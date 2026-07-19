@@ -16,6 +16,13 @@ A RAPM is
 
 `QuerySpec=(rho0,H,w,g,delta,normalizer)` and `PolicyResult=(pi_h,G_q,C_q,F_q)`, where `pi_h(z)` is a deterministic semantic action and `G_q` is its reachable contingent graph.
 
+`WorkloadSpec=(workload_id,E,{q_i}_{i=1}^N,route_policy)` fixes an ordered query
+campaign and its immutable external `BuildEpoch E`. The epoch commits to structure,
+kernel, coverage, feature/terminal registries, semantic action/concretizer, synthesis
+algorithm, contract/schema versions, source revision, and the resulting coverage/model
+IDs. It is provenance that binds the portable object; it is not a field inside that
+object.
+
 For an explicit initial declaration `S0=supp(rho0)`, Phase 0.5 defines
 
 ```text
@@ -187,7 +194,77 @@ rows: G2048 varies initial support/distribution and horizon at fixed reward/risk
 LMB varies reward basis, horizon, and risk at fixed initial support. It does not assert
 that either domain individually covers every change axis or every admissible query.
 
-For canonical reward definitions, `normalizer=H` in G2048 and `normalizer=2N/3` in LMB. A query changing any reward coefficient or reward/bonus/goal semantics supplies and validates its own deterministic total-return bound; the two canonical formulas have no default validity outside their registered reward definitions.
+For Phase 3B and a partition `Pi`, the query-neutral one-step action behaviour is
+
+```text
+b_Pi(x,a) = (reward_feature_vector(x,a),
+             P(entered_failure), terminal_or_success_kind,
+             (P(Y in C))_{C in Pi}).
+```
+
+The vector retains registered basis features before query weighting. Starting from
+terminal-kind blocks, repeatedly split each block by the set of exact `b_Pi(x,a)`
+values until a fixed point `Pi*`. Equal action behaviours define one semantic action;
+its concretizer is frozen over the distinct corresponding legal actions. This operator
+depends on the complete one-step kernel but not on `Q*`, any value/frontier or selected
+policy, query weights, horizon, risk threshold, or held-out result. The resulting
+portable RAPM contains `Pi*`, a complete state catalog with `planning_kind`, nominal
+point entries, exact sound entries, semantic/ground action catalogs, concretizers,
+coverage plus its content ID, reward features, `normalizer_rules`, and `goal_ids`.
+Schema v1 admits exactly the `default` structural stopping goal. Its separate portable
+query contains the
+model-bound cell distribution, horizon, raw and normalized reward weights,
+normalizer/proof ID, that goal ID, and risk threshold. The `model_id` is a content ID of
+this portable payload alone; the external BuildEpoch does not participate in it.
+
+Let a canonical normalizer rule be
+
+```text
+p = (proof_id, kind=nonnegative_feature_caps_v1,
+     [(feature_name, raw_basis_weight)],
+     [(feature_name, per_step_cap or null, total_cap or null)]).
+```
+
+Rules are nonempty, unique, and sorted by `proof_id`. The `reward_basis` is the complete
+registered reward-feature set, unique and sorted by feature name, with an explicit
+nonnegative rational raw weight for every feature, including zeros. The feature-cap list
+is unique and sorted by registered name. Its caps are exact nonnegative rationals; each
+listed cap record supplies at least one non-null value, every positive-basis-weight
+feature is listed, and zero-weight features need not appear. For the rule's raw weights `w_k`, the proof yields
+
+```text
+b_p(k,H) = min({H * per_step_cap_p,k if present,
+                total_cap_p,k if present})
+B_p(q)   = sum_{k:w_k>0} w_k b_p(k,H).
+```
+
+The query's full raw-weight vector must equal `p.reward_basis` exactly, preventing a
+proof ID from crossing reward bases. Every positive-weight feature must have a cap, the
+query normalizer must be positive and satisfy `Rmax(q) >= B_p(q)`, and
+`normalized_weight_k=w_k/Rmax(q)` exactly.
+
+The Phase 3B authority binds G2048's proof to `(merge=1)` and LMB's canonical,
+match-only, and terminal-clear-only proofs to complete `(match,terminal_clear)` bases
+`(1,1)`, `(1,0)`, and `(0,1)` respectively. Those proof IDs are basis-specific.
+
+For a proposed policy `pi` and query `q`, let `Bad(pi,q)` be its reachable `(z,h)`
+nodes whose local value-regret or failure proof obligation is not certified. The local
+ground frontier is the earliest antichain
+
+```text
+F_local(pi,q) = {u in Bad(pi,q) : no strict policy-graph ancestor of u is in Bad(pi,q)}.
+```
+
+Only `union_{(z,h) in F_local} C_z` and the positive-probability successor dependencies
+needed to recompute those entries may be reopened by `LOCAL_GROUND_RECOVERY`. The route
+does not authorize a global ground solve or coverage extension; those are separately
+charged `FULL_GROUND_FALLBACK` or `REBUILD_REQUIRED` routes.
+
+For canonical reward definitions, `normalizer=H` in G2048 and `normalizer=2N/3` in LMB.
+Phase 3B accepts only a raw reward basis exactly equal to one of the model's registered
+proof rules and only the `default` goal. A later schema may register other reward/goal
+semantics with its own deterministic bound, but the two canonical formulas have no
+default validity outside their registered definitions.
 
 For a query-normalized reward, define:
 
@@ -262,6 +339,32 @@ evaluate_phase3a_suite(frozen, Q_train, Q_heldout):
     require supp(q.rho0) subseteq frozen.Omega_train
     evaluate J0, Jkappa, nominal, exact audit, and ground lift on frozen.RAPM
 
+construct_phase3b_epoch(structure, coverage):
+  Pi = partition_by_terminal_kind(coverage)
+  repeat Pi = split_by_complete_one_step_behaviour(Pi) until fixed_point
+  audit builder API/data-flow and source imports for forbidden dependencies
+  rapm = serialize_portable_RAPM(Pi,coverage,registries,adapter)
+  epoch = externally_bind(structure,kernel,coverage,registries,adapter,
+                          synthesizer,schemas,source,rapm.model_id)
+  return epoch,rapm
+
+fresh_process_query(portable_rapm, portable_query_v1):
+  launch fresh bwrap mount/network namespace with staged three-module runtime
+  require read_only(current model/query), empty_writable_output, python=-S
+  assert no ground_kernel_or_builder_object_loaded and project_not_mounted
+  proposal = nominal_abstract_plan(portable_rapm,portable_query_v1)
+  attest inputs, namespace, module origins, and output
+  return freeze(proposal)
+
+evaluate_frozen_proposal(proposal, q):
+  assert all_workload_proposals_already_frozen
+  return independent_exact_audit_J0_and_ground_lift(proposal,q)
+
+route_after_audit(proposal,audit,q):
+  if audit.certified: return ABSTRACT_CERTIFIED
+  frontier = earliest_failed_proof_antichain(proposal.policy_graph,audit)
+  return LOCAL_GROUND_RECOVERY(frontier)  # later Gate, not exercised by Phase 3B
+
 audit(pi, q):
   backward_induct over every reachable (z,h)
   return regret_bound, failure_upper_bound, proof_dependencies
@@ -302,6 +405,17 @@ audit(pi, q):
 - Cross-automorphism evidence counts, separately for each lifted training policy graph,
   the physical state orbits actually reached inside each active cell; a passing cell
   contains at least two such orbits independently of terminal-cell aggregation.
+- Phase 3B's behavioural fixed point is invariant under query order, weights, horizons,
+  and risk thresholds; the builder API/data flow excludes these objects, and static
+  source audits exclude their planning/oracle modules. This does not assert a closed
+  import DAG for the entire campaign runner.
+- A portable RAPM resolves every fresh-process planner dependency without a ground-
+  kernel or builder-memory reference; later audit dependencies are separately recorded.
+- `F_local` is policy-reachable, contains only failed obligations, and is an earliest
+  antichain. No ground work is authorized before it is nonempty.
+- `BuildEpoch` is immutable; any changed epoch component yields a different epoch
+  identity and a new charged build. The model ID changes only when the extensional
+  portable RAPM payload changes.
 
 ## Acceptance tests
 
@@ -348,13 +462,41 @@ audit(pi, q):
 - Mutating any held-out query while retaining its support within coverage leaves
   `SuiteCovID`, partition signature, semantic adapter, and RAPM ID unchanged; passing
   that mutation into either construction function is a leakage failure.
+- Phase 3B one-step fixed-point construction gives identical bytes under query
+  permutation/mutation. Builder API/data-flow and static source audits reject injected
+  Q/value/policy-signature dependencies in the behavioural builder or portable planner.
+- It reproduces G2048 `Pi` trace `2 -> 9 -> 10 -> 10`, state/action counts
+  `192 -> 10`, `144 -> 17`, and LMB `3 -> 5 -> 5`, `25 -> 5`, `40 -> 4`.
+- Serialization/deserialization preserves every partition, state planning kind,
+  action, exact probability, feature, envelope, map, concretizer, coverage and
+  coverage ID, normalizer rule, goal ID, and extensional model identity. BuildEpoch is checked through
+  its separate binding, not deserialized from the model.
+- Fresh Linux bubblewrap processes plan the entire registered campaign from only the
+  current read-only portable model/query, the three staged runtime modules and system
+  Python libraries, with `-S`, an isolated network namespace, and an initially empty
+  writable output. Runtime attestations validate this boundary. Only after all proposals freeze do independent audit/J0/lift checks run;
+  their inputs and outputs are absent from the planner dependency graph.
+- The campaign contains eleven distinct ground queries and at least eight distinct
+  portable projections, four per domain, with `H>=2` represented in each domain, and
+  every row retains the same per-domain model identity.
+- A fabricated local-ground route without a failed certificate/frontier, or a frontier
+  containing an unreachable/non-earliest node, fails validation.
+- Portable query validation rejects negative weights, unknown proof IDs, a raw vector
+  unequal to the proof's complete `reward_basis`, missing caps for positive-weight
+  features, `Rmax(q)<B_p(q)`, and normalized weights other than exact `raw/Rmax`.
+- The independent verifier rebuilds both kernels, coverages, behavioural models, and
+  authoritative G2048/LMB normalizer-rule registries, reprojects all queries, recomputes portable-envelope and live ground audits, lifts
+  through serialized `kappa`, runs J0, validates all content IDs/cross-links/counters,
+  and can replay each isolated planner occurrence.
 
 ## Out of scope
 
 Learned confidence sets, belief states, continuous spaces/actions, randomized ground or
 abstract selectors, query-time mixtures/convexification of deterministic policies,
 macro-actions, robust first-hit reduction, and interpreting exact-model behavioural or
-ground-oracle signatures as oracle-free discovery of an unknown quotient.
+ground-oracle signatures as oracle-free discovery of an unknown quotient. Phase 3B
+also excludes learned world models, automatic predicate invention, an executed local-
+hybrid method, break-even evidence, and full Phase 3/5 Gate claims.
 
 ## Known failure modes
 
@@ -362,4 +504,4 @@ Loose cellwise suprema can make `U_all` conservative; a valid policy may fail ce
 
 ## Open risks
 
-Tighter coupled envelope representations may improve coverage later, but must preserve containment and the unrestricted-action regret theorem. V0-027 proves an exact-model/oracle cross-automorphism construction slice, but automatic predicate invention, oracle-free quotient recovery, and the statistical Phase 3 aggregate remain open.
+Tighter coupled envelope representations may improve coverage later, but must preserve containment and the unrestricted-action regret theorem. V0-027 proves an exact-model/oracle cross-automorphism construction slice. V0-028 removes Q/value signatures from the portable campaign builder, while useful certificate-triggered local repair, automatic predicate invention, workload economics, and the statistical Phase 3/Phase 5 aggregates remain open.

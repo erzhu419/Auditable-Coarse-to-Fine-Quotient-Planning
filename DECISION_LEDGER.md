@@ -1,8 +1,8 @@
 # V0 Decision Ledger
 
 **Status:** normative source of truth  
-**Ledger version:** 0.6.0
-**Last updated:** 2026-07-19
+**Ledger version:** 0.7.0
+**Last updated:** 2026-07-20
 
 ## Authority
 
@@ -53,6 +53,7 @@ absent from a public checkout.
 | V0-025 | 2026-07-19 | Coverage-limited build ownership | FROZEN | `rho0` remains a `QuerySpec` field and never becomes structural environment semantics. The Phase 0.5 RAPM build receives the query's explicit positive-mass support and constructs its full transition closure under every legal action and every positive-probability successor. Its coverage descriptor is frozen as `mode=query_support_transition_closure`, `initial_support_sha256` over the canonical ordered `rho0` declaration including exact masses, `covered_state_count`, and `reuse_outside_coverage_forbidden=true`. `structural_id` excludes `rho0`; `query_id` includes the full query; and `build_id` includes `structural_id`, the complete coverage descriptor, and source identity. Thus changing `rho0` leaves `structural_id` unchanged but changes the descriptor-specific `build_id` and `query_id`; the current cache does not infer extensional equivalence between different support declarations. A candidate query must be validated against the recorded closure before planning, and any support outside it is rejected or rebuilt under a new coverage descriptor. Optional domain initial-distribution methods are named query factories only; they cannot seed a build implicitly, and `structural.json` contains no `initial_law`. | Resolves `V0-RISK-003` and narrows V0-003's reuse statement for the implemented coverage-limited V0 profile without moving query semantics into the structural key. | `QuerySpec`; `RAPMBuilder`; build/query/structural IDs; coverage validator; config/run artifacts; cache-reuse and out-of-coverage tests. |
 | V0-026 | 2026-07-19 | Safe-chain aliased CEGAR positive control | FROZEN | `g2048_select_safe_chain_aliased_partition_v0` is an independent refinement **profile key**, not a new ground structural key: it reuses the `g2048_select_safe_chain_2x2_v0` kernel, canonical `D4`-uniform `H=2, delta=1/20` query, and complete 192-state query-support transition closure, while committing separate partition, grammar, semantic-adapter, build, run, and artifact hashes. Its fixed ten-cell base encoder puts every failure state in one terminal cell and maps each active state by `(empty_count, sorted nonzero rank histogram)`; this preregistered base encoder has incremental refinement rate zero but its ten leaves and all construction/accounting costs are charged. The profile uses `RefinementBudget.full_v0()`, `abstraction_source=deliberately_aliased_boundary_actions`, the deliberately non-`D4`-equivariant `canonical:first`/`canonical:last` boundary labels, and deterministic singleton `kappa`. Grammar `g2048.action_frame_geometry.v1` contains exactly `first_survivor_adjacent_nonmerged_count`, `first_pair_horizontal`, `first_survivor_row`, `first_survivor_column`, `nonmerged_row`, and `nonmerged_column`, totalized to zero when `FIRST` has no unique occupied nonmerged cell. The registered target is `first_survivor_adjacent_nonmerged_count|<=|1/2`; with one threshold and six features its incremental rate is four bits per local application. The frozen `(nominal reward, nominal failure, L_pi, U_F, normalized regret upper)` sequence is `(201/6400,5059/8000,51/3200,19999/20000,99/3200)` before refinement, `(3/64,21187/80000,3/64,5099/10000,0)` after the first split, and `(3/64,317/16000,3/64,397/20000,0)` after the second. Exact audit witness extraction and the full V0 joint candidate ranking, never a hard-coded split schedule, must select that predicate first in histogram cell `(1,1,2)` and then in `(1,2,2)`, giving `10 -> 11 -> 12` leaves and eight charged refinement bits. The second split immediately returns `CERTIFIED` with no fallback: lifted reward `3/64`, exact lifted failure `317/16000`, sound failure upper bound `397/20000 < 1/20`, and normalized regret upper bound zero at the distribution and at all eight initial support points. J0 failure remains `99/5000`; the lifted-risk gap is `1/80000` and envelope conservatism is `3/80000`. A third split of `(2,2,2)` is future tightening-only work and is forbidden in the main run after certification. Ordinary planning/refinement endings use the existing eight CEGAR statuses; malformed profile construction or replay terminates separately as `ALIASED_CEGAR_INVARIANT_VIOLATION`. Every active histogram cell happens to be one complete `D4` orbit, so the demonstrated defect is the mismatch between a coarse state cell and the order-dependent, non-equivariant boundary-action labels. The claim is only that exact counterexamples can select and apply a preregistered current-state geometry atom to repair this deliberate action/partition aliasing enough for a sound constrained certificate; it is not automatic predicate invention, state-quotient or unknown-symmetry discovery, exact risk/policy preservation, shared grammar, or learning. | Makes the future profile mentioned by V0-024 executable without changing the exact-`D4` baseline, and supersedes the nonnormative sketch in `markdown/GPT_d4_quotient_decision.md` wherever that sketch called the profile a new structural key or left its partition/action/refinement semantics open. | Aliased-profile registry and identity; action-frame feature adapter; base partition; exact witness extractor; multi-step CEGAR runner; full-V0 budget/rate accounting; iteration artifacts and independent verifier; claim filter and golden tests. |
 | V0-027 | 2026-07-19 | Phase 3A true-state-alias oracle positive control | FROZEN | Contract `0.6.0` registers `phase3a_true_state_alias_oracle_control_v0` / execution profile `phase3a_true_state_alias_oracle_control` as a two-domain **construction slice**, with the exact fixtures, train/held-out split, algorithms, goldens, and acceptance rules below. It must demonstrate an active cell in which one lifted training policy graph jointly reaches states from multiple complete known-automorphism orbits, train-built RAPM reuse across the registered two-domain held-out suite, at least `5x` **active-state** compression, strict state-action compression, exact-sound certification, zero exact reward gaps, and zero exact failure gaps. Passing returns `PHASE3A_SLICE_PASS` and simultaneously `PHASE3_AGGREGATE_NOT_RUN`; malformed construction or replay returns `PHASE3A_INVARIANT_VIOLATION`. This is an exact-model/oracle upper-bound control, not the full Phase 3 Gate and not evidence of predicate invention, oracle-free unknown-quotient discovery, shared coordinates, CEGAR recovery, multiresolution planning, or scale generality. | Directly addresses V0-026's limitation that every active histogram cell was already one `D4` orbit, without upgrading the Phase 3 aggregate claim or changing any earlier profile. | Suite coverage; oracle/behavioural builders; semantic actions and lift; train/held-out registry; symmetry-nontriviality audit; J0/Jkappa/J2 rows; contract-0.6 artifacts, statuses, claim filter, and golden tests. |
+| V0-028 | 2026-07-20 | Reusable world-model objective and Phase 3B portable campaign | FROZEN | Contract `0.7.0` makes the primary objective explicit: compile a coverage-bounded ground process once into an auditable RAPM, perform repeated multi-step contingent planning primarily inside that portable abstract world model, and recover ground distinctions locally only when the independent value/risk certificate cannot certify the current plan. Quotients, predicates, CEGAR, and ground solvers are construction, repair, audit, and fallback subsystems rather than the scientific endpoint. The immediate profile is `phase3b_portable_rapm_campaign_v0`: build each domain RAPM from the complete one-step reward-feature/failure/terminal/successor behaviour only, with no `Q*`, value, selected-policy, query reward/risk/horizon, or held-out evaluation signature; serialize it; then use a fresh planner process that can read only the portable RAPM and the cell-level portable projection bound to a `QuerySpec` to plan at least eight distinct registered queries across both domains, at least four per domain and at least one `H>=2` query in each domain. J0 is evaluation/fallback truth and cannot enter construction or the fresh-process planner. Passing returns `PHASE3B_PORTABLE_RAPM_PASS` together with `PHASE3_AGGREGATE_NOT_RUN`, `LOCAL_HYBRID_GATE_NOT_RUN`, and `WORKLOAD_ECONOMICS_GATE_NOT_RUN`. It proves only no-Q/value-signature construction, portability, repeated in-coverage reuse, abstract-primary multi-step planning, and exact-sound certification on the registered campaign; it does not prove automatic predicate invention, local hybrid repair, amortized break-even, full Phase 3/5, scale, or learning. | Supersedes lower-authority framing that treated quotient discovery or CEGAR itself as the endpoint. It is additive to V0-024 through V0-027: their fixtures, goldens, statuses, and narrow historical claims remain unchanged and may not be retroactively relabelled as Phase 3B evidence. | `WorkloadSpec`; `BuildEpoch`; portable RAPM schema/loader; exact behavioural synthesizer; fresh-process planner; construction-dependency audit; route and cost accounting; Phase 3B registry, artifact bundle, verifier, claim filter, and acceptance tests. |
 
 ## V0-027 registered construction slice
 
@@ -160,6 +161,139 @@ holding reward basis and risk fixed; LMB tests reward-basis, horizon, and risk c
 while holding initial support fixed. It does not assert that either domain was tested
 under all four change types or that arbitrary in-coverage queries preserve value.
 
+## V0-028 registered world-model campaign
+
+The Phase 3B execution profile is `phase3b_portable_rapm_campaign`. Its authority is a
+frozen `WorkloadSpec`, not a succession of isolated query runs. The record contains a
+canonical workload ID, domain/structural IDs, build-coverage seed set and closure rule,
+an ordered campaign query registry, expected query count, admissible routes, normalizer
+proofs, and the exact build epoch. The frozen campaign has eleven distinct ground query
+IDs (six G2048, five LMB), at least eight distinct portable query IDs, at least four
+distinct portable queries per domain, and an `H>=2` query in each domain.
+Byte-equivalent portable projections, cache hits, J0 probes, and construction-only rows
+do not count toward the portable-query threshold.
+
+A `BuildEpoch` is the immutable external provenance tuple of structural/kernel identity,
+complete coverage, reward-feature and terminal/failure registries, semantic
+action/concretizer identity, behavioural-synthesis algorithm, contract/schema version,
+source revision, and the resulting coverage/model IDs. One RAPM per domain is built and
+frozen once and then bound by that epoch. The epoch is not embedded in the portable
+model: `portable_rapm_id` is derived only from the portable RAPM payload. Changing an
+epoch component creates a new epoch and pays a new build cost, but changes the model ID
+only when the extensional portable payload changes. Evaluation-query order, reward
+weights, risk threshold, and horizon cannot mutate either object.
+
+The Phase 3B synthesizer starts from terminal-kind blocks and refines them to a fixed
+point using the complete exact **one-step** tuple
+
+```text
+(registered reward-feature vector,
+ entered-failure indicator,
+ terminal/success kind,
+ successor-block probability distribution)
+```
+
+for every legal ground action, with equal action behaviours deduplicated into semantic
+actions and distinct-action concretizers frozen. It may inspect the exact one-step
+kernel over declared coverage. It may not inspect `Q*`, a value/frontier table, selected
+actions or policies, query reward weights, `delta`, `H`, held-out results, or a
+value-derived signature. This is exact behavioural world-model synthesis, not learned
+model induction or human predicate invention. The serialized RAPM itself carries
+coverage plus `coverage_id`, a state catalog with `planning_kind`, partition, nominal
+model, exact envelope, frozen concretizer, reward-feature registry,
+`normalizer_rules`, and `goal_ids`. `normalizer_rules` is a nonempty proof-ID-sorted
+registry. Each unique proof has `kind=nonnegative_feature_caps_v1`, a complete unique
+`reward_basis` sorted by registered feature name with nonnegative rational raw weights
+(including zero-weight features), and a unique feature-name-sorted cap list. Every
+positive-basis-weight feature has a nonnegative rational `per_step_cap` and/or
+`total_cap`; every cap record has at least one non-null value, while zero-weight
+features need not have a cap record.
+The no-forbidden-input evidence is builder API/data flow plus static source audits of
+the behavioural builder and portable planner; it is not a closed import-DAG claim for
+the entire Phase 3B runner.
+
+After serialization, every query occurrence gets a fresh process in a bubblewrap
+mount/network namespace. It sees only staged `portable.py`, `portable_planner.py`, and
+`portable_runtime.py`, the current read-only RAPM/query files, system Python libraries,
+and an initially empty writable output directory. The project checkout, ground kernel,
+builder cache, and previous/other-domain requests are not mounted; Python starts with
+`-S`, and a content-addressed runtime attestation records namespace, input,
+module-origin, and output evidence. Portable query v1 binds the ground request's cell
+distribution, horizon, raw and normalized rewards, normalizer/proof ID, risk, and
+`default` goal. Because the schema supports only that structural stopping goal, v1
+rejects every other goal rather than silently ignoring goal semantics. It constructs
+the nominal abstract contingent plan without the ground kernel or a builder-owned
+in-memory object. The query validator requires registered reward-feature names, a
+registered `normalizer_proof_id`, nonnegative raw weights, a positive normalizer, and a
+raw-weight vector exactly equal to that proof's `reward_basis`. Thus a proof ID cannot
+be reused for a different reward basis. Every positive-weight feature requires a cap.
+For proof `p`,
+
+```text
+B_p(q) = sum_k w_k * min({H * per_step_cap_k if present,
+                           total_cap_k if present})
+normalizer >= B_p(q)
+normalized_weight_k = w_k / normalizer.
+```
+
+This instantiates only registered Phase 3B reward features/proofs and the v1 `default`
+goal; it does not provide arbitrary reward or goal support. G2048 binds its canonical
+proof to `(merge=1)`. LMB binds its canonical, match-only, and terminal-clear-only
+proofs respectively to the complete bases `(match,terminal_clear)=(1,1),(1,0),(0,1)`;
+the three LMB proof IDs are not interchangeable. Only after every workload
+proposal is frozen does an independent exact auditor inspect the authoritative ground
+kernel/envelope; J0 and lifting run on that same evaluation side. Audit/J0/lift outputs
+may not flow back into construction or the portable planner.
+
+Query routing is frozen as `ABSTRACT_CERTIFIED`, `LOCAL_GROUND_RECOVERY`,
+`FULL_GROUND_FALLBACK`, `REBUILD_REQUIRED`, or `INFEASIBLE_QUERY`. The first route is
+the normal route. A local route is authorized only after an abstract proposal exists
+and its exact certificate fails. Its **local ground frontier** is the set of earliest
+policy-reachable `(cell,h)` nodes whose reward-regret or failure proof obligation fails;
+ground inspection/repair is limited to those cells and the exact successor dependencies
+needed to recompute their entries. Uncovered states, changed semantics, an exhausted or
+grammar-incomplete repair, or a failed same-query ground solve routes explicitly to
+rebuild, charged full fallback, or infeasibility. Phase 3B records this route contract
+but exercises only `ABSTRACT_CERTIFIED`; therefore it reports
+`LOCAL_HYBRID_GATE_NOT_RUN` rather than claiming local repair.
+
+Workload work is kept separate and additive. Given a preregistered scalar
+`CostFunctional c` on the recorded work-counter vectors, the first `n` queries in the
+frozen order obey
+
+```text
+C_world(n) = c(W_build(epoch))
+             + sum_i<=n c(W_load(i) + W_abstract_plan(i) + W_audit(i)
+                          + W_local_ground(i) + W_full_fallback(i))
+C_ground(n) = sum_i<=n c(W_same_query_ground(i))
+N_break_even = min {n>=1 : C_world(n) <= C_ground(n)}, or NOT_REACHED.
+```
+
+Evaluation-only J0 comparison work is reported separately and cannot be hidden in or
+credited against either operational path. Phase 3B emits implementation-level,
+noninterchangeable exact counters: build coverage, ground state/action/outcome and
+refinement counts plus model bytes; per-occurrence model and query loads/bytes,
+abstract composed candidates/frontier/decision nodes, portable-envelope and live
+ground-certificate reachable pairs, zero local/fallback activity, and evaluation-only
+J0 composed candidates, with reconciliation totals. It has no frozen `c`; therefore
+scalar costs and `N_break_even` are
+`null`, not `NOT_REACHED`, and it returns `WORKLOAD_ECONOMICS_GATE_NOT_RUN`. A later
+economics Gate must freeze `c`, hardware, and repetition policy before opening results.
+
+A Phase 3B pass requires portable round-trip identity, fresh-process isolation, builder
+API/data-flow and static-source dependency checks, one unchanged RAPM identity per domain,
+G2048 `192 -> 10` cells and `144 -> 17` state-action pairs with refinement trace
+`2 -> 9 -> 10 -> 10`, LMB `25 -> 5` and `40 -> 4` with trace `3 -> 5 -> 5`,
+abstract-primary planning and exact-sound
+certification for every registered campaign query, and independent verification that
+rebuilds both kernels/coverage/behavioural models and their authoritative G2048/LMB
+normalizer registries, reprojects queries, recomputes the
+portable-envelope audit and serialized-concretizer lift/live exact audit/J0, validates
+IDs/cross-links/counters, and can replay the isolated planner.
+The terminal status tuple is exactly
+`PHASE3B_PORTABLE_RAPM_PASS/PHASE3_AGGREGATE_NOT_RUN/LOCAL_HYBRID_GATE_NOT_RUN/WORKLOAD_ECONOMICS_GATE_NOT_RUN`.
+This additive campaign does not alter any V0-024--V0-027 result or claim boundary.
+
 ## Implementation defaults (not new scientific claims)
 
 These defaults select the first Phase 0.5 fixtures without changing the benchmark families: G2048 uses `g2048_select_canonical_2x2_v0` with query horizon 1; LMB starts with the smallest canonical `N=6, T=2, K=3, D=1, H=6` generated layout. The deliberately coarse LMB initializer separates terminal status and `remaining_object_count<=5/2`. The preregistered mandatory refinements are G2048 `rank_sum<=3` and LMB `action_count<=3/2`; they are domain atoms for the shared-algorithm slice, not evidence for a shared-grammar claim. A run may use another canonical tiny fixture, but its full structural parameters, initial partition, and grammar version belong in the build key and manifest. The implemented `g2048_select_safe_chain_2x2_v0` exact-known-symmetry positive control uses the V0-024 orbit quotient and no CEGAR split. The V0-026 aliased profile reuses that ground structure and query but deliberately replaces its abstraction/action profile; it is a full-V0 refinement positive control, not a retroactive replacement for either Phase 0.5 fixture or the exact-`D4` run. An individual run becomes positive-claim eligible only after its profile-specific bundle verifies.
@@ -193,3 +327,4 @@ accepted split, iteration record, output-stage proof, and final certificate.
 - **2026-07-19 — 0.4.0:** Froze the implemented Phase 0.5 build as explicit query-support transition-closure coverage. Added coverage mode/support hash/count and no-outside-reuse to `build_id`, preserved query-owned `rho0` and the unrestricted structural identity boundary, and resolved `V0-RISK-003`.
 - **2026-07-19 — 0.5.0:** Froze the separately keyed safe-chain aliased CEGAR positive control over the unchanged safe-chain ground structure/query: complete 192-state coverage, ten-cell histogram base partition, order-dependent boundary actions, a six-feature action-frame grammar, two auditor-selected four-bit geometry splits, exact golden bounds, immediate sound certification, zero fallback, multi-iteration artifacts, and a claim boundary that excludes automatic predicate/state/symmetry discovery and exact risk preservation.
 - **2026-07-19 — 0.6.0:** Froze the Phase 3A two-domain true-state-alias oracle construction slice: train-only suite coverage and construction, held-out evaluation on unchanged RAPMs, G2048 `192 -> 8`, exact LMB behavioural `25 -> 5`, same-policy-graph joint reachability across complete known-automorphism orbits, exact audit goldens, and explicit `PHASE3_AGGREGATE_NOT_RUN`/no-predicate-invention/no-unknown-discovery boundaries.
+- **2026-07-20 — 0.7.0:** Re-centred the project on one coverage-bounded auditable abstract world model used for repeated contingent planning. Froze `WorkloadSpec`, immutable `BuildEpoch`, certificate-gated route semantics, the local-ground frontier, additive workload/break-even accounting, and the two-domain no-Q/value-signature fresh-process Phase 3B portable-RAPM campaign. Preserved V0-024--V0-027 as historical positive controls with unchanged claims.

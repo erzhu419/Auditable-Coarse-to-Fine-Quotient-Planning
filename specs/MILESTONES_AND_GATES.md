@@ -15,6 +15,10 @@
   control. `PHASE3A_SLICE_PASS` is paired with
   `PHASE3_AGGREGATE_NOT_RUN`; malformed construction/replay uses
   `PHASE3A_INVARIANT_VIOLATION`.
+- **Phase 3B portable campaign:** the V0-028 two-domain exact one-step behavioural
+  world-model build plus fresh-process repeated planning. A pass is paired with
+  `PHASE3_AGGREGATE_NOT_RUN`, `LOCAL_HYBRID_GATE_NOT_RUN`, and
+  `WORKLOAD_ECONOMICS_GATE_NOT_RUN`.
 
 ## Normative decisions
 
@@ -171,6 +175,85 @@ varies reward basis, horizon, and risk. Passing returns
 `PHASE3A_SLICE_PASS/PHASE3_AGGREGATE_NOT_RUN`. It neither satisfies nor contributes a
 sample to the full Phase 3 oracle or human-grammar aggregate Gate.
 
+### Phase 3B portable RAPM campaign gate
+
+This is the first gate framed around the project's primary object: build a reusable,
+coverage-bounded auditable abstract world model once and perform repeated multi-step
+contingent planning primarily inside it. Quotient construction and CEGAR remain
+construction/repair subsystems. The registered chain is:
+
+```text
+freeze WorkloadSpec and per-domain build inputs
+-> enumerate complete declared coverage and registered one-step feature semantics
+-> refine terminal-kind cells by full exact one-step behaviour to a fixed point
+-> audit builder API/data flow and behavioural/planner source imports
+-> freeze and serialize one portable RAPM per domain
+-> externally bind each BuildEpoch to its coverage/model IDs
+-> canonical deserialize/reserialize identity check
+-> launch an attested fresh bwrap process for each portable-query-v1 occurrence
+-> freeze every portable-model proposal before any J0 call
+-> independently exact-audit, run J0, and ground-lift as evaluation truth
+-> record routes and implemented exact work-counter fields; leave scalar costs null
+-> emit contract-0.7 bundle and bounded claim report
+```
+
+The workload contains eleven distinct ground queries: six G2048 and five LMB, with at
+least eight distinct portable projections and four per domain, and multi-step queries
+in both domains. The G2048 set contains
+four `H=2` rows. The LMB set contains its earlier three rows plus canonical
+`H=3,delta=1/10` and terminal-clear-only `H=3`. Duplicate/cache/diagnostic executions
+do not satisfy the portable-query threshold.
+
+Construction may use the complete exact one-step kernel, registered reward-feature
+vector, entered-failure/terminal kind, and successor-block probabilities. It may not
+use `Q*`, a value/frontier, selected policy/action, query reward weights, `delta`, `H`,
+or evaluation output. This boundary is demonstrated through builder API/data flow and
+static source audits, not a whole-run closed import DAG. The portable model embeds
+coverage/coverage ID, state planning kinds, partition, nominal/exact-envelope entries,
+action catalogs, concretizer, reward features, `normalizer_rules`, and `goal_ids`;
+BuildEpoch is an external
+binding and does not enter the model content ID.
+
+Every occurrence runs in a fresh Linux bubblewrap mount/network namespace. It may load
+only the three staged portable runtime modules, system Python libraries, the current
+read-only model/query, and an initially empty writable output; the checkout and other
+requests are not mounted, Python uses `-S`, and runtime evidence is content-addressed.
+Portable query v1 binds cell `rho0`, horizon, raw/normalized weights,
+normalizer/proof, risk, and exactly the `default` structural stopping goal. Its proof ID
+must resolve in the uniquely proof-sorted registry. Each rule has
+`kind=nonnegative_feature_caps_v1`, a complete uniquely name-sorted nonnegative
+`reward_basis` containing every registered feature including zeros, and uniquely
+name-sorted registered feature caps. Query validation requires raw weights exactly equal
+to that rule's basis, so proof IDs cannot cross bases; every positive-weight feature
+requires a nonnegative per-step and/or total cap,
+`normalizer >= sum_k w_k min(H*per_step_cap_k,total_cap_k)`, and exact
+`normalized=raw/normalizer`.
+
+Passing requires one unchanged build epoch/RAPM per domain, canonical portable
+round-trip equality, G2048 behavioural trace `2 -> 9 -> 10 -> 10` with state/action
+compression `192 -> 10` and `144 -> 17`, LMB trace `3 -> 5 -> 5` with `25 -> 5` and
+`40 -> 4`, an exact-sound
+`ABSTRACT_CERTIFIED` multi-stage policy for every registered query, and independent
+J0/lift agreement. It returns exactly
+`PHASE3B_PORTABLE_RAPM_PASS/PHASE3_AGGREGATE_NOT_RUN/LOCAL_HYBRID_GATE_NOT_RUN/WORKLOAD_ECONOMICS_GATE_NOT_RUN`.
+Malformed construction, portability, isolation, or replay uses
+`PHASE3B_INVARIANT_VIOLATION`.
+
+The router/local-frontier interface is normative but not exercised here. A later local
+hybrid may inspect ground states only after the full-plan certificate fails and only at
+the earliest policy-reachable failed nodes plus exact successor dependencies. Phase 3B
+has an empty local frontier and zero local/fallback charges. Likewise it records
+the implemented separated build state/action/outcome/refinement/byte counters and
+per-occurrence load, plan, portable/live-ground audit, local/fallback,
+evaluation-only-J0, and reconciliation counters. Without a preregistered scalar cost functional it
+leaves `C_world`, `C_ground`, and `N_break_even` null and does not run or pass the
+workload-economics Gate.
+
+This gate supports portable no-Q/value-signature exact world-model synthesis and reuse
+on the frozen workload. It does not support automatic predicate invention, a working
+local hybrid, amortized break-even, the full Phase 3/5 Gates, scale, or learning. It is
+additive and does not modify V0-024--V0-027's result labels or historical claims.
+
 ### Frozen later Gates
 
 - **Phase 3 oracle quotient:** median compression at least `5x`, 95th-percentile normalized regret at most 1%, zero additional constraint violations, at least 80% tiny-instance pass rate.
@@ -243,6 +326,27 @@ run_phase3a_slice(registry):
     assert reached_cross_automorphism_active_cell()
     assert all_exact_reward_and_failure_gaps_zero()
   return PHASE3A_SLICE_PASS, PHASE3_AGGREGATE_NOT_RUN
+
+run_phase3b_campaign(workload):
+  freeze workload
+  for domain in (G2048,LMB):
+    rapm = full_one_step_behavioural_fixed_point(domain,workload.coverage(domain))
+    audit builder API/data flow and behavioural/planner source imports
+    serialize_and_verify_canonical_roundtrip(rapm)
+    epoch = externally_bind(rapm.coverage_id,rapm.model_id,construction_provenance)
+  for q in workload.ordered_queries:
+    pq = portable_query_v1(rapm[q.domain],q,goal=default)
+    result = fresh_bwrap_process_plan_only(rapm[q.domain],pq,python=-S)
+  freeze all workload proposals before J0 starts
+  for result in frozen_results:
+    exact_audit_J0_and_ground_lift(result)
+    require result.route == ABSTRACT_CERTIFIED
+    require independent_J0_and_ground_lift_agree(result,q)
+  reconcile_all_workload_cost_prefixes()
+  return PHASE3B_PORTABLE_RAPM_PASS,
+         PHASE3_AGGREGATE_NOT_RUN,
+         LOCAL_HYBRID_GATE_NOT_RUN,
+         WORKLOAD_ECONOMICS_GATE_NOT_RUN
 ```
 
 ## Invariants
@@ -276,6 +380,16 @@ run_phase3a_slice(registry):
   separately. A cross-automorphism witness passes only when one lifted training policy
   graph reaches at least two physical-orbit members inside the same active cell.
 - A construction-slice pass cannot be promoted to the full Phase 3 aggregate status.
+- A Phase 3B external build epoch and portable RAPM are immutable across all domain
+  queries; no query/result enters the builder API/data flow. Epoch and extensional
+  model IDs are separate content-addressed objects.
+- Phase 3B fresh planner occurrences attest their bubblewrap mount/network namespace,
+  three staged modules, `-S`, read-only current inputs, initially empty output, and
+  absence of the checkout/other requests.
+- Local recovery cannot occur before a failed certificate and is limited to the
+  earliest policy-reachable failed-proof frontier; Phase 3B never exercises it.
+- A Phase 3B pass cannot be promoted to full Phase 3, local-hybrid, economics, or Phase
+  5 status and cannot relabel an earlier positive control.
 
 ## Acceptance tests
 
@@ -306,10 +420,24 @@ run_phase3a_slice(registry):
   registered evaluations have zero exact reward and failure gaps; an uncovered support,
   held-out dependency, terminal-only mixed cell, or missing aggregate-not-run status
   fails the slice.
+- Phase 3B tests independently rebuild both kernels, coverages, one-step fixed-point
+  models, and G2048/LMB authority normalizer registries; they reproject six/five queries,
+  require the three LMB proof IDs to bind `(match,terminal_clear)` bases
+  `(1,1),(1,0),(0,1)` without cross-use,
+  recompute portable/live-ground audits, serialized-`kappa` lift and J0, check content
+  IDs/cross-links/counters, and can replay
+  the attested isolated planner occurrences. They also check unchanged per-domain IDs,
+  strict state/action compression, exact-sound certificates, and J0/lift equality.
+- Injecting Q/value/policy/query/evaluation input at the builder/planner audit boundary, deleting a portable
+  dependency, mutating an epoch between queries, or recording a non-abstract route
+  returns `PHASE3B_INVARIANT_VIOLATION`.
+- Work-counter tests reconcile build/load/plan/audit/local/fallback components, preserve
+  evaluation J0 separately, and require scalar costs/break-even null; missing any
+  required not-run status fails the gate.
 
 ## Out of scope
 
-Implementing Phase 1–7 in the Phase 0.5 milestone, claiming their Gates from smoke fixtures, crediting the supplied `D4` positive control with automatic quotient/predicate discovery, crediting the aliased profile with predicate invention or unknown-symmetry discovery, or crediting the Phase 3A exact-model slice with a full Phase 3 pass or oracle-free unknown-quotient discovery.
+Implementing Phase 1–7 in the Phase 0.5 milestone, claiming their Gates from smoke fixtures, crediting the supplied `D4` positive control with automatic quotient/predicate discovery, crediting the aliased profile with predicate invention or unknown-symmetry discovery, crediting the Phase 3A exact-model slice with a full Phase 3 pass or oracle-free unknown-quotient discovery, or crediting Phase 3B with a local-hybrid, break-even, or full Phase 3/5 result.
 
 ## Known failure modes
 
@@ -331,5 +459,9 @@ V0-027 closes the next exact-model/oracle construction slice and removes the imm
 “all active cells are already one known-symmetry orbit” limitation. Oracle-free
 predicate/quotient discovery, the human-grammar branch, larger seeds, and the complete
 Phase 3 `60/20/40` aggregate remain unrun.
+
+V0-028 closes the no-Q/value-signature portable world-model campaign slice. It leaves
+certificate-triggered local ground recovery, workload economics, larger workloads,
+and the full Phase 3/5 Gates explicitly unrun.
 
 Later Gate denominators and statistical aggregation details also need a preregistered analysis plan before Phase 3 test evaluation; the threshold values above are already frozen.

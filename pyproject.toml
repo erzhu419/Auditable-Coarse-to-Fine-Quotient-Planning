@@ -19,6 +19,8 @@ acfqp-phase05 = "acfqp.phase05:main"
 acfqp-exact-d4 = "acfqp.d4_baseline:main"
 acfqp-aliased-cegar = "acfqp.aliased_safe_chain:main"
 acfqp-phase3a = "acfqp.phase3a:main"
+acfqp-phase3b = "acfqp.phase3b:main"
+acfqp-plan-portable = "acfqp.portable_planner:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

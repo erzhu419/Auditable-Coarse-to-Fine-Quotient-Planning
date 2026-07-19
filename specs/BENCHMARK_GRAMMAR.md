@@ -8,6 +8,11 @@
 
 An atomic predicate is `f(x)<=theta` or `f(x)>theta`; a tree path forms conjunctions. Predicate ID is `feature_name | operator | reduced_rational_threshold`.
 
+A **full one-step behavioural signature** is the exact tuple of registered reward-
+feature values, entered-failure/terminal kind, and successor probabilities into the
+current partition for one legal action. It is model-construction data, not a predicate,
+Q/value signature, or human strategic coordinate.
+
 ## Normative decisions
 
 ### G2048-Select
@@ -163,7 +168,20 @@ g2048.rank1_uniform.h1: training distribution with H=1
 ```
 
 All retain the registered canonical reward and `delta=1/20`; their contents cannot
-generate atoms, thresholds, labels, coverage, or a partition.
+generate atoms, thresholds, labels, coverage, or a partition. Their goal ID is the
+`default` structural stopping goal.
+
+Phase 3B reuses these six distinct G2048 query definitions as a workload only after a
+new query-neutral behavioural RAPM has frozen. Its builder starts from failure/terminal
+kind and refines with every legal action's complete one-step canonical merge-reward
+feature, entered-failure flag, and successor-cell distribution. It uses neither the
+Phase 3A oracle atoms nor any query/Q/value/policy field. Four of the six queries have
+`H=2`, so the campaign contains genuine multi-step contingent planning rather than
+only one-step diagnostics. Its authority normalizer registry contains the single proof
+`g2048.canonical.merge_le_1_per_step.total_le_h.v1`, kind
+`nonnegative_feature_caps_v1`, with complete reward basis `(merge=1)`,
+`merge.per_step_cap=1`, and
+`merge.total_cap=null`.
 
 ### LMB
 
@@ -190,6 +208,34 @@ G2048 supplies initial-support/distribution and horizon variation, while LMB sup
 reward-basis, horizon, and risk variation. The grammar contract does not imply that
 either domain was tested on every variation axis.
 
+Phase 3B adds two LMB workload queries on the same registered support after its
+query-neutral behavioural RAPM is frozen: `lmb.alias9.canonical.h3.delta10` with
+canonical weights, `H=3`, and `delta=1/10`; and
+`lmb.alias9.terminal_clear_only.h3` with `match=0`, `terminal_clear=1`, `H=3`,
+`delta=1/20`, `Rmax=2`, and proof ID
+`lmb.terminal_clear_only.clear_bonus.v1`. The latter may not inherit either the
+canonical `2N/3` or match-only proof by name. Together with the Phase 3A three, this
+gives five LMB workload queries. LMB construction uses the unweighted registered basis
+`(match,terminal_clear)`, one-time failure/terminal kind, and exact successor
+distribution only; query coefficients, horizon, and `delta` are unavailable. All five
+use the `default` structural stopping goal; “terminal-clear-only” changes reward
+weights, not goal semantics. Portable query schema v1 rejects any non-`default` goal.
+The LMB authority registry contains the three proof IDs already named by the canonical,
+match-only, and terminal-clear-only rows. Each is kind
+`nonnegative_feature_caps_v1` and binds exactly one complete sorted reward basis:
+
+```text
+lmb.canonical.matches_plus_clear_le_2n_over_3.v1 : (match=1, terminal_clear=1)
+lmb.match_only.matches_le_n_over_3.v1            : (match=1, terminal_clear=0)
+lmb.terminal_clear_only.clear_bonus.v1           : (match=0, terminal_clear=1)
+```
+
+All three carry the same sorted caps:
+`match=(per_step_cap=1,total_cap=N/3)` and
+`terminal_clear=(per_step_cap=B,total_cap=B)`, with `B=N/3`. A proof ID does not relax
+feature registration or authorize a different reward basis or goal; in particular,
+these three proof IDs cannot be cross-used.
+
 ### Predicate grammar
 
 The minimum cross-domain strategic basis is capacity slack `S_cap=(K-occupancy)/K` (for G2048, empty cells divided by board cells), match-debt summaries for arity `m_j`, normalized branching `log(1+|A|)/log(1+Amax)`, immediate release liquidity `L1`, unlock depth `U`, and relaxed conversion distance `C` clipped at `H`. The primary shared-algorithm claim permits finite, preregistered domain atoms; Phase 0.5 additionally registers G2048 `min_rank`, `max_rank`, and `rank_sum`, and LMB buffer/object/action counts. These are current-state structural measurements, never oracle or rollout values. A later shared-grammar claim must exclude them. Domain adapters must document exact feature semantics and total terminal-state conventions.
@@ -210,6 +256,11 @@ candidate_predicates(training_states):
   values = exact feature values
   thresholds = midpoints_or_frozen_quantiles(values) union semantic_constants
   return canonical reduced-rational predicates
+
+full_one_step_behaviour(Pi,x,a):
+  return (registered_reward_feature_vector(x,a),
+          entered_failure_probability, terminal_or_success_kind,
+          exact_successor_distribution_over(Pi))
 ```
 
 ## Invariants
@@ -227,6 +278,13 @@ candidate_predicates(training_states):
   behavioural labels are determined solely by the frozen exact kernel/refinement.
 - Held-out query fields never enter either Phase 3A feature/action registry or
   construction signature.
+- Phase 3B behavioural signatures retain the complete unweighted registered feature
+  basis and contain no horizon, risk, reward weights, Q/value, or selected-policy field.
+- All six/five Phase 3B query definitions are read only after the per-domain build
+  epoch and portable model identity freeze.
+- Phase 3B dependency evidence is scoped to builder API/data flow and static source
+  audits of the behavioural builder/portable planner, not a closed import DAG for the
+  whole campaign runner.
 
 ## Acceptance tests
 
@@ -262,10 +320,21 @@ candidate_predicates(training_states):
   compression `18/3`, physical state-action orbits/abstract entries `16 -> 4`, and the
   same training graph reaches members from multiple physical orbits inside every active
   cell, including the explicit nonautomorphic pair `(11,(1,2))`, `(13,(2,1))`.
+- The Phase 3B G2048/LMB fixed points are unchanged when workload order, query weights,
+  horizon, or `delta` changes, and an injected oracle/value/policy signature at the
+  builder/planner boundary fails the API/data-flow or static source audit.
+- Their fixed-point traces and state/action counts are respectively
+  `2 -> 9 -> 10 -> 10`, `192 -> 10`, `144 -> 17` for G2048 and
+  `3 -> 5 -> 5`, `25 -> 5`, `40 -> 4` for LMB.
+- The Phase 3B registry has six G2048 and five LMB distinct queries, includes multi-step
+  rows in both domains, validates every query-specific normalizer and the fixed
+  `default` goal, and retains one unchanged portable RAPM per domain.
+- Independent verification reconstructs the above G2048/LMB normalizer-rule registries
+  from the authoritative kernels rather than trusting serialized model summaries.
 
 ## Out of scope
 
-Slide-2048, hidden LMB layouts, visual inputs, arbitrary logical split formulas, oracle-derived `M_fail` predicates, exposing LMB solution evidence to the planner, treating the registered `D4` group as an automatically discovered abstraction, or treating Phase 3A's oracle atoms/exact behavioural signatures as invented human predicates.
+Slide-2048, hidden LMB layouts, visual inputs, arbitrary logical split formulas, oracle-derived `M_fail` predicates, exposing LMB solution evidence to the planner, treating the registered `D4` group as an automatically discovered abstraction, treating Phase 3A's oracle atoms/exact behavioural signatures as invented human predicates, or describing Phase 3B complete one-step minimization as automatic predicate invention, learned dynamics, or local hybrid repair.
 
 ## Known failure modes
 
@@ -287,3 +356,7 @@ Exact domain-wide definitions of unlock depth and relaxed conversion distance mu
 V0-027 now supplies a cross-automorphism exact-model/oracle positive control in both
 domains. It does not settle whether a human or learned grammar can recover comparable
 cells without oracle values or complete model minimization.
+
+V0-028 removes Q/value signatures from the portable campaign builder, but it still
+assumes exact complete one-step dynamics on tiny coverage. Learning those dynamics,
+inventing readable predicates, and repairing a failed certificate locally remain open.

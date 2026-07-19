@@ -121,6 +121,38 @@ profile has no CEGAR witness/split chain and no exact-`D4` orbit-certificate top
 its cross-automorphism evidence belongs in the evaluation audit, not in a fabricated
 known-group construction claim.
 
+The Phase 3B portable world-model campaign uses contract `0.7.0` and this append-only
+topology:
+
+```text
+run.json
+workload/spec.json
+workload/query_registry.json
+build/epochs.json
+build/g2048/portable_rapm.json
+build/lmb/portable_rapm.json
+campaign/portable_queries.jsonl
+campaign/portable_plans.jsonl
+campaign/policy_graphs.json
+audit/certificates.jsonl
+evaluation/j0_rows.jsonl
+evaluation/reuse.json
+accounting/work_counters.json
+result/phase3b_report.json
+metrics.json
+events.jsonl
+```
+
+`manifest.json` and detached `manifest.sha256` cover this inventory. `build/epochs.json`
+contains the one-step construction traces, external coverage/model bindings, explicit
+forbidden-input booleans, and portable round-trip evidence. The independent verifier
+supplements those declarations with builder API/data-flow replay and static source
+audits. `evaluation/reuse.json` plus the portable-plan stream contain fresh-process
+isolation and unchanged-model evidence. Because local hybrid recovery is not run, the
+report records an empty/not-run local frontier summary; the bundle does not fabricate a
+local-repair trace. This evidence does not claim a closed import DAG for the entire
+Phase 3B runner.
+
 For single-query profiles, `run.json` records schema/contract/spec versions and hashes,
 run/fixture/build/query IDs, `structural_key`, `benchmark_role`, `execution_profile`,
 domain, status, evidence tier, seed/tape IDs, UTC timestamps, command, code revision and
@@ -128,9 +160,10 @@ dirty-state digest, runtime/dependency lock hash, platform, and parent reference
 manifest hashes. Phase 3A replaces the singular fixture/build/query fields with its
 suite registry plus per-domain coverage/RAPM and per-row query IDs. The
 execution profile is one of `phase05_vertical_slice`, `production_query`,
-`exact_d4_quotient_baseline`, `aliased_cegar_positive_control`, or
-`phase3a_true_state_alias_oracle_control`. Aliased bundles use
-`contract_version=0.5.0`; Phase 3A bundles use `contract_version=0.6.0`. An older
+`exact_d4_quotient_baseline`, `aliased_cegar_positive_control`,
+`phase3a_true_state_alias_oracle_control`, or `phase3b_portable_rapm_campaign`.
+Aliased bundles use `contract_version=0.5.0`; Phase 3A bundles use
+`contract_version=0.6.0`; Phase 3B bundles use `contract_version=0.7.0`. An older
 contract version cannot opt into a newer execution profile, result eligibility, or
 artifact schema.
 
@@ -277,6 +310,69 @@ G2048 varies initial support/distribution and horizon; LMB varies reward basis, 
 and risk. The final report serializes both supported and unsupported claims and may not
 generalize either domain to all four variation types.
 
+For Phase 3B, `workload/spec.json` freezes the workload ID, ordered query IDs,
+per-domain coverage roots/rules, expected count, allowed routes, normalizer proof IDs,
+and build epochs before planning. A passing registry has eleven distinct ground query
+IDs (six G2048, five LMB), at least eight distinct portable query IDs and four per
+domain, and an `H>=2` query in each domain. Byte-equivalent portable projections are
+reported but do not satisfy the portable-query threshold.
+
+Each epoch commits to structural ID, exact kernel/coverage hashes, feature/terminal
+registries, semantic adapter/concretizer, one-step synthesizer, contract/schema version,
+source revision, and the resulting coverage/model IDs. It is an external provenance
+binding, not a portable-model field. A model ID hashes only its own extensional payload,
+so an epoch change changes that ID only if the payload changes. Portable RAPMs are
+closed: coverage and `coverage_id`, every partition member and its
+`active/terminal/failure/success` planning kind, nominal/exact-envelope entry,
+semantic/ground action catalogs, exact concretizer, reward features, and `goal_ids`
+resolve inside the model, together with the top-level `normalizer_rules` registry. It
+is a nonempty list sorted by unique `proof_id`; each record contains
+exactly `proof_id`, `kind=nonnegative_feature_caps_v1`, `reward_basis`, and
+`feature_caps`. `reward_basis` contains every registered feature exactly once, sorted by
+name, with a canonical nonnegative rational raw weight including explicit zeros. Cap
+records are sorted by unique registered feature name and contain exactly `name`,
+`per_step_cap`, and `total_cap`; each record has at least one non-null canonical
+nonnegative cap, every positive-basis-weight feature has a record, and zero-weight
+features need not have one. No
+native object or absolute host path is needed to plan.
+
+Portable query-stream requests contain the model ID and canonical cell-level
+projection of the ground request: `rho0`, `H`, raw and normalized reward weights,
+normalizer/proof ID, `delta`, and goal. Schema v1 accepts only the `default` structural
+stopping goal. Its `normalizer_proof_id` must resolve in the model. Raw weights are
+required to equal that rule's complete `reward_basis` exactly, so a proof cannot cross
+reward bases. Every positive-weight feature must have a cap under that proof, the
+normalizer must be at least
+`sum_k w_k min(H*per_step_cap_k,total_cap_k)` over available caps, and normalized
+weights equal `raw/normalizer` exactly. Portable plan records and `evaluation/reuse.json` record a new process
+occurrence flag/positive process-ID observation, exact permitted input files,
+content-addressed runtime attestation, and output digests. The attestation covers a Linux bubblewrap
+mount/network namespace with staged `portable.py`, `portable_planner.py`, and
+`portable_runtime.py`, read-only current model/query files, an initially empty writable
+output, unmounted checkout/other requests, and Python `-S` module origins.
+Portable results contain the frontier/selected multi-stage deterministic Markov policy
+and RAPM/query IDs. Only after every proposal freezes are exact-sound certificates and
+routes written under `audit/`, with J0/lift rows under `evaluation/`; those records are
+never inputs to the behavioural-builder data flow and are not mounted into a fresh
+planner namespace.
+
+Routes are exactly `ABSTRACT_CERTIFIED`, `LOCAL_GROUND_RECOVERY`,
+`FULL_GROUND_FALLBACK`, `REBUILD_REQUIRED`, and `INFEASIBLE_QUERY`. A local route must
+resolve a preceding failed certificate, the earliest policy-reachable failed-node
+antichain, cell members, and exact successor dependencies. A Phase 3B pass has only
+`ABSTRACT_CERTIFIED` rows and zero local/fallback charges.
+
+`accounting/work_counters.json` stores build covered-state/state-action/outcome counts,
+behavioural rounds and model bytes; per-occurrence model/query loads and bytes;
+abstract candidate/frontier/decision counts; portable-envelope and live ground-audit
+reachable pairs; local-ground candidates; fallback invocations/candidates;
+evaluation-only J0 candidates; and reconciliation totals. These exact fields are
+noninterchangeable. Because Phase 3B has no frozen scalar cost functional,
+`scalar_break_even` is null and no scalar world/ground totals are asserted.
+The final report
+pairs `PHASE3B_PORTABLE_RAPM_PASS` with `PHASE3_AGGREGATE_NOT_RUN`,
+`LOCAL_HYBRID_GATE_NOT_RUN`, and `WORKLOAD_ECONOMICS_GATE_NOT_RUN`.
+
 JSON exact numbers are encoded as `{ "numerator": int, "denominator": positive_int }`; derived decimal displays are nonauthoritative. Opaque pickle/native-object dumps are never the sole source artifact.
 
 ## Pseudocode / schema
@@ -366,6 +462,30 @@ Phase 3A result:
   J0_Jkappa_J2_exact_rows, exact_reward_gaps, exact_failure_gaps
   status=PHASE3A_SLICE_PASS
   full_phase3_gate_status=PHASE3_AGGREGATE_NOT_RUN
+
+Phase 3B portable campaign:
+  profile_key=phase3b_portable_rapm_campaign_v0
+  workload_id, ordered_query_ids, build_epoch_ids, portable_rapm_ids
+  construction_dependency_audit, portable_roundtrip_audit
+  fresh_process_results, independent_J0_lift_rows, query_routes
+  status=PHASE3B_PORTABLE_RAPM_PASS
+  full_phase3_gate_status=PHASE3_AGGREGATE_NOT_RUN
+  local_hybrid_gate_status=LOCAL_HYBRID_GATE_NOT_RUN
+  workload_economics_gate_status=WORKLOAD_ECONOMICS_GATE_NOT_RUN
+
+portable normalizer rule:
+  proof_id: unique nonempty string; rules sorted by proof_id
+  kind: nonnegative_feature_caps_v1
+  reward_basis: complete sorted unique (registered feature name, nonnegative weight)
+  feature_caps: sorted unique registered feature names
+    name, per_step_cap: rational|null, total_cap: rational|null
+
+workload prefix cost:
+  C_world[n] = c(W_build) + sum_i<=n c(W_load_i + W_abstract_plan_i + W_audit_i
+                                      + W_local_ground_i + W_full_fallback_i)
+  C_ground[n] = sum_i<=n c(W_same_query_ground_i)
+  evaluation_only_j0 is separate
+  Phase3B: c, C_world, C_ground, N_break_even = null (Gate NOT_RUN)
 ```
 
 The manifest hashes every other file, then a detached `manifest.sha256` hashes canonical `manifest.json` to avoid self-reference.
@@ -417,6 +537,17 @@ The manifest hashes every other file, then a detached `manifest.sha256` hashes c
   policy graph; terminal aggregation is separately reported.
 - `PHASE3A_SLICE_PASS` always co-occurs with `PHASE3_AGGREGATE_NOT_RUN`, exact reward
   and failure gaps zero, and the complete unsupported-claim list.
+- A Phase 3B bundle contains one immutable external epoch/RAPM binding per domain; all
+  eleven query rows reference those identities and no query/evaluation input enters the
+  behavioural-builder API/data flow. Epoch and model IDs remain distinct.
+- Every portable dependency resolves inside the model/query pair. Every occurrence has
+  a separate runtime attestation for the three staged application modules, read-only
+  current inputs, empty writable output, unmounted checkout/other requests, `-S`, and
+  isolated mount/network namespaces.
+- A passing Phase 3B plan/result stream contains only `ABSTRACT_CERTIFIED`; the report's
+  local-frontier summary is not-run/empty and local/fallback costs are exactly zero.
+- Work-counter components reconcile exactly, keep evaluation-only J0 separate, require
+  scalar totals/break-even null, and cannot infer `*_NOT_RUN` statuses from counters.
 
 ## Acceptance tests
 
@@ -430,8 +561,9 @@ The manifest hashes every other file, then a detached `manifest.sha256` hashes c
   split and charged same-query fallback.
 - A one-field mismatch in the J0 proof's structural/build/kernel/query identity rejects
   the shortcut and is visible in verification output.
-- Changing a reward coefficient without changing `normalizer_proof_id` or proving a
-  valid replacement `normalizer_value` fails verification.
+- Changing a reward coefficient while retaining `normalizer_proof_id` fails exact
+  `reward_basis` equality regardless of the replacement normalizer; a separately
+  registered rule/proof is required.
 - Two paths assigning different actions to the same state/cell and remaining horizon
   fail policy-graph verification.
 - Safe-chain artifact verification reconstructs every orbit, canonicalizer, stabilizer,
@@ -468,10 +600,35 @@ The manifest hashes every other file, then a detached `manifest.sha256` hashes c
   a terminal mixed cell, reports total rather than active compression as the threshold
   witness, claims reuse outside the registered two-domain held-out suite, or omits
   `PHASE3_AGGREGATE_NOT_RUN`.
+- Phase 3B verification independently rebuilds both authoritative kernels, coverage
+  closures, and one-step fixed points; builder API/data-flow plus static source audits
+  reject Q/value/frontier/policy/query dependencies at the construction/planner
+  boundaries; canonical round trips reproduce portable model hashes.
+- Removing a portable feature/normalizer-rule/envelope/action/concretizer/coverage/planning-kind/goal field or
+  adding an unresolved ground reference makes both loader and verifier fail.
+- Duplicate/unsorted proof IDs or feature names, an incomplete/negative basis, unknown
+  features, a wrong rule kind, negative caps, a missing positive-basis cap, an
+  unregistered/cross-basis query proof, an under-bound normalizer, or
+  `normalized != raw/normalizer` fails validation.
+- The verifier reprojects all queries; recomputes portable-envelope and live exact
+  ground audits, serialized-`kappa` lifts, and J0; validates IDs, cross-links and exact
+  counter fields; independently rebuilds the G2048/LMB authority normalizer registries;
+  requires the LMB canonical/match-only/terminal-clear-only proofs to bind respectively
+  to `(match,terminal_clear)=(1,1),(1,0),(0,1)` without cross-use; and can replay six
+  G2048 and five LMB requests in isolated fresh
+  processes. It checks one
+  unchanged RAPM per domain, G2048 `192/10`, `144/17`, trace `2/9/10/10`, LMB
+  `25/5`, `40/4`, trace `3/5/5`, multi-step coverage in both, all exact-sound
+  certificates, and independent J0/lift equality.
+- A nonempty local frontier, local/full-fallback charge, missing isolation evidence,
+  construction reference to evaluation, or absent `PHASE3_AGGREGATE_NOT_RUN`,
+  `LOCAL_HYBRID_GATE_NOT_RUN`, or `WORKLOAD_ECONOMICS_GATE_NOT_RUN` fails the pass.
+- Recomputing work counters preserves every route component and null scalar fields; a
+  post-hoc conversion cannot replace the economics-not-run label.
 
 ## Out of scope
 
-Long-term object-store layout, public data-release licensing policy, binary performance traces as normative evidence, statistical confidence-set schemas, artifacts claiming an automatically discovered group from the supplied `D4` profile, aliased artifacts claiming that their preregistered geometry atom was invented automatically, and Phase 3A artifacts claiming oracle-free discovery or a full Phase 3 Gate.
+Long-term object-store layout, public data-release licensing policy, binary performance traces as normative evidence, statistical confidence-set schemas, artifacts claiming an automatically discovered group from the supplied `D4` profile, aliased artifacts claiming that their preregistered geometry atom was invented automatically, Phase 3A artifacts claiming oracle-free discovery or a full Phase 3 Gate, and Phase 3B artifacts claiming learned/predicate discovery, an executed local hybrid, workload break-even, or full Phase 3/5 Gates.
 
 ## Known failure modes
 
@@ -479,4 +636,4 @@ Self-referential manifests, partially written bundles, absolute host paths, nonc
 
 ## Open risks
 
-Large exact state/transition artifacts may require deterministic chunking or compression after Phase 0.5; logical hashes and schema semantics must remain stable. V0-027 freezes the Phase 3A construction-slice topology and its independent semantic replay verifier; the statistical full-Phase-3 artifact layout remains later work.
+Large exact state/transition artifacts may require deterministic chunking or compression after Phase 0.5; logical hashes and schema semantics must remain stable. V0-027 freezes the Phase 3A construction-slice topology. V0-028 adds a portable world-model/fresh-process campaign topology; local-hybrid traces, workload-economics evidence, and the statistical full-Phase-3/5 artifact layouts remain later work.

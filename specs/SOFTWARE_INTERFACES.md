@@ -11,6 +11,13 @@ Phase 3A additionally exposes `SuiteBuildCoverage`, `GroundOracleTable`,
 `PolicyLifter`, and `Phase3AConstructionRunner`. These are exact-model/oracle control
 interfaces, not learned feature or predicate discovery APIs.
 
+Phase 3B adds `WorkloadSpec`, `BuildEpoch`, `PortableRAPMWriter`,
+`PortableRAPMLoader`, `ExactOneStepBehavioralSynthesizer`,
+`FreshProcessAbstractPlanner`, `ConstructionDependencyAudit`, `QueryRoute`,
+`LocalGroundFrontier`, and `WorkloadAccounting`. These make the reusable world model
+and its planning boundary explicit; they do not expose a learned-model or local-hybrid
+claim.
+
 ## Normative decisions
 
 `DomainProtocol` is the only domain-specific authority for physical state/action
@@ -66,9 +73,38 @@ ExactBehavioralQuotient(partition, semantic_adapter, refinement_trace,
                         failure_targets, quotient_models)
 Phase3AQueryEvaluation(split, query_id, J0, Jkappa, nominal_J2,
                        exact_audit, ground_lift)
+WorkloadSpec(workload_id, ordered_query_ids, coverage_seed_ids,
+             expected_query_count, allowed_routes, build_epoch_ids)
+BuildEpoch(structural_id, kernel_hash, coverage_id, feature_registry_id,
+           terminal_registry_id, semantic_adapter_id, synthesizer_id,
+           contract_version, schema_version, source_revision, portable_rapm_id)
+PortableRAPM(coverage, coverage_id, state_catalog_with_planning_kind, partition,
+             nominal, exact_envelope, semantic_and_ground_action_catalogs,
+             concretizer_registry, reward_features, normalizer_rules, goal_ids)
+NormalizerRule(proof_id, kind="nonnegative_feature_caps_v1",
+               complete_reward_basis_sorted_by_name,
+               feature_caps_sorted_by_name)
+FeatureCap(name, per_step_cap_or_null, total_cap_or_null)
+PortableQueryV1(model_id, cell_rho0, horizon, raw_reward_weights,
+                normalized_reward_weights, normalizer, normalizer_proof_id,
+                goal_id="default", delta)
+ConstructionDependencyAudit(builder_api_fields, builder_source_imports,
+                            forbidden_dependency_hits)
+FreshProcessQueryRequest(portable_rapm_path, portable_rapm_sha256,
+                         portable_query_path, portable_query_sha256)
+FreshProcessQueryResult(query_id, rapm_id, frontier, selected_policy_graph,
+                        runtime_attestation, accounting)
+LocalGroundFrontier(query_id, policy_graph_id, failed_node_ids,
+                    ground_cell_member_ids, successor_dependency_ids)
+WorkloadAccounting(build_ground_state_action_outcome_counts,
+                   build_refinement_rounds_and_model_bytes,
+                   per_occurrence_load_bytes, abstract_candidate_frontier_decision_counts,
+                   portable_and_ground_audit_reachable_pairs,
+                   local_ground, full_fallback, evaluation_only_j0_candidates,
+                   reconciliation, scalar_break_even=null)
 ```
 
-`rho0` is either one canonical state with unit mass or a finite exact distribution. It belongs to `QuerySpec`; a domain may register and return a canonical default distribution for fixture construction, but that default is not part of the structural key. The query validator accepts only registered rewards/goals, `H<=Hmax`, `delta in {0,1/20,1/10}`, and a deterministic proved `Rmax(q)` recorded as both `normalizer_value` and `normalizer_proof_id`. Canonical `H` and `2N/3` bounds are accepted only for their unchanged registered G2048 and LMB rewards.
+`rho0` is either one canonical state with unit mass or a finite exact distribution. It belongs to `QuerySpec`; a domain may register and return a canonical default distribution for fixture construction, but that default is not part of the structural key. The query validator accepts only registered rewards/goals whose semantics are implemented by the active schema, `H<=Hmax`, `delta in {0,1/20,1/10}`, and a deterministic proved `Rmax(q)` recorded as both `normalizer_value` and `normalizer_proof_id`. Portable schema v1 implements only `goal_id=default`. Canonical `H` and `2N/3` bounds are accepted only for their unchanged registered G2048 and LMB rewards.
 
 Phase 0.5 freezes `BuildCoverageSpec.mode` to
 `query_support_transition_closure`. `RAPMBuilder` receives the explicit ordered
@@ -160,6 +196,69 @@ horizon; LMB changes reward basis, horizon, and risk. Its success tuple is
 `PHASE3A_SLICE_PASS/PHASE3_AGGREGATE_NOT_RUN`; profile validation failures use
 `PHASE3A_INVARIANT_VIOLATION` outside the CEGAR result enum.
 
+`ExactOneStepBehavioralSynthesizer` accepts only a structural kernel view, frozen
+coverage, reward-feature/terminal registries, and semantic-action rules. It refines
+terminal-kind blocks by complete exact one-step feature/failure/successor behaviour to
+a fixed point. Its callable signature has no query, horizon, reward weights, risk,
+ground oracle, value table, selected action, or policy argument.
+`ConstructionDependencyAudit` checks that API/data flow and statically audits source
+imports for the behavioural builder and portable planner. It fails if forbidden
+Q/value/refinement/ground-planning dependencies enter those boundaries. This is not an
+assertion that every orchestration module in the Phase 3B process belongs to a closed
+import DAG.
+
+`PortableRAPMWriter` writes a closed canonical representation with all data required by
+abstract planning and later model replay: coverage and `coverage_id`, state catalog,
+partition, nominal model, exact envelope, semantic/ground action catalogs, frozen
+concretizer, reward features, `normalizer_rules`, and `goal_ids`. The state catalog carries a frozen
+`planning_kind in {active,terminal,failure,success}`; cells may not mix active and
+terminal states, and every active cell must have at least one model action, so an empty
+common-action intersection cannot be misread as successful termination.
+The portable payload does not contain `BuildEpoch`; the external epoch binds
+`portable_rapm_id` and `coverage_id`, while the model ID is derived only from its own
+payload. `PortableRAPMLoader` rejects missing registries, external ground references,
+unresolved/content-ID mismatches, noncanonical rationals, mixed planning kinds, or an
+actionless active cell.
+
+Portable query schema v1 binds exact cell `rho0`, horizon, raw and normalized reward
+weights, normalizer/proof ID, `delta`, and goal to the model. It supports only the
+`default` structural stopping goal and rejects other goal semantics. The top-level
+normalizer registry is a nonempty list uniquely sorted by `proof_id`; every rule has
+exactly `kind=nonnegative_feature_caps_v1`, `reward_basis`, and `feature_caps` in addition
+to its proof ID. The basis is the complete registered feature set uniquely sorted by
+name, with a nonnegative exact raw weight for every feature including zeros. Caps are
+uniquely name-sorted registered features; each positive-basis-weight feature has a
+cap record, every cap record has a nonnegative per-step and/or total value with at least
+one non-null, and zero-weight features need not have a cap record. A
+query requires a registered proof and a complete raw-weight vector exactly equal to
+that proof's basis, plus a positive normalizer. The loader computes
+`sum_k w_k min(H*per_step_cap_k,total_cap_k)` over the present caps, requires the
+declared normalizer to be at least that bound, and requires normalized weights to equal
+`raw/normalizer` exactly. This is not general reward or goal extensibility.
+`FreshProcessAbstractPlanner` is launched once per occurrence inside a Linux bubblewrap
+mount/network namespace. It receives staged copies of only `portable.py`,
+`portable_planner.py`, and `portable_runtime.py`, the current read-only model/query, and
+an initially empty writable output directory; the checkout and other requests are not
+mounted. Python uses `-S`, and a content-addressed runtime attestation records inputs,
+namespace status, loaded module origins, and output hashes.
+
+`QueryRoute` has exactly `ABSTRACT_CERTIFIED`, `LOCAL_GROUND_RECOVERY`,
+`FULL_GROUND_FALLBACK`, `REBUILD_REQUIRED`, and `INFEASIBLE_QUERY`. The router may
+construct `LocalGroundFrontier` only after a failed full-plan certificate. Its nodes are
+the earliest policy-reachable failures; support is limited to their cell members and
+the exact successor dependencies needed to recompute those model entries. Phase 3B
+validates the interface but every passing campaign row is `ABSTRACT_CERTIFIED`.
+
+`WorkloadAccounting` records the implemented noninterchangeable exact fields: build
+covered states, ground state-action pairs/outcomes, behavioural rounds and model bytes;
+per-occurrence model/query load counts and bytes; abstract composed candidates,
+frontier points and selected decision nodes; portable-envelope and live ground-
+certificate reachable pairs; local-ground candidates; full-fallback invocations and
+candidates; evaluation-only J0 composed candidates; and reconciliation totals. A
+later preregistered scalar `CostFunctional` may map them to `C_world/C_ground` and the
+first break-even prefix. Phase 3B freezes no such conversion, so scalar costs and
+break-even are `null` and it sets `WORKLOAD_ECONOMICS_GATE_NOT_RUN`.
+
 ## Pseudocode / schema
 
 ```text
@@ -247,6 +346,40 @@ run_aliased_safe_chain(profile,q):
     accepted = RefinementEngine.accept_first_valid(evaluations,counters,full_v0_budget)
     append RefinementIteration(...)
     partition, counters = accepted.output_partition, accepted.counters_after
+
+ExactOneStepBehavioralSynthesizer.build(kernel_view,coverage,registries,adapter):
+  partition = terminal_kind_partition(coverage)
+  repeat partition = refine_by_full_one_step_behaviour(partition) until stable
+  audit builder API/data-flow and source imports for forbidden dependencies
+  model = PortableRAPMWriter.freeze(partition,coverage,registries,adapter)
+  return externally_bind_build_epoch(model.model_id,model.coverage_id), model
+
+FreshProcessAbstractPlanner.run(request):
+  model = PortableRAPMLoader.load_and_verify(request.path,request.sha256)
+  query = PortableQueryV1.load_and_verify(request.query_path,request.query_sha256,model)
+  require query.goal_id == default and model.coverage.contains(query.cell_rho0.support)
+  require query.normalizer_proof_id in model.normalizer_rules
+  require query.raw_weights == selected_rule.reward_basis
+  require nonnegative(query.raw_weights) and query.normalizer >= proved_bound(query)
+  require query.normalized_weights == query.raw_weights / query.normalizer
+  require bwrap_mount_and_network_namespace and python_site_disabled
+  require current_model_query_read_only and output_initially_empty
+  require project_and_other_requests_not_mounted
+  proposal = NominalPlanner.solve(model.nominal,query)
+  attest runtime, inputs, module origins, and output
+  return freeze(FreshProcessQueryResult(proposal))
+
+evaluate_frozen_phase3b_proposals(all_results):
+  require every workload proposal was produced before J0 starts
+  for result in all_results:
+    certificate = ExactAuditor.audit_with_authoritative_ground_envelope(result)
+    lift = PolicyLifter.evaluate_on_ground(result)
+    J0 = GroundConstrainedOracle.solve_same_query(result.query)
+    assign route from certificate
+
+route_failed_plan(result):
+  require not result.certificate.certified
+  return LocalGroundFrontier.from_earliest_failed_reachable_nodes(result)
 ```
 
 For the safe-chain adapter, `transform_action` applies the same cell transform to both
@@ -286,6 +419,16 @@ cell key; it never loses which transformed endpoint is the survivor.
   counts (`192/8`, `25/5`) and terminal aggregation are reported separately.
 - Cross-automorphism audits use complete physical groups: G2048 state-action orbits
   `18 -> 14` abstract pairs and LMB `16 -> 4`; mixed cells must be active and reached.
+- Phase 3B exposes one immutable external build epoch and portable RAPM ID per domain;
+  no query field or result appears in the builder API/data flow. Epoch and model IDs are
+  separate: only an extensional model-payload change alters the latter.
+- A fresh planner request contains exactly a portable-model path/hash and portable-query-
+  v1 path/hash. Its runtime attestation proves the per-occurrence bubblewrap boundary,
+  `-S`, allowed input/output files, and observed module origins.
+- Local ground recovery is unreachable before certificate failure and cannot widen its
+  recorded frontier without a new failure/dependency proof.
+- All workload cost fields are additive and route-specific; evaluation-only oracle
+  cost is never merged into the operational abstract or ground comparator path.
 
 ## Acceptance tests
 
@@ -340,10 +483,43 @@ cell key; it never loses which transformed endpoint is the survivor.
   changing construction hashes, reproduces all V0-027 rationals, and requires both
   exact reward and exact failure gaps zero. It rejects an uncovered support, a held-out
   construction dependency, a terminal-only mixed cell, or a full-Phase-3 pass label.
+- Synthesizer signature/type tests reject `QuerySpec`, Q/value/frontier/policy objects;
+  builder API/data-flow and static import audits reject forbidden dependencies at the
+  behavioural-builder/portable-planner boundaries.
+- A portable-model canonical round trip is byte-identical and a deliberately removed
+  feature, normalizer rule, action realization, envelope entry, coverage member,
+  planning kind, or goal
+  field fails
+  the loader before planning.
+- A re-signed active cell with no action, mixed planning kinds, non-`default` v1 goal,
+  incomplete/unsorted/duplicate/negative reward basis, unsorted/duplicate/unknown
+  feature caps, a missing positive-basis cap, an unregistered or cross-basis proof, a
+  bound-violating normalizer, or inconsistent raw/normalized weights fails validation.
+- The Phase 3B integration starts fresh processes for eleven distinct ground queries
+  whose projections include at least eight distinct portable queries and four per
+  domain, with a multi-step row in each; all reuse one model ID per domain, certify
+  abstractly, and agree with independent J0/lift evaluation.
+- Each process uses Linux `bwrap`, sees only the three staged application modules plus
+  system libraries and its read-only current model/query, starts with `-S`, has no
+  project/other-request mount, and attests an initially empty writable output.
+- It reproduces G2048 behavioural trace/counts `2 -> 9 -> 10 -> 10`, `192 -> 10`,
+  `144 -> 17` and LMB `3 -> 5 -> 5`, `25 -> 5`, `40 -> 4`.
+- Router tests reject a local-ground frontier on a certified plan, an unreachable or
+  non-earliest node, and any uncharged widening to a full ground solve.
+- Accounting tests reconcile every additive counter component, preserve evaluation-
+  only J0 separately, require scalar cost/break-even `null`, and emit all three required
+  `*_NOT_RUN` Gate statuses.
+- The independent verifier rebuilds both authoritative kernels, coverage closures,
+  behavioural models, and G2048/LMB authority normalizer-rule registries; it reprojects
+  queries, requires the LMB canonical/match-only/terminal-clear-only bases to be
+  `(1,1),(1,0),(0,1)` and rejects cross-use of their proof IDs, recomputes portable-
+  envelope and live exact
+  ground audits, lifts with serialized `kappa`, runs J0, checks IDs/cross-links/counters,
+  and can replay the isolated planner.
 
 ## Out of scope
 
-Network services, mutable online model updates, learned adapters, asynchronous planners, plugin-specific APIs, unstable language-object serialization as an artifact format, discovery of an unknown symmetry group from data, and an API that relabels Phase 3A exact-model construction as oracle-free unknown-quotient discovery.
+Network services, mutable online model updates, learned adapters, asynchronous planners, plugin-specific APIs, unstable language-object serialization as an artifact format, discovery of an unknown symmetry group from data, an API that relabels Phase 3A exact-model construction as oracle-free unknown-quotient discovery, and treating the Phase 3B exact behavioural builder as learned predicate invention, an implemented local hybrid, or a workload-economics/full-Gate result.
 
 ## Known failure modes
 
@@ -351,4 +527,4 @@ Noncanonical state keys, uncoalesced duplicate successors, accidental float coer
 
 ## Open risks
 
-The exact in-memory frontier/envelope representation may need optimization after Phase 0.5; any replacement must preserve these external records and proof dependencies. Phase 3A now proves the exact-model/oracle cross-automorphism interface path and registered held-out reuse, but an oracle-free proposer, human predicate reconstruction, and full Phase 3 aggregate runner remain open.
+The exact in-memory frontier/envelope representation may need optimization after Phase 0.5; any replacement must preserve these external records and proof dependencies. Phase 3A proves the exact-model/oracle cross-automorphism control. Phase 3B freezes a no-Q/value-signature portable planning interface, but certificate-triggered local repair, human predicate reconstruction, workload economics, and full Phase 3/5 runners remain open.

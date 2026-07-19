@@ -8,6 +8,11 @@
 - **J3/J4/J5:** respectively replace the model, restrict search, and replace symbolic observation; all are post-V0.
 - **Evidence labels:** `oracle_truth`, `exact_sound`, `statistical_high_probability`, `diagnostic_only`.
 - **Audit channels:** value/regret, failure risk, action availability/restriction, transition/reward width, and accounting.
+- **Construction-dependency audit:** builder API/data-flow evidence plus static source
+  audits that the behavioural builder and portable planner exclude
+  Q/value/policy/query/evaluation signatures; it is not a whole-run import-DAG proof.
+- **Local ground frontier:** the earliest policy-reachable failed certificate nodes and
+  their exact model dependencies; it is empty until a contingent plan fails audit.
 
 ## Normative decisions
 
@@ -116,6 +121,50 @@ G2048 exercises initial-support/distribution and horizon changes at fixed reward
 LMB exercises reward-basis, horizon, and risk changes at fixed support. It cannot emit
 a per-domain “all axes covered” or arbitrary-query reuse claim.
 
+Phase 3B audits a different boundary: whether a reusable world model is independently
+portable and query-neutral enough that repeated contingent planning occurs primarily
+inside it. Before any query, builder API/data-flow checks and static source audits must
+show that the fixed-point builder used only complete exact one-step reward-feature,
+failure/terminal, and successor behaviour and did not observe `Q*`, a value/frontier,
+selected action/policy, query reward/risk/horizon, or evaluation result. This evidence
+is scoped to the builder/planner boundaries; it is not a whole-run closed-import-DAG
+claim.
+
+After serialization, every registered occurrence is issued to a fresh Linux bubblewrap
+mount/network namespace with staged copies of only `portable.py`,
+`portable_planner.py`, and `portable_runtime.py`, the current read-only RAPM/query, and
+an initially empty writable output. The checkout and other requests are not mounted;
+Python runs with `-S`, and a content-addressed runtime attestation records inputs,
+module origins, namespace status, and output. Portable query v1 binds cell `rho0`, `H`,
+raw/normalized weights, normalizer/proof, risk, and exactly the supported `default`
+structural stopping goal. The model's canonical `normalizer_rules` registry contains
+unique proof IDs of kind `nonnegative_feature_caps_v1`. Each proof binds a complete,
+unique, name-sorted `reward_basis` over every registered feature, including explicit
+zero weights. Registered feature caps are uniquely sorted by name and nonnegative;
+every positive-basis feature supplies a per-step and/or total cap. Query audit requires
+a registered proof, raw weights exactly equal to its basis, exact
+`normalized=raw/normalizer`, and
+`normalizer >= sum_k w_k min(H*per_step_cap_k,total_cap_k)` over present caps; each
+positive-weight feature must be covered. The process reconstructs a multi-stage abstract policy graph.
+Only after every proposal freezes does the independent exact audit/J0/lift
+evaluation phase load authoritative ground evidence; it may not appear in construction
+or planner dependencies. Model identity and bytes remain unchanged across the campaign.
+
+The general audit router returns `ABSTRACT_CERTIFIED` when both full-plan obligations
+pass. Only otherwise may it form the earliest failed-node antichain and request
+`LOCAL_GROUND_RECOVERY`; inability to repair routes to charged full fallback,
+rebuild, or infeasibility. The Phase 3B campaign exercises only the first route, so an
+empty local frontier and `LOCAL_HYBRID_GATE_NOT_RUN` are required rather than evidence
+that local repair works.
+
+Workload audit reconciles the implemented build state/action/outcome/refinement/byte
+counters; per-occurrence load bytes, abstract candidates/frontier/decision nodes,
+portable/live-ground audit reachability, local/fallback zeroes, and evaluation-only J0
+candidates; plus their reconciliation totals. A scalar prefix equation requires a
+preregistered cost functional. Phase 3B
+freezes none, leaves scalar totals/break-even `null`, and reports
+`WORKLOAD_ECONOMICS_GATE_NOT_RUN`.
+
 ## Pseudocode / schema
 
 ```text
@@ -168,6 +217,29 @@ audit_phase3a(construction,Q_train,Q_heldout):
     lifted = evaluate_lift_on_ground(proposal,q)
     require registered exact values and sound.certified
   return PHASE3A_SLICE_PASS, PHASE3_AGGREGATE_NOT_RUN
+
+audit_phase3b(workload, portable_models):
+  audit builder API/data flow and behavioural/planner source imports
+  verify canonical portable roundtrip and one immutable model per domain
+  for q in workload.ordered_queries:
+    pq = project_to_portable_query_v1(q, portable_model(q.domain))
+    result = launch_fresh_bwrap_process(portable_model(q.domain), pq)
+    verify attested read-only inputs, three staged modules, -S, namespaces, empty output
+    freeze result
+  assert all proposals frozen before J0 starts
+  for result in frozen_results:
+    certificate = independent_exact_audit(result)
+    require certificate.certified and certificate.route == ABSTRACT_CERTIFIED
+    compare independent_J0_and_ground_lift(result,result.query)
+  verify separated_work_counters and empty local_ground_frontier summary
+  return PHASE3B_PORTABLE_RAPM_PASS,
+         PHASE3_AGGREGATE_NOT_RUN,
+         LOCAL_HYBRID_GATE_NOT_RUN,
+         WORKLOAD_ECONOMICS_GATE_NOT_RUN
+
+local_frontier(policy_graph,audit):
+  bad = reachable nodes with failed value/risk obligation
+  return {u in bad : no strict policy-graph ancestor of u is in bad}
 ```
 
 ## Invariants
@@ -196,6 +268,12 @@ audit_phase3a(construction,Q_train,Q_heldout):
     reached states from at least two of its physical orbits in that same graph.
 13. `PHASE3A_SLICE_PASS` does not satisfy or alter the sample-size/aggregate thresholds
     of the full Phase 3 oracle Gate.
+14. Phase 3B builder API/data flow and statically audited behavioural/planner imports are
+    disjoint from J0/value/policy/evaluation truth. Fresh-process attestations prove the
+    narrower per-occurrence runtime boundary; no whole-orchestrator closed DAG is claimed.
+15. `LOCAL_GROUND_RECOVERY` is impossible when the full plan certifies; its frontier is
+    policy-reachable, failed, earliest, and coverage-bounded.
+16. Phase 3B's portable pass always co-occurs with all three frozen `*_NOT_RUN` statuses.
 
 ## Acceptance tests
 
@@ -242,10 +320,31 @@ audit_phase3a(construction,Q_train,Q_heldout):
 - A held-out query mutation changes only its query/evaluation identity. If it changes a
   construction hash or is observed by a builder, leakage validation fails; if its
   support is outside coverage, evaluation is rejected rather than rebuilding silently.
+- Phase 3B builder API/data-flow and static source audits reject an injected
+  Q/value/frontier/policy/query dependency at the builder/planner boundary even if final
+  model bytes or values happen to match the legitimate build.
+- Canonical round-trip and per-occurrence bubblewrap attestations prove that all eleven registered
+  query plans use only one portable RAPM per domain before independent exact audit/J0/
+  lift; every row then certifies and agrees, with multi-step queries in both domains.
+- Construction replay reproduces G2048 trace/state/action counts
+  `2 -> 9 -> 10 -> 10`, `192 -> 10`, `144 -> 17` and LMB
+  `3 -> 5 -> 5`, `25 -> 5`, `40 -> 4`.
+- A fabricated local route on a certified plan, an unreachable/non-earliest frontier
+  node, a hidden ground import in the fresh planner, or an evaluation record referenced
+  by construction fails the campaign.
+- Workload recomputation keeps exact build/route counters additive and J0-evaluation
+  work separate; scalar break-even remains null and no result changes the
+  economics-not-run status.
+- The verifier independently rebuilds both kernels, coverage closures, behavioural
+  models, and G2048/LMB authority normalizer registries; it reprojects each query,
+  including exact LMB proof-to-basis bindings `(1,1),(1,0),(0,1)` with no cross-use,
+  recomputes portable-envelope and live exact audits,
+  performs serialized-`kappa` lift and J0, checks all IDs/cross-links/counters, and can
+  replay the isolated planner.
 
 ## Out of scope
 
-J3 learned/statistical models, J4 bounded search/MCTS, J5 perception, causal attribution from the telescoping ladder, asymptotic guarantees beyond the enumerated finite model, using the supplied `D4` group as evidence of automatic symmetry or predicate discovery, and using Phase 3A exact-model cross-orbit aliasing as evidence of oracle-free unknown-quotient discovery.
+J3 learned/statistical models, J4 bounded search/MCTS, J5 perception, causal attribution from the telescoping ladder, asymptotic guarantees beyond the enumerated finite model, using the supplied `D4` group as evidence of automatic symmetry or predicate discovery, using Phase 3A exact-model cross-orbit aliasing as evidence of oracle-free unknown-quotient discovery, and crediting Phase 3B with local-hybrid or workload-economics/full-Gate evidence.
 
 ## Known failure modes
 
@@ -253,4 +352,4 @@ Frontier combinatorics, conservative rectangular composition, all policies excee
 
 ## Open risks
 
-Paired oracle-replacement ablations and component interactions are required before causal claims. More compact exact frontier representations may be needed beyond tiny instances. V0-027 reaches cross-automorphism state aliasing only with exact oracle/model access; automatic feature invention, oracle-free quotient discovery, and broader feasible CEGAR remain open.
+Paired oracle-replacement ablations and component interactions are required before causal claims. More compact exact frontier representations may be needed beyond tiny instances. V0-028 removes Q/value signatures from the portable exact builder, but automatic feature invention, useful certificate-triggered local recovery, workload break-even, and broader statistical Gates remain open.

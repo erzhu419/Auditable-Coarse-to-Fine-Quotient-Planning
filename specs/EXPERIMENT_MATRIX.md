@@ -14,6 +14,10 @@
 - **Fixture:** a fully serialized structural instance and seed.
 - **Primary query:** canonical reward/goal, maximum canonical horizon, and `delta=0.05`; a Phase 0.5 smoke query may use the smaller horizon frozen in the ledger and must not be relabelled as the full primary row.
 - **Sensitivity query:** the same query with `delta=0` or `0.10`, or another registered reward/goal/horizon/initial distribution.
+- **Workload configuration:** an ordered `WorkloadSpec` sharing one immutable
+  per-domain build epoch; its query count is distinct from cache hits and diagnostics.
+- **Operational route:** one of `ABSTRACT_CERTIFIED`, `LOCAL_GROUND_RECOVERY`,
+  `FULL_GROUND_FALLBACK`, `REBUILD_REQUIRED`, or `INFEASIBLE_QUERY`.
 
 ## Normative decisions
 
@@ -27,6 +31,8 @@ The Phase 0.5 vertical slice and the frozen positive G2048 follow-up use these d
 | Aliased CEGAR G2048 positive control | same `g2048_select_safe_chain_2x2_v0` ground structure under profile `g2048_select_safe_chain_aliased_partition_v0` | the identical safe-chain query and 192-state coverage | ten-cell histogram base encoder; boundary FIRST/LAST actions; exact-witness-ranked geometry splits `10 -> 11 -> 12`; final reward `3/64`, lifted failure `317/16000`, sound `U_F=397/20000`, zero regret, no fallback |
 | Phase 3A G2048 oracle construction slice | same safe-chain ground structure under `phase3a_true_state_alias_oracle_control_v0` | train: rank-1 `D4` uniform `H=2` plus strict cross-`D4` bridge `H=1`; held-out: rank-2 `D4` uniform, mixed/point supports, and rank-1 uniform `H=1`; canonical reward and `delta=1/20` throughout | 20-support/192-state train-only suite closure and two-atom oracle partition; total `192 -> 8`, active `68 -> 7`; active `D4` orbits/cells `9 -> 7`; state-action orbits/entries `18 -> 14`, ground pairs/entries `144 -> 14`; bridge witnesses jointly reached in one cross-orbit cell; all six exact rows certify |
 | Phase 3A LMB exact-behavioural construction slice | `lmb_generated_n6_t2_k3_d2_seed0_v0` | train: canonical `H=3,delta=1/20`; held-out: match-only `H=3,delta=0` and canonical `H=2,delta=0`, all on the registered nine-state support | train-support 25-state closure; query-independent refinement `3 -> 5 -> 5`; total `25 -> 5`, active `18 -> 3`; physical orbits/cells `13 -> 5`; state-action orbits/entries `16 -> 4`; the same training graph jointly reaches multiple physical orbits inside each active cell; all three exact rows certify |
+| Phase 3B G2048 portable RAPM campaign | safe-chain structure and frozen coverage under `phase3b_portable_rapm_campaign_v0` | six distinct registered queries, including four `H=2` rows and registered initial-support/distribution and horizon variations at fixed reward/risk | query-neutral exact behavioural trace `2 -> 9 -> 10 -> 10`; state/action `192 -> 10`, `144 -> 17`; portable round trip; fresh-process planning; freeze all proposals before independent audit/J0/lift; one unchanged epoch/RAPM |
+| Phase 3B LMB portable RAPM campaign | `lmb_generated_n6_t2_k3_d2_seed0_v0` and frozen coverage | five distinct registered queries: the Phase 3A three plus canonical `H=3,delta=1/10` and terminal-clear-only `H=3` | query-neutral exact behavioural trace `3 -> 5 -> 5`; state/action `25 -> 5`, `40 -> 4`; portable round trip; fresh-process planning; freeze all proposals before independent audit/J0/lift; one unchanged epoch/RAPM |
 
 The positive safe-chain row is implemented as a separate exact-bundle profile. It does not retroactively replace the canonical Phase 0.5 regression and enters positive-result aggregates only when that run's J0 golden checks and independent exact-quotient artifact verification pass. The canonical row is permanently `infeasibility_only`; safe-chain is `known_group_exact_quotient_eligible_after_certification` and supports only the V0-024 known-`D4` claim after an actual exact `CERTIFIED` result. Its profile uses no CEGAR split or fallback; a failed invariant yields `EXACT_D4_QUOTIENT_INVARIANT_VIOLATION` and remains in the denominator as a failed positive control.
 
@@ -61,6 +67,33 @@ those identities are frozen. Their support must already lie within the train-bui
 coverage; they never trigger a silent rebuild. A slice pass is recorded together with
 `PHASE3_AGGREGATE_NOT_RUN` and cannot enter the later `60/20/40` Phase 3 denominator.
 
+The two Phase 3B rows form one preregistered `WorkloadSpec` with eleven genuine
+queries, six G2048 and five LMB. The per-domain builder sees structure, complete
+coverage, registered one-step reward features/failure/terminal semantics, and the exact
+kernel only. It cannot see query weights, horizon, risk, Q/value/frontier/policy data,
+or evaluation rows; this is checked at the builder API/data-flow boundary and by static
+source audit, not asserted as a closed import DAG for the whole runner. After portable
+files and their external build-epoch bindings freeze, every occurrence is planned in a
+fresh Linux bubblewrap mount/network namespace from the current read-only model/query,
+the three staged portable runtime modules, and system libraries only. Python runs with
+`-S`, output starts empty, the checkout and other requests are not mounted, and runtime
+attestation records the boundary. Portable query v1 includes cell `rho0`, `H`, raw and
+normalized weights, normalizer/proof, risk, and only the supported `default` goal. Its
+proof must resolve in the model's canonical `normalizer_rules` registry. With
+nonnegative raw weights it must equal the selected proof's complete, uniquely
+name-sorted registered `reward_basis`, including explicit zero weights. Proof IDs cannot
+cross reward bases. The rule must cover every positive-weight registered feature,
+`normalizer` must be no smaller than the weighted sum of each feature's
+`min(H*per_step_cap,total_cap)`, and normalized weights equal `raw/normalizer`. All proposals freeze
+before the independent exact audit/J0/lift evaluation phase, whose results cannot
+mutate the model.
+
+A Phase 3B pass requires strict state/action compression and
+`ABSTRACT_CERTIFIED` for every row, with one unchanged epoch/RAPM per domain. It is
+reported with `PHASE3_AGGREGATE_NOT_RUN`, `LOCAL_HYBRID_GATE_NOT_RUN`, and
+`WORKLOAD_ECONOMICS_GATE_NOT_RUN`; it is excluded from full Phase 3/5 denominators and
+does not count as automatic predicate invention or local-refinement evidence.
+
 If that deterministic fixture cannot yield an accepted split, fixture selection may advance through a prespecified seed list; every rejected seed and reason remains in the artifact. Selecting on final reward/regret or hiding attempts is forbidden.
 
 For later benchmark evaluation, each parameter configuration has 60 train seeds/layouts, 20 validation, 40 test, and an OOD test holding out one larger capacity or depth setting. Training data alone may generate feature thresholds and freeze grammar/rate parameters. Validation chooses among already declared configurations. Test data cannot influence predicates, thresholds, tie-breaking, budgets, or code.
@@ -68,6 +101,13 @@ For later benchmark evaluation, each parameter configuration has 60 train seeds/
 Every J0–J2 row shares fixture hash, query hash, initial conditions, horizon, failure definition, and replay tape where sampling diagnostics are used. Exact enumeration remains the authoritative measurement.
 
 Required metrics are reachable-state count; leaf count and compression; nominal prediction; sound value/risk widths; certified normalized full-plan regret; exact J0 regret where available; `Delta_action`; certificate coverage; fallback rate/location; build/query/fallback wall time; ground expansions and model calls; candidate evaluations; rate bits; policy-graph nodes/edges; policy switching; and break-even query count.
+
+Phase 3B additionally records the implemented noninterchangeable build state/action/
+outcome/refinement/byte fields and per-occurrence load-byte, abstract candidate/frontier/
+decision, portable/live-ground-audit, local/fallback, evaluation-only-J0, and
+reconciliation fields. The frozen
+cost equation applies only after preregistering a scalar cost functional; this slice
+leaves scalar `C_world`, `C_ground`, and break-even `null` and makes no economics claim.
 
 Every row additionally records build-coverage mode, initial-declaration hash, covered
 state count, and the no-outside-reuse flag. Aggregation treats builds with distinct
@@ -88,6 +128,17 @@ aggregate only after:
   evidence-label validation
   exclusion of STRESS_ONLY from exact Gates
   inclusion of all charged fallback costs
+
+phase3b_campaign(workload):
+  build and serialize one exact one-step behavioural RAPM per domain
+  externally bind and freeze build epochs before opening query results
+  for q in workload.ordered_queries:
+    pq = project_default_goal_query_v1(portable_rapm(q.domain),q)
+    result = fresh_bwrap_process_plan(portable_rapm(q.domain),pq)
+  freeze all proposals before J0 starts
+  for result in frozen_results:
+    independently exact-audit and compare J0/ground lift
+    append route and separated work-counter records
 ```
 
 ## Invariants
@@ -112,6 +163,12 @@ aggregate only after:
   counts or terminal/failure collapse.
 - Every Phase 3A evaluation preserves exact reward **and exact failure** relative to J0;
   “no additional violation” alone is insufficient for this registered slice.
+- Phase 3B builder API/data flow and statically audited builder/planner sources have no
+  query/Q/value/policy/evaluation dependency, and all campaign rows reference one
+  immutable external epoch/RAPM binding per domain.
+- Every passing Phase 3B route is `ABSTRACT_CERTIFIED`; local frontier and local/full-
+  fallback charges are empty/zero because the local-hybrid Gate is not run.
+- Build is charged once per epoch; cache hits do not increment genuine query count.
 
 ## Acceptance tests
 
@@ -153,10 +210,27 @@ aggregate only after:
 - The matrix validator rejects a Phase 3A result if held-out contents affect either
   construction identity, if a mixed cell is terminal/unreached, if either compression
   golden changes, or if `PHASE3_AGGREGATE_NOT_RUN` is absent.
+- Phase 3B matrix validation requires the registered six/five domain counts, at least
+  eight distinct portable projections and four per domain, multi-step coverage in each,
+  one unchanged model identity per domain, strict state/action compression, attested
+  per-occurrence bubblewrap isolation, and exact-
+  sound/J0/lift agreement for every row.
+- LMB matrix validation binds its canonical, match-only, and terminal-clear-only proof
+  IDs to complete `(match,terminal_clear)` bases `(1,1)`, `(1,0)`, and `(0,1)`;
+  selecting any of those proof IDs with another raw basis fails the row.
+- Injecting query/Q/value/policy data at the builder/planner audit boundary, changing an epoch after the
+  first query, recording a non-abstract route, or omitting any required `*_NOT_RUN`
+  status fails the Phase 3B row set.
+- Work accounting recomputes exactly, keeps evaluation-only oracle work separate, and
+  requires scalar costs/break-even to remain null in this not-run economics profile.
+- Independent verification rebuilds both kernels, coverages, behavioural models, and
+  their G2048/LMB authority normalizer registries; it reprojects queries, recomputes portable-envelope/live ground audits and
+  serialized-`kappa` lift/J0, checks IDs/cross-links/counters, and can replay the
+  isolated planner occurrences.
 
 ## Out of scope
 
-Unregistered reward extrapolation, post-hoc test-derived predicates, statistical substitution for exact Gate rows, causal component attribution from a single ladder order, automatic-symmetry-discovery claims from the supplied `D4` profile, automatic-predicate-invention claims from the aliased profile's six preregistered atoms, and generalizing Phase 3A reuse beyond its registered two-domain held-out suite.
+Unregistered reward extrapolation, post-hoc test-derived predicates, statistical substitution for exact Gate rows, causal component attribution from a single ladder order, automatic-symmetry-discovery claims from the supplied `D4` profile, automatic-predicate-invention claims from the aliased profile's six preregistered atoms, generalizing Phase 3A reuse beyond its registered two-domain held-out suite, and treating the Phase 3B portable campaign as a local-hybrid, break-even, or full Phase 3/5 result.
 
 ## Known failure modes
 
@@ -171,3 +245,7 @@ Before Phase 3, also freeze the exact OOD held-out value, quantile positions for
 V0-027 freezes only the two-domain Phase 3A construction-slice held-outs above. The
 remaining `60/20/40` split, OOD row, aggregation, confidence intervals, and human-
 grammar comparison are still prerequisites for a full Phase 3 Gate decision.
+
+V0-028 freezes the immediate eleven-query Phase 3B portability campaign. Larger
+workloads, certificate-failure cases that exercise local ground recovery, reference
+hardware, repeated-run economics, and the full Phase 5 Gate remain unrun.

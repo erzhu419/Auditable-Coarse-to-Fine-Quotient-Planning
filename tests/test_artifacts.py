@@ -7,6 +7,8 @@ from acfqp.artifacts import (
     ALIASED_CEGAR_REQUIRED_PATHS,
     PHASE3A_DOCUMENT_CONTRACTS,
     PHASE3A_REQUIRED_PATHS,
+    PHASE3B_DOCUMENT_CONTRACTS,
+    PHASE3B_REQUIRED_PATHS,
     object_id,
     verify_artifact_bundle,
     write_artifact_bundle,
@@ -86,6 +88,28 @@ def test_phase3a_bundle_uses_its_complete_profile_contract(tmp_path: Path) -> No
     assert set(records) == set(PHASE3A_REQUIRED_PATHS)
     assert manifest["required_paths"] == sorted(PHASE3A_REQUIRED_PATHS)
     for path, (role, schema) in PHASE3A_DOCUMENT_CONTRACTS.items():
+        assert records[path]["required"] is True
+        assert records[path]["role"] == role
+        assert records[path]["schema"] == schema
+    assert verify_artifact_bundle(tmp_path) == []
+
+
+def test_phase3b_bundle_uses_its_complete_profile_contract(tmp_path: Path) -> None:
+    documents = {
+        path: ([{"event": "complete"}] if path.endswith(".jsonl") else {"path": path})
+        for path in PHASE3B_REQUIRED_PATHS
+    }
+
+    manifest = write_artifact_bundle(
+        tmp_path,
+        documents,
+        required_paths=PHASE3B_REQUIRED_PATHS,
+    )
+
+    records = {record["path"]: record for record in manifest["files"]}
+    assert set(records) == set(PHASE3B_REQUIRED_PATHS)
+    assert manifest["required_paths"] == sorted(PHASE3B_REQUIRED_PATHS)
+    for path, (role, schema) in PHASE3B_DOCUMENT_CONTRACTS.items():
         assert records[path]["required"] is True
         assert records[path]["role"] == role
         assert records[path]["schema"] == schema

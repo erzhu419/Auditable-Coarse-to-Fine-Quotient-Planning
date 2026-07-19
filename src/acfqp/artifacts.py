@@ -278,6 +278,70 @@ PHASE3A_DOCUMENT_CONTRACTS = {
 PHASE3A_REQUIRED_PATHS = tuple(PHASE3A_DOCUMENT_CONTRACTS)
 
 
+PHASE3B_DOCUMENT_CONTRACTS = {
+    "run.json": ("run_metadata", "acfqp.run@phase3b.v1"),
+    "workload/spec.json": (
+        "ordered_repeated_planning_workload",
+        "acfqp.workload_spec@phase3b.v1",
+    ),
+    "workload/query_registry.json": (
+        "ground_and_portable_query_registry",
+        "acfqp.query_registry@phase3b.v1",
+    ),
+    "build/epochs.json": (
+        "immutable_build_epochs",
+        "acfqp.build_epochs@phase3b.v1",
+    ),
+    "build/g2048/portable_rapm.json": (
+        "portable_reusable_abstract_world_model",
+        "acfqp.portable_rapm.v1",
+    ),
+    "build/lmb/portable_rapm.json": (
+        "portable_reusable_abstract_world_model",
+        "acfqp.portable_rapm.v1",
+    ),
+    "campaign/portable_queries.jsonl": (
+        "portable_query_stream",
+        "application/x-ndjson; profile=acfqp.portable_queries.phase3b.v1",
+    ),
+    "campaign/portable_plans.jsonl": (
+        "fresh_process_abstract_plan_stream",
+        "application/x-ndjson; profile=acfqp.portable_plans.phase3b.v1",
+    ),
+    "campaign/policy_graphs.json": (
+        "portable_contingent_policy_graphs",
+        "acfqp.policy_graphs@phase3b.v1",
+    ),
+    "audit/certificates.jsonl": (
+        "independent_exact_plan_certificates",
+        "application/x-ndjson; profile=acfqp.certificates.phase3b.v1",
+    ),
+    "evaluation/j0_rows.jsonl": (
+        "evaluation_only_ground_comparisons",
+        "application/x-ndjson; profile=acfqp.j0.phase3b.v1",
+    ),
+    "evaluation/reuse.json": (
+        "portable_model_reuse_audit",
+        "acfqp.reuse_audit@phase3b.v1",
+    ),
+    "accounting/work_counters.json": (
+        "separated_deterministic_work_counters",
+        "acfqp.work_counters@phase3b.v1",
+    ),
+    "result/phase3b_report.json": (
+        "portable_world_model_campaign_report",
+        "acfqp.phase3b_report@v1",
+    ),
+    "metrics.json": ("run_metrics", "acfqp.metrics@phase3b.v1"),
+    "events.jsonl": (
+        "event_log",
+        "application/x-ndjson; profile=acfqp.events.phase3b.v1",
+    ),
+}
+
+PHASE3B_REQUIRED_PATHS = tuple(PHASE3B_DOCUMENT_CONTRACTS)
+
+
 def _document_contracts_for_required_paths(
     required_paths: set[str],
 ) -> Mapping[str, tuple[str, str]]:
@@ -289,6 +353,8 @@ def _document_contracts_for_required_paths(
         return ALIASED_CEGAR_DOCUMENT_CONTRACTS
     if required_paths == set(PHASE3A_REQUIRED_PATHS):
         return PHASE3A_DOCUMENT_CONTRACTS
+    if required_paths == set(PHASE3B_REQUIRED_PATHS):
+        return PHASE3B_DOCUMENT_CONTRACTS
     return PHASE05_DOCUMENT_CONTRACTS
 
 

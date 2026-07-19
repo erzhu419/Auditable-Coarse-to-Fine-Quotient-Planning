@@ -6,6 +6,9 @@
 - **Performance reproducibility:** comparable timing/expansion measurements on a declared platform; timing need not be bit-identical.
 - **Seed ledger:** ordered, immutable mapping from purpose to seed, never a single hidden global RNG stream.
 - **Reference archive:** a local, Git-ignored collection of downloaded literature/pages/repos plus verification and content hashes; it is optional provenance input, not executable authority or part of the public checkout.
+- **Portable round trip:** canonical serialization, fresh-process deserialization, and
+  reserialization with identical extensional model ID and semantic bytes. The external
+  BuildEpoch binding is verified separately.
 
 ## Normative decisions
 
@@ -106,6 +109,43 @@ suite: G2048 tests initial-support/distribution and horizon changes; LMB tests r
 basis, horizon, and risk changes. Every replay requires exact reward and exact failure
 gaps zero and retains `PHASE3_AGGREGATE_NOT_RUN`.
 
+The Phase 3B entry points are `acfqp-phase3b --output artifacts/phase3b` and
+`python3 scripts/verify_phase3b.py artifacts/phase3b`. Reproduction first rebuilds the
+two exact one-step behavioural fixed points from structure and coverage only, audits
+builder API/data flow and behavioural/planner source imports for the absence of
+Q/value/frontier/policy/query/evaluation inputs, freezes external build-epoch bindings,
+writes portable RAPMs, and proves canonical round-trip
+identity before opening planning results.
+
+Each of the eleven registered occurrences is dispatched to a new Linux bubblewrap
+mount/network namespace with only the staged `portable.py`, `portable_planner.py`, and
+`portable_runtime.py`, system Python libraries, its current read-only model/query pair,
+and an initially empty writable output. The checkout and other requests are not
+mounted; Python uses `-S`, and a content-addressed runtime attestation records files,
+module origins, namespace status, and output hashes. Portable query v1 binds cell
+`rho0`, horizon, raw/normalized weights, normalizer/proof, risk, and only the `default`
+structural stopping goal. The portable model's canonical `normalizer_rules` registry is
+uniquely sorted by proof ID; its `nonnegative_feature_caps_v1` entries use uniquely
+name-sorted complete `reward_basis` vectors with a nonnegative rational weight for every
+registered feature, including zeros. Their feature caps are uniquely name-sorted and
+nonnegative. Reproduction checks proof registration, exact raw-weight equality to the
+selected basis (preventing cross-basis proof reuse), complete positive-weight cap
+coverage, `normalizer >= sum_k w_k min(H*per_step_cap_k,total_cap_k)`, and exact
+`normalized=raw/normalizer`. LMB reproduction specifically binds its canonical,
+match-only, and terminal-clear-only proofs to complete `(match,terminal_clear)` bases
+`(1,1)`, `(1,0)`, and `(0,1)`. PID, timestamps, and wall times are provenance but not
+semantic hash inputs; model/query/policy/certificate/route IDs and exact rationals are.
+
+Clean reruns reproduce the six G2048/five LMB query order, one epoch/RAPM ID per domain,
+G2048 trace/counts `2 -> 9 -> 10 -> 10`, `192 -> 10`, `144 -> 17`, LMB
+`3 -> 5 -> 5`, `25 -> 5`, `40 -> 4`, every multi-stage policy graph, exact certificate,
+independent J0/lift comparison, `ABSTRACT_CERTIFIED` route, empty local frontier, and
+the exact implemented build/load/plan/portable-audit/ground-audit/local/fallback/
+evaluation-J0/reconciliation counters with null scalar break-even. The four result/Gate statuses remain exactly
+`PHASE3B_PORTABLE_RAPM_PASS`, `PHASE3_AGGREGATE_NOT_RUN`,
+`LOCAL_HYBRID_GATE_NOT_RUN`, and `WORKLOAD_ECONOMICS_GATE_NOT_RUN`. Timing variation
+cannot upgrade the economics status.
+
 ## Pseudocode / schema
 
 ```text
@@ -151,6 +191,16 @@ reproduce_phase3a(bundle_request):
   validate held-out support; recompute J0, Jkappa, J2 audit, and ground lift
   recompute active compression and per-policy jointly reached physical-orbit mixing
   require exact reward/failure gaps zero and aggregate status NOT_RUN
+
+reproduce_phase3b(bundle_request):
+  load contract-0.7 workload and epoch registries
+  rebuild full-one-step behavioural RAPMs without query/value inputs
+  verify builder API/data-flow/static-source audit and canonical portable roundtrip
+  for request in ordered_workload:
+    reproject portable_query_v1 and launch attested fresh bwrap planner process
+    recompute portable/live-ground audits, serialized-kappa lift, and J0
+    verify IDs, cross-links, exact certificate and route
+  reconcile separated work counters, null scalar economics, and four final statuses
 ```
 
 ## Invariants
@@ -177,6 +227,15 @@ reproduce_phase3a(bundle_request):
 - Held-out records never enter a Phase 3A construction dependency. Active-state
   compression and cross-orbit reachability are deterministic semantic fields, while
   terminal aggregation cannot supply the threshold witness.
+- Phase 3B query order/content cannot change either frozen construction/model hash;
+  changing a BuildEpoch component must change the epoch identity, but changes the
+  portable model identity only when the extensional model payload changes.
+- Fresh-process attestations show that each occurrence sees the staged three-module
+  runtime, system libraries, current read-only RAPM/query and empty writable output
+  inside isolated mount/network namespaces with `-S`; the checkout and other requests
+  are not mounted. This does not assert a closed import DAG for the whole runner.
+- Local-frontier emptiness, zero local/fallback charge, and all `*_NOT_RUN` statuses are
+  semantic outputs for the Phase 3B pass.
 
 ## Acceptance tests
 
@@ -224,10 +283,26 @@ reproduce_phase3a(bundle_request):
 - Phase 3A replay verifies total and active count goldens separately, physical state-
   action orbit reductions `18 -> 14` and `16 -> 4`, same-policy jointly reached mixed
   active cells, every V0-027 rational, and zero exact reward/failure gaps.
+- Two clean Phase 3B reruns have identical construction traces, external epoch records,
+  model bytes,
+  portable round trips, query order, policies, certificates, routes, exact evaluation
+  rows, work-counter accounting, and semantic hashes; only declared performance fields vary.
+- Mutating any query leaves both build epochs and model hashes unchanged while changing
+  the appropriate query/result identity; injecting that query into construction fails
+  the dependency audit even if output bytes are otherwise unchanged.
+- Removing a portable dependency or violating the fresh planner's attested namespace,
+  input, module-origin, `-S`, or empty-output boundary fails offline verification.
+  Reordering/cache-replaying requests cannot create a new
+  genuine query or change cumulative prefix semantics.
+- The verifier independently reconstructs both authoritative kernels, coverage closures,
+  behavioural models, G2048/LMB authority normalizer registries, and query projections,
+  recomputes portable/live-ground audits,
+  serialized-`kappa` lift and J0, validates all IDs/cross-links/counters, and can replay
+  the isolated planner.
 
 ## Out of scope
 
-Bit-identical wall time, reproducing third-party web availability, container publishing policy, deterministic GPU/neural execution, reproducibility of an unregistered/learned symmetry-discovery procedure, claiming that the deterministic aliased profile invented its preregistered feature, or extrapolating Phase 3A reproducibility to oracle-free discovery/full Phase 3.
+Bit-identical wall time, reproducing third-party web availability, container publishing policy, deterministic GPU/neural execution, reproducibility of an unregistered/learned symmetry-discovery procedure, claiming that the deterministic aliased profile invented its preregistered feature, extrapolating Phase 3A reproducibility to oracle-free discovery/full Phase 3, or interpreting reproducible Phase 3B portability as local-hybrid, economics, or full-Gate evidence.
 
 ## Known failure modes
 
@@ -235,4 +310,4 @@ Mutable dependency resolution, locale/timezone-dependent serialization, unordere
 
 ## Open risks
 
-Before performance Gates, freeze a reference hardware protocol and repetition/statistical summary policy. Before public release, add licensing checks for redistributed papers and repositories. V0-027 freezes the deterministic Phase 3A construction slice, but the full Phase 3 statistical split/aggregates and any larger or stochastic refinement study still require separate preregistration.
+Before performance Gates, freeze a reference hardware protocol and repetition/statistical summary policy. Before public release, add licensing checks for redistributed papers and repositories. V0-028 freezes the deterministic portable campaign, but local-hybrid reproducibility, workload economics, the full Phase 3/5 statistical aggregates, and larger or stochastic refinement studies still require separate preregistration.
