@@ -1,0 +1,21 @@
+{
+  "name": "Laplace-semi-MDP",
+  "upstream_url": "https://github.com/erzhu419/Laplace-semi-MDP",
+  "source_commit": "940598d8648d7c65f77f3f3c736d749e8e3750bf",
+  "source_commit_date": "2026-07-11T06:06:57+08:00",
+  "snapshot_created": "2026-07-19",
+  "license": "MIT",
+  "purpose": "Quarantined Phase-0 compatibility capsule for one frozen Bellman-Kron/graph-SMDP regression gate; not the production API of the new project.",
+  "provenance_note": "Every copied file was verified to match source_commit before copying. No uncommitted upstream working-tree changes were included.",
+  "files_sha256": {
+    "LICENSE": "608b4f4e014ca2f43c884307230964331fc1a15ca1909e7d5628763a71030ba6",
+    "CITATION.cff": "548a18ba45c95a7987fd5f7374e209ee0132588d75a20227ff523f12c9f4a876",
+    "README.md": "cb7fb8e2187a9beac530bf781e5942eb935315cd8a987b73c97593bf4d0af42b",
+    "requirements-lock.txt": "88f6791219a6f9ac282f25390e1182b1b11af6eb2f27e9165b6361ea33c99b95",
+    "experiments/thread_limits.py": "1d4a55daa63025cafc5668a05be50dab9c68e602d56e78548a7acfdf8ea48f16",
+    "experiments/bellman_kron.py": "0c6a63418f7a079b4e060a52716449b63a2ea66849eba2dc02c11319f8616cf8",
+    "experiments/run_gridworld_bellman_kron.py": "08b133351b5bca6b36640b6e333146a6542a579ea5cce2c00fef0608f3e8f32e",
+    "experiments/fixtures/summary.json": "29cf621196dfa2c52e572fb7b5e368b9917f29f6e0400503e3d0ca05d4e17f76",
+    "experiments/fixtures/boundary_values.csv": "0b7f11f6cbf01b3b6fbbc34bb22bf20b21c9e25cff2d2c190832003912d8ff5a"
+  }
+}

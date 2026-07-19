@@ -1,0 +1,117 @@
+{
+  "gamma": 0.97,
+  "slip": 0.0,
+  "n_states": 81,
+  "n_boundary": 32,
+  "n_interior": 49,
+  "compression_ratio": 0.3950617283950617,
+  "n_edges": 128,
+  "bellman_preservation_max_error_by_option": {
+    "N": 4.440892098500626e-16,
+    "S": 8.881784197001252e-16,
+    "W": 4.440892098500626e-16,
+    "E": 8.881784197001252e-16
+  },
+  "smdp_vs_primitive_value_max_abs_gap_on_boundaries": 7.105427357601002e-15,
+  "smdp_value_at_start_boundary_if_boundary": -22.19907793749682,
+  "primitive_value_at_start": -22.199077937496824,
+  "signature_merge_group_count": 32,
+  "signature_merge_groups_boundary_positions": [
+    [
+      0
+    ],
+    [
+      1
+    ],
+    [
+      2
+    ],
+    [
+      3
+    ],
+    [
+      4
+    ],
+    [
+      5
+    ],
+    [
+      6
+    ],
+    [
+      7
+    ],
+    [
+      8
+    ],
+    [
+      9
+    ],
+    [
+      10
+    ],
+    [
+      11
+    ],
+    [
+      12
+    ],
+    [
+      13
+    ],
+    [
+      14
+    ],
+    [
+      15
+    ],
+    [
+      16
+    ],
+    [
+      17
+    ],
+    [
+      18
+    ],
+    [
+      19
+    ],
+    [
+      20
+    ],
+    [
+      21
+    ],
+    [
+      22
+    ],
+    [
+      23
+    ],
+    [
+      24
+    ],
+    [
+      25
+    ],
+    [
+      26
+    ],
+    [
+      27
+    ],
+    [
+      28
+    ],
+    [
+      29
+    ],
+    [
+      30
+    ],
+    [
+      31
+    ]
+  ]
+}

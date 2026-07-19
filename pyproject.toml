@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "acfqp"
+version = "0.0.1"
+description = "Auditable coarse-to-fine quotient planning research prototype"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{name = "ACFQP contributors"}]
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+
+[project.scripts]
+acfqp-phase05 = "acfqp.phase05:main"
+acfqp-exact-d4 = "acfqp.d4_baseline:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+testpaths = ["tests"]
+pythonpath = [".", "src"]

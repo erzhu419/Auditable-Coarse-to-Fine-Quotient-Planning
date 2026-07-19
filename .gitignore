@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+build/
+dist/
+*.egg-info/
+
+# Reproducible generated runs.  Keep only an empty anchor in version control.
+artifacts/*
+!artifacts/.gitkeep
+
+# Private planning notes and the locally archived literature/repository corpus.
+# The curated third_party/ snapshot remains publishable project input.
+/markdown/
+/reference/
