@@ -57,9 +57,26 @@ coverage makes the RAPM reusable for an uncovered distribution or horizon.
 
 This profile performs no CEGAR split or fallback. A failed exact-quotient invariant
 returns `EXACT_D4_QUOTIENT_INVARIANT_VIOLATION`. The original infeasible canonical
-fixture remains the Phase 0.5 split/fallback test. Any future feasible-aliasing CEGAR
-fixture has a distinct structural/profile identity and cannot overwrite the exact
-baseline.
+fixture remains the Phase 0.5 split/fallback test.
+
+The feasible-aliasing positive control is now the independent profile
+`g2048_select_safe_chain_aliased_partition_v0`. It retains the ground structural key,
+kernel, query, J0 truth, and 192-state coverage of the safe-chain fixture but changes
+the build-owned partition, action adapter, and grammar, so all corresponding hashes are
+distinct. It starts from the ten-cell failure-plus-active-histogram encoder, whose
+incremental rate is zero but whose leaves and construction costs are charged; it uses
+full-V0 budgets. Its order-dependent `canonical:first/last` singleton concretizers are
+deliberately not `D4`-equivariant. An exact counterexample extractor and the standard
+joint ranking must choose the registered four-bit adjacency predicate twice, producing
+`10 -> 11 -> 12` leaves and immediate `CERTIFIED` after the second split, with no
+fallback.
+
+That result supports only recovery from a deliberately installed action/partition
+alias using a preregistered current-state geometry atom. Because every active histogram
+cell is already one `D4` orbit, it is not discovery of an unknown state quotient or
+symmetry. Because the final failure `317/16000` differs from J0 `99/5000`, it is a sound
+constrained certificate, not exact policy/risk preservation. It does not support
+automatic predicate invention, shared grammar/coordinates, or learning.
 
 ## Pseudocode / schema
 
@@ -89,6 +106,13 @@ ExactD4BaselineResult:
   singleton_envelope_proof
   ground_vs_lifted_value_risk_proof
   status = CERTIFIED or EXACT_D4_QUOTIENT_INVARIANT_VIOLATION
+
+AliasedCEGARPositiveControlResult:
+  profile_key, ground_structural_id, build_id, query_id
+  base_partition_id, semantic_adapter_id, grammar_id
+  ordered_iteration_ids, accepted_split_ids
+  exact_lifted_return_risk, sound_certificate
+  status = one of the eight CEGAR statuses
 ```
 
 Total cost for `N` genuine planning queries is `C_build + sum_i C_query(q_i)`. Cached execution is not a new query. Report the smallest `N` for which build plus abstract-query cost does not exceed repeated ground-query cost.
@@ -110,6 +134,9 @@ Total cost for `N` genuine planning queries is `C_build + sum_i C_query(q_i)`. C
    it does not relax the deterministic selector policy class.
 9. A coverage-limited RAPM is closed under all legal actions/outcomes from its declared
    support and rejects every query whose support is outside the recorded closure.
+10. The aliased profile never imports stabilizer-orbit actions, exact-`D4` status, or
+    exact-homomorphism evidence; certification terminates refinement before any optional
+    third tightening split.
 
 ## Acceptance tests
 
@@ -137,6 +164,14 @@ Total cost for `N` genuine planning queries is `C_build + sum_i C_query(q_i)`. C
 - Injecting a non-equivariant transition, duplicate-action multiplicity bias, or
   representative-dependent aggregate produces
   `EXACT_D4_QUOTIENT_INVARIANT_VIOLATION`, never a split or ground fallback.
+- The aliased profile reconstructs ten base cells from all 192 covered states, selects
+  two exact-witness-driven `first_survivor_adjacent_nonmerged_count|<=|1/2` splits at
+  four bits each, and ends at twelve leaves with reward `3/64`, exact lifted failure
+  `317/16000`, sound `U_F=397/20000`, regret zero, eight pointwise certificates, and
+  zero fallback calls.
+- Its ground structural/query identities equal the exact baseline inputs, while the
+  profile/build/adapter/grammar/partition/result identities differ; neither verifier
+  accepts the other profile's result label or artifact topology.
 
 ## Out of scope
 
@@ -144,8 +179,8 @@ Neural encoders, learned/statistical world models, MCTS, first-hit options, SMDP
 
 ## Known failure modes
 
-State explosion, incomplete predicate grammar, no common semantic action, overly conservative envelopes, infeasible chance constraints, build cost that never amortizes, incorrect state/action group transforms, and a cache key that omits or misstates build coverage. For the exact `D4` baseline, a nonzero width is an invariant failure rather than acceptable conservatism.
+State explosion, incomplete predicate grammar, no common semantic action, overly conservative envelopes, infeasible chance constraints, build cost that never amortizes, incorrect state/action group transforms, and a cache key that omits or misstates build coverage. For the exact `D4` baseline, a nonzero width is an invariant failure rather than acceptable conservatism. For the aliased profile, hard-coding its two cell IDs instead of extracting and ranking exact witnesses invalidates the CEGAR-discovery claim.
 
 ## Open risks
 
-Later claims about shared grammar/coordinates and practical amortization remain empirical. They do not weaken Phase 0.5 soundness obligations. A separately keyed aliased safe-chain profile is still needed if the project wants a feasible positive control for discovering a missing strategic geometry predicate.
+Later claims about shared grammar/coordinates and practical amortization remain empirical. They do not weaken Phase 0.5 soundness obligations. V0-026 closes the executable feasible-aliasing positive-control contract; broader automatic predicate invention and genuinely unknown state-quotient discovery remain open empirical work.

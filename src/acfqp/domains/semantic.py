@@ -195,6 +195,66 @@ class G2048SemanticAdapter(_BoundaryAdapter[G2048State, G2048Action]):
 
 
 @dataclass(frozen=True, slots=True)
+class G2048ActionFrameGeometryAdapter(G2048SemanticAdapter):
+    """Boundary actions plus geometry in the authoritative ``FIRST`` frame.
+
+    The added atoms are functions only of the current board, the fixed board
+    geometry, and the kernel's authoritative primitive-action order.  They do
+    not inspect outcomes, spawn probabilities, policies, values, or an oracle.
+    Rows and columns use the kernel's zero-based row-major coordinates.
+
+    A geometry frame is defined only when the state is nonterminal and exactly
+    one occupied cell lies outside the pair merged by ``FIRST``.  All six atoms
+    are zero otherwise, which keeps the feature map total without inventing a
+    privileged nonmerged tile.
+    """
+
+    def features(self, kernel: G2048Kernel, state: G2048State) -> FeatureVector:
+        # ``dataclass(slots=True)`` creates a replacement class, so use the
+        # explicit parent call instead of zero-argument ``super()`` here.
+        features = dict(G2048SemanticAdapter.features(self, kernel, state))
+        geometry = {
+            "first_survivor_adjacent_nonmerged_count": 0,
+            "first_pair_horizontal": 0,
+            "first_survivor_row": 0,
+            "first_survivor_column": 0,
+            "nonmerged_row": 0,
+            "nonmerged_column": 0,
+        }
+
+        primitive_actions = tuple(kernel.actions(state))
+        if not kernel.is_terminal(state) and primitive_actions:
+            first = primitive_actions[0]
+            nonmerged = tuple(
+                cell
+                for cell, rank in enumerate(state.board)
+                if rank != 0 and cell not in (first.first, first.second)
+            )
+            if len(nonmerged) == 1:
+                survivor_row, survivor_column = divmod(first.survivor, kernel.size)
+                nonmerged_row, nonmerged_column = divmod(nonmerged[0], kernel.size)
+                first_row, _ = divmod(first.first, kernel.size)
+                second_row, _ = divmod(first.second, kernel.size)
+                geometry.update(
+                    {
+                        "first_survivor_adjacent_nonmerged_count": int(
+                            abs(survivor_row - nonmerged_row)
+                            + abs(survivor_column - nonmerged_column)
+                            == 1
+                        ),
+                        "first_pair_horizontal": int(first_row == second_row),
+                        "first_survivor_row": survivor_row,
+                        "first_survivor_column": survivor_column,
+                        "nonmerged_row": nonmerged_row,
+                        "nonmerged_column": nonmerged_column,
+                    }
+                )
+
+        features.update(geometry)
+        return _feature_vector(**features)
+
+
+@dataclass(frozen=True, slots=True)
 class LMBSemanticAdapter(_BoundaryAdapter[LMBState, LMBAction]):
     """Boundary labels plus buffer/debt features for Layered Matching Buffer."""
 

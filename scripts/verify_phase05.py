@@ -39,6 +39,53 @@ def exact(value: dict | int) -> Fraction:
     return Fraction(value["numerator"], value["denominator"])
 
 
+def _verify_reference_manifest_hashes(
+    run: dict,
+    failures: list[str],
+    *,
+    root: Path = ROOT,
+) -> None:
+    """Validate the optional local provenance-manifest pair.
+
+    The public repository deliberately omits the local ``reference/`` archive.
+    A run may therefore bind either the complete two-manifest pair or no
+    reference manifests at all; a partial local archive is never admissible.
+    """
+
+    relative_paths = (
+        "reference/download_manifest.json",
+        "reference/repo_clone_manifest.json",
+    )
+    paths = {relative: root / relative for relative in relative_paths}
+    present = {relative: path.is_file() for relative, path in paths.items()}
+    recorded = run.get("reference_manifest_hashes")
+    if not isinstance(recorded, dict):
+        failures.append("run reference_manifest_hashes is missing or malformed")
+        return
+
+    if all(present.values()):
+        expected = {
+            relative: sha256_file(path) for relative, path in paths.items()
+        }
+        if recorded != expected:
+            failures.append(
+                "run reference-manifest hashes do not exactly match the complete local pair"
+            )
+        return
+
+    if not any(present.values()):
+        if recorded:
+            failures.append(
+                "run reference-manifest hashes must be empty when the local pair is absent"
+            )
+        return
+
+    missing = sorted(relative for relative, exists in present.items() if not exists)
+    failures.append(
+        "local reference-manifest pair is incomplete; missing: " + ", ".join(missing)
+    )
+
+
 def _state_from_document(domain: str, value: dict) -> object:
     """Reconstruct a query state using the authoritative fixture state type."""
 
@@ -267,29 +314,23 @@ def verify_domain(bundle: Path, *, recompute: bool) -> dict:
         failures.append("run contract version is not the frozen Phase 0.5 contract")
     if run.get("source_tree_sha256") != _source_tree_hash():
         failures.append("run source-tree hash is stale for the current workspace")
-    for field in ("spec_hashes", "reference_manifest_hashes"):
-        records_for_parent = run.get(field)
-        if not isinstance(records_for_parent, dict) or not records_for_parent:
-            failures.append(f"run {field} is missing or malformed")
-            continue
-        for relative, recorded_hash in records_for_parent.items():
-            parent = ROOT / relative
-            if not parent.is_file():
-                failures.append(f"run {field} parent is missing: {relative}")
-            elif sha256_file(parent) != recorded_hash:
-                failures.append(f"run {field} parent hash is stale: {relative}")
+    spec_hashes = run.get("spec_hashes")
+    if not isinstance(spec_hashes, dict) or not spec_hashes:
+        failures.append("run spec_hashes is missing or malformed")
+        spec_hashes = {}
+    for relative, recorded_hash in spec_hashes.items():
+        parent = ROOT / relative
+        if not parent.is_file():
+            failures.append(f"run spec_hashes parent is missing: {relative}")
+        elif sha256_file(parent) != recorded_hash:
+            failures.append(f"run spec_hashes parent hash is stale: {relative}")
     expected_spec_parents = {
         "DECISION_LEDGER.md",
         *(path.relative_to(ROOT).as_posix() for path in (ROOT / "specs").glob("*.md")),
     }
     if set(run.get("spec_hashes", {})) != expected_spec_parents:
         failures.append("run spec-hash parent inventory is incomplete")
-    expected_reference_parents = {
-        "reference/download_manifest.json",
-        "reference/repo_clone_manifest.json",
-    }
-    if set(run.get("reference_manifest_hashes", {})) != expected_reference_parents:
-        failures.append("run reference-manifest parent inventory is incomplete")
+    _verify_reference_manifest_hashes(run, failures)
 
     query_payload = dict(query)
     query_id = query_payload.pop("query_id", None)

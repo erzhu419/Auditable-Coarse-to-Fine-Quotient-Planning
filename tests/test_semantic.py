@@ -10,6 +10,7 @@ from acfqp.domains.matching_buffer import (
 )
 from acfqp.domains.semantic import (
     BoundaryActionLabel,
+    G2048ActionFrameGeometryAdapter,
     G2048SemanticAdapter,
     LMBSemanticAdapter,
     restriction_diagnostic,
@@ -73,6 +74,87 @@ def test_g2048_features_are_exact_current_state_atoms() -> None:
         "rank_sum": Fraction(4),
         "spatial_match_debt": Fraction(1),
     }
+
+
+def test_g2048_action_frame_geometry_features_extend_base_atoms_exactly() -> None:
+    kernel = G2048Kernel(2)
+    state = G2048State((1, 1, 2, 0))
+    base = as_dict(G2048SemanticAdapter().features(kernel, state))
+    features = as_dict(G2048ActionFrameGeometryAdapter().features(kernel, state))
+
+    assert {name: features[name] for name in base} == base
+    assert features == {
+        **base,
+        "first_survivor_adjacent_nonmerged_count": Fraction(1),
+        "first_pair_horizontal": Fraction(1),
+        "first_survivor_row": Fraction(0),
+        "first_survivor_column": Fraction(0),
+        "nonmerged_row": Fraction(1),
+        "nonmerged_column": Fraction(0),
+    }
+
+
+@pytest.mark.parametrize(
+    ("board", "expected"),
+    (
+        ((1, 1, 2, 0), 1),
+        ((0, 1, 2, 1), 0),
+        ((0, 1, 2, 2), 0),
+        ((1, 0, 2, 2), 1),
+    ),
+)
+def test_g2048_action_frame_geometry_witness_adjacency_goldens(
+    board: tuple[int, ...], expected: int
+) -> None:
+    features = as_dict(
+        G2048ActionFrameGeometryAdapter().features(
+            G2048Kernel(2), G2048State(board)
+        )
+    )
+    assert features["first_survivor_adjacent_nonmerged_count"] == expected
+
+
+@pytest.mark.parametrize(
+    "state",
+    (
+        G2048State((1, 2, 0, 0), G2048Status.FAILURE),
+        G2048State((1, 1, 1, 1)),
+    ),
+)
+def test_g2048_action_frame_geometry_is_zero_without_unique_nonmerged_tile(
+    state: G2048State,
+) -> None:
+    features = as_dict(
+        G2048ActionFrameGeometryAdapter().features(G2048Kernel(2), state)
+    )
+    geometry_names = (
+        "first_survivor_adjacent_nonmerged_count",
+        "first_pair_horizontal",
+        "first_survivor_row",
+        "first_survivor_column",
+        "nonmerged_row",
+        "nonmerged_column",
+    )
+    assert {name: features[name] for name in geometry_names} == {
+        name: Fraction(0) for name in geometry_names
+    }
+
+
+def test_g2048_action_frame_geometry_preserves_boundary_concretizer() -> None:
+    kernel = G2048Kernel(2)
+    state = G2048State((1, 1, 2, 0))
+    adapter = G2048ActionFrameGeometryAdapter()
+    primitive = kernel.actions(state)
+    assert adapter.labels(kernel, state) == (
+        BoundaryActionLabel.FIRST,
+        BoundaryActionLabel.LAST,
+    )
+    assert adapter.concretize(kernel, state, BoundaryActionLabel.FIRST) == (
+        (Fraction(1), primitive[0]),
+    )
+    assert adapter.concretize(kernel, state, BoundaryActionLabel.LAST) == (
+        (Fraction(1), primitive[-1]),
+    )
 
 
 def test_lmb_single_action_deduplicates_last_label() -> None:

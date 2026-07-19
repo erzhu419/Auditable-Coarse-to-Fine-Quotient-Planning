@@ -55,6 +55,24 @@ no refinement or fallback. A nonzero interval, nonsingleton transition set, ille
 concretizer support, representative disagreement, or J0 mismatch returns
 `EXACT_D4_QUOTIENT_INVARIANT_VIOLATION` and invalidates the known-symmetry certificate.
 
+The aliased safe-chain profile is instead an ordinary J2 interval audit with
+`abstraction_source=deliberately_aliased_boundary_actions`.
+It uses the same J0 and query but an order-dependent boundary-action adapter. The ten-
+cell histogram base partition has no state-orbit error—each active histogram is one
+`D4` orbit—but its cells do not make `canonical:first/last` equivariant. Exact audit
+witnesses expose that state/action mismatch. The standard ranking selects two local
+four-bit applications of the registered adjacency predicate. The final J2 policy is
+reward-optimal and soundly feasible but not risk-identical to J0:
+
+```text
+J0:        reward=3/64, failure=99/5000
+lifted J2: reward=3/64, failure=317/16000
+sound J2:  regret_upper=0, U_F=397/20000 < 1/20.
+```
+
+The exact lifted-risk gap `1/80000` and envelope conservatism `3/80000` remain visible;
+neither can be rounded away or described as exact policy preservation.
+
 ## Pseudocode / schema
 
 ```text
@@ -86,6 +104,13 @@ audit_exact_D4(quotient,q):
   compare every reachable value plus constrained root return/risk against J0
   return CERTIFIED if all exact equalities hold
   else EXACT_D4_QUOTIENT_INVARIANT_VIOLATION without refinement/fallback
+
+audit_refine_aliased_safe_chain(rapm,q):
+  assert complete coverage count == 192 and base leaves == 10
+  repeat exact proposal audit and extract all reachable witnesses
+  jointly rank every separating six-feature grammar candidate
+  accept one ordinary local split or return the normative terminal status
+  stop immediately when aggregate and all eight pointwise audits certify
 ```
 
 ## Invariants
@@ -104,6 +129,9 @@ audit_exact_D4(quotient,q):
    never to stabilizer elements with duplicate images.
 9. J1/J2 never read, optimize over, or certify a state outside the coverage committed
    by `build_id`; query-owned `rho0` is not inferred from a domain default.
+10. The aliased J2 run uses full-V0 budgets and charges base leaves plus both four-bit
+    splits; certification after the second accepted split forbids an additional
+    tightening split.
 
 ## Acceptance tests
 
@@ -128,6 +156,12 @@ audit_exact_D4(quotient,q):
 - Perturbing one action transform, representative aggregate, envelope endpoint, or
   duplicated concretizer weight deterministically produces
   `EXACT_D4_QUOTIENT_INVARIANT_VIOLATION`.
+- The aliased audit is initially unsafe (`L_pi=51/3200`, `U_F=19999/20000`, regret
+  `99/3200`), remains unsafe after the first split (`L_pi=3/64`, `U_F=5099/10000`),
+  and certifies after the second (`L_pi=3/64`, `U_F=397/20000`, regret zero).
+- Independent ground lifting recomputes failure `317/16000`; each of the eight initial
+  point audits has `U_F=397/20000` and certifies. Adding a fallback or claiming J0 risk
+  equality fails the profile gate.
 
 ## Out of scope
 
@@ -135,8 +169,8 @@ J3 learned/statistical models, J4 bounded search/MCTS, J5 perception, causal att
 
 ## Known failure modes
 
-Frontier combinatorics, conservative rectangular composition, all policies exceeding `delta`, stale or incomplete build-coverage identity, and small numeric differences in derived display floats. Exact stored rationals remain authoritative. Conservative width is permitted in ordinary interval quotients but is a hard error in the exact `D4` profile.
+Frontier combinatorics, conservative rectangular composition, all policies exceeding `delta`, stale or incomplete build-coverage identity, and small numeric differences in derived display floats. Exact stored rationals remain authoritative. Conservative width is permitted—and expected by `3/80000` in the final aliased risk bound—in ordinary interval quotients but is a hard error in the exact `D4` profile.
 
 ## Open risks
 
-Paired oracle-replacement ablations and component interactions are required before causal claims. More compact exact frontier representations may be needed beyond tiny instances. A future aliased safe-chain profile, not this exact positive control, must test feasible CEGAR discovery.
+Paired oracle-replacement ablations and component interactions are required before causal claims. More compact exact frontier representations may be needed beyond tiny instances. The V0-026 aliased control tests exact-counterexample selection of one preregistered geometry atom; automatic feature invention and broader feasible CEGAR discovery remain open.

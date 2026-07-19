@@ -75,6 +75,35 @@ Consequently `Phat=Pbar`, `rhat=rbar`, and `chat=cbar`; the exact sound envelope
 same singleton point model, not a wider rectangular hull. A violation is
 `EXACT_D4_QUOTIENT_INVARIANT_VIOLATION`, not a refinement counterexample.
 
+The aliased safe-chain profile is an ordinary interval RAPM over the unchanged
+safe-chain process rather than a second exact-group object. On its complete
+`|Omega_cov|=192` closure, define
+
+```text
+phi_0(x) = failure                                      if x is absorbing failure
+           (active, empty_count(x), hist_nonzero(x))   otherwise.
+```
+
+This produces ten cells. Its base encoder is preregistered with incremental refinement
+rate zero, but the ten starting leaves and every construction cost are charged. It
+uses full-V0 budgets. `psi_x` maps the first and last distinct members of the
+authoritative ordered `A(x)` to `canonical:first` and `canonical:last`; `kappa_x` is
+the corresponding singleton. Unlike the exact-group adapter, this `psi` is deliberately
+coordinate/order dependent.
+
+Let the six-feature action-frame grammar and its total-zero convention be those in
+`BENCHMARK_GRAMMAR.md`. The only successful separator in the golden path is
+
+```text
+p_geo(x) = [first_survivor_adjacent_nonmerged_count(x) <= 1/2].
+```
+
+The exact auditor and the normal joint ranking first apply `p_geo` locally to histogram
+`(1,1,2)` and then to `(1,2,2)`. Each split is `4+4`, costs four bits, and changes the
+leaf/rate counters `10/0 -> 11/4 -> 12/8`. Certification stops after the second split;
+the residual interval at `(2,2,2)` is permitted because its propagated sound risk
+still satisfies the query.
+
 For canonical reward definitions, `normalizer=H` in G2048 and `normalizer=2N/3` in LMB. A query changing any reward coefficient or reward/bonus/goal semantics supplies and validates its own deterministic total-return bound; the two canonical formulas have no default validity outside their registered reward definitions.
 
 For a query-normalized reward, define:
@@ -122,6 +151,19 @@ build_exact_D4_cell([x,h]):
     nominal = induced
     envelope = singleton(induced)
 
+build_aliased_safe_chain_profile(q):
+  assert ground_structural_key == g2048_select_safe_chain_2x2_v0
+  Omega_cov = complete_query_support_transition_closure(q)  # 192 states
+  partition = failure_plus_active_empty_count_rank_histogram(Omega_cov)  # 10 cells
+  adapter = deterministic_boundary_first_last
+  grammar = six_feature_action_frame_geometry_v1
+  repeat:
+    proposal = nominal_plan(partition,q)
+    audit, witnesses = exact_full_plan_audit(proposal,q)
+    if audit.certified: return CERTIFIED
+    split = rank_all_witness_predicate_candidates(witnesses,grammar)
+    partition = accept(split)
+
 audit(pi, q):
   backward_induct over every reachable (z,h)
   return regret_bound, failure_upper_bound, proof_dependencies
@@ -147,6 +189,12 @@ audit(pi, q):
   count.
 - Structural identity excludes `rho0`, while the coverage-specific build identity
   commits to `CovID`; maps and proof dependencies never escape `Omega_cov`.
+- The aliased profile shares the exact baseline's ground structural and query IDs but
+  has distinct profile, adapter, grammar, partition, build, run, and artifact hashes.
+- Its base encoder is ten leaves and zero incremental rate; only the two accepted
+  four-bit local predicates change refinement rate, for a final total of eight bits.
+- Certification is terminal: the main profile cannot split `(2,2,2)` after the second
+  split has certified the query.
 
 ## Acceptance tests
 
@@ -170,6 +218,13 @@ audit(pi, q):
   `sum_z |Abar_h(z)| < sum_(x,h) |A_h(x)|` on the same complete reachable state-time
   graph before claiming strict state/action compression, where both action sets are
   empty at terminal/failure nodes.
+- The aliased profile reproduces the golden sequence
+  `(Rhat,Fhat,L_pi,U_F,regret) = (201/6400,5059/8000,51/3200,
+  19999/20000,99/3200)`, then `(3/64,21187/80000,3/64,5099/10000,0)`,
+  then `(3/64,317/16000,3/64,397/20000,0)`.
+- Its final lifted policy has exact failure `317/16000`, versus J0 `99/5000`, while
+  envelope conservatism is `397/20000-317/16000=3/80000`; all eight point queries
+  certify and no fallback occurs.
 
 ## Out of scope
 
@@ -179,8 +234,8 @@ macro-actions, and robust first-hit reduction.
 
 ## Known failure modes
 
-Loose cellwise suprema can make `U_all` conservative; a valid policy may fail certification. Semantic action intersections can be empty. Exact envelope materialization can be large. Omitting coverage from the build identity or allowing a proof dependency outside `Omega_cov` is unsound. In the exact `D4` profile, any nonzero width signals an implementation or automorphism violation rather than ordinary abstraction conservatism.
+Loose cellwise suprema can make `U_all` conservative; a valid policy may fail certification. Semantic action intersections can be empty. Exact envelope materialization can be large. Omitting coverage from the build identity or allowing a proof dependency outside `Omega_cov` is unsound. In the exact `D4` profile, any nonzero width signals an implementation or automorphism violation rather than ordinary abstraction conservatism. In the aliased profile, the final `3/80000` risk conservatism is expected sound slack, not an exact-group invariant failure.
 
 ## Open risks
 
-Tighter coupled envelope representations may improve coverage later, but must preserve containment and the unrestricted-action regret theorem. The safe-chain known-group baseline does not test whether a predicate grammar can discover the same quotient; that requires a separately keyed aliased profile.
+Tighter coupled envelope representations may improve coverage later, but must preserve containment and the unrestricted-action regret theorem. V0-026 supplies a deliberately aliased, preregistered-grammar positive control, but still does not test automatic predicate invention or recovery of the exact `D4` quotient.

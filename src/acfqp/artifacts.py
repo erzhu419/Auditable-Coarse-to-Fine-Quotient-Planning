@@ -102,6 +102,128 @@ D4_BASELINE_DOCUMENT_CONTRACTS = {
 D4_BASELINE_REQUIRED_PATHS = tuple(D4_BASELINE_DOCUMENT_CONTRACTS)
 
 
+ALIASED_CEGAR_DOCUMENT_CONTRACTS = {
+    "run.json": ("run_metadata", "acfqp.run@aliased_cegar.v1"),
+    "config/structural.json": (
+        "structural_config",
+        "acfqp.structural_config@aliased_cegar.v1",
+    ),
+    "config/profile.json": (
+        "aliased_cegar_profile",
+        "acfqp.profile@aliased_cegar.v1",
+    ),
+    "config/query.json": ("query_config", "acfqp.query_config@aliased_cegar.v1"),
+    "ground/enumeration.json": (
+        "exact_enumeration",
+        "acfqp.enumeration@aliased_cegar.v1",
+    ),
+    "ground/j0_frontier.json": (
+        "ground_oracle_frontier",
+        "acfqp.frontier@aliased_cegar.v1",
+    ),
+    "audit/alias_source_diagnostic.json": (
+        "alias_source_diagnostic",
+        "acfqp.alias_source_diagnostic@aliased_cegar.v1",
+    ),
+    "rapm/partition_00.json": (
+        "stage_00_partition",
+        "acfqp.partition_00@aliased_cegar.v1",
+    ),
+    "rapm/nominal_00.json": (
+        "stage_00_nominal_model",
+        "acfqp.nominal_00@aliased_cegar.v1",
+    ),
+    "rapm/envelope_00.json": (
+        "stage_00_sound_envelope",
+        "acfqp.envelope_00@aliased_cegar.v1",
+    ),
+    "audit/audit_00.json": (
+        "stage_00_exact_audit",
+        "acfqp.audit_00@aliased_cegar.v1",
+    ),
+    "rapm/partition_01.json": (
+        "stage_01_partition",
+        "acfqp.partition_01@aliased_cegar.v1",
+    ),
+    "rapm/nominal_01.json": (
+        "stage_01_nominal_model",
+        "acfqp.nominal_01@aliased_cegar.v1",
+    ),
+    "rapm/envelope_01.json": (
+        "stage_01_sound_envelope",
+        "acfqp.envelope_01@aliased_cegar.v1",
+    ),
+    "audit/audit_01.json": (
+        "stage_01_exact_audit",
+        "acfqp.audit_01@aliased_cegar.v1",
+    ),
+    "rapm/partition_02.json": (
+        "stage_02_partition",
+        "acfqp.partition_02@aliased_cegar.v1",
+    ),
+    "rapm/nominal_02.json": (
+        "stage_02_nominal_model",
+        "acfqp.nominal_02@aliased_cegar.v1",
+    ),
+    "rapm/envelope_02.json": (
+        "stage_02_sound_envelope",
+        "acfqp.envelope_02@aliased_cegar.v1",
+    ),
+    "audit/audit_02.json": (
+        "stage_02_exact_audit",
+        "acfqp.audit_02@aliased_cegar.v1",
+    ),
+    "refinement/iterations/001/witness.json": (
+        "iteration_001_counterexample_witness",
+        "acfqp.witness_001@aliased_cegar.v1",
+    ),
+    "refinement/iterations/001/candidates.json": (
+        "iteration_001_split_candidates",
+        "acfqp.candidates_001@aliased_cegar.v1",
+    ),
+    "refinement/iterations/001/accepted_split.json": (
+        "iteration_001_accepted_split",
+        "acfqp.accepted_split_001@aliased_cegar.v1",
+    ),
+    "refinement/iterations/002/witness.json": (
+        "iteration_002_counterexample_witness",
+        "acfqp.witness_002@aliased_cegar.v1",
+    ),
+    "refinement/iterations/002/candidates.json": (
+        "iteration_002_split_candidates",
+        "acfqp.candidates_002@aliased_cegar.v1",
+    ),
+    "refinement/iterations/002/accepted_split.json": (
+        "iteration_002_accepted_split",
+        "acfqp.accepted_split_002@aliased_cegar.v1",
+    ),
+    "result/policy_graph.json": (
+        "query_policy_graph",
+        "acfqp.policy_graph@aliased_cegar.v1",
+    ),
+    "result/cegar_certificate.json": (
+        "aliased_cegar_certificate",
+        "acfqp.certificate@aliased_cegar.v1",
+    ),
+    "metrics.json": ("run_metrics", "acfqp.metrics@aliased_cegar.v1"),
+    "events.jsonl": ("event_log", "acfqp.events@aliased_cegar.v1"),
+}
+
+ALIASED_CEGAR_REQUIRED_PATHS = tuple(ALIASED_CEGAR_DOCUMENT_CONTRACTS)
+
+
+def _document_contracts_for_required_paths(
+    required_paths: set[str],
+) -> Mapping[str, tuple[str, str]]:
+    """Select the exact document contract identified by a required-path set."""
+
+    if required_paths == set(D4_BASELINE_REQUIRED_PATHS):
+        return D4_BASELINE_DOCUMENT_CONTRACTS
+    if required_paths == set(ALIASED_CEGAR_REQUIRED_PATHS):
+        return ALIASED_CEGAR_DOCUMENT_CONTRACTS
+    return PHASE05_DOCUMENT_CONTRACTS
+
+
 def to_jsonable(value: Any) -> Any:
     """Convert project objects to stable, JSON-compatible values."""
 
@@ -203,6 +325,7 @@ def write_artifact_bundle(
     missing = sorted(set(required_paths) - set(documents))
     if missing:
         raise ValueError(f"required artifact documents missing: {missing}")
+    document_contracts = _document_contracts_for_required_paths(set(required_paths))
     files = []
     for filename, document in sorted(documents.items()):
         relative = _safe_relative_path(filename)
@@ -213,7 +336,7 @@ def write_artifact_bundle(
         else:
             write_json(path, document)
             default_schema = SCHEMA_VERSION
-        contract = PHASE05_DOCUMENT_CONTRACTS.get(filename)
+        contract = document_contracts.get(filename)
         files.append(
             {
                 "path": filename,
@@ -297,10 +420,7 @@ def verify_artifact_bundle(output_dir: Path) -> list[str]:
     if len(declared_paths) != len(declared_list):
         failures.append("manifest contains duplicate paths")
     required_paths = set(manifest.get("required_paths", []))
-    if required_paths == set(D4_BASELINE_REQUIRED_PATHS):
-        document_contracts = D4_BASELINE_DOCUMENT_CONTRACTS
-    else:
-        document_contracts = PHASE05_DOCUMENT_CONTRACTS
+    document_contracts = _document_contracts_for_required_paths(required_paths)
     for required in sorted(required_paths - declared_paths):
         failures.append(f"required path absent from manifest: {required}")
     actual_paths = {

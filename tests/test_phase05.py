@@ -21,7 +21,10 @@ from acfqp.build_coverage import (
 from acfqp.core import QuerySpec
 from acfqp.domains.g2048 import G2048State
 from acfqp.phase05 import _fixture, run_fixture
-from scripts.verify_phase05 import verify_domain
+from scripts.verify_phase05 import (
+    _verify_reference_manifest_hashes,
+    verify_domain,
+)
 
 
 def _resign_bundle(output: Path, changed_path: str) -> None:
@@ -38,6 +41,46 @@ def _resign_bundle(output: Path, changed_path: str) -> None:
     (output / "manifest.sha256").write_text(
         sha256_file(manifest_path) + "  manifest.json\n", encoding="ascii"
     )
+
+
+def test_phase05_reference_manifest_pair_is_optional_but_atomic(
+    tmp_path: Path,
+) -> None:
+    run = {"reference_manifest_hashes": {}}
+    failures: list[str] = []
+    _verify_reference_manifest_hashes(run, failures, root=tmp_path)
+    assert failures == []
+
+    run["reference_manifest_hashes"] = {
+        "reference/download_manifest.json": "stale"
+    }
+    failures = []
+    _verify_reference_manifest_hashes(run, failures, root=tmp_path)
+    assert any("must be empty" in failure for failure in failures)
+
+    reference = tmp_path / "reference"
+    reference.mkdir()
+    download = reference / "download_manifest.json"
+    download.write_text('{"kind":"download"}\n', encoding="utf-8")
+    run["reference_manifest_hashes"] = {}
+    failures = []
+    _verify_reference_manifest_hashes(run, failures, root=tmp_path)
+    assert any("pair is incomplete" in failure for failure in failures)
+
+    clone = reference / "repo_clone_manifest.json"
+    clone.write_text('{"kind":"repos"}\n', encoding="utf-8")
+    run["reference_manifest_hashes"] = {
+        "reference/download_manifest.json": sha256_file(download),
+        "reference/repo_clone_manifest.json": sha256_file(clone),
+    }
+    failures = []
+    _verify_reference_manifest_hashes(run, failures, root=tmp_path)
+    assert failures == []
+
+    run["reference_manifest_hashes"]["reference/download_manifest.json"] = "stale"
+    failures = []
+    _verify_reference_manifest_hashes(run, failures, root=tmp_path)
+    assert any("do not exactly match" in failure for failure in failures)
 
 
 def test_g2048_phase05_runs_mandatory_split_then_proves_infeasible(tmp_path: Path) -> None:

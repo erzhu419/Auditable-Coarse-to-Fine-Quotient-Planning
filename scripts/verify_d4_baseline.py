@@ -60,6 +60,48 @@ def exact(value: dict | int) -> Fraction:
     return Fraction(value["numerator"], value["denominator"])
 
 
+def _verify_reference_manifest_hashes(
+    run: dict,
+    failures: list[str],
+    *,
+    root: Path = ROOT,
+) -> None:
+    """Validate the optional local provenance-manifest pair."""
+
+    relative_paths = (
+        "reference/download_manifest.json",
+        "reference/repo_clone_manifest.json",
+    )
+    paths = {relative: root / relative for relative in relative_paths}
+    present = {relative: path.is_file() for relative, path in paths.items()}
+    recorded = run.get("reference_manifest_hashes")
+    if not isinstance(recorded, dict):
+        failures.append("run reference_manifest_hashes is missing or malformed")
+        return
+
+    if all(present.values()):
+        expected = {
+            relative: sha256_file(path) for relative, path in paths.items()
+        }
+        if recorded != expected:
+            failures.append(
+                "run reference-manifest hashes do not exactly match the complete local pair"
+            )
+        return
+
+    if not any(present.values()):
+        if recorded:
+            failures.append(
+                "run reference-manifest hashes must be empty when the local pair is absent"
+            )
+        return
+
+    missing = sorted(relative for relative, exists in present.items() if not exists)
+    failures.append(
+        "local reference-manifest pair is incomplete; missing: " + ", ".join(missing)
+    )
+
+
 def _state(value: dict) -> G2048State:
     return G2048State(tuple(value["board"]), G2048Status(value["status"]))
 
@@ -220,16 +262,7 @@ def verify_exact_d4_bundle(bundle: Path, *, recompute: bool = True) -> dict:
         path = ROOT / relative
         if not path.is_file() or sha256_file(path) != recorded:
             failures.append(f"run spec parent hash is stale: {relative}")
-    for relative, recorded in run.get("reference_manifest_hashes", {}).items():
-        path = ROOT / relative
-        if not path.is_file() or sha256_file(path) != recorded:
-            failures.append(f"run reference parent hash is stale: {relative}")
-    expected_reference_parents = {
-        "reference/download_manifest.json",
-        "reference/repo_clone_manifest.json",
-    }
-    if set(run.get("reference_manifest_hashes", {})) != expected_reference_parents:
-        failures.append("run reference-manifest parent inventory is incomplete")
+    _verify_reference_manifest_hashes(run, failures)
 
     structural_payload = dict(structural)
     structural_id = structural_payload.pop("structural_id", None)

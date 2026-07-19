@@ -18,7 +18,10 @@ from acfqp.d4_baseline import (
     INVARIANT_VIOLATION,
     run_exact_d4_baseline,
 )
-from scripts.verify_d4_baseline import verify_exact_d4_bundle
+from scripts.verify_d4_baseline import (
+    _verify_reference_manifest_hashes,
+    verify_exact_d4_bundle,
+)
 
 
 @pytest.fixture(scope="module")
@@ -47,6 +50,46 @@ def _resign_bundle(output: Path, changed_path: str) -> None:
     (output / "manifest.sha256").write_text(
         sha256_file(manifest_path) + "  manifest.json\n", encoding="ascii"
     )
+
+
+def test_exact_d4_reference_manifest_pair_is_optional_but_atomic(
+    tmp_path: Path,
+) -> None:
+    run = {"reference_manifest_hashes": {}}
+    failures: list[str] = []
+    _verify_reference_manifest_hashes(run, failures, root=tmp_path)
+    assert failures == []
+
+    run["reference_manifest_hashes"] = {
+        "reference/download_manifest.json": "stale"
+    }
+    failures = []
+    _verify_reference_manifest_hashes(run, failures, root=tmp_path)
+    assert any("must be empty" in failure for failure in failures)
+
+    reference = tmp_path / "reference"
+    reference.mkdir()
+    download = reference / "download_manifest.json"
+    download.write_text('{"kind":"download"}\n', encoding="utf-8")
+    run["reference_manifest_hashes"] = {}
+    failures = []
+    _verify_reference_manifest_hashes(run, failures, root=tmp_path)
+    assert any("pair is incomplete" in failure for failure in failures)
+
+    clone = reference / "repo_clone_manifest.json"
+    clone.write_text('{"kind":"repos"}\n', encoding="utf-8")
+    run["reference_manifest_hashes"] = {
+        "reference/download_manifest.json": sha256_file(download),
+        "reference/repo_clone_manifest.json": sha256_file(clone),
+    }
+    failures = []
+    _verify_reference_manifest_hashes(run, failures, root=tmp_path)
+    assert failures == []
+
+    run["reference_manifest_hashes"]["reference/download_manifest.json"] = "stale"
+    failures = []
+    _verify_reference_manifest_hashes(run, failures, root=tmp_path)
+    assert any("do not exactly match" in failure for failure in failures)
 
 
 def test_exact_d4_bundle_is_certified_strictly_compressed_and_recomputes(

@@ -4,7 +4,7 @@
 
 All public records are versioned, immutable value objects with canonical serialization. Probabilities, benchmark rewards, thresholds, and rate inputs use reduced rationals at the boundary.
 
-Core interfaces are `DomainProtocol`, `Enumerator`, `GroundConstrainedOracle`, `Partition`, `RAPMBuilder`, `NominalPlanner`, `ExactAuditor`, `PredicateGrammar`, `RefinementEngine`, `FallbackSolver`, `ArtifactWriter`, and `RunAccounting`. The safe-chain positive control additionally uses a versioned `ExactGroupQuotientProfile` and `ExactGroupQuotientBuilder`; these are known-symmetry adapters, not learned refinement interfaces.
+Core interfaces are `DomainProtocol`, `Enumerator`, `GroundConstrainedOracle`, `Partition`, `RAPMBuilder`, `NominalPlanner`, `ExactAuditor`, `PredicateGrammar`, `RefinementEngine`, `FallbackSolver`, `ArtifactWriter`, and `RunAccounting`. The safe-chain positive control additionally uses a versioned `ExactGroupQuotientProfile` and `ExactGroupQuotientBuilder`; these are known-symmetry adapters, not learned refinement interfaces. The separately keyed aliased safe-chain positive control uses the ordinary RAPM and refinement interfaces plus a versioned `AliasedCEGARProfile`; it never calls the exact-group builder.
 
 ## Normative decisions
 
@@ -42,6 +42,12 @@ ActionOrbit(action_orbit_id, canonical_action_ids,
             inverse_ground_action_ids_by_state)
 BuildCoverageSpec(mode, initial_support_sha256, covered_state_count,
                   reuse_outside_coverage_forbidden)
+AliasedCEGARProfile(profile_key, ground_structural_key, base_encoder_id,
+                    semantic_adapter_id, grammar_id, budget_profile,
+                    expected_iteration_contract)
+RefinementIteration(index, input_partition_id, proposal_id, audit_id,
+                    witness_ids, ranked_candidate_ids, accepted_split_id,
+                    output_partition_id, counters_before, counters_after)
 ```
 
 `rho0` is either one canonical state with unit mass or a finite exact distribution. It belongs to `QuerySpec`; a domain may register and return a canonical default distribution for fixture construction, but that default is not part of the structural key. The query validator accepts only registered rewards/goals, `H<=Hmax`, `delta in {0,1/20,1/10}`, and a deterministic proved `Rmax(q)` recorded as both `normalizer_value` and `normalizer_proof_id`. Canonical `H` and `2N/3` bounds are accepted only for their unchanged registered G2048 and LMB rewards.
@@ -80,6 +86,25 @@ The `ExactGroupQuotientProfile` and transforms are structural/build-owned. The b
 materialized reachable graph, orbit cells, plan, and certificate are query-owned;
 passing `rho0` or `H` to this materialization does not add them to the structural key or
 authorize reuse outside the build's declared coverage.
+
+`AliasedCEGARProfile` freezes a different build path over the same safe-chain ground
+structure and query. It requires a complete 192-state coverage inventory; a ten-cell
+base partition consisting of one failure cell plus one cell per active
+`(empty_count, nonzero-rank histogram)`; zero incremental rate for that fixed encoder;
+and `RefinementBudget.full_v0()`. The adapter exposes only deterministic singleton
+`canonical:first/last` realizations. Its grammar registry contains exactly the six
+action-frame features in `BENCHMARK_GRAMMAR.md`, each with threshold `1/2`; therefore
+the selected adjacency predicate costs four bits.
+
+The runner cannot pass target cell IDs to `RefinementEngine` as a fixture schedule.
+For each iteration, `ExactAuditor` emits every reachable counterexample, the grammar
+emits every separating candidate, and the joint V0 order selects one candidate using
+all frozen tie breakers. The golden order is histogram `(1,1,2)` and then `(1,2,2)`.
+After the second replan/audit returns `CERTIFIED`, the runner stops before fallback or
+the optional `(2,2,2)` tightening split.
+Construction/replay violations use the profile-validation status
+`ALIASED_CEGAR_INVARIANT_VIOLATION`, outside the refinement engine's eight results;
+ordinary audit, budget, refinement, and fallback endings do not gain a ninth status.
 
 ## Pseudocode / schema
 
@@ -134,6 +159,19 @@ RefinementEngine.step(cell,q):
   evaluate candidates once by child-partition signature
   accept first candidate in frozen ranking that passes acceptance rule/budgets
   otherwise return exact terminal status and mark cell
+
+run_aliased_safe_chain(profile,q):
+  require profile.ground_structural_key == g2048_select_safe_chain_2x2_v0
+  require complete_coverage_count == 192
+  partition, counters = profile.base_encoder(coverage), (leaves=10, rate=0)
+  while true:
+    proposal = NominalPlanner.solve(partition,q)
+    audit, witnesses = ExactAuditor.audit_and_extract_all(proposal,q)
+    if audit.certified: return CERTIFIED
+    evaluations = rank_jointly(all_separating_candidates(witnesses,profile.grammar))
+    accepted = RefinementEngine.accept_first_valid(evaluations,counters,full_v0_budget)
+    append RefinementIteration(...)
+    partition, counters = accepted.output_partition, accepted.counters_after
 ```
 
 For the safe-chain adapter, `transform_action` applies the same cell transform to both
@@ -162,6 +200,11 @@ cell key; it never loses which transformed endpoint is the survivor.
 - A policy graph is keyed by `(ground_state_id, remaining_horizon)` or
   `(cell_id, remaining_horizon)` and assigns exactly one action to each reachable key.
   Converging histories reuse the same key and cannot select different actions.
+- The aliased profile has the same ground structural/query/coverage identities as its
+  exact-baseline input but distinct profile, semantic-adapter, grammar, partition,
+  build, and run IDs.
+- Its iteration indices are contiguous, each input partition equals the previous
+  output, and counters advance exactly `10/0 -> 11/4 -> 12/8` in leaves/rate bits.
 
 ## Acceptance tests
 
@@ -193,6 +236,16 @@ cell key; it never loses which transformed endpoint is the survivor.
 - The safe-chain profile reports strict compression of both reachable state-time nodes
   and total legal state-action pairs using ground and abstract counts from the same
   complete graph.
+- The action-frame adapter returns the thirteen base G2048 atoms plus exactly six
+  registered geometry atoms, uses zero for all six when the frame is undefined, and
+  leaves boundary labels/concretizers byte-identical to the ordinary boundary adapter.
+- Aliased-profile integration tests prove the witness extractor, rather than a fixture
+  constant, selects the two golden cells; swapping action order, geometry truth,
+  candidate rank, or either partition link fails the semantic hash or verifier.
+- The final ordinary CEGAR result is `CERTIFIED` with reward `3/64`, exact lifted risk
+  `317/16000`, sound risk `397/20000`, regret zero, eight pointwise certificates, and
+  no fallback. It never carries `EXACT_D4_QUOTIENT_INVARIANT_VIOLATION` or
+  `known_group_exact_homomorphism`.
 
 ## Out of scope
 
@@ -200,8 +253,8 @@ Network services, mutable online model updates, learned adapters, asynchronous p
 
 ## Known failure modes
 
-Noncanonical state keys, uncoalesced duplicate successors, accidental float coercion, stale build caches, missing coverage fields in a build key, reuse outside transition closure, domain logic leaking into the generic planner, inconsistent state/action transforms, and stabilizer multiplicity bias.
+Noncanonical state keys, uncoalesced duplicate successors, accidental float coercion, stale build caches, missing coverage fields in a build key, reuse outside transition closure, domain logic leaking into the generic planner, inconsistent state/action transforms, stabilizer multiplicity bias, a hard-coded aliased split schedule, and overwriting a prior refinement iteration.
 
 ## Open risks
 
-The exact in-memory frontier/envelope representation may need optimization after Phase 0.5; any replacement must preserve these external records and proof dependencies. The registered `D4` adapter is a positive-control implementation and cannot be counted as evidence of automatic predicate or symmetry discovery.
+The exact in-memory frontier/envelope representation may need optimization after Phase 0.5; any replacement must preserve these external records and proof dependencies. The registered `D4` adapter is a positive-control implementation and cannot be counted as evidence of automatic predicate or symmetry discovery. Likewise, the aliased adapter proves selection of a registered atom, not invention of one.

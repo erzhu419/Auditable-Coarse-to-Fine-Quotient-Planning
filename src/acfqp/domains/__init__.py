@@ -30,12 +30,14 @@ from .matching_buffer import (
     LMBState,
     generate_solvable_lmb,
 )
+from .semantic import G2048ActionFrameGeometryAdapter
 
 __all__ = [
     "G2048Action",
     "G2048Kernel",
     "G2048SafeChainKernel",
     "G2048State",
+    "G2048ActionFrameGeometryAdapter",
     "D4Transform",
     "D4_ELEMENTS",
     "SAFE_CHAIN_BASE_STATE",

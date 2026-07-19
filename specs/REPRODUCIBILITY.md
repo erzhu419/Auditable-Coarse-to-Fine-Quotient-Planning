@@ -5,7 +5,7 @@
 - **Semantic reproducibility:** identical canonical states, kernel, partition, policy, exact bounds, statuses, and hashes for the same build/query inputs.
 - **Performance reproducibility:** comparable timing/expansion measurements on a declared platform; timing need not be bit-identical.
 - **Seed ledger:** ordered, immutable mapping from purpose to seed, never a single hidden global RNG stream.
-- **Reference archive:** downloaded literature/pages/repos plus verification and content hashes; it is provenance, not executable authority.
+- **Reference archive:** a local, Git-ignored collection of downloaded literature/pages/repos plus verification and content hashes; it is optional provenance input, not executable authority or part of the public checkout.
 
 ## Normative decisions
 
@@ -13,7 +13,7 @@ All exact semantics are deterministic under canonical inputs. Iteration uses can
 
 Canonical probabilities and rewards remain reduced rationals through enumeration and proof calculations. Derived floats may be used for display/timing but cannot turn an inequality failure into a pass. If a backend cannot preserve exactness, that run cannot be labelled `exact_sound`.
 
-Every run records code revision plus dirty diff digest, specification/ledger hashes, structural/query canonical JSON, dependency lock/runtime, OS/architecture, CPU and worker count, environment variables that affect determinism, and reference/download/repository manifest hashes. If the project is not in a VCS worktree, record `vcs=none` and a deterministic source-tree content hash instead. Source repos are pinned by commit; downloaded files are pinned by SHA-256 and retrieval URL/date/status.
+Every run records code revision plus dirty diff digest, specification/ledger hashes, structural/query canonical JSON, dependency lock/runtime, OS/architecture, CPU and worker count, and environment variables that affect determinism. If both optional local reference manifests exist, the run also records their exact hashes; if neither exists, it records an empty mapping. A half-present pair is invalid. If the project is not in a VCS worktree, record `vcs=none` and a deterministic source-tree content hash instead. In a restored local archive, source repos are pinned by commit and downloaded files by SHA-256 plus retrieval URL/date/status.
 
 One clean command must regenerate each Phase 0.5 bundle from its serialized fixture/query; a second command verifies schemas, cross-references, hashes, exact bounds, and Gate status without trusting cached summaries. Reuse caches are content-addressed and may be deleted without changing semantic output.
 
@@ -53,6 +53,28 @@ state-time graph, materialized orbit quotient, policy, and proof are keyed by th
 canonical safe-chain query hash; this separation remains visible in cache and
 semantic-hash records.
 
+The aliased safe-chain run has an independent profile ID and semantic hash while
+retaining the same ground structural and query identities. It records deterministic
+`not_used` entries for benchmark/fixture randomness rather than borrowing exact-`D4`
+seed fields. Clean rebuilds must reproduce the 192-state closure; ten-cell base
+partition; six action-frame feature definitions and `1/2` thresholds; boundary-action
+ordering and singleton concretizers; the complete candidate table; and two linked
+iterations with leaf/rate counters `10/0 -> 11/4 -> 12/8`.
+
+The runner obtains target cells only through exact witness extraction and canonical
+joint candidate ranking. Refinement iteration `001` must select histogram `(1,1,2)`
+and iteration `002` `(1,2,2)`, both with
+`first_survivor_adjacent_nonmerged_count|<=|1/2`. Stored timestamps and timings may
+differ, but input/output partition hashes, witness/candidate order, policies, exact
+rationals, certificate dependencies, and semantic result hash must match. Certification
+ends the run; no platform may emit the optional third split or a fallback.
+
+The clean public entry points are
+`acfqp-aliased-cegar --output artifacts/aliased_cegar` and
+`python3 scripts/verify_aliased_cegar.py artifacts/aliased_cegar`. The verifier rebuilds
+semantics from the stored structure/query/profile and must not import a cached result
+summary from the runner.
+
 ## Pseudocode / schema
 
 ```text
@@ -80,6 +102,15 @@ reproduce_exact_D4(bundle_request):
   canonicalize full orbits, stabilizers, and distinct inverse-action sets
   rebuild exact point quotient and singleton envelope
   compare J0, lifted policy, and semantic artifact hashes
+
+reproduce_aliased_cegar(bundle_request):
+  load aliased profile, boundary adapter, base encoder, grammar, and full-V0 budget
+  rebuild the 192-state all-action closure, 144 transitions, kernel hash, and ten-cell partition
+  for iteration in (0,1):
+    independently recompute proposal, audit, all witnesses, and all ranked candidates
+    charge every unique child-signature provisional evaluation against the budget
+    verify accepted split and linked output partition
+  independently lift the final policy and verify the sound certificate
 ```
 
 ## Invariants
@@ -97,6 +128,10 @@ reproduce_exact_D4(bundle_request):
   build ID while preserving structural ID.
 - Cache-warm execution validates the recorded coverage before reuse and cannot expand,
   shrink, or substitute it silently.
+- Exact-`D4` and aliased profile IDs, build semantics, artifact topologies, and result
+  labels remain disjoint even though their ground structure/query hashes match.
+- Reordering states, candidates, or worker completion cannot change either accepted
+  aliased split; a hard-coded target-cell input is forbidden provenance.
 
 ## Acceptance tests
 
@@ -106,8 +141,8 @@ reproduce_exact_D4(bundle_request):
   presented.
 - Single-worker and multi-worker runs have identical canonical outputs.
 - Cache-cold and cache-warm builds produce identical RAPM/query results while accounting remains correctly distinct.
-- Deliberate dependency, spec, query, seed, code, or downloaded-file mutation changes the appropriate hash and prevents false cache reuse.
-- Offline verification succeeds using the archived reference/provenance manifests and pinned repositories.
+- Deliberate dependency, spec, query, seed, code, or locally bound downloaded-file mutation changes the appropriate hash and prevents false cache reuse.
+- Offline verification succeeds in a public checkout with an empty reference-manifest mapping, and in a restored local archive only when both provenance manifests are present and match exactly; a half-present pair fails.
 - Mutating the safe-chain spawn law changes the structural/build ID; mutating only its
   `D4` initial distribution changes the query/run and coverage-specific build IDs
   without changing structural ID.
@@ -127,15 +162,22 @@ reproduce_exact_D4(bundle_request):
 - Replaying a bundle with one mutated group/action transform deterministically returns
   `EXACT_D4_QUOTIENT_INVARIANT_VIOLATION` rather than a platform-dependent split or
   fallback.
+- Two clean aliased-profile reruns reproduce all 192 state IDs, the same ten base-cell
+  membership sets, both `4+4` splits, ordered witnesses/candidates, final policy,
+  reward `3/64`, lifted failure `317/16000`, `U_F=397/20000`, and semantic hashes.
+- Permuting the input state order or candidate construction order does not change the
+  two accepted splits. Changing one action-frame atom, action order, threshold,
+  candidate score, or iteration link changes the appropriate identity and makes
+  replay verification fail.
 
 ## Out of scope
 
-Bit-identical wall time, reproducing third-party web availability, container publishing policy, deterministic GPU/neural execution, and reproducibility of an unregistered/learned symmetry-discovery procedure.
+Bit-identical wall time, reproducing third-party web availability, container publishing policy, deterministic GPU/neural execution, reproducibility of an unregistered/learned symmetry-discovery procedure, and claiming that the deterministic aliased profile invented its preregistered feature.
 
 ## Known failure modes
 
-Mutable dependency resolution, locale/timezone-dependent serialization, unordered sets, hidden RNG consumption, unpinned repository submodules, caches keyed without the complete coverage descriptor, hashing a noncanonical initial declaration, unstable group-element naming/order, and assigning weights before action-image deduplication.
+Mutable dependency resolution, locale/timezone-dependent serialization, unordered sets, hidden RNG consumption, unpinned repository submodules, caches keyed without the complete coverage descriptor, hashing a noncanonical initial declaration, unstable group-element naming/order, assigning weights before action-image deduplication, overwriting iteration zero with iteration one, and serializing only the accepted aliased candidate while hiding its ranked competitors.
 
 ## Open risks
 
-Before performance Gates, freeze a reference hardware protocol and repetition/statistical summary policy. Before public release, add licensing checks for redistributed papers and repositories. A future aliased safe-chain CEGAR profile must register independent seeds, partition/grammar IDs, and semantic hashes; it may not inherit the exact-`D4` profile identity.
+Before performance Gates, freeze a reference hardware protocol and repetition/statistical summary policy. Before public release, add licensing checks for redistributed papers and repositories. V0-026 now freezes the aliased safe-chain profile's deterministic seed ledger, partition/grammar IDs, and semantic-hash separation; larger or stochastic refinement studies still require their own preregistration.

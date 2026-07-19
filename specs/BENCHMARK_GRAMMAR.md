@@ -89,6 +89,46 @@ build identity. Structural fixture serialization contains no `initial_law`; chan
 registered query distribution preserves the structural identity but produces a new
 query and coverage descriptor.
 
+The separately registered refinement profile
+`g2048_select_safe_chain_aliased_partition_v0` reuses the safe-chain ground
+`structural_key`, canonical query, and full transition closure; the name is a
+`profile_key`, not a second physical environment. Its authoritative closure contains
+exactly 192 states. The fixed base partition has ten cells: all absorbing failure
+states share one terminal cell, while each active state is keyed by the pair
+`(empty_count, sorted multiset of nonzero ranks)`. There are nine such active
+histograms. Each happens to be exactly one `D4` state orbit, so this base partition is
+not evidence of a previously unknown state quotient.
+
+This profile deliberately uses the order-dependent boundary vocabulary
+`canonical:first` and `canonical:last`, meaning the first and last distinct actions in
+the kernel's authoritative order. Their concretizers are deterministic singleton
+distributions; when only one primitive action exists the labels are deduplicated. This
+adapter is intentionally not `D4`-equivariant and never inherits the exact baseline's
+stabilizer-orbit actions.
+
+Its preregistered action-frame geometry grammar contains exactly six total current-state
+features:
+
+```text
+first_survivor_adjacent_nonmerged_count
+first_pair_horizontal
+first_survivor_row
+first_survivor_column
+nonmerged_row
+nonmerged_column
+```
+
+`FIRST` fixes the action frame. If its merge pair leaves exactly one occupied cell
+outside the pair, rows and columns are zero-based row-major coordinates,
+`first_pair_horizontal` is the pair-orientation indicator, and
+`first_survivor_adjacent_nonmerged_count` is one iff the `FIRST` survivor and that
+nonmerged cell are orthogonally adjacent. All six features are zero for terminal
+states, states without `FIRST`, or states without exactly one occupied nonmerged cell.
+They inspect neither outcomes nor spawn probabilities, policies, values, rollouts, or
+J0. The single registered threshold per feature is `1/2`; the target predicate is
+`first_survivor_adjacent_nonmerged_count|<=|1/2`. With six feature choices and one
+threshold its rate is `1+ceil(log2 6)=4` bits per local application.
+
 ### LMB
 
 Initial buffer is empty; arity is 3; `B=N/3`; `H=N`. A step removes one eligible tile, inserts its type, immediately removes a triple and awards one match reward when present, then checks overflow (`occupancy>K`) before checking board-clear success. Clear success adds `B`. Overflow enters absorbing failure.
@@ -143,6 +183,13 @@ candidate_predicates(training_states):
   deduplicated inverse concretizer action is legal with exact uniform mass.
 - The exact quotient strictly reduces both complete reachable state-time count and total
   legal state-action-pair count before a “strict compression” claim is accepted.
+- The aliased profile reconstructs the 192-state closure and ten-cell base partition,
+  verifies that each active histogram cell is one complete `D4` orbit, but uses only
+  the registered boundary labels and singleton concretizers during CEGAR.
+- Its exact witness extractor and full candidate ranking select
+  `first_survivor_adjacent_nonmerged_count|<=|1/2` first in active histogram
+  `(1,1,2)` and then in `(1,2,2)`; both applications split eight states into `4+4`
+  and cost four bits.
 - LMB generation is deterministic by seed and replay-verifies its evidence.
 - Predicate IDs collapse mathematically equal rational thresholds.
 - Train/validation/test/OOD identities are disjoint and hash-stable.
@@ -153,7 +200,7 @@ Slide-2048, hidden LMB layouts, visual inputs, arbitrary logical split formulas,
 
 ## Known failure modes
 
-Rejection sampling or LMB backtracking may be slow for hostile parameters; generation must terminate with an explicit failure, not a malformed instance. Some coarse cells have no common action. An incomplete support closure or cache reuse under a different coverage descriptor is unsound. A non-equivariant survivor transform, unstable canonicalizer tie order, or averaging over stabilizer elements without deduplicating actions destroys the exact `D4` baseline.
+Rejection sampling or LMB backtracking may be slow for hostile parameters; generation must terminate with an explicit failure, not a malformed instance. Some coarse cells have no common action. An incomplete support closure or cache reuse under a different coverage descriptor is unsound. A non-equivariant survivor transform, unstable canonicalizer tie order, or averaging over stabilizer elements without deduplicating actions destroys the exact `D4` baseline. Conversely, silently replacing the aliased profile's deliberately non-equivariant boundary labels with the exact `D4` actions removes the intended counterexample and changes the profile identity.
 
 ## Open risks
 
@@ -161,8 +208,9 @@ The canonical `2x2` initial distribution and post-spawn failure rule make every 
 
 `V0-RISK-002` is resolved by the exact `D4` profile in V0-024. Its remaining risk is
 implementation conformance: a successful certificate is not automatic until all group,
-action, representative-independence, zero-width, and J0-preservation tests pass. A
-future aliased safe-chain CEGAR fixture must use a separate key and cannot modify this
-known-symmetry baseline.
+action, representative-independence, zero-width, and J0-preservation tests pass. The
+formerly future aliased safe-chain CEGAR fixture is now frozen by V0-026 as a separate
+profile over the same ground structure; it cannot modify or borrow the result label of
+the known-symmetry baseline.
 
 Exact domain-wide definitions of unlock depth and relaxed conversion distance must also be versioned with their adapter before Phase 3 grammar comparisons; Phase 0.5 may use only already-total registered features.
