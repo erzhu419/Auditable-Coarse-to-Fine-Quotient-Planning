@@ -129,11 +129,66 @@ J0. The single registered threshold per feature is `1/2`; the target predicate i
 `first_survivor_adjacent_nonmerged_count|<=|1/2`. With six feature choices and one
 threshold its rate is `1+ceil(log2 6)=4` bits per local application.
 
+The Phase 3A profile over the same safe-chain kernel uses a different, `D4`-equivariant
+semantic vocabulary. A legal survivor is `TOWARD` iff it is orthogonally adjacent to
+at least one occupied cell outside the selected merge pair, and `AWAY` otherwise.
+Available labels are deduplicated, and `kappa_x` is uniform over the distinct legal
+actions carrying a label. This adapter is fixed from current-state incidence and
+occupancy; it reads no transition outcome, value, policy, or held-out query.
+
+G2048 Phase 3A training contains two registered queries. The first,
+`g2048.rank1_uniform.h2`, is the canonical safe-chain `D4`-uniform distribution with
+`H=2`. The second, `g2048.strict_cross_d4_bridge.h1`, has `H=1` and places mass
+`3/25` on each of the eight `D4` images of `(1,1,2,0)`, `1/200` on each of the four
+images of `(2,2,2,0)`, and `1/400` on each of the eight images of `(2,2,4,0)`.
+Both use canonical merge reward and `delta=1/20`; the bridge uses `Rmax=1`. Their
+20-state support-union closure contains 192 states. The train-oracle atom registry
+contains exactly `selected_semantic_action@delta` and `maximum_normalized_reward` at
+each of `h=1,2`. The cardinality-first exact-audit selector must choose the two `h=1`
+atoms and produce eight cells. These atoms are oracle signatures, not members of the
+human predicate grammar.
+
+The bridge's explicit witnesses `(0,2,2,2)` and `(0,2,4,2)` must be in one oracle
+cell but different `D4` state orbits; both must occur in the bridge policy graph and
+select `AWAY`. Its exact row is reward `13/400`, failure `199/5000`, and sound
+`U_F=1/25`. This query belongs to construction/training, not held-out reuse.
+
+Only after that partition and RAPM are frozen, evaluate:
+
+```text
+g2048.rank2_uniform.h2 : uniform D4 orbit of (2,2,3,0), H=2
+g2048.mixed_points.h2 : 1/2 (1,1,2,0) + 1/2 (2,2,3,0), H=2
+g2048.rank1_point.h2  : point mass at (1,1,2,0), H=2
+g2048.rank1_uniform.h1: training distribution with H=1
+```
+
+All retain the registered canonical reward and `delta=1/20`; their contents cannot
+generate atoms, thresholds, labels, coverage, or a partition.
+
 ### LMB
 
 Initial buffer is empty; arity is 3; `B=N/3`; `H=N`. A step removes one eligible tile, inserts its type, immediately removes a triple and awards one match reward when present, then checks overflow (`occupancy>K`) before checking board-clear success. Clear success adds `B`. Overflow enters absorbing failure.
 
 Canonical tiny parameters are `N in {6,9,12}`, `T in {2,3,4}`, `K in {3,4,5}`, `D in {1,2,3}`. Solvable layouts are reverse-constructed: create type counts divisible by three; find a complete clearing order by randomized backtracking while preserving capacity and per-type completion; assign at most `D` layers; give noninitial tiles one or two blockers that occur earlier in the order and are shallower; reject cycles, excess depth, or invalidated order; replay the authoritative simulator. Store the order only as generation evidence. Non-guaranteed layouts are `STRESS_ONLY`.
+
+Phase 3A registers `lmb_generated_n6_t2_k3_d2_seed0_v0` with tile types
+`(0,1,0,1,1,0)`, blockers `(empty,{0},{0},empty,empty,{0})`, capacity 3, and the
+ordinary arity-three/clear-bonus rules. Its training support is the nine
+`(removed_mask,buffer)` pairs in V0-027, uniformly weighted; the canonical training
+query has `H=3`, `delta=1/20`, and `Rmax=4`. The support closure has 25 states.
+
+LMB's Phase 3A builder uses no predicate grammar and no query values: it minimizes the
+complete exact controlled model by reward-feature/failure/termination/successor-cell
+action signatures. Registered held-out evaluations are match-only `H=3,delta=0,Rmax=2`
+and canonical `H=2,delta=0,Rmax=4`, on the same nine-state support. They are evaluation
+inputs only. The match-only row uses proof ID
+`lmb.match_only.matches_le_n_over_3.v1`; because its coefficients differ from the
+canonical benchmark, it may not reuse the canonical `2N/3` proof ID.
+
+Accordingly, reuse is claimed only across the registered two-domain held-out suite:
+G2048 supplies initial-support/distribution and horizon variation, while LMB supplies
+reward-basis, horizon, and risk variation. The grammar contract does not imply that
+either domain was tested on every variation axis.
 
 ### Predicate grammar
 
@@ -168,6 +223,10 @@ candidate_predicates(training_states):
 - `M_fail`/robust planning margin is evaluation-only, never a human-grammar predicate.
 - Every Phase 0.5 RAPM state set is the full all-action transition closure of the
   explicit query support, and reuse outside that recorded closure is forbidden.
+- Phase 3A's relative-survivor labels commute with all `D4` transforms, and its LMB
+  behavioural labels are determined solely by the frozen exact kernel/refinement.
+- Held-out query fields never enter either Phase 3A feature/action registry or
+  construction signature.
 
 ## Acceptance tests
 
@@ -193,14 +252,24 @@ candidate_predicates(training_states):
 - LMB generation is deterministic by seed and replay-verifies its evidence.
 - Predicate IDs collapse mathematically equal rational thresholds.
 - Train/validation/test/OOD identities are disjoint and hash-stable.
+- The Phase 3A G2048 build reproduces the 20-state training-support union, total
+  `192 -> 8`, active `68 -> 7`, the two selected `h=1` oracle atoms, physical
+  state-action orbits/abstract entries `18 -> 14`, and the bridge's two non-`D4`
+  witnesses jointly policy-reachable in one cell with action `AWAY` and exact row
+  `(reward,failure,U_F)=(13/400,199/5000,1/25)`.
+- The registered LMB fixture reproduces its serialized tile/blocker layout, 25-state
+  closure, behavioural trace `3 -> 5 -> 5`, five total/three active cells, active
+  compression `18/3`, physical state-action orbits/abstract entries `16 -> 4`, and the
+  same training graph reaches members from multiple physical orbits inside every active
+  cell, including the explicit nonautomorphic pair `(11,(1,2))`, `(13,(2,1))`.
 
 ## Out of scope
 
-Slide-2048, hidden LMB layouts, visual inputs, arbitrary logical split formulas, oracle-derived `M_fail` predicates, exposing LMB solution evidence to the planner, and treating the registered `D4` group as an automatically discovered abstraction.
+Slide-2048, hidden LMB layouts, visual inputs, arbitrary logical split formulas, oracle-derived `M_fail` predicates, exposing LMB solution evidence to the planner, treating the registered `D4` group as an automatically discovered abstraction, or treating Phase 3A's oracle atoms/exact behavioural signatures as invented human predicates.
 
 ## Known failure modes
 
-Rejection sampling or LMB backtracking may be slow for hostile parameters; generation must terminate with an explicit failure, not a malformed instance. Some coarse cells have no common action. An incomplete support closure or cache reuse under a different coverage descriptor is unsound. A non-equivariant survivor transform, unstable canonicalizer tie order, or averaging over stabilizer elements without deduplicating actions destroys the exact `D4` baseline. Conversely, silently replacing the aliased profile's deliberately non-equivariant boundary labels with the exact `D4` actions removes the intended counterexample and changes the profile identity.
+Rejection sampling or LMB backtracking may be slow for hostile parameters; generation must terminate with an explicit failure, not a malformed instance. Some coarse cells have no common action. An incomplete support closure or cache reuse under a different coverage descriptor is unsound. A non-equivariant survivor transform, unstable canonicalizer tie order, or averaging over stabilizer elements without deduplicating actions destroys the exact `D4` baseline. Conversely, silently replacing the aliased profile's deliberately non-equivariant boundary labels with the exact `D4` actions removes the intended counterexample and changes the profile identity. Phase 3A additionally fails if a held-out query influences its atom subset or if cross-orbit evidence comes only from the collapsed terminal cell.
 
 ## Open risks
 
@@ -214,3 +283,7 @@ profile over the same ground structure; it cannot modify or borrow the result la
 the known-symmetry baseline.
 
 Exact domain-wide definitions of unlock depth and relaxed conversion distance must also be versioned with their adapter before Phase 3 grammar comparisons; Phase 0.5 may use only already-total registered features.
+
+V0-027 now supplies a cross-automorphism exact-model/oracle positive control in both
+domains. It does not settle whether a human or learned grammar can recover comparable
+cells without oracle values or complete model minimization.

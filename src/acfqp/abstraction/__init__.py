@@ -1,6 +1,15 @@
 """Hard partitions, nominal quotients, and exact behavioural envelopes."""
 
 from .partition import Partition
+from .behavioral import (
+    BehavioralActionAssignment,
+    BehavioralActionSignature,
+    BehavioralCellId,
+    BehavioralRefinementStep,
+    BehavioralSemanticAdapter,
+    ExactBehavioralQuotient,
+    build_exact_behavioral_quotient,
+)
 from .quotient import (
     ExactRealizationEnvelope,
     GroundRealization,
@@ -16,6 +25,12 @@ from .quotient import (
 )
 
 __all__ = [
+    "BehavioralActionAssignment",
+    "BehavioralActionSignature",
+    "BehavioralCellId",
+    "BehavioralRefinementStep",
+    "BehavioralSemanticAdapter",
+    "ExactBehavioralQuotient",
     "ExactRealizationEnvelope",
     "GroundRealization",
     "NominalActionModel",
@@ -25,6 +40,7 @@ __all__ = [
     "RAPM",
     "ReusableAbstractPlanningModel",
     "build_exact_realization_envelope",
+    "build_exact_behavioral_quotient",
     "build_nominal_quotient",
     "build_quotient_models",
     "identity_action_label",

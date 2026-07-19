@@ -26,6 +26,18 @@ the least set containing `S0` and every positive-probability successor of every 
 action at every member. `CovID` is the canonical coverage descriptor committed by the
 build identity.
 
+For a frozen training suite `Q_train`, Phase 3A instead defines
+
+```text
+S_train = union_{q in Q_train} supp(rho0(q)),
+Omega_train = Cl_P(S_train).
+```
+
+`SuiteCovID` hashes the canonical **set** `S_train` (not query order or probability
+masses), its count, `|Omega_train|`, the exact state cap, the support-subset
+admissibility rule, and the no-outside-reuse flag. A held-out query is admissible only
+if its positive support is a subset of `Omega_train`.
+
 ## Normative decisions
 
 The nominal model averages reachable ground realizations represented by a cell under the frozen concretizer. For stochastic `kappa`, first take each state's `kappa`-weighted ground outcome, then average states uniformly. It proposes and ranks policies only.
@@ -104,6 +116,77 @@ leaf/rate counters `10/0 -> 11/4 -> 12/8`. Certification stops after the second 
 the residual interval at `(2,2,2)` is permitted because its propagated sound risk
 still satisfies the query.
 
+For the Phase 3A G2048 construction, let `O(x,h)` be the unrestricted exact ground-
+oracle record under the frozen canonical training reward/risk profile shared by both
+training queries. It contains the
+deterministic selected ground and relative-survivor semantic actions at `delta`, the
+complete reward/risk frontier, maximum reward, and minimum failure. The four registered
+atoms are
+
+```text
+(h, selected_semantic_action_at_delta),
+(h, maximum_reward under the registered canonical normalized reward basis),
+  h in {1,2}.
+```
+
+For an atom subset `S`, an active-state signature is the ordered pair of its available
+relative-survivor label set and the values of atoms in `S`; terminal kind remains a
+separate cell. Enumerate atom subsets first by cardinality and then canonical atom ID,
+build the ordinary nominal model plus exact realization envelope, and retain only
+partitions that certify every training query, compress active states/cells by at least
+`5x` independently of terminal aggregation, and have a
+cell in which one lifted training policy graph reaches states from at least two complete
+`D4` orbits. The frozen minimizer selects the two `h=1` atoms and produces eight cells over
+192 states. This interval RAPM need not be a homomorphism and must not be described as
+one.
+
+Here `Q_train` contains the canonical rank-1 `D4`-uniform `H=2` query and the strict
+cross-`D4` `H=1` bridge. The bridge assigns per-state masses `3/25`, `1/200`, and
+`1/400` to the complete orbits of `(1,1,2,0)`, `(2,2,2,0)`, and `(2,2,4,0)`,
+respectively. Its two witnesses `(0,2,2,2)` and `(0,2,4,2)` must be jointly present
+in the lifted decision graph, share one selected cell and semantic action `AWAY`, and
+belong to different `D4` state orbits.
+
+For Phase 3A LMB, define an action's signature relative to partition `Pi_i` as
+
+```text
+b_i(x,a) = (E[reward-feature vector], P(entered failure), P(terminated),
+            unconditional successor-cell subdistribution on continuation).
+```
+
+Start with the three status cells active/failure/success. Refine an active state by its
+old cell and the **set** `{b_i(x,a):a in A(x)}` until block membership stabilizes.
+Ground actions with an identical final signature are one semantic action; `kappa` is
+uniform over the distinct actions carrying that signature. On the registered LMB
+closure this exact fixed point has trace `3 -> 5 -> 5`; its representative-induced
+tuples are equal, so nominal and envelope entries are singleton. This is exact-model
+behavioural minimization, not a learned or predicate-readable construction.
+
+For a registered physical automorphism group `G_D`, a Phase 3A active cell is
+**cross-automorphism** iff
+
+```text
+|{G_D.x : x in C_z}| > 1.
+```
+
+Let `R_pi(q)` be the set of active ground states occurring as decisions in the lifted
+policy graph for one registered training query `q`. The stronger **jointly reached
+cross-automorphism** condition is
+
+```text
+exists q in Q_train, z:
+  |{G_D.x : x in C_z intersect R_pi(q)}| > 1.
+```
+
+Phase 3A nontriviality requires this stronger condition. It is insufficient for a cell
+merely to contain multiple orbits while the policy reaches one state/orbit, or for two
+different training-policy graphs to reach different orbit members separately.
+
+The reuse quantifier ranges only over the registered union of domain-specific held-out
+rows: G2048 varies initial support/distribution and horizon at fixed reward/risk, while
+LMB varies reward basis, horizon, and risk at fixed initial support. It does not assert
+that either domain individually covers every change axis or every admissible query.
+
 For canonical reward definitions, `normalizer=H` in G2048 and `normalizer=2N/3` in LMB. A query changing any reward coefficient or reward/bonus/goal semantics supplies and validates its own deterministic total-return bound; the two canonical formulas have no default validity outside their registered reward definitions.
 
 For a query-normalized reward, define:
@@ -164,6 +247,21 @@ build_aliased_safe_chain_profile(q):
     split = rank_all_witness_predicate_candidates(witnesses,grammar)
     partition = accept(split)
 
+construct_phase3a_suite(Q_train):
+  Omega_train, SuiteCovID = closure(union_support(Q_train))
+  if domain == G2048:
+    oracle_table = unrestricted_J0_table(Omega_train, train_profile, h=1..2)
+    partition = smallest_exact_audited_oracle_atom_partition(oracle_table,Q_train)
+  if domain == LMB:
+    partition = exact_behavioural_fixed_point(kernel,Omega_train)
+  return freeze(partition, semantic_adapter, RAPM, construction_hash)
+
+evaluate_phase3a_suite(frozen, Q_train, Q_heldout):
+  assert frozen.construction_dependencies exclude Q_heldout
+  for q in Q_train + Q_heldout:
+    require supp(q.rho0) subseteq frozen.Omega_train
+    evaluate J0, Jkappa, nominal, exact audit, and ground lift on frozen.RAPM
+
 audit(pi, q):
   backward_induct over every reachable (z,h)
   return regret_bound, failure_upper_bound, proof_dependencies
@@ -195,6 +293,15 @@ audit(pi, q):
   four-bit local predicates change refinement rate, for a final total of eight bits.
 - Certification is terminal: the main profile cannot split `(2,2,2)` after the second
   split has certified the query.
+- A Phase 3A suite constructor depends only on the exact kernel, canonical training
+  support set, and the registered training construction profile; held-out query values
+  are not in its dependency graph.
+- The G2048 oracle partition is allowed nonzero realization width but must satisfy the
+  exact full-plan audit on every registered row; the LMB behavioural quotient has
+  singleton realization sets by construction.
+- Cross-automorphism evidence counts, separately for each lifted training policy graph,
+  the physical state orbits actually reached inside each active cell; a passing cell
+  contains at least two such orbits independently of terminal-cell aggregation.
 
 ## Acceptance tests
 
@@ -225,17 +332,34 @@ audit(pi, q):
 - Its final lifted policy has exact failure `317/16000`, versus J0 `99/5000`, while
   envelope conservatism is `397/20000-317/16000=3/80000`; all eight point queries
   certify and no fallback occurs.
+- Phase 3A G2048 has cell-size multiset `{124,16,12,8,8,8,8,8}`, active state/cell
+  counts `68 -> 7`, active orbit/cell counts `9 -> 7`, physical state-action orbit/
+  abstract-entry counts `18 -> 14`, ground-pair/entry counts `144 -> 14`, and at least
+  one active cell with two orbit members jointly reached by one training graph. The
+  explicit bridge witnesses are jointly reached and
+  reproduce reward `13/400`, failure `199/5000`, and `U_F=1/25`. All six registered
+  query rows have the V0-027 exact rational values, zero reward and failure gaps, and
+  zero regret upper bound.
+- Phase 3A LMB has 25 states, cell-size multiset `{9,6,5,4,1}`, total physical-orbit/
+  cell counts `13 -> 5`, active state/cell counts `18 -> 3`, active orbit/cell counts
+  `10 -> 3`, state-action orbit/abstract-entry counts `16 -> 4`, and in all three active
+  cells the same training graph reaches members of multiple physical orbits. Its three registered query rows have the V0-027
+  exact rational values and zero reward/failure gaps.
+- Mutating any held-out query while retaining its support within coverage leaves
+  `SuiteCovID`, partition signature, semantic adapter, and RAPM ID unchanged; passing
+  that mutation into either construction function is a leakage failure.
 
 ## Out of scope
 
 Learned confidence sets, belief states, continuous spaces/actions, randomized ground or
 abstract selectors, query-time mixtures/convexification of deterministic policies,
-macro-actions, and robust first-hit reduction.
+macro-actions, robust first-hit reduction, and interpreting exact-model behavioural or
+ground-oracle signatures as oracle-free discovery of an unknown quotient.
 
 ## Known failure modes
 
-Loose cellwise suprema can make `U_all` conservative; a valid policy may fail certification. Semantic action intersections can be empty. Exact envelope materialization can be large. Omitting coverage from the build identity or allowing a proof dependency outside `Omega_cov` is unsound. In the exact `D4` profile, any nonzero width signals an implementation or automorphism violation rather than ordinary abstraction conservatism. In the aliased profile, the final `3/80000` risk conservatism is expected sound slack, not an exact-group invariant failure.
+Loose cellwise suprema can make `U_all` conservative; a valid policy may fail certification. Semantic action intersections can be empty. Exact envelope materialization can be large. Omitting coverage from the build identity or allowing a proof dependency outside `Omega_cov` is unsound. In the exact `D4` profile, any nonzero width signals an implementation or automorphism violation rather than ordinary abstraction conservatism. In the aliased profile, the final `3/80000` risk conservatism is expected sound slack, not an exact-group invariant failure. In Phase 3A, held-out leakage or choosing a mixed cell that no registered training policy reaches defeats the intended nontriviality control.
 
 ## Open risks
 
-Tighter coupled envelope representations may improve coverage later, but must preserve containment and the unrestricted-action regret theorem. V0-026 supplies a deliberately aliased, preregistered-grammar positive control, but still does not test automatic predicate invention or recovery of the exact `D4` quotient.
+Tighter coupled envelope representations may improve coverage later, but must preserve containment and the unrestricted-action regret theorem. V0-027 proves an exact-model/oracle cross-automorphism construction slice, but automatic predicate invention, oracle-free quotient recovery, and the statistical Phase 3 aggregate remain open.

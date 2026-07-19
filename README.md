@@ -39,6 +39,8 @@ acfqp-exact-d4 --output artifacts/exact_d4
 python3 scripts/verify_d4_baseline.py artifacts/exact_d4
 acfqp-aliased-cegar --output artifacts/aliased_cegar
 python3 scripts/verify_aliased_cegar.py artifacts/aliased_cegar
+acfqp-phase3a --output artifacts/phase3a
+python3 scripts/verify_phase3a.py artifacts/phase3a
 python3 third_party/laplace_smdp_940598d/experiments/run_gridworld_bellman_kron.py \
   --out-dir artifacts/legacy_gate_actual
 python3 scripts/check_legacy_gate.py --actual-dir artifacts/legacy_gate_actual
@@ -69,6 +71,36 @@ baseline and is not evidence of automatic predicate or symmetry discovery. Its r
 and independent verifier use their own profile key and multi-iteration artifact bundle;
 the two commands shown above generate and independently recompute that bundle.
 
+Ledger `V0-027` freezes the next, deliberately narrow construction slice under profile
+`phase3a_true_state_alias_oracle_control_v0`. Unlike V0-026, its accepted cells contain
+active states from more than one complete known-automorphism orbit. The train-only
+G2048 build uses the canonical safe-chain query plus a strict `H=1` bridge query whose
+states `(0,2,2,2)` and `(0,2,4,2)` are non-`D4`, jointly policy-reachable members of
+one oracle cell. Its 20-state training-support union closes to 192 states and the
+oracle-signature build compresses that closure to 8 cells (`24x`). The query-independent
+exact LMB behavioural minimizer compresses 25 states to 5 cells (`5x`). The acceptance
+threshold is checked separately on active states/cells
+(`68/7` and `18/3`), so terminal aggregation cannot manufacture the pass. One frozen
+RAPM per domain is then evaluated on held-out queries whose support is already covered;
+held-out query contents cannot select the partition, and every registered row must
+preserve both exact reward and exact failure.
+
+The nontriviality gate is also joint: within one active cell, the same lifted training
+policy graph must actually reach states from at least two different registered physical
+automorphism orbits. Cell membership alone, or reaching one orbit member per query,
+does not pass.
+
+Reuse is claimed only across the registered two-domain held-out suite: G2048 varies
+initial support/distribution and horizon, while LMB varies reward basis, horizon, and
+risk. Neither domain is claimed to cover all four variation types by itself.
+
+This closes the immediate “the cell is only a known symmetry orbit” weakness, but it is
+still an exact-model/oracle positive control. It does not claim human-readable
+predicate invention, oracle-free discovery of an unknown quotient, a shared
+cross-domain coordinate system, or the full Phase 3 `60/20/40` aggregate Gate. A
+successful bundle therefore reports `PHASE3A_SLICE_PASS` together with
+`PHASE3_AGGREGATE_NOT_RUN`, never a full Phase 3 pass.
+
 ## Scope
 
 Phase 0.5 contains no neural encoder, learned model, MCTS, option, first-hit
@@ -89,4 +121,5 @@ predicate discovery.
 The query-owned initial-support implementation and coverage-specific build identity are
 frozen by ledger `V0-025`; resolved `V0-RISK-003` is no longer an open construction
 blocker. The executable aliased refinement contract and its narrow claim boundary are
-frozen separately by ledger `V0-026`.
+frozen separately by ledger `V0-026`. The cross-automorphism, train/held-out Phase 3A
+construction slice and its still-oracle-bound claim boundary are frozen by `V0-027`.

@@ -75,6 +75,37 @@ The clean public entry points are
 semantics from the stored structure/query/profile and must not import a cached result
 summary from the runner.
 
+The Phase 3A entry points are `acfqp-phase3a --output artifacts/phase3a` and the
+independent replay `python3 scripts/verify_phase3a.py artifacts/phase3a`. The verifier
+reconstructs both authoritative closures, constructions, automorphism audits, planners,
+lifts, exact rows, claim boundary, and hashes rather than trusting runner summaries.
+Its seed ledger freezes LMB generation seed 0, records G2048 as deterministic/no-seed,
+and freezes the
+benchmark/query train/held-out split before construction. It builds each
+`SuiteBuildCoverage` from the canonical set union of training supports only; this hash
+is invariant to training-query order and probability masses. The complete closure,
+partition, semantic adapter, RAPM, construction trace, and their hashes are frozen
+before held-out evaluation.
+
+G2048 reruns reproduce the 20-state training-support union, 192-state closure, selected
+two `h=1` atoms, eight total and seven active cells, active compression `68/7`, active
+`D4` orbit count nine, 18 complete `D4` state-action orbits, 14 abstract entries, and
+all six exact evaluation rows. The strict bridge pair `(0,2,2,2)`/`(0,2,4,2)` is
+jointly policy-reachable in one cell, is not one `D4` orbit, selects `AWAY`, and has
+exact `(reward,failure,U_F)=(13/400,199/5000,1/25)`. LMB
+reruns reproduce the serialized seed-0 layout, nine-state training support, 25-state
+closure, trace `3 -> 5 -> 5`, five total/three active cells, active compression `18/3`,
+four physical automorphisms, 13 total/ten active state orbits, 16 state-action orbits,
+four abstract entries, same-policy joint reachability of multiple physical orbits in
+each active cell, and all three exact evaluation rows.
+
+Changing or reordering held-out records changes the query/evaluation portion of the
+semantic result as appropriate but cannot change either construction subhash. The
+registered cross-query reproducibility claim is only across the two-domain held-out
+suite: G2048 tests initial-support/distribution and horizon changes; LMB tests reward-
+basis, horizon, and risk changes. Every replay requires exact reward and exact failure
+gaps zero and retains `PHASE3_AGGREGATE_NOT_RUN`.
+
 ## Pseudocode / schema
 
 ```text
@@ -111,6 +142,15 @@ reproduce_aliased_cegar(bundle_request):
     charge every unique child-signature provisional evaluation against the budget
     verify accepted split and linked output partition
   independently lift the final policy and verify the sound certificate
+
+reproduce_phase3a(bundle_request):
+  load contract-0.6 benchmark/query/split/seed registries
+  construct suite coverage from training supports only
+  rebuild G2048 oracle table/atom selection and LMB behavioural fixed point
+  freeze and compare construction hashes before reading held-out evaluations
+  validate held-out support; recompute J0, Jkappa, J2 audit, and ground lift
+  recompute active compression and per-policy jointly reached physical-orbit mixing
+  require exact reward/failure gaps zero and aggregate status NOT_RUN
 ```
 
 ## Invariants
@@ -132,6 +172,11 @@ reproduce_aliased_cegar(bundle_request):
   labels remain disjoint even though their ground structure/query hashes match.
 - Reordering states, candidates, or worker completion cannot change either accepted
   aliased split; a hard-coded target-cell input is forbidden provenance.
+- Phase 3A training-query order/masses cannot change the canonical declared support-set
+  hash when the support set is unchanged; changing the support set must change it.
+- Held-out records never enter a Phase 3A construction dependency. Active-state
+  compression and cross-orbit reachability are deterministic semantic fields, while
+  terminal aggregation cannot supply the threshold witness.
 
 ## Acceptance tests
 
@@ -169,15 +214,25 @@ reproduce_aliased_cegar(bundle_request):
   two accepted splits. Changing one action-frame atom, action order, threshold,
   candidate score, or iteration link changes the appropriate identity and makes
   replay verification fail.
+- Two clean Phase 3A reruns have identical coverage, construction, RAPM, policy,
+  evaluation, symmetry-audit, report, and semantic hashes, plus statuses
+  `PHASE3A_SLICE_PASS/PHASE3_AGGREGATE_NOT_RUN`.
+- Randomly permuting training queries/support serialization leaves suite coverage and
+  construction hashes invariant. Mutating a held-out reward/horizon/risk/distribution
+  leaves construction hashes unchanged but changes its query/evaluation hash; adding
+  uncovered support fails validation.
+- Phase 3A replay verifies total and active count goldens separately, physical state-
+  action orbit reductions `18 -> 14` and `16 -> 4`, same-policy jointly reached mixed
+  active cells, every V0-027 rational, and zero exact reward/failure gaps.
 
 ## Out of scope
 
-Bit-identical wall time, reproducing third-party web availability, container publishing policy, deterministic GPU/neural execution, reproducibility of an unregistered/learned symmetry-discovery procedure, and claiming that the deterministic aliased profile invented its preregistered feature.
+Bit-identical wall time, reproducing third-party web availability, container publishing policy, deterministic GPU/neural execution, reproducibility of an unregistered/learned symmetry-discovery procedure, claiming that the deterministic aliased profile invented its preregistered feature, or extrapolating Phase 3A reproducibility to oracle-free discovery/full Phase 3.
 
 ## Known failure modes
 
-Mutable dependency resolution, locale/timezone-dependent serialization, unordered sets, hidden RNG consumption, unpinned repository submodules, caches keyed without the complete coverage descriptor, hashing a noncanonical initial declaration, unstable group-element naming/order, assigning weights before action-image deduplication, overwriting iteration zero with iteration one, and serializing only the accepted aliased candidate while hiding its ranked competitors.
+Mutable dependency resolution, locale/timezone-dependent serialization, unordered sets, hidden RNG consumption, unpinned repository submodules, caches keyed without the complete coverage descriptor, hashing a noncanonical initial declaration, unstable group-element naming/order, assigning weights before action-image deduplication, overwriting iteration zero with iteration one, serializing only the accepted aliased candidate while hiding its ranked competitors, and allowing held-out records to perturb Phase 3A construction hashes.
 
 ## Open risks
 
-Before performance Gates, freeze a reference hardware protocol and repetition/statistical summary policy. Before public release, add licensing checks for redistributed papers and repositories. V0-026 now freezes the aliased safe-chain profile's deterministic seed ledger, partition/grammar IDs, and semantic-hash separation; larger or stochastic refinement studies still require their own preregistration.
+Before performance Gates, freeze a reference hardware protocol and repetition/statistical summary policy. Before public release, add licensing checks for redistributed papers and repositories. V0-027 freezes the deterministic Phase 3A construction slice, but the full Phase 3 statistical split/aggregates and any larger or stochastic refinement study still require separate preregistration.

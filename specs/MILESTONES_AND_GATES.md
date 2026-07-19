@@ -11,6 +11,10 @@
 - **Aliased-profile validation status:** malformed profile construction, replay, or
   golden-contract evidence uses `ALIASED_CEGAR_INVARIANT_VIOLATION`; ordinary planning
   and refinement endings still use only the eight CEGAR statuses.
+- **Phase 3A construction slice:** the V0-027 two-domain exact-model/oracle positive
+  control. `PHASE3A_SLICE_PASS` is paired with
+  `PHASE3_AGGREGATE_NOT_RUN`; malformed construction/replay uses
+  `PHASE3A_INVARIANT_VIOLATION`.
 
 ## Normative decisions
 
@@ -123,6 +127,50 @@ split with reward `3/64`, exact lifted failure `317/16000`, sound
 envelope conservatism `3/80000` are reported rather than erased. A third `(2,2,2)`
 split is not part of this gate.
 
+### Phase 3A true-state-alias oracle construction-slice gate
+
+This gate directly follows the observation that V0-026's active histogram cells were
+already complete `D4` orbits. In each domain it must produce an active cell where one
+lifted training policy graph jointly reaches states from multiple complete known-
+automorphism orbits, using train-only exact-model/oracle construction and held-out
+evaluation on the frozen RAPMs:
+
+```text
+freeze two-domain benchmark/query/split/seed registries
+-> build suite-support-union all-action closure from training queries only
+-> G2048: exact train J0 table and audited two-atom oracle partition
+-> LMB: query-independent exact behavioural partition refinement
+-> freeze coverage, partition, semantic adapter, RAPM, and construction hashes
+-> release registered held-out queries
+-> validate held-out support without extending coverage
+-> run J0, Jkappa, nominal J2, exact audit, and independent ground lift
+-> audit complete physical automorphism orbits and policy reachability
+-> emit contract-0.6 bundle and claim-boundary report
+```
+
+The G2048 total golden is `192 -> 8`; active states/cells are `68 -> 7`, active `D4`
+state orbits/cells are `9 -> 7`, complete `D4` state-action orbits/abstract pairs are
+`18 -> 14`, and ground active state-action pairs are `144 -> 14`. One of two mixed
+active cells has members from distinct `D4` orbits jointly reached by one policy graph.
+Its two training rows comprise the canonical `H=2`
+safe-chain query and the strict cross-`D4` `H=1` bridge. The bridge witnesses
+`(0,2,2,2)` and `(0,2,4,2)` must be jointly reached in one cell, belong to different
+`D4` orbits, select `AWAY`, and reproduce reward `13/400`, failure `199/5000`, and
+sound `U_F=1/25`. LMB totals are `25 -> 5`; active states/cells are
+`18 -> 3`, total physical state orbits/cells `13 -> 5`, active orbits/cells `10 -> 3`,
+physical state-action orbits/abstract pairs `16 -> 4`, and ground pairs `40 -> 4`; all
+three active cells contain distinct-orbit members jointly reached by the same training
+policy graph. The `5x` compression threshold is evaluated
+on active states/cells (`68/7` and `18/3`), not on terminal/failure collapse.
+
+Every registered train and held-out row must certify, reproduce the V0-027 rational
+goldens, have exact J0-to-lifted reward gap zero and exact failure gap zero, and have
+normalized regret upper bound zero. Reuse is claimed only across the registered two-
+domain held-out suite: G2048 varies initial support/distribution and horizon; LMB
+varies reward basis, horizon, and risk. Passing returns
+`PHASE3A_SLICE_PASS/PHASE3_AGGREGATE_NOT_RUN`. It neither satisfies nor contributes a
+sample to the full Phase 3 oracle or human-grammar aggregate Gate.
+
 ### Frozen later Gates
 
 - **Phase 3 oracle quotient:** median compression at least `5x`, 95th-percentile normalized regret at most 1%, zero additional constraint violations, at least 80% tiny-instance pass rate.
@@ -184,6 +232,17 @@ run_safe_chain_aliased_cegar(profile,q):
     if audit.certified: return CERTIFIED
     candidate = frozen_joint_rank(all_separating_candidates(witnesses))
     partition, counters = accept(candidate, counters)
+
+run_phase3a_slice(registry):
+  for domain in (G2048,LMB):
+    coverage = suite_union_closure(registry.train_queries(domain))
+    rapm = construct_from_train_only(domain,coverage)
+    freeze(coverage,rapm)
+    evaluate(registry.train_queries(domain) + registry.heldout_queries(domain))
+    assert active_compression_at_least_5x()
+    assert reached_cross_automorphism_active_cell()
+    assert all_exact_reward_and_failure_gaps_zero()
+  return PHASE3A_SLICE_PASS, PHASE3_AGGREGATE_NOT_RUN
 ```
 
 ## Invariants
@@ -211,6 +270,12 @@ run_safe_chain_aliased_cegar(profile,q):
   not converted into a normal counterexample, accepted split, or fallback.
 - The aliased runner never receives the two target cells as a schedule; their order is
   a reproducible consequence of exact witnesses and the frozen joint ranking.
+- Phase 3A held-out queries are absent from the construction dependency graph; support
+  validation after freezing cannot extend or rebuild the RAPM.
+- Phase 3A Gate arithmetic uses active states/cells and records terminal/total counts
+  separately. A cross-automorphism witness passes only when one lifted training policy
+  graph reaches at least two physical-orbit members inside the same active cell.
+- A construction-slice pass cannot be promoted to the full Phase 3 aggregate status.
 
 ## Acceptance tests
 
@@ -234,14 +299,21 @@ run_safe_chain_aliased_cegar(profile,q):
   with no fallback; missing, reordered, or hard-coded witness/candidate evidence fails.
 - All eight initial point audits reproduce final `U_F=397/20000` and regret zero;
   independent lifting reproduces `317/16000`, not the J0 risk.
+- Phase 3A tests reproduce the 20-state G2048 training-support union, total/active/
+  orbit/action counts `192/8`, `68/7`, `9/7`, `18/14`, and `144/14`, plus LMB
+  `25/5`, `18/3`, `13/5`, `10/3`, `16/4`, and `40/4`.
+- Reordering or mutating held-out rows cannot change a construction hash. All nine
+  registered evaluations have zero exact reward and failure gaps; an uncovered support,
+  held-out dependency, terminal-only mixed cell, or missing aggregate-not-run status
+  fails the slice.
 
 ## Out of scope
 
-Implementing Phase 1–7 in the Phase 0.5 milestone, claiming their Gates from smoke fixtures, crediting the supplied `D4` positive control with automatic quotient/predicate discovery, or crediting the aliased profile with predicate invention or unknown-symmetry discovery.
+Implementing Phase 1–7 in the Phase 0.5 milestone, claiming their Gates from smoke fixtures, crediting the supplied `D4` positive control with automatic quotient/predicate discovery, crediting the aliased profile with predicate invention or unknown-symmetry discovery, or crediting the Phase 3A exact-model slice with a full Phase 3 pass or oracle-free unknown-quotient discovery.
 
 ## Known failure modes
 
-The coarse policy can be immediately infeasible, no predicate may separate the witness, every useful split may exceed rate, and an accepted split may still end in charged fallback. These are valid measured outcomes, but Phase 0.5 still requires a fixture with one accepted split. An implicit default support, incomplete all-action closure, or coverage-free cache key is unsound. In the exact `D4` gate, incomplete orbit closure, action-transform errors, stabilizer multiplicity bias, or nonzero envelopes are hard validation failures and are never repaired by refinement. In the aliased gate, replacing the deliberate boundary adapter with equivariant actions, forcing a third split after certification, or hiding the final risk gap changes the registered experiment.
+The coarse policy can be immediately infeasible, no predicate may separate the witness, every useful split may exceed rate, and an accepted split may still end in charged fallback. These are valid measured outcomes, but Phase 0.5 still requires a fixture with one accepted split. An implicit default support, incomplete all-action closure, or coverage-free cache key is unsound. In the exact `D4` gate, incomplete orbit closure, action-transform errors, stabilizer multiplicity bias, or nonzero envelopes are hard validation failures and are never repaired by refinement. In the aliased gate, replacing the deliberate boundary adapter with equivariant actions, forcing a third split after certification, or hiding the final risk gap changes the registered experiment. In Phase 3A, held-out leakage, thresholding compression on terminal collapse, or reporting a cross-orbit cell unreachable by the training policy invalidates the slice.
 
 ## Open risks
 
@@ -254,5 +326,10 @@ across arbitrary initial distributions.
 V0-026 closes the small feasible aliased-CEGAR positive-control contract. It does not
 close the later empirical question of automatically generating strategic predicates or
 discovering useful quotients on larger fixtures.
+
+V0-027 closes the next exact-model/oracle construction slice and removes the immediate
+“all active cells are already one known-symmetry orbit” limitation. Oracle-free
+predicate/quotient discovery, the human-grammar branch, larger seeds, and the complete
+Phase 3 `60/20/40` aggregate remain unrun.
 
 Later Gate denominators and statistical aggregation details also need a preregistered analysis plan before Phase 3 test evaluation; the threshold values above are already frozen.

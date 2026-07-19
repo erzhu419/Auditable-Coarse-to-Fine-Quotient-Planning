@@ -30,7 +30,11 @@ from .matching_buffer import (
     LMBState,
     generate_solvable_lmb,
 )
-from .semantic import G2048ActionFrameGeometryAdapter
+from .semantic import (
+    G2048ActionFrameGeometryAdapter,
+    G2048RelativeSurvivorAdapter,
+    G2048RelativeSurvivorLabel,
+)
 
 __all__ = [
     "G2048Action",
@@ -38,6 +42,8 @@ __all__ = [
     "G2048SafeChainKernel",
     "G2048State",
     "G2048ActionFrameGeometryAdapter",
+    "G2048RelativeSurvivorAdapter",
+    "G2048RelativeSurvivorLabel",
     "D4Transform",
     "D4_ELEMENTS",
     "SAFE_CHAIN_BASE_STATE",

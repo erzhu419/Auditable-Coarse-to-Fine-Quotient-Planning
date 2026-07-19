@@ -39,6 +39,13 @@ from .quotient import (
     solve_exact_d4_quotient,
     validate_d4_quotient,
 )
+from .lmb import (
+    LMBAutomorphism,
+    enumerate_lmb_automorphisms,
+    lmb_orbit,
+    transform_lmb_action,
+    transform_lmb_state,
+)
 
 __all__ = [
     "CanonicalizerChoiceCheck",
@@ -54,6 +61,7 @@ __all__ = [
     "InverseActionConcretization",
     "LiftedOrbitDecision",
     "LiftedOrbitPolicy",
+    "LMBAutomorphism",
     "OrbitCellKind",
     "OrbitEnvelopeWidth",
     "OrbitAutomorphismCheck",
@@ -70,10 +78,14 @@ __all__ = [
     "build_validate_solve_d4",
     "compose_d4",
     "evaluate_lifted_d4_policy",
+    "enumerate_lmb_automorphisms",
     "inverse_d4",
+    "lmb_orbit",
     "solve_exact_d4_quotient",
     "transform_board",
     "transform_cell",
+    "transform_lmb_action",
+    "transform_lmb_state",
     "transform_square_values",
     "validate_d4_quotient",
 ]

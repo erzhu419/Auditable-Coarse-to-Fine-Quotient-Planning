@@ -18,7 +18,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from fractions import Fraction
 from itertools import product
-from typing import Any, Hashable, Iterator
+from typing import Any, Hashable, Iterator, Mapping
 
 from .common import (
     as_fraction,
@@ -226,7 +226,11 @@ def select_constrained(
     )
 
 
-def solve_ground_pareto(kernel: Any, query: Any) -> GroundParetoResult:
+def solve_ground_pareto(
+    kernel: Any,
+    query: Any,
+    required_decisions: Mapping[tuple[int, Hashable], Hashable] | None = None,
+) -> GroundParetoResult:
     """Solve J0 exactly over deterministic finite-horizon Markov policies.
 
     The recursion state is the exact sub-probability distribution over active
@@ -241,6 +245,32 @@ def solve_ground_pareto(kernel: Any, query: Any) -> GroundParetoResult:
     weights = reward_weights(query)
     goal = getattr(query, "goal", None)
     horizon = query_horizon(kernel, query)
+    requirements = dict(required_decisions or {})
+    if requirements:
+        reachable_pairs = set(reachable_decision_pairs(kernel, query))
+        for decision, required_action in requirements.items():
+            if (
+                not isinstance(decision, tuple)
+                or len(decision) != 2
+                or not isinstance(decision[0], int)
+            ):
+                raise ValueError(
+                    "required decision keys must be (positive remaining, state) pairs"
+                )
+            remaining, state = decision
+            if remaining <= 0 or remaining > horizon:
+                raise ValueError(
+                    f"required decision remaining horizon {remaining!r} lies outside "
+                    f"[1, {horizon}]"
+                )
+            if decision not in reachable_pairs:
+                raise ValueError(
+                    f"required decision {decision!r} is not reachable under any ground action"
+                )
+            if required_action not in tuple(kernel.actions(state)):
+                raise ValueError(
+                    f"required action {required_action!r} is unavailable at state {state!r}"
+                )
     Distribution = tuple[tuple[Hashable, Fraction], ...]
     memo: dict[tuple[int, Distribution], tuple[ParetoPoint, ...]] = {}
     composed_candidates = 0
@@ -280,6 +310,9 @@ def solve_ground_pareto(kernel: Any, query: Any) -> GroundParetoResult:
             if mass <= 0 or is_stopped(kernel, state, goal):
                 continue
             actions = deterministic_order(kernel.actions(state))
+            decision_key = (remaining, state)
+            if decision_key in requirements:
+                actions = (requirements[decision_key],)
             if actions:
                 decision_states.append(state)
                 action_sets.append(actions)
@@ -384,4 +417,27 @@ def solve_ground_pareto(kernel: Any, query: Any) -> GroundParetoResult:
         frontier=frontier,
         selected=select_constrained(frontier, delta),
         composed_candidate_count=composed_candidates,
+    )
+
+
+def solve_ground_action_frontier(
+    kernel: Any,
+    query: Any,
+    *,
+    state: Hashable,
+    remaining: int,
+    action: Hashable,
+) -> GroundParetoResult:
+    """Solve the exact ground frontier with one state-time action forced.
+
+    The requirement constrains the deterministic Markov decision whenever the
+    pair is reached; it does not alter the initial distribution or force the
+    state itself to be visited.  Structurally unreachable pairs and illegal
+    actions are rejected instead of returning a vacuous frontier.
+    """
+
+    return solve_ground_pareto(
+        kernel,
+        query,
+        required_decisions={(remaining, state): action},
     )

@@ -93,16 +93,49 @@ overwrites or summarizes away an earlier one. The final certificate links both
 iteration IDs and every reachable proof dependency. No fallback or symmetry-orbit
 artifact is present.
 
-`run.json` records schema/contract/spec versions and hashes, run/fixture/build/query IDs,
-`structural_key`, `benchmark_role`, `execution_profile`, domain, status, evidence tier,
-seed/tape IDs, UTC timestamps, command, code revision and dirty-state digest,
-runtime/dependency lock hash, platform, and parent reference-manifest hashes. The
-execution profile is one of `phase05_vertical_slice`, `production_query`,
-`exact_d4_quotient_baseline`, or `aliased_cegar_positive_control`.
-Bundles emitted under the new profile use `contract_version=0.5.0`; an older contract
-version cannot opt into its execution profile, result eligibility, or artifact schema.
+The Phase 3A true-state-alias oracle construction slice uses contract `0.6.0` and this
+separate topology:
 
-Every coverage-limited build records `build_coverage` in `run.json` with exactly:
+```text
+suite/benchmark_registry.json
+suite/query_registry.json
+suite/split_and_seed_ledger.json
+coverage/g2048.json
+coverage/lmb.json
+ground/g2048_oracle_table.json
+oracle/g2048_partition_construction.json
+oracle/lmb_behavioral_construction.json
+rapm/g2048.json
+rapm/lmb.json
+evaluation/j0_jkappa_j2_rows.jsonl
+evaluation/policy_graphs.json
+evaluation/symmetry_nontriviality.json
+evaluation/reuse.json
+result/phase3a_slice_report.json
+metrics.json
+events.jsonl
+```
+
+`manifest.json` and detached `manifest.sha256` cover the complete inventory. This
+profile has no CEGAR witness/split chain and no exact-`D4` orbit-certificate topology;
+its cross-automorphism evidence belongs in the evaluation audit, not in a fabricated
+known-group construction claim.
+
+For single-query profiles, `run.json` records schema/contract/spec versions and hashes,
+run/fixture/build/query IDs, `structural_key`, `benchmark_role`, `execution_profile`,
+domain, status, evidence tier, seed/tape IDs, UTC timestamps, command, code revision and
+dirty-state digest, runtime/dependency lock hash, platform, and parent reference-
+manifest hashes. Phase 3A replaces the singular fixture/build/query fields with its
+suite registry plus per-domain coverage/RAPM and per-row query IDs. The
+execution profile is one of `phase05_vertical_slice`, `production_query`,
+`exact_d4_quotient_baseline`, `aliased_cegar_positive_control`, or
+`phase3a_true_state_alias_oracle_control`. Aliased bundles use
+`contract_version=0.5.0`; Phase 3A bundles use `contract_version=0.6.0`. An older
+contract version cannot opt into a newer execution profile, result eligibility, or
+artifact schema.
+
+Every Phase 0.5/production per-query coverage-limited build records `build_coverage` in
+`run.json` with exactly:
 `mode=query_support_transition_closure`, `initial_support_sha256` over the canonical
 ordered positive-mass `rho0` declaration including exact masses,
 `covered_state_count`, and `reuse_outside_coverage_forbidden=true`. The serialized
@@ -111,15 +144,27 @@ complete descriptor, and source identity; `query_id` independently commits to th
 query. `config/structural.json` contains no `initial_law`, while `config/query.json`
 records the selected distribution and its registration/provenance.
 
-Every run also records `known_exact_j0_status`, the matching J0 proof dependency (if
-known), that proof's structural ID, build ID, kernel hash, and query hash, and
+Phase 3A coverage records instead contain the distinct suite descriptor
+`mode=suite_support_union_transition_closure`,
+`declared_support_set_sha256`, `declared_support_state_count`,
+`covered_state_count`, `exact_state_cap`,
+`admissible_query_support_rule=positive_support_subset_of_covered_states`, and
+`reuse_outside_coverage_forbidden=true`. The support hash is over the canonical union
+of **training** positive-support states and intentionally excludes query order and
+probability masses. Each coverage document serializes that declared set, the complete
+closure, all legal transitions, exact kernel hash, and content-addressed `coverage_id`.
+Held-out query records reference but never alter this object.
+
+Every single-query execution profile also records `known_exact_j0_status`, the matching
+J0 proof dependency (if known), that proof's structural ID, build ID, kernel hash, and query hash, and
 `phase05_test_override`. The override may be true only for the named
 canonical G2048 Phase 0.5 regression and means that the mandatory construction split
 is being exercised despite already-known infeasibility. A production query may never
 set this override. The establishment and validation costs of a reused J0 proof remain
 visible in accounting.
 
-`config/query.json` records `normalizer_value` and `normalizer_proof_id` separately.
+For a single-query bundle, `config/query.json` records `normalizer_value` and
+`normalizer_proof_id` separately.
 Result and metric records report raw ground regret, the exact `Rmax(q)`, and normalized
 regret. Every G2048 result also carries `claim_eligibility`: the canonical infeasibility
 fixture is `infeasibility_only`; the safe-chain fixture is only
@@ -184,6 +229,53 @@ conservatism `3/80000`, zero regret, eight pointwise certificates, and zero fall
 Content IDs form a DAG: child documents never receive a backlink after hashing; the
 accepted-split document embeds the uniquely resolving iteration record, and the final
 certificate references both iteration IDs and the final audit proof root.
+
+For Phase 3A, `run.json` records profile key
+`phase3a_true_state_alias_oracle_control_v0`, status `PHASE3A_SLICE_PASS` or
+`PHASE3A_INVARIANT_VIOLATION`, and the separate field
+`full_phase3_gate_status=PHASE3_AGGREGATE_NOT_RUN`. Exact certificate quantities keep
+the controlled evidence labels `oracle_truth` or `exact_sound`; the construction-slice
+scope belongs in profile/status fields and does not create a fifth evidence tier.
+
+The suite registry fixes two G2048 training rows plus four held-out rows, and one LMB
+training row plus two held-out rows.
+`query_registry.json` states `construction_inputs=train queries only` and
+`heldout_queries_used_in_partition_selection=false`. `g2048_partition_construction`
+stores the complete four-atom candidate trace, selected two `h=1` atoms, partition
+signature, both training audits, and ten-cell exact-behavioural comparison. The LMB construction stores
+`query_values_used=false`, trace `3 -> 5 -> 5`, final cell sizes, and the exact
+behavioural semantic-action rule. RAPM records contain complete member IDs, nominal
+entries, every ground realization in the sound envelope, partition signature, and
+compression.
+
+`symmetry_nontriviality.json` stores complete physical-automorphism group sizes, active
+ground counts, physical state and state-action orbit counts, mixed active cells, their
+per-training-policy reached orbit sets with resolving policy-graph IDs and exact
+state-time-node inventories, and ground/abstract pair counts. A passing
+cell records at least two distinct physical orbits reached inside it by the same lifted
+training policy graph. Goldens
+are G2048 total `192 -> 8`, active `68 -> 7`, active physical state orbits `9 -> 7`,
+physical state-action orbits `18 -> 14`, and ground pairs `144 -> 14`; LMB total
+`25 -> 5`, active `18 -> 3`, total physical state orbits `13 -> 5`, active orbits
+`10 -> 3`, physical state-action orbits `16 -> 4`, and ground pairs `40 -> 4`.
+The `5x` acceptance threshold is computed from active states/cells (`68/7` and `18/3`),
+not inflated by terminal/failure aggregation.
+
+The G2048 record also serializes the explicit witness pair `(0,2,2,2)` and
+`(0,2,4,2)`, the facts that the pair shares one selected oracle cell but not a `D4`
+orbit, both members occur on the strict bridge policy graph, and both lifted semantic
+actions are `AWAY`. The query registry records that bridge as a training query; its
+exact row is reward `13/400`, failure `199/5000`, and sound `U_F=1/25`.
+
+Each J0/Jkappa/J2 row records exact rewards and failures, action-restriction,
+state-alias-selector, and full gaps separately for both reward and failure, sound reward
+lower/failure upper/regret upper, and a resolving policy-graph ID. All registered Phase 3A
+rows require every segment and full exact gap to be zero. `reuse.json` proves that every query
+in a domain references its one frozen coverage/RAPM and that held-out support is within
+training coverage. Its claim is only across the registered two-domain held-out suite:
+G2048 varies initial support/distribution and horizon; LMB varies reward basis, horizon,
+and risk. The final report serializes both supported and unsupported claims and may not
+generalize either domain to all four variation types.
 
 JSON exact numbers are encoded as `{ "numerator": int, "denominator": positive_int }`; derived decimal displays are nonauthoritative. Opaque pickle/native-object dumps are never the sole source artifact.
 
@@ -258,6 +350,22 @@ aliased final result:
   j0_failure=99/5000, risk_gap=1/80000
   envelope_conservatism=3/80000, pointwise_certified_count=8
   fallback_invocations=0, status=CERTIFIED
+
+Phase 3A suite coverage:
+  mode=suite_support_union_transition_closure
+  declared_support_set_sha256, declared_support_state_count
+  covered_state_count, exact_state_cap
+  admissible_query_support_rule=positive_support_subset_of_covered_states
+  reuse_outside_coverage_forbidden=true
+
+Phase 3A result:
+  profile_key, coverage_ids, rapm_ids, construction_hashes
+  train_query_ids, heldout_query_ids, heldout_used_for_construction=false
+  active_ground_counts, active_cell_counts, physical_orbit_counts
+  mixed_active_cells, policy_reachable_mixed_active_cells, explicit_nonorbit_pairs
+  J0_Jkappa_J2_exact_rows, exact_reward_gaps, exact_failure_gaps
+  status=PHASE3A_SLICE_PASS
+  full_phase3_gate_status=PHASE3_AGGREGATE_NOT_RUN
 ```
 
 The manifest hashes every other file, then a detached `manifest.sha256` hashes canonical `manifest.json` to avoid self-reference.
@@ -301,6 +409,14 @@ The manifest hashes every other file, then a detached `manifest.sha256` hashes c
 - A failed aliased construction/replay reports
   `ALIASED_CEGAR_INVARIANT_VIOLATION`, sets positive-claim inclusion false, and cannot
   carry the golden `CERTIFIED` result or ordinary fallback evidence.
+- A Phase 3A bundle has one immutable suite coverage and RAPM ID per domain; every
+  held-out row points to those identities and no held-out query ID appears in a
+  construction dependency list.
+- Phase 3A compression acceptance uses active states/cells. Mixed-cell evidence is
+  active and jointly reached across at least two physical orbits by one lifted training
+  policy graph; terminal aggregation is separately reported.
+- `PHASE3A_SLICE_PASS` always co-occurs with `PHASE3_AGGREGATE_NOT_RUN`, exact reward
+  and failure gaps zero, and the complete unsupported-claim list.
 
 ## Acceptance tests
 
@@ -338,15 +454,29 @@ The manifest hashes every other file, then a detached `manifest.sha256` hashes c
 - Deleting or reordering an iteration, mutating action order/feature truth/rate, hiding
   a candidate, changing `317/16000` to the J0 risk, adding a third split/fallback, or
   using an exact-`D4` source/result label fails verification.
+- Phase 3A verification checks the exact required-path set, contract/profile/status
+  tuple, canonical training support-set descriptors (20 G2048 and nine LMB states),
+  192/25 closure inventories, 8/5 partitions, active compression `68/7` and `18/3`,
+  physical state-action orbit counts `18 -> 14` and `16 -> 4`, and same-policy jointly
+  reached mixed active cells. The strict G2048 bridge pair must share one cell, differ in `D4`
+  orbit, be jointly policy-reachable, and select `AWAY`.
+- Recomputing all nine registered evaluation rows reproduces the V0-027 rewards,
+  failures, sound bounds, zero exact reward/failure gaps, and deterministic policy
+  graphs. Reordering or mutating held-out query records cannot change either
+  construction/RAPM hash.
+- A Phase 3A bundle fails if it uses a held-out field during construction, counts only
+  a terminal mixed cell, reports total rather than active compression as the threshold
+  witness, claims reuse outside the registered two-domain held-out suite, or omits
+  `PHASE3_AGGREGATE_NOT_RUN`.
 
 ## Out of scope
 
-Long-term object-store layout, public data-release licensing policy, binary performance traces as normative evidence, statistical confidence-set schemas, artifacts claiming an automatically discovered group from the supplied `D4` profile, and aliased artifacts claiming that their preregistered geometry atom was invented automatically.
+Long-term object-store layout, public data-release licensing policy, binary performance traces as normative evidence, statistical confidence-set schemas, artifacts claiming an automatically discovered group from the supplied `D4` profile, aliased artifacts claiming that their preregistered geometry atom was invented automatically, and Phase 3A artifacts claiming oracle-free discovery or a full Phase 3 Gate.
 
 ## Known failure modes
 
-Self-referential manifests, partially written bundles, absolute host paths, noncanonical JSON ordering, missing dirty-worktree provenance, orphan policy/proof nodes, an incomplete coverage descriptor, a support hash over noncanonical data, reuse outside the recorded closure, incomplete orbit inventories, stabilizer-element multiplicity masquerading as distinct-action probability, overwritten aliased iterations, incomplete candidate inventories, and cross-profile result labels.
+Self-referential manifests, partially written bundles, absolute host paths, noncanonical JSON ordering, missing dirty-worktree provenance, orphan policy/proof nodes, an incomplete coverage descriptor, a support hash over noncanonical data, reuse outside the recorded closure, incomplete orbit inventories, stabilizer-element multiplicity masquerading as distinct-action probability, overwritten aliased iterations, incomplete candidate inventories, cross-profile result labels, held-out IDs in construction dependencies, and terminal aggregation masquerading as active compression.
 
 ## Open risks
 
-Large exact state/transition artifacts may require deterministic chunking or compression after Phase 0.5; logical hashes and schema semantics must remain stable. V0-026 now freezes the aliased safe-chain multi-iteration topology; any later chunking must preserve its logical inventories, links, order, and hashes and still cannot reuse the exact-`D4` result label.
+Large exact state/transition artifacts may require deterministic chunking or compression after Phase 0.5; logical hashes and schema semantics must remain stable. V0-027 freezes the Phase 3A construction-slice topology and its independent semantic replay verifier; the statistical full-Phase-3 artifact layout remains later work.

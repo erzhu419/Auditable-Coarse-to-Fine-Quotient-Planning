@@ -6,6 +6,11 @@ All public records are versioned, immutable value objects with canonical seriali
 
 Core interfaces are `DomainProtocol`, `Enumerator`, `GroundConstrainedOracle`, `Partition`, `RAPMBuilder`, `NominalPlanner`, `ExactAuditor`, `PredicateGrammar`, `RefinementEngine`, `FallbackSolver`, `ArtifactWriter`, and `RunAccounting`. The safe-chain positive control additionally uses a versioned `ExactGroupQuotientProfile` and `ExactGroupQuotientBuilder`; these are known-symmetry adapters, not learned refinement interfaces. The separately keyed aliased safe-chain positive control uses the ordinary RAPM and refinement interfaces plus a versioned `AliasedCEGARProfile`; it never calls the exact-group builder.
 
+Phase 3A additionally exposes `SuiteBuildCoverage`, `GroundOracleTable`,
+`OraclePartitionSelector`, `ExactBehavioralQuotientBuilder`, `SemanticKernelView`,
+`PolicyLifter`, and `Phase3AConstructionRunner`. These are exact-model/oracle control
+interfaces, not learned feature or predicate discovery APIs.
+
 ## Normative decisions
 
 `DomainProtocol` is the only domain-specific authority for physical state/action
@@ -48,6 +53,19 @@ AliasedCEGARProfile(profile_key, ground_structural_key, base_encoder_id,
 RefinementIteration(index, input_partition_id, proposal_id, audit_id,
                     witness_ids, ranked_candidate_ids, accepted_split_id,
                     output_partition_id, counters_before, counters_after)
+SuiteBuildCoverage(mode, declared_support_set_sha256,
+                   declared_support_state_count, covered_state_count,
+                   exact_state_cap, admissible_query_support_rule,
+                   reuse_outside_coverage_forbidden)
+GroundOracleTable(states, max_horizon, reward_weights, goal, delta,
+                  state_records, first_action_frontiers)
+OraclePartitionSelection(partition, quotient_models, selected_atoms,
+                         candidate_trace, training_evaluations,
+                         reachable_mixed_cells)
+ExactBehavioralQuotient(partition, semantic_adapter, refinement_trace,
+                        failure_targets, quotient_models)
+Phase3AQueryEvaluation(split, query_id, J0, Jkappa, nominal_J2,
+                       exact_audit, ground_lift)
 ```
 
 `rho0` is either one canonical state with unit mass or a finite exact distribution. It belongs to `QuerySpec`; a domain may register and return a canonical default distribution for fixture construction, but that default is not part of the structural key. The query validator accepts only registered rewards/goals, `H<=Hmax`, `delta in {0,1/20,1/10}`, and a deterministic proved `Rmax(q)` recorded as both `normalizer_value` and `normalizer_proof_id`. Canonical `H` and `2N/3` bounds are accepted only for their unchanged registered G2048 and LMB rewards.
@@ -106,6 +124,42 @@ Construction/replay violations use the profile-validation status
 `ALIASED_CEGAR_INVARIANT_VIOLATION`, outside the refinement engine's eight results;
 ordinary audit, budget, refinement, and fallback endings do not gain a ninth status.
 
+`SuiteBuildCoverage.from_queries(kernel, training_queries)` accepts only the training
+query tuple. It canonicalizes the union of positive-support states independently of
+query order/masses, computes the complete all-action/all-positive-outcome closure, and
+freezes the descriptor before any held-out evaluation. `validate_query_coverage` is the
+only held-out interaction: it accepts a support subset or raises
+`QueryOutsideBuildCoverageError`; it cannot extend coverage.
+
+For G2048, `GroundOracleTable` is built from the 192-state training closure, the fixed
+relative-survivor adapter, `h=1,2`, and the training reward/risk profile.
+`OraclePartitionSelector` accepts `training_queries` and has no held-out parameter. It
+enumerates the fixed four-atom subset lattice, caches duplicate partition signatures,
+constructs nominal/envelope models, exact-audits training policies, requires active
+compression and a cell in which one lifted training policy graph reaches multiple
+`D4` state orbits, and returns the canonical minimum.
+The frozen input contains the canonical `H=2` and strict bridge `H=1` training queries;
+their 20-state support union closes to 192. The result selects the two `h=1` atoms and
+has eight total/seven active cells. The symmetry audit requires bridge witnesses
+`(0,2,2,2)` and `(0,2,4,2)` to share one cell but not one `D4` orbit, occur jointly in
+the bridge's lifted decision graph, and both select `AWAY`.
+
+For LMB, `ExactBehavioralQuotientBuilder` accepts only the exact kernel and 25 covered
+states. It refines status cells by exact action behaviours to trace `3 -> 5 -> 5`,
+deduplicates equal-signature ground actions, freezes uniform distinct-action
+concretizers, and constructs singleton quotient entries. It accepts no query, reward
+weights, risk threshold, train/held-out label, predicate grammar, or automorphism group.
+
+`Phase3AConstructionRunner` constructs both domain objects, freezes their coverage,
+partition, adapter, and RAPM identities, and then evaluates the registered train plus
+held-out rows with the same four-stage path: unrestricted J0, concretizer-restricted
+ground Jkappa, nominal abstract proposal plus exact audit, and independent ground lift.
+It requires exact reward and exact failure equality on every row. Reuse claims are
+limited to the registered two-domain held-out suite: G2048 changes initial support and
+horizon; LMB changes reward basis, horizon, and risk. Its success tuple is
+`PHASE3A_SLICE_PASS/PHASE3_AGGREGATE_NOT_RUN`; profile validation failures use
+`PHASE3A_INVARIANT_VIOLATION` outside the CEGAR result enum.
+
 ## Pseudocode / schema
 
 ```text
@@ -138,6 +192,27 @@ RAPMBuilder.build(structural_config, query_support, grammar, budgets):
 validate_query_coverage(rapm,q):
   require supp(q.rho0) subseteq rapm.covered_states
   otherwise reject before planning or rebuild with a new coverage descriptor
+
+SuiteBuildCoverage.from_queries(kernel,Q_train):
+  declared = canonical_set(union positive_support(q) for q in Q_train)
+  covered = transition_closure(declared, all legal actions/outcomes)
+  return immutable_suite_descriptor_and_inventory(declared,covered)
+
+construct_phase3a(Q_train):
+  coverage = SuiteBuildCoverage.from_queries(kernel,Q_train)
+  if G2048:
+    table = GroundOracleTable.build(coverage,relative_survivor,train_profile)
+    construction = OraclePartitionSelector.select(table,Q_train)
+  if LMB:
+    construction = ExactBehavioralQuotientBuilder.build(kernel,coverage)
+  return freeze(coverage,construction.partition,construction.adapter,
+                construction.quotient_models)
+
+evaluate_phase3a(frozen,Q_heldout):
+  for q in Q_heldout:
+    frozen.coverage.validate_query_coverage(q)
+    row = compare_J0_Jkappa_exact_audit_and_ground_lift(frozen,q)
+    require row.exact_reward_gap == 0 and row.exact_failure_gap == 0
 
 optional exact-symmetry adapter for a registered profile:
   ordered_group_elements(profile_id) -> ordered tuple[GroupElement]
@@ -205,6 +280,12 @@ cell key; it never loses which transformed endpoint is the survivor.
   build, and run IDs.
 - Its iteration indices are contiguous, each input partition equals the previous
   output, and counters advance exactly `10/0 -> 11/4 -> 12/8` in leaves/rate bits.
+- Phase 3A builder signatures contain no held-out query argument or dependency; the
+  evaluation layer cannot mutate a frozen coverage, partition, adapter, or RAPM.
+- Phase 3A compression checks use active states/cells (`68/7`, `18/3`); total graph
+  counts (`192/8`, `25/5`) and terminal aggregation are reported separately.
+- Cross-automorphism audits use complete physical groups: G2048 state-action orbits
+  `18 -> 14` abstract pairs and LMB `16 -> 4`; mixed cells must be active and reached.
 
 ## Acceptance tests
 
@@ -246,15 +327,28 @@ cell key; it never loses which transformed endpoint is the survivor.
   `317/16000`, sound risk `397/20000`, regret zero, eight pointwise certificates, and
   no fallback. It never carries `EXACT_D4_QUOTIENT_INVARIANT_VIOLATION` or
   `known_group_exact_homomorphism`.
+- `OraclePartitionSelector` unit tests prove no held-out argument is accepted, subset
+  enumeration/tie-breaking is canonical, the selected atom IDs are the two `h=1`
+  atoms, and the G2048 partition is `192 -> 8` with active `68 -> 7`. They also prove
+  both training audits certify and the bridge exact row is reward `13/400`, failure
+  `199/5000`, and sound `U_F=1/25`.
+- `ExactBehavioralQuotientBuilder` reproduces the LMB fixture's `25 -> 5`, trace
+  `3 -> 5 -> 5`, singleton envelopes, active `18 -> 3`, and uniform deduplicated
+  equal-signature action support. The lifted training graph reaches members from
+  multiple physical orbits inside each of its three active cells.
+- Phase 3A integration evaluates the registered two-domain held-out suite without
+  changing construction hashes, reproduces all V0-027 rationals, and requires both
+  exact reward and exact failure gaps zero. It rejects an uncovered support, a held-out
+  construction dependency, a terminal-only mixed cell, or a full-Phase-3 pass label.
 
 ## Out of scope
 
-Network services, mutable online model updates, learned adapters, asynchronous planners, plugin-specific APIs, unstable language-object serialization as an artifact format, and discovery of an unknown symmetry group from data.
+Network services, mutable online model updates, learned adapters, asynchronous planners, plugin-specific APIs, unstable language-object serialization as an artifact format, discovery of an unknown symmetry group from data, and an API that relabels Phase 3A exact-model construction as oracle-free unknown-quotient discovery.
 
 ## Known failure modes
 
-Noncanonical state keys, uncoalesced duplicate successors, accidental float coercion, stale build caches, missing coverage fields in a build key, reuse outside transition closure, domain logic leaking into the generic planner, inconsistent state/action transforms, stabilizer multiplicity bias, a hard-coded aliased split schedule, and overwriting a prior refinement iteration.
+Noncanonical state keys, uncoalesced duplicate successors, accidental float coercion, stale build caches, missing coverage fields in a build key, reuse outside transition closure, domain logic leaking into the generic planner, inconsistent state/action transforms, stabilizer multiplicity bias, a hard-coded aliased split schedule, overwriting a prior refinement iteration, held-out fields entering a constructor, and computing Phase 3A compression from terminal aggregation alone.
 
 ## Open risks
 
-The exact in-memory frontier/envelope representation may need optimization after Phase 0.5; any replacement must preserve these external records and proof dependencies. The registered `D4` adapter is a positive-control implementation and cannot be counted as evidence of automatic predicate or symmetry discovery. Likewise, the aliased adapter proves selection of a registered atom, not invention of one.
+The exact in-memory frontier/envelope representation may need optimization after Phase 0.5; any replacement must preserve these external records and proof dependencies. Phase 3A now proves the exact-model/oracle cross-automorphism interface path and registered held-out reuse, but an oracle-free proposer, human predicate reconstruction, and full Phase 3 aggregate runner remain open.

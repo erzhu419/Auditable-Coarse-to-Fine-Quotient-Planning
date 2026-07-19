@@ -7,7 +7,15 @@ from .ground import (
     enumerate_deterministic_policies,
     evaluate_ground_policy,
     reachable_decision_pairs,
+    solve_ground_action_frontier,
     solve_ground_pareto,
+)
+from .lift import (
+    SemanticKernelView,
+    SemanticPolicyLift,
+    evaluate_semantic_policy,
+    lift_semantic_policy,
+    lift_semantic_policy_decisions,
 )
 from .policy import FiniteHorizonPolicy, PolicyDecision
 from .nominal import NominalParetoResult, solve_nominal_pareto
@@ -40,10 +48,16 @@ __all__ = [
     "PlanningIdentity",
     "ProductionPrecheckResult",
     "ProductionPrecheckStatus",
+    "SemanticKernelView",
+    "SemanticPolicyLift",
     "enumerate_deterministic_policies",
     "evaluate_ground_policy",
+    "evaluate_semantic_policy",
     "audit_abstract_policy",
+    "lift_semantic_policy",
+    "lift_semantic_policy_decisions",
     "reachable_decision_pairs",
+    "solve_ground_action_frontier",
     "solve_ground_pareto",
     "solve_nominal_pareto",
     "unrestricted_upper_envelope",

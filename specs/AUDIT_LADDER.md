@@ -41,6 +41,19 @@ policies only; it never manufactures a convex combination.
 
 On J0-capable instances also report `Delta_action = V_ground* - V_kappa-restricted*` as `oracle_truth`. It is diagnostic and is never substituted for the production certificate.
 
+Phase 3A records all three quantities separately for every query:
+
+```text
+J0       = unrestricted deterministic ground constrained optimum,
+Jkappa   = deterministic ground optimum under the frozen semantic concretizer,
+J2_lift  = independent ground evaluation of the lifted abstract selector.
+```
+
+It reports `J0-Jkappa` as the action-restriction gap, `Jkappa-J2_lift` as the
+state-alias selector gap, and `J0-J2_lift` as the full gap. A sound audit remains the
+certificate; equality to J0 is a registered positive-control check, not a replacement
+for `U_all/L_pi/U_F`.
+
 The safe-chain exact `D4` positive control is a special J0-versus-exact-J2 equality
 audit. It first verifies the registered group is an automorphism of legal actions,
 reward, one-time failure cost, exact kernel, and terminal semantics on the complete
@@ -72,6 +85,36 @@ sound J2:  regret_upper=0, U_F=397/20000 < 1/20.
 
 The exact lifted-risk gap `1/80000` and envelope conservatism `3/80000` remain visible;
 neither can be rounded away or described as exact policy preservation.
+
+The Phase 3A construction slice audits one frozen train-built RAPM per domain against
+both training and held-out queries. It first proves that held-out query records are not
+inputs to coverage construction, G2048 oracle-atom selection, LMB behavioural
+refinement, semantic-action construction, or RAPM hashing. It then validates held-out
+support against the frozen suite closure and runs J0, Jkappa, nominal J2, exact sound
+audit, and independent ground lift without rebuilding.
+
+Cross-automorphism nontriviality is an audit channel: enumerate the complete known
+physical automorphism group and, separately for each lifted training policy graph,
+count the distinct physical orbits actually reached inside each active cell. Require
+at least two reached orbits in one cell per domain. A cross-orbit cell with only one
+reached orbit, or orbit members reached only across different query graphs, fails.
+Terminal aggregation cannot satisfy this check. The G2048
+control remains an interval quotient whose risk bound may be conservative; the LMB
+behavioural model must have singleton realization sets. Passing every per-query audit
+and golden comparison returns `PHASE3A_SLICE_PASS` together with
+`PHASE3_AGGREGATE_NOT_RUN`, not a Phase 3 aggregate result.
+
+G2048 makes the reachability test strict with a second training query. Its `H=1`
+bridge gives positive mass to complete `D4` orbits of `(1,1,2,0)`, `(2,2,2,0)`, and
+`(2,2,4,0)`. The audit requires non-orbit witnesses `(0,2,2,2)` and `(0,2,4,2)` to
+be jointly present in one lifted decision graph and one oracle cell, with semantic
+action `AWAY`; merely reaching different members under different queries is
+insufficient.
+
+The reuse audit is joint and limited to the registered two-domain held-out suite:
+G2048 exercises initial-support/distribution and horizon changes at fixed reward/risk;
+LMB exercises reward-basis, horizon, and risk changes at fixed support. It cannot emit
+a per-domain “all axes covered” or arbitrary-query reuse claim.
 
 ## Pseudocode / schema
 
@@ -111,6 +154,20 @@ audit_refine_aliased_safe_chain(rapm,q):
   jointly rank every separating six-feature grammar candidate
   accept one ordinary local split or return the normative terminal status
   stop immediately when aggregate and all eight pointwise audits certify
+
+audit_phase3a(construction,Q_train,Q_heldout):
+  verify construction_dependency_graph excludes Q_heldout
+  verify same frozen coverage_id, partition_id, adapter_id, rapm_id for every query
+  verify heldout supports are subsets of suite coverage
+  verify same-policy jointly reached cross-automorphism active cells
+  for q in Q_train + Q_heldout:
+    J0 = solve_unrestricted_ground(q)
+    Jkappa = solve_concretizer_restricted_ground(q)
+    proposal = solve_nominal_RAPM(q)
+    sound = exact_full_plan_audit(proposal,q)
+    lifted = evaluate_lift_on_ground(proposal,q)
+    require registered exact values and sound.certified
+  return PHASE3A_SLICE_PASS, PHASE3_AGGREGATE_NOT_RUN
 ```
 
 ## Invariants
@@ -132,6 +189,13 @@ audit_refine_aliased_safe_chain(rapm,q):
 10. The aliased J2 run uses full-V0 budgets and charges base leaves plus both four-bit
     splits; certification after the second accepted split forbids an additional
     tightening split.
+11. Phase 3A construction is train-only; held-out queries share a frozen RAPM but not a
+    construction dependency.
+12. Cross-automorphism evidence is computed per lifted training policy graph using the
+    complete registered physical automorphism group; one active cell must contain
+    reached states from at least two of its physical orbits in that same graph.
+13. `PHASE3A_SLICE_PASS` does not satisfy or alter the sample-size/aggregate thresholds
+    of the full Phase 3 oracle Gate.
 
 ## Acceptance tests
 
@@ -162,15 +226,31 @@ audit_refine_aliased_safe_chain(rapm,q):
 - Independent ground lifting recomputes failure `317/16000`; each of the eight initial
   point audits has `U_F=397/20000` and certifies. Adding a fallback or claiming J0 risk
   equality fails the profile gate.
+- Every Phase 3A row reproduces the V0-027 exact `J0=Jkappa=J2_lift` reward and failure
+  values, exact reward lower bound, normalized regret upper bound zero, and a sound
+  failure upper bound at or below its registered `delta`.
+- G2048 audit goldens include total `192/8`, active state/cell `68/7`, active physical
+  orbits/cells `9/7`, physical state-action orbits/entries `18/14`, ground pairs/entries
+  `144/14`, two mixed active cells, and one cell with distinct-orbit members jointly
+  reached by one training graph. Its 20-state training-support union and six rows are
+  reproduced; the bridge row is reward `13/400`,
+  failure `199/5000`, sound `U_F=1/25`, and both explicit witnesses are jointly
+  reached. LMB includes total `25/5`,
+  active state/cell `18/3`, active physical orbits/cells `10/3`, state-action orbits/
+  entries `16/4`, and within all three active cells the same training graph reaches
+  members from multiple physical orbits.
+- A held-out query mutation changes only its query/evaluation identity. If it changes a
+  construction hash or is observed by a builder, leakage validation fails; if its
+  support is outside coverage, evaluation is rejected rather than rebuilding silently.
 
 ## Out of scope
 
-J3 learned/statistical models, J4 bounded search/MCTS, J5 perception, causal attribution from the telescoping ladder, asymptotic guarantees beyond the enumerated finite model, and using the supplied `D4` group as evidence of automatic symmetry or predicate discovery.
+J3 learned/statistical models, J4 bounded search/MCTS, J5 perception, causal attribution from the telescoping ladder, asymptotic guarantees beyond the enumerated finite model, using the supplied `D4` group as evidence of automatic symmetry or predicate discovery, and using Phase 3A exact-model cross-orbit aliasing as evidence of oracle-free unknown-quotient discovery.
 
 ## Known failure modes
 
-Frontier combinatorics, conservative rectangular composition, all policies exceeding `delta`, stale or incomplete build-coverage identity, and small numeric differences in derived display floats. Exact stored rationals remain authoritative. Conservative width is permitted—and expected by `3/80000` in the final aliased risk bound—in ordinary interval quotients but is a hard error in the exact `D4` profile.
+Frontier combinatorics, conservative rectangular composition, all policies exceeding `delta`, stale or incomplete build-coverage identity, and small numeric differences in derived display floats. Exact stored rationals remain authoritative. Conservative width is permitted—and expected by `3/80000` in the final aliased risk bound and by some G2048 Phase 3A risk rows—in ordinary interval quotients but is a hard error in the exact `D4` and LMB exact-behavioural profiles. Held-out leakage is a Phase 3A construction failure even when all final values happen to match.
 
 ## Open risks
 
-Paired oracle-replacement ablations and component interactions are required before causal claims. More compact exact frontier representations may be needed beyond tiny instances. The V0-026 aliased control tests exact-counterexample selection of one preregistered geometry atom; automatic feature invention and broader feasible CEGAR discovery remain open.
+Paired oracle-replacement ablations and component interactions are required before causal claims. More compact exact frontier representations may be needed beyond tiny instances. V0-027 reaches cross-automorphism state aliasing only with exact oracle/model access; automatic feature invention, oracle-free quotient discovery, and broader feasible CEGAR remain open.

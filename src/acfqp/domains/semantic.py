@@ -39,6 +39,13 @@ class BoundaryActionLabel(str, Enum):
     LAST = "canonical:last"
 
 
+class G2048RelativeSurvivorLabel(str, Enum):
+    """D4-invariant survivor geometry relative to nonmerged occupied tiles."""
+
+    TOWARD = "survivor:toward_nonmerged"
+    AWAY = "survivor:away_from_nonmerged"
+
+
 @runtime_checkable
 class SemanticActionAdapter(Protocol[StateT, ActionT, LabelT]):
     """Ground-independent interface consumed by quotient construction."""
@@ -252,6 +259,76 @@ class G2048ActionFrameGeometryAdapter(G2048SemanticAdapter):
 
         features.update(geometry)
         return _feature_vector(**features)
+
+
+@dataclass(frozen=True, slots=True)
+class G2048RelativeSurvivorAdapter(G2048SemanticAdapter):
+    """Equivariant two-label action system for strategic state quotients.
+
+    A survivor is ``TOWARD`` exactly when it is orthogonally adjacent to at
+    least one occupied cell outside the selected merge pair.  Otherwise it is
+    ``AWAY``.  The definition uses only incidence and occupancy, so applying a
+    square-board automorphism before or after labelling gives the same label.
+    The fixed concretizer is uniform over distinct legal actions carrying the
+    requested label.
+    """
+
+    def label(
+        self,
+        kernel: G2048Kernel,
+        state: G2048State,
+        action: G2048Action,
+    ) -> G2048RelativeSurvivorLabel:
+        if action not in kernel.actions(state):
+            raise ValueError("relative-survivor label requires a legal action")
+        survivor_row, survivor_column = divmod(action.survivor, kernel.size)
+        toward = any(
+            abs(survivor_row - row) + abs(survivor_column - column) == 1
+            for cell, rank in enumerate(state.board)
+            if rank != 0 and cell not in (action.first, action.second)
+            for row, column in (divmod(cell, kernel.size),)
+        )
+        return (
+            G2048RelativeSurvivorLabel.TOWARD
+            if toward
+            else G2048RelativeSurvivorLabel.AWAY
+        )
+
+    def labels(
+        self,
+        kernel: G2048Kernel,
+        state: G2048State,
+    ) -> tuple[G2048RelativeSurvivorLabel, ...]:
+        primitive_actions = tuple(kernel.actions(state))
+        if not primitive_actions:
+            if kernel.is_terminal(state):
+                return ()
+            raise RuntimeError(
+                "an active state has no primitive action; dead ends must be terminal"
+            )
+        return tuple(
+            sorted(
+                {self.label(kernel, state, action) for action in primitive_actions},
+                key=lambda label: label.value,
+            )
+        )
+
+    def concretize(
+        self,
+        kernel: G2048Kernel,
+        state: G2048State,
+        label: G2048RelativeSurvivorLabel,
+    ) -> ActionDistribution[G2048Action]:
+        selected = G2048RelativeSurvivorLabel(label)
+        actions = tuple(
+            action
+            for action in kernel.actions(state)
+            if self.label(kernel, state, action) is selected
+        )
+        if not actions:
+            raise ValueError(f"relative-survivor action {selected.value!r} is unavailable")
+        probability = Fraction(1, len(actions))
+        return tuple((probability, action) for action in actions)
 
 
 @dataclass(frozen=True, slots=True)

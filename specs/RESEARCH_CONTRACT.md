@@ -10,6 +10,9 @@
   declaration and forbids reuse outside that set.
 - **Per-query result:** contingent policy graph, value/risk certificates, and charged fallback locations.
 - **Certified:** supported by complete backward induction with `exact_sound` evidence, not by nominal prediction or empirical accuracy.
+- **Phase 3A construction slice:** the V0-027 two-domain, train-only exact-model/oracle
+  positive control. It is a single registered construction/evaluation slice, not the
+  frozen Phase 3 aggregate Gate.
 
 ## Normative decisions
 
@@ -78,6 +81,43 @@ symmetry. Because the final failure `317/16000` differs from J0 `99/5000`, it is
 constrained certificate, not exact policy/risk preservation. It does not support
 automatic predicate invention, shared grammar/coordinates, or learning.
 
+The Phase 3A profile is `phase3a_true_state_alias_oracle_control_v0`. It builds suite
+coverage and one RAPM per domain from training inputs only, freezes their identities,
+and only then evaluates registered held-out queries whose positive support is already
+covered. G2048 uses two training queries—the canonical safe-chain `H=2` row and a
+strict cross-`D4` `H=1` bridge—and selects a two-atom train-oracle signature partition
+with eight cells on their 192-state closure; LMB uses query-independent exact behavioural
+refinement with five cells on a 25-state closure. Both must contain a policy-reachable
+active cell for which one lifted training policy graph actually reaches members from
+multiple complete known-automorphism orbits. Cell membership alone, or separate
+queries reaching separate orbit members, is insufficient. Thus this slice tests real
+state aliasing beyond a supplied symmetry partition, not merely the action-frame aliasing
+of V0-026.
+
+The construction authority remains exact ground knowledge: G2048 uses an unrestricted
+J0 table under the training reward/risk profile, and LMB uses the complete exact kernel
+and a fixed behavioural-signature refinement. Consequently the result is an oracle
+upper-bound/positive control. It may support cross-automorphism state aggregation and
+held-out reuse within frozen coverage, but it may not be described as human-readable
+predicate invention, oracle-free discovery of an unknown quotient, the full Phase 3
+Gate, shared cross-domain coordinates, learned abstraction, CEGAR recovery, or
+multiresolution strategic planning.
+
+Passing this slice requires G2048 total `192 -> 8` and active `68 -> 7`, LMB total
+`25 -> 5` and active `18 -> 3`, at least `5x` compression computed from **active**
+states/cells in each domain, strict ground-to-abstract state-action compression, exact-
+sound certification of every train and held-out row, zero J0-to-lifted reward and
+failure gaps, and at least one policy-reachable cross-automorphism active cell per
+domain, with at least two physical orbits jointly reached in that cell by the same
+lifted training policy graph. The terminal pair is `PHASE3A_SLICE_PASS` plus
+`PHASE3_AGGREGATE_NOT_RUN`; a construction or replay violation is
+`PHASE3A_INVARIANT_VIOLATION`.
+
+Reuse is claimed only **across the registered two-domain held-out suite**. G2048 covers
+changes in initial support/distribution and horizon; LMB covers changes in reward basis,
+horizon, and risk. Neither domain is claimed to cover all four axes, and the result
+does not quantify over arbitrary in-coverage queries.
+
 ## Pseudocode / schema
 
 ```text
@@ -113,6 +153,14 @@ AliasedCEGARPositiveControlResult:
   ordered_iteration_ids, accepted_split_ids
   exact_lifted_return_risk, sound_certificate
   status = one of the eight CEGAR statuses
+
+Phase3AConstructionSliceResult:
+  profile_key, suite_registry_id, train_split_id, heldout_split_id
+  coverage_id_by_domain, rapm_id_by_domain
+  construction_trace_by_domain, cross_automorphism_audit
+  J0_Jkappa_J2_rows, heldout_reuse_audit
+  status = PHASE3A_SLICE_PASS or PHASE3A_INVARIANT_VIOLATION
+  full_phase3_gate_status = PHASE3_AGGREGATE_NOT_RUN
 ```
 
 Total cost for `N` genuine planning queries is `C_build + sum_i C_query(q_i)`. Cached execution is not a new query. Report the smallest `N` for which build plus abstract-query cost does not exceed repeated ground-query cost.
@@ -137,6 +185,13 @@ Total cost for `N` genuine planning queries is `C_build + sum_i C_query(q_i)`. C
 10. The aliased profile never imports stabilizer-orbit actions, exact-`D4` status, or
     exact-homomorphism evidence; certification terminates refinement before any optional
     third tightening split.
+11. Phase 3A suite coverage hashes the canonical union of training support states and
+    closes only that union; held-out query fields are not constructor inputs.
+12. Each Phase 3A held-out row references the same frozen coverage and RAPM identity as
+    its domain's registered training construction, and an uncovered held-out support
+    is rejected.
+13. `PHASE3A_SLICE_PASS` can coexist only with
+    `PHASE3_AGGREGATE_NOT_RUN`; it cannot be promoted to a Phase 3 Gate pass.
 
 ## Acceptance tests
 
@@ -172,15 +227,31 @@ Total cost for `N` genuine planning queries is `C_build + sum_i C_query(q_i)`. C
 - Its ground structural/query identities equal the exact baseline inputs, while the
   profile/build/adapter/grammar/partition/result identities differ; neither verifier
   accepts the other profile's result label or artifact topology.
+- Reordering, changing, or deleting held-out queries leaves both Phase 3A construction
+  signatures unchanged; passing held-out values into either builder fails leakage
+  validation.
+- The G2048 Phase 3A partition has 8 cells over 192 states and 7 active cells over 68
+  active states; 14 abstract entries replace 18 complete `D4` state-action orbits and
+  144 active ground state-action pairs. The 20-state training-support union and bridge
+  witnesses `(0,2,2,2)`/`(0,2,4,2)` are reproduced; those non-`D4` states are jointly
+  policy-reachable in one cell with action `AWAY`, and the bridge exact row is
+  `(reward,failure,U_F)=(13/400,199/5000,1/25)`.
+- The LMB partition has trace `3 -> 5 -> 5`, five cells over 25 states, four abstract
+  entries versus 16 physical state-action orbits and 40 ground state-action pairs, and
+  three active cells over 18 active states; within every active cell, the same lifted
+  training policy graph reaches members from multiple of its ten active physical-
+  automorphism orbits.
+- Every registered Phase 3A train/held-out row reproduces the V0-027 rational goldens,
+  has `J0=Jkappa=lifted` reward and failure, and normalized regret upper bound zero.
 
 ## Out of scope
 
-Neural encoders, learned/statistical world models, MCTS, first-hit options, SMDP duration, POMDP/belief adapters, visual perception, infinite horizon, cross-domain meta-controllers, and interpreting a supplied `D4` group as an automatically discovered abstraction.
+Neural encoders, learned/statistical world models, MCTS, first-hit options, SMDP duration, POMDP/belief adapters, visual perception, infinite horizon, cross-domain meta-controllers, interpreting a supplied `D4` group as an automatically discovered abstraction, or interpreting Phase 3A exact-model cross-orbit aggregation as oracle-free unknown-quotient discovery.
 
 ## Known failure modes
 
-State explosion, incomplete predicate grammar, no common semantic action, overly conservative envelopes, infeasible chance constraints, build cost that never amortizes, incorrect state/action group transforms, and a cache key that omits or misstates build coverage. For the exact `D4` baseline, a nonzero width is an invariant failure rather than acceptable conservatism. For the aliased profile, hard-coding its two cell IDs instead of extracting and ranking exact witnesses invalidates the CEGAR-discovery claim.
+State explosion, incomplete predicate grammar, no common semantic action, overly conservative envelopes, infeasible chance constraints, build cost that never amortizes, incorrect state/action group transforms, and a cache key that omits or misstates build coverage. For the exact `D4` baseline, a nonzero width is an invariant failure rather than acceptable conservatism. For the aliased profile, hard-coding its two cell IDs instead of extracting and ranking exact witnesses invalidates the CEGAR-discovery claim. For Phase 3A, using held-out fields during atom selection, accepting a cross-orbit cell reachable only outside the registered policies, or calling the eight-cell G2048 interval model an exact homomorphism invalidates the claim.
 
 ## Open risks
 
-Later claims about shared grammar/coordinates and practical amortization remain empirical. They do not weaken Phase 0.5 soundness obligations. V0-026 closes the executable feasible-aliasing positive-control contract; broader automatic predicate invention and genuinely unknown state-quotient discovery remain open empirical work.
+Later claims about shared grammar/coordinates and practical amortization remain empirical. They do not weaken Phase 0.5 soundness obligations. V0-027 closes the immediate cross-automorphism state-alias positive control, but broader automatic predicate invention, oracle-free unknown state-quotient discovery, and the complete statistical Phase 3 Gate remain open empirical work.

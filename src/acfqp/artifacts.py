@@ -212,6 +212,72 @@ ALIASED_CEGAR_DOCUMENT_CONTRACTS = {
 ALIASED_CEGAR_REQUIRED_PATHS = tuple(ALIASED_CEGAR_DOCUMENT_CONTRACTS)
 
 
+PHASE3A_DOCUMENT_CONTRACTS = {
+    "run.json": ("run_metadata", "acfqp.run@phase3a.v1"),
+    "suite/benchmark_registry.json": (
+        "benchmark_registry",
+        "acfqp.benchmark_registry@phase3a.v1",
+    ),
+    "suite/query_registry.json": (
+        "query_registry",
+        "acfqp.query_registry@phase3a.v1",
+    ),
+    "suite/split_and_seed_ledger.json": (
+        "split_and_seed_ledger",
+        "acfqp.split_seed_ledger@phase3a.v1",
+    ),
+    "coverage/g2048.json": (
+        "suite_union_coverage",
+        "acfqp.suite_coverage.g2048@phase3a.v1",
+    ),
+    "coverage/lmb.json": (
+        "suite_union_coverage",
+        "acfqp.suite_coverage.lmb@phase3a.v1",
+    ),
+    "ground/g2048_oracle_table.json": (
+        "ground_oracle_table",
+        "acfqp.ground_oracle_table.g2048@phase3a.v1",
+    ),
+    "oracle/g2048_partition_construction.json": (
+        "oracle_partition_construction",
+        "acfqp.oracle_partition.g2048@phase3a.v1",
+    ),
+    "oracle/lmb_behavioral_construction.json": (
+        "behavioral_partition_construction",
+        "acfqp.behavioral_partition.lmb@phase3a.v1",
+    ),
+    "rapm/g2048.json": ("reusable_abstract_planning_model", "acfqp.rapm.g2048@phase3a.v1"),
+    "rapm/lmb.json": ("reusable_abstract_planning_model", "acfqp.rapm.lmb@phase3a.v1"),
+    "evaluation/j0_jkappa_j2_rows.jsonl": (
+        "audit_ladder_rows",
+        "application/x-ndjson; profile=acfqp.j0_jkappa_j2.phase3a.v1",
+    ),
+    "evaluation/policy_graphs.json": (
+        "contingent_policy_graphs",
+        "acfqp.policy_graphs@phase3a.v1",
+    ),
+    "evaluation/symmetry_nontriviality.json": (
+        "strategic_nontriviality_audit",
+        "acfqp.symmetry_nontriviality@phase3a.v1",
+    ),
+    "evaluation/reuse.json": (
+        "multi_query_reuse_audit",
+        "acfqp.reuse_audit@phase3a.v1",
+    ),
+    "result/phase3a_slice_report.json": (
+        "phase3a_slice_gate_report",
+        "acfqp.phase3a_slice_report@v1",
+    ),
+    "metrics.json": ("run_metrics", "acfqp.metrics@phase3a.v1"),
+    "events.jsonl": (
+        "event_log",
+        "application/x-ndjson; profile=acfqp.events.phase3a.v1",
+    ),
+}
+
+PHASE3A_REQUIRED_PATHS = tuple(PHASE3A_DOCUMENT_CONTRACTS)
+
+
 def _document_contracts_for_required_paths(
     required_paths: set[str],
 ) -> Mapping[str, tuple[str, str]]:
@@ -221,6 +287,8 @@ def _document_contracts_for_required_paths(
         return D4_BASELINE_DOCUMENT_CONTRACTS
     if required_paths == set(ALIASED_CEGAR_REQUIRED_PATHS):
         return ALIASED_CEGAR_DOCUMENT_CONTRACTS
+    if required_paths == set(PHASE3A_REQUIRED_PATHS):
+        return PHASE3A_DOCUMENT_CONTRACTS
     return PHASE05_DOCUMENT_CONTRACTS
 
 

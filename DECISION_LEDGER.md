@@ -1,7 +1,7 @@
 # V0 Decision Ledger
 
 **Status:** normative source of truth  
-**Ledger version:** 0.5.0
+**Ledger version:** 0.6.0
 **Last updated:** 2026-07-19
 
 ## Authority
@@ -52,6 +52,113 @@ absent from a public checkout.
 | V0-024 | 2026-07-19 | Safe-chain exact D4 quotient | FROZEN | `g2048_select_safe_chain_2x2_v0` is the `exact_D4_orbit_quotient_certificate_baseline`. Enumerate its complete reachable state-time graph for `h in {0,1,2}` and quotient only equal-stage states by full `D4` orbits. Verify legal actions, reward, one-time failure cost, kernel, rank/spawn/failure, and terminal semantics are `D4` automorphisms. Use row-major lexicographic canonicalization (empty rank `0`) and the frozen group order `e,r,r^2,r^3,m,rm,r^2m,r^3m`, where `r` is clockwise quarter-turn, `m` is vertical-axis reflection, and `r^k m` applies `m` then `r^k`; define a semantic action as the canonical action's orbit under the canonical state's stabilizer; and freeze `kappa_x` as the uniform distribution over the **distinct**, deduplicated inverse ground-action set, never over group elements with multiplicity. The exact abstract reward/cost/transition must be representative-independent, its transition uncertainty set singleton, and all sound-envelope widths zero. The group/action-transform profile is structural/build-owned, while the reachable state-time graph, materialized orbit quotient, plan, and proof are query-scoped; `rho0/H` do not enter the structural key. This profile performs no CEGAR split: any violated exact-quotient invariant terminates with baseline-validation status `EXACT_D4_QUOTIENT_INVARIANT_VIOLATION`, not refinement or fallback. Passing it requires strict state/action graph compression and supports only a known-group exact state-action symmetry quotient/value/risk/policy-preservation claim, not automatic discovery, predicate/refinement, shared coordinates, or learning. Any future `g2048_select_safe_chain_aliased_partition_v0` is a separate refinement profile and may not replace or modify this baseline. | Resolves `V0-RISK-002` and supersedes the unresolved abstract-profile note in `markdown/GPT_followup_questions.md`; it does not alter V0-020 ground/query semantics or the original canonical Phase 0.5 split fixture. | D4 action/state transforms; reachable state-time graph; canonicalizer/stabilizer/action-orbit builder; concretizer; exact quotient/envelope; J0/lift comparison; artifacts and claim validator. |
 | V0-025 | 2026-07-19 | Coverage-limited build ownership | FROZEN | `rho0` remains a `QuerySpec` field and never becomes structural environment semantics. The Phase 0.5 RAPM build receives the query's explicit positive-mass support and constructs its full transition closure under every legal action and every positive-probability successor. Its coverage descriptor is frozen as `mode=query_support_transition_closure`, `initial_support_sha256` over the canonical ordered `rho0` declaration including exact masses, `covered_state_count`, and `reuse_outside_coverage_forbidden=true`. `structural_id` excludes `rho0`; `query_id` includes the full query; and `build_id` includes `structural_id`, the complete coverage descriptor, and source identity. Thus changing `rho0` leaves `structural_id` unchanged but changes the descriptor-specific `build_id` and `query_id`; the current cache does not infer extensional equivalence between different support declarations. A candidate query must be validated against the recorded closure before planning, and any support outside it is rejected or rebuilt under a new coverage descriptor. Optional domain initial-distribution methods are named query factories only; they cannot seed a build implicitly, and `structural.json` contains no `initial_law`. | Resolves `V0-RISK-003` and narrows V0-003's reuse statement for the implemented coverage-limited V0 profile without moving query semantics into the structural key. | `QuerySpec`; `RAPMBuilder`; build/query/structural IDs; coverage validator; config/run artifacts; cache-reuse and out-of-coverage tests. |
 | V0-026 | 2026-07-19 | Safe-chain aliased CEGAR positive control | FROZEN | `g2048_select_safe_chain_aliased_partition_v0` is an independent refinement **profile key**, not a new ground structural key: it reuses the `g2048_select_safe_chain_2x2_v0` kernel, canonical `D4`-uniform `H=2, delta=1/20` query, and complete 192-state query-support transition closure, while committing separate partition, grammar, semantic-adapter, build, run, and artifact hashes. Its fixed ten-cell base encoder puts every failure state in one terminal cell and maps each active state by `(empty_count, sorted nonzero rank histogram)`; this preregistered base encoder has incremental refinement rate zero but its ten leaves and all construction/accounting costs are charged. The profile uses `RefinementBudget.full_v0()`, `abstraction_source=deliberately_aliased_boundary_actions`, the deliberately non-`D4`-equivariant `canonical:first`/`canonical:last` boundary labels, and deterministic singleton `kappa`. Grammar `g2048.action_frame_geometry.v1` contains exactly `first_survivor_adjacent_nonmerged_count`, `first_pair_horizontal`, `first_survivor_row`, `first_survivor_column`, `nonmerged_row`, and `nonmerged_column`, totalized to zero when `FIRST` has no unique occupied nonmerged cell. The registered target is `first_survivor_adjacent_nonmerged_count|<=|1/2`; with one threshold and six features its incremental rate is four bits per local application. The frozen `(nominal reward, nominal failure, L_pi, U_F, normalized regret upper)` sequence is `(201/6400,5059/8000,51/3200,19999/20000,99/3200)` before refinement, `(3/64,21187/80000,3/64,5099/10000,0)` after the first split, and `(3/64,317/16000,3/64,397/20000,0)` after the second. Exact audit witness extraction and the full V0 joint candidate ranking, never a hard-coded split schedule, must select that predicate first in histogram cell `(1,1,2)` and then in `(1,2,2)`, giving `10 -> 11 -> 12` leaves and eight charged refinement bits. The second split immediately returns `CERTIFIED` with no fallback: lifted reward `3/64`, exact lifted failure `317/16000`, sound failure upper bound `397/20000 < 1/20`, and normalized regret upper bound zero at the distribution and at all eight initial support points. J0 failure remains `99/5000`; the lifted-risk gap is `1/80000` and envelope conservatism is `3/80000`. A third split of `(2,2,2)` is future tightening-only work and is forbidden in the main run after certification. Ordinary planning/refinement endings use the existing eight CEGAR statuses; malformed profile construction or replay terminates separately as `ALIASED_CEGAR_INVARIANT_VIOLATION`. Every active histogram cell happens to be one complete `D4` orbit, so the demonstrated defect is the mismatch between a coarse state cell and the order-dependent, non-equivariant boundary-action labels. The claim is only that exact counterexamples can select and apply a preregistered current-state geometry atom to repair this deliberate action/partition aliasing enough for a sound constrained certificate; it is not automatic predicate invention, state-quotient or unknown-symmetry discovery, exact risk/policy preservation, shared grammar, or learning. | Makes the future profile mentioned by V0-024 executable without changing the exact-`D4` baseline, and supersedes the nonnormative sketch in `markdown/GPT_d4_quotient_decision.md` wherever that sketch called the profile a new structural key or left its partition/action/refinement semantics open. | Aliased-profile registry and identity; action-frame feature adapter; base partition; exact witness extractor; multi-step CEGAR runner; full-V0 budget/rate accounting; iteration artifacts and independent verifier; claim filter and golden tests. |
+| V0-027 | 2026-07-19 | Phase 3A true-state-alias oracle positive control | FROZEN | Contract `0.6.0` registers `phase3a_true_state_alias_oracle_control_v0` / execution profile `phase3a_true_state_alias_oracle_control` as a two-domain **construction slice**, with the exact fixtures, train/held-out split, algorithms, goldens, and acceptance rules below. It must demonstrate an active cell in which one lifted training policy graph jointly reaches states from multiple complete known-automorphism orbits, train-built RAPM reuse across the registered two-domain held-out suite, at least `5x` **active-state** compression, strict state-action compression, exact-sound certification, zero exact reward gaps, and zero exact failure gaps. Passing returns `PHASE3A_SLICE_PASS` and simultaneously `PHASE3_AGGREGATE_NOT_RUN`; malformed construction or replay returns `PHASE3A_INVARIANT_VIOLATION`. This is an exact-model/oracle upper-bound control, not the full Phase 3 Gate and not evidence of predicate invention, oracle-free unknown-quotient discovery, shared coordinates, CEGAR recovery, multiresolution planning, or scale generality. | Directly addresses V0-026's limitation that every active histogram cell was already one `D4` orbit, without upgrading the Phase 3 aggregate claim or changing any earlier profile. | Suite coverage; oracle/behavioural builders; semantic actions and lift; train/held-out registry; symmetry-nontriviality audit; J0/Jkappa/J2 rows; contract-0.6 artifacts, statuses, claim filter, and golden tests. |
+
+## V0-027 registered construction slice
+
+The Phase 3A suite coverage mode is
+`suite_support_union_transition_closure`: canonicalize the set union of positive-mass
+supports from **training queries only**, hash that set without query order or masses,
+and close it under every legal action and positive-probability outcome. The descriptor
+also records support-state count, closure count, exact state cap, the admissibility rule
+`positive_support_subset_of_covered_states`, and
+`reuse_outside_coverage_forbidden=true`. Held-out queries may be released only after
+the coverage, partition, semantic adapter, and RAPM identities are frozen. They may be
+evaluated only when their support is contained in that coverage; changing any held-out
+reward, horizon, delta, distribution, ordering, or presence cannot change construction.
+
+The G2048 control reuses `g2048_select_safe_chain_2x2_v0`. Training contains two
+queries with canonical merge reward and `delta=1/20`: the canonical rank-1
+`D4`-uniform `H=2` query and the `H=1` strict cross-`D4` bridge query defined below.
+Their 20-state support union closes to 192 states. Actions use the `D4`-equivariant relative-
+survivor labels `TOWARD` and `AWAY`, with `kappa` uniform over distinct legal actions
+carrying the selected label. An unrestricted exact ground-oracle table is computed on
+the training closure for `h in {1,2}` and the training reward/risk profile. The fixed
+candidate atom set is selected semantic action at `delta` and maximum normalized
+reward at each horizon; exhaustive cardinality-first/canonical-ID subset selection,
+followed by ordinary exact full-plan audit, must select exactly the two `h=1` atoms.
+The resulting state partition has 8 cells with size multiset
+`{124,16,12,8,8,8,8,8}`, hence total `192/8=24x`; the exact full-model behavioural
+baseline has 10 cells. Among 68 active states, nine complete `D4` state orbits are
+aggregated into seven active cells, so the gate compression is `68/7>5`; two cells cross
+orbit boundaries and at least one is reached by a registered training policy. The complete
+active `D4` state-action orbit count is 18, while the candidate has 14 abstract
+cell-action entries; all 144 active ground state-action pairs also map into those 14.
+
+The bridge query places mass `3/25` on each of the eight `D4` images of
+`(1,1,2,0)`, mass `1/200` on each of the four images of `(2,2,2,0)`, and mass
+`1/400` on each of the eight images of `(2,2,4,0)`; these masses sum to one. Its
+explicit witnesses `(0,2,2,2)` and `(0,2,4,2)` are not in the same `D4` orbit, but
+must occupy the same selected oracle cell, both occur on the bridge query's lifted
+policy graph, and both select `AWAY`. This is the mandatory G2048 proof that the
+reported active alias is a jointly policy-reachable cross-automorphism state alias.
+
+The registered G2048 evaluation rows are:
+
+| Split | Query key | J0 = Jkappa = lifted reward | J0 = Jkappa = lifted failure | Sound `U_F` |
+|---|---|---:|---:|---:|
+| train | `g2048.rank1_uniform.h2` | `3/64` | `99/5000` | `199/10000` |
+| train | `g2048.strict_cross_d4_bridge.h1` | `13/400` | `199/5000` | `1/25` |
+| held-out | `g2048.rank2_uniform.h2` | `3/32` | `99/5000` | `99/5000` |
+| held-out | `g2048.mixed_points.h2` | `9/128` | `99/5000` | `397/20000` |
+| held-out | `g2048.rank1_point.h2` | `3/64` | `99/5000` | `199/10000` |
+| held-out | `g2048.rank1_uniform.h1` | `1/32` | `0` | `0` |
+
+Here rank-2 uses the `D4` orbit of row-major board `(2,2,3,0)`, while mixed-points is
+the equal mixture of `(1,1,2,0)` and `(2,2,3,0)`. Every row has exact lifted reward
+lower bound equal to J0 and normalized regret upper bound zero.
+
+The LMB control is the deterministic generated fixture
+`lmb_generated_n6_t2_k3_d2_seed0_v0`, with tile types `(0,1,0,1,1,0)`, blockers
+`(empty,{0},{0},empty,empty,{0})`, capacity 3, and arity 3. Its training query is uniform over
+the nine registered active `(removed_mask,buffer)` pairs
+`(11,(1,2)), (13,(2,1)), (19,(1,2)), (21,(2,1)), (25,(1,2)), (35,(2,1)),
+(41,(2,1)), (49,(2,1)), (7,(2,1))`, with canonical match-plus-clear reward, `H=3`,
+`delta=1/20`, and `Rmax=4`. This support closes to 25 states: 18 active, six failure,
+and one success.
+
+LMB construction does not inspect query values. Exact partition refinement starts from
+active/failure/success status and repeatedly represents each action by its exact reward-
+feature vector, one-time failure probability, termination probability, and successor-
+cell distribution. Equal-signature distinct ground actions are one semantic action and
+receive uniform concretizer mass. The cell-count trace is `3 -> 5 -> 5`; final cell
+sizes are `{9,6,5,4,1}`, all realization envelopes are singleton, and 18 active states
+become three active cells, so the gate compression is `18/3=6`; total compression is
+`25/5=5`. Forty ground state-action pairs become four abstract entries. The complete
+physical automorphism group has four elements: its 13 state orbits become five behavioural cells, its ten
+active state orbits become three active cells, and its 16 state-action orbits become
+four semantic cell-actions. In every active cell, the same lifted training policy graph
+jointly reaches states from more than one physical automorphism orbit. In particular,
+states `(11,(1,2))` and
+`(13,(2,1))` are not automorphic but occupy the same exact behavioural cell.
+
+The registered LMB evaluation rows are:
+
+| Split | Query key | J0 = Jkappa = lifted reward | J0 = Jkappa = lifted failure | Sound `U_F` |
+|---|---|---:|---:|---:|
+| train | `lmb.alias9.canonical.h3` | `1` | `0` | `0` |
+| held-out | `lmb.alias9.match_only.h3` | `1` | `0` | `0` |
+| held-out | `lmb.alias9.canonical.h2` | `1/4` | `0` | `0` |
+
+The changed match-only reward basis uses the separate deterministic bound `Rmax=2`
+with proof ID `lmb.match_only.matches_le_n_over_3.v1`; it must not reuse the canonical
+match-plus-clear `2N/3` proof ID. The canonical LMB rows retain `Rmax=4` and the
+canonical proof.
+
+For both domains, every registered row must have `J0=Jkappa=lifted` reward and failure,
+zero action-restriction and state-alias-selector gaps independently for both reward and
+failure, a complete exact audit, and a contingent deterministic Markov policy with its
+frozen concretizer. The bundle must expose construction traces, the cross-automorphism
+audit, coverage/RAPM reuse identities, every evaluation row, and the unsupported-claim
+list. Exact-model construction may identify equivalences not supplied as a group
+action; under V0-027 that fact is described only as **cross-automorphism oracle/model-
+oracle state aliasing**, never as discovery of an unknown quotient.
+
+The reuse statement is indivisible and limited to **across the registered two-domain
+held-out suite**: G2048 tests changes in initial support/distribution and horizon while
+holding reward basis and risk fixed; LMB tests reward-basis, horizon, and risk changes
+while holding initial support fixed. It does not assert that either domain was tested
+under all four change types or that arbitrary in-coverage queries preserve value.
 
 ## Implementation defaults (not new scientific claims)
 
@@ -85,3 +192,4 @@ accepted split, iteration record, output-stage proof, and final certificate.
 - **2026-07-19 — 0.3.0:** Froze the safe-chain known-symmetry positive control as an exact `D4` state-time orbit quotient with stabilizer-orbit semantic actions, a deduplicated distinct-inverse-action uniform concretizer, representative-independent point dynamics, zero-width envelopes, no CEGAR split, a dedicated invariant-violation status, and a narrow claim boundary. Resolved `V0-RISK-002`; any aliased CEGAR benchmark remains separately keyed future work.
 - **2026-07-19 — 0.4.0:** Froze the implemented Phase 0.5 build as explicit query-support transition-closure coverage. Added coverage mode/support hash/count and no-outside-reuse to `build_id`, preserved query-owned `rho0` and the unrestricted structural identity boundary, and resolved `V0-RISK-003`.
 - **2026-07-19 — 0.5.0:** Froze the separately keyed safe-chain aliased CEGAR positive control over the unchanged safe-chain ground structure/query: complete 192-state coverage, ten-cell histogram base partition, order-dependent boundary actions, a six-feature action-frame grammar, two auditor-selected four-bit geometry splits, exact golden bounds, immediate sound certification, zero fallback, multi-iteration artifacts, and a claim boundary that excludes automatic predicate/state/symmetry discovery and exact risk preservation.
+- **2026-07-19 — 0.6.0:** Froze the Phase 3A two-domain true-state-alias oracle construction slice: train-only suite coverage and construction, held-out evaluation on unchanged RAPMs, G2048 `192 -> 8`, exact LMB behavioural `25 -> 5`, same-policy-graph joint reachability across complete known-automorphism orbits, exact audit goldens, and explicit `PHASE3_AGGREGATE_NOT_RUN`/no-predicate-invention/no-unknown-discovery boundaries.

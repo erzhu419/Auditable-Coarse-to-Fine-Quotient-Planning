@@ -6,6 +6,13 @@ only for a query whose positive support is already contained in that closure.
 The initial-law digest remains part of the build descriptor so changing
 ``rho0`` produces a different build identity even when the resulting closure
 set happens to be unchanged.
+
+Phase 3 suite builds use a distinct contract.  They close the union of the
+declared queries' positive supports once, and bind the build to that canonical
+support *set*.  Consequently their support digest is intentionally independent
+of query order and probability masses.  Keeping this as a separate value object
+prevents those reusable-suite semantics from silently changing the Phase 0.5
+per-query :class:`BuildCoverage` identity contract.
 """
 
 from __future__ import annotations
@@ -159,10 +166,174 @@ class BuildCoverage(Generic[StateT]):
             )
 
 
+@dataclass(frozen=True, slots=True)
+class SuiteBuildCoverage(Generic[StateT]):
+    """Immutable coverage certificate for a declared reusable query suite.
+
+    ``declared_support_set_sha256`` hashes the canonically ordered set of
+    positive-support states.  It does not hash query probability masses or the
+    order in which queries were supplied.  ``covered_states`` is then the full
+    all-action/all-positive-outcome transition closure of that support union.
+    """
+
+    declared_support_set_sha256: str
+    declared_support_states: tuple[StateT, ...]
+    declared_support_state_ids: tuple[str, ...]
+    covered_states: tuple[StateT, ...]
+    covered_state_ids: tuple[str, ...]
+    exact_state_cap: int
+
+    mode: str = "suite_support_union_transition_closure"
+    admissible_query_support_rule: str = (
+        "positive_support_subset_of_covered_states"
+    )
+    reuse_outside_coverage_forbidden: bool = True
+
+    def __post_init__(self) -> None:
+        declared = _ordered_states(self.declared_support_states)
+        if (
+            not declared
+            or declared != self.declared_support_states
+            or len(set(declared)) != len(declared)
+        ):
+            raise ValueError(
+                "declared support states must be nonempty, unique, and "
+                "canonically ordered"
+            )
+        expected_declared_ids = tuple(
+            sorted(object_id(state, "state") for state in declared)
+        )
+        if self.declared_support_state_ids != expected_declared_ids:
+            raise ValueError(
+                "declared support state IDs do not match the declared support set"
+            )
+        expected_support_digest = canonical_sha256(declared)
+        if self.declared_support_set_sha256 != expected_support_digest:
+            raise ValueError(
+                "declared-support-set digest does not match the canonical support set"
+            )
+
+        covered = _ordered_states(self.covered_states)
+        if covered != self.covered_states or len(set(covered)) != len(covered):
+            raise ValueError("covered states must be unique and canonically ordered")
+        expected_covered_ids = tuple(
+            sorted(object_id(state, "state") for state in covered)
+        )
+        if self.covered_state_ids != expected_covered_ids:
+            raise ValueError("covered state IDs do not match the covered states")
+        if not set(declared).issubset(covered):
+            raise ValueError("declared support must be contained in build coverage")
+
+        if self.exact_state_cap <= 0:
+            raise ValueError("suite build exact state cap must be positive")
+        if len(covered) > self.exact_state_cap:
+            raise ValueError("covered states exceed the recorded exact state cap")
+        if self.mode != "suite_support_union_transition_closure":
+            raise ValueError("unsupported suite build-coverage mode")
+        if (
+            self.admissible_query_support_rule
+            != "positive_support_subset_of_covered_states"
+        ):
+            raise ValueError("unsupported suite query-admissibility rule")
+        if self.reuse_outside_coverage_forbidden is not True:
+            raise ValueError("suite builds must forbid out-of-coverage reuse")
+
+    @classmethod
+    def from_queries(
+        cls,
+        kernel: FiniteKernel[StateT, Any],
+        queries: Iterable[QuerySpec[StateT]],
+        *,
+        state_cap: int = 50_000,
+    ) -> "SuiteBuildCoverage[StateT]":
+        """Build exact closure coverage for the union of suite supports."""
+
+        if state_cap <= 0:
+            raise ValueError("suite build exact state cap must be positive")
+        suite = tuple(queries)
+        if not suite:
+            raise ValueError("suite build coverage requires at least one query")
+
+        declared_support = _ordered_states(
+            {
+                state
+                for query in suite
+                for probability, state in query.initial_distribution
+                if Fraction(probability) > 0
+            }
+        )
+        if not declared_support:
+            raise ValueError(
+                "suite build coverage requires nonempty positive-probability support"
+            )
+        if len(declared_support) > state_cap:
+            raise RuntimeError(
+                "RAPM transition closure exceeded the exact state cap"
+            )
+
+        states = transition_closure(
+            kernel,
+            ((Fraction(1), state) for state in declared_support),
+            state_cap=state_cap,
+        )
+        return cls(
+            declared_support_set_sha256=canonical_sha256(declared_support),
+            declared_support_states=declared_support,
+            declared_support_state_ids=tuple(
+                sorted(object_id(state, "state") for state in declared_support)
+            ),
+            covered_states=states,
+            covered_state_ids=tuple(
+                sorted(object_id(state, "state") for state in states)
+            ),
+            exact_state_cap=state_cap,
+        )
+
+    @property
+    def declared_support_state_count(self) -> int:
+        return len(self.declared_support_state_ids)
+
+    @property
+    def covered_state_count(self) -> int:
+        return len(self.covered_state_ids)
+
+    def descriptor(self) -> dict[str, object]:
+        """Return every suite-coverage field that must enter ``build_id``."""
+
+        return {
+            "mode": self.mode,
+            "declared_support_set_sha256": self.declared_support_set_sha256,
+            "declared_support_state_count": self.declared_support_state_count,
+            "covered_state_count": self.covered_state_count,
+            "exact_state_cap": self.exact_state_cap,
+            "admissible_query_support_rule": self.admissible_query_support_rule,
+            "reuse_outside_coverage_forbidden": (
+                self.reuse_outside_coverage_forbidden
+            ),
+        }
+
+    def validate_query_coverage(self, query: QuerySpec[StateT]) -> None:
+        """Reject a query whose positive support is outside suite coverage."""
+
+        covered = set(self.covered_states)
+        missing = _ordered_states(
+            state
+            for probability, state in query.initial_distribution
+            if Fraction(probability) > 0 and state not in covered
+        )
+        if missing:
+            missing_ids = tuple(object_id(state, "state") for state in missing)
+            raise QueryOutsideBuildCoverageError(
+                "candidate query support lies outside cached suite build coverage; "
+                f"rebuild required for state IDs {missing_ids!r}"
+            )
+
+
 def validate_query_coverage(
-    coverage: BuildCoverage[StateT], query: QuerySpec[StateT]
+    coverage: BuildCoverage[StateT] | SuiteBuildCoverage[StateT],
+    query: QuerySpec[StateT],
 ) -> None:
-    """Public functional form of :meth:`BuildCoverage.validate_query_coverage`."""
+    """Validate a query against either immutable coverage contract."""
 
     coverage.validate_query_coverage(query)
 
@@ -170,6 +341,7 @@ def validate_query_coverage(
 __all__ = [
     "BuildCoverage",
     "QueryOutsideBuildCoverageError",
+    "SuiteBuildCoverage",
     "transition_closure",
     "validate_query_coverage",
 ]
