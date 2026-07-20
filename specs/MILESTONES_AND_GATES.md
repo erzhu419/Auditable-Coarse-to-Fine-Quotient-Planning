@@ -370,8 +370,9 @@ python3 scripts/verify_phase3d.py artifacts/phase3d
 This Gate supports only the declared finite-domain, capped, earliest-antichain claim.
 Dependent-horizon one-shot recovery, information-theoretic capability minimality,
 automatic predicate/quotient discovery, economics, scale, learning, and cross-domain
-generality remain unproved. Workload economics/dynamic routing is next; learned model
-synthesis follows it.
+generality remain unproved. Accounted dynamic routing and scalar-free workload-vector
+mechanics are next; the scalar workload-economics Gate waits for a later ledger
+revision, and learned model synthesis follows it.
 
 ### Phase 3E accounted dynamic-routing implementation Gate
 
@@ -403,20 +404,31 @@ The Gate remains closed until all of the following pass together:
   projection, upper-violation, typed-attestation, terminal-class, and hash-chain attack
   suites.
 
-The current working implementation has completed the component schemas and attack
-fixtures for full IDs, the 47-leaf registry/34-operational-leaf eight-axis projection,
-route formula and cap guards, marginal selection, access ordering, trusted local
-budget replay, scalar-free workload vectors, and occurrence/rebuild closure. Phase
-3B/3C/3D also expose no-full-replay consumption modes and Phase 3D exposes a
-pre-execution estimate boundary. Four semantic roles have real V1 replay handlers
-(work, actual projection, terminal classification, and protocol access); nine original
-FQ7 roles, including route decision, fail closed as `NOT_IMPLEMENTED`.
+The current working implementation also has a non-official one-decision
+`run_phase3e`, registered-safe-chain causal/cardinality authority, generic
+route-upper/decision replay, real isolated LOCAL and capped fallback adapters,
+route-native aggregation/upper compliance, terminal/occurrence evidence, and generic
+authority-gated second-decision control: after failed post-audit the new marginal
+decision can select local transaction 2 or direct fallback without manufacturing a
+transaction. Negative local worker results close after the legal three-stage prefix and
+also require a fresh fallback decision. Phase 3B/3C/3D expose
+no-full-replay modes and Phase 3D exposes a pre-execution estimate boundary. The
+registered safe-chain LOCAL positive control executes `16+8` ground steps only after
+decision freeze and closes with independent local-result and sound-post-audit semantic
+results. Preselection binds failed-certificate/action-catalogue identities, charged
+semantic evidence forms an exact decision/upper/cardinality dependency closure,
+capability/worker/stitch/post-audit identities cannot be substituted, and both selected
+routes preserve already observed work incrementally on failure.
 
-This component milestone does not satisfy the implementation Gate. Production-native
-instrumentation, direct fallback/caps, the executable second transaction, the remaining
-semantic authorities, an integrated `run_phase3e`, and an independent bundle verifier
-are still absent. A component test pass cannot be relabelled as an official workload
-run.
+This vertical-slice milestone still does not satisfy the implementation Gate. Four P0s
+remain: a non-cyclic charge for terminal/certificate-verifier operational work;
+continuation `WORK_VECTOR` verification work in the next common prefix; a sealed
+post-freeze executor factory and content-addressed runtime tree; and occurrence-level
+typed failure closure plus aggregate-terminal semantics. Exact cached-infeasibility and
+abstract-audit authority, a registered live dependent second-decision benchmark,
+rebuild/retry and complete failure/hash instrumentation, an upstream manifest-to-
+prepared-run consumer, and an independent bundle verifier also remain absent. A scoped
+runtime pass cannot be relabelled as an official workload run.
 
 Until then the required tuple is exactly:
 

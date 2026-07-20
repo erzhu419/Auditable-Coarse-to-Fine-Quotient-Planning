@@ -17,6 +17,7 @@ import json
 import os
 from pathlib import Path
 import platform
+import resource
 import sys
 from typing import Any, Sequence
 
@@ -32,6 +33,7 @@ FORBIDDEN_PREFIXES = (
 )
 FORBIDDEN_MODULES = FORBIDDEN_PREFIXES
 ATTESTATION_SCHEMA = "acfqp.general_local_runtime_attestation.v1"
+WORKING_SET_LIMIT_BYTES = 256 * 1024 * 1024
 
 
 def _canonical_json(value: Any) -> str:
@@ -129,6 +131,16 @@ def run_isolated(
     attestation_path: Path,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     """Run the worker after verifying its complete capability inventory."""
+
+    # Phase 3E accounts peak working capacity, not an unverifiable zero.  The
+    # isolated worker therefore installs and attests a finite address-space
+    # ceiling before reading route inputs or importing the solver.  We charge
+    # that deterministic cap instead of putting nondeterministic ru_maxrss in
+    # the replay-exact Phase 3D semantic attestation.
+    resource.setrlimit(
+        resource.RLIMIT_AS,
+        (WORKING_SET_LIMIT_BYTES, WORKING_SET_LIMIT_BYTES),
+    )
 
     input_parents = {
         capability_path.parent.resolve(),
@@ -246,6 +258,7 @@ def run_isolated(
             "slice_id": result["slice_id"],
             "result_id": result["result_id"],
             "status": result["status"],
+            "working_set_limit_bytes": WORKING_SET_LIMIT_BYTES,
             "python_implementation": platform.python_implementation(),
             "python_version": platform.python_version(),
             "python_executable": str(Path(sys.executable).resolve()),
@@ -324,6 +337,7 @@ __all__ = [
     "ATTESTATION_SCHEMA",
     "FORBIDDEN_MODULES",
     "FORBIDDEN_PREFIXES",
+    "WORKING_SET_LIMIT_BYTES",
     "main",
     "run",
     "run_isolated",

@@ -733,6 +733,11 @@ Phase 3E accounted dynamic routing:
                peak_mounted_bytes, peak_working_bytes, process_launches,
                read_bytes, staged_bytes)
   common_prefix_work_vector_id
+  preselection_read_ids=(reusable_rapm_id, build_epoch_id,
+                         failed_certificate_id, selected_plan_id,
+                         action_catalogue_id, frontier_snapshot_id-or-typed-null-id,
+                         causal_proof_id-or-typed-null-id, cardinality_evidence_id,
+                         route_cap_profile_id, formula_id, comparison_profile_id)
   route_attempt_id, logical_occurrence_id, decision_point_id
   local transaction_id/index, frontier_snapshot_id, causal_evidence_id=required
   direct-fallback transaction/frontier/causal fields=typed NOT_APPLICABLE
@@ -749,9 +754,33 @@ Phase 3E accounted dynamic routing:
   rebuild_policy_id, rebuild_event_ids, campaign_occurrence_closure_id
   closure/certification/economics denominators=registered logical occurrences
   workload_vector_spec_id, vector_prefix_totals, prefix_worst_frontiers
-  partial semantic handlers=(WorkVector, actual projection,
+  generic semantic handlers=(WorkVector, actual projection, route upper,
+                             route decision, ground fallback,
                              terminal classification, protocol access)
-  nine original FQ7 semantic roles including route decision=NOT_IMPLEMENTED
+  registered-safe-chain semantic handlers=(causal search, local/fallback cardinality,
+                                            local solver result, post audit)
+  charged_semantic_dependency_closure=(route decision -> causal + local upper
+                                       + fallback upper; each upper -> exactly one
+                                       matching cardinality verification)
+  unimplemented semantic handlers=(exact cached infeasibility, abstract audit)
+  one_decision_runner=run_phase3e
+  local_executor=AuthorizedSafeChainLocalExecutorV1
+  fallback_executor=AuthorizedIsolatedGroundFallbackExecutorV1
+  selected_route_work_id, verification_suffix_work_id,
+  aggregate_marginal_work_id, upper_compliance
+  local_result_bindings=(capability_binding_id, worker_result_binding_id,
+                         stitched_plan_id-or-typed-null,
+                         post_audit_certificate_id-or-typed-null)
+  local_negative_closure=(materialize, compile, worker; no stitch/post-audit)
+  failed_route_noncertificate=Phase3ERouteExecutionFailedV1
+  occurrence_runner=run_phase3e_occurrence_v1
+  occurrence_continuation=(fresh deeper decision -> local transaction 2
+                           or direct fallback without transaction 2)
+  failure_accounting=incremental local/fallback observed-work preservation
+  unresolved_p0=(terminal-verifier accounting cycle,
+                 continuation WorkVector-verification common-prefix charge,
+                 executor-factory/runtime-tree sealing,
+                 occurrence-level noncertificate/aggregate terminal)
   official_execution_allowed=false until all contract-1.0 implementation Gates pass
   official_scalar_cost=null, official_N_break_even=null
   scalar_gate_status=NOT_RUN

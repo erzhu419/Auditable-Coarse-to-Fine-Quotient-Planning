@@ -24,10 +24,21 @@ from acfqp.actual_accounting_v1 import (
     derive_actual_projection_v1,
     official_actual_projection_profile_v1,
 )
+from acfqp.route_upper_formula_v1 import (
+    derive_route_upper_v1,
+    official_route_upper_formula_v1,
+)
+from acfqp.phase3e_fallback_v1 import GroundFallbackCapProfileV1
 from acfqp.routing_v1 import (
+    CardinalityEvidenceV1,
+    CardinalitySourceKind,
+    DecisionPointV1,
+    FrozenCardinalityCollectionV1,
+    FrozenCardinalitySourceV1,
     MarginalRouteDecisionV1,
     RouteComparison,
     RouteDecisionContextV1,
+    RouteKind,
     RouteSelection,
     TerminalArtifactV1,
     TerminalClass,
@@ -39,10 +50,12 @@ from acfqp.semantic_verification_v1 import (
     SemanticRole,
     SemanticVerificationV1Error,
     SemanticVerifierNotImplementedError,
+    reject_unimplemented_semantic_claim_v1,
     semantic_verifier_spec_v1,
     verify_actual_projection_semantics_v1,
     verify_forbidden_access_violation_semantics_v1,
     verify_marginal_route_decision_semantics_v1,
+    verify_route_upper_semantics_v1,
     verify_terminal_classification_semantics_v1,
     verify_typed_attestation_v1,
     verify_work_vector_semantics_v1,
@@ -176,10 +189,17 @@ def test_local_work_and_actual_projection_require_matching_transaction_subject()
 
 
 def test_route_decision_semantics_fail_closed_until_route_upper_authorities_exist() -> None:
-    point = _id("raw-point")
+    context = _context("route")
+    point = DecisionPointV1(
+        context.route_decision_context_id,
+        TypedNotApplicable("no local transaction"),
+        TypedNotApplicable("no frontier"),
+        TypedNotApplicable("no causal search"),
+        _id("raw-common-prefix"),
+    )
     fallback = _id("raw-fallback")
     raw = MarginalRouteDecisionV1(
-        point,
+        point.decision_point_id,
         TypedNotApplicable("raw"),
         TypedNotApplicable("raw"),
         fallback,
@@ -187,16 +207,137 @@ def test_route_decision_semantics_fail_closed_until_route_upper_authorities_exis
         RouteComparison.MISSING_LOCAL_UPPER,
         fallback,
     )
-    with pytest.raises(SemanticVerifierNotImplementedError, match="ROUTE_DECISION"):
+    wrong_role = verify_work_vector_semantics_v1(
+        _work(RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE, context.route_attempt_id),
+        binding=_binding(context, decision=point.decision_point_id),
+        verification_work_record=_record(SemanticRole.WORK_VECTOR),
+    )
+    with pytest.raises(SemanticVerificationV1Error, match="expected verified ROUTE_UPPER"):
         verify_marginal_route_decision_semantics_v1(
             raw,
-            context=_context("route"),
-            decision_point={},
-            fallback_upper={},
-            causal=None,
-            local_upper=None,
-            binding=_binding(_context("route")),
+            context=context,
+            decision_point=point,
+            fallback_upper_result=wrong_role,
+            causal_result=None,
+            local_upper_result=None,
+            binding=_binding(context, decision=point.decision_point_id),
             verification_work_record=_record(SemanticRole.ROUTE_DECISION),
+        )
+
+
+def test_cardinality_member_deletion_and_rehash_is_not_semantic_authority() -> None:
+    """A self-consistent source transport cannot prove catalogue completeness."""
+
+    context = _context("cardinality-source")
+    source = FrozenCardinalitySourceV1(
+        context.route_decision_context_id,
+        RouteKind.DIRECT_FALLBACK,
+        _id("route-cap-profile"),
+        TypedNotApplicable("fallback source is attempt-scoped"),
+        CardinalitySourceKind.FALLBACK_SEARCH_BOUND,
+        "fallback-bound-catalogue",
+        _id("authoritative-parent"),
+        "GroundFallbackSearchSpaceV1",
+        SemanticRole.GROUND_FALLBACK.value,
+        _id("registered-extraction-profile"),
+        (
+            FrozenCardinalityCollectionV1(
+                "fallback.actions_evaluated",
+                tuple(sorted((_id("action-1"), _id("action-2")))),
+            ),
+        ),
+        2,
+    )
+    assert FrozenCardinalitySourceV1.from_dict(source.to_dict()) == source
+
+    # Deleting a member and recomputing the transport hash produces another
+    # well-formed source.  Therefore neither hash can authorize a count until
+    # the registered extractor replays an authority-bearing parent artifact.
+    omitted = replace(
+        source,
+        collections=(
+            FrozenCardinalityCollectionV1(
+                "fallback.actions_evaluated", (_id("action-1"),)
+            ),
+        ),
+    )
+    assert omitted.source_artifact_id != source.source_artifact_id
+    assert FrozenCardinalitySourceV1.from_dict(omitted.to_dict()) == omitted
+    # CARDINALITY_EVIDENCE now has one registered safe-chain fallback
+    # handler; this generic member-list transport is outside that profile and
+    # still cannot mint a result.
+    assert semantic_verifier_spec_v1(
+        SemanticRole.CARDINALITY_EVIDENCE
+    ).implemented
+    with pytest.raises(
+        SemanticVerificationV1Error, match="implemented"
+    ):
+        reject_unimplemented_semantic_claim_v1(
+            SemanticRole.CARDINALITY_EVIDENCE, claimed_outcome="VALID"
+        )
+
+
+def test_formula_valid_upper_cannot_use_self_hashed_cardinality_as_authority() -> None:
+    """Exact upper arithmetic does not elevate its raw count input to evidence."""
+
+    context = _context("raw-cardinality-upper")
+    registry = official_counter_registry_v1()
+    profile = official_comparison_profile_v1(registry)
+    cap = GroundFallbackCapProfileV1(
+        max_states_expanded=100,
+        max_actions_evaluated=200,
+        max_ground_steps=200,
+        max_outcome_rows=800,
+        max_bellman_backups=10_000,
+        max_composed_candidates=10_000,
+        max_cap_checks=20_000,
+        max_positive_outcomes_per_step=4,
+    )
+    point = DecisionPointV1(
+        context.route_decision_context_id,
+        TypedNotApplicable("fallback has no local transaction"),
+        TypedNotApplicable("fallback has no local frontier"),
+        TypedNotApplicable("fallback has no causal evidence"),
+        _id("raw-cardinality-common-prefix"),
+    )
+    formula = official_route_upper_formula_v1(
+        RouteKind.DIRECT_FALLBACK,
+        registry=registry,
+        profile=profile,
+        cap_profile=cap,
+    )
+    cardinality = CardinalityEvidenceV1(
+        context.route_decision_context_id,
+        RouteKind.DIRECT_FALLBACK,
+        cap.route_cap_profile_id,
+        TypedNotApplicable("fallback is attempt-scoped"),
+        tuple((name, 0) for name in formula.required_count_names),
+        (_id("self-hashed-cardinality-source"),),
+    )
+    upper, proof = derive_route_upper_v1(
+        context=context,
+        decision_point=point,
+        cardinality=cardinality,
+        cap_profile=cap,
+        registry=registry,
+        profile=profile,
+        formula=formula,
+    )
+    with pytest.raises(
+        SemanticVerificationV1Error, match="semantic replay"
+    ):
+        verify_route_upper_semantics_v1(
+            upper,
+            derivation_proof=proof,
+            cardinality_result=cardinality,  # type: ignore[arg-type]
+            context=context,
+            decision_point=point,
+            cap_profile=cap,
+            formula=formula,
+            transaction=None,
+            causal=None,
+            binding=_binding(context, decision=point.decision_point_id),
+            verification_work_record=_record(SemanticRole.ROUTE_UPPER),
         )
 
 
@@ -287,7 +428,11 @@ def test_protocol_evidence_rejects_claimed_violation_from_another_log() -> None:
     with pytest.raises(AccessProtocolViolation) as caught:
         first.record(AccessOperation.KERNEL_STEP, AccessRouteScope.LOCAL)
     second = FailClosedAccessController(context.route_attempt_id, point)
-    second.record(AccessOperation.READ_FROZEN_RAPM, AccessRouteScope.COMMON)
+    second.record(
+        AccessOperation.READ_FROZEN_RAPM,
+        AccessRouteScope.COMMON,
+        artifact_id=_id("wrong-log-rapm"),
+    )
     with pytest.raises(SemanticVerificationV1Error):
         verify_forbidden_access_violation_semantics_v1(
             caught.value.violation,

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import hashlib
+from types import SimpleNamespace
 
 import pytest
 
@@ -16,6 +17,7 @@ from acfqp.access_protocol_v1 import (
     FailClosedAccessController,
     ForbiddenAccessViolationV1,
     ProtocolSequenceProfileV1,
+    decide_then_execute,
     local_execution_order_violation_v1,
     local_execution_stages_v1,
     replay_access_protocol,
@@ -130,6 +132,41 @@ def test_local_stage_order_accepts_repeated_events_without_regression() -> None:
     ) == (1, 2, 3, 4, 5)
 
 
+def test_local_solver_no_candidate_may_close_at_worker_stage() -> None:
+    """Cap/no-feasible outcomes must reach the fresh-fallback state machine."""
+
+    class ControllerStub:
+        def __init__(self) -> None:
+            self._decision = None
+            self.freeze_attestation = None
+            self._events = _local_events(
+                (
+                    AccessOperation.LOCAL_SLICE_MATERIALIZATION,
+                    AccessOperation.LOCAL_CAPABILITY_COMPILATION,
+                    AccessOperation.LOCAL_WORKER_LAUNCH,
+                )
+            )
+
+        def freeze_route_decision(self, _result):
+            self._decision = _raw_decision(_id("point"), RouteSelection.LOCAL)
+            self.freeze_attestation = SimpleNamespace(last_preselection_sequence=0)
+
+        def verify(self) -> None:
+            return None
+
+        def snapshot(self):
+            return SimpleNamespace(events=self._events)
+
+    controller = ControllerStub()
+    marker = object()
+    assert decide_then_execute(
+        controller,  # type: ignore[arg-type]
+        object(),
+        local_callback=lambda _controller: marker,
+        fallback_callback=lambda _controller: None,
+    ) is marker
+
+
 @pytest.mark.parametrize(
     "operations",
     (
@@ -162,7 +199,11 @@ def test_local_stage_skip_reverse_artifact_and_misplaced_kernel_are_rejected(
 
 def test_unfrozen_access_log_tamper_is_detected() -> None:
     controller = _controller("tamper")
-    controller.record(AccessOperation.READ_FROZEN_RAPM, AccessRouteScope.COMMON)
+    controller.record(
+        AccessOperation.READ_FROZEN_RAPM,
+        AccessRouteScope.COMMON,
+        artifact_id=_id("tamper-rapm"),
+    )
     log = controller.snapshot()
     assert AccessEventLogV1.from_dict(log.to_dict()) == log
     tampered = copy.deepcopy(log.to_dict())
@@ -179,3 +220,25 @@ def test_unfrozen_access_log_tamper_is_detected() -> None:
     assert AccessEventLogV1.from_dict(resigned).events[0].operation is (
         AccessOperation.READ_CAP_REGISTRY
     )
+
+
+def test_preselection_reads_require_and_hash_the_exact_artifact_identity() -> None:
+    controller = _controller("identity-bearing-read")
+    with pytest.raises(AccessProtocolV1Error, match="full Phase-3E content ID"):
+        controller.record(
+            AccessOperation.READ_SELECTED_PLAN,
+            AccessRouteScope.COMMON,
+        )
+    first = _controller("identity-bearing-read-first")
+    second = _controller("identity-bearing-read-first")
+    first.record(
+        AccessOperation.READ_SELECTED_PLAN,
+        AccessRouteScope.COMMON,
+        artifact_id=_id("selected-plan-a"),
+    )
+    second.record(
+        AccessOperation.READ_SELECTED_PLAN,
+        AccessRouteScope.COMMON,
+        artifact_id=_id("selected-plan-b"),
+    )
+    assert first.snapshot().access_event_log_id != second.snapshot().access_event_log_id

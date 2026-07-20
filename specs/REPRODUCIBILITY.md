@@ -276,34 +276,40 @@ permutation cap, and retains a componentwise worst frontier; no scalar crossing 
 single worst scalar order is synthesized.
 
 Access replay verifies a contiguous, monotonically numbered log and the route-decision
-freeze attestation.  After an explicit pre-decision bind has produced the immutable
+freeze attestation. Every preselection event reproduces the exact RAPM, BuildEpoch,
+failed-certificate, selected-plan, action-catalogue, frontier/proof-or-typed-null,
+cardinality, cap, formula and profile identity. After an explicit pre-decision bind has produced the immutable
 world/action catalogues, Phase 3D estimate preparation can be repeated with live
 `actions`, `is_terminal`, `step`, materializer, compiler and worker entry points
 replaced by failures and must still complete.  Before freeze, an execution access closes the attempt as
 `ATTEMPT_CLOSURE_NONCERTIFICATE.PROTOCOL_FAILURE`; after freeze, only the selected
 route family is admitted.  Phase 3B/3C/3D operational no-full-replay modes validate
 the isolated result and its bindings without repeating the host planner/local solver,
-ground lift, unrestricted ground upper, or J0.  Historical runners retain their 0.x
+ground lift, unrestricted ground upper, or J0. A local candidate must replay exact
+capability/worker/stitch/post-audit bindings; a negative worker outcome instead replays
+the short materialize/compile/worker prefix and a fresh fallback decision. Historical runners retain their 0.x
 semantics; their old bundles are not silently relabelled as contract-1.0 evidence.
 
-The semantic verifier registry fixes all FQ7 role/schema/outcome names. Four roles
-currently have authority-bearing replay handlers: native work vector, exact actual
-projection, terminal classification, and the `PROTOCOL_ACCESS` extension. Attestations are
-emitted only after those handlers recompute their outcome and bind verification work.
-Nine original FQ7 roles—including cardinality, route upper and route decision—return
-`NOT_IMPLEMENTED` fail closed; plausible
-attestation bytes or a caller-supplied outcome cannot make them authoritative.  In
-particular, plan and infeasibility terminal labels cannot pass merely because their
-hash chain is intact while their underlying audit/fallback/infeasibility authorities
-remain unimplemented.
+The semantic verifier registry fixes all FQ7 role/schema/outcome names. Generic
+authority-bearing replay exists for native work vector, exact actual projection, route
+upper, route decision, ground fallback, terminal classification and the
+`PROTOCOL_ACCESS` extension. Causal/cardinality/local-result/post-audit replay is
+restricted to the registered safe-chain sources. Charged decision authorization
+reproduces the exact transitive closure of the decision, causal result, both uppers and
+one cardinality verification per upper; omissions, duplicates and extra results fail.
+`EXACT_CACHED_INFEASIBILITY` and `ABSTRACT_AUDIT` remain `NOT_IMPLEMENTED`, so plan and
+infeasibility terminal labels cannot pass merely because their hash chain is intact.
 
-Current reproducibility stops at those typed components. It does not yet replay
-production-native counters from every runner/worker/I/O and failure path, implement
-cardinality/upper/decision authority, execute a real direct fallback, close a second
-local transaction, implement semantic authority for the other unresolved registered
-roles, run an integrated `run_phase3e`, or verify a complete Phase 3E bundle
-independently. Accordingly every component artifact and
-campaign summary must retain:
+Current reproducibility includes genuine integrated safe-chain LOCAL and isolated
+fallback slices plus generic failed-post-audit -> fresh-local-or-fallback orchestration.
+Both executors record observed work incrementally, so injected exceptions reproduce the
+same retained execution prefix. It still lacks a clean official campaign replay and
+four P0 closures: non-cyclic terminal/certificate-verifier work accounting;
+continuation `WORK_VECTOR` verification work in the next common prefix; a sealed
+post-freeze executor factory plus content-addressed runtime tree; and whole-occurrence
+typed failure/aggregate-terminal semantics. Exact cached-infeasibility/abstract-audit,
+rebuild/retry and a complete manifest verifier also remain open. Accordingly every
+artifact and campaign summary must retain:
 
 ```text
 official_execution_allowed = false
@@ -435,7 +441,8 @@ reproduce_phase3e_foundation(component_documents):
   cannot be repaired by supplying a matching summary field.
 - Phase 3E route preparation is result-blind and estimate-before-execute.  Every access
   event is bound to the current attempt and decision point, and no post-run actual may
-  enter a route upper or decision.
+  enter a route upper or decision. Failed-certificate and action-catalogue reads are
+  exact identity bindings, not names or unverified placeholders.
 - Contract-1.0 retry and workload denominators count logical occurrences.  Reordering
   attempts, hiding a failed local/fallback/rebuild, or dropping a final noncertificate
   changes the campaign artifact and fails replay.
@@ -524,18 +531,24 @@ reproduce_phase3e_foundation(component_documents):
 - Routing/budget round trips reject stale frontier/transaction/profile/cap/cardinality
   bindings, incomplete shared-axis uppers, local selection on equal or incomparable
   vectors, reopening after a negative causal outcome, duplicate/gapped transaction
-  indices, and a worker budget claim inconsistent with trusted native replay.
+  indices, a worker budget claim inconsistent with trusted native replay, incomplete or
+  extraneous decision/upper/cardinality semantic dependencies, and substituted
+  capability/worker/stitch/post-audit identities.
 - Access-protocol round trips reject pre-freeze materialization/compiler/worker/
   fallback calls, route-family artifacts on the unselected branch, deleted/reordered
-  log events, identity rebound, and invocation of both route callbacks.
+  log events, identity rebound, invocation of both route callbacks, stitch/post-audit
+  after a negative local result, and a fictitious transaction 2 on direct fallback.
 - Workload/campaign round trips reject incomplete permutation enumeration, a forged
   Pareto-worst prefix, sum/max reducer confusion, scalar or break-even injection,
   missing registered logical occurrences, rebuild retry overflow, hidden
   noncertificates, and fallback-cap exhaustion relabelled as infeasibility.
-- Passing the foregoing component attacks does not constitute a clean Phase 3E rerun.
-  That claim additionally requires production-native instrumentation, real fallback
-  and second-transaction paths, all semantic role verifiers, an integrated runner, and
-  an independent complete-bundle replay.
+- The registered safe-chain LOCAL and isolated-fallback integration tests additionally
+  replay genuine selected-route work after decision freeze. Passing those scoped tests
+  still does not constitute a clean official Phase 3E campaign rerun. That claim
+  additionally requires closure of the four P0s above, complete abstract/rebuild/exact-
+  infeasible/failure/hash instrumentation, a registered live dependent second-decision
+  benchmark, exact cached-infeasibility and abstract-audit authority, and an independent
+  complete-bundle replay.
 
 ## Out of scope
 
@@ -547,4 +560,4 @@ Mutable dependency resolution, locale/timezone-dependent serialization, unordere
 
 ## Open risks
 
-Before performance Gates, freeze a reference hardware protocol and repetition/statistical summary policy. Before public release, add licensing checks for redistributed papers and repositories. V0-028 freezes the portable campaign; V0-029 freezes the first hybrid; V0-030 freezes earliest-antichain causal search, finite-domain sparse compilation, and capped joint solver replay; and V0-032 freezes the accounted-routing contract and its current component foundation. Production-native instrumentation, real fallback/retry execution, the remaining nine original FQ7 role-authority verifiers, end-to-end Phase 3E plus independent bundle replay, workload economics/dynamic routing, dependent-horizon repair, full Phase 3/5 statistical aggregates, and larger or stochastic studies still require closure or preregistration.
+Before performance Gates, freeze a reference hardware protocol and repetition/statistical summary policy. Before public release, add licensing checks for redistributed papers and repositories. V0-028 freezes the portable campaign; V0-029 freezes the first hybrid; V0-030 freezes earliest-antichain causal search, finite-domain sparse compilation, and capped joint solver replay; and V0-032 freezes the accounted-routing contract and now has scoped integrated safe-chain LOCAL/fallback slices. The four P0 accounting/executor/occurrence boundaries above, complete native failure/rebuild/hash instrumentation, registered dependent second-decision evidence, exact cached-infeasibility and abstract-audit authority, manifest-level independent replay, scalar-free workload routing and the later scalar economics revision, dependent-horizon repair, full Phase 3/5 statistical aggregates, and larger or stochastic studies still require closure or preregistration.

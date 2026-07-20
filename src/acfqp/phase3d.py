@@ -1077,6 +1077,7 @@ def _run_fresh_general_solver(
             or payload.get("python_site_disabled") is not True
             or payload.get("project_checkout_visible") is not False
             or payload.get("network_namespace_unshared") is not True
+            or payload.get("working_set_limit_bytes") != 256 * 1024 * 1024
             or payload.get("unexpected_module_origins") != []
             or payload.get("forbidden_loaded_before") != []
             or payload.get("forbidden_loaded_after") != []

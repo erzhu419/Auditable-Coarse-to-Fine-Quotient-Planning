@@ -52,6 +52,7 @@ from acfqp.route_upper_formula_v1 import (
     derive_route_upper_v1,
     official_route_upper_formula_v1,
 )
+from acfqp.phase3e_fallback_v1 import GroundFallbackCapProfileV1
 from acfqp.routing_v1 import (
     CardinalityEvidenceV1,
     CausalEvidenceV1,
@@ -140,7 +141,7 @@ def _occurrence_inputs(
     )
     prefix_work = _work(
         RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE,
-        context.route_decision_context_id,
+        context.route_attempt_id,
         **(prefix_values or {}),
     )
     prefix = (
@@ -215,6 +216,21 @@ class _UpperEvidence:
     formula: RouteUpperFormulaV1
     transaction: TransactionV1
     causal: CausalEvidenceV1
+
+
+def _fallback_cap() -> GroundFallbackCapProfileV1:
+    """Finite route-specific cap used only by the dominating comparator."""
+
+    return GroundFallbackCapProfileV1(
+        max_states_expanded=1_000_000,
+        max_actions_evaluated=1_000_000,
+        max_ground_steps=1_000_000,
+        max_outcome_rows=1_000_000,
+        max_bellman_backups=1_000_000,
+        max_composed_candidates=1_000_000,
+        max_cap_checks=1_000_000,
+        max_positive_outcomes_per_step=1_000_000,
+    )
 
 
 def _upper(
@@ -299,11 +315,12 @@ def _upper(
         causal=causal,
     )
 
+    fallback_cap = _fallback_cap()
     fallback_formula = official_route_upper_formula_v1(
         RouteKind.DIRECT_FALLBACK,
         registry=registry,
         profile=comparison,
-        cap_profile=cap,
+        cap_profile=fallback_cap,
     )
     fallback_counts = {name: 0 for name in fallback_formula.required_count_names}
     for name in fallback_counts:
@@ -312,7 +329,7 @@ def _upper(
     fallback_cardinality = CardinalityEvidenceV1(
         context.route_decision_context_id,
         RouteKind.DIRECT_FALLBACK,
-        cap.route_cap_profile_id,
+        fallback_cap.route_cap_profile_id,
         TypedNotApplicable("fallback cardinality is attempt-scoped"),
         tuple(sorted(fallback_counts.items())),
         (_cid(f"{label}-fallback-cardinality-source"),),
@@ -321,7 +338,7 @@ def _upper(
         context=context,
         decision_point=decision_point,
         cardinality=fallback_cardinality,
-        cap_profile=cap,
+        cap_profile=fallback_cap,
         registry=registry,
         profile=comparison,
         formula=fallback_formula,
@@ -798,6 +815,45 @@ def test_occurrence_sum_retains_refs_and_replays_sum_and_max_reducers() -> None:
         local_attempt=local,
         fallback=fallback,
     )
+
+
+def test_occurrence_sum_accepts_verified_postfreeze_marginal_aggregates() -> None:
+    registry, comparison_profile, actual_profile = _environment()
+    (
+        occurrence_id,
+        context,
+        decision_point,
+        transaction,
+        prefix,
+        local,
+        fallback,
+    ) = _occurrence_inputs("postfreeze-aggregate")
+    local_work = local[0]
+    fallback_work = fallback[0]
+    local_aggregate = (
+        local_work,
+        *_project(local_work, ActualWorkScope.MARGINAL_ROUTE_AGGREGATE),
+    )
+    fallback_aggregate = (
+        fallback_work,
+        *_project(fallback_work, ActualWorkScope.MARGINAL_ROUTE_AGGREGATE),
+    )
+
+    occurrence = derive_occurrence_work_sum_v1(
+        logical_occurrence_id=occurrence_id,
+        route_context=context,
+        decision_point=decision_point,
+        local_transaction=transaction,
+        registry=registry,
+        comparison_profile=comparison_profile,
+        actual_profile=actual_profile,
+        common_prefix=prefix,
+        local_attempt=local_aggregate,
+        fallback=fallback_aggregate,
+    )
+
+    assert occurrence.local_attempt_work_id == local_work.work_vector_id
+    assert occurrence.fallback_work_id == fallback_work.work_vector_id
 
 
 def test_occurrence_sum_rejects_tampered_aggregate_and_swapped_route_inputs() -> None:

@@ -471,13 +471,29 @@ verify_route_upper_derivation_v1(envelope, proof, same frozen inputs)
   # proof.authorizes_route_selection is false until cardinality/upper authority exists
 MarginalRouteDecisionV1.select(decision_point, fallback_upper,
                                causal=..., local_upper=...)
-  -> unauthoritative comparison mechanics only
+  -> comparison mechanics; execution still requires semantic replay
 
 FailClosedAccessController.freeze_route_decision(authority_route_decision_result)
 decide_then_execute(controller, authority_route_decision_result,
                     local_callback, fallback_callback)
   -> exactly the selected callback, with replayable AccessEventLogV1
-  # currently fails closed because ROUTE_DECISION authority is NOT_IMPLEMENTED
+
+run_phase3e(prepared_authority_package, local_executor, fallback_executor)
+  -> frozen one-decision route, native execution/verification aggregate,
+     exact per-axis selected-upper compliance, freeze and access evidence
+  # prepared reads bind RAPM/epoch/failed certificate/plan/action catalogue and
+  # frontier/proof-or-typed-null/cardinality/cap/formula/profile identities exactly
+Phase3EDecisionAuthorizationV1.validate(...)
+  -> exact charged closure: decision + causal + both uppers + one cardinality
+     verification per upper; reject omissions, duplicates and extras
+AuthorizedSafeChainLocalExecutorV1(...)
+  -> isolated Phase-3D local result with exact capability/worker bindings;
+     candidate also binds exact stitch/post-audit, negative result closes before them
+AuthorizedIsolatedGroundFallbackExecutorV1(...)
+  -> isolated safe-chain fallback result plus exact native process/I/O work
+run_phase3e_occurrence_v1(...)
+  -> after failed post-audit, a fresh decision selects local transaction 2 or direct
+     fallback; negative local result likewise enters a fresh fallback decision
 
 TrustedBudgetReplayV1.replay_work_vectors(transactions, work_vectors, caps)
   -> trusted budget outcome independent of worker claim
@@ -495,10 +511,10 @@ CampaignClosureSummaryV1.summarize(registered_occurrences, closures)
 verify_work_vector_semantics_v1(...)
 verify_actual_projection_semantics_v1(...)
 verify_marginal_route_decision_semantics_v1(...)
-  -> NOT_IMPLEMENTED until cardinality and route-upper authorities exist
 verify_forbidden_access_violation_semantics_v1(...)
 verify_terminal_classification_semantics_v1(...)
-  -> partial typed semantic results; unresolved FQ7 roles are NOT_IMPLEMENTED
+  -> typed semantic results; exact cached infeasibility and abstract audit
+     remain NOT_IMPLEMENTED
 ```
 
 The V1 counter registry requires every operational leaf plus explicit native closure
@@ -532,19 +548,30 @@ BuildEpoch and threshold profile; a submitted frontier cannot define its own
 unrestricted upper. Phase 3C/3D worker helpers likewise expose an explicit
 `operational_no_full_replay` mode: the host verifies schema, content/bindings,
 authorized decisions, declared limit bindings, and runtime attestation, while complete
-reconstruction remains evaluation-only.  These helpers do **not** by themselves prove
-native counter/cap replay; that remains a locked Phase 3E integration obligation.
-Historical defaults retain their original replay semantics.
+reconstruction remains evaluation-only. The registered Phase 3E local/fallback
+adapters now add scoped native counter/cap replay around these helpers. That does not
+prove completeness for every abstract, rebuild, failure or hash path. Historical
+defaults retain their original replay semantics.
 
 `AccessEventLogV1` admits only frozen-model/proof/catalogue/cardinality/profile reads
 before route-decision freeze. Kernel/outcome access, local materialization, compiler,
 either route worker, stitch, and post-audit are forbidden before the freeze. A selected
 fallback rejects every local execution or local-artifact event; a selected local route
 rejects fallback execution. Local execution must follow materialize, compile, worker,
-stitch, then post-audit. The freeze accepts only an authority-bearing semantic route
+then either stop on a negative solver result or continue with stitch and post-audit for
+a candidate. The freeze accepts only an authority-bearing semantic route
 decision result, not a self-hashed decision. Any deletion, reorder, identity rebound,
 or premature operation closes the attempt as
 `ATTEMPT_CLOSURE_NONCERTIFICATE.PROTOCOL_FAILURE`.
+
+Every preselection read must match the prepared package's exact content identity. The
+fallback path represents inapplicable frontier/proof inputs with content-addressed typed
+nulls, not dummy strings or omitted fields. Decision authorization also rejects any
+charged semantic-result set other than the exact transitive decision/causal/two-upper/
+two-cardinality closure. Local capability, worker result, stitched plan and post-audit
+certificate are independently identity-bound. Both selected-route adapters update their
+owned native recorder incrementally, so an exception preserves all already observed
+materialization/staging, compiler, launch, solver, audit, I/O and output work.
 
 The scalar-free workload and campaign layers preserve every registered logical
 occurrence in closure, certification and future economics denominators, even across a
@@ -552,16 +579,24 @@ failed attempt and one explicitly authorized rebuild. Workload analysis replays 
 occurrence from its native WorkVector, projection proof and occurrence sum; a
 self-signed comparison vector is inadmissible. Campaign closure likewise accepts only
 authority-bearing terminal-classification results. These layers never manufacture a
-scalar crossing or a single scalar worst order. The partial semantic layer performs
-actual replay for work, projection, terminal classification and protocol access; nine
-original FQ7 roles—including route decision—reject even well-formed outcome strings,
-so plan-like and infeasibility-like terminals cannot be authorized by hashes.
+scalar crossing or a single scalar worst order. The semantic layer now performs
+generic work/projection/upper/decision/fallback/terminal/protocol replay and scoped
+safe-chain causal/cardinality/local/post-audit replay. Exact cached infeasibility and
+abstract audit still reject well-formed outcome strings, so neither result can be
+authorized by hashes.
 
-These are implemented contract interfaces, not an official run result. Production
-native instrumentation, fallback numeric caps and real fallback execution, the second
-transaction execution loop, the remaining semantic authorities, an integrated runner,
-and an independent complete campaign verifier still have to close before
-`official_execution_allowed` can change from false or either Phase 3E Gate can run.
+These are implemented contract interfaces and scoped runtime slices, not an official
+run result. Four P0 interfaces are still missing: a non-self-referential home for
+terminal/certificate-verifier operational work; charging continuation `WORK_VECTOR`
+verification in the next common prefix; constructing route executors only after freeze
+from a content-addressed runtime tree rather than accepting an arbitrary callable/live
+checkout; and converting route exceptions into whole-occurrence typed noncertificate
+closure with aggregate-terminal semantics. Complete abstract/rebuild/exact-infeasible/
+failure/hash instrumentation, a registered live dependent second-decision benchmark,
+exact cached-infeasibility and abstract-audit authority, upstream manifest-to-prepared-
+run orchestration, and an independent complete campaign verifier also have to close
+before `official_execution_allowed` can change from false or either Phase 3E Gate can
+run.
 
 ## Pseudocode / schema
 

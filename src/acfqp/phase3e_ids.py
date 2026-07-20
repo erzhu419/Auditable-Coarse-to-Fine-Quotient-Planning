@@ -29,6 +29,7 @@ ROUTE_UPPER_DERIVATION_PROOF_DOMAIN = "acfqp:route-upper-derivation-proof:v1"
 COMPARISON_PROFILE_DOMAIN = "acfqp:comparison-profile:v1"
 COUNTER_REGISTRY_DOMAIN = "acfqp:counter-registry:v1"
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
+CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
 ROUTE_CAP_PROFILE_DOMAIN = "acfqp:route-cap-profile:v1"
 FRONTIER_SNAPSHOT_DOMAIN = "acfqp:frontier-snapshot:v1"
 CAUSAL_EVIDENCE_DOMAIN = "acfqp:causal-evidence:v1"
@@ -64,6 +65,56 @@ ROUTE_DECISION_FREEZE_ATTESTATION_DOMAIN = (
     "acfqp:route-decision-freeze-attestation:v1"
 )
 FORBIDDEN_ACCESS_VIOLATION_DOMAIN = "acfqp:forbidden-access-violation:v1"
+GROUND_FALLBACK_CAP_PROFILE_DOMAIN = "acfqp:ground-fallback-cap-profile:v1"
+GROUND_FALLBACK_CARDINALITY_BOUND_DOMAIN = (
+    "acfqp:ground-fallback-cardinality-bound:v1"
+)
+GROUND_FALLBACK_CARDINALITY_SOURCE_DOMAIN = (
+    "acfqp:ground-fallback-cardinality-source:v1"
+)
+GROUND_FALLBACK_PARENT_BINDING_DOMAIN = (
+    "acfqp:ground-fallback-parent-binding:v1"
+)
+GROUND_FALLBACK_EXTRACTION_PROFILE_DOMAIN = (
+    "acfqp:ground-fallback-extraction-profile:v1"
+)
+GROUND_FALLBACK_RESULT_DOMAIN = "acfqp:ground-fallback-result:v1"
+GROUND_FALLBACK_ISOLATION_PROFILE_DOMAIN = (
+    "acfqp:ground-fallback-isolation-profile:v1"
+)
+GROUND_FALLBACK_ISOLATED_REQUEST_DOMAIN = (
+    "acfqp:ground-fallback-isolated-request:v1"
+)
+GROUND_FALLBACK_ISOLATED_OUTPUT_DOMAIN = (
+    "acfqp:ground-fallback-isolated-output:v1"
+)
+GROUND_FALLBACK_ISOLATED_ATTESTATION_DOMAIN = (
+    "acfqp:ground-fallback-isolated-attestation:v1"
+)
+LOCAL_PRESELECTION_SOURCE_DOMAIN = "acfqp:local-preselection-source:v1"
+LOCAL_CARDINALITY_BOUND_DOMAIN = "acfqp:local-cardinality-bound:v1"
+LOCAL_PRESELECTION_PARENT_BINDING_DOMAIN = (
+    "acfqp:local-preselection-parent-binding:v1"
+)
+LOCAL_PRESELECTION_EXTRACTION_PROFILE_DOMAIN = (
+    "acfqp:local-preselection-extraction-profile:v1"
+)
+LOCAL_PROOF_OBLIGATION_DOMAIN = "acfqp:local-proof-obligation:v1"
+LOCAL_TRANSACTION_RESULT_DOMAIN = "acfqp:local-transaction-result:v1"
+POST_AUDIT_CERTIFICATE_DOMAIN = "acfqp:post-audit-certificate:v1"
+PHASE3D_LOCAL_PARENT_BINDING_DOMAIN = (
+    "acfqp:phase3d-local-parent-binding:v1"
+)
+MARGINAL_WORK_AGGREGATION_PROOF_DOMAIN = (
+    "acfqp:marginal-work-aggregation-proof:v1"
+)
+OCCURRENCE_WORK_COMPONENT_REF_DOMAIN = (
+    "acfqp:occurrence-work-component-ref:v1"
+)
+OCCURRENCE_WORK_AGGREGATE_DOMAIN = "acfqp:occurrence-work-aggregate:v1"
+PRESELECTION_NOT_APPLICABLE_BINDING_DOMAIN = (
+    "acfqp:preselection-not-applicable-binding:v1"
+)
 
 
 PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
@@ -74,6 +125,7 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         "comparison_profile": COMPARISON_PROFILE_DOMAIN,
         "counter_registry": COUNTER_REGISTRY_DOMAIN,
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
+        "cardinality_source": CARDINALITY_SOURCE_DOMAIN,
         "route_cap_profile": ROUTE_CAP_PROFILE_DOMAIN,
         "frontier_snapshot": FRONTIER_SNAPSHOT_DOMAIN,
         "causal_evidence": CAUSAL_EVIDENCE_DOMAIN,
@@ -107,6 +159,54 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
             ROUTE_DECISION_FREEZE_ATTESTATION_DOMAIN
         ),
         "forbidden_access_violation": FORBIDDEN_ACCESS_VIOLATION_DOMAIN,
+        "ground_fallback_cap_profile": GROUND_FALLBACK_CAP_PROFILE_DOMAIN,
+        "ground_fallback_cardinality_bound": (
+            GROUND_FALLBACK_CARDINALITY_BOUND_DOMAIN
+        ),
+        "ground_fallback_cardinality_source": (
+            GROUND_FALLBACK_CARDINALITY_SOURCE_DOMAIN
+        ),
+        "ground_fallback_parent_binding": (
+            GROUND_FALLBACK_PARENT_BINDING_DOMAIN
+        ),
+        "ground_fallback_extraction_profile": (
+            GROUND_FALLBACK_EXTRACTION_PROFILE_DOMAIN
+        ),
+        "ground_fallback_result": GROUND_FALLBACK_RESULT_DOMAIN,
+        "ground_fallback_isolation_profile": (
+            GROUND_FALLBACK_ISOLATION_PROFILE_DOMAIN
+        ),
+        "ground_fallback_isolated_request": (
+            GROUND_FALLBACK_ISOLATED_REQUEST_DOMAIN
+        ),
+        "ground_fallback_isolated_output": (
+            GROUND_FALLBACK_ISOLATED_OUTPUT_DOMAIN
+        ),
+        "ground_fallback_isolated_attestation": (
+            GROUND_FALLBACK_ISOLATED_ATTESTATION_DOMAIN
+        ),
+        "local_preselection_source": LOCAL_PRESELECTION_SOURCE_DOMAIN,
+        "local_cardinality_bound": LOCAL_CARDINALITY_BOUND_DOMAIN,
+        "local_preselection_parent_binding": (
+            LOCAL_PRESELECTION_PARENT_BINDING_DOMAIN
+        ),
+        "local_preselection_extraction_profile": (
+            LOCAL_PRESELECTION_EXTRACTION_PROFILE_DOMAIN
+        ),
+        "local_proof_obligation": LOCAL_PROOF_OBLIGATION_DOMAIN,
+        "local_transaction_result": LOCAL_TRANSACTION_RESULT_DOMAIN,
+        "post_audit_certificate": POST_AUDIT_CERTIFICATE_DOMAIN,
+        "phase3d_local_parent_binding": PHASE3D_LOCAL_PARENT_BINDING_DOMAIN,
+        "marginal_work_aggregation_proof": (
+            MARGINAL_WORK_AGGREGATION_PROOF_DOMAIN
+        ),
+        "occurrence_work_component_ref": (
+            OCCURRENCE_WORK_COMPONENT_REF_DOMAIN
+        ),
+        "occurrence_work_aggregate": OCCURRENCE_WORK_AGGREGATE_DOMAIN,
+        "preselection_not_applicable_binding": (
+            PRESELECTION_NOT_APPLICABLE_BINDING_DOMAIN
+        ),
     }
 )
 

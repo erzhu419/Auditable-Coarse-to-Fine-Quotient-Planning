@@ -23,6 +23,7 @@ from acfqp.route_upper_formula_v1 import (
     official_route_upper_formula_v1,
     verify_route_upper_derivation_v1,
 )
+from acfqp.phase3e_fallback_v1 import GroundFallbackCapProfileV1
 from acfqp.routing_v1 import (
     CardinalityEvidenceV1,
     CausalEvidenceV1,
@@ -89,6 +90,19 @@ def _world():
     return registry, profile, cap, context, frontier, causal, decision, transaction
 
 
+def _fallback_cap() -> GroundFallbackCapProfileV1:
+    return GroundFallbackCapProfileV1(
+        max_states_expanded=100,
+        max_actions_evaluated=200,
+        max_ground_steps=200,
+        max_outcome_rows=800,
+        max_bellman_backups=10_000,
+        max_composed_candidates=10_000,
+        max_cap_checks=20_000,
+        max_positive_outcomes_per_step=4,
+    )
+
+
 def _cardinality(
     route: RouteKind,
     *,
@@ -96,7 +110,8 @@ def _cardinality(
     world=None,
 ):
     world = world or _world()
-    registry, profile, cap, context, frontier, *_ = world
+    registry, profile, local_cap, context, frontier, *_ = world
+    cap = local_cap if route is RouteKind.LOCAL_ATTEMPT else _fallback_cap()
     formula = official_route_upper_formula_v1(
         route, registry=registry, profile=profile, cap_profile=cap
     )
@@ -139,7 +154,8 @@ def _derive_local(*, overrides: dict[str, int] | None = None, world=None):
 
 def _derive_fallback(*, overrides: dict[str, int] | None = None, world=None):
     world = world or _world()
-    registry, profile, cap, context, _, _, decision, _ = world
+    registry, profile, _, context, _, _, decision, _ = world
+    cap = _fallback_cap()
     formula, cardinality = _cardinality(
         RouteKind.DIRECT_FALLBACK, overrides=overrides, world=world
     )
@@ -159,8 +175,9 @@ def test_official_formulas_cover_every_operational_leaf_exactly_once() -> None:
     registry, profile, cap, *_ = _world()
     expected = tuple(leaf.path for leaf in registry.operational_leaves)
     for route in RouteKind:
+        route_cap = cap if route is RouteKind.LOCAL_ATTEMPT else _fallback_cap()
         formula = official_route_upper_formula_v1(
-            route, registry=registry, profile=profile, cap_profile=cap
+            route, registry=registry, profile=profile, cap_profile=route_cap
         )
         assert tuple(term.target_leaf for term in formula.terms) == expected
         assert len(formula.terms) == 34
@@ -176,7 +193,7 @@ def test_official_formulas_cover_every_operational_leaf_exactly_once() -> None:
         RouteKind.DIRECT_FALLBACK,
         registry=registry,
         profile=profile,
-        cap_profile=cap,
+        cap_profile=_fallback_cap(),
     )
     assert len(local.structural_guards) == 6
     assert fallback.structural_guards == ()
@@ -278,15 +295,13 @@ def test_missing_or_extra_cardinality_input_fails_closed(mutation: str) -> None:
 @pytest.mark.parametrize(
     ("route", "forbidden_path"),
     [
-        (RouteKind.LOCAL_ATTEMPT, "common.protocol_checks"),
         (RouteKind.LOCAL_ATTEMPT, "fallback.states_expanded"),
         (RouteKind.LOCAL_ATTEMPT, "rebuild.ground_steps"),
-        (RouteKind.DIRECT_FALLBACK, "common.integrity_checks"),
         (RouteKind.DIRECT_FALLBACK, "local.solver_subset_evaluations"),
         (RouteKind.DIRECT_FALLBACK, "rebuild.outcome_rows"),
     ],
 )
-def test_marginal_formula_rejects_common_rebuild_and_other_route_family(
+def test_marginal_formula_rejects_rebuild_and_other_route_family(
     route: RouteKind, forbidden_path: str
 ) -> None:
     with pytest.raises(RouteUpperFormulaV1Error, match="forbidden nonzero"):
@@ -294,6 +309,23 @@ def test_marginal_formula_rejects_common_rebuild_and_other_route_family(
             _derive_local(overrides={forbidden_path: 1})
         else:
             _derive_fallback(overrides={forbidden_path: 1})
+
+
+@pytest.mark.parametrize("route", tuple(RouteKind))
+def test_marginal_formula_accounts_for_postfreeze_common_verification_suffix(
+    route: RouteKind,
+) -> None:
+    overrides = {
+        "common.integrity_checks": 2,
+        "common.protocol_checks": 3,
+        "common.hash_invocations": 4,
+    }
+    if route is RouteKind.LOCAL_ATTEMPT:
+        _, _, _, envelope, proof = _derive_local(overrides=overrides)
+    else:
+        _, _, _, envelope, proof = _derive_fallback(overrides=overrides)
+    assert dict(proof.leaf_upper_bounds)["common.protocol_checks"] == 3
+    assert dict(envelope.upper_bounds)[NONKERNEL_COMPUTE_EVENTS] == 9
 
 
 def test_structural_cap_overrun_is_typed_local_cap_impossible() -> None:
@@ -343,14 +375,14 @@ def test_formula_profile_route_and_cap_identity_mismatches_fail_closed() -> None
         RouteKind.DIRECT_FALLBACK,
         registry=registry,
         profile=profile,
-        cap_profile=cap,
+        cap_profile=_fallback_cap(),
     )
     with pytest.raises(RouteUpperFormulaV1Error, match="route mismatch"):
         derive_route_upper_v1(
             context=context,
             decision_point=decision,
             cardinality=cardinality,
-            cap_profile=cap,
+            cap_profile=_fallback_cap(),
             registry=registry,
             profile=profile,
             formula=fallback_formula,

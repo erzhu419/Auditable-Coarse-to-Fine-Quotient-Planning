@@ -386,8 +386,12 @@ The operational protocol is estimate-before-execute. Before the content-addresse
 route decision freezes, no ground transition enumeration, local materialization,
 compiler, local/fallback worker, stitch, or post-audit is permitted. A fallback-selected
 path has native-zero local execution leaves and no local execution artifacts. A local
-path may materialize, compile, launch, stitch, and soundly post-audit only after the
-decision. Phase 3B/3C/3D full solver/J0/lift reconstruction belongs to standalone
+path may materialize, compile and launch only after the decision; it either closes
+after a negative worker result or, for a candidate, continues through exact-bound
+stitch and sound post-audit artifacts. Preselection reads bind the exact failed-
+certificate and action-catalogue identities alongside every other frozen input. The
+charged semantic authority is the exact decision/causal/two-upper/two-cardinality
+dependency closure, not an arbitrary set of attestations. Phase 3B/3C/3D full solver/J0/lift reconstruction belongs to standalone
 evaluation verifiers; the 1.0.0 operational path cannot replay it on the host.
 
 Terminal authority is the typed `(terminal_scope, terminal_class, terminal_code)`
@@ -404,6 +408,15 @@ migration, typed attestations, exact projections, trusted cap replay, terminal c
 access-order attacks, and independent verifier all pass, the only valid status is
 `official_execution_allowed=false`, `COUNTER_COMPLETENESS_GATE_NOT_RUN`, and
 `WORKLOAD_ECONOMICS_GATE_NOT_RUN`.
+
+The current integrated safe-chain slice does not yet close four P0 contract gaps:
+terminal/certificate-verifier operational work needs a non-self-referential accounting
+home; continuation `WORK_VECTOR` verification must enter the next common prefix; route
+executors/runtime trees must be created from frozen content after decision rather than
+accepted as arbitrary callables/live source; and route-level failures must close as
+whole-occurrence typed noncertificates with aggregate-terminal semantics. These gaps
+keep the foregoing official status locked even when a scoped local or isolated-fallback
+integration passes.
 
 ## Pseudocode / schema
 
@@ -601,6 +614,19 @@ evaluation-only J0 costs remain separate.
 35. Contract 1.0 workload ordering is vector-valued. Until a later ledger revision
     freezes a scalar, every prefix/campaign artifact keeps scalar cost and
     `N_break_even` null and the scalar/economics Gates `NOT_RUN`.
+36. Every preselection read, including the failed certificate and action catalogue,
+    binds the exact prepared identity; inapplicable fallback frontier/proof fields use
+    content-addressed typed nulls rather than dummy IDs or omission.
+37. Route-decision authorization contains exactly the causal result, both route-upper
+    results and one matching cardinality verification per upper. Missing, duplicate or
+    extra semantic results invalidate authorization.
+38. A local candidate binds exact capability, worker, stitch and post-audit artifacts.
+    A negative local solver result closes after materialize/compile/worker, forbids
+    stitch and post-audit artifacts, and may continue only at a fresh fallback decision.
+39. A failed transaction-1 post-audit creates a fresh decision that may choose local
+    transaction 2 or direct fallback without inventing transaction 2. Both route
+    adapters preserve every observed work prefix incrementally when later execution
+    fails.
 
 ## Acceptance tests
 

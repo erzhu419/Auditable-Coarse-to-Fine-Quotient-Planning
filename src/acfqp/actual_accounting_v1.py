@@ -101,6 +101,8 @@ class UpperBoundViolationError(ActualAccountingProtocolError):
 class ActualWorkScope(str, Enum):
     COMMON_PREFIX = "COMMON_PREFIX"
     MARGINAL_ROUTE_EXECUTION = "MARGINAL_ROUTE_EXECUTION"
+    MARGINAL_ROUTE_VERIFICATION = "MARGINAL_ROUTE_VERIFICATION"
+    MARGINAL_ROUTE_AGGREGATE = "MARGINAL_ROUTE_AGGREGATE"
     REBUILD_EXECUTION = "REBUILD_EXECUTION"
     EVALUATION_REPLAY = "EVALUATION_REPLAY"
 
@@ -337,6 +339,34 @@ def _validate_work_scope(
                 "marginal work must be a local-attempt or direct-fallback vector"
             )
         forbidden = ("common.", "rebuild.")
+    elif work_scope is ActualWorkScope.MARGINAL_ROUTE_VERIFICATION:
+        if vector.route_kind not in {
+            RouteKindEnum.LOCAL_ATTEMPT,
+            RouteKindEnum.DIRECT_FALLBACK,
+        }:
+            raise ActualAccountingV1Error(
+                "marginal verification work must retain the selected route kind"
+            )
+        # Result/cap/projection/terminal checks happen only after the selected
+        # route has produced artifacts.  They therefore cannot be charged to
+        # the already-frozen common prefix.  Keep them in a separate suffix
+        # vector and forbid solver/kernel work in that vector; a later native
+        # aggregation proof combines execution and verification before upper
+        # compliance is checked.
+        forbidden = ("local.", "fallback.", "rebuild.")
+    elif work_scope is ActualWorkScope.MARGINAL_ROUTE_AGGREGATE:
+        if vector.route_kind not in {
+            RouteKindEnum.LOCAL_ATTEMPT,
+            RouteKindEnum.DIRECT_FALLBACK,
+        }:
+            raise ActualAccountingV1Error(
+                "marginal aggregate must retain the selected route kind"
+            )
+        # This scope is emitted only by the native execution+verification
+        # aggregation helper.  Route-kind exclusivity still rejects the
+        # opposite route family; common.* here is post-freeze verification,
+        # never the separately referenced common prefix.
+        forbidden = ("rebuild.",)
     elif work_scope is ActualWorkScope.REBUILD_EXECUTION:
         if vector.route_kind is not RouteKindEnum.REBUILD:
             raise ActualAccountingV1Error("rebuild scope requires a rebuild vector")
@@ -572,7 +602,7 @@ def _verify_selected_upper_authority_v1(
     selected_upper: RouteUpperBoundEnvelopeV1,
     derivation_proof: RouteUpperDerivationProofV1,
     cardinality: CardinalityEvidenceV1,
-    cap_profile: RouteCapProfileV1,
+    cap_profile: Any,
     registry: CounterRegistryV1,
     comparison_profile: ComparisonProfileV1,
     formula: RouteUpperFormulaV1,
@@ -692,7 +722,7 @@ def verify_selected_upper_compliance_v1(
     decision_point: DecisionPointV1,
     upper_derivation_proof: RouteUpperDerivationProofV1,
     upper_cardinality: CardinalityEvidenceV1,
-    upper_cap_profile: RouteCapProfileV1,
+    upper_cap_profile: Any,
     upper_formula: RouteUpperFormulaV1,
     upper_transaction: TransactionV1 | None,
     upper_causal: CausalEvidenceV1 | None,
@@ -983,15 +1013,25 @@ def derive_occurrence_work_sum_v1(
             "occurrence aggregate transaction decision-point mismatch"
         )
     triples = (common_prefix, local_attempt, fallback)
-    expected_scopes = (
-        ActualWorkScope.COMMON_PREFIX,
-        ActualWorkScope.MARGINAL_ROUTE_EXECUTION,
-        ActualWorkScope.MARGINAL_ROUTE_EXECUTION,
+    allowed_scopes = (
+        frozenset({ActualWorkScope.COMMON_PREFIX}),
+        frozenset(
+            {
+                ActualWorkScope.MARGINAL_ROUTE_EXECUTION,
+                ActualWorkScope.MARGINAL_ROUTE_AGGREGATE,
+            }
+        ),
+        frozenset(
+            {
+                ActualWorkScope.MARGINAL_ROUTE_EXECUTION,
+                ActualWorkScope.MARGINAL_ROUTE_AGGREGATE,
+            }
+        ),
     )
-    for (work, comparison, proof), expected_scope in zip(
-        triples, expected_scopes, strict=True
+    for (work, comparison, proof), component_scopes in zip(
+        triples, allowed_scopes, strict=True
     ):
-        if proof.work_scope is not expected_scope:
+        if proof.work_scope not in component_scopes:
             raise ActualAccountingV1Error("occurrence input work-scope mismatch")
         verify_actual_projection_v1(
             proof,
@@ -1011,8 +1051,8 @@ def derive_occurrence_work_sum_v1(
     expected_subjects = (
         (
             prefix_work,
-            route_context.route_decision_context_id,
-            "common-prefix route context",
+            route_context.route_attempt_id,
+            "common-prefix route attempt",
         ),
         (local_work, local_transaction.transaction_id, "local transaction"),
         (fallback_work, route_context.route_attempt_id, "fallback route attempt"),

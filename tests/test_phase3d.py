@@ -238,6 +238,8 @@ def test_phase3d_clean_bundle_closes_general_local_recovery_gate(
     ]
     assert runtime["project_checkout_visible"] is False
     assert runtime["unexpected_module_origins"] == []
+    assert runtime["working_set_limit_bytes"] == 256 * 1024 * 1024
+    assert "peak_working_bytes" not in runtime
     assert (
         bundle / "safe_chain/base_portable_rapm.json"
     ).read_bytes() == (

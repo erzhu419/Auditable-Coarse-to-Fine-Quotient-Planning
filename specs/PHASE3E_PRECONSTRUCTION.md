@@ -45,26 +45,43 @@ attacks the following strict V1 surfaces without changing the historical 0.x run
 6. trusted local transaction-budget replay, negative-causal fallback, strict
    componentwise route selection, scalar-free workload-prefix/permutation-frontier
    mechanics, and logical-occurrence denominators;
-7. a fail-closed estimate-before-execute access log and decision-freeze attestation;
-   and
-8. operational no-full-replay modes for Phase 3B/3C/3D plus a Phase 3D estimate split
+7. a fail-closed estimate-before-execute access log and decision-freeze attestation.
+   Preselection binds the exact reusable RAPM, BuildEpoch, failed certificate,
+   selected plan, action catalogue, frontier/proof or content-addressed typed null,
+   cardinality evidence, cap, formula and comparison profile;
+8. a one-decision `run_phase3e` consumer with registered-safe-chain causal and
+   cardinality replay, generic upper/decision authority, genuine isolated LOCAL and
+   capped fallback adapters, exact native marginal aggregation, and per-axis upper
+   compliance. Its charged semantic results must be the exact transitive dependency
+   closure `decision -> causal + both route uppers -> one cardinality verification per
+   upper`; omissions, duplicates and unrelated results fail closed;
+9. terminal/occurrence evidence that binds the runner's current execution-plus-
+   verification-suffix aggregate and rejects provenance splicing, plus generic
+   authority-gated control for a deeper second
+   decision that may select local transaction 2 or direct fallback. A local
+   `SEARCH_CAP_EXHAUSTED`/`NO_FEASIBLE_ASSIGNMENT` result legally stops after the
+   worker, without stitch/post-audit artifacts, and may continue only through a fresh
+   fallback decision; and
+10. operational no-full-replay modes for Phase 3B/3C/3D plus a Phase 3D estimate split
    that stops before kernel stepping, materialization, compilation or worker launch.
 
-The partial semantic-verification registry has real replay handlers only for native
-work, actual projection, access-protocol violations and terminal classification.
-Nine original FQ7 evidence roles—including cardinality, route upper and route
-decision—return `NOT_IMPLEMENTED`, even when supplied a legal outcome string. In
-particular, a hash-only upper/decision, abstract audit, local result, post-audit,
-fallback result or infeasibility proof cannot authorize execution or a
-plan/infeasibility terminal.
+The semantic-verification registry now authoritatively replays native work, actual
+projection, access-protocol violations, terminal classification, route upper, route
+decision and ground fallback. Causal/cardinality and local-result/post-audit handlers
+are intentionally restricted to the registered safe-chain sources and opaque trusted
+runtime provenance. `EXACT_CACHED_INFEASIBILITY` and `ABSTRACT_AUDIT` remain
+`NOT_IMPLEMENTED`; no hash or legal-looking outcome string can replace either role or
+extend a scoped safe-chain handler to a different profile.
 The older `*Candidate` APIs remain historical preconstruction attack fixtures; they
 are not substitutes for these V1 contracts.
 
 ## Highest valid output
 
-The highest valid new claim is a **component-level contract-1.0 replay foundation**.
-It is not an official route decision, plan certificate, infeasibility certificate,
-complete campaign replay, or workload-economics result.  The older
+The highest valid new claim is an **accounted, authority-gated contract-1.0 vertical
+slice for the registered safe-chain workload**. It includes a genuine isolated LOCAL
+route and a capped ground-fallback route, but it is not an official execution profile,
+complete campaign replay, counter-completeness Gate, or workload-economics result. The
+older
 `TERMINAL_SHAPE_CLASSIFICATION_CANDIDATE` remains only a historical control-flow-shape
 artifact; plan-like names in that schema still prove no planning semantics.
 
@@ -96,10 +113,14 @@ capacity peaks, diagnostic cardinalities, evaluation work and provenance remain
 separate.  Missing required leaves are rejected rather than inferred as zero; route,
 solver and process closure records reconcile explicitly.
 
-The schema/catalogue is implemented, but production instrumentation is not complete.
-The component fixtures therefore do not prove that every actual abstract, fallback,
-rebuild, infeasible, verification, serialization, I/O and failure path emits the full
-registry.  This is why `COUNTER_COMPLETENESS_GATE_NOT_RUN` remains mandatory.
+The registered local and fallback positive paths now emit native operational work,
+process/I/O/peak records, semantic-verification suffixes and explicit opposite-route
+zeroes. Their adapters record observed materialization/staging, compilation, process
+launch, solver work, post-audit and output incrementally, so a later exception cannot
+erase completed prefix work. Production instrumentation is still incomplete across
+abstract-only, rebuild, exact-infeasible, serialization, integrity/protocol, terminal-
+verification and hash paths. This is why `COUNTER_COMPLETENESS_GATE_NOT_RUN` remains
+mandatory.
 
 ### Historical Phase 3B diagnostic projection
 
@@ -134,30 +155,44 @@ The upper candidate itself is no longer accepted as a hand-filled comparison vec
 its arithmetic must replay from the exact pre-execution cardinality claim set, frozen
 affine formula, cap profile, current context/decision/transaction/frontier/causal
 identities and official projection. Common-prefix work is charged separately. Source
-cardinality and route-upper semantic authority remain unimplemented, so the proof does
-not authorize selection. No scalarization is frozen.
+cardinality authority is implemented only for the registered safe-chain local and
+fallback extractors; generic upper and decision replay require that upstream authority.
+No scalarization is frozen.
 
 ## Unresolved acceptance contracts
 
 An official Phase 3E run remains blocked until all of the following are implemented
 and independently verified together:
 
-1. production-native counter instrumentation for every common, local, direct-
-   fallback, rebuild, infeasible, cap/protocol/integrity-failure, process, I/O and
-   verification path;
-2. a real cap-aware direct ground fallback, including feasible, exactly infeasible and
-   cap-exhausted outcomes plus route-specific fallback cap authority;
-3. the executable failed-post-audit -> genuinely deeper frontier -> fresh second
-   transaction loop, with no stale upper or identity reuse;
-4. authoritative semantic replay for the nine original FQ7 roles still marked
-   `NOT_IMPLEMENTED`, including route decision;
-5. an end-to-end `run_phase3e` that connects RAPM planning/audit, result-blind route
-   preparation and freeze, selected execution, actual accounting, terminal/rebuild and
-   campaign closure; and
-6. an independent manifest-based bundle verifier that replays all sources, identities,
+1. a non-self-referential accounting rule for operational terminal/certificate
+   semantic verification. Those verification records are currently produced after the
+   runner route aggregate and are not part of the certified marginal suffix;
+2. inclusion of continuation-authority `WORK_VECTOR` verification work in the next
+   decision's common prefix, with exact provenance and no double charge;
+3. a sealed executor factory and content-addressed runtime-tree binding that prevent a
+   caller-supplied callable from doing route work before freeze and prevent runtime
+   source from changing between decision freeze and isolated execution;
+4. occurrence-level conversion of `Phase3ERouteExecutionFailedV1` into a typed final
+   noncertificate plus an aggregate terminal over the whole logical occurrence, rather
+   than only the last marginal route;
+5. production-native counter instrumentation for every remaining abstract-only,
+   rebuild, exact-infeasible, cap/protocol/integrity, serialization, I/O, verification
+   and hash path;
+6. authoritative `ABSTRACT_AUDIT` and identical-query/build/kernel
+   `EXACT_CACHED_INFEASIBILITY` replay;
+7. a live failed-post-audit -> genuinely deeper frontier -> fresh second-decision
+   benchmark. The generic controller can select local transaction 2 or direct fallback,
+   but its tests are not registered benchmark evidence for that dependent path;
+8. operational rebuild/new-epoch retry and all terminal/campaign failure closures with
+   complete accounting;
+9. an upstream consumer that starts from a manifest, plans and audits in the frozen
+   RAPM, and constructs the prepared authority package rather than receiving it; and
+10. an independent manifest-based bundle verifier that replays all sources, identities,
    counters, formulae, access events and certificate semantics.
 
 Until then, the project has advanced the auditable mechanism but has not run
-Phase 3E workload economics or official dynamic routing.  Nor does this accounting
-foundation by itself establish automatic strategic abstraction, generality, scale or
-the complete reusable-world-model objective.
+Phase 3E workload economics or official dynamic routing. FQ12 permits scalar-free
+vector prefixes and componentwise worst frontiers only; `official_scalar_cost` and
+`official_N_break_even` stay null until a later scalar ledger revision. Nor does this
+accounting foundation by itself establish automatic strategic abstraction, generality,
+scale or the complete reusable-world-model objective.

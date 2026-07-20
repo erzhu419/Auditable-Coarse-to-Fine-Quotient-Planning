@@ -12,6 +12,7 @@ from acfqp.phase3e_ids import (
     DECISION_POINT_DOMAIN,
     FRONTIER_SNAPSHOT_DOMAIN,
     PHASE3E_DOMAIN_TAGS,
+    PRESELECTION_NOT_APPLICABLE_BINDING_DOMAIN,
     ROUTE_CAP_PROFILE_DOMAIN,
     ROUTE_UPPER_BOUND_ENVELOPE_DOMAIN,
     TRANSACTION_DOMAIN,
@@ -75,6 +76,7 @@ def test_registry_includes_routing_and_accounting_v1_domains() -> None:
         "acfqp:rebuild-event:v1",
         "acfqp:campaign-occurrence-closure:v1",
         "acfqp:campaign-summary:v1",
+        PRESELECTION_NOT_APPLICABLE_BINDING_DOMAIN,
     }.issubset(PHASE3E_DOMAIN_TAGS)
 
 

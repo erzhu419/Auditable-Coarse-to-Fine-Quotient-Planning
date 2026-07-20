@@ -6,6 +6,14 @@ replayable V1 implementation:
 
 * native ``WorkVectorV1`` materialization against the official counter registry;
 * exact actual-work projection from that native vector;
+* safe-chain Phase-3D preselection causal/frontier replay and complete local
+  cardinality projection without ground transitions;
+* route-upper arithmetic/cap replay gated by an upstream cardinality authority;
+* authority-gated marginal route selection;
+* scoped Phase-3D safe-chain local-worker and sound-post-audit runtime replay
+  without a second host solver run;
+* trusted in-process ground-fallback result/work/outcome replay without a
+  second host solver run;
 * forbidden-access protocol replay; and
 * terminal class/code validation against semantically replayed evidence.
 
@@ -14,8 +22,18 @@ vocabularies cannot drift, but they fail closed with ``NOT_IMPLEMENTED``.  In
 particular, a well-formed attestation carrying a plausible result string is not
 accepted as evidence for one of those roles.
 
-This is a partial verification profile.  It does not run, and must not be used
-to claim, the full FQ7 or Phase-3E official gate.
+``CARDINALITY_EVIDENCE`` is implemented only for two registered safe-chain
+profiles: direct fallback and the Phase-3D local preselection projection.  Both
+handlers reload the verified frozen Phase-3C parent bundle and recompute the
+complete source/bound/evidence chain without ground transitions.  Generic
+member lists remain non-authoritative: a source hash or an enumerated witness
+cannot establish that it is a complete projection of the frozen RAPM/action
+catalogue.
+
+The ground-fallback authority is deliberately scoped to the V0 in-process
+trusted executor.  It is not an isolated-worker attestation or portable proof.
+This remains a partial verification profile and must not be used to claim the
+full FQ7 or Phase-3E official gate.
 """
 
 from __future__ import annotations
@@ -33,34 +51,57 @@ from acfqp.accounting_v1 import (
     LaneEnum,
     NativeZeroAttestationV1,
     ReconciliationProofV1,
+    SHARED_AXES,
     WorkVectorV1,
     official_comparison_profile_v1,
     official_counter_registry_v1,
 )
 from acfqp.actual_accounting_v1 import (
     ActualProjectionProofV1,
+    ActualWorkScope,
     official_actual_projection_profile_v1,
     verify_actual_projection_v1,
 )
 from acfqp.access_protocol_v1 import (
     AccessEventLogV1,
+    AccessOperation,
     AccessProtocolV1Error,
     AccessProtocolViolation,
     ForbiddenAccessViolationV1,
+    PRESELECTION_READ_OPERATIONS,
     ProtocolSequenceProfileV1,
     RouteDecisionFreezeAttestationV1,
+    local_execution_stages_v1,
     replay_access_protocol,
 )
+from acfqp.marginal_accounting_v1 import (
+    AggregatedMarginalWorkV1,
+    MarginalAccountingV1Error,
+    verify_marginal_work_aggregate_v1,
+)
+from acfqp.native_recorder_v1 import RecordedWorkV1, verify_recorded_work_v1
 from acfqp.phase3e_ids import (
     TYPED_VERIFICATION_ATTESTATION_DOMAIN,
     content_id,
     parse_content_id,
 )
+from acfqp.route_upper_formula_v1 import (
+    RouteUpperDerivationProofV1,
+    RouteUpperFormulaV1,
+    official_route_upper_formula_v1,
+    verify_route_upper_derivation_v1,
+)
 from acfqp.routing_v1 import (
+    CardinalityEvidenceV1,
     CausalEvidenceV1,
+    CausalOutcome,
     DecisionPointV1,
+    FrontierSnapshotV1,
     MarginalRouteDecisionV1,
+    RouteComparison,
     RouteDecisionContextV1,
+    RouteCapProfileV1,
+    RouteKind,
     RouteSelection,
     RouteUpperBoundEnvelopeV1,
     TerminalArtifactV1,
@@ -68,6 +109,7 @@ from acfqp.routing_v1 import (
     TerminalCode,
     TypedNotApplicable,
     TypedVerificationAttestationV1,
+    TransactionV1,
     verify_unique_attestation_roles,
 )
 
@@ -174,29 +216,32 @@ _SPECS = (
             "LOCAL_CAP_IMPOSSIBLE",
             "INVALID",
         ),
-        implemented=False,
+        # Scoped to the registered safe-chain Phase-3D preselection replay.
+        # Other causal profiles remain fail closed in that handler.
+        implemented=True,
     ),
     _spec(
         SemanticRole.CARDINALITY_EVIDENCE,
         "CardinalityEvidenceV1",
         ("VALID", "INVALID"),
-        implemented=False,
+        # V1 currently implements the registered safe-chain fallback and
+        # Phase-3D local preselection extractors.  Other route/domain profiles
+        # fail closed in their handlers instead of inheriting this capability.
+        implemented=True,
     ),
     _spec(
         SemanticRole.ROUTE_UPPER,
         "RouteUpperBoundEnvelopeV1",
         ("VALID", "INVALID"),
-        implemented=False,
+        implemented=True,
     ),
     _spec(
         SemanticRole.ROUTE_DECISION,
         "RouteDecisionV1",
         ("LOCAL", "FALLBACK", "INVALID"),
-        # Route selection is not authoritative until both route uppers have
-        # themselves been semantically replayed.  The current profile has no
-        # implemented ROUTE_UPPER authority, so accepting a merely
-        # self-consistent selector object here would create a trust cycle.
-        implemented=False,
+        # The handler accepts only authority-bearing ROUTE_UPPER results.  A
+        # LOCAL result additionally requires CAUSAL_SEARCH=FOUND authority.
+        implemented=True,
     ),
     _spec(
         SemanticRole.LOCAL_SOLVER_RESULT,
@@ -207,13 +252,17 @@ _SPECS = (
             "NO_FEASIBLE_ASSIGNMENT",
             "INVALID",
         ),
-        implemented=False,
+        # Scoped to opaque runtime provenance minted by the existing isolated
+        # Phase-3D safe-chain local executor.  Raw transport remains inert.
+        implemented=True,
     ),
     _spec(
         SemanticRole.POST_AUDIT,
         "PostAuditCertificateV1",
         ("CERTIFIED", "FAILED", "INVALID"),
-        implemented=False,
+        # Scoped to the trusted sound Phase-3D safe-chain post-auditor and the
+        # exact local-result authority it consumed.
+        implemented=True,
     ),
     _spec(
         SemanticRole.GROUND_FALLBACK,
@@ -224,7 +273,9 @@ _SPECS = (
             "CAP_EXHAUSTED",
             "INVALID",
         ),
-        implemented=False,
+        # This accepts only an opaque runtime seal minted by the selected-route
+        # trusted executor.  Raw/serialized results still fail closed.
+        implemented=True,
     ),
     _spec(
         SemanticRole.WORK_VECTOR,
@@ -626,6 +677,45 @@ class ProtocolVerificationResultV1:
         return "PROTOCOL_FAILURE"
 
 
+@dataclass(frozen=True, slots=True)
+class TerminalRouteEvidenceBundleV1:
+    """Runtime-only evidence joining a terminal to the selected runner work.
+
+    The aggregate alone is not authoritative: it must be replayed from the
+    native execution and post-result verification suffix.  Likewise, a valid
+    access-log hash is insufficient without its decision freeze and the
+    authority-bearing route decision supplied in ``evidence_results``.
+    """
+
+    execution_work: RecordedWorkV1
+    verification_suffix_work: RecordedWorkV1
+    aggregate_marginal_work: AggregatedMarginalWorkV1
+    access_log: AccessEventLogV1
+    freeze_attestation: RouteDecisionFreezeAttestationV1
+    protocol_profile: ProtocolSequenceProfileV1
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.execution_work, RecordedWorkV1) or not isinstance(
+            self.verification_suffix_work, RecordedWorkV1
+        ):
+            raise SemanticVerificationV1Error(
+                "terminal route evidence requires native execution and "
+                "verification-suffix work"
+            )
+        if not isinstance(
+            self.aggregate_marginal_work, AggregatedMarginalWorkV1
+        ):
+            raise SemanticVerificationV1Error(
+                "terminal route evidence requires AggregatedMarginalWorkV1"
+            )
+        if not isinstance(self.access_log, AccessEventLogV1) or not isinstance(
+            self.freeze_attestation, RouteDecisionFreezeAttestationV1
+        ) or not isinstance(self.protocol_profile, ProtocolSequenceProfileV1):
+            raise SemanticVerificationV1Error(
+                "terminal route evidence requires typed access/freeze/profile objects"
+            )
+
+
 def _expected_attestation(
     *,
     artifact_id: str,
@@ -868,6 +958,264 @@ def verify_actual_projection_semantics_v1(
     )
 
 
+def verify_ground_fallback_semantics_v1(
+    execution: object,
+    *,
+    cap_profile: object,
+    binding: AttestationContextV1,
+    verification_work_record: CounterRecordV1 | Mapping[str, Any],
+    registry: CounterRegistryV1 | None = None,
+) -> SemanticVerificationResultV1:
+    """Verify a trusted-executor fallback result without rerunning the solver.
+
+    FQ10 forbids a second full ground-solver replay on the host.  Accordingly,
+    this handler accepts only the non-serializable runtime execution seal minted
+    after the authority-gated selected route finishes.  It independently
+    replays the result schema, cap binding, native WorkVector completeness and
+    reconciliation, exact frontier selection/infeasibility conditions, and all
+    observable cap/counter invariants.  Raw JSON and unsealed raw-search
+    results cannot cross this boundary.
+
+    The runtime seal is a deliberately narrow V0 trust root.  It attests the
+    in-process executor's exhaustive-search statement; it is not an isolated
+    worker attestation or a portable public-bundle proof, and it does not turn
+    on the official Phase-3E gate.
+    """
+
+    from acfqp.phase3e_fallback_v1 import (
+        GroundFallbackCapProfileV1,
+        GroundFallbackExecutionV1,
+        GroundFallbackOutcome,
+        GroundFallbackResultV1,
+        GroundFallbackV1Error,
+        verify_trusted_ground_fallback_execution_provenance_v1,
+    )
+
+    spec = require_implemented_role_v1(SemanticRole.GROUND_FALLBACK)
+    trusted_registry = _official_registry(registry)
+    work = _verification_work_record(
+        verification_work_record, spec, trusted_registry
+    )
+    if not isinstance(execution, GroundFallbackExecutionV1):
+        raise SemanticVerificationV1Error(
+            "GROUND_FALLBACK requires an opaque in-memory trusted execution; "
+            "raw result JSON has no authority"
+        )
+    try:
+        delta = verify_trusted_ground_fallback_execution_provenance_v1(execution)
+        parsed_result = GroundFallbackResultV1.from_dict(
+            execution.result.to_dict()
+        )
+        parsed_vector = WorkVectorV1.from_dict(
+            execution.work_vector.to_dict(), trusted_registry
+        )
+        parsed_cap = GroundFallbackCapProfileV1.from_dict(
+            cap_profile.to_dict()
+            if isinstance(cap_profile, GroundFallbackCapProfileV1)
+            else cap_profile
+        )
+        trusted_registry.validate_vector(parsed_vector)
+        _verify_work_binding_v1(parsed_vector, binding)
+        native_zero = NativeZeroAttestationV1.derive(
+            parsed_vector, trusted_registry
+        )
+        reconciliation = ReconciliationProofV1.derive(
+            parsed_vector, trusted_registry
+        )
+    except (GroundFallbackV1Error, TypeError, ValueError) as error:
+        raise SemanticVerificationV1Error(
+            f"ground-fallback trusted-execution replay failed: {error}"
+        ) from error
+
+    if parsed_result != execution.result or parsed_vector != execution.work_vector:
+        raise SemanticVerificationV1Error(
+            "ground fallback runtime objects differ from strict schema replay"
+        )
+    context = binding.route_context
+    if isinstance(binding.decision_point_id, TypedNotApplicable) or not isinstance(
+        binding.transaction_id, TypedNotApplicable
+    ):
+        raise SemanticVerificationV1Error(
+            "direct fallback requires an applicable decision point and typed-null transaction"
+        )
+    if (
+        parsed_result.route_decision_context_id
+        != context.route_decision_context_id
+        or parsed_result.decision_point_id != binding.decision_point_id
+        or parsed_result.route_attempt_id != context.route_attempt_id
+        or parsed_result.query_id != context.query_id
+    ):
+        raise SemanticVerificationV1Error(
+            "ground fallback result uses another route/query/decision context"
+        )
+    if (
+        parsed_result.ground_fallback_cap_profile_id
+        != parsed_cap.ground_fallback_cap_profile_id
+    ):
+        raise SemanticVerificationV1Error(
+            "ground fallback result uses another finite cap profile"
+        )
+    if parsed_result.work_vector_id != parsed_vector.work_vector_id:
+        raise SemanticVerificationV1Error(
+            "ground fallback result does not bind the replayed native WorkVector"
+        )
+
+    values = parsed_vector.values
+    cap_limits = {
+        "fallback.states_expanded": parsed_cap.max_states_expanded,
+        "fallback.actions_evaluated": parsed_cap.max_actions_evaluated,
+        "fallback.ground_steps": parsed_cap.max_ground_steps,
+        "fallback.outcome_rows": parsed_cap.max_outcome_rows,
+        "fallback.bellman_backups": parsed_cap.max_bellman_backups,
+        "control.cap_checks": parsed_cap.max_cap_checks,
+    }
+    exceeded = tuple(
+        path for path, maximum in cap_limits.items() if values[path] > maximum
+    )
+    if exceeded:
+        raise SemanticVerificationV1Error(
+            "ground fallback actual WorkVector exceeds its finite cap: "
+            + ", ".join(exceeded)
+        )
+    if (
+        parsed_result.composed_candidate_count
+        > parsed_cap.max_composed_candidates
+        or values["fallback.bellman_backups"]
+        != parsed_result.composed_candidate_count
+    ):
+        raise SemanticVerificationV1Error(
+            "fallback composed-candidate work is absent, inconsistent, or over cap"
+        )
+    if (
+        values["fallback.ground_steps"]
+        > values["fallback.actions_evaluated"]
+        or values["fallback.outcome_rows"]
+        > values["fallback.ground_steps"]
+        * parsed_cap.max_positive_outcomes_per_step
+    ):
+        raise SemanticVerificationV1Error(
+            "fallback action/transition/outcome native counters are inconsistent"
+        )
+
+    successful_guards = (
+        values["fallback.states_expanded"]
+        + values["fallback.actions_evaluated"]
+        + values["fallback.ground_steps"]
+        + parsed_result.composed_candidate_count
+    )
+    cap_exhausted = parsed_result.outcome is GroundFallbackOutcome.CAP_EXHAUSTED
+    if values["control.cap_checks"] not in (
+        successful_guards,
+        successful_guards + (1 if cap_exhausted else 0),
+    ):
+        raise SemanticVerificationV1Error(
+            "fallback cap-check count is not derivable from native guarded work"
+        )
+
+    # Pareto shape and constrained selection can be replayed from the exact
+    # frontier bytes without any kernel call.  Completeness of that frontier is
+    # the statement covered by the opaque trusted-executor provenance.
+    frontier = parsed_result.frontier
+    reward_risk = tuple(
+        (point.expected_reward, point.failure_probability) for point in frontier
+    )
+    if len(set(reward_risk)) != len(reward_risk):
+        raise SemanticVerificationV1Error(
+            "ground fallback frontier repeats a reward-risk point"
+        )
+    for index, point in enumerate(frontier):
+        if any(
+            other_index != index
+            and other.expected_reward >= point.expected_reward
+            and other.failure_probability <= point.failure_probability
+            and (
+                other.expected_reward > point.expected_reward
+                or other.failure_probability < point.failure_probability
+            )
+            for other_index, other in enumerate(frontier)
+        ):
+            raise SemanticVerificationV1Error(
+                "ground fallback claimed frontier contains a dominated point"
+            )
+    feasible = tuple(
+        point for point in frontier if point.failure_probability <= delta
+    )
+
+    outcome = parsed_result.outcome
+    if outcome is GroundFallbackOutcome.FEASIBLE_CERTIFIED:
+        if not feasible:
+            raise SemanticVerificationV1Error(
+                "FEASIBLE_CERTIFIED has no point below the trusted query delta"
+            )
+        selected = min(
+            feasible,
+            key=lambda point: (
+                -point.expected_reward,
+                point.failure_probability,
+                point.policy_signature,
+            ),
+        )
+        if (
+            selected.policy_signature != parsed_result.selected_policy_signature
+            or selected.expected_reward != parsed_result.selected_expected_reward
+            or selected.failure_probability
+            != parsed_result.selected_failure_probability
+        ):
+            raise SemanticVerificationV1Error(
+                "ground fallback selected point is not the exact constrained optimum"
+            )
+        expected_successes, expected_failures, expected_rejections = 1, 0, 0
+    elif outcome is GroundFallbackOutcome.INFEASIBLE_CERTIFIED:
+        if not frontier or feasible:
+            raise SemanticVerificationV1Error(
+                "INFEASIBLE_CERTIFIED requires a complete nonempty frontier with no feasible point"
+            )
+        expected_successes, expected_failures, expected_rejections = 1, 0, 0
+    else:
+        allowed_cap_names = {
+            "max_states_expanded",
+            "max_actions_evaluated",
+            "max_ground_steps",
+            "max_outcome_rows",
+            "max_bellman_backups",
+            "max_composed_candidates",
+            "max_cap_checks",
+        }
+        if parsed_result.cap_exhausted_name not in allowed_cap_names:
+            raise SemanticVerificationV1Error(
+                "CAP_EXHAUSTED does not name a registered fallback cap"
+            )
+        expected_successes, expected_failures, expected_rejections = 0, 1, 1
+
+    if (
+        values["route.attempts"] != 1
+        or values["solver.attempts"] != 1
+        or values["route.successes"] != expected_successes
+        or values["solver.successes"] != expected_successes
+        or values["route.failures"] != expected_failures
+        or values["solver.failures"] != expected_failures
+        or values["control.cap_rejections"] != expected_rejections
+    ):
+        raise SemanticVerificationV1Error(
+            "ground fallback terminal outcome disagrees with native route/solver/cap counters"
+        )
+
+    return _finish(
+        artifact=parsed_result,
+        artifact_id=parsed_result.ground_fallback_result_id,
+        spec=spec,
+        outcome=outcome.value,
+        binding=binding,
+        work=work,
+        recomputed_evidence_ids=(
+            parsed_vector.work_vector_id,
+            parsed_cap.ground_fallback_cap_profile_id,
+            native_zero.native_zero_attestation_id,
+            reconciliation.reconciliation_proof_id,
+        ),
+    )
+
+
 _UPPER_CONTEXT_FIELDS = (
     "preregistration_id",
     "protocol_id",
@@ -883,6 +1231,268 @@ _UPPER_CONTEXT_FIELDS = (
 )
 
 
+def verify_local_transaction_result_semantics_v1(
+    execution: object,
+    *,
+    context: RouteDecisionContextV1,
+    decision_point: DecisionPointV1,
+    transaction: TransactionV1,
+    cap_profile: RouteCapProfileV1,
+    binding: AttestationContextV1,
+    verification_work_record: CounterRecordV1 | Mapping[str, Any],
+    registry: CounterRegistryV1 | None = None,
+) -> SemanticVerificationResultV1:
+    """Verify the scoped trusted local-worker result without solver replay.
+
+    The opaque runtime seal is the V0 trust root for the fact that the existing
+    isolated Phase-3D safe-chain worker produced this exact result.  This
+    handler replays strict schemas, context/cap/work binding and native-vector
+    integrity, but intentionally does not run the local solver again (FQ10).
+    """
+
+    from acfqp.phase3e_local_semantics_v1 import (
+        LocalTransactionResultV1,
+        Phase3ELocalSemanticV1Error,
+        TrustedLocalExecutionV1,
+        validate_local_execution_context_v1,
+    )
+
+    spec = require_implemented_role_v1(SemanticRole.LOCAL_SOLVER_RESULT)
+    trusted_registry = _official_registry(registry)
+    work = _verification_work_record(
+        verification_work_record, spec, trusted_registry
+    )
+    if not isinstance(execution, TrustedLocalExecutionV1):
+        raise SemanticVerificationV1Error(
+            "LOCAL_SOLVER_RESULT requires opaque trusted runtime provenance; "
+            "raw LocalTransactionResultV1 bytes have no authority"
+        )
+    if binding.route_context != context:
+        raise SemanticVerificationV1Error(
+            "local semantic binding carries another route context"
+        )
+    if (
+        binding.decision_point_id != decision_point.decision_point_id
+        or binding.transaction_id != transaction.transaction_id
+    ):
+        raise SemanticVerificationV1Error(
+            "local semantic binding carries another decision or transaction"
+        )
+    try:
+        parsed = LocalTransactionResultV1.from_dict(
+            execution.local_result.to_dict()
+        )
+        parsed_vector = WorkVectorV1.from_dict(
+            execution.work_vector.to_dict(), trusted_registry
+        )
+        validate_local_execution_context_v1(
+            execution,
+            context=context,
+            decision_point=decision_point,
+            transaction=transaction,
+            cap_profile=cap_profile,
+        )
+        trusted_registry.validate_vector(parsed_vector)
+        _verify_work_binding_v1(parsed_vector, binding)
+        native_zero = NativeZeroAttestationV1.derive(
+            parsed_vector, trusted_registry
+        )
+        reconciliation = ReconciliationProofV1.derive(
+            parsed_vector, trusted_registry
+        )
+    except (Phase3ELocalSemanticV1Error, TypeError, ValueError) as error:
+        raise SemanticVerificationV1Error(
+            f"trusted local-result replay failed: {error}"
+        ) from error
+    if parsed != execution.local_result or parsed_vector != execution.work_vector:
+        raise SemanticVerificationV1Error(
+            "local runtime objects differ from strict schema replay"
+        )
+    values = parsed_vector.values
+    limits = dict(cap_profile.limits)
+    direct_cap_bindings = {
+        "local.causal_candidate_evaluations": "max_causal_candidate_evaluations",
+        "local.materialization_ground_steps": "max_materialization_ground_steps",
+        "local.materialization_outcome_rows": "max_materialization_positive_outcomes",
+        "local.compiler_expanded_forms": "max_expanded_forms",
+        "local.compiler_domain_assignments": "max_domain_assignments",
+        "local.solver_subset_evaluations": "max_subset_evaluations",
+        "local.solver_policy_assignments": "max_policy_assignments",
+        "local.solver_frontier_points": "max_root_frontier_points",
+        "local.solver_dominance_comparisons": "max_dominance_comparisons",
+        "local.solver_affine_term_evaluations": "max_affine_term_evaluations",
+        "local.postaudit_ground_steps": "max_postaudit_ground_steps",
+        "local.postaudit_outcome_rows": "max_postaudit_positive_outcomes",
+    }
+    exceeded = tuple(
+        path
+        for path, cap_name in direct_cap_bindings.items()
+        if values[path] > limits[cap_name]
+    )
+    compiler_input_cap = sum(
+        limits[name]
+        for name in (
+            "max_slice_cells",
+            "max_slice_members",
+            "max_slice_actions",
+            "max_slice_successor_rows",
+        )
+    )
+    if values["local.compiler_input_records"] > compiler_input_cap:
+        exceeded += ("local.compiler_input_records",)
+    if values["control.cap_checks"] > sum(limits.values()):
+        exceeded += ("control.cap_checks",)
+    if exceeded:
+        raise SemanticVerificationV1Error(
+            "local actual WorkVector exceeds the frozen RouteCapProfileV1: "
+            + ", ".join(exceeded)
+        )
+    from acfqp.phase3e_local_semantics_v1 import LocalSolverOutcome
+
+    if parsed.outcome is LocalSolverOutcome.SEARCH_CAP_EXHAUSTED:
+        saturation_paths = {
+            cap_name: path for path, cap_name in direct_cap_bindings.items()
+        }
+        saturation_path = saturation_paths.get(parsed.cap_reason)
+        if (
+            parsed.cap_reason not in limits
+            or values["control.cap_rejections"] != 1
+            or saturation_path is None
+            or values[saturation_path] != limits[parsed.cap_reason]
+        ):
+            raise SemanticVerificationV1Error(
+                "SEARCH_CAP_EXHAUSTED lacks registered native cap-saturation evidence"
+            )
+    elif values["control.cap_rejections"] != 0:
+        raise SemanticVerificationV1Error(
+            "a complete local solver result cannot carry cap rejections"
+        )
+    return _finish(
+        artifact=parsed,
+        artifact_id=parsed.local_transaction_result_id,
+        spec=spec,
+        outcome=parsed.outcome.value,
+        binding=binding,
+        work=work,
+        recomputed_evidence_ids=(
+            native_zero.native_zero_attestation_id,
+            reconciliation.reconciliation_proof_id,
+            parsed.runtime_attestation_binding_id,
+            parsed.worker_result_binding_id,
+        ),
+    )
+
+
+def verify_post_audit_semantics_v1(
+    execution: object,
+    *,
+    local_solver_result: SemanticVerificationResultV1,
+    context: RouteDecisionContextV1,
+    decision_point: DecisionPointV1,
+    transaction: TransactionV1,
+    cap_profile: RouteCapProfileV1,
+    binding: AttestationContextV1,
+    verification_work_record: CounterRecordV1 | Mapping[str, Any],
+    registry: CounterRegistryV1 | None = None,
+) -> SemanticVerificationResultV1:
+    """Verify the exact trusted post-audit and its local-result dependency."""
+
+    from acfqp.phase3e_local_semantics_v1 import (
+        Phase3ELocalSemanticV1Error,
+        PostAuditCertificateV1,
+        TrustedLocalExecutionV1,
+        validate_local_execution_context_v1,
+        verify_trusted_postaudit_runtime_provenance_v1,
+    )
+
+    spec = require_implemented_role_v1(SemanticRole.POST_AUDIT)
+    trusted_registry = _official_registry(registry)
+    work = _verification_work_record(
+        verification_work_record, spec, trusted_registry
+    )
+    if not isinstance(execution, TrustedLocalExecutionV1):
+        raise SemanticVerificationV1Error(
+            "POST_AUDIT requires opaque trusted runtime provenance; raw bytes have no authority"
+        )
+    verified_local = require_semantic_verification_result_v1(
+        local_solver_result, SemanticRole.LOCAL_SOLVER_RESULT
+    )
+    if binding.route_context != context or (
+        binding.decision_point_id != decision_point.decision_point_id
+        or binding.transaction_id != transaction.transaction_id
+    ):
+        raise SemanticVerificationV1Error(
+            "post-audit semantic binding carries another context or transaction"
+        )
+    try:
+        verify_trusted_postaudit_runtime_provenance_v1(execution)
+        validate_local_execution_context_v1(
+            execution,
+            context=context,
+            decision_point=decision_point,
+            transaction=transaction,
+            cap_profile=cap_profile,
+        )
+        if execution.post_audit is None:
+            raise Phase3ELocalSemanticV1Error("trusted execution has no post-audit artifact")
+        parsed = PostAuditCertificateV1.from_dict(execution.post_audit.to_dict())
+    except (Phase3ELocalSemanticV1Error, TypeError, ValueError) as error:
+        raise SemanticVerificationV1Error(
+            f"trusted post-audit replay failed: {error}"
+        ) from error
+    if parsed != execution.post_audit:
+        raise SemanticVerificationV1Error(
+            "post-audit runtime object differs from strict schema replay"
+        )
+    if (
+        verified_local.artifact != execution.local_result
+        or verified_local.attestation.artifact_id
+        != parsed.local_transaction_result_id
+        or verified_local.binding != binding
+        or parsed.route_decision_context_id != context.route_decision_context_id
+        or parsed.decision_point_id != decision_point.decision_point_id
+        or parsed.transaction_id != transaction.transaction_id
+        or parsed.route_attempt_id != context.route_attempt_id
+        or parsed.query_id != context.query_id
+        or parsed.selected_plan_id != context.selected_plan_id
+        or parsed.work_vector_id != execution.work_vector.work_vector_id
+    ):
+        raise SemanticVerificationV1Error(
+            "post-audit/local-result/context identity chain does not match"
+        )
+    values = execution.work_vector.values
+    if (
+        parsed.postaudit_ground_steps
+        != values["local.postaudit_ground_steps"]
+        or parsed.postaudit_positive_outcomes
+        != values["local.postaudit_outcome_rows"]
+    ):
+        raise SemanticVerificationV1Error(
+            "post-audit artifact counters differ from the native WorkVector"
+        )
+    expected_success = parsed.outcome.value == "CERTIFIED"
+    if (
+        values["route.attempts"] != 1
+        or values["route.successes"] != (1 if expected_success else 0)
+        or values["route.failures"] != (0 if expected_success else 1)
+    ):
+        raise SemanticVerificationV1Error(
+            "post-audit outcome disagrees with native route completion counters"
+        )
+    return _finish(
+        artifact=parsed,
+        artifact_id=parsed.post_audit_certificate_id,
+        spec=spec,
+        outcome=parsed.outcome.value,
+        binding=binding,
+        work=work,
+        recomputed_evidence_ids=(
+            parsed.audit_issue_set_id,
+            verified_local.attestation.verification_attestation_id,
+        ),
+    )
+
+
 def _load_route_object(value: Any, expected_type: type[Any]) -> Any:
     document = value.to_dict() if isinstance(value, expected_type) else value
     try:
@@ -893,19 +1503,807 @@ def _load_route_object(value: Any, expected_type: type[Any]) -> Any:
         ) from error
 
 
+def _replay_safe_chain_local_preselection_source_v1(
+    *,
+    source: Any,
+    frozen_world: Any,
+    context: RouteDecisionContextV1,
+    frontier: FrontierSnapshotV1,
+    causal: CausalEvidenceV1,
+    decision_point: DecisionPointV1,
+    transaction: TransactionV1,
+    cap_profile: RouteCapProfileV1,
+) -> tuple[Any, Any, Any, Any]:
+    """Reload and recompute the registered preselection source chain."""
+
+    from acfqp.frozen_phase3c import FrozenPhase3CWorld, load_frozen_phase3c_world
+    from acfqp.phase3d import prepare_safe_chain_estimate_context
+    from acfqp.phase3e_local_preselection_v1 import (
+        SafeChainLocalPreselectionSourceV1,
+        derive_safe_chain_local_frontier_and_causal_v1,
+        derive_safe_chain_local_preselection_source_v1,
+    )
+
+    parsed_source = _load_route_object(
+        source, SafeChainLocalPreselectionSourceV1
+    )
+    if not isinstance(frozen_world, FrozenPhase3CWorld):
+        raise SemanticVerificationV1Error(
+            "safe-chain local replay requires a loaded FrozenPhase3CWorld parent"
+        )
+    try:
+        # The reload revalidates the manifest, model, BuildEpoch, and frozen
+        # action catalogue.  Preparation consumes only RAPM realizations and
+        # that frozen catalogue; it performs no kernel step/materialization.
+        replayed_world = load_frozen_phase3c_world(frozen_world.source_bundle)
+        prepared = prepare_safe_chain_estimate_context(replayed_world)
+        replayed_frontier, replayed_causal = (
+            derive_safe_chain_local_frontier_and_causal_v1(
+                prepared=prepared,
+                context=context,
+                cap_profile=cap_profile,
+                frontier_stage=transaction.transaction_index,
+            )
+        )
+        replayed_source = derive_safe_chain_local_preselection_source_v1(
+            prepared=prepared,
+            context=context,
+            frontier=replayed_frontier,
+            causal=replayed_causal,
+            decision_point=decision_point,
+            transaction=transaction,
+            cap_profile=cap_profile,
+            frozen_at_protocol_step=parsed_source.frozen_at_protocol_step,
+        )
+    except (RuntimeError, TypeError, ValueError) as error:
+        raise SemanticVerificationV1Error(
+            f"safe-chain local preselection replay failed: {error}"
+        ) from error
+    if frontier != replayed_frontier or causal != replayed_causal:
+        raise SemanticVerificationV1Error(
+            "frontier/causal evidence differs from frozen-parent replay"
+        )
+    if parsed_source != replayed_source:
+        raise SemanticVerificationV1Error(
+            "local preselection source differs from the verified frozen-parent projection"
+        )
+    return parsed_source, prepared, replayed_frontier, replayed_causal
+
+
+def verify_safe_chain_local_causal_semantics_v1(
+    claimed_causal: CausalEvidenceV1 | Mapping[str, Any],
+    *,
+    source: Any,
+    frozen_world: Any,
+    context: RouteDecisionContextV1 | Mapping[str, Any],
+    frontier: FrontierSnapshotV1 | Mapping[str, Any],
+    decision_point: DecisionPointV1 | Mapping[str, Any],
+    transaction: TransactionV1 | Mapping[str, Any],
+    cap_profile: RouteCapProfileV1 | Mapping[str, Any],
+    binding: AttestationContextV1,
+    verification_work_record: CounterRecordV1 | Mapping[str, Any],
+    registry: CounterRegistryV1 | None = None,
+) -> SemanticVerificationResultV1:
+    """Authorize the registered safe-chain ``FOUND`` causal result.
+
+    Negative claims and every unregistered domain/profile fail closed.  The
+    route state machine therefore cannot be reopened by supplying a cheap
+    local cardinality after a missing, invalid, or negative causal authority.
+    """
+
+    from acfqp.phase3e_local_preselection_v1 import (
+        SafeChainLocalPreselectionSourceV1,
+    )
+
+    spec = require_implemented_role_v1(SemanticRole.CAUSAL_SEARCH)
+    trusted_registry = _official_registry(registry)
+    work = _verification_work_record(
+        verification_work_record, spec, trusted_registry
+    )
+    parsed_context = _load_context(context)
+    parsed_frontier = _load_route_object(frontier, FrontierSnapshotV1)
+    parsed_causal = _load_route_object(claimed_causal, CausalEvidenceV1)
+    parsed_point = _load_route_object(decision_point, DecisionPointV1)
+    parsed_transaction = _load_route_object(transaction, TransactionV1)
+    parsed_cap = _load_route_object(cap_profile, RouteCapProfileV1)
+    parsed_source = _load_route_object(source, SafeChainLocalPreselectionSourceV1)
+    if binding.route_context != parsed_context:
+        raise SemanticVerificationV1Error(
+            "local causal binding uses another route context"
+        )
+    if (
+        binding.decision_point_id != parsed_point.decision_point_id
+        or binding.transaction_id != parsed_transaction.transaction_id
+    ):
+        raise SemanticVerificationV1Error(
+            "local causal binding uses another decision point or transaction"
+        )
+    if (
+        parsed_frontier.route_decision_context_id
+        != parsed_context.route_decision_context_id
+        or parsed_point.route_decision_context_id
+        != parsed_context.route_decision_context_id
+        or parsed_point.frontier_snapshot_id
+        != parsed_frontier.frontier_snapshot_id
+        or parsed_point.causal_evidence_id != parsed_causal.causal_evidence_id
+        or parsed_transaction.decision_point_id != parsed_point.decision_point_id
+        or parsed_transaction.frontier_snapshot_id
+        != parsed_frontier.frontier_snapshot_id
+        or parsed_transaction.route_cap_profile_id != parsed_cap.route_cap_profile_id
+        or parsed_source.transaction_id != parsed_transaction.transaction_id
+    ):
+        raise SemanticVerificationV1Error(
+            "local causal context/frontier/transaction/cap chain is stale"
+        )
+    if parsed_source.frozen_at_protocol_step >= binding.verified_at_protocol_step:
+        raise SemanticVerificationV1Error(
+            "local preselection source was not frozen before semantic verification"
+        )
+    parsed_source, _prepared, _frontier, replayed_causal = (
+        _replay_safe_chain_local_preselection_source_v1(
+            source=parsed_source,
+            frozen_world=frozen_world,
+            context=parsed_context,
+            frontier=parsed_frontier,
+            causal=parsed_causal,
+            decision_point=parsed_point,
+            transaction=parsed_transaction,
+            cap_profile=parsed_cap,
+        )
+    )
+    if replayed_causal.outcome is not CausalOutcome.FOUND:
+        # The registered safe-chain profile has one real FOUND result.  This
+        # branch is deliberately explicit so adding another outcome requires
+        # a new replay profile rather than inheriting authority accidentally.
+        raise SemanticVerificationV1Error(
+            "safe-chain causal authority supports only the recomputed FOUND profile"
+        )
+    return _finish(
+        artifact=replayed_causal,
+        artifact_id=replayed_causal.causal_evidence_id,
+        spec=spec,
+        outcome=replayed_causal.outcome.value,
+        binding=binding,
+        work=work,
+        recomputed_evidence_ids=(
+            parsed_source.source_artifact_id,
+            parsed_source.extraction_profile_id,
+            parsed_frontier.frontier_snapshot_id,
+            *(artifact_id for _, artifact_id in parsed_source.parent_artifact_ids),
+        ),
+    )
+
+
+def verify_safe_chain_local_cardinality_semantics_v1(
+    claimed_cardinality: CardinalityEvidenceV1 | Mapping[str, Any],
+    *,
+    source: Any,
+    bound: Any,
+    causal_result: SemanticVerificationResultV1,
+    frozen_world: Any,
+    context: RouteDecisionContextV1 | Mapping[str, Any],
+    frontier: FrontierSnapshotV1 | Mapping[str, Any],
+    decision_point: DecisionPointV1 | Mapping[str, Any],
+    transaction: TransactionV1 | Mapping[str, Any],
+    cap_profile: RouteCapProfileV1 | Mapping[str, Any],
+    binding: AttestationContextV1,
+    verification_work_record: CounterRecordV1 | Mapping[str, Any],
+    registry: CounterRegistryV1 | None = None,
+) -> SemanticVerificationResultV1:
+    """Authorize complete local route cardinalities from frozen parents."""
+
+    from acfqp.phase3e_local_preselection_v1 import (
+        SafeChainLocalCardinalityBoundV1,
+        SafeChainLocalPreselectionSourceV1,
+        build_safe_chain_local_cardinality_evidence_v1,
+        derive_safe_chain_local_cardinality_bound_v1,
+    )
+
+    spec = require_implemented_role_v1(SemanticRole.CARDINALITY_EVIDENCE)
+    trusted_registry = _official_registry(registry)
+    work = _verification_work_record(
+        verification_work_record, spec, trusted_registry
+    )
+    parsed_context = _load_context(context)
+    parsed_frontier = _load_route_object(frontier, FrontierSnapshotV1)
+    parsed_point = _load_route_object(decision_point, DecisionPointV1)
+    parsed_transaction = _load_route_object(transaction, TransactionV1)
+    parsed_cap = _load_route_object(cap_profile, RouteCapProfileV1)
+    parsed_source = _load_route_object(source, SafeChainLocalPreselectionSourceV1)
+    parsed_bound = _load_route_object(bound, SafeChainLocalCardinalityBoundV1)
+    parsed_claim = _load_route_object(claimed_cardinality, CardinalityEvidenceV1)
+    verified_causal = require_semantic_verification_result_v1(
+        causal_result, SemanticRole.CAUSAL_SEARCH
+    )
+    _verify_result_context(verified_causal, binding)
+    if (
+        verified_causal.outcome != CausalOutcome.FOUND.value
+        or not isinstance(verified_causal.artifact, CausalEvidenceV1)
+        or verified_causal.attestation.artifact_id
+        != verified_causal.artifact.causal_evidence_id
+    ):
+        raise SemanticVerificationV1Error(
+            "local cardinality requires CAUSAL_SEARCH=FOUND authority"
+        )
+    parsed_causal = verified_causal.artifact
+    if binding.route_context != parsed_context:
+        raise SemanticVerificationV1Error(
+            "local cardinality binding uses another route context"
+        )
+    if (
+        binding.decision_point_id != parsed_point.decision_point_id
+        or binding.transaction_id != parsed_transaction.transaction_id
+    ):
+        raise SemanticVerificationV1Error(
+            "local cardinality binding uses another decision point or transaction"
+        )
+    if (
+        parsed_point.causal_evidence_id != parsed_causal.causal_evidence_id
+        or parsed_point.frontier_snapshot_id != parsed_frontier.frontier_snapshot_id
+        or parsed_transaction.decision_point_id != parsed_point.decision_point_id
+        or parsed_transaction.frontier_snapshot_id
+        != parsed_frontier.frontier_snapshot_id
+        or parsed_transaction.route_cap_profile_id != parsed_cap.route_cap_profile_id
+        or parsed_claim.route_kind is not RouteKind.LOCAL_ATTEMPT
+        or parsed_claim.route_cap_profile_id != parsed_cap.route_cap_profile_id
+        or parsed_claim.frontier_snapshot_id
+        != parsed_frontier.frontier_snapshot_id
+    ):
+        raise SemanticVerificationV1Error(
+            "local cardinality evidence uses a stale frontier/transaction/cap"
+        )
+    if parsed_source.frozen_at_protocol_step >= binding.verified_at_protocol_step:
+        raise SemanticVerificationV1Error(
+            "local cardinality source was not frozen before semantic verification"
+        )
+    parsed_source, _prepared, _frontier, _causal = (
+        _replay_safe_chain_local_preselection_source_v1(
+            source=parsed_source,
+            frozen_world=frozen_world,
+            context=parsed_context,
+            frontier=parsed_frontier,
+            causal=parsed_causal,
+            decision_point=parsed_point,
+            transaction=parsed_transaction,
+            cap_profile=parsed_cap,
+        )
+    )
+    try:
+        recomputed_bound = derive_safe_chain_local_cardinality_bound_v1(
+            source=parsed_source,
+            cap_profile=parsed_cap,
+            registry=trusted_registry,
+        )
+        recomputed_cardinality = build_safe_chain_local_cardinality_evidence_v1(
+            context=parsed_context,
+            decision_point=parsed_point,
+            transaction=parsed_transaction,
+            cap_profile=parsed_cap,
+            bound=recomputed_bound,
+        )
+    except ValueError as error:
+        raise SemanticVerificationV1Error(
+            f"safe-chain local cardinality replay failed: {error}"
+        ) from error
+    if parsed_bound != recomputed_bound:
+        raise SemanticVerificationV1Error(
+            "local cardinality bound differs from the registered formula"
+        )
+    if parsed_claim != recomputed_cardinality:
+        raise SemanticVerificationV1Error(
+            "CardinalityEvidenceV1 differs from authoritative local projection"
+        )
+    return _finish(
+        artifact=recomputed_cardinality,
+        artifact_id=recomputed_cardinality.cardinality_evidence_id,
+        spec=spec,
+        outcome="VALID",
+        binding=binding,
+        work=work,
+        recomputed_evidence_ids=(
+            parsed_source.source_artifact_id,
+            parsed_source.extraction_profile_id,
+            recomputed_bound.local_cardinality_bound_id,
+            verified_causal.attestation.verification_attestation_id,
+            *(artifact_id for _, artifact_id in parsed_source.parent_artifact_ids),
+        ),
+    )
+
+
+def verify_safe_chain_fallback_cardinality_semantics_v1(
+    claimed_cardinality: CardinalityEvidenceV1 | Mapping[str, Any],
+    *,
+    source: Any,
+    bound: Any,
+    frozen_world: Any,
+    context: RouteDecisionContextV1 | Mapping[str, Any],
+    decision_point: DecisionPointV1 | Mapping[str, Any],
+    cap_profile: Any,
+    binding: AttestationContextV1,
+    verification_work_record: CounterRecordV1 | Mapping[str, Any],
+    registry: CounterRegistryV1 | None = None,
+) -> SemanticVerificationResultV1:
+    """Authorize one safe-chain direct-fallback cardinality chain.
+
+    The supplied source and bound are merely claims.  The verifier reloads the
+    frozen Phase-3C bundle from its source path, replays its manifest/model/
+    BuildEpoch/action-catalogue bindings, confirms that the loader performed
+    zero ground transition calls, and regenerates source, bound, and generic
+    cardinality evidence with the registered fixture-specific integer formula.
+    """
+
+    from acfqp.frozen_phase3c import (
+        FrozenPhase3CWorld,
+        load_frozen_phase3c_world,
+    )
+    from acfqp.phase3e_fallback_v1 import (
+        GroundFallbackCapProfileV1,
+        GroundFallbackCardinalityBoundV1,
+        SafeChainFallbackCardinalitySourceV1,
+        build_ground_fallback_cardinality_evidence_v1,
+        derive_safe_chain_fallback_cardinality_bound_v1,
+        derive_safe_chain_fallback_cardinality_source_v1,
+    )
+
+    spec = require_implemented_role_v1(SemanticRole.CARDINALITY_EVIDENCE)
+    trusted_registry = _official_registry(registry)
+    work = _verification_work_record(
+        verification_work_record, spec, trusted_registry
+    )
+    parsed_context = _load_context(context)
+    if binding.route_context != parsed_context:
+        raise SemanticVerificationV1Error(
+            "fallback cardinality binding uses another route context"
+        )
+    parsed_point = _load_route_object(decision_point, DecisionPointV1)
+    if (
+        parsed_point.route_decision_context_id
+        != parsed_context.route_decision_context_id
+        or not _same_ref(binding.decision_point_id, parsed_point.decision_point_id)
+    ):
+        raise SemanticVerificationV1Error(
+            "fallback cardinality uses another decision point"
+        )
+    if not isinstance(binding.transaction_id, TypedNotApplicable):
+        raise SemanticVerificationV1Error(
+            "direct-fallback cardinality requires typed-null transaction"
+        )
+    parsed_cap = _load_route_object(cap_profile, GroundFallbackCapProfileV1)
+    parsed_source = _load_route_object(
+        source, SafeChainFallbackCardinalitySourceV1
+    )
+    parsed_bound = _load_route_object(bound, GroundFallbackCardinalityBoundV1)
+    parsed_claim = _load_route_object(
+        claimed_cardinality, CardinalityEvidenceV1
+    )
+    if (
+        parsed_source.route_decision_context_id
+        != parsed_context.route_decision_context_id
+        or parsed_source.decision_point_id != parsed_point.decision_point_id
+        or parsed_bound.route_decision_context_id
+        != parsed_context.route_decision_context_id
+        or parsed_bound.decision_point_id != parsed_point.decision_point_id
+        or parsed_claim.route_decision_context_id
+        != parsed_context.route_decision_context_id
+    ):
+        raise SemanticVerificationV1Error(
+            "fallback cardinality source/bound/evidence context mismatch"
+        )
+    if (
+        parsed_source.ground_fallback_cap_profile_id
+        != parsed_cap.ground_fallback_cap_profile_id
+        or parsed_bound.ground_fallback_cap_profile_id
+        != parsed_cap.ground_fallback_cap_profile_id
+        or parsed_claim.route_cap_profile_id != parsed_cap.route_cap_profile_id
+    ):
+        raise SemanticVerificationV1Error(
+            "fallback cardinality source/bound/evidence cap mismatch"
+        )
+    if parsed_claim.route_kind is not RouteKind.DIRECT_FALLBACK:
+        raise SemanticVerificationV1Error(
+            "safe-chain fallback authority cannot authorize local cardinality"
+        )
+    if parsed_source.frozen_at_protocol_step >= binding.verified_at_protocol_step:
+        raise SemanticVerificationV1Error(
+            "fallback cardinality source was not frozen before semantic verification"
+        )
+    if not isinstance(frozen_world, FrozenPhase3CWorld):
+        raise SemanticVerificationV1Error(
+            "fallback cardinality requires a loaded FrozenPhase3CWorld parent"
+        )
+    try:
+        # Never trust the caller's in-memory member/count fields.  Reloading
+        # the bundle makes deletion+rehash attacks observable through the
+        # signed manifest and exact parent topology.
+        replayed_world = load_frozen_phase3c_world(frozen_world.source_bundle)
+        recomputed_source = derive_safe_chain_fallback_cardinality_source_v1(
+            world=replayed_world,
+            context=parsed_context,
+            decision_point=parsed_point,
+            cap_profile=parsed_cap,
+            frozen_at_protocol_step=parsed_source.frozen_at_protocol_step,
+        )
+        recomputed_bound = derive_safe_chain_fallback_cardinality_bound_v1(
+            source=recomputed_source,
+            cap_profile=parsed_cap,
+        )
+        recomputed_cardinality = build_ground_fallback_cardinality_evidence_v1(
+            context=parsed_context,
+            decision_point=parsed_point,
+            cap_profile=parsed_cap,
+            bound=recomputed_bound,
+        )
+    except ValueError as error:
+        raise SemanticVerificationV1Error(
+            f"safe-chain fallback cardinality replay failed: {error}"
+        ) from error
+    if parsed_source != recomputed_source:
+        raise SemanticVerificationV1Error(
+            "fallback cardinality source differs from the verified frozen parent extraction"
+        )
+    if parsed_bound != recomputed_bound:
+        raise SemanticVerificationV1Error(
+            "fallback cardinality bound differs from the registered formula"
+        )
+    if parsed_claim != recomputed_cardinality:
+        raise SemanticVerificationV1Error(
+            "CardinalityEvidenceV1 differs from the authoritative fallback projection"
+        )
+    parent_ids = tuple(artifact_id for _, artifact_id in parsed_source.parent_artifact_ids)
+    return _finish(
+        artifact=recomputed_cardinality,
+        artifact_id=recomputed_cardinality.cardinality_evidence_id,
+        spec=spec,
+        outcome="VALID",
+        binding=binding,
+        work=work,
+        recomputed_evidence_ids=(
+            parsed_source.source_artifact_id,
+            parsed_source.extraction_profile_id,
+            parsed_bound.ground_fallback_cardinality_bound_id,
+            *parent_ids,
+        ),
+    )
+
+
+def verify_route_upper_semantics_v1(
+    claimed_upper: RouteUpperBoundEnvelopeV1 | Mapping[str, Any],
+    *,
+    derivation_proof: RouteUpperDerivationProofV1 | Mapping[str, Any],
+    cardinality_result: SemanticVerificationResultV1,
+    context: RouteDecisionContextV1 | Mapping[str, Any],
+    decision_point: DecisionPointV1 | Mapping[str, Any],
+    cap_profile: Any | Mapping[str, Any],
+    formula: RouteUpperFormulaV1 | Mapping[str, Any],
+    transaction: TransactionV1 | Mapping[str, Any] | None,
+    causal: CausalEvidenceV1 | Mapping[str, Any] | None,
+    binding: AttestationContextV1,
+    verification_work_record: CounterRecordV1 | Mapping[str, Any],
+    registry: CounterRegistryV1 | None = None,
+) -> SemanticVerificationResultV1:
+    """Replay the complete cap/formula/envelope chain.
+
+    The cardinality input must be an authority-bearing semantic result.  A
+    transport-valid ``CardinalityEvidenceV1`` or its content hash is never
+    accepted directly.  The registered safe-chain fallback handler can mint
+    this result after frozen-parent replay; other domain/route profiles remain
+    fail-closed until their own source authorities land.
+    """
+
+    spec = require_implemented_role_v1(SemanticRole.ROUTE_UPPER)
+    trusted_registry = _official_registry(registry)
+    comparison_profile = official_comparison_profile_v1(trusted_registry)
+    work = _verification_work_record(
+        verification_work_record, spec, trusted_registry
+    )
+    parsed_context = _load_context(context)
+    if binding.route_context != parsed_context:
+        raise SemanticVerificationV1Error(
+            "route-upper attestation context differs from replayed context"
+        )
+    parsed_point = _load_route_object(decision_point, DecisionPointV1)
+    if (
+        parsed_point.route_decision_context_id
+        != parsed_context.route_decision_context_id
+        or not _same_ref(binding.decision_point_id, parsed_point.decision_point_id)
+    ):
+        raise SemanticVerificationV1Error(
+            "route-upper decision point is stale for the attested context"
+        )
+    parsed_formula = _load_route_object(formula, RouteUpperFormulaV1)
+    parsed_upper = _load_route_object(claimed_upper, RouteUpperBoundEnvelopeV1)
+    if parsed_upper.route_kind is RouteKind.LOCAL_ATTEMPT:
+        parsed_cap = _load_route_object(cap_profile, RouteCapProfileV1)
+    else:
+        # Import lazily: the fallback module imports the semantic authority
+        # layer at its production execution boundary.
+        from acfqp.phase3e_fallback_v1 import GroundFallbackCapProfileV1
+
+        parsed_cap = _load_route_object(
+            cap_profile, GroundFallbackCapProfileV1
+        )
+    parsed_proof = _load_route_object(
+        derivation_proof, RouteUpperDerivationProofV1
+    )
+    parsed_transaction = (
+        None
+        if transaction is None
+        else _load_route_object(transaction, TransactionV1)
+    )
+    parsed_causal = (
+        None if causal is None else _load_route_object(causal, CausalEvidenceV1)
+    )
+
+    verified_cardinality = require_semantic_verification_result_v1(
+        cardinality_result, SemanticRole.CARDINALITY_EVIDENCE
+    )
+    if verified_cardinality.outcome != "VALID" or not isinstance(
+        verified_cardinality.artifact, CardinalityEvidenceV1
+    ):
+        raise SemanticVerificationV1Error(
+            "route upper requires CARDINALITY_EVIDENCE=VALID authority"
+        )
+    _verify_result_context(verified_cardinality, binding)
+    parsed_cardinality = verified_cardinality.artifact
+    if (
+        verified_cardinality.attestation.artifact_id
+        != parsed_cardinality.cardinality_evidence_id
+    ):
+        raise SemanticVerificationV1Error(
+            "cardinality authority does not bind its replayed artifact"
+        )
+
+    official_formula = official_route_upper_formula_v1(
+        parsed_upper.route_kind,
+        registry=trusted_registry,
+        profile=comparison_profile,
+        cap_profile=parsed_cap,
+    )
+    if parsed_formula != official_formula:
+        raise SemanticVerificationV1Error(
+            "route upper uses a non-official route/cap formula"
+        )
+    try:
+        verify_route_upper_derivation_v1(
+            parsed_upper,
+            parsed_proof,
+            context=parsed_context,
+            decision_point=parsed_point,
+            cardinality=parsed_cardinality,
+            cap_profile=parsed_cap,
+            registry=trusted_registry,
+            profile=comparison_profile,
+            formula=parsed_formula,
+            transaction=parsed_transaction,
+            causal=parsed_causal,
+        )
+    except ValueError as error:
+        raise SemanticVerificationV1Error(
+            f"route-upper semantic replay failed: {error}"
+        ) from error
+    if parsed_upper.route_kind is RouteKind.LOCAL_ATTEMPT:
+        if parsed_transaction is None or not _same_ref(
+            binding.transaction_id, parsed_transaction.transaction_id
+        ):
+            raise SemanticVerificationV1Error(
+                "local route upper uses another or missing transaction"
+            )
+    elif not isinstance(binding.transaction_id, TypedNotApplicable):
+        raise SemanticVerificationV1Error(
+            "direct-fallback upper cannot be attested as local transaction work"
+        )
+    return _finish(
+        artifact=parsed_upper,
+        artifact_id=parsed_upper.route_upper_bound_envelope_id,
+        spec=spec,
+        outcome="VALID",
+        binding=binding,
+        work=work,
+        recomputed_evidence_ids=(
+            verified_cardinality.attestation.verification_attestation_id,
+            parsed_formula.formula_id,
+            parsed_proof.derivation_proof_id,
+        ),
+    )
+
+
+def _authority_upper_or_error(
+    result: SemanticVerificationResultV1,
+    *,
+    route_kind: RouteKind,
+    context: RouteDecisionContextV1,
+    decision_point: DecisionPointV1,
+    binding: AttestationContextV1,
+) -> RouteUpperBoundEnvelopeV1:
+    verified = require_semantic_verification_result_v1(
+        result, SemanticRole.ROUTE_UPPER
+    )
+    if verified.outcome != "VALID" or not isinstance(
+        verified.artifact, RouteUpperBoundEnvelopeV1
+    ):
+        raise SemanticVerificationV1Error(
+            "route decision requires ROUTE_UPPER=VALID authority"
+        )
+    if verified.binding.route_context != binding.route_context or not _same_ref(
+        verified.binding.decision_point_id, binding.decision_point_id
+    ):
+        raise SemanticVerificationV1Error(
+            "route-upper authority belongs to another context or decision point"
+        )
+    upper = verified.artifact
+    if (
+        upper.route_kind is not route_kind
+        or upper.route_upper_bound_envelope_id != verified.attestation.artifact_id
+        or upper.decision_point_id != decision_point.decision_point_id
+    ):
+        raise SemanticVerificationV1Error(
+            "route-upper authority has the wrong role, route, or decision point"
+        )
+    for field in _UPPER_CONTEXT_FIELDS:
+        if getattr(upper, field) != getattr(context, field):
+            raise SemanticVerificationV1Error(
+                f"route-upper authority/context mismatch at {field}"
+            )
+    if route_kind is RouteKind.LOCAL_ATTEMPT and not _same_ref(
+        verified.binding.transaction_id, binding.transaction_id
+    ):
+        raise SemanticVerificationV1Error(
+            "local route-upper authority belongs to another transaction"
+        )
+    if route_kind is RouteKind.DIRECT_FALLBACK and not isinstance(
+        verified.binding.transaction_id, TypedNotApplicable
+    ):
+        raise SemanticVerificationV1Error(
+            "fallback route-upper authority must carry typed-null transaction"
+        )
+    return upper
+
+
+def _authority_causal_or_none(
+    result: SemanticVerificationResultV1 | None,
+    *,
+    binding: AttestationContextV1,
+    decision_point: DecisionPointV1,
+) -> CausalEvidenceV1 | None:
+    """Return causal evidence only when it came from semantic replay.
+
+    Only the registered safe-chain preselection handler can currently emit
+    this authority.  Every other profile returns ``None`` here without ever
+    consulting a raw ``local_allowed`` flag.
+    """
+
+    if result is None:
+        return None
+    try:
+        verified = require_semantic_verification_result_v1(
+            result, SemanticRole.CAUSAL_SEARCH
+        )
+        _verify_result_context(verified, binding)
+    except SemanticVerificationV1Error:
+        return None
+    if not isinstance(verified.artifact, CausalEvidenceV1):
+        return None
+    causal = verified.artifact
+    if (
+        verified.outcome != causal.outcome.value
+        or verified.attestation.artifact_id != causal.causal_evidence_id
+        or decision_point.causal_evidence_id != causal.causal_evidence_id
+        or decision_point.frontier_snapshot_id != causal.frontier_snapshot_id
+    ):
+        return None
+    return causal
+
+
+def derive_guarded_marginal_route_decision_v1(
+    *,
+    context: RouteDecisionContextV1 | Mapping[str, Any],
+    decision_point: DecisionPointV1 | Mapping[str, Any],
+    fallback_upper_result: SemanticVerificationResultV1,
+    local_upper_result: SemanticVerificationResultV1 | None,
+    causal_result: SemanticVerificationResultV1 | None,
+    binding: AttestationContextV1,
+) -> MarginalRouteDecisionV1:
+    """Construct the only decision admitted by authority-bearing inputs.
+
+    An invalid or stale local-upper result is conservatively converted to
+    ``FALLBACK/INVALID_LOCAL_UPPER``.  A missing local upper becomes
+    ``FALLBACK/MISSING_LOCAL_UPPER``.  Missing, invalid, or negative causal
+    authority forbids LOCAL.  The fallback upper itself is never optional:
+    without an authoritative fallback bound there is no safe route decision.
+    """
+
+    parsed_context = _load_context(context)
+    if binding.route_context != parsed_context:
+        raise SemanticVerificationV1Error(
+            "route-decision binding uses another route context"
+        )
+    parsed_point = _load_route_object(decision_point, DecisionPointV1)
+    if (
+        parsed_point.route_decision_context_id
+        != parsed_context.route_decision_context_id
+        or not _same_ref(binding.decision_point_id, parsed_point.decision_point_id)
+    ):
+        raise SemanticVerificationV1Error(
+            "route-decision point is stale for the attested context"
+        )
+    fallback_upper = _authority_upper_or_error(
+        fallback_upper_result,
+        route_kind=RouteKind.DIRECT_FALLBACK,
+        context=parsed_context,
+        decision_point=parsed_point,
+        binding=binding,
+    )
+
+    invalid_local = False
+    local_upper: RouteUpperBoundEnvelopeV1 | None = None
+    if local_upper_result is not None:
+        try:
+            local_upper = _authority_upper_or_error(
+                local_upper_result,
+                route_kind=RouteKind.LOCAL_ATTEMPT,
+                context=parsed_context,
+                decision_point=parsed_point,
+                binding=binding,
+            )
+        except SemanticVerificationV1Error:
+            invalid_local = True
+
+    causal = _authority_causal_or_none(
+        causal_result, binding=binding, decision_point=parsed_point
+    )
+    causal_ref: ContentRef = (
+        causal.causal_evidence_id
+        if causal is not None
+        else TypedNotApplicable("no authoritative causal-search result")
+    )
+    local_ref: ContentRef = (
+        local_upper.route_upper_bound_envelope_id
+        if local_upper is not None
+        else TypedNotApplicable(
+            "local upper missing or rejected by semantic authority"
+        )
+    )
+    if invalid_local:
+        return MarginalRouteDecisionV1(
+            parsed_point.decision_point_id,
+            causal_ref,
+            TypedNotApplicable("invalid local upper rejected by authority"),
+            fallback_upper.route_upper_bound_envelope_id,
+            RouteSelection.FALLBACK,
+            RouteComparison.INVALID_LOCAL_UPPER,
+            fallback_upper.route_upper_bound_envelope_id,
+        )
+    if causal is None or causal.local_allowed is not True:
+        return MarginalRouteDecisionV1(
+            parsed_point.decision_point_id,
+            causal_ref,
+            local_ref,
+            fallback_upper.route_upper_bound_envelope_id,
+            RouteSelection.FALLBACK,
+            RouteComparison.LOCAL_FORBIDDEN,
+            fallback_upper.route_upper_bound_envelope_id,
+        )
+    return MarginalRouteDecisionV1.select(
+        parsed_point,
+        fallback_upper,
+        causal=causal,
+        local_upper=local_upper,
+    )
+
+
 def verify_marginal_route_decision_semantics_v1(
     claimed_decision: MarginalRouteDecisionV1 | Mapping[str, Any],
     *,
     context: RouteDecisionContextV1 | Mapping[str, Any],
     decision_point: DecisionPointV1 | Mapping[str, Any],
-    fallback_upper: RouteUpperBoundEnvelopeV1 | Mapping[str, Any],
-    causal: CausalEvidenceV1 | Mapping[str, Any] | None,
-    local_upper: RouteUpperBoundEnvelopeV1 | Mapping[str, Any] | None,
+    fallback_upper_result: SemanticVerificationResultV1,
+    causal_result: SemanticVerificationResultV1 | None,
+    local_upper_result: SemanticVerificationResultV1 | None,
     binding: AttestationContextV1,
     verification_work_record: CounterRecordV1 | Mapping[str, Any],
     registry: CounterRegistryV1 | None = None,
 ) -> SemanticVerificationResultV1:
-    """Re-run the marginal selector and reject a claimed route/result string."""
+    """Replay the authority-gated selector and reject a claimed result."""
 
     spec = require_implemented_role_v1(SemanticRole.ROUTE_DECISION)
     trusted_registry = _official_registry(registry)
@@ -928,17 +2326,6 @@ def verify_marginal_route_decision_semantics_v1(
         )
 
     parsed_point = _load_route_object(decision_point, DecisionPointV1)
-    parsed_fallback = _load_route_object(
-        fallback_upper, RouteUpperBoundEnvelopeV1
-    )
-    parsed_causal = (
-        None if causal is None else _load_route_object(causal, CausalEvidenceV1)
-    )
-    parsed_local = (
-        None
-        if local_upper is None
-        else _load_route_object(local_upper, RouteUpperBoundEnvelopeV1)
-    )
     parsed_claim = _load_route_object(claimed_decision, MarginalRouteDecisionV1)
 
     if parsed_point.route_decision_context_id != parsed_context.route_decision_context_id:
@@ -947,34 +2334,14 @@ def verify_marginal_route_decision_semantics_v1(
         raise SemanticVerificationV1Error(
             "attestation decision-point identity does not match replay input"
         )
-    for upper in (parsed_fallback,) + (() if parsed_local is None else (parsed_local,)):
-        for field in _UPPER_CONTEXT_FIELDS:
-            if getattr(upper, field) != getattr(parsed_context, field):
-                raise SemanticVerificationV1Error(
-                    f"route upper/context mismatch at {field}"
-                )
-    point_causal = parsed_point.causal_evidence_id
-    if parsed_causal is None:
-        if not isinstance(point_causal, TypedNotApplicable):
-            raise SemanticVerificationV1Error(
-                "decision point binds causal evidence that was not supplied"
-            )
-    else:
-        if point_causal != parsed_causal.causal_evidence_id:
-            raise SemanticVerificationV1Error(
-                "causal evidence does not match the frozen decision point"
-            )
-        if parsed_point.frontier_snapshot_id != parsed_causal.frontier_snapshot_id:
-            raise SemanticVerificationV1Error(
-                "causal evidence uses another frontier snapshot"
-            )
-
     try:
-        recomputed = MarginalRouteDecisionV1.select(
-            parsed_point,
-            parsed_fallback,
-            causal=parsed_causal,
-            local_upper=parsed_local,
+        recomputed = derive_guarded_marginal_route_decision_v1(
+            context=parsed_context,
+            decision_point=parsed_point,
+            fallback_upper_result=fallback_upper_result,
+            local_upper_result=local_upper_result,
+            causal_result=causal_result,
+            binding=binding,
         )
     except ValueError as error:
         raise SemanticVerificationV1Error(
@@ -984,12 +2351,6 @@ def verify_marginal_route_decision_semantics_v1(
         raise SemanticVerificationV1Error(
             "claimed marginal route decision differs from recomputed selection"
         )
-    if recomputed.selected_route is RouteSelection.LOCAL:
-        assert parsed_local is not None  # established by selector
-        if not _same_ref(binding.transaction_id, parsed_local.transaction_id):
-            raise SemanticVerificationV1Error(
-                "local route attestation uses another transaction"
-            )
     return _finish(
         artifact=recomputed,
         artifact_id=recomputed.route_decision_id,
@@ -998,15 +2359,16 @@ def verify_marginal_route_decision_semantics_v1(
         binding=binding,
         work=work,
         recomputed_evidence_ids=tuple(
-            item
-            for item in (
-                parsed_fallback.route_upper_bound_envelope_id,
-                parsed_local.route_upper_bound_envelope_id
-                if parsed_local is not None
-                else None,
-                parsed_causal.causal_evidence_id if parsed_causal is not None else None,
+            sorted(
+                result.attestation.verification_attestation_id
+                for result in (
+                    fallback_upper_result,
+                    local_upper_result,
+                    causal_result,
+                )
+                if isinstance(result, SemanticVerificationResultV1)
+                and result._authority is _VERIFIED_AUTHORITY
             )
-            if item is not None
         ),
     )
 
@@ -1024,11 +2386,17 @@ TERMINAL_EVIDENCE_MATRIX_V1: Mapping[
         ),
         TerminalCode.LOCAL_GROUND_RECOVERY: (
             (SemanticRole.WORK_VECTOR, "VALID"),
+            (SemanticRole.ACTUAL_PROJECTION, "VALID"),
+            (SemanticRole.ROUTE_UPPER, "VALID"),
+            (SemanticRole.ROUTE_DECISION, "LOCAL"),
             (SemanticRole.LOCAL_SOLVER_RESULT, "CANDIDATE_FOUND"),
             (SemanticRole.POST_AUDIT, "CERTIFIED"),
         ),
         TerminalCode.FULL_GROUND_FALLBACK: (
             (SemanticRole.WORK_VECTOR, "VALID"),
+            (SemanticRole.ACTUAL_PROJECTION, "VALID"),
+            (SemanticRole.ROUTE_UPPER, "VALID"),
+            (SemanticRole.ROUTE_DECISION, "FALLBACK"),
             (SemanticRole.GROUND_FALLBACK, "FEASIBLE_CERTIFIED"),
         ),
         TerminalCode.CACHED_EXACT_INFEASIBLE: (
@@ -1037,6 +2405,9 @@ TERMINAL_EVIDENCE_MATRIX_V1: Mapping[
         ),
         TerminalCode.FULL_GROUND_EXACT_INFEASIBLE: (
             (SemanticRole.WORK_VECTOR, "VALID"),
+            (SemanticRole.ACTUAL_PROJECTION, "VALID"),
+            (SemanticRole.ROUTE_UPPER, "VALID"),
+            (SemanticRole.ROUTE_DECISION, "FALLBACK"),
             (SemanticRole.GROUND_FALLBACK, "INFEASIBLE_CERTIFIED"),
         ),
         # Only this noncertificate path is currently classifiable using solely
@@ -1048,10 +2419,17 @@ TERMINAL_EVIDENCE_MATRIX_V1: Mapping[
         TerminalCode.INTEGRITY_FAILURE: ((SemanticRole.WORK_VECTOR, "INVALID"),),
         TerminalCode.REBUILD_REQUIRED: (
             (SemanticRole.WORK_VECTOR, "VALID"),
+            (SemanticRole.ACTUAL_PROJECTION, "VALID"),
+            (SemanticRole.ROUTE_UPPER, "VALID"),
+            (SemanticRole.ROUTE_DECISION, "LOCAL"),
+            (SemanticRole.LOCAL_SOLVER_RESULT, "CANDIDATE_FOUND"),
             (SemanticRole.POST_AUDIT, "FAILED"),
         ),
         TerminalCode.FALLBACK_CAP_EXHAUSTED: (
             (SemanticRole.WORK_VECTOR, "VALID"),
+            (SemanticRole.ACTUAL_PROJECTION, "VALID"),
+            (SemanticRole.ROUTE_UPPER, "VALID"),
+            (SemanticRole.ROUTE_DECISION, "FALLBACK"),
             (SemanticRole.GROUND_FALLBACK, "CAP_EXHAUSTED"),
         ),
         # No FQ7 budget-replay evidence role exists yet, so the class cannot be
@@ -1306,6 +2684,394 @@ def _verify_protocol_result_context(
         )
 
 
+_MARGINAL_ROUTE_TERMINAL_CODES = frozenset(
+    {
+        TerminalCode.LOCAL_GROUND_RECOVERY,
+        TerminalCode.FULL_GROUND_FALLBACK,
+        TerminalCode.FULL_GROUND_EXACT_INFEASIBLE,
+        TerminalCode.REBUILD_REQUIRED,
+        TerminalCode.FALLBACK_CAP_EXHAUSTED,
+    }
+)
+
+# The integrated Phase-3E runner performs four fixed post-execution checks
+# before charging the route-specific semantic verifier records.  A terminal
+# must replay this exact suffix rather than accepting any lower-cost native
+# vector that happens to form a self-consistent marginal aggregate.
+_RUNNER_MARGINAL_BASE_PROTOCOL_CHECKS_V1 = 4
+
+
+def _single_terminal_result(
+    by_role: Mapping[
+        SemanticRole,
+        list[SemanticVerificationResultV1 | ProtocolVerificationResultV1],
+    ],
+    role: SemanticRole,
+) -> SemanticVerificationResultV1:
+    values = by_role.get(role, ())
+    if len(values) != 1 or not isinstance(values[0], SemanticVerificationResultV1):
+        raise SemanticVerificationV1Error(
+            f"terminal route chain requires exactly one {role.value} authority"
+        )
+    return values[0]
+
+
+def _verify_marginal_terminal_route_chain_v1(
+    terminal: TerminalArtifactV1,
+    *,
+    route_evidence: TerminalRouteEvidenceBundleV1 | None,
+    by_role: Mapping[
+        SemanticRole,
+        list[SemanticVerificationResultV1 | ProtocolVerificationResultV1],
+    ],
+    binding: AttestationContextV1,
+    registry: CounterRegistryV1,
+) -> None:
+    """Bind a route terminal to decision, work, upper, and access replay."""
+
+    if not isinstance(route_evidence, TerminalRouteEvidenceBundleV1):
+        raise SemanticVerificationV1Error(
+            f"terminal {terminal.terminal_code.value} requires complete typed "
+            "runner route evidence"
+        )
+    decision_result = _single_terminal_result(
+        by_role, SemanticRole.ROUTE_DECISION
+    )
+    upper_result = _single_terminal_result(by_role, SemanticRole.ROUTE_UPPER)
+    work_result = _single_terminal_result(by_role, SemanticRole.WORK_VECTOR)
+    actual_result = _single_terminal_result(
+        by_role, SemanticRole.ACTUAL_PROJECTION
+    )
+    if not isinstance(decision_result.artifact, MarginalRouteDecisionV1) or not isinstance(
+        upper_result.artifact, RouteUpperBoundEnvelopeV1
+    ) or not isinstance(work_result.artifact, WorkVectorV1) or not isinstance(
+        actual_result.artifact, ComparisonVectorV1
+    ):
+        raise SemanticVerificationV1Error(
+            "terminal route authorities carry the wrong artifact types"
+        )
+    decision = decision_result.artifact
+    upper = upper_result.artifact
+    expected_selection = (
+        RouteSelection.LOCAL
+        if terminal.terminal_code
+        in {TerminalCode.LOCAL_GROUND_RECOVERY, TerminalCode.REBUILD_REQUIRED}
+        else RouteSelection.FALLBACK
+    )
+    expected_kind = (
+        RouteKind.LOCAL_ATTEMPT
+        if expected_selection is RouteSelection.LOCAL
+        else RouteKind.DIRECT_FALLBACK
+    )
+    if (
+        decision.selected_route is not expected_selection
+        or decision_result.outcome != expected_selection.value
+        or decision.selected_upper_id != upper.route_upper_bound_envelope_id
+        or upper.route_kind is not expected_kind
+        or upper_result.outcome != "VALID"
+        or upper_result.attestation.verification_attestation_id
+        not in decision_result.recomputed_evidence_ids
+    ):
+        raise SemanticVerificationV1Error(
+            "terminal route decision and selected upper are not one authority chain"
+        )
+
+    evidence = route_evidence
+    profile = official_comparison_profile_v1(registry)
+    actual_profile = official_actual_projection_profile_v1(registry, profile)
+    try:
+        verify_recorded_work_v1(
+            evidence.execution_work,
+            expected_scope=ActualWorkScope.MARGINAL_ROUTE_EXECUTION,
+            registry=registry,
+            comparison_profile=profile,
+        )
+        verify_recorded_work_v1(
+            evidence.verification_suffix_work,
+            expected_scope=ActualWorkScope.MARGINAL_ROUTE_VERIFICATION,
+            registry=registry,
+            comparison_profile=profile,
+        )
+        aggregate = verify_marginal_work_aggregate_v1(
+            evidence.aggregate_marginal_work,
+            subject_id=evidence.execution_work.work_vector.subject_id,
+            route_kind=evidence.execution_work.work_vector.route_kind,
+            execution=(
+                evidence.execution_work.work_vector,
+                evidence.execution_work.comparison_vector,
+                evidence.execution_work.actual_projection_proof,
+            ),
+            verification_suffix=(
+                evidence.verification_suffix_work.work_vector,
+                evidence.verification_suffix_work.comparison_vector,
+                evidence.verification_suffix_work.actual_projection_proof,
+            ),
+            registry=registry,
+            comparison_profile=profile,
+            actual_profile=actual_profile,
+        )
+    except (MarginalAccountingV1Error, ValueError) as error:
+        raise SemanticVerificationV1Error(
+            f"terminal marginal source-chain replay failed: {error}"
+        ) from error
+
+    route_verification_roles = (
+        (
+            SemanticRole.LOCAL_SOLVER_RESULT,
+            SemanticRole.POST_AUDIT,
+        )
+        if expected_selection is RouteSelection.LOCAL
+        else (SemanticRole.GROUND_FALLBACK,)
+    )
+    expected_suffix_values = {
+        path: 0
+        for path in evidence.verification_suffix_work.work_vector.values
+    }
+    expected_suffix_values["common.protocol_checks"] = (
+        _RUNNER_MARGINAL_BASE_PROTOCOL_CHECKS_V1
+    )
+    for role in route_verification_roles:
+        semantic_result = _single_terminal_result(by_role, role)
+        record = semantic_result.verification_work_record
+        expected_suffix_values[record.path] += record.value
+    if dict(evidence.verification_suffix_work.work_vector.values) != (
+        expected_suffix_values
+    ):
+        raise SemanticVerificationV1Error(
+            "terminal verification suffix does not equal the runner's four "
+            "checks plus exact route-specific semantic verifier work"
+        )
+
+    aggregate_work = aggregate.aggregate_work_vector
+    aggregate_comparison = aggregate.aggregate_comparison_vector
+    aggregate_projection = aggregate.aggregate_projection_proof
+    aggregation_proof = aggregate.aggregation_proof
+    if (
+        aggregate_work.route_kind.value != expected_kind.value
+        or work_result.artifact != aggregate_work
+        or work_result.attestation.artifact_id != aggregate_work.work_vector_id
+        or actual_result.artifact != aggregate_comparison
+        or actual_result.attestation.artifact_id
+        != aggregate_comparison.comparison_vector_id
+        or actual_result.recomputed_evidence_ids
+        != (aggregate_projection.actual_projection_proof_id,)
+        or terminal.actual_work_vector_id != aggregate_work.work_vector_id
+        or terminal.actual_comparison_vector_id
+        != aggregate_comparison.comparison_vector_id
+        or terminal.actual_projection_proof_id
+        != aggregate_projection.actual_projection_proof_id
+        or terminal.marginal_work_aggregation_proof_id
+        != aggregation_proof.marginal_work_aggregation_proof_id
+    ):
+        raise SemanticVerificationV1Error(
+            "terminal actual work/projection does not bind the runner aggregate"
+        )
+
+    upper_values = dict(upper.upper_bounds)
+    if tuple(sorted(upper_values)) != SHARED_AXES or any(
+        aggregate_comparison.value(axis) > upper_values[axis]
+        for axis in SHARED_AXES
+    ):
+        raise SemanticVerificationV1Error(
+            "terminal aggregate violates or cannot replay the selected upper"
+        )
+
+    try:
+        access_log = AccessEventLogV1.from_dict(evidence.access_log.to_dict())
+        freeze = RouteDecisionFreezeAttestationV1.from_dict(
+            evidence.freeze_attestation.to_dict()
+        )
+        protocol_profile = ProtocolSequenceProfileV1.from_dict(
+            evidence.protocol_profile.to_dict()
+        )
+        replay_access_protocol(
+            access_log,
+            protocol_profile,
+            decision_result=decision_result,
+            freeze_attestation=freeze,
+        )
+    except (AccessProtocolViolation, AccessProtocolV1Error, ValueError) as error:
+        raise SemanticVerificationV1Error(
+            f"terminal successful access-protocol replay failed: {error}"
+        ) from error
+    if (
+        freeze.route_decision_id != decision.route_decision_id
+        or freeze.route_decision_verification_attestation_id
+        != decision_result.attestation.verification_attestation_id
+        or freeze.selected_route is not expected_selection
+        or access_log.route_decision_id != decision.route_decision_id
+        or access_log.route_decision_freeze_attestation_id
+        != freeze.route_decision_freeze_attestation_id
+        or terminal.route_decision_freeze_attestation_id
+        != freeze.route_decision_freeze_attestation_id
+        or terminal.access_event_log_id != access_log.access_event_log_id
+        or binding.verified_at_protocol_step < len(access_log.events)
+    ):
+        raise SemanticVerificationV1Error(
+            "terminal route freeze/access identities are stale or spliced"
+        )
+    prefreeze_events = access_log.events[: freeze.last_preselection_sequence]
+    if (
+        len(prefreeze_events) != len(PRESELECTION_READ_OPERATIONS)
+        or len({row.operation for row in prefreeze_events})
+        != len(prefreeze_events)
+        or {row.operation for row in prefreeze_events}
+        != set(PRESELECTION_READ_OPERATIONS)
+    ):
+        raise SemanticVerificationV1Error(
+            "terminal successful access evidence omits a frozen preselection read"
+        )
+
+    events = access_log.events
+    if expected_selection is RouteSelection.FALLBACK:
+        from acfqp.phase3e_fallback_v1 import GroundFallbackResultV1
+
+        route_result = _single_terminal_result(
+            by_role, SemanticRole.GROUND_FALLBACK
+        )
+        ground = route_result.artifact
+        if not isinstance(ground, GroundFallbackResultV1) or (
+            ground.work_vector_id
+            != evidence.execution_work.work_vector.work_vector_id
+            or ground.route_decision_id != decision.route_decision_id
+            or ground.selected_upper_id != upper.route_upper_bound_envelope_id
+        ):
+            raise SemanticVerificationV1Error(
+                "fallback semantic result is not bound to selected execution work"
+            )
+        result_events = tuple(
+            row
+            for row in events
+            if row.operation is AccessOperation.FALLBACK_RESULT_ARTIFACT
+        )
+        if (
+            sum(
+                row.operation
+                in {
+                    AccessOperation.FALLBACK_SOLVER_INVOCATION,
+                    AccessOperation.FALLBACK_WORKER_LAUNCH,
+                }
+                for row in events
+            )
+            != 1
+            or len(result_events) != 1
+            or result_events[0].artifact_id != ground.ground_fallback_result_id
+            or result_events[0] is not events[-1]
+            or sum(
+                row.operation is AccessOperation.KERNEL_STEP for row in events
+            )
+            != evidence.execution_work.work_vector.value(
+                "fallback.ground_steps"
+            )
+            or sum(
+                row.operation is AccessOperation.GROUND_OUTCOME_ENUMERATION
+                for row in events
+            )
+            != evidence.execution_work.work_vector.value(
+                "fallback.ground_steps"
+            )
+        ):
+            raise SemanticVerificationV1Error(
+                "fallback access trace does not bind its semantic result"
+            )
+    else:
+        from acfqp.phase3e_local_semantics_v1 import (
+            LocalTransactionResultV1,
+            PostAuditCertificateV1,
+        )
+
+        local_result = _single_terminal_result(
+            by_role, SemanticRole.LOCAL_SOLVER_RESULT
+        )
+        post_result = _single_terminal_result(by_role, SemanticRole.POST_AUDIT)
+        local = local_result.artifact
+        post = post_result.artifact
+        if not isinstance(local, LocalTransactionResultV1) or not isinstance(
+            post, PostAuditCertificateV1
+        ) or (
+            local.work_vector_id
+            != evidence.execution_work.work_vector.work_vector_id
+            or local.selected_upper_id != upper.route_upper_bound_envelope_id
+            or post.work_vector_id != local.work_vector_id
+            or post.local_transaction_result_id
+            != local.local_transaction_result_id
+        ):
+            raise SemanticVerificationV1Error(
+                "local semantic/post-audit results do not bind selected execution work"
+            )
+        capability_events = tuple(
+            row
+            for row in events
+            if row.operation is AccessOperation.LOCAL_CAPABILITY_ARTIFACT
+        )
+        local_events = tuple(
+            row
+            for row in events
+            if row.operation is AccessOperation.LOCAL_WORKER_RESULT_ARTIFACT
+        )
+        stitch_events = tuple(
+            row
+            for row in events
+            if row.operation is AccessOperation.LOCAL_STITCH_ARTIFACT
+        )
+        post_events = tuple(
+            row
+            for row in events
+            if row.operation is AccessOperation.LOCAL_POSTAUDIT_ARTIFACT
+        )
+        if (
+            local_execution_stages_v1(
+                events, freeze_after_sequence=freeze.last_preselection_sequence
+            )
+            != (1, 2, 3, 4, 5)
+            or any(
+                sum(row.operation is operation for row in events) != 1
+                for operation in (
+                    AccessOperation.LOCAL_SLICE_MATERIALIZATION,
+                    AccessOperation.LOCAL_CAPABILITY_COMPILATION,
+                    AccessOperation.LOCAL_WORKER_LAUNCH,
+                    AccessOperation.LOCAL_PATCH_STITCH,
+                    AccessOperation.LOCAL_POSTAUDIT,
+                )
+            )
+            or len(capability_events) != 1
+            or capability_events[0].artifact_id != local.capability_binding_id
+            or len(local_events) != 1
+            or local_events[0].artifact_id != local.worker_result_binding_id
+            or len(stitch_events) != 1
+            or stitch_events[0].artifact_id != local.stitched_plan_binding_id
+            or len(post_events) != 1
+            or post_events[0].artifact_id != post.post_audit_certificate_id
+            or post_events[0] is not events[-1]
+            or sum(
+                row.operation is AccessOperation.KERNEL_STEP for row in events
+            )
+            != (
+                evidence.execution_work.work_vector.value(
+                    "local.materialization_ground_steps"
+                )
+                + evidence.execution_work.work_vector.value(
+                    "local.postaudit_ground_steps"
+                )
+            )
+            or sum(
+                row.operation is AccessOperation.GROUND_OUTCOME_ENUMERATION
+                for row in events
+            )
+            != (
+                evidence.execution_work.work_vector.value(
+                    "local.materialization_ground_steps"
+                )
+                + evidence.execution_work.work_vector.value(
+                    "local.postaudit_ground_steps"
+                )
+            )
+        ):
+            raise SemanticVerificationV1Error(
+                "local access trace is incomplete or does not bind semantic artifacts"
+            )
+
+
 def verify_terminal_classification_semantics_v1(
     terminal: TerminalArtifactV1 | Mapping[str, Any],
     *,
@@ -1314,6 +3080,7 @@ def verify_terminal_classification_semantics_v1(
     ],
     binding: AttestationContextV1,
     verification_work_record: CounterRecordV1 | Mapping[str, Any],
+    route_evidence: TerminalRouteEvidenceBundleV1 | None = None,
     registry: CounterRegistryV1 | None = None,
 ) -> SemanticVerificationResultV1:
     """Verify terminal class/code from replayed role evidence, never hash-only IDs."""
@@ -1401,6 +3168,13 @@ def verify_terminal_classification_semantics_v1(
                 f"terminal {parsed.terminal_code.value} requires exactly one "
                 f"semantically verified {role.value}={required_outcome} evidence"
             )
+    required_roles = {role for role, _ in requirements}
+    if set(by_role) != required_roles or any(
+        len(rows) != 1 for rows in by_role.values()
+    ):
+        raise SemanticVerificationV1Error(
+            "terminal evidence roles must exactly match its class/code contract"
+        )
     work_vectors = by_role.get(SemanticRole.WORK_VECTOR, ())
     if len(work_vectors) != 1:
         raise SemanticVerificationV1Error(
@@ -1409,6 +3183,32 @@ def verify_terminal_classification_semantics_v1(
     if work_vectors[0].attestation.artifact_id != parsed.actual_work_vector_id:
         raise SemanticVerificationV1Error(
             "terminal actual_work_vector_id differs from replayed WorkVector evidence"
+        )
+
+    route_refs = (
+        parsed.actual_comparison_vector_id,
+        parsed.actual_projection_proof_id,
+        parsed.marginal_work_aggregation_proof_id,
+        parsed.route_decision_freeze_attestation_id,
+        parsed.access_event_log_id,
+    )
+    if parsed.terminal_code in _MARGINAL_ROUTE_TERMINAL_CODES:
+        if any(isinstance(row, TypedNotApplicable) for row in route_refs):
+            raise SemanticVerificationV1Error(
+                "marginal route terminal omits required typed route evidence refs"
+            )
+        _verify_marginal_terminal_route_chain_v1(
+            parsed,
+            route_evidence=route_evidence,
+            by_role=by_role,
+            binding=binding,
+            registry=trusted_registry,
+        )
+    elif route_evidence is not None or any(
+        not isinstance(row, TypedNotApplicable) for row in route_refs
+    ):
+        raise SemanticVerificationV1Error(
+            "non-route terminal cannot claim marginal runner evidence"
         )
 
     return _finish(
@@ -1452,7 +3252,9 @@ __all__ = [
     "SemanticVerifierNotImplementedError",
     "SemanticVerifierSpecV1",
     "TERMINAL_EVIDENCE_MATRIX_V1",
+    "TerminalRouteEvidenceBundleV1",
     "VERIFICATION_PROFILE_ID",
+    "derive_guarded_marginal_route_decision_v1",
     "reject_unimplemented_semantic_claim_v1",
     "require_semantic_verification_result_v1",
     "require_terminal_classification_result_v1",
@@ -1460,7 +3262,14 @@ __all__ = [
     "semantic_verifier_spec_v1",
     "verify_actual_projection_semantics_v1",
     "verify_forbidden_access_violation_semantics_v1",
+    "verify_ground_fallback_semantics_v1",
+    "verify_local_transaction_result_semantics_v1",
     "verify_marginal_route_decision_semantics_v1",
+    "verify_post_audit_semantics_v1",
+    "verify_route_upper_semantics_v1",
+    "verify_safe_chain_fallback_cardinality_semantics_v1",
+    "verify_safe_chain_local_cardinality_semantics_v1",
+    "verify_safe_chain_local_causal_semantics_v1",
     "verify_terminal_classification_semantics_v1",
     "verify_typed_attestation_v1",
     "verify_work_vector_semantics_v1",

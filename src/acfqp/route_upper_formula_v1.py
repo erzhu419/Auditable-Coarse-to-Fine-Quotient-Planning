@@ -18,8 +18,11 @@ this module establishes formula arithmetic and identity binding only.  It does
 **not** establish that a cardinality claim is true of its source artifacts or
 that hard caps were operationally enforced.  Consequently it cannot, by
 itself, authorize a route decision.  The Contract-1.0 semantic registry keeps
-both ``CARDINALITY_EVIDENCE`` and ``ROUTE_UPPER`` fail closed until those source
-replayers exist.  No scalar cost or break-even claim is introduced here.
+``CARDINALITY_EVIDENCE`` fail closed until its authoritative parent-source
+extractors exist.  Its ``ROUTE_UPPER`` handler additionally requires the
+authority-bearing cardinality result before replaying this formula, so the
+dependency cannot be bypassed with a self-hash.  No scalar cost or break-even
+claim is introduced here.
 """
 
 from __future__ import annotations
@@ -345,7 +348,7 @@ class RouteUpperFormulaV1:
         self,
         registry: CounterRegistryV1,
         profile: ComparisonProfileV1,
-        cap_profile: RouteCapProfileV1,
+        cap_profile: Any,
     ) -> None:
         expected = official_route_upper_formula_v1(
             self.route_kind, registry=registry, profile=profile, cap_profile=cap_profile
@@ -361,7 +364,7 @@ def official_route_upper_formula_v1(
     *,
     registry: CounterRegistryV1 | None = None,
     profile: ComparisonProfileV1 | None = None,
-    cap_profile: RouteCapProfileV1 | None = None,
+    cap_profile: Any | None = None,
 ) -> RouteUpperFormulaV1:
     """Return the one official affine formula for a marginal route kind."""
 
@@ -370,10 +373,27 @@ def official_route_upper_formula_v1(
     registry.validate_official_catalogue()
     profile = profile or official_comparison_profile_v1(registry)
     profile.validate(registry)
-    cap_profile = cap_profile or RouteCapProfileV1()
-    # Round-trip validation is a concise way to reject lookalike cap objects.
-    RouteCapProfileV1.from_dict(cap_profile.to_dict())
+    if cap_profile is None:
+        if route is RouteKind.LOCAL_ATTEMPT:
+            cap_profile = RouteCapProfileV1()
+        else:
+            raise RouteUpperFormulaV1Error(
+                "direct-fallback formula requires an explicit finite "
+                "GroundFallbackCapProfileV1"
+            )
+    cap_profile_id = _validated_route_cap_profile_id(route, cap_profile)
     local_bindings = dict(LOCAL_WORK_CAP_BINDINGS)
+    if route is RouteKind.DIRECT_FALLBACK:
+        from acfqp.phase3e_fallback_v1 import (
+            GROUND_FALLBACK_WORK_CAP_BINDINGS,
+        )
+
+        fallback_bindings = dict(GROUND_FALLBACK_WORK_CAP_BINDINGS)
+    else:
+        fallback_bindings = {}
+    work_cap_bindings = (
+        local_bindings if route is RouteKind.LOCAL_ATTEMPT else fallback_bindings
+    )
     terms = tuple(
         AffineLeafUpperTermV1(
             target_leaf=leaf.path,
@@ -382,14 +402,10 @@ def official_route_upper_formula_v1(
             addend=0,
             cap_mode=(
                 CapMode.MIN_HARD_CAP
-                if route is RouteKind.LOCAL_ATTEMPT and leaf.path in local_bindings
+                if leaf.path in work_cap_bindings
                 else CapMode.NONE
             ),
-            cap_name=(
-                local_bindings[leaf.path]
-                if route is RouteKind.LOCAL_ATTEMPT and leaf.path in local_bindings
-                else None
-            ),
+            cap_name=work_cap_bindings.get(leaf.path),
         )
         for leaf in registry.operational_leaves
     )
@@ -401,7 +417,7 @@ def official_route_upper_formula_v1(
     return RouteUpperFormulaV1(
         registry.registry_id,
         profile.comparison_profile_id,
-        cap_profile.route_cap_profile_id,
+        cap_profile_id,
         route,
         terms,
         guards,
@@ -581,12 +597,38 @@ class RouteUpperDerivationProofV1:
         return result
 
 
+def _validated_route_cap_profile_id(route: RouteKind, cap_profile: Any) -> str:
+    """Validate and return the route-specific finite cap identity.
+
+    Local transaction caps are the frozen V0 ``RouteCapProfileV1``.  Direct
+    ground fallback has an independent, query-attempt finite cap profile; it
+    must not be rebound to the local cap merely to satisfy the generic route
+    envelope schema.
+    """
+
+    if route is RouteKind.LOCAL_ATTEMPT:
+        if not isinstance(cap_profile, RouteCapProfileV1):
+            raise RouteUpperFormulaV1Error(
+                "local upper requires RouteCapProfileV1"
+            )
+        RouteCapProfileV1.from_dict(cap_profile.to_dict())
+        return cap_profile.route_cap_profile_id
+    from acfqp.phase3e_fallback_v1 import GroundFallbackCapProfileV1
+
+    if not isinstance(cap_profile, GroundFallbackCapProfileV1):
+        raise RouteUpperFormulaV1Error(
+            "direct-fallback upper requires GroundFallbackCapProfileV1"
+        )
+    GroundFallbackCapProfileV1.from_dict(cap_profile.to_dict())
+    return cap_profile.ground_fallback_cap_profile_id
+
+
 def _validate_chain(
     *,
     context: RouteDecisionContextV1,
     decision_point: DecisionPointV1,
     cardinality: CardinalityEvidenceV1,
-    cap_profile: RouteCapProfileV1,
+    cap_profile: Any,
     registry: CounterRegistryV1,
     profile: ComparisonProfileV1,
     formula: RouteUpperFormulaV1,
@@ -595,7 +637,9 @@ def _validate_chain(
 ) -> None:
     registry.validate_official_catalogue()
     profile.validate(registry)
-    RouteCapProfileV1.from_dict(cap_profile.to_dict())
+    cap_profile_id = _validated_route_cap_profile_id(
+        formula.route_kind, cap_profile
+    )
     formula.validate_official(registry, profile, cap_profile)
     if context.counter_registry_id != registry.registry_id:
         raise RouteUpperFormulaV1Error("route context/counter registry mismatch")
@@ -605,7 +649,7 @@ def _validate_chain(
         raise RouteUpperFormulaV1Error("formula/counter registry mismatch")
     if formula.comparison_profile_id != profile.comparison_profile_id:
         raise RouteUpperFormulaV1Error("formula/comparison profile mismatch")
-    if formula.route_cap_profile_id != cap_profile.route_cap_profile_id:
+    if formula.route_cap_profile_id != cap_profile_id:
         raise RouteUpperFormulaV1Error("formula/cap profile mismatch")
     if decision_point.route_decision_context_id != context.route_decision_context_id:
         raise RouteUpperFormulaV1Error("decision point uses a stale route context")
@@ -613,7 +657,7 @@ def _validate_chain(
         raise RouteUpperFormulaV1Error("cardinality uses a stale route context")
     if cardinality.route_kind is not formula.route_kind:
         raise RouteUpperFormulaV1Error("formula/cardinality route mismatch")
-    if cardinality.route_cap_profile_id != cap_profile.route_cap_profile_id:
+    if cardinality.route_cap_profile_id != cap_profile_id:
         raise RouteUpperFormulaV1Error("cardinality/cap profile mismatch")
 
     if formula.route_kind is RouteKind.LOCAL_ATTEMPT:
@@ -625,7 +669,7 @@ def _validate_chain(
             raise RouteUpperFormulaV1Error(
                 "only FOUND causal evidence can derive a local upper"
             )
-        if causal.cap_id != cap_profile.route_cap_profile_id:
+        if causal.cap_id != cap_profile_id:
             raise RouteUpperFormulaV1Error("causal evidence/cap profile mismatch")
         if transaction.logical_occurrence_id != context.logical_occurrence_id:
             raise RouteUpperFormulaV1Error("transaction occurrence mismatch")
@@ -633,7 +677,7 @@ def _validate_chain(
             raise RouteUpperFormulaV1Error("transaction route-attempt mismatch")
         if transaction.decision_point_id != decision_point.decision_point_id:
             raise RouteUpperFormulaV1Error("transaction decision-point mismatch")
-        if transaction.route_cap_profile_id != cap_profile.route_cap_profile_id:
+        if transaction.route_cap_profile_id != cap_profile_id:
             raise RouteUpperFormulaV1Error("transaction/cap profile mismatch")
         if decision_point.transaction_index != transaction.transaction_index:
             raise RouteUpperFormulaV1Error("decision-point transaction index mismatch")
@@ -654,7 +698,7 @@ def _validate_chain(
 def _derive_leaf_uppers(
     formula: RouteUpperFormulaV1,
     cardinality: CardinalityEvidenceV1,
-    cap_profile: RouteCapProfileV1,
+    cap_profile: Any,
 ) -> tuple[tuple[str, int], ...]:
     counts = dict(cardinality.counts)
     expected = set(formula.required_count_names)
@@ -664,7 +708,23 @@ def _derive_leaf_uppers(
             "cardinality/formula input mismatch; "
             f"missing={sorted(expected - actual)!r}, extra={sorted(actual - expected)!r}"
         )
-    caps = dict(cap_profile.limits)
+    if formula.route_kind is RouteKind.LOCAL_ATTEMPT:
+        caps = dict(cap_profile.limits)
+    else:
+        from acfqp.phase3e_fallback_v1 import (
+            GROUND_FALLBACK_WORK_CAP_BINDINGS,
+        )
+
+        caps = {
+            cap_name: getattr(cap_profile, cap_name)
+            for _, cap_name in GROUND_FALLBACK_WORK_CAP_BINDINGS
+        }
+        # One composed candidate is one Bellman backup, so both independent
+        # hard caps bound the same native leaf.
+        caps["max_bellman_backups"] = min(
+            cap_profile.max_bellman_backups,
+            cap_profile.max_composed_candidates,
+        )
     for guard in formula.structural_guards:
         if guard.cap_name not in caps:
             raise RouteUpperFormulaV1Error("structural guard names an unknown cap")
@@ -688,15 +748,21 @@ def _derive_leaf_uppers(
                 ) from error
         values[term.target_leaf] = raw
 
-    common_or_rebuild = {
-        path for path in values if path.startswith("common.") or path.startswith("rebuild.")
+    # The already-spent common-prefix vector is never part of these counts.
+    # ``common.*`` values that do appear here are post-freeze operational
+    # verification suffix work (result/cap/projection/terminal checks).  That
+    # suffix must be estimated per route and later aggregated with execution;
+    # forbidding the paths outright would make complete operational accounting
+    # impossible.  Rebuild work remains outside every marginal route upper.
+    rebuild_only = {
+        path for path in values if path.startswith("rebuild.")
     }
     forbidden_family = (
         {path for path in values if path.startswith("fallback.")}
         if formula.route_kind is RouteKind.LOCAL_ATTEMPT
         else {path for path in values if path.startswith("local.")}
     )
-    forbidden = common_or_rebuild | forbidden_family
+    forbidden = rebuild_only | forbidden_family
     nonzero = sorted(path for path in forbidden if values[path] != 0)
     if nonzero:
         raise RouteUpperFormulaV1Error(
@@ -731,7 +797,7 @@ def derive_route_upper_v1(
     context: RouteDecisionContextV1,
     decision_point: DecisionPointV1,
     cardinality: CardinalityEvidenceV1,
-    cap_profile: RouteCapProfileV1,
+    cap_profile: Any,
     registry: CounterRegistryV1,
     profile: ComparisonProfileV1,
     formula: RouteUpperFormulaV1,
@@ -791,7 +857,7 @@ def derive_route_upper_v1(
         transaction_index,
         frontier_ref,
         causal_ref,
-        cap_profile.route_cap_profile_id,
+        _validated_route_cap_profile_id(formula.route_kind, cap_profile),
         cardinality.cardinality_evidence_id,
         formula.formula_id,
         formula.route_kind,
@@ -810,7 +876,7 @@ def derive_route_upper_v1(
         decision_point.decision_point_id,
         transaction_ref,
         causal_ref,
-        cap_profile.route_cap_profile_id,
+        _validated_route_cap_profile_id(formula.route_kind, cap_profile),
         cardinality.cardinality_evidence_id,
         registry.registry_id,
         profile.comparison_profile_id,
@@ -830,7 +896,7 @@ def verify_route_upper_derivation_v1(
     context: RouteDecisionContextV1,
     decision_point: DecisionPointV1,
     cardinality: CardinalityEvidenceV1,
-    cap_profile: RouteCapProfileV1,
+    cap_profile: Any,
     registry: CounterRegistryV1,
     profile: ComparisonProfileV1,
     formula: RouteUpperFormulaV1,

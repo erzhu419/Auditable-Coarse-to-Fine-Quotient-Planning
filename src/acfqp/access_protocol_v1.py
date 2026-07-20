@@ -98,6 +98,7 @@ class AccessOperation(str, Enum):
     LOCAL_WORKER_LAUNCH = "LOCAL_WORKER_LAUNCH"
     LOCAL_PATCH_STITCH = "LOCAL_PATCH_STITCH"
     LOCAL_POSTAUDIT = "LOCAL_POSTAUDIT"
+    FALLBACK_SOLVER_INVOCATION = "FALLBACK_SOLVER_INVOCATION"
     FALLBACK_WORKER_LAUNCH = "FALLBACK_WORKER_LAUNCH"
 
     LOCAL_CAPABILITY_ARTIFACT = "LOCAL_CAPABILITY_ARTIFACT"
@@ -156,6 +157,7 @@ LOCAL_ONLY_OPERATIONS = tuple(
 FALLBACK_ONLY_OPERATIONS = tuple(
     sorted(
         (
+            AccessOperation.FALLBACK_SOLVER_INVOCATION,
             AccessOperation.FALLBACK_WORKER_LAUNCH,
             AccessOperation.FALLBACK_RESULT_ARTIFACT,
         ),
@@ -172,6 +174,11 @@ ARTIFACT_OPERATIONS = frozenset(
         AccessOperation.FALLBACK_RESULT_ARTIFACT,
     }
 )
+
+# Every preselection read is identity-bearing.  Recording only the operation
+# name allowed a caller to replace the frozen RAPM, plan, cap, or formula while
+# preserving the same access-log hash shape.
+IDENTITY_BEARING_OPERATIONS = frozenset(PRESELECTION_READ_OPERATIONS) | ARTIFACT_OPERATIONS
 
 
 class AccessViolationReason(str, Enum):
@@ -297,11 +304,11 @@ class AccessEventV1:
             "route_scope",
             _enum(self.route_scope, AccessRouteScope, "access route scope"),
         )
-        if self.operation in ARTIFACT_OPERATIONS:
+        if self.operation in IDENTITY_BEARING_OPERATIONS:
             _cid(self.artifact_id, "artifact_id")
         elif self.artifact_id is not None:
             raise AccessProtocolV1Error(
-                "only registered artifact events may carry artifact_id"
+                "only registered identity-bearing events may carry artifact_id"
             )
 
     def to_dict(self) -> dict[str, Any]:
@@ -1185,10 +1192,18 @@ def decide_then_execute(
         freeze = controller.freeze_attestation
         if freeze is None:  # pragma: no cover - established above
             raise AccessProtocolV1Error("local execution is missing its freeze")
-        if local_execution_stages_v1(
+        stages = local_execution_stages_v1(
             controller.snapshot().events,
             freeze_after_sequence=freeze.last_preselection_sequence,
-        ) != (1, 2, 3, 4, 5):
+        )
+        # A sound local attempt has two legitimate closures.  The isolated
+        # solver can stop after materialization, compilation, and worker
+        # execution when it proves SEARCH_CAP_EXHAUSTED or
+        # NO_FEASIBLE_ASSIGNMENT.  Only a returned candidate proceeds through
+        # stitch and post-audit.  The route runner binds these two stage
+        # prefixes to the corresponding trusted semantic outcome; this layer
+        # merely rejects skipped, partial, or extra stages.
+        if stages not in ((1, 2, 3), (1, 2, 3, 4, 5)):
             raise AccessProtocolV1Error(
                 "completed local callback omitted a required execution stage"
             )

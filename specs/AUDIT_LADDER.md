@@ -300,6 +300,10 @@ surfaces:
 - exact actual projection from referenced work records, common-prefix versus marginal
   separation, context-bound selected-upper compliance mechanics, and
   provenance-preserving occurrence sums;
+- exact identity binding for every preselection read, including failed certificate and
+  action catalogue plus content-addressed typed-null frontier/proof references on the
+  fallback path. This is identity integrity, not yet independent abstract-audit
+  semantics;
 - typed route contexts, frontier/causal/cardinality/cap/transaction identities,
   strict-dominance marginal selection, trusted budget replay, terminal class/code,
   rebuild policy, logical-occurrence closure, and scalar-free vector-prefix/worst-order
@@ -309,15 +313,24 @@ surfaces:
   all 34 operational leaves, the official projection, 13 native local hard-cap
   minima, and six structural-cap guards, with a replayable formula/proof identity that
   explicitly carries `authorizes_route_selection=false`;
-- a fail-closed semantic-verifier registry whose work-vector, actual-projection,
-  access-protocol and terminal-classification roles replay authoritatively while
-  cardinality, route-upper, route-decision and the other unresolved FQ7 roles return
-  `NOT_IMPLEMENTED`; plan and infeasibility terminal labels therefore cannot acquire
-  authority from a hash-only attestation; and
+- a fail-closed semantic-verifier registry with generic work-vector,
+  actual-projection, route-upper, route-decision, ground-fallback,
+  access-protocol and terminal-classification replay, plus registered-safe-chain-only
+  causal/cardinality and local-result/post-audit replay. Exact cached infeasibility
+  and abstract audit remain `NOT_IMPLEMENTED`; no role can acquire authority from a
+  hash-only attestation. Decision authorization requires the exact charged dependency
+  closure—causal result, both route uppers, and one matching cardinality verification
+  for each upper—with no missing, duplicate or extra semantic result; and
 - fail-closed estimate-before-execute access logs plus explicit Phase 3B/3C/3D
   operational no-full-replay modes.  Phase 3D can prepare its failed-plan, causal and
   action-catalogue estimate context without a kernel step, materialization, compiler,
-  or worker launch.
+  or worker launch. A non-official `run_phase3e` now consumes that authority, freezes
+  one decision, executes either the genuine isolated safe-chain LOCAL adapter or the
+  capped fallback adapter, and verifies native marginal work against the selected
+  upper. Local candidate evidence binds exact capability, worker, stitch and post-audit
+  IDs. Negative local results legally close after the worker and enter a fresh fallback
+  decision without invented stitch/post-audit evidence. Local and fallback record
+  already observed execution work incrementally on failure.
 
 The component replay order is:
 
@@ -327,7 +340,7 @@ strict canonical decode and domain-ID verification
 -> materialize canonical WorkVectorV1
 -> exact projection to ComparisonVectorV1
 -> replay context/frontier/causal/cardinality/cap/formula/upper arithmetic
--> require semantic cardinality/upper/decision authority (currently fail closed)
+-> require source-specific semantic cardinality plus generic upper/decision authority
 -> verify decision-freeze access prefix
 -> permit only the selected route's post-freeze event family
 -> recompute actual projection and per-axis selected-upper compliance
@@ -345,14 +358,25 @@ roles represented by plausible attestations; discontinuous or substituted
 transactions; cross-occurrence sums; pre-freeze execution; reversed local execution
 stages; fallback paths with local artifacts; deleted/reordered access events;
 hash-only campaign terminals; hidden noncertificate occurrences; worker-frontier
-self-uppers; and injected legacy scalar or break-even claims.
+self-uppers; omitted/extraneous semantic dependencies; substituted failed-certificate,
+action-catalogue, capability, worker, stitch or post-audit IDs; fake transaction 2 on a
+fresh fallback branch; loss of observed local/fallback work on exceptions; and injected
+legacy scalar or break-even claims.
 
-This is not yet a run-level Phase 3E certificate.  Production-native instrumentation
-has not been connected across every operational and failure path; a real direct
-fallback route, the second-transaction execution loop, the complete role-authority
-semantic verifier registry, an end-to-end `run_phase3e`, and an independent bundle
-verifier remain absent.  Consequently no typed terminal produced by these component
-tests establishes plan feasibility or infeasibility, and the locked result remains:
+This is not yet an official run-level Phase 3E certificate. The registered safe-chain
+LOCAL and fallback paths now execute with scoped semantic authority, and terminal/
+occurrence replay binds the runner's current execution-plus-suffix evidence.
+Production-native instrumentation is
+not connected across every abstract, rebuild, exact-infeasible, partial-failure and
+hash path. Four P0 audit boundaries remain: terminal/certificate-verifier operational
+work has no non-cyclic place in the route suffix; continuation `WORK_VECTOR`
+verification work is missing from the next common prefix; caller-supplied executors and
+post-freeze live runtime copying leave pre-execution/runtime-tree TOCTOU outside the
+access proof; and route-level failures are not yet converted into whole-occurrence typed
+noncertificates and aggregate terminals. Exact cached-infeasibility and abstract-audit
+authorities, a registered live dependent second-decision benchmark, rebuild/retry, and
+an independent manifest verifier also remain absent. The locked result therefore
+remains:
 
 ```text
 official_execution_allowed = false
@@ -631,4 +655,4 @@ Frontier combinatorics, conservative rectangular composition, all policies excee
 
 ## Open risks
 
-Paired oracle-replacement ablations and component interactions are required before broad causal claims. More compact exact frontier representations may be needed beyond tiny instances. V0-028 removes Q/value signatures from the portable exact builder; V0-029 closes the first certificate-triggered recovery; V0-030 closes slack-aware earliest-antichain authorization, finite-domain sparse capability, and capped joint search; and V0-032 freezes and partially implements the accounted routing foundation. Production-native instrumentation, real fallback/retry execution, the remaining nine original FQ7 role-authority verifiers, end-to-end Phase 3E replay, dependent-horizon recovery, automatic feature invention, workload economics/dynamic routing, and statistical Gates remain open.
+Paired oracle-replacement ablations and component interactions are required before broad causal claims. More compact exact frontier representations may be needed beyond tiny instances. V0-028 removes Q/value signatures from the portable exact builder; V0-029 closes the first certificate-triggered recovery; V0-030 closes slack-aware earliest-antichain authorization, finite-domain sparse capability, and capped joint search; and V0-032 now has scoped integrated safe-chain LOCAL/fallback slices around the frozen RAPM. The four P0 terminal-verification, continuation-prefix, executor/runtime-sealing and occurrence-closure boundaries; complete native failure/rebuild/hash instrumentation; registered dependent second-decision evidence; exact cached-infeasibility and abstract-audit authority; manifest-level independent replay; dependent-horizon recovery; automatic feature invention; scalar-free workload routing and the later scalar-economics revision; and statistical Gates remain open.

@@ -282,6 +282,80 @@ with `safe_chain/source_phase3c_run.json`,
 rebuilds authoritative semantics to detect coordinated forgery, but that work is an
 evaluation-only lane and is never counted as operational planning or recovery.
 
+Ledger `V0-032` freezes the contract-`1.0.0` accounted dynamic-routing profile. The
+current non-official implementation now goes beyond schema-only preconstruction. Its
+one-decision `run_phase3e` consumer accepts a frozen RAPM/failed-plan authority package,
+binds every preselection read to the exact RAPM, BuildEpoch, failed-certificate,
+selected-plan, action-catalogue, frontier/proof-or-typed-null, cardinality, cap,
+formula, and comparison-profile identity, and freezes a semantically replayed strict-
+dominance decision before route execution. The charged semantic authority is an exact
+dependency closure: the decision must reference the causal result and both route
+uppers, each upper must have exactly one matching cardinality verification, and missing,
+duplicate, or extraneous results fail closed. The runner executes only the selected
+route, preserves native execution and verification work separately, and checks their
+exact eight-axis aggregate against the selected upper. Binding the failed certificate's
+identity does not yet implement independent `ABSTRACT_AUDIT` semantics.
+
+The registered safe-chain positive control exercises a genuine LOCAL path. Frozen
+Phase 3D metadata supplies the causal/cardinality evidence without a ground transition;
+the local upper strictly dominates the isolated-fallback upper; and only after freeze
+the adapter performs `16/64` materialization steps/outcome rows, launches the isolated
+finite-domain worker, stitches its overlay, and performs an `8/32` sound post-audit.
+The result is independently typed as `CANDIDATE_FOUND` then `CERTIFIED` and remains
+within its preregistered upper. Capability, worker result, stitched plan, and post-audit
+certificate are bound to their exact declared IDs; a `SEARCH_CAP_EXHAUSTED` or
+`NO_FEASIBLE_ASSIGNMENT` worker result instead closes the legal short
+materialize→compile→worker prefix without fabricating stitch/post-audit artifacts and
+can proceed only through a fresh fallback decision. The companion capped ground
+fallback has exact safe-chain cardinality and result authority and isolated process/
+resource accounting.
+Its worker revalidates the frozen Phase 3C manifest/query/BuildEpoch/action catalogue/
+RAPM, performs the complete `48`-transition/`192`-outcome search with `5696` Bellman
+backups, and returns `FEASIBLE_CERTIFIED` without host solver replay. The historical
+callable adapter that cannot produce the required isolation evidence is rejected.
+
+The generic occurrence layer can preserve up to two continuous local transactions. A
+failed transaction-1 post-audit requires a deeper frontier, a newly stitched plan
+identity, fresh common work/cardinalities/uppers/decision, and complete semantic
+authority. That fresh decision may select LOCAL transaction 2 or execute direct
+FALLBACK immediately; the fallback branch does not fabricate a second local
+transaction. A negative local worker closure likewise enters a new fallback decision.
+Terminal and occurrence replay bind the actual runner aggregate, route evidence,
+freeze/access identities, and every retained work component, so a cheaper valid
+WorkVector cannot be spliced onto a certificate. These controls are exercised as a
+generic orchestration path, but there is not yet a registered live benchmark whose
+first sound post-audit fails and whose deeper second decision completes.
+
+Selected-route exceptions produce a typed noncertificate carrying the available
+execution/verification work, marginal aggregate, context/decision/upper, freeze/access
+evidence, and exception classification. Python-level local-adapter failures also attach
+and fail-close the adapter-owned recorder. Local materialization, compilation, launch,
+solver, and post-audit counters, and fallback staging, launch, worker-native, and output
+counters, are charged incrementally so a later exception cannot erase already observed
+work. This does not invent unobservable work: an abnormally terminated isolated child
+still requires durable child-side streaming before its incomplete internal work can be
+claimed.
+
+This is an accounted, authority-gated vertical slice—not an official Phase 3E run.
+The consumer still receives rather than autonomously creates the upstream abstract
+plan/audit package. Four P0 boundaries remain explicit: terminal/certificate semantic
+verification work is not yet included without creating an accounting self-reference;
+continuation `WORK_VECTOR` verification work is not yet carried into the next common
+prefix; a caller-supplied executable and a live runtime tree are not yet sealed against
+pre-freeze execution or runtime-tree TOCTOU; and route failures are not yet converted
+into a complete occurrence-level typed noncertificate/aggregate terminal. Exact cached-
+infeasibility and abstract-audit authorities, rebuild/retry, a manifest-level
+independent verifier, and the later scalar economics revision also remain open. See
+`specs/PHASE3E_PRECONSTRUCTION_LIMITATIONS.md` for the exact current boundary.
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+```
+
 ## Scope
 
 Phase 0.5 contains no neural encoder, learned model, MCTS, option, first-hit
@@ -322,13 +396,14 @@ replay, and estimate-before-execute access order. This is an implementation cont
 not an official Gate result; `official_execution_allowed=false`, scalar cost and
 break-even remain null, and both counter-completeness and workload-economics Gates
 remain `NOT_RUN` until every registered path and independent attack test passes.
-The current component foundation implements strict V1 identity/accounting/projection,
-formula-consistent marginal-upper candidates, routing/access/budget/workload/campaign
-mechanics, and four authority-bearing semantic handlers: native work, actual
-projection, access-protocol violations, and terminal classification. The arithmetic
-upper proof explicitly does not authorize selection: cardinality, route-upper, and
-route-decision authority remain fail closed. It still lacks production-native
-instrumentation, real fallback and second-transaction execution, the remaining
-semantic authorities, an integrated Phase 3E runner, and an independent bundle
-verifier.
+The current implementation provides the scoped integrated local and fallback vertical
+slices, registered-safe-chain causal/cardinality authority, generic route-upper and
+decision replay, route-result/post-audit authority, terminal/occurrence evidence, and
+generic two-decision control described above. It still lacks closure of the four P0
+accounting/execution/occurrence boundaries listed above, exact cached-infeasibility and
+abstract-audit authority, a live dependent transaction-2 benchmark, complete rebuild/
+failure/hash instrumentation, and an independent manifest verifier. FQ12 deliberately
+keeps the official scalar and `N_break_even` null: vector prefix and componentwise
+worst-frontier mechanics may proceed, but scalar crossing is deferred to a later ledger
+revision.
 The earlier profiles retain their original claims and are not retroactively relabelled.

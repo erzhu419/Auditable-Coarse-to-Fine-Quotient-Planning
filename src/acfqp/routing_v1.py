@@ -19,6 +19,7 @@ from typing import Any, Mapping, Sequence, TypeVar
 from acfqp.accounting_v1 import SHARED_AXES
 from acfqp.phase3e_ids import (
     CARDINALITY_EVIDENCE_DOMAIN,
+    CARDINALITY_SOURCE_DOMAIN,
     CAUSAL_EVIDENCE_DOMAIN,
     DECISION_POINT_DOMAIN,
     FRONTIER_SNAPSHOT_DOMAIN,
@@ -181,6 +182,24 @@ class CausalOutcome(str, Enum):
     LOCAL_CAP_IMPOSSIBLE = "LOCAL_CAP_IMPOSSIBLE"
 
 
+class CardinalitySourceKind(str, Enum):
+    """Registered kinds of immutable, pre-route cardinality sources.
+
+    A source is not an integer assertion.  It contains the distinct frozen
+    member identities from which the cardinality authority recomputes each
+    count.  The kind records which pre-execution catalogue supplied those
+    identities and prevents an opaque, untyped hash from being treated as a
+    cardinality source.
+    """
+
+    ACTION_CATALOGUE = "ACTION_CATALOGUE"
+    FRONTIER = "FRONTIER"
+    PROOF_CIRCUIT_METADATA = "PROOF_CIRCUIT_METADATA"
+    ROUTE_CAP_METADATA = "ROUTE_CAP_METADATA"
+    IO_MANIFEST = "IO_MANIFEST"
+    FALLBACK_SEARCH_BOUND = "FALLBACK_SEARCH_BOUND"
+
+
 class RouteSelection(str, Enum):
     LOCAL = "LOCAL"
     FALLBACK = "FALLBACK"
@@ -193,6 +212,7 @@ class RouteComparison(str, Enum):
     INCOMPARABLE = "INCOMPARABLE"
     LOCAL_FORBIDDEN = "LOCAL_FORBIDDEN"
     MISSING_LOCAL_UPPER = "MISSING_LOCAL_UPPER"
+    INVALID_LOCAL_UPPER = "INVALID_LOCAL_UPPER"
 
 
 OFFICIAL_LOCAL_CAPS: tuple[tuple[str, int], ...] = tuple(
@@ -557,6 +577,215 @@ class CausalEvidenceV1:
             document,
             "causal_evidence_id",
             CAUSAL_EVIDENCE_DOMAIN,
+            result._payload(),
+        )
+        return result
+
+
+@dataclass(frozen=True, slots=True)
+class FrozenCardinalityCollectionV1:
+    """One named collection whose size is recomputed from distinct members."""
+
+    count_name: str
+    member_ids: tuple[str, ...]
+
+    def __post_init__(self) -> None:
+        _token(self.count_name, "cardinality count_name")
+        if (
+            tuple(sorted(self.member_ids)) != self.member_ids
+            or len(set(self.member_ids)) != len(self.member_ids)
+        ):
+            raise RoutingV1Error(
+                "frozen cardinality members must be unique and sorted"
+            )
+        for member_id in self.member_ids:
+            _cid(member_id, "frozen cardinality member_id")
+
+    @property
+    def cardinality(self) -> int:
+        return len(self.member_ids)
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "count_name": self.count_name,
+            "member_ids": list(self.member_ids),
+        }
+
+    @classmethod
+    def from_dict(
+        cls, document: Mapping[str, Any]
+    ) -> "FrozenCardinalityCollectionV1":
+        _fields(document, {"count_name", "member_ids"}, "cardinality collection")
+        if type(document["member_ids"]) is not list:
+            raise RoutingV1Error("cardinality collection members must be a list")
+        return cls(document["count_name"], tuple(document["member_ids"]))
+
+
+@dataclass(frozen=True, slots=True)
+class FrozenCardinalitySourceV1:
+    """Typed immutable input consumed by the cardinality authority.
+
+    ``source_artifact_id`` authenticates the complete enumerated source, but
+    its hash is never interpreted as a count.  Counts are recomputed as the
+    number of distinct member identities in each collection.  Empty
+    collections are explicit native zeros.
+    """
+
+    route_decision_context_id: str
+    route_kind: RouteKind
+    route_cap_profile_id: str
+    frontier_snapshot_id: ContentRef
+    source_kind: CardinalitySourceKind
+    source_name: str
+    parent_artifact_id: str
+    parent_artifact_schema_id: str
+    parent_artifact_role: str
+    extraction_profile_id: str
+    collections: tuple[FrozenCardinalityCollectionV1, ...]
+    frozen_at_protocol_step: int
+    captured_before_route_decision: bool = True
+    depends_on_actual_route_work: bool = False
+    schema_version: str = SCHEMA_VERSION
+
+    def __post_init__(self) -> None:
+        _cid(self.route_decision_context_id, "route_decision_context_id")
+        object.__setattr__(
+            self, "route_kind", _enum(self.route_kind, RouteKind, "route_kind")
+        )
+        _cid(self.route_cap_profile_id, "route_cap_profile_id")
+        local = self.route_kind is RouteKind.LOCAL_ATTEMPT
+        object.__setattr__(
+            self,
+            "frontier_snapshot_id",
+            _content_ref(
+                self.frontier_snapshot_id,
+                "frontier_snapshot_id",
+                allow_not_applicable=not local,
+            ),
+        )
+        object.__setattr__(
+            self,
+            "source_kind",
+            _enum(self.source_kind, CardinalitySourceKind, "source_kind"),
+        )
+        _token(self.source_name, "source_name")
+        _cid(self.parent_artifact_id, "parent_artifact_id")
+        _token(self.parent_artifact_schema_id, "parent_artifact_schema_id")
+        _token(self.parent_artifact_role, "parent_artifact_role")
+        _cid(self.extraction_profile_id, "extraction_profile_id")
+        if (
+            not self.collections
+            or tuple(
+                sorted(self.collections, key=lambda row: row.count_name)
+            )
+            != self.collections
+            or len({row.count_name for row in self.collections})
+            != len(self.collections)
+        ):
+            raise RoutingV1Error(
+                "frozen cardinality collections must be nonempty, unique, and sorted"
+            )
+        if (
+            type(self.frozen_at_protocol_step) is not int
+            or self.frozen_at_protocol_step < 0
+        ):
+            raise RoutingV1Error(
+                "frozen_at_protocol_step must be a nonnegative exact integer"
+            )
+        if self.captured_before_route_decision is not True:
+            raise RoutingV1Error(
+                "cardinality source must be captured before route decision"
+            )
+        if self.depends_on_actual_route_work is not False:
+            raise RoutingV1Error(
+                "cardinality source cannot depend on actual route work"
+            )
+        if self.schema_version != SCHEMA_VERSION:
+            raise RoutingV1Error("frozen cardinality source version mismatch")
+
+    def _payload(self) -> dict[str, Any]:
+        return {
+            "schema": "acfqp.frozen_cardinality_source.v1",
+            "schema_version": self.schema_version,
+            "RouteDecisionContext_id": self.route_decision_context_id,
+            "route_kind": self.route_kind.value,
+            "route_cap_profile_id": self.route_cap_profile_id,
+            "frontier_snapshot_id": _ref_dict(self.frontier_snapshot_id),
+            "source_kind": self.source_kind.value,
+            "source_name": self.source_name,
+            "parent_artifact_id": self.parent_artifact_id,
+            "parent_artifact_schema_id": self.parent_artifact_schema_id,
+            "parent_artifact_role": self.parent_artifact_role,
+            "extraction_profile_id": self.extraction_profile_id,
+            "collections": [row.to_dict() for row in self.collections],
+            "frozen_at_protocol_step": self.frozen_at_protocol_step,
+            "captured_before_route_decision": True,
+            "depends_on_actual_route_work": False,
+        }
+
+    @property
+    def source_artifact_id(self) -> str:
+        return content_id(CARDINALITY_SOURCE_DOMAIN, self._payload())
+
+    def to_dict(self) -> dict[str, Any]:
+        return {**self._payload(), "source_artifact_id": self.source_artifact_id}
+
+    @classmethod
+    def from_dict(cls, document: Mapping[str, Any]) -> "FrozenCardinalitySourceV1":
+        expected = {
+            "schema",
+            "schema_version",
+            "RouteDecisionContext_id",
+            "route_kind",
+            "route_cap_profile_id",
+            "frontier_snapshot_id",
+            "source_kind",
+            "source_name",
+            "parent_artifact_id",
+            "parent_artifact_schema_id",
+            "parent_artifact_role",
+            "extraction_profile_id",
+            "collections",
+            "frozen_at_protocol_step",
+            "captured_before_route_decision",
+            "depends_on_actual_route_work",
+            "source_artifact_id",
+        }
+        _fields(document, expected, "frozen cardinality source")
+        if (
+            document["schema"] != "acfqp.frozen_cardinality_source.v1"
+            or type(document["collections"]) is not list
+        ):
+            raise RoutingV1Error("frozen cardinality source schema mismatch")
+        route_kind = _enum(document["route_kind"], RouteKind, "route_kind")
+        result = cls(
+            document["RouteDecisionContext_id"],
+            route_kind,
+            document["route_cap_profile_id"],
+            _parse_content_ref(
+                document["frontier_snapshot_id"],
+                "frontier_snapshot_id",
+                allow_not_applicable=route_kind is RouteKind.DIRECT_FALLBACK,
+            ),
+            document["source_kind"],
+            document["source_name"],
+            document["parent_artifact_id"],
+            document["parent_artifact_schema_id"],
+            document["parent_artifact_role"],
+            document["extraction_profile_id"],
+            tuple(
+                FrozenCardinalityCollectionV1.from_dict(row)
+                for row in document["collections"]
+            ),
+            document["frozen_at_protocol_step"],
+            document["captured_before_route_decision"],
+            document["depends_on_actual_route_work"],
+            document["schema_version"],
+        )
+        _verify_id(
+            document,
+            "source_artifact_id",
+            CARDINALITY_SOURCE_DOMAIN,
             result._payload(),
         )
         return result
@@ -1671,6 +1900,21 @@ class TerminalArtifactV1:
     transaction_id: ContentRef
     actual_work_vector_id: str
     evidence_attestation_ids: tuple[str, ...]
+    actual_comparison_vector_id: ContentRef = TypedNotApplicable(
+        "terminal has no marginal actual comparison"
+    )
+    actual_projection_proof_id: ContentRef = TypedNotApplicable(
+        "terminal has no marginal actual projection"
+    )
+    marginal_work_aggregation_proof_id: ContentRef = TypedNotApplicable(
+        "terminal has no marginal aggregation proof"
+    )
+    route_decision_freeze_attestation_id: ContentRef = TypedNotApplicable(
+        "terminal has no successful route freeze"
+    )
+    access_event_log_id: ContentRef = TypedNotApplicable(
+        "terminal has no successful route access log"
+    )
 
     def __post_init__(self) -> None:
         if self.terminal_scope not in {"ROUTE_ATTEMPT", "LOGICAL_OCCURRENCE"}:
@@ -1696,6 +1940,20 @@ class TerminalArtifactV1:
             "transaction_id",
             _content_ref(self.transaction_id, "transaction_id", allow_not_applicable=True),
         )
+        for field in (
+            "actual_comparison_vector_id",
+            "actual_projection_proof_id",
+            "marginal_work_aggregation_proof_id",
+            "route_decision_freeze_attestation_id",
+            "access_event_log_id",
+        ):
+            object.__setattr__(
+                self,
+                field,
+                _content_ref(
+                    getattr(self, field), field, allow_not_applicable=True
+                ),
+            )
         if (
             not self.evidence_attestation_ids
             or tuple(sorted(self.evidence_attestation_ids)) != self.evidence_attestation_ids
@@ -1719,6 +1977,19 @@ class TerminalArtifactV1:
             "transaction_id": _ref_dict(self.transaction_id),
             "actual_work_vector_id": self.actual_work_vector_id,
             "evidence_attestation_ids": list(self.evidence_attestation_ids),
+            "actual_comparison_vector_id": _ref_dict(
+                self.actual_comparison_vector_id
+            ),
+            "actual_projection_proof_id": _ref_dict(
+                self.actual_projection_proof_id
+            ),
+            "marginal_work_aggregation_proof_id": _ref_dict(
+                self.marginal_work_aggregation_proof_id
+            ),
+            "route_decision_freeze_attestation_id": _ref_dict(
+                self.route_decision_freeze_attestation_id
+            ),
+            "access_event_log_id": _ref_dict(self.access_event_log_id),
         }
 
     @property
@@ -1743,6 +2014,11 @@ class TerminalArtifactV1:
             "transaction_id",
             "actual_work_vector_id",
             "evidence_attestation_ids",
+            "actual_comparison_vector_id",
+            "actual_projection_proof_id",
+            "marginal_work_aggregation_proof_id",
+            "route_decision_freeze_attestation_id",
+            "access_event_log_id",
             "terminal_artifact_id",
         }
         _fields(document, expected, "terminal artifact")
@@ -1771,6 +2047,31 @@ class TerminalArtifactV1:
             ),
             document["actual_work_vector_id"],
             tuple(document["evidence_attestation_ids"]),
+            _parse_content_ref(
+                document["actual_comparison_vector_id"],
+                "actual_comparison_vector_id",
+                allow_not_applicable=True,
+            ),
+            _parse_content_ref(
+                document["actual_projection_proof_id"],
+                "actual_projection_proof_id",
+                allow_not_applicable=True,
+            ),
+            _parse_content_ref(
+                document["marginal_work_aggregation_proof_id"],
+                "marginal_work_aggregation_proof_id",
+                allow_not_applicable=True,
+            ),
+            _parse_content_ref(
+                document["route_decision_freeze_attestation_id"],
+                "route_decision_freeze_attestation_id",
+                allow_not_applicable=True,
+            ),
+            _parse_content_ref(
+                document["access_event_log_id"],
+                "access_event_log_id",
+                allow_not_applicable=True,
+            ),
         )
         _verify_id(
             document,
@@ -2009,10 +2310,13 @@ def verify_unique_attestation_roles(
 __all__ = [
     "BudgetOutcome",
     "CardinalityEvidenceV1",
+    "CardinalitySourceKind",
     "CausalEvidenceV1",
     "CausalOutcome",
     "DecisionPointV1",
     "FrontierSnapshotV1",
+    "FrozenCardinalityCollectionV1",
+    "FrozenCardinalitySourceV1",
     "LOCAL_WORK_CAP_BINDINGS",
     "MarginalRouteDecisionV1",
     "OFFICIAL_LOCAL_CAPS",

@@ -97,7 +97,7 @@ def _accounting(
     )
     prefix_work = _work(
         RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE,
-        context.route_decision_context_id,
+        context.route_attempt_id,
         {},
     )
     prefix_comparison, prefix_proof = derive_actual_projection_v1(
