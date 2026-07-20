@@ -23,8 +23,9 @@ authoritative benchmark kernel and declared build coverage
 → answer a workload of QuerySpecs by abstract contingent planning
 → independently audit each complete plan's value and risk
 → reuse unchanged when certified
-→ otherwise expose the earliest policy-reachable atomic DirectBad proof frontier
-→ recover only the necessary ground distinctions, rebuild, or use charged fallback
+→ otherwise find the slack-aware causal family on the earliest DirectBad antichain
+→ compile a minimal finite-domain worker capability
+→ jointly search local value/risk choices, rebuild, or use charged fallback
 ```
 
 The root `DECISION_LEDGER.md` and the nine files in `specs/` are the published
@@ -49,6 +50,8 @@ acfqp-phase3b --output artifacts/phase3b
 python3 scripts/verify_phase3b.py artifacts/phase3b
 acfqp-phase3c --output artifacts/phase3c
 python3 scripts/verify_phase3c.py artifacts/phase3c
+acfqp-phase3d --phase3c-bundle artifacts/phase3c --output artifacts/phase3d
+python3 scripts/verify_phase3d.py artifacts/phase3d
 python3 third_party/laplace_smdp_940598d/experiments/run_gridworld_bellman_kron.py \
   --out-dir artifacts/legacy_gate_actual
 python3 scripts/check_legacy_gate.py --actual-dir artifacts/legacy_gate_actual
@@ -208,6 +211,77 @@ reusable abstract-primary world model. It does not claim predicate invention
 Phase 3/5, scale, learning, or cross-domain generality. Bundle SHA-256 manifests prove
 content integrity and replay binding, not public-key source authenticity.
 
+Ledger `V0-030` freezes the additive contract-`0.9.0` profile
+`phase3d_general_local_recovery_v0`. It closes the three limitations intentionally left
+by Phase 3C without changing that historical profile. Exact active Bellman derivations
+and certificate slack reduce the safe-chain authorization from `40/160` state-action/
+outcome records to `24/96`; only the eight-state common frontier cell is causal. A
+trusted compiler then reduces the four-node/twenty-realization selected-policy boundary
+to a worker capability with one frontier input, zero exits, one reward-min form, and
+one risk-max form. The source graph and the equivalence/minimality evidence remain on
+the trusted side.
+
+The isolated standard-library worker performs one cap-aware global enumeration of
+deterministic value/risk assignments instead of selecting minimum-risk actions state by
+state. It exhausts 257 safe-chain assignments and, after the operational sound
+post-audit, certifies reward `3/64` and risk upper bound `397/20000`. The separate
+standalone-verifier evaluation lane performs the exact hybrid lift and reproduces exact
+risk `317/16000`, with 8 patched and 12 retained abstract decisions. A separate
+two-cell/two-member control exhausts 25 assignments and reaches
+`(reward,risk)=(1,1/25)` under thresholds
+`(3/4,1/20)`, while the old independent minimum-risk rule has value zero. Passing
+returns `PHASE3D_GENERAL_LOCAL_RECOVERY_PASS`,
+`GENERAL_LOCAL_RECOVERY_GATE_PASS`, `PHASE3_AGGREGATE_NOT_RUN`, and
+`WORKLOAD_ECONOMICS_GATE_NOT_RUN`.
+
+This is a strong but finite claim: causal localization is limited to the current
+earliest antichain, capability minimality is relative to the fully enumerated finite
+port domain and sparse min/max-affine representation, and exact global search is
+complete only under its declared caps. It is not automatic predicate/quotient
+discovery, one-shot repair of dependent horizons, economics, scale, learning, or
+cross-domain empirical generality. The next construction stage is workload economics
+and dynamic routing; learned proposal/model synthesis follows only after that Gate.
+
+Ledger `V0-031` additionally freezes the operational boundary between those two
+profiles. Phase 3D must consume a complete, independently verified Phase 3C artifact
+bundle through `--phase3c-bundle`; it binds the serialized RAPM, `BuildEpoch`, and the
+local-query pre-certificate instead of calling the Phase 3C constructor. It also
+consumes the verified source locality and authorization documents: the current 16-pair
+causal frontier must be a strict subset of the source 32-pair frontier, while the
+current 8 reverse-dependency pairs must exactly equal the source 8. The frozen
+pre-certificate supplies the action-unrestricted reward upper bound, so operational
+pre/post audits never rebuild ground `U_all`.
+
+Binding may collect the complete 144-action namespace without evaluating a transition.
+That frozen binding-time catalogue then supplies causal scoring, ancestor legality, and
+capability costs; those stages make no new ground-action or ground-step calls before
+authorization. Transition closure, partition, quotient, and portable-RAPM construction
+also have exact zero counters, and `SuiteBuildCoverage.from_queries` is explicitly
+forbidden on this path. After certificate failure, materializing the authorized causal
+frontier performs exactly 16 ground steps; the patch-restricted sound post-audit performs
+exactly 8 more. Thus the operational total is 24 ground-step calls, with zero accounting
+steps and zero steps outside the authorized frontier or patched cells. The `24/96`
+pair/outcome figure is the authorized capability scope (16/64 frontier plus 8/32 frozen
+reverse dependency), not a claim that all 96 outcomes were re-executed.
+
+The operational post-certificate records reward lower bound `3/64`, failure upper bound
+`397/20000`, null exact-hybrid fields, and status
+`EVALUATION_ONLY_NOT_RUN_IN_OPERATIONAL_RUNNER`. Exact hybrid lifting is deliberately
+absent from the operational runner. The standalone independent verifier may perform that
+evaluation-only replay, yielding exact failure `317/16000`, 8 patched decisions and 12
+retained abstract decisions, and may invoke J0 after the operational artifacts are
+frozen.
+
+The Phase 3D bundle therefore embeds byte-identical
+`safe_chain/base_portable_rapm.json` and `safe_chain/base_build_epoch.json`, together
+with `safe_chain/source_phase3c_run.json`,
+`safe_chain/source_phase3c_manifest.json`, and
+`safe_chain/source_phase3c_local_pre_certificate.json`, plus
+`safe_chain/source_phase3c_locality.json` and
+`safe_chain/source_phase3c_authorization.json`. The standalone verifier still
+rebuilds authoritative semantics to detect coordinated forgery, but that work is an
+evaluation-only lane and is never counted as operational planning or recovery.
+
 ## Scope
 
 Phase 0.5 contains no neural encoder, learned model, MCTS, option, first-hit
@@ -235,4 +309,10 @@ cost equations, and the immediate portable Phase 3B campaign are frozen by `V0-0
 The first certificate-triggered local-recovery execution slice and its direct-frontier,
 isolation, immutable-base, overlay, replay, and narrow-claim rules are frozen by
 `V0-029`.
+The slack-aware causal family, sparse worker capability, and cap-aware joint value-risk
+recovery contract are frozen by `V0-030`; it resolves `V0-RISK-004..006` only within
+the registered finite Phase 3D scope.
+The verified frozen Phase 3C-to-3D consumption boundary, source provenance topology,
+zero-build counters, and evaluation-only verifier reconstruction are frozen by
+`V0-031`.
 The earlier profiles retain their original claims and are not retroactively relabelled.

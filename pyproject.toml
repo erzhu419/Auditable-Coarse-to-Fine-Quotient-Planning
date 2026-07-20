@@ -21,6 +21,7 @@ acfqp-aliased-cegar = "acfqp.aliased_safe_chain:main"
 acfqp-phase3a = "acfqp.phase3a:main"
 acfqp-phase3b = "acfqp.phase3b:main"
 acfqp-phase3c = "acfqp.phase3c:main"
+acfqp-phase3d = "acfqp.phase3d:main"
 acfqp-plan-portable = "acfqp.portable_planner:main"
 
 [tool.setuptools]

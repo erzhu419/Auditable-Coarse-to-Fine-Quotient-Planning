@@ -23,6 +23,9 @@
   executes one certificate-triggered strictly local overlay while preserving its base
   RAPM/BuildEpoch. Its pass opens only `LOCAL_HYBRID_GATE_PASS`, not aggregate Phase 3
   or workload economics.
+- **Phase 3D general local-recovery Gate:** the V0-030 finite, cap-aware positive
+  control that closes joint value/risk composition, slack-aware causal localization,
+  and sparse worker authority. Its pass is not aggregate Phase 3 or economics.
 
 ## Normative decisions
 
@@ -306,6 +309,66 @@ It proves certificate-triggered strictly local hybrid recovery for this positive
 control. It does not prove predicate invention, unknown quotient discovery, workload
 break-even, the full Phase 3/5 Gate, scale, learning, or generality.
 
+### Phase 3D general local-recovery gate
+
+Contract `0.9.0` registers `phase3d_general_local_recovery_v0`. It must begin by
+verifying and binding a frozen Phase 3C artifact bundle, including its locality and
+authorization documents as well as its run, manifest, RAPM, BuildEpoch, and local
+pre-certificate. Operational execution may not
+call the Phase 3C world constructor, `SuiteBuildCoverage.from_queries`/transition
+closure, any partition/quotient/RAPM builder, or the ground action-unrestricted upper
+routine; all such counters and all kernel steps before local authorization are zero.
+The binding pass freezes a complete catalogue of all 144 covered ground actions for
+causal analysis, legality, and capability costs without opening ground transitions. The
+source local pre-certificate supplies frozen `U_all`. Only after the full abstract-plan
+proof fails may the registered causal slice open ground dynamics; patched-cell
+evaluation is then permitted for the sound post-stitch certificate. The independent
+verifier may rebuild authoritative semantics only in the evaluation lane.
+
+Its safe-chain branch must select the singleton common-cell causal family from the
+earliest `DirectBad`
+antichain using exact active reward-min/risk-max derivations and certificate slack.
+Its 16 frontier pairs must be a strict subset of the source Phase 3C frontier's 32
+pairs, while its eight reverse selected-dependency pairs must equal the source eight
+exactly. The resulting `24/96` state-action/outcome figure is capability scope, not
+executed work: the runner materializes only the `16/64` worker slice.
+
+The trusted compiler must reduce the complete four-node/twenty-realization boundary to
+one frontier input, zero exits, one reward-min form, and one risk-max form, with exact
+equivalence and necessity witnesses over the fully enumerated finite admissible domain.
+The source boundary remains a trusted audit artifact; the isolated worker mounts only
+capability, request, and sparse slice. The worker must jointly enumerate deterministic
+value/risk assignments under explicit caps, exhaust every lower-cardinality subset,
+and return a distinct cap-exhausted status rather than certify an incomplete prefix.
+
+Safe-chain must exhaust 257 assignments and its operational sound post-audit must
+reproduce reward `3/64` and failure upper `397/20000`. Operational ground work is
+exactly 16 authorized-frontier materialization steps plus eight patched post-audit
+steps, 24 total, while accounting/other/outside-support steps and exact-hybrid-lift
+invocations are zero. The operational post-certificate's exact reward/failure fields
+are null with status `EVALUATION_ONLY_NOT_RUN_IN_OPERATIONAL_RUNNER`. The standalone
+verifier's evaluation-only authoritative rebuild/lift must then reproduce exact failure
+`317/16000`, eight patched decisions, twelve retained abstract decisions, and J0 truth.
+The RAPM/BuildEpoch remain byte-identical throughout. The algebraic
+two-cell/two-member control must exhaust 25 assignments, localize both cells, and reach
+`(1,1/25)` under thresholds `(3/4,1/20)`; its independent minimum-risk counterfactual
+has value zero.
+Passing returns exactly
+`PHASE3D_GENERAL_LOCAL_RECOVERY_PASS/GENERAL_LOCAL_RECOVERY_GATE_PASS/PHASE3_AGGREGATE_NOT_RUN/WORKLOAD_ECONOMICS_GATE_NOT_RUN`.
+
+The executable and independent replay are:
+
+```bash
+acfqp-phase3d --phase3c-bundle artifacts/phase3c --output artifacts/phase3d
+python3 scripts/verify_phase3d.py artifacts/phase3d
+```
+
+This Gate supports only the declared finite-domain, capped, earliest-antichain claim.
+Dependent-horizon one-shot recovery, information-theoretic capability minimality,
+automatic predicate/quotient discovery, economics, scale, learning, and cross-domain
+generality remain unproved. Workload economics/dynamic routing is next; learned model
+synthesis follows it.
+
 ### Frozen later Gates
 
 - **Phase 3 oracle quotient:** median compression at least `5x`, 95th-percentile normalized regret at most 1%, zero additional constraint violations, at least 80% tiny-instance pass rate.
@@ -491,10 +554,22 @@ run_phase3b_campaign(workload):
   overlay, mixed policy, immutable base and post-audit goldens; independent replay
   rejects coordinated re-hashing of route/witness/slice/patch/base/query/attestation/
   evaluation-order/certificate/counter forgeries.
+- Phase 3D tests first reject malformed Phase 3C source bundles and prove forbidden
+  constructors/builders/closure/ground-upper routines are never called, source RAPM/
+  epoch bytes and provenance links are preserved, source locality/authorization are
+  embedded, the complete 144-action binding catalogue is used, and all
+  binding/pre-authorization transition counters are zero. They then prove current
+  frontier `16` is a strict subset of source `32`, reverse support `8` equals source
+  `8`, and reproduce the `24/96` capability scope, `1/0/1+1` sparse capability, and
+  257/25 exact search counts. Access accounting must be exactly 16 materialization plus
+  eight patched sound-audit steps, with other/outside `step` calls zero and operational exact
+  fields null. Evaluation-only replay must recover `317/16000`, the `8/12` decision
+  split, and J0; forged active derivations, mounted source boundaries, capability
+  extras/deletions, local choices, caps, or counters fail.
 
 ## Out of scope
 
-Implementing Phase 1–7 in the Phase 0.5 milestone, claiming their Gates from smoke fixtures, crediting the supplied `D4` positive control with automatic quotient/predicate discovery, crediting the aliased profile with predicate invention or unknown-symmetry discovery, crediting the Phase 3A exact-model slice with a full Phase 3 pass or oracle-free unknown-quotient discovery, or crediting Phase 3B with a local-hybrid, break-even, or full Phase 3/5 result.
+Implementing Phase 1–7 in the Phase 0.5 milestone, claiming their Gates from smoke fixtures, crediting the supplied `D4` positive control with automatic quotient/predicate discovery, crediting the aliased profile with predicate invention or unknown-symmetry discovery, crediting the Phase 3A exact-model slice with a full Phase 3 pass or oracle-free unknown-quotient discovery, crediting Phase 3B with a local-hybrid result, or crediting Phase 3D with break-even or a full Phase 3/5 result.
 
 ## Known failure modes
 
@@ -518,8 +593,10 @@ predicate/quotient discovery, the human-grammar branch, larger seeds, and the co
 Phase 3 `60/20/40` aggregate remain unrun.
 
 V0-028 closes the no-Q/value-signature portable world-model campaign slice. V0-029
-closes one certificate-triggered strict local-ground-recovery positive control. Broader
-recovery, workload economics, larger workloads, and the full Phase 3/5 Gates remain
-explicitly unrun.
+closes the first certificate-triggered strict local-ground-recovery positive control.
+V0-030 resolves `V0-RISK-004..006` for current-earliest-antichain causal search,
+finite-domain sparse capability, and capped joint deterministic composition. Deeper
+recovery, workload economics/dynamic routing, larger workloads, and the full Phase 3/5
+Gates remain explicitly unrun.
 
 Later Gate denominators and statistical aggregation details also need a preregistered analysis plan before Phase 3 test evaluation; the threshold values above are already frozen.

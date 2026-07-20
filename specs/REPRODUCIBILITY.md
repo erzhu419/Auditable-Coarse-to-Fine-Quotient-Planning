@@ -183,6 +183,54 @@ reuses/falsifies runtime evidence, opens J0 early, embeds J0/fallback as local w
 forges the post-certificate, or changes a counter. `manifest.sha256` is reproducible
 content integrity, not a public-key authenticity or authorship claim.
 
+Contract `0.9.0` adds
+`acfqp-phase3d --phase3c-bundle artifacts/phase3c --output artifacts/phase3d` and independent
+`python3 scripts/verify_phase3d.py artifacts/phase3d`. A clean rerun reconstructs the
+failed selected-policy Bellman circuit, all tied active extrema, certificate deficits,
+and the complete capped causal search. It must select only the common safe-chain cell,
+with current frontier 16 a strict subset of the source Phase 3C frontier 32 and current
+reverse support eight exactly equal to the source eight. The resulting `24/96` is
+capability scope; the materialized worker slice is only `16/64`.
+
+The runner's clean rerun does **not** reconstruct the Phase 3C world model. It verifies
+the supplied Phase 3C bundle, binds the serialized RAPM/BuildEpoch and source local
+pre-certificate, embeds the source locality and authorization documents, and preserves
+the model documents byte for byte. Reproducible binding freezes a complete catalogue
+of all 144 covered ground actions, which supplies causal construction, legality, and
+capability costs without transition access. It has zero transition-closure,
+partition/quotient/RAPM-builder, binding/pre-authorization kernel-step, and operational
+unrestricted-upper calls;
+the source pre-certificate fixes `U_all`. Provenance is carried forward in the embedded
+source Phase 3C run, manifest, locality, authorization, and local pre-certificate plus
+`base_identity.json` hashes and counters.
+
+The trusted compiler rerun starts from the stored four-node/twenty-realization
+`source_boundary.json`, enumerates the complete admissible finite port domain, and
+reproduces one input, zero exits, one reward-min form, one risk-max form, every
+equivalence row, and every necessity witness. The source boundary and compilation
+evidence are reproducible trusted artifacts, but the isolated attestation records only
+three input regular files: capability, request, and sparse slice. Reproduction fails if
+artifact availability is confused with worker authority.
+
+Both exact local searches rerun in fresh isolated processes. Safe-chain consumes 257
+assignments and its operational sound post-audit returns `(3/64,397/20000)`. Ground
+access reconciles exactly 16 frontier-materialization steps plus eight patched
+post-audit steps, with accounting/other/outside-support `step` calls zero. The operational
+runner performs no exact hybrid lift, so its exact fields remain null under
+`EVALUATION_ONLY_NOT_RUN_IN_OPERATIONAL_RUNNER`. Only the standalone verifier's
+evaluation-only authoritative rebuild/lift returns exact failure `317/16000`, eight
+patched and twelve retained abstract decisions, and may evaluate J0. The
+two-cell/two-member control consumes 25 and returns `(1,1/25)`, while its recorded
+independent minimum-risk baseline has value zero. Search limits, consumed counters,
+subset records, Pareto points, overlay, unchanged base bytes/IDs, and final statuses are
+semantic hash inputs. Clean runs end with
+`PHASE3D_GENERAL_LOCAL_RECOVERY_PASS/GENERAL_LOCAL_RECOVERY_GATE_PASS/PHASE3_AGGREGATE_NOT_RUN/WORKLOAD_ECONOMICS_GATE_NOT_RUN`.
+
+The standalone verifier intentionally performs a fresh authoritative reconstruction
+and may evaluate ground/J0 truth to detect coordinated semantic forgery. That work is
+tagged evaluation-only; reproducibility reports must not merge it into the operational
+world-model, query, audit, repair, or fallback counters.
+
 ## Pseudocode / schema
 
 ```text
@@ -238,6 +286,19 @@ reproduce_phase3b(bundle_request):
     recompute portable/live-ground audits, serialized-kappa lift, and J0
     verify IDs, cross-links, exact certificate and route
   reconcile separated work counters, null scalar economics, and four final statuses
+
+reproduce_phase3d(bundle_request):
+  verify/embed source Phase 3C locality+authorization and bind RAPM/epoch/pre-certificate
+  freeze complete 144-action catalogue with zero builders/transitions before authorization
+  rebuild the failed proof circuit and all tied active derivations
+  exhaust capped slack-aware causal search on the current earliest antichain
+  prove frontier 16 is a strict subset of source 32 and reverse 8 equals source 8
+  recompile source boundary over the complete finite admissible domain
+  prove sparse capability equivalence and retained-object necessity
+  assert worker mounts exactly capability + request + sparse slice
+  rerun safe-chain and synthetic joint solvers; reconcile 257 and 25 assignments
+  sound-audit with 16 materialization + 8 patched steps; exact fields remain null
+  evaluation-only rebuild/lift verifies 317/16000, 8/12 decisions, J0, base, attacks, statuses
 ```
 
 ## Invariants
@@ -336,10 +397,20 @@ reproduce_phase3b(bundle_request):
   recomputes portable/live-ground audits,
   serialized-`kappa` lift and J0, validates all IDs/cross-links/counters, and can replay
   the isolated planner.
+- Two clean Phase 3D reruns have identical causal circuit/family, authorization,
+  embedded source locality/authorization, complete 144-action binding catalogue, sparse
+  capability/evidence, three-file runtime attestation, solver records, overlay,
+  certificates, attack matrix, counters, and semantic hashes. They reproduce the
+  strict `16<32` frontier and exact `8=8` reverse relations, separate `24/96` capability
+  scope from `16+8=24` operational steps, leave operational exact fields null, and
+  reproduce exact `317/16000` plus the `8/12` split only in verifier evaluation.
+- Permuting source rows or action construction order cannot change the canonical
+  Phase 3D output. Mutating slack, an active tie, a capability port/form, a worker
+  mount, a cap, or one consumed assignment makes independent replay fail.
 
 ## Out of scope
 
-Bit-identical wall time, reproducing third-party web availability, container publishing policy, deterministic GPU/neural execution, reproducibility of an unregistered/learned symmetry-discovery procedure, claiming that the deterministic aliased profile invented its preregistered feature, extrapolating Phase 3A reproducibility to oracle-free discovery/full Phase 3, or interpreting reproducible Phase 3B portability as local-hybrid, economics, or full-Gate evidence.
+Bit-identical wall time, reproducing third-party web availability, container publishing policy, deterministic GPU/neural execution, reproducibility of an unregistered/learned symmetry-discovery procedure, claiming that the deterministic aliased profile invented its preregistered feature, extrapolating Phase 3A reproducibility to oracle-free discovery/full Phase 3, interpreting reproducible Phase 3B portability as local hybrid, or interpreting reproducible Phase 3D finite enumeration as dependent-horizon completeness, economics, scale, or a full Gate.
 
 ## Known failure modes
 
@@ -347,4 +418,4 @@ Mutable dependency resolution, locale/timezone-dependent serialization, unordere
 
 ## Open risks
 
-Before performance Gates, freeze a reference hardware protocol and repetition/statistical summary policy. Before public release, add licensing checks for redistributed papers and repositories. V0-028 freezes the deterministic portable campaign and V0-029 freezes reproducibility for one local-hybrid positive control; workload economics, broader local repair, the full Phase 3/5 statistical aggregates, and larger or stochastic refinement studies still require separate preregistration.
+Before performance Gates, freeze a reference hardware protocol and repetition/statistical summary policy. Before public release, add licensing checks for redistributed papers and repositories. V0-028 freezes the portable campaign; V0-029 freezes the first hybrid; and V0-030 freezes earliest-antichain causal search, finite-domain sparse compilation, and capped joint solver replay. Workload economics/dynamic routing, dependent-horizon repair, full Phase 3/5 statistical aggregates, and larger or stochastic studies still require preregistration.

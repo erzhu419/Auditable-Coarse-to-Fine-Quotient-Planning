@@ -22,6 +22,16 @@ Phase 3C adds the direct-proof inventory, authorized-slice, isolated local-runti
 query-owned overlay, hybrid-stitch, and post-audit interfaces defined below. They do not
 turn the immutable RAPM into an online mutable model API.
 
+Phase 3D adds `CausalProofCircuit`, `SlackAwareCausalFamily`,
+`SparseCapabilityCompiler`, `SparseRobustAffineCapability`,
+`GeneralLocalRecoveryRequest`, `GeneralLocalSolver`, and
+`GeneralLocalRuntimeAttestation`, plus the restricted `PatchedAuditKernelView`. These
+are exact finite-domain, cap-aware interfaces;
+`FrozenPhase3CWorld` and `load_frozen_phase3c_world` form their operational source
+boundary. The loader verifies and binds a frozen Phase 3C artifact bundle without
+transition closure, kernel steps, or any partition/quotient/RAPM builder. These
+interfaces do not authorize learned predicates, mutable models, or an uncapped solver.
+
 ## Normative decisions
 
 `DomainProtocol` is the only domain-specific authority for physical state/action
@@ -328,6 +338,104 @@ stitch/audit, verifies base-byte invariance and exact counters, and rejects coor
 re-hashing attacks. Runtime/manifest hashes attest content integrity, not public-key
 identity.
 
+### Contract 0.9.0 general local-recovery interfaces
+
+Phase 3D is additive to the v1 Phase 3C slice and boundary schemas:
+
+```text
+load_frozen_phase3c_world(verified_phase3c_bundle)
+  -> FrozenPhase3CWorld(RAPM, BuildEpoch, source provenance,
+                       source_locality, source_authorization,
+                       local_pre_certificate, frozen_U_all,
+                       complete_binding_ground_action_catalogue,
+                       zero-build binding counters)
+
+causal_circuit_from_failed_proof(proof_graph)
+  -> CausalProofCircuit
+
+find_slack_aware_causal_family(circuit, obligations, evaluation_cap,
+                               recoverable_earliest_antichain)
+  -> SlackAwareCausalFamily
+
+compile_sparse_recovery_inputs(source_boundary, authorized_v1_slice,
+                               target_frontier, admissible_domain, compiler_caps)
+  -> {SparseFrontierGroundSlice,
+      SparseRobustAffineCapability,
+      TrustedCompilationEvidence}
+
+GeneralLocalRuntime.solve(capability_path, slice_path, request_path)
+  -> GeneralLocalSolverResult + GeneralLocalRuntimeAttestation
+
+HybridPolicyStitcher.stitch(base_policy, result.overlay)
+  -> HybridPolicyGraph
+PatchedAuditKernelView(base_kernel, exact_overlay_pairs)
+  -> patch_step_restricted_kernel_view
+HybridSoundAuditor.audit(base_envelope, patch_step_restricted_kernel_view,
+                         overlay, hybrid_policy, query, frozen_U_all)
+  -> PostRecoveryCertificate
+
+IndependentPhase3DVerifier.reconstruct_and_exact_lift(bundle)
+  -> EvaluationOnlyExactHybridResult + J0Comparison
+```
+
+The public Phase 3D runner accepts the source through `--phase3c-bundle`; passing an
+in-memory rebuilt `Phase3CWorld` is an invariant violation. The loader's finite
+structural-ID scan can bind serialized state/action IDs, but it cannot call
+`construct_phase3c_world`, `SuiteBuildCoverage.from_queries`/transition closure, a
+partition/quotient/RAPM builder, or `kernel.step`. Abstract and hybrid auditors receive
+the source pre-certificate's frozen
+action-unrestricted reward upper bound, so the operational runner does not invoke a
+ground `U_all` routine. The loader also preserves the Phase 3C locality and
+authorization documents and constructs a complete 144-action binding-time catalogue.
+Causal selection, ancestor legality, and capability-cost lookups use that frozen
+catalogue; they cannot trigger pre-authorization ground calls. Only certificate failure
+creates an authorized slice. The operational post-auditor receives
+`PatchedAuditKernelView`, which permits transition steps only for exact overlay pairs;
+unpatched decisions stay in the RAPM envelope. Verifier reconstruction and exact lift
+use a private evaluation-only context and are not operational interfaces.
+
+`SlackAwareCausalFamily` records baseline root values/deficits, tied active
+realizations, every evaluated discharge set, selected earliest-antichain family,
+evaluation cap/count, completeness, and one of `CERTIFICATE_ALREADY_PASSES`,
+`CAUSAL_FAMILY_FOUND`, `NO_CAUSAL_COVER`, or `SEARCH_CAP_REACHED`. A cap hit does not
+widen authority automatically.
+
+The trusted compiler may read the complete Phase 3C source boundary and authorized
+slice. It emits an exact-field-allowlisted worker capability and keeps graph rows,
+identities, domain equivalence tables, and necessity witnesses in trusted evidence.
+For safe-chain it compiles four nodes/twenty realization rows to one input, zero exits,
+one reward-min form, and one risk-max form. Although the source boundary is stored in
+the bundle, the runtime attestation permits only three read-only input files:
+capability, sparse slice, and occurrence request. Artifact presence never implies
+worker access.
+
+`GeneralLocalSolver` accepts only deterministic finite-horizon Markov assignments. It
+enumerates every authorized member-action Cartesian product for each localized-cell
+subset, evaluates sparse root forms, and Pareto-prunes complete root points. Selection
+is minimum localized-cell cardinality, maximum root reward lower, minimum root failure
+upper, then canonical signatures. Limits cover subset evaluations, policy assignments,
+frontier points, dominance comparisons, affine terms, and rational bits. Results are
+`LOCAL_RECOVERY_CERTIFIED`, `LOCAL_RECOVERY_AUTHORIZED_EXHAUSTED`, or
+`LOCAL_RECOVERY_SEARCH_CAP_EXHAUSTED` with exact counters.
+
+The registered safe-chain call exhausts 257 assignments. Its `24/96` figure is the
+authorized capability scope, not performed transition work. Trusted materialization
+steps 16 frontier pairs and observes 64 positive-probability outcomes; the restricted
+sound post-audit steps eight overlay pairs, for exactly 24 operational ground steps,
+with zero accounting/out-of-scope steps. It patches eight decisions and yields reward
+lower `3/64`, sound failure upper `397/20000`, and regret upper zero. The operational
+post-certificate sets exact-hybrid reward/failure to `null` with status
+`EVALUATION_ONLY_NOT_RUN_IN_OPERATIONAL_RUNNER`; the runner is forbidden to exact-lift.
+The standalone verifier performs that reconstruction/lift only in its evaluation lane,
+obtains exact failure `317/16000` with eight patched and twelve abstract decisions, and
+then compares with J0. The synthetic call exhausts 25 and yields `1,1/25`. The profile
+and independent interface replay are:
+
+```bash
+acfqp-phase3d --phase3c-bundle artifacts/phase3c --output artifacts/phase3d
+python3 scripts/verify_phase3d.py artifacts/phase3d
+```
+
 ## Pseudocode / schema
 
 ```text
@@ -586,10 +694,22 @@ cell key; it never loses which transformed endpoint is the survivor.
   envelope and live exact
   ground audits, lifts with serialized `kappa`, runs J0, checks IDs/cross-links/counters,
   and can replay the isolated planner.
+- Phase 3D interface tests forbid the Phase 3C constructor,
+  `SuiteBuildCoverage.from_queries`/transition closure,
+  partition/quotient/RAPM builders, `kernel.step` during binding/pre-authorization, and
+  operational unrestricted-upper recomputation; they preserve embedded source model,
+  epoch, run, manifest, locality, authorization, and pre-certificate bytes/provenance.
+  They require the complete 144-action binding catalogue to serve causal/ancestor
+  lookups, and reconcile operational ground access as `16+8=24` step calls with 64
+  recorded materialization outcomes, zero accounting/out-of-scope steps, and zero
+  operational exact lifts. Evaluation-side tests then recompute all active ties/slack,
+  reject a causal search cap as noncertified, prove sparse extensional equivalence/
+  minimality over the finite domain, enforce the three-file mount allowlist, reproduce
+  257/25 assignments, and exact-lift `8+12` decisions to failure `317/16000` before J0.
 
 ## Out of scope
 
-Network services, mutable online model updates, learned adapters, asynchronous planners, plugin-specific APIs, unstable language-object serialization as an artifact format, discovery of an unknown symmetry group from data, an API that relabels Phase 3A exact-model construction as oracle-free unknown-quotient discovery, and treating the Phase 3B exact behavioural builder as learned predicate invention, an implemented local hybrid, or a workload-economics/full-Gate result.
+Network services, mutable online model updates, learned adapters, asynchronous planners, plugin-specific APIs, unstable language-object serialization as an artifact format, discovery of an unknown symmetry group from data, an API that relabels Phase 3A exact-model construction as oracle-free unknown-quotient discovery, treating the Phase 3B exact behavioural builder as learned predicate invention or an implemented local hybrid, or treating the Phase 3D finite solver as dependent-horizon complete, workload-economic, learned, or a full Gate.
 
 ## Known failure modes
 
@@ -597,4 +717,4 @@ Noncanonical state keys, uncoalesced duplicate successors, accidental float coer
 
 ## Open risks
 
-The exact in-memory frontier/envelope representation may need optimization after Phase 0.5; any replacement must preserve these external records and proof dependencies. Phase 3A proves the exact-model/oracle cross-automorphism control. Phase 3B freezes a no-Q/value-signature portable planning interface, and Phase 3C freezes one isolated local-repair interface; human predicate reconstruction, broader local recovery, workload economics, and full Phase 3/5 runners remain open.
+The exact in-memory frontier/envelope representation may need optimization after Phase 0.5; any replacement must preserve these external records and proof dependencies. Phase 3A proves the exact-model/oracle cross-automorphism control; Phase 3B freezes portable planning; Phase 3C freezes the first isolated repair; and Phase 3D freezes slack-aware causal, sparse capability, and joint capped solver interfaces. Human predicate reconstruction, dependent-horizon recovery, workload economics/dynamic routing, and full Phase 3/5 runners remain open.

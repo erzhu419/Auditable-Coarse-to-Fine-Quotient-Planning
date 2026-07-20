@@ -162,11 +162,13 @@ suite registry plus per-domain coverage/RAPM and per-row query IDs. The
 execution profile is one of `phase05_vertical_slice`, `production_query`,
 `exact_d4_quotient_baseline`, `aliased_cegar_positive_control`,
 `phase3a_true_state_alias_oracle_control`, `phase3b_portable_rapm_campaign`, or
-`phase3c_certificate_triggered_local_recovery`.
+`phase3c_certificate_triggered_local_recovery`, or
+`phase3d_general_local_recovery`.
 Aliased bundles use `contract_version=0.5.0`; Phase 3A bundles use
 `contract_version=0.6.0`; Phase 3B bundles use `contract_version=0.7.0`; Phase 3C
-bundles use `contract_version=0.8.0`. An older contract version cannot opt into a newer
-execution profile, result eligibility, or artifact schema.
+bundles use `contract_version=0.8.0`; Phase 3D bundles use
+`contract_version=0.9.0`. An older contract version cannot opt into a newer execution
+profile, result eligibility, or artifact schema.
 
 Every Phase 0.5/production per-query coverage-limited build records `build_coverage` in
 `run.json` with exactly:
@@ -463,6 +465,108 @@ base/query/coverage, no retained abstract decision, fake/reused runtime evidence
 J0, hidden fallback/rebuild, forged post-audit, or counters. Manifest SHA-256 is an
 integrity/checksum mechanism, not public-key authenticity.
 
+Contract `0.9.0` adds profile `phase3d_general_local_recovery_v0`. Its canonical
+semantic bundle contains:
+
+```text
+run.json
+contract/profile.json
+safe_chain/base_identity.json
+safe_chain/base_portable_rapm.json
+safe_chain/base_build_epoch.json
+safe_chain/source_phase3c_run.json
+safe_chain/source_phase3c_manifest.json
+safe_chain/source_phase3c_locality.json
+safe_chain/source_phase3c_authorization.json
+safe_chain/source_phase3c_local_pre_certificate.json
+safe_chain/pre_certificate.json
+safe_chain/causal_circuit.json
+safe_chain/causal_search.json
+safe_chain/authorization.json
+safe_chain/ground_slice.json
+safe_chain/source_boundary.json
+safe_chain/capability.json
+safe_chain/capability_evidence.json
+safe_chain/request.json
+safe_chain/runtime_attestation.json
+safe_chain/result.json
+safe_chain/overlay.json
+safe_chain/post_certificate.json
+safe_chain/locality.json
+synthetic/tradeoff_problem.json
+synthetic/capability.json
+synthetic/ground_slice.json
+synthetic/request.json
+synthetic/result.json
+synthetic/legacy_greedy.json
+attacks/regressions.json
+accounting/work_counters.json
+result/phase3d_report.json
+metrics.json
+events.jsonl
+manifest.json
+manifest.sha256
+```
+
+`causal_search.json` records the failed obligations, exact baseline slack/deficits, all
+tied active derivations, every capped ambiguity-discharge evaluation, minimal causal
+family, and cap status. Its safe-chain family contains one common-cell node; locality
+records `24/96` total authorized state-action/outcome records as the capability scope,
+not as performed transition work. The trusted frontier materialization actually steps
+`16` authorized pairs and records their `64` positive-probability outcomes.
+`source_boundary.json` preserves the four-node/twenty-realization trusted audit source.
+`capability.json` carries only one frontier input, zero exits, one reward-min form, and
+one risk-max form; `capability_evidence.json` records finite-domain equivalence and a
+necessity witness for every retained port/form.
+
+The seven frozen source documents before `pre_certificate.json` make Phase 3D an
+artifact consumer rather than an implicit rebuild. `base_portable_rapm.json` and
+`base_build_epoch.json` are byte-identical copies of the verified Phase 3C source;
+`source_phase3c_run.json`, `source_phase3c_manifest.json`,
+`source_phase3c_locality.json`, `source_phase3c_authorization.json`, and
+`source_phase3c_local_pre_certificate.json` preserve its run identity, manifest links,
+ground-locality counts, exact authorization identity, and the content-addressed
+action-unrestricted reward upper bound. `base_identity.json` binds the model/epoch and
+source run/manifest/locality/authorization identities and SHA-256 values; the source
+manifest transitively binds the local pre-certificate. It records zero transition-
+closure, partition, quotient, RAPM-builder, and pre-authorization ground-step work.
+Binding may enumerate the complete registered 144-action catalogue without stepping
+it; subsequent causal/ancestor legality and capability-cost checks consume that frozen
+catalogue rather than making fresh ground calls before authorization.
+
+Artifact availability and worker authority are distinct. The trusted bundle stores
+`source_boundary.json` and compiler evidence so an independent verifier can audit
+elimination, but `runtime_attestation.json` must bind exactly the three mounted worker
+inputs `capability.json`, `request.json`, and `ground_slice.json`. Mounting the source
+boundary, causal search, compiler evidence, RAPM, J0, ground kernel, or accounting is a
+hard isolation failure.
+
+The safe-chain `result.json` records exact cap/counter reconciliation and all 257
+policy assignments; the synthetic result records 25. Their accepted points and goldens
+are respectively `(3/64,397/20000)` and `(1,1/25)`. The synthetic legacy artifact
+binds the value-zero independent minimum-risk counterfactual. The final status tuple is
+`PHASE3D_GENERAL_LOCAL_RECOVERY_PASS`, `GENERAL_LOCAL_RECOVERY_GATE_PASS`,
+`PHASE3_AGGREGATE_NOT_RUN`, and `WORKLOAD_ECONOMICS_GATE_NOT_RUN`.
+
+The operational `post_certificate.json` is a sound mixed-model certificate produced
+through `PatchedAuditKernelView`: it may step exactly the eight overlay pairs, while
+every unpatched decision remains in the serialized abstract envelope. It records
+reward lower `3/64`, failure upper `397/20000`, regret upper zero, and
+`exact_hybrid_evaluation_status=EVALUATION_ONLY_NOT_RUN_IN_OPERATIONAL_RUNNER`; its
+exact-hybrid reward/failure fields and abstract-decision count are `null`. Together with
+the 16 frontier-materialization steps, this is exactly 24 operational ground-step calls;
+accounting performs no additional steps and zero steps occur outside the authorized
+frontier or overlay. The standalone verifier may reconstruct and exact-lift only in its
+evaluation lane; there it obtains exact failure `317/16000` from eight patched and
+twelve retained abstract decisions before opening J0.
+
+Generation and independent semantic replay use:
+
+```bash
+acfqp-phase3d --phase3c-bundle artifacts/phase3c --output artifacts/phase3d
+python3 scripts/verify_phase3d.py artifacts/phase3d
+```
+
 JSON exact numbers are encoded as `{ "numerator": int, "denominator": positive_int }`; derived decimal displays are nonauthoritative. Opaque pickle/native-object dumps are never the sole source artifact.
 
 ## Pseudocode / schema
@@ -580,6 +684,40 @@ Phase 3C local recovery:
   post_recovery_certificate_id, evaluation_only_j0_id
   status=PHASE3C_LOCAL_RECOVERY_PASS or PHASE3C_INVARIANT_VIOLATION
   local_hybrid_gate_status=LOCAL_HYBRID_GATE_PASS
+  full_phase3_gate_status=PHASE3_AGGREGATE_NOT_RUN
+  workload_economics_gate_status=WORKLOAD_ECONOMICS_GATE_NOT_RUN
+
+Phase 3D general local recovery:
+  profile_key=phase3d_general_local_recovery_v0
+  source_run_id, source_semantic_hash, source_manifest_sha256
+  source_locality_sha256, source_authorization_sha256
+  byte_identical_base_portable_rapm=true, byte_identical_base_build_epoch=true
+  frozen_unrestricted_reward_upper=3/64
+  operational_world_constructor_forbidden=true
+  binding.transition_closure_calls=0, binding.partition_builder_calls=0
+  binding.quotient_builder_calls=0, binding.portable_rapm_builder_calls=0
+  binding.kernel_step_calls=0, operational_ground_steps_before_local_authorization=0
+  binding.ground_action_candidates_scanned=144 (complete binding catalogue)
+  causal_family_nodes=1, capability_scope_pairs=24, capability_scope_outcomes=96
+  worker_slice_pairs=16, worker_slice_outcomes=64
+  frontier_materialization_step_calls=16
+  frontier_materialization_positive_outcomes=64
+  patched_sound_post_audit_step_calls=8, operational_total_ground_step_calls=24
+  accounting_ground_step_calls=0, outside_authorized_or_patched_step_calls=0
+  source_boundary_nodes=4, source_boundary_realizations=20
+  capability_inputs=1, capability_exits=0
+  reward_min_forms=1, risk_max_forms=1
+  worker_mounts=(capability, request, sparse_slice)
+  safe_chain_policy_assignments=257, synthetic_policy_assignments=25
+  safe_chain_root=(3/64,397/20000), synthetic_root=(1,1/25)
+  operational_exact_hybrid_replay=forbidden
+  post_certificate.exact_hybrid_evaluation_status=EVALUATION_ONLY_NOT_RUN_IN_OPERATIONAL_RUNNER
+  post_certificate.exact_hybrid_reward=null
+  post_certificate.exact_hybrid_failure=null
+  verifier_evaluation_only_exact_hybrid_failure=317/16000
+  verifier_evaluation_only_decisions=(patched=8,abstract=12), then J0
+  status=PHASE3D_GENERAL_LOCAL_RECOVERY_PASS or PHASE3D_INVARIANT_VIOLATION
+  general_local_recovery_gate_status=GENERAL_LOCAL_RECOVERY_GATE_PASS
   full_phase3_gate_status=PHASE3_AGGREGATE_NOT_RUN
   workload_economics_gate_status=WORKLOAD_ECONOMICS_GATE_NOT_RUN
 
@@ -741,10 +879,27 @@ The manifest hashes every other file, then a detached `manifest.sha256` hashes c
   policy and post-certificate before J0. It rejects semantic forgery even when every
   modified file and manifest digest is self-consistent, and requires byte-identical base
   RAPM/epoch, zero fallback/rebuild, `grammar_used=false`, and the four frozen statuses.
+- A Phase 3D loader test rejects an incomplete, noncanonical, or semantically invalid
+  Phase 3C source bundle; forbids the Phase 3C constructor,
+  `SuiteBuildCoverage.from_queries`/transition closure, and all
+  partition/quotient/RAPM builders; and proves byte-identical source embedding plus
+  both source locality/authorization documents and zero binding transitions. The
+  complete 144-action binding catalogue must supply all pre-authorization causal and
+  ancestor legality/cost lookups. Operational replay must reconcile 16 frontier
+  materialization steps/64 positive outcomes plus eight patch-only sound-audit steps to
+  24 total, with zero accounting or out-of-scope steps and no exact hybrid lift. A
+  Phase 3D verifier reconstructs the authoritative model only in its evaluation lane,
+  reconstructs the causal circuit/search, recompiles the sparse capability from the
+  trusted source, confirms the exact finite-domain equivalence and necessity witnesses,
+  reruns both isolated searches, and reproduces the `24/96` capability scope,
+  `1/0/1+1`, and `257/25`. Its evaluation-only exact lift must reproduce failure
+  `317/16000`, eight patched plus twelve abstract decisions, and only then J0. It rejects
+  a source-boundary worker mount and coordinated causal/capability/result/cap/counter
+  forgery even if manifests are regenerated.
 
 ## Out of scope
 
-Long-term object-store layout, public data-release licensing policy, binary performance traces as normative evidence, statistical confidence-set schemas, artifacts claiming an automatically discovered group from the supplied `D4` profile, aliased artifacts claiming that their preregistered geometry atom was invented automatically, Phase 3A artifacts claiming oracle-free discovery or a full Phase 3 Gate, Phase 3B artifacts claiming learned/predicate discovery, an executed local hybrid, workload break-even, or full Phase 3/5 Gates, and Phase 3C artifacts claiming predicate invention, unknown-quotient discovery, economics, scale, learning, generality, or public-key authenticity.
+Long-term object-store layout, public data-release licensing policy, binary performance traces as normative evidence, statistical confidence-set schemas, artifacts claiming an automatically discovered group from the supplied `D4` profile, aliased artifacts claiming that their preregistered geometry atom was invented automatically, Phase 3A artifacts claiming oracle-free discovery or a full Phase 3 Gate, Phase 3B artifacts claiming learned/predicate discovery or an executed local hybrid, Phase 3C artifacts claiming predicate invention or unknown-quotient discovery, and Phase 3D artifacts claiming one-shot dependent-horizon repair, information-theoretic minimality, economics, scale, learning, generality, full Phase 3/5, or public-key authenticity.
 
 ## Known failure modes
 
@@ -752,4 +907,4 @@ Self-referential manifests, partially written bundles, absolute host paths, nonc
 
 ## Open risks
 
-Large exact state/transition artifacts may require deterministic chunking or compression after Phase 0.5; logical hashes and schema semantics must remain stable. V0-027 freezes the Phase 3A construction-slice topology. V0-028 adds a portable world-model/fresh-process campaign topology. V0-029 freezes the first local-hybrid trace topology; workload-economics evidence and the statistical full-Phase-3/5 artifact layouts remain later work.
+Large exact state/transition artifacts may require deterministic chunking or compression after Phase 0.5; logical hashes and schema semantics must remain stable. V0-027 freezes the Phase 3A construction-slice topology; V0-028 adds a portable world-model/fresh-process campaign topology; V0-029 freezes the first local-hybrid trace; and V0-030 freezes the causal-search/sparse-capability/joint-search topology. Workload-economics/dynamic-routing evidence and statistical full-Phase-3/5 layouts remain later work.

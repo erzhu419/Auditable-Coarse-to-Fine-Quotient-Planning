@@ -332,6 +332,115 @@ The local overlay-selection transaction does not call a predicate grammar and re
 `grammar_used=false`; reproducing the immutable eleven-cell base retains its separately
 charged V0-026 first-revision provenance.
 
+### Contract 0.9.0 causal family, sparse capability, and joint search
+
+Phase 3D receives a verified frozen source object
+
+```text
+S_3C = (RAPM_bytes, BuildEpoch_bytes, source_run, source_manifest,
+        source_locality, source_authorization, local_pre_certificate),
+```
+
+where the last component fixes the action-unrestricted reward upper bound `U_all` for
+the registered local query. The operational binder may enumerate the registered finite
+structural ID namespace, but performs no transition closure, kernel step, partition/
+quotient construction, portable-RAPM build, or recomputation of `U_all`. It reconstructs
+an in-memory view whose nominal/envelope/concretizer authority is exactly the serialized
+RAPM. Thus the Phase 3D pre-audit computes the selected-policy quantities against a
+frozen `U_all`; it does not solve the unrestricted ground problem again.
+
+The same binding pass captures the complete registered ground-action catalogue
+
+```text
+A_bind = {(x,a) : x is one of the 192 covered states and a in A(x)},
+|A_bind| = 144,
+```
+
+without evaluating a transition. Source locality/authorization fix the authorized
+identities and counts. Causal/ancestor legality and capability-cost providers are
+projections of `A_bind`; no pre-authorization ground query may replace them.
+
+If that full-plan proof certifies, no ground recovery object exists. If it fails, the
+only operational ground object exposed is the occurrence-bound causally authorized
+slice described below. The stitched-plan post-audit receives `PatchedAuditKernelView`
+and may evaluate transitions only for exact overlay pairs; unpatched decisions retain
+their serialized envelope semantics. An independent verifier's complete authoritative
+rebuild, exact hybrid lift, and J0 comparison are separate evaluation objects, not
+members of the operational planning computation.
+
+A `CausalProofCircuit` is the finite acyclic selected-policy Bellman circuit with exact
+rational realizations. For reward lower bounds each node is a minimum gate; for failure
+upper bounds it is a maximum gate. Evaluation retains the full tied argmin/argmax set.
+For obligation `o=(channel,threshold)`, exact slack/deficit is
+
+```text
+d_reward = max(0, threshold - L_root)
+d_failure = max(0, U_root - threshold).
+```
+
+Discharging a recoverable ambiguity switches its failed-channel pessimistic gate to
+the corresponding optimistic gate. A slack-aware causal family is the complete
+inclusion-minimal family of discharge sets, searched under a declared cap, that closes
+all failed root obligations while following active derivations. One Phase 3D
+transaction may discharge only members of the current earliest `DirectBad` antichain.
+The counterfactual is an authorization proof, not the final policy certificate.
+
+A `SparseRobustAffineCapability` contains frontier input ports `p`, optional scalar
+abstract exits, and sparse forms:
+
+```text
+L_root(v) = min_f [b_f + sum_p alpha[f,p] * L_p]
+U_root(v) = max_g [c_g + sum_p beta[g,p] * U_p],
+```
+
+with nonnegative exact coefficients. Every unlocalized input uses its certified
+abstract default pair. Compilation must be extensionally equal to the trusted source
+boundary on the complete finite admissible port domain. Minimality is the canonical
+minimum number of retained ports/forms in this frozen sparse min/max-affine
+representation over that domain, with a necessity witness for every retained object;
+it is not an information-theoretic minimum.
+
+For a localized cell `z` and deterministic member-action assignment `a_x`, its robust
+pair is
+
+```text
+L_z = min_{x in C_z} L(x,a_x)
+U_z = max_{x in C_z} U(x,a_x).
+```
+
+The global solver enumerates the Cartesian product across every localized cell/member,
+evaluates the sparse root capability, and Pareto-prunes only complete root points. It
+orders results by minimum localized-cell cardinality, maximum root reward lower bound,
+minimum root failure upper bound, then canonical subset/policy signature. It exhausts
+all lower cardinalities and all subsets at the selected cardinality. Every subset,
+assignment, frontier, dominance, affine-term, and rational-size enumeration is capped;
+cap exhaustion is not certification.
+
+Safe-chain instantiates `4/20 -> 1 input, 0 exits, 1 reward-min + 1 risk-max form`,
+exhausts 257 assignments, and reduces authorization `40/160 -> 24/96`. The latter is
+the authorized capability scope, not performed transition work. Trusted frontier
+materialization executes 16 steps/64 positive-probability outcomes; restricted sound
+post-audit executes eight more overlay-pair steps, for 24 operational ground steps in
+total and zero accounting or out-of-scope steps. Its operational certificate is
+
+```text
+L_R = 3/64
+U_F = 397/20000
+U_regret = 0
+exact_hybrid_status = EVALUATION_ONLY_NOT_RUN_IN_OPERATIONAL_RUNNER
+exact_hybrid_reward = exact_hybrid_failure = null.
+```
+
+Only the standalone verifier's evaluation lane reconstructs and exact-lifts the policy:
+it obtains `P_exact_hybrid(F)=317/16000` with eight patched and twelve abstract
+decisions, then compares with J0. The algebraic control exhausts 25 assignments. The
+profile is executable and replayed with:
+
+```bash
+acfqp-phase3d --phase3c-bundle artifacts/phase3c --output artifacts/phase3d
+python3 scripts/verify_phase3d.py artifacts/phase3d
+```
+
 ## Pseudocode / schema
 
 ```text
@@ -540,6 +649,21 @@ audit(pi, q):
   authoritative G2048/LMB normalizer-rule registries, reprojects all queries, recomputes portable-envelope and live ground audits, lifts
   through serialized `kappa`, runs J0, validates all content IDs/cross-links/counters,
   and can replay each isolated planner occurrence.
+- Phase 3D active derivations include all tied extrema; the causal family is searched
+  only on the current earliest antichain and cannot be treated as the post-certificate.
+- The frozen Phase 3C source object includes locality and authorization, and its
+  complete 144-action binding catalogue supplies every causal/ancestor legality and
+  capability-cost lookup without a pre-authorization transition call.
+- Sparse capability evaluation is extensionally equal to its trusted boundary on every
+  admissible finite-domain assignment; the worker authority is exactly capability,
+  request, and sparse slice, regardless of other trusted artifacts in the bundle.
+- A certified general-local result exhausts all lower cardinalities and all subsets at
+  its selected cardinality without hitting any declared cap.
+- Operational safe-chain work is 16 frontier-materialization steps/64 recorded positive
+  outcomes plus eight `PatchedAuditKernelView` steps, with zero accounting/out-of-scope
+  steps. The resulting sound certificate is `(3/64,397/20000,0)` and has null exact-
+  hybrid fields; only the standalone evaluation lane exact-lifts `8+12` decisions to
+  failure `317/16000` before J0.
 
 ## Out of scope
 
@@ -549,6 +673,9 @@ macro-actions, robust first-hit reduction, and interpreting exact-model behaviou
 ground-oracle signatures as oracle-free discovery of an unknown quotient. Phase 3B
 also excludes learned world models, automatic predicate invention, an executed local-
 hybrid method, break-even evidence, and full Phase 3/5 Gate claims.
+Phase 3D additionally excludes one-shot causally dependent multi-horizon recovery,
+information-theoretic capability minimality, uncapped polynomial-time search,
+workload economics, and learned model synthesis.
 
 ## Known failure modes
 
@@ -556,4 +683,4 @@ Loose cellwise suprema can make `U_all` conservative; a valid policy may fail ce
 
 ## Open risks
 
-Tighter coupled envelope representations may improve coverage later, but must preserve containment and the unrestricted-action regret theorem. V0-027 proves an exact-model/oracle cross-automorphism construction slice. V0-028 removes Q/value signatures from the portable campaign builder, and V0-029 executes one strict local-repair overlay; automatic predicate invention, broader recovery, workload economics, and the statistical Phase 3/Phase 5 aggregates remain open.
+Tighter coupled envelope representations may improve coverage later, but must preserve containment and the unrestricted-action regret theorem. V0-027 proves an exact-model/oracle cross-automorphism construction slice; V0-028 removes Q/value signatures from the portable campaign builder; V0-029 executes the first strict overlay; and V0-030 resolves finite joint composition, slack-aware causality, and sparse authority. Automatic predicate invention, dependent-horizon recovery, workload economics/dynamic routing, and statistical Phase 3/Phase 5 aggregates remain open.

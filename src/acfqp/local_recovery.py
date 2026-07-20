@@ -572,13 +572,22 @@ class LocalRecoveryAuthorization:
         graph: FailedProofGraph | None = None,
         *,
         include_strict_ancestors: bool = True,
+        ground_action_provider: Callable[[Hashable], Iterable[Hashable]] | None = None,
     ) -> "LocalRecoveryAuthorization":
+        def registered_actions(state: Hashable) -> tuple[Hashable, ...]:
+            raw = (
+                ground_action_provider(state)
+                if ground_action_provider is not None
+                else kernel.actions(state)
+            )
+            return tuple(raw)
+
         frontier_pairs: list[tuple[Hashable, Hashable]] = []
         for node in frontier.nodes:
             for state in envelope.partition.members(node.cell):
                 if not kernel.is_terminal(state):
                     frontier_pairs.extend(
-                        (state, action) for action in kernel.actions(state)
+                        (state, action) for action in registered_actions(state)
                     )
         reverse_pairs: list[tuple[Hashable, Hashable]] = []
         if include_strict_ancestors and graph is not None:
@@ -621,7 +630,7 @@ class LocalRecoveryAuthorization:
                             raise ValueError(
                                 "ancestor selected-action concretizer is not normalized"
                             )
-                        legal = set(kernel.actions(state))
+                        legal = set(registered_actions(state))
                         support = {
                             action for _, action in raw_support if action in legal
                         }
@@ -716,6 +725,69 @@ class AuthorizedKernelView:
         return bool(self._kernel.is_terminal(state))
 
 
+class PatchedAuditKernelView:
+    """Allow transition access only for the frozen overlay decisions.
+
+    The sound hybrid auditor may inspect terminal status throughout the frozen
+    partition and may enumerate actions at patched states, but it can step
+    only the exact occurrence-bound patch pairs.  Unpatched behaviour must
+    continue through the RAPM envelope.
+    """
+
+    def __init__(
+        self,
+        kernel: Any,
+        allowed_state_actions: Iterable[tuple[Hashable, Hashable]],
+    ) -> None:
+        self._kernel = kernel
+        self._allowed = frozenset(allowed_state_actions)
+        self._states = frozenset(state for state, _action in self._allowed)
+        self._log: list[KernelAccessRecord] = []
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._kernel, name)
+
+    @property
+    def horizon(self) -> int:
+        return int(self._kernel.horizon)
+
+    @property
+    def access_log(self) -> tuple[KernelAccessRecord, ...]:
+        return tuple(self._log)
+
+    def _record(
+        self, state: Hashable, action: Hashable | None = None
+    ) -> None:
+        self._log.append(
+            KernelAccessRecord(
+                sequence=len(self._log),
+                operation="step" if action is not None else "actions",
+                state_id=_state_id(state),
+                action_id=_action_id(action) if action is not None else None,
+            )
+        )
+
+    def actions(self, state: Hashable) -> tuple[Hashable, ...]:
+        if state not in self._states:
+            raise UnauthorizedLocalRecoveryAccess(
+                f"post-audit actions requested outside patched state {_state_id(state)}"
+            )
+        self._record(state)
+        return tuple(self._kernel.actions(state))
+
+    def step(self, state: Hashable, action: Hashable) -> tuple[Any, ...]:
+        if (state, action) not in self._allowed:
+            raise UnauthorizedLocalRecoveryAccess(
+                "post-audit step requested outside patched pair "
+                f"{_state_id(state)}/{_action_id(action)}"
+            )
+        self._record(state, action)
+        return iter_outcomes(self._kernel, state, action)
+
+    def is_terminal(self, state: Hashable) -> bool:
+        return bool(self._kernel.is_terminal(state))
+
+
 def materialize_authorized_slice(
     kernel: Any,
     query: Any,
@@ -746,6 +818,8 @@ def materialize_authorized_slice(
     goal = getattr(query, "goal", None)
     partition = envelope.partition
     cells: list[dict[str, Any]] = []
+    materialized_state_actions = 0
+    materialized_positive_probability_outcomes = 0
     for node in frontier.nodes:
         members: list[dict[str, Any]] = []
         expected_active = tuple(
@@ -756,6 +830,7 @@ def materialize_authorized_slice(
         for state in sorted(expected_active, key=repr):
             actions: list[dict[str, Any]] = []
             for action in view.actions(state):
+                materialized_state_actions += 1
                 immediate_reward = Fraction(0)
                 immediate_failure = Fraction(0)
                 termination = Fraction(0)
@@ -763,6 +838,8 @@ def materialize_authorized_slice(
                 successor_cells: dict[str, str] = {}
                 for outcome in view.step(state, action):
                     probability = as_fraction(outcome.probability)
+                    if probability > 0:
+                        materialized_positive_probability_outcomes += 1
                     immediate_reward += probability * outcome_reward(outcome, weights)
                     stopped = bool(
                         outcome.failure
@@ -826,6 +903,12 @@ def materialize_authorized_slice(
             ),
             "total_state_actions": len(
                 selected_authorization.allowed_state_actions
+            ),
+        },
+        "materialization_counts": {
+            "state_action_steps": materialized_state_actions,
+            "positive_probability_outcomes": (
+                materialized_positive_probability_outcomes
             ),
         },
         "cells": sorted(cells, key=lambda item: (-item["remaining"], item["node_id"])),
@@ -1093,6 +1176,7 @@ def audit_hybrid_policy(
     *,
     regret_tolerance: Fraction = Fraction(1, 20),
     goal_cells: Iterable[Hashable] = (),
+    unrestricted_reward_upper: Fraction | int | None = None,
 ) -> AbstractPolicyAudit:
     """Full-authority sound audit of a query-scoped hybrid overlay.
 
@@ -1284,20 +1368,37 @@ def audit_hybrid_policy(
         memo[key] = min(reward_values), max(failure_values)
         return memo[key]
 
-    upper = unrestricted_upper_envelope(kernel, query, partition)
-    root_upper = Fraction(0)
+    if unrestricted_reward_upper is None:
+        upper = unrestricted_upper_envelope(kernel, query, partition)
+        root_upper = Fraction(0)
+    else:
+        if isinstance(unrestricted_reward_upper, bool) or not isinstance(
+            unrestricted_reward_upper, (int, Fraction)
+        ):
+            raise TypeError(
+                "unrestricted_reward_upper must be an exact int or Fraction"
+            )
+        root_upper = Fraction(unrestricted_reward_upper)
+        if root_upper < 0:
+            raise ValueError("unrestricted_reward_upper must be nonnegative")
+        upper = None
     root_lower = Fraction(0)
     root_failure = Fraction(0)
     complete = overlay_valid
     for probability, state in query_initial_distribution(kernel, query):
         cell = partition.cell_of(state)
-        root_upper += probability * upper[(horizon, cell)]
+        if upper is not None:
+            root_upper += probability * upper[(horizon, cell)]
         result = bounds(cell, horizon)
         if result is None:
             complete = False
         else:
             root_lower += probability * result[0]
             root_failure += probability * result[1]
+    if complete and root_upper < root_lower:
+        raise ValueError(
+            "unrestricted_reward_upper is below the audited policy reward lower bound"
+        )
     tolerance = as_fraction(regret_tolerance)
     risk_tolerance = as_fraction(query.delta)
     regret = root_upper - root_lower if complete else None
@@ -1489,6 +1590,7 @@ __all__ = [
     "HybridPolicyOverlay",
     "KernelAccessRecord",
     "LocalRecoveryAuthorization",
+    "PatchedAuditKernelView",
     "ProofEdge",
     "ProofNode",
     "ProofWitness",

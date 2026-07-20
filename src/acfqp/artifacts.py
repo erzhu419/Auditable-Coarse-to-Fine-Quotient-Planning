@@ -450,6 +450,146 @@ PHASE3C_DOCUMENT_CONTRACTS = {
 PHASE3C_REQUIRED_PATHS = tuple(PHASE3C_DOCUMENT_CONTRACTS)
 
 
+PHASE3D_DOCUMENT_CONTRACTS = {
+    "run.json": ("run_metadata", "acfqp.run@phase3d.v1"),
+    "contract/profile.json": (
+        "general_local_recovery_contract",
+        "acfqp.general_local_recovery_profile@phase3d.v1",
+    ),
+    "safe_chain/base_identity.json": (
+        "immutable_base_model_identity",
+        "acfqp.base_identity@phase3d.v1",
+    ),
+    "safe_chain/base_portable_rapm.json": (
+        "consumed_frozen_portable_abstract_world_model",
+        "acfqp.portable_rapm.v1",
+    ),
+    "safe_chain/base_build_epoch.json": (
+        "consumed_frozen_build_epoch",
+        "acfqp.build_epoch@phase3c.v1",
+    ),
+    "safe_chain/source_phase3c_run.json": (
+        "verified_source_phase3c_run",
+        "acfqp.run@phase3c.v1",
+    ),
+    "safe_chain/source_phase3c_manifest.json": (
+        "verified_source_phase3c_manifest",
+        "acfqp.manifest@phase05.v1",
+    ),
+    "safe_chain/source_phase3c_local_pre_certificate.json": (
+        "source_local_pre_certificate_and_frozen_unrestricted_upper",
+        "acfqp.audit@phase3c.v1",
+    ),
+    "safe_chain/source_phase3c_locality.json": (
+        "verified_source_phase3c_ground_authority_baseline",
+        "acfqp.locality_audit@phase3c.v1",
+    ),
+    "safe_chain/source_phase3c_authorization.json": (
+        "verified_source_phase3c_ground_authorization",
+        "acfqp.local_recovery_authorization@phase3c.v1",
+    ),
+    "safe_chain/pre_certificate.json": (
+        "failed_abstract_plan_certificate",
+        "acfqp.pre_certificate@phase3d.v1",
+    ),
+    "safe_chain/causal_circuit.json": (
+        "complete_exact_bellman_causal_circuit",
+        "acfqp.causal_proof_circuit.v1",
+    ),
+    "safe_chain/causal_search.json": (
+        "slack_aware_active_derivation_search",
+        "acfqp.slack_aware_causal_family.v1",
+    ),
+    "safe_chain/authorization.json": (
+        "causal_local_ground_authorization",
+        "acfqp.local_recovery_authorization@phase3d.v1",
+    ),
+    "safe_chain/ground_slice.json": (
+        "causal_frontier_ground_solver_slice",
+        "acfqp.sparse_frontier_ground_slice.v1",
+    ),
+    "safe_chain/source_boundary.json": (
+        "trusted_selected_policy_boundary_source",
+        "acfqp.redacted_boundary_view.v1",
+    ),
+    "safe_chain/capability.json": (
+        "minimal_worker_affine_capability",
+        "acfqp.sparse_robust_affine_capability.v1",
+    ),
+    "safe_chain/capability_evidence.json": (
+        "trusted_capability_compilation_and_minimality_evidence",
+        "acfqp.sparse_capability_compilation_evidence.v1",
+    ),
+    "safe_chain/request.json": (
+        "bounded_joint_local_search_request",
+        "acfqp.general_local_recovery_request.v1",
+    ),
+    "safe_chain/runtime_attestation.json": (
+        "isolated_general_local_solver_attestation",
+        "acfqp.general_local_runtime_attestation.v1",
+    ),
+    "safe_chain/result.json": (
+        "joint_value_risk_local_solver_result",
+        "acfqp.general_local_solver_result.v1",
+    ),
+    "safe_chain/overlay.json": (
+        "query_scoped_general_hybrid_overlay",
+        "acfqp.hybrid_policy_overlay@phase3d.v1",
+    ),
+    "safe_chain/post_certificate.json": (
+        "post_recovery_full_authority_certificate",
+        "acfqp.post_certificate@phase3d.v1",
+    ),
+    "safe_chain/locality.json": (
+        "causal_and_capability_locality_audit",
+        "acfqp.locality_audit@phase3d.v1",
+    ),
+    "synthetic/tradeoff_problem.json": (
+        "joint_pareto_tradeoff_positive_control",
+        "acfqp.joint_tradeoff_problem.v1",
+    ),
+    "synthetic/capability.json": (
+        "synthetic_sparse_affine_capability",
+        "acfqp.sparse_robust_affine_capability.v1",
+    ),
+    "synthetic/ground_slice.json": (
+        "synthetic_authorized_ground_slice",
+        "acfqp.sparse_frontier_ground_slice.v1",
+    ),
+    "synthetic/request.json": (
+        "synthetic_bounded_joint_search_request",
+        "acfqp.general_local_recovery_request.v1",
+    ),
+    "synthetic/result.json": (
+        "synthetic_joint_search_result",
+        "acfqp.general_local_solver_result.v1",
+    ),
+    "synthetic/legacy_greedy.json": (
+        "independent_action_greedy_counterexample",
+        "acfqp.legacy_greedy_counterexample.v1",
+    ),
+    "attacks/regressions.json": (
+        "general_local_recovery_attack_matrix",
+        "acfqp.general_local_attacks@phase3d.v1",
+    ),
+    "accounting/work_counters.json": (
+        "exact_causal_capability_and_joint_search_work",
+        "acfqp.work_counters@phase3d.v1",
+    ),
+    "result/phase3d_report.json": (
+        "general_local_recovery_gate_report",
+        "acfqp.phase3d_report@v1",
+    ),
+    "metrics.json": ("run_metrics", "acfqp.metrics@phase3d.v1"),
+    "events.jsonl": (
+        "event_log",
+        "application/x-ndjson; profile=acfqp.events.phase3d.v1",
+    ),
+}
+
+PHASE3D_REQUIRED_PATHS = tuple(PHASE3D_DOCUMENT_CONTRACTS)
+
+
 def _document_contracts_for_required_paths(
     required_paths: set[str],
 ) -> Mapping[str, tuple[str, str]]:
@@ -465,6 +605,8 @@ def _document_contracts_for_required_paths(
         return PHASE3B_DOCUMENT_CONTRACTS
     if required_paths == set(PHASE3C_REQUIRED_PATHS):
         return PHASE3C_DOCUMENT_CONTRACTS
+    if required_paths == set(PHASE3D_REQUIRED_PATHS):
+        return PHASE3D_DOCUMENT_CONTRACTS
     return PHASE05_DOCUMENT_CONTRACTS
 
 

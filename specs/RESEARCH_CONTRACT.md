@@ -23,6 +23,10 @@
 - **Phase 3C local-recovery slice:** the V0-029 certificate-triggered, isolated,
   query-owned overlay positive control over an immutable reusable RAPM; it is not the
   aggregate Phase 3 or economics Gate.
+- **Phase 3D general local-recovery Gate:** the V0-030 finite, cap-aware positive
+  control for slack-aware causal localization, sparse worker authority, and joint
+  deterministic value/risk composition; it is not the aggregate Phase 3 or economics
+  Gate.
 
 ## Normative decisions
 
@@ -268,6 +272,71 @@ economics, full Phase 3/5, scale, learning, or cross-domain generality. SHA-256
 manifests bind integrity, not public-key authenticity. V0-029 is additive and leaves
 all Phase 3B queries, results, bundle semantics and status tuple unchanged.
 
+### Contract 0.9.0: Phase 3D general local recovery
+
+Execution profile `phase3d_general_local_recovery` resolves `V0-RISK-004..006` in a
+registered finite scope. Its operational input is a fully verified frozen Phase 3C
+bundle supplied through `--phase3c-bundle`. The runner binds the source RAPM,
+`BuildEpoch`, run, manifest, locality, authorization, and local pre-certificate without
+calling the Phase 3C world constructor, `SuiteBuildCoverage.from_queries`/transition
+closure, partition/quotient/RAPM builders, or ground `U_all`; every such counter, plus
+binding and pre-authorization kernel steps, is zero. The binding pass captures the
+complete registered 144-action catalogue. All causal/ancestor legality and capability-
+cost lookups before authorization use this frozen catalogue rather than new ground
+calls.
+The source pre-certificate freezes the action-unrestricted reward upper bound. The
+trusted authority then constructs the exact selected-policy
+reward-min/risk-max Bellman circuit, retains every tied active extremizer, and searches
+ambiguity-discharge sets under an explicit cap. One transaction can authorize only the
+current earliest `DirectBad` antichain; a deeper causal layer requires a complete
+post-audit and a new occurrence-bound transaction. On safe-chain this selects only the
+common eight-state cell and reduces authorization from Phase 3C's `40/160` records to
+`24/96`, with a `16/64` worker slice. The former is authorized capability scope, not a
+claim that all 24 pairs/96 outcomes were executed.
+
+Before isolation, a trusted compiler eliminates the four-node/twenty-realization
+source boundary into a `SparseRobustAffineCapability` with one frontier input, zero
+exit ports, one reward-min form, and one risk-max form. Minimality means minimum form/
+port representation over the fully enumerated finite admissible domain in the frozen
+sparse min/max-affine class. The source boundary and equivalence/necessity evidence are
+available in the trusted bundle for audit, but the isolated worker receives exactly
+three mounted inputs: sparse capability, sparse slice, and occurrence-bound request.
+
+The standard-library worker jointly enumerates deterministic assignments across every
+authorized cell/member, composes cell values as `(min reward,max risk)`, and Pareto
+prunes only complete root points. It exhausts every lower-cardinality subset before
+accepting a cardinality-minimal result; caps and cap-exhausted statuses are explicit.
+Safe-chain exhausts 257 assignments and the operational sound post-audit reproduces
+reward lower `3/64`, failure upper `397/20000`, regret upper zero, and the immutable
+RAPM/BuildEpoch. Its exact-hybrid fields are `null` with status
+`EVALUATION_ONLY_NOT_RUN_IN_OPERATIONAL_RUNNER`; the operational runner cannot perform
+an exact lift. The standalone verifier reconstructs and exact-lifts only in its
+evaluation lane, obtaining exact failure `317/16000` from eight patched and twelve
+retained abstract decisions before it opens J0. A separate two-cell/two-member control
+exhausts 25 assignments and reaches `(1,1/25)` at thresholds `(3/4,1/20)`, while
+independent minimum-risk selection returns value zero.
+Passing returns `PHASE3D_GENERAL_LOCAL_RECOVERY_PASS`,
+`GENERAL_LOCAL_RECOVERY_GATE_PASS`, `PHASE3_AGGREGATE_NOT_RUN`, and
+`WORKLOAD_ECONOMICS_GATE_NOT_RUN`.
+
+Ground dynamics enter the operational path only after the abstract full-plan proof
+fails and only through the authorized occurrence-bound slice. Frontier materialization
+steps exactly 16 pairs and observes 64 positive-probability outcomes. The final sound
+post-audit receives `PatchedAuditKernelView`, may step exactly the eight overlay pairs,
+and keeps unpatched behavior in the abstract envelope. Thus operational ground work is
+exactly `16+8=24` step calls, with zero extra accounting calls and zero calls outside
+authorized or patched pairs. The output embeds byte-identical source RAPM/epoch
+documents plus the Phase 3C run, manifest, locality, authorization, and local pre-
+certificate with content/hash links. The independent verifier's authoritative rebuild,
+exact lift, and J0 checks are evaluation-only and cannot be counted as operational work.
+
+This supports exact finite-domain causal authorization, sparse authority compilation,
+and joint value-risk local repair under declared caps. It does not support automatic
+predicate/quotient discovery, one-shot dependent-horizon repair, an information-
+theoretically minimum encoding, uncapped scalability, economics, learning, or cross-
+domain empirical generality. Workload economics/dynamic routing is the next Gate;
+learned proposal/model synthesis follows it.
+
 ## Pseudocode / schema
 
 ```text
@@ -402,6 +471,25 @@ evaluation-only J0 costs remain separate.
     both local and abstract reachable decisions.
 20. J0 cannot enter Phase 3C frontier, authorization, local selection, stitching, or
     post-audit; evaluation opens it only after those artifacts freeze.
+21. Phase 3D causal search uses certificate slack and all tied active extremizers; a
+    reachable DirectBad residual that cannot close a failed root obligation is not
+    authorized by that transaction.
+22. Phase 3D worker authority consists only of capability, request, and sparse slice;
+    presence of the trusted source boundary in the bundle does not mount it in the
+    isolated runtime.
+23. Every Phase 3D exponential search has a declared cap and distinct exhausted
+    status; an incomplete prefix cannot be returned as an exact result.
+24. Local action choice is one global deterministic value-risk composition across all
+    authorized members/cells, never independent minimum-risk selection.
+25. Phase 3D leaves Phase 3C schemas, goldens, and claims unchanged.
+26. Operational Phase 3D consumes and preserves a verified frozen Phase 3C bundle and
+    its locality, authorization, and pre-certificate `U_all`; it performs zero model
+    construction/closure and zero ground steps before local authorization. Its complete
+    144-action binding catalogue supplies pre-authorization legality/cost queries.
+    Verifier reconstruction and exact lift are evaluation-only.
+27. Phase 3D operational post-audit can step only exact overlay pairs through
+    `PatchedAuditKernelView`; unpatched decisions remain envelope-evaluated. Operational
+    exact lift is forbidden and its exact-hybrid fields remain null.
 
 ## Acceptance tests
 
@@ -413,6 +501,23 @@ evaluation-only J0 costs remain separate.
   or covered-state counts have different build IDs.
 - A query with any positive-mass initial state outside the recorded transition closure
   is rejected before planning; it cannot reuse a certificate or RAPM cache entry.
+- Phase 3D independently reproduces the `24/96` authorized capability scope,
+  `1/0/1+1`, 257-assignment, and 25-assignment goldens; deleting a retained sparse
+  port/form or forging a cap counter fails replay. Operational work separately
+  reconciles 16 materialization steps/64 positive outcomes and eight restricted
+  post-audit steps to 24 total, with zero accounting/out-of-scope steps and no exact
+  hybrid replay.
+- Phase 3D source-boundary tests monkeypatch the Phase 3C constructor, transition
+  closure, partition/quotient/RAPM builders, and operational unrestricted-upper solver
+  to fail if called; valid runs still preserve source model/epoch/run/manifest/locality/
+  authorization/pre-certificate bytes and provenance, while malformed or coherently
+  re-signed source artifacts fail verification/replay. The binding-time 144-action
+  catalogue, rather than fresh pre-authorization calls, must serve causal and ancestor
+  legality/cost lookup.
+- The standalone Phase 3D verifier's evaluation-only reconstruction/lift reproduces
+  exact failure `317/16000` with eight patched and twelve abstract decisions before J0;
+  those operations never enter operational work counters or post-certificate exact
+  fields.
 - A cached execution is excluded from planning-query counts.
 - Both Phase 0.5 domains emit a reusable model and separate query result.
 - Result labels reject nominal-only “certificates.”
@@ -495,7 +600,7 @@ evaluation-only J0 costs remain separate.
 
 ## Out of scope
 
-Neural encoders, learned/statistical world models, MCTS, first-hit options, SMDP duration, POMDP/belief adapters, visual perception, infinite horizon, cross-domain meta-controllers, interpreting a supplied `D4` group as an automatically discovered abstraction, interpreting Phase 3A exact-model cross-orbit aggregation as oracle-free unknown-quotient discovery, or interpreting Phase 3B exact one-step synthesis as predicate invention, local hybrid planning, workload break-even, or a full Phase 3/5 pass.
+Neural encoders, learned/statistical world models, MCTS, first-hit options, SMDP duration, POMDP/belief adapters, visual perception, infinite horizon, cross-domain meta-controllers, interpreting a supplied `D4` group as an automatically discovered abstraction, interpreting Phase 3A exact-model cross-orbit aggregation as oracle-free unknown-quotient discovery, interpreting Phase 3B exact one-step synthesis as predicate invention or local hybrid planning, or interpreting Phase 3D as workload break-even or a full Phase 3/5 pass.
 
 ## Known failure modes
 
@@ -503,4 +608,4 @@ State explosion, incomplete predicate grammar, no common semantic action, overly
 
 ## Open risks
 
-Later claims about shared grammar/coordinates and practical amortization remain empirical. They do not weaken Phase 0.5 soundness obligations. V0-027 closes the immediate cross-automorphism state-alias positive control. V0-028 establishes the no-Q/value-signature portable world-model path, and V0-029 executes one certificate-triggered strict local-repair slice; automatic predicate invention, broader recovery, workload economics, and the complete statistical Phase 3/Phase 5 Gates remain open empirical work.
+Later claims about shared grammar/coordinates and practical amortization remain empirical. They do not weaken Phase 0.5 soundness obligations. V0-027 closes the immediate cross-automorphism state-alias positive control; V0-028 establishes the no-Q/value-signature portable world-model path; V0-029 executes the first strict local repair; and V0-030 closes joint finite local composition, slack-aware causality, and finite-domain sparse capability. Automatic predicate invention, dependent-horizon recovery, workload economics/dynamic routing, and the complete statistical Phase 3/Phase 5 Gates remain open empirical work.

@@ -272,6 +272,46 @@ provenance. Required post-results are
 reward `3/64`, sound failure `397/20000`, exact hybrid failure `317/16000`, and regret
 upper zero. J0 failure `99/5000` is evaluation-only after the hybrid certificate.
 
+### Phase 3D registered local-recovery controls
+
+Contract `0.9.0` reuses the same safe-chain ground structure, query, coverage,
+stage-1 RAPM, action semantics, and canonical reward. It changes only the recovery
+proof/authority/search profile. Exact certificate slack and all tied active Bellman
+extremizers must select the common eight-state `((1,1),(2,2))` cell as the sole causal
+member of the earliest `DirectBad` antichain; the rare `((2,3),)` cell cannot close the
+root deficit by itself. The resulting authorization is 24 state-action pairs/96
+outcomes, of which 16/64 form the worker slice. This `24/96` is the permitted capability
+scope, not a count of executed ground work. No predicate is generated or credited;
+`grammar_used=false` remains mandatory.
+
+“Reuses” here means verified artifact consumption under V0-031, not deterministic
+reconstruction followed by an equality claim. The runner loads and embeds the Phase 3C
+RAPM, `BuildEpoch`, source manifest/run, locality, authorization, and local
+pre-certificate selected with `--phase3c-bundle`. Binding freezes all 144 covered
+ground-action records without transition closure or kernel steps; causal analysis,
+legality checks, and capability costs consume this catalogue. The current 16-pair
+frontier must be a strict subset of the source 32-pair frontier, and its eight reverse
+selected-dependency pairs must equal the source eight exactly. The pre-certificate
+supplies the action-unrestricted reward upper bound.
+
+Only a failed full-plan proof authorizes ground access. Operational work is exactly 16
+frontier-materialization steps followed by eight patched-cell steps in the sound
+post-audit: 24 total, with zero accounting/other `step` calls and zero steps outside
+authorized or patched support. That post-audit reports reward `3/64` and sound failure
+`397/20000`; it does not run an exact hybrid lift, so exact fields are null with status
+`EVALUATION_ONLY_NOT_RUN_IN_OPERATIONAL_RUNNER`. A verifier-side authoritative rebuild,
+exact lift (`317/16000` failure, eight patched and twelve abstract decisions), and J0
+are evaluation-only and do not alter benchmark or operational work semantics.
+
+The companion `two_cell_two_member_tradeoff_v0` is a pure exact algebraic solver
+control, not a new G2048/LMB benchmark or grammar-discovery sample. Each of two cells
+has two members with low `(reward,risk)=(0,0)` and high `(1,1/25)` deterministic
+actions. With thresholds `(3/4,1/20)`, both cells must be localized and every high
+action selected, yielding root `(1,1/25)` after 25 exhaustive assignments. Independent
+minimum-risk selection yields value zero and therefore fails the reward obligation.
+This row tests joint value/risk composition only and cannot enter cross-domain,
+predicate, or workload aggregates.
+
 ### Predicate grammar
 
 The minimum cross-domain strategic basis is capacity slack `S_cap=(K-occupancy)/K` (for G2048, empty cells divided by board cells), match-debt summaries for arity `m_j`, normalized branching `log(1+|A|)/log(1+Amax)`, immediate release liquidity `L1`, unlock depth `U`, and relaxed conversion distance `C` clipped at `H`. The primary shared-algorithm claim permits finite, preregistered domain atoms; Phase 0.5 additionally registers G2048 `min_rank`, `max_rank`, and `rank_sum`, and LMB buffer/object/action counts. These are current-state structural measurements, never oracle or rollout values. A later shared-grammar claim must exclude them. Domain adapters must document exact feature semantics and total terminal-state conventions.
@@ -367,10 +407,20 @@ full_one_step_behaviour(Pi,x,a):
   `default` goal, and retains one unchanged portable RAPM per domain.
 - Independent verification reconstructs the above G2048/LMB normalizer-rule registries
   from the authoritative kernels rather than trusting serialized model summaries.
+- Phase 3D safe-chain verifies embedded source locality/authorization, the strict
+  `16<32` frontier relation and exact `8=8` reverse support, the `24/96` capability
+  scope, 257-assignment joint search, and operational sound point
+  `(3/64,397/20000)` without a grammar call. It also requires exactly `16+8=24`
+  operational ground steps and null exact-lift fields.
+- Standalone evaluation independently rebuilds and lifts the Phase 3D hybrid to failure
+  `317/16000` with eight patched and twelve retained abstract decisions; this exact
+  result and J0 are not operational post-audit outputs.
+- The algebraic Phase 3D control exhausts exactly 25 assignments, reaches `(1,1/25)`,
+  and records the value-zero independent minimum-risk counterfactual.
 
 ## Out of scope
 
-Slide-2048, hidden LMB layouts, visual inputs, arbitrary logical split formulas, oracle-derived `M_fail` predicates, exposing LMB solution evidence to the planner, treating the registered `D4` group as an automatically discovered abstraction, treating Phase 3A's oracle atoms/exact behavioural signatures as invented human predicates, or describing Phase 3B complete one-step minimization as automatic predicate invention, learned dynamics, or local hybrid repair.
+Slide-2048, hidden LMB layouts, visual inputs, arbitrary logical split formulas, oracle-derived `M_fail` predicates, exposing LMB solution evidence to the planner, treating the registered `D4` group as an automatically discovered abstraction, treating Phase 3A's oracle atoms/exact behavioural signatures as invented human predicates, describing Phase 3B complete one-step minimization as automatic predicate invention or learned dynamics, or treating the Phase 3D algebraic control as a domain/generalization result.
 
 ## Known failure modes
 
@@ -378,7 +428,7 @@ Rejection sampling or LMB backtracking may be slow for hostile parameters; gener
 
 ## Open risks
 
-The canonical `2x2` initial distribution and post-spawn failure rule make every positive-horizon query infeasible at the registered risk thresholds. Exactly, first-step survival is `27/410`, hence failure is `383/410 > 0.10`; see resolved `V0-RISK-001`. Phase 0.5 must preserve this result through charged J0 fallback/infeasibility rather than weakening a rule. The separately keyed safe-chain fixture now supplies the nontrivial feasible ground query, but cannot support a positive quotient claim until its implementation, J0 golden regression, and quotient audit pass.
+The canonical `2x2` initial distribution and post-spawn failure rule make every positive-horizon query infeasible at the registered risk thresholds. Exactly, first-step survival is `27/410`, hence failure is `383/410 > 0.10`; see resolved `V0-RISK-001`. Phase 0.5 must preserve this result through charged J0 fallback/infeasibility rather than weakening a rule. The separately keyed safe-chain fixture supplies the nontrivial feasible ground query, but supports only the separately executed and audited claim of each registered profile.
 
 `V0-RISK-002` is resolved by the exact `D4` profile in V0-024. Its remaining risk is
 implementation conformance: a successful certificate is not automatic until all group,
@@ -394,5 +444,7 @@ domains. It does not settle whether a human or learned grammar can recover compa
 cells without oracle values or complete model minimization.
 
 V0-028 removes Q/value signatures from the portable campaign builder, but it still
-assumes exact complete one-step dynamics on tiny coverage. Learning those dynamics,
-inventing readable predicates, and repairing a failed certificate locally remain open.
+assumes exact complete one-step dynamics on tiny coverage. V0-029/V0-030 now execute
+finite certificate-triggered recovery with slack-aware sparse joint composition.
+Learning dynamics, inventing readable predicates, dependent-horizon recovery, and
+workload economics/dynamic routing remain open.

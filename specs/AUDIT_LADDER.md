@@ -214,6 +214,72 @@ base/query/coverage, false or reused isolation attestation, early J0, hidden fal
 forged post-certificate, or work-counter discrepancy. A SHA-256 manifest proves content
 integrity under replay, not signer identity.
 
+### Contract 0.9.0 slack-aware general local-recovery audit
+
+Phase 3D replaces reachability-only DirectBad authorization with an exact causal audit:
+
+```text
+verify the complete frozen Phase 3C artifact bundle
+-> bind its RAPM/BuildEpoch, locality, authorization, and pre-certificate upper
+   with zero ground transitions
+-> freeze failed selected plan and certificate obligations
+-> evaluate reward-min/risk-max Bellman circuit with all tied active extremizers
+-> search slack-aware ambiguity-discharge sets on the earliest DirectBad antichain
+-> compile trusted boundary to a finite-domain-minimal sparse capability
+-> mount only capability + occurrence request + sparse ground slice
+-> jointly enumerate deterministic value/risk assignments under explicit caps
+-> stitch and repeat the full authority audit
+-> independently replay causal, compiler, solver, and hybrid evidence
+```
+
+The first two arrows are operationally normative. Source Phase 3C `locality` and
+`authorization` documents are verified and embedded alongside its RAPM, BuildEpoch,
+run, manifest, and pre-certificate. The binding scan freezes a complete catalogue of
+all 144 covered ground actions; causal construction, action legality, and capability
+costing must use that catalogue rather than opening the kernel. The runner may not call
+`construct_phase3c_world`, `SuiteBuildCoverage.from_queries`/transition closure,
+partition/quotient/RAPM construction, or
+an action-unrestricted ground-upper routine. The abstract pre-audit reevaluates the
+selected policy against the frozen serialized envelope and the source pre-certificate's
+content-addressed `U_all`. Ground transitions become available only after that proof
+fails: operational execution materializes exactly 16 causal-frontier pairs and later
+steps exactly eight patched pairs for the sound post-stitch audit. Its total is
+therefore 24 ground `step` calls, with zero accounting/other `step` calls and zero steps
+outside the authorized-or-patched support. The operational runner does not perform an
+exact full-hybrid lift; its exact fields remain null under
+`EVALUATION_ONLY_NOT_RUN_IN_OPERATIONAL_RUNNER`. An independent verifier may rebuild
+and lift everything, but only as evaluation-side evidence.
+
+For safe-chain, baseline risk is `5099/10000` and the failed-obligation deficit is
+`4599/10000`. Discharging the common cell yields `397/20000` (gain `9801/20000`),
+whereas the rare cell yields `10197/20000` (gain `1/20000`) and cannot close the
+obligation. The causal family is therefore the common singleton. Its 16 frontier pairs
+form a strict subset of the source Phase 3C frontier's 32 pairs, while its eight reverse
+selected-dependency pairs equal the source eight exactly. The resulting `24/96`
+pairs/outcomes describe capability scope, not work performed: only the 16/64 frontier
+slice is materialized before planning, and the reverse 8/32 is supplied by frozen
+authority evidence. The compiler proves the four-node/twenty-row
+source boundary extensionally equal to one input, zero exits, one reward-min form, and
+one risk-max form on the complete finite admissible port domain. The source and proof
+remain trusted bundle artifacts but are absent from worker mounts.
+
+The exact global solver exhausts 257 safe-chain assignments and 25 assignments in the
+two-cell/two-member trade-off control. It must reproduce respectively
+`(reward,risk)=(3/64,397/20000)` and `(1,1/25)`; the latter distinguishes the joint
+search from the value-zero independent minimum-risk rule. The first pair is the
+operational sound post-audit result. Only the standalone verifier's evaluation-only
+authoritative rebuild/lift may additionally report exact hybrid failure `317/16000`,
+eight patched decisions, twelve retained abstract decisions, and J0 truth. A cap hit is
+an explicit noncertificate, never a pass. Successful replay returns
+`PHASE3D_GENERAL_LOCAL_RECOVERY_PASS/GENERAL_LOCAL_RECOVERY_GATE_PASS/PHASE3_AGGREGATE_NOT_RUN/WORKLOAD_ECONOMICS_GATE_NOT_RUN`.
+
+Run and independently audit the bundle with:
+
+```bash
+acfqp-phase3d --phase3c-bundle artifacts/phase3c --output artifacts/phase3d
+python3 scripts/verify_phase3d.py artifacts/phase3d
+```
+
 ## Pseudocode / schema
 
 ```text
@@ -323,6 +389,25 @@ local_frontier(policy_graph,audit):
 15. `LOCAL_GROUND_RECOVERY` is impossible when the full plan certifies; its frontier is
     policy-reachable, failed, earliest, and coverage-bounded.
 16. Phase 3B's portable pass always co-occurs with all three frozen `*_NOT_RUN` statuses.
+17. Phase 3D authorization excludes a DirectBad node unless a capped exact active-
+    derivation counterfactual shows that an allowed causal set can close every failed
+    root obligation.
+18. Trusted Phase 3D source/capability evidence is auditable but never part of the
+    three-file isolated worker authority.
+19. Search-cap exhaustion cannot be relabelled certified; all lower-cardinality subsets
+    and declared assignments must be exhausted before minimality is asserted.
+20. Phase 3D operational audit starts from a verified frozen Phase 3C bundle and its
+    embedded locality/authorization plus pre-certificate upper. Its complete 144-action
+    binding catalogue supplies pre-authorization causal, legality, and cost queries;
+    all model builders, coverage closure, pre-authorization kernel steps, and
+    operational `U_all` recomputation remain zero.
+21. Phase 3D's 16-pair causal frontier is a strict subset of the source 32-pair
+    frontier, while its eight reverse-dependency pairs equal the source set exactly.
+    `24/96` is capability scope, not executed work.
+22. Operational ground work is exactly 16 materialization steps plus eight patched
+    sound-post-audit steps; accounting/other/outside-support steps and exact-hybrid lift
+    invocations are zero. Exact `317/16000`, the `8/12` decision split, and J0 belong
+    only to standalone-verifier evaluation.
 
 ## Acceptance tests
 
@@ -390,10 +475,21 @@ local_frontier(policy_graph,audit):
   recomputes portable-envelope and live exact audits,
   performs serialized-`kappa` lift and J0, checks all IDs/cross-links/counters, and can
   replay the isolated planner.
+- Phase 3D replay verifies and embeds source Phase 3C locality/authorization, proves
+  current frontier `16` is a strict subset of source `32` and reverse support `8` is
+  exactly equal, and reproduces the `24/96` capability scope, `1/0/1+1` sparse
+  capability, safe-chain 257 count, and synthetic 25 count.
+- Operational access tests require a complete binding-time 144-action catalogue, zero
+  pre-authorization transition calls, exactly `16+8=24` ground steps, and zero
+  accounting/other/outside-support steps. The operational post-certificate carries
+  `(3/64,397/20000)` with null exact-lift fields; independent evaluation alone must
+  reproduce `317/16000` and the `8/12` local/abstract split. Forging active ties/slack,
+  adding the source boundary to worker mounts, deleting or adding capability authority,
+  or changing cap/access counters fails.
 
 ## Out of scope
 
-J3 learned/statistical models, J4 bounded search/MCTS, J5 perception, causal attribution from the telescoping ladder, asymptotic guarantees beyond the enumerated finite model, using the supplied `D4` group as evidence of automatic symmetry or predicate discovery, using Phase 3A exact-model cross-orbit aliasing as evidence of oracle-free unknown-quotient discovery, and crediting Phase 3B with local-hybrid or workload-economics/full-Gate evidence.
+J3 learned/statistical models, J4 bounded search/MCTS, J5 perception, causal attribution from the telescoping ladder, asymptotic guarantees beyond the enumerated finite model, using the supplied `D4` group as evidence of automatic symmetry or predicate discovery, using Phase 3A exact-model cross-orbit aliasing as evidence of oracle-free unknown-quotient discovery, crediting Phase 3B with local-hybrid evidence, or crediting Phase 3D with dependent-horizon completeness, workload economics, or a full Gate.
 
 ## Known failure modes
 
@@ -401,4 +497,4 @@ Frontier combinatorics, conservative rectangular composition, all policies excee
 
 ## Open risks
 
-Paired oracle-replacement ablations and component interactions are required before causal claims. More compact exact frontier representations may be needed beyond tiny instances. V0-028 removes Q/value signatures from the portable exact builder, and V0-029 closes one exact certificate-triggered local-recovery positive control; automatic feature invention, broader useful/local recovery, workload break-even, and statistical Gates remain open.
+Paired oracle-replacement ablations and component interactions are required before broad causal claims. More compact exact frontier representations may be needed beyond tiny instances. V0-028 removes Q/value signatures from the portable exact builder; V0-029 closes the first certificate-triggered recovery; and V0-030 closes slack-aware earliest-antichain authorization, finite-domain sparse capability, and capped joint search. Dependent-horizon recovery, automatic feature invention, workload economics/dynamic routing, and statistical Gates remain open.

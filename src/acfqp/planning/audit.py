@@ -107,6 +107,7 @@ def audit_abstract_policy(
     *,
     regret_tolerance: Fraction = Fraction(1, 20),
     goal_cells: Iterable[Hashable] = (),
+    unrestricted_reward_upper: Fraction | int | None = None,
 ) -> AbstractPolicyAudit:
     """Audit a complete lifted policy against unrestricted ground behaviour.
 
@@ -194,14 +195,27 @@ def audit_abstract_policy(
         memo[key] = (min(reward_values), max(failure_values))
         return memo[key]
 
-    upper = unrestricted_upper_envelope(kernel, query, partition)
-    root_upper = Fraction(0)
+    if unrestricted_reward_upper is None:
+        upper = unrestricted_upper_envelope(kernel, query, partition)
+        root_upper = Fraction(0)
+    else:
+        if isinstance(unrestricted_reward_upper, bool) or not isinstance(
+            unrestricted_reward_upper, (int, Fraction)
+        ):
+            raise TypeError(
+                "unrestricted_reward_upper must be an exact int or Fraction"
+            )
+        root_upper = Fraction(unrestricted_reward_upper)
+        if root_upper < 0:
+            raise ValueError("unrestricted_reward_upper must be nonnegative")
+        upper = None
     root_lower = Fraction(0)
     root_failure = Fraction(0)
     complete = True
     for probability, state in query_initial_distribution(kernel, query):
         cell = partition.cell_of(state)
-        root_upper += probability * upper[(horizon, cell)]
+        if upper is not None:
+            root_upper += probability * upper[(horizon, cell)]
         result = bounds(cell, horizon)
         if result is None:
             complete = False
@@ -209,6 +223,10 @@ def audit_abstract_policy(
             root_lower += probability * result[0]
             root_failure += probability * result[1]
 
+    if complete and root_upper < root_lower:
+        raise ValueError(
+            "unrestricted_reward_upper is below the audited policy reward lower bound"
+        )
     tolerance = as_fraction(regret_tolerance)
     risk_tolerance = as_fraction(query.delta)
     regret = root_upper - root_lower if complete else None

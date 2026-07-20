@@ -34,6 +34,8 @@ The Phase 0.5 vertical slice and the frozen positive G2048 follow-up use these d
 | Phase 3B G2048 portable RAPM campaign | safe-chain structure and frozen coverage under `phase3b_portable_rapm_campaign_v0` | six distinct registered queries, including four `H=2` rows and registered initial-support/distribution and horizon variations at fixed reward/risk | query-neutral exact behavioural trace `2 -> 9 -> 10 -> 10`; state/action `192 -> 10`, `144 -> 17`; portable round trip; fresh-process planning; freeze all proposals before independent audit/J0/lift; one unchanged epoch/RAPM |
 | Phase 3B LMB portable RAPM campaign | `lmb_generated_n6_t2_k3_d2_seed0_v0` and frozen coverage | five distinct registered queries: the Phase 3A three plus canonical `H=3,delta=1/10` and terminal-clear-only `H=3` | query-neutral exact behavioural trace `3 -> 5 -> 5`; state/action `25 -> 5`, `40 -> 4`; portable round trip; fresh-process planning; freeze all proposals before independent audit/J0/lift; one unchanged epoch/RAPM |
 | Phase 3C G2048 local-recovery slice | immutable eleven-cell stage-1 aliased safe-chain RAPM under `phase3c_certificate_triggered_local_recovery_v0` | canonical D4-uniform `H=1,delta=0` and `H=2,delta=1/20` | first row abstract-certified; second row certificate-fails then uses a strict 40-pair/160-outcome authorization (worker mounts 32 frontier pairs) and minimal eight-state/eight-decision overlay; hybrid retains abstract nodes; immutable base; post `U_F=397/20000`; no fallback/rebuild |
+| Phase 3D G2048 general local recovery | a fully verified frozen Phase 3C safe-chain bundle consumed under `phase3d_general_local_recovery_v0`; byte-identical RAPM/epoch, embedded locality/authorization, and frozen pre-certificate `U_all` | canonical D4-uniform `H=2,delta=1/20` | zero operational rebuild/closure/pre-authorization ground steps; complete binding-time 144-action catalogue; current/source frontier `16<32`, reverse support `8=8`; 24-pair/96-outcome capability scope and 16/64 worker slice; exactly 16 materialization + 8 patched sound-audit steps; operational `(3/64,397/20000)` with null exact-lift fields; evaluation-only verifier lift `317/16000`, 8 local + 12 abstract; sparse boundary `4 nodes/20 rows -> 1 input/0 exits/1+1 forms`; 257 exact joint assignments; unchanged base |
+| Phase 3D algebraic trade-off control | `two_cell_two_member_tradeoff_v0`; no domain/world-model claim | two cells, two members each, low `(0,0)` and high `(1,1/25)` actions; thresholds `(3/4,1/20)` | 25 exact assignments; localize both cells; root `(1,1/25)`; independent minimum-risk baseline value zero |
 
 The positive safe-chain row is implemented as a separate exact-bundle profile. It does not retroactively replace the canonical Phase 0.5 regression and enters positive-result aggregates only when that run's J0 golden checks and independent exact-quotient artifact verification pass. The canonical row is permanently `infeasibility_only`; safe-chain is `known_group_exact_quotient_eligible_after_certification` and supports only the V0-024 known-`D4` claim after an actual exact `CERTIFIED` result. Its profile uses no CEGAR split or fallback; a failed invariant yields `EXACT_D4_QUOTIENT_INVARIANT_VIOLATION` and remains in the denominator as a failed positive control.
 
@@ -46,6 +48,8 @@ Capability attribution is fixture-specific:
 | safe-chain aliased CEGAR profile | exact-counterexample selection and application of a preregistered action-frame geometry atom under deliberate boundary-action aliasing |
 | Phase 3A G2048 oracle control | train-oracle state aggregation across complete `D4` orbit boundaries and exact-sound reuse for registered held-out initial-support/horizon changes |
 | Phase 3A LMB behavioural control | exact-model behavioural state/action minimization beyond physical relabelling orbits and exact reuse for registered held-out reward-basis/horizon/risk changes |
+| Phase 3D safe-chain control | slack-aware earliest-antichain causality, finite-domain sparse worker capability, and capped joint deterministic value/risk composition |
+| Phase 3D algebraic control | joint-composition counterexample only; no benchmark, quotient, predicate, reuse, or cross-domain credit |
 
 The first row never counts toward CEGAR/refinement coverage, split-success, predicate-
 discovery, or shared-grammar metrics. The second cannot count as positive feasible
@@ -141,6 +145,27 @@ manifest. A pass reports `PHASE3C_LOCAL_RECOVERY_PASS`, `LOCAL_HYBRID_GATE_PASS`
 `PHASE3_AGGREGATE_NOT_RUN`, and `WORKLOAD_ECONOMICS_GATE_NOT_RUN`; the two rows are not
 inserted into aggregate Phase 3/5 denominators and support no predicate-invention,
 unknown-quotient, economics, scale, learning, or generality claim.
+
+Contract `0.9.0` adds two nonaggregate Phase 3D rows:
+
+| Control | Causal/authority result | Capability/search result | Required output |
+|---|---|---|---|
+| safe-chain | common singleton; source/current frontier `32 -> 16` (strict subset), reverse `8 -> 8` (exact equality); `24/96` capability scope, worker `16/64` | `4/20 -> 1 input, 0 exits, 1 reward-min + 1 risk-max`; 257 assignments; operational ground steps `16+8=24`, other/outside `0` | operational sound `(3/64,397/20000)` and null exact fields; evaluation-only verifier lift risk `317/16000`, 8 local + 12 abstract decisions |
+| two-cell/two-member | no domain causal claim | 25 assignments; both cells localized | `(1,1/25)` passes `(3/4,1/20)`; legacy greedy value `0` |
+
+The runner verifies and embeds source Phase 3C locality and authorization as well as its
+model/pre-certificate provenance. Its complete binding-time catalogue of 144 ground
+actions supplies causal, legality, and capability-cost queries without pre-authorization
+ground calls. The safe-chain source boundary and compiler witnesses are trusted audit
+artifacts, not worker inputs. The isolated attestation allows only capability, request,
+and sparse slice. Every enumeration cap and consumed counter is matrix data; an
+exhausted cap is not a passing row. A pass reports
+`PHASE3D_GENERAL_LOCAL_RECOVERY_PASS/GENERAL_LOCAL_RECOVERY_GATE_PASS/PHASE3_AGGREGATE_NOT_RUN/WORKLOAD_ECONOMICS_GATE_NOT_RUN`.
+
+```bash
+acfqp-phase3d --phase3c-bundle artifacts/phase3c --output artifacts/phase3d
+python3 scripts/verify_phase3d.py artifacts/phase3d
+```
 
 Every row additionally records build-coverage mode, initial-declaration hash, covered
 state count, and the no-outside-reuse flag. Aggregation treats builds with distinct
@@ -260,10 +285,21 @@ phase3b_campaign(workload):
   their G2048/LMB authority normalizer registries; it reprojects queries, recomputes portable-envelope/live ground audits and
   serialized-`kappa` lift/J0, checks IDs/cross-links/counters, and can replay the
   isolated planner occurrences.
+- Phase 3D loader validation forbids the Phase 3C constructor, transition closure,
+  partition/quotient/RAPM builders, operational `U_all`, and pre-authorization kernel
+  steps; it verifies embedded source locality/authorization, the strict `16<32`
+  frontier relation, exact `8=8` reverse relation, complete 144-action binding
+  catalogue, and exact embedded bytes/provenance. Operational validation reconciles
+  the `24/96` capability scope separately from exactly 16 materialization plus eight
+  patched sound-audit steps, with all other/outside-support `step` calls zero and exact-lift
+  fields null. Independent evaluation then rebuilds authoritative semantics, recomputes
+  the causal family, sparse compilation, three-file mount allowlist, 257/25 search
+  counts, exact lift `317/16000` with `8/12` decisions, J0, unchanged base, and the four
+  terminal statuses.
 
 ## Out of scope
 
-Unregistered reward extrapolation, post-hoc test-derived predicates, statistical substitution for exact Gate rows, causal component attribution from a single ladder order, automatic-symmetry-discovery claims from the supplied `D4` profile, automatic-predicate-invention claims from the aliased profile's six preregistered atoms, generalizing Phase 3A reuse beyond its registered two-domain held-out suite, and treating the Phase 3B portable campaign as a local-hybrid, break-even, or full Phase 3/5 result.
+Unregistered reward extrapolation, post-hoc test-derived predicates, statistical substitution for exact Gate rows, causal component attribution from a single ladder order, automatic-symmetry-discovery claims from the supplied `D4` profile, automatic-predicate-invention claims from the aliased profile's six preregistered atoms, generalizing Phase 3A reuse beyond its registered two-domain held-out suite, treating Phase 3B as local hybrid, or treating Phase 3D as dependent-horizon completeness, break-even, or full Phase 3/5.
 
 ## Known failure modes
 
@@ -280,5 +316,7 @@ remaining `60/20/40` split, OOD row, aggregation, confidence intervals, and huma
 grammar comparison are still prerequisites for a full Phase 3 Gate decision.
 
 V0-028 freezes the immediate eleven-query Phase 3B portability campaign. Larger
-workloads, certificate-failure cases that exercise local ground recovery, reference
-hardware, repeated-run economics, and the full Phase 5 Gate remain unrun.
+workloads, reference hardware, repeated-run economics, and the full Phase 5 Gate remain
+unrun. V0-030 closes the immediate finite joint-recovery/slack/capability controls;
+dependent-horizon recovery and workload economics/dynamic routing are the next open
+matrix rows, followed by learned model synthesis.

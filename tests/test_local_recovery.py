@@ -15,6 +15,7 @@ from acfqp.local_recovery import (
     GroundPatchDecision,
     HybridPolicyOverlay,
     LocalRecoveryAuthorization,
+    PatchedAuditKernelView,
     UnauthorizedLocalRecoveryAccess,
     audit_hybrid_policy,
     build_failed_proof_graph,
@@ -173,6 +174,37 @@ def test_authorization_is_strict_and_logs_only_successful_access(
         view.step(state, "not-an-authorized-action")
     assert view.access_log == before
     assert tuple(record.sequence for record in view.access_log) == (0, 1)
+
+
+def test_patched_post_audit_view_steps_only_frozen_overlay_pairs(
+    failed_case: dict,
+) -> None:
+    world = failed_case["world"]
+    state, action = next(
+        pair
+        for pair in failed_case["authorization"].frontier_state_actions
+        if len(world.kernel.actions(pair[0])) > 1
+    )
+    alternative = next(
+        candidate for candidate in world.kernel.actions(state) if candidate != action
+    )
+    outside_state = next(
+        candidate
+        for candidate in world.partition.states
+        if candidate != state and not world.kernel.is_terminal(candidate)
+    )
+    view = PatchedAuditKernelView(world.kernel, ((state, action),))
+
+    assert action in view.actions(state)
+    assert sum(
+        (outcome.probability for outcome in view.step(state, action)), Fraction(0)
+    ) == 1
+    before = view.access_log
+    with pytest.raises(UnauthorizedLocalRecoveryAccess):
+        view.step(state, alternative)
+    with pytest.raises(UnauthorizedLocalRecoveryAccess):
+        view.actions(outside_state)
+    assert view.access_log == before
 
 
 def test_local_solver_selects_cardinality_minimal_complete_cell_patch(
