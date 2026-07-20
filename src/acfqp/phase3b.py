@@ -26,7 +26,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from fractions import Fraction
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any, Iterable, Mapping
 
 from acfqp.abstraction import ExactBehavioralQuotient, build_exact_behavioral_quotient
 from acfqp.artifacts import (
@@ -52,7 +52,9 @@ from acfqp.planning import (
 from acfqp.portable import (
     PortableBuildResult,
     PortableQuery,
+    PortableRAPM,
     build_portable_rapm,
+    canonical_json,
     dump_model,
     dump_query,
     fraction_to_json,
@@ -62,8 +64,12 @@ from acfqp.portable import (
 from acfqp.portable_planner import (
     PortableExactEnvelopeAudit,
     PortablePlanResult,
+    PortableRewardUpperProof,
     audit_exact_portable_policy,
+    audit_exact_portable_policy_with_frozen_upper,
+    build_portable_reward_upper_proof,
     load_result,
+    verify_portable_reward_upper_proof,
 )
 
 
@@ -78,6 +84,13 @@ FULL_PHASE3_NOT_RUN = "PHASE3_AGGREGATE_NOT_RUN"
 LOCAL_HYBRID_NOT_RUN = "LOCAL_HYBRID_GATE_NOT_RUN"
 ECONOMICS_NOT_RUN = "WORKLOAD_ECONOMICS_GATE_NOT_RUN"
 INVARIANT_FAILURE = "PHASE3B_INVARIANT_VIOLATION"
+OPERATIONAL_NO_FULL_REPLAY_MODE = "operational_no_full_replay"
+PORTABLE_REWARD_UPPER_EVIDENCE_SCHEMA = (
+    "acfqp.frozen_portable_reward_upper_evidence.v1"
+)
+PORTABLE_REWARD_UPPER_EVIDENCE_DOMAIN = (
+    "acfqp:portable-reward-upper-evidence:v1"
+)
 
 SUPPORTED_CLAIMS = (
     "complete exact one-step behavioural signatures can synthesize a portable RAPM without Q*, value, or policy signatures",
@@ -130,6 +143,130 @@ class CampaignEvaluation:
     audit: Any
     lift: Any
     ground: Any
+
+
+def _phase3b_v1_content_id(domain: str, payload: Mapping[str, Any]) -> str:
+    return hashlib.sha256(
+        domain.encode("utf-8")
+        + b"\0"
+        + canonical_json(dict(payload)).encode("utf-8")
+    ).hexdigest()
+
+
+def _portable_threshold_profile_id(
+    query: PortableQuery,
+    regret_tolerance: Fraction,
+) -> str:
+    payload = {
+        "schema": "acfqp.portable_threshold_profile.v1",
+        "query_id": query.query_id,
+        "delta": query.to_dict()["delta"],
+        "regret_tolerance": fraction_to_json(regret_tolerance),
+    }
+    return _phase3b_v1_content_id("acfqp:portable-threshold-profile:v1", payload)
+
+
+@dataclass(frozen=True, slots=True)
+class FrozenPortableRewardUpperEvidence:
+    """Result-independent, content-addressed upper bound for no-replay use."""
+
+    model_id: str
+    query_id: str
+    build_epoch_id: str
+    threshold_profile_id: str
+    proof: PortableRewardUpperProof
+
+    def __post_init__(self) -> None:
+        if any(
+            not isinstance(value, str) or not value
+            for value in (
+                self.model_id,
+                self.query_id,
+                self.build_epoch_id,
+                self.threshold_profile_id,
+            )
+        ):
+            raise ValueError("portable reward-upper evidence IDs must be nonempty")
+        if self.proof.model_id != self.model_id or self.proof.query_id != self.query_id:
+            raise ValueError("portable reward-upper proof/evidence binding mismatch")
+
+    def _payload(self) -> dict[str, Any]:
+        return {
+            "schema": PORTABLE_REWARD_UPPER_EVIDENCE_SCHEMA,
+            "model_id": self.model_id,
+            "query_id": self.query_id,
+            "build_epoch_id": self.build_epoch_id,
+            "threshold_profile_id": self.threshold_profile_id,
+            "proof": self.proof.to_dict(),
+        }
+
+    @property
+    def evidence_id(self) -> str:
+        return _phase3b_v1_content_id(
+            PORTABLE_REWARD_UPPER_EVIDENCE_DOMAIN, self._payload()
+        )
+
+    def to_dict(self) -> dict[str, Any]:
+        return {**self._payload(), "evidence_id": self.evidence_id}
+
+    @classmethod
+    def from_dict(
+        cls, document: Mapping[str, Any]
+    ) -> "FrozenPortableRewardUpperEvidence":
+        expected = {
+            "schema",
+            "model_id",
+            "query_id",
+            "build_epoch_id",
+            "threshold_profile_id",
+            "proof",
+            "evidence_id",
+        }
+        if not isinstance(document, Mapping) or set(document) != expected:
+            raise ValueError("portable reward-upper evidence has an invalid field set")
+        if document["schema"] != PORTABLE_REWARD_UPPER_EVIDENCE_SCHEMA:
+            raise ValueError("unsupported portable reward-upper evidence")
+        for field in (
+            "model_id",
+            "query_id",
+            "build_epoch_id",
+            "threshold_profile_id",
+            "evidence_id",
+        ):
+            if not isinstance(document[field], str) or not document[field]:
+                raise ValueError(
+                    f"portable reward-upper evidence {field} must be a nonempty string"
+                )
+        proof = PortableRewardUpperProof.from_dict(document["proof"])
+        evidence = cls(
+            document["model_id"],
+            document["query_id"],
+            document["build_epoch_id"],
+            document["threshold_profile_id"],
+            proof,
+        )
+        if document["evidence_id"] != evidence.evidence_id:
+            raise ValueError("portable reward-upper evidence content ID mismatch")
+        return evidence
+
+
+@dataclass(frozen=True, slots=True)
+class OperationalPortableValidation:
+    """Operational-only validation of one frozen portable-worker proposal."""
+
+    model_id: str
+    query_id: str
+    result_id: str
+    runtime_attestation_id: str
+    reward_upper_evidence_id: str
+    build_epoch_id: str
+    threshold_profile_id: str
+    selected_index: int
+    frontier_audits: tuple[PortableExactEnvelopeAudit, ...]
+    selected_audit: PortableExactEnvelopeAudit
+    execution_lane: str = "operational"
+    execution_mode: str = OPERATIONAL_NO_FULL_REPLAY_MODE
+    full_replay_performed: bool = False
 
 
 def _utc_now() -> str:
@@ -590,6 +727,307 @@ def _fresh_process_proposals(
                     )
                 )
     return tuple(proposals)
+
+
+def _portable_serialized_sha256(document: dict[str, Any]) -> str:
+    return hashlib.sha256(
+        (canonical_json(document) + "\n").encode("utf-8")
+    ).hexdigest()
+
+
+def _validate_operational_runtime_attestation(
+    proposal: PortableProposal,
+    *,
+    model: PortableRAPM,
+    query: PortableQuery,
+    result: PortablePlanResult,
+) -> str:
+    attestation = proposal.runtime_attestation
+    expected_fields = {
+        "attestation_id",
+        "schema",
+        "isolation_backend",
+        "python_site_disabled",
+        "project_checkout_visible",
+        "network_namespace_unshared",
+        "forbidden_modules_resolved",
+        "input_regular_files",
+        "output_regular_files_before",
+        "loaded_acfqp_modules",
+        "loaded_module_origins",
+        "unexpected_module_origins",
+        "runtime_source_sha256",
+        "model_sha256",
+        "query_sha256",
+        "output_sha256",
+        "model_id",
+        "query_id",
+        "result_id",
+    }
+    if not isinstance(attestation, dict) or set(attestation) != expected_fields:
+        raise Phase3BInvariantViolation(
+            "portable runtime attestation has an invalid field set"
+        )
+    payload = dict(attestation)
+    attestation_id = payload.pop("attestation_id")
+    if not isinstance(attestation_id, str) or attestation_id != logical_id(
+        "runtime-attestation", payload
+    ):
+        raise Phase3BInvariantViolation(
+            "portable runtime attestation content ID mismatch"
+        )
+    loaded_origins = payload["loaded_module_origins"]
+    if not isinstance(loaded_origins, list) or any(
+        not isinstance(record, dict)
+        or set(record) != {"module", "origin"}
+        or not isinstance(record["module"], str)
+        or not isinstance(record["origin"], str)
+        for record in loaded_origins
+    ):
+        raise Phase3BInvariantViolation(
+            "portable runtime attestation module origins are malformed"
+        )
+    expected_source_hashes = {
+        f"acfqp.{module_name[:-3]}": sha256_file(
+            PROJECT_ROOT / "src" / "acfqp" / module_name
+        )
+        for module_name in (
+            "portable.py",
+            "portable_planner.py",
+            "portable_runtime.py",
+        )
+    }
+    if (
+        isinstance(proposal.process_id, bool)
+        or not isinstance(proposal.process_id, int)
+        or proposal.process_id <= 0
+        or payload["schema"] != "acfqp.portable_runtime_attestation.v1"
+        or payload["isolation_backend"]
+        != "bubblewrap_mount_and_network_namespace"
+        or payload["model_id"] != model.model_id
+        or payload["query_id"] != query.query_id
+        or payload["result_id"] != result.result_id
+        or payload["model_sha256"]
+        != _portable_serialized_sha256(model.to_dict())
+        or payload["query_sha256"]
+        != _portable_serialized_sha256(query.to_dict())
+        or payload["output_sha256"]
+        != _portable_serialized_sha256(result.to_dict())
+        or payload["project_checkout_visible"] is not False
+        or payload["forbidden_modules_resolved"] != []
+        or payload["input_regular_files"] != ["model.json", "query.json"]
+        or payload["output_regular_files_before"] != []
+        or payload["python_site_disabled"] is not True
+        or payload["network_namespace_unshared"] is not True
+        or payload["unexpected_module_origins"] != []
+        or payload["loaded_acfqp_modules"]
+        != ["acfqp", "acfqp.portable", "acfqp.portable_planner"]
+        or payload["runtime_source_sha256"] != expected_source_hashes
+    ):
+        raise Phase3BInvariantViolation(
+            "portable runtime operational isolation/binding validation failed"
+        )
+    return attestation_id
+
+
+def freeze_portable_reward_upper_evidence(
+    domain_model: DomainWorldModel,
+    query: PortableQuery,
+    *,
+    regret_tolerance: Fraction = Fraction(1, 20),
+) -> FrozenPortableRewardUpperEvidence:
+    """Freeze a scalar Bellman proof before consuming planner output.
+
+    This preparation API deliberately accepts no ``PortablePlanResult``.  Its
+    proof is bound to the immutable RAPM, query, BuildEpoch, and value/risk
+    threshold profile, so a worker cannot make its submitted frontier certify
+    itself by omitting a better policy.
+    """
+
+    if isinstance(regret_tolerance, bool) or not isinstance(
+        regret_tolerance, (int, Fraction)
+    ):
+        raise Phase3BInvariantViolation(
+            "regret_tolerance must be an exact int or Fraction"
+        )
+    tolerance = Fraction(regret_tolerance)
+    if tolerance < 0:
+        raise Phase3BInvariantViolation("regret_tolerance must be nonnegative")
+    if query.model_id != domain_model.portable.model.model_id:
+        raise Phase3BInvariantViolation(
+            "reward-upper evidence query/model binding changed"
+        )
+    proof = build_portable_reward_upper_proof(domain_model.portable.model, query)
+    return FrozenPortableRewardUpperEvidence(
+        model_id=query.model_id,
+        query_id=query.query_id,
+        build_epoch_id=_build_epoch_document(domain_model)["build_epoch_id"],
+        threshold_profile_id=_portable_threshold_profile_id(query, tolerance),
+        proof=proof,
+    )
+
+
+def validate_portable_proposal_operational_no_full_replay(
+    proposal: PortableProposal,
+    *,
+    regret_tolerance: Fraction = Fraction(1, 20),
+    upper_evidence: FrozenPortableRewardUpperEvidence
+    | Mapping[str, Any]
+    | None = None,
+) -> OperationalPortableValidation:
+    """Validate a frozen worker proposal without any planner or ground replay.
+
+    This is the Phase-3E-compatible operational consumption boundary for a
+    Phase-3B proposal.  It validates content IDs and bindings, the trusted
+    isolated runtime/source attestation, every reported frontier point against
+    the serialized point-valued envelope, and the selected plan against an
+    independently frozen scalar Bellman proof.  It never derives an upper from
+    the worker frontier and never invokes the portable planner, ground audit,
+    policy lift, or J0; those remain standalone evaluation work.
+    """
+
+    try:
+        if isinstance(regret_tolerance, bool) or not isinstance(
+            regret_tolerance, (int, Fraction)
+        ):
+            raise Phase3BInvariantViolation(
+                "regret_tolerance must be an exact int or Fraction"
+            )
+        tolerance = Fraction(regret_tolerance)
+        if tolerance < 0:
+            raise Phase3BInvariantViolation(
+                "regret_tolerance must be nonnegative"
+            )
+        model = PortableRAPM.from_dict(
+            proposal.domain_model.portable.model.to_dict()
+        )
+        query = PortableQuery.from_dict(proposal.portable_query.to_dict(), model)
+        expected_query = proposal.domain_model.portable.query_from_spec(
+            proposal.named_query.query
+        )
+        if (
+            query.to_dict() != expected_query.to_dict()
+            or proposal.ground_query_id
+            != object_id(proposal.named_query.query, "query")
+        ):
+            raise Phase3BInvariantViolation(
+                "portable proposal query/ground identity binding changed"
+            )
+        result = PortablePlanResult.from_dict(
+            proposal.result.to_dict(),
+            model=model,
+            query=query,
+        )
+        if upper_evidence is None:
+            raise Phase3BInvariantViolation(
+                "operational no-full-replay validation requires frozen reward-upper evidence"
+            )
+        evidence = FrozenPortableRewardUpperEvidence.from_dict(
+            upper_evidence.to_dict()
+            if isinstance(upper_evidence, FrozenPortableRewardUpperEvidence)
+            else upper_evidence
+        )
+        expected_build_epoch_id = _build_epoch_document(proposal.domain_model)[
+            "build_epoch_id"
+        ]
+        expected_threshold_profile_id = _portable_threshold_profile_id(
+            query, tolerance
+        )
+        if (
+            evidence.model_id != model.model_id
+            or evidence.query_id != query.query_id
+            or evidence.build_epoch_id != expected_build_epoch_id
+            or evidence.threshold_profile_id != expected_threshold_profile_id
+        ):
+            raise Phase3BInvariantViolation(
+                "portable reward-upper evidence identity binding changed"
+            )
+        verified_upper = verify_portable_reward_upper_proof(
+            model, query, evidence.proof
+        )
+        if result.selected is None:
+            raise Phase3BInvariantViolation(
+                "operational Phase3B proposal has no selected feasible point"
+            )
+        result_document = result.to_dict()
+        selected_index = result_document["selected_index"]
+        if isinstance(selected_index, bool) or not isinstance(selected_index, int):
+            raise Phase3BInvariantViolation(
+                "operational Phase3B result lacks a selected frontier index"
+            )
+        unrestricted_reward_upper = verified_upper.root_upper
+        if unrestricted_reward_upper < 0 or unrestricted_reward_upper > 1:
+            raise Phase3BInvariantViolation(
+                "portable reward-upper proof exceeds its normalized [0,1] bound"
+            )
+        frontier_audits = tuple(
+            audit_exact_portable_policy_with_frozen_upper(
+                model,
+                query,
+                point.policy,
+                unrestricted_reward_upper=unrestricted_reward_upper,
+                regret_tolerance=tolerance,
+            )
+            for point in result.frontier
+        )
+        for point, audit in zip(result.frontier, frontier_audits):
+            if (
+                audit.expected_reward != point.expected_reward
+                or audit.failure_probability != point.failure_probability
+                or audit.unrestricted_reward_upper != unrestricted_reward_upper
+            ):
+                raise Phase3BInvariantViolation(
+                    "portable result point disagrees with the exact envelope"
+                )
+        selected_audit = frontier_audits[selected_index]
+        if not selected_audit.certified:
+            raise Phase3BInvariantViolation(
+                "portable selected result failed its operational exact-envelope bounds"
+            )
+        attestation_id = _validate_operational_runtime_attestation(
+            proposal,
+            model=model,
+            query=query,
+            result=result,
+        )
+        return OperationalPortableValidation(
+            model.model_id,
+            query.query_id,
+            result.result_id,
+            attestation_id,
+            evidence.evidence_id,
+            evidence.build_epoch_id,
+            evidence.threshold_profile_id,
+            selected_index,
+            frontier_audits,
+            selected_audit,
+        )
+    except Phase3BInvariantViolation:
+        raise
+    except (KeyError, TypeError, ValueError) as error:
+        raise Phase3BInvariantViolation(
+            f"operational portable proposal validation failed: {error}"
+        ) from error
+
+
+def validate_phase3b_proposals_operational_no_full_replay(
+    proposals: Iterable[PortableProposal],
+    *,
+    upper_evidence_by_query_id: Mapping[
+        str, FrozenPortableRewardUpperEvidence | Mapping[str, Any]
+    ],
+) -> tuple[OperationalPortableValidation, ...]:
+    """Validate an ordered proposal batch on the operational lane only."""
+
+    return tuple(
+        validate_portable_proposal_operational_no_full_replay(
+            proposal,
+            upper_evidence=upper_evidence_by_query_id.get(
+                proposal.portable_query.query_id
+            ),
+        )
+        for proposal in proposals
+    )
 
 
 def _evaluate_after_proposal_freeze(
@@ -1350,12 +1788,18 @@ __all__ = [
     "ECONOMICS_NOT_RUN",
     "EXECUTION_PROFILE",
     "FULL_PHASE3_NOT_RUN",
+    "FrozenPortableRewardUpperEvidence",
     "INVARIANT_FAILURE",
     "LOCAL_HYBRID_NOT_RUN",
+    "OPERATIONAL_NO_FULL_REPLAY_MODE",
     "PROFILE_KEY",
     "SLICE_PASS",
+    "OperationalPortableValidation",
     "Phase3BInvariantViolation",
     "build_phase3b_documents",
     "compute_phase3b_campaign",
+    "freeze_portable_reward_upper_evidence",
     "run_phase3b",
+    "validate_phase3b_proposals_operational_no_full_replay",
+    "validate_portable_proposal_operational_no_full_replay",
 ]

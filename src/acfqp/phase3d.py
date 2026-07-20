@@ -158,6 +158,36 @@ class Phase3DInvariantViolation(RuntimeError):
 
 
 @dataclass(frozen=True, slots=True)
+class SafeChainPreparedEstimateContext:
+    """Safe-chain proof/frontier state before selected-route execution.
+
+    This object contains no materialized ground slice, compiled capability,
+    worker result, stitch, or post-audit.  Contract-1.0 consumers may use its
+    frozen proof and action-catalogue cardinalities to construct marginal route
+    uppers before a route decision is frozen.
+    """
+
+    world: Any
+    query: Any
+    ground_query_id: str
+    portable_query: Any
+    portable_result: Any
+    proposal: Any
+    proposal_source: str
+    policy: FiniteHorizonPolicy[Any, Any]
+    pre_audit: Any
+    proof_graph: Any
+    causal_circuit: Any
+    causal_search: Any
+    frontier: FailedProofFrontier
+    authorization: LocalRecoveryAuthorization
+    source_boundary: dict[str, Any]
+    source_phase3c_locality: dict[str, Any]
+    source_phase3c_authorization: dict[str, Any]
+    unrestricted_reward_upper: Fraction
+
+
+@dataclass(frozen=True, slots=True)
 class SafeChainContext:
     world: Any
     query: Any
@@ -182,6 +212,64 @@ class SafeChainContext:
     source_phase3c_authorization: dict[str, Any]
     materialization_counts: dict[str, int]
     unrestricted_reward_upper: Fraction
+
+
+@dataclass(frozen=True, slots=True)
+class _FrozenEstimateKernelView:
+    """The only kernel-shaped authority admitted during route estimation.
+
+    Terminal status is read from the serialized RAPM state catalogue.  Live
+    action and transition methods are intentionally fail-closed; action
+    cardinalities come from ``FrozenPhase3CWorld.bound_ground_action_records``.
+    """
+
+    horizon: int
+    registered_reward_features: tuple[str, ...]
+    registered_goals: tuple[str, ...]
+    registry: Any
+    planning_kind_by_state_id: Mapping[str, str]
+
+    @classmethod
+    def from_world(cls, world: Any) -> "_FrozenEstimateKernelView":
+        model = world.portable.model
+        document = model.to_dict()
+        kinds = {
+            row["state_id"]: row["planning_kind"]
+            for row in document["state_catalog"]
+        }
+        if not kinds or any(
+            kind not in {"active", "terminal", "failure"}
+            for kind in kinds.values()
+        ):
+            raise Phase3DInvariantViolation(
+                "frozen RAPM lacks a complete planning-kind catalogue"
+            )
+        return cls(
+            int(model.horizon),
+            tuple(model.reward_features),
+            tuple(model.goal_ids),
+            world.portable.registry,
+            kinds,
+        )
+
+    def is_terminal(self, state: Hashable) -> bool:
+        try:
+            state_id = self.registry.state_id(state)
+            return self.planning_kind_by_state_id[state_id] != "active"
+        except KeyError as error:
+            raise Phase3DInvariantViolation(
+                "estimate state is absent from the frozen RAPM catalogue"
+            ) from error
+
+    def actions(self, _state: Hashable) -> tuple[Any, ...]:
+        raise Phase3DInvariantViolation(
+            "live kernel actions are forbidden during route estimation"
+        )
+
+    def step(self, _state: Hashable, _action: Hashable) -> tuple[Any, ...]:
+        raise Phase3DInvariantViolation(
+            "live kernel transitions are forbidden during route estimation"
+        )
 
 
 def _utc_now() -> str:
@@ -241,13 +329,25 @@ def _causal_frontier(graph: Any, node_ids: tuple[str, ...]) -> FailedProofFronti
     )
 
 
-def _frozen_capability_cost(world: Any, proof_node: Any) -> int:
+def _frozen_capability_cost(
+    world: Any,
+    proof_node: Any,
+    estimate_kernel: _FrozenEstimateKernelView,
+    *,
+    allow_live_evaluation_catalogue: bool = False,
+) -> int:
     """Count a proof cell's registered ground actions without kernel access."""
 
     count = sum(
-        len(_frozen_ground_actions(world, state))
+        len(
+            _frozen_ground_actions(
+                world,
+                state,
+                allow_live_evaluation_catalogue=allow_live_evaluation_catalogue,
+            )
+        )
         for state in world.partition.members(proof_node.cell)
-        if not world.kernel.is_terminal(state)
+        if not estimate_kernel.is_terminal(state)
     )
     if count <= 0:
         raise Phase3DInvariantViolation(
@@ -256,7 +356,12 @@ def _frozen_capability_cost(world: Any, proof_node: Any) -> int:
     return count
 
 
-def _frozen_ground_actions(world: Any, state: Hashable) -> tuple[Hashable, ...]:
+def _frozen_ground_actions(
+    world: Any,
+    state: Hashable,
+    *,
+    allow_live_evaluation_catalogue: bool = False,
+) -> tuple[Hashable, ...]:
     """Return one state's complete binding-time ground-action catalogue.
 
     Operational frozen worlds carry all 144 records captured during their
@@ -265,16 +370,13 @@ def _frozen_ground_actions(world: Any, state: Hashable) -> tuple[Hashable, ...]:
     """
 
     records = getattr(world, "bound_ground_action_records", None)
-    actions = (
-        tuple(action for candidate, action in records if candidate == state)
-        if records is not None
-        else tuple(world.kernel.actions(state))
+    if records is not None:
+        return tuple(action for candidate, action in records if candidate == state)
+    if allow_live_evaluation_catalogue:
+        return tuple(world.kernel.actions(state))
+    raise Phase3DInvariantViolation(
+        "Phase 3E route estimation requires a prebound frozen action catalogue"
     )
-    if not actions and not world.kernel.is_terminal(state):
-        raise Phase3DInvariantViolation(
-            "frozen registry has no actions for an active registered state"
-        )
-    return actions
 
 
 def _authority_accounting(context: SafeChainContext) -> dict[str, Any]:
@@ -408,21 +510,30 @@ def _authority_accounting(context: SafeChainContext) -> dict[str, Any]:
     return result
 
 
-def _construct_safe_chain_context_from_world(
+def _prepare_safe_chain_estimate_from_world(
     world: Any,
     *,
     unrestricted_reward_upper: Fraction,
     source_phase3c_locality: Mapping[str, Any],
     source_phase3c_authorization: Mapping[str, Any],
-) -> SafeChainContext:
-    """Construct one transaction from an already materialized trusted world.
+    allow_live_evaluation_catalogue: bool = False,
+) -> SafeChainPreparedEstimateContext:
+    """Prepare the failed proof and route cardinalities without ground steps.
 
-    Operational callers must enter through :func:`construct_safe_chain_context`,
-    which loads a verified frozen Phase-3C bundle.  This factored helper exists
-    so the independent verifier can rebuild an authority world in its separate
-    evaluation lane without changing operational work counters.
+    The frozen unrestricted upper prevents an all-action ground replay.  Every
+    realization read below comes from the reusable RAPM envelope, and action
+    cardinalities come from the frozen binding catalogue.  Materialization and
+    compilation are intentionally absent from this function.
     """
 
+    if (
+        getattr(world, "bound_ground_action_records", None) is None
+        and not allow_live_evaluation_catalogue
+    ):
+        raise Phase3DInvariantViolation(
+            "route estimation requires a prebound frozen ground-action catalogue"
+        )
+    estimate_kernel = _FrozenEstimateKernelView.from_world(world)
     registered = world.queries[1]
     query = registered.query
     portable_query = world.portable.query_from_spec(query)
@@ -432,7 +543,7 @@ def _construct_safe_chain_context_from_world(
         world.portable.decode_policy(proposal.policy)
     )
     pre_audit = audit_abstract_policy(
-        world.kernel,
+        estimate_kernel,
         query,
         world.models.envelope,
         policy,
@@ -448,19 +559,24 @@ def _construct_safe_chain_context_from_world(
         raise Phase3DInvariantViolation("safe-chain pre-certificate golden changed")
 
     graph = build_failed_proof_graph(
-        world.kernel,
+        estimate_kernel,
         query,
         world.models.envelope,
         policy,
         pre_audit,
     )
     circuit = causal_circuit_from_failed_proof(
-        world.kernel,
+        estimate_kernel,
         query,
         world.models.envelope,
         policy,
         graph,
-        capability_cost_provider=lambda node: _frozen_capability_cost(world, node),
+        capability_cost_provider=lambda node: _frozen_capability_cost(
+            world,
+            node,
+            estimate_kernel,
+            allow_live_evaluation_catalogue=allow_live_evaluation_catalogue,
+        ),
     )
     obligations = (
         CertificateObligation(
@@ -493,11 +609,15 @@ def _construct_safe_chain_context_from_world(
         raise Phase3DInvariantViolation("safe-chain causal counterfactual changed")
     frontier = _causal_frontier(graph, causal.selected_node_ids)
     authorization = LocalRecoveryAuthorization.for_frontier(
-        world.kernel,
+        estimate_kernel,
         world.models.envelope,
         frontier,
         graph,
-        ground_action_provider=lambda state: _frozen_ground_actions(world, state),
+        ground_action_provider=lambda state: _frozen_ground_actions(
+            world,
+            state,
+            allow_live_evaluation_catalogue=allow_live_evaluation_catalogue,
+        ),
     )
     if (
         len(authorization.frontier_state_actions) != 16
@@ -505,6 +625,47 @@ def _construct_safe_chain_context_from_world(
         or len(authorization.allowed_state_actions) != 24
     ):
         raise Phase3DInvariantViolation("causal authorization golden changed")
+
+    source_boundary = build_redacted_boundary_view(
+        query,
+        world.models.envelope,
+        policy,
+        graph,
+        unrestricted_reward_upper=pre_audit.unrestricted_reward_upper,
+        regret_tolerance=pre_audit.regret_tolerance,
+    )
+    return SafeChainPreparedEstimateContext(
+        world=world,
+        query=query,
+        ground_query_id=object_id(query, "query"),
+        portable_query=portable_query,
+        portable_result=portable_result,
+        proposal=proposal,
+        proposal_source=proposal_source,
+        policy=policy,
+        pre_audit=pre_audit,
+        proof_graph=graph,
+        causal_circuit=circuit,
+        causal_search=causal,
+        frontier=frontier,
+        authorization=authorization,
+        source_boundary=source_boundary,
+        source_phase3c_locality=dict(source_phase3c_locality),
+        source_phase3c_authorization=dict(source_phase3c_authorization),
+        unrestricted_reward_upper=pre_audit.unrestricted_reward_upper,
+    )
+
+
+def _execute_safe_chain_local_preparation(
+    prepared: SafeChainPreparedEstimateContext,
+) -> SafeChainContext:
+    """Materialize and compile only after a caller has frozen LOCAL selection."""
+
+    world = prepared.world
+    query = prepared.query
+    frontier = prepared.frontier
+    authorization = prepared.authorization
+    graph = prepared.proof_graph
 
     materialized = materialize_authorized_slice(
         world.kernel,
@@ -551,16 +712,8 @@ def _construct_safe_chain_context_from_world(
             "authorized materialization access log is not the exact frontier"
         )
     v1_slice = redact_authorized_slice_for_worker(materialized)
-    source_boundary = build_redacted_boundary_view(
-        query,
-        world.models.envelope,
-        policy,
-        graph,
-        unrestricted_reward_upper=pre_audit.unrestricted_reward_upper,
-        regret_tolerance=pre_audit.regret_tolerance,
-    )
     compiled = compile_sparse_recovery_inputs(
-        source_boundary,
+        prepared.source_boundary,
         v1_slice,
         target_frontier_id=frontier.frontier_id,
         **COMPILER_LIMITS,
@@ -584,34 +737,80 @@ def _construct_safe_chain_context_from_world(
     return SafeChainContext(
         world=world,
         query=query,
-        ground_query_id=object_id(query, "query"),
-        portable_query=portable_query,
-        portable_result=portable_result,
-        proposal=proposal,
-        proposal_source=proposal_source,
-        policy=policy,
-        pre_audit=pre_audit,
+        ground_query_id=prepared.ground_query_id,
+        portable_query=prepared.portable_query,
+        portable_result=prepared.portable_result,
+        proposal=prepared.proposal,
+        proposal_source=prepared.proposal_source,
+        policy=prepared.policy,
+        pre_audit=prepared.pre_audit,
         proof_graph=graph,
-        causal_circuit=circuit,
-        causal_search=causal,
+        causal_circuit=prepared.causal_circuit,
+        causal_search=prepared.causal_search,
         frontier=frontier,
         authorization=authorization,
         v1_slice=v1_slice,
         sparse_slice=sparse_slice,
         capability=capability,
         capability_evidence=evidence,
-        source_boundary=source_boundary,
-        source_phase3c_locality=dict(source_phase3c_locality),
-        source_phase3c_authorization=dict(source_phase3c_authorization),
+        source_boundary=prepared.source_boundary,
+        source_phase3c_locality=prepared.source_phase3c_locality,
+        source_phase3c_authorization=prepared.source_phase3c_authorization,
         materialization_counts=materialization_counts,
-        unrestricted_reward_upper=pre_audit.unrestricted_reward_upper,
+        unrestricted_reward_upper=prepared.unrestricted_reward_upper,
+    )
+
+
+def _construct_safe_chain_context_from_world(
+    world: Any,
+    *,
+    unrestricted_reward_upper: Fraction,
+    source_phase3c_locality: Mapping[str, Any],
+    source_phase3c_authorization: Mapping[str, Any],
+) -> SafeChainContext:
+    """Historical one-call construction retained for 0.9 replay/verifiers."""
+
+    prepared = _prepare_safe_chain_estimate_from_world(
+        world,
+        unrestricted_reward_upper=unrestricted_reward_upper,
+        source_phase3c_locality=source_phase3c_locality,
+        source_phase3c_authorization=source_phase3c_authorization,
+        allow_live_evaluation_catalogue=(
+            getattr(world, "bound_ground_action_records", None) is None
+        ),
+    )
+    return _execute_safe_chain_local_preparation(prepared)
+
+
+def prepare_safe_chain_estimate_context(
+    frozen_world: FrozenPhase3CWorld | str | Path = DEFAULT_PHASE3C_BUNDLE,
+) -> SafeChainPreparedEstimateContext:
+    """Prepare one estimate from an already bound frozen Phase-3C world.
+
+    Contract 1.0 keeps namespace/model binding outside the decision point.  A
+    path is therefore rejected here instead of silently invoking the legacy
+    binder, whose structural validation reads live ``actions``/``is_terminal``.
+    Historical Phase 3D construction still performs that binding explicitly in
+    :func:`construct_safe_chain_context`.
+    """
+
+    if not isinstance(frozen_world, FrozenPhase3CWorld):
+        raise Phase3DInvariantViolation(
+            "Phase 3E estimate preparation requires a prebound FrozenPhase3CWorld"
+        )
+    world = frozen_world
+    return _prepare_safe_chain_estimate_from_world(
+        world,
+        unrestricted_reward_upper=world.unrestricted_reward_upper,
+        source_phase3c_locality=world.source_locality_document,
+        source_phase3c_authorization=world.source_authorization_document,
     )
 
 
 def construct_safe_chain_context(
     source_bundle: str | Path = DEFAULT_PHASE3C_BUNDLE,
 ) -> SafeChainContext:
-    """Consume and bind a verified frozen Phase-3C RAPM without rebuilding."""
+    """Historical 0.9 bind-and-execute entry point, retained unchanged."""
 
     try:
         world = load_frozen_phase3c_world(source_bundle)
@@ -619,11 +818,13 @@ def construct_safe_chain_context(
         raise Phase3DInvariantViolation(
             f"frozen Phase 3C source bundle is inadmissible: {error}"
         ) from error
-    return _construct_safe_chain_context_from_world(
-        world,
-        unrestricted_reward_upper=world.unrestricted_reward_upper,
-        source_phase3c_locality=world.source_locality_document,
-        source_phase3c_authorization=world.source_authorization_document,
+    return _execute_safe_chain_local_preparation(
+        _prepare_safe_chain_estimate_from_world(
+            world,
+            unrestricted_reward_upper=world.unrestricted_reward_upper,
+            source_phase3c_locality=world.source_locality_document,
+            source_phase3c_authorization=world.source_authorization_document,
+        )
     )
 
 
@@ -650,12 +851,115 @@ def _general_request(
     return {**payload, "request_id": object_id(payload, "general-local-request")}
 
 
+def _validate_general_worker_result(
+    result: dict[str, Any],
+    capability: dict[str, Any],
+    ground_slice: dict[str, Any],
+    request: dict[str, Any],
+    *,
+    operational_no_full_replay: bool,
+) -> None:
+    """Validate general-worker output, optionally replaying the full search."""
+
+    try:
+        validate_general_local_result(result)
+    except (KeyError, TypeError, ValueError) as exc:
+        raise Phase3DInvariantViolation(
+            f"isolated general local result validation failed: {exc}"
+        ) from exc
+
+    expected_bindings = {
+        "request_id": request.get("request_id"),
+        "occurrence_id": request.get("occurrence_id"),
+        "capability_id": capability.get("capability_id"),
+        "slice_id": ground_slice.get("slice_id"),
+        "frontier_id": capability.get("frontier_id"),
+        "required_reward_floor": capability.get("reward_floor"),
+        "allowed_failure_ceiling": capability.get("failure_ceiling"),
+        "search_limits": request.get("search_limits"),
+    }
+    if any(result.get(field) != value for field, value in expected_bindings.items()):
+        raise Phase3DInvariantViolation(
+            "isolated general local result does not bind the frozen request capabilities"
+        )
+    if (
+        ground_slice.get("frontier_id") != capability.get("frontier_id")
+        or request.get("frontier_id") != capability.get("frontier_id")
+        or request.get("capability_id") != capability.get("capability_id")
+        or request.get("slice_id") != ground_slice.get("slice_id")
+    ):
+        raise Phase3DInvariantViolation(
+            "general local worker inputs contain inconsistent capability bindings"
+        )
+
+    cells = {
+        row.get("node_id"): row
+        for row in ground_slice.get("cells", [])
+        if isinstance(row, dict)
+    }
+    localized = set(result["localized_node_ids"])
+    if not localized.issubset(cells):
+        raise Phase3DInvariantViolation(
+            "isolated general local result localizes outside the authorized slice"
+        )
+    expected_decisions = {
+        (node_id, member.get("state_id"))
+        for node_id in localized
+        for member in cells[node_id].get("members", [])
+        if isinstance(member, dict)
+    }
+    observed_decisions = {
+        (row["node_id"], row["state_id"]) for row in result["decisions"]
+    }
+    if observed_decisions != expected_decisions:
+        raise Phase3DInvariantViolation(
+            "isolated general local result does not assign every localized member"
+        )
+    for decision in result["decisions"]:
+        cell = cells[decision["node_id"]]
+        member = next(
+            (
+                row
+                for row in cell.get("members", [])
+                if row.get("state_id") == decision["state_id"]
+            ),
+            None,
+        )
+        if (
+            decision["cell"] != cell.get("cell")
+            or decision["remaining"] != cell.get("remaining")
+            or decision["input_port_id"] != cell.get("input_port_id")
+            or member is None
+            or decision["action_id"]
+            not in {row.get("action_id") for row in member.get("actions", [])}
+        ):
+            raise Phase3DInvariantViolation(
+                "isolated general local result contains an unauthorized decision"
+            )
+
+    if not operational_no_full_replay:
+        replay = solve_general_local_recovery(
+            capability, ground_slice, request
+        ).to_dict()
+        if result != replay:
+            raise Phase3DInvariantViolation(
+                "isolated general local result disagrees with exact replay"
+            )
+
+
 def _run_fresh_general_solver(
     capability: dict[str, Any],
     ground_slice: dict[str, Any],
     request: dict[str, Any],
+    *,
+    operational_no_full_replay: bool = False,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
-    """Run the stdlib worker with exactly three mounted input files."""
+    """Run the stdlib worker with exactly three mounted input files.
+
+    Historical Phase 3D retains its deterministic host replay by default.
+    Contract-1.0 operational consumers opt into strict validation without a
+    second host-side solver search.
+    """
 
     bubblewrap = shutil.which("bwrap")
     if bubblewrap is None:
@@ -749,14 +1053,13 @@ def _run_fresh_general_solver(
             )
         result = json.loads(result_path.read_text(encoding="utf-8"))
         attestation = json.loads(attestation_path.read_text(encoding="utf-8"))
-        replay = solve_general_local_recovery(
-            capability, ground_slice, request
-        ).to_dict()
-        if result != replay:
-            raise Phase3DInvariantViolation(
-                "isolated general local result disagrees with exact replay"
-            )
-        validate_general_local_result(result)
+        _validate_general_worker_result(
+            result,
+            capability,
+            ground_slice,
+            request,
+            operational_no_full_replay=operational_no_full_replay,
+        )
         payload = dict(attestation)
         attestation_id = payload.pop("attestation_id", None)
         if (
@@ -1892,6 +2195,8 @@ __all__ = [
     "PROFILE_KEY",
     "Phase3DInvariantViolation",
     "SafeChainContext",
+    "SafeChainPreparedEstimateContext",
     "construct_safe_chain_context",
+    "prepare_safe_chain_estimate_context",
     "run_phase3d",
 ]

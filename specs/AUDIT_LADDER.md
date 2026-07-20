@@ -280,6 +280,88 @@ acfqp-phase3d --phase3c-bundle artifacts/phase3c --output artifacts/phase3d
 python3 scripts/verify_phase3d.py artifacts/phase3d
 ```
 
+### Contract 1.0.0 accounted dynamic-routing foundation audit
+
+Phase 3E is an execution discipline around the scientific object established by
+Phases 3A--3D, not a replacement for it.  The primary object remains a reusable
+abstract world model in which multi-step contingent plans are synthesized and
+audited.  Ground distinctions become eligible only when that model cannot certify
+the selected plan at the registered value and risk thresholds; even then, the route
+may reopen only the failed-proof causal region or invoke a charged full fallback.
+
+The current contract-1.0 implementation closes the following component-level audit
+surfaces:
+
+- full, domain-separated SHA-256 identities over strict canonical JSON for the new
+  accounting, routing, workload, campaign, and access-protocol artifacts;
+- the canonical native counter registry, explicit observed native zeroes,
+  route-family separation, reconciliation records, and exact projection to the eight
+  shared resource axes with the registered sum/max reducers;
+- exact actual projection from referenced work records, common-prefix versus marginal
+  separation, context-bound selected-upper compliance mechanics, and
+  provenance-preserving occurrence sums;
+- typed route contexts, frontier/causal/cardinality/cap/transaction identities,
+  strict-dominance marginal selection, trusted budget replay, terminal class/code,
+  rebuild policy, logical-occurrence closure, and scalar-free vector-prefix/worst-order
+  mechanics;
+- exact marginal route-upper arithmetic from complete explicit pre-execution count
+  claims,
+  all 34 operational leaves, the official projection, 13 native local hard-cap
+  minima, and six structural-cap guards, with a replayable formula/proof identity that
+  explicitly carries `authorizes_route_selection=false`;
+- a fail-closed semantic-verifier registry whose work-vector, actual-projection,
+  access-protocol and terminal-classification roles replay authoritatively while
+  cardinality, route-upper, route-decision and the other unresolved FQ7 roles return
+  `NOT_IMPLEMENTED`; plan and infeasibility terminal labels therefore cannot acquire
+  authority from a hash-only attestation; and
+- fail-closed estimate-before-execute access logs plus explicit Phase 3B/3C/3D
+  operational no-full-replay modes.  Phase 3D can prepare its failed-plan, causal and
+  action-catalogue estimate context without a kernel step, materialization, compiler,
+  or worker launch.
+
+The component replay order is:
+
+```text
+strict canonical decode and domain-ID verification
+-> counter-registry and native-zero/reconciliation verification
+-> materialize canonical WorkVectorV1
+-> exact projection to ComparisonVectorV1
+-> replay context/frontier/causal/cardinality/cap/formula/upper arithmetic
+-> require semantic cardinality/upper/decision authority (currently fail closed)
+-> verify decision-freeze access prefix
+-> permit only the selected route's post-freeze event family
+-> recompute actual projection and per-axis selected-upper compliance
+-> replay transaction indices/budgets and preserve failed-attempt work
+-> derive logical-occurrence closure and scalar-free workload prefixes
+```
+
+Unit and attack tests currently reject noncanonical or cross-domain IDs; missing,
+duplicate, unknown, wrongly typed, wrongly scoped, or implicitly zero counter leaves;
+local/fallback family mixing; byte double charging; forged actual comparisons and
+self-signed workload vectors; stale or rebound formulas/uppers; foreign selected
+uppers; incomplete cardinality inputs; structural-cap overrun;
+negative causal evidence reopened by a cheap local estimate; unimplemented semantic
+roles represented by plausible attestations; discontinuous or substituted
+transactions; cross-occurrence sums; pre-freeze execution; reversed local execution
+stages; fallback paths with local artifacts; deleted/reordered access events;
+hash-only campaign terminals; hidden noncertificate occurrences; worker-frontier
+self-uppers; and injected legacy scalar or break-even claims.
+
+This is not yet a run-level Phase 3E certificate.  Production-native instrumentation
+has not been connected across every operational and failure path; a real direct
+fallback route, the second-transaction execution loop, the complete role-authority
+semantic verifier registry, an end-to-end `run_phase3e`, and an independent bundle
+verifier remain absent.  Consequently no typed terminal produced by these component
+tests establishes plan feasibility or infeasibility, and the locked result remains:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+```
+
 ## Pseudocode / schema
 
 ```text
@@ -355,6 +437,17 @@ audit_phase3b(workload, portable_models):
 local_frontier(policy_graph,audit):
   bad = reachable nodes with failed value/risk obligation
   return {u in bad : no strict policy-graph ancestor of u is in bad}
+
+audit_phase3e_foundation(frozen_rapm, failed_plan, preexecution_evidence):
+  require failed_plan is selected in and rejected by the reusable RAPM certificate
+  prepare context/frontier/causal/cardinality evidence without route execution
+  verify full domain IDs, registered caps, formulas, and exact eight-axis uppers
+  freeze marginal route decision before any forbidden access
+  execute only selected route family; retain common prefix separately
+  recompute actual WorkVector and ComparisonVector from native records
+  require actual <= selected upper on every shared axis
+  replay transactions, terminal class, occurrence closure, and vector prefixes
+  return COMPONENT_REPLAY_ONLY  # not an official plan/infeasibility certificate
 ```
 
 ## Invariants
@@ -408,6 +501,24 @@ local_frontier(policy_graph,audit):
     sound-post-audit steps; accounting/other/outside-support steps and exact-hybrid lift
     invocations are zero. Exact `317/16000`, the `8/12` decision split, and J0 belong
     only to standalone-verifier evaluation.
+23. Contract-1.0 local recovery is downstream of an abstract full-plan certificate
+    failure.  Accounting cost or route dominance can choose how to respond to that
+    failure but can never authorize ground reopening on a certified abstract plan.
+24. Phase 3E comparison is a deterministic projection of complete native work, not an
+    independently reported summary.  Every operational charged leaf projects exactly
+    once; evaluation/provenance/diagnostic and derived-only leaves project zero times.
+25. Common-prefix work is charged once and is absent from both marginal route uppers.
+    Local is selected only by strict componentwise dominance of all eight shared axes;
+    equality, incomparability, stale evidence, or negative causal evidence selects
+    fallback.
+26. A route decision freezes before any transition materialization, compiler, route
+    worker, stitch, post-audit, or fallback execution.  Forbidden early access is a
+    protocol-failure noncertificate, regardless of the eventual numeric plan result.
+27. Logical occurrences, rather than route attempts, define campaign denominators.
+    Failed local, fallback, rebuild, retry, cap exhaustion, and noncertificate work
+    cannot be removed from the occurrence aggregate.
+28. Contract-1.0 component replay does not open official execution, counter
+    completeness, workload economics, scalar cost, or break-even claims.
 
 ## Acceptance tests
 
@@ -486,10 +597,33 @@ local_frontier(policy_graph,audit):
   reproduce `317/16000` and the `8/12` local/abstract split. Forging active ties/slack,
   adding the source boundary to worker mounts, deleting or adding capability authority,
   or changing cap/access counters fails.
+- Contract-1.0 identity tests reject noncanonical JSON, non-reduced rationals,
+  nonfinite values, unsupported fields, truncated IDs, unregistered domains, and
+  cross-role/domain reuse even when payload JSON is otherwise identical.
+- Native accounting tests require every route/stage leaf and explicit observed zero,
+  preserve local/fallback/rebuild provenance, replay route/solver/process closure, and
+  reject missing/duplicate projection terms, generic branch-cost substitution, wrong
+  lane/scope/reducer metadata, and serialized-byte double charging.
+- Marginal routing tests require exact eight-axis coverage, strict componentwise local
+  dominance, typed local/fallback optionality, stale-identity rejection, continuous
+  transaction indices, all registered local hard caps, and fallback for every negative
+  causal outcome.  Worker budget claims cannot override trusted replay.
+- Access-order tests monkeypatch Phase 3D ground materialization/compiler/kernel entry
+  points during estimate preparation, reject every execution event before decision
+  freeze, invoke only the selected callback, and reject a fallback trace containing
+  any local execution artifact or a deleted/reordered/rebound access event.
+- Actual/workload/campaign tests reconstruct actual vectors and sum/max occurrence
+  aggregates from referenced native work; reject upper overflow, forged or swapped
+  vector references, scalar/crossing injection, hidden registered occurrences, retry
+  overrun, and any attempt to classify fallback-cap exhaustion as infeasibility.
+- These component tests do not satisfy the Phase 3E implementation Gate until the same
+  checks cover production-native records on abstract, direct-fallback, second-local-
+  transaction, rebuild, infeasible, protocol/integrity-failure, and independent bundle
+  replay paths.
 
 ## Out of scope
 
-J3 learned/statistical models, J4 bounded search/MCTS, J5 perception, causal attribution from the telescoping ladder, asymptotic guarantees beyond the enumerated finite model, using the supplied `D4` group as evidence of automatic symmetry or predicate discovery, using Phase 3A exact-model cross-orbit aliasing as evidence of oracle-free unknown-quotient discovery, crediting Phase 3B with local-hybrid evidence, or crediting Phase 3D with dependent-horizon completeness, workload economics, or a full Gate.
+J3 learned/statistical models, J4 bounded search/MCTS, J5 perception, causal attribution from the telescoping ladder, asymptotic guarantees beyond the enumerated finite model, using the supplied `D4` group as evidence of automatic symmetry or predicate discovery, using Phase 3A exact-model cross-orbit aliasing as evidence of oracle-free unknown-quotient discovery, crediting Phase 3B with local-hybrid evidence, crediting Phase 3D with dependent-horizon completeness, or crediting the Phase 3E component foundation with production counter completeness, workload economics, an official scalar/break-even, or a full Gate.
 
 ## Known failure modes
 
@@ -497,4 +631,4 @@ Frontier combinatorics, conservative rectangular composition, all policies excee
 
 ## Open risks
 
-Paired oracle-replacement ablations and component interactions are required before broad causal claims. More compact exact frontier representations may be needed beyond tiny instances. V0-028 removes Q/value signatures from the portable exact builder; V0-029 closes the first certificate-triggered recovery; and V0-030 closes slack-aware earliest-antichain authorization, finite-domain sparse capability, and capped joint search. Dependent-horizon recovery, automatic feature invention, workload economics/dynamic routing, and statistical Gates remain open.
+Paired oracle-replacement ablations and component interactions are required before broad causal claims. More compact exact frontier representations may be needed beyond tiny instances. V0-028 removes Q/value signatures from the portable exact builder; V0-029 closes the first certificate-triggered recovery; V0-030 closes slack-aware earliest-antichain authorization, finite-domain sparse capability, and capped joint search; and V0-032 freezes and partially implements the accounted routing foundation. Production-native instrumentation, real fallback/retry execution, the remaining nine original FQ7 role-authority verifiers, end-to-end Phase 3E replay, dependent-horizon recovery, automatic feature invention, workload economics/dynamic routing, and statistical Gates remain open.

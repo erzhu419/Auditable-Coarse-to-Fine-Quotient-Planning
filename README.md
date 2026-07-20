@@ -315,4 +315,20 @@ the registered finite Phase 3D scope.
 The verified frozen Phase 3C-to-3D consumption boundary, source provenance topology,
 zero-build counters, and evaluation-only verifier reconstruction are frozen by
 `V0-031`.
+The contract-`1.0.0` accounted dynamic-routing design is frozen by `V0-032`: full
+domain-separated identities, native counter completeness, strict shared-axis marginal
+route selection, typed evidence/terminal authority, trusted cap replay, no host full
+replay, and estimate-before-execute access order. This is an implementation contract,
+not an official Gate result; `official_execution_allowed=false`, scalar cost and
+break-even remain null, and both counter-completeness and workload-economics Gates
+remain `NOT_RUN` until every registered path and independent attack test passes.
+The current component foundation implements strict V1 identity/accounting/projection,
+formula-consistent marginal-upper candidates, routing/access/budget/workload/campaign
+mechanics, and four authority-bearing semantic handlers: native work, actual
+projection, access-protocol violations, and terminal classification. The arithmetic
+upper proof explicitly does not authorize selection: cardinality, route-upper, and
+route-decision authority remain fail closed. It still lacks production-native
+instrumentation, real fallback and second-transaction execution, the remaining
+semantic authorities, an integrated Phase 3E runner, and an independent bundle
+verifier.
 The earlier profiles retain their original claims and are not retroactively relabelled.

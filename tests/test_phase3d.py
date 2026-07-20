@@ -16,6 +16,7 @@ import acfqp.aliased_safe_chain as aliased_module
 import acfqp.build_coverage as coverage_module
 import acfqp.local_recovery as local_recovery_module
 import acfqp.phase3c as phase3c_module
+import acfqp.phase3d as phase3d_module
 import acfqp.planning.audit as audit_module
 import acfqp.portable as portable_module
 
@@ -33,9 +34,11 @@ from acfqp.artifacts import (
 from acfqp.phase3d import (
     _authority_accounting,
     construct_safe_chain_context,
+    prepare_safe_chain_estimate_context,
     run_phase3d,
 )
 from acfqp.phase3c import run_phase3c
+from acfqp.frozen_phase3c import load_frozen_phase3c_world
 from acfqp.portable import logical_id
 
 
@@ -108,6 +111,44 @@ def _resign_bundle(bundle: Path) -> None:
         f"{sha256_file(manifest_path)}  manifest.json\n",
         encoding="ascii",
     )
+
+
+def test_phase3e_estimate_preparation_stops_before_ground_execution(
+    phase3c_source_bundle: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def forbidden(*_args, **_kwargs):
+        raise AssertionError("route-specific execution happened before decision freeze")
+
+    # Binding is an explicit pre-decision operation.  Once its immutable
+    # model/action catalogues exist, estimate preparation may not consult any
+    # live kernel method.
+    frozen_world = load_frozen_phase3c_world(phase3c_source_bundle)
+    monkeypatch.setattr(G2048SafeChainKernel, "actions", forbidden)
+    monkeypatch.setattr(G2048SafeChainKernel, "is_terminal", forbidden)
+    monkeypatch.setattr(G2048SafeChainKernel, "step", forbidden)
+    monkeypatch.setattr(phase3d_module, "materialize_authorized_slice", forbidden)
+    monkeypatch.setattr(phase3d_module, "compile_sparse_recovery_inputs", forbidden)
+
+    prepared = prepare_safe_chain_estimate_context(frozen_world)
+
+    assert not prepared.pre_audit.certified
+    assert len(prepared.authorization.frontier_state_actions) == 16
+    assert len(prepared.authorization.reverse_dependency_state_actions) == 8
+    assert len(prepared.authorization.allowed_state_actions) == 24
+    assert not hasattr(prepared, "v1_slice")
+    assert not hasattr(prepared, "sparse_slice")
+    assert not hasattr(prepared, "capability")
+
+
+def test_phase3e_estimate_preparation_rejects_an_unbound_bundle_path(
+    phase3c_source_bundle: Path,
+) -> None:
+    with pytest.raises(
+        phase3d_module.Phase3DInvariantViolation,
+        match="prebound FrozenPhase3CWorld",
+    ):
+        prepare_safe_chain_estimate_context(phase3c_source_bundle)
 
 
 def test_phase3d_clean_bundle_closes_general_local_recovery_gate(

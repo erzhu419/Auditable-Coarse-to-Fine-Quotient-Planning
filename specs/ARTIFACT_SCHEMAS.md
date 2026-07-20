@@ -162,12 +162,12 @@ suite registry plus per-domain coverage/RAPM and per-row query IDs. The
 execution profile is one of `phase05_vertical_slice`, `production_query`,
 `exact_d4_quotient_baseline`, `aliased_cegar_positive_control`,
 `phase3a_true_state_alias_oracle_control`, `phase3b_portable_rapm_campaign`, or
-`phase3c_certificate_triggered_local_recovery`, or
-`phase3d_general_local_recovery`.
+`phase3c_certificate_triggered_local_recovery`, `phase3d_general_local_recovery`, or
+`phase3e_accounted_dynamic_routing`.
 Aliased bundles use `contract_version=0.5.0`; Phase 3A bundles use
 `contract_version=0.6.0`; Phase 3B bundles use `contract_version=0.7.0`; Phase 3C
 bundles use `contract_version=0.8.0`; Phase 3D bundles use
-`contract_version=0.9.0`. An older contract version cannot opt into a newer execution
+`contract_version=0.9.0`; Phase 3E bundles use `contract_version=1.0.0`. An older contract version cannot opt into a newer execution
 profile, result eligibility, or artifact schema.
 
 Every Phase 0.5/production per-query coverage-limited build records `build_coverage` in
@@ -721,6 +721,43 @@ Phase 3D general local recovery:
   full_phase3_gate_status=PHASE3_AGGREGATE_NOT_RUN
   workload_economics_gate_status=WORKLOAD_ECONOMICS_GATE_NOT_RUN
 
+Phase 3E accounted dynamic routing:
+  contract_version=1.0.0
+  profile_key=phase3e_accounted_dynamic_routing_v0
+  content_id=full SHA256(domain-tag || 0x00 || canonical-json)
+  counter_registry.registry_key=acfqp_counter_registry_v1
+  counter_registry_id=full content hash
+  comparison_profile.profile_key=comparison_profile_shared_resources_v1
+  comparison_profile_id=full content hash
+  shared_axes=(kernel_transition_calls, nonkernel_compute_events, output_bytes,
+               peak_mounted_bytes, peak_working_bytes, process_launches,
+               read_bytes, staged_bytes)
+  common_prefix_work_vector_id
+  route_attempt_id, logical_occurrence_id, decision_point_id
+  local transaction_id/index, frontier_snapshot_id, causal_evidence_id=required
+  direct-fallback transaction/frontier/causal fields=typed NOT_APPLICABLE
+  route_cap_profile_id, cardinality_evidence_id
+  formula_id, derivation_proof_id, authorizes_route_selection=false
+  formula operational_leaf_terms=34 exactly once
+  local native cap minima=13, local structural cap guards=6
+  local_upper_id, fallback_upper_id
+  route_decision_id, selected_route=LOCAL|FALLBACK
+  operational_work_vector_ids, evaluation_work_vector_ids
+  actual_projection_proof_ids, typed_verification_attestation_ids
+  access_event_log_id, route_decision_freeze_attestation_id
+  terminal_scope, terminal_class, terminal_code
+  rebuild_policy_id, rebuild_event_ids, campaign_occurrence_closure_id
+  closure/certification/economics denominators=registered logical occurrences
+  workload_vector_spec_id, vector_prefix_totals, prefix_worst_frontiers
+  partial semantic handlers=(WorkVector, actual projection,
+                             terminal classification, protocol access)
+  nine original FQ7 semantic roles including route decision=NOT_IMPLEMENTED
+  official_execution_allowed=false until all contract-1.0 implementation Gates pass
+  official_scalar_cost=null, official_N_break_even=null
+  scalar_gate_status=NOT_RUN
+  workload_economics_gate_status=WORKLOAD_ECONOMICS_GATE_NOT_RUN
+  counter_completeness_gate_status=COUNTER_COMPLETENESS_GATE_NOT_RUN
+
 portable normalizer rule:
   proof_id: unique nonempty string; rules sorted by proof_id
   kind: nonnegative_feature_caps_v1
@@ -796,6 +833,31 @@ The manifest hashes every other file, then a detached `manifest.sha256` hashes c
   local-frontier summary is not-run/empty and local/fallback costs are exactly zero.
 - Work-counter components reconcile exactly, keep evaluation-only J0 separate, require
   scalar totals/break-even null, and cannot infer `*_NOT_RUN` statuses from counters.
+- Every contract-1.0 operational counter leaf is explicitly observed and projects
+  exactly once; required native zero is not represented by absence. Additive and peak
+  axes retain their `sum` and `max` reducers across attempt/occurrence/workload objects.
+- A route-upper candidate is arithmetically admissible only with a replayable formula
+  proof over the exact cardinality field set. Local marginal formulae contain all 34 operational leaves,
+  zero common/rebuild/fallback leaves, 13 cap-min terms and six structural guards;
+  fallback formulae contain zero common/rebuild/local leaves. The transport envelope
+  alone is not generation evidence. Formula replay does not establish source-count
+  truth or cap enforcement and therefore records `authorizes_route_selection=false`;
+  semantic cardinality and route-upper authorities are still required.
+- One decision point compares only marginal local-attempt and direct-fallback uppers.
+  Common-prefix work is referenced separately. Local requires `FOUND` plus strict
+  componentwise dominance; equal, incomparable, missing, stale or forbidden local
+  evidence selects fallback.
+- Access events are contiguous and bind one attempt/decision. Decision freeze requires
+  an authority-bearing semantic decision result rather than a self-hashed decision. Before decision freeze
+  only registered frozen-input reads are legal; afterward events/artifacts belong only
+  to the selected route family, and local stages cannot run out of the registered
+  materialize/compile/worker/stitch/post-audit order.
+- Rebuild retry creates a new BuildEpoch and route attempt under the same logical
+  occurrence. All denominators count logical occurrences, all prior work remains
+  referenced, and fallback-cap exhaustion is a noncertificate.
+- A typed semantic attestation is accepted only when emitted by a registered replay
+  handler with an operational verification-work record. Roles marked
+  `NOT_IMPLEMENTED` cannot authorize a terminal merely by using a legal outcome string.
 
 ## Acceptance tests
 
@@ -896,6 +958,24 @@ The manifest hashes every other file, then a detached `manifest.sha256` hashes c
   `317/16000`, eight patched plus twelve abstract decisions, and only then J0. It rejects
   a source-boundary worker mount and coordinated causal/capability/result/cap/counter
   forgery even if manifests are regenerated.
+- Contract-1.0 component tests reject alternate/cross-domain/truncated IDs; missing,
+  extra, duplicate, wrong-lane or implicit-zero counter records; route-family mixing;
+  duplicate byte charge; forged actual projections; foreign selected uppers; and
+  selected actual work above any upper axis.
+- Formula replay rejects a missing/extra cardinality, non-official formula/profile/cap,
+  hand-edited upper, stale decision/frontier/transaction, forbidden marginal work, or
+  structural local cardinality above its cap (`LOCAL_CAP_IMPOSSIBLE`).
+- Routing/access tests reject local mechanics without strict dominance or after a
+  negative causal outcome, a decision freeze without semantic authority, any
+  pre-freeze kernel/materializer/compiler/worker access, out-of-order local stages,
+  local execution on a fallback route, fallback execution on a local route, and
+  deleted/reordered/rebound access events.
+- Budget/campaign/workload tests reject duplicated or gapped transactions, a worker
+  budget lie, a retry without a new epoch/attempt, a hidden noncertificate occurrence,
+  hash-only terminal, cross-protocol semantic result, self-signed comparison vector,
+  cross-occurrence work sum, scalar or `N_break_even` injection, incomplete permutation
+  enumeration, and reducer drift. These component passes leave official execution false
+  and both Phase 3E Gates `NOT_RUN`.
 
 ## Out of scope
 

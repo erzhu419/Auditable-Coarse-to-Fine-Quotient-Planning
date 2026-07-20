@@ -779,6 +779,162 @@ def solve_local_recovery(
     )
 
 
+def validate_local_solver_result(document: Mapping[str, Any]) -> None:
+    """Validate the serialized result without repeating the local search.
+
+    The operational host uses this check to authenticate the worker document
+    and all of its cheap derived fields.  It deliberately does not establish
+    search minimality; that is the isolated worker's claim and remains subject
+    to the trusted post-audit and an optional independent replay.
+    """
+
+    fields = {
+        "schema",
+        "request_id",
+        "occurrence_id",
+        "boundary_view_id",
+        "slice_id",
+        "frontier_id",
+        "localized_node_ids",
+        "decisions",
+        "root_reward_lower",
+        "unrestricted_reward_upper",
+        "regret_upper",
+        "regret_tolerance",
+        "root_failure_upper",
+        "delta",
+        "candidate_subset_count",
+        "certified_safe",
+        "certified_value",
+        "certified",
+        "result_id",
+    }
+    if not isinstance(document, Mapping):
+        raise ValueError("local solver result must be an object")
+    _require_fields(document, fields, "local solver result")
+    if document.get("schema") != RESULT_SCHEMA:
+        raise ValueError("unsupported local solver result schema")
+
+    def result_fraction(value: Any, *, field: str) -> Fraction:
+        if not isinstance(value, Mapping) or set(value) != {
+            "numerator",
+            "denominator",
+        }:
+            raise ValueError(f"{field} must be a canonical exact rational object")
+        return _fraction(value, field=field)
+
+    payload = dict(document)
+    result_id = payload.pop("result_id")
+    if result_id != _logical_id("local-result", payload):
+        raise ValueError("result_id does not bind the complete result document")
+
+    for field in (
+        "request_id",
+        "occurrence_id",
+        "boundary_view_id",
+        "slice_id",
+        "frontier_id",
+    ):
+        if not isinstance(document[field], str) or not document[field]:
+            raise ValueError(f"result.{field} must be a nonempty string")
+
+    localized = document["localized_node_ids"]
+    if (
+        not isinstance(localized, list)
+        or any(not isinstance(node_id, str) or not node_id for node_id in localized)
+        or localized != sorted(set(localized))
+    ):
+        raise ValueError("localized_node_ids must be uniquely sorted strings")
+    localized_set = set(localized)
+
+    decisions = document["decisions"]
+    if not isinstance(decisions, list):
+        raise ValueError("result.decisions must be a list")
+    decision_keys: list[tuple[str, str]] = []
+    for index, decision in enumerate(decisions):
+        if not isinstance(decision, Mapping):
+            raise ValueError(f"result.decisions[{index}] must be an object")
+        _require_fields(
+            decision,
+            {
+                "node_id",
+                "cell",
+                "remaining",
+                "state_id",
+                "action_id",
+                "expected_reward",
+                "failure_probability",
+            },
+            f"result.decisions[{index}]",
+        )
+        for field in ("node_id", "cell", "state_id", "action_id"):
+            if not isinstance(decision[field], str) or not decision[field]:
+                raise ValueError(
+                    f"result.decisions[{index}].{field} must be nonempty"
+                )
+        if decision["node_id"] not in localized_set:
+            raise ValueError("a patch decision names a nonlocalized node")
+        remaining = decision["remaining"]
+        if isinstance(remaining, bool) or not isinstance(remaining, int) or remaining <= 0:
+            raise ValueError("patch decision remaining must be a positive integer")
+        result_fraction(
+            decision["expected_reward"],
+            field=f"result.decisions[{index}].expected_reward",
+        )
+        failure = result_fraction(
+            decision["failure_probability"],
+            field=f"result.decisions[{index}].failure_probability",
+        )
+        if not 0 <= failure <= 1:
+            raise ValueError("patch decision failure lies outside [0,1]")
+        decision_keys.append((decision["node_id"], decision["state_id"]))
+    if decision_keys != sorted(set(decision_keys)):
+        raise ValueError("patch decisions must be uniquely sorted by node and state")
+
+    root_reward = result_fraction(
+        document["root_reward_lower"], field="result.root_reward_lower"
+    )
+    unrestricted = result_fraction(
+        document["unrestricted_reward_upper"],
+        field="result.unrestricted_reward_upper",
+    )
+    serialized_regret = result_fraction(
+        document["regret_upper"], field="result.regret_upper"
+    )
+    tolerance = result_fraction(
+        document["regret_tolerance"], field="result.regret_tolerance"
+    )
+    failure = result_fraction(
+        document["root_failure_upper"], field="result.root_failure_upper"
+    )
+    delta = result_fraction(document["delta"], field="result.delta")
+    if tolerance < 0:
+        raise ValueError("result regret tolerance must be nonnegative")
+    if not 0 <= failure <= 1 or not 0 <= delta <= 1:
+        raise ValueError("result failure or delta lies outside [0,1]")
+    regret = unrestricted - root_reward
+    if serialized_regret != regret:
+        raise ValueError("serialized regret_upper is false")
+
+    candidate_count = document["candidate_subset_count"]
+    if (
+        isinstance(candidate_count, bool)
+        or not isinstance(candidate_count, int)
+        or candidate_count <= 0
+    ):
+        raise ValueError("candidate_subset_count must be a positive integer")
+    safe = failure <= delta
+    valuable = 0 <= regret <= tolerance
+    expected_flags = {
+        "certified_safe": safe,
+        "certified_value": valuable,
+        "certified": safe and valuable,
+    }
+    for field, expected in expected_flags.items():
+        if document[field] is not expected:
+            raise ValueError(f"serialized {field} flag is false")
+
+
 __all__ = [
     "BOUNDARY_SCHEMA",
     "LocalPatchDecision",
@@ -786,4 +942,5 @@ __all__ = [
     "RESULT_SCHEMA",
     "SLICE_SCHEMA",
     "solve_local_recovery",
+    "validate_local_solver_result",
 ]

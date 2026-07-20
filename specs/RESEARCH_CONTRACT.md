@@ -27,6 +27,11 @@
   control for slack-aware causal localization, sparse worker authority, and joint
   deterministic value/risk composition; it is not the aggregate Phase 3 or economics
   Gate.
+- **Phase 3E accounted dynamic-routing profile:** the contract-`1.0.0` consumer of
+  frozen RAPM, failed-certificate, causal, and route-cardinality evidence. It freezes
+  a route decision before route-specific execution, preserves native work provenance,
+  and remains nonofficial until every V0-032 counter, verifier, failure-path, and
+  access-order acceptance test passes.
 
 ## Normative decisions
 
@@ -337,6 +342,69 @@ theoretically minimum encoding, uncapped scalability, economics, learning, or cr
 domain empirical generality. Workload economics/dynamic routing is the next Gate;
 learned proposal/model synthesis follows it.
 
+### Contract 1.0.0: accounted dynamic routing
+
+Ledger V0-032 freezes profile `phase3e_accounted_dynamic_routing_v0`. The scientific
+center remains an automatically synthesized reusable abstract world model in which
+multi-step contingent planning occurs primarily. Ground distinctions may be reopened
+only after that model cannot certify the current plan at the registered value/risk
+thresholds. Phase 3E accounts and routes that recovery; it does not replace the
+world-model objective with a local-repair or accounting objective.
+
+`WorkVectorV1` is the complete native ledger. Operational, evaluation, provenance,
+and diagnostic lanes remain distinct, and local, fallback, rebuild, failed-attempt,
+verification, process, I/O, and peak-capacity leaves retain their source. The shared
+comparison profile projects every operational charged leaf exactly once onto eight
+axes: kernel transition calls, registered nonkernel compute events, process launches,
+read bytes, staged bytes, output bytes, peak mounted bytes, and peak working bytes.
+Additive traffic and peak capacity are never summed together. Evaluation-only replay
+never enters an operational route vector.
+
+At one decision point only marginal `U_local_attempt` and `U_direct_fallback` are
+compared. Local is selected only under strict componentwise dominance; equality,
+incomparability, missing/stale/invalid evidence, a profile mismatch, or any causal
+outcome other than `FOUND` selects fallback. Common-prefix work is charged once outside
+both marginal uppers. A failed local attempt closes its transaction with its actual
+work intact; any fallback begins a new decision point.
+
+Every upper, cap, cardinality proof, frontier, causal result, decision, transaction,
+work vector, projection, attestation, and terminal artifact is typed and content
+addressed by full SHA-256 over `domain-tag || 0x00 || canonical-json`. Route uppers bind
+all query/build/plan/threshold/occurrence/attempt/decision/transaction/frontier/cap/
+cardinality/formula/profile identities. A changed identity makes the upper stale even
+when its numeric vector is unchanged. Typed `NOT_APPLICABLE` records are not missing
+fields and cannot replace a required local identity.
+
+The registered profile permits at most two continuous local transaction indices and
+uses the exact V0-032 causal, materialization, compiler, solver, rational, and
+post-audit caps. A trusted replay derives the budget outcome from unique native
+records; worker budget labels are untrusted. Tight route uppers are computed from
+frozen pre-execution cardinalities and exact formulas capped by the registered hard
+limits, never by substituting a broad hard cap.
+
+The operational protocol is estimate-before-execute. Before the content-addressed
+route decision freezes, no ground transition enumeration, local materialization,
+compiler, local/fallback worker, stitch, or post-audit is permitted. A fallback-selected
+path has native-zero local execution leaves and no local execution artifacts. A local
+path may materialize, compile, launch, stitch, and soundly post-audit only after the
+decision. Phase 3B/3C/3D full solver/J0/lift reconstruction belongs to standalone
+evaluation verifiers; the 1.0.0 operational path cannot replay it on the host.
+
+Terminal authority is the typed `(terminal_scope, terminal_class, terminal_code)`
+triple. Feasible plan, exact infeasibility, and noncertificate attempt closures are
+disjoint. `FALLBACK_CAP_EXHAUSTED`, protocol/integrity failure, rebuild required, and
+attempt-budget exhaustion never become infeasibility certificates. Every registered
+logical occurrence stays in the closure, certificate-coverage, and future economics
+denominators, including all failed local, fallback, rebuild, and retry work.
+
+Contract 1.0.0 freezes no scalar cost: `official_scalar_cost` and
+`official_N_break_even` are null and the scalar Gate is `NOT_RUN`. Until the native
+counter registry covers every operational and failure path, the no-full-replay
+migration, typed attestations, exact projections, trusted cap replay, terminal closure,
+access-order attacks, and independent verifier all pass, the only valid status is
+`official_execution_allowed=false`, `COUNTER_COMPLETENESS_GATE_NOT_RUN`, and
+`WORKLOAD_ECONOMICS_GATE_NOT_RUN`.
+
 ## Pseudocode / schema
 
 ```text
@@ -419,6 +487,24 @@ Phase3CLocalRecoveryResult:
   full_phase3_gate_status = PHASE3_AGGREGATE_NOT_RUN
   local_hybrid_gate_status = LOCAL_HYBRID_GATE_PASS
   workload_economics_gate_status = WORKLOAD_ECONOMICS_GATE_NOT_RUN
+
+Phase3EAccountedDynamicRoutingV1:
+  contract_version = 1.0.0
+  profile_key = phase3e_accounted_dynamic_routing_v0
+  counter_registry_id, comparison_profile_id, actual_projection_profile_id
+  logical_occurrence_id, route_attempt_id, decision_point_id, transaction_id
+  frontier_snapshot_id, causal_evidence_id, cardinality_evidence_ids
+  route_upper_formula_ids, route_upper_derivation_proof_ids
+  local_upper_id, fallback_upper_id, route_decision_id, access_event_log_id
+  operational_work_vector_ids, evaluation_work_vector_ids
+  typed_verification_attestation_ids, terminal_artifact_id
+  rebuild_policy_id, rebuild_event_ids, occurrence_closure_ids, campaign_summary_id
+  workload_vector_spec_id, vector_prefix_ids, worst_frontier_ids
+  official_execution_allowed = false
+  official_scalar_cost = null
+  official_N_break_even = null
+  counter_completeness_gate_status = COUNTER_COMPLETENESS_GATE_NOT_RUN
+  workload_economics_gate_status = WORKLOAD_ECONOMICS_GATE_NOT_RUN
 ```
 
 Total cost follows the V0-028 route-resolved equation above. Cached execution is not a
@@ -490,6 +576,31 @@ evaluation-only J0 costs remain separate.
 27. Phase 3D operational post-audit can step only exact overlay pairs through
     `PatchedAuditKernelView`; unpatched decisions remain envelope-evaluated. Operational
     exact lift is forbidden and its exact-hybrid fields remain null.
+28. Phase 3E freezes verified marginal route uppers and the route decision before any
+    route-specific ground transition, compiler, worker, stitch, or post-audit access.
+29. Every Phase 3E operational charged leaf is present, including native zero, and
+    projects exactly once to one shared additive or peak axis; evaluation, provenance,
+    diagnostic, and derived-only fields cannot enter operational comparison cost.
+30. Local selection requires strict componentwise dominance and `local_allowed=true`;
+    equality, incomparability, stale/missing evidence, cap exhaustion, no sound cover,
+    or local-cap impossibility deterministically selects fallback.
+31. Host full solver replay, unrestricted ground upper recomputation, exact lift, and
+    J0 are forbidden in the 1.0.0 operational lane and remain separately charged
+    evaluation work.
+32. A complete hash chain establishes bytes and binding only. It cannot change a
+    noncertificate closure or cap exhaustion into a plan/infeasibility certificate,
+    and no registered logical occurrence may be removed from a Gate denominator.
+33. A route-upper transport envelope is not generation evidence. Its complete
+    eight-axis vector must replay from the exact registered cardinality set, one
+    formula term per operational leaf, hard-cap minima/structural guards and the
+    current context/decision/transaction/frontier identities.
+34. A typed verification attestation is accepted only after the registered semantic
+    verifier recomputes its result and charges an operational verification record.
+    A role without an implemented authority fails closed even when its claimed outcome
+    belongs to the legal vocabulary.
+35. Contract 1.0 workload ordering is vector-valued. Until a later ledger revision
+    freezes a scalar, every prefix/campaign artifact keeps scalar cost and
+    `N_break_even` null and the scalar/economics Gates `NOT_RUN`.
 
 ## Acceptance tests
 
@@ -597,6 +708,13 @@ evaluation-only J0 costs remain separate.
   all queries, recomputes portable-envelope and live
   exact ground audits, lifts through serialized `kappa`, runs J0, validates IDs,
   cross-links and counters, and can replay the isolated planner.
+- Contract-1.0 component attacks cover canonical/domain IDs; exact native counter
+  completeness and reconciliation; eight-axis actual projection; 34-leaf route-upper
+  derivation with 13 native cap minima and six structural guards; strict-dominance
+  selection; pre-freeze access; transaction/rebuild closure; logical-occurrence
+  denominators; scalar-free prefix frontiers; and partial semantic authority. These
+  tests must retain `official_execution_allowed=false` and both Phase 3E Gates
+  `NOT_RUN` until the integrated production and independent bundle paths also pass.
 
 ## Out of scope
 

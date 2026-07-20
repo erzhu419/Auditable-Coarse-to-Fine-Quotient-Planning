@@ -10,6 +10,7 @@ import subprocess
 
 import pytest
 
+import acfqp.phase3d as phase3d_module
 from acfqp.general_local_solver import (
     ALGORITHM_ID,
     AUTHORIZED_EXHAUSTED,
@@ -23,6 +24,7 @@ from acfqp.general_local_solver import (
     solve_general_local_recovery,
     validate_general_local_result,
 )
+from acfqp.phase3d import _validate_general_worker_result
 
 
 def _canonical(value):
@@ -244,6 +246,37 @@ def test_joint_two_cell_risk_budget_finds_mixed_deterministic_policy():
     assert len(result.subset_records) == 4
     assert len(result.subset_records[-1].root_frontier) == 3
     validate_general_local_result(result.to_dict())
+
+
+def test_phase3d_operational_mode_does_not_replay_general_solver(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    capability, ground_slice, request = _two_cell_budget()
+    result = solve_general_local_recovery(
+        capability, ground_slice, request
+    ).to_dict()
+
+    def forbidden_replay(*_args, **_kwargs):
+        raise AssertionError("host general local solver replay was called")
+
+    monkeypatch.setattr(
+        phase3d_module, "solve_general_local_recovery", forbidden_replay
+    )
+    _validate_general_worker_result(
+        result,
+        capability,
+        ground_slice,
+        request,
+        operational_no_full_replay=True,
+    )
+    with pytest.raises(AssertionError, match="host general local solver replay"):
+        _validate_general_worker_result(
+            result,
+            capability,
+            ground_slice,
+            request,
+            operational_no_full_replay=False,
+        )
 
 
 def test_joint_member_composition_uses_cell_min_reward_and_max_risk():

@@ -26,6 +26,10 @@
 - **Phase 3D general local-recovery Gate:** the V0-030 finite, cap-aware positive
   control that closes joint value/risk composition, slack-aware causal localization,
   and sparse worker authority. Its pass is not aggregate Phase 3 or economics.
+- **Phase 3E accounted dynamic-routing profile:** the contract-`1.0.0`, V0-032
+  estimate-before-execute consumer profile. Its schema and acceptance obligations are
+  frozen, but neither official execution nor the counter/economics Gates are open
+  before their complete implementation and independent replay.
 
 ## Normative decisions
 
@@ -368,6 +372,64 @@ Dependent-horizon one-shot recovery, information-theoretic capability minimality
 automatic predicate/quotient discovery, economics, scale, learning, and cross-domain
 generality remain unproved. Workload economics/dynamic routing is next; learned model
 synthesis follows it.
+
+### Phase 3E accounted dynamic-routing implementation Gate
+
+Contract `1.0.0` and profile `phase3e_accounted_dynamic_routing_v0` freeze the
+implementation target but do not authorize an official workload run. The runner must
+first plan and audit in the frozen reusable RAPM, identify a failed-proof frontier, and
+derive causal/cardinality evidence without route-specific ground execution. It then
+freezes full-SHA typed local and fallback uppers and selects local only under strict
+componentwise dominance; every other valid comparison selects fallback.
+
+The Gate remains closed until all of the following pass together:
+
+- `CounterRegistryV1` records every required operational leaf and native zero on
+  abstract, local, fallback, rebuild, infeasible, cap/protocol/integrity-failure paths;
+- the exact projection maps every operational charged leaf once to the eight shared
+  axes, with no evaluation/provenance/diagnostic or derived double charge;
+- Phase 3B/3C/3D operational consumers perform no host full-solver, unrestricted
+  ground-upper, exact-lift, or J0 replay;
+- the Phase 3E consumer freezes its decision before transition materialization,
+  compiler, worker, stitch, post-audit, or fallback execution;
+- content-addressed caps, cardinalities, uppers, decisions, transactions, work vectors,
+  attestations, and terminal artifacts reject every stale or cross-role identity;
+- trusted budget replay enforces continuous transaction indices, at most two local
+  transactions, and all frozen V0-032 hard caps;
+- failed local plus fallback, rebuild/retry, complete infeasibility, cap exhaustion,
+  and every noncertificate closure retain all work and remain in logical-occurrence
+  denominators; and
+- an independent verifier passes the access-order, missing/duplicate counter,
+  projection, upper-violation, typed-attestation, terminal-class, and hash-chain attack
+  suites.
+
+The current working implementation has completed the component schemas and attack
+fixtures for full IDs, the 47-leaf registry/34-operational-leaf eight-axis projection,
+route formula and cap guards, marginal selection, access ordering, trusted local
+budget replay, scalar-free workload vectors, and occurrence/rebuild closure. Phase
+3B/3C/3D also expose no-full-replay consumption modes and Phase 3D exposes a
+pre-execution estimate boundary. Four semantic roles have real V1 replay handlers
+(work, actual projection, terminal classification, and protocol access); nine original
+FQ7 roles, including route decision, fail closed as `NOT_IMPLEMENTED`.
+
+This component milestone does not satisfy the implementation Gate. Production-native
+instrumentation, direct fallback/caps, the executable second transaction, the remaining
+semantic authorities, an integrated `run_phase3e`, and an independent bundle verifier
+are still absent. A component test pass cannot be relabelled as an official workload
+run.
+
+Until then the required tuple is exactly:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+```
+
+Vector prefix/worst-order mechanics may be tested, but no scalar or break-even claim
+may be emitted. In particular, `ops + bytes/4096` is not an official surrogate.
 
 ### Frozen later Gates
 

@@ -9,6 +9,7 @@ import subprocess
 
 import pytest
 
+import acfqp.phase3c as phase3c_module
 from acfqp.artifacts import object_id, sha256_file, to_jsonable
 from acfqp.local_recovery import (
     AuthorizedKernelView,
@@ -27,6 +28,7 @@ from acfqp.local_recovery import (
 from acfqp.local_solver import solve_local_recovery
 from acfqp.phase3c import (
     _select_recovery_proposal,
+    _validate_local_worker_result,
     _worker_input_sha256,
     construct_phase3c_world,
 )
@@ -221,6 +223,31 @@ def test_local_solver_selects_cardinality_minimal_complete_cell_patch(
     assert result.certified_safe
     assert result.certified_value
     assert result.certified
+
+
+def test_phase3c_operational_mode_does_not_replay_local_solver(
+    failed_case: dict,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def forbidden_replay(*_args, **_kwargs):
+        raise AssertionError("host local solver replay was called")
+
+    monkeypatch.setattr(phase3c_module, "solve_local_recovery", forbidden_replay)
+    _validate_local_worker_result(
+        failed_case["local_result"].to_dict(),
+        failed_case["boundary"],
+        failed_case["ground_slice"],
+        failed_case["request"],
+        operational_no_full_replay=True,
+    )
+    with pytest.raises(AssertionError, match="host local solver replay"):
+        _validate_local_worker_result(
+            failed_case["local_result"].to_dict(),
+            failed_case["boundary"],
+            failed_case["ground_slice"],
+            failed_case["request"],
+            operational_no_full_replay=False,
+        )
 
 
 def test_local_solver_rejects_risk_only_patch_when_value_certificate_fails(

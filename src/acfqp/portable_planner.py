@@ -28,6 +28,8 @@ from acfqp.portable import (
 
 
 RESULT_SCHEMA = "acfqp.portable_plan_result.v1"
+REWARD_UPPER_PROOF_SCHEMA = "acfqp.portable_reward_upper_proof.v1"
+REWARD_UPPER_FORMULA_ID = "portable_reward_bellman_upper_v1"
 
 
 @dataclass(frozen=True, order=True, slots=True)
@@ -178,6 +180,233 @@ class PortableExactEnvelopeAudit:
     risk_tolerance: Fraction
     reachable_cell_horizon_pairs: int
     certified: bool
+
+
+@dataclass(frozen=True, order=True, slots=True)
+class PortableRewardUpperRow:
+    """One independently replayable reward-only Bellman upper entry."""
+
+    remaining: int
+    cell_id: str
+    reward_upper: Fraction
+
+    def __post_init__(self) -> None:
+        if self.remaining <= 0:
+            raise ValueError("reward-upper rows require a positive horizon")
+        if not self.cell_id:
+            raise ValueError("reward-upper rows require a cell ID")
+        if self.reward_upper < 0:
+            raise ValueError("reward-upper rows must be nonnegative")
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "remaining": self.remaining,
+            "cell_id": self.cell_id,
+            "reward_upper": fraction_to_json(self.reward_upper),
+        }
+
+    @classmethod
+    def from_dict(cls, document: Any) -> "PortableRewardUpperRow":
+        if not isinstance(document, dict) or set(document) != {
+            "remaining",
+            "cell_id",
+            "reward_upper",
+        }:
+            raise ValueError("portable reward-upper row has an invalid field set")
+        remaining = document["remaining"]
+        cell_id = document["cell_id"]
+        if isinstance(remaining, bool) or not isinstance(remaining, int):
+            raise ValueError("reward-upper row remaining must be an integer")
+        if not isinstance(cell_id, str):
+            raise ValueError("reward-upper row cell_id must be a string")
+        return cls(
+            remaining,
+            cell_id,
+            fraction_from_json(
+                document["reward_upper"], field="reward-upper row value"
+            ),
+        )
+
+
+@dataclass(frozen=True, slots=True)
+class PortableRewardUpperProof:
+    """Content-addressed reward-only Bellman proof independent of a frontier.
+
+    The proof is deliberately generated without a :class:`PortablePlanResult`.
+    A consumer replays the scalar Bellman equations against the frozen RAPM and
+    query, which proves a sound unrestricted reward upper without reconstructing
+    the value--risk policy frontier.
+    """
+
+    model_id: str
+    query_id: str
+    rows: tuple[PortableRewardUpperRow, ...]
+    root_upper: Fraction
+
+    def __post_init__(self) -> None:
+        if not self.model_id or not self.query_id:
+            raise ValueError("reward-upper proof IDs must be nonempty")
+        if self.rows != tuple(sorted(set(self.rows))):
+            raise ValueError("reward-upper proof rows must be unique and sorted")
+        if self.root_upper < 0:
+            raise ValueError("reward-upper proof root must be nonnegative")
+
+    def _payload(self) -> dict[str, Any]:
+        return {
+            "schema": REWARD_UPPER_PROOF_SCHEMA,
+            "formula_id": REWARD_UPPER_FORMULA_ID,
+            "model_id": self.model_id,
+            "query_id": self.query_id,
+            "rows": [row.to_dict() for row in self.rows],
+            "root_upper": fraction_to_json(self.root_upper),
+        }
+
+    @property
+    def proof_id(self) -> str:
+        return logical_id("portable-reward-upper-proof", self._payload())
+
+    def to_dict(self) -> dict[str, Any]:
+        return {**self._payload(), "proof_id": self.proof_id}
+
+    @classmethod
+    def from_dict(
+        cls,
+        document: Any,
+        *,
+        model: PortableRAPM | None = None,
+        query: PortableQuery | None = None,
+    ) -> "PortableRewardUpperProof":
+        if not isinstance(document, dict) or set(document) != {
+            "schema",
+            "formula_id",
+            "model_id",
+            "query_id",
+            "rows",
+            "root_upper",
+            "proof_id",
+        }:
+            raise ValueError("portable reward-upper proof has an invalid field set")
+        if (
+            document["schema"] != REWARD_UPPER_PROOF_SCHEMA
+            or document["formula_id"] != REWARD_UPPER_FORMULA_ID
+        ):
+            raise ValueError("unsupported portable reward-upper proof")
+        for field in ("model_id", "query_id", "proof_id"):
+            if not isinstance(document[field], str) or not document[field]:
+                raise ValueError(
+                    f"portable reward-upper proof {field} must be a nonempty string"
+                )
+        if not isinstance(document["rows"], list):
+            raise ValueError("portable reward-upper proof rows must be a list")
+        proof = cls(
+            document["model_id"],
+            document["query_id"],
+            tuple(PortableRewardUpperRow.from_dict(row) for row in document["rows"]),
+            fraction_from_json(
+                document["root_upper"], field="reward-upper proof root"
+            ),
+        )
+        if document["proof_id"] != proof.proof_id:
+            raise ValueError("portable reward-upper proof content ID mismatch")
+        if model is not None and proof.model_id != model.model_id:
+            raise ValueError("portable reward-upper proof/model mismatch")
+        if query is not None and proof.query_id != query.query_id:
+            raise ValueError("portable reward-upper proof/query mismatch")
+        return proof
+
+
+def _reward_upper_bellman(
+    model: PortableRAPM,
+    query: PortableQuery,
+) -> tuple[tuple[PortableRewardUpperRow, ...], Fraction]:
+    """Compute the scalar Bellman table used to generate or replay a proof."""
+
+    if query.model_id != model.model_id:
+        raise ValueError("portable query/model mismatch")
+    model = PortableRAPM.from_dict(model.to_dict())
+    query = PortableQuery.from_dict(query.to_dict(), model)
+    model_document = model.to_dict()
+    query_document = query.to_dict()
+    weights = {
+        record["name"]: fraction_from_json(
+            record["value"], field="query normalized reward weight"
+        )
+        for record in query_document["normalized_reward_weights"]
+    }
+    entries_by_cell: dict[str, list[dict[str, Any]]] = {}
+    for entry in model_document["nominal"]:
+        entries_by_cell.setdefault(entry["cell_id"], []).append(entry["model"])
+    values: dict[tuple[int, str], Fraction] = {}
+    rows: list[PortableRewardUpperRow] = []
+    for remaining in range(1, query.horizon + 1):
+        for cell_id in sorted(entries_by_cell):
+            candidates: list[Fraction] = []
+            for transition in entries_by_cell[cell_id]:
+                features = {
+                    record["name"]: fraction_from_json(
+                        record["value"], field="nominal reward feature"
+                    )
+                    for record in transition["reward_features"]
+                }
+                value = sum(
+                    (
+                        weights.get(name, Fraction(0)) * feature
+                        for name, feature in features.items()
+                    ),
+                    Fraction(0),
+                )
+                if remaining > 1:
+                    for successor in transition["successor_probabilities"]:
+                        probability = fraction_from_json(
+                            successor["probability"],
+                            field="nominal successor probability",
+                        )
+                        value += probability * values.get(
+                            (remaining - 1, successor["cell_id"]), Fraction(0)
+                        )
+                candidates.append(value)
+            upper = max(candidates, default=Fraction(0))
+            values[(remaining, cell_id)] = upper
+            rows.append(PortableRewardUpperRow(remaining, cell_id, upper))
+    root_upper = sum(
+        (
+            fraction_from_json(
+                record["probability"], field="query initial probability"
+            )
+            * values.get((query.horizon, record["cell_id"]), Fraction(0))
+            for record in query_document["initial_distribution"]
+        ),
+        Fraction(0),
+    )
+    return tuple(rows), root_upper
+
+
+def build_portable_reward_upper_proof(
+    model: PortableRAPM,
+    query: PortableQuery,
+) -> PortableRewardUpperProof:
+    """Freeze a result-independent reward upper before planner output exists."""
+
+    rows, root_upper = _reward_upper_bellman(model, query)
+    return PortableRewardUpperProof(model.model_id, query.query_id, rows, root_upper)
+
+
+def verify_portable_reward_upper_proof(
+    model: PortableRAPM,
+    query: PortableQuery,
+    proof: PortableRewardUpperProof | Mapping[str, Any],
+) -> PortableRewardUpperProof:
+    """Replay the scalar proof without enumerating a value--risk frontier."""
+
+    parsed = PortableRewardUpperProof.from_dict(
+        proof.to_dict() if isinstance(proof, PortableRewardUpperProof) else dict(proof),
+        model=model,
+        query=query,
+    )
+    expected_rows, expected_root = _reward_upper_bellman(model, query)
+    if parsed.rows != expected_rows or parsed.root_upper != expected_root:
+        raise ValueError("portable reward-upper Bellman proof is false or incomplete")
+    return parsed
 
 
 def _pareto_prune(points: list[PortableParetoPoint]) -> tuple[PortableParetoPoint, ...]:
@@ -521,6 +750,57 @@ def audit_exact_portable_policy(
         raise ValueError("portable query/model mismatch")
     model = PortableRAPM.from_dict(model.to_dict())
     query = PortableQuery.from_dict(query.to_dict(), model)
+    frontier = solve_portable_pareto(model, query).frontier
+    unrestricted_reward_upper = max(
+        (point.expected_reward for point in frontier), default=Fraction(0)
+    )
+    return audit_exact_portable_policy_with_frozen_upper(
+        model,
+        query,
+        policy,
+        unrestricted_reward_upper=unrestricted_reward_upper,
+        regret_tolerance=regret_tolerance,
+    )
+
+
+def audit_exact_portable_policy_with_frozen_upper(
+    model: PortableRAPM,
+    query: PortableQuery,
+    policy: PortablePolicy,
+    *,
+    unrestricted_reward_upper: Fraction | int,
+    regret_tolerance: Fraction = Fraction(1, 20),
+) -> PortableExactEnvelopeAudit:
+    """Audit one policy against an already frozen sound reward upper bound.
+
+    Unlike :func:`audit_exact_portable_policy`, this operational verifier does
+    not solve the portable planning problem or reconstruct its frontier.  The
+    caller must supply the content-bound upper produced before this validation
+    step.  The routine only round-trips the serialized model/query, proves that
+    the realization envelope is point-valued, and evaluates the supplied
+    policy exactly against that envelope.
+    """
+
+    if query.model_id != model.model_id:
+        raise ValueError("portable query/model mismatch")
+    if isinstance(unrestricted_reward_upper, bool) or not isinstance(
+        unrestricted_reward_upper, (int, Fraction)
+    ):
+        raise ValueError(
+            "unrestricted_reward_upper must be an exact int or Fraction"
+        )
+    root_upper = Fraction(unrestricted_reward_upper)
+    if root_upper < 0:
+        raise ValueError("unrestricted_reward_upper must be nonnegative")
+    if isinstance(regret_tolerance, bool) or not isinstance(
+        regret_tolerance, (int, Fraction)
+    ):
+        raise ValueError("regret_tolerance must be an exact int or Fraction")
+    regret_tolerance = Fraction(regret_tolerance)
+    if regret_tolerance < 0:
+        raise ValueError("regret_tolerance must be nonnegative")
+    model = PortableRAPM.from_dict(model.to_dict())
+    query = PortableQuery.from_dict(query.to_dict(), model)
     document = model.to_dict()
     query_document = query.to_dict()
     transitions: dict[tuple[str, str], dict[str, Any]] = {}
@@ -624,16 +904,16 @@ def audit_exact_portable_policy(
         for record in query_document["initial_distribution"]
     )
     expected_reward, failure_probability = evaluate(initial, query.horizon)
-    frontier = solve_portable_pareto(model, query).frontier
-    unrestricted_reward_upper = max(
-        (point.expected_reward for point in frontier), default=Fraction(0)
-    )
-    regret_upper = unrestricted_reward_upper - expected_reward
+    if root_upper < expected_reward:
+        raise ValueError(
+            "unrestricted_reward_upper is below the audited policy reward"
+        )
+    regret_upper = root_upper - expected_reward
     risk_tolerance = fraction_from_json(query_document["delta"], field="query.delta")
     return PortableExactEnvelopeAudit(
         expected_reward,
         failure_probability,
-        unrestricted_reward_upper,
+        root_upper,
         regret_upper,
         regret_tolerance,
         risk_tolerance,
@@ -683,15 +963,22 @@ if __name__ == "__main__":  # pragma: no cover - exercised by subprocess tests
 
 
 __all__ = [
+    "REWARD_UPPER_FORMULA_ID",
+    "REWARD_UPPER_PROOF_SCHEMA",
     "RESULT_SCHEMA",
     "PortableParetoPoint",
     "PortableExactEnvelopeAudit",
     "PortablePlanResult",
     "PortablePolicy",
     "PortablePolicyDecision",
+    "PortableRewardUpperProof",
+    "PortableRewardUpperRow",
+    "build_portable_reward_upper_proof",
     "dump_result",
     "audit_exact_portable_policy",
+    "audit_exact_portable_policy_with_frozen_upper",
     "load_result",
     "main",
     "solve_portable_pareto",
+    "verify_portable_reward_upper_proof",
 ]

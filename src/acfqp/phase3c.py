@@ -68,7 +68,7 @@ from acfqp.local_recovery import (
     materialize_authorized_slice,
     redact_authorized_slice_for_worker,
 )
-from acfqp.local_solver import solve_local_recovery
+from acfqp.local_solver import solve_local_recovery, validate_local_solver_result
 from acfqp.portable import (
     PortableBuildResult,
     PortableQuery,
@@ -567,12 +567,114 @@ def _worker_input_sha256(document: Any) -> str:
     return hashlib.sha256(_worker_input_bytes(document)).hexdigest()
 
 
+def _validate_local_worker_result(
+    result: dict[str, Any],
+    boundary_view: dict[str, Any],
+    ground_slice: dict[str, Any],
+    request: dict[str, Any],
+    *,
+    operational_no_full_replay: bool,
+) -> None:
+    """Validate a local-worker result, optionally replaying the full search."""
+
+    try:
+        validate_local_solver_result(result)
+    except (KeyError, TypeError, ValueError) as exc:
+        raise Phase3CInvariantViolation(
+            f"isolated local result validation failed: {exc}"
+        ) from exc
+
+    expected_bindings = {
+        "request_id": request.get("request_id"),
+        "occurrence_id": request.get("occurrence_id"),
+        "boundary_view_id": boundary_view.get("boundary_view_id"),
+        "slice_id": ground_slice.get("slice_id"),
+        "frontier_id": boundary_view.get("frontier_id"),
+        "unrestricted_reward_upper": boundary_view.get(
+            "unrestricted_reward_upper"
+        ),
+        "regret_tolerance": boundary_view.get("regret_tolerance"),
+        "delta": boundary_view.get("delta"),
+    }
+    if any(result.get(field) != value for field, value in expected_bindings.items()):
+        raise Phase3CInvariantViolation(
+            "isolated local result does not bind the frozen request capabilities"
+        )
+    if (
+        ground_slice.get("frontier_id") != boundary_view.get("frontier_id")
+        or request.get("frontier_id") != boundary_view.get("frontier_id")
+        or request.get("boundary_view_id") != boundary_view.get("boundary_view_id")
+        or request.get("slice_id") != ground_slice.get("slice_id")
+    ):
+        raise Phase3CInvariantViolation(
+            "local worker inputs contain inconsistent capability bindings"
+        )
+
+    cells = {
+        row.get("node_id"): row
+        for row in ground_slice.get("cells", [])
+        if isinstance(row, dict)
+    }
+    localized = set(result["localized_node_ids"])
+    if not localized.issubset(cells):
+        raise Phase3CInvariantViolation(
+            "isolated local result localizes outside the authorized slice"
+        )
+    expected_decisions = {
+        (node_id, member.get("state_id"))
+        for node_id in localized
+        for member in cells[node_id].get("members", [])
+        if isinstance(member, dict)
+    }
+    observed_decisions = {
+        (row["node_id"], row["state_id"]) for row in result["decisions"]
+    }
+    if observed_decisions != expected_decisions:
+        raise Phase3CInvariantViolation(
+            "isolated local result does not assign every localized member exactly once"
+        )
+    for decision in result["decisions"]:
+        cell = cells[decision["node_id"]]
+        member = next(
+            (
+                row
+                for row in cell.get("members", [])
+                if row.get("state_id") == decision["state_id"]
+            ),
+            None,
+        )
+        if (
+            decision["cell"] != cell.get("cell")
+            or decision["remaining"] != cell.get("remaining")
+            or member is None
+            or decision["action_id"]
+            not in {row.get("action_id") for row in member.get("actions", [])}
+        ):
+            raise Phase3CInvariantViolation(
+                "isolated local result contains an unauthorized patch decision"
+            )
+
+    if not operational_no_full_replay:
+        replay = solve_local_recovery(boundary_view, ground_slice, request).to_dict()
+        if result != replay:
+            raise Phase3CInvariantViolation(
+                "isolated local result disagrees with deterministic replay"
+            )
+
+
 def run_fresh_local_solver(
     boundary_view: dict[str, Any],
     ground_slice: dict[str, Any],
     request: dict[str, Any],
+    *,
+    operational_no_full_replay: bool = False,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
-    """Run the stdlib-only repair worker with no model/kernel/project mount."""
+    """Run the stdlib-only repair worker with no model/kernel/project mount.
+
+    The default preserves the historical Phase 3C deterministic host replay.
+    Contract-1.0 operational consumers set ``operational_no_full_replay`` and
+    rely on strict document/binding checks plus the later sound post-audit.
+    """
 
     bubblewrap = shutil.which("bwrap")
     if bubblewrap is None:
@@ -662,11 +764,13 @@ def run_fresh_local_solver(
             )
         result = json.loads(result_path.read_text(encoding="utf-8"))
         attestation = json.loads(attestation_path.read_text(encoding="utf-8"))
-        replay = solve_local_recovery(boundary_view, ground_slice, request).to_dict()
-        if result != replay:
-            raise Phase3CInvariantViolation(
-                "isolated local result disagrees with deterministic replay"
-            )
+        _validate_local_worker_result(
+            result,
+            boundary_view,
+            ground_slice,
+            request,
+            operational_no_full_replay=operational_no_full_replay,
+        )
         attestation_payload = dict(attestation)
         attestation_id = attestation_payload.pop("attestation_id", None)
         expected_sources = {

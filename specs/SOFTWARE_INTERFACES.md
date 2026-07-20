@@ -436,6 +436,133 @@ acfqp-phase3d --phase3c-bundle artifacts/phase3c --output artifacts/phase3d
 python3 scripts/verify_phase3d.py artifacts/phase3d
 ```
 
+### Contract 1.0.0 accounted dynamic-routing interfaces
+
+Contract 1.0 adds new interfaces without changing the historical 0.x runners:
+
+```text
+phase3e_ids.content_id(domain_tag, canonical_payload)
+  -> full 64-hex SHA256(domain-tag || 0x00 || canonical-json)
+
+CounterRegistryV1.materialize(exact CounterRecordV1 rows)
+  -> WorkVectorV1
+derive_comparison_vector_v1(WorkVectorV1, CounterRegistryV1,
+                            ComparisonProfileV1)
+  -> ComparisonVectorV1
+derive_actual_projection_v1(work, registry, comparison_profile, actual_profile,
+                            source_lane, work_scope)
+  -> (ComparisonVectorV1, ActualProjectionProofV1)
+verify_actual_projection_v1(proof, work, claimed_comparison, registry,
+                            comparison_profile, actual_profile)
+  -> recomputed ComparisonVectorV1 or fail closed
+
+prepare_safe_chain_estimate_context(prebound_frozen_phase3c_world)
+  -> SafeChainPreparedEstimateContext
+  # no live kernel actions/is_terminal/step, materialization, compiler, or worker
+
+RouteUpperBoundEnvelopeV1.validate_bindings(context, decision_point,
+                                            cardinality, transaction, causal)
+derive_route_upper_v1(context, decision_point, cardinality, caps,
+                      registry, comparison_profile, formula,
+                      transaction?, causal?)
+  -> (RouteUpperBoundEnvelopeV1, RouteUpperDerivationProofV1)
+verify_route_upper_derivation_v1(envelope, proof, same frozen inputs)
+  -> exact arithmetic/binding replay or fail closed
+  # proof.authorizes_route_selection is false until cardinality/upper authority exists
+MarginalRouteDecisionV1.select(decision_point, fallback_upper,
+                               causal=..., local_upper=...)
+  -> unauthoritative comparison mechanics only
+
+FailClosedAccessController.freeze_route_decision(authority_route_decision_result)
+decide_then_execute(controller, authority_route_decision_result,
+                    local_callback, fallback_callback)
+  -> exactly the selected callback, with replayable AccessEventLogV1
+  # currently fails closed because ROUTE_DECISION authority is NOT_IMPLEMENTED
+
+TrustedBudgetReplayV1.replay_work_vectors(transactions, work_vectors, caps)
+  -> trusted budget outcome independent of worker claim
+
+analyze_workload_vectors_v1(workload_spec, replayable_occurrence_accounting,
+                            registry, comparison_profile, actual_profile)
+  -> reducer-aware vector prefixes and componentwise-worst frontier
+
+CampaignOccurrenceClosureV1.close(occurrence, policy, attempts,
+                                  terminal_semantic_results,
+                                  work_refs, rebuild_events)
+CampaignClosureSummaryV1.summarize(registered_occurrences, closures)
+  -> logical-occurrence denominators; scalar/N remain null
+
+verify_work_vector_semantics_v1(...)
+verify_actual_projection_semantics_v1(...)
+verify_marginal_route_decision_semantics_v1(...)
+  -> NOT_IMPLEMENTED until cardinality and route-upper authorities exist
+verify_forbidden_access_violation_semantics_v1(...)
+verify_terminal_classification_semantics_v1(...)
+  -> partial typed semantic results; unresolved FQ7 roles are NOT_IMPLEMENTED
+```
+
+The V1 counter registry requires every operational leaf plus explicit native closure
+records for route, solver, and process reconciliation. Local/fallback/rebuild source
+families remain separate. The eight-axis comparison is a projection, not the native
+record, and peak mounted/working bytes retain `max` reducers. Generic branch volume
+must first be reclassified as a registered Bellman/action/solver event.
+
+`ActualProjectionProofV1` is authoritative only when independently recomputed from the
+referenced `WorkVectorV1`. Common-prefix work has its own vector; it cannot enter a
+marginal selected-route upper. Any shared axis above that upper is
+`UPPER_BOUND_VIOLATION/PROTOCOL_FAILURE`. A failed local followed by fallback retains
+both vectors and comparisons; `OccurrenceWorkSumV1` derives a sum/max aggregate while
+preserving all source references.
+
+`RouteUpperFormulaV1` is the arithmetic generator missing from a transport envelope.
+Its official route-specific form assigns exactly one affine expression to each of the
+34 operational leaves. For local work, 13 leaf bounds are reduced by their registered
+hard caps and six non-work structural cardinalities are guarded separately; exceeding
+one of those six closes local eligibility as `LOCAL_CAP_IMPOSSIBLE`. Forbidden common,
+rebuild, or opposite-route leaves must be present with value zero. The derivation proof
+recomputes the complete eight-axis upper and rejects a hand-filled value or stale
+context/frontier/transaction/profile. It does not verify that cardinality source
+artifacts are truthful or that caps were operationally enforced, so its proof carries
+`authorizes_route_selection=false` and cannot by itself freeze a decision.
+
+The Phase 3B operational validator consumes the isolated portable result without
+rerunning the portable planner, ground audit, lift, or J0.  It requires a separately
+frozen, content-addressed reward-only Bellman proof bound to the model, query,
+BuildEpoch and threshold profile; a submitted frontier cannot define its own
+unrestricted upper. Phase 3C/3D worker helpers likewise expose an explicit
+`operational_no_full_replay` mode: the host verifies schema, content/bindings,
+authorized decisions, declared limit bindings, and runtime attestation, while complete
+reconstruction remains evaluation-only.  These helpers do **not** by themselves prove
+native counter/cap replay; that remains a locked Phase 3E integration obligation.
+Historical defaults retain their original replay semantics.
+
+`AccessEventLogV1` admits only frozen-model/proof/catalogue/cardinality/profile reads
+before route-decision freeze. Kernel/outcome access, local materialization, compiler,
+either route worker, stitch, and post-audit are forbidden before the freeze. A selected
+fallback rejects every local execution or local-artifact event; a selected local route
+rejects fallback execution. Local execution must follow materialize, compile, worker,
+stitch, then post-audit. The freeze accepts only an authority-bearing semantic route
+decision result, not a self-hashed decision. Any deletion, reorder, identity rebound,
+or premature operation closes the attempt as
+`ATTEMPT_CLOSURE_NONCERTIFICATE.PROTOCOL_FAILURE`.
+
+The scalar-free workload and campaign layers preserve every registered logical
+occurrence in closure, certification and future economics denominators, even across a
+failed attempt and one explicitly authorized rebuild. Workload analysis replays each
+occurrence from its native WorkVector, projection proof and occurrence sum; a
+self-signed comparison vector is inadmissible. Campaign closure likewise accepts only
+authority-bearing terminal-classification results. These layers never manufacture a
+scalar crossing or a single scalar worst order. The partial semantic layer performs
+actual replay for work, projection, terminal classification and protocol access; nine
+original FQ7 roles—including route decision—reject even well-formed outcome strings,
+so plan-like and infeasibility-like terminals cannot be authorized by hashes.
+
+These are implemented contract interfaces, not an official run result. Production
+native instrumentation, fallback numeric caps and real fallback execution, the second
+transaction execution loop, the remaining semantic authorities, an integrated runner,
+and an independent complete campaign verifier still have to close before
+`official_execution_allowed` can change from false or either Phase 3E Gate can run.
+
 ## Pseudocode / schema
 
 ```text
