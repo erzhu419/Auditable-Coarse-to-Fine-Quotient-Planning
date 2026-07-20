@@ -33,6 +33,7 @@ The Phase 0.5 vertical slice and the frozen positive G2048 follow-up use these d
 | Phase 3A LMB exact-behavioural construction slice | `lmb_generated_n6_t2_k3_d2_seed0_v0` | train: canonical `H=3,delta=1/20`; held-out: match-only `H=3,delta=0` and canonical `H=2,delta=0`, all on the registered nine-state support | train-support 25-state closure; query-independent refinement `3 -> 5 -> 5`; total `25 -> 5`, active `18 -> 3`; physical orbits/cells `13 -> 5`; state-action orbits/entries `16 -> 4`; the same training graph jointly reaches multiple physical orbits inside each active cell; all three exact rows certify |
 | Phase 3B G2048 portable RAPM campaign | safe-chain structure and frozen coverage under `phase3b_portable_rapm_campaign_v0` | six distinct registered queries, including four `H=2` rows and registered initial-support/distribution and horizon variations at fixed reward/risk | query-neutral exact behavioural trace `2 -> 9 -> 10 -> 10`; state/action `192 -> 10`, `144 -> 17`; portable round trip; fresh-process planning; freeze all proposals before independent audit/J0/lift; one unchanged epoch/RAPM |
 | Phase 3B LMB portable RAPM campaign | `lmb_generated_n6_t2_k3_d2_seed0_v0` and frozen coverage | five distinct registered queries: the Phase 3A three plus canonical `H=3,delta=1/10` and terminal-clear-only `H=3` | query-neutral exact behavioural trace `3 -> 5 -> 5`; state/action `25 -> 5`, `40 -> 4`; portable round trip; fresh-process planning; freeze all proposals before independent audit/J0/lift; one unchanged epoch/RAPM |
+| Phase 3C G2048 local-recovery slice | immutable eleven-cell stage-1 aliased safe-chain RAPM under `phase3c_certificate_triggered_local_recovery_v0` | canonical D4-uniform `H=1,delta=0` and `H=2,delta=1/20` | first row abstract-certified; second row certificate-fails then uses a strict 40-pair/160-outcome authorization (worker mounts 32 frontier pairs) and minimal eight-state/eight-decision overlay; hybrid retains abstract nodes; immutable base; post `U_F=397/20000`; no fallback/rebuild |
 
 The positive safe-chain row is implemented as a separate exact-bundle profile. It does not retroactively replace the canonical Phase 0.5 regression and enters positive-result aggregates only when that run's J0 golden checks and independent exact-quotient artifact verification pass. The canonical row is permanently `infeasibility_only`; safe-chain is `known_group_exact_quotient_eligible_after_certification` and supports only the V0-024 known-`D4` claim after an actual exact `CERTIFIED` result. Its profile uses no CEGAR split or fallback; a failed invariant yields `EXACT_D4_QUOTIENT_INVARIANT_VIOLATION` and remains in the denominator as a failed positive control.
 
@@ -108,6 +109,38 @@ decision, portable/live-ground-audit, local/fallback, evaluation-only-J0, and
 reconciliation fields. The frozen
 cost equation applies only after preregistering a scalar cost functional; this slice
 leaves scalar `C_world`, `C_ground`, and break-even `null` and makes no economics claim.
+
+Contract `0.8.0` adds the following Phase 3C positive-control matrix over the **same**
+immutable query-neutral stage-1 eleven-cell aliased safe-chain RAPM; it does not add a
+new V0 risk threshold:
+
+| Query | `H` | `delta` | Pre-audit | Final route | Required local work |
+|---|---:|---:|---|---|---|
+| canonical safe-chain H1 | 1 | 0 | certified | `ABSTRACT_CERTIFIED` | none |
+| canonical safe-chain H2 | 2 | `1/20` | failed | `LOCAL_GROUND_RECOVERY` | minimal overlay |
+
+The H2 row freezes a direct frontier of two `h=1` cells/12 states/32 state-action
+pairs/128 outcomes, plus 8 selected-action ancestor pairs/32 outcomes. Total
+authorization is `40 < 48` pairs/`160 < 192` outcomes against the same-query all-action
+graph and `40 < 144` covered pairs; the isolated worker mounts only the 32 frontier
+pairs. The repair may patch only the eight-state `((1,1),(2,2))` cell (16 available
+state-action pairs/64 outcomes, 8 decisions), and the final graph must keep root and
+rare `((2,3),)` decisions abstract. Required
+post-results are reward `3/64`, sound risk `397/20000`, exact hybrid risk `317/16000`,
+and normalized regret upper zero; J0 risk `99/5000` is evaluation-only after freeze.
+Base RAPM/BuildEpoch changes, fallback and rebuild counts are zero. Artifacts record
+`grammar_used=false`.
+
+Phase 3C metrics include direct versus propagated bad-node counts, frontier state/cell/
+state-action counts, reverse-dependency and authorization cardinality, authorized/full
+ratio, overlay state/action/outcome cardinality, abstract/local decision counts, base
+byte/ID equality, isolated input/output bytes, pre/post certificate bounds, route,
+fallback/rebuild, evaluation-order proof, and all work-counter reconciliations. The
+independent replay recomputes these from source rather than trusting IDs or a regenerated
+manifest. A pass reports `PHASE3C_LOCAL_RECOVERY_PASS`, `LOCAL_HYBRID_GATE_PASS`,
+`PHASE3_AGGREGATE_NOT_RUN`, and `WORKLOAD_ECONOMICS_GATE_NOT_RUN`; the two rows are not
+inserted into aggregate Phase 3/5 denominators and support no predicate-invention,
+unknown-quotient, economics, scale, learning, or generality claim.
 
 Every row additionally records build-coverage mode, initial-declaration hash, covered
 state count, and the no-outside-reuse flag. Aggregation treats builds with distinct

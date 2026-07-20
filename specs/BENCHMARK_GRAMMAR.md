@@ -236,6 +236,42 @@ All three carry the same sorted caps:
 feature registration or authorize a different reward basis or goal; in particular,
 these three proof IDs cannot be cross-used.
 
+### Phase 3C registered safe-chain workload
+
+Contract `0.8.0` reuses the exact ground structure, full 192-state coverage, boundary
+action semantics, and query-neutral eleven-cell **stage-1** aliased safe-chain RAPM. It
+does not alter the G2048 structural key, spawn law, canonical reward basis, V0 risk
+threshold family, or Phase 3B models. Its ordered queries are:
+
+```text
+g2048.safe_chain.canonical.h1.delta0:
+  rho0 = Uniform(Orb_D4(x_base)), H=1, delta=0,
+  reward = canonical normalized merge reward, goal=default
+
+g2048.safe_chain.canonical.h2.delta05:
+  rho0 = Uniform(Orb_D4(x_base)), H=2, delta=1/20,
+  reward = canonical normalized merge reward, goal=default
+```
+
+The first must certify without repair. The second must expose direct selected-action
+residuals in the two `h=1` histogram cells `((1,1),(2,2))` and `((2,3),)`. Local
+authorization includes those 12 states/32 legal state-action pairs/128 outcomes plus 8
+selected-action-concretizer ancestor pairs/32 outcomes: `40 < 48` pairs and
+`160 < 192` outcomes versus the same-query all-action graph, and `40 < 144` covered
+pairs. The isolated worker mounts only the 32-pair frontier slice. The minimal
+query-owned overlay distinguishes only the eight states of `((1,1),(2,2))`; their local
+view has 16 available state-action pairs/64 outcomes and the overlay freezes 8
+decisions. The rare `((2,3),)` decision remains abstract because the distributional
+certificate then passes.
+
+This overlay is an explicit ground-distinction patch, not a predicate-grammar split.
+The recovery transaction/artifacts must set `grammar_used=false`; no feature or
+threshold is credited to local repair and no predicate-invention claim is permitted.
+The immutable base still identifies its already-frozen V0-026 first-revision
+provenance. Required post-results are
+reward `3/64`, sound failure `397/20000`, exact hybrid failure `317/16000`, and regret
+upper zero. J0 failure `99/5000` is evaluation-only after the hybrid certificate.
+
 ### Predicate grammar
 
 The minimum cross-domain strategic basis is capacity slack `S_cap=(K-occupancy)/K` (for G2048, empty cells divided by board cells), match-debt summaries for arity `m_j`, normalized branching `log(1+|A|)/log(1+Amax)`, immediate release liquidity `L1`, unlock depth `U`, and relaxed conversion distance `C` clipped at `H`. The primary shared-algorithm claim permits finite, preregistered domain atoms; Phase 0.5 additionally registers G2048 `min_rank`, `max_rank`, and `rank_sum`, and LMB buffer/object/action counts. These are current-state structural measurements, never oracle or rollout values. A later shared-grammar claim must exclude them. Domain adapters must document exact feature semantics and total terminal-state conventions.

@@ -9,6 +9,9 @@
 - **Portable round trip:** canonical serialization, fresh-process deserialization, and
   reserialization with identical extensional model ID and semantic bytes. The external
   BuildEpoch binding is verified separately.
+- **Local-recovery replay:** independent reconstruction of the failed direct-proof DAG,
+  authorization, isolated repair, immutable-base overlay, hybrid stitch and post-audit
+  before any evaluation-only J0 access.
 
 ## Normative decisions
 
@@ -145,6 +148,40 @@ evaluation-J0/reconciliation counters with null scalar break-even. The four resu
 `PHASE3B_PORTABLE_RAPM_PASS`, `PHASE3_AGGREGATE_NOT_RUN`,
 `LOCAL_HYBRID_GATE_NOT_RUN`, and `WORKLOAD_ECONOMICS_GATE_NOT_RUN`. Timing variation
 cannot upgrade the economics status.
+
+Contract `0.8.0` adds `acfqp-phase3c --output artifacts/phase3c` and independent
+`python3 scripts/verify_phase3c.py artifacts/phase3c`. A clean Phase 3C rerun must
+reproduce the same stage-1 eleven-cell base RAPM and BuildEpoch bytes/IDs for both
+registered queries, the H1 direct certificate, and the H2 pre-audit failure before any
+local input exists.
+
+For H2 it must reproduce the atomic direct-proof DAG, the two-cell/12-state frontier
+(32 pairs/128 outcomes), selected-action ancestor dependency (8 pairs/32 outcomes),
+and total `40<48`-pair/`160<192`-outcome authorization against the same-query
+all-action graph (`40<144` covered pairs). It also reproduces the isolated runtime
+attestation and unique eight-state overlay with 16 available pairs/64 outcomes and 8
+decisions. The runtime is freshly launched with only the 32-pair frontier ground slice,
+content-addressed request/redacted-boundary inputs,
+staged local runtime files, system libraries and empty output. It cannot see the
+checkout, full RAPM/kernel/coverage, builder cache, other requests, J0, or a fallback
+solver. Module origins, namespace evidence and input/output hashes are deterministic
+semantic evidence except for explicitly non-hashed runtime provenance such as PID/time.
+
+Reproduction then restitches the mixed policy, verifies reachable local decisions plus
+abstract root/rare-cell decisions, and obtains reward `3/64`, sound risk `397/20000`,
+exact risk `317/16000`, and regret upper zero. Only afterward may it reproduce J0 risk
+`99/5000`. Both clean runs have zero fallback/rebuild, `grammar_used=false`, identical
+exact work counters, and statuses
+`PHASE3C_LOCAL_RECOVERY_PASS/LOCAL_HYBRID_GATE_PASS/PHASE3_AGGREGATE_NOT_RUN/WORKLOAD_ECONOMICS_GATE_NOT_RUN`.
+
+The standalone verifier begins from authoritative fixture code and independently
+rebuilds, replans, extracts, authorizes, reruns, stitches, audits, then evaluates. It
+must fail after coordinated bundle re-hashing if an adversary changes a certified route
+to local, deletes/adds/non-earliest-selects a proof node, under/over-scopes the slice,
+patches another cell, removes an abstract decision, changes base/query/coverage,
+reuses/falsifies runtime evidence, opens J0 early, embeds J0/fallback as local work,
+forges the post-certificate, or changes a counter. `manifest.sha256` is reproducible
+content integrity, not a public-key authenticity or authorship claim.
 
 ## Pseudocode / schema
 
@@ -310,4 +347,4 @@ Mutable dependency resolution, locale/timezone-dependent serialization, unordere
 
 ## Open risks
 
-Before performance Gates, freeze a reference hardware protocol and repetition/statistical summary policy. Before public release, add licensing checks for redistributed papers and repositories. V0-028 freezes the deterministic portable campaign, but local-hybrid reproducibility, workload economics, the full Phase 3/5 statistical aggregates, and larger or stochastic refinement studies still require separate preregistration.
+Before performance Gates, freeze a reference hardware protocol and repetition/statistical summary policy. Before public release, add licensing checks for redistributed papers and repositories. V0-028 freezes the deterministic portable campaign and V0-029 freezes reproducibility for one local-hybrid positive control; workload economics, broader local repair, the full Phase 3/5 statistical aggregates, and larger or stochastic refinement studies still require separate preregistration.

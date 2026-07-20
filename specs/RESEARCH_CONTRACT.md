@@ -20,6 +20,9 @@
   resulting coverage/model IDs; it is not embedded in the portable RAPM.
 - **Phase 3B portable campaign:** the V0-028 two-domain, no-Q/value-signature exact
   behavioural build followed by fresh-process planning on the serialized RAPMs.
+- **Phase 3C local-recovery slice:** the V0-029 certificate-triggered, isolated,
+  query-owned overlay positive control over an immutable reusable RAPM; it is not the
+  aggregate Phase 3 or economics Gate.
 
 ## Normative decisions
 
@@ -222,6 +225,49 @@ reconciliation totals. It freezes no scalar `c`; its scalar totals and
 Gate or claim break-even. V0-028 is additive:
 none of these labels may rewrite V0-024--V0-027's identities, goldens, or claims.
 
+### Contract 0.8.0: Phase 3C local-recovery slice
+
+The scientific center remains reusable abstract-primary planning. Contract `0.8.0`
+therefore tests whether a frozen world model can answer one query unchanged and repair
+another only where its complete-plan certificate exposes a local distinction; it does
+not make refinement itself the endpoint.
+
+Execution profile `phase3c_certificate_triggered_local_recovery` binds one immutable,
+query-neutral, stage-1 eleven-cell aliased safe-chain RAPM and BuildEpoch to exactly two
+in-coverage occurrences. The canonical `H=1, delta=0` query must route
+`ABSTRACT_CERTIFIED`. The canonical `H=2, delta=1/20` proposal must fail before any
+ground slice is materialized and then route `LOCAL_GROUND_RECOVERY`.
+
+Authorization is based on the atomic selected-action `DirectBad` proof DAG, not a root
+whose recursive bound merely inherits downstream uncertainty. The `H=2` frontier is
+the two `h=1` cells/12 states/32 state-action pairs/128 outcomes. Its strict ancestor
+dependency is only the selected abstract action's concretizer support (8 pairs/32
+outcomes), giving total `40<48` pairs and `160<192` outcomes versus the same-query
+all-action graph and `40<144` covered pairs. The local runtime mounts only the 32-pair
+frontier slice and a redacted certified abstract boundary. It returns the unique
+cardinality-minimal query-owned overlay over the eight-state `((1,1),(2,2))` cell (16
+available pairs/64 outcomes, 8 decisions). The base bytes/ID and BuildEpoch stay
+identical, and root plus rare `((2,3),)` decisions remain abstract. A whole-ground solve
+or whole-model replacement is respectively charged fallback or `REBUILD_REQUIRED`,
+never relabelled local recovery.
+
+Independent post-audit requires sound risk `397/20000 < 1/20`, exact hybrid risk
+`317/16000`, reward `3/64`, and normalized regret upper zero. J0 risk `99/5000` is
+opened evaluation-only after the hybrid policy and certificate freeze. Fallback and
+rebuild are zero. The terminal tuple is
+`PHASE3C_LOCAL_RECOVERY_PASS/LOCAL_HYBRID_GATE_PASS/PHASE3_AGGREGATE_NOT_RUN/WORKLOAD_ECONOMICS_GATE_NOT_RUN`.
+The artifact verifier independently rebuilds/replans/reextracts/replays/restitches/
+reaudits before J0 and validates isolation, identities, ordering and exact counters
+even after coordinated manifest regeneration.
+
+The local-recovery result sets `grammar_used=false`; the base model still binds its
+separately charged V0-026 first-revision construction provenance. The slice supports
+only certificate-triggered strict local recovery and a mixed abstract/local contingent
+plan over an immutable reusable model. It does not support predicate invention, unknown quotient discovery, workload
+economics, full Phase 3/5, scale, learning, or cross-domain generality. SHA-256
+manifests bind integrity, not public-key authenticity. V0-029 is additive and leaves
+all Phase 3B queries, results, bundle semantics and status tuple unchanged.
+
 ## Pseudocode / schema
 
 ```text
@@ -295,6 +341,15 @@ Phase3BPortableCampaignResult:
   full_phase3_gate_status = PHASE3_AGGREGATE_NOT_RUN
   local_hybrid_gate_status = LOCAL_HYBRID_GATE_NOT_RUN
   workload_economics_gate_status = WORKLOAD_ECONOMICS_GATE_NOT_RUN
+
+Phase3CLocalRecoveryResult:
+  profile_key, base_epoch_id, base_rapm_id, query_occurrence_ids
+  pre_audits, direct_proof_inventory, frontier, authorized_slice
+  isolated_repair_attestation, local_overlay, hybrid_policy, post_audit
+  status = PHASE3C_LOCAL_RECOVERY_PASS or PHASE3C_INVARIANT_VIOLATION
+  full_phase3_gate_status = PHASE3_AGGREGATE_NOT_RUN
+  local_hybrid_gate_status = LOCAL_HYBRID_GATE_PASS
+  workload_economics_gate_status = WORKLOAD_ECONOMICS_GATE_NOT_RUN
 ```
 
 Total cost follows the V0-028 route-resolved equation above. Cached execution is not a
@@ -337,9 +392,16 @@ evaluation-only J0 costs remain separate.
     separately recomputed and cannot
     feed results back into construction/planning.
 16. Local ground recovery is unreachable before a plan-certificate failure and is
-    limited to the recorded earliest failed-proof frontier and its dependencies.
+    limited to the recorded earliest atomic `DirectBad` frontier and its dependencies.
 17. A Phase 3B pass always carries all three `*_NOT_RUN` Gate statuses and preserves
     every earlier profile's historical result label.
+18. Phase 3C computes a local frontier only from direct atomic proof residuals after a
+    failed complete certificate; propagated ancestor uncertainty cannot widen it.
+19. A Phase 3C overlay is query-owned and leaves base RAPM/BuildEpoch bytes and IDs
+    invariant; its scope is a strict subset of coverage and its hybrid graph retains
+    both local and abstract reachable decisions.
+20. J0 cannot enter Phase 3C frontier, authorization, local selection, stitching, or
+    post-audit; evaluation opens it only after those artifacts freeze.
 
 ## Acceptance tests
 
@@ -405,6 +467,15 @@ evaluation-only J0 costs remain separate.
 - Each occurrence attests a read-only current model/query, initially empty writable
   output, unmounted project/other-request files, `-S`, isolated network namespace, and
   exactly the three staged application modules.
+- Phase 3C independently reproduces the H1 abstract-certified row and the H2 failed
+  pre-audit, two-cell/12-state direct frontier, `32+8=40<48<144` authorized pairs,
+  `128+32=160<192` authorized outcomes, worker-only 32-pair frontier mount,
+  eight-state/16-available-pair/64-outcome/eight-decision minimal overlay, retained
+  abstract nodes, immutable
+  base, exact/sound post-goldens, late J0 and zero fallback/rebuild.
+- Re-hashing the entire Phase 3C bundle after changing a route, witness/frontier, slice,
+  patch, abstract node, base/query/coverage, isolation attestation, evaluation order,
+  post-certificate or counter still fails independent semantic replay.
 - Portable query validation rejects an unregistered normalizer proof, negative raw
   weight, reward-basis mismatch, missing positive-weight feature cap, bound-violating
   normalizer, or normalized weight unequal to `raw/normalizer`.
@@ -432,4 +503,4 @@ State explosion, incomplete predicate grammar, no common semantic action, overly
 
 ## Open risks
 
-Later claims about shared grammar/coordinates and practical amortization remain empirical. They do not weaken Phase 0.5 soundness obligations. V0-027 closes the immediate cross-automorphism state-alias positive control. V0-028 establishes the no-Q/value-signature portable world-model path, but certificate-triggered local repair, automatic predicate invention, workload economics, and the complete statistical Phase 3/Phase 5 Gates remain open empirical work.
+Later claims about shared grammar/coordinates and practical amortization remain empirical. They do not weaken Phase 0.5 soundness obligations. V0-027 closes the immediate cross-automorphism state-alias positive control. V0-028 establishes the no-Q/value-signature portable world-model path, and V0-029 executes one certificate-triggered strict local-repair slice; automatic predicate invention, broader recovery, workload economics, and the complete statistical Phase 3/Phase 5 Gates remain open empirical work.

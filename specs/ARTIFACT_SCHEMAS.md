@@ -161,11 +161,12 @@ manifest hashes. Phase 3A replaces the singular fixture/build/query fields with 
 suite registry plus per-domain coverage/RAPM and per-row query IDs. The
 execution profile is one of `phase05_vertical_slice`, `production_query`,
 `exact_d4_quotient_baseline`, `aliased_cegar_positive_control`,
-`phase3a_true_state_alias_oracle_control`, or `phase3b_portable_rapm_campaign`.
+`phase3a_true_state_alias_oracle_control`, `phase3b_portable_rapm_campaign`, or
+`phase3c_certificate_triggered_local_recovery`.
 Aliased bundles use `contract_version=0.5.0`; Phase 3A bundles use
-`contract_version=0.6.0`; Phase 3B bundles use `contract_version=0.7.0`. An older
-contract version cannot opt into a newer execution profile, result eligibility, or
-artifact schema.
+`contract_version=0.6.0`; Phase 3B bundles use `contract_version=0.7.0`; Phase 3C
+bundles use `contract_version=0.8.0`. An older contract version cannot opt into a newer
+execution profile, result eligibility, or artifact schema.
 
 Every Phase 0.5/production per-query coverage-limited build records `build_coverage` in
 `run.json` with exactly:
@@ -359,7 +360,8 @@ planner namespace.
 Routes are exactly `ABSTRACT_CERTIFIED`, `LOCAL_GROUND_RECOVERY`,
 `FULL_GROUND_FALLBACK`, `REBUILD_REQUIRED`, and `INFEASIBLE_QUERY`. A local route must
 resolve a preceding failed certificate, the earliest policy-reachable failed-node
-antichain, cell members, and exact successor dependencies. A Phase 3B pass has only
+antichain from atomic `DirectBad` residuals, cell members, and exact model dependencies.
+A Phase 3B pass has only
 `ABSTRACT_CERTIFIED` rows and zero local/fallback charges.
 
 `accounting/work_counters.json` stores build covered-state/state-action/outcome counts,
@@ -372,6 +374,94 @@ noninterchangeable. Because Phase 3B has no frozen scalar cost functional,
 The final report
 pairs `PHASE3B_PORTABLE_RAPM_PASS` with `PHASE3_AGGREGATE_NOT_RUN`,
 `LOCAL_HYBRID_GATE_NOT_RUN`, and `WORKLOAD_ECONOMICS_GATE_NOT_RUN`.
+
+Contract `0.8.0` adds profile
+`phase3c_certificate_triggered_local_recovery_v0` without changing a Phase 3B bundle.
+Its canonical bundle contains at least:
+
+```text
+run.json
+workload/spec.json
+workload/query_registry.json
+build/epoch.json
+build/portable_rapm.json
+campaign/portable_queries.jsonl
+campaign/portable_plans.jsonl
+campaign/policy_graphs.json
+audit/pre_recovery.jsonl
+audit/failed_proof_graph.json
+recovery/frontier.json
+recovery/authorization.json
+recovery/ground_slice.json
+recovery/boundary_view.json
+recovery/request.json
+recovery/runtime_attestation.json
+recovery/result.json
+recovery/overlay.json
+recovery/access_trace.json
+audit/post_recovery.jsonl
+result/route_certificates.jsonl
+evaluation/j0_rows.jsonl
+evaluation/locality.json
+accounting/work_counters.json
+result/local_recovery_report.json
+metrics.json
+events.jsonl
+manifest.json
+manifest.sha256
+```
+
+Every record carries a content-addressed occurrence ID binding workload, ordinal,
+ground query, portable projection, base RAPM and BuildEpoch. Pre-audit stores both
+`PropagatedBad` diagnostics and the authoritative atomic `DirectBad` residual/proof DAG.
+`frontier.json` is its earliest direct-failure antichain. `authorization.json`
+enumerates every allowed state-action pair and labels it as frontier or selected-action
+ancestor support; `ground_slice.json` serializes the frontier outcomes visible to the
+worker, while `access_trace.json` and `evaluation/locality.json` reconcile the complete
+authorization/outcome counts. The frozen counts are 12
+frontier states, 32 frontier pairs/128 outcomes, and 8 ancestor pairs/32 outcomes:
+`40<48` pairs and `160<192` outcomes versus the same-query all-action graph and
+`40<144` covered pairs. Only three content-bound inputs are mounted in the local
+worker: `request.json`, the sanitized 32-pair `ground_slice.json`, and
+`boundary_view.json`. The worker slice has only opaque state/action IDs and exact
+Bellman branch data; state/action payloads, access logs, and authorization accounting
+remain trusted-side artifacts. The request binds occurrence/model/epoch/query/frontier/
+authorization plus both capability hashes. `boundary_view.json` is redacted: it can
+expose certified abstract boundary IDs/bounds, the unrestricted reward upper bound and
+regret/risk tolerances, but not the full RAPM, ground kernel, J0, coverage catalog,
+builder cache, or another occurrence. A local result is acceptable only when both
+regret and risk certificates pass.
+
+RAPM and BuildEpoch `before/after` hashes are full SHA-256 values over the exact
+pretty-serialized bytes written under `build/`, and must equal their manifest file
+hashes; a canonical in-memory object hash is not a byte-invariance substitute.
+`runtime_attestation.json` binds a fresh isolated process, request/occurrence IDs, all
+three permitted read-only inputs, empty output, module origins, namespace evidence, and
+output hash. `overlay.json`
+binds the unchanged base bytes/ID and query occurrence, declares
+`grammar_used=false`, and contains exactly one cardinality-minimal eight-state patch
+whose view has 16 available state-action pairs/64 outcomes and whose policy has 8
+ground decisions with different legal actions across aliased reachable members. The
+hybrid graph has typed `abstract` and
+`local_ground` decisions and must retain reachable abstract root and rare-cell nodes.
+The pre-route is failed; the final route is `LOCAL_GROUND_RECOVERY`. The companion
+`H=1, delta=0` row is `ABSTRACT_CERTIFIED` and has no recovery transaction.
+
+The post-audit exact fields freeze reward `3/64`, failure upper `397/20000`, exact
+hybrid failure `317/16000`, and regret upper zero. J0 `99/5000` appears only under
+`evaluation/`, with an ordering assertion that policy/overlay/post-certificate IDs were
+already frozen. Work counters separate base load, abstract plan, pre-audit,
+frontier/slice construction, isolated local candidates, stitch, post-audit, fallback,
+rebuild and evaluation-only J0. Fallback and rebuild are zero. Final statuses are
+`PHASE3C_LOCAL_RECOVERY_PASS`, `LOCAL_HYBRID_GATE_PASS`,
+`PHASE3_AGGREGATE_NOT_RUN`, and `WORKLOAD_ECONOMICS_GATE_NOT_RUN`.
+
+The verifier recomputes semantic content and IDs instead of trusting the manifest.
+Coordinated manifest regeneration cannot legitimize missing/non-earliest proof nodes,
+under/over scope, a patch outside the authorized cell, conflicting actions, a changed
+base/query/coverage, no retained abstract decision, fake/reused runtime evidence, early
+J0, hidden fallback/rebuild, forged post-audit, or counters. Manifest SHA-256 is an
+integrity/checksum mechanism, not public-key authenticity.
 
 JSON exact numbers are encoded as `{ "numerator": int, "denominator": positive_int }`; derived decimal displays are nonauthoritative. Opaque pickle/native-object dumps are never the sole source artifact.
 
@@ -471,6 +561,26 @@ Phase 3B portable campaign:
   status=PHASE3B_PORTABLE_RAPM_PASS
   full_phase3_gate_status=PHASE3_AGGREGATE_NOT_RUN
   local_hybrid_gate_status=LOCAL_HYBRID_GATE_NOT_RUN
+  workload_economics_gate_status=WORKLOAD_ECONOMICS_GATE_NOT_RUN
+
+Phase 3C local recovery:
+  profile_key=phase3c_certificate_triggered_local_recovery_v0
+  base_build_epoch_id, base_portable_rapm_id, base_bytes_sha256
+  ordered_query_occurrence_ids
+  pre_audits, direct_proof_inventory, local_frontier
+  authorization_id, ground_slice_id, authorized_frontier_pairs=32
+  authorized_reverse_dependency_pairs=8, authorized_total_pairs=40
+  authorized_frontier_outcomes=128, authorized_ancestor_outcomes=32
+  authorized_total_outcomes=160, full_query_pairs=48, full_query_outcomes=192
+  covered_pairs=144, worker_mounted_ground_pairs=32
+  runtime_attestation_id, local_overlay_id, hybrid_policy_graph_id
+  overlay_states=8, overlay_available_state_action_pairs=16, overlay_outcomes=64
+  overlay_decisions=8
+  grammar_used=false, full_fallback_invocations=0, rebuild_invocations=0
+  post_recovery_certificate_id, evaluation_only_j0_id
+  status=PHASE3C_LOCAL_RECOVERY_PASS or PHASE3C_INVARIANT_VIOLATION
+  local_hybrid_gate_status=LOCAL_HYBRID_GATE_PASS
+  full_phase3_gate_status=PHASE3_AGGREGATE_NOT_RUN
   workload_economics_gate_status=WORKLOAD_ECONOMICS_GATE_NOT_RUN
 
 portable normalizer rule:
@@ -625,10 +735,16 @@ The manifest hashes every other file, then a detached `manifest.sha256` hashes c
   `LOCAL_HYBRID_GATE_NOT_RUN`, or `WORKLOAD_ECONOMICS_GATE_NOT_RUN` fails the pass.
 - Recomputing work counters preserves every route component and null scalar fields; a
   post-hoc conversion cannot replace the economics-not-run label.
+- A Phase 3C verifier independently rebuilds and replays the pre-audit, direct-proof
+  frontier, `32+8=40<48<144` pair and `128+32=160<192` outcome authorization,
+  32-pair worker mount, isolated repair, exact minimal overlay, mixed
+  policy and post-certificate before J0. It rejects semantic forgery even when every
+  modified file and manifest digest is self-consistent, and requires byte-identical base
+  RAPM/epoch, zero fallback/rebuild, `grammar_used=false`, and the four frozen statuses.
 
 ## Out of scope
 
-Long-term object-store layout, public data-release licensing policy, binary performance traces as normative evidence, statistical confidence-set schemas, artifacts claiming an automatically discovered group from the supplied `D4` profile, aliased artifacts claiming that their preregistered geometry atom was invented automatically, Phase 3A artifacts claiming oracle-free discovery or a full Phase 3 Gate, and Phase 3B artifacts claiming learned/predicate discovery, an executed local hybrid, workload break-even, or full Phase 3/5 Gates.
+Long-term object-store layout, public data-release licensing policy, binary performance traces as normative evidence, statistical confidence-set schemas, artifacts claiming an automatically discovered group from the supplied `D4` profile, aliased artifacts claiming that their preregistered geometry atom was invented automatically, Phase 3A artifacts claiming oracle-free discovery or a full Phase 3 Gate, Phase 3B artifacts claiming learned/predicate discovery, an executed local hybrid, workload break-even, or full Phase 3/5 Gates, and Phase 3C artifacts claiming predicate invention, unknown-quotient discovery, economics, scale, learning, generality, or public-key authenticity.
 
 ## Known failure modes
 
@@ -636,4 +752,4 @@ Self-referential manifests, partially written bundles, absolute host paths, nonc
 
 ## Open risks
 
-Large exact state/transition artifacts may require deterministic chunking or compression after Phase 0.5; logical hashes and schema semantics must remain stable. V0-027 freezes the Phase 3A construction-slice topology. V0-028 adds a portable world-model/fresh-process campaign topology; local-hybrid traces, workload-economics evidence, and the statistical full-Phase-3/5 artifact layouts remain later work.
+Large exact state/transition artifacts may require deterministic chunking or compression after Phase 0.5; logical hashes and schema semantics must remain stable. V0-027 freezes the Phase 3A construction-slice topology. V0-028 adds a portable world-model/fresh-process campaign topology. V0-029 freezes the first local-hybrid trace topology; workload-economics evidence and the statistical full-Phase-3/5 artifact layouts remain later work.

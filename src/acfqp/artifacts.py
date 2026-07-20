@@ -342,6 +342,114 @@ PHASE3B_DOCUMENT_CONTRACTS = {
 PHASE3B_REQUIRED_PATHS = tuple(PHASE3B_DOCUMENT_CONTRACTS)
 
 
+PHASE3C_DOCUMENT_CONTRACTS = {
+    "run.json": ("run_metadata", "acfqp.run@phase3c.v1"),
+    "workload/spec.json": (
+        "certificate_triggered_local_recovery_workload",
+        "acfqp.workload_spec@phase3c.v1",
+    ),
+    "workload/query_registry.json": (
+        "ground_and_portable_query_registry",
+        "acfqp.query_registry@phase3c.v1",
+    ),
+    "build/epoch.json": (
+        "immutable_base_build_epoch",
+        "acfqp.build_epoch@phase3c.v1",
+    ),
+    "build/portable_rapm.json": (
+        "immutable_portable_abstract_world_model",
+        "acfqp.portable_rapm.v1",
+    ),
+    "campaign/portable_queries.jsonl": (
+        "portable_query_stream",
+        "application/x-ndjson; profile=acfqp.portable_queries.phase3c.v1",
+    ),
+    "campaign/portable_plans.jsonl": (
+        "closed_process_abstract_plan_stream",
+        "application/x-ndjson; profile=acfqp.portable_plans.phase3c.v1",
+    ),
+    "campaign/policy_graphs.json": (
+        "pre_recovery_contingent_policy_graphs",
+        "acfqp.policy_graphs@phase3c.v1",
+    ),
+    "audit/pre_recovery.jsonl": (
+        "pre_recovery_certificate_audits",
+        "application/x-ndjson; profile=acfqp.pre_recovery_audits.phase3c.v1",
+    ),
+    "audit/failed_proof_graph.json": (
+        "complete_direct_and_inherited_failed_proof_dag",
+        "acfqp.failed_proof_graph@phase3c.v1",
+    ),
+    "recovery/frontier.json": (
+        "earliest_direct_failure_frontier",
+        "acfqp.failed_proof_frontier@phase3c.v1",
+    ),
+    "recovery/authorization.json": (
+        "content_addressed_local_ground_authorization",
+        "acfqp.local_recovery_authorization@phase3c.v1",
+    ),
+    "recovery/ground_slice.json": (
+        "frontier_only_ground_solver_slice",
+        "acfqp.authorized_ground_slice.v1",
+    ),
+    "recovery/boundary_view.json": (
+        "redacted_abstract_boundary_view",
+        "acfqp.redacted_boundary_view.v1",
+    ),
+    "recovery/request.json": (
+        "isolated_local_recovery_request",
+        "acfqp.local_recovery_request@phase3c.v1",
+    ),
+    "recovery/runtime_attestation.json": (
+        "isolated_local_solver_runtime_attestation",
+        "acfqp.local_runtime_attestation.v1",
+    ),
+    "recovery/result.json": (
+        "isolated_local_solver_result",
+        "acfqp.local_solver_result.v1",
+    ),
+    "recovery/overlay.json": (
+        "query_scoped_hybrid_policy_overlay",
+        "acfqp.hybrid_policy_overlay@phase3c.v1",
+    ),
+    "recovery/access_trace.json": (
+        "authorized_kernel_access_and_locality_trace",
+        "acfqp.local_access_trace@phase3c.v1",
+    ),
+    "audit/post_recovery.jsonl": (
+        "post_recovery_full_authority_audits",
+        "application/x-ndjson; profile=acfqp.post_recovery_audits.phase3c.v1",
+    ),
+    "result/route_certificates.jsonl": (
+        "terminal_query_route_certificates",
+        "application/x-ndjson; profile=acfqp.route_certificates.phase3c.v1",
+    ),
+    "result/local_recovery_report.json": (
+        "phase3c_local_recovery_gate_report",
+        "acfqp.phase3c_report@v1",
+    ),
+    "evaluation/j0_rows.jsonl": (
+        "post_freeze_ground_oracle_evaluation_rows",
+        "application/x-ndjson; profile=acfqp.j0_rows.phase3c.v1",
+    ),
+    "evaluation/locality.json": (
+        "strict_locality_and_hybrid_retention_audit",
+        "acfqp.locality_audit@phase3c.v1",
+    ),
+    "accounting/work_counters.json": (
+        "route_separated_operational_and_evaluation_work",
+        "acfqp.work_counters@phase3c.v1",
+    ),
+    "metrics.json": ("run_metrics", "acfqp.metrics@phase3c.v1"),
+    "events.jsonl": (
+        "event_log",
+        "application/x-ndjson; profile=acfqp.events.phase3c.v1",
+    ),
+}
+
+PHASE3C_REQUIRED_PATHS = tuple(PHASE3C_DOCUMENT_CONTRACTS)
+
+
 def _document_contracts_for_required_paths(
     required_paths: set[str],
 ) -> Mapping[str, tuple[str, str]]:
@@ -355,6 +463,8 @@ def _document_contracts_for_required_paths(
         return PHASE3A_DOCUMENT_CONTRACTS
     if required_paths == set(PHASE3B_REQUIRED_PATHS):
         return PHASE3B_DOCUMENT_CONTRACTS
+    if required_paths == set(PHASE3C_REQUIRED_PATHS):
+        return PHASE3C_DOCUMENT_CONTRACTS
     return PHASE05_DOCUMENT_CONTRACTS
 
 
@@ -408,12 +518,24 @@ def object_id(value: Any, prefix: str = "obj") -> str:
     return f"{prefix}-{digest[:16]}"
 
 
+def serialized_json_bytes(value: Any) -> bytes:
+    """Return the exact bytes used for a ``.json`` artifact document."""
+
+    return (
+        json.dumps(to_jsonable(value), indent=2, ensure_ascii=False, sort_keys=True)
+        + "\n"
+    ).encode("utf-8")
+
+
+def serialized_json_sha256(value: Any) -> str:
+    """Hash the exact pretty-printed bytes emitted by :func:`write_json`."""
+
+    return hashlib.sha256(serialized_json_bytes(value)).hexdigest()
+
+
 def write_json(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        json.dumps(to_jsonable(value), indent=2, ensure_ascii=False, sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
+    path.write_bytes(serialized_json_bytes(value))
 
 
 def write_jsonl(path: Path, values: Any) -> None:

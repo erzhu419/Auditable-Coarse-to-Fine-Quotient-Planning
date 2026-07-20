@@ -247,18 +247,26 @@ The Phase 3B authority binds G2048's proof to `(merge=1)` and LMB's canonical,
 match-only, and terminal-clear-only proofs to complete `(match,terminal_clear)` bases
 `(1,1)`, `(1,0)`, and `(0,1)` respectively. Those proof IDs are basis-specific.
 
-For a proposed policy `pi` and query `q`, let `Bad(pi,q)` be its reachable `(z,h)`
-nodes whose local value-regret or failure proof obligation is not certified. The local
-ground frontier is the earliest antichain
+For a proposed policy `pi` and query `q`, let `PropagatedBad(pi,q)` be its reachable
+`(z,h)` nodes whose recursively accumulated value-regret or failure bound is not
+certified. Let `DirectBad(pi,q)` instead contain exactly the reachable nodes whose
+**selected action's atomic realization/envelope residual** is relevant to the failed
+proof obligation. A node that is bad only because a descendant residual propagates
+into its bound belongs to `PropagatedBad` but not `DirectBad`. The local ground frontier
+is the earliest antichain in the explicit direct-proof dependency DAG:
 
 ```text
-F_local(pi,q) = {u in Bad(pi,q) : no strict policy-graph ancestor of u is in Bad(pi,q)}.
+F_local(pi,q) = {u in DirectBad(pi,q) :
+                 no strict direct-proof ancestor of u is in DirectBad(pi,q)}.
 ```
 
-Only `union_{(z,h) in F_local} C_z` and the positive-probability successor dependencies
-needed to recompute those entries may be reopened by `LOCAL_GROUND_RECOVERY`. The route
-does not authorize a global ground solve or coverage extension; those are separately
-charged `FULL_GROUND_FALLBACK` or `REBUILD_REQUIRED` routes.
+This direct/propagated distinction prevents a downstream failure from automatically
+making the root the local cause. Only `union_{(z,h) in F_local} C_z`, its legal actions
+and positive-probability successor dependencies, plus the minimal reverse dependencies
+needed to stitch/recompute incoming abstract entries may be authorized by
+`LOCAL_GROUND_RECOVERY`. The route does not authorize a global ground solve, coverage
+extension, or base-RAPM mutation; those are separately charged
+`FULL_GROUND_FALLBACK` or `REBUILD_REQUIRED` routes.
 
 For canonical reward definitions, `normalizer=H` in G2048 and `normalizer=2N/3` in LMB.
 Phase 3B accepts only a raw reward basis exactly equal to one of the model's registered
@@ -280,6 +288,49 @@ L_pi[h,z] = min over x in C_z
 ```
 
 `U_all` includes actions omitted by semantic abstraction. For an initial distribution, aggregate both bounds with `rho0`; certification requires `U_all-L_pi<=.05` and the risk bound `U_F<=delta`. Here the target `V*` is the best deterministic finite-horizon ground policy satisfying the same query constraint; the unconstrained return recursion above is a valid upper bound on it.
+
+### Contract 0.8.0 local overlay and hybrid policy
+
+For base RAPM `M`, occurrence `o=(M,q,ordinal)`, and authorized slice `S_o`, a local
+overlay `Omega_o` is a query-owned partial replacement map. Its domain must be a strict
+subset of covered ground state-action pairs, every patched outcome must already belong
+to `M`'s coverage, and it binds the exact base model ID and byte hash. Applying it forms
+an execution view `M \oplus Omega_o`; it does not alter `M`, create a new BuildEpoch, or
+make `Omega_o` reusable for another query occurrence.
+
+The hybrid policy `pi^hyb` is a typed decision graph: an overlay decision resolves to a
+legal exact local ground action, while an unpatched decision resolves to a base semantic
+action and the frozen `kappa`. A local-hybrid certificate is valid only if both node
+types are reachable; in particular, serializing a complete ground J0 policy as an
+overlay is not local recovery.
+
+For `phase3c_certificate_triggered_local_recovery_v0`, the immutable stage-1 base has
+11 cells and 144 covered ground state-action pairs. The failed `H=2, delta=1/20` policy
+has two direct-bad `h=1` cells, 12 states, 32 state-action pairs and 128 outcomes. The
+strict ancestor dependency is the selected abstract action's concretizer support: 8
+pairs/32 outcomes. Total authorization is `40 < 48` pairs and `160 < 192` outcomes
+versus the same-query all-action graph, as well as `40 < 144` covered pairs. The worker
+mounts only an occurrence-bound request, a sanitized 32-pair frontier ground slice,
+and a redacted boundary. The slice contains opaque state/action IDs and exact Bellman
+branches but no state/action payload or accounting fields. The boundary supplies the
+unrestricted reward upper bound and regret tolerance, and candidate acceptance requires
+both the value-regret and risk inequalities. The cardinality-minimal overlay patches
+only the eight-state `((1,1),(2,2))` histogram cell: its local view has 16 available
+state-action pairs/64 outcomes and the overlay freezes 8 decisions. Root and rare
+`((2,3),)` decisions remain abstract. The complete post-stitch obligations are
+
+```text
+L_R = 3/64
+U_F = 397/20000 < 1/20
+P_exact_hybrid(F) = 317/16000
+U_regret = 0.
+```
+
+J0 failure `99/5000` is not an input to `DirectBad`, authorization, overlay selection,
+or stitching; it is computed only after the hybrid policy and sound certificate freeze.
+The local overlay-selection transaction does not call a predicate grammar and records
+`grammar_used=false`; reproducing the immutable eleven-cell base retains its separately
+charged V0-026 first-revision provenance.
 
 ## Pseudocode / schema
 
@@ -362,7 +413,8 @@ evaluate_frozen_proposal(proposal, q):
 
 route_after_audit(proposal,audit,q):
   if audit.certified: return ABSTRACT_CERTIFIED
-  frontier = earliest_failed_proof_antichain(proposal.policy_graph,audit)
+  inventory = atomic_direct_bad_inventory(proposal.policy_graph,audit)
+  frontier = earliest_direct_proof_antichain(inventory)
   return LOCAL_GROUND_RECOVERY(frontier)  # later Gate, not exercised by Phase 3B
 
 audit(pi, q):
@@ -504,4 +556,4 @@ Loose cellwise suprema can make `U_all` conservative; a valid policy may fail ce
 
 ## Open risks
 
-Tighter coupled envelope representations may improve coverage later, but must preserve containment and the unrestricted-action regret theorem. V0-027 proves an exact-model/oracle cross-automorphism construction slice. V0-028 removes Q/value signatures from the portable campaign builder, while useful certificate-triggered local repair, automatic predicate invention, workload economics, and the statistical Phase 3/Phase 5 aggregates remain open.
+Tighter coupled envelope representations may improve coverage later, but must preserve containment and the unrestricted-action regret theorem. V0-027 proves an exact-model/oracle cross-automorphism construction slice. V0-028 removes Q/value signatures from the portable campaign builder, and V0-029 executes one strict local-repair overlay; automatic predicate invention, broader recovery, workload economics, and the statistical Phase 3/Phase 5 aggregates remain open.

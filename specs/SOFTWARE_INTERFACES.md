@@ -18,6 +18,10 @@ Phase 3B adds `WorkloadSpec`, `BuildEpoch`, `PortableRAPMWriter`,
 and its planning boundary explicit; they do not expose a learned-model or local-hybrid
 claim.
 
+Phase 3C adds the direct-proof inventory, authorized-slice, isolated local-runtime,
+query-owned overlay, hybrid-stitch, and post-audit interfaces defined below. They do not
+turn the immutable RAPM into an online mutable model API.
+
 ## Normative decisions
 
 `DomainProtocol` is the only domain-specific authority for physical state/action
@@ -259,6 +263,71 @@ later preregistered scalar `CostFunctional` may map them to `C_world/C_ground` a
 first break-even prefix. Phase 3B freezes no such conversion, so scalar costs and
 break-even are `null` and it sets `WORKLOAD_ECONOMICS_GATE_NOT_RUN`.
 
+### Contract 0.8.0 local-recovery interfaces
+
+Phase 3C adds `DirectProofInventory`, `LocalFrontierExtractor`,
+`AuthorizedGroundSliceBuilder`, `RedactedBoundaryView`, `IsolatedLocalRepairRuntime`,
+`LocalOverlay`, `HybridPolicyStitcher`, and `HybridExactAuditor`. These interfaces are
+query-occurrence scoped; none may mutate `PortableRAPM` or `BuildEpoch`.
+
+```text
+DirectProofInventory.from_failed_audit(base_model, query, proposal)
+  -> {direct_bad_nodes, propagated_bad_diagnostics, proof_dependency_edges}
+
+LocalFrontierExtractor.earliest_direct(inventory)
+  -> LocalGroundFrontier
+
+AuthorizedGroundSliceBuilder.build(frontier, exact_index,
+                                   selected_action_ancestor_dependencies)
+  -> {LocalRecoveryAuthorization,
+      FrontierOnlyGroundSlice,
+      RedactedBoundaryView}
+
+IsolatedLocalRepairRuntime.solve(slice_path, slice_sha256,
+                                 boundary_path, boundary_sha256,
+                                 request_path, request_sha256)
+  -> LocalRepairResult + RuntimeAttestation
+
+HybridPolicyStitcher.stitch(base_policy, local_overlay)
+  -> HybridPolicyGraph
+
+HybridExactAuditor.audit(base_model, overlay, hybrid_policy, query)
+  -> PostRecoveryCertificate
+```
+
+The extractor never substitutes recursive root bound failure for a direct residual.
+The slice builder records an exact reason for every action: the registered fixture has
+32 frontier pairs/128 outcomes and 8 selected-action ancestor pairs/32 outcomes, hence
+`40 < 48` pairs and `160 < 192` outcomes versus the same-query all-action graph and
+`40 < 144` covered pairs. The isolated runtime mounts only the 32-pair frontier ground
+slice plus content-addressed request/redacted-boundary inputs and staged local
+runtime code and an empty output; the project checkout, full portable model, ground
+oracle/J0, full coverage catalog, builder/refiner cache, and other requests are absent.
+The mounted slice is sanitized to opaque IDs and Bellman branches; payloads, access
+logs, and accounting remain trusted-side. The request binds occurrence and capability
+hashes. The boundary view contains only IDs, certified handoff bounds, the unrestricted
+reward upper bound, and regret/risk tolerances. A result must certify both value and
+risk.
+
+`LocalOverlay` binds base model byte hash/ID, BuildEpoch, query and occurrence. It
+contains exactly the minimal eight-state local view with 16 available state-action
+pairs/64 outcomes and 8 frozen patch decisions for the
+registered run, including different legal actions for aliased reachable members, and
+sets `grammar_used=false`. A different base, query, coverage, action
+outside authorization, conflicting decision, or whole-policy replacement is rejected.
+The stitcher requires at least one reachable local decision and at least one reachable
+unpatched abstract decision; here the root and rare `((2,3),)` decisions stay abstract.
+A base mutation returns `REBUILD_REQUIRED`, not a new local overlay.
+
+The post-auditor must reproduce `3/64`, `397/20000`, `317/16000`, and zero regret before
+the evaluation interface may call J0 (`99/5000`). The router then emits
+`LOCAL_GROUND_RECOVERY`, with zero fallback/rebuild. The second registered `H=1,
+delta=0` occurrence remains `ABSTRACT_CERTIFIED` and cannot create a local request.
+Independent interface replay reconstructs every input, repeats isolated execution and
+stitch/audit, verifies base-byte invariance and exact counters, and rejects coordinated
+re-hashing attacks. Runtime/manifest hashes attest content integrity, not public-key
+identity.
+
 ## Pseudocode / schema
 
 ```text
@@ -379,7 +448,8 @@ evaluate_frozen_phase3b_proposals(all_results):
 
 route_failed_plan(result):
   require not result.certificate.certified
-  return LocalGroundFrontier.from_earliest_failed_reachable_nodes(result)
+  inventory = DirectProofInventory.from_failed_audit(result)
+  return LocalGroundFrontier.from_earliest_direct_bad_nodes(inventory)
 ```
 
 For the safe-chain adapter, `transform_action` applies the same cell transform to both
@@ -527,4 +597,4 @@ Noncanonical state keys, uncoalesced duplicate successors, accidental float coer
 
 ## Open risks
 
-The exact in-memory frontier/envelope representation may need optimization after Phase 0.5; any replacement must preserve these external records and proof dependencies. Phase 3A proves the exact-model/oracle cross-automorphism control. Phase 3B freezes a no-Q/value-signature portable planning interface, but certificate-triggered local repair, human predicate reconstruction, workload economics, and full Phase 3/5 runners remain open.
+The exact in-memory frontier/envelope representation may need optimization after Phase 0.5; any replacement must preserve these external records and proof dependencies. Phase 3A proves the exact-model/oracle cross-automorphism control. Phase 3B freezes a no-Q/value-signature portable planning interface, and Phase 3C freezes one isolated local-repair interface; human predicate reconstruction, broader local recovery, workload economics, and full Phase 3/5 runners remain open.

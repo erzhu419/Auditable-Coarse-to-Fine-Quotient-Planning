@@ -23,7 +23,7 @@ authoritative benchmark kernel and declared build coverage
 → answer a workload of QuerySpecs by abstract contingent planning
 → independently audit each complete plan's value and risk
 → reuse unchanged when certified
-→ otherwise expose the earliest policy-reachable failed-proof frontier
+→ otherwise expose the earliest policy-reachable atomic DirectBad proof frontier
 → recover only the necessary ground distinctions, rebuild, or use charged fallback
 ```
 
@@ -47,6 +47,8 @@ acfqp-phase3a --output artifacts/phase3a
 python3 scripts/verify_phase3a.py artifacts/phase3a
 acfqp-phase3b --output artifacts/phase3b
 python3 scripts/verify_phase3b.py artifacts/phase3b
+acfqp-phase3c --output artifacts/phase3c
+python3 scripts/verify_phase3c.py artifacts/phase3c
 python3 third_party/laplace_smdp_940598d/experiments/run_gridworld_bellman_kron.py \
   --out-dir artifacts/legacy_gate_actual
 python3 scripts/check_legacy_gate.py --actual-dir artifacts/legacy_gate_actual
@@ -162,9 +164,49 @@ A passing campaign reports `PHASE3B_PORTABLE_RAPM_PASS` together with
 `PHASE3_AGGREGATE_NOT_RUN`, `LOCAL_HYBRID_GATE_NOT_RUN`, and
 `WORKLOAD_ECONOMICS_GATE_NOT_RUN`. It demonstrates no-Q/value-signature synthesis,
 portable round-trip planning, in-coverage reuse, and exact-sound certification for this
-registered workload. It does not yet demonstrate automatic predicate invention,
-certificate-triggered local hybrid repair, amortized break-even, the full Phase 3 or
-Phase 5 Gate, scale, or learning.
+registered workload. The Phase 3B bundle itself does not demonstrate automatic
+predicate invention, certificate-triggered local hybrid repair, amortized break-even,
+the full Phase 3 or Phase 5 Gate, scale, or learning.
+
+Ledger `V0-029` freezes the additive contract-`0.8.0` execution profile
+`phase3c_certificate_triggered_local_recovery_v0`. It reuses one immutable,
+query-neutral, eleven-cell stage-1 aliased safe-chain RAPM for two queries. The
+registered canonical `H=1, delta=0` query must remain `ABSTRACT_CERTIFIED`. The
+canonical `H=2, delta=1/20` query must first fail its complete abstract certificate and
+only then route to `LOCAL_GROUND_RECOVERY`.
+
+The failed-proof frontier is formed from **direct** selected-action proof residuals,
+not recursively accumulated ancestor bounds. For the `H=2` query it consists of the
+two reachable `h=1` histogram cells with 12 ground states. The authorized local view
+contains their 32 state-action pairs/128 outcomes. The strict ancestor dependency uses
+only the selected abstract action's concretizer support: 8 pairs/32 outcomes. Thus total
+authorization is `40 < 48` state-action pairs and `160 < 192` outcomes relative to the
+same query's full all-action graph, and also `40 < 144` covered pairs. The isolated
+repair process can read only an occurrence-bound request, the sanitized 32-pair
+frontier slice (IDs and Bellman branches, with no state/action payload or accounting),
+and a redacted abstract boundary carrying the ancestor handoff plus the value/risk
+certificate scalars. It accepts a candidate only when both regret and risk pass. It
+selects the unique
+cardinality-minimal query-owned overlay: reopen only the eight-state
+`(empty=1, histogram=((1,1),(2,2)))` cell, whose local action view has 16 available
+state-action pairs/64 positive-probability outcomes, and freeze 8 patch decisions. The
+patch must select different legal ground actions for reachable members that the base
+cell aliases. The exact serialized RAPM and `BuildEpoch` bytes and their IDs remain
+unchanged; replacing any of them is `REBUILD_REQUIRED`, not local recovery.
+
+The stitched policy deliberately keeps the root and rare `(2,3)` decisions abstract.
+Its post-repair sound failure upper bound is `397/20000 < 1/20`; exact lifted failure
+is `317/16000`, reward is `3/64`, and normalized regret upper bound is zero. J0 failure
+`99/5000` is opened only after the hybrid policy and post-certificate freeze, solely as
+evaluation truth. No full fallback or rebuild is used. A passing run reports
+`PHASE3C_LOCAL_RECOVERY_PASS`, `LOCAL_HYBRID_GATE_PASS`,
+`PHASE3_AGGREGATE_NOT_RUN`, and `WORKLOAD_ECONOMICS_GATE_NOT_RUN`.
+
+This is evidence for certificate-triggered, strictly local recovery while preserving a
+reusable abstract-primary world model. It does not claim predicate invention
+(`grammar_used=false`), discovery of an unknown quotient, workload break-even, full
+Phase 3/5, scale, learning, or cross-domain generality. Bundle SHA-256 manifests prove
+content integrity and replay binding, not public-key source authenticity.
 
 ## Scope
 
@@ -190,4 +232,7 @@ frozen separately by ledger `V0-026`. The cross-automorphism, train/held-out Pha
 construction slice and its still-oracle-bound claim boundary are frozen by `V0-027`.
 The primary reusable-world-model objective, workload/build-epoch semantics, route and
 cost equations, and the immediate portable Phase 3B campaign are frozen by `V0-028`.
+The first certificate-triggered local-recovery execution slice and its direct-frontier,
+isolation, immutable-base, overlay, replay, and narrow-claim rules are frozen by
+`V0-029`.
 The earlier profiles retain their original claims and are not retroactively relabelled.

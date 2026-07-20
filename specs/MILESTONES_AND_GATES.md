@@ -19,6 +19,10 @@
   world-model build plus fresh-process repeated planning. A pass is paired with
   `PHASE3_AGGREGATE_NOT_RUN`, `LOCAL_HYBRID_GATE_NOT_RUN`, and
   `WORKLOAD_ECONOMICS_GATE_NOT_RUN`.
+- **Phase 3C local-recovery slice:** the V0-029 single-domain positive control that
+  executes one certificate-triggered strictly local overlay while preserving its base
+  RAPM/BuildEpoch. Its pass opens only `LOCAL_HYBRID_GATE_PASS`, not aggregate Phase 3
+  or workload economics.
 
 ## Normative decisions
 
@@ -241,7 +245,8 @@ Malformed construction, portability, isolation, or replay uses
 
 The router/local-frontier interface is normative but not exercised here. A later local
 hybrid may inspect ground states only after the full-plan certificate fails and only at
-the earliest policy-reachable failed nodes plus exact successor dependencies. Phase 3B
+the earliest policy-reachable atomic `DirectBad` nodes plus exact model dependencies.
+Phase 3B
 has an empty local frontier and zero local/fallback charges. Likewise it records
 the implemented separated build state/action/outcome/refinement/byte counters and
 per-occurrence load, plan, portable/live-ground audit, local/fallback,
@@ -253,6 +258,53 @@ This gate supports portable no-Q/value-signature exact world-model synthesis and
 on the frozen workload. It does not support automatic predicate invention, a working
 local hybrid, amortized break-even, the full Phase 3/5 Gates, scale, or learning. It is
 additive and does not modify V0-024--V0-027's result labels or historical claims.
+
+### Phase 3C certificate-triggered local-recovery gate
+
+Contract `0.8.0` registers
+`phase3c_certificate_triggered_local_recovery_v0`. It is an additive execution slice,
+not the aggregate Phase 3 Gate and not a modification of Phase 3B.
+
+The gate reuses one byte-identical query-neutral eleven-cell stage-1 aliased safe-chain
+RAPM and BuildEpoch for two occurrences:
+
+1. canonical `H=1, delta=0` returns `ABSTRACT_CERTIFIED`, an empty frontier, and zero
+   local/fallback/rebuild work;
+2. canonical `H=2, delta=1/20` freezes an abstract proposal, fails its full-plan
+   certificate, constructs the direct failed-proof frontier, runs local recovery, and
+   returns a certified hybrid on `LOCAL_GROUND_RECOVERY`.
+
+The second row passes only if the authoritative `DirectBad` antichain contains the two
+reachable `h=1` cells (12 states); their ground frontier has exactly 32 state-action
+pairs/128 outcomes and the strict selected-action ancestor dependency has 8 pairs/32
+outcomes. Total authorization is `40 < 48` pairs and `160 < 192` outcomes versus the
+same-query all-action graph, and `40 < 144` covered pairs. The isolated runtime mounts
+only the 32-pair frontier ground slice plus a redacted ancestor boundary. The selected
+overlay must be cardinality-minimal, bind the unchanged base model, and patch exactly
+the eight-state `((1,1),(2,2))` cell (16 available pairs/64 outcomes, 8 frozen
+decisions), with different legal ground actions for aliased reachable members. The
+final graph must contain reachable local decisions and retain reachable
+abstract root and rare `((2,3),)` decisions.
+
+The independent post-certificate must report reward `3/64`, sound failure
+`397/20000 < 1/20`, exact hybrid failure `317/16000`, and regret upper zero. J0 failure
+`99/5000` is evaluation-only and starts after the overlay/hybrid/post-certificate IDs
+freeze. Base-model/BuildEpoch mutation, coverage extension, a complete ground-policy
+patch, early J0, hidden fallback/rebuild, or any nonminimal/out-of-scope patch fails the
+gate. Fallback/rebuild counts are exactly zero; `grammar_used=false`.
+
+The independent verifier must rebuild the kernel, coverage, stage-1 model and both
+queries; reproduce proposal/audit/direct-proof DAG/frontier/minimal authorization;
+rerun the isolated local solver; reconstruct overlay/hybrid/post-certificate; and only
+then recompute J0, IDs, cross-links, counters and manifest. Coordinated re-signing does
+not excuse a changed route/witness/slice/base/query/coverage/attestation/policy/audit/
+counter. SHA-256 establishes integrity, not public-key authenticity.
+
+Passing returns exactly
+`PHASE3C_LOCAL_RECOVERY_PASS/LOCAL_HYBRID_GATE_PASS/PHASE3_AGGREGATE_NOT_RUN/WORKLOAD_ECONOMICS_GATE_NOT_RUN`.
+It proves certificate-triggered strictly local hybrid recovery for this positive
+control. It does not prove predicate invention, unknown quotient discovery, workload
+break-even, the full Phase 3/5 Gate, scale, learning, or generality.
 
 ### Frozen later Gates
 
@@ -387,7 +439,8 @@ run_phase3b_campaign(workload):
   three staged modules, `-S`, read-only current inputs, initially empty output, and
   absence of the checkout/other requests.
 - Local recovery cannot occur before a failed certificate and is limited to the
-  earliest policy-reachable failed-proof frontier; Phase 3B never exercises it.
+  earliest policy-reachable atomic `DirectBad` proof frontier; Phase 3B never exercises
+  it.
 - A Phase 3B pass cannot be promoted to full Phase 3, local-hybrid, economics, or Phase
   5 status and cannot relabel an earlier positive control.
 
@@ -434,6 +487,10 @@ run_phase3b_campaign(workload):
 - Work-counter tests reconcile build/load/plan/audit/local/fallback components, preserve
   evaluation J0 separately, and require scalar costs/break-even null; missing any
   required not-run status fails the gate.
+- Phase 3C tests reproduce the direct frontier, strict authorization, isolated minimal
+  overlay, mixed policy, immutable base and post-audit goldens; independent replay
+  rejects coordinated re-hashing of route/witness/slice/patch/base/query/attestation/
+  evaluation-order/certificate/counter forgeries.
 
 ## Out of scope
 
@@ -460,8 +517,9 @@ V0-027 closes the next exact-model/oracle construction slice and removes the imm
 predicate/quotient discovery, the human-grammar branch, larger seeds, and the complete
 Phase 3 `60/20/40` aggregate remain unrun.
 
-V0-028 closes the no-Q/value-signature portable world-model campaign slice. It leaves
-certificate-triggered local ground recovery, workload economics, larger workloads,
-and the full Phase 3/5 Gates explicitly unrun.
+V0-028 closes the no-Q/value-signature portable world-model campaign slice. V0-029
+closes one certificate-triggered strict local-ground-recovery positive control. Broader
+recovery, workload economics, larger workloads, and the full Phase 3/5 Gates remain
+explicitly unrun.
 
 Later Gate denominators and statistical aggregation details also need a preregistered analysis plan before Phase 3 test evaluation; the threshold values above are already frozen.

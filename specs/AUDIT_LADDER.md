@@ -11,8 +11,10 @@
 - **Construction-dependency audit:** builder API/data-flow evidence plus static source
   audits that the behavioural builder and portable planner exclude
   Q/value/policy/query/evaluation signatures; it is not a whole-run import-DAG proof.
-- **Local ground frontier:** the earliest policy-reachable failed certificate nodes and
-  their exact model dependencies; it is empty until a contingent plan fails audit.
+- **Local ground frontier:** the earliest antichain of policy-reachable atomic
+  selected-action `DirectBad` residuals in the proof-dependency DAG, together with its
+  exact model dependencies; propagated ancestor-bound failures do not enter it, and it
+  is empty until a contingent plan fails audit.
 
 ## Normative decisions
 
@@ -151,7 +153,7 @@ evaluation phase load authoritative ground evidence; it may not appear in constr
 or planner dependencies. Model identity and bytes remain unchanged across the campaign.
 
 The general audit router returns `ABSTRACT_CERTIFIED` when both full-plan obligations
-pass. Only otherwise may it form the earliest failed-node antichain and request
+pass. Only otherwise may it form the earliest atomic `DirectBad` antichain and request
 `LOCAL_GROUND_RECOVERY`; inability to repair routes to charged full fallback,
 rebuild, or infeasibility. The Phase 3B campaign exercises only the first route, so an
 empty local frontier and `LOCAL_HYBRID_GATE_NOT_RUN` are required rather than evidence
@@ -164,6 +166,53 @@ candidates; plus their reconciliation totals. A scalar prefix equation requires 
 preregistered cost functional. Phase 3B
 freezes none, leaves scalar totals/break-even `null`, and reports
 `WORKLOAD_ECONOMICS_GATE_NOT_RUN`.
+
+### Contract 0.8.0 certificate-triggered local-recovery audit
+
+The Phase 3C profile executes, rather than merely exposes, the local route. Its audit
+order is immutable:
+
+```text
+freeze base abstract proposal
+-> fail complete exact-sound value/risk certificate
+-> inventory atomic DirectBad residuals and proof dependencies
+-> take the earliest direct-failure antichain
+-> authorize the minimal ground/reverse-dependency slice
+-> run isolated local repair on slice + redacted boundary only
+-> stitch a mixed abstract/local policy
+-> repeat the complete exact-sound certificate
+-> freeze route
+-> open J0 for evaluation only
+```
+
+`PropagatedBad` is diagnostic only: a root whose bound inherits downstream uncertainty
+does not authorize root reopening. The registered `H=2, delta=1/20` occurrence must
+produce two `h=1` frontier cells with 12 states, 32 frontier state-action pairs/128
+outcomes, and 8 selected-action-concretizer ancestor pairs/32 outcomes. Total
+authorization is `40 < 48` pairs and `160 < 192` outcomes versus the same-query
+all-action graph and `40 < 144` covered pairs. The isolated worker mounts only the
+32-pair frontier slice; ancestor support is a redacted boundary. Local repair may patch
+only the eight-state `((1,1),(2,2))` cell (16 available state-action pairs/64 outcomes,
+8 frozen decisions), while root and rare `((2,3),)` nodes remain abstract. A
+whole-ground policy, any base-model mutation, or a J0-derived patch fails the route
+audit.
+
+The post-auditor is independent of the local selector and recomputes reward `3/64`,
+sound failure `397/20000`, exact hybrid failure `317/16000`, and regret upper zero.
+Only after that record freezes may the evaluation auditor compute J0 failure
+`99/5000`. The companion `H=1, delta=0` occurrence must certify directly, with no
+frontier or local artifact. The successful result tuple is
+`PHASE3C_LOCAL_RECOVERY_PASS/LOCAL_HYBRID_GATE_PASS/PHASE3_AGGREGATE_NOT_RUN/WORKLOAD_ECONOMICS_GATE_NOT_RUN`;
+fallback/rebuild counters are zero and `grammar_used=false`.
+
+Independent replay reconstructs the kernel, closure, base model, query projections,
+proposal, direct-proof DAG/frontier, minimal slice, isolated repair output, overlay,
+hybrid graph, post-certificate, evaluation order, IDs and counters. Verification must
+reject coordinated re-hashing of any route reversal, omitted/added/non-earliest
+witness, under/over-authorized slice, out-of-scope patch, lost abstract node, changed
+base/query/coverage, false or reused isolation attestation, early J0, hidden fallback,
+forged post-certificate, or work-counter discrepancy. A SHA-256 manifest proves content
+integrity under replay, not signer identity.
 
 ## Pseudocode / schema
 
@@ -352,4 +401,4 @@ Frontier combinatorics, conservative rectangular composition, all policies excee
 
 ## Open risks
 
-Paired oracle-replacement ablations and component interactions are required before causal claims. More compact exact frontier representations may be needed beyond tiny instances. V0-028 removes Q/value signatures from the portable exact builder, but automatic feature invention, useful certificate-triggered local recovery, workload break-even, and broader statistical Gates remain open.
+Paired oracle-replacement ablations and component interactions are required before causal claims. More compact exact frontier representations may be needed beyond tiny instances. V0-028 removes Q/value signatures from the portable exact builder, and V0-029 closes one exact certificate-triggered local-recovery positive control; automatic feature invention, broader useful/local recovery, workload break-even, and statistical Gates remain open.
