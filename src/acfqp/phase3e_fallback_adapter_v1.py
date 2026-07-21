@@ -82,6 +82,7 @@ def adapt_ground_fallback_execution_v1(
     registry: CounterRegistryV1 | None = None,
     comparison_profile: ComparisonProfileV1 | None = None,
     semantic_verification_results: tuple[object, ...] = (),
+    semantic_verification_deferred: bool = False,
 ) -> Phase3ERouteExecutionV1:
     """Preserve the fallback-owned native vector in the runner result."""
 
@@ -113,6 +114,7 @@ def adapt_ground_fallback_execution_v1(
         execution,
         execution.result.outcome.value,
         semantic_verification_results,
+        semantic_verification_deferred=semantic_verification_deferred,
     )
 
 

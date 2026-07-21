@@ -25,8 +25,9 @@ reusable strategic quotient world model.
 
 ## Implemented contract-1.0 foundation
 
-Ledger V0-032 now ratifies the component contracts.  The current code implements and
-attacks the following strict V1 surfaces without changing the historical 0.x runners:
+Ledger V0-032 ratifies the component contracts and V0-033 freezes the four additive P0
+closure rules. The current code implements and attacks the following strict V1
+surfaces without changing the historical 0.x runners:
 
 1. full domain-separated SHA-256 identities over strict canonical JSON;
 2. `acfqp_counter_registry_v1`, explicit observed native zeroes, route-family
@@ -63,11 +64,60 @@ attacks the following strict V1 surfaces without changing the historical 0.x run
    worker, without stitch/post-audit artifacts, and may continue only through a fresh
    fallback decision; and
 10. operational no-full-replay modes for Phase 3B/3C/3D plus a Phase 3D estimate split
-   that stops before kernel stepping, materialization, compilation or worker launch.
+   that stops before kernel stepping, materialization, compilation or worker launch;
+11. sealed-core/frozen-obligation two-stage accounting. The exact authority-bearing
+   semantic and registered nonsemantic `CounterRecordV1` objects form an operational
+   verification suffix; sum/max reducers form one aggregate; manifest and receipt
+   identities reject omission, duplication, substitution, padding, stale bindings,
+   pre-plan execution and evaluation-lane leakage;
+12. invocation-typed verification lanes. Operational common/route authorities remain
+   operational, while aggregate WorkVector/projection, route/attempt terminal
+   classification, and occurrence-terminal replay are standalone evaluation work over
+   an already closed aggregate, removing the terminal-accounting self-reference;
+13. runner-owned selected-WorkVector continuation authority. Transaction-2 and fresh-
+   fallback planners cannot supply prior execution authority; the occurrence controller
+   transports the exact charged result from completed runner history into the next
+   common-prefix proof; and
+14. a content-addressed runtime-tree CAS plus inert executor recipe and single-use
+   post-freeze factory, and an occurrence-level typed `PROTOCOL_FAILURE`
+   noncertificate that replays all earlier work plus the exact failed marginal pair and
+   remains in every denominator;
+15. `RuntimeFactoryCardinalityV1`, derived from the frozen runtime manifest and
+   registered manifest-cap profile before execution. Its content ID is carried in the
+   route-specific cardinality source chain of each sealed local/fallback candidate, and
+   its exact file, byte, manifest-document, hash/integrity/protocol/cap/I/O/peak terms
+   therefore enter both marginal uppers without consulting actual route work. The
+   selected factory rechecks the chosen source/upper chain. A successful
+   `SealedExecutorConstructionReceiptV1` binds that factory work and the final
+   post-construction access-log ID returned by the runner. The sealed safe-chain
+   fallback freezes `C_route=5815=C_factory(3)+C_solver(5812)` before comparison;
+   the factory reserve enters through cardinality and is not appended after the
+   route-wide cap. A total `5812` with reserve `3` leaves worker share `5809` and
+   preregisters cap rejection. Legacy reserve-zero serialization and identity remain
+   unchanged;
+16. exact sealed failure decomposition. `SealedExecutorFailureMergeProofV1` retains the
+   factory partial WorkVector/comparison/projection IDs, either the complete delegate
+   triple or typed nulls, and the merged partial triple. Its failure evidence also binds
+   runtime/recipe/cap/constructor/freeze identities, a registered failure stage, and
+   the final post-failure access-log ID. This currently supplies exact in-process
+   failed-route/occurrence replay, not an independent FQ7 semantic attestation; and
+17. `PARTIAL_ACCOUNTED_COMMON` for continuation packages rejected after operational
+   verification has begun. It reconstructs a suffix and sum/max aggregate from the
+   exact already observed authority-bearing semantic results and nonsemantic records.
+   It is not a successful two-stage receipt, cannot authorize continuation, and cannot
+   pad missing work; and
+18. registered typed nonsemantic replay and occurrence-result boundary replay. Each
+   nonsemantic check kind recomputes its claim from concrete evidence rather than
+   accepting IDs, every plan source record is disjoint from the sealed core, and the
+   occurrence result reconstructs its aggregate, ordered runs, transactions, closure
+   and terminal authorities before it is accepted.
 
 The semantic-verification registry now authoritatively replays native work, actual
-projection, access-protocol violations, terminal classification, route upper, route
-decision and ground fallback. Causal/cardinality and local-result/post-audit handlers
+projection, access-protocol violations, route/attempt terminal classification,
+evaluation-lane `SemanticRole.OCCURRENCE_TERMINAL` over
+`Phase3EOccurrenceTerminalArtifactV1`, route upper, route decision and ground fallback.
+The occurrence role covers `PROTOCOL_FAILURE` and `FALLBACK_CAP_EXHAUSTED`; the route-
+attempt terminal role cannot substitute for it. Causal/cardinality and local-result/post-audit handlers
 are intentionally restricted to the registered safe-chain sources and opaque trusted
 runtime provenance. `EXACT_CACHED_INFEASIBILITY` and `ABSTRACT_AUDIT` remain
 `NOT_IMPLEMENTED`; no hash or legal-looking outcome string can replace either role or
@@ -118,9 +168,10 @@ process/I/O/peak records, semantic-verification suffixes and explicit opposite-r
 zeroes. Their adapters record observed materialization/staging, compilation, process
 launch, solver work, post-audit and output incrementally, so a later exception cannot
 erase completed prefix work. Production instrumentation is still incomplete across
-abstract-only, rebuild, exact-infeasible, serialization, integrity/protocol, terminal-
-verification and hash paths. This is why `COUNTER_COMPLETENESS_GATE_NOT_RUN` remains
-mandatory.
+abstract-only, rebuild, exact-infeasible, serialization, remaining integrity/protocol
+failure and hash paths. The two-stage rule proves exact ownership for the paths wired
+to it; it does not infer counters for unwired paths. This is why
+`COUNTER_COMPLETENESS_GATE_NOT_RUN` remains mandatory.
 
 ### Historical Phase 3B diagnostic projection
 
@@ -161,33 +212,30 @@ No scalarization is frozen.
 
 ## Unresolved acceptance contracts
 
-An official Phase 3E run remains blocked until all of the following are implemented
-and independently verified together:
+An official Phase 3E run remains blocked. The four former scoped P0 items—non-cyclic
+verification accounting, continuation WorkVector
+authority, sealed post-freeze execution/runtime CAS, and occurrence-level failed-route
+closure—are implemented under V0-033. They are no longer blockers. The remaining
+conditions must be implemented and independently verified together:
 
-1. a non-self-referential accounting rule for operational terminal/certificate
-   semantic verification. Those verification records are currently produced after the
-   runner route aggregate and are not part of the certified marginal suffix;
-2. inclusion of continuation-authority `WORK_VECTOR` verification work in the next
-   decision's common prefix, with exact provenance and no double charge;
-3. a sealed executor factory and content-addressed runtime-tree binding that prevent a
-   caller-supplied callable from doing route work before freeze and prevent runtime
-   source from changing between decision freeze and isolated execution;
-4. occurrence-level conversion of `Phase3ERouteExecutionFailedV1` into a typed final
-   noncertificate plus an aggregate terminal over the whole logical occurrence, rather
-   than only the last marginal route;
-5. production-native counter instrumentation for every remaining abstract-only,
-   rebuild, exact-infeasible, cap/protocol/integrity, serialization, I/O, verification
-   and hash path;
-6. authoritative `ABSTRACT_AUDIT` and identical-query/build/kernel
+1. production-native and content-hash instrumentation for every remaining path,
+   including planner invocation, continuation/fallback authority-package construction
+   and rejection, abstract-only, rebuild, exact-infeasible, cap/protocol/integrity,
+   every terminal branch, serialization, I/O, verification, and hashing. The current
+   runner still publishes
+   `unassigned_postfreeze_operational_leaves=(common.hash_invocations)` and
+   `ALL_PATH_NATIVE_HASH_INSTRUMENTATION`; the four scoped closures above do not erase
+   those blockers;
+2. authoritative `ABSTRACT_AUDIT` and identical-query/build/kernel
    `EXACT_CACHED_INFEASIBILITY` replay;
-7. a live failed-post-audit -> genuinely deeper frontier -> fresh second-decision
+3. a live failed-post-audit -> genuinely deeper frontier -> fresh second-decision
    benchmark. The generic controller can select local transaction 2 or direct fallback,
    but its tests are not registered benchmark evidence for that dependent path;
-8. operational rebuild/new-epoch retry and all terminal/campaign failure closures with
-   complete accounting;
-9. an upstream consumer that starts from a manifest, plans and audits in the frozen
+4. operational rebuild/new-epoch retry and all remaining terminal/campaign failure
+   closures with complete accounting;
+5. an upstream consumer that starts from a manifest, plans and audits in the frozen
    RAPM, and constructs the prepared authority package rather than receiving it; and
-10. an independent manifest-based bundle verifier that replays all sources, identities,
+6. an independent manifest-based bundle verifier that replays all sources, identities,
    counters, formulae, access events and certificate semantics.
 
 Until then, the project has advanced the auditable mechanism but has not run

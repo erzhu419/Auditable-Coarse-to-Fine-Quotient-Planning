@@ -66,6 +66,7 @@ from acfqp.phase3e_fallback_v1 import (
     safe_chain_fallback_context_identity_v1,
 )
 from acfqp.phase3e_ids import (
+    GROUND_FALLBACK_PARENT_BINDING_DOMAIN,
     GROUND_FALLBACK_ISOLATED_ATTESTATION_DOMAIN,
     GROUND_FALLBACK_ISOLATED_OUTPUT_DOMAIN,
     canonical_json_bytes,
@@ -77,6 +78,11 @@ from acfqp.phase3e_runner_v1 import (
     Phase3ERouteExecutionV1,
     Phase3ERunnerV1Error,
     PreparedPhase3ERunV1,
+)
+from acfqp.phase3e_sealed_executor_v1 import (
+    ExecutorRecipeV1,
+    PostFreezeConstructionGrantV1,
+    RuntimeFactoryCardinalityV1,
 )
 from acfqp.routing_v1 import (
     CardinalityEvidenceV1,
@@ -99,6 +105,12 @@ from acfqp.semantic_verification_v1 import (
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 RUNTIME_SOURCE_ROOT = PROJECT_ROOT / "src"
 RECORDER_ID = "phase3e_isolated_ground_fallback_supervisor_v1"
+ISOLATED_FALLBACK_EXECUTOR_SEMANTICS_ID = (
+    "phase3e-isolated-ground-fallback-executor-v1"
+)
+ISOLATED_FALLBACK_RUNTIME_ENTRYPOINT = (
+    "acfqp/phase3e_fallback_runtime_v1.py"
+)
 
 
 class Phase3EIsolatedFallbackV1Error(Phase3ERunnerV1Error):
@@ -117,6 +129,36 @@ class IsolatedGroundFallbackExecutorInputsV1:
     route_decision_result: object
     fallback_upper_result: object
     cardinality_result: object
+    runtime_factory_cardinality: RuntimeFactoryCardinalityV1 | None = None
+
+
+def isolated_ground_fallback_executor_configuration_id_v1(
+    inputs: IsolatedGroundFallbackExecutorInputsV1,
+) -> str:
+    """Bind one sealed recipe to the exact fallback authority chain."""
+
+    payload = {
+            "schema": "acfqp.phase3e_isolated_fallback_executor_configuration.v1",
+            "route_decision_context_id": (
+                inputs.context.route_decision_context_id
+            ),
+            "decision_point_id": inputs.decision_point.decision_point_id,
+            "selected_upper_id": (
+                inputs.fallback_upper.route_upper_bound_envelope_id
+            ),
+            "cardinality_evidence_id": inputs.cardinality.cardinality_evidence_id,
+            "cardinality_bound_id": (
+                inputs.cardinality_bound.ground_fallback_cardinality_bound_id
+            ),
+            "ground_fallback_cap_profile_id": (
+                inputs.cap_profile.ground_fallback_cap_profile_id
+            ),
+        }
+    if inputs.runtime_factory_cardinality is not None:
+        payload["runtime_factory_cardinality_id"] = (
+            inputs.runtime_factory_cardinality.runtime_factory_cardinality_id
+        )
+    return content_id(GROUND_FALLBACK_PARENT_BINDING_DOMAIN, payload)
 
 
 def _system_mounts() -> tuple[str, ...]:
@@ -136,12 +178,28 @@ def _isolated_python() -> str:
     return str(Path(candidate).resolve())
 
 
-def _copy_runtime_source(destination: Path) -> None:
+def _copy_runtime_source(
+    destination: Path,
+    runtime_source_root: Path | None = None,
+) -> None:
     """Stage the complete Python package payload, excluding caches/non-code."""
 
-    package_source = RUNTIME_SOURCE_ROOT / "acfqp"
+    source_root = (
+        RUNTIME_SOURCE_ROOT
+        if runtime_source_root is None
+        else Path(runtime_source_root)
+    )
+    package_source = source_root / "acfqp"
+    if package_source.is_symlink() or not package_source.is_dir():
+        raise Phase3EIsolatedFallbackV1Error(
+            "isolated fallback runtime snapshot is invalid"
+        )
     package_target = destination / "acfqp"
     for source in sorted(package_source.rglob("*.py")):
+        if source.is_symlink() or not source.is_file():
+            raise Phase3EIsolatedFallbackV1Error(
+                "isolated fallback runtime snapshot contains a non-regular file"
+            )
         relative = source.relative_to(package_source)
         target = package_target / relative
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -193,6 +251,11 @@ def _authorize(inputs: IsolatedGroundFallbackExecutorInputsV1) -> MarginalRouteD
         != inputs.decision_point.decision_point_id
         or inputs.cardinality_bound.ground_fallback_cardinality_bound_id
         not in inputs.cardinality.source_artifact_ids
+        or (
+            inputs.runtime_factory_cardinality is not None
+            and inputs.runtime_factory_cardinality.runtime_factory_cardinality_id
+            not in inputs.cardinality_bound.source_artifact_ids
+        )
     ):
         raise Phase3EIsolatedFallbackV1Error(
             "isolated fallback cardinality bound is stale"
@@ -317,6 +380,7 @@ def _run_worker(
     registry: CounterRegistryV1,
     controller: FailClosedAccessController,
     recorder: NativeCounterRecorderV1,
+    runtime_source_root: Path | None = None,
 ) -> GroundFallbackExecutionV1:
     bubblewrap = shutil.which("bwrap")
     if bubblewrap is None:
@@ -332,7 +396,7 @@ def _run_worker(
         runtime_root.mkdir()
         input_root.mkdir()
         output_root.mkdir()
-        _copy_runtime_source(runtime_root)
+        _copy_runtime_source(runtime_root, runtime_source_root)
         request_raw = canonical_json_bytes(request.to_dict())
         request_path = input_root / "request.json"
         request_path.write_bytes(request_raw)
@@ -536,6 +600,37 @@ def _run_worker(
         )
 
 
+def _verify_fallback_route_semantics_v1(
+    *,
+    inputs: IsolatedGroundFallbackExecutorInputsV1,
+    semantic_execution: GroundFallbackExecutionV1,
+    binding: AttestationContextV1,
+    verification_records: tuple[CounterRecordV1, ...],
+    registry: CounterRegistryV1,
+) -> tuple[object, ...]:
+    """Exact constructor-owned fallback dispatcher; never reruns the solver."""
+
+    if (
+        not isinstance(semantic_execution, GroundFallbackExecutionV1)
+        or not isinstance(binding, AttestationContextV1)
+        or type(verification_records) is not tuple
+        or len(verification_records) != 1
+        or not isinstance(verification_records[0], CounterRecordV1)
+    ):
+        raise Phase3EIsolatedFallbackV1Error(
+            "deferred fallback semantic dispatcher received an invalid target set"
+        )
+    return (
+        verify_ground_fallback_semantics_v1(
+            semantic_execution,
+            cap_profile=inputs.cap_profile,
+            binding=binding,
+            verification_work_record=verification_records[0],
+            registry=registry,
+        ),
+    )
+
+
 def _finalize_isolated_fallback_execution_v1(
     *,
     inputs: IsolatedGroundFallbackExecutorInputsV1,
@@ -543,6 +638,7 @@ def _finalize_isolated_fallback_execution_v1(
     execution: GroundFallbackExecutionV1,
     registry: CounterRegistryV1,
     profile: ComparisonProfileV1,
+    defer_semantics: bool,
 ) -> Phase3ERouteExecutionV1:
     """Bind a successful isolated output to access and semantic authority."""
 
@@ -566,25 +662,30 @@ def _finalize_isolated_fallback_execution_v1(
         TypedNotApplicable("direct fallback has no local transaction"),
         len(controller.snapshot().events) + 1,
     )
-    spec = semantic_verifier_spec_v1(SemanticRole.GROUND_FALLBACK)
-    verification_record = CounterRecordV1.observe(
-        registry,
-        spec.verification_counter_path,
-        1,
-        recorder_id="phase3e_isolated_ground_fallback_semantic_verifier_v1",
-    )
-    semantic_result = verify_ground_fallback_semantics_v1(
-        execution,
-        cap_profile=inputs.cap_profile,
-        binding=binding,
-        verification_work_record=verification_record,
-        registry=registry,
-    )
+    semantic_results: tuple[object, ...]
+    if defer_semantics:
+        semantic_results = ()
+    else:
+        spec = semantic_verifier_spec_v1(SemanticRole.GROUND_FALLBACK)
+        verification_record = CounterRecordV1.observe(
+            registry,
+            spec.verification_counter_path,
+            1,
+            recorder_id="phase3e_isolated_ground_fallback_semantic_verifier_v1",
+        )
+        semantic_results = _verify_fallback_route_semantics_v1(
+            inputs=inputs,
+            semantic_execution=execution,
+            binding=binding,
+            verification_records=(verification_record,),
+            registry=registry,
+        )
     return adapt_ground_fallback_execution_v1(
         execution,
         registry=registry,
         comparison_profile=profile,
-        semantic_verification_results=(semantic_result,),
+        semantic_verification_results=semantic_results,
+        semantic_verification_deferred=defer_semantics,
     )
 
 
@@ -613,6 +714,11 @@ class AuthorizedIsolatedGroundFallbackExecutorV1:
     inputs: IsolatedGroundFallbackExecutorInputsV1
     registry: CounterRegistryV1 | None = None
     comparison_profile: ComparisonProfileV1 | None = None
+    # Historical callers use ``None``.  The sealed profile injects a verified
+    # route-private runtime-tree lease after decision freeze.
+    runtime_source_root: Path | None = None
+    runtime_tree_id: str | None = None
+    executor_recipe_id: str | None = None
 
     def __call__(
         self,
@@ -634,6 +740,16 @@ class AuthorizedIsolatedGroundFallbackExecutorV1:
         ):
             raise Phase3EIsolatedFallbackV1Error(
                 "prepared run differs from isolated fallback authority inputs"
+            )
+        if self.runtime_source_root is not None and (
+            self.runtime_tree_id is None
+            or self.executor_recipe_id is None
+            or getattr(prepared, "runtime_tree_id", None) != self.runtime_tree_id
+            or getattr(prepared, "executor_recipe_id", None)
+            != self.executor_recipe_id
+        ):
+            raise Phase3EIsolatedFallbackV1Error(
+                "sealed fallback runtime IDs differ from the prepared run"
             )
         if (
             not isinstance(recorder, NativeCounterRecorderV1)
@@ -660,7 +776,12 @@ class AuthorizedIsolatedGroundFallbackExecutorV1:
         request = _build_request(inputs)
         try:
             execution = _run_worker(
-                inputs, request, registry, controller, owned_recorder
+                inputs,
+                request,
+                registry,
+                controller,
+                owned_recorder,
+                self.runtime_source_root,
             )
             return _finalize_isolated_fallback_execution_v1(
                 inputs=inputs,
@@ -668,14 +789,124 @@ class AuthorizedIsolatedGroundFallbackExecutorV1:
                 execution=execution,
                 registry=registry,
                 profile=profile,
+                defer_semantics=prepared.two_stage_accounting_profile,
             )
         except Exception as error:
             _raise_with_partial_fallback_work_v1(error, owned_recorder)
             raise AssertionError("partial fallback failure helper returned")
 
 
+@dataclass(frozen=True, slots=True)
+class IsolatedFallbackPostFreezeConstructorV1:
+    """Create the fallback supervisor only from a verified runtime lease."""
+
+    inputs: IsolatedGroundFallbackExecutorInputsV1
+    registry: CounterRegistryV1 | None = None
+    comparison_profile: ComparisonProfileV1 | None = None
+
+    @property
+    def runtime_factory_cardinality_v1(self) -> RuntimeFactoryCardinalityV1 | None:
+        return self.inputs.runtime_factory_cardinality
+
+    @property
+    def executor_configuration_id_v1(self) -> str:
+        return isolated_ground_fallback_executor_configuration_id_v1(self.inputs)
+
+    @property
+    def selected_upper_id_v1(self) -> str:
+        return self.inputs.fallback_upper.route_upper_bound_envelope_id
+
+    @property
+    def selected_cardinality_evidence_id_v1(self) -> str:
+        return self.inputs.cardinality.cardinality_evidence_id
+
+    @property
+    def selected_cardinality_source_artifact_ids_v1(self) -> tuple[str, ...]:
+        return self.inputs.cardinality_bound.source_artifact_ids
+
+    def deferred_route_verifier_v1(
+        self,
+        execution: Phase3ERouteExecutionV1,
+        binding: object,
+        verification_records: tuple[CounterRecordV1, ...],
+    ) -> tuple[object, ...]:
+        """Replay exact fallback semantics after charge-plan freeze."""
+
+        if (
+            not isinstance(execution, Phase3ERouteExecutionV1)
+            or not isinstance(binding, AttestationContextV1)
+            or not isinstance(
+                execution.semantic_execution, GroundFallbackExecutionV1
+            )
+        ):
+            raise Phase3EIsolatedFallbackV1Error(
+                "deferred fallback verifier received a foreign route execution"
+            )
+        registry = self.registry or official_counter_registry_v1()
+        return _verify_fallback_route_semantics_v1(
+            inputs=self.inputs,
+            semantic_execution=execution.semantic_execution,
+            binding=binding,
+            verification_records=verification_records,
+            registry=registry,
+        )
+
+    def deferred_route_verifier_step_v1(
+        self,
+        execution: Phase3ERouteExecutionV1,
+        binding: object,
+        role: object,
+        verification_record: CounterRecordV1,
+        prior_results: tuple[object, ...],
+    ) -> object:
+        if role is not SemanticRole.GROUND_FALLBACK or prior_results:
+            raise Phase3EIsolatedFallbackV1Error(
+                "incremental fallback verifier received an invalid obligation"
+            )
+        return self.deferred_route_verifier_v1(
+            execution, binding, (verification_record,)
+        )[0]
+
+    def construct_after_freeze(
+        self,
+        grant: PostFreezeConstructionGrantV1,
+    ) -> AuthorizedIsolatedGroundFallbackExecutorV1:
+        if type(grant) is not PostFreezeConstructionGrantV1:
+            raise Phase3EIsolatedFallbackV1Error(
+                "sealed fallback construction requires a typed post-freeze grant"
+            )
+        recipe: ExecutorRecipeV1 = grant.recipe
+        if (
+            recipe.selected_route is not RouteSelection.FALLBACK
+            or recipe.executor_semantics_id
+            != ISOLATED_FALLBACK_EXECUTOR_SEMANTICS_ID
+            or recipe.entrypoint_relative_path
+            != ISOLATED_FALLBACK_RUNTIME_ENTRYPOINT
+            or recipe.executor_configuration_id
+            != isolated_ground_fallback_executor_configuration_id_v1(self.inputs)
+        ):
+            raise Phase3EIsolatedFallbackV1Error(
+                "sealed fallback recipe differs from its trusted authority inputs"
+            )
+        # The sealed factory owns the exact pre/post lease verification and
+        # its WorkVector.  A second constructor-side replay would be unmetered
+        # duplicate runtime I/O.
+        return AuthorizedIsolatedGroundFallbackExecutorV1(
+            self.inputs,
+            self.registry,
+            self.comparison_profile,
+            grant.runtime_tree.root,
+            recipe.runtime_tree_id,
+            recipe.executor_recipe_id,
+        )
+
+
 __all__ = [
     "AuthorizedIsolatedGroundFallbackExecutorV1",
+    "ISOLATED_FALLBACK_EXECUTOR_SEMANTICS_ID",
+    "ISOLATED_FALLBACK_RUNTIME_ENTRYPOINT",
     "IsolatedGroundFallbackExecutorInputsV1",
+    "IsolatedFallbackPostFreezeConstructorV1",
     "Phase3EIsolatedFallbackV1Error",
+    "isolated_ground_fallback_executor_configuration_id_v1",
 ]

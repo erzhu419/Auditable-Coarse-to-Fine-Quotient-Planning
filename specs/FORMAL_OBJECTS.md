@@ -674,8 +674,8 @@ ground-oracle signatures as oracle-free discovery of an unknown quotient. Phase 
 also excludes learned world models, automatic predicate invention, an executed local-
 hybrid method, break-even evidence, and full Phase 3/5 Gate claims.
 Phase 3D additionally excludes one-shot causally dependent multi-horizon recovery,
-information-theoretic capability minimality, uncapped polynomial-time search,
-workload economics, and learned model synthesis.
+information-theoretic capability minimality, uncapped polynomial-time search, the
+official Phase 3E Gate and scalar workload economics, and learned model synthesis.
 
 ## Known failure modes
 
@@ -683,4 +683,4 @@ Loose cellwise suprema can make `U_all` conservative; a valid policy may fail ce
 
 ## Open risks
 
-Tighter coupled envelope representations may improve coverage later, but must preserve containment and the unrestricted-action regret theorem. V0-027 proves an exact-model/oracle cross-automorphism construction slice; V0-028 removes Q/value signatures from the portable campaign builder; V0-029 executes the first strict overlay; and V0-030 resolves finite joint composition, slack-aware causality, and sparse authority. Automatic predicate invention, dependent-horizon recovery, workload economics/dynamic routing, and statistical Phase 3/Phase 5 aggregates remain open.
+Tighter coupled envelope representations may improve coverage later, but must preserve containment and the unrestricted-action regret theorem. V0-027 proves an exact-model/oracle cross-automorphism construction slice; V0-028 removes Q/value signatures from the portable campaign builder; V0-029 executes the first strict overlay; and V0-030 resolves finite joint composition, slack-aware causality, and sparse authority. Automatic predicate invention, dependent-horizon recovery, the official Phase 3E campaign/Gate and scalar workload economics, and statistical Phase 3/Phase 5 aggregates remain open; scoped component dynamic routing is already implemented under V0-032/V0-033.

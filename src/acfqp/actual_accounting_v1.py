@@ -338,7 +338,30 @@ def _validate_work_scope(
             raise ActualAccountingV1Error(
                 "marginal work must be a local-attempt or direct-fallback vector"
             )
-        forbidden = ("common.", "rebuild.")
+        # Runtime-CAS resolution is selected-route execution even though its
+        # operation families (hash/integrity/protocol) are shared by both
+        # routes.  Only the closed factory recorder or its typed two-source
+        # merge may carry nonzero ``common.*`` rows in this scope; ordinary
+        # route executors remain unable to launder common-prefix work here.
+        allowed_shared_recorders = {
+            "phase3e-sealed-executor-factory-v1",
+            "phase3e-sealed-execution-merge-v1",
+            "phase3e-sealed-failed-execution-merge-v1",
+        }
+        bad_shared = sorted(
+            row.path
+            for row in vector.records
+            if row.path.startswith("common.")
+            and row.value
+            and row.recorder_id not in allowed_shared_recorders
+        )
+        if bad_shared:
+            raise ActualAccountingV1Error(
+                "marginal execution contains forbidden work from unauthorised "
+                "shared recorders: "
+                f"{bad_shared!r}"
+            )
+        forbidden = ("rebuild.",)
     elif work_scope is ActualWorkScope.MARGINAL_ROUTE_VERIFICATION:
         if vector.route_kind not in {
             RouteKindEnum.LOCAL_ATTEMPT,

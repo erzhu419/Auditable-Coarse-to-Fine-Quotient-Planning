@@ -81,7 +81,11 @@ def test_official_registry_freezes_all_fq11_leaves_and_metadata() -> None:
     registry.validate_official_catalogue()
 
     assert len(registry.operational_leaves) == 34
-    assert len(registry.leaves) == 47
+    assert len(registry.leaves) == 49
+    assert {
+        registry.by_path["evaluation.semantic_integrity_checks"].lane,
+        registry.by_path["evaluation.semantic_protocol_checks"].lane,
+    } == {LaneEnum.EVALUATION}
     assert set(registry.required_paths) == {
         leaf.path for leaf in registry.operational_leaves
     } | {

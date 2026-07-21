@@ -14,6 +14,7 @@ from acfqp.access_protocol_v1 import (
 from acfqp.accounting_v1 import (
     ComparisonVectorV1,
     CounterRecordV1,
+    LaneEnum,
     RouteKindEnum,
     explicit_records_v1,
     official_comparison_profile_v1,
@@ -92,20 +93,28 @@ def _binding(
     decision: str | TypedNotApplicable | None = None,
     transaction: str | TypedNotApplicable | None = None,
     step: int = 7,
+    lane: LaneEnum = LaneEnum.OPERATIONAL,
 ) -> AttestationContextV1:
     return AttestationContextV1(
         context,
         decision or TypedNotApplicable("no decision"),
         transaction or TypedNotApplicable("no transaction"),
         step,
+        lane,
     )
 
 
-def _record(role: SemanticRole, value: int = 1) -> CounterRecordV1:
+def _record(
+    role: SemanticRole,
+    value: int = 1,
+    *,
+    lane: LaneEnum = LaneEnum.OPERATIONAL,
+) -> CounterRecordV1:
     registry = official_counter_registry_v1()
+    spec = semantic_verifier_spec_v1(role)
     return CounterRecordV1.observe(
         registry,
-        semantic_verifier_spec_v1(role).verification_counter_path,
+        spec.counter_path_for_lane(lane),
         value,
         recorder_id=f"{role.value.lower()}-verifier-test-v1",
     )
@@ -142,6 +151,71 @@ def test_work_vector_is_bound_to_attested_attempt_subject() -> None:
             binding=_binding(other),
             verification_work_record=_record(SemanticRole.WORK_VECTOR),
         )
+
+
+def test_semantic_replay_lane_is_invocation_typed_and_evaluation_is_noncosted() -> None:
+    context = _context("evaluation-work")
+    vector = _work(
+        RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE,
+        context.route_attempt_id,
+    )
+    evaluation_binding = _binding(context, lane=LaneEnum.EVALUATION)
+    result = verify_work_vector_semantics_v1(
+        vector,
+        binding=evaluation_binding,
+        verification_work_record=_record(
+            SemanticRole.WORK_VECTOR,
+            lane=LaneEnum.EVALUATION,
+        ),
+    )
+    assert result.attestation.verification_lane is LaneEnum.EVALUATION
+    assert result.verification_work_record.path == (
+        "evaluation.semantic_integrity_checks"
+    )
+    assert result.verification_work_record.lane is LaneEnum.EVALUATION
+
+    with pytest.raises(SemanticVerificationV1Error, match="lane differs"):
+        verify_work_vector_semantics_v1(
+            vector,
+            binding=evaluation_binding,
+            verification_work_record=_record(SemanticRole.WORK_VECTOR),
+        )
+
+    with pytest.raises(SemanticVerificationV1Error, match="lane differs"):
+        verify_work_vector_semantics_v1(
+            vector,
+            binding=_binding(context),
+            verification_work_record=_record(
+                SemanticRole.WORK_VECTOR,
+                lane=LaneEnum.EVALUATION,
+            ),
+        )
+
+
+@pytest.mark.parametrize("ref_field", ("decision_point_id", "transaction_id"))
+def test_semantic_result_rejects_typed_null_reason_substitution(
+    ref_field: str,
+) -> None:
+    context = _context(f"typed-null-{ref_field}")
+    vector = _work(
+        RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE,
+        context.route_attempt_id,
+    )
+    result = verify_work_vector_semantics_v1(
+        vector,
+        binding=_binding(context),
+        verification_work_record=_record(SemanticRole.WORK_VECTOR),
+    )
+    substituted_binding = replace(
+        result.binding,
+        **{ref_field: TypedNotApplicable(f"substituted {ref_field} reason")},
+    )
+
+    with pytest.raises(
+        SemanticVerificationV1Error,
+        match="attestation context mismatch",
+    ):
+        replace(result, binding=substituted_binding)
 
 
 def test_local_work_and_actual_projection_require_matching_transaction_subject() -> None:
@@ -359,7 +433,22 @@ def test_typed_attestation_transport_requires_authority_result() -> None:
 def _verified_protocol_terminal(label: str = "protocol"):
     context = _context(label)
     point = _id(f"{label}-point")
-    binding = _binding(context, decision=point, step=1)
+    no_transaction = TypedNotApplicable(
+        "preselection violation has no transaction"
+    )
+    operational_binding = _binding(
+        context,
+        decision=point,
+        transaction=no_transaction,
+        step=1,
+    )
+    binding = _binding(
+        context,
+        decision=point,
+        transaction=no_transaction,
+        step=1,
+        lane=LaneEnum.EVALUATION,
+    )
     controller = FailClosedAccessController(context.route_attempt_id, point)
     with pytest.raises(AccessProtocolViolation) as caught:
         controller.record(AccessOperation.KERNEL_STEP, AccessRouteScope.LOCAL)
@@ -367,13 +456,16 @@ def _verified_protocol_terminal(label: str = "protocol"):
         caught.value.violation,
         access_log=controller.snapshot(),
         profile=controller.profile,
-        binding=binding,
+        binding=operational_binding,
         verification_work_record=_record(SemanticRole.PROTOCOL_ACCESS),
     )
     work_result = verify_work_vector_semantics_v1(
         _work(RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE, context.route_attempt_id),
         binding=binding,
-        verification_work_record=_record(SemanticRole.WORK_VECTOR),
+        verification_work_record=_record(
+            SemanticRole.WORK_VECTOR,
+            lane=LaneEnum.EVALUATION,
+        ),
     )
     evidence_ids = tuple(
         sorted(
@@ -391,7 +483,7 @@ def _verified_protocol_terminal(label: str = "protocol"):
         context.logical_occurrence_id,
         context.route_attempt_id,
         point,
-        TypedNotApplicable("preselection violation has no transaction"),
+        no_transaction,
         work_result.attestation.artifact_id,
         evidence_ids,
     )
@@ -399,7 +491,10 @@ def _verified_protocol_terminal(label: str = "protocol"):
         terminal,
         evidence_results=(work_result, protocol_result),
         binding=binding,
-        verification_work_record=_record(SemanticRole.TERMINAL_CLASSIFICATION),
+        verification_work_record=_record(
+            SemanticRole.TERMINAL_CLASSIFICATION,
+            lane=LaneEnum.EVALUATION,
+        ),
     )
     return context, binding, controller, work_result, protocol_result, terminal_result
 
@@ -415,7 +510,10 @@ def test_protocol_failure_terminal_requires_replayed_forbidden_access() -> None:
             terminal,
             evidence_results=(work_result,),
             binding=binding,
-            verification_work_record=_record(SemanticRole.TERMINAL_CLASSIFICATION),
+            verification_work_record=_record(
+                SemanticRole.TERMINAL_CLASSIFICATION,
+                lane=LaneEnum.EVALUATION,
+            ),
         )
     assert protocol_result.outcome == "PROTOCOL_FAILURE"
 
@@ -464,11 +562,14 @@ def test_positive_and_infeasibility_terminals_remain_fail_closed(
     missing_role: str,
 ) -> None:
     context = _context(terminal_code.value)
-    binding = _binding(context)
+    binding = _binding(context, lane=LaneEnum.EVALUATION)
     work = verify_work_vector_semantics_v1(
         _work(RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE, context.route_attempt_id),
         binding=binding,
-        verification_work_record=_record(SemanticRole.WORK_VECTOR),
+        verification_work_record=_record(
+            SemanticRole.WORK_VECTOR,
+            lane=LaneEnum.EVALUATION,
+        ),
     )
     terminal = TerminalArtifactV1(
         "ROUTE_ATTEMPT",
@@ -487,5 +588,8 @@ def test_positive_and_infeasibility_terminals_remain_fail_closed(
             terminal,
             evidence_results=(work,),
             binding=binding,
-            verification_work_record=_record(SemanticRole.TERMINAL_CLASSIFICATION),
+            verification_work_record=_record(
+                SemanticRole.TERMINAL_CLASSIFICATION,
+                lane=LaneEnum.EVALUATION,
+            ),
         )

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from fractions import Fraction
 import hashlib
 
@@ -19,10 +19,15 @@ from acfqp.phase3e_fallback_v1 import (
     GroundFallbackProtocolError,
     GroundFallbackResultV1,
     GroundFallbackV1Error,
+    SEALED_ROUTE_CAP_PROFILE_KEY,
     build_ground_fallback_cardinality_evidence_v1,
     execute_authorized_ground_fallback_v1,
     require_fallback_formula_binding_v1,
     run_ground_fallback_search_v1,
+)
+from acfqp.phase3e_sealed_executor_v1 import (
+    OFFICIAL_RUNTIME_MANIFEST_CAP_PROFILE,
+    RuntimeFactoryCardinalityV1,
 )
 from acfqp.route_upper_formula_v1 import (
     RouteUpperFormulaV1Error,
@@ -304,6 +309,120 @@ def test_fallback_cardinality_adapter_binds_route_specific_formula_cap() -> None
     assert envelope.route_cap_profile_id == cap.route_cap_profile_id
     assert dict(proof.leaf_upper_bounds)["fallback.bellman_backups"] == 5_696
     assert dict(proof.leaf_upper_bounds)["control.cap_checks"] == 5_812
+
+
+def test_sealed_fallback_runtime_cap_checks_are_in_exact_cardinality_chain() -> None:
+    cap = replace(
+        _cap(max_cap_checks=5_815),
+        reserved_route_cap_checks=3,
+        profile_key=SEALED_ROUTE_CAP_PROFILE_KEY,
+    )
+    registry, profile, context, decision, historical_bound = (
+        _fallback_route_world(cap)
+    )
+    runtime = RuntimeFactoryCardinalityV1(
+        _id("sealed-runtime-tree"),
+        OFFICIAL_RUNTIME_MANIFEST_CAP_PROFILE.runtime_manifest_cap_profile_id,
+        file_count=2,
+        total_bytes=123,
+        manifest_document_bytes=456,
+    )
+    sealed_bound = replace(
+        historical_bound,
+        source_artifact_ids=tuple(
+            sorted(
+                historical_bound.source_artifact_ids
+                + (runtime.runtime_factory_cardinality_id,)
+            )
+        ),
+        runtime_factory_cardinality=runtime,
+    )
+
+    historical_counts = dict(
+        historical_bound.operational_count_values(registry)
+    )
+    sealed_counts = dict(sealed_bound.operational_count_values(registry))
+    sealed_uppers = dict(sealed_bound.operational_upper_values(cap, registry))
+    assert dict(runtime.upper_values())["control.cap_checks"] == 3
+    assert sealed_counts["control.cap_checks"] == (
+        historical_counts["control.cap_checks"] + 3
+    )
+    # The cap formula consumes the same exact cardinality; the factory checks
+    # must not be appended a second time at the upper-envelope layer.
+    assert sealed_uppers["control.cap_checks"] == sealed_counts[
+        "control.cap_checks"
+    ]
+
+    cardinality = build_ground_fallback_cardinality_evidence_v1(
+        context=context,
+        decision_point=decision,
+        cap_profile=cap,
+        bound=sealed_bound,
+    )
+    assert dict(cardinality.counts)["control.cap_checks"] == 5_815
+    formula = official_route_upper_formula_v1(
+        RouteKind.DIRECT_FALLBACK,
+        registry=registry,
+        profile=profile,
+        cap_profile=cap,
+    )
+    _, proof = derive_route_upper_v1(
+        context=context,
+        decision_point=decision,
+        cardinality=cardinality,
+        cap_profile=cap,
+        registry=registry,
+        profile=profile,
+        formula=formula,
+    )
+    assert dict(proof.leaf_upper_bounds)["control.cap_checks"] == 5_815
+
+    # A route-wide cap of 5,812 reserves the same three factory checks and
+    # leaves only 5,809 for the solver.  The complete 5,812-check solver is
+    # therefore preregistered to close CAP_EXHAUSTED; it cannot be presented
+    # as a successful 5,815-check execution within a 5,812 upper.
+    tight_cap = replace(cap, max_cap_checks=5_812)
+    tight_bound = replace(
+        sealed_bound,
+        ground_fallback_cap_profile_id=(
+            tight_cap.ground_fallback_cap_profile_id
+        ),
+    )
+    assert tight_cap.max_solver_cap_checks == 5_809
+    assert tight_bound.cap_rejection_upper(tight_cap) == 1
+    tight_cardinality = build_ground_fallback_cardinality_evidence_v1(
+        context=context,
+        decision_point=decision,
+        cap_profile=tight_cap,
+        bound=tight_bound,
+    )
+    assert dict(tight_cardinality.counts)["control.cap_checks"] == 5_815
+    assert dict(tight_cardinality.counts)["control.cap_rejections"] == 1
+    tight_formula = official_route_upper_formula_v1(
+        RouteKind.DIRECT_FALLBACK,
+        registry=registry,
+        profile=profile,
+        cap_profile=tight_cap,
+    )
+    _, tight_proof = derive_route_upper_v1(
+        context=context,
+        decision_point=decision,
+        cardinality=tight_cardinality,
+        cap_profile=tight_cap,
+        registry=registry,
+        profile=profile,
+        formula=tight_formula,
+    )
+    assert dict(tight_proof.leaf_upper_bounds)["control.cap_checks"] == 5_812
+
+
+def test_unsealed_fallback_cap_payload_and_identity_remain_legacy_v1() -> None:
+    cap = _cap(max_cap_checks=5_812)
+    document = cap.to_dict()
+    assert document["schema"] == "acfqp.ground_fallback_cap_profile.v1"
+    assert "reserved_route_cap_checks" not in document
+    assert "max_solver_cap_checks" not in document
+    assert GroundFallbackCapProfileV1.from_dict(document) == cap
 
 
 def test_candidate_upper_cannot_disappear_below_registered_backup_upper() -> None:

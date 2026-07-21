@@ -1,8 +1,8 @@
 # V0 Decision Ledger
 
 **Status:** normative source of truth  
-**Ledger version:** 1.0.0
-**Last updated:** 2026-07-20
+**Ledger version:** 1.0.1
+**Last updated:** 2026-07-21
 
 ## Authority
 
@@ -59,6 +59,7 @@ absent from a public checkout.
 | V0-031 | 2026-07-20 | Frozen Phase 3C to Phase 3D boundary | FROZEN | Phase 3D is an operational consumer of a **fully verified, frozen Phase 3C artifact bundle**, not another world-model construction run. Before planning it verifies and embeds the source run, manifest, local pre-certificate, locality, authorization, serialized RAPM and `BuildEpoch`, and binds their registries to immutable structural objects without ground transition evaluation. The source pre-certificate supplies the frozen action-unrestricted reward upper bound; the operational path may reevaluate selected-policy sound bounds but may not recompute `U_all`. Source locality/authorization also determines current authority: the 16 current frontier pair IDs are a strict subset of the source 32 frontier IDs, while the 8 reverse-dependency pair IDs exactly equal the source 8. Namespace binding may collect the complete 144-action catalogue without stepping the kernel; thereafter causal scoring, ancestor legality and capability cost use only that frozen catalogue, with no new ground-action or ground-step calls before authorization. Counters are zero for `construct_phase3c_world`, transition closure, partition, quotient and portable-RAPM construction. After abstract proof failure, authorized frontier materialization performs exactly 16 steps and the patch-restricted sound post-audit exactly 8, for 24 operational steps total, zero accounting steps and zero steps outside the authorized frontier or patched cells. `24/96` denotes authorized capability scope, not 96 re-executed outcomes. The operational post-certificate records reward lower bound `3/64`, failure upper bound `397/20000`, null exact-hybrid fields and `EVALUATION_ONLY_NOT_RUN_IN_OPERATIONAL_RUNNER`; exact hybrid lift is forbidden there. Only the standalone independent verifier's evaluation lane may rebuild authoritative semantics, lift exactly to risk `317/16000` with 8 patched/12 retained abstract decisions, and invoke J0; none of that is operational world-model/query cost. | Additively clarifies V0-030's source boundary and closes the implementation loopholes in which a runner could rebuild Phase 3C, infer authority, recount via ground access, or perform an uncharged exact lift while reporting zero rebuild work; it preserves V0-030's historical mathematics and does not change V0-028--V0-030 results, goldens, or claim scope. | `FrozenPhase3CWorld` loader; `acfqp-phase3d --phase3c-bundle`; frozen-upper audit API; frozen action catalogue/providers; source locality/authorization and base/provenance artifacts; operational access counters; patched-audit view; null exact-field schema; forbidden-builder/transition/lift tests; byte-preservation and independent-verifier forgery tests. |
 
 | V0-032 | 2026-07-20 | Phase 3E accounted dynamic routing | FROZEN | Contract `1.0.0` registers profile `phase3e_accounted_dynamic_routing_v0`. It keeps the reusable-world-model objective of V0-028 primary and adds a result-blind, estimate-before-execute routing contract: complete native `WorkVectorV1` accounting is distinct from the eight-axis shared `ComparisonProfileV1`; only marginal local-attempt versus direct-fallback strict componentwise dominance may select local; all identities, caps, cardinalities, uppers, decisions, work and attestations are full domain-separated SHA-256 objects; trusted replay, not worker claims, derives budgets; negative causal outcomes forbid local; actual comparison is recomputed from exact native work; host full-solver replay is removed from operational 3B/3C/3D paths; terminal class/code, retry and denominator semantics are explicit. No scalar or break-even is frozen. Until the complete registry, migrations, typed verifiers, access-order guards, all failure paths and independent replay pass, official execution remains forbidden and both workload-economics and counter-completeness Gates remain `NOT_RUN`. | Resolves Phase 3E follow-up FQ1--FQ13 and supersedes the unresolved design choices in the Phase 3E preconstruction question packet; it does not relabel contracts 0.4--0.9 or their historical artifacts. | `WorkVectorV1`; `CounterRegistryV1`; `ComparisonProfileV1`; full content-ID registry; typed route/cap/cardinality/attestation/terminal schemas; Phase 3B--3D lane migration; Phase 3E consumer runner; access-order, failure-path, replay and Gate tests. |
+| V0-033 | 2026-07-21 | Phase 3E P0 accounting, continuation, executor and occurrence closure | FROZEN | The contract-`1.0.0` implementation profile gains four additive fail-closed rules. (1) Operational verification accounting is two-stage: seal an immutable common-prefix or route-execution core; freeze the exact semantic and registered nonsemantic verification obligations; materialize their operational suffix only from the bound source `CounterRecordV1` objects; and bind the reducer-correct aggregate, exact entries, attestations, manifest and receipt. Omission, padding, duplication, substitution, stale context, pre-freeze verification or evaluation-lane leakage is invalid. Terminal classification and the aggregate `WORK_VECTOR`/`ACTUAL_PROJECTION` replay it consumes are invocation-typed standalone evaluation work, so they certify a previously closed operational aggregate without recursively charging themselves into it. (2) Continuation planners may not supply authority for already executed work. The one-decision runner owns the selected-route `WORK_VECTOR` result, charges its verification once, and the occurrence controller transports that exact authority into transaction-2 or fresh-fallback authorization and the next common-prefix proof; cheaper same-shaped substitution fails. (3) The sealed profile rejects an already-instantiated route callable. A prepared decision binds an inert `ExecutorRecipeV1` and `RuntimeTreeManifestV1` content ID; only after typed route freeze may a single-use trusted factory resolve and byte-verify the preregistered runtime-tree CAS, create a private read-only lease, construct the selected executor and invoke it. Snapshot creation belongs to build/rebuild, never route preselection; live-checkout fallback, symlinks, extra files, altered bytes, foreign recipes, pre-freeze construction and reuse fail closed. (4) Every selected-route exception with one uniquely replayable native-work ownership chain is caught at occurrence scope, where all prior successful decision pairs and the exact failed common-prefix/partial-marginal pair are aggregated, replayed, and closed as one denominator-preserving `ATTEMPT_CLOSURE_NONCERTIFICATE.PROTOCOL_FAILURE` with typed terminal authority. Ambiguous mixed ownership fails closed outside this scoped closure until all-path failure accounting is implemented. The occurrence closure produces neither plan nor infeasibility credit. These four closures remove the previously listed scoped P0 implementation gaps but do not open official execution, scalar economics, or either Gate. | Additively resolves the four P0 implementation gaps recorded after V0-032 without weakening its FQ1--FQ13 rules, changing historical 0.x claims, or treating accounting infrastructure as strategic-abstraction/generalization evidence. | `phase3e_two_stage_accounting_v1`; invocation-typed semantic verification/counters; runner-owned selected-work authority and continuation adapters; `phase3e_sealed_executor_v1`; runtime-tree/recipe domain IDs; occurrence failure terminal/authority and aggregate replay; omission/padding/substitution/TOCTOU/pre-freeze/route-failure attack tests. |
 
 ## V0-027 registered construction slice
 
@@ -665,6 +666,200 @@ the registry covers every route/failure, no-full-replay migration, typed semanti
 verification, exact projection, trusted cap replay, terminal/campaign closure,
 access-order attacks and independent verification all pass.
 
+## V0-033 Phase 3E P0 closure rules
+
+V0-033 closes four scoped implementation boundaries in the V0-032 consumer without
+changing its scientific target, eight-axis route rule, cap values, or locked Gate
+state.  "Closed" below means that the named interface has a typed, replayable path;
+it does not mean that all official routes, counters, hashes, terminals, or the reusable-
+world-model research objective are complete.
+
+### Non-cyclic operational accounting and evaluation replay
+
+Every two-stage accounting instance starts from an exact `RecordedWorkV1` core. The
+core is sealed as either `COMMON_PREFIX` or `ROUTE_EXECUTION`, and its context,
+decision/transaction reference, route/scope/subject, profiles, WorkVector,
+ComparisonVector, projection proof, and complete source-record tuple enter the core
+identity. Before any charged verification executes, a `VerificationChargePlanV1`
+freezes a canonical contiguous list of semantic obligations and optional registered
+nonsemantic checks. Each obligation binds its role, artifact, verifier/profile,
+counter-record ID, context, lane, and strictly later protocol step.
+
+The suffix is reconstructed only from the exact authority-bearing verification
+results and nonsemantic records named by that plan. The aggregate applies each
+registered sum or max reducer exactly once. `VerificationChargeManifestV1` and
+`VerificationChargeReceiptV1` then bind the core, plan, source records, semantic and
+nonsemantic attestations, suffix, aggregate and projection identities. Missing,
+duplicate, substituted, padded, pre-plan, stale-context or wrong-lane evidence is a
+protocol error. A historical `>=` counter check cannot claim this rule.
+
+If continuation-package validation stops after some operational verifier calls but
+before a complete charge plan/receipt can be minted, the already observed work must
+not disappear.  The only admissible occurrence evidence for that case is
+`PARTIAL_ACCOUNTED_COMMON`, backed by a
+`RunnerPartialCommonAccountingEvidenceV1`.  It replays the exact common core, every
+available authority-bearing operational semantic result, every registered
+nonsemantic `CounterRecordV1`, their context/decision-point bindings, and the
+sum/max-reduced suffix and aggregate.  Empty evidence, duplicate records, overlap with
+the core, unknown counter paths, a foreign registry, a wrong lane, or a stale context
+is invalid.  It may occur only as the final unpaired common component of the rejected
+occurrence path; using it as an earlier or route-paired successful prefix is invalid.
+This object is fail-closed accounting for a rejected package; it is not a successful
+`VerificationChargeReceiptV1`, does not authorize a continuation, and may not invent
+or pad work that was never durably observed.
+
+Nonsemantic verification authority is a closed typed registry, not a caller-supplied
+tuple of content IDs. `ACCESS_TRACE_RECONCILIATION` replays the typed access log,
+freeze, protocol profile, decision, execution and native work;
+`EXECUTION_VECTOR_INTEGRITY`, `NATIVE_AGGREGATION`,
+`AGGREGATE_UPPER_COMPLIANCE`, and `CONTINUATION_WORK_VECTOR_AUTHORITY` likewise replay
+their concrete typed inputs. The attested evidence-ID tuple is derived only after that
+replay. Every semantic and nonsemantic plan source must be disjoint from the sealed
+core's CounterRecord IDs, as well as mutually unique, so one record cannot pay for both
+core execution and verification suffix.
+
+Terminal classification does not recurse into the operational cost it certifies. Its
+invocation, and the aggregate `WORK_VECTOR`/`ACTUAL_PROJECTION` replay supplied to it,
+use the standalone evaluation lane and the registered evaluation semantic-check
+leaves. Operational route and common-prefix verifiers continue to use operational
+leaves. Attestation lane, binding lane and source `CounterRecordV1` lane must agree;
+changing the invocation lane changes the attestation identity.
+
+At occurrence-result construction, the controller replays the ordered raw components
+into the claimed occurrence aggregate, matches every completed run to its exact
+common/marginal pair, reconstructs the local transaction list, recomputes the closure
+from the final execution, and re-verifies occurrence and failed-route terminal
+authority. A reordered or rehashed component list, foreign run/context, stale
+transaction, relabelled closure, or carried-forward authority is invalid even when all
+individual content IDs are well formed.
+
+### Runner-owned continuation authority
+
+The one-decision runner mints the authoritative selected-route `WORK_VECTOR` result
+from its exact native execution vector and charges that original verification in the
+route suffix. A transaction-2 or post-local fallback planner describes only the fresh
+structural candidate and its new authorities; it cannot supply or replace prior
+execution-work authority. The occurrence controller takes the exact result from the
+completed runner history and treats that old result as immutable evidence rather than
+recharging its old verifier invocation. The next common prefix nevertheless pays one
+fresh registered `CONTINUATION_WORK_VECTOR_AUTHORITY` protocol check that verifies the
+occurrence/attempt/decision/transaction and artifact binding. Any omitted check or
+cheaper, foreign, stale, or same-shaped substituted vector fails continuation
+authorization.
+
+### Content-addressed post-freeze executor construction
+
+The sealed executor profile binds `runtime_tree_id` and `executor_recipe_id` in the
+prepared decision. `ExecutorRecipeV1` is serializable intent, not a callable. Runtime
+files are snapshotted during build/rebuild into `RuntimeTreeCASV1`; the manifest binds
+the exact sorted regular-file set, each size and SHA-256 digest. Runtime symlinks,
+special or extra entries, changed bytes, foreign CAS keys and live-checkout fallback
+are invalid.
+
+Before route selection, the exact manifest and registered runtime cap profile derive
+one content-addressed `RuntimeFactoryCardinalityV1`.  It freezes file count, total
+bytes, canonical manifest-document bytes, and the exact factory counter-upper formula,
+with `measured_before_execution=true` and
+`depends_on_actual_route_work=false`.  Each sealed candidate route binds its
+route-specific runtime-cardinality ID in its own cardinality-source chain, so both
+compared local and fallback uppers reserve the factory's hash, integrity, protocol,
+cap, read/stage, mounted and working-capacity terms before the decision freezes.  After
+selection, the factory rechecks the exact selected source/upper chain.  A global hard
+cap, a post-run measurement, or an unbound manifest count cannot substitute for this
+source.
+
+The registered safe-chain sealed-fallback cap is stage-reserved rather than enlarged
+after execution.  Its route-wide `control.cap_checks` cap and upper are `5815`: the
+manifest-derived factory owns reserve `3`, leaving worker share `5812`.  A route-wide
+cap of `5812` with the same reserve leaves worker share `5809` and must preregister a
+cap-rejection path; it cannot certify a successful `5815`-check execution beneath a
+`5812` upper.  This additive sealed profile uses key
+`phase3e_sealed_ground_fallback_route_caps_v1`, schema
+`acfqp.sealed_ground_fallback_route_cap_profile.v1`, and domain
+`acfqp:sealed-ground-fallback-route-cap-profile:v1`.  The historical unsealed
+`reserved_route_cap_checks=0` representation continues to omit the new field and
+preserves key `phase3e_ground_fallback_caps_v1`, schema
+`acfqp.ground_fallback_cap_profile.v1`, domain
+`acfqp:ground-fallback-cap-profile:v1`, and its prior content ID.
+
+Only the selected route's single-use `SealedPostFreezeExecutorFactoryV1` may be
+invoked, and only after a typed `RouteDecisionFreezeAttestationV1`. It replays the CAS
+manifest, copies the exact bytes into a private read-only lease, mints an unforgeable
+post-freeze construction grant, asks the registered trusted constructor for the
+concrete executor, invokes it, and rechecks the leased tree before returning. The
+unselected factory is not invoked; a preconstructed legacy callable cannot make a
+sealed-profile claim.
+
+On success, `SealedExecutorConstructionReceiptV1` binds the exact factory
+`WorkVectorV1`/`ComparisonVectorV1`, its complete counter-record set, runtime/recipe/
+constructor/freeze identities, and `postconstruction_access_event_log_id`.  The latter
+must equal the final selected-route access log carried by the returned
+`Phase3ERunResultV1`; a receipt sealed against an earlier or foreign log is invalid.
+The separate execution merge proof then binds the factory and delegate native-work
+sources to the returned merged route work.
+
+On failure, the sealed profile must retain an exact two-source decomposition rather
+than only a merged partial vector.  `SealedExecutorFailureMergeProofV1` binds the route
+subject/kind; the factory partial WorkVector, ComparisonVector and projection proof;
+either all three delegate partial IDs or three explicit typed nulls; and the merged
+partial WorkVector, ComparisonVector and projection proof.  Replay applies the
+registered reducers exactly, with mounted and working capacity added where factory
+and delegate lifetimes coexist, then normalizes the route closure to one failed and
+zero successful attempts.  `SealedExecutorFailureEvidenceV1` additionally binds the
+runtime tree, recipe, cap/constructor registries, freeze, precise registered failure
+stage, merge-proof ID, and `postfailure_access_event_log_id`.  Any missing component,
+mixed null/ID delegate triple, changed subject, foreign stage/registry, guessed work,
+or access-log mismatch fails closed.
+
+This failure-merge rule is currently an exact in-process failed-route and occurrence
+replay contract.  It does not yet create a separate FQ7 semantic role/attestation or a
+manifest-level independent-verifier authority; neither may be claimed until that
+remaining verifier path is implemented.
+
+### Occurrence-scoped failed-route terminal
+
+`Phase3ERouteExecutionFailedV1` remains route evidence, not a campaign label. The
+occurrence runner catches it, preserves every prior successful common/marginal pair,
+adds the exact failed common-prefix and partial route/verification aggregate, and
+reconstructs one `Phase3EOccurrenceWorkAggregateV1`. A typed
+`Phase3EOccurrenceFailureTerminalV1` is the selected-route-exception detail: it binds
+that aggregate, the failed evidence, decision/upper/freeze/access identities,
+transaction history and component counts.  The final occurrence authority is the
+separate `Phase3EOccurrenceTerminalArtifactV1`, verified under
+`SemanticRole.OCCURRENCE_TERMINAL`; it binds the aggregate, ordered component refs,
+detail ID, runtime/recipe provenance, exact counts and all three denominators.  The same
+outer artifact also covers the separately typed `FALLBACK_CAP_EXHAUSTED` occurrence
+detail. Only successful full replay mints this outer terminal authority.
+
+The selected-route-exception closure is exactly
+`ATTEMPT_CLOSURE_NONCERTIFICATE.PROTOCOL_FAILURE`; the cap detail closes as
+`ATTEMPT_CLOSURE_NONCERTIFICATE.FALLBACK_CAP_EXHAUSTED`. Both have
+plan/infeasibility counts `0/0`, noncertificate count `1`, and remain in closure,
+certification-coverage and future-economics denominators. Neither can become
+`INFEASIBLE_QUERY` or a plan certificate.
+
+These mechanisms close only the four scoped interfaces that were previously labelled
+P0.  In particular, the implementation still exposes
+`unassigned_postfreeze_operational_leaves=(common.hash_invocations)` and
+`ALL_PATH_NATIVE_HASH_INSTRUMENTATION`: planner invocation, authority-package
+construction and rejection, all route/terminal branches, serialization/I/O, and every
+integrity/protocol/hash operation must eventually emit complete native records and
+content-addressed evidence on success and failure.  The new runtime-cardinality,
+success-receipt, failure-decomposition, and partial-common rules prevent disappearance
+or substitution where evidence is already available; they do not certify an unwired
+path or manufacture missing records.  `ABSTRACT_AUDIT`, identical-query cached
+infeasibility, rebuild/retry, a live dependent transaction-2 benchmark, an upstream
+RAPM plan/audit producer, a manifest-level independent verifier, and workload
+economics also remain incomplete. Consequently the following values remain normative:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+```
+
 ## Implementation defaults (not new scientific claims)
 
 These defaults select the first Phase 0.5 fixtures without changing the benchmark families: G2048 uses `g2048_select_canonical_2x2_v0` with query horizon 1; LMB starts with the smallest canonical `N=6, T=2, K=3, D=1, H=6` generated layout. The deliberately coarse LMB initializer separates terminal status and `remaining_object_count<=5/2`. The preregistered mandatory refinements are G2048 `rank_sum<=3` and LMB `action_count<=3/2`; they are domain atoms for the shared-algorithm slice, not evidence for a shared-grammar claim. A run may use another canonical tiny fixture, but its full structural parameters, initial partition, and grammar version belong in the build key and manifest. The implemented `g2048_select_safe_chain_2x2_v0` exact-known-symmetry positive control uses the V0-024 orbit quotient and no CEGAR split. The V0-026 aliased profile reuses that ground structure and query but deliberately replaces its abstraction/action profile; it is a full-V0 refinement positive control, not a retroactive replacement for either Phase 0.5 fixture or the exact-`D4` run. An individual run becomes positive-claim eligible only after its profile-specific bundle verifies.
@@ -706,3 +901,4 @@ accepted split, iteration record, output-stage proof, and final certificate.
 - **2026-07-20 — 0.9.0:** Froze the Phase 3D general local-recovery Gate: exact slack/active causal-family search over the earliest `DirectBad` antichain; `40/160 -> 24/96` safe-chain authorization; finite-domain-minimal sparse affine worker capability; cap-aware joint deterministic value-risk search; the 257-assignment safe-chain and 25-assignment two-cell/two-member trade-off controls; full post-audit, independent replay/forgery obligations and explicit remaining one-shot/economics/discovery boundaries. Resolved `V0-RISK-004..006` without changing V0-029.
 - **2026-07-20 — 0.9.1:** Added V0-031 to freeze Phase 3D as a verified consumer of the Phase 3C RAPM/BuildEpoch, pre-certificate upper bound, locality and authorization. Operational rebuild, closure, quotient/RAPM construction, post-binding pre-authorization ground access, `U_all` recomputation and exact hybrid lifting are forbidden and zero-counted. The binding-time 144-action catalogue supplies causal/ancestor checks; the current `16+8` authority is proven against the source `32+8`; materialization and patch-restricted sound audit perform exactly `16+8=24` steps. The operational certificate keeps exact fields null, while independent verifier reconstruction, exact lift (`317/16000`, 8 patched/12 abstract) and J0 remain evaluation-only.
 - **2026-07-20 — 1.0.0:** Added V0-032 and profile `phase3e_accounted_dynamic_routing_v0`. Froze native-versus-comparison accounting, the eight shared resource axes, marginal strict-dominance routing, full domain-separated content IDs, typed upper/cap/cardinality/attestation chains, finite trusted budgets, negative-causal fallback, exact actual projection, explicit attempt/campaign terminal semantics, `acfqp_counter_registry_v1`, removal of operational host full replay, and estimate-before-execute access order. No scalar or official execution is opened; economics and counter-completeness remain `NOT_RUN` pending implementation and independent verification.
+- **2026-07-21 — 1.0.1:** Added V0-033 without changing the contract-`1.0.0` route semantics: sealed-core/frozen-obligation two-stage operational accounting with exact manifests and receipts; invocation-typed standalone terminal/aggregate evaluation; runner-owned prior-WorkVector continuation authority; content-addressed runtime-tree CAS and single-use post-freeze executor factories; and denominator-preserving occurrence-level typed closure of selected-route exceptions with uniquely replayable native ownership. The four former scoped P0 implementation gaps are closed, while official execution remains false, scalar/break-even remain null, and both Phase 3E Gates remain `NOT_RUN` pending the remaining authorities, all-path instrumentation, rebuild/campaign replay and independent verification.

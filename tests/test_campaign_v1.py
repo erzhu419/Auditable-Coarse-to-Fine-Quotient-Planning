@@ -14,6 +14,7 @@ from acfqp.access_protocol_v1 import (
 )
 from acfqp.accounting_v1 import (
     CounterRecordV1,
+    LaneEnum,
     RouteKindEnum,
     explicit_records_v1,
     official_comparison_profile_v1,
@@ -50,11 +51,15 @@ def _id(label: str) -> str:
     return hashlib.sha256(label.encode("utf-8")).hexdigest()
 
 
-def _record(role: SemanticRole) -> CounterRecordV1:
+def _record(
+    role: SemanticRole,
+    lane: LaneEnum = LaneEnum.OPERATIONAL,
+) -> CounterRecordV1:
     registry = official_counter_registry_v1()
+    spec = semantic_verifier_spec_v1(role)
     return CounterRecordV1.observe(
         registry,
-        semantic_verifier_spec_v1(role).verification_counter_path,
+        spec.counter_path_for_lane(lane),
         1,
         recorder_id=f"campaign-{role.value.lower()}-verifier-v1",
     )
@@ -152,11 +157,21 @@ def _protocol_terminal_result(
         work.work_vector_id,
         evidence,
     )
+    terminal_binding = AttestationContextV1(
+        context,
+        point,
+        TypedNotApplicable("preselection failure has no transaction"),
+        1,
+        LaneEnum.EVALUATION,
+    )
     result = verify_terminal_classification_semantics_v1(
         terminal,
         evidence_results=(work_result, protocol),
-        binding=binding,
-        verification_work_record=_record(SemanticRole.TERMINAL_CLASSIFICATION),
+        binding=terminal_binding,
+        verification_work_record=_record(
+            SemanticRole.TERMINAL_CLASSIFICATION,
+            LaneEnum.EVALUATION,
+        ),
     )
     return terminal, result
 

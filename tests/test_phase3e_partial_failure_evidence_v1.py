@@ -15,12 +15,24 @@ from acfqp.accounting_v1 import (
     official_comparison_profile_v1,
     official_counter_registry_v1,
 )
-from acfqp.actual_accounting_v1 import ActualWorkScope
+from acfqp.actual_accounting_v1 import (
+    ActualWorkScope,
+    official_actual_projection_profile_v1,
+)
 from acfqp.native_recorder_v1 import (
     NativeCounterRecorderV1,
     verify_recorded_work_v1,
 )
-from acfqp.phase3e_occurrence_runner_v1 import run_phase3e_occurrence_v1
+from acfqp.phase3e_occurrence_runner_v1 import (
+    OccurrenceClosureCodeV1,
+    Phase3EOccurrenceFailureTerminalV1,
+    Phase3EOccurrenceRunnerV1Error,
+    run_phase3e_occurrence_v1,
+    verify_phase3e_occurrence_failure_terminal_v1,
+)
+from acfqp.phase3e_occurrence_accounting_v1 import (
+    RunnerMarginalWorkEvidenceV1,
+)
 from acfqp.phase3e_fallback_v1 import GroundFallbackProtocolError
 from acfqp.phase3e_runner_v1 import (
     AccessNativeReconciliationStatusV1,
@@ -33,6 +45,15 @@ from acfqp.phase3e_runner_v1 import (
     run_phase3e,
     verify_failed_route_evidence_v1,
 )
+from acfqp.routing_v1 import (
+    DecisionPointV1,
+    MarginalRouteDecisionV1,
+    TerminalClass,
+    TerminalCode,
+    TypedNotApplicable,
+)
+import acfqp.semantic_verification_v1 as semantic_verification
+from acfqp.semantic_verification_v1 import SemanticRole, semantic_verifier_spec_v1
 from tests.test_phase3e_fallback_cap_min_v1 import _authority_chain
 
 
@@ -59,6 +80,36 @@ def _prepared(monkeypatch: pytest.MonkeyPatch):
         recorder_id="phase3e-partial-failure-common-v1",
     )
     common = common_recorder.seal()
+    old_point = chain["point"]
+    point = DecisionPointV1(
+        context.route_decision_context_id,
+        old_point.transaction_index,
+        old_point.frontier_snapshot_id,
+        old_point.causal_evidence_id,
+        common.work_vector.work_vector_id,
+    )
+    upper = replace(chain["upper"], decision_point_id=point.decision_point_id)
+    decision = MarginalRouteDecisionV1.select(
+        point,
+        upper,
+        causal=None,
+        local_upper=None,
+    )
+    binding = semantic_verification.AttestationContextV1(
+        context,
+        point.decision_point_id,
+        TypedNotApplicable("direct fallback has no local transaction"),
+        20,
+    )
+    decision_result = semantic_verification._finish(
+        artifact=decision,
+        artifact_id=decision.route_decision_id,
+        spec=semantic_verifier_spec_v1(SemanticRole.ROUTE_DECISION),
+        outcome=decision.selected_route.value,
+        binding=binding,
+        work=chain["decision_result"].verification_work_record,
+        recomputed_evidence_ids=(),
+    )
     reads = tuple(
         Phase3EPreselectionReadV1(operation, _id(f"read-{operation.value}"))
         for operation in PRESELECTION_READ_OPERATIONS
@@ -72,7 +123,7 @@ def _prepared(monkeypatch: pytest.MonkeyPatch):
         reads,
         common,
         Phase3EDecisionAuthorizationV1(
-            chain["decision_result"],
+            decision_result,
             chain["upper_result"],
             (chain["upper_result"], chain["decision_result"]),
         ),
@@ -83,7 +134,7 @@ def _prepared(monkeypatch: pytest.MonkeyPatch):
     # bypassed so the test can focus on a post-freeze failure with a genuine
     # semantic ROUTE_DECISION handle.
     def validated(_self, _registry, _profile):
-        return chain["decision_result"].artifact, chain["upper_result"].artifact
+        return decision, upper
 
     monkeypatch.setattr(PreparedPhase3ERunV1, "validate", validated)
     return prepared, registry, profile
@@ -309,20 +360,138 @@ def test_failure_evidence_remains_visible_through_occurrence_runner(
         _record_one_ground_step(controller, recorder)
         raise RuntimeError("occurrence-visible crash")
 
-    with pytest.raises(Phase3ERouteExecutionFailedV1) as caught:
-        run_phase3e_occurrence_v1(
-            prepared,
-            local_executor=_forbidden_local,
-            fallback_executor=failed_executor,
-            registry=registry,
-            comparison_profile=profile,
-        )
-    assert caught.value.evidence.partial_route_work.work_vector.value(
+    result = run_phase3e_occurrence_v1(
+        prepared,
+        local_executor=_forbidden_local,
+        fallback_executor=failed_executor,
+        registry=registry,
+        comparison_profile=profile,
+    )
+    assert result.closure_code is OccurrenceClosureCodeV1.PROTOCOL_FAILURE
+    assert result.decision_runs == ()
+    assert len(result.work_components) == 2
+    assert result.failed_route_evidence is not None
+    assert result.failed_route_evidence.partial_route_work.work_vector.value(
         "fallback.ground_steps"
     ) == 1
-    assert caught.value.evidence.context.logical_occurrence_id == (
+    assert result.failed_route_evidence.context.logical_occurrence_id == (
         prepared.context.logical_occurrence_id
     )
+    terminal = result.occurrence_failure_terminal
+    assert terminal is not None
+    assert terminal.terminal_scope == "LOGICAL_OCCURRENCE"
+    assert terminal.terminal_class is (
+        TerminalClass.ATTEMPT_CLOSURE_NONCERTIFICATE
+    )
+    assert terminal.terminal_code is TerminalCode.PROTOCOL_FAILURE
+    assert terminal.logical_occurrence_id == prepared.context.logical_occurrence_id
+    assert (
+        terminal.occurrence_work_aggregate_id
+        == result.occurrence_work.phase3e_occurrence_work_aggregate_id
+    )
+    assert (
+        terminal.closure_denominator_included,
+        terminal.certification_denominator_included,
+        terminal.economics_denominator_included,
+    ) == (True, True, True)
+    assert (
+        terminal.plan_certificate_count,
+        terminal.infeasibility_certificate_count,
+        terminal.noncertificate_count,
+    ) == (0, 0, 1)
+    assert Phase3EOccurrenceFailureTerminalV1.from_dict(
+        terminal.to_dict()
+    ) == terminal
+
+    # The terminal authority replays the exact prefix + partial marginal pair.
+    authority = verify_phase3e_occurrence_failure_terminal_v1(
+        terminal,
+        failure_evidence=result.failed_route_evidence,
+        successful_runs=result.decision_runs,
+        transactions=result.transactions,
+        components=result.work_components,
+        registry=registry,
+        comparison_profile=profile,
+        actual_profile=official_actual_projection_profile_v1(registry, profile),
+    )
+    assert authority.occurrence_work == result.occurrence_work
+
+    with pytest.raises(
+        Phase3EOccurrenceRunnerV1Error,
+        match="omits or adds a decision work pair",
+    ):
+        verify_phase3e_occurrence_failure_terminal_v1(
+            terminal,
+            failure_evidence=result.failed_route_evidence,
+            successful_runs=result.decision_runs,
+            transactions=result.transactions,
+            components=(),
+            registry=registry,
+            comparison_profile=profile,
+            actual_profile=official_actual_projection_profile_v1(
+                registry, profile
+            ),
+        )
+
+    with pytest.raises(Phase3EOccurrenceRunnerV1Error):
+        replace(terminal, closure_denominator_included=False)
+
+    zero_verification = NativeCounterRecorderV1(
+        subject_id=prepared.context.route_attempt_id,
+        route_kind=RouteKindEnum.DIRECT_FALLBACK,
+        work_scope=ActualWorkScope.MARGINAL_ROUTE_VERIFICATION,
+        registry=registry,
+        comparison_profile=profile,
+        recorder_id="phase3e-occurrence-spliced-partial-verification-v1",
+    ).seal()
+    failure_raw = result.work_components[-1].raw_work[0]
+    assert isinstance(failure_raw, RunnerMarginalWorkEvidenceV1)
+    spliced_route = replace(
+        result.work_components[-1],
+        raw_work=(
+            RunnerMarginalWorkEvidenceV1(
+                failure_raw.aggregate,
+                failure_raw.execution,
+                zero_verification,
+            ),
+        ),
+    )
+    with pytest.raises(
+        Phase3EOccurrenceRunnerV1Error,
+        match="omits or splices exact partial marginal work",
+    ):
+        verify_phase3e_occurrence_failure_terminal_v1(
+            terminal,
+            failure_evidence=result.failed_route_evidence,
+            successful_runs=result.decision_runs,
+            transactions=result.transactions,
+            components=(result.work_components[0], spliced_route),
+            registry=registry,
+            comparison_profile=profile,
+            actual_profile=official_actual_projection_profile_v1(
+                registry, profile
+            ),
+        )
+
+    wrong_occurrence = replace(
+        terminal, logical_occurrence_id=_id("foreign-logical-occurrence")
+    )
+    with pytest.raises(
+        Phase3EOccurrenceRunnerV1Error,
+        match="differs from full evidence replay",
+    ):
+        verify_phase3e_occurrence_failure_terminal_v1(
+            wrong_occurrence,
+            failure_evidence=result.failed_route_evidence,
+            successful_runs=result.decision_runs,
+            transactions=result.transactions,
+            components=result.work_components,
+            registry=registry,
+            comparison_profile=profile,
+            actual_profile=official_actual_projection_profile_v1(
+                registry, profile
+            ),
+        )
 
 
 def test_native_recorder_rewrites_only_route_closure_without_double_attempt() -> None:

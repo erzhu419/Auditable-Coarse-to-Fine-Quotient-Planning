@@ -48,10 +48,14 @@ from acfqp.phase3e_ids import (
     GROUND_FALLBACK_ISOLATION_PROFILE_DOMAIN,
     GROUND_FALLBACK_PARENT_BINDING_DOMAIN,
     GROUND_FALLBACK_RESULT_DOMAIN,
+    SEALED_GROUND_FALLBACK_ROUTE_CAP_PROFILE_DOMAIN,
     canonical_json,
     content_id,
     parse_content_id,
     require_exact_fields,
+)
+from acfqp.phase3e_sealed_executor_v1 import (
+    RuntimeFactoryCardinalityV1,
 )
 from acfqp.planning.common import (
     as_fraction,
@@ -70,6 +74,13 @@ from acfqp.planning.policy import FiniteHorizonPolicy
 
 SCHEMA_VERSION = "1.0.0"
 CAP_PROFILE_KEY = "phase3e_ground_fallback_caps_v1"
+SEALED_ROUTE_CAP_PROFILE_KEY = (
+    "phase3e_sealed_ground_fallback_route_caps_v1"
+)
+_LEGACY_CAP_SCHEMA = "acfqp.ground_fallback_cap_profile.v1"
+_SEALED_ROUTE_CAP_SCHEMA = (
+    "acfqp.sealed_ground_fallback_route_cap_profile.v1"
+)
 RECORDER_ID = "phase3e_ground_fallback_executor_v1"
 TRUSTED_EXECUTOR_PROFILE_KEY = (
     "phase3e_inprocess_trusted_ground_fallback_executor_v1"
@@ -278,6 +289,7 @@ class GroundFallbackCapProfileV1:
     max_composed_candidates: int
     max_cap_checks: int
     max_positive_outcomes_per_step: int
+    reserved_route_cap_checks: int = field(default=0, kw_only=True)
     profile_key: str = CAP_PROFILE_KEY
     schema_version: str = SCHEMA_VERSION
 
@@ -293,8 +305,26 @@ class GroundFallbackCapProfileV1:
             "max_positive_outcomes_per_step",
         ):
             _positive(getattr(self, field_name), field_name)
-        if self.profile_key != CAP_PROFILE_KEY or self.schema_version != SCHEMA_VERSION:
-            raise GroundFallbackV1Error("ground fallback cap profile key/version mismatch")
+        if (
+            type(self.reserved_route_cap_checks) is not int
+            or self.reserved_route_cap_checks < 0
+            or self.reserved_route_cap_checks > self.max_cap_checks
+        ):
+            raise GroundFallbackV1Error(
+                "reserved_route_cap_checks must fit within max_cap_checks"
+            )
+        expected_profile_key = (
+            CAP_PROFILE_KEY
+            if self.reserved_route_cap_checks == 0
+            else SEALED_ROUTE_CAP_PROFILE_KEY
+        )
+        if (
+            self.profile_key != expected_profile_key
+            or self.schema_version != SCHEMA_VERSION
+        ):
+            raise GroundFallbackV1Error(
+                "ground fallback cap profile key/version mismatch"
+            )
         if self.max_ground_steps > self.max_actions_evaluated:
             raise GroundFallbackV1Error(
                 "ground-step cap cannot exceed the action-evaluation cap"
@@ -305,8 +335,12 @@ class GroundFallbackCapProfileV1:
             )
 
     def _payload(self) -> dict[str, Any]:
-        return {
-            "schema": "acfqp.ground_fallback_cap_profile.v1",
+        payload = {
+            "schema": (
+                _LEGACY_CAP_SCHEMA
+                if self.reserved_route_cap_checks == 0
+                else _SEALED_ROUTE_CAP_SCHEMA
+            ),
             "schema_version": self.schema_version,
             "profile_key": self.profile_key,
             "max_states_expanded": self.max_states_expanded,
@@ -320,10 +354,36 @@ class GroundFallbackCapProfileV1:
                 self.max_positive_outcomes_per_step
             ),
         }
+        if self.reserved_route_cap_checks:
+            payload.update(
+                {
+                    "reserved_route_cap_checks": (
+                        self.reserved_route_cap_checks
+                    ),
+                    "max_solver_cap_checks": self.max_solver_cap_checks,
+                }
+            )
+        return payload
+
+    @property
+    def max_solver_cap_checks(self) -> int:
+        """Return the fallback-worker share of the route-wide check cap.
+
+        A sealed route charges runtime-factory checks in the same native leaf.
+        Reserving them here prevents the worker from consuming a route-wide
+        allowance that its own WorkVector does not include.
+        """
+
+        return self.max_cap_checks - self.reserved_route_cap_checks
 
     @property
     def ground_fallback_cap_profile_id(self) -> str:
-        return content_id(GROUND_FALLBACK_CAP_PROFILE_DOMAIN, self._payload())
+        domain = (
+            GROUND_FALLBACK_CAP_PROFILE_DOMAIN
+            if self.reserved_route_cap_checks == 0
+            else SEALED_GROUND_FALLBACK_ROUTE_CAP_PROFILE_DOMAIN
+        )
+        return content_id(domain, self._payload())
 
     @property
     def route_cap_profile_id(self) -> str:
@@ -339,7 +399,7 @@ class GroundFallbackCapProfileV1:
 
     @classmethod
     def from_dict(cls, document: Mapping[str, Any]) -> "GroundFallbackCapProfileV1":
-        expected = {
+        legacy_expected = {
             "schema",
             "schema_version",
             "profile_key",
@@ -353,9 +413,19 @@ class GroundFallbackCapProfileV1:
             "max_positive_outcomes_per_step",
             "ground_fallback_cap_profile_id",
         }
-        _fields(document, expected, "ground fallback cap profile")
-        if document["schema"] != "acfqp.ground_fallback_cap_profile.v1":
+        schema = document.get("schema")
+        if schema == _LEGACY_CAP_SCHEMA:
+            expected = legacy_expected
+            reserve = 0
+        elif schema == _SEALED_ROUTE_CAP_SCHEMA:
+            expected = legacy_expected | {
+                "reserved_route_cap_checks",
+                "max_solver_cap_checks",
+            }
+            reserve = document.get("reserved_route_cap_checks")
+        else:
             raise GroundFallbackV1Error("ground fallback cap schema mismatch")
+        _fields(document, expected, "ground fallback cap profile")
         result = cls(
             document["max_states_expanded"],
             document["max_actions_evaluated"],
@@ -367,7 +437,16 @@ class GroundFallbackCapProfileV1:
             document["max_positive_outcomes_per_step"],
             document["profile_key"],
             document["schema_version"],
+            reserved_route_cap_checks=reserve,
         )
+        if (
+            schema == _SEALED_ROUTE_CAP_SCHEMA
+            and document["max_solver_cap_checks"]
+            != result.max_solver_cap_checks
+        ):
+            raise GroundFallbackV1Error(
+                "sealed fallback cap solver reservation is inconsistent"
+            )
         if (
             document["ground_fallback_cap_profile_id"]
             != result.ground_fallback_cap_profile_id
@@ -624,6 +703,9 @@ class GroundFallbackCardinalityBoundV1:
     ground_fallback_cap_profile_id: str
     bounds: tuple[tuple[str, int], ...]
     source_artifact_ids: tuple[str, ...]
+    runtime_factory_cardinality: RuntimeFactoryCardinalityV1 | None = field(
+        default=None, kw_only=True
+    )
     measured_before_execution: bool = True
     depends_on_actual_route_work: bool = False
     authorizes_route_selection: bool = False
@@ -652,6 +734,17 @@ class GroundFallbackCardinalityBoundV1:
             )
         for source_id in self.source_artifact_ids:
             _cid(source_id, "source_artifact_id")
+        if self.runtime_factory_cardinality is not None:
+            parsed_runtime = RuntimeFactoryCardinalityV1.from_dict(
+                self.runtime_factory_cardinality.to_dict()
+            )
+            if (
+                parsed_runtime.runtime_factory_cardinality_id
+                not in self.source_artifact_ids
+            ):
+                raise GroundFallbackV1Error(
+                    "fallback bound does not bind its runtime cardinality source"
+                )
         if self.measured_before_execution is not True:
             raise GroundFallbackV1Error(
                 "fallback cardinalities must be frozen before execution"
@@ -671,6 +764,17 @@ class GroundFallbackCardinalityBoundV1:
         GroundFallbackCapProfileV1.from_dict(cap.to_dict())
         if self.ground_fallback_cap_profile_id != cap.ground_fallback_cap_profile_id:
             raise GroundFallbackV1Error("fallback cardinality/cap identity mismatch")
+        expected_reserve = (
+            0
+            if self.runtime_factory_cardinality is None
+            else dict(
+                self.runtime_factory_cardinality.upper_values()
+            )["control.cap_checks"]
+        )
+        if cap.reserved_route_cap_checks != expected_reserve:
+            raise GroundFallbackV1Error(
+                "fallback cap does not reserve the exact runtime-factory checks"
+            )
         values = dict(self.bounds)
         if values["fallback.ground_steps"] > values["fallback.actions_evaluated"]:
             raise GroundFallbackV1Error(
@@ -727,7 +831,12 @@ class GroundFallbackCardinalityBoundV1:
                 )
                 or (
                     path != "fallback.bellman_backups"
-                    and source[path] > getattr(cap, cap_name)
+                    and source[path]
+                    > (
+                        cap.max_solver_cap_checks
+                        if path == "control.cap_checks"
+                        else getattr(cap, cap_name)
+                    )
                 )
                 for path, cap_name in GROUND_FALLBACK_WORK_CAP_BINDINGS
             )
@@ -774,6 +883,26 @@ class GroundFallbackCardinalityBoundV1:
                 "memory.working_bytes_peak": FALLBACK_WORKING_BYTES_CAP,
             }
         )
+        if self.runtime_factory_cardinality is not None:
+            runtime = dict(self.runtime_factory_cardinality.upper_values())
+            values["common.integrity_checks"] += 1
+            for path in (
+                "common.hash_invocations",
+                "common.integrity_checks",
+                "common.protocol_checks",
+                "control.cap_checks",
+                "io.read_bytes",
+                "io.staged_bytes",
+                "io.output_bytes",
+            ):
+                values[path] += runtime[path]
+            # Both mounts coexist.  Working-set capacity uses MAX.
+            values["io.mounted_bytes_peak"] += runtime[
+                "io.mounted_bytes_peak"
+            ]
+            values["memory.working_bytes_peak"] += runtime[
+                "memory.working_bytes_peak"
+            ]
         # This uncapped structural view cannot predict whether a caller's
         # finite cap will reject work.  ``operational_upper_values`` replaces
         # this placeholder with the exact cap-relative 0/1 upper.
@@ -781,7 +910,7 @@ class GroundFallbackCardinalityBoundV1:
         return tuple(sorted(values.items()))
 
     def _payload(self) -> dict[str, Any]:
-        return {
+        payload = {
             "schema": "acfqp.ground_fallback_cardinality_bound.v1",
             "schema_version": self.schema_version,
             "RouteDecisionContext_id": self.route_decision_context_id,
@@ -793,6 +922,11 @@ class GroundFallbackCardinalityBoundV1:
             "depends_on_actual_route_work": self.depends_on_actual_route_work,
             "authorizes_route_selection": self.authorizes_route_selection,
         }
+        if self.runtime_factory_cardinality is not None:
+            payload["runtime_factory_cardinality"] = (
+                self.runtime_factory_cardinality.to_dict()
+            )
+        return payload
 
     @property
     def ground_fallback_cardinality_bound_id(self) -> str:
@@ -823,6 +957,8 @@ class GroundFallbackCardinalityBoundV1:
             "authorizes_route_selection",
             "ground_fallback_cardinality_bound_id",
         }
+        if "runtime_factory_cardinality" in document:
+            expected.add("runtime_factory_cardinality")
         _fields(document, expected, "ground fallback cardinality bound")
         if (
             document["schema"] != "acfqp.ground_fallback_cardinality_bound.v1"
@@ -844,6 +980,13 @@ class GroundFallbackCardinalityBoundV1:
             document["depends_on_actual_route_work"],
             document["authorizes_route_selection"],
             document["schema_version"],
+            runtime_factory_cardinality=(
+                RuntimeFactoryCardinalityV1.from_dict(
+                    document["runtime_factory_cardinality"]
+                )
+                if "runtime_factory_cardinality" in document
+                else None
+            ),
         )
         if (
             document["ground_fallback_cardinality_bound_id"]
@@ -1021,6 +1164,7 @@ def derive_safe_chain_fallback_cardinality_bound_v1(
     *,
     source: SafeChainFallbackCardinalitySourceV1,
     cap_profile: GroundFallbackCapProfileV1,
+    runtime_factory_cardinality: RuntimeFactoryCardinalityV1 | None = None,
 ) -> GroundFallbackCardinalityBoundV1:
     """Apply the registered fixture-specific integer upper formula."""
 
@@ -1056,12 +1200,29 @@ def derive_safe_chain_fallback_cardinality_bound_v1(
         ("fallback.states_expanded", states),
         ("control.cap_checks", states + actions + actions + composed),
     )
+    parsed_runtime = (
+        RuntimeFactoryCardinalityV1.from_dict(
+            runtime_factory_cardinality.to_dict()
+        )
+        if runtime_factory_cardinality is not None
+        else None
+    )
     result = GroundFallbackCardinalityBoundV1(
         parsed_source.route_decision_context_id,
         parsed_source.decision_point_id,
         parsed_source.ground_fallback_cap_profile_id,
         bounds,
-        (parsed_source.source_artifact_id,),
+        tuple(
+            sorted(
+                (parsed_source.source_artifact_id,)
+                + (
+                    (parsed_runtime.runtime_factory_cardinality_id,)
+                    if parsed_runtime is not None
+                    else ()
+                )
+            )
+        ),
+        runtime_factory_cardinality=parsed_runtime,
     )
     result.validate_against_cap(cap_profile)
     return result
@@ -1839,7 +2000,7 @@ class _FallbackLedger:
         self.cap_rejections = 0
 
     def _guard(self, *checks: tuple[str, int, int]) -> None:
-        if self.cap_checks >= self.cap.max_cap_checks:
+        if self.cap_checks >= self.cap.max_solver_cap_checks:
             self.cap_rejections = 1
             raise _CapExhausted("max_cap_checks")
         self.cap_checks += 1
@@ -2397,6 +2558,7 @@ __all__ = [
     "GroundFallbackV1Error",
     "SAFE_CHAIN_CARDINALITY_EXTRACTION_PROFILE_ID",
     "SAFE_CHAIN_CARDINALITY_EXTRACTION_PROFILE_KEY",
+    "SEALED_ROUTE_CAP_PROFILE_KEY",
     "SafeChainFallbackCardinalitySourceV1",
     "build_ground_fallback_cardinality_evidence_v1",
     "derive_safe_chain_fallback_cardinality_bound_v1",

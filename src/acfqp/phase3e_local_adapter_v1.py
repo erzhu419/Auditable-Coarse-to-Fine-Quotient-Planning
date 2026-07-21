@@ -80,6 +80,11 @@ from acfqp.phase3e_runner_v1 import (
     Phase3ERunnerV1Error,
     PreparedPhase3ERunV1,
 )
+from acfqp.phase3e_sealed_executor_v1 import (
+    ExecutorRecipeV1,
+    PostFreezeConstructionGrantV1,
+    RuntimeFactoryCardinalityV1,
+)
 from acfqp.routing_v1 import (
     CardinalityEvidenceV1,
     DecisionPointV1,
@@ -102,6 +107,12 @@ from acfqp.semantic_verification_v1 import (
 
 class Phase3ELocalAdapterV1Error(Phase3ERunnerV1Error):
     """The local adapter was invoked before freeze or with stale authority."""
+
+
+SAFE_CHAIN_LOCAL_EXECUTOR_SEMANTICS_ID = (
+    "phase3e-safe-chain-selected-local-executor-v1"
+)
+SAFE_CHAIN_LOCAL_RUNTIME_ENTRYPOINT = "acfqp/general_local_runtime.py"
 
 
 def _binding_id(role: str, legacy_id: Any) -> str:
@@ -156,6 +167,7 @@ class SafeChainLocalExecutorInputsV1:
     local_upper_result: object
     causal_result: object
     cardinality_result: object
+    runtime_factory_cardinality: RuntimeFactoryCardinalityV1 | None = None
 
 
 def _require_authority(inputs: SafeChainLocalExecutorInputsV1) -> None:
@@ -226,6 +238,11 @@ def _validate_inputs(inputs: SafeChainLocalExecutorInputsV1) -> None:
         or inputs.local_upper.cardinality_evidence_id
         != inputs.cardinality.cardinality_evidence_id
         or inputs.cardinality_bound.transaction_id != transaction.transaction_id
+        or (
+            inputs.runtime_factory_cardinality is not None
+            and inputs.runtime_factory_cardinality.runtime_factory_cardinality_id
+            not in inputs.cardinality_bound.source_artifact_ids
+        )
     ):
         raise Phase3ELocalAdapterV1Error(
             "local context/point/transaction/upper/cardinality chain is stale"
@@ -264,13 +281,17 @@ def _worker_io_counts(
     request: Mapping[str, Any],
     result: Mapping[str, Any],
     attestation: Mapping[str, Any],
+    runtime_source_root: Path | None = None,
 ) -> tuple[int, int, int, int, int]:
     input_bytes = sum(
         len(_canonical_bytes(document))
         for document in (capability, sparse_slice, request)
     )
+    source_root = PROJECT_ROOT / "src" if runtime_source_root is None else Path(
+        runtime_source_root
+    )
     runtime_bytes = sum(
-        (PROJECT_ROOT / "src" / "acfqp" / name).stat().st_size
+        (source_root / "acfqp" / name).stat().st_size
         for name in ("general_local_solver.py", "general_local_runtime.py")
     )
     output_bytes = len(_canonical_bytes(result)) + len(_canonical_bytes(attestation))
@@ -290,6 +311,7 @@ def _worker_input_resource_counts(
     capability: Mapping[str, Any],
     sparse_slice: Mapping[str, Any],
     request: Mapping[str, Any],
+    runtime_source_root: Path | None = None,
 ) -> tuple[int, int]:
     """Return conservative pre-launch read and staging traffic.
 
@@ -302,11 +324,92 @@ def _worker_input_resource_counts(
         len(_canonical_bytes(document))
         for document in (capability, sparse_slice, request)
     )
+    source_root = PROJECT_ROOT / "src" if runtime_source_root is None else Path(
+        runtime_source_root
+    )
     runtime_bytes = sum(
-        (PROJECT_ROOT / "src" / "acfqp" / name).stat().st_size
+        (source_root / "acfqp" / name).stat().st_size
         for name in ("general_local_solver.py", "general_local_runtime.py")
     )
     return input_bytes, input_bytes + runtime_bytes
+
+
+def safe_chain_local_executor_configuration_id_v1(
+    inputs: SafeChainLocalExecutorInputsV1,
+) -> str:
+    """Bind a sealed executor recipe to one exact local authority chain."""
+
+    payload = {
+            "schema": "acfqp.phase3e_safe_chain_local_executor_configuration.v1",
+            "route_decision_context_id": (
+                inputs.context.route_decision_context_id
+            ),
+            "decision_point_id": inputs.decision_point.decision_point_id,
+            "transaction_id": inputs.transaction.transaction_id,
+            "selected_upper_id": (
+                inputs.local_upper.route_upper_bound_envelope_id
+            ),
+            "cardinality_evidence_id": inputs.cardinality.cardinality_evidence_id,
+            "route_cap_profile_id": inputs.cap_profile.route_cap_profile_id,
+            "threshold_profile_id": inputs.threshold_profile.threshold_profile_id,
+        }
+    if inputs.runtime_factory_cardinality is not None:
+        payload["runtime_factory_cardinality_id"] = (
+            inputs.runtime_factory_cardinality.runtime_factory_cardinality_id
+        )
+    return content_id(PHASE3D_LOCAL_PARENT_BINDING_DOMAIN, payload)
+
+
+def _verify_local_route_semantics_v1(
+    *,
+    inputs: SafeChainLocalExecutorInputsV1,
+    semantic_execution: TrustedLocalExecutionV1,
+    binding: AttestationContextV1,
+    verification_records: tuple[CounterRecordV1, ...],
+    registry: CounterRegistryV1,
+) -> tuple[object, ...]:
+    """Exact constructor-owned semantic dispatcher; never reruns the solver."""
+
+    if (
+        not isinstance(semantic_execution, TrustedLocalExecutionV1)
+        or not isinstance(binding, AttestationContextV1)
+        or type(verification_records) is not tuple
+        or not all(isinstance(row, CounterRecordV1) for row in verification_records)
+    ):
+        raise Phase3ELocalAdapterV1Error(
+            "deferred local semantic dispatcher received an invalid target set"
+        )
+    expected_count = 1 + int(semantic_execution.post_audit is not None)
+    if len(verification_records) != expected_count:
+        raise Phase3ELocalAdapterV1Error(
+            "deferred local semantic dispatcher received an invalid target count"
+        )
+    local_result = verify_local_transaction_result_semantics_v1(
+        semantic_execution,
+        context=inputs.context,
+        decision_point=inputs.decision_point,
+        transaction=inputs.transaction,
+        cap_profile=inputs.cap_profile,
+        binding=binding,
+        verification_work_record=verification_records[0],
+        registry=registry,
+    )
+    results: list[object] = [local_result]
+    if semantic_execution.post_audit is not None:
+        results.append(
+            verify_post_audit_semantics_v1(
+                semantic_execution,
+                local_solver_result=local_result,
+                context=inputs.context,
+                decision_point=inputs.decision_point,
+                transaction=inputs.transaction,
+                cap_profile=inputs.cap_profile,
+                binding=binding,
+                verification_work_record=verification_records[1],
+                registry=registry,
+            )
+        )
+    return tuple(results)
 
 
 @dataclass(frozen=True, slots=True)
@@ -316,6 +419,11 @@ class AuthorizedSafeChainLocalExecutorV1:
     inputs: SafeChainLocalExecutorInputsV1
     registry: CounterRegistryV1 | None = None
     comparison_profile: ComparisonProfileV1 | None = None
+    # ``None`` is the historical Phase-3D compatibility path.  The sealed
+    # Phase-3E profile always supplies a verified private runtime-tree lease.
+    runtime_source_root: Path | None = None
+    runtime_tree_id: str | None = None
+    executor_recipe_id: str | None = None
 
     def __call__(
         self,
@@ -393,6 +501,16 @@ class AuthorizedSafeChainLocalExecutorV1:
         ):
             raise Phase3ELocalAdapterV1Error(
                 "runner preparation differs from local executor authority inputs"
+            )
+        if self.runtime_source_root is not None and (
+            self.runtime_tree_id is None
+            or self.executor_recipe_id is None
+            or getattr(prepared, "runtime_tree_id", None) != self.runtime_tree_id
+            or getattr(prepared, "executor_recipe_id", None)
+            != self.executor_recipe_id
+        ):
+            raise Phase3ELocalAdapterV1Error(
+                "sealed local runtime IDs differ from the prepared run"
             )
         if (
             not isinstance(recorder, NativeCounterRecorderV1)
@@ -475,6 +593,7 @@ class AuthorizedSafeChainLocalExecutorV1:
             local_context.capability,
             local_context.sparse_slice,
             request,
+            self.runtime_source_root,
         )
         recorder.add("io.read_bytes", input_read_bytes)
         recorder.add("io.staged_bytes", staged_bytes)
@@ -491,6 +610,7 @@ class AuthorizedSafeChainLocalExecutorV1:
             local_context.sparse_slice,
             request,
             operational_no_full_replay=True,
+            runtime_source_root=self.runtime_source_root,
         )
         recorder.add("process.exit_successes")
         read_bytes, full_staged_bytes, output_bytes, mounted_peak, working_peak = (
@@ -500,6 +620,7 @@ class AuthorizedSafeChainLocalExecutorV1:
                 request,
                 worker_result,
                 runtime_attestation,
+                self.runtime_source_root,
             )
         )
         if full_staged_bytes != staged_bytes or read_bytes != (
@@ -737,34 +858,26 @@ class AuthorizedSafeChainLocalExecutorV1:
                 ),
             )
 
-        local_semantic_result = verify_local_transaction_result_semantics_v1(
-            semantic_execution,
-            context=inputs.context,
-            decision_point=inputs.decision_point,
-            transaction=inputs.transaction,
-            cap_profile=inputs.cap_profile,
-            binding=binding,
-            verification_work_record=verification_record(
-                SemanticRole.LOCAL_SOLVER_RESULT
-            ),
-            registry=registry,
-        )
-        semantic_results = [local_semantic_result]
-        if post_audit is not None:
-            semantic_results.append(
-                verify_post_audit_semantics_v1(
-                    semantic_execution,
-                    local_solver_result=local_semantic_result,
-                    context=inputs.context,
-                    decision_point=inputs.decision_point,
-                    transaction=inputs.transaction,
-                    cap_profile=inputs.cap_profile,
-                    binding=binding,
-                    verification_work_record=verification_record(
-                        SemanticRole.POST_AUDIT
-                    ),
-                    registry=registry,
-                )
+        semantic_results: tuple[object, ...]
+        deferred = prepared.two_stage_accounting_profile
+        if deferred:
+            # The runner first freezes the exact verification charge plan and
+            # only then invokes the constructor-owned dispatcher below.
+            semantic_results = ()
+        else:
+            records = (
+                verification_record(SemanticRole.LOCAL_SOLVER_RESULT),
+            ) + (
+                (verification_record(SemanticRole.POST_AUDIT),)
+                if post_audit is not None
+                else ()
+            )
+            semantic_results = _verify_local_route_semantics_v1(
+                inputs=inputs,
+                semantic_execution=semantic_execution,
+                binding=binding,
+                verification_records=records,
+                registry=registry,
             )
         artifact_id = (
             local_result.local_transaction_result_id
@@ -789,12 +902,164 @@ class AuthorizedSafeChainLocalExecutorV1:
             native,
             semantic_execution,
             outcome,
-            tuple(semantic_results),
+            semantic_results,
+            semantic_verification_deferred=deferred,
+        )
+
+
+@dataclass(frozen=True, slots=True)
+class SafeChainLocalPostFreezeConstructorV1:
+    """Create the real local executor only from a verified post-freeze lease."""
+
+    inputs: SafeChainLocalExecutorInputsV1
+    registry: CounterRegistryV1 | None = None
+    comparison_profile: ComparisonProfileV1 | None = None
+
+    @property
+    def runtime_factory_cardinality_v1(self) -> RuntimeFactoryCardinalityV1 | None:
+        return self.inputs.runtime_factory_cardinality
+
+    @property
+    def executor_configuration_id_v1(self) -> str:
+        return safe_chain_local_executor_configuration_id_v1(self.inputs)
+
+    @property
+    def selected_upper_id_v1(self) -> str:
+        return self.inputs.local_upper.route_upper_bound_envelope_id
+
+    @property
+    def selected_cardinality_evidence_id_v1(self) -> str:
+        return self.inputs.cardinality.cardinality_evidence_id
+
+    @property
+    def selected_cardinality_source_artifact_ids_v1(self) -> tuple[str, ...]:
+        return self.inputs.cardinality_bound.source_artifact_ids
+
+    def deferred_route_verifier_v1(
+        self,
+        execution: Phase3ERouteExecutionV1,
+        binding: object,
+        verification_records: tuple[CounterRecordV1, ...],
+    ) -> tuple[object, ...]:
+        """Replay exact local semantics after the runner freezes its charges."""
+
+        if (
+            not isinstance(execution, Phase3ERouteExecutionV1)
+            or not isinstance(binding, AttestationContextV1)
+            or not isinstance(execution.semantic_execution, TrustedLocalExecutionV1)
+        ):
+            raise Phase3ELocalAdapterV1Error(
+                "deferred local verifier received a foreign route execution"
+            )
+        registry = self.registry or official_counter_registry_v1()
+        return _verify_local_route_semantics_v1(
+            inputs=self.inputs,
+            semantic_execution=execution.semantic_execution,
+            binding=binding,
+            verification_records=verification_records,
+            registry=registry,
+        )
+
+    def deferred_route_verifier_step_v1(
+        self,
+        execution: Phase3ERouteExecutionV1,
+        binding: object,
+        role: object,
+        verification_record: CounterRecordV1,
+        prior_results: tuple[object, ...],
+    ) -> object:
+        """Verify exactly one frozen local obligation in causal order."""
+
+        if (
+            not isinstance(execution, Phase3ERouteExecutionV1)
+            or not isinstance(binding, AttestationContextV1)
+            or not isinstance(execution.semantic_execution, TrustedLocalExecutionV1)
+            or not isinstance(verification_record, CounterRecordV1)
+            or type(prior_results) is not tuple
+        ):
+            raise Phase3ELocalAdapterV1Error(
+                "incremental local verifier received a foreign target"
+            )
+        semantic = execution.semantic_execution
+        registry = self.registry or official_counter_registry_v1()
+        if role is SemanticRole.LOCAL_SOLVER_RESULT:
+            if prior_results:
+                raise Phase3ELocalAdapterV1Error(
+                    "local-result verification must be the first obligation"
+                )
+            return verify_local_transaction_result_semantics_v1(
+                semantic,
+                context=self.inputs.context,
+                decision_point=self.inputs.decision_point,
+                transaction=self.inputs.transaction,
+                cap_profile=self.inputs.cap_profile,
+                binding=binding,
+                verification_work_record=verification_record,
+                registry=registry,
+            )
+        if role is SemanticRole.POST_AUDIT:
+            if len(prior_results) != 1:
+                raise Phase3ELocalAdapterV1Error(
+                    "post-audit verification requires one prior local result"
+                )
+            local_result = require_semantic_verification_result_v1(
+                prior_results[0], SemanticRole.LOCAL_SOLVER_RESULT
+            )
+            return verify_post_audit_semantics_v1(
+                semantic,
+                local_solver_result=local_result,
+                context=self.inputs.context,
+                decision_point=self.inputs.decision_point,
+                transaction=self.inputs.transaction,
+                cap_profile=self.inputs.cap_profile,
+                binding=binding,
+                verification_work_record=verification_record,
+                registry=registry,
+            )
+        raise Phase3ELocalAdapterV1Error(
+            "incremental local verifier received an unregistered role"
+        )
+
+    def construct_after_freeze(
+        self,
+        grant: PostFreezeConstructionGrantV1,
+    ) -> AuthorizedSafeChainLocalExecutorV1:
+        if type(grant) is not PostFreezeConstructionGrantV1:
+            raise Phase3ELocalAdapterV1Error(
+                "sealed local construction requires a typed post-freeze grant"
+            )
+        recipe: ExecutorRecipeV1 = grant.recipe
+        if (
+            recipe.selected_route is not RouteSelection.LOCAL
+            or recipe.executor_semantics_id
+            != SAFE_CHAIN_LOCAL_EXECUTOR_SEMANTICS_ID
+            or recipe.entrypoint_relative_path
+            != SAFE_CHAIN_LOCAL_RUNTIME_ENTRYPOINT
+            or recipe.executor_configuration_id
+            != safe_chain_local_executor_configuration_id_v1(self.inputs)
+        ):
+            raise Phase3ELocalAdapterV1Error(
+                "sealed local recipe differs from its trusted authority inputs"
+            )
+        # The sealed factory performs and accounts for the exact pre-lease
+        # verification pass.  Replaying it here would be an unregistered fifth
+        # runtime-tree read and would double-charge construction work.
+        return AuthorizedSafeChainLocalExecutorV1(
+            self.inputs,
+            self.registry,
+            self.comparison_profile,
+            grant.runtime_tree.root,
+            recipe.runtime_tree_id,
+            recipe.executor_recipe_id,
         )
 
 
 __all__ = [
     "AuthorizedSafeChainLocalExecutorV1",
     "Phase3ELocalAdapterV1Error",
+    "SAFE_CHAIN_LOCAL_EXECUTOR_SEMANTICS_ID",
+    "SAFE_CHAIN_LOCAL_RUNTIME_ENTRYPOINT",
     "SafeChainLocalExecutorInputsV1",
+    "SafeChainLocalPostFreezeConstructorV1",
+    "safe_chain_local_executor_configuration_id_v1",
 ]

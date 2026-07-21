@@ -66,6 +66,9 @@ ROUTE_DECISION_FREEZE_ATTESTATION_DOMAIN = (
 )
 FORBIDDEN_ACCESS_VIOLATION_DOMAIN = "acfqp:forbidden-access-violation:v1"
 GROUND_FALLBACK_CAP_PROFILE_DOMAIN = "acfqp:ground-fallback-cap-profile:v1"
+SEALED_GROUND_FALLBACK_ROUTE_CAP_PROFILE_DOMAIN = (
+    "acfqp:sealed-ground-fallback-route-cap-profile:v1"
+)
 GROUND_FALLBACK_CARDINALITY_BOUND_DOMAIN = (
     "acfqp:ground-fallback-cardinality-bound:v1"
 )
@@ -112,8 +115,65 @@ OCCURRENCE_WORK_COMPONENT_REF_DOMAIN = (
     "acfqp:occurrence-work-component-ref:v1"
 )
 OCCURRENCE_WORK_AGGREGATE_DOMAIN = "acfqp:occurrence-work-aggregate:v1"
+OCCURRENCE_PARTIAL_COMMON_ACCOUNTING_DOMAIN = (
+    "acfqp:occurrence-partial-common-accounting:v1"
+)
+OCCURRENCE_FAILURE_EVIDENCE_BINDING_DOMAIN = (
+    "acfqp:phase3e-occurrence-failure-evidence-binding:v1"
+)
+OCCURRENCE_FAILURE_TERMINAL_DOMAIN = (
+    "acfqp:phase3e-occurrence-failure-terminal:v1"
+)
+OCCURRENCE_CLOSURE_EVIDENCE_DOMAIN = (
+    "acfqp:phase3e-occurrence-closure-evidence:v1"
+)
+OCCURRENCE_CONTROL_FAILURE_DOMAIN = (
+    "acfqp:phase3e-occurrence-control-failure:v1"
+)
+OCCURRENCE_TERMINAL_ARTIFACT_DOMAIN = (
+    "acfqp:phase3e-occurrence-terminal-artifact:v1"
+)
 PRESELECTION_NOT_APPLICABLE_BINDING_DOMAIN = (
     "acfqp:preselection-not-applicable-binding:v1"
+)
+ACCOUNTING_CORE_SEAL_DOMAIN = "acfqp:accounting-core-seal:v1"
+VERIFICATION_CHARGE_PLAN_DOMAIN = "acfqp:verification-charge-plan:v1"
+VERIFICATION_CHARGE_ENTRY_DOMAIN = "acfqp:verification-charge-entry:v1"
+TWO_STAGE_WORK_AGGREGATE_DOMAIN = "acfqp:two-stage-work-aggregate:v1"
+VERIFICATION_CHARGE_MANIFEST_DOMAIN = (
+    "acfqp:verification-charge-manifest:v1"
+)
+VERIFICATION_CHARGE_RECEIPT_DOMAIN = (
+    "acfqp:verification-charge-receipt:v1"
+)
+NONSEMANTIC_VERIFICATION_ATTESTATION_DOMAIN = (
+    "acfqp:nonsemantic-verification-attestation:v1"
+)
+CONTINUATION_WORK_VECTOR_AUTHORITY_DOMAIN = (
+    "acfqp:continuation-work-vector-authority:v1"
+)
+RUNTIME_TREE_MANIFEST_DOMAIN = "acfqp:runtime-tree-manifest:v1"
+EXECUTOR_RECIPE_DOMAIN = "acfqp:executor-recipe:v1"
+TRUSTED_CONSTRUCTOR_REGISTRY_DOMAIN = (
+    "acfqp:trusted-constructor-registry:v1"
+)
+RUNTIME_MANIFEST_CAP_PROFILE_DOMAIN = (
+    "acfqp:runtime-manifest-cap-profile:v1"
+)
+RUNTIME_FACTORY_CARDINALITY_DOMAIN = (
+    "acfqp:runtime-factory-cardinality:v1"
+)
+SEALED_EXECUTOR_CONSTRUCTION_RECEIPT_DOMAIN = (
+    "acfqp:sealed-executor-construction-receipt:v1"
+)
+SEALED_EXECUTOR_FAILURE_EVIDENCE_DOMAIN = (
+    "acfqp:sealed-executor-failure-evidence:v1"
+)
+SEALED_EXECUTOR_EXECUTION_MERGE_PROOF_DOMAIN = (
+    "acfqp:sealed-executor-execution-merge-proof:v1"
+)
+SEALED_EXECUTOR_FAILURE_MERGE_PROOF_DOMAIN = (
+    "acfqp:sealed-executor-failure-merge-proof:v1"
 )
 
 
@@ -160,6 +220,9 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "forbidden_access_violation": FORBIDDEN_ACCESS_VIOLATION_DOMAIN,
         "ground_fallback_cap_profile": GROUND_FALLBACK_CAP_PROFILE_DOMAIN,
+        "sealed_ground_fallback_route_cap_profile": (
+            SEALED_GROUND_FALLBACK_ROUTE_CAP_PROFILE_DOMAIN
+        ),
         "ground_fallback_cardinality_bound": (
             GROUND_FALLBACK_CARDINALITY_BOUND_DOMAIN
         ),
@@ -204,8 +267,47 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
             OCCURRENCE_WORK_COMPONENT_REF_DOMAIN
         ),
         "occurrence_work_aggregate": OCCURRENCE_WORK_AGGREGATE_DOMAIN,
+        "occurrence_partial_common_accounting": (
+            OCCURRENCE_PARTIAL_COMMON_ACCOUNTING_DOMAIN
+        ),
+        "occurrence_failure_evidence_binding": (
+            OCCURRENCE_FAILURE_EVIDENCE_BINDING_DOMAIN
+        ),
+        "occurrence_failure_terminal": OCCURRENCE_FAILURE_TERMINAL_DOMAIN,
+        "occurrence_closure_evidence": OCCURRENCE_CLOSURE_EVIDENCE_DOMAIN,
+        "occurrence_control_failure": OCCURRENCE_CONTROL_FAILURE_DOMAIN,
+        "occurrence_terminal_artifact": OCCURRENCE_TERMINAL_ARTIFACT_DOMAIN,
         "preselection_not_applicable_binding": (
             PRESELECTION_NOT_APPLICABLE_BINDING_DOMAIN
+        ),
+        "accounting_core_seal": ACCOUNTING_CORE_SEAL_DOMAIN,
+        "verification_charge_plan": VERIFICATION_CHARGE_PLAN_DOMAIN,
+        "verification_charge_entry": VERIFICATION_CHARGE_ENTRY_DOMAIN,
+        "two_stage_work_aggregate": TWO_STAGE_WORK_AGGREGATE_DOMAIN,
+        "verification_charge_manifest": VERIFICATION_CHARGE_MANIFEST_DOMAIN,
+        "verification_charge_receipt": VERIFICATION_CHARGE_RECEIPT_DOMAIN,
+        "nonsemantic_verification_attestation": (
+            NONSEMANTIC_VERIFICATION_ATTESTATION_DOMAIN
+        ),
+        "continuation_work_vector_authority": (
+            CONTINUATION_WORK_VECTOR_AUTHORITY_DOMAIN
+        ),
+        "runtime_tree_manifest": RUNTIME_TREE_MANIFEST_DOMAIN,
+        "executor_recipe": EXECUTOR_RECIPE_DOMAIN,
+        "trusted_constructor_registry": TRUSTED_CONSTRUCTOR_REGISTRY_DOMAIN,
+        "runtime_manifest_cap_profile": RUNTIME_MANIFEST_CAP_PROFILE_DOMAIN,
+        "runtime_factory_cardinality": RUNTIME_FACTORY_CARDINALITY_DOMAIN,
+        "sealed_executor_construction_receipt": (
+            SEALED_EXECUTOR_CONSTRUCTION_RECEIPT_DOMAIN
+        ),
+        "sealed_executor_failure_evidence": (
+            SEALED_EXECUTOR_FAILURE_EVIDENCE_DOMAIN
+        ),
+        "sealed_executor_execution_merge_proof": (
+            SEALED_EXECUTOR_EXECUTION_MERGE_PROOF_DOMAIN
+        ),
+        "sealed_executor_failure_merge_proof": (
+            SEALED_EXECUTOR_FAILURE_MERGE_PROOF_DOMAIN
         ),
     }
 )

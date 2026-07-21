@@ -35,6 +35,9 @@ from acfqp.phase3e_ids import (
     parse_content_id,
     require_exact_fields,
 )
+from acfqp.phase3e_sealed_executor_v1 import (
+    RuntimeFactoryCardinalityV1,
+)
 from acfqp.route_upper_formula_v1 import OFFICIAL_STRUCTURAL_GUARDS
 from acfqp.routing_v1 import (
     CardinalityEvidenceV1,
@@ -903,6 +906,7 @@ def derive_safe_chain_local_cardinality_bound_v1(
     source: SafeChainLocalPreselectionSourceV1,
     cap_profile: RouteCapProfileV1,
     registry: CounterRegistryV1 | None = None,
+    runtime_factory_cardinality: RuntimeFactoryCardinalityV1 | None = None,
 ) -> SafeChainLocalCardinalityBoundV1:
     """Apply the registered safe-chain integer upper formula."""
 
@@ -974,6 +978,34 @@ def derive_safe_chain_local_cardinality_bound_v1(
             ],
         }
     )
+    runtime_source_id: str | None = None
+    runtime_values: dict[str, int] = {}
+    if runtime_factory_cardinality is not None:
+        parsed_runtime = RuntimeFactoryCardinalityV1.from_dict(
+            runtime_factory_cardinality.to_dict()
+        )
+        runtime_source_id = parsed_runtime.runtime_factory_cardinality_id
+        runtime_values = dict(parsed_runtime.upper_values())
+        # Sealed/two-stage execution additionally verifies the merged route
+        # WorkVector.  Historical unsealed bounds retain their exact V0 value.
+        values["common.integrity_checks"] += 1
+        # The CAS lease is a separate physical copy.  Add its exact manifest-
+        # bound traffic once; peaks follow their registered SUM/MAX semantics.
+        for path in (
+            "common.hash_invocations",
+            "common.integrity_checks",
+            "common.protocol_checks",
+            "io.read_bytes",
+            "io.staged_bytes",
+            "io.output_bytes",
+        ):
+            values[path] += runtime_values[path]
+        values["io.mounted_bytes_peak"] += runtime_values[
+            "io.mounted_bytes_peak"
+        ]
+        values["memory.working_bytes_peak"] += runtime_values[
+            "memory.working_bytes_peak"
+        ]
     structural = {
         "structural.cell_policy_assignments": source_counts[
             "cell_policy_assignments"
@@ -1000,8 +1032,10 @@ def derive_safe_chain_local_cardinality_bound_v1(
         "local.postaudit_ground_steps",
         "local.postaudit_outcome_rows",
     )
-    values["control.cap_checks"] = sum(values[path] for path in cap_checked_paths) + len(
-        structural
+    values["control.cap_checks"] = (
+        sum(values[path] for path in cap_checked_paths)
+        + len(structural)
+        + runtime_values.get("control.cap_checks", 0)
     )
     all_bounds = tuple(sorted({**values, **structural}.items()))
     result = SafeChainLocalCardinalityBoundV1(
@@ -1013,7 +1047,12 @@ def derive_safe_chain_local_cardinality_bound_v1(
         parsed.frontier_snapshot_id,
         parsed.causal_evidence_id,
         all_bounds,
-        (parsed.source_artifact_id,),
+        tuple(
+            sorted(
+                (parsed.source_artifact_id,)
+                + ((runtime_source_id,) if runtime_source_id is not None else ())
+            )
+        ),
     )
     result.validate_against_cap(cap)
     return result

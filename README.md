@@ -326,26 +326,94 @@ WorkVector cannot be spliced onto a certificate. These controls are exercised as
 generic orchestration path, but there is not yet a registered live benchmark whose
 first sound post-audit fails and whose deeper second decision completes.
 
-Selected-route exceptions produce a typed noncertificate carrying the available
+Ledger `V0-033` closes the four former scoped P0 plumbing gaps without changing this narrow
+claim. Operational accounting can now seal a common-prefix or route-execution core,
+freeze the exact semantic/nonsemantic verification obligations, materialize their
+operational suffix, and bind the reducer-correct aggregate in an exact manifest and
+receipt. Missing, duplicate, substituted, padded, stale, pre-plan, or wrong-lane
+charges fail replay. Aggregate `WORK_VECTOR`/`ACTUAL_PROJECTION`, route/attempt
+terminal classification, and occurrence-terminal authority are invoked in the
+standalone evaluation lane, so they verify an
+already closed operational aggregate without recursively charging themselves into it.
+Registered nonsemantic checks no longer accept caller-selected evidence IDs: each
+check kind consumes typed live evidence and recomputes access/freeze reconciliation,
+execution-vector integrity, native aggregation, selected-upper compliance, or prior-
+run continuation authority. Verification-source CounterRecords must also be disjoint
+from the sealed core, preventing the same observation from being charged twice.
+If a continuation package is rejected after some operational verifier calls but before
+a complete receipt exists, `PARTIAL_ACCOUNTED_COMMON` preserves exactly those observed
+semantic/nonsemantic records and reducer-replays them with the common core. It is a
+fail-closed occurrence-accounting kind, not a successful two-stage receipt or
+continuation authority, and it cannot pad unobserved work.
+The selected-route WorkVector authority is minted by the one-decision runner and
+transported from its immutable history into transaction-2 or fresh-fallback
+authorization; continuation planners no longer have a prior-work substitution seam.
+
+The additive sealed-executor profile binds an inert executor recipe and an exact
+runtime-tree manifest before route selection. `RuntimeFactoryCardinalityV1` derives
+the exact file/byte/manifest cardinalities and factory counter upper from that manifest
+and its `RuntimeManifestCapProfileV1`; the separate sealed
+`GroundFallbackCapProfileV1` partitions the route-wide fallback cap between factory
+and worker. Each sealed candidate route binds a route-specific
+cardinality source, so both compared uppers reserve factory work without consulting
+actual route work; after selection the factory rechecks the selected source/upper
+chain. For the registered sealed safe-chain fallback this is one route-wide cap:
+`control.cap_checks=5815`, split before selection into the factory reserve `3` and
+the fallback worker allowance `5812`. The upper therefore remains `5815`; the
+factory charge is not appended a second time. Historical unsealed profiles keep
+`reserved_route_cap_checks=0`, omit that field from their payload, and retain their
+original schema, domain and content identity. Only after the typed route freeze may a
+single-use factory resolve and byte-verify the preregistered CAS tree, create a private
+read-only lease, and construct the selected executor. It rejects preconstructed legacy
+callables, live-checkout fallback, foreign recipes, symlinks, extra files, byte changes,
+pre-freeze construction, and factory reuse. Runtime snapshot creation is build/rebuild
+work, not a query preselection operation. On success, the construction receipt binds
+`postconstruction_access_event_log_id` and exact factory work; the runner requires that
+ID to equal the final selected-route `AccessEventLogV1` in the returned
+`Phase3ERunResultV1`.
+
+Selected-route exceptions with one uniquely replayable native-work ownership chain
+produce a typed noncertificate carrying the available
 execution/verification work, marginal aggregate, context/decision/upper, freeze/access
-evidence, and exception classification. Python-level local-adapter failures also attach
+evidence, and exception classification. The occurrence result boundary independently
+reconstructs its ordered aggregate and binds each completed run and transaction before
+accepting the terminal; reordering, splicing, rehashing, closure relabelling, or reuse
+of an old terminal authority fails closed. Python-level local-adapter failures also attach
 and fail-close the adapter-owned recorder. Local materialization, compilation, launch,
 solver, and post-audit counters, and fallback staging, launch, worker-native, and output
 counters, are charged incrementally so a later exception cannot erase already observed
-work. This does not invent unobservable work: an abnormally terminated isolated child
-still requires durable child-side streaming before its incomplete internal work can be
-claimed.
+work. A sealed failure additionally carries `SealedExecutorFailureMergeProofV1`: the
+factory partial WorkVector/comparison/projection triple, either a complete delegate
+triple or typed nulls, and the exact merged partial triple. Its companion failure
+evidence binds runtime/recipe/cap/constructor identities, the registered failure stage,
+freeze, merge proof, and final post-failure access-log ID. Replay rejects source,
+subject, reducer, stage, registry, or log substitution. This does not invent
+unobservable work: an abnormally terminated isolated child still requires durable
+child-side streaming before its incomplete internal work can be claimed. The exact
+merge is currently replayed inside the failed-route/occurrence boundary; it is not yet
+a separate FQ7 semantic attestation or manifest-level independent-verifier result.
+
+The occurrence runner now catches that scoped route-level exception, preserves all earlier
+successful common/marginal pairs plus the exact failed prefix/partial marginal, and
+replays one occurrence aggregate. Successful replay mints a typed logical-occurrence
+`Phase3EOccurrenceTerminalArtifactV1` under the evaluation-lane
+`OCCURRENCE_TERMINAL` authority. A selected-route exception closes as
+`ATTEMPT_CLOSURE_NONCERTIFICATE.PROTOCOL_FAILURE`; fallback-cap exhaustion closes as
+`ATTEMPT_CLOSURE_NONCERTIFICATE.FALLBACK_CAP_EXHAUSTED`. Both have plan and
+infeasibility counts zero, noncertificate count one, and all three denominators
+retained. Neither can be relabelled as a plan or infeasibility certificate.
 
 This is an accounted, authority-gated vertical slice—not an official Phase 3E run.
 The consumer still receives rather than autonomously creates the upstream abstract
-plan/audit package. Four P0 boundaries remain explicit: terminal/certificate semantic
-verification work is not yet included without creating an accounting self-reference;
-continuation `WORK_VECTOR` verification work is not yet carried into the next common
-prefix; a caller-supplied executable and a live runtime tree are not yet sealed against
-pre-freeze execution or runtime-tree TOCTOU; and route failures are not yet converted
-into a complete occurrence-level typed noncertificate/aggregate terminal. Exact cached-
-infeasibility and abstract-audit authorities, rebuild/retry, a manifest-level
-independent verifier, and the later scalar economics revision also remain open. See
+plan/audit package. The four former scoped P0 accounting/continuation/executor/occurrence
+boundaries are scoped interfaces implemented under V0-033, not completion of Phase 3E
+or the reusable-world-model objective. Exact cached-infeasibility and abstract-audit
+authorities, complete abstract-only/rebuild/exact-infeasible/failure/hash
+instrumentation—including planner invocation, authority-package construction and
+rejection, every success/failure terminal path, and the still-unassigned
+`common.hash_invocations` leaf—a live dependent transaction-2 benchmark, operational
+rebuild/retry, the upstream plan/audit producer, a manifest-level independent verifier,
+and the later scalar economics revision remain open. See
 `specs/PHASE3E_PRECONSTRUCTION_LIMITATIONS.md` for the exact current boundary.
 
 ```text
@@ -396,13 +464,18 @@ replay, and estimate-before-execute access order. This is an implementation cont
 not an official Gate result; `official_execution_allowed=false`, scalar cost and
 break-even remain null, and both counter-completeness and workload-economics Gates
 remain `NOT_RUN` until every registered path and independent attack test passes.
+Ledger `V0-033` additively freezes the two-stage non-self-referential accounting rule,
+invocation-typed terminal evaluation, runner-owned continuation WorkVector authority,
+content-addressed post-freeze executor construction, and typed occurrence-failure
+aggregate described above; it opens no Gate and changes no historical result.
 The current implementation provides the scoped integrated local and fallback vertical
 slices, registered-safe-chain causal/cardinality authority, generic route-upper and
 decision replay, route-result/post-audit authority, terminal/occurrence evidence, and
-generic two-decision control described above. It still lacks closure of the four P0
-accounting/execution/occurrence boundaries listed above, exact cached-infeasibility and
-abstract-audit authority, a live dependent transaction-2 benchmark, complete rebuild/
-failure/hash instrumentation, and an independent manifest verifier. FQ12 deliberately
+generic two-decision control described above. It still lacks exact cached-infeasibility
+and abstract-audit authority, a live dependent transaction-2 benchmark, complete
+abstract-only/rebuild/exact-infeasible/failure/hash instrumentation, operational
+rebuild/retry, an upstream manifest-to-plan/audit consumer, and an independent manifest
+verifier. FQ12 deliberately
 keeps the official scalar and `N_break_even` null: vector prefix and componentwise
 worst-frontier mechanics may proceed, but scalar crossing is deferred to a later ledger
 revision.

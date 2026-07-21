@@ -315,7 +315,9 @@ surfaces:
   explicitly carries `authorizes_route_selection=false`;
 - a fail-closed semantic-verifier registry with generic work-vector,
   actual-projection, route-upper, route-decision, ground-fallback,
-  access-protocol and terminal-classification replay, plus registered-safe-chain-only
+  access-protocol, route/attempt terminal-classification, and evaluation-lane
+  `OCCURRENCE_TERMINAL` replay of `Phase3EOccurrenceTerminalArtifactV1` for
+  `PROTOCOL_FAILURE`/`FALLBACK_CAP_EXHAUSTED`, plus registered-safe-chain-only
   causal/cardinality and local-result/post-audit replay. Exact cached infeasibility
   and abstract audit remain `NOT_IMPLEMENTED`; no role can acquire authority from a
   hash-only attestation. Decision authorization requires the exact charged dependency
@@ -366,17 +368,20 @@ legacy scalar or break-even claims.
 This is not yet an official run-level Phase 3E certificate. The registered safe-chain
 LOCAL and fallback paths now execute with scoped semantic authority, and terminal/
 occurrence replay binds the runner's current execution-plus-suffix evidence.
-Production-native instrumentation is
-not connected across every abstract, rebuild, exact-infeasible, partial-failure and
-hash path. Four P0 audit boundaries remain: terminal/certificate-verifier operational
-work has no non-cyclic place in the route suffix; continuation `WORK_VECTOR`
-verification work is missing from the next common prefix; caller-supplied executors and
-post-freeze live runtime copying leave pre-execution/runtime-tree TOCTOU outside the
-access proof; and route-level failures are not yet converted into whole-occurrence typed
-noncertificates and aggregate terminals. Exact cached-infeasibility and abstract-audit
-authorities, a registered live dependent second-decision benchmark, rebuild/retry, and
-an independent manifest verifier also remain absent. The locked result therefore
-remains:
+V0-033 closes the former four scoped P0 audit boundaries with a non-cyclic two-stage
+verification suffix, a fresh continuation `WORK_VECTOR` check in the next common
+prefix, a content-addressed runtime tree plus single-use post-freeze executor factory,
+and denominator-preserving occurrence noncertificates over exact work aggregates.
+The closure now includes manifest-derived runtime-factory cardinality in route uppers,
+final-log-bound success receipts, exact factory/delegate failure decomposition, and
+`PARTIAL_ACCOUNTED_COMMON` for rejected packages with already observed verification
+work. Production-native instrumentation is still not connected across planner/package
+control or every abstract, rebuild, exact-infeasible, terminal, partial-failure and hash
+path; `common.hash_invocations` remains an explicitly unassigned post-freeze leaf.
+Exact cached-infeasibility and
+abstract-audit authorities, a registered live dependent second-decision benchmark,
+rebuild/retry, an upstream manifest-to-RAPM consumer, and an independent manifest
+verifier also remain absent. The locked result therefore remains:
 
 ```text
 official_execution_allowed = false
@@ -640,10 +645,33 @@ audit_phase3e_foundation(frozen_rapm, failed_plan, preexecution_evidence):
   aggregates from referenced native work; reject upper overflow, forged or swapped
   vector references, scalar/crossing injection, hidden registered occurrences, retry
   overrun, and any attempt to classify fallback-cap exhaustion as infeasibility.
+- Sealed-executor tests require each compared candidate's manifest-derived
+  `RuntimeFactoryCardinalityV1` ID in its route-specific cardinality-source chain,
+  recompute both factory uppers, and recheck the selected chain at construction; only
+  the selected route incurs actual CAS work. The sealed fallback positive control
+  requires `control.cap_checks=5815=3+5812`; the tight total-`5812` negative control
+  leaves worker share `5809` and must report cap rejection rather than `WITHIN`.
+  Reserve-zero legacy schema/domain/payload/content identity must remain unchanged.
+  A success receipt must bind the final
+  returned selected-route access-log ID. Failure tests replay
+  `SealedExecutorFailureMergeProofV1` from the exact factory partial and the complete
+  delegate partial triple or typed nulls, then reject any subject, reducer, stage,
+  registry, source-ID, or post-failure-log mutation.
+- Rejected-continuation tests retain already observed operational verifier records as
+  `PARTIAL_ACCOUNTED_COMMON`, reconstruct the exact suffix and reducer-aware aggregate,
+  and reject an empty set, duplicate/core-overlapping records, unknown paths, stale
+  context or wrong registry/lane. They must never mint a successful charge receipt or
+  continuation authority.
+- Typed-nonsemantic tests replay every registered check kind from concrete evidence,
+  reject fabricated evidence IDs, and reject core/suffix CounterRecord reuse. Both
+  LOCAL and FALLBACK access witnesses must map to their exact route kinds.
+- Occurrence-result tests reconstruct the aggregate and ordered run/transaction chain
+  and reject reordered, spliced, rehashed, relabelled, or stale-authority histories.
 - These component tests do not satisfy the Phase 3E implementation Gate until the same
-  checks cover production-native records on abstract, direct-fallback, second-local-
-  transaction, rebuild, infeasible, protocol/integrity-failure, and independent bundle
-  replay paths.
+  checks cover production-native and content-hash records for planner invocation,
+  authority-package construction/rejection, abstract, direct-fallback, second-local-
+  transaction, rebuild, infeasible, every terminal and protocol/integrity-failure, and
+  independent bundle replay paths.
 
 ## Out of scope
 
@@ -655,4 +683,4 @@ Frontier combinatorics, conservative rectangular composition, all policies excee
 
 ## Open risks
 
-Paired oracle-replacement ablations and component interactions are required before broad causal claims. More compact exact frontier representations may be needed beyond tiny instances. V0-028 removes Q/value signatures from the portable exact builder; V0-029 closes the first certificate-triggered recovery; V0-030 closes slack-aware earliest-antichain authorization, finite-domain sparse capability, and capped joint search; and V0-032 now has scoped integrated safe-chain LOCAL/fallback slices around the frozen RAPM. The four P0 terminal-verification, continuation-prefix, executor/runtime-sealing and occurrence-closure boundaries; complete native failure/rebuild/hash instrumentation; registered dependent second-decision evidence; exact cached-infeasibility and abstract-audit authority; manifest-level independent replay; dependent-horizon recovery; automatic feature invention; scalar-free workload routing and the later scalar-economics revision; and statistical Gates remain open.
+Paired oracle-replacement ablations and component interactions are required before broad causal claims. More compact exact frontier representations may be needed beyond tiny instances. V0-028 removes Q/value signatures from the portable exact builder; V0-029 closes the first certificate-triggered recovery; V0-030 closes slack-aware earliest-antichain authorization, finite-domain sparse capability, and capped joint search; V0-032 adds scoped integrated safe-chain LOCAL/fallback slices around the frozen RAPM; and V0-033 closes the four scoped P0 terminal-verification, continuation-prefix, executor/runtime-sealing and occurrence-closure boundaries. Complete native failure/rebuild/hash instrumentation; registered dependent second-decision evidence; exact cached-infeasibility and abstract-audit authority; manifest-level independent replay; dependent-horizon recovery; automatic feature invention; scalar-free workload routing and the later scalar-economics revision; and statistical Gates remain open.

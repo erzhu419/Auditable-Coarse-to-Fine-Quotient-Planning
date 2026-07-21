@@ -16,7 +16,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Mapping, Sequence, TypeVar
 
-from acfqp.accounting_v1 import SHARED_AXES
+from acfqp.accounting_v1 import LaneEnum, SHARED_AXES
 from acfqp.phase3e_ids import (
     CARDINALITY_EVIDENCE_DOMAIN,
     CARDINALITY_SOURCE_DOMAIN,
@@ -2131,6 +2131,10 @@ _ROLE_CONTRACT: Mapping[str, tuple[str, frozenset[str]]] = {
         "TerminalArtifactV1",
         frozenset({item.value for item in TerminalClass} | {"INVALID"}),
     ),
+    "OCCURRENCE_TERMINAL": (
+        "Phase3EOccurrenceTerminalArtifactV1",
+        frozenset({item.value for item in TerminalClass} | {"INVALID"}),
+    ),
 }
 
 
@@ -2154,6 +2158,7 @@ class TypedVerificationAttestationV1:
     verification_result: str
     verification_work_counter_record_id: str
     verified_at_protocol_step: int
+    verification_lane: LaneEnum = LaneEnum.OPERATIONAL
 
     def __post_init__(self) -> None:
         for field in (
@@ -2190,6 +2195,19 @@ class TypedVerificationAttestationV1:
         if self.verification_result not in outcomes:
             raise RoutingV1Error("verification result is invalid for the artifact role")
         _nonnegative(self.verified_at_protocol_step, "verified_at_protocol_step")
+        object.__setattr__(
+            self,
+            "verification_lane",
+            _enum(self.verification_lane, LaneEnum, "verification_lane"),
+        )
+        if self.verification_lane not in {
+            LaneEnum.OPERATIONAL,
+            LaneEnum.EVALUATION,
+        }:
+            raise RoutingV1Error(
+                "semantic verification attestation must use the operational or "
+                "evaluation lane"
+            )
 
     def _payload(self) -> dict[str, Any]:
         return {
@@ -2213,6 +2231,7 @@ class TypedVerificationAttestationV1:
             "verification_result": self.verification_result,
             "verification_work_counter_record_id": self.verification_work_counter_record_id,
             "verified_at_protocol_step": self.verified_at_protocol_step,
+            "verification_lane": self.verification_lane.value,
         }
 
     @property
@@ -2250,6 +2269,7 @@ class TypedVerificationAttestationV1:
             "verification_result",
             "verification_work_counter_record_id",
             "verified_at_protocol_step",
+            "verification_lane",
             "verification_attestation_id",
         }
         _fields(document, expected, "typed verification attestation")
@@ -2285,6 +2305,7 @@ class TypedVerificationAttestationV1:
             document["verification_result"],
             document["verification_work_counter_record_id"],
             document["verified_at_protocol_step"],
+            document["verification_lane"],
         )
         _verify_id(
             document,

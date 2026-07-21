@@ -31,9 +31,17 @@ from acfqp.phase3e_occurrence_accounting_v1 import (
     OccurrenceWorkComponentRefV1,
     Phase3EOccurrenceAccountingV1Error,
     Phase3EOccurrenceWorkAggregateV1,
+    RunnerCommonAccountingEvidenceV1,
     RunnerMarginalWorkEvidenceV1,
+    RunnerPartialCommonAccountingEvidenceV1,
     derive_phase3e_occurrence_work_aggregate_v1,
+    derive_runner_partial_common_accounting_v1,
     verify_phase3e_occurrence_work_aggregate_v1,
+)
+from acfqp.phase3e_ids import OCCURRENCE_WORK_AGGREGATE_DOMAIN, content_id
+from tests.test_phase3e_two_stage_accounting_v1 import (
+    _reverify_with_binding as _reverify_two_stage_with_binding,
+    _world as _two_stage_world,
 )
 from acfqp.routing_v1 import (
     DecisionPointV1,
@@ -917,6 +925,197 @@ def test_bare_actual_triple_and_orphan_aggregate_are_rejected() -> None:
             actual_profile=actual,
         )
 
+
+def test_two_stage_common_binds_decision_to_core_but_charges_aggregate() -> None:
+    two_stage = _two_stage_world("occurrence-common")
+    registry = official_counter_registry_v1()
+    profile = official_comparison_profile_v1(registry)
+    actual = official_actual_projection_profile_v1(registry, profile)
+    point = DecisionPointV1(
+        two_stage.context.route_decision_context_id,
+        TypedNotApplicable("control prefix has no transaction"),
+        TypedNotApplicable("control prefix has no frontier"),
+        TypedNotApplicable("control prefix has no causal evidence"),
+        two_stage.core_work.work_vector.work_vector_id,
+    )
+    common = RunnerCommonAccountingEvidenceV1(
+        two_stage.core_work,
+        two_stage.closure,
+        two_stage.results,
+        (),
+        two_stage.context,
+    )
+    component = OccurrenceWorkComponentEvidenceV1(
+        OccurrenceWorkComponentKind.COMMON_PREFIX,
+        two_stage.context,
+        point,
+        None,
+        (common,),
+    )
+    aggregate = derive_phase3e_occurrence_work_aggregate_v1(
+        logical_occurrence_id=two_stage.context.logical_occurrence_id,
+        components=(component,),
+        registry=registry,
+        comparison_profile=profile,
+        actual_profile=actual,
+    )
+    ref = aggregate.component_refs[0].raw_work_refs[0]
+    assert ref.evidence_kind is OccurrenceRawEvidenceKind.TWO_STAGE_ACCOUNTED_COMMON
+    assert ref.work_vector_id == (
+        two_stage.closure.aggregate_work.work_vector.work_vector_id
+    )
+    assert ref.work_vector_id != point.common_prefix_work_id
+    assert ref.marginal_work_aggregation_proof_id == (
+        two_stage.closure.receipt.verification_charge_receipt_id
+    )
+
+    forged_point = replace(
+        point,
+        common_prefix_work_id=ref.work_vector_id,
+    )
+    forged_component = replace(component, decision_point=forged_point)
+    with pytest.raises(
+        Phase3EOccurrenceAccountingV1Error,
+        match="stale for its decision point",
+    ):
+        derive_phase3e_occurrence_work_aggregate_v1(
+            logical_occurrence_id=two_stage.context.logical_occurrence_id,
+            components=(forged_component,),
+            registry=registry,
+            comparison_profile=profile,
+            actual_profile=actual,
+        )
+
+
+def _partial_common_sequence_fixture():
+    two_stage = _two_stage_world("occurrence-partial-placement")
+    registry = official_counter_registry_v1()
+    profile = official_comparison_profile_v1(registry)
+    actual = official_actual_projection_profile_v1(registry, profile)
+    point = DecisionPointV1(
+        two_stage.context.route_decision_context_id,
+        TypedNotApplicable("rejected package has no transaction"),
+        TypedNotApplicable("rejected package has no frontier"),
+        TypedNotApplicable("rejected package has no causal evidence"),
+        two_stage.core_work.work_vector.work_vector_id,
+    )
+    partial = derive_runner_partial_common_accounting_v1(
+        core=two_stage.core_work,
+        semantic_results=_reverify_two_stage_with_binding(
+            two_stage,
+            decision_point_id=point.decision_point_id,
+        ),
+        nonsemantic_records=(),
+        route_context=two_stage.context,
+        decision_point_id=point.decision_point_id,
+        registry=registry,
+        comparison_profile=profile,
+        actual_profile=actual,
+    )
+    partial_prefix = OccurrenceWorkComponentEvidenceV1(
+        OccurrenceWorkComponentKind.COMMON_PREFIX,
+        two_stage.context,
+        point,
+        None,
+        (partial,),
+    )
+    full_prefix = replace(partial_prefix, raw_work=(two_stage.core_work,))
+    fallback_execution = _record(
+        label="partial-placement-fallback-execution",
+        subject_id=two_stage.context.route_attempt_id,
+        route_kind=RouteKindEnum.DIRECT_FALLBACK,
+        scope=ActualWorkScope.MARGINAL_ROUTE_EXECUTION,
+        values={"fallback.ground_steps": 1},
+    )
+    fallback_verification = _record(
+        label="partial-placement-fallback-verification",
+        subject_id=two_stage.context.route_attempt_id,
+        route_kind=RouteKindEnum.DIRECT_FALLBACK,
+        scope=ActualWorkScope.MARGINAL_ROUTE_VERIFICATION,
+        values={"common.protocol_checks": 1},
+    )
+    fallback = OccurrenceWorkComponentEvidenceV1(
+        OccurrenceWorkComponentKind.DIRECT_FALLBACK,
+        two_stage.context,
+        point,
+        None,
+        (fallback_execution, fallback_verification),
+    )
+    return (
+        two_stage,
+        registry,
+        profile,
+        actual,
+        partial_prefix,
+        full_prefix,
+        fallback,
+    )
+
+
+def test_partial_common_is_only_a_final_unpaired_rejected_prefix() -> None:
+    (
+        two_stage,
+        registry,
+        profile,
+        actual,
+        partial_prefix,
+        full_prefix,
+        fallback,
+    ) = _partial_common_sequence_fixture()
+    legal = derive_phase3e_occurrence_work_aggregate_v1(
+        logical_occurrence_id=two_stage.context.logical_occurrence_id,
+        components=(partial_prefix,),
+        registry=registry,
+        comparison_profile=profile,
+        actual_profile=actual,
+    )
+    assert legal.component_refs[0].raw_work_refs[0].evidence_kind is (
+        OccurrenceRawEvidenceKind.PARTIAL_ACCOUNTED_COMMON
+    )
+
+    for attacked in (
+        (partial_prefix, fallback),
+        (partial_prefix, full_prefix),
+        (partial_prefix, fallback, full_prefix),
+    ):
+        with pytest.raises(
+            Phase3EOccurrenceAccountingV1Error,
+            match="PARTIAL_ACCOUNTED_COMMON.*final unpaired",
+        ):
+            derive_phase3e_occurrence_work_aggregate_v1(
+                logical_occurrence_id=two_stage.context.logical_occurrence_id,
+                components=attacked,
+                registry=registry,
+                comparison_profile=profile,
+                actual_profile=actual,
+            )
+
+    paired = derive_phase3e_occurrence_work_aggregate_v1(
+        logical_occurrence_id=two_stage.context.logical_occurrence_id,
+        components=(full_prefix, fallback),
+        registry=registry,
+        comparison_profile=profile,
+        actual_profile=actual,
+    )
+    document = legal.to_dict()
+    document["component_refs"] = [
+        legal.component_refs[0].to_dict(),
+        paired.component_refs[1].to_dict(),
+    ]
+    payload = {
+        key: value
+        for key, value in document.items()
+        if key != "phase3e_occurrence_work_aggregate_id"
+    }
+    document["phase3e_occurrence_work_aggregate_id"] = content_id(
+        OCCURRENCE_WORK_AGGREGATE_DOMAIN,
+        payload,
+    )
+    with pytest.raises(
+        Phase3EOccurrenceAccountingV1Error,
+        match="PARTIAL_ACCOUNTED_COMMON.*final unpaired",
+    ):
+        Phase3EOccurrenceWorkAggregateV1.from_dict(document)
 
 def test_forged_smaller_aggregate_cannot_hide_native_source_work() -> None:
     world = _world()

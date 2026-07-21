@@ -420,15 +420,28 @@ semantic evidence forms an exact decision/upper/cardinality dependency closure,
 capability/worker/stitch/post-audit identities cannot be substituted, and both selected
 routes preserve already observed work incrementally on failure.
 
-This vertical-slice milestone still does not satisfy the implementation Gate. Four P0s
-remain: a non-cyclic charge for terminal/certificate-verifier operational work;
-continuation `WORK_VECTOR` verification work in the next common prefix; a sealed
-post-freeze executor factory and content-addressed runtime tree; and occurrence-level
-typed failure closure plus aggregate-terminal semantics. Exact cached-infeasibility and
-abstract-audit authority, a registered live dependent second-decision benchmark,
-rebuild/retry and complete failure/hash instrumentation, an upstream manifest-to-
-prepared-run consumer, and an independent bundle verifier also remain absent. A scoped
-runtime pass cannot be relabelled as an official workload run.
+This vertical-slice milestone still does not satisfy the implementation Gate. V0-033
+closes the former four scoped P0 interfaces: non-cyclic terminal/certificate-verification accounting,
+continuation `WORK_VECTOR` verification in the next common prefix, a sealed
+post-freeze executor factory over a content-addressed runtime tree, and occurrence-level
+typed noncertificate closure plus aggregate-terminal semantics. Within those interfaces,
+manifest-derived `RuntimeFactoryCardinalityV1` now enters route uppers, successful
+construction receipts bind the final access log, failed sealed execution has an exact
+factory/delegate/merged decomposition, and rejected packages preserve observed verifier
+work as `PARTIAL_ACCOUNTED_COMMON`. The sealed safe-chain fallback additionally
+freezes `control.cap_checks=5815=3 factory+5812 worker`, tests total `5812` as a
+worker-`5809` cap rejection, prohibits post-hoc reserve addition, and preserves the
+reserve-zero legacy identity. Registered nonsemantic checks now replay typed evidence
+and reject core/suffix record reuse; occurrence results reconstruct their ordered
+aggregate, runs, transactions, closure and terminal authority at their own boundary.
+These are scoped component closures, not the Phase
+3E implementation Gate or the reusable-world-model research objective. Exact cached-
+infeasibility and abstract-audit authority, a registered live dependent second-decision
+benchmark, rebuild/retry and complete all-path native/hash instrumentation—including
+planner/package control, every terminal branch, and the still-unassigned
+`common.hash_invocations` leaf—an upstream
+manifest-to-prepared-run consumer, and an independent bundle verifier still remain
+absent. A scoped runtime pass cannot be relabelled as an official workload run.
 
 Until then the required tuple is exactly:
 

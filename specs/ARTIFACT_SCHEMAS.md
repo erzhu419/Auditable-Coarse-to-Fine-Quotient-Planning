@@ -725,6 +725,12 @@ Phase 3E accounted dynamic routing:
   contract_version=1.0.0
   profile_key=phase3e_accounted_dynamic_routing_v0
   content_id=full SHA256(domain-tag || 0x00 || canonical-json)
+  relevant additive domain tags=(acfqp:runtime-factory-cardinality:v1,
+                                 acfqp:sealed-ground-fallback-route-cap-profile:v1,
+                                 acfqp:sealed-executor-construction-receipt:v1,
+                                 acfqp:sealed-executor-failure-evidence:v1,
+                                 acfqp:sealed-executor-failure-merge-proof:v1,
+                                 acfqp:occurrence-partial-common-accounting:v1)
   counter_registry.registry_key=acfqp_counter_registry_v1
   counter_registry_id=full content hash
   comparison_profile.profile_key=comparison_profile_shared_resources_v1
@@ -756,7 +762,17 @@ Phase 3E accounted dynamic routing:
   workload_vector_spec_id, vector_prefix_totals, prefix_worst_frontiers
   generic semantic handlers=(WorkVector, actual projection, route upper,
                              route decision, ground fallback,
-                             terminal classification, protocol access)
+                             route/attempt terminal classification,
+                             occurrence terminal, protocol access)
+  occurrence terminal handler=(SemanticRole.OCCURRENCE_TERMINAL,
+                               Phase3EOccurrenceTerminalArtifactV1,
+                               evaluation lane,
+                               PROTOCOL_FAILURE|FALLBACK_CAP_EXHAUSTED)
+  occurrence result boundary=(ordered raw-component aggregate replay,
+                              completed-run/common-route correspondence,
+                              local transaction reconstruction,
+                              final-execution closure replay,
+                              terminal/failure-authority replay)
   registered-safe-chain semantic handlers=(causal search, local/fallback cardinality,
                                             local solver result, post audit)
   charged_semantic_dependency_closure=(route decision -> causal + local upper
@@ -768,6 +784,72 @@ Phase 3E accounted dynamic routing:
   fallback_executor=AuthorizedIsolatedGroundFallbackExecutorV1
   selected_route_work_id, verification_suffix_work_id,
   aggregate_marginal_work_id, upper_compliance
+  accounting_profile=phase3e_two_stage_accounting_v1|historical
+  common_accounting=(sealed_core_id, frozen_charge_plan_id,
+                     verification_suffix_work_id, aggregate_work_id,
+                     charge_manifest_id, charge_receipt_id)
+  rejected_common_accounting=(evidence_kind=PARTIAL_ACCOUNTED_COMMON,
+                              partial_common_accounting_id,
+                              RouteDecisionContext_id, decision_point_id,
+                              core_work_id, observed operational semantic-result IDs,
+                              observed nonsemantic CounterRecord IDs,
+                              verification_suffix_work_id, aggregate_work_id)
+  selected_accounting=(sealed_core_id, frozen_charge_plan_id,
+                       verification_suffix_work_id, aggregate_work_id,
+                       charge_manifest_id, charge_receipt_id)
+  verification_charge_entry=(ordinal, semantic role, artifact ID,
+                             source CounterRecord ID, typed attestation ID)
+  nonsemantic_charge_entry=(ordinal, registered check kind,
+                            source CounterRecord ID, typed attestation ID)
+  nonsemantic_typed_evidence=(ACCESS_TRACE_RECONCILIATION:
+                                access log+freeze+protocol+decision+execution+work,
+                              EXECUTION_VECTOR_INTEGRITY: exact RecordedWork,
+                              NATIVE_AGGREGATION: exact core/suffix/aggregate replay,
+                              AGGREGATE_UPPER_COMPLIANCE: selected typed upper,
+                              CONTINUATION_WORK_VECTOR_AUTHORITY:
+                                prior-run typed authority+current context)
+  nonsemantic_evidence_ids=derived by registered replay, never caller supplied
+  source_record_exclusivity=(plan sources pairwise unique and disjoint from
+                             sealed core CounterRecord IDs)
+  terminal/aggregate semantic replay lane=evaluation
+  continuation_work_vector_authority=(prior run identity,
+                                      exact runner-minted WORK_VECTOR result)
+  sealed_executor_profile=(runtime_tree_id, executor_recipe_id,
+                           runtime_manifest_cap_profile_id,
+                           trusted_constructor_registry_id)
+  runtime_tree_manifest=(exact sorted regular-file set, sizes, SHA256 digests)
+  runtime_factory_cardinality=(runtime_factory_cardinality_id,
+                               runtime_tree_id, runtime_manifest_cap_profile_id,
+                               file_count, total_bytes, manifest_document_bytes,
+                               exact counter_upper_values,
+                               measured_before_execution=true,
+                               depends_on_actual_route_work=false)
+  sealed_fallback_route_cap=(profile_key=phase3e_sealed_ground_fallback_route_caps_v1,
+                             schema=acfqp.sealed_ground_fallback_route_cap_profile.v1,
+                             domain=acfqp:sealed-ground-fallback-route-cap-profile:v1,
+                             max_cap_checks=5815,
+                             reserved_route_cap_checks=3,
+                             max_solver_cap_checks=5812)
+  legacy_fallback_cap_compatibility=(profile_key=phase3e_ground_fallback_caps_v1,
+                                     schema=acfqp.ground_fallback_cap_profile.v1,
+                                     domain=acfqp:ground-fallback-cap-profile:v1,
+                                     reserved_route_cap_checks omitted,
+                                     content ID unchanged)
+  selected construction=(single-use post-freeze factory)
+  successful construction=(SealedExecutorConstructionReceiptV1,
+                           SealedExecutorExecutionMergeProofV1)
+  construction_receipt=(factory WorkVector/ComparisonVector and CounterRecord IDs,
+                        recipe/runtime/constructor/freeze identities,
+                        postconstruction_access_event_log_id=
+                          final selected-route Phase3ERunResultV1 access log ID)
+  failed construction/execution=(SealedExecutorFailureEvidenceV1,
+                                 SealedExecutorFailureMergeProofV1)
+  sealed_failure=(registered failure_stage,
+                  postfailure_access_event_log_id)
+  sealed_failure_merge_proof=(route subject/kind,
+                              factory partial WorkVector/ComparisonVector/projection IDs,
+                              delegate partial ID triple or all typed-null,
+                              merged partial WorkVector/ComparisonVector/projection IDs)
   local_result_bindings=(capability_binding_id, worker_result_binding_id,
                          stitched_plan_id-or-typed-null,
                          post_audit_certificate_id-or-typed-null)
@@ -777,10 +859,21 @@ Phase 3E accounted dynamic routing:
   occurrence_continuation=(fresh deeper decision -> local transaction 2
                            or direct fallback without transaction 2)
   failure_accounting=incremental local/fallback observed-work preservation
-  unresolved_p0=(terminal-verifier accounting cycle,
-                 continuation WorkVector-verification common-prefix charge,
-                 executor-factory/runtime-tree sealing,
-                 occurrence-level noncertificate/aggregate terminal)
+  occurrence_noncertificate=(Phase3EOccurrenceTerminalArtifactV1,
+                             ordered occurrence component refs,
+                             occurrence aggregate ID, typed detail ID,
+                             runtime/recipe provenance,
+                             all three denominators retained)
+  former_scoped_p0_boundaries_closed=(cycle-free two-stage verification accounting,
+                                      fresh continuation-authority check in next prefix,
+                                      sealed post-freeze executor/runtime CAS,
+                                      occurrence-level noncertificate/aggregate terminal)
+  remaining_official_obligations=(abstract/cached-infeasibility authority,
+                                  all-path native/hash instrumentation,
+                                  live dependent transaction-2 benchmark,
+                                  rebuild/retry and remaining terminals,
+                                  upstream RAPM consumer,
+                                  independent complete-bundle verifier)
   official_execution_allowed=false until all contract-1.0 implementation Gates pass
   official_scalar_cost=null, official_N_break_even=null
   scalar_gate_status=NOT_RUN
@@ -1005,6 +1098,20 @@ The manifest hashes every other file, then a detached `manifest.sha256` hashes c
   cross-occurrence work sum, scalar or `N_break_even` injection, incomplete permutation
   enumeration, and reducer drift. These component passes leave official execution false
   and both Phase 3E Gates `NOT_RUN`.
+- V0-033 replay additionally rejects a verification obligation omitted, padded,
+  duplicated, substituted, charged before its plan, charged in the evaluation lane, or
+  rebound through a different typed-null identity.  A decision point continues to bind
+  the raw common core; occurrence accounting separately replays the two-stage closure
+  and charges its aggregate, so a core/aggregate ID swap is invalid.
+- Under the sealed profile, each compared route upper must be derived from its pre-
+  frozen manifest cardinalities and finite caps; an unselected or historical route
+  receives no **actual WorkVector** CAS charge. Runtime resolution, lease creation and trusted executor construction are
+  post-freeze only.  A changed/extra/symlinked runtime entry, foreign recipe, factory
+  reuse, or omitted factory work on a failed delegate invalidates the attempt.
+- An occurrence noncertificate replays exact `Phase3ERunResultV1` histories plus the
+  typed failed/control/cap detail.  It cannot replace an occurrence aggregate with the
+  last marginal vector, drop an earlier transaction, turn cap exhaustion into
+  infeasibility, or remove the logical occurrence from any denominator.
 
 ## Out of scope
 

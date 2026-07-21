@@ -409,14 +409,21 @@ access-order attacks, and independent verifier all pass, the only valid status i
 `official_execution_allowed=false`, `COUNTER_COMPLETENESS_GATE_NOT_RUN`, and
 `WORKLOAD_ECONOMICS_GATE_NOT_RUN`.
 
-The current integrated safe-chain slice does not yet close four P0 contract gaps:
-terminal/certificate-verifier operational work needs a non-self-referential accounting
-home; continuation `WORK_VECTOR` verification must enter the next common prefix; route
-executors/runtime trees must be created from frozen content after decision rather than
-accepted as arbitrary callables/live source; and route-level failures must close as
-whole-occurrence typed noncertificates with aggregate-terminal semantics. These gaps
-keep the foregoing official status locked even when a scoped local or isolated-fallback
-integration passes.
+V0-033 closes the four former scoped P0 contract gaps with exact two-stage non-self-
+referential accounting, runner-owned continuation `WORK_VECTOR` authority, a
+content-addressed runtime tree and single-use post-freeze executor factory, and
+whole-occurrence typed failure/aggregate-terminal replay. These are four scoped
+interface closures, not completion of the Phase 3E Gate or of automatic reusable-world-
+model synthesis. Their current strict evidence includes manifest-derived
+`RuntimeFactoryCardinalityV1` in route uppers, a success receipt bound to the final
+access log, `SealedExecutorFailureMergeProofV1` over exact factory/delegate/merged
+partials, and rejection-only `PARTIAL_ACCOUNTED_COMMON` preservation of already
+observed verifier work. The foregoing official status remains locked because exact
+cached-infeasibility/abstract-audit authority, complete all-path native/hash
+instrumentation (including planner/package control, all terminals, and the unassigned
+`common.hash_invocations` leaf), registered live dependent transaction-2 evidence,
+rebuild/retry, the upstream manifest-to-plan/audit consumer, and independent complete-
+bundle verification are still absent.
 
 ## Pseudocode / schema
 
@@ -509,8 +516,15 @@ Phase3EAccountedDynamicRoutingV1:
   frontier_snapshot_id, causal_evidence_id, cardinality_evidence_ids
   route_upper_formula_ids, route_upper_derivation_proof_ids
   local_upper_id, fallback_upper_id, route_decision_id, access_event_log_id
+  runtime_factory_cardinality_ids
+  sealed_executor_construction_receipt_id, postconstruction_access_event_log_id
+  sealed_executor_execution_merge_proof_id
+  sealed_executor_failure_evidence_id, sealed_executor_failure_merge_proof_id
+  sealed_failure_source_triples=(factory, delegate-or-typed-null, merged)
+  partial_common_accounting_ids
   operational_work_vector_ids, evaluation_work_vector_ids
-  typed_verification_attestation_ids, terminal_artifact_id
+  typed_verification_attestation_ids, route_terminal_artifact_id
+  occurrence_terminal_artifact_id, occurrence_terminal_semantic_result_id
   rebuild_policy_id, rebuild_event_ids, occurrence_closure_ids, campaign_summary_id
   workload_vector_spec_id, vector_prefix_ids, worst_frontier_ids
   official_execution_allowed = false
@@ -627,6 +641,31 @@ evaluation-only J0 costs remain separate.
     transaction 2 or direct fallback without inventing transaction 2. Both route
     adapters preserve every observed work prefix incrementally when later execution
     fails.
+40. Each sealed candidate route derives `RuntimeFactoryCardinalityV1` from its exact
+    frozen manifest/cap and binds that ID in its route-specific cardinality source
+    chain before comparison; after selection the factory rechecks the chosen chain.
+    The registered sealed safe-chain fallback uses the preselection identity
+    `C_route=5815=C_factory(3)+C_solver(5812)`: cardinality incorporates the reserve
+    before the route-total cap is applied, never as a post-hoc `+3`. A total `5812`
+    with reserve `3` yields worker share `5809` and a cap-rejection/noncertificate
+    path. The positive upper proof leaf is `5815`; a reserve-zero legacy payload keeps
+    its original schema, domain and content ID.
+41. A successful sealed construction receipt binds the exact factory work and the
+    final selected-route `AccessEventLogV1` returned by `Phase3ERunResultV1`; an earlier
+    or foreign log cannot authorize the result.
+42. A sealed failure retains exact factory, delegate-or-typed-null, and merged
+    WorkVector/comparison/projection triples. A rejected continuation may retain
+    observed verifier work as `PARTIAL_ACCOUNTED_COMMON`, but that evidence is neither
+    a successful receipt nor continuation/certificate authority. The failure merge is
+    not yet a separate FQ7 or independent-bundle semantic authority.
+43. `Phase3EOccurrenceTerminalArtifactV1`, not a route-attempt terminal, is the
+    evaluation-lane occurrence authority for `PROTOCOL_FAILURE` and
+    `FALLBACK_CAP_EXHAUSTED`; both retain counts `0/0/1` and every denominator.
+44. Nonsemantic `VALID` is derived only by registered check-kind replay over typed
+    evidence; a caller cannot supply evidence IDs. Plan source records are disjoint
+    from sealed-core records. Every occurrence runtime result independently replays
+    its aggregate, ordered run/transaction correspondence, final closure and terminal
+    authority, rejecting stale or rearranged histories.
 
 ## Acceptance tests
 
@@ -741,6 +780,15 @@ evaluation-only J0 costs remain separate.
   denominators; scalar-free prefix frontiers; and partial semantic authority. These
   tests must retain `official_execution_allowed=false` and both Phase 3E Gates
   `NOT_RUN` until the integrated production and independent bundle paths also pass.
+- Sealed-route attacks mutate manifest cardinality/source binding, the success
+  receipt's final access-log ID, every factory/delegate/merged failure-proof reference,
+  the all-ID/all-typed-null delegate rule, failure stage, and post-failure log; each
+  mutation must fail exact replay.
+- Rejected-continuation attacks remove, duplicate, overlap, change lane/registry, or
+  stale-bind an observed verifier record in `PARTIAL_ACCOUNTED_COMMON`; each must fail,
+  and no such evidence may mint a successful charge receipt, continuation authority,
+  plan certificate or infeasibility certificate. A protocol-failure occurrence
+  noncertificate remains the only allowed terminal use.
 
 ## Out of scope
 

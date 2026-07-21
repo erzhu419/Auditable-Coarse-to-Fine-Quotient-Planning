@@ -15,23 +15,31 @@ from acfqp.access_protocol_v1 import (
 )
 from acfqp.accounting_v1 import (
     CounterRecordV1,
+    LaneEnum,
     RouteKindEnum,
     official_comparison_profile_v1,
     official_counter_registry_v1,
 )
-from acfqp.actual_accounting_v1 import ActualWorkScope
+from acfqp.actual_accounting_v1 import (
+    ActualWorkScope,
+    official_actual_projection_profile_v1,
+)
 from acfqp.frozen_phase3c import load_frozen_phase3c_world
 from acfqp.native_recorder_v1 import NativeCounterRecorderV1
 from acfqp.phase3d import prepare_safe_chain_estimate_context
 from acfqp.phase3e_fallback_v1 import (
     GroundFallbackCapProfileV1,
+    SEALED_ROUTE_CAP_PROFILE_KEY,
     build_ground_fallback_cardinality_evidence_v1,
     derive_safe_chain_fallback_cardinality_bound_v1,
     derive_safe_chain_fallback_cardinality_source_v1,
 )
 from acfqp.phase3e_local_adapter_v1 import (
-    AuthorizedSafeChainLocalExecutorV1,
+    SAFE_CHAIN_LOCAL_EXECUTOR_SEMANTICS_ID,
+    SAFE_CHAIN_LOCAL_RUNTIME_ENTRYPOINT,
     SafeChainLocalExecutorInputsV1,
+    SafeChainLocalPostFreezeConstructorV1,
+    safe_chain_local_executor_configuration_id_v1,
 )
 from acfqp.phase3e_local_preselection_v1 import (
     build_safe_chain_local_cardinality_evidence_v1,
@@ -55,6 +63,25 @@ from acfqp.phase3e_runner_v1 import (
     PreparedPhase3ERunV1,
     run_phase3e,
     verify_failed_route_evidence_v1,
+)
+from acfqp.phase3e_sealed_executor_v1 import (
+    ExecutorRecipeV1,
+    RuntimeFactoryCardinalityV1,
+    RuntimeTreeCASV1,
+    SealedExecutorConstructionAccountingV1,
+    SealedExecutorConstructionReceiptV1,
+    SealedExecutorExecutionMergeProofV1,
+    SealedExecutorFailureEvidenceV1,
+    SealedExecutorFailureMergeProofV1,
+    SealedPostFreezeExecutorFactoryV1,
+    verify_sealed_factory_execution_merge_v1,
+)
+from acfqp.phase3e_two_stage_accounting_v1 import (
+    AccessTraceReconciliationEvidenceV1,
+    AccountingCoreStage,
+    VerificationChargeObligationV1,
+    VerificationChargePlanV1,
+    seal_accounting_core_v1,
 )
 from acfqp.route_upper_formula_v1 import (
     derive_route_upper_v1,
@@ -100,16 +127,20 @@ def _id(label: str) -> str:
     ).hexdigest()
 
 
-def _verification_record(role: SemanticRole, instance: str) -> CounterRecordV1:
+def _verification_record(
+    role: SemanticRole,
+    instance: str,
+    lane: LaneEnum = LaneEnum.OPERATIONAL,
+) -> CounterRecordV1:
     registry = official_counter_registry_v1()
     spec = semantic_verifier_spec_v1(role)
     return CounterRecordV1.observe(
         registry,
-        spec.verification_counter_path,
+        spec.counter_path_for_lane(lane),
         1,
         recorder_id=(
             "phase3e-integrated-local-"
-            f"{role.value.lower()}-{instance}-verifier-v1"
+            f"{role.value.lower()}-{instance}-{lane.value.lower()}-verifier-v1"
         ),
     )
 
@@ -122,13 +153,16 @@ def _fallback_cap() -> GroundFallbackCapProfileV1:
         max_outcome_rows=192,
         max_bellman_backups=5_696,
         max_composed_candidates=5_696,
-        max_cap_checks=5_812,
+        max_cap_checks=5_815,
         max_positive_outcomes_per_step=4,
+        reserved_route_cap_checks=3,
+        profile_key=SEALED_ROUTE_CAP_PROFILE_KEY,
     )
 
 
 def test_run_phase3e_executes_genuine_safe_chain_local_only_after_freeze(
     monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
 ) -> None:
     """Close the real RAPM-failure -> LOCAL worker -> post-audit slice."""
 
@@ -163,7 +197,6 @@ def test_run_phase3e_executes_genuine_safe_chain_local_only_after_freeze(
         comparison_profile=profile,
         recorder_id="phase3e-integrated-local-common-v1",
     )
-    reserved.add("common.protocol_checks", 6)
     reserved_common = reserved.seal()
 
     local_cap = RouteCapProfileV1()
@@ -198,10 +231,19 @@ def test_run_phase3e_executes_genuine_safe_chain_local_only_after_freeze(
         cap_profile=local_cap,
         frozen_at_protocol_step=1,
     )
+    # The immutable runtime is snapshotted before either route upper exists.
+    # Its exact manifest cardinality, not the loose hard cap, is the only
+    # sealed-factory overhead admitted into route comparison.
+    runtime_cas = RuntimeTreeCASV1((tmp_path / "runtime-cas").resolve())
+    runtime_manifest = runtime_cas.snapshot_build_tree(ROOT / "src")
+    runtime_cardinality = RuntimeFactoryCardinalityV1.from_manifest(
+        runtime_manifest
+    )
     local_bound = derive_safe_chain_local_cardinality_bound_v1(
         source=local_source,
         cap_profile=local_cap,
         registry=registry,
+        runtime_factory_cardinality=runtime_cardinality,
     )
     local_cardinality = build_safe_chain_local_cardinality_evidence_v1(
         context=context,
@@ -244,6 +286,8 @@ def test_run_phase3e_executes_genuine_safe_chain_local_only_after_freeze(
             SemanticRole.CARDINALITY_EVIDENCE, "local"
         ),
         registry=registry,
+        runtime_factory_cardinality=runtime_cardinality,
+        runtime_manifest=runtime_manifest,
     )
     local_formula = official_route_upper_formula_v1(
         RouteKind.LOCAL_ATTEMPT,
@@ -290,6 +334,7 @@ def test_run_phase3e_executes_genuine_safe_chain_local_only_after_freeze(
     fallback_bound = derive_safe_chain_fallback_cardinality_bound_v1(
         source=fallback_source,
         cap_profile=fallback_cap,
+        runtime_factory_cardinality=runtime_cardinality,
     )
     fallback_cardinality = build_ground_fallback_cardinality_evidence_v1(
         context=context,
@@ -320,6 +365,8 @@ def test_run_phase3e_executes_genuine_safe_chain_local_only_after_freeze(
                 SemanticRole.CARDINALITY_EVIDENCE, "fallback"
             ),
             registry=registry,
+            runtime_factory_cardinality=runtime_cardinality,
+            runtime_manifest=runtime_manifest,
         )
     )
     fallback_formula = official_route_upper_formula_v1(
@@ -390,21 +437,40 @@ def test_run_phase3e_executes_genuine_safe_chain_local_only_after_freeze(
         fallback_upper_result,
         decision_result,
     )
-    actual_common_recorder = NativeCounterRecorderV1(
-        subject_id=context.route_attempt_id,
-        route_kind=RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE,
-        work_scope=ActualWorkScope.COMMON_PREFIX,
+    # Stage 1 contains execution/preparation only.  The six semantic checks
+    # are frozen as an exact suffix and are never preloaded into the core.
+    common = reserved_common
+    common_freeze_step = min(
+        result.binding.verified_at_protocol_step for result in charged_results
+    ) - 1
+    common_core = seal_accounting_core_v1(
+        recorded_work=common,
+        binding=AttestationContextV1(
+            context,
+            point.decision_point_id,
+            TypedNotApplicable("common prefix has no local transaction"),
+            common_freeze_step,
+        ),
+        core_stage=AccountingCoreStage.COMMON_PREFIX,
         registry=registry,
         comparison_profile=profile,
-        recorder_id="phase3e-integrated-local-common-v1",
+        actual_profile=official_actual_projection_profile_v1(registry, profile),
     )
-    for semantic_result in charged_results:
-        actual_common_recorder.charge_verified_record(
-            semantic_result.verification_work_record
-        )
-    common = actual_common_recorder.seal()
-    assert common.work_vector.work_vector_id == (
-        reserved_common.work_vector.work_vector_id
+    common_plan = VerificationChargePlanV1.for_core(
+        common_core,
+        plan_frozen_at_protocol_step=common_freeze_step,
+        obligations=tuple(
+            VerificationChargeObligationV1.for_role(
+                ordinal=index,
+                artifact_id=result.attestation.artifact_id,
+                role=result.role,
+                expected_result=result.outcome,
+                verified_at_protocol_step=result.binding.verified_at_protocol_step,
+                verification_work_record=result.verification_work_record,
+                binding=result.binding,
+            )
+            for index, result in enumerate(charged_results)
+        ),
     )
 
     failed_certificate_id = _id("failed-abstract-certificate")
@@ -444,6 +510,9 @@ def test_run_phase3e_executes_genuine_safe_chain_local_only_after_freeze(
             local_upper_result,
             charged_results,
         ),
+        two_stage_accounting_profile=True,
+        common_accounting_core=common_core,
+        common_verification_charge_plan=common_plan,
     )
     with pytest.raises(
         Phase3ERunnerV1Error,
@@ -459,58 +528,83 @@ def test_run_phase3e_executes_genuine_safe_chain_local_only_after_freeze(
         prepared_local.pre_audit.regret_tolerance,
         prepared_local.pre_audit.risk_tolerance,
     )
-    authorized_local = AuthorizedSafeChainLocalExecutorV1(
-        SafeChainLocalExecutorInputsV1(
-            prepared_local,
-            context,
-            point,
-            transaction,
-            local_upper,
-            local_cardinality,
-            local_bound,
-            local_cap,
-            threshold_profile,
-            decision_result,
-            local_upper_result,
-            causal_result,
-            local_cardinality_result,
-        ),
+    local_inputs = SafeChainLocalExecutorInputsV1(
+        prepared_local,
+        context,
+        point,
+        transaction,
+        local_upper,
+        local_cardinality,
+        local_bound,
+        local_cap,
+        threshold_profile,
+        decision_result,
+        local_upper_result,
+        causal_result,
+        local_cardinality_result,
+        runtime_cardinality,
+    )
+    local_recipe = ExecutorRecipeV1(
+        runtime_manifest.runtime_tree_id,
+        RouteSelection.LOCAL,
+        SAFE_CHAIN_LOCAL_EXECUTOR_SEMANTICS_ID,
+        SAFE_CHAIN_LOCAL_RUNTIME_ENTRYPOINT,
+        safe_chain_local_executor_configuration_id_v1(local_inputs),
+    )
+    prepared = replace(
+        prepared,
+        runtime_tree_id=local_recipe.runtime_tree_id,
+        executor_recipe_id=local_recipe.executor_recipe_id,
+        sealed_executor_profile=True,
+    )
+    trusted_constructor = SafeChainLocalPostFreezeConstructorV1(
+        local_inputs,
         registry,
         profile,
     )
 
-    saw_frozen_clean_prefix = False
-
-    def guarded_local(prepared_run, controller, recorder):
-        nonlocal saw_frozen_clean_prefix
-        freeze = controller.freeze_attestation
-        assert freeze is not None
-        assert freeze.selected_route is RouteSelection.LOCAL
-        assert len(controller.snapshot().events) == len(PRESELECTION_READ_OPERATIONS)
-        assert all(
-            event.operation in PRESELECTION_READ_OPERATIONS
-            for event in controller.snapshot().events
+    def sealed_local_factory():
+        return SealedPostFreezeExecutorFactoryV1(
+            local_recipe,
+            runtime_cas,
+            trusted_constructor,
         )
-        saw_frozen_clean_prefix = True
-        try:
-            return authorized_local(prepared_run, controller, recorder)
-        except RuntimeError as error:
-            if "bwrap:" in str(error) or "bubblewrap" in str(error).lower():
-                pytest.skip(f"bubblewrap namespace unavailable: {error}")
-            raise
 
     def forbidden_fallback(*_args):
         raise AssertionError("LOCAL decision executed the fallback route")
 
+    selected_factory = sealed_local_factory()
     result = run_phase3e(
         prepared,
-        local_executor=guarded_local,
+        local_executor=selected_factory,
         fallback_executor=forbidden_fallback,
         registry=registry,
         comparison_profile=profile,
     )
-    assert saw_frozen_clean_prefix is True
+    construction = selected_factory.construction_accounting
+    assert construction is not None
+    assert result.sealed_executor_profile is True
+    assert result.two_stage_accounting_profile is True
+    receipt = result.sealed_executor_construction_receipt
+    merge_proof = result.sealed_executor_execution_merge_proof
+    assert type(receipt) is SealedExecutorConstructionReceiptV1
+    assert type(merge_proof) is SealedExecutorExecutionMergeProofV1
+    assert receipt.postconstruction_access_event_log_id == (
+        result.access_log.access_event_log_id
+    )
+    assert SealedExecutorConstructionReceiptV1.from_dict(
+        receipt.to_dict()
+    ) == receipt
+    assert SealedExecutorExecutionMergeProofV1.from_dict(
+        merge_proof.to_dict()
+    ) == merge_proof
     assert result.selected_route is RouteSelection.LOCAL
+    selected_accounting = result.selected_two_stage_accounting
+    assert selected_accounting is not None
+    access_evidence = selected_accounting.nonsemantic_evidence[0]
+    assert type(access_evidence) is AccessTraceReconciliationEvidenceV1
+    assert access_evidence.selected_route is RouteSelection.LOCAL
+    assert selected_accounting.core.route_kind is RouteKindEnum.LOCAL_ATTEMPT
     assert result.decision.comparison is RouteComparison.LOCAL_STRICTLY_DOMINATES
     assert result.upper_compliance == "WITHIN_SELECTED_UPPER"
     assert result.route_execution.completed is True
@@ -526,6 +620,13 @@ def test_run_phase3e_executes_genuine_safe_chain_local_only_after_freeze(
     ) == (SemanticRole.LOCAL_SOLVER_RESULT, SemanticRole.POST_AUDIT)
 
     native = result.selected_route_work.work_vector
+    factory_native = construction.recorded_work.work_vector
+    assert native.value("io.staged_bytes") >= factory_native.value(
+        "io.staged_bytes"
+    )
+    assert native.value("common.hash_invocations") == factory_native.value(
+        "common.hash_invocations"
+    )
     assert native.value("local.materialization_ground_steps") == 16
     assert native.value("local.materialization_outcome_rows") == 64
     assert native.value("local.postaudit_ground_steps") == 8
@@ -558,6 +659,33 @@ def test_run_phase3e_executes_genuine_safe_chain_local_only_after_freeze(
     assert set(actual) == set(selected_upper)
     assert all(actual[axis] <= selected_upper[axis] for axis in actual)
 
+    foreign_receipt = replace(
+        receipt,
+        postconstruction_access_event_log_id=_id("foreign-final-access-log"),
+    )
+    foreign_construction = SealedExecutorConstructionAccountingV1(
+        foreign_receipt,
+        construction.recorded_work,
+    )
+    foreign_proof = replace(
+        merge_proof,
+        construction_receipt_id=(
+            foreign_receipt.sealed_executor_construction_receipt_id
+        ),
+    )
+    foreign_execution = replace(
+        result.route_execution,
+        sealed_executor_construction_accounting=foreign_construction,
+        sealed_executor_execution_merge_proof=foreign_proof,
+    )
+    with pytest.raises(Phase3ERunnerV1Error, match="final authority chain"):
+        replace(
+            result,
+            route_execution=foreign_execution,
+            sealed_executor_construction_receipt=foreign_receipt,
+            sealed_executor_execution_merge_proof=foreign_proof,
+        )
+
     prefreeze = result.access_log.events[
         : result.freeze_attestation.last_preselection_sequence
     ]
@@ -575,6 +703,9 @@ def test_run_phase3e_executes_genuine_safe_chain_local_only_after_freeze(
         for event in prefreeze
     )
     operations = tuple(event.operation for event in postfreeze)
+    assert operations.count(AccessOperation.RESOLVE_RUNTIME_CAS) == 1
+    assert operations.count(AccessOperation.OPEN_RUNTIME_PRIVATE_LEASE) == 1
+    assert operations.count(AccessOperation.CONSTRUCT_SELECTED_EXECUTOR) == 1
     assert operations.count(AccessOperation.LOCAL_WORKER_LAUNCH) == 1
     assert operations.count(AccessOperation.KERNEL_STEP) == 24
     assert operations.count(AccessOperation.GROUND_OUTCOME_ENUMERATION) == 24
@@ -594,7 +725,7 @@ def test_run_phase3e_executes_genuine_safe_chain_local_only_after_freeze(
     with pytest.raises(Phase3ERouteExecutionFailedV1) as caught:
         run_phase3e(
             prepared,
-            local_executor=guarded_local,
+            local_executor=sealed_local_factory(),
             fallback_executor=forbidden_fallback,
             registry=registry,
             comparison_profile=profile,
@@ -605,6 +736,16 @@ def test_run_phase3e_executes_genuine_safe_chain_local_only_after_freeze(
         comparison_profile=profile,
     )
     failed_values = failed.partial_route_work.work_vector.values
+    sealed_failure = failed.sealed_executor_failure_evidence
+    failure_merge_proof = failed.sealed_executor_failure_merge_proof
+    assert type(sealed_failure) is SealedExecutorFailureEvidenceV1
+    assert type(failure_merge_proof) is SealedExecutorFailureMergeProofV1
+    assert SealedExecutorFailureEvidenceV1.from_dict(
+        sealed_failure.to_dict()
+    ) == sealed_failure
+    assert SealedExecutorFailureMergeProofV1.from_dict(
+        failure_merge_proof.to_dict()
+    ) == failure_merge_proof
     assert failed_values["local.materialization_ground_steps"] == 16
     assert failed_values["local.materialization_outcome_rows"] == 64
     assert failed_values["local.compiler_input_records"] == 49
@@ -615,6 +756,67 @@ def test_run_phase3e_executes_genuine_safe_chain_local_only_after_freeze(
     assert failed_values["io.staged_bytes"] > 0
     assert failed_values["route.failures"] == 1
 
+    for field_name in (
+        "partial_factory_work_vector_id",
+        "delegate_partial_work_vector_id",
+        "postfailure_access_event_log_id",
+    ):
+        attacked_seal = replace(
+            sealed_failure,
+            **{field_name: _id(f"foreign-{field_name}")},
+        )
+        with pytest.raises(Phase3ERunnerV1Error, match="identities/work"):
+            verify_failed_route_evidence_v1(
+                replace(
+                    failed,
+                    sealed_executor_failure_evidence=attacked_seal,
+                ),
+                registry=registry,
+                comparison_profile=profile,
+            )
+
+    attacked_stage = replace(sealed_failure, failure_stage="FROZEN_BINDING")
+    with pytest.raises(Phase3ERunnerV1Error, match="identities/work"):
+        verify_failed_route_evidence_v1(
+            replace(
+                failed,
+                sealed_executor_failure_evidence=attacked_stage,
+            ),
+            registry=registry,
+            comparison_profile=profile,
+        )
+
+    attacked_proof = replace(
+        failure_merge_proof,
+        factory_partial_work_vector_id=_id("foreign-failure-proof-factory"),
+    )
+    attacked_proof_seal = replace(
+        sealed_failure,
+        failure_merge_proof_id=(
+            attacked_proof.sealed_executor_failure_merge_proof_id
+        ),
+    )
+    with pytest.raises(Phase3ERunnerV1Error, match="decomposition replay"):
+        verify_failed_route_evidence_v1(
+            replace(
+                failed,
+                sealed_executor_failure_evidence=attacked_proof_seal,
+                sealed_executor_failure_merge_proof=attacked_proof,
+            ),
+            registry=registry,
+            comparison_profile=profile,
+        )
+
+    for authority_field in (
+        "runtime_manifest_cap_profile_id",
+        "trusted_constructor_registry_id",
+    ):
+        with pytest.raises(ValueError, match="foreign cap or constructor"):
+            replace(
+                sealed_failure,
+                **{authority_field: _id(f"foreign-{authority_field}")},
+            )
+
     # Terminal admission binds the access trace to the three distinct local
     # runtime artifacts.  The local result transport ID is not the isolated
     # worker-result binding, and a stitch marker without its stitched-plan
@@ -624,13 +826,14 @@ def test_run_phase3e_executes_genuine_safe_chain_local_only_after_freeze(
         point.decision_point_id,
         transaction.transaction_id,
         len(result.access_log.events) + 1,
+        LaneEnum.EVALUATION,
     )
     aggregate = result.aggregate_marginal_work
     work_result = verify_work_vector_semantics_v1(
         aggregate.aggregate_work_vector,
         binding=terminal_binding,
         verification_work_record=_verification_record(
-            SemanticRole.WORK_VECTOR, "terminal"
+            SemanticRole.WORK_VECTOR, "terminal", LaneEnum.EVALUATION
         ),
         registry=registry,
     )
@@ -640,7 +843,7 @@ def test_run_phase3e_executes_genuine_safe_chain_local_only_after_freeze(
         projection_proof=aggregate.aggregate_projection_proof,
         binding=terminal_binding,
         verification_work_record=_verification_record(
-            SemanticRole.ACTUAL_PROJECTION, "terminal"
+            SemanticRole.ACTUAL_PROJECTION, "terminal", LaneEnum.EVALUATION
         ),
         registry=registry,
     )
@@ -688,6 +891,53 @@ def test_run_phase3e_executes_genuine_safe_chain_local_only_after_freeze(
             access_log,
             result.freeze_attestation,
             ProtocolSequenceProfileV1(),
+            result.selected_work_result,
+            sealed_executor_profile=True,
+            sealed_executor_construction_accounting=(
+                result.route_execution.sealed_executor_construction_accounting
+            ),
+            sealed_delegate_execution_work=(
+                result.route_execution.delegate_execution_work
+            ),
+            sealed_executor_execution_merge_proof=(
+                result.route_execution.sealed_executor_execution_merge_proof
+            ),
+        )
+
+    valid_route_bundle = route_bundle(result.access_log)
+    with pytest.raises(ValueError, match="construction receipt differs"):
+        replace(
+            construction,
+            recorded_work=result.route_execution.delegate_execution_work,
+        )
+    with pytest.raises(SemanticVerificationV1Error, match="merge does not replay"):
+        TerminalRouteEvidenceBundleV1(
+            valid_route_bundle.execution_work,
+            valid_route_bundle.verification_suffix_work,
+            valid_route_bundle.aggregate_marginal_work,
+            valid_route_bundle.access_log,
+            valid_route_bundle.freeze_attestation,
+            valid_route_bundle.protocol_profile,
+            valid_route_bundle.selected_execution_work_result,
+            sealed_executor_profile=True,
+            sealed_executor_construction_accounting=construction,
+            sealed_delegate_execution_work=construction.recorded_work,
+            sealed_executor_execution_merge_proof=merge_proof,
+        )
+    proof_attack = replace(
+        merge_proof,
+        delegate_work_vector_id=_id("foreign-terminal-delegate-work"),
+    )
+    with pytest.raises(SemanticVerificationV1Error, match="merge does not replay"):
+        replace(
+            valid_route_bundle,
+            sealed_executor_execution_merge_proof=proof_attack,
+        )
+    with pytest.raises(SemanticVerificationV1Error, match="access/freeze"):
+        replace(
+            valid_route_bundle,
+            sealed_executor_construction_accounting=foreign_construction,
+            sealed_executor_execution_merge_proof=foreign_proof,
         )
 
     terminal = terminal_for_log(result.access_log)
@@ -697,7 +947,9 @@ def test_run_phase3e_executes_genuine_safe_chain_local_only_after_freeze(
         route_evidence=route_bundle(result.access_log),
         binding=terminal_binding,
         verification_work_record=_verification_record(
-            SemanticRole.TERMINAL_CLASSIFICATION, "terminal"
+            SemanticRole.TERMINAL_CLASSIFICATION,
+            "terminal",
+            LaneEnum.EVALUATION,
         ),
         registry=registry,
     )
@@ -714,7 +966,8 @@ def test_run_phase3e_executes_genuine_safe_chain_local_only_after_freeze(
         result.access_log, events=worker_relabel_events
     )
     with pytest.raises(
-        SemanticVerificationV1Error, match="local access trace"
+        SemanticVerificationV1Error,
+        match="access/freeze|local access trace",
     ):
         verify_terminal_classification_semantics_v1(
             terminal_for_log(worker_relabel_log),
@@ -722,7 +975,9 @@ def test_run_phase3e_executes_genuine_safe_chain_local_only_after_freeze(
             route_evidence=route_bundle(worker_relabel_log),
             binding=terminal_binding,
             verification_work_record=_verification_record(
-                SemanticRole.TERMINAL_CLASSIFICATION, "worker-relabel"
+                SemanticRole.TERMINAL_CLASSIFICATION,
+                "worker-relabel",
+                LaneEnum.EVALUATION,
             ),
             registry=registry,
         )
@@ -737,7 +992,8 @@ def test_run_phase3e_executes_genuine_safe_chain_local_only_after_freeze(
         result.access_log, events=wrong_capability_events
     )
     with pytest.raises(
-        SemanticVerificationV1Error, match="local access trace"
+        SemanticVerificationV1Error,
+        match="access/freeze|local access trace",
     ):
         verify_terminal_classification_semantics_v1(
             terminal_for_log(wrong_capability_log),
@@ -745,7 +1001,9 @@ def test_run_phase3e_executes_genuine_safe_chain_local_only_after_freeze(
             route_evidence=route_bundle(wrong_capability_log),
             binding=terminal_binding,
             verification_work_record=_verification_record(
-                SemanticRole.TERMINAL_CLASSIFICATION, "capability-relabel"
+                SemanticRole.TERMINAL_CLASSIFICATION,
+                "capability-relabel",
+                LaneEnum.EVALUATION,
             ),
             registry=registry,
         )
@@ -761,7 +1019,8 @@ def test_run_phase3e_executes_genuine_safe_chain_local_only_after_freeze(
     )
     missing_stitch_log = replace(result.access_log, events=without_stitch)
     with pytest.raises(
-        SemanticVerificationV1Error, match="local access trace"
+        SemanticVerificationV1Error,
+        match="access/freeze|local access trace",
     ):
         verify_terminal_classification_semantics_v1(
             terminal_for_log(missing_stitch_log),
@@ -769,7 +1028,9 @@ def test_run_phase3e_executes_genuine_safe_chain_local_only_after_freeze(
             route_evidence=route_bundle(missing_stitch_log),
             binding=terminal_binding,
             verification_work_record=_verification_record(
-                SemanticRole.TERMINAL_CLASSIFICATION, "missing-stitch"
+                SemanticRole.TERMINAL_CLASSIFICATION,
+                "missing-stitch",
+                LaneEnum.EVALUATION,
             ),
             registry=registry,
         )

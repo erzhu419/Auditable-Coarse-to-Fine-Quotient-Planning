@@ -44,7 +44,9 @@ from typing import Any, Mapping, Sequence, TypeAlias
 from acfqp.accounting_v1 import (
     ComparisonProfileV1,
     ComparisonVectorV1,
+    CounterRecordV1,
     CounterRegistryV1,
+    LaneEnum,
     ReducerEnum,
     RouteKindEnum,
     SHARED_AXES,
@@ -62,7 +64,18 @@ from acfqp.marginal_accounting_v1 import (
     verify_marginal_work_aggregate_v1,
 )
 from acfqp.native_recorder_v1 import RecordedWorkV1, verify_recorded_work_v1
+from acfqp.phase3e_two_stage_accounting_v1 import (
+    TwoStageAccountingClosureV1,
+    TwoStageAccountingV1Error,
+    _materialize_values,
+    verify_two_stage_accounting_v1,
+)
+from acfqp.semantic_verification_v1 import (
+    SemanticVerificationResultV1,
+    require_semantic_verification_result_v1,
+)
 from acfqp.phase3e_ids import (
+    OCCURRENCE_PARTIAL_COMMON_ACCOUNTING_DOMAIN,
     OCCURRENCE_WORK_AGGREGATE_DOMAIN,
     OCCURRENCE_WORK_COMPONENT_REF_DOMAIN,
     content_id,
@@ -94,6 +107,8 @@ class OccurrenceWorkComponentKind(str, Enum):
 class OccurrenceRawEvidenceKind(str, Enum):
     RECORDED_WORK = "RECORDED_WORK"
     AGGREGATED_MARGINAL_WORK = "AGGREGATED_MARGINAL_WORK"
+    TWO_STAGE_ACCOUNTED_COMMON = "TWO_STAGE_ACCOUNTED_COMMON"
+    PARTIAL_ACCOUNTED_COMMON = "PARTIAL_ACCOUNTED_COMMON"
 
 
 @dataclass(frozen=True, slots=True)
@@ -123,8 +138,276 @@ class RunnerMarginalWorkEvidenceV1:
             )
 
 
+@dataclass(frozen=True, slots=True)
+class RunnerCommonAccountingEvidenceV1:
+    """A common core plus the exact two-stage verification closure it paid."""
+
+    core: RecordedWorkV1
+    closure: TwoStageAccountingClosureV1
+    semantic_results: tuple[SemanticVerificationResultV1, ...]
+    nonsemantic_records: tuple[CounterRecordV1, ...]
+    route_context: RouteDecisionContextV1
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.core, RecordedWorkV1) or not isinstance(
+            self.closure, TwoStageAccountingClosureV1
+        ):
+            raise Phase3EOccurrenceAccountingV1Error(
+                "common accounting evidence requires typed core and closure"
+            )
+        if type(self.semantic_results) is not tuple or not all(
+            isinstance(row, SemanticVerificationResultV1)
+            for row in self.semantic_results
+        ):
+            raise Phase3EOccurrenceAccountingV1Error(
+                "common semantic replay inputs must be an immutable typed tuple"
+            )
+        if type(self.nonsemantic_records) is not tuple or not all(
+            isinstance(row, CounterRecordV1)
+            for row in self.nonsemantic_records
+        ):
+            raise Phase3EOccurrenceAccountingV1Error(
+                "common nonsemantic replay inputs must be an immutable typed tuple"
+            )
+        if not isinstance(self.route_context, RouteDecisionContextV1):
+            raise Phase3EOccurrenceAccountingV1Error(
+                "common accounting evidence requires a typed route context"
+            )
+
+
+@dataclass(frozen=True, slots=True)
+class RunnerPartialCommonAccountingEvidenceV1:
+    """Fail-closed common core plus every already observed verifier charge.
+
+    This is not a successful two-stage receipt.  It exists only so a rejected
+    continuation package cannot make operational verifier work disappear.
+    Replay revalidates the exact authority contexts and CounterRecords, then
+    deterministically reconstructs both the suffix and reducer-aware sum.
+    """
+
+    core: RecordedWorkV1
+    semantic_results: tuple[SemanticVerificationResultV1, ...]
+    nonsemantic_records: tuple[CounterRecordV1, ...]
+    route_context: RouteDecisionContextV1
+    decision_point_id: str
+    verification_suffix: RecordedWorkV1
+    aggregate_work: RecordedWorkV1
+
+    def __post_init__(self) -> None:
+        if type(self.core) is not RecordedWorkV1:
+            raise Phase3EOccurrenceAccountingV1Error(
+                "partial common accounting requires an exact RecordedWorkV1 core"
+            )
+        if type(self.semantic_results) is not tuple or not all(
+            type(row) is SemanticVerificationResultV1
+            for row in self.semantic_results
+        ):
+            raise Phase3EOccurrenceAccountingV1Error(
+                "partial common semantic inputs must be exact immutable results"
+            )
+        if type(self.nonsemantic_records) is not tuple or not all(
+            type(row) is CounterRecordV1 for row in self.nonsemantic_records
+        ):
+            raise Phase3EOccurrenceAccountingV1Error(
+                "partial common nonsemantic inputs must be exact immutable records"
+            )
+        if type(self.route_context) is not RouteDecisionContextV1:
+            raise Phase3EOccurrenceAccountingV1Error(
+                "partial common accounting requires an exact route context"
+            )
+        _cid(self.decision_point_id, "decision_point_id")
+        if type(self.verification_suffix) is not RecordedWorkV1 or type(
+            self.aggregate_work
+        ) is not RecordedWorkV1:
+            raise Phase3EOccurrenceAccountingV1Error(
+                "partial common accounting lacks its exact derived work"
+            )
+
+    @property
+    def partial_common_accounting_id(self) -> str:
+        return content_id(
+            OCCURRENCE_PARTIAL_COMMON_ACCOUNTING_DOMAIN,
+            {
+                "schema": "acfqp.occurrence_partial_common_accounting.v1",
+                "RouteDecisionContext_id": (
+                    self.route_context.route_decision_context_id
+                ),
+                "decision_point_id": self.decision_point_id,
+                "core_work_vector_id": self.core.work_vector.work_vector_id,
+                "semantic_attestation_ids": [
+                    row.attestation.verification_attestation_id
+                    for row in self.semantic_results
+                ],
+                "nonsemantic_counter_record_ids": [
+                    row.record_id for row in self.nonsemantic_records
+                ],
+                "verification_suffix_work_vector_id": (
+                    self.verification_suffix.work_vector.work_vector_id
+                ),
+                "aggregate_work_vector_id": (
+                    self.aggregate_work.work_vector.work_vector_id
+                ),
+            },
+        )
+
+
+def derive_runner_partial_common_accounting_v1(
+    *,
+    core: RecordedWorkV1,
+    semantic_results: tuple[SemanticVerificationResultV1, ...],
+    nonsemantic_records: tuple[CounterRecordV1, ...],
+    route_context: RouteDecisionContextV1,
+    decision_point_id: str,
+    registry: CounterRegistryV1,
+    comparison_profile: ComparisonProfileV1,
+    actual_profile: ActualProjectionProfileV1,
+) -> RunnerPartialCommonAccountingEvidenceV1:
+    """Charge only exact, already observed operational continuation records."""
+
+    try:
+        verify_recorded_work_v1(
+            core,
+            expected_scope=ActualWorkScope.COMMON_PREFIX,
+            registry=registry,
+            comparison_profile=comparison_profile,
+        )
+        parse_content_id(decision_point_id)
+    except ValueError as error:
+        raise Phase3EOccurrenceAccountingV1Error(
+            f"partial common core is invalid: {error}"
+        ) from error
+    if (
+        type(route_context) is not RouteDecisionContextV1
+        or route_context.counter_registry_id != registry.registry_id
+        or route_context.comparison_profile_id
+        != comparison_profile.comparison_profile_id
+        or core.work_vector.subject_id != route_context.route_attempt_id
+        or core.work_vector.route_kind
+        is not RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE
+        or core.actual_projection_proof.actual_projection_profile_id
+        != actual_profile.actual_projection_profile_id
+    ):
+        raise Phase3EOccurrenceAccountingV1Error(
+            "partial common core/context/profile chain is stale"
+        )
+    records: list[CounterRecordV1] = []
+    if type(semantic_results) is not tuple:
+        raise Phase3EOccurrenceAccountingV1Error(
+            "partial semantic results must be an immutable tuple"
+        )
+    for result in semantic_results:
+        if type(result) is not SemanticVerificationResultV1:
+            raise Phase3EOccurrenceAccountingV1Error(
+                "partial semantic charge lacks exact replay authority"
+            )
+        try:
+            verified = require_semantic_verification_result_v1(
+                result, result.role
+            )
+        except ValueError as error:
+            raise Phase3EOccurrenceAccountingV1Error(
+                f"partial semantic charge is unauthoritative: {error}"
+            ) from error
+        if (
+            verified.binding.route_context != route_context
+            or verified.binding.decision_point_id != decision_point_id
+            or verified.binding.verification_lane is not LaneEnum.OPERATIONAL
+        ):
+            raise Phase3EOccurrenceAccountingV1Error(
+                "partial semantic charge uses another context, point, or lane"
+            )
+        records.append(verified.verification_work_record)
+    if type(nonsemantic_records) is not tuple or not all(
+        type(row) is CounterRecordV1 for row in nonsemantic_records
+    ):
+        raise Phase3EOccurrenceAccountingV1Error(
+            "partial nonsemantic charges must be exact CounterRecords"
+        )
+    records.extend(nonsemantic_records)
+    if not records:
+        raise Phase3EOccurrenceAccountingV1Error(
+            "partial common accounting requires observed verifier work"
+        )
+    if len({row.record_id for row in records}) != len(records):
+        raise Phase3EOccurrenceAccountingV1Error(
+            "partial common accounting repeats a CounterRecord"
+        )
+    if {row.record_id for row in records} & {
+        row.record_id for row in core.work_vector.records
+    }:
+        raise Phase3EOccurrenceAccountingV1Error(
+            "partial common accounting recharges a core CounterRecord"
+        )
+    suffix_values = {path: 0 for path in registry.required_paths}
+    for record in records:
+        if record.counter_registry_id != registry.registry_id or (
+            record.lane is not LaneEnum.OPERATIONAL
+        ):
+            raise Phase3EOccurrenceAccountingV1Error(
+                "partial common record uses another registry or lane"
+            )
+        leaf = registry.by_path.get(record.path)
+        if leaf is None:
+            raise Phase3EOccurrenceAccountingV1Error(
+                "partial common record uses an unknown path"
+            )
+        try:
+            record.verify_against(leaf)
+        except ValueError as error:
+            raise Phase3EOccurrenceAccountingV1Error(
+                f"partial common record is invalid: {error}"
+            ) from error
+        suffix_values[record.path] = (
+            suffix_values[record.path] + record.value
+            if leaf.reducer is ReducerEnum.SUM
+            else max(suffix_values[record.path], record.value)
+        )
+    suffix = _materialize_values(
+        values=suffix_values,
+        subject_id=route_context.route_attempt_id,
+        route_kind=RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE,
+        work_scope=ActualWorkScope.COMMON_PREFIX,
+        recorder_id="phase3e-occurrence-partial-common-suffix-v1",
+        registry=registry,
+        comparison_profile=comparison_profile,
+        actual_profile=actual_profile,
+    )
+    aggregate_values: dict[str, int] = {}
+    for path in registry.required_paths:
+        leaf = registry.by_path[path]
+        core_value = core.work_vector.value(path)
+        suffix_value = suffix.work_vector.value(path)
+        aggregate_values[path] = (
+            core_value + suffix_value
+            if leaf.reducer is ReducerEnum.SUM
+            else max(core_value, suffix_value)
+        )
+    aggregate = _materialize_values(
+        values=aggregate_values,
+        subject_id=route_context.route_attempt_id,
+        route_kind=RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE,
+        work_scope=ActualWorkScope.COMMON_PREFIX,
+        recorder_id="phase3e-occurrence-partial-common-aggregate-v1",
+        registry=registry,
+        comparison_profile=comparison_profile,
+        actual_profile=actual_profile,
+    )
+    return RunnerPartialCommonAccountingEvidenceV1(
+        core,
+        semantic_results,
+        nonsemantic_records,
+        route_context,
+        decision_point_id,
+        suffix,
+        aggregate,
+    )
+
+
 OccurrenceRawEvidenceV1: TypeAlias = (
-    RecordedWorkV1 | RunnerMarginalWorkEvidenceV1
+    RecordedWorkV1
+    | RunnerMarginalWorkEvidenceV1
+    | RunnerCommonAccountingEvidenceV1
+    | RunnerPartialCommonAccountingEvidenceV1
 )
 ContentRefV1: TypeAlias = str | TypedNotApplicable
 IndexRefV1: TypeAlias = int | TypedNotApplicable
@@ -281,16 +564,19 @@ class OccurrenceNativeSourceRefV1:
         if self.work_scope not in {
             ActualWorkScope.MARGINAL_ROUTE_EXECUTION,
             ActualWorkScope.MARGINAL_ROUTE_VERIFICATION,
+            ActualWorkScope.COMMON_PREFIX,
         }:
             raise Phase3EOccurrenceAccountingV1Error(
-                "aggregate source must be execution or verification work"
+                "aggregate source must be common, execution, or verification work"
             )
-        if self.route_kind not in {
-            RouteKindEnum.LOCAL_ATTEMPT,
-            RouteKindEnum.DIRECT_FALLBACK,
-        }:
+        allowed_route_kinds = (
+            {RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE}
+            if self.work_scope is ActualWorkScope.COMMON_PREFIX
+            else {RouteKindEnum.LOCAL_ATTEMPT, RouteKindEnum.DIRECT_FALLBACK}
+        )
+        if self.route_kind not in allowed_route_kinds:
             raise Phase3EOccurrenceAccountingV1Error(
-                "aggregate source must belong to a marginal route"
+                "aggregate source route kind differs from its work scope"
             )
         for field in (
             "subject_id",
@@ -430,7 +716,7 @@ class OccurrenceRawWorkRefV1:
                 raise Phase3EOccurrenceAccountingV1Error(
                     "MARGINAL_ROUTE_AGGREGATE requires complete source refs"
                 )
-        else:
+        elif self.evidence_kind is OccurrenceRawEvidenceKind.AGGREGATED_MARGINAL_WORK:
             if not (native_na and reconciliation_na) or aggregate_na:
                 raise Phase3EOccurrenceAccountingV1Error(
                     "derived aggregate must carry only its aggregation proof"
@@ -470,6 +756,32 @@ class OccurrenceRawWorkRefV1:
                     raise Phase3EOccurrenceAccountingV1Error(
                         f"marginal aggregate repeats source {field}"
                     )
+        else:
+            if not (native_na and reconciliation_na) or aggregate_na:
+                raise Phase3EOccurrenceAccountingV1Error(
+                    "two-stage common aggregate must retain its receipt only"
+                )
+            if self.work_scope is not ActualWorkScope.COMMON_PREFIX:
+                raise Phase3EOccurrenceAccountingV1Error(
+                    "two-stage common aggregate has the wrong work scope"
+                )
+            if tuple(
+                row.work_scope for row in self.aggregation_source_refs
+            ) != (
+                ActualWorkScope.COMMON_PREFIX,
+                ActualWorkScope.COMMON_PREFIX,
+            ):
+                raise Phase3EOccurrenceAccountingV1Error(
+                    "two-stage common must retain ordered core and suffix refs"
+                )
+            if any(
+                row.route_kind is not self.route_kind
+                or row.subject_id != self.subject_id
+                for row in self.aggregation_source_refs
+            ):
+                raise Phase3EOccurrenceAccountingV1Error(
+                    "two-stage common source context is stale or spliced"
+                )
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -777,9 +1089,116 @@ def _work_evidence_parts(
         )
         return work, comparison, proof, raw_ref
 
+    if isinstance(evidence, RunnerCommonAccountingEvidenceV1):
+        core = evidence.core
+        closure = evidence.closure
+        try:
+            verify_two_stage_accounting_v1(
+                closure,
+                core_work=core,
+                semantic_results=evidence.semantic_results,
+                nonsemantic_records=evidence.nonsemantic_records,
+                route_context=evidence.route_context,
+                registry=registry,
+                comparison_profile=comparison_profile,
+                actual_profile=actual_profile,
+            )
+        except (TwoStageAccountingV1Error, ValueError) as error:
+            raise Phase3EOccurrenceAccountingV1Error(
+                f"runner common two-stage replay failed: {error}"
+            ) from error
+        aggregate = closure.aggregate_work
+        suffix = closure.verification_suffix
+        work = aggregate.work_vector
+        comparison = aggregate.comparison_vector
+        proof = aggregate.actual_projection_proof
+
+        def common_source_ref(
+            recorded: RecordedWorkV1,
+        ) -> OccurrenceNativeSourceRefV1:
+            source_proof = recorded.actual_projection_proof
+            return OccurrenceNativeSourceRefV1(
+                source_proof.work_scope,
+                recorded.work_vector.route_kind,
+                recorded.work_vector.subject_id,
+                recorded.work_vector.work_vector_id,
+                recorded.comparison_vector.comparison_vector_id,
+                source_proof.actual_projection_proof_id,
+                recorded.native_zero_attestation.native_zero_attestation_id,
+                recorded.reconciliation_proof.reconciliation_proof_id,
+            )
+
+        raw_ref = OccurrenceRawWorkRefV1(
+            OccurrenceRawEvidenceKind.TWO_STAGE_ACCOUNTED_COMMON,
+            proof.work_scope,
+            work.route_kind,
+            work.subject_id,
+            work.work_vector_id,
+            comparison.comparison_vector_id,
+            proof.actual_projection_proof_id,
+            TypedNotApplicable(_NO_NATIVE_ZERO),
+            TypedNotApplicable(_NO_RECONCILIATION),
+            closure.receipt.verification_charge_receipt_id,
+            (common_source_ref(core), common_source_ref(suffix)),
+        )
+        return work, comparison, proof, raw_ref
+
+    if type(evidence) is RunnerPartialCommonAccountingEvidenceV1:
+        replayed_partial = derive_runner_partial_common_accounting_v1(
+            core=evidence.core,
+            semantic_results=evidence.semantic_results,
+            nonsemantic_records=evidence.nonsemantic_records,
+            route_context=evidence.route_context,
+            decision_point_id=evidence.decision_point_id,
+            registry=registry,
+            comparison_profile=comparison_profile,
+            actual_profile=actual_profile,
+        )
+        if replayed_partial != evidence:
+            raise Phase3EOccurrenceAccountingV1Error(
+                "partial common accounting differs from exact record replay"
+            )
+        work = evidence.aggregate_work.work_vector
+        comparison = evidence.aggregate_work.comparison_vector
+        proof = evidence.aggregate_work.actual_projection_proof
+
+        def partial_source_ref(
+            recorded: RecordedWorkV1,
+        ) -> OccurrenceNativeSourceRefV1:
+            source_proof = recorded.actual_projection_proof
+            return OccurrenceNativeSourceRefV1(
+                source_proof.work_scope,
+                recorded.work_vector.route_kind,
+                recorded.work_vector.subject_id,
+                recorded.work_vector.work_vector_id,
+                recorded.comparison_vector.comparison_vector_id,
+                source_proof.actual_projection_proof_id,
+                recorded.native_zero_attestation.native_zero_attestation_id,
+                recorded.reconciliation_proof.reconciliation_proof_id,
+            )
+
+        raw_ref = OccurrenceRawWorkRefV1(
+            OccurrenceRawEvidenceKind.PARTIAL_ACCOUNTED_COMMON,
+            proof.work_scope,
+            work.route_kind,
+            work.subject_id,
+            work.work_vector_id,
+            comparison.comparison_vector_id,
+            proof.actual_projection_proof_id,
+            TypedNotApplicable(_NO_NATIVE_ZERO),
+            TypedNotApplicable(_NO_RECONCILIATION),
+            evidence.partial_common_accounting_id,
+            (
+                partial_source_ref(evidence.core),
+                partial_source_ref(evidence.verification_suffix),
+            ),
+        )
+        return work, comparison, proof, raw_ref
+
     if not isinstance(evidence, RunnerMarginalWorkEvidenceV1):
         raise Phase3EOccurrenceAccountingV1Error(
-            "raw work must be RecordedWorkV1 or complete runner marginal evidence"
+            "raw work must be RecordedWorkV1 or complete runner marginal evidence "
+            "or common accounting evidence"
         )
 
     execution = evidence.execution
@@ -932,10 +1351,21 @@ def _derive_component_ref(
                 "common-prefix component cannot own a transaction"
             )
         work = replayed[0][0]
+        bound_core_id = (
+            evidence.raw_work[0].core.work_vector.work_vector_id
+            if isinstance(
+                evidence.raw_work[0],
+                (
+                    RunnerCommonAccountingEvidenceV1,
+                    RunnerPartialCommonAccountingEvidenceV1,
+                ),
+            )
+            else work.work_vector_id
+        )
         if (
             work.route_kind is not RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE
             or work.subject_id != route_attempt_id
-            or decision_point.common_prefix_work_id != work.work_vector_id
+            or decision_point.common_prefix_work_id != bound_core_id
         ):
             raise Phase3EOccurrenceAccountingV1Error(
                 "common-prefix WorkVector is stale for its decision point"
@@ -1051,12 +1481,49 @@ _STABLE_CONTEXT_FIELDS = (
 def _validate_runtime_sequence(
     components: tuple[OccurrenceWorkComponentEvidenceV1, ...],
 ) -> None:
-    if not components or len(components) % 2:
+    if not components:
         raise Phase3EOccurrenceAccountingV1Error(
-            "occurrence work must contain complete common-prefix/route pairs"
+            "occurrence work must contain at least one charged component"
         )
-    route_components = components[1::2]
-    prefix_components = components[0::2]
+    partial_common_positions = tuple(
+        index
+        for index, component in enumerate(components)
+        if any(
+            type(raw) is RunnerPartialCommonAccountingEvidenceV1
+            for raw in component.raw_work
+        )
+    )
+    # PARTIAL_ACCOUNTED_COMMON is rejection-only evidence.  It can preserve a
+    # verifier suffix after package validation aborts, but it must never be
+    # laundered into an earlier or route-paired successful decision prefix.
+    if partial_common_positions and (
+        partial_common_positions != (len(components) - 1,)
+        or len(components) % 2 != 1
+        or components[-1].component_kind
+        is not OccurrenceWorkComponentKind.COMMON_PREFIX
+        or len(components[-1].raw_work) != 1
+    ):
+        raise Phase3EOccurrenceAccountingV1Error(
+            "PARTIAL_ACCOUNTED_COMMON is allowed only as the final unpaired "
+            "rejected-package common prefix"
+        )
+
+    # A control-plane failure may occur after a next decision's common-prefix
+    # work has been sealed but before its route decision is frozen.  That final
+    # prefix is real work and must remain chargeable; inventing a zero-valued
+    # route partner would violate FQ13.  Every earlier prefix must still have
+    # exactly one route component.
+    has_unpaired_terminal_prefix = len(components) % 2 == 1
+    paired = components[:-1] if has_unpaired_terminal_prefix else components
+    if has_unpaired_terminal_prefix and (
+        components[-1].component_kind
+        is not OccurrenceWorkComponentKind.COMMON_PREFIX
+    ):
+        raise Phase3EOccurrenceAccountingV1Error(
+            "only a final pre-freeze common prefix may be unpaired"
+        )
+    route_components = paired[1::2]
+    prefix_components = paired[0::2]
     if any(
         row.component_kind is not OccurrenceWorkComponentKind.COMMON_PREFIX
         for row in prefix_components
@@ -1139,15 +1606,20 @@ def _validate_cross_component_chain(
                 f"occurrence repeats a raw {label} identity"
             )
 
-    route_pairs = tuple(zip(components[0::2], components[1::2], strict=True))
-    decision_ids = [route.decision_point.decision_point_id for _, route in route_pairs]
+    paired = components[:-1] if len(components) % 2 else components
+    route_pairs = tuple(zip(paired[0::2], paired[1::2], strict=True))
+    decision_ids = [
+        prefix.decision_point.decision_point_id
+        for prefix in components[0::2]
+    ]
     if len(set(decision_ids)) != len(decision_ids):
         raise Phase3EOccurrenceAccountingV1Error(
             "occurrence reuses a stale decision point"
         )
     prefix_work_ids = [
-        refs[index].raw_work_refs[0].work_vector_id
-        for index in range(0, len(refs), 2)
+        ref.raw_work_refs[0].work_vector_id
+        for ref in refs
+        if ref.component_kind is OccurrenceWorkComponentKind.COMMON_PREFIX
     ]
     if len(set(prefix_work_ids)) != len(prefix_work_ids):
         raise Phase3EOccurrenceAccountingV1Error(
@@ -1298,6 +1770,26 @@ class Phase3EOccurrenceWorkAggregateV1:
         ):
             raise Phase3EOccurrenceAccountingV1Error(
                 "occurrence component reference has a stale occurrence or attempt"
+            )
+        partial_common_positions = tuple(
+            index
+            for index, component in enumerate(self.component_refs)
+            if any(
+                raw.evidence_kind
+                is OccurrenceRawEvidenceKind.PARTIAL_ACCOUNTED_COMMON
+                for raw in component.raw_work_refs
+            )
+        )
+        if partial_common_positions and (
+            partial_common_positions != (len(self.component_refs) - 1,)
+            or len(self.component_refs) % 2 != 1
+            or self.component_refs[-1].component_kind
+            is not OccurrenceWorkComponentKind.COMMON_PREFIX
+            or len(self.component_refs[-1].raw_work_refs) != 1
+        ):
+            raise Phase3EOccurrenceAccountingV1Error(
+                "PARTIAL_ACCOUNTED_COMMON is allowed only as the final unpaired "
+                "rejected-package common prefix"
             )
         object.__setattr__(
             self,
@@ -1475,6 +1967,9 @@ __all__ = [
     "Phase3EOccurrenceAccountingV1Error",
     "Phase3EOccurrenceWorkAggregateV1",
     "RunnerMarginalWorkEvidenceV1",
+    "RunnerCommonAccountingEvidenceV1",
+    "RunnerPartialCommonAccountingEvidenceV1",
+    "derive_runner_partial_common_accounting_v1",
     "derive_phase3e_occurrence_work_aggregate_v1",
     "verify_phase3e_occurrence_work_aggregate_v1",
 ]

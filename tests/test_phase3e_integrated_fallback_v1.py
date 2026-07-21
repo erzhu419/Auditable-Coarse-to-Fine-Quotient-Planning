@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import replace
 import hashlib
 from pathlib import Path
 
@@ -14,6 +15,7 @@ from acfqp.access_protocol_v1 import (
 )
 from acfqp.accounting_v1 import (
     CounterRecordV1,
+    LaneEnum,
     RouteKindEnum,
     official_comparison_profile_v1,
     official_counter_registry_v1,
@@ -26,13 +28,17 @@ from acfqp.frozen_phase3c import load_frozen_phase3c_world
 from acfqp.native_recorder_v1 import NativeCounterRecorderV1
 from acfqp.marginal_accounting_v1 import derive_marginal_work_aggregate_v1
 from acfqp.phase3e_isolated_fallback_v1 import (
-    AuthorizedIsolatedGroundFallbackExecutorV1,
+    ISOLATED_FALLBACK_EXECUTOR_SEMANTICS_ID,
+    ISOLATED_FALLBACK_RUNTIME_ENTRYPOINT,
     IsolatedGroundFallbackExecutorInputsV1,
+    IsolatedFallbackPostFreezeConstructorV1,
     Phase3EIsolatedFallbackV1Error,
+    isolated_ground_fallback_executor_configuration_id_v1,
 )
 from acfqp.phase3e_fallback_v1 import (
     GroundFallbackCapProfileV1,
     GroundFallbackOutcome,
+    SEALED_ROUTE_CAP_PROFILE_KEY,
     build_ground_fallback_cardinality_evidence_v1,
     derive_safe_chain_fallback_cardinality_bound_v1,
     derive_safe_chain_fallback_cardinality_source_v1,
@@ -45,6 +51,24 @@ from acfqp.phase3e_runner_v1 import (
     PreparedPhase3ERunV1,
     _preselection_reference_id_v1,
     verify_failed_route_evidence_v1,
+)
+from acfqp.phase3e_sealed_executor_v1 import (
+    ExecutorRecipeV1,
+    RuntimeFactoryCardinalityV1,
+    RuntimeTreeCASV1,
+    MergedSealedRouteExecutionWorkV1,
+    SealedExecutorConstructionAccountingV1,
+    SealedExecutorConstructionReceiptV1,
+    SealedExecutorExecutionMergeProofV1,
+    SealedPostFreezeExecutorFactoryV1,
+    verify_sealed_factory_execution_merge_v1,
+)
+from acfqp.phase3e_two_stage_accounting_v1 import (
+    AccessTraceReconciliationEvidenceV1,
+    AccountingCoreStage,
+    VerificationChargeObligationV1,
+    VerificationChargePlanV1,
+    seal_accounting_core_v1,
 )
 from acfqp.phase3e_occurrence_runner_v1 import (
     OccurrenceClosureCodeV1,
@@ -90,14 +114,20 @@ def _id(label: str) -> str:
     ).hexdigest()
 
 
-def _verification_record(role: SemanticRole) -> CounterRecordV1:
+def _verification_record(
+    role: SemanticRole,
+    lane: LaneEnum = LaneEnum.OPERATIONAL,
+) -> CounterRecordV1:
     registry = official_counter_registry_v1()
     spec = semantic_verifier_spec_v1(role)
     return CounterRecordV1.observe(
         registry,
-        spec.verification_counter_path,
+        spec.counter_path_for_lane(lane),
         1,
-        recorder_id=f"phase3e-integrated-{role.value.lower()}-v1",
+        recorder_id=(
+            "phase3e-integrated-"
+            f"{role.value.lower()}-{lane.value.lower()}-v1"
+        ),
     )
 
 
@@ -109,13 +139,16 @@ def _exact_safe_chain_cap() -> GroundFallbackCapProfileV1:
         max_outcome_rows=192,
         max_bellman_backups=5_696,
         max_composed_candidates=5_696,
-        max_cap_checks=5_812,
+        max_cap_checks=5_815,
         max_positive_outcomes_per_step=4,
+        reserved_route_cap_checks=3,
+        profile_key=SEALED_ROUTE_CAP_PROFILE_KEY,
     )
 
 
 def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
     monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
 ) -> None:
     """Close the cardinality -> upper -> decision -> real fallback slice."""
 
@@ -148,9 +181,10 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
         comparison_profile=profile,
         recorder_id="phase3e-integrated-common-v1",
     )
-    reserved.add("common.protocol_checks", 3)
     reserved_common = reserved.seal()
-    na = TypedNotApplicable("direct fallback has no local transaction")
+    na = TypedNotApplicable(
+        "transaction does not apply to the direct-fallback marginal upper"
+    )
     point = DecisionPointV1(
         context.route_decision_context_id,
         na,
@@ -167,9 +201,15 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
         cap_profile=cap,
         frozen_at_protocol_step=1,
     )
+    runtime_cas = RuntimeTreeCASV1((tmp_path / "runtime-cas").resolve())
+    runtime_manifest = runtime_cas.snapshot_build_tree(ROOT / "src")
+    runtime_cardinality = RuntimeFactoryCardinalityV1.from_manifest(
+        runtime_manifest
+    )
     bound = derive_safe_chain_fallback_cardinality_bound_v1(
         source=source,
         cap_profile=cap,
+        runtime_factory_cardinality=runtime_cardinality,
     )
     cardinality = build_ground_fallback_cardinality_evidence_v1(
         context=context,
@@ -178,14 +218,6 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
         bound=bound,
     )
 
-    actual_common = NativeCounterRecorderV1(
-        subject_id=context.route_attempt_id,
-        route_kind=RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE,
-        work_scope=ActualWorkScope.COMMON_PREFIX,
-        registry=registry,
-        comparison_profile=profile,
-        recorder_id="phase3e-integrated-common-v1",
-    )
     cardinality_result = verify_safe_chain_fallback_cardinality_semantics_v1(
         cardinality,
         source=source,
@@ -199,9 +231,8 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
             SemanticRole.CARDINALITY_EVIDENCE
         ),
         registry=registry,
-    )
-    actual_common.charge_verified_record(
-        cardinality_result.verification_work_record
+        runtime_factory_cardinality=runtime_cardinality,
+        runtime_manifest=runtime_manifest,
     )
 
     formula = official_route_upper_formula_v1(
@@ -233,7 +264,6 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
         verification_work_record=_verification_record(SemanticRole.ROUTE_UPPER),
         registry=registry,
     )
-    actual_common.charge_verified_record(upper_result.verification_work_record)
 
     decision = derive_guarded_marginal_route_decision_v1(
         context=context,
@@ -257,9 +287,40 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
         ),
         registry=registry,
     )
-    actual_common.charge_verified_record(decision_result.verification_work_record)
-    common = actual_common.seal()
-    assert common.work_vector.work_vector_id == reserved_common.work_vector.work_vector_id
+    charged_results = (cardinality_result, upper_result, decision_result)
+    common = reserved_common
+    common_freeze_step = min(
+        result.binding.verified_at_protocol_step for result in charged_results
+    ) - 1
+    common_core = seal_accounting_core_v1(
+        recorded_work=common,
+        binding=AttestationContextV1(
+            context,
+            point.decision_point_id,
+            na,
+            common_freeze_step,
+        ),
+        core_stage=AccountingCoreStage.COMMON_PREFIX,
+        registry=registry,
+        comparison_profile=profile,
+        actual_profile=official_actual_projection_profile_v1(registry, profile),
+    )
+    common_plan = VerificationChargePlanV1.for_core(
+        common_core,
+        plan_frozen_at_protocol_step=common_freeze_step,
+        obligations=tuple(
+            VerificationChargeObligationV1.for_role(
+                ordinal=index,
+                artifact_id=result.attestation.artifact_id,
+                role=result.role,
+                expected_result=result.outcome,
+                verified_at_protocol_step=result.binding.verified_at_protocol_step,
+                verification_work_record=result.verification_work_record,
+                binding=result.binding,
+            )
+            for index, result in enumerate(charged_results)
+        ),
+    )
 
     failed_certificate_id = _id("failed-abstract-certificate")
     action_catalogue_id = identities["bound_ground_action_catalogue_id"]
@@ -304,23 +365,50 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
             upper_result,
             (cardinality_result, upper_result, decision_result),
         ),
+        two_stage_accounting_profile=True,
+        common_accounting_core=common_core,
+        common_verification_charge_plan=common_plan,
     )
-    fallback_executor = AuthorizedIsolatedGroundFallbackExecutorV1(
-        IsolatedGroundFallbackExecutorInputsV1(
-            world,
-            context,
-            point,
-            upper,
-            cardinality,
-            bound,
-            cap,
-            decision_result,
-            upper_result,
-            cardinality_result,
-        ),
+    fallback_inputs = IsolatedGroundFallbackExecutorInputsV1(
+        world,
+        context,
+        point,
+        upper,
+        cardinality,
+        bound,
+        cap,
+        decision_result,
+        upper_result,
+        cardinality_result,
+        runtime_cardinality,
+    )
+    fallback_recipe = ExecutorRecipeV1(
+        runtime_manifest.runtime_tree_id,
+        RouteSelection.FALLBACK,
+        ISOLATED_FALLBACK_EXECUTOR_SEMANTICS_ID,
+        ISOLATED_FALLBACK_RUNTIME_ENTRYPOINT,
+        isolated_ground_fallback_executor_configuration_id_v1(fallback_inputs),
+    )
+    prepared = replace(
+        prepared,
+        runtime_tree_id=fallback_recipe.runtime_tree_id,
+        executor_recipe_id=fallback_recipe.executor_recipe_id,
+        sealed_executor_profile=True,
+    )
+    fallback_constructor = IsolatedFallbackPostFreezeConstructorV1(
+        fallback_inputs,
         registry,
         profile,
     )
+
+    def sealed_fallback_factory():
+        return SealedPostFreezeExecutorFactoryV1(
+            fallback_recipe,
+            runtime_cas,
+            fallback_constructor,
+        )
+
+    fallback_executor = sealed_fallback_factory()
 
     def forbidden_local(*_args):
         raise AssertionError("FALLBACK decision executed the local route")
@@ -340,8 +428,18 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
         ):
             pytest.skip(f"bubblewrap namespace unavailable: {original}")
         raise
+    if occurrence.closure_code is OccurrenceClosureCodeV1.PROTOCOL_FAILURE:
+        evidence = occurrence.failed_route_evidence
+        assert evidence is not None
+        message = evidence.original_error_message
+        if any(
+            marker in message
+            for marker in ("bwrap:", "requires bubblewrap", "NETLINK_ROUTE")
+        ):
+            pytest.skip(f"bubblewrap namespace unavailable: {message}")
+        pytest.fail(f"unexpected fallback protocol closure: {message}")
     result = occurrence.decision_runs[0]
-    execution = fallback_executor.inputs
+    execution = fallback_inputs
     assert occurrence.closure_code is OccurrenceClosureCodeV1.FULL_GROUND_FALLBACK
     assert len(occurrence.work_components) == 2
     assert occurrence.transactions == ()
@@ -352,12 +450,48 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
     assert occurrence.official_scalar_cost is None
     assert occurrence.official_N_break_even is None
     assert result.selected_route is RouteSelection.FALLBACK
+    selected_accounting = result.selected_two_stage_accounting
+    assert selected_accounting is not None
+    access_evidence = selected_accounting.nonsemantic_evidence[0]
+    assert type(access_evidence) is AccessTraceReconciliationEvidenceV1
+    assert access_evidence.selected_route is RouteSelection.FALLBACK
+    assert selected_accounting.core.route_kind is RouteKindEnum.DIRECT_FALLBACK
     assert result.upper_compliance == "WITHIN_SELECTED_UPPER"
     assert result.route_execution.completed is True
     assert result.route_execution.native_execution_work is not None
     assert result.route_execution.semantic_execution is not None
     assert result.route_execution.semantic_outcome == "FEASIBLE_CERTIFIED"
+    construction = fallback_executor.construction_accounting
+    assert construction is not None
+    assert result.sealed_executor_profile is True
+    assert result.two_stage_accounting_profile is True
+    receipt = result.sealed_executor_construction_receipt
+    merge_proof = result.sealed_executor_execution_merge_proof
+    assert type(receipt) is SealedExecutorConstructionReceiptV1
+    assert type(merge_proof) is SealedExecutorExecutionMergeProofV1
+    assert receipt.postconstruction_access_event_log_id == (
+        result.access_log.access_event_log_id
+    )
+    verify_sealed_factory_execution_merge_v1(
+        MergedSealedRouteExecutionWorkV1(
+            result.selected_route_work,
+            merge_proof,
+        ),
+        factory_accounting=construction,
+        delegate_work=result.route_execution.delegate_execution_work,
+        registry=registry,
+        comparison_profile=profile,
+    )
     native = result.route_execution.native_execution_work.work_vector
+    delegate_native = result.route_execution.delegate_execution_work.work_vector
+    selected_native = result.selected_route_work.work_vector
+    factory_native = construction.recorded_work.work_vector
+    assert selected_native.value("io.staged_bytes") >= factory_native.value(
+        "io.staged_bytes"
+    )
+    assert selected_native.value("common.hash_invocations") == factory_native.value(
+        "common.hash_invocations"
+    )
     assert native.value("fallback.ground_steps") == 48
     assert native.value("fallback.outcome_rows") == 192
     assert native.value("fallback.bellman_backups") == 5_696
@@ -366,10 +500,16 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
     assert native.value("io.staged_bytes") > 0
     assert native.value("io.output_bytes") > 0
     assert native.value("io.mounted_bytes_peak") > 0
-    assert 0 < native.value("memory.working_bytes_peak") <= 256 * 1024 * 1024
+    assert 0 < delegate_native.value("memory.working_bytes_peak") <= 256 * 1024 * 1024
+    # Factory verification and the selected worker are simultaneously live,
+    # so their independently capped working sets add in the sealed route.
+    assert native.value("memory.working_bytes_peak") == (
+        factory_native.value("memory.working_bytes_peak")
+        + delegate_native.value("memory.working_bytes_peak")
+    )
     assert result.aggregate_marginal_work.aggregate_work_vector.value(
         "common.protocol_checks"
-    ) == 5
+    ) == 15
     assert result.official_execution_allowed is False
     assert result.freeze_attestation.last_preselection_sequence == len(
         PRESELECTION_READ_OPERATIONS
@@ -387,6 +527,9 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
         row.artifact_id for row in prepared.preselection_reads
     )
     operations = tuple(event.operation for event in result.access_log.events)
+    assert operations.count(AccessOperation.RESOLVE_RUNTIME_CAS) == 1
+    assert operations.count(AccessOperation.OPEN_RUNTIME_PRIVATE_LEASE) == 1
+    assert operations.count(AccessOperation.CONSTRUCT_SELECTED_EXECUTOR) == 1
     assert operations.count(AccessOperation.FALLBACK_SOLVER_INVOCATION) == 0
     assert operations.count(AccessOperation.FALLBACK_WORKER_LAUNCH) == 1
     assert operations.count(AccessOperation.FALLBACK_RESULT_ARTIFACT) == 1
@@ -430,17 +573,21 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
     # A plan terminal is admitted only after the runner aggregate, selected
     # upper, semantic fallback result, and successful frozen access trace are
     # joined.  The execution WorkVector alone is intentionally insufficient.
+    terminal_transaction_id = result.selected_upper.transaction_id
     terminal_binding = AttestationContextV1(
         context,
         point.decision_point_id,
-        na,
+        terminal_transaction_id,
         len(result.access_log.events) + 1,
+        LaneEnum.EVALUATION,
     )
     aggregate = result.aggregate_marginal_work
     work_result = verify_work_vector_semantics_v1(
         aggregate.aggregate_work_vector,
         binding=terminal_binding,
-        verification_work_record=_verification_record(SemanticRole.WORK_VECTOR),
+        verification_work_record=_verification_record(
+            SemanticRole.WORK_VECTOR, LaneEnum.EVALUATION
+        ),
         registry=registry,
     )
     actual_result = verify_actual_projection_semantics_v1(
@@ -449,7 +596,7 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
         projection_proof=aggregate.aggregate_projection_proof,
         binding=terminal_binding,
         verification_work_record=_verification_record(
-            SemanticRole.ACTUAL_PROJECTION
+            SemanticRole.ACTUAL_PROJECTION, LaneEnum.EVALUATION
         ),
         registry=registry,
     )
@@ -460,6 +607,33 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
         decision_result,
         fallback_result,
     )
+
+    def terminal_route_bundle(
+        execution_work,
+        verification_work,
+        marginal_work,
+        access_log=result.access_log,
+        freeze=result.freeze_attestation,
+    ):
+        return TerminalRouteEvidenceBundleV1(
+            execution_work,
+            verification_work,
+            marginal_work,
+            access_log,
+            freeze,
+            ProtocolSequenceProfileV1(),
+            result.selected_work_result,
+            sealed_executor_profile=True,
+            sealed_executor_construction_accounting=(
+                result.route_execution.sealed_executor_construction_accounting
+            ),
+            sealed_delegate_execution_work=(
+                result.route_execution.delegate_execution_work
+            ),
+            sealed_executor_execution_merge_proof=(
+                result.route_execution.sealed_executor_execution_merge_proof
+            ),
+        )
     terminal = TerminalArtifactV1(
         "ROUTE_ATTEMPT",
         TerminalClass.PLAN_CERTIFICATE,
@@ -468,7 +642,7 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
         context.logical_occurrence_id,
         context.route_attempt_id,
         point.decision_point_id,
-        na,
+        terminal_transaction_id,
         aggregate.aggregate_work_vector.work_vector_id,
         tuple(
             sorted(
@@ -482,24 +656,62 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
         result.freeze_attestation.route_decision_freeze_attestation_id,
         result.access_log.access_event_log_id,
     )
+    valid_terminal_bundle = terminal_route_bundle(
+        result.selected_route_work,
+        result.verification_suffix_work,
+        aggregate,
+    )
     terminal_result = verify_terminal_classification_semantics_v1(
         terminal,
         evidence_results=terminal_evidence,
-        route_evidence=TerminalRouteEvidenceBundleV1(
-            result.selected_route_work,
-            result.verification_suffix_work,
-            aggregate,
-            result.access_log,
-            result.freeze_attestation,
-            ProtocolSequenceProfileV1(),
-        ),
+        route_evidence=valid_terminal_bundle,
         binding=terminal_binding,
         verification_work_record=_verification_record(
-            SemanticRole.TERMINAL_CLASSIFICATION
+            SemanticRole.TERMINAL_CLASSIFICATION, LaneEnum.EVALUATION
         ),
         registry=registry,
     )
     assert terminal_result.outcome == TerminalClass.PLAN_CERTIFICATE.value
+
+    with pytest.raises(ValueError, match="construction receipt differs"):
+        replace(
+            construction,
+            recorded_work=result.route_execution.delegate_execution_work,
+        )
+    with pytest.raises(SemanticVerificationV1Error, match="merge does not replay"):
+        replace(
+            valid_terminal_bundle,
+            sealed_delegate_execution_work=construction.recorded_work,
+        )
+    proof_attack = replace(
+        merge_proof,
+        delegate_work_vector_id=_id("foreign-terminal-fallback-delegate"),
+    )
+    with pytest.raises(SemanticVerificationV1Error, match="merge does not replay"):
+        replace(
+            valid_terminal_bundle,
+            sealed_executor_execution_merge_proof=proof_attack,
+        )
+    foreign_receipt = replace(
+        receipt,
+        postconstruction_access_event_log_id=_id("foreign-fallback-access-log"),
+    )
+    foreign_construction = SealedExecutorConstructionAccountingV1(
+        foreign_receipt,
+        construction.recorded_work,
+    )
+    foreign_proof = replace(
+        merge_proof,
+        construction_receipt_id=(
+            foreign_receipt.sealed_executor_construction_receipt_id
+        ),
+    )
+    with pytest.raises(SemanticVerificationV1Error, match="access/freeze"):
+        replace(
+            valid_terminal_bundle,
+            sealed_executor_construction_accounting=foreign_construction,
+            sealed_executor_execution_merge_proof=foreign_proof,
+        )
 
     # A self-consistent lower-cost aggregate cannot omit the runner's fixed
     # verification checks or the selected route's semantic-verifier work.
@@ -534,7 +746,9 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
     low_suffix_work_result = verify_work_vector_semantics_v1(
         low_aggregate.aggregate_work_vector,
         binding=terminal_binding,
-        verification_work_record=_verification_record(SemanticRole.WORK_VECTOR),
+        verification_work_record=_verification_record(
+            SemanticRole.WORK_VECTOR, LaneEnum.EVALUATION
+        ),
         registry=registry,
     )
     low_suffix_actual_result = verify_actual_projection_semantics_v1(
@@ -543,7 +757,7 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
         projection_proof=low_aggregate.aggregate_projection_proof,
         binding=terminal_binding,
         verification_work_record=_verification_record(
-            SemanticRole.ACTUAL_PROJECTION
+            SemanticRole.ACTUAL_PROJECTION, LaneEnum.EVALUATION
         ),
         registry=registry,
     )
@@ -562,7 +776,7 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
         context.logical_occurrence_id,
         context.route_attempt_id,
         point.decision_point_id,
-        na,
+        terminal_transaction_id,
         low_aggregate.aggregate_work_vector.work_vector_id,
         tuple(
             sorted(
@@ -582,17 +796,14 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
         verify_terminal_classification_semantics_v1(
             low_suffix_terminal,
             evidence_results=low_suffix_evidence,
-            route_evidence=TerminalRouteEvidenceBundleV1(
+            route_evidence=terminal_route_bundle(
                 result.selected_route_work,
                 zero_suffix,
                 low_aggregate,
-                result.access_log,
-                result.freeze_attestation,
-                ProtocolSequenceProfileV1(),
             ),
             binding=terminal_binding,
             verification_work_record=_verification_record(
-                SemanticRole.TERMINAL_CLASSIFICATION
+                SemanticRole.TERMINAL_CLASSIFICATION, LaneEnum.EVALUATION
             ),
             registry=registry,
         )
@@ -605,7 +816,7 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
             evidence_results=terminal_evidence,
             binding=terminal_binding,
             verification_work_record=_verification_record(
-                SemanticRole.TERMINAL_CLASSIFICATION
+                SemanticRole.TERMINAL_CLASSIFICATION, LaneEnum.EVALUATION
             ),
             registry=registry,
         )
@@ -618,7 +829,7 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
         context.logical_occurrence_id,
         context.route_attempt_id,
         point.decision_point_id,
-        na,
+        terminal_transaction_id,
         aggregate.aggregate_work_vector.work_vector_id,
         terminal.evidence_attestation_ids,
         aggregate.aggregate_comparison_vector.comparison_vector_id,
@@ -633,17 +844,14 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
         verify_terminal_classification_semantics_v1(
             stale_freeze_terminal,
             evidence_results=terminal_evidence,
-            route_evidence=TerminalRouteEvidenceBundleV1(
+            route_evidence=terminal_route_bundle(
                 result.selected_route_work,
                 result.verification_suffix_work,
                 aggregate,
-                result.access_log,
-                result.freeze_attestation,
-                ProtocolSequenceProfileV1(),
             ),
             binding=terminal_binding,
             verification_work_record=_verification_record(
-                SemanticRole.TERMINAL_CLASSIFICATION
+                SemanticRole.TERMINAL_CLASSIFICATION, LaneEnum.EVALUATION
             ),
             registry=registry,
         )
@@ -662,7 +870,9 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
     low_work_result = verify_work_vector_semantics_v1(
         low.work_vector,
         binding=terminal_binding,
-        verification_work_record=_verification_record(SemanticRole.WORK_VECTOR),
+        verification_work_record=_verification_record(
+            SemanticRole.WORK_VECTOR, LaneEnum.EVALUATION
+        ),
         registry=registry,
     )
     low_actual_result = verify_actual_projection_semantics_v1(
@@ -671,7 +881,7 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
         projection_proof=low.actual_projection_proof,
         binding=terminal_binding,
         verification_work_record=_verification_record(
-            SemanticRole.ACTUAL_PROJECTION
+            SemanticRole.ACTUAL_PROJECTION, LaneEnum.EVALUATION
         ),
         registry=registry,
     )
@@ -690,7 +900,7 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
         context.logical_occurrence_id,
         context.route_attempt_id,
         point.decision_point_id,
-        na,
+        terminal_transaction_id,
         low.work_vector.work_vector_id,
         tuple(
             sorted(
@@ -711,17 +921,14 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
         verify_terminal_classification_semantics_v1(
             spliced_terminal,
             evidence_results=spliced_evidence,
-            route_evidence=TerminalRouteEvidenceBundleV1(
+            route_evidence=terminal_route_bundle(
                 result.selected_route_work,
                 result.verification_suffix_work,
                 aggregate,
-                result.access_log,
-                result.freeze_attestation,
-                ProtocolSequenceProfileV1(),
             ),
             binding=terminal_binding,
             verification_work_record=_verification_record(
-                SemanticRole.TERMINAL_CLASSIFICATION
+                SemanticRole.TERMINAL_CLASSIFICATION, LaneEnum.EVALUATION
             ),
             registry=registry,
         )
@@ -732,16 +939,19 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
     monkeypatch.setattr(
         isolated_fallback_module.subprocess, "run", fail_isolated_launch
     )
-    with pytest.raises(Phase3ERouteExecutionFailedV1) as caught:
-        run_phase3e_occurrence_v1(
-            prepared,
-            local_executor=forbidden_local,
-            fallback_executor=fallback_executor,
-            registry=registry,
-            comparison_profile=profile,
-        )
+    failed_occurrence = run_phase3e_occurrence_v1(
+        prepared,
+        local_executor=forbidden_local,
+        fallback_executor=sealed_fallback_factory(),
+        registry=registry,
+        comparison_profile=profile,
+    )
+    assert failed_occurrence.closure_code is OccurrenceClosureCodeV1.PROTOCOL_FAILURE
+    assert failed_occurrence.decision_runs == ()
+    assert failed_occurrence.occurrence_failure_terminal is not None
+    assert failed_occurrence.failed_route_evidence is not None
     failed = verify_failed_route_evidence_v1(
-        caught.value.evidence,
+        failed_occurrence.failed_route_evidence,
         registry=registry,
         comparison_profile=profile,
     )
@@ -761,7 +971,7 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
         context.logical_occurrence_id,
         context.route_attempt_id,
         point.decision_point_id,
-        na,
+        terminal_transaction_id,
         aggregate.aggregate_work_vector.work_vector_id,
         tuple(
             sorted(
@@ -781,17 +991,14 @@ def test_run_phase3e_executes_authorized_exact_fallback_after_freeze(
         verify_terminal_classification_semantics_v1(
             legacy_terminal,
             evidence_results=legacy_evidence,
-            route_evidence=TerminalRouteEvidenceBundleV1(
+            route_evidence=terminal_route_bundle(
                 result.selected_route_work,
                 result.verification_suffix_work,
                 aggregate,
-                result.access_log,
-                result.freeze_attestation,
-                ProtocolSequenceProfileV1(),
             ),
             binding=terminal_binding,
             verification_work_record=_verification_record(
-                SemanticRole.TERMINAL_CLASSIFICATION
+                SemanticRole.TERMINAL_CLASSIFICATION, LaneEnum.EVALUATION
             ),
             registry=registry,
         )

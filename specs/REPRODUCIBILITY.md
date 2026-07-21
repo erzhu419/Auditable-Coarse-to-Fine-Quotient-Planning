@@ -292,8 +292,11 @@ semantics; their old bundles are not silently relabelled as contract-1.0 evidenc
 
 The semantic verifier registry fixes all FQ7 role/schema/outcome names. Generic
 authority-bearing replay exists for native work vector, exact actual projection, route
-upper, route decision, ground fallback, terminal classification and the
-`PROTOCOL_ACCESS` extension. Causal/cardinality/local-result/post-audit replay is
+upper, route decision, ground fallback, route/attempt terminal classification,
+evaluation-lane `SemanticRole.OCCURRENCE_TERMINAL` over
+`Phase3EOccurrenceTerminalArtifactV1`, and the `PROTOCOL_ACCESS` extension. The
+occurrence role covers `PROTOCOL_FAILURE` and `FALLBACK_CAP_EXHAUSTED`; route-attempt
+terminal authority cannot replace it. Causal/cardinality/local-result/post-audit replay is
 restricted to the registered safe-chain sources. Charged decision authorization
 reproduces the exact transitive closure of the decision, causal result, both uppers and
 one cardinality verification per upper; omissions, duplicates and extra results fail.
@@ -303,13 +306,19 @@ infeasibility terminal labels cannot pass merely because their hash chain is int
 Current reproducibility includes genuine integrated safe-chain LOCAL and isolated
 fallback slices plus generic failed-post-audit -> fresh-local-or-fallback orchestration.
 Both executors record observed work incrementally, so injected exceptions reproduce the
-same retained execution prefix. It still lacks a clean official campaign replay and
-four P0 closures: non-cyclic terminal/certificate-verifier work accounting;
-continuation `WORK_VECTOR` verification work in the next common prefix; a sealed
-post-freeze executor factory plus content-addressed runtime tree; and whole-occurrence
-typed failure/aggregate-terminal semantics. Exact cached-infeasibility/abstract-audit,
-rebuild/retry and a complete manifest verifier also remain open. Accordingly every
-artifact and campaign summary must retain:
+same retained execution prefix. V0-033 adds exact two-stage verification accounting,
+runner-owned continuation `WORK_VECTOR` authority, a sealed post-freeze executor plus
+content-addressed runtime tree, and whole-occurrence typed failure/aggregate-terminal
+semantics. Reproducible evidence inside those scoped interfaces now also includes
+manifest-derived `RuntimeFactoryCardinalityV1` route-upper terms, success receipts bound
+to the final access log, exact sealed factory/delegate failure merges, and
+`PARTIAL_ACCOUNTED_COMMON` replay for rejected packages after observed operational
+verification. It still lacks a clean official campaign replay, exact cached-
+infeasibility/abstract-audit authority, all-path native/hash instrumentation across
+planner/package control and every terminal (with `common.hash_invocations` still an
+unassigned post-freeze leaf), registered live
+dependent transaction-2 evidence, rebuild/retry and a complete manifest verifier.
+Accordingly every artifact and campaign summary must retain:
 
 ```text
 official_execution_allowed = false
@@ -538,6 +547,26 @@ reproduce_phase3e_foundation(component_documents):
   fallback calls, route-family artifacts on the unselected branch, deleted/reordered
   log events, identity rebound, invocation of both route callbacks, stitch/post-audit
   after a negative local result, and a fictitious transaction 2 on direct fallback.
+- Sealed-executor round trips recompute each candidate's manifest-derived
+  `RuntimeFactoryCardinalityV1` and require its route-specific source binding; the
+  unselected route reserves that work only in its compared upper and incurs no actual
+  CAS WorkVector. The registered fallback proves
+  `5815=3 factory+5812 worker` on `control.cap_checks`; it rejects post-hoc reserve
+  addition and treats total `5812` plus reserve `3` as worker share `5809` with cap
+  rejection. A reserve-zero legacy profile must round-trip with unchanged payload,
+  schema, domain and content ID. They reject a foreign success-receipt final access log; a changed
+  factory, delegate, or merged failure triple; mixed delegate IDs/typed nulls; and a
+  changed failure stage, registry or post-failure log.
+- Rejected-continuation round trips reconstruct `PARTIAL_ACCOUNTED_COMMON` only from
+  observed operational verifier records and reject an empty set, duplicate/core
+  overlap, wrong lane/registry or stale context. This replay produces no successful
+  charge receipt or continuation authority.
+- Nonsemantic-check round trips supply typed evidence for each registered check kind,
+  recompute its canonical evidence IDs, reject fabricated ID tuples, and reject any
+  plan source CounterRecord reused from the sealed core.
+- Occurrence-result attacks reorder/replace raw components, splice a run or context,
+  alter/re-hash aggregate references, mutate transaction history, relabel closure, or
+  reuse terminal/failure authority; each must fail full result-boundary replay.
 - Workload/campaign round trips reject incomplete permutation enumeration, a forged
   Pareto-worst prefix, sum/max reducer confusion, scalar or break-even injection,
   missing registered logical occurrences, rebuild retry overflow, hidden
@@ -545,8 +574,8 @@ reproduce_phase3e_foundation(component_documents):
 - The registered safe-chain LOCAL and isolated-fallback integration tests additionally
   replay genuine selected-route work after decision freeze. Passing those scoped tests
   still does not constitute a clean official Phase 3E campaign rerun. That claim
-  additionally requires closure of the four P0s above, complete abstract/rebuild/exact-
-  infeasible/failure/hash instrumentation, a registered live dependent second-decision
+  additionally requires complete abstract/rebuild/exact-infeasible/failure/hash
+  instrumentation, a registered live dependent second-decision
   benchmark, exact cached-infeasibility and abstract-audit authority, and an independent
   complete-bundle replay.
 
@@ -560,4 +589,4 @@ Mutable dependency resolution, locale/timezone-dependent serialization, unordere
 
 ## Open risks
 
-Before performance Gates, freeze a reference hardware protocol and repetition/statistical summary policy. Before public release, add licensing checks for redistributed papers and repositories. V0-028 freezes the portable campaign; V0-029 freezes the first hybrid; V0-030 freezes earliest-antichain causal search, finite-domain sparse compilation, and capped joint solver replay; and V0-032 freezes the accounted-routing contract and now has scoped integrated safe-chain LOCAL/fallback slices. The four P0 accounting/executor/occurrence boundaries above, complete native failure/rebuild/hash instrumentation, registered dependent second-decision evidence, exact cached-infeasibility and abstract-audit authority, manifest-level independent replay, scalar-free workload routing and the later scalar economics revision, dependent-horizon repair, full Phase 3/5 statistical aggregates, and larger or stochastic studies still require closure or preregistration.
+Before performance Gates, freeze a reference hardware protocol and repetition/statistical summary policy. Before public release, add licensing checks for redistributed papers and repositories. V0-028 freezes the portable campaign; V0-029 freezes the first hybrid; V0-030 freezes earliest-antichain causal search, finite-domain sparse compilation, and capped joint solver replay; V0-032 freezes the accounted-routing contract; and V0-033 closes its four scoped P0 accounting/continuation/executor/occurrence implementation holes. Complete native failure/rebuild/hash instrumentation, registered dependent second-decision evidence, exact cached-infeasibility and abstract-audit authority, manifest-level independent replay, scalar-free workload routing and the later scalar economics revision, dependent-horizon repair, full Phase 3/5 statistical aggregates, and larger or stochastic studies still require closure or preregistration.

@@ -94,6 +94,30 @@ def test_preselection_forbidden_access_fails_closed_and_replays() -> None:
         replay_access_protocol(controller.snapshot(), controller.profile)
 
 
+@pytest.mark.parametrize(
+    "operation",
+    (
+        AccessOperation.RESOLVE_RUNTIME_CAS,
+        AccessOperation.OPEN_RUNTIME_PRIVATE_LEASE,
+        AccessOperation.CONSTRUCT_SELECTED_EXECUTOR,
+    ),
+)
+def test_runtime_construction_access_is_forbidden_before_route_freeze(
+    operation: AccessOperation,
+) -> None:
+    controller = _controller(f"prefreeze-{operation.value}")
+    with pytest.raises(AccessProtocolViolation) as caught:
+        controller.record(
+            operation,
+            AccessRouteScope.FALLBACK,
+            artifact_id=_id(operation.value),
+        )
+    assert (
+        caught.value.violation.reason
+        is AccessViolationReason.PRESELECTION_FORBIDDEN_ACCESS
+    )
+
+
 @pytest.mark.parametrize("selected", tuple(RouteSelection))
 def test_self_hashed_route_decision_cannot_freeze_execution(
     selected: RouteSelection,

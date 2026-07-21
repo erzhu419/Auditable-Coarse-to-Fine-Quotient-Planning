@@ -77,6 +77,7 @@ class NativeCounterRecorderV1:
         registry: CounterRegistryV1 | None = None,
         comparison_profile: ComparisonProfileV1 | None = None,
         recorder_id: str = RECORDER_ID,
+        allow_selected_route_shared_operations: bool = False,
     ) -> None:
         try:
             self.registry = registry or official_counter_registry_v1()
@@ -93,6 +94,23 @@ class NativeCounterRecorderV1:
         if type(recorder_id) is not str or not recorder_id:
             raise NativeRecorderV1Error("recorder_id must be nonempty")
         self.recorder_id = recorder_id
+        if type(allow_selected_route_shared_operations) is not bool:
+            raise NativeRecorderV1Error(
+                "selected-route shared-operation flag must be boolean"
+            )
+        if allow_selected_route_shared_operations and (
+            recorder_id != "phase3e-sealed-executor-factory-v1"
+            or self.route_kind
+            not in {RouteKindEnum.LOCAL_ATTEMPT, RouteKindEnum.DIRECT_FALLBACK}
+            or self.work_scope is not ActualWorkScope.MARGINAL_ROUTE_EXECUTION
+        ):
+            raise NativeRecorderV1Error(
+                "only the sealed selected-route factory may record shared "
+                "operations in the execution lane"
+            )
+        self.allow_selected_route_shared_operations = (
+            allow_selected_route_shared_operations
+        )
         allowed_scopes = {
             RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE: {
                 ActualWorkScope.COMMON_PREFIX
@@ -149,10 +167,14 @@ class NativeCounterRecorderV1:
                     "local.", "fallback.", "rebuild."
                 ),
                 RouteKindEnum.LOCAL_ATTEMPT: (
-                    "common.", "fallback.", "rebuild."
+                    ("fallback.", "rebuild.")
+                    if self.allow_selected_route_shared_operations
+                    else ("common.", "fallback.", "rebuild.")
                 ),
                 RouteKindEnum.DIRECT_FALLBACK: (
-                    "common.", "local.", "rebuild."
+                    ("local.", "rebuild.")
+                    if self.allow_selected_route_shared_operations
+                    else ("common.", "local.", "rebuild.")
                 ),
                 RouteKindEnum.REBUILD: (
                     "common.", "local.", "fallback.", "control."

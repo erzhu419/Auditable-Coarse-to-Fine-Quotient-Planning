@@ -495,6 +495,62 @@ run_phase3e_occurrence_v1(...)
   -> after failed post-audit, a fresh decision selects local transaction 2 or direct
      fallback; negative local result likewise enters a fresh fallback decision
 
+seal_accounting_core_v1(recorded_work, typed binding, core stage, profiles)
+VerificationChargePlanV1.for_core(core, frozen semantic/nonsemantic obligations)
+derive_two_stage_accounting_v1(core, exact results/records, frozen plan)
+verify_two_stage_accounting_v1(claimed closure, same native sources)
+  -> exact operational verification suffix, reducer-correct aggregate,
+     charge manifest and receipt; omission/padding/substitution/lane drift fail closed
+  -> registered nonsemantic check kinds consume typed evidence and recompute
+     access/freeze, execution integrity, native aggregation, upper compliance, or
+     continuation authority; caller-selected evidence IDs are not an input
+  -> plan source CounterRecord IDs are disjoint from the sealed core and one another
+  # WORK_VECTOR/projection/terminal replay over the closed aggregate is evaluation-only
+derive_runner_partial_common_accounting_v1(core, observed semantic results/records,
+                                           context, decision point)
+  -> PARTIAL_ACCOUNTED_COMMON occurrence evidence with exact operational suffix/sum
+  # rejection-only accounting: no successful charge receipt and no continuation authority
+
+continuation_work_vector_authority_v1(completed Phase3ERunResultV1)
+  -> runner-owned reference to the exact prior selected-work authority
+  # the old invocation is evidence, not recharged work; the next common prefix pays
+  # one fresh CONTINUATION_WORK_VECTOR_AUTHORITY protocol check
+
+RuntimeTreeCASV1.snapshot_build_tree(source_root)
+  -> build/rebuild-time exact RuntimeTreeManifestV1
+RuntimeFactoryCardinalityV1.from_manifest(manifest, registered runtime cap)
+  -> preselection-only content-addressed file/byte/manifest counts and exact
+     factory counter upper; each sealed candidate upper binds its route-specific ID
+GroundFallbackCapProfileV1(..., max_cap_checks=5815,
+                           reserved_route_cap_checks=3,
+                           profile_key=SEALED_ROUTE_CAP_PROFILE_KEY)
+  -> worker max_solver_cap_checks=5812; the shared route upper remains 5815
+  # a total of 5812 would leave worker share 5809 and preregister cap rejection
+  # reserve=0 remains the byte-identical legacy schema/domain/payload contract
+SealedPostFreezeExecutorFactoryV1(recipe, CAS, registered inert constructor)
+  -> after route freeze only: resolve/verify CAS, open private read-only lease,
+     construct exactly the selected executor, execute once, reverify lease,
+     return construction receipt plus reducer-correct factory/delegate merge proof;
+     success receipt binds the final post-construction AccessEventLogV1 ID
+  # sealed route cardinality uses this manifest's frozen counts; a historical route
+  # has no runtime-factory charge and a global hard cap is not a tight estimate
+merge_sealed_factory_failure_work_v1(factory partial, delegate partial-or-none)
+verify_sealed_factory_failure_merge_v1(claimed merge, exact source partials)
+  -> SealedExecutorFailureMergeProofV1 over factory, all-ID-or-all-typed-null
+     delegate, and merged WorkVector/ComparisonVector/projection triples
+  # companion failure evidence binds the registered stage and final post-failure log
+  # exact in-process failed-route/occurrence replay only; no separate FQ7 semantic
+  # attestation or manifest-level independent-verifier authority is claimed yet
+
+verify_occurrence_terminal_semantics_v1(typed terminal, occurrence aggregate,
+                                        exact components/runs/detail)
+  -> evaluation-lane occurrence authority for PROTOCOL_FAILURE or
+     FALLBACK_CAP_EXHAUSTED, with plan/infeasibility counts 0/0,
+     noncertificate count 1 and every denominator retained
+Phase3EOccurrenceRunResultV1(...)
+  -> reconstruct ordered aggregate/run/transaction correspondence and terminal
+     authority at the runtime result boundary; reject reorder/splice/relabel attacks
+
 TrustedBudgetReplayV1.replay_work_vectors(transactions, work_vectors, caps)
   -> trusted budget outcome independent of worker claim
 
@@ -580,23 +636,28 @@ occurrence from its native WorkVector, projection proof and occurrence sum; a
 self-signed comparison vector is inadmissible. Campaign closure likewise accepts only
 authority-bearing terminal-classification results. These layers never manufacture a
 scalar crossing or a single scalar worst order. The semantic layer now performs
-generic work/projection/upper/decision/fallback/terminal/protocol replay and scoped
-safe-chain causal/cardinality/local/post-audit replay. Exact cached infeasibility and
+generic work/projection/upper/decision/fallback/route-terminal/protocol replay plus
+evaluation-lane `OCCURRENCE_TERMINAL` replay of
+`Phase3EOccurrenceTerminalArtifactV1` for `PROTOCOL_FAILURE` and
+`FALLBACK_CAP_EXHAUSTED`; the route-attempt terminal role cannot substitute for it.
+Scoped safe-chain causal/cardinality/local/post-audit replay is separate. Exact cached infeasibility and
 abstract audit still reject well-formed outcome strings, so neither result can be
 authorized by hashes.
 
 These are implemented contract interfaces and scoped runtime slices, not an official
-run result. Four P0 interfaces are still missing: a non-self-referential home for
-terminal/certificate-verifier operational work; charging continuation `WORK_VECTOR`
-verification in the next common prefix; constructing route executors only after freeze
-from a content-addressed runtime tree rather than accepting an arbitrary callable/live
-checkout; and converting route exceptions into whole-occurrence typed noncertificate
-closure with aggregate-terminal semantics. Complete abstract/rebuild/exact-infeasible/
-failure/hash instrumentation, a registered live dependent second-decision benchmark,
-exact cached-infeasibility and abstract-audit authority, upstream manifest-to-prepared-
-run orchestration, and an independent complete campaign verifier also have to close
-before `official_execution_allowed` can change from false or either Phase 3E Gate can
-run.
+run result. V0-033 closes the four former scoped P0 interfaces: non-self-referential two-stage
+verification accounting, a freshly charged continuation-authority check, sealed
+post-freeze construction from a content-addressed runtime tree, and whole-occurrence
+typed noncertificate replay. `RuntimeFactoryCardinalityV1`, final-log-bound success
+receipts, exact sealed failure decomposition, and `PARTIAL_ACCOUNTED_COMMON` tighten
+those interfaces; they do not meter code outside them. Complete abstract/rebuild/exact-
+infeasible/failure/hash instrumentation—including planner invocation, authority-package
+construction/rejection, every terminal branch, and the runner's still-unassigned
+`common.hash_invocations` leaf—a registered live dependent second-decision benchmark, exact cached-
+infeasibility and abstract-audit authority, upstream manifest-to-prepared-run
+orchestration, all remaining rebuild/campaign terminals, and an independent complete
+campaign verifier still have to close before `official_execution_allowed` can change
+from false or either Phase 3E Gate can run.
 
 ## Pseudocode / schema
 

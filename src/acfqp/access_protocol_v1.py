@@ -91,6 +91,13 @@ class AccessOperation(str, Enum):
     READ_FORMULA_REGISTRY = "READ_FORMULA_REGISTRY"
     READ_PROFILE_REGISTRY = "READ_PROFILE_REGISTRY"
 
+    # These accesses are common to both selected routes, but are legal only
+    # after the route-decision freeze.  They make the previously implicit
+    # runtime-CAS resolution/construction boundary replayable.
+    RESOLVE_RUNTIME_CAS = "RESOLVE_RUNTIME_CAS"
+    OPEN_RUNTIME_PRIVATE_LEASE = "OPEN_RUNTIME_PRIVATE_LEASE"
+    CONSTRUCT_SELECTED_EXECUTOR = "CONSTRUCT_SELECTED_EXECUTOR"
+
     KERNEL_STEP = "KERNEL_STEP"
     GROUND_OUTCOME_ENUMERATION = "GROUND_OUTCOME_ENUMERATION"
     LOCAL_SLICE_MATERIALIZATION = "LOCAL_SLICE_MATERIALIZATION"
@@ -132,6 +139,9 @@ ROUTE_SCOPED_OPERATIONS = tuple(
         (
             AccessOperation.KERNEL_STEP,
             AccessOperation.GROUND_OUTCOME_ENUMERATION,
+            AccessOperation.RESOLVE_RUNTIME_CAS,
+            AccessOperation.OPEN_RUNTIME_PRIVATE_LEASE,
+            AccessOperation.CONSTRUCT_SELECTED_EXECUTOR,
         ),
         key=lambda operation: operation.value,
     )
@@ -178,7 +188,27 @@ ARTIFACT_OPERATIONS = frozenset(
 # Every preselection read is identity-bearing.  Recording only the operation
 # name allowed a caller to replace the frozen RAPM, plan, cap, or formula while
 # preserving the same access-log hash shape.
-IDENTITY_BEARING_OPERATIONS = frozenset(PRESELECTION_READ_OPERATIONS) | ARTIFACT_OPERATIONS
+IDENTITY_BEARING_OPERATIONS = (
+    frozenset(PRESELECTION_READ_OPERATIONS)
+    | ARTIFACT_OPERATIONS
+    | frozenset(
+        {
+            AccessOperation.RESOLVE_RUNTIME_CAS,
+            AccessOperation.OPEN_RUNTIME_PRIVATE_LEASE,
+            AccessOperation.CONSTRUCT_SELECTED_EXECUTOR,
+        }
+    )
+)
+
+# Only these route-scoped events carry ground-transition stage semantics.
+# Runtime-CAS operations may precede local stage 1 and must not be mistaken
+# for an unscoped kernel access merely because both routes share them.
+GROUND_TRANSITION_OPERATIONS = frozenset(
+    {
+        AccessOperation.KERNEL_STEP,
+        AccessOperation.GROUND_OUTCOME_ENUMERATION,
+    }
+)
 
 
 class AccessViolationReason(str, Enum):
@@ -561,7 +591,7 @@ def local_execution_order_violation_v1(
         artifact_stage = _LOCAL_ARTIFACT_STAGE.get(event.operation)
         if artifact_stage is not None and artifact_stage != stage:
             return event
-        if event.operation in ROUTE_SCOPED_OPERATIONS and stage not in {1, 5}:
+        if event.operation in GROUND_TRANSITION_OPERATIONS and stage not in {1, 5}:
             # Ground transitions belong to materialization or the post-audit,
             # never to estimate/compile/worker/stitch.
             return event
@@ -1223,6 +1253,7 @@ __all__ = [
     "AccessRouteScope",
     "AccessViolationReason",
     "FALLBACK_ONLY_OPERATIONS",
+    "GROUND_TRANSITION_OPERATIONS",
     "FailClosedAccessController",
     "ForbiddenAccessViolationV1",
     "LOCAL_ONLY_OPERATIONS",

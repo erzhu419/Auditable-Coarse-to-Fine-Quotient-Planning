@@ -953,6 +953,7 @@ def _run_fresh_general_solver(
     request: dict[str, Any],
     *,
     operational_no_full_replay: bool = False,
+    runtime_source_root: Path | None = None,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     """Run the stdlib worker with exactly three mounted input files.
 
@@ -964,6 +965,16 @@ def _run_fresh_general_solver(
     bubblewrap = shutil.which("bwrap")
     if bubblewrap is None:
         raise Phase3DInvariantViolation("Phase 3D general local worker requires bubblewrap")
+    source_root = (
+        PROJECT_ROOT / "src"
+        if runtime_source_root is None
+        else Path(runtime_source_root)
+    )
+    runtime_package = source_root / "acfqp"
+    if runtime_package.is_symlink() or not runtime_package.is_dir():
+        raise Phase3DInvariantViolation(
+            "Phase 3D general local worker runtime source is invalid"
+        )
     with tempfile.TemporaryDirectory(prefix="acfqp-phase3d-local-") as temporary:
         root = Path(temporary)
         runtime = root / "runtime"
@@ -973,7 +984,12 @@ def _run_fresh_general_solver(
         input_root.mkdir()
         output_root.mkdir()
         for module_name in ("general_local_solver.py", "general_local_runtime.py"):
-            shutil.copy2(PROJECT_ROOT / "src" / "acfqp" / module_name, runtime)
+            source = runtime_package / module_name
+            if source.is_symlink() or not source.is_file():
+                raise Phase3DInvariantViolation(
+                    "Phase 3D general local runtime snapshot is incomplete"
+                )
+            shutil.copy2(source, runtime)
         inputs = {
             "capability.json": capability,
             "slice.json": ground_slice,
