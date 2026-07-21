@@ -57,6 +57,9 @@ LOGICAL_OCCURRENCE_DOMAIN = "acfqp:logical-occurrence:v1"
 ROUTE_ATTEMPT_DOMAIN = "acfqp:route-attempt:v1"
 REBUILD_POLICY_DOMAIN = "acfqp:rebuild-policy:v1"
 REBUILD_EVENT_DOMAIN = "acfqp:rebuild-event:v1"
+BOUNDED_REBUILD_OCCURRENCE_WORK_SUM_DOMAIN = (
+    "acfqp:bounded-rebuild-occurrence-work-sum:v1"
+)
 CAMPAIGN_OCCURRENCE_CLOSURE_DOMAIN = "acfqp:campaign-occurrence-closure:v1"
 CAMPAIGN_SUMMARY_DOMAIN = "acfqp:campaign-summary:v1"
 ACCESS_EVENT_LOG_DOMAIN = "acfqp:access-event-log:v1"
@@ -127,6 +130,15 @@ OCCURRENCE_FAILURE_TERMINAL_DOMAIN = (
 OCCURRENCE_CLOSURE_EVIDENCE_DOMAIN = (
     "acfqp:phase3e-occurrence-closure-evidence:v1"
 )
+MODEL_FAILURE_OCCURRENCE_CLOSURE_DOMAIN = (
+    "acfqp:model-failure-occurrence-closure:v1"
+)
+MODEL_FAILURE_PREPARATION_TRACE_DOMAIN = (
+    "acfqp:model-failure-preparation-trace:v1"
+)
+MODEL_FAILURE_PREPARATION_ACCOUNTING_DOMAIN = (
+    "acfqp:model-failure-preparation-accounting:v1"
+)
 OCCURRENCE_CONTROL_FAILURE_DOMAIN = (
     "acfqp:phase3e-occurrence-control-failure:v1"
 )
@@ -175,6 +187,69 @@ SEALED_EXECUTOR_EXECUTION_MERGE_PROOF_DOMAIN = (
 SEALED_EXECUTOR_FAILURE_MERGE_PROOF_DOMAIN = (
     "acfqp:sealed-executor-failure-merge-proof:v1"
 )
+RAPM_SOURCE_LEASE_DOMAIN = "acfqp:rapm-source-lease:v1"
+SELECTED_CONTINGENT_PLAN_DOMAIN = "acfqp:selected-contingent-plan:v1"
+PORTABLE_POLICY_BINDING_DOMAIN = "acfqp:portable-policy-binding:v1"
+PORTABLE_SOUND_BELLMAN_PROOF_DOMAIN = (
+    "acfqp:portable-sound-bellman-proof:v1"
+)
+ABSTRACT_PLAN_AUDIT_DOMAIN = "acfqp:abstract-plan-audit:v1"
+PLAN_FROZEN_EXACT_CACHE_BINDING_DOMAIN = (
+    "acfqp:plan-frozen-exact-cache-binding:v1"
+)
+VERIFIED_EXACT_INFEASIBILITY_SOURCE_DOMAIN = (
+    "acfqp:verified-exact-infeasibility-source:v1"
+)
+EXACT_CACHED_INFEASIBILITY_PROOF_DOMAIN = (
+    "acfqp:exact-cached-infeasibility-proof:v1"
+)
+EXACT_KERNEL_CONTEXT_IDENTITY_DOMAIN = (
+    "acfqp:exact-kernel-context-identity:v1"
+)
+EXACT_INFEASIBILITY_PROOF_PROFILE_DOMAIN = (
+    "acfqp:exact-infeasibility-proof-profile:v1"
+)
+EXACT_CACHE_PREFLIGHT_REQUEST_DOMAIN = (
+    "acfqp:exact-cache-preflight-request:v1"
+)
+EXACT_CACHE_PREFLIGHT_ENTRY_DOMAIN = "acfqp:exact-cache-preflight-entry:v1"
+EXACT_CACHE_PREFLIGHT_RESULT_DOMAIN = "acfqp:exact-cache-preflight-result:v1"
+MODEL_ONLY_ORCHESTRATION_BINDING_DOMAIN = (
+    "acfqp:phase3e-model-only-orchestration-binding:v1"
+)
+MODEL_ONLY_RESULT_DOMAIN = "acfqp:phase3e-model-only-result:v1"
+ABSTRACT_ONLY_OCCURRENCE_WORK_SUM_DOMAIN = (
+    "acfqp:abstract-only-occurrence-work-sum:v1"
+)
+MODEL_ONLY_OPERATIONAL_REQUEST_DOMAIN = (
+    "acfqp:model-only-operational-request:v1"
+)
+MODEL_ONLY_OPERATIONAL_EXECUTION_DOMAIN = (
+    "acfqp:model-only-operational-execution:v1"
+)
+GROUND_BINDING_AFTER_FAILED_AUDIT_DOMAIN = (
+    "acfqp:ground-binding-after-failed-audit:v1"
+)
+MODEL_ONLY_FAILED_PREFIX_ACCOUNTING_AUTHORITY_DOMAIN = (
+    "acfqp:model-only-failed-prefix-accounting-authority:v1"
+)
+DEPENDENT_POSTAUDIT_OBLIGATION_DOMAIN = (
+    "acfqp:dependent-postaudit-obligation:v1"
+)
+DEPENDENT_FRONTIER_DERIVATION_DOMAIN = (
+    "acfqp:dependent-frontier-derivation:v1"
+)
+DEPENDENT_TRANSACTION_BENCHMARK_PROFILE_DOMAIN = (
+    "acfqp:dependent-transaction-benchmark-profile:v1"
+)
+GROUND_DERIVED_TRANSACTION_TWO_FEASIBILITY_AUDIT_DOMAIN = (
+    "acfqp:ground-derived-transaction-two-feasibility-audit:v1"
+)
+RECORDED_WORK_TRANSPORT_DOMAIN = "acfqp:recorded-work-transport:v1"
+PHASE3E_BUNDLE_MANIFEST_DOMAIN = "acfqp:phase3e-bundle-manifest:v1"
+SELECTED_ROUTE_BUNDLE_MANIFEST_DOMAIN = (
+    "acfqp:selected-route-bundle-manifest:v1"
+)
 
 
 PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
@@ -211,6 +286,9 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         "route_attempt": ROUTE_ATTEMPT_DOMAIN,
         "rebuild_policy": REBUILD_POLICY_DOMAIN,
         "rebuild_event": REBUILD_EVENT_DOMAIN,
+        "bounded_rebuild_occurrence_work_sum": (
+            BOUNDED_REBUILD_OCCURRENCE_WORK_SUM_DOMAIN
+        ),
         "campaign_occurrence_closure": CAMPAIGN_OCCURRENCE_CLOSURE_DOMAIN,
         "campaign_summary": CAMPAIGN_SUMMARY_DOMAIN,
         "access_event_log": ACCESS_EVENT_LOG_DOMAIN,
@@ -275,6 +353,15 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "occurrence_failure_terminal": OCCURRENCE_FAILURE_TERMINAL_DOMAIN,
         "occurrence_closure_evidence": OCCURRENCE_CLOSURE_EVIDENCE_DOMAIN,
+        "model_failure_occurrence_closure": (
+            MODEL_FAILURE_OCCURRENCE_CLOSURE_DOMAIN
+        ),
+        "model_failure_preparation_trace": (
+            MODEL_FAILURE_PREPARATION_TRACE_DOMAIN
+        ),
+        "model_failure_preparation_accounting": (
+            MODEL_FAILURE_PREPARATION_ACCOUNTING_DOMAIN
+        ),
         "occurrence_control_failure": OCCURRENCE_CONTROL_FAILURE_DOMAIN,
         "occurrence_terminal_artifact": OCCURRENCE_TERMINAL_ARTIFACT_DOMAIN,
         "preselection_not_applicable_binding": (
@@ -308,6 +395,61 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "sealed_executor_failure_merge_proof": (
             SEALED_EXECUTOR_FAILURE_MERGE_PROOF_DOMAIN
+        ),
+        "rapm_source_lease": RAPM_SOURCE_LEASE_DOMAIN,
+        "selected_contingent_plan": SELECTED_CONTINGENT_PLAN_DOMAIN,
+        "portable_policy_binding": PORTABLE_POLICY_BINDING_DOMAIN,
+        "portable_sound_bellman_proof": PORTABLE_SOUND_BELLMAN_PROOF_DOMAIN,
+        "abstract_plan_audit": ABSTRACT_PLAN_AUDIT_DOMAIN,
+        "plan_frozen_exact_cache_binding": (
+            PLAN_FROZEN_EXACT_CACHE_BINDING_DOMAIN
+        ),
+        "verified_exact_infeasibility_source": (
+            VERIFIED_EXACT_INFEASIBILITY_SOURCE_DOMAIN
+        ),
+        "exact_cached_infeasibility_proof": (
+            EXACT_CACHED_INFEASIBILITY_PROOF_DOMAIN
+        ),
+        "exact_kernel_context_identity": EXACT_KERNEL_CONTEXT_IDENTITY_DOMAIN,
+        "exact_infeasibility_proof_profile": (
+            EXACT_INFEASIBILITY_PROOF_PROFILE_DOMAIN
+        ),
+        "exact_cache_preflight_request": EXACT_CACHE_PREFLIGHT_REQUEST_DOMAIN,
+        "exact_cache_preflight_entry": EXACT_CACHE_PREFLIGHT_ENTRY_DOMAIN,
+        "exact_cache_preflight_result": EXACT_CACHE_PREFLIGHT_RESULT_DOMAIN,
+        "model_only_orchestration_binding": (
+            MODEL_ONLY_ORCHESTRATION_BINDING_DOMAIN
+        ),
+        "model_only_result": MODEL_ONLY_RESULT_DOMAIN,
+        "abstract_only_occurrence_work_sum": (
+            ABSTRACT_ONLY_OCCURRENCE_WORK_SUM_DOMAIN
+        ),
+        "model_only_operational_request": MODEL_ONLY_OPERATIONAL_REQUEST_DOMAIN,
+        "model_only_operational_execution": (
+            MODEL_ONLY_OPERATIONAL_EXECUTION_DOMAIN
+        ),
+        "ground_binding_after_failed_audit": (
+            GROUND_BINDING_AFTER_FAILED_AUDIT_DOMAIN
+        ),
+        "model_only_failed_prefix_accounting_authority": (
+            MODEL_ONLY_FAILED_PREFIX_ACCOUNTING_AUTHORITY_DOMAIN
+        ),
+        "dependent_postaudit_obligation": (
+            DEPENDENT_POSTAUDIT_OBLIGATION_DOMAIN
+        ),
+        "dependent_frontier_derivation": (
+            DEPENDENT_FRONTIER_DERIVATION_DOMAIN
+        ),
+        "dependent_transaction_benchmark_profile": (
+            DEPENDENT_TRANSACTION_BENCHMARK_PROFILE_DOMAIN
+        ),
+        "ground_derived_transaction_two_feasibility_audit": (
+            GROUND_DERIVED_TRANSACTION_TWO_FEASIBILITY_AUDIT_DOMAIN
+        ),
+        "recorded_work_transport": RECORDED_WORK_TRANSPORT_DOMAIN,
+        "phase3e_bundle_manifest": PHASE3E_BUNDLE_MANIFEST_DOMAIN,
+        "selected_route_bundle_manifest": (
+            SELECTED_ROUTE_BUNDLE_MANIFEST_DOMAIN
         ),
     }
 )

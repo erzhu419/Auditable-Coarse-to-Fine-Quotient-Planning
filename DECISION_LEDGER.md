@@ -1,7 +1,7 @@
 # V0 Decision Ledger
 
 **Status:** normative source of truth  
-**Ledger version:** 1.0.1
+**Ledger version:** 1.2.0
 **Last updated:** 2026-07-21
 
 ## Authority
@@ -60,6 +60,12 @@ absent from a public checkout.
 
 | V0-032 | 2026-07-20 | Phase 3E accounted dynamic routing | FROZEN | Contract `1.0.0` registers profile `phase3e_accounted_dynamic_routing_v0`. It keeps the reusable-world-model objective of V0-028 primary and adds a result-blind, estimate-before-execute routing contract: complete native `WorkVectorV1` accounting is distinct from the eight-axis shared `ComparisonProfileV1`; only marginal local-attempt versus direct-fallback strict componentwise dominance may select local; all identities, caps, cardinalities, uppers, decisions, work and attestations are full domain-separated SHA-256 objects; trusted replay, not worker claims, derives budgets; negative causal outcomes forbid local; actual comparison is recomputed from exact native work; host full-solver replay is removed from operational 3B/3C/3D paths; terminal class/code, retry and denominator semantics are explicit. No scalar or break-even is frozen. Until the complete registry, migrations, typed verifiers, access-order guards, all failure paths and independent replay pass, official execution remains forbidden and both workload-economics and counter-completeness Gates remain `NOT_RUN`. | Resolves Phase 3E follow-up FQ1--FQ13 and supersedes the unresolved design choices in the Phase 3E preconstruction question packet; it does not relabel contracts 0.4--0.9 or their historical artifacts. | `WorkVectorV1`; `CounterRegistryV1`; `ComparisonProfileV1`; full content-ID registry; typed route/cap/cardinality/attestation/terminal schemas; Phase 3B--3D lane migration; Phase 3E consumer runner; access-order, failure-path, replay and Gate tests. |
 | V0-033 | 2026-07-21 | Phase 3E P0 accounting, continuation, executor and occurrence closure | FROZEN | The contract-`1.0.0` implementation profile gains four additive fail-closed rules. (1) Operational verification accounting is two-stage: seal an immutable common-prefix or route-execution core; freeze the exact semantic and registered nonsemantic verification obligations; materialize their operational suffix only from the bound source `CounterRecordV1` objects; and bind the reducer-correct aggregate, exact entries, attestations, manifest and receipt. Omission, padding, duplication, substitution, stale context, pre-freeze verification or evaluation-lane leakage is invalid. Terminal classification and the aggregate `WORK_VECTOR`/`ACTUAL_PROJECTION` replay it consumes are invocation-typed standalone evaluation work, so they certify a previously closed operational aggregate without recursively charging themselves into it. (2) Continuation planners may not supply authority for already executed work. The one-decision runner owns the selected-route `WORK_VECTOR` result, charges its verification once, and the occurrence controller transports that exact authority into transaction-2 or fresh-fallback authorization and the next common-prefix proof; cheaper same-shaped substitution fails. (3) The sealed profile rejects an already-instantiated route callable. A prepared decision binds an inert `ExecutorRecipeV1` and `RuntimeTreeManifestV1` content ID; only after typed route freeze may a single-use trusted factory resolve and byte-verify the preregistered runtime-tree CAS, create a private read-only lease, construct the selected executor and invoke it. Snapshot creation belongs to build/rebuild, never route preselection; live-checkout fallback, symlinks, extra files, altered bytes, foreign recipes, pre-freeze construction and reuse fail closed. (4) Every selected-route exception with one uniquely replayable native-work ownership chain is caught at occurrence scope, where all prior successful decision pairs and the exact failed common-prefix/partial-marginal pair are aggregated, replayed, and closed as one denominator-preserving `ATTEMPT_CLOSURE_NONCERTIFICATE.PROTOCOL_FAILURE` with typed terminal authority. Ambiguous mixed ownership fails closed outside this scoped closure until all-path failure accounting is implemented. The occurrence closure produces neither plan nor infeasibility credit. These four closures remove the previously listed scoped P0 implementation gaps but do not open official execution, scalar economics, or either Gate. | Additively resolves the four P0 implementation gaps recorded after V0-032 without weakening its FQ1--FQ13 rules, changing historical 0.x claims, or treating accounting infrastructure as strategic-abstraction/generalization evidence. | `phase3e_two_stage_accounting_v1`; invocation-typed semantic verification/counters; runner-owned selected-work authority and continuation adapters; `phase3e_sealed_executor_v1`; runtime-tree/recipe domain IDs; occurrence failure terminal/authority and aggregate replay; omission/padding/substitution/TOCTOU/pre-freeze/route-failure attack tests. |
+| V0-034 | 2026-07-21 | Phase 3E model-only RAPM consumer and sound-audit boundary | FROZEN | Query-time control now starts from an integrity-verified Phase 3C manifest and opens only a model/query source lease: `manifest -> model-only RAPM contingent plan -> rectangular exact-sound Bellman audit`. No ground domain, state, action, kernel, concretizer, frozen-world binder, local executor, or fallback executor may be opened while that audit is being constructed and replayed. `PASS` completes the model-only stage with `ground_binding_required=false`; only a typed `FAIL` may set `ground_binding_required=true`, and even that result authorizes rather than performs later ground binding. The frozen H1 control has `(U_R,L_R,U_F,regret,delta)=(1/32,1/32,0,0,0)` and `PASS`; the H2 recovery query has `(3/64,3/64,5099/10000,0,1/20)` and `FAIL`. This corrects the prior consumer path that bound all 192 ground states before the abstract audit. Both FQ7 roles are implemented: `ABSTRACT_AUDIT` strictly replays the exact model-only source/plan/proof/audit chain without full replanning, while exact-cache replay remains deliberately weaker, plan-frozen and valid only while retaining the opaque, typed `GROUND_FALLBACK/INFEASIBLE_CERTIFIED` semantic authority from a complete search; serialized cache bytes alone are neither a planner-free early lookup nor a durable cross-process exact proof. Every new source/plan/policy/proof/audit/cache/orchestration/result content ID is assigned through the central Phase 3E domain-tag registry. Official execution, scalar economics and both Gates remain locked. | Additively repairs the query-time ordering gap left by V0-031--V0-033 and implements the first manifest-to-model-only plan/audit producer. It does not weaken V0-021's identity rule, claim durable cached infeasibility, finish the FAIL-to-route package, or prove automatic model synthesis/generalization. | `phase3e_rapm_consumer_v1`; `portable_sound_audit_v1`; `phase3e_model_only_v1`; retained-runtime `phase3e_exact_cache_v1`; FQ7 semantic verifiers; central content-domain registry; H1/H2 goldens; poisoned-ground-import/access tests; canonical replay and identity-splice attacks. |
+| V0-035 | 2026-07-21 | Phase 3E verified model-first continuations | FROZEN | The V0-034 model-first boundary gains four additive, non-official continuations. (1) Ground binding is an opaque live capability opened only by retained, context-identical `ABSTRACT_AUDIT=FAIL` semantic authority; raw audit bytes, hashes, attestations, `PASS`, foreign results and foreign contexts are rejected before ground access. From that capability, the H2 selected plan and portable Bellman rows are translated directly into the Phase 3D causal estimate without replanning, rerunning the abstract auditor, calling the kernel, materializing a slice, compiling, or launching a worker; the unchanged golden authority is 16 frontier pairs, 8 strict-ancestor pairs and 24 allowed pairs. (2) H1 `PASS` can close as typed `PLAN_CERTIFICATE/ABSTRACT_CERTIFIED` only while retaining the exact `ABSTRACT_AUDIT=PASS` result and a replayable native `WorkVectorV1`; ground binding/execution is forbidden and zeros must be observed native records. (3) A fresh `python -I` producer performs the model-only plan/audit once, emits replayable native work, and the host does not replan, but its embedded blocker tuple makes it explicitly partial and non-official: abstract candidate/dominance families, global content-ID hash accounting, an honest failed-prefix route kind, sealed runtime tree/resource cap/event-trace authority, external audit authority, and complete visible mount/import-byte accounting remain incomplete. (4) A proof-derived synthetic benchmark converts a failed transaction-1 post-audit into exact failed obligations and a strictly deeper frontier, then exercises the real two-transaction occurrence state machine, distinct work vectors and reducer-correct occurrence aggregate; its cardinality/upper semantic-authority bridge is test-only, so it is not production ground-derived transaction-2 evidence. None of these changes proves automatic RAPM synthesis, unknown strategic quotient/predicate discovery, generalization, sealed production isolation, complete accounting, durable early cache, rebuild/retry, or economics. Official execution, scalar/break-even and both Gates remain locked. | Additively closes the verified `FAIL` handoff, no-replanning H2 estimate bridge, strict accounted H1 terminal boundary, and a state-machine-level dependent-transaction control left by V0-034. It narrows but does not remove the production obligations listed below. | `phase3e_ground_handoff_v1`; verified-model Phase 3D estimate bridge; `phase3e_abstract_pass_closure_v1`; `phase3e_model_only_executor_v1` and fresh isolated runtime; `phase3e_dependent_frontier_v1`; PASS/FAIL/raw-authority/foreign-context, no-replan/no-ground-access, native-work, process-failure, trace-forgery and two-transaction identity/aggregation tests. |
+| V0-036 | 2026-07-21 | Phase 3E model-failure route bridge and live-authority integrity | FROZEN | V0-035 is extended without changing the reusable-world-model objective or opening an official Gate. (1) The isolated H2 failure has its own `ABSTRACT_FAILED_PREFIX` WorkVector kind and retained two-stage accounting authority. That exact prefix and the exact ground handoff are translated without replanning into the frozen Phase-3D proof/frontier, production safe-chain cardinalities, marginal uppers and strict route decision, yielding one `PreparedPhase3ERunV1` and one inert selected post-freeze factory; the nonselected route is rejection-only. Preparation remains explicitly non-official until ground-handoff, route-construction, abstract-audit event-grain and global content-hash work are natively charged, and those blocker labels may not be removed. (2) A fixed seven-role independent bundle replays only the model-failure prefix from an independently loaded Phase-3C source snapshot with a final TOCTOU recheck; it cannot claim selected-route, terminal or occurrence closure. (3) Planner-free exact-cache preflight derives structural/query/build/kernel/manifest/threshold/proof/search identities from verified sources and distinguishes `IDENTICAL_MATCH/NO_MATCH/INVALID`, but it always leaves `authorizes_infeasibility=false` until a durable kernel-bound complete-search proof payload and independent verifier exist. (4) Runtime authority is exact live capability, not a module token copied inside a frozen dataclass. Semantic/protocol results, prepared estimates, transaction/fallback/local provenance, occurrence/campaign/cache/workload handles retain an internal mint, exact member identity and replayed fingerprint; copy, replace, serialization, field substitution and cross-role reuse fail closed. These are trust-boundary and control-flow closures, not automatic RAPM synthesis, unknown strategic abstraction discovery, cross-domain generalization, counter completeness or economics. | Supersedes V0-035's obsolete statements that the honest failed-prefix kind and FAIL-to-prepared consumer were missing, and repairs a general copied-token authority flaw discovered during adversarial review. It does not erase V0-035's partial-runtime caveats or upgrade its synthetic transaction-2 control. | `phase3e_model_failure_consumer_v1`; `phase3e_bundle_v1`; planner-free `phase3e_exact_cache_v1`; prepared-estimate full-field mint and post-freeze derivative; live semantic/protocol and continuation authorities; copy/replace/cross-role/TOCTOU/identity-splice attacks; nonofficial-blocker regression tests. |
+| V0-037 | 2026-07-21 | Phase 3E scoped local closure, preparation accounting and transport boundary | FROZEN | V0-036 gains four additive, non-official closures. (1) The canonical H2 model-failure preparation has an immutable native event trace with exactly 4 causal-candidate evaluations, 18 protocol checks, 3 integrity checks and 5 cap checks. Its incremental WorkVector is separate from the failed-prefix source, and its reducer-derived aggregate is retained only as post-core evidence with `occurrence_charge_status=RETAINED_POST_CORE_NOT_YET_OCCURRENCE_CHARGED`; content-ID hash invocations, I/O and accounting-materialization self-work are explicitly excluded, so neither vector may be represented as an occurrence charge. (2) The selected LOCAL execution now closes through scoped `PLAN_CERTIFICATE/LOCAL_GROUND_RECOVERY` terminal and logical-occurrence aggregation. A fixed 54-role selected-route bundle independently replays canonical bytes, role/path topology, source lease, typed IDs, preparation trace/work, route-upper arithmetic and strict selection, access/freeze order, reducer merges, selected-upper compliance, terminal and occurrence topology. Its highest claim is exactly `VERIFIED_LOCAL_ROUTE_ACCOUNTING_AND_TOPOLOGY`; transport bytes cannot mint live semantic authority or a semantic plan certificate because the local ground proof inputs and post-audit replay inputs are not serialized. (3) Bounded rebuild/new-epoch/single-retry objects and work aggregation are control-plane mechanics only; they do not prove a semantically authorized operational rebuild/retry campaign. (4) The canonical H2 transaction 1 now ends in sound `POST_AUDIT=CERTIFIED`, so the failed-post-audit prerequisite for transaction 2 is false and a real transaction 2 is unreachable on that fixture. Production transaction-2 evidence therefore requires a separately registered dependent-horizon fixture whose genuine ground post-audit fails and yields a distinct deeper frontier and fresh semantic authorities; the existing proof-derived synthetic transaction-2 remains only a state-machine control. These closures do not demonstrate automatic RAPM synthesis, unknown strategic abstraction discovery, cross-domain generalization, scalar economics or counter completeness. | Supersedes V0-036's statements that model-failure terminal/occurrence and selected-route bundle replay were wholly absent, and narrows its generic transaction-2 blocker to a fixture-design obligation. It does not remove the global hash/I/O, durable proof, semantic-transport, workload or synthesis blockers. | `phase3e_model_failure_preparation_accounting_v1`; `phase3e_model_failure_occurrence_v1`; `phase3e_selected_route_bundle_v1`; bounded rebuild/retry control objects; exact event-count/reducer/noncharging tests; fixed-role, source-splice, TOCTOU and resigned-attack bundle tests; canonical-H2 transaction-2 feasibility audit. |
+| V0-038 | 2026-07-21 | Automatic feature-realized reusable LMB RAPM vertical slice | FROZEN | Register implementation profile `lmb_feature_realized_reusable_rapm_v1`. Its production API accepts exactly an exact `LMBKernel` and frozen `SuiteBuildCoverage`; it internally constructs the complete canonical eleven-feature registry and bound spec, so a caller cannot encode query bits by choosing a feature subset. Restricted registries run only through the explicit non-production negative-control API and cannot mint a production claim. Production exhausts all `2^11=2048` subsets under cap 4096, generates exact rational adjacent-value midpoint `<=` atoms, and realizes the complete exact behavioural target. The 25-state golden selects `action_count`, thresholds `3/2,5/2`, and `25 -> 5` total / `18 -> 3` active cells with singleton envelope. Registry/spec/certificate constants and independent implementation digest are frozen; parsers require canonical JSON types, runtime verification rejects nested proxy/type substitution, and independent replay rebuilds target partition/trace/adapter/model, candidate trace/tree/certificate, realized quotient and portable model/registry. Negative controls support both `TARGET_SEPARATED_FEATURE_ALIASED` and `TARGET_MERGED_FEATURE_SEPARATED`; the distinct 36-state seed-0 control has target 11/action-count 7 cells and both witness directions. One portable RAPM serves two fresh-process in-coverage QuerySpecs. This is automatic selection inside a fixed grammar under an exact ground behavioural target, not target-free/oracle-free unknown-quotient or feature invention, learning, scale/generalization, or a full Gate. All official/scalar/Gate locks remain unchanged. | Repairs the original caller-selected-registry loophole and transport/runtime/source-anchor weaknesses without changing the 25-state positive result or V0-038's exact-target-dependent claim. | `feature_synthesis.py`; canonical two-input production API; explicit negative-control API/verifier; frozen implementation digest; exact transport/runtime graph validation; bidirectional witnesses; deterministic/golden/fresh-process/attack tests. |
+| V0-039 | 2026-07-21 | Direct target-free exact homomorphic LMB synthesis | FROZEN | Register construction profile `lmb_direct_exact_homomorphism_v1` with `execution_profile=production_full_grammar_v1`. Its two-input production API internally freezes the full eleven-feature state grammar and one-feature action grammar (`completes_match`) and enumerates all `2^11*2=4096` state/action-subset candidates. Construction imports neither V0-038 nor the behavioural target builder and accepts no `BehavioralActionSignature`, behavioural quotient target, QuerySpec, J0, Q/value/policy, planning or held-out channel. For each candidate it directly checks label-set equality in every state cell, identical raw one-step reward/failure/termination/successor signatures before any within-label action mixture, and cross-state same-label signature equality against the exact ground kernel. Selection minimizes state-feature count, action-feature count, split count, state names, action names and partition ID. The 25-state golden returns `EXACT_DIRECT_HOMOMORPHISM`, selects state `action_count`, action `completes_match`, thresholds `3/2,5/2`, compresses total/active `25/18 -> 5/3`, emits four abstract entries and a singleton envelope. The complete trace records 4096 candidates and typed `LABEL_SET_MISMATCH`, `WITHIN_STATE_ACTION_ALIAS` and `CROSS_STATE_LABEL_DYNAMICS_MISMATCH` evidence. Restricted exact controls return `RESTRICTED_CONTROL_EXACT_FOUND` with no model/certificate; incomplete grammar returns `NO_EXACT_DIRECT_HOMOMORPHISM`; insufficient cap returns `CANDIDATE_CAP_EXHAUSTED` with `CANDIDATE_CAP_INSUFFICIENT`. Controls have a separate role-locked verifier; the production verifier rejects restricted-control provenance, incomplete canonical registries and duck-typed result objects. A fresh process still constructs after poisoning the behavioural module; evaluation-only behavioural comparison later agrees exactly. Artifacts, frozen state/action implementation digests, transport/runtime types, source imports and independent full rebuild are attacked; one unchanged portable RAPM serves two fresh-process in-coverage queries. The claim is direct exact homomorphism synthesis inside fixed human state/action grammars and exact finite coverage. It is not feature invention, partial/learned dynamics, unknown-domain/scalable discovery, held-out/cross-domain generalization or a full Phase 3/3E/economics/counter Gate. All official/scalar/Gate locks remain unchanged. | Removes V0-038's construction-time behavioural target/signature dependence for this one LMB coverage while retaining its fixed-grammar, exact-kernel scope and without relabelling V0-038 or any Phase 3E result. | `direct_feature_synthesis.py`; state/action registries and semantic adapter; direct obligation/witness/trace/certificate schemas; canonical producer and role-separated controls; independent production/control verifiers; poison-import, source-digest, transport/proxy/resign, golden, two-query and evaluation-only comparison tests. |
 
 ## V0-027 registered construction slice
 
@@ -860,6 +866,199 @@ WORKLOAD_ECONOMICS_GATE_NOT_RUN
 COUNTER_COMPLETENESS_GATE_NOT_RUN
 ```
 
+## V0-034 model-only RAPM consumer and sound-audit authority boundary
+
+V0-034 repairs the upstream order of the Phase 3E consumer.  Query-time work now begins
+by verifying the frozen Phase 3C bundle topology, manifest bytes, semantic hash,
+`BuildEpoch`, portable RAPM and the registered portable query.  The admitted object is
+a content-addressed read-only model/query source lease.  Planning, contingent-policy
+selection, rectangular action-realization coverage, unrestricted reward-upper
+recursion, selected-policy reward-lower/failure-upper recursion and audit replay all
+operate on the serialized portable RAPM and query alone.
+
+The resulting control flow is normative:
+
+```text
+verified manifest
+  -> model-only RAPM/query lease
+  -> selected contingent plan
+  -> rectangular exact-sound Bellman proof
+  -> AbstractPlanAuditV1
+       PASS -> ground_binding_required=false
+       FAIL -> ground_binding_required=true, but no ground binding yet
+```
+
+Before the audit outcome is frozen, this chain may not import or instantiate the ground
+domain, ground states/actions, kernel, concretizer, frozen Phase 3C world binder, local
+executor or fallback executor.  A `FAIL` is the first artifact that may authorize a
+later ground namespace lease; it does not itself materialize a frontier, compile a
+capability, run a worker, stitch a patch, post-audit a hybrid plan or invoke fallback.
+This is the first implementation slice that directly enforces the project's central
+sentence at the query-time boundary.  In particular, it corrects the previous helper
+path that verified a manifest and then bound all 192 ground states before deciding
+whether the complete abstract plan already certified.
+
+The canonical model-only goldens are:
+
+| Query | Nominal proposal `(reward,failure)` | Sound audit `(U_R,L_R,U_F,regret,delta)` | Outcome | Ground boundary |
+|---|---:|---:|---|---|
+| `g2048.safe_chain.h1.delta0.abstract_control` | `(1/32,0)` | `(1/32,1/32,0,0,0)` | `PASS` | remains closed |
+| `g2048.safe_chain.h2.delta05.local_recovery` | `(3/64,21187/80000)` | `(3/64,3/64,5099/10000,0,1/20)` | `FAIL` | later binding authorized, not executed |
+
+Both previously registered FQ7 roles are now implemented, but with different authority
+strength.  `ABSTRACT_AUDIT` accepts only strict semantic replay of the exact model-only
+source, selected plan, Bellman proof and audit bindings; its verifier does not rerun the
+full contingent planner or open ground semantics.  `EXACT_CACHED_INFEASIBILITY` accepts
+only exact identity replay against a retained, typed
+`GROUND_FALLBACK/INFEASIBLE_CERTIFIED` result whose complete-search semantic authority
+is still live.  The latter profile is intentionally plan-frozen because the current
+route/attestation context requires a real `selected_plan_id`.  Its serialized source and
+cache-proof objects are content-addressed transport, not self-sufficient authority:
+losing the retained typed runtime source invalidates the lookup.  Therefore this slice
+must not be described as V0-021's planner-free early cache, a durable cross-process
+infeasibility proof, or a reason to invent a dummy selected plan.
+
+All newly introduced IDs use registered central domain tags, including RAPM source
+lease, selected contingent plan, portable policy binding, portable sound Bellman proof,
+abstract audit, plan-frozen cache binding, verified exact-infeasibility source, cached
+proof, model-only orchestration binding and model-only result.  Same JSON under another
+role/domain is non-interchangeable, and model-only parent identities are constructed
+byte-for-byte compatibly with the later ground binder so a `FAIL` cannot silently change
+structural, query, build-epoch, manifest or portable-RAPM identity.
+
+This slice establishes a real reusable-model-first control boundary; it does not show
+that the RAPM was synthesized automatically, that unknown strategic predicates or
+quotients were discovered, that the representation generalizes across domains, or that
+the full Phase 3E occurrence is operationally complete.  Remaining work is explicitly:
+
+1. run the contingent planner in an isolated, native-accounted operational lane and
+   close `PASS` as a fully accounted typed `ABSTRACT_CERTIFIED` occurrence terminal;
+2. transform the exact `FAIL` result into the complete ground-bound
+   `PreparedPhase3ERunV1` package and execute the selected Phase 3E route;
+3. add a planner-free preflight identity and durable independently replayable exact
+   infeasibility source for the V0-021 early-cache rule;
+4. execute a real dependent transaction-2 benchmark with a deeper frontier derived
+   from the failed transaction-1 post-audit;
+5. implement operational rebuild/retry and the remaining terminal branches;
+6. wire all-path native hash/I/O/protocol accounting; and
+7. complete the independent manifest-level full-bundle verifier.
+
+Consequently the locked state is unchanged:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+```
+
+## V0-035 verified model-first continuations
+
+V0-035 preserves the project's central direction verbatim:
+
+> **自动合成一个可复用的抽象世界模型，使多步计划能够主要在该模型中完成；系统只在抽象模型无法以给定价值与约束误差认证当前 contingent plan 时，才局部恢复 ground distinctions。**
+
+The model-only result is now connected to both legitimate continuations without
+weakening that order.  On `FAIL`, opening the ground namespace requires the retained
+`SemanticVerificationResultV1` for the exact `ABSTRACT_AUDIT=FAIL`, not a serialized
+audit, its content ID, a detached attestation, or a caller assertion.  The authority,
+model-only result, source lease, selected plan, Bellman proof, route context,
+structural/query/BuildEpoch/manifest/RAPM identities and later frozen world must all
+match.  `PASS`, foreign authority and spliced identity chains fail before the ground
+binder is imported or called.  The resulting ground lease is deliberately opaque and
+process-local.
+
+The H2 continuation then decodes the already frozen contingent plan and translates the
+portable sound-proof rows into the existing Phase 3D `AbstractPolicyAudit` boundary.
+It does not rerun the portable planner or abstract auditor and, during estimate
+preparation, does not call ground actions/transitions, materialize an authorized slice,
+compile a capability or launch a local worker.  Causal-family/frontier construction is
+therefore still a proof-metadata estimate.  It reproduces the frozen H2 root bounds
+`(U_R,L_R,U_F,regret)=(3/64,3/64,5099/10000,0)`, four reachable policy-bound rows, and
+the Phase 3D capability cardinalities:
+
+```text
+frontier_state_actions = 16
+reverse_dependency_state_actions = 8
+allowed_state_actions = 24
+```
+
+This is a verified `FAIL -> causal estimate` bridge, not yet the complete
+`estimate -> PreparedPhase3ERunV1 -> selected route` production consumer.
+
+On H1 `PASS`, a separate strict closure can emit
+`PLAN_CERTIFICATE/ABSTRACT_CERTIFIED` and close the logical occurrence only when it
+retains the context-identical `ABSTRACT_AUDIT=PASS` semantic result and exact native
+`RecordedWorkV1`.  The official counter registry, comparison and actual-projection
+profiles replay that work; route-inapplicable local, fallback and rebuild leaves are
+explicit observed native zeros rather than missing values.  Ground binding and route
+executors are rejection-only inputs at this boundary.  Work-vector and terminal
+classification verification remain standalone evaluation work, while the occurrence
+sum references the operational model-only vector.
+
+The first native producer for that closure runs the portable planner and sound audit
+once in a fresh `python -I` process and returns a canonical event trace, result and
+replayable `WorkVectorV1`; the host validates transport and bindings without replanning.
+This producer remains explicitly partial and non-official.  The following exact
+counter-coverage blocker tuple is part of its result and may not be hidden or weakened:
+
+```text
+ABSTRACT_CANDIDATE_AND_DOMINANCE_FAMILIES_NOT_REGISTERED
+CONTENT_ID_HASH_INVOCATIONS_NOT_GLOBALLY_HOOKED
+FAILED_MODEL_ONLY_PREFIX_HAS_NO_DISTINCT_ROUTE_KIND
+RUNTIME_TREE_AND_RESOURCE_CAP_NOT_SEALED
+WORKER_EVENT_TRACE_HAS_NO_SEALED_ATTESTATION
+WORKER_RESULT_REQUIRES_EXTERNAL_SEMANTIC_AUDIT_AUTHORITY
+VISIBLE_RUNTIME_MOUNT_AND_IMPORT_BYTES_NOT_FULLY_ACCOUNTED
+```
+
+In particular, `python -I` is fresh-process isolation, not a claim of the sealed
+runtime-tree/CAS, mount namespace, resource cap and trace-attestation contract already
+required elsewhere in Phase 3E.  A sound model-only `FAIL` is preserved as a
+noncertificate result and trace, but no false `ABSTRACT_ONLY_CERTIFICATE` WorkVector is
+minted while the registry lacks an honest failed-prefix route kind.
+
+Finally, the profile `phase3e_dependent_postaudit_transaction_two_v0` establishes a
+proof-derived dependent-transaction regression.  Exact reward/risk/regret failure
+obligations are extracted from the failed transaction-1 post-audit and content-addressed
+into a distinct, deeper frontier; old-frontier upper and decision reuse are rejected.
+The test executes the real occurrence runner and route executors through transaction
+indices `(1,2)`, retains distinct first-failed and second-successful native WorkVectors,
+and derives one reducer-correct occurrence aggregate.  The frontier selector reads only
+immutable proof artifacts and rational bounds, not a kernel or J0.  However, the
+synthetic cardinality and route-upper inputs still use a test-only semantic-authority
+bridge.  This proves the continuation state machine and work aggregation, not a
+production semantic-authority, ground-derived dependent transaction 2.
+
+The concrete remaining official obligations are:
+
+1. complete all-path native, content-ID hash, I/O and runtime-mounted-byte accounting,
+   and replace the partial model-only process with sealed runtime-tree/cap/trace
+   authority;
+2. register and charge an honest model-only failed-prefix route kind before carrying its
+   work into route selection;
+3. produce transaction 2 from a real failed ground post-audit with production
+   cardinality, upper and route-decision semantic authorities;
+4. implement rebuild/retry and every remaining terminal/failure branch with full work;
+5. add a planner-free preflight identity and durable independently replayable exact
+   infeasibility proof;
+6. connect the verified H2 estimate through `PreparedPhase3ERunV1`, route selection and
+   selected execution without duplicate planning/auditing; and
+7. complete the independent manifest-level full-bundle verifier.
+
+Automatic RAPM synthesis, unknown strategic abstraction discovery and cross-domain
+generalization remain subsequent scientific work after this infrastructure is honest;
+this slice must not be cited as their evidence.  The lock values remain:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+```
+
 ## Implementation defaults (not new scientific claims)
 
 These defaults select the first Phase 0.5 fixtures without changing the benchmark families: G2048 uses `g2048_select_canonical_2x2_v0` with query horizon 1; LMB starts with the smallest canonical `N=6, T=2, K=3, D=1, H=6` generated layout. The deliberately coarse LMB initializer separates terminal status and `remaining_object_count<=5/2`. The preregistered mandatory refinements are G2048 `rank_sum<=3` and LMB `action_count<=3/2`; they are domain atoms for the shared-algorithm slice, not evidence for a shared-grammar claim. A run may use another canonical tiny fixture, but its full structural parameters, initial partition, and grammar version belong in the build key and manifest. The implemented `g2048_select_safe_chain_2x2_v0` exact-known-symmetry positive control uses the V0-024 orbit quotient and no CEGAR split. The V0-026 aliased profile reuses that ground structure and query but deliberately replaces its abstraction/action profile; it is a full-V0 refinement positive control, not a retroactive replacement for either Phase 0.5 fixture or the exact-`D4` run. An individual run becomes positive-claim eligible only after its profile-specific bundle verifies.
@@ -884,6 +1083,408 @@ accepted split, iteration record, output-stage proof, and final certificate.
 | V0-RISK-005 | 2026-07-20 | General DirectBad causal minimality | RESOLVED BY V0-030 | `DirectBad` is now restricted to Bellman residuals in the actually failed value/risk channel, and raw successor TV alone is insufficient. It does not yet propagate certificate slack or an explicit active worst-case derivation, so a large proof DAG may authorize a relevant residual that has no material contribution to the root deficit. | V0-030 adds exact slack, all tied active extremizers, inclusion-minimal causal families, cap status and inactive/rare/tied-branch regressions. One transaction is restricted to the earliest antichain; deeper recovery requires re-audit and a new transaction. | `CausalProofCircuit`; causal-family search; activation/slack witnesses; locality verifier. |
 | V0-RISK-006 | 2026-07-20 | Boundary capability minimization | RESOLVED BY V0-030 | The isolated worker receives no ground identities, payloads, RAPM, kernel, coverage, J0, or accounting, but its redacted boundary still contains every selected-policy abstract realization row needed by the current exact recursion rather than a proven minimum set of handoff scalar bounds. | V0-030 replaces the worker boundary with a finite-domain-minimal sparse affine capability plus trusted equivalence/deletion evidence. The claim is representation-relative, not information-theoretic. | `SparseRobustAffineCapability`; trusted compiler; strict worker parser; scalar-exit and redaction attacks. |
 
+## V0-036 model-failure route bridge and live-authority rule
+
+V0-036 preserves the central objective verbatim: the reusable RAPM is the primary
+planning surface, and ground distinctions are opened only after a complete
+contingent plan fails its value/risk proof.  The H2 path is now:
+
+```text
+verified Phase-3C source snapshot
+  -> isolated model-only plan and exact-sound audit
+  -> ABSTRACT_FAILED_PREFIX with retained two-stage work authority
+  -> opaque ground handoff
+  -> no-replanning proof/frontier translation
+  -> verified local/fallback cardinalities and uppers
+  -> strict marginal route decision
+  -> exactly one selected post-freeze executor factory
+```
+
+This is a real control-flow bridge, not an official accounting claim.  The
+prepared consumer must retain, verbatim, the following nonempty blocker set:
+
+```text
+GROUND_HANDOFF_OPERATIONAL_WORK_NOT_NATIVE_ACCOUNTED
+MODEL_FAILURE_ROUTE_PREPARATION_OPERATIONAL_WORK_NOT_NATIVE_ACCOUNTED
+ABSTRACT_AUDIT_REPLAY_NOT_EVENT_GRAIN_ACCOUNTED
+CONTENT_ID_HASH_INVOCATIONS_NOT_GLOBALLY_HOOKED
+```
+
+Changing that set, or setting `official_execution_allowed=true`, invalidates the
+authority before route execution.  A host restriction that prevents the selected
+bubblewrap worker from opening its namespace is a failed-route/noncertificate event,
+not evidence that the selected route completed.
+
+The independent H2 bundle is deliberately prefix-scoped.  Its manifest contains a
+fixed role set, independently reloads the Phase-3C source bytes, rejects missing,
+extra, duplicated, cross-role, symlink or traversal entries, and performs a final
+source recheck.  It reports selected route, terminal and occurrence as `NOT_RUN`.
+Likewise, exact-cache preflight is an identity authority only: even an identical
+eight-coordinate match cannot certify infeasibility until the cache stores a durable
+complete-search proof and an independent verifier replays it.
+
+Finally, a private module token is no longer sufficient runtime authority.  Every
+authority-bearing result that can open ground state, select/continue a route, classify
+a terminal, retry a campaign, or seed a cache must be the exact internally minted live
+instance.  The mint binds all downstream-consumed members and a canonical fingerprint;
+the consumer rechecks both.  A dataclass copy that happens to retain a token, an
+equal-content replacement object, an in-place mutable-document change, or a cross-role
+attestation is inert.  This rule does not alter serialized artifact schemas: serialized
+bytes remain evidence that a fresh verifier must replay, never a transportable live
+capability.
+
+The current unresolved official obligations are exactly the runner's published
+`UNRESOLVED_OFFICIAL_EXECUTION_OBLIGATIONS`: all-path native hash/I/O/runtime
+instrumentation, sealed model-only cap/trace authority, native model-failure route
+preparation accounting, production ground-derived transaction two, rebuild/retry and
+remaining terminals, model-failure terminal/occurrence closure, durable exact proof
+payload/verifier, and selected-route complete-bundle replay.  The synthetic dependent
+transaction remains a state-machine control only.  Automatic RAPM synthesis, unknown
+strategic abstraction discovery, cross-domain generalization and learned proposals
+remain later research stages rather than claims inferred from this infrastructure.
+
+All locks remain:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+```
+
+## V0-037 scoped local closure, preparation accounting and transport rule
+
+The project objective remains verbatim:
+
+> **自动合成一个可复用的抽象世界模型，使多步计划能够主要在该模型中完成；系统只在抽象模型无法以给定价值与约束误差认证当前 contingent plan 时，才局部恢复 ground distinctions。**
+
+V0-037 closes a bounded H2 control/accounting slice; it does not claim that the
+system has automatically synthesized that world model.  The exact canonical H2
+preparation trace records:
+
+```text
+local.causal_candidate_evaluations = 4
+common.protocol_checks = 18
+common.integrity_checks = 3
+control.cap_checks = 5
+```
+
+Those counts form a separate incremental native WorkVector.  Its reducer-derived
+aggregate with the already observed failed prefix is retained as diagnostic/post-core
+evidence.  Both objects are bound by
+`occurrence_charge_status=RETAINED_POST_CORE_NOT_YET_OCCURRENCE_CHARGED`; the original
+failed-prefix WorkVector remains the sealed common core.  Content-ID hash invocations,
+I/O/mount work, ground-handoff construction and accounting materialization/sealing are
+outside this trace.  Therefore this partial native trace neither removes the broad
+V0-036 preparation blocker nor permits the incremental or aggregate WorkVector to be
+inserted into the current occurrence total.
+
+For the registered successful LOCAL path, the scoped runner now produces a typed
+`PLAN_CERTIFICATE/LOCAL_GROUND_RECOVERY` terminal and a reducer-replayed logical-
+occurrence aggregate.  Its independent selected-route transport has exactly 54 fixed
+roles.  It reopens the Phase-3C source, validates canonical bytes and all fixed
+role/schema/domain/path bindings, replays the preparation trace and native work,
+recomputes cardinality-bound route uppers and strict marginal selection, verifies
+access/freeze order, factory/delegate and verification-suffix merges, selected-upper
+compliance, terminal topology and occurrence references, and performs final immutable
+read-set checks.  Its normative success label is only:
+
+```text
+VERIFIED_LOCAL_ROUTE_ACCOUNTING_AND_TOPOLOGY
+```
+
+It must also state `semantic_certificate_status=NOT_MINTED_FROM_TRANSPORT`.  The bundle
+does not serialize the complete local ground-proof inputs or the independent post-audit
+ground replay needed to recreate live semantic authority.  A transport verifier may
+therefore verify the terminal artifact's topology but may not mint or independently
+assert its semantic plan certificate.
+
+The bounded rebuild/new-`BuildEpoch`/single-retry path now exercises identity, attempt,
+budget and reducer-correct occurrence mechanics.  It remains a control-plane profile:
+it does not demonstrate a semantically authorized operational rebuild, rebuilt RAPM,
+or successful retry certificate.  Likewise, the canonical H2 LOCAL transaction 1 now
+ends at sound `POST_AUDIT=CERTIFIED`.  Under the frozen state machine, transaction 2 is
+permitted only after a failed post-audit; it is therefore genuinely unreachable on
+this fixture rather than merely unimplemented.  A production transaction-2 Gate needs
+a separately registered dependent-horizon fixture that produces a real ground
+post-audit failure, a distinct deeper frontier, fresh cardinality/upper authorities and
+a new selected execution.  The proof-derived synthetic transaction-2 remains only a
+control of state-machine and aggregation mechanics.
+
+The remaining work still includes all-path native content-hash and I/O/runtime
+instrumentation, durable exact-infeasibility proof replay, serialized semantic proof
+inputs for an independent certificate verifier, a genuine dependent-horizon
+transaction-2 fixture, operational rebuild semantics, the full workload and the
+automatic RAPM-synthesis/generalization research program.  Therefore:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+```
+
+## V0-038 automatic feature-realized reusable LMB RAPM rule
+
+V0-038 is the first narrow vertical slice that realizes the central objective through
+automatic selection inside a human-readable feature language:
+
+> **自动合成一个可复用的抽象世界模型，使多步计划能够主要在该模型中完成；系统只在抽象模型无法以给定价值与约束误差认证当前 contingent plan 时，才局部恢复 ground distinctions。**
+
+The registered implementation profile is
+`lmb_feature_realized_reusable_rapm_v1`.  Its public construction boundary is exactly:
+
+```text
+synthesize_lmb_feature_rapm_v1(
+    kernel: LMBKernel,
+    coverage: SuiteBuildCoverage,
+)
+```
+
+This production entry point internally constructs the complete canonical eleven-
+feature `FeatureRegistryV1` and its coverage-bound `SynthesisSpecV1`.  It accepts no
+registry/spec argument, so a caller cannot condition the production outcome on a
+query bit by choosing a subset that happens to return exact versus nonexact.  Restricted
+grammars are available only through
+`synthesize_lmb_feature_rapm_negative_control_v1`; that explicitly non-production API
+has its own verifier and cannot mint the production claim.
+
+The frozen coverage may have been prepared from registered training queries, but no
+query object crosses this synthesis boundary.  The allowed channels are the exact
+one-step transition kernel, frozen structural kernel, frozen training coverage, and
+registered current-state features.  The forbidden channels are `QuerySpec`, J0,
+Q-values, value/frontier, policy and held-out data.  The module may not import the
+planning, J0/Q/value/policy, held-out/evaluation-oracle or Phase-3A construction layers
+to recover those channels indirectly.  The exact ground-model behavioural oracle
+implemented by `build_exact_behavioral_quotient` is explicitly allowed and is the
+realization target; V0-038 has not removed that target/signature dependence.
+
+The canonical LMB V1 feature registry contains exactly these eleven sorted names:
+
+```text
+action_count
+branching_count
+buffer_occupancy
+capacity_slack
+capacity_slack_count
+immediate_release_liquidity
+match_debt_mean
+match_debt_min
+match_debt_nonzero_types
+max_match_debt
+remaining_object_count
+```
+
+Every definition binds an exact-rational value kind, semantic description, semantics
+ID, threshold-generator ID and implementation-source SHA-256.  The frozen V1
+registry/spec/certificate schemas, domains, information-channel lists, target,
+generator, ordering, selector, claim and lock constants are strict content-addressed
+authorities; coherent re-signing cannot substitute them.  The adapter implementation
+digest is also anchored to an independently frozen V1 constant and checked before a
+registry can be created.  Typed-document parsers preserve JSON list/string distinctions
+instead of relying on Python sequence coercion, while the result and independent
+verifier require exact nested runtime types for the target, partition, quotient,
+portable build/registry/model and certificate.  Transport-equivalent proxy objects
+therefore cannot smuggle altered runtime behaviour behind honest bytes.  V1 begins
+from a terminal-
+kind base partition (`active`, `failure`, `success`) and exhaustively enumerates all
+feature subsets in increasing feature count and lexicographic feature-name order.  The
+full registry therefore produces exactly `2^11=2048` candidates, below the frozen
+`candidate_cap=4096`.  For each feature in a subset, V1 sorts all distinct values on
+active covered states and creates one reduced-rational `feature <= midpoint` atom for
+every adjacent pair.  Those atoms are applied in canonical order to every splittable
+active cell; empty branches are not recorded.
+
+The target is the complete exact controlled one-step behavioural quotient over the
+same frozen coverage.  It is query-neutral but still an exact ground-behaviour
+realization obligation, not a learned or partial dynamics target.  A candidate is exact
+only when its complete partition signature equals that target.  Among exact candidates
+the selector minimizes, in order:
+
+```text
+feature_count
+applied_split_count
+lexicographic selected feature names
+final_partition_id
+```
+
+The canonical fixture must select `selected_features=(action_count,)`, generate
+thresholds `(3/2,5/2)`, apply two splits, and reproduce:
+
+```text
+ground states -> quotient cells          25 -> 5
+active ground states -> active cells     18 -> 3
+target_partition_id == realized_partition_id
+sound envelope is singleton
+```
+
+The feature registry, synthesis spec, predicate atoms/tree, candidates/witnesses,
+complete candidate trace and realization certificate use domain-separated full
+SHA-256 identities; the resulting portable RAPM keeps its ordinary `rapm:<sha256>`
+identity.  Independent verification reruns the full registry-bound enumeration and
+rebuilds the behavioural target partition, refinement trace, semantic adapter and
+quotient model; it also rebuilds the candidate trace, predicate tree, certificate,
+realized partition/quotient, and portable model plus portable registry.  Thus coherent
+re-signing of a truncated trace, changed semantics/selection rule, target
+trace/adapter/model, realized partition/model, portable registry, Gate field or claim
+scope fails replay.
+
+If the registered grammar cannot realize the target, V1 returns
+`NO_EXACT_FEATURE_REALIZATION`.  It binds the selected failed candidate and a typed
+partition-mismatch pair witness, and publishes no predicate tree, realized partition,
+quotient model, portable RAPM or certificate.  The witness vocabulary is bidirectional:
+`TARGET_SEPARATED_FEATURE_ALIASED` means the feature partition merges states separated
+by the target; `TARGET_MERGED_FEATURE_SEPARATED` means it separates states merged by
+the target.  Oversplitting is therefore a diagnosed negative realization, not an
+invariant failure and never a positive exact result.
+
+A separate negative control must not be confused with the 25-state golden above.  It
+uses the seed-0 LMB canonical initial distribution, has 36 covered states, an exact
+behavioural target with 11 cells and an `action_count`-only candidate with 7 cells.
+The candidate is incomparable with the target: its complete trace contains both
+witness kinds, while the selected unresolved witness is
+`TARGET_MERGED_FEATURE_SEPARATED`.
+
+An exact restricted subset can also be exercised only through the negative-control
+entry point.  Whether that control returns exact or nonexact cannot alter the canonical
+production registry, production trace or production verifier expectation.
+
+For positive reuse evidence, the one serialized feature-realized portable RAPM is
+loaded unchanged by fresh Python planner subprocesses for two distinct QuerySpecs
+inside the same frozen coverage: the registered `H=3`, match-plus-clear,
+`delta=1/20` query and an `H=2`, match-only, `delta=1/10` query.  This proves two-query
+in-coverage portability of the abstract model; it is not a preregistered held-out
+generalization result or a sealed production-runtime claim.
+
+The precise scientific claim is therefore: given this preregistered LMB current-state
+feature grammar and exact finite training coverage, the system automatically selects a
+minimal feature coordinate set and generated rational threshold atoms that exactly
+realize the query-neutral controlled-behaviour world model, then reuses the resulting
+portable RAPM for two in-coverage planning queries.  Because exact realization is
+supervised by the complete exact ground behavioural target/signature, V0-038 is not
+oracle-free unknown-quotient discovery.  It also does not invent features, learn
+incomplete dynamics, discover an unknown-domain grammar, establish scalable or cross-
+domain synthesis, validate held-out generalization, or pass the aggregate Phase 3,
+Phase 3E, counter-completeness, workload-economics, transfer or learning Gates.
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+```
+
+## V0-039 direct target-free exact homomorphic LMB synthesis rule
+
+V0-039 is additive to V0-038.  It keeps the same central world-model objective but
+removes the earlier construction-time requirement to first build an exact behavioural
+target partition/signature and then match a feature partition to it.  The registered
+profile is `lmb_direct_exact_homomorphism_v1`, with execution profile
+`production_full_grammar_v1` and claim kind
+`DIRECT_EXACT_HOMOMORPHISM_INSIDE_FIXED_GRAMMAR`.
+
+Its production API is exactly:
+
+```text
+synthesize_direct_lmb_homomorphism_v1(
+    kernel: LMBKernel,
+    coverage: SuiteBuildCoverage,
+)
+```
+
+The function internally constructs the complete canonical state/action registries and
+bound synthesis spec.  It accepts no caller-selected registry, behavioural target,
+`BehavioralActionSignature`, `QuerySpec`, J0, Q/value/frontier/policy, planning result
+or held-out input.  The module imports neither `feature_synthesis` nor
+`abstraction.behavioral`, `core` or planning modules.  A fresh-process test poisons the
+behavioural module before importing the direct constructor and still obtains the
+canonical result.  Raw one-step signatures are computed internally from the exact
+kernel only as proof obligations and typed evidence; no precomputed target partition
+or signature labels candidate success.
+
+The fixed state grammar contains the same eleven V0-038 current-state coordinates.
+The fixed action grammar contains exactly `completes_match`, equal to one iff the
+selected tile's type currently has buffer count two.  State and action adapters have
+separate frozen source SHA-256 values under one implementation epoch.  Runtime source
+must match both independent anchors before construction.  Production enumerates every
+state subset and both action-feature subsets, hence exactly
+`2^11 * 2^1 = 4096` candidates under cap 4096.  State atoms use every adjacent-value
+reduced-rational midpoint with `<=`; action subsets induce semantic labels and a
+uniform concretizer over distinct matching ground actions.
+
+Each candidate is accepted only after direct exact state-action homomorphism checks:
+
+1. every active state in a state cell exposes the identical semantic-label set;
+2. before any stochastic mixture, all ground actions aliased to one label in one state
+   have identical exact reward-feature, failure, termination and successor-cell
+   distributions; and
+3. the same semantic label has the identical exact one-step signature across every
+   state in the cell.
+
+Failures retain domain-separated typed witnesses
+`LABEL_SET_MISMATCH`, `WITHIN_STATE_ACTION_ALIAS` or
+`CROSS_STATE_LABEL_DYNAMICS_MISMATCH`.  The selector minimizes, in order, state-feature
+count, action-feature count, split count, state-feature names, action-feature names and
+partition ID.
+
+The canonical 25-state result is:
+
+```text
+status = EXACT_DIRECT_HOMOMORPHISM
+selected_state_features = (action_count,)
+selected_action_features = (completes_match,)
+state_thresholds = (3/2, 5/2)
+required/evaluated candidates = 4096/4096
+ground/active states = 25/18
+quotient/active cells = 5/3
+abstract entries = 4
+envelope_is_singleton = true
+action_alias_checked_before_mixture = true
+```
+
+The complete positive trace contains all 4096 candidates and all three witness kinds.
+An explicit non-production restricted-grammar API is retained for negative and cap
+controls.  A restricted grammar with no exact candidate returns
+`NO_EXACT_DIRECT_HOMOMORPHISM` and no model/certificate.  Insufficient cap returns
+`CANDIDATE_CAP_EXHAUSTED`, evaluates zero candidates and binds exactly one
+`CANDIDATE_CAP_INSUFFICIENT` witness.  A restricted grammar that happens to find an
+exact homomorphism returns `RESTRICTED_CONTROL_EXACT_FOUND` but deliberately publishes
+no quotient, portable model or certificate and is rejected by the production
+verifier.  Negative controls are verified only by a separate role-locked control
+verifier.  The production verifier additionally rejects restricted-control provenance,
+incomplete canonical registries and duck-typed result objects; re-signing a control
+result cannot promote it into production evidence.
+
+State/action registries, spec, predicate tree, semantic labels/signatures, witnesses,
+candidates, complete trace and certificate are domain-separated content-addressed
+artifacts.  Parsers require canonical JSON field types, runtime graphs require exact
+nested types, and coherent re-signing, proxy objects, trace deletion and implementation-
+source substitution fail.  The independent verifier reconstructs the full production
+enumeration, selected tree/partition/action adapter, quotient, portable model/registry
+and certificate.  Only after construction, an evaluation-only import of the old exact
+behavioural oracle confirms identical partition and model; that comparison is not
+construction or certificate authority.  One unchanged portable RAPM also serves the
+same two distinct in-coverage queries in fresh planner processes.
+
+The precise V0-039 claim is direct exact state-action homomorphism synthesis from
+preregistered human-readable state/action grammars on one exact finite LMB coverage,
+without a construction-time behavioural target/signature.  It still uses the complete
+exact ground kernel and fixed grammars.  It therefore does not invent feature
+semantics, learn partial dynamics, discover an unknown-domain grammar at scale, prove
+held-out or cross-domain generalization, or pass any aggregate Phase 3, Phase 3E,
+counter-completeness, workload-economics, transfer or learning Gate.
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+```
+
 ## Change log
 
 - **2026-07-19 — 0.1.0:** Transcribed and closed the V0 construction contract from the Normative Decision Addendum and the V0 preconstruction audit. Added the deterministic policy-class and reward-normalization implementation clarifications needed for executable tests.
@@ -902,3 +1503,9 @@ accepted split, iteration record, output-stage proof, and final certificate.
 - **2026-07-20 — 0.9.1:** Added V0-031 to freeze Phase 3D as a verified consumer of the Phase 3C RAPM/BuildEpoch, pre-certificate upper bound, locality and authorization. Operational rebuild, closure, quotient/RAPM construction, post-binding pre-authorization ground access, `U_all` recomputation and exact hybrid lifting are forbidden and zero-counted. The binding-time 144-action catalogue supplies causal/ancestor checks; the current `16+8` authority is proven against the source `32+8`; materialization and patch-restricted sound audit perform exactly `16+8=24` steps. The operational certificate keeps exact fields null, while independent verifier reconstruction, exact lift (`317/16000`, 8 patched/12 abstract) and J0 remain evaluation-only.
 - **2026-07-20 — 1.0.0:** Added V0-032 and profile `phase3e_accounted_dynamic_routing_v0`. Froze native-versus-comparison accounting, the eight shared resource axes, marginal strict-dominance routing, full domain-separated content IDs, typed upper/cap/cardinality/attestation chains, finite trusted budgets, negative-causal fallback, exact actual projection, explicit attempt/campaign terminal semantics, `acfqp_counter_registry_v1`, removal of operational host full replay, and estimate-before-execute access order. No scalar or official execution is opened; economics and counter-completeness remain `NOT_RUN` pending implementation and independent verification.
 - **2026-07-21 — 1.0.1:** Added V0-033 without changing the contract-`1.0.0` route semantics: sealed-core/frozen-obligation two-stage operational accounting with exact manifests and receipts; invocation-typed standalone terminal/aggregate evaluation; runner-owned prior-WorkVector continuation authority; content-addressed runtime-tree CAS and single-use post-freeze executor factories; and denominator-preserving occurrence-level typed closure of selected-route exceptions with uniquely replayable native ownership. The four former scoped P0 implementation gaps are closed, while official execution remains false, scalar/break-even remain null, and both Phase 3E Gates remain `NOT_RUN` pending the remaining authorities, all-path instrumentation, rebuild/campaign replay and independent verification.
+- **2026-07-21 — 1.0.2:** Added V0-034 and corrected Phase 3E's upstream query-time order to `verified manifest -> model-only RAPM contingent plan -> rectangular exact-sound audit -> PASS without ground / FAIL may authorize later ground binding`. Froze the H1 `PASS` and H2 `FAIL` goldens, implemented strict model-only `ABSTRACT_AUDIT` replay and the deliberately narrower plan-frozen retained-runtime exact-cache authority, and registered every new source/plan/policy/proof/audit/cache/orchestration/result domain centrally. This is a reusable-model-first control boundary, not evidence of automatic RAPM synthesis or generalization; isolated/native accounting, the PASS terminal, FAIL-to-run handoff, durable planner-free cache, real transaction 2, rebuild/retry, all-path hashes and independent bundle replay remain incomplete, so official/scalar/Gate locks do not move.
+- **2026-07-21 — 1.0.3:** Added V0-035. Required retained `ABSTRACT_AUDIT=FAIL` authority before an opaque ground handoff and connected its frozen H2 plan/proof to Phase 3D causal estimation without replanning, reaudit, kernel transitions or execution, reproducing `16/8/24` frontier/ancestor/allowed pairs. Added strict retained-authority/native-work H1 `ABSTRACT_CERTIFIED` closure and a fresh `python -I` native producer whose exact partial-coverage blockers remain embedded and non-official. Added a proof-derived synthetic dependent-transaction benchmark that exercises the real two-transaction state machine and occurrence aggregation while explicitly retaining its test-only semantic-authority limitation. Automatic RAPM synthesis/generalization, production FAIL-to-route integration, production ground-derived transaction 2, sealed all-path accounting, rebuild/retry, durable preflight cache and independent bundle verification remain open; all official/scalar/Gate locks are unchanged.
+- **2026-07-21 — 1.0.4:** Added V0-036. Registered the honest `ABSTRACT_FAILED_PREFIX`, connected the retained H2 failure through no-replanning ground handoff, production route authorities, strict marginal selection and one selected sealed factory, and embedded the still-unresolved preparation/accounting blockers so the bridge cannot self-promote to official. Added an independently source-replayed, TOCTOU-checked failed-prefix bundle and an eight-coordinate planner-free exact-cache preflight that deliberately cannot authorize infeasibility without a durable proof payload. Replaced copied module-token authority across the execution chain with exact internally minted live-instance/fingerprint checks, including full prepared-estimate member binding and a distinct post-freeze kernel derivative. Ground-derived transaction two, rebuild/retry, complete native hash/I/O/runtime accounting, durable exact proof, selected-route complete-bundle verification, automatic RAPM synthesis/generalization, scalar economics and both Gates remain open.
+- **2026-07-21 — 1.0.5:** Added V0-037 without changing contract-`1.0.0` route semantics. Froze the canonical H2 preparation trace at 4 causal, 18 protocol, 3 integrity and 5 cap events while keeping hash/I/O/materialization exclusions and `RETAINED_POST_CORE_NOT_YET_OCCURRENCE_CHARGED`; closed the scoped successful LOCAL terminal/occurrence path; and added a fixed 54-role selected-route bundle whose highest claim is only `VERIFIED_LOCAL_ROUTE_ACCOUNTING_AND_TOPOLOGY`, never a transport-minted semantic certificate. Recorded bounded rebuild/retry as control-plane mechanics and established that the repaired canonical H2 transaction 1 certifies, making transaction 2 unreachable on that fixture and requiring a new dependent-horizon benchmark. Official execution remains false, scalar/break-even remain null and both Gates remain `NOT_RUN`; automatic RAPM synthesis/generalization is still the research objective, not a result of this infrastructure.
+- **2026-07-21 — 1.1.0:** Added V0-038 and profile `lmb_feature_realized_reusable_rapm_v1`. Froze the query/J0/value/policy/held-out-free LMB construction API, the eleven-feature current-state registry, exhaustive 2048-subset enumeration, adjacent-value rational-midpoint `<=` atoms, exact ground-behavioural-oracle realization obligation, deterministic minimal selector, `action_count`/`(3/2,5/2)` and 25-state `25->5`/active-`18->3` goldens, locked registry/spec/certificate constants, strict content-addressed artifacts, bidirectional typed mismatch witnesses, the distinct 36-state target-11/action-count-7 negative control, full target/adapter/model/portable-registry independent rebuild attacks, and unchanged portable-RAPM reuse by two fresh-process in-coverage QuerySpecs. The new claim is automatic selection inside a preregistered human grammar under an exact behavioural target, not oracle-free unknown-quotient or feature invention, partial/learned dynamics, unknown-domain/scalable discovery, held-out or cross-domain generalization, or any aggregate/official/economics/counter Gate. All locks remain unchanged.
+- **2026-07-21 — 1.2.0:** Hardened V0-038 by making its production API canonical and two-input only, separating restricted-grammar controls, freezing the feature implementation digest, enforcing exact JSON/runtime graph types and rejecting proxy substitution. Added V0-039/profile `lmb_direct_exact_homomorphism_v1`: full fixed 11-state/1-action grammar, 4096 direct candidates, exact label/action/dynamics homomorphism obligations, three typed witness families, `action_count + completes_match`, `(3/2,5/2)`, `25/18 -> 5/3`, four-entry singleton goldens, strict restricted/cap outcomes with role-separated production/control verifiers, poison-import target independence, independent rebuild and two-query portable reuse. V0-039 removes construction-time behavioural-target/signature dependence only for this exact finite fixed-grammar LMB slice; it is not feature invention, learning, scale/generalization or a Gate unlock. All official/scalar/Gate locks remain unchanged.

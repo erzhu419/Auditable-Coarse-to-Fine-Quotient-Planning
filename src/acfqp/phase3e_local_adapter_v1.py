@@ -15,7 +15,7 @@ and the official Phase 3E completeness/economics locks remain closed.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 from fractions import Fraction
 from pathlib import Path
 from typing import Any, Mapping
@@ -45,7 +45,9 @@ from acfqp.phase3d import (
     PROJECT_ROOT,
     SAFE_CHAIN_SEARCH_LIMITS,
     SafeChainPreparedEstimateContext,
+    _EXECUTABLE_PREPARED_ESTIMATE_DERIVATION_AUTHORITY,
     _canonical_bytes,
+    _derive_safe_chain_access_logged_estimate_v1,
     _execute_safe_chain_local_preparation,
     _general_request,
     _overlay_from_result,
@@ -535,8 +537,11 @@ class AuthorizedSafeChainLocalExecutorV1:
         logged_kernel = _AccessLoggedLocalKernelV1(
             inputs.prepared_local.world.kernel, controller
         )
-        executable_world = replace(inputs.prepared_local.world, kernel=logged_kernel)
-        executable_prepared = replace(inputs.prepared_local, world=executable_world)
+        executable_prepared = _derive_safe_chain_access_logged_estimate_v1(
+            inputs.prepared_local,
+            access_logged_kernel=logged_kernel,
+            authority=_EXECUTABLE_PREPARED_ESTIMATE_DERIVATION_AUTHORITY,
+        )
 
         controller.record(
             AccessOperation.LOCAL_SLICE_MATERIALIZATION,

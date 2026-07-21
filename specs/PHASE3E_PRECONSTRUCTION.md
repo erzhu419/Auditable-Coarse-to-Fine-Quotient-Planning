@@ -8,10 +8,29 @@ Counter-completeness Gate: `COUNTER_COMPLETENESS_GATE_NOT_RUN`
 
 Semantic-evidence Gate: `SEMANTIC_EVIDENCE_GATE_NOT_RUN`
 
+Current implementation note (V0-037): the H2 model-first path now closes one scoped
+successful LOCAL terminal and logical occurrence.  Its preparation trace records
+exactly 4 causal-candidate evaluations, 18 protocol checks, 3 integrity checks and
+5 cap checks.  The incremental and reducer-derived aggregate WorkVectors remain
+`RETAINED_POST_CORE_NOT_YET_OCCURRENCE_CHARGED`; hashes, I/O and accounting
+materialization are excluded.  A fixed 54-role bundle independently verifies only
+`VERIFIED_LOCAL_ROUTE_ACCOUNTING_AND_TOPOLOGY`; it cannot mint semantic authority from
+transport because complete local ground-proof and post-audit replay inputs are not
+serialized.  Bounded rebuild/new-epoch/single-retry support is control-plane mechanics.
+The repaired canonical H2 transaction 1 certifies, making a genuine transaction 2
+unreachable on that fixture; a separately registered dependent-horizon fixture is
+required.  Runtime semantic and continuation authority remains exact-live and
+internally minted.  The older implemented/unresolved lists below remain useful
+contract history but are superseded where they still call the local closure, selected-
+route bundle, rebuild mechanics or canonical-H2 transaction-2 feasibility wholly
+absent.
+
 ## Scientific objective
 
 Phase 3E is subordinate to the project objective frozen by the preconstruction
 audit:
+
+> **自动合成一个可复用的抽象世界模型，使多步计划能够主要在该模型中完成；系统只在抽象模型无法以给定价值与约束误差认证当前 contingent plan 时，才局部恢复 ground distinctions。**
 
 > Synthesize a reusable abstract world model in which multi-step contingent
 > planning is performed primarily; restore ground distinctions locally only when
@@ -110,7 +129,24 @@ surfaces without changing the historical 0.x runners:
    nonsemantic check kind recomputes its claim from concrete evidence rather than
    accepting IDs, every plan source record is disjoint from the sealed core, and the
    occurrence result reconstructs its aggregate, ordered runs, transactions, closure
-   and terminal authorities before it is accepted.
+   and terminal authorities before it is accepted; and
+19. model-failure preparation event accounting. The canonical H2 trace has exactly
+   4 causal, 18 protocol, 3 integrity and 5 cap events. Its incremental WorkVector and
+   reducer-derived failed-prefix aggregate are retained post-core under
+   `RETAINED_POST_CORE_NOT_YET_OCCURRENCE_CHARGED`; hash/I/O/materialization exclusions
+   are explicit and neither vector enters the occurrence total;
+20. the scoped successful model-failure LOCAL closure. The selected route reaches a
+   typed `LOCAL_GROUND_RECOVERY` terminal and reducer-correct logical-occurrence
+   aggregate without granting a broader campaign claim;
+21. a fixed 54-role selected-route transport verifier. It independently replays byte
+   topology, source lease, identities, preparation accounting, route selection, access
+   order, work aggregation, selected upper and terminal/occurrence topology. Its claim
+   is only `VERIFIED_LOCAL_ROUTE_ACCOUNTING_AND_TOPOLOGY`; it cannot mint a semantic
+   certificate from unserialized ground proof/post-audit inputs; and
+22. bounded rebuild/new-epoch/single-retry and transaction-2 feasibility controls.
+   They establish control-plane identity/budget/aggregation mechanics only. The
+   canonical H2 transaction 1 certifies, so a real transaction 2 is unreachable there
+   and requires a new registered dependent-horizon fixture.
 
 The semantic-verification registry now authoritatively replays native work, actual
 projection, access-protocol violations, route/attempt terminal classification,
@@ -119,8 +155,10 @@ evaluation-lane `SemanticRole.OCCURRENCE_TERMINAL` over
 The occurrence role covers `PROTOCOL_FAILURE` and `FALLBACK_CAP_EXHAUSTED`; the route-
 attempt terminal role cannot substitute for it. Causal/cardinality and local-result/post-audit handlers
 are intentionally restricted to the registered safe-chain sources and opaque trusted
-runtime provenance. `EXACT_CACHED_INFEASIBILITY` and `ABSTRACT_AUDIT` remain
-`NOT_IMPLEMENTED`; no hash or legal-looking outcome string can replace either role or
+runtime provenance. The model-only `ABSTRACT_AUDIT` handler replays its registered
+source/plan/proof/audit chain. `EXACT_CACHED_INFEASIBILITY` still cannot become a
+durable planner-free authority without a stored complete-search proof and its
+independent verifier; no hash or legal-looking outcome string can replace that proof or
 extend a scoped safe-chain handler to a different profile.
 The older `*Candidate` APIs remain historical preconstruction attack fixtures; they
 are not substitutes for these V1 contracts.
@@ -131,6 +169,9 @@ The highest valid new claim is an **accounted, authority-gated contract-1.0 vert
 slice for the registered safe-chain workload**. It includes a genuine isolated LOCAL
 route and a capped ground-fallback route, but it is not an official execution profile,
 complete campaign replay, counter-completeness Gate, or workload-economics result. The
+selected-route transport's narrower claim is exactly
+`VERIFIED_LOCAL_ROUTE_ACCOUNTING_AND_TOPOLOGY`; it does not independently certify the
+plan semantics or mint live authority. The
 older
 `TERMINAL_SHAPE_CLASSIFICATION_CANDIDATE` remains only a historical control-flow-shape
 artifact; plan-like names in that schema still prove no planning semantics.
@@ -226,17 +267,24 @@ conditions must be implemented and independently verified together:
    `unassigned_postfreeze_operational_leaves=(common.hash_invocations)` and
    `ALL_PATH_NATIVE_HASH_INSTRUMENTATION`; the four scoped closures above do not erase
    those blockers;
-2. authoritative `ABSTRACT_AUDIT` and identical-query/build/kernel
-   `EXACT_CACHED_INFEASIBILITY` replay;
-3. a live failed-post-audit -> genuinely deeper frontier -> fresh second-decision
-   benchmark. The generic controller can select local transaction 2 or direct fallback,
-   but its tests are not registered benchmark evidence for that dependent path;
-4. operational rebuild/new-epoch retry and all remaining terminal/campaign failure
-   closures with complete accounting;
+2. a durable identical-query/build/kernel `EXACT_CACHED_INFEASIBILITY` proof and an
+   independent complete-search verifier, plus serialized local ground-proof and
+   post-audit replay inputs sufficient for a transport verifier to certify semantics;
+3. a separately registered dependent-horizon fixture whose genuine transaction-1
+   ground post-audit fails, yields a distinct deeper frontier and fresh authorities,
+   then executes a second decision. The canonical H2 transaction 1 now certifies, so
+   transaction 2 is unreachable there; the synthetic controller remains only a state-
+   machine control;
+4. semantically authorized operational rebuild/new-epoch retry and all remaining
+   terminal/campaign failure closures with complete accounting. Existing bounded
+   rebuild/retry objects prove only control-plane mechanics;
 5. an upstream consumer that starts from a manifest, plans and audits in the frozen
    RAPM, and constructs the prepared authority package rather than receiving it; and
-6. an independent manifest-based bundle verifier that replays all sources, identities,
-   counters, formulae, access events and certificate semantics.
+6. an independent campaign/semantic bundle verifier that extends the current 54-role
+   accounting/topology replay to serialized ground proof inputs, post-audit semantics,
+   all routes/retries and campaign closure; and
+7. the registered full workload and later scalar revision, followed by the actual
+   automatic RAPM-synthesis, unknown-abstraction and generalization experiments.
 
 Until then, the project has advanced the auditable mechanism but has not run
 Phase 3E workload economics or official dynamic routing. FQ12 permits scalar-free

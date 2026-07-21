@@ -28,6 +28,109 @@ authoritative benchmark kernel and declared build coverage
 → jointly search local value/risk choices, rebuild, or use charged fallback
 ```
 
+## Current direct homomorphism synthesis slice (V0-039)
+
+V0-039 constructs an exact LMB state-action quotient without receiving or importing a
+prebuilt behavioural quotient/signature target. Its production API accepts only an
+exact `LMBKernel` and frozen `SuiteBuildCoverage`, internally freezes the full eleven-
+feature state grammar plus the one-feature `completes_match` action grammar, and
+directly tests every one of the 4096 state/action-subset candidates against the exact
+ground kernel.
+
+For each candidate it proves equal semantic-label sets within each state cell,
+identical raw reward/failure/termination/successor signatures before mixing aliased
+ground actions, and identical same-label dynamics across cell members. The deterministic
+minimum selects state feature `action_count`, action feature `completes_match`, and
+thresholds `3/2,5/2`; the golden compresses total/active `25/18 -> 5/3`, has four
+abstract entries, and a singleton envelope. The complete trace contains all 4096
+candidates and typed label-set, within-state-action-alias and cross-state-dynamics
+witnesses.
+
+Restricted exact, no-exact and cap-exhausted controls cannot publish a production
+model/certificate. They use a separate role-locked control verifier; the production
+verifier rejects restricted provenance, incomplete canonical registries and duck-typed
+results. A fresh process still constructs successfully when the behavioural module is
+poisoned; the old behavioural oracle is imported only later for evaluation and agrees
+exactly. Content-addressed artifacts, frozen state/action implementation digests, exact
+transport/runtime types, independent reconstruction and two-query fresh-process reuse
+are covered by attack tests.
+
+The valid claim is direct exact homomorphism synthesis inside fixed human-readable
+state/action grammars on exact finite coverage. It is target-free at construction, but
+still uses the exact ground kernel and fixed grammar; it is not feature invention,
+partial/learned dynamics, unknown-domain or scalable discovery, held-out/cross-domain
+generalization, or a full Phase 3/3E/economics/counter Gate. All official locks remain
+unchanged.
+
+## Current automatic feature-realization slice (V0-038)
+
+The new LMB vertical slice automatically realizes a reusable portable RAPM from a
+preregistered human-readable current-state feature grammar. Its production constructor
+sees only an exact `LMBKernel` and frozen `SuiteBuildCoverage`; it internally fixes the
+complete canonical registry/spec, so callers cannot encode query bits by selecting a
+feature subset. Restricted registries use a separate non-production control API. It
+has no `QuerySpec`, J0, Q/value/frontier, policy, or held-out input and exhausts all 2048
+subsets of the eleven registered features, generates reduced-rational `<=` atoms at
+adjacent-value midpoints, and matches each resulting predicate partition against the
+query-neutral exact controlled behavioural quotient on the same coverage.
+That target is a complete exact ground-model behavioural oracle; the slice removes
+query/J0/Q/value/policy/held-out leakage, not target-signature supervision.
+
+The deterministic selector minimizes feature count, split count, feature names, then
+partition ID. The canonical result selects only `action_count`, thresholds `3/2` and
+`5/2`, and exactly realizes `25 -> 5` total states/cells and `18 -> 3` active
+states/cells with a singleton envelope. Registry, spec, predicate tree, complete
+candidate trace, bidirectional mismatch witnesses and certificate are content
+addressed. Their frozen V1 constants are enforced, and independent replay rebuilds the
+target trace/adapter/model, realized partition/quotient and portable model/registry. A
+restricted grammar that cannot realize the target returns
+`NO_EXACT_FEATURE_REALIZATION` plus either a
+`TARGET_SEPARATED_FEATURE_ALIASED` or `TARGET_MERGED_FEATURE_SEPARATED` witness and no
+model/certificate. A separate 36-state seed-0 canonical-initial control has an 11-cell
+target and 7-cell `action_count` candidate and exhibits both mismatch directions in
+its trace; it is not the 25-state positive golden.
+
+The feature adapter source digest is independently frozen; canonical transport parsers
+preserve JSON list/string types, and exact nested runtime-type checks reject proxy
+objects that serialize to honest bytes while exposing altered behaviour. Restricted
+exact controls likewise cannot change the canonical production trace or claim.
+
+One unchanged serialized RAPM is loaded by fresh planner subprocesses for two distinct
+in-coverage QuerySpecs. The valid claim is automatic selection of coordinates and
+threshold atoms from this fixed LMB grammar—not feature invention, partial/learned
+dynamics, oracle-free unknown-quotient discovery, unknown-domain or scalable discovery,
+held-out/cross-domain generalization, or a full Phase 3/3E/economics/counter Gate. All
+official locks remain unchanged.
+
+## Current Phase 3E boundary (V0-037)
+
+The project target remains:
+
+> **自动合成一个可复用的抽象世界模型，使多步计划能够主要在该模型中完成；系统只在抽象模型无法以给定价值与约束误差认证当前 contingent plan 时，才局部恢复 ground distinctions。**
+
+The registered H2 model-failure path now has a scoped successful LOCAL terminal and
+logical-occurrence closure.  Its preparation trace natively records exactly 4 causal,
+18 protocol, 3 integrity and 5 cap events.  That incremental work and its derived
+failed-prefix aggregate are retained post-core with
+`RETAINED_POST_CORE_NOT_YET_OCCURRENCE_CHARGED`; content-ID hashes, I/O and accounting
+materialization are excluded, so this is not counter-complete occurrence accounting.
+
+An independent selected-route bundle fixes 54 roles and replays the source lease,
+identities, route arithmetic/selection, access order, native-work reductions, selected
+upper, terminal and occurrence topology.  Its highest result is
+`VERIFIED_LOCAL_ROUTE_ACCOUNTING_AND_TOPOLOGY`, not a semantic certificate: the
+transport does not contain enough ground proof/post-audit input to mint live semantic
+authority.  Bounded rebuild/new-epoch/single-retry support is likewise control-plane
+mechanics only.  The repaired canonical H2 transaction 1 certifies, so a genuine
+transaction 2 is unreachable there; that Gate now requires a separate dependent-
+horizon fixture with a real failed ground post-audit and fresh deeper frontier.
+
+None of this demonstrates automatic RAPM synthesis, unknown strategic abstraction or
+cross-domain generalization.  The current locks remain
+`official_execution_allowed=false`, `official_scalar_cost=null`,
+`official_N_break_even=null`, `WORKLOAD_ECONOMICS_GATE_NOT_RUN`, and
+`COUNTER_COMPLETENESS_GATE_NOT_RUN`.
+
 The root `DECISION_LEDGER.md` and the nine files in `specs/` are the published
 normative contract. The local `markdown/` discussion history and `reference/`
 literature/repository archive are provenance inputs, are intentionally ignored by Git,
@@ -294,7 +397,9 @@ uppers, each upper must have exactly one matching cardinality verification, and 
 duplicate, or extraneous results fail closed. The runner executes only the selected
 route, preserves native execution and verification work separately, and checks their
 exact eight-axis aggregate against the selected upper. Binding the failed certificate's
-identity does not yet implement independent `ABSTRACT_AUDIT` semantics.
+identity inside this generic runner does not itself mint `ABSTRACT_AUDIT` authority;
+the model-only source/plan/proof/audit chain supplies and replays that authority before
+the H2 handoff.
 
 The registered safe-chain positive control exercises a genuine LOCAL path. Frozen
 Phase 3D metadata supplies the causal/cardinality evidence without a ground transition;
@@ -324,7 +429,9 @@ Terminal and occurrence replay bind the actual runner aggregate, route evidence,
 freeze/access identities, and every retained work component, so a cheaper valid
 WorkVector cannot be spliced onto a certificate. These controls are exercised as a
 generic orchestration path, but there is not yet a registered live benchmark whose
-first sound post-audit fails and whose deeper second decision completes.
+first sound post-audit fails and whose deeper second decision completes. The canonical
+H2 transaction 1 now certifies, so transaction 2 is unreachable on that fixture; a new
+dependent-horizon benchmark is required rather than another patch to canonical H2.
 
 Ledger `V0-033` closes the four former scoped P0 plumbing gaps without changing this narrow
 claim. Operational accounting can now seal a common-prefix or route-execution core,
@@ -403,18 +510,33 @@ replays one occurrence aggregate. Successful replay mints a typed logical-occurr
 infeasibility counts zero, noncertificate count one, and all three denominators
 retained. Neither can be relabelled as a plan or infeasibility certificate.
 
-This is an accounted, authority-gated vertical slice—not an official Phase 3E run.
-The consumer still receives rather than autonomously creates the upstream abstract
-plan/audit package. The four former scoped P0 accounting/continuation/executor/occurrence
-boundaries are scoped interfaces implemented under V0-033, not completion of Phase 3E
-or the reusable-world-model objective. Exact cached-infeasibility and abstract-audit
-authorities, complete abstract-only/rebuild/exact-infeasible/failure/hash
-instrumentation—including planner invocation, authority-package construction and
-rejection, every success/failure terminal path, and the still-unassigned
-`common.hash_invocations` leaf—a live dependent transaction-2 benchmark, operational
-rebuild/retry, the upstream plan/audit producer, a manifest-level independent verifier,
-and the later scalar economics revision remain open. See
-`specs/PHASE3E_PRECONSTRUCTION_LIMITATIONS.md` for the exact current boundary.
+This is an authority-gated vertical slice—not an official Phase 3E run. Ledgers
+V0-036/V0-037 connect an isolated H2 model-only `ABSTRACT_AUDIT=FAIL` through an
+honestly accounted `ABSTRACT_FAILED_PREFIX`, opaque ground handoff, no-replanning
+proof/frontier translation, production route cardinalities and uppers, strict
+marginal selection, exactly one selected post-freeze factory, and a scoped successful
+LOCAL terminal/occurrence closure. The unselected route is rejection-only. The
+preparation trace now accounts for exactly 4 causal, 18 protocol, 3 integrity and 5 cap
+events, but its incremental and aggregate vectors are retained post-core and not yet
+occurrence-charged; global content-hash and I/O work remain incomplete, so
+`official_execution_allowed` remains false.
+
+The independent H2 selected-route bundle now has 54 fixed roles and verifies only
+`VERIFIED_LOCAL_ROUTE_ACCOUNTING_AND_TOPOLOGY`; it cannot mint the semantic certificate
+from transport. The planner-free exact-cache
+preflight compares all source-derived identity coordinates but cannot authorize
+infeasibility until a durable kernel-bound complete-search proof and independent
+verifier exist.  Runtime authority is now exact-live and internally minted rather
+than a token copied inside a dataclass: semantic/protocol results, prepared estimates,
+continuations, trusted local/fallback provenance, occurrence/campaign/cache/workload
+handles reject copy, replacement, member substitution, and cross-role reuse.
+
+Complete native hash/I/O/runtime instrumentation, durable/serialized semantic proofs,
+a new dependent-horizon transaction-2 fixture, operational rebuild semantics, full
+campaign/workload replay, the later scalar economics revision, and ultimately
+feature invention and general automatic RAPM synthesis beyond the registered LMB
+grammar remain open. See
+`specs/PHASE3E_PRECONSTRUCTION_LIMITATIONS.md` for the exact boundary.
 
 ```text
 official_execution_allowed = false
@@ -470,12 +592,13 @@ content-addressed post-freeze executor construction, and typed occurrence-failur
 aggregate described above; it opens no Gate and changes no historical result.
 The current implementation provides the scoped integrated local and fallback vertical
 slices, registered-safe-chain causal/cardinality authority, generic route-upper and
-decision replay, route-result/post-audit authority, terminal/occurrence evidence, and
-generic two-decision control described above. It still lacks exact cached-infeasibility
-and abstract-audit authority, a live dependent transaction-2 benchmark, complete
-abstract-only/rebuild/exact-infeasible/failure/hash instrumentation, operational
-rebuild/retry, an upstream manifest-to-plan/audit consumer, and an independent manifest
-verifier. FQ12 deliberately
+decision replay, route-result/post-audit authority, a scoped LOCAL terminal/occurrence
+closure, a 54-role accounting/topology bundle verifier, bounded rebuild/retry mechanics,
+and generic two-decision control. It still lacks durable planner-free cached-
+infeasibility authority, serialized inputs for independent semantic certificate replay,
+a dependent-horizon transaction-2 benchmark, complete all-path hash/I/O/runtime
+instrumentation, semantically authorized operational rebuild/retry, integrated full
+campaign/workload execution, and a semantic/campaign bundle verifier. FQ12 deliberately
 keeps the official scalar and `N_break_even` null: vector prefix and componentwise
 worst-frontier mechanics may proceed, but scalar crossing is deferred to a later ledger
 revision.

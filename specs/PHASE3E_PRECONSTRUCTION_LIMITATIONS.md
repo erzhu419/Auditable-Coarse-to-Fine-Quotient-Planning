@@ -2,6 +2,233 @@
 
 Status: non-normative implementation boundary, 2026-07-21.
 
+## Relationship to the V0-039 direct-construction slice
+
+V0-039 advances the construction side of the same ultimate target without changing
+the current Phase 3E execution boundary:
+
+> **自动合成一个可复用的抽象世界模型，使多步计划能够主要在该模型中完成；系统只在抽象模型无法以给定价值与约束误差认证当前 contingent plan 时，才局部恢复 ground distinctions。**
+
+Profile `lmb_direct_exact_homomorphism_v1` removes V0-038's construction-time
+behavioural-target/signature dependency for one exact finite LMB coverage. Its
+production constructor accepts only the exact `LMBKernel` and frozen
+`SuiteBuildCoverage`, internally freezes the complete eleven-state/one-action grammar,
+and directly checks all 4096 state/action-subset candidates against the ground kernel.
+Acceptance requires equal semantic-label sets, exact equality of aliased ground-action
+dynamics before mixture, and exact same-label dynamics across state-cell members. The
+canonical result selects state feature `action_count`, action feature
+`completes_match`, thresholds `(3/2,5/2)`, compresses total/active `25/18 -> 5/3`, and
+emits four abstract entries with a singleton envelope.
+
+Restricted exact, no-exact and cap-exhausted runs belong to a separate non-production
+control API and role-locked control verifier. The production verifier rejects
+restricted-control provenance, incomplete registries and duck-typed result objects;
+control evidence cannot mint a production model or certificate. Poison-import,
+canonical transport, exact runtime-type, implementation-digest and independent-rebuild
+tests protect the direct result. The old behavioural oracle is loaded only afterwards
+for evaluation-only agreement, never as construction or certificate authority.
+
+This is target-free direct construction inside fixed human-readable grammars, not
+feature invention or oracle-free discovery from partial/learned dynamics. It still
+requires the complete exact ground kernel, exact finite coverage and preregistered
+feature semantics; it does not establish unknown-domain/scalable discovery,
+held-out/cross-domain generalization or any aggregate Gate. It also does not close the
+Phase 3E accounting, semantic-transport, dependent-transaction, rebuild, campaign or
+independent-verification blockers below. Therefore the authoritative Phase 3E boundary
+remains V0-037 and all locks remain unchanged:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+```
+
+## Relationship to the V0-038 feature-realization slice
+
+V0-038 advances the construction side of the same ultimate target without changing
+the current Phase 3E execution boundary:
+
+> **自动合成一个可复用的抽象世界模型，使多步计划能够主要在该模型中完成；系统只在抽象模型无法以给定价值与约束误差认证当前 contingent plan 时，才局部恢复 ground distinctions。**
+
+Profile `lmb_feature_realized_reusable_rapm_v1` now automatically selects feature
+coordinates and exact rational midpoint predicates from one preregistered
+human-readable LMB current-state grammar. Its canonical production constructor receives
+only the exact `LMBKernel` and frozen `SuiteBuildCoverage` and internally fixes the
+complete eleven-feature registry and bound spec; it receives no caller registry/spec,
+query, J0, Q/value/frontier/policy or held-out evidence. Restricted grammars are
+confined to a separate non-production negative-control API and verifier. Production
+exhausts all 2048 subsets
+of the eleven-feature grammar, exactly realizes the query-neutral behavioural quotient
+with `action_count <= 3/2` and `action_count <= 5/2`, compresses total `25 -> 5` and
+active `18 -> 3`, and serializes one portable model used unchanged by two fresh
+in-coverage query-planning processes. A missing realization instead produces typed
+`NO_EXACT_FEATURE_REALIZATION` with a bidirectional typed mismatch witness and no
+positive model or certificate. The distinct 36-state seed-0 canonical-initial control
+has an 11-cell target and a 7-cell `action_count` candidate and exhibits both
+`TARGET_SEPARATED_FEATURE_ALIASED` and `TARGET_MERGED_FEATURE_SEPARATED`; it is not the
+25-state golden.
+
+This is a real but narrow automatic-synthesis result: selection occurs inside a fixed
+human grammar and against a complete exact ground-model behavioural oracle on training
+coverage. That target/signature dependence remains, so this is not oracle-free unknown-
+quotient discovery. It is also not feature invention, partial/learned dynamics,
+unknown-domain/scalable discovery, held-out or cross-domain generalization. It does not
+close any of the Phase 3E accounting, semantic-transport, dependent-transaction,
+rebuild, campaign or independent-verification blockers listed below. Therefore the
+authoritative Phase 3E boundary remains V0-037 and all locks remain unchanged:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+```
+
+## Current V0-037 Phase 3E boundary (supersedes the older Phase 3E status lists below)
+
+The ultimate target is unchanged:
+
+> **自动合成一个可复用的抽象世界模型，使多步计划能够主要在该模型中完成；系统只在抽象模型无法以给定价值与约束误差认证当前 contingent plan 时，才局部恢复 ground distinctions。**
+
+V0-037 closes three scoped plumbing boundaries and diagnoses one fixture boundary. It
+does not establish synthesis or generality.
+
+First, canonical H2 preparation now has an immutable native trace containing exactly
+4 causal-candidate evaluations, 18 protocol checks, 3 integrity checks and 5 cap
+checks. Its incremental WorkVector is kept separate from the original failed prefix;
+the reducer-derived aggregate is retained as post-core evidence. Both remain
+`RETAINED_POST_CORE_NOT_YET_OCCURRENCE_CHARGED`. Content-ID hash invocations, I/O and
+accounting materialization/sealing are outside that trace, so the existing broad
+preparation/global-hash blockers remain and neither preparation vector enters the
+logical-occurrence cost.
+
+Second, the successful registered LOCAL path now has a scoped typed terminal and
+logical-occurrence closure. A fixed 54-role bundle independently replays the Phase-3C
+source lease, canonical bytes, role/path topology, preparation work, upper arithmetic,
+strict route selection, access/freeze sequence, reducer merges, selected-upper
+compliance, terminal and occurrence references. Its highest status is exactly:
+
+```text
+VERIFIED_LOCAL_ROUTE_ACCOUNTING_AND_TOPOLOGY
+semantic_certificate_status = NOT_MINTED_FROM_TRANSPORT
+```
+
+The bundle does not serialize enough local ground-proof or post-audit ground-replay
+input to recreate live semantic authority. It therefore verifies the topology of a
+terminal artifact; it does not independently issue the plan certificate.
+
+Third, bounded rebuild/new-`BuildEpoch`/single-retry objects now exercise identity,
+budget and reducer-correct occurrence aggregation. This is control-plane mechanics,
+not a semantically authorized operational rebuild/retry or rebuilt-world-model result.
+
+Finally, the canonical H2 local transaction 1 now ends in sound
+`POST_AUDIT=CERTIFIED`. The frozen state machine permits transaction 2 only after a
+failed post-audit, so a real transaction 2 is unreachable on this fixture. The next
+benchmark must be a separately registered dependent-horizon fixture with a genuine
+ground post-audit failure, distinct deeper frontier, fresh cardinality/upper authority
+and new selected execution. The proof-derived synthetic two-transaction profile is
+still only a state-machine/aggregation control.
+
+Remaining official blockers are all-path hash/I/O/runtime accounting, durable exact-
+infeasibility proof replay, serialized proof inputs for an independent semantic bundle
+verifier, the new dependent-horizon transaction-2 fixture, operational rebuild
+semantics, complete campaign/workload replay, and the later scalar revision. Automatic
+RAPM synthesis, unknown strategic abstraction discovery and cross-domain
+generalization remain research work rather than conclusions from these controls.
+
+All locks remain:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+```
+
+## Historical V0-036 boundary
+
+The implementation has moved beyond V0-035, but the scientific objective has
+not changed: synthesize one reusable abstract world model, perform multi-step
+contingent planning primarily inside it, and restore ground distinctions only
+at the first proof frontier where the selected plan cannot be certified.
+
+The model-first H2 path now has an honest `ABSTRACT_FAILED_PREFIX` accounting
+kind and a retained, opaque authority chain from the isolated model-only result
+through `ABSTRACT_AUDIT=FAIL`, ground binding, no-replanning Phase-3D causal
+translation, cardinality and route-upper replay, strict marginal route choice,
+and exactly one selected post-freeze executor factory.  The unselected route is
+a rejection trap.  This closes the former `FAIL -> estimate -> prepared route`
+control-flow gap; it does **not** make the route official.  The preparation
+object permanently exposes these unresolved accounting facts:
+
+```text
+GROUND_HANDOFF_OPERATIONAL_WORK_NOT_NATIVE_ACCOUNTED
+MODEL_FAILURE_ROUTE_PREPARATION_OPERATIONAL_WORK_NOT_NATIVE_ACCOUNTED
+ABSTRACT_AUDIT_REPLAY_NOT_EVENT_GRAIN_ACCOUNTED
+CONTENT_ID_HASH_INVOCATIONS_NOT_GLOBALLY_HOOKED
+```
+
+Those flags cannot be removed or changed into
+`official_execution_allowed=true`.  On this restricted development host the
+end-to-end call reaches the selected local worker and then encounters the
+host's nested bubblewrap/`NETLINK_ROUTE` namespace denial.  That environmental
+failure is retained as failed-route work; it is not converted into a passing
+runtime claim.
+
+Two other boundaries are now executable but deliberately weaker than their
+future official forms.  First, a strict seven-role independent bundle verifier
+replays the H2 model-failure **prefix** from an independently loaded Phase-3C
+source snapshot, including final TOCTOU recheck; selected-route receipts,
+terminal and occurrence closure remain `NOT_RUN`.  Second, the planner-free
+exact-cache preflight derives kernel/manifest identity from the verified source
+and compares all eight frozen coordinates, but always returns
+`authorizes_infeasibility=false`: no current artifact contains the durable,
+kernel-bound search-completeness payload and independent verifier required by
+V0-021.
+
+An adversarial authority audit also found that a module token inside a public
+frozen dataclass was copyable.  V0-036 therefore treats runtime semantic and
+continuation authority as an exact live object, not as a copied token or a
+same-shaped dataclass.  Semantic results, prepared estimates, route
+continuations, trusted local/fallback provenance, occurrence/campaign handles,
+and cache/workload runtime handles must retain an internal mint, exact member
+identity, and a replayed fingerprint; `replace`, shallow/deep copy, field
+substitution and cross-role reuse are inert.  This correction is a trust-boundary
+repair, not strategic-model evidence.
+
+The remaining official blockers are consequently narrower and more precise:
+
+1. event-granular native accounting for the complete model-failure preparation
+   path, every content hash, I/O/mount/runtime event, and all abnormal exits;
+2. sealed model-only runtime resource caps and an independently replayable event
+   trace;
+3. a real ground-derived failed post-audit whose new proof frontier drives
+   production transaction 2, rather than the existing synthetic control;
+4. model-failure terminal/occurrence closure, operational rebuild/new
+   `BuildEpoch`/single retry, and every remaining terminal branch;
+5. a durable exact-infeasibility proof payload with an independent complete-
+   search verifier;
+6. selected-route receipts plus a complete manifest-level bundle verifier;
+7. the full registered workload and, only after a later scalar ledger revision,
+   scalar break-even; and
+8. the ultimate research work: automatic RAPM synthesis, unknown strategic
+   abstraction discovery, cross-domain generalization and learned proposals
+   that remain subordinate to exact audit.
+
+Therefore all official and economics locks remain unchanged:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+```
+
 This note narrows the claim made by `PHASE3E_PRECONSTRUCTION.md`. Ledger V0-032
 freezes contract `1.0.0` and profile `phase3e_accounted_dynamic_routing_v0`;
 V0-033 additively freezes the four scoped P0 accounting, continuation, executor and
@@ -224,6 +451,12 @@ binding, exact two-stage verification charging, sealed post-freeze construction,
 runner-owned continuation authority, and provenance-preserving occurrence failure
 closure.
 
+V0-037 additionally demonstrates a scoped successful
+`PLAN_CERTIFICATE/LOCAL_GROUND_RECOVERY` terminal/occurrence closure and a 54-role
+independent accounting/topology transport. The latter's highest claim is exactly
+`VERIFIED_LOCAL_ROUTE_ACCOUNTING_AND_TOPOLOGY`; it cannot independently mint the
+semantic certificate.
+
 It is not an official execution profile, a completed counter-completeness Gate,
 a workload-economics result, or a general campaign certificate. In particular,
 `run_phase3e` consumes a caller-prepared failed-plan/authority package; it does
@@ -238,10 +471,12 @@ post-freeze executor/runtime CAS, and occurrence-level failed-route terminal rep
 Their registered vertical-slice paths are no longer absent, but that does not imply
 all-path enforcement or that the wider Gate has run. The remaining blockers are:
 
-1. **Abstract and cached-infeasibility authority.** Implement independent
-   `ABSTRACT_AUDIT` replay and exact identical-query/build/kernel cached
-   infeasibility matching. No hash or fallback-cap outcome may substitute for
-   either authority.
+1. **Durable infeasibility and transport semantic authority.** The registered
+   model-only `ABSTRACT_AUDIT` chain replays, but planner-free cached infeasibility
+   still needs a durable kernel-bound complete-search proof and independent verifier.
+   The selected-route bundle also needs serialized local ground-proof and post-audit
+   inputs before it can verify certificate semantics. No hash or fallback-cap outcome
+   may substitute for those proofs.
 2. **Complete remaining native/hash instrumentation.** Close planner invocation,
    continuation/fallback authority-package construction and rejection, and every
    abstract-only, rebuild, exact-infeasible, cap/protocol/integrity failure, terminal,
@@ -250,22 +485,28 @@ all-path enforcement or that the wider Gate has run. The remaining blockers are:
    declares `unassigned_postfreeze_operational_leaves=(common.hash_invocations)` and
    `ALL_PATH_NATIVE_HASH_INSTRUMENTATION`; the current registered positive and typed-
    failure paths cannot prove counter completeness for all official paths.
-3. **Live dependent transaction evidence.** Exercise a genuine failed sound
-   post-audit, derive the deeper frontier and all transaction-2 authorities from
-   frozen sources, execute the fresh local-or-fallback decision, and then certify or
-   close. The generic orchestrator and attack controls alone are not this evidence.
-4. **Rebuild/retry and remaining campaign closure.** Fallback cap exhaustion already
+3. **New dependent-horizon transaction evidence.** The repaired canonical H2
+   transaction 1 ends `POST_AUDIT=CERTIFIED`, so transaction 2 is unreachable there.
+   Register a different fixture whose genuine ground post-audit fails, derive the
+   deeper frontier and all transaction-2 authorities from frozen sources, execute the
+   fresh local-or-fallback decision, and then certify or close. The synthetic control
+   alone is not this evidence.
+4. **Operational rebuild/retry semantics and remaining campaign closure.** Bounded
+   new-epoch/single-retry identity, budget and aggregation mechanics exist, and
+   fallback cap exhaustion already
    closes at occurrence scope as an authority-verified denominator-preserving
-   noncertificate. Still connect an operational rebuild recipe/new `BuildEpoch`, the
-   one permitted retry, exact infeasibility, protocol/integrity failure and attempt-
-   budget exhaustion to the complete campaign orchestration while charging all work.
-5. **Upstream RAPM consumer.** Start from a manifest, plan and audit in the frozen RAPM,
-   and construct the prepared authority package instead of receiving it from a caller.
-6. **Manifest-level independent verifier.** Add a clean command that starts
-   from a Phase 3E bundle/manifest and independently replays source identities,
-   access order, counters, cardinalities, formulas, uppers, route decisions,
-   budgets, terminals, occurrence totals, and campaign closure. Runtime seals and
-   unit-level strict round trips are insufficient for this Gate.
+   noncertificate. Still perform a semantically authorized RAPM rebuild/new
+   `BuildEpoch`, the one permitted retry, exact infeasibility, protocol/integrity
+   failure and attempt-budget exhaustion in complete campaign orchestration while
+   charging all work.
+5. **Integrated upstream/campaign consumer.** Connect manifest loading, model-only
+   plan/audit, failed-prefix preparation, selected execution, retries and closure as
+   one fully accounted production consumer rather than separately invoked scoped
+   stages.
+6. **Semantic and campaign bundle verification.** Extend the current fixed 54-role
+   accounting/topology verifier with serialized ground proof inputs, independent post-
+   audit replay, all route/retry branches and campaign closure. Runtime seals and
+   topology-only replay are insufficient for this Gate.
 7. **Workload economics.** Freeze a later scalar ledger revision, run the full
    registered logical-occurrence workload including worst order, and only then
    define or report `N_break_even`. Until then only vector prefix and componentwise
@@ -275,7 +516,7 @@ all-path enforcement or that the wider Gate has run. The remaining blockers are:
    cross-domain reuse, scale, or learning. Progress on accounting must not be
    relabelled as completion of the reusable-world-model objective.
 
-Until these blockers and the V0-032/V0-033 acceptance matrix close, every Phase 3E
+Until these blockers and the V0-032/V0-033/V0-037 acceptance matrix close, every Phase 3E
 artifact preserves exactly:
 
 ```text

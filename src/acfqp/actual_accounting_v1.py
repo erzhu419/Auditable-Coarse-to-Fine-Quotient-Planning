@@ -325,7 +325,10 @@ def _validate_work_scope(
             "evaluation replay requires a separate evaluation projection profile"
         )
     if work_scope is ActualWorkScope.COMMON_PREFIX:
-        if vector.route_kind is not RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE:
+        if vector.route_kind not in {
+            RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE,
+            RouteKindEnum.ABSTRACT_FAILED_PREFIX,
+        }:
             raise ActualAccountingV1Error(
                 "common-prefix work must use the non-route-execution vector kind"
             )
@@ -399,7 +402,18 @@ def _validate_work_scope(
     nonzero = sorted(
         path
         for path, value in values.items()
-        if value and any(path.startswith(prefix) for prefix in forbidden)
+        if value
+        and any(path.startswith(prefix) for prefix in forbidden)
+        # FQ11 preserves the causal-search operation family as ``local.*``;
+        # FQ2/FQ13 place that estimate-before-execute work in the common
+        # prefix.  This one failed-prefix leaf is therefore the registered
+        # cross-family exception.  Materialization/compiler/solver/post-audit
+        # leaves remain forbidden here.
+        and not (
+            work_scope is ActualWorkScope.COMMON_PREFIX
+            and vector.route_kind is RouteKindEnum.ABSTRACT_FAILED_PREFIX
+            and path == "local.causal_candidate_evaluations"
+        )
     )
     if nonzero:
         raise ActualAccountingV1Error(

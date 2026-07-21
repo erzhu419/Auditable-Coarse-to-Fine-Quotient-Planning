@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 from dataclasses import replace
 from fractions import Fraction
 import hashlib
@@ -22,6 +23,7 @@ from acfqp.phase3e_local_semantics_v1 import (
     PostAuditCertificateV1,
     PostAuditOutcome,
     TrustedLocalExecutionV1,
+    require_trusted_local_execution_authority_v1,
 )
 from acfqp.routing_v1 import (
     DecisionPointV1,
@@ -274,6 +276,17 @@ def test_replace_and_rehash_cannot_reuse_runtime_provenance() -> None:
             verification_work_record=_record(SemanticRole.LOCAL_SOLVER_RESULT),
             registry=registry,
         )
+
+
+def test_exact_local_execution_copy_and_replace_are_inert() -> None:
+    execution = _world()[9]
+    assert require_trusted_local_execution_authority_v1(execution) is execution
+
+    copied = copy.copy(execution)
+    with pytest.raises(Phase3ELocalSemanticV1Error, match="retained"):
+        require_trusted_local_execution_authority_v1(copied)
+    with pytest.raises(Phase3ELocalSemanticV1Error, match="copied or modified"):
+        replace(execution)
 
 
 def test_context_or_transaction_substitution_is_rejected() -> None:

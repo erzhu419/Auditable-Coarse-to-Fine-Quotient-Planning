@@ -21,7 +21,7 @@ from __future__ import annotations
 
 import argparse
 import copy
-from dataclasses import dataclass
+from dataclasses import dataclass, field, replace
 from datetime import datetime, timezone
 from fractions import Fraction
 import hashlib
@@ -86,9 +86,14 @@ from acfqp.phase3c import (
     _audit_document,
     _select_recovery_proposal,
 )
-from acfqp.planning import FiniteHorizonPolicy, audit_abstract_policy
+from acfqp.planning import (
+    AbstractPolicyAudit,
+    CellPolicyBound,
+    FiniteHorizonPolicy,
+    audit_abstract_policy,
+)
 from acfqp.portable import logical_id
-from acfqp.portable_planner import solve_portable_pareto
+from acfqp.portable_planner import PortablePlanResult, solve_portable_pareto
 from acfqp.sparse_capability import (
     CAPABILITY_SCHEMA,
     SparseAffineForm,
@@ -157,6 +162,247 @@ class Phase3DInvariantViolation(RuntimeError):
     status = INVARIANT_FAILURE
 
 
+_VERIFIED_MODEL_ESTIMATE_BINDING_AUTHORITY = object()
+_PREPARED_ESTIMATE_MINT_AUTHORITY = object()
+_EXECUTABLE_PREPARED_ESTIMATE_DERIVATION_AUTHORITY = object()
+
+_PREPARED_ESTIMATE_BOUND_FIELDS = (
+    "world",
+    "query",
+    "ground_query_id",
+    "portable_query",
+    "portable_result",
+    "proposal",
+    "proposal_source",
+    "policy",
+    "pre_audit",
+    "proof_graph",
+    "causal_circuit",
+    "causal_search",
+    "frontier",
+    "authorization",
+    "source_boundary",
+    "source_phase3c_locality",
+    "source_phase3c_authorization",
+    "unrestricted_reward_upper",
+    "verified_model_binding",
+)
+
+
+def _prepared_estimate_bound_value_v1(field_name: str, value: Any) -> Any:
+    """Return a complete canonical view of one prepared-estimate field.
+
+    Most bound objects are frozen dataclasses and are handled recursively by
+    ``to_jsonable``.  ``CausalProofCircuit`` intentionally is not a dataclass,
+    so spell out its complete public graph instead of falling back to an
+    address-bearing ``repr``.  Portable planner objects provide their own
+    canonical documents and are bound through those documents as well as live
+    object identity in the opaque mint.
+    """
+
+    if field_name == "causal_circuit":
+        return {
+            "nodes": to_jsonable(value.nodes),
+            "roots": to_jsonable(value.roots),
+            "node_index": {
+                node_id: to_jsonable(node)
+                for node_id, node in sorted(value._by_id.items())
+            },
+        }
+    if field_name in {"portable_result", "proposal"}:
+        return value.to_dict()
+    if field_name == "verified_model_binding":
+        if value is None:
+            return None
+        return {
+            name: getattr(value, name)
+            for name in (
+                "model_only_result_id",
+                "selected_plan_id",
+                "threshold_profile_id",
+                "route_decision_context_id",
+                "abstract_audit_attestation_id",
+                "verification_work_record_id",
+                "ground_binding_id",
+            )
+        }
+    return to_jsonable(value)
+
+
+def _prepared_estimate_payload_sha256_v1(
+    fields: Mapping[str, Any],
+) -> str:
+    missing = set(_PREPARED_ESTIMATE_BOUND_FIELDS) - set(fields)
+    extra = set(fields) - set(_PREPARED_ESTIMATE_BOUND_FIELDS)
+    if missing or extra:
+        raise Phase3DInvariantViolation(
+            "prepared estimate binding field set is incomplete"
+        )
+    payload = {
+        "schema": "acfqp.safe_chain_prepared_estimate_payload.v1",
+        "fields": {
+            name: _prepared_estimate_bound_value_v1(name, fields[name])
+            for name in _PREPARED_ESTIMATE_BOUND_FIELDS
+        },
+    }
+    return hashlib.sha256(
+        b"acfqp:safe-chain-prepared-estimate-payload:v1\x00"
+        + _canonical_bytes(payload)
+    ).hexdigest()
+
+
+@dataclass(frozen=True, slots=True)
+class VerifiedModelEstimateBindingV1:
+    """Process-local bridge from a verified model failure to local estimation.
+
+    The public IDs are conveniences for downstream route construction.  Their
+    authority comes from the retained model result, semantic audit result, and
+    ground handoff; copying this object and replacing an ID cannot mint a new
+    binding because every construction replays that retained triple.
+    """
+
+    model_only_result_id: str
+    selected_plan_id: str
+    threshold_profile_id: str
+    route_decision_context_id: str
+    abstract_audit_attestation_id: str
+    verification_work_record_id: str
+    ground_binding_id: str
+    _model_only_result: object = field(repr=False, compare=False)
+    _abstract_audit_authority: object = field(repr=False, compare=False)
+    _ground_binding: object = field(repr=False, compare=False)
+    _authority: object = field(repr=False, compare=False)
+
+    def __post_init__(self) -> None:
+        _validate_verified_model_estimate_binding_core_v1(self)
+
+
+def _validate_verified_model_estimate_binding_core_v1(
+    binding: VerifiedModelEstimateBindingV1,
+) -> None:
+    """Replay the retained authority triple behind one estimate binding."""
+
+    from acfqp.phase3e_ground_handoff_v1 import (
+        GroundBindingAfterFailedAuditV1,
+        Phase3EGroundHandoffV1Error,
+        require_ground_binding_after_failed_audit_v1,
+    )
+    from acfqp.phase3e_model_only_v1 import (
+        ModelOnlyOutcome,
+        Phase3EModelOnlyResultV1,
+    )
+    from acfqp.semantic_verification_v1 import (
+        SemanticRole,
+        SemanticVerificationResultV1,
+        SemanticVerificationV1Error,
+        require_semantic_verification_result_v1,
+    )
+
+    if (
+        type(binding) is not VerifiedModelEstimateBindingV1
+        or binding._authority is not _VERIFIED_MODEL_ESTIMATE_BINDING_AUTHORITY
+        or type(binding._model_only_result) is not Phase3EModelOnlyResultV1
+        or type(binding._abstract_audit_authority)
+        is not SemanticVerificationResultV1
+        or type(binding._ground_binding) is not GroundBindingAfterFailedAuditV1
+    ):
+        raise Phase3DInvariantViolation(
+            "verified-model estimate binding lacks its retained authority triple"
+        )
+    result = binding._model_only_result
+    try:
+        ground = require_ground_binding_after_failed_audit_v1(
+            binding._ground_binding
+        )
+        audit_authority = require_semantic_verification_result_v1(
+            binding._abstract_audit_authority, SemanticRole.ABSTRACT_AUDIT
+        )
+    except (Phase3EGroundHandoffV1Error, SemanticVerificationV1Error) as error:
+        raise Phase3DInvariantViolation(
+            f"verified-model estimate binding replay failed: {error}"
+        ) from error
+    if (
+        result.outcome is not ModelOnlyOutcome.FAIL
+        or result.ground_binding_required is not True
+        or audit_authority.outcome != "FAIL"
+        or audit_authority is not ground.semantic_authority
+        or audit_authority.binding.route_context != result.route_context
+        or audit_authority.artifact != result.audit
+        or ground.model_only_result_id != result.result_id
+    ):
+        raise Phase3DInvariantViolation(
+            "verified-model estimate binding retains a foreign or nonfailed chain"
+        )
+    expected = {
+        "model_only_result_id": result.result_id,
+        "selected_plan_id": result.route_context.selected_plan_id,
+        "threshold_profile_id": result.route_context.threshold_profile_id,
+        "route_decision_context_id": (
+            result.route_context.route_decision_context_id
+        ),
+        "abstract_audit_attestation_id": (
+            audit_authority.attestation.verification_attestation_id
+        ),
+        "verification_work_record_id": (
+            audit_authority.verification_work_record.record_id
+        ),
+        "ground_binding_id": ground.ground_binding_id,
+    }
+    for field_name, expected_value in expected.items():
+        if getattr(binding, field_name) != expected_value:
+            raise Phase3DInvariantViolation(
+                f"verified-model estimate binding mismatch for {field_name}"
+            )
+
+
+@dataclass(frozen=True, slots=True)
+class _SafeChainPreparedEstimateMintV1:
+    """One-owner opaque seal over every prepared-estimate input.
+
+    ``bound_objects`` prevents an equal-content object from being spliced into
+    a live capability.  ``payload_sha256`` additionally detects mutation of a
+    retained mapping or another nested object after minting.  ``owner`` makes
+    a generic ``dataclasses.replace`` copy fail closed even when none of the
+    public fields changed.
+    """
+
+    verified_model_binding: VerifiedModelEstimateBindingV1 | None = field(
+        repr=False, compare=False
+    )
+    bound_objects: tuple[tuple[str, object], ...] = field(
+        repr=False, compare=False
+    )
+    payload_sha256: str = field(repr=False, compare=False)
+    derivation_kind: str
+    parent_payload_sha256: str | None
+    authority: object = field(repr=False, compare=False)
+    owner: object | None = field(default=None, repr=False, compare=False)
+
+    def __post_init__(self) -> None:
+        if (
+            self.authority is not _PREPARED_ESTIMATE_MINT_AUTHORITY
+            or tuple(name for name, _value in self.bound_objects)
+            != _PREPARED_ESTIMATE_BOUND_FIELDS
+            or len(self.payload_sha256) != 64
+            or self.derivation_kind
+            not in {"FROZEN_ESTIMATE", "ACCESS_LOGGED_KERNEL_DERIVATIVE"}
+            or (
+                self.derivation_kind == "FROZEN_ESTIMATE"
+                and self.parent_payload_sha256 is not None
+            )
+            or (
+                self.derivation_kind == "ACCESS_LOGGED_KERNEL_DERIVATIVE"
+                and (
+                    self.parent_payload_sha256 is None
+                    or len(self.parent_payload_sha256) != 64
+                )
+            )
+        ):
+            raise Phase3DInvariantViolation(
+                "prepared estimate mint has no trusted constructor"
+            )
+
+
 @dataclass(frozen=True, slots=True)
 class SafeChainPreparedEstimateContext:
     """Safe-chain proof/frontier state before selected-route execution.
@@ -185,6 +431,209 @@ class SafeChainPreparedEstimateContext:
     source_phase3c_locality: dict[str, Any]
     source_phase3c_authorization: dict[str, Any]
     unrestricted_reward_upper: Fraction
+    _mint: _SafeChainPreparedEstimateMintV1 = field(repr=False, compare=False)
+    verified_model_binding: VerifiedModelEstimateBindingV1 | None = field(
+        default=None, repr=False, compare=False
+    )
+
+    def __post_init__(self) -> None:
+        _validate_safe_chain_prepared_estimate_context_v1(
+            self, allow_unowned_mint=True
+        )
+
+    def __copy__(self) -> object:
+        raise Phase3DInvariantViolation(
+            "prepared estimate is a one-owner capability and cannot be copied"
+        )
+
+    def __deepcopy__(self, memo: dict[int, object]) -> object:
+        raise Phase3DInvariantViolation(
+            "prepared estimate is a one-owner capability and cannot be deep-copied"
+        )
+
+    def __reduce_ex__(self, protocol: int) -> object:
+        raise Phase3DInvariantViolation(
+            "prepared estimate is a live capability and cannot be serialized"
+        )
+
+
+def _prepared_estimate_context_fields_v1(
+    prepared: SafeChainPreparedEstimateContext,
+) -> dict[str, Any]:
+    return {
+        name: getattr(prepared, name)
+        for name in _PREPARED_ESTIMATE_BOUND_FIELDS
+    }
+
+
+def _validate_safe_chain_prepared_estimate_context_v1(
+    prepared: SafeChainPreparedEstimateContext,
+    *,
+    allow_unowned_mint: bool = False,
+) -> None:
+    """Verify live ownership, exact object binding, and the payload snapshot."""
+
+    if type(prepared) is not SafeChainPreparedEstimateContext:
+        raise Phase3DInvariantViolation(
+            "prepared estimate requires the exact safe-chain context type"
+        )
+    mint = prepared._mint
+    if (
+        type(mint) is not _SafeChainPreparedEstimateMintV1
+        or mint.authority is not _PREPARED_ESTIMATE_MINT_AUTHORITY
+        or (
+            mint.owner is not prepared
+            and not (allow_unowned_mint and mint.owner is None)
+        )
+        or prepared.verified_model_binding is not mint.verified_model_binding
+    ):
+        raise Phase3DInvariantViolation(
+            "prepared estimate continuation binding differs from its mint"
+        )
+    fields = _prepared_estimate_context_fields_v1(prepared)
+    for field_name, expected_object in mint.bound_objects:
+        if fields[field_name] is not expected_object:
+            raise Phase3DInvariantViolation(
+                f"prepared estimate object binding mismatch for {field_name}"
+            )
+    if _prepared_estimate_payload_sha256_v1(fields) != mint.payload_sha256:
+        raise Phase3DInvariantViolation(
+            "prepared estimate payload differs from its cryptographic mint"
+        )
+
+
+def _mint_safe_chain_prepared_estimate_context_v1(
+    *,
+    derivation_kind: str = "FROZEN_ESTIMATE",
+    parent_payload_sha256: str | None = None,
+    **fields: Any,
+) -> SafeChainPreparedEstimateContext:
+    """Mint the sole live owner for one complete prepared-estimate payload."""
+
+    payload_sha256 = _prepared_estimate_payload_sha256_v1(fields)
+    mint = _SafeChainPreparedEstimateMintV1(
+        verified_model_binding=fields["verified_model_binding"],
+        bound_objects=tuple(
+            (name, fields[name]) for name in _PREPARED_ESTIMATE_BOUND_FIELDS
+        ),
+        payload_sha256=payload_sha256,
+        derivation_kind=derivation_kind,
+        parent_payload_sha256=parent_payload_sha256,
+        authority=_PREPARED_ESTIMATE_MINT_AUTHORITY,
+    )
+    prepared = SafeChainPreparedEstimateContext(**fields, _mint=mint)
+    object.__setattr__(mint, "owner", prepared)
+    _validate_safe_chain_prepared_estimate_context_v1(prepared)
+    return prepared
+
+
+def require_safe_chain_prepared_estimate_context_v1(
+    prepared: SafeChainPreparedEstimateContext,
+) -> SafeChainPreparedEstimateContext:
+    """Require the exact one-owner, cryptographically sealed context."""
+
+    _validate_safe_chain_prepared_estimate_context_v1(prepared)
+    return prepared
+
+
+def _derive_safe_chain_access_logged_estimate_v1(
+    prepared: SafeChainPreparedEstimateContext,
+    *,
+    access_logged_kernel: object,
+    authority: object,
+) -> SafeChainPreparedEstimateContext:
+    """Mint the one authorized post-freeze executable-world derivative.
+
+    The caller cannot supply a replacement world or any proof/authorization
+    field.  This function derives the world itself and changes exactly its
+    kernel to a wrapper over the source kernel.  All other prepared fields are
+    copied from the validated parent and receive a fresh one-owner seal.
+    """
+
+    if authority is not _EXECUTABLE_PREPARED_ESTIMATE_DERIVATION_AUTHORITY:
+        raise Phase3DInvariantViolation(
+            "executable estimate derivative lacks post-freeze authority"
+        )
+    _validate_safe_chain_prepared_estimate_context_v1(prepared)
+    if getattr(access_logged_kernel, "_kernel", None) is not prepared.world.kernel:
+        raise Phase3DInvariantViolation(
+            "executable estimate kernel does not wrap the frozen parent kernel"
+        )
+    executable_world = replace(prepared.world, kernel=access_logged_kernel)
+    fields = _prepared_estimate_context_fields_v1(prepared)
+    fields["world"] = executable_world
+    return _mint_safe_chain_prepared_estimate_context_v1(
+        **fields,
+        derivation_kind="ACCESS_LOGGED_KERNEL_DERIVATIVE",
+        parent_payload_sha256=prepared._mint.payload_sha256,
+    )
+
+
+def require_verified_model_estimate_binding_v1(
+    prepared: SafeChainPreparedEstimateContext,
+) -> VerifiedModelEstimateBindingV1:
+    """Return the exact model-only route identity retained by ``prepared``."""
+
+    _validate_safe_chain_prepared_estimate_context_v1(prepared)
+    binding = prepared.verified_model_binding
+    if type(binding) is not VerifiedModelEstimateBindingV1:
+        raise Phase3DInvariantViolation(
+            "prepared estimate has no verified-model continuation binding"
+        )
+    _validate_verified_model_estimate_binding_core_v1(binding)
+    result = binding._model_only_result
+    ground = binding._ground_binding
+    portable_result_document = prepared.portable_result.to_dict()
+    audit = result.audit
+    if (
+        prepared.world is not ground.world
+        or prepared.ground_query_id != result.source_lease.legacy_ground_query_id
+        or prepared.portable_query.query_id
+        != result.source_lease.legacy_portable_query_id
+        or portable_result_document != result.selected_plan.planner_result
+        or prepared.proposal != result.selected_plan.proposal
+        or prepared.proposal_source != result.selected_plan.proposal_source
+        or prepared.pre_audit.unrestricted_reward_upper
+        != audit.unrestricted_reward_upper
+        or prepared.pre_audit.lifted_reward_lower != audit.policy_reward_lower
+        or prepared.pre_audit.lifted_failure_upper != audit.policy_failure_upper
+        or prepared.pre_audit.regret_upper != audit.regret_upper
+        or prepared.pre_audit.regret_tolerance != audit.regret_tolerance
+        or prepared.pre_audit.risk_tolerance != audit.risk_tolerance
+    ):
+        raise Phase3DInvariantViolation(
+            "prepared estimate is spliced from a different verified-model chain"
+        )
+    return binding
+
+
+def _mint_verified_model_estimate_binding_v1(
+    *,
+    model_only_result: object,
+    abstract_audit_authority: object,
+    ground_binding: object,
+) -> VerifiedModelEstimateBindingV1:
+    """Mint the process-local identity bridge after the FAIL handoff."""
+
+    return VerifiedModelEstimateBindingV1(
+        model_only_result_id=model_only_result.result_id,
+        selected_plan_id=model_only_result.route_context.selected_plan_id,
+        threshold_profile_id=model_only_result.route_context.threshold_profile_id,
+        route_decision_context_id=(
+            model_only_result.route_context.route_decision_context_id
+        ),
+        abstract_audit_attestation_id=(
+            abstract_audit_authority.attestation.verification_attestation_id
+        ),
+        verification_work_record_id=(
+            abstract_audit_authority.verification_work_record.record_id
+        ),
+        ground_binding_id=ground_binding.ground_binding_id,
+        _model_only_result=model_only_result,
+        _abstract_audit_authority=abstract_audit_authority,
+        _ground_binding=ground_binding,
+        _authority=_VERIFIED_MODEL_ESTIMATE_BINDING_AUTHORITY,
+    )
 
 
 @dataclass(frozen=True, slots=True)
@@ -510,20 +959,27 @@ def _authority_accounting(context: SafeChainContext) -> dict[str, Any]:
     return result
 
 
-def _prepare_safe_chain_estimate_from_world(
+def _prepare_safe_chain_estimate_from_frozen_plan(
     world: Any,
     *,
-    unrestricted_reward_upper: Fraction,
+    query: Any,
+    portable_query: Any,
+    portable_result: Any,
+    proposal: Any,
+    proposal_source: str,
+    policy: FiniteHorizonPolicy[Any, Any],
+    pre_audit: AbstractPolicyAudit,
     source_phase3c_locality: Mapping[str, Any],
     source_phase3c_authorization: Mapping[str, Any],
     allow_live_evaluation_catalogue: bool = False,
+    verified_model_binding: VerifiedModelEstimateBindingV1 | None = None,
 ) -> SafeChainPreparedEstimateContext:
-    """Prepare the failed proof and route cardinalities without ground steps.
+    """Prepare proof/frontier/cardinalities from an already frozen plan/audit.
 
-    The frozen unrestricted upper prevents an all-action ground replay.  Every
-    realization read below comes from the reusable RAPM envelope, and action
-    cardinalities come from the frozen binding catalogue.  Materialization and
-    compilation are intentionally absent from this function.
+    This is the shared estimate-only tail.  It deliberately has no planner or
+    abstract-auditor call: every realization comes from the reusable RAPM
+    envelope and every ground-action cardinality comes from the binding-time
+    catalogue.  Materialization and compilation are also absent.
     """
 
     if (
@@ -534,22 +990,6 @@ def _prepare_safe_chain_estimate_from_world(
             "route estimation requires a prebound frozen ground-action catalogue"
         )
     estimate_kernel = _FrozenEstimateKernelView.from_world(world)
-    registered = world.queries[1]
-    query = registered.query
-    portable_query = world.portable.query_from_spec(query)
-    portable_result = solve_portable_pareto(world.portable.model, portable_query)
-    proposal, proposal_source = _select_recovery_proposal(portable_result)
-    policy = FiniteHorizonPolicy.from_mapping(
-        world.portable.decode_policy(proposal.policy)
-    )
-    pre_audit = audit_abstract_policy(
-        estimate_kernel,
-        query,
-        world.models.envelope,
-        policy,
-        regret_tolerance=Fraction(1, 20),
-        unrestricted_reward_upper=unrestricted_reward_upper,
-    )
     if (
         pre_audit.certified
         or pre_audit.lifted_reward_lower != Fraction(3, 64)
@@ -634,7 +1074,9 @@ def _prepare_safe_chain_estimate_from_world(
         unrestricted_reward_upper=pre_audit.unrestricted_reward_upper,
         regret_tolerance=pre_audit.regret_tolerance,
     )
-    return SafeChainPreparedEstimateContext(
+    source_phase3c_locality_document = dict(source_phase3c_locality)
+    source_phase3c_authorization_document = dict(source_phase3c_authorization)
+    return _mint_safe_chain_prepared_estimate_context_v1(
         world=world,
         query=query,
         ground_query_id=object_id(query, "query"),
@@ -650,9 +1092,52 @@ def _prepare_safe_chain_estimate_from_world(
         frontier=frontier,
         authorization=authorization,
         source_boundary=source_boundary,
-        source_phase3c_locality=dict(source_phase3c_locality),
-        source_phase3c_authorization=dict(source_phase3c_authorization),
+        source_phase3c_locality=source_phase3c_locality_document,
+        source_phase3c_authorization=source_phase3c_authorization_document,
         unrestricted_reward_upper=pre_audit.unrestricted_reward_upper,
+        verified_model_binding=verified_model_binding,
+    )
+
+
+def _prepare_safe_chain_estimate_from_world(
+    world: Any,
+    *,
+    unrestricted_reward_upper: Fraction,
+    source_phase3c_locality: Mapping[str, Any],
+    source_phase3c_authorization: Mapping[str, Any],
+    allow_live_evaluation_catalogue: bool = False,
+) -> SafeChainPreparedEstimateContext:
+    """Historical planner/auditor front end for the shared estimate-only tail."""
+
+    estimate_kernel = _FrozenEstimateKernelView.from_world(world)
+    registered = world.queries[1]
+    query = registered.query
+    portable_query = world.portable.query_from_spec(query)
+    portable_result = solve_portable_pareto(world.portable.model, portable_query)
+    proposal, proposal_source = _select_recovery_proposal(portable_result)
+    policy = FiniteHorizonPolicy.from_mapping(
+        world.portable.decode_policy(proposal.policy)
+    )
+    pre_audit = audit_abstract_policy(
+        estimate_kernel,
+        query,
+        world.models.envelope,
+        policy,
+        regret_tolerance=Fraction(1, 20),
+        unrestricted_reward_upper=unrestricted_reward_upper,
+    )
+    return _prepare_safe_chain_estimate_from_frozen_plan(
+        world,
+        query=query,
+        portable_query=portable_query,
+        portable_result=portable_result,
+        proposal=proposal,
+        proposal_source=proposal_source,
+        policy=policy,
+        pre_audit=pre_audit,
+        source_phase3c_locality=source_phase3c_locality,
+        source_phase3c_authorization=source_phase3c_authorization,
+        allow_live_evaluation_catalogue=allow_live_evaluation_catalogue,
     )
 
 
@@ -660,6 +1145,8 @@ def _execute_safe_chain_local_preparation(
     prepared: SafeChainPreparedEstimateContext,
 ) -> SafeChainContext:
     """Materialize and compile only after a caller has frozen LOCAL selection."""
+
+    _validate_safe_chain_prepared_estimate_context_v1(prepared)
 
     world = prepared.world
     query = prepared.query
@@ -804,6 +1291,295 @@ def prepare_safe_chain_estimate_context(
         unrestricted_reward_upper=world.unrestricted_reward_upper,
         source_phase3c_locality=world.source_locality_document,
         source_phase3c_authorization=world.source_authorization_document,
+    )
+
+
+def _audit_from_portable_sound_proof_v1(
+    world: Any,
+    model_only_result: Any,
+    policy: FiniteHorizonPolicy[Any, Any],
+) -> AbstractPolicyAudit:
+    """Decode the frozen portable proof rows into Phase-3D audit bounds.
+
+    This is a representation bridge, not a second audit.  The retained
+    ``ABSTRACT_AUDIT=FAIL`` semantic authority has already replayed the
+    portable sound proof.  Here we require an exact one-to-one correspondence
+    between its policy rows and the decoded policy decisions, then translate
+    portable cell IDs into the frozen world's construction-time cell objects.
+    """
+
+    portable_audit = model_only_result.audit
+    proof = model_only_result.sound_proof
+    if (
+        portable_audit.outcome != "FAIL"
+        or portable_audit.certified
+        or not portable_audit.action_realization_complete
+        or proof.proof_id != portable_audit.proof_id
+    ):
+        raise Phase3DInvariantViolation(
+            "verified-model estimate requires a complete failed portable audit"
+        )
+
+    registry = world.portable.registry
+    cells_by_id = {
+        identifier: cell for cell, identifier in registry.cell_records
+    }
+    if len(cells_by_id) != len(registry.cell_records):
+        raise Phase3DInvariantViolation("frozen cell registry has duplicate IDs")
+    decisions = {
+        (decision.remaining, decision.cell_id): decision.action_id
+        for decision in model_only_result.selected_plan.proposal.policy.decisions
+    }
+    if len(decisions) != len(
+        model_only_result.selected_plan.proposal.policy.decisions
+    ):
+        raise Phase3DInvariantViolation("portable policy decisions are duplicated")
+
+    bounds: list[CellPolicyBound] = []
+    seen: set[tuple[int, str]] = set()
+    for row in proof.policy_rows:
+        key = (row.remaining, row.cell_id)
+        if key in seen or decisions.get(key) != row.action_id:
+            raise Phase3DInvariantViolation(
+                "portable proof rows do not exactly bind the selected policy"
+            )
+        seen.add(key)
+        try:
+            cell = cells_by_id[row.cell_id]
+            decoded_action = policy.action(cell, row.remaining)
+            decoded_action_id = registry.semantic_action_id(cell, decoded_action)
+        except (KeyError, ValueError) as error:
+            raise Phase3DInvariantViolation(
+                "portable proof row cannot be decoded in the authorized world"
+            ) from error
+        if decoded_action_id != row.action_id:
+            raise Phase3DInvariantViolation(
+                "portable proof action differs from the decoded frozen policy"
+            )
+        bounds.append(
+            CellPolicyBound(
+                cell,
+                row.remaining,
+                row.reward_lower,
+                row.failure_upper,
+            )
+        )
+    if (
+        seen != set(decisions)
+        or len(bounds) != portable_audit.reachable_cell_horizon_pairs
+    ):
+        raise Phase3DInvariantViolation(
+            "portable proof does not cover every reachable selected-policy pair"
+        )
+
+    bounds.sort(key=lambda item: (-item.remaining, repr(item.cell)))
+    translated = AbstractPolicyAudit(
+        unrestricted_reward_upper=portable_audit.unrestricted_reward_upper,
+        lifted_reward_lower=portable_audit.policy_reward_lower,
+        lifted_failure_upper=portable_audit.policy_failure_upper,
+        regret_upper=portable_audit.regret_upper,
+        regret_tolerance=portable_audit.regret_tolerance,
+        risk_tolerance=portable_audit.risk_tolerance,
+        certified=False,
+        issues=(),
+        reachable_bounds=tuple(bounds),
+    )
+    if (
+        translated.regret_upper
+        != translated.unrestricted_reward_upper - translated.lifted_reward_lower
+        or len(translated.reachable_bounds)
+        != portable_audit.reachable_cell_horizon_pairs
+    ):
+        raise Phase3DInvariantViolation(
+            "translated portable proof has inconsistent root or reachability bounds"
+        )
+    return translated
+
+
+def prepare_safe_chain_estimate_from_verified_model_failure_v1(
+    ground_binding: object,
+    *,
+    model_only_result: object,
+    abstract_audit_authority: object,
+) -> SafeChainPreparedEstimateContext:
+    """Continue a verified model-only ``FAIL`` into Phase-3D route estimation.
+
+    No portable planner, abstract auditor, ground transition, materializer,
+    compiler, or worker is invoked.  The opaque handoff is the sole source of
+    the already-authorized ground namespace; the selected contingent plan and
+    every Bellman bound are decoded from the frozen model-only result.
+    """
+
+    # Lazy imports preserve the historical Phase-3D dependency surface and
+    # make the ground-handoff authority boundary explicit.
+    from acfqp.phase3e_ground_handoff_v1 import (
+        GroundBindingAfterFailedAuditV1,
+        Phase3EGroundHandoffV1Error,
+        require_ground_binding_after_failed_audit_v1,
+    )
+    from acfqp.phase3e_model_only_v1 import (
+        ModelOnlyOutcome,
+        Phase3EModelOnlyResultV1,
+    )
+    from acfqp.semantic_verification_v1 import (
+        SemanticRole,
+        SemanticVerificationResultV1,
+        SemanticVerificationV1Error,
+        require_semantic_verification_result_v1,
+    )
+
+    if type(model_only_result) is not Phase3EModelOnlyResultV1:
+        raise Phase3DInvariantViolation(
+            "verified-model estimate requires Phase3EModelOnlyResultV1"
+        )
+    if (
+        model_only_result.outcome is not ModelOnlyOutcome.FAIL
+        or model_only_result.audit.outcome != "FAIL"
+        or model_only_result.ground_binding_required is not True
+    ):
+        raise Phase3DInvariantViolation(
+            "verified-model estimate is forbidden for a PASS result"
+        )
+    if type(abstract_audit_authority) is not SemanticVerificationResultV1:
+        raise Phase3DInvariantViolation(
+            "verified-model estimate requires retained ABSTRACT_AUDIT authority"
+        )
+    try:
+        binding = require_ground_binding_after_failed_audit_v1(ground_binding)
+        verified_audit = require_semantic_verification_result_v1(
+            abstract_audit_authority, SemanticRole.ABSTRACT_AUDIT
+        )
+    except (Phase3EGroundHandoffV1Error, SemanticVerificationV1Error) as error:
+        raise Phase3DInvariantViolation(
+            f"verified-model estimate authority is invalid: {error}"
+        ) from error
+    if type(binding) is not GroundBindingAfterFailedAuditV1:  # defensive
+        raise Phase3DInvariantViolation("ground handoff has the wrong authority type")
+    if verified_audit.outcome != "FAIL":
+        raise Phase3DInvariantViolation(
+            "verified-model estimate requires ABSTRACT_AUDIT=FAIL"
+        )
+    if verified_audit is not binding.semantic_authority:
+        raise Phase3DInvariantViolation(
+            "abstract-audit authority is foreign to the ground handoff"
+        )
+
+    # Re-derive the two ground-only identities from the retained world instead
+    # of trusting the capability's public metadata.  This is a catalogue and
+    # locality hash operation only; it performs no ground transition or route
+    # execution.  Together with the verification-work identity below it keeps
+    # the Phase-3D bridge from accepting a metadata-spliced handoff even if a
+    # caller bypasses the public capability validator.
+    from acfqp.phase3e_fallback_v1 import (
+        safe_chain_fallback_context_identity_v1,
+    )
+
+    world = binding.world
+    try:
+        ground_identities = safe_chain_fallback_context_identity_v1(world)
+    except (TypeError, ValueError) as error:
+        raise Phase3DInvariantViolation(
+            f"cannot re-derive ground handoff identities: {error}"
+        ) from error
+
+    expected_binding = {
+        "model_only_result_id": model_only_result.result_id,
+        "source_lease_id": model_only_result.source_lease.source_lease_id,
+        "selected_plan_id": (
+            model_only_result.selected_plan.selected_contingent_plan_id
+        ),
+        "sound_proof_id": model_only_result.sound_proof.proof_id,
+        "abstract_audit_id": model_only_result.audit.audit_id,
+        "abstract_audit_verification_attestation_id": (
+            verified_audit.attestation.verification_attestation_id
+        ),
+        "verification_work_record_id": (
+            verified_audit.verification_work_record.record_id
+        ),
+        "route_decision_context_id": (
+            model_only_result.route_context.route_decision_context_id
+        ),
+        "structural_id": model_only_result.identities.structural_id,
+        "query_id": model_only_result.identities.query_id,
+        "build_epoch_id": model_only_result.identities.build_epoch_id,
+        "manifest_id": model_only_result.identities.manifest_id,
+        "portable_rapm_id": model_only_result.identities.portable_rapm_id,
+        "bound_ground_action_catalogue_id": (
+            ground_identities["bound_ground_action_catalogue_id"]
+        ),
+        "locality_metadata_id": ground_identities["locality_metadata_id"],
+    }
+    for field_name, expected in expected_binding.items():
+        if getattr(binding, field_name) != expected:
+            raise Phase3DInvariantViolation(
+                f"ground handoff/model-only mismatch for {field_name}"
+            )
+    if (
+        verified_audit.artifact != model_only_result.audit
+        or verified_audit.binding.route_context != model_only_result.route_context
+    ):
+        raise Phase3DInvariantViolation(
+            "retained abstract-audit authority does not own this model result"
+        )
+
+    registered = world.queries[1]
+    query = registered.query
+    if (
+        registered.query_key != model_only_result.source_lease.query_key
+        or object_id(query, "query")
+        != model_only_result.source_lease.legacy_ground_query_id
+        or world.portable.model.model_id
+        != model_only_result.source_lease.legacy_portable_rapm_id
+    ):
+        raise Phase3DInvariantViolation(
+            "authorized world does not contain the frozen failed query/model"
+        )
+    portable_query = world.portable.query_from_spec(query)
+    if (
+        portable_query.query_id
+        != model_only_result.source_lease.legacy_portable_query_id
+    ):
+        raise Phase3DInvariantViolation(
+            "authorized world reconstructed a different portable query"
+        )
+    try:
+        portable_result = PortablePlanResult.from_dict(
+            model_only_result.selected_plan.planner_result,
+            model=world.portable.model,
+            query=portable_query,
+        )
+        proposal = portable_result.frontier[
+            model_only_result.selected_plan.selected_frontier_index
+        ]
+        if proposal != model_only_result.selected_plan.proposal:
+            raise ValueError("selected proposal differs from the frozen plan")
+        policy = FiniteHorizonPolicy.from_mapping(
+            world.portable.decode_policy(proposal.policy)
+        )
+    except (IndexError, KeyError, TypeError, ValueError) as error:
+        raise Phase3DInvariantViolation(
+            f"cannot decode the frozen contingent plan: {error}"
+        ) from error
+    pre_audit = _audit_from_portable_sound_proof_v1(
+        world, model_only_result, policy
+    )
+    verified_model_binding = _mint_verified_model_estimate_binding_v1(
+        model_only_result=model_only_result,
+        abstract_audit_authority=verified_audit,
+        ground_binding=binding,
+    )
+    return _prepare_safe_chain_estimate_from_frozen_plan(
+        world,
+        query=query,
+        portable_query=portable_query,
+        portable_result=portable_result,
+        proposal=proposal,
+        proposal_source=model_only_result.selected_plan.proposal_source,
+        policy=policy,
+        pre_audit=pre_audit,
+        source_phase3c_locality=world.source_locality_document,
+        source_phase3c_authorization=world.source_authorization_document,
+        verified_model_binding=verified_model_binding,
     )
 
 
@@ -2213,7 +2989,11 @@ __all__ = [
     "Phase3DInvariantViolation",
     "SafeChainContext",
     "SafeChainPreparedEstimateContext",
+    "VerifiedModelEstimateBindingV1",
     "construct_safe_chain_context",
     "prepare_safe_chain_estimate_context",
+    "prepare_safe_chain_estimate_from_verified_model_failure_v1",
+    "require_safe_chain_prepared_estimate_context_v1",
+    "require_verified_model_estimate_binding_v1",
     "run_phase3d",
 ]

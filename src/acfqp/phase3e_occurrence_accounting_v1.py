@@ -282,8 +282,10 @@ def derive_runner_partial_common_accounting_v1(
         or route_context.comparison_profile_id
         != comparison_profile.comparison_profile_id
         or core.work_vector.subject_id != route_context.route_attempt_id
-        or core.work_vector.route_kind
-        is not RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE
+        or core.work_vector.route_kind not in {
+            RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE,
+            RouteKindEnum.ABSTRACT_FAILED_PREFIX,
+        }
         or core.actual_projection_proof.actual_projection_profile_id
         != actual_profile.actual_projection_profile_id
     ):
@@ -365,7 +367,7 @@ def derive_runner_partial_common_accounting_v1(
     suffix = _materialize_values(
         values=suffix_values,
         subject_id=route_context.route_attempt_id,
-        route_kind=RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE,
+        route_kind=core.work_vector.route_kind,
         work_scope=ActualWorkScope.COMMON_PREFIX,
         recorder_id="phase3e-occurrence-partial-common-suffix-v1",
         registry=registry,
@@ -385,7 +387,7 @@ def derive_runner_partial_common_accounting_v1(
     aggregate = _materialize_values(
         values=aggregate_values,
         subject_id=route_context.route_attempt_id,
-        route_kind=RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE,
+        route_kind=core.work_vector.route_kind,
         work_scope=ActualWorkScope.COMMON_PREFIX,
         recorder_id="phase3e-occurrence-partial-common-aggregate-v1",
         registry=registry,
@@ -570,7 +572,10 @@ class OccurrenceNativeSourceRefV1:
                 "aggregate source must be common, execution, or verification work"
             )
         allowed_route_kinds = (
-            {RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE}
+            {
+                RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE,
+                RouteKindEnum.ABSTRACT_FAILED_PREFIX,
+            }
             if self.work_scope is ActualWorkScope.COMMON_PREFIX
             else {RouteKindEnum.LOCAL_ATTEMPT, RouteKindEnum.DIRECT_FALLBACK}
         )
@@ -1363,7 +1368,10 @@ def _derive_component_ref(
             else work.work_vector_id
         )
         if (
-            work.route_kind is not RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE
+            work.route_kind not in {
+                RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE,
+                RouteKindEnum.ABSTRACT_FAILED_PREFIX,
+            }
             or work.subject_id != route_attempt_id
             or decision_point.common_prefix_work_id != bound_core_id
         ):

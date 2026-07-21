@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 from dataclasses import replace
 import hashlib
 
@@ -48,10 +49,12 @@ from acfqp.routing_v1 import (
 )
 from acfqp.semantic_verification_v1 import (
     AttestationContextV1,
+    ProtocolVerificationResultV1,
     SemanticRole,
+    SemanticVerificationResultV1,
     SemanticVerificationV1Error,
-    SemanticVerifierNotImplementedError,
     reject_unimplemented_semantic_claim_v1,
+    require_semantic_verification_result_v1,
     semantic_verifier_spec_v1,
     verify_actual_projection_semantics_v1,
     verify_forbidden_access_violation_semantics_v1,
@@ -153,6 +156,33 @@ def test_work_vector_is_bound_to_attested_attempt_subject() -> None:
         )
 
 
+def test_failed_abstract_prefix_has_attempt_authority_but_no_transaction() -> None:
+    context = _context("failed-prefix")
+    vector = _work(
+        RouteKindEnum.ABSTRACT_FAILED_PREFIX,
+        context.route_attempt_id,
+        **{"common.abstract_audit_obligations": 1},
+    )
+    result = verify_work_vector_semantics_v1(
+        vector,
+        binding=_binding(context),
+        verification_work_record=_record(SemanticRole.WORK_VECTOR),
+    )
+    assert result.outcome == "VALID"
+    assert result.artifact.route_kind is RouteKindEnum.ABSTRACT_FAILED_PREFIX
+
+    with pytest.raises(SemanticVerificationV1Error, match="cannot bind a local"):
+        verify_work_vector_semantics_v1(
+            vector,
+            binding=_binding(
+                context,
+                decision=_id("failed-prefix-decision"),
+                transaction=_id("forbidden-prefix-transaction"),
+            ),
+            verification_work_record=_record(SemanticRole.WORK_VECTOR),
+        )
+
+
 def test_semantic_replay_lane_is_invocation_typed_and_evaluation_is_noncosted() -> None:
     context = _context("evaluation-work")
     vector = _work(
@@ -211,10 +241,7 @@ def test_semantic_result_rejects_typed_null_reason_substitution(
         **{ref_field: TypedNotApplicable(f"substituted {ref_field} reason")},
     )
 
-    with pytest.raises(
-        SemanticVerificationV1Error,
-        match="attestation context mismatch",
-    ):
+    with pytest.raises(TypeError, match="dataclass instances"):
         replace(result, binding=substituted_binding)
 
 
@@ -430,6 +457,135 @@ def test_typed_attestation_transport_requires_authority_result() -> None:
         verify_typed_attestation_v1(forged, authority_result=result)
 
 
+def _fresh_work_authority(label: str) -> SemanticVerificationResultV1:
+    context = _context(label)
+    return verify_work_vector_semantics_v1(
+        _work(RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE, context.route_attempt_id),
+        binding=_binding(context),
+        verification_work_record=_record(SemanticRole.WORK_VECTOR),
+    )
+
+
+def test_semantic_live_authority_rejects_replace_copy_deepcopy_and_mutation() -> None:
+    result = _fresh_work_authority("opaque-copy")
+    assert len(result.authority_fingerprint) == 64
+
+    with pytest.raises(TypeError, match="dataclass instances"):
+        replace(result)
+    with pytest.raises(SemanticVerificationV1Error, match="cannot be copied"):
+        copy.copy(result)
+    with pytest.raises(SemanticVerificationV1Error, match="deep-copied"):
+        copy.deepcopy(result)
+    with pytest.raises(SemanticVerificationV1Error, match="immutable live authority"):
+        result.binding = result.binding  # type: ignore[misc]
+    with pytest.raises(
+        SemanticVerificationV1Error, match="can only be minted by semantic replay"
+    ):
+        SemanticVerificationResultV1(
+            result.artifact,
+            result.attestation,
+            result.verification_work_record,
+            result.recomputed_evidence_ids,
+            result.binding,
+        )
+
+
+def test_semantic_registry_rejects_an_exact_private_field_clone() -> None:
+    result = _fresh_work_authority("private-clone")
+    forged = object.__new__(SemanticVerificationResultV1)
+    for name in (
+        "_SemanticVerificationResultV1__artifact",
+        "_SemanticVerificationResultV1__attestation",
+        "_SemanticVerificationResultV1__verification_work_record",
+        "_SemanticVerificationResultV1__recomputed_evidence_ids",
+        "_SemanticVerificationResultV1__binding",
+        "_SemanticVerificationResultV1__authority_fingerprint",
+    ):
+        object.__setattr__(forged, name, object.__getattribute__(result, name))
+
+    with pytest.raises(SemanticVerificationV1Error, match="exact live authority"):
+        require_semantic_verification_result_v1(forged, SemanticRole.WORK_VECTOR)
+    with pytest.raises(SemanticVerificationV1Error, match="exact live authority"):
+        verify_typed_attestation_v1(
+            result.attestation,
+            authority_result=forged,
+        )
+
+
+@pytest.mark.parametrize(
+    "attack",
+    (
+        "artifact",
+        "attestation",
+        "verification_work",
+        "evidence_ids",
+        "binding",
+        "fingerprint",
+    ),
+)
+def test_semantic_live_registry_rejects_component_substitution(attack: str) -> None:
+    result = _fresh_work_authority(f"component-{attack}")
+    claimed = result.attestation
+    if attack == "artifact":
+        replacement = _work(
+            RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE,
+            result.binding.route_context.route_attempt_id,
+        )
+        assert replacement == result.artifact and replacement is not result.artifact
+        field = "_SemanticVerificationResultV1__artifact"
+    elif attack == "attestation":
+        replacement = type(result.attestation).from_dict(result.attestation.to_dict())
+        assert replacement == result.attestation and replacement is not result.attestation
+        field = "_SemanticVerificationResultV1__attestation"
+    elif attack == "verification_work":
+        replacement = CounterRecordV1.from_dict(
+            result.verification_work_record.to_dict()
+        )
+        assert replacement == result.verification_work_record
+        assert replacement is not result.verification_work_record
+        field = "_SemanticVerificationResultV1__verification_work_record"
+    elif attack == "evidence_ids":
+        replacement = tuple(list(result.recomputed_evidence_ids))
+        assert replacement == result.recomputed_evidence_ids
+        assert replacement is not result.recomputed_evidence_ids
+        field = "_SemanticVerificationResultV1__recomputed_evidence_ids"
+    elif attack == "binding":
+        replacement = _binding(result.binding.route_context)
+        assert replacement == result.binding and replacement is not result.binding
+        field = "_SemanticVerificationResultV1__binding"
+    else:
+        replacement = _id("forged-live-authority-fingerprint")
+        field = "_SemanticVerificationResultV1__authority_fingerprint"
+    object.__setattr__(result, field, replacement)
+
+    with pytest.raises(SemanticVerificationV1Error, match="copied or substituted"):
+        verify_typed_attestation_v1(claimed, authority_result=result)
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    (
+        ("artifact_id", _id("forged-authority-artifact")),
+        ("verification_result", "INVALID"),
+        ("artifact_role", SemanticRole.ACTUAL_PROJECTION.value),
+        ("query_id", _id("forged-authority-query")),
+    ),
+)
+def test_semantic_fingerprint_rejects_in_place_attestation_forgery(
+    field: str,
+    value: str,
+) -> None:
+    result = _fresh_work_authority(f"attestation-{field}")
+    attestation = result.attestation
+    object.__setattr__(attestation, field, value)
+
+    with pytest.raises(
+        SemanticVerificationV1Error,
+        match="fingerprint no longer replays|attestation context mismatch",
+    ):
+        require_semantic_verification_result_v1(result, SemanticRole.WORK_VECTOR)
+
+
 def _verified_protocol_terminal(label: str = "protocol"):
     context = _context(label)
     point = _id(f"{label}-point")
@@ -518,6 +674,105 @@ def test_protocol_failure_terminal_requires_replayed_forbidden_access() -> None:
     assert protocol_result.outcome == "PROTOCOL_FAILURE"
 
 
+def test_cross_role_attestation_splice_cannot_change_semantic_authority() -> None:
+    _, _, _, work_result, _, terminal_result = _verified_protocol_terminal(
+        "cross-role-splice"
+    )
+    claimed = work_result.attestation
+    object.__setattr__(
+        work_result,
+        "_SemanticVerificationResultV1__attestation",
+        terminal_result.attestation,
+    )
+    with pytest.raises(SemanticVerificationV1Error, match="copied or substituted"):
+        verify_typed_attestation_v1(claimed, authority_result=work_result)
+
+
+def test_protocol_live_authority_rejects_replace_copy_and_private_clone() -> None:
+    _, _, _, _, protocol_result, _ = _verified_protocol_terminal(
+        "protocol-live-copy"
+    )
+    assert len(protocol_result.authority_fingerprint) == 64
+
+    with pytest.raises(TypeError, match="dataclass instances"):
+        replace(protocol_result)
+    with pytest.raises(SemanticVerificationV1Error, match="cannot be copied"):
+        copy.copy(protocol_result)
+    with pytest.raises(SemanticVerificationV1Error, match="deep-copied"):
+        copy.deepcopy(protocol_result)
+    with pytest.raises(
+        SemanticVerificationV1Error, match="can only be minted by protocol replay"
+    ):
+        ProtocolVerificationResultV1(
+            protocol_result.violation,
+            protocol_result.attestation,
+            protocol_result.verification_work_record,
+        )
+
+    forged = object.__new__(ProtocolVerificationResultV1)
+    for name in (
+        "_ProtocolVerificationResultV1__violation",
+        "_ProtocolVerificationResultV1__attestation",
+        "_ProtocolVerificationResultV1__verification_work_record",
+        "_ProtocolVerificationResultV1__authority_fingerprint",
+    ):
+        object.__setattr__(
+            forged,
+            name,
+            object.__getattribute__(protocol_result, name),
+        )
+    with pytest.raises(SemanticVerificationV1Error, match="exact live authority"):
+        _ = forged.outcome
+
+
+@pytest.mark.parametrize(
+    "attack",
+    ("violation", "attestation", "verification_work", "fingerprint"),
+)
+def test_protocol_live_registry_rejects_component_substitution(attack: str) -> None:
+    _, _, _, _, protocol_result, _ = _verified_protocol_terminal(
+        f"protocol-component-{attack}"
+    )
+    if attack == "violation":
+        replacement = type(protocol_result.violation).from_dict(
+            protocol_result.violation.to_dict()
+        )
+        assert replacement == protocol_result.violation
+        assert replacement is not protocol_result.violation
+        field = "_ProtocolVerificationResultV1__violation"
+    elif attack == "attestation":
+        # ProtocolVerificationAttestationV1 deliberately has no public loader;
+        # dataclass replacement still demonstrates an equal-content splice.
+        replacement = replace(protocol_result.attestation)
+        assert replacement == protocol_result.attestation
+        assert replacement is not protocol_result.attestation
+        field = "_ProtocolVerificationResultV1__attestation"
+    elif attack == "verification_work":
+        replacement = CounterRecordV1.from_dict(
+            protocol_result.verification_work_record.to_dict()
+        )
+        assert replacement == protocol_result.verification_work_record
+        assert replacement is not protocol_result.verification_work_record
+        field = "_ProtocolVerificationResultV1__verification_work_record"
+    else:
+        replacement = _id("forged-protocol-authority-fingerprint")
+        field = "_ProtocolVerificationResultV1__authority_fingerprint"
+    object.__setattr__(protocol_result, field, replacement)
+
+    with pytest.raises(SemanticVerificationV1Error, match="copied or substituted"):
+        _ = protocol_result.attestation
+
+
+def test_protocol_fingerprint_rejects_in_place_attestation_forgery() -> None:
+    _, _, _, _, protocol_result, _ = _verified_protocol_terminal(
+        "protocol-attestation-forgery"
+    )
+    attestation = protocol_result.attestation
+    object.__setattr__(attestation, "query_id", _id("forged-protocol-query"))
+    with pytest.raises(SemanticVerificationV1Error, match="fingerprint no longer replays"):
+        _ = protocol_result.outcome
+
+
 def test_protocol_evidence_rejects_claimed_violation_from_another_log() -> None:
     context = _context("wrong-log")
     point = _id("wrong-log-point")
@@ -541,27 +796,8 @@ def test_protocol_evidence_rejects_claimed_violation_from_another_log() -> None:
         )
 
 
-@pytest.mark.parametrize(
-    ("terminal_class", "terminal_code", "missing_role"),
-    (
-        (
-            TerminalClass.PLAN_CERTIFICATE,
-            TerminalCode.ABSTRACT_CERTIFIED,
-            "ABSTRACT_AUDIT",
-        ),
-        (
-            TerminalClass.INFEASIBILITY_CERTIFICATE,
-            TerminalCode.CACHED_EXACT_INFEASIBLE,
-            "EXACT_CACHED_INFEASIBILITY",
-        ),
-    ),
-)
-def test_positive_and_infeasibility_terminals_remain_fail_closed(
-    terminal_class: TerminalClass,
-    terminal_code: TerminalCode,
-    missing_role: str,
-) -> None:
-    context = _context(terminal_code.value)
+def test_abstract_terminal_without_replayed_audit_remains_fail_closed() -> None:
+    context = _context(TerminalCode.ABSTRACT_CERTIFIED.value)
     binding = _binding(context, lane=LaneEnum.EVALUATION)
     work = verify_work_vector_semantics_v1(
         _work(RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE, context.route_attempt_id),
@@ -573,8 +809,8 @@ def test_positive_and_infeasibility_terminals_remain_fail_closed(
     )
     terminal = TerminalArtifactV1(
         "ROUTE_ATTEMPT",
-        terminal_class,
-        terminal_code,
+        TerminalClass.PLAN_CERTIFICATE,
+        TerminalCode.ABSTRACT_CERTIFIED,
         context.route_decision_context_id,
         context.logical_occurrence_id,
         context.route_attempt_id,
@@ -583,7 +819,10 @@ def test_positive_and_infeasibility_terminals_remain_fail_closed(
         work.attestation.artifact_id,
         (work.attestation.verification_attestation_id,),
     )
-    with pytest.raises(SemanticVerifierNotImplementedError, match=missing_role):
+    with pytest.raises(
+        SemanticVerificationV1Error,
+        match="requires exactly one semantically verified ABSTRACT_AUDIT=PASS",
+    ):
         verify_terminal_classification_semantics_v1(
             terminal,
             evidence_results=(work,),

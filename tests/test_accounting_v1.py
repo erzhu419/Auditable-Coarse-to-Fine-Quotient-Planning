@@ -263,6 +263,30 @@ def test_abstract_and_rebuild_route_stage_coverage_is_fail_closed() -> None:
     assert abstract.value("fallback.states_expanded") == 0
     assert abstract.value("rebuild.ground_steps") == 0
 
+    _, failed_prefix = _vector(
+        RouteKindEnum.ABSTRACT_FAILED_PREFIX,
+        subject="failed-abstract-prefix",
+        common__abstract_bellman_backups=4,
+        common__abstract_audit_obligations=1,
+        local__causal_candidate_evaluations=4,
+    )
+    assert failed_prefix.value("local.causal_candidate_evaluations") == 4
+    assert failed_prefix.value("fallback.states_expanded") == 0
+    assert failed_prefix.value("rebuild.ground_steps") == 0
+
+    failed_prefix_values = dict(failed_prefix.values)
+    failed_prefix_values["local.materialization_ground_steps"] = 1
+    with pytest.raises(AccountingV1Error, match="exclusivity violation"):
+        registry.materialize(
+            subject_id="failed-prefix-with-route-execution",
+            route_kind=RouteKindEnum.ABSTRACT_FAILED_PREFIX,
+            records=explicit_records_v1(
+                registry,
+                failed_prefix_values,
+                recorder_id="trusted-recorder-v1",
+            ),
+        )
+
     _, rebuild = _vector(
         RouteKindEnum.REBUILD,
         subject="rebuild-1",

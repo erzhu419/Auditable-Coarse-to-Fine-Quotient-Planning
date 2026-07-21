@@ -115,12 +115,15 @@ UNASSIGNED_POSTFREEZE_OPERATIONAL_LEAVES = (
     "common.hash_invocations",
 )
 UNRESOLVED_OFFICIAL_EXECUTION_OBLIGATIONS = (
-    "ABSTRACT_AND_CACHED_INFEASIBILITY_AUTHORITIES",
-    "ALL_PATH_NATIVE_HASH_INSTRUMENTATION",
-    "LIVE_DEPENDENT_TRANSACTION_TWO_BENCHMARK",
-    "REBUILD_RETRY_AND_REMAINING_TERMINALS",
-    "UPSTREAM_MANIFEST_TO_RAPM_CONSUMER",
-    "INDEPENDENT_COMPLETE_BUNDLE_VERIFIER",
+    "ALL_PATH_NATIVE_HASH_IO_AND_RUNTIME_INSTRUMENTATION",
+    "SEALED_MODEL_ONLY_RUNTIME_CAP_AND_TRACE_AUTHORITY",
+    "MODEL_FAILURE_PREPARATION_OCCURRENCE_CHARGING_AND_EXCLUDED_WORK",
+    "REGISTERED_DEPENDENT_HORIZON_FIXTURE_AND_PRODUCTION_TRANSACTION_TWO",
+    "PRODUCTION_REBUILD_SOURCE_AND_SEALED_RETRY_INTEGRATION",
+    "REMAINING_TERMINAL_BRANCH_AND_CAMPAIGN_COVERAGE",
+    "DURABLE_EXACT_INFEASIBILITY_PROOF_PAYLOAD_AND_VERIFIER",
+    "SELECTED_ROUTE_GROUND_INPUTS_AND_INDEPENDENT_SEMANTIC_BUNDLE_VERIFIER",
+    "ALL_PATH_BUNDLE_AND_REGISTERED_WORKLOAD_GATE",
 )
 
 
@@ -723,8 +726,10 @@ class PreparedPhase3ERunV1:
             comparison_profile=profile,
         )
         if (
-            common.work_vector.route_kind
-            is not RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE
+            common.work_vector.route_kind not in {
+                RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE,
+                RouteKindEnum.ABSTRACT_FAILED_PREFIX,
+            }
             or common.actual_projection_proof.work_scope
             is not ActualWorkScope.COMMON_PREFIX
             or common.work_vector.subject_id != self.context.route_attempt_id
@@ -1959,8 +1964,10 @@ def verify_failed_route_evidence_v1(
         comparison_profile=profile,
     )
     if (
-        evidence.common_prefix_work.work_vector.route_kind
-        is not RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE
+        evidence.common_prefix_work.work_vector.route_kind not in {
+            RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE,
+            RouteKindEnum.ABSTRACT_FAILED_PREFIX,
+        }
         or evidence.common_prefix_work.work_vector.subject_id
         != evidence.context.route_attempt_id
     ):

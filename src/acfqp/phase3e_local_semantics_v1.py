@@ -21,6 +21,12 @@ from fractions import Fraction
 import hashlib
 from typing import Any, Mapping
 
+from acfqp._runtime_authority_v1 import (
+    RuntimeAuthorityMintV1,
+    bind_runtime_authority_v1,
+    require_runtime_authority_v1,
+    runtime_authority_fingerprint_v1,
+)
 from acfqp.accounting_v1 import RouteKindEnum, WorkVectorV1
 from acfqp.phase3e_ids import (
     LOCAL_TRANSACTION_RESULT_DOMAIN,
@@ -31,6 +37,7 @@ from acfqp.phase3e_ids import (
     parse_content_id,
     require_exact_fields,
 )
+from acfqp.phase3e_threshold_v1 import portable_threshold_profile_id_v1
 from acfqp.planning.common import as_fraction
 from acfqp.routing_v1 import (
     DecisionPointV1,
@@ -64,11 +71,43 @@ class PostAuditOutcome(str, Enum):
     FAILED = "FAILED"
 
 
-PORTABLE_THRESHOLD_PROFILE_DOMAIN = "acfqp:portable-threshold-profile:v1"
-
-
 def _fraction_payload(value: Fraction) -> dict[str, int]:
     return {"numerator": value.numerator, "denominator": value.denominator}
+
+
+def _fraction_from_transport(value: Any, field_name: str) -> Any:
+    """Parse canonical JSON rational records while preserving ``None``."""
+
+    if value is None or not isinstance(value, Mapping):
+        return value
+    try:
+        require_exact_fields(
+            value,
+            {"numerator", "denominator"},
+            context=f"{field_name} rational",
+        )
+        numerator = value["numerator"]
+        denominator = value["denominator"]
+        if (
+            type(numerator) is not int
+            or type(denominator) is not int
+            or denominator <= 0
+        ):
+            raise Phase3ELocalSemanticV1Error(
+                f"{field_name} rational is not reduced positive-denominator data"
+            )
+        result = Fraction(numerator, denominator)
+    except (TypeError, ValueError) as error:
+        if isinstance(error, Phase3ELocalSemanticV1Error):
+            raise
+        raise Phase3ELocalSemanticV1Error(
+            f"{field_name} rational is invalid: {error}"
+        ) from error
+    if result.numerator != numerator or result.denominator != denominator:
+        raise Phase3ELocalSemanticV1Error(
+            f"{field_name} rational must be reduced"
+        )
+    return result
 
 
 @dataclass(frozen=True, slots=True)
@@ -118,11 +157,11 @@ class FrozenThresholdProfileV1:
 
     @property
     def threshold_profile_id(self) -> str:
-        return hashlib.sha256(
-            PORTABLE_THRESHOLD_PROFILE_DOMAIN.encode("utf-8")
-            + b"\x00"
-            + canonical_json(self._payload()).encode("utf-8")
-        ).hexdigest()
+        return portable_threshold_profile_id_v1(
+            self.query_id,
+            self.regret_tolerance,
+            self.risk_tolerance,
+        )
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -501,8 +540,14 @@ class PostAuditCertificateV1:
             document["local_transaction_result_id"], document["work_vector_id"],
             document["overlay_binding_id"], document["stitched_plan_binding_id"],
             document["audit_issue_set_id"], document["outcome"],
-            document["lifted_reward_lower"], document["lifted_failure_upper"],
-            document["regret_upper"], document["postaudit_ground_steps"],
+            _fraction_from_transport(
+                document["lifted_reward_lower"], "lifted_reward_lower"
+            ),
+            _fraction_from_transport(
+                document["lifted_failure_upper"], "lifted_failure_upper"
+            ),
+            _fraction_from_transport(document["regret_upper"], "regret_upper"),
+            document["postaudit_ground_steps"],
             document["postaudit_positive_outcomes"], document["semantic_authority"],
             document["authorizes_terminal_classification"], document["schema_version"],
         )
@@ -571,10 +616,24 @@ class TrustedLocalExecutionV1:
     threshold_profile: FrozenThresholdProfileV1 | None
     local_provenance: TrustedLocalRuntimeProvenanceV1
     postaudit_provenance: TrustedPostAuditRuntimeProvenanceV1 | None
+    _instance_mint: RuntimeAuthorityMintV1 | None = field(
+        default=None, repr=False, compare=False
+    )
 
     def __post_init__(self) -> None:
         if self.local_result.work_vector_id != self.work_vector.work_vector_id:
             raise Phase3ELocalSemanticV1Error("local result/work-vector mismatch")
+        if self._instance_mint is not None:
+            try:
+                self._instance_mint.validate_construction(
+                    self,
+                    issuer=_TRUSTED_LOCAL_RUNTIME_AUTHORITY,
+                    fingerprint=runtime_authority_fingerprint_v1(self),
+                )
+            except ValueError as error:
+                raise Phase3ELocalSemanticV1Error(
+                    "trusted local execution is a copied or modified authority"
+                ) from error
         if self.post_audit is None:
             if self.postaudit_provenance is not None or self.threshold_profile is not None:
                 raise Phase3ELocalSemanticV1Error(
@@ -629,6 +688,28 @@ class TrustedLocalExecutionV1:
             )
 
 
+def require_trusted_local_execution_authority_v1(
+    execution: object,
+) -> TrustedLocalExecutionV1:
+    """Require the exact trusted-executor result instance."""
+
+    if type(execution) is not TrustedLocalExecutionV1:
+        raise Phase3ELocalSemanticV1Error(
+            "local semantic replay requires an in-memory execution"
+        )
+    try:
+        require_runtime_authority_v1(
+            execution,
+            issuer=_TRUSTED_LOCAL_RUNTIME_AUTHORITY,
+        )
+    except ValueError as error:
+        raise Phase3ELocalSemanticV1Error(
+            "local execution lacks trusted provenance from the retained "
+            "trusted-executor instance"
+        ) from error
+    return execution
+
+
 def _local_digest(execution: TrustedLocalExecutionV1) -> str:
     payload = {
         "schema": "acfqp.trusted_phase3d_local_runtime_binding.v1",
@@ -669,8 +750,7 @@ def _postaudit_digest(execution: TrustedLocalExecutionV1) -> str:
 def verify_trusted_local_runtime_provenance_v1(
     execution: TrustedLocalExecutionV1,
 ) -> None:
-    if not isinstance(execution, TrustedLocalExecutionV1):
-        raise Phase3ELocalSemanticV1Error("local semantic replay requires in-memory execution")
+    execution = require_trusted_local_execution_authority_v1(execution)
     provenance = execution.local_provenance
     if (
         not isinstance(provenance, TrustedLocalRuntimeProvenanceV1)
@@ -731,17 +811,24 @@ def _seal_trusted_execution_v1(
         provisional.postaudit_provenance,
     )
     if post_audit is None:
-        return with_local
+        return bind_runtime_authority_v1(
+            with_local,
+            issuer=_TRUSTED_LOCAL_RUNTIME_AUTHORITY,
+        )
     post_seal = TrustedPostAuditRuntimeProvenanceV1(
         _postaudit_digest(with_local), _authority=_TRUSTED_POSTAUDIT_RUNTIME_AUTHORITY
     )
-    return TrustedLocalExecutionV1(
+    sealed = TrustedLocalExecutionV1(
         local_result,
         post_audit,
         work_vector,
         threshold_profile,
         local_seal,
         post_seal,
+    )
+    return bind_runtime_authority_v1(
+        sealed,
+        issuer=_TRUSTED_LOCAL_RUNTIME_AUTHORITY,
     )
 
 
@@ -816,6 +903,7 @@ __all__ = [
     "TrustedLocalExecutionV1",
     "TrustedLocalRuntimeProvenanceV1",
     "TrustedPostAuditRuntimeProvenanceV1",
+    "require_trusted_local_execution_authority_v1",
     "validate_local_execution_context_v1",
     "verify_trusted_local_runtime_provenance_v1",
     "verify_trusted_postaudit_runtime_provenance_v1",

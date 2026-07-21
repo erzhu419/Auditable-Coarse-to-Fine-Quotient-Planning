@@ -26,6 +26,12 @@ from dataclasses import dataclass, field, replace
 from enum import Enum
 from typing import Any, Mapping, Protocol
 
+from acfqp._runtime_authority_v1 import (
+    RuntimeAuthorityMintV1,
+    bind_runtime_authority_v1,
+    require_runtime_authority_v1,
+    runtime_authority_fingerprint_v1,
+)
 from acfqp.accounting_v1 import (
     ComparisonProfileV1,
     CounterRecordV1,
@@ -44,12 +50,14 @@ from acfqp.phase3e_failure_continuation_v1 import (
     LocalFailureKind,
     authorize_fallback_after_local_failure_v1,
     prepare_fallback_after_local_failure_v1,
+    require_authorized_fallback_after_local_failure_v1,
 )
 from acfqp.phase3e_fallback_v1 import (
     GroundFallbackCapProfileV1,
     GroundFallbackCardinalityBoundV1,
     GroundFallbackExecutionV1,
     GroundFallbackOutcome,
+    require_trusted_ground_fallback_execution_authority_v1,
 )
 from acfqp.phase3e_ids import (
     OCCURRENCE_CONTROL_FAILURE_DOMAIN,
@@ -64,6 +72,7 @@ from acfqp.phase3e_local_semantics_v1 import (
     LocalSolverOutcome,
     PostAuditOutcome,
     TrustedLocalExecutionV1,
+    require_trusted_local_execution_authority_v1,
 )
 from acfqp.native_recorder_v1 import RecordedWorkV1
 from acfqp.phase3e_occurrence_accounting_v1 import (
@@ -100,6 +109,7 @@ from acfqp.phase3e_transactions_v1 import (
     SecondTransactionCandidateV1,
     authorize_second_transaction_v1,
     prepare_second_transaction_candidate_v1,
+    require_local_continuation_directive_authority_v1,
 )
 from acfqp.routing_v1 import (
     CardinalityEvidenceV1,
@@ -824,12 +834,47 @@ class Phase3EOccurrenceFailureTerminalAuthorityV1:
         repr=False, compare=False
     )
     _authority: object = field(default=None, repr=False, compare=False)
+    _instance_mint: RuntimeAuthorityMintV1 | None = field(
+        default=None, repr=False, compare=False
+    )
 
     def __post_init__(self) -> None:
         if self._authority is not _OCCURRENCE_FAILURE_TERMINAL_AUTHORITY:
             raise Phase3EOccurrenceRunnerV1Error(
                 "occurrence failure terminal authority requires semantic replay"
             )
+        if self._instance_mint is not None:
+            try:
+                self._instance_mint.validate_construction(
+                    self,
+                    issuer=_OCCURRENCE_FAILURE_TERMINAL_AUTHORITY,
+                    fingerprint=runtime_authority_fingerprint_v1(self),
+                )
+            except ValueError as error:
+                raise Phase3EOccurrenceRunnerV1Error(
+                    "occurrence failure terminal is a copied or modified authority"
+                ) from error
+
+
+def require_phase3e_occurrence_failure_terminal_authority_v1(
+    authority: object,
+) -> Phase3EOccurrenceFailureTerminalAuthorityV1:
+    """Require the exact full-replay occurrence-failure authority instance."""
+
+    if type(authority) is not Phase3EOccurrenceFailureTerminalAuthorityV1:
+        raise Phase3EOccurrenceRunnerV1Error(
+            "occurrence failure terminal lacks semantic replay authority"
+        )
+    try:
+        require_runtime_authority_v1(
+            authority,
+            issuer=_OCCURRENCE_FAILURE_TERMINAL_AUTHORITY,
+        )
+    except ValueError as error:
+        raise Phase3EOccurrenceRunnerV1Error(
+            "occurrence failure terminal is not the retained replay instance"
+        ) from error
+    return authority
 
 
 @dataclass(frozen=True, slots=True)
@@ -1351,6 +1396,12 @@ class Phase3EOccurrenceRunResultV1:
                 raise Phase3EOccurrenceRunnerV1Error(
                     "protocol failure needs exactly one route or control detail"
                 )
+            if route_failure:
+                authority = (
+                    require_phase3e_occurrence_failure_terminal_authority_v1(
+                        authority
+                    )
+                )
             if route_failure and (
                 not isinstance(
                     self.occurrence_failure_terminal,
@@ -1783,6 +1834,14 @@ def _verify_occurrence_result_history_v1(
     final_run = runs[-1]
     semantic_execution = final_run.route_execution.semantic_execution
     if result.closure_code is OccurrenceClosureCodeV1.LOCAL_GROUND_RECOVERY:
+        try:
+            semantic_execution = require_trusted_local_execution_authority_v1(
+                semantic_execution
+            )
+        except ValueError as error:
+            raise Phase3EOccurrenceRunnerV1Error(
+                "local-recovery closure lacks its exact runtime authority"
+            ) from error
         if (
             final_run.selected_route is not RouteSelection.LOCAL
             or type(semantic_execution) is not TrustedLocalExecutionV1
@@ -1801,6 +1860,16 @@ def _verify_occurrence_result_history_v1(
         raise Phase3EOccurrenceRunnerV1Error(
             "fallback closure differs from the final run route"
         )
+    try:
+        semantic_execution = (
+            require_trusted_ground_fallback_execution_authority_v1(
+                semantic_execution
+            )
+        )
+    except ValueError as error:
+        raise Phase3EOccurrenceRunnerV1Error(
+            "fallback closure lacks its exact runtime authority"
+        ) from error
     expected_fallback_closure = {
         GroundFallbackOutcome.FEASIBLE_CERTIFIED: (
             OccurrenceClosureCodeV1.FULL_GROUND_FALLBACK
@@ -1960,11 +2029,15 @@ def verify_phase3e_occurrence_failure_terminal_v1(
         raise Phase3EOccurrenceRunnerV1Error(
             "claimed occurrence failure terminal differs from full evidence replay"
         )
-    return Phase3EOccurrenceFailureTerminalAuthorityV1(
+    authority = Phase3EOccurrenceFailureTerminalAuthorityV1(
         expected,
         occurrence_work,
         evidence,
         _authority=_OCCURRENCE_FAILURE_TERMINAL_AUTHORITY,
+    )
+    return bind_runtime_authority_v1(
+        authority,
+        issuer=_OCCURRENCE_FAILURE_TERMINAL_AUTHORITY,
     )
 
 
@@ -1977,16 +2050,31 @@ def _observe_local_failure(
     local_runs: tuple[Phase3ERunResultV1, ...],
 ) -> LocalFailureObservationV1 | None:
     execution = result.route_execution.semantic_execution
-    if type(execution) is not TrustedLocalExecutionV1:
+    try:
+        execution = require_trusted_local_execution_authority_v1(execution)
+    except ValueError as error:
         raise Phase3EOccurrenceRunnerV1Error(
             "selected LOCAL run lacks trusted local semantic execution"
-        )
+        ) from error
+    # A sealed executor returns a merged selected-route WorkVector that also
+    # contains construction/hash/I/O work.  The trusted local semantic result
+    # intentionally binds the delegate WorkVector produced by the route
+    # adapter, and the sealed execution merge proof binds that delegate to the
+    # merged runner vector.  Comparing the local result directly with the
+    # merged vector rejects every valid sealed occurrence (including a
+    # certified first transaction) and would encourage relabelling the local
+    # semantic artifact with accounting work it did not produce.
+    semantic_route_work = (
+        result.route_execution.delegate_execution_work
+        if result.route_execution.delegate_execution_work is not None
+        else result.selected_route_work
+    )
     if (
         execution.local_result.selected_upper_id
         != result.selected_upper.route_upper_bound_envelope_id
         or execution.local_result.transaction_id != transaction.transaction_id
         or execution.local_result.work_vector_id
-        != result.selected_route_work.work_vector.work_vector_id
+        != semantic_route_work.work_vector.work_vector_id
     ):
         raise Phase3EOccurrenceRunnerV1Error(
             "trusted local result does not bind the executed upper, transaction, "
@@ -2104,6 +2192,9 @@ def _prepare_second_run(
             local_upper_result=package.local_upper_result,
             fallback_upper_result=package.fallback_upper_result,
             route_decision_result=package.route_decision_result,
+        )
+        directive = require_local_continuation_directive_authority_v1(
+            directive
         )
     except ValueError as error:
         raise Phase3EOccurrenceRunnerV1Error(
@@ -2245,6 +2336,9 @@ def _prepare_fallback_run(
             fallback_upper_result=package.fallback_upper_result,
             route_decision_result=package.route_decision_result,
         )
+        authorized = require_authorized_fallback_after_local_failure_v1(
+            authorized
+        )
     except ValueError as error:
         raise Phase3EOccurrenceRunnerV1Error(
             f"fresh fallback authority failed closed: {error}"
@@ -2284,10 +2378,14 @@ def _prepare_fallback_run(
 
 def _fallback_closure(result: Phase3ERunResultV1) -> OccurrenceClosureCodeV1:
     execution = result.route_execution.semantic_execution
-    if type(execution) is not GroundFallbackExecutionV1:
+    try:
+        execution = require_trusted_ground_fallback_execution_authority_v1(
+            execution
+        )
+    except ValueError as error:
         raise Phase3EOccurrenceRunnerV1Error(
             "selected FALLBACK run lacks trusted ground-fallback execution"
-        )
+        ) from error
     outcome = execution.result.outcome
     if outcome is GroundFallbackOutcome.FEASIBLE_CERTIFIED:
         return OccurrenceClosureCodeV1.FULL_GROUND_FALLBACK
@@ -3139,5 +3237,6 @@ __all__ = [
     "SecondTransactionPlannerV1",
     "failed_route_evidence_binding_id_v1",
     "run_phase3e_occurrence_v1",
+    "require_phase3e_occurrence_failure_terminal_authority_v1",
     "verify_phase3e_occurrence_failure_terminal_v1",
 ]

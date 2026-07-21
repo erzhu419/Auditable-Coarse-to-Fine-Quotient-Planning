@@ -19,6 +19,13 @@
   world-model build plus fresh-process repeated planning. A pass is paired with
   `PHASE3_AGGREGATE_NOT_RUN`, `LOCAL_HYBRID_GATE_NOT_RUN`, and
   `WORKLOAD_ECONOMICS_GATE_NOT_RUN`.
+- **V0-038 feature-realized LMB RAPM slice:** the query-free exhaustive selection of
+  coordinates and rational threshold atoms from one preregistered current-state LMB
+  grammar to exactly realize its behavioural quotient on frozen training coverage.
+  It is not the aggregate Phase 3 human-grammar, Phase 3E or economics Gate.
+- **V0-039 direct homomorphism synthesis slice:** the target-free enumeration and
+  direct exact-kernel verification of state/action feature candidates from fixed LMB
+  grammars on one finite coverage. It is not feature invention or an aggregate Gate.
 - **Phase 3C local-recovery slice:** the V0-029 single-domain positive control that
   executes one certificate-triggered strictly local overlay while preserving its base
   RAPM/BuildEpoch. Its pass opens only `LOCAL_HYBRID_GATE_PASS`, not aggregate Phase 3
@@ -265,6 +272,136 @@ This gate supports portable no-Q/value-signature exact world-model synthesis and
 on the frozen workload. It does not support automatic predicate invention, a working
 local hybrid, amortized break-even, the full Phase 3/5 Gates, scale, or learning. It is
 additive and does not modify V0-024--V0-027's result labels or historical claims.
+
+### V0-038 automatic feature-realized LMB RAPM vertical slice
+
+Profile `lmb_feature_realized_reusable_rapm_v1` is an additive construction slice,
+not an aggregate Phase 3/human-grammar Gate and not a Phase 3E route. Its registered
+chain is:
+
+```text
+freeze exact LMB kernel and training coverage
+-> internally construct the complete canonical feature registry and bound spec
+-> audit the query/J0/Q/value/frontier/policy/held-out-free construction boundary
+-> build the exact query-neutral controlled behavioural target quotient
+-> enumerate all feature subsets and adjacent-value rational-midpoint <= atoms
+-> compile each canonical predicate tree and compare its complete partition signature
+-> choose an exact realization by the frozen minimal deterministic selector
+-> build exact quotient/envelope and one portable RAPM
+-> independently rebuild all candidates, artifacts and content identities
+-> load the unchanged portable RAPM in two fresh query-planning processes
+```
+
+The production constructor accepts only `LMBKernel` and immutable
+`SuiteBuildCoverage`; it internally fixes the complete `FeatureRegistryV1` and bound
+`SynthesisSpecV1`. It cannot accept a caller-selected subset that encodes query bits.
+Restricted subsets run only through a separately named non-production control API.
+The exact allowed evidence is the one-step kernel, frozen structure/coverage and
+registered current-state features; `QuerySpec`, J0, Q/value/frontier/policy and held-
+out evidence are forbidden. The eleven-feature registry is the one frozen by V0-038.
+Complete enumeration therefore contains `2^11=2048` candidates under cap 4096. Each
+selected coordinate generates every reduced-rational `<=` midpoint between adjacent
+distinct values on active covered states.
+
+A positive candidate must realize the entire exact behavioural target partition, not
+merely refine or approximately predict it. Exact candidates are ordered by minimum
+feature count, applied split count, lexicographic feature names and final partition ID.
+The canonical 25-state result is `EXACT_FEATURE_REALIZATION` with only `action_count`,
+thresholds `(3/2,5/2)`, two splits, total `25 -> 5`, active `18 -> 3`, equal target and
+realized partition IDs and a singleton envelope. The registry/spec/certificate V1
+schemas, domains and semantic/selection/claim/lock constants are frozen. Registry,
+spec, atoms/tree, complete candidate trace, witnesses and certificate are
+domain-separated content-addressed artifacts; the portable model retains its ordinary
+RAPM content identity. Independent replay rebuilds the target partition/refinement
+trace/adapter/model, candidate trace/tree/certificate, realized partition/quotient and
+portable model/registry. The feature implementation digest is independently frozen;
+canonical JSON list/string types and exact nested runtime types reject transport
+malleability and proxy substitution.
+
+If no candidate realizes the target, the result is
+`NO_EXACT_FEATURE_REALIZATION` with a content-addressed bidirectional mismatch witness
+and no tree, realized partition, quotient model, portable model or certificate.
+`TARGET_SEPARATED_FEATURE_ALIASED` records candidate undersplitting;
+`TARGET_MERGED_FEATURE_SEPARATED` records candidate oversplitting. Either is a typed
+negative result, not an invariant failure and not a positive realization. A separate
+seed-0 canonical-initial control has 36 covered states, an 11-cell exact target and a
+7-cell `action_count` candidate; its trace contains both witness kinds. Those control
+numbers never replace the 25-state positive golden. The positive RAPM must round-trip
+unchanged and serve both the
+registered in-coverage fresh-process `H=3` match-plus-clear query and `H=2` match-only
+query.
+
+This slice supports exactly automatic coordinate and threshold-atom selection inside
+the preregistered LMB grammar and exact reusable-world-model realization on its frozen
+training coverage. Its realization obligation is still the complete exact ground-model
+behavioural oracle; it does not support oracle-free unknown-quotient discovery,
+feature invention, partial/learned dynamics, unknown-domain or scalable discovery,
+held-out/cross-domain generalization, sealed production execution or any aggregate
+Phase 3, Phase 3E, counter-completeness, workload-economics, transfer or learning Gate.
+Official execution remains false, scalar cost and break-even remain null, and both
+Phase 3E Gates remain `NOT_RUN`.
+
+### V0-039 direct target-free exact homomorphism synthesis slice
+
+Profile `lmb_direct_exact_homomorphism_v1` uses execution profile
+`production_full_grammar_v1`. It is additive to V0-038 and removes only V0-038's need
+for a construction-time exact behavioural target/signature. Its registered chain is:
+
+```text
+freeze exact LMB kernel and finite training coverage
+-> internally freeze the complete eleven-state/one-action feature registries and spec
+-> enumerate every state-feature subset and action-feature subset
+-> compile the state predicate tree and state-dependent semantic action labels
+-> directly replay raw one-step kernel obligations for every candidate
+-> reject with typed label/action/dynamics witness or retain exact homomorphism
+-> select the canonical minimal exact candidate
+-> build singleton quotient envelope and portable RAPM
+-> independently rebuild every artifact and exact obligation
+-> reuse the unchanged RAPM for two fresh-process in-coverage queries
+```
+
+The public API is exactly `synthesize_direct_lmb_homomorphism_v1(kernel, coverage)`.
+Construction imports neither V0-038 nor the behavioural target builder and accepts no
+behavioural quotient target, `BehavioralActionSignature`, query, J0, Q/value/frontier,
+policy, planning or held-out input. The eleven state features are V0-038's fixed
+current-state grammar; the sole action feature is `completes_match`. Production
+enumerates all `2^11 * 2 = 4096` candidates. Internally recomputed exact one-step
+signatures are proof evidence derived from the ground kernel, not a precomputed target
+partition or candidate label.
+
+Each candidate must prove identical semantic-label sets within every state cell,
+identical raw reward-feature/failure/termination/successor distributions among actions
+before one label mixes them, and identical same-label signatures across cell members.
+The typed failures are `LABEL_SET_MISMATCH`, `WITHIN_STATE_ACTION_ALIAS` and
+`CROSS_STATE_LABEL_DYNAMICS_MISMATCH`. Selection minimizes state-feature count,
+action-feature count, split count, state names, action names and partition ID.
+
+The canonical result is `EXACT_DIRECT_HOMOMORPHISM`: state `action_count`, action
+`completes_match`, thresholds `(3/2,5/2)`, required/evaluated candidates `4096/4096`,
+total/active `25/18 -> 5/3`, four abstract entries, singleton envelope and
+`action_alias_checked_before_mixture=true`. The complete trace contains all three
+witness families. State/action implementation digests are independently frozen under
+one implementation epoch.
+
+Restricted controls cannot mint production evidence. No exact candidate returns
+`NO_EXACT_DIRECT_HOMOMORPHISM`; cap insufficiency returns
+`CANDIDATE_CAP_EXHAUSTED`, zero evaluations and one
+`CANDIDATE_CAP_INSUFFICIENT` witness; a restricted exact candidate returns
+`RESTRICTED_CONTROL_EXACT_FOUND` but publishes no model/certificate and fails the
+production verifier. Negative controls have a separate role-locked verifier; the
+production verifier rejects restricted-control provenance, incomplete canonical
+registries and duck-typed result objects.
+
+Passing requires canonical typed transport, exact nested runtime graph types, full
+content-addressed trace/certificate reconstruction, frozen source digests, successful
+construction in a fresh process with the behavioural module poisoned, later evaluation-
+only agreement with the old behavioural quotient, and two-query fresh-process portable
+reuse. It supports only direct exact homomorphism synthesis inside fixed human state/
+action grammars on exact finite coverage. It does not support feature invention,
+partial/learned dynamics, unknown-domain or scalable discovery, held-out/cross-domain
+generalization, sealed official execution or any aggregate Phase 3, Phase 3E,
+counter-completeness, workload-economics, transfer or learning Gate. All official,
+scalar and Gate locks remain unchanged.
 
 ### Phase 3C certificate-triggered local-recovery gate
 
@@ -593,6 +730,26 @@ run_phase3b_campaign(workload):
   it.
 - A Phase 3B pass cannot be promoted to full Phase 3, local-hybrid, economics, or Phase
   5 status and cannot relabel an earlier positive control.
+- V0-038 production remains query-free even when its training coverage was prepared
+  upstream from registered support. Only kernel/coverage cross the constructor
+  boundary; the complete canonical registry/spec are internal, while restricted
+  subsets are explicitly non-production controls.
+- V0-038 exact realization means partition equality with the complete behavioural
+  target. A strict coarsening, strict refinement, incomparable/approximate match,
+  missing candidate or truncated power-set trace cannot receive
+  `EXACT_FEATURE_REALIZATION`; mismatch witnesses diagnose both directions.
+- V0-038's two-query portable reuse preserves one model ID and cannot promote the
+  slice to held-out generalization, feature invention or an aggregate Gate.
+- V0-039 construction has no behavioural-target/signature import or input; exact raw
+  one-step signatures are recomputed only as direct homomorphism proof evidence.
+- V0-039 never mixes actions before proving within-state label aliases behaviourally
+  identical, and never aliases states before proving equal label sets and cross-state
+  same-label dynamics.
+- V0-039 restricted exact/no-exact/cap controls publish no production model or
+  certificate and cannot verify under `production_full_grammar_v1`; their separate
+  control verifier is role-locked and cannot substitute for production verification.
+- V0-039's target independence does not remove its exact-kernel, fixed-grammar and
+  exact-finite-coverage assumptions or open any official/aggregate Gate.
 
 ## Acceptance tests
 
@@ -637,6 +794,36 @@ run_phase3b_campaign(workload):
 - Work-counter tests reconcile build/load/plan/audit/local/fallback components, preserve
   evaluation J0 separately, and require scalar costs/break-even null; missing any
   required not-run status fails the gate.
+- V0-038 tests audit its two-input canonical production boundary, reject caller subset
+  arguments, keep restricted registries on the explicit control API, enumerate all
+  2048 production candidates, reproduce `action_count`, `(3/2,5/2)`, two splits,
+  `25 -> 5` and active `18 -> 3`, and preserve canonical round trips.
+- V0-038 independent replay rejects altered or coherently re-signed registry/spec/
+  certificate constants and rebuilds the target partition/trace/adapter/model,
+  candidate trace/tree/certificate, realized partition/quotient and portable
+  model/registry. Its restricted-grammar negative control returns
+  `NO_EXACT_FEATURE_REALIZATION`, a typed mismatch witness and no positive
+  model/certificate; source-digest, list/string transport and nested-proxy attacks also
+  fail.
+- The separate V0-038 seed-0 canonical-initial control has 36 covered states, 11 target
+  cells and 7 `action_count` cells, and its trace contains both
+  `TARGET_SEPARATED_FEATURE_ALIASED` and `TARGET_MERGED_FEATURE_SEPARATED`; it cannot
+  be substituted for the `25 -> 5`, active `18 -> 3` golden.
+- Two fresh processes must solve the two registered in-coverage queries from one
+  unchanged V0-038 portable RAPM without turning the test into a sealed-runtime,
+  held-out or full-Gate claim.
+- V0-039 API/import and poison-process tests prove construction has no prebuilt
+  behavioural target/signature or query/planning channel. Its 4096-candidate golden
+  selects `action_count + completes_match`, `(3/2,5/2)`, `25/18 -> 5/3`, four entries
+  and a singleton envelope, with all three typed direct-obligation witnesses.
+- V0-039 controls separately reach no-exact, zero-evaluation cap-exhausted and
+  restricted-exact-without-model/certificate outcomes; production verification rejects
+  every control result, incomplete canonical registry and duck-typed result, while the
+  separate negative-control verifier accepts only its control role/provenance.
+- V0-039 canonical round trips and independent rebuild reject coherent resigning,
+  malformed JSON types, nested runtime proxies, trace deletion and state/action source-
+  digest substitution. Evaluation-only behavioural comparison agrees exactly, and one
+  direct portable model serves two fresh-process in-coverage queries.
 - Phase 3C tests reproduce the direct frontier, strict authorization, isolated minimal
   overlay, mixed policy, immutable base and post-audit goldens; independent replay
   rejects coordinated re-hashing of route/witness/slice/patch/base/query/attestation/
@@ -656,11 +843,11 @@ run_phase3b_campaign(workload):
 
 ## Out of scope
 
-Implementing Phase 1–7 in the Phase 0.5 milestone, claiming their Gates from smoke fixtures, crediting the supplied `D4` positive control with automatic quotient/predicate discovery, crediting the aliased profile with predicate invention or unknown-symmetry discovery, crediting the Phase 3A exact-model slice with a full Phase 3 pass or oracle-free unknown-quotient discovery, crediting Phase 3B with a local-hybrid result, or crediting Phase 3D with break-even or a full Phase 3/5 result.
+Implementing Phase 1–7 in the Phase 0.5 milestone, claiming their Gates from smoke fixtures, crediting the supplied `D4` positive control with automatic quotient/predicate discovery, crediting the aliased profile with predicate invention or unknown-symmetry discovery, crediting the Phase 3A exact-model slice with a full Phase 3 pass or oracle-free unknown-quotient discovery, crediting Phase 3B with a local-hybrid result, crediting V0-038 with target-free discovery, crediting V0-039's fixed-grammar exact-kernel slice with feature invention, scalable/unknown-domain discovery, held-out generalization or a full human-grammar/Phase 3 Gate, or crediting Phase 3D with break-even or a full Phase 3/5 result.
 
 ## Known failure modes
 
-The coarse policy can be immediately infeasible, no predicate may separate the witness, every useful split may exceed rate, and an accepted split may still end in charged fallback. These are valid measured outcomes, but Phase 0.5 still requires a fixture with one accepted split. An implicit default support, incomplete all-action closure, or coverage-free cache key is unsound. In the exact `D4` gate, incomplete orbit closure, action-transform errors, stabilizer multiplicity bias, or nonzero envelopes are hard validation failures and are never repaired by refinement. In the aliased gate, replacing the deliberate boundary adapter with equivariant actions, forcing a third split after certification, or hiding the final risk gap changes the registered experiment. In Phase 3A, held-out leakage, thresholding compression on terminal collapse, or reporting a cross-orbit cell unreachable by the training policy invalidates the slice.
+The coarse policy can be immediately infeasible, no predicate may separate the witness, every useful split may exceed rate, and an accepted split may still end in charged fallback. These are valid measured outcomes, but Phase 0.5 still requires a fixture with one accepted split. An implicit default support, incomplete all-action closure, or coverage-free cache key is unsound. In the exact `D4` gate, incomplete orbit closure, action-transform errors, stabilizer multiplicity bias, or nonzero envelopes are hard validation failures and are never repaired by refinement. In the aliased gate, replacing the deliberate boundary adapter with equivariant actions, forcing a third split after certification, or hiding the final risk gap changes the registered experiment. In Phase 3A, held-out leakage, thresholding compression on terminal collapse, or reporting a cross-orbit cell unreachable by the training policy invalidates the slice. In V0-039, label-set, within-label action-alias or cross-state same-label mismatch is a typed negative candidate; cap exhaustion cannot certify, and mixing before the alias check invalidates the direct claim.
 
 ## Open risks
 
@@ -685,5 +872,13 @@ V0-030 resolves `V0-RISK-004..006` for current-earliest-antichain causal search,
 finite-domain sparse capability, and capped joint deterministic composition. Deeper
 recovery, workload economics/dynamic routing, larger workloads, and the full Phase 3/5
 Gates remain explicitly unrun.
+
+V0-038 closes exhaustive exact feature realization only inside one preregistered LMB
+grammar and frozen coverage. Its complete exact ground behavioural target/signature is
+still a construction oracle. V0-039 removes that target/signature dependency for the
+same finite LMB slice through direct state-action homomorphism proof, but still fixes
+the grammars and assumes a complete exact ground kernel/coverage. Inventing feature
+semantics, learning partial dynamics, scaling to larger/unknown domains and proving
+held-out/cross-domain generalization remain open.
 
 Later Gate denominators and statistical aggregation details also need a preregistered analysis plan before Phase 3 test evaluation; the threshold values above are already frozen.

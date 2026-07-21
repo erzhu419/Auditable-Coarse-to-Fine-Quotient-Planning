@@ -115,6 +115,9 @@ class NativeCounterRecorderV1:
             RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE: {
                 ActualWorkScope.COMMON_PREFIX
             },
+            RouteKindEnum.ABSTRACT_FAILED_PREFIX: {
+                ActualWorkScope.COMMON_PREFIX
+            },
             RouteKindEnum.LOCAL_ATTEMPT: {
                 ActualWorkScope.MARGINAL_ROUTE_EXECUTION,
                 ActualWorkScope.MARGINAL_ROUTE_VERIFICATION,
@@ -166,6 +169,9 @@ class NativeCounterRecorderV1:
                 RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE: (
                     "local.", "fallback.", "rebuild."
                 ),
+                RouteKindEnum.ABSTRACT_FAILED_PREFIX: (
+                    "local.", "fallback.", "rebuild."
+                ),
                 RouteKindEnum.LOCAL_ATTEMPT: (
                     ("fallback.", "rebuild.")
                     if self.allow_selected_route_shared_operations
@@ -180,7 +186,14 @@ class NativeCounterRecorderV1:
                     "common.", "local.", "fallback.", "control."
                 ),
             }[self.route_kind]
-        if any(path.startswith(prefix) for prefix in forbidden):
+        failed_prefix_causal = (
+            self.route_kind is RouteKindEnum.ABSTRACT_FAILED_PREFIX
+            and self.work_scope is ActualWorkScope.COMMON_PREFIX
+            and path == "local.causal_candidate_evaluations"
+        )
+        if not failed_prefix_causal and any(
+            path.startswith(prefix) for prefix in forbidden
+        ):
             raise NativeRecorderV1Error(
                 f"counter {path!r} belongs outside the "
                 f"{self.work_scope.value} lane"

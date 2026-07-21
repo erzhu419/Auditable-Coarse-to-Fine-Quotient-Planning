@@ -68,6 +68,16 @@ def test_recorder_emits_explicit_native_zeroes_and_exact_projection() -> None:
             "local.causal_candidate_evaluations",
         ),
         (
+            RouteKindEnum.ABSTRACT_FAILED_PREFIX,
+            ActualWorkScope.COMMON_PREFIX,
+            "fallback.states_expanded",
+        ),
+        (
+            RouteKindEnum.ABSTRACT_FAILED_PREFIX,
+            ActualWorkScope.COMMON_PREFIX,
+            "local.materialization_ground_steps",
+        ),
+        (
             RouteKindEnum.LOCAL_ATTEMPT,
             ActualWorkScope.MARGINAL_ROUTE_EXECUTION,
             "common.protocol_checks",
@@ -110,6 +120,32 @@ def test_route_scope_and_kind_cannot_be_mixed() -> None:
             route_kind=RouteKindEnum.LOCAL_ATTEMPT,
             work_scope=ActualWorkScope.COMMON_PREFIX,
         )
+
+
+def test_failed_abstract_prefix_is_accounted_without_certificate_route_kind() -> None:
+    recorder = NativeCounterRecorderV1(
+        subject_id=_id("failed-abstract-attempt"),
+        route_kind=RouteKindEnum.ABSTRACT_FAILED_PREFIX,
+        work_scope=ActualWorkScope.COMMON_PREFIX,
+    )
+    recorder.add("common.abstract_bellman_backups", 5)
+    recorder.add("common.abstract_audit_obligations", 2)
+    recorder.add("local.causal_candidate_evaluations", 4)
+    recorder.record_solver_completion(success=True)
+    recorder.record_process_completion(success=True)
+    recorder.record_route_completion(success=True)
+    work = recorder.seal()
+
+    assert work.work_vector.route_kind is RouteKindEnum.ABSTRACT_FAILED_PREFIX
+    assert work.actual_projection_proof.work_scope is ActualWorkScope.COMMON_PREFIX
+    assert work.work_vector.value("common.abstract_bellman_backups") == 5
+    assert work.work_vector.value("local.causal_candidate_evaluations") == 4
+    assert all(
+        value == 0
+        for path, value in work.work_vector.values.items()
+        if path.startswith(("local.", "fallback.", "rebuild."))
+        and path != "local.causal_candidate_evaluations"
+    )
 
 
 def test_unknown_generic_counter_and_wrong_reducer_fail_closed() -> None:

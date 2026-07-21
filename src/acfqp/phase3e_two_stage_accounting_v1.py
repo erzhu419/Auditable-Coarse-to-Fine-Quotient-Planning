@@ -466,7 +466,10 @@ def seal_accounting_core_v1(
     decision_na = isinstance(binding.decision_point_id, TypedNotApplicable)
     if stage is AccountingCoreStage.COMMON_PREFIX:
         if (
-            vector.route_kind is not RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE
+            vector.route_kind not in {
+                RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE,
+                RouteKindEnum.ABSTRACT_FAILED_PREFIX,
+            }
             or proof.work_scope is not ActualWorkScope.COMMON_PREFIX
             or vector.subject_id != context.route_attempt_id
             or not transaction_na

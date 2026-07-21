@@ -33,6 +33,12 @@ from fractions import Fraction
 from itertools import product
 from typing import Any, Hashable, Mapping, Sequence
 
+from acfqp._runtime_authority_v1 import (
+    RuntimeAuthorityMintV1,
+    bind_runtime_authority_v1,
+    require_runtime_authority_v1,
+    runtime_authority_fingerprint_v1,
+)
 from acfqp.accounting_v1 import (
     CounterRegistryV1,
     RouteKindEnum,
@@ -1793,6 +1799,9 @@ class GroundFallbackExecutionV1:
     trusted_provenance: GroundFallbackTrustedExecutionProvenanceV1 | None = field(
         default=None, compare=False, repr=False
     )
+    _instance_mint: RuntimeAuthorityMintV1 | None = field(
+        default=None, compare=False, repr=False
+    )
 
     def __post_init__(self) -> None:
         if self.result.work_vector_id != self.work_vector.work_vector_id:
@@ -1812,6 +1821,39 @@ class GroundFallbackExecutionV1:
             raise GroundFallbackV1Error(
                 "non-feasible fallback outcome cannot carry an executable policy"
             )
+        if self._instance_mint is not None:
+            try:
+                self._instance_mint.validate_construction(
+                    self,
+                    issuer=_TRUSTED_EXECUTOR_RUNTIME_AUTHORITY,
+                    fingerprint=runtime_authority_fingerprint_v1(self),
+                )
+            except ValueError as error:
+                raise GroundFallbackV1Error(
+                    "trusted fallback execution is a copied or modified authority"
+                ) from error
+
+
+def require_trusted_ground_fallback_execution_authority_v1(
+    execution: object,
+) -> GroundFallbackExecutionV1:
+    """Require the exact selected-route executor result instance."""
+
+    if type(execution) is not GroundFallbackExecutionV1:
+        raise GroundFallbackV1Error(
+            "ground fallback semantic verification requires an in-memory execution"
+        )
+    try:
+        require_runtime_authority_v1(
+            execution,
+            issuer=_TRUSTED_EXECUTOR_RUNTIME_AUTHORITY,
+        )
+    except ValueError as error:
+        raise GroundFallbackV1Error(
+            "fallback execution lacks trusted runtime provenance from the "
+            "retained trusted-executor instance"
+        ) from error
+    return execution
 
 
 def _trusted_execution_binding_payload_v1(
@@ -1895,11 +1937,15 @@ def _seal_trusted_ground_fallback_execution_v1(
         delta,
         _authority=_TRUSTED_EXECUTOR_RUNTIME_AUTHORITY,
     )
-    return GroundFallbackExecutionV1(
+    sealed = GroundFallbackExecutionV1(
         execution.result,
         execution.work_vector,
         execution.selected_policy,
         provenance,
+    )
+    return bind_runtime_authority_v1(
+        sealed,
+        issuer=_TRUSTED_EXECUTOR_RUNTIME_AUTHORITY,
     )
 
 
@@ -1934,11 +1980,15 @@ def _seal_isolated_ground_fallback_execution_v1(
         _authority=_TRUSTED_EXECUTOR_RUNTIME_AUTHORITY,
         **profile_fields,
     )
-    return GroundFallbackExecutionV1(
+    sealed = GroundFallbackExecutionV1(
         execution.result,
         execution.work_vector,
         execution.selected_policy,
         provenance,
+    )
+    return bind_runtime_authority_v1(
+        sealed,
+        issuer=_TRUSTED_EXECUTOR_RUNTIME_AUTHORITY,
     )
 
 
@@ -1952,10 +2002,9 @@ def verify_trusted_ground_fallback_execution_provenance_v1(
     executor, not an independently portable proof.
     """
 
-    if not isinstance(execution, GroundFallbackExecutionV1):
-        raise GroundFallbackV1Error(
-            "ground fallback semantic verification requires an in-memory execution"
-        )
+    execution = require_trusted_ground_fallback_execution_authority_v1(
+        execution
+    )
     provenance = execution.trusted_provenance
     if (
         not isinstance(provenance, GroundFallbackTrustedExecutionProvenanceV1)
@@ -2565,6 +2614,7 @@ __all__ = [
     "derive_safe_chain_fallback_cardinality_source_v1",
     "execute_authorized_ground_fallback_v1",
     "require_fallback_formula_binding_v1",
+    "require_trusted_ground_fallback_execution_authority_v1",
     "run_ground_fallback_search_v1",
     "reconstruct_safe_chain_policy_from_signature_v1",
     "safe_chain_fallback_context_identity_v1",

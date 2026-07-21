@@ -22,6 +22,12 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any
 
+from acfqp._runtime_authority_v1 import (
+    RuntimeAuthorityMintV1,
+    bind_runtime_authority_v1,
+    require_runtime_authority_v1,
+    runtime_authority_fingerprint_v1,
+)
 from acfqp.accounting_v1 import (
     ComparisonProfileV1,
     CounterRegistryV1,
@@ -135,6 +141,9 @@ class AuthorizedFallbackAfterLocalFailureV1:
     route_decision_result: object = field(repr=False, compare=False)
     infeasibility_certified: bool = False
     _authority: object = field(default=None, repr=False, compare=False)
+    _instance_mint: RuntimeAuthorityMintV1 | None = field(
+        default=None, repr=False, compare=False
+    )
 
     def __post_init__(self) -> None:
         if self._authority is not _FRESH_FALLBACK_AUTHORITY:
@@ -145,6 +154,17 @@ class AuthorizedFallbackAfterLocalFailureV1:
             raise Phase3EFailureContinuationV1Error(
                 "local failure or cap exhaustion is never infeasibility evidence"
             )
+        if self._instance_mint is not None:
+            try:
+                self._instance_mint.validate_construction(
+                    self,
+                    issuer=_FRESH_FALLBACK_AUTHORITY,
+                    fingerprint=runtime_authority_fingerprint_v1(self),
+                )
+            except ValueError as error:
+                raise Phase3EFailureContinuationV1Error(
+                    "fresh fallback continuation is a copied or modified authority"
+                ) from error
 
     @property
     def selected_route(self) -> RouteSelection:
@@ -153,6 +173,27 @@ class AuthorizedFallbackAfterLocalFailureV1:
     @property
     def preserved_local_work_vector_ids(self) -> tuple[str, ...]:
         return self.candidate.preserved_local_work_vector_ids
+
+
+def require_authorized_fallback_after_local_failure_v1(
+    authority: object,
+) -> AuthorizedFallbackAfterLocalFailureV1:
+    """Require the exact semantic-replay fallback continuation instance."""
+
+    if type(authority) is not AuthorizedFallbackAfterLocalFailureV1:
+        raise Phase3EFailureContinuationV1Error(
+            "fresh fallback continuation lacks semantic authority"
+        )
+    try:
+        require_runtime_authority_v1(
+            authority,
+            issuer=_FRESH_FALLBACK_AUTHORITY,
+        )
+    except ValueError as error:
+        raise Phase3EFailureContinuationV1Error(
+            "fresh fallback continuation is not the retained minted instance"
+        ) from error
+    return authority
 
 
 def prepare_fallback_after_local_failure_v1(
@@ -269,7 +310,10 @@ def prepare_fallback_after_local_failure_v1(
         ) from error
     prefix_vector = verified_prefix.work_vector
     if (
-        prefix_vector.route_kind is not RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE
+        prefix_vector.route_kind not in {
+            RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE,
+            RouteKindEnum.ABSTRACT_FAILED_PREFIX,
+        }
         or prefix_vector.subject_id != context.route_attempt_id
         or fallback_decision_point.common_prefix_work_id
         != prefix_vector.work_vector_id
@@ -580,7 +624,7 @@ def authorize_fallback_after_local_failure_v1(
             )
         _require_new_binding(result, candidate)
 
-    return AuthorizedFallbackAfterLocalFailureV1(
+    authority = AuthorizedFallbackAfterLocalFailureV1(
         candidate,
         verified_failure,
         verified_prior_work,
@@ -591,6 +635,10 @@ def authorize_fallback_after_local_failure_v1(
         False,
         _FRESH_FALLBACK_AUTHORITY,
     )
+    return bind_runtime_authority_v1(
+        authority,
+        issuer=_FRESH_FALLBACK_AUTHORITY,
+    )
 
 
 __all__ = [
@@ -600,4 +648,5 @@ __all__ = [
     "Phase3EFailureContinuationV1Error",
     "authorize_fallback_after_local_failure_v1",
     "prepare_fallback_after_local_failure_v1",
+    "require_authorized_fallback_after_local_failure_v1",
 ]

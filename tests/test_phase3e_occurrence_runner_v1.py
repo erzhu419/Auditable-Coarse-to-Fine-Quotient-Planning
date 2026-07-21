@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import hashlib
 from fractions import Fraction
 from types import SimpleNamespace
@@ -35,6 +36,7 @@ from acfqp.phase3e_occurrence_runner_v1 import (
     OccurrenceClosureCodeV1,
     Phase3EOccurrenceRunnerV1Error,
     SecondTransactionAuthorityPackageV1,
+    require_phase3e_occurrence_failure_terminal_authority_v1,
     run_phase3e_occurrence_v1,
 )
 from acfqp.phase3e_occurrence_accounting_v1 import (
@@ -43,6 +45,10 @@ from acfqp.phase3e_occurrence_accounting_v1 import (
     derive_runner_partial_common_accounting_v1,
 )
 from acfqp.phase3e_failure_continuation_v1 import LocalFailureKind
+from acfqp.phase3e_transactions_v1 import (
+    require_local_continuation_directive_authority_v1,
+    require_second_transaction_candidate_authority_v1,
+)
 from acfqp.phase3e_fallback_v1 import (
     GroundFallbackCapProfileV1,
     GroundFallbackCardinalityBoundV1,
@@ -1200,22 +1206,38 @@ def test_transaction_two_executor_failure_closes_one_noncertificate_occurrence(
     assert result.occurrence_failure_terminal.noncertificate_count == 1
     assert result.infeasibility_certified is False
 
+    candidate, directive = result.continuation_authorities
+    assert require_second_transaction_candidate_authority_v1(candidate) is candidate
+    assert (
+        require_local_continuation_directive_authority_v1(directive)
+        is directive
+    )
+    with pytest.raises(Phase3EOccurrenceRunnerV1Error, match="copied or modified"):
+        replace(result.occurrence_failure_terminal_authority)
+    with pytest.raises(Phase3EOccurrenceRunnerV1Error, match="retained replay"):
+        require_phase3e_occurrence_failure_terminal_authority_v1(
+            copy.copy(result.occurrence_failure_terminal_authority)
+        )
+    with pytest.raises(ValueError, match="retained replay"):
+        require_second_transaction_candidate_authority_v1(copy.copy(candidate))
+    with pytest.raises(ValueError, match="retained minted"):
+        require_local_continuation_directive_authority_v1(copy.copy(directive))
+    with pytest.raises(ValueError, match="copied or modified"):
+        replace(candidate)
+    with pytest.raises(ValueError, match="copied or modified"):
+        replace(directive)
+
     forged_failure = replace(
         result.failed_route_evidence,
         original_error_message="forged transaction-two failure detail",
     )
-    forged_failure_authority = replace(
-        result.occurrence_failure_terminal_authority,
-        failed_route_evidence=forged_failure,
-    )
     with pytest.raises(
         Phase3EOccurrenceRunnerV1Error,
-        match="differs from full evidence replay",
+        match="copied or modified authority",
     ):
         replace(
-            result,
+            result.occurrence_failure_terminal_authority,
             failed_route_evidence=forged_failure,
-            occurrence_failure_terminal_authority=forged_failure_authority,
         )
 
     partial = derive_runner_partial_common_accounting_v1(
@@ -1762,10 +1784,14 @@ def test_occurrence_result_boundary_replays_order_runs_transactions_and_terminal
         result.occurrence_terminal,
         detail_id=_id("forged-occurrence-terminal-detail"),
     )
-    forged_terminal_result = replace(
-        result.occurrence_terminal_result,
-        artifact=forged_terminal,
-    )
+    # Semantic authorities are live opaque capabilities.  The former exploit
+    # could use dataclasses.replace to carry the mint token into a forged
+    # result; replacement is now rejected before the occurrence boundary.
+    with pytest.raises(TypeError, match="dataclass instances"):
+        replace(
+            result.occurrence_terminal_result,
+            artifact=forged_terminal,
+        )
     with pytest.raises(
         Phase3EOccurrenceRunnerV1Error,
         match="terminal authority is stale",
@@ -1773,7 +1799,6 @@ def test_occurrence_result_boundary_replays_order_runs_transactions_and_terminal
         replace(
             result,
             occurrence_terminal=forged_terminal,
-            occurrence_terminal_result=forged_terminal_result,
         )
 
     with pytest.raises(

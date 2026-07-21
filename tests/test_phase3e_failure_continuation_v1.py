@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 from dataclasses import replace
 import hashlib
 from types import SimpleNamespace
@@ -7,6 +8,7 @@ from types import SimpleNamespace
 import pytest
 
 from acfqp.accounting_v1 import (
+    CounterRecordV1,
     RouteKindEnum,
     explicit_records_v1,
     official_comparison_profile_v1,
@@ -20,6 +22,7 @@ from acfqp.phase3e_failure_continuation_v1 import (
     Phase3EFailureContinuationV1Error,
     authorize_fallback_after_local_failure_v1,
     prepare_fallback_after_local_failure_v1,
+    require_authorized_fallback_after_local_failure_v1,
 )
 from acfqp.phase3e_fallback_v1 import (
     GroundFallbackCapProfileV1,
@@ -46,11 +49,36 @@ from acfqp.routing_v1 import (
     TransactionV1,
     TypedNotApplicable,
 )
-from acfqp.semantic_verification_v1 import SemanticVerificationV1Error
+from acfqp.semantic_verification_v1 import (
+    AttestationContextV1,
+    SemanticRole,
+    SemanticVerificationV1Error,
+    _finish,
+    semantic_verifier_spec_v1,
+)
 
 
 def _id(label: str) -> str:
     return hashlib.sha256(label.encode("utf-8")).hexdigest()
+
+
+def _authority(role, artifact, artifact_id, outcome, binding, label):
+    registry = official_counter_registry_v1()
+    spec = semantic_verifier_spec_v1(role)
+    record = CounterRecordV1.observe(
+        registry,
+        spec.verification_counter_path,
+        1,
+        recorder_id=f"fresh-fallback-{label}-authority-v1",
+    )
+    return _finish(
+        artifact=artifact,
+        artifact_id=artifact_id,
+        spec=spec,
+        outcome=outcome,
+        binding=binding,
+        work=record,
+    )
 
 
 def _local_work(registry, transaction: TransactionV1, *, rejected: bool = False):
@@ -302,6 +330,100 @@ def test_missing_failure_and_route_authority_cannot_cross_execution_boundary() -
             object(),
             object(),
         )
+
+
+def test_fresh_fallback_runtime_authority_copy_and_replace_are_inert() -> None:
+    arguments = _world(transaction_count=2)
+    candidate = prepare_fallback_after_local_failure_v1(**arguments)
+    context = candidate.context
+    last = candidate.transactions[-1]
+    failure_binding = AttestationContextV1(
+        context,
+        last.decision_point_id,
+        last.transaction_id,
+        20,
+    )
+    fresh_binding = AttestationContextV1(
+        context,
+        candidate.fallback_decision_point.decision_point_id,
+        TypedNotApplicable("fresh fallback has no local transaction"),
+        21,
+    )
+    prior_work = tuple(
+        _authority(
+            SemanticRole.WORK_VECTOR,
+            vector,
+            vector.work_vector_id,
+            "VALID",
+            AttestationContextV1(
+                context,
+                transaction.decision_point_id,
+                transaction.transaction_id,
+                20,
+            ),
+            f"prior-work-{transaction.transaction_index}",
+        )
+        for transaction, vector in zip(
+            candidate.transactions,
+            candidate.prior_local_work_vectors,
+            strict=True,
+        )
+    )
+    failure_artifact = SimpleNamespace(
+        to_dict=lambda: {"failure_artifact_id": candidate.failure_artifact_id}
+    )
+    authority = authorize_fallback_after_local_failure_v1(
+        candidate,
+        failure_result=_authority(
+            SemanticRole.POST_AUDIT,
+            failure_artifact,
+            candidate.failure_artifact_id,
+            "FAILED",
+            failure_binding,
+            "failure",
+        ),
+        prior_work_results=prior_work,
+        common_prefix_work_result=_authority(
+            SemanticRole.WORK_VECTOR,
+            candidate.fallback_common_prefix_work.work_vector,
+            candidate.fallback_common_prefix_work.work_vector.work_vector_id,
+            "VALID",
+            fresh_binding,
+            "prefix-work",
+        ),
+        cardinality_result=_authority(
+            SemanticRole.CARDINALITY_EVIDENCE,
+            candidate.fallback_cardinality,
+            candidate.fallback_cardinality.cardinality_evidence_id,
+            "VALID",
+            fresh_binding,
+            "cardinality",
+        ),
+        fallback_upper_result=_authority(
+            SemanticRole.ROUTE_UPPER,
+            candidate.fallback_upper,
+            candidate.fallback_upper.route_upper_bound_envelope_id,
+            "VALID",
+            fresh_binding,
+            "upper",
+        ),
+        route_decision_result=_authority(
+            SemanticRole.ROUTE_DECISION,
+            candidate.fallback_route_decision,
+            candidate.fallback_route_decision.route_decision_id,
+            RouteSelection.FALLBACK.value,
+            fresh_binding,
+            "decision",
+        ),
+    )
+    assert (
+        require_authorized_fallback_after_local_failure_v1(authority)
+        is authority
+    )
+    with pytest.raises(Phase3EFailureContinuationV1Error, match="retained minted"):
+        require_authorized_fallback_after_local_failure_v1(copy.copy(authority))
+    with pytest.raises(Phase3EFailureContinuationV1Error, match="copied or modified"):
+        replace(authority)
 
 
 def test_third_local_transaction_cannot_be_smuggled_into_fallback_preparation() -> None:

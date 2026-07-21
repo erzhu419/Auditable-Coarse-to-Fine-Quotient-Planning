@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import dataclasses
 from dataclasses import dataclass
 from fractions import Fraction
@@ -20,8 +21,10 @@ from acfqp.phase3e_fallback_v1 import (
     GroundFallbackExecutionV1,
     GroundFallbackOutcome,
     GroundFallbackResultV1,
+    GroundFallbackV1Error,
     _seal_trusted_ground_fallback_execution_v1,
     run_ground_fallback_search_v1,
+    require_trusted_ground_fallback_execution_authority_v1,
 )
 from acfqp.routing_v1 import RouteDecisionContextV1, TypedNotApplicable
 from acfqp.semantic_verification_v1 import (
@@ -228,7 +231,10 @@ def test_runtime_seal_rejects_replaced_result_and_work() -> None:
         sealed.selected_policy,
         sealed.trusted_provenance,
     )
-    with pytest.raises(SemanticVerificationV1Error, match="does not bind"):
+    with pytest.raises(
+        SemanticVerificationV1Error,
+        match="trusted runtime provenance|does not bind",
+    ):
         _verify(result_attack, cap, context, point_id)
 
     registry = official_counter_registry_v1()
@@ -252,8 +258,28 @@ def test_runtime_seal_rejects_replaced_result_and_work() -> None:
         sealed.selected_policy,
         sealed.trusted_provenance,
     )
-    with pytest.raises(SemanticVerificationV1Error, match="does not bind"):
+    with pytest.raises(
+        SemanticVerificationV1Error,
+        match="trusted runtime provenance|does not bind",
+    ):
         _verify(work_attack, cap, context, point_id)
+
+
+def test_exact_fallback_execution_copy_and_replace_are_inert() -> None:
+    raw, _cap_profile, _context_value, _point_id = _raw_execution(fails=False)
+    sealed = _seal_trusted_ground_fallback_execution_v1(
+        raw, constraint_delta=Fraction(1, 20)
+    )
+    assert (
+        require_trusted_ground_fallback_execution_authority_v1(sealed)
+        is sealed
+    )
+
+    copied = copy.copy(sealed)
+    with pytest.raises(GroundFallbackV1Error, match="retained"):
+        require_trusted_ground_fallback_execution_authority_v1(copied)
+    with pytest.raises(GroundFallbackV1Error, match="copied or modified"):
+        dataclasses.replace(sealed)
 
 
 def test_wrong_context_and_cap_cannot_reuse_trusted_execution() -> None:

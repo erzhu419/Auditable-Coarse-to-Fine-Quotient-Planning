@@ -17,6 +17,12 @@ from itertools import permutations
 import math
 from typing import Any, Mapping, Sequence
 
+from acfqp._runtime_authority_v1 import (
+    RuntimeAuthorityMintV1,
+    bind_runtime_authority_v1,
+    require_runtime_authority_v1,
+    runtime_authority_fingerprint_v1,
+)
 from acfqp.accounting_v1 import (
     ComparisonProfileV1,
     ComparisonVectorV1,
@@ -515,12 +521,26 @@ class WorkloadVectorAnalysisV1:
     official_N_break_even: None = None
     scalar_gate_status: str = SCALAR_GATE_NOT_RUN
     _authority: object = field(default=None, repr=False, compare=False)
+    _instance_mint: RuntimeAuthorityMintV1 | None = field(
+        default=None, repr=False, compare=False
+    )
 
     def __post_init__(self) -> None:
         if self._authority is not _WORKLOAD_ANALYSIS_AUTHORITY:
             raise WorkloadVectorV1Error(
                 "workload analysis requires native occurrence replay"
             )
+        if self._instance_mint is not None:
+            try:
+                self._instance_mint.validate_construction(
+                    self,
+                    issuer=_WORKLOAD_ANALYSIS_AUTHORITY,
+                    fingerprint=runtime_authority_fingerprint_v1(self),
+                )
+            except ValueError as error:
+                raise WorkloadVectorV1Error(
+                    "workload analysis is a copied or modified replay authority"
+                ) from error
         _cid(self.workload_vector_spec_id, "workload_vector_spec_id")
         _cid(self.comparison_profile_id, "comparison_profile_id")
         if (
@@ -820,7 +840,7 @@ def analyze_workload_vectors_v1(
         )
         for prefix_length in range(1, len(spec.ordered_logical_occurrence_ids) + 1)
     )
-    return WorkloadVectorAnalysisV1(
+    analysis = WorkloadVectorAnalysisV1(
         spec.workload_vector_spec_id,
         comparison_profile.comparison_profile_id,
         spec.ordered_logical_occurrence_ids,
@@ -829,6 +849,10 @@ def analyze_workload_vectors_v1(
         prefix_totals,
         frontiers,
         _authority=_WORKLOAD_ANALYSIS_AUTHORITY,
+    )
+    return bind_runtime_authority_v1(
+        analysis,
+        issuer=_WORKLOAD_ANALYSIS_AUTHORITY,
     )
 
 
@@ -840,10 +864,15 @@ def verify_workload_vector_analysis_v1(
     comparison_profile: ComparisonProfileV1,
     actual_profile: ActualProjectionProfileV1,
 ) -> None:
-    if analysis._authority is not _WORKLOAD_ANALYSIS_AUTHORITY:
-        raise WorkloadVectorV1Error(
-            "workload vector analysis lacks native replay authority"
+    try:
+        require_runtime_authority_v1(
+            analysis,
+            issuer=_WORKLOAD_ANALYSIS_AUTHORITY,
         )
+    except (AttributeError, ValueError) as error:
+        raise WorkloadVectorV1Error(
+            "workload vector analysis lacks exact native replay authority"
+        ) from error
     expected = analyze_workload_vectors_v1(
         spec,
         occurrence_vectors,

@@ -12,6 +12,12 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Mapping, Sequence
 
+from acfqp._runtime_authority_v1 import (
+    RuntimeAuthorityMintV1,
+    bind_runtime_authority_v1,
+    require_runtime_authority_v1,
+    runtime_authority_fingerprint_v1,
+)
 from acfqp.phase3e_ids import (
     CAMPAIGN_OCCURRENCE_CLOSURE_DOMAIN,
     CAMPAIGN_SUMMARY_DOMAIN,
@@ -512,12 +518,26 @@ class RebuildEventV1:
     target_build_epoch_id: str
     rebuild_work_vector_id: str
     _authority: object = field(default=None, repr=False, compare=False)
+    _instance_mint: RuntimeAuthorityMintV1 | None = field(
+        default=None, repr=False, compare=False
+    )
 
     def __post_init__(self) -> None:
         if self._authority is not _REBUILD_EVENT_AUTHORITY:
             raise CampaignV1Error(
                 "rebuild event requires verified REBUILD_REQUIRED authorization"
             )
+        if self._instance_mint is not None:
+            try:
+                self._instance_mint.validate_construction(
+                    self,
+                    issuer=_REBUILD_EVENT_AUTHORITY,
+                    fingerprint=runtime_authority_fingerprint_v1(self),
+                )
+            except ValueError as error:
+                raise CampaignV1Error(
+                    "rebuild event is a copied or modified authority"
+                ) from error
         for field in (
             "logical_occurrence_id",
             "rebuild_policy_id",
@@ -606,7 +626,7 @@ class RebuildEventV1:
             raise CampaignV1Error("target attempt does not bind its predecessor")
         if target_attempt.build_epoch_id == source_attempt.build_epoch_id:
             raise CampaignV1Error("rebuild did not create a new BuildEpoch")
-        return cls(
+        event = cls(
             occurrence.logical_occurrence_id,
             policy.rebuild_policy_id,
             1,
@@ -620,6 +640,10 @@ class RebuildEventV1:
             target_attempt.build_epoch_id,
             rebuild_work_vector_id,
             _authority=_REBUILD_EVENT_AUTHORITY,
+        )
+        return bind_runtime_authority_v1(
+            event,
+            issuer=_REBUILD_EVENT_AUTHORITY,
         )
 
     def _payload(self) -> dict[str, Any]:
@@ -708,6 +732,20 @@ class RebuildEventV1:
         if result.to_dict() != dict(document):
             raise CampaignV1Error("rebuild event does not match authorization replay")
         return result
+
+
+def require_rebuild_event_authority_v1(event: object) -> RebuildEventV1:
+    """Require the exact terminal-replay rebuild authorization instance."""
+
+    if type(event) is not RebuildEventV1:
+        raise CampaignV1Error("rebuild event lacks semantic terminal authority")
+    try:
+        require_runtime_authority_v1(event, issuer=_REBUILD_EVENT_AUTHORITY)
+    except ValueError as error:
+        raise CampaignV1Error(
+            "rebuild event is not the retained authorized instance"
+        ) from error
+    return event
 
 
 @dataclass(frozen=True, slots=True)
@@ -868,12 +906,26 @@ class CampaignOccurrenceClosureV1:
     certification_denominator_included: bool = True
     economics_denominator_included: bool = True
     _authority: object = field(default=None, repr=False, compare=False)
+    _instance_mint: RuntimeAuthorityMintV1 | None = field(
+        default=None, repr=False, compare=False
+    )
 
     def __post_init__(self) -> None:
         if self._authority is not _CAMPAIGN_CLOSURE_AUTHORITY:
             raise CampaignV1Error(
                 "campaign occurrence closure requires semantic terminal replay"
             )
+        if self._instance_mint is not None:
+            try:
+                self._instance_mint.validate_construction(
+                    self,
+                    issuer=_CAMPAIGN_CLOSURE_AUTHORITY,
+                    fingerprint=runtime_authority_fingerprint_v1(self),
+                )
+            except ValueError as error:
+                raise CampaignV1Error(
+                    "campaign occurrence closure is a copied or modified authority"
+                ) from error
         _cid(self.logical_occurrence_id, "logical_occurrence_id")
         _cid(self.rebuild_policy_id, "rebuild_policy_id")
         if not self.attempts or len(self.attempts) > 2:
@@ -979,6 +1031,7 @@ class CampaignOccurrenceClosureV1:
         if len(events) != max(0, len(attempt_rows) - 1):
             raise CampaignV1Error("retry closure has missing or extra rebuild events")
         for index, event in enumerate(events):
+            event = require_rebuild_event_authority_v1(event)
             source = attempt_rows[index]
             target = attempt_rows[index + 1]
             source_terminal = terminal_rows[index]
@@ -1011,7 +1064,7 @@ class CampaignOccurrenceClosureV1:
             raise CampaignV1Error(
                 "REBUILD_REQUIRED is retryable and cannot yet close the logical occurrence"
             )
-        return cls(
+        closure = cls(
             occurrence.logical_occurrence_id,
             policy.rebuild_policy_id,
             records,
@@ -1022,6 +1075,10 @@ class CampaignOccurrenceClosureV1:
             final_terminal.terminal_class,
             final_terminal.terminal_code,
             _authority=_CAMPAIGN_CLOSURE_AUTHORITY,
+        )
+        return bind_runtime_authority_v1(
+            closure,
+            issuer=_CAMPAIGN_CLOSURE_AUTHORITY,
         )
 
     def _payload(self) -> dict[str, Any]:
@@ -1130,6 +1187,27 @@ class CampaignOccurrenceClosureV1:
         return result
 
 
+def require_campaign_occurrence_closure_authority_v1(
+    closure: object,
+) -> CampaignOccurrenceClosureV1:
+    """Require the exact occurrence closure minted by terminal replay."""
+
+    if type(closure) is not CampaignOccurrenceClosureV1:
+        raise CampaignV1Error(
+            "campaign occurrence closure lacks terminal replay authority"
+        )
+    try:
+        require_runtime_authority_v1(
+            closure,
+            issuer=_CAMPAIGN_CLOSURE_AUTHORITY,
+        )
+    except ValueError as error:
+        raise CampaignV1Error(
+            "campaign occurrence closure is not the retained minted instance"
+        ) from error
+    return closure
+
+
 @dataclass(frozen=True, slots=True)
 class CampaignSummaryRowV1:
     occurrence_index: int
@@ -1205,12 +1283,26 @@ class CampaignClosureSummaryV1:
     counter_completeness_gate_status: str = COUNTER_COMPLETENESS_GATE_NOT_RUN
     scalar_gate_status: str = SCALAR_GATE_NOT_RUN
     _authority: object = field(default=None, repr=False, compare=False)
+    _instance_mint: RuntimeAuthorityMintV1 | None = field(
+        default=None, repr=False, compare=False
+    )
 
     def __post_init__(self) -> None:
         if self._authority is not _CAMPAIGN_SUMMARY_AUTHORITY:
             raise CampaignV1Error(
                 "campaign summary requires authoritative closure replay"
             )
+        if self._instance_mint is not None:
+            try:
+                self._instance_mint.validate_construction(
+                    self,
+                    issuer=_CAMPAIGN_SUMMARY_AUTHORITY,
+                    fingerprint=runtime_authority_fingerprint_v1(self),
+                )
+            except ValueError as error:
+                raise CampaignV1Error(
+                    "campaign summary is a copied or modified authority"
+                ) from error
         _cid(self.workload_spec_id, "workload_spec_id")
         if not self.rows:
             raise CampaignV1Error("campaign summary cannot omit all registered occurrences")
@@ -1311,6 +1403,7 @@ class CampaignClosureSummaryV1:
         for occurrence, closure, result in zip(
             occurrence_rows, closure_rows, result_rows
         ):
+            closure = require_campaign_occurrence_closure_authority_v1(closure)
             if occurrence.workload_spec_id != workload_spec_id:
                 raise CampaignV1Error("campaign mixes workload specifications")
             if closure.logical_occurrence_id != occurrence.logical_occurrence_id:
@@ -1372,7 +1465,7 @@ class CampaignClosureSummaryV1:
             for row in row_tuple
         )
         denominator = len(row_tuple)
-        return cls(
+        summary = cls(
             workload_spec_id,
             row_tuple,
             denominator,
@@ -1386,6 +1479,10 @@ class CampaignClosureSummaryV1:
             if noncertificate_count == 0
             else CERTIFICATE_COVERAGE_FAIL,
             _authority=_CAMPAIGN_SUMMARY_AUTHORITY,
+        )
+        return bind_runtime_authority_v1(
+            summary,
+            issuer=_CAMPAIGN_SUMMARY_AUTHORITY,
         )
 
     def _payload(self) -> dict[str, Any]:
@@ -1479,6 +1576,25 @@ class CampaignClosureSummaryV1:
         return result
 
 
+def require_campaign_closure_summary_authority_v1(
+    summary: object,
+) -> CampaignClosureSummaryV1:
+    """Require the exact campaign summary minted from retained closures."""
+
+    if type(summary) is not CampaignClosureSummaryV1:
+        raise CampaignV1Error("campaign summary lacks closure replay authority")
+    try:
+        require_runtime_authority_v1(
+            summary,
+            issuer=_CAMPAIGN_SUMMARY_AUTHORITY,
+        )
+    except ValueError as error:
+        raise CampaignV1Error(
+            "campaign summary is not the retained minted instance"
+        ) from error
+    return summary
+
+
 __all__ = [
     "AttemptClosureRecordV1",
     "CampaignClosureSummaryV1",
@@ -1489,4 +1605,7 @@ __all__ = [
     "RebuildEventV1",
     "RebuildPolicyV1",
     "RouteAttemptV1",
+    "require_campaign_closure_summary_authority_v1",
+    "require_campaign_occurrence_closure_authority_v1",
+    "require_rebuild_event_authority_v1",
 ]

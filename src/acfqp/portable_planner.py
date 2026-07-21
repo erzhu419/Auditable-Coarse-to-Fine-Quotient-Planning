@@ -13,7 +13,7 @@ from fractions import Fraction
 from itertools import product
 import json
 from pathlib import Path
-from typing import Any, Iterable, Mapping
+from typing import Any, Callable, Iterable, Mapping
 
 from acfqp.portable import (
     PortableQuery,
@@ -581,7 +581,10 @@ def _validate_policy_references(
 
 
 def solve_portable_pareto(
-    model: PortableRAPM, query: PortableQuery
+    model: PortableRAPM,
+    query: PortableQuery,
+    *,
+    operation_counter: Callable[[str, int], None] | None = None,
 ) -> PortablePlanResult:
     """Solve a finite-horizon deterministic-policy chance-constrained query."""
 
@@ -704,6 +707,12 @@ def solve_portable_pareto(
                         PortablePolicy.from_mapping(mapping),
                     )
                 )
+        # One native abstract Bellman backup is the complete computation of a
+        # previously unseen, nonterminal distribution/horizon subproblem.  The
+        # optional hook is deliberately invoked at the operation itself rather
+        # than reconstructed later from the returned frontier.
+        if operation_counter is not None:
+            operation_counter("common.abstract_bellman_backups", 1)
         memo[key] = _pareto_prune(candidates)
         return memo[key]
 

@@ -29,6 +29,9 @@ from acfqp.campaign_v1 import (
     RebuildEventV1,
     RebuildPolicyV1,
     RouteAttemptV1,
+    require_campaign_closure_summary_authority_v1,
+    require_campaign_occurrence_closure_authority_v1,
+    require_rebuild_event_authority_v1,
 )
 from acfqp.routing_v1 import (
     RouteDecisionContextV1,
@@ -40,6 +43,7 @@ from acfqp.routing_v1 import (
 from acfqp.semantic_verification_v1 import (
     AttestationContextV1,
     SemanticRole,
+    _finish,
     semantic_verifier_spec_v1,
     verify_forbidden_access_violation_semantics_v1,
     verify_terminal_classification_semantics_v1,
@@ -256,6 +260,17 @@ def test_verified_protocol_terminal_closes_and_summary_uses_occurrence_denominat
     assert summary.certificate_coverage_gate == CERTIFICATE_COVERAGE_FAIL
     assert summary.official_execution_allowed is False
 
+    assert require_campaign_occurrence_closure_authority_v1(closure) is closure
+    assert require_campaign_closure_summary_authority_v1(summary) is summary
+    with pytest.raises(CampaignV1Error, match="retained minted"):
+        require_campaign_occurrence_closure_authority_v1(copy.copy(closure))
+    with pytest.raises(CampaignV1Error, match="copied or modified"):
+        replace(closure)
+    with pytest.raises(CampaignV1Error, match="retained minted"):
+        require_campaign_closure_summary_authority_v1(copy.copy(summary))
+    with pytest.raises(CampaignV1Error, match="copied or modified"):
+        replace(summary)
+
 
 def test_summary_rejects_missing_or_other_terminal_authority() -> None:
     workload = _id("summary-authority-workload")
@@ -350,6 +365,82 @@ def test_raw_rebuild_terminal_cannot_authorize_retry_or_rebuild_event() -> None:
             ((raw.actual_work_vector_id,),),
             _id("retry-raw-sum"),
         )
+
+
+def test_rebuild_event_copy_and_identity_replace_are_inert() -> None:
+    policy = RebuildPolicyV1.allowing_one(_id("copy-rebuild-recipe"))
+    occurrence = _occurrence(
+        1,
+        policy,
+        suffix="copy-rebuild",
+        workload_spec_id=_id("copy-rebuild-workload"),
+    )
+    first = RouteAttemptV1.initial(occurrence)
+    registry = official_counter_registry_v1()
+    comparison = official_comparison_profile_v1(registry)
+    context = RouteDecisionContextV1(
+        _id("copy-rebuild-preregister"),
+        occurrence.protocol_id,
+        comparison.comparison_profile_id,
+        registry.registry_id,
+        occurrence.structural_id,
+        occurrence.query_id,
+        occurrence.selected_plan_id,
+        occurrence.threshold_profile_id,
+        first.build_epoch_id,
+        occurrence.logical_occurrence_id,
+        first.route_attempt_id,
+    )
+    point_id = _id("copy-rebuild-point")
+    terminal = TerminalArtifactV1(
+        "ROUTE_ATTEMPT",
+        TerminalClass.ATTEMPT_CLOSURE_NONCERTIFICATE,
+        TerminalCode.REBUILD_REQUIRED,
+        context.route_decision_context_id,
+        occurrence.logical_occurrence_id,
+        first.route_attempt_id,
+        point_id,
+        TypedNotApplicable("rebuild terminal has no local transaction"),
+        _id("copy-rebuild-terminal-work"),
+        (_id("copy-rebuild-evidence"),),
+    )
+    binding = AttestationContextV1(
+        context,
+        point_id,
+        TypedNotApplicable("rebuild terminal has no local transaction"),
+        12,
+        LaneEnum.EVALUATION,
+    )
+    spec = semantic_verifier_spec_v1(SemanticRole.TERMINAL_CLASSIFICATION)
+    terminal_result = _finish(
+        artifact=terminal,
+        artifact_id=terminal.terminal_artifact_id,
+        spec=spec,
+        outcome=TerminalClass.ATTEMPT_CLOSURE_NONCERTIFICATE.value,
+        binding=binding,
+        work=_record(SemanticRole.TERMINAL_CLASSIFICATION, LaneEnum.EVALUATION),
+        recomputed_evidence_ids=terminal.evidence_attestation_ids,
+    )
+    second = RouteAttemptV1.retry(
+        occurrence,
+        policy,
+        first,
+        terminal_result,
+        _id("copy-rebuild-epoch-2"),
+    )
+    event = RebuildEventV1.authorize(
+        occurrence,
+        policy,
+        first,
+        terminal_result,
+        second,
+        _id("copy-rebuild-work"),
+    )
+    assert require_rebuild_event_authority_v1(event) is event
+    with pytest.raises(CampaignV1Error, match="retained authorized"):
+        require_rebuild_event_authority_v1(copy.copy(event))
+    with pytest.raises(CampaignV1Error, match="copied or modified"):
+        replace(event)
 
 
 def test_verified_campaign_artifacts_roundtrip_and_hash_tamper_reject() -> None:

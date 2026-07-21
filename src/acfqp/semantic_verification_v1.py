@@ -6,6 +6,10 @@ replayable V1 implementation:
 
 * native ``WorkVectorV1`` materialization against the official counter registry;
 * exact actual-work projection from that native vector;
+* plan-frozen cached exact-infeasibility replay against a retained, verified
+  complete-ground-search authority;
+* model-only manifest/RAPM contingent-plan audit replay against the complete
+  rectangular realization envelope, without re-planning or ground binding;
 * safe-chain Phase-3D preselection causal/frontier replay and complete local
   cardinality projection without ground transitions;
 * route-upper arithmetic/cap replay gated by an upstream cardinality authority;
@@ -17,10 +21,9 @@ replayable V1 implementation:
 * forbidden-access protocol replay; and
 * terminal class/code validation against semantically replayed evidence.
 
-The remaining FQ7 roles are registered so that their schema and outcome
-vocabularies cannot drift, but they fail closed with ``NOT_IMPLEMENTED``.  In
-particular, a well-formed attestation carrying a plausible result string is not
-accepted as evidence for one of those roles.
+Both early-exit authorities remain fail closed: a well-formed attestation or a
+plausible outcome string is never accepted without the retained exact-search
+or model-only semantic source and a complete identity/work binding.
 
 ``CARDINALITY_EVIDENCE`` is implemented only for two registered safe-chain
 profiles: direct fallback and the Phase-3D local preselection projection.  Both
@@ -41,8 +44,10 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from enum import Enum
 import hashlib
+import hmac
 from types import MappingProxyType
 from typing import Any, Mapping, Sequence
+import weakref
 
 from acfqp.accounting_v1 import (
     ComparisonVectorV1,
@@ -82,6 +87,7 @@ from acfqp.marginal_accounting_v1 import (
 from acfqp.native_recorder_v1 import RecordedWorkV1, verify_recorded_work_v1
 from acfqp.phase3e_ids import (
     TYPED_VERIFICATION_ATTESTATION_DOMAIN,
+    canonical_json_bytes,
     content_id,
     parse_content_id,
 )
@@ -215,13 +221,19 @@ _SPECS = (
         SemanticRole.EXACT_CACHED_INFEASIBILITY,
         "ExactCachedInfeasibilityProofV1",
         ("IDENTICAL_MATCH", "NO_MATCH", "INVALID"),
-        implemented=False,
+        # V1 is deliberately plan-frozen and requires a retained opaque
+        # GROUND_FALLBACK/INFEASIBLE_CERTIFIED authority.  Serializable proof
+        # bytes alone do not become a portable exact source.
+        implemented=True,
     ),
     _spec(
         SemanticRole.ABSTRACT_AUDIT,
         "AbstractPlanAuditV1",
         ("PASS", "FAIL", "INVALID"),
-        implemented=False,
+        # Scoped to the model-only manifest -> RAPM -> frozen contingent plan
+        # -> rectangular-envelope Bellman proof chain.  Replay never invokes
+        # the portable planner or any ground namespace.
+        implemented=True,
     ),
     _spec(
         SemanticRole.CAUSAL_SEARCH,
@@ -514,88 +526,355 @@ def _verification_work_record(
     return record
 
 
-_VERIFIED_AUTHORITY = object()
+_SEMANTIC_RESULT_MINT_TOKEN = object()
+_PROTOCOL_RESULT_MINT_TOKEN = object()
+
+_SEMANTIC_AUTHORITY_FINGERPRINT_DOMAIN = (
+    "acfqp:semantic-verification-live-authority-fingerprint:v1"
+)
+_PROTOCOL_AUTHORITY_FINGERPRINT_DOMAIN = (
+    "acfqp:protocol-verification-live-authority-fingerprint:v1"
+)
+
+
+def _authority_ref_document(value: ContentRef) -> object:
+    return value.to_dict() if isinstance(value, TypedNotApplicable) else value
+
+
+def _authority_object_document(value: object, *, field_name: str) -> Mapping[str, Any]:
+    to_dict = getattr(value, "to_dict", None)
+    if not callable(to_dict):
+        raise SemanticVerificationV1Error(
+            f"{field_name} cannot be sealed as a live verification authority"
+        )
+    document = to_dict()
+    if not isinstance(document, Mapping):
+        raise SemanticVerificationV1Error(
+            f"{field_name}.to_dict() did not return a mapping"
+        )
+    # The canonical encoder is also the strict JSON-value validator.  Running
+    # it at mint time prevents a live seal whose fingerprint cannot be replayed.
+    try:
+        canonical_json_bytes(document)
+    except (TypeError, ValueError) as error:
+        raise SemanticVerificationV1Error(
+            f"{field_name} cannot be canonically fingerprinted: {error}"
+        ) from error
+    return document
+
+
+def _binding_authority_document(binding: AttestationContextV1) -> dict[str, Any]:
+    return {
+        "route_context": _authority_object_document(
+            binding.route_context, field_name="binding.route_context"
+        ),
+        "decision_point_id": _authority_ref_document(binding.decision_point_id),
+        "transaction_id": _authority_ref_document(binding.transaction_id),
+        "verified_at_protocol_step": binding.verified_at_protocol_step,
+        "verification_lane": binding.verification_lane.value,
+    }
+
+
+def _runtime_fingerprint(domain: str, payload: Mapping[str, Any]) -> str:
+    try:
+        raw = canonical_json_bytes(payload)
+    except (TypeError, ValueError) as error:
+        raise SemanticVerificationV1Error(
+            f"live verification authority fingerprint failed: {error}"
+        ) from error
+    return hashlib.sha256(domain.encode("utf-8") + b"\x00" + raw).hexdigest()
+
+
+def _semantic_result_fingerprint(
+    *,
+    artifact: object,
+    attestation: TypedVerificationAttestationV1,
+    verification_work_record: CounterRecordV1,
+    recomputed_evidence_ids: tuple[str, ...],
+    binding: AttestationContextV1,
+) -> str:
+    return _runtime_fingerprint(
+        _SEMANTIC_AUTHORITY_FINGERPRINT_DOMAIN,
+        {
+            "schema": "acfqp.semantic_verification_live_authority.v1",
+            "artifact_type": (
+                f"{type(artifact).__module__}.{type(artifact).__qualname__}"
+            ),
+            "artifact": _authority_object_document(
+                artifact, field_name="semantic artifact"
+            ),
+            "attestation": _authority_object_document(
+                attestation, field_name="semantic attestation"
+            ),
+            "verification_work_record": _authority_object_document(
+                verification_work_record,
+                field_name="semantic verification work record",
+            ),
+            "recomputed_evidence_ids": list(recomputed_evidence_ids),
+            "binding": _binding_authority_document(binding),
+        },
+    )
+
+
+def _validate_semantic_result_components(
+    *,
+    attestation: TypedVerificationAttestationV1,
+    verification_work_record: CounterRecordV1,
+    recomputed_evidence_ids: tuple[str, ...],
+    binding: AttestationContextV1,
+) -> None:
+    if not isinstance(attestation, TypedVerificationAttestationV1):
+        raise SemanticVerificationV1Error(
+            "semantic result must retain TypedVerificationAttestationV1"
+        )
+    if not isinstance(verification_work_record, CounterRecordV1):
+        raise SemanticVerificationV1Error(
+            "semantic result must retain CounterRecordV1 verification work"
+        )
+    if attestation.verification_work_counter_record_id != (
+        verification_work_record.record_id
+    ):
+        raise SemanticVerificationV1Error(
+            "semantic result/verification-work binding mismatch"
+        )
+    if (
+        type(recomputed_evidence_ids) is not tuple
+        or tuple(sorted(recomputed_evidence_ids)) != recomputed_evidence_ids
+    ):
+        raise SemanticVerificationV1Error(
+            "recomputed evidence IDs must be an exact tuple in canonical order"
+        )
+    for evidence_id in recomputed_evidence_ids:
+        try:
+            parse_content_id(evidence_id)
+        except ValueError as error:
+            raise SemanticVerificationV1Error(
+                "recomputed evidence IDs must be full Phase-3E content IDs"
+            ) from error
+    if not isinstance(binding, AttestationContextV1):
+        raise SemanticVerificationV1Error(
+            "semantic result must retain its authoritative attestation context"
+        )
+    if (
+        attestation.verification_lane is not binding.verification_lane
+        or verification_work_record.lane is not binding.verification_lane
+    ):
+        raise SemanticVerificationV1Error(
+            "semantic result, attestation, work record, and invocation lane differ"
+        )
+    context = binding.route_context
+    expected_context = (
+        context.route_decision_context_id,
+        context.structural_id,
+        context.query_id,
+        context.selected_plan_id,
+        context.threshold_profile_id,
+        context.build_epoch_id,
+        context.logical_occurrence_id,
+        context.route_attempt_id,
+    )
+    attested_context = (
+        attestation.route_decision_context_id,
+        attestation.structural_id,
+        attestation.query_id,
+        attestation.selected_plan_id,
+        attestation.threshold_profile_id,
+        attestation.build_epoch_id,
+        attestation.logical_occurrence_id,
+        attestation.route_attempt_id,
+    )
+    if attested_context != expected_context or not _same_ref(
+        attestation.decision_point_id, binding.decision_point_id
+    ) or not _same_ref(attestation.transaction_id, binding.transaction_id):
+        raise SemanticVerificationV1Error(
+            "semantic result/authoritative attestation context mismatch"
+        )
 
 
 @dataclass(frozen=True, slots=True)
-class SemanticVerificationResultV1:
-    """Non-serializable result handle emitted only after semantic replay."""
-
+class _SemanticAuthoritySealV1:
+    result_ref: weakref.ReferenceType[object]
     artifact: object
     attestation: TypedVerificationAttestationV1
     verification_work_record: CounterRecordV1
     recomputed_evidence_ids: tuple[str, ...]
     binding: AttestationContextV1
-    _authority: object
+    authority_fingerprint: str
 
-    def __post_init__(self) -> None:
-        if self._authority is not _VERIFIED_AUTHORITY:
+
+_LIVE_SEMANTIC_AUTHORITIES: dict[int, _SemanticAuthoritySealV1] = {}
+
+
+class SemanticVerificationResultV1:
+    """Opaque, non-copyable live authority emitted only after semantic replay.
+
+    Serialized artifacts and attestations are evidence, not this capability.
+    A valid handle is the exact live instance registered by :func:`_finish`;
+    structural equality, ``dataclasses.replace``, shallow/deep copy, pickling,
+    and field substitution cannot create another authority.
+    """
+
+    __slots__ = (
+        "__artifact",
+        "__attestation",
+        "__verification_work_record",
+        "__recomputed_evidence_ids",
+        "__binding",
+        "__authority_fingerprint",
+        "__weakref__",
+    )
+
+    def __init_subclass__(cls, **kwargs: object) -> None:  # pragma: no cover - guard
+        raise TypeError("SemanticVerificationResultV1 cannot be subclassed")
+
+    def __init__(
+        self,
+        artifact: object,
+        attestation: TypedVerificationAttestationV1,
+        verification_work_record: CounterRecordV1,
+        recomputed_evidence_ids: tuple[str, ...],
+        binding: AttestationContextV1,
+        *,
+        _mint_token: object | None = None,
+    ) -> None:
+        if _mint_token is not _SEMANTIC_RESULT_MINT_TOKEN:
             raise SemanticVerificationV1Error(
-                "semantic verification result was not emitted by an authoritative handler"
+                "SemanticVerificationResultV1 can only be minted by semantic replay"
             )
-        if self.attestation.verification_work_counter_record_id != (
-            self.verification_work_record.record_id
-        ):
-            raise SemanticVerificationV1Error(
-                "semantic result/verification-work binding mismatch"
-            )
-        if tuple(sorted(self.recomputed_evidence_ids)) != self.recomputed_evidence_ids:
-            raise SemanticVerificationV1Error(
-                "recomputed evidence IDs must be in canonical order"
-            )
-        if not isinstance(self.binding, AttestationContextV1):
-            raise SemanticVerificationV1Error(
-                "semantic result must retain its authoritative attestation context"
-            )
-        if (
-            self.attestation.verification_lane
-            is not self.binding.verification_lane
-            or self.verification_work_record.lane
-            is not self.binding.verification_lane
-        ):
-            raise SemanticVerificationV1Error(
-                "semantic result, attestation, work record, and invocation lane differ"
-            )
-        context = self.binding.route_context
-        expected_context = (
-            context.route_decision_context_id,
-            context.structural_id,
-            context.query_id,
-            context.selected_plan_id,
-            context.threshold_profile_id,
-            context.build_epoch_id,
-            context.logical_occurrence_id,
-            context.route_attempt_id,
+        _validate_semantic_result_components(
+            attestation=attestation,
+            verification_work_record=verification_work_record,
+            recomputed_evidence_ids=recomputed_evidence_ids,
+            binding=binding,
         )
-        attested_context = (
-            self.attestation.route_decision_context_id,
-            self.attestation.structural_id,
-            self.attestation.query_id,
-            self.attestation.selected_plan_id,
-            self.attestation.threshold_profile_id,
-            self.attestation.build_epoch_id,
-            self.attestation.logical_occurrence_id,
-            self.attestation.route_attempt_id,
+        fingerprint = _semantic_result_fingerprint(
+            artifact=artifact,
+            attestation=attestation,
+            verification_work_record=verification_work_record,
+            recomputed_evidence_ids=recomputed_evidence_ids,
+            binding=binding,
         )
-        if attested_context != expected_context or not _same_ref(
-            self.attestation.decision_point_id, self.binding.decision_point_id
-        ) or not _same_ref(
-            self.attestation.transaction_id, self.binding.transaction_id
-        ):
-            raise SemanticVerificationV1Error(
-                "semantic result/authoritative attestation context mismatch"
-            )
+        object.__setattr__(self, "_SemanticVerificationResultV1__artifact", artifact)
+        object.__setattr__(
+            self, "_SemanticVerificationResultV1__attestation", attestation
+        )
+        object.__setattr__(
+            self,
+            "_SemanticVerificationResultV1__verification_work_record",
+            verification_work_record,
+        )
+        object.__setattr__(
+            self,
+            "_SemanticVerificationResultV1__recomputed_evidence_ids",
+            recomputed_evidence_ids,
+        )
+        object.__setattr__(self, "_SemanticVerificationResultV1__binding", binding)
+        object.__setattr__(
+            self,
+            "_SemanticVerificationResultV1__authority_fingerprint",
+            fingerprint,
+        )
+
+    def __setattr__(self, name: str, value: object) -> None:
+        raise SemanticVerificationV1Error(
+            "SemanticVerificationResultV1 is an immutable live authority"
+        )
+
+    def __delattr__(self, name: str) -> None:
+        raise SemanticVerificationV1Error(
+            "SemanticVerificationResultV1 is an immutable live authority"
+        )
+
+    def __copy__(self) -> object:
+        raise SemanticVerificationV1Error(
+            "SemanticVerificationResultV1 cannot be copied"
+        )
+
+    def __deepcopy__(self, memo: dict[int, object]) -> object:
+        raise SemanticVerificationV1Error(
+            "SemanticVerificationResultV1 cannot be deep-copied"
+        )
+
+    def __reduce_ex__(self, protocol: int) -> object:
+        raise SemanticVerificationV1Error(
+            "SemanticVerificationResultV1 cannot be serialized"
+        )
+
+    @property
+    def artifact(self) -> object:
+        _require_authoritative_result(self)
+        return self.__artifact
+
+    @property
+    def attestation(self) -> TypedVerificationAttestationV1:
+        _require_authoritative_result(self)
+        return self.__attestation
+
+    @property
+    def verification_work_record(self) -> CounterRecordV1:
+        _require_authoritative_result(self)
+        return self.__verification_work_record
+
+    @property
+    def recomputed_evidence_ids(self) -> tuple[str, ...]:
+        _require_authoritative_result(self)
+        return self.__recomputed_evidence_ids
+
+    @property
+    def binding(self) -> AttestationContextV1:
+        _require_authoritative_result(self)
+        return self.__binding
+
+    @property
+    def authority_fingerprint(self) -> str:
+        _require_authoritative_result(self)
+        return self.__authority_fingerprint
 
     @property
     def role(self) -> SemanticRole:
-        return _role(self.attestation.artifact_role)
+        _require_authoritative_result(self)
+        return _role(self.__attestation.artifact_role)
 
     @property
     def outcome(self) -> str:
-        return self.attestation.verification_result
+        _require_authoritative_result(self)
+        return self.__attestation.verification_result
 
 
-_PROTOCOL_VERIFIED_AUTHORITY = object()
+def _mint_semantic_result_v1(
+    *,
+    artifact: object,
+    attestation: TypedVerificationAttestationV1,
+    verification_work_record: CounterRecordV1,
+    recomputed_evidence_ids: tuple[str, ...],
+    binding: AttestationContextV1,
+) -> SemanticVerificationResultV1:
+    result = SemanticVerificationResultV1(
+        artifact,
+        attestation,
+        verification_work_record,
+        recomputed_evidence_ids,
+        binding,
+        _mint_token=_SEMANTIC_RESULT_MINT_TOKEN,
+    )
+    key = id(result)
+
+    def retire(reference: weakref.ReferenceType[object]) -> None:
+        current = _LIVE_SEMANTIC_AUTHORITIES.get(key)
+        if current is not None and current.result_ref is reference:
+            _LIVE_SEMANTIC_AUTHORITIES.pop(key, None)
+
+    reference = weakref.ref(result, retire)
+    _LIVE_SEMANTIC_AUTHORITIES[key] = _SemanticAuthoritySealV1(
+        reference,
+        result._SemanticVerificationResultV1__artifact,
+        result._SemanticVerificationResultV1__attestation,
+        result._SemanticVerificationResultV1__verification_work_record,
+        result._SemanticVerificationResultV1__recomputed_evidence_ids,
+        result._SemanticVerificationResultV1__binding,
+        result._SemanticVerificationResultV1__authority_fingerprint,
+    )
+    return result
 
 
 @dataclass(frozen=True, slots=True)
@@ -711,36 +990,209 @@ class ProtocolVerificationAttestationV1:
         }
 
 
+def _protocol_result_fingerprint(
+    *,
+    violation: ForbiddenAccessViolationV1,
+    attestation: ProtocolVerificationAttestationV1,
+    verification_work_record: CounterRecordV1,
+) -> str:
+    return _runtime_fingerprint(
+        _PROTOCOL_AUTHORITY_FINGERPRINT_DOMAIN,
+        {
+            "schema": "acfqp.protocol_verification_live_authority.v1",
+            "violation": _authority_object_document(
+                violation, field_name="protocol violation"
+            ),
+            "attestation": _authority_object_document(
+                attestation, field_name="protocol attestation"
+            ),
+            "verification_work_record": _authority_object_document(
+                verification_work_record,
+                field_name="protocol verification work record",
+            ),
+        },
+    )
+
+
+def _validate_protocol_result_components(
+    *,
+    violation: ForbiddenAccessViolationV1,
+    attestation: ProtocolVerificationAttestationV1,
+    verification_work_record: CounterRecordV1,
+) -> None:
+    if not isinstance(violation, ForbiddenAccessViolationV1):
+        raise SemanticVerificationV1Error(
+            "protocol result must retain ForbiddenAccessViolationV1"
+        )
+    if not isinstance(attestation, ProtocolVerificationAttestationV1):
+        raise SemanticVerificationV1Error(
+            "protocol result must retain ProtocolVerificationAttestationV1"
+        )
+    if not isinstance(verification_work_record, CounterRecordV1):
+        raise SemanticVerificationV1Error(
+            "protocol result must retain CounterRecordV1 verification work"
+        )
+    if attestation.artifact_id != violation.forbidden_access_violation_id:
+        raise SemanticVerificationV1Error(
+            "protocol result/violation artifact mismatch"
+        )
+    if attestation.verification_work_counter_record_id != (
+        verification_work_record.record_id
+    ):
+        raise SemanticVerificationV1Error(
+            "protocol result/verification-work mismatch"
+        )
+
+
 @dataclass(frozen=True, slots=True)
-class ProtocolVerificationResultV1:
+class _ProtocolAuthoritySealV1:
+    result_ref: weakref.ReferenceType[object]
     violation: ForbiddenAccessViolationV1
     attestation: ProtocolVerificationAttestationV1
     verification_work_record: CounterRecordV1
-    _authority: object
+    authority_fingerprint: str
 
-    def __post_init__(self) -> None:
-        if self._authority is not _PROTOCOL_VERIFIED_AUTHORITY:
+
+_LIVE_PROTOCOL_AUTHORITIES: dict[int, _ProtocolAuthoritySealV1] = {}
+
+
+class ProtocolVerificationResultV1:
+    """Opaque, non-copyable authority for one replayed protocol violation."""
+
+    __slots__ = (
+        "__violation",
+        "__attestation",
+        "__verification_work_record",
+        "__authority_fingerprint",
+        "__weakref__",
+    )
+
+    def __init_subclass__(cls, **kwargs: object) -> None:  # pragma: no cover - guard
+        raise TypeError("ProtocolVerificationResultV1 cannot be subclassed")
+
+    def __init__(
+        self,
+        violation: ForbiddenAccessViolationV1,
+        attestation: ProtocolVerificationAttestationV1,
+        verification_work_record: CounterRecordV1,
+        *,
+        _mint_token: object | None = None,
+    ) -> None:
+        if _mint_token is not _PROTOCOL_RESULT_MINT_TOKEN:
             raise SemanticVerificationV1Error(
-                "protocol verification result was not emitted by replay"
+                "ProtocolVerificationResultV1 can only be minted by protocol replay"
             )
-        if self.attestation.artifact_id != self.violation.forbidden_access_violation_id:
-            raise SemanticVerificationV1Error(
-                "protocol result/violation artifact mismatch"
-            )
-        if self.attestation.verification_work_counter_record_id != (
-            self.verification_work_record.record_id
-        ):
-            raise SemanticVerificationV1Error(
-                "protocol result/verification-work mismatch"
-            )
+        _validate_protocol_result_components(
+            violation=violation,
+            attestation=attestation,
+            verification_work_record=verification_work_record,
+        )
+        fingerprint = _protocol_result_fingerprint(
+            violation=violation,
+            attestation=attestation,
+            verification_work_record=verification_work_record,
+        )
+        object.__setattr__(
+            self, "_ProtocolVerificationResultV1__violation", violation
+        )
+        object.__setattr__(
+            self, "_ProtocolVerificationResultV1__attestation", attestation
+        )
+        object.__setattr__(
+            self,
+            "_ProtocolVerificationResultV1__verification_work_record",
+            verification_work_record,
+        )
+        object.__setattr__(
+            self,
+            "_ProtocolVerificationResultV1__authority_fingerprint",
+            fingerprint,
+        )
+
+    def __setattr__(self, name: str, value: object) -> None:
+        raise SemanticVerificationV1Error(
+            "ProtocolVerificationResultV1 is an immutable live authority"
+        )
+
+    def __delattr__(self, name: str) -> None:
+        raise SemanticVerificationV1Error(
+            "ProtocolVerificationResultV1 is an immutable live authority"
+        )
+
+    def __copy__(self) -> object:
+        raise SemanticVerificationV1Error(
+            "ProtocolVerificationResultV1 cannot be copied"
+        )
+
+    def __deepcopy__(self, memo: dict[int, object]) -> object:
+        raise SemanticVerificationV1Error(
+            "ProtocolVerificationResultV1 cannot be deep-copied"
+        )
+
+    def __reduce_ex__(self, protocol: int) -> object:
+        raise SemanticVerificationV1Error(
+            "ProtocolVerificationResultV1 cannot be serialized"
+        )
+
+    @property
+    def violation(self) -> ForbiddenAccessViolationV1:
+        _require_protocol_authoritative_result(self)
+        return self.__violation
+
+    @property
+    def attestation(self) -> ProtocolVerificationAttestationV1:
+        _require_protocol_authoritative_result(self)
+        return self.__attestation
+
+    @property
+    def verification_work_record(self) -> CounterRecordV1:
+        _require_protocol_authoritative_result(self)
+        return self.__verification_work_record
+
+    @property
+    def authority_fingerprint(self) -> str:
+        _require_protocol_authoritative_result(self)
+        return self.__authority_fingerprint
 
     @property
     def role(self) -> SemanticRole:
+        _require_protocol_authoritative_result(self)
         return SemanticRole.PROTOCOL_ACCESS
 
     @property
     def outcome(self) -> str:
+        _require_protocol_authoritative_result(self)
         return "PROTOCOL_FAILURE"
+
+
+def _mint_protocol_result_v1(
+    *,
+    violation: ForbiddenAccessViolationV1,
+    attestation: ProtocolVerificationAttestationV1,
+    verification_work_record: CounterRecordV1,
+) -> ProtocolVerificationResultV1:
+    result = ProtocolVerificationResultV1(
+        violation,
+        attestation,
+        verification_work_record,
+        _mint_token=_PROTOCOL_RESULT_MINT_TOKEN,
+    )
+    key = id(result)
+
+    def retire(reference: weakref.ReferenceType[object]) -> None:
+        current = _LIVE_PROTOCOL_AUTHORITIES.get(key)
+        if current is not None and current.result_ref is reference:
+            _LIVE_PROTOCOL_AUTHORITIES.pop(key, None)
+
+    reference = weakref.ref(result, retire)
+    _LIVE_PROTOCOL_AUTHORITIES[key] = _ProtocolAuthoritySealV1(
+        reference,
+        result._ProtocolVerificationResultV1__violation,
+        result._ProtocolVerificationResultV1__attestation,
+        result._ProtocolVerificationResultV1__verification_work_record,
+        result._ProtocolVerificationResultV1__authority_fingerprint,
+    )
+    return result
 
 
 @dataclass(frozen=True, slots=True)
@@ -965,13 +1417,12 @@ def _finish(
         work=work,
     )
     ids = tuple(sorted(recomputed_evidence_ids))
-    return SemanticVerificationResultV1(
-        artifact,
-        attestation,
-        work,
-        ids,
-        binding,
-        _VERIFIED_AUTHORITY,
+    return _mint_semantic_result_v1(
+        artifact=artifact,
+        attestation=attestation,
+        verification_work_record=work,
+        recomputed_evidence_ids=ids,
+        binding=binding,
     )
 
 
@@ -1003,7 +1454,10 @@ def _verify_work_binding_v1(
                 "fallback WorkVector requires a decision point and no local transaction"
             )
         expected_subject = context.route_attempt_id
-    elif vector.route_kind.value == "ABSTRACT_ONLY_CERTIFICATE":
+    elif vector.route_kind.value in {
+        "ABSTRACT_ONLY_CERTIFICATE",
+        "ABSTRACT_FAILED_PREFIX",
+    }:
         if not transaction_na:
             raise SemanticVerificationV1Error(
                 "abstract/common-prefix WorkVector cannot bind a local transaction"
@@ -1124,6 +1578,232 @@ def verify_actual_projection_semantics_v1(
         binding=binding,
         work=work,
         recomputed_evidence_ids=(parsed_proof.actual_projection_proof_id,),
+    )
+
+
+def verify_exact_cached_infeasibility_semantics_v1(
+    proof: object,
+    *,
+    source: object,
+    current_model_source: object | None = None,
+    complete_search_profile: object | None = None,
+    binding: AttestationContextV1,
+    verification_work_record: CounterRecordV1 | Mapping[str, Any],
+    registry: CounterRegistryV1 | None = None,
+) -> SemanticVerificationResultV1:
+    """Replay one plan-frozen lookup against retained exact authority.
+
+    The cache proof is transport, not authority.  Search completeness comes
+    only from ``VerifiedExactInfeasibilitySourceV1``, which in turn retains the
+    opaque semantic result of a complete
+    ``GROUND_FALLBACK/INFEASIBLE_CERTIFIED`` replay.  The current lookup must
+    bind the exact ``RouteDecisionContextV1`` in ``binding``; the handler never
+    fabricates a planner-free context to bypass V1's selected-plan contract.
+
+    An identity difference is a successful semantic replay with outcome
+    ``NO_MATCH``.  Malformed bytes, a stale current context, a spliced source,
+    or lost source authority raise :class:`SemanticVerificationV1Error` and
+    therefore lie on the caller's ``INVALID`` boundary.
+    """
+
+    from acfqp.phase3e_exact_cache_v1 import (
+        ExactCachedInfeasibilityProofV1,
+        Phase3EExactCacheV1Error,
+        VerifiedExactInfeasibilitySourceV1,
+        verify_exact_cached_infeasibility_v1,
+    )
+
+    spec = require_implemented_role_v1(
+        SemanticRole.EXACT_CACHED_INFEASIBILITY
+    )
+    trusted_registry = _official_registry(registry)
+    work = _verification_work_record(
+        verification_work_record,
+        spec,
+        trusted_registry,
+        binding.verification_lane,
+    )
+    if type(source) is not VerifiedExactInfeasibilitySourceV1:
+        raise SemanticVerificationV1Error(
+            "EXACT_CACHED_INFEASIBILITY requires retained verified source authority"
+        )
+    document = (
+        proof.to_dict()
+        if isinstance(proof, ExactCachedInfeasibilityProofV1)
+        else proof
+    )
+    try:
+        parsed = ExactCachedInfeasibilityProofV1.from_dict(document)
+        outcome = verify_exact_cached_infeasibility_v1(
+            parsed,
+            source=source,
+            current_context=binding.route_context,
+            current_model_source=(
+                source.model_source
+                if current_model_source is None
+                else current_model_source
+            ),
+            complete_search_profile=(
+                source.complete_search_profile
+                if complete_search_profile is None
+                else complete_search_profile
+            ),
+        )
+    except (Phase3EExactCacheV1Error, TypeError, ValueError) as error:
+        raise SemanticVerificationV1Error(
+            f"exact-cached-infeasibility semantic replay failed: {error}"
+        ) from error
+
+    source_artifact = source.artifact
+    evidence_ids = (
+        source_artifact.verified_exact_infeasibility_source_id,
+        source_artifact.source_ground_fallback_result_id,
+        source_artifact.source_ground_fallback_attestation_id,
+        source_artifact.source_ground_fallback_work_vector_id,
+        source_artifact.source_verification_work_counter_record_id,
+        source_artifact.complete_search_profile_id,
+    )
+    return _finish(
+        artifact=parsed,
+        artifact_id=parsed.exact_cached_infeasibility_proof_id,
+        spec=spec,
+        outcome=outcome.value,
+        binding=binding,
+        work=work,
+        recomputed_evidence_ids=evidence_ids,
+    )
+
+
+def verify_abstract_plan_audit_semantics_v1(
+    claimed_audit: object,
+    *,
+    source: object,
+    model_only_result: object,
+    binding: AttestationContextV1,
+    verification_work_record: CounterRecordV1 | Mapping[str, Any],
+    registry: CounterRegistryV1 | None = None,
+) -> SemanticVerificationResultV1:
+    """Replay a frozen RAPM audit without re-planning or opening ground state.
+
+    ``model_only_result`` is the retained output of the model-only production
+    chain.  This handler strictly round-trips its source lease, selected plan,
+    Bellman proof, audit, identities, campaign objects, and route context using
+    the no-replanning verifier.  In particular it must never call
+    ``solve_portable_pareto`` or ``Phase3EModelOnlyResultV1.from_dict``: the
+    latter is an independent evaluation replay which intentionally plans again.
+
+    A valid ``FAIL`` is semantic authority to proceed to a later ground
+    handoff; it is not a plan certificate.  ``PASS`` and ``FAIL`` are copied
+    only from the recomputed rectangular-envelope audit.
+    """
+
+    from acfqp.phase3e_model_only_v1 import (
+        Phase3EModelOnlyResultV1,
+        Phase3EModelOnlyV1Error,
+        verify_phase3e_model_only_result_without_replanning_v1,
+    )
+    from acfqp.phase3e_rapm_consumer_v1 import (
+        ModelOnlyRAPMSourceV1,
+        require_model_only_source_authority_v1,
+    )
+    from acfqp.portable_sound_audit_v1 import (
+        AbstractPlanAuditV1,
+        PortableSoundAuditV1Error,
+    )
+
+    spec = require_implemented_role_v1(SemanticRole.ABSTRACT_AUDIT)
+    trusted_registry = _official_registry(registry)
+    work = _verification_work_record(
+        verification_work_record,
+        spec,
+        trusted_registry,
+        binding.verification_lane,
+    )
+    if type(source) is not ModelOnlyRAPMSourceV1:
+        raise SemanticVerificationV1Error(
+            "ABSTRACT_AUDIT requires a retained ModelOnlyRAPMSourceV1 lease"
+        )
+    try:
+        require_model_only_source_authority_v1(source)
+    except ValueError as error:
+        raise SemanticVerificationV1Error(
+            f"ABSTRACT_AUDIT source lacks live loader authority: {error}"
+        ) from error
+    if type(model_only_result) is not Phase3EModelOnlyResultV1:
+        raise SemanticVerificationV1Error(
+            "ABSTRACT_AUDIT requires a retained Phase3EModelOnlyResultV1"
+        )
+    if not isinstance(binding.decision_point_id, TypedNotApplicable) or not isinstance(
+        binding.transaction_id, TypedNotApplicable
+    ):
+        raise SemanticVerificationV1Error(
+            "ABSTRACT_AUDIT occurs before any route decision or local transaction"
+        )
+
+    try:
+        claimed_document = (
+            claimed_audit.to_dict()
+            if type(claimed_audit) is AbstractPlanAuditV1
+            else claimed_audit
+        )
+        parsed_claim = AbstractPlanAuditV1.from_dict(claimed_document)
+        replayed = verify_phase3e_model_only_result_without_replanning_v1(
+            model_only_result,
+            source=source,
+        )
+    except (
+        Phase3EModelOnlyV1Error,
+        PortableSoundAuditV1Error,
+        TypeError,
+        ValueError,
+    ) as error:
+        raise SemanticVerificationV1Error(
+            f"abstract-plan-audit semantic replay failed: {error}"
+        ) from error
+
+    if parsed_claim != replayed.audit:
+        raise SemanticVerificationV1Error(
+            "claimed abstract audit differs from recomputed model-only audit"
+        )
+    context = binding.route_context
+    if context != replayed.route_context:
+        raise SemanticVerificationV1Error(
+            "abstract-audit attestation context differs from model-only campaign context"
+        )
+    # Keep the four terminally important bindings explicit rather than relying
+    # solely on dataclass equality; this prevents future context fields from
+    # accidentally weakening the certificate contract.
+    if (
+        context.selected_plan_id
+        != replayed.selected_plan.selected_contingent_plan_id
+        or context.query_id != replayed.identities.query_id
+        or context.build_epoch_id != replayed.identities.build_epoch_id
+        or context.threshold_profile_id
+        != replayed.logical_occurrence.threshold_profile_id
+    ):
+        raise SemanticVerificationV1Error(
+            "abstract audit plan/query/build/threshold binding mismatch"
+        )
+
+    evidence_ids = (
+        source.lease.source_lease_id,
+        replayed.selected_plan.selected_contingent_plan_id,
+        replayed.sound_proof.proof_id,
+        replayed.result_id,
+        replayed.identities.identities_id,
+        replayed.rebuild_policy.rebuild_policy_id,
+        replayed.logical_occurrence.logical_occurrence_id,
+        replayed.route_attempt.route_attempt_id,
+        replayed.route_context.route_decision_context_id,
+    )
+    return _finish(
+        artifact=replayed.audit,
+        artifact_id=replayed.audit.audit_id,
+        spec=spec,
+        outcome=replayed.audit.outcome,
+        binding=binding,
+        work=work,
+        recomputed_evidence_ids=evidence_ids,
     )
 
 
@@ -1694,11 +2374,16 @@ def _replay_safe_chain_local_preselection_source_v1(
     decision_point: DecisionPointV1,
     transaction: TransactionV1,
     cap_profile: RouteCapProfileV1,
+    verified_prepared: Any | None = None,
 ) -> tuple[Any, Any, Any, Any]:
     """Reload and recompute the registered preselection source chain."""
 
     from acfqp.frozen_phase3c import FrozenPhase3CWorld, load_frozen_phase3c_world
-    from acfqp.phase3d import prepare_safe_chain_estimate_context
+    from acfqp.phase3d import (
+        SafeChainPreparedEstimateContext,
+        prepare_safe_chain_estimate_context,
+        require_verified_model_estimate_binding_v1,
+    )
     from acfqp.phase3e_local_preselection_v1 import (
         SafeChainLocalPreselectionSourceV1,
         derive_safe_chain_local_frontier_and_causal_v1,
@@ -1713,11 +2398,39 @@ def _replay_safe_chain_local_preselection_source_v1(
             "safe-chain local replay requires a loaded FrozenPhase3CWorld parent"
         )
     try:
-        # The reload revalidates the manifest, model, BuildEpoch, and frozen
-        # action catalogue.  Preparation consumes only RAPM realizations and
-        # that frozen catalogue; it performs no kernel step/materialization.
-        replayed_world = load_frozen_phase3c_world(frozen_world.source_bundle)
-        prepared = prepare_safe_chain_estimate_context(replayed_world)
+        if verified_prepared is None:
+            # Historical replay profile.  Production model-failure consumers
+            # must pass ``verified_prepared`` below: this legacy branch may
+            # reconstruct the portable proposal and audit and is therefore
+            # unsuitable for estimate-before-execute accounting.
+            replayed_world = load_frozen_phase3c_world(
+                frozen_world.source_bundle
+            )
+            prepared = prepare_safe_chain_estimate_context(replayed_world)
+        else:
+            # The verified-model continuation retains the exact model-only
+            # FAIL, ABSTRACT_AUDIT authority, and ground handoff.  Replaying
+            # its binding proves the parent without re-planning, re-auditing,
+            # reloading the ground bundle, or touching the transition kernel.
+            if type(verified_prepared) is not SafeChainPreparedEstimateContext:
+                raise ValueError(
+                    "verified local replay requires the exact prepared type"
+                )
+            verified_binding = require_verified_model_estimate_binding_v1(
+                verified_prepared
+            )
+            if (
+                verified_prepared.world is not frozen_world
+                or verified_binding.route_decision_context_id
+                != context.route_decision_context_id
+                or verified_binding.selected_plan_id != context.selected_plan_id
+                or verified_binding.threshold_profile_id
+                != context.threshold_profile_id
+            ):
+                raise ValueError(
+                    "verified prepared estimate belongs to another route chain"
+                )
+            prepared = verified_prepared
         replayed_frontier, replayed_causal = (
             derive_safe_chain_local_frontier_and_causal_v1(
                 prepared=prepared,
@@ -1764,6 +2477,7 @@ def verify_safe_chain_local_causal_semantics_v1(
     binding: AttestationContextV1,
     verification_work_record: CounterRecordV1 | Mapping[str, Any],
     registry: CounterRegistryV1 | None = None,
+    verified_prepared: Any | None = None,
 ) -> SemanticVerificationResultV1:
     """Authorize the registered safe-chain ``FOUND`` causal result.
 
@@ -1833,6 +2547,7 @@ def verify_safe_chain_local_causal_semantics_v1(
             decision_point=parsed_point,
             transaction=parsed_transaction,
             cap_profile=parsed_cap,
+            verified_prepared=verified_prepared,
         )
     )
     if replayed_causal.outcome is not CausalOutcome.FOUND:
@@ -1875,6 +2590,7 @@ def verify_safe_chain_local_cardinality_semantics_v1(
     registry: CounterRegistryV1 | None = None,
     runtime_factory_cardinality: Any | None = None,
     runtime_manifest: Any | None = None,
+    verified_prepared: Any | None = None,
 ) -> SemanticVerificationResultV1:
     """Authorize complete local route cardinalities from frozen parents."""
 
@@ -1980,6 +2696,7 @@ def verify_safe_chain_local_cardinality_semantics_v1(
             decision_point=parsed_point,
             transaction=parsed_transaction,
             cap_profile=parsed_cap,
+            verified_prepared=verified_prepared,
         )
     )
     try:
@@ -2039,6 +2756,7 @@ def verify_safe_chain_fallback_cardinality_semantics_v1(
     registry: CounterRegistryV1 | None = None,
     runtime_factory_cardinality: Any | None = None,
     runtime_manifest: Any | None = None,
+    verified_ground_binding: Any | None = None,
 ) -> SemanticVerificationResultV1:
     """Authorize one safe-chain direct-fallback cardinality chain.
 
@@ -2157,10 +2875,38 @@ def verify_safe_chain_fallback_cardinality_semantics_v1(
             "fallback cardinality requires a loaded FrozenPhase3CWorld parent"
         )
     try:
-        # Never trust the caller's in-memory member/count fields.  Reloading
-        # the bundle makes deletion+rehash attacks observable through the
-        # signed manifest and exact parent topology.
-        replayed_world = load_frozen_phase3c_world(frozen_world.source_bundle)
+        if verified_ground_binding is None:
+            # Historical replay profile.  Production model-failure consumers
+            # pass the opaque binding branch below so route estimation does
+            # not reconstruct the ground action catalogue through the kernel.
+            replayed_world = load_frozen_phase3c_world(
+                frozen_world.source_bundle
+            )
+        else:
+            from acfqp.phase3e_ground_handoff_v1 import (
+                GroundBindingAfterFailedAuditV1,
+                require_ground_binding_after_failed_audit_v1,
+            )
+
+            if type(verified_ground_binding) is not GroundBindingAfterFailedAuditV1:
+                raise ValueError(
+                    "verified fallback replay requires the exact ground binding type"
+                )
+            retained_ground = require_ground_binding_after_failed_audit_v1(
+                verified_ground_binding
+            )
+            if (
+                retained_ground.world is not frozen_world
+                or retained_ground.route_decision_context_id
+                != parsed_context.route_decision_context_id
+                or retained_ground.structural_id != parsed_context.structural_id
+                or retained_ground.query_id != parsed_context.query_id
+                or retained_ground.build_epoch_id != parsed_context.build_epoch_id
+            ):
+                raise ValueError(
+                    "verified ground binding belongs to another fallback context"
+                )
+            replayed_world = frozen_world
         recomputed_source = derive_safe_chain_fallback_cardinality_source_v1(
             world=replayed_world,
             context=parsed_context,
@@ -2612,14 +3358,15 @@ def verify_marginal_route_decision_semantics_v1(
         work=work,
         recomputed_evidence_ids=tuple(
             sorted(
-                result.attestation.verification_attestation_id
+                _require_authoritative_result(
+                    result
+                ).attestation.verification_attestation_id
                 for result in (
                     fallback_upper_result,
                     local_upper_result,
                     causal_result,
                 )
-                if isinstance(result, SemanticVerificationResultV1)
-                and result._authority is _VERIFIED_AUTHORITY
+                if result is not None
             )
         ),
     )
@@ -2694,12 +3441,52 @@ TERMINAL_EVIDENCE_MATRIX_V1: Mapping[
 def _require_authoritative_result(
     result: SemanticVerificationResultV1,
 ) -> SemanticVerificationResultV1:
-    if (
-        not isinstance(result, SemanticVerificationResultV1)
-        or result._authority is not _VERIFIED_AUTHORITY
-    ):
+    if type(result) is not SemanticVerificationResultV1:
         raise SemanticVerificationV1Error(
             "terminal evidence was not produced by semantic replay"
+        )
+    seal = _LIVE_SEMANTIC_AUTHORITIES.get(id(result))
+    if seal is None or seal.result_ref() is not result:
+        raise SemanticVerificationV1Error(
+            "semantic evidence is not the exact live authority minted by replay"
+        )
+    artifact = result._SemanticVerificationResultV1__artifact
+    attestation = result._SemanticVerificationResultV1__attestation
+    verification_work_record = (
+        result._SemanticVerificationResultV1__verification_work_record
+    )
+    recomputed_evidence_ids = (
+        result._SemanticVerificationResultV1__recomputed_evidence_ids
+    )
+    binding = result._SemanticVerificationResultV1__binding
+    fingerprint = result._SemanticVerificationResultV1__authority_fingerprint
+    if (
+        artifact is not seal.artifact
+        or attestation is not seal.attestation
+        or verification_work_record is not seal.verification_work_record
+        or recomputed_evidence_ids is not seal.recomputed_evidence_ids
+        or binding is not seal.binding
+        or not hmac.compare_digest(fingerprint, seal.authority_fingerprint)
+    ):
+        raise SemanticVerificationV1Error(
+            "semantic live authority components were copied or substituted"
+        )
+    _validate_semantic_result_components(
+        attestation=attestation,
+        verification_work_record=verification_work_record,
+        recomputed_evidence_ids=recomputed_evidence_ids,
+        binding=binding,
+    )
+    replayed_fingerprint = _semantic_result_fingerprint(
+        artifact=artifact,
+        attestation=attestation,
+        verification_work_record=verification_work_record,
+        recomputed_evidence_ids=recomputed_evidence_ids,
+        binding=binding,
+    )
+    if not hmac.compare_digest(replayed_fingerprint, seal.authority_fingerprint):
+        raise SemanticVerificationV1Error(
+            "semantic live authority fingerprint no longer replays"
         )
     return result
 
@@ -2851,11 +3638,10 @@ def verify_forbidden_access_violation_semantics_v1(
         verification_work_counter_record_id=work.record_id,
         verified_at_protocol_step=binding.verified_at_protocol_step,
     )
-    return ProtocolVerificationResultV1(
-        recomputed,
-        attestation,
-        work,
-        _PROTOCOL_VERIFIED_AUTHORITY,
+    return _mint_protocol_result_v1(
+        violation=recomputed,
+        attestation=attestation,
+        verification_work_record=work,
     )
 
 
@@ -2902,13 +3688,7 @@ def _verify_protocol_result_context(
     result: ProtocolVerificationResultV1,
     binding: AttestationContextV1,
 ) -> None:
-    if (
-        not isinstance(result, ProtocolVerificationResultV1)
-        or result._authority is not _PROTOCOL_VERIFIED_AUTHORITY
-    ):
-        raise SemanticVerificationV1Error(
-            "protocol evidence was not produced by access-log replay"
-        )
+    _require_protocol_authoritative_result(result)
     attestation = result.attestation
     context = binding.route_context
     expected = (
@@ -2937,6 +3717,50 @@ def _verify_protocol_result_context(
         raise SemanticVerificationV1Error(
             "protocol terminal evidence uses another route/query/build context"
         )
+
+
+def _require_protocol_authoritative_result(
+    result: ProtocolVerificationResultV1,
+) -> ProtocolVerificationResultV1:
+    if type(result) is not ProtocolVerificationResultV1:
+        raise SemanticVerificationV1Error(
+            "protocol evidence was not produced by access-log replay"
+        )
+    seal = _LIVE_PROTOCOL_AUTHORITIES.get(id(result))
+    if seal is None or seal.result_ref() is not result:
+        raise SemanticVerificationV1Error(
+            "protocol evidence is not the exact live authority minted by replay"
+        )
+    violation = result._ProtocolVerificationResultV1__violation
+    attestation = result._ProtocolVerificationResultV1__attestation
+    verification_work_record = (
+        result._ProtocolVerificationResultV1__verification_work_record
+    )
+    fingerprint = result._ProtocolVerificationResultV1__authority_fingerprint
+    if (
+        violation is not seal.violation
+        or attestation is not seal.attestation
+        or verification_work_record is not seal.verification_work_record
+        or not hmac.compare_digest(fingerprint, seal.authority_fingerprint)
+    ):
+        raise SemanticVerificationV1Error(
+            "protocol live authority components were copied or substituted"
+        )
+    _validate_protocol_result_components(
+        violation=violation,
+        attestation=attestation,
+        verification_work_record=verification_work_record,
+    )
+    replayed_fingerprint = _protocol_result_fingerprint(
+        violation=violation,
+        attestation=attestation,
+        verification_work_record=verification_work_record,
+    )
+    if not hmac.compare_digest(replayed_fingerprint, seal.authority_fingerprint):
+        raise SemanticVerificationV1Error(
+            "protocol live authority fingerprint no longer replays"
+        )
+    return result
 
 
 _MARGINAL_ROUTE_TERMINAL_CODES = frozenset(
@@ -3558,8 +4382,10 @@ def verify_occurrence_terminal_semantics_v1(
     from acfqp.phase3e_occurrence_runner_v1 import (
         Phase3EOccurrenceControlFailureV1,
         Phase3EOccurrenceFailureTerminalAuthorityV1,
+        Phase3EOccurrenceRunnerV1Error,
         Phase3EOccurrenceTerminalArtifactV1,
         _run_component_matches_v1,
+        require_phase3e_occurrence_failure_terminal_authority_v1,
     )
     from acfqp.phase3e_runner_v1 import (
         Phase3ERunResultV1,
@@ -3666,6 +4492,16 @@ def verify_occurrence_terminal_semantics_v1(
     if isinstance(
         detail_evidence, Phase3EOccurrenceFailureTerminalAuthorityV1
     ):
+        try:
+            detail_evidence = (
+                require_phase3e_occurrence_failure_terminal_authority_v1(
+                    detail_evidence
+                )
+            )
+        except Phase3EOccurrenceRunnerV1Error as error:
+            raise SemanticVerificationV1Error(
+                "occurrence failure terminal is not the retained replay authority"
+            ) from error
         expected_code = TerminalCode.PROTOCOL_FAILURE
         expected_detail_id = (
             detail_evidence.terminal.occurrence_failure_terminal_id
@@ -3867,7 +4703,9 @@ __all__ = [
     "require_terminal_classification_result_v1",
     "require_implemented_role_v1",
     "semantic_verifier_spec_v1",
+    "verify_abstract_plan_audit_semantics_v1",
     "verify_actual_projection_semantics_v1",
+    "verify_exact_cached_infeasibility_semantics_v1",
     "verify_forbidden_access_violation_semantics_v1",
     "verify_ground_fallback_semantics_v1",
     "verify_local_transaction_result_semantics_v1",

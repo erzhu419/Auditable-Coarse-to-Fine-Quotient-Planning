@@ -582,12 +582,23 @@ class SafeChainLocalCardinalityBoundV1:
 def _require_prepared(prepared: Any) -> Any:
     from acfqp.frozen_phase3c import FrozenPhase3CWorld
     from acfqp.general_local_recovery import CausalSearchStatus
-    from acfqp.phase3d import SafeChainPreparedEstimateContext
+    from acfqp.phase3d import (
+        Phase3DInvariantViolation,
+        SafeChainPreparedEstimateContext,
+        require_safe_chain_prepared_estimate_context_v1,
+        require_verified_model_estimate_binding_v1,
+    )
 
     if not isinstance(prepared, SafeChainPreparedEstimateContext):
         raise Phase3ELocalPreselectionV1Error(
             "local source requires SafeChainPreparedEstimateContext"
         )
+    try:
+        require_safe_chain_prepared_estimate_context_v1(prepared)
+    except Phase3DInvariantViolation as error:
+        raise Phase3ELocalPreselectionV1Error(
+            f"invalid prepared-estimate capability: {error}"
+        ) from error
     if not isinstance(prepared.world, FrozenPhase3CWorld):
         raise Phase3ELocalPreselectionV1Error(
             "local source requires a frozen Phase-3C parent"
@@ -619,6 +630,13 @@ def _require_prepared(prepared: Any) -> Any:
         raise Phase3ELocalPreselectionV1Error(
             "local preselection profile is registered only for safe-chain H=2"
         )
+    if prepared.verified_model_binding is not None:
+        try:
+            require_verified_model_estimate_binding_v1(prepared)
+        except Phase3DInvariantViolation as error:
+            raise Phase3ELocalPreselectionV1Error(
+                f"invalid verified-model continuation binding: {error}"
+            ) from error
     return prepared
 
 
@@ -634,6 +652,8 @@ def safe_chain_local_selected_plan_id_v1(prepared: Any) -> str:
     """Bind the RouteDecisionContext to the exact failed portable plan."""
 
     prepared = _require_prepared(prepared)
+    if prepared.verified_model_binding is not None:
+        return prepared.verified_model_binding.selected_plan_id
     return _parent_id(
         "selected_failed_portable_plan",
         {
@@ -647,6 +667,8 @@ def safe_chain_local_threshold_profile_id_v1(prepared: Any) -> str:
     """Replay the portable-threshold identity consumed by local post-audit."""
 
     prepared = _require_prepared(prepared)
+    if prepared.verified_model_binding is not None:
+        return prepared.verified_model_binding.threshold_profile_id
     from acfqp.phase3e_local_semantics_v1 import FrozenThresholdProfileV1
 
     audit = prepared.pre_audit

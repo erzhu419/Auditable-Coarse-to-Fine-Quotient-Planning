@@ -61,6 +61,11 @@ class ReducerEnum(str, Enum):
 
 class RouteKindEnum(str, Enum):
     ABSTRACT_ONLY_CERTIFICATE = "ABSTRACT_ONLY_CERTIFICATE"
+    # A model-only contingent plan whose sound audit failed is already-paid
+    # common-prefix work, not an abstract certificate and not selected-route
+    # execution.  Keep that provenance distinct so a FAIL can never acquire a
+    # certificate-looking WorkVector merely to enter dynamic routing.
+    ABSTRACT_FAILED_PREFIX = "ABSTRACT_FAILED_PREFIX"
     LOCAL_ATTEMPT = "LOCAL_ATTEMPT"
     DIRECT_FALLBACK = "DIRECT_FALLBACK"
     REBUILD = "REBUILD"
@@ -376,7 +381,10 @@ class CounterRegistryV1:
             families = ("fallback.", "rebuild.")
         elif route_kind is RouteKindEnum.DIRECT_FALLBACK:
             families = ("local.", "rebuild.")
-        elif route_kind is RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE:
+        elif route_kind in {
+            RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE,
+            RouteKindEnum.ABSTRACT_FAILED_PREFIX,
+        }:
             families = ("local.", "fallback.", "rebuild.")
         elif route_kind is RouteKindEnum.REBUILD:
             families = ("common.", "local.", "fallback.", "control.")
@@ -385,7 +393,12 @@ class CounterRegistryV1:
         nonzero = sorted(
             path
             for path, value in values.items()
-            if value and any(path.startswith(prefix) for prefix in families)
+            if value
+            and any(path.startswith(prefix) for prefix in families)
+            and not (
+                route_kind is RouteKindEnum.ABSTRACT_FAILED_PREFIX
+                and path == "local.causal_candidate_evaluations"
+            )
         )
         if nonzero:
             raise AccountingV1Error(

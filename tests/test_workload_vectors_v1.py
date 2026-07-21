@@ -413,18 +413,25 @@ def test_tampered_spec_prefix_and_analysis_content_ids_are_rejected() -> None:
 def test_semantically_re_signed_frontier_tamper_fails_exact_replay() -> None:
     registry, profile, actual, spec, vectors, analysis = _analysis()
     frontier = analysis.prefix_worst_frontiers[0]
-    forged = replace(
-        analysis,
-        prefix_worst_frontiers=(
-            replace(frontier, points=frontier.points[:1]),
-            *analysis.prefix_worst_frontiers[1:],
-        ),
-    )
-    assert forged.workload_vector_analysis_id != analysis.workload_vector_analysis_id
-    with pytest.raises(WorkloadVectorV1Error, match="does not match"):
-        verify_workload_vector_analysis_v1(
-            forged, spec, vectors, registry, profile, actual
+    with pytest.raises(WorkloadVectorV1Error, match="copied or modified"):
+        replace(
+            analysis,
+            prefix_worst_frontiers=(
+                replace(frontier, points=frontier.points[:1]),
+                *analysis.prefix_worst_frontiers[1:],
+            ),
         )
+
+
+def test_workload_analysis_copy_and_identity_replace_are_inert() -> None:
+    registry, profile, actual, spec, vectors, analysis = _analysis()
+    copied = copy.copy(analysis)
+    with pytest.raises(WorkloadVectorV1Error, match="exact native replay"):
+        verify_workload_vector_analysis_v1(
+            copied, spec, vectors, registry, profile, actual
+        )
+    with pytest.raises(WorkloadVectorV1Error, match="copied or modified"):
+        replace(analysis)
 
 
 @pytest.mark.parametrize(

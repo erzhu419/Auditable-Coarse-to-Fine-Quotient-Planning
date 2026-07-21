@@ -21,6 +21,12 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any, NoReturn
 
+from acfqp._runtime_authority_v1 import (
+    RuntimeAuthorityMintV1,
+    bind_runtime_authority_v1,
+    require_runtime_authority_v1,
+    runtime_authority_fingerprint_v1,
+)
 from acfqp.accounting_v1 import (
     CounterRegistryV1,
     RouteKindEnum,
@@ -125,6 +131,9 @@ class SecondTransactionCandidateV1:
     budget_replay: TrustedBudgetReplayV1
     execution_authorized: bool = False
     _validation_authority: object = field(default=None, repr=False, compare=False)
+    _instance_mint: RuntimeAuthorityMintV1 | None = field(
+        default=None, repr=False, compare=False
+    )
 
     def __post_init__(self) -> None:
         _cid(self.first_local_upper_id, "first_local_upper_id")
@@ -147,6 +156,17 @@ class SecondTransactionCandidateV1:
             raise Phase3ETransactionV1Error(
                 "a structural candidate cannot self-authorize execution"
             )
+        if self._instance_mint is not None:
+            try:
+                self._instance_mint.validate_construction(
+                    self,
+                    issuer=_CANDIDATE_VALIDATION_AUTHORITY,
+                    fingerprint=runtime_authority_fingerprint_v1(self),
+                )
+            except ValueError as error:
+                raise Phase3ETransactionV1Error(
+                    "second-transaction candidate is a copied or modified authority"
+                ) from error
 
     @property
     def preserved_first_local_work_id(self) -> str:
@@ -167,6 +187,9 @@ class LocalContinuationDirectiveV1:
     budget_replay: TrustedBudgetReplayV1
     infeasibility_certified: bool = False
     _authority: object = field(default=None, repr=False, compare=False)
+    _instance_mint: RuntimeAuthorityMintV1 | None = field(
+        default=None, repr=False, compare=False
+    )
 
     def __post_init__(self) -> None:
         if self._authority is not _DIRECTIVE_AUTHORITY:
@@ -202,6 +225,56 @@ class LocalContinuationDirectiveV1:
             raise Phase3ETransactionV1Error(
                 "direct-fallback directive cannot authorize a local transaction"
             )
+        if self._instance_mint is not None:
+            try:
+                self._instance_mint.validate_construction(
+                    self,
+                    issuer=_DIRECTIVE_AUTHORITY,
+                    fingerprint=runtime_authority_fingerprint_v1(self),
+                )
+            except ValueError as error:
+                raise Phase3ETransactionV1Error(
+                    "local continuation directive is a copied or modified authority"
+                ) from error
+
+
+def require_second_transaction_candidate_authority_v1(
+    candidate: object,
+) -> SecondTransactionCandidateV1:
+    """Require the exact structurally replayed candidate instance."""
+
+    if type(candidate) is not SecondTransactionCandidateV1:
+        raise Phase3ETransactionV1Error(
+            "second-transaction candidate lacks structural replay authority"
+        )
+    try:
+        require_runtime_authority_v1(
+            candidate,
+            issuer=_CANDIDATE_VALIDATION_AUTHORITY,
+        )
+    except ValueError as error:
+        raise Phase3ETransactionV1Error(
+            "second-transaction candidate is not the retained replay instance"
+        ) from error
+    return candidate
+
+
+def require_local_continuation_directive_authority_v1(
+    directive: object,
+) -> LocalContinuationDirectiveV1:
+    """Require the exact semantic-replay directive instance."""
+
+    if type(directive) is not LocalContinuationDirectiveV1:
+        raise Phase3ETransactionV1Error(
+            "local continuation directive lacks semantic authority"
+        )
+    try:
+        require_runtime_authority_v1(directive, issuer=_DIRECTIVE_AUTHORITY)
+    except ValueError as error:
+        raise Phase3ETransactionV1Error(
+            "local continuation directive is not the retained minted instance"
+        ) from error
+    return directive
 
 
 def _validate_first_transaction_chain(
@@ -372,8 +445,10 @@ def prepare_second_transaction_candidate_v1(
             f"second common-prefix RecordedWork replay failed: {error}"
         ) from error
     if (
-        verified_second_prefix.work_vector.route_kind
-        is not RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE
+        verified_second_prefix.work_vector.route_kind not in {
+            RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE,
+            RouteKindEnum.ABSTRACT_FAILED_PREFIX,
+        }
         or verified_second_prefix.work_vector.subject_id
         != second_context.route_attempt_id
         or verified_second_prefix.work_vector.work_vector_id
@@ -458,7 +533,7 @@ def prepare_second_transaction_candidate_v1(
         raise Phase3ETransactionV1Error(
             "second route decision differs from structural selector replay"
         )
-    return SecondTransactionCandidateV1(
+    candidate = SecondTransactionCandidateV1(
         first_context,
         first_decision_point,
         first_frontier,
@@ -484,6 +559,10 @@ def prepare_second_transaction_candidate_v1(
         budget_replay,
         False,
         _CANDIDATE_VALIDATION_AUTHORITY,
+    )
+    return bind_runtime_authority_v1(
+        candidate,
+        issuer=_CANDIDATE_VALIDATION_AUTHORITY,
     )
 
 
@@ -512,6 +591,7 @@ def authorize_second_transaction_v1(
         PostAuditCertificateV1,
     )
 
+    candidate = require_second_transaction_candidate_authority_v1(candidate)
     first_work = require_semantic_verification_result_v1(
         first_local_work_result, SemanticRole.WORK_VECTOR
     )
@@ -650,7 +730,7 @@ def authorize_second_transaction_v1(
                 "semantic continuation evidence outcome/artifact mismatch"
             )
     selected = candidate.second_route_decision.selected_route
-    return LocalContinuationDirectiveV1(
+    directive = LocalContinuationDirectiveV1(
         (
             LocalContinuationRoute.SECOND_LOCAL_TRANSACTION
             if selected is RouteSelection.LOCAL
@@ -666,6 +746,10 @@ def authorize_second_transaction_v1(
         candidate.budget_replay,
         False,
         _DIRECTIVE_AUTHORITY,
+    )
+    return bind_runtime_authority_v1(
+        directive,
+        issuer=_DIRECTIVE_AUTHORITY,
     )
 
 
@@ -777,4 +861,6 @@ __all__ = [
     "fallback_after_local_cap_exhaustion_v1",
     "fallback_after_second_post_audit_failure_v1",
     "prepare_second_transaction_candidate_v1",
+    "require_local_continuation_directive_authority_v1",
+    "require_second_transaction_candidate_authority_v1",
 ]

@@ -20,6 +20,14 @@
   resulting coverage/model IDs; it is not embedded in the portable RAPM.
 - **Phase 3B portable campaign:** the V0-028 two-domain, no-Q/value-signature exact
   behavioural build followed by fresh-process planning on the serialized RAPMs.
+- **V0-038 feature-realized LMB RAPM slice:** the query-free exhaustive selection of
+  human-readable current-state feature coordinates and rational threshold atoms that
+  exactly realizes the LMB behavioural quotient on one frozen training coverage and
+  serves two in-coverage queries. It is not the aggregate Phase 3/human-grammar Gate.
+- **V0-039 direct homomorphism synthesis slice:** the target-free direct verification
+  of exact state-action homomorphism candidates drawn from fixed LMB state/action
+  grammars over one exact finite coverage. It is not feature invention, learned
+  dynamics or an aggregate Gate.
 - **Phase 3C local-recovery slice:** the V0-029 certificate-triggered, isolated,
   query-owned overlay positive control over an immutable reusable RAPM; it is not the
   aggregate Phase 3 or economics Gate.
@@ -419,11 +427,198 @@ model synthesis. Their current strict evidence includes manifest-derived
 access log, `SealedExecutorFailureMergeProofV1` over exact factory/delegate/merged
 partials, and rejection-only `PARTIAL_ACCOUNTED_COMMON` preservation of already
 observed verifier work. The foregoing official status remains locked because exact
-cached-infeasibility/abstract-audit authority, complete all-path native/hash
-instrumentation (including planner/package control, all terminals, and the unassigned
-`common.hash_invocations` leaf), registered live dependent transaction-2 evidence,
-rebuild/retry, the upstream manifest-to-plan/audit consumer, and independent complete-
-bundle verification are still absent.
+cached-infeasibility proof replay, complete all-path native hash/I/O/runtime
+instrumentation, a registered dependent-horizon transaction-2 fixture, semantically
+authorized rebuild/retry, integrated campaign/workload execution, and independent
+semantic/campaign bundle verification remain absent. V0-034--V0-037 add the model-only
+audit/handoff, scoped LOCAL occurrence closure, partial preparation accounting,
+control-plane rebuild/retry mechanics and 54-role accounting/topology transport, but
+none opens an official Gate.
+
+### Contract 1.1.0: automatic feature-realized reusable LMB RAPM slice
+
+Profile `lmb_feature_realized_reusable_rapm_v1` is an additive, single-domain
+construction vertical slice. It advances the primary world-model objective by
+automatically selecting a minimal feature/predicate realization from a fixed human-
+readable grammar. It does not alter V0-028's two-domain Phase 3B campaign or any Phase
+3E route/accounting contract.
+
+The production synthesis inputs are exactly an exact `LMBKernel` and immutable
+`SuiteBuildCoverage[LMBState]`. The complete canonical `FeatureRegistryV1` and its
+coverage/structure/registry-bound `SynthesisSpecV1` are constructed internally; the
+production API accepts no registry/spec argument, preventing a caller from encoding a
+query bit by selecting a subset that changes exact versus nonexact outcome.
+`QuerySpec`, J0, Q-values, value or Pareto frontiers, selected policies, and held-out
+data are forbidden parameters and information channels. Restricted registries are
+accepted only by the explicit non-production negative-control API and cannot mint a
+production claim. Construction may inspect the exact one-step kernel, structural LMB
+configuration, frozen training coverage and registered current-state features.
+The implementation dependency audit excludes planning, J0/Q/value/policy,
+held-out/evaluation-oracle and Phase-3A construction imports. It explicitly permits
+`build_exact_behavioral_quotient`: that exact ground-model behavioural oracle is the
+realization target, so this slice has not removed target/signature supervision.
+
+The canonical exact-rational feature grammar contains eleven uniquely sorted names:
+`action_count`, `branching_count`, `buffer_occupancy`, `capacity_slack`,
+`capacity_slack_count`, `immediate_release_liquidity`, `match_debt_mean`,
+`match_debt_min`, `match_debt_nonzero_types`, `max_match_debt`, and
+`remaining_object_count`. Each definition binds its semantics ID/text, the current
+adapter implementation SHA-256, and threshold generator
+`adjacent_distinct_value_midpoints_v1`.
+
+V1 starts from the three terminal-kind cells (`active`, `failure`, `success`) and
+enumerates every feature subset by feature count and lexicographic names. With eleven
+features the complete candidate trace contains `2^11=2048` candidates under cap 4096.
+For each selected feature, all distinct exact values on active covered states are
+sorted and every adjacent pair generates one reduced-rational midpoint atom with
+operator `<=`. Atoms and splittable active cells are processed canonically; empty
+branches are skipped.
+
+The realization obligation is the query-neutral complete exact controlled one-step
+behavioural quotient over that same frozen coverage. This target uses full exact ground
+behaviour and is neither a partial nor learned dynamics model. A feature candidate is
+successful only when its entire partition signature equals the target. The exact
+selector minimizes `(feature_count, applied_split_count, selected_feature_names,
+final_partition_id)`. The registered golden is:
+
+```text
+selected_features = (action_count,)
+selected_thresholds = (3/2, 5/2)
+applied_split_count = 2
+ground_state_count / quotient_cell_count = 25 / 5
+active_ground_state_count / active_quotient_cell_count = 18 / 3
+target_partition_id = realized_partition_id
+envelope_is_singleton = true
+```
+
+Feature registry, synthesis spec, predicate atoms/tree, candidates and mismatch
+witnesses, complete candidate trace, and realization certificate are strict
+domain-separated content-addressed documents. Their V1 schemas/domains and the frozen
+registry semantics, information channels, target/generator/order/selector, certificate
+claim and lock constants cannot be changed by coherent re-signing. The feature adapter
+implementation digest is independently frozen and checked before registry creation.
+Document parsers require exact canonical JSON field types, including list/string
+distinctions, and result verification requires exact nested runtime graph types; proxy
+objects with honest serialized bytes but altered behaviour are rejected. The portable
+model retains its ordinary RAPM content ID. Independent verification reruns every
+subset/atom/tree and rebuilds the exact behavioural target partition, refinement trace,
+semantic adapter and quotient model; it also rebuilds the candidate trace,
+certificate, realized partition/quotient, and portable model plus registry. Canonical
+reordering is stable, and coherently re-signed semantics, trace, target/realized model,
+portable registry, claim or Gate substitutions fail replay.
+
+If no subset realizes the target, the only semantic outcome is
+`NO_EXACT_FEATURE_REALIZATION`. The result carries a content-addressed mismatch
+witness and publishes no predicate tree, realized partition, quotient models,
+portable build or realization certificate. `TARGET_SEPARATED_FEATURE_ALIASED` records
+two states merged by the candidate and separated by the target;
+`TARGET_MERGED_FEATURE_SEPARATED` records two states separated by the candidate and
+merged by the target. Oversplitting is a typed negative mismatch, not an invariant
+failure and not a feature-realization success.
+
+The 36-state seed-0 canonical-initial negative control is distinct from the 25-state
+positive golden. Its exact behavioural target has 11 cells, its `action_count`-only
+candidate has 7 cells, and its complete trace contains both mismatch-witness kinds;
+the selected unresolved witness is `TARGET_MERGED_FEATURE_SEPARATED`.
+
+The explicit negative-control API may also find an exact restricted subset, but that
+control cannot alter the complete canonical production registry/trace or production
+verifier expectation and cannot be cited as the production profile.
+
+The positive model is serialized once and loaded unchanged by fresh Python planner
+subprocesses for two distinct QuerySpecs inside the frozen coverage: one `H=3`,
+match-plus-clear, `delta=1/20` query and one `H=2`, match-only, `delta=1/10` query. This
+is two-query in-coverage portable reuse; it is not a sealed production runtime, a
+preregistered held-out evaluation, or evidence of held-out generalization.
+
+The allowed claim is precisely automatic selection of feature coordinates and rational
+threshold atoms from this preregistered LMB grammar to exactly realize a reusable,
+query-neutral world model on the frozen training coverage. It does not support feature
+invention, incomplete/learned dynamics, oracle-free unknown-quotient discovery,
+unknown-domain or scalable discovery, cross-domain/shared-coordinate conclusions,
+held-out generalization, or any aggregate Phase 3, Phase 3E, counter-completeness,
+workload-economics, transfer or learning Gate.
+`official_execution_allowed=false`; official scalar cost and break-even remain null,
+and both registered Gates remain `NOT_RUN`.
+
+### Contract 1.2.0: direct exact homomorphism synthesis inside fixed LMB grammars
+
+Profile `lmb_direct_exact_homomorphism_v1` is the additive V0-039 construction slice.
+Its production entry point `synthesize_direct_lmb_homomorphism_v1(kernel, coverage)`
+accepts only an exact `LMBKernel` and frozen `SuiteBuildCoverage`. It internally fixes
+the complete state/action registries and `production_full_grammar_v1` spec. It imports
+neither V0-038 feature realization nor the behavioural target builder and accepts no
+`BehavioralActionSignature`, behavioural quotient target, query, J0, Q/value/frontier,
+policy, planning or held-out channel. Internally computed exact raw one-step signatures
+are proof records, not a preconstructed target or candidate label.
+
+The state grammar contains V0-038's eleven exact-rational current-state coordinates.
+The action grammar contains exactly `completes_match`: one iff the selected tile's type
+currently has buffer count two. Both implementations are independently SHA-256-anchored
+under a frozen implementation epoch. State subsets generate adjacent-value rational-
+midpoint `<=` trees; action subsets generate state-dependent semantic labels and a
+uniform concretizer over distinct matching ground actions. Production enumerates all
+`2^11 * 2 = 4096` candidates under cap 4096.
+
+A candidate is an exact homomorphism only if direct kernel replay proves all of the
+following without reference to a target partition:
+
+1. every member of each active state cell exposes the same semantic-label set;
+2. all ground actions aliased to one label at one state have identical exact expected
+   reward-feature, failure, termination and successor-cell distributions before any
+   mixture; and
+3. the same label has that identical exact one-step signature across all members of
+   the cell.
+
+Typed counterexamples are `LABEL_SET_MISMATCH`, `WITHIN_STATE_ACTION_ALIAS` and
+`CROSS_STATE_LABEL_DYNAMICS_MISMATCH`. Exact candidates are selected by minimum state-
+feature count, action-feature count, split count, state names, action names and
+partition ID. The canonical golden is:
+
+```text
+status = EXACT_DIRECT_HOMOMORPHISM
+required/evaluated candidates = 4096/4096
+selected_state_features = (action_count,)
+selected_action_features = (completes_match,)
+state_thresholds = (3/2, 5/2)
+ground/active state count = 25/18
+quotient/active cell count = 5/3
+abstract_entry_count = 4
+envelope_is_singleton = true
+action_alias_checked_before_mixture = true
+```
+
+Restricted grammars are available only through the non-production control API. No
+exact candidate gives `NO_EXACT_DIRECT_HOMOMORPHISM`; insufficient cap gives
+`CANDIDATE_CAP_EXHAUSTED` with zero evaluated candidates and one
+`CANDIDATE_CAP_INSUFFICIENT` witness. A restricted control that finds an exact candidate
+returns `RESTRICTED_CONTROL_EXACT_FOUND` and deliberately publishes no tree,
+partition, semantic adapter, quotient, portable model or certificate. The production
+verifier rejects it. A separate role-locked verifier is the only authority for
+negative-control results. The production verifier also rejects restricted-control
+provenance, incomplete canonical registries and duck-typed result objects, so a
+control result cannot be re-signed into production evidence.
+
+State/action registries, spec, predicate tree, semantic labels and exact signatures,
+witnesses, candidates, full trace and certificate are domain-separated content-
+addressed artifacts. Canonical JSON types, exact nested runtime types, state/action
+implementation anchors and complete independent reconstruction reject coherent
+re-signing, list/string malleability, nested proxies, trace deletion and source
+substitution. A fresh process with the behavioural module poisoned still imports and
+constructs the canonical result. Only after construction, evaluation-only comparison
+may load the old behavioural oracle; it reproduces the same partition and quotient
+model but supplies no construction/certificate authority. One unchanged portable model
+also serves the registered `H=3` match-plus-clear and `H=2` match-only queries in fresh
+planner processes.
+
+V0-039 supports direct exact state-action homomorphism synthesis from fixed human-
+readable grammars on one exact finite LMB coverage without construction-time
+behavioural target/signature dependence. It still assumes a complete exact ground
+kernel, exact finite coverage and preregistered feature semantics. It does not support
+feature invention, partial/learned dynamics, unknown-domain or scalable discovery,
+held-out/cross-domain generalization, or any aggregate Phase 3, Phase 3E, counter-
+completeness, workload-economics, transfer or learning Gate. Official execution stays
+false, scalar cost and break-even stay null, and both Phase 3E Gates stay `NOT_RUN`.
 
 ## Pseudocode / schema
 
@@ -666,6 +861,39 @@ evaluation-only J0 costs remain separate.
     from sealed-core records. Every occurrence runtime result independently replays
     its aggregate, ordered run/transaction correspondence, final closure and terminal
     authority, rejecting stale or rearranged histories.
+45. V0-038 production accepts only the exact `LMBKernel` and frozen
+    `SuiteBuildCoverage` and internally constructs the complete canonical registry/
+    specification. Restricted registries belong only to a separately named non-
+    production control and cannot influence the production trace or claim.
+46. V0-038 enumerates the complete registered feature power set and all adjacent-value
+    exact-rational midpoint atoms. A candidate succeeds only by equality with the
+    exact behavioural target partition; under- and oversplitting are typed negative
+    mismatches rather than exact realizations.
+47. Exact candidates are selected by the frozen tuple `(feature_count, split_count,
+    feature_names, partition_id)`. Registry reordering, process boundaries and
+    canonical round trips cannot alter that selection or any content ID.
+48. `NO_EXACT_FEATURE_REALIZATION` publishes a bidirectional typed partition-mismatch
+    witness but no tree, realized model or certificate. `EXACT_FEATURE_REALIZATION`
+    does not open official execution, scalar/break-even, counter-completeness,
+    workload-economics or aggregate Phase 3/3E status.
+49. V0-039 production accepts only the exact kernel and frozen coverage, internally
+    fixes the complete eleven-state/one-action grammars, and has no construction import
+    or input path to a behavioural target/signature, query, value, policy or held-out
+    result.
+50. A V0-039 candidate is exact only after label-set, within-state pre-mixture action-
+    alias and cross-state same-label one-step dynamics obligations all hold exactly.
+    Internally recomputed raw signatures are proof evidence, not a target quotient.
+51. V0-039 production evaluates all 4096 candidates before selecting by the frozen
+    order. Restricted exact, no-exact and cap controls cannot publish or verify as a
+    production model/certificate; their separate role-locked verifier cannot substitute
+    for production verification, which requires canonical complete registries and
+    exact production result types/provenance.
+52. V0-039 content IDs, canonical transport types, nested runtime types, source-digest
+    anchors and independent reconstruction bind the complete state/action registry-to-
+    portable-model graph; evaluation-only behavioural comparison cannot feed back.
+53. `EXACT_DIRECT_HOMOMORPHISM` means exact homomorphism inside fixed grammars and
+    exact finite coverage. It never implies feature invention, learned/partial
+    dynamics, scale/generalization or an official/aggregate Gate.
 
 ## Acceptance tests
 
@@ -789,15 +1017,57 @@ evaluation-only J0 costs remain separate.
   and no such evidence may mint a successful charge receipt, continuation authority,
   plan certificate or infeasibility certificate. A protocol-failure occurrence
   noncertificate remains the only allowed terminal use.
+- V0-038 production API/type and static-source audits expose only exact kernel and
+  coverage inputs, reject caller registry/spec arguments and query/J0/Q/value/policy/
+  held-out/planning channels, and allow the explicit exact behavioural-ground-model
+  target builder. Restricted subsets run only through the negative-control API.
+- The full eleven-feature V0-038 trace contains exactly 2048 candidates, is stable
+  under registry reordering and selects only `action_count`, midpoint thresholds
+  `(3/2,5/2)`, two applied splits, total `25 -> 5` and active `18 -> 3`, with the
+  realized partition equal to the exact behavioural target and a singleton envelope.
+- Independent V0-038 replay reconstructs every subset/atom/tree, the target
+  partition/trace/adapter/model, candidate trace/certificate, realized
+  partition/quotient and portable model/registry. It rejects modified or coherently
+  re-signed registry/spec/certificate constants or semantic artifacts, a changed
+  independently frozen implementation digest, list/string transport substitution and
+  nested runtime proxies. A restricted incomplete grammar returns typed
+  `NO_EXACT_FEATURE_REALIZATION`, a bidirectional mismatch witness and no positive
+  artifacts.
+- The separate seed-0 canonical-initial negative control retains 36 states, an 11-cell
+  exact target and a 7-cell `action_count` candidate; its trace contains both
+  `TARGET_SEPARATED_FEATURE_ALIASED` and `TARGET_MERGED_FEATURE_SEPARATED`. None of
+  these numbers may replace the 25-state exact-realization golden.
+- Two fresh Python subprocesses load the same unchanged V0-038 portable RAPM and solve
+  the registered in-coverage `H=3` match-plus-clear and `H=2` match-only queries. This
+  test does not count as sealed production execution, held-out evaluation or a full
+  Gate.
+- V0-039 source/API tests expose only kernel/coverage, reject target/query channels and
+  forbidden imports, and construct successfully in a fresh process after poisoning
+  `acfqp.abstraction.behavioral`.
+- The complete V0-039 production trace evaluates 4096/4096 candidates, selects state
+  `action_count`, action `completes_match`, thresholds `(3/2,5/2)`, and reproduces
+  `25/18 -> 5/3`, four abstract entries, singleton envelope and pre-mixture action-
+  alias verification. All three direct mismatch-witness kinds occur.
+- V0-039 restricted controls reproduce `NO_EXACT_DIRECT_HOMOMORPHISM`, typed
+  `CANDIDATE_CAP_EXHAUSTED` with zero evaluations, and
+  `RESTRICTED_CONTROL_EXACT_FOUND` without model/certificate; none verifies as the
+  production profile. The role-locked control verifier accepts only control provenance,
+  while production verification rejects restricted provenance, incomplete registries
+  and duck-typed results.
+- V0-039 typed artifact round trips and independent rebuild reject coherent re-signing,
+  list/string transport changes, nested proxies, truncated traces and state/action
+  implementation-source substitution. The evaluation-only behavioural oracle later
+  matches the direct partition/model exactly, and one unchanged portable model serves
+  two fresh-process in-coverage queries.
 
 ## Out of scope
 
-Neural encoders, learned/statistical world models, MCTS, first-hit options, SMDP duration, POMDP/belief adapters, visual perception, infinite horizon, cross-domain meta-controllers, interpreting a supplied `D4` group as an automatically discovered abstraction, interpreting Phase 3A exact-model cross-orbit aggregation as oracle-free unknown-quotient discovery, interpreting Phase 3B exact one-step synthesis as predicate invention or local hybrid planning, or interpreting Phase 3D as workload break-even or a full Phase 3/5 pass.
+Neural encoders, learned/statistical world models, MCTS, first-hit options, SMDP duration, POMDP/belief adapters, visual perception, infinite horizon, cross-domain meta-controllers, interpreting a supplied `D4` group as an automatically discovered abstraction, interpreting Phase 3A exact-model cross-orbit aggregation as oracle-free unknown-quotient discovery, interpreting Phase 3B exact one-step synthesis as predicate invention or local hybrid planning, interpreting V0-038's target-supervised selection as target-free discovery, interpreting V0-039's direct fixed-grammar exact homomorphism as feature invention, scalable/unknown-domain discovery or held-out generalization, or interpreting Phase 3D as workload break-even or a full Phase 3/5 pass.
 
 ## Known failure modes
 
-State explosion, incomplete predicate grammar, no common semantic action, overly conservative envelopes, infeasible chance constraints, build cost that never amortizes, incorrect state/action group transforms, and a cache key that omits or misstates build coverage. For the exact `D4` baseline, a nonzero width is an invariant failure rather than acceptable conservatism. For the aliased profile, hard-coding its two cell IDs instead of extracting and ranking exact witnesses invalidates the CEGAR-discovery claim. For Phase 3A, using held-out fields during atom selection, accepting a cross-orbit cell reachable only outside the registered policies, or calling the eight-cell G2048 interval model an exact homomorphism invalidates the claim.
+State explosion, incomplete predicate grammar, no common semantic action, overly conservative envelopes, infeasible chance constraints, build cost that never amortizes, incorrect state/action group transforms, and a cache key that omits or misstates build coverage. For the exact `D4` baseline, a nonzero width is an invariant failure rather than acceptable conservatism. For the aliased profile, hard-coding its two cell IDs instead of extracting and ranking exact witnesses invalidates the CEGAR-discovery claim. For Phase 3A, using held-out fields during atom selection, accepting a cross-orbit cell reachable only outside the registered policies, or calling the eight-cell G2048 interval model an exact homomorphism invalidates the claim. For V0-039, unequal label sets, premature action mixing, unequal cross-state label dynamics, an incomplete 4096-candidate production trace, or an insufficient cap are typed failures and cannot be promoted to a direct certificate.
 
 ## Open risks
 
-Later claims about shared grammar/coordinates and practical amortization remain empirical. They do not weaken Phase 0.5 soundness obligations. V0-027 closes the immediate cross-automorphism state-alias positive control; V0-028 establishes the no-Q/value-signature portable world-model path; V0-029 executes the first strict local repair; and V0-030 closes joint finite local composition, slack-aware causality, and finite-domain sparse capability. Automatic predicate invention, dependent-horizon recovery, workload economics/dynamic routing, and the complete statistical Phase 3/Phase 5 Gates remain open empirical work.
+Later claims about shared grammar/coordinates and practical amortization remain empirical. They do not weaken Phase 0.5 soundness obligations. V0-027 closes the immediate cross-automorphism state-alias positive control; V0-028 establishes the no-Q/value-signature portable world-model path; V0-029 executes the first strict local repair; and V0-030 closes joint finite local composition, slack-aware causality, and finite-domain sparse capability. V0-038 closes target-supervised automatic exact realization inside one fixed LMB grammar/coverage. V0-039 removes that construction-time target/signature dependency for the same finite LMB slice by direct homomorphism proof, but retains the exact ground kernel, fixed grammar and exact coverage. Automatic feature invention, partial/learned-model discovery, larger/unknown domains, held-out/cross-domain generalization, dependent-horizon recovery, workload economics/dynamic routing, and the complete statistical Phase 3/Phase 5 Gates remain open empirical work.
