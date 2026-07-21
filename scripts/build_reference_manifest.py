@@ -216,6 +216,91 @@ PAPERS = [
         "copy_kind": "publisher open-access PDF",
         "repo_keys": ["aibasel/downward"],
     },
+    {
+        "id": "PMLR:v119/jin20d",
+        "title": "Reward-Free Exploration for Reinforcement Learning",
+        "source_url": "https://proceedings.mlr.press/v119/jin20d.html",
+        "download_url": "https://proceedings.mlr.press/v119/jin20d/jin20d.pdf",
+        "pdf": "papers/pmlr_v119_jin20d.pdf",
+        "page": "pages/pmlr_v119_jin20d.html",
+        "copy_kind": "publisher open-access PDF",
+        "repo_keys": [],
+        "repo_status": "No repository association is asserted by this registry.",
+    },
+    {
+        "id": "PMLR:v162/wagenmaker22b",
+        "title": "Reward-Free RL is No Harder Than Reward-Aware RL in Linear Markov Decision Processes",
+        "source_url": "https://proceedings.mlr.press/v162/wagenmaker22b.html",
+        "download_url": "https://proceedings.mlr.press/v162/wagenmaker22b/wagenmaker22b.pdf",
+        "pdf": "papers/pmlr_v162_wagenmaker22b.pdf",
+        "page": "pages/pmlr_v162_wagenmaker22b.html",
+        "copy_kind": "publisher open-access PDF",
+        "repo_keys": [],
+        "repo_status": "No repository association is asserted by this registry.",
+    },
+    {
+        "id": "PMLR:v37/jiang15",
+        "title": "Abstraction Selection in Model-based Reinforcement Learning",
+        "source_url": "https://proceedings.mlr.press/v37/jiang15.html",
+        "download_url": "https://proceedings.mlr.press/v37/jiang15.pdf",
+        "pdf": "papers/pmlr_v37_jiang15.pdf",
+        "page": "pages/pmlr_v37_jiang15.html",
+        "copy_kind": "publisher open-access PDF",
+        "repo_keys": [],
+        "repo_status": "No repository association is asserted by this registry.",
+    },
+    {
+        "id": "PMLR:v97/rakelly19a",
+        "title": "Efficient Off-Policy Meta-Reinforcement Learning via Probabilistic Context Variables",
+        "source_url": "https://proceedings.mlr.press/v97/rakelly19a.html",
+        "download_url": "https://proceedings.mlr.press/v97/rakelly19a/rakelly19a.pdf",
+        "pdf": "papers/pmlr_v97_rakelly19a.pdf",
+        "page": "pages/pmlr_v97_rakelly19a.html",
+        "copy_kind": "publisher open-access PDF",
+        "repo_keys": ["katerakelly/oyster"],
+    },
+    {
+        "id": "PMLR:v54/farahmand17a",
+        "title": "Value-Aware Loss Function for Model-based Reinforcement Learning",
+        "source_url": "https://proceedings.mlr.press/v54/farahmand17a.html",
+        "download_url": "https://proceedings.mlr.press/v54/farahmand17a/farahmand17a.pdf",
+        "pdf": "papers/pmlr_v54_farahmand17a.pdf",
+        "page": "pages/pmlr_v54_farahmand17a.html",
+        "copy_kind": "publisher open-access PDF",
+        "repo_keys": [],
+        "repo_status": "No repository association is asserted by this registry.",
+    },
+    {
+        "id": "PMLR:v97/shyam19a",
+        "title": "Model-Based Active Exploration",
+        "source_url": "https://proceedings.mlr.press/v97/shyam19a.html",
+        "download_url": "https://proceedings.mlr.press/v97/shyam19a/shyam19a.pdf",
+        "pdf": "papers/pmlr_v97_shyam19a.pdf",
+        "page": "pages/pmlr_v97_shyam19a.html",
+        "copy_kind": "publisher open-access PDF",
+        "repo_keys": ["nnaisense/max"],
+    },
+    {
+        "id": "PMLR:v97/gelada19a",
+        "title": "DeepMDP: Learning Continuous Latent Space Models for Representation Learning",
+        "source_url": "https://proceedings.mlr.press/v97/gelada19a.html",
+        "download_url": "https://proceedings.mlr.press/v97/gelada19a/gelada19a.pdf",
+        "pdf": "papers/pmlr_v97_gelada19a.pdf",
+        "page": "pages/pmlr_v97_gelada19a.html",
+        "copy_kind": "publisher open-access PDF",
+        "repo_keys": ["jbuckman/dmdp-donutworld"],
+    },
+    {
+        "id": "arXiv:1803.11347",
+        "title": "Learning to Adapt in Dynamic, Real-World Environments through Meta-Reinforcement Learning",
+        "source_url": "https://arxiv.org/abs/1803.11347",
+        "download_url": "https://arxiv.org/pdf/1803.11347",
+        "pdf": "papers/arxiv_1803.11347.pdf",
+        "page": "pages/arxiv_1803.11347.html",
+        "copy_kind": "arXiv author manuscript",
+        "repo_keys": [],
+        "repo_status": "No repository association is asserted by this registry.",
+    },
 ]
 
 
@@ -269,6 +354,9 @@ REPOSITORIES = [
     ("gabrielecirulli/2048", "https://github.com/gabrielecirulli/2048.git", "repos/gabrielecirulli__2048", "official original-game source used for rule provenance", "MIT"),
     ("aibasel/downward", "https://github.com/aibasel/downward.git", "repos/aibasel__downward", "current official implementation platform named by ICAPS paper; not archival 2013 snapshot", "GPL-3.0"),
     ("StreakingMan/solvable-sheep-game", "https://github.com/StreakingMan/solvable-sheep-game.git", "repos/StreakingMan__solvable-sheep-game", "source linked by cited demo page", "GPL-3.0"),
+    ("katerakelly/oyster", "https://github.com/katerakelly/oyster.git", "repos/katerakelly__oyster", "code repository linked by the PEARL paper page; cloned snapshot contains an MIT LICENSE", "MIT"),
+    ("nnaisense/max", "https://github.com/nnaisense/max.git", "repos/nnaisense__max", "code repository linked by the MAX paper page", "NOASSERTION; verify after clone"),
+    ("jbuckman/dmdp-donutworld", "https://github.com/jbuckman/dmdp-donutworld.git", "repos/jbuckman__dmdp-donutworld", "code repository linked by the DeepMDP paper page", "NOASSERTION; verify after clone"),
 ]
 
 
@@ -312,12 +400,21 @@ def entity_for_url(url: str) -> str | None:
     arxiv = re.search(r"arxiv\.org/(?:abs|pdf|html)/(\d{4}\.\d{4,5})", normalized)
     if arxiv:
         return f"arXiv:{arxiv.group(1)}"
-    if "proceedings.mlr.press/v139/choi21b" in normalized:
-        return "PMLR:v139/choi21b"
-    if "proceedings.mlr.press/v162/hansen-estruch22a" in normalized:
-        return "PMLR:v162/hansen-estruch22a"
-    if "proceedings.mlr.press/v216/dadvar23a" in normalized:
-        return "PMLR:v216/dadvar23a"
+    pmlr_entities = {
+        "v37/jiang15": "PMLR:v37/jiang15",
+        "v54/farahmand17a": "PMLR:v54/farahmand17a",
+        "v97/gelada19a": "PMLR:v97/gelada19a",
+        "v97/rakelly19a": "PMLR:v97/rakelly19a",
+        "v97/shyam19a": "PMLR:v97/shyam19a",
+        "v119/jin20d": "PMLR:v119/jin20d",
+        "v139/choi21b": "PMLR:v139/choi21b",
+        "v162/hansen-estruch22a": "PMLR:v162/hansen-estruch22a",
+        "v162/wagenmaker22b": "PMLR:v162/wagenmaker22b",
+        "v216/dadvar23a": "PMLR:v216/dadvar23a",
+    }
+    for path_fragment, entity in pmlr_entities.items():
+        if f"proceedings.mlr.press/{path_fragment}" in normalized:
+            return entity
     if "454cecc4829279e64d624cd8a8c9ddf1" in normalized:
         return "NeurIPS2021:454cecc4829279e64d624cd8a8c9ddf1"
     if "10.1287/opre.1050.0216" in normalized:
@@ -332,6 +429,12 @@ def entity_for_url(url: str) -> str | None:
         return "repo:chrisvander/2048-Expectimax"
     if "github.com/erzhu419/Laplace-semi-MDP" in normalized:
         return "repo:erzhu419/Laplace-semi-MDP"
+    if "github.com/katerakelly/oyster" in normalized:
+        return "repo:katerakelly/oyster"
+    if "github.com/nnaisense/max" in normalized:
+        return "repo:nnaisense/max"
+    if "github.com/jbuckman/dmdp-donutworld" in normalized:
+        return "repo:jbuckman/dmdp-donutworld"
     mapping = {
         "en.wikipedia.org/wiki/2048_%28video_game%29": "web:2048-wikipedia",
         "zh.wikipedia.org/wiki/%E7%BE%8A%E4%BA%86%E4%B8%AA%E7%BE%8A": "web:sheep-a-sheep-wikipedia",
@@ -430,6 +533,12 @@ def main() -> int:
     if broken_local_links:
         failures.append(f"{len(broken_local_links)} Markdown local links are broken")
 
+    classified_direct_entities = {
+        item["entity"] for item in occurrences if item["entity"] is not None
+    }
+    explicit_repository_entities = {
+        entity for entity in classified_direct_entities if entity.startswith("repo:")
+    }
     download_manifest = {
         "schema_version": 1,
         "generated_at_utc": now,
@@ -437,8 +546,9 @@ def main() -> int:
         "summary": {
             "paper_entities": len(PAPERS),
             "general_page_entities": len(PAGES),
-            "explicit_repository_entities": 2,
-            "total_external_entities_cited_directly": len(PAPERS) + len(PAGES) + 2,
+            "explicit_repository_entities": len(explicit_repository_entities),
+            "archived_repository_entities": len(REPOSITORIES),
+            "total_external_entities_cited_directly": len(classified_direct_entities),
             "markdown_url_occurrences": len(occurrences),
             "uncovered_url_occurrences": len(uncovered),
             "markdown_local_link_occurrences": len(local_links),
@@ -507,6 +617,11 @@ def main() -> int:
             "arXiv:2605.17058 (LMTA)",
             "AAAI98-109 (Continuous U Tree)",
             "DOI:10.1016/S0004-3702(02)00376-4 (MDP minimization)",
+            "PMLR:v119/jin20d (reward-free exploration)",
+            "PMLR:v162/wagenmaker22b (linear reward-free RL)",
+            "PMLR:v37/jiang15 (abstraction selection)",
+            "PMLR:v54/farahmand17a (value-aware model learning)",
+            "arXiv:1803.11347 (meta model-based RL)",
         ],
         "isolation_note": "Reference clones are unmodified research inputs. GPL and NOASSERTION code must not be copied into the project package without a separate license review.",
     }
