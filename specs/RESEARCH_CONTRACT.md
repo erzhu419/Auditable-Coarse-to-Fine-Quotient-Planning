@@ -89,6 +89,14 @@
   complete audit executions from 30 to nine through 21 exact-identity hits. It is not
   cross-identity incremental proof, persistent cache authority, sample reduction,
   total-work/economics evidence, or an aggregate Gate.
+- **V0-051 identity-bound incremental proof-DAG slice:** a seven-context H1
+  workload that changes only `rho0`, regret tolerance, or risk tolerance and resolves
+  every request through explicit `U/P/C/D/E/F/G/R` dependencies. Threshold-neutral
+  nodes may hit only when their complete facets and parents are unchanged; every
+  role-bound root and all affected descendants are re-derived. Three reset controls
+  freeze `168/0`, `112/56`, and `62/106` compute/hit totals and attribute only 50
+  avoided node constructions to cross-context reuse. It is not H>1 recurrence,
+  persistent caching, sample reduction, total-work/economics evidence, or a Gate.
 - **Phase 3C local-recovery slice:** the V0-029 certificate-triggered, isolated,
   query-owned overlay positive control over an immutable reusable RAPM; it is not the
   aggregate Phase 3 or economics Gate.
@@ -1615,7 +1623,7 @@ overall_workload_economics_claimed = false
 
 Cross-query or changed-threshold incremental proof is a later Gate. It requires a new
 identity-bound proof-dependency DAG and re-derivation artifact that enumerates reused
-obligations and recomputes every changed ancestor; it may not relax or reinterpret the
+obligations and recomputes every affected descendant; it may not relax or reinterpret the
 V0-050 exact key. Canonical identities and all acceptance/attack tests are normative
 in `specs/CERTIFICATE_MEMOIZATION.md`.
 
@@ -1631,6 +1639,102 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
 
+
+### Contract 1.14.0: identity-bound incremental proof-dependency DAG
+
+V0-051 registers schema `1.0.0`, profile
+`lmb_identity_bound_incremental_proof_dag_v0`, and success status
+`CERTIFIED_IDENTITY_BOUND_INCREMENTAL_PROOF_DAG_CONTROL`. It leaves V0-050's exact
+full-identity memo and every frozen V0-043/V0-049 source artifact unchanged. The
+content-addressed `IncrementalProofDAGProtocolV1` freezes the ordered contexts,
+adjacent change kinds, `H=1`, two candidate plus one independent-selected request per
+context, the V0-049 family binding and preregistration identity. Its `protocol_id`
+binds every execution and result.
+
+The new runner factors only a seven-context H1 control over the unchanged V5 promotion.
+Adjacent contexts change exactly one registered field: `rho0`, regret tolerance, or
+risk tolerance. Every context enumerates the same two plans and performs two
+candidate-role plus one independent-selected-role proof requests.
+
+The only registered node kinds and edges are:
+
+```text
+U = unrestricted Bellman arithmetic
+P = selected-policy Bellman arithmetic
+C = reachable obligations
+D = initial-support/root metrics       <- U,P,C
+E = regret verdict                     <- D
+F = risk verdict                       <- D
+G = external-coverage verdict          <- C
+R = full role-bound audit root          <- U,P,C,D,E,F,G
+```
+
+Trusted code constructs every neutral key from its exact model/horizon/reward/plan/
+`rho0`/formula facets and ordered parent IDs. `R` additionally binds the full current
+query, threshold, plan, request and role identities; an independent-selected root
+also binds the planner-result ID. Candidate roots can never authorize selection.
+
+All V0-043 obligations, bound rows, unrestricted rows, support-regret rows and robust
+bounds bind `thresholds_id`. Their existing bytes and IDs are forbidden as neutral
+nodes. `U` through `G` store only new intrinsic facts; `R` freshly rematerializes all
+legacy V1 rows and the final result under the current threshold and role. Every DAG
+root must match the unchanged monolithic V0-043 result byte-for-byte.
+
+The minimal adjacent invalidation closures in the global-DAG arm are:
+
+```text
+rho0 change   -> C,D,E,F,G,R
+regret change -> E,R
+risk change   -> F,R
+```
+
+Plan changes invalidate `P,C,D,E,F,G,R`; model, horizon, reward, return-proof,
+formula, source or semantic changes invalidate all nodes. Descendants are recomputed
+even when changed inputs happen to produce equal numeric values. Request- and
+occurrence-reset controls intentionally recompute supersets of these minimal closures.
+
+The three cache-scope controls freeze:
+
+```text
+21 proof requests / 168 node resolutions per arm
+request reset:    168 computes /   0 hits
+occurrence reset: 112 computes /  56 hits
+global DAG:        62 computes / 106 hits
+global kind counts U 1/20, P 2/19, C 6/15, D 6/15,
+                   E 10/11, F 10/11, G 6/15, R 21/0
+```
+
+The request-reset difference includes within-context factoring. Only the
+occurrence-reset-to-global difference, `112-62=50`, is registered as avoided
+cross-context proof-node constructions. Node construction counts are not scalar,
+wall-clock, I/O, hash, lookup, or total-work measurements.
+
+Receipts are monotonic and bind the reset scope, context, request, role, node kind,
+key, ordered parents, output, and cache pre/post state. The store is append-only from
+the canonical empty state; prewarm/import, overwrite, reorder, rollback, stale-parent,
+cross-domain, affected-descendant and owner-copy attacks fail closed. Production runtime
+authority remains owner bound. Independent evaluation rebuilds the V0-049 parent,
+executes 21 unchanged monolithic audits, replays all three stores, and requires exact
+artifact equality.
+
+V0-051 may assert only
+`registered_h1_changed_query_incremental_proof_claimed=true`. H>1 incremental
+Bellman recurrence, general cross-identity reuse, model/reward-epoch reuse,
+persistent caching, sample-tax/sample-efficiency, total-work/wall-clock, official
+execution, scalar cost and break-even remain false, null, or `NOT_RUN`. Canonical
+identities and attacks are normative in `specs/INCREMENTAL_PROOF_DAG.md`.
+
+Contract 1.14.0 opens no aggregate lock:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+sample_efficiency_gate_blocks_mainline = false
+```
 
 ## Pseudocode / schema
 

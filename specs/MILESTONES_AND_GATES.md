@@ -81,6 +81,14 @@
   candidate plans and ten certificates while replacing 30 repeated complete audits
   with nine misses and 21 exact hits. It is not cross-identity incremental proof,
   sample-tax reduction, total-work/economics evidence, or an aggregate Gate.
+- **V0-051 identity-bound incremental proof-DAG slice:** seven unique H1 contexts
+  change one of `rho0`, regret tolerance, or risk tolerance at a time. Eight explicit
+  proof-node kinds preserve only unaffected intrinsic facts, re-derive the full
+  affected-descendant closure, and always rebuild the role-bound audit root. Request-,
+  occurrence-, and global-reset controls freeze `168/0`, `112/56`, and `62/106`
+  compute/hit totals; only the 50 global-versus-occurrence avoided constructions are
+  attributed to changed-query reuse. No H>1, persistence, sample-tax, total-work,
+  economics, or aggregate-Gate claim is opened.
 - **Phase 3D general local-recovery Gate:** the V0-030 finite, cap-aware positive
   control that closes joint value/risk composition, slack-aware causal localization,
   and sparse worker authority. Its pass is not aggregate Phase 3 or economics.
@@ -1307,7 +1315,7 @@ Gate.
 
 The next proof-reuse Gate requires an identity-bound proof-dependency DAG and a
 re-derivation artifact that identifies reusable obligations and recomputes every
-changed ancestor. The V0-050 exact key may not be weakened to simulate that result.
+affected descendant. The V0-050 exact key may not be weakened to simulate that result.
 Detailed identities are normative in `specs/CERTIFICATE_MEMOIZATION.md`.
 
 All aggregate locks remain unchanged:
@@ -1322,6 +1330,71 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
 
+
+### V0-051 identity-bound incremental proof-dependency DAG gate
+
+Contract `1.14.0` registers
+`lmb_identity_bound_incremental_proof_dag_v0`. It executes seven unique H1 contexts
+over the unchanged V5 model. The content-addressed `IncrementalProofDAGProtocolV1`
+freezes their order, adjacent change kinds, request cardinality, V0-049 family binding
+and preregistration; every execution and result binds its `protocol_id`. Adjacent
+contexts differ only in `rho0`, regret
+tolerance, or risk tolerance; every context still has two candidate-role requests and
+one independent-selected-role request.
+
+The Gate passes only if:
+
+1. exactly eight domain-separated node kinds `U/P/C/D/E/F/G/R` and the frozen edge
+   graph are used;
+2. neutral keys are derived by trusted code from exact registered facets and ordered
+   parents, never supplied by the caller;
+3. no V0-043 `thresholds_id`-bound row is accepted as neutral evidence;
+4. every root is freshly role/query/threshold/plan bound, and selected roots bind the
+   current planner result;
+5. in the global-DAG arm, `rho0`, regret, and risk changes have the exact minimal
+   recomputation closures `C,D,E,F,G,R`, `E,R`, and `F,R`, respectively; reset controls
+   may deliberately recompute supersets;
+6. request-, occurrence-, and global-reset arms all resolve 168 nodes and produce
+   compute/hit totals `168/0`, `112/56`, and `62/106`;
+7. global per-kind compute/hit totals are `U 1/20`, `P 2/19`, `C 6/15`, `D 6/15`,
+   `E 10/11`, `F 10/11`, `G 6/15`, and `R 21/0`;
+8. cumulative computes are request `24,48,72,96,120,144,168`, occurrence
+   `16,32,48,64,80,96,112`, and global `16,29,34,39,52,57,62`;
+9. all 14 candidate roots and seven independent selected certificates match 21
+   unchanged monolithic V0-043 audits byte-for-byte;
+10. the runner accepts only log, semantics profile, observation authority, and V5
+    promotion and performs zero target transition/catalogue/ground-optimizer calls;
+11. every hit refers to an earlier trusted compute under the current reset scope and
+    all sequence, parent, cache-state, work and prefix artifacts replay exactly;
+12. missing/extra edges, cycles, wrong topology, affected-descendant omission, stale
+    facet reuse, role substitution, threshold-row injection, source/model/plan/
+    promotion/authority changes, prewarm/import/overwrite/reorder/rollback, owner
+    copy and content-domain attacks fail closed;
+13. the independent verifier reconstructs the parent and all three arms and mints
+    three fresh owner-bound executions only after exact replay;
+14. frozen V0-043, V0-049 and V0-050 sources and V0-050 canonical identities remain
+    unchanged;
+15. the canonical V0-051 protocol, semantics, global-cache, global-execution and
+    control-result IDs equal the values frozen in `specs/INCREMENTAL_PROOF_DAG.md`.
+
+Passing permits only the statement that the registered global H1 DAG avoids 50 node
+constructions relative to an occurrence-reset DAG by safely reusing unaffected proof
+facts across the seven changed contexts. It does not permit attributing all
+`168-62` constructions to cross-query reuse, or claiming H>1 recurrence, persistence,
+sample reduction, a Laplace/KG-OP operator, scalar/total-work/wall-clock improvement,
+official economics, or an aggregate Gate.
+
+All aggregate locks remain unchanged:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+sample_efficiency_gate_blocks_mainline = false
+```
 
 ### Phase 3C certificate-triggered local-recovery gate
 

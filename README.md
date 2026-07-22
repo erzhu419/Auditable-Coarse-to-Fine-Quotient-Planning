@@ -28,7 +28,44 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 → jointly search local value/risk choices, rebuild, or use charged fallback
 ```
 
-## Current exact identity-bound certificate memoization slice (V0-050)
+## Current identity-bound incremental proof-DAG slice (V0-051)
+
+Contract `1.14.0`, schema `1.0.0`, and profile
+`lmb_identity_bound_incremental_proof_dag_v0` factor the unchanged V0-043 H1
+fixed-plan proof into eight domain-separated nodes. `U/P/C/D` retain intrinsic
+Bellman, selected-policy, reachability, and root metrics; `E/F/G` apply the current
+regret, risk, and external-coverage obligations; `R` always rematerializes the full
+query-, threshold-, plan-, and role-bound audit result. Existing V0-043 row artifacts
+all bind `thresholds_id`, so they are never reused as threshold-neutral evidence.
+
+Seven unique contexts change exactly one of `rho0`, regret tolerance, or risk
+tolerance at a time. Each context still enumerates two plans and makes a separate
+independent-selected certificate request. The three matched reset scopes produce:
+
+```text
+proof requests / node resolutions       = 21 / 168 in every arm
+request-reset computes / hits            = 168 / 0
+occurrence-reset computes / hits         = 112 / 56
+global-DAG computes / hits               = 62 / 106
+selected-plan certificates               = 7
+target transition / catalogue calls      = 0 / 0
+```
+
+The registered changed-query attribution is only `112 - 62 = 50` avoided proof-node
+constructions; the larger `168 - 62` difference also contains within-context
+factoring. Every `rho0` change re-derives `C,D,E,F,G,R`, every regret change re-derives
+`E,R`, and every risk change re-derives `F,R`. All 21 roots match unchanged monolithic
+V0-043 audits byte-for-byte, while candidate roots remain unable to authorize the
+selected role.
+
+This is a registered H1 changed-query proof-reuse control, not H>1 incremental
+Bellman evaluation, persistent caching, total-work or wall-clock improvement,
+sample-efficiency evidence, or a Laplace/KG-OP tax-reduction operator. Official,
+scalar, economics, counter-completeness, and sample-efficiency Gates remain locked.
+The exact dependency, invalidation, authority, trace, and attack contracts are in
+`specs/INCREMENTAL_PROOF_DAG.md`.
+
+## Historical exact identity-bound certificate memoization slice (V0-050)
 
 Contract `1.13.0`, schema `1.0.0`, and profile
 `lmb_identity_bound_certificate_memoization_v0` retain the complete V0-049
@@ -74,7 +111,7 @@ sample-tax operator, sample efficiency, statistical generalization, total-work o
 wall-clock improvement, or official economics. Official execution remains false;
 scalar cost and break-even remain null; workload-economics, counter-completeness and
 sample-efficiency Gates remain `NOT_RUN`. The next proof-reuse Gate requires a new
-identity-bound proof-dependency DAG and changed-ancestor re-derivation artifact; it
+identity-bound proof-dependency DAG and affected-descendant re-derivation artifact; it
 may not relax the V0-050 exact key. Full identities and attacks are normative in
 `specs/CERTIFICATE_MEMOIZATION.md`.
 
