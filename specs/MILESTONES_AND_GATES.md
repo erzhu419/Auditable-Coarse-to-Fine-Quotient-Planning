@@ -56,6 +56,10 @@
   graph, followed by typed model planning and independent fixed-plan audit. It is not
   raw symbolization, learned/neural latent dynamics, unknown-DSL invention,
   generalization, sample efficiency or an aggregate Gate.
+- **V0-046 query-local exact-row refinement slice:** full-chain authorization of the
+  four necessary rows in the canonical H1 zero-risk failed certificate, exact charged
+  acquisition, immutable query-owned overlay, abstract replanning, and independent
+  certification. It is not a multi-step/general acquisition or promotion Gate.
 - **Phase 3D general local-recovery Gate:** the V0-030 finite, cap-aware positive
   control that closes joint value/risk composition, slack-aware causal localization,
   and sparse worker authority. Its pass is not aggregate Phase 3 or economics.
@@ -873,15 +877,87 @@ generalization, scale or sample saving. The frozen synthesis result is
 model is `1676785661c8fb00f54ddef93dc84d53c08b81781249de66ae5e4129a450bc18`, and the
 complete identity table is normative in `specs/OBSERVED_TYPED_COORDINATE_SYNTHESIS.md`.
 
-The next construction Gate begins only after independent certificate failure. It must
-separately authorize the minimum query-local ground-row scope, charge acquisition,
-create a versioned immutable overlay/new BuildEpoch, replan and independently re-audit,
-and promote only after preregistered multi-query/held-out checks. A failed-proof
-frontier alone authorizes none of these actions.
+V0-046 now executes the next construction Gate below for the canonical H1 control. A
+failed-proof frontier alone remains nonauthorizing; the complete source/planner/audit
+chain is required.
 
 Official execution remains false; scalar cost and break-even remain null; workload-
 economics, counter-completeness and sample-efficiency Gates remain `NOT_RUN`, with
 sample efficiency non-blocking.
+
+### V0-046 query-local exact-row refinement slice
+
+Contract `1.9.0`, schema `1.0.0`, and profile
+`lmb_h1_query_local_exact_row_refinement_v0` require this uninterrupted chain:
+
+```text
+replay full V0-045 source/result
+-> replay canonical H1 typed V0-044 selected plan
+-> replay independent failed typed V0-043 result
+-> derive four row-wise necessity proofs without kernel access
+-> freeze the exact four-row evidence request
+-> validate canonical LMB kernel and all registered action catalogues
+-> execute exactly four authorized transition calls
+-> build a new query-owned V2 model; leave the base unchanged
+-> rebase identical query fields to the new model ID
+-> enumerate/audit both abstract H1 plans without kernel access
+-> independently certify the selected plan
+-> retain the overlay locally; do not promote the base
+```
+
+The scope is fixed H1, `delta=0`, fixed plan, fixed concretizer, row-wise vacuous
+uncertainty, and the row-completion evidence family. One obligation has reachable mass
+upper one; each of its four missing rows has concretizer weight `1/4`. Leaving any one
+unknown permits failure upper `1/4`, so every row is individually required. This does
+not establish a global minimum over arbitrary experiments or policy/representation
+changes.
+
+The acceptance goldens are:
+
+```text
+request preparation kernel/search calls = 0 / 0
+row proofs / requested rows              = 4 / 4
+operational exact-kernel calls            = 4
+extra ground-row access                   = 0
+registered/external successors            = 1 / 3
+reward/failure/terminal outcomes          = 0 / 0 / 0
+base observed/missing                     = 7 / 4 (unchanged)
+overlay observed/missing                  = 11 / 0
+overlay planner plans/audits              = 2 / 2
+overlay planner kernel calls              = 0
+certified reward/failure/regret            = 0 / 0 / 0
+base promotion authorized                 = false
+```
+
+The gate passes only if:
+
+1. a bare frontier or substituted source artifact cannot authorize acquisition;
+2. request preparation performs no ground access and accepts no caller row list/cap;
+3. any omitted row invalidates the four-row necessity request;
+4. kernel/configuration/catalogue mismatch is rejected before `step`;
+5. evidence contains exactly the requested rows and exact operational lane markers;
+6. the reusable V0-045 model is byte-identical before and after;
+7. the V2 overlay content-binds request, bundle, failed plan/audit, and parent model;
+8. query-scoped replanning performs no additional kernel access;
+9. independent audit returns `CERTIFIED_FIXED_PLAN` with zero reward/failure/regret;
+10. independent full replay reproduces the complete result byte-for-byte.
+
+Frozen primary IDs are:
+
+```text
+request = 1ff845f3eecc05a098b3437c7e4b8356bcd28ea1dd0d4cc4ace8e52bc382cd2c
+bundle = 17c8783b3ab489322359bb9ed7e463c4540e9ed1d4d6036d639c1cc9a6bc8543
+overlay model = 7c709a2cb568398954b1c357dfd1bb68798be91bc4a9ed192e915976126276df
+certificate = ea6d196cd6054871f8cb0e6809210df9bb83975ff49baea8a516f69b1a2af303
+result = 8c37b241d15b06f05dfe34189b37e324addd2c93605d4c718868d8a0544cf057
+```
+
+Passing is labelled `QUERY_LOCAL_PLAN_CERTIFIED`. It proves only the registered H1
+certificate-triggered row-refinement loop. It does not prove transition closure, exact
+quotient, general causal localization, multi-step external-boundary repair, base
+promotion, raw symbolization, learned dynamics, generalization, scale, economics, or
+sample saving. Complete identities and claim boundaries are normative in
+`specs/QUERY_LOCAL_EVIDENCE_REFINEMENT.md`.
 
 ### Phase 3C certificate-triggered local-recovery gate
 
@@ -1540,11 +1616,15 @@ trusted finite observation graph. V0-045 now closes fixed-DSL observation-only
 coordinate selection, same-schema partial-RAPM construction, one-replay fixed-model
 planning and independent typed fixed-plan audit on that graph.
 
-The next construction Gate is sound certificate-triggered query-local evidence and
-model evolution: separately authorize a minimum evidence scope, charge acquisition,
-create an immutable versioned overlay/new BuildEpoch, replan/re-audit, and apply a
-preregistered promotion test before changing the reusable base. Portable source
-authority, raw symbolization, statistical/learned dynamics, larger or unknown domains,
-held-out/cross-domain evidence, the empirically designed tax-reduction operator and the
-complete statistical Gates remain open. Sample efficiency remains non-blocking until
-complete acquisition/refinement telemetry identifies the actual bottleneck.
+V0-046 now closes certificate-triggered exact-row evidence and immutable model
+evolution for one fixed H1 zero-risk control: four necessary rows are authorized and
+charged, the base remains unchanged, and the resulting query-owned model replans and
+certifies. It does not authorize base promotion or generalize beyond H1 row completion.
+
+The next construction Gate extends this to multi-step failed-proof frontiers and
+locally restored active distinctions, then applies preregistered multi-query/held-out
+promotion tests. Portable source authority, raw symbolization, statistical/learned
+dynamics, larger or unknown domains, held-out/cross-domain evidence, the empirically
+designed tax-reduction operator and the complete statistical Gates remain open. Sample
+efficiency remains non-blocking until complete multi-step acquisition/refinement
+telemetry identifies the actual bottleneck.

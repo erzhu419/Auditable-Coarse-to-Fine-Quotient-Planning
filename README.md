@@ -28,6 +28,58 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 → jointly search local value/risk choices, rebuild, or use charged fallback
 ```
 
+## Current certificate-triggered query-local refinement slice (V0-046)
+
+Contract `1.9.0`, implementation schema `1.0.0`, and profile
+`lmb_h1_query_local_exact_row_refinement_v0` close the next narrow part of the central
+loop. The input is the complete V0-045 H1 typed-planner result and independently failed
+typed V0-043 audit—not a bare frontier. A separate authority replays that full chain
+and derives the evidence request; callers cannot supply a row subset or acquisition
+cap.
+
+For the fixed H1, `delta=0`, fixed-plan, fixed-concretizer row-completion problem, the
+one reachable unresolved realization contains four missing rows, each with weight
+`1/4`. Leaving any one row unknown permits failure upper `1/4>0`, so all four rows are
+individually necessary inside this declared evidence family. Request preparation uses
+zero kernel calls. The executor validates the canonical LMB kernel and all registered
+legal-action catalogues, then performs exactly four authorized transition calls and no
+other ground-row access.
+
+Those outcomes are all safe and reward-zero: one successor is registered and three are
+known external states. The reusable V0-045 model remains byte-identical. A new
+query-owned `QueryScopedPartialRAPMV2` changes coverage from `7 observed / 4 missing`
+to `11 / 0`, but remains non-query-neutral, non-promotable, not transition-closed, and
+not an exact quotient. Rebased abstract planning enumerates two plans with zero further
+kernel access. Independent audit certifies the selected H1 plan with reward, failure,
+and regret all zero.
+
+Canonical counts and IDs are:
+
+```text
+authorized operational exact-kernel calls = 4
+extra ground-row access                   = 0
+base model                                = 1676785661c8fb00f54ddef93dc84d53c08b81781249de66ae5e4129a450bc18
+evidence request                          = 1ff845f3eecc05a098b3437c7e4b8356bcd28ea1dd0d4cc4ace8e52bc382cd2c
+query-scoped model                        = 7c709a2cb568398954b1c357dfd1bb68798be91bc4a9ed192e915976126276df
+fixed-plan certificate                    = ea6d196cd6054871f8cb0e6809210df9bb83975ff49baea8a516f69b1a2af303
+complete result                           = 8c37b241d15b06f05dfe34189b37e324addd2c93605d4c718868d8a0544cf057
+```
+
+This is a real certificate-failure → minimal scoped evidence → immutable overlay →
+replan/re-audit positive control, but only for the registered H1 row-completion case.
+It is not general causal minimality, an acquisition policy, multi-step external
+coverage repair, base-model promotion, raw symbolization, learned dynamics,
+generalization, scale, or sample saving. Four exact calls are charged; the 4096-
+candidate offline coordinate search is separate construction work and is not being
+called free.
+
+The next construction step generalizes the authority to multi-step failed-proof
+frontiers and locally restores active distinctions. Only after real multi-step traces
+exist will the project compare offline construction plus online acquisition against
+direct ground optimization and design a Laplace-semi-MDP-style heuristic operator or
+KG-OP-style meta-prior from the measured bottleneck. Full normative details and the
+identity table are in `specs/QUERY_LOCAL_EVIDENCE_REFINEMENT.md`.
+
 ## Current observation-only typed-coordinate synthesis slice (V0-045)
 
 Contract `1.8.0` (synthesis schema `1.0.0`, typed V0-042 `1.2.0`, typed planner
@@ -73,11 +125,12 @@ are `4834efc30b9ae292e33f83932525195df1997ae31f7c7898b452b6175815ded2` and
 `1676785661c8fb00f54ddef93dc84d53c08b81781249de66ae5e4129a450bc18`; the full table
 is in `specs/OBSERVED_TYPED_COORDINATE_SYNTHESIS.md`.
 
-The next construction Gate starts from an independently failed certificate: prove a
-minimum query-local evidence scope under separate authority, charge acquisition, build
-an immutable versioned overlay/new BuildEpoch, replan and re-audit, and promote only
-after preregistered multi-query/held-out checks. A failed frontier alone cannot authorize
-ground access or mutate the reusable base.
+V0-046 now executes this former next Gate for the exact H1 row-completion control: a
+separate authority proves four individually necessary rows, acquisition is charged,
+the base remains unchanged, and a query-owned overlay replans and certifies. It does
+not yet generalize to multi-step frontier repair or authorize base promotion. A failed
+frontier alone still cannot authorize ground access or mutate the reusable base; the
+complete typed failure chain remains mandatory.
 
 All aggregate locks remain unchanged:
 

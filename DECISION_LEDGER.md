@@ -2,7 +2,7 @@
 
 **Status:** normative source of truth
 
-**Ledger version:** 1.8.0
+**Ledger version:** 1.9.0
 **Last updated:** 2026-07-22
 
 ## Authority
@@ -74,6 +74,7 @@ absent from a public checkout.
 | V0-043 | 2026-07-22 | Conditional robust audit of a supplied partial-RAPM plan | FROZEN | Contract `1.6.0` registers implementation schema `1.1.0` and profile `partial_fixed_plan_robust_audit_v0`. The auditor first independently reconstructs the exact allowlisted V0-042 source graph/model, then consumes content-addressed query thresholds and one externally supplied deterministic finite-horizon contingent abstract plan; it has no kernel, transition API, ground solver, planner, J0 or feasibility oracle. The plan covers every active cell at each contiguous stage and obeys `H<=6`. Canonical return proof `6fb0235260099bf0dda06c93a0c2e7122e18ff16439a959f51ca904d551d9b98` binds the canonical LMB `N=6` structural/environment/log/semantics/observation-authority/acquisition-manifest identities, exact weights `match=1,terminal_clear=1`, at most two matches plus terminal-clear bonus upper two, and `R_max=4`; it is not derived from the selected model/partition. Normalized-regret tolerance is restricted to `{0,1/20}`, risk tolerance to `{0,1/20,1/10}`, and `rho0` consists of exact registered active ground states. The unrestricted comparator is only an upper bound built from every registered ground-action row. Fixed-plan Bellman replay charges the joint unknown simplex once, requires pointwise regret at every initial support state, distributional risk, and no reachable unknown/external continuation with remaining horizon above one. The normal outcomes are exactly `CERTIFIED_FIXED_PLAN` or `FAILED_PROOF_FRONTIER`; the latter carries an earliest `NONAUTHORIZING_PROOF_OBLIGATION_HINT_V1`, never infeasibility, local-recovery authority or causal necessity/sufficiency. `unresolved_exposure_sum` and per-destination reachability uppers are not probabilities. The H3 observed-path control has unrestricted upper `4`, plan reward interval `[4,4]`, maximum support regret `0`, failure `0`, 33 unrestricted proof rows and certifies despite unrelated missing rows. The H1 missing-state negative regression has unrestricted upper `3`, plan lower `0`, normalized regret `3/4`, failure upper `1` and earliest `(t=0,h=1,UNRESOLVED_POLICY_PATH_DISTINCTION)` frontier. Low-mass pointwise-regret, external-escape and known-threshold negative regressions must also fail certification. Malformed, stale, self-signed, duck-typed or coherently re-signed source/proof/plan/result objects terminate as `PartialSoundAuditInvariantViolation`, not as a normal negative regression. The certificate is conditional on V0-042's external in-memory trust root and proves only the supplied fixed plan, not planning, optimality, infeasibility, repair authorization, exactness/closure, learning/generalization, sample saving, official execution or any Gate. All existing official/scalar/economics/counter/sample locks remain unchanged. | Adds the first model-only robust audit consumer for the V0-042 partial RAPM without changing V0-042 construction or claiming that a planner or local-recovery route exists. | `partial_sound_audit_v1.py`; thresholds/return-proof/plan/obligation/unrestricted-upper/bounds/support-regret/certificate/frontier/result schemas; source-first audit and exact verifier replay; positive, negative-regression and invariant-violation tests. |
 | V0-044 | 2026-07-22 | Bounded partial-model contingent-plan proposal | FROZEN | Contract `1.7.0` registers implementation schema `1.0.0` and profile `partial_model_contingent_plan_proposal_v0`. The six-input producer first reconstructs the complete V0-042 source/model, then reads one V0-043 threshold object; the verifier adds only the claimed result. Production exposes no kernel, transition callback/interface, J0, ground solver, feasibility oracle, second query or caller cap. For per-stage assignment count `S=product_z |Abar(z)|`, it enumerates all `S^H` deterministic complete plans under fixed cap 65536 and internally audits each with V0-043. Selection is hierarchical: candidates whose internal V0-043 replay returns `CERTIFIED_FIXED_PLAN` maximize reward lower then minimize failure upper then plan ID; if none, risk-feasible candidates use the same order; otherwise minimize failure upper then maximize reward lower then plan ID. This tier is only an internal proposal-ranking signal. The proposal is never certificate authority and the selected plan always requires independent V0-043 audit; feasible, infeasible-query and optimal-ground-policy claims remain false. Production cap-profile ID is `9176c40aec0b6ecb3c7645a61363cefa32d9d13396ab33ee70fb0238f171932b`. Over-cap returns `CAP_EXHAUSTED` after one source reconstruction and exact count but before candidate work, with zero evaluations/audits, empty summaries, `NOT_APPLICABLE` selection and no plan. The private caller-cap path is a named nonproduction control rejected by the public verifier. H3 freezes `S=2`, `8/8` candidates, 8 audits, 9 source reconstructions, tier-1 selection, selected plan ID `1cad00f91105976061f7ec4b1e31529cdedb16ac185d948a005e3c2643c06bbc`, reward `4/4`, failure `0/0` and matching independent V0-043 certificate. H1 reuses the same model/build with distinct threshold/result IDs, enumerates two candidates, selects minimum-risk fallback with reward `0/3`, failure upper 1 and a nonauthorizing unresolved V0-043 frontier. The cap-4 control predicts eight candidates but audits zero. Trace work counts are finite model-work/sample-tax telemetry, not interactions, samples, savings or economics; external-transition and ground-search calls remain zero. This is bounded abstract proposal, not certificate/feasibility/infeasibility/J0/ground optimality, exact closure/quotient, coordinate invention, causal/local/fallback authority, learning/generalization/scale, sample saving/economics, official execution or any Gate. All locks remain unchanged. | Closes the finite partial-model plan-producer gap left after V0-043 without changing V0-042 construction or transferring V0-043 certificate authority into the producer. | `partial_model_planner_v1.py`; action-domain/candidate-summary/trace/result/cap-profile artifacts; production proposer and full-replay verifier; tier/tie-break, H3/H1/two-query/cap, source-first/API/import, content/duck/re-sign and authority-boundary tests. |
 | V0-045 | 2026-07-22 | Observation-only typed-coordinate partial RAPM and typed consumer chain | FROZEN | Contract `1.8.0` registers `lmb_query_free_observed_typed_coordinate_synthesis_v0`. Its three-input producer and four-input verifier consume only the exact allowlisted V0-042 log/profile/authority. A closed observation-only evaluator materializes all eight state and four action AST values over eight states and eleven legal rows, exhausts all `4096` subset candidates, uses only seven observed rows for congruence, preserves four missing rows as unknown, and selects `cardinality(legal_actions)` plus `buffer_at_type(buffer_counts,selected_tile_type)`. The integer action coordinate compiles to boolean atom `<=3/2`; the existing nonempty `tuple[bool,...]` `PartialSemanticActionV1` schema is unchanged. The selected model has six total/four active cells, five abstract entries/actions, six realizations, seven point rows and one four-row `UNOBSERVED_UNKNOWN` entry. `FrozenTypedCoordinateValueTableV2`, `FrozenTypedCoordinateProposalV2` and the V2 pure builder are internal deterministic derivation objects, not independent authority; only full `ObservedTypedPartialRAPMResultV1` reconstruction may authorize a consumer. The typed V0-044 path replays V0-045 once, freezes the verified model, enumerates/audits all plans without repeating source synthesis per candidate, and remains proposal-only. Independent typed V0-043 replay is the sole plan-certificate authority and explicitly binds synthesis-result/certificate, proposal, build, model, thresholds and plan. H3 enumerates `8/8` plans and independently certifies reward `4`, failure `0`; H1 enumerates two, returns reward `[0,3]`, failure upper one and a nonauthorizing unresolved frontier. This is fixed-DSL discovery over already-symbolized logged states/actions, not raw symbolization, unknown-DSL invention, neural/learned latent dynamics, exact quotient, statistical consistency, generalization, sample saving or an aggregate Gate. The next Gate is separately authorized minimal query-local evidence, immutable versioned overlay/refinement, replan/re-audit and promotion checks. Every official/scalar/economics/counter/sample lock remains unchanged. | Replaces the former “V0-045 not implemented” frontier and connects observation-only construction to typed V0-044/V0-043 consumers without changing historical manual V0-042--V0-044 artifacts or transferring certificate authority into the pure builder or planner. | `observed_typed_coordinate_synthesis_v1.py`; V2 typed table/proposal/builder extension; typed planner/audit wrappers; full 4096 replay; V1-schema, source/digest, missing/availability, H3/H1 and authority-boundary regressions. |
+| V0-046 | 2026-07-22 | Certificate-triggered query-local exact-row refinement | FROZEN | Contract `1.9.0` registers `lmb_h1_query_local_exact_row_refinement_v0`. The producer requires the complete V0-045 result, canonical H1 typed V0-044 proposal/selected plan, and independently failed typed V0-043 result; a bare frontier cannot authorize access. Under fixed H1, `delta=0`, fixed plan/concretizer and row-completion evidence semantics, the one reachable obligation contains four missing rows of weight `1/4`; every leave-one-out failure upper is `1/4>0`, so the separate authority requests exactly four rows with zero preparation kernel/search calls and no global-minimum claim. The frozen exact LMB executor validates kernel source/configuration and all legal-action catalogues before exactly four authorized operational transition calls and zero extra-row access. All four outcomes are reward/failure/terminal zero, with one registered and three external successors. The V0-045 base stays byte-identical; a new query-owned `QueryScopedPartialRAPMV2` changes observed/missing coverage `7/4 -> 11/0`, remains non-query-neutral/non-promotable/non-closed/non-exact, and binds the complete failure/evidence chain. Rebased abstract planning enumerates/audits two plans with zero further kernel calls; independent audit certifies reward/failure/regret `0/0/0`. Promotion remains `RETAIN_QUERY_LOCAL_OVERLAY_ONLY`. Full independent replay is byte-identical. This is only an H1 row-completion positive control, not general causal minimality, multi-step recovery, learned acquisition/dynamics, base promotion, generalization, scale, economics or sample saving; all aggregate locks remain unchanged and sample efficiency remains non-blocking. | Closes the immediate Gate left by V0-045 without mutating or relabelling the reusable base and without turning the nonauthorizing V0-043 frontier into authority. | `query_local_refinement_v1.py`; `QueryScopedPartialRAPMV2`; typed audit union; exact row-necessity/request/evidence/overlay/rebase/planner/audit/promotion/result artifacts; canonical H1 and full-replay regressions; `specs/QUERY_LOCAL_EVIDENCE_REFINEMENT.md`. |
 
 ## V0-027 registered construction slice
 
@@ -1944,11 +1945,11 @@ This closes fixed-DSL discovery only over an already-symbolized, externally trus
 finite observation graph. It does not claim raw or neural representation learning,
 unknown primitives/operators/DSL, exact/true latent dynamics, observer truth,
 statistical consistency, held-out/cross-domain generalization, scale or sample saving.
-The next construction Gate freezes a failed certificate, separately proves a minimum
-query-local acquisition scope, charges authorized rows into an immutable versioned
-overlay/new BuildEpoch, replans and independently re-audits, then promotes only after
-preregistered multi-query/held-out checks. A failed frontier is diagnostic and cannot
-itself authorize access or mutate the reusable base.
+V0-046 now freezes that failed chain, proves and charges the exact H1 four-row scope,
+constructs an immutable query-owned overlay, and replans/re-audits without mutating the
+base. It remains a row-completion control; multi-step refinement and preregistered
+multi-query/held-out promotion are the next Gate. A failed frontier is diagnostic and
+cannot itself authorize access or mutate the reusable base.
 
 Frozen key IDs are: synthesis result
 `4834efc30b9ae292e33f83932525195df1997ae31f7c7898b452b6175815ded2`, partial model
@@ -1959,6 +1960,80 @@ result `f9006103939f33ee744fd994e00240018ab445c75df1c4c23fba82d479bc6513`, and H
 frontier `9d6f0803f365643d623368cdfed6b6666c5c8a00e3fd77fbdf41b00d1f354cab`.
 The full identity table is normative in `specs/OBSERVED_TYPED_COORDINATE_SYNTHESIS.md`.
 All existing official/scalar/economics/counter/sample locks remain unchanged.
+
+## V0-046 query-local exact-row refinement rule
+
+Contract `1.9.0` freezes profile `lmb_h1_query_local_exact_row_refinement_v0`. The
+production runner accepts the full V0-045 observation-only result, canonical H1
+thresholds, complete typed V0-044 proposal, independently failed typed V0-043 result,
+and exact canonical LMB kernel. It accepts no row subset/cap, alternative frontier,
+transition callback, J0/ground solver result, target policy, or promotion decision.
+The verifier adds only the claimed complete result.
+
+The row authority first replays the complete source/planner/audit chain and requires
+the frozen H1 `UNRESOLVED_POLICY_PATH_DISTINCTION`. Its one reachable obligation has
+mass upper one and four missing uniform concretizer rows. Each row’s leave-one-out
+failure upper is `1/4`, above `delta=0`; all four are therefore individually necessary
+inside the fixed-plan, fixed-concretizer row-completion family. Request preparation
+uses no kernel/search call, authorizes exactly four calls, and explicitly declines a
+global experiment-minimum claim. A bare failed frontier remains nonauthorizing.
+
+Acquisition binds the exact LMB structure and kernel source digest
+`fa38ca4724420cc9834a50ee83b57a97721434404a9e76f0994b1aecb22b5323`, validates every
+registered legal-action catalogue, then calls only the four requested ground rows.
+Operational counts are four exact calls/four positive rows/zero extra rows; environment
+interactions, generative samples and synthetic evidence rollouts are zero. One
+successor is registered and three are external; all four rewards, failures and terminal
+flags are zero.
+
+The base remains ID
+`1676785661c8fb00f54ddef93dc84d53c08b81781249de66ae5e4129a450bc18`.
+A new overlay context/BuildEpoch constructs query-owned model
+`7c709a2cb568398954b1c357dfd1bb68798be91bc4a9ed192e915976126276df`, replaces exactly
+the four missing rows, recomputes semantic realizations, and changes coverage from
+`7/4` to `11/0`. It remains query-local, non-promotable, not transition-closed and not
+an exact quotient. Threshold rebasing preserves query semantics. Abstract planning
+enumerates/audits two plans without further kernel access; independent audit issues
+certificate `ea6d196cd6054871f8cb0e6809210df9bb83975ff49baea8a516f69b1a2af303`
+with reward/failure/regret zero.
+
+Primary IDs are:
+
+```text
+kernel authority = 2bb62669839fbde2cb4703c1ff71b71eb95cddcfdba5b3102a1833c5258164a0
+request = 1ff845f3eecc05a098b3437c7e4b8356bcd28ea1dd0d4cc4ace8e52bc382cd2c
+bundle = 17c8783b3ab489322359bb9ed7e463c4540e9ed1d4d6036d639c1cc9a6bc8543
+overlay BuildEpoch = ff0a14c296c8d5d122ff0f635ad8909dcfd2294274c99c3ac1da0412e8d947d2
+overlay model = 7c709a2cb568398954b1c357dfd1bb68798be91bc4a9ed192e915976126276df
+plan proposal = 9a408b15377b10bf6450d91c0e1e26d9e7dd9ac129abc7462ce15ca69187ad3c
+certificate = ea6d196cd6054871f8cb0e6809210df9bb83975ff49baea8a516f69b1a2af303
+result = 8c37b241d15b06f05dfe34189b37e324addd2c93605d4c718868d8a0544cf057
+```
+
+`RETAIN_QUERY_LOCAL_OVERLAY_ONLY` permits reuse only in the identical bound context;
+base promotion and multi-query/held-out promotion Gates remain false. Independent
+verification replays source, failure, exact evidence, overlay, planning and audit and
+requires byte-identical output. Evaluation replay does not alter the four-call
+operational record and does not establish complete Phase 3E accounting.
+
+This proves one authentic certificate-triggered local model-evolution loop, not general
+causal minimality, multi-step external-boundary recovery, raw symbolization, unknown-
+DSL invention, learned/statistical dynamics, promotion, generalization, scale,
+economics, or sample saving. The next construction Gate generalizes to multi-step
+frontiers/active distinctions and then measures offline plus online work against direct
+optimization before designing a tax-reduction operator or meta-prior.
+
+All locks remain:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+sample_efficiency_gate_blocks_mainline = false
+```
 
 ## Change log
 
@@ -1990,3 +2065,4 @@ All existing official/scalar/economics/counter/sample locks remain unchanged.
 - **2026-07-22 — 1.6.0:** Added V0-043/profile `partial_fixed_plan_robust_audit_v0` with implementation schema `1.1.0`. The downstream auditor replays the hardened V0-042 source before reading registered query thresholds or one supplied deterministic plan, uses a canonical identity-bound `R_max=4` proof, charges joint unknown mass once, requires pointwise support regret plus distributional risk and external-coverage obligations, and emits only a robust fixed-plan certificate or earliest nonauthorizing proof hint. Froze the H3 certified and H1 missing-state negative-regression goldens, low-mass pointwise/external/known-threshold regressions, exact replay and invariant-violation attacks. This is not a planner, optimality/infeasibility proof, causal/local-recovery authority or Gate unlock; all locks remain unchanged.
 - **2026-07-22 — 1.7.0:** Added V0-044/profile `partial_model_contingent_plan_proposal_v0` with implementation schema `1.0.0`. The source-first six-input producer exhausts all within-cap deterministic global abstract plans, audits each internally with V0-043, and selects by the frozen certified/risk-feasible/minimum-risk hierarchy. Froze production cap 65536 and its profile ID, typed zero-work cap exhaustion, finite reconstruction/audit telemetry, H3 certified selection, H1 nonauthorizing fallback proposal, cap-4 and two-query controls, independent full replay and authority/ordering/content attacks. The proposal is never certificate, feasibility/infeasibility, J0/ground-optimality, local-recovery, scale, sample-saving/economics or Gate authority; all locks remain unchanged.
 - **2026-07-22 — 1.8.0:** Added V0-045/profile `lmb_query_free_observed_typed_coordinate_synthesis_v0` and the typed V0-044/V0-043 consumer boundary. Froze the exact 8-state/11-row/7-observed/4-missing source, 8+4 fixed DSL, complete 4096-candidate observation-only selection, boolean midpoint action compilation with unchanged V1 schema, six-cell/five-entry partial model, full retained synthesis authority, one-replay fixed-model planning and independent typed fixed-plan certification. H3 certifies reward/failure `4/0`; all-missing H1 remains a nonauthorizing unresolved frontier. No raw symbolization, learned/statistical latent dynamics, generalization, sample saving or official Gate is claimed; the next Gate is query-local evidence/overlay/refinement and promotion.
+- **2026-07-22 — 1.9.0:** Added V0-046/profile `lmb_h1_query_local_exact_row_refinement_v0`. Replayed the complete V0-045/typed-plan/failed-audit chain, proved all four uniform H1 missing rows individually necessary under the fixed zero-risk row-completion scope, charged exactly four authorized exact-kernel calls, preserved the reusable base, constructed an `11/0` query-owned V2 overlay, replanned two abstract policies and independently certified reward/failure/regret zero. Promotion, general causal/multi-step claims, sample saving and every aggregate Gate remain locked.

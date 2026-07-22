@@ -38,6 +38,7 @@ from acfqp.observation_partial_rapm_v1 import (
     PlanningKind,
     PreregisteredObservationAuthorityV1,
     PortablePartialRAPMV1,
+    QueryScopedPartialRAPMV2,
     verify_observation_partial_rapm_v1,
 )
 from acfqp.phase3e_ids import canonical_json_bytes, parse_content_id
@@ -1914,7 +1915,7 @@ def _validate_return_bound_authority(
 
 
 def _validate_inputs(
-    partial_model: PortablePartialRAPMV1,
+    partial_model: PortablePartialRAPMV1 | QueryScopedPartialRAPMV2,
     thresholds: FrozenPartialAuditThresholdsV1,
     contingent_plan: FrozenContingentAbstractPlanV1,
 ) -> tuple[
@@ -1923,7 +1924,10 @@ def _validate_inputs(
     dict[int, dict[str, str]],
     dict[str, str],
 ]:
-    if type(partial_model) is not PortablePartialRAPMV1:
+    if type(partial_model) not in (
+        PortablePartialRAPMV1,
+        QueryScopedPartialRAPMV2,
+    ):
         raise PartialSoundAuditInvariantViolation(
             "audit rejects duck partial models"
         )
@@ -1940,18 +1944,30 @@ def _validate_inputs(
         raise PartialSoundAuditInvariantViolation(
             "model/threshold/plan identity or horizon-scope mismatch"
         )
+    if type(partial_model) is PortablePartialRAPMV1:
+        scope_valid = (
+            partial_model.query_neutral is True
+            and partial_model.acquisition_query_neutral_attested is True
+        )
+    else:
+        scope_valid = (
+            partial_model.query_neutral is False
+            and partial_model.acquisition_query_neutral_attested is False
+            and partial_model.query_local_overlay_authority_required is True
+            and partial_model.base_model_mutated is False
+            and partial_model.promotion_authorized is False
+        )
     if (
-        partial_model.query_neutral is not True
+        not scope_valid
         or partial_model.transition_closure_claimed is not False
         or partial_model.plan_certificate_claimed is not False
         or partial_model.infeasibility_claimed is not False
-        or partial_model.acquisition_query_neutral_attested is not True
         or partial_model.preregistered_allowlisted_authority_required is not True
         or partial_model.observation_authority_id
         not in PREREGISTERED_OBSERVATION_AUTHORITY_IDS
     ):
         raise PartialSoundAuditInvariantViolation(
-            "input does not satisfy the preregistered query-neutral partial-model scope"
+            "input does not satisfy its verified partial-model authority scope"
         )
     if tuple(item.name for item in thresholds.reward_weights) != tuple(
         item.name for item in partial_model.reward_feature_caps
@@ -2513,7 +2529,7 @@ def audit_partial_fixed_plan_v1(
 
 
 def _audit_verified_partial_model_v1(
-    partial_model: PortablePartialRAPMV1,
+    partial_model: PortablePartialRAPMV1 | QueryScopedPartialRAPMV2,
     observation_log: ObservationLogManifestV1,
     semantics_profile: DeterministicObservationProfileV1,
     observation_authority: PreregisteredObservationAuthorityV1,

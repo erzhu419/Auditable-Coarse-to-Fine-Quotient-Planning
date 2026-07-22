@@ -57,6 +57,7 @@ DOMAIN_TAGS = {
     "cell": "acfqp:partial-rapm-cell:v1",
     "semantic_action": "acfqp:partial-rapm-semantic-action:v1",
     "model": "acfqp:portable-partial-rapm:v1",
+    "query_scoped_model": "acfqp:query-scoped-partial-rapm:v2",
     "result": "acfqp:observation-partial-rapm-build-result:v1",
 }
 
@@ -3093,6 +3094,169 @@ class PortablePartialRAPMV1:
 
 
 @dataclass(frozen=True, slots=True)
+class QueryScopedPartialRAPMV2:
+    """Immutable query-owned refinement of one verified V0-045 base model.
+
+    The structural rows are validated with the same exact closure checks as
+    ``PortablePartialRAPMV1``, but the provenance and claim flags are distinct:
+    this model is never query neutral and can only be consumed together with
+    the complete evidence-overlay authority chain bound below.
+    """
+
+    semantics_profile_id: str
+    semantics_horizon_cap: int
+    observation_log_id: str
+    coordinate_proposal_id: str
+    observation_authority_id: str
+    acquisition_manifest_id: str
+    acquisition_coverage_id: str
+    evidence_ledger_id: str
+    coverage: ObservationCoverageV1
+    external_boundary_id: str
+    cells: tuple[PartialCellV1, ...]
+    semantic_actions: tuple[PartialSemanticActionV1, ...]
+    concretizer_rows: tuple[ConcretizerRowV1, ...]
+    ground_rows: tuple[PartialGroundRowV1, ...]
+    semantic_realizations: tuple[PartialSemanticRealizationV1, ...]
+    reward_feature_caps: tuple[RewardFeatureCapV1, ...]
+    base_model_id: str
+    observed_synthesis_result_id: str
+    source_thresholds_id: str
+    source_plan_id: str
+    failed_typed_audit_result_id: str
+    evidence_request_id: str
+    evidence_bundle_id: str
+    overlay_context_id: str
+    overlay_version: int = 1
+    evidence_kind: str = "DETERMINISTIC_QUERY_LOCAL_EXACT_OVERLAY_V1"
+    query_neutral: bool = False
+    transition_closure_claimed: bool = False
+    exact_quotient_claimed: bool = False
+    plan_certificate_claimed: bool = False
+    infeasibility_claimed: bool = False
+    acquisition_query_neutral_attested: bool = False
+    preregistered_allowlisted_authority_required: bool = True
+    query_local_overlay_authority_required: bool = True
+    base_model_mutated: bool = False
+    promotion_authorized: bool = False
+
+    def __post_init__(self) -> None:
+        for field in (
+            "base_model_id",
+            "observed_synthesis_result_id",
+            "source_thresholds_id",
+            "source_plan_id",
+            "failed_typed_audit_result_id",
+            "evidence_request_id",
+            "evidence_bundle_id",
+            "overlay_context_id",
+        ):
+            _cid(getattr(self, field), f"query-scoped model {field}")
+        _integer(self.overlay_version, "query-scoped overlay version", 1)
+        if (
+            self.overlay_version != 1
+            or self.evidence_kind != "DETERMINISTIC_QUERY_LOCAL_EXACT_OVERLAY_V1"
+            or self.query_neutral is not False
+            or self.transition_closure_claimed is not False
+            or self.exact_quotient_claimed is not False
+            or self.plan_certificate_claimed is not False
+            or self.infeasibility_claimed is not False
+            or self.acquisition_query_neutral_attested is not False
+            or self.preregistered_allowlisted_authority_required is not True
+            or self.query_local_overlay_authority_required is not True
+            or self.base_model_mutated is not False
+            or self.promotion_authorized is not False
+        ):
+            raise ObservationPartialRAPMInvariantViolation(
+                "query-scoped partial RAPM crossed its local-overlay claim boundary"
+            )
+
+        # Reuse the exact structural closure checker without serializing or
+        # retaining a misleading V1 artifact.  The temporary object is only a
+        # validator for cells, rows, concretizers, realizations and ambiguity.
+        PortablePartialRAPMV1(
+            self.semantics_profile_id,
+            self.semantics_horizon_cap,
+            self.observation_log_id,
+            self.coordinate_proposal_id,
+            self.observation_authority_id,
+            self.acquisition_manifest_id,
+            self.acquisition_coverage_id,
+            self.evidence_ledger_id,
+            self.coverage,
+            self.external_boundary_id,
+            self.cells,
+            self.semantic_actions,
+            self.concretizer_rows,
+            self.ground_rows,
+            self.semantic_realizations,
+            self.reward_feature_caps,
+        )
+
+    def _payload(self) -> dict[str, Any]:
+        return {
+            "schema": "acfqp.query_scoped_partial_rapm.v2",
+            "schema_version": TYPED_COORDINATE_SCHEMA_VERSION,
+            "semantics_profile_id": self.semantics_profile_id,
+            "semantics_horizon_cap": self.semantics_horizon_cap,
+            "observation_log_id": self.observation_log_id,
+            "coordinate_proposal_id": self.coordinate_proposal_id,
+            "observation_authority_id": self.observation_authority_id,
+            "acquisition_manifest_id": self.acquisition_manifest_id,
+            "acquisition_coverage_id": self.acquisition_coverage_id,
+            "evidence_ledger_id": self.evidence_ledger_id,
+            "coverage": self.coverage.to_document(),
+            "external_boundary_id": self.external_boundary_id,
+            "cells": [item.to_document() for item in self.cells],
+            "semantic_actions": [item.to_document() for item in self.semantic_actions],
+            "concretizer_rows": [item.to_document() for item in self.concretizer_rows],
+            "ground_rows": [item.to_document() for item in self.ground_rows],
+            "semantic_realizations": [
+                item.to_document() for item in self.semantic_realizations
+            ],
+            "reward_feature_caps": [
+                item.to_document() for item in self.reward_feature_caps
+            ],
+            "base_model_id": self.base_model_id,
+            "observed_synthesis_result_id": self.observed_synthesis_result_id,
+            "source_thresholds_id": self.source_thresholds_id,
+            "source_plan_id": self.source_plan_id,
+            "failed_typed_audit_result_id": self.failed_typed_audit_result_id,
+            "evidence_request_id": self.evidence_request_id,
+            "evidence_bundle_id": self.evidence_bundle_id,
+            "overlay_context_id": self.overlay_context_id,
+            "overlay_version": self.overlay_version,
+            "evidence_kind": self.evidence_kind,
+            "query_neutral": self.query_neutral,
+            "transition_closure_claimed": self.transition_closure_claimed,
+            "exact_quotient_claimed": self.exact_quotient_claimed,
+            "plan_certificate_claimed": self.plan_certificate_claimed,
+            "infeasibility_claimed": self.infeasibility_claimed,
+            "acquisition_query_neutral_attested": (
+                self.acquisition_query_neutral_attested
+            ),
+            "preregistered_allowlisted_authority_required": (
+                self.preregistered_allowlisted_authority_required
+            ),
+            "query_local_overlay_authority_required": (
+                self.query_local_overlay_authority_required
+            ),
+            "base_model_mutated": self.base_model_mutated,
+            "promotion_authorized": self.promotion_authorized,
+        }
+
+    @property
+    def model_id(self) -> str:
+        return _content_id("query_scoped_model", self._payload())
+
+    def to_document(self) -> dict[str, Any]:
+        return {**self._payload(), "model_id": self.model_id}
+
+    def validate_registered_support(self, state_ids: Iterable[str]) -> None:
+        self.coverage.validate_registered_support(state_ids)
+
+
+@dataclass(frozen=True, slots=True)
 class ObservationPartialRAPMBuildV1:
     semantics_profile_id: str
     semantics_horizon_cap: int
@@ -4106,6 +4270,7 @@ __all__ = [
     "PartialSemanticRealizationV1",
     "PlanningKind",
     "PortablePartialRAPMV1",
+    "QueryScopedPartialRAPMV2",
     "PREREGISTERED_OBSERVATION_AUTHORITY_IDS",
     "PreregisteredAcquisitionManifestV1",
     "PreregisteredObservationAuthorityV1",
