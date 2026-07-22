@@ -82,6 +82,13 @@
   complete H1 ground planners. It freezes native vector prefix relations and source
   amortization mechanics, not a scalar break-even, statistical generalization,
   environment-sample reduction, tax operator, or aggregate Gate.
+- **V0-050 exact identity-bound certificate memoization slice:** the unchanged
+  V0-049 ten-occurrence workload executed with an initially empty, append-only,
+  role-separated exact proof cache and a strict no-reuse control. It preserves all
+  20 plan candidates and ten independent selected-plan certificates while reducing
+  complete audit executions from 30 to nine through 21 exact-identity hits. It is not
+  cross-identity incremental proof, persistent cache authority, sample reduction,
+  total-work/economics evidence, or an aggregate Gate.
 - **Phase 3C local-recovery slice:** the V0-029 certificate-triggered, isolated,
   query-owned overlay positive control over an immutable reusable RAPM; it is not the
   aggregate Phase 3 or economics Gate.
@@ -1513,6 +1520,106 @@ Canonical identities and all acceptance/attack tests are normative in
 `specs/HELDOUT_FAMILY_AMORTIZATION.md`.
 
 Contract 1.12.0 opens no aggregate lock:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+sample_efficiency_gate_blocks_mainline = false
+```
+
+### Contract 1.13.0: exact identity-bound certificate memoization
+
+V0-050 registers schema `1.0.0`, profile
+`lmb_identity_bound_certificate_memoization_v0`, and success status
+`CERTIFIED_IDENTITY_BOUND_PROOF_REUSE_CONTROL`. It retains the exact V0-049 V5
+model, three preregistered queries, ten-occurrence order, two complete plan
+candidates per occurrence, selection/tie-break semantics, and independent
+selected-plan audit. The no-reuse arm is the unchanged V0-049 warm workload; the
+memo arm receives only the observation log, semantics profile, observation authority,
+and V0-049 promotion. It receives no kernel, source refinement result, cold result, or
+control-arm artifact, and its cache begins at the canonical empty state.
+
+Each occurrence issues two role-typed `CANDIDATE_RANKING_AUDIT` requests and one
+separately keyed `INDEPENDENT_SELECTED_PLAN_CERTIFICATE` request. A candidate result
+may be certified or may expose a failed proof frontier; the selected role must contain
+a complete fixed-plan certificate. Equal inner audit bytes do not allow one role to
+authorize the other.
+
+`FixedPlanAuditMemoKeyV1` binds the complete semantic identity of the request:
+model/base/source/protocol/promotion/eligibility; observation log, semantics and
+authority; target query; threshold binding, complete thresholds and return-bound
+proof; complete contingent plan; planner and tie break; auditor schema/profile/source;
+proof role; and, for selected certification, the frozen planner-result ID. The
+registered auditor and family-planner source digests are part of memo semantics.
+Memo semantics and planner/tie-break semantics have distinct content-ID domain tags;
+a schema string alone cannot substitute for domain separation. Logical occurrence ID
+is excluded from this semantic key only so an exact repeated
+request may hit; every use still produces a new occurrence/query/sequence/role-bound
+receipt.
+
+A trusted miss executes the full exact auditor once and freezes its execution
+attestation, complete result, optional certificate, append-only insertion, and current
+use receipt. A hit must first revalidate the live planner context, match the complete
+key exactly, and bind the earlier trusted miss in a fresh receipt. The 30-receipt
+trace is replayed from the empty-state ID. Entries cannot be overwritten, reordered,
+cross-role reused, silently replaced after a mismatch, or imported as authority from
+serialized/copied runtime objects. The memoized family execution is owner-bound
+process-local authority; an independent verifier mints new authority only after full
+semantic and trace replay.
+
+The matched goldens are:
+
+```text
+logical proof requests = 30 in each arm
+plan candidates = 20 in each arm
+independent selected-plan certificates = 10 in each arm
+no-reuse complete audit executions = 30
+memo complete audit executions = 9
+memo misses / inserts / hits / lookups = 9 / 9 / 21 / 30
+final memo entries = 9
+target transition / catalogue calls = 0 / 0 in each arm
+memo full-audit prefix = 3,6,9,9,9,9,9,9,9,9
+no-reuse full-audit prefix = 3,6,9,12,15,18,21,24,27,30
+first strict full-audit reduction prefix = 4
+```
+
+All ten threshold bindings, selected planner artifacts, outer audit artifacts,
+certificates, and cold direct reward/failure/regret results must remain byte-identical
+to the no-reuse/cold controls. The 21 avoided executions give the narrow exact-proof
+computation reduction `21/30=7/10`; lookup, identity validation, hashing, receipts,
+I/O and standalone evaluation replay remain explicit nonnegative work. No total-work,
+wall-clock, scalar-cost, or break-even conclusion follows.
+
+Changing model/source/promotion, observation authority, query, thresholds/risk/regret/
+reward/horizon/goal/return proof, plan, planner/tie break, auditor semantics/source,
+proof role, or selected planner result invalidates the key. Changing only a registered
+occurrence ID may hit the same semantic entry but must create a new bound receipt.
+Unknown occurrences, malformed content IDs, stale or poisoned entries, cross-role
+substitution, owner-copy replay, and forged cache/trace/work fields fail closed.
+
+V0-050 therefore establishes only exact-repeat proof reuse. It does not establish:
+
+```text
+incremental_proof_claimed = false
+cross_identity_reuse_claimed = false
+persistent_cross_process_cache_claimed = false
+sample_tax_operator_claimed = false
+sample_efficiency_claimed = false
+statistical_generalization_claimed = false
+overall_workload_economics_claimed = false
+```
+
+Cross-query or changed-threshold incremental proof is a later Gate. It requires a new
+identity-bound proof-dependency DAG and re-derivation artifact that enumerates reused
+obligations and recomputes every changed ancestor; it may not relax or reinterpret the
+V0-050 exact key. Canonical identities and all acceptance/attack tests are normative
+in `specs/CERTIFICATE_MEMOIZATION.md`.
+
+Contract 1.13.0 opens no aggregate lock:
 
 ```text
 official_execution_allowed = false

@@ -28,7 +28,57 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 → jointly search local value/risk choices, rebuild, or use charged fallback
 ```
 
-## Current held-out family amortization slice (V0-049)
+## Current exact identity-bound certificate memoization slice (V0-050)
+
+Contract `1.13.0`, schema `1.0.0`, and profile
+`lmb_identity_bound_certificate_memoization_v0` retain the complete V0-049
+held-out family, planner, candidate order, tie break, and independent selected-plan
+certificate, but start an isolated append-only proof cache empty. Every occurrence
+still enumerates the same two H1 plans and issues two
+`CANDIDATE_RANKING_AUDIT` requests plus one separately keyed
+`INDEPENDENT_SELECTED_PLAN_CERTIFICATE` request. Candidate audits may pass or expose
+a failed proof frontier; only the selected role must contain a complete certificate.
+
+The semantic memo key binds the model/source/promotion, observation authority, query,
+complete thresholds and return-bound proof, contingent plan, planner/tie-break,
+auditor implementation and proof role. A selected-certificate key also binds its
+planner-result identity. Logical occurrence identity is deliberately excluded from
+that semantic key so an exact repeat may hit, but every hit or miss emits a fresh
+occurrence-bound use receipt. Runtime execution authority is owner bound, the trace is
+append-only from a canonical empty state, and the independent verifier replays every
+cache transition and every source miss.
+
+Against the unchanged V0-049 no-reuse arm, the frozen result is:
+
+```text
+logical proof requests / plan candidates = 30 / 20 in both arms
+no-reuse complete audit executions       = 30
+memo complete audit executions           = 9
+memo misses / inserts / hits              = 9 / 9 / 21
+matched selected-plan certificates       = 10
+target transition / catalogue calls      = 0 / 0 in both arms
+first prefix with fewer full audits       = 4
+```
+
+The first three distinct queries populate nine role-bound entries: two distinct
+candidate-plan entries under the candidate role plus one selected-certificate entry
+per query. The remaining seven occurrences reuse them exactly. Model, query, threshold, plan, auditor,
+planner, source, promotion, authority, or proof-role changes invalidate reuse. Merely
+changing a registered occurrence creates a new receipt around the same semantic hit.
+The reduction `21/30 = 7/10` applies only to complete proof computations: lookup,
+validation, hashing, receipt, I/O, and independent replay work remain explicit.
+
+This is exact-repeat certificate memoization, not cross-identity incremental proof,
+partial Bellman reuse, persistent cross-process cache authority, a Laplace/KG-OP
+sample-tax operator, sample efficiency, statistical generalization, total-work or
+wall-clock improvement, or official economics. Official execution remains false;
+scalar cost and break-even remain null; workload-economics, counter-completeness and
+sample-efficiency Gates remain `NOT_RUN`. The next proof-reuse Gate requires a new
+identity-bound proof-dependency DAG and changed-ancestor re-derivation artifact; it
+may not relax the V0-050 exact key. Full identities and attacks are normative in
+`specs/CERTIFICATE_MEMOIZATION.md`.
+
+## Historical held-out family amortization slice (V0-049)
 
 Contract `1.12.0`, schema `1.0.0`, and profile
 `lmb_preregistered_h1_heldout_family_amortization_v0` extend V0-048 from one

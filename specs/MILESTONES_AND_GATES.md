@@ -75,6 +75,12 @@
   source-blind complete H1 cold planner. It establishes exact native prefix vectors
   and scoped multi-occurrence reuse, not a scalar break-even, sample-efficiency,
   statistical-transfer, tax-operator, or aggregate Gate.
+- **V0-050 exact identity-bound certificate memoization slice:** the V0-049 workload
+  with an initially empty append-only proof cache, strict no-reuse arm, role-separated
+  requests, occurrence-bound receipts and independent trace replay. It preserves 20
+  candidate plans and ten certificates while replacing 30 repeated complete audits
+  with nine misses and 21 exact hits. It is not cross-identity incremental proof,
+  sample-tax reduction, total-work/economics evidence, or an aggregate Gate.
 - **Phase 3D general local-recovery Gate:** the V0-030 finite, cap-aware positive
   control that closes joint value/risk composition, slack-aware causal localization,
   and sparse worker authority. Its pass is not aggregate Phase 3 or economics.
@@ -1214,6 +1220,107 @@ identities are normative in `specs/HELDOUT_FAMILY_AMORTIZATION.md`.
 
 All aggregate locks remain unchanged; scalar and break-even stay null and sample
 efficiency remains non-blocking and `NOT_RUN`.
+
+### V0-050 exact identity-bound certificate memoization gate
+
+Contract `1.13.0` registers
+`lmb_identity_bound_certificate_memoization_v0` and the success status
+`CERTIFIED_IDENTITY_BOUND_PROOF_REUSE_CONTROL`. It executes the unchanged V0-049
+ten-occurrence workload twice: the historical warm path is the strict no-reuse arm,
+while the memo arm begins from a canonical empty cache and receives no kernel, source
+result, cold result, or control-arm artifact. Both arms must enumerate the same two
+plans for each occurrence and preserve the independent selected-plan audit.
+
+Every occurrence freezes three role-typed requests:
+
+```text
+CANDIDATE_RANKING_AUDIT x 2
+INDEPENDENT_SELECTED_PLAN_CERTIFICATE x 1
+```
+
+The second role must certify the selected plan and cannot reuse a candidate-role
+entry even if its inner audit bytes match. The semantic key binds all model/source/
+promotion, observation-authority, query, threshold/return-proof, plan, planner,
+auditor/source, and role identities; the selected role additionally binds the
+planner-result ID. Occurrence identity is excluded only from the semantic key and is
+mandatory in each fresh use receipt.
+
+The required totals are:
+
+```text
+queries / occurrences = 3 / 10
+plan candidates = 20 in both arms
+logical audit requests = 30 in both arms
+no-reuse full audit executions = 30
+memo full audit executions = 9
+memo misses / inserts / hits / lookups = 9 / 9 / 21 / 30
+final cache entries = 9
+matched selected-plan certificates = 10
+target transitions / catalogues = 0 / 0 in both arms
+```
+
+The exact full-audit prefix curves are:
+
+| Prefix N | No reuse | Memo | Memo hits |
+|---:|---:|---:|---:|
+| 1 | 3 | 3 | 0 |
+| 2 | 6 | 6 | 0 |
+| 3 | 9 | 9 | 0 |
+| 4 | 12 | 9 | 3 |
+| 5 | 15 | 9 | 6 |
+| 6 | 18 | 9 | 9 |
+| 7 | 21 | 9 | 12 |
+| 8 | 24 | 9 | 15 |
+| 9 | 27 | 9 | 18 |
+| 10 | 30 | 9 | 21 |
+
+The Gate passes only if:
+
+1. V0-049 is independently replayed and remains the unchanged no-reuse control;
+2. the memo arm begins empty and has no source/cold/control/kernel input;
+3. both arms enumerate the same 20 candidates in the same order and freeze the same
+   ten planner, threshold-binding, outer-audit and certificate artifacts;
+4. candidate and selected-certificate roles remain distinct and selected-role entries
+   always contain a complete fixed-plan certificate;
+5. exactly nine trusted misses execute the full auditor, while all 21 hits reference
+   an earlier matching miss and execute no full audit;
+6. all 30 use receipts bind occurrence, query, sequence, role, key, entry, payload,
+   cache pre/post states and source-miss provenance;
+7. append-only replay from the empty state proves no overwrite, missing entry,
+   reordering, cross-role reuse or untraced final entry;
+8. changing model, source/promotion, authority, query, thresholds, return proof, plan,
+   planner/tie-break, auditor/source, role, or selected result causes a cache miss;
+9. changing only a registered occurrence may hit but emits a fresh bound receipt;
+10. malformed IDs, stale/poisoned entries, owner-copy authority, cache/trace/work
+    forgery and unregistered occurrences fail closed;
+11. native totals and every prefix row are reconstructed from receipts, and memo,
+    no-reuse and cold result artifacts match exactly;
+12. canonical IDs and full independent replay are byte-identical.
+
+Passing proves only exact-repeat proof memoization. The `21/30=7/10` reduction is a
+count of avoided complete audit computations, not a total-work or wall-clock ratio:
+cache validation, hashing, receipts, I/O and standalone replay remain nonnegative
+work. It does not prove cross-query/changed-threshold incremental proof, persistent
+cross-process reuse, partial Bellman reuse, sample efficiency, a Laplace/KG-OP tax
+operator, statistical generalization, scale, official economics, or an aggregate
+Gate.
+
+The next proof-reuse Gate requires an identity-bound proof-dependency DAG and a
+re-derivation artifact that identifies reusable obligations and recomputes every
+changed ancestor. The V0-050 exact key may not be weakened to simulate that result.
+Detailed identities are normative in `specs/CERTIFICATE_MEMOIZATION.md`.
+
+All aggregate locks remain unchanged:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+sample_efficiency_gate_blocks_mainline = false
+```
 
 
 ### Phase 3C certificate-triggered local-recovery gate
