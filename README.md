@@ -28,7 +28,44 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 → jointly search local value/risk choices, rebuild, or use charged fallback
 ```
 
-## Current multi-step query-local refinement slice (V0-047)
+## Current preregistered cross-query promotion slice (V0-048)
+
+Contract `1.11.0`, schema `1.0.0`, and profile
+`lmb_preregistered_h1_cross_query_promotion_v0` advance the central loop from
+within-query refinement to a distinct held-out query. Before V0-047 source
+acquisition, the protocol freezes an H1 target at LMB state
+`removed_mask=11, buffer=(1,2)`. That state is absent from the V0-045
+observation graph and differs from the V0-047 H2 source initial state. The
+already-frozen source runner has no target or promotion input.
+
+Promotion independently replays the complete V0-047 result and selects all 20
+final rows, all 13 exact evidence records, and all three boundary catalogues.
+It forbids a target-filtered subset. The new
+`PreregisteredReusablePartialRAPMV4` is a separate immutable epoch: V0-045 is
+not mutated, source acquisition remains explicitly non-query-neutral, and reuse
+is authorized only for the preregistered initial state with horizon at most one.
+There is no global closure, exact-quotient, or unrestricted-reuse claim.
+
+The held-out consumer accepts no kernel or transition interface. It enumerates
+two H1 abstract plans and independently certifies reward `1`, failure `0`, and
+normalized regret `0` with zero warm-target transition/catalogue/ground-optimizer
+calls. A separate evaluation-only cold trace makes one direct catalogue call and
+three transitions; their outcomes exactly match the promoted source evidence.
+Source acquisition (`13+3`), promotion replay (`13+3`), warm target (`0+0`), and
+cold target evidence (`3+1`) remain separate work lanes.
+
+This is one authentic preregistered cross-query reuse/promotion positive control,
+not statistical generalization or a sample-efficiency result. Source amortization
+and a complete cold-start planner are not included, so scalar cost and break-even
+remain null and the sample-efficiency Gate remains `NOT_RUN`. The next construction
+Gate is a preregistered family of held-out logical occurrences with promotion
+amortization and matched end-to-end cold baselines. Those traces—not an LLM—will
+determine whether a later Laplace-style heuristic operator or KG-OP-style
+offline/online prior should target coordinate, transition, certificate, or model-
+verification cost. Full identities and acceptance tests are in
+`specs/CROSS_QUERY_PROMOTION.md`.
+
+## Historical multi-step query-local refinement slice (V0-047)
 
 Contract `1.10.0`, implementation schema `1.0.0`, and profile
 `lmb_h2_multistep_query_local_exact_refinement_v0` execute the first genuine
@@ -64,11 +101,9 @@ nonpromotable, non-query-neutral, non-exact, and not globally transition-closed.
 This is real within-query coordinate reuse, not held-out reuse, learned dynamics,
 general causal minimality, sample saving, or aggregate-Gate completion.
 
-The next construction Gate is preregistered cross-query/held-out reuse and
-promotion without query-local leakage, together with matched acquisition traces.
-Only those measured traces may motivate a Laplace-semi-MDP-style heuristic
-operator or KG-OP-style offline/online meta-prior. Full identities and acceptance
-tests are in `specs/MULTISTEP_QUERY_LOCAL_REFINEMENT.md`.
+V0-048 now executes the next distinct cross-query promotion control; V0-047 remains
+the immutable source regression and is not retroactively relabelled as reusable.
+Its full identities remain in `specs/MULTISTEP_QUERY_LOCAL_REFINEMENT.md`.
 
 ## Historical certificate-triggered H1 refinement slice (V0-046)
 

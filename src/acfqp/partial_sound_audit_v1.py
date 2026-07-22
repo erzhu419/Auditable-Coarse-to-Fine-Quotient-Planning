@@ -36,6 +36,7 @@ from acfqp.observation_partial_rapm_v1 import (
     PartialSemanticActionV1,
     PartialSemanticRealizationV1,
     PlanningKind,
+    PreregisteredReusablePartialRAPMV4,
     PreregisteredObservationAuthorityV1,
     PortablePartialRAPMV1,
     QueryScopedPartialRAPMV2,
@@ -1920,6 +1921,7 @@ def _validate_inputs(
         PortablePartialRAPMV1
         | QueryScopedPartialRAPMV2
         | QueryScopedPartialRAPMV3
+        | PreregisteredReusablePartialRAPMV4
     ),
     thresholds: FrozenPartialAuditThresholdsV1,
     contingent_plan: FrozenContingentAbstractPlanV1,
@@ -1933,6 +1935,7 @@ def _validate_inputs(
         PortablePartialRAPMV1,
         QueryScopedPartialRAPMV2,
         QueryScopedPartialRAPMV3,
+        PreregisteredReusablePartialRAPMV4,
     ):
         raise PartialSoundAuditInvariantViolation(
             "audit rejects duck partial models"
@@ -1955,13 +1958,28 @@ def _validate_inputs(
             partial_model.query_neutral is True
             and partial_model.acquisition_query_neutral_attested is True
         )
-    else:
+    elif type(partial_model) in (QueryScopedPartialRAPMV2, QueryScopedPartialRAPMV3):
         scope_valid = (
             partial_model.query_neutral is False
             and partial_model.acquisition_query_neutral_attested is False
             and partial_model.query_local_overlay_authority_required is True
             and partial_model.base_model_mutated is False
             and partial_model.promotion_authorized is False
+        )
+    else:
+        initial_state_ids = {
+            item.state_id for item in thresholds.initial_state_distribution
+        }
+        scope_valid = (
+            partial_model.query_neutral is True
+            and partial_model.acquisition_query_neutral_attested is False
+            and partial_model.promotion_scope_query_neutral_attested is True
+            and partial_model.query_local_overlay_authority_required is False
+            and partial_model.base_model_mutated is False
+            and partial_model.promotion_authorized is True
+            and partial_model.unrestricted_reuse_claimed is False
+            and thresholds.horizon <= partial_model.reuse_horizon_cap
+            and initial_state_ids <= set(partial_model.authorized_initial_state_ids)
         )
     if (
         not scope_valid
@@ -2539,6 +2557,7 @@ def _audit_verified_partial_model_v1(
         PortablePartialRAPMV1
         | QueryScopedPartialRAPMV2
         | QueryScopedPartialRAPMV3
+        | PreregisteredReusablePartialRAPMV4
     ),
     observation_log: ObservationLogManifestV1,
     semantics_profile: DeterministicObservationProfileV1,

@@ -59,6 +59,7 @@ DOMAIN_TAGS = {
     "model": "acfqp:portable-partial-rapm:v1",
     "query_scoped_model": "acfqp:query-scoped-partial-rapm:v2",
     "query_scoped_multistep_model": "acfqp:query-scoped-partial-rapm:v3",
+    "promoted_reusable_model": "acfqp:preregistered-reusable-partial-rapm:v4",
     "result": "acfqp:observation-partial-rapm-build-result:v1",
 }
 
@@ -3457,6 +3458,224 @@ class QueryScopedPartialRAPMV3:
 
 
 @dataclass(frozen=True, slots=True)
+class PreregisteredReusablePartialRAPMV4:
+    """Promoted exact-row model reusable only inside a frozen query scope.
+
+    The source acquisition may have been query directed, so V4 does not claim
+    query-neutral acquisition.  A separate promotion authority verifies the
+    complete source model and authorizes reuse for an explicit initial-state
+    set and horizon cap.  The reusable V0-045 base is not mutated.
+    """
+
+    semantics_profile_id: str
+    semantics_horizon_cap: int
+    observation_log_id: str
+    coordinate_proposal_id: str
+    observation_authority_id: str
+    acquisition_manifest_id: str
+    acquisition_coverage_id: str
+    evidence_ledger_id: str
+    coverage: ObservationCoverageV1
+    external_boundary_id: str
+    cells: tuple[PartialCellV1, ...]
+    semantic_actions: tuple[PartialSemanticActionV1, ...]
+    concretizer_rows: tuple[ConcretizerRowV1, ...]
+    ground_rows: tuple[PartialGroundRowV1, ...]
+    semantic_realizations: tuple[PartialSemanticRealizationV1, ...]
+    reward_feature_caps: tuple[RewardFeatureCapV1, ...]
+    base_model_id: str
+    promoted_from_model_id: str
+    source_refinement_result_id: str
+    promotion_protocol_id: str
+    promotion_eligibility_proof_id: str
+    promoted_ground_row_ids: tuple[str, ...]
+    source_exact_evidence_ids: tuple[str, ...]
+    authorized_initial_state_ids: tuple[str, ...]
+    reuse_horizon_cap: int
+    promotion_epoch: int = 1
+    evidence_kind: str = "PREREGISTERED_CROSS_QUERY_PROMOTED_EXACT_ROWS_V1"
+    query_neutral: bool = True
+    transition_closure_claimed: bool = False
+    exact_quotient_claimed: bool = False
+    plan_certificate_claimed: bool = False
+    infeasibility_claimed: bool = False
+    acquisition_query_neutral_attested: bool = False
+    promotion_scope_query_neutral_attested: bool = True
+    preregistered_allowlisted_authority_required: bool = True
+    query_local_overlay_authority_required: bool = False
+    boundary_catalogue_authority_required: bool = True
+    base_model_mutated: bool = False
+    promotion_authorized: bool = True
+    unrestricted_reuse_claimed: bool = False
+
+    def __post_init__(self) -> None:
+        for field in (
+            "base_model_id",
+            "promoted_from_model_id",
+            "source_refinement_result_id",
+            "promotion_protocol_id",
+            "promotion_eligibility_proof_id",
+        ):
+            _cid(getattr(self, field), f"promoted reusable model {field}")
+        for values, field in (
+            (self.promoted_ground_row_ids, "promoted_ground_row_ids"),
+            (self.source_exact_evidence_ids, "source_exact_evidence_ids"),
+            (self.authorized_initial_state_ids, "authorized_initial_state_ids"),
+        ):
+            if (
+                type(values) is not tuple
+                or not values
+                or any(type(item) is not str for item in values)
+                or values != tuple(sorted(set(values)))
+            ):
+                raise ObservationPartialRAPMInvariantViolation(
+                    f"promoted reusable model {field} must be unique and sorted"
+                )
+            for item in values:
+                _cid(item, f"promoted reusable model {field}")
+        _integer(self.reuse_horizon_cap, "promoted reuse horizon cap", 1)
+        _integer(self.promotion_epoch, "promotion epoch", 1)
+        if (
+            self.promotion_epoch != 1
+            or self.reuse_horizon_cap != 1
+            or self.reuse_horizon_cap > self.semantics_horizon_cap
+            or len(self.source_exact_evidence_ids) != 13
+            or self.promoted_ground_row_ids
+            != self.coverage.observed_ground_row_ids
+            or self.coverage.missing_ground_row_ids
+            or len(self.promoted_ground_row_ids) != 20
+            or len(self.authorized_initial_state_ids) != 1
+        ):
+            raise ObservationPartialRAPMInvariantViolation(
+                "promoted reusable model coverage or frozen scope changed"
+            )
+        active_state_ids = {
+            state_id
+            for cell in self.cells
+            if cell.planning_kind is PlanningKind.ACTIVE
+            for state_id in cell.member_state_ids
+        }
+        if not set(self.authorized_initial_state_ids) <= active_state_ids:
+            raise ObservationPartialRAPMInvariantViolation(
+                "promoted reuse scope contains an unknown or terminal state"
+            )
+        if (
+            self.evidence_kind
+            != "PREREGISTERED_CROSS_QUERY_PROMOTED_EXACT_ROWS_V1"
+            or self.query_neutral is not True
+            or self.transition_closure_claimed is not False
+            or self.exact_quotient_claimed is not False
+            or self.plan_certificate_claimed is not False
+            or self.infeasibility_claimed is not False
+            or self.acquisition_query_neutral_attested is not False
+            or self.promotion_scope_query_neutral_attested is not True
+            or self.preregistered_allowlisted_authority_required is not True
+            or self.query_local_overlay_authority_required is not False
+            or self.boundary_catalogue_authority_required is not True
+            or self.base_model_mutated is not False
+            or self.promotion_authorized is not True
+            or self.unrestricted_reuse_claimed is not False
+        ):
+            raise ObservationPartialRAPMInvariantViolation(
+                "promoted reusable model crossed its scoped-promotion boundary"
+            )
+
+        PortablePartialRAPMV1(
+            self.semantics_profile_id,
+            self.semantics_horizon_cap,
+            self.observation_log_id,
+            self.coordinate_proposal_id,
+            self.observation_authority_id,
+            self.acquisition_manifest_id,
+            self.acquisition_coverage_id,
+            self.evidence_ledger_id,
+            self.coverage,
+            self.external_boundary_id,
+            self.cells,
+            self.semantic_actions,
+            self.concretizer_rows,
+            self.ground_rows,
+            self.semantic_realizations,
+            self.reward_feature_caps,
+        )
+
+    def _payload(self) -> dict[str, Any]:
+        return {
+            "schema": "acfqp.preregistered_reusable_partial_rapm.v4",
+            "schema_version": TYPED_COORDINATE_SCHEMA_VERSION,
+            "semantics_profile_id": self.semantics_profile_id,
+            "semantics_horizon_cap": self.semantics_horizon_cap,
+            "observation_log_id": self.observation_log_id,
+            "coordinate_proposal_id": self.coordinate_proposal_id,
+            "observation_authority_id": self.observation_authority_id,
+            "acquisition_manifest_id": self.acquisition_manifest_id,
+            "acquisition_coverage_id": self.acquisition_coverage_id,
+            "evidence_ledger_id": self.evidence_ledger_id,
+            "coverage": self.coverage.to_document(),
+            "external_boundary_id": self.external_boundary_id,
+            "cells": [item.to_document() for item in self.cells],
+            "semantic_actions": [item.to_document() for item in self.semantic_actions],
+            "concretizer_rows": [item.to_document() for item in self.concretizer_rows],
+            "ground_rows": [item.to_document() for item in self.ground_rows],
+            "semantic_realizations": [
+                item.to_document() for item in self.semantic_realizations
+            ],
+            "reward_feature_caps": [
+                item.to_document() for item in self.reward_feature_caps
+            ],
+            "base_model_id": self.base_model_id,
+            "promoted_from_model_id": self.promoted_from_model_id,
+            "source_refinement_result_id": self.source_refinement_result_id,
+            "promotion_protocol_id": self.promotion_protocol_id,
+            "promotion_eligibility_proof_id": self.promotion_eligibility_proof_id,
+            "promoted_ground_row_ids": list(self.promoted_ground_row_ids),
+            "source_exact_evidence_ids": list(self.source_exact_evidence_ids),
+            "authorized_initial_state_ids": list(self.authorized_initial_state_ids),
+            "reuse_horizon_cap": self.reuse_horizon_cap,
+            "promotion_epoch": self.promotion_epoch,
+            "evidence_kind": self.evidence_kind,
+            "query_neutral": self.query_neutral,
+            "transition_closure_claimed": self.transition_closure_claimed,
+            "exact_quotient_claimed": self.exact_quotient_claimed,
+            "plan_certificate_claimed": self.plan_certificate_claimed,
+            "infeasibility_claimed": self.infeasibility_claimed,
+            "acquisition_query_neutral_attested": (
+                self.acquisition_query_neutral_attested
+            ),
+            "promotion_scope_query_neutral_attested": (
+                self.promotion_scope_query_neutral_attested
+            ),
+            "preregistered_allowlisted_authority_required": (
+                self.preregistered_allowlisted_authority_required
+            ),
+            "query_local_overlay_authority_required": (
+                self.query_local_overlay_authority_required
+            ),
+            "boundary_catalogue_authority_required": (
+                self.boundary_catalogue_authority_required
+            ),
+            "base_model_mutated": self.base_model_mutated,
+            "promotion_authorized": self.promotion_authorized,
+            "unrestricted_reuse_claimed": self.unrestricted_reuse_claimed,
+        }
+
+    @property
+    def model_id(self) -> str:
+        return _content_id("promoted_reusable_model", self._payload())
+
+    def to_document(self) -> dict[str, Any]:
+        return {**self._payload(), "model_id": self.model_id}
+
+    def validate_registered_support(self, state_ids: Iterable[str]) -> None:
+        requested = tuple(state_ids)
+        self.coverage.validate_registered_support(requested)
+        if not set(requested) <= set(self.authorized_initial_state_ids):
+            raise ObservationPartialRAPMInvariantViolation(
+                "state support lies outside the preregistered promotion scope"
+            )
+
+
+@dataclass(frozen=True, slots=True)
 class ObservationPartialRAPMBuildV1:
     semantics_profile_id: str
     semantics_horizon_cap: int
@@ -4472,6 +4691,7 @@ __all__ = [
     "PortablePartialRAPMV1",
     "QueryScopedPartialRAPMV2",
     "QueryScopedPartialRAPMV3",
+    "PreregisteredReusablePartialRAPMV4",
     "PREREGISTERED_OBSERVATION_AUTHORITY_IDS",
     "PreregisteredAcquisitionManifestV1",
     "PreregisteredObservationAuthorityV1",

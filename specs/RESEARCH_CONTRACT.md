@@ -70,6 +70,12 @@
   model-only replanning, frontier movement, and independent final certification.
   It is not cross-query promotion, learned/statistical dynamics, general causal
   minimality, sample saving, or an aggregate Gate.
+- **V0-048 preregistered cross-query promotion slice:** a target-blind V0-047
+  source acquisition followed by complete-model promotion into a scope-limited V4
+  reusable epoch and a distinct held-out H1 model-only certificate. A matched cold
+  evidence trace remains evaluation-only. It is not unrestricted promotion,
+  statistical generalization, learned dynamics, sample efficiency, or an aggregate
+  Gate.
 - **Phase 3C local-recovery slice:** the V0-029 certificate-triggered, isolated,
   query-owned overlay positive control over an immutable reusable RAPM; it is not the
   aggregate Phase 3 or economics Gate.
@@ -1342,6 +1348,102 @@ COUNTER_COMPLETENESS_GATE_NOT_RUN
 SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
+
+### Contract 1.11.0: preregistered cross-query promotion and held-out reuse
+
+V0-048 registers schema `1.0.0` and profile
+`lmb_preregistered_h1_cross_query_promotion_v0`. Before any V0-047 result or
+kernel is supplied, preregistration freezes a distinct H1 target at LMB state
+`removed_mask=11, buffer=(1,2)`, with zero risk and normalized-regret
+tolerances. The state is absent from the V0-045 observation registry and differs
+from the V0-047 H2 source initial state. The preregistration API has no source-
+refinement result or kernel; the already-frozen source runner has no target or
+promotion-protocol parameter.
+
+The promotion authority independently replays the complete V0-047 chain. It
+must select the complete final model—20 observed rows, all 13 exact evidence
+records, and all three boundary catalogues—with zero target-filtered rows. The
+V0-045 base remains byte-identical. The resulting
+`PreregisteredReusablePartialRAPMV4` is a new immutable epoch, not an in-place
+mutation. It binds the source result, protocol, eligibility proof, promoted row
+set, exact evidence set, authorized initial state, and reuse horizon cap one.
+
+V4 must retain:
+
+```text
+query_neutral = true
+acquisition_query_neutral_attested = false
+promotion_scope_query_neutral_attested = true
+promotion_authorized = true
+base_model_mutated = false
+unrestricted_reuse_claimed = false
+transition_closure_claimed = false
+exact_quotient_claimed = false
+```
+
+Thus the promoted transition facts are query-neutral only inside the registered
+reuse scope; their source acquisition is not retroactively declared query neutral.
+The generic auditor rejects target distributions or horizons outside that scope.
+
+The held-out consumer receives the log/profile/authority and promoted build only.
+It accepts no kernel, transition callback, target override, ground solver, J0, or
+caller cap. It evaluates two H1 deterministic abstract plans and independently
+certifies:
+
+```text
+reward lower / upper = 1 / 1
+unrestricted reward upper = 1
+failure lower / upper = 0 / 0
+normalized regret = 0
+external coverage certified = true
+warm target transition / catalogue calls = 0 / 0
+direct ground-optimizer calls = 0
+```
+
+A distinct evaluation-only cold trace requests the target's complete three-action
+catalogue once and executes its three transitions. One action gives the safe
+one-match reward and two terminate in failure. Every outcome must exactly equal its
+promoted source evidence. The three `step`-internal legality checks are included in
+the transition calls and are not additional catalogue acquisition.
+
+The four work lanes remain separate:
+
+```text
+source V0-047 acquisition        = 13 transitions + 3 catalogues
+promotion independent replay     = 13 transitions + 3 catalogues
+warm held-out operational query  = 0 transitions + 0 catalogues
+cold held-out evaluation trace   = 3 transitions + 1 catalogue
+```
+
+The cold trace is evidence acquisition only; it does not claim an end-to-end cold
+planner, include source-cost amortization, or establish sample efficiency. Official
+scalar cost and break-even remain null and `SAMPLE_EFFICIENCY_GATE_NOT_RUN` remains
+non-blocking.
+
+Contract 1.11.0 closes one preregistered cross-query scoped-promotion positive
+control. It does not prove unrestricted reuse, arbitrary-support/horizon promotion,
+statistical or cross-domain generalization, learned dynamics, feature invention,
+portable observer truth, scale, sample saving, or an aggregate Gate. The next
+construction Gate is a preregistered family of held-out logical occurrences with
+promotion amortization and matched end-to-end cold baselines. Those traces will
+identify the real tax before any Laplace-style operator or KG-OP-style meta-prior is
+frozen.
+
+Canonical identities, exact claim boundaries, and acceptance/attack tests are
+normative in `specs/CROSS_QUERY_PROMOTION.md`.
+
+Contract 1.11.0 opens no aggregate lock:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+sample_efficiency_gate_blocks_mainline = false
+```
+
 
 ## Pseudocode / schema
 

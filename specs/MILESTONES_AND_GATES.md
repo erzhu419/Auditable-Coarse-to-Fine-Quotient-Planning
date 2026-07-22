@@ -65,6 +65,11 @@
   fixed-coordinate reuse, immutable V3 epochs, model-only replanning, frontier
   movement, and final independent certification. It is not cross-query promotion,
   learned dynamics, sample saving or an aggregate Gate.
+- **V0-048 preregistered cross-query promotion slice:** complete V0-047 final-model
+  promotion into a scope-limited reusable V4 epoch, followed by a distinct held-out
+  H1 model-only certificate and evaluation-only cold evidence trace. It is not
+  unrestricted promotion, statistical generalization, sample efficiency, or an
+  aggregate Gate.
 - **Phase 3D general local-recovery Gate:** the V0-030 finite, cap-aware positive
   control that closes joint value/risk composition, slack-aware causal localization,
   and sparse worker authority. Its pass is not aggregate Phase 3 or economics.
@@ -1049,6 +1054,80 @@ traces. Detailed identities and boundaries are normative in
 
 All official/scalar/economics/counter/sample locks remain unchanged, with sample
 efficiency non-blocking.
+
+### V0-048 preregistered cross-query promotion gate
+
+Contract `1.11.0` registers
+`lmb_preregistered_h1_cross_query_promotion_v0`. The source is the complete V0-047
+H2 result. Before source acquisition, a target-blind preregistration freezes a
+distinct H1 query at state `removed_mask=11, buffer=(1,2)`. The target is absent
+from V0-045 and cannot enter the frozen V0-047 source-runner API.
+
+Promotion passes only when independent replay proves:
+
+```text
+source final observed / missing rows = 20 / 0
+complete promoted rows               = 20
+source exact evidence rows           = 13
+source boundary catalogues           = 3
+target rows inside complete model    = 3
+target-filtered rows                  = 0
+base mutation                         = false
+```
+
+The promoted V4 epoch retains nonneutral acquisition provenance and authorizes reuse
+only for the registered target state with horizon at most one. It may not claim global
+closure, exact quotient, unrestricted reuse, plan certification, or infeasibility.
+
+The warm held-out consumer has no kernel/transition/ground-solver input. Acceptance
+goldens are:
+
+```text
+held-out candidate plans / audits     = 2 / 2
+reward lower / upper                  = 1 / 1
+unrestricted reward upper             = 1
+failure lower / upper                 = 0 / 0
+normalized regret                     = 0
+external coverage certified           = true
+warm transition / catalogue calls     = 0 / 0
+warm ground-optimizer calls            = 0
+```
+
+The separate matched cold evidence lane must record:
+
+```text
+direct catalogue calls                = 1
+transition calls                       = 3
+step-internal legality checks          = 3
+safe-match / failure outcomes          = 1 / 2
+ground search / optimizer calls        = 0 / 0
+evaluation-only                        = true
+end-to-end cold planner claimed        = false
+```
+
+The Gate passes only if:
+
+1. preregistration sees neither the V0-047 result nor a kernel;
+2. the source runner has no target/protocol input;
+3. source and target identities are distinct and frozen before source acquisition;
+4. promotion selects all 20 rows and rejects target filtering;
+5. V4 scope, provenance, and conservative claim flags cannot be escalated;
+6. the held-out query certifies `1/0/0` with zero target ground work;
+7. cold evidence exactly matches the promoted source rows;
+8. source, promotion replay, warm target, and cold evaluation work remain separate;
+9. one direct and three step-internal catalogue accesses are instrumentally verified;
+10. canonical IDs and full independent replay are byte-identical.
+
+Passing yields `CERTIFIED_PREREGISTERED_HELD_OUT_REUSE`. It closes one scoped
+cross-query reuse/promotion positive control, not unrestricted promotion, statistical
+generalization, learned dynamics, sample efficiency, scale, economics, or an aggregate
+Gate. Source amortization and a matched end-to-end cold planner remain open. The next
+Gate is a preregistered family of held-out occurrences with those complete baselines.
+Detailed identities are normative in `specs/CROSS_QUERY_PROMOTION.md`.
+
+All official/scalar/economics/counter/sample locks remain unchanged; sample efficiency
+is still non-blocking.
+
 
 ### Phase 3C certificate-triggered local-recovery gate
 
