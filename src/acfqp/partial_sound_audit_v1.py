@@ -1,12 +1,12 @@
 """Robust fixed-plan auditing over a query-neutral partial RAPM.
 
-This consumer first reconstructs a ``PortablePartialRAPMV1`` from the complete
-V0-042 source graph, then accepts frozen query thresholds,
-and one deterministic finite-horizon contingent abstract plan.  It never
-receives a transition API, a ground planner, or a ground feasibility oracle.
-Its positive claim is conditional on the model's preregistered observation
-authority.  It neither searches for a policy nor proves optimality or
-infeasibility.
+The legacy boundary reconstructs a ``PortablePartialRAPMV1`` from the complete
+manual V0-042 source graph.  The typed boundary first replays a complete V0-045
+synthesis result.  Each then accepts frozen query thresholds and one
+deterministic finite-horizon contingent abstract plan.  Neither receives a
+transition API, ground planner, or ground feasibility oracle.  A positive
+claim is conditional on the retained observation authority; this module does
+not search for a policy or prove optimality or infeasibility.
 
 The V0-042 ambiguity contract is a *joint* simplex.  Consequently each Bellman
 row charges ``unknown_atom_mass_sum`` exactly once.  Destination marginal
@@ -22,12 +22,14 @@ from fractions import Fraction
 import hashlib
 from typing import Any, Iterable, Mapping
 
+import acfqp.observed_typed_coordinate_synthesis_v1 as observed_synthesis_v1
 from acfqp.observation_partial_rapm_v1 import (
     AmbiguityPayloadV1,
     DeterministicObservationProfileV1,
     FrozenCoordinateProposalV1,
     JointOutcomeKind,
     ObservationLogManifestV1,
+    ObservationPartialRAPMInvariantViolation,
     ObservationPartialRAPMBuildV1,
     PREREGISTERED_OBSERVATION_AUTHORITY_IDS,
     PartialCellV1,
@@ -42,6 +44,7 @@ from acfqp.phase3e_ids import canonical_json_bytes, parse_content_id
 
 
 SCHEMA_VERSION = "1.1.0"
+TYPED_AUDIT_SCHEMA_VERSION = "1.2.0"
 PROFILE_KEY = "partial_fixed_plan_robust_audit_v0"
 ROBUST_BELLMAN_FORMULA_ID = "partial-joint-simplex-fixed-plan-bellman-v1"
 UNRESTRICTED_UPPER_FORMULA_ID = "partial-joint-simplex-unrestricted-ground-upper-v1"
@@ -86,6 +89,7 @@ DOMAIN_TAGS = {
     "certificate": "acfqp:partial-fixed-plan-certificate:v1",
     "frontier": "acfqp:partial-failed-proof-frontier:v1",
     "result": "acfqp:partial-sound-audit-result:v1",
+    "typed_result": "acfqp:typed-partial-sound-audit-result:v2",
 }
 
 if len(DOMAIN_TAGS) != len(set(DOMAIN_TAGS.values())):  # pragma: no cover
@@ -1703,6 +1707,69 @@ class PartialSoundAuditResultV1:
 
 
 @dataclass(frozen=True, slots=True)
+class TypedPartialSoundAuditResultV2:
+    """A source-complete binding around the byte-stable V0-043 result.
+
+    The nested V1 result remains unchanged.  This wrapper makes the retained
+    V0-045 synthesis authority, its certificate, coordinate proposal, build,
+    and resulting portable model explicit in the audit's content identity.
+    """
+
+    observed_synthesis_result_id: str
+    observed_synthesis_certificate_id: str
+    coordinate_proposal_id: str
+    partial_build_result_id: str
+    partial_model_id: str
+    audit_result: PartialSoundAuditResultV1
+    source_authority_kind: str = "RETAINED_V0045_FULL_SYNTHESIS_REPLAY_V1"
+
+    def __post_init__(self) -> None:
+        for field in (
+            "observed_synthesis_result_id",
+            "observed_synthesis_certificate_id",
+            "coordinate_proposal_id",
+            "partial_build_result_id",
+            "partial_model_id",
+        ):
+            _cid(getattr(self, field), f"typed audit {field}")
+        if type(self.audit_result) is not PartialSoundAuditResultV1:
+            raise PartialSoundAuditInvariantViolation(
+                "typed audit wrapper rejects duck inner results"
+            )
+        if self.audit_result.partial_model_id != self.partial_model_id:
+            raise PartialSoundAuditInvariantViolation(
+                "typed audit wrapper/model identity mismatch"
+            )
+        if self.source_authority_kind != "RETAINED_V0045_FULL_SYNTHESIS_REPLAY_V1":
+            raise PartialSoundAuditInvariantViolation(
+                "typed audit wrapper relaxed its retained-source authority"
+            )
+
+    def _payload(self) -> dict[str, Any]:
+        return {
+            "schema": "acfqp.typed_partial_sound_audit_result.v2",
+            "schema_version": TYPED_AUDIT_SCHEMA_VERSION,
+            "profile_key": PROFILE_KEY,
+            "observed_synthesis_result_id": self.observed_synthesis_result_id,
+            "observed_synthesis_certificate_id": (
+                self.observed_synthesis_certificate_id
+            ),
+            "coordinate_proposal_id": self.coordinate_proposal_id,
+            "partial_build_result_id": self.partial_build_result_id,
+            "partial_model_id": self.partial_model_id,
+            "audit_result": self.audit_result.to_document(),
+            "source_authority_kind": self.source_authority_kind,
+        }
+
+    @property
+    def result_id(self) -> str:
+        return _content_id("typed_result", self._payload())
+
+    def to_document(self) -> dict[str, Any]:
+        return {**self._payload(), "result_id": self.result_id}
+
+
+@dataclass(frozen=True, slots=True)
 class _Bound:
     reward_lower: Fraction
     reward_upper: Fraction
@@ -2435,6 +2502,26 @@ def audit_partial_fixed_plan_v1(
         observation_authority,
         partial_build_result,
     )
+    return _audit_verified_partial_model_v1(
+        partial_model,
+        observation_log,
+        semantics_profile,
+        observation_authority,
+        thresholds,
+        contingent_plan,
+    )
+
+
+def _audit_verified_partial_model_v1(
+    partial_model: PortablePartialRAPMV1,
+    observation_log: ObservationLogManifestV1,
+    semantics_profile: DeterministicObservationProfileV1,
+    observation_authority: PreregisteredObservationAuthorityV1,
+    thresholds: FrozenPartialAuditThresholdsV1,
+    contingent_plan: FrozenContingentAbstractPlanV1,
+) -> PartialSoundAuditResultV1:
+    """Run the unchanged V0-043 proof after a public source verifier passes."""
+
     active_cells, realizations, stage_maps, state_to_cell = _validate_inputs(
         partial_model, thresholds, contingent_plan
     )
@@ -2668,6 +2755,123 @@ def audit_partial_fixed_plan_v1(
     )
 
 
+def _verified_observed_typed_model_v2(
+    observation_log: ObservationLogManifestV1,
+    semantics_profile: DeterministicObservationProfileV1,
+    observation_authority: PreregisteredObservationAuthorityV1,
+    observed_synthesis_result: observed_synthesis_v1.ObservedTypedPartialRAPMResultV1,
+) -> PortablePartialRAPMV1:
+    """Retain and replay the complete V0-045 authority before model access."""
+
+    if (
+        type(observed_synthesis_result)
+        is not observed_synthesis_v1.ObservedTypedPartialRAPMResultV1
+    ):
+        raise PartialSoundAuditInvariantViolation(
+            "typed audit rejects duck V0-045 synthesis results"
+        )
+    try:
+        failures = observed_synthesis_v1.verify_observed_lmb_partial_rapm_v1(
+            observation_log,
+            semantics_profile,
+            observation_authority,
+            observed_synthesis_result,
+        )
+    except (
+        observed_synthesis_v1.ObservedTypedCoordinateInvariantViolation,
+        ObservationPartialRAPMInvariantViolation,
+    ) as error:
+        raise PartialSoundAuditInvariantViolation(
+            "typed partial RAPM failed retained V0-045 reconstruction: "
+            + str(error)
+        ) from error
+    if failures:
+        raise PartialSoundAuditInvariantViolation(
+            "typed partial RAPM failed retained V0-045 reconstruction: "
+            + ",".join(failures)
+        )
+
+    proposal = observed_synthesis_result.coordinate_proposal
+    build = observed_synthesis_result.partial_build_result
+    model = build.model
+    certificate = observed_synthesis_result.certificate
+    if (
+        certificate.coordinate_proposal_id != proposal.proposal_id
+        or certificate.partial_build_result_id != build.result_id
+        or certificate.partial_model_id != model.model_id
+        or build.coordinate_proposal_id != proposal.proposal_id
+        or build.model.coordinate_proposal_id != proposal.proposal_id
+    ):
+        raise PartialSoundAuditInvariantViolation(
+            "typed V0-045 result/proposal/build/model identity chain mismatch"
+        )
+    return model
+
+
+def audit_partial_fixed_plan_from_observed_synthesis_v2(
+    observation_log: ObservationLogManifestV1,
+    semantics_profile: DeterministicObservationProfileV1,
+    observation_authority: PreregisteredObservationAuthorityV1,
+    observed_synthesis_result: observed_synthesis_v1.ObservedTypedPartialRAPMResultV1,
+    thresholds: FrozenPartialAuditThresholdsV1,
+    contingent_plan: FrozenContingentAbstractPlanV1,
+) -> TypedPartialSoundAuditResultV2:
+    """Audit one plan only after replaying the full retained V0-045 chain."""
+
+    partial_model = _verified_observed_typed_model_v2(
+        observation_log,
+        semantics_profile,
+        observation_authority,
+        observed_synthesis_result,
+    )
+    audit_result = _audit_verified_partial_model_v1(
+        partial_model,
+        observation_log,
+        semantics_profile,
+        observation_authority,
+        thresholds,
+        contingent_plan,
+    )
+    return TypedPartialSoundAuditResultV2(
+        observed_synthesis_result.result_id,
+        observed_synthesis_result.certificate.certificate_id,
+        observed_synthesis_result.coordinate_proposal.proposal_id,
+        observed_synthesis_result.partial_build_result.result_id,
+        partial_model.model_id,
+        audit_result,
+    )
+
+
+def verify_partial_fixed_plan_audit_from_observed_synthesis_v2(
+    observation_log: ObservationLogManifestV1,
+    semantics_profile: DeterministicObservationProfileV1,
+    observation_authority: PreregisteredObservationAuthorityV1,
+    observed_synthesis_result: observed_synthesis_v1.ObservedTypedPartialRAPMResultV1,
+    thresholds: FrozenPartialAuditThresholdsV1,
+    contingent_plan: FrozenContingentAbstractPlanV1,
+    claimed_result: TypedPartialSoundAuditResultV2,
+) -> TypedPartialSoundAuditResultV2:
+    """Replay the complete V0-045-to-V0-043 source and proof chain."""
+
+    if type(claimed_result) is not TypedPartialSoundAuditResultV2:
+        raise PartialSoundAuditInvariantViolation(
+            "typed audit verifier rejects duck result artifacts"
+        )
+    replayed = audit_partial_fixed_plan_from_observed_synthesis_v2(
+        observation_log,
+        semantics_profile,
+        observation_authority,
+        observed_synthesis_result,
+        thresholds,
+        contingent_plan,
+    )
+    if claimed_result.to_document() != replayed.to_document():
+        raise PartialSoundAuditInvariantViolation(
+            "claimed typed partial audit differs from retained full-chain replay"
+        )
+    return replayed
+
+
 def verify_partial_fixed_plan_audit_v1(
     observation_log: ObservationLogManifestV1,
     coordinate_proposal: FrozenCoordinateProposalV1,
@@ -2727,8 +2931,12 @@ __all__ = [
     "RegisteredReturnBoundProofV1",
     "RewardWeightV1",
     "StateActionTimeObligationV1",
+    "TYPED_AUDIT_SCHEMA_VERSION",
+    "TypedPartialSoundAuditResultV2",
     "UnrestrictedGroundUpperRowV1",
     "audit_partial_fixed_plan_v1",
+    "audit_partial_fixed_plan_from_observed_synthesis_v2",
     "canonical_lmb_n6_return_bound_proof_v1",
     "verify_partial_fixed_plan_audit_v1",
+    "verify_partial_fixed_plan_audit_from_observed_synthesis_v2",
 ]

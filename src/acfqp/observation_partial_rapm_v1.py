@@ -26,6 +26,7 @@ from acfqp.phase3e_ids import canonical_json_bytes, parse_content_id
 
 
 SCHEMA_VERSION = "1.1.0"
+TYPED_COORDINATE_SCHEMA_VERSION = "1.2.0"
 PROFILE_KEY = "lmb_deterministic_observation_partial_rapm_v0"
 
 DOMAIN_TAGS = {
@@ -37,6 +38,11 @@ DOMAIN_TAGS = {
     "coordinate_expression": "acfqp:frozen-coordinate-expression:v1",
     "coordinate_ancestry": "acfqp:coordinate-ancestry-reference:v1",
     "coordinate_proposal": "acfqp:frozen-coordinate-proposal:v1",
+    "typed_state_coordinate_values": "acfqp:frozen-typed-state-coordinate-values:v2",
+    "typed_action_coordinate_values": "acfqp:frozen-typed-action-coordinate-values:v2",
+    "typed_coordinate_value_table": "acfqp:frozen-typed-coordinate-value-table:v2",
+    "typed_coordinate_proposal": "acfqp:frozen-typed-coordinate-proposal:v2",
+    "typed_action_coordinate_atom": "acfqp:frozen-typed-action-coordinate-atom:v2",
     "ground_row": "acfqp:observed-ground-row:v1",
     "acquisition_coverage": "acfqp:preregistered-observation-acquisition-coverage:v1",
     "acquisition_manifest": "acfqp:preregistered-observation-acquisition-manifest:v1",
@@ -199,6 +205,12 @@ class JointOutcomeKind(str, Enum):
 class AmbiguityRowStatus(str, Enum):
     OBSERVED_SINGLETON = "OBSERVED_SINGLETON"
     MISSING_VACUOUS = "MISSING_VACUOUS"
+
+
+class TypedActionAtomKind(str, Enum):
+    INTEGER_LEQ = "INTEGER_LEQ"
+    BOOLEAN_IDENTITY = "BOOLEAN_IDENTITY"
+    UNIVERSAL_TRUE = "UNIVERSAL_TRUE"
 
 
 @dataclass(frozen=True, order=True, slots=True)
@@ -686,6 +698,333 @@ class FrozenCoordinateProposalV1:
     @property
     def proposal_id(self) -> str:
         return _content_id("coordinate_proposal", self._payload())
+
+    def to_document(self) -> dict[str, Any]:
+        return {**self._payload(), "proposal_id": self.proposal_id}
+
+
+def _typed_coordinate_values(values: Any, field: str) -> tuple[int | bool, ...]:
+    if type(values) is not tuple or any(type(value) not in (int, bool) for value in values):
+        raise ObservationPartialRAPMInvariantViolation(
+            f"{field} must be an exact tuple of integer/boolean scalars"
+        )
+    return values
+
+
+def _typed_coordinate_value_document(value: int | bool) -> dict[str, Any]:
+    if type(value) is bool:
+        return {"kind": "BOOLEAN", "value": value}
+    if type(value) is int:
+        return {"kind": "INTEGER", "value": value}
+    raise ObservationPartialRAPMInvariantViolation("typed coordinate scalar substitution")
+
+
+@dataclass(frozen=True, slots=True)
+class FrozenStateCoordinateValuesV2:
+    state_id: str
+    values: tuple[int | bool, ...]
+
+    def __post_init__(self) -> None:
+        _cid(self.state_id, "typed state-coordinate state_id")
+        _typed_coordinate_values(self.values, "typed state-coordinate values")
+
+    def _payload(self) -> dict[str, Any]:
+        return {
+            "schema": "acfqp.frozen_typed_state_coordinate_values.v2",
+            "schema_version": TYPED_COORDINATE_SCHEMA_VERSION,
+            "state_id": self.state_id,
+            "values": [_typed_coordinate_value_document(value) for value in self.values],
+        }
+
+    @property
+    def value_row_id(self) -> str:
+        return _content_id("typed_state_coordinate_values", self._payload())
+
+    def to_document(self) -> dict[str, Any]:
+        return {**self._payload(), "value_row_id": self.value_row_id}
+
+
+@dataclass(frozen=True, slots=True)
+class FrozenActionCoordinateValuesV2:
+    ground_row_id: str
+    state_id: str
+    ground_action_id: str
+    values: tuple[int | bool, ...]
+
+    def __post_init__(self) -> None:
+        _cid(self.ground_row_id, "typed action-coordinate ground_row_id")
+        _cid(self.state_id, "typed action-coordinate state_id")
+        _cid(self.ground_action_id, "typed action-coordinate ground_action_id")
+        if self.ground_row_id != _ground_row_id(self.state_id, self.ground_action_id):
+            raise ObservationPartialRAPMInvariantViolation(
+                "typed action-coordinate ground-row identity mismatch"
+            )
+        _typed_coordinate_values(self.values, "typed action-coordinate values")
+
+    def _payload(self) -> dict[str, Any]:
+        return {
+            "schema": "acfqp.frozen_typed_action_coordinate_values.v2",
+            "schema_version": TYPED_COORDINATE_SCHEMA_VERSION,
+            "ground_row_id": self.ground_row_id,
+            "state_id": self.state_id,
+            "ground_action_id": self.ground_action_id,
+            "values": [_typed_coordinate_value_document(value) for value in self.values],
+        }
+
+    @property
+    def value_row_id(self) -> str:
+        return _content_id("typed_action_coordinate_values", self._payload())
+
+    def to_document(self) -> dict[str, Any]:
+        return {**self._payload(), "value_row_id": self.value_row_id}
+
+
+@dataclass(frozen=True, slots=True)
+class FrozenTypedCoordinateValueTableV2:
+    observation_log_id: str
+    semantics_profile_id: str
+    observation_authority_id: str
+    structural_binding_id: str
+    dsl_registry_id: str
+    state_expression_ids: tuple[str, ...]
+    action_expression_ids: tuple[str, ...]
+    state_rows: tuple[FrozenStateCoordinateValuesV2, ...]
+    action_rows: tuple[FrozenActionCoordinateValuesV2, ...]
+    source_kind: str = "complete_preregistered_observation_source_graph_v1"
+    callable_evaluator_present: bool = False
+    schema_version: str = TYPED_COORDINATE_SCHEMA_VERSION
+
+    def __post_init__(self) -> None:
+        for field in (
+            "observation_log_id",
+            "semantics_profile_id",
+            "observation_authority_id",
+            "structural_binding_id",
+            "dsl_registry_id",
+        ):
+            _cid(getattr(self, field), field)
+        _sorted_unique_ids(self.state_expression_ids, "typed state expression IDs")
+        _sorted_unique_ids(self.action_expression_ids, "typed action expression IDs")
+        if type(self.state_rows) is not tuple or any(
+            type(item) is not FrozenStateCoordinateValuesV2 for item in self.state_rows
+        ):
+            raise ObservationPartialRAPMInvariantViolation(
+                "typed value table rejects duck state rows before canonical access"
+            )
+        if type(self.action_rows) is not tuple or any(
+            type(item) is not FrozenActionCoordinateValuesV2 for item in self.action_rows
+        ):
+            raise ObservationPartialRAPMInvariantViolation(
+                "typed value table rejects duck action rows before canonical access"
+            )
+        _require_stable_documents(self.state_rows, "typed state-coordinate rows")
+        _require_stable_documents(self.action_rows, "typed action-coordinate rows")
+        if tuple(item.state_id for item in self.state_rows) != tuple(
+            sorted({item.state_id for item in self.state_rows})
+        ):
+            raise ObservationPartialRAPMInvariantViolation(
+                "typed state-coordinate rows must be unique and state-ID sorted"
+            )
+        if tuple(item.ground_row_id for item in self.action_rows) != tuple(
+            sorted({item.ground_row_id for item in self.action_rows})
+        ):
+            raise ObservationPartialRAPMInvariantViolation(
+                "typed action-coordinate rows must be unique and ground-row-ID sorted"
+            )
+        if any(len(item.values) != len(self.state_expression_ids) for item in self.state_rows):
+            raise ObservationPartialRAPMInvariantViolation(
+                "typed state-coordinate row width mismatch"
+            )
+        if any(len(item.values) != len(self.action_expression_ids) for item in self.action_rows):
+            raise ObservationPartialRAPMInvariantViolation(
+                "typed action-coordinate row width mismatch"
+            )
+        if (
+            self.source_kind != "complete_preregistered_observation_source_graph_v1"
+            or self.callable_evaluator_present is not False
+            or self.schema_version != TYPED_COORDINATE_SCHEMA_VERSION
+        ):
+            raise ObservationPartialRAPMInvariantViolation(
+                "typed coordinate value-table trust boundary was relaxed"
+            )
+
+    def _payload(self) -> dict[str, Any]:
+        return {
+            "schema": "acfqp.frozen_typed_coordinate_value_table.v2",
+            "schema_version": self.schema_version,
+            "observation_log_id": self.observation_log_id,
+            "semantics_profile_id": self.semantics_profile_id,
+            "observation_authority_id": self.observation_authority_id,
+            "structural_binding_id": self.structural_binding_id,
+            "dsl_registry_id": self.dsl_registry_id,
+            "state_expression_ids": list(self.state_expression_ids),
+            "action_expression_ids": list(self.action_expression_ids),
+            "state_rows": [item.to_document() for item in self.state_rows],
+            "action_rows": [item.to_document() for item in self.action_rows],
+            "source_kind": self.source_kind,
+            "callable_evaluator_present": self.callable_evaluator_present,
+        }
+
+    @property
+    def value_table_id(self) -> str:
+        return _content_id("typed_coordinate_value_table", self._payload())
+
+    def to_document(self) -> dict[str, Any]:
+        return {**self._payload(), "value_table_id": self.value_table_id}
+
+
+@dataclass(frozen=True, slots=True)
+class FrozenTypedActionCoordinateAtomV2:
+    kind: TypedActionAtomKind
+    source_expression_id: str | None
+    threshold: Fraction | None
+
+    def __post_init__(self) -> None:
+        if type(self.kind) is not TypedActionAtomKind:
+            raise ObservationPartialRAPMInvariantViolation(
+                "typed action atom requires the exact kind enum"
+            )
+        if self.kind is TypedActionAtomKind.UNIVERSAL_TRUE:
+            if self.source_expression_id is not None or self.threshold is not None:
+                raise ObservationPartialRAPMInvariantViolation(
+                    "universal action atom cannot carry a source or threshold"
+                )
+        elif self.kind is TypedActionAtomKind.BOOLEAN_IDENTITY:
+            _cid(self.source_expression_id, "boolean action atom source expression")
+            if self.threshold is not None:
+                raise ObservationPartialRAPMInvariantViolation(
+                    "boolean identity action atom cannot carry a threshold"
+                )
+        else:
+            _cid(self.source_expression_id, "integer action atom source expression")
+            if type(self.threshold) not in (int, Fraction):
+                raise ObservationPartialRAPMInvariantViolation(
+                    "integer action atom threshold must be exact"
+                )
+            object.__setattr__(self, "threshold", Fraction(self.threshold))
+
+    def _payload(self) -> dict[str, Any]:
+        return {
+            "schema": "acfqp.frozen_typed_action_coordinate_atom.v2",
+            "schema_version": TYPED_COORDINATE_SCHEMA_VERSION,
+            "kind": self.kind.value,
+            "source_expression_id": self.source_expression_id,
+            "operator": (
+                "<=" if self.kind is TypedActionAtomKind.INTEGER_LEQ
+                else "IDENTITY" if self.kind is TypedActionAtomKind.BOOLEAN_IDENTITY
+                else "UNIVERSAL_TRUE"
+            ),
+            "threshold": (
+                _fraction_document(self.threshold) if self.threshold is not None else None
+            ),
+        }
+
+    @property
+    def atom_id(self) -> str:
+        return _content_id("typed_action_coordinate_atom", self._payload())
+
+    def to_document(self) -> dict[str, Any]:
+        return {**self._payload(), "atom_id": self.atom_id}
+
+
+@dataclass(frozen=True, slots=True)
+class FrozenTypedCoordinateProposalV2:
+    state_expression_ids: tuple[str, ...]
+    action_expression_ids: tuple[str, ...]
+    action_atoms: tuple[FrozenTypedActionCoordinateAtomV2, ...]
+    dsl_registry_id: str
+    structural_binding_id: str
+    value_table_id: str
+    synthesis_spec_id: str
+    selected_candidate_id: str
+    candidate_trace_id: str
+    observation_log_id: str
+    semantics_profile_id: str
+    observation_authority_id: str
+    acquisition_manifest_id: str
+    origin: str = "observation_only_fixed_typed_dsl_synthesis_v1"
+    query_neutral: bool = True
+    target_exact_audit_used: bool = False
+    callable_adapter_present: bool = False
+    schema_version: str = TYPED_COORDINATE_SCHEMA_VERSION
+
+    def __post_init__(self) -> None:
+        _sorted_unique_ids(self.state_expression_ids, "typed proposal state expression IDs")
+        _sorted_unique_ids(self.action_expression_ids, "typed proposal action expression IDs")
+        if type(self.action_atoms) is not tuple or any(
+            type(item) is not FrozenTypedActionCoordinateAtomV2
+            for item in self.action_atoms
+        ):
+            raise ObservationPartialRAPMInvariantViolation(
+                "typed proposal rejects duck action atoms before canonical access"
+            )
+        _require_stable_documents(self.action_atoms, "typed proposal action atoms")
+        if not self.action_atoms or self.action_atoms != tuple(
+            sorted({item.atom_id: item for item in self.action_atoms}.values(), key=lambda item: item.atom_id)
+        ):
+            raise ObservationPartialRAPMInvariantViolation(
+                "typed proposal action atoms must be nonempty, unique, and atom-ID sorted"
+            )
+        universal = tuple(
+            item for item in self.action_atoms
+            if item.kind is TypedActionAtomKind.UNIVERSAL_TRUE
+        )
+        if (not self.action_expression_ids and len(universal) != 1) or (
+            self.action_expression_ids and universal
+        ):
+            raise ObservationPartialRAPMInvariantViolation(
+                "universal action atom is reserved for the empty action-program subset"
+            )
+        for field in (
+            "dsl_registry_id",
+            "structural_binding_id",
+            "value_table_id",
+            "synthesis_spec_id",
+            "selected_candidate_id",
+            "candidate_trace_id",
+            "observation_log_id",
+            "semantics_profile_id",
+            "observation_authority_id",
+            "acquisition_manifest_id",
+        ):
+            _cid(getattr(self, field), field)
+        if (
+            self.origin != "observation_only_fixed_typed_dsl_synthesis_v1"
+            or self.query_neutral is not True
+            or self.target_exact_audit_used is not False
+            or self.callable_adapter_present is not False
+            or self.schema_version != TYPED_COORDINATE_SCHEMA_VERSION
+        ):
+            raise ObservationPartialRAPMInvariantViolation(
+                "typed coordinate proposal imports a query/target/callable authority"
+            )
+
+    def _payload(self) -> dict[str, Any]:
+        return {
+            "schema": "acfqp.frozen_typed_coordinate_proposal.v2",
+            "schema_version": self.schema_version,
+            "state_expression_ids": list(self.state_expression_ids),
+            "action_expression_ids": list(self.action_expression_ids),
+            "action_atoms": [item.to_document() for item in self.action_atoms],
+            "dsl_registry_id": self.dsl_registry_id,
+            "structural_binding_id": self.structural_binding_id,
+            "value_table_id": self.value_table_id,
+            "synthesis_spec_id": self.synthesis_spec_id,
+            "selected_candidate_id": self.selected_candidate_id,
+            "candidate_trace_id": self.candidate_trace_id,
+            "observation_log_id": self.observation_log_id,
+            "semantics_profile_id": self.semantics_profile_id,
+            "observation_authority_id": self.observation_authority_id,
+            "acquisition_manifest_id": self.acquisition_manifest_id,
+            "origin": self.origin,
+            "query_neutral": self.query_neutral,
+            "target_exact_audit_used": self.target_exact_audit_used,
+            "callable_adapter_present": self.callable_adapter_present,
+        }
+
+    @property
+    def proposal_id(self) -> str:
+        return _content_id("typed_coordinate_proposal", self._payload())
 
     def to_document(self) -> dict[str, Any]:
         return {**self._payload(), "proposal_id": self.proposal_id}
@@ -1308,6 +1647,9 @@ def _validate_preregistered_observation_authority_v1(
     profile: DeterministicObservationProfileV1,
     authority: PreregisteredObservationAuthorityV1,
 ) -> None:
+    _validate_preregistered_observation_source_runtime_types_v1(
+        log, profile, authority
+    )
     if type(authority) is not PreregisteredObservationAuthorityV1:
         raise ObservationPartialRAPMInvariantViolation(
             "builder rejects duck observation authorities"
@@ -1368,6 +1710,323 @@ def _validate_preregistered_observation_authority_v1(
             "observation log differs from its preregistered authority binding"
         )
     log.validate_against_profile(profile)
+
+
+def _validate_preregistered_observation_source_runtime_types_v1(
+    log: ObservationLogManifestV1,
+    profile: DeterministicObservationProfileV1,
+    authority: PreregisteredObservationAuthorityV1,
+) -> None:
+    """Reject nested substitutions before any content-ID/property replay.
+
+    The source graph is retained in memory, so a frozen dataclass can still be
+    corrupted with low-level mutation after its constructor has run.  This pass
+    deliberately checks the complete nested runtime shape before the authority
+    validator reads ``authority_id``, ``log_id`` or any other derived property.
+    """
+
+    if type(log) is not ObservationLogManifestV1:
+        raise ObservationPartialRAPMInvariantViolation(
+            "source replay rejects duck observation logs"
+        )
+    if type(profile) is not DeterministicObservationProfileV1:
+        raise ObservationPartialRAPMInvariantViolation(
+            "source replay rejects duck semantics profiles"
+        )
+    if type(authority) is not PreregisteredObservationAuthorityV1:
+        raise ObservationPartialRAPMInvariantViolation(
+            "source replay rejects duck observation authorities"
+        )
+
+    def require_fields(
+        instance: Any,
+        specification: tuple[tuple[str, tuple[type, ...]], ...],
+        scope: str,
+    ) -> None:
+        for field, allowed in specification:
+            value = object.__getattribute__(instance, field)
+            if type(value) not in allowed:
+                raise ObservationPartialRAPMInvariantViolation(
+                    f"source replay rejects malformed {scope}.{field} before canonical access"
+                )
+
+    require_fields(
+        profile,
+        (
+            ("structural_id", (str,)),
+            ("trusted_observer_id", (str,)),
+            ("reward_feature_caps", (tuple,)),
+            ("horizon_cap", (int,)),
+            ("profile_key", (str,)),
+            ("dynamics_assumption", (str,)),
+            ("action_catalogue_semantics", (str,)),
+            ("unknown_successor_scope", (str,)),
+            ("concretizer_rule", (str,)),
+            ("evidence_kind", (str,)),
+            ("query_neutral", (bool,)),
+            ("schema_version", (str,)),
+        ),
+        "semantics profile",
+    )
+
+    if type(profile.reward_feature_caps) is not tuple or any(
+        type(item) is not RewardFeatureCapV1 for item in profile.reward_feature_caps
+    ):
+        raise ObservationPartialRAPMInvariantViolation(
+            "source replay rejects nested reward-cap substitutions before canonical access"
+        )
+    for cap in profile.reward_feature_caps:
+        require_fields(
+            cap,
+            (("name", (str,)), ("lower", (Fraction,)), ("upper", (Fraction,))),
+            "reward cap",
+        )
+
+    require_fields(
+        log,
+        (
+            ("structural_id", (str,)),
+            ("environment_instance_id", (str,)),
+            ("semantics_profile_id", (str,)),
+            ("acquisition_manifest_id", (str,)),
+            ("states", (tuple,)),
+            ("action_catalogues", (tuple,)),
+            ("observations", (tuple,)),
+            ("evidence_ledger", (EvidenceLedgerV1,)),
+        ),
+        "observation log",
+    )
+
+    if type(log.evidence_ledger) is not EvidenceLedgerV1:
+        raise ObservationPartialRAPMInvariantViolation(
+            "source replay rejects nested evidence-ledger substitutions before canonical access"
+        )
+    if type(log.evidence_ledger.counters) is not tuple or any(
+        type(item) is not EvidenceCounterV1
+        for item in log.evidence_ledger.counters
+    ):
+        raise ObservationPartialRAPMInvariantViolation(
+            "source replay rejects nested evidence-counter substitutions before canonical access"
+        )
+    for counter in log.evidence_ledger.counters:
+        require_fields(
+            counter,
+            (
+                ("lane", (EvidenceLane,)),
+                ("evidence_class", (EvidenceClass,)),
+                ("count", (int,)),
+            ),
+            "evidence counter",
+        )
+    if type(log.states) is not tuple or any(
+        type(item) is not CanonicalStateObservationV1 for item in log.states
+    ):
+        raise ObservationPartialRAPMInvariantViolation(
+            "source replay rejects nested state substitutions before canonical access"
+        )
+    if any(
+        type(item.buffer_counts) is not tuple
+        or any(type(value) is not int for value in item.buffer_counts)
+        or type(item.planning_kind) is not PlanningKind
+        for item in log.states
+    ):
+        raise ObservationPartialRAPMInvariantViolation(
+            "source replay rejects malformed nested state values before canonical access"
+        )
+    for state in log.states:
+        require_fields(
+            state,
+            (
+                ("state_key", (str,)),
+                ("removed_mask", (int,)),
+                ("buffer_counts", (tuple,)),
+                ("status", (str,)),
+                ("planning_kind", (PlanningKind,)),
+            ),
+            "state",
+        )
+    if type(log.action_catalogues) is not tuple or any(
+        type(item) is not TrustedCompleteActionCatalogueV1
+        for item in log.action_catalogues
+    ):
+        raise ObservationPartialRAPMInvariantViolation(
+            "source replay rejects nested action-catalogue substitutions before canonical access"
+        )
+    if any(
+        type(item.actions) is not tuple
+        or any(type(action) is not CanonicalGroundActionV1 for action in item.actions)
+        for item in log.action_catalogues
+    ):
+        raise ObservationPartialRAPMInvariantViolation(
+            "source replay rejects nested ground-action substitutions before canonical access"
+        )
+    for catalogue in log.action_catalogues:
+        require_fields(
+            catalogue,
+            (
+                ("state_id", (str,)),
+                ("actions", (tuple,)),
+                ("trusted_observer_id", (str,)),
+                ("complete", (bool,)),
+                ("semantics_id", (str,)),
+            ),
+            "action catalogue",
+        )
+        for action in catalogue.actions:
+            require_fields(
+                action,
+                (
+                    ("state_id", (str,)),
+                    ("action_key", (str,)),
+                    ("selected_type", (int,)),
+                ),
+                "ground action",
+            )
+    if type(log.observations) is not tuple or any(
+        type(item) is not DeterministicTransitionObservationV1
+        for item in log.observations
+    ):
+        raise ObservationPartialRAPMInvariantViolation(
+            "source replay rejects nested transition substitutions before canonical access"
+        )
+    for observation in log.observations:
+        if type(observation.successor) is not ObservedSuccessorRefV1:
+            raise ObservationPartialRAPMInvariantViolation(
+                "source replay rejects nested successor substitutions before canonical access"
+            )
+        if type(observation.reward_features) is not tuple or any(
+            type(item) is not tuple
+            or len(item) != 2
+            or type(item[0]) is not str
+            or type(item[1]) not in (int, Fraction)
+            for item in observation.reward_features
+        ):
+            raise ObservationPartialRAPMInvariantViolation(
+                "source replay rejects nested reward substitutions before canonical access"
+            )
+        if (
+            type(observation.successor.kind) is not SuccessorKind
+            or type(observation.evidence_class) is not EvidenceClass
+            or type(observation.evidence_lane) is not EvidenceLane
+            or type(observation.failure) is not bool
+            or type(observation.terminal) is not bool
+        ):
+            raise ObservationPartialRAPMInvariantViolation(
+                "source replay rejects malformed transition markers before canonical access"
+            )
+        require_fields(
+            observation.successor,
+            (("kind", (SuccessorKind,)), ("reference", (str,))),
+            "successor",
+        )
+        require_fields(
+            observation,
+            (
+                ("sequence_number", (int,)),
+                ("state_id", (str,)),
+                ("ground_action_id", (str,)),
+                ("successor", (ObservedSuccessorRefV1,)),
+                ("reward_features", (tuple,)),
+                ("failure", (bool,)),
+                ("terminal", (bool,)),
+                ("event_receipt_id", (str,)),
+                ("evidence_class", (EvidenceClass,)),
+                ("evidence_lane", (EvidenceLane,)),
+                ("trusted_observer_id", (str,)),
+            ),
+            "transition observation",
+        )
+
+    if type(authority.acquisition_manifest) is not PreregisteredAcquisitionManifestV1:
+        raise ObservationPartialRAPMInvariantViolation(
+            "source replay rejects nested acquisition substitutions before canonical access"
+        )
+    acquisition = authority.acquisition_manifest
+    require_fields(
+        acquisition,
+        (
+            ("structural_id", (str,)),
+            ("environment_instance_id", (str,)),
+            ("semantics_profile_id", (str,)),
+            ("trusted_observer_id", (str,)),
+            ("acquisition_protocol_id", (str,)),
+            ("registered_state_ids", (tuple,)),
+            ("registered_ground_row_ids", (tuple,)),
+            ("observed_ground_row_ids", (tuple,)),
+            ("event_receipt_ids", (tuple,)),
+            ("acquisition_query_inputs_used", (int,)),
+            ("authority_registry_freeze_sequence", (int,)),
+            ("query_registration_open_sequence", (int,)),
+            ("allowlist_registered_before_query", (bool,)),
+            ("selection_rule", (str,)),
+            ("evidence_class", (EvidenceClass,)),
+            ("evidence_lane", (EvidenceLane,)),
+            ("prequery_frozen", (bool,)),
+            ("complete_for_declared_receipts", (bool,)),
+        ),
+        "acquisition manifest",
+    )
+    require_fields(
+        authority,
+        (
+            ("acquisition_manifest", (PreregisteredAcquisitionManifestV1,)),
+            ("structural_id", (str,)),
+            ("environment_instance_id", (str,)),
+            ("semantics_profile_id", (str,)),
+            ("trusted_observer_id", (str,)),
+            ("observation_log_id", (str,)),
+            ("evidence_ledger_id", (str,)),
+            ("state_ids", (tuple,)),
+            ("action_catalogue_ids", (tuple,)),
+            ("event_bindings", (tuple,)),
+            ("trust_root_key", (str,)),
+            ("action_catalogues_complete_asserted", (bool,)),
+            ("deterministic_stationary_asserted", (bool,)),
+            ("observation_source_authenticity_asserted", (bool,)),
+            ("in_memory_exact_graph_required", (bool,)),
+            ("transport_authority_claimed", (bool,)),
+        ),
+        "observation authority",
+    )
+    for value, field in (
+        (acquisition.registered_state_ids, "acquisition state IDs"),
+        (acquisition.registered_ground_row_ids, "acquisition ground-row IDs"),
+        (acquisition.observed_ground_row_ids, "acquisition observed-row IDs"),
+        (acquisition.event_receipt_ids, "acquisition receipt IDs"),
+        (authority.state_ids, "authority state IDs"),
+        (authority.action_catalogue_ids, "authority catalogue IDs"),
+    ):
+        if type(value) is not tuple or any(type(item) is not str for item in value):
+            raise ObservationPartialRAPMInvariantViolation(
+                f"source replay rejects nested {field} before canonical access"
+            )
+    if type(authority.event_bindings) is not tuple or any(
+        type(item) is not ObservationAuthorityEventBindingV1
+        for item in authority.event_bindings
+    ):
+        raise ObservationPartialRAPMInvariantViolation(
+            "source replay rejects nested authority-event substitutions before canonical access"
+        )
+    if any(
+        type(item.evidence_class) is not EvidenceClass
+        or type(item.evidence_lane) is not EvidenceLane
+        for item in authority.event_bindings
+    ):
+        raise ObservationPartialRAPMInvariantViolation(
+            "source replay rejects malformed authority-event markers before canonical access"
+        )
+    for binding in authority.event_bindings:
+        require_fields(
+            binding,
+            (
+                ("event_receipt_id", (str,)),
+                ("observation_id", (str,)),
+                ("ground_row_id", (str,)),
+                ("evidence_class", (EvidenceClass,)),
+                ("evidence_lane", (EvidenceLane,)),
+            ),
+            "authority event binding",
+        )
 
 
 @dataclass(frozen=True, order=True, slots=True)
@@ -2638,13 +3297,267 @@ def _ambiguity_payload(
     )
 
 
-def _derive_partial_model_v1(
+def _expected_typed_action_atoms_v2(
+    proposal: FrozenTypedCoordinateProposalV2,
+    value_table: FrozenTypedCoordinateValueTableV2,
+) -> tuple[FrozenTypedActionCoordinateAtomV2, ...]:
+    if not proposal.action_expression_ids:
+        return (
+            FrozenTypedActionCoordinateAtomV2(
+                TypedActionAtomKind.UNIVERSAL_TRUE, None, None
+            ),
+        )
+    atoms: list[FrozenTypedActionCoordinateAtomV2] = []
+    for expression_id in proposal.action_expression_ids:
+        index = value_table.action_expression_ids.index(expression_id)
+        values = tuple(row.values[index] for row in value_table.action_rows)
+        runtime_types = {type(value) for value in values}
+        if runtime_types == {bool}:
+            atoms.append(
+                FrozenTypedActionCoordinateAtomV2(
+                    TypedActionAtomKind.BOOLEAN_IDENTITY, expression_id, None
+                )
+            )
+        elif runtime_types == {int}:
+            distinct = tuple(sorted(set(values)))
+            atoms.extend(
+                FrozenTypedActionCoordinateAtomV2(
+                    TypedActionAtomKind.INTEGER_LEQ,
+                    expression_id,
+                    Fraction(left + right, 2),
+                )
+                for left, right in zip(distinct, distinct[1:])
+            )
+        else:
+            raise ObservationPartialRAPMInvariantViolation(
+                "typed action-coordinate column changes or violates its scalar type"
+            )
+    if not atoms:
+        raise ObservationPartialRAPMInvariantViolation(
+            "a nonempty action-program subset compiled to no separating boolean atom"
+        )
+    return tuple(sorted(atoms, key=lambda item: item.atom_id))
+
+
+def _validate_typed_coordinate_runtime_types_v2(
+    proposal: FrozenTypedCoordinateProposalV2,
+    value_table: FrozenTypedCoordinateValueTableV2,
+) -> None:
+    """Validate the complete V2 object shape before reading a derived ID."""
+
+    if type(proposal) is not FrozenTypedCoordinateProposalV2:
+        raise ObservationPartialRAPMInvariantViolation(
+            "typed source replay rejects a coordinate-proposal substitution"
+        )
+    if type(value_table) is not FrozenTypedCoordinateValueTableV2:
+        raise ObservationPartialRAPMInvariantViolation(
+            "typed source replay rejects a coordinate-value-table substitution"
+        )
+
+    def require_fields(
+        instance: Any,
+        specification: tuple[tuple[str, tuple[type, ...]], ...],
+        scope: str,
+    ) -> None:
+        for field, allowed in specification:
+            value = object.__getattribute__(instance, field)
+            if type(value) not in allowed:
+                raise ObservationPartialRAPMInvariantViolation(
+                    f"typed source replay rejects malformed {scope}.{field} before canonical access"
+                )
+
+    require_fields(
+        proposal,
+        (
+            ("state_expression_ids", (tuple,)),
+            ("action_expression_ids", (tuple,)),
+            ("action_atoms", (tuple,)),
+            ("dsl_registry_id", (str,)),
+            ("structural_binding_id", (str,)),
+            ("value_table_id", (str,)),
+            ("synthesis_spec_id", (str,)),
+            ("selected_candidate_id", (str,)),
+            ("candidate_trace_id", (str,)),
+            ("observation_log_id", (str,)),
+            ("semantics_profile_id", (str,)),
+            ("observation_authority_id", (str,)),
+            ("acquisition_manifest_id", (str,)),
+            ("origin", (str,)),
+            ("query_neutral", (bool,)),
+            ("target_exact_audit_used", (bool,)),
+            ("callable_adapter_present", (bool,)),
+            ("schema_version", (str,)),
+        ),
+        "coordinate proposal",
+    )
+    for values, scope in (
+        (proposal.state_expression_ids, "proposal state-expression IDs"),
+        (proposal.action_expression_ids, "proposal action-expression IDs"),
+    ):
+        if any(type(item) is not str for item in values):
+            raise ObservationPartialRAPMInvariantViolation(
+                f"typed source replay rejects malformed {scope} before canonical access"
+            )
+    if any(
+        type(item) is not FrozenTypedActionCoordinateAtomV2
+        for item in proposal.action_atoms
+    ):
+        raise ObservationPartialRAPMInvariantViolation(
+            "typed source replay rejects nested action-atom substitutions before canonical access"
+        )
+    for atom in proposal.action_atoms:
+        require_fields(
+            atom,
+            (
+                ("kind", (TypedActionAtomKind,)),
+                ("source_expression_id", (str, type(None))),
+                ("threshold", (Fraction, type(None))),
+            ),
+            "action atom",
+        )
+
+    require_fields(
+        value_table,
+        (
+            ("observation_log_id", (str,)),
+            ("semantics_profile_id", (str,)),
+            ("observation_authority_id", (str,)),
+            ("structural_binding_id", (str,)),
+            ("dsl_registry_id", (str,)),
+            ("state_expression_ids", (tuple,)),
+            ("action_expression_ids", (tuple,)),
+            ("state_rows", (tuple,)),
+            ("action_rows", (tuple,)),
+            ("source_kind", (str,)),
+            ("callable_evaluator_present", (bool,)),
+            ("schema_version", (str,)),
+        ),
+        "coordinate value table",
+    )
+    for values, scope in (
+        (value_table.state_expression_ids, "table state-expression IDs"),
+        (value_table.action_expression_ids, "table action-expression IDs"),
+    ):
+        if any(type(item) is not str for item in values):
+            raise ObservationPartialRAPMInvariantViolation(
+                f"typed source replay rejects malformed {scope} before canonical access"
+            )
+    if any(type(item) is not FrozenStateCoordinateValuesV2 for item in value_table.state_rows):
+        raise ObservationPartialRAPMInvariantViolation(
+            "typed source replay rejects nested state-value rows before canonical access"
+        )
+    if any(type(item) is not FrozenActionCoordinateValuesV2 for item in value_table.action_rows):
+        raise ObservationPartialRAPMInvariantViolation(
+            "typed source replay rejects nested action-value rows before canonical access"
+        )
+    for row in value_table.state_rows:
+        require_fields(
+            row,
+            (("state_id", (str,)), ("values", (tuple,))),
+            "state-value row",
+        )
+        if any(type(value) not in (int, bool) for value in row.values):
+            raise ObservationPartialRAPMInvariantViolation(
+                "typed source replay rejects malformed state values before canonical access"
+            )
+    for row in value_table.action_rows:
+        require_fields(
+            row,
+            (
+                ("ground_row_id", (str,)),
+                ("state_id", (str,)),
+                ("ground_action_id", (str,)),
+                ("values", (tuple,)),
+            ),
+            "action-value row",
+        )
+        if any(type(value) not in (int, bool) for value in row.values):
+            raise ObservationPartialRAPMInvariantViolation(
+                "typed source replay rejects malformed action values before canonical access"
+            )
+
+
+def _validate_typed_coordinate_source_v2(
     log: ObservationLogManifestV1,
-    coordinate_proposal: FrozenCoordinateProposalV1,
+    proposal: FrozenTypedCoordinateProposalV2,
+    value_table: FrozenTypedCoordinateValueTableV2,
     semantics: DeterministicObservationProfileV1,
     authority: PreregisteredObservationAuthorityV1,
+) -> None:
+    _validate_typed_coordinate_runtime_types_v2(proposal, value_table)
+    if (
+        proposal.observation_log_id != log.log_id
+        or proposal.semantics_profile_id != semantics.profile_id
+        or proposal.observation_authority_id != authority.authority_id
+        or proposal.acquisition_manifest_id != authority.acquisition_manifest.manifest_id
+        or proposal.value_table_id != value_table.value_table_id
+        or proposal.dsl_registry_id != value_table.dsl_registry_id
+        or proposal.structural_binding_id != value_table.structural_binding_id
+        or value_table.observation_log_id != log.log_id
+        or value_table.semantics_profile_id != semantics.profile_id
+        or value_table.observation_authority_id != authority.authority_id
+    ):
+        raise ObservationPartialRAPMInvariantViolation(
+            "typed proposal/value table differs from the allowlisted source graph"
+        )
+    if not set(proposal.state_expression_ids) <= set(value_table.state_expression_ids):
+        raise ObservationPartialRAPMInvariantViolation(
+            "typed proposal uses an unregistered state expression"
+        )
+    if not set(proposal.action_expression_ids) <= set(value_table.action_expression_ids):
+        raise ObservationPartialRAPMInvariantViolation(
+            "typed proposal uses an unregistered action expression"
+        )
+    expected_state_ids = tuple(item.state_id for item in log.states)
+    if tuple(item.state_id for item in value_table.state_rows) != expected_state_ids:
+        raise ObservationPartialRAPMInvariantViolation(
+            "typed value table does not cover every registered state exactly once"
+        )
+    expected_actions = {
+        action.ground_row_id: action
+        for catalogue in log.action_catalogues
+        for action in catalogue.actions
+    }
+    if tuple(item.ground_row_id for item in value_table.action_rows) != tuple(
+        sorted(expected_actions)
+    ):
+        raise ObservationPartialRAPMInvariantViolation(
+            "typed value table does not cover every registered ground row exactly once"
+        )
+    for row in value_table.action_rows:
+        expected = expected_actions[row.ground_row_id]
+        if row.state_id != expected.state_id or row.ground_action_id != expected.action_id:
+            raise ObservationPartialRAPMInvariantViolation(
+                "typed action-coordinate row differs from the complete action catalogue"
+            )
+    for column in range(len(value_table.state_expression_ids)):
+        types = {type(row.values[column]) for row in value_table.state_rows}
+        if len(types) != 1:
+            raise ObservationPartialRAPMInvariantViolation(
+                "typed state-coordinate column changes runtime scalar type"
+            )
+    for column in range(len(value_table.action_expression_ids)):
+        types = {type(row.values[column]) for row in value_table.action_rows}
+        if len(types) != 1:
+            raise ObservationPartialRAPMInvariantViolation(
+                "typed action-coordinate column changes runtime scalar type"
+            )
+    if proposal.action_atoms != _expected_typed_action_atoms_v2(proposal, value_table):
+        raise ObservationPartialRAPMInvariantViolation(
+            "typed proposal action atoms differ from exact midpoint/identity compilation"
+        )
+
+
+
+def _derive_partial_model_v1(
+    log: ObservationLogManifestV1,
+    coordinate_proposal: FrozenCoordinateProposalV1 | FrozenTypedCoordinateProposalV2,
+    semantics: DeterministicObservationProfileV1,
+    authority: PreregisteredObservationAuthorityV1,
+    coordinate_value_table: FrozenTypedCoordinateValueTableV2 | None = None,
 ) -> PortablePartialRAPMV1:
     _validate_preregistered_observation_authority_v1(log, semantics, authority)
+    typed_coordinate_path = type(coordinate_proposal) is FrozenTypedCoordinateProposalV2
     state_by_id = {item.state_id: item for item in log.states}
     catalogue_by_state = {item.state_id: item for item in log.action_catalogues}
     action_by_id = {
@@ -2652,11 +3565,76 @@ def _derive_partial_model_v1(
         for catalogue in log.action_catalogues
         for action in catalogue.actions
     }
+    if type(coordinate_proposal) is FrozenCoordinateProposalV1:
+        if coordinate_value_table is not None:
+            raise ObservationPartialRAPMInvariantViolation(
+                "manual V1 proposal cannot consume a typed value table"
+            )
+        proposal_id = coordinate_proposal.proposal_id
+        state_coordinates_by_id = {
+            state.state_id: _state_coordinate_values(
+                catalogue_by_state[state.state_id], coordinate_proposal
+            )
+            for state in log.states
+        }
+        action_labels_by_row = {
+            action.ground_row_id: _action_label_values(
+                state_by_id[action.state_id], action, coordinate_proposal
+            )
+            for action in action_by_id.values()
+        }
+    elif type(coordinate_proposal) is FrozenTypedCoordinateProposalV2 and type(
+        coordinate_value_table
+    ) is FrozenTypedCoordinateValueTableV2:
+        _validate_typed_coordinate_source_v2(
+            log, coordinate_proposal, coordinate_value_table, semantics, authority
+        )
+        proposal_id = coordinate_proposal.proposal_id
+        state_indexes = tuple(
+            coordinate_value_table.state_expression_ids.index(expression_id)
+            for expression_id in coordinate_proposal.state_expression_ids
+        )
+        state_coordinates_by_id = {
+            row.state_id: tuple(row.values[index] for index in state_indexes)
+            for row in coordinate_value_table.state_rows
+        }
+        if any(type(value) is not int for values in state_coordinates_by_id.values() for value in values):
+            raise ObservationPartialRAPMInvariantViolation(
+                "selected state-coordinate programs must return exact integers"
+            )
+        action_labels_by_row: dict[str, tuple[bool, ...]] = {}
+        for row in coordinate_value_table.action_rows:
+            labels: list[bool] = []
+            for atom in coordinate_proposal.action_atoms:
+                if atom.kind is TypedActionAtomKind.UNIVERSAL_TRUE:
+                    labels.append(True)
+                    continue
+                index = coordinate_value_table.action_expression_ids.index(
+                    atom.source_expression_id
+                )
+                value = row.values[index]
+                if atom.kind is TypedActionAtomKind.BOOLEAN_IDENTITY:
+                    if type(value) is not bool:
+                        raise ObservationPartialRAPMInvariantViolation(
+                            "boolean identity action atom received a nonboolean value"
+                        )
+                    labels.append(value)
+                else:
+                    if type(value) is not int:
+                        raise ObservationPartialRAPMInvariantViolation(
+                            "integer threshold action atom received a noninteger value"
+                        )
+                    labels.append(Fraction(value) <= atom.threshold)
+            action_labels_by_row[row.ground_row_id] = tuple(labels)
+    else:
+        raise ObservationPartialRAPMInvariantViolation(
+            "coordinate proposal/value-table schema pairing is invalid"
+        )
 
     grouped: dict[tuple[PlanningKind, tuple[int, ...]], list[str]] = {}
     for state in log.states:
         coordinates = (
-            _state_coordinate_values(catalogue_by_state[state.state_id], coordinate_proposal)
+            state_coordinates_by_id[state.state_id]
             if state.planning_kind is PlanningKind.ACTIVE
             else ()
         )
@@ -2750,14 +3728,20 @@ def _derive_partial_model_v1(
         labels_by_state: dict[str, dict[tuple[bool, ...], list[CanonicalGroundActionV1]]] = {}
         common_labels: set[tuple[bool, ...]] | None = None
         for state_id in cell.member_state_ids:
-            state = state_by_id[state_id]
             grouped_actions: dict[tuple[bool, ...], list[CanonicalGroundActionV1]] = {}
             for action in catalogue_by_state[state_id].actions:
-                label = _action_label_values(state, action, coordinate_proposal)
+                label = action_labels_by_row[action.ground_row_id]
                 grouped_actions.setdefault(label, []).append(action)
             labels_by_state[state_id] = grouped_actions
             labels = set(grouped_actions)
             common_labels = labels if common_labels is None else common_labels & labels
+        if typed_coordinate_path and any(
+            set(labels_by_state[state_id]) != common_labels
+            for state_id in cell.member_state_ids
+        ):
+            raise ObservationPartialRAPMInvariantViolation(
+                "typed active-cell members must expose exactly the same semantic label set"
+            )
         if not common_labels:
             raise ObservationPartialRAPMInvariantViolation(
                 "active abstract cell has no common semantic action"
@@ -2860,7 +3844,7 @@ def _derive_partial_model_v1(
         semantics.profile_id,
         semantics.horizon_cap,
         log.log_id,
-        coordinate_proposal.proposal_id,
+        proposal_id,
         authority.authority_id,
         authority.acquisition_manifest.manifest_id,
         authority.acquisition_manifest.coverage_id,
@@ -2873,6 +3857,29 @@ def _derive_partial_model_v1(
         ground_rows_tuple,
         realizations_tuple,
         semantics.reward_feature_caps,
+    )
+
+
+def validate_preregistered_observation_source_graph_v1(
+    observation_log: ObservationLogManifestV1,
+    semantics_profile: DeterministicObservationProfileV1,
+    observation_authority: PreregisteredObservationAuthorityV1,
+) -> None:
+    """Replay the complete hardened V0-042 source graph without building a model."""
+    if type(observation_log) is not ObservationLogManifestV1:
+        raise ObservationPartialRAPMInvariantViolation(
+            "source replay rejects duck observation logs"
+        )
+    if type(semantics_profile) is not DeterministicObservationProfileV1:
+        raise ObservationPartialRAPMInvariantViolation(
+            "source replay rejects duck semantics profiles"
+        )
+    if type(observation_authority) is not PreregisteredObservationAuthorityV1:
+        raise ObservationPartialRAPMInvariantViolation(
+            "source replay rejects duck observation authorities"
+        )
+    _validate_preregistered_observation_authority_v1(
+        observation_log, semantics_profile, observation_authority
     )
 
 
@@ -2979,6 +3986,86 @@ def verify_observation_partial_rapm_v1(
     return tuple(failures)
 
 
+def build_observation_partial_rapm_from_typed_values_v2(
+    observation_log: ObservationLogManifestV1,
+    coordinate_proposal: FrozenTypedCoordinateProposalV2,
+    coordinate_value_table: FrozenTypedCoordinateValueTableV2,
+    semantics_profile: DeterministicObservationProfileV1,
+    observation_authority: PreregisteredObservationAuthorityV1,
+) -> ObservationPartialRAPMBuildV1:
+    """Internal pure derivation for an already-authorized typed value table.
+
+    This helper does not establish how the proposal or table was obtained and
+    therefore is not a coordinate-synthesis authority.  Production consumers
+    must accept and replay the complete V0-045 synthesis result instead.
+    """
+    if type(observation_log) is not ObservationLogManifestV1:
+        raise ObservationPartialRAPMInvariantViolation("typed constructor rejects duck observation logs")
+    if type(coordinate_proposal) is not FrozenTypedCoordinateProposalV2:
+        raise ObservationPartialRAPMInvariantViolation("typed constructor rejects duck coordinate proposals")
+    if type(coordinate_value_table) is not FrozenTypedCoordinateValueTableV2:
+        raise ObservationPartialRAPMInvariantViolation("typed constructor rejects duck coordinate value tables")
+    if type(semantics_profile) is not DeterministicObservationProfileV1:
+        raise ObservationPartialRAPMInvariantViolation("typed constructor rejects duck semantics profiles")
+    if type(observation_authority) is not PreregisteredObservationAuthorityV1:
+        raise ObservationPartialRAPMInvariantViolation("typed constructor rejects duck observation authorities")
+    model = _derive_partial_model_v1(
+        observation_log,
+        coordinate_proposal,
+        semantics_profile,
+        observation_authority,
+        coordinate_value_table,
+    )
+    return ObservationPartialRAPMBuildV1(
+        semantics_profile.profile_id,
+        semantics_profile.horizon_cap,
+        observation_log.log_id,
+        coordinate_proposal.proposal_id,
+        observation_authority.authority_id,
+        observation_authority.acquisition_manifest.manifest_id,
+        model,
+        len(model.coverage.observed_ground_row_ids),
+        len(model.coverage.missing_ground_row_ids),
+    )
+
+
+def verify_observation_partial_rapm_from_typed_values_v2(
+    observation_log: ObservationLogManifestV1,
+    coordinate_proposal: FrozenTypedCoordinateProposalV2,
+    coordinate_value_table: FrozenTypedCoordinateValueTableV2,
+    semantics_profile: DeterministicObservationProfileV1,
+    observation_authority: PreregisteredObservationAuthorityV1,
+    claimed_result: ObservationPartialRAPMBuildV1,
+) -> tuple[str, ...]:
+    """Check the internal typed-table derivation, not synthesis provenance.
+
+    Passing this check alone never authorizes a typed coordinate proposal or a
+    downstream planning certificate; that requires full V0-045 replay.
+    """
+    if type(claimed_result) is not ObservationPartialRAPMBuildV1:
+        raise ObservationPartialRAPMInvariantViolation("typed verifier rejects duck build results")
+    expected = build_observation_partial_rapm_from_typed_values_v2(
+        observation_log,
+        coordinate_proposal,
+        coordinate_value_table,
+        semantics_profile,
+        observation_authority,
+    )
+    failures: list[str] = []
+    if claimed_result.observation_log_id != observation_log.log_id:
+        failures.append("OBSERVATION_LOG_ID_MISMATCH")
+    if claimed_result.coordinate_proposal_id != coordinate_proposal.proposal_id:
+        failures.append("COORDINATE_PROPOSAL_ID_MISMATCH")
+    if claimed_result.observation_authority_id != observation_authority.authority_id:
+        failures.append("OBSERVATION_AUTHORITY_ID_MISMATCH")
+    if claimed_result.acquisition_manifest_id != observation_authority.acquisition_manifest.manifest_id:
+        failures.append("ACQUISITION_MANIFEST_ID_MISMATCH")
+    if claimed_result.model.to_document() != expected.model.to_document():
+        failures.append("MODEL_RECONSTRUCTION_MISMATCH")
+    if claimed_result.to_document() != expected.to_document():
+        failures.append("RESULT_RECONSTRUCTION_MISMATCH")
+    return tuple(failures)
+
 __all__ = [
     "AmbiguityPayloadV1",
     "AmbiguityRowStatus",
@@ -2996,8 +4083,13 @@ __all__ = [
     "EvidenceLane",
     "EvidenceLedgerV1",
     "ExactIntervalV1",
+    "FrozenActionCoordinateValuesV2",
+    "FrozenTypedActionCoordinateAtomV2",
     "FrozenCoordinateExpressionV1",
     "FrozenCoordinateProposalV1",
+    "FrozenStateCoordinateValuesV2",
+    "FrozenTypedCoordinateProposalV2",
+    "FrozenTypedCoordinateValueTableV2",
     "JointOutcomeAtomV1",
     "JointOutcomeKind",
     "JointSimplexConstraintV1",
@@ -3019,7 +4111,10 @@ __all__ = [
     "PreregisteredObservationAuthorityV1",
     "RewardFeatureCapV1",
     "SuccessorKind",
+    "TYPED_COORDINATE_SCHEMA_VERSION",
     "TrustedCompleteActionCatalogueV1",
+    "TypedActionAtomKind",
     "build_observation_partial_rapm_v1",
+    "validate_preregistered_observation_source_graph_v1",
     "verify_observation_partial_rapm_v1",
 ]

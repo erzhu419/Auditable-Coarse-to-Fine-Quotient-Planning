@@ -53,6 +53,12 @@
   deterministic plans under a fixed cap, but the selected plan still requires an
   independent V0-043 audit. It is not certificate, feasibility/infeasibility, J0,
   local-recovery, scale, sample-efficiency/economics or aggregate-Gate authority.
+- **V0-045 observation-only typed-coordinate partial-RAPM slice:** a query-free,
+  kernel-free exhaustive selection of coordinate programs from one fixed human typed
+  DSL over an already-symbolized, externally allowlisted finite observation graph. It
+  emits a reusable log-conditional partial RAPM and feeds typed V0-044/V0-043 consumers;
+  it is not raw symbolization, unknown-DSL invention, learned/neural latent dynamics,
+  statistical consistency, generalization, sample efficiency or an aggregate Gate.
 - **Phase 3C local-recovery slice:** the V0-029 certificate-triggered, isolated,
   query-owned overlay positive control over an immutable reusable RAPM; it is not the
   aggregate Phase 3 or economics Gate.
@@ -1023,6 +1029,117 @@ generalization/transfer/scale, sample savings/economics, official execution nor 
 Phase 3/3E/aggregate Gate. Cap 65536 is not a scalability result; every Gate lock stays
 unchanged.
 
+### Contract 1.8.0: observation-only typed-coordinate partial RAPM
+
+V0-045 registers implementation schema `1.0.0`, typed V0-042 extension schema `1.2.0`,
+typed V0-044 planner schema `1.1.0`, typed V0-043 audit-wrapper schema `1.2.0`,
+and profile `lmb_query_free_observed_typed_coordinate_synthesis_v0`. Its producer has
+exactly three inputs `(observation_log, semantics_profile, observation_authority)`;
+the verifier adds only `claimed_result`. Both require the exact allowlisted V0-042
+in-memory graph before any coordinate evaluation. No query, kernel, behavioural
+target/signature, V0-041 result, caller registry/subset/cap, planner, audit, policy,
+value/risk object, J0, ground solver or callback is accepted.
+
+The fixed human DSL contains eight state and four state-action ASTs under a V0-045-
+specific registry authority. A separate observation-only evaluator materializes
+`FrozenTypedCoordinateValueTableV2` for all eight registered states and eleven legal
+rows. Construction exhausts all `4096` subset pairs. Only seven observed rows support
+congruence; four missing rows are neither equality nor mismatch evidence and remain
+explicitly unknown.
+
+Production requires exact member label-set equality, observed pre-mixture congruence,
+one nontrivial observed alias, separation of a null/coarser observed conflict, point
+identification and strict compression. Its frozen selector chooses
+`cardinality(legal_actions)` and
+`buffer_at_type(buffer_counts,selected_tile_type)`. The raw integer action value is
+compiled to exact boolean atom `<=3/2`. This preserves, rather than revises, the V1
+schema:
+
+```text
+PartialSemanticActionV1.label_values = nonempty tuple[bool, ...]
+```
+
+Boolean raw coordinates use identity atoms; integer coordinates use adjacent-value
+midpoint atoms; the empty action subset uses one `UNIVERSAL_TRUE` boolean sentinel.
+The selected model contains six total/four active cells, five abstract entries/actions,
+six realizations, seven point rows and one four-row `UNOBSERVED_UNKNOWN` entry. Its
+seven observed rows are singletons, its four missing rows have unit unknown mass, its
+horizon cap is six, and it claims neither exact quotient nor transition closure.
+
+`FrozenTypedCoordinateProposalV2`, the typed table and
+`build_observation_partial_rapm_from_typed_values_v2` are deterministic internal
+derivation artifacts, not authority. In particular the pure builder cannot establish
+that a caller-supplied table actually came from the source or that opaque candidate/
+trace IDs represent the exhaustive selector. Only
+`verify_observed_lmb_partial_rapm_v1` may accept the full
+`ObservedTypedPartialRAPMResultV1`; it reconstructs source values, all candidates,
+selection, proposal, build, model, telemetry and certificate.
+
+The typed V0-044 producer surface is exactly:
+
+```text
+propose_partial_model_plan_from_observed_synthesis_v2(
+  observation_log,
+  semantics_profile,
+  observation_authority,
+  observed_synthesis_result,
+  thresholds,
+)
+```
+
+Its verifier adds only the claimed proposal result. The proposer fully replays V0-045
+once, freezes the verified portable model, then enumerates plans and invokes the shared
+verified-model V0-043 core once per candidate. `retained_v0045_full_replay_count=1`,
+`internal_audit_source_replay_count=0`, and
+`fixed_plan_audit_count=candidate_evaluated_count`. Internal audit outcomes are
+ranking evidence only; `selected_plan_requires_independent_typed_v0043_audit=true`.
+
+The typed V0-043 public auditor accepts the same source and full V0-045 result plus one
+threshold object and frozen plan. It independently replays the complete V0-045 chain,
+then invokes the same bound core. `TypedPartialSoundAuditResultV2` binds the synthesis
+result and certificate, coordinate proposal, partial build, model, thresholds, plan and
+unchanged inner V0-043 result. No bare portable model, proposal, value table, pure-build
+result or caller verifier can substitute for this boundary.
+
+Canonical downstream controls are:
+
+```text
+H3 observed: S=2; plans/audits=8/8; reward=4; failure=0;
+             independent typed V0-043=CERTIFIED_FIXED_PLAN
+H1 all-missing: plans/audits=2/2; reward=[0,3]; failure upper=1;
+                independent typed V0-043=FAILED_PROOF_FRONTIER;
+                reason=UNRESOLVED_POLICY_PATH_DISTINCTION;
+                local recovery authorized=false
+```
+
+Historical manual V0-042--V0-044 APIs and artifacts remain byte-compatible. The frozen
+V0-045 result/model IDs are
+`4834efc30b9ae292e33f83932525195df1997ae31f7c7898b452b6175815ded2` and
+`1676785661c8fb00f54ddef93dc84d53c08b81781249de66ae5e4129a450bc18`;
+the complete typed identity table is normative in
+`specs/OBSERVED_TYPED_COORDINATE_SYNTHESIS.md`.
+
+Contract 1.8.0 proves fixed-DSL discovery over already-symbolized logged states/actions
+only. It does not prove raw observation symbolization, neural/continuous latent-state
+learning, unknown primitives/operators/DSL, an exact or true latent model, observer
+truth, ground optimality/infeasibility, statistical consistency, held-out/cross-domain
+generalization, scale or sample saving. The next Gate is a separate authority for
+minimum query-local evidence after certificate failure, immutable versioned overlay/
+new BuildEpoch, replan/re-audit and preregistered promotion checks. A V0-043 failed
+frontier remains nonauthorizing.
+
+Contract 1.8.0 opens no aggregate lock:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+sample_efficiency_gate_blocks_mainline = false
+```
+
 ## Pseudocode / schema
 
 
@@ -1658,6 +1775,35 @@ evaluation-only J0 costs remain separate.
   ground-optimality/J0, exact-closure, coordinate-invention, causal/local/fallback,
   learning/generalization/scale, sample-saving/economics and official-Gate claims false.
 
+- V0-045 producer/verifier signatures are exactly three/four source inputs and expose
+  no query, coordinate subset, cap, kernel, target, V0-041 result, planner/audit or
+  callback channel. Runtime digest checks and full retained replay reject changed
+  registry/evaluator/compiler/selector implementations.
+- The exact 8-state/11-row value table contains all eight state and four action AST
+  columns; the trace evaluates `4096/4096` candidates and selects
+  `cardinality(legal_actions)`,
+  `buffer_at_type(buffer_counts,selected_tile_type)` and action atom `<=3/2`.
+- The selected result has six total/four active cells, five abstract entries/actions,
+  six realizations, seven point rows, four missing rows and entry classes four
+  `POINT_IDENTIFIED` plus one `UNOBSERVED_UNKNOWN`. Missing rows contribute neither
+  equality nor mismatch evidence.
+- The original nonempty `tuple[bool,...]` semantic-action schema remains unchanged.
+  V2 integer values compile through exact midpoint atoms, and the typed pure builder
+  rejects changed atoms, partial member label availability, nested substitutions and
+  source/proposal/table mismatch. It is never accepted as stand-alone authority.
+- The full V0-045 verifier reconstructs values, all candidates, selection, proposal,
+  build, model, telemetry and certificate. Kernel blindness, unallowlisted authority,
+  source/result substitution and a separately named cap-4095 closure fail closed.
+- Typed V0-044 replays V0-045 exactly once, then runs candidate audits on the fixed
+  verified model: H3 has `8/8` plans/audits; H1 has `2/2`; internal source-replay count
+  is zero. Its selected plan remains nonauthorizing.
+- Independent typed V0-043 explicitly binds the V0-045 result/certificate, proposal,
+  build and model to thresholds, plan and the unchanged inner audit. H3 certifies
+  reward/failure `4/0`; all-missing H1 returns `[0,3]`, failure upper one and an
+  unresolved nonauthorizing frontier. A bare model/build/table/proposal is rejected.
+- Historical manual V0-042--V0-044 focused tests preserve their existing results and
+  IDs. Typed V0-045/V0-044/V0-043 content-ID goldens are frozen in their focused tests.
+
 ## Out of scope
 
 Neural encoders, learned/statistical world models, MCTS, first-hit options, SMDP duration, POMDP/belief adapters, visual perception, infinite horizon, cross-domain meta-controllers, interpreting a supplied `D4` group as an automatically discovered abstraction, interpreting Phase 3A exact-model cross-orbit aggregation as oracle-free unknown-quotient discovery, interpreting Phase 3B exact one-step synthesis as predicate invention or local hybrid planning, interpreting V0-038's target-supervised selection as target-free discovery, interpreting V0-039's direct fixed-grammar exact homomorphism as feature invention, scalable/unknown-domain discovery or held-out generalization, or interpreting Phase 3D as workload break-even or a full Phase 3/5 pass.
@@ -1687,6 +1833,15 @@ learned/statistical model, generalization/transfer/scale, sample reduction/econo
 official terminal. Its cap establishes only bounded exhaustive abstract search; its
 selected plan remains conditional on the V0-042 trust root and requires independent
 V0-043 audit.
+
+V0-045 cannot be cited as symbolization of raw/visual observations, discovery of an
+unknown primitive/operator/DSL, a neural or statistical latent model, exact quotient,
+true dynamics, observer/catalogue truth, portable authenticity, unrestricted reuse,
+ground-optimal planning, infeasibility, held-out/cross-domain generalization, scale or
+sample saving. Its coordinate discovery occurs only inside one fixed human DSL over an
+already-symbolized finite log. The typed pure builder and typed V0-044 internal audit
+are not certificate authorities; only complete V0-045 replay followed by independent
+typed V0-043 may certify the selected fixed plan.
 
 ## Known failure modes
 
@@ -1722,6 +1877,15 @@ or counting model replay as environment sampling invalidates the claim. Internal
 V0-043 audit or inferring feasibility/infeasibility from proposal/cap status is
 unsound.
 
+For V0-045, using raw integer action values as semantic labels, relaxing V1 labels to
+integers or empty tuples, intersecting unequal member action-label sets, treating a
+missing row as equality/mismatch evidence, trusting a caller-supplied typed table or
+pure build, reusing V0-041 runtime/certificate ancestry, or repeating full synthesis as
+if every planner candidate were a new model invalidates the claim. Typed consumers
+must first replay one complete V0-045 result; the planner may then audit candidates on
+that fixed verified model, while the selected plan still requires a separate full-chain
+typed V0-043 replay.
+
 ## Open risks
 
 Later claims about shared grammar/coordinates and practical amortization remain empirical. They do not weaken Phase 0.5 soundness obligations. V0-027 closes the immediate cross-automorphism state-alias positive control; V0-028 establishes the no-Q/value-signature portable world-model path; V0-029 executes the first strict local repair; and V0-030 closes joint finite local composition, slack-aware causality, and finite-domain sparse capability. V0-038 closes target-supervised automatic exact realization inside one fixed LMB grammar/coverage. V0-039 removes that construction-time target/signature dependency for the same finite LMB slice by direct homomorphism proof, but retains the exact ground kernel, fixed grammar and exact coverage. Automatic feature invention, partial/learned-model discovery, larger/unknown domains, held-out/cross-domain generalization, dependent-horizon recovery, workload economics/dynamic routing, and the complete statistical Phase 3/Phase 5 Gates remain open empirical work.
@@ -1733,13 +1897,20 @@ programs but retains a fixed human DSL, complete exact kernel and finite coverag
 Unknown-semantic invention, partial/learned dynamics, larger/unknown-domain evidence,
 held-out/cross-domain generalization, an empirically designed tax-reduction operator,
 and the aggregate statistical Gates remain open.
-V0-042 closes only conditional partial-dynamics materialization from one externally
-trusted finite observation graph using manual coordinates. V0-044 now supplies bounded
-model-only plan proposals, and V0-043 independently audits the selected plan; neither
-opens a recovery route or changes the V0-042 trust boundary. The next construction slice
-is V0-045 log-only typed-coordinate synthesis, followed by a V0-042-compatible reusable
-partial RAPM, V0-044 proposal and independent V0-043 audit. Full portable source
-authority, sound certificate-triggered local evidence/refinement/RAPM update,
-statistical or learned dynamics, held-out/cross-domain validation and matched-budget
-sample-efficiency evaluation remain open. Sample efficiency stays a non-blocking
-sidecar until complete-flow telemetry identifies the actual tax bottleneck.
+V0-042 closes conditional partial-dynamics materialization from one externally trusted
+finite observation graph. V0-045 now selects coordinates observation-only inside the
+fixed typed DSL, builds the same-schema partial RAPM, lets typed V0-044 plan on one
+verified fixed model, and lets independent typed V0-043 certify or return a
+nonauthorizing frontier. This closes the narrow symbolic-log mainline, not raw
+symbolization, learned/statistical dynamics, portable source truth, larger/unknown
+domains or generalization.
+
+The next construction Gate is certificate-triggered minimum query-local evidence and
+model evolution: freeze the failed query/plan/model/frontier identities; use a separate
+authority to prove the smallest admissible ground-row scope; charge acquisition;
+create an immutable versioned overlay/new BuildEpoch; replan and independently re-audit;
+and promote into a reusable base only after preregistered multi-query/held-out checks.
+Until that exists, the failed frontier cannot authorize ground access or mutate V0-045.
+Matched-budget sample-efficiency evaluation and a Laplace-style tax-reduction operator
+remain non-blocking follow-up work to be designed from measured acquisition/refinement
+telemetry rather than guessed before the full route exists.

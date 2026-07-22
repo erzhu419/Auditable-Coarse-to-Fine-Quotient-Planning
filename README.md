@@ -28,6 +28,69 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 → jointly search local value/risk choices, rebuild, or use charged fallback
 ```
 
+## Current observation-only typed-coordinate synthesis slice (V0-045)
+
+Contract `1.8.0` (synthesis schema `1.0.0`, typed V0-042 `1.2.0`, typed planner
+`1.1.0`, typed audit wrapper `1.2.0`) closes the narrow construction-to-planning chain on the hardened
+finite observation control. Profile
+`lmb_query_free_observed_typed_coordinate_synthesis_v0` receives only the exact
+allowlisted observation log, deterministic profile and observation authority. It uses
+no query, kernel, behavioural target/signature, V0-041 result, caller-selected subset,
+planner, audit, J0, ground solver or callback.
+
+The system evaluates a fixed human-written typed DSL—eight state and four action ASTs—
+over all eight registered states and eleven legal rows, then exhausts all 4096 subset
+candidates. Seven observed rows supply congruence evidence; four unobserved legal rows
+remain explicit uncertainty and are neither positive nor negative comparisons. The
+selected programs are:
+
+```text
+state:  cardinality(legal_actions)
+action: buffer_at_type(buffer_counts, selected_tile_type)
+atom:   integer <= 3/2
+```
+
+The resulting query-neutral partial RAPM has six total/four active cells, five abstract
+entries/actions and six realizations. It preserves seven singleton rows, four unit-
+unknown rows, the shared joint simplex and horizon cap six. The original V1 action
+schema is unchanged: semantic labels remain nonempty boolean tuples. Raw integer DSL
+values compile to exact boolean midpoint atoms; they never become integer labels.
+
+The typed value table, proposal and pure V0-042 builder are internal derivation
+objects, not certificate authority. A downstream consumer must supply the complete
+`ObservedTypedPartialRAPMResultV1` and replay V0-045. Typed V0-044 does that once, freezes
+the model, and enumerates plans without rerunning synthesis per candidate. H3 evaluates
+eight plans and proposes reward/failure `4/0`; H1 evaluates two and exposes interval
+`[0,3]` with failure upper one. The proposal is still not a certificate. Independent
+typed V0-043 replays the full V0-045 chain for the selected plan: H3 certifies, whereas
+H1 returns a nonauthorizing `UNRESOLVED_POLICY_PATH_DISTINCTION` frontier.
+
+This is coordinate discovery only inside a fixed DSL over already-symbolized logged
+states/actions. It is not raw perception/symbolization, unknown semantic or DSL
+invention, a neural/learned latent model, true/exact dynamics recovery, statistical
+consistency, generalization, scale or sample saving. The frozen V0-045 result/model IDs
+are `4834efc30b9ae292e33f83932525195df1997ae31f7c7898b452b6175815ded2` and
+`1676785661c8fb00f54ddef93dc84d53c08b81781249de66ae5e4129a450bc18`; the full table
+is in `specs/OBSERVED_TYPED_COORDINATE_SYNTHESIS.md`.
+
+The next construction Gate starts from an independently failed certificate: prove a
+minimum query-local evidence scope under separate authority, charge acquisition, build
+an immutable versioned overlay/new BuildEpoch, replan and re-audit, and promote only
+after preregistered multi-query/held-out checks. A failed frontier alone cannot authorize
+ground access or mutate the reusable base.
+
+All aggregate locks remain unchanged:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+sample_efficiency_gate_blocks_mainline = false
+```
+
 ## Current partial-model contingent-plan proposal slice (V0-044)
 
 Contract `1.7.0`, implementation schema `1.0.0`, registers profile
@@ -110,9 +173,10 @@ repair/fallback, demonstrate learning/generalization/scale/sample savings/econom
 open official execution, Phase 3, Phase 3E or aggregate Gates. In particular, cap
 `65536` is a bounded-search limit, not a scalability claim.
 
-The next construction slice is V0-045 log-only typed-coordinate synthesis. It remains
-unimplemented here and must feed the unchanged V0-042 builder before any V0-044 proposal
-and independent V0-043 audit can support a later claim.
+Contract `1.8.0` adds the typed V0-045 consumer surface without changing this historical
+manual V0-044 result. The typed proposer replays one complete V0-045 result, freezes its
+verified model and uses the common bound core for candidate ranking; independent typed
+V0-043 remains the sole plan-certificate authority. See the preceding V0-045 section.
 
 ## Current robust fixed-plan audit slice (V0-043)
 
