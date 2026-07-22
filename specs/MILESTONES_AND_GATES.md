@@ -60,6 +60,11 @@
   four necessary rows in the canonical H1 zero-risk failed certificate, exact charged
   acquisition, immutable query-owned overlay, abstract replanning, and independent
   certification. It is not a multi-step/general acquisition or promotion Gate.
+- **V0-047 multi-step query-local refinement slice:** two certificate-triggered
+  evidence rounds on a canonical H2 path, evidence-derived boundary registration,
+  fixed-coordinate reuse, immutable V3 epochs, model-only replanning, frontier
+  movement, and final independent certification. It is not cross-query promotion,
+  learned dynamics, sample saving or an aggregate Gate.
 - **Phase 3D general local-recovery Gate:** the V0-030 finite, cap-aware positive
   control that closes joint value/risk composition, slack-aware causal localization,
   and sparse worker authority. Its pass is not aggregate Phase 3 or economics.
@@ -877,9 +882,9 @@ generalization, scale or sample saving. The frozen synthesis result is
 model is `1676785661c8fb00f54ddef93dc84d53c08b81781249de66ae5e4129a450bc18`, and the
 complete identity table is normative in `specs/OBSERVED_TYPED_COORDINATE_SYNTHESIS.md`.
 
-V0-046 now executes the next construction Gate below for the canonical H1 control. A
-failed-proof frontier alone remains nonauthorizing; the complete source/planner/audit
-chain is required.
+V0-046 executes the H1 construction Gate below, and V0-047 separately extends the
+same authority chain to a two-round H2 control. A failed-proof frontier alone remains
+nonauthorizing; the complete source/planner/audit chain is required.
 
 Official execution remains false; scalar cost and break-even remain null; workload-
 economics, counter-completeness and sample-efficiency Gates remain `NOT_RUN`, with
@@ -958,6 +963,92 @@ quotient, general causal localization, multi-step external-boundary repair, base
 promotion, raw symbolization, learned dynamics, generalization, scale, economics, or
 sample saving. Complete identities and claim boundaries are normative in
 `specs/QUERY_LOCAL_EVIDENCE_REFINEMENT.md`.
+
+### V0-047 multi-step query-local RAPM-evolution slice
+
+Contract `1.10.0`, schema `1.0.0`, and profile
+`lmb_h2_multistep_query_local_exact_refinement_v0` require:
+
+```text
+full V0-045 result + canonical H2 typed proposal + independent failed audit
+-> derive/freeze four time-zero rows with zero preparation ground access
+-> execute exactly four transition calls
+-> derive three nonterminal boundary states from evidence
+-> query exactly three complete legal-action catalogues; register nine rows
+-> reevaluate the frozen V0-045 coordinates on those states/actions
+-> freeze first V3 epoch at 11 observed / 9 missing
+-> model-only four-plan replan + independent audit
+-> freeze later frontier at time 1 / remaining horizon 1
+-> derive 3 risk / 9 value / 9 distinct second-round rows
+-> execute exactly nine transition calls
+-> freeze final V3 epoch at 20 observed / 0 missing
+-> model-only four-plan replan + independent reward/risk/regret 1/0/0 audit
+```
+
+The first four calls reveal one registered and three external active successors.
+Boundary expansion cannot accept a caller state/action set and performs no transition
+replay or search. All three new states evaluate to existing coordinate `(3,)`; their
+actions evaluate to the existing semantic labels `(False,)` and `(True,)`. The first
+audit must move the proof frontier from `time=0,h=2` to `time=1,h=1` and must no
+longer fail external coverage.
+
+The planner freezes
+`NUMERIC_GATE_THEN_SEMANTIC_LABEL_LEXICOGRAPHIC_V1`: the existing numerical
+value/risk tier remains first, the semantic boolean schedule breaks only exact numeric
+ties, and `plan_id` is last. The second request retains separate native risk/value
+roles even though their union is nine rows. Its outcomes are exactly three safe
+one-match transitions and six terminal failures.
+
+The acceptance goldens are:
+
+```text
+round-one transition calls              = 4
+boundary states / legal rows            = 3 / 9
+boundary catalogue / transition calls   = 3 / 0
+first model observed / missing           = 11 / 9
+first planner candidates                 = 4
+first failed frontier                    = time 1 / horizon 1
+round-two risk / value / distinct rows   = 3 / 9 / 9
+round-two transition calls               = 9
+final model observed / missing           = 20 / 0
+final planner candidates                 = 4
+candidate plan audits                    = 8
+total transition / direct catalogue calls = 13 / 3
+step-internal legality checks             = 13 (included in transition calls)
+planner/auditor kernel calls             = 0
+direct ground-optimizer calls            = 0
+certified reward / failure / regret       = 1 / 0 / 0
+base mutation / promotion                = false / false
+sample efficiency claimed                = false
+```
+
+The gate passes only if:
+
+1. the public runner accepts no caller row/state/cap or ground-solver control;
+2. round one contains exactly four authorized rows/calls and no extra access;
+3. all three boundary states and nine actions are evidence/catalogue-derived;
+4. boundary expansion has zero transition replay and exactly three direct boundary
+   catalogue calls;
+5. the exact V0-045 coordinate programs, not replacements, are evaluated on new rows;
+6. the base remains byte-identical and every V3 claim flag stays conservative;
+7. first coverage is `11/9` and the independent frontier moves to time one;
+8. semantic tie-breaking precedes content-hash tie-breaking only after numeric ties;
+9. round two preserves `3 risk / 9 value / 9 distinct` role evidence;
+10. final coverage is `20/0` and the independent certificate is exactly `1/0/0`;
+11. omission, role-removal, promotion, model/proof substitution and extra-access
+    attacks fail closed;
+12. independent replay reproduces the complete result byte-for-byte.
+
+Passing remains a narrow `QUERY_LOCAL_PLAN_CERTIFIED` positive control. It proves the
+first multi-step within-query model-evolution loop, but not general causal minimality,
+global transition closure, exact quotient, cross-query/held-out reuse, base promotion,
+raw symbolization, learned/statistical dynamics, generalization, economics, scale, or
+sample saving. The next Gate is preregistered reuse/promotion and matched acquisition
+traces. Detailed identities and boundaries are normative in
+`specs/MULTISTEP_QUERY_LOCAL_REFINEMENT.md`.
+
+All official/scalar/economics/counter/sample locks remain unchanged, with sample
+efficiency non-blocking.
 
 ### Phase 3C certificate-triggered local-recovery gate
 
@@ -1539,6 +1630,12 @@ recovery, observer truth, portable authenticity, ground optimality/infeasibility
 held-out/cross-domain generalization, scalability or sample saving. Fixed-DSL
 observation-log discovery is its complete claim.
 
+V0-046 and V0-047 cannot be promoted to general causal minimality, global transition
+closure, cross-query reuse, base promotion, learned/statistical acquisition or sample
+saving. V0-047's reuse of `(3,)` is within one query-local boundary expansion; it is not
+held-out validation. Zero missing rows in its registered catalogue does not close
+external successors reached only at horizon truncation.
+
 ## Known failure modes
 
 The coarse policy can be immediately infeasible, no predicate may separate the witness, every useful split may exceed rate, and an accepted split may still end in charged fallback. These are valid measured outcomes, but Phase 0.5 still requires a fixture with one accepted split. An implicit default support, incomplete all-action closure, or coverage-free cache key is unsound. In the exact `D4` gate, incomplete orbit closure, action-transform errors, stabilizer multiplicity bias, or nonzero envelopes are hard validation failures and are never repaired by refinement. In the aliased gate, replacing the deliberate boundary adapter with equivariant actions, forcing a third split after certification, or hiding the final risk gap changes the registered experiment. In Phase 3A, held-out leakage, thresholding compression on terminal collapse, or reporting a cross-orbit cell unreachable by the training policy invalidates the slice. In V0-039, label-set, within-label action-alias or cross-state same-label mismatch is a typed negative candidate; cap exhaustion cannot certify, and mixing before the alias check invalidates the direct claim.
@@ -1621,10 +1718,16 @@ evolution for one fixed H1 zero-risk control: four necessary rows are authorized
 charged, the base remains unchanged, and the resulting query-owned model replans and
 certifies. It does not authorize base promotion or generalize beyond H1 row completion.
 
-The next construction Gate extends this to multi-step failed-proof frontiers and
-locally restored active distinctions, then applies preregistered multi-query/held-out
-promotion tests. Portable source authority, raw symbolization, statistical/learned
-dynamics, larger or unknown domains, held-out/cross-domain evidence, the empirically
-designed tax-reduction operator and the complete statistical Gates remain open. Sample
-efficiency remains non-blocking until complete multi-step acquisition/refinement
-telemetry identifies the actual bottleneck.
+V0-047 now extends this to a two-round H2 failed-proof path. Four first-round calls
+expose three active boundary states; the fixed coordinate is reused, the first V3
+epoch moves the frontier to time one, and nine second-round value/risk calls yield a
+final reward/failure/regret `1/0/0` certificate. This supplies the first complete
+multi-step acquisition/refinement trace without mutating the base or invoking a
+ground optimizer.
+
+The next construction Gate applies preregistered multi-query/held-out reuse and
+promotion tests and begins matched trace comparison. Portable source authority, raw
+symbolization, statistical/learned dynamics, larger or unknown domains, held-out/
+cross-domain evidence, the empirically designed tax-reduction operator and the
+complete statistical Gates remain open. Sample efficiency stays non-blocking until
+those traces identify whether and where an intervention is justified.

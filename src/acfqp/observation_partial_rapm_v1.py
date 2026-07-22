@@ -58,6 +58,7 @@ DOMAIN_TAGS = {
     "semantic_action": "acfqp:partial-rapm-semantic-action:v1",
     "model": "acfqp:portable-partial-rapm:v1",
     "query_scoped_model": "acfqp:query-scoped-partial-rapm:v2",
+    "query_scoped_multistep_model": "acfqp:query-scoped-partial-rapm:v3",
     "result": "acfqp:observation-partial-rapm-build-result:v1",
 }
 
@@ -3257,6 +3258,205 @@ class QueryScopedPartialRAPMV2:
 
 
 @dataclass(frozen=True, slots=True)
+class QueryScopedPartialRAPMV3:
+    """Immutable multi-step query overlay with locally registered boundary states.
+
+    V3 preserves the V1 structural checker but carries a versioned provenance
+    chain for query-local state/action-catalogue expansion.  It is deliberately
+    neither query neutral nor promotable; only a verifier holding the complete
+    multi-step evolution chain may consume it.
+    """
+
+    semantics_profile_id: str
+    semantics_horizon_cap: int
+    observation_log_id: str
+    coordinate_proposal_id: str
+    observation_authority_id: str
+    acquisition_manifest_id: str
+    acquisition_coverage_id: str
+    evidence_ledger_id: str
+    coverage: ObservationCoverageV1
+    external_boundary_id: str
+    cells: tuple[PartialCellV1, ...]
+    semantic_actions: tuple[PartialSemanticActionV1, ...]
+    concretizer_rows: tuple[ConcretizerRowV1, ...]
+    ground_rows: tuple[PartialGroundRowV1, ...]
+    semantic_realizations: tuple[PartialSemanticRealizationV1, ...]
+    reward_feature_caps: tuple[RewardFeatureCapV1, ...]
+    base_model_id: str
+    previous_model_id: str
+    observed_synthesis_result_id: str
+    source_thresholds_id: str
+    source_plan_id: str
+    source_failed_typed_audit_result_id: str
+    evidence_request_id: str
+    evidence_bundle_id: str
+    boundary_expansion_id: str
+    overlay_ledger_id: str
+    overlay_version: int
+    cumulative_exact_kernel_query_count: int
+    registered_query_local_state_count: int
+    evidence_kind: str = "DETERMINISTIC_QUERY_LOCAL_MULTISTEP_EXACT_OVERLAY_V1"
+    query_neutral: bool = False
+    transition_closure_claimed: bool = False
+    exact_quotient_claimed: bool = False
+    plan_certificate_claimed: bool = False
+    infeasibility_claimed: bool = False
+    acquisition_query_neutral_attested: bool = False
+    preregistered_allowlisted_authority_required: bool = True
+    query_local_overlay_authority_required: bool = True
+    boundary_catalogue_authority_required: bool = True
+    base_model_mutated: bool = False
+    promotion_authorized: bool = False
+
+    def __post_init__(self) -> None:
+        for field in (
+            "base_model_id",
+            "previous_model_id",
+            "observed_synthesis_result_id",
+            "source_thresholds_id",
+            "source_plan_id",
+            "source_failed_typed_audit_result_id",
+            "evidence_request_id",
+            "evidence_bundle_id",
+            "boundary_expansion_id",
+            "overlay_ledger_id",
+        ):
+            _cid(getattr(self, field), f"multi-step query model {field}")
+        _integer(self.overlay_version, "multi-step overlay version", 1)
+        _integer(
+            self.cumulative_exact_kernel_query_count,
+            "multi-step cumulative exact-kernel count",
+            1,
+        )
+        _integer(
+            self.registered_query_local_state_count,
+            "multi-step registered query-local state count",
+            1,
+        )
+        if self.overlay_version not in (1, 2):
+            raise ObservationPartialRAPMInvariantViolation(
+                "V3 multi-step overlay version lies outside the frozen two-round profile"
+            )
+        if (self.overlay_version == 1) != (self.previous_model_id == self.base_model_id):
+            raise ObservationPartialRAPMInvariantViolation(
+                "multi-step previous-model binding disagrees with overlay version"
+            )
+        if (
+            self.evidence_kind
+            != "DETERMINISTIC_QUERY_LOCAL_MULTISTEP_EXACT_OVERLAY_V1"
+            or self.query_neutral is not False
+            or self.transition_closure_claimed is not False
+            or self.exact_quotient_claimed is not False
+            or self.plan_certificate_claimed is not False
+            or self.infeasibility_claimed is not False
+            or self.acquisition_query_neutral_attested is not False
+            or self.preregistered_allowlisted_authority_required is not True
+            or self.query_local_overlay_authority_required is not True
+            or self.boundary_catalogue_authority_required is not True
+            or self.base_model_mutated is not False
+            or self.promotion_authorized is not False
+        ):
+            raise ObservationPartialRAPMInvariantViolation(
+                "multi-step query model crossed its local-overlay claim boundary"
+            )
+
+        PortablePartialRAPMV1(
+            self.semantics_profile_id,
+            self.semantics_horizon_cap,
+            self.observation_log_id,
+            self.coordinate_proposal_id,
+            self.observation_authority_id,
+            self.acquisition_manifest_id,
+            self.acquisition_coverage_id,
+            self.evidence_ledger_id,
+            self.coverage,
+            self.external_boundary_id,
+            self.cells,
+            self.semantic_actions,
+            self.concretizer_rows,
+            self.ground_rows,
+            self.semantic_realizations,
+            self.reward_feature_caps,
+        )
+
+    def _payload(self) -> dict[str, Any]:
+        return {
+            "schema": "acfqp.query_scoped_partial_rapm.v3",
+            "schema_version": TYPED_COORDINATE_SCHEMA_VERSION,
+            "semantics_profile_id": self.semantics_profile_id,
+            "semantics_horizon_cap": self.semantics_horizon_cap,
+            "observation_log_id": self.observation_log_id,
+            "coordinate_proposal_id": self.coordinate_proposal_id,
+            "observation_authority_id": self.observation_authority_id,
+            "acquisition_manifest_id": self.acquisition_manifest_id,
+            "acquisition_coverage_id": self.acquisition_coverage_id,
+            "evidence_ledger_id": self.evidence_ledger_id,
+            "coverage": self.coverage.to_document(),
+            "external_boundary_id": self.external_boundary_id,
+            "cells": [item.to_document() for item in self.cells],
+            "semantic_actions": [item.to_document() for item in self.semantic_actions],
+            "concretizer_rows": [item.to_document() for item in self.concretizer_rows],
+            "ground_rows": [item.to_document() for item in self.ground_rows],
+            "semantic_realizations": [
+                item.to_document() for item in self.semantic_realizations
+            ],
+            "reward_feature_caps": [
+                item.to_document() for item in self.reward_feature_caps
+            ],
+            "base_model_id": self.base_model_id,
+            "previous_model_id": self.previous_model_id,
+            "observed_synthesis_result_id": self.observed_synthesis_result_id,
+            "source_thresholds_id": self.source_thresholds_id,
+            "source_plan_id": self.source_plan_id,
+            "source_failed_typed_audit_result_id": (
+                self.source_failed_typed_audit_result_id
+            ),
+            "evidence_request_id": self.evidence_request_id,
+            "evidence_bundle_id": self.evidence_bundle_id,
+            "boundary_expansion_id": self.boundary_expansion_id,
+            "overlay_ledger_id": self.overlay_ledger_id,
+            "overlay_version": self.overlay_version,
+            "cumulative_exact_kernel_query_count": (
+                self.cumulative_exact_kernel_query_count
+            ),
+            "registered_query_local_state_count": (
+                self.registered_query_local_state_count
+            ),
+            "evidence_kind": self.evidence_kind,
+            "query_neutral": self.query_neutral,
+            "transition_closure_claimed": self.transition_closure_claimed,
+            "exact_quotient_claimed": self.exact_quotient_claimed,
+            "plan_certificate_claimed": self.plan_certificate_claimed,
+            "infeasibility_claimed": self.infeasibility_claimed,
+            "acquisition_query_neutral_attested": (
+                self.acquisition_query_neutral_attested
+            ),
+            "preregistered_allowlisted_authority_required": (
+                self.preregistered_allowlisted_authority_required
+            ),
+            "query_local_overlay_authority_required": (
+                self.query_local_overlay_authority_required
+            ),
+            "boundary_catalogue_authority_required": (
+                self.boundary_catalogue_authority_required
+            ),
+            "base_model_mutated": self.base_model_mutated,
+            "promotion_authorized": self.promotion_authorized,
+        }
+
+    @property
+    def model_id(self) -> str:
+        return _content_id("query_scoped_multistep_model", self._payload())
+
+    def to_document(self) -> dict[str, Any]:
+        return {**self._payload(), "model_id": self.model_id}
+
+    def validate_registered_support(self, state_ids: Iterable[str]) -> None:
+        self.coverage.validate_registered_support(state_ids)
+
+
+@dataclass(frozen=True, slots=True)
 class ObservationPartialRAPMBuildV1:
     semantics_profile_id: str
     semantics_horizon_cap: int
@@ -4271,6 +4471,7 @@ __all__ = [
     "PlanningKind",
     "PortablePartialRAPMV1",
     "QueryScopedPartialRAPMV2",
+    "QueryScopedPartialRAPMV3",
     "PREREGISTERED_OBSERVATION_AUTHORITY_IDS",
     "PreregisteredAcquisitionManifestV1",
     "PreregisteredObservationAuthorityV1",

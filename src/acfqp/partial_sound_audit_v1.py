@@ -39,6 +39,7 @@ from acfqp.observation_partial_rapm_v1 import (
     PreregisteredObservationAuthorityV1,
     PortablePartialRAPMV1,
     QueryScopedPartialRAPMV2,
+    QueryScopedPartialRAPMV3,
     verify_observation_partial_rapm_v1,
 )
 from acfqp.phase3e_ids import canonical_json_bytes, parse_content_id
@@ -1915,7 +1916,11 @@ def _validate_return_bound_authority(
 
 
 def _validate_inputs(
-    partial_model: PortablePartialRAPMV1 | QueryScopedPartialRAPMV2,
+    partial_model: (
+        PortablePartialRAPMV1
+        | QueryScopedPartialRAPMV2
+        | QueryScopedPartialRAPMV3
+    ),
     thresholds: FrozenPartialAuditThresholdsV1,
     contingent_plan: FrozenContingentAbstractPlanV1,
 ) -> tuple[
@@ -1927,6 +1932,7 @@ def _validate_inputs(
     if type(partial_model) not in (
         PortablePartialRAPMV1,
         QueryScopedPartialRAPMV2,
+        QueryScopedPartialRAPMV3,
     ):
         raise PartialSoundAuditInvariantViolation(
             "audit rejects duck partial models"
@@ -2529,7 +2535,11 @@ def audit_partial_fixed_plan_v1(
 
 
 def _audit_verified_partial_model_v1(
-    partial_model: PortablePartialRAPMV1 | QueryScopedPartialRAPMV2,
+    partial_model: (
+        PortablePartialRAPMV1
+        | QueryScopedPartialRAPMV2
+        | QueryScopedPartialRAPMV3
+    ),
     observation_log: ObservationLogManifestV1,
     semantics_profile: DeterministicObservationProfileV1,
     observation_authority: PreregisteredObservationAuthorityV1,

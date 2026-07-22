@@ -28,7 +28,49 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 → jointly search local value/risk choices, rebuild, or use charged fallback
 ```
 
-## Current certificate-triggered query-local refinement slice (V0-046)
+## Current multi-step query-local refinement slice (V0-047)
+
+Contract `1.10.0`, implementation schema `1.0.0`, and profile
+`lmb_h2_multistep_query_local_exact_refinement_v0` execute the first genuine
+two-stage version of the central loop. Starting from the complete V0-045 model,
+typed V0-044 H2 proposal, and independently failed V0-043 audit, the authority
+derives four time-zero rows without caller-selected states, rows, or caps. Four
+exact transition calls expose three previously external active states; three direct
+boundary action-catalogue calls register their nine legal rows without replaying transitions.
+
+The fixed V0-045 coordinates are then evaluated on those new states. All three
+reuse the existing state-coordinate signature `(3,)` and the two semantic action
+labels `(False,)` and `(True,)`. The immutable first `QueryScopedPartialRAPMV3`
+epoch has `11 observed / 9 missing` rows. Model-only planning enumerates four H2
+plans, and independent audit moves the earliest failed-proof frontier from
+`time=0, horizon=2` to `time=1, horizon=1`; external coverage is no longer the
+failed obligation.
+
+The second authority freezes the union of three selected-plan risk rows and nine
+unrestricted value challengers: nine distinct rows and exactly nine further
+transition calls. The final V3 epoch has `20/0` observed/missing rows over its
+registered query-local catalogue. Model-only replanning and independent audit
+certify reward `1`, failure `0`, and normalized regret `0`. A semantic-label
+lexicographic tie rule acts only after exact numerical ties, so unrelated content
+hash changes cannot silently change the selected contingent plan.
+
+The complete operational acquisition trace is `4 + 9 = 13` exact transition
+calls, three direct boundary action-catalogue calls, two model-only replans, eight
+candidate-plan audits, zero planner/auditor kernel calls, and zero direct ground-optimizer calls.
+Each transition performs one internal action-legality enumeration; those 13 checks are
+charged inside the transition calls and are not additional catalogue acquisitions.
+The reusable base remains byte-identical; both V3 epochs are query-owned,
+nonpromotable, non-query-neutral, non-exact, and not globally transition-closed.
+This is real within-query coordinate reuse, not held-out reuse, learned dynamics,
+general causal minimality, sample saving, or aggregate-Gate completion.
+
+The next construction Gate is preregistered cross-query/held-out reuse and
+promotion without query-local leakage, together with matched acquisition traces.
+Only those measured traces may motivate a Laplace-semi-MDP-style heuristic
+operator or KG-OP-style offline/online meta-prior. Full identities and acceptance
+tests are in `specs/MULTISTEP_QUERY_LOCAL_REFINEMENT.md`.
+
+## Historical certificate-triggered H1 refinement slice (V0-046)
 
 Contract `1.9.0`, implementation schema `1.0.0`, and profile
 `lmb_h1_query_local_exact_row_refinement_v0` close the next narrow part of the central
@@ -73,12 +115,11 @@ generalization, scale, or sample saving. Four exact calls are charged; the 4096-
 candidate offline coordinate search is separate construction work and is not being
 called free.
 
-The next construction step generalizes the authority to multi-step failed-proof
-frontiers and locally restores active distinctions. Only after real multi-step traces
-exist will the project compare offline construction plus online acquisition against
-direct ground optimization and design a Laplace-semi-MDP-style heuristic operator or
-KG-OP-style meta-prior from the measured bottleneck. Full normative details and the
-identity table are in `specs/QUERY_LOCAL_EVIDENCE_REFINEMENT.md`.
+V0-047, described above, now generalizes this authority to a real two-round H2
+failed-proof path with boundary registration, active coordinate reuse, and a later-stage
+frontier. V0-046 remains the immutable H1 row-completion regression. Its full normative
+details and identity table are in `specs/QUERY_LOCAL_EVIDENCE_REFINEMENT.md`; no H1
+artifact is retroactively relabelled as multi-step or promoted into the reusable base.
 
 ## Current observation-only typed-coordinate synthesis slice (V0-045)
 
@@ -128,7 +169,9 @@ is in `specs/OBSERVED_TYPED_COORDINATE_SYNTHESIS.md`.
 V0-046 now executes this former next Gate for the exact H1 row-completion control: a
 separate authority proves four individually necessary rows, acquisition is charged,
 the base remains unchanged, and a query-owned overlay replans and certifies. It does
-not yet generalize to multi-step frontier repair or authorize base promotion. A failed
+not authorize base promotion. V0-047 then executes a separate H2 two-round path,
+registers three evidence-derived boundary states, reuses the selected coordinates, and
+moves the failed frontier to the next stage before certification. A failed
 frontier alone still cannot authorize ground access or mutate the reusable base; the
 complete typed failure chain remains mandatory.
 
