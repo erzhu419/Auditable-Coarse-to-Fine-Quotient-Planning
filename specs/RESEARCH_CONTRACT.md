@@ -76,6 +76,12 @@
   evidence trace remains evaluation-only. It is not unrestricted promotion,
   statistical generalization, learned dynamics, sample efficiency, or an aggregate
   Gate.
+- **V0-049 preregistered held-out family amortization slice:** one complete V0-047
+  promotion into a separate three-state V5 scope, followed by ten preregistered
+  logical occurrences whose model-only certificates are paired with source-blind
+  complete H1 ground planners. It freezes native vector prefix relations and source
+  amortization mechanics, not a scalar break-even, statistical generalization,
+  environment-sample reduction, tax operator, or aggregate Gate.
 - **Phase 3C local-recovery slice:** the V0-029 certificate-triggered, isolated,
   query-owned overlay positive control over an immutable reusable RAPM; it is not the
   aggregate Phase 3 or economics Gate.
@@ -1433,6 +1439,80 @@ Canonical identities, exact claim boundaries, and acceptance/attack tests are
 normative in `specs/CROSS_QUERY_PROMOTION.md`.
 
 Contract 1.11.0 opens no aggregate lock:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+sample_efficiency_gate_blocks_mainline = false
+```
+
+### Contract 1.12.0: preregistered held-out family and matched amortization
+
+V0-049 registers schema `1.0.0` and profile
+`lmb_preregistered_h1_heldout_family_amortization_v0`. Before source acquisition it
+freezes three H1 target QuerySpecs at LMB states `removed_mask=11,19,35` and ten
+logical occurrences ordered `Q1,Q2,Q3,Q1,Q2,Q3,Q1,Q2,Q3,Q1`. All target states are
+absent from V0-045, distinct from the source initial state, and carry reward/risk/
+regret parameters `1/0/0` under the canonical reward basis. Preregistration has no
+source-result or kernel input; the V0-047 source runner remains target blind.
+
+Promotion reuses the unchanged V0-048 complete-source authority. Its parent V4 must
+contain all 20 rows, 13 exact evidence records and three boundary catalogues with no
+target filtering. A new immutable `PreregisteredReusablePartialRAPMV5` binds that
+complete parent, the family protocol, a three-target eligibility proof and exactly
+three authorized initial-state IDs with reuse horizon cap one. V5 retains nonneutral
+acquisition provenance and forbids base mutation, unrestricted reuse, transition
+closure and exact-quotient claims.
+
+Each warm occurrence receives no kernel, transition callback or ground optimizer. It
+enumerates two semantic plans, audits both, and independently audits the selected
+plan. All ten must certify reward/failure/normalized-regret `1/0/0`, with zero target
+transition and catalogue calls. Repeated occurrences are executed again; V0-049 does
+not cache a prior plan or certificate.
+
+Each matched cold planner receives only the observation log, preregistered QuerySpec,
+logical occurrence and canonical kernel. It cannot see the promoted model or source
+result. It makes one complete action-catalogue call, three deterministic transition
+calls, three step-internal legality checks, evaluates all three ground actions and
+selects the unique safe reward-one action. Only after selection may a separate pairer
+verify exact equality with the source catalogue/evidence.
+
+Native lanes remain distinct:
+
+```text
+source acquisition operational = 13 transitions + 3 catalogues
+promotion replay evaluation = 13 transitions + 3 catalogues
+warm target operational per occurrence = 0 transitions + 0 catalogues + 2 plans + 3 audits
+cold direct operational per occurrence = 3 transitions + 1 catalogue + 3 actions + 1 optimizer
+```
+
+For prefix `N`, source-inclusive warm acquisition is `(13,3)`, verification-inclusive
+diagnostic work is `(26,6)`, and cold direct acquisition is `(3N,N)`. Source-inclusive
+warm first strictly componentwise dominates at `N=5`; verification-inclusive warm
+first dominates at `N=9`. These are diagnostic vector relations only:
+
+```text
+official_scalar_cost = null
+official_N_break_even = null
+sample_efficiency_claimed = false
+```
+
+Exact-kernel calls are not relabelled as samples. Three deterministic target states,
+seven repeated occurrences, no stochastic inference and no scalar exchange rate are
+insufficient for a sample-efficiency or generalization claim. The exact family trace
+does establish `20` warm plan candidates and `30` exact fixed-plan audits after target
+ground acquisition has fallen to zero. This licenses the next experiment—an identity-
+bound certificate memoization/incremental-proof operator—but does not select or claim
+that operator in V0-049.
+
+Canonical identities and all acceptance/attack tests are normative in
+`specs/HELDOUT_FAMILY_AMORTIZATION.md`.
+
+Contract 1.12.0 opens no aggregate lock:
 
 ```text
 official_execution_allowed = false

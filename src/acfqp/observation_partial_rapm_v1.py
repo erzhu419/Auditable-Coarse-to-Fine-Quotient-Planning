@@ -60,6 +60,7 @@ DOMAIN_TAGS = {
     "query_scoped_model": "acfqp:query-scoped-partial-rapm:v2",
     "query_scoped_multistep_model": "acfqp:query-scoped-partial-rapm:v3",
     "promoted_reusable_model": "acfqp:preregistered-reusable-partial-rapm:v4",
+    "promoted_reusable_family_model": "acfqp:preregistered-reusable-partial-rapm:v5",
     "result": "acfqp:observation-partial-rapm-build-result:v1",
 }
 
@@ -3676,6 +3677,241 @@ class PreregisteredReusablePartialRAPMV4:
 
 
 @dataclass(frozen=True, slots=True)
+class PreregisteredReusablePartialRAPMV5:
+    """A family-scoped reusable epoch derived from the verified V4 model.
+
+    V5 does not widen V4 in place.  It binds a separate preregistered family
+    protocol and eligibility proof, while retaining the complete V4 model and
+    its non-query-neutral acquisition provenance.  Only the frozen family
+    initial states and horizon cap may consume this epoch.
+    """
+
+    parent_scoped_model: PreregisteredReusablePartialRAPMV4
+    family_protocol_id: str
+    family_eligibility_proof_id: str
+    authorized_initial_state_ids: tuple[str, ...]
+    reuse_horizon_cap: int = 1
+    promotion_epoch: int = 2
+    evidence_kind: str = "PREREGISTERED_HELD_OUT_FAMILY_PROMOTED_EXACT_ROWS_V1"
+    query_neutral: bool = True
+    transition_closure_claimed: bool = False
+    exact_quotient_claimed: bool = False
+    plan_certificate_claimed: bool = False
+    infeasibility_claimed: bool = False
+    acquisition_query_neutral_attested: bool = False
+    promotion_scope_query_neutral_attested: bool = True
+    preregistered_allowlisted_authority_required: bool = True
+    query_local_overlay_authority_required: bool = False
+    boundary_catalogue_authority_required: bool = True
+    base_model_mutated: bool = False
+    promotion_authorized: bool = True
+    unrestricted_reuse_claimed: bool = False
+
+    def __post_init__(self) -> None:
+        if type(self.parent_scoped_model) is not PreregisteredReusablePartialRAPMV4:
+            raise ObservationPartialRAPMInvariantViolation(
+                "family reusable model rejects substituted parent models"
+            )
+        _cid(self.family_protocol_id, "family reusable model protocol")
+        _cid(
+            self.family_eligibility_proof_id,
+            "family reusable model eligibility proof",
+        )
+        if (
+            type(self.authorized_initial_state_ids) is not tuple
+            or self.authorized_initial_state_ids
+            != tuple(sorted(set(self.authorized_initial_state_ids)))
+            or len(self.authorized_initial_state_ids) != 3
+        ):
+            raise ObservationPartialRAPMInvariantViolation(
+                "family reusable model requires three unique sorted states"
+            )
+        for state_id in self.authorized_initial_state_ids:
+            _cid(state_id, "family reusable model authorized state")
+        _integer(self.reuse_horizon_cap, "family reuse horizon cap", 1)
+        _integer(self.promotion_epoch, "family promotion epoch", 1)
+        parent = self.parent_scoped_model
+        if (
+            self.reuse_horizon_cap != 1
+            or self.promotion_epoch != 2
+            or self.reuse_horizon_cap > self.semantics_horizon_cap
+            or len(self.source_exact_evidence_ids) != 13
+            or len(self.promoted_ground_row_ids) != 20
+            or self.promoted_ground_row_ids
+            != self.coverage.observed_ground_row_ids
+            or self.coverage.missing_ground_row_ids
+            or not set(parent.authorized_initial_state_ids)
+            <= set(self.authorized_initial_state_ids)
+        ):
+            raise ObservationPartialRAPMInvariantViolation(
+                "family reusable model coverage, ancestry, or scope changed"
+            )
+        active_state_ids = {
+            state_id
+            for cell in self.cells
+            if cell.planning_kind is PlanningKind.ACTIVE
+            for state_id in cell.member_state_ids
+        }
+        if not set(self.authorized_initial_state_ids) <= active_state_ids:
+            raise ObservationPartialRAPMInvariantViolation(
+                "family reuse scope contains an unknown or terminal state"
+            )
+        if (
+            self.evidence_kind
+            != "PREREGISTERED_HELD_OUT_FAMILY_PROMOTED_EXACT_ROWS_V1"
+            or self.query_neutral is not True
+            or self.transition_closure_claimed is not False
+            or self.exact_quotient_claimed is not False
+            or self.plan_certificate_claimed is not False
+            or self.infeasibility_claimed is not False
+            or self.acquisition_query_neutral_attested is not False
+            or self.promotion_scope_query_neutral_attested is not True
+            or self.preregistered_allowlisted_authority_required is not True
+            or self.query_local_overlay_authority_required is not False
+            or self.boundary_catalogue_authority_required is not True
+            or self.base_model_mutated is not False
+            or self.promotion_authorized is not True
+            or self.unrestricted_reuse_claimed is not False
+        ):
+            raise ObservationPartialRAPMInvariantViolation(
+                "family reusable model crossed its scoped-promotion boundary"
+            )
+
+    @property
+    def semantics_profile_id(self) -> str:
+        return self.parent_scoped_model.semantics_profile_id
+
+    @property
+    def semantics_horizon_cap(self) -> int:
+        return self.parent_scoped_model.semantics_horizon_cap
+
+    @property
+    def observation_log_id(self) -> str:
+        return self.parent_scoped_model.observation_log_id
+
+    @property
+    def coordinate_proposal_id(self) -> str:
+        return self.parent_scoped_model.coordinate_proposal_id
+
+    @property
+    def observation_authority_id(self) -> str:
+        return self.parent_scoped_model.observation_authority_id
+
+    @property
+    def acquisition_manifest_id(self) -> str:
+        return self.parent_scoped_model.acquisition_manifest_id
+
+    @property
+    def acquisition_coverage_id(self) -> str:
+        return self.parent_scoped_model.acquisition_coverage_id
+
+    @property
+    def evidence_ledger_id(self) -> str:
+        return self.parent_scoped_model.evidence_ledger_id
+
+    @property
+    def coverage(self) -> ObservationCoverageV1:
+        return self.parent_scoped_model.coverage
+
+    @property
+    def external_boundary_id(self) -> str:
+        return self.parent_scoped_model.external_boundary_id
+
+    @property
+    def cells(self) -> tuple[PartialCellV1, ...]:
+        return self.parent_scoped_model.cells
+
+    @property
+    def semantic_actions(self) -> tuple[PartialSemanticActionV1, ...]:
+        return self.parent_scoped_model.semantic_actions
+
+    @property
+    def concretizer_rows(self) -> tuple[ConcretizerRowV1, ...]:
+        return self.parent_scoped_model.concretizer_rows
+
+    @property
+    def ground_rows(self) -> tuple[PartialGroundRowV1, ...]:
+        return self.parent_scoped_model.ground_rows
+
+    @property
+    def semantic_realizations(self) -> tuple[PartialSemanticRealizationV1, ...]:
+        return self.parent_scoped_model.semantic_realizations
+
+    @property
+    def reward_feature_caps(self) -> tuple[RewardFeatureCapV1, ...]:
+        return self.parent_scoped_model.reward_feature_caps
+
+    @property
+    def base_model_id(self) -> str:
+        return self.parent_scoped_model.base_model_id
+
+    @property
+    def promoted_from_model_id(self) -> str:
+        return self.parent_scoped_model.promoted_from_model_id
+
+    @property
+    def source_refinement_result_id(self) -> str:
+        return self.parent_scoped_model.source_refinement_result_id
+
+    @property
+    def promotion_protocol_id(self) -> str:
+        return self.family_protocol_id
+
+    @property
+    def promotion_eligibility_proof_id(self) -> str:
+        return self.family_eligibility_proof_id
+
+    @property
+    def promoted_ground_row_ids(self) -> tuple[str, ...]:
+        return self.parent_scoped_model.promoted_ground_row_ids
+
+    @property
+    def source_exact_evidence_ids(self) -> tuple[str, ...]:
+        return self.parent_scoped_model.source_exact_evidence_ids
+
+    def _payload(self) -> dict[str, Any]:
+        return {
+            "schema": "acfqp.preregistered_reusable_partial_rapm.v5",
+            "schema_version": TYPED_COORDINATE_SCHEMA_VERSION,
+            "parent_scoped_model": self.parent_scoped_model.to_document(),
+            "family_protocol_id": self.family_protocol_id,
+            "family_eligibility_proof_id": self.family_eligibility_proof_id,
+            "authorized_initial_state_ids": list(self.authorized_initial_state_ids),
+            "reuse_horizon_cap": self.reuse_horizon_cap,
+            "promotion_epoch": self.promotion_epoch,
+            "evidence_kind": self.evidence_kind,
+            "query_neutral": self.query_neutral,
+            "transition_closure_claimed": self.transition_closure_claimed,
+            "exact_quotient_claimed": self.exact_quotient_claimed,
+            "plan_certificate_claimed": self.plan_certificate_claimed,
+            "infeasibility_claimed": self.infeasibility_claimed,
+            "acquisition_query_neutral_attested": self.acquisition_query_neutral_attested,
+            "promotion_scope_query_neutral_attested": self.promotion_scope_query_neutral_attested,
+            "preregistered_allowlisted_authority_required": self.preregistered_allowlisted_authority_required,
+            "query_local_overlay_authority_required": self.query_local_overlay_authority_required,
+            "boundary_catalogue_authority_required": self.boundary_catalogue_authority_required,
+            "base_model_mutated": self.base_model_mutated,
+            "promotion_authorized": self.promotion_authorized,
+            "unrestricted_reuse_claimed": self.unrestricted_reuse_claimed,
+        }
+
+    @property
+    def model_id(self) -> str:
+        return _content_id("promoted_reusable_family_model", self._payload())
+
+    def to_document(self) -> dict[str, Any]:
+        return {**self._payload(), "model_id": self.model_id}
+
+    def validate_registered_support(self, state_ids: Iterable[str]) -> None:
+        requested = tuple(state_ids)
+        self.coverage.validate_registered_support(requested)
+        if not set(requested) <= set(self.authorized_initial_state_ids):
+            raise ObservationPartialRAPMInvariantViolation(
+                "state support lies outside the preregistered family scope"
+            )
+
+
+@dataclass(frozen=True, slots=True)
 class ObservationPartialRAPMBuildV1:
     semantics_profile_id: str
     semantics_horizon_cap: int
@@ -4692,6 +4928,7 @@ __all__ = [
     "QueryScopedPartialRAPMV2",
     "QueryScopedPartialRAPMV3",
     "PreregisteredReusablePartialRAPMV4",
+    "PreregisteredReusablePartialRAPMV5",
     "PREREGISTERED_OBSERVATION_AUTHORITY_IDS",
     "PreregisteredAcquisitionManifestV1",
     "PreregisteredObservationAuthorityV1",

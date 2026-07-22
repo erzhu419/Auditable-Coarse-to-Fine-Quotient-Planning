@@ -37,6 +37,7 @@ from acfqp.observation_partial_rapm_v1 import (
     PartialSemanticRealizationV1,
     PlanningKind,
     PreregisteredReusablePartialRAPMV4,
+    PreregisteredReusablePartialRAPMV5,
     PreregisteredObservationAuthorityV1,
     PortablePartialRAPMV1,
     QueryScopedPartialRAPMV2,
@@ -1922,6 +1923,7 @@ def _validate_inputs(
         | QueryScopedPartialRAPMV2
         | QueryScopedPartialRAPMV3
         | PreregisteredReusablePartialRAPMV4
+        | PreregisteredReusablePartialRAPMV5
     ),
     thresholds: FrozenPartialAuditThresholdsV1,
     contingent_plan: FrozenContingentAbstractPlanV1,
@@ -1936,6 +1938,7 @@ def _validate_inputs(
         QueryScopedPartialRAPMV2,
         QueryScopedPartialRAPMV3,
         PreregisteredReusablePartialRAPMV4,
+        PreregisteredReusablePartialRAPMV5,
     ):
         raise PartialSoundAuditInvariantViolation(
             "audit rejects duck partial models"
@@ -2558,6 +2561,7 @@ def _audit_verified_partial_model_v1(
         | QueryScopedPartialRAPMV2
         | QueryScopedPartialRAPMV3
         | PreregisteredReusablePartialRAPMV4
+        | PreregisteredReusablePartialRAPMV5
     ),
     observation_log: ObservationLogManifestV1,
     semantics_profile: DeterministicObservationProfileV1,

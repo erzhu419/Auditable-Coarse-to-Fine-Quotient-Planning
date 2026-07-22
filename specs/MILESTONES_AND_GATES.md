@@ -70,6 +70,11 @@
   H1 model-only certificate and evaluation-only cold evidence trace. It is not
   unrestricted promotion, statistical generalization, sample efficiency, or an
   aggregate Gate.
+- **V0-049 preregistered held-out family amortization slice:** a complete V5
+  three-state promotion serving ten frozen logical occurrences, each paired with a
+  source-blind complete H1 cold planner. It establishes exact native prefix vectors
+  and scoped multi-occurrence reuse, not a scalar break-even, sample-efficiency,
+  statistical-transfer, tax-operator, or aggregate Gate.
 - **Phase 3D general local-recovery Gate:** the V0-030 finite, cap-aware positive
   control that closes joint value/risk composition, slack-aware causal localization,
   and sparse worker authority. Its pass is not aggregate Phase 3 or economics.
@@ -1127,6 +1132,88 @@ Detailed identities are normative in `specs/CROSS_QUERY_PROMOTION.md`.
 
 All official/scalar/economics/counter/sample locks remain unchanged; sample efficiency
 is still non-blocking.
+
+### V0-049 preregistered held-out family amortization gate
+
+Contract `1.12.0` registers
+`lmb_preregistered_h1_heldout_family_amortization_v0`. Before source acquisition, the
+protocol freezes target states `removed_mask=11,19,35`, H1 zero-risk/zero-regret
+QuerySpecs, and ten logical occurrences ordered `1,2,3,1,2,3,1,2,3,1`. The source
+runner has no family input and the cold planner has no promotion/source input.
+
+Promotion acceptance requires:
+
+```text
+complete promoted rows = 20
+source exact evidence = 13
+boundary catalogues = 3
+unique target states = 3
+target rows = 9
+target-filtered rows = 0
+V5 authorized states / horizon cap = 3 / 1
+base mutation / unrestricted reuse = false / false
+```
+
+Every one of the ten matched occurrences must reproduce:
+
+```text
+warm reward/failure/regret = 1 / 0 / 0
+warm transition/catalogue/optimizer = 0 / 0 / 0
+warm plan candidates / fixed-plan audits = 2 / 3
+cold reward/failure/regret = 1 / 0 / 0
+cold transition/catalogue/internal checks = 3 / 1 / 3
+cold ground candidates / optimizer = 3 / 1
+matching source catalogue/evidence = true / 3 rows
+```
+
+The required prefix goldens are:
+
+```text
+source-inclusive warm acquisition = (13 transitions, 3 catalogues)
+verification-inclusive diagnostic = (26 transitions, 6 catalogues)
+cold direct prefix N = (3N transitions, N catalogues)
+
+source-inclusive relation:
+  N 1..3 COLD_STRICT_COMPONENTWISE
+  N 4    INCOMPARABLE
+  N 5..10 WARM_STRICT_COMPONENTWISE
+
+verification-inclusive relation:
+  N 1..6 COLD_STRICT_COMPONENTWISE
+  N 7..8 INCOMPARABLE
+  N 9..10 WARM_STRICT_COMPONENTWISE
+```
+
+The Gate passes only if:
+
+1. queries and occurrence order are reconstructed from pre-source inputs;
+2. three target states are unique, absent from V0-045 and distinct from the source;
+3. complete-model promotion cannot be target filtered;
+4. V5 scope cannot be widened beyond its three states or H1;
+5. all ten warm consumers have no kernel and certify exact `1/0/0`;
+6. all ten cold planners have no promotion/source input and exhaust all legal actions;
+7. post-selection source matching covers every cold catalogue and outcome;
+8. source, promotion evaluation, warm, and cold native lanes retain explicit zeros;
+9. all prefix formulas and componentwise relations are recomputed exactly;
+10. method tracing counts one explicit catalogue and three internal legality checks
+    without changing the frozen kernel source digest;
+11. scalar/sample/operator/scope/accounting forgery fails closed;
+12. canonical IDs and full independent replay are byte-identical.
+
+Passing yields `CERTIFIED_HELD_OUT_FAMILY_MATCHED_REUSE`. It proves a finite exact
+multi-occurrence scoped-reuse and vector-amortization control. It does not prove
+unrestricted reuse, statistical generalization, learned dynamics, sample reduction,
+scale, official economics, or an aggregate Gate.
+
+The exact family trace records 20 warm candidate plans and 30 fixed-plan audits after
+target ground work reaches zero. The next Gate is therefore an identity-bound
+certificate-reuse/incremental-proof intervention with a matched no-reuse control,
+strict invalidation on model/query/threshold/plan changes, and independent evaluation
+replay. This is a measured next hypothesis, not a V0-049 operator claim. Detailed
+identities are normative in `specs/HELDOUT_FAMILY_AMORTIZATION.md`.
+
+All aggregate locks remain unchanged; scalar and break-even stay null and sample
+efficiency remains non-blocking and `NOT_RUN`.
 
 
 ### Phase 3C certificate-triggered local-recovery gate

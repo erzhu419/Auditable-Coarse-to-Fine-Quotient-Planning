@@ -2,7 +2,7 @@
 
 **Status:** normative source of truth
 
-**Ledger version:** 1.11.0
+**Ledger version:** 1.12.0
 **Last updated:** 2026-07-22
 
 ## Authority
@@ -77,6 +77,7 @@ absent from a public checkout.
 | V0-046 | 2026-07-22 | Certificate-triggered query-local exact-row refinement | FROZEN | Contract `1.9.0` registers `lmb_h1_query_local_exact_row_refinement_v0`. The producer requires the complete V0-045 result, canonical H1 typed V0-044 proposal/selected plan, and independently failed typed V0-043 result; a bare frontier cannot authorize access. Under fixed H1, `delta=0`, fixed plan/concretizer and row-completion evidence semantics, the one reachable obligation contains four missing rows of weight `1/4`; every leave-one-out failure upper is `1/4>0`, so the separate authority requests exactly four rows with zero preparation kernel/search calls and no global-minimum claim. The frozen exact LMB executor validates kernel source/configuration and all legal-action catalogues before exactly four authorized operational transition calls and zero extra-row access. All four outcomes are reward/failure/terminal zero, with one registered and three external successors. The V0-045 base stays byte-identical; a new query-owned `QueryScopedPartialRAPMV2` changes observed/missing coverage `7/4 -> 11/0`, remains non-query-neutral/non-promotable/non-closed/non-exact, and binds the complete failure/evidence chain. Rebased abstract planning enumerates/audits two plans with zero further kernel calls; independent audit certifies reward/failure/regret `0/0/0`. Promotion remains `RETAIN_QUERY_LOCAL_OVERLAY_ONLY`. Full independent replay is byte-identical. This is only an H1 row-completion positive control, not general causal minimality, multi-step recovery, learned acquisition/dynamics, base promotion, generalization, scale, economics or sample saving; all aggregate locks remain unchanged and sample efficiency remains non-blocking. | Closes the immediate Gate left by V0-045 without mutating or relabelling the reusable base and without turning the nonauthorizing V0-043 frontier into authority. | `query_local_refinement_v1.py`; `QueryScopedPartialRAPMV2`; typed audit union; exact row-necessity/request/evidence/overlay/rebase/planner/audit/promotion/result artifacts; canonical H1 and full-replay regressions; `specs/QUERY_LOCAL_EVIDENCE_REFINEMENT.md`. |
 | V0-047 | 2026-07-22 | Multi-step query-local RAPM evolution | FROZEN | Contract `1.10.0` registers `lmb_h2_multistep_query_local_exact_refinement_v0`. The runner requires the full V0-045 result, canonical H2 typed V0-044 proposal/selected plan, independently failed V0-043 audit, and exact canonical LMB kernel; callers cannot supply row/state lists, caps, alternate frontiers, solvers, target plans or promotion choices. Round one derives four equal-exposure rows with zero preparation ground access and executes exactly four transitions, exposing one registered and three external active states. Boundary expansion derives those three states from evidence, makes exactly three direct complete action-catalogue calls, registers nine rows with zero transition replay/search, and reevaluates the exact V0-045 coordinates; every new state reuses signature `(3,)` and labels `(False,)/(True,)`. The first immutable query-owned `QueryScopedPartialRAPMV3` has `11/9` observed/missing rows. Four-plan model-only replanning plus independent audit moves the frontier from `time 0,h=2` to `time 1,h=1`. Exact numeric ties use frozen semantic-schedule ordering before plan ID. Round two preserves `3 selected-plan risk / 9 unrestricted value / 9 distinct` roles and executes exactly nine transitions, yielding three safe one-match and six terminal-failure rows. The final V3 epoch binds its predecessor, has `20/0` registered coverage and cumulative 13 transition calls; four-plan model-only replanning and independent audit certify reward/failure/regret `1/0/0`, with zero planner/auditor kernel and direct-ground-optimizer calls. The V0-045 base remains byte-identical; V3 remains non-query-neutral, nonpromotable, non-exact and not globally transition-closed. This proves a two-round within-query refinement loop, not general causal minimality, cross-query promotion, learned/statistical dynamics, generalization, economics or sample saving. All aggregate locks remain unchanged and sample efficiency remains non-blocking. | Closes the immediate multi-step Gate left by V0-046 while preserving its H1 artifact and the V0-045 reusable base. It creates a measured acquisition trace for, but does not implement or justify, a future sample-tax operator/meta-prior. | `multistep_query_refinement_v1.py`; `QueryScopedPartialRAPMV3`; typed audit union; two evidence rounds, boundary expansion, semantic tie rule, V3 model epochs, planner/audit/telemetry/result artifacts; omission/role/promotion/full-replay regressions; `specs/MULTISTEP_QUERY_LOCAL_REFINEMENT.md`. |
 | V0-048 | 2026-07-22 | Preregistered cross-query promotion and held-out reuse | FROZEN | Contract `1.11.0` registers `lmb_preregistered_h1_cross_query_promotion_v0`. Before any V0-047 result or kernel is supplied, the protocol freezes a distinct H1 target at LMB state `removed_mask=11,buffer=(1,2)`, absent from V0-045 and distinct from the H2 source; the frozen source runner has no target/protocol input. Promotion independently replays the complete V0-047 chain and selects all 20 final rows, 13 exact evidence records and three boundary catalogues with zero target filtering. A separate `PreregisteredReusablePartialRAPMV4` preserves nonneutral acquisition provenance, authorizes reuse only for the target state/horizon cap one, and leaves V0-045 byte-identical; unrestricted reuse, closure and exact-quotient claims remain false. The kernel-free held-out consumer enumerates/audits two plans and certifies reward/failure/regret `1/0/0` with zero warm target transition/catalogue/optimizer calls. An evaluation-only cold trace uses one direct catalogue and three transitions (one safe match, two failures), exactly matching promoted evidence; source `13+3`, promotion replay `13+3`, warm `0+0`, and cold `3+1` lanes remain separate. Source amortization and an end-to-end cold planner are absent, so no statistical generalization or sample-efficiency claim opens and every aggregate lock remains unchanged. | Closes the first authentic source/target-separated scoped-promotion control without relabelling query-directed acquisition as neutral or selecting only target-favourable rows. | `cross_query_promotion_v1.py`; `PreregisteredReusablePartialRAPMV4`; preregistration/protocol/eligibility/promotion/threshold/planner/audit/cold-trace/telemetry/result artifacts; target-blind API, complete-promotion, scope-escalation, method-level access, canonical-ID and full-replay tests; `specs/CROSS_QUERY_PROMOTION.md`. |
+| V0-049 | 2026-07-22 | Preregistered held-out family and matched vector amortization | FROZEN | Contract `1.12.0` registers `lmb_preregistered_h1_heldout_family_amortization_v0`. Before source acquisition the protocol freezes three distinct H1 targets at LMB masks `11/19/35` and ten logical occurrences ordered `1,2,3,1,2,3,1,2,3,1`; all targets are absent from V0-045 and the source runner remains target blind. The unchanged V0-048 complete-source verifier retains all 20 final rows, 13 exact evidence records and three boundary catalogues with zero filtering, then a separate V5 epoch authorizes only the three target states and H1 while preserving nonneutral acquisition provenance. Ten kernel-free warm routes each certify reward/failure/regret `1/0/0` with `0+0` target ground work, two plan candidates and three audits. Ten source-blind cold direct planners each execute `3+1`, exhaust three actions and match the warm certificate and source evidence exactly. Source-inclusive warm `(13,3)` first componentwise dominates cold `(3N,N)` at diagnostic prefix 5; including promotion evaluation `(26,6)` moves that diagnostic relation to prefix 9. These are vector relations, not official scalar break-even or sample-efficiency results. | Closes the finite multi-occurrence scoped-reuse, source-amortization and end-to-end cold-baseline Gate left by V0-048 while exposing repeated exact certificate work as the next measured tax candidate. | `heldout_family_amortization_v1.py`; `PreregisteredReusablePartialRAPMV5`; family query/occurrence/protocol/eligibility/promotion, warm/cold pair, native work, prefix, telemetry and result artifacts; API isolation, method tracing, scope/accounting forgery, canonical-ID and full-replay tests; `specs/HELDOUT_FAMILY_AMORTIZATION.md`. |
 
 ## V0-027 registered construction slice
 
@@ -2213,6 +2214,90 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
 
+## V0-049 preregistered held-out family amortization rule
+
+Contract `1.12.0` freezes profile
+`lmb_preregistered_h1_heldout_family_amortization_v0`. Before any source result or
+kernel is supplied, preregistration freezes three H1 queries at LMB states
+`removed_mask=11,19,35`, all absent from V0-045, and the ten-occurrence order
+`1,2,3,1,2,3,1,2,3,1`. The V0-047 source runner has no family input. The cold direct
+planner has no promotion or source-result input.
+
+The unchanged V0-048 authority independently replays the complete V0-047 source and
+builds the exact singleton V4 parent. Family promotion must retain all 20 final rows,
+all 13 exact evidence records and all three boundary catalogues. The three targets
+jointly account for nine complete rows and target-filtered row count remains zero.
+
+`PreregisteredReusablePartialRAPMV5` is a separate immutable epoch rather than an
+in-place V4 widening. It binds the complete V4 parent, family protocol, eligibility
+proof, exactly three authorized initial-state IDs and horizon cap one. V5 keeps:
+
+```text
+query_neutral = true inside registered family scope
+acquisition_query_neutral_attested = false
+promotion_scope_query_neutral_attested = true
+promotion_authorized = true
+base_model_mutated = false
+unrestricted_reuse_claimed = false
+transition_closure_claimed = false
+exact_quotient_claimed = false
+```
+
+Each warm occurrence has no kernel or ground optimizer. It evaluates two semantic
+plans and performs three fixed-plan audits, then certifies reward/failure/regret
+`1/0/0` with target transition/catalogue calls `0/0`. Each cold occurrence begins
+from its QuerySpec and canonical kernel only, requests one complete catalogue,
+executes three transitions, observes three internal legality checks, evaluates all
+three ground actions and invokes one direct ground optimizer. It also returns exact
+`1/0/0`. Source catalogue/evidence comparison occurs only after the cold result is
+frozen, and all ten warm/cold pairs must match exactly.
+
+Native work is frozen by lane:
+
+```text
+source acquisition operational = 13 transitions + 3 catalogues
+promotion replay evaluation = 13 transitions + 3 catalogues
+warm target operational total = 0 transitions + 0 catalogues + 20 candidates + 30 audits
+cold direct operational total = 30 transitions + 10 catalogues + 30 candidates + 10 optimizers
+```
+
+For prefix `N`, source-inclusive warm acquisition is `(13,3)`, verification-inclusive
+diagnostic acquisition is `(26,6)`, and cold direct acquisition is `(3N,N)`. The first
+strict warm componentwise-dominance prefixes are diagnostic `5` and `9`, respectively.
+They are not scalar break-even fields:
+
+```text
+official_scalar_cost = null
+official_N_break_even = null
+sample_efficiency_claimed = false
+tax_operator_selected = false
+dominant_tax_axis = null
+```
+
+Exact-kernel calls remain distinct from environment interactions and samples. The
+three-state deterministic family and seven repeated occurrences do not establish
+statistical generalization or sample efficiency. V0-049 does establish that, after
+target ground acquisition becomes zero, repeated warm certification still executes
+20 plan candidates and 30 audits. The next Gate shall test an identity-bound
+certificate memoization/incremental-proof intervention against a matched no-reuse
+control, with invalidation on model/query/threshold/plan changes and independent
+evaluation replay. No such operator is claimed here.
+
+Canonical identities and all acceptance attacks are normative in
+`specs/HELDOUT_FAMILY_AMORTIZATION.md`.
+
+All locks remain:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+sample_efficiency_gate_blocks_mainline = false
+```
+
 
 ## Change log
 
@@ -2247,3 +2332,4 @@ sample_efficiency_gate_blocks_mainline = false
 - **2026-07-22 — 1.9.0:** Added V0-046/profile `lmb_h1_query_local_exact_row_refinement_v0`. Replayed the complete V0-045/typed-plan/failed-audit chain, proved all four uniform H1 missing rows individually necessary under the fixed zero-risk row-completion scope, charged exactly four authorized exact-kernel calls, preserved the reusable base, constructed an `11/0` query-owned V2 overlay, replanned two abstract policies and independently certified reward/failure/regret zero. Promotion, general causal/multi-step claims, sample saving and every aggregate Gate remain locked.
 - **2026-07-22 — 1.10.0:** Added V0-047/profile `lmb_h2_multistep_query_local_exact_refinement_v0`. Froze two full-chain evidence rounds: four time-zero transitions expose three evidence-derived active boundary states; three direct boundary catalogue calls register nine rows; the exact V0-045 coordinates reuse signature `(3,)`; an `11/9` V3 epoch moves the failed frontier to time one; and the `3 risk / 9 value / 9 distinct` second scope uses nine further transitions to build a `20/0` V3 epoch. Model-only replanning and independent audit certify reward/failure/regret `1/0/0` with 13 charged transition and 3 direct boundary catalogue calls, no ground optimizer, immutable base, no promotion and no sample-saving claim. Cross-query/held-out reuse, learned dynamics, sample intervention and every aggregate Gate remain open.
 - **2026-07-22 — 1.11.0:** Added V0-048/profile `lmb_preregistered_h1_cross_query_promotion_v0`. Froze a target-blind source API and pre-source H1 target absent from V0-045; independently replayed and promoted the complete V0-047 `20/0` final model into scope-limited V4 without mutating the base or claiming neutral acquisition; and certified the held-out target at reward/failure/regret `1/0/0` with zero warm target ground calls. Recorded separate source `13+3`, promotion-replay `13+3`, warm `0+0`, and evaluation-only cold `3+1` lanes. Source amortization, a cold end-to-end planner, unrestricted promotion, statistical generalization, sample saving and every aggregate Gate remain open.
+- **2026-07-22 — 1.12.0:** Added V0-049/profile `lmb_preregistered_h1_heldout_family_amortization_v0`. Froze three pre-source H1 targets and a ten-occurrence workload, promoted the complete V0-047 model into a separate three-state V5 scope, and paired ten zero-ground warm `1/0/0` certificates with ten source-blind complete cold H1 optimizers. Recorded exact source `(13,3)`, promotion-evaluation `(13,3)`, warm `20 candidates/30 audits`, cold `(30,10)` and componentwise prefix relations with diagnostic warm-dominance prefixes 5 and 9. Scalar/break-even, statistical generalization, sample efficiency and tax-operator claims remain locked; the next experiment is identity-bound certificate reuse/incremental proof.

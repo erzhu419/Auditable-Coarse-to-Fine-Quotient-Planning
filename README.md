@@ -28,7 +28,55 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 → jointly search local value/risk choices, rebuild, or use charged fallback
 ```
 
-## Current preregistered cross-query promotion slice (V0-048)
+## Current held-out family amortization slice (V0-049)
+
+Contract `1.12.0`, schema `1.0.0`, and profile
+`lmb_preregistered_h1_heldout_family_amortization_v0` extend V0-048 from one
+target to a preregistered workload. Before source acquisition, the protocol
+freezes three distinct H1 targets at LMB states `removed_mask=11/19/35` and a
+ten-occurrence order `Q1,Q2,Q3,Q1,Q2,Q3,Q1,Q2,Q3,Q1`. All three states are
+absent from V0-045; the source runner still has no target or protocol input.
+
+Promotion independently verifies the complete V0-047 source through the
+unchanged V0-048 component, retains all 20 rows, 13 exact evidence records and
+three boundary catalogues, and creates a separate
+`PreregisteredReusablePartialRAPMV5`. V5 does not widen V4 in place. It permits
+only the three registered initial states with `H<=1`, preserves
+`acquisition_query_neutral_attested=false`, and makes no closure, exact-quotient
+or unrestricted-reuse claim.
+
+Every warm occurrence enumerates two model plans and performs three exact model
+audits, certifying reward/failure/regret `1/0/0` with zero target transition,
+catalogue or ground-optimizer calls. Each matched cold route receives only its
+QuerySpec, logical occurrence and exact kernel; it cannot see the promotion or
+source result. It makes one complete catalogue call, executes three transitions,
+enumerates all three ground actions and independently obtains the same `1/0/0`
+result. Source evidence comparison occurs only after cold selection.
+
+The source-inclusive operational acquisition vector stays `(13 transitions,
+3 catalogues)`, while the matched cold prefix is `(3N,N)`. Cold is strictly
+smaller for `N=1..3`, the vectors are incomparable at `N=4`, and warm is
+strictly smaller for `N=5..10`. If independent promotion replay is included as
+a diagnostic evaluation lane, the corresponding relation changes at `N=9`.
+These are vector relations—not an official scalar break-even:
+
+```text
+official_scalar_cost = null
+official_N_break_even = null
+sample_efficiency_claimed = false
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+```
+
+The exact trace also exposes the next likely tax: ten warm occurrences perform
+20 candidate evaluations and 30 fixed-plan audits even though their target
+ground calls are zero. This makes identity-bound certificate memoization or
+incremental proof the next intervention to test; it does not yet prove that
+such an operator is sound or beneficial. No LLM or subagent participates in
+the production planner, promotion, cold optimizer, or certificate logic. Full
+identities and acceptance tests are in
+`specs/HELDOUT_FAMILY_AMORTIZATION.md`.
+
+## Historical preregistered cross-query promotion slice (V0-048)
 
 Contract `1.11.0`, schema `1.0.0`, and profile
 `lmb_preregistered_h1_cross_query_promotion_v0` advance the central loop from
