@@ -2,7 +2,7 @@
 
 **Status:** normative source of truth
 
-**Ledger version:** 1.15.0
+**Ledger version:** 1.16.0
 **Last updated:** 2026-07-23
 
 ## Authority
@@ -81,6 +81,7 @@ absent from a public checkout.
 | V0-050 | 2026-07-22 | Exact identity-bound certificate memoization | FROZEN | Contract `1.13.0` registers `lmb_identity_bound_certificate_memoization_v0`. The unchanged V0-049 workload is paired with an initially empty append-only memo arm. Each occurrence still enumerates two plans and issues two candidate-role plus one independent-selected-role audit requests. The exact semantic key binds model/source/promotion, observation authority, query, thresholds/return proof, plan, planner/tie-break, auditor implementation and role; selected certification also binds its planner result. Occurrence identity is excluded only from the semantic key and remains mandatory in each use receipt. Nine trusted misses populate, for each of three queries, two candidate-plan entries under the candidate role plus one selected-certificate entry; 21 exact hits reduce full-audit executions from 30 to nine while all 20 candidates, ten selected certificates, zero target-ground calls and matched no-reuse/cold artifacts remain unchanged. Runtime authority is owner-bound and independent verification replays all 30 append-only transitions. | Closes only the exact-repeat proof-computation Gate exposed by V0-049. Cross-identity incremental proof, persistent reuse, sample-tax reduction, total-work/economics and generalization remain open. | `certificate_memoization_v1.py`; memo semantics/key/attestation/entry/use-receipt/cache/work/prefix/execution/telemetry/control artifacts; role, invalidation, empty-cache, owner-authority, trace, canonical-ID and independent-replay tests; `specs/CERTIFICATE_MEMOIZATION.md`. |
 | V0-051 | 2026-07-22 | Identity-bound incremental proof-dependency DAG | FROZEN | Contract `1.14.0` registers `lmb_identity_bound_incremental_proof_dag_v0`. Seven unique H1 contexts over the unchanged V5 model change exactly one of `rho0`, regret tolerance, or risk tolerance. Every context retains two candidate requests and one independent selected-plan certificate. Eight domain-separated nodes `U/P/C/D/E/F/G/R` expose explicit semantic facets and parent dependencies; changed descendants are re-derived and every final root is freshly query/threshold/plan/role bound. Existing V0-043 threshold-bound rows are never neutral nodes and are rematerialized only at `R`. Request-, occurrence-, and global-reset controls freeze `168/0`, `112/56`, and `62/106` compute/hit totals; only `112-62=50` avoided constructions are attributed to cross-context reuse. All 21 roots match unchanged monolithic V0-043 audits, zero target ground calls are made, append-only owner-bound execution and independent replay fail closed under dependency, identity, role, trace and cache attacks. | Closes only the registered H1 changed-query/threshold proof-factoring Gate left by V0-050. H>1 recurrence, persistent caching, sample-tax/sample-efficiency, total-work/economics, model/reward changes and generalization remain open. | `incremental_proof_dag_v1.py`; DAG semantics/registry/context/key/node/receipt/store/change-closure/work/prefix/execution/telemetry/control artifacts; exact legacy equivalence, invalidation, topology, role, source, cache, owner, canonical-ID and independent-replay tests; `specs/INCREMENTAL_PROOF_DAG.md`. |
 | V0-052 | 2026-07-23 | H2 stage-local temporal proof DAG | FROZEN | Contract `1.15.0` registers schema `1.0.0`, profile `lmb_h2_stage_local_bellman_proof_dag_v0`, and status `CERTIFIED_REGISTERED_H2_STAGE_LOCAL_BELLMAN_RECURRENCE_CONTROL`. It consumes the unchanged V0-047 final query-local H2 V3 model, never the promoted V5 H1 model. Four candidate requests execute in Gray order `A0A0,A0A1,A1A1,A1A0`, followed by a role-distinct independent selected certificate for `A0A0`. Eleven slots expose `U1->U0`, `P1->P0`, `C0->C1`, `D<-(U0,P0,C0,C1)`, `E/F<-D`, `G<-(C0,C1)`, and a freshly complete-plan/request/role-bound `R` over all lower nodes. Lower identities carry only their required stage-local facets; legacy plan-/threshold-bound V0-043 rows remain at `R`. Request-reset, plan-partitioned and global controls freeze `55/0`, `45/10`, and `35/20` compute/hit totals; exactly `45-35=10` avoided constructions are attributable to cross-plan temporal reuse. | Closes only the registered frozen-model H2 stage-local recurrence control after V0-051. It is not another world-model promotion, generic H>1, cross-query/threshold/model/reward incremental proof, persistent cache, closed-loop repair, sample reduction/efficiency, economics or official execution. | `h2_temporal_incremental_proof_dag_v1.py`; H2 temporal protocol/semantics/node/receipt/cache/work/prefix/execution/control artifacts; unchanged V0-047 source reconstruction; five legacy-equivalent roots; topology/stage/plan/role/source/cache/owner attacks; canonical-ID tests; `specs/H2_TEMPORAL_PROOF_DAG.md`. |
+| V0-053 | 2026-07-23 | Live H2 query-local epoch invalidation | FROZEN | Contract `1.16.0` registers schema `1.0.0`, profile `lmb_h2_live_query_local_epoch_invalidation_v0`, and status `CERTIFIED_REGISTERED_H2_LIVE_QUERY_LOCAL_EPOCH_INVALIDATION_CONTROL`. Its production runner consumes exactly the same eight upstream authorities as V0-047 and may not consume a completed V0-047 result or caller-supplied models, rows, plans, closure, cache, controls, or expected outcomes. It must freeze the first `11/9` V3 candidate DAG, DAG-derived proposal, and independent selected `t=1,h=1` failed root before deriving and executing the second request's exact nine authorized rows; only then may it freeze the immutable successor `20/0` V3, derive the row delta and affected proof closure, replan, and independently certify reward/failure/regret `1/0/0`. The exact delta changes nine time-one boundary rows from missing to observed. Because the model rows are stationary, both `U1/U0` scan them and both `P1/P0` consume the changed coord-3 realizations: the direct consumed-facet changes are therefore `U1/U0/P1/P0/C1`, while `D/E/F/G/R` are rebuilt as descendants and only the two distinct stage-0 `C0` constructions remain extensionally reusable across epochs. Request-reset, epoch-reset-global and continuous facet-DAG controls freeze `110/0`, `70/40`, and `68/42`; only `70-68=2` avoided constructions are cross-epoch reuse, never five C0 hits, transition samples, total work, bytes, or wall time. First and final planners both select the same semantic Gray `A0A0` schedule `(0,1,0,1,0,1,0,1)`; model-bound plan/proposal/root identities change, but V0-053 makes no semantic-policy-change claim. | Closes the live ordering and exact model-facet invalidation Gate left by V0-052 without retroactively changing V0-047 or using its completed result as post-hoc production authority. It remains a single registered H2 query-local correctness control, not generic changed-model proof, persistent cache, sample reduction/efficiency, economics, learned dynamics, coordinate invention, semantic policy change or official execution. | Eight-authority live runner and nine-input verifier; source-order protocol; immutable epoch/delta/invalidation manifests; facet-keyed temporal DAG; three matched controls; ten legacy-equivalent roots; operational/evaluation ground-access separation; stale-node, under/over-key, evidence-order, cache/owner, role and canonical-ID attacks. |
 
 For V0-051, the affected public interface expressly includes the content-addressed
 `IncrementalProofDAGProtocolV1` and its `protocol_id`, in addition to the node,
@@ -2401,6 +2402,203 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
 
+## V0-053 live H2 query-local epoch-invalidation rule
+
+Contract `1.16.0` freezes schema `1.0.0`, profile
+`lmb_h2_live_query_local_epoch_invalidation_v0`, and success status
+`CERTIFIED_REGISTERED_H2_LIVE_QUERY_LOCAL_EPOCH_INVALIDATION_CONTROL`. This is the
+first Gate that interleaves the temporal proof DAG with the authentic V0-047
+first-to-final model evolution. It is not satisfied by reading an already completed
+V0-047 result and reconstructing a cache trace after the fact.
+
+The live production runner accepts exactly the eight V0-047 upstream authorities, in
+this order of meaning:
+
+```text
+observation_log
+semantics_profile
+observation_authority
+observed_synthesis_result
+thresholds
+base_plan_proposal
+failed_audit
+kernel
+```
+
+It accepts no completed V0-047 result, first/final model, row or state list, plan,
+closure, cache, control arm, expected outcome, legacy audit, ground optimizer or
+promotion choice. The runner must execute the following monotonic authority order:
+
+```text
+verify the complete base failure chain
+-> execute round one and evidence-derived boundary registration
+-> freeze the first immutable V3 epoch
+-> build four candidate DAG roots and the DAG-derived proposal
+-> freeze a role-distinct independent selected failed root
+-> derive and freeze the round-two request from that root/frontier
+-> execute only its nine authorized ground rows
+-> freeze the final immutable V3 successor epoch
+-> derive the exact epoch delta and affected-descendant closure
+-> rebuild the final four candidate roots and proposal
+-> freeze the final independent selected certificate
+```
+
+No round-two transition may precede the first selected root. Production constructs
+the stage-local roots directly; whole-horizon V0-043 replay is reserved for the
+independent verifier. A consumer of an already completed V0-047 result may at most
+emit a separately labelled post-hoc artifact-replay control and cannot return the
+V0-053 success status or positive claim.
+
+The first checkpoint remains exactly the V0-047 `11 observed / 9 missing` V3 model
+`e3d550b7d46b516bd443881e14ade00b8a1cc673f141039d09dc585fa2b28fba`, with proposal
+`b5db44c042eaa656980f942430c2fee6eda6fcf6ec8c0a1af1142b723ec006e4` and an
+independently keyed selected `FAILED_PROOF_FRONTIER` at `time=1,h=1`, reason
+`UNRESOLVED_POLICY_PATH_DISTINCTION`. The round-two request remains
+`dc79dda993650f03b335217fbdf98cc10449bb79f7374d0440258996b84b1ccf`: it contains
+exactly nine distinct rows with retained native roles `3 selected-plan risk / 9
+unrestricted value / 9 distinct`. Its operational execution performs exactly nine
+kernel steps and their nine step-internal legality checks, zero direct boundary
+catalogue calls, zero extra-row access, zero search and zero ground optimization.
+Step-internal legality checks are included in transition work and are not charged a
+second time. The complete logical occurrence still reports the earlier four round-one
+steps and three direct boundary catalogue calls separately.
+
+The final immutable V3 is
+`a18a29a1c1bd3433ef7ace6d99c67a594a0d587b6b0c2889f71022eaa7437315`, has
+`overlay_version=2`, binds the first model as `previous_model_id`, and changes coverage
+to `20 observed / 0 missing`. The first V3 and reusable base remain byte-identical.
+The exact delta is derived from the two model documents and must equal precisely the
+nine requested/evidenced rows changing from `MISSING_VACUOUS` to
+`OBSERVED_SINGLETON`. State/action catalogues, cells, semantic actions, concretizers,
+query, thresholds, reward, horizon and every non-delta row remain unchanged. A
+caller-supplied delta, same-ID/different-byte object, wrong predecessor, omitted or
+extra row, or bundle/request substitution fails closed.
+
+Every epoch executes the unchanged five-request workload: four Gray candidate roots
+`A0A0,A0A1,A1A1,A1A0`, followed by a proposal-bound independent selected root. The
+eleven-slot graph remains:
+
+```text
+U1 -> U0
+P1 -> P0
+C0 -> C1
+D  <- U0,P0,C0,C1
+E,F <- D
+G  <- C0,C1
+R  <- all ten lower nodes
+```
+
+V0-052's full-model identity cannot simply be copied into every lower cross-epoch
+key. Each lower key binds an allowlisted, content-addressed extensional stage facet
+and exact ordered parents; each `R` still binds the complete current model epoch,
+plan, query, thresholds, request, role and selected proposal. Although acquired from
+the time-one frontier, these are stationary model rows: `U1` and `U0` both scan them,
+while `P1` and `P0` both directly consume the changed coord-3 realizations. The direct
+consumed-facet changes are therefore `U1`, `U0`, `P1`, `P0` and `C1`; `D`, `E`, `F`,
+`G` and `R` are rebuilt as affected descendants. Only `C0` is unchanged. Numeric
+equality of a result or verdict never permits reuse of an invalidated node.
+
+All three controls resolve ten requests and 110 logical slots:
+
+```text
+REQUEST_RESET                 110 computes /  0 hits
+EPOCH_RESET_GLOBAL_DAG         70 computes / 40 hits
+GLOBAL_CROSS_EPOCH_FACET_DAG   68 computes / 42 hits
+```
+
+The continuous arm's cumulative compute/hit prefixes are:
+
+```text
+computes: 11,19,27,34,35,45,53,60,67,68
+hits:      0, 3, 6,10,20,21,24,28,32,42
+```
+
+At the final epoch all five `C0` resolutions hit the two distinct `A0`/`A1` entries
+constructed in the first epoch. Consequently `70-68=2`, not five, is the exact count
+of avoided cross-epoch constructions. Every proof-control arm consumes the same
+frozen evidence transaction and performs no additional operational sampling.
+Independent replay ground work is evaluation-only. These counts are neither sample
+reduction nor total-work, byte, wall-clock or economics evidence.
+
+Both epochs replan from the four candidate roots using the unchanged
+numeric-then-semantic rule. Both select the same semantic Gray schedule `A0A0`, whose
+key is `(0,1,0,1,0,1,0,1)`. Model-bound plan, proposal and root IDs must change across
+epochs, but that re-binding is not a semantic action/policy change. A test that checks
+only unequal plan IDs is noninformative and cannot pass. All ten `R` roots must be
+byte-identical to the corresponding unchanged V0-043 audits; candidate roots never
+authorize selected roots. The first selected root fails, while the final selected
+root is `CERTIFIED_FIXED_PLAN` with reward interval `1/1`, failure interval `0/0`,
+normalized regret zero and certified external coverage.
+
+The nine-input independent verifier adds only the claimed result to the eight
+production authorities. It reconstructs the full 13-transition/three-catalogue
+V0-047 source chain, both epochs, exact delta and closure, all ten legacy matches,
+all three controls and every append-only cache pre/post state from a canonical empty
+cache, then requires byte-identical documents. Mandatory failures include evidence
+before the first root, post-hoc-as-live substitution, missing/extra rows, final
+evidence leaking into the first DAG, stale `U1/U0/P1/P0/C1` or descendants, a
+full-model-ID `C0` false miss, under-keyed false hit, relevant-row mutation with a hit, edge/order/
+cycle attacks, prewarm/import/overwrite/rollback/owner-copy, candidate-as-selected,
+operational/evaluation work mixing, and mutation of the V0-047/V0-052 pinned sources.
+
+The source goldens above, final audit
+`81f379b9485d1da2aaf56fd20ff75d5c45c8ac4b870cc6e52b795ef6896e9529`, and complete
+V0-047 result `9a3691831b8103d1523333f50b302a5f099dee9d1b8790a893e5998810866d42`
+remain fixed. The source-order protocol, epoch delta, invalidation manifest,
+cross-epoch cache, execution and result each require distinct domain-separated
+canonical IDs. The deterministic V0-053 replay freezes:
+
+```text
+semantics ID = 17a7fb36b05d6dcf9ed319cae706a5a5b0fd496359b66348cc444ea16955f264
+ordering ID = e7e0a08ecf6cf5ef04fd990f73065955e6d4412aec5fb474aff1e4660f391da2
+delta ID = 40e6447cfff4526e4b17f4e381bf8067f6dec946a1d3e655a3380c780de053fa
+invalidation ID = a9657e12ebd46cee061263205d103ff4b82dfd557b3923a843ef00c1b841668c
+request-reset arm ID = e91726ac2b17bf42b2890bf456118de04ec9c09bfd07d29830e2239e558340d6
+epoch-reset arm ID = a51f8e3682aac5d932bb68cfd54193be7bd19f1b302865a2f8ca467438cc69d9
+cross-epoch arm ID = 5e8c2d23cfcf96c9d810fac1af3069b83eea2caa1a191c6b02e546a29bf21b56
+first-epoch execution ID = 4818bcaa0a2217bb720b02879869062e58efb4dd0e05a5555c57c0e22ff81572
+final-epoch execution ID = 3cbe43d106be12824e8d15a27a8fc0e82d37cf37a8c772a191eacd2b5fb77279
+final cross-epoch cache ID = 270b5b126953dfbe9ab1e33e3f99505f5e0b95f8a5929b1f581b78165706185f
+result ID = 5e46f0eda3f6d9c96e955315034829913dc248d09ed1a73ca8384d4cbcd65d44
+```
+
+Every role uses its own registered content domain and schema; cross-role ID reuse is
+invalid. No placeholder, empty or `TO_BE_FROZEN` value can pass independent replay.
+Canonical IDs prove byte identity and binding, never live ordering, delta correctness,
+proof soundness or semantic certification by themselves.
+
+Passing permits exactly the registered-scope positive claim:
+
+```text
+registered_h2_live_query_local_epoch_invalidation_claimed = true
+```
+
+Generic changed-model or H>2 incremental proof, semantic policy change, cross-query
+reuse, persistent cache, sample reduction/efficiency, total-work/wall-clock,
+economics, learned/partial dynamics, coordinate invention and official execution
+remain false, null or `NOT_RUN`. This is a live correctness Gate on one canonical H2
+query-local evolution, not a performance or generality Gate.
+
+The next construction Gate must move beyond this broad nine-row future-stage update.
+It should preregister a repeated H2 occurrence family with durable epoch/proof state
+and at least one action-local sparse delta that causes a genuine semantic policy
+change, while retaining matched no-reuse/cold-direct traces. Only after those traces
+identify acquisition or proof work as the actual sample-tax bottleneck may a
+Laplace-style heuristic operator or KG-OP-style offline/online meta-prior enter the
+mainline.
+
+All aggregate locks remain unchanged:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+sample_efficiency_gate_blocks_mainline = false
+```
+
 ## V0-052 H2 stage-local temporal proof-DAG rule
 
 Contract `1.15.0` freezes schema `1.0.0`, profile
@@ -2626,3 +2824,4 @@ sample_efficiency_gate_blocks_mainline = false
 - **2026-07-22 — 1.13.0:** Added V0-050/profile `lmb_identity_bound_certificate_memoization_v0`. Retained the unchanged V0-049 no-reuse workload, role-separated candidate and independent-selected proof requests, a complete semantic identity key with occurrence-bound receipts, owner-bound append-only runtime authority and independent replay. Nine trusted misses plus 21 exact hits preserve 20 candidates and ten certificates while reducing complete audit executions from 30 to nine. Cross-identity incremental proof, persistent cache authority, sample-tax/sample-efficiency, total-work/economics, scalar/break-even and all aggregate Gates remain locked; the next proof-reuse Gate requires an explicit proof-dependency DAG and affected-descendant re-derivation.
 - **2026-07-22 — 1.14.0:** Added V0-051/profile `lmb_identity_bound_incremental_proof_dag_v0`. Factored the registered H1 audit into explicit `U/P/C/D/E/F/G/R` dependencies, kept all legacy threshold-bound rows at the freshly rebuilt role-bound root, and froze seven single-field-changed contexts with request/occurrence/global reset controls. The global DAG executes 62 node constructions and 106 hits versus occurrence-local `112/56`; only the resulting 50 avoided constructions are attributed to cross-context reuse. All 21 roots match unchanged V0-043 audits. H>1, persistence, sample-tax/sample-efficiency, total-work/economics, scalar/break-even and all aggregate Gates remain locked.
 - **2026-07-23 — 1.15.0:** Added V0-052/profile `lmb_h2_stage_local_bellman_proof_dag_v0`. Over the unchanged V0-047 final query-local H2 V3 model, factored five Gray-order candidate/selected requests into eleven stage-local temporal slots. Request-reset, plan-partitioned and global arms compute/hit `55/0`, `45/10`, and `35/20`; only the ten global-versus-plan-partitioned avoided constructions are attributed to cross-plan reuse. The sole new claim is registered H2 stage-local Bellman recurrence. Generic H>1, changed query/model/reward, persistence, closed-loop overlay invalidation, sample efficiency, economics and official execution remain locked; six canonical V0-052 IDs are frozen in the normative spec.
+- **2026-07-23 — 1.16.0:** Added V0-053/profile `lmb_h2_live_query_local_epoch_invalidation_v0`. The eight-authority runner must freeze the first V3 DAG failure before the exact nine-row round-two acquisition, then derive the immutable final epoch, exact row delta, facet invalidation closure, replanning and final certificate live rather than from a completed V0-047 result. Request-reset, epoch-reset-global and continuous cross-epoch controls compute/hit `110/0`, `70/40`, and `68/42`; exactly two distinct `C0` constructions are reused across epochs. Both epochs retain the same semantic `A0A0` policy, so only model-bound plan/proposal/root re-binding is claimed. Eleven domain-separated V0-053 canonical IDs are frozen, while their hashes remain integrity/binding anchors rather than semantic proof. Generic model change, semantic policy change, persistence, sample efficiency, economics and official execution remain locked.

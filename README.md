@@ -28,7 +28,74 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 → jointly search local value/risk choices, rebuild, or use charged fallback
 ```
 
-## Current H2 stage-local temporal proof-DAG slice (V0-052)
+## Current live H2 query-local epoch-invalidation slice (V0-053)
+
+Contract `1.16.0`, schema `1.0.0`, and profile
+`lmb_h2_live_query_local_epoch_invalidation_v0` connect the authentic V0-047 first
+`11/9` V3 epoch to its final `20/0` V3 successor through the V0-052 temporal proof
+DAG. Production accepts exactly the eight upstream V0-047 authorities. It cannot
+accept a completed V0-047 result, caller-selected rows or plans, model pair, closure,
+cache, controls, or expected outcomes.
+
+The live order is:
+
+```text
+base failure authority and round one
+-> first immutable V3
+-> four candidate DAG roots
+-> DAG-derived proposal and independent selected failed root
+-> derive and freeze the nine-row round-two request
+-> execute exactly nine authorized transitions
+-> final immutable V3
+-> derive exact row delta and proof invalidation
+-> four new candidate roots
+-> replan and independently certify
+```
+
+No round-two transition can precede the first selected failed root. Reading a
+completed V0-047 result and reconstructing the trace afterward is only a post-hoc
+control, never the live passing path.
+
+The exact delta changes the nine round-two boundary rows from missing to observed.
+Although acquired from the time-one frontier, they are stationary model rows:
+`U1/U0` both scan them, `P1/P0` both consume the changed coord-3 realization, and
+`C1` consumes their changed reachability facet. Direct consumed-facet changes are
+therefore `U1/U0/P1/P0/C1`; `D/E/F/G/R` are rebuilt as descendants. Only `C0` is
+extensionally unchanged across epochs.
+
+Two five-request epoch workloads resolve 110 slots in each matched arm:
+
+```text
+request-reset computes / hits                    = 110 / 0
+epoch-reset global-DAG computes / hits            = 70 / 40
+continuous cross-epoch facet-DAG computes / hits = 68 / 42
+```
+
+All five final-epoch `C0` resolutions hit the two distinct `A0/A1` entries built in
+the first epoch. Thus only `70-68=2` avoided constructions are attributed to
+cross-epoch reuse. They are not transition samples, total work, bytes, or wall time.
+The proof controls share the same evidence transaction and perform no additional
+operational sampling; independent full replay remains evaluation-only.
+
+Both epochs genuinely replan, but both select the same semantic Gray `A0A0` schedule
+with key `(0,1,0,1,0,1,0,1)`. Their model-bound plan/proposal/root IDs change; their
+semantic actions do not. V0-053 therefore opens only
+`registered_h2_live_query_local_epoch_invalidation_claimed=true`, not a semantic
+policy-change claim.
+
+Generic changed-model/H>2 proof, cross-query or persistent caching, sample
+reduction/efficiency, total-work/economics, learned dynamics, coordinate invention,
+and official execution remain locked. Scalar cost and break-even stay null, and all
+three associated Gates stay `NOT_RUN`. The full live order, exact delta, controls,
+attacks, inherited source goldens, and claim boundary are in
+`specs/LIVE_QUERY_LOCAL_EPOCH_INVALIDATION.md`.
+
+The next construction Gate is a preregistered repeated H2 occurrence family with
+durable epoch/proof state and a separate action-local sparse delta that produces a
+genuine semantic policy change. Only its measured acquisition/proof trace can justify
+a later Laplace-style or KG-OP-style sample-tax intervention.
+
+## Historical H2 stage-local temporal proof-DAG slice (V0-052)
 
 Contract `1.15.0`, schema `1.0.0`, and profile
 `lmb_h2_stage_local_bellman_proof_dag_v0` consume the unchanged V0-047 **final
@@ -72,10 +139,10 @@ total-work/economics evidence, or official execution. Scalar cost and break-even
 null; workload-economics, counter-completeness and sample-efficiency Gates stay
 `NOT_RUN`.
 
-The next construction Gate must connect the authentic V0-047 first-to-final V3 overlay
-change to the DAG: failed certificate, authorized query-local rows, new epoch, local
-proof invalidation, replanning, and independent re-audit. Canonical V0-052 identities
-are frozen in the V0-052 specification and must match independent replay.
+V0-053 now consumes the first-to-final overlay Gate that V0-052 left open. V0-052
+itself remains a frozen-model proof control and cannot be retroactively relabelled as
+live model evolution. Canonical V0-052 identities remain frozen and must match
+independent replay.
 The complete contract is in `specs/H2_TEMPORAL_PROOF_DAG.md`.
 
 ## Historical identity-bound incremental proof-DAG slice (V0-051)

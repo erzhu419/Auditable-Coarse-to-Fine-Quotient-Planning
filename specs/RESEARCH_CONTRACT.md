@@ -105,6 +105,14 @@
   reuse. This is a frozen-model H2 proof-layer control, not promotion, generic H>1,
   changed-model incremental proof, persistence, closed-loop repair, sample reduction,
   economics, or an aggregate Gate.
+- **V0-053 live H2 query-local epoch-invalidation slice:** an eight-authority live
+  execution freezes the V0-047 first-V3 failed proof before its exact nine-row second
+  acquisition, then derives the immutable final epoch, exact delta, proof-facet
+  invalidation, replanning and certification. Three matched controls freeze `110/0`,
+  `70/40`, and `68/42`; only two distinct `C0` constructions are cross-epoch reuse.
+  Both epochs retain the same semantic `A0A0` plan, so this is a registered live
+  correctness control, not generic model-change proof, semantic policy change,
+  persistence, sample efficiency, economics, or an aggregate Gate.
 - **Phase 3C local-recovery slice:** the V0-029 certificate-triggered, isolated,
   query-owned overlay positive control over an immutable reusable RAPM; it is not the
   aggregate Phase 3 or economics Gate.
@@ -1803,12 +1811,125 @@ registered_h2_stage_local_bellman_recurrence_claimed = true
 Generic H>1, cross-query/threshold/model/reward incremental proof, persistent caching,
 closed-loop local repair, sample reduction/efficiency, workload economics and official
 execution remain locked. The V0-052 canonical IDs are frozen in the normative spec
-and must match independent replay. The next Gate must consume V0-047's
-authentic first-to-final V3 row change and prove local model-facet invalidation,
-replanning and re-audit. Full identities and attacks are normative in
+and must match independent replay. V0-053 now consumes the authentic V0-047
+first-to-final V3 row change that this contract left open; V0-052 itself remains a
+frozen-model control. Full identities and attacks are normative in
 `specs/H2_TEMPORAL_PROOF_DAG.md`.
 
 Contract 1.15.0 opens no aggregate lock:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+sample_efficiency_gate_blocks_mainline = false
+```
+
+### Contract 1.16.0: live H2 query-local epoch invalidation
+
+V0-053 registers schema `1.0.0`, profile
+`lmb_h2_live_query_local_epoch_invalidation_v0`, and passing status
+`CERTIFIED_REGISTERED_H2_LIVE_QUERY_LOCAL_EPOCH_INVALIDATION_CONTROL`. It consumes
+the same eight upstream authorities as V0-047 and rejects a completed V0-047 result,
+caller models, rows, plans, closure, cache, controls, expected outcomes, legacy audit,
+optimizer, or promotion choice.
+
+The production order is binding:
+
+```text
+verify base failure authority and execute round one
+-> freeze first V3
+-> build four candidate DAG roots
+-> derive proposal and independent selected failed root
+-> derive/freeze the nine-row round-two request
+-> execute only those nine rows
+-> freeze final successor V3
+-> derive exact model delta and affected closure
+-> rebuild four candidate roots
+-> replan and freeze the final independent certificate
+```
+
+No second-round transition may precede the first selected root. Post-hoc replay from a
+completed V0-047 result cannot produce the passing status or positive claim.
+
+The inherited source checkpoints remain:
+
+```text
+first V3 model ID = e3d550b7d46b516bd443881e14ade00b8a1cc673f141039d09dc585fa2b28fba
+first proposal ID = b5db44c042eaa656980f942430c2fee6eda6fcf6ec8c0a1af1142b723ec006e4
+round-two request ID = dc79dda993650f03b335217fbdf98cc10449bb79f7374d0440258996b84b1ccf
+final V3 model ID = a18a29a1c1bd3433ef7ace6d99c67a594a0d587b6b0c2889f71022eaa7437315
+final audit ID = 81f379b9485d1da2aaf56fd20ff75d5c45c8ac4b870cc6e52b795ef6896e9529
+V0-047 result ID = 9a3691831b8103d1523333f50b302a5f099dee9d1b8790a893e5998810866d42
+```
+
+The first model has `overlay_version=1`, coverage `11/9`, and a selected
+`FAILED_PROOF_FRONTIER` at `time=1,h=1`. The exact second request retains
+`3 selected-risk / 9 unrestricted-value / 9 distinct`, executes nine transitions and
+no new direct catalogue/search/optimizer work. The final immutable model has
+`overlay_version=2`, coverage `20/0`, binds the first as predecessor, and independently
+certifies reward/failure/regret `1/0/0` with external coverage. The reusable base and
+first epoch remain byte-identical.
+
+The derived delta consists exactly of the nine requested rows changing from
+`MISSING_VACUOUS` to `OBSERVED_SINGLETON`. Every catalogue, cell, semantic action,
+concretizer, query, threshold, reward, horizon, and other row is invariant. The rows
+are stationary even though their authority originates at the time-one frontier:
+`U1/U0` both scan them, `P1/P0` both consume their coord-3 realizations, and `C1`
+consumes the changed reachability facet. Thus direct consumed-facet changes are
+`U1/U0/P1/P0/C1`; `D/E/F/G/R` are re-derived as descendants. Only `C0` is stable.
+
+Every lower proof identity binds its exact extensional model/stage facet and ordered
+parents. It neither includes the complete model ID solely to force a miss nor omits a
+consumed facet to force a hit. Every root remains fully bound to the current epoch,
+plan, query, thresholds, request, role, and selected proposal.
+
+Each epoch executes Gray candidates `A0A0,A0A1,A1A1,A1A0` and a separate selected
+request. Both planners select the same semantic `A0A0` schedule with key
+`(0,1,0,1,0,1,0,1)`. Their epoch-bound plan/proposal/root IDs change, but their
+semantic policy does not. All ten roots reproduce their corresponding unchanged
+V0-043 audits; the first selected root fails and the final selected root certifies.
+
+The three matched control totals are:
+
+```text
+REQUEST_RESET                 110 / 0
+EPOCH_RESET_GLOBAL_DAG         70 / 40
+GLOBAL_CROSS_EPOCH_FACET_DAG   68 / 42
+```
+
+Continuous compute prefixes are `11,19,27,34,35,45,53,60,67,68`; hit prefixes are
+`0,3,6,10,20,21,24,28,32,42`. The final epoch's five `C0` resolutions hit two distinct
+first-epoch entries, so only `70-68=2` avoided constructions are cross-epoch reuse.
+The controls share one evidence transaction and add no operational ground sampling.
+Node counts do not establish sample, total-work, byte, wall-clock, or economics
+improvement.
+
+The independent verifier adds only the claimed result to the eight authorities. It
+reconstructs the complete `13+3` V0-047 chain, both epochs, exact delta and closure,
+ten legacy-equivalent roots, all three empty-start controls, and every append-only
+cache transition. Acquisition-order, post-hoc-as-live, row/evidence, stale-node,
+false-hit/miss, edge/cycle, cache/owner, role, lane, source and content-domain attacks
+fail closed. Full requirements are normative in
+`specs/LIVE_QUERY_LOCAL_EPOCH_INVALIDATION.md`.
+
+The sole positive flag is:
+
+```text
+registered_h2_live_query_local_epoch_invalidation_claimed = true
+```
+
+Generic changed-model/H>2 proof, semantic policy change, cross-query reuse, persistent
+caching, sample reduction/efficiency, total-work/wall-clock, economics, learned or
+partial dynamics, coordinate invention and official execution remain locked. The
+next Gate is a preregistered repeated H2 occurrence family with durable epoch/proof
+state and a separate action-local sparse-delta fixture that changes the semantic
+policy before any sample-tax operator is frozen.
+
+Contract 1.16.0 opens no aggregate lock:
 
 ```text
 official_execution_allowed = false

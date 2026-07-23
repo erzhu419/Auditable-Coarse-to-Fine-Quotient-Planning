@@ -96,6 +96,14 @@
   are cross-plan reuse. It is not world-model promotion, generic H>1, changed-model
   incremental proof, persistence, closed-loop repair, sample efficiency, economics,
   or an aggregate Gate.
+- **V0-053 live H2 query-local epoch-invalidation slice:** the same eight upstream
+  authorities as V0-047 must freeze a first-epoch DAG failure before the exact
+  nine-row second acquisition, then derive the immutable successor epoch, exact row
+  delta, facet invalidation, replanning and final certificate live. Request-reset,
+  epoch-reset-global and continuous facet-DAG controls freeze `110/0`, `70/40`, and
+  `68/42`; only two distinct `C0` constructions are cross-epoch reuse. Both epochs
+  select the same semantic `A0A0` schedule, so this is not a semantic-policy-change,
+  generic changed-model, persistence, sample-efficiency, economics, or aggregate Gate.
 - **Phase 3D general local-recovery Gate:** the V0-030 finite, cap-aware positive
   control that closes joint value/risk composition, slack-aware causal localization,
   and sparse worker authority. Its pass is not aggregate Phase 3 or economics.
@@ -1338,7 +1346,94 @@ sample_efficiency_gate_blocks_mainline = false
 ```
 
 
-### V0-052 H2 stage-local temporal proof-DAG gate
+### V0-053 live H2 query-local epoch-invalidation gate
+
+Contract `1.16.0` registers schema `1.0.0`, profile
+`lmb_h2_live_query_local_epoch_invalidation_v0`, and status
+`CERTIFIED_REGISTERED_H2_LIVE_QUERY_LOCAL_EPOCH_INVALIDATION_CONTROL`. The Gate
+connects the authentic V0-047 first `11/9` V3 epoch to its immutable final `20/0`
+successor through live evidence ordering and the H2 temporal proof DAG. A completed
+V0-047 result is not an admissible production input.
+
+The Gate passes only if:
+
+1. production accepts exactly V0-047's eight upstream authorities and no caller model,
+   row/state list, plan, closure, cache, control, expected result, legacy audit,
+   optimizer, promotion choice, or completed V0-047 result;
+2. the live trace freezes the first four candidate roots, DAG-derived proposal and
+   independent selected failed root before deriving the round-two request or opening
+   any of its ground rows;
+3. the first checkpoint is the exact V0-047 `overlay_version=1`, `11/9` V3, and its
+   selected root is `FAILED_PROOF_FRONTIER` at `time=1,h=1` with reason
+   `UNRESOLVED_POLICY_PATH_DISTINCTION`;
+4. the second request retains `3 selected-risk / 9 unrestricted-value / 9 distinct`,
+   executes exactly nine authorized transitions and their included legality checks,
+   and makes zero direct catalogue, extra-row, search, or optimizer calls;
+5. the final checkpoint is `overlay_version=2`, binds the first model as predecessor,
+   has `20/0` coverage, leaves the first/base bytes unchanged, and independently
+   certifies reward/failure/regret `1/0/0` with external coverage;
+6. the exact delta is derived rather than supplied and contains exactly the nine
+   requested rows changing `MISSING_VACUOUS -> OBSERVED_SINGLETON`, with every
+   catalogue, cell, semantic action, concretizer, query, threshold, reward, horizon,
+   and other row unchanged;
+7. every request resolves `U1,U0,P1,P0,C0,C1,D,E,F,G,R` under the V0-052 topology;
+8. because the changed rows are stationary, direct consumed-facet changes are exactly
+   `U1/U0/P1/P0/C1`; `D/E/F/G/R` are rebuilt as descendants and only `C0` is stable;
+9. lower identities bind exact allowlisted extensional stage/model facets and ordered
+   parents without complete-model over-keying or consumed-facet under-keying, while
+   each root remains complete epoch/plan/query/threshold/request/role/proposal bound;
+10. each epoch executes candidates `A0A0,A0A1,A1A1,A1A0` and a role-distinct selected
+    request, and selection is derived from candidate roots rather than a source result;
+11. both planners select the same semantic `A0A0` schedule with key
+    `(0,1,0,1,0,1,0,1)`; model-bound plan/proposal/root IDs change, but neither the
+    result nor its tests claim a semantic policy change;
+12. all ten roots exactly reproduce the corresponding unchanged V0-043 audits;
+    candidate authority cannot replace either independent selected authority;
+13. request-reset, epoch-reset-global and continuous facet-DAG arms all resolve 110
+    slots and compute/hit exactly `110/0`, `70/40`, and `68/42`;
+14. continuous compute prefixes equal `11,19,27,34,35,45,53,60,67,68`, hit prefixes
+    equal `0,3,6,10,20,21,24,28,32,42`, and only `70-68=2` avoided distinct `C0`
+    constructions are attributed to cross-epoch reuse;
+15. proof controls share one ground-evidence transaction, operational work reports
+    round-one `4+3` and round-two `9+0` separately, and independent `13+3` replay
+    remains evaluation-only;
+16. the nine-input verifier independently rebuilds the complete V0-047 chain, both
+    epochs, delta/closure, ten roots, three empty-start controls and every cache
+    transition, then requires exact document equality;
+17. acquisition-order, post-hoc-as-live, row omission/substitution, evidence leakage,
+    stale `U1/U0/P1/P0/C1` or descendant, false `C0` miss, under-key false hit,
+    edge/cycle, cache/owner, role, lane, source and content-domain attacks fail closed;
+18. every inherited V0-047 source identity equals the exact value in
+    `specs/LIVE_QUERY_LOCAL_EPOCH_INVALIDATION.md`.
+
+Passing permits only:
+
+```text
+registered_h2_live_query_local_epoch_invalidation_claimed = true
+```
+
+Generic changed-model/H>2 proof, semantic policy change, cross-query or persistent
+caching, sample reduction/efficiency, total-work/wall-clock, economics, learned
+dynamics, coordinate invention and official execution remain locked. The next Gate is
+a preregistered repeated H2 family with durable epoch/proof state and a separate
+action-local sparse-delta fixture that produces a genuine semantic policy change.
+
+All aggregate locks remain unchanged:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+sample_efficiency_gate_blocks_mainline = false
+```
+
+Detailed order, delta, facet, control, replay and attack requirements are normative in
+`specs/LIVE_QUERY_LOCAL_EPOCH_INVALIDATION.md`.
+
+### Historical V0-052 H2 stage-local temporal proof-DAG gate
 
 Contract `1.15.0` registers schema `1.0.0`, profile
 `lmb_h2_stage_local_bellman_proof_dag_v0`, and status
@@ -1389,8 +1484,9 @@ cross-query/threshold/model/reward incremental proof, persistent caching, closed
 repair, sample reduction/efficiency, total-work/economics and official execution
 remain locked. This is a temporal proof layer over a frozen RAPM, not model promotion.
 
-The next Gate must connect V0-047's genuine first-to-final V3 overlay row change to
-local proof-node invalidation, replanning and independent re-audit.
+V0-053 now consumes the first-to-final live invalidation Gate left open here. V0-052
+itself remains a frozen-model control and is not retroactively relabelled as live
+model evolution.
 
 All aggregate locks remain unchanged:
 
