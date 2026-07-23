@@ -97,6 +97,14 @@
   freeze `168/0`, `112/56`, and `62/106` compute/hit totals and attribute only 50
   avoided node constructions to cross-context reuse. It is not H>1 recurrence,
   persistent caching, sample reduction, total-work/economics evidence, or a Gate.
+- **V0-052 H2 stage-local temporal proof-DAG slice:** five requests over the
+  unchanged V0-047 final query-local H2 V3 model factor exact Bellman, policy,
+  reachability and verdict facts into eleven temporal slots. Request-reset,
+  plan-partitioned and global controls freeze `55/0`, `45/10`, and `35/20`
+  compute/hit totals; only ten avoided constructions are attributed to cross-plan
+  reuse. This is a frozen-model H2 proof-layer control, not promotion, generic H>1,
+  changed-model incremental proof, persistence, closed-loop repair, sample reduction,
+  economics, or an aggregate Gate.
 - **Phase 3C local-recovery slice:** the V0-029 certificate-triggered, isolated,
   query-owned overlay positive control over an immutable reusable RAPM; it is not the
   aggregate Phase 3 or economics Gate.
@@ -1725,6 +1733,82 @@ execution, scalar cost and break-even remain false, null, or `NOT_RUN`. Canonica
 identities and attacks are normative in `specs/INCREMENTAL_PROOF_DAG.md`.
 
 Contract 1.14.0 opens no aggregate lock:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+sample_efficiency_gate_blocks_mainline = false
+```
+
+### Contract 1.15.0: H2 stage-local temporal proof DAG
+
+V0-052 registers schema `1.0.0`, profile
+`lmb_h2_stage_local_bellman_proof_dag_v0`, and passing status
+`CERTIFIED_REGISTERED_H2_STAGE_LOCAL_BELLMAN_RECURRENCE_CONTROL`. The only admissible
+source is the unchanged V0-047 final query-local H2 V3 result/model, with IDs
+`9a3691831b8103d1523333f50b302a5f099dee9d1b8790a893e5998810866d42` and
+`a18a29a1c1bd3433ef7ace6d99c67a594a0d587b6b0c2889f71022eaa7437315`.
+The promoted V5 H1 model is not an admissible replacement. The selected Gray-`00`
+plan remains `0a90dfe57c48c76e917b80b546242975f43219b310ccff238bea00bae19ad1eb`.
+
+The frozen request sequence is four candidate roles for
+`A0A0,A0A1,A1A1,A1A0`, then one independent-selected role for `A0A0`. Every request
+resolves these eleven ordered slots:
+
+```text
+U1 -> U0; P1 -> P0; C0 -> C1
+D <- U0,P0,C0,C1
+E,F <- D; G <- C0,C1
+R <- U1,U0,P1,P0,C0,C1,D,E,F,G
+```
+
+Lower content identities carry the exact source and only the local stage/action,
+support, recurrence-parent, query/reward/risk or threshold facet their semantics
+consume. They omit the complete plan, request and role. `R` always rematerializes the
+complete plan-/query-/threshold-/request-/role-bound audit; selected authority also
+binds the selected planner result. Existing V0-043 threshold-/plan-bound rows are
+forbidden below `R`.
+
+Stage-1 and stage-0 action changes have exact invalidation cones
+`P1,P0,C1,D,E,F,G,R` and `P0,C0,C1,D,E,F,G,R`. The final return to stage-1 action
+`A0` reuses historical `P1` but re-derives its current descendants.
+
+All arms resolve 55 slots. Request reset gives `55/0` computes/hits. Four independent
+plan-ID caches give `45/10`; after all candidates execute, the selected request returns
+to the Gray-`00` partition and may reuse its ten lower nodes. The initially empty global
+DAG gives `35/20`. Cumulative compute prefixes are `11,22,33,44,55`,
+`11,22,33,44,45`, and `11,19,27,34,35`; global hit prefixes are
+`0,3,6,10,20`. Global slot totals are `U1 1/4`, `U0 1/4`, `P1 2/3`,
+`P0 4/1`, `C0 2/3`, `C1 4/1`, `D/E/F/G 4/1` each, and `R 5/0`.
+Only `45-35=10` is cross-plan reuse; `55-35` includes same-plan selected-role reuse.
+Grouped global totals are `U 2/8`, `P 6/4`, `C 6/4`, `D/E/F/G 4/1` each,
+and `R 5/0`; exact grouped counts for all arms are frozen in the H2 spec.
+
+Production makes zero target transition, catalogue, optimizer, refinement and
+promotion calls. Independent replay reconstructs the V0-047 source, five authoritative
+roots and all reset/cache traces, and rejects source/stage/action/plan/query/threshold/
+reward/role, topology, legacy-row, stale-descendant, cache-state, owner and content-
+domain attacks.
+
+The sole positive flag is:
+
+```text
+registered_h2_stage_local_bellman_recurrence_claimed = true
+```
+
+Generic H>1, cross-query/threshold/model/reward incremental proof, persistent caching,
+closed-loop local repair, sample reduction/efficiency, workload economics and official
+execution remain locked. The V0-052 canonical IDs are frozen in the normative spec
+and must match independent replay. The next Gate must consume V0-047's
+authentic first-to-final V3 row change and prove local model-facet invalidation,
+replanning and re-audit. Full identities and attacks are normative in
+`specs/H2_TEMPORAL_PROOF_DAG.md`.
+
+Contract 1.15.0 opens no aggregate lock:
 
 ```text
 official_execution_allowed = false

@@ -28,7 +28,57 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 → jointly search local value/risk choices, rebuild, or use charged fallback
 ```
 
-## Current identity-bound incremental proof-DAG slice (V0-051)
+## Current H2 stage-local temporal proof-DAG slice (V0-052)
+
+Contract `1.15.0`, schema `1.0.0`, and profile
+`lmb_h2_stage_local_bellman_proof_dag_v0` consume the unchanged V0-047 **final
+query-local H2 V3** model. They do not use the later promoted V5 H1 model and do not
+perform another model promotion. Four candidate plans run in Gray order
+`A0A0 -> A0A1 -> A1A1 -> A1A0`, followed by a separately keyed independent selected
+certificate for `A0A0`.
+
+Each request resolves eleven temporal slots:
+
+```text
+U1 -> U0       P1 -> P0       C0 -> C1
+D <- U0,P0,C0,C1
+E,F <- D       G <- C0,C1
+R <- every lower node
+```
+
+Lower nodes bind only the exact source and local stage/action/parent facet needed by
+their semantics. The root always binds the complete plan, query, thresholds, request
+and proof role; legacy V0-043 plan-/threshold-bound rows exist only at that root. The
+three matched cache scopes freeze:
+
+```text
+logical slot resolutions                         = 55 in every arm
+request-reset computes / hits                    = 55 / 0
+plan-partitioned computes / hits                  = 45 / 10
+global temporal-DAG computes / hits               = 35 / 20
+global compute prefixes                           = 11,19,27,34,35
+global hit prefixes                               = 0,3,6,10,20
+target transition / catalogue / optimizer calls  = 0 / 0 / 0
+```
+
+Only `45-35=10` avoided constructions are attributed to cross-plan temporal reuse;
+`55-35` also includes the selected request's exact same-plan lower-node reuse. This
+opens only
+`registered_h2_stage_local_bellman_recurrence_claimed=true` for the registered
+frozen-model control. It is not generic H>1 recurrence, cross-query or changed-model
+incremental proof, changed-threshold or changed-reward incremental proof, persistent
+caching, a closed-loop repair result, sample reduction, sample efficiency,
+total-work/economics evidence, or official execution. Scalar cost and break-even stay
+null; workload-economics, counter-completeness and sample-efficiency Gates stay
+`NOT_RUN`.
+
+The next construction Gate must connect the authentic V0-047 first-to-final V3 overlay
+change to the DAG: failed certificate, authorized query-local rows, new epoch, local
+proof invalidation, replanning, and independent re-audit. Canonical V0-052 identities
+are frozen in the V0-052 specification and must match independent replay.
+The complete contract is in `specs/H2_TEMPORAL_PROOF_DAG.md`.
+
+## Historical identity-bound incremental proof-DAG slice (V0-051)
 
 Contract `1.14.0`, schema `1.0.0`, and profile
 `lmb_identity_bound_incremental_proof_dag_v0` factor the unchanged V0-043 H1

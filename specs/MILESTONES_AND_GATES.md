@@ -89,6 +89,13 @@
   compute/hit totals; only the 50 global-versus-occurrence avoided constructions are
   attributed to changed-query reuse. No H>1, persistence, sample-tax, total-work,
   economics, or aggregate-Gate claim is opened.
+- **V0-052 H2 stage-local temporal proof-DAG slice:** four Gray-ordered H2 candidate
+  plans and one independent selected-plan request over the unchanged V0-047 final V3
+  source resolve eleven stage-local proof slots. Request-reset, plan-partitioned and
+  global controls freeze `55/0`, `45/10`, and `35/20`; only ten avoided constructions
+  are cross-plan reuse. It is not world-model promotion, generic H>1, changed-model
+  incremental proof, persistence, closed-loop repair, sample efficiency, economics,
+  or an aggregate Gate.
 - **Phase 3D general local-recovery Gate:** the V0-030 finite, cap-aware positive
   control that closes joint value/risk composition, slack-aware causal localization,
   and sparse worker authority. Its pass is not aggregate Phase 3 or economics.
@@ -1331,7 +1338,73 @@ sample_efficiency_gate_blocks_mainline = false
 ```
 
 
-### V0-051 identity-bound incremental proof-dependency DAG gate
+### V0-052 H2 stage-local temporal proof-DAG gate
+
+Contract `1.15.0` registers schema `1.0.0`, profile
+`lmb_h2_stage_local_bellman_proof_dag_v0`, and status
+`CERTIFIED_REGISTERED_H2_STAGE_LOCAL_BELLMAN_RECURRENCE_CONTROL`. The Gate uses only
+the unchanged V0-047 final query-local H2 V3 source, not the promoted V5 H1 model.
+It executes candidate requests in Gray order `A0A0,A0A1,A1A1,A1A0`, then a distinct
+independent-selected request for `A0A0`.
+
+The Gate passes only if:
+
+1. source result, final V3 model and selected-plan IDs equal the V0-047 goldens in
+   `specs/H2_TEMPORAL_PROOF_DAG.md`;
+2. every request resolves exactly `U1,U0,P1,P0,C0,C1,D,E,F,G,R` with edges
+   `U1->U0`, `P1->P0`, `C0->C1`, `D<-(U0,P0,C0,C1)`, `E/F<-D`,
+   `G<-(C0,C1)` and `R` over all ten lower nodes;
+3. ordered parents and local stage/action/support facets are content bound, while no
+   lower node is unnecessarily keyed by the complete plan/request/role;
+4. every `R` is freshly complete-plan/query/threshold/request/role bound, and the
+   selected root additionally binds the selected planner result;
+5. no existing V0-043 plan-/threshold-bound row appears below `R`;
+6. stage-1 changes invalidate `P1,P0,C1,D,E,F,G,R`, stage-0 changes invalidate
+   `P0,C0,C1,D,E,F,G,R`, and the final return to the historical stage-1 `A0` identity
+   reuses `P1` while rebuilding the rest of its affected cone;
+7. request-reset, plan-partitioned and global arms all resolve 55 slots and freeze
+   compute/hit totals `55/0`, `45/10`, and `35/20`;
+8. cumulative compute prefixes are request `11,22,33,44,55`, plan-partitioned
+   `11,22,33,44,45`, and global `11,19,27,34,35`; global hit prefixes are
+   `0,3,6,10,20`;
+9. global per-slot compute/hit totals are `U1 1/4`, `U0 1/4`, `P1 2/3`, `P0 4/1`,
+   `C0 2/3`, `C1 4/1`, `D/E/F/G 4/1` each and `R 5/0`;
+10. grouped compute/hit totals are request-reset `U/P/C 10/0`, `D/E/F/G/R 5/0`;
+   plan-partitioned `U/P/C 8/2`, `D/E/F/G 4/1`, `R 5/0`; and global
+   `U 2/8`, `P/C 6/4`, `D/E/F/G 4/1`, `R 5/0`;
+11. only `45-35=10`, not `55-35`, is attributed to cross-plan temporal reuse;
+12. all four candidate roots and the independent selected root exactly reproduce the
+    unchanged authoritative H2 audits and candidate authority cannot replace selected
+    authority;
+13. production makes zero target transition, catalogue, optimizer, refinement,
+    promotion and acquisition calls;
+14. the independent verifier rebuilds V0-047 and all three empty-start traces and
+    rejects source epoch/model, stage/action/plan/query/threshold/reward/role,
+    topology, legacy-row, affected-descendant, cache, owner and domain attacks;
+15. all canonical V0-052 IDs equal the frozen spec values; `TO_BE_FROZEN` never passes.
+
+Passing permits only
+`registered_h2_stage_local_bellman_recurrence_claimed=true`. Generic H>1,
+cross-query/threshold/model/reward incremental proof, persistent caching, closed-loop
+repair, sample reduction/efficiency, total-work/economics and official execution
+remain locked. This is a temporal proof layer over a frozen RAPM, not model promotion.
+
+The next Gate must connect V0-047's genuine first-to-final V3 overlay row change to
+local proof-node invalidation, replanning and independent re-audit.
+
+All aggregate locks remain unchanged:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+sample_efficiency_gate_blocks_mainline = false
+```
+
+### Historical V0-051 identity-bound incremental proof-dependency DAG gate
 
 Contract `1.14.0` registers
 `lmb_identity_bound_incremental_proof_dag_v0`. It executes seven unique H1 contexts

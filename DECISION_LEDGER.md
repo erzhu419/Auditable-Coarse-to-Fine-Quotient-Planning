@@ -2,8 +2,8 @@
 
 **Status:** normative source of truth
 
-**Ledger version:** 1.14.0
-**Last updated:** 2026-07-22
+**Ledger version:** 1.15.0
+**Last updated:** 2026-07-23
 
 ## Authority
 
@@ -80,6 +80,7 @@ absent from a public checkout.
 | V0-049 | 2026-07-22 | Preregistered held-out family and matched vector amortization | FROZEN | Contract `1.12.0` registers `lmb_preregistered_h1_heldout_family_amortization_v0`. Before source acquisition the protocol freezes three distinct H1 targets at LMB masks `11/19/35` and ten logical occurrences ordered `1,2,3,1,2,3,1,2,3,1`; all targets are absent from V0-045 and the source runner remains target blind. The unchanged V0-048 complete-source verifier retains all 20 final rows, 13 exact evidence records and three boundary catalogues with zero filtering, then a separate V5 epoch authorizes only the three target states and H1 while preserving nonneutral acquisition provenance. Ten kernel-free warm routes each certify reward/failure/regret `1/0/0` with `0+0` target ground work, two plan candidates and three audits. Ten source-blind cold direct planners each execute `3+1`, exhaust three actions and match the warm certificate and source evidence exactly. Source-inclusive warm `(13,3)` first componentwise dominates cold `(3N,N)` at diagnostic prefix 5; including promotion evaluation `(26,6)` moves that diagnostic relation to prefix 9. These are vector relations, not official scalar break-even or sample-efficiency results. | Closes the finite multi-occurrence scoped-reuse, source-amortization and end-to-end cold-baseline Gate left by V0-048 while exposing repeated exact certificate work as the next measured tax candidate. | `heldout_family_amortization_v1.py`; `PreregisteredReusablePartialRAPMV5`; family query/occurrence/protocol/eligibility/promotion, warm/cold pair, native work, prefix, telemetry and result artifacts; API isolation, method tracing, scope/accounting forgery, canonical-ID and full-replay tests; `specs/HELDOUT_FAMILY_AMORTIZATION.md`. |
 | V0-050 | 2026-07-22 | Exact identity-bound certificate memoization | FROZEN | Contract `1.13.0` registers `lmb_identity_bound_certificate_memoization_v0`. The unchanged V0-049 workload is paired with an initially empty append-only memo arm. Each occurrence still enumerates two plans and issues two candidate-role plus one independent-selected-role audit requests. The exact semantic key binds model/source/promotion, observation authority, query, thresholds/return proof, plan, planner/tie-break, auditor implementation and role; selected certification also binds its planner result. Occurrence identity is excluded only from the semantic key and remains mandatory in each use receipt. Nine trusted misses populate, for each of three queries, two candidate-plan entries under the candidate role plus one selected-certificate entry; 21 exact hits reduce full-audit executions from 30 to nine while all 20 candidates, ten selected certificates, zero target-ground calls and matched no-reuse/cold artifacts remain unchanged. Runtime authority is owner-bound and independent verification replays all 30 append-only transitions. | Closes only the exact-repeat proof-computation Gate exposed by V0-049. Cross-identity incremental proof, persistent reuse, sample-tax reduction, total-work/economics and generalization remain open. | `certificate_memoization_v1.py`; memo semantics/key/attestation/entry/use-receipt/cache/work/prefix/execution/telemetry/control artifacts; role, invalidation, empty-cache, owner-authority, trace, canonical-ID and independent-replay tests; `specs/CERTIFICATE_MEMOIZATION.md`. |
 | V0-051 | 2026-07-22 | Identity-bound incremental proof-dependency DAG | FROZEN | Contract `1.14.0` registers `lmb_identity_bound_incremental_proof_dag_v0`. Seven unique H1 contexts over the unchanged V5 model change exactly one of `rho0`, regret tolerance, or risk tolerance. Every context retains two candidate requests and one independent selected-plan certificate. Eight domain-separated nodes `U/P/C/D/E/F/G/R` expose explicit semantic facets and parent dependencies; changed descendants are re-derived and every final root is freshly query/threshold/plan/role bound. Existing V0-043 threshold-bound rows are never neutral nodes and are rematerialized only at `R`. Request-, occurrence-, and global-reset controls freeze `168/0`, `112/56`, and `62/106` compute/hit totals; only `112-62=50` avoided constructions are attributed to cross-context reuse. All 21 roots match unchanged monolithic V0-043 audits, zero target ground calls are made, append-only owner-bound execution and independent replay fail closed under dependency, identity, role, trace and cache attacks. | Closes only the registered H1 changed-query/threshold proof-factoring Gate left by V0-050. H>1 recurrence, persistent caching, sample-tax/sample-efficiency, total-work/economics, model/reward changes and generalization remain open. | `incremental_proof_dag_v1.py`; DAG semantics/registry/context/key/node/receipt/store/change-closure/work/prefix/execution/telemetry/control artifacts; exact legacy equivalence, invalidation, topology, role, source, cache, owner, canonical-ID and independent-replay tests; `specs/INCREMENTAL_PROOF_DAG.md`. |
+| V0-052 | 2026-07-23 | H2 stage-local temporal proof DAG | FROZEN | Contract `1.15.0` registers schema `1.0.0`, profile `lmb_h2_stage_local_bellman_proof_dag_v0`, and status `CERTIFIED_REGISTERED_H2_STAGE_LOCAL_BELLMAN_RECURRENCE_CONTROL`. It consumes the unchanged V0-047 final query-local H2 V3 model, never the promoted V5 H1 model. Four candidate requests execute in Gray order `A0A0,A0A1,A1A1,A1A0`, followed by a role-distinct independent selected certificate for `A0A0`. Eleven slots expose `U1->U0`, `P1->P0`, `C0->C1`, `D<-(U0,P0,C0,C1)`, `E/F<-D`, `G<-(C0,C1)`, and a freshly complete-plan/request/role-bound `R` over all lower nodes. Lower identities carry only their required stage-local facets; legacy plan-/threshold-bound V0-043 rows remain at `R`. Request-reset, plan-partitioned and global controls freeze `55/0`, `45/10`, and `35/20` compute/hit totals; exactly `45-35=10` avoided constructions are attributable to cross-plan temporal reuse. | Closes only the registered frozen-model H2 stage-local recurrence control after V0-051. It is not another world-model promotion, generic H>1, cross-query/threshold/model/reward incremental proof, persistent cache, closed-loop repair, sample reduction/efficiency, economics or official execution. | `h2_temporal_incremental_proof_dag_v1.py`; H2 temporal protocol/semantics/node/receipt/cache/work/prefix/execution/control artifacts; unchanged V0-047 source reconstruction; five legacy-equivalent roots; topology/stage/plan/role/source/cache/owner attacks; canonical-ID tests; `specs/H2_TEMPORAL_PROOF_DAG.md`. |
 
 For V0-051, the affected public interface expressly includes the content-addressed
 `IncrementalProofDAGProtocolV1` and its `protocol_id`, in addition to the node,
@@ -2400,6 +2401,96 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
 
+## V0-052 H2 stage-local temporal proof-DAG rule
+
+Contract `1.15.0` freezes schema `1.0.0`, profile
+`lmb_h2_stage_local_bellman_proof_dag_v0`, and success status
+`CERTIFIED_REGISTERED_H2_STAGE_LOCAL_BELLMAN_RECURRENCE_CONTROL`. Its source is the
+unchanged V0-047 final query-local H2 V3 result/model
+`9a3691831b8103d1523333f50b302a5f099dee9d1b8790a893e5998810866d42` /
+`a18a29a1c1bd3433ef7ace6d99c67a594a0d587b6b0c2889f71022eaa7437315`.
+The V0-048/V0-049 promoted V4/V5 H1 models are forbidden substitutes. The selected
+Gray-`00` plan remains
+`0a90dfe57c48c76e917b80b546242975f43219b310ccff238bea00bae19ad1eb`.
+This is a proof layer over a frozen RAPM, not another promotion.
+Its semantics identity pins the exact V0-043 audit, partial-model planner, V0-047
+multi-step, and V0-051 predecessor source digests listed in the normative H2 spec.
+
+The protocol freezes four candidate-role requests in Gray order
+`A0A0,A0A1,A1A1,A1A0`, then one separately keyed independent-selected request for
+`A0A0`. Eleven exact slots form this ordered graph:
+
+```text
+U1 -> U0
+P1 -> P0
+C0 -> C1
+D  <- U0,P0,C0,C1
+E,F <- D
+G  <- C0,C1
+R  <- U1,U0,P1,P0,C0,C1,D,E,F,G
+```
+
+Every lower key binds the exact source and only its consumed stage/action/support,
+recurrence-parent and fixed query/reward/risk/threshold facets. It does not absorb the
+complete plan, request or role. `R` always binds the full plan, query, thresholds,
+request and proof role; the selected root additionally binds the selected result.
+Existing V0-043 plan-/threshold-bound rows and final result are admissible only at
+`R`, never as lower temporal facts.
+
+The exact stage-1 and stage-0 action-change cones are respectively
+`P1,P0,C1,D,E,F,G,R` and `P0,C0,C1,D,E,F,G,R`. On `A1A1->A1A0`, the previously
+computed stage-1 `A0` `P1` node is a historical hit, but its current descendants are
+still derived under their exact parents.
+
+All three arms resolve 55 logical slots. Request reset computes/hits `55/0`. Four
+independent plan-ID cache partitions compute/hit `45/10`, because the final selected
+request can return only to the Gray-`00` lower facts. One initially empty global DAG
+computes/hits `35/20`. Cumulative request prefixes are:
+
+```text
+request reset:    11,22,33,44,55 computes / 0,0,0,0,0 hits
+plan-partitioned: 11,22,33,44,45 computes / 0,0,0,0,10 hits
+global DAG:       11,19,27,34,35 computes / 0,3,6,10,20 hits
+```
+
+Global per-slot compute/hit totals are `U1 1/4`, `U0 1/4`, `P1 2/3`, `P0 4/1`,
+`C0 2/3`, `C1 4/1`, `D/E/F/G 4/1` each, and `R 5/0`. Only
+`45-35=10` avoided constructions are attributed to cross-plan reuse; `55-35` also
+contains same-plan candidate-to-selected reuse. Node counts are not transition
+samples, total work or wall time.
+
+Production performs zero target transition, catalogue, acquisition, refinement,
+promotion and ground-optimizer calls. The independent verifier rebuilds the unchanged
+V0-047 authority, all five authoritative roots and all three traces. It rejects wrong
+source epoch/model, stage/action/plan/query/threshold/reward/role substitutions,
+legacy-row injection below `R`, edge/cycle/affected-descendant attacks, cache prewarm/
+overwrite/reorder/rollback, owner-copy and content-domain attacks.
+
+Passing permits exactly:
+
+```text
+registered_h2_stage_local_bellman_recurrence_claimed = true
+```
+
+Generic H>1, cross-query, changed-threshold/model/reward, persistent cache, closed-loop
+repair, sample reduction/efficiency, workload economics and official execution remain
+false/null/`NOT_RUN`. V0-052's six canonical IDs are frozen in the normative spec and
+must match independent replay. The next construction Gate must connect the authentic V0-047 first-to-final
+V3 overlay row change to local model-facet invalidation, replanning and re-audit.
+Normative identities and attacks are in `specs/H2_TEMPORAL_PROOF_DAG.md`.
+
+All aggregate locks remain unchanged:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+sample_efficiency_gate_blocks_mainline = false
+```
+
 ## V0-051 identity-bound incremental proof-dependency DAG rule
 
 Contract `1.14.0` freezes schema `1.0.0`, profile
@@ -2534,3 +2625,4 @@ sample_efficiency_gate_blocks_mainline = false
 - **2026-07-22 — 1.12.0:** Added V0-049/profile `lmb_preregistered_h1_heldout_family_amortization_v0`. Froze three pre-source H1 targets and a ten-occurrence workload, promoted the complete V0-047 model into a separate three-state V5 scope, and paired ten zero-ground warm `1/0/0` certificates with ten source-blind complete cold H1 optimizers. Recorded exact source `(13,3)`, promotion-evaluation `(13,3)`, warm `20 candidates/30 audits`, cold `(30,10)` and componentwise prefix relations with diagnostic warm-dominance prefixes 5 and 9. Scalar/break-even, statistical generalization, sample efficiency and tax-operator claims remain locked; the next experiment is identity-bound certificate reuse/incremental proof.
 - **2026-07-22 — 1.13.0:** Added V0-050/profile `lmb_identity_bound_certificate_memoization_v0`. Retained the unchanged V0-049 no-reuse workload, role-separated candidate and independent-selected proof requests, a complete semantic identity key with occurrence-bound receipts, owner-bound append-only runtime authority and independent replay. Nine trusted misses plus 21 exact hits preserve 20 candidates and ten certificates while reducing complete audit executions from 30 to nine. Cross-identity incremental proof, persistent cache authority, sample-tax/sample-efficiency, total-work/economics, scalar/break-even and all aggregate Gates remain locked; the next proof-reuse Gate requires an explicit proof-dependency DAG and affected-descendant re-derivation.
 - **2026-07-22 — 1.14.0:** Added V0-051/profile `lmb_identity_bound_incremental_proof_dag_v0`. Factored the registered H1 audit into explicit `U/P/C/D/E/F/G/R` dependencies, kept all legacy threshold-bound rows at the freshly rebuilt role-bound root, and froze seven single-field-changed contexts with request/occurrence/global reset controls. The global DAG executes 62 node constructions and 106 hits versus occurrence-local `112/56`; only the resulting 50 avoided constructions are attributed to cross-context reuse. All 21 roots match unchanged V0-043 audits. H>1, persistence, sample-tax/sample-efficiency, total-work/economics, scalar/break-even and all aggregate Gates remain locked.
+- **2026-07-23 — 1.15.0:** Added V0-052/profile `lmb_h2_stage_local_bellman_proof_dag_v0`. Over the unchanged V0-047 final query-local H2 V3 model, factored five Gray-order candidate/selected requests into eleven stage-local temporal slots. Request-reset, plan-partitioned and global arms compute/hit `55/0`, `45/10`, and `35/20`; only the ten global-versus-plan-partitioned avoided constructions are attributed to cross-plan reuse. The sole new claim is registered H2 stage-local Bellman recurrence. Generic H>1, changed query/model/reward, persistence, closed-loop overlay invalidation, sample efficiency, economics and official execution remain locked; six canonical V0-052 IDs are frozen in the normative spec.
