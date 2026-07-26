@@ -129,7 +129,24 @@
   semantic switch only for the registered H2 fixture; it is not generic
   persistence, cross-query/H>2 proof, native-work/sample saving, independent
   verification, economics, or an aggregate Gate.
-- **V0-057 interleaved certificate-triggered durable H2 epoch:** the current
+- **V0-058 observation-driven program closure and held-out H2 recovery:** the
+  current construction contract replaces the fixed handwritten production
+  coordinate catalogue with bottom-up depth-two composition inside the frozen
+  human typed primitive/operator vocabulary. It retains 215 exact
+  type/context/source-signature representatives, exhausts all 6650 bounded
+  optional-single-coordinate candidates and selects
+  `cardinality(legal_actions)` with
+  `buffer_at_type(buffer_counts,selected_tile_type)<=3/2`, producing an honest
+  `7 observed / 4 missing` partial RAPM. A pre-synthesis source-log-held-out
+  H2 target remains `7/7` until its selected proof fails; the resulting
+  `1 risk / 3 value / 3 distinct` authorization acquires exactly three target
+  rows, reuses an already-observed source continuation without successor
+  access, constructs immutable `10/4`, replans and independently certifies
+  reward/failure/regret `1/0/0`. All 19 tests pass. This is automatic program
+  composition/selection inside a frozen vocabulary, not primitive/operator
+  invention, raw symbolization, learned/statistical dynamics, broad
+  generalization, sample efficiency, economics or official execution.
+- **V0-057 interleaved certificate-triggered durable H2 epoch (historical):** the
   construction contract preregisters Q_R/Q_S order around the authentic
   V0-047 `11/9 -> 20/0` query-local model change and binds all eight source
   authorities plus complete H2 semantic/query scope before ground, without
@@ -861,7 +878,7 @@ The `candidate_cap_one` control requires 4096 candidates, evaluates zero and emi
 returns `NO_EXACT_GENERATED_HOMOMORPHISM`, and publishes no model/certificate. AST type,
 duck-result, trace, content and implementation-digest attacks fail closed.
 
-V0-041 is the current mainline construction slice, but its evidence remains finite and
+V0-041 is a historical mainline construction slice, and its evidence remains finite and
 exact. It does not establish unknown-semantic invention, neural/partial/learned
 dynamics, larger or unknown-domain scalability, held-out/cross-domain generalization,
 sample efficiency, or an aggregate Phase 3/Phase 3E Gate. All prior locks remain:
@@ -1877,6 +1894,69 @@ COUNTER_COMPLETENESS_GATE_NOT_RUN
 SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
+
+### Contract 1.22.0: observation-driven program closure and held-out H2 recovery
+
+V0-058 registers schema `1.0.0`, profiles
+`lmb_observed_program_closure_partial_rapm_v0` and
+`lmb_observed_program_closure_heldout_h2_v0`, and passing statuses
+`OBSERVATION_CONSISTENT_PROGRAM_CLOSURE_PARTIAL_RAPM` and
+`CERTIFIED_OBSERVED_PROGRAM_CLOSURE_HELDOUT_H2_RECOVERY`.
+
+The construction API accepts exactly the preregistered observation log,
+deterministic semantics profile and observation authority. It generates the
+complete type-correct depth-two closure of the frozen LMB
+primitive/operator vocabulary and deduplicates programs by exact result type,
+context and full source-covariate signature. The closure counts are
+`8`, `21`, `215`; the scalar catalogues contain `174` state and `37`
+state-action representatives. The complete bounded search has 6650
+candidates and 1384 admissible candidates. Candidate 4013 selects:
+
+```text
+state  = cardinality(legal_actions)
+action = buffer_at_type(buffer_counts, selected_tile_type) <= 3/2
+```
+
+The source build is `7 observed / 4 missing`. The preregistered H2 target
+`removed_mask=35, buffer=(2,1)` is absent from the source. Program application
+registers one target catalogue, coordinate `(3,)`, and labels false/true/true,
+but no target dynamics. The initial query epoch is `7/7`; four complete H2
+plans plus an independent selected audit fail at reward `[0,4]`, failure
+`[0,1]`, unrestricted upper 4 and normalized regret 1. Only that failure
+authorizes the exact three target rows. Tile 2 safely reaches an already
+registered source state with match reward one, while tiles 3/4 fail. No
+successor catalogue or successor transition is queried. The final epoch is
+`10/4`; four replanned candidates and a separate selected audit certify
+reward/failure/regret `1/0/0`.
+
+All 19 registered positive, negative, attack and retained-replay tests pass.
+The complete staged Python package is now approximately 6.5 MiB, so the
+content-addressed isolated-fallback runtime-source cap migrates from 6 MiB to
+the independently frozen 8 MiB sealed-manifest ceiling. This pre-execution
+profile change invalidates old route uppers; it does not replace exact actual
+byte accounting or unlock an official Gate. The principal IDs are:
+
+```text
+program_registry_id     = 1331c29c9f23390b296d3be3777b99cda7eba915755bbd7d92808b411df1a9b0
+candidate_trace_id      = a2addf7fc8a78889793d0fa381041e9e12f41e010d51f21580040108e938281a
+synthesis_result_id     = f4b4904a5d1944e97dcf4dfc8e2fd7620b74dedf32f60ee2dd94e41f7b22666f
+preregistration_id      = 3389cec70655a35e69a606c2ef72daca00c5c6362f780fe78bb4218911d3dcd5
+initial_epoch_id        = 027abab818aae2bd0469f5ab4f45197457bcc08a66700c434a87799a708f40f1
+authorization_id       = b30d795691a056c08ead4a003e187d7b57ed8ad2829f73c5a4a2c190065614aa
+evidence_bundle_id      = 5269dd0c8675201b637cf274d570225463885a9ffc0ce9336f53e9d4345eb5a3
+final_epoch_id          = b835afe210574787aa668640d12500d7829268c1d041e521defdaaa687792efe
+final_selected_audit_id = d09b1882d41234bd930ea6702d1ca620b6f7c7afec6967a83e34578005a93d96
+heldout_result_id       = f70cbc1c48645c071ab842c0ec328d22157a61458b72a17933daf82e9ae7efdd
+```
+
+The exact closure, chronology, implementation authorities, additional IDs
+and attacks are normative in
+`specs/OBSERVATION_DRIVEN_PROGRAM_CLOSURE_HELDOUT_H2.md`. Contract 1.22.0
+does not claim unknown primitive/operator invention, raw symbolization,
+statistical or learned dynamics, generic H>2 recovery, broad held-out or
+cross-domain generalization, sample reduction/efficiency, complete workload
+accounting, economics or official execution. All corresponding locks remain
+unchanged.
 
 ### Contract 1.21.0: interleaved certificate-triggered durable H2 epoch
 
@@ -3245,6 +3325,13 @@ already-symbolized finite log. The typed pure builder and typed V0-044 internal 
 are not certificate authorities; only complete V0-045 replay followed by independent
 typed V0-043 may certify the selected fixed plan.
 
+V0-058 cannot be cited as invention of unknown primitives/operators, raw
+symbolization, learned/statistical dynamics, generic H2/H>2 causal minimality,
+broad held-out/cross-domain generalization or sample reduction. It proves one
+complete bounded program closure and one preregistered deterministic held-out
+H2 recovery inside the frozen vocabulary; all three target transition calls
+remain recorded work.
+
 ## Known failure modes
 
 State explosion, incomplete predicate grammar, no common semantic action, overly conservative envelopes, infeasible chance constraints, build cost that never amortizes, incorrect state/action group transforms, and a cache key that omits or misstates build coverage. For the exact `D4` baseline, a nonzero width is an invariant failure rather than acceptable conservatism. For the aliased profile, hard-coding its two cell IDs instead of extracting and ranking exact witnesses invalidates the CEGAR-discovery claim. For Phase 3A, using held-out fields during atom selection, accepting a cross-orbit cell reachable only outside the registered policies, or calling the eight-cell G2048 interval model an exact homomorphism invalidates the claim. For V0-039, unequal label sets, premature action mixing, unequal cross-state label dynamics, an incomplete 4096-candidate production trace, or an insufficient cap are typed failures and cannot be promoted to a direct certificate.
@@ -3320,9 +3407,18 @@ coordinates are reused, the first V3 epoch moves the frontier to time one, and n
 second-round value/risk rows produce a final reward/failure/regret `1/0/0`
 certificate. The base remains immutable and no ground optimizer is invoked.
 
-This closes multi-step within-query model evolution only. Preregistered multi-query/
-held-out reuse and promotion, portable source authority, raw symbolization,
-statistical/learned dynamics, larger or unknown domains and generalization remain
-open. Matched-budget sample-efficiency evaluation and a Laplace-style tax-reduction
-operator remain non-blocking follow-up work to be designed from the now-recorded
-acquisition/refinement telemetry, not inferred from this one trace.
+V0-058 removes the fixed handwritten coordinate-catalogue dependency for one
+bounded construction profile: it composes the complete depth-two program
+closure inside the frozen vocabulary and transfers the selected coordinate
+to a genuinely source-log-held-out H2 target before three-row
+certificate-triggered recovery. It still does not invent primitive/operator
+semantics, learn unobserved transition laws, symbolize raw input, or establish
+statistical generalization.
+
+The next construction risk is therefore broader reusable synthesis:
+registered primitive schemas across more than one domain, partial/statistical
+dynamics with calibrated coverage, and a preregistered held-out occurrence
+family rather than one deterministic target. Matched-budget sample-efficiency
+evaluation and a Laplace-style tax-reduction operator remain non-blocking
+follow-up work to be designed from richer acquisition/refinement telemetry,
+not inferred from this one trace.

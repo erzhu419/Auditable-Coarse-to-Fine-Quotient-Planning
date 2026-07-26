@@ -28,7 +28,60 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 → jointly search local value/risk choices, rebuild, or use charged fallback
 ```
 
-## Current interleaved certificate-triggered durable H2 epoch Gate (V0-057)
+## Current observation-driven program-closure and held-out H2 Gate (V0-058)
+
+Contract `1.22.0` freezes profiles
+`lmb_observed_program_closure_partial_rapm_v0` and
+`lmb_observed_program_closure_heldout_h2_v0`. All 19 registered tests pass.
+Starting only from the preregistered `8 state / 11 row / 7 observed` symbolic
+source graph, the constructor performs a bottom-up depth-two closure over the
+frozen human primitive/operator vocabulary, retains 215 type-tagged semantic
+program representatives, and exhausts the complete bounded
+`(174+1)*(37+1)=6650` state/action-coordinate search. It selects
+
+```text
+state  = cardinality(legal_actions)
+action = buffer_at_type(buffer_counts, selected_tile_type) <= 3/2
+```
+
+and builds an honest `7 observed / 4 missing` partial RAPM. This is automatic
+program composition and selection inside the frozen vocabulary; it is not
+primitive/operator invention, raw symbolization or learned dynamics.
+
+The separately preregistered target `removed_mask=35, buffer=(2,1), H=2` is
+absent from the source log. Its first query epoch keeps all three target rows
+vacuous, so model-only planning and a role-distinct selected audit fail
+soundly at reward `[0,4]`, failure `[0,1]`. That certificate failure
+authorizes exactly the target's three rows. One safe row reaches an
+already-registered source successor whose second-step dynamics are reused;
+the other two rows fail. No successor catalogue or successor transition is
+queried. The immutable final epoch is `10 observed / 4 missing`, replans
+inside the model and certifies reward/failure/regret `1/0/0`.
+
+Principal identities include:
+
+```text
+program_registry_id     = 1331c29c9f23390b296d3be3777b99cda7eba915755bbd7d92808b411df1a9b0
+candidate_trace_id      = a2addf7fc8a78889793d0fa381041e9e12f41e010d51f21580040108e938281a
+synthesis_result_id     = f4b4904a5d1944e97dcf4dfc8e2fd7620b74dedf32f60ee2dd94e41f7b22666f
+preregistration_id      = 3389cec70655a35e69a606c2ef72daca00c5c6362f780fe78bb4218911d3dcd5
+initial_epoch_id        = 027abab818aae2bd0469f5ab4f45197457bcc08a66700c434a87799a708f40f1
+authorization_id       = b30d795691a056c08ead4a003e187d7b57ed8ad2829f73c5a4a2c190065614aa
+final_epoch_id          = b835afe210574787aa668640d12500d7829268c1d041e521defdaaa687792efe
+heldout_result_id       = f70cbc1c48645c071ab842c0ec328d22157a61458b72a17933daf82e9ae7efdd
+```
+
+The full chronology, identities, attacks and claim locks are in
+`specs/OBSERVATION_DRIVEN_PROGRAM_CLOSURE_HELDOUT_H2.md`. V0-058 does not
+claim unknown-vocabulary invention, statistical/learned dynamics, broad
+held-out or cross-domain generalization, sample reduction, economics or
+official execution. Its two construction modules bring the complete staged
+Python package to about 6.5 MiB, so the content-addressed isolated-fallback
+runtime-source ceiling migrates from 6 MiB to the independently frozen 8 MiB
+sealed-manifest ceiling; actual bytes are still charged exactly and old route
+uppers become stale through the changed profile ID.
+
+## Historical interleaved certificate-triggered durable H2 epoch Gate (V0-057)
 
 Contract `1.21.0`, schema `1.0.0`, and profile
 `lmb_h2_interleaved_certificate_triggered_durable_epoch_v0` now freeze the
@@ -272,10 +325,13 @@ V0-057 now freezes that next construction Gate: it connects the authentic
 V0-047 `11/9 -> 20/0` query-local model-epoch change to exact durable
 invalidation, replanning/recertification and later interleaved reuse. Its
 implementation and evaluation pass all 85 registered tests; the status and
-canonical principal identities above are frozen. A Laplace-style heuristic
-operator, offline/online meta-prior or other sample-tax intervention remains
-a later, separately preregistered control informed by the completed
-closed-loop trace.
+canonical principal identities above are frozen. V0-058 now advances the
+construction mainline from a fixed handwritten coordinate catalogue to
+complete bounded program closure and applies the selected coordinate to a
+source-log-held-out H2 query before certificate-triggered three-row recovery.
+A Laplace-style heuristic operator, offline/online meta-prior or other
+sample-tax intervention remains a later, separately preregistered control
+informed by richer multi-query traces.
 
 ## Historical durable action-local H2 recovery slice (V0-055)
 

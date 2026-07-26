@@ -106,10 +106,14 @@ SAFE_CHAIN_CARDINALITY_EXTRACTION_PROFILE_KEY = (
 # supervisor rejects a source tree, frozen Phase-3C bundle, request, or output
 # that exceeds the corresponding component cap.  Actual WorkVector byte
 # leaves are computed from the exact files mounted/read/written by that run.
-# The caps are grounded in the current fixture payload (roughly 4.8 MiB of
-# Python source and 0.45 MiB of frozen artifacts), with a finite allowance for
-# the canonical request and result rather than arbitrary padding.
-FALLBACK_RUNTIME_SOURCE_BYTES_CAP = 6 * 1024 * 1024
+# The caps are grounded in the current fixture payload (roughly 6.5 MiB of
+# Python source after the V0-058 construction modules and 0.45 MiB of frozen
+# artifacts), with a finite allowance for the canonical request and result
+# rather than arbitrary padding.  The runtime-source ceiling is aligned with
+# the independently frozen sealed-manifest ceiling.  Because it is part of the
+# content-addressed isolation profile, this migration invalidates every older
+# route upper instead of silently accepting a larger post-run payload.
+FALLBACK_RUNTIME_SOURCE_BYTES_CAP = 8 * 1024 * 1024
 FALLBACK_FROZEN_BUNDLE_BYTES_CAP = 512 * 1024
 FALLBACK_REQUEST_BYTES_CAP = 64 * 1024
 FALLBACK_OUTPUT_BYTES_CAP = 1024 * 1024

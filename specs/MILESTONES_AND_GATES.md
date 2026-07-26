@@ -134,7 +134,20 @@
   host-verified. This proves only the registered H2 composition, not generic
   persistence, cross-query/H>2 behavior, native work or sample savings,
   independent-algorithm verification, economics, or an aggregate Gate.
-- **V0-057 interleaved certificate-triggered durable H2 epoch:** the current
+- **V0-058 observation-driven program closure and held-out H2 recovery:** the
+  current Gate closes the complete bounded depth-two typed program catalogue
+  from the frozen human vocabulary, semantically deduplicates it to 215
+  representatives, exhausts all 6650 optional-single-coordinate candidates,
+  and selects `cardinality(legal_actions)` plus
+  `buffer_at_type(buffer_counts,selected_tile_type)<=3/2`. Its source model is
+  `7 observed / 4 missing`. A pre-synthesis source-log-held-out H2 target first
+  fails at `7/7`; only the selected certificate failure authorizes exact
+  `1/3/3` target rows. The resulting `10/4` epoch reuses an already-observed
+  source continuation without successor access and independently certifies
+  reward/failure/regret `1/0/0`. All 19 tests pass. No primitive/operator
+  invention, raw symbolization, learned/statistical dynamics, broad
+  generalization, sample efficiency, economics or official claim opens.
+- **V0-057 interleaved certificate-triggered durable H2 epoch (historical):** the
   construction Gate freezes a new epoch-bound relaxed Q_R `(3/4,1)`, the
   original strict Q_S `(0,0)`, and order `Q_R,Q_S,Q_R,Q_S,Q_R` before
   rebuilding the authentic V0-047 first `11/9` epoch. Its pre-source record
@@ -1416,6 +1429,78 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
 
+### V0-058 observation-driven program-closure and held-out H2 gate
+
+Contract `1.22.0` registers schema `1.0.0`, profiles
+`lmb_observed_program_closure_partial_rapm_v0` and
+`lmb_observed_program_closure_heldout_h2_v0`.
+
+The Gate passes only when all of the following hold:
+
+1. the source construction API has exactly the observation log, deterministic
+   semantics profile and preregistered observation authority inputs;
+2. bottom-up depth-two closure retains exact cumulative counts `8/21/215`,
+   including `174` scalar state and `37` scalar state-action representatives,
+   with boolean/integer signatures type-distinct;
+3. all 6650 optional-single-coordinate candidates are retained and audited,
+   exactly 1384 are admissible, and deterministic selection returns candidate
+   4013 with state/action programs
+   `cardinality(legal_actions)` and
+   `buffer_at_type(buffer_counts,selected_tile_type)<=3/2`;
+4. the source partial RAPM is exactly `7 observed / 4 missing`, and cap
+   exhaustion below 6650 publishes neither model nor certificate;
+5. the H2 target is preregistered and absent from all source states/rows before
+   synthesis, and its catalogue is inaccessible until complete synthesis
+   replay;
+6. the target maps to coordinate `(3,)` and labels false/true/true, but all
+   three target rows remain vacuous in an initial `7/7` query epoch;
+7. four model-only plans and a separate selected audit reproduce
+   `FAILED_PROOF_FRONTIER`, `EXTERNAL_COVERAGE_ESCAPE`, reward `[0,4]`,
+   failure `[0,1]`, unrestricted upper `4` and normalized regret `1`;
+8. only that verified failure authorizes the exact `1 risk / 3 value /
+   3 distinct` target-row union, and the single-use executor performs exactly
+   three target transitions;
+9. the safe target row reaches an already-registered source successor; no
+   successor catalogue, successor transition, ground search or extra row is
+   accessed;
+10. the immutable final epoch is `10 observed / 4 missing`, all eleven source
+    row documents are unchanged from the initial query epoch, and the four
+    original source-missing rows remain missing;
+11. four complete final plans and a separate selected audit certify
+    reward/failure/regret `1/0/0`; and
+12. full retained replay, implementation-change, type/substitution,
+    chronology, authorization, wrong-kernel, source-preservation and overclaim
+    attacks fail closed.
+
+All 19 registered tests pass. The complete staged Python package is now
+approximately 6.5 MiB, so the content-addressed isolated-fallback
+runtime-source ceiling migrates from 6 MiB to the independently frozen 8 MiB
+sealed-manifest ceiling. The source is measured before execution, the changed
+profile ID invalidates old route uppers, and exact actual bytes remain
+charged. This migration unlocks no official Gate. Principal frozen identities
+are:
+
+```text
+program_registry_id     = 1331c29c9f23390b296d3be3777b99cda7eba915755bbd7d92808b411df1a9b0
+candidate_trace_id      = a2addf7fc8a78889793d0fa381041e9e12f41e010d51f21580040108e938281a
+synthesis_result_id     = f4b4904a5d1944e97dcf4dfc8e2fd7620b74dedf32f60ee2dd94e41f7b22666f
+preregistration_id      = 3389cec70655a35e69a606c2ef72daca00c5c6362f780fe78bb4218911d3dcd5
+initial_epoch_id        = 027abab818aae2bd0469f5ab4f45197457bcc08a66700c434a87799a708f40f1
+authorization_id       = b30d795691a056c08ead4a003e187d7b57ed8ad2829f73c5a4a2c190065614aa
+evidence_bundle_id      = 5269dd0c8675201b637cf274d570225463885a9ffc0ce9336f53e9d4345eb5a3
+final_epoch_id          = b835afe210574787aa668640d12500d7829268c1d041e521defdaaa687792efe
+final_selected_audit_id = d09b1882d41234bd930ea6702d1ca620b6f7c7afec6967a83e34578005a93d96
+heldout_result_id       = f70cbc1c48645c071ab842c0ec328d22157a61458b72a17933daf82e9ae7efdd
+```
+
+This Gate proves automatic bounded program composition/selection only inside
+one frozen human vocabulary and deterministic finite symbolic log. It does
+not prove primitive/operator invention, raw symbolization, learned or
+statistical dynamics, generic H>2 recovery, broad held-out/cross-domain
+generalization, sample reduction/efficiency, complete accounting, economics
+or official execution. Full rules are in
+`specs/OBSERVATION_DRIVEN_PROGRAM_CLOSURE_HELDOUT_H2.md`.
+
 ### V0-057 interleaved certificate-triggered durable H2 epoch gate
 
 Contract `1.21.0` registers schema `1.0.0`, profile
@@ -2682,6 +2767,12 @@ recovery, observer truth, portable authenticity, ground optimality/infeasibility
 held-out/cross-domain generalization, scalability or sample saving. Fixed-DSL
 observation-log discovery is its complete claim.
 
+V0-058 cannot be promoted to primitive/operator invention, raw symbolization,
+learned/statistical dynamics, generic H2/H>2 causal minimality, or broad
+held-out/cross-domain generalization. Its one held-out target is a
+preregistered deterministic positive control, and its three transition calls
+are recorded work rather than evidence of sample reduction.
+
 V0-046 and V0-047 cannot be promoted to general causal minimality, global transition
 closure, cross-query reuse, base promotion, learned/statistical acquisition or sample
 saving. V0-047's reuse of `(3,)` is within one query-local boundary expansion; it is not
@@ -2777,9 +2868,17 @@ final reward/failure/regret `1/0/0` certificate. This supplies the first complet
 multi-step acquisition/refinement trace without mutating the base or invoking a
 ground optimizer.
 
-The next construction Gate applies preregistered multi-query/held-out reuse and
-promotion tests and begins matched trace comparison. Portable source authority, raw
-symbolization, statistical/learned dynamics, larger or unknown domains, held-out/
-cross-domain evidence, the empirically designed tax-reduction operator and the
-complete statistical Gates remain open. Sample efficiency stays non-blocking until
-those traces identify whether and where an intervention is justified.
+V0-058 now removes the handwritten coordinate-catalogue dependency for one
+bounded construction profile and completes a source-log-held-out H2
+certificate/recovery trace with the selected generated program. It remains
+inside a frozen human vocabulary and a deterministic finite symbolic log.
+
+The next construction Gate must broaden reusable synthesis itself: registered
+primitive schemas in at least two domains, partial/statistical dynamics with
+calibrated coverage, and a preregistered held-out occurrence family rather
+than one target. Portable source authority, raw symbolization,
+primitive/operator invention, larger or unknown domains, broad held-out/
+cross-domain evidence, the empirically designed tax-reduction operator and
+the complete statistical Gates remain open. Sample efficiency stays
+non-blocking until those traces identify whether and where an intervention is
+justified.
