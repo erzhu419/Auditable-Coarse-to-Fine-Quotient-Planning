@@ -28,7 +28,108 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 → jointly search local value/risk choices, rebuild, or use charged fallback
 ```
 
-## Current durable action-local H2 recovery slice (V0-055)
+## Current preregistered durable H2 multi-query workload (V0-056)
+
+Contract `1.20.0`, schema `1.0.0`, and profile
+`lmb_h2_preregistered_durable_multiquery_workload_v0` extend V0-055 from one
+durable recovery occurrence to a frozen ten-occurrence H2 workload. Before
+the V0-055 source producer runs, the protocol freezes three threshold-only
+queries:
+
+```text
+Q1 = (normalized regret tolerance 0,   risk tolerance 0)
+Q2 = (normalized regret tolerance 3/4, risk tolerance 0)
+Q3 = (normalized regret tolerance 0,   risk tolerance 1)
+
+occurrence order = 1,2,3,1,2,3,1,2,3,1
+```
+
+The implementation Gate, 21 registered attack cases and fresh-store
+evaluation replay pass, so status
+`CERTIFIED_REGISTERED_H2_PREREGISTERED_DURABLE_MULTIQUERY_WORKLOAD_CONTROL`
+is emitted. The principal canonical pins are campaign `8edf8a660fe3...`,
+evaluation `48e8919a0899...`, protocol `928b8233021b...`, proof semantics
+`5880e0a9a4d7...`, preregistration `2cde4f37b9e7...`, and W0/W1/W2
+`4e9deaec2baf...` / `8d15aae30b49...` / `8e33d23a1369...`. The matched and
+reset-initialization ID vectors are `f8fe8f4dd584...` and
+`20339c4e312e...`. Full artifact IDs and literal code/source hashes are frozen in
+`specs/H2_DURABLE_MULTIQUERY_WORKLOAD.md` and
+`src/acfqp/h2_durable_multiquery_workload_pins_v1.py`.
+
+The source API remains target blind. It runs the exact V0-055 Q1 path:
+C1's `4 observed / 1 missing` model selects N but fails the regret
+certificate, after which one source-pinned M ground row is authorized and C2
+is frozen as `5/0`, reward 1, risk/regret zero and certified M. Only then may
+the ten target occurrences begin.
+
+W0 is not an ID-only cache. It carries the canonical 21,983-byte semantic
+projection of all 18 active C2 lower-node documents, pinned by SHA-256
+`b122d4ec7d98b723717a0f547c693516aa74c64ce8e8e5051318063ce9a15a55`.
+Fresh model-only target processes parse the typed result fields and parent
+topology. Regret and risk gates are computed from U0/plan values and only
+their consumed threshold facets; selection is derived after those gates and
+binds their result node IDs. Candidate audits, proposal, three fresh roots and
+the final certificate are formula-derived from the resolved 18-node map,
+never supplied by query/address answer tables.
+
+The persistent target-facet arm performs:
+
+```text
+Q1: 0 lower builders / 18 exact hits
+first Q2: 3 / 15, appending two regret gates + selection
+first Q3: 3 / 15, appending two risk gates + selection
+all seven later occurrences: 0 / 18
+
+global total = 6 builders / 174 hits / 30 fresh roots
+W0 / W1 / W2 logical lower counts = 18 / 21 / 24
+target ground calls = 0
+```
+
+A matched C2 base-reset arm discards query facets after every occurrence and
+therefore records `18 builders / 162 hits / 30 fresh roots`. It nevertheless
+performs and retains ten typed W0 initializations, one per reset occurrence,
+and records each initializer's projection/checkpoint read and W0 output bytes
+plus worker-reported store bytes. These are scoped observed bytes:
+`query_store_io_complete=false` because host before/after/final lease and
+snapshot reads plus verification rereads remain incomplete. The `18/162/30`
+tuple does not include or erase that I/O and supports no byte- or
+total-work-saving claim. A separate
+source-blind trusted literal comparator starts from the source-independent
+four-row offline projection proved equal to V0-055 C1, but reacquires the
+missing M row independently for every occurrence. Its dynamic one-call guard
+and recorder produce exactly ten
+ground transitions, ten complete catalogues, 40 policy evaluations and ten
+optimizer calls. Every paired route selects M and returns reward/failure/
+regret `1/0/0`.
+
+These are operation-family call traces, not samples or a complete
+`CounterRegistryV1`/WorkVector. No scalar combines proof calls, ground calls,
+processes or bytes; no official break-even or total-work ordering is emitted.
+The projection is valid only for the registered threshold-only Q1/Q2/Q3
+family: its input slices remain opaque, so reward-basis, horizon, action,
+dynamics, initial-support or structural changes are not authorized.
+
+V0-056 proves only finite source-before-target reuse of one actual C2
+semantic world-model/proof state, exact facet-local
+changed-query derivation, cross-process lookup-before-builder avoidance and a
+matched conditional-online direct control. It does not prove generic
+cross-query or H>2 reuse, statistical generalization, coordinate invention,
+partial/learned dynamics, independent-algorithm verification, sample efficiency, or
+byte/CPU/wall-clock/total-work savings. Official execution remains false;
+official scalar cost and break-even remain null; workload-economics,
+counter-completeness and sample-efficiency Gates remain `NOT_RUN`. Full
+semantics and attacks are in
+`specs/H2_DURABLE_MULTIQUERY_WORKLOAD.md`.
+
+The next construction Gate stays on the main world-model loop: connect a real
+query-local model-epoch change to durable proof dependencies, exact
+invalidation, replanning/recertification and reuse by later queries. Only
+after that deeper closed loop yields more realistic workload traces should a
+separate Laplace-style heuristic operator, offline/online meta-prior or other
+sample-tax intervention be preregistered against a strict no-operator
+control.
+
+## Historical durable action-local H2 recovery slice (V0-055)
 
 Contract `1.19.0`, schema `1.0.0`, and profile
 `lmb_h2_two_generation_durable_action_local_recovery_v0` compose the
@@ -86,11 +187,9 @@ counter-completeness and sample-efficiency Gates remain `NOT_RUN`. Full
 semantics and attacks are in
 `specs/H2_DURABLE_ACTION_LOCAL_RECOVERY.md`.
 
-The next Gate is a preregistered matched multi-occurrence/multi-query workload
-that exercises this complete model-first durable recovery path against a
-no-reuse/direct baseline. Only after those real workload traces identify the
-actual sample-tax bottleneck should a Laplace-style heuristic operator or
-KG-OP-style meta-prior intervention be designed and tested.
+V0-056 now consumes this historical C2 control in a preregistered matched
+multi-occurrence/multi-query workload. V0-055 remains the source and
+durability prerequisite; its artifacts and narrow claims are not rewritten.
 
 ## Historical one-row action-local H2 semantic-switch slice (V0-054B)
 

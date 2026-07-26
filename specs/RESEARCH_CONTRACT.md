@@ -129,6 +129,16 @@
   semantic switch only for the registered H2 fixture; it is not generic
   persistence, cross-query/H>2 proof, native-work/sample saving, independent
   verification, economics, or an aggregate Gate.
+- **V0-056 preregistered durable H2 multi-query workload:** a
+  source-before-target protocol freezes three threshold-only H2 queries and ten
+  occurrences before the V0-055 Q1 recovery. Fresh target processes consume
+  the complete active-C2 semantic projection and formula-derive facet-local
+  proof updates. Global, C2-reset and source-blind conditional-online direct
+  arms freeze `6/174/30`, `18/162/30` and `10/10/40/10` operation-family
+  traces respectively; all ten reset W0 initializations and their scoped
+  initializer/worker-observed read/output bytes are retained while complete
+  query-store I/O remains false. It is not generic reuse/generalization, sample
+  efficiency, complete accounting, economics, or an aggregate Gate.
 - **Phase 3C local-recovery slice:** the V0-029 certificate-triggered, isolated,
   query-owned overlay positive control over an immutable reusable RAPM; it is not the
   aggregate Phase 3 or economics Gate.
@@ -1844,7 +1854,154 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
 
-### Contract 1.19.0: two-generation durable action-local H2 recovery
+### Contract 1.20.0: preregistered durable H2 multi-query workload
+
+V0-056 registers schema `1.0.0`, profile
+`lmb_h2_preregistered_durable_multiquery_workload_v0`, and passing status
+`CERTIFIED_REGISTERED_H2_PREREGISTERED_DURABLE_MULTIQUERY_WORKLOAD_CONTROL`.
+The implementation, 21 registered attack cases and fresh-store evaluation
+replay pass, so the status is emitted. Principal canonical pins are campaign
+`8edf8a660fe3...`, evaluation `48e8919a0899...`, protocol
+`928b8233021b...`, proof semantics `5880e0a9a4d7...`, preregistration
+`2cde4f37b9e7...`, W0/W1/W2
+`4e9deaec2baf.../8d15aae30b49.../8e33d23a1369...`, matched vector
+`f8fe8f4dd584...` and reset-initialization vector `20339c4e312e...`.
+Full IDs and literal code/source hashes are frozen in the normative workload
+spec and data-only pin module.
+
+Before any source work, the trusted protocol freezes the exact V0-055
+six-tile H2 fixture, source Q1, three threshold-only target queries and order:
+
+```text
+Q1 = (normalized regret tolerance 0,   risk tolerance 0)
+Q2 = (normalized regret tolerance 3/4, risk tolerance 0)
+Q3 = (normalized regret tolerance 0,   risk tolerance 1)
+order = Q1,Q2,Q3,Q1,Q2,Q3,Q1,Q2,Q3,Q1
+```
+
+The source is target blind. It reproduces the exact V0-055 Q1 chain: C1 is
+`4 observed / 1 missing`, selects `N` and fails at regret `3/4`; only after
+that proof is host-verified does one owner-bound `M` transition occur; C2 is
+`5/0`, selects `M` and certifies reward/failure/regret `1/0/0`. Target
+processes start only after the complete source-before-target order and C2
+semantic state have been verified and all source ground authority is closed.
+
+The target W0 projection is the complete 18-document active C2 lower graph,
+not an ID-only cache. It carries typed result fields, identity terms, input
+slices and ordered parent-node topology. Its canonical form is exactly
+`21983` bytes with SHA-256
+`b122d4ec7d98b723717a0f547c693516aa74c64ce8e8e5051318063ce9a15a55`.
+Workers parse and use those semantic fields without importing the LMB kernel
+or the V0-055 recovery implementation. The digest is an integrity and source
+binding only, never semantic authority by itself.
+
+Reusable lower keys are formula- and facet-local. Regret gates bind
+`return_upper` plus normalized-regret tolerance; risk gates bind risk
+tolerance; selection binds its exact ordered result-node parents and consumes
+no threshold directly. Persistent nodes do not bind occurrence identity or
+the entire query. Receipts, all three roots and occurrence results do bind
+the current occurrence. Over-keying unchanged nodes, omitting a consumed
+facet, or substituting a gate key ID for a gate result-node parent is a
+protocol failure.
+
+Every changed gate, selection, audit, proposal, root and certificate is
+formula-derived from the verified lower fields. In particular:
+
+```text
+regret(a) =
+  max(0, (U0.reward_upper - PLAN_a.reward_lower) / return_upper)
+RISK_a.failure_upper = PLAN_a.failure_upper
+```
+
+The associated tolerance comparisons and coverage determine certification;
+selection maximizes plan reward lower among certified actions under the
+frozen fallback/tie rules. Query-index/address answer tables, hard-coded
+expected values, ID-only nodes and fully re-signed semantic poison are
+forbidden.
+
+The target runtime derives a topological key and performs exact lookup before
+invoking the lower builder. Hits have zero builder calls; misses have exactly
+one. Changed Q2/Q3 gates resolve before the selection key is constructed from
+their result-node IDs. Ten fresh processes then freeze:
+
+```text
+global append-only facet arm = 6 builders / 174 hits / 30 fresh roots
+W0/W1/W2 logical lowers      = 18 / 21 / 24
+C2 base-reset arm            = 18 builders / 162 hits / 30 fresh roots
+target ground calls          = 0 in both arms
+```
+
+The C2-reset trace additionally retains ten typed W0 initialization results,
+one per occurrence. It records initializer-observed C2/projection read and W0
+output bytes plus worker-reported store bytes, but keeps
+`query_store_io_complete=false`: host before/after/final lease and snapshot
+reads plus verification rereads remain incompletely instrumented. The
+`18/162/30` tuple describes only lower builder/hit/root events; it neither
+includes nor cancels this scoped I/O and cannot support a byte- or
+total-work-saving claim.
+
+The separate direct control begins each of ten fresh occurrences from the
+same exact source-independent four-row offline C1 projection and cannot read
+C2, the M receipt/overlay, target facets or earlier direct results. Its
+source-pinned trusted literal comparator uses a dynamic recorder and
+single-use exact `(x1,M)` guard. The exact direct totals are:
+
+```text
+ground transition calls = 10
+complete catalogues      = 10
+policy evaluations       = 40
+optimizer calls          = 10
+```
+
+All matched occurrences select `M` and reproduce exact
+reward/failure/regret `1/0/0`. The direct comparator is not treated as a
+hostile worker and does not establish a transferable owner-bound
+capability.
+
+The positive claim flags are limited to:
+
+```text
+registered_h2_preregistered_durable_multiquery_workload_claimed = true
+threshold_only_semantic_projection_reuse_claimed = true
+lookup_before_builder_avoidance_claimed = true
+matched_conditional_online_direct_control_claimed = true
+```
+
+The operation counts are not called samples and do not constitute complete
+CounterRegistry/WorkVector, byte/CPU/wall-clock or total-work accounting.
+Because the projected input-slice documents remain opaque, the scope is
+strictly threshold-only. A changed reward basis, horizon, action, dynamics,
+initial support/distribution or structure requires a separate semantic
+compiler/projection and Gate. Generic cross-query/H2+ reuse, H above two,
+statistical generalization, coordinate invention, partial/learned dynamics,
+independent-algorithm verification, sample efficiency, economics and
+official execution remain false.
+
+The next construction Gate remains on the main world-model loop: connect a
+real query-local model-epoch change to durable proof dependencies,
+invalidation, replanning, recertification and later multi-query reuse. A
+Laplace-style heuristic operator or KG-OP-style meta-prior is a later,
+separately preregistered sample-tax intervention, designed only after that
+deeper closed loop yields more realistic workload traces. It is not the
+immediate next mainline Gate.
+
+Contract 1.20.0 opens no aggregate lock:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+sample_efficiency_gate_blocks_mainline = false
+```
+
+The exact topology, process/identity boundaries, acceptance values and
+mandatory attacks are normative in
+`specs/H2_DURABLE_MULTIQUERY_WORKLOAD.md`.
+
+### Historical contract 1.19.0: two-generation durable action-local H2 recovery
 
 V0-055 registers schema `1.0.0`, profile
 `lmb_h2_two_generation_durable_action_local_recovery_v0`, transport subprofile
@@ -1937,12 +2094,11 @@ partial/learned dynamics, sample efficiency, byte/CPU/wall-clock/total-work
 savings, native-compute completeness and independent-algorithm verification
 remain false.
 
-The next construction Gate is a preregistered matched
-multi-occurrence/multi-query workload over this complete durable model-first
-path, with strict no-reuse and direct baselines. Only after those real traces
-measure the actual sample tax may a Laplace-style heuristic operator or
-KG-OP-style meta-prior be frozen and evaluated; that later intervention does
-not block the current mainline.
+Contract 1.20.0 now consumes this historical source control in a
+preregistered matched multi-occurrence/multi-query workload with strict
+C2-reset and direct baselines. Only measured traces may later motivate a
+separately frozen Laplace-style heuristic operator or KG-OP-style meta-prior;
+that intervention does not block the current mainline.
 
 Contract 1.19.0 opens no aggregate lock:
 
