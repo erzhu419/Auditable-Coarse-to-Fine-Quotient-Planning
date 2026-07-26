@@ -2,7 +2,7 @@
 
 **Status:** normative source of truth
 
-**Ledger version:** 1.20.0
+**Ledger version:** 1.21.0
 **Last updated:** 2026-07-26
 
 ## Authority
@@ -86,6 +86,7 @@ absent from a public checkout.
 | V0-054B | 2026-07-26 | One-row action-local H2 semantic switch | FROZEN | Contract `1.18.0` registers schema `1.0.0`, profile `lmb_h2_action_local_semantic_switch_v0`, model-only subprofile `lmb_h2_action_indexed_semantic_switch_v0`, and status `CERTIFIED_REGISTERED_H2_ACTION_LOCAL_SEMANTIC_SWITCH_CONTROL`. The literal seed-4 six-tile LMB first epoch is built with zero transition calls and contains exact `S+3N` rows with unique missing challenger `M` (`4/1`). Model-only H2 planning selects reachable `A0A0/N`, risk 0, but fails normalized regret `3/4`. The selected-support frontier excludes `M` and cannot authorize it. A non-authorizing unrestricted-challenger circuit identifies exactly `ROW_M`; a separate necessity proof and request activate a non-copyable, owner-bound, single-use authority behind a source-pinned process-local kernel gate. Exactly one `(x1,tile0)` transition is recorded. The immutable `5/0` epoch adds only `M`. Before final replanning, the live first-epoch cache independently verifies and freezes the complete 14-edge reverse-closure authority; final execution is impossible without it. The 18-node lower DAG changes from `18/0` to `10/8`, rebuilds three roots each epoch, and every submitted epoch graph is independently replayed from its exact model/query before the strict reward-0 `A0A0/N` to reward-1 `A0A1/M` switch is certified. | Closes the registered “certificate failure → one off-policy ground row → immutable epoch → exact action-indexed invalidation → strict policy change → recertification” loop. It does not prove generic causal minimality/H>1, durable or cross-query reuse, coordinate invention, partial/learned dynamics, sample/byte/CPU/wall-clock/total-work savings, economics, or official execution. Evaluation is same-implementation replay and is labelled accordingly. | `h2_action_indexed_proof_dag_v1.py`; `h2_action_local_semantic_switch_v1.py`; owner-bound source-pinned gate/authority/receipt/result; model/query semantic replay; pre-execution invalidation authority; fully re-signed graph, replaced-gate, incomplete-closure, early/no/duplicate-ground-call, copied-authority, overlay/policy and verifier-bypass attacks; `specs/H2_ACTION_LOCAL_SEMANTIC_SWITCH.md`. |
 | V0-055 | 2026-07-26 | Two-generation durable action-local H2 recovery | FROZEN | Contract `1.19.0` registers schema `1.0.0`, profile `lmb_h2_two_generation_durable_action_local_recovery_v0`, transport subprofile `lmb_h2_durable_action_switch_transport_v0`, and status `CERTIFIED_REGISTERED_H2_TWO_GENERATION_DURABLE_ACTION_LOCAL_RECOVERY_CONTROL`. Before ground evidence, root-free C1 commits the exact first `4/1` model/query and 18 strict typed lower nodes. Fresh model-only P1 parses and semantically validates the checkpoint, operationally records `0 recomputed/18 loaded-reused + 3 fresh roots`, and reproduces the failed `A0A0/N` proof. Only after host verification may a V0-055 authorization invoke the source-pinned V0-054B runner, whose owner-bound `(x1,M)` call is the sole operational ground transition. Its immutable overlay projection is detached provenance, never transported ground authority. Fresh model-only P2 restores/reuses the first 18 lower nodes, performs the exact successor continuation as `10 recomputed/8 reused + 3 fresh roots`, and reproduces the strict reward-0 `N` to reward-1 certified `M` switch. Root-free C2 then commits the 28-lower-node union with 18 active and ten historical nodes; fresh model-only P3 records `0/18 + 3 fresh roots` and reproduces the final certificate. P1/P2/P3 are exactly three fresh processes with zero worker ground transitions. The 18 checkpoint semantic-validation obligations are not relabelled as native physical computations. Evaluation is separate same-implementation replay with one evaluation ground call and three evaluation launches, not an independent algorithm. | Closes only the registered durable composition of “failed proof -> one owner-bound ground row -> immutable overlay -> exact invalidation/replanning -> recertification” across two root-free lower-proof generations. It does not prove generic/crash-safe persistence, hostile-worker security, cross-query reuse, generic H>1 or H>2, generic action-local minimality, coordinate invention, partial/learned dynamics, sample/byte/CPU/wall/total-work savings, native-compute completeness, economics, or official execution. The next Gate is a preregistered matched multi-occurrence/multi-query workload; any Laplace/KG-OP sample-tax operator follows measured workload traces. | `h2_action_indexed_proof_dag_v1.py`; `h2_durable_action_switch_transport_v1.py`; `h2_durable_action_local_recovery_v1.py`; canonical root-free C1/C2 stores and typed node parsers; P1/P2/P3 fresh workers; host failed-proof verification and ground authorization; detached overlay provenance; source/hash/process/ground/store/owner attacks; full same-implementation replay; `specs/H2_DURABLE_ACTION_LOCAL_RECOVERY.md`. |
 | V0-056 | 2026-07-26 | Preregistered durable H2 multi-query workload | FROZEN | Contract `1.20.0` registers schema `1.0.0`, profile `lmb_h2_preregistered_durable_multiquery_workload_v0`, and status `CERTIFIED_REGISTERED_H2_PREREGISTERED_DURABLE_MULTIQUERY_WORKLOAD_CONTROL`. Before its target-blind V0-055 source runs, it freezes threshold-only `Q1=(epsilon_regret=0,delta=0)`, `Q2=(3/4,0)`, `Q3=(0,1)` and order `1,2,3,1,2,3,1,2,3,1`. The exact Q1 source first fails on C1 (`4/1`, selected `N`, regret `3/4`), then and only then acquires one authorized `M` row and publishes certified C2 (`5/0`, selected `M`, reward/failure/regret `1/0/0`). W0 contains the full canonical 18-document active-C2 semantic projection (`21983` bytes; SHA-256 `b122d4ec7d98b723717a0f547c693516aa74c64ce8e8e5051318063ce9a15a55`), not only IDs. Fresh model-only targets derive regret/risk gates, selection, audits and three occurrence-bound roots from those semantic fields and exact parent topology; lower keys bind only the consumed threshold facet and ordered parent-node IDs. The append-only arm records `6 lower builders / 174 exact hits / 30 fresh roots` with W0/W1/W2 logical lower counts `18/21/24`; the matched C2-reset arm records `18/162/30`, retains ten typed W0 initializations, and records their scoped initializer/worker-observed store bytes with `query_store_io_complete=false`; both make zero target ground calls. A source-blind literal direct control, pinned to the source-independent four-row C1 projection and protected by a dynamic single-use `(x1,M)` guard, records exactly `10` ground calls, `10` complete catalogues, `40` policy evaluations and `10` optimizer calls, with paired action/value/risk/regret `M,1/0/0`. The implementation Gate, 21 registered attack cases and fresh-store evaluation replay pass; pins include campaign `8edf8a660fe3...`, evaluation `48e8919a0899...`, protocol `928b8233021b...`, semantics `5880e0a9a4d7...`, preregistration `2cde4f37b9e7...`, W0/W1/W2 `4e9deaec2baf.../8d15aae30b49.../8e33d23a1369...`, matched vector `f8fe8f4dd584...`, and reset-initialization vector `20339c4e312e...`. | Closes only the registered threshold-only source-before-target workload. The trace units are operation-family calls, not samples or complete CounterRegistry/WorkVector cost. The `18/162/30` tuple does not include or cancel reset-initialization I/O, while host lease/snapshot and verification rereads remain outside complete query-store I/O accounting. It does not authorize reward/horizon/action/dynamics/initial-support/structural changes, generic cross-query/H>2 reuse, generalization, coordinate invention, partial/learned dynamics, sample efficiency, byte/CPU/wall/total-work superiority, economics or official execution. | `h2_query_family_model_v1.py`; `h2_conditional_direct_ground_v1.py`; `h2_durable_multiquery_workload_v1.py`; `h2_durable_multiquery_workload_pins_v1.py`; full typed C2 semantic projection; consumed-facet proof keys; topological lookup-before-builder runtime; global/reset/direct controls; source-blindness, over/under-key, semantic-poison, selection-parent, roots/certificate, process/store, reset-initialization-I/O and scope-escalation attacks; `specs/H2_DURABLE_MULTIQUERY_WORKLOAD.md`. |
+| V0-057 | 2026-07-26 | Interleaved certificate-triggered durable H2 query-local epoch | FROZEN | Contract `1.21.0` freezes schema `1.0.0`, profile `lmb_h2_interleaved_certificate_triggered_durable_epoch_v0`, passing status `CERTIFIED_REGISTERED_H2_INTERLEAVED_CERTIFICATE_TRIGGERED_DURABLE_EPOCH_CONTROL`, and logical order `Q_R,Q_S,Q_R,Q_S,Q_R`, where new epoch-bound typed `Q_R=(3/4,1)` leaves the historical threshold registry unchanged and `Q_S=(0,0)` preserves strict V0-047 semantics. The pre-source scope binds all eight authorities and complete H2 semantics without future-derived IDs. Production constructs the authentic first `11/9` epoch; only the selected Q_S value/risk failure authorizes exact `3/9/9` rows with `3 safe / 6 failure`, producing final `20/0`. C1/C2 preserve the real strict core, C2 independently verifies complete C1 history, query facets and proof requests bind their exact roles/parents, and the exact update is `28/2`, C2 `58/30/28`. Native main/reset are `16/284` and `24/276`, projections `16/234` and `24/226`, operational total `40/560`, 12 launches, 60 roots and 23 events; host verification is `23/9/36/12/64/32/12`. All 85 registered tests pass. The comparison contains exactly one operational producer and one fresh same-implementation replay under the same frozen source pins; there is no third campaign or independent algorithm. Principal canonical IDs are frozen in the detailed V0-057 rule and normative specification (result `092c92708f67...`, verification `6330a3a6be2b...`, snapshot `4add6d49870f...`). | Advances V0-056 into one authentic certificate-gated query-local model-epoch change without promoting either V3 epoch. It does not prove generic changed-model/query reuse, H>2, automatic coordinates, partial/learned dynamics, generalization, sample reduction/efficiency, complete accounting, byte/CPU/wall/total-work superiority, economics or official execution. | `specs/H2_INTERLEAVED_DURABLE_EPOCH.md`; process-local claimed authority plus durable replay; positive, attack, deterministic-replay and same-implementation fresh-store suite passed. |
 
 For V0-051, the affected public interface expressly includes the content-addressed
 `IncrementalProofDAGProtocolV1` and its `protocol_id`, in addition to the node,
@@ -2406,7 +2407,201 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
 
-## V0-056 preregistered durable H2 multi-query workload rule
+## V0-057 interleaved certificate-triggered durable H2 epoch rule
+
+Contract `1.21.0` freezes schema `1.0.0`, profile
+`lmb_h2_interleaved_certificate_triggered_durable_epoch_v0`, and passing
+status
+`CERTIFIED_REGISTERED_H2_INTERLEAVED_CERTIFICATE_TRIGGERED_DURABLE_EPOCH_CONTROL`.
+The complete registered suite passes all 85 positive, attack,
+deterministic-replay and fresh-store evaluation tests. The Gate passes and
+its canonical principal identities are:
+
+```text
+orchestrator_sha256      = 9808009f3e9aa2c444466799679e80772a444e69f49ede632f09a0153f8ea419
+result_id                = 092c92708f67a2b0044abce792a96e9afed5cda56a017d1b99063433861ce01c
+verification_id          = 6330a3a6be2b4a3e1365f8cf62cc8c4dec6ad02b80c7aba5fd65e64c4f28e9d9
+campaign_snapshot_id     = 4add6d49870f37692622db051b56b830158e30ab9cf0dbe65140c44718e02553
+preregistration_id       = 530e7c76f29c7590826abacb44e13cf3559481ae7f21b54c68a166a24fb57435
+source_chain_id          = a070baa803adf19a435fbcc558016b2a729313b5cfd06776c309f5e35a5b8f45
+authorization_id         = 09aecbb5df77b7d102928f0f1a3c4bd1ced8bf33f9218ed4a58ed336eed998ef
+accounting_id            = dce0c871d4f2ebecfba185e39d8097737cd850541f6bcbbfa38f28c355981a5a
+event_log_id             = 6b0de30820c6460a783e558ed514b37499087c14d7d73505e76cb4b9d231a21d
+C1_payload_id            = 2fb3897106fff1387ebe6f3edb5618c88fe597e0e952b1531805da3db359fc3e
+C1_commit_id             = 0272231a20d8162882fdf309c008c19fb3e3265f4d10bc2df918c9ec11430737
+C2_payload_id            = d81d33a52705488ab9944c2911222f54b2a773f26ba2decf5bb4ad53eb4b2a49
+C2_commit_id             = 2164daa10ae031ab4b36e0f3602c0d015430befca256ee13c8bde2899b066e29
+first_facet_tip_id       = adea7a973cfaa2bc3a5e671b82417c04dcaed942a521dd97b8d6e9aa830aad66
+final_facet_tip_id       = 1c135cd185268051e992191628a7f9788079c01ebb5169db43ad96f3d5d919cf
+```
+
+Before any source construction or query result, the protocol freezes the
+threshold-only family and order:
+
+```text
+Q_R = normalized-regret tolerance 3/4, risk tolerance 1
+Q_S = normalized-regret tolerance 0,   risk tolerance 0
+order = Q_R,Q_S,Q_R,Q_S,Q_R
+```
+
+The same pre-source artifact binds the exact eight input-authority identities
+(`observation_log`, semantics profile, observation authority, observed
+synthesis, source thresholds, base proposal, failed audit and kernel digest),
+plus goal, H2 initial/reward/return/unrestricted formulas, base
+structural/environment/model/coordinate scope, complete semantics
+profile/state/action/realization/concretizer scope, policy class, candidate
+order and proof registry. It freezes
+`derived_source_artifact_ids_absent=true`: prospective first/final V3 model,
+checkpoint, source-chain and result IDs are forbidden from the
+preregistration.
+
+Q_R is a new epoch-bound typed query/eligibility object. The historical
+`FrozenPartialAuditThresholdsV1` does not admit `(3/4,1)` and must not be
+edited, monkeypatched or duck-typed. Q_S retains the exact original strict
+V0-047/V0-053 semantics. Both queries bind the same H2 structure, initial
+distribution, reward basis, return proof, state/action semantics,
+concretizer, candidate order and V3 model lineage; only the two threshold
+facets differ.
+
+Production starts from the original eight V0-047/V0-053 upstream authorities,
+not a completed result or caller-supplied model, row set, proof graph or
+expected outcome. It must derive the authentic first V3 epoch live as
+`11 observed / 9 missing`, charging the four round-one transitions and three
+direct boundary catalogues. Once that epoch and root-free C1 are frozen:
+
+1. occurrence 1 independently certifies Q_R at regret/risk `3/4 / 1` with
+   zero additional query-triggered transition, catalogue or optimizer calls;
+2. occurrence 2 applies strict Q_S and freezes the selected
+   `t=1,h=1` value/risk failed root with
+   `external_coverage_failed=false` and
+   `external_coverage_certified=true` before any further ground access;
+3. only that selected Q_S failure may derive the exact registered nine-row
+   request;
+4. exactly nine owner-bound transitions freeze the immutable `20/0` V3
+   successor;
+5. strict Q_S replans and certifies exact reward/failure/regret `1/0/0`; and
+6. later Q_R/Q_S/Q_R occurrences use the final epoch with zero target ground
+   calls and the same exact final values.
+
+C1/C2 persist the authentic 30-node strict-Q_S lower core. Its E/F entries
+are real strict threshold gates, not threshold-neutral placeholders. Q_S
+roots must bind and semantically replay those actual entries. Only Q_R uses
+a disjoint epoch-bound overlay containing four relaxed-regret E and four
+relaxed-risk F variants. First-epoch Q_R facets are ineligible after the model
+change; final-epoch Q_R derives eight new variants. Query facets never enter
+C1/C2 strict-core cardinalities and cannot overwrite strict E/F. Every Q_R
+facet binds preregistration, eligibility, query, epoch/model, metric and exact
+source-D parent. Every root carries a separate proof request bound to
+candidate-versus-independent-selected role, occurrence, model, epoch,
+evidence request, metric, schedule and selected proposal where applicable.
+
+The exact strict-core epoch delta is:
+
+```text
+C1 union/active/historical = 30/30/0
+new final lower nodes       = 28
+reused lower nodes          = 2, exactly the two extensional C0 entries
+C2 union/active/historical = 58/30/28
+persisted roots             = 0
+```
+
+Five logical occurrences resolve five proof blocks times ten lower slots.
+Their append-only Q_R-facet builder/hit traces are:
+
+```text
+8/42, 0/50, 8/42, 0/50, 0/50
+global total = 16 builders / 234 exact hits
+```
+
+Those five-occurrence figures are projections, not native worker totals.
+Occurrence 2 has a sixth fresh model-only proof process for final
+recertification. The main arm's six worker records are `16/284`; the matched
+overlay-reset arm's six are `24/276`. Each arm builds 30 fresh roots. The
+complete operational campaign therefore has 12 launches, 60 roots and
+`40/560`; its logical projections remain `16/234` and `24/226`. Neither O2
+worker nor the `28/2` strict-core epoch update may be discarded. The logical
+projection uses `O2_RECERTIFIED_FINAL` as occurrence 2's closure;
+`O2_FAILED_FIRST` remains native certificate-triggering attempt work. The
+reset arm does not reset C1/C2 or replay ground acquisition.
+
+C1 and C2 are separate immutable checkpoint stores. C2's predecessor is a
+cross-store pointer whose C1 target must be independently loaded and
+externally verified; it is not directory-local history. C2's complete
+retained C1 records and historical set must equal the independently loaded C1
+active set minus the two shared C0 identities. Final workers snapshot C1, C2
+and their facet store. `facets-c1` and `facets-c2` likewise form two
+epoch-local append-only chains, each with its own W0/genesis. The campaign
+freezes exactly 23 owner-bound, sequence- and context-bound live events.
+Literal `EXPECTED_*_SHA256` values in a separate V0-057 pins module bind the
+complete orchestrator and registered upstream module/callable sources before
+host root/ground access and before worker checkpoint/query reads. The pins
+module cannot self-hash or derive those values at runtime.
+
+Both model epochs select semantic schedule `A0A0`. Model, plan, proposal and
+root identities change, but V0-057 makes no semantic-policy-switch claim.
+Both V3 epochs remain query-owned, non-query-neutral, nonpromotable,
+non-exact and not globally transition-closed.
+
+The operation traces above are not environment samples or a complete
+`CounterRegistryV1`/`WorkVectorV1`. Byte telemetry covers only
+query/occurrence input files, worker result files and serialized
+checkpoint/facet footprint, not cumulative I/O traffic. A fresh-store
+evaluation replay runs the
+same implementation over both arms with another 12 evaluation-only worker
+launches and must report `independent_algorithm=false`. Operational host
+checkpoint/cross-store/facet counts are `23/9/36`; result
+reconstruction/snapshot/immutability/assertion counts are `12/64/32/12`.
+Evaluation reports the same vector with evaluation-prefixed fields, outside
+operational work. The exact repair scope is `3 selected-risk / 9
+unrestricted-value / 9 distinct requested` rows with `3 safe / 6 terminal
+failure` outcomes.
+
+The positive result is a process-local runtime-minted claimed handle plus
+durable campaign bytes. A copied or deserialized wrapper does not mint final
+semantic authority. The verifier validates the live claimed handle and
+durable snapshot, then performs the second clean producer execution in a
+fresh store under the identical frozen literal source-pin set. Production is
+one operational producer execution and fresh evaluation is one
+same-implementation replay: these are the only two clean producer executions
+used for exact comparison. No third campaign or independent algorithm is
+required. This is not a generic cross-process final-wrapper parser.
+
+The complete suite has passed every registered positive, ordering, identity,
+semantic, store, authority, invalidation, process-isolation, attack and
+deterministic fresh-store replay obligation in
+`specs/H2_INTERLEAVED_DURABLE_EPOCH.md`; the status and principal IDs above
+are therefore frozen.
+
+The result artifact carries only the implemented closed claim fields:
+`query_local_model_only=true`, `promotion_authorized=false`,
+`policy_switch_claimed=false`, `learned_dynamics_claimed=false`,
+`coordinate_invention_claimed=false`, `sample_efficiency_claimed=false`,
+`workload_economics_claimed=false`, and
+`official_execution_allowed=false`, plus its status. Generic reuse/H>2,
+independent-verifier, savings, scalar and Gate statements below are
+ledger-level locks; they are not additional result fields.
+
+All aggregate locks remain unchanged:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+sample_efficiency_gate_blocks_mainline = false
+```
+
+This Gate does not claim generic changed-model/query reuse, H>2, reusable-base
+promotion, automatic coordinates, partial/learned dynamics, statistical
+generalization, independent-algorithm verification, sample
+reduction/efficiency, byte/CPU/wall/total-work superiority or economics. A
+Laplace-style heuristic operator or KG-OP-style meta-prior remains a later,
+separately preregistered sample-tax intervention informed by completed
+closed-loop traces.
+
+## Historical V0-056 preregistered durable H2 multi-query workload rule
 
 Contract `1.20.0` freezes schema `1.0.0`, profile
 `lmb_h2_preregistered_durable_multiquery_workload_v0`, and passing status
@@ -3235,3 +3430,4 @@ sample_efficiency_gate_blocks_mainline = false
 - **2026-07-26 — 1.18.0:** Added V0-054B/profile `lmb_h2_action_local_semantic_switch_v0` and pure proof subprofile `lmb_h2_action_indexed_semantic_switch_v0`. A literal seed-4 LMB first epoch is constructed at `4 observed / 1 missing` with zero transition calls; its `A0A0/N` plan fails regret `3/4`. A non-authorizing unrestricted-challenger circuit and separate necessity/request chain open one owner-bound, non-copyable transition capability behind a process-local non-reentrant step gate. The monitored `M` row is the only acquisition and immutable addition. Before final replanning, the live 18-node cache verifies and binds the complete 14-edge pre-execution reverse closure. Final proof work is `10 computes / 8 hits` plus three fresh roots, and the reachable action changes strictly to reward-1 `A0A1/M`, risk/regret zero, certified. Candidate/audit/root/proposal identities and live receipt/result ownership are cross-checked against fully re-signed, no-step, early/duplicate-step, incomplete-closure and copied-authority attacks. Only this registered one-row semantic closed loop is claimed; generic H>1/minimality, persistence/reuse, coordinate invention, learned dynamics, sample/total-work savings, economics and official execution remain locked.
 - **2026-07-26 — 1.19.0:** Added V0-055/profile `lmb_h2_two_generation_durable_action_local_recovery_v0` and transport subprofile `lmb_h2_durable_action_switch_transport_v0`. Root-free C1 persists 18 strict typed first-model lower nodes; fresh P1 loads/reuses all 18, recomputes none, builds three fresh roots and reproduces the failed `N` proof before ground authorization exists. Only after host verification does the exact source-pinned V0-054B runner execute the sole operational `M` transition. A detached immutable overlay preserves provenance without transporting live ground authority. Fresh P2 restores the 18 first nodes, performs the final `10/8 + 3 fresh roots` continuation and reproduces the strict `N -> M` certificate. Root-free C2 persists the 28-node lower union with 18 active and ten historical nodes; fresh P3 loads/reuses the active 18, recomputes none and builds three fresh roots. All three workers are model-only. The 18 checkpoint semantic obligations are not native physical compute counts; same-implementation evaluation replay is separate and no generic persistence, cross-query/H>2, independent-verifier, sample/byte/CPU/wall/total-work, economics or official claim opens. The next Gate is a preregistered matched multi-occurrence/multi-query workload, after which a measured sample-tax operator/meta-prior may be designed.
 - **2026-07-26 — 1.20.0:** Added V0-056/profile `lmb_h2_preregistered_durable_multiquery_workload_v0`. Before the target-blind V0-055 Q1 source runs, it freezes threshold-only Q1/Q2/Q3 and ten-occurrence order `1,2,3,1,2,3,1,2,3,1`. The target projection contains the complete canonical 18-document active-C2 semantics (`21983` bytes; SHA-256 `b122d4ec7d98b723717a0f547c693516aa74c64ce8e8e5051318063ce9a15a55`), and fresh workers formula-derive all changed gates, selection, audits, roots and certificates from exact semantic fields and ordered parent-node IDs. Consumed-facet keys and lookup-before-builder execution freeze global `6/174/30`, matched C2-reset `18/162/30`, and source-blind conditional-online direct `10 ground / 10 catalogue / 40 policy-evaluation / 10 optimizer` traces. The reset arm additionally retains ten typed W0 initializations and records every initializer plus worker-observed store byte count, while `query_store_io_complete=false` because host lease/snapshot and verification rereads remain incomplete. The implementation, registered attack cases and fresh-store evaluation replay emit status `CERTIFIED_REGISTERED_H2_PREREGISTERED_DURABLE_MULTIQUERY_WORKLOAD_CONTROL`; final campaign/evaluation IDs are `8edf8a660fe3...`/`48e8919a0899...`, with matched/reset-initialization vectors `f8fe8f4dd584...`/`20339c4e312e...`. This remains a threshold-only operation-specific workload control, not sample, byte/total-work, economics, generic reuse/generalization or official-execution evidence.
+- **2026-07-26 — 1.21.0:** Added and verified the V0-057 construction contract/profile `lmb_h2_interleaved_certificate_triggered_durable_epoch_v0`. It freezes the new typed relaxed Q_R `(3/4,1)`, original strict Q_S `(0,0)` and order `Q_R,Q_S,Q_R,Q_S,Q_R` before the authentic V0-047 source is constructed. The pre-source record binds all eight input-authority identities and complete H2 semantic/query scope while forbidding prospective derived epoch IDs. Q_R certifies the first live `11/9` epoch with zero additional query ground; only the next selected Q_S value/risk failure may authorize the exact `3/9/9` row scope and `3 safe / 6 failure` nine-row acquisition that produces the final `20/0` epoch. C1/C2 retain the real 30-node strict-Q_S core; Q_R facets bind preregistration/eligibility/query/source-D and roots bind typed proof requests. C2 independently loads C1 and proves exact retained history; facet stores remain distinct epoch-local W0/genesis chains. The exact core update is `28 new / 2 C0 reused`, yielding C2 `58/30/28`. Native main/reset traces are `16/284` and `24/276`; projections are `16/234` and `24/226`; the operational campaign is 12 launches, 60 roots and `40/560`, with host verification `23/9/36/12/64/32/12`. A 23-record event ledger is mandatory. All 85 registered tests pass. One operational producer and one fresh same-implementation evaluation replay use the identical frozen source-pin set; evaluation work is separate, no third campaign or independent algorithm is claimed, and the final authority boundary is a process-local claimed handle plus durable bytes/fresh replay rather than a generic cross-process wrapper parser. The passing status and canonical principal IDs are frozen in the detailed rule and normative specification. No generic reuse/H>2, promotion, generalization, sample/total-work/economics or official claim opens.

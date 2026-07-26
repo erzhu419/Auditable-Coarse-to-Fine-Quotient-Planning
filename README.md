@@ -28,7 +28,154 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 → jointly search local value/risk choices, rebuild, or use charged fallback
 ```
 
-## Current preregistered durable H2 multi-query workload (V0-056)
+## Current interleaved certificate-triggered durable H2 epoch Gate (V0-057)
+
+Contract `1.21.0`, schema `1.0.0`, and profile
+`lmb_h2_interleaved_certificate_triggered_durable_epoch_v0` now freeze the
+next mainline construction Gate. All 85 registered positive, attack,
+deterministic-replay and fresh-store evaluation tests pass, so the Gate emits
+`CERTIFIED_REGISTERED_H2_INTERLEAVED_CERTIFICATE_TRIGGERED_DURABLE_EPOCH_CONTROL`.
+Its canonical principal identities are:
+
+```text
+orchestrator_sha256      = 9808009f3e9aa2c444466799679e80772a444e69f49ede632f09a0153f8ea419
+result_id                = 092c92708f67a2b0044abce792a96e9afed5cda56a017d1b99063433861ce01c
+verification_id          = 6330a3a6be2b4a3e1365f8cf62cc8c4dec6ad02b80c7aba5fd65e64c4f28e9d9
+campaign_snapshot_id     = 4add6d49870f37692622db051b56b830158e30ab9cf0dbe65140c44718e02553
+preregistration_id       = 530e7c76f29c7590826abacb44e13cf3559481ae7f21b54c68a166a24fb57435
+source_chain_id          = a070baa803adf19a435fbcc558016b2a729313b5cfd06776c309f5e35a5b8f45
+authorization_id         = 09aecbb5df77b7d102928f0f1a3c4bd1ced8bf33f9218ed4a58ed336eed998ef
+accounting_id            = dce0c871d4f2ebecfba185e39d8097737cd850541f6bcbbfa38f28c355981a5a
+event_log_id             = 6b0de30820c6460a783e558ed514b37499087c14d7d73505e76cb4b9d231a21d
+C1_payload_id            = 2fb3897106fff1387ebe6f3edb5618c88fe597e0e952b1531805da3db359fc3e
+C1_commit_id             = 0272231a20d8162882fdf309c008c19fb3e3265f4d10bc2df918c9ec11430737
+C2_payload_id            = d81d33a52705488ab9944c2911222f54b2a773f26ba2decf5bb4ad53eb4b2a49
+C2_commit_id             = 2164daa10ae031ab4b36e0f3602c0d015430befca256ee13c8bde2899b066e29
+first_facet_tip_id       = adea7a973cfaa2bc3a5e671b82417c04dcaed942a521dd97b8d6e9aa830aad66
+final_facet_tip_id       = 1c135cd185268051e992191628a7f9788079c01ebb5169db43ad96f3d5d919cf
+```
+
+The registered workload starts from the authentic V0-047 first query-local
+V3 epoch, not a caller-supplied completed result:
+
+```text
+live first epoch = 11 observed / 9 missing
+query order      = Q_R,Q_S,Q_R,Q_S,Q_R
+Q_R              = regret tolerance 3/4, risk tolerance 1
+Q_S              = original strict tolerances 0,0
+```
+
+Before campaign-root creation or source ground access, the preregistration
+binds the exact eight input-authority identities (including the kernel
+digest), the base structural/environment/model/coordinate scope, complete
+semantics profile, state/action realizations and concretizer rows, H2
+initial/reward/return/goal formulas, policy class, candidate order and proof
+registry. It explicitly says `derived_source_artifact_ids_absent=true`: no
+prospective first/final V3 model, checkpoint, source-chain or result ID is
+smuggled into this pre-source scope.
+
+Q_R uses a new epoch-bound typed query because `(3/4,1)` is outside the
+historical V0-043 threshold registry; that registry remains byte-for-byte
+unchanged. Q_R must independently derive its formula result and certifies the
+first epoch with zero additional query-triggered ground access. Only the
+subsequent selected Q_S failed proof may authorize the exact nine V0-047
+round-two rows. Those rows freeze the immutable final `20/0` V3 epoch, after
+which Q_S replans and certifies and all later queries remain model-only. The
+first Q_S proof fails value/risk while
+`external_coverage_failed=false` and
+`external_coverage_certified=true`; coverage is not its failure reason.
+
+C1/C2 retain the authentic strict-Q_S lower-proof core: 30 active nodes per
+epoch, including the real strict E/F gate nodes. Q_S roots consume and replay
+those nodes directly. Only Q_R uses a separate epoch-bound overlay of eight
+relaxed E/F variants. Every such facet binds the preregistration, eligibility,
+Q_R query, epoch/model, metric and exact source-D parent. Candidate and
+independently selected roots also carry distinct proof requests bound to
+role, occurrence, model, epoch, evidence request, metric and proposal where
+applicable. The nine-row model change invalidates 28 unique strict
+lower nodes and reuses only the two extensional C0 nodes; C2 therefore has a
+58-node union with 30 active and 28 historical nodes, and no persisted roots.
+Both epochs still select semantic schedule `A0A0`, so this is deliberately
+not a semantic-policy-switch claim.
+
+C1 and C2 are separate checkpoint stores. C2's predecessor is a cross-store
+lineage pointer to an externally verified C1 commit, not a traversable commit
+inside C2. The C2 loader independently opens C1 and requires C2's exact
+historical set and complete retained records to equal C1 active minus the two
+shared C0 nodes; final workers snapshot C1, C2 and their facet store.
+Likewise, `facets-c1` and `facets-c2` are separate epoch-local
+append-only chains, each with its own W0/genesis; the first tip is never the
+final genesis's predecessor.
+
+Five logical occurrences each resolve 50 lower obligations. The registered
+append-only query-facet trace is:
+
+```text
+8/42, 0/50, 8/42, 0/50, 0/50
+total = 16 query-facet builders / 234 exact lower hits
+```
+
+Occurrence 2 also performs a fresh final-epoch proof execution after the
+strict failure and nine-row repair. The five-occurrence projection uses that
+recertified result as occurrence 2's closure; the failed first attempt remains
+native certificate-triggering work and is not a logical closure entry. Its
+`28 new / 2 reused` core update is also recorded separately. Native accounting
+retains both occurrence-2 workers:
+
+```text
+main six workers  = 16 builders / 284 hits / 30 roots
+reset six workers = 24 builders / 276 hits / 30 roots
+operational total = 12 launches / 40 builders / 560 hits / 60 roots
+logical projections = main 16/234; reset 24/226
+```
+
+The selected failure freezes `3 selected-risk / 9 unrestricted-value /
+9 distinct requested` rows; the exact nine acquired outcomes are `3 safe /
+6 terminal failure`. Operational host accounting additionally replays the
+seven registered counters:
+
+```text
+checkpoint loads / cross-store checks / facet loads = 23 / 9 / 36
+worker result comparisons / snapshot hashes         = 12 / 64
+immutability comparisons / semantic assertions      = 32 / 12
+```
+
+The campaign also freezes 23 owner-bound, monotonically sequenced live events.
+A fresh-store verifier replays both arms with the same implementation in a
+separate evaluation lane, launching another 12 workers; it explicitly reports
+`same_implementation_full_replay=true` and `independent_algorithm=false`.
+Its evaluation-prefixed host counters reproduce the same
+`23/9/36/12/64/32/12` vector and remain outside operational work.
+These are operation-family identities, not samples or complete work.
+Recorded bytes cover query/occurrence inputs, worker result outputs and
+serialized checkpoint/facet footprint only; they are not cumulative I/O
+traffic or a complete counter registry.
+
+Literal source pins live in
+`src/acfqp/h2_interleaved_durable_epoch_pins_v1.py`: they bind the complete
+orchestrator bytes and registered upstream module/callable sources before host
+root/ground access and before worker checkpoint/query reads. The pins module
+does not self-hash or derive pins at runtime.
+
+The positive API boundary is a process-local runtime-minted claimed-result
+handle plus durable campaign bytes. Copying or deserializing the wrapper does
+not mint semantic authority. The fresh verifier validates that live handle
+and the durable snapshot, then performs the second clean producer execution
+in a fresh store under the identical frozen literal source-pin set. The
+evidence is exactly one operational producer execution plus one fresh
+same-implementation evaluation replay; no third campaign is required. This
+is not a generic cross-process final-wrapper parser or independent algorithm.
+
+The exact contract, required attacks and claim locks are in
+`specs/H2_INTERLEAVED_DURABLE_EPOCH.md`. Both V3 epochs remain query-local,
+nonpromotable and not globally transition-closed. No sample-efficiency,
+byte/CPU/wall/total-work, economics, generic changed-model/query, H>2,
+generalization, learned-dynamics or official-execution claim is opened. The
+result carries only its implemented closed claim fields; generic reuse/H>2,
+independent-verifier, scalar and Gate statements remain ledger-level locks,
+not invented result fields.
+
+## Historical preregistered durable H2 multi-query workload (V0-056)
 
 Contract `1.20.0`, schema `1.0.0`, and profile
 `lmb_h2_preregistered_durable_multiquery_workload_v0` extend V0-055 from one
@@ -121,13 +268,14 @@ counter-completeness and sample-efficiency Gates remain `NOT_RUN`. Full
 semantics and attacks are in
 `specs/H2_DURABLE_MULTIQUERY_WORKLOAD.md`.
 
-The next construction Gate stays on the main world-model loop: connect a real
-query-local model-epoch change to durable proof dependencies, exact
-invalidation, replanning/recertification and reuse by later queries. Only
-after that deeper closed loop yields more realistic workload traces should a
-separate Laplace-style heuristic operator, offline/online meta-prior or other
-sample-tax intervention be preregistered against a strict no-operator
-control.
+V0-057 now freezes that next construction Gate: it connects the authentic
+V0-047 `11/9 -> 20/0` query-local model-epoch change to exact durable
+invalidation, replanning/recertification and later interleaved reuse. Its
+implementation and evaluation pass all 85 registered tests; the status and
+canonical principal identities above are frozen. A Laplace-style heuristic
+operator, offline/online meta-prior or other sample-tax intervention remains
+a later, separately preregistered control informed by the completed
+closed-loop trace.
 
 ## Historical durable action-local H2 recovery slice (V0-055)
 
