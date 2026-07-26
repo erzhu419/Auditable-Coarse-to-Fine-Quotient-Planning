@@ -134,6 +134,17 @@
   host-verified. This proves only the registered H2 composition, not generic
   persistence, cross-query/H>2 behavior, native work or sample savings,
   independent-algorithm verification, economics, or an aggregate Gate.
+- **V0-059 multi-domain observed/statistical held-out campaign:** the current
+  construction Gate freezes twelve LMB/G2048 occurrences before model/plan
+  identities, composes the V0-058 exact partial-model/recovery path with a
+  six-row G2048 high-probability transition model, and keeps their evidence
+  levels distinct. G2048 probabilities come from 393,216 trusted offline
+  aggregate observations under an exact-rational simultaneous Hoeffding
+  envelope; production has no G2048 kernel, all nine G2048 occurrences use
+  zero online samples, and standalone exact replay only verifies
+  containment. This is not automatic D4/primitive discovery, shared
+  cross-domain coordinates, raw symbolization, exact-sound statistical
+  dynamics, broad generalization, sample saving or an official Gate.
 - **V0-058 observation-driven program closure and held-out H2 recovery:** the
   current Gate closes the complete bounded depth-two typed program catalogue
   from the frozen human vocabulary, semantically deduplicates it to 215
@@ -1416,6 +1427,79 @@ The next proof-reuse Gate requires an identity-bound proof-dependency DAG and a
 re-derivation artifact that identifies reusable obligations and recomputes every
 affected descendant. The V0-050 exact key may not be weakened to simulate that result.
 Detailed identities are normative in `specs/CERTIFICATE_MEMOIZATION.md`.
+
+All aggregate locks remain unchanged:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+sample_efficiency_gate_blocks_mainline = false
+```
+
+### V0-059 multi-domain observed/statistical held-out campaign gate
+
+Contract `1.23.0` registers schema `1.0.0`, profiles
+`multidomain_observed_statistical_heldout_campaign_v0` and
+`g2048_d4_empirical_hoeffding_partial_rapm_v0`.
+
+The Gate passes only when all of the following hold:
+
+1. exactly two primitive-schema bindings exist: automatic LMB depth-two
+   program selection inside its frozen vocabulary, and explicitly
+   nonautomatic known-D4 G2048 structure;
+2. the probability-free G2048 catalogue freezes exactly seven state-time
+   cells and six binary semantic action rows while containing no transition
+   probability or held-out query input;
+3. a content-addressed aggregate ledger is frozen before query release and
+   binds exactly 65,536 observations to each row, 393,216 total;
+4. the ledger is labelled trusted sufficient-statistic authority, explicitly
+   says individual traces are absent, and no stronger provenance claim is
+   emitted;
+5. exact-rational Hoeffding calibration reconstructs radius `1/128`, exponent
+   8, degree-13 Taylor lower greater than 2800, per-coordinate tail
+   `1/1400`, family tail `3/350` and confidence lower `347/350`;
+6. all six statistical rows retain nonempty binary-simplex interval
+   intersections and `statistical_high_probability` evidence;
+7. the robust planner enumerates eight policies and selects
+   `TOWARD,AWAY,AWAY`, reward `[3/64,3/64]`, failure bounds
+   `9277983/2147483648` and `75716127/2147483648`, and regret upper zero;
+8. twelve occurrences are frozen before prospective model/plan IDs:
+   three strict LMB H2 queries with `delta=0`, eight D4 point G2048 queries
+   and one D4-uniform G2048 query with `delta=1/20`;
+9. the first LMB occurrence performs exactly three certificate-authorized
+   target transitions and the later two execute fresh model-only planning and
+   selected audit with zero target transitions;
+10. the first G2048 occurrence uses the frozen model, the next eight reuse it,
+    all nine enumerate eight policies, and all nine use zero online samples;
+11. production signatures and access contain no exact G2048 kernel, while the
+    standalone evaluation verifier rebuilds the exact D4 quotient and contains
+    value `3/64` and failure `99/5000` without evidence promotion;
+12. native work freezes `12 / 6650 / 16 / 3 / 393216 / 72 / 0 / 3 / 9`
+    for occurrences, LMB program/plan/target calls, G2048 offline
+    samples/policies/online samples, and exact/statistical certificates;
+13. sample efficiency, exact statistical soundness, shared coordinates,
+    automatic G2048 symmetry discovery and official execution remain false;
+14. stale-ledger, count-splice, occurrence-order, delta, evidence-overclaim,
+    runtime-substitution, early-kernel and implementation-change attacks fail
+    closed; and
+15. all 15 registered focused tests and all 1242 repository tests pass with
+    canonical byte-identical replay.
+
+Passing proves only the registered two-domain exact/statistical
+evidence-composition control. G2048's nine occurrences share one known D4
+orbit, its support graph is hand registered, and its statistical source is a
+trusted aggregate rather than an independently replayable raw log. The next
+Gate must add raw/replayable stochastic observations over multiple structural
+contexts, honest missing/out-of-support rows and matched adaptive-acquisition
+versus direct-planning traces. A Laplace/KG-OP tax-reduction operator remains
+downstream of those measurements.
+
+Canonical identities and all acceptance/attack details are normative in
+`specs/MULTIDOMAIN_STATISTICAL_HELDOUT_CAMPAIGN.md`.
 
 All aggregate locks remain unchanged:
 
@@ -2773,6 +2857,13 @@ held-out/cross-domain generalization. Its one held-out target is a
 preregistered deterministic positive control, and its three transition calls
 are recorded work rather than evidence of sample reduction.
 
+V0-059 cannot be promoted to automatic D4/primitive discovery, shared
+cross-domain coordinates, exact-sound statistical dynamics, broad
+structural/H>2 generalization or sample efficiency. Its six probability rows
+use one trusted aggregate ledger on a hand-registered support, its nine
+G2048 queries are quotient-equivalent, and all 393,216 offline observations
+remain charged.
+
 V0-046 and V0-047 cannot be promoted to general causal minimality, global transition
 closure, cross-query reuse, base promotion, learned/statistical acquisition or sample
 saving. V0-047's reuse of `(3,)` is within one query-local boundary expansion; it is not
@@ -2868,17 +2959,18 @@ final reward/failure/regret `1/0/0` certificate. This supplies the first complet
 multi-step acquisition/refinement trace without mutating the base or invoking a
 ground optimizer.
 
-V0-058 now removes the handwritten coordinate-catalogue dependency for one
-bounded construction profile and completes a source-log-held-out H2
-certificate/recovery trace with the selected generated program. It remains
-inside a frozen human vocabulary and a deterministic finite symbolic log.
+V0-058 removes the handwritten coordinate-catalogue dependency for one
+bounded deterministic LMB profile. V0-059 composes it with a finite G2048
+statistical probability model and a pre-model twelve-occurrence two-domain
+workload. It preserves exact versus statistical evidence and records
+393,216 offline samples, but the G2048 support remains hand registered and
+its nine queries remain one D4-equivalent family.
 
-The next construction Gate must broaden reusable synthesis itself: registered
-primitive schemas in at least two domains, partial/statistical dynamics with
-calibrated coverage, and a preregistered held-out occurrence family rather
-than one target. Portable source authority, raw symbolization,
-primitive/operator invention, larger or unknown domains, broad held-out/
-cross-domain evidence, the empirically designed tax-reduction operator and
-the complete statistical Gates remain open. Sample efficiency stays
-non-blocking until those traces identify whether and where an intervention is
-justified.
+The next construction Gate must add raw or independently replayable
+stochastic logs over multiple structural/query contexts, honest
+missing/out-of-support rows, and matched adaptive-acquisition versus direct
+planning. Portable source authority, raw symbolization, primitive/operator
+invention, larger or unknown domains, broad held-out/cross-domain evidence,
+the empirically designed tax-reduction operator and the complete statistical
+Gates remain open. Sample efficiency stays non-blocking until those traces
+identify whether and where an intervention is justified.

@@ -129,8 +129,21 @@
   semantic switch only for the registered H2 fixture; it is not generic
   persistence, cross-query/H>2 proof, native-work/sample saving, independent
   verification, economics, or an aggregate Gate.
+- **V0-059 multi-domain observed/statistical held-out campaign:** the current
+  construction contract preregisters twelve occurrences across LMB and
+  G2048 before prospective model/plan IDs. LMB performs the V0-058 exact
+  three-row certificate-triggered recovery once and two fresh model-only
+  reuses. G2048 keeps its known exact `D4` structure as an explicit human
+  prior, learns six binary probability rows from a trusted 393,216-sample
+  offline aggregate ledger, and certifies nine H2 occurrences with an
+  exact-rational simultaneous Hoeffding envelope and zero online samples.
+  Production receives no G2048 kernel; standalone exact replay only checks
+  containment. This is not automatic symmetry/primitive discovery, shared
+  cross-domain coordinates, raw symbolization, exact-sound statistical
+  evidence, broad generalization, sample saving, economics or official
+  execution.
 - **V0-058 observation-driven program closure and held-out H2 recovery:** the
-  current construction contract replaces the fixed handwritten production
+  historical construction contract replaces the fixed handwritten production
   coordinate catalogue with bottom-up depth-two composition inside the frozen
   human typed primitive/operator vocabulary. It retains 215 exact
   type/context/source-signature representatives, exhausts all 6650 bounded
@@ -1895,6 +1908,100 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
 
+### Contract 1.23.0: multi-domain observed/statistical held-out campaign
+
+V0-059 registers schema `1.0.0`, profiles
+`multidomain_observed_statistical_heldout_campaign_v0` and
+`g2048_d4_empirical_hoeffding_partial_rapm_v0`, and passing status
+`CERTIFIED_REGISTERED_MULTIDOMAIN_OBSERVED_STATISTICAL_HELDOUT_CAMPAIGN`.
+
+Before either prospective model or any plan identity exists, the
+preregistration binds two primitive-schema authorities, the LMB observation
+log/profile/authority, a probability-free G2048 structural catalogue, a
+trusted aggregate sample ledger and the exact order of twelve held-out
+occurrences. The schemas retain different claim levels:
+
+```text
+LMB:
+  observation-driven complete depth-two program closure
+  automatically selected inside a fixed human vocabulary
+
+G2048:
+  known exact D4 automorphism and relative-survivor semantics
+  not automatically discovered
+```
+
+The G2048 structural catalogue freezes seven state-time cells, six binary
+state-action rows, rewards and destination/failure semantics, but no
+probabilities and no held-out query. Its offline-source ledger freezes
+65,536 aggregate observations per row, 393,216 total. The individual traces
+are not embedded, so statistical validity is conditional on the registered
+trusted sufficient-statistic authority.
+
+Each empirical destination probability receives radius `1/128` and a binary
+simplex intersection. Exact rational arithmetic proves
+`2*65536*(1/128)^2=8`; a degree-13 positive Taylor sum proves
+`exp(8)>2800`. The two-sided per-coordinate tail is therefore less than
+`1/1400`. A twelve-coordinate union gives family tail at most `3/350`,
+strictly below alpha `1/100`, and simultaneous confidence at least `347/350`.
+All six learned rows and all nine G2048 certificates remain
+`statistical_high_probability`; exact-sound promotion is forbidden.
+This profile-specific research/evaluation certificate does not alter the
+`exact_sound` requirement for official execution or any older Gate.
+
+The robust H2 solver enumerates all eight deterministic relative-survivor
+policies. It selects `TOWARD,AWAY,AWAY` with reward `[3/64,3/64]`, failure
+lower `9277983/2147483648`, failure upper
+`75716127/2147483648 < 1/20`, and normalized regret upper zero. Production
+has no G2048 kernel input. The standalone evaluation verifier alone rebuilds
+the exact D4 quotient and confirms exact value `3/64` and failure `99/5000`
+are contained by the statistical bounds.
+
+The twelve-occurrence order contains three strict LMB H2 occurrences, eight
+G2048 D4 point occurrences and one G2048 D4-uniform occurrence. The first LMB
+occurrence charges the V0-058 6650-program search and exactly three
+certificate-triggered target transitions; two later occurrences perform
+fresh model-only proposal and selected audit with zero target calls. The
+first G2048 occurrence uses the newly built frozen statistical model and the
+next eight reuse it; all nine enumerate eight policies and acquire zero
+online samples. The D4 points and uniform query are deliberately one
+quotient-equivalent family, not broad changed-query generalization.
+
+The canonical work trace is:
+
+```text
+logical occurrences                         = 12
+LMB program candidates                      = 6650
+LMB plan candidates                         = 16
+LMB exact target transition calls           = 3
+G2048 offline logged samples                = 393216
+G2048 statistical policy candidates         = 72
+G2048 online samples                        = 0
+exact-sound certificates                    = 3
+statistical high-probability certificates   = 9
+```
+
+All 15 registered focused tests and all 1242 repository tests pass. Complete
+identities, chronology, confidence proof, attacks and claim locks are normative in
+`specs/MULTIDOMAIN_STATISTICAL_HELDOUT_CAMPAIGN.md`. Contract 1.23.0 does not
+claim automatic D4/primitive invention, shared cross-domain coordinates, raw
+symbolization, exact-sound learned dynamics, broad structural or H>2
+generalization, sample reduction/efficiency, complete workload accounting,
+economics or official execution. The explicit 393,216-sample source is a
+measured tax, not a saving.
+
+All aggregate locks remain:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+sample_efficiency_gate_blocks_mainline = false
+```
+
 ### Contract 1.22.0: observation-driven program closure and held-out H2 recovery
 
 V0-058 registers schema `1.0.0`, profiles
@@ -3288,7 +3395,19 @@ evaluation-only J0 costs remain separate.
 
 ## Out of scope
 
-Neural encoders, learned/statistical world models, MCTS, first-hit options, SMDP duration, POMDP/belief adapters, visual perception, infinite horizon, cross-domain meta-controllers, interpreting a supplied `D4` group as an automatically discovered abstraction, interpreting Phase 3A exact-model cross-orbit aggregation as oracle-free unknown-quotient discovery, interpreting Phase 3B exact one-step synthesis as predicate invention or local hybrid planning, interpreting V0-038's target-supervised selection as target-free discovery, interpreting V0-039's direct fixed-grammar exact homomorphism as feature invention, scalable/unknown-domain discovery or held-out generalization, or interpreting Phase 3D as workload break-even or a full Phase 3/5 pass.
+Neural latent encoders, raw/perceptual symbolization, learned structural
+supports or unknown-domain world models, MCTS, first-hit options, SMDP
+duration, POMDP/belief adapters, visual perception, infinite horizon and
+cross-domain meta-controllers remain out of scope. V0-059's finite
+high-probability probability rows are the only registered statistical-model
+exception; they may not be generalized into automatic structure discovery,
+exact-sound evidence or an official Phase 3/5 pass. A supplied `D4` group is
+never automatic abstraction discovery, Phase 3A exact cross-orbit aggregation
+is not oracle-free quotient discovery, Phase 3B exact one-step synthesis is
+not predicate invention/local hybrid planning, V0-038 target-supervised
+selection is not target-free discovery, V0-039 fixed-grammar exact
+homomorphism is not feature invention/scale/generalization, and Phase 3D is
+not workload break-even.
 
 
 V0-040 cannot be cited as learned/meta-prior ranking, an executed broad-tail schedule,
@@ -3331,6 +3450,13 @@ broad held-out/cross-domain generalization or sample reduction. It proves one
 complete bounded program closure and one preregistered deterministic held-out
 H2 recovery inside the frozen vocabulary; all three target transition calls
 remain recorded work.
+
+V0-059 cannot be cited as automatic D4/primitive discovery, a shared
+cross-domain representation, exact-sound statistical evidence, broad
+structural/H>2 generalization or sample efficiency. Its G2048 construction
+learns only six probability rows on one hand-registered known-D4 support from
+a trusted aggregate ledger; the nine queries are one quotient-equivalent
+family and 393,216 offline observations remain charged.
 
 ## Known failure modes
 
@@ -3408,17 +3534,16 @@ second-round value/risk rows produce a final reward/failure/regret `1/0/0`
 certificate. The base remains immutable and no ground optimizer is invoked.
 
 V0-058 removes the fixed handwritten coordinate-catalogue dependency for one
-bounded construction profile: it composes the complete depth-two program
-closure inside the frozen vocabulary and transfers the selected coordinate
-to a genuinely source-log-held-out H2 target before three-row
-certificate-triggered recovery. It still does not invent primitive/operator
-semantics, learn unobserved transition laws, symbolize raw input, or establish
-statistical generalization.
+bounded deterministic LMB profile. V0-059 then composes that exact
+partial/recovery path with a finite G2048 statistical probability model and a
+pre-model twelve-occurrence two-domain workload. It exposes 393,216 offline
+samples, zero G2048 online samples and exact/statistical evidence separation,
+but keeps G2048 structure hand registered and all G2048 queries inside one D4
+equivalence family.
 
-The next construction risk is therefore broader reusable synthesis:
-registered primitive schemas across more than one domain, partial/statistical
-dynamics with calibrated coverage, and a preregistered held-out occurrence
-family rather than one deterministic target. Matched-budget sample-efficiency
-evaluation and a Laplace-style tax-reduction operator remain non-blocking
-follow-up work to be designed from richer acquisition/refinement telemetry,
-not inferred from this one trace.
+The next construction risk is raw or independently replayable stochastic
+evidence over multiple structural/query contexts, with honest
+missing/out-of-support rows and matched adaptive-acquisition versus direct
+planning. A Laplace-style tax-reduction operator remains non-blocking
+follow-up work to be designed from those richer traces, not inferred from the
+current fixed aggregate ledger.

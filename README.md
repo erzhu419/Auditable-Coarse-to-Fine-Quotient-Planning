@@ -28,6 +28,60 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 → jointly search local value/risk choices, rebuild, or use charged fallback
 ```
 
+## Current multi-domain observed/statistical held-out Gate (V0-059)
+
+Contract `1.23.0` freezes profiles
+`multidomain_observed_statistical_heldout_campaign_v0` and
+`g2048_d4_empirical_hoeffding_partial_rapm_v0`. All 15 registered focused
+tests and all 1242 repository tests pass.
+
+The preregistered 12-occurrence campaign composes two deliberately different
+world-model authorities. LMB retains the V0-058 observation-driven program
+closure and honest partial RAPM: the first strict H2 occurrence acquires
+exactly three certificate-authorized target rows, and two later occurrences
+perform fresh model-only planning/audit with zero additional ground rows.
+G2048 uses the known exact `D4` structural quotient as a registered human
+prior, but obtains all six binary transition rows only from a frozen
+393,216-sample offline aggregate ledger. An exact-rational Hoeffding/union
+proof gives radius `1/128` and simultaneous confidence at least `347/350`.
+
+The robust statistical planner enumerates all eight deterministic H2 semantic
+policies and selects `TOWARD, AWAY, AWAY`, with:
+
+```text
+reward                    = [3/64, 3/64]
+failure                   = [9277983,75716127] / 2147483648
+risk threshold            = 1/20
+normalized regret upper   = 0
+G2048 online samples      = 0
+```
+
+Eight `D4` point occurrences and one orbit-uniform occurrence reuse that
+model. The production campaign has no G2048 kernel input. A standalone
+evaluation-only exact quotient replay confirms value `3/64` and failure
+`99/5000` lie inside the statistical certificate without promoting it to
+`exact_sound`.
+
+Principal identities include:
+
+```text
+g2048_catalogue_id          = 1c97e476c25b0a1f0f37ce2796ae4cf9bb138bf29dbd80271792e2ef988dbcb1
+g2048_sample_ledger_id      = 07793df8d27bacbd68f40b878c8de8483d03c22b6e323d5477dce06806154f7e
+g2048_statistical_model_id  = 78a3ed52d6d7284d8690708b2177b962c6cffbd33064925efe66f6fa1f520d9d
+campaign_preregistration_id = a15ffeb13b9890b720def2e0029ea72e870c3cd855dc3efcab132e915e9de3ce
+campaign_result_id          = e536ace0665fc7c01fb6d79a025a17eba4adb1d3950cfe14e7a627cfc6886c78
+campaign_verification_id    = 49e7662ce463d4640fdc9cb8cf8aa0fec5dde1c92b49a83f10e6ab2cfd335719
+```
+
+The full contract is in
+`specs/MULTIDOMAIN_STATISTICAL_HELDOUT_CAMPAIGN.md`. V0-059 does not claim
+automatic `D4` discovery, shared cross-domain coordinates, raw symbolization,
+exact-sound statistical dynamics, broad structural generalization or sample
+savings. Its 393,216 logged samples are the first explicit statistical sample
+tax in the mainline; a Laplace-style heuristic operator or KG-OP meta-prior
+will be evaluated only after richer independently replayable acquisition
+traces exist.
+
 ## Current observation-driven program-closure and held-out H2 Gate (V0-058)
 
 Contract `1.22.0` freezes profiles
@@ -329,9 +383,13 @@ canonical principal identities above are frozen. V0-058 now advances the
 construction mainline from a fixed handwritten coordinate catalogue to
 complete bounded program closure and applies the selected coordinate to a
 source-log-held-out H2 query before certificate-triggered three-row recovery.
-A Laplace-style heuristic operator, offline/online meta-prior or other
+V0-059 composes that path with a finite known-D4 G2048 statistical model and
+a twelve-occurrence two-domain workload, exposing a 393,216-sample offline
+tax while keeping production kernel-free. The next Gate requires raw/
+replayable stochastic logs across multiple structural contexts. A
+Laplace-style heuristic operator, offline/online meta-prior or other
 sample-tax intervention remains a later, separately preregistered control
-informed by richer multi-query traces.
+informed by those richer traces.
 
 ## Historical durable action-local H2 recovery slice (V0-055)
 

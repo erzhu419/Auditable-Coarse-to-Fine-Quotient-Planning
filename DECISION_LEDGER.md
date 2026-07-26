@@ -2,7 +2,7 @@
 
 **Status:** normative source of truth
 
-**Ledger version:** 1.22.0
+**Ledger version:** 1.23.0
 **Last updated:** 2026-07-26
 
 ## Authority
@@ -88,6 +88,7 @@ absent from a public checkout.
 | V0-056 | 2026-07-26 | Preregistered durable H2 multi-query workload | FROZEN | Contract `1.20.0` registers schema `1.0.0`, profile `lmb_h2_preregistered_durable_multiquery_workload_v0`, and status `CERTIFIED_REGISTERED_H2_PREREGISTERED_DURABLE_MULTIQUERY_WORKLOAD_CONTROL`. Before its target-blind V0-055 source runs, it freezes threshold-only `Q1=(epsilon_regret=0,delta=0)`, `Q2=(3/4,0)`, `Q3=(0,1)` and order `1,2,3,1,2,3,1,2,3,1`. The exact Q1 source first fails on C1 (`4/1`, selected `N`, regret `3/4`), then and only then acquires one authorized `M` row and publishes certified C2 (`5/0`, selected `M`, reward/failure/regret `1/0/0`). W0 contains the full canonical 18-document active-C2 semantic projection (`21983` bytes; SHA-256 `b122d4ec7d98b723717a0f547c693516aa74c64ce8e8e5051318063ce9a15a55`), not only IDs. Fresh model-only targets derive regret/risk gates, selection, audits and three occurrence-bound roots from those semantic fields and exact parent topology; lower keys bind only the consumed threshold facet and ordered parent-node IDs. The append-only arm records `6 lower builders / 174 exact hits / 30 fresh roots` with W0/W1/W2 logical lower counts `18/21/24`; the matched C2-reset arm records `18/162/30`, retains ten typed W0 initializations, and records their scoped initializer/worker-observed store bytes with `query_store_io_complete=false`; both make zero target ground calls. A source-blind literal direct control, pinned to the source-independent four-row C1 projection and protected by a dynamic single-use `(x1,M)` guard, records exactly `10` ground calls, `10` complete catalogues, `40` policy evaluations and `10` optimizer calls, with paired action/value/risk/regret `M,1/0/0`. The implementation Gate, 21 registered attack cases and fresh-store evaluation replay pass; pins include campaign `8edf8a660fe3...`, evaluation `48e8919a0899...`, protocol `928b8233021b...`, semantics `5880e0a9a4d7...`, preregistration `2cde4f37b9e7...`, W0/W1/W2 `4e9deaec2baf.../8d15aae30b49.../8e33d23a1369...`, matched vector `f8fe8f4dd584...`, and reset-initialization vector `20339c4e312e...`. | Closes only the registered threshold-only source-before-target workload. The trace units are operation-family calls, not samples or complete CounterRegistry/WorkVector cost. The `18/162/30` tuple does not include or cancel reset-initialization I/O, while host lease/snapshot and verification rereads remain outside complete query-store I/O accounting. It does not authorize reward/horizon/action/dynamics/initial-support/structural changes, generic cross-query/H>2 reuse, generalization, coordinate invention, partial/learned dynamics, sample efficiency, byte/CPU/wall/total-work superiority, economics or official execution. | `h2_query_family_model_v1.py`; `h2_conditional_direct_ground_v1.py`; `h2_durable_multiquery_workload_v1.py`; `h2_durable_multiquery_workload_pins_v1.py`; full typed C2 semantic projection; consumed-facet proof keys; topological lookup-before-builder runtime; global/reset/direct controls; source-blindness, over/under-key, semantic-poison, selection-parent, roots/certificate, process/store, reset-initialization-I/O and scope-escalation attacks; `specs/H2_DURABLE_MULTIQUERY_WORKLOAD.md`. |
 | V0-057 | 2026-07-26 | Interleaved certificate-triggered durable H2 query-local epoch | FROZEN | Contract `1.21.0` freezes schema `1.0.0`, profile `lmb_h2_interleaved_certificate_triggered_durable_epoch_v0`, passing status `CERTIFIED_REGISTERED_H2_INTERLEAVED_CERTIFICATE_TRIGGERED_DURABLE_EPOCH_CONTROL`, and logical order `Q_R,Q_S,Q_R,Q_S,Q_R`, where new epoch-bound typed `Q_R=(3/4,1)` leaves the historical threshold registry unchanged and `Q_S=(0,0)` preserves strict V0-047 semantics. The pre-source scope binds all eight authorities and complete H2 semantics without future-derived IDs. Production constructs the authentic first `11/9` epoch; only the selected Q_S value/risk failure authorizes exact `3/9/9` rows with `3 safe / 6 failure`, producing final `20/0`. C1/C2 preserve the real strict core, C2 independently verifies complete C1 history, query facets and proof requests bind their exact roles/parents, and the exact update is `28/2`, C2 `58/30/28`. Native main/reset are `16/284` and `24/276`, projections `16/234` and `24/226`, operational total `40/560`, 12 launches, 60 roots and 23 events; host verification is `23/9/36/12/64/32/12`. All 85 registered tests pass. The comparison contains exactly one operational producer and one fresh same-implementation replay under the same frozen source pins; there is no third campaign or independent algorithm. Principal canonical IDs are frozen in the detailed V0-057 rule and normative specification (result `092c92708f67...`, verification `6330a3a6be2b...`, snapshot `4add6d49870f...`). | Advances V0-056 into one authentic certificate-gated query-local model-epoch change without promoting either V3 epoch. It does not prove generic changed-model/query reuse, H>2, automatic coordinates, partial/learned dynamics, generalization, sample reduction/efficiency, complete accounting, byte/CPU/wall/total-work superiority, economics or official execution. | `specs/H2_INTERLEAVED_DURABLE_EPOCH.md`; process-local claimed authority plus durable replay; positive, attack, deterministic-replay and same-implementation fresh-store suite passed. |
 | V0-058 | 2026-07-26 | Observation-driven program closure and held-out H2 recovery | FROZEN | Contract `1.22.0` freezes schema `1.0.0`, profiles `lmb_observed_program_closure_partial_rapm_v0` and `lmb_observed_program_closure_heldout_h2_v0`, and passing statuses `OBSERVATION_CONSISTENT_PROGRAM_CLOSURE_PARTIAL_RAPM` and `CERTIFIED_OBSERVED_PROGRAM_CLOSURE_HELDOUT_H2_RECOVERY`. From only the preregistered `8/11/7` symbolic source graph, production closes the frozen human typed vocabulary to depth two, retains `215` semantic representatives (`174` state, `37` state-action), exhausts all `6650` optional-single-coordinate candidates, finds `1384` admissible candidates, and selects candidate `4013`: `cardinality(legal_actions)` plus `buffer_at_type(buffer_counts,selected_tile_type)<=3/2`. Its partial RAPM is `7 observed / 4 missing`. A source-log-held-out H2 target is frozen before synthesis; after full source replay, its one catalogue is registered but all three target rows remain vacuous. The selected audit fails at reward `[0,4]`, failure `[0,1]`; only then does the `1 risk / 3 value / 3 distinct` authorization permit exactly three target transitions. The safe row reaches an existing source state and reuses its observed second-stage dynamics without successor access. The immutable final epoch is `10/4` and independently certifies reward/failure/regret `1/0/0`. All 19 registered tests pass and the principal IDs are frozen below. The complete staged Python package is now approximately 6.5 MiB, so the content-addressed isolated-fallback runtime-source ceiling migrates from 6 MiB to the independently frozen 8 MiB sealed-manifest ceiling; the profile-ID change invalidates old route uppers, exact actual bytes remain charged, and no official Gate is unlocked. | Advances automatic world-model construction beyond a handwritten coordinate catalogue, but only inside one frozen human primitive/operator vocabulary and one finite deterministic symbolic log. It does not prove primitive/operator invention, raw symbolization, statistical/learned dynamics, generic H>2 recovery, broad held-out/cross-domain generalization, sample reduction/efficiency, complete accounting, economics or official execution. | `observed_program_closure_synthesis_v1.py`; `observed_program_closure_heldout_h2_v1.py`; complete 6650-candidate trace; preregistration/chronology/three-row/epoch/replay/overclaim attacks; isolated-fallback runtime-cap migration/replay; `specs/OBSERVATION_DRIVEN_PROGRAM_CLOSURE_HELDOUT_H2.md`. |
+| V0-059 | 2026-07-26 | Multi-domain observed/statistical held-out campaign | FROZEN | Contract `1.23.0` freezes schema `1.0.0`, profiles `multidomain_observed_statistical_heldout_campaign_v0` and `g2048_d4_empirical_hoeffding_partial_rapm_v0`, and status `CERTIFIED_REGISTERED_MULTIDOMAIN_OBSERVED_STATISTICAL_HELDOUT_CAMPAIGN`. Before prospective model/plan identities it registers two distinct human schemas and twelve LMB/G2048 occurrences. LMB automatically composes/selects inside the V0-058 typed vocabulary, performs exactly three certificate-authorized target transitions on its first strict H2 occurrence, then executes two fresh model-only reuses. G2048 uses known D4 structure rather than discovering it; a probability-free seven-cell/six-row catalogue plus a trusted frozen aggregate ledger of `6*65536=393216` offline observations yields six nonzero-width statistical rows. Exact-rational Hoeffding/Taylor/union calibration freezes radius `1/128`, family tail `3/350` and confidence lower `347/350`. Robust enumeration selects `TOWARD,AWAY,AWAY`, reward `[3/64,3/64]`, failure `[9277983,75716127]/2147483648 < 1/20`, regret zero. Nine D4 point/uniform occurrences use zero online samples. Production accepts no G2048 kernel; standalone exact D4 replay contains value `3/64` and failure `99/5000` without promoting statistical evidence. All 15 focused tests and all 1242 repository tests pass. | Closes only the first registered two-domain exact/statistical evidence-composition campaign. It does not prove automatic D4/primitive discovery, shared cross-domain coordinates, raw symbolization, exact-sound statistical dynamics, broad structural/H>2 generalization, sample saving, complete accounting, economics or official execution. The 393,216 observations are an exposed sample tax, not a benefit claim. | `multidomain_statistical_campaign_v1.py`; typed schema/catalogue/ledger/calibration/model/preregistration/occurrence/work/result/verifier artifacts; count/order/evidence/runtime/kernel/implementation attacks; `specs/MULTIDOMAIN_STATISTICAL_HELDOUT_CAMPAIGN.md`. |
 
 For V0-051, the affected public interface expressly includes the content-addressed
 `IncrementalProofDAGProtocolV1` and its `protocol_id`, in addition to the node,
@@ -2408,6 +2409,99 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
 
+## V0-059 multi-domain observed/statistical held-out campaign rule
+
+Contract `1.23.0` freezes schema `1.0.0`, profiles
+`multidomain_observed_statistical_heldout_campaign_v0` and
+`g2048_d4_empirical_hoeffding_partial_rapm_v0`, and passing status
+`CERTIFIED_REGISTERED_MULTIDOMAIN_OBSERVED_STATISTICAL_HELDOUT_CAMPAIGN`.
+
+The preregistration must exist before prospective models or plans. It binds:
+
+- the V0-058 LMB observation log, semantics and observation authority;
+- a probability-free G2048 D4 structural catalogue;
+- a trusted content-addressed aggregate sample ledger;
+- two distinct primitive-schema registrations; and
+- the exact twelve-occurrence LMB/G2048 order and domain-specific thresholds.
+
+LMB retains automatic complete depth-two composition and selection only
+inside its frozen human primitive/operator vocabulary. G2048 explicitly
+retains `known_exact_d4_automorphism_not_automatically_discovered`; its D4
+state-time cells and relative-survivor semantic actions are a human
+structural prior. No shared cross-domain coordinate or automatic G2048
+symmetry-discovery claim is permitted.
+
+The G2048 catalogue contains seven cells and six binary action rows with
+known rewards, destination identities and failure/terminal semantics, but no
+transition probabilities or held-out queries. The offline ledger provides
+65,536 trusted aggregate observations per row and 393,216 total. It is frozen
+before query release and explicitly does not embed individual draws.
+Statistical validity is conditional on this sufficient-statistic authority.
+
+Each destination coordinate uses empirical probability plus/minus `1/128`,
+intersected with the binary simplex. The exact-rational proof freezes
+`2*n*epsilon^2=8`, the degree-13 positive Taylor lower
+`exp(8)>2800`, per-coordinate tail less than `1/1400`, twelve-coordinate
+family tail at most `3/350 < 1/100`, and confidence lower `347/350`.
+Every G2048 probability row and plan certificate must remain
+`statistical_high_probability`; exact-sound promotion is forbidden.
+This is a profile-specific research/evaluation extension to the evidence
+classes listed in V0-011, not a relaxation of V0-004/V0-011 for official
+execution: any Gate requiring `exact_sound` still rejects this statistical
+certificate.
+
+The robust H2 planner enumerates the complete eight deterministic
+relative-survivor schedules and selects:
+
+```text
+schedule                  = TOWARD,AWAY,AWAY
+reward                    = [3/64,3/64]
+failure lower             = 9277983/2147483648
+failure upper             = 75716127/2147483648
+risk threshold            = 1/20
+normalized regret upper   = 0
+```
+
+The campaign order contains three strict LMB H2 occurrences (`delta=0`),
+eight G2048 D4 point occurrences and one D4-uniform occurrence
+(`delta=1/20`). The first LMB occurrence performs exactly three
+certificate-triggered target transition calls; two later occurrences perform
+fresh model-only proposal/audit and no target calls. The first G2048
+occurrence uses the newly built statistical model and the next eight reuse
+it; all nine enumerate eight policies and use zero online samples. The G2048
+family is one quotient-equivalent D4 control, not broad changed-query
+generalization.
+
+Production receives no exact G2048 kernel. The standalone evaluation verifier
+alone rebuilds the exact D4 quotient, checks exact row probabilities lie in
+the intervals, and confirms exact optimal value `3/64` and failure `99/5000`
+are contained by the selected statistical certificate. Evaluation cannot
+change the production evidence class.
+
+Canonical work is:
+
+```text
+logical occurrences                         = 12
+LMB program candidates                      = 6650
+LMB plan candidates                         = 16
+LMB exact target transition calls           = 3
+G2048 offline logged samples                = 393216
+G2048 statistical policy candidates         = 72
+G2048 online samples                        = 0
+exact-sound certificates                    = 3
+statistical high-probability certificates   = 9
+```
+
+All 15 focused tests and all 1242 repository tests pass. Principal IDs are frozen in
+`specs/MULTIDOMAIN_STATISTICAL_HELDOUT_CAMPAIGN.md`. V0-059 leaves
+sample-efficiency, complete CounterRegistry accounting, scalar economics and
+official execution locked. The 393,216 logged observations expose the
+current sample tax; they do not establish necessity, optimality or savings.
+The next construction Gate requires raw or independently replayable
+stochastic logs across multiple structural contexts and matched adaptive
+acquisition/direct-planning traces before any Laplace-style heuristic
+operator or KG-OP meta-prior claim.
+
 ## V0-058 observation-driven program-closure and held-out H2 rule
 
 Contract `1.22.0` freezes schema `1.0.0`, profiles
@@ -3518,3 +3612,4 @@ sample_efficiency_gate_blocks_mainline = false
 - **2026-07-26 — 1.20.0:** Added V0-056/profile `lmb_h2_preregistered_durable_multiquery_workload_v0`. Before the target-blind V0-055 Q1 source runs, it freezes threshold-only Q1/Q2/Q3 and ten-occurrence order `1,2,3,1,2,3,1,2,3,1`. The target projection contains the complete canonical 18-document active-C2 semantics (`21983` bytes; SHA-256 `b122d4ec7d98b723717a0f547c693516aa74c64ce8e8e5051318063ce9a15a55`), and fresh workers formula-derive all changed gates, selection, audits, roots and certificates from exact semantic fields and ordered parent-node IDs. Consumed-facet keys and lookup-before-builder execution freeze global `6/174/30`, matched C2-reset `18/162/30`, and source-blind conditional-online direct `10 ground / 10 catalogue / 40 policy-evaluation / 10 optimizer` traces. The reset arm additionally retains ten typed W0 initializations and records every initializer plus worker-observed store byte count, while `query_store_io_complete=false` because host lease/snapshot and verification rereads remain incomplete. The implementation, registered attack cases and fresh-store evaluation replay emit status `CERTIFIED_REGISTERED_H2_PREREGISTERED_DURABLE_MULTIQUERY_WORKLOAD_CONTROL`; final campaign/evaluation IDs are `8edf8a660fe3...`/`48e8919a0899...`, with matched/reset-initialization vectors `f8fe8f4dd584...`/`20339c4e312e...`. This remains a threshold-only operation-specific workload control, not sample, byte/total-work, economics, generic reuse/generalization or official-execution evidence.
 - **2026-07-26 — 1.21.0:** Added and verified the V0-057 construction contract/profile `lmb_h2_interleaved_certificate_triggered_durable_epoch_v0`. It freezes the new typed relaxed Q_R `(3/4,1)`, original strict Q_S `(0,0)` and order `Q_R,Q_S,Q_R,Q_S,Q_R` before the authentic V0-047 source is constructed. The pre-source record binds all eight input-authority identities and complete H2 semantic/query scope while forbidding prospective derived epoch IDs. Q_R certifies the first live `11/9` epoch with zero additional query ground; only the next selected Q_S value/risk failure may authorize the exact `3/9/9` row scope and `3 safe / 6 failure` nine-row acquisition that produces the final `20/0` epoch. C1/C2 retain the real 30-node strict-Q_S core; Q_R facets bind preregistration/eligibility/query/source-D and roots bind typed proof requests. C2 independently loads C1 and proves exact retained history; facet stores remain distinct epoch-local W0/genesis chains. The exact core update is `28 new / 2 C0 reused`, yielding C2 `58/30/28`. Native main/reset traces are `16/284` and `24/276`; projections are `16/234` and `24/226`; the operational campaign is 12 launches, 60 roots and `40/560`, with host verification `23/9/36/12/64/32/12`. A 23-record event ledger is mandatory. All 85 registered tests pass. One operational producer and one fresh same-implementation evaluation replay use the identical frozen source-pin set; evaluation work is separate, no third campaign or independent algorithm is claimed, and the final authority boundary is a process-local claimed handle plus durable bytes/fresh replay rather than a generic cross-process wrapper parser. The passing status and canonical principal IDs are frozen in the detailed rule and normative specification. No generic reuse/H>2, promotion, generalization, sample/total-work/economics or official claim opens.
 - **2026-07-26 — 1.22.0:** Added and verified V0-058 profiles `lmb_observed_program_closure_partial_rapm_v0` and `lmb_observed_program_closure_heldout_h2_v0`. The source-only producer closes the frozen typed vocabulary to depth two, retains 215 semantic representatives, exhausts all 6650 bounded optional-single-coordinate candidates, and selects `cardinality(legal_actions)` with `buffer_at_type(buffer_counts,selected_tile_type)<=3/2`, yielding an honest `7/4` partial RAPM. A pre-synthesis source-log-held-out H2 target first fails model-only audit at reward `[0,4]`, failure `[0,1]`; only that failure authorizes its exact `1/3/3` three-row scope. The safe row reaches an existing source successor, so no successor ground access is needed. The immutable `10/4` epoch replans and independently certifies reward/failure/regret `1/0/0`. All 19 registered tests and deterministic replay pass; implementation digests and principal IDs are frozen. This advances automatic program composition/selection only within one human-specified vocabulary and finite deterministic symbolic log; unknown-semantic invention, learned/statistical dynamics, broad generalization, sample savings/economics and official execution remain locked.
+- **2026-07-26 — 1.23.0:** Added and verified V0-059 profiles `multidomain_observed_statistical_heldout_campaign_v0` and `g2048_d4_empirical_hoeffding_partial_rapm_v0`. A pre-model twelve-occurrence campaign composes the V0-058 LMB exact partial/recovery path with a G2048 probability model learned from six trusted aggregate rows of 65,536 offline observations each. The known D4 structural quotient remains an explicit human prior. Exact-rational Hoeffding/Taylor/union calibration freezes radius `1/128`, family tail `3/350` and confidence lower `347/350`; robust H2 enumeration selects `TOWARD,AWAY,AWAY` with reward `3/64`, failure upper `75716127/2147483648 < 1/20` and regret zero. The first LMB occurrence acquires exactly three rows and two later occurrences reuse its final model; all nine G2048 occurrences use zero online samples. Production has no G2048 kernel, while standalone exact D4 evaluation contains value `3/64` and risk `99/5000` without promoting statistical evidence. All 15 focused tests and all 1242 repository tests pass. Automatic symmetry/primitive invention, shared cross-domain coordinates, raw symbolization, broad generalization, sample savings/economics and official execution remain locked; 393,216 is an exposed sample tax, not a benefit claim.
