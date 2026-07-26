@@ -104,6 +104,24 @@
   `68/42`; only two distinct `C0` constructions are cross-epoch reuse. Both epochs
   select the same semantic `A0A0` schedule, so this is not a semantic-policy-change,
   generic changed-model, persistence, sample-efficiency, economics, or aggregate Gate.
+- **V0-054A same-query durable H2 proof-state slice:** the owner-bound V0-053 final
+  epoch is materialized as a canonical 30-lower-node/no-`R` checkpoint and loaded by
+  two fresh processes. Request-reset, occurrence-reset and durable controls freeze
+  `110/0`, `70/40`, and `10/100`; the parent treats child output as untrusted and
+  exactly re-derives it from a verified lease. The 60 avoided worker-local lower
+  constructions are not sample or total-work savings. Generic persistence,
+  independent-algorithm verification, semantic policy change, economics and
+  aggregate Gates remain open.
+- **V0-054B one-row action-local H2 semantic-switch slice:** a literal seed-4
+  LMB first epoch is built as `4/1` with zero transition calls. Its `A0A0/N`
+  plan is safe but fails regret `3/4`; a non-authorizing unrestricted
+  challenger and separate necessity/request chain activate one live-owner-bound
+  `(x1,M)` call behind a fail-closed step gate. The immutable `5/0` successor
+  freezes a complete pre-execution 14-edge reverse closure before final
+  replanning. The action-indexed lower DAG changes from `18/0` to `10/8`, all
+  roots are fresh, and value improves strictly `0 -> 1` under `A0A1/M` before
+  certification. Generic minimality/H>1, persistence/reuse, learned dynamics,
+  sample/total-work savings, economics and aggregate Gates remain open.
 - **Phase 3D general local-recovery Gate:** the V0-030 finite, cap-aware positive
   control that closes joint value/risk composition, slack-aware causal localization,
   and sparse worker authority. Its pass is not aggregate Phase 3 or economics.
@@ -1346,7 +1364,121 @@ sample_efficiency_gate_blocks_mainline = false
 ```
 
 
-### V0-053 live H2 query-local epoch-invalidation gate
+### V0-054B one-row action-local H2 semantic-switch gate
+
+Contract `1.18.0` registers schema `1.0.0`, profile
+`lmb_h2_action_local_semantic_switch_v0`, pure model-only subprofile
+`lmb_h2_action_indexed_semantic_switch_v0`, and status
+`CERTIFIED_REGISTERED_H2_ACTION_LOCAL_SEMANTIC_SWITCH_CONTROL`.
+
+The Gate passes only if:
+
+1. the production fixture is the literal seed-4 six-tile LMB and agrees with
+   the canonical generator only in a regression test;
+2. canonical states and all five ground rows equal the IDs frozen in
+   `specs/H2_ACTION_LOCAL_SEMANTIC_SWITCH.md`;
+3. the first model is constructed as exact `S+3N`, one missing `M`, with zero
+   transition calls;
+4. first model-only planning selects `A0A0/N`, reward/risk `0/0`, unrestricted
+   upper 3, normalized regret `3/4`, and fails certification;
+5. the selected-policy support frontier excludes `M` and cannot authorize any
+   transition;
+6. an unrestricted-challenger circuit identifies only downstream `M` at
+   remaining horizon one and remains non-authorizing;
+7. a separate exact-one-row necessity proof and request bind the first model,
+   query, failed proof circuit, state, action, row and single-call cap;
+8. authority, receipt and successful result are exact live-owner-bound objects;
+   copy/deepcopy, foreign types, golden receipt construction and reused
+   authority fail closed;
+9. a process-local non-reentrant gate source-pins the canonical step and its
+   own execution entry, rejects replacements, every call before request
+   freeze, every foreign state/action and every second or concurrent call;
+10. the monitored authority executes exactly one canonical `(x1,tile0)` row
+    and records deterministic reward/risk `1/0`;
+11. the immutable successor preserves all four base rows and appends only `M`,
+    changing coverage to exact `5/0`;
+12. before final execution, the live first-epoch proof cache independently
+    verifies the complete 14-edge reverse closure and binds that
+    pre-execution invalidation authority to the runtime;
+13. incomplete, stale, copied or post-hoc invalidation cannot authorize the
+    final epoch; actual work must equal ten recomputed and eight reused lower
+    nodes, with three fresh roots;
+14. a pure exact-model/query replay independently reconstructs all 18 nodes,
+    both audits, both candidate roots, proposal and selected root; document
+    equality rejects fully re-signed but semantically false graphs;
+15. final replanning selects `A0A1/M`, reward/risk/regret `1/0/0`, certified,
+    and the strict `0 -> 1` improvement proves the switch is not tie-only;
+16. two registered runs have identical canonical documents/IDs, and the
+    evaluation verifier bypasses the public runner while honestly labelling
+    itself same-implementation deterministic replay rather than an independent
+    algorithm.
+
+Passing permits only the registered one-row semantic closed-loop claim.
+Generic causal minimality/H>1, durable/cross-query reuse, automatic coordinate
+invention, partial/learned dynamics, sample/byte/CPU/wall-clock/total-work
+savings, workload economics, counter completeness and official execution
+remain locked. The scalar fields remain `official_scalar_cost = null` and
+`official_N_break_even = null`.
+
+The next Gate must combine the strict semantic switch with durable proof state
+or a preregistered multi-occurrence workload before widening any reuse or
+sample-tax claim.
+
+### Historical V0-054A same-query durable H2 proof-state gate
+
+Contract `1.17.0` registers schema `1.0.0`, profile
+`lmb_h2_same_query_durable_proof_state_v0`, and status
+`CERTIFIED_REGISTERED_H2_SAME_QUERY_DURABLE_PROOF_STATE_CONTROL`.
+
+The Gate passes only if:
+
+1. the producer consumes the exact owner-bound V0-053 result and freezes its
+   final model, threshold, build/rebase, evidence, candidate request/audit,
+   proposal, selected request/receipt/audit and execution identities;
+2. the canonical store contains exactly one 30-lower-node payload, one
+   manifest and one externally selected commit, with no mutable `HEAD` and no
+   persisted `R`;
+3. every load rejects noncanonical, extra/missing, unstable, linked, symlinked
+   or hard-linked artifacts and replays the four model-derived candidate
+   requests as exactly `34/10` over 44 resolutions;
+4. that replay reproduces the exact payload and four candidate inner-audit IDs
+   before a verified lease is minted;
+5. two distinct logical occurrences run in two separately launched
+   `python -I -s -B` processes, each with an actual PID attestation and
+   fail-closed target ground-entry guard;
+6. request-reset, occurrence-reset-global and durable arms produce exact
+   two-occurrence compute/hit totals `110/0`, `70/40`, and `10/100`;
+7. each durable request hits all ten lower nodes and computes a fresh
+   occurrence-/role-/proposal-bound `R`; both occurrences select the unchanged
+   semantic `A0A0` plan;
+8. the parent treats worker output as untrusted, re-derives the complete
+   occurrence from its own verified lease, and requires exact document
+   equality before minting success;
+9. parent validation reports its separate `34/10` checkpoint replay and
+   `190/140` worker-output proof work rather than hiding that work behind the
+   worker hit count;
+10. the checkpoint byte snapshot is unchanged across both occurrences and is
+    checked before and after evaluation replay;
+11. the evaluation verifier rebuilds a new store and two new processes and
+    reproduces the exact campaign, while being labelled same-implementation
+    deterministic replay rather than independent algorithm implementation;
+12. source substitution, fully re-signed hidden-value/topology/identity
+    attacks, untrusted-worker output, cache/root/receipt attacks, filesystem
+    substitutions, concurrent mutation and actual guarded ground calls fail
+    closed;
+13. all canonical identities equal the values frozen in
+    `specs/H2_DURABLE_PROOF_STATE.md`.
+
+Passing permits only the exact same-query/final-epoch persistence claim. The
+`70-10=60` difference is a worker-local lower-proof construction count, not a
+sample, total-work, byte, CPU, wall-clock or economics saving. V0-054A does not
+implement the complete Phase 3E counter registry/WorkVector and opens no
+official or aggregate Gate.
+
+V0-054B now supplies that separate strict switch without widening V0-054A's
+same-query durable-proof-state claim.
+
+### Historical V0-053 live H2 query-local epoch-invalidation gate
 
 Contract `1.16.0` registers schema `1.0.0`, profile
 `lmb_h2_live_query_local_epoch_invalidation_v0`, and status

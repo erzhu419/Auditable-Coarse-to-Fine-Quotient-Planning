@@ -28,7 +28,129 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 → jointly search local value/risk choices, rebuild, or use charged fallback
 ```
 
-## Current live H2 query-local epoch-invalidation slice (V0-053)
+## Current one-row action-local H2 semantic-switch slice (V0-054B)
+
+Contract `1.18.0`, schema `1.0.0`, and profile
+`lmb_h2_action_local_semantic_switch_v0` register a six-tile seed-4 LMB
+control whose first query-local model contains four exact rows and one missing
+off-policy challenger row. The pure proof subprofile
+`lmb_h2_action_indexed_semantic_switch_v0` contains an explicit 18-node H2
+lower DAG and imports no ground kernel.
+
+The first epoch is built without a transition call:
+
+```text
+x0 --S/tile4,reward0--> x1
+x1 --N={tile1,tile2,tile3},reward0--> horizon
+x1 --M=tile0--> missing
+coverage = 4 observed / 1 missing
+```
+
+Model-only planning selects reachable schedule `A0A0/N`. Its failure upper is
+zero, but the complete action catalogue leaves `M` as the unique missing
+unrestricted H1 maximizer. The unrestricted H2 upper is 3, so normalized
+regret is `3/4` and the plan is not certified. The ordinary selected-policy
+support frontier contains only `S` and the three `N` rows and is explicitly
+non-authorizing.
+
+The new `UnrestrictedChallengerFrontierV1` follows the failed `REGRET_N`
+proof circuit through `U0`, `U1`, `Q_M`, and `ROW_M`. It is also
+non-authorizing. A separate one-row necessity proof and content-addressed
+request must be frozen before the single-use authority can call the exact
+registered `(x1,tile0)` transition. Exactly one row is acquired; the first
+model remains byte-for-byte unchanged and the successor epoch is `5/0`.
+
+The action-indexed DAG then derives the actual reverse-edge invalidation cone:
+
+```text
+first lower DAG: 18 computes / 0 hits + 3 fresh roots = 21 computes
+final lower DAG: 10 computes / 8 hits + 3 fresh roots = 13 computes
+affected:   ROW_M,Q_M,U1,U0,PLAN_M,REGRET_N,REGRET_M,
+            RISK_M,COVERAGE_M,SELECTION
+unaffected: ROW_S,ROW_N1,ROW_N2,ROW_N3,Q_N,PLAN_N,RISK_N,COVERAGE_N
+```
+
+Each submitted epoch graph is independently replayed from its exact
+model/query and compared across all 18 nodes, audits, roots and proposal; a
+fully re-signed but semantically false graph is rejected. The one permitted
+kernel call likewise goes through a source-pinned gate entry and a guard that
+closes directly over the canonical step.
+
+All three complete roots are rebuilt in both epochs. The final exact row has
+reward 1 and risk 0, so replanning switches strictly from `A0A0/N` with value
+0 to `A0A1/M` with value 1; normalized regret becomes zero and the final
+candidate is certified. This is a numeric policy improvement, not a
+tie-breaking label change.
+
+V0-054B proves only this registered action-local closed loop. Its evaluation
+verifier is same-implementation deterministic replay, not an independent
+algorithm. Generic causal minimality, generic `H>1`, durable/cross-query reuse,
+automatic coordinate invention, partial/learned dynamics, sample,
+byte/CPU/wall-clock/total-work savings, workload economics, and official
+execution remain locked; `official_N_break_even` remains null. Full semantics
+and attacks are in
+`specs/H2_ACTION_LOCAL_SEMANTIC_SWITCH.md`.
+
+The next Gate should compose this semantic one-row switch with durable proof
+storage or a preregistered multi-occurrence workload. Only after real
+multi-query traces exist should a Laplace-style heuristic operator or KG-OP
+meta-prior be judged against the measured sample-tax bottleneck.
+
+## Historical same-query durable H2 proof-state slice (V0-054A)
+
+Contract `1.17.0`, schema `1.0.0`, and profile
+`lmb_h2_same_query_durable_proof_state_v0` carry the exact V0-053 final-epoch
+lower proof DAG into two fresh Python processes. The producer consumes only the
+owner-bound V0-053 result, reconstructs its final model-only workload, and commits
+exactly 30 lower nodes:
+
+```text
+U1,U0,P1,P0,C0,C1,D,E,F,G = 30 entries
+R = 0 persisted entries
+```
+
+The store has no mutable `HEAD`; an external commit ID binds canonical payload,
+manifest and commit bytes. Each loader replays the four model-derived candidate
+requests (`44 = 34 computes + 10 hits`) and requires the recomputed 30-node
+payload and four candidate-audit identities to match exactly before seeding a
+cache.
+
+Two separately launched `python -I -s -B` workers each run request-reset,
+occurrence-reset and durable arms:
+
+```text
+two-occurrence request reset       = 110 / 0
+two-occurrence occurrence reset    =  70 / 40
+two-occurrence durable continuation = 10 / 100
+```
+
+Every durable request constructs a fresh occurrence-/role-bound `R`; all ten
+lower resolutions hit. Thus 60 lower constructions are avoided inside the two
+worker executions relative to occurrence-reset. This is deliberately not called
+a total-work or sample saving: checkpoint construction, loader replay, process
+and I/O work, and trusted parent validation remain real work.
+
+Worker output is untrusted. The parent derives the complete expected occurrence
+from its own verified lease and exact-compares every load binding, resolution,
+root, proposal and audit commitment before minting success. Evaluation then
+rebuilds a fresh store and two further processes and checks the original store
+snapshot before and after replay. This is deterministic replay with the same
+pinned proof implementation, not an independently implemented algorithm.
+
+The warm process imports the ground-kernel module only to install a fail-closed
+guard; it obtains no target kernel instance and performs zero transition,
+catalogue or optimizer calls. Both occurrences retain semantic `A0A0`.
+Persistence is therefore established only for this exact same-query H2 control.
+Generic persistence, changed-query/model reuse, semantic policy change,
+sample/total-work reduction, economics and official execution remain locked.
+The exact source chain, trust boundary, attacks and canonical IDs are in
+`specs/H2_DURABLE_PROOF_STATE.md`.
+
+V0-054B now supplies the separate strict action-local switch without changing
+V0-054A's same-query persistence claim. Sample-tax operators/meta-priors remain
+downstream of measured multi-query traces.
+
+## Historical live H2 query-local epoch-invalidation slice (V0-053)
 
 Contract `1.16.0`, schema `1.0.0`, and profile
 `lmb_h2_live_query_local_epoch_invalidation_v0` connect the authentic V0-047 first
