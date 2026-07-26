@@ -113,6 +113,22 @@
   Both epochs retain the same semantic `A0A0` plan, so this is a registered live
   correctness control, not generic model-change proof, semantic policy change,
   persistence, sample efficiency, economics, or an aggregate Gate.
+- **V0-054A same-query durable H2 proof-state slice:** the exact V0-053 final
+  lower proof graph is committed root-free and consumed by fresh processes under
+  strict semantic replay. It proves only its registered same-query persistence
+  control, not a semantic action switch or net-work/sample savings.
+- **V0-054B one-row action-local H2 semantic-switch slice:** a literal seed-4
+  `4/1` model fails regret under `N`, authorizes exactly one missing `M` row, and
+  certifies the immutable `5/0` successor under a strict `N -> M` value
+  improvement. It is a live nonpersistent registered H2 control.
+- **V0-055 two-generation durable action-local H2 recovery slice:** V0-054B is
+  ordered between two strict root-free typed lower-proof checkpoints. Fresh
+  model-only P1 and P3 each load/reuse 18 lower nodes and build three roots
+  without recomputing a lower node; P2 restores the first 18 and performs the
+  final `10/8` continuation. This composes durable proof state with one strict
+  semantic switch only for the registered H2 fixture; it is not generic
+  persistence, cross-query/H>2 proof, native-work/sample saving, independent
+  verification, economics, or an aggregate Gate.
 - **Phase 3C local-recovery slice:** the V0-029 certificate-triggered, isolated,
   query-owned overlay positive control over an immutable reusable RAPM; it is not the
   aggregate Phase 3 or economics Gate.
@@ -1828,6 +1844,118 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
 
+### Contract 1.19.0: two-generation durable action-local H2 recovery
+
+V0-055 registers schema `1.0.0`, profile
+`lmb_h2_two_generation_durable_action_local_recovery_v0`, transport subprofile
+`lmb_h2_durable_action_switch_transport_v0`, and passing status
+`CERTIFIED_REGISTERED_H2_TWO_GENERATION_DURABLE_ACTION_LOCAL_RECOVERY_CONTROL`.
+
+This contract closes the exact composition left separate by V0-054A and
+V0-054B. It does not treat proof persistence as the research endpoint. The
+purpose of the durable proof state is to keep the registered multi-step plan,
+failure diagnosis, successor-model planning and recertification primarily
+inside the reusable abstract world model, opening one ground distinction only
+when the failed contingent-plan proof has authorized it.
+
+The normative operational order is:
+
+```text
+freeze root-free C1 before ground evidence
+-> launch P1 and reconstruct typed first-model lower proof state
+-> host verify the failed N proof
+-> freeze V0-055 authorization bound to P1 and C1
+-> invoke the exact source-pinned V0-054B one-row runner
+-> freeze the detached immutable M-row overlay projection
+-> launch P2 and reconstruct the final proof by exact continuation
+-> freeze root-free C2
+-> launch P3 and reconstruct the final certificate from C2
+```
+
+C1 contains the exact first `4/1` model/query and 18 canonical typed lower
+nodes, with zero persisted complete roots. The loader parses every durable
+document into its strict node type and replays its model/query semantics before
+minting a lease. P1 then starts an operational runtime from those nodes,
+records `0 lower recomputed / 18 lower loaded-reused`, and builds all three
+complete plan/request/role-bound roots fresh. It reproduces the failed
+`A0A0/N` proof. Neither C1 bytes nor P1 output can authorize ground access.
+
+Only after host verification of P1 may a V0-055 authorization bind C1, P1,
+the exact target row and source hashes to the frozen V0-054B runner. That
+runner owns the sole operational ground transition, the canonical `(x1,M)`
+row. Its live owner-bound authority is deliberately nontransportable. A
+detached overlay projection may preserve the exact row, source-result,
+evidence-bundle, predecessor and immutable-overlay identities as provenance,
+but it cannot mint a second ground authority or replace the live source
+result.
+
+P2 is a fresh model-only process. It loads C1, restores/reuses the first 18
+lower nodes with zero operational lower recomputation, then consumes the
+verified overlay projection and derives the successor execution as
+`10 lower recomputed / 8 lower reused + 3 fresh roots`. Its exact delta,
+pre-execution invalidation, execution and selected certificate must equal the
+owner-bound V0-054B source. The final semantic action is `M`, with reward,
+risk and normalized regret `1/0/0`; the first semantic action was `N` with
+reward 0 and failed regret `3/4`.
+
+C2 is a second immutable root-free checkpoint. It contains a canonical
+28-lower-node union: exactly 18 active final nodes and ten historical
+first-only nodes. Roots and an opaque P2 continuation are not persisted as
+substitutes for typed lower proof. P3 is a third fresh model-only process. It
+loads/reuses the 18 active nodes, recomputes zero lower nodes, creates all
+three roots fresh and reproduces the certified `A0A1/M` result.
+
+The operational trace freezes exactly three fresh model-only process launches,
+one source-owned ground transition, zero pre-ground transitions, and zero
+P1/P2/P3 ground transitions. The separate evaluation verifier rebuilds the
+full chain in a fresh store, charges one additional ground transition and
+three launches only to the evaluation lane, exact-compares the complete result
+and proves the original C1/overlay/C2 bytes unchanged. It is
+same-implementation deterministic replay, not an independently implemented
+proof algorithm.
+
+The `0/18` and `10/8` values are operational lower-proof-runtime telemetry
+after strict checkpoint acceptance. The 18 semantic validation obligations
+used to establish that a checkpoint represents the exact source graph are not
+relabelled as native physical computations. V0-055 therefore does not claim
+CounterRegistry-complete native compute accounting or any total-work
+improvement.
+
+The only positive claim flags are:
+
+```text
+registered_h2_two_generation_durable_action_local_recovery_claimed = true
+root_free_lower_checkpoint_claimed = true
+fresh_model_only_process_continuation_claimed = true
+strict_policy_switch_preserved_claimed = true
+```
+
+Detached checkpoint ground authority, generic durable/crash recovery,
+hostile-worker security, cross-query reuse, generic `H>1`, horizons above two,
+generic action-local minimality, automatic coordinate invention,
+partial/learned dynamics, sample efficiency, byte/CPU/wall-clock/total-work
+savings, native-compute completeness and independent-algorithm verification
+remain false.
+
+The next construction Gate is a preregistered matched
+multi-occurrence/multi-query workload over this complete durable model-first
+path, with strict no-reuse and direct baselines. Only after those real traces
+measure the actual sample tax may a Laplace-style heuristic operator or
+KG-OP-style meta-prior be frozen and evaluated; that later intervention does
+not block the current mainline.
+
+Contract 1.19.0 opens no aggregate lock:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+sample_efficiency_gate_blocks_mainline = false
+```
+
 ### Contract 1.18.0: one-row action-local H2 semantic switch
 
 V0-054B registers schema `1.0.0`, profile
@@ -1878,10 +2006,9 @@ execution, scalar/break-even and workload Gates remain false/null/`NOT_RUN`;
 the normative field remains `official_N_break_even = null`. Evaluation is same-implementation
 deterministic replay and does not claim an independent proof algorithm.
 
-The next contract must compose the semantic switch with durable proof storage
-or a preregistered multi-occurrence workload. Only measured multi-query traces
-may motivate a later Laplace-style heuristic operator or KG-OP meta-prior
-sample-tax intervention. Full details are normative in
+Contract 1.19.0 now composes the semantic switch with two generations of
+root-free durable lower-proof state. Contract 1.18.0 remains the historical
+nonpersistent live control. Full V0-054B details remain normative in
 `specs/H2_ACTION_LOCAL_SEMANTIC_SWITCH.md`.
 
 ### Historical contract 1.17.0: same-query durable H2 proof state

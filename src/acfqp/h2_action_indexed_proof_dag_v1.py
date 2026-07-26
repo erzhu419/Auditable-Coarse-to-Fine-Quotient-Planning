@@ -59,6 +59,9 @@ DOMAIN_TAGS = {
     "root": "acfqp:action-indexed-proof-root:v1",
     "proposal": "acfqp:action-indexed-plan-proposal:v1",
     "execution": "acfqp:action-indexed-epoch-execution:v1",
+    "restore": "acfqp:action-indexed-first-runtime-restore:v1",
+    "final_restore": "acfqp:action-indexed-final-runtime-restore:v1",
+    "restored_roots": "acfqp:action-indexed-restored-root-replay:v1",
     "delta": "acfqp:action-indexed-model-delta:v1",
     "edge": "acfqp:action-indexed-invalidation-edge:v1",
     "pre_invalidation": "acfqp:action-indexed-preexecution-invalidation:v1",
@@ -769,6 +772,125 @@ class ActionIndexedProofNodeV1:
         raise ActionIndexedProofInvariantViolation(
             f"{self.address.value} has no text field {name}"
         )
+
+
+def _parse_fraction_document(value: Any, name: str) -> Fraction:
+    if (
+        type(value) is not dict
+        or set(value) != {"numerator", "denominator"}
+        or type(value["numerator"]) is not int
+        or type(value["denominator"]) is not int
+        or value["denominator"] <= 0
+    ):
+        raise ActionIndexedProofInvariantViolation(
+            f"{name} is not a reduced rational document"
+        )
+    result = Fraction(value["numerator"], value["denominator"])
+    if _fdoc(result) != value:
+        raise ActionIndexedProofInvariantViolation(
+            f"{name} rational document is not reduced"
+        )
+    return result
+
+
+def parse_action_indexed_proof_node_document_v1(
+    document: Mapping[str, Any],
+) -> ActionIndexedProofNodeV1:
+    """Reconstruct one canonical lower node from durable JSON bytes."""
+
+    expected_keys = {
+        "schema",
+        "schema_version",
+        "profile_key",
+        "address",
+        "kind",
+        "input_slice_id",
+        "ordered_parent_node_ids",
+        "identity_terms",
+        "node_key_id",
+        "result_digest",
+        "result_fields",
+        "node_id",
+    }
+    if type(document) is not dict or set(document) != expected_keys:
+        raise ActionIndexedProofInvariantViolation(
+            "durable proof-node document shape changed"
+        )
+    if (
+        document["schema"] != "acfqp.action_indexed_proof_node.v1"
+        or document["schema_version"] != SCHEMA_VERSION
+        or document["profile_key"] != PROFILE_KEY
+        or type(document["ordered_parent_node_ids"]) is not list
+        or type(document["identity_terms"]) is not list
+        or type(document["result_fields"]) is not list
+    ):
+        raise ActionIndexedProofInvariantViolation(
+            "durable proof-node schema changed"
+        )
+    identity_terms: list[tuple[str, str]] = []
+    for item in document["identity_terms"]:
+        if type(item) is not dict or set(item) != {"name", "value"}:
+            raise ActionIndexedProofInvariantViolation(
+                "durable proof-node identity term changed"
+            )
+        identity_terms.append((item["name"], item["value"]))
+    result_fields: list[ActionIndexedResultFieldV1] = []
+    for item in document["result_fields"]:
+        if type(item) is not dict or set(item) != {"name", "kind", "value"}:
+            raise ActionIndexedProofInvariantViolation(
+                "durable proof-node result field changed"
+            )
+        try:
+            kind = ResultFieldKind(item["kind"])
+        except (TypeError, ValueError) as error:
+            raise ActionIndexedProofInvariantViolation(
+                "durable proof-node result kind changed"
+            ) from error
+        if kind is ResultFieldKind.FRACTION:
+            result_fields.append(
+                ActionIndexedResultFieldV1(
+                    item["name"],
+                    kind,
+                    fraction_value=_parse_fraction_document(
+                        item["value"],
+                        f"durable {item['name']}",
+                    ),
+                )
+            )
+        elif kind is ResultFieldKind.BOOLEAN:
+            result_fields.append(
+                ActionIndexedResultFieldV1(
+                    item["name"],
+                    kind,
+                    boolean_value=item["value"],
+                )
+            )
+        else:
+            result_fields.append(
+                ActionIndexedResultFieldV1(
+                    item["name"],
+                    kind,
+                    text_value=item["value"],
+                )
+            )
+    try:
+        node = ActionIndexedProofNodeV1(
+            ProofAddress(document["address"]),
+            ProofNodeKind(document["kind"]),
+            document["input_slice_id"],
+            tuple(document["ordered_parent_node_ids"]),
+            tuple(identity_terms),
+            tuple(result_fields),
+        )
+    except (TypeError, ValueError) as error:
+        raise ActionIndexedProofInvariantViolation(
+            "durable proof-node document cannot be reconstructed"
+        ) from error
+    if node.to_document() != document:
+        raise ActionIndexedProofInvariantViolation(
+            "durable proof-node document is not canonical"
+        )
+    return node
 
 
 class ProofResolutionOutcome(str, Enum):
@@ -1583,6 +1705,260 @@ class ActionIndexedEpochExecutionV1:
 
     def to_document(self) -> dict[str, Any]:
         return {**self._payload(), "execution_id": self.execution_id}
+
+
+@dataclass(frozen=True, slots=True)
+class ActionIndexedFirstRuntimeRestoreV1:
+    """Receipt for loading a verified first-epoch lower graph into a runtime.
+
+    The receipt does not prove that the nodes came from durable storage.  A
+    storage profile must bind it to its own verified lease.  It proves only
+    that this model-only module accepted the exact registered first
+    model/query/execution semantics and loaded lower nodes but no roots.
+    """
+
+    model_id: str
+    query_id: str
+    execution_id: str
+    ordered_lower_node_ids: tuple[str, ...]
+    pre_runtime_snapshot_id: str
+    post_runtime_snapshot_id: str
+    lower_entries_loaded: int = 18
+    roots_loaded: int = 0
+    semantic_replay_required: bool = True
+
+    def __post_init__(self) -> None:
+        for value in (
+            self.model_id,
+            self.query_id,
+            self.execution_id,
+            self.pre_runtime_snapshot_id,
+            self.post_runtime_snapshot_id,
+            *self.ordered_lower_node_ids,
+        ):
+            _cid(value, "first-runtime restore identity")
+        if (
+            type(self.ordered_lower_node_ids) is not tuple
+            or len(self.ordered_lower_node_ids) != 18
+            or len(set(self.ordered_lower_node_ids)) != 18
+            or self.lower_entries_loaded != 18
+            or self.roots_loaded != 0
+            or self.semantic_replay_required is not True
+            or self.pre_runtime_snapshot_id == self.post_runtime_snapshot_id
+        ):
+            raise ActionIndexedProofInvariantViolation(
+                "first-runtime restore receipt changed"
+            )
+
+    def _payload(self) -> dict[str, Any]:
+        return {
+            "schema": "acfqp.action_indexed_first_runtime_restore.v1",
+            "schema_version": SCHEMA_VERSION,
+            "profile_key": PROFILE_KEY,
+            "model_id": self.model_id,
+            "query_id": self.query_id,
+            "execution_id": self.execution_id,
+            "ordered_lower_node_ids": list(self.ordered_lower_node_ids),
+            "pre_runtime_snapshot_id": self.pre_runtime_snapshot_id,
+            "post_runtime_snapshot_id": self.post_runtime_snapshot_id,
+            "lower_entries_loaded": self.lower_entries_loaded,
+            "roots_loaded": self.roots_loaded,
+            "semantic_replay_required": self.semantic_replay_required,
+        }
+
+    @property
+    def restore_id(self) -> str:
+        return _content_id("restore", self._payload())
+
+    def to_document(self) -> dict[str, Any]:
+        return {**self._payload(), "restore_id": self.restore_id}
+
+
+@dataclass(frozen=True, slots=True)
+class ActionIndexedFinalRuntimeRestoreV1:
+    """Receipt for loading the active final lower graph from a 28-node union."""
+
+    model_id: str
+    query_id: str
+    execution_id: str
+    full_ordered_node_ids: tuple[str, ...]
+    active_ordered_node_ids: tuple[str, ...]
+    pre_runtime_snapshot_id: str
+    post_runtime_snapshot_id: str
+    full_entries_validated: int = 28
+    active_entries_loaded: int = 18
+    roots_loaded: int = 0
+    semantic_replay_required: bool = True
+
+    def __post_init__(self) -> None:
+        for value in (
+            self.model_id,
+            self.query_id,
+            self.execution_id,
+            self.pre_runtime_snapshot_id,
+            self.post_runtime_snapshot_id,
+            *self.full_ordered_node_ids,
+            *self.active_ordered_node_ids,
+        ):
+            _cid(value, "final-runtime restore identity")
+        if (
+            type(self.full_ordered_node_ids) is not tuple
+            or len(self.full_ordered_node_ids) != 28
+            or len(set(self.full_ordered_node_ids)) != 28
+            or self.full_ordered_node_ids
+            != tuple(sorted(self.full_ordered_node_ids))
+            or type(self.active_ordered_node_ids) is not tuple
+            or len(self.active_ordered_node_ids) != 18
+            or len(set(self.active_ordered_node_ids)) != 18
+            or not set(self.active_ordered_node_ids).issubset(
+                self.full_ordered_node_ids
+            )
+            or self.full_entries_validated != 28
+            or self.active_entries_loaded != 18
+            or self.roots_loaded != 0
+            or self.semantic_replay_required is not True
+            or self.pre_runtime_snapshot_id == self.post_runtime_snapshot_id
+        ):
+            raise ActionIndexedProofInvariantViolation(
+                "final-runtime restore receipt changed"
+            )
+
+    def _payload(self) -> dict[str, Any]:
+        return {
+            "schema": "acfqp.action_indexed_final_runtime_restore.v1",
+            "schema_version": SCHEMA_VERSION,
+            "profile_key": PROFILE_KEY,
+            "model_id": self.model_id,
+            "query_id": self.query_id,
+            "execution_id": self.execution_id,
+            "full_ordered_node_ids": list(self.full_ordered_node_ids),
+            "active_ordered_node_ids": list(
+                self.active_ordered_node_ids
+            ),
+            "pre_runtime_snapshot_id": self.pre_runtime_snapshot_id,
+            "post_runtime_snapshot_id": self.post_runtime_snapshot_id,
+            "full_entries_validated": self.full_entries_validated,
+            "active_entries_loaded": self.active_entries_loaded,
+            "roots_loaded": self.roots_loaded,
+            "semantic_replay_required": self.semantic_replay_required,
+        }
+
+    @property
+    def restore_id(self) -> str:
+        return _content_id("final_restore", self._payload())
+
+    def to_document(self) -> dict[str, Any]:
+        return {**self._payload(), "restore_id": self.restore_id}
+
+
+@dataclass(frozen=True, slots=True)
+class ActionIndexedRestoredRootReplayV1:
+    """Three fresh roots derived from 18 operationally loaded lower nodes."""
+
+    epoch: ModelEpoch
+    model_id: str
+    query_id: str
+    source_execution_id: str
+    restore_binding_id: str
+    runtime_snapshot_id: str
+    ordered_lower_node_ids: tuple[str, ...]
+    candidate_audits: tuple[ActionIndexedCandidateAuditV1, ...]
+    candidate_roots: tuple[ActionIndexedProofRootV1, ...]
+    proposal: ActionIndexedPlanProposalV1
+    selected_root: ActionIndexedProofRootV1
+    lower_computed: int = 0
+    lower_reused: int = 18
+    roots_loaded: int = 0
+    fresh_root_computed: int = 3
+    ground_transition_calls: int = 0
+
+    def __post_init__(self) -> None:
+        if type(self.epoch) is not ModelEpoch:
+            raise ActionIndexedProofInvariantViolation(
+                "restored-root epoch changed"
+            )
+        for value in (
+            self.model_id,
+            self.query_id,
+            self.source_execution_id,
+            self.restore_binding_id,
+            self.runtime_snapshot_id,
+            *self.ordered_lower_node_ids,
+        ):
+            _cid(value, "restored-root identity")
+        _require_exact_tuple(
+            self.candidate_audits,
+            ActionIndexedCandidateAuditV1,
+            "restored-root audits",
+        )
+        _require_exact_tuple(
+            self.candidate_roots,
+            ActionIndexedProofRootV1,
+            "restored-root candidate roots",
+        )
+        if (
+            len(self.ordered_lower_node_ids) != 18
+            or len(set(self.ordered_lower_node_ids)) != 18
+            or tuple(item.action for item in self.candidate_audits)
+            != (CandidateAction.N, CandidateAction.M)
+            or tuple(item.action for item in self.candidate_roots)
+            != (CandidateAction.N, CandidateAction.M)
+            or type(self.proposal) is not ActionIndexedPlanProposalV1
+            or type(self.selected_root) is not ActionIndexedProofRootV1
+            or self.proposal.model_id != self.model_id
+            or self.proposal.query_id != self.query_id
+            or self.proposal.epoch is not self.epoch
+            or self.proposal.candidate_audit_ids
+            != tuple(item.audit_id for item in self.candidate_audits)
+            or self.proposal.candidate_root_ids
+            != tuple(item.root_id for item in self.candidate_roots)
+            or self.selected_root.proposal_id != self.proposal.proposal_id
+            or self.selected_root.action is not self.proposal.selected_action
+            or self.selected_root.ordered_lower_node_ids
+            != self.ordered_lower_node_ids
+            or self.lower_computed != 0
+            or self.lower_reused != 18
+            or self.roots_loaded != 0
+            or self.fresh_root_computed != 3
+            or self.ground_transition_calls != 0
+        ):
+            raise ActionIndexedProofInvariantViolation(
+                "restored-root replay changed"
+            )
+
+    def _payload(self) -> dict[str, Any]:
+        return {
+            "schema": "acfqp.action_indexed_restored_root_replay.v1",
+            "schema_version": SCHEMA_VERSION,
+            "profile_key": PROFILE_KEY,
+            "epoch": self.epoch.value,
+            "model_id": self.model_id,
+            "query_id": self.query_id,
+            "source_execution_id": self.source_execution_id,
+            "restore_binding_id": self.restore_binding_id,
+            "runtime_snapshot_id": self.runtime_snapshot_id,
+            "ordered_lower_node_ids": list(self.ordered_lower_node_ids),
+            "candidate_audits": [
+                item.to_document() for item in self.candidate_audits
+            ],
+            "candidate_roots": [
+                item.to_document() for item in self.candidate_roots
+            ],
+            "proposal": self.proposal.to_document(),
+            "selected_root": self.selected_root.to_document(),
+            "lower_computed": self.lower_computed,
+            "lower_reused": self.lower_reused,
+            "roots_loaded": self.roots_loaded,
+            "fresh_root_computed": self.fresh_root_computed,
+            "ground_transition_calls": self.ground_transition_calls,
+        }
+
+    @property
+    def replay_id(self) -> str:
+        return _content_id("restored_roots", self._payload())
+
+    def to_document(self) -> dict[str, Any]:
+        return {**self._payload(), "replay_id": self.replay_id}
 
 
 def _slice_id(address: ProofAddress, document: Mapping[str, Any]) -> str:
@@ -2420,6 +2796,424 @@ def execute_action_indexed_epoch_v1(
     return execution
 
 
+def restore_verified_action_indexed_first_runtime_v1(
+    model: ActionIndexedH2ModelV1,
+    query: ActionIndexedH2QueryV1,
+    execution: ActionIndexedEpochExecutionV1,
+) -> tuple[ActionIndexedProofRuntimeV1, ActionIndexedFirstRuntimeRestoreV1]:
+    """Load the exact verified first lower graph without persisting roots.
+
+    Semantic validation is deliberately repeated before loading.  The returned
+    runtime records the canonical first execution history so a separately
+    verified durable lease can continue with the normal pre-invalidation and
+    final-epoch APIs.  Callers must account semantic replay and storage I/O
+    separately from the 18 loaded lower entries; this helper makes no work-
+    saving claim.
+    """
+
+    if (
+        type(model) is not ActionIndexedH2ModelV1
+        or type(query) is not ActionIndexedH2QueryV1
+        or type(execution) is not ActionIndexedEpochExecutionV1
+    ):
+        raise ActionIndexedProofInvariantViolation(
+            "first-runtime restore requires exact model/query/execution types"
+        )
+    model.__post_init__()
+    query.__post_init__()
+    execution.__post_init__()
+    if (
+        model.epoch is not ModelEpoch.FIRST_4_OBSERVED_1_MISSING
+        or execution.epoch is not model.epoch
+        or execution.model_id != model.model_id
+        or execution.query_id != query.query_id
+        or execution.semantic_model.to_document() != model.to_document()
+        or execution.semantic_query.to_document() != query.to_document()
+        or execution.work.lower_computed != 18
+        or execution.work.lower_reused != 0
+    ):
+        raise ActionIndexedProofInvariantViolation(
+            "first-runtime restore source is not the exact first execution"
+        )
+    validation_runtime = ActionIndexedProofRuntimeV1()
+    canonical_execution = execute_action_indexed_epoch_v1(
+        model,
+        query,
+        validation_runtime,
+    )
+    if execution.to_document() != canonical_execution.to_document():
+        raise ActionIndexedProofInvariantViolation(
+            "first-runtime restore execution differs from fresh semantic replay"
+        )
+    return restore_verified_action_indexed_first_lower_graph_v1(
+        model,
+        query,
+        execution.nodes,
+        execution.execution_id,
+    )
+
+
+def restore_verified_action_indexed_first_lower_graph_v1(
+    model: ActionIndexedH2ModelV1,
+    query: ActionIndexedH2QueryV1,
+    durable_nodes: tuple[ActionIndexedProofNodeV1, ...],
+    source_execution_id: str,
+) -> tuple[ActionIndexedProofRuntimeV1, ActionIndexedFirstRuntimeRestoreV1]:
+    """Load canonical first lower-node objects supplied by durable storage."""
+
+    if (
+        type(model) is not ActionIndexedH2ModelV1
+        or type(query) is not ActionIndexedH2QueryV1
+    ):
+        raise ActionIndexedProofInvariantViolation(
+            "durable first restore requires exact model/query types"
+        )
+    _require_exact_tuple(
+        durable_nodes,
+        ActionIndexedProofNodeV1,
+        "durable first lower nodes",
+    )
+    source_execution_id = _cid(
+        source_execution_id,
+        "durable first source execution",
+    )
+    if (
+        model.epoch is not ModelEpoch.FIRST_4_OBSERVED_1_MISSING
+        or tuple(item.address for item in durable_nodes) != ADDRESS_ORDER
+        or len({item.node_key_id for item in durable_nodes}) != 18
+        or len({item.node_id for item in durable_nodes}) != 18
+    ):
+        raise ActionIndexedProofInvariantViolation(
+            "durable first lower graph shape changed"
+        )
+    validation_runtime = ActionIndexedProofRuntimeV1()
+    canonical_execution = execute_action_indexed_epoch_v1(
+        model,
+        query,
+        validation_runtime,
+    )
+    if (
+        source_execution_id != canonical_execution.execution_id
+        or tuple(item.to_document() for item in durable_nodes)
+        != tuple(
+            item.to_document()
+            for item in canonical_execution.nodes
+        )
+    ):
+        raise ActionIndexedProofInvariantViolation(
+            "durable first lower graph differs from semantic replay"
+        )
+    runtime = ActionIndexedProofRuntimeV1()
+    pre_snapshot = runtime.snapshot_id
+    runtime._cache = {
+        node.node_key_id: node
+        for node in durable_nodes
+    }
+    if (
+        len(runtime._cache) != 18
+        or any(
+            runtime._cache[node.node_key_id] is not node
+            for node in durable_nodes
+        )
+    ):
+        raise ActionIndexedProofInvariantViolation(
+            "durable first lower objects were not loaded exactly"
+        )
+    runtime._commit_execution(model.model_id, source_execution_id)
+    post_snapshot = runtime.snapshot_id
+    receipt = ActionIndexedFirstRuntimeRestoreV1(
+        model.model_id,
+        query.query_id,
+        source_execution_id,
+        tuple(item.node_id for item in durable_nodes),
+        pre_snapshot,
+        post_snapshot,
+    )
+    if runtime.cache_size != 18:
+        raise ActionIndexedProofInvariantViolation(
+            "durable first restore cache cardinality changed"
+        )
+    return runtime, receipt
+
+
+def restore_verified_action_indexed_final_lower_graph_v1(
+    model: ActionIndexedH2ModelV1,
+    query: ActionIndexedH2QueryV1,
+    durable_full_nodes: tuple[ActionIndexedProofNodeV1, ...],
+    active_final_bindings: tuple[tuple[str, str, str], ...],
+    source_execution_id: str,
+) -> tuple[ActionIndexedProofRuntimeV1, ActionIndexedFinalRuntimeRestoreV1]:
+    """Validate a 28-node union and operationally load its 18 active nodes."""
+
+    if (
+        type(model) is not ActionIndexedH2ModelV1
+        or type(query) is not ActionIndexedH2QueryV1
+        or type(active_final_bindings) is not tuple
+    ):
+        raise ActionIndexedProofInvariantViolation(
+            "durable final restore requires exact typed inputs"
+        )
+    _require_exact_tuple(
+        durable_full_nodes,
+        ActionIndexedProofNodeV1,
+        "durable final full lower nodes",
+    )
+    source_execution_id = _cid(
+        source_execution_id,
+        "durable final source execution",
+    )
+    if (
+        model.epoch is not ModelEpoch.FINAL_5_OBSERVED_0_MISSING
+        or len(durable_full_nodes) != 28
+        or tuple(item.node_id for item in durable_full_nodes)
+        != tuple(sorted(item.node_id for item in durable_full_nodes))
+        or len({item.node_id for item in durable_full_nodes}) != 28
+    ):
+        raise ActionIndexedProofInvariantViolation(
+            "durable final union shape changed"
+        )
+    first_replay = replay_action_indexed_epoch_semantics_v1(
+        registered_first_action_indexed_h2_model_v1(),
+        query,
+    )
+    final_replay = replay_action_indexed_epoch_semantics_v1(model, query)
+    expected_union = {
+        node.node_id: node
+        for node in (*first_replay.nodes, *final_replay.nodes)
+    }
+    supplied_union = {
+        node.node_id: node for node in durable_full_nodes
+    }
+    if (
+        len(expected_union) != 28
+        or set(supplied_union) != set(expected_union)
+        or any(
+            supplied_union[node_id].to_document()
+            != expected.to_document()
+            for node_id, expected in expected_union.items()
+        )
+    ):
+        raise ActionIndexedProofInvariantViolation(
+            "durable final union differs from semantic replay"
+        )
+    if (
+        len(active_final_bindings) != 18
+        or tuple(item[0] for item in active_final_bindings)
+        != tuple(address.value for address in ADDRESS_ORDER)
+    ):
+        raise ActionIndexedProofInvariantViolation(
+            "durable final active bindings changed"
+        )
+    active_nodes: list[ActionIndexedProofNodeV1] = []
+    for binding, expected in zip(
+        active_final_bindings,
+        final_replay.nodes,
+    ):
+        if (
+            type(binding) is not tuple
+            or len(binding) != 3
+            or binding
+            != (
+                expected.address.value,
+                expected.node_key_id,
+                expected.node_id,
+            )
+        ):
+            raise ActionIndexedProofInvariantViolation(
+                "durable final active binding differs from semantic replay"
+            )
+        active_nodes.append(supplied_union[expected.node_id])
+    canonical_final = run_registered_action_indexed_h2_switch_v1()[1]
+    if source_execution_id != canonical_final.execution_id:
+        raise ActionIndexedProofInvariantViolation(
+            "durable final source execution changed"
+        )
+    runtime = ActionIndexedProofRuntimeV1()
+    pre_snapshot = runtime.snapshot_id
+    runtime._cache = {
+        node.node_key_id: node for node in active_nodes
+    }
+    if (
+        len(runtime._cache) != 18
+        or any(
+            runtime._cache[node.node_key_id] is not node
+            for node in active_nodes
+        )
+    ):
+        raise ActionIndexedProofInvariantViolation(
+            "durable final active objects were not loaded exactly"
+        )
+    runtime._commit_execution(model.model_id, source_execution_id)
+    post_snapshot = runtime.snapshot_id
+    receipt = ActionIndexedFinalRuntimeRestoreV1(
+        model.model_id,
+        query.query_id,
+        source_execution_id,
+        tuple(item.node_id for item in durable_full_nodes),
+        tuple(item.node_id for item in active_nodes),
+        pre_snapshot,
+        post_snapshot,
+    )
+    return runtime, receipt
+
+
+def rebuild_action_indexed_roots_from_restored_runtime_v1(
+    model: ActionIndexedH2ModelV1,
+    query: ActionIndexedH2QueryV1,
+    runtime: ActionIndexedProofRuntimeV1,
+    restore: ActionIndexedFirstRuntimeRestoreV1
+    | ActionIndexedFinalRuntimeRestoreV1,
+) -> ActionIndexedRestoredRootReplayV1:
+    """Build the three non-cacheable roots from the loaded lower objects."""
+
+    if (
+        type(model) is not ActionIndexedH2ModelV1
+        or type(query) is not ActionIndexedH2QueryV1
+        or type(runtime) is not ActionIndexedProofRuntimeV1
+        or type(restore)
+        not in (
+            ActionIndexedFirstRuntimeRestoreV1,
+            ActionIndexedFinalRuntimeRestoreV1,
+        )
+    ):
+        raise ActionIndexedProofInvariantViolation(
+            "restored-root replay requires exact typed inputs"
+        )
+    restore.__post_init__()
+    if (
+        restore.model_id != model.model_id
+        or restore.query_id != query.query_id
+        or restore.post_runtime_snapshot_id != runtime.snapshot_id
+        or runtime.cache_size != 18
+    ):
+        raise ActionIndexedProofInvariantViolation(
+            "restored-root replay lost its runtime binding"
+        )
+    nodes_by_address = {
+        node.address: node for node in runtime._cache.values()
+    }
+    if set(nodes_by_address) != set(ADDRESS_ORDER):
+        raise ActionIndexedProofInvariantViolation(
+            "restored-root replay has an incomplete lower graph"
+        )
+    nodes = tuple(nodes_by_address[address] for address in ADDRESS_ORDER)
+    expected_active_ids = (
+        restore.ordered_lower_node_ids
+        if type(restore) is ActionIndexedFirstRuntimeRestoreV1
+        else restore.active_ordered_node_ids
+    )
+    if tuple(item.node_id for item in nodes) != expected_active_ids:
+        raise ActionIndexedProofInvariantViolation(
+            "restored-root lower-node order changed"
+        )
+    node_by_id = {item.node_id: item for item in nodes}
+    for address, node in zip(ADDRESS_ORDER, nodes):
+        try:
+            parents = tuple(
+                node_by_id[parent].address
+                for parent in node.ordered_parent_node_ids
+            )
+        except KeyError as error:
+            raise ActionIndexedProofInvariantViolation(
+                "restored-root graph has a missing parent"
+            ) from error
+        if parents != EXPECTED_PARENT_ADDRESSES[address]:
+            raise ActionIndexedProofInvariantViolation(
+                "restored-root parent topology changed"
+            )
+    mapping = {
+        node.address: node for node in nodes
+    }
+    audits = tuple(
+        _build_candidate_audit(
+            model.epoch,
+            model.model_id,
+            query.query_id,
+            action,
+            mapping,
+        )
+        for action in CandidateAction
+    )
+    lower_ids = tuple(item.node_id for item in nodes)
+    candidate_roots = tuple(
+        ActionIndexedProofRootV1(
+            model.epoch,
+            model.model_id,
+            query.query_id,
+            ProofRootRole.CANDIDATE_AUDIT,
+            audit.action,
+            audit.audit_id,
+            lower_ids,
+            None,
+            audit.certified,
+        )
+        for audit in audits
+    )
+    selected_action = CandidateAction(
+        mapping[ProofAddress.SELECTION].text("selected_action")
+    )
+    selected_code = mapping[ProofAddress.SELECTION].text("schedule_code")
+    selection_mode = mapping[ProofAddress.SELECTION].text("selection_mode")
+    proposal = ActionIndexedPlanProposalV1(
+        model.epoch,
+        model.model_id,
+        query.query_id,
+        mapping[ProofAddress.SELECTION].node_id,
+        tuple(item.audit_id for item in audits),  # type: ignore[arg-type]
+        tuple(item.root_id for item in candidate_roots),  # type: ignore[arg-type]
+        selected_action,
+        selected_code,
+        selection_mode,
+    )
+    selected_audit = audits[
+        0 if selected_action is CandidateAction.N else 1
+    ]
+    selected_root = ActionIndexedProofRootV1(
+        model.epoch,
+        model.model_id,
+        query.query_id,
+        ProofRootRole.INDEPENDENT_SELECTED_ROOT,
+        selected_action,
+        selected_audit.audit_id,
+        lower_ids,
+        proposal.proposal_id,
+        selected_audit.certified,
+    )
+    replay = replay_action_indexed_epoch_semantics_v1(model, query)
+    if (
+        tuple(item.to_document() for item in nodes)
+        != tuple(item.to_document() for item in replay.nodes)
+        or tuple(item.to_document() for item in audits)
+        != tuple(
+            item.to_document() for item in replay.candidate_audits
+        )
+        or tuple(item.to_document() for item in candidate_roots)
+        != tuple(
+            item.to_document() for item in replay.candidate_roots
+        )
+        or proposal.to_document() != replay.proposal.to_document()
+        or selected_root.to_document()
+        != replay.selected_root.to_document()
+        or runtime.snapshot_id != restore.post_runtime_snapshot_id
+    ):
+        raise ActionIndexedProofInvariantViolation(
+            "restored-root result differs from semantic replay"
+        )
+    return ActionIndexedRestoredRootReplayV1(
+        model.epoch,
+        model.model_id,
+        query.query_id,
+        restore.execution_id,
+        restore.restore_id,
+        runtime.snapshot_id,
+        lower_ids,
+        audits,
+        candidate_roots,
+        proposal,
+        selected_root,
+    )
+
+
 @dataclass(frozen=True, slots=True)
 class ActionIndexedModelDeltaV1:
     first_model_id: str
@@ -3062,6 +3856,8 @@ __all__ = [
     "ActionIndexedCandidateAuditV1",
     "ActionIndexedEpochExecutionV1",
     "ActionIndexedEpochSemanticReplayV1",
+    "ActionIndexedFinalRuntimeRestoreV1",
+    "ActionIndexedFirstRuntimeRestoreV1",
     "ActionIndexedGroundRowV1",
     "ActionIndexedH2ModelV1",
     "ActionIndexedH2QueryV1",
@@ -3076,6 +3872,7 @@ __all__ = [
     "ActionIndexedProofRootV1",
     "ActionIndexedProofRuntimeV1",
     "ActionIndexedProofWorkV1",
+    "ActionIndexedRestoredRootReplayV1",
     "CandidateAction",
     "GroundRowName",
     "GroundRowStatus",
@@ -3090,9 +3887,14 @@ __all__ = [
     "derive_action_indexed_delta_and_invalidation_v1",
     "derive_action_indexed_preexecution_invalidation_v1",
     "execute_action_indexed_epoch_v1",
+    "parse_action_indexed_proof_node_document_v1",
+    "rebuild_action_indexed_roots_from_restored_runtime_v1",
     "replay_action_indexed_epoch_semantics_v1",
     "registered_action_indexed_h2_query_v1",
     "registered_final_action_indexed_h2_model_v1",
     "registered_first_action_indexed_h2_model_v1",
+    "restore_verified_action_indexed_first_runtime_v1",
+    "restore_verified_action_indexed_first_lower_graph_v1",
+    "restore_verified_action_indexed_final_lower_graph_v1",
     "run_registered_action_indexed_h2_switch_v1",
 ]

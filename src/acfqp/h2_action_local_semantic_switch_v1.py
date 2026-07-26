@@ -2432,6 +2432,26 @@ def run_registered_h2_action_local_semantic_switch_v1(
     return _execute_registered_h2_action_local_semantic_switch_v1()
 
 
+def require_action_local_semantic_switch_result_v1(
+    result: ActionLocalSemanticSwitchResultV1,
+) -> ActionLocalSemanticSwitchResultV1:
+    """Require the exact live owner-bound V0-054B result.
+
+    The helper exposes validation, not serialization authority.  Downstream
+    construction profiles may bind selected immutable projections of this
+    result, but the live receipt/result itself remains process-local.
+    """
+
+    if type(result) is not ActionLocalSemanticSwitchResultV1:
+        raise ActionLocalSemanticSwitchInvariantViolation(
+            "semantic-switch result rejects substituted types"
+        )
+    result._assert_owner_bound()
+    result.__post_init__()
+    _assert_canonical_result_ids(result)
+    return result
+
+
 @dataclass(frozen=True, slots=True)
 class ActionLocalSemanticSwitchVerificationV1:
     claimed_result_id: str
@@ -2537,6 +2557,7 @@ __all__ = [
     "UnrestrictedChallengerFrontierV1",
     "freeze_action_local_evidence_request_v1",
     "registered_action_local_fixture_v1",
+    "require_action_local_semantic_switch_result_v1",
     "run_registered_h2_action_local_semantic_switch_v1",
     "verify_registered_h2_action_local_semantic_switch_v1",
 ]

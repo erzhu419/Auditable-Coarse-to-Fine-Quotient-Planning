@@ -122,6 +122,18 @@
   roots are fresh, and value improves strictly `0 -> 1` under `A0A1/M` before
   certification. Generic minimality/H>1, persistence/reuse, learned dynamics,
   sample/total-work savings, economics and aggregate Gates remain open.
+- **V0-055 two-generation durable action-local H2 recovery slice:** the
+  registered V0-054B `4/1 -> 5/0`, `N -> M` recovery is ordered behind a
+  root-free C1 checkpoint and followed by a root-free C2 checkpoint. C1
+  contains 18 strict typed lower nodes; C2 contains the 28-node union with 18
+  active and 10 historical nodes. Fresh model-only P1 and P3 each consume
+  `0 recomputed / 18 loaded-reused + 3 fresh roots`; P2 restores the first 18
+  and computes/reuses the successor as `10/8 + 3 fresh roots`. Three fresh
+  processes perform zero ground work, while the source-pinned V0-054B route
+  performs the sole operational `M` transition only after P1's failed proof is
+  host-verified. This proves only the registered H2 composition, not generic
+  persistence, cross-query/H>2 behavior, native work or sample savings,
+  independent-algorithm verification, economics, or an aggregate Gate.
 - **Phase 3D general local-recovery Gate:** the V0-030 finite, cap-aware positive
   control that closes joint value/risk composition, slack-aware causal localization,
   and sparse worker authority. Its pass is not aggregate Phase 3 or economics.
@@ -1364,6 +1376,97 @@ sample_efficiency_gate_blocks_mainline = false
 ```
 
 
+### V0-055 two-generation durable action-local H2 recovery gate
+
+Contract `1.19.0` registers schema `1.0.0`, profile
+`lmb_h2_two_generation_durable_action_local_recovery_v0`, transport subprofile
+`lmb_h2_durable_action_switch_transport_v0`, and status
+`CERTIFIED_REGISTERED_H2_TWO_GENERATION_DURABLE_ACTION_LOCAL_RECOVERY_CONTROL`.
+
+The Gate passes only if:
+
+1. the production source remains the exact owner-bound V0-054B seed-4 H2
+   construction, and no detached document can replace its live authority;
+2. before any ground evidence exists, C1 commits the exact first `4/1` model,
+   query and 18 canonical lower-node documents, with zero persisted roots;
+3. C1 has no mutable `HEAD`, is externally selected by commit ID, and rejects
+   malformed, missing, extra, unstable, linked or noncanonical store entries;
+4. each lower-node document is reparsed as its exact typed action-indexed node
+   and its semantic model/query dependency is replayed before operational
+   loading; opaque or merely self-consistent values are rejected;
+5. fresh model-only P1 imports no ground module, loads/reuses all 18 verified
+   lower nodes, recomputes zero lower nodes, builds three fresh roots, and
+   reproduces the failed `A0A0/N` proof;
+6. no kernel call can occur before the host exact-verifies P1 and freezes a
+   V0-055 ground authorization bound to C1, P1 and the source-pinned V0-054B
+   runner;
+7. V0-054B then executes exactly one operational `(x1,M)` transition; all
+   pre-ground and model-only-worker ground counters remain zero;
+8. the detached overlay projection binds the exact source result, owner-bound
+   evidence bundle, immutable `M` row and predecessor identities while
+   explicitly carrying provenance rather than live ground authority;
+9. fresh model-only P2 loads C1, restores all 18 lower nodes operationally
+   without recomputation, consumes the exact overlay projection, and performs
+   the final action-indexed continuation as ten recomputed/eight reused lower
+   nodes plus three fresh roots;
+10. P2 exactly reproduces the V0-054B row delta, pre-execution invalidation,
+    final execution and strict `N -> M` certificate;
+11. C2 commits a root-free 28-lower-node union containing exactly 18 active
+    final nodes and ten historical first-only nodes; neither final roots nor
+    an opaque continuation result may substitute for typed lower nodes;
+12. fresh model-only P3 loads/reuses the 18 active nodes, recomputes zero
+    lower nodes, builds three fresh roots and independently reproduces the
+    certified `A0A1/M` result;
+13. the operational trace contains exactly three fresh model-only process
+    launches, one source-owned ground transition, zero P1/P2/P3 ground
+    transitions, and the frozen C1 -> P1 -> authorization -> V0-054B ->
+    overlay -> P2 -> C2 -> P3 order;
+14. C1, overlay and C2 bytes are immutable across the run and across
+    evaluation; worker output remains untrusted and is rederived from verified
+    stores by the host;
+15. the verifier bypasses the public runner, rebuilds the complete campaign in
+    a fresh evaluation store, exact-compares result documents, and labels its
+    additional one ground call and three process launches as evaluation-only
+    same-implementation replay, not an independent algorithm;
+16. detached-ground-authority, root injection, stale/foreign parent, wrong
+    active set, semantic-node forgery, process/import, early/extra ground,
+    source replacement, owner-copy, store mutation and public-runner bypass
+    attacks fail closed; and
+17. two registered runs preserve the frozen canonical identities and claim
+    locks.
+
+The `0/18` P1/P3 and `10/8` P2 figures describe the operational lower-proof
+runtime after strict durable validation. The 18 semantic validation
+obligations used to accept a checkpoint are not a claim of 18 native physical
+computations, and the Gate does not assert complete native compute-event
+accounting.
+
+Passing opens only the registered H2 two-generation durable action-local
+recovery claim. It does not prove generic durable/crash recovery, hostile
+worker security, cross-query reuse, generic `H>1`, any horizon above two,
+generic action-local minimality, automatic coordinate invention,
+partial/learned dynamics, sample/byte/CPU/wall-clock/total-work savings, or an
+independent verification algorithm.
+
+The next Gate is a preregistered matched multi-occurrence/multi-query workload
+over the complete model-first durable recovery path with explicit no-reuse and
+direct baselines. A Laplace-style heuristic operator or KG-OP-style meta-prior
+may be designed only after that workload exposes a measured sample-tax
+bottleneck; it is not a prerequisite for this construction mainline.
+
+All aggregate locks remain unchanged:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+sample_efficiency_gate_blocks_mainline = false
+```
+
+
 ### V0-054B one-row action-local H2 semantic-switch gate
 
 Contract `1.18.0` registers schema `1.0.0`, profile
@@ -1420,9 +1523,9 @@ savings, workload economics, counter completeness and official execution
 remain locked. The scalar fields remain `official_scalar_cost = null` and
 `official_N_break_even = null`.
 
-The next Gate must combine the strict semantic switch with durable proof state
-or a preregistered multi-occurrence workload before widening any reuse or
-sample-tax claim.
+V0-055 now combines the strict semantic switch with two generations of
+root-free durable lower-proof state. V0-054B remains a historical
+nonpersistent live-control claim.
 
 ### Historical V0-054A same-query durable H2 proof-state gate
 

@@ -907,6 +907,12 @@ def test_verifier_bypasses_public_runner(
 def test_two_runs_are_content_identical_and_claim_locks_remain_closed(
     switch_result,
 ) -> None:
+    assert (
+        switch_module.require_action_local_semantic_switch_result_v1(
+            switch_result
+        )
+        is switch_result
+    )
     repeated = switch_module.run_registered_h2_action_local_semantic_switch_v1()
     assert repeated.result_id == switch_result.result_id
     assert repeated.to_document() == switch_result.to_document()

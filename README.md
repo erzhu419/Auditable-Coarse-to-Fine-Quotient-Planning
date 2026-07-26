@@ -28,7 +28,71 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 → jointly search local value/risk choices, rebuild, or use charged fallback
 ```
 
-## Current one-row action-local H2 semantic-switch slice (V0-054B)
+## Current durable action-local H2 recovery slice (V0-055)
+
+Contract `1.19.0`, schema `1.0.0`, and profile
+`lmb_h2_two_generation_durable_action_local_recovery_v0` compose the
+V0-054B strict one-row switch with two generations of durable, root-free H2
+lower-proof state. This remains a registered seed-4 H2 construction control:
+the proof DAG is machinery for keeping planning and recertification inside the
+reusable model, not the scientific endpoint.
+
+The binding order is:
+
+```text
+C1: first 4/1 model + 18 typed lower nodes + 0 roots
+-> P1 fresh model-only process: load/reuse 18, recompute 0, build 3 fresh roots
+-> host verifies the failed N proof
+-> authorize and execute the source-pinned V0-054B M row
+-> freeze its detached immutable overlay projection
+-> P2 fresh model-only process: restore/reuse 18, then compute/reuse 10/8
+-> certify the strict N -> M switch
+-> C2: 28 typed lower-node union, 18 active + 10 historical + 0 roots
+-> P3 fresh model-only process: load/reuse 18, recompute 0, build 3 fresh roots
+```
+
+Both checkpoints are canonical, externally selected, immutable and root-free.
+Their node documents are parsed back into strict typed proof nodes rather than
+treated as opaque cache values. Complete plan/request/role-bound roots are
+always reconstructed in the consuming process. P1 and P3 therefore each
+record operational lower-proof consumption as `0 recomputed / 18
+loaded-reused + 3 fresh roots`; P2 records the successor computation as
+`10 recomputed / 8 reused + 3 fresh roots`.
+
+No ground access is permitted before the host has verified P1's failed proof.
+The exact source-pinned V0-054B runner then performs the sole operational
+ground transition, the registered `(x1,M)` row. P1, P2 and P3 are three fresh
+model-only processes and each records zero ground transitions. Detached row
+and overlay bytes preserve provenance but cannot mint or replace the live
+ground authority. The resulting final model and certificate retain the strict
+semantic change from `A0A0/N`, reward 0 and failed regret, to `A0A1/M`,
+reward 1 and certified risk/regret zero.
+
+The counts above are scoped proof-runtime telemetry. In particular, the 18
+semantic validation obligations needed to accept a checkpoint are not
+relabelled as 18 native physical computations, and this contract does not
+claim native-compute completeness. Its verifier performs a separate
+same-implementation evaluation replay with one evaluation-lane ground call
+and three evaluation-lane process launches; it is not an independent
+algorithm.
+
+V0-055 proves only this registered H2 durable recovery composition. It does
+not prove generic durable or crash-safe persistence, hostile-worker security,
+cross-query reuse, generic `H>1` or `H>2`, generic action-local minimality,
+automatic coordinate invention, partial/learned dynamics, or sample,
+byte/CPU/wall-clock/total-work savings. Official execution stays false;
+official scalar cost and break-even remain null; workload-economics,
+counter-completeness and sample-efficiency Gates remain `NOT_RUN`. Full
+semantics and attacks are in
+`specs/H2_DURABLE_ACTION_LOCAL_RECOVERY.md`.
+
+The next Gate is a preregistered matched multi-occurrence/multi-query workload
+that exercises this complete model-first durable recovery path against a
+no-reuse/direct baseline. Only after those real workload traces identify the
+actual sample-tax bottleneck should a Laplace-style heuristic operator or
+KG-OP-style meta-prior intervention be designed and tested.
+
+## Historical one-row action-local H2 semantic-switch slice (V0-054B)
 
 Contract `1.18.0`, schema `1.0.0`, and profile
 `lmb_h2_action_local_semantic_switch_v0` register a six-tile seed-4 LMB
@@ -91,10 +155,9 @@ execution remain locked; `official_N_break_even` remains null. Full semantics
 and attacks are in
 `specs/H2_ACTION_LOCAL_SEMANTIC_SWITCH.md`.
 
-The next Gate should compose this semantic one-row switch with durable proof
-storage or a preregistered multi-occurrence workload. Only after real
-multi-query traces exist should a Laplace-style heuristic operator or KG-OP
-meta-prior be judged against the measured sample-tax bottleneck.
+V0-055 now composes this strict semantic switch with two root-free durable
+lower-proof generations. V0-054B itself remains the historical live,
+nonpersistent one-row control.
 
 ## Historical same-query durable H2 proof-state slice (V0-054A)
 
