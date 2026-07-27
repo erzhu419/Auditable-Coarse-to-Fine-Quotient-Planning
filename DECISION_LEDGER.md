@@ -2,8 +2,8 @@
 
 **Status:** normative source of truth
 
-**Ledger version:** 1.23.0
-**Last updated:** 2026-07-26
+**Ledger version:** 1.24.0
+**Last updated:** 2026-07-27
 
 ## Authority
 
@@ -89,6 +89,7 @@ absent from a public checkout.
 | V0-057 | 2026-07-26 | Interleaved certificate-triggered durable H2 query-local epoch | FROZEN | Contract `1.21.0` freezes schema `1.0.0`, profile `lmb_h2_interleaved_certificate_triggered_durable_epoch_v0`, passing status `CERTIFIED_REGISTERED_H2_INTERLEAVED_CERTIFICATE_TRIGGERED_DURABLE_EPOCH_CONTROL`, and logical order `Q_R,Q_S,Q_R,Q_S,Q_R`, where new epoch-bound typed `Q_R=(3/4,1)` leaves the historical threshold registry unchanged and `Q_S=(0,0)` preserves strict V0-047 semantics. The pre-source scope binds all eight authorities and complete H2 semantics without future-derived IDs. Production constructs the authentic first `11/9` epoch; only the selected Q_S value/risk failure authorizes exact `3/9/9` rows with `3 safe / 6 failure`, producing final `20/0`. C1/C2 preserve the real strict core, C2 independently verifies complete C1 history, query facets and proof requests bind their exact roles/parents, and the exact update is `28/2`, C2 `58/30/28`. Native main/reset are `16/284` and `24/276`, projections `16/234` and `24/226`, operational total `40/560`, 12 launches, 60 roots and 23 events; host verification is `23/9/36/12/64/32/12`. All 85 registered tests pass. The comparison contains exactly one operational producer and one fresh same-implementation replay under the same frozen source pins; there is no third campaign or independent algorithm. Principal canonical IDs are frozen in the detailed V0-057 rule and normative specification (result `092c92708f67...`, verification `6330a3a6be2b...`, snapshot `4add6d49870f...`). | Advances V0-056 into one authentic certificate-gated query-local model-epoch change without promoting either V3 epoch. It does not prove generic changed-model/query reuse, H>2, automatic coordinates, partial/learned dynamics, generalization, sample reduction/efficiency, complete accounting, byte/CPU/wall/total-work superiority, economics or official execution. | `specs/H2_INTERLEAVED_DURABLE_EPOCH.md`; process-local claimed authority plus durable replay; positive, attack, deterministic-replay and same-implementation fresh-store suite passed. |
 | V0-058 | 2026-07-26 | Observation-driven program closure and held-out H2 recovery | FROZEN | Contract `1.22.0` freezes schema `1.0.0`, profiles `lmb_observed_program_closure_partial_rapm_v0` and `lmb_observed_program_closure_heldout_h2_v0`, and passing statuses `OBSERVATION_CONSISTENT_PROGRAM_CLOSURE_PARTIAL_RAPM` and `CERTIFIED_OBSERVED_PROGRAM_CLOSURE_HELDOUT_H2_RECOVERY`. From only the preregistered `8/11/7` symbolic source graph, production closes the frozen human typed vocabulary to depth two, retains `215` semantic representatives (`174` state, `37` state-action), exhausts all `6650` optional-single-coordinate candidates, finds `1384` admissible candidates, and selects candidate `4013`: `cardinality(legal_actions)` plus `buffer_at_type(buffer_counts,selected_tile_type)<=3/2`. Its partial RAPM is `7 observed / 4 missing`. A source-log-held-out H2 target is frozen before synthesis; after full source replay, its one catalogue is registered but all three target rows remain vacuous. The selected audit fails at reward `[0,4]`, failure `[0,1]`; only then does the `1 risk / 3 value / 3 distinct` authorization permit exactly three target transitions. The safe row reaches an existing source state and reuses its observed second-stage dynamics without successor access. The immutable final epoch is `10/4` and independently certifies reward/failure/regret `1/0/0`. All 19 registered tests pass and the principal IDs are frozen below. The complete staged Python package is now approximately 6.5 MiB, so the content-addressed isolated-fallback runtime-source ceiling migrates from 6 MiB to the independently frozen 8 MiB sealed-manifest ceiling; the profile-ID change invalidates old route uppers, exact actual bytes remain charged, and no official Gate is unlocked. | Advances automatic world-model construction beyond a handwritten coordinate catalogue, but only inside one frozen human primitive/operator vocabulary and one finite deterministic symbolic log. It does not prove primitive/operator invention, raw symbolization, statistical/learned dynamics, generic H>2 recovery, broad held-out/cross-domain generalization, sample reduction/efficiency, complete accounting, economics or official execution. | `observed_program_closure_synthesis_v1.py`; `observed_program_closure_heldout_h2_v1.py`; complete 6650-candidate trace; preregistration/chronology/three-row/epoch/replay/overclaim attacks; isolated-fallback runtime-cap migration/replay; `specs/OBSERVATION_DRIVEN_PROGRAM_CLOSURE_HELDOUT_H2.md`. |
 | V0-059 | 2026-07-26 | Multi-domain observed/statistical held-out campaign | FROZEN | Contract `1.23.0` freezes schema `1.0.0`, profiles `multidomain_observed_statistical_heldout_campaign_v0` and `g2048_d4_empirical_hoeffding_partial_rapm_v0`, and status `CERTIFIED_REGISTERED_MULTIDOMAIN_OBSERVED_STATISTICAL_HELDOUT_CAMPAIGN`. Before prospective model/plan identities it registers two distinct human schemas and twelve LMB/G2048 occurrences. LMB automatically composes/selects inside the V0-058 typed vocabulary, performs exactly three certificate-authorized target transitions on its first strict H2 occurrence, then executes two fresh model-only reuses. G2048 uses known D4 structure rather than discovering it; a probability-free seven-cell/six-row catalogue plus a trusted frozen aggregate ledger of `6*65536=393216` offline observations yields six nonzero-width statistical rows. Exact-rational Hoeffding/Taylor/union calibration freezes radius `1/128`, family tail `3/350` and confidence lower `347/350`. Robust enumeration selects `TOWARD,AWAY,AWAY`, reward `[3/64,3/64]`, failure `[9277983,75716127]/2147483648 < 1/20`, regret zero. Nine D4 point/uniform occurrences use zero online samples. Production accepts no G2048 kernel; standalone exact D4 replay contains value `3/64` and failure `99/5000` without promoting statistical evidence. All 15 focused tests and all 1242 repository tests pass. | Closes only the first registered two-domain exact/statistical evidence-composition campaign. It does not prove automatic D4/primitive discovery, shared cross-domain coordinates, raw symbolization, exact-sound statistical dynamics, broad structural/H>2 generalization, sample saving, complete accounting, economics or official execution. The 393,216 observations are an exposed sample tax, not a benefit claim. | `multidomain_statistical_campaign_v1.py`; typed schema/catalogue/ledger/calibration/model/preregistration/occurrence/work/result/verifier artifacts; count/order/evidence/runtime/kernel/implementation attacks; `specs/MULTIDOMAIN_STATISTICAL_HELDOUT_CAMPAIGN.md`. |
+| V0-060 | 2026-07-27 | Raw replayable multi-context stochastic acquisition control | FROZEN | Contract `1.24.0` freezes schema `1.0.0`, profiles `g2048_raw_replayable_multicontext_partial_statistical_v0` and `g2048_certificate_directed_vs_uniform_acquisition_v0`, and status `CERTIFIED_REGISTERED_RAW_REPLAYABLE_MULTICONTEXT_ACQUISITION_CONTROL`. Without changing the canonical `99/100` safe-chain fixture, it preregisters three separately keyed spawn-law contexts `p=199/200,249/250,999/1000` and a point/uniform H2 query pair per context before any log/model/plan ID exists. An all-missing model-only proof selects `TOWARD,AWAY,AWAY` and authorizes exactly `ROOT_TOWARD,CHAIN_A_AWAY,CHAIN_B_AWAY`. The adaptive lane records 16,384 individual counter-based outcome draws for each of those three rows and keeps the other three legal rows explicitly vacuous; an independent control records all six rows. Exact-rational calibration freezes radius `1/64`, 54 obligations, family tail `27/700`, and confidence lower `673/700`. Both lanes certify reward `3/64`, risk `<1/20`, regret zero; each second context query reuses its immutable model with zero new draws. Production model/planner interfaces have no kernel and no exact probabilities. Standalone evaluation replays all `442368` individual nibbles and exact J0 risks `199/20000,249/31250,999/500000` over `3*5440` candidates. All 14 focused tests and all 1,256 repository tests pass. | Closes V0-059's aggregate-only evidence limitation only for this finite known-D4 simulation family. The all-six-row arm is a statistical control, not a matched direct-ground planner, so the adaptive/direct difference `147456` is not a sample-efficiency or tax-operator result. Automatic coordinates/symmetry, unknown support, broad structural generalization, exact-sound statistical promotion, complete accounting, economics and official execution remain locked. | `raw_multicontext_acquisition_v1.py`; packed individual draw/codebook/hash-chain, partial-model, authorization, occurrence, work, exact-comparator and verifier artifacts; kernel/API/context/aggregate/tamper/identity attacks; `specs/RAW_MULTICONTEXT_ACQUISITION_CONTROL.md`. |
 
 For V0-051, the affected public interface expressly includes the content-addressed
 `IncrementalProofDAGProtocolV1` and its `protocol_id`, in addition to the node,
@@ -2409,6 +2410,79 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
 
+## V0-060 raw replayable multi-context acquisition rule
+
+Contract `1.24.0` freezes schema `1.0.0`, profiles
+`g2048_raw_replayable_multicontext_partial_statistical_v0` and
+`g2048_certificate_directed_vs_uniform_acquisition_v0`, and status
+`CERTIFIED_REGISTERED_RAW_REPLAYABLE_MULTICONTEXT_ACQUISITION_CONTROL`.
+The original safe-chain fixture and its `99/100` spawn law remain unchanged.
+Three new, noninterchangeable simulation contexts freeze rank-one
+probabilities `199/200`, `249/250`, and `999/1000` over the same explicitly
+known `D4` structural/action catalogue. A point query and a uniform-orbit
+query per context are registered before any raw-log, model, or plan identity.
+Evidence and models may be reused only inside an identical context.
+
+Every initial context model has six explicit missing `[0,1]` binary-simplex
+rows. Model-only enumeration first selects `TOWARD,AWAY,AWAY` but fails its
+risk proof; that frozen proof authorizes only `ROOT_TOWARD`,
+`CHAIN_A_AWAY`, and `CHAIN_B_AWAY`. The adaptive lane samples exactly those
+three rows and leaves the other three rows vacuous. The independent direct
+control samples all six registered rows under a different seed. Every
+observed row contains 16,384 counter-based draws in four 4,096-draw
+content-addressed blocks. One exact ground-outcome index per draw is embedded
+as a hexadecimal nibble. Codebooks retain concrete next state, status,
+normalized reward, failure/terminal flag, and structural destination but no
+transition probability. Aggregate-only evidence is invalid.
+
+Exact-rational Hoeffding calibration uses radius `1/64`,
+`2*n*radius^2=8`, per-coordinate tail `1/1400`, and exactly
+`2*3*(3+6)=54` obligations, giving family tail `27/700` and simultaneous
+confidence lower `673/700`. Production model construction decodes every
+nibble, imports no probability, and accepts no exact kernel. Missing rows
+remain native uncertainty. Both lanes enumerate eight deterministic
+policies per occurrence and certify reward `3/64`, regret zero, and robust
+risk below `1/20`. Adaptive failure uppers are
+`11153865/268435456`, `2575781/67108864`, and `34527/1048576`;
+direct-control uppers are `1382201/33554432`,
+`10511905/268435456`, and `8871139/268435456`. The second query in each
+context reuses the same immutable model with zero new draws.
+
+Native totals freeze `9` adaptive observed rows, `9` adaptive explicit
+missing rows, `18` direct observed rows, `147456` adaptive draws, `294912`
+direct draws, `27` acquisition kernel-row enumerations, three within-context
+zero-draw reuses, and zero cross-context model reuse. The standalone
+evaluation verifier independently recomputes and checks all `442368`
+individual draws, reconstructs the codebooks from three exact context
+kernels, and executes unrestricted J0. Exact reward is `3/64`; exact risks
+are `199/20000`, `249/31250`, and `999/500000`, with `5440` composed
+candidates per context. Each exact optimum lies inside both statistical
+certificates, but evaluation cannot promote statistical evidence to
+`exact_sound`.
+
+The all-six-row arm is normatively an
+`independent_uniform_all_six_row_statistical_control`, not a matched
+direct-ground planner. Therefore `294912-147456=147456` is recorded only as
+a draw-count difference. `matched_direct_ground_planning_claimed`,
+`sample_efficiency_claimed`, and `sample_tax_operator_claimed` remain false;
+official scalar cost and `N_break_even` remain null. Automatic `D4`,
+coordinate, primitive or support discovery, raw symbolization, broad
+cross-geometry/domain generalization, learned dynamics, complete accounting,
+economics and official execution remain locked.
+
+Principal frozen identities are preregistration
+`6117c8d72ee25afe393145db726bfa7a6edafde8d4439a83963b7d1bf8a41b3e`,
+evidence bundle
+`547cee4144499e9de4753f910f0571f64c58c3266c50744cce967f8482aca7c0`,
+campaign
+`6c5e95ac16d157ff28f103fbb6fb9782846d1b8407aa5a2808bfc744e91ad1f0`,
+verification
+`fa055f4525189d6e1dcbc4a1e849ca4b475018e2cc74e4e3885c9367cd562269`,
+and implementation
+`364696557d33f67a5ff96a97684917a822f49beb62ad95d25c4447fbe81544b6`.
+The complete normative protocol and next Gate are in
+`specs/RAW_MULTICONTEXT_ACQUISITION_CONTROL.md`.
+
 ## V0-059 multi-domain observed/statistical held-out campaign rule
 
 Contract `1.23.0` freezes schema `1.0.0`, profiles
@@ -3613,3 +3687,4 @@ sample_efficiency_gate_blocks_mainline = false
 - **2026-07-26 — 1.21.0:** Added and verified the V0-057 construction contract/profile `lmb_h2_interleaved_certificate_triggered_durable_epoch_v0`. It freezes the new typed relaxed Q_R `(3/4,1)`, original strict Q_S `(0,0)` and order `Q_R,Q_S,Q_R,Q_S,Q_R` before the authentic V0-047 source is constructed. The pre-source record binds all eight input-authority identities and complete H2 semantic/query scope while forbidding prospective derived epoch IDs. Q_R certifies the first live `11/9` epoch with zero additional query ground; only the next selected Q_S value/risk failure may authorize the exact `3/9/9` row scope and `3 safe / 6 failure` nine-row acquisition that produces the final `20/0` epoch. C1/C2 retain the real 30-node strict-Q_S core; Q_R facets bind preregistration/eligibility/query/source-D and roots bind typed proof requests. C2 independently loads C1 and proves exact retained history; facet stores remain distinct epoch-local W0/genesis chains. The exact core update is `28 new / 2 C0 reused`, yielding C2 `58/30/28`. Native main/reset traces are `16/284` and `24/276`; projections are `16/234` and `24/226`; the operational campaign is 12 launches, 60 roots and `40/560`, with host verification `23/9/36/12/64/32/12`. A 23-record event ledger is mandatory. All 85 registered tests pass. One operational producer and one fresh same-implementation evaluation replay use the identical frozen source-pin set; evaluation work is separate, no third campaign or independent algorithm is claimed, and the final authority boundary is a process-local claimed handle plus durable bytes/fresh replay rather than a generic cross-process wrapper parser. The passing status and canonical principal IDs are frozen in the detailed rule and normative specification. No generic reuse/H>2, promotion, generalization, sample/total-work/economics or official claim opens.
 - **2026-07-26 — 1.22.0:** Added and verified V0-058 profiles `lmb_observed_program_closure_partial_rapm_v0` and `lmb_observed_program_closure_heldout_h2_v0`. The source-only producer closes the frozen typed vocabulary to depth two, retains 215 semantic representatives, exhausts all 6650 bounded optional-single-coordinate candidates, and selects `cardinality(legal_actions)` with `buffer_at_type(buffer_counts,selected_tile_type)<=3/2`, yielding an honest `7/4` partial RAPM. A pre-synthesis source-log-held-out H2 target first fails model-only audit at reward `[0,4]`, failure `[0,1]`; only that failure authorizes its exact `1/3/3` three-row scope. The safe row reaches an existing source successor, so no successor ground access is needed. The immutable `10/4` epoch replans and independently certifies reward/failure/regret `1/0/0`. All 19 registered tests and deterministic replay pass; implementation digests and principal IDs are frozen. This advances automatic program composition/selection only within one human-specified vocabulary and finite deterministic symbolic log; unknown-semantic invention, learned/statistical dynamics, broad generalization, sample savings/economics and official execution remain locked.
 - **2026-07-26 — 1.23.0:** Added and verified V0-059 profiles `multidomain_observed_statistical_heldout_campaign_v0` and `g2048_d4_empirical_hoeffding_partial_rapm_v0`. A pre-model twelve-occurrence campaign composes the V0-058 LMB exact partial/recovery path with a G2048 probability model learned from six trusted aggregate rows of 65,536 offline observations each. The known D4 structural quotient remains an explicit human prior. Exact-rational Hoeffding/Taylor/union calibration freezes radius `1/128`, family tail `3/350` and confidence lower `347/350`; robust H2 enumeration selects `TOWARD,AWAY,AWAY` with reward `3/64`, failure upper `75716127/2147483648 < 1/20` and regret zero. The first LMB occurrence acquires exactly three rows and two later occurrences reuse its final model; all nine G2048 occurrences use zero online samples. Production has no G2048 kernel, while standalone exact D4 evaluation contains value `3/64` and risk `99/5000` without promoting statistical evidence. All 15 focused tests and all 1242 repository tests pass. Automatic symmetry/primitive invention, shared cross-domain coordinates, raw symbolization, broad generalization, sample savings/economics and official execution remain locked; 393,216 is an exposed sample tax, not a benefit claim.
+- **2026-07-27 — 1.24.0:** Added and verified V0-060 profiles `g2048_raw_replayable_multicontext_partial_statistical_v0` and `g2048_certificate_directed_vs_uniform_acquisition_v0`. Three separately keyed spawn-law contexts and two queries per context are frozen before raw evidence. A model-only failed risk proof authorizes exactly three of six rows; the adaptive lane stores 147,456 individual packed draws and retains nine explicit missing context-rows, while the independent all-six-row statistical control stores 294,912 draws. Exact-rational calibration freezes radius `1/64`, 54 obligations and confidence `673/700`. Both lanes certify `TOWARD,AWAY,AWAY`, reward `3/64`, risk below `1/20` and regret zero; each second query reuses its context model with no new draws. Production has no kernel/probability input. Standalone evaluation replays all 442,368 nibbles and three exact J0 risks without promoting evidence. All 14 focused tests and all 1,256 repository tests pass. The 147,456 draw difference is not a sample-efficiency claim because the control is statistical all-row acquisition, not a matched direct-ground planning system. Automatic coordinates/symmetry, unknown support, broad generalization, sample-tax operators, complete accounting, economics and official execution remain locked.

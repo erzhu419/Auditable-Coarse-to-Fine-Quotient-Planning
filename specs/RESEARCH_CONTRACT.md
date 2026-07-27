@@ -129,6 +129,15 @@
   semantic switch only for the registered H2 fixture; it is not generic
   persistence, cross-query/H>2 proof, native-work/sample saving, independent
   verification, economics, or an aggregate Gate.
+- **V0-060 raw replayable multi-context acquisition control:** three
+  separately keyed safe-chain spawn-law contexts each begin with six explicit
+  missing probability rows. A model-only failed proof authorizes three rows
+  for adaptive individual-draw acquisition; an independent statistical
+  control acquires all six. The production builder/planner are kernel-free,
+  the second query per context reuses the immutable partial model, and a
+  standalone verifier replays every packed draw plus exact J0. This is not
+  automatic structure/coordinate discovery, broad generalization, matched
+  direct-ground planning, sample efficiency, or a tax-reduction operator.
 - **V0-059 multi-domain observed/statistical held-out campaign:** the current
   construction contract preregisters twelve occurrences across LMB and
   G2048 before prospective model/plan IDs. LMB performs the V0-058 exact
@@ -1908,6 +1917,73 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
 
+### Contract 1.24.0: raw replayable multi-context acquisition control
+
+V0-060 registers schema `1.0.0`, profiles
+`g2048_raw_replayable_multicontext_partial_statistical_v0` and
+`g2048_certificate_directed_vs_uniform_acquisition_v0`, and passing status
+`CERTIFIED_REGISTERED_RAW_REPLAYABLE_MULTICONTEXT_ACQUISITION_CONTROL`.
+It adds three separately keyed `2x2` safe-chain simulation contexts with
+rank-one probabilities `199/200`, `249/250`, and `999/1000`; it does not
+modify the canonical `99/100` fixture. The known `D4` state/action catalogue
+is an explicit human prior.
+
+Before acquisition, preregistration freezes a point and uniform-orbit H2
+query for each context and contains no prospective log/model/plan identity.
+Every context starts from six explicit missing binary-simplex rows. The
+model-only selected proof fails risk and authorizes exactly
+`ROOT_TOWARD`, `CHAIN_A_AWAY`, and `CHAIN_B_AWAY`. The adaptive lane acquires
+only those rows; the independent control acquires all six. Every observed row
+stores 16,384 individual outcome indices in four chained blocks. Codebooks
+contain concrete outcomes but no probabilities; aggregate-only input is
+invalid. Production model construction and planning accept no exact kernel.
+
+The exact-rational statistical profile freezes radius `1/64`, per-coordinate
+tail `1/1400`, 54 simultaneous obligations, family tail `27/700`, and
+confidence lower `673/700`. Both lanes enumerate eight deterministic
+policies, select `TOWARD,AWAY,AWAY`, and certify reward `3/64`, risk below
+`1/20`, and normalized regret zero. The adaptive model retains three native
+vacuous rows per context. The second query per context performs a fresh
+occurrence-bound certificate over the same immutable model with zero new
+draws.
+
+The native control trace is:
+
+```text
+contexts / logical occurrences           = 3 / 6
+adaptive observed / explicit missing     = 9 / 9 rows
+direct-control observed                   = 18 rows
+adaptive / direct individual draws        = 147456 / 294912
+acquisition kernel-row enumerations       = 27
+within-context / cross-context reuses     = 3 / 0
+```
+
+Standalone evaluation independently replays all 442,368 outcome nibbles and
+executes exact unrestricted J0. Exact reward is `3/64`; exact risks are
+`199/20000`, `249/31250`, and `999/500000`, with 5,440 composed candidates
+per context. They lie inside both statistical certificates, but the exact
+evaluation does not promote production evidence.
+
+The all-six-row arm is a statistical acquisition/planning control, not a
+matched direct-ground planning system. Therefore the 147,456-draw difference
+does not establish sample efficiency or a sample-tax operator. The complete
+protocol, frozen bounds/identities, attacks and next Gate are normative in
+`specs/RAW_MULTICONTEXT_ACQUISITION_CONTROL.md`.
+
+All 14 focused tests and all 1,256 repository tests pass.
+
+All aggregate locks remain:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+sample_efficiency_gate_blocks_mainline = false
+```
+
 ### Contract 1.23.0: multi-domain observed/statistical held-out campaign
 
 V0-059 registers schema `1.0.0`, profiles
@@ -3398,10 +3474,10 @@ evaluation-only J0 costs remain separate.
 Neural latent encoders, raw/perceptual symbolization, learned structural
 supports or unknown-domain world models, MCTS, first-hit options, SMDP
 duration, POMDP/belief adapters, visual perception, infinite horizon and
-cross-domain meta-controllers remain out of scope. V0-059's finite
-high-probability probability rows are the only registered statistical-model
-exception; they may not be generalized into automatic structure discovery,
-exact-sound evidence or an official Phase 3/5 pass. A supplied `D4` group is
+cross-domain meta-controllers remain out of scope. V0-059 and V0-060 contain
+the only registered finite high-probability probability-row exceptions; they
+may not be generalized into automatic structure discovery, exact-sound
+evidence or an official Phase 3/5 pass. A supplied `D4` group is
 never automatic abstraction discovery, Phase 3A exact cross-orbit aggregation
 is not oracle-free quotient discovery, Phase 3B exact one-step synthesis is
 not predicate invention/local hybrid planning, V0-038 target-supervised
@@ -3457,6 +3533,14 @@ structural/H>2 generalization or sample efficiency. Its G2048 construction
 learns only six probability rows on one hand-registered known-D4 support from
 a trusted aggregate ledger; the nine queries are one quotient-equivalent
 family and 393,216 offline observations remain charged.
+
+V0-060 cannot be cited as automatic D4/coordinate/support discovery, portable
+external observation authenticity, broad cross-geometry/domain
+generalization, exact-sound statistical evidence, matched direct-ground
+planning, sample efficiency, or a sample-tax operator. Its three contexts
+change only a preregistered spawn law on the same known-D4 scaffold. The
+all-six-row arm is a statistical control, and all 442,368 draws remain
+charged even though the adaptive arm uses fewer of them.
 
 ## Known failure modes
 
@@ -3541,9 +3625,16 @@ samples, zero G2048 online samples and exact/statistical evidence separation,
 but keeps G2048 structure hand registered and all G2048 queries inside one D4
 equivalence family.
 
-The next construction risk is raw or independently replayable stochastic
-evidence over multiple structural/query contexts, with honest
-missing/out-of-support rows and matched adaptive-acquisition versus direct
-planning. A Laplace-style tax-reduction operator remains non-blocking
-follow-up work to be designed from those richer traces, not inferred from the
-current fixed aggregate ledger.
+V0-060 replaces that aggregate-only limitation with individually replayable
+stochastic traces in three registered spawn-law contexts. It preserves honest
+missing rows, performs certificate-directed three-row acquisition, reuses
+each context model for a second query, and checks all draws plus exact J0 in
+the evaluation lane. The direct arm, however, is only an independent
+all-six-row statistical control.
+
+The next construction risk is a genuinely matched end-to-end adaptive versus
+direct-ground planning workload across preregistered occurrences, with all
+planning, failed proof, acquisition, certification, reuse, and fallback work
+charged under comparable native counters. Only such traces can support
+designing and evaluating a Laplace-style heuristic operator or KG-OP-style
+meta-prior as a non-blocking sample-tax intervention.

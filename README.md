@@ -28,6 +28,52 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 → jointly search local value/risk choices, rebuild, or use charged fallback
 ```
 
+## Current raw replayable multi-context acquisition Gate (V0-060)
+
+Contract `1.24.0` freezes profiles
+`g2048_raw_replayable_multicontext_partial_statistical_v0` and
+`g2048_certificate_directed_vs_uniform_acquisition_v0`. All 14 focused tests
+and all 1,256 repository tests pass.
+
+V0-060 replaces the V0-059 trusted aggregate G2048 ledger with a compact trace
+of every stochastic outcome. It registers three separately keyed safe-chain
+spawn-law contexts (`P(rank 1)=199/200, 249/250, 999/1000`) without modifying
+the canonical `99/100` fixture. In each context an all-missing partial RAPM
+first fails its H2 risk proof. That proof authorizes exactly
+`ROOT_TOWARD`, `CHAIN_A_AWAY`, and `CHAIN_B_AWAY`; the adaptive lane samples
+only those three rows, while the other three legal rows remain explicit
+vacuous `[0,1]` uncertainty. An independent control samples all six rows.
+
+Each observed row contains 16,384 counter-based draws packed one exact
+ground-outcome index per nibble. The model builder and production planner have
+no kernel input and receive no exact probabilities. Exact-rational Hoeffding
+calibration freezes radius `1/64`, 54 simultaneous obligations, family tail
+`27/700`, and confidence lower `673/700`. Both lanes select
+`TOWARD, AWAY, AWAY`, certify reward `3/64`, risk below `1/20`, and zero
+regret. A second preregistered query per context reuses the immutable model
+with zero new draws.
+
+```text
+adaptive rows/draws/missing rows  = 9 / 147456 / 9
+direct-control rows/draws          = 18 / 294912
+within-context zero-draw reuses    = 3
+cross-context model reuses         = 0
+```
+
+The standalone evaluation verifier independently replays all `442,368`
+individual draws and runs three unrestricted exact J0 controls. Their
+failure probabilities are `199/20000`, `249/31250`, and `999/500000`;
+each lies inside both statistical certificates. Exact replay does not promote
+the production evidence to `exact_sound`.
+
+The direct arm is a uniform all-six-row statistical control, not a matched
+direct-ground planner. Consequently the observed `147,456`-draw difference
+is not a sample-efficiency or sample-tax-operator claim. Automatic `D4` or
+coordinate discovery, broad structural generalization, complete accounting,
+official execution, scalar cost, and economics remain locked. The full
+contract is in
+`specs/RAW_MULTICONTEXT_ACQUISITION_CONTROL.md`.
+
 ## Current multi-domain observed/statistical held-out Gate (V0-059)
 
 Contract `1.23.0` freezes profiles

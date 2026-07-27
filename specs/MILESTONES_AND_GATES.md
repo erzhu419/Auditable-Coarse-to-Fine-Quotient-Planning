@@ -134,6 +134,14 @@
   host-verified. This proves only the registered H2 composition, not generic
   persistence, cross-query/H>2 behavior, native work or sample savings,
   independent-algorithm verification, economics, or an aggregate Gate.
+- **V0-060 raw replayable multi-context acquisition control:** three
+  separately keyed known-D4 spawn-law contexts each execute a model-only
+  failed proof, three-row certificate-directed individual-draw acquisition,
+  honest three-row missing remainder, and a second zero-draw query reuse. An
+  independent all-six-row statistical arm is the finite control; standalone
+  evaluation replays every draw and exact J0. This is not matched
+  direct-ground planning, automatic coordinates/structure, broad
+  generalization, sample efficiency, or a tax-reduction operator.
 - **V0-059 multi-domain observed/statistical held-out campaign:** the current
   construction Gate freezes twelve LMB/G2048 occurrences before model/plan
   identities, composes the V0-058 exact partial-model/recovery path with a
@@ -1427,6 +1435,79 @@ The next proof-reuse Gate requires an identity-bound proof-dependency DAG and a
 re-derivation artifact that identifies reusable obligations and recomputes every
 affected descendant. The V0-050 exact key may not be weakened to simulate that result.
 Detailed identities are normative in `specs/CERTIFICATE_MEMOIZATION.md`.
+
+All aggregate locks remain unchanged:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+sample_efficiency_gate_blocks_mainline = false
+```
+
+### V0-060 raw replayable multi-context acquisition gate
+
+Contract `1.24.0` registers schema `1.0.0`, profiles
+`g2048_raw_replayable_multicontext_partial_statistical_v0` and
+`g2048_certificate_directed_vs_uniform_acquisition_v0`.
+
+The Gate passes only when all of the following hold:
+
+1. the canonical `99/100` safe-chain fixture is unchanged, while three
+   separate context identities freeze rank-one probabilities
+   `199/200`, `249/250`, and `999/1000`;
+2. point and uniform-orbit H2 occurrences per context are frozen before any
+   raw-log, model, or plan identity;
+3. the known `D4` structural/action catalogue is explicitly human supplied
+   and no automatic-discovery claim is emitted;
+4. every initial model contains six explicit missing binary-simplex rows;
+5. a model-only failed risk proof authorizes exactly `ROOT_TOWARD`,
+   `CHAIN_A_AWAY`, and `CHAIN_B_AWAY` before adaptive acquisition;
+6. the adaptive lane records 16,384 individual draws per authorized row and
+   leaves the other three rows vacuous, while an independent seed drives an
+   all-six-row statistical control;
+7. every draw is embedded as a ground-outcome nibble in a complete
+   content-addressed block chain; codebooks contain no exact probabilities
+   and aggregate-only input is rejected;
+8. model construction and production planning accept no exact kernel and
+   decode every packed draw;
+9. exact-rational calibration reconstructs radius `1/64`, exponent `8`,
+   per-coordinate tail `1/1400`, 54 obligations, family tail `27/700`, and
+   confidence lower `673/700`;
+10. both lanes enumerate eight policies per occurrence and select
+    `TOWARD,AWAY,AWAY`, reward `3/64`, robust risk `<1/20`, and regret zero;
+11. the second query per context reuses the same immutable context model and
+    acquires zero new draws; cross-context model reuse remains zero;
+12. native totals are `9/9/18` adaptive-observed/adaptive-missing/direct rows,
+    `147456/294912` adaptive/direct draws, and 27 acquisition kernel-row
+    enumerations;
+13. the standalone verifier independently replays all 442,368 draws and
+    exact J0 reward `3/64`, risks
+    `199/20000,249/31250,999/500000`, and `5440` composed candidates per
+    context;
+14. a one-nibble mutation, aggregate-only evidence, unregistered context,
+    kernel use from production, identity substitution, or implementation
+    change fails closed;
+15. the direct arm remains labelled all-six-row statistical control,
+    statistical evidence is not promoted, and all sample-efficiency,
+    tax-operator, scalar, economics, accounting and official locks remain
+    closed; and
+16. all 14 registered focused tests and all 1,256 repository tests pass with
+    canonical byte-identical replay.
+
+Passing closes only the V0-059 aggregate-ledger limitation for this finite
+simulation family. The observed draw difference cannot establish efficiency
+because no matched direct-ground planning baseline has yet been executed.
+The next Gate must compare end-to-end adaptive and direct-ground planning on a
+preregistered multi-occurrence workload with all model, proof, acquisition,
+reuse, failure and fallback work charged. A Laplace/KG-OP sample-tax
+intervention remains downstream of that matched trace.
+
+Canonical identities and all protocol details are normative in
+`specs/RAW_MULTICONTEXT_ACQUISITION_CONTROL.md`.
 
 All aggregate locks remain unchanged:
 
@@ -2864,6 +2945,13 @@ use one trusted aggregate ledger on a hand-registered support, its nine
 G2048 queries are quotient-equivalent, and all 393,216 offline observations
 remain charged.
 
+V0-060 cannot be promoted to automatic D4/coordinate/support discovery,
+portable external observation authenticity, broad cross-geometry/domain
+generalization, exact-sound statistical dynamics, matched direct-ground
+planning, sample efficiency or a sample-tax operator. Its three contexts
+share one known-D4 scaffold, its all-six-row arm is a statistical control,
+and all 442,368 individual draws remain charged.
+
 V0-046 and V0-047 cannot be promoted to general causal minimality, global transition
 closure, cross-query reuse, base promotion, learned/statistical acquisition or sample
 saving. V0-047's reuse of `(3,)` is within one query-local boundary expansion; it is not
@@ -2966,11 +3054,16 @@ workload. It preserves exact versus statistical evidence and records
 393,216 offline samples, but the G2048 support remains hand registered and
 its nine queries remain one D4-equivalent family.
 
-The next construction Gate must add raw or independently replayable
-stochastic logs over multiple structural/query contexts, honest
-missing/out-of-support rows, and matched adaptive-acquisition versus direct
-planning. Portable source authority, raw symbolization, primitive/operator
-invention, larger or unknown domains, broad held-out/cross-domain evidence,
-the empirically designed tax-reduction operator and the complete statistical
-Gates remain open. Sample efficiency stays non-blocking until those traces
-identify whether and where an intervention is justified.
+V0-060 adds independently replayable stochastic logs over three separately
+keyed spawn-law contexts, honest missing rows, certificate-directed partial
+acquisition, zero-draw second-query reuse, and exact evaluation replay. Its
+direct arm is still only a uniform all-row statistical control.
+
+The next construction Gate must execute a genuinely matched adaptive versus
+direct-ground planning workload, charging planning, failed proof,
+acquisition, certification, model reuse, failure and fallback work. Portable
+source authenticity, raw symbolization, primitive/operator invention,
+larger/unknown domains, broad held-out/cross-domain evidence, the empirically
+designed tax-reduction operator and complete statistical/economics Gates
+remain open. Sample efficiency stays non-blocking until that matched trace
+identifies whether and where an intervention is justified.
