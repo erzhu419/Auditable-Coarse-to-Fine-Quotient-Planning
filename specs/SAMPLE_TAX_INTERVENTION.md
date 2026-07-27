@@ -325,9 +325,10 @@ the parallel result is independent of cache creation order.
 ## Next Gate
 
 V0-062 demonstrates a real 1/3 target-online reduction but also shows that the
-offline prior has not amortized over only three target contexts. The next Gate
-must therefore test persistent source-prior reuse over a larger preregistered
-held-out occurrence/context family, or reduce source construction cost with
-sequential source stopping. It must retain target-only certification,
-no-prior and wrong-prior controls, and report the complete offline-plus-online
-curve before any broad sample-efficiency promotion.
+fixed offline prior has not amortized over only three target contexts. V0-063
+subsequently implements the lower-source-cost branch with preregistered
+sequential stopping, while retaining target-only certification, no-prior and
+wrong-prior controls and the complete offline-plus-online curve. Its normative
+semantics are in `specs/SEQUENTIAL_SOURCE_STOPPING.md`. Broad promotion still
+requires a larger structural family beyond the known human D4/frontier
+scaffold.

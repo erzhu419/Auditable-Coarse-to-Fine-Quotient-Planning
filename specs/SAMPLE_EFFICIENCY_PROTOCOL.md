@@ -17,6 +17,12 @@ Implemented V0-062 intervention profile:
 g2048_source_frozen_boundary_capability_operator_v0
 ```
 
+Implemented V0-063 source-stopping profile:
+
+```text
+g2048_preregistered_sequential_source_stopping_v0
+```
+
 The project objective remains to synthesize one reusable auditable abstract world
 model, plan mainly in that model, and recover ground distinctions only at a failed
 value/risk proof frontier. The main construction line may continue through automatic
@@ -241,6 +247,24 @@ generative-oracle samples, a reduction of `1/3`. The offline source lane costs
 V0-062 does not pass or rename the broad sample-efficiency Gate. Its status is
 `REGISTERED_INTERVENTION_GATE_PASSED_BROAD_GATE_NOT_RUN`.
 
+V0-063 implements the lower-cost-source option without changing target
+authority. Ordered complete-context checkpoints stop after two source
+contexts:
+
+```text
+stopped source                    = 24576 draws
+unchanged operator target        = 98304 draws
+source + target                  = 122880 draws
+unchanged no-operator target     = 147456 draws
+registered saving                = 24576 = 1/6
+```
+
+The third source context remains unqueried. The proposal guard controls only
+the stopping decision and is not a confidence certificate. This licenses a
+finite registered offline-inclusive draw reduction, with status
+`REGISTERED_OFFLINE_INCLUSIVE_INTERVENTION_PASSED_BROAD_GATE_NOT_RUN`; it
+does not pass or rename the broad Gate.
+
 The broad official matched-budget protocol remains deferred. Before any broad
 promotion, a later normative ledger revision must freeze:
 
@@ -259,19 +283,21 @@ another by matching only a generic count. A direct optimizer and an abstraction 
 must be compared on the interfaces each is actually permitted to call, with every
 evidence class visible.
 
-The later experiment must extend beyond the three V0-062 target contexts and
-include persistent prior reuse or lower-cost source construction. It must
+The later experiment must extend beyond the three V0-062/V0-063 target
+contexts and the known human D4/frontier scaffold. It must
 retain a direct baseline, the observed unoptimized mainline, and every
-tax-reduction operator. V0-062's diagnostic nine-context source amortization
-is not official `N_break_even`; no broad or offline-inclusive sample-saving
-claim is emitted until the wider protocol is ratified and run.
+tax-reduction operator. V0-063's diagnostic two-context crossing is not
+official `N_break_even`; no broad sample-saving claim is emitted until the
+wider protocol is ratified and run.
 
 ## 8. Gate state
 
 V0-040 closes the source-unanimous-prior proposal/certificate-authority
 boundary. V0-062 executes one finite broad-tail intervention and establishes a
-registered target-online reduction without hiding offline cost. Neither
-closes or blocks the broad sample-efficiency Gate.
+registered target-online reduction without hiding offline cost. V0-063 adds
+preregistered sequential source stopping and establishes a narrow
+offline-inclusive reduction on the same finite family. None closes or blocks
+the broad sample-efficiency Gate.
 
 ```text
 official_execution_allowed = false

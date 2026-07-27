@@ -6,8 +6,8 @@ This document governs repository test execution only. It does not change any
 planner, simulator, sample count, confidence statement, artifact schema, or
 research claim.
 
-The repository contains 1,287 pytest cases in 105 test modules. These are not
-1,287 independent research Gates: many cases are attacks and replay checks
+The repository contains 1,300 pytest cases in 106 test modules. These are not
+1,300 independent research Gates: many cases are attacks and replay checks
 for the same frozen Gate.
 
 ## Formal fresh lane
@@ -143,3 +143,20 @@ and private execution lease still use exact-file-set verification, and an
 extra cache file injected after snapshotting remains an integrity failure.
 This removes a test-order race without increasing the frozen 8 MiB cap or
 weakening runtime verification.
+
+The V0-063 validation adds one module and 13 cases. Its standard lane passes
+in 47.1 seconds and its fresh-ID lane passes in 46.9 seconds:
+
+```text
+ordinary compatible lane       = 96 modules / 1205 cases
+isolation-compatible lane      = 10 modules /   95 cases
+module/case collection         = 106 / 106, 1300 / 1300
+V0-063 standard focused lane   = 13 / 13
+V0-063 fresh-ID focused lane   = 13 / 13
+single 24-worker full lane     = 266.9 s / 1300 passed
+```
+
+The V0-063 module independently replays the complete V0-061 target/direct
+control in addition to its sequential source trace. The namespace-capable
+106-module lane passes all 1,300 cases in 266.9 seconds with no nonpassing
+module.

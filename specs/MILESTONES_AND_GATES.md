@@ -134,6 +134,13 @@
   host-verified. This proves only the registered H2 composition, not generic
   persistence, cross-query/H>2 behavior, native work or sample savings,
   independent-algorithm verification, economics, or an aggregate Gate.
+- **V0-063 preregistered sequential source stopping:** complete-context
+  checkpoints stop after two ordered source contexts, six rows and 24,576
+  generative-oracle samples; the third source context is not enumerated. The
+  unchanged 98,304-draw target route yields 122,880 offline-plus-online draws
+  versus the no-operator control's 147,456, a registered-family reduction of
+  one sixth. The source guard remains proposal-only and broad sample
+  efficiency remains open.
 - **V0-062 source-frozen sample-tax intervention:** three disjoint source
   contexts learn a two-row proposal before target evidence. Target-only
   certificates on the unchanged V0-061 held-out contexts use 98,304 instead
@@ -1462,6 +1469,51 @@ COUNTER_COMPLETENESS_GATE_NOT_RUN
 SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
+
+### V0-063 preregistered sequential source-stopping gate
+
+Contract `1.27.0` registers schema `1.0.0` and profile
+`g2048_preregistered_sequential_source_stopping_v0`.
+
+The Gate passes only when:
+
+1. the V0-062/V0-061 target workload and controls remain identity-bound and
+   unchanged;
+2. three ordered target-disjoint source contexts, one 4,096-draw block per
+   row/context, minimum two/maximum three contexts, all two-row candidates,
+   proposal guard, seed/counter protocol and implementation digest are frozen
+   before evidence;
+3. every checkpoint follows a complete three-row source-context block;
+4. checkpoint one records `CONTINUE_MIN_CONTEXTS` even though it identifies
+   the eventual prefix;
+5. checkpoint two uniquely/unanimously freezes
+   `ROOT_TOWARD + CHAIN_A_AWAY`;
+6. the third source context has no row enumeration or draw;
+7. source work is exactly six rows/24,576 draws and the source prior sees no
+   target evidence/kernel;
+8. the source guard is proposal-only and cannot narrow target bounds or
+   certify a target plan;
+9. the unchanged target route observes six rows/98,304 draws, certifies six
+   occurrences at confidence `347/350`, and reuses three models;
+10. no-operator and cold-direct controls remain `147456/9` and
+    `4866048/198` draws/rows;
+11. source plus target is exactly 122,880 draws, saving 24,576 (`1/6`)
+    against no-operator;
+12. the wrong prior produces three failures, three tail fallbacks and zero
+    false certificates;
+13. independent verification regenerates all source draws, the complete
+    matched baseline and six exact J0 comparators;
+14. post-stop access, draw, checkpoint, chronology, identity, runtime-shape
+    and implementation attacks fail closed; and
+15. broad sample efficiency/generalization, automatic discovery, official
+    execution, scalar/economics and aggregate Gates remain locked.
+
+Passing licenses only the finite registered evidence-class
+offline-inclusive reduction. The diagnostic two-context crossing is not
+official `N_break_even`.
+
+Complete semantics are normative in
+`specs/SEQUENTIAL_SOURCE_STOPPING.md`.
 
 ### V0-062 source-frozen sample-tax intervention gate
 

@@ -28,7 +28,40 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 → jointly search local value/risk choices, rebuild, or use charged fallback
 ```
 
-## Current source-frozen sample-tax intervention Gate (V0-062)
+## Current sequential source-stopping Gate (V0-063)
+
+Contract `1.27.0` freezes profile
+`g2048_preregistered_sequential_source_stopping_v0`.
+
+V0-063 preserves the complete V0-062 target certificate and V0-061
+no-operator/cold-direct controls, but preregisters ordered source checkpoints.
+One 4,096-draw block is acquired for each of the three frontier rows in a
+source context. The first checkpoint must continue; the second uniquely and
+unanimously freezes `ROOT_TOWARD + CHAIN_A_AWAY`; the third source context is
+never enumerated.
+
+```text
+V0-062 fixed source draws       = 147456
+V0-063 stopped source draws     =  24576
+unchanged operator target       =  98304
+source + target                 = 122880
+unchanged no-operator target    = 147456
+registered saving               =  24576 = 1/6
+```
+
+The source guard only controls stopping and has no confidence-certificate
+authority. Target certificates remain target-only at confidence `347/350`.
+The wrong prior still fails in all three contexts before three explicit tail
+fallbacks and emits zero false certificates.
+
+This is an offline-inclusive reduction only on the registered finite
+known-D4 family. It is not broad sample efficiency, automatic
+coordinate/support discovery, official execution, or scalar economics. The
+next construction Gate returns to observation-driven coordinate/support
+proposals over a larger held-out structural family. The full contract is in
+`specs/SEQUENTIAL_SOURCE_STOPPING.md`.
+
+## Source-frozen sample-tax intervention Gate (V0-062)
 
 Contract `1.26.0` freezes profile
 `g2048_source_frozen_boundary_capability_operator_v0`.
@@ -94,7 +127,7 @@ scalar/break-even economics, and broad generalization remain later Gates.
 The full V0-061 contract is in
 `specs/MATCHED_END_TO_END_ACQUISITION_WORKLOAD.md`.
 
-The current repository Gate contains 1,287 tests in 105 modules. For fast
+The current repository Gate contains 1,300 tests in 106 modules. For fast
 development, `scripts/run_pytest_parallel.py` runs modules concurrently and
 memoizes only repeated content-ID reads on the identical frozen object;
 mutation-attack modules automatically use fresh IDs. The formal release path

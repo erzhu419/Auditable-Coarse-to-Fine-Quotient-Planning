@@ -2,7 +2,7 @@
 
 **Status:** normative source of truth
 
-**Ledger version:** 1.26.0
+**Ledger version:** 1.27.0
 **Last updated:** 2026-07-27
 
 ## Authority
@@ -92,6 +92,7 @@ absent from a public checkout.
 | V0-060 | 2026-07-27 | Raw replayable multi-context stochastic acquisition control | FROZEN | Contract `1.24.0` freezes schema `1.0.0`, profiles `g2048_raw_replayable_multicontext_partial_statistical_v0` and `g2048_certificate_directed_vs_uniform_acquisition_v0`, and status `CERTIFIED_REGISTERED_RAW_REPLAYABLE_MULTICONTEXT_ACQUISITION_CONTROL`. Without changing the canonical `99/100` safe-chain fixture, it preregisters three separately keyed spawn-law contexts `p=199/200,249/250,999/1000` and a point/uniform H2 query pair per context before any log/model/plan ID exists. An all-missing model-only proof selects `TOWARD,AWAY,AWAY` and authorizes exactly `ROOT_TOWARD,CHAIN_A_AWAY,CHAIN_B_AWAY`. The adaptive lane records 16,384 individual counter-based outcome draws for each of those three rows and keeps the other three legal rows explicitly vacuous; an independent control records all six rows. Exact-rational calibration freezes radius `1/64`, 54 obligations, family tail `27/700`, and confidence lower `673/700`. Both lanes certify reward `3/64`, risk `<1/20`, regret zero; each second context query reuses its immutable model with zero new draws. Production model/planner interfaces have no kernel and no exact probabilities. Standalone evaluation replays all `442368` individual nibbles and exact J0 risks `199/20000,249/31250,999/500000` over `3*5440` candidates. All 14 focused tests and all 1,256 repository tests pass. | Closes V0-059's aggregate-only evidence limitation only for this finite known-D4 simulation family. The all-six-row arm is a statistical control, not a matched direct-ground planner, so the adaptive/direct difference `147456` is not a sample-efficiency or tax-operator result. Automatic coordinates/symmetry, unknown support, broad structural generalization, exact-sound statistical promotion, complete accounting, economics and official execution remain locked. | `raw_multicontext_acquisition_v1.py`; packed individual draw/codebook/hash-chain, partial-model, authorization, occurrence, work, exact-comparator and verifier artifacts; kernel/API/context/aggregate/tamper/identity attacks; `specs/RAW_MULTICONTEXT_ACQUISITION_CONTROL.md`. |
 | V0-061 | 2026-07-27 | Matched end-to-end adaptive versus cold direct-ground acquisition workload | FROZEN | Contract `1.25.0` freezes schema `1.0.0`, profile `g2048_matched_adaptive_vs_cold_direct_ground_v0`, and status `CERTIFIED_REGISTERED_MATCHED_END_TO_END_ACQUISITION_WORKLOAD_CONTROL`. It retains V0-060's three contexts and six point/uniform H2 occurrences but replaces the all-six-row abstract control with an occurrence-cold ground planner. The adaptive arm freezes three failed proofs, samples nine authorized abstract rows (`147456` individual draws), builds three `3/3` partial RAPMs, and reuses each context model once. The direct arm independently enumerates `78` ground state/action catalogues and `198` transition rows, records `4866048` individual draws, estimates `144` H1 and `54` root actions, evaluates `774` root assignments, certifies six deterministic ground plans, and performs zero cross-occurrence reuse. Both use radius `1/64`; exact-rational family accounting binds 18 adaptive plus 252 direct obligations, tail `783/43750`, and confidence lower `42967/43750`. Production planners receive no kernel/probabilities. Standalone evaluation replays all `5013504` observations, all 198 ground rows, both lifted/adaptive and direct plans, and six exact J0 problems. All 15 focused tests and all 1,273 repository tests pass. | Closes V0-060's unmatched-control limitation and licenses only the registered-workload observation `direct/adaptive raw draws = 33`. The adaptive arm uses a known human D4 prior and the direct arm uses known finite symbolic support. The result is not automatic hidden-space discovery, unknown-support RL, broad sample efficiency/generalization, or a Laplace/KG-OP sample-tax operator. Native fallback/noncertificate counts are zero; official execution, scalar/break-even and economics remain locked. | `matched_end_to_end_workload_v1.py`; preregistration, raw adaptive/direct evidence, cold ground plan/proof, work, comparator and verifier artifacts; kernel/API/row/reuse/tamper/identity attacks; `specs/MATCHED_END_TO_END_ACQUISITION_WORKLOAD.md`; `specs/TEST_EXECUTION.md`. |
 | V0-062 | 2026-07-27 | Source-frozen, certificate-guarded sample-tax intervention | FROZEN | Contract `1.26.0` freezes schema `1.0.0`, profile `g2048_source_frozen_boundary_capability_operator_v0`, and status `CERTIFIED_REGISTERED_HELDOUT_SAMPLE_TAX_INTERVENTION`. Three source-only safe-chain contexts (`497/500`, `399/400`, `1999/2000`) contribute nine exact-kernel row enumerations and `147456` offline-source generative-oracle samples. Before any target evidence, the source builder evaluates all two-row subsets of the V0-061 failed-proof frontier and uniquely/unanimously proposes `ROOT_TOWARD + CHAIN_A_AWAY`, retaining `CHAIN_B_AWAY` as broad tail. The unchanged three V0-061 contexts and six occurrences are held out. Target-only intervals over six row enumerations/`98304` generative-oracle samples certify every occurrence with family confidence `347/350`; unchanged no-operator and cold-direct controls remain `147456` and `4866048` samples. A wrong proposal `ROOT_TOWARD + CHAIN_B_AWAY` fails in all three contexts, triggers exactly three tail acquisitions, and emits zero false certificates. The five evidence-event classes are explicit, with interaction/logged/synthetic native zeros for source/operator lanes. Standalone evaluation independently replays source evidence, the complete V0-061 control, both operator paths, and six exact J0 comparators. | Licenses only the registered held-out target-online reduction `49152` generative-oracle samples, exactly `1/3`, and the narrow claim that a source-frozen proposal plus target certificate is a sample-tax operator on this workload. Offline-plus-target work is `245760`, so offline-inclusive saving, broad sample efficiency, automatic coordinate/support discovery, official execution, scalar/break-even and all aggregate Gates remain false/null/`NOT_RUN`. The diagnostic source amortization is nine context-level savings and is not official `N_break_even`. | `sample_tax_operator_v1.py`; source/target preregistration, raw source blocks, five-class evidence counters, source subset assessments/prior, restricted target logs, target-only model/proof, wrong-prior fallback, work/campaign/comparator/verifier artifacts; 13 focused tests including leakage/tamper/kernel/identity attacks; `specs/SAMPLE_TAX_INTERVENTION.md`. |
+| V0-063 | 2026-07-27 | Preregistered sequential source stopping | FROZEN | Contract `1.27.0` freezes schema `1.0.0`, profile `g2048_preregistered_sequential_source_stopping_v0`, and status `CERTIFIED_REGISTERED_OFFLINE_INCLUSIVE_SAMPLE_TAX_REDUCTION`. The complete V0-062/V0-061 target, no-operator, cold-direct and wrong-prior authorities remain unchanged. Before evidence, three ordered target-disjoint source contexts, one 4096-draw block per frontier row/context, minimum two/maximum three contexts, guard radius `1/64`, all two-row candidates and unique-unanimous stopping are frozen. Checkpoint one identifies the same prefix but must continue; checkpoint two freezes `ROOT_TOWARD + CHAIN_A_AWAY`; the third source context is not enumerated. Source work is exactly six row enumerations/`24576` generative samples. Target-only planning remains six rows/`98304` draws with confidence `347/350`; the no-operator and cold-direct controls remain `147456` and `4866048`, and the wrong prefix still yields three failures, three tail fallbacks and zero false certificates. Independent replay regenerates all acquired source draws, the complete matched baseline and six exact J0 comparators. All 13 standard/fresh-ID focused tests and all 1,300 repository tests pass. | Licenses only the registered-family offline-plus-online observation `24576+98304=122880 < 147456`, a saving of `24576` or `1/6`, and source reduction `5/6` relative to V0-062. The source guard is proposal-only, not a confidence certificate. The diagnostic context crossing is two and is not official `N_break_even`. Broad sample efficiency/generalization, automatic coordinate/support discovery, official execution, scalar/economics and aggregate Gates remain false/null/`NOT_RUN`. The next construction Gate returns to observation-driven coordinate/support proposals over a larger held-out structural family. | `sequential_source_stopping_v1.py`; ordered source logs, assessments/checkpoints, stopped evidence/prior, restricted target evidence, unchanged controls, work/campaign/comparator/verifier artifacts; 13 focused tests including post-stop access, draw/checkpoint/chronology/identity/implementation attacks; `specs/SEQUENTIAL_SOURCE_STOPPING.md`. |
 
 For V0-051, the affected public interface expressly includes the content-addressed
 `IncrementalProofDAGProtocolV1` and its `protocol_id`, in addition to the node,
@@ -2412,6 +2413,74 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
 
+## V0-063 preregistered sequential source-stopping rule
+
+Contract `1.27.0` freezes schema `1.0.0`, profile
+`g2048_preregistered_sequential_source_stopping_v0`, and passing status
+`CERTIFIED_REGISTERED_OFFLINE_INCLUSIVE_SAMPLE_TAX_REDUCTION`.
+
+The complete V0-062/V0-061 target workload and controls remain unchanged.
+Before evidence, V0-063 freezes three ordered target-disjoint source contexts,
+all three two-row candidates, one 4096-draw block per row/context checkpoint,
+minimum two and maximum three contexts, proposal guard radius `1/64`, delta
+`1/20`, unique-unanimous stopping, source seed/counter protocol, and the
+implementation digest. Prospective evidence, prior, plan and result IDs are
+absent.
+
+The source guard is proposal-only and has no confidence-certificate
+authority. A checkpoint is allowed only after all three frontier rows in the
+current context have one complete block. Before two contexts, stopping is
+forbidden. At or after two contexts, exactly one subset must pass in every
+acquired context; otherwise acquisition continues or abstains at the maximum.
+
+The registered trace is:
+
+```text
+checkpoint 1 = CONTINUE_MIN_CONTEXTS
+checkpoint 2 = STOP_UNIQUE_UNANIMOUS
+frozen prefix = ROOT_TOWARD + CHAIN_A_AWAY
+unused source contexts = 1
+source rows/draws = 6 / 24576
+```
+
+No row from the third source context may be enumerated. The stopped prior sees
+no target context/evidence and cannot narrow target envelopes or certify
+plans.
+
+The target-only route remains six rows/`98304` draws and certifies all six
+occurrences at confidence `347/350`, with three model reuses. The unchanged
+no-operator and cold-direct controls remain `147456/9` and `4866048/198`
+draws/rows. The wrong prefix still fails in all three contexts before three
+tail acquisitions; false certificates remain zero.
+
+The only new positive claim is:
+
+```text
+V0-062 fixed source draws             = 147456
+V0-063 stopped source draws           =  24576
+source draw reduction                 = 122880 = 5/6
+source + operator target              = 122880
+unchanged no-operator target          = 147456
+registered offline-inclusive saving   =  24576 = 1/6
+```
+
+The two-context crossing is a single-unit diagnostic, not
+`official_N_break_even`. The following locks remain:
+
+```text
+broad_sample_efficiency_claimed = false
+automatic_coordinate_discovery_claimed = false
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+```
+
+Normative semantics and principal IDs are in
+`specs/SEQUENTIAL_SOURCE_STOPPING.md`.
+
 ## V0-062 source-frozen sample-tax intervention rule
 
 Contract `1.26.0` freezes schema `1.0.0`, profile
@@ -3841,3 +3910,4 @@ sample_efficiency_gate_blocks_mainline = false
 - **2026-07-27 — 1.24.0:** Added and verified V0-060 profiles `g2048_raw_replayable_multicontext_partial_statistical_v0` and `g2048_certificate_directed_vs_uniform_acquisition_v0`. Three separately keyed spawn-law contexts and two queries per context are frozen before raw evidence. A model-only failed risk proof authorizes exactly three of six rows; the adaptive lane stores 147,456 individual packed draws and retains nine explicit missing context-rows, while the independent all-six-row statistical control stores 294,912 draws. Exact-rational calibration freezes radius `1/64`, 54 obligations and confidence `673/700`. Both lanes certify `TOWARD,AWAY,AWAY`, reward `3/64`, risk below `1/20` and regret zero; each second query reuses its context model with no new draws. Production has no kernel/probability input. Standalone evaluation replays all 442,368 nibbles and three exact J0 risks without promoting evidence. All 14 focused tests and all 1,256 repository tests pass. The 147,456 draw difference is not a sample-efficiency claim because the control is statistical all-row acquisition, not a matched direct-ground planning system. Automatic coordinates/symmetry, unknown support, broad generalization, sample-tax operators, complete accounting, economics and official execution remain locked.
 - **2026-07-27 — 1.25.0:** Added V0-061/profile `g2048_matched_adaptive_vs_cold_direct_ground_v0`. It preserves V0-060's three contexts/six queries but replaces the unmatched all-six-row control with six cold complete ground statistical planners. The adaptive route records 147,456 draws and three within-context model reuses; direct records 4,866,048 draws across 198 occurrence-local ground rows with zero reuse. Exact-rational joint confidence is `42967/43750`; production has no kernel, and standalone evaluation replays 5,013,504 observations plus six exact J0 controls. The registered draw ratio is exactly 33 and may be reported only as a finite known-D4 workload observation. All 15 focused tests and all 1,273 repository tests pass. Exact test-only immutable-ID memoization and six-node module sharding reduce the compatible full-suite critical path to 208.1 seconds while retaining a fresh-ID release lane; this is execution acceleration, not research evidence. Broad sample efficiency, automatic hidden-coordinate/support discovery, sample-tax operators, official execution, scalar/break-even, complete economics and generalization remain locked.
 - **2026-07-27 — 1.26.0:** Added V0-062/profile `g2048_source_frozen_boundary_capability_operator_v0`. Three disjoint source contexts contribute nine exact row enumerations/147,456 offline-source generative-oracle samples; source-only exhaustive two-row capability evaluation uniquely proposes `ROOT_TOWARD + CHAIN_A_AWAY` and retains `CHAIN_B_AWAY` as broad tail. On the unchanged V0-061 held-out targets, six rows/98,304 target generative-oracle samples certify all six occurrences at confidence `347/350`, saving 49,152 online samples, exactly one third, against the unchanged nine-row control. The five evidence-event classes are explicit. A wrong-prior prefix fails three times, invokes three tail rows, and emits zero false certificates. Standalone verification replays source evidence, the complete V0-061 baseline, both operator paths, and six exact J0 values. All 13 focused and fresh-ID tests pass; the compatible full-suite union covers 1,287 cases in 105 modules. Live interpreter caches are excluded only while selecting the immutable source payload, making concurrent snapshots deterministic; the resulting CAS tree and every private lease retain exact-file-set verification. Offline-plus-target samples are 245,760, so offline-inclusive and broad sample efficiency remain unclaimed; the nine-context source-amortization value is diagnostic, not official break-even. Automatic coordinate/support discovery, official execution, scalar/economics and all aggregate Gates remain locked.
+- **2026-07-27 — 1.27.0:** Added V0-063/profile `g2048_preregistered_sequential_source_stopping_v0`. Ordered complete-context checkpoints stop the V0-062 source acquisition after two contexts and six 4,096-draw rows; checkpoint one is forbidden to stop, checkpoint two uniquely/unanimously freezes `ROOT_TOWARD + CHAIN_A_AWAY`, and the third source context remains unqueried. The proposal guard is explicitly nonauthoritative. The unchanged target route certifies all six occurrences from 98,304 target draws, while the no-operator and cold-direct controls remain 147,456 and 4,866,048. Source plus target is 122,880, yielding a registered-family offline-inclusive saving of 24,576 (`1/6`); the wrong prior still fails three times, invokes three fallbacks and emits zero false certificates. Independent replay covers all source draws, the complete V0-061 baseline and six exact J0 comparators. All 13 standard/fresh-ID focused tests and all 1,300 repository tests pass. Broad sample efficiency/generalization, automatic coordinate/support discovery, official execution, scalar/economics and aggregate Gates remain locked; the next construction Gate returns to observation-driven coordinate/support proposals over a larger held-out structural family.

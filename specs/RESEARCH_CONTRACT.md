@@ -129,6 +129,14 @@
   semantic switch only for the registered H2 fixture; it is not generic
   persistence, cross-query/H>2 proof, native-work/sample saving, independent
   verification, economics, or an aggregate Gate.
+- **V0-063 preregistered sequential source stopping:** ordered complete-context
+  checkpoints reduce V0-062 source acquisition from 147,456 to 24,576
+  generative-oracle samples and leave the third source context unqueried.
+  The unchanged target-only route uses 98,304 samples, so registered
+  offline-plus-online work is 122,880 versus the no-operator control's
+  147,456, a finite-family reduction of one sixth. The source guard is only a
+  proposal/stopping mechanism; broad sample efficiency and all mainline locks
+  remain open.
 - **V0-062 source-frozen sample-tax intervention:** three disjoint offline
   source contexts learn a two-row boundary-capability proposal without target
   evidence. On the unchanged V0-061 held-out contexts, target-only
@@ -1932,6 +1940,48 @@ COUNTER_COMPLETENESS_GATE_NOT_RUN
 SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
+
+### Contract 1.27.0: preregistered sequential source stopping
+
+V0-063 registers schema `1.0.0`, profile
+`g2048_preregistered_sequential_source_stopping_v0`, and passing status
+`CERTIFIED_REGISTERED_OFFLINE_INCLUSIVE_SAMPLE_TAX_REDUCTION`.
+
+The complete V0-062/V0-061 target workload and controls are retained.
+Before evidence, the contract freezes three ordered target-disjoint source
+contexts, all two-row candidates, one 4,096-draw block per row/context
+checkpoint, minimum two and maximum three contexts, guard radius `1/64`,
+delta `1/20`, unique-unanimous stopping, source seed/counter semantics and
+the implementation digest.
+
+Checkpoint one observes all three frontier rows in the first context and must
+continue even though it identifies the eventual prefix. Checkpoint two
+observes all three rows in the second context, uniquely/unanimously freezes
+`ROOT_TOWARD + CHAIN_A_AWAY`, and stops. No row in the third registered
+source context is enumerated. Source work is exactly six row enumerations and
+24,576 generative-oracle samples.
+
+The source guard is explicitly not a confidence certificate and has no
+authority to narrow target bounds or certify plans. The unchanged target-only
+route uses six rows/98,304 samples, certifies all six occurrences at
+confidence `347/350`, and reuses three context models. The no-operator and
+cold-direct controls remain `147456/9` and `4866048/198` samples/rows. The
+wrong prefix still fails in all three contexts before three tail fallbacks and
+emits zero false certificates.
+
+The registered evidence-class result is:
+
+```text
+stopped source + operator target = 24576 + 98304 = 122880
+no-operator target               = 147456
+saving                           = 24576 = 1/6
+```
+
+The two-context crossing is diagnostic only and is not official
+`N_break_even`. Broad sample efficiency/generalization, automatic
+coordinate/support discovery, official execution, scalar/economics and
+aggregate Gates remain false, null, or `NOT_RUN`. Complete semantics and
+principal IDs are normative in `specs/SEQUENTIAL_SOURCE_STOPPING.md`.
 
 ### Contract 1.26.0: source-frozen sample-tax intervention
 
