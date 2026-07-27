@@ -134,6 +134,14 @@
   host-verified. This proves only the registered H2 composition, not generic
   persistence, cross-query/H>2 behavior, native work or sample savings,
   independent-algorithm verification, economics, or an aggregate Gate.
+- **V0-062 source-frozen sample-tax intervention:** three disjoint source
+  contexts learn a two-row proposal before target evidence. Target-only
+  certificates on the unchanged V0-061 held-out contexts use 98,304 instead
+  of 147,456 online generative-oracle samples; a wrong-prior path fails closed and invokes
+  the broad tail. The one-third target-online reduction passes only the
+  registered intervention Gate. Offline-inclusive and broad sample
+  efficiency remain open because source acquisition costs 147,456
+  observations.
 - **V0-061 matched end-to-end acquisition workload:** three known-D4
   contexts and six H2 occurrences compare a failed-proof-directed reusable
   partial RAPM with a cold complete ground statistical planner. Every
@@ -1454,6 +1462,53 @@ COUNTER_COMPLETENESS_GATE_NOT_RUN
 SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
+
+### V0-062 source-frozen sample-tax intervention gate
+
+Contract `1.26.0` registers schema `1.0.0` and profile
+`g2048_source_frozen_boundary_capability_operator_v0`.
+
+The Gate passes only when:
+
+1. three source contexts (`497/500`, `399/400`, `1999/2000`), the three
+   unchanged V0-061 target contexts, all six target occurrences, and the
+   source/target split are frozen before evidence;
+2. source and target context IDs are disjoint and the source prior interface
+   accepts no target evidence or target kernel;
+3. source acquisition records exactly nine exact row enumerations and
+   147,456 replayable offline-source generative-oracle samples;
+4. all three two-row failed-proof subsets are evaluated in each source
+   context and only `ROOT_TOWARD + CHAIN_A_AWAY` certifies unanimously;
+5. `CHAIN_B_AWAY` remains an explicit broad-tail proposal and source
+   evidence never narrows target intervals;
+6. production target building/planning accepts no kernel and observes only
+   six rows/98,304 target generative-oracle samples;
+7. all six point/uniform target occurrences certify from target-only bounds,
+   with 12 coordinate obligations and confidence lower `347/350`;
+8. the unchanged V0-061 nine-row adaptive and 198-row cold-direct results are
+   identity-bound controls;
+9. the target-online comparison is exactly
+   `147456 - 98304 = 49152`, reduction `1/3`;
+10. a wrong prefix `ROOT_TOWARD + CHAIN_B_AWAY` fails three times, authorizes
+    exactly three `CHAIN_A_AWAY` tail rows, and emits zero false
+    certificates;
+11. all five evidence-event classes are explicit, source/operator
+    interaction/logged/synthetic counters are native zero, and offline source
+    and online target lanes remain separate, with
+    offline-inclusive operator draws `245760` and saving false;
+12. standalone evaluation replays source evidence, the complete V0-061
+    baseline, positive/wrong operator paths, and six exact J0 values;
+13. draw mutation, source/target leakage, context, identity, kernel-interface
+    and implementation attacks fail closed; and
+14. broad/offline-inclusive sample efficiency, automatic discovery,
+    official execution, scalar/economics and aggregate Gates remain locked.
+
+Passing licenses only the registered held-out target-online intervention
+claim. The diagnostic nine-context source amortization is not official
+`N_break_even`.
+
+Complete semantics are normative in
+`specs/SAMPLE_TAX_INTERVENTION.md`.
 
 ### V0-061 matched end-to-end acquisition workload gate
 
@@ -3116,8 +3171,15 @@ fallback/noncertificate work is explicit zero. Because the adaptive route
 uses a human D4 prior and both routes use known finite symbolic support, this
 does not establish broad sample efficiency.
 
-The next construction Gate may now test an empirically designed tax-reduction
-operator. It must preregister a no-operator control, held-out contexts,
-offline-prior cost and online/fallback traces. Portable source authenticity,
-raw symbolization, primitive/operator invention, larger/unknown domains,
-broad held-out/cross-domain evidence and complete economics remain open.
+V0-062 tests that intervention. Its source-frozen two-row proposal reduces
+held-out target acquisition by exactly one third, while target-only
+certification and a wrong-prior broad-tail control preserve soundness. The
+source cost has not amortized over the three target contexts:
+offline-plus-target observations are `245760`.
+
+The next construction Gate must extend persistent prior use over a larger
+pre-model held-out context family, or reduce source cost by sequential
+source stopping, before any offline-inclusive promotion. Portable source
+authenticity, raw symbolization, primitive/operator invention,
+larger/unknown domains, broad held-out/cross-domain evidence and complete
+economics remain open.

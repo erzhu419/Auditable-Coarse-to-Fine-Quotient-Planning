@@ -196,6 +196,37 @@ def test_snapshot_round_trip_is_canonical_and_ignores_later_live_checkout_edits(
     ]
 
 
+def test_snapshot_ignores_live_interpreter_cache_without_weakening_cas_integrity(
+    tmp_path: Path,
+) -> None:
+    source = _source_tree(tmp_path)
+    clean_cas = RuntimeTreeCASV1((tmp_path / "clean-cas").resolve())
+    clean = clean_cas.snapshot_build_tree(source)
+
+    cache = source / "acfqp" / "__pycache__"
+    cache.mkdir()
+    (cache / "worker.cpython-310.pyc").write_bytes(b"derived cache")
+    (source / "acfqp" / "standalone.pyc").write_bytes(b"derived cache")
+    dirty_cas = RuntimeTreeCASV1((tmp_path / "dirty-cas").resolve())
+    dirty = dirty_cas.snapshot_build_tree(source)
+
+    assert dirty == clean
+    resolved = dirty_cas.resolve(dirty.runtime_tree_id)
+    assert not (resolved.tree_root / "acfqp" / "__pycache__").exists()
+    assert not (resolved.tree_root / "acfqp" / "standalone.pyc").exists()
+
+    # Cache exclusion applies only to live source selection.  A post-snapshot
+    # addition to the authoritative CAS tree is still an integrity violation.
+    injected = resolved.tree_root / "acfqp" / "__pycache__"
+    injected.mkdir()
+    (injected / "worker.cpython-310.pyc").write_bytes(b"attack")
+    with pytest.raises(
+        Phase3ESealedExecutorV1Error,
+        match="file set differs",
+    ):
+        dirty_cas.resolve(dirty.runtime_tree_id)
+
+
 def test_factory_does_not_construct_before_freeze_and_is_fail_closed_single_use(
     tmp_path: Path,
 ) -> None:

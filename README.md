@@ -28,7 +28,38 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 → jointly search local value/risk choices, rebuild, or use charged fallback
 ```
 
-## Current matched end-to-end acquisition Gate (V0-061)
+## Current source-frozen sample-tax intervention Gate (V0-062)
+
+Contract `1.26.0` freezes profile
+`g2048_source_frozen_boundary_capability_operator_v0`.
+
+Three target-disjoint source contexts contribute 147,456 offline-source
+generative-oracle samples. A source-only exhaustive boundary-capability check uniquely
+proposes `ROOT_TOWARD + CHAIN_A_AWAY`, with `CHAIN_B_AWAY` retained as a
+broad tail. The unchanged V0-061 contexts and six H2 occurrences remain
+held out; production exposes only the proposed two target rows per context
+and certifies from target observations alone. All five evidence-event classes
+are explicit; source/operator interaction, logged-observation, and synthetic
+rollout counters are native zero.
+
+```text
+operator target rows / draws    = 6 / 98304
+no-operator target rows / draws = 9 / 147456
+target-online reduction         = 49152 = 1/3
+cold-direct rows / draws        = 198 / 4866048
+```
+
+A registered wrong proposal fails all three target proofs, acquires exactly
+one tail row per context, and emits zero false certificates. The source prior
+can change work but cannot narrow target bounds or authorize a plan.
+
+Offline cost is not hidden: source plus target is 245,760 observations, so
+this finite campaign does not show offline-inclusive or broad sample
+efficiency. Official execution, scalar/break-even economics, automatic
+coordinate/support discovery, and aggregate Gates remain locked. The full
+contract is in `specs/SAMPLE_TAX_INTERVENTION.md`.
+
+## Matched end-to-end acquisition Gate (V0-061)
 
 Contract `1.25.0` freezes profile
 `g2048_matched_adaptive_vs_cold_direct_ground_v0`.
@@ -57,12 +88,13 @@ problems.
 
 The 33× result is restricted to this registered workload and its known human
 D4 prior. It is not automatic hidden-coordinate/support discovery, broad
-sample efficiency, or a sample-tax-reduction operator. Those remain later
-Gates, as do official execution, scalar/break-even economics, and broad
-generalization. The full contract is in
+sample efficiency, or by itself a sample-tax-reduction operator. V0-062 now
+uses it as the unchanged no-operator/cold-direct control; official execution,
+scalar/break-even economics, and broad generalization remain later Gates.
+The full V0-061 contract is in
 `specs/MATCHED_END_TO_END_ACQUISITION_WORKLOAD.md`.
 
-The current repository Gate contains 1,273 tests in 104 modules. For fast
+The current repository Gate contains 1,287 tests in 105 modules. For fast
 development, `scripts/run_pytest_parallel.py` runs modules concurrently and
 memoizes only repeated content-ID reads on the identical frozen object;
 mutation-attack modules automatically use fresh IDs. The formal release path

@@ -425,6 +425,25 @@ def _regular_tree_paths(root: Path) -> tuple[str, ...]:
     return tuple(sorted(rows))
 
 
+def _runtime_source_tree_paths_v1(root: Path) -> tuple[str, ...]:
+    """Select canonical source payload, excluding interpreter cache products.
+
+    Snapshot input may be a live checkout while other isolated test/build
+    processes import the package.  ``__pycache__`` and standalone bytecode are
+    derived, untracked products rather than runtime source authority.  They are
+    therefore omitted from the immutable CAS payload.  The stored CAS tree and
+    every private lease are still verified with ``_regular_tree_paths`` so an
+    extra file created after snapshotting remains a hard integrity failure.
+    """
+
+    return tuple(
+        relative
+        for relative in _regular_tree_paths(root)
+        if "__pycache__" not in PurePosixPath(relative).parts
+        and PurePosixPath(relative).suffix not in {".pyc", ".pyo"}
+    )
+
+
 @dataclass(frozen=True, slots=True, order=True)
 class RuntimeTreeEntryV1:
     relative_path: str
@@ -751,7 +770,7 @@ class RuntimeFactoryCardinalityV1:
 
 def _manifest_from_root_v1(root: Path) -> RuntimeTreeManifestV1:
     entries: list[RuntimeTreeEntryV1] = []
-    for relative in _regular_tree_paths(root):
+    for relative in _runtime_source_tree_paths_v1(root):
         raw = _stable_read_regular_file(root / relative)
         entries.append(RuntimeTreeEntryV1(relative, len(raw), _file_sha256(raw)))
     return RuntimeTreeManifestV1(tuple(entries))

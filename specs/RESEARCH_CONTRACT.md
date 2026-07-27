@@ -129,6 +129,14 @@
   semantic switch only for the registered H2 fixture; it is not generic
   persistence, cross-query/H>2 proof, native-work/sample saving, independent
   verification, economics, or an aggregate Gate.
+- **V0-062 source-frozen sample-tax intervention:** three disjoint offline
+  source contexts learn a two-row boundary-capability proposal without target
+  evidence. On the unchanged V0-061 held-out contexts, target-only
+  certificates use 98,304 rather than 147,456 online generative-oracle samples. A wrong
+  proposal fails closed and acquires its broad-tail row. The one-third online
+  reduction is registered, but 147,456 source generative-oracle samples make the
+  offline-inclusive total 245,760, so broad/offline-inclusive sample
+  efficiency remains unclaimed.
 - **V0-061 matched end-to-end acquisition workload:** the same three
   known-D4 contexts and six H2 occurrences run through both a reusable
   failed-proof-directed partial RAPM route and an occurrence-cold complete
@@ -1925,6 +1933,58 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
 
+### Contract 1.26.0: source-frozen sample-tax intervention
+
+V0-062 registers schema `1.0.0`, profile
+`g2048_source_frozen_boundary_capability_operator_v0`, and passing status
+`CERTIFIED_REGISTERED_HELDOUT_SAMPLE_TAX_INTERVENTION`.
+
+Three source-only safe-chain contexts with rank-one probabilities
+`497/500`, `399/400`, and `1999/2000` are identity-disjoint from the unchanged
+V0-061 target contexts. The split, six target occurrences, V0-061 control,
+sampling profile and implementation digest are frozen before evidence.
+Source acquisition records nine exact row enumerations and 147,456
+offline-source generative-oracle samples. A source-only
+exhaustive evaluation of all two-row failed-proof subsets uniquely and
+unanimously proposes:
+
+```text
+ROOT_TOWARD + CHAIN_A_AWAY
+```
+
+while retaining `CHAIN_B_AWAY` as broad tail. The prior has no target input
+or target-kernel access and cannot narrow target intervals or certify plans.
+
+On held-out targets, production exposes only the two proposed rows per
+context, constructs an honest `2/4` partial RAPM, enumerates all eight H2
+schedules, and uses target-only statistical bounds. Six rows/98,304 target
+generative-oracle samples certify all six occurrences; 12 coordinate obligations give
+confidence lower `347/350`. The unchanged V0-061 no-operator and cold-direct
+controls remain 147,456 and 4,866,048 generative-oracle samples.
+
+The Work artifact reports all five evidence-event classes. Source/operator
+environment interactions, pre-existing logged observations, and synthetic
+rollouts are native zero. Source/operator exact-kernel row enumerations are
+`9/6`; replay belongs only to standalone evaluation and creates no new
+observation.
+
+A wrong-prior prefix `ROOT_TOWARD + CHAIN_B_AWAY` fails all three target
+proofs, authorizes only `CHAIN_A_AWAY`, performs three fallback acquisitions,
+and emits zero false certificates. Standalone verification independently
+replays source observations, the complete V0-061 control, positive and
+wrong-prior paths, and six exact J0 values.
+
+The registered target-online saving is 49,152 generative-oracle samples,
+exactly one third. Offline source plus target work is 245,760 samples, so no
+offline-inclusive saving is observed. Nine context-level savings equal the
+source acquisition in the single native draw unit, but this is diagnostic
+and not official scalar `N_break_even`.
+
+Broad sample efficiency, automatic coordinate/support discovery, official
+execution, scalar/economics, and all aggregate Gates remain false, null, or
+`NOT_RUN`. Complete semantics are normative in
+`specs/SAMPLE_TAX_INTERVENTION.md`.
+
 ### Contract 1.25.0: matched end-to-end acquisition workload
 
 V0-061 registers schema `1.0.0`, profile
@@ -3691,9 +3751,15 @@ three/zero model reuses, exact ratio 33, complete packed replay, and six J0
 comparators. The result is still conditional on a human D4 prior and known
 finite symbolic support.
 
-The next construction risk is therefore no longer locating the sample tax,
-but reducing it without hiding offline work or overfitting the six registered
-occurrences. A separately preregistered Laplace-style acquisition heuristic
-or KG-OP-style offline/online meta-prior must retain a no-operator control,
-held-out contexts, explicit prior-construction cost, and failure/fallback
-semantics.
+V0-062 performs the first separately preregistered intervention. A
+source-frozen two-row proposal reduces held-out target acquisition from
+147,456 to 98,304 observations while target-only certification and a
+wrong-prior broad-tail control preserve soundness. Its 147,456 source
+observations have not amortized over only three target contexts: the
+offline-inclusive total is 245,760.
+
+The next construction risk is therefore persistent prior reuse over a larger
+pre-model held-out family, or lower source construction cost through
+sequential source stopping. Any promotion must retain target-only
+certification, no-prior/wrong-prior controls, complete offline-plus-online
+curves, and the main reusable-world-model objective.

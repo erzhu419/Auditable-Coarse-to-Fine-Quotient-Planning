@@ -11,6 +11,12 @@ nonproduction_external_control_v1
 sample_evidence_taxonomy_v1
 ```
 
+Implemented V0-062 intervention profile:
+
+```text
+g2048_source_frozen_boundary_capability_operator_v0
+```
+
 The project objective remains to synthesize one reusable auditable abstract world
 model, plan mainly in that model, and recover ground distinctions only at a failed
 value/risk proof frontier. The main construction line may continue through automatic
@@ -215,11 +221,28 @@ Telemetry instrumentation should be attached as these algorithms are built. It m
 not restructure the scientific algorithm merely to optimize an as-yet hypothetical
 sample Gate.
 
-## 7. Deferred sample-efficiency experiment
+## 7. Registered finite intervention and deferred broad experiment
 
-The official matched-budget protocol is intentionally deferred until the construction
-and recovery paths are executable and their dominant evidence costs can be measured.
-At that point a new normative ledger revision must freeze, before results are visible:
+V0-061 supplied the first genuinely matched end-to-end trace. V0-062 then
+freezes a narrow intervention with all required controls:
+
+- three source-only contexts and three identity-disjoint held-out target
+  contexts;
+- unchanged V0-061 no-operator and cold-direct controls;
+- a source-only two-row proposal with explicit broad tail;
+- target-only statistical plan certification;
+- a wrong-prior fail-closed/fallback path; and
+- separate offline-source and online-target observation counters.
+
+The registered target-online comparison is `147456` versus `98304`
+generative-oracle samples, a reduction of `1/3`. The offline source lane costs
+`147456` generative-oracle samples, making the finite offline-inclusive total
+`245760`; therefore
+V0-062 does not pass or rename the broad sample-efficiency Gate. Its status is
+`REGISTERED_INTERVENTION_GATE_PASSED_BROAD_GATE_NOT_RUN`.
+
+The broad official matched-budget protocol remains deferred. Before any broad
+promotion, a later normative ledger revision must freeze:
 
 - the direct ground optimization baseline and its information interface;
 - the unoptimized abstraction/world-model baseline;
@@ -236,15 +259,19 @@ another by matching only a generic count. A direct optimizer and an abstraction 
 must be compared on the interfaces each is actually permitted to call, with every
 evidence class visible.
 
-The later experiment should include a direct baseline, the observed unoptimized
-mainline, and each proposed tax-reduction operator. No `N_break_even` or sample-saving
-claim is emitted until that protocol is ratified and run.
+The later experiment must extend beyond the three V0-062 target contexts and
+include persistent prior reuse or lower-cost source construction. It must
+retain a direct baseline, the observed unoptimized mainline, and every
+tax-reduction operator. V0-062's diagnostic nine-context source amortization
+is not official `N_break_even`; no broad or offline-inclusive sample-saving
+claim is emitted until the wider protocol is ratified and run.
 
 ## 8. Gate state
 
-V0-040 closes only the source-unanimous-prior proposal/certificate-authority boundary
-and installs the evidence telemetry needed for later diagnosis. It does not execute a
-wide-tail search, close, or block the future sample-efficiency Gate.
+V0-040 closes the source-unanimous-prior proposal/certificate-authority
+boundary. V0-062 executes one finite broad-tail intervention and establishes a
+registered target-online reduction without hiding offline cost. Neither
+closes or blocks the broad sample-efficiency Gate.
 
 ```text
 official_execution_allowed = false

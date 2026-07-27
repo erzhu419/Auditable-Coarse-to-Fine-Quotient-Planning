@@ -6,8 +6,8 @@ This document governs repository test execution only. It does not change any
 planner, simulator, sample count, confidence statement, artifact schema, or
 research claim.
 
-The repository contains 1,273 pytest cases in 104 test modules. These are not
-1,273 independent research Gates: many cases are attacks and replay checks
+The repository contains 1,287 pytest cases in 105 test modules. These are not
+1,287 independent research Gates: many cases are attacks and replay checks
 for the same frozen Gate.
 
 ## Formal fresh lane
@@ -87,7 +87,7 @@ pytest collection so that missing or duplicate modules cannot be hidden.
 
 ## Measured validation
 
-The 2026-07-27 validation used node001–node006, each with 24 module workers:
+The V0-061 2026-07-27 validation used node001–node006, each with 24 module workers:
 
 ```text
 cluster-compatible critical path       = 208.1 s
@@ -116,3 +116,30 @@ full six-node critical path   16–19 min → 208.1 s
 
 These are test-harness runtime improvements only. The formal fresh lane
 remains mandatory before a release or a new frozen research claim.
+
+The V0-062 validation added one module and 13 cases. Its focused lane passed
+in 89.49 seconds and its fresh-ID lane passed in 87.5 seconds. The complete
+collection is now:
+
+```text
+ordinary compatible lane       = 95 modules / 1192 cases / all pass
+isolation-compatible lane      = 10 modules /   95 cases / all pass
+module/case union              = 105 / 105, 1287 / 1287
+V0-062 fresh-ID focused lane   = 13 / 13
+single 24-worker full lane     = 456.9 s / all pass
+```
+
+The ten isolation modules fail inside the Codex filesystem sandbox only
+because bubblewrap cannot create a `NETLINK_ROUTE` socket there. The same
+unchanged modules pass in the approved namespace-capable execution layer.
+The final 24-worker run executed all 105 modules together and passed all
+1,287 cases in 456.9 seconds.
+
+Concurrent nested workers can create live `src/**/__pycache__` files even
+when the parent pytest process disables bytecode. Runtime-tree snapshot
+selection therefore canonically omits `__pycache__`, `.pyc`, and `.pyo`
+products. Only source selection has this filter: the materialized CAS tree
+and private execution lease still use exact-file-set verification, and an
+extra cache file injected after snapshotting remains an integrity failure.
+This removes a test-order race without increasing the frozen 8 MiB cap or
+weakening runtime verification.
