@@ -134,6 +134,13 @@
   host-verified. This proves only the registered H2 composition, not generic
   persistence, cross-query/H>2 behavior, native work or sample savings,
   independent-algorithm verification, economics, or an aggregate Gate.
+- **V0-061 matched end-to-end acquisition workload:** three known-D4
+  contexts and six H2 occurrences compare a failed-proof-directed reusable
+  partial RAPM with a cold complete ground statistical planner. Every
+  observation is replayable and production is kernel-free. The registered
+  direct/adaptive draw ratio is 33, restricted to this finite known-prior
+  workload; broad sample efficiency, automatic hidden-space discovery and a
+  tax-reduction operator remain open.
 - **V0-060 raw replayable multi-context acquisition control:** three
   separately keyed known-D4 spawn-law contexts each execute a model-only
   failed proof, three-row certificate-directed individual-draw acquisition,
@@ -1447,6 +1454,49 @@ COUNTER_COMPLETENESS_GATE_NOT_RUN
 SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
+
+### V0-061 matched end-to-end acquisition workload gate
+
+Contract `1.25.0` registers schema `1.0.0` and profile
+`g2048_matched_adaptive_vs_cold_direct_ground_v0`.
+
+The Gate passes only when:
+
+1. the same three contexts and six H2 occurrences are frozen before either
+   route receives evidence;
+2. adaptive acquisition follows only three model-only failed-proof
+   frontiers, samples nine abstract rows, and retains all unobserved rows as
+   explicit uncertainty;
+3. each direct occurrence starts cold, enumerates its complete any-policy
+   ground support, samples every legal state-action row, plans a deterministic
+   ground policy, and cannot reuse its model;
+4. point and uniform support shapes are respectively
+   `6/18/16/2/2` and `20/48/32/16/256`;
+5. adaptive/direct totals are `9/198` rows and
+   `147456/4866048` individual observations;
+6. exact-rational calibration reconstructs radius `1/64`, 18 adaptive plus
+   252 direct obligations, family tail `783/43750`, and confidence lower
+   `42967/43750`;
+7. production planning receives no exact kernel or transition probability;
+8. all six plans in both routes satisfy risk and regret thresholds;
+9. adaptive context-model reuse is exactly three while direct reuse is zero;
+10. fallback and noncertificate counts are explicit zeros;
+11. standalone evaluation replays all 5,013,504 observations, 198 direct
+    rows, both selected-route exact values and six unrestricted J0 controls;
+12. missing-row, cross-occurrence-reuse, one-nibble, kernel, context,
+    identity, and implementation attacks fail closed; and
+13. the 33× draw ratio is labelled a registered-workload observation, while
+    broad sample efficiency, automatic discovery, tax-operator, official,
+    scalar and economics claims remain locked.
+
+Passing closes V0-060's unmatched-control limitation. It does not itself
+reduce the sample tax. The next intervention Gate must preregister a
+Laplace-style heuristic or KG-OP-style offline/online meta-prior against an
+unchanged no-operator control and held-out contexts, with offline and online
+work kept separate.
+
+Complete semantics are normative in
+`specs/MATCHED_END_TO_END_ACQUISITION_WORKLOAD.md`.
 
 ### V0-060 raw replayable multi-context acquisition gate
 
@@ -3059,11 +3109,15 @@ keyed spawn-law contexts, honest missing rows, certificate-directed partial
 acquisition, zero-draw second-query reuse, and exact evaluation replay. Its
 direct arm is still only a uniform all-row statistical control.
 
-The next construction Gate must execute a genuinely matched adaptive versus
-direct-ground planning workload, charging planning, failed proof,
-acquisition, certification, model reuse, failure and fallback work. Portable
-source authenticity, raw symbolization, primitive/operator invention,
-larger/unknown domains, broad held-out/cross-domain evidence, the empirically
-designed tax-reduction operator and complete statistical/economics Gates
-remain open. Sample efficiency stays non-blocking until that matched trace
-identifies whether and where an intervention is justified.
+V0-061 executes the genuinely matched adaptive versus cold direct-ground
+workload and exposes a registered `147456/4866048`, ratio-33 raw-draw trace.
+It charges failed proof, acquisition, planning, certification and model reuse;
+fallback/noncertificate work is explicit zero. Because the adaptive route
+uses a human D4 prior and both routes use known finite symbolic support, this
+does not establish broad sample efficiency.
+
+The next construction Gate may now test an empirically designed tax-reduction
+operator. It must preregister a no-operator control, held-out contexts,
+offline-prior cost and online/fallback traces. Portable source authenticity,
+raw symbolization, primitive/operator invention, larger/unknown domains,
+broad held-out/cross-domain evidence and complete economics remain open.

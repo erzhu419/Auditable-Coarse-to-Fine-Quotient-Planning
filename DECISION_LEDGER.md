@@ -2,7 +2,7 @@
 
 **Status:** normative source of truth
 
-**Ledger version:** 1.24.0
+**Ledger version:** 1.25.0
 **Last updated:** 2026-07-27
 
 ## Authority
@@ -90,6 +90,7 @@ absent from a public checkout.
 | V0-058 | 2026-07-26 | Observation-driven program closure and held-out H2 recovery | FROZEN | Contract `1.22.0` freezes schema `1.0.0`, profiles `lmb_observed_program_closure_partial_rapm_v0` and `lmb_observed_program_closure_heldout_h2_v0`, and passing statuses `OBSERVATION_CONSISTENT_PROGRAM_CLOSURE_PARTIAL_RAPM` and `CERTIFIED_OBSERVED_PROGRAM_CLOSURE_HELDOUT_H2_RECOVERY`. From only the preregistered `8/11/7` symbolic source graph, production closes the frozen human typed vocabulary to depth two, retains `215` semantic representatives (`174` state, `37` state-action), exhausts all `6650` optional-single-coordinate candidates, finds `1384` admissible candidates, and selects candidate `4013`: `cardinality(legal_actions)` plus `buffer_at_type(buffer_counts,selected_tile_type)<=3/2`. Its partial RAPM is `7 observed / 4 missing`. A source-log-held-out H2 target is frozen before synthesis; after full source replay, its one catalogue is registered but all three target rows remain vacuous. The selected audit fails at reward `[0,4]`, failure `[0,1]`; only then does the `1 risk / 3 value / 3 distinct` authorization permit exactly three target transitions. The safe row reaches an existing source state and reuses its observed second-stage dynamics without successor access. The immutable final epoch is `10/4` and independently certifies reward/failure/regret `1/0/0`. All 19 registered tests pass and the principal IDs are frozen below. The complete staged Python package is now approximately 6.5 MiB, so the content-addressed isolated-fallback runtime-source ceiling migrates from 6 MiB to the independently frozen 8 MiB sealed-manifest ceiling; the profile-ID change invalidates old route uppers, exact actual bytes remain charged, and no official Gate is unlocked. | Advances automatic world-model construction beyond a handwritten coordinate catalogue, but only inside one frozen human primitive/operator vocabulary and one finite deterministic symbolic log. It does not prove primitive/operator invention, raw symbolization, statistical/learned dynamics, generic H>2 recovery, broad held-out/cross-domain generalization, sample reduction/efficiency, complete accounting, economics or official execution. | `observed_program_closure_synthesis_v1.py`; `observed_program_closure_heldout_h2_v1.py`; complete 6650-candidate trace; preregistration/chronology/three-row/epoch/replay/overclaim attacks; isolated-fallback runtime-cap migration/replay; `specs/OBSERVATION_DRIVEN_PROGRAM_CLOSURE_HELDOUT_H2.md`. |
 | V0-059 | 2026-07-26 | Multi-domain observed/statistical held-out campaign | FROZEN | Contract `1.23.0` freezes schema `1.0.0`, profiles `multidomain_observed_statistical_heldout_campaign_v0` and `g2048_d4_empirical_hoeffding_partial_rapm_v0`, and status `CERTIFIED_REGISTERED_MULTIDOMAIN_OBSERVED_STATISTICAL_HELDOUT_CAMPAIGN`. Before prospective model/plan identities it registers two distinct human schemas and twelve LMB/G2048 occurrences. LMB automatically composes/selects inside the V0-058 typed vocabulary, performs exactly three certificate-authorized target transitions on its first strict H2 occurrence, then executes two fresh model-only reuses. G2048 uses known D4 structure rather than discovering it; a probability-free seven-cell/six-row catalogue plus a trusted frozen aggregate ledger of `6*65536=393216` offline observations yields six nonzero-width statistical rows. Exact-rational Hoeffding/Taylor/union calibration freezes radius `1/128`, family tail `3/350` and confidence lower `347/350`. Robust enumeration selects `TOWARD,AWAY,AWAY`, reward `[3/64,3/64]`, failure `[9277983,75716127]/2147483648 < 1/20`, regret zero. Nine D4 point/uniform occurrences use zero online samples. Production accepts no G2048 kernel; standalone exact D4 replay contains value `3/64` and failure `99/5000` without promoting statistical evidence. All 15 focused tests and all 1242 repository tests pass. | Closes only the first registered two-domain exact/statistical evidence-composition campaign. It does not prove automatic D4/primitive discovery, shared cross-domain coordinates, raw symbolization, exact-sound statistical dynamics, broad structural/H>2 generalization, sample saving, complete accounting, economics or official execution. The 393,216 observations are an exposed sample tax, not a benefit claim. | `multidomain_statistical_campaign_v1.py`; typed schema/catalogue/ledger/calibration/model/preregistration/occurrence/work/result/verifier artifacts; count/order/evidence/runtime/kernel/implementation attacks; `specs/MULTIDOMAIN_STATISTICAL_HELDOUT_CAMPAIGN.md`. |
 | V0-060 | 2026-07-27 | Raw replayable multi-context stochastic acquisition control | FROZEN | Contract `1.24.0` freezes schema `1.0.0`, profiles `g2048_raw_replayable_multicontext_partial_statistical_v0` and `g2048_certificate_directed_vs_uniform_acquisition_v0`, and status `CERTIFIED_REGISTERED_RAW_REPLAYABLE_MULTICONTEXT_ACQUISITION_CONTROL`. Without changing the canonical `99/100` safe-chain fixture, it preregisters three separately keyed spawn-law contexts `p=199/200,249/250,999/1000` and a point/uniform H2 query pair per context before any log/model/plan ID exists. An all-missing model-only proof selects `TOWARD,AWAY,AWAY` and authorizes exactly `ROOT_TOWARD,CHAIN_A_AWAY,CHAIN_B_AWAY`. The adaptive lane records 16,384 individual counter-based outcome draws for each of those three rows and keeps the other three legal rows explicitly vacuous; an independent control records all six rows. Exact-rational calibration freezes radius `1/64`, 54 obligations, family tail `27/700`, and confidence lower `673/700`. Both lanes certify reward `3/64`, risk `<1/20`, regret zero; each second context query reuses its immutable model with zero new draws. Production model/planner interfaces have no kernel and no exact probabilities. Standalone evaluation replays all `442368` individual nibbles and exact J0 risks `199/20000,249/31250,999/500000` over `3*5440` candidates. All 14 focused tests and all 1,256 repository tests pass. | Closes V0-059's aggregate-only evidence limitation only for this finite known-D4 simulation family. The all-six-row arm is a statistical control, not a matched direct-ground planner, so the adaptive/direct difference `147456` is not a sample-efficiency or tax-operator result. Automatic coordinates/symmetry, unknown support, broad structural generalization, exact-sound statistical promotion, complete accounting, economics and official execution remain locked. | `raw_multicontext_acquisition_v1.py`; packed individual draw/codebook/hash-chain, partial-model, authorization, occurrence, work, exact-comparator and verifier artifacts; kernel/API/context/aggregate/tamper/identity attacks; `specs/RAW_MULTICONTEXT_ACQUISITION_CONTROL.md`. |
+| V0-061 | 2026-07-27 | Matched end-to-end adaptive versus cold direct-ground acquisition workload | FROZEN | Contract `1.25.0` freezes schema `1.0.0`, profile `g2048_matched_adaptive_vs_cold_direct_ground_v0`, and status `CERTIFIED_REGISTERED_MATCHED_END_TO_END_ACQUISITION_WORKLOAD_CONTROL`. It retains V0-060's three contexts and six point/uniform H2 occurrences but replaces the all-six-row abstract control with an occurrence-cold ground planner. The adaptive arm freezes three failed proofs, samples nine authorized abstract rows (`147456` individual draws), builds three `3/3` partial RAPMs, and reuses each context model once. The direct arm independently enumerates `78` ground state/action catalogues and `198` transition rows, records `4866048` individual draws, estimates `144` H1 and `54` root actions, evaluates `774` root assignments, certifies six deterministic ground plans, and performs zero cross-occurrence reuse. Both use radius `1/64`; exact-rational family accounting binds 18 adaptive plus 252 direct obligations, tail `783/43750`, and confidence lower `42967/43750`. Production planners receive no kernel/probabilities. Standalone evaluation replays all `5013504` observations, all 198 ground rows, both lifted/adaptive and direct plans, and six exact J0 problems. All 15 focused tests and all 1,273 repository tests pass. | Closes V0-060's unmatched-control limitation and licenses only the registered-workload observation `direct/adaptive raw draws = 33`. The adaptive arm uses a known human D4 prior and the direct arm uses known finite symbolic support. The result is not automatic hidden-space discovery, unknown-support RL, broad sample efficiency/generalization, or a Laplace/KG-OP sample-tax operator. Native fallback/noncertificate counts are zero; official execution, scalar/break-even and economics remain locked. | `matched_end_to_end_workload_v1.py`; preregistration, raw adaptive/direct evidence, cold ground plan/proof, work, comparator and verifier artifacts; kernel/API/row/reuse/tamper/identity attacks; `specs/MATCHED_END_TO_END_ACQUISITION_WORKLOAD.md`; `specs/TEST_EXECUTION.md`. |
 
 For V0-051, the affected public interface expressly includes the content-addressed
 `IncrementalProofDAGProtocolV1` and its `protocol_id`, in addition to the node,
@@ -2410,6 +2411,76 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
 
+## V0-061 matched end-to-end acquisition workload rule
+
+Contract `1.25.0` freezes schema `1.0.0`, profile
+`g2048_matched_adaptive_vs_cold_direct_ground_v0`, and status
+`CERTIFIED_REGISTERED_MATCHED_END_TO_END_ACQUISITION_WORKLOAD_CONTROL`.
+The same three V0-060 contexts and six point/uniform H2 QuerySpecs are bound
+before evidence. Both routes must consume identical context/query identities.
+
+The adaptive route starts from six explicit missing abstract rows per context.
+Its failed risk proof authorizes only `ROOT_TOWARD`, `CHAIN_A_AWAY`, and
+`CHAIN_B_AWAY`. It samples nine total rows at 16,384 draws per row, builds
+three honest `3 observed / 3 missing` partial RAPMs, evaluates eight semantic
+policies per occurrence, and reuses each immutable context model for the
+second query. Its totals are three initial failed proofs, 24 failed-proof
+candidate evaluations, nine kernel-row enumerations, 147,456 individual
+draws, three model builds, 48 occurrence candidate evaluations, six
+certificates, and three within-context zero-draw reuses.
+
+The direct route starts cold for every occurrence and receives no D4 quotient.
+It independently enumerates the complete any-policy reachable ground
+state-time/action support, records a probability-free codebook and 24,576
+individual draws for every row, constructs an occurrence-local ground model,
+selects deterministic H1 actions, enumerates every root action assignment,
+certifies the complete deterministic ground policy, then discards the model.
+A point query has `6/18/16/2/2` state-time/action/H1/root/candidate counts; a
+uniform query has `20/48/32/16/256`. Campaign totals are 78 catalogue calls,
+198 transition rows, 4,866,048 draws, 144 H1 estimates, 54 root estimates,
+252 statistical obligations, 774 root candidate evaluations, six
+certificates, and zero model reuse.
+
+Both routes use radius `1/64`. Adaptive obligations retain per-coordinate
+tail `1/1400`; direct scalar obligations use exact-rational exponent 12 and
+tail `1/50000`. The frozen union calculation is
+`18/1400 + 252/50000 = 783/43750`, giving simultaneous confidence lower
+`42967/43750`. The direct arm's larger per-row sample count is explicit
+family-multiplicity compensation, not hidden post-run tuning.
+
+Every raw outcome index is stored in a content-addressed packed trace.
+Codebooks contain concrete transition semantics but no probability.
+Production model builders and planners accept no exact kernel. The
+standalone verifier independently replays 147,456 adaptive plus 4,866,048
+direct observations, re-enumerates all 198 direct rows, evaluates both
+selected routes exactly, and runs six unrestricted J0 controls. Adaptive
+exact value equals J0. Direct plans match J0 reward `3/64`, remain below risk
+`1/20`, and expose any finite-sample risk gap from J0 rather than requiring
+or pretending exact risk-optimal tie breaking.
+
+The native draw ratio is:
+
+```text
+4866048 / 147456 = 33
+```
+
+This licenses only
+`registered_workload_draw_advantage_observed=true`. It is conditional on the
+registered known-D4 prior, known finite symbolic support, six occurrences,
+and frozen confidence profile. `broad_sample_efficiency_claimed`,
+`sample_tax_operator_claimed`, automatic coordinate/symmetry/support
+discovery, and broad generalization remain false. Both route fallback counts
+and noncertificate occurrence closures are explicit native zeros. Official
+execution remains false; official scalar and break-even remain null; all
+economics Gates remain `NOT_RUN`.
+
+The next Gate may introduce a separately preregistered Laplace-style
+acquisition operator or KG-OP-style offline/online meta-prior only with an
+unmodified no-operator control, held-out contexts, separate offline-prior
+cost, and complete evidence replay. V0-061's ratio is its baseline, not its
+promised outcome. Full semantics are in
+`specs/MATCHED_END_TO_END_ACQUISITION_WORKLOAD.md`.
+
 ## V0-060 raw replayable multi-context acquisition rule
 
 Contract `1.24.0` freezes schema `1.0.0`, profiles
@@ -3688,3 +3759,4 @@ sample_efficiency_gate_blocks_mainline = false
 - **2026-07-26 — 1.22.0:** Added and verified V0-058 profiles `lmb_observed_program_closure_partial_rapm_v0` and `lmb_observed_program_closure_heldout_h2_v0`. The source-only producer closes the frozen typed vocabulary to depth two, retains 215 semantic representatives, exhausts all 6650 bounded optional-single-coordinate candidates, and selects `cardinality(legal_actions)` with `buffer_at_type(buffer_counts,selected_tile_type)<=3/2`, yielding an honest `7/4` partial RAPM. A pre-synthesis source-log-held-out H2 target first fails model-only audit at reward `[0,4]`, failure `[0,1]`; only that failure authorizes its exact `1/3/3` three-row scope. The safe row reaches an existing source successor, so no successor ground access is needed. The immutable `10/4` epoch replans and independently certifies reward/failure/regret `1/0/0`. All 19 registered tests and deterministic replay pass; implementation digests and principal IDs are frozen. This advances automatic program composition/selection only within one human-specified vocabulary and finite deterministic symbolic log; unknown-semantic invention, learned/statistical dynamics, broad generalization, sample savings/economics and official execution remain locked.
 - **2026-07-26 — 1.23.0:** Added and verified V0-059 profiles `multidomain_observed_statistical_heldout_campaign_v0` and `g2048_d4_empirical_hoeffding_partial_rapm_v0`. A pre-model twelve-occurrence campaign composes the V0-058 LMB exact partial/recovery path with a G2048 probability model learned from six trusted aggregate rows of 65,536 offline observations each. The known D4 structural quotient remains an explicit human prior. Exact-rational Hoeffding/Taylor/union calibration freezes radius `1/128`, family tail `3/350` and confidence lower `347/350`; robust H2 enumeration selects `TOWARD,AWAY,AWAY` with reward `3/64`, failure upper `75716127/2147483648 < 1/20` and regret zero. The first LMB occurrence acquires exactly three rows and two later occurrences reuse its final model; all nine G2048 occurrences use zero online samples. Production has no G2048 kernel, while standalone exact D4 evaluation contains value `3/64` and risk `99/5000` without promoting statistical evidence. All 15 focused tests and all 1242 repository tests pass. Automatic symmetry/primitive invention, shared cross-domain coordinates, raw symbolization, broad generalization, sample savings/economics and official execution remain locked; 393,216 is an exposed sample tax, not a benefit claim.
 - **2026-07-27 — 1.24.0:** Added and verified V0-060 profiles `g2048_raw_replayable_multicontext_partial_statistical_v0` and `g2048_certificate_directed_vs_uniform_acquisition_v0`. Three separately keyed spawn-law contexts and two queries per context are frozen before raw evidence. A model-only failed risk proof authorizes exactly three of six rows; the adaptive lane stores 147,456 individual packed draws and retains nine explicit missing context-rows, while the independent all-six-row statistical control stores 294,912 draws. Exact-rational calibration freezes radius `1/64`, 54 obligations and confidence `673/700`. Both lanes certify `TOWARD,AWAY,AWAY`, reward `3/64`, risk below `1/20` and regret zero; each second query reuses its context model with no new draws. Production has no kernel/probability input. Standalone evaluation replays all 442,368 nibbles and three exact J0 risks without promoting evidence. All 14 focused tests and all 1,256 repository tests pass. The 147,456 draw difference is not a sample-efficiency claim because the control is statistical all-row acquisition, not a matched direct-ground planning system. Automatic coordinates/symmetry, unknown support, broad generalization, sample-tax operators, complete accounting, economics and official execution remain locked.
+- **2026-07-27 — 1.25.0:** Added V0-061/profile `g2048_matched_adaptive_vs_cold_direct_ground_v0`. It preserves V0-060's three contexts/six queries but replaces the unmatched all-six-row control with six cold complete ground statistical planners. The adaptive route records 147,456 draws and three within-context model reuses; direct records 4,866,048 draws across 198 occurrence-local ground rows with zero reuse. Exact-rational joint confidence is `42967/43750`; production has no kernel, and standalone evaluation replays 5,013,504 observations plus six exact J0 controls. The registered draw ratio is exactly 33 and may be reported only as a finite known-D4 workload observation. All 15 focused tests and all 1,273 repository tests pass. Exact test-only immutable-ID memoization and six-node module sharding reduce the compatible full-suite critical path to 208.1 seconds while retaining a fresh-ID release lane; this is execution acceleration, not research evidence. Broad sample efficiency, automatic hidden-coordinate/support discovery, sample-tax operators, official execution, scalar/break-even, complete economics and generalization remain locked.

@@ -28,7 +28,62 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 → jointly search local value/risk choices, rebuild, or use charged fallback
 ```
 
-## Current raw replayable multi-context acquisition Gate (V0-060)
+## Current matched end-to-end acquisition Gate (V0-061)
+
+Contract `1.25.0` freezes profile
+`g2048_matched_adaptive_vs_cold_direct_ground_v0`.
+
+V0-061 keeps V0-060's three safe-chain contexts and six point/uniform H2
+queries, but replaces its all-six-row abstract control with a genuine cold
+direct-ground statistical planner. The adaptive route first freezes a failed
+proof, samples only nine certificate-required abstract rows, builds three
+honest `3 observed / 3 missing` partial RAPMs, and reuses each model once.
+The direct route independently enumerates and samples the complete reachable
+ground state-action graph for every occurrence, plans a deterministic ground
+policy, certifies it, and discards the occurrence-local model.
+
+```text
+adaptive rows / draws / model reuses = 9 / 147456 / 3
+direct rows / draws / model reuses   = 198 / 4866048 / 0
+registered direct/adaptive draw ratio = 33
+```
+
+Both routes use error radius `1/64`. Joint exact-rational family accounting
+binds 18 adaptive and 252 direct obligations, giving confidence lower
+`42967/43750`. Production planning receives no kernel or transition
+probabilities. Standalone evaluation independently replays all 5,013,504
+observations, all 198 ground rows, both selected routes, and six exact J0
+problems.
+
+The 33× result is restricted to this registered workload and its known human
+D4 prior. It is not automatic hidden-coordinate/support discovery, broad
+sample efficiency, or a sample-tax-reduction operator. Those remain later
+Gates, as do official execution, scalar/break-even economics, and broad
+generalization. The full contract is in
+`specs/MATCHED_END_TO_END_ACQUISITION_WORKLOAD.md`.
+
+The current repository Gate contains 1,273 tests in 104 modules. For fast
+development, `scripts/run_pytest_parallel.py` runs modules concurrently and
+memoizes only repeated content-ID reads on the identical frozen object;
+mutation-attack modules automatically use fresh IDs. The formal release path
+still recomputes every ID:
+
+```bash
+# exact parallel development lane
+PYTHONDONTWRITEBYTECODE=1 \
+python3 scripts/run_pytest_parallel.py -j 4 tests
+
+# formal fresh lane
+PYTHONDONTWRITEBYTECODE=1 \
+python3 scripts/run_pytest_parallel.py --fresh-ids -j 4 tests
+```
+
+Six-node sharding reduced the compatible full-suite critical path from
+16–19 minutes to 208.1 seconds without dropping a test, sample, exact
+fraction, oracle replay, or attack. Execution details are in
+`specs/TEST_EXECUTION.md`.
+
+## Raw replayable multi-context acquisition Gate (V0-060)
 
 Contract `1.24.0` freezes profiles
 `g2048_raw_replayable_multicontext_partial_statistical_v0` and
@@ -1433,7 +1488,7 @@ and are not part of the public checkout.
 
 ```bash
 python3 -m pip install -e '.[test]'
-python3 -m pytest
+PYTHONDONTWRITEBYTECODE=1 python3 -m pytest -p no:cacheprovider
 acfqp-phase05 --output artifacts/phase05
 python3 scripts/verify_phase05.py artifacts/phase05
 acfqp-exact-d4 --output artifacts/exact_d4

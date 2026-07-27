@@ -129,6 +129,14 @@
   semantic switch only for the registered H2 fixture; it is not generic
   persistence, cross-query/H>2 proof, native-work/sample saving, independent
   verification, economics, or an aggregate Gate.
+- **V0-061 matched end-to-end acquisition workload:** the same three
+  known-D4 contexts and six H2 occurrences run through both a reusable
+  failed-proof-directed partial RAPM route and an occurrence-cold complete
+  ground statistical planning route. Production is kernel-free and every one
+  of 5,013,504 observations is replayable. The registered raw-draw ratio is
+  33, but remains a finite known-prior workload observation rather than broad
+  sample efficiency, automatic hidden-space discovery, or a tax-reduction
+  operator.
 - **V0-060 raw replayable multi-context acquisition control:** three
   separately keyed safe-chain spawn-law contexts each begin with six explicit
   missing probability rows. A model-only failed proof authorizes three rows
@@ -1917,6 +1925,51 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
 
+### Contract 1.25.0: matched end-to-end acquisition workload
+
+V0-061 registers schema `1.0.0`, profile
+`g2048_matched_adaptive_vs_cold_direct_ground_v0`, and passing status
+`CERTIFIED_REGISTERED_MATCHED_END_TO_END_ACQUISITION_WORKLOAD_CONTROL`.
+It retains V0-060's three known-D4 spawn contexts and six point/uniform H2
+occurrences.
+
+The adaptive route freezes a failed risk proof before acquiring exactly nine
+necessary abstract rows. It records 147,456 observations, builds three honest
+`3/3` partial RAPMs, certifies six occurrence-bound plans, and reuses each
+context model once. The matched direct route starts cold per occurrence,
+enumerates 78 state/action catalogues and 198 ground transition rows, records
+4,866,048 observations, evaluates 144 H1 actions, 54 root actions and 774
+root assignments, certifies six deterministic ground policies, and reuses no
+model.
+
+Both routes use radius `1/64`. Exact-rational family accounting binds 18
+adaptive obligations at tail `1/1400` and 252 direct obligations at
+`1/50000`, so joint confidence is at least `42967/43750`. Codebooks expose
+transition semantics but no probabilities. Production model construction and
+planning accept no kernel; standalone evaluation replays all 5,013,504 raw
+observations, all 198 direct rows, both selected routes and six unrestricted
+J0 controls.
+
+The exact registered draw ratio is 33. This is evidence only for the frozen
+six-occurrence workload with a human D4 prior and known finite symbolic
+support. It is neither automatic coordinate/support discovery nor broad
+sample efficiency, and it registers no Laplace/KG-OP operator. Fallback and
+noncertificate closures are explicit native zeros; scalar, break-even,
+economics and official execution remain locked. Complete semantics are
+normative in `specs/MATCHED_END_TO_END_ACQUISITION_WORKLOAD.md`.
+
+All aggregate locks remain unchanged:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+sample_efficiency_gate_blocks_mainline = false
+```
+
 ### Contract 1.24.0: raw replayable multi-context acquisition control
 
 V0-060 registers schema `1.0.0`, profiles
@@ -3632,9 +3685,15 @@ each context model for a second query, and checks all draws plus exact J0 in
 the evaluation lane. The direct arm, however, is only an independent
 all-six-row statistical control.
 
-The next construction risk is a genuinely matched end-to-end adaptive versus
-direct-ground planning workload across preregistered occurrences, with all
-planning, failed proof, acquisition, certification, reuse, and fallback work
-charged under comparable native counters. Only such traces can support
-designing and evaluating a Laplace-style heuristic operator or KG-OP-style
-meta-prior as a non-blocking sample-tax intervention.
+V0-061 closes that control gap with a genuinely matched end-to-end adaptive
+versus cold direct-ground workload. It records `147456/4866048` raw draws,
+three/zero model reuses, exact ratio 33, complete packed replay, and six J0
+comparators. The result is still conditional on a human D4 prior and known
+finite symbolic support.
+
+The next construction risk is therefore no longer locating the sample tax,
+but reducing it without hiding offline work or overfitting the six registered
+occurrences. A separately preregistered Laplace-style acquisition heuristic
+or KG-OP-style offline/online meta-prior must retain a no-operator control,
+held-out contexts, explicit prior-construction cost, and failure/fallback
+semantics.
