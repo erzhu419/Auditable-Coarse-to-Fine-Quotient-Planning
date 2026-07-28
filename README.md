@@ -28,6 +28,95 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 → jointly search local value/risk choices, rebuild, or use charged fallback
 ```
 
+## Current target-local sequential sample-efficiency Gate (V0-067)
+
+Contract `1.31.0` freezes campaign profile
+`v0067_real_factorial_campaign_v0` and Gate profile
+`v0067_v0066_graph_factorial_sample_efficiency_v0`.
+
+V0-067 returns to the sample tax measured by V0-066 without weakening its
+certificate. A uniform-Beta likelihood-mixture e-process supplies target-local
+time-uniform confidence sequences at checkpoints
+`2048/4096/8192/16384`; exact integer tests verify every dyadic outer
+endpoint. The quotient and cold direct runners rebuild and audit the complete
+registered H2 decision after each checkpoint and stop only at the first sound
+plan certificate or the fail-closed cap.
+
+The real `4+2` campaign contains four quotient cells
+(`no-meta/meta × fixed/sequential`) on W5, K6 and K6-minus-edge, plus fixed
+and sequential cold direct controls on W5/K6. Fixed and sequential streams
+are seed-paired and raw-prefix verified; sequential runners generate only
+the consumed prefix and never materialize then truncate the 131,072-draw
+fixed row.
+
+```text
+quotient fixed, W5+K6       = 10747904 draws
+quotient sequential, W5+K6  =   425984 draws
+direct fixed, W5+K6         = 11796480 draws
+direct sequential, W5+K6    =   737280 draws
+
+quotient fixed, full family  = 18612224 draws
+quotient sequential, family  =  1409024 draws
+```
+
+On the registered positive endpoint, sequential quotient planning uses
+`311296` fewer target generative draws than matched sequential direct-ground
+planning, a reduction of `19/45`. W5/K6 preserve normalized reward `3/64`, registered
+risk and regret constraints. The Gate does not claim exact risk equality:
+the W5 quotient lift is `1337/67500`, while cold direct risk is `99/5000`.
+K6-minus-edge remains a real no-cover control and charges the same 60-row
+exact feasible-plan fallback.
+
+Eight deduplicated confidence authorities
+(`1 quotient-fixed + 3 quotient-sequential + 2 direct-fixed + 2
+direct-sequential`)—not sixteen cell labels—aggregate into four confidence
+families and are combined without an independence assumption:
+
+```text
+joint tail upper       = 97/25000
+joint confidence lower = 24903/25000
+```
+
+The source-only meta-prior is proposal-only. Its comparison/physical-unique
+source-proxy costs are `5,451,776/5,242,880` draws, but meta and no-meta
+target arms consume identical prefixes. Therefore the meta-prior has no
+target main effect and no offline-inclusive amortization; the measured
+saving belongs to the sequential target operator.
+
+Frozen principal IDs are:
+
+```text
+source meta campaign  973a21dd8818510220091924eeeb3ed2fab7cace93b4efb3954f89bd2a878fed
+source-prior evidence 1e38bda646e61421a378f7003be53deec389ae9ac9723ec007ae9521c7c5f722
+pairing replay        50b8d3610eca69a0548fcf505015b152613891b6220c405a2a246ff6f8829005
+counter subset        bc52d7a962ed760aa4a4714e0ef0773f01c2d5787bfb7d333960c5140349dac9
+Gate result           fff9285c60a9691416227e81d857c7a389ddf732303688f024db77de65baf9d3
+campaign              8074ae6583b85b9b69ce94aac35f64d1d96afcd51133383d3c9351228f6f1e5a
+semantic verification e6d7be5ef451ab6bc5d711080cc5c132d1d7f51bc07798dc5c0c3fbbca66cc5a
+```
+
+Exact support-descriptor, fallback and standalone evaluation calls remain
+separate `EXACT_KERNEL_QUERY` lanes and never enter the generative-draw
+endpoint. Only the registered native evidence subset is reconciled; this is
+not full counter completeness. The result is conditional on a pretrained source skeleton and
+known exact symbolic support/reward/failure labels. Broad sample efficiency,
+unknown-support learning, total-work/wall-clock savings, official execution,
+scalar break-even, workload economics and counter completeness remain
+locked. Full bundle verification is same-implementation semantic replay, not
+an independently implemented planning algorithm. The complete contract is in
+`specs/TARGET_LOCAL_SEQUENTIAL_SAMPLE_EFFICIENCY.md`.
+
+The cache-filtered source selection is now 8,703,902 bytes, so the active
+sealed-runtime and isolated-fallback source caps migrate from the historical
+8 MiB profile to a content-bound 16 MiB V2 profile. V1 remains parseable;
+old route uppers become stale and must be regenerated. This operational cap
+migration changes no research endpoint or official/economics lock.
+
+The next construction Gate should weaken the exact symbolic-support oracle
+across more structural/domain contexts while retaining partial models,
+fail-closed certificates and matched direct controls. A future meta-prior
+must show incremental target savings over the same sequential no-meta arm.
+
 ## Current variable-cardinality two-domain relational RAPM Gate (V0-066)
 
 Contract `1.30.0` freezes profile
@@ -99,9 +188,9 @@ locked. All 62 V0-066 focused tests and all 1,412 repository tests pass. The
 full contract is in
 `specs/VARIABLE_CARDINALITY_TWO_DOMAIN_RELATIONAL_RAPM.md`.
 
-The next construction Gate uses this end-to-end acquisition trace to design
-and test a Laplace-style heuristic operator or KG-OP-style meta-prior against
-a matched no-operator control, without weakening the certificate.
+V0-067 subsequently tests that acquisition trace with a target-local
+sequential operator and proposal-only source meta-prior. V0-066 remains the
+historical cross-cardinality/two-domain construction Gate.
 
 ## Cross-geometry relational RAPM Gate (V0-065)
 

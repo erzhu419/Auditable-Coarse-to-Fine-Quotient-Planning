@@ -6,9 +6,9 @@ This document governs repository test execution only. It does not change any
 planner, simulator, sample count, confidence statement, artifact schema, or
 research claim.
 
-The repository contains 1,412 pytest cases in 115 test modules. These are not
-1,412 independent research Gates: many cases are attacks and replay checks
-for the same frozen Gate.
+The current V0-067 collection contains 1,516 pytest cases in 123 test
+modules. These are not 1,516 independent research Gates: many cases are
+attacks and replay checks for the same frozen Gate.
 
 ## Formal fresh lane
 
@@ -86,6 +86,50 @@ the six compute shards and the local isolation modules, checked against
 pytest collection so that missing or duplicate modules cannot be hidden.
 
 ## Current measured validation
+
+V0-067 adds eight focused modules and 102 cases. All focused cases pass:
+
+```text
+sequential/meta/anytime/direct authorities = 73 / 73
+authority-lane wall                         = 76.0 s
+factorial Gate unit                         = 23 / 23
+factorial Gate unit wall                    = 1.83 s
+real campaign and semantic replay           = 6 / 6
+real campaign pytest wall                   = 573.47 s
+/usr/bin/time real                          = 574.03 s
+final V2 identity-snapshot replay            = 6 / 6
+final V2 replay wall (contended lane)        = 956.00 s
+focused module/case union                   = 8 / 8, 102 / 102
+runtime-cap migration targeted lane         = 10 / 10
+runtime-cap migration wall                  = 93.78 s
+```
+
+The stable direct real-campaign construction plus semantic replay, without
+the surrounding pytest attack cases, took `446.651898258` seconds and
+reproduced campaign
+`8074ae6583b85b9b69ce94aac35f64d1d96afcd51133383d3c9351228f6f1e5a`
+and verification
+`e6d7be5ef451ab6bc5d711080cc5c132d1d7f51bc07798dc5c0c3fbbca66cc5a`.
+
+V0-067 expands the cache-filtered `src/acfqp` source selection to
+`8,703,902` bytes, beyond the historical 8 MiB sealed-runtime cap. The
+active sealed-runtime manifest and isolated-fallback source caps therefore
+use the registered 16 MiB V2 profile. Historical V1 manifests remain
+parseable, but their route uppers are stale under the changed cap-profile ID.
+The cap migration changes no test, sample, planner or certificate and does
+not unlock official execution or economics.
+
+The final V2 release collection contains `123` modules and `1,516` unique
+tests. The parallel release lane executed every module except the separately
+isolated real campaign and reported `1,503` passes plus seven Phase-3B errors
+after its producer and verifier observed different specification hashes
+during the final documentation write. On the frozen final tree, the complete
+Phase-3B module then passed `17/17` in `74.88` seconds. The separately isolated
+final campaign passed `6/6`. Thus every one of the `1,516` collected tests
+passes on the final content snapshot; the split replay is retained instead
+of misreporting the transient hash-race run as one clean monolithic process.
+
+## Historical V0-066 measured validation
 
 The V0-066 2026-07-28 validation used the exact single-process fresh lane for
 all new tests and the unchanged 24-worker exact development lane for the full

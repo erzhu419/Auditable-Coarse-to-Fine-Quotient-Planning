@@ -23,6 +23,17 @@ REFERENCE = ROOT / "reference"
 
 PAPERS = [
     {
+        "id": "DOI:10.1214/20-AOS1991; arXiv:1810.08240",
+        "title": "Time-uniform, nonparametric, nonasymptotic confidence sequences",
+        "source_url": "https://arxiv.org/abs/1810.08240",
+        "download_url": "https://arxiv.org/pdf/1810.08240",
+        "pdf": "papers/arxiv_1810.08240.pdf",
+        "page": "pages/arxiv_1810.08240.html",
+        "copy_kind": "arXiv author manuscript",
+        "repo_keys": [],
+        "repo_status": "No code repository is required by the implemented likelihood-mixture construction.",
+    },
+    {
         "id": "arXiv:1606.07374",
         "title": "Multi-Stage Temporal Difference Learning for 2048-like Games",
         "source_url": "https://arxiv.org/abs/1606.07374",

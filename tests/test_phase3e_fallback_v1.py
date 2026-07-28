@@ -13,6 +13,7 @@ from acfqp.accounting_v1 import (
 from acfqp.core import Outcome, QuerySpec
 from acfqp.domains.g2048 import safe_chain_fixture
 from acfqp.phase3e_fallback_v1 import (
+    FALLBACK_RUNTIME_SOURCE_BYTES_CAP,
     GroundFallbackCapProfileV1,
     GroundFallbackCardinalityBoundV1,
     GroundFallbackOutcome,
@@ -45,6 +46,13 @@ from acfqp.semantic_verification_v1 import SemanticVerificationV1Error
 
 def _id(label: str) -> str:
     return hashlib.sha256(label.encode("utf-8")).hexdigest()
+
+
+def test_fallback_runtime_cap_tracks_the_active_sealed_v2_profile() -> None:
+    assert SEALED_ROUTE_CAP_PROFILE_KEY.endswith("_v2")
+    assert FALLBACK_RUNTIME_SOURCE_BYTES_CAP == (
+        OFFICIAL_RUNTIME_MANIFEST_CAP_PROFILE.max_total_bytes
+    )
 
 
 def _cap(**overrides: int) -> GroundFallbackCapProfileV1:

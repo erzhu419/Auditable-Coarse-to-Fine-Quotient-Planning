@@ -23,6 +23,14 @@ Implemented V0-063 source-stopping profile:
 g2048_preregistered_sequential_source_stopping_v0
 ```
 
+Implemented V0-067 campaign and Gate profiles:
+
+```text
+v0067_real_factorial_campaign_v0
+v0067_v0066_graph_factorial_sample_efficiency_v0
+target_local_sequential_bernoulli_row_v0
+```
+
 The project objective remains to synthesize one reusable auditable abstract world
 model, plan mainly in that model, and recover ground distinctions only at a failed
 value/risk proof frontier. The main construction line may continue through automatic
@@ -290,14 +298,103 @@ tax-reduction operator. V0-063's diagnostic two-context crossing is not
 official `N_break_even`; no broad sample-saving claim is emitted until the
 wider protocol is ratified and run.
 
-## 8. Gate state
+## 8. V0-067 registered target-local sequential result
+
+V0-067 runs a finite matched experiment on the V0-066 graph family. It
+freezes four quotient cells (`no-meta/meta × fixed/sequential`) on
+W5/K6/K6-minus-edge and fixed/sequential cold direct-ground controls on
+W5/K6. All sixteen occurrence-arm results are registered real/native
+authorities; synthetic fixtures have no research-claim authority. Full
+bundle verification is same-implementation semantic replay, not a separately
+implemented planning algorithm.
+
+The acquisition operator is a target-local, uniform-Beta
+likelihood-mixture confidence sequence. One `alpha=1/250000` covers all
+registered looks for an obligation by Ville's inequality. The target runners
+generate prefixes only at `2048/4096/8192/16384`, rebuild and audit the H2
+decision after each checkpoint, and stop at the first complete sound plan
+certificate. Exact integer comparisons verify each 24-bit dyadic outer
+endpoint. The uniform-Beta reference mixture is mathematical and is not the
+learned/source meta-prior.
+
+The positive `GENERATIVE_ORACLE_SAMPLE` endpoint is:
+
+```text
+quotient fixed positive       = 10747904
+quotient sequential positive  =   425984
+direct fixed positive         = 11796480
+direct sequential positive    =   737280
+```
+
+The quotient sequential route is lower than the matched sequential direct
+route by `311296`, an exact fraction `19/45` of the direct count. Including
+the K6-minus-edge no-cover control, quotient work changes from `18612224` to
+`1409024` draws. That negative control remains in the closure denominator
+and uses a separately charged 60-row exact feasible-plan fallback; it is
+excluded only from the positive statistical-certificate draw endpoint.
+
+Meta/no-meta labels that share evidence deduplicate to eight statistical
+authorities: one quotient-fixed, three quotient-sequential, two direct-fixed
+and two direct-sequential. They aggregate into four family tails
+`287/250000`, `287/250000`, `198/250000`, and `198/250000`. Boole's
+inequality, without a cross-authority independence assumption, gives:
+
+```text
+joint tail upper       = 97/25000
+joint confidence lower = 24903/25000
+```
+
+The concrete source meta-prior is proposal-only. Its source proxy uses a
+declared width-based scoring rule that is not the target's
+first-plan-certificate stopping rule. Comparison and physical-unique source
+draws are `5451776/5242880`. Meta and no-meta target arms consume identical
+prefixes, so:
+
+```text
+meta_prior_main_effect            = false
+meta_prior_target_savings_claimed = false
+offline_inclusive_break_even      = null
+```
+
+The registered saving is therefore attributed to sequential target
+acquisition, not to the source meta-prior.
+
+The stable real campaign and same-implementation semantic verification IDs
+are:
+
+```text
+campaign     8074ae6583b85b9b69ce94aac35f64d1d96afcd51133383d3c9351228f6f1e5a
+verification e6d7be5ef451ab6bc5d711080cc5c132d1d7f51bc07798dc5c0c3fbbca66cc5a
+Gate         fff9285c60a9691416227e81d857c7a389ddf732303688f024db77de65baf9d3
+```
+
+The primary endpoint does not hide other evidence classes. Every
+authoritative symbolic-support descriptor lookup is an
+`EXACT_KERNEL_QUERY`, even when the probability field is forbidden and only
+support/reward/failure labels are used. Target acquisition, exact fallback
+and standalone evaluation queries are stored in separate lanes. They cannot
+be subtracted from, converted into, or silently omitted from the
+generative-draw endpoint. This reconciles a registered native evidence
+subset only; it is not unqualified native-accounting reconciliation or
+counter completeness.
+
+V0-067 licenses only a registered positive-target transition-probability
+draw result conditional on the pretrained V0-066 skeleton and known exact
+symbolic support/reward/failure labels. Broad sample efficiency,
+unknown-support learning, total-work or wall-clock savings, and official
+economics remain unclaimed.
+
+## 9. Gate state
 
 V0-040 closes the source-unanimous-prior proposal/certificate-authority
 boundary. V0-062 executes one finite broad-tail intervention and establishes a
 registered target-online reduction without hiding offline cost. V0-063 adds
 preregistered sequential source stopping and establishes a narrow
-offline-inclusive reduction on the same finite family. None closes or blocks
-the broad sample-efficiency Gate.
+offline-inclusive reduction on the same finite family. V0-067 adds a
+registered finite positive-target sequential acquisition result with a
+matched direct control, but its exact symbolic-support and pretrained-skeleton
+conditions keep the broad sample-efficiency Gate open. None blocks the
+construction mainline.
 
 ```text
 official_execution_allowed = false

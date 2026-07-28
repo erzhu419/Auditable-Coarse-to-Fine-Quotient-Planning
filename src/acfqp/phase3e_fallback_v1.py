@@ -81,7 +81,7 @@ from acfqp.planning.policy import FiniteHorizonPolicy
 SCHEMA_VERSION = "1.0.0"
 CAP_PROFILE_KEY = "phase3e_ground_fallback_caps_v1"
 SEALED_ROUTE_CAP_PROFILE_KEY = (
-    "phase3e_sealed_ground_fallback_route_caps_v1"
+    "phase3e_sealed_ground_fallback_route_caps_v2"
 )
 _LEGACY_CAP_SCHEMA = "acfqp.ground_fallback_cap_profile.v1"
 _SEALED_ROUTE_CAP_SCHEMA = (
@@ -93,7 +93,7 @@ TRUSTED_EXECUTOR_PROFILE_KEY = (
 )
 TRUSTED_EXECUTOR_SCOPE = "IN_PROCESS_TRUSTED_EXECUTOR_VERTICAL_SLICE"
 ISOLATED_TRUSTED_EXECUTOR_PROFILE_KEY = (
-    "phase3e_safe_chain_isolated_ground_fallback_executor_v1"
+    "phase3e_safe_chain_isolated_ground_fallback_executor_v2"
 )
 ISOLATED_TRUSTED_EXECUTOR_SCOPE = (
     "BUBBLEWRAP_SAFE_CHAIN_GROUND_FALLBACK_VERTICAL_SLICE"
@@ -106,14 +106,14 @@ SAFE_CHAIN_CARDINALITY_EXTRACTION_PROFILE_KEY = (
 # supervisor rejects a source tree, frozen Phase-3C bundle, request, or output
 # that exceeds the corresponding component cap.  Actual WorkVector byte
 # leaves are computed from the exact files mounted/read/written by that run.
-# The caps are grounded in the current fixture payload (roughly 6.5 MiB of
-# Python source after the V0-058 construction modules and 0.45 MiB of frozen
+# The caps are grounded in the current fixture payload (roughly 8.7 MiB of
+# Python source after the V0-067 construction modules and 0.45 MiB of frozen
 # artifacts), with a finite allowance for the canonical request and result
 # rather than arbitrary padding.  The runtime-source ceiling is aligned with
-# the independently frozen sealed-manifest ceiling.  Because it is part of the
-# content-addressed isolation profile, this migration invalidates every older
-# route upper instead of silently accepting a larger post-run payload.
-FALLBACK_RUNTIME_SOURCE_BYTES_CAP = 8 * 1024 * 1024
+# the independently frozen sealed-manifest V2 ceiling.  Because it is part of
+# the content-addressed isolation profile, this migration invalidates every
+# older route upper instead of silently accepting a larger post-run payload.
+FALLBACK_RUNTIME_SOURCE_BYTES_CAP = 16 * 1024 * 1024
 FALLBACK_FROZEN_BUNDLE_BYTES_CAP = 512 * 1024
 FALLBACK_REQUEST_BYTES_CAP = 64 * 1024
 FALLBACK_OUTPUT_BYTES_CAP = 1024 * 1024

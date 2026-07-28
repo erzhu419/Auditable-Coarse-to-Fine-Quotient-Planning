@@ -30,6 +30,10 @@ from acfqp.phase3e_sealed_executor_v1 import (
     OFFICIAL_RUNTIME_MANIFEST_CAP_PROFILE,
     OFFICIAL_TRUSTED_CONSTRUCTOR_REGISTRY,
     Phase3ESealedExecutorV1Error,
+    RUNTIME_MANIFEST_CAP_PROFILE_KEY_V1,
+    RUNTIME_MANIFEST_CAP_PROFILE_KEY_V2,
+    RUNTIME_MANIFEST_LEGACY_MAX_TOTAL_BYTES,
+    RUNTIME_MANIFEST_MAX_TOTAL_BYTES,
     RuntimeIntegrityProbeConstructorV1,
     RuntimeFactoryCardinalityV1,
     RuntimeManifestCapProfileV1,
@@ -194,6 +198,22 @@ def test_snapshot_round_trip_is_canonical_and_ignores_later_live_checkout_edits(
         AccessOperation.OPEN_RUNTIME_PRIVATE_LEASE,
         AccessOperation.CONSTRUCT_SELECTED_EXECUTOR,
     ]
+
+
+def test_runtime_cap_v2_is_active_and_legacy_v1_remains_replayable() -> None:
+    active = OFFICIAL_RUNTIME_MANIFEST_CAP_PROFILE
+    assert active.profile_key == RUNTIME_MANIFEST_CAP_PROFILE_KEY_V2
+    assert active.max_total_bytes == RUNTIME_MANIFEST_MAX_TOTAL_BYTES
+    assert active.max_total_bytes == 16 * 1024 * 1024
+
+    legacy = RuntimeManifestCapProfileV1(
+        max_total_bytes=RUNTIME_MANIFEST_LEGACY_MAX_TOTAL_BYTES,
+        profile_key=RUNTIME_MANIFEST_CAP_PROFILE_KEY_V1,
+    )
+    assert RuntimeManifestCapProfileV1.from_dict(legacy.to_dict()) == legacy
+    assert legacy.runtime_manifest_cap_profile_id != (
+        active.runtime_manifest_cap_profile_id
+    )
 
 
 def test_snapshot_ignores_live_interpreter_cache_without_weakening_cas_integrity(

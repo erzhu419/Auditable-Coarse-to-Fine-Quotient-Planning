@@ -77,10 +77,13 @@ SCHEMA_VERSION = "1.0.0"
 # of the worker sandbox caps: the private CAS lease is an additional physical
 # copy and is charged exactly once by this factory.
 RUNTIME_MANIFEST_MAX_FILE_COUNT = 512
-RUNTIME_MANIFEST_MAX_TOTAL_BYTES = 8 * 1024 * 1024
+RUNTIME_MANIFEST_LEGACY_MAX_TOTAL_BYTES = 8 * 1024 * 1024
+RUNTIME_MANIFEST_MAX_TOTAL_BYTES = 16 * 1024 * 1024
 RUNTIME_MANIFEST_MAX_DOCUMENT_BYTES = 1024 * 1024
 RUNTIME_MANIFEST_MAX_PATH_BYTES = 512
 RUNTIME_FACTORY_WORKING_BYTES_CAP = 64 * 1024 * 1024
+RUNTIME_MANIFEST_CAP_PROFILE_KEY_V1 = "phase3e-runtime-manifest-caps-v1"
+RUNTIME_MANIFEST_CAP_PROFILE_KEY_V2 = "phase3e-runtime-manifest-caps-v2"
 
 # Successful factory replay has four byte/hash passes over the runtime tree:
 # CAS verification, private-copy materialization, pre-construction lease
@@ -132,18 +135,28 @@ class RuntimeManifestCapProfileV1:
     max_path_bytes: int = RUNTIME_MANIFEST_MAX_PATH_BYTES
     factory_working_bytes_cap: int = RUNTIME_FACTORY_WORKING_BYTES_CAP
     tree_passes: int = RUNTIME_FACTORY_TREE_PASSES
-    profile_key: str = "phase3e-runtime-manifest-caps-v1"
+    profile_key: str = RUNTIME_MANIFEST_CAP_PROFILE_KEY_V2
     schema_version: str = SCHEMA_VERSION
 
     def __post_init__(self) -> None:
-        expected = (
+        active = (
             RUNTIME_MANIFEST_MAX_FILE_COUNT,
             RUNTIME_MANIFEST_MAX_TOTAL_BYTES,
             RUNTIME_MANIFEST_MAX_DOCUMENT_BYTES,
             RUNTIME_MANIFEST_MAX_PATH_BYTES,
             RUNTIME_FACTORY_WORKING_BYTES_CAP,
             RUNTIME_FACTORY_TREE_PASSES,
-            "phase3e-runtime-manifest-caps-v1",
+            RUNTIME_MANIFEST_CAP_PROFILE_KEY_V2,
+            SCHEMA_VERSION,
+        )
+        legacy = (
+            RUNTIME_MANIFEST_MAX_FILE_COUNT,
+            RUNTIME_MANIFEST_LEGACY_MAX_TOTAL_BYTES,
+            RUNTIME_MANIFEST_MAX_DOCUMENT_BYTES,
+            RUNTIME_MANIFEST_MAX_PATH_BYTES,
+            RUNTIME_FACTORY_WORKING_BYTES_CAP,
+            RUNTIME_FACTORY_TREE_PASSES,
+            RUNTIME_MANIFEST_CAP_PROFILE_KEY_V1,
             SCHEMA_VERSION,
         )
         if (
@@ -155,9 +168,9 @@ class RuntimeManifestCapProfileV1:
             self.tree_passes,
             self.profile_key,
             self.schema_version,
-        ) != expected:
+        ) not in (active, legacy):
             raise Phase3ESealedExecutorV1Error(
-                "runtime manifest cap profile differs from the frozen V1 profile"
+                "runtime manifest cap profile is not a frozen V1/V2 profile"
             )
 
     def _payload(self) -> dict[str, Any]:
@@ -3081,6 +3094,9 @@ __all__ = [
     "RUNTIME_FACTORY_PROTOCOL_CHECKS_UPPER",
     "RUNTIME_FACTORY_TREE_PASSES",
     "RUNTIME_FACTORY_WORKING_BYTES_CAP",
+    "RUNTIME_MANIFEST_CAP_PROFILE_KEY_V1",
+    "RUNTIME_MANIFEST_CAP_PROFILE_KEY_V2",
+    "RUNTIME_MANIFEST_LEGACY_MAX_TOTAL_BYTES",
     "RUNTIME_MANIFEST_MAX_DOCUMENT_BYTES",
     "RUNTIME_MANIFEST_MAX_FILE_COUNT",
     "RUNTIME_MANIFEST_MAX_PATH_BYTES",

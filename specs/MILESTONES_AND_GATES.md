@@ -146,6 +146,16 @@
   and domain, not automatic ontology invention, generic planning, independent
   target verification, observational OOD generalization, changed-query reuse or
   sample efficiency.
+- **V0-067 target-local sequential sample-efficiency Gate:** sixteen real
+  `4+2` occurrence-arm cells compare fixed and target-local time-uniform
+  probability acquisition for the V0-066 graph quotient routes and matched
+  cold direct-ground controls. The registered positive endpoint is
+  `425984` quotient-sequential versus `737280` direct-sequential draws.
+  Exact support/reward/failure labels and the pretrained source skeleton
+  remain supplied. The source meta-prior is proposal-only and has no
+  incremental target saving or amortization. This is not broad sample
+  efficiency, unknown-support learning, total-work economics or an official
+  Gate.
 - **V0-065 observation-driven cross-geometry relational RAPM:** complete H2
   observations from the non-isomorphic P4/star/paw source split automatically
   select a relational coordinate schema without transporting source dynamics
@@ -1500,6 +1510,120 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
 
+### V0-067 target-local sequential sample-efficiency gate
+
+Contract `1.31.0` registers schema `1.0.0`, campaign profile
+`v0067_real_factorial_campaign_v0`, and Gate profile
+`v0067_v0066_graph_factorial_sample_efficiency_v0`.
+
+The Gate passes only when:
+
+1. the source prior, three target occurrences, six arm definitions,
+   positive endpoint, confidence budget and paired stream identities freeze
+   before target evidence;
+2. all sixteen registered real/native cells are present exactly once: four
+   quotient arms for W5/K6/K6-minus-edge and two cold direct arms for W5/K6;
+3. synthetic fixtures support only schema/attack tests and never the
+   positive research claim;
+4. each sequential Bernoulli obligation uses the registered uniform-Beta
+   likelihood-mixture e-process with one `alpha=1/250000` across checkpoints
+   `2048/4096/8192/16384`, target half-width `1/140`, and exact 24-bit
+   dyadic outer-boundary verification;
+5. quotient and direct sequential routes generate target prefixes directly,
+   never read a materialized full row, and reproduce the fixed stream's
+   seed, outcome descriptors and exact raw prefix;
+6. every sequential runner rebuilds and audits its registered H2 planning
+   problem at each checkpoint, stops at the first sound plan certificate,
+   and fails closed at the cap;
+7. fixed quotient target draws reproduce
+   `2883584/7864320/7864320`, for positive/family totals
+   `10747904/18612224`;
+8. sequential quotient target draws reproduce
+   `180224/245760/983040`, for positive/family totals
+   `425984/1409024`;
+9. fixed direct W5/K6 draws reproduce `3932160/7864320`, total
+   `11796480`;
+10. sequential direct W5/K6 draws reproduce `245760/491520`, total
+    `737280`;
+11. the positive quotient-sequential route is strictly below fixed quotient
+    and sequential direct, with no W5/K6 context harmed relative to direct;
+12. W5/K6 preserve exact normalized reward `3/64`, registered regret and
+    chance constraints, complete contingent plans and standalone exact lift
+    coverage;
+13. exact risk equality remains false: W5 quotient/direct risks are
+    `1337/67500` and `99/5000`;
+14. K6-minus-edge emits no abstract certificate, retains the same 60-row
+    exact feasible-plan fallback, and reproduces failure
+    `2277/16000 < 1/5`;
+15. the concrete source meta-prior uses only three source contexts and a
+    declared source proxy, cannot narrow target evidence, and binds only a
+    registered target operator/capability;
+16. source-proxy comparison/physical-unique draws are
+    `5451776/5242880`, while target meta/no-meta prefixes are identical;
+    therefore meta main effect, target savings and offline-inclusive
+    amortization are all false;
+17. meta/no-meta cells deduplicate to eight statistical authorities, grouped
+    as one quotient-fixed, three quotient-sequential, two direct-fixed and
+    two direct-sequential authorities; their four family tails remain
+    `287/250000`, `287/250000`, `198/250000`, `198/250000`;
+18. authority-ID deduplication and Boole's inequality reproduce joint tail
+    `97/25000` and conditional confidence `24903/25000` without a
+    cross-family independence assumption;
+19. symbolic-support descriptor calls remain `EXACT_KERNEL_QUERY` events;
+    target acquisition, fallback and standalone evaluation exact calls
+    remain distinct and none enters the generative-draw endpoint;
+20. physically unique target work records
+    `32555008` acquisition draws, 464 support queries and 120 fallback
+    queries, while factorial-comparison work records
+    `52576256`, 748 and 240 without hiding the distinction; this reconciles
+    only the registered native evidence subset and cannot be promoted to
+    full counter completeness;
+21. all occurrence terminals close, false-certificate count is zero, all
+    identity/prefix/counter/confidence/fallback/claim attacks fail closed,
+    and full same-implementation semantic bundle replay reconstructs every
+    registered real/native authority and conclusion without claiming an
+    independently implemented planner; and
+22. focused and full-regression validation pass on one stable
+    source/specification snapshot before principal IDs are frozen; and
+23. the measured `8,703,902`-byte source selection uses the registered
+    16 MiB sealed-runtime/fallback V2 caps, retains historical V1 parsing,
+    and rejects every old route upper whose cap-profile identity is stale.
+
+The stable real run freezes:
+
+```text
+source campaign 973a21dd8818510220091924eeeb3ed2fab7cace93b4efb3954f89bd2a878fed
+source prior    1e38bda646e61421a378f7003be53deec389ae9ac9723ec007ae9521c7c5f722
+pairing replay  50b8d3610eca69a0548fcf505015b152613891b6220c405a2a246ff6f8829005
+counter subset  bc52d7a962ed760aa4a4714e0ef0773f01c2d5787bfb7d333960c5140349dac9
+Gate            fff9285c60a9691416227e81d857c7a389ddf732303688f024db77de65baf9d3
+campaign        8074ae6583b85b9b69ce94aac35f64d1d96afcd51133383d3c9351228f6f1e5a
+verification    e6d7be5ef451ab6bc5d711080cc5c132d1d7f51bc07798dc5c0c3fbbca66cc5a
+```
+
+Passing licenses only the registered finite result that target-local
+time-uniform stopping lowers W5/K6 transition-probability generative draws
+below both fixed quotient and matched sequential direct-ground planning,
+conditional on the pretrained relational skeleton and known exact
+support/reward/failure labels. The saving is attributed to the sequential
+target operator. The tested source meta-prior has no incremental target
+effect.
+
+It does not license broad graph/domain sample efficiency, unknown-support
+learning, primitive/ontology invention, exact policy or risk equality,
+unconditional statistics, total-work/wall-clock improvement, independent
+target-algorithm verification, official execution, scalar economics,
+break-even, counter completeness or completion of the general project.
+
+Complete semantics are normative in
+`specs/TARGET_LOCAL_SEQUENTIAL_SAMPLE_EFFICIENCY.md`.
+
+The next Gate should weaken the exact symbolic-support oracle over more
+structural/domain contexts while retaining honest partial models,
+first-certificate acquisition and matched direct controls. A later
+meta-prior must show incremental target savings over the same sequential
+no-meta route.
+
 ### V0-066 variable-cardinality two-domain relational RAPM gate
 
 Contract `1.30.0` registers schema `1.0.0`, profile
@@ -1591,9 +1715,9 @@ break-even or an aggregate Gate.
 Complete semantics and IDs are normative in
 `specs/VARIABLE_CARDINALITY_TWO_DOMAIN_RELATIONAL_RAPM.md`.
 
-The next Gate should use the measured target acquisition trace to evaluate a
-Laplace-style heuristic operator or KG-OP-style meta-prior against a matched
-no-operator control while keeping the same target-local proof authority.
+V0-067 subsequently evaluates that trace with a target-local sequential
+operator and proposal-only source meta-prior. V0-066 remains the historical
+cross-cardinality/two-domain construction Gate.
 
 ### V0-065 observation-driven cross-geometry relational RAPM gate
 
@@ -3538,3 +3662,11 @@ authenticity, raw symbolization, primitive/operator invention, unknown
 support, cross-structural model reuse, independent target verification, broad
 generalization and complete economics remain open; the new acquisition trace
 now makes a matched sample-tax operator the immediate follow-up.
+
+V0-067 executes that follow-up and identifies the effective intervention:
+target-local time-uniform stopping, not the tested source meta-prior. The
+registered positive quotient endpoint is now below matched sequential direct
+planning, but exact symbolic support/reward/failure labels and the pretrained
+source skeleton remain prerequisites. Broad sample efficiency, honest
+unknown-support construction, total-work economics and the general
+reusable-hidden-world-model objective remain open.
