@@ -129,6 +129,15 @@
   semantic switch only for the registered H2 fixture; it is not generic
   persistence, cross-query/H>2 proof, native-work/sample saving, independent
   verification, economics, or an aggregate Gate.
+- **V0-064 observation-driven relational coordinate/support synthesis:** three
+  complete source structures and three identity-disjoint target structures are
+  frozen before evidence. A source-only depth-two relational closure automatically
+  selects one state and one action coordinate, six anonymous supports, and a
+  semantic plan without D4 or named frontier inputs. Each target then performs a
+  certificate-triggered `8+16`-row context build and certifies two occurrence-bound
+  point queries from target-only statistical probabilities at simultaneous
+  confidence `239/250`. The graph, primitive/operator vocabulary, and symbolic
+  outcome support remain registered; verification is same-implementation replay.
 - **V0-063 preregistered sequential source stopping:** ordered complete-context
   checkpoints reduce V0-062 source acquisition from 147,456 to 24,576
   generative-oracle samples and leave the third source context unqueried.
@@ -1940,6 +1949,52 @@ COUNTER_COMPLETENESS_GATE_NOT_RUN
 SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
+
+### Contract 1.28.0: observation-driven relational coordinate/support synthesis
+
+V0-064 registers schema `1.0.0`, profile
+`g2048_observation_driven_relational_support_v0`, and passing status
+`CERTIFIED_REGISTERED_OBSERVATION_DRIVEN_RELATIONAL_SUPPORT_FAMILY`.
+
+The structural source/target split, six occurrences, human depth-two relational
+vocabulary, complete optional-single candidate shape, implementation and kernel
+digests are frozen before evidence. Source and target structural IDs are disjoint.
+The proposer accepts only a semantically complete 144-row anonymous source log and
+has no query, target, transition, group, named-frontier, Q/value, or plan input.
+
+Complete closure retains `7/19/56` programs. All 432 candidates are evaluated, 13
+are admissible, and construction selects
+`cardinality_actions(legal_actions)` with
+`cardinality_cells(adjacent_filter(survivor_cell,occupied_cells))`. These programs
+yield six anonymous supports and decisions `(1,2)->1`, `(1,4)->1`, `(2,2)->2`.
+The abstract selector is deterministic and the frozen concretizer is uniform over
+distinct matching ground actions.
+
+Every target starts with six missing rows. A current failed model-only proof first
+authorizes eight root rows; its observed successor catalogues expose two
+continuation supports and a second failed proof authorizes sixteen rows. Only target
+draws estimate target probabilities. Registered symbolic outcome support remains an
+explicit assumption and unknown-support discovery remains false.
+
+The 24 rows are context-build work before either registered point occurrence. Both
+occurrence-bound audits then add zero query-local rows. Sequential first-to-second
+occurrence acquisition and cross-structural RAPM reuse are not claimed. Audits bind
+their initial catalogue, occurrence when applicable, model epoch, and calibration.
+Evidence requires typed semantic replay of its failed audit, authorization, legal
+catalogue, seed, symbolic support and raw draws.
+
+The exact simultaneous calibration freezes 16,384 draws per row, radius `1/60`,
+176 coordinate obligations, family tail `11/250`, and confidence `239/250`. All
+three target risks certify below `1/20` with zero normalized-regret upper. A wrong
+proposal fails risk with upper one and zero false certificates; six occurrence-cold
+exact controls reproduce J0 over 108 rows.
+
+This contract removes known-D4 and named-row construction scaffolds only inside the
+fixed 2x2 graph and human vocabulary. It does not establish primitive invention,
+unknown support, unseen graph geometry, cross-structural reuse, broad
+generalization, independent-algorithm verification, sample efficiency, official
+execution, or scalar economics. Complete semantics and IDs are normative in
+`specs/OBSERVATION_DRIVEN_RELATIONAL_SUPPORT.md`.
 
 ### Contract 1.27.0: preregistered sequential source stopping
 
@@ -3808,8 +3863,18 @@ wrong-prior broad-tail control preserve soundness. Its 147,456 source
 observations have not amortized over only three target contexts: the
 offline-inclusive total is 245,760.
 
-The next construction risk is therefore persistent prior reuse over a larger
-pre-model held-out family, or lower source construction cost through
-sequential source stopping. Any promotion must retain target-only
-certification, no-prior/wrong-prior controls, complete offline-plus-online
-curves, and the main reusable-world-model objective.
+V0-063 lowers that source cost through preregistered sequential stopping.
+V0-064 then returns to the main construction line and removes the production
+D4 canonicalizer, handwritten relative-survivor labels, and named
+`ROOT`/`CHAIN` supports. It automatically proposes relational coordinates and
+anonymous supports from source observations, then builds three target-only
+partial/statistical context models through failed-proof-directed acquisition.
+
+The remaining structural risk is now explicit: V0-064 still fixes the 2x2
+incidence graph, low-level primitive/operator vocabulary, and symbolic
+outcome support. Its target split varies rank-relative dynamics rather than
+graph geometry, and its verifier is same-implementation replay. The next
+construction Gate must cover multiple preregistered graph geometries or a
+second domain with no-transfer/OOD controls. Sample-tax interventions should
+be designed only after those acquisition traces identify the actual
+bottleneck.

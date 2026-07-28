@@ -28,7 +28,35 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 → jointly search local value/risk choices, rebuild, or use charged fallback
 ```
 
-## Current sequential source-stopping Gate (V0-063)
+## Current observation-driven relational support Gate (V0-064)
+
+Contract `1.28.0` freezes profile
+`g2048_observation_driven_relational_support_v0`.
+
+From 144 complete, anonymous, source-only H2 rows, a bounded relational DSL closes
+to 56 semantic programs and exhausts 432 state/action-coordinate candidates. It
+selects the number of legal actions and the number of occupied neighbors of the
+chosen survivor, producing six anonymous support templates without D4
+canonicalization, relative-survivor labels, or named `ROOT`/`CHAIN` rows.
+
+Three structurally identity-disjoint held-out rank-relative contexts start with
+all-missing partial statistical RAPMs. In each context a failed model proof
+authorizes eight root rows, observed successors expose two continuation supports,
+and a second failed proof authorizes sixteen continuation rows. The resulting
+context-local model certifies two registered point queries with no query-local
+ground work after the 24-row context build. Target probabilities come only from
+replayable draws; known symbolic outcome support is still registered. Family
+confidence is `239/250`. A wrong proposal fails closed, and six cold exact-ground
+controls reproduce J0.
+
+This advances automatic hidden-coordinate/support construction only inside a fixed
+human relational vocabulary, fixed 2x2 graph, and finite structural family.
+Primitive invention, unknown support, unseen graph geometry, cross-structural model
+reuse, independent-algorithm verification, broad generalization, sample efficiency,
+official execution, and scalar economics remain open. The full contract and frozen
+IDs are in `specs/OBSERVATION_DRIVEN_RELATIONAL_SUPPORT.md`.
+
+## Sequential source-stopping Gate (V0-063)
 
 Contract `1.27.0` freezes profile
 `g2048_preregistered_sequential_source_stopping_v0`.
@@ -56,9 +84,9 @@ fallbacks and emits zero false certificates.
 
 This is an offline-inclusive reduction only on the registered finite
 known-D4 family. It is not broad sample efficiency, automatic
-coordinate/support discovery, official execution, or scalar economics. The
-next construction Gate returns to observation-driven coordinate/support
-proposals over a larger held-out structural family. The full contract is in
+coordinate/support discovery, official execution, or scalar economics.
+V0-064 subsequently executes the observation-driven coordinate/support
+construction Gate under its separate claim boundary. The V0-063 contract is in
 `specs/SEQUENTIAL_SOURCE_STOPPING.md`.
 
 ## Source-frozen sample-tax intervention Gate (V0-062)

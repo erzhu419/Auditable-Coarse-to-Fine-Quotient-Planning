@@ -134,6 +134,14 @@
   host-verified. This proves only the registered H2 composition, not generic
   persistence, cross-query/H>2 behavior, native work or sample savings,
   independent-algorithm verification, economics, or an aggregate Gate.
+- **V0-064 observation-driven relational coordinate/support synthesis:** a
+  complete anonymous source log drives bounded relational program closure and
+  exhaustive coordinate selection without D4 or named frontier inputs. Three
+  identity-disjoint target structures each perform a failed-proof-directed
+  `8+16`-row partial/statistical context build and then certify two
+  occurrence-bound point queries at simultaneous confidence `239/250`. This
+  retains a fixed 2x2 graph, human vocabulary, registered symbolic outcome
+  support, and same-implementation verification.
 - **V0-063 preregistered sequential source stopping:** complete-context
   checkpoints stop after two ordered source contexts, six rows and 24,576
   generative-oracle samples; the third source context is not enumerated. The
@@ -1469,6 +1477,65 @@ COUNTER_COMPLETENESS_GATE_NOT_RUN
 SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
+
+### V0-064 observation-driven relational coordinate/support gate
+
+Contract `1.28.0` registers schema `1.0.0` and profile
+`g2048_observation_driven_relational_support_v0`.
+
+The Gate passes only when:
+
+1. three source structures, three identity-disjoint target structures, six
+   target occurrences, the relational grammar, complete candidate shape,
+   kernel and implementation digests are frozen before evidence;
+2. the source log contains exactly 144 rows and proves complete two-step
+   root, legal-action and active-successor closure;
+3. the public producer accepts only that source log and records zero
+   target/query/group/named-frontier inputs;
+4. complete depth-two closure yields `7/19/56` semantic programs;
+5. all 432 coordinate candidates are evaluated and exactly 13 are
+   admissible;
+6. construction selects the registered legal-action-count state coordinate,
+   occupied-neighbor survivor action coordinate, six anonymous supports and
+   three semantic decisions;
+7. the abstract selector is deterministic and its concretizer is uniform
+   over distinct matching ground actions;
+8. every target begins all-missing, its first failed audit authorizes one
+   root support/eight rows, and its second failed audit authorizes two
+   continuation supports/sixteen rows;
+9. every target evidence artifact passes typed semantic replay of the
+   current model, failed audit, authorization, legal catalogue, seed,
+   registered symbolic support and raw draws before model construction;
+10. target probability bounds use only target draws; source dynamics are
+    absent, exact target dynamics are unclaimed, and unknown-support
+    discovery is false;
+11. calibration proves radius `1/60`, exponent `2048/225`, per-coordinate
+    tail `1/4000`, 176 obligations, family tail `11/250`, and confidence
+    `239/250`;
+12. all three final context audits and all six occurrence-bound audits
+    certify risk below `1/20` and zero normalized-regret upper;
+13. the 24 rows per target are charged to context build before either
+    occurrence, both occurrence queries add zero rows, and sequential
+    occurrence acquisition is not claimed;
+14. the wrong proposal acquires 16 rows, ends `FAILED_RISK` with failure
+    upper one, requires fallback and emits zero false certificates;
+15. six occurrence-cold exact controls enumerate 108 rows and reproduce J0;
+16. stale authorization, source truncation, raw-draw, evidence-attestation,
+    chain-splice, occurrence-scope, duplicate interval, horizon-cycle, OOD
+    structure, runtime-shape and implementation attacks fail closed; and
+17. full same-implementation semantic replay reproduces every content ID
+    while independent-algorithm verification and all broader claim locks
+    remain false.
+
+Passing licenses automatic coordinate selection and anonymous abstract-support
+proposal only inside the registered human vocabulary, fixed 2x2 incidence graph,
+and finite rank-relative family. It does not license primitive invention, unknown
+outcome support, unseen graph geometry, cross-structural RAPM reuse, broad
+generalization, sample efficiency, official execution, scalar economics, or an
+aggregate Gate.
+
+Complete semantics and principal IDs are normative in
+`specs/OBSERVATION_DRIVEN_RELATIONAL_SUPPORT.md`.
 
 ### V0-063 preregistered sequential source-stopping gate
 
@@ -3229,9 +3296,17 @@ certification and a wrong-prior broad-tail control preserve soundness. The
 source cost has not amortized over the three target contexts:
 offline-plus-target observations are `245760`.
 
-The next construction Gate must extend persistent prior use over a larger
-pre-model held-out context family, or reduce source cost by sequential
-source stopping, before any offline-inclusive promotion. Portable source
-authenticity, raw symbolization, primitive/operator invention,
-larger/unknown domains, broad held-out/cross-domain evidence and complete
-economics remain open.
+V0-063 reduces that source cost by preregistered stopping. V0-064 returns to
+the world-model construction line: it removes D4 and named-row construction
+scaffolds, automatically selects relational coordinates and anonymous
+supports, then executes three target-only two-round statistical context
+builds. Its 2x2 graph, human primitive/operator vocabulary, registered
+symbolic outcome support, and same-implementation verifier remain explicit
+limits.
+
+The next construction Gate must preregister multiple graph geometries or a
+second domain, repeat source-only synthesis and certificate-triggered
+partial/statistical recovery, and include no-transfer/OOD controls. Portable
+source authenticity, raw symbolization, primitive/operator invention,
+unknown support, cross-structural model reuse, independent-algorithm
+verification, broad generalization and complete economics remain open.
