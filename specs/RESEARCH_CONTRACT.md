@@ -1,8 +1,8 @@
 # Research Contract
 
-**Current construction contract:** `1.29.0`
+**Current construction contract:** `1.30.0`
 
-**Current construction profile:** `observation_driven_cross_geometry_relational_rapm_v0`
+**Current construction profile:** `variable_cardinality_two_domain_relational_rapm_v0`
 
 ## Definitions
 
@@ -133,6 +133,18 @@
   semantic switch only for the registered H2 fixture; it is not generic
   persistence, cross-query/H>2 proof, native-work/sample saving, independent
   verification, economics, or an aggregate Gate.
+- **V0-066 variable-cardinality two-domain relational RAPM slice:** one
+  independently replayed source-only synthesis exports a dynamics-free
+  relational state/action AST skeleton. A held-out graph consumer varies
+  vertex count from four to five/six, performs target-local statistical
+  planning/refinement and charges a genuine no-cover exact fallback. A
+  separately isolated LMB consumer binds the same exact program IDs and
+  certifies three target-local H2 models. Only source AST identities are
+  portable; target bindings, evidence, models and dynamics are disjoint.
+  Conditional arm guarantees combine to confidence `245713/250000` without a
+  cross-arm-independence assumption. The human role ontology/grammar and LMB
+  planner remain domain supplied, and independent verification covers source
+  synthesis only.
 - **V0-065 observation-driven cross-geometry relational RAPM slice:** three
   non-isomorphic source graphs drive complete bounded relational coordinate
   synthesis before three non-isomorphic held-out target graphs instantiate
@@ -269,7 +281,91 @@
 
 V0 covers finite reachable state spaces, finite state-dependent primitive action sets, exact enumerable transition kernels, bounded additive registered rewards, one-time failure cost, full observability, and `H<=Hmax`. The primary research object is a coverage-bounded auditable RAPM compiled once for repeated multi-step contingent planning; the quotient tree, predicates, and CEGAR construct or repair it, while a policy graph remains a query result. Ground distinctions are recovered only after the independent certificate for the current plan fails.
 
-### Contract 1.29.0: observation-driven cross-geometry relational RAPM (current slice)
+### Contract 1.30.0: variable-cardinality two-domain relational RAPM (current slice)
+
+Contract `1.30.0`, schema `1.0.0`, profile
+`variable_cardinality_two_domain_relational_rapm_v0` and status
+`CONDITIONAL_TWO_DOMAIN_VARIABLE_CARDINALITY_RAPM_CLOSED` freeze the current
+construction slice.
+
+One complete 120-row anonymous graph log is the only source-construction
+input. Inside a frozen human relational-role ontology and depth-two grammar,
+the source-only constructor closes 86 syntactic programs to 23
+source-semantic representatives, evaluates all ten integer state/action
+candidates and selects:
+
+```text
+cardinality_actions(legal_actions)
+cardinality_resources(linked_filter(action_anchor,active_resources))
+```
+
+The exported skeleton contains only typed ASTs, an anonymous support schema
+and source provenance. It contains no kernel, dynamics, probabilities,
+reward, failure, query, policy, decision, graph name or target/domain
+identity. An import-disjoint verifier reconstructs the raw source log,
+closure, selection and identities without importing the producer or target
+implementations. This is independent verification of source synthesis only.
+
+The graph arm freezes source vertex count four and held-out target counts five
+and six. Root action choice is reconstructed from observed target legal
+actions. Each target records exact local symbolic outcome support but learns
+probabilities only from replayable draws under the registered SplitMix64-IID
+simulator semantics. It imports zero source registry or dynamics rows. A
+failed proof may trigger a fresh target-local closure with no source-registry
+parameter.
+
+W5 uses 22 rows/2,883,584 draws, selects
+`active_attribute_degree_signature` from 11 target candidates, and emits a
+complete conditionally certified H2 plan. K6 uses 60 rows/7,864,320 draws and
+certifies without refinement. K6-minus-edge uses 60 rows/7,864,320 draws,
+exhausts nine candidates without a sound cover and invokes a separately
+charged 60-row exact fallback with failure `2277/16000`. Every certified plan
+covers all reachable abstract state-time cells and uses a frozen uniform
+distinct-action concretizer. Graph construction totals 142 rows and
+18,612,224 draws with zero complete target-closure calls. Its conditional
+family tail is `287/250000`.
+
+The LMB arm consumes the same exact two program identities through a
+query-neutral seven-row bridge and uniquely binds the anonymous relation to
+`same_type_buffer_tokens`. Its role ontology, bridge registry and semantic
+planner are LMB-specific. Each of three contexts opens two
+certificate-triggered supports and records 16,384 draws per support, for six
+supports/98,304 operational draws and zero operational exact ground rows.
+Every domain-specific H2 plan certifies reward `[59/60,61/60]`, failure upper
+`119/3600` and normalized-regret upper `1/60`. Thirteen exact rows are
+standalone-cold evaluation only. LMB family tail is `2/125`, conditional on
+the registered SHA-256 random-oracle/IID-simulator assumption.
+
+The two target arms share only the source-log, skeleton and exact program
+identities. Context, binding, evidence, model and dynamics identity sets are
+disjoint; source-registry, source-dynamics and cross-target row imports are
+zero. Six executed wrong-arm transplants fail closed. Boole's inequality
+combines the arm tails without assuming cross-arm independence:
+
+```text
+union tail             4287/250000
+conditional confidence 245713/250000
+```
+
+The combined campaign and verification IDs are
+`f71c28b83cff8854c406da85a97408d62480548568e15ca488e75bbfaca93c20`
+and
+`f8e39e7822dc88477b246037eafd2ca6a2f48ff6c1e0af73580bb37c7affba41`.
+Graph and LMB target replay remains same-implementation.
+All 62 V0-066 focused tests and all 1,412 repository tests pass.
+
+This contract licenses only the registered finite-H2 conclusion that one
+source-observed relational skeleton can cross vertex cardinality and enter a
+second domain while target evidence, models, dynamics, refinements and
+fallback remain local. It does not license primitive/ontology invention,
+generic model-selected planning, unconditional statistical validity,
+observational OOD generalization, broad graph/domain generalization,
+changed-query reuse, independent target verification or sample efficiency.
+Repeated occurrences reuse identical query parameters only. Official
+execution is false; scalar cost and break-even are null; workload economics,
+counter completeness and sample efficiency remain `NOT_RUN`.
+
+### Contract 1.29.0: observation-driven cross-geometry relational RAPM
 
 Contract `1.29.0`, schema `1.0.0`, profile
 `observation_driven_cross_geometry_relational_rapm_v0` and status
@@ -3815,14 +3911,34 @@ evaluation-only J0 costs remain separate.
   and verification
   `ea29a7e0c885166c1b321df24a53edc37975fe680f9bc97f4fa38288830ea329`
   without asserting independent-algorithm verification.
+- V0-066 independently reconstructs the complete source-only portable
+  synthesis and freezes skeleton
+  `77a9666172fb5cebf30820b12075fef92e190f3ccda6cdf44e4c902c7dc73322`
+  without importing either target implementation.
+- V0-066 graph targets record rows `22/60/60`, draws
+  `2883584/7864320/7864320`, two conditional complete H2 certificates and one
+  charged 60-row exact fallback. LMB records six supports/98,304 operational
+  draws, zero operational exact rows and three conditional H2 certificates.
+- V0-066 shares only the source log, portable skeleton and exact program IDs.
+  Target context/binding/evidence/model/dynamics identities are disjoint;
+  source-registry, source-dynamics and cross-target row imports are zero; six
+  executed wrong-arm transplants fail closed.
+- V0-066 union calibration uses no cross-arm independence assumption and
+  reconstructs tail `4287/250000`, conditional confidence
+  `245713/250000`, campaign
+  `f71c28b83cff8854c406da85a97408d62480548568e15ca488e75bbfaca93c20`
+  and verification
+  `f8e39e7822dc88477b246037eafd2ca6a2f48ff6c1e0af73580bb37c7affba41`.
+- All 62 V0-066 focused tests and all 1,412 tests in the 115-module
+  repository regression pass without a failed module.
 
 ## Out of scope
 
 Neural latent encoders, raw/perceptual symbolization, learned structural
 supports or unknown-domain world models, MCTS, first-hit options, SMDP
 duration, POMDP/belief adapters, visual perception, infinite horizon and
-cross-domain meta-controllers remain out of scope. V0-059, V0-060, V0-064
-and V0-065 are registered finite high-probability probability-row
+cross-domain meta-controllers remain out of scope. V0-059, V0-060, V0-064,
+V0-065 and V0-066 are registered finite high-probability probability-row
 exceptions; they may not be generalized into automatic unknown-support
 discovery, exact-sound evidence or an official Phase 3/5 pass. A supplied `D4` group is
 never automatic abstraction discovery, Phase 3A exact cross-orbit aggregation
@@ -3897,6 +4013,16 @@ optional refinement registry and controls are preregistered. Diamond's target-ti
 repair selects from four source-frozen combinations only; it generates no target
 program or primitive. Same-implementation semantic replay is not independent
 algorithm verification.
+
+V0-066 cannot be cited as automatic primitive/ontology discovery, generic
+model-selected planning, unconditional statistical validity, observational
+OOD generalization, changed-query reuse, independent target verification or
+sample efficiency. The portable ASTs are selected inside a human role ontology
+and frozen grammar; the LMB bridge and symbolic selector are domain-specific.
+Graph and LMB statistical claims are conditional on different registered
+simulator assumptions. Its no-transfer/OOD evidence consists of finite
+identity, registry, transplant and permutation attacks. W5 is strictly sparse,
+but the registered K6 cones equal their matched closures extensionally.
 
 ## Known failure modes
 
@@ -4008,14 +4134,16 @@ D4 canonicalizer, handwritten relative-survivor labels, and named
 anonymous supports from source observations, then builds three target-only
 partial/statistical context models through failed-proof-directed acquisition.
 
-V0-065 closes the immediate fixed-geometry gap with three source and three
-held-out non-isomorphic graph topologies, target-local dynamics/replanning,
-no-transfer/OOD/permutation controls, and one failed-proof-triggered
-source-registry refinement. The remaining structural risk is narrower but
-material: every graph has four vertices, uses the same graph-merge domain,
-human relational vocabulary and registered symbolic outcome support, and the
-verifier remains same-implementation replay. The next construction Gate must
-extend the schema to a larger graph/longer-horizon family or a genuinely
-second domain without importing domain IDs, target dynamics or hand-written
-policies into construction. Broad sample-tax interventions should be designed
-only after those acquisition traces identify the actual bottleneck.
+V0-065 closes the fixed-geometry gap over non-isomorphic four-vertex graphs.
+V0-066 then closes both requested follow-up axes in one registered slice:
+five/six-vertex graph targets and a separately isolated LMB target consume the
+same source-observed portable relational program identities while retaining
+target-local evidence, dynamics, refinement and fallback. The remaining risk
+is now concentrated in human role/grammar design, domain-specific LMB
+planning, registered symbolic support, conditional simulator assumptions,
+same-implementation target verification and the very large 18,612,224-draw
+graph acquisition cost. The next experiment should test a preregistered
+Laplace-style heuristic operator or KG-OP-style meta-prior against a matched
+no-operator acquisition route, with identical certificate and fallback
+authority. Automatic ontology invention, longer horizons, observational OOD,
+broad graph/domain generalization and official economics remain open.

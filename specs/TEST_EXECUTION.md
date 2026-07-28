@@ -6,8 +6,8 @@ This document governs repository test execution only. It does not change any
 planner, simulator, sample count, confidence statement, artifact schema, or
 research claim.
 
-The repository contains 1,300 pytest cases in 106 test modules. These are not
-1,300 independent research Gates: many cases are attacks and replay checks
+The repository contains 1,412 pytest cases in 115 test modules. These are not
+1,412 independent research Gates: many cases are attacks and replay checks
 for the same frozen Gate.
 
 ## Formal fresh lane
@@ -85,7 +85,27 @@ the CPU nodes do not provide bubblewrap. The final Gate is the exact union of
 the six compute shards and the local isolation modules, checked against
 pytest collection so that missing or duplicate modules cannot be hidden.
 
-## Measured validation
+## Current measured validation
+
+The V0-066 2026-07-28 validation used the exact single-process fresh lane for
+all new tests and the unchanged 24-worker exact development lane for the full
+repository:
+
+```text
+V0-066 fresh focused tests             = 62 / 62
+V0-066 fresh focused elapsed           = 232.27 s
+full repository modules                = 115 / 115
+full repository tests                  = 1412 / 1412
+full parallel elapsed                  = 361.5 s
+failed modules                         = 0
+```
+
+The development-lane memoization returns only the identical content ID for
+the same frozen object and does not alter a sample, fraction, planner,
+certificate, fallback or attack. Mutation-attack modules remain fresh, and
+all 62 newly added tests were separately run without the memoization plugin.
+
+## Historical V0-061 measured validation
 
 The V0-061 2026-07-27 validation used node001–node006, each with 24 module workers:
 

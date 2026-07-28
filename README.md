@@ -28,7 +28,82 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 → jointly search local value/risk choices, rebuild, or use charged fallback
 ```
 
-## Current cross-geometry relational RAPM Gate (V0-065)
+## Current variable-cardinality two-domain relational RAPM Gate (V0-066)
+
+Contract `1.30.0` freezes profile
+`variable_cardinality_two_domain_relational_rapm_v0` and status
+`CONDITIONAL_TWO_DOMAIN_VARIABLE_CARDINALITY_RAPM_CLOSED`.
+
+V0-066 independently replays one source-only relational synthesis and exports
+only a portable state/action AST skeleton:
+
+```text
+state  = cardinality_actions(legal_actions)
+action = cardinality_resources(
+           linked_filter(action_anchor, active_resources)
+         )
+```
+
+The source constructor sees 120 anonymous rows but no target, query, kernel,
+policy, dynamics, graph name, or domain identity. Its frozen human depth-two
+grammar has 86 syntactic programs, 23 source-semantic representatives and 10
+integer candidate pairs. The independent verifier shares no producer or
+domain implementation. The exported skeleton contains no transition
+probabilities, rewards, failures, policy or source decision.
+
+Two isolated target consumers then use the same exact program IDs:
+
+- the graph arm transfers from four-vertex source observations to held-out
+  five- and six-vertex graphs. W5 acquires 22 local rows and synthesizes the
+  target-local distinction `active_attribute_degree_signature`; K6 acquires
+  60 rows and needs no refinement. Both produce complete H2 contingent plans
+  with uniform distinct-action concretizers. A registered K6-minus-edge
+  negative control acquires 60 rows, exhausts nine target-generated
+  candidates without a sound cover, emits no false certificate, and invokes
+  a charged 60-row exact fallback;
+- the LMB arm uses a query-neutral seven-row bridge to bind the same anonymous
+  action relation to `same_type_buffer_tokens`. Three target contexts each
+  acquire two certificate-triggered statistical supports, for six supports
+  and 98,304 target draws total, then certify a domain-specific symbolic H2
+  policy. Operational exact ground rows remain zero; 13 exact rows belong
+  only to standalone cold controls.
+
+Graph construction uses 142 target-local rows and 18,612,224 draws, with no
+complete target-closure call; the negative fallback is accounted separately.
+The graph and LMB family tails are `287/250000` and `2/125`. Their Boole union
+bound assumes no cross-arm independence and gives conditional joint
+confidence `245713/250000`. Six executed wrong-arm evidence/model/campaign
+transplants fail closed. Only the source log, portable skeleton and exact
+state/action program IDs are shared; contexts, bindings, evidence, models and
+dynamics remain disjoint.
+
+Frozen principal IDs are:
+
+```text
+portable skeleton       77a9666172fb5cebf30820b12075fef92e190f3ccda6cdf44e4c902c7dc73322
+graph campaign          8e839923dd2d965f6180fbff8abaebfbd6c5e9d6546cb60cb12666182bf7a77a
+LMB campaign            baa37d57d60fb67c513e5655734e98d211e82ef278c1c0347bed864cf8a9f1d6
+combined campaign       f71c28b83cff8854c406da85a97408d62480548568e15ca488e75bbfaca93c20
+combined verification   f8e39e7822dc88477b246037eafd2ca6a2f48ff6c1e0af73580bb37c7affba41
+```
+
+This closes the registered construction Gate along both requested axes:
+vertex count varies, and the shared relational skeleton is consumed in a
+second domain. It does not prove automatic primitive/ontology invention,
+generic model-selected planning, unconditional statistics, observational OOD
+generalization, changed-query reuse, independent target verification or
+sample efficiency. The LMB selector is domain-specific; both target
+verifiers are same-implementation semantic replays. Official execution,
+scalar cost, break-even, workload economics and counter completeness remain
+locked. All 62 V0-066 focused tests and all 1,412 repository tests pass. The
+full contract is in
+`specs/VARIABLE_CARDINALITY_TWO_DOMAIN_RELATIONAL_RAPM.md`.
+
+The next construction Gate uses this end-to-end acquisition trace to design
+and test a Laplace-style heuristic operator or KG-OP-style meta-prior against
+a matched no-operator control, without weakening the certificate.
+
+## Cross-geometry relational RAPM Gate (V0-065)
 
 Contract `1.29.0` freezes profile
 `observation_driven_cross_geometry_relational_rapm_v0`.
@@ -77,10 +152,8 @@ efficiency, official execution, or scalar economics. All 33 V0-065 focused
 tests and all 1,350 repository tests pass. The full contract is in
 `specs/CROSS_GEOMETRY_RELATIONAL_RAPM.md`.
 
-The next construction Gate must vary vertex count or use a second domain
-while retaining observation-driven source/target separation and target-local
-certification. Sample-tax operators remain deliberately downstream of that
-larger acquisition trace.
+V0-066 subsequently closes both of those follow-up axes under its narrower
+portable-role contract. V0-065 remains the historical four-vertex Gate.
 
 ## Observation-driven relational support Gate (V0-064)
 
@@ -209,7 +282,7 @@ scalar/break-even economics, and broad generalization remain later Gates.
 The full V0-061 contract is in
 `specs/MATCHED_END_TO_END_ACQUISITION_WORKLOAD.md`.
 
-The current repository Gate contains 1,350 tests in 110 modules. For fast
+The current repository Gate contains 1,412 tests in 115 modules. For fast
 development, `scripts/run_pytest_parallel.py` runs modules concurrently and
 memoizes only repeated content-ID reads on the identical frozen object;
 mutation-attack modules automatically use fresh IDs. The formal release path

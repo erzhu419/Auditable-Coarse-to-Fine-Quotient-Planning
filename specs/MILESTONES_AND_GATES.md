@@ -134,6 +134,18 @@
   host-verified. This proves only the registered H2 composition, not generic
   persistence, cross-query/H>2 behavior, native work or sample savings,
   independent-algorithm verification, economics, or an aggregate Gate.
+- **V0-066 variable-cardinality two-domain relational RAPM:** one independently
+  replayed source-only relational synthesis exports a dynamics-free state/action
+  AST skeleton. A graph consumer holds out vertex counts five and six, constructs
+  target-local statistical RAPMs, conditionally certifies W5/K6 complete H2 plans,
+  and routes a registered K6-minus-edge no-cover case to charged exact fallback.
+  An isolated LMB consumer binds the same program IDs through a query-neutral
+  bridge and certifies three separate target models. Six executed wrong-arm
+  transplants fail closed and the conditional two-arm confidence is
+  `245713/250000`. This is finite registered-family portability across cardinality
+  and domain, not automatic ontology invention, generic planning, independent
+  target verification, observational OOD generalization, changed-query reuse or
+  sample efficiency.
 - **V0-065 observation-driven cross-geometry relational RAPM:** complete H2
   observations from the non-isomorphic P4/star/paw source split automatically
   select a relational coordinate schema without transporting source dynamics
@@ -1488,6 +1500,101 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
 
+### V0-066 variable-cardinality two-domain relational RAPM gate
+
+Contract `1.30.0` registers schema `1.0.0`, profile
+`variable_cardinality_two_domain_relational_rapm_v0`, and status
+`CONDITIONAL_TWO_DOMAIN_VARIABLE_CARDINALITY_RAPM_CLOSED`.
+
+The Gate passes only when:
+
+1. one complete 120-row anonymous source log, the frozen human relational-role
+   ontology and depth-two grammar are fixed before target construction;
+2. the source constructor accepts only that log, closes all 86 syntactic
+   programs to 23 source-semantic representatives, evaluates all ten integer
+   coordinate pairs, and exports only
+   `cardinality_actions(legal_actions)` plus
+   `cardinality_resources(linked_filter(action_anchor,active_resources))`;
+3. the portable skeleton contains no transition, probability, reward, failure,
+   policy, decision, target, query, graph-name or domain identity;
+4. an import-disjoint verifier independently reconstructs source completeness,
+   semantic closure, candidate selection and the exact skeleton/program IDs;
+5. source vertex count is exactly four and graph target counts are exactly five
+   and six, with source and target structural identities disjoint;
+6. graph root actions are chosen from target observations, local symbolic
+   outcome support is explicit, statistical probabilities come only from
+   replayable target draws, and the sampling context contains no evaluation
+   role label or selected action;
+7. after a failed graph proof, target-local grammar closure has no source
+   registry parameter and imports zero source-registry/dynamics rows;
+8. W5 acquires 22 rows/2,883,584 draws, evaluates 11 target candidates,
+   selects `active_attribute_degree_signature`, and emits a complete
+   conditionally certified H2 contingent plan;
+9. K6 acquires 60 rows/7,864,320 draws, needs no refinement, and emits a
+   complete conditionally certified H2 contingent plan;
+10. K6-minus-edge acquires 60 rows/7,864,320 draws, exhausts nine target
+    candidates without a sound cover, emits no abstract certificate, and
+    invokes a separately charged 60-row exact fallback with failure
+    `2277/16000`;
+11. every positive graph plan assigns every reachable abstract state-time
+    cell, uses a fixed uniform concretizer over distinct inverse ground
+    actions, and its standalone exact lift lies inside the statistical
+    reward/risk envelope;
+12. graph construction records 142 local rows, 18,612,224 draws, zero complete
+    target-closure calls, family tail `287/250000`, and a statistical claim
+    explicitly conditional on the registered SplitMix64/IID simulator
+    semantics;
+13. the LMB bridge is query-neutral, has exactly seven exact rows, searches
+    the frozen human LMB binding registry and uniquely selects
+    `same_type_buffer_tokens` without importing graph dynamics;
+14. three separate LMB contexts each acquire exactly two
+    certificate-triggered supports at 16,384 draws per support; all six
+    supports use zero operational exact ground rows and yield complete
+    domain-specific symbolic H2 plans;
+15. every LMB audit certifies reward `[59/60,61/60]`, failure upper
+    `119/3600`, regret upper `1/60`, while 13 exact rows remain
+    standalone-cold only;
+16. LMB family tail is `2/125`, conditional on its registered SHA-256
+    random-oracle/IID simulator assumption and never presented as
+    unconditional entropy or IID evidence;
+17. graph and LMB contexts, bindings, evidence, models and dynamics identities
+    are pairwise disjoint, source-registry/source-dynamics/cross-target imports
+    are zero, and all six executed wrong-arm transplants fail closed;
+18. Boole union calibration freezes union tail `4287/250000` and conditional
+    confidence `245713/250000` without assuming cross-arm independence;
+19. two identity-distinct occurrences per context reuse only the same
+    parameterization and are not labelled changed-query reuse;
+20. combined replay freezes:
+
+```text
+source verification c1383c8d2a37bc44270347f4dcf4159a8415d97744b7217dd5c99735b896e4e0
+graph campaign      8e839923dd2d965f6180fbff8abaebfbd6c5e9d6546cb60cb12666182bf7a77a
+LMB campaign        baa37d57d60fb67c513e5655734e98d211e82ef278c1c0347bed864cf8a9f1d6
+combined campaign   f71c28b83cff8854c406da85a97408d62480548568e15ca488e75bbfaca93c20
+verification        f8e39e7822dc88477b246037eafd2ca6a2f48ff6c1e0af73580bb37c7affba41
+```
+
+21. all 62 V0-066 focused tests and all 1,412 tests in the 115-module
+    repository regression pass on a stable source/spec snapshot.
+
+Passing licenses only the registered finite H2 result that a source-observed
+relational skeleton can be instantiated across vertex counts and in a second
+domain while target evidence, models and dynamics remain local. The role
+ontology/grammar and LMB symbolic selector are human/domain supplied.
+Independent verification covers source synthesis only; target verification is
+same-implementation. The result does not license automatic primitive/ontology
+invention, generic model-selected planning, unconditional statistics,
+observational OOD generalization, broad graph/domain generalization,
+changed-query reuse, sample efficiency, official execution, scalar economics,
+break-even or an aggregate Gate.
+
+Complete semantics and IDs are normative in
+`specs/VARIABLE_CARDINALITY_TWO_DOMAIN_RELATIONAL_RAPM.md`.
+
+The next Gate should use the measured target acquisition trace to evaluate a
+Laplace-style heuristic operator or KG-OP-style meta-prior against a matched
+no-operator control while keeping the same target-local proof authority.
+
 ### V0-065 observation-driven cross-geometry relational RAPM gate
 
 Contract `1.29.0` registers schema `1.0.0` and profile
@@ -1585,13 +1692,10 @@ scalar economics, break-even, or an aggregate Gate.
 Complete semantics and principal IDs are normative in
 `specs/CROSS_GEOMETRY_RELATIONAL_RAPM.md`.
 
-The next construction Gate must transfer an observation-driven relational
-schema across multiple vertex counts or into a second domain while retaining
-target-local dynamics, replanning, proof-triggered recovery, no-transfer and
-OOD controls. A Laplace-style heuristic or KG-OP-style meta-prior remains a
-subsequent sample-tax intervention to be designed from that larger
-acquisition trace rather than a prerequisite for completing the construction
-path.
+V0-066 subsequently closes both requested construction axes—multiple vertex
+counts and a second domain—under a narrower portable-role contract. Its
+measured acquisition trace becomes the input to the next matched sample-tax
+operator experiment; V0-065 itself remains a four-vertex historical Gate.
 
 ### V0-064 observation-driven relational coordinate/support gate
 
@@ -3428,11 +3532,9 @@ semantic/unregistered OOD, identity-isolation and permutation controls prevent
 this bounded result from being read as dynamics transfer or graph-name
 memorization.
 
-The next construction Gate must vary vertex count or enter a second domain
-while retaining observation-driven source/target separation, target-local
-dynamics, replanning and proof-triggered recovery. Portable source
+V0-066 subsequently varies vertex count and enters a second domain while
+retaining target-local dynamics and proof authority. Portable source
 authenticity, raw symbolization, primitive/operator invention, unknown
-support, cross-structural model reuse, independent-algorithm verification,
-broad generalization and complete economics remain open. Sample-tax
-operators remain downstream until that larger acquisition trace identifies
-the actual bottleneck.
+support, cross-structural model reuse, independent target verification, broad
+generalization and complete economics remain open; the new acquisition trace
+now makes a matched sample-tax operator the immediate follow-up.

@@ -2,7 +2,7 @@
 
 **Status:** normative source of truth
 
-**Ledger version:** 1.29.0
+**Ledger version:** 1.30.0
 **Last updated:** 2026-07-28
 
 ## Authority
@@ -95,6 +95,7 @@ absent from a public checkout.
 | V0-063 | 2026-07-27 | Preregistered sequential source stopping | FROZEN | Contract `1.27.0` freezes schema `1.0.0`, profile `g2048_preregistered_sequential_source_stopping_v0`, and status `CERTIFIED_REGISTERED_OFFLINE_INCLUSIVE_SAMPLE_TAX_REDUCTION`. The complete V0-062/V0-061 target, no-operator, cold-direct and wrong-prior authorities remain unchanged. Before evidence, three ordered target-disjoint source contexts, one 4096-draw block per frontier row/context, minimum two/maximum three contexts, guard radius `1/64`, all two-row candidates and unique-unanimous stopping are frozen. Checkpoint one identifies the same prefix but must continue; checkpoint two freezes `ROOT_TOWARD + CHAIN_A_AWAY`; the third source context is not enumerated. Source work is exactly six row enumerations/`24576` generative samples. Target-only planning remains six rows/`98304` draws with confidence `347/350`; the no-operator and cold-direct controls remain `147456` and `4866048`, and the wrong prefix still yields three failures, three tail fallbacks and zero false certificates. Independent replay regenerates all acquired source draws, the complete matched baseline and six exact J0 comparators. All 13 standard/fresh-ID focused tests and all 1,300 repository tests pass. | Licenses only the registered-family offline-plus-online observation `24576+98304=122880 < 147456`, a saving of `24576` or `1/6`, and source reduction `5/6` relative to V0-062. The source guard is proposal-only, not a confidence certificate. The diagnostic context crossing is two and is not official `N_break_even`. Broad sample efficiency/generalization, automatic coordinate/support discovery, official execution, scalar/economics and aggregate Gates remain false/null/`NOT_RUN`. The next construction Gate returns to observation-driven coordinate/support proposals over a larger held-out structural family. | `sequential_source_stopping_v1.py`; ordered source logs, assessments/checkpoints, stopped evidence/prior, restricted target evidence, unchanged controls, work/campaign/comparator/verifier artifacts; 13 focused tests including post-stop access, draw/checkpoint/chronology/identity/implementation attacks; `specs/SEQUENTIAL_SOURCE_STOPPING.md`. |
 | V0-064 | 2026-07-28 | Observation-driven relational coordinate/support synthesis | FROZEN | Contract `1.28.0` freezes schema `1.0.0`, profile `g2048_observation_driven_relational_support_v0`, and status `CERTIFIED_REGISTERED_OBSERVATION_DRIVEN_RELATIONAL_SUPPORT_FAMILY`. Before evidence it registers three complete H2 source structures, three structurally identity-disjoint held-out target structures, six target point occurrences, one depth-two relational grammar, and a complete optional-single coordinate search. From 144 anonymous source rows, with no query/target/kernel/group/frontier input to the producer, semantic closure is `7/19/56`; all 432 candidates are evaluated, 13 are admissible, and the selected coordinates are `cardinality_actions(legal_actions)` plus `cardinality_cells(adjacent_filter(survivor_cell,occupied_cells))`. They yield six anonymous supports and decisions `(1,2)->1`, `(1,4)->1`, `(2,2)->2`. Each target starts all-missing, authorizes eight root rows after the first failed proof and sixteen continuation rows after the second, then certifies two occurrence-bound queries from one immutable context model. The 24 rows are charged to context construction, not the first occurrence; both queries add zero rows after construction. Target probabilities come only from 16,384 replayable draws per row over registered symbolic outcome support. Exact-rational calibration gives radius `1/60`, 176 coordinate obligations, family tail `11/250`, and confidence `239/250`. A wrong proposal acquires 16 rows, fails risk with upper one, requires fallback, and emits no false certificate. Six occurrence-cold exact controls enumerate 108 rows and reproduce J0. | Licenses automatic coordinate selection and anonymous abstract-support proposal only inside the fixed human relational vocabulary, fixed 2x2 incidence graph, and registered rank-relative family, followed by target-only statistical certification and post-context-build query reuse. No D4 or named frontier enters construction. It does not license primitive invention, unknown outcome support, unseen graph geometry, cross-structural RAPM reuse, broad generalization, independent-algorithm verification, sample efficiency, official execution, scalar/break-even economics, or an aggregate Gate. | `relational_support_synthesis_v1.py`; source-completeness, full-search, generative-acquisition, typed evidence, occurrence-scope, fixed-concretizer, two-round recovery, wrong-proposal, exact-control, interval/identity/implementation and same-implementation replay tests; `specs/OBSERVATION_DRIVEN_RELATIONAL_SUPPORT.md`. |
 | V0-065 | 2026-07-28 | Observation-driven cross-geometry relational RAPM | FROZEN | Contract `1.29.0` freezes schema `1.0.0`, profile `observation_driven_cross_geometry_relational_rapm_v0`, and status `CERTIFIED_REGISTERED_CROSS_GEOMETRY_RELATIONAL_RAPM_FAMILY`. Three pairwise non-isomorphic source graphs (`P4`, `K1,3`, paw) contribute 120 complete H2 rows over 51 states. A kernel/target/query-free producer closes 262 syntactic programs to 42 semantic representatives, exhausts 25 integer state/action pairs, finds two admissible pairs, and selects `cardinality_actions(legal_actions)` plus `cardinality_cells(adjacent_filter(survivor_cell,occupied_cells))`; its honest source sound-alias width is `99/100`. The proposal contains only ASTs and an anonymous support-key schema, never source dynamics or decisions. Non-isomorphic held-out `C4`, diamond and `K4` instantiate target-local supports and independently acquire `16+32`, `20+40`, and `24+48` rows, respectively, at 65,536 replayable draws per row. Base target audits are `CERTIFIED/FAILED_RISK_OR_REGRET/CERTIFIED`; only the failed diamond proof may search the source-frozen optional registry, whose four candidates select `rank_degree_signature` plus survivor degree, after which all `3/3` target contexts certify and six occurrences reuse only their context-local models. | Licenses only bounded held-out non-isomorphic graph transfer of a source-observed relational coordinate/support schema, target-local statistical dynamics and replanning, and one certificate-triggered source-registry refinement. It does not license source/cross-target dynamics transfer, cross-structural RAPM reuse, target-time primitive/program invention, broad graph generalization, a second domain, unknown outcome support, independent-algorithm verification, sample efficiency, official execution, scalar/break-even economics, or an aggregate Gate. | `relational_graph_core_v1.py`; `cross_graph_relational_support_v1.py`; `cross_geometry_rapm_v1.py`; complete closure/search, two-round target evidence, local refinement, no-transfer, legacy, semantic/unregistered OOD, permutation, identity/transplant, cold-control, raw-draw and same-implementation replay tests; `specs/CROSS_GEOMETRY_RELATIONAL_RAPM.md`. |
+| V0-066 | 2026-07-28 | Variable-cardinality two-domain relational RAPM | FROZEN | Contract `1.30.0` freezes schema `1.0.0`, profile `variable_cardinality_two_domain_relational_rapm_v0`, and status `CONDITIONAL_TWO_DOMAIN_VARIABLE_CARDINALITY_RAPM_CLOSED`. One independently replayed 120-row anonymous graph source synthesizes a dynamics-free portable skeleton with exact programs `cardinality_actions(legal_actions)` and `cardinality_resources(linked_filter(action_anchor,active_resources))`. The graph consumer holds out vertex counts 5 and 6: W5 and K6 produce complete conditionally certified H2 contingent plans from 22 and 60 target-local rows, while K6-minus-edge exhausts nine fresh target candidates without a sound cover and invokes a charged 60-row exact fallback. A second-domain LMB consumer binds the same action AST through a query-neutral seven-row bridge and builds three separate two-support statistical models from 98,304 target draws, with zero operational exact ground rows. Source registry/dynamics and cross-target row imports are all zero; six wrong-arm transplants fail closed. A Boole union bound combines arm tails `287/250000` and `2/125` without a cross-arm-independence assumption, giving conditional confidence `245713/250000`. All 62 focused and 1,412 repository tests pass. | Licenses only this registered proof that one source-observed portable relational skeleton can be instantiated across vertex counts and in a second domain while target contexts, bindings, evidence, models and dynamics remain isolated. Automatic synthesis is confined to a human relational-role ontology and frozen grammar. Graph probabilities are conditional on the registered SplitMix64/IID simulator assumption; LMB probabilities are conditional on the registered SHA-256 random-oracle/IID assumption. LMB planning is domain-specific. Independent verification covers source synthesis only; target verification is same-implementation. It does not license primitive/ontology invention, generic model-selected planning, observational OOD generalization, changed-query reuse, sample efficiency, official execution, scalar/break-even economics or an aggregate Gate. | `portable_relational_skeleton_v1.py`; `portable_relational_independent_verifier_v1.py`; `variable_order_graph_rapm_v1.py`; `cross_domain_lmb_rapm_v1.py`; `variable_cardinality_multidomain_campaign_v1.py`; source-boundary, fresh target-closure, raw/rejection replay, full-policy, fallback, wrong-binding, no-transfer/OOD, permutation, identity/transplant, union-calibration and claim-lock tests; `specs/VARIABLE_CARDINALITY_TWO_DOMAIN_RELATIONAL_RAPM.md`. |
 
 For V0-051, the affected public interface expressly includes the content-addressed
 `IncrementalProofDAGProtocolV1` and its `protocol_id`, in addition to the node,
@@ -2415,6 +2416,128 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
 
+## V0-066 variable-cardinality two-domain relational RAPM rule
+
+Contract `1.30.0` freezes schema `1.0.0`, profile
+`variable_cardinality_two_domain_relational_rapm_v0`, and passing status
+`CONDITIONAL_TWO_DOMAIN_VARIABLE_CARDINALITY_RAPM_CLOSED`.
+
+The only portable construction input is one complete, anonymous 120-row
+four-vertex graph source log. A source-only constructor with no target, query,
+kernel, policy, dynamics, graph-name or domain input closes the frozen human
+depth-two relational grammar to 86 syntactic programs and 23
+source-semantic representatives. It evaluates all 10 integer state/action
+pairs and emits only these two ASTs and their anonymous support schema:
+
+```text
+state  = cardinality_actions(legal_actions)
+action = cardinality_resources(
+           linked_filter(action_anchor, active_resources)
+         )
+```
+
+The selected program IDs are
+`051e6331bd01c4df41a889d0cc248d7ad48c3cc0815a4b91d2597f36ceae2fa1`
+and
+`59ae6240e21b48097e94f3259e024aeb0341d21128bff5604c1c2ea3cf7e80e7`.
+The portable skeleton ID is
+`77a9666172fb5cebf30820b12075fef92e190f3ccda6cdf44e4c902c7dc73322`.
+Its separate verifier reconstructs source completeness, semantic closure,
+candidate selection and content identities without importing the producer or
+either target domain. This independence applies only to source synthesis.
+
+The graph target arm freezes source vertex count 4 and target counts 5 and 6.
+It receives the portable ASTs but no source registry, transition row,
+probability, reward or policy. Each target root row is selected from observed
+legal actions; exact local symbolic outcome support is registered, while
+probabilities are estimated from replayable target draws. Failed proof may
+generate a fresh target-local program closure from the target slice; no
+source-frozen refinement registry is available.
+
+The graph results are:
+
+```text
+W5                  22 rows   2,883,584 draws   conditional H2 certificate
+K6                  60 rows   7,864,320 draws   conditional H2 certificate
+K6 minus one edge   60 rows   7,864,320 draws   no sound cover; exact fallback
+```
+
+W5 evaluates 11 fresh target candidates and selects
+`active_attribute_degree_signature`; K6 needs no refinement. K6-minus-edge
+evaluates all nine registered target candidates, finds no sound cover, emits
+no false certificate and invokes an independently accounted 60-row exact
+fallback with failure `2277/16000` and normalized reward `3/64`. Positive
+certificates contain every reachable H2 abstract state-time assignment and a
+uniform concretizer over distinct inverse ground actions. The operational
+construction uses 142 local rows, 18,612,224 draws and zero complete target
+closure calls. Its family tail is `287/250000`, conditional on the registered
+SplitMix64-IID simulator semantics. W5 is strictly sparse relative to its cold
+closure; the K6 cones happen to equal their matched closures extensionally,
+so V0-066 makes no blanket strict-compression claim.
+
+The LMB target arm uses a query-neutral exact seven-row bridge in a separately
+registered human LMB ontology. It automatically selects the unique binding
+`same_type_buffer_tokens`, preserving the same two portable program IDs while
+giving every LMB context, binding, evidence row, model and dynamics object a
+domain-local identity. Each of three contexts performs two
+certificate-triggered acquisitions at 16,384 draws per support, for six
+supports and 98,304 operational draws. Operational exact ground-row count is
+zero. All three domain-specific symbolic H2 plans certify reward interval
+`[59/60,61/60]`, failure upper `119/3600`, and normalized-regret upper `1/60`.
+The 13 exact H2 rows belong only to standalone cold controls. The LMB family
+tail is `2/125`, conditional on its registered SHA-256
+random-oracle/IID-simulator assumption.
+
+Only source log, skeleton and exact program identities may be shared between
+arms. Graph and LMB context, binding, evidence, model and dynamics identity
+sets must be disjoint. Source-registry rows, source-dynamics rows and
+cross-target transition rows imported into either arm are exactly zero. Six
+executed wrong-arm campaign/evidence/model/source transplants fail closed.
+The union calibration uses Boole's inequality, requires no cross-arm
+independence, and freezes:
+
+```text
+graph tail             287/250000
+LMB tail               2/125
+union tail             4287/250000
+conditional confidence 245713/250000
+```
+
+Principal IDs are:
+
+```text
+independent source verification c1383c8d2a37bc44270347f4dcf4159a8415d97744b7217dd5c99735b896e4e0
+graph campaign                 8e839923dd2d965f6180fbff8abaebfbd6c5e9d6546cb60cb12666182bf7a77a
+graph verification             ad4a502c71eb1c3f3a55c1a1c468be06b529d2e1ba0cc62cbd149ba9dbae3bd1
+LMB campaign                   baa37d57d60fb67c513e5655734e98d211e82ef278c1c0347bed864cf8a9f1d6
+LMB verification               be94dbe27e83eadc72282cf4d45f035857d230c97441837fcdbba72e09be344e
+union calibration              de5441cbc0ed337aa1468eaf3717d90be2066c4b38d31a91f37e350d646cb83f
+combined campaign              f71c28b83cff8854c406da85a97408d62480548568e15ca488e75bbfaca93c20
+combined verification          f8e39e7822dc88477b246037eafd2ca6a2f48ff6c1e0af73580bb37c7affba41
+```
+
+The licensed claim is narrow: within these preregistered finite H2 families,
+one source-observed portable relational skeleton is instantiated across
+vertex counts and in a second domain, planning occurs in target-local partial
+statistical RAPMs, failed proof restores only local distinctions, and a
+no-cover case falls back exactly. The role ontology and grammar remain human
+supplied; LMB uses a domain-specific symbolic selector. Target verification is
+same-implementation, and the no-transfer/OOD controls cover registered
+identity, transplant and permutation attacks rather than observational OOD
+generalization. Repeated occurrences have identical query parameters and do
+not establish changed-query reuse. Primitive/ontology invention, generic
+model-selected planning, unconditional statistical validity and sample
+efficiency remain unclaimed.
+
+All 62 V0-066 focused tests pass in one fresh process. The 115-module
+parallel repository regression passes all 1,412 tests with no failed module.
+
+All official execution, scalar, break-even, workload-economics,
+counter-completeness and sample-efficiency locks remain false, null or
+`NOT_RUN`. The next Gate may use the now-observed acquisition costs to test a
+Laplace-style heuristic operator or KG-OP-style meta-prior against a matched
+no-operator route, but must not weaken target-local certification.
+
 ## V0-065 observation-driven cross-geometry relational RAPM rule
 
 Contract `1.29.0` freezes schema `1.0.0`, profile
@@ -4070,3 +4193,4 @@ sample_efficiency_gate_blocks_mainline = false
 - **2026-07-27 — 1.27.0:** Added V0-063/profile `g2048_preregistered_sequential_source_stopping_v0`. Ordered complete-context checkpoints stop the V0-062 source acquisition after two contexts and six 4,096-draw rows; checkpoint one is forbidden to stop, checkpoint two uniquely/unanimously freezes `ROOT_TOWARD + CHAIN_A_AWAY`, and the third source context remains unqueried. The proposal guard is explicitly nonauthoritative. The unchanged target route certifies all six occurrences from 98,304 target draws, while the no-operator and cold-direct controls remain 147,456 and 4,866,048. Source plus target is 122,880, yielding a registered-family offline-inclusive saving of 24,576 (`1/6`); the wrong prior still fails three times, invokes three fallbacks and emits zero false certificates. Independent replay covers all source draws, the complete V0-061 baseline and six exact J0 comparators. All 13 standard/fresh-ID focused tests and all 1,300 repository tests pass. Broad sample efficiency/generalization, automatic coordinate/support discovery, official execution, scalar/economics and aggregate Gates remain locked; the next construction Gate returns to observation-driven coordinate/support proposals over a larger held-out structural family.
 - **2026-07-28 — 1.28.0:** Added V0-064/profile `g2048_observation_driven_relational_support_v0`. A source-only bounded relational closure selects state/action coordinates and six anonymous support templates from 144 complete rows after evaluating all 432 candidates, without D4 or named frontier inputs. Three identity-disjoint target structures each execute an all-missing, `8+16` row, two-failed-proof partial/statistical construction and then certify two occurrence-bound queries from their context-local model. Target probabilities are draw-only over registered symbolic support; exact calibration gives simultaneous confidence `239/250`. Context-build versus occurrence work is explicitly separated. A wrong proposal fails closed; six cold exact controls reproduce J0. Typed evidence replay, fixed concretizer, occurrence scopes, horizon/simplex checks, kernel/implementation pins, and chain-splice attacks are mandatory. Verification is same-implementation semantic replay, not independent-algorithm evidence. All 17 focused and all 1,317 repository tests pass. Primitive invention, unknown support, unseen graph geometry, cross-structural reuse, broad generalization, sample efficiency, official execution and economics remain locked.
 - **2026-07-28 — 1.29.0:** Added V0-065/profile `observation_driven_cross_geometry_relational_rapm_v0`. Three non-isomorphic source graphs contribute 120 complete H2 rows/51 states to a target/query/kernel-free depth-two relational synthesis; 262 syntactic programs reduce to 42 semantic representatives, and complete 25-pair search selects legal-action count plus survivor occupied-neighbor count with honest alias width `99/100`. Held-out non-isomorphic `C4`, diamond and `K4` build separate target-only statistical RAPMs from `48/60/72` rows and 11,796,480 total raw draws. C4/K4 certify under the base schema; diamond's failed certificate searches four source-frozen refinement candidates and selects rank-degree signature plus survivor degree, after which all three contexts and six occurrences certify, with cold exact risk `99/5000`. Exact calibration covers 912 positive/OOD obligations at confidence `3011/3125`. No-transfer, one-of-three legacy, semantic/unregistered OOD, permutation, identity-isolation and cold-ground controls fail closed where required. Campaign/verification IDs are frozen; verification is same-implementation, not independent. All 33 focused tests and all 1,350 repository tests pass. Broad graph/second-domain generalization, primitive invention, unknown support, dynamics transfer, cross-structural reuse, sample efficiency, official execution and economics remain locked.
+- **2026-07-28 — 1.30.0:** Added V0-066/profile `variable_cardinality_two_domain_relational_rapm_v0`. An independently replayed source-only constructor selects a dynamics-free portable relational state/action skeleton from a complete 120-row anonymous log. The graph arm crosses from four to five/six vertices, conditionally certifies W5/K6 complete H2 plans from target-local observations, and sends a registered K6-minus-edge no-cover case to a charged exact fallback. The second-domain LMB arm binds the same program identities through a query-neutral bridge and certifies three separate two-support target models from 98,304 operational draws and zero operational exact rows. Target identities and dynamics remain disjoint; six wrong-arm transplants fail closed. Arm-wise conditional tails combine by Boole's inequality to confidence `245713/250000` without assuming cross-arm independence. Independent verification is source-only, LMB planning is domain-specific, and ontology invention, generic planning, observational OOD, changed-query reuse, sample efficiency, official execution and economics remain locked. All 62 focused and 1,412 repository tests pass.
