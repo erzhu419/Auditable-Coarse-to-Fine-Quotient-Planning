@@ -28,7 +28,61 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 → jointly search local value/risk choices, rebuild, or use charged fallback
 ```
 
-## Current observation-driven relational support Gate (V0-064)
+## Current cross-geometry relational RAPM Gate (V0-065)
+
+Contract `1.29.0` freezes profile
+`observation_driven_cross_geometry_relational_rapm_v0`.
+
+A complete 120-row H2 source log spans three pairwise non-isomorphic
+four-vertex graphs: P4, star, and paw. Source-only bounded program closure
+selects the legal-action-count state coordinate and occupied-neighbor-count
+survivor coordinate. The proposal contains neither dynamics nor a policy.
+The held-out target split contains three further non-isomorphic graphs:
+C4, diamond, and K4; no source graph is isomorphic to a target graph.
+
+Every target starts with an all-missing RAPM, acquires only failed-proof
+authorized root and continuation rows, estimates probabilities only from
+replayable target draws, and replans locally. The three context builds use
+`48/60/72 = 180` target rows and `11,796,480` draws. C4 certifies under the
+base coordinates. K4 builds its own statistical row for the
+`legal-action-count=6` support key; that key already occurs among the source
+base supports, but target action availability requires replanning to action
+coordinate 2 rather than reuse of a fixed source schedule. Diamond first
+fails closed under the base profile,
+then a proof-triggered search over the source-frozen registry adds the
+smallest certifying state/action distinction and constructs genuinely new
+vector-valued support keys; no target program or primitive is invented. All
+six occurrence-bound audits certify at
+simultaneous confidence `3011/3125`, and occurrence-cold exact controls give
+risk `99/5000`.
+
+No-transfer routes use exact ground fallback without an abstract certificate.
+A hidden-mechanism semantic OOD fixture and an unregistered topology both
+fail closed, cross-structural evidence transplants are rejected, and a vertex
+permutation preserves the relational support and mapped certificate. The
+frozen campaign and same-implementation verification IDs are:
+
+```text
+campaign     2399c56dd7378429cc08dabb52d7bb76c61bc26f7541dccb535badfe193a7d7a
+verification ea29a7e0c885166c1b321df24a53edc37975fe680f9bc97f4fa38288830ea329
+```
+
+This licenses observation-driven relational-schema transfer, target-local
+statistical RAPM construction/replanning, and one certificate-triggered
+coordinate recovery only inside the registered finite four-vertex
+graph-merge family. It does not license broad graph generalization, a second
+domain, raw perception, primitive invention, unknown outcome support,
+cross-structural RAPM reuse, independent-algorithm verification, sample
+efficiency, official execution, or scalar economics. All 33 V0-065 focused
+tests and all 1,350 repository tests pass. The full contract is in
+`specs/CROSS_GEOMETRY_RELATIONAL_RAPM.md`.
+
+The next construction Gate must vary vertex count or use a second domain
+while retaining observation-driven source/target separation and target-local
+certification. Sample-tax operators remain deliberately downstream of that
+larger acquisition trace.
+
+## Observation-driven relational support Gate (V0-064)
 
 Contract `1.28.0` freezes profile
 `g2048_observation_driven_relational_support_v0`.
@@ -155,7 +209,7 @@ scalar/break-even economics, and broad generalization remain later Gates.
 The full V0-061 contract is in
 `specs/MATCHED_END_TO_END_ACQUISITION_WORKLOAD.md`.
 
-The current repository Gate contains 1,300 tests in 106 modules. For fast
+The current repository Gate contains 1,350 tests in 110 modules. For fast
 development, `scripts/run_pytest_parallel.py` runs modules concurrently and
 memoizes only repeated content-ID reads on the identical frozen object;
 mutation-attack modules automatically use fresh IDs. The formal release path

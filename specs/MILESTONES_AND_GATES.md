@@ -134,6 +134,16 @@
   host-verified. This proves only the registered H2 composition, not generic
   persistence, cross-query/H>2 behavior, native work or sample savings,
   independent-algorithm verification, economics, or an aggregate Gate.
+- **V0-065 observation-driven cross-geometry relational RAPM:** complete H2
+  observations from the non-isomorphic P4/star/paw source split automatically
+  select a relational coordinate schema without transporting source dynamics
+  or a source policy. Held-out C4/diamond/K4 targets perform 180 rows and
+  11,796,480 target-local draws, instantiate target-local supports, replan, and
+  certify six occurrences at confidence `3011/3125`. Diamond alone performs
+  proof-triggered recovery from the source-frozen optional registry. Explicit
+  no-transfer, semantic/unregistered OOD, identity-isolation, legacy-plan,
+  permutation and cold-ground controls pass. Broad graph/second-domain
+  generalization and sample efficiency remain open.
 - **V0-064 observation-driven relational coordinate/support synthesis:** a
   complete anonymous source log drives bounded relational program closure and
   exhaustive coordinate selection without D4 or named frontier inputs. Three
@@ -1477,6 +1487,111 @@ COUNTER_COMPLETENESS_GATE_NOT_RUN
 SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
+
+### V0-065 observation-driven cross-geometry relational RAPM gate
+
+Contract `1.29.0` registers schema `1.0.0` and profile
+`observation_driven_cross_geometry_relational_rapm_v0`.
+
+The Gate passes only when:
+
+1. the complete P4/star/paw source split, C4/diamond/K4 held-out target
+   split, H2 query class, `delta=1/20`, rank-relative spawn law, relational
+   grammar, statistical calibration, six target occurrences, controls and
+   implementation authorities are preregistered before observations;
+2. exact enumeration of all 24 vertex bijections proves every source graph
+   non-isomorphic to every target graph, source/target structural IDs are
+   disjoint, and transition/motif/catalogue code contains no graph-identity
+   behavior branch;
+3. the source artifact contains exactly `36/36/48 = 120` rows and proves
+   every edge-plus-third-anchor root, every legal action and every active H2
+   successor row;
+4. the sole public constructor consumes only that anonymous source log,
+   closes 262 syntactic programs to `6/12/24` semantic representatives,
+   evaluates all 25 integer state/action-coordinate pairs, and records
+   exactly two admissible candidates;
+5. construction selects
+   `cardinality_actions(legal_actions)` and
+   `cardinality_cells(adjacent_filter(survivor_cell,occupied_cells))`,
+   while the transported proposal contains no source dynamics, policy,
+   decision, target identity or query identity;
+6. C4, diamond and K4 each begin with an all-missing target-local RAPM; the
+   first failed proof authorizes respectively `16/20/24` root rows and the
+   second authorizes `32/40/48` continuation rows, for context-build totals
+   `48/60/72 = 180`;
+7. each positive target row stores 65,536 replayable draws, giving
+   11,796,480 target-local draws; source rows and probabilities never narrow
+   target intervals and exact target probabilities are not used;
+8. calibration freezes radius `1/110`, exponent `65536/6050`, a
+   per-atom tail upper `1/25000`, and 912 preregistered positive-plus-OOD
+   atom obligations, proving family tail `114/3125` and simultaneous
+   confidence `3011/3125`;
+9. every evidence artifact is semantically replayed against its current
+   failed proof, authorization, target structure, catalogue, seed,
+   registered symbolic support and raw draws before a model epoch accepts
+   it;
+10. target planning instantiates topology-independent support keys and
+    dynamics from target catalogues and computes a new deterministic policy
+    solely in the target-local statistical RAPM; source-base-unseen support
+    keys arise only from diamond's later vector-coordinate refinement;
+11. C4 certifies directly under the transported base coordinates;
+12. K4 builds a target-local statistical row for the
+    `legal-action-count=6, action-coordinate=2` base support key already
+    present among the source base support keys, while changed action
+    availability forces target-local replanning to action coordinate 2 rather
+    than transport of a fixed source schedule;
+13. diamond first fails closed with failure upper above `1/2`, then searches
+    exactly four source-frozen refinement candidates, adds
+    `rank_degree_signature` and survivor graph degree to a new immutable
+    profile/model epoch, and certifies below `1/20` with zero
+    normalized-regret upper; target program and primitive generation remain
+    zero;
+14. all three context audits and all six occurrence-bound audits certify,
+    both occurrences per context add zero rows after context build, and only
+    the context-local model/profile is reused;
+15. all six occurrence-cold exact ground controls perform no model reuse and
+    reproduce failure probability `99/5000`;
+16. the legacy fixed schedule certifies only C4, rejects diamond and K4,
+    and emits no false certificate, while all three no-transfer controls
+    invoke identity-matched exact ground fallback without using target rows
+    to invent an abstraction;
+17. the hidden-mechanism semantic OOD path charges 48 rows and 3,145,728
+    draws but produces no model or abstract certificate, an unregistered
+    topology is rejected before ground access, cross-structural/stale
+    transplants fail, and permutation `(2,0,3,1)` preserves the relational
+    support multiset and mapped certificate; and
+18. same-implementation semantic replay reconstructs six model epochs, six
+    occurrence audits, six evidence attestations, six cold controls and all
+    registered controls, freezing:
+
+```text
+campaign     2399c56dd7378429cc08dabb52d7bb76c61bc26f7541dccb535badfe193a7d7a
+verification ea29a7e0c885166c1b321df24a53edc37975fe680f9bc97f4fa38288830ea329
+```
+
+19. all 33 V0-065 focused tests and all 1,350 repository tests pass in a
+    stable source/spec snapshot.
+
+Passing licenses only observation-driven relational-schema transfer across
+the registered non-isomorphic four-vertex graph family, target-local
+statistical RAPM construction/replanning, and the registered
+certificate-triggered diamond coordinate recovery. It does not license broad
+graph generalization, varying vertex count, a second domain, raw
+symbolization, primitive invention, unknown outcome support, source or
+cross-target dynamics transfer, cross-structural RAPM reuse,
+independent-algorithm verification, sample efficiency, official execution,
+scalar economics, break-even, or an aggregate Gate.
+
+Complete semantics and principal IDs are normative in
+`specs/CROSS_GEOMETRY_RELATIONAL_RAPM.md`.
+
+The next construction Gate must transfer an observation-driven relational
+schema across multiple vertex counts or into a second domain while retaining
+target-local dynamics, replanning, proof-triggered recovery, no-transfer and
+OOD controls. A Laplace-style heuristic or KG-OP-style meta-prior remains a
+subsequent sample-tax intervention to be designed from that larger
+acquisition trace rather than a prerequisite for completing the construction
+path.
 
 ### V0-064 observation-driven relational coordinate/support gate
 
@@ -3304,9 +3419,20 @@ builds. Its 2x2 graph, human primitive/operator vocabulary, registered
 symbolic outcome support, and same-implementation verifier remain explicit
 limits.
 
-The next construction Gate must preregister multiple graph geometries or a
-second domain, repeat source-only synthesis and certificate-triggered
-partial/statistical recovery, and include no-transfer/OOD controls. Portable
-source authenticity, raw symbolization, primitive/operator invention,
-unknown support, cross-structural model reuse, independent-algorithm
-verification, broad generalization and complete economics remain open.
+V0-065 closes that immediate geometry Gate on one preregistered four-vertex
+graph-merge family. P4/star/paw source observations yield a dynamics-free
+relational schema; C4/diamond/K4 each build target-local statistical RAPMs
+and replan. Diamond recovers one missing distinction only after the base
+certificate fails, using programs frozen on the source side. No-transfer,
+semantic/unregistered OOD, identity-isolation and permutation controls prevent
+this bounded result from being read as dynamics transfer or graph-name
+memorization.
+
+The next construction Gate must vary vertex count or enter a second domain
+while retaining observation-driven source/target separation, target-local
+dynamics, replanning and proof-triggered recovery. Portable source
+authenticity, raw symbolization, primitive/operator invention, unknown
+support, cross-structural model reuse, independent-algorithm verification,
+broad generalization and complete economics remain open. Sample-tax
+operators remain downstream until that larger acquisition trace identifies
+the actual bottleneck.

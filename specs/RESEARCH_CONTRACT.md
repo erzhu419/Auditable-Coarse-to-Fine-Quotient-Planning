@@ -1,5 +1,9 @@
 # Research Contract
 
+**Current construction contract:** `1.29.0`
+
+**Current construction profile:** `observation_driven_cross_geometry_relational_rapm_v0`
+
 ## Definitions
 
 - **V0:** the exact, symbolic, finite-horizon project boundary.
@@ -129,6 +133,19 @@
   semantic switch only for the registered H2 fixture; it is not generic
   persistence, cross-query/H>2 proof, native-work/sample saving, independent
   verification, economics, or an aggregate Gate.
+- **V0-065 observation-driven cross-geometry relational RAPM slice:** three
+  non-isomorphic source graphs drive complete bounded relational coordinate
+  synthesis before three non-isomorphic held-out target graphs instantiate
+  their own support catalogues and learn separate statistical dynamics. `C4`
+  and `K4` certify with the source-selected base coordinates; diamond first
+  fails and may select only `rank_degree_signature` plus survivor degree from
+  the source-frozen optional registry. Six occurrences then plan and certify
+  in their context-local RAPMs. This is bounded registered-family
+  cross-geometry coordinate-schema transfer with target-local dynamics,
+  replanning and certificate-triggered refinement, not broad graph
+  generalization, a second-domain result, primitive invention, dynamics
+  transfer, sample efficiency, independent-algorithm verification or an
+  aggregate Gate.
 - **V0-064 observation-driven relational coordinate/support synthesis:** three
   complete source structures and three identity-disjoint target structures are
   frozen before evidence. A source-only depth-two relational closure automatically
@@ -251,6 +268,98 @@
 ## Normative decisions
 
 V0 covers finite reachable state spaces, finite state-dependent primitive action sets, exact enumerable transition kernels, bounded additive registered rewards, one-time failure cost, full observability, and `H<=Hmax`. The primary research object is a coverage-bounded auditable RAPM compiled once for repeated multi-step contingent planning; the quotient tree, predicates, and CEGAR construct or repair it, while a policy graph remains a query result. Ground distinctions are recovered only after the independent certificate for the current plan fails.
+
+### Contract 1.29.0: observation-driven cross-geometry relational RAPM (current slice)
+
+Contract `1.29.0`, schema `1.0.0`, profile
+`observation_driven_cross_geometry_relational_rapm_v0` and status
+`CERTIFIED_REGISTERED_CROSS_GEOMETRY_RELATIONAL_RAPM_FAMILY` freeze the
+current construction slice. Source graphs `P4`, `K1,3` and paw and held-out
+targets `C4`, diamond `K4-e` and `K4` are preregistered before observations,
+programs, supports, target draws, models or plans. The two sets are disjoint
+both by structural identity and graph isomorphism. All targets use H2,
+`delta=1/20`, registered symbolic outcome support and two preregistered
+occurrences.
+
+The source producer accepts only 120 complete anonymous H2 rows over 51 states.
+It cannot receive a kernel, target, query, value, plan, group or graph-name
+feature. Complete depth-two construction contains 262 syntactic programs, 42
+semantic representatives and 25 integer state/action candidates, of which two
+are admissible. The deterministic source-only score selects:
+
+```text
+cardinality_actions(legal_actions)
+cardinality_cells(adjacent_filter(survivor_cell,occupied_cells))
+```
+
+The corresponding compression is `51 states / 120 rows -> 4 abstract state
+keys / 7 support keys`; its maximum source sound-alias width is `99/100`.
+Consequently V0-065 is an approximate sound-envelope construction slice, not
+an exact homomorphism claim. The source proposal carries only coordinate ASTs,
+source/registry provenance and a generic anonymous support-key schema. Source
+transition rows, probabilities, rewards, policies and decisions are absent.
+
+Each held-out target independently instantiates its support catalogue and
+starts with an all-missing statistical RAPM. Only current model-only failed
+proofs may authorize its two acquisition rounds. Root/continuation counts are
+`16+32` for C4, `20+40` for diamond and `24+48` for K4: 180 positive rows and
+11,796,480 replayable target draws at 65,536 draws per row. Source or
+other-target dynamics cannot narrow these intervals. Each final target model
+has its own structural/context/model identity, and both registered
+occurrences subsequently add zero ground rows.
+
+The base profile certifies C4 and K4 and returns
+`FAILED_RISK_OR_REGRET` for diamond. That failure alone permits exhaustive
+search of four coordinate combinations already frozen in the source
+registry. No target primitive or program is generated. The selected
+refinement adds state `rank_degree_signature` and action
+`cardinality_cells(adjacent_filter(survivor_cell,all_cells))`; the latter is
+survivor degree. A new immutable diamond epoch then replans and certifies.
+Final normalized-regret uppers are zero and failure uppers are:
+
+```text
+C4       230656215/5905580032
+diamond  516701257/10737418240
+K4       839745981/21474836480
+```
+
+All are below `1/20`. Six occurrence-cold exact ground comparators perform no
+model reuse and reproduce failure `99/5000`.
+
+Calibration is preregistered over successful and failed positive/OOD paths,
+not selected after observing the route. Radius is `1/110`; 912 atom
+obligations at per-atom tail `1/25000` give family tail `114/3125` and
+confidence lower `3011/3125`. Target interval centers come only from raw
+target draws. Exact probabilities and ground comparators are evaluation-only.
+
+The no-transfer arms must use direct fallback and emit no abstract
+certificate. The V0-064 legacy schedule may certify only one of three target
+contexts and must reject the other two without a false certificate. The
+hidden-colour semantic-OOD control must reject its altered mechanism after 48
+rows/3,145,728 draws, forbid model construction and require fallback; an unregistered graph
+must be rejected before ground access. Vertex permutation must preserve the
+ASTs, support multiset and mapped certificate without a graph-identity
+feature. Source, stale-epoch and cross-target evidence, authorization, model
+or interval transplants must fail closed.
+
+Campaign ID
+`2399c56dd7378429cc08dabb52d7bb76c61bc26f7541dccb535badfe193a7d7a`
+and same-implementation verification ID
+`ea29a7e0c885166c1b321df24a53edc37975fe680f9bc97f4fa38288830ea329`
+are frozen. Verification replays raw draws, proposal selection, model epochs,
+six occurrence audits, controls and cold comparators, but is not an
+independent algorithm. All 33 V0-065 focused tests and all 1,350 repository
+tests pass on a stable source/spec snapshot.
+
+This licenses only bounded transfer of one source-observed relational
+coordinate/support schema across this registered non-isomorphic graph family,
+target-local statistical RAPM construction/replanning and one
+certificate-triggered source-registry refinement. It does not license broad
+graph generalization, second-domain transfer, primitive invention, raw
+perception, unknown outcome support, source/cross-target dynamics transfer,
+cross-structural RAPM reuse, sample efficiency, independent-algorithm
+verification, official execution, scalar cost or break-even. Workload
+economics, counter completeness and sample efficiency remain `NOT_RUN`.
 
 A RAPM may be queried with a different horizon, registered reward coefficients, and
 `delta in {0,0.05,0.10}` while its structural and coverage identities remain valid;
@@ -3686,16 +3795,36 @@ evaluation-only J0 costs remain separate.
   unresolved nonauthorizing frontier. A bare model/build/table/proposal is rejected.
 - Historical manual V0-042--V0-044 focused tests preserve their existing results and
   IDs. Typed V0-045/V0-044/V0-043 content-ID goldens are frozen in their focused tests.
+- V0-065 source/target graph-isomorphism sets are disjoint. Its source producer has
+  exactly one anonymous-log input, closes all 262 depth-two syntactic programs,
+  retains 42 semantic representatives, evaluates all 25 integer pairs and reproduces
+  the frozen base ASTs, `51/120 -> 4/7` compression and `99/100` alias width.
+- V0-065 C4/diamond/K4 target chains acquire exactly `16+32`, `20+40` and `24+48`
+  target-only rows. Base audits are pass/fail/pass; diamond evaluates all four
+  source-registry refinements, generates no target program/primitive, selects
+  rank-degree signature plus survivor degree, and all three final audits reproduce
+  the frozen sub-`1/20` bounds with zero regret upper.
+- V0-065 calibration binds all 912 positive/semantic-OOD obligations before draws and
+  reproduces confidence `3011/3125`. Every one of 11,796,480 positive target draws is
+  replayable, while exact ground controls remain evaluation-only and reproduce six
+  `99/5000` risks.
+- V0-065 no-transfer, legacy-one-of-three, semantic/unregistered OOD, permutation,
+  stale/cross-structural identity, pre-authorization and draw-tamper controls fail
+  closed. Same-implementation replay must reproduce campaign
+  `2399c56dd7378429cc08dabb52d7bb76c61bc26f7541dccb535badfe193a7d7a`
+  and verification
+  `ea29a7e0c885166c1b321df24a53edc37975fe680f9bc97f4fa38288830ea329`
+  without asserting independent-algorithm verification.
 
 ## Out of scope
 
 Neural latent encoders, raw/perceptual symbolization, learned structural
 supports or unknown-domain world models, MCTS, first-hit options, SMDP
 duration, POMDP/belief adapters, visual perception, infinite horizon and
-cross-domain meta-controllers remain out of scope. V0-059 and V0-060 contain
-the only registered finite high-probability probability-row exceptions; they
-may not be generalized into automatic structure discovery, exact-sound
-evidence or an official Phase 3/5 pass. A supplied `D4` group is
+cross-domain meta-controllers remain out of scope. V0-059, V0-060, V0-064
+and V0-065 are registered finite high-probability probability-row
+exceptions; they may not be generalized into automatic unknown-support
+discovery, exact-sound evidence or an official Phase 3/5 pass. A supplied `D4` group is
 never automatic abstraction discovery, Phase 3A exact cross-orbit aggregation
 is not oracle-free quotient discovery, Phase 3B exact one-step synthesis is
 not predicate invention/local hybrid planning, V0-038 target-supervised
@@ -3759,6 +3888,15 @@ planning, sample efficiency, or a sample-tax operator. Its three contexts
 change only a preregistered spawn law on the same known-D4 scaffold. The
 all-six-row arm is a statistical control, and all 442,368 draws remain
 charged even though the adaptive arm uses fewer of them.
+
+V0-065 cannot be cited as broad graph generalization, topology discovery,
+second-domain transfer, primitive invention, unknown-support learning,
+source/cross-target dynamics transfer, cross-structural RAPM reuse or
+sample-efficiency evidence. Its six graph geometries, symbolic support, grammar,
+optional refinement registry and controls are preregistered. Diamond's target-time
+repair selects from four source-frozen combinations only; it generates no target
+program or primitive. Same-implementation semantic replay is not independent
+algorithm verification.
 
 ## Known failure modes
 
@@ -3870,11 +4008,14 @@ D4 canonicalizer, handwritten relative-survivor labels, and named
 anonymous supports from source observations, then builds three target-only
 partial/statistical context models through failed-proof-directed acquisition.
 
-The remaining structural risk is now explicit: V0-064 still fixes the 2x2
-incidence graph, low-level primitive/operator vocabulary, and symbolic
-outcome support. Its target split varies rank-relative dynamics rather than
-graph geometry, and its verifier is same-implementation replay. The next
-construction Gate must cover multiple preregistered graph geometries or a
-second domain with no-transfer/OOD controls. Sample-tax interventions should
-be designed only after those acquisition traces identify the actual
-bottleneck.
+V0-065 closes the immediate fixed-geometry gap with three source and three
+held-out non-isomorphic graph topologies, target-local dynamics/replanning,
+no-transfer/OOD/permutation controls, and one failed-proof-triggered
+source-registry refinement. The remaining structural risk is narrower but
+material: every graph has four vertices, uses the same graph-merge domain,
+human relational vocabulary and registered symbolic outcome support, and the
+verifier remains same-implementation replay. The next construction Gate must
+extend the schema to a larger graph/longer-horizon family or a genuinely
+second domain without importing domain IDs, target dynamics or hand-written
+policies into construction. Broad sample-tax interventions should be designed
+only after those acquisition traces identify the actual bottleneck.
