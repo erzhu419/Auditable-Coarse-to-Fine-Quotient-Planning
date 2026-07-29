@@ -251,6 +251,8 @@ def _evaluation_values(
 
 def _check_certificate(
     *,
+    authority_chain: consumer.RegisteredCampaignAuthorityChainV1,
+    context: prereg.HeldoutPublicGraphContextV2,
     anchor_id: str,
     plan: consumer.RegisteredOccurrenceExecutionPlanV1,
     operational_artifact_id: str,
@@ -307,6 +309,35 @@ def _check_certificate(
         or evaluation.operational_work_included is not False
     ):
         _fail("certified terminal/policy/exact evaluation was transplanted")
+    try:
+        recomputed = evaluator.evaluate_registered_independent_exact_ground_v2(
+            anchor=authority_chain.remote_main_anchor,
+            context=context,
+            operational_terminal=terminal_artifact,
+            selected_policy=policy,
+        )
+        recomputed_document = canonical_json_bytes(
+            recomputed.to_document()
+        )
+        claimed_document = canonical_json_bytes(evaluation.to_document())
+    except (
+        AttributeError,
+        KeyError,
+        TypeError,
+        ValueError,
+        RuntimeError,
+    ) as error:
+        raise IndependentRegisteredCampaignReconciliationFailure(
+            "certified exact evaluation could not be independently rebuilt"
+        ) from error
+    if (
+        recomputed.result_id != evaluation.result_id
+        or recomputed_document != claimed_document
+    ):
+        _fail(
+            "certified exact rows, atoms, branch partition, metrics, or "
+            "result identity differ from independent replay"
+        )
 
 
 ADAPTIVE_TERMINAL_CODES = {
@@ -452,6 +483,7 @@ def _replay_occurrence(
         operational_work_id = execution.work.work_id
         operational_artifact_id = execution.result_id
         route_result_id = route.verified_result_id
+        terminal_occurrence_plan = plan
         model_epoch_id = final_epoch.epoch_id
         planner_model_id = (
             final_epoch.model_pair.quotient_planner_model.model_id
@@ -506,6 +538,7 @@ def _replay_occurrence(
         operational_work_id = final_checkpoint.work.work_id
         operational_artifact_id = route.result_id
         route_result_id = route.result_id
+        terminal_occurrence_plan = canonical_direct_plan
         model_epoch_id = final_checkpoint.checkpoint_id
         planner_model_id = final_checkpoint.direct_snapshot.planner_model.model_id
     if terminal_code not in prereg.TERMINAL_CODES:
@@ -527,12 +560,45 @@ def _replay_occurrence(
     ):
         _fail("occurrence terminal or model identity differs")
     if certified:
+        try:
+            recomputed_authority = (
+                terminal.derive_registered_operational_terminal_authority_v1(
+                    authority_chain=authority_chain,
+                    anchor=authority_chain.remote_main_anchor,
+                    occurrence_plan=terminal_occurrence_plan,
+                    context=context,
+                    verified_runtime_result=route,
+                )
+            )
+            recomputed_authority_document = canonical_json_bytes(
+                recomputed_authority.to_document()
+            )
+            claimed_authority_document = canonical_json_bytes(
+                claimed.operational_terminal_authority.to_document()
+            )
+        except (AttributeError, KeyError, TypeError, ValueError, RuntimeError) as error:
+            raise IndependentRegisteredCampaignReconciliationFailure(
+                "certified operational terminal authority could not be "
+                "independently rebuilt"
+            ) from error
+        if (
+            recomputed_authority.authority_result_id
+            != claimed.operational_terminal_authority.authority_result_id
+            or recomputed_authority_document
+            != claimed_authority_document
+        ):
+            _fail(
+                "certified operational terminal authority or modeled support "
+                "differs from independent replay"
+            )
         _check_certificate(
+            authority_chain=authority_chain,
+            context=context,
             anchor_id=anchor_id,
             plan=plan,
             operational_artifact_id=operational_artifact_id,
             runtime_verification_id=runtime_verification_id,
-            authority=claimed.operational_terminal_authority,
+            authority=recomputed_authority,
             evaluation=claimed.exact_evaluation,
         )
         if (

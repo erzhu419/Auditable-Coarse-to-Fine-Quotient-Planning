@@ -1,7 +1,7 @@
 # Transfer-Guided Adaptive Observation Acquisition
 
-Status: **FIRST ANCHORED ATTEMPT CLOSED AS PROTOCOL FAILURE; ONE CLEAN
-REPAIR/RE-ANCHOR PENDING**. No scientific endpoint is available.
+Status: **HISTORICAL V0-072 AUTHORITY EXHAUSTED AFTER TWO IMMUTABLE
+PROTOCOL FAILURES; GATE NOT RUN**. No scientific endpoint is available.
 
 Proposed contract: `1.36.0`
 
@@ -12,7 +12,45 @@ Profile: `transfer_guided_adaptive_observation_acquisition_v1`
 Confirmatory family generation:
 `v072_anchor_clean_confirmatory_family_generation_1`
 
-## Anchored-attempt-1 correction
+## Anchored authority exhaustion
+
+The replacement authority was consumed by attempt ordinal 2. That attempt
+closed immutably as
+`ATTEMPT_CLOSURE_NONCERTIFICATE.PROTOCOL_FAILURE` after completing 4 of 15
+registered logical occurrences. It produced no canonical campaign result,
+terminal certificate, sample endpoint, or retry authority. Its canonical
+record is `specs/V072_ANCHORED_ATTEMPT_2_FAILURE.json`, with record ID
+`cfcc4173e05f7e1ae0354849c40ae72aef5b80ca1dbd747de185e5e1dabdb64e`.
+The failed chain cannot be resumed, retried, or used as a source of scientific
+endpoints.
+
+The failure exposed an incomplete fixed-concretizer lift: exact child states
+outside the frozen modeled support were treated as an evaluator exception
+instead of the already intended conservative policy-abort outcome. Repairing
+the implementation does not rewrite this historical attempt or reopen its
+authority.
+
+V0-074 is therefore a nonauthorizing construction profile. It freezes three
+repair requirements:
+
+1. a total partial-support lift in which every exact realization absent from
+   the frozen modeled support enters an absorbing policy-abort failure state,
+   with zero continuation reward and explicit environment-versus-abort
+   failure accounting;
+2. a content-addressed pre-target source archive whose bytes and offline work
+   are frozen before any held-out target access; and
+3. occurrence-level isolated execution with deterministic canonical merging,
+   such that sequential and parallel schedules produce byte-identical
+   scientific artifacts and retain all launched work on failure.
+
+These changes are mechanics only. The checked-in archive/parallel worker
+registry is a synthetic transport control, not a production V0-072 proposal
+consumer or campaign executor; operational-envelope containment remains
+`NOT_RUN`. Any new scientific validation requires a separate preregistration,
+manifest and anchor plus fresh target identities/tapes and genuinely fresh
+held-out occurrences.
+
+### Historical anchored-attempt-1 correction
 
 The first chain was anchored at remote-main commit
 `b711cc52001419cfb0962e2a94af91cc03c5ffc2`. Its authority-only replay
@@ -23,14 +61,17 @@ result, terminal certificate or endpoint was written. The canonical record is
 `specs/V072_ANCHORED_ATTEMPT_1_FAILURE.json`, with record ID
 `ca9159f19534f73291206b5a86d792f5a2336458afe521c46ed77171bfeda74f`.
 
-Ledger amendment 1.34.7 authorizes one replacement attempt limited to
+Ledger amendment 1.34.7 authorized one replacement attempt limited to
 exhaustive enum handling and durable attempt journaling. All scientific
 parameters remain byte-identical. The old tape/evidence is non-reusable; the
-replacement must use a new recipe/manifest/preregistration/anchor chain and
-restart all 15 occurrences. The sample-efficiency Gate remains `NOT_RUN`.
+replacement was required to use a new
+recipe/manifest/preregistration/anchor chain and restart all 15 occurrences.
+That authority was consumed by attempt 2 and is now exhausted. The
+sample-efficiency Gate remains `NOT_RUN`.
 
-The replacement journal is the unique attempt-ordinal-2 slot for that new
-authority chain and execution plan. It binds predecessor failure record
+Historically, the replacement journal was the unique attempt-ordinal-2 slot
+for that new authority chain and execution plan. It binds predecessor failure
+record
 `ca9159f19534f73291206b5a86d792f5a2336458afe521c46ed77171bfeda74f`
 and the fixed output transport
 `artifacts/v072_registered_campaign_result_v1.json`. It contains no random
@@ -72,17 +113,19 @@ authority. It would not establish the complete reusable hidden-world-model
 objective, arbitrary-horizon learning, raw symbolization, broad domain
 transfer, exact IID execution, or total-work economics.
 
-The first possible confirmatory anchor is the first `origin/main` commit that
-contains both:
+### Historical anchor rule and current lock
+
+For each of the two historical V0-072 chains, the first possible confirmatory
+anchor was the first `origin/main` commit that contained both:
 
 1. a finalized, non-null confirmatory execution manifest; and
 2. the final preregistration ID that content-binds that manifest,
 
-and whose parent does not contain that final preregistration ID. The anchor
-commit is verified after it exists; it is not an input to either of those
-content IDs. This avoids a circular hash dependency. The current null-manifest
-draft preregistration ID is deliberately nonauthorizing and will change when
-the execution manifest is frozen.
+and whose parent did not contain that final preregistration ID. The anchor
+commit was verified after it existed; it was not an input to either of those
+content IDs. This avoided a circular hash dependency. The historical
+null-manifest draft preregistration remained nonauthorizing and changed when
+each execution manifest was frozen.
 
 The semantic anchor verifier must recompute the configured repository URL,
 remote `origin`, branch/ref `main`, remote-head containment, commit ancestry,
@@ -93,8 +136,12 @@ of randomness. A later change to any bound implementation or profile digest
 requires a new Gate and preregistration rather than a rerun under the old
 anchor.
 
-Until that anchor has been semantically verified, every registered target
-observer must fail closed and the following values remain frozen:
+Both historical anchors were semantically verified, but both downstream
+attempts failed and the V0-072 authority is exhausted. Any future scientific
+validation therefore requires a separate fresh preregistration, manifest,
+anchor, target identities/tapes and genuinely fresh held-out occurrences.
+Until such a separately authorized campaign completes, the following values
+remain frozen:
 
 ```text
 official_execution_allowed = false
@@ -401,7 +448,8 @@ proof identities.
 ## Preregistered held-out structural family
 
 The following records the pre-anchor lock that protected the registered
-family before attempt 1. It remains normative provenance for the replacement:
+family before attempt 1. It remains historical provenance for both exhausted
+attempts and grants no V0-074 target authority:
 
 ```text
 registered_target_tapes_opened       = false

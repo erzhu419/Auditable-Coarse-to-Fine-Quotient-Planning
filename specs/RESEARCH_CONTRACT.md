@@ -184,24 +184,27 @@
   independent recurrence replays all 1,225 obligations. This closes only the
   registered `k<=2` fixed-plan hypothesis and does not authorize brute-force
   `k=3`, sampling, sample-efficiency or project-completion claims.
-- **V0-072 transfer-guided adaptive acquisition (ATTEMPT 1 PROTOCOL
-  FAILURE; CLEAN REPAIR/RE-ANCHOR PENDING; Gate NOT RUN):** proposed schema
-  `2.0.0` and profile
-  `transfer_guided_adaptive_observation_acquisition_v1` freeze a clean
-  generation of three seven-vertex contexts, five arms/15 occurrences, cold
-  `64+2048` row acquisition, two-round cumulative caps, direct checkpoints,
-  and `beta=1/300000` confidence allocation. Exact lazy planning plus
-  independent proof replay, verified source roll-forwards and archive
-  transform replay, exact split-support confidence, evidence-first
-  preauthorization/cardinality, immutable row transcripts, generic cold-H2
-  closure, an anchor-locked observer/full epoch-chain verifier, a disjoint
-  synthetic K4 control, and manifest/anchor authorities are implemented.
-  The first anchored attempt reached target execution but wrote no result:
-  the independent row-work verifier omitted the registered matched-direct
-  checkpoint purpose. Its content-addressed failure record preserves the
-  full denominator and marks unpersisted work unknown, never zero. One
-  parameter-preserving full restart with durable journaling is authorized;
-  no sample-efficiency result exists.
+- **V0-072 transfer-guided adaptive acquisition (TWO IMMUTABLE PROTOCOL
+  FAILURES; AUTHORITY EXHAUSTED; Gate NOT RUN):** proposed schema `2.0.0`
+  and profile `transfer_guided_adaptive_observation_acquisition_v1` froze a
+  clean generation of three seven-vertex contexts, five arms/15 occurrences,
+  cold `64+2048` row acquisition, two-round cumulative caps, direct
+  checkpoints, and `beta=1/300000` confidence allocation. The first anchored
+  attempt failed at the first K7 matched-direct checkpoint because the
+  independent row-work verifier omitted a registered enum. The sole
+  authorized full restart used fresh identities and durable journaling,
+  completed four occurrences, and failed during occurrence five at the
+  partial-support exact-lift boundary. Neither attempt wrote a campaign result
+  or scientific endpoint; unknown tail work is not zero, and no V0-072
+  resume, retry, or third attempt remains.
+- **V0-074 partial-support total lift and lossless execution mechanics
+  (NONAUTHORIZING; fresh scientific Gate NOT RUN):** proposed contract
+  `1.39.0` repairs the exact-lift mechanics under the already registered
+  policy-abort semantics. Its archive and process-parallel implementation is
+  currently a synthetic transport/scheduling control, not a production V0-072
+  proposal consumer or campaign worker. A new scientific result requires a
+  separate preregistration, manifest, anchor, fresh target identities/tapes
+  and genuinely fresh held-out occurrences.
 - **V0-071 source-guided acquisition mechanics (Gate NOT RUN):** the
   implementation freezes exact one-row slack-gain ranking, a bounded
   proposal-only multiplier, same-prior wrong-control reversal, strict
@@ -347,16 +350,56 @@
 
 V0 covers finite reachable state spaces, finite state-dependent primitive action sets, exact enumerable transition kernels, bounded additive registered rewards, one-time failure cost, full observability, and `H<=Hmax`. The primary research object is a coverage-bounded auditable RAPM compiled once for repeated multi-step contingent planning; the quotient tree, predicates, and CEGAR construct or repair it, while a policy graph remains a query result. Ground distinctions are recovered only after the independent certificate for the current plan fails.
 
+### Proposed contract 1.39.0: total partial-support lift and lossless execution
+
+Profile `v074_partial_support_total_lift_parallel_execution_v0` is a
+nonauthorizing repair construction. It does not rewrite either V0-072
+attempt, reopen the exhausted authority chain, or create a scientific
+sample-efficiency endpoint.
+
+The exact-lift boundary must consume a private, content-addressed modeled
+support authority derived from the independently replayed final operational
+model. For every selected fixed-concretizer root realization it binds the
+corresponding root row and that row's positive-upper-mass non-`OTHER` active
+children. An exact nonfailure child inside that row-specific modeled support
+requires its bound decision. An exact child outside it enters
+`ABSORBING_POLICY_ABORT_FAILURE`, contributes failure one and zero
+continuation reward, and receives a branch witness. A dormant decision
+reachable under another root row cannot suppress this abort. Exact selected
+failure is reported as the exact sum of environment and policy-abort failure.
+
+The production contract requires the complete source proposal payload and its
+offline work to be frozen in a pre-target content-addressed archive. Target
+occurrences may execute in isolated processes only after all logical
+identities freeze. Every child has a private content-addressed journal;
+successful outputs merge in registered ordinal order and must be
+byte-identical for sequential and parallel schedules. If any child fails, no
+scientific merge is produced, while every launched/completed/failed child
+journal, known work, unknown-tail marker and completed output remains in a
+deterministic accounting closure.
+
+The checked-in archive/parallel implementation currently proves synthetic
+transport and scheduling mechanics only. It accepts generic canonical source
+bytes and has no production V0-072 proposal or occurrence worker. Production
+integration and the fresh-science check that exact value/risk lies inside the
+operational statistical envelope remain `NOT_RUN`.
+
+V0-073 development contracts `1.37.0` and `1.38.0` remain unchanged. Any
+future scientific validation of this repair requires fresh preregistration,
+target identities, tapes, genuinely fresh held-out occurrences, manifest and
+anchor. Until then all official, scalar, economics, counter-completeness and
+sample-efficiency Gates remain locked.
+
 ### Proposed contract 1.36.0: transfer-guided adaptive observation acquisition
 
 Schema `2.0.0` and profile
-`transfer_guided_adaptive_observation_acquisition_v1` have one historical
-anchored protocol-failure attempt; the replacement is locked pending a new
-identity chain and `SAMPLE_EFFICIENCY_GATE_NOT_RUN`. The profile freezes K7, W7 and
-K7-minus-two, separate environment-only laws, five arms and exactly 15
-context-major occurrences. Every arm starts cold with 64 discovery and 2,048
-validation draws per physical H2 row; the conservative per-arm initial cap is
-506,880. The two-round incremental budget is
+`transfer_guided_adaptive_observation_acquisition_v1` now have two immutable
+anchored protocol-failure attempts and an exhausted authority chain.
+`SAMPLE_EFFICIENCY_GATE_NOT_RUN` remains unchanged. The historical profile
+froze K7, W7 and K7-minus-two, separate environment-only laws, five arms and
+exactly 15 context-major occurrences. Every arm starts cold with 64 discovery
+and 2,048 validation draws per physical H2 row; the conservative per-arm
+initial cap is 506,880. The two-round incremental budget is
 
 ```text
 C_R = 2048*R + 8256*|union(new child rows through R)| <= 160960
@@ -385,7 +428,8 @@ Implemented prerequisites are:
    gain, ranking, or postselection authorization, and an independent
    verifier recomputes the public row/count/cap chain;
 5. a registered observer with raw commitments and full support-epoch-chain
-   replay, locked behind a future semantic remote-`main` anchor;
+   replay, initially locked behind the then-future semantic remote-`main`
+   anchor;
 6. generic immutable row-transcript and discovery-only cold-H2-closure
    authorities with separately implemented replay verifiers and a
    domain-separated synthetic K4 control carrying no registered
@@ -395,7 +439,8 @@ Implemented prerequisites are:
    `96/48/96` row-cap bindings; an exact development-only
    confidence-to-interval-simplex projection with one row-bound adversarial
    `OTHER`; and an evaluation-only exact H2 ground enumerator independent of
-   the production planner, whose registered entry remains locked; and
+   the production planner, whose registered entry was locked at this
+   prerequisite stage; and
 8. a nonauthorizing execution-manifest readiness authority that derives
    actual file hashes and reports every missing role/applicable identity but
    cannot finalize a manifest or mint an anchor.
@@ -406,9 +451,10 @@ campaign output persisted, but all eight IDs are permanently retired as
 `DEVELOPMENT_SYNTHETIC_DRY_RUN_NOT_REGISTERED_TARGET_TAPE`. Clean-generation
 context/law/environment replacements have zero draws.
 
-Draft preregistration
+Before either final anchored chain existed, draft preregistration
 `7639f1ee57ee2d9a8c871a5f0270d15fdd92f712a735e2ae89b6155e057ba5c2`
-has a null confirmatory execution manifest, is not final, and cannot anchor.
+had a null confirmatory execution manifest, was not final, and could not
+anchor.
 It supersedes nonauthorizing drafts
 `8b1e4747bb364ccddc04bb45d97a061c621650c907d31c979673f312acdffd29`
 and
@@ -416,12 +462,14 @@ and
 after correcting the per-row limit to one initial plus two promotion
 confidence epochs without changing the two-round total authority cap, and
 adding the precise matched-direct checkpoint-cap noncertificate.
-The first possible anchor is the first `origin/main` commit containing both a
-final non-null execution manifest and the final preregistration ID that binds
-it, whose parent lacks that final ID. A push containing only the current
-draft, partial component digests, or null manifest remains nonauthorizing.
+The frozen anchor rule required the first qualifying `origin/main` commit to
+contain both a final non-null execution manifest and its binding final
+preregistration ID, with a parent lacking that final ID. That rule was applied
+separately to both now-exhausted chains. It grants no V0-074 execution
+authority.
 
-The production construction chain is now implemented through:
+Before the two attempts, the production construction chain had been
+implemented through:
 
 1. anchor-bound cold and incremental observation/model epochs with independent
    confidence, closure, model, selector, and incremental-epoch replay;
@@ -442,17 +490,26 @@ The production construction chain is now implemented through:
 7. enabled fail-closed source-recipe, final-manifest, one-way final
    preregistration and production remote-`main` anchor authorities.
 
-The implementation does not itself constitute a confirmatory result. The
-first fixed chain was generated, pushed and independently anchored at
+Those construction checks did not establish that the partial-support exact
+lift was total; attempt 2 later exposed that missing boundary. The
+implementation did not itself constitute a confirmatory result. The first
+fixed chain was generated, pushed and independently anchored at
 `b711cc52001419cfb0962e2a94af91cc03c5ffc2`. Its campaign reached target
 execution but failed closed at the first K7 matched-direct 2,048 checkpoint
 because an independent-verifier enum mapping was incomplete. No result or
 endpoint was written. The failed attempt remains in its 15-occurrence
 denominator; unknown work is not zero, and no old tape/evidence may be reused.
 
-One ledger-authorized replacement must pass a new exact Gate, bind a new
-recipe/manifest/preregistration/anchor chain, journal durable work prefixes,
-restart all 15 occurrences, and derive rather than receive:
+The sole ledger-authorized replacement used a fresh
+recipe/manifest/preregistration/anchor chain and passed its exact fresh-ID
+Gate. It durably completed four of 15 occurrences, then failed closed during
+the fifth K7 matched-direct exact lift because the evaluator required a
+decision for a child represented operationally by row `OTHER`. It emitted no
+campaign result or scientific endpoint. Its immutable failure record ID is
+`cfcc4173e05f7e1ae0354849c40ae72aef5b80ca1dbd747de185e5e1dabdb64e`;
+unknown tail work is not zero. No V0-072 retry or resume authority remains.
+
+Consequently none of the preregistered comparisons was derived:
 
 ```text
 SOURCE online draws < NO_PRIOR online draws
@@ -461,13 +518,12 @@ SOURCE certificate coverage is noninferior
 false certificates = 0
 ```
 
-Offline source draws remain separately reported. Passing these two registered
-draw endpoints would establish only a preregistered three-context V0-072
-sample result, not broad sample efficiency, total-work dominance, a scalar
-break-even, automatic ontology invention, or completion of the reusable
-hidden-world-model objective. Contract `1.34.0` remains the current completed
-construction contract until the replacement campaign is actually run and its
-bundle independently verifies.
+The durable K7 prefix is regression evidence only. It cannot be used as a
+held-out or sample-efficiency endpoint. Contract `1.34.0` remains the current
+completed construction contract; a new scientific result requires a separate
+preregistration, manifest and anchor plus fresh target identities/tapes and
+genuinely fresh held-out occurrences after the 1.39.0 repair is independently
+verified.
 
 ### Proposed contract 1.35.0: source-guided certificate-sensitive acquisition
 

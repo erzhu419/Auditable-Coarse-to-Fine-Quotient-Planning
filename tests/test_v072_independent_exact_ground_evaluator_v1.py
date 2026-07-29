@@ -770,3 +770,430 @@ def test_fixed_kappa_requires_union_of_all_reachable_child_states() -> None:
             root_decision=root_kappa,
             child_decisions=(),
         )
+
+
+def test_partial_fixed_kappa_missing_state_is_exact_policy_abort() -> None:
+    roots = _fixed_kappa_generic_inventory()
+    root_kappa = exact.GenericH2UniformKappaDecisionV1(
+        "semantic-root",
+        ((0, 1, 0), (0, 1, 1)),
+        (Fraction(1, 2), Fraction(1, 2)),
+    )
+    result = exact.evaluate_generic_h2_partial_fixed_kappa_policy_v1(
+        root_actions=roots,
+        root_decision=root_kappa,
+        child_decisions=(),
+        modeled_child_support_by_root=(
+            ((0, 1, 0), ()),
+            ((0, 1, 1), ()),
+        ),
+        globally_modeled_child_states=(),
+    )
+    assert result.expected_reward == Fraction(2)
+    assert result.environment_failure_probability == Fraction(1, 20)
+    assert result.policy_abort_failure_probability == Fraction(19, 20)
+    assert result.failure_probability == 1
+    assert tuple(
+        (
+            item.root_action,
+            item.state_key,
+            item.marginal_failure_probability,
+        )
+        for item in result.policy_abort_branches
+    ) == (
+        ((0, 1, 0), (2, 1, 0), Fraction(9, 20)),
+        ((0, 1, 1), (2, 1, 0), Fraction(1, 2)),
+    )
+    assert result.missing_reachable_child_semantics == (
+        exact.PARTIAL_SUPPORT_POLICY_ABORT_RULE
+    )
+
+
+def test_partial_fixed_kappa_abort_and_child_mixture_are_both_weighted() -> None:
+    child_actions = (
+        exact.GenericH2ChildActionV1(
+            (1, 2, 1),
+            Fraction(2),
+            Fraction(0),
+        ),
+        exact.GenericH2ChildActionV1(
+            (1, 2, 2),
+            Fraction(0),
+            Fraction(1, 5),
+        ),
+    )
+    roots = (
+        exact.GenericH2RootActionV1(
+            (0, 1, 0),
+            Fraction(1),
+            Fraction(1, 10),
+            (
+                exact.GenericH2ChildBranchV1(
+                    (2, 1, 0),
+                    Fraction(9, 10),
+                    child_actions,
+                ),
+            ),
+        ),
+        exact.GenericH2RootActionV1(
+            (0, 1, 1),
+            Fraction(3),
+            Fraction(0),
+            (
+                exact.GenericH2ChildBranchV1(
+                    (3, 1, 0),
+                    Fraction(1),
+                    child_actions,
+                ),
+            ),
+        ),
+    )
+    root_kappa = exact.GenericH2UniformKappaDecisionV1(
+        "semantic-root",
+        ((0, 1, 0), (0, 1, 1)),
+        (Fraction(1, 2), Fraction(1, 2)),
+    )
+    child_kappa = exact.GenericH2UniformKappaDecisionV1(
+        "semantic-child",
+        ((1, 2, 1), (1, 2, 2)),
+        (Fraction(1, 2), Fraction(1, 2)),
+    )
+    result = exact.evaluate_generic_h2_partial_fixed_kappa_policy_v1(
+        root_actions=roots,
+        root_decision=root_kappa,
+        child_decisions=(((2, 1, 0), child_kappa),),
+        modeled_child_support_by_root=(
+            ((0, 1, 0), ((2, 1, 0),)),
+            ((0, 1, 1), ()),
+        ),
+        globally_modeled_child_states=((2, 1, 0),),
+    )
+    assert result.expected_reward == Fraction(49, 20)
+    assert result.environment_failure_probability == Fraction(19, 200)
+    assert result.policy_abort_failure_probability == Fraction(1, 2)
+    assert result.failure_probability == Fraction(119, 200)
+    assert len(result.policy_abort_branches) == 1
+    assert result.policy_abort_branches[0].root_action == (0, 1, 1)
+    assert result.policy_abort_branches[0].state_key == (3, 1, 0)
+    assert (
+        result.policy_abort_branches[0].marginal_failure_probability
+        == Fraction(1, 2)
+    )
+
+
+def test_partial_fixed_kappa_rejects_wrong_or_extra_child_decision() -> None:
+    roots = _fixed_kappa_generic_inventory()
+    root_kappa = exact.GenericH2UniformKappaDecisionV1(
+        "semantic-root",
+        ((0, 1, 0), (0, 1, 1)),
+        (Fraction(1, 2), Fraction(1, 2)),
+    )
+    child_kappa = exact.GenericH2UniformKappaDecisionV1(
+        "semantic-child",
+        ((1, 2, 1),),
+        (Fraction(1),),
+    )
+    with pytest.raises(
+        exact.V072IndependentExactGroundEvaluationViolation,
+        match="global frozen model state registry",
+    ):
+        exact.evaluate_generic_h2_partial_fixed_kappa_policy_v1(
+            root_actions=roots,
+            root_decision=root_kappa,
+            child_decisions=(((9, 9, 9), child_kappa),),
+            modeled_child_support_by_root=(
+                ((0, 1, 0), ()),
+                ((0, 1, 1), ()),
+            ),
+            globally_modeled_child_states=(),
+        )
+    wrong_action = exact.GenericH2UniformKappaDecisionV1(
+        "wrong-semantic-child",
+        ((0, 2, 0),),
+        (Fraction(1),),
+    )
+    with pytest.raises(
+        exact.V072IndependentExactGroundEvaluationViolation,
+        match="child support is outside exact inventory",
+    ):
+        exact.evaluate_generic_h2_partial_fixed_kappa_policy_v1(
+            root_actions=roots,
+            root_decision=root_kappa,
+            child_decisions=(((2, 1, 0), wrong_action),),
+            modeled_child_support_by_root=(
+                ((0, 1, 0), ((2, 1, 0),)),
+                ((0, 1, 1), ((2, 1, 0),)),
+            ),
+            globally_modeled_child_states=((2, 1, 0),),
+        )
+
+
+def test_complete_and_partial_fixed_kappa_helpers_agree_without_abort() -> None:
+    roots = _fixed_kappa_generic_inventory()
+    root_kappa = exact.GenericH2UniformKappaDecisionV1(
+        "semantic-root",
+        ((0, 1, 0), (0, 1, 1)),
+        (Fraction(1, 2), Fraction(1, 2)),
+    )
+    child_kappa = exact.GenericH2UniformKappaDecisionV1(
+        "semantic-child",
+        ((1, 2, 1), (1, 2, 2)),
+        (Fraction(1, 2), Fraction(1, 2)),
+    )
+    complete = exact.evaluate_generic_h2_fixed_kappa_policy_v1(
+        root_actions=roots,
+        root_decision=root_kappa,
+        child_decisions=(((2, 1, 0), child_kappa),),
+    )
+    partial = exact.evaluate_generic_h2_partial_fixed_kappa_policy_v1(
+        root_actions=roots,
+        root_decision=root_kappa,
+        child_decisions=(((2, 1, 0), child_kappa),),
+        modeled_child_support_by_root=(
+            ((0, 1, 0), ((2, 1, 0),)),
+            ((0, 1, 1), ((2, 1, 0),)),
+        ),
+        globally_modeled_child_states=((2, 1, 0),),
+    )
+    assert partial.expected_reward == complete.expected_reward
+    assert partial.failure_probability == complete.failure_probability
+    assert partial.environment_failure_probability == (
+        complete.failure_probability
+    )
+    assert partial.policy_abort_failure_probability == 0
+    assert partial.policy_abort_branches == ()
+
+
+def test_registered_policy_abort_branch_is_typed_and_exact() -> None:
+    branch = exact.RegisteredPolicyAbortBranchWitnessV1(
+        _id("abort-occurrence"),
+        _id("abort-context"),
+        _id("abort-ground-state"),
+        (3, 1, 0),
+        (0, 1, 1),
+        Fraction(1, 2),
+        Fraction(3, 5),
+        Fraction(3, 10),
+        _id("abort-modeled-support"),
+        _id("abort-selected-row"),
+        _id("abort-partition"),
+        _id("abort-exact-root-row"),
+        (_id("abort-exact-atom"),),
+        _id("abort-global-other"),
+        _id("abort-other-handler"),
+    )
+    document = branch.to_document()
+    assert document["exact_child_state_id"] == _id("abort-ground-state")
+    assert document["behavior"] == "ABSORBING_POLICY_ABORT_FAILURE"
+    assert document["continuation_reward"] == {
+        "numerator": 0,
+        "denominator": 1,
+    }
+    assert document["marginal_failure_probability"] == {
+        "numerator": 3,
+        "denominator": 10,
+    }
+    assert len(document["branch_witness_id"]) == 64
+    with pytest.raises(
+        exact.V072IndependentExactGroundEvaluationViolation,
+        match="policy-abort branch witness",
+    ):
+        exact.RegisteredPolicyAbortBranchWitnessV1(
+            _id("abort-occurrence"),
+            _id("abort-context"),
+            _id("abort-ground-state"),
+            (3, 1, 0),
+            (0, 1, 1),
+            Fraction(1, 2),
+            Fraction(3, 5),
+            Fraction(1, 10),
+            _id("abort-modeled-support"),
+            _id("abort-selected-row"),
+            _id("abort-partition"),
+            _id("abort-exact-root-row"),
+            (_id("abort-exact-atom"),),
+            _id("abort-global-other"),
+            _id("abort-other-handler"),
+        )
+
+
+def test_exact_root_branch_partition_is_complete_disjoint_and_exact() -> None:
+    atom_ids = tuple(_id(f"partition-atom:{index}") for index in range(3))
+    partition = exact.ExactBranchPartitionWitnessV1(
+        _id("partition-occurrence"),
+        _id("partition-context"),
+        (0, 1, 1),
+        Fraction(1),
+        _id("partition-support"),
+        _id("partition-model-row"),
+        _id("partition-exact-row"),
+        tuple(sorted(atom_ids)),
+        tuple(
+            sorted(
+                zip(
+                    atom_ids,
+                    (
+                        Fraction(1, 5),
+                        Fraction(1, 2),
+                        Fraction(3, 10),
+                    ),
+                    strict=True,
+                )
+            )
+        ),
+        (atom_ids[0],),
+        (atom_ids[1],),
+        (atom_ids[2],),
+        Fraction(1, 5),
+        Fraction(1, 2),
+        Fraction(3, 10),
+    )
+    document = partition.to_document()
+    assert document["exact_root_row_id"] == _id("partition-exact-row")
+    assert set(document["exact_atom_ids"]) == set(atom_ids)
+    assert document["partition_categories"] == [
+        "ENVIRONMENT_FAILURE",
+        "MODELED_RECURSE",
+        "POLICY_ABORT",
+    ]
+    with pytest.raises(
+        exact.V074ModeledSupportExactLiftProtocolViolation,
+        match="disjoint union",
+    ):
+        exact.ExactBranchPartitionWitnessV1(
+            _id("partition-occurrence"),
+            _id("partition-context"),
+            (0, 1, 1),
+            Fraction(1),
+            _id("partition-support"),
+            _id("partition-model-row"),
+            _id("partition-exact-row"),
+            tuple(sorted(atom_ids)),
+            tuple(
+                sorted(
+                    zip(
+                        atom_ids,
+                        (
+                            Fraction(1, 5),
+                            Fraction(1, 2),
+                            Fraction(3, 10),
+                        ),
+                        strict=True,
+                    )
+                )
+            ),
+            tuple(sorted((atom_ids[0], atom_ids[1]))),
+            (atom_ids[1],),
+            (atom_ids[2],),
+            Fraction(7, 10),
+            Fraction(1, 2),
+            Fraction(3, 10),
+        )
+
+
+def test_registered_evaluator_routes_partial_support_through_abort_helper(
+) -> None:
+    source = inspect.getsource(exact._evaluate_registered_exact_ground)
+    assert "evaluate_generic_h2_partial_fixed_kappa_policy_v1" in source
+    assert "RegisteredPolicyAbortBranchWitnessV1" in source
+    assert "ExactBranchPartitionWitnessV1" in source
+    assert "exact_root_row_by_action" in source
+    assert "does not cover the union of child states" not in source
+
+
+def test_v074_result_domains_and_top_level_failure_decomposition_are_explicit(
+) -> None:
+    source = inspect.getsource(
+        exact.RegisteredIndependentExactGroundEvaluationResultV1
+    )
+    assert "acfqp.v074_modeled_support" in source
+    assert "selected_environment_failure_probability" in source
+    assert "selected_policy_abort_failure_probability" in source
+    assert "modeled_policy_support_authority_id" in source
+    assert "operational_envelope_containment_pass" in source
+    assert "operational_unrestricted_reward_upper" in source
+    assert exact.DOMAIN_TAGS["v074_registered_result"].startswith(
+        "acfqp:v074-"
+    )
+    assert exact.DOMAIN_TAGS["v074_policy_abort_branch"].startswith(
+        "acfqp:v074-"
+    )
+    assert inspect.signature(
+        exact.evaluate_registered_independent_exact_ground_v2
+    ).parameters.keys() == {
+        "anchor",
+        "context",
+        "operational_terminal",
+        "selected_policy",
+    }
+
+
+def test_row_specific_support_aborts_despite_dormant_decision() -> None:
+    roots = _fixed_kappa_generic_inventory()
+    root_kappa = exact.GenericH2UniformKappaDecisionV1(
+        "semantic-root",
+        ((0, 1, 0), (0, 1, 1)),
+        (Fraction(1, 2), Fraction(1, 2)),
+    )
+    child_kappa = exact.GenericH2UniformKappaDecisionV1(
+        "semantic-child",
+        ((1, 2, 1), (1, 2, 2)),
+        (Fraction(1, 2), Fraction(1, 2)),
+    )
+    result = exact.evaluate_generic_h2_partial_fixed_kappa_policy_v1(
+        root_actions=roots,
+        root_decision=root_kappa,
+        child_decisions=(((2, 1, 0), child_kappa),),
+        modeled_child_support_by_root=(
+            ((0, 1, 0), ((2, 1, 0),)),
+            ((0, 1, 1), ()),
+        ),
+        globally_modeled_child_states=((2, 1, 0),),
+    )
+    assert result.policy_abort_failure_probability == Fraction(1, 2)
+    assert tuple(
+        (item.root_action, item.state_key)
+        for item in result.policy_abort_branches
+    ) == (((0, 1, 1), (2, 1, 0)),)
+
+
+def test_modeled_support_omission_and_exact_absence_fail_protocol() -> None:
+    roots = _fixed_kappa_generic_inventory()
+    root_kappa = exact.GenericH2UniformKappaDecisionV1(
+        "semantic-root",
+        ((0, 1, 0), (0, 1, 1)),
+        (Fraction(1, 2), Fraction(1, 2)),
+    )
+    with pytest.raises(
+        exact.V074ModeledSupportExactLiftProtocolViolation,
+        match="DECISION_OMISSION",
+    ):
+        exact.evaluate_generic_h2_partial_fixed_kappa_policy_v1(
+            root_actions=roots,
+            root_decision=root_kappa,
+            child_decisions=(),
+            modeled_child_support_by_root=(
+                ((0, 1, 0), ((2, 1, 0),)),
+                ((0, 1, 1), ()),
+            ),
+            globally_modeled_child_states=((2, 1, 0),),
+        )
+    invented = exact.GenericH2UniformKappaDecisionV1(
+        "invented",
+        ((1, 2, 1),),
+        (Fraction(1),),
+    )
+    with pytest.raises(
+        exact.V074ModeledSupportExactLiftProtocolViolation,
+        match="NOT_PRESENT",
+    ):
+        exact.evaluate_generic_h2_partial_fixed_kappa_policy_v1(
+            root_actions=roots,
+            root_decision=root_kappa,
+            child_decisions=(((9, 9, 9), invented),),
+            modeled_child_support_by_root=(
+                ((0, 1, 0), ((9, 9, 9),)),
+                ((0, 1, 1), ()),
+            ),
+            globally_modeled_child_states=((9, 9, 9),),
+        )

@@ -28,7 +28,47 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 → jointly search local value/risk choices, rebuild, or use charged fallback
 ```
 
-## Current transfer-guided acquisition construction (V0-072, NONAUTHORIZING DRAFT; TARGET LOCKED; Gate NOT RUN)
+## Current repair construction (V0-074, NONAUTHORIZING; fresh Gate NOT RUN)
+
+Both anchored V0-072 attempts failed closed and produced no campaign result.
+Attempt 2 has a valid durable hash chain, completed `4/15` occurrences, and
+ended at the first K7 matched-direct exact-lift boundary:
+
+```text
+route-native checkpoint = CERTIFIED at 16384
+attempt terminal         = ATTEMPT_CLOSURE_NONCERTIFICATE.PROTOCOL_FAILURE
+result artifact          = absent
+scientific endpoint      = forbidden
+remaining retry slots    = 0
+```
+
+The independent evaluator incorrectly required actions for exact child states
+represented by the partial model's frozen `OTHER` escape.  Proposed contract
+`1.39.0` repairs that original path: modeled selected children still require
+their decisions, while an exact child outside frozen modeled support is
+charged once as `ABSORBING_POLICY_ABORT_FAILURE`, with failure one, zero
+continuation reward, and an exact branch witness.  It also specifies a
+pre-target content-addressed source proposal archive and isolated
+occurrence-level process parallelism with byte-identical canonical merging.
+Neither optimization changes draws, rational arithmetic, checkpoints,
+confidence, caps, plans or certificates.
+
+The checked-in archive/parallel runner is currently a synthetic
+transport-and-scheduling control. It is not yet connected to the production
+V0-072 proposal schema or campaign worker and therefore cannot authorize a
+scientific rerun. The repaired exact path now independently replays the
+operational robust-envelope containment checks and their attack tests; applying
+them to a newly preregistered scientific bundle remains `NOT_RUN`.
+
+The historical attempt is frozen in
+`specs/V072_ANCHORED_ATTEMPT_2_FAILURE.json`; the repair contract is
+`specs/PARTIAL_SUPPORT_TOTAL_LIFT_AND_PARALLEL_EXECUTION.md`.  Old K7 evidence
+is regression-only.  A scientific sample-efficiency rerun requires a separate
+preregistration, manifest and anchor plus fresh target identities/tapes and
+genuinely fresh held-out occurrences. Official, scalar, economics,
+counter-completeness and sample-efficiency Gates remain locked.
+
+## Historical transfer-guided acquisition construction (V0-072)
 
 V0-072 proposes contract `1.36.0`, schema `2.0.0`, and profile
 `transfer_guided_adaptive_observation_acquisition_v1`. It freezes three
@@ -42,7 +82,8 @@ child rows. At most 2,400 row-epoch authorities use
 `beta=1/300000`, giving campaign tail at most `1/125` and conditional
 confidence at least `124/125` without an independence assumption.
 
-The implemented, tested prerequisites are:
+Before the two anchored attempts, the implemented and tested prerequisites
+included:
 
 - an exact-`Fraction` lazy H2 planner plus a separately implemented proof
   verifier for complete/pruned search prefixes;
@@ -57,9 +98,9 @@ The implemented, tested prerequisites are:
 - an evidence-first target selector: the complete public novel-child row
   list and exact draw upper freeze before gain/ranking, with independent
   row/count replay and fresh round-2 identity rules;
-- a registered observer whose target APIs are locked behind a future
-  semantically verified remote-`main` anchor, including raw commitments and
-  full support-epoch-chain verification;
+- a registered observer whose target APIs were initially locked behind the
+  then-future semantically verified remote-`main` anchor, including raw
+  commitments and full support-epoch-chain verification;
 - generic immutable row-transcript and discovery-only cold-H2-closure
   authorities, each with a separately implemented verifier; their
   domain-separated synthetic K4 controls exercise incremental prefixes,
@@ -72,21 +113,22 @@ The implemented, tested prerequisites are:
   confidence-to-row projection that preserves every exact interval and one
   row-bound adversarial `OTHER`; and
 - an evaluation-only exact H2 ground enumerator, independent of the
-  production model/planner implementation, whose registered entry remains
-  locked while separate K4/K5 controls cover feasible and infeasible cases;
+  production model/planner implementation, whose registered entry was locked
+  at that stage while separate K4/K5 controls covered feasible and infeasible
+  cases;
   and
 - a read-only execution-manifest readiness authority that can report missing
   components but cannot finalize a manifest, mint an anchor, or authorize a
   registered target observation.
 
-An earlier fake-placeholder development path produced only in-memory tuples
-under eight now-retired development identities. No tape, artifact, endpoint,
-or campaign output was persisted. The replacement clean-generation
-context/law/environment identities have zero draws. The current
+Before either final anchor, a fake-placeholder development path produced only
+in-memory tuples under eight now-retired development identities. No tape,
+artifact, endpoint, or campaign output was persisted. The clean-generation
+context/law/environment identities then had zero draws. The historical
 audit-corrected draft preregistration
 `7639f1ee57ee2d9a8c871a5f0270d15fdd92f712a735e2ae89b6155e057ba5c2`
-has a null execution manifest and is neither an anchor nor an execution
-credential. It supersedes nonauthorizing drafts
+had a null execution manifest and was neither an anchor nor an execution
+credential. It superseded nonauthorizing drafts
 `8b1e4747bb364ccddc04bb45d97a061c621650c907d31c979673f312acdffd29`
 and
 `e368be24adad7870d95c8e5059455d31e035783394e48040d113258388eaf4d4`.
@@ -94,13 +136,10 @@ The corrections permit one initial confidence epoch plus two promotions per
 physical row while retaining the two-round, 480-authority-per-arm schedule
 cap, and add the precise matched-direct checkpoint-cap noncertificate.
 
-The first possible anchor is the first `origin/main` commit containing both a
-final non-null execution manifest and the final preregistration ID that binds
-it, whose parent lacks that final ID. Consequently, pushing this draft does
-not open the target tape. Registered row/confidence/cap-6 model integration,
-relational/ground model construction, authorization-bound materialization,
-matched direct execution, fresh round 2, the five-arm campaign, and the
-standalone complete-bundle verifier remain incomplete.
+That draft-stage anchor rule was subsequently applied to two distinct frozen
+chains. Both reached target execution and failed closed; neither wrote a
+campaign result or endpoint. The second chain consumed the sole replacement
+slot, so V0-072 now has no resume, retry, reuse, or third-attempt authority.
 
 The positive empirical Gate is not run. Its primary endpoint is strict
 SOURCE-versus-NO_PRIOR online-draw reduction; the matched endpoint also

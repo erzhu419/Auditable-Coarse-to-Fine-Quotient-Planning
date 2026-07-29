@@ -178,18 +178,22 @@
   replay all obligations. The registered 49 singletons and 1,176 pairs all
   fail without sampling; only `k<=2` for the current selected policy is
   closed.
-- **V0-072 transfer-guided adaptive acquisition — NONAUTHORIZING DRAFT,
-  TARGET LOCKED, Gate NOT RUN:** proposed schema `2.0.0` and profile
-  `transfer_guided_adaptive_observation_acquisition_v1` freeze the clean
-  K7/W7/K7-minus-two generation, five arms/15 occurrences, cold
+- **V0-072 transfer-guided adaptive acquisition — TWO IMMUTABLE PROTOCOL
+  FAILURES, AUTHORITY EXHAUSTED, Gate NOT RUN:** proposed schema `2.0.0` and
+  profile `transfer_guided_adaptive_observation_acquisition_v1` froze the
+  clean K7/W7/K7-minus-two generation, five arms/15 occurrences, cold
   `64+2048` row schedule, cumulative two-round cap, direct checkpoints and
-  `beta=1/300000` confidence allocation. The production registered
-  model/materializer, matched-direct runtime, dependent round-2 path,
-  15-occurrence executor, exact reconciliation/endpoint verification and
-  one-way finalization authorities are implemented and tested. No fixed
-  source recipe, final committed manifest/preregistration triple, remote-main
-  anchor or actual target campaign has yet been frozen or run, so no sample
-  endpoint or Gate result exists.
+  `beta=1/300000` confidence allocation. Two separately anchored attempts
+  reached target execution and failed closed without a campaign result or
+  scientific endpoint. The sole replacement completed four occurrences
+  before the occurrence-five exact-lift failure. The old chains have no
+  resume, retry, reuse, or third-attempt authority.
+- **V0-074 partial-support total lift and parallel transport — construction
+  only, fresh scientific Gate NOT RUN:** proposed contract `1.39.0` repairs
+  exact policy-abort accounting and adds content-addressed archive/process
+  mechanics. The archive/parallel runner currently has only registered
+  synthetic workers and is not integrated with the production V0-072
+  proposal schema or campaign executor.
 - **V0-071 source-guided acquisition mechanics — Gate NOT RUN:** exact
   one-row slack-gain ranking, same-prior source/wrong multipliers,
   authorization-before-materialization, and a two-round synthetic control are
@@ -1551,12 +1555,47 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
 
-### V0-072 transfer-guided adaptive acquisition — REPAIR/RE-ANCHOR REQUIRED, Gate NOT RUN
+### V0-074 partial-support total lift and parallel execution — construction only, Gate NOT RUN
+
+V0-072 exhausted its only registered replacement authority without producing
+a scientific endpoint. V0-074 is a nonauthorizing repair profile, not a
+continuation or reinterpretation of either failed campaign. Its construction
+Gate requires:
+
+1. total fixed-concretizer lift semantics: an exact realization absent from
+   frozen modeled support enters an absorbing policy-abort failure state,
+   receives zero continuation reward, and is reported separately from
+   environment failure;
+2. a content-addressed source archive frozen before target access, including
+   the exact source payload and offline work provenance; and
+3. occurrence-level isolated execution with deterministic ordinal merge and
+   byte-identical sequential/parallel outputs, while retaining all launched
+   work and child journals if any occurrence fails.
+
+The current archive/parallel runner is a registered synthetic transport
+control, not a production V0-072 proposal consumer or campaign worker.
+Production integration and exact-value/risk containment inside the
+operational statistical envelope remain `NOT_RUN`.
+
+This work can repair the original implementation path, but it cannot mutate
+historical artifacts. Any new scientific campaign requires genuinely fresh
+held-out occurrences, target identities/tapes, preregistration, manifest and
+anchor.
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+```
+
+### V0-072 transfer-guided adaptive acquisition — historical authority exhausted, Gate NOT RUN
 
 Proposed contract `1.36.0`, schema `2.0.0`, and profile
-`transfer_guided_adaptive_observation_acquisition_v1` remain scientifically
-locked until one complete replacement campaign and independent endpoint
-replay exist.
+`transfer_guided_adaptive_observation_acquisition_v1` are retained as the
+historical contract for the two exhausted attempts.
 The clean-generation artifact freezes:
 
 1. three seven-vertex public contexts and separately role-bound hidden
@@ -1579,7 +1618,8 @@ The clean-generation artifact freezes:
 8. sample/probability/identity-free portable feature keys plus
    identity-bound local snapshots.
 
-Implemented and tested construction includes the exact lazy H2 planner and
+Before the two attempts, implemented and tested construction included the
+exact lazy H2 planner and
 independent proof verifier; verified source archive and archive-transform
 replay; exact split-support confidence and finite-union allocation;
 evidence-first public cardinality/selection with independent row/count replay;
@@ -1592,16 +1632,18 @@ exact evaluation and typed operational terminals; exact campaign
 reconciliation with an independent verifier; and the complete-bundle
 endpoint authority with independent replay. One-way manifest,
 preregistration and remote-main-anchor finalization authorities are also
-implemented and tested. These are construction and lock evidence, not an
-executed held-out campaign or a Gate result.
+implemented and tested. These were construction and lock evidence, not a
+completed held-out campaign or a Gate result; attempt 2 subsequently exposed
+the incomplete partial-support exact-lift boundary now assigned to V0-074.
 
-An earlier fake-placeholder development test generated only in-memory tuples
+Before either final anchor, an earlier fake-placeholder development test
+generated only in-memory tuples
 under eight identities now retired as
 `DEVELOPMENT_SYNTHETIC_DRY_RUN_NOT_REGISTERED_TARGET_TAPE`; no tape,
 artifact, endpoint or campaign output persisted. New clean-generation
-context/law/environment IDs have zero draws. Draft preregistration
+context/law/environment IDs had zero draws. Draft preregistration
 `7639f1ee57ee2d9a8c871a5f0270d15fdd92f712a735e2ae89b6155e057ba5c2`
-has a null execution manifest and cannot anchor. It supersedes the
+had a null execution manifest and could not anchor. It superseded the
 nonauthorizing drafts
 `8b1e4747bb364ccddc04bb45d97a061c621650c907d31c979673f312acdffd29`
 and
@@ -1622,21 +1664,21 @@ historical failure record is
 unknown and explicitly not zero; the failed attempt retains its full
 15-occurrence denominator.
 
-Ledger amendment 1.34.7 permits one mechanical repair and full restart. It
-forbids reuse of the old target tape/evidence, preserves every scientific
-parameter, and requires exhaustive enum handling, durable attempt journaling,
-a fresh exact test Gate, new recipe/manifest/preregistration identities and a
-new remote-main anchor. Until that replacement closes all 15 occurrences, no
-campaign endpoint exists.
+Ledger amendment 1.34.7 permitted exactly one mechanical repair and full
+restart. That replacement ran under attempt ordinal 2 and then failed closed
+after 4 of 15 registered logical occurrences with
+`ATTEMPT_CLOSURE_NONCERTIFICATE.PROTOCOL_FAILURE`. It wrote no canonical
+campaign result, terminal certificate, sample endpoint, or retry authority.
+Its immutable record is `specs/V072_ANCHORED_ATTEMPT_2_FAILURE.json`, record
+ID
+`cfcc4173e05f7e1ae0354849c40ae72aef5b80ca1dbd747de185e5e1dabdb64e`.
+The authority chain is exhausted: neither attempt may be resumed, retried, or
+used to derive SOURCE-versus-control endpoints.
 
-Only after the fixed chain is anchored may SOURCE be compared with NO_PRIOR
-and matched direct ground. SOURCE must use strictly fewer online target draws
-than NO_PRIOR and no more than matched direct, with noninferior certificate
-coverage and zero false certificates. Offline source observations remain a
-separate reported lane. No broad sample-efficiency conclusion, total-objective
-completion, official execution, scalar cost, break-even value, workload
-economics result or counter-completeness result is claimed; every
-official/economics/counter/sample lock remains unchanged.
+No broad sample-efficiency conclusion, total-objective completion, official
+execution, scalar cost, break-even value, workload economics result or
+counter-completeness result is claimed; every official/economics/counter/
+sample lock remains unchanged.
 
 ### V0-071 source-guided acquisition mechanics — Gate NOT RUN
 

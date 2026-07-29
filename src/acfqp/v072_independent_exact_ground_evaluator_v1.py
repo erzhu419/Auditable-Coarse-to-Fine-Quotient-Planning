@@ -15,6 +15,12 @@ policy is deterministic.  A fixed concretizer may realize that semantic action
 as an exact uniform mixture over distinct ground actions; that is frozen
 environment/action-realization randomness, not policy randomization.  The
 exact ground comparator remains deterministic.
+
+Operational policies are intentionally partial over the model's observed
+support.  If exact evaluation reaches a child state for which that policy has
+no decision, the already-frozen ``OTHER`` semantics apply: the branch enters
+absorbing policy-abort failure with zero continuation reward.  Such mass is
+kept separate from environment failure in the exact witness.
 """
 
 from __future__ import annotations
@@ -40,6 +46,14 @@ if TYPE_CHECKING:
 SCHEMA_VERSION = "1.0.0"
 PROPOSED_CONTRACT_VERSION = "1.36.0"
 PROFILE_KEY = "v072_independent_exact_ground_evaluator_v1"
+MODELED_SUPPORT_CONTRACT_VERSION = "1.39.0"
+MODELED_SUPPORT_PROFILE_KEY = (
+    "v074_modeled_policy_support_total_lift_v0"
+)
+MODELED_SUPPORT_PROFILE_REGISTRATION = (
+    "REGISTERED_COMPONENT_OF_V074_PARTIAL_SUPPORT_TOTAL_LIFT_"
+    "PARALLEL_EXECUTION_V0"
+)
 HORIZON = 2
 EVALUATION_LANE = "STANDALONE_EVALUATION_ONLY"
 DEVELOPMENT_SCOPE = "DEVELOPMENT_K4_K5_CONTROL_ONLY"
@@ -51,10 +65,19 @@ REGISTERED_OPERATIONAL_TERMINAL_BLOCKER = (
 UNREACHABLE_POLICY_RULE = (
     "CANONICALLY_OMIT_ACTION_ASSIGNMENTS_UNREACHABLE_UNDER_ROOT_ACTION"
 )
+PARTIAL_SUPPORT_POLICY_ABORT_RULE = (
+    "MISSING_REACHABLE_CHILD_DECISION_IS_ABSORBING_POLICY_ABORT_FAILURE"
+)
 
 
 class V072IndependentExactGroundEvaluationViolation(ValueError):
     """An exact-type, identity, recurrence, or result invariant failed."""
+
+
+class V074ModeledSupportExactLiftProtocolViolation(
+    V072IndependentExactGroundEvaluationViolation
+):
+    """Frozen modeled-support authority and exact lift do not reconcile."""
 
 
 class RegisteredIndependentExactGroundEvaluationLocked(RuntimeError):
@@ -115,11 +138,32 @@ DOMAIN_TAGS = {
     "registered_kappa_policy_witness": (
         "acfqp:v072-registered-fixed-kappa-policy-witness:v1"
     ),
+    "registered_policy_abort_branch": (
+        "acfqp:v072-registered-policy-abort-branch-witness:v1"
+    ),
     "registered_work": (
         "acfqp:v072-registered-exact-ground-evaluation-work:v1"
     ),
     "registered_result": (
         "acfqp:v072-registered-independent-exact-ground-result:v1"
+    ),
+    "v074_operational_policy": (
+        "acfqp:v074-modeled-support-operational-selected-policy:v1"
+    ),
+    "v074_terminal_policy_bundle": (
+        "acfqp:v074-modeled-support-terminal-policy-bundle:v1"
+    ),
+    "v074_policy_abort_branch": (
+        "acfqp:v074-modeled-support-policy-abort-branch-witness:v1"
+    ),
+    "v074_exact_branch_partition": (
+        "acfqp:v074-modeled-support-exact-branch-partition-witness:v1"
+    ),
+    "v074_kappa_policy_witness": (
+        "acfqp:v074-modeled-support-fixed-kappa-policy-witness:v1"
+    ),
+    "v074_registered_result": (
+        "acfqp:v074-modeled-support-independent-exact-ground-result:v1"
     ),
 }
 
@@ -1979,8 +2023,14 @@ class RegisteredOperationalSelectedPolicyV1:
     independent_runtime_verification_id: str
     root_decision: RegisteredFixedKappaDecisionV1
     child_decisions: tuple[RegisteredFixedKappaDecisionV1, ...]
+    modeled_support_authority: Any
 
     def __post_init__(self) -> None:
+        from . import (
+            v072_registered_operational_terminal_authority_v1
+            as terminal_authority,
+        )
+
         if (
             self._operational_capability
             is not _REGISTERED_OPERATIONAL_TERMINAL_SENTINEL
@@ -2042,6 +2092,28 @@ class RegisteredOperationalSelectedPolicyV1:
                     or any(not item.singleton for item in self.child_decisions)
                 )
             )
+            or type(self.modeled_support_authority)
+            is not (
+                terminal_authority
+                .RegisteredModeledPolicySupportAuthorityV1
+            )
+            or (
+                self.modeled_support_authority._minting_capability
+                is not terminal_authority._MODELED_POLICY_SUPPORT_SENTINEL
+            )
+            or self.modeled_support_authority.occurrence_id
+            != self.occurrence.occurrence_id
+            or self.modeled_support_authority.context_id
+            != self.occurrence.context_id
+            or self.modeled_support_authority.route_kind.value
+            != self.route_kind
+            or self.modeled_support_authority.operational_result_artifact_id
+            != self.operational_policy_source_artifact_id
+            or (
+                self.modeled_support_authority
+                .independent_runtime_verification_id
+            )
+            != self.independent_runtime_verification_id
         ):
             raise V072IndependentExactGroundEvaluationViolation(
                 "registered fixed-kappa selected policy is malformed, "
@@ -2051,9 +2123,12 @@ class RegisteredOperationalSelectedPolicyV1:
     def _payload(self) -> dict[str, Any]:
         return {
             "schema": (
-                "acfqp.v072_registered_operational_selected_policy.v1"
+                "acfqp.v074_modeled_support_operational_selected_policy.v1"
             ),
             "schema_version": SCHEMA_VERSION,
+            "contract_version": MODELED_SUPPORT_CONTRACT_VERSION,
+            "profile_key": MODELED_SUPPORT_PROFILE_KEY,
+            "profile_registration": MODELED_SUPPORT_PROFILE_REGISTRATION,
             "occurrence_id": self.occurrence.occurrence_id,
             "context_id": self.occurrence.context_id,
             "arm": self.occurrence.arm,
@@ -2068,6 +2143,9 @@ class RegisteredOperationalSelectedPolicyV1:
             "child_decision_ids": [
                 item.decision_id for item in self.child_decisions
             ],
+            "modeled_policy_support_authority_id": (
+                self.modeled_support_authority.authority_id
+            ),
             "deterministic_semantic_finite_horizon_markov_selector": True,
             "fixed_stochastic_kappa_action_realization": True,
             "policy_randomization": False,
@@ -2078,7 +2156,7 @@ class RegisteredOperationalSelectedPolicyV1:
 
     @property
     def selected_policy_id(self) -> str:
-        return _content_id("registered_operational_policy", self._payload())
+        return _content_id("v074_operational_policy", self._payload())
 
     @property
     def semantic_policy_key(self) -> tuple[str, tuple[Any, ...]]:
@@ -2095,6 +2173,9 @@ class RegisteredOperationalSelectedPolicyV1:
             "child_decisions": [
                 item.to_document() for item in self.child_decisions
             ],
+            "modeled_support_authority": (
+                self.modeled_support_authority.to_document()
+            ),
             "selected_policy_id": self.selected_policy_id,
         }
 
@@ -2197,10 +2278,13 @@ class RegisteredOperationalTerminalPolicyBundleV1:
     def _payload(self) -> dict[str, Any]:
         return {
             "schema": (
-                "acfqp.v072_registered_operational_terminal_"
+                "acfqp.v074_modeled_support_operational_terminal_"
                 "policy_bundle.v1"
             ),
             "schema_version": SCHEMA_VERSION,
+            "contract_version": MODELED_SUPPORT_CONTRACT_VERSION,
+            "profile_key": MODELED_SUPPORT_PROFILE_KEY,
+            "profile_registration": MODELED_SUPPORT_PROFILE_REGISTRATION,
             "mint_authority_id": self.mint_authority_id,
             "occurrence_id": (
                 self.operational_terminal.occurrence.occurrence_id
@@ -2209,13 +2293,16 @@ class RegisteredOperationalTerminalPolicyBundleV1:
                 self.operational_terminal.terminal_id
             ),
             "selected_policy_id": self.selected_policy.selected_policy_id,
+            "modeled_policy_support_authority_id": (
+                self.selected_policy.modeled_support_authority.authority_id
+            ),
             "terminal_and_policy_caller_supplied": False,
         }
 
     @property
     def bundle_id(self) -> str:
         return _content_id(
-            "registered_operational_terminal_policy_bundle",
+            "v074_terminal_policy_bundle",
             self._payload(),
         )
 
@@ -2275,6 +2362,7 @@ def mint_registered_occurrence_operational_terminal_policy_v1(
         canonical.independent_runtime_verification_id,
         root_decision,
         child_decisions,
+        canonical.modeled_support_authority,
     )
     terminal = RegisteredOccurrenceOperationalTerminalV1(
         _REGISTERED_OPERATIONAL_TERMINAL_SENTINEL,
@@ -2287,6 +2375,17 @@ def mint_registered_occurrence_operational_terminal_policy_v1(
         canonical.mint_authority_id,
         terminal,
         selected_policy,
+    )
+
+
+def mint_registered_occurrence_operational_terminal_policy_v2(
+    *,
+    mint_authority: RegisteredEvaluatorTerminalMintAuthorityV1,
+) -> RegisteredOperationalTerminalPolicyBundleV1:
+    """V0-074 successor entrypoint with modeled-support authority binding."""
+
+    return mint_registered_occurrence_operational_terminal_policy_v1(
+        mint_authority=mint_authority
     )
 
 
@@ -2481,8 +2580,324 @@ class RegisteredExactGroundPolicyWitnessV1:
 
 
 @dataclass(frozen=True, slots=True)
+class ExactBranchPartitionWitnessV1:
+    """Exact per-root partition of all atoms under modeled-support lift."""
+
+    occurrence_id: str
+    context_id: str
+    root_ground_action: tuple[int, int, int]
+    root_realization_weight: Fraction
+    modeled_policy_support_authority_id: str
+    selected_model_row_id: str
+    exact_root_row_id: str
+    exact_atom_ids: tuple[str, ...]
+    exact_atom_probability_items: tuple[tuple[str, Fraction], ...]
+    environment_failure_atom_ids: tuple[str, ...]
+    modeled_recurse_atom_ids: tuple[str, ...]
+    policy_abort_atom_ids: tuple[str, ...]
+    environment_failure_probability: Fraction
+    modeled_recurse_probability: Fraction
+    policy_abort_probability: Fraction
+
+    def __post_init__(self) -> None:
+        for value, label in (
+            (self.occurrence_id, "exact partition occurrence"),
+            (self.context_id, "exact partition context"),
+            (
+                self.modeled_policy_support_authority_id,
+                "exact partition modeled support",
+            ),
+            (self.selected_model_row_id, "exact partition model row"),
+            (self.exact_root_row_id, "exact partition ground row"),
+        ):
+            _cid(value, label)
+        _registered_action(
+            self.root_ground_action,
+            "exact partition root action",
+        )
+        if (
+            type(self.root_realization_weight) is not Fraction
+            or not 0 < self.root_realization_weight <= 1
+            or type(self.exact_atom_ids) is not tuple
+            or not self.exact_atom_ids
+            or self.exact_atom_ids
+            != tuple(sorted(set(self.exact_atom_ids)))
+            or type(self.exact_atom_probability_items) is not tuple
+            or tuple(
+                item[0]
+                for item in self.exact_atom_probability_items
+                if type(item) is tuple and len(item) == 2
+            )
+            != self.exact_atom_ids
+            or any(
+                type(item) is not tuple
+                or len(item) != 2
+                or type(item[1]) is not Fraction
+                or not 0 < item[1] <= 1
+                for item in self.exact_atom_probability_items
+            )
+        ):
+            raise V074ModeledSupportExactLiftProtocolViolation(
+                "exact root atom inventory is malformed or noncanonical"
+            )
+        for atom_id in self.exact_atom_ids:
+            _cid(atom_id, "exact partition atom")
+        partitions = (
+            self.environment_failure_atom_ids,
+            self.modeled_recurse_atom_ids,
+            self.policy_abort_atom_ids,
+        )
+        if any(
+            type(items) is not tuple
+            or items != tuple(sorted(set(items)))
+            for items in partitions
+        ):
+            raise V074ModeledSupportExactLiftProtocolViolation(
+                "exact branch partition is noncanonical"
+            )
+        partition_sets = tuple(set(items) for items in partitions)
+        if (
+            any(
+                partition_sets[left] & partition_sets[right]
+                for left in range(3)
+                for right in range(left + 1, 3)
+            )
+            or set().union(*partition_sets) != set(self.exact_atom_ids)
+        ):
+            raise V074ModeledSupportExactLiftProtocolViolation(
+                "exact branch classes are not a disjoint union"
+            )
+        probability_by_id = dict(self.exact_atom_probability_items)
+        expected_probabilities = tuple(
+            sum(
+                (probability_by_id[atom_id] for atom_id in items),
+                Fraction(0),
+            )
+            for items in partitions
+        )
+        stated_probabilities = (
+            self.environment_failure_probability,
+            self.modeled_recurse_probability,
+            self.policy_abort_probability,
+        )
+        if (
+            any(
+                type(value) is not Fraction or not 0 <= value <= 1
+                for value in stated_probabilities
+            )
+            or stated_probabilities != expected_probabilities
+            or sum(stated_probabilities, Fraction(0)) != 1
+        ):
+            raise V074ModeledSupportExactLiftProtocolViolation(
+                "exact branch partition probability reconciliation failed"
+            )
+
+    @property
+    def semantic_key(self) -> tuple[int, int, int]:
+        return self.root_ground_action
+
+    def _payload(self) -> dict[str, Any]:
+        return {
+            "schema": (
+                "acfqp.v074_modeled_support_exact_branch_partition_"
+                "witness.v1"
+            ),
+            "schema_version": SCHEMA_VERSION,
+            "contract_version": MODELED_SUPPORT_CONTRACT_VERSION,
+            "profile_key": MODELED_SUPPORT_PROFILE_KEY,
+            "profile_registration": MODELED_SUPPORT_PROFILE_REGISTRATION,
+            "occurrence_id": self.occurrence_id,
+            "context_id": self.context_id,
+            "root_ground_action": list(self.root_ground_action),
+            "root_realization_weight": _fdoc(
+                self.root_realization_weight
+            ),
+            "modeled_policy_support_authority_id": (
+                self.modeled_policy_support_authority_id
+            ),
+            "selected_model_row_id": self.selected_model_row_id,
+            "exact_root_row_id": self.exact_root_row_id,
+            "exact_atom_ids": list(self.exact_atom_ids),
+            "exact_atom_probability_items": [
+                {
+                    "exact_atom_id": atom_id,
+                    "probability": _fdoc(probability),
+                }
+                for atom_id, probability
+                in self.exact_atom_probability_items
+            ],
+            "environment_failure_atom_ids": list(
+                self.environment_failure_atom_ids
+            ),
+            "modeled_recurse_atom_ids": list(
+                self.modeled_recurse_atom_ids
+            ),
+            "policy_abort_atom_ids": list(self.policy_abort_atom_ids),
+            "environment_failure_probability": _fdoc(
+                self.environment_failure_probability
+            ),
+            "modeled_recurse_probability": _fdoc(
+                self.modeled_recurse_probability
+            ),
+            "policy_abort_probability": _fdoc(
+                self.policy_abort_probability
+            ),
+            "partition_categories": [
+                "ENVIRONMENT_FAILURE",
+                "MODELED_RECURSE",
+                "POLICY_ABORT",
+            ],
+            "disjoint_union_verified": True,
+            "probability_reconciled": True,
+        }
+
+    @property
+    def partition_witness_id(self) -> str:
+        return _content_id(
+            "v074_exact_branch_partition",
+            self._payload(),
+        )
+
+    def to_document(self) -> dict[str, Any]:
+        return {
+            **self._payload(),
+            "partition_witness_id": self.partition_witness_id,
+        }
+
+
+@dataclass(frozen=True, slots=True)
+class RegisteredPolicyAbortBranchWitnessV1:
+    """One exact missing-policy branch mapped to absorbing failure."""
+
+    occurrence_id: str
+    context_id: str
+    exact_child_state_id: str
+    state_key: tuple[int, ...]
+    root_ground_action: tuple[int, int, int]
+    root_realization_weight: Fraction
+    conditional_branch_probability: Fraction
+    marginal_failure_probability: Fraction
+    modeled_policy_support_authority_id: str
+    selected_model_row_id: str
+    exact_branch_partition_witness_id: str
+    exact_root_row_id: str
+    exact_atom_ids: tuple[str, ...]
+    global_other_destination_id: str
+    global_other_handler_id: str
+    behavior: str = "ABSORBING_POLICY_ABORT_FAILURE"
+    continuation_reward: Fraction = Fraction(0)
+
+    def __post_init__(self) -> None:
+        _cid(self.occurrence_id, "policy-abort occurrence")
+        _cid(self.context_id, "policy-abort context")
+        _cid(self.exact_child_state_id, "policy-abort exact child state")
+        _cid(
+            self.modeled_policy_support_authority_id,
+            "policy-abort modeled support",
+        )
+        _cid(self.selected_model_row_id, "policy-abort selected model row")
+        _cid(
+            self.exact_branch_partition_witness_id,
+            "policy-abort exact branch partition",
+        )
+        _cid(self.exact_root_row_id, "policy-abort exact root row")
+        _cid(
+            self.global_other_destination_id,
+            "policy-abort global OTHER",
+        )
+        _cid(self.global_other_handler_id, "policy-abort OTHER handler")
+        _registered_action(
+            self.root_ground_action,
+            "policy-abort root realization",
+        )
+        if (
+            type(self.state_key) is not tuple
+            or not self.state_key
+            or any(type(item) is not int for item in self.state_key)
+            or type(self.root_realization_weight) is not Fraction
+            or not 0 < self.root_realization_weight <= 1
+            or type(self.conditional_branch_probability) is not Fraction
+            or not 0 < self.conditional_branch_probability <= 1
+            or type(self.marginal_failure_probability) is not Fraction
+            or self.marginal_failure_probability
+            != (
+                self.root_realization_weight
+                * self.conditional_branch_probability
+            )
+            or type(self.exact_atom_ids) is not tuple
+            or not self.exact_atom_ids
+            or self.exact_atom_ids
+            != tuple(sorted(set(self.exact_atom_ids)))
+            or self.behavior != "ABSORBING_POLICY_ABORT_FAILURE"
+            or type(self.continuation_reward) is not Fraction
+            or self.continuation_reward != 0
+        ):
+            raise V072IndependentExactGroundEvaluationViolation(
+                "registered policy-abort branch witness is malformed"
+            )
+        for atom_id in self.exact_atom_ids:
+            _cid(atom_id, "policy-abort exact atom")
+
+    @property
+    def semantic_key(
+        self,
+    ) -> tuple[tuple[int, int, int], tuple[int, ...]]:
+        return self.root_ground_action, self.state_key
+
+    def _payload(self) -> dict[str, Any]:
+        return {
+            "schema": (
+                "acfqp.v074_modeled_support_policy_abort_branch_witness.v1"
+            ),
+            "schema_version": SCHEMA_VERSION,
+            "contract_version": MODELED_SUPPORT_CONTRACT_VERSION,
+            "profile_key": MODELED_SUPPORT_PROFILE_KEY,
+            "profile_registration": MODELED_SUPPORT_PROFILE_REGISTRATION,
+            "occurrence_id": self.occurrence_id,
+            "context_id": self.context_id,
+            "exact_child_state_id": self.exact_child_state_id,
+            "state_key": list(self.state_key),
+            "root_ground_action": list(self.root_ground_action),
+            "root_realization_weight": _fdoc(
+                self.root_realization_weight
+            ),
+            "conditional_branch_probability": _fdoc(
+                self.conditional_branch_probability
+            ),
+            "marginal_failure_probability": _fdoc(
+                self.marginal_failure_probability
+            ),
+            "modeled_policy_support_authority_id": (
+                self.modeled_policy_support_authority_id
+            ),
+            "selected_model_row_id": self.selected_model_row_id,
+            "exact_branch_partition_witness_id": (
+                self.exact_branch_partition_witness_id
+            ),
+            "exact_root_row_id": self.exact_root_row_id,
+            "exact_atom_ids": list(self.exact_atom_ids),
+            "global_other_destination_id": (
+                self.global_other_destination_id
+            ),
+            "global_other_handler_id": self.global_other_handler_id,
+            "behavior": self.behavior,
+            "continuation_reward": _fdoc(self.continuation_reward),
+        }
+
+    @property
+    def branch_witness_id(self) -> str:
+        return _content_id("v074_policy_abort_branch", self._payload())
+
+    def to_document(self) -> dict[str, Any]:
+        return {
+            **self._payload(),
+            "branch_witness_id": self.branch_witness_id,
+        }
+
+
+@dataclass(frozen=True, slots=True)
 class RegisteredFixedKappaPolicyWitnessV1:
-    """Exact value of a deterministic selector with frozen κ realization."""
+    """Exact value of a partial selector with frozen κ realization."""
 
     occurrence_id: str
     context_id: str
@@ -2491,10 +2906,40 @@ class RegisteredFixedKappaPolicyWitnessV1:
     child_decisions: tuple[RegisteredFixedKappaDecisionV1, ...]
     expected_reward: Fraction
     failure_probability: Fraction
+    environment_failure_probability: Fraction
+    policy_abort_failure_probability: Fraction
+    policy_abort_branches: tuple[
+        RegisteredPolicyAbortBranchWitnessV1,
+        ...,
+    ]
+    exact_branch_partitions: tuple[ExactBranchPartitionWitnessV1, ...]
+    modeled_policy_support_authority_id: str
+    global_other_handler_id: str
+    query_binding_id: str
+    operational_audit_id: str
+    operational_root_reward_lower: Fraction
+    operational_unrestricted_reward_upper: Fraction
+    operational_root_failure_upper: Fraction
+    operational_normalized_regret_upper: Fraction
+    exact_normalized_regret: Fraction
+    reward_containment_pass: bool
+    failure_containment_pass: bool
+    normalized_regret_containment_pass: bool
+    operational_envelope_containment_pass: bool
 
     def __post_init__(self) -> None:
         _cid(self.occurrence_id, "fixed-kappa witness occurrence")
         _cid(self.context_id, "fixed-kappa witness context")
+        _cid(
+            self.modeled_policy_support_authority_id,
+            "fixed-kappa witness modeled support",
+        )
+        _cid(
+            self.global_other_handler_id,
+            "fixed-kappa witness OTHER handler",
+        )
+        _cid(self.query_binding_id, "fixed-kappa witness query binding")
+        _cid(self.operational_audit_id, "fixed-kappa witness audit")
         if (
             self.route_kind
             not in ("ADAPTIVE_QUOTIENT", "MATCHED_DIRECT_GROUND")
@@ -2517,17 +2962,226 @@ class RegisteredFixedKappaPolicyWitnessV1:
             or self.expected_reward < 0
             or type(self.failure_probability) is not Fraction
             or not 0 <= self.failure_probability <= 1
+            or type(self.environment_failure_probability) is not Fraction
+            or not 0 <= self.environment_failure_probability <= 1
+            or type(self.policy_abort_failure_probability) is not Fraction
+            or not 0 <= self.policy_abort_failure_probability <= 1
+            or self.failure_probability
+            != (
+                self.environment_failure_probability
+                + self.policy_abort_failure_probability
+            )
+            or type(self.policy_abort_branches) is not tuple
+            or any(
+                type(item) is not RegisteredPolicyAbortBranchWitnessV1
+                or item.occurrence_id != self.occurrence_id
+                or item.context_id != self.context_id
+                or item.modeled_policy_support_authority_id
+                != self.modeled_policy_support_authority_id
+                or item.global_other_handler_id
+                != self.global_other_handler_id
+                for item in self.policy_abort_branches
+            )
+            or tuple(
+                item.semantic_key for item in self.policy_abort_branches
+            )
+            != tuple(
+                sorted(
+                    {
+                        item.semantic_key
+                        for item in self.policy_abort_branches
+                    }
+                )
+            )
+            or self.policy_abort_failure_probability
+            != sum(
+                (
+                    item.marginal_failure_probability
+                    for item in self.policy_abort_branches
+                ),
+                Fraction(0),
+            )
+            or type(self.exact_branch_partitions) is not tuple
+            or any(
+                type(item) is not ExactBranchPartitionWitnessV1
+                or item.occurrence_id != self.occurrence_id
+                or item.context_id != self.context_id
+                or item.modeled_policy_support_authority_id
+                != self.modeled_policy_support_authority_id
+                for item in self.exact_branch_partitions
+            )
+            or tuple(
+                item.semantic_key for item in self.exact_branch_partitions
+            )
+            != tuple(
+                sorted(
+                    {
+                        item.semantic_key
+                        for item in self.exact_branch_partitions
+                    }
+                )
+            )
+            or tuple(
+                item.root_ground_action
+                for item in self.exact_branch_partitions
+            )
+            != tuple(sorted(self.root_decision.ground_actions))
+            or any(
+                partition.root_realization_weight
+                != dict(
+                    zip(
+                        self.root_decision.ground_actions,
+                        self.root_decision.uniform_weights,
+                        strict=True,
+                    )
+                )[partition.root_ground_action]
+                for partition in self.exact_branch_partitions
+            )
         ):
             raise V072IndependentExactGroundEvaluationViolation(
                 "registered fixed-kappa policy witness is malformed"
+            )
+        partition_by_id = {
+            item.partition_witness_id: item
+            for item in self.exact_branch_partitions
+        }
+        if (
+            any(
+                branch.exact_branch_partition_witness_id
+                not in partition_by_id
+                or branch.exact_root_row_id
+                != partition_by_id[
+                    branch.exact_branch_partition_witness_id
+                ].exact_root_row_id
+                or branch.selected_model_row_id
+                != partition_by_id[
+                    branch.exact_branch_partition_witness_id
+                ].selected_model_row_id
+                or branch.root_realization_weight
+                != partition_by_id[
+                    branch.exact_branch_partition_witness_id
+                ].root_realization_weight
+                or not set(branch.exact_atom_ids)
+                <= set(
+                    partition_by_id[
+                        branch.exact_branch_partition_witness_id
+                    ].policy_abort_atom_ids
+                )
+                or branch.conditional_branch_probability
+                != sum(
+                    (
+                        dict(
+                            partition_by_id[
+                                branch.exact_branch_partition_witness_id
+                            ].exact_atom_probability_items
+                        )[atom_id]
+                        for atom_id in branch.exact_atom_ids
+                    ),
+                    Fraction(0),
+                )
+                for branch in self.policy_abort_branches
+            )
+            or sum(
+                len(branch.exact_atom_ids)
+                for branch in self.policy_abort_branches
+            )
+            != len(
+                {
+                    atom_id
+                    for branch in self.policy_abort_branches
+                    for atom_id in branch.exact_atom_ids
+                }
+            )
+            or {
+                atom_id
+                for branch in self.policy_abort_branches
+                for atom_id in branch.exact_atom_ids
+            }
+            != {
+                atom_id
+                for partition in self.exact_branch_partitions
+                for atom_id in partition.policy_abort_atom_ids
+            }
+            or sum(
+                (
+                    partition.root_realization_weight
+                    * partition.policy_abort_probability
+                    for partition in self.exact_branch_partitions
+                ),
+                Fraction(0),
+            )
+            != self.policy_abort_failure_probability
+        ):
+            raise V074ModeledSupportExactLiftProtocolViolation(
+                "policy-abort witnesses do not cover the exact abort partition"
+            )
+        for value, label in (
+            (
+                self.operational_root_reward_lower,
+                "operational audit reward lower",
+            ),
+            (
+                self.operational_root_failure_upper,
+                "operational audit failure upper",
+            ),
+            (
+                self.operational_unrestricted_reward_upper,
+                "operational audit unrestricted reward upper",
+            ),
+            (
+                self.operational_normalized_regret_upper,
+                "operational audit normalized regret upper",
+            ),
+        ):
+            if type(value) is not Fraction or value < 0:
+                raise V074ModeledSupportExactLiftProtocolViolation(
+                    f"{label} is malformed"
+                )
+        expected_reward_containment = (
+            self.operational_root_reward_lower
+            <= self.expected_reward
+            <= self.operational_unrestricted_reward_upper
+        )
+        expected_failure_containment = (
+            self.failure_probability
+            <= self.operational_root_failure_upper
+        )
+        expected_regret_containment = (
+            self.exact_normalized_regret
+            <= self.operational_normalized_regret_upper
+        )
+        if (
+            type(self.exact_normalized_regret) is not Fraction
+            or self.exact_normalized_regret < 0
+            or self.operational_root_reward_lower
+            > self.operational_unrestricted_reward_upper
+            or self.reward_containment_pass
+            is not expected_reward_containment
+            or self.failure_containment_pass
+            is not expected_failure_containment
+            or self.normalized_regret_containment_pass
+            is not expected_regret_containment
+            or self.operational_envelope_containment_pass
+            is not (
+                expected_reward_containment
+                and expected_failure_containment
+                and expected_regret_containment
+            )
+            or not self.operational_envelope_containment_pass
+        ):
+            raise V074ModeledSupportExactLiftProtocolViolation(
+                "exact selected policy is outside its operational audit envelope"
             )
 
     def _payload(self) -> dict[str, Any]:
         return {
             "schema": (
-                "acfqp.v072_registered_fixed_kappa_policy_witness.v1"
+                "acfqp.v074_modeled_support_fixed_kappa_policy_witness.v1"
             ),
             "schema_version": SCHEMA_VERSION,
+            "contract_version": MODELED_SUPPORT_CONTRACT_VERSION,
+            "profile_key": MODELED_SUPPORT_PROFILE_KEY,
+            "profile_registration": MODELED_SUPPORT_PROFILE_REGISTRATION,
             "occurrence_id": self.occurrence_id,
             "context_id": self.context_id,
             "route_kind": self.route_kind,
@@ -2537,6 +3191,52 @@ class RegisteredFixedKappaPolicyWitnessV1:
             ],
             "expected_reward": _fdoc(self.expected_reward),
             "failure_probability": _fdoc(self.failure_probability),
+            "environment_failure_probability": _fdoc(
+                self.environment_failure_probability
+            ),
+            "policy_abort_failure_probability": _fdoc(
+                self.policy_abort_failure_probability
+            ),
+            "policy_abort_branch_witness_ids": [
+                item.branch_witness_id
+                for item in self.policy_abort_branches
+            ],
+            "exact_branch_partition_witness_ids": [
+                item.partition_witness_id
+                for item in self.exact_branch_partitions
+            ],
+            "modeled_policy_support_authority_id": (
+                self.modeled_policy_support_authority_id
+            ),
+            "global_other_handler_id": self.global_other_handler_id,
+            "query_binding_id": self.query_binding_id,
+            "operational_audit_id": self.operational_audit_id,
+            "operational_root_reward_lower": _fdoc(
+                self.operational_root_reward_lower
+            ),
+            "operational_unrestricted_reward_upper": _fdoc(
+                self.operational_unrestricted_reward_upper
+            ),
+            "operational_root_failure_upper": _fdoc(
+                self.operational_root_failure_upper
+            ),
+            "operational_normalized_regret_upper": _fdoc(
+                self.operational_normalized_regret_upper
+            ),
+            "exact_normalized_regret": _fdoc(
+                self.exact_normalized_regret
+            ),
+            "reward_containment_pass": self.reward_containment_pass,
+            "failure_containment_pass": self.failure_containment_pass,
+            "normalized_regret_containment_pass": (
+                self.normalized_regret_containment_pass
+            ),
+            "operational_envelope_containment_pass": (
+                self.operational_envelope_containment_pass
+            ),
+            "missing_reachable_child_semantics": (
+                PARTIAL_SUPPORT_POLICY_ABORT_RULE
+            ),
             "deterministic_semantic_selector": True,
             "fixed_stochastic_kappa_action_realization": True,
             "policy_randomization": False,
@@ -2544,7 +3244,7 @@ class RegisteredFixedKappaPolicyWitnessV1:
 
     @property
     def policy_witness_id(self) -> str:
-        return _content_id("registered_kappa_policy_witness", self._payload())
+        return _content_id("v074_kappa_policy_witness", self._payload())
 
     def to_document(self) -> dict[str, Any]:
         return {
@@ -2552,6 +3252,12 @@ class RegisteredFixedKappaPolicyWitnessV1:
             "root_decision": self.root_decision.to_document(),
             "child_decisions": [
                 item.to_document() for item in self.child_decisions
+            ],
+            "policy_abort_branches": [
+                item.to_document() for item in self.policy_abort_branches
+            ],
+            "exact_branch_partitions": [
+                item.to_document() for item in self.exact_branch_partitions
             ],
             "policy_witness_id": self.policy_witness_id,
         }
@@ -2701,6 +3407,9 @@ class RegisteredIndependentExactGroundEvaluationResultV1:
             != self.selected_expected_reward
             or self.selected_policy.failure_probability
             != self.selected_failure_probability
+            or self.selected_policy.exact_normalized_regret
+            != self.normalized_regret
+            or not self.selected_policy.operational_envelope_containment_pass
             or self.risk_pass
             != (
                 self.selected_failure_probability
@@ -2794,11 +3503,12 @@ class RegisteredIndependentExactGroundEvaluationResultV1:
     def _payload(self) -> dict[str, Any]:
         return {
             "schema": (
-                "acfqp.v072_registered_independent_exact_ground_result.v1"
+                "acfqp.v074_modeled_support_independent_exact_ground_result.v1"
             ),
             "schema_version": SCHEMA_VERSION,
-            "proposed_contract_version": PROPOSED_CONTRACT_VERSION,
-            "profile_key": PROFILE_KEY,
+            "contract_version": MODELED_SUPPORT_CONTRACT_VERSION,
+            "profile_key": MODELED_SUPPORT_PROFILE_KEY,
+            "profile_registration": MODELED_SUPPORT_PROFILE_REGISTRATION,
             "anchor_id": self.anchor_id,
             "occurrence_id": self.occurrence.occurrence_id,
             "operational_terminal_id": self.operational_terminal_id,
@@ -2831,6 +3541,48 @@ class RegisteredIndependentExactGroundEvaluationResultV1:
             "selected_failure_probability": _fdoc(
                 self.selected_failure_probability
             ),
+            "selected_environment_failure_probability": _fdoc(
+                self.selected_policy.environment_failure_probability
+            ),
+            "selected_policy_abort_failure_probability": _fdoc(
+                self.selected_policy.policy_abort_failure_probability
+            ),
+            "modeled_policy_support_authority_id": (
+                self.selected_policy.modeled_policy_support_authority_id
+            ),
+            "query_binding_id": self.selected_policy.query_binding_id,
+            "operational_audit_id": (
+                self.selected_policy.operational_audit_id
+            ),
+            "operational_root_reward_lower": _fdoc(
+                self.selected_policy.operational_root_reward_lower
+            ),
+            "operational_unrestricted_reward_upper": _fdoc(
+                self.selected_policy.operational_unrestricted_reward_upper
+            ),
+            "operational_root_failure_upper": _fdoc(
+                self.selected_policy.operational_root_failure_upper
+            ),
+            "operational_normalized_regret_upper": _fdoc(
+                self.selected_policy.operational_normalized_regret_upper
+            ),
+            "reward_containment_pass": (
+                self.selected_policy.reward_containment_pass
+            ),
+            "failure_containment_pass": (
+                self.selected_policy.failure_containment_pass
+            ),
+            "normalized_regret_containment_pass": (
+                self.selected_policy.normalized_regret_containment_pass
+            ),
+            "operational_envelope_containment_pass": (
+                self.selected_policy
+                .operational_envelope_containment_pass
+            ),
+            "exact_branch_partition_witness_ids": [
+                item.partition_witness_id
+                for item in self.selected_policy.exact_branch_partitions
+            ],
             "regret": None if self.regret is None else _fdoc(self.regret),
             "normalized_regret": (
                 None
@@ -2855,7 +3607,15 @@ class RegisteredIndependentExactGroundEvaluationResultV1:
 
     @property
     def result_id(self) -> str:
-        return _content_id("registered_result", self._payload())
+        return _content_id("v074_registered_result", self._payload())
+
+    @property
+    def selected_environment_failure_probability(self) -> Fraction:
+        return self.selected_policy.environment_failure_probability
+
+    @property
+    def selected_policy_abort_failure_probability(self) -> Fraction:
+        return self.selected_policy.policy_abort_failure_probability
 
     def to_document(self) -> dict[str, Any]:
         return {
@@ -3072,6 +3832,125 @@ class GenericH2FixedKappaPolicyV1:
         ):
             raise V072IndependentExactGroundEvaluationViolation(
                 "generic H=2 fixed-kappa policy is malformed"
+            )
+
+
+@dataclass(frozen=True, slots=True)
+class GenericH2PolicyAbortBranchV1:
+    """Exact failure contribution of one omitted reachable child state."""
+
+    root_action: tuple[int, int, int]
+    root_realization_weight: Fraction
+    state_key: tuple[int, ...]
+    conditional_branch_probability: Fraction
+    marginal_failure_probability: Fraction
+
+    def __post_init__(self) -> None:
+        _registered_action(
+            self.root_action,
+            "generic policy-abort root realization",
+        )
+        if (
+            type(self.root_realization_weight) is not Fraction
+            or not 0 < self.root_realization_weight <= 1
+            or type(self.state_key) is not tuple
+            or not self.state_key
+            or any(type(item) is not int for item in self.state_key)
+            or type(self.conditional_branch_probability) is not Fraction
+            or not 0 < self.conditional_branch_probability <= 1
+            or type(self.marginal_failure_probability) is not Fraction
+            or self.marginal_failure_probability
+            != (
+                self.root_realization_weight
+                * self.conditional_branch_probability
+            )
+        ):
+            raise V072IndependentExactGroundEvaluationViolation(
+                "generic policy-abort branch is malformed"
+            )
+
+    @property
+    def semantic_key(
+        self,
+    ) -> tuple[tuple[int, int, int], tuple[int, ...]]:
+        return self.root_action, self.state_key
+
+
+@dataclass(frozen=True, slots=True)
+class GenericH2PartialFixedKappaPolicyV1:
+    """Exact fixed-κ value with omitted child decisions mapped to abort."""
+
+    root_decision: GenericH2UniformKappaDecisionV1
+    child_decisions: tuple[
+        tuple[tuple[int, ...], GenericH2UniformKappaDecisionV1],
+        ...,
+    ]
+    expected_reward: Fraction
+    environment_failure_probability: Fraction
+    policy_abort_failure_probability: Fraction
+    failure_probability: Fraction
+    policy_abort_branches: tuple[GenericH2PolicyAbortBranchV1, ...]
+    missing_reachable_child_semantics: str = (
+        PARTIAL_SUPPORT_POLICY_ABORT_RULE
+    )
+
+    def __post_init__(self) -> None:
+        if (
+            type(self.root_decision)
+            is not GenericH2UniformKappaDecisionV1
+            or type(self.child_decisions) is not tuple
+            or self.child_decisions
+            != tuple(sorted(self.child_decisions, key=lambda item: item[0]))
+            or len({item[0] for item in self.child_decisions})
+            != len(self.child_decisions)
+            or any(
+                type(state_key) is not tuple
+                or not state_key
+                or type(decision) is not GenericH2UniformKappaDecisionV1
+                for state_key, decision in self.child_decisions
+            )
+            or type(self.expected_reward) is not Fraction
+            or self.expected_reward < 0
+            or type(self.environment_failure_probability) is not Fraction
+            or not 0 <= self.environment_failure_probability <= 1
+            or type(self.policy_abort_failure_probability) is not Fraction
+            or not 0 <= self.policy_abort_failure_probability <= 1
+            or type(self.failure_probability) is not Fraction
+            or not 0 <= self.failure_probability <= 1
+            or self.failure_probability
+            != (
+                self.environment_failure_probability
+                + self.policy_abort_failure_probability
+            )
+            or type(self.policy_abort_branches) is not tuple
+            or any(
+                type(item) is not GenericH2PolicyAbortBranchV1
+                for item in self.policy_abort_branches
+            )
+            or tuple(
+                item.semantic_key for item in self.policy_abort_branches
+            )
+            != tuple(
+                sorted(
+                    {
+                        item.semantic_key
+                        for item in self.policy_abort_branches
+                    }
+                )
+            )
+            or self.policy_abort_failure_probability
+            != sum(
+                (
+                    item.marginal_failure_probability
+                    for item in self.policy_abort_branches
+                ),
+                Fraction(0),
+            )
+            or self.missing_reachable_child_semantics
+            != PARTIAL_SUPPORT_POLICY_ABORT_RULE
+        ):
+            raise V072IndependentExactGroundEvaluationViolation(
+                "generic partial fixed-kappa policy is malformed"
             )
 
 
@@ -3455,6 +4334,203 @@ def evaluate_generic_h2_fixed_kappa_policy_v1(
     )
 
 
+def evaluate_generic_h2_partial_fixed_kappa_policy_v1(
+    *,
+    root_actions: tuple[GenericH2RootActionV1, ...],
+    root_decision: GenericH2UniformKappaDecisionV1,
+    child_decisions: tuple[
+        tuple[tuple[int, ...], GenericH2UniformKappaDecisionV1],
+        ...,
+    ],
+    modeled_child_support_by_root: tuple[
+        tuple[tuple[int, int, int], tuple[tuple[int, ...], ...]],
+        ...,
+    ],
+    globally_modeled_child_states: tuple[tuple[int, ...], ...],
+) -> GenericH2PartialFixedKappaPolicyV1:
+    """Evaluate a partial selector against frozen row-specific model support.
+
+    This is deliberately separate from
+    :func:`evaluate_generic_h2_fixed_kappa_policy_v1`, whose exact-coverage
+    contract remains unchanged for callers supplying a complete policy.  A
+    modeled child must have a decision.  An exact child outside the selected
+    root realization's modeled support aborts even if a dormant decision for
+    that same state exists because another model row can reach it.
+    """
+
+    if (
+        type(root_actions) is not tuple
+        or any(type(item) is not GenericH2RootActionV1 for item in root_actions)
+        or type(root_decision) is not GenericH2UniformKappaDecisionV1
+        or type(child_decisions) is not tuple
+        or child_decisions
+        != tuple(sorted(child_decisions, key=lambda item: item[0]))
+        or len({item[0] for item in child_decisions}) != len(child_decisions)
+        or any(
+            type(state_key) is not tuple
+            or type(decision) is not GenericH2UniformKappaDecisionV1
+            for state_key, decision in child_decisions
+        )
+        or type(modeled_child_support_by_root) is not tuple
+        or modeled_child_support_by_root
+        != tuple(
+            sorted(
+                modeled_child_support_by_root,
+                key=lambda item: item[0],
+            )
+        )
+        or len(
+            {root_action for root_action, _ in modeled_child_support_by_root}
+        )
+        != len(modeled_child_support_by_root)
+        or any(
+            _registered_action(root_action, "generic modeled-support root")
+            != root_action
+            or type(states) is not tuple
+            or states != tuple(sorted(set(states)))
+            or any(
+                type(state) is not tuple
+                or not state
+                or any(type(value) is not int for value in state)
+                for state in states
+            )
+            for root_action, states in modeled_child_support_by_root
+        )
+        or type(globally_modeled_child_states) is not tuple
+        or globally_modeled_child_states
+        != tuple(sorted(set(globally_modeled_child_states)))
+        or any(
+            type(state) is not tuple
+            or not state
+            or any(type(value) is not int for value in state)
+            for state in globally_modeled_child_states
+        )
+    ):
+        raise V072IndependentExactGroundEvaluationViolation(
+            "generic partial fixed-kappa H=2 policy is malformed"
+        )
+    root_by_action = {item.action: item for item in root_actions}
+    if len(root_by_action) != len(root_actions):
+        raise V072IndependentExactGroundEvaluationViolation(
+            "generic partial fixed-kappa exact root inventory is duplicated"
+        )
+    selected_roots = tuple(
+        (weight, root_by_action.get(action))
+        for action, weight in zip(
+            root_decision.actions,
+            root_decision.uniform_weights,
+            strict=True,
+        )
+    )
+    if any(item is None for _, item in selected_roots):
+        raise V072IndependentExactGroundEvaluationViolation(
+            "generic partial fixed-kappa root support is outside exact "
+            "inventory"
+        )
+    canonical_roots = tuple(
+        (weight, item) for weight, item in selected_roots if item is not None
+    )
+    child_by_state = dict(child_decisions)
+    modeled_by_root = dict(modeled_child_support_by_root)
+    selected_root_actions = {root.action for _, root in canonical_roots}
+    if set(modeled_by_root) != selected_root_actions:
+        raise V072IndependentExactGroundEvaluationViolation(
+            "generic partial fixed-kappa modeled support does not bind each "
+            "selected root realization exactly once"
+        )
+    global_modeled = set(globally_modeled_child_states)
+    if (
+        any(
+            not set(states) <= global_modeled
+            for states in modeled_by_root.values()
+        )
+        or not set(child_by_state) <= global_modeled
+    ):
+        raise V072IndependentExactGroundEvaluationViolation(
+            "generic partial fixed-kappa decision/support is outside the "
+            "global frozen model state registry"
+        )
+    for _, root in canonical_roots:
+        exact_positive = {
+            branch.state_key for branch in root.child_branches
+        }
+        modeled = set(modeled_by_root[root.action])
+        if not modeled <= exact_positive:
+            raise V074ModeledSupportExactLiftProtocolViolation(
+                "MODELED_SUPPORT_NOT_PRESENT_IN_EXACT_POSITIVE_BRANCHES"
+            )
+        if not modeled <= set(child_by_state):
+            raise V074ModeledSupportExactLiftProtocolViolation(
+                "MODELED_SELECTED_ROOT_CHILD_DECISION_OMISSION"
+            )
+
+    reward = Fraction(0)
+    environment_failure = Fraction(0)
+    abort_branches: list[GenericH2PolicyAbortBranchV1] = []
+    for root_weight, root in canonical_roots:
+        conditional_reward = root.reward
+        conditional_environment_failure = (
+            root.immediate_failure_probability
+        )
+        modeled_for_root = set(modeled_by_root[root.action])
+        for branch in root.child_branches:
+            if branch.state_key not in modeled_for_root:
+                abort_branches.append(
+                    GenericH2PolicyAbortBranchV1(
+                        root.action,
+                        root_weight,
+                        branch.state_key,
+                        branch.probability,
+                        root_weight * branch.probability,
+                    )
+                )
+                continue
+            decision = child_by_state[branch.state_key]
+            options = {item.action: item for item in branch.actions}
+            child_reward = Fraction(0)
+            child_failure = Fraction(0)
+            for action, weight in zip(
+                decision.actions,
+                decision.uniform_weights,
+                strict=True,
+            ):
+                option = options.get(action)
+                if option is None:
+                    raise V072IndependentExactGroundEvaluationViolation(
+                        "generic partial fixed-kappa child support is "
+                        "outside exact inventory"
+                    )
+                child_reward += weight * option.reward
+                child_failure += weight * option.failure_probability
+            conditional_reward += branch.probability * child_reward
+            conditional_environment_failure += (
+                branch.probability * child_failure
+            )
+        reward += root_weight * conditional_reward
+        environment_failure += (
+            root_weight * conditional_environment_failure
+        )
+    abort_tuple = tuple(
+        sorted(abort_branches, key=lambda item: item.semantic_key)
+    )
+    policy_abort_failure = sum(
+        (
+            item.marginal_failure_probability
+            for item in abort_tuple
+        ),
+        Fraction(0),
+    )
+    return GenericH2PartialFixedKappaPolicyV1(
+        root_decision,
+        child_decisions,
+        reward,
+        environment_failure,
+        policy_abort_failure,
+        environment_failure + policy_abort_failure,
+        abort_tuple,
+    )
+
+
 def evaluate_development_h2_generic_dp_control_v1(
     *,
     anchor: Any,
@@ -3715,6 +4791,10 @@ def _evaluate_registered_exact_ground(
         registered_prereg.HORIZON,
     )
     root_specs: list[GenericH2RootActionV1] = []
+    exact_root_row_by_action: dict[
+        tuple[int, int, int],
+        RegisteredExactGroundRowV1,
+    ] = {}
     states_by_key: dict[
         tuple[int, ...],
         registered_observer.HeldoutSymbolicGraphStateV2,
@@ -3725,6 +4805,7 @@ def _evaluate_registered_exact_ground(
             registered_prereg.HORIZON,
             root_action,
         )
+        exact_root_row_by_action[root_action] = root_row
         active_probabilities: dict[
             registered_observer.HeldoutSymbolicGraphStateV2,
             Fraction,
@@ -3825,6 +4906,10 @@ def _evaluate_registered_exact_ground(
     child_by_state = {
         item.state.ranks: item for item in selected_decisions
     }
+    if len(child_by_state) != len(selected_decisions):
+        raise V074ModeledSupportExactLiftProtocolViolation(
+            "child_by_ground_state contains duplicate exact state keys"
+        )
     selected_root_specs: list[
         tuple[Fraction, GenericH2RootActionV1]
     ] = []
@@ -3840,59 +4925,179 @@ def _evaluate_registered_exact_ground(
                 "fixed-kappa root realization is absent from exact ground"
             )
         selected_root_specs.append((weight, root_spec))
-    required_child_states = {
-        branch.state_key
-        for _, root_spec in selected_root_specs
-        for branch in root_spec.child_branches
-    }
-    if not required_child_states <= set(child_by_state):
-        raise V072IndependentExactGroundEvaluationViolation(
-            "fixed-kappa selected policy does not cover the union of child "
-            "states reachable under every root realization"
+    support_authority = operational_policy.modeled_support_authority
+    if (
+        support_authority.context_id != context.context_id
+        or support_authority.query_risk_tolerance
+        != context.risk_tolerance
+        or support_authority.query_reward_ceiling
+        != context.reward_ceiling
+        or support_authority.query_normalized_regret_tolerance
+        != context.normalized_regret_tolerance
+    ):
+        raise V074ModeledSupportExactLiftProtocolViolation(
+            "modeled-support query/audit authority was transplanted"
         )
-    for decision in selected_decisions:
-        if states_by_key.get(decision.state.ranks) != decision.state:
-            raise V072IndependentExactGroundEvaluationViolation(
-                "selected-policy state was re-signed or is unreachable"
-            )
-    selected_reward = Fraction(0)
-    selected_failure = Fraction(0)
-    for root_weight, root_spec in selected_root_specs:
-        conditional_reward = root_spec.reward
-        conditional_failure = root_spec.immediate_failure_probability
-        for branch in root_spec.child_branches:
-            decision = child_by_state[branch.state_key]
-            option_by_action = {
-                item.action: item for item in branch.actions
+    global_modeled_child_states = tuple(
+        sorted(
+            {
+                item.state_ranks
+                for item in support_authority.global_modeled_children
             }
-            child_reward = Fraction(0)
-            child_failure = Fraction(0)
-            for action, weight in zip(
-                decision.ground_actions,
-                decision.uniform_weights,
-                strict=True,
-            ):
-                option = option_by_action.get(action)
-                if option is None:
-                    raise V072IndependentExactGroundEvaluationViolation(
-                        "fixed-kappa child realization is absent from exact "
-                        "ground"
-                    )
-                child_reward += weight * option.reward
-                child_failure += weight * option.failure_probability
-            conditional_reward += branch.probability * child_reward
-            conditional_failure += branch.probability * child_failure
-        selected_reward += root_weight * conditional_reward
-        selected_failure += root_weight * conditional_failure
-    selected_witness = RegisteredFixedKappaPolicyWitnessV1(
-        occurrence.occurrence_id,
-        context.context_id,
-        operational_policy.route_kind,
-        operational_policy.root_decision,
-        selected_decisions,
-        selected_reward,
-        selected_failure,
+        )
     )
+    if len(global_modeled_child_states) != len(
+        support_authority.global_modeled_children
+    ):
+        raise V074ModeledSupportExactLiftProtocolViolation(
+            "two frozen model states collapse to one exact semantic key"
+        )
+    modeled_child_support_by_root = tuple(
+        sorted(
+            (
+                (
+                    row.realization.action,
+                    tuple(
+                        sorted(
+                            child.state_ranks
+                            for child in row.active_children
+                        )
+                    ),
+                )
+                for row in support_authority.selected_root_rows
+            ),
+            key=lambda item: item[0],
+        )
+    )
+    generic_root_decision = GenericH2UniformKappaDecisionV1(
+        operational_policy.root_decision.semantic_action_id,
+        tuple(
+            sorted(operational_policy.root_decision.ground_actions)
+        ),
+        operational_policy.root_decision.uniform_weights,
+    )
+    active_generic_child_decisions = tuple(
+        (
+            decision.state.ranks,
+            GenericH2UniformKappaDecisionV1(
+                decision.semantic_action_id,
+                tuple(
+                    sorted(decision.ground_actions)
+                ),
+                decision.uniform_weights,
+            ),
+        )
+        for decision in selected_decisions
+    )
+    partial_selected = (
+        evaluate_generic_h2_partial_fixed_kappa_policy_v1(
+            root_actions=tuple(root_specs),
+            root_decision=generic_root_decision,
+            child_decisions=active_generic_child_decisions,
+            modeled_child_support_by_root=(
+                modeled_child_support_by_root
+            ),
+            globally_modeled_child_states=(
+                global_modeled_child_states
+            ),
+        )
+    )
+    selected_reward = partial_selected.expected_reward
+    selected_environment_failure = (
+        partial_selected.environment_failure_probability
+    )
+    selected_policy_abort_failure = (
+        partial_selected.policy_abort_failure_probability
+    )
+    selected_failure = partial_selected.failure_probability
+    support_row_by_action = {
+        item.realization.action: item
+        for item in support_authority.selected_root_rows
+    }
+    exact_partitions: list[ExactBranchPartitionWitnessV1] = []
+    abort_atom_ids_by_action_state: dict[
+        tuple[tuple[int, int, int], tuple[int, ...]],
+        tuple[str, ...],
+    ] = {}
+    for root_action, support_row in support_row_by_action.items():
+        exact_row = exact_root_row_by_action[root_action]
+        modeled_states = {
+            item.state_ranks for item in support_row.active_children
+        }
+        environment_ids: list[str] = []
+        modeled_ids: list[str] = []
+        abort_ids: list[str] = []
+        abort_ids_by_state: dict[tuple[int, ...], list[str]] = {}
+        for atom in exact_row.atoms:
+            if atom.failure:
+                environment_ids.append(atom.atom_id)
+            elif atom.terminal:
+                raise V074ModeledSupportExactLiftProtocolViolation(
+                    "H=2 selected root row contains an unclassified "
+                    "terminal-success atom"
+                )
+            elif atom.next_state.ranks in modeled_states:
+                modeled_ids.append(atom.atom_id)
+            else:
+                abort_ids.append(atom.atom_id)
+                abort_ids_by_state.setdefault(
+                    atom.next_state.ranks,
+                    [],
+                ).append(atom.atom_id)
+        partition = ExactBranchPartitionWitnessV1(
+            occurrence.occurrence_id,
+            context.context_id,
+            root_action,
+            support_row.realization.weight,
+            support_authority.authority_id,
+            support_row.selected_row_id,
+            exact_row.row_id,
+            tuple(item.atom_id for item in exact_row.atoms),
+            tuple(
+                (item.atom_id, item.probability)
+                for item in exact_row.atoms
+            ),
+            tuple(sorted(environment_ids)),
+            tuple(sorted(modeled_ids)),
+            tuple(sorted(abort_ids)),
+            sum(
+                (
+                    item.probability
+                    for item in exact_row.atoms
+                    if item.atom_id in environment_ids
+                ),
+                Fraction(0),
+            ),
+            sum(
+                (
+                    item.probability
+                    for item in exact_row.atoms
+                    if item.atom_id in modeled_ids
+                ),
+                Fraction(0),
+            ),
+            sum(
+                (
+                    item.probability
+                    for item in exact_row.atoms
+                    if item.atom_id in abort_ids
+                ),
+                Fraction(0),
+            ),
+        )
+        exact_partitions.append(partition)
+        abort_atom_ids_by_action_state.update(
+            {
+                (root_action, state_key): tuple(sorted(atom_ids))
+                for state_key, atom_ids in abort_ids_by_state.items()
+            }
+        )
+    registered_partitions = tuple(
+        sorted(exact_partitions, key=lambda item: item.semantic_key)
+    )
+    partition_by_action = {
+        item.root_ground_action: item for item in registered_partitions
+    }
     risk_pass = selected_failure <= context.risk_tolerance
     if optimal_policy is None or not risk_pass:
         regret = None
@@ -3904,6 +5109,77 @@ def _evaluate_registered_exact_ground(
         regret_pass = (
             normalized_regret <= context.normalized_regret_tolerance
         )
+    reward_containment = (
+        support_authority.operational_root_reward_lower
+        <= selected_reward
+        <= support_authority.operational_unrestricted_reward_upper
+    )
+    failure_containment = (
+        selected_failure
+        <= support_authority.operational_root_failure_upper
+    )
+    normalized_regret_containment = (
+        normalized_regret is not None
+        and normalized_regret
+        <= support_authority.operational_normalized_regret_upper
+    )
+    if (
+        not reward_containment
+        or not failure_containment
+        or not normalized_regret_containment
+    ):
+        raise V074ModeledSupportExactLiftProtocolViolation(
+            "exact selected policy violates its certified operational "
+            "reward/failure/regret envelope"
+        )
+    registered_abort_branches = tuple(
+        RegisteredPolicyAbortBranchWitnessV1(
+            occurrence.occurrence_id,
+            context.context_id,
+            states_by_key[item.state_key].state_id,
+            item.state_key,
+            item.root_action,
+            item.root_realization_weight,
+            item.conditional_branch_probability,
+            item.marginal_failure_probability,
+            support_authority.authority_id,
+            support_row_by_action[item.root_action].selected_row_id,
+            partition_by_action[item.root_action].partition_witness_id,
+            partition_by_action[item.root_action].exact_root_row_id,
+            abort_atom_ids_by_action_state[
+                (item.root_action, item.state_key)
+            ],
+            support_authority.global_other_destination_id,
+            support_authority.global_other_handler_id,
+        )
+        for item in partial_selected.policy_abort_branches
+    )
+    selected_witness = RegisteredFixedKappaPolicyWitnessV1(
+        occurrence.occurrence_id,
+        context.context_id,
+        operational_policy.route_kind,
+        operational_policy.root_decision,
+        selected_decisions,
+        selected_reward,
+        selected_failure,
+        selected_environment_failure,
+        selected_policy_abort_failure,
+        registered_abort_branches,
+        registered_partitions,
+        support_authority.authority_id,
+        support_authority.global_other_handler_id,
+        support_authority.query_binding_id,
+        support_authority.operational_audit_id,
+        support_authority.operational_root_reward_lower,
+        support_authority.operational_unrestricted_reward_upper,
+        support_authority.operational_root_failure_upper,
+        support_authority.operational_normalized_regret_upper,
+        normalized_regret,
+        reward_containment,
+        failure_containment,
+        normalized_regret_containment,
+        True,
+    )
     status = (
         RegisteredExactGroundEvaluationStatusV1.GROUND_QUERY_INFEASIBLE
         if optimal_policy is None
@@ -3993,6 +5269,23 @@ def evaluate_registered_independent_exact_ground_v1(
     )
 
 
+def evaluate_registered_independent_exact_ground_v2(
+    *,
+    anchor: Any,
+    context: Any,
+    operational_terminal: Any,
+    selected_policy: Any,
+) -> RegisteredIndependentExactGroundEvaluationResultV1:
+    """V0-074 successor entrypoint for modeled-support total exact lift."""
+
+    return evaluate_registered_independent_exact_ground_v1(
+        anchor=anchor,
+        context=context,
+        operational_terminal=operational_terminal,
+        selected_policy=selected_policy,
+    )
+
+
 __all__ = [
     "DEVELOPMENT_SCOPE",
     "EVALUATION_LANE",
@@ -4002,16 +5295,23 @@ __all__ = [
     "ExactGroundPolicyV1",
     "ExactGroundRowV1",
     "ExactGroundTransitionV1",
+    "ExactBranchPartitionWitnessV1",
     "GenericH2ChildActionV1",
     "GenericH2ChildBranchV1",
     "GenericH2DeterministicCoreResultV1",
     "GenericH2DeterministicPolicyV1",
     "GenericH2FixedKappaPolicyV1",
+    "GenericH2PartialFixedKappaPolicyV1",
+    "GenericH2PolicyAbortBranchV1",
     "GenericH2RootActionV1",
     "GenericH2UniformKappaDecisionV1",
     "IndependentExactGroundEvaluationResultV1",
     "ExactGroundSameImplementationReplayVerificationV1",
+    "MODELED_SUPPORT_CONTRACT_VERSION",
+    "MODELED_SUPPORT_PROFILE_KEY",
+    "MODELED_SUPPORT_PROFILE_REGISTRATION",
     "PROFILE_KEY",
+    "PARTIAL_SUPPORT_POLICY_ABORT_RULE",
     "PROPOSED_CONTRACT_VERSION",
     "REGISTERED_EVALUATION_ALLOWED",
     "REGISTERED_OPERATIONAL_TERMINAL_AUTHORITY_ENABLED",
@@ -4031,8 +5331,10 @@ __all__ = [
     "RegisteredOccurrenceOperationalTerminalRefDraftV1",
     "RegisteredOperationalTerminalPolicyBundleV1",
     "RegisteredOperationalSelectedPolicyV1",
+    "RegisteredPolicyAbortBranchWitnessV1",
     "SCHEMA_VERSION",
     "V072IndependentExactGroundEvaluationViolation",
+    "V074ModeledSupportExactLiftProtocolViolation",
     "DevelopmentExactGroundContextV1",
     "DevelopmentExactGroundQueryV1",
     "DevelopmentExactGroundSemanticAnchorV1",
@@ -4046,8 +5348,11 @@ __all__ = [
     "evaluate_development_h2_generic_dp_control_v1",
     "evaluate_generic_h2_deterministic_policy_v1",
     "evaluate_generic_h2_fixed_kappa_policy_v1",
+    "evaluate_generic_h2_partial_fixed_kappa_policy_v1",
     "evaluate_registered_independent_exact_ground_v1",
+    "evaluate_registered_independent_exact_ground_v2",
     "mint_registered_occurrence_operational_terminal_policy_v1",
+    "mint_registered_occurrence_operational_terminal_policy_v2",
     "registered_occurrence_identity_v1",
     "solve_generic_h2_deterministic_core_v1",
     "verify_development_exact_ground_same_implementation_replay_v1",

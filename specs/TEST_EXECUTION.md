@@ -10,9 +10,9 @@ The exact current case/module count is refreshed at each release Gate. These
 cases are not independent research Gates: many are attacks and replay checks
 for the same frozen Gate.
 
-## Formal fresh lane
+## Historical V0-072 formal fresh lane
 
-The V0-072 release-authoritative command is:
+The V0-072 release-authoritative command was:
 
 ```bash
 python3 scripts/run_v072_confirmatory_tests.py
@@ -103,10 +103,55 @@ pytest collection so that missing or duplicate modules cannot be hidden.
 
 ## Current measured validation
 
-### V0-072 construction and first anchored-attempt validation
+### V0-074 nonauthorizing repair validation state
 
-The following focused lanes have actually completed on the current
-construction tree:
+V0-072 attempt ordinal 2 is immutably closed after 4 of 15 logical
+occurrences as
+`ATTEMPT_CLOSURE_NONCERTIFICATE.PROTOCOL_FAILURE`. Its record is
+`specs/V072_ANCHORED_ATTEMPT_2_FAILURE.json`, record ID
+`cfcc4173e05f7e1ae0354849c40ae72aef5b80ca1dbd747de185e5e1dabdb64e`.
+No canonical result, terminal certificate, scientific endpoint, resume slot,
+or retry remains. The earlier V0-072 commands and counts below are retained
+only as historical construction and failure-chain evidence.
+
+V0-074 testing is limited to the repaired mechanics:
+
+- exact outcomes absent from frozen modeled support map to an absorbing
+  policy-abort failure with zero continuation reward and typed branch
+  witnesses;
+- source payload and offline work are frozen in a content-addressed
+  pre-target archive; and
+- independent occurrences may execute in isolated processes, but canonical
+  ordinal merge must make sequential and parallel outputs byte-identical and
+  failure paths must retain all launched work and child journals.
+
+The archive/parallel tests use only registered synthetic transport workers.
+They do not integrate the production V0-072 proposal schema, observation
+runtime, planner, campaign executor, or endpoint verifier. The repaired exact
+path now replays the operational authority, exact row/atom branch partition
+and robust-envelope containment, but its validation on a fresh scientific
+bundle remains `NOT_RUN`.
+
+The final local affected-module regression for this construction passed
+`200` tests. This is a mechanics/regression count, not a scientific endpoint
+or sample-efficiency result.
+
+These tests cannot authorize a scientific rerun. A scientific validation
+requires a new preregistration, manifest and anchor plus fresh target
+identities/tapes and genuinely fresh held-out occurrences. Until that happens:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+```
+
+### Historical V0-072 construction and first anchored-attempt validation
+
+The following focused lanes completed on the historical construction tree:
 
 ```text
 exact lazy planner + independent verifier + partial robust = 35 / 35, 6.38 s
@@ -155,8 +200,10 @@ The actual target attempt subsequently failed closed at the first K7
 matched-direct 2,048 checkpoint due to an omitted verifier enum case. No
 campaign result or endpoint was written; its tracked record is
 `specs/V072_ANCHORED_ATTEMPT_1_FAILURE.json`. The repair changes the component
-tree, so the first 2,307-case result does not authorize the replacement
-attempt: the exact fresh-ID Gate must run again before a new chain is frozen.
+tree, so the first 2,307-case result did not authorize the replacement
+attempt. That replacement later ran its own frozen chain and produced the
+distinct immutable attempt-2 failure recorded above; it did not produce a
+scientific endpoint.
 
 ### V0-067 release validation
 

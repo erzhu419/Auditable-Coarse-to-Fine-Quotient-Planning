@@ -400,6 +400,16 @@ def _certified_first_occurrence(
     )
     root_decision = SimpleNamespace(
         decision_id=_id("certified-root-decision:0"),
+        to_document=lambda: {
+            "decision_id": _id("certified-root-decision:0")
+        },
+    )
+    modeled_support = SimpleNamespace(
+        authority_id=_id("certified-modeled-support:0"),
+        global_other_handler_id=_id("certified-other-handler:0"),
+        to_document=lambda: {
+            "authority_id": _id("certified-modeled-support:0")
+        },
     )
     selected_policy = _unsafe_exact(
         evaluator.RegisteredOperationalSelectedPolicyV1,
@@ -412,6 +422,7 @@ def _certified_first_occurrence(
         ),
         root_decision=root_decision,
         child_decisions=(),
+        modeled_support_authority=modeled_support,
     )
     operational_terminal = _unsafe_exact(
         evaluator.RegisteredOccurrenceOperationalTerminalV1,
@@ -431,7 +442,12 @@ def _certified_first_occurrence(
         verified_runtime_adapter_id=_id("runtime-adapter:0"),
         mint_authority_id=bundle.mint_authority_id,
         evaluator_bundle=bundle,
-        access_audit=SimpleNamespace(audit_id=_id("access-audit:0")),
+        access_audit=SimpleNamespace(
+            audit_id=_id("access-audit:0"),
+            to_document=lambda: {
+                "audit_id": _id("access-audit:0")
+            },
+        ),
         _authority_result_id=_id("terminal-authority-result:0"),
     )
     selected_witness = _unsafe_exact(
@@ -443,6 +459,25 @@ def _certified_first_occurrence(
         child_decisions=(),
         expected_reward=Fraction(1),
         failure_probability=Fraction(0),
+        environment_failure_probability=Fraction(0),
+        policy_abort_failure_probability=Fraction(0),
+        policy_abort_branches=(),
+        exact_branch_partitions=(),
+        modeled_policy_support_authority_id=(
+            modeled_support.authority_id
+        ),
+        global_other_handler_id=modeled_support.global_other_handler_id,
+        query_binding_id=_id("certified-query-binding:0"),
+        operational_audit_id=_id("certified-operational-audit:0"),
+        operational_root_reward_lower=Fraction(1),
+        operational_unrestricted_reward_upper=Fraction(1),
+        operational_root_failure_upper=Fraction(0),
+        operational_normalized_regret_upper=Fraction(0),
+        exact_normalized_regret=Fraction(0),
+        reward_containment_pass=True,
+        failure_containment_pass=True,
+        normalized_regret_containment_pass=True,
+        operational_envelope_containment_pass=True,
     )
     work = evaluator.RegisteredExactGroundEvaluationWorkV1(
         evaluation_exact_atom_api_calls=1,
@@ -463,9 +498,19 @@ def _certified_first_occurrence(
             evaluator.RegisteredExactGroundEvaluationStatusV1
             .CERTIFICATE_METRICS_PASS
         ),
-        rows=(SimpleNamespace(row_id=_id("exact-row:0")),),
+        rows=(
+            SimpleNamespace(
+                row_id=_id("exact-row:0"),
+                to_document=lambda: {
+                    "row_id": _id("exact-row:0")
+                },
+            ),
+        ),
         optimal_policy=SimpleNamespace(
             policy_witness_id=_id("optimal-policy:0"),
+            to_document=lambda: {
+                "policy_witness_id": _id("optimal-policy:0")
+            },
         ),
         selected_policy=selected_witness,
         optimal_expected_reward=Fraction(1),
@@ -556,10 +601,25 @@ def test_reconciliation_rejects_unknown_route_kind_without_defaulting_direct(
 
 def test_certified_occurrence_is_registration_disjoint_and_replays(
     mechanics_bundle,
+    monkeypatch,
 ) -> None:
     chain, plan, _routes, source_replay = mechanics_bundle
     routes, authorities, evaluations = _certified_first_occurrence(
         mechanics_bundle
+    )
+    asserted_authority = authorities[0]
+    asserted_evaluation = evaluations[0]
+    assert asserted_authority is not None
+    assert asserted_evaluation is not None
+    monkeypatch.setattr(
+        terminal,
+        "derive_registered_operational_terminal_authority_v1",
+        lambda **_kwargs: asserted_authority,
+    )
+    monkeypatch.setattr(
+        evaluator,
+        "evaluate_registered_independent_exact_ground_v2",
+        lambda **_kwargs: asserted_evaluation,
     )
     result = reconciliation.reconcile_registered_v072_campaign_v1(
         authority_chain=chain,
@@ -583,6 +643,56 @@ def test_certified_occurrence_is_registration_disjoint_and_replays(
         )
     )
     assert verification.reconciliation_id == result.reconciliation_id
+
+    tampered_authority_replay = _unsafe_clone(
+        asserted_authority,
+        _authority_result_id=_id("tampered-authority-replay"),
+    )
+    monkeypatch.setattr(
+        terminal,
+        "derive_registered_operational_terminal_authority_v1",
+        lambda **_kwargs: tampered_authority_replay,
+    )
+    with pytest.raises(
+        independent.IndependentRegisteredCampaignReconciliationFailure,
+        match="operational terminal authority",
+    ):
+        independent.verify_registered_v072_campaign_reconciliation_independently_v1(
+            authority_chain=chain,
+            execution_plan=plan,
+            source_reconstruction_replay=source_replay,
+            claimed=result,
+        )
+    monkeypatch.setattr(
+        terminal,
+        "derive_registered_operational_terminal_authority_v1",
+        lambda **_kwargs: asserted_authority,
+    )
+
+    tampered_replay = _unsafe_clone(
+        asserted_evaluation,
+        selected_expected_reward=Fraction(2),
+    )
+    monkeypatch.setattr(
+        evaluator,
+        "evaluate_registered_independent_exact_ground_v2",
+        lambda **_kwargs: tampered_replay,
+    )
+    with pytest.raises(
+        independent.IndependentRegisteredCampaignReconciliationFailure,
+        match="exact rows, atoms, branch partition",
+    ):
+        independent.verify_registered_v072_campaign_reconciliation_independently_v1(
+            authority_chain=chain,
+            execution_plan=plan,
+            source_reconstruction_replay=source_replay,
+            claimed=result,
+        )
+    monkeypatch.setattr(
+        evaluator,
+        "evaluate_registered_independent_exact_ground_v2",
+        lambda **_kwargs: asserted_evaluation,
+    )
 
     authority = authorities[0]
     assert authority is not None

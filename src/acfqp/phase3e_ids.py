@@ -269,6 +269,33 @@ V072_REGISTERED_CAMPAIGN_ATTEMPT_JOURNAL_OBJECT_DOMAIN = (
 V072_REGISTERED_CAMPAIGN_ATTEMPT_JOURNAL_EVENT_DOMAIN = (
     "acfqp:v072-registered-campaign-attempt-journal-event:v1"
 )
+FROZEN_SOURCE_ARCHIVE_ENVELOPE_DOMAIN = (
+    "acfqp:v074-frozen-source-archive-envelope:v1"
+)
+FROZEN_SOURCE_OFFLINE_WORK_DOMAIN = (
+    "acfqp:v074-frozen-source-offline-work:v1"
+)
+FROZEN_SOURCE_OCCURRENCE_INPUT_DOMAIN = (
+    "acfqp:v074-frozen-source-occurrence-input:v1"
+)
+FROZEN_SOURCE_OCCURRENCE_OUTPUT_DOMAIN = (
+    "acfqp:v074-frozen-source-occurrence-output:v1"
+)
+FROZEN_SOURCE_CHILD_ATTEMPT_JOURNAL_DOMAIN = (
+    "acfqp:v074-frozen-source-child-attempt-journal:v1"
+)
+FROZEN_SOURCE_OCCURRENCE_FAILURE_CLOSURE_DOMAIN = (
+    "acfqp:v074-frozen-source-occurrence-failure-closure:v1"
+)
+FROZEN_SOURCE_OCCURRENCE_MERGE_DOMAIN = (
+    "acfqp:v074-frozen-source-occurrence-merge:v1"
+)
+FROZEN_SOURCE_VERIFICATION_ATTESTATION_DOMAIN = (
+    "acfqp:v074-frozen-source-verification-attestation:v1"
+)
+FROZEN_SOURCE_EXECUTION_BATCH_DOMAIN = (
+    "acfqp:v074-frozen-source-execution-batch:v1"
+)
 
 
 PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
@@ -481,6 +508,33 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "v072_registered_campaign_attempt_journal_event": (
             V072_REGISTERED_CAMPAIGN_ATTEMPT_JOURNAL_EVENT_DOMAIN
+        ),
+        "frozen_source_archive_envelope": (
+            FROZEN_SOURCE_ARCHIVE_ENVELOPE_DOMAIN
+        ),
+        "frozen_source_offline_work": (
+            FROZEN_SOURCE_OFFLINE_WORK_DOMAIN
+        ),
+        "frozen_source_occurrence_input": (
+            FROZEN_SOURCE_OCCURRENCE_INPUT_DOMAIN
+        ),
+        "frozen_source_occurrence_output": (
+            FROZEN_SOURCE_OCCURRENCE_OUTPUT_DOMAIN
+        ),
+        "frozen_source_child_attempt_journal": (
+            FROZEN_SOURCE_CHILD_ATTEMPT_JOURNAL_DOMAIN
+        ),
+        "frozen_source_occurrence_failure_closure": (
+            FROZEN_SOURCE_OCCURRENCE_FAILURE_CLOSURE_DOMAIN
+        ),
+        "frozen_source_occurrence_merge": (
+            FROZEN_SOURCE_OCCURRENCE_MERGE_DOMAIN
+        ),
+        "frozen_source_verification_attestation": (
+            FROZEN_SOURCE_VERIFICATION_ATTESTATION_DOMAIN
+        ),
+        "frozen_source_execution_batch": (
+            FROZEN_SOURCE_EXECUTION_BATCH_DOMAIN
         ),
     }
 )

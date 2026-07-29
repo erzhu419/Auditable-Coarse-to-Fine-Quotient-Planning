@@ -1,7 +1,7 @@
 # V0-072 Final Preregistration and Remote-Main Anchor
 
-Status: first chain anchored; attempt 1 failed as a protocol noncertificate;
-one clean repair/re-anchor is pending.
+Status: two chains anchored; both attempts failed as protocol
+noncertificates; V0-072 attempt authority is exhausted.
 
 ## Dependency direction
 
@@ -109,18 +109,29 @@ independent row-work verifier omitted the registered
 written. The tracked historical record is
 `specs/V072_ANCHORED_ATTEMPT_1_FAILURE.json`.
 
-Ledger amendment 1.34.7 permits only the exhaustive enum repair and durable
-attempt journaling. The old tape and evidence are non-reusable. A replacement
-must freeze and anchor a new identity chain and restart all 15 occurrences.
-Until then:
+Ledger amendment 1.34.7 permitted exactly one exhaustive-enum and durable-
+journal repair.  That replacement was anchored at commit
+`63cc0f5f78f64b7845319d1c1a5856212e3b8097` with:
 
 ```text
-replacement_source_reconstruction_recipe_id = null
-replacement_final_manifest_id = null
-replacement_final_preregistration_id = null
-replacement_remote_main_anchor_id = null
+replacement_source_reconstruction_recipe_id = 7f6cebc1edf2bf007ae63a165866b8a3e6c6c4cb47b23a120eb1fa874be1e1d1
+replacement_final_manifest_id = 2af044753017e6aeb1295408db23a2f8e923fbd7acdd207029e21371e7f09865
+replacement_final_preregistration_id = 966c6631db568851829dfec0079b73920f0a980f8583d65d9eb6c14e23278e26
+replacement_remote_main_anchor_id = 1c123268407d609ea853452c0145d21153e87251dfe8de61802264ccd6203474
 replacement_campaign_result_id = null
 SAMPLE_EFFICIENCY_GATE_NOT_RUN
 ```
 
+Attempt 2 durably completed four occurrences and failed during the fifth
+occurrence's exact lift.  It closed
+`ATTEMPT_CLOSURE_NONCERTIFICATE.PROTOCOL_FAILURE`; no campaign result or
+endpoint was written.  Its canonical record is
+`specs/V072_ANCHORED_ATTEMPT_2_FAILURE.json`, ID
+`cfcc4173e05f7e1ae0354849c40ae72aef5b80ca1dbd747de185e5e1dabdb64e`.
+
 No V0-072 target law, seed, draw schedule, stopping rule or endpoint changed.
+There is no remaining V0-072 retry.  The exact-lift repair and lossless
+parallel/source-archive construction have a new proposed contract in
+`specs/PARTIAL_SUPPORT_TOTAL_LIFT_AND_PARALLEL_EXECUTION.md`; any scientific
+rerun requires a separate preregistration, manifest and anchor plus fresh
+target identities/tapes and genuinely fresh held-out occurrences.

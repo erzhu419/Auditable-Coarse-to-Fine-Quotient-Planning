@@ -2,7 +2,7 @@
 
 **Status:** normative source of truth
 
-**Ledger version:** 1.34.5
+**Ledger version:** 1.34.8
 **Last updated:** 2026-07-29
 
 ## Authority
@@ -103,6 +103,7 @@ absent from a public checkout.
 | V0-071 | 2026-07-29 | Source-guided certificate-sensitive acquisition audit | AUDITED / GATE NOT RUN | Ledger `1.34.1` freezes only the non-closure boundary for proposed target contract `1.35.0` and profile `source_frozen_certificate_sensitive_greedy_acquisition_v0`; it does not ratify either as the current completed construction contract. The checked-in mechanics compute exact per-context normalized midranks, `q=mean`, `worst=min`, disagreement `q-worst`, abstention above `1/4`, multiplier `1/2+(3/2)q`, and the same-prior wrong control `q -> 1-q`. Target-current-model one-row zero-`OTHER` slack gains are nonnegative ranking signals only; deterministic selection and authorization freeze before materialization, and synthetic receipts alone can exercise robust replanning. | The Gate is not run because source gains are still caller-supplied rather than semantically replayed from bound source models/audits/raw evidence; the v1 portable feature includes sample-dependent support documents and `OTHER` mass; no real authorization-bound target observer/materializer exists; round 2 does not implement the required independently fresh current-plan/frontier authority; and verification is same-implementation rather than an independent complete bundle replay. Real K6 can stop only at authorization, cap exhaustion or no positive gain. Positive controls are named `SYNTHETIC_CONTROL_CERTIFIED_AFTER_ROUND_*` and cannot support target acquisition, transfer, sample-efficiency, independent-verification, contract-`1.35.0`, Gate-pass or project-completion claims. Current completed contract remains `1.34.0`; all official/economics/counter/sample-efficiency locks remain unchanged. | `certificate_sensitive_greedy_acquisition_v1.py`; mechanics and attack tests only; `specs/SOURCE_FROZEN_CERTIFICATE_SENSITIVE_ACQUISITION.md`; a future revision must add verified source replay, a sample-invariant portable feature, real target materialization, fresh round-2 frontier reconstruction and an independent complete-bundle verifier before proposing Gate closure. |
 
 | V0-072 | 2026-07-29 | Transfer-guided adaptive observation acquisition draft | NONAUTHORIZING DRAFT / TARGET LOCKED / GATE NOT RUN | Ledger `1.34.6` extends the audit-corrected prerequisites for proposed contract `1.36.0`, schema `2.0.0`, and profile `transfer_guided_adaptive_observation_acquisition_v1`; completed construction contract remains `1.34.0`. The draft freezes the clean-generation K7/W7/K7-minus-two family, five arms/15 occurrences, cold `64+2048` row schedule, two-round cumulative cap, direct checkpoints, and `beta=1/300000` confidence allocation. A physical row may carry its initial confidence epoch plus at most two promotions (three epochs total); the global schedule still permits at most two promotion authorities per context and conservatively caps each arm at 480 authorities. Implemented prerequisites now include exact lazy planning/independent proof replay; the seven-roll-forward source archive plus a separately implemented archive-transform verifier; exact split-support confidence and campaign allocation; evidence-first public novel-child cardinality/selection plus independent row/count replay; immutable row transcripts and discovery-only cold-H2 closure plus independent verifiers; the anchor-locked observer/full epoch-chain; a disjoint synthetic K4 control; and nonauthorizing manifest readiness. | Audit corrections supersede nonauthorizing drafts `8b1e4747bb364ccddc04bb45d97a061c621650c907d31c979673f312acdffd29` and `e368be24adad7870d95c8e5059455d31e035783394e48040d113258388eaf4d4` with nonauthorizing draft `7639f1ee57ee2d9a8c871a5f0270d15fdd92f712a735e2ae89b6155e057ba5c2`; all have null execution manifests and none is an anchor. The latest correction adds `DIRECT_CHECKPOINT_CAP_EXHAUSTED_NONCERTIFICATE`, which is distinct from adaptive incremental/two-round exhaustion and from infeasibility. Eight earlier development identities remain retired; no tape, artifact, endpoint, or campaign output persisted. The real V0-068 campaign → production archive → independent archive-transform lane passes, but the independent verifier expressly consumes the same-implementation V0-068 campaign authority. Only the first `origin/main` commit containing a final non-null execution manifest and the final preregistration ID that binds it, whose parent lacks that final ID, can become the anchor. Registered row/model integration, relational/ground model construction, materialization, direct baseline, fresh round 2, campaign and standalone bundle verification remain incomplete; no sample-efficiency, held-out, transfer, official-execution, economics or completion claim opens. | `partial_support_confidence_v2.py`; `verified_source_acquisition_archive_independent_verifier_v2.py`; `public_novel_child_cardinality_authority_v2.py`; `public_novel_child_cardinality_independent_verifier_v2.py`; `row_bound_observation_core_v2.py`; `row_bound_observation_independent_verifier_v2.py`; `v072_synthetic_row_observation_adapter_v1.py`; `v072_cold_h2_closure_v1.py`; `v072_cold_h2_closure_independent_verifier_v1.py`; `v072_confirmatory_execution_manifest_v1.py`; prior V0-072 components; focused, real-source-integration, lock and attack tests; `specs/TRANSFER_GUIDED_ADAPTIVE_OBSERVATION_ACQUISITION.md`. |
+| V0-074 | 2026-07-29 | Partial-support total lift and lossless execution acceleration | NONAUTHORIZING REPAIR CONSTRUCTION / FRESH SCIENTIFIC GATE NOT RUN | The V0-072 attempt-2 journal is frozen as a second historical `PROTOCOL_FAILURE`, not a campaign result.  The exhausted chain cannot run again.  Proposed contract `1.39.0` repairs the already-registered `OTHER -> ABSORBING_POLICY_ABORT_FAILURE` exact-lift rule: modeled selected children require their bound decisions, while every exact positive-probability child outside the frozen modeled support contributes failure one and zero continuation reward with a branch witness.  The repaired exact path independently replays the operational authority, exact row/atom partition, and reward/failure/regret envelope containment.  It additionally specifies a content-addressed frozen-source envelope and occurrence-level isolated process mechanics whose canonical merged output must be byte-identical to sequential execution.  The current archive/parallel worker registry is synthetic transport only and is not integrated with the production V0-072 proposal or campaign runner. | Supersedes only the pending-repair wording of ledger `1.34.7`; it does not rewrite either anchored attempt, reuse K7 evidence, change V0-072 scientific parameters, or open a third attempt.  K7 is retrospective regression only.  Any new sample-efficiency result requires a new preregistration, manifest and anchor plus fresh target identities/tapes and genuinely fresh held-out occurrences.  Applying the containment mechanism to a new scientific bundle remains `NOT_RUN`; V0-073 contracts `1.37.0` and `1.38.0` remain the earlier development-only VOI constructions and are not overwritten. | `specs/V072_ANCHORED_ATTEMPT_2_FAILURE.json`; `specs/PARTIAL_SUPPORT_TOTAL_LIFT_AND_PARALLEL_EXECUTION.md`; typed failure/journal verifier; partial-policy exact-lift witness and attacks; independent authority/partition/envelope replay; synthetic frozen-source transport verifier; sequential/parallel equivalence and child-failure tests. |
 
 For V0-051, the affected public interface expressly includes the content-addressed
 `IncrementalProofDAGProtocolV1` and its `protocol_id`, in addition to the node,
@@ -4598,6 +4599,75 @@ COUNTER_COMPLETENESS_GATE_NOT_RUN
 SAMPLE_EFFICIENCY_GATE_NOT_RUN
 ```
 
+## V0-072 anchored-attempt-2 failure and exhausted chain
+
+The one authorized replacement was anchored at remote-main commit
+`63cc0f5f78f64b7845319d1c1a5856212e3b8097`.  Its source recipe, manifest,
+final preregistration, anchor claim, anchor and independent attestation IDs
+are respectively:
+
+```text
+7f6cebc1edf2bf007ae63a165866b8a3e6c6c4cb47b23a120eb1fa874be1e1d1
+2af044753017e6aeb1295408db23a2f8e923fbd7acdd207029e21371e7f09865
+966c6631db568851829dfec0079b73920f0a980f8583d65d9eb6c14e23278e26
+022ced158d19aea8293a8c8c75e70aa93f93e1913380a76ad11f729f54057076
+1c123268407d609ea853452c0145d21153e87251dfe8de61802264ccd6203474
+408e76d3350bc4fc7a6e2a625d7a42b7949672e98615d51870b156aafc8924c0
+```
+
+The exact fresh-ID Gate passed before execution.  Attempt
+`a925bb7104727ccce81b4da5361fab9610638f5e6a35e46177faa3dfced4174a`
+then reconstructed the source authority and durably completed four of the
+15 registered occurrences.  In the fifth occurrence, K7
+`MATCHED_DIRECT_GROUND` reached route-native `CERTIFIED` at checkpoint
+`16384`.  The standalone exact evaluator subsequently failed closed because
+it required the fixed-κ policy to contain actions for every exact reachable
+child, including children represented operationally by the frozen row
+`OTHER` escape.
+
+The attempt closed as:
+
+```text
+ATTEMPT_CLOSURE_NONCERTIFICATE.PROTOCOL_FAILURE
+completed_occurrences = 4 / 15
+campaign_result_written = false
+scientific_endpoint_read_allowed = false
+```
+
+Its hash chain contains 16 events and 21 referenced objects and verifies
+against an externally supplied identity.  The canonical tracked record is
+`specs/V072_ANCHORED_ATTEMPT_2_FAILURE.json`, ID
+`cfcc4173e05f7e1ae0354849c40ae72aef5b80ca1dbd747de185e5e1dabdb64e`.
+Unknown work after the last durable boundary is explicitly not zero.
+
+The V0-072 authority chain is exhausted.  It has no resume, reuse, retry or
+third-attempt authority.  Durable K7 prefix records are diagnostic regression
+evidence only and cannot be read as a sample-efficiency endpoint or used to
+make K7 held out again.
+
+Proposed V0-074 contract `1.39.0` repairs the implementation under the
+already-frozen `ABSORBING_POLICY_ABORT_FAILURE` semantics.  A modeled selected
+child still requires its bound decision; an exact child outside frozen
+modeled support is charged exactly once as failure one with zero continuation
+reward.  The same revision freezes a pre-target source proposal archive and
+occurrence-level process isolation/canonical merge.  Those changes are
+construction and wall-clock mechanics only.  A scientific rerun requires
+new preregistration, manifest and anchor plus fresh target identities, tapes
+and genuinely fresh held-out occurrences.  The checked-in archive/parallel
+worker registry is synthetic transport only; production proposal/campaign
+integration and operational-envelope containment remain `NOT_RUN`.
+
+All locks remain:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+```
+
 ## Change log
 
 - **2026-07-19 — 0.1.0:** Transcribed and closed the V0 construction contract from the Normative Decision Addendum and the V0 preconstruction audit. Added the deterministic policy-class and reward-normalization implementation clarifications needed for executable tests.
@@ -4661,3 +4731,4 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 - **2026-07-29 — ledger 1.34.5 confidence-schedule audit correction (construction contract unchanged at 1.34.0):** Corrected the V0-072 per-row confidence limit from two to three epochs: one initial epoch plus at most two promotions. The distinct two-round execution bound still permits at most two promotion authorities per context, so the conservative total remains 480 authorities per arm and 2,400 per campaign; `beta=1/300000`, joint tail `1/125`, and confidence `124/125` are unchanged. Superseded nonauthorizing draft ID `8b1e4747bb364ccddc04bb45d97a061c621650c907d31c979673f312acdffd29` is retained in audit provenance and replaced by nonauthorizing draft ID `e368be24adad7870d95c8e5059455d31e035783394e48040d113258388eaf4d4`; neither authorizes target access or changes any Gate.
 - **2026-07-29 — ledger 1.34.6 direct-terminal audit correction (construction contract unchanged at 1.34.0):** Added `DIRECT_CHECKPOINT_CAP_EXHAUSTED_NONCERTIFICATE` to the V0-072 terminal registry for the matched-direct arm reaching its complete 16,384-draw checkpoint without a sound certificate. It is distinct from adaptive incremental/two-round exhaustion, exact-DP resource exhaustion, fallback, and infeasibility. Superseded nonauthorizing draft ID `e368be24adad7870d95c8e5059455d31e035783394e48040d113258388eaf4d4` is retained in audit provenance and replaced by nonauthorizing draft ID `7639f1ee57ee2d9a8c871a5f0270d15fdd92f712a735e2ae89b6155e057ba5c2`; both retain null manifests, keep target execution locked, and change no Gate.
 - **2026-07-29 — ledger 1.34.7 anchored-attempt protocol repair (construction contract unchanged at 1.34.0):** Recorded anchored attempt 1 as `PROTOCOL_FAILURE / INCOMPLETE_CAMPAIGN_ARTIFACT` after the independently replayed matched-direct native-work purpose omitted `MATCHED_DIRECT_CHECKPOINT`. No result or endpoint was written; unknown paid work is explicitly not zero and all 15 occurrences remain in the failed-attempt denominator. Authorized one clean, full-restart replacement using only exhaustive enum handling and durable attempt journaling, with new target identities and a new recipe/manifest/preregistration/remote-main anchor. Scientific parameters and every aggregate Gate remain unchanged.
+- **2026-07-29 — ledger 1.34.8 attempt-2 closure and V0-074 repair construction (completed construction contract unchanged at 1.34.0):** Recorded the sole V0-072 replacement as a hash-chain-valid `ATTEMPT_CLOSURE_NONCERTIFICATE.PROTOCOL_FAILURE` after four of 15 completed occurrences; no result or endpoint exists and the old chain has zero remaining attempt slots.  The tracked record ID is `cfcc4173e05f7e1ae0354849c40ae72aef5b80ca1dbd747de185e5e1dabdb64e`.  Proposed contract `1.39.0` now makes the frozen partial-support escape semantics explicit in exact lift, with separate environment/abort risk and branch witnesses, and specifies pre-target frozen-source plus occurrence-parallel mechanics.  The current archive/worker implementation is synthetic transport only; production integration and operational-envelope containment remain `NOT_RUN`.  Existing V0-073 development contracts `1.37.0` and `1.38.0` remain unchanged.  V0-072 K7 evidence is retrospective only; fresh science requires a separate preregistration, manifest and anchor plus fresh target identities/tapes and genuinely fresh held-out occurrences.  All official, scalar, economics, counter and sample-efficiency locks remain unchanged.
