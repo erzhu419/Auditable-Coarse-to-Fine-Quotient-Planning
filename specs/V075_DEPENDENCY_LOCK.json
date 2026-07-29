@@ -1,0 +1,104 @@
+{
+  "schema": "acfqp.v075_runtime_dependency_lock.v1",
+  "schema_version": "1.0.0",
+  "proposed_contract_version": "1.40.0",
+  "profile_key": "v075_stdlib_runtime_and_exact_test_dependency_lock_v1",
+  "runtime_dependency_model": "PYTHON_STDLIB_PLUS_TRACKED_ACFQP_COMPONENT_BLOBS",
+  "runtime_third_party_distributions": [],
+  "test_dependency_distributions": [
+    {
+      "name": "exceptiongroup",
+      "version": "1.3.1",
+      "metadata_sha256": "81984a523a2f7a522ad12bea784a8bb85edec0805ebbd0fb4e350169a36dd802",
+      "wheel_sha256": "1b68144734c4b66791f27add5d425f3620775585718a03d0f9b110ba3a4d88db"
+    },
+    {
+      "name": "iniconfig",
+      "version": "2.3.0",
+      "metadata_sha256": "40d773f84e4e112f495bbf4f1be9cbd2d456c0aeb6ef5311f75d1bf322f2165b",
+      "wheel_sha256": "ff309ddcdd65ebd02bc724dbf2bcc4a0ff53a5b61792a44548d383e4ebb19d3b"
+    },
+    {
+      "name": "packaging",
+      "version": "24.2",
+      "metadata_sha256": "a211fceacea4e6621f4316364d2d0b7127c00de3856b8062082f9bc5957ea4db",
+      "wheel_sha256": "0a950253178741b44de54191407611268acee407fe432fdf1cc72d710f034862"
+    },
+    {
+      "name": "pluggy",
+      "version": "1.6.0",
+      "metadata_sha256": "7438c35ee25a095eb7416f84b461c2d74425c5e734ad54c3912453c65244e01c",
+      "wheel_sha256": "370dfa0e3ba1ff9543ba42b41fbf10cce5fefc5404a3a577ee6de7926f7a82d5"
+    },
+    {
+      "name": "pygments",
+      "version": "2.20.0",
+      "metadata_sha256": "e0528f51b30427fae94723662ba622f8d8db2a4d8d3f1365698d67a52450a845",
+      "wheel_sha256": "41c708c5adba6e097513ab8ccb9f1d7865a2fb469e22491a9e01dcc64da459fc"
+    },
+    {
+      "name": "pytest",
+      "version": "9.0.3",
+      "metadata_sha256": "c3966f28791686477bae35e518736d4cbea5b626d3a79011215854e2bc670207",
+      "wheel_sha256": "69e6228a0d35958183cc1812f07c565ce837b95eb51bd8a33acba9fa4f68d6c9"
+    },
+    {
+      "name": "tomli",
+      "version": "2.4.1",
+      "metadata_sha256": "b2b3fdf2566bba313106abf4a806f9c217f8f814587f1017c494d49079a0a683",
+      "wheel_sha256": "1b68144734c4b66791f27add5d425f3620775585718a03d0f9b110ba3a4d88db"
+    },
+    {
+      "name": "typing-extensions",
+      "version": "4.15.0",
+      "metadata_sha256": "c138378fe8f18934ac99de060535c53ec6c13aeed65e94c32641da7ee3192a72",
+      "wheel_sha256": "1b68144734c4b66791f27add5d425f3620775585718a03d0f9b110ba3a4d88db"
+    }
+  ],
+  "interpreter": {
+    "implementation": "cpython",
+    "version_info": [3, 10, 12, "final", 0],
+    "hexversion": 50990320,
+    "cache_tag": "cpython-310",
+    "soabi": "cpython-310-x86_64-linux-gnu",
+    "platform": "linux-x86_64",
+    "machine": "x86_64",
+    "byteorder": "little",
+    "maxsize": 9223372036854775807,
+    "hash_algorithm": "siphash24",
+    "hash_width": 64,
+    "hash_modulus": 2305843009213693951,
+    "compiler": "GCC 11.4.0",
+    "build": ["main", "Jun 22 2026 18:55:27"],
+    "config_args_sha256": "d4338ea578ea418a5fb102e8a821dcc18bd401d97bf78ef860fcb8b059526ce1"
+  },
+  "project": {
+    "name": "acfqp",
+    "version": "0.0.1",
+    "requires_python": ">=3.10",
+    "declared_runtime_dependencies": [],
+    "pyproject_sha256": "79ccf191abc49cb6d2fd6a0bbf285da036addf891010f43fde4f9841e77beffc"
+  },
+  "exact_test_command": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "-s",
+    "tests/test_v075_registered_campaign.py"
+  ],
+  "required_environment": [
+    {"name": "LC_ALL", "value": "C.UTF-8"},
+    {"name": "PYTEST_DISABLE_PLUGIN_AUTOLOAD", "value": "1"},
+    {"name": "PYTHONDONTWRITEBYTECODE", "value": "1"},
+    {"name": "PYTHONHASHSEED", "value": "0"},
+    {"name": "TZ", "value": "UTC"}
+  ],
+  "pytest_plugin_autoload_allowed": false,
+  "package_installer_execution_allowed": false,
+  "network_access_required": false,
+  "caller_supplied_digest_accepted": false,
+  "caller_supplied_status_accepted": false,
+  "target_access": false,
+  "runtime_dependency_lock_id": "777a2108e166af8a991bc953d4584e35db210a6a59f5182f2879864b0b7b5b72"
+}

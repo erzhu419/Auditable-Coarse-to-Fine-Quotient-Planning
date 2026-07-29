@@ -223,6 +223,39 @@ def test_exact_replay_materializes_all_native_counter_fields(
     assert document["sample_draw_offline_work_replayable"] is True
 
 
+def test_unique_prefix_counts_are_not_confused_with_logical_rebuild_work(
+    exact_source_replay,
+) -> None:
+    """The production campaign may rebuild cumulative prefixes repeatedly."""
+
+    campaign = exact_source_replay.source_campaign
+    counters = campaign.counters
+    assert (
+        campaign.aggregate_direct_unique_observer_draws
+        <= counters.logical_direct_rebuild_observer_draws
+    )
+    assert (
+        campaign.aggregate_quotient_unique_observer_draws
+        <= counters.logical_quotient_rebuild_observer_draws
+    )
+    materialized = v075.materialize_v075_source_offline_work_v1(
+        exact_source_replay
+    )
+    assert materialized.campaign_counters == counters
+    assert v075._unique_prefix_work_is_bounded_by_rebuild_work(
+        direct_unique=20,
+        direct_rebuild=27,
+        quotient_unique=12,
+        quotient_rebuild=31,
+    )
+    assert not v075._unique_prefix_work_is_bounded_by_rebuild_work(
+        direct_unique=28,
+        direct_rebuild=27,
+        quotient_unique=12,
+        quotient_rebuild=31,
+    )
+
+
 def test_materialization_binds_complete_replay_identity_graph(
     exact_source_replay,
 ) -> None:

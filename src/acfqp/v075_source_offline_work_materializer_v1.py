@@ -249,6 +249,26 @@ def _counter_document_digest(
     return _content_id("counter_document_digest", _counter_document(counter))
 
 
+def _unique_prefix_work_is_bounded_by_rebuild_work(
+    *,
+    direct_unique: int,
+    direct_rebuild: int,
+    quotient_unique: int,
+    quotient_rebuild: int,
+) -> bool:
+    values = (
+        direct_unique,
+        direct_rebuild,
+        quotient_unique,
+        quotient_rebuild,
+    )
+    return (
+        all(type(value) is int and value >= 0 for value in values)
+        and direct_unique <= direct_rebuild
+        and quotient_unique <= quotient_rebuild
+    )
+
+
 def _replay_identity_tuple(
     replay: recipe_v1.SourceReconstructionReplayV1,
 ) -> tuple[str, ...]:
@@ -333,10 +353,20 @@ def _replay_identity_tuple(
             == independent_id
             and source_campaign.physical_unique_observer_draws
             == counter.physical_unique_observer_draws
-            and source_campaign.aggregate_direct_unique_observer_draws
-            == counter.logical_direct_rebuild_observer_draws
-            and source_campaign.aggregate_quotient_unique_observer_draws
-            == counter.logical_quotient_rebuild_observer_draws
+            and _unique_prefix_work_is_bounded_by_rebuild_work(
+                direct_unique=(
+                    source_campaign.aggregate_direct_unique_observer_draws
+                ),
+                direct_rebuild=(
+                    counter.logical_direct_rebuild_observer_draws
+                ),
+                quotient_unique=(
+                    source_campaign.aggregate_quotient_unique_observer_draws
+                ),
+                quotient_rebuild=(
+                    counter.logical_quotient_rebuild_observer_draws
+                ),
+            )
             and source_campaign.official_execution_allowed is False
             and source_campaign.official_scalar_cost is None
             and source_campaign.official_N_break_even is None
