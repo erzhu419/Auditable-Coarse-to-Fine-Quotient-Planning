@@ -1,4 +1,4 @@
-"""Isolated, parent-owned adaptive occurrence IPC for production V0-075.
+"""Isolated, parent-owned occurrence IPC for production V0-075.
 
 The mutable observer, hidden law, reveal salt, signing key, and exact kernels
 remain in the parent.  One fresh ``python -I`` child is launched for exactly
@@ -6,8 +6,10 @@ one logical occurrence.  The only bytes crossing the process boundary are
 strict canonical JSON frames.
 
 The child reconstructs the public occurrence graph, source-prior transport,
-signed aggregate batches, batch-native statistical backend, learned-support
-planner, and failed-proof acquisition authority.  It emits content-addressed
+signed aggregate batches, batch-native statistical backend, and exact route
+planner.  Adaptive arms additionally reconstruct the failed-proof acquisition
+authority.  The matched-direct arm follows the registered global discovery,
+support-freeze, and checkpoint barriers.  It emits content-addressed
 batch/support/round intents.  The parent validates the public capability
 surface and caps, executes only those intents through its already-open
 parent-owned observer lifecycle, and returns signed public aggregate bytes.
@@ -45,7 +47,7 @@ PROFILE_KEY = "v075_production_occurrence_ipc_v1"
 
 PRODUCTION_TRANSPORT_READY = True
 PRODUCTION_OCCURRENCE_WORKER_COMPLETE = False
-MATCHED_DIRECT_HANDLER_READY = False
+MATCHED_DIRECT_HANDLER_READY = True
 TARGET_EXECUTION_OPENED = False
 PRIVATE_MATERIAL_TRANSPORT_ALLOWED = False
 PICKLE_TRANSPORT_ALLOWED = False
@@ -71,6 +73,9 @@ _DOMAINS = {
     "support_response": "acfqp:v075-production-occurrence-support-response:v1",
     "round_begin": "acfqp:v075-production-occurrence-round-begin:v1",
     "round_ack": "acfqp:v075-production-occurrence-round-ack:v1",
+    "direct_scientific_intent": (
+        "acfqp:v075-production-occurrence-direct-scientific-intent:v1"
+    ),
     "child_result": "acfqp:v075-production-occurrence-child-result:v1",
     "journal_entry": "acfqp:v075-production-occurrence-ipc-journal-entry:v1",
     "journal": "acfqp:v075-production-occurrence-ipc-journal:v1",
@@ -176,6 +181,36 @@ def _hash(role: str, payload: Mapping[str, Any]) -> str:
     return hashlib.sha256(
         domain + b"\x00" + _canonical_bytes(dict(payload))
     ).hexdigest()
+
+
+def _direct_scientific_intent_id(
+    *,
+    occurrence_id: str,
+    phase: str,
+    row_binding_id: str,
+    checkpoint: int | None,
+) -> str:
+    _cid(occurrence_id, "direct scientific occurrence")
+    _cid(row_binding_id, "direct scientific row")
+    _token(phase, "direct scientific phase")
+    if checkpoint is not None and (
+        type(checkpoint) is not int or checkpoint <= 0
+    ):
+        _fail("direct scientific checkpoint must be positive or null")
+    return _hash(
+        "direct_scientific_intent",
+        {
+            "schema": (
+                "acfqp.v075_production_occurrence_"
+                "direct_scientific_intent.v1"
+            ),
+            "schema_version": SCHEMA_VERSION,
+            "occurrence_id": occurrence_id,
+            "phase": phase,
+            "row_binding_id": row_binding_id,
+            "checkpoint": checkpoint,
+        },
+    )
 
 
 def _cid(value: Any, field_name: str) -> str:
@@ -355,7 +390,7 @@ class V075ProductionOccurrenceIPCProfileV1:
         ):
             _fail("IPC profile is occurrence, context, arm, or source transplanted")
         if (
-            binding.authority_scope.value == "PRODUCTION_OPEN"
+            binding.authority_scope.value == "PRODUCTION"
             and self.behavior is not V075ProductionIPCBehaviorV1.HONEST
         ):
             _fail("production authority rejects construction attack behavior")
@@ -402,9 +437,10 @@ class V075ProductionOccurrenceIPCProfileV1:
             "canonical_json_frames_only": True,
             "pickle_transport_allowed": False,
             "host_operational_full_planner_replay_allowed": False,
-            "target_execution_opened": False,
+            "ipc_module_opened_observer": False,
+            "production_target_observation_accessed": False,
             "production_occurrence_worker_complete": False,
-            "matched_direct_handler_ready": False,
+            "matched_direct_handler_ready": True,
         }
 
     @property
@@ -496,7 +532,8 @@ def _launch_document(
         "private_kernel_serialized": False,
         "callback_serialized": False,
         "pickle_transport_used": False,
-        "target_execution_opened": False,
+        "ipc_module_opened_observer": False,
+        "production_target_observation_accessed_before_launch": False,
     }
     return {**payload, "launch_id": _hash("launch", payload)}
 
@@ -1017,7 +1054,8 @@ def _load_launch(raw: bytes) -> dict[str, Any]:
             "private_kernel_serialized",
             "callback_serialized",
             "pickle_transport_used",
-            "target_execution_opened",
+            "ipc_module_opened_observer",
+            "production_target_observation_accessed_before_launch",
             "launch_id",
         },
         field_name="production child launch",
@@ -1046,7 +1084,8 @@ def _load_launch(raw: bytes) -> dict[str, Any]:
                 "private_kernel_serialized",
                 "callback_serialized",
                 "pickle_transport_used",
-                "target_execution_opened",
+                "ipc_module_opened_observer",
+                "production_target_observation_accessed_before_launch",
             )
         )
         or _cid(claimed_launch_id, "production launch")
@@ -1147,9 +1186,10 @@ def _load_launch(raw: bytes) -> dict[str, Any]:
                 "canonical_json_frames_only": True,
                 "pickle_transport_allowed": False,
                 "host_operational_full_planner_replay_allowed": False,
-                "target_execution_opened": False,
+                "ipc_module_opened_observer": False,
+                "production_target_observation_accessed": False,
                 "production_occurrence_worker_complete": False,
-                "matched_direct_handler_ready": False,
+                "matched_direct_handler_ready": True,
             },
         )
     ):
@@ -1161,7 +1201,7 @@ def _load_launch(raw: bytes) -> dict[str, Any]:
             "production child behavior is unknown"
         ) from error
     if (
-        open_document.get("authority_scope") == "PRODUCTION_OPEN"
+        open_document.get("authority_scope") == "PRODUCTION"
         and behavior is not V075ProductionIPCBehaviorV1.HONEST
     ):
         _fail("production-open child rejects attack behavior")
@@ -1552,6 +1592,7 @@ class _ChildProtocolV1:
         self.launch = launch
         self.sequence = 0
         self.batches: list[Any] = []
+        self.aggregate_support_evidence: list[Any] = []
         self.behavior = launch["_behavior"]
         self.attack_used = False
 
@@ -1796,6 +1837,12 @@ class _ChildProtocolV1:
         )
         if [item.evidence_id for item in evidence] != response["evidence_ids"]:
             _fail("support response evidence registry is reordered")
+        prior_evidence_ids = {
+            item.evidence_id for item in self.aggregate_support_evidence
+        }
+        if any(item.evidence_id in prior_evidence_ids for item in evidence):
+            _fail("support response reuses aggregate evidence")
+        self.aggregate_support_evidence.extend(evidence)
         expected = _validation_stream(
             self.launch["_namespace"],
             row,
@@ -2141,6 +2188,15 @@ def _child_scientific_run(launch: dict[str, Any]) -> dict[str, Any]:
     terminal = _terminal_code(current_planner, rounds)
     if terminal is None:
         _fail("isolated child exited without a registered terminal")
+    from acfqp import v075_operational_planner_transport_v1 as transport
+
+    operational_transport = (
+        transport.freeze_v075_operational_planner_transport_v1(
+            occurrence_identity=identity,
+            backend_result=current_backend,
+            planner_result=current_planner,
+        )
+    )
     payload = {
         "schema": "acfqp.v075_production_occurrence_child_result.v1",
         "schema_version": SCHEMA_VERSION,
@@ -2203,12 +2259,344 @@ def _child_scientific_run(launch: dict[str, Any]) -> dict[str, Any]:
         "terminal_code": terminal,
         "final_backend_result": current_backend.to_document(),
         "final_planner_result": current_planner.to_document(),
+        "operational_planner_transport_id": (
+            operational_transport.transport_id
+        ),
+        "operational_planner_transport": (
+            operational_transport.to_document()
+        ),
+        "operational_planner_transport_bytes_hex": (
+            operational_transport.canonical_bytes.hex()
+        ),
         "public_backend_computed_in_child": True,
         "public_planner_computed_in_child": True,
         "host_operational_full_planner_replay_required": False,
         "private_material_serialized": False,
         "scientific_plan_certificate": False,
-        "target_execution_opened": False,
+        "ipc_module_opened_observer": False,
+        "production_target_observation_accessed": (
+            launch["open_lifecycle_binding"]["authority_scope"]
+            == "PRODUCTION"
+            and bool(protocol.batches)
+        ),
+    }
+    return _message_id(
+        role="child_result",
+        payload=payload,
+        id_field="child_result_id",
+    )
+
+
+def _child_matched_direct_run(launch: dict[str, Any]) -> dict[str, Any]:
+    """Run the registered direct barriers and exact checkpoints in-child."""
+
+    from acfqp import v075_integrated_direct_occurrence_pipeline_v1 as direct
+    from acfqp import v075_operational_planner_transport_v1 as transport
+    from acfqp import v075_public_graph_semantics_v1 as graph
+
+    protocol = _ChildProtocolV1(launch)
+    namespace = launch["_namespace"]
+    context = launch["_context"]
+    arm = launch["_arm"]
+    identity = launch["_identity"]
+    caps = launch["_caps"]
+    root = graph.root_catalogue_v1(context)
+    root_batches: list[Any] = []
+    discovery_epochs: list[tuple[Any, Any]] = []
+
+    for action in root.actions:
+        row = graph.observation_row_binding_v1(
+            context,
+            root,
+            action,
+        )
+        root_epoch, stream = _bootstrap_stream(namespace, row, arm)
+        batch = protocol.request_batch(
+            stream=stream,
+            phase="DIRECT_ROOT_DISCOVERY",
+            round_index=0,
+            intent_kind="DIRECT_ROOT_DISCOVERY",
+            scientific_intent_id=_direct_scientific_intent_id(
+                occurrence_id=identity.occurrence_id,
+                phase="DIRECT_ROOT_DISCOVERY",
+                row_binding_id=row.row_binding_id,
+                checkpoint=None,
+            ),
+            authorization_id=None,
+            accepted_draw_start=1,
+            accepted_draw_count=caps.initial_discovery_draws_per_row,
+            accepted_draw_cap=caps.initial_discovery_draws_per_row,
+        )
+        root_batches.append(batch)
+        discovery_epochs.append((batch, root_epoch))
+
+    root_bindings, child_bindings = direct._root_and_child_bindings(
+        context=context,
+        root_batches=tuple(root_batches),
+    )
+    physical_rows = len(root.actions) + sum(
+        len(item.row_bindings) for item in child_bindings
+    )
+    if physical_rows > context.maximum_physical_rows_per_confidence_epoch:
+        failure = direct.V075IntegratedDirectPhysicalRowCapExceeded(
+            occurrence_id=identity.occurrence_id,
+            observed_physical_rows=physical_rows,
+            maximum_physical_rows=(
+                context.maximum_physical_rows_per_confidence_epoch
+            ),
+            retained_root_batch_ids=tuple(
+                sorted(item.batch_id for item in root_batches)
+            ),
+        )
+        payload = {
+            "schema": "acfqp.v075_production_occurrence_child_result.v1",
+            "schema_version": SCHEMA_VERSION,
+            "proposed_contract_version": PROPOSED_CONTRACT_VERSION,
+            "profile_key": PROFILE_KEY,
+            "profile_id": launch["profile_id"],
+            "occurrence_id": identity.occurrence_id,
+            "target_tape_namespace_id": identity.target_tape_namespace_id,
+            "context_id": identity.context_id,
+            "arm": arm.value,
+            "route": "MATCHED_DIRECT_GROUND",
+            "occurrence_ordinal": identity.occurrence_ordinal,
+            "source_view_id": None,
+            "initial_schedule_id": None,
+            "initial_backend_result_id": None,
+            "initial_planner_result_id": None,
+            "rounds": [],
+            "batch_ids": sorted(
+                item.batch_id for item in protocol.batches
+            ),
+            "observation_order_batch_ids": [
+                item.batch_id for item in protocol.batches
+            ],
+            "final_backend_result_id": None,
+            "final_planner_result_id": None,
+            "final_planner_status": None,
+            "ready_for_exact_total_lift": False,
+            "terminal_class": "ATTEMPT_CLOSURE_NONCERTIFICATE",
+            "terminal_code": "DIRECT_PHYSICAL_ROW_CAP_EXHAUSTED",
+            "direct_root_child_bindings": [
+                item.to_document() for item in root_bindings
+            ],
+            "direct_child_catalogue_bindings": [
+                item.to_document() for item in child_bindings
+            ],
+            "direct_checkpoint_history": [],
+            "direct_work": None,
+            "direct_physical_cap_failure": failure.to_document(),
+            "final_backend_result": None,
+            "final_planner_result": None,
+            "operational_planner_transport_id": None,
+            "operational_planner_transport": None,
+            "operational_planner_transport_bytes_hex": None,
+            "public_backend_computed_in_child": False,
+            "public_planner_computed_in_child": False,
+            "host_operational_full_planner_replay_required": False,
+            "private_material_serialized": False,
+            "root_work_retained": True,
+            "lifecycle_close_requires_failure_authority": True,
+            "scientific_plan_certificate": False,
+            "ipc_module_opened_observer": False,
+            "production_target_observation_accessed": (
+                launch["open_lifecycle_binding"]["authority_scope"]
+                == "PRODUCTION"
+                and bool(protocol.batches)
+            ),
+        }
+        return _message_id(
+            role="child_result",
+            payload=payload,
+            id_field="child_result_id",
+        )
+
+    for child in child_bindings:
+        for row in child.row_bindings:
+            root_epoch, stream = _bootstrap_stream(namespace, row, arm)
+            batch = protocol.request_batch(
+                stream=stream,
+                phase="DIRECT_CHILD_DISCOVERY",
+                round_index=0,
+                intent_kind="DIRECT_CHILD_DISCOVERY",
+                scientific_intent_id=_direct_scientific_intent_id(
+                    occurrence_id=identity.occurrence_id,
+                    phase="DIRECT_CHILD_DISCOVERY",
+                    row_binding_id=row.row_binding_id,
+                    checkpoint=None,
+                ),
+                authorization_id=None,
+                accepted_draw_start=1,
+                accepted_draw_count=(
+                    caps.new_child_discovery_draws_per_row
+                ),
+                accepted_draw_cap=(
+                    caps.new_child_discovery_draws_per_row
+                ),
+            )
+            discovery_epochs.append((batch, root_epoch))
+
+    validation_streams = []
+    for discovery, root_epoch in discovery_epochs:
+        row_id = (
+            discovery.request.stream_identity.row_binding.row_binding_id
+        )
+        validation_streams.append(
+            protocol.freeze_support(
+                phase="DIRECT_SUPPORT_FREEZE",
+                round_index=0,
+                scientific_intent_id=_direct_scientific_intent_id(
+                    occurrence_id=identity.occurrence_id,
+                    phase="DIRECT_SUPPORT_FREEZE",
+                    row_binding_id=row_id,
+                    checkpoint=None,
+                ),
+                authorization_id=None,
+                discovery_batch=discovery,
+                root_epoch=root_epoch,
+            )
+        )
+
+    history = []
+    prior_checkpoint = 0
+    maximum_checkpoint = caps.direct_validation_checkpoints[-1]
+    for checkpoint in caps.direct_validation_checkpoints:
+        increment = checkpoint - prior_checkpoint
+        for stream in validation_streams:
+            protocol.request_batch(
+                stream=stream,
+                phase="DIRECT_VALIDATION",
+                round_index=0,
+                intent_kind="DIRECT_VALIDATION",
+                scientific_intent_id=_direct_scientific_intent_id(
+                    occurrence_id=identity.occurrence_id,
+                    phase="DIRECT_VALIDATION",
+                    row_binding_id=stream.row_binding_id,
+                    checkpoint=checkpoint,
+                ),
+                authorization_id=None,
+                accepted_draw_start=prior_checkpoint + 1,
+                accepted_draw_count=increment,
+                accepted_draw_cap=maximum_checkpoint,
+            )
+        current = direct._checkpoint(
+            occurrence_identity=identity,
+            batches=tuple(protocol.batches),
+            checkpoint=checkpoint,
+        )
+        history.append(current)
+        if current.planner_result.ready_for_exact_total_lift:
+            break
+        prior_checkpoint = checkpoint
+
+    history_tuple = tuple(history)
+    terminal = (
+        direct.V075IntegratedDirectTerminalV1.READY_FOR_EXACT_TOTAL_LIFT
+        if history_tuple[-1].planner_result.ready_for_exact_total_lift
+        else (
+            direct.V075IntegratedDirectTerminalV1
+            .DIRECT_CHECKPOINT_CAP_EXHAUSTED
+        )
+    )
+    final_backend = history_tuple[-1].backend_result
+    final_planner = history_tuple[-1].planner_result
+    direct_work = direct._work(
+        occurrence_id=identity.occurrence_id,
+        root_batches=tuple(root_batches),
+        child_bindings=child_bindings,
+        discovery_batches=tuple(
+            item for item, _epoch in discovery_epochs
+        ),
+        evidence=tuple(
+            sorted(
+                protocol.aggregate_support_evidence,
+                key=lambda item: item.evidence_id,
+            )
+        ),
+        final_batches=tuple(protocol.batches),
+        history=history_tuple,
+    )
+    operational_transport = (
+        transport.freeze_v075_operational_planner_transport_v1(
+            occurrence_identity=identity,
+            backend_result=final_backend,
+            planner_result=final_planner,
+        )
+    )
+    payload = {
+        "schema": "acfqp.v075_production_occurrence_child_result.v1",
+        "schema_version": SCHEMA_VERSION,
+        "proposed_contract_version": PROPOSED_CONTRACT_VERSION,
+        "profile_key": PROFILE_KEY,
+        "profile_id": launch["profile_id"],
+        "occurrence_id": identity.occurrence_id,
+        "target_tape_namespace_id": identity.target_tape_namespace_id,
+        "context_id": identity.context_id,
+        "arm": arm.value,
+        "route": "MATCHED_DIRECT_GROUND",
+        "occurrence_ordinal": identity.occurrence_ordinal,
+        "source_view_id": None,
+        "initial_schedule_id": None,
+        "initial_backend_result_id": (
+            history_tuple[0].backend_result.result_id
+        ),
+        "initial_planner_result_id": (
+            history_tuple[0].planner_result.result_id
+        ),
+        "rounds": [],
+        "batch_ids": sorted(item.batch_id for item in protocol.batches),
+        "observation_order_batch_ids": [
+            item.batch_id for item in protocol.batches
+        ],
+        "final_backend_result_id": final_backend.result_id,
+        "final_planner_result_id": final_planner.result_id,
+        "final_planner_status": final_planner.status.value,
+        "ready_for_exact_total_lift": (
+            final_planner.ready_for_exact_total_lift
+        ),
+        "terminal_class": (
+            "PRECERTIFICATE_CANDIDATE"
+            if terminal
+            is direct.V075IntegratedDirectTerminalV1
+            .READY_FOR_EXACT_TOTAL_LIFT
+            else "ATTEMPT_CLOSURE_NONCERTIFICATE"
+        ),
+        "terminal_code": terminal.value,
+        "direct_root_child_bindings": [
+            item.to_document() for item in root_bindings
+        ],
+        "direct_child_catalogue_bindings": [
+            item.to_document() for item in child_bindings
+        ],
+        "direct_checkpoint_history": [
+            item.to_document() for item in history_tuple
+        ],
+        "direct_work": direct_work.to_document(),
+        "direct_physical_cap_failure": None,
+        "final_backend_result": final_backend.to_document(),
+        "final_planner_result": final_planner.to_document(),
+        "operational_planner_transport_id": (
+            operational_transport.transport_id
+        ),
+        "operational_planner_transport": (
+            operational_transport.to_document()
+        ),
+        "operational_planner_transport_bytes_hex": (
+            operational_transport.canonical_bytes.hex()
+        ),
+        "public_backend_computed_in_child": True,
+        "public_planner_computed_in_child": True,
+        "host_operational_full_planner_replay_required": False,
+        "private_material_serialized": False,
+        "root_work_retained": True,
+        "lifecycle_close_requires_failure_authority": False,
+        "scientific_plan_certificate": False,
+        "ipc_module_opened_observer": False,
+        "production_target_observation_accessed": (
+            launch["open_lifecycle_binding"]["authority_scope"]
+            == "PRODUCTION"
+            and bool(protocol.batches)
+        ),
     }
     return _message_id(
         role="child_result",
@@ -2399,13 +2787,14 @@ class V075ProductionOccurrenceIPCResultV1:
             _cid(value, name)
         if (
             self.authority_scope
-            not in {"PRODUCTION_OPEN", "CONSTRUCTION_ONLY"}
+            not in {"PRODUCTION", "CONSTRUCTION_ONLY"}
             or self.route
             not in {"ADAPTIVE_QUOTIENT", "MATCHED_DIRECT_GROUND"}
-            or self.status not in {"PASS", "FAILED"}
+            or self.status not in {"PASS", "NONCERTIFICATE", "FAILED"}
             or self.terminal_code
             not in {
                 "CHILD_SCIENTIFIC_RESULT_READY",
+                "DIRECT_PHYSICAL_ROW_CAP_EXHAUSTED",
                 "PROTOCOL_FAILURE",
                 "PROCESS_FAILURE",
                 "TIMEOUT",
@@ -2441,7 +2830,22 @@ class V075ProductionOccurrenceIPCResultV1:
             and self.actual_work.child_exit_code == 0
         ):
             _fail("production IPC terminal and child result disagree")
-        if passed:
+        noncertificate = self.status == "NONCERTIFICATE"
+        if noncertificate != (
+            self.terminal_code == "DIRECT_PHYSICAL_ROW_CAP_EXHAUSTED"
+            and type(self.child_result) is dict
+            and self.child_result.get("terminal_class")
+            == "ATTEMPT_CLOSURE_NONCERTIFICATE"
+            and self.child_result.get("terminal_code")
+            == "DIRECT_PHYSICAL_ROW_CAP_EXHAUSTED"
+            and self.child_result.get(
+                "lifecycle_close_requires_failure_authority"
+            )
+            is True
+            and self.actual_work.child_exit_code == 0
+        ):
+            _fail("production IPC noncertificate terminal disagrees")
+        if passed or noncertificate:
             assert self.child_result is not None
             if (
                 self.child_result.get("profile_id") != self.profile_id
@@ -2499,7 +2903,11 @@ class V075ProductionOccurrenceIPCResultV1:
             "canonical_json_frames_only": True,
             "host_operational_full_planner_replays": 0,
             "scientific_plan_certificate": False,
-            "target_execution_opened": False,
+            "ipc_module_opened_observer": False,
+            "production_target_observation_accessed": (
+                self.authority_scope == "PRODUCTION"
+                and bool(self.observed_batches)
+            ),
         }
 
     @property
@@ -2531,6 +2939,155 @@ def _terminate_process(process: subprocess.Popen[bytes]) -> None:
             process.kill()
     except (ProcessLookupError, PermissionError):
         process.kill()
+
+
+def _validate_direct_batch_intent_semantics(
+    *,
+    item: dict[str, Any],
+    stream: Any,
+    profile: V075ProductionOccurrenceIPCProfileV1,
+    controller: Any,
+) -> None:
+    from acfqp import v075_integrated_direct_occurrence_pipeline_v1 as direct
+    from acfqp import v075_public_graph_semantics_v1 as graph
+
+    context = profile.context
+    identity = profile.occurrence_identity
+    caps = profile.open_lifecycle_binding.route_cap_profile
+    root = graph.root_catalogue_v1(context)
+    discovery = tuple(
+        value
+        for value in controller.batches
+        if value.request.stream_identity.lane
+        is graph.V075ObservationLaneV1.DISCOVERY
+    )
+    validation = tuple(
+        value
+        for value in controller.batches
+        if value.request.stream_identity.lane
+        is graph.V075ObservationLaneV1.VALIDATION
+    )
+    root_batches = tuple(
+        value
+        for value in discovery
+        if value.request.stream_identity.row_binding.remaining_horizon == 2
+    )
+    child_batches = tuple(
+        value
+        for value in discovery
+        if value.request.stream_identity.row_binding.remaining_horizon == 1
+    )
+    expected_phase: str
+    expected_stream: Any
+    expected_start: int
+    expected_count: int
+    expected_cap: int
+    checkpoint: int | None = None
+    if len(root_batches) < len(root.actions):
+        expected_row = graph.observation_row_binding_v1(
+            context,
+            root,
+            root.actions[len(root_batches)],
+        )
+        _epoch, expected_stream = _bootstrap_stream(
+            profile.open_lifecycle_binding.namespace,
+            expected_row,
+            identity.arm,
+        )
+        expected_phase = "DIRECT_ROOT_DISCOVERY"
+        expected_start = 1
+        expected_count = caps.initial_discovery_draws_per_row
+        expected_cap = caps.initial_discovery_draws_per_row
+    else:
+        _roots, children = direct._root_and_child_bindings(
+            context=context,
+            root_batches=root_batches,
+        )
+        expected_child_rows = tuple(
+            row for child in children for row in child.row_bindings
+        )
+        physical_rows = len(root.actions) + len(expected_child_rows)
+        if physical_rows > context.maximum_physical_rows_per_confidence_epoch:
+            _fail("direct child requested work after the physical-row cap")
+        if len(child_batches) < len(expected_child_rows):
+            expected_row = expected_child_rows[len(child_batches)]
+            _epoch, expected_stream = _bootstrap_stream(
+                profile.open_lifecycle_binding.namespace,
+                expected_row,
+                identity.arm,
+            )
+            expected_phase = "DIRECT_CHILD_DISCOVERY"
+            expected_start = 1
+            expected_count = caps.new_child_discovery_draws_per_row
+            expected_cap = caps.new_child_discovery_draws_per_row
+        else:
+            if len(child_batches) != len(expected_child_rows):
+                _fail("direct child emitted an extra discovery row")
+            evidence_by_batch: dict[str, tuple[Any, ...]] = {}
+            for value in controller.aggregate_support_evidence:
+                evidence_by_batch.setdefault(
+                    value.discovery_batch_id,
+                    (),
+                )
+                evidence_by_batch[value.discovery_batch_id] = (
+                    *evidence_by_batch[value.discovery_batch_id],
+                    value,
+                )
+            if set(evidence_by_batch) != {
+                value.batch_id for value in discovery
+            }:
+                _fail("direct validation started before every support freeze")
+            width = len(discovery)
+            if not width:
+                _fail("direct validation has no discovered row")
+            block_index, row_index = divmod(len(validation), width)
+            if block_index >= len(caps.direct_validation_checkpoints):
+                _fail("direct validation continued beyond its checkpoint cap")
+            checkpoint = caps.direct_validation_checkpoints[block_index]
+            prior = (
+                0
+                if block_index == 0
+                else caps.direct_validation_checkpoints[block_index - 1]
+            )
+            discovery_batch = discovery[row_index]
+            row = discovery_batch.request.stream_identity.row_binding
+            root_epoch, _root_stream = _bootstrap_stream(
+                profile.open_lifecycle_binding.namespace,
+                row,
+                identity.arm,
+            )
+            expected_stream = _validation_stream(
+                profile.open_lifecycle_binding.namespace,
+                row,
+                root_epoch,
+                tuple(
+                    sorted(
+                        evidence_by_batch[discovery_batch.batch_id],
+                        key=lambda value: value.evidence_id,
+                    )
+                ),
+                identity.arm,
+            )
+            expected_phase = "DIRECT_VALIDATION"
+            expected_start = prior + 1
+            expected_count = checkpoint - prior
+            expected_cap = caps.direct_validation_checkpoints[-1]
+    expected_scientific_id = _direct_scientific_intent_id(
+        occurrence_id=identity.occurrence_id,
+        phase=expected_phase,
+        row_binding_id=expected_stream.row_binding_id,
+        checkpoint=checkpoint,
+    )
+    if (
+        item["phase"] != expected_phase
+        or item["intent_kind"] != expected_phase
+        or item["scientific_intent_id"] != expected_scientific_id
+        or stream != expected_stream
+        or item["accepted_draw_start"] != expected_start
+        or item["accepted_draw_count"] != expected_count
+        or item["accepted_draw_cap"] != expected_cap
+    ):
+        _fail("direct child intent changed a registered global barrier")
 
 
 def _validate_child_batch_intent(
@@ -2630,6 +3187,25 @@ def _validate_child_batch_intent(
         _fail("child batch intent is stale, reordered, or transplanted")
     caps = profile.open_lifecycle_binding.route_cap_profile
     row = stream.row_binding
+    if (
+        identity.arm
+        is worker.V075WorkerArmV1.MATCHED_DIRECT_GROUND
+    ):
+        if (
+            active_round != 0
+            or active_authorization_id is not None
+            or item["authorization_id"] is not None
+        ):
+            _fail("direct child cannot enter an adaptive round")
+        _validate_direct_batch_intent_semantics(
+            item=item,
+            stream=stream,
+            profile=profile,
+            controller=controller,
+        )
+        if stream.arm != identity.arm.value:
+            _fail("direct batch intent stream changed arm")
+        return item, stream, incremental_draws
     if active_round == 0:
         expected = root_schedule_intents.get(item["scientific_intent_id"])
         if (
@@ -2701,7 +3277,7 @@ def _validate_child_batch_intent(
     return item, stream, next_incremental
 
 
-def _validate_child_result_operationally(
+def _validate_adaptive_child_result_operationally(
     *,
     raw: bytes,
     profile: V075ProductionOccurrenceIPCProfileV1,
@@ -2736,12 +3312,16 @@ def _validate_child_result_operationally(
             "terminal_code",
             "final_backend_result",
             "final_planner_result",
+            "operational_planner_transport_id",
+            "operational_planner_transport",
+            "operational_planner_transport_bytes_hex",
             "public_backend_computed_in_child",
             "public_planner_computed_in_child",
             "host_operational_full_planner_replay_required",
             "private_material_serialized",
             "scientific_plan_certificate",
-            "target_execution_opened",
+            "ipc_module_opened_observer",
+            "production_target_observation_accessed",
             "child_result_id",
         },
         field_name="child scientific result",
@@ -2760,6 +3340,7 @@ def _validate_child_result_operationally(
         "initial_planner_result_id",
         "final_backend_result_id",
         "final_planner_result_id",
+        "operational_planner_transport_id",
     )
     for key in id_fields:
         _cid(item[key], f"child result {key}")
@@ -2789,7 +3370,13 @@ def _validate_child_result_operationally(
         or item["host_operational_full_planner_replay_required"] is not False
         or item["private_material_serialized"] is not False
         or item["scientific_plan_certificate"] is not False
-        or item["target_execution_opened"] is not False
+        or item["ipc_module_opened_observer"] is not False
+        or item["production_target_observation_accessed"]
+        is not (
+            profile.open_lifecycle_binding.authority_scope.value
+            == "PRODUCTION"
+            and bool(observed_batches)
+        )
         or type(item["final_backend_result"]) is not dict
         or type(item["final_planner_result"]) is not dict
         or item["final_backend_result"].get("result_id")
@@ -2800,7 +3387,562 @@ def _validate_child_result_operationally(
         != item["final_planner_result_id"]
     ):
         _fail("child scientific result is malformed or identity-transplanted")
+    from acfqp import v075_operational_planner_transport_v1 as transport
+
+    try:
+        transport_raw = bytes.fromhex(
+            item["operational_planner_transport_bytes_hex"]
+        )
+    except (TypeError, ValueError) as error:
+        raise V075ProductionOccurrenceIPCInvariantViolation(
+            "child operational planner transport is not canonical hex"
+        ) from error
+    if (
+        transport_raw.hex()
+        != item["operational_planner_transport_bytes_hex"]
+        or _load_canonical(
+            transport_raw,
+            field_name="child operational planner transport",
+        )
+        != item["operational_planner_transport"]
+    ):
+        _fail("child operational planner transport bytes changed")
+    loaded = transport.load_v075_operational_planner_transport_v1(
+        occurrence_identity=identity,
+        batches=observed_batches,
+        source_prior_transport=profile.source_prior_transport,
+        claimed_bytes=transport_raw,
+    )
+    if (
+        loaded.transport.transport_id
+        != item["operational_planner_transport_id"]
+        or loaded.backend_result.result_id
+        != item["final_backend_result_id"]
+        or loaded.planner_result.result_id
+        != item["final_planner_result_id"]
+        or loaded.backend_result.to_document()
+        != item["final_backend_result"]
+        or loaded.planner_result.to_document()
+        != item["final_planner_result"]
+    ):
+        _fail("child operational planner transport changed its exact results")
     return item
+
+
+_DIRECT_CHILD_RESULT_KEYS = {
+    "schema",
+    "schema_version",
+    "proposed_contract_version",
+    "profile_key",
+    "profile_id",
+    "occurrence_id",
+    "target_tape_namespace_id",
+    "context_id",
+    "arm",
+    "route",
+    "occurrence_ordinal",
+    "source_view_id",
+    "initial_schedule_id",
+    "initial_backend_result_id",
+    "initial_planner_result_id",
+    "rounds",
+    "batch_ids",
+    "observation_order_batch_ids",
+    "final_backend_result_id",
+    "final_planner_result_id",
+    "final_planner_status",
+    "ready_for_exact_total_lift",
+    "terminal_class",
+    "terminal_code",
+    "direct_root_child_bindings",
+    "direct_child_catalogue_bindings",
+    "direct_checkpoint_history",
+    "direct_work",
+    "direct_physical_cap_failure",
+    "final_backend_result",
+    "final_planner_result",
+    "operational_planner_transport_id",
+    "operational_planner_transport",
+    "operational_planner_transport_bytes_hex",
+    "public_backend_computed_in_child",
+    "public_planner_computed_in_child",
+    "host_operational_full_planner_replay_required",
+    "private_material_serialized",
+    "root_work_retained",
+    "lifecycle_close_requires_failure_authority",
+    "scientific_plan_certificate",
+    "ipc_module_opened_observer",
+    "production_target_observation_accessed",
+    "child_result_id",
+}
+
+
+def _direct_public_closure(
+    *,
+    profile: V075ProductionOccurrenceIPCProfileV1,
+    observed_batches: tuple[Any, ...],
+) -> tuple[
+    tuple[Any, ...],
+    tuple[Any, ...],
+    tuple[Any, ...],
+    tuple[Any, ...],
+]:
+    from acfqp import v075_integrated_direct_occurrence_pipeline_v1 as direct
+    from acfqp import v075_public_graph_semantics_v1 as graph
+
+    context = profile.context
+    root = graph.root_catalogue_v1(context)
+    discovery = tuple(
+        item
+        for item in observed_batches
+        if item.request.stream_identity.lane
+        is graph.V075ObservationLaneV1.DISCOVERY
+    )
+    validation = tuple(
+        item
+        for item in observed_batches
+        if item.request.stream_identity.lane
+        is graph.V075ObservationLaneV1.VALIDATION
+    )
+    if observed_batches[: len(discovery)] != discovery:
+        _fail("direct child crossed the global discovery barrier")
+    root_batches = tuple(
+        item
+        for item in discovery
+        if item.request.stream_identity.row_binding.remaining_horizon == 2
+    )
+    child_batches = tuple(
+        item
+        for item in discovery
+        if item.request.stream_identity.row_binding.remaining_horizon == 1
+    )
+    if (
+        len(root_batches) != len(root.actions)
+        or tuple(
+            item.request.stream_identity.row_binding.action
+            for item in root_batches
+        )
+        != root.actions
+        or any(
+            item.request.accepted_draw_start != 1
+            or item.request.accepted_draw_count
+            != profile.open_lifecycle_binding.route_cap_profile
+            .initial_discovery_draws_per_row
+            or item.request.accepted_draw_cap
+            != profile.open_lifecycle_binding.route_cap_profile
+            .initial_discovery_draws_per_row
+            for item in root_batches
+        )
+    ):
+        _fail("direct child omitted or changed a root discovery row")
+    roots, children = direct._root_and_child_bindings(
+        context=context,
+        root_batches=root_batches,
+    )
+    expected_child_rows = tuple(
+        row for child in children for row in child.row_bindings
+    )
+    if child_batches and (
+        tuple(
+            item.request.stream_identity.row_binding.row_binding_id
+            for item in child_batches
+        )
+        != tuple(item.row_binding_id for item in expected_child_rows)
+        or any(
+            item.request.accepted_draw_start != 1
+            or item.request.accepted_draw_count
+            != profile.open_lifecycle_binding.route_cap_profile
+            .new_child_discovery_draws_per_row
+            or item.request.accepted_draw_cap
+            != profile.open_lifecycle_binding.route_cap_profile
+            .new_child_discovery_draws_per_row
+            for item in child_batches
+        )
+    ):
+        _fail("direct child discovery changed a complete child catalogue")
+    return discovery, validation, roots, children
+
+
+def _validate_direct_child_result_operationally(
+    *,
+    raw: bytes,
+    profile: V075ProductionOccurrenceIPCProfileV1,
+    observed_batches: tuple[Any, ...],
+) -> dict[str, Any]:
+    from acfqp import v075_batch_native_statistical_backend_v1 as backend
+    from acfqp import v075_integrated_direct_occurrence_pipeline_v1 as direct
+    from acfqp import v075_operational_planner_transport_v1 as transport
+    from acfqp import v075_public_graph_semantics_v1 as graph
+
+    item = _exact_mapping(
+        _load_canonical(raw, field_name="direct child scientific result"),
+        _DIRECT_CHILD_RESULT_KEYS,
+        field_name="direct child scientific result",
+    )
+    _strip_id_and_verify(
+        item,
+        role="child_result",
+        id_field="child_result_id",
+        field_name="direct child scientific result",
+    )
+    identity = profile.occurrence_identity
+    if (
+        item["schema"]
+        != "acfqp.v075_production_occurrence_child_result.v1"
+        or item["schema_version"] != SCHEMA_VERSION
+        or item["proposed_contract_version"] != PROPOSED_CONTRACT_VERSION
+        or item["profile_key"] != PROFILE_KEY
+        or item["profile_id"] != profile.profile_id
+        or item["occurrence_id"] != identity.occurrence_id
+        or item["target_tape_namespace_id"]
+        != identity.target_tape_namespace_id
+        or item["context_id"] != identity.context_id
+        or item["arm"] != identity.arm.value
+        or item["route"] != "MATCHED_DIRECT_GROUND"
+        or item["occurrence_ordinal"] != identity.occurrence_ordinal
+        or item["source_view_id"] is not None
+        or item["initial_schedule_id"] is not None
+        or item["rounds"] != []
+        or item["batch_ids"]
+        != sorted(batch.batch_id for batch in observed_batches)
+        or item["observation_order_batch_ids"]
+        != [batch.batch_id for batch in observed_batches]
+        or item["host_operational_full_planner_replay_required"] is not False
+        or item["private_material_serialized"] is not False
+        or item["root_work_retained"] is not True
+        or item["scientific_plan_certificate"] is not False
+        or item["ipc_module_opened_observer"] is not False
+        or item["production_target_observation_accessed"]
+        is not (
+            profile.open_lifecycle_binding.authority_scope.value
+            == "PRODUCTION"
+            and bool(observed_batches)
+        )
+    ):
+        _fail("direct child result is malformed or identity-transplanted")
+    discovery, validation, roots, children = _direct_public_closure(
+        profile=profile,
+        observed_batches=observed_batches,
+    )
+    if item["direct_root_child_bindings"] != [
+        value.to_document() for value in roots
+    ] or item["direct_child_catalogue_bindings"] != [
+        value.to_document() for value in children
+    ]:
+        _fail("direct child closure differs from signed root observations")
+    physical_rows = len(roots) + sum(
+        len(value.row_bindings) for value in children
+    )
+    maximum_rows = (
+        profile.context.maximum_physical_rows_per_confidence_epoch
+    )
+    physical_cap = physical_rows > maximum_rows
+    if physical_cap:
+        expected_failure = (
+            direct.V075IntegratedDirectPhysicalRowCapExceeded(
+                occurrence_id=identity.occurrence_id,
+                observed_physical_rows=physical_rows,
+                maximum_physical_rows=maximum_rows,
+                retained_root_batch_ids=tuple(
+                    sorted(value.batch_id for value in discovery)
+                ),
+            )
+        )
+        if (
+            len(discovery) != len(roots)
+            or validation
+            or item["terminal_class"]
+            != "ATTEMPT_CLOSURE_NONCERTIFICATE"
+            or item["terminal_code"]
+            != "DIRECT_PHYSICAL_ROW_CAP_EXHAUSTED"
+            or item["direct_checkpoint_history"] != []
+            or item["direct_work"] is not None
+            or item["direct_physical_cap_failure"]
+            != expected_failure.to_document()
+            or item["initial_backend_result_id"] is not None
+            or item["initial_planner_result_id"] is not None
+            or item["final_backend_result_id"] is not None
+            or item["final_planner_result_id"] is not None
+            or item["final_planner_status"] is not None
+            or item["ready_for_exact_total_lift"] is not False
+            or item["final_backend_result"] is not None
+            or item["final_planner_result"] is not None
+            or item["operational_planner_transport_id"] is not None
+            or item["operational_planner_transport"] is not None
+            or item["operational_planner_transport_bytes_hex"] is not None
+            or item["public_backend_computed_in_child"] is not False
+            or item["public_planner_computed_in_child"] is not False
+            or item["lifecycle_close_requires_failure_authority"]
+            is not True
+        ):
+            _fail("direct physical-row cap terminal was weakened or changed")
+        return item
+
+    expected_child_rows = sum(
+        len(value.row_bindings) for value in children
+    )
+    if (
+        len(discovery) != len(roots) + expected_child_rows
+        or not validation
+        or item["direct_physical_cap_failure"] is not None
+        or item["lifecycle_close_requires_failure_authority"] is not False
+        or item["public_backend_computed_in_child"] is not True
+        or item["public_planner_computed_in_child"] is not True
+        or type(item["final_backend_result"]) is not dict
+        or type(item["final_planner_result"]) is not dict
+        or type(item["direct_checkpoint_history"]) is not list
+        or not item["direct_checkpoint_history"]
+    ):
+        _fail("direct child stopped outside a checkpoint or complete closure")
+
+    validation_stream_by_row: dict[str, Any] = {}
+    validation_by_stream: dict[str, list[Any]] = {}
+    for batch in validation:
+        stream = batch.request.stream_identity
+        prior = validation_stream_by_row.get(stream.row_binding_id)
+        if prior is not None and prior != stream:
+            _fail("direct validation row changed support identity")
+        validation_stream_by_row[stream.row_binding_id] = stream
+        validation_by_stream.setdefault(stream.stream_id, []).append(batch)
+    discovery_rows = tuple(
+        value.request.stream_identity.row_binding_id for value in discovery
+    )
+    if tuple(validation_stream_by_row) != discovery_rows:
+        _fail("direct validation omitted, added, or reordered a row")
+    evidence_ids = tuple(
+        sorted(
+            {
+                evidence.evidence_id
+                for stream in validation_stream_by_row.values()
+                for evidence in (
+                    stream.pairing_authority.support_chain.leaf.evidence
+                )
+            }
+        )
+    )
+    if any(
+        not stream.pairing_authority.support_chain.leaf.evidence
+        for stream in validation_stream_by_row.values()
+    ):
+        _fail("direct validation used an unfrozen support stream")
+
+    checkpoints = (
+        profile.open_lifecycle_binding.route_cap_profile
+        .direct_validation_checkpoints
+    )
+    width = len(discovery)
+    if (
+        len(validation) % width
+        or len(validation) // width
+        != len(item["direct_checkpoint_history"])
+        or len(item["direct_checkpoint_history"]) > len(checkpoints)
+    ):
+        _fail("direct checkpoint blocks and child history disagree")
+    completed = len(item["direct_checkpoint_history"])
+    prior_checkpoint = 0
+    discovery_count = len(discovery)
+    for index, checkpoint_document in enumerate(
+        item["direct_checkpoint_history"]
+    ):
+        checkpoint = checkpoints[index]
+        block = validation[index * width : (index + 1) * width]
+        if (
+            type(checkpoint_document) is not dict
+            or checkpoint_document.get("checkpoint") != checkpoint
+        ):
+            _fail("direct checkpoint index is malformed or transplanted")
+        if tuple(
+            value.request.stream_identity.row_binding_id
+            for value in block
+        ) != discovery_rows:
+            _fail("direct checkpoint row block was reordered")
+        if any(
+            value.request.accepted_draw_start != prior_checkpoint + 1
+            or value.request.accepted_draw_count
+            != checkpoint - prior_checkpoint
+            or value.request.accepted_draw_cap != checkpoints[-1]
+            for value in block
+        ):
+            _fail("direct checkpoint prefix was re-capped")
+        expected_request = (
+            backend.freeze_v075_batch_native_backend_request_v1(
+                arm=identity.arm,
+                occurrence_ordinal=identity.occurrence_ordinal,
+                batches=tuple(
+                    (
+                        *observed_batches[:discovery_count],
+                        *validation[: (index + 1) * width],
+                    )
+                ),
+                occurrence_identity=identity,
+            )
+        )
+        if (
+            checkpoint_document.get("request_id")
+            != expected_request.request_id
+            or checkpoint_document.get("batch_ids")
+            != [value.batch_id for value in expected_request.batches]
+        ):
+            _fail("direct checkpoint batch registry was transplanted")
+        for key in (
+            "checkpoint_id",
+            "request_id",
+            "backend_result_id",
+            "backend_work_id",
+            "planner_result_id",
+            "planner_work_id",
+        ):
+            _cid(checkpoint_document.get(key), f"direct checkpoint {key}")
+        if (
+            type(checkpoint_document.get("ready_for_exact_total_lift"))
+            is not bool
+            or (
+                checkpoint_document["ready_for_exact_total_lift"]
+                and index + 1 != completed
+            )
+        ):
+            _fail("direct checkpoint continued after readiness")
+        prior_checkpoint = checkpoint
+
+    final_checkpoint = item["direct_checkpoint_history"][-1]
+    ready = final_checkpoint["ready_for_exact_total_lift"]
+    terminal_code = (
+        "READY_FOR_EXACT_TOTAL_LIFT"
+        if ready
+        else "DIRECT_CHECKPOINT_CAP_EXHAUSTED"
+    )
+    if (
+        item["terminal_code"] != terminal_code
+        or item["terminal_class"]
+        != (
+            "PRECERTIFICATE_CANDIDATE"
+            if ready
+            else "ATTEMPT_CLOSURE_NONCERTIFICATE"
+        )
+        or item["ready_for_exact_total_lift"] is not ready
+        or (
+            not ready
+            and checkpoints[completed - 1] != checkpoints[-1]
+        )
+        or item["initial_backend_result_id"]
+        != item["direct_checkpoint_history"][0]["backend_result_id"]
+        or item["initial_planner_result_id"]
+        != item["direct_checkpoint_history"][0]["planner_result_id"]
+        or item["final_backend_result_id"]
+        != final_checkpoint["backend_result_id"]
+        or item["final_planner_result_id"]
+        != final_checkpoint["planner_result_id"]
+        or item["final_backend_result"].get("result_id")
+        != item["final_backend_result_id"]
+        or item["final_planner_result"].get("result_id")
+        != item["final_planner_result_id"]
+        or item["final_planner_status"]
+        != item["final_planner_result"].get("status")
+    ):
+        _fail("direct child terminal differs from checkpoint history")
+
+    try:
+        transport_raw = bytes.fromhex(
+            item["operational_planner_transport_bytes_hex"]
+        )
+    except (TypeError, ValueError) as error:
+        raise V075ProductionOccurrenceIPCInvariantViolation(
+            "direct operational planner transport is not canonical hex"
+        ) from error
+    if (
+        transport_raw.hex()
+        != item["operational_planner_transport_bytes_hex"]
+        or _load_canonical(
+            transport_raw,
+            field_name="direct operational planner transport",
+        )
+        != item["operational_planner_transport"]
+    ):
+        _fail("direct operational planner transport bytes changed")
+    loaded = transport.load_v075_operational_planner_transport_v1(
+        occurrence_identity=identity,
+        batches=observed_batches,
+        source_prior_transport=None,
+        claimed_bytes=transport_raw,
+    )
+    if (
+        loaded.transport.transport_id
+        != item["operational_planner_transport_id"]
+        or loaded.backend_result.result_id
+        != item["final_backend_result_id"]
+        or loaded.planner_result.result_id
+        != item["final_planner_result_id"]
+        or loaded.backend_result.to_document()
+        != item["final_backend_result"]
+        or loaded.planner_result.to_document()
+        != item["final_planner_result"]
+    ):
+        _fail("direct operational planner transport changed exact results")
+
+    values = {
+        "common.pre_sampling_identity_checks": 1,
+        "common.open_lifecycle_checks": 1,
+        "common.signed_batches_retained": len(observed_batches),
+        "common.per_draw_capabilities_materialized": 0,
+        "discovery.root_rows": len(roots),
+        "discovery.root_draws": sum(
+            value.request.accepted_draw_count
+            for value in discovery[: len(roots)]
+        ),
+        "discovery.distinct_nonfailure_child_states": len(children),
+        "discovery.child_catalogues": len(children),
+        "discovery.child_rows": expected_child_rows,
+        "discovery.child_draws": sum(
+            value.request.accepted_draw_count
+            for value in discovery[len(roots) :]
+        ),
+        "support.rows_frozen": len(discovery),
+        "support.distinct_states_frozen": len(evidence_ids),
+        "validation.rows": len(discovery),
+        "validation.draws": sum(
+            value.request.accepted_draw_count for value in validation
+        ),
+        "planning.checkpoints_evaluated": completed,
+        "planning.backend_compilations": completed,
+        "planning.matched_direct_planner_invocations": completed,
+        "planning.ready_checkpoint_count": int(ready),
+    }
+    expected_work = direct.V075IntegratedDirectWorkV1(
+        identity.occurrence_id,
+        tuple(
+            direct.V075IntegratedDirectCounterV1(path, values[path])
+            for path in direct.DIRECT_PIPELINE_COUNTER_PATHS
+        ),
+    )
+    if item["direct_work"] != expected_work.to_document():
+        _fail("direct child work vector differs from signed observations")
+    return item
+
+
+def _validate_child_result_operationally(
+    *,
+    raw: bytes,
+    profile: V075ProductionOccurrenceIPCProfileV1,
+    observed_batches: tuple[Any, ...],
+    active_round: int,
+) -> dict[str, Any]:
+    from acfqp import v075_registered_occurrence_worker_v1 as worker
+
+    if (
+        profile.occurrence_identity.arm
+        is worker.V075WorkerArmV1.MATCHED_DIRECT_GROUND
+    ):
+        return _validate_direct_child_result_operationally(
+            raw=raw,
+            profile=profile,
+            observed_batches=observed_batches,
+        )
+    return _validate_adaptive_child_result_operationally(
+        raw=raw,
+        profile=profile,
+        observed_batches=observed_batches,
+        active_round=active_round,
+    )
 
 
 def execute_v075_production_adaptive_occurrence_ipc_v1(
@@ -2808,7 +3950,7 @@ def execute_v075_production_adaptive_occurrence_ipc_v1(
     profile: V075ProductionOccurrenceIPCProfileV1,
     controller: Any,
 ) -> V075ProductionOccurrenceIPCResultV1:
-    """Execute one adaptive occurrence in one fresh registered child.
+    """Execute one registered occurrence in one fresh isolated child.
 
     The parent performs capability/cap/protocol checks and observer execution
     only.  It never calls the statistical backend or planner.
@@ -2827,14 +3969,10 @@ def execute_v075_production_adaptive_occurrence_ipc_v1(
         or controller.events
     ):
         _fail("production occurrence IPC requires its exact unused lifecycle")
-    if (
+    is_direct = (
         profile.occurrence_identity.arm
         is worker.V075WorkerArmV1.MATCHED_DIRECT_GROUND
-    ):
-        _fail(
-            "route-generic IPC profile is frozen, but the matched-direct "
-            "child handler is not yet integrated"
-        )
+    )
     launch = _launch_document(profile)
     launch_raw = _canonical_bytes(launch)
     entries: list[V075ProductionIPCJournalEntryV1] = []
@@ -2853,13 +3991,19 @@ def execute_v075_production_adaptive_occurrence_ipc_v1(
     active_authorization_id: str | None = None
     allowed_scientific_intent_ids: set[str] = set()
     consumed_scientific_intent_ids: set[str] = set()
-    root_schedule = proposal.freeze_v075_initial_root_acquisition_schedule_v1(
-        context=profile.context,
-        arm=profile.occurrence_identity.arm,
+    root_schedule = (
+        None
+        if is_direct
+        else proposal.freeze_v075_initial_root_acquisition_schedule_v1(
+            context=profile.context,
+            arm=profile.occurrence_identity.arm,
+        )
     )
-    root_schedule_intents = {
-        item.intent_id: item for item in root_schedule.intents
-    }
+    root_schedule_intents = (
+        {}
+        if root_schedule is None
+        else {item.intent_id: item for item in root_schedule.intents}
+    )
     allowed_scientific_intent_ids = set(root_schedule_intents)
     child_result: dict[str, Any] | None = None
     terminal_code = "PROTOCOL_FAILURE"
@@ -3035,6 +4179,81 @@ def execute_v075_production_adaptive_occurrence_ipc_v1(
                         if type(item["selected_outcome_ids"]) is list
                         else ()
                     )
+                    direct_support_valid = False
+                    if (
+                        profile.occurrence_identity.arm
+                        is worker.V075WorkerArmV1.MATCHED_DIRECT_GROUND
+                    ):
+                        from acfqp import (
+                            v075_integrated_direct_occurrence_pipeline_v1
+                            as direct,
+                        )
+                        from acfqp import (
+                            v075_public_graph_semantics_v1 as graph,
+                        )
+
+                        discovery_batches = tuple(
+                            value
+                            for value in batches
+                            if value.request.stream_identity.lane
+                            is graph.V075ObservationLaneV1.DISCOVERY
+                        )
+                        root_batches = tuple(
+                            value
+                            for value in discovery_batches
+                            if value.request.stream_identity.row_binding
+                            .remaining_horizon
+                            == 2
+                        )
+                        root = graph.root_catalogue_v1(profile.context)
+                        _roots, children = (
+                            direct._root_and_child_bindings(
+                                context=profile.context,
+                                root_batches=root_batches,
+                            )
+                        )
+                        expected_discovery_count = len(root.actions) + sum(
+                            len(value.row_bindings)
+                            for value in children
+                        )
+                        expected_discovery = (
+                            discovery_batches[support_intents]
+                            if support_intents < len(discovery_batches)
+                            else None
+                        )
+                        expected_direct_scientific_id = (
+                            None
+                            if expected_discovery is None
+                            else _direct_scientific_intent_id(
+                                occurrence_id=(
+                                    profile.occurrence_identity.occurrence_id
+                                ),
+                                phase="DIRECT_SUPPORT_FREEZE",
+                                row_binding_id=(
+                                    expected_discovery.request
+                                    .stream_identity.row_binding_id
+                                ),
+                                checkpoint=None,
+                            )
+                        )
+                        direct_support_valid = (
+                            len(discovery_batches)
+                            == expected_discovery_count
+                            and expected_discovery is discovery
+                            and item["phase"] == "DIRECT_SUPPORT_FREEZE"
+                            and item["round_index"] == 0
+                            and item["authorization_id"] is None
+                            and item["scientific_intent_id"]
+                            == expected_direct_scientific_id
+                        )
+                    else:
+                        direct_support_valid = (
+                            item["round_index"] == active_round
+                            and item["authorization_id"]
+                            == active_authorization_id
+                            and item["scientific_intent_id"]
+                            in allowed_scientific_intent_ids
+                        )
                     if (
                         item["schema"]
                         != "acfqp.v075_production_occurrence_support_intent.v1"
@@ -3043,11 +4262,7 @@ def execute_v075_production_adaptive_occurrence_ipc_v1(
                         or item["occurrence_id"]
                         != profile.occurrence_identity.occurrence_id
                         or item["sequence_number"] != expected_sequence
-                        or item["round_index"] != active_round
-                        or item["authorization_id"]
-                        != active_authorization_id
-                        or item["scientific_intent_id"]
-                        not in allowed_scientific_intent_ids
+                        or not direct_support_valid
                         or item["private_material_serialized"] is not False
                         or discovery is None
                         or discovery.request.request_id
@@ -3229,7 +4444,12 @@ def execute_v075_production_adaptive_occurrence_ipc_v1(
                         raw=raw,
                     )
                     protocol_checks += 3
-                    terminal_code = "CHILD_SCIENTIFIC_RESULT_READY"
+                    terminal_code = (
+                        "DIRECT_PHYSICAL_ROW_CAP_EXHAUSTED"
+                        if child_result.get("terminal_code")
+                        == "DIRECT_PHYSICAL_ROW_CAP_EXHAUSTED"
+                        else "CHILD_SCIENTIFIC_RESULT_READY"
+                    )
                     break
                 _fail("child emitted an unknown protocol message")
             else:
@@ -3302,12 +4522,22 @@ def execute_v075_production_adaptive_occurrence_ipc_v1(
         profile.profile_id,
         profile.occurrence_identity.occurrence_id,
         profile.open_lifecycle_binding.authority_scope.value,
-        "ADAPTIVE_QUOTIENT",
+        (
+            "MATCHED_DIRECT_GROUND"
+            if is_direct
+            else "ADAPTIVE_QUOTIENT"
+        ),
         (
             "PASS"
             if terminal_code == "CHILD_SCIENTIFIC_RESULT_READY"
             and exit_code == 0
-            else "FAILED"
+            else (
+                "NONCERTIFICATE"
+                if terminal_code
+                == "DIRECT_PHYSICAL_ROW_CAP_EXHAUSTED"
+                and exit_code == 0
+                else "FAILED"
+            )
         ),
         terminal_code,
         child_result,
@@ -3319,15 +4549,31 @@ def execute_v075_production_adaptive_occurrence_ipc_v1(
     )
 
 
+def execute_v075_production_occurrence_ipc_v1(
+    *,
+    profile: V075ProductionOccurrenceIPCProfileV1,
+    controller: Any,
+) -> V075ProductionOccurrenceIPCResultV1:
+    """Route-generic spelling of the backward-compatible executor."""
+
+    return execute_v075_production_adaptive_occurrence_ipc_v1(
+        profile=profile,
+        controller=controller,
+    )
+
+
 @dataclass(frozen=True, slots=True)
 class V075ProductionIPCStandaloneVerificationV1:
     result_id: str
     occurrence_id: str
     child_result_id: str
-    final_backend_result_id: str
-    final_planner_result_id: str
+    route: str
+    terminal_code: str
+    final_backend_result_id: str | None
+    final_planner_result_id: str | None
     replayed_batch_count: int
-    evaluation_planner_replays: int = 1
+    replayed_checkpoint_count: int
+    evaluation_planner_replays: int
     operational_work_charged: bool = False
     _verification_id: str = field(init=False, repr=False)
 
@@ -3336,15 +4582,43 @@ class V075ProductionIPCStandaloneVerificationV1:
             (self.result_id, "standalone verified IPC result"),
             (self.occurrence_id, "standalone verified occurrence"),
             (self.child_result_id, "standalone verified child result"),
+        ):
+            _cid(value, name)
+        for value, name in (
             (self.final_backend_result_id, "standalone verified backend"),
             (self.final_planner_result_id, "standalone verified planner"),
         ):
-            _cid(value, name)
+            if value is not None:
+                _cid(value, name)
         if (
-            type(self.replayed_batch_count) is not int
+            self.route not in {"ADAPTIVE_QUOTIENT", "MATCHED_DIRECT_GROUND"}
+            or type(self.terminal_code) is not str
+            or not self.terminal_code
+            or type(self.replayed_batch_count) is not int
             or self.replayed_batch_count <= 0
-            or self.evaluation_planner_replays != 1
+            or type(self.replayed_checkpoint_count) is not int
+            or self.replayed_checkpoint_count < 0
+            or type(self.evaluation_planner_replays) is not int
+            or self.evaluation_planner_replays < 0
             or self.operational_work_charged is not False
+            or (
+                self.final_backend_result_id is None
+            )
+            != (self.final_planner_result_id is None)
+            or (
+                self.terminal_code
+                == "DIRECT_PHYSICAL_ROW_CAP_EXHAUSTED"
+            )
+            != (
+                self.final_backend_result_id is None
+                and self.replayed_checkpoint_count == 0
+                and self.evaluation_planner_replays == 0
+            )
+            or (
+                self.final_backend_result_id is not None
+                and self.evaluation_planner_replays
+                != max(1, self.replayed_checkpoint_count)
+            )
         ):
             _fail("standalone IPC verification is malformed")
         object.__setattr__(
@@ -3363,9 +4637,12 @@ class V075ProductionIPCStandaloneVerificationV1:
             "result_id": self.result_id,
             "occurrence_id": self.occurrence_id,
             "child_result_id": self.child_result_id,
+            "route": self.route,
+            "terminal_code": self.terminal_code,
             "final_backend_result_id": self.final_backend_result_id,
             "final_planner_result_id": self.final_planner_result_id,
             "replayed_batch_count": self.replayed_batch_count,
+            "replayed_checkpoint_count": self.replayed_checkpoint_count,
             "evaluation_planner_replays": self.evaluation_planner_replays,
             "evaluation_lane": True,
             "operational_work_charged": self.operational_work_charged,
@@ -3391,6 +4668,8 @@ def verify_v075_occurrence_ipc_result_standalone_v1(
     """
 
     from acfqp import v075_batch_native_statistical_backend_v1 as backend
+    from acfqp import v075_integrated_direct_occurrence_pipeline_v1 as direct
+    from acfqp import v075_registered_occurrence_worker_v1 as worker
 
     if (
         type(profile) is not V075ProductionOccurrenceIPCProfileV1
@@ -3398,10 +4677,117 @@ def verify_v075_occurrence_ipc_result_standalone_v1(
         or claimed.profile_id != profile.profile_id
         or claimed.occurrence_id
         != profile.occurrence_identity.occurrence_id
-        or claimed.status != "PASS"
+        or claimed.status not in {"PASS", "NONCERTIFICATE"}
         or claimed.child_result is None
     ):
-        _fail("standalone verifier requires one matching passing IPC result")
+        _fail("standalone verifier requires one matching closed IPC result")
+    child = claimed.child_result
+    validated = _validate_child_result_operationally(
+        raw=_canonical_bytes(child),
+        profile=profile,
+        observed_batches=claimed.observed_batches,
+        active_round=(
+            len(child["rounds"])
+            if type(child.get("rounds")) is list
+            else 0
+        ),
+    )
+    if validated != child:
+        _fail("standalone verifier changed the operational child result")
+
+    if (
+        profile.occurrence_identity.arm
+        is worker.V075WorkerArmV1.MATCHED_DIRECT_GROUND
+    ):
+        if (
+            child["terminal_code"]
+            == "DIRECT_PHYSICAL_ROW_CAP_EXHAUSTED"
+        ):
+            return V075ProductionIPCStandaloneVerificationV1(
+                claimed.result_id,
+                claimed.occurrence_id,
+                child["child_result_id"],
+                claimed.route,
+                child["terminal_code"],
+                None,
+                None,
+                len(claimed.observed_batches),
+                0,
+                0,
+            )
+        discovery, validation, roots, children = _direct_public_closure(
+            profile=profile,
+            observed_batches=claimed.observed_batches,
+        )
+        width = len(discovery)
+        history = []
+        for index, checkpoint_document in enumerate(
+            child["direct_checkpoint_history"]
+        ):
+            replayed = direct._checkpoint(
+                occurrence_identity=profile.occurrence_identity,
+                batches=tuple(
+                    (
+                        *discovery,
+                        *validation[: (index + 1) * width],
+                    )
+                ),
+                checkpoint=checkpoint_document["checkpoint"],
+            )
+            if replayed.to_document() != checkpoint_document:
+                _fail(
+                    "isolated direct checkpoint differs from "
+                    "standalone replay"
+                )
+            history.append(replayed)
+        history_tuple = tuple(history)
+        evidence = tuple(
+            sorted(
+                {
+                    value.evidence_id: value
+                    for batch in validation
+                    for value in (
+                        batch.request.stream_identity.pairing_authority
+                        .support_chain.leaf.evidence
+                    )
+                }.values(),
+                key=lambda value: value.evidence_id,
+            )
+        )
+        replayed_work = direct._work(
+            occurrence_id=profile.occurrence_identity.occurrence_id,
+            root_batches=tuple(discovery[: len(roots)]),
+            child_bindings=children,
+            discovery_batches=discovery,
+            evidence=evidence,
+            final_batches=claimed.observed_batches,
+            history=history_tuple,
+        )
+        replayed_backend = history_tuple[-1].backend_result
+        replayed_planner = history_tuple[-1].planner_result
+        if (
+            replayed_work.to_document() != child["direct_work"]
+            or replayed_backend.to_document()
+            != child["final_backend_result"]
+            or replayed_planner.to_document()
+            != child["final_planner_result"]
+        ):
+            _fail(
+                "isolated direct result differs from standalone replay"
+            )
+        return V075ProductionIPCStandaloneVerificationV1(
+            claimed.result_id,
+            claimed.occurrence_id,
+            child["child_result_id"],
+            claimed.route,
+            child["terminal_code"],
+            replayed_backend.result_id,
+            replayed_planner.result_id,
+            len(claimed.observed_batches),
+            len(history_tuple),
+            len(history_tuple),
+        )
+
     request = backend.freeze_v075_batch_native_backend_request_v1(
         arm=profile.occurrence_identity.arm,
         occurrence_ordinal=profile.occurrence_identity.occurrence_ordinal,
@@ -3415,7 +4801,6 @@ def verify_v075_occurrence_ipc_result_standalone_v1(
     replayed_planner = backend.plan_v075_batch_native_route_v1(
         replayed_backend
     )
-    child = claimed.child_result
     if (
         replayed_backend.result_id != child["final_backend_result_id"]
         or replayed_backend.to_document() != child["final_backend_result"]
@@ -3427,9 +4812,13 @@ def verify_v075_occurrence_ipc_result_standalone_v1(
         claimed.result_id,
         claimed.occurrence_id,
         child["child_result_id"],
+        claimed.route,
+        child["terminal_code"],
         replayed_backend.result_id,
         replayed_planner.result_id,
         len(claimed.observed_batches),
+        1,
+        1,
     )
 
 
@@ -3442,7 +4831,14 @@ def _child_main() -> int:
         if source_root not in sys.path:
             sys.path.insert(0, source_root)
         launch = _load_launch(_read_frame_child(sys.stdin.buffer))
-        result = _child_scientific_run(launch)
+        from acfqp import v075_registered_occurrence_worker_v1 as worker
+
+        result = (
+            _child_matched_direct_run(launch)
+            if launch["_arm"]
+            is worker.V075WorkerArmV1.MATCHED_DIRECT_GROUND
+            else _child_scientific_run(launch)
+        )
         if (
             launch["_behavior"]
             is V075ProductionIPCBehaviorV1.ATTACK_EXTRA_BATCH_INTENT
@@ -3509,6 +4905,7 @@ __all__ = [
     "V075ProductionOccurrenceIPCProfileV1",
     "V075ProductionOccurrenceIPCResultV1",
     "execute_v075_production_adaptive_occurrence_ipc_v1",
+    "execute_v075_production_occurrence_ipc_v1",
     "freeze_v075_production_occurrence_ipc_profile_v1",
     "registered_v075_production_occurrence_child_program_v1",
     "verify_v075_occurrence_ipc_result_standalone_v1",
