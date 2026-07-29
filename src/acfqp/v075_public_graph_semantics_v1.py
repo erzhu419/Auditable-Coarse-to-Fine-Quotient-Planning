@@ -139,6 +139,73 @@ def _cid(value: Any, field: str) -> str:
         ) from error
 
 
+def _is_exact_public_target_namespace_v1_or_v2(value: Any) -> bool:
+    """Recognize only the two registered concrete public namespace types.
+
+    V2 is imported lazily because its frozen runner dependency reaches this
+    graph module.  The exact type checks deliberately reject subclasses,
+    duck-typed namespace objects, and synthesized V1 external-claim views.
+    """
+
+    if type(value) is public_authority.V075PublicTargetTapeNamespaceV1:
+        return True
+    try:
+        from acfqp import v075_public_target_tape_namespace_v2 as namespace_v2
+    except ImportError:
+        return False
+    if type(value) is not namespace_v2.V075PublicTargetTapeNamespaceV2:
+        return False
+    try:
+        document = value.to_document()
+        return (
+            value.family
+            == public_authority.freeze_v075_public_family_generation_v1()
+            and type(value.signer_registry)
+            is public_authority.V075TrustedSignerRegistryV1
+            and value.signer_registry == value.anchor.signer_registry
+            and document.get("target_tape_namespace_id")
+            == value.target_tape_namespace_id
+            and document.get("remote_main_anchor_id")
+            == value.anchor.anchor_id
+            and document.get("final_preregistration_id")
+            == value.anchor.final_preregistration_id
+            and document.get("v1_external_claim_projection_present")
+            is False
+            and document.get("v1_external_claim_projection_accepted")
+            is False
+            and _cid(
+                value.target_tape_namespace_id,
+                "public graph V2 namespace",
+            )
+            == value.target_tape_namespace_id
+        )
+    except (AttributeError, TypeError, ValueError):
+        return False
+
+
+def validate_v075_public_graph_namespace_v2(namespace: Any) -> Any:
+    """Validate one exact V2 namespace for public graph construction.
+
+    Returning the original object is intentional: no V1 namespace or
+    historical external-claim projection is created.
+    """
+
+    try:
+        from acfqp import v075_public_target_tape_namespace_v2 as namespace_v2
+    except ImportError as error:  # pragma: no cover - deployment corruption
+        raise V075PublicGraphSemanticsInvariantViolation(
+            "public target namespace V2 authority is unavailable"
+        ) from error
+    if (
+        type(namespace) is not namespace_v2.V075PublicTargetTapeNamespaceV2
+        or not _is_exact_public_target_namespace_v1_or_v2(namespace)
+    ):
+        raise V075PublicGraphSemanticsInvariantViolation(
+            "public graph requires one exact, complete V2 namespace"
+        )
+    return namespace
+
+
 def _registered_context(
     value: Any,
 ) -> public_authority.V075PublicReplicateContextV1:
@@ -424,7 +491,7 @@ def observation_row_binding_v1(
 
 @dataclass(frozen=True, slots=True)
 class V075SupportEvidenceV1:
-    namespace: public_authority.V075PublicTargetTapeNamespaceV1
+    namespace: Any
     row_binding: V075ObservationRowBindingV1
     observed_state: V075SymbolicGraphStateV1
     source_observer_epoch_index: int
@@ -433,8 +500,7 @@ class V075SupportEvidenceV1:
 
     def __post_init__(self) -> None:
         if (
-            type(self.namespace)
-            is not public_authority.V075PublicTargetTapeNamespaceV1
+            not _is_exact_public_target_namespace_v1_or_v2(self.namespace)
             or type(self.row_binding) is not V075ObservationRowBindingV1
             or type(self.observed_state) is not V075SymbolicGraphStateV1
             or self.observed_state.context != self.row_binding.context
@@ -514,15 +580,14 @@ class V075SupportEvidenceV1:
 
 def support_evidence_signing_bytes_v1(
     *,
-    namespace: public_authority.V075PublicTargetTapeNamespaceV1,
+    namespace: Any,
     row_binding: V075ObservationRowBindingV1,
     observed_state: V075SymbolicGraphStateV1,
     source_observer_epoch_index: int,
     accepted_draw_index: int,
 ) -> bytes:
     if (
-        type(namespace)
-        is not public_authority.V075PublicTargetTapeNamespaceV1
+        not _is_exact_public_target_namespace_v1_or_v2(namespace)
         or type(row_binding) is not V075ObservationRowBindingV1
         or type(observed_state) is not V075SymbolicGraphStateV1
         or observed_state.context != row_binding.context
@@ -569,7 +634,7 @@ def support_evidence_signing_bytes_v1(
 
 def bind_support_evidence_v1(
     *,
-    namespace: public_authority.V075PublicTargetTapeNamespaceV1,
+    namespace: Any,
     row_binding: V075ObservationRowBindingV1,
     observed_state: V075SymbolicGraphStateV1,
     source_observer_epoch_index: int,
@@ -592,7 +657,7 @@ def bind_support_evidence_v1(
 class V075BatchAggregateSupportEvidenceV1:
     """One signed DISCOVERY aggregate, never a fabricated per-draw record."""
 
-    namespace: public_authority.V075PublicTargetTapeNamespaceV1
+    namespace: Any
     row_binding: V075ObservationRowBindingV1
     observed_state: V075SymbolicGraphStateV1
     source_observer_epoch_index: int
@@ -610,8 +675,7 @@ class V075BatchAggregateSupportEvidenceV1:
         ):
             _cid(value, field)
         if (
-            type(self.namespace)
-            is not public_authority.V075PublicTargetTapeNamespaceV1
+            not _is_exact_public_target_namespace_v1_or_v2(self.namespace)
             or type(self.row_binding) is not V075ObservationRowBindingV1
             or type(self.observed_state) is not V075SymbolicGraphStateV1
             or self.observed_state.context != self.row_binding.context
@@ -702,7 +766,7 @@ class V075BatchAggregateSupportEvidenceV1:
 
 def batch_aggregate_support_evidence_signing_bytes_v1(
     *,
-    namespace: public_authority.V075PublicTargetTapeNamespaceV1,
+    namespace: Any,
     row_binding: V075ObservationRowBindingV1,
     observed_state: V075SymbolicGraphStateV1,
     source_observer_epoch_index: int,
@@ -718,8 +782,7 @@ def batch_aggregate_support_evidence_signing_bytes_v1(
     ):
         _cid(value, field)
     if (
-        type(namespace)
-        is not public_authority.V075PublicTargetTapeNamespaceV1
+        not _is_exact_public_target_namespace_v1_or_v2(namespace)
         or type(row_binding) is not V075ObservationRowBindingV1
         or type(observed_state) is not V075SymbolicGraphStateV1
         or observed_state.context != row_binding.context
@@ -771,7 +834,7 @@ def batch_aggregate_support_evidence_signing_bytes_v1(
 
 def bind_batch_aggregate_support_evidence_v1(
     *,
-    namespace: public_authority.V075PublicTargetTapeNamespaceV1,
+    namespace: Any,
     row_binding: V075ObservationRowBindingV1,
     observed_state: V075SymbolicGraphStateV1,
     source_observer_epoch_index: int,
@@ -803,7 +866,7 @@ class V075ObservationLaneV1(str, Enum):
 
 @dataclass(frozen=True, slots=True)
 class V075SharedSupportEpochV1:
-    namespace: public_authority.V075PublicTargetTapeNamespaceV1
+    namespace: Any
     row_binding: V075ObservationRowBindingV1
     epoch_index: int
     evidence: tuple[
@@ -814,8 +877,7 @@ class V075SharedSupportEpochV1:
 
     def __post_init__(self) -> None:
         if (
-            type(self.namespace)
-            is not public_authority.V075PublicTargetTapeNamespaceV1
+            not _is_exact_public_target_namespace_v1_or_v2(self.namespace)
             or type(self.row_binding) is not V075ObservationRowBindingV1
             or self.row_binding.context
             not in self.namespace.family.replicate_contexts
@@ -965,7 +1027,7 @@ class V075SharedSupportEpochV1:
 
 def derive_shared_support_epoch_v1(
     *,
-    namespace: public_authority.V075PublicTargetTapeNamespaceV1,
+    namespace: Any,
     row_binding: V075ObservationRowBindingV1,
     epoch_index: int,
     evidence: Iterable[
@@ -996,14 +1058,13 @@ def derive_shared_support_epoch_v1(
 
 @dataclass(frozen=True, slots=True)
 class V075SharedSupportChainV1:
-    namespace: public_authority.V075PublicTargetTapeNamespaceV1
+    namespace: Any
     row_binding: V075ObservationRowBindingV1
     epochs: tuple[V075SharedSupportEpochV1, ...]
 
     def __post_init__(self) -> None:
         if (
-            type(self.namespace)
-            is not public_authority.V075PublicTargetTapeNamespaceV1
+            not _is_exact_public_target_namespace_v1_or_v2(self.namespace)
             or type(self.row_binding) is not V075ObservationRowBindingV1
             or type(self.epochs) is not tuple
             or not self.epochs
@@ -1066,7 +1127,7 @@ class V075SharedSupportChainV1:
 
 def freeze_shared_support_chain_v1(
     *,
-    namespace: public_authority.V075PublicTargetTapeNamespaceV1,
+    namespace: Any,
     row_binding: V075ObservationRowBindingV1,
     epochs: tuple[V075SharedSupportEpochV1, ...],
 ) -> V075SharedSupportChainV1:
@@ -1079,15 +1140,14 @@ def freeze_shared_support_chain_v1(
 
 @dataclass(frozen=True, slots=True)
 class V075FiveArmPairingAuthorityV1:
-    namespace: public_authority.V075PublicTargetTapeNamespaceV1
+    namespace: Any
     row_binding: V075ObservationRowBindingV1
     support_chain: V075SharedSupportChainV1
     arms: tuple[str, ...] = public_authority.ARM_ORDER
 
     def __post_init__(self) -> None:
         if (
-            type(self.namespace)
-            is not public_authority.V075PublicTargetTapeNamespaceV1
+            not _is_exact_public_target_namespace_v1_or_v2(self.namespace)
             or type(self.row_binding) is not V075ObservationRowBindingV1
             or type(self.support_chain) is not V075SharedSupportChainV1
             or self.support_chain.namespace != self.namespace
@@ -1163,7 +1223,7 @@ class V075FiveArmPairingAuthorityV1:
 
 def freeze_five_arm_pairing_authority_v1(
     *,
-    namespace: public_authority.V075PublicTargetTapeNamespaceV1,
+    namespace: Any,
     row_binding: V075ObservationRowBindingV1,
     support_chain: V075SharedSupportChainV1,
 ) -> V075FiveArmPairingAuthorityV1:
@@ -1190,7 +1250,7 @@ class V075TransitionStreamIdentityV1:
             )
 
     @property
-    def namespace(self) -> public_authority.V075PublicTargetTapeNamespaceV1:
+    def namespace(self) -> Any:
         return self.pairing_authority.namespace
 
     @property
@@ -1444,4 +1504,5 @@ __all__ = [
     "public_h2_kernel_without_hidden_law_v1",
     "root_catalogue_v1",
     "support_evidence_signing_bytes_v1",
+    "validate_v075_public_graph_namespace_v2",
 ]

@@ -93,6 +93,16 @@ def _cid(value: Any, field_name: str) -> str:
         ) from error
 
 
+def _exact_namespace_v2_type() -> type[Any] | None:
+    """Resolve the V2 type lazily to avoid a namespace/runner/plan cycle."""
+
+    try:
+        from acfqp import v075_public_target_tape_namespace_v2 as namespace_v2
+    except ImportError:
+        return None
+    return namespace_v2.V075PublicTargetTapeNamespaceV2
+
+
 def _read_bound_regular_file_v1(
     root: Path,
     relative_path: str,
@@ -247,45 +257,100 @@ def load_tracked_v075_source_prior_transport_v1(
     return transport
 
 
-def _validated_namespace_document_v1(
-    namespace: public.V075PublicTargetTapeNamespaceV1,
+def _validated_namespace_document_v1_or_v2(
+    namespace: Any,
 ) -> dict[str, Any]:
     family = public.freeze_v075_public_family_generation_v1()
-    if (
-        type(namespace) is not public.V075PublicTargetTapeNamespaceV1
-        or namespace.family != family
-    ):
-        _fail("production plan requires one exact current public namespace")
-    document = namespace.to_document()
-    expected_external_ids = (
-        namespace.remote_main_anchor.external_id,
-        namespace.final_preregistration.external_id,
-        namespace.observer_profile.external_id,
-    )
-    if (
-        document.get("remote_main_anchor_id") != expected_external_ids[0]
-        or document.get("final_preregistration_id")
-        != expected_external_ids[1]
-        or document.get("observer_profile_id") != expected_external_ids[2]
-        or document.get("remote_main_anchor_claim_id")
-        != namespace.remote_main_anchor.claim_id
-        or document.get("final_preregistration_claim_id")
-        != namespace.final_preregistration.claim_id
-        or document.get("observer_profile_claim_id")
-        != namespace.observer_profile.claim_id
-        or document.get("family_generation_id") != family.generation_id
-        or document.get("target_tape_namespace_id")
-        != namespace.target_tape_namespace_id
-        or len(set(expected_external_ids)) != 3
-        or any(
-            value in public.FORBIDDEN_HISTORICAL_TARGET_IDS
-            for value in expected_external_ids
+    if type(namespace) is public.V075PublicTargetTapeNamespaceV1:
+        if namespace.family != family:
+            _fail(
+                "production plan requires one exact current public namespace"
+            )
+        document = namespace.to_document()
+        expected_external_ids = (
+            namespace.remote_main_anchor.external_id,
+            namespace.final_preregistration.external_id,
+            namespace.observer_profile.external_id,
         )
-    ):
+        if (
+            document.get("remote_main_anchor_id")
+            != expected_external_ids[0]
+            or document.get("final_preregistration_id")
+            != expected_external_ids[1]
+            or document.get("observer_profile_id")
+            != expected_external_ids[2]
+            or document.get("remote_main_anchor_claim_id")
+            != namespace.remote_main_anchor.claim_id
+            or document.get("final_preregistration_claim_id")
+            != namespace.final_preregistration.claim_id
+            or document.get("observer_profile_claim_id")
+            != namespace.observer_profile.claim_id
+            or document.get("family_generation_id") != family.generation_id
+            or document.get("target_tape_namespace_id")
+            != namespace.target_tape_namespace_id
+            or len(set(expected_external_ids)) != 3
+            or any(
+                value in public.FORBIDDEN_HISTORICAL_TARGET_IDS
+                for value in expected_external_ids
+            )
+        ):
+            _fail(
+                "namespace does not bind the exact external anchor, final "
+                "preregistration, and observer-profile identities"
+            )
+        return document
+
+    namespace_v2_type = _exact_namespace_v2_type()
+    if namespace_v2_type is None or type(namespace) is not namespace_v2_type:
         _fail(
-            "namespace does not bind the exact external anchor, final "
-            "preregistration, and observer-profile identities"
+            "production plan requires one exact current public namespace "
+            "(V1 or V2)"
         )
+    try:
+        document = namespace.to_document()
+        expected_anchor_id = namespace.anchor.anchor_id
+        expected_final_id = namespace.anchor.final_preregistration_id
+        if (
+            namespace.family != family
+            or type(namespace.signer_registry)
+            is not public.V075TrustedSignerRegistryV1
+            or namespace.signer_registry != namespace.anchor.signer_registry
+            or document.get("remote_main_anchor_id") != expected_anchor_id
+            or document.get("final_preregistration_id")
+            != expected_final_id
+            or document.get("family_generation_id") != family.generation_id
+            or document.get("target_tape_namespace_id")
+            != namespace.target_tape_namespace_id
+            or document.get("v1_external_claim_projection_present")
+            is not False
+            or document.get("v1_external_claim_projection_accepted")
+            is not False
+            or expected_anchor_id in public.FORBIDDEN_HISTORICAL_TARGET_IDS
+            or expected_final_id in public.FORBIDDEN_HISTORICAL_TARGET_IDS
+        ):
+            _fail(
+                "V2 namespace identity graph is stale, transplanted, or "
+                "contains a V1 external-claim projection"
+            )
+        _cid(expected_anchor_id, "V2 production-plan anchor")
+        _cid(expected_final_id, "V2 production-plan final preregistration")
+        _cid(
+            namespace.target_tape_namespace_id,
+            "V2 production-plan target namespace",
+        )
+    except (
+        AttributeError,
+        TypeError,
+        ValueError,
+    ) as error:
+        if isinstance(
+            error,
+            V075ProductionOccurrencePlanInvariantViolation,
+        ):
+            raise
+        raise V075ProductionOccurrencePlanInvariantViolation(
+            "V2 namespace identity graph is incomplete"
+        ) from error
     return document
 
 
@@ -607,11 +672,11 @@ class V075ProductionOccurrencePlanV1:
 def freeze_v075_production_occurrence_plan_v1(
     *,
     repository_root: str | Path,
-    namespace: public.V075PublicTargetTapeNamespaceV1,
+    namespace: Any,
 ) -> V075ProductionOccurrencePlanV1:
-    """Freeze the exact fifteen-entry plan without opening the target."""
+    """Freeze the exact plan from an exact V1 or V2 public namespace."""
 
-    namespace_document = _validated_namespace_document_v1(namespace)
+    namespace_document = _validated_namespace_document_v1_or_v2(namespace)
     family = public.freeze_v075_public_family_generation_v1()
     threshold_profile = worker.V075WorkerThresholdProfileV1()
     cap_profile = worker.V075WorkerCapProfileV1()
@@ -677,6 +742,26 @@ def freeze_v075_production_occurrence_plan_v1(
         source_bundle.bundle_id,
         source_verification.verification_id,
         tuple(entries),
+    )
+
+
+def freeze_v075_production_occurrence_plan_from_namespace_v2(
+    *,
+    repository_root: str | Path,
+    namespace: Any,
+) -> V075ProductionOccurrencePlanV1:
+    """Freeze the existing plan artifact directly from one exact V2 graph.
+
+    No historical claim objects are synthesized.  The plan carries the V2
+    anchor, final-preregistration, and opaque namespace content IDs verbatim.
+    """
+
+    namespace_v2_type = _exact_namespace_v2_type()
+    if namespace_v2_type is None or type(namespace) is not namespace_v2_type:
+        _fail("V2 production-plan factory requires one exact V2 namespace")
+    return freeze_v075_production_occurrence_plan_v1(
+        repository_root=repository_root,
+        namespace=namespace,
     )
 
 
@@ -788,7 +873,7 @@ class V075ProductionOccurrencePlanVerificationV1:
 def verify_v075_production_occurrence_plan_bytes_v1(
     *,
     repository_root: str | Path,
-    namespace: public.V075PublicTargetTapeNamespaceV1,
+    namespace: Any,
     raw: bytes,
 ) -> tuple[
     V075ProductionOccurrencePlanV1,
@@ -837,6 +922,27 @@ def verify_v075_production_occurrence_plan_bytes_v1(
     return expected, verification
 
 
+def verify_v075_production_occurrence_plan_bytes_from_namespace_v2(
+    *,
+    repository_root: str | Path,
+    namespace: Any,
+    raw: bytes,
+) -> tuple[
+    V075ProductionOccurrencePlanV1,
+    V075ProductionOccurrencePlanVerificationV1,
+]:
+    """Replay a plan against one exact V2 namespace without claim projection."""
+
+    namespace_v2_type = _exact_namespace_v2_type()
+    if namespace_v2_type is None or type(namespace) is not namespace_v2_type:
+        _fail("V2 production-plan replay requires one exact V2 namespace")
+    return verify_v075_production_occurrence_plan_bytes_v1(
+        repository_root=repository_root,
+        namespace=namespace,
+        raw=raw,
+    )
+
+
 __all__ = [
     "DOMAIN_TAGS",
     "EXPECTED_ARM_COUNT",
@@ -852,6 +958,8 @@ __all__ = [
     "V075ProductionOccurrencePlanV1",
     "V075ProductionOccurrencePlanVerificationV1",
     "freeze_v075_production_occurrence_plan_v1",
+    "freeze_v075_production_occurrence_plan_from_namespace_v2",
     "load_tracked_v075_source_prior_transport_v1",
     "verify_v075_production_occurrence_plan_bytes_v1",
+    "verify_v075_production_occurrence_plan_bytes_from_namespace_v2",
 ]

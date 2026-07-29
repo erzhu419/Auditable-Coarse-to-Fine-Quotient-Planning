@@ -87,6 +87,41 @@ def _cid(value: Any, field_name: str) -> str:
         ) from error
 
 
+def _is_exact_public_target_namespace_v1_or_v2(value: Any) -> bool:
+    """Accept only one registered concrete namespace generation.
+
+    The V2 import is intentionally lazy: the V2 namespace freezes the
+    production runner, whose dependency graph reaches this backend.  A
+    module-level import would therefore create a namespace/runner/backend
+    cycle.  Exact ``type`` checks reject subclasses and duck-typed claim
+    projections.
+    """
+
+    if type(value) is public_authority.V075PublicTargetTapeNamespaceV1:
+        return True
+    try:
+        from acfqp import v075_public_target_tape_namespace_v2 as namespace_v2
+    except ImportError:
+        return False
+    if type(value) is not namespace_v2.V075PublicTargetTapeNamespaceV2:
+        return False
+    try:
+        return (
+            value.family
+            == public_authority.freeze_v075_public_family_generation_v1()
+            and type(value.signer_registry)
+            is public_authority.V075TrustedSignerRegistryV1
+            and value.signer_registry == value.anchor.signer_registry
+            and _cid(
+                value.target_tape_namespace_id,
+                "V2 occurrence target namespace",
+            )
+            == value.target_tape_namespace_id
+        )
+    except (AttributeError, TypeError, ValueError):
+        return False
+
+
 def _fdoc(value: Fraction) -> dict[str, int]:
     if type(value) is not Fraction:
         _fail("batch-native arithmetic must use exact Fraction")
@@ -197,7 +232,7 @@ class V075BatchNativeOccurrenceIdentityV1:
 
 def freeze_v075_batch_native_occurrence_identity_v1(
     *,
-    namespace: public_authority.V075PublicTargetTapeNamespaceV1,
+    namespace: Any,
     context: public_authority.V075PublicReplicateContextV1,
     arm: worker.V075WorkerArmV1,
     occurrence_ordinal: int,
@@ -208,8 +243,7 @@ def freeze_v075_batch_native_occurrence_identity_v1(
     """Freeze the exact occurrence identity without accepting observations."""
 
     if (
-        type(namespace)
-        is not public_authority.V075PublicTargetTapeNamespaceV1
+        not _is_exact_public_target_namespace_v1_or_v2(namespace)
         or type(context)
         is not public_authority.V075PublicReplicateContextV1
         or context
@@ -247,6 +281,42 @@ def freeze_v075_batch_native_occurrence_identity_v1(
             if source_prior_transport is None
             else source_prior_transport.transport_id
         ),
+    )
+
+
+def freeze_v075_batch_native_occurrence_identity_from_namespace_v2(
+    *,
+    namespace: Any,
+    context: public_authority.V075PublicReplicateContextV1,
+    arm: worker.V075WorkerArmV1,
+    occurrence_ordinal: int,
+    threshold_profile: worker.V075WorkerThresholdProfileV1,
+    cap_profile: worker.V075WorkerCapProfileV1,
+    source_prior_transport: worker.V075SourcePriorTransportV1 | None,
+) -> V075BatchNativeOccurrenceIdentityV1:
+    """Freeze a V1 occurrence artifact directly from one exact V2 namespace.
+
+    This is an explicit migration entry point, not a V2-to-V1 authority
+    projection: the occurrence artifact stores only the opaque namespace
+    content ID and never synthesizes historical external claims.
+    """
+
+    try:
+        from acfqp import v075_public_target_tape_namespace_v2 as namespace_v2
+    except ImportError as error:  # pragma: no cover - deployment corruption
+        raise V075BatchNativeBackendInvariantViolation(
+            "public target namespace V2 authority is unavailable"
+        ) from error
+    if type(namespace) is not namespace_v2.V075PublicTargetTapeNamespaceV2:
+        _fail("V2 occurrence factory requires one exact V2 namespace")
+    return freeze_v075_batch_native_occurrence_identity_v1(
+        namespace=namespace,
+        context=context,
+        arm=arm,
+        occurrence_ordinal=occurrence_ordinal,
+        threshold_profile=threshold_profile,
+        cap_profile=cap_profile,
+        source_prior_transport=source_prior_transport,
     )
 
 
@@ -1600,6 +1670,7 @@ __all__ = [
     "compile_v075_batch_native_support_graph_v1",
     "freeze_v075_batch_native_backend_request_v1",
     "freeze_v075_batch_native_occurrence_identity_v1",
+    "freeze_v075_batch_native_occurrence_identity_from_namespace_v2",
     "plan_v075_batch_native_route_v1",
     "verify_v075_batch_native_backend_result_v1",
 ]
