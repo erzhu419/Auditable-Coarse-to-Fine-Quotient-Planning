@@ -88,10 +88,10 @@ def _derive_test_prime(label: bytes) -> int:
     raise RuntimeError("deterministic unit-test RSA prime search exhausted")
 
 
-def _derive_test_key_pair(
+def _derive_test_key_material(
     first_label: bytes,
     second_label: bytes,
-) -> tuple[int, int]:
+) -> tuple[int, int, int, int, int, int, int]:
     first = _derive_test_prime(first_label)
     second = _derive_test_prime(second_label)
     if first == second:
@@ -102,15 +102,40 @@ def _derive_test_key_pair(
     modulus = first * second
     if modulus.bit_length() < 2_048:
         raise RuntimeError("unit-test RSA modulus is undersized")
-    return modulus, pow(_PUBLIC_EXPONENT, -1, totient)
+    signing_exponent = pow(_PUBLIC_EXPONENT, -1, totient)
+    return (
+        modulus,
+        signing_exponent,
+        first,
+        second,
+        signing_exponent % (first - 1),
+        signing_exponent % (second - 1),
+        pow(second, -1, first),
+    )
 
 
-RSA_MODULUS, _RSA_SIGNING_EXPONENT = _derive_test_key_pair(
+(
+    RSA_MODULUS,
+    _RSA_SIGNING_EXPONENT,
+    _RSA_FIRST,
+    _RSA_SECOND,
+    _RSA_DP,
+    _RSA_DQ,
+    _RSA_Q_INVERSE,
+) = _derive_test_key_material(
     b"acfqp-unit-rsa-62",
     b"acfqp-unit-rsa-68",
 )
-OBSERVER_RSA_MODULUS, _OBSERVER_RSA_SIGNING_EXPONENT = (
-    _derive_test_key_pair(
+(
+    OBSERVER_RSA_MODULUS,
+    _OBSERVER_RSA_SIGNING_EXPONENT,
+    _OBSERVER_RSA_FIRST,
+    _OBSERVER_RSA_SECOND,
+    _OBSERVER_RSA_DP,
+    _OBSERVER_RSA_DQ,
+    _OBSERVER_RSA_Q_INVERSE,
+) = (
+    _derive_test_key_material(
         b"acfqp-unit-rsa-95",
         b"acfqp-unit-rsa-97",
     )
@@ -139,12 +164,23 @@ def sign_test_message(
     *,
     key_role: str = "CAMPAIGN_AUTHORITY",
 ) -> str:
-    modulus, signing_exponent = (
-        (RSA_MODULUS, _RSA_SIGNING_EXPONENT)
+    modulus, first, second, dp, dq, q_inverse = (
+        (
+            RSA_MODULUS,
+            _RSA_FIRST,
+            _RSA_SECOND,
+            _RSA_DP,
+            _RSA_DQ,
+            _RSA_Q_INVERSE,
+        )
         if key_role == "CAMPAIGN_AUTHORITY"
         else (
             OBSERVER_RSA_MODULUS,
-            _OBSERVER_RSA_SIGNING_EXPONENT,
+            _OBSERVER_RSA_FIRST,
+            _OBSERVER_RSA_SECOND,
+            _OBSERVER_RSA_DP,
+            _OBSERVER_RSA_DQ,
+            _OBSERVER_RSA_Q_INVERSE,
         )
     )
     width = (modulus.bit_length() + 7) // 8
@@ -156,9 +192,13 @@ def sign_test_message(
         + b"\x00"
         + digest_info
     )
-    signature = pow(
-        int.from_bytes(encoded, "big"),
-        signing_exponent,
-        modulus,
+    # Exact CRT exponentiation produces the same PKCS#1 v1.5 signature as
+    # ``pow(encoded, d, n)`` while keeping the large V0-075 attack suites
+    # practical.  These are deterministic, explicitly nonproduction primes.
+    encoded_integer = int.from_bytes(encoded, "big")
+    first_residue = pow(encoded_integer, dp, first)
+    second_residue = pow(encoded_integer, dq, second)
+    signature = second_residue + second * (
+        (first_residue - second_residue) * q_inverse % first
     )
     return signature.to_bytes(width, "big").hex()
