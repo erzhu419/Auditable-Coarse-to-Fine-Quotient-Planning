@@ -28,7 +28,11 @@ from functools import lru_cache
 import hashlib
 from typing import Any, Mapping
 
-from acfqp.phase3e_ids import canonical_json_bytes, parse_content_id
+from acfqp.phase3e_ids import (
+    Phase3EIdentityError,
+    canonical_json_bytes,
+    parse_content_id,
+)
 from acfqp.sequential_bernoulli_acquisition_v1 import (
     SequentialBernoulliProfileV1,
     build_anytime_bernoulli_checkpoint_v1,
@@ -320,6 +324,52 @@ def freeze_v075_batch_native_occurrence_identity_from_namespace_v2(
     )
 
 
+def replay_v075_batch_native_occurrence_identity_v1(
+    claimed: V075BatchNativeOccurrenceIdentityV1,
+) -> V075BatchNativeOccurrenceIdentityV1:
+    """Reconstruct one occurrence identity instead of trusting its object graph.
+
+    Exact ``type`` alone is insufficient because an object created through
+    ``object.__new__`` can carry forged cached IDs or hidden fields.  Every
+    consumer trust boundary must use the returned reconstruction.
+    """
+
+    if type(claimed) is not V075BatchNativeOccurrenceIdentityV1:
+        _fail("occurrence identity replay requires one exact typed claim")
+    try:
+        replayed = V075BatchNativeOccurrenceIdentityV1(
+            _OCCURRENCE_IDENTITY_ISSUER,
+            claimed.target_tape_namespace_id,
+            claimed.context_id,
+            claimed.arm,
+            claimed.occurrence_ordinal,
+            claimed.threshold_profile_id,
+            claimed.cap_profile_id,
+            claimed.source_transport_id,
+        )
+        if (
+            replayed.occurrence_id != claimed.occurrence_id
+            or canonical_json_bytes(replayed.to_document())
+            != canonical_json_bytes(claimed.to_document())
+        ):
+            _fail(
+                "occurrence identity fields, content ID, or document differ "
+                "from exact replay"
+            )
+    except (
+        AttributeError,
+        TypeError,
+        ValueError,
+        Phase3EIdentityError,
+    ) as error:
+        if type(error) is V075BatchNativeBackendInvariantViolation:
+            raise
+        raise V075BatchNativeBackendInvariantViolation(
+            "occurrence identity semantic replay failed"
+        ) from error
+    return replayed
+
+
 @dataclass(frozen=True, slots=True)
 class V075BatchNativeBackendRequestV1:
     arm: worker.V075WorkerArmV1
@@ -386,6 +436,9 @@ class V075BatchNativeBackendRequestV1:
             is not V075BatchNativeOccurrenceIdentityV1
         ):
             _fail("batch-native request is untyped or noncanonical")
+        replay_v075_batch_native_occurrence_identity_v1(
+            self.occurrence_identity
+        )
         first = self.batches[0].request
         first_stream = first.stream_identity
         if any(
@@ -1671,6 +1724,7 @@ __all__ = [
     "freeze_v075_batch_native_backend_request_v1",
     "freeze_v075_batch_native_occurrence_identity_v1",
     "freeze_v075_batch_native_occurrence_identity_from_namespace_v2",
+    "replay_v075_batch_native_occurrence_identity_v1",
     "plan_v075_batch_native_route_v1",
     "verify_v075_batch_native_backend_result_v1",
 ]
