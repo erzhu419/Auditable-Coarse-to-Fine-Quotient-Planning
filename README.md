@@ -28,7 +28,33 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 → jointly search local value/risk choices, rebuild, or use charged fallback
 ```
 
-## Current repair construction (V0-074, NONAUTHORIZING; fresh Gate NOT RUN)
+## Current fresh-campaign construction (V0-075, target locked)
+
+V0-075 is a new authority family, not a third V0-072 attempt. Proposed
+contract `1.40.0` builds a semantically verified compact source-proposal
+archive, a law-free public target authority, an anchor-derived target
+namespace, and lossless occurrence-level process execution around the V0-074
+total partial-support lift.
+
+The public K7/W7/K7-minus-two structures are retained only as a same-structure
+fresh statistical replication. The initially proposed spawn laws were exposed
+during construction and are now regression fixtures only. A production law
+must remain private behind a high-entropy salted commitment until a real final
+preregistration and remote-main anchor exist; every target identity/tape will
+then be new. No V0-072 target observation, model, policy, certificate,
+journal, result, cache or retry authority is accepted.
+
+Construction currently keeps target access disabled. The full contract is
+[`specs/FRESH_TOTAL_LIFT_PARALLEL_CONFIRMATORY_CAMPAIGN.md`](specs/FRESH_TOTAL_LIFT_PARALLEL_CONFIRMATORY_CAMPAIGN.md).
+Implemented pre-target boundaries now include a source-only exact replay
+controller, private reveal/observer isolation, strict manifest/preregistration
+construction, and independent remote-Git anchor replay. The expensive source
+replay has not run, and the anchor verifier intentionally refuses every
+production authority role until its semantic verifier exists.
+Sample-efficiency, official, scalar, economics and counter-completeness Gates
+remain locked.
+
+## V0-074 repair construction (NONAUTHORIZING; fresh Gate NOT RUN)
 
 Both anchored V0-072 attempts failed closed and produced no campaign result.
 Attempt 2 has a valid durable hash chain, completed `4/15` occurrences, and

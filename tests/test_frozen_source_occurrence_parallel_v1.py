@@ -222,6 +222,12 @@ def test_parallel_and_serial_outputs_and_merge_are_byte_identical():
     assert serial.to_document() == process_parallel.to_document()
     assert serial.canonical_bytes == process_parallel.canonical_bytes
     assert serial.merge_id == process_parallel.merge_id
+    assert serial.merge_id == (
+        "4310cc8544112ee1b538a341fe8d17f20252fddee4f052b784722fd1c919b4c4"
+    )
+    assert hashlib.sha256(serial.canonical_bytes).hexdigest() == (
+        "dacb25bf220da052af3ec90002d12e0a966a045faab3d408c10018d623e92582"
+    )
     assert serial.to_document()["source_offline_work"] == (
         archive.offline_work.to_document()
     )
@@ -664,10 +670,15 @@ def test_process_start_and_submit_failures_have_stable_complete_closures(
             )
 
     class BoundaryFailure:
-        def __init__(self, **_kwargs):
-            pass
+        constructor_kwargs = []
+        submit_args = []
 
-        def submit(self, *_args, **_kwargs):
+        def __init__(self, **kwargs):
+            type(self).constructor_kwargs.append(kwargs)
+
+        def submit(self, function, *args, **_kwargs):
+            assert function is parallel._execute_child_occurrence_v1
+            type(self).submit_args.append(args)
             return VolatileBoundaryFuture()
 
         def shutdown(self, **_kwargs):
@@ -709,11 +720,133 @@ def test_process_start_and_submit_failures_have_stable_complete_closures(
         ]
         is True
     )
+    assert all(
+        kwargs["max_tasks_per_child"] == 1
+        and tuple(type(value) for value in kwargs["initargs"]) == (bytes,)
+        for kwargs in BoundaryFailure.constructor_kwargs
+    )
+    assert all(
+        tuple(type(value) for value in args) == (bytes,)
+        and parallel.canonical_json_bytes(
+            parallel.loads_canonical_json(args[0])
+        )
+        == args[0]
+        for args in BoundaryFailure.submit_args
+    )
     assert {
         item.failure_code
         for item in boundary_first.failure_closure.failed_attempts
     } == {"PROCESS_BOUNDARY_FAILURE"}
     assert b"/volatile/" not in boundary_first.failure_closure_bytes
+
+
+def test_forced_python310_one_shot_waves_preserve_success_and_failure_bytes(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    archive = _archive()
+    success_occurrences = _occurrences(5)
+    failure_occurrences = _occurrences(3)
+    failure_worker = (
+        parallel.RegisteredOccurrenceWorkerV1.SAFE_SYNTHETIC_FAIL_V1
+    )
+    standard_success = _run(
+        archive,
+        max_workers=2,
+        occurrences=success_occurrences,
+    )
+    standard_failure = _caught_failure(
+        archive,
+        max_workers=2,
+        worker_key=failure_worker,
+        occurrences=failure_occurrences,
+    )
+    tracker = {
+        "active": 0,
+        "peak": 0,
+        "executors": [],
+        "initializer_args": [],
+        "task_args": [],
+        "next_pid": 20_000,
+    }
+
+    class CompletedFuture:
+        def __init__(self, value):
+            self.value = value
+            self.consumed = False
+
+        def result(self):
+            assert not self.consumed
+            self.consumed = True
+            tracker["active"] -= 1
+            return self.value
+
+    class Python310OneShotExecutor:
+        def __init__(self, **kwargs):
+            assert kwargs["max_workers"] == 1
+            assert "max_tasks_per_child" not in kwargs
+            assert kwargs["initializer"] is parallel._initialize_child_source_v1
+            assert tuple(type(value) for value in kwargs["initargs"]) == (bytes,)
+            tracker["executors"].append(self)
+            tracker["initializer_args"].append(kwargs["initargs"])
+            kwargs["initializer"](*kwargs["initargs"])
+
+        def submit(self, function, *args):
+            assert function is parallel._execute_child_occurrence_v1
+            assert tuple(type(value) for value in args) == (bytes,)
+            tracker["task_args"].append(args)
+            tracker["active"] += 1
+            tracker["peak"] = max(tracker["peak"], tracker["active"])
+            journal_bytes, _diagnostic_pid = function(*args)
+            tracker["next_pid"] += 1
+            return CompletedFuture((journal_bytes, tracker["next_pid"]))
+
+        def shutdown(self, **_kwargs):
+            return None
+
+    monkeypatch.setattr(
+        parallel,
+        "ProcessPoolExecutor",
+        Python310OneShotExecutor,
+    )
+    monkeypatch.setattr(
+        parallel,
+        "_STDLIB_PROCESS_POOL_EXECUTOR",
+        Python310OneShotExecutor,
+    )
+    fallback_success = _run(
+        archive,
+        max_workers=2,
+        occurrences=success_occurrences,
+    )
+    fallback_failure = _caught_failure(
+        archive,
+        max_workers=2,
+        worker_key=failure_worker,
+        occurrences=failure_occurrences,
+    )
+
+    assert fallback_success.merge_id == standard_success.merge_id
+    assert fallback_success.canonical_bytes == standard_success.canonical_bytes
+    assert fallback_failure.failure_closure_id == (
+        standard_failure.failure_closure_id
+    )
+    assert fallback_failure.failure_closure_bytes == (
+        standard_failure.failure_closure_bytes
+    )
+    assert len(tracker["executors"]) == 8
+    assert len({id(value) for value in tracker["executors"]}) == 8
+    assert tracker["peak"] == 2
+    assert tracker["active"] == 0
+    assert all(
+        parallel.canonical_json_bytes(parallel.loads_canonical_json(args[0]))
+        == args[0]
+        for args in tracker["initializer_args"]
+    )
+    assert all(
+        parallel.canonical_json_bytes(parallel.loads_canonical_json(args[0]))
+        == args[0]
+        for args in tracker["task_args"]
+    )
 
 
 def test_legal_near_cap_payload_generates_replayable_output_and_journal() -> None:

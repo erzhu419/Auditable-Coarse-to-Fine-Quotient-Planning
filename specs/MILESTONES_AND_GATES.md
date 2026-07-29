@@ -4035,3 +4035,22 @@ transaction or a different support-acquisition operator. Formal IID
 execution, broader structures/domains, primitive/ontology invention, H>2
 recurrence, cross-query reuse, independent verification, total-work
 economics and the general reusable-hidden-world-model objective remain open.
+
+V0-074 repairs the historical exact-lift mismatch without reopening either
+failed V0-072 attempt. V0-075 is the resulting fresh-campaign construction:
+it requires new context/tape identities and authority domains, a law-free
+public target graph plus privately salted environment commitment, a compact
+semantically verified source-proposal archive, and lossless occurrence-level
+process transport before any new target access. The initially proposed exact
+laws were exposed and are permanently construction fixtures. The source
+recipe's compact work identity also requires a still-unrun exact replay at its
+frozen source snapshot before production accounting exists. The current
+source-only controller can perform that replay without importing the
+historical target/held-out closure, but the expensive replay itself remains
+`NOT_RUN`. The extracted H2 core, law-free graph, private observer boundary,
+lossless transport, manifest/preregistration builder and independent
+remote-main verifier are construction mechanics only; the latter deliberately
+implements no production authority-role verifier yet. Until production
+workers, total lift, reconciliation, endpoint, semantic authority replay,
+tracked artifacts and the first qualifying anchor all pass, the fresh
+scientific and sample-efficiency Gates remain `NOT_RUN`.

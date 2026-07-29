@@ -15,3 +15,8 @@ artifacts/*
 # The curated third_party/ snapshot remains publishable project input.
 /markdown/
 /reference/
+
+# Defense in depth only: V0-075 production laws, reveal salts, and signing
+# private keys belong outside the repository. Never treat this ignored path as
+# an authorization or persistence mechanism.
+/.acfqp-private/

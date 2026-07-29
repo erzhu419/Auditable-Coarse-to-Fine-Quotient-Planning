@@ -24,6 +24,7 @@ from concurrent.futures import Future, ProcessPoolExecutor
 from dataclasses import dataclass, field
 from enum import Enum
 import hashlib
+import inspect
 from multiprocessing import get_context
 import os
 from typing import Any, Mapping, Sequence
@@ -49,12 +50,21 @@ from acfqp.phase3e_ids import (
 SCHEMA_VERSION = "1.0.0"
 PROPOSED_CONTRACT_VERSION = "1.39.0"
 PROFILE_KEY = "v074_frozen_source_occurrence_parallel_v1"
+_STDLIB_PROCESS_POOL_EXECUTOR = ProcessPoolExecutor
+_CHILD_SOURCE_INIT_REQUEST_SCHEMA = (
+    "acfqp.v074.nonidentity_child_source_init_request.v1"
+)
+_CHILD_OCCURRENCE_REQUEST_SCHEMA = (
+    "acfqp.v074.nonidentity_child_occurrence_request.v1"
+)
 MAX_ARCHIVE_BYTES = 64 * 1024 * 1024
 MAX_TARGET_PAYLOAD_BYTES = 64 * 1024
 MAX_OCCURRENCE_BYTES = 128 * 1024
 MAX_OCCURRENCE_RESULT_PAYLOAD_BYTES = 128 * 1024
 MAX_OCCURRENCE_OUTPUT_BYTES = 192 * 1024
 MAX_CHILD_JOURNAL_BYTES = 256 * 1024
+_MAX_CHILD_SOURCE_INIT_REQUEST_BYTES = MAX_ARCHIVE_BYTES + 64 * 1024
+_MAX_CHILD_OCCURRENCE_REQUEST_BYTES = MAX_OCCURRENCE_BYTES + 16 * 1024
 MAX_OCCURRENCES = 256
 MAX_WORKERS = 192
 MAX_COMPOSITE_PER_OCCURRENCE_OVERHEAD_BYTES = 4 * 1024
@@ -2359,22 +2369,89 @@ def load_canonical_occurrence_merge_v1(
 _CHILD_SOURCE_ARCHIVE: FrozenSourceArchiveEnvelopeV1 | None = None
 
 
-def _initialize_child_source_v1(
+def _child_source_init_request_bytes_v1(
     archive_bytes: bytes,
+    *,
     expected_archive_id: str,
     expected_upstream_archive_id: str,
     expected_upstream_verification_id: str,
     expected_offline_work_id: str,
+) -> bytes:
+    """Encode the non-identity child initializer as one canonical byte value."""
+
+    archive_document = _strict_load(
+        archive_bytes,
+        maximum_bytes=MAX_ARCHIVE_BYTES,
+        field="child source initializer archive",
+    )
+    request = {
+        "schema": _CHILD_SOURCE_INIT_REQUEST_SCHEMA,
+        "schema_version": SCHEMA_VERSION,
+        "profile_key": PROFILE_KEY,
+        "identity_bearing": False,
+        "archive_document": archive_document,
+        "expected_archive_id": _cid(
+            expected_archive_id,
+            "child expected archive",
+        ),
+        "expected_upstream_archive_id": _cid(
+            expected_upstream_archive_id,
+            "child expected upstream archive",
+        ),
+        "expected_upstream_verification_id": _cid(
+            expected_upstream_verification_id,
+            "child expected upstream verification",
+        ),
+        "expected_offline_work_id": _cid(
+            expected_offline_work_id,
+            "child expected offline work",
+        ),
+    }
+    raw = canonical_json_bytes(request)
+    if len(raw) > _MAX_CHILD_SOURCE_INIT_REQUEST_BYTES:
+        _fail("child source initializer request exceeds its physical byte cap")
+    return raw
+
+
+def _initialize_child_source_v1(
+    request_bytes: bytes,
 ) -> None:
+    request = _exact_mapping(
+        _strict_load(
+            request_bytes,
+            maximum_bytes=_MAX_CHILD_SOURCE_INIT_REQUEST_BYTES,
+            field="child source initializer request",
+        ),
+        keys={
+            "schema",
+            "schema_version",
+            "profile_key",
+            "identity_bearing",
+            "archive_document",
+            "expected_archive_id",
+            "expected_upstream_archive_id",
+            "expected_upstream_verification_id",
+            "expected_offline_work_id",
+        },
+        field="child source initializer request",
+    )
+    if (
+        request["schema"] != _CHILD_SOURCE_INIT_REQUEST_SCHEMA
+        or request["schema_version"] != SCHEMA_VERSION
+        or request["profile_key"] != PROFILE_KEY
+        or request["identity_bearing"] is not False
+    ):
+        _fail("child source initializer request contract changed")
+    archive_bytes = canonical_json_bytes(request["archive_document"])
     global _CHILD_SOURCE_ARCHIVE
     _CHILD_SOURCE_ARCHIVE = load_frozen_source_archive_envelope_v1(
         archive_bytes,
-        expected_archive_id=expected_archive_id,
-        expected_upstream_archive_id=expected_upstream_archive_id,
+        expected_archive_id=request["expected_archive_id"],
+        expected_upstream_archive_id=request["expected_upstream_archive_id"],
         expected_upstream_verification_id=(
-            expected_upstream_verification_id
+            request["expected_upstream_verification_id"]
         ),
-        expected_offline_work_id=expected_offline_work_id,
+        expected_offline_work_id=request["expected_offline_work_id"],
     )
 
 
@@ -2418,24 +2495,70 @@ def _registered_worker_result_v1(
     )
 
 
+def _child_occurrence_request_bytes_v1(
+    occurrence: BoundOccurrenceInputV1,
+) -> bytes:
+    """Encode one child task as a single canonical non-identity byte value."""
+
+    request = {
+        "schema": _CHILD_OCCURRENCE_REQUEST_SCHEMA,
+        "schema_version": SCHEMA_VERSION,
+        "profile_key": PROFILE_KEY,
+        "identity_bearing": False,
+        "occurrence_document": loads_canonical_json(occurrence.canonical_bytes),
+        "expected_worker_key": occurrence.worker_key.value,
+        "expected_execution_batch_id": occurrence.execution_batch_id,
+        "expected_attempt_nonce_id": occurrence.attempt_nonce_id,
+    }
+    raw = canonical_json_bytes(request)
+    if len(raw) > _MAX_CHILD_OCCURRENCE_REQUEST_BYTES:
+        _fail("child occurrence request exceeds its physical byte cap")
+    return raw
+
+
 def _execute_child_occurrence_v1(
-    occurrence_bytes: bytes,
-    expected_worker_key: str,
-    expected_execution_batch_id: str,
-    expected_attempt_nonce_id: str,
+    request_bytes: bytes,
 ) -> tuple[bytes, int]:
+    request = _exact_mapping(
+        _strict_load(
+            request_bytes,
+            maximum_bytes=_MAX_CHILD_OCCURRENCE_REQUEST_BYTES,
+            field="child occurrence request",
+        ),
+        keys={
+            "schema",
+            "schema_version",
+            "profile_key",
+            "identity_bearing",
+            "occurrence_document",
+            "expected_worker_key",
+            "expected_execution_batch_id",
+            "expected_attempt_nonce_id",
+        },
+        field="child occurrence request",
+    )
+    if (
+        request["schema"] != _CHILD_OCCURRENCE_REQUEST_SCHEMA
+        or request["schema_version"] != SCHEMA_VERSION
+        or request["profile_key"] != PROFILE_KEY
+        or request["identity_bearing"] is not False
+    ):
+        _fail("child occurrence request contract changed")
     archive = _CHILD_SOURCE_ARCHIVE
     if archive is None:
         raise RuntimeError("child source archive was not initialized")
     try:
-        worker_key = RegisteredOccurrenceWorkerV1(expected_worker_key)
+        worker_key = RegisteredOccurrenceWorkerV1(
+            request["expected_worker_key"]
+        )
     except ValueError as error:
         raise RuntimeError("child worker key is not registered") from error
+    occurrence_bytes = canonical_json_bytes(request["occurrence_document"])
     occurrence = _load_bound_occurrence_input_v1(
         occurrence_bytes,
         expected_source_archive_id=archive.archive_id,
-        expected_execution_batch_id=expected_execution_batch_id,
-        expected_attempt_nonce_id=expected_attempt_nonce_id,
+        expected_execution_batch_id=request["expected_execution_batch_id"],
+        expected_attempt_nonce_id=request["expected_attempt_nonce_id"],
         expected_worker_key=worker_key,
     )
     return (
@@ -2660,64 +2783,16 @@ def _validate_schedule_v1(
     return inputs
 
 
-def run_frozen_source_occurrences_v1(
-    archive_bytes: bytes,
+def _run_process_pool_occurrences_v1(
     *,
-    expected_archive_id: str,
-    expected_upstream_archive_id: str,
-    expected_upstream_verification_id: str,
-    expected_offline_work_id: str,
-    expected_execution_batch_id: str,
-    attempt_nonce_id: str,
-    occurrences: tuple[TargetOccurrenceSpecV1, ...],
-    worker_key: RegisteredOccurrenceWorkerV1,
+    source_init_request_bytes: bytes,
+    inputs: tuple[BoundOccurrenceInputV1, ...],
     max_workers: int,
-) -> CanonicalOccurrenceMergeV1:
-    """Execute every occurrence once and merge independent of worker count.
+    journals_by_index: list[ChildAttemptJournalV1 | None],
+    pids_by_index: list[int | None],
+) -> str | None:
+    """Run the Python >=3.11 or injected executor path unchanged logically."""
 
-    Every occurrence uses a fresh ``spawn`` process. ``max_workers`` limits
-    concurrent processes only; ``max_tasks_per_child=1`` prevents PID/global
-    state reuse even for sequential execution. A child or process-boundary
-    failure produces one deterministic accounting/provenance closure.
-    """
-
-    if (
-        type(max_workers) is not int
-        or not 1 <= max_workers <= MAX_WORKERS
-    ):
-        _fail("max_workers is outside the frozen [1, 192] range")
-    archive = load_frozen_source_archive_envelope_v1(
-        archive_bytes,
-        expected_archive_id=expected_archive_id,
-        expected_upstream_archive_id=expected_upstream_archive_id,
-        expected_upstream_verification_id=(
-            expected_upstream_verification_id
-        ),
-        expected_offline_work_id=expected_offline_work_id,
-    )
-    attempt_nonce = _cid(attempt_nonce_id, "execution attempt nonce")
-    derived_batch_id = derive_frozen_execution_batch_id_v1(
-        source_archive_id=archive.archive_id,
-        attempt_nonce_id=attempt_nonce,
-        occurrences=occurrences,
-        worker_key=worker_key,
-    )
-    if derived_batch_id != _cid(
-        expected_execution_batch_id,
-        "expected execution batch",
-    ):
-        _fail("execution batch identity does not bind the frozen schedule")
-    inputs = _validate_schedule_v1(
-        archive,
-        occurrences,
-        worker_key,
-        execution_batch_id=derived_batch_id,
-        attempt_nonce_id=attempt_nonce,
-    )
-    journals_by_index: list[ChildAttemptJournalV1 | None] = [
-        None for _ in inputs
-    ]
-    pids_by_index: list[int | None] = [None for _ in inputs]
     futures: list[tuple[int, Future[tuple[bytes, int]]]] = []
     executor: ProcessPoolExecutor | None = None
     batch_failure_code: str | None = None
@@ -2727,13 +2802,7 @@ def run_frozen_source_occurrences_v1(
                 max_workers=min(max_workers, len(inputs)),
                 mp_context=get_context("spawn"),
                 initializer=_initialize_child_source_v1,
-                initargs=(
-                    archive_bytes,
-                    archive.archive_id,
-                    archive.upstream_archive_id,
-                    archive.upstream_verification_id,
-                    archive.offline_work.work_id,
-                ),
+                initargs=(source_init_request_bytes,),
                 max_tasks_per_child=1,
             )
         except Exception:
@@ -2762,10 +2831,7 @@ def run_frozen_source_occurrences_v1(
                 try:
                     future = executor.submit(
                         _execute_child_occurrence_v1,
-                        occurrence.canonical_bytes,
-                        worker_key.value,
-                        derived_batch_id,
-                        attempt_nonce,
+                        _child_occurrence_request_bytes_v1(occurrence),
                     )
                     futures.append((index, future))
                 except Exception:
@@ -2807,6 +2873,211 @@ def run_frozen_source_occurrences_v1(
                 executor.shutdown(wait=True, cancel_futures=False)
             except Exception:
                 batch_failure_code = "PROCESS_POOL_SHUTDOWN_FAILURE"
+    return batch_failure_code
+
+
+def _run_python310_one_shot_occurrences_v1(
+    *,
+    source_init_request_bytes: bytes,
+    inputs: tuple[BoundOccurrenceInputV1, ...],
+    max_workers: int,
+    journals_by_index: list[ChildAttemptJournalV1 | None],
+    pids_by_index: list[int | None],
+) -> str | None:
+    """Run bounded waves of one-executor/one-spawn/one-task occurrences."""
+
+    try:
+        context = get_context("spawn")
+    except Exception:
+        for index, occurrence in enumerate(inputs):
+            journals_by_index[index] = _parent_failure_journal_v1(
+                occurrence,
+                failure_code="PROCESS_POOL_START_FAILURE",
+                failure_kind="PARENT_PROCESS_SUPERVISOR_FAILURE",
+                submit_attempted=False,
+                submitted=False,
+                work_tail_unknown=False,
+            )
+        return None
+
+    batch_failure_code: str | None = None
+    submit_stopped = False
+    for wave_start in range(0, len(inputs), max_workers):
+        running: list[
+            tuple[
+                int,
+                BoundOccurrenceInputV1,
+                ProcessPoolExecutor,
+                Future[tuple[bytes, int]],
+            ]
+        ] = []
+        wave_stop = min(wave_start + max_workers, len(inputs))
+        for index in range(wave_start, wave_stop):
+            occurrence = inputs[index]
+            if submit_stopped:
+                journals_by_index[index] = _parent_failure_journal_v1(
+                    occurrence,
+                    failure_code="BATCH_ABORTED_BEFORE_SUBMIT",
+                    failure_kind="PARENT_PROCESS_SUPERVISOR_FAILURE",
+                    submit_attempted=False,
+                    submitted=False,
+                    work_tail_unknown=False,
+                )
+                continue
+            executor: ProcessPoolExecutor | None = None
+            try:
+                executor = ProcessPoolExecutor(
+                    max_workers=1,
+                    mp_context=context,
+                    initializer=_initialize_child_source_v1,
+                    initargs=(source_init_request_bytes,),
+                )
+            except Exception:
+                journals_by_index[index] = _parent_failure_journal_v1(
+                    occurrence,
+                    failure_code="PROCESS_POOL_START_FAILURE",
+                    failure_kind="PARENT_PROCESS_SUPERVISOR_FAILURE",
+                    submit_attempted=False,
+                    submitted=False,
+                    work_tail_unknown=False,
+                )
+                continue
+            try:
+                future = executor.submit(
+                    _execute_child_occurrence_v1,
+                    _child_occurrence_request_bytes_v1(occurrence),
+                )
+                running.append((index, occurrence, executor, future))
+            except Exception:
+                journals_by_index[index] = _parent_failure_journal_v1(
+                    occurrence,
+                    failure_code="PROCESS_SUBMIT_FAILURE",
+                    failure_kind="PARENT_PROCESS_SUPERVISOR_FAILURE",
+                    submit_attempted=True,
+                    submitted=False,
+                    work_tail_unknown=False,
+                )
+                submit_stopped = True
+                try:
+                    executor.shutdown(wait=True, cancel_futures=False)
+                except Exception:
+                    batch_failure_code = "PROCESS_POOL_SHUTDOWN_FAILURE"
+        for index, occurrence, executor, future in running:
+            try:
+                journal_bytes, physical_pid = future.result()
+                if type(physical_pid) is not int or physical_pid <= 0:
+                    raise FrozenSourceOccurrenceInvariantViolation(
+                        "child returned an invalid physical PID diagnostic"
+                    )
+                journal = _load_child_attempt_journal_v1(
+                    journal_bytes,
+                    occurrence_input=occurrence,
+                )
+                pids_by_index[index] = physical_pid
+                journals_by_index[index] = journal
+            except Exception:
+                journals_by_index[index] = _parent_failure_journal_v1(
+                    occurrence,
+                    failure_code="PROCESS_BOUNDARY_FAILURE",
+                    failure_kind="PARENT_PROCESS_BOUNDARY_FAILURE",
+                    submit_attempted=True,
+                    submitted=True,
+                    work_tail_unknown=True,
+                )
+            finally:
+                try:
+                    executor.shutdown(wait=True, cancel_futures=False)
+                except Exception:
+                    batch_failure_code = "PROCESS_POOL_SHUTDOWN_FAILURE"
+    return batch_failure_code
+
+
+def run_frozen_source_occurrences_v1(
+    archive_bytes: bytes,
+    *,
+    expected_archive_id: str,
+    expected_upstream_archive_id: str,
+    expected_upstream_verification_id: str,
+    expected_offline_work_id: str,
+    expected_execution_batch_id: str,
+    attempt_nonce_id: str,
+    occurrences: tuple[TargetOccurrenceSpecV1, ...],
+    worker_key: RegisteredOccurrenceWorkerV1,
+    max_workers: int,
+) -> CanonicalOccurrenceMergeV1:
+    """Execute every occurrence once and merge independent of worker count.
+
+    Every occurrence uses a fresh ``spawn`` process and ``max_workers`` limits
+    concurrent processes only.  Python >=3.11 freezes
+    ``max_tasks_per_child=1``; Python 3.10 uses one single-worker executor for
+    exactly one task.  A child or process-boundary failure produces one
+    deterministic accounting/provenance closure.
+    """
+
+    if (
+        type(max_workers) is not int
+        or not 1 <= max_workers <= MAX_WORKERS
+    ):
+        _fail("max_workers is outside the frozen [1, 192] range")
+    archive = load_frozen_source_archive_envelope_v1(
+        archive_bytes,
+        expected_archive_id=expected_archive_id,
+        expected_upstream_archive_id=expected_upstream_archive_id,
+        expected_upstream_verification_id=(
+            expected_upstream_verification_id
+        ),
+        expected_offline_work_id=expected_offline_work_id,
+    )
+    attempt_nonce = _cid(attempt_nonce_id, "execution attempt nonce")
+    derived_batch_id = derive_frozen_execution_batch_id_v1(
+        source_archive_id=archive.archive_id,
+        attempt_nonce_id=attempt_nonce,
+        occurrences=occurrences,
+        worker_key=worker_key,
+    )
+    if derived_batch_id != _cid(
+        expected_execution_batch_id,
+        "expected execution batch",
+    ):
+        _fail("execution batch identity does not bind the frozen schedule")
+    inputs = _validate_schedule_v1(
+        archive,
+        occurrences,
+        worker_key,
+        execution_batch_id=derived_batch_id,
+        attempt_nonce_id=attempt_nonce,
+    )
+    journals_by_index: list[ChildAttemptJournalV1 | None] = [
+        None for _ in inputs
+    ]
+    pids_by_index: list[int | None] = [None for _ in inputs]
+    source_init_request_bytes = _child_source_init_request_bytes_v1(
+        archive_bytes,
+        expected_archive_id=archive.archive_id,
+        expected_upstream_archive_id=archive.upstream_archive_id,
+        expected_upstream_verification_id=archive.upstream_verification_id,
+        expected_offline_work_id=archive.offline_work.work_id,
+    )
+    if (
+        ProcessPoolExecutor is _STDLIB_PROCESS_POOL_EXECUTOR
+        and "max_tasks_per_child"
+        not in inspect.signature(ProcessPoolExecutor).parameters
+    ):
+        batch_failure_code = _run_python310_one_shot_occurrences_v1(
+            source_init_request_bytes=source_init_request_bytes,
+            inputs=inputs,
+            max_workers=max_workers,
+            journals_by_index=journals_by_index,
+            pids_by_index=pids_by_index,
+        )
+    else:
+        batch_failure_code = _run_process_pool_occurrences_v1(
+            source_init_request_bytes=source_init_request_bytes,
+            inputs=inputs,
+            max_workers=max_workers,
+            journals_by_index=journals_by_index,
+            pids_by_index=pids_by_index,
+        )
     if any(item is None for item in journals_by_index):
         for index, item in enumerate(journals_by_index):
             if item is None:
