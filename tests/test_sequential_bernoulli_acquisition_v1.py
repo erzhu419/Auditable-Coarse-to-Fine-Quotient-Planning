@@ -87,6 +87,22 @@ def test_exact_mixture_formula_and_rejection_predicate() -> None:
     )
 
 
+def test_exact_math_memoization_is_byte_neutral_and_clearable() -> None:
+    seq.clear_exact_bernoulli_math_cache_v1()
+    profile = _small_profile()
+    first = seq.build_anytime_bernoulli_checkpoint_v1(2_048, 21, profile)
+    before = seq._outer_confidence_bounds.cache_info()
+    second = seq.build_anytime_bernoulli_checkpoint_v1(2_048, 21, profile)
+    after = seq._outer_confidence_bounds.cache_info()
+    assert second == first
+    assert second.to_document() == first.to_document()
+    assert after.hits > before.hits
+    seq.clear_exact_bernoulli_math_cache_v1()
+    cleared = seq._outer_confidence_bounds.cache_info()
+    assert cleared.currsize == 0
+    assert cleared.hits == 0
+
+
 def test_dyadic_bounds_outer_cover_exact_accepted_grid() -> None:
     alpha = Fraction(1, 1_000)
     denominator = 1 << 8

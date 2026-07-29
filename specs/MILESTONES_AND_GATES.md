@@ -156,6 +156,47 @@
   incremental target saving or amortization. This is not broad sample
   efficiency, unknown-support learning, total-work economics or an official
   Gate.
+- **V0-068 observation-discovered partial-support H2 Gate:** direct and
+  quotient planners receive only replayable realized transition tuples for
+  three registered graph contexts. Discovery freezes observed joint support;
+  fresh validation estimates it together with one adversarial `OTHER`
+  coordinate, and authority-bound partial RAPMs plan complete H2 policies.
+  W5 certifies at 4096 in both lanes; K6 direct certifies at 8192, while one
+  failed support-promotion transaction leaves quotient certification to
+  16384; K6-minus-edge reaches matched exact feasible fallback. The
+  construction Gate passes, but matched observation advantage is false.
+  Statistics remain conditional because deterministic SplitMix64 replay does
+  not itself prove IID.
+- **V0-069 bounded second-row support Gate:** recompute every eligible
+  different-row selected-policy counterfactual against the immutable K6
+  transaction-1 model. The registered 49 candidates are all noncausal, so the
+  Gate closes before observations, exact evaluation, global-16384 access or a
+  third transaction.
+- **V0-070 model-only minimal-pair support Gate:** reconstruct a fresh
+  authority-bound 49-row registry, exhaust singleton then canonical pair
+  overlays under complete H1-to-H2 fixed-policy recurrence, and independently
+  replay all obligations. The registered 49 singletons and 1,176 pairs all
+  fail without sampling; only `k<=2` for the current selected policy is
+  closed.
+- **V0-072 transfer-guided adaptive acquisition — NONAUTHORIZING DRAFT,
+  TARGET LOCKED, Gate NOT RUN:** proposed schema `2.0.0` and profile
+  `transfer_guided_adaptive_observation_acquisition_v1` freeze the clean
+  K7/W7/K7-minus-two generation, five arms/15 occurrences, cold
+  `64+2048` row schedule, cumulative two-round cap, direct checkpoints and
+  `beta=1/300000` confidence allocation. The production registered
+  model/materializer, matched-direct runtime, dependent round-2 path,
+  15-occurrence executor, exact reconciliation/endpoint verification and
+  one-way finalization authorities are implemented and tested. No fixed
+  source recipe, final committed manifest/preregistration triple, remote-main
+  anchor or actual target campaign has yet been frozen or run, so no sample
+  endpoint or Gate result exists.
+- **V0-071 source-guided acquisition mechanics — Gate NOT RUN:** exact
+  one-row slack-gain ranking, same-prior source/wrong multipliers,
+  authorization-before-materialization, and a two-round synthetic control are
+  implemented. Source trial semantics, real target observation
+  materialization, fresh round-2 frontier reconstruction, and independent
+  bundle replay are not. Synthetic positive endpoints are not target
+  acquisition certificates and carry no sample-efficiency claim.
 - **V0-065 observation-driven cross-geometry relational RAPM:** complete H2
   observations from the non-isomorphic P4/star/paw source split automatically
   select a relational coordinate schema without transporting source dynamics
@@ -1509,6 +1550,252 @@ COUNTER_COMPLETENESS_GATE_NOT_RUN
 SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
+
+### V0-072 transfer-guided adaptive acquisition — NONAUTHORIZING DRAFT, TARGET LOCKED, Gate NOT RUN
+
+Proposed contract `1.36.0`, schema `2.0.0`, and profile
+`transfer_guided_adaptive_observation_acquisition_v1` remain nonauthorizing
+until their fixed source recipe and final committed identity chain exist.
+The clean-generation artifact freezes:
+
+1. three seven-vertex public contexts and separately role-bound hidden
+   environment laws;
+2. SOURCE, NO_PRIOR, WRONG, OOD and MATCHED_DIRECT_GROUND, producing exactly
+   15 context-major logical occurrences;
+3. a complete cold H2 schedule of 64 discovery plus 2,048 validation draws
+   per physical row before the first audit, with conservative per-arm initial
+   cap 506,880;
+4. at most two authorization-bound target rounds, at most 19 distinct new
+   child rows, and cumulative incremental cap
+   `2048*R + 8256*|union(new child rows through R)| <= 160960`;
+5. direct checkpoints `2048/4096/8192/16384` and no adaptive peeking between
+   complete cold/round-1/round-2 checkpoints;
+6. at most 2,400 campaign row-epoch authorities with
+   `beta=1/300000`, family tail at most `1/125`, and conditional confidence
+   at least `124/125` by a finite union bound;
+7. a source archive derived mechanically from seven verified V0-068
+   adjacent raw-prefix checkpoint pairs; and
+8. sample/probability/identity-free portable feature keys plus
+   identity-bound local snapshots.
+
+Implemented and tested construction includes the exact lazy H2 planner and
+independent proof verifier; verified source archive and archive-transform
+replay; exact split-support confidence and finite-union allocation;
+evidence-first public cardinality/selection with independent row/count replay;
+immutable row transcripts and discovery-only cold-H2 closure; the
+anchor-locked registered observer/raw commitment/full epoch-chain verifier;
+registered relational and ground model construction; the registered
+incremental materializer; the matched-direct runtime; a genuinely dependent
+round-2 path; the context-major 15-occurrence executor; fixed-concretizer
+exact evaluation and typed operational terminals; exact campaign
+reconciliation with an independent verifier; and the complete-bundle
+endpoint authority with independent replay. One-way manifest,
+preregistration and remote-main-anchor finalization authorities are also
+implemented and tested. These are construction and lock evidence, not an
+executed held-out campaign or a Gate result.
+
+An earlier fake-placeholder development test generated only in-memory tuples
+under eight identities now retired as
+`DEVELOPMENT_SYNTHETIC_DRY_RUN_NOT_REGISTERED_TARGET_TAPE`; no tape,
+artifact, endpoint or campaign output persisted. New clean-generation
+context/law/environment IDs have zero draws. Draft preregistration
+`7639f1ee57ee2d9a8c871a5f0270d15fdd92f712a735e2ae89b6155e057ba5c2`
+has a null execution manifest and cannot anchor. It supersedes the
+nonauthorizing drafts
+`8b1e4747bb364ccddc04bb45d97a061c621650c907d31c979673f312acdffd29`
+and
+`e368be24adad7870d95c8e5059455d31e035783394e48040d113258388eaf4d4`;
+the corrected profile permits one initial plus two promotion confidence
+epochs per row while the two-round total authority cap remains unchanged,
+and adds the precise matched-direct checkpoint-cap noncertificate.
+
+The first possible anchor is the first `origin/main` commit containing a
+fixed source reconstruction recipe, a final non-null execution manifest and
+the final preregistration ID that binds them, whose parent lacks that final
+identity chain. Although the production construction and finalization
+authorities now exist, that source recipe has not yet been executed and
+frozen, the final three-file chain has not been committed and pushed, the
+remote-main anchor has not been minted, and the actual 15-occurrence target
+campaign has not been run. Therefore the current draft does not authorize
+target execution and exposes no campaign endpoint.
+
+Only after the fixed chain is anchored may SOURCE be compared with NO_PRIOR
+and matched direct ground. SOURCE must use strictly fewer online target draws
+than NO_PRIOR and no more than matched direct, with noninferior certificate
+coverage and zero false certificates. Offline source observations remain a
+separate reported lane. No broad sample-efficiency conclusion, total-objective
+completion, official execution, scalar cost, break-even value, workload
+economics result or counter-completeness result is claimed; every
+official/economics/counter/sample lock remains unchanged.
+
+### V0-071 source-guided acquisition mechanics — Gate NOT RUN
+
+Target contract `1.35.0` and profile
+`source_frozen_certificate_sensitive_greedy_acquisition_v0` currently license
+only mechanics tests. The implementation must retain all of these locks:
+
+1. one-row zero-`OTHER` counterfactuals rank proposals only;
+2. source multipliers cannot enter target probability or certificate
+   arithmetic;
+3. `WRONG_CONSENSUS_PRIOR` is `q -> 1-q` on the same prior;
+4. authorization precedes every evidence/materialization access;
+5. the real K6 path stops at authorization, cap, or no positive gain; and
+6. only explicitly synthetic controls may emit
+   `SYNTHETIC_CONTROL_CERTIFIED_AFTER_ROUND_*`.
+
+The Gate remains `NOT_RUN` until verified raw source evidence derives every
+gain, a sample-invariant feature projection supports cross-context joining, a
+real observation materializer closes immutable epochs, round 2 is rebuilt
+from its new selected plan/frontier, and an independent verifier replays the
+complete bundle. No synthetic result may satisfy one of those obligations.
+
+### V0-070 model-only minimal-pair support-recovery gate
+
+Contract `1.34.0` registers schema `1.0.0` and profile
+`k6_model_only_minimal_pair_support_recovery_v0`.
+
+The Gate passes only when:
+
+1. the verified V0-068 transaction-1 model and V0-069 negative terminal are
+   identity-bound, but V0-069 counterfactual records are not reused as
+   authority;
+2. exactly 49 fresh selected-policy candidates are reconstructed;
+3. all 49 singleton overlays are evaluated before pair enumeration and fail;
+4. all `C(49,2)=1176` canonical pairs are evaluated exactly once;
+5. every overlay recomputes complete H1 then H2 fixed-policy recurrence;
+6. independent recurrence reproduces all 1,225 subset obligations;
+7. a finite positive control contains singleton failures and pair successes;
+8. the real result is `NO_SOUND_FIXED_PLAN_PAIR_COVER`;
+9. observer, promotion, operational full-replan, exact and global-16384 work
+   are zero on that negative terminal;
+10. cardinality 3, transaction 3, stale identities and incomplete/reversed
+    pair topologies fail closed;
+11. any future materialized branch freezes authorization before fresh
+    disjoint streams and satisfies the 19-row/160,960-draw boundary; the
+    registered negative result makes no positive branch-coverage claim;
+12. official execution, scalar, break-even, workload economics and counter
+    completeness remain locked.
+
+This Gate closes only a bounded selected-policy hypothesis. It is not sample
+efficiency, automatic hidden-world-model discovery or the overall objective.
+
+### V0-069 bounded second distinct-row support gate
+
+Contract `1.33.0` registers schema `1.0.0` and profile
+`k6_two_distinct_row_support_transactions_v0`.
+
+The Gate passes when the immutable transaction-1 K6 model yields exactly 49
+eligible different-row counterfactuals, every one remains uncertified after
+its individual `OTHER -> 0` overlay, and the terminal is
+`NO_SOUND_DIFFERENT_ROW_COVER` with zero transaction-2 observer draws, exact
+calls, global-16384 access and transaction 3. Materialization-only stream,
+closure and accounting obligations are conditional and are not claimed
+exercised by this registered negative result.
+
+### V0-068 observation-discovered partial-support H2 gate
+
+Contract `1.32.0` registers schema `1.0.0` and executable profile
+`observation_discovered_partial_support_campaign_v0`.
+
+The Gate passes only when:
+
+1. W5, hidden-three-rank K6 and K6-minus-edge public contexts freeze before
+   observations and expose no atom ordinal/count, support list, spawn law,
+   transition probability or pre-enumerated reward/failure label;
+2. the operational observer returns only complete symbolic transition tuples
+   with replayable row/lane/epoch/sample identities and raw commitments;
+3. every authorized row uses exactly 64 discovery tuples to freeze observed
+   joint support, then fresh disjoint validation at checkpoints
+   `2048/4096/8192/16384`;
+4. validation is permanently partitioned into the discovered outcomes plus
+   exactly one `OTHER`, including when validation reveals a novel identity;
+5. each row epoch uses exact-rational uniform-Beta likelihood-mixture
+   confidence with `beta=1/64000`, at most 16 discovered atoms and event
+   alpha `beta/(|S|+1)`;
+6. every considered checkpoint, rejected coordinate candidate and promoted
+   epoch is included in the complete manifest; physical authorities
+   deduplicate across direct/quotient labels while logical work does not;
+7. the unique considered row-epoch count is at most 512, so Boole's
+   inequality gives family tail at most `1/125` and confidence at least
+   `124/125` without an independence assumption;
+8. every row interval simplex is nonempty and the robust Bellman recursion
+   assigns `OTHER` one adversarial mass coordinate, failure value one,
+   continuation/reward lower zero, never duplicated across destinations;
+9. the authority-bound graph bridge reconstructs observations, confidence,
+   complete legal-action catalogues, relational coordinates, typed
+   destinations and distinct inverse-action concretizers before a plan may
+   certify;
+10. every deterministic direct or semantic policy covers all reachable
+    observed continuations and satisfies `failure_upper <= delta` plus the
+    registered normalized-regret tolerance;
+11. exact support enumeration raises if called in the operational acquisition,
+    model, planning or audit path, while exact lift and fallback remain
+    separately typed and charged;
+12. W5 direct and quotient routes both first certify at checkpoint 4096;
+13. K6 direct first certifies at 8192, while its base quotient and every
+    registered coordinate candidate still fail there;
+14. exactly one K6/8192 missing-mass transaction authorizes the deterministic
+    earliest individually causal row, binds its parent model/audit/frontier
+    and promotes only observed novel identities;
+15. the promoted row uses fresh validation 2048, its seven new child
+    catalogues produce 30 child rows at checkpoint 8192, and all 249,728
+    incremental observer draws are charged without mutating the parent epoch;
+16. that mixed-epoch replan remains `FAILED_PROOF_FRONTIER`, with failure
+    upper `1321268563/17179869184 > 1/20` and normalized-regret upper
+    `1300423631/38654705664`; no second promotion is executed;
+17. the failed epoch remains in the campaign and K6 quotient first certifies
+    only at 16384;
+18. K6 direct/quotient unique raw-observation totals are
+    `165120/578688`, so construction passes but matched observation advantage
+    is false;
+19. K6-minus-edge binds `delta=2847/20000`, exact ground failure
+    `2277/16000` and base quotient-lift failure `11393/80000`, emits no false
+    partial certificate and reaches the same exact feasible fallback in both
+    lanes;
+20. exact fallback completes search before post-hoc cap classification;
+    fallback cap exhaustion remains a noncertificate and cannot become
+    infeasibility;
+21. a typed absorbing-policy-abort escape handler maps every exact-lift
+    outcome absent from frozen support to one failure destination and rejects
+    cross-context/query transplant;
+22. each route freezes its operational planning/audit identity before any
+    exact lift or fallback call;
+23. deterministic SplitMix64 replay is reported only as reproducible raw
+    evidence; every statistical terminal retains
+    `exact_iid_implementation_claimed=false`,
+    `formal_exact_iid_plan_certificate=false` and scope
+    `CONDITIONAL_ON_IDEALIZED_TARGET_LOCAL_UINT64_IID_AUTHORITY_NOT_PROVEN_BY_DETERMINISTIC_REPLAY_IMPLEMENTATION`;
+24. the complete same-implementation campaign verifier replays every family
+    row, promoted row, confidence authority, bridge/audit/freeze role, exact
+    lift/fallback and terminal conclusion; bare lower-level artifacts have no
+    Gate authority; and
+25. all support/epoch/stream/simplex/manifest/identity/`OTHER`/access-order/
+    fallback attacks and stable repository regression pass before principal
+    IDs are frozen.
+
+Passing licenses only the registered construction result that finite
+observation-frozen support plus adversarial `OTHER` can drive robust H2
+direct/quotient planning, one fail-closed local support epoch and matched
+fallback without an operational exact support oracle. It does not license
+exact support recovery, unconditional statistics, primitive/ontology
+invention, broad generalization, H>2, sample efficiency, total-work
+economics, independent-planner verification or project completion.
+
+All official locks remain:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+```
+
+Complete semantics are normative in
+`specs/OBSERVATION_DISCOVERED_PARTIAL_SUPPORT.md`.
+
+The next construction Gate must use a new contract if it permits a distinct
+second-row dependent support transaction or another sample-tax operator.
 
 ### V0-067 target-local sequential sample-efficiency gate
 
@@ -3525,6 +3812,14 @@ saving. V0-047's reuse of `(3,)` is within one query-local boundary expansion; i
 held-out validation. Zero missing rows in its registered catalogue does not close
 external successors reached only at horizon truncation.
 
+V0-068 cannot be promoted to exact support recovery, unconditional IID
+statistics, primitive/legal-action/ontology invention, raw perception, broad
+graph/domain generalization, H>2 planning, changed-query reuse,
+independent-planner verification, sample efficiency or total-work economics.
+Its deterministic SplitMix64 stream is replay infrastructure, and its only
+support promotion fails certification before K6 continues to a later global
+checkpoint.
+
 ## Known failure modes
 
 The coarse policy can be immediately infeasible, no predicate may separate the witness, every useful split may exceed rate, and an accepted split may still end in charged fallback. These are valid measured outcomes, but Phase 0.5 still requires a fixture with one accepted split. An implicit default support, incomplete all-action closure, or coverage-free cache key is unsound. In the exact `D4` gate, incomplete orbit closure, action-transform errors, stabilizer multiplicity bias, or nonzero envelopes are hard validation failures and are never repaired by refinement. In the aliased gate, replacing the deliberate boundary adapter with equivariant actions, forcing a third split after certification, or hiding the final risk gap changes the registered experiment. In Phase 3A, held-out leakage, thresholding compression on terminal collapse, or reporting a cross-orbit cell unreachable by the training policy invalidates the slice. In V0-039, label-set, within-label action-alias or cross-state same-label mismatch is a typed negative candidate; cap exhaustion cannot certify, and mixing before the alias check invalidates the direct claim.
@@ -3560,6 +3855,13 @@ omitting full V0-045 replay in a typed consumer invalidates the milestone. Repea
 full synthesis for every planner candidate is also the wrong execution semantics: one
 replay freezes the model for enumeration; an independent full replay certifies only the
 selected plan.
+
+In V0-068, leaking exact support metadata into operation, aliasing discovery
+and validation streams, changing frozen support, reusing validation after an
+epoch change, omitting/duplicating `OTHER`, breaking the joint simplex,
+undercounting rejected candidates, executing exact work before the typed
+route freeze, or relabelling cap exhaustion as infeasibility invalidates the
+Gate. A failed promoted epoch is retained work, not a certificate.
 
 ## Open risks
 
@@ -3670,3 +3972,14 @@ planning, but exact symbolic support/reward/failure labels and the pretrained
 source skeleton remain prerequisites. Broad sample efficiency, honest
 unknown-support construction, total-work economics and the general
 reusable-hidden-world-model objective remain open.
+
+V0-068 replaces those exact target support labels with discovery-frozen
+observed support and an adversarial `OTHER` event for the registered H2 graph
+family. This closes the narrow honest-partial-support construction Gate, not
+the sample tax: K6 quotient uses `578688` unique raw observations versus
+direct planning's `165120`, and its single promoted row still fails risk.
+The next contract must separately authorize a distinct second-row dependent
+transaction or a different support-acquisition operator. Formal IID
+execution, broader structures/domains, primitive/ontology invention, H>2
+recurrence, cross-query reuse, independent verification, total-work
+economics and the general reusable-hidden-world-model objective remain open.

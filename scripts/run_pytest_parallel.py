@@ -17,8 +17,10 @@ import json
 import os
 from pathlib import Path
 import re
+import shutil
 import subprocess
 import sys
+import tempfile
 import time
 
 
@@ -37,6 +39,7 @@ ID_CACHE_PATTERN = re.compile(
 TIMING_CACHE_RELATIVE_PATH = Path(
     ".pytest_cache/acfqp_parallel_module_timings_v1.json"
 )
+PARALLEL_TEMP_ROOT_VARIABLE = "ACFQP_PARALLEL_TEMP_ROOT"
 
 
 @dataclass(frozen=True)
@@ -127,37 +130,48 @@ def _run_module(
     path: Path,
     *,
     root: Path,
+    temporary_root: Path,
     python: str,
     pytest_args: tuple[str, ...],
     fresh_ids: bool,
 ) -> ModuleResult:
     environment = os.environ.copy()
     environment["PYTHONDONTWRITEBYTECODE"] = "1"
-    started = time.monotonic()
-    completed = subprocess.run(
-        (
-            python,
-            "-m",
-            "pytest",
-            "-q",
-            "-s",
-            "-p",
-            "no:cacheprovider",
-            *(
-                ()
-                if fresh_ids
-                else ("-p", "tests.acfqp_exact_id_cache_v1")
-            ),
-            *pytest_args,
-            str(path.relative_to(root)),
-        ),
-        cwd=root,
-        env=environment,
-        text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        check=False,
+    module_temporary_directory = tempfile.mkdtemp(
+        prefix=f"{path.stem}-",
+        dir=temporary_root,
     )
+    environment["TMPDIR"] = module_temporary_directory
+    environment["TEMP"] = module_temporary_directory
+    environment["TMP"] = module_temporary_directory
+    started = time.monotonic()
+    try:
+        completed = subprocess.run(
+            (
+                python,
+                "-m",
+                "pytest",
+                "-q",
+                "-s",
+                "-p",
+                "no:cacheprovider",
+                *(
+                    ()
+                    if fresh_ids
+                    else ("-p", "tests.acfqp_exact_id_cache_v1")
+                ),
+                *pytest_args,
+                str(path.relative_to(root)),
+            ),
+            cwd=root,
+            env=environment,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            check=False,
+        )
+    finally:
+        shutil.rmtree(module_temporary_directory, ignore_errors=True)
     duration = time.monotonic() - started
     return ModuleResult(
         path,
@@ -167,6 +181,27 @@ def _run_module(
         _parse_counts(completed.stdout),
         _parse_id_cache_summary(completed.stdout),
     )
+
+
+def _parallel_temporary_root(root: Path) -> Path:
+    """Resolve one explicit private base or a repository-local default."""
+
+    configured = os.environ.get(PARALLEL_TEMP_ROOT_VARIABLE)
+    candidate = (
+        Path(configured)
+        if configured is not None
+        else root / ".tmp" / "parallel-pytest"
+    )
+    if not candidate.is_absolute() or candidate.is_symlink():
+        raise SystemExit("parallel pytest temp root must be absolute and unlinked")
+    candidate.mkdir(parents=True, exist_ok=True)
+    try:
+        resolved = candidate.resolve(strict=True)
+    except OSError as error:
+        raise SystemExit("parallel pytest temp root cannot be resolved") from error
+    if resolved != candidate:
+        raise SystemExit("parallel pytest temp root changed under resolution")
+    return resolved
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -228,6 +263,7 @@ def main(argv: list[str] | None = None) -> int:
         parser.error("--shard-index must be in [0, shard-count)")
 
     root = Path(__file__).resolve().parents[1]
+    temporary_root = _parallel_temporary_root(root)
     modules = _discover(tuple(args.paths), root)
     if not modules:
         parser.error("no test modules discovered")
@@ -276,6 +312,7 @@ def main(argv: list[str] | None = None) -> int:
                 _run_module,
                 path,
                 root=root,
+                temporary_root=temporary_root,
                 python=args.python,
                 pytest_args=tuple(args.pytest_arg),
                 fresh_ids=args.fresh_ids,

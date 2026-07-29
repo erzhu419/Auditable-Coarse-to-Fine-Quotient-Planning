@@ -2,8 +2,8 @@
 
 **Status:** normative source of truth
 
-**Ledger version:** 1.30.0
-**Last updated:** 2026-07-28
+**Ledger version:** 1.34.5
+**Last updated:** 2026-07-29
 
 ## Authority
 
@@ -96,6 +96,13 @@ absent from a public checkout.
 | V0-064 | 2026-07-28 | Observation-driven relational coordinate/support synthesis | FROZEN | Contract `1.28.0` freezes schema `1.0.0`, profile `g2048_observation_driven_relational_support_v0`, and status `CERTIFIED_REGISTERED_OBSERVATION_DRIVEN_RELATIONAL_SUPPORT_FAMILY`. Before evidence it registers three complete H2 source structures, three structurally identity-disjoint held-out target structures, six target point occurrences, one depth-two relational grammar, and a complete optional-single coordinate search. From 144 anonymous source rows, with no query/target/kernel/group/frontier input to the producer, semantic closure is `7/19/56`; all 432 candidates are evaluated, 13 are admissible, and the selected coordinates are `cardinality_actions(legal_actions)` plus `cardinality_cells(adjacent_filter(survivor_cell,occupied_cells))`. They yield six anonymous supports and decisions `(1,2)->1`, `(1,4)->1`, `(2,2)->2`. Each target starts all-missing, authorizes eight root rows after the first failed proof and sixteen continuation rows after the second, then certifies two occurrence-bound queries from one immutable context model. The 24 rows are charged to context construction, not the first occurrence; both queries add zero rows after construction. Target probabilities come only from 16,384 replayable draws per row over registered symbolic outcome support. Exact-rational calibration gives radius `1/60`, 176 coordinate obligations, family tail `11/250`, and confidence `239/250`. A wrong proposal acquires 16 rows, fails risk with upper one, requires fallback, and emits no false certificate. Six occurrence-cold exact controls enumerate 108 rows and reproduce J0. | Licenses automatic coordinate selection and anonymous abstract-support proposal only inside the fixed human relational vocabulary, fixed 2x2 incidence graph, and registered rank-relative family, followed by target-only statistical certification and post-context-build query reuse. No D4 or named frontier enters construction. It does not license primitive invention, unknown outcome support, unseen graph geometry, cross-structural RAPM reuse, broad generalization, independent-algorithm verification, sample efficiency, official execution, scalar/break-even economics, or an aggregate Gate. | `relational_support_synthesis_v1.py`; source-completeness, full-search, generative-acquisition, typed evidence, occurrence-scope, fixed-concretizer, two-round recovery, wrong-proposal, exact-control, interval/identity/implementation and same-implementation replay tests; `specs/OBSERVATION_DRIVEN_RELATIONAL_SUPPORT.md`. |
 | V0-065 | 2026-07-28 | Observation-driven cross-geometry relational RAPM | FROZEN | Contract `1.29.0` freezes schema `1.0.0`, profile `observation_driven_cross_geometry_relational_rapm_v0`, and status `CERTIFIED_REGISTERED_CROSS_GEOMETRY_RELATIONAL_RAPM_FAMILY`. Three pairwise non-isomorphic source graphs (`P4`, `K1,3`, paw) contribute 120 complete H2 rows over 51 states. A kernel/target/query-free producer closes 262 syntactic programs to 42 semantic representatives, exhausts 25 integer state/action pairs, finds two admissible pairs, and selects `cardinality_actions(legal_actions)` plus `cardinality_cells(adjacent_filter(survivor_cell,occupied_cells))`; its honest source sound-alias width is `99/100`. The proposal contains only ASTs and an anonymous support-key schema, never source dynamics or decisions. Non-isomorphic held-out `C4`, diamond and `K4` instantiate target-local supports and independently acquire `16+32`, `20+40`, and `24+48` rows, respectively, at 65,536 replayable draws per row. Base target audits are `CERTIFIED/FAILED_RISK_OR_REGRET/CERTIFIED`; only the failed diamond proof may search the source-frozen optional registry, whose four candidates select `rank_degree_signature` plus survivor degree, after which all `3/3` target contexts certify and six occurrences reuse only their context-local models. | Licenses only bounded held-out non-isomorphic graph transfer of a source-observed relational coordinate/support schema, target-local statistical dynamics and replanning, and one certificate-triggered source-registry refinement. It does not license source/cross-target dynamics transfer, cross-structural RAPM reuse, target-time primitive/program invention, broad graph generalization, a second domain, unknown outcome support, independent-algorithm verification, sample efficiency, official execution, scalar/break-even economics, or an aggregate Gate. | `relational_graph_core_v1.py`; `cross_graph_relational_support_v1.py`; `cross_geometry_rapm_v1.py`; complete closure/search, two-round target evidence, local refinement, no-transfer, legacy, semantic/unregistered OOD, permutation, identity/transplant, cold-control, raw-draw and same-implementation replay tests; `specs/CROSS_GEOMETRY_RELATIONAL_RAPM.md`. |
 | V0-066 | 2026-07-28 | Variable-cardinality two-domain relational RAPM | FROZEN | Contract `1.30.0` freezes schema `1.0.0`, profile `variable_cardinality_two_domain_relational_rapm_v0`, and status `CONDITIONAL_TWO_DOMAIN_VARIABLE_CARDINALITY_RAPM_CLOSED`. One independently replayed 120-row anonymous graph source synthesizes a dynamics-free portable skeleton with exact programs `cardinality_actions(legal_actions)` and `cardinality_resources(linked_filter(action_anchor,active_resources))`. The graph consumer holds out vertex counts 5 and 6: W5 and K6 produce complete conditionally certified H2 contingent plans from 22 and 60 target-local rows, while K6-minus-edge exhausts nine fresh target candidates without a sound cover and invokes a charged 60-row exact fallback. A second-domain LMB consumer binds the same action AST through a query-neutral seven-row bridge and builds three separate two-support statistical models from 98,304 target draws, with zero operational exact ground rows. Source registry/dynamics and cross-target row imports are all zero; six wrong-arm transplants fail closed. A Boole union bound combines arm tails `287/250000` and `2/125` without a cross-arm-independence assumption, giving conditional confidence `245713/250000`. All 62 focused and 1,412 repository tests pass. | Licenses only this registered proof that one source-observed portable relational skeleton can be instantiated across vertex counts and in a second domain while target contexts, bindings, evidence, models and dynamics remain isolated. Automatic synthesis is confined to a human relational-role ontology and frozen grammar. Graph probabilities are conditional on the registered SplitMix64/IID simulator assumption; LMB probabilities are conditional on the registered SHA-256 random-oracle/IID assumption. LMB planning is domain-specific. Independent verification covers source synthesis only; target verification is same-implementation. It does not license primitive/ontology invention, generic model-selected planning, observational OOD generalization, changed-query reuse, sample efficiency, official execution, scalar/break-even economics or an aggregate Gate. | `portable_relational_skeleton_v1.py`; `portable_relational_independent_verifier_v1.py`; `variable_order_graph_rapm_v1.py`; `cross_domain_lmb_rapm_v1.py`; `variable_cardinality_multidomain_campaign_v1.py`; source-boundary, fresh target-closure, raw/rejection replay, full-policy, fallback, wrong-binding, no-transfer/OOD, permutation, identity/transplant, union-calibration and claim-lock tests; `specs/VARIABLE_CARDINALITY_TWO_DOMAIN_RELATIONAL_RAPM.md`. |
+| V0-067 | 2026-07-28 | Target-local sequential sample-efficiency control | FROZEN | Contract `1.31.0` freezes profile `v0067_real_factorial_campaign_v0`, Gate profile `v0067_v0066_graph_factorial_sample_efficiency_v0`, and the four checkpoints `2048/4096/8192/16384`. Uniform-Beta likelihood-mixture confidence sequences are exact-rational and time-uniform at those checkpoints. Fixed and sequential streams are seed-paired and raw-prefix verified; the sequential implementation generates only the consumed prefix. On registered W5 and K6 positives, quotient sequential planning consumes `425984` target draws versus `737280` for the matched cold direct-ground route, saving `311296 = 19/45` draws, while the fixed routes consume `10747904` and `11796480`. K6-minus-edge remains a no-cover control with a charged 60-row exact feasible fallback. Eight deduplicated physical confidence authorities form four Boole-combined families with joint tail `97/25000` and confidence `24903/25000`. The source-only meta-prior changes proposals but not target prefixes, so its target main effect and offline-inclusive amortization are both zero. | Licenses only the registered positive-endpoint target-draw reduction caused by sequential stopping. It does not license broad sample efficiency, unknown-support learning, total-work or wall-clock savings, a meta-prior advantage, official execution, scalar break-even, workload economics or counter completeness. Exact support descriptors and exact fallback/evaluation remain separate lanes. Same-implementation replay is not an independent planning algorithm. | `sequential_bernoulli_acquisition_v1.py`; `variable_graph_direct_sequential_v1.py`; `factorial_sample_efficiency_gate_v1.py`; `v0067_factorial_campaign_v1.py`; raw-prefix, checkpoint, fixed/sequential pairing, family-confidence, no-cover fallback, identity/tamper and claim-lock tests; `specs/TARGET_LOCAL_SEQUENTIAL_SAMPLE_EFFICIENCY.md`. |
+| V0-068 | 2026-07-28 | Observation-discovered partial-support H2 planning | FROZEN | Contract `1.32.0` freezes schema `1.0.0` and profile `observation_discovered_partial_support_campaign_v0`. The operational planner receives replayable realized transition tuples but no exact atom ordinal/count, support list, spawn law or probability. Each row uses 64 discovery tuples to freeze observed joint support and fresh validation at `2048/4096/8192/16384` over that support plus one adversarial `OTHER`; exact-rational uniform-Beta likelihood-mixture confidence uses row-epoch tail `1/64000`, at most 16 discovered atoms and a preregistered 512-authority family cap, giving conditional confidence `124/125`. W5 direct/quotient first certify at `4096`. K6 direct first certifies at `8192`; its base quotient and coordinate candidates fail, and the sole causally authorized support transaction charges `249728` new observations but still fails risk (`1321268563/17179869184 > 1/20`), so quotient first certifies at `16384`. K6 direct/quotient unique raw totals are `165120/578688`; construction passes but matched observation advantage is false. K6-minus-edge freezes `delta=2847/20000` between exact-ground `2277/16000` and base-lift `11393/80000`, so both lanes use the same complete-search exact feasible fallback. | Licenses only the registered finite H2 construction result that discovery-frozen support plus adversarial `OTHER` can drive robust direct/quotient planning, one immutable fail-closed support epoch and matched fallback without an operational exact support oracle. The SplitMix64 implementation is deterministic replay, not an IID proof: `exact_iid_implementation_claimed=false`, `formal_exact_iid_plan_certificate=false`, and every positive is conditional on the idealized target-local uint64 IID authority. It does not license exact-support recovery, raw symbolization, primitive/legal-action/ontology invention, broad generalization, H>2, sample efficiency, total-work economics, independent-planner verification or project completion. No second support promotion is authorized. All official/economics/counter locks remain. | `transition_tuple_observer_v1.py`; `partial_support_confidence_v1.py`; `observation_support_graph_acquisition_v1.py`; `observation_support_h2_closure_v1.py`; `observation_support_relational_adapter_v1.py`; `observation_support_graph_model_v1.py`; `partial_support_robust_planner_v1.py`; `observation_support_coordinate_refinement_v1.py`; `partial_support_expansion_authority_v1.py`; `observation_support_promoted_h2_consumer_v1.py`; `partial_support_family_confidence_v1.py`; `observation_support_exact_evaluation_v1.py`; `observation_support_campaign_v1.py`; complete row/family/role replay and support/stream/simplex/`OTHER`/epoch/fallback/access-order attacks; `specs/OBSERVATION_DISCOVERED_PARTIAL_SUPPORT.md`. |
+| V0-069 | 2026-07-29 | Bounded second distinct-row support transaction | FROZEN | Contract `1.33.0` freezes schema `1.0.0` and profile `k6_two_distinct_row_support_transactions_v0`. Starting from the immutable failed K6 transaction-1 epoch at checkpoint `8192`, the probe recomputes all eligible different-row, selected-policy `OTHER -> 0` counterfactuals against that mixed model. It finds 49 fresh candidates and no individually causal row, then closes as `NO_SOUND_DIFFERENT_ROW_COVER` before authorization: transaction-2 observations, global-`16384` access, transaction 3 and exact evaluation are all zero/absent. | Rules out only one additional individually causal row under the registered transaction-1 model and plan. It does not rule out joint row interactions, alternative coordinates or policies, and it opens no sample-efficiency, generality, economics, official-execution or project-completion claim. | `observation_support_second_transaction_v1.py`; complete candidate, identity, history, cap, zero-access, schedule and replay tests; `specs/K6_TWO_DISTINCT_ROW_SUPPORT_TRANSACTIONS.md`. |
+| V0-070 | 2026-07-29 | Model-only minimal-pair support-recovery screen | FROZEN | Contract `1.34.0` freezes schema `1.0.0` and profile `k6_model_only_minimal_pair_support_recovery_v0`. A fresh candidate registry reconstructs the same 49 K6 rows without treating V0-069 evidence as authority, replays all 49 singleton overlays and then all `C(49,2)=1176` canonical pairs through complete selected-policy H1-to-H2 recurrence, and independently verifies all 1225 obligations. Every singleton and pair remains failed, so the registered result is `NO_SOUND_FIXED_PLAN_PAIR_COVER` with zero observer draws, promotions, operational full replans, exact calls and global-`16384` access. A separate finite positive control proves the recurrence detects genuine pair-only interactions. | Closes only the cardinality-at-most-two, current-selected-policy frontier hypothesis. It does not authorize brute-force `k=3`, claim that the dormant materialization branch was exercised, or establish sample efficiency, automatic hidden-space discovery, generality, economics, official execution or the overall objective. The next intervention must rank or reject acquisition from source-frozen, target-evidence-gated proof information while leaving the target-local certificate unchanged. | `observation_support_joint_pair_recovery_v1.py`; full topology, independent recurrence, positive interaction, zero-access, cap, schedule, identity/transplant and exact 19-row sample-boundary tests; `specs/K6_MODEL_ONLY_MINIMAL_PAIR_SUPPORT_RECOVERY.md`. |
+| V0-071 | 2026-07-29 | Source-guided certificate-sensitive acquisition audit | AUDITED / GATE NOT RUN | Ledger `1.34.1` freezes only the non-closure boundary for proposed target contract `1.35.0` and profile `source_frozen_certificate_sensitive_greedy_acquisition_v0`; it does not ratify either as the current completed construction contract. The checked-in mechanics compute exact per-context normalized midranks, `q=mean`, `worst=min`, disagreement `q-worst`, abstention above `1/4`, multiplier `1/2+(3/2)q`, and the same-prior wrong control `q -> 1-q`. Target-current-model one-row zero-`OTHER` slack gains are nonnegative ranking signals only; deterministic selection and authorization freeze before materialization, and synthetic receipts alone can exercise robust replanning. | The Gate is not run because source gains are still caller-supplied rather than semantically replayed from bound source models/audits/raw evidence; the v1 portable feature includes sample-dependent support documents and `OTHER` mass; no real authorization-bound target observer/materializer exists; round 2 does not implement the required independently fresh current-plan/frontier authority; and verification is same-implementation rather than an independent complete bundle replay. Real K6 can stop only at authorization, cap exhaustion or no positive gain. Positive controls are named `SYNTHETIC_CONTROL_CERTIFIED_AFTER_ROUND_*` and cannot support target acquisition, transfer, sample-efficiency, independent-verification, contract-`1.35.0`, Gate-pass or project-completion claims. Current completed contract remains `1.34.0`; all official/economics/counter/sample-efficiency locks remain unchanged. | `certificate_sensitive_greedy_acquisition_v1.py`; mechanics and attack tests only; `specs/SOURCE_FROZEN_CERTIFICATE_SENSITIVE_ACQUISITION.md`; a future revision must add verified source replay, a sample-invariant portable feature, real target materialization, fresh round-2 frontier reconstruction and an independent complete-bundle verifier before proposing Gate closure. |
+
+| V0-072 | 2026-07-29 | Transfer-guided adaptive observation acquisition draft | NONAUTHORIZING DRAFT / TARGET LOCKED / GATE NOT RUN | Ledger `1.34.6` extends the audit-corrected prerequisites for proposed contract `1.36.0`, schema `2.0.0`, and profile `transfer_guided_adaptive_observation_acquisition_v1`; completed construction contract remains `1.34.0`. The draft freezes the clean-generation K7/W7/K7-minus-two family, five arms/15 occurrences, cold `64+2048` row schedule, two-round cumulative cap, direct checkpoints, and `beta=1/300000` confidence allocation. A physical row may carry its initial confidence epoch plus at most two promotions (three epochs total); the global schedule still permits at most two promotion authorities per context and conservatively caps each arm at 480 authorities. Implemented prerequisites now include exact lazy planning/independent proof replay; the seven-roll-forward source archive plus a separately implemented archive-transform verifier; exact split-support confidence and campaign allocation; evidence-first public novel-child cardinality/selection plus independent row/count replay; immutable row transcripts and discovery-only cold-H2 closure plus independent verifiers; the anchor-locked observer/full epoch-chain; a disjoint synthetic K4 control; and nonauthorizing manifest readiness. | Audit corrections supersede nonauthorizing drafts `8b1e4747bb364ccddc04bb45d97a061c621650c907d31c979673f312acdffd29` and `e368be24adad7870d95c8e5059455d31e035783394e48040d113258388eaf4d4` with nonauthorizing draft `7639f1ee57ee2d9a8c871a5f0270d15fdd92f712a735e2ae89b6155e057ba5c2`; all have null execution manifests and none is an anchor. The latest correction adds `DIRECT_CHECKPOINT_CAP_EXHAUSTED_NONCERTIFICATE`, which is distinct from adaptive incremental/two-round exhaustion and from infeasibility. Eight earlier development identities remain retired; no tape, artifact, endpoint, or campaign output persisted. The real V0-068 campaign → production archive → independent archive-transform lane passes, but the independent verifier expressly consumes the same-implementation V0-068 campaign authority. Only the first `origin/main` commit containing a final non-null execution manifest and the final preregistration ID that binds it, whose parent lacks that final ID, can become the anchor. Registered row/model integration, relational/ground model construction, materialization, direct baseline, fresh round 2, campaign and standalone bundle verification remain incomplete; no sample-efficiency, held-out, transfer, official-execution, economics or completion claim opens. | `partial_support_confidence_v2.py`; `verified_source_acquisition_archive_independent_verifier_v2.py`; `public_novel_child_cardinality_authority_v2.py`; `public_novel_child_cardinality_independent_verifier_v2.py`; `row_bound_observation_core_v2.py`; `row_bound_observation_independent_verifier_v2.py`; `v072_synthetic_row_observation_adapter_v1.py`; `v072_cold_h2_closure_v1.py`; `v072_cold_h2_closure_independent_verifier_v1.py`; `v072_confirmatory_execution_manifest_v1.py`; prior V0-072 components; focused, real-source-integration, lock and attack tests; `specs/TRANSFER_GUIDED_ADAPTIVE_OBSERVATION_ACQUISITION.md`. |
 
 For V0-051, the affected public interface expressly includes the content-addressed
 `IncrementalProofDAGProtocolV1` and its `protocol_id`, in addition to the node,
@@ -2416,6 +2423,386 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
 
+## V0-072 nonauthorizing draft and target-lock rule
+
+Ledger `1.34.5` retains the `1.34.3` audit correction, fixes the confidence
+epoch/schedule-cap distinction, and records additional
+nonauthorizing construction prerequisites for proposed contract `1.36.0`,
+schema `2.0.0`, and profile
+`transfer_guided_adaptive_observation_acquisition_v1`. This is a
+`NONAUTHORIZING DRAFT`; it is not a completed construction contract or an
+executable preregistration. Current completed construction contract
+`1.34.0` remains unchanged.
+
+The clean-generation draft freezes:
+
+1. K7, W7 and K7-minus-two public H2 contexts with common root
+   `(1,1,2,0,0,0,0)`, risk/regret tolerance `1/20`, rank cap 6 and reward
+   ceiling `3/64`;
+2. separate environment-only hidden-law commitments that do not appear in
+   public context documents;
+3. SOURCE, NO_PRIOR, WRONG, OOD and MATCHED_DIRECT_GROUND arms, ordered
+   context-major into exactly 15 logical occurrences;
+4. a cold initial schedule of 64 discovery plus 2,048 validation draws for
+   every physical row in the complete registered H2 closure, with
+   conservative per-arm initial cap 506,880;
+5. at most two authorization-bound rounds, at most 19 distinct new child
+   action rows, and cumulative incremental cap
+   `C_R=2048*R+8256*|union(new child rows through R)| <= 160960`;
+6. direct-ground validation checkpoints `2048/4096/8192/16384` and adaptive
+   audits only after the complete cold model and complete round-1/round-2
+   materializations;
+7. row-epoch `beta=1/300000`, at most 480 authorities per arm and 2,400
+   across the campaign, giving family tail at most `1/125` and confidence at
+   least `124/125` by a union bound with no independence assumption; a
+   physical row may have one initial plus two promotion epochs, while the
+   two-round protocol permits at most two promotion authorities per context;
+8. seven V0-068 adjacent raw-prefix roll-forwards and sample/probability/
+   identity-free portable feature keys; and
+9. primary SOURCE-versus-NO_PRIOR and matched SOURCE-versus-direct
+   online-target-draw endpoints.
+
+The following construction prerequisites are implemented and tested:
+
+- exact-`Fraction` lazy H2 branch-and-bound with typed resource exhaustion
+  and a separately implemented verifier that replays interval-simplex
+  Bellman values, relevant decisions, prefix cover, prunes, counters, and
+  legacy audit equality;
+- a verified V2 source archive that mechanically derives the seven adjacent
+  raw prefixes, separates portable features from identity-bound snapshots,
+  and abstains per feature, plus a separately implemented transform verifier
+  that recomputes prefix, fixed-policy, rank, consensus, and content
+  identities while explicitly consuming the same-implementation V0-068
+  campaign authority;
+- exact V2 split-support confidence, one `OTHER` event, all-novel fresh
+  promotion, and the finite-union `2400/300000=1/125` campaign allocation;
+- evidence-first public novel-child cardinality and selector authorities:
+  complete absent-row lists and exact draw uppers freeze before gain/ranking,
+  postselection requires positive gain bound to that evidence, and an
+  independent verifier rebuilds the public row/count/cap chain;
+- immutable chunked row transcripts with incremental prefix work,
+  arm-free random-word semantics, arm-bound evidence, and fresh promotion,
+  together with a separately implemented development-control verifier;
+- a generic discovery-only cold-H2 closure with complete root/child public
+  row obligations, validation novelty excluded from expansion, exact native
+  work, exact context-total `96/48/96` root-plus-child caps, one physical
+  charge across its arm-registered consumer routes, and independent closure
+  replay;
+- a public-only adapter for the three clean registered graph contexts whose
+  legal catalogues and total-cap bindings replay independently without
+  calling hidden-law, kernel, observer-outcome, or tape APIs;
+- an exact development-only confidence-to-interval-simplex projection that
+  preserves support-event bounds, keeps validation novelty aggregated in
+  one row-bound adversarial `OTHER` until promotion, and leaves the
+  registered cap-6 entry locked;
+- an evaluation-only exact H2 ground enumerator independent of the
+  production model/planner implementation, with separate K4/K5 brute-force
+  controls and a registered entry locked on the absent future semantic
+  anchor and occurrence terminal authority;
+- a registered target observer with raw commitments and full support-epoch
+  chain verification, whose registered open/replay/evaluation APIs fail
+  closed until a future semantic remote-`main` anchor authority exists; and
+- a domain-separated synthetic K4 control with no registered context, law,
+  stream, observation, model, endpoint, or claim identity; and
+- a read-only, content-addressed execution-manifest readiness authority that
+  derives actual repository bytes and reports missing roles/identities but
+  cannot finalize, mint an anchor, access a remote, or authorize target
+  observations.
+
+### Development-identity retirement
+
+An earlier fake-placeholder unit-test path generated only in-memory
+registered tuples under these eight development identities:
+
+```text
+0f8061ac58630cced8f01bce01191ab0d02aff5cf64b4cc106f579ad53d02312
+1f240bb0305012a9144b4039d9f2f9b13a0be18b23c0cc7c70dc2909f09ccc29
+a5775190ea336702a7f4e1f06bdd93ec0bd0609f03f69ad7a72c2262e6645976
+ad7dca2b9db96d98d0c8bd6608315264995d3dcb0b6457a4b2b5d073db494ab0
+571d4cb2a7b2b55fc85012b2b417f397b57226df7ae4b00c47d0bb5f35639441
+e8cb7a070c7d6bbdb93683367a8026f422a8ef397877b87d07a3c6c549820cde
+f0d8db6165c3d0a125945b43b4b0d8e221b13ea7870021e96f18b91e218ed00e
+495927b2c72c847086008b2b2c6e8f65ea4a2b5a45ce409c8c7ec3d4be915500
+```
+
+No observation tape, artifact, endpoint, or campaign output was persisted,
+but the zero-draw premise is not assigned to those identities. They are
+permanently retired with disposition
+`DEVELOPMENT_SYNTHETIC_DRY_RUN_NOT_REGISTERED_TARGET_TAPE` and are invalid in
+every confirmatory role.
+
+The replacement clean-generation identities are:
+
+```text
+K7 public context       5bf58b73e363ff73f65d778f039b46ec96d2176082b9c935423f3ef9bb45681a
+W7 public context       48a6f36af9ef5ff1ba9920d783d2435cedd9458c8383f48ccf40412ff55f0dda
+K7-minus-two context    52363b3d6e6508e6734418103be98da18cd7aafe6657d24de16c2547c630ba7a
+K7 hidden law           434f67074a8be498fd8cc532fe780f4227f6f8233bc90a62fab6e8cb595a5f71
+W7 hidden law           801683343ef1973337e534f2d36ac6c8493717d240ef05677abd3a2abb72559c
+K7-minus-two law        b0803f306f3d5ac79abd6e87fc713caedcceae3411f3172f88d103cb7b540347
+environment manifest    f1b158319b5c059786829fc6b5ca4cda60e0b49e9e173a3c70daa4c8a04100da
+```
+
+They have zero registered draws. Current audit-corrected draft
+preregistration
+`7639f1ee57ee2d9a8c871a5f0270d15fdd92f712a735e2ae89b6155e057ba5c2`
+has `confirmatory_execution_manifest_id=null`,
+`confirmatory_profile_finalized=false`, `anchor_commit_id=null`, and
+`target_execution_allowed=false`. Superseded nonauthorizing drafts
+`8b1e4747bb364ccddc04bb45d97a061c621650c907d31c979673f312acdffd29`
+and
+`e368be24adad7870d95c8e5059455d31e035783394e48040d113258388eaf4d4`
+are retained only as audit provenance.
+
+### Anchor and remaining work
+
+The draft ID cannot be an anchor. The first possible anchor is the first
+`origin/main` commit that contains both a final non-null execution manifest
+with every component digest/semantic ID and the final preregistration ID that
+content-binds that manifest, and whose parent does not contain that final
+preregistration ID. The parent therefore necessarily lacks the final ID.
+Merely pushing the current draft, specification, implementation
+prerequisites, or null manifest does not open the target tape.
+
+Before a positive Gate may be read, the following remain incomplete:
+
+```text
+final non-null execution manifest and final preregistration
+semantic origin/main anchor verifier and attestation
+registered-row/confidence/model/closure integration
+relational and ground robust-model construction
+authorization-bound incremental materializer
+matched direct-ground baseline
+real dependent fresh round-2 execution
+five-arm held-out campaign
+standalone raw-evidence/model/plan/certificate bundle verifier
+```
+
+After those are implemented, a valid campaign must additionally preserve
+noninferior certificate coverage, issue zero false certificates, satisfy
+`SOURCE draws < NO_PRIOR draws`, and satisfy
+`SOURCE draws <= matched direct-ground draws`. No held-out target tape may
+open earlier, and no graph, law, threshold, root, arm, schedule, cap,
+checkpoint, terminal rule, endpoint, or component digest may be rerolled
+after the anchor.
+
+Locks remain:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+sample_efficiency_gate_blocks_mainline = false
+```
+
+## V0-071 audited mechanics and non-closure rule
+
+Ledger `1.34.1` records an audit note, not a construction-contract
+promotion. Contract `1.34.0` and profile
+`k6_model_only_minimal_pair_support_recovery_v0` remain the current completed
+construction contract and profile. The `1.35.0` constant and
+`source_frozen_certificate_sensitive_greedy_acquisition_v0` profile in the
+V0-071 draft identify a proposed target contract only.
+
+The checked-in mechanics establish:
+
+1. exact rational source aggregation by normalized within-context midranks,
+   with `q=mean`, `worst=min`, `disagreement=q-worst`, abstention above
+   `1/4`, and multiplier `1/2+(3/2)q`;
+2. `WRONG_CONSENSUS_PRIOR` reverses `q -> 1-q` on the same frozen prior;
+3. exact target-current-model one-row zero-`OTHER` counterfactual gains are
+   clipped at zero and may rank proposals only;
+4. the complete score table, deterministic top admissible selection, cap,
+   authorization identity and access order are frozen before target
+   materialization;
+5. ranking counterfactuals cannot become evidence, model epochs or
+   certificates; and
+6. only a typed synthetic exact-support materializer reaches a complete
+   robust replan and the explicitly synthetic positive endpoints
+   `SYNTHETIC_CONTROL_CERTIFIED_AFTER_ROUND_1/2`.
+
+Those mechanics do not close the proposed Gate. The following obligations are
+missing:
+
+1. `SourceLocalTrialV1.source_gain_per_draw` is accepted as caller input; no
+   semantic authority reconstructs it from the referenced source model,
+   failed audit and raw roll-forward evidence;
+2. `PortableCandidateFeatureV1` still includes sample-dependent support
+   documents and `other_mass_upper`, so its v1 key is not a valid
+   sample-invariant cross-context transfer key;
+3. there is no real authorization-bound target observation materializer;
+4. the second round does not yet establish the required independently fresh
+   current-model/current-plan/failed-frontier candidate authority; and
+5. `verify_certificate_sensitive_greedy_run_v1` reruns the production
+   implementation and explicitly records `independent_verifier=false`; it is
+   not the required independent source/raw-evidence/model/certificate bundle
+   verifier.
+
+Accordingly, real K6 may emit only `AUTHORIZATION_READY`,
+`DRAW_CAP_EXHAUSTED`, or `NO_POSITIVE_GAIN`. A synthetic fixture can test
+control flow but cannot establish real target acquisition, a plan
+certificate for K6, source-to-target transfer, sample saving, sample
+efficiency, independent verification, contract `1.35.0`, a V0-071 Gate pass,
+or completion of the reusable hidden-world-model objective. The run-level
+claims remain frozen false:
+
+```text
+retrospective_mechanics_only       = true
+confirmatory_result                = false
+sample_efficiency_claimed          = false
+source_semantic_replay_claimed     = false
+fresh_round2_frontier_claimed      = false
+independent_verifier_claimed       = false
+```
+
+The aggregate locks remain:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+sample_efficiency_gate_blocks_mainline = false
+```
+
+## V0-070 model-only minimal-pair support-recovery rule
+
+Contract `1.34.0` freezes schema `1.0.0` and profile
+`k6_model_only_minimal_pair_support_recovery_v0`. It reconstructs a fresh
+49-row selected-policy registry from the immutable K6 transaction-1 model,
+evaluates all singleton overlays, then all 1,176 canonical unordered pairs.
+Every overlay sets only the selected `OTHER` intervals to zero and recomputes
+complete H1-to-H2 fixed-policy recurrence.
+
+The registered result is:
+
+```text
+singleton evaluations / covers = 49 / 0
+pair evaluations / covers      = 1176 / 0
+outcome                         = NO_SOUND_FIXED_PLAN_PAIR_COVER
+observer / full-replan / exact  = 0 / 0 / 0
+global-16384 accesses           = 0
+```
+
+An independent recurrence replays all 1,225 subset obligations, while a
+finite positive control demonstrates pair-only interaction. This closes only
+the current-selected-policy frontier through cardinality two. It neither
+licenses brute-force cardinality three nor claims the dormant
+materialization path was exercised.
+
+## V0-069 bounded second distinct-row support-transaction rule
+
+Contract `1.33.0` freezes schema `1.0.0` and profile
+`k6_two_distinct_row_support_transactions_v0`. It recomputes eligible
+different-row selected-policy counterfactuals against the immutable failed
+transaction-1 K6 model. All 49 registered candidates remain failed under an
+individual `OTHER -> 0` overlay, so the result is
+`NO_SOUND_DIFFERENT_ROW_COVER` with zero transaction-2 observations, exact
+calls, global-16384 access or transaction 3. Stream/closure/materialization
+requirements are conditional obligations and are not claimed exercised by
+this negative terminal.
+
+## V0-068 observation-discovered partial-support H2 rule
+
+Contract `1.32.0` freezes schema `1.0.0` and executable profile
+`observation_discovered_partial_support_campaign_v0`.
+
+The operational target interface is tuple-only. It exposes symbolic
+next-state, reward, failure/terminal flags and replay identities, but not an
+atom ordinal/count, exact support, spawn law or transition probability. Each
+authorized row takes 64 discovery tuples, freezes the distinct observed joint
+outcomes and uses a separate validation stream at checkpoints
+`2048/4096/8192/16384`. Validation is permanently interpreted as the frozen
+outcomes plus exactly one `OTHER` category.
+
+The row-epoch tail is `1/64000`; at most 16 discovered atoms are allowed and
+event alpha is divided uniformly across the support-plus-`OTHER` partition.
+At most 512 physical row-epoch authorities may be considered, yielding
+family tail `1/125` and confidence `124/125` by Boole's inequality. The
+manifest includes failed checkpoints, rejected coordinate candidates and
+promoted epochs. Logical direct/quotient consumers share a physical
+statistical authority only when every identity matches.
+
+Robust planning operates on the joint interval simplex and charges `OTHER`
+once as absorbing policy-abort failure, zero lower reward and zero lower
+continuation. It requires complete deterministic H2 policies, a fixed uniform
+distinct-action concretizer, `failure_upper <= delta` and the registered
+normalized-regret threshold. Exact lift and complete-search/post-hoc-cap
+fallback are separate lanes and may run only after a typed operational route
+freeze.
+
+The registered results are:
+
+```text
+W5 direct / quotient first certificate      4096 / 4096
+K6 direct / quotient first certificate      8192 / 16384
+K6-minus-edge direct / quotient closure      exact feasible fallback / same
+```
+
+At K6/8192 the base quotient and all registered coordinate candidates fail.
+The one permitted missing-mass transaction authorizes the deterministic
+earliest individually causal row, uses fresh promoted-row validation 2048,
+constructs seven new child catalogues and 30 child rows at 8192, and charges
+249,728 incremental observer draws. Its immutable mixed-epoch result remains:
+
+```text
+failure upper           = 1321268563 / 17179869184
+normalized regret upper = 1300423631 / 38654705664
+status                  = FAILED_PROOF_FRONTIER
+```
+
+Because the failure upper exceeds `1/20`, the transaction does not certify.
+The runner retains it and continues; V0-068 authorizes no second promotion.
+K6 direct/quotient unique raw totals are `165120/578688`, so
+`construction_gate_passed=true` but
+`matched_observation_advantage=false`.
+
+K6-minus-edge binds `delta=2847/20000`, strictly between exact ground failure
+`2277/16000` and base quotient-lift failure `11393/80000`. Both comparison
+lanes therefore emit no false partial certificate and invoke the same exact
+feasible fallback. Fallback cap exhaustion remains a noncertificate, never
+an infeasibility proof.
+
+The checked-in SplitMix64 stream is deterministic counter replay. It supports
+raw-prefix and tamper verification but does not prove IID, so all statistical
+terminals retain:
+
+```text
+exact_iid_implementation_claimed = false
+formal_exact_iid_plan_certificate = false
+statistical_claim_scope =
+  CONDITIONAL_ON_IDEALIZED_TARGET_LOCAL_UINT64_IID_AUTHORITY_
+  NOT_PROVEN_BY_DETERMINISTIC_REPLAY_IMPLEMENTATION
+```
+
+Only complete same-implementation campaign replay has Gate authority. It
+must reconstruct all considered/promoted rows, the confidence family,
+bridge/audit/freeze identities, exact lift/fallback roles and terminal
+conclusions. Bare model, interval, audit or confidence artifacts are
+insufficient.
+
+This rule licenses neither exact support recovery nor primitive/ontology
+invention, raw perception, broad graph/domain generalization, H>2 planning,
+changed-query reuse, sample efficiency, total-work/wall-clock economics,
+independent-planner verification or completion of the general reusable
+hidden-world-model objective. A distinct second-row support transaction
+requires a later contract.
+
+The official locks remain:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+```
+
 ## V0-066 variable-cardinality two-domain relational RAPM rule
 
 Contract `1.30.0` freezes schema `1.0.0`, profile
@@ -4194,3 +4581,13 @@ sample_efficiency_gate_blocks_mainline = false
 - **2026-07-28 — 1.28.0:** Added V0-064/profile `g2048_observation_driven_relational_support_v0`. A source-only bounded relational closure selects state/action coordinates and six anonymous support templates from 144 complete rows after evaluating all 432 candidates, without D4 or named frontier inputs. Three identity-disjoint target structures each execute an all-missing, `8+16` row, two-failed-proof partial/statistical construction and then certify two occurrence-bound queries from their context-local model. Target probabilities are draw-only over registered symbolic support; exact calibration gives simultaneous confidence `239/250`. Context-build versus occurrence work is explicitly separated. A wrong proposal fails closed; six cold exact controls reproduce J0. Typed evidence replay, fixed concretizer, occurrence scopes, horizon/simplex checks, kernel/implementation pins, and chain-splice attacks are mandatory. Verification is same-implementation semantic replay, not independent-algorithm evidence. All 17 focused and all 1,317 repository tests pass. Primitive invention, unknown support, unseen graph geometry, cross-structural reuse, broad generalization, sample efficiency, official execution and economics remain locked.
 - **2026-07-28 — 1.29.0:** Added V0-065/profile `observation_driven_cross_geometry_relational_rapm_v0`. Three non-isomorphic source graphs contribute 120 complete H2 rows/51 states to a target/query/kernel-free depth-two relational synthesis; 262 syntactic programs reduce to 42 semantic representatives, and complete 25-pair search selects legal-action count plus survivor occupied-neighbor count with honest alias width `99/100`. Held-out non-isomorphic `C4`, diamond and `K4` build separate target-only statistical RAPMs from `48/60/72` rows and 11,796,480 total raw draws. C4/K4 certify under the base schema; diamond's failed certificate searches four source-frozen refinement candidates and selects rank-degree signature plus survivor degree, after which all three contexts and six occurrences certify, with cold exact risk `99/5000`. Exact calibration covers 912 positive/OOD obligations at confidence `3011/3125`. No-transfer, one-of-three legacy, semantic/unregistered OOD, permutation, identity-isolation and cold-ground controls fail closed where required. Campaign/verification IDs are frozen; verification is same-implementation, not independent. All 33 focused tests and all 1,350 repository tests pass. Broad graph/second-domain generalization, primitive invention, unknown support, dynamics transfer, cross-structural reuse, sample efficiency, official execution and economics remain locked.
 - **2026-07-28 — 1.30.0:** Added V0-066/profile `variable_cardinality_two_domain_relational_rapm_v0`. An independently replayed source-only constructor selects a dynamics-free portable relational state/action skeleton from a complete 120-row anonymous log. The graph arm crosses from four to five/six vertices, conditionally certifies W5/K6 complete H2 plans from target-local observations, and sends a registered K6-minus-edge no-cover case to a charged exact fallback. The second-domain LMB arm binds the same program identities through a query-neutral bridge and certifies three separate two-support target models from 98,304 operational draws and zero operational exact rows. Target identities and dynamics remain disjoint; six wrong-arm transplants fail closed. Arm-wise conditional tails combine by Boole's inequality to confidence `245713/250000` without assuming cross-arm independence. Independent verification is source-only, LMB planning is domain-specific, and ontology invention, generic planning, observational OOD, changed-query reuse, sample efficiency, official execution and economics remain locked. All 62 focused and 1,412 repository tests pass.
+- **2026-07-28 — 1.31.0:** Added V0-067 profiles `v0067_real_factorial_campaign_v0` and `v0067_v0066_graph_factorial_sample_efficiency_v0`. Target-local uniform-Beta likelihood-mixture stopping reduces registered positive quotient acquisition to `425984` draws versus `737280` for matched sequential direct planning, while the tested source-only meta-prior changes no target prefix and has no incremental target effect. K6-minus-edge remains a charged exact-fallback control; eight physical authorities combine to confidence `24903/25000`. Unknown-support learning, total-work economics, official execution and broad sample efficiency remain locked.
+- **2026-07-28 — 1.32.0:** Added V0-068/profile `observation_discovered_partial_support_campaign_v0`. Operational direct/quotient planners receive only realized transition tuples; discovery freezes observed support, fresh validation estimates it plus one adversarial `OTHER`, and exact-rational row/family authorities drive robust H2 planning. W5 certifies at 4096 in both lanes. K6 direct certifies at 8192; one 249,728-draw support promotion still fails risk and quotient certifies at 16384, yielding `matched_observation_advantage=false`. K6-minus-edge invokes matched exact feasible fallback. Every statistical positive is conditional on an idealized uint64 IID authority not proven by deterministic SplitMix64 replay. No exact-support, broad generalization, total-work/economics, independent-planner or project-completion claim opens, and all official locks remain.
+- **2026-07-29 — 1.33.0:** Added V0-069/profile `k6_two_distinct_row_support_transactions_v0`. The immutable K6 transaction-1 model yields 49 fresh different-row selected-policy counterfactuals and zero individually causal rows. It closes `NO_SOUND_DIFFERENT_ROW_COVER` before sampling, exact evaluation, global-16384 access or transaction 3; its materialization branch remains unexercised.
+- **2026-07-29 — 1.34.0:** Added V0-070/profile `k6_model_only_minimal_pair_support_recovery_v0`. A fresh authority evaluates 49 singleton and all 1,176 unordered pair overlays under complete fixed-policy H1-to-H2 recurrence; all fail, and an independent recurrence replays all 1,225 obligations. The negative terminal performs zero acquisition/full-replan/exact/16K work and closes only the selected-policy `k<=2` hypothesis.
+- **2026-07-29 — ledger 1.34.1 (construction contract unchanged at 1.34.0):** Audited the proposed V0-071 `1.35.0` source-guided acquisition mechanics and froze their non-closure boundary. Exact midrank/source-multiplier, one-row sensitivity ranking, authorization ordering and synthetic two-round control mechanics exist, but caller-supplied source gains, a sample-dependent v1 feature key, the absence of a real target observer/materializer and fresh round-2 frontier authority, and same-implementation-only replay keep the Gate `NOT_RUN`. Synthetic endpoints authorize no target-acquisition, transfer, sample-efficiency, independent-verification or project-completion claim; every official/economics/counter/sample-efficiency lock remains unchanged.
+- **2026-07-29 — ledger 1.34.2 (construction contract unchanged at 1.34.0):** Preregistered the V0-072 transfer-guided adaptive-acquisition experiment before any held-out target tape. Three seven-vertex contexts, environment-only laws, five arms, exact two-round draw caps, seven source raw-prefix roll-forwards and source/no-prior plus source/direct endpoints are frozen. Exact lazy planning and proposal-only source replay are prerequisites, not result evidence. Execution remains disabled pending a pushed-commit anchor; real materialization, fresh round 2, independent search/bundle verification and the confirmatory campaign remain `NOT_RUN`.
+- **2026-07-29 — ledger 1.34.3 audit correction (construction contract unchanged at 1.34.0):** Corrected V0-072 from “preregistered” to `NONAUTHORIZING DRAFT / TARGET LOCKED / GATE NOT RUN`, schema `2.0.0`, profile `transfer_guided_adaptive_observation_acquisition_v1`. Retired eight development IDs after a fake-placeholder test path generated in-memory registered tuples; no tape/artifact/endpoint persisted, and clean-generation replacements start at zero draws. Draft preregistration `8b1e4747bb364ccddc04bb45d97a061c621650c907d31c979673f312acdffd29` has a null execution manifest and cannot anchor. Exact lazy planning plus independent proof replay, verified source archive, selector, anchor-locked observer/full epoch-chain and disjoint synthetic K4 control are prerequisites only. The first possible anchor must be the first qualifying `origin/main` commit containing a final non-null execution manifest and its final binding preregistration ID, whose parent lacks that final ID; real model/materializer/direct/round-2/campaign/bundle verification remains incomplete.
+- **2026-07-29 — ledger 1.34.4 prerequisite closure (construction contract unchanged at 1.34.0):** Added exact split-support confidence and campaign allocation, evidence-first public novel-child cardinality and selection, immutable row-bound observation/replay records, discovery-only cold-H2 closure, a separately implemented source-archive transform verifier, and nonauthorizing execution-manifest readiness. A real V0-068 campaign now traverses the production V0-072 archive and the independent archive-transform verifier, while the latter explicitly does not claim independence from the upstream same-implementation V0-068 campaign authority. Registered target access remains locked; relational/ground model construction, materialization, fresh round 2, direct baseline, campaign and standalone bundle verification remain incomplete, so no V0-072 result or aggregate Gate opens.
+- **2026-07-29 — ledger 1.34.5 confidence-schedule audit correction (construction contract unchanged at 1.34.0):** Corrected the V0-072 per-row confidence limit from two to three epochs: one initial epoch plus at most two promotions. The distinct two-round execution bound still permits at most two promotion authorities per context, so the conservative total remains 480 authorities per arm and 2,400 per campaign; `beta=1/300000`, joint tail `1/125`, and confidence `124/125` are unchanged. Superseded nonauthorizing draft ID `8b1e4747bb364ccddc04bb45d97a061c621650c907d31c979673f312acdffd29` is retained in audit provenance and replaced by nonauthorizing draft ID `e368be24adad7870d95c8e5059455d31e035783394e48040d113258388eaf4d4`; neither authorizes target access or changes any Gate.
+- **2026-07-29 — ledger 1.34.6 direct-terminal audit correction (construction contract unchanged at 1.34.0):** Added `DIRECT_CHECKPOINT_CAP_EXHAUSTED_NONCERTIFICATE` to the V0-072 terminal registry for the matched-direct arm reaching its complete 16,384-draw checkpoint without a sound certificate. It is distinct from adaptive incremental/two-round exhaustion, exact-DP resource exhaustion, fallback, and infeasibility. Superseded nonauthorizing draft ID `e368be24adad7870d95c8e5059455d31e035783394e48040d113258388eaf4d4` is retained in audit provenance and replaced by nonauthorizing draft ID `7639f1ee57ee2d9a8c871a5f0270d15fdd92f712a735e2ae89b6155e057ba5c2`; both retain null manifests, keep target execution locked, and change no Gate.

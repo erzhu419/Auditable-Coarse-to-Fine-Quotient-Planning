@@ -1,0 +1,548 @@
+{
+  "active_dependency_edges": [
+    {
+      "child_distribution": "exceptiongroup",
+      "parent_distribution": "anyio",
+      "requirement": "exceptiongroup>=1.0.2; python_version < \"3.11\""
+    },
+    {
+      "child_distribution": "idna",
+      "parent_distribution": "anyio",
+      "requirement": "idna>=2.8"
+    },
+    {
+      "child_distribution": "typing-extensions",
+      "parent_distribution": "anyio",
+      "requirement": "typing_extensions>=4.5; python_version < \"3.13\""
+    },
+    {
+      "child_distribution": "typing-extensions",
+      "parent_distribution": "exceptiongroup",
+      "requirement": "typing-extensions >= 4.6.0; python_version < '3.13'"
+    },
+    {
+      "child_distribution": "antlr4-python3-runtime",
+      "parent_distribution": "hydra-core",
+      "requirement": "antlr4-python3-runtime (==4.9.*)"
+    },
+    {
+      "child_distribution": "omegaconf",
+      "parent_distribution": "hydra-core",
+      "requirement": "omegaconf (<2.4,>=2.2)"
+    },
+    {
+      "child_distribution": "packaging",
+      "parent_distribution": "hydra-core",
+      "requirement": "packaging"
+    },
+    {
+      "child_distribution": "typeguard",
+      "parent_distribution": "jaxtyping",
+      "requirement": "typeguard==2.13.3"
+    },
+    {
+      "child_distribution": "antlr4-python3-runtime",
+      "parent_distribution": "omegaconf",
+      "requirement": "antlr4-python3-runtime (==4.9.*)"
+    },
+    {
+      "child_distribution": "pyyaml",
+      "parent_distribution": "omegaconf",
+      "requirement": "PyYAML (>=5.1.0)"
+    },
+    {
+      "child_distribution": "exceptiongroup",
+      "parent_distribution": "pytest",
+      "requirement": "exceptiongroup>=1; python_version < \"3.11\""
+    },
+    {
+      "child_distribution": "iniconfig",
+      "parent_distribution": "pytest",
+      "requirement": "iniconfig>=1.0.1"
+    },
+    {
+      "child_distribution": "packaging",
+      "parent_distribution": "pytest",
+      "requirement": "packaging>=22"
+    },
+    {
+      "child_distribution": "pluggy",
+      "parent_distribution": "pytest",
+      "requirement": "pluggy<2,>=1.5"
+    },
+    {
+      "child_distribution": "pygments",
+      "parent_distribution": "pytest",
+      "requirement": "pygments>=2.7.2"
+    },
+    {
+      "child_distribution": "tomli",
+      "parent_distribution": "pytest",
+      "requirement": "tomli>=1; python_version < \"3.11\""
+    }
+  ],
+  "caller_supplied_digest_accepted": false,
+  "caller_supplied_status_accepted": false,
+  "executes_package_installer": false,
+  "executes_tests": false,
+  "implementation_files": [
+    {
+      "file_byte_count": 41666,
+      "repository_relative_path": "src/acfqp/v072_execution_environment_authority_v1.py",
+      "sha256_file_bytes": "bbd1dda9535791d750dd691502f47e098d00171b0daecb4d32a951ecb72905d1"
+    },
+    {
+      "file_byte_count": 34086,
+      "repository_relative_path": "src/acfqp/v072_execution_environment_independent_verifier_v1.py",
+      "sha256_file_bytes": "908b485c478824b446b7aaec54ca635082520c3fa4b65a6735db7ca6833179c7"
+    },
+    {
+      "file_byte_count": 2600,
+      "repository_relative_path": "scripts/generate_v072_execution_environment_specs.py",
+      "sha256_file_bytes": "8f53b21ac1b401c925c55fc997c258ac6509f6cb57bdea7ee1233a039179d4e2"
+    },
+    {
+      "file_byte_count": 2993,
+      "repository_relative_path": "scripts/run_v072_confirmatory_tests.py",
+      "sha256_file_bytes": "62b6057c71d02c71a4b5e0b2af1bfa6e292f15bcea6ef9db4220338e6f397497"
+    },
+    {
+      "file_byte_count": 11574,
+      "repository_relative_path": "scripts/run_pytest_parallel.py",
+      "sha256_file_bytes": "7dff29fa29bc19692c56b53ec7af9e818d9b2c704db0a2fa16dd64ca62a8045b"
+    }
+  ],
+  "interpreter_build_identity": {
+    "abiflags": "",
+    "api_version": 1013,
+    "byteorder": "little",
+    "cc": "x86_64-linux-gnu-gcc",
+    "config_args": "'--enable-shared' '--prefix=/usr' '--libdir=/usr/lib/x86_64-linux-gnu' '--enable-ipv6' '--enable-loadable-sqlite-extensions' '--with-dbmliborder=bdb:gdbm' '--with-computed-gotos' '--without-ensurepip' '--with-system-expat' '--with-dtrace' '--with-system-libmpdec' '--with-wheel-pkg-dir=/usr/share/python-wheels/' 'MKDIR_P=/bin/mkdir -p' '--with-system-ffi' 'CC=x86_64-linux-gnu-gcc' 'CFLAGS=-g       -fstack-protector-strong -Wformat -Werror=format-security ' 'LDFLAGS=-Wl,-Bsymbolic-functions      -g -fwrapv -O2   ' 'CPPFLAGS=-Wdate-time -D_FORTIFY_SOURCE=2'",
+    "executable": {
+      "file_byte_count": 5917224,
+      "sha256_file_bytes": "7d51cd6b48b521277f5caa4610a82126e315fa2be4df069823a8b1eeb5bd4a86"
+    },
+    "hexversion": 50990320,
+    "host_abi": {
+      "libc_name": "glibc",
+      "libc_version": "2.35",
+      "machine": "x86_64",
+      "system": "Linux"
+    },
+    "implementation_cache_tag": "cpython-310",
+    "implementation_name": "cpython",
+    "implementation_version": {
+      "major": 3,
+      "micro": 12,
+      "minor": 10,
+      "releaselevel": "final",
+      "serial": 0
+    },
+    "interpreter_build_identity_id": "4be756fa3f0b71499942f9cf2b6fdaac98a2a0df8dd005cd4ba83f1e934e649d",
+    "maxsize": 9223372036854775807,
+    "multiarch": "x86_64-linux-gnu",
+    "python_build": [
+      "main",
+      "Jun 22 2026 18:55:27"
+    ],
+    "python_compiler": "GCC 11.4.0",
+    "registered_command_resolves_to_active_interpreter": true,
+    "schema": "acfqp.v072_interpreter_build_identity.v1",
+    "schema_version": "1.0.0",
+    "shared_library": {
+      "file_byte_count": 5834688,
+      "sha256_file_bytes": "1ece943a1641101b1c678b553a7a0fbb6683ff0ad76f7ebce9f8844354e3f153"
+    },
+    "soabi": "cpython-310-x86_64-linux-gnu",
+    "stdlib": {
+      "file_count": 717,
+      "tree_digest": "3c45bce7bb6fdfa9d0b9278d568b1e293b52dc9686cab13f706345dccc4ab1d4"
+    },
+    "sys_version": "3.10.12 (main, Jun 22 2026, 18:55:27) [GCC 11.4.0]",
+    "sysconfig_platform": "linux-x86_64"
+  },
+  "locked_distributions": [
+    {
+      "declared_name": "antlr4-python3-runtime",
+      "direct_url": {
+        "kind": "NOT_PRESENT"
+      },
+      "installed_file_count": 62,
+      "installed_file_tree_digest": "8c95ab0f586b903e1f8b4a3f0b6adbe938d123a1109f19ba34e05babcc4eb061",
+      "installer": "pip",
+      "metadata_byte_count": 318,
+      "metadata_kind": "METADATA",
+      "metadata_sha256": "a6b62e5d922a2d33fb54740dae8c96736c2d20c217efac1f219a1309db217124",
+      "normalized_name": "antlr4-python3-runtime",
+      "version": "4.9.3",
+      "wheel_metadata": {
+        "file_byte_count": 92,
+        "kind": "PRESENT",
+        "sha256_file_bytes": "1b5e87e00dc87a84269cead8578b9e6462928e18a95f1f3373c9eef451a5bcc0"
+      }
+    },
+    {
+      "declared_name": "anyio",
+      "direct_url": {
+        "kind": "NOT_PRESENT"
+      },
+      "installed_file_count": 50,
+      "installed_file_tree_digest": "abd45c278721aedf95289681d1883eefd5aca43a527e25fe343e533582118bb6",
+      "installer": "pip",
+      "metadata_byte_count": 4513,
+      "metadata_kind": "METADATA",
+      "metadata_sha256": "1741187e23e5993470989376264b4dc4983518d9e5d301e1cce5a6cfba45be33",
+      "normalized_name": "anyio",
+      "version": "4.13.0",
+      "wheel_metadata": {
+        "file_byte_count": 91,
+        "kind": "PRESENT",
+        "sha256_file_bytes": "69e6228a0d35958183cc1812f07c565ce837b95eb51bd8a33acba9fa4f68d6c9"
+      }
+    },
+    {
+      "declared_name": "exceptiongroup",
+      "direct_url": {
+        "kind": "NOT_PRESENT"
+      },
+      "installed_file_count": 12,
+      "installed_file_tree_digest": "9e50286890b9ce3369aebd0a52ad67027a7f023f98cd360a57c6207193c74b42",
+      "installer": "pip",
+      "metadata_byte_count": 6725,
+      "metadata_kind": "METADATA",
+      "metadata_sha256": "81984a523a2f7a522ad12bea784a8bb85edec0805ebbd0fb4e350169a36dd802",
+      "normalized_name": "exceptiongroup",
+      "version": "1.3.1",
+      "wheel_metadata": {
+        "file_byte_count": 82,
+        "kind": "PRESENT",
+        "sha256_file_bytes": "1b68144734c4b66791f27add5d425f3620775585718a03d0f9b110ba3a4d88db"
+      }
+    },
+    {
+      "declared_name": "hydra-core",
+      "direct_url": {
+        "kind": "NOT_PRESENT"
+      },
+      "installed_file_count": 152,
+      "installed_file_tree_digest": "080b02034cc10bb4b2f713656b3364f74949e32f561643eace23ec923d06f0e5",
+      "installer": "pip",
+      "metadata_byte_count": 5480,
+      "metadata_kind": "METADATA",
+      "metadata_sha256": "399046cbf9ae7ebab8dfd009e2b4f748212c710a0e75ca501a72bbb2d456e2e7",
+      "normalized_name": "hydra-core",
+      "version": "1.3.2",
+      "wheel_metadata": {
+        "file_byte_count": 92,
+        "kind": "PRESENT",
+        "sha256_file_bytes": "db07a93359e4e034b8785a58ad6d534ea3dca0635f1e184efe2e66e1c3a299ba"
+      }
+    },
+    {
+      "declared_name": "idna",
+      "direct_url": {
+        "kind": "NOT_PRESENT"
+      },
+      "installed_file_count": 9,
+      "installed_file_tree_digest": "11b0863489041ad4b3df994dc257af3f1d0747b5c059f9a65e8421f51746bf0e",
+      "installer": {
+        "kind": "NOT_RECORDED"
+      },
+      "metadata_byte_count": 9765,
+      "metadata_kind": "PKG-INFO",
+      "metadata_sha256": "05daa201ff28bb8c759f3207a76fec0df5d68e5ec1ad2506a4e795cdb60742e4",
+      "normalized_name": "idna",
+      "version": "3.3",
+      "wheel_metadata": {
+        "kind": "NOT_PRESENT"
+      }
+    },
+    {
+      "declared_name": "iniconfig",
+      "direct_url": {
+        "kind": "NOT_PRESENT"
+      },
+      "installed_file_count": 11,
+      "installed_file_tree_digest": "b5d764c289f5cbdbbce82d475b5f9c5067be14898677ba68594494c7a31f2ebf",
+      "installer": "pip",
+      "metadata_byte_count": 2526,
+      "metadata_kind": "METADATA",
+      "metadata_sha256": "40d773f84e4e112f495bbf4f1be9cbd2d456c0aeb6ef5311f75d1bf322f2165b",
+      "normalized_name": "iniconfig",
+      "version": "2.3.0",
+      "wheel_metadata": {
+        "file_byte_count": 91,
+        "kind": "PRESENT",
+        "sha256_file_bytes": "ff309ddcdd65ebd02bc724dbf2bcc4a0ff53a5b61792a44548d383e4ebb19d3b"
+      }
+    },
+    {
+      "declared_name": "jaxtyping",
+      "direct_url": {
+        "kind": "NOT_PRESENT"
+      },
+      "installed_file_count": 19,
+      "installed_file_tree_digest": "15476bd04edb1655a05dfbe900b0c8b47e1c037379621425f6dd8e4ef6f6e09d",
+      "installer": "pip",
+      "metadata_byte_count": 6446,
+      "metadata_kind": "METADATA",
+      "metadata_sha256": "e89e32dc4bbc18f09cc08521ffb34ce511176a59c3a00a4001c1ef63cfb48b4d",
+      "normalized_name": "jaxtyping",
+      "version": "0.2.29",
+      "wheel_metadata": {
+        "file_byte_count": 87,
+        "kind": "PRESENT",
+        "sha256_file_bytes": "cc431c46bf4aaf4df1d68cc6c20e6ff4d4012a7de49dda7a2d2a1295583e8e15"
+      }
+    },
+    {
+      "declared_name": "omegaconf",
+      "direct_url": {
+        "kind": "NOT_PRESENT"
+      },
+      "installed_file_count": 33,
+      "installed_file_tree_digest": "1bdfbd9f8a00201a5be037f7b75e56c197a861a0cd9e4c8781395404e0b91e9a",
+      "installer": "pip",
+      "metadata_byte_count": 3865,
+      "metadata_kind": "METADATA",
+      "metadata_sha256": "ab2dcbf0e3e70cc75dca1d894f8953e7de8b651dc2dc28f08f350bfa5787badb",
+      "normalized_name": "omegaconf",
+      "version": "2.3.0",
+      "wheel_metadata": {
+        "file_byte_count": 92,
+        "kind": "PRESENT",
+        "sha256_file_bytes": "db07a93359e4e034b8785a58ad6d534ea3dca0635f1e184efe2e66e1c3a299ba"
+      }
+    },
+    {
+      "declared_name": "packaging",
+      "direct_url": {
+        "kind": "NOT_PRESENT"
+      },
+      "installed_file_count": 24,
+      "installed_file_tree_digest": "d7b26c7496206bc9a3938b46ad5c1567ee953087573385d24403720ad3853ed3",
+      "installer": "pip",
+      "metadata_byte_count": 3204,
+      "metadata_kind": "METADATA",
+      "metadata_sha256": "a211fceacea4e6621f4316364d2d0b7127c00de3856b8062082f9bc5957ea4db",
+      "normalized_name": "packaging",
+      "version": "24.2",
+      "wheel_metadata": {
+        "file_byte_count": 82,
+        "kind": "PRESENT",
+        "sha256_file_bytes": "0a950253178741b44de54191407611268acee407fe432fdf1cc72d710f034862"
+      }
+    },
+    {
+      "declared_name": "pluggy",
+      "direct_url": {
+        "kind": "NOT_PRESENT"
+      },
+      "installed_file_count": 15,
+      "installed_file_tree_digest": "81f17afc68db5c01b3392b513fcf4a9af7913c2165b9e6ec92373f96562aaa3a",
+      "installer": "pip",
+      "metadata_byte_count": 4811,
+      "metadata_kind": "METADATA",
+      "metadata_sha256": "7438c35ee25a095eb7416f84b461c2d74425c5e734ad54c3912453c65244e01c",
+      "normalized_name": "pluggy",
+      "version": "1.6.0",
+      "wheel_metadata": {
+        "file_byte_count": 91,
+        "kind": "PRESENT",
+        "sha256_file_bytes": "370dfa0e3ba1ff9543ba42b41fbf10cce5fefc5404a3a577ee6de7926f7a82d5"
+      }
+    },
+    {
+      "declared_name": "Pygments",
+      "direct_url": {
+        "kind": "NOT_PRESENT"
+      },
+      "installed_file_count": 347,
+      "installed_file_tree_digest": "6882752da49222443e7f2900601e3d5e1741fc5dbe982706183aea838e224349",
+      "installer": "pip",
+      "metadata_byte_count": 2476,
+      "metadata_kind": "METADATA",
+      "metadata_sha256": "e0528f51b30427fae94723662ba622f8d8db2a4d8d3f1365698d67a52450a845",
+      "normalized_name": "pygments",
+      "version": "2.20.0",
+      "wheel_metadata": {
+        "file_byte_count": 87,
+        "kind": "PRESENT",
+        "sha256_file_bytes": "41c708c5adba6e097513ab8ccb9f1d7865a2fb469e22491a9e01dcc64da459fc"
+      }
+    },
+    {
+      "declared_name": "pytest",
+      "direct_url": {
+        "kind": "NOT_PRESENT"
+      },
+      "installed_file_count": 85,
+      "installed_file_tree_digest": "c3554cc6b5a74cbc2d5bfbe70969a5f8236ac356683c82e5fa1f788dd5851da5",
+      "installer": "pip",
+      "metadata_byte_count": 7556,
+      "metadata_kind": "METADATA",
+      "metadata_sha256": "c3966f28791686477bae35e518736d4cbea5b626d3a79011215854e2bc670207",
+      "normalized_name": "pytest",
+      "version": "9.0.3",
+      "wheel_metadata": {
+        "file_byte_count": 91,
+        "kind": "PRESENT",
+        "sha256_file_bytes": "69e6228a0d35958183cc1812f07c565ce837b95eb51bd8a33acba9fa4f68d6c9"
+      }
+    },
+    {
+      "declared_name": "PyYAML",
+      "direct_url": {
+        "kind": "NOT_PRESENT"
+      },
+      "installed_file_count": 19,
+      "installed_file_tree_digest": "61346959021a15356a89ec10e536957a855fd6c589a4d056a8bc0e37d3771031",
+      "installer": {
+        "kind": "NOT_RECORDED"
+      },
+      "metadata_byte_count": 2109,
+      "metadata_kind": "PKG-INFO",
+      "metadata_sha256": "d6bfd9f5a90cfb11da6f23130d2ef4cbdd360156989d50dc35d2c31fba6b1def",
+      "normalized_name": "pyyaml",
+      "version": "5.4.1",
+      "wheel_metadata": {
+        "kind": "NOT_PRESENT"
+      }
+    },
+    {
+      "declared_name": "setuptools",
+      "direct_url": {
+        "kind": "NOT_PRESENT"
+      },
+      "installed_file_count": 440,
+      "installed_file_tree_digest": "f8fd959410428a5f773c44ae3e721ebbf55c40193a92b0a251f2e3101b396f7c",
+      "installer": "pip",
+      "metadata_byte_count": 6527,
+      "metadata_kind": "METADATA",
+      "metadata_sha256": "75683f40e1121ebccbbca4d679ae2dbf8a0be0ba91531df285b28abe927a43f8",
+      "normalized_name": "setuptools",
+      "version": "82.0.1",
+      "wheel_metadata": {
+        "file_byte_count": 91,
+        "kind": "PRESENT",
+        "sha256_file_bytes": "69e6228a0d35958183cc1812f07c565ce837b95eb51bd8a33acba9fa4f68d6c9"
+      }
+    },
+    {
+      "declared_name": "tomli",
+      "direct_url": {
+        "kind": "NOT_PRESENT"
+      },
+      "installed_file_count": 10,
+      "installed_file_tree_digest": "0108567cd8236d84dec1d5a8db4d9737a217cfee705c9e61083d93b07739ba37",
+      "installer": "pip",
+      "metadata_byte_count": 10463,
+      "metadata_kind": "METADATA",
+      "metadata_sha256": "b2b3fdf2566bba313106abf4a806f9c217f8f814587f1017c494d49079a0a683",
+      "normalized_name": "tomli",
+      "version": "2.4.1",
+      "wheel_metadata": {
+        "file_byte_count": 82,
+        "kind": "PRESENT",
+        "sha256_file_bytes": "1b68144734c4b66791f27add5d425f3620775585718a03d0f9b110ba3a4d88db"
+      }
+    },
+    {
+      "declared_name": "typing_extensions",
+      "direct_url": {
+        "kind": "NOT_PRESENT"
+      },
+      "installed_file_count": 6,
+      "installed_file_tree_digest": "e11ba6891856c62d5aa152bc23435dec9d4d8a746c57caca51723b7c1b14bae9",
+      "installer": "pip",
+      "metadata_byte_count": 3259,
+      "metadata_kind": "METADATA",
+      "metadata_sha256": "c138378fe8f18934ac99de060535c53ec6c13aeed65e94c32641da7ee3192a72",
+      "normalized_name": "typing-extensions",
+      "version": "4.15.0",
+      "wheel_metadata": {
+        "file_byte_count": 82,
+        "kind": "PRESENT",
+        "sha256_file_bytes": "1b68144734c4b66791f27add5d425f3620775585718a03d0f9b110ba3a4d88db"
+      }
+    }
+  ],
+  "profile_key": "v072_runtime_dependency_lock_v1",
+  "project_configuration": {
+    "build_dependencies": [
+      "setuptools>=68"
+    ],
+    "project_dependencies": [],
+    "pytest_pythonpath": [
+      ".",
+      "src"
+    ],
+    "pytest_testpaths": [
+      "tests"
+    ],
+    "requires_python": ">=3.10",
+    "test_dependencies": [
+      "pytest>=8"
+    ]
+  },
+  "proposed_contract_version": "1.36.0",
+  "pyproject": {
+    "file_byte_count": 907,
+    "repository_relative_path": "pyproject.toml",
+    "sha256_file_bytes": "79ccf191abc49cb6d2fd6a0bbf285da036addf891010f43fde4f9841e77beffc"
+  },
+  "pytest11_autoload_plugins": [
+    {
+      "distribution_name": "anyio",
+      "distribution_version": "4.13.0",
+      "entry_point_name": "anyio",
+      "entry_point_value": "anyio.pytest_plugin"
+    },
+    {
+      "distribution_name": "hydra-core",
+      "distribution_version": "1.3.2",
+      "entry_point_name": "hydra_pytest",
+      "entry_point_value": "hydra.extra.pytest_plugin"
+    },
+    {
+      "distribution_name": "jaxtyping",
+      "distribution_version": "0.2.29",
+      "entry_point_name": "jaxtyping",
+      "entry_point_value": "jaxtyping._pytest_plugin"
+    }
+  ],
+  "requirement_roots": [
+    {
+      "requirement": "setuptools>=68",
+      "source": "build-system.requires"
+    },
+    {
+      "requirement": "anyio==4.13.0",
+      "source": "environment.pytest11:anyio"
+    },
+    {
+      "requirement": "hydra-core==1.3.2",
+      "source": "environment.pytest11:hydra_pytest"
+    },
+    {
+      "requirement": "jaxtyping==0.2.29",
+      "source": "environment.pytest11:jaxtyping"
+    },
+    {
+      "requirement": "pytest>=8",
+      "source": "project.optional-dependencies.test"
+    }
+  ],
+  "runtime_dependency_lock_id": "df36fe359dfcdaa02ede001c5d87b265ec1e738ec642811156c404a78f8bac92",
+  "schema": "acfqp.v072_runtime_dependency_lock.v1",
+  "schema_version": "1.0.0",
+  "target_access": false,
+  "unresolved_declared_requirements": [
+    {
+      "child_distribution": "typeguard",
+      "parent_distribution": "jaxtyping",
+      "reason": "MISSING_DISTRIBUTION",
+      "requirement": "typeguard==2.13.3"
+    }
+  ]
+}

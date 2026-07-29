@@ -19,6 +19,7 @@ from acfqp.phase3e_ids import (
     EXACT_CACHED_INFEASIBILITY_PROOF_DOMAIN,
     EXACT_KERNEL_CONTEXT_IDENTITY_DOMAIN,
     GROUND_BINDING_AFTER_FAILED_AUDIT_DOMAIN,
+    MAX_CANONICAL_INTEGER_DECIMAL_DIGITS,
     MODEL_ONLY_ORCHESTRATION_BINDING_DOMAIN,
     MODEL_ONLY_OPERATIONAL_EXECUTION_DOMAIN,
     MODEL_ONLY_OPERATIONAL_REQUEST_DOMAIN,
@@ -182,6 +183,30 @@ def test_canonical_json_is_sorted_compact_utf8_and_reduces_fractions() -> None:
     assert canonical_json_bytes(left) == expected.encode("utf-8")
     assert canonical_json_bytes(left) == canonical_json_bytes(right)
     assert loads_canonical_json(expected.encode("utf-8")) == right
+
+
+def test_canonical_json_round_trips_registered_huge_exact_integers() -> None:
+    huge = 10**5_000 + 7
+    document = {"huge": huge, "negative": -huge}
+
+    encoded = canonical_json_bytes(document)
+
+    assert encoded.startswith(b'{"huge":1')
+    assert loads_canonical_json(encoded) == document
+    assert canonical_json_bytes(loads_canonical_json(encoded)) == encoded
+
+
+def test_canonical_json_huge_integer_support_remains_locally_bounded() -> None:
+    oversized = b"1" + (
+        b"0" * MAX_CANONICAL_INTEGER_DECIMAL_DIGITS
+    )
+
+    with pytest.raises(Phase3EIdentityError, match="digit ceiling"):
+        loads_canonical_json(oversized)
+    with pytest.raises(Phase3EIdentityError, match="digit ceiling"):
+        canonical_json_bytes(
+            {"oversized": 10**MAX_CANONICAL_INTEGER_DECIMAL_DIGITS}
+        )
 
 
 def test_content_id_is_the_normative_full_domain_separated_sha256() -> None:

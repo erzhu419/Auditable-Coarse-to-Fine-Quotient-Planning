@@ -40,6 +40,7 @@ import ctypes.util
 from dataclasses import dataclass
 from enum import Enum
 from fractions import Fraction
+from functools import lru_cache
 import hashlib
 import math
 from typing import Any, Iterable, Mapping
@@ -410,6 +411,7 @@ def v0067_default_sequential_profile_v1() -> SequentialBernoulliProfileV1:
     )
 
 
+@lru_cache(maxsize=32_768)
 def beta_binomial_sequence_mass_v1(
     draw_count: int,
     success_count: int,
@@ -683,6 +685,7 @@ def _first_rejected_upper_grid_index(
     return candidate, log_evaluations
 
 
+@lru_cache(maxsize=32_768)
 def _outer_confidence_bounds(
     draw_count: int,
     success_count: int,
@@ -735,6 +738,19 @@ def _outer_confidence_bounds(
         exact.comparison_count,
         lower_log_evaluations + upper_log_evaluations,
     )
+
+
+def clear_exact_bernoulli_math_cache_v1() -> None:
+    """Clear pure exact-math memoization used only for execution speed.
+
+    Both cached functions are deterministic functions of their complete
+    arguments.  Clearing these caches therefore changes neither artifact
+    bytes nor any statistical or numerical conclusion; it only supports
+    fresh-computation regression lanes.
+    """
+
+    beta_binomial_sequence_mass_v1.cache_clear()
+    _outer_confidence_bounds.cache_clear()
 
 
 @dataclass(frozen=True, slots=True)
@@ -1416,6 +1432,7 @@ __all__ = [
     "bernoulli_mixture_rejects_v1",
     "beta_binomial_sequence_mass_v1",
     "build_anytime_bernoulli_checkpoint_v1",
+    "clear_exact_bernoulli_math_cache_v1",
     "v0067_default_sequential_profile_v1",
     "verify_sequential_bernoulli_acquisition_v1",
 ]

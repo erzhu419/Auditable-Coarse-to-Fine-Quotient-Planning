@@ -1,0 +1,96 @@
+{
+  "caller_supplied_digest_accepted": false,
+  "caller_supplied_status_accepted": false,
+  "executes_tests": false,
+  "implementation_files": [
+    {
+      "file_byte_count": 41666,
+      "repository_relative_path": "src/acfqp/v072_execution_environment_authority_v1.py",
+      "sha256_file_bytes": "bbd1dda9535791d750dd691502f47e098d00171b0daecb4d32a951ecb72905d1"
+    },
+    {
+      "file_byte_count": 34086,
+      "repository_relative_path": "src/acfqp/v072_execution_environment_independent_verifier_v1.py",
+      "sha256_file_bytes": "908b485c478824b446b7aaec54ca635082520c3fa4b65a6735db7ca6833179c7"
+    },
+    {
+      "file_byte_count": 2600,
+      "repository_relative_path": "scripts/generate_v072_execution_environment_specs.py",
+      "sha256_file_bytes": "8f53b21ac1b401c925c55fc997c258ac6509f6cb57bdea7ee1233a039179d4e2"
+    },
+    {
+      "file_byte_count": 2993,
+      "repository_relative_path": "scripts/run_v072_confirmatory_tests.py",
+      "sha256_file_bytes": "62b6057c71d02c71a4b5e0b2af1bfa6e292f15bcea6ef9db4220338e6f397497"
+    },
+    {
+      "file_byte_count": 11574,
+      "repository_relative_path": "scripts/run_pytest_parallel.py",
+      "sha256_file_bytes": "7dff29fa29bc19692c56b53ec7af9e818d9b2c704db0a2fa16dd64ca62a8045b"
+    }
+  ],
+  "invocation": {
+    "argv": [
+      "python3",
+      "scripts/run_v072_confirmatory_tests.py"
+    ],
+    "collection_root": "tests",
+    "deterministic_environment": [
+      {
+        "name": "LC_ALL",
+        "value": "C.UTF-8"
+      },
+      {
+        "name": "PYTHONDONTWRITEBYTECODE",
+        "value": "1"
+      },
+      {
+        "name": "PYTHONHASHSEED",
+        "value": "0"
+      }
+    ],
+    "fresh_content_id_recomputation": true,
+    "inner_argv": [
+      "python3",
+      "scripts/run_pytest_parallel.py",
+      "-j",
+      "32",
+      "--fresh-ids",
+      "--no-timing-cache",
+      "tests"
+    ],
+    "parallel_module_workers": 32,
+    "pytest_cache_provider_disabled": true,
+    "shell": false,
+    "temporary_directory_policy": {
+      "cleanup_required": true,
+      "host_tmp_environment_inherited": false,
+      "kind": "PRIVATE_MKDTEMP_UNDER_REPOSITORY_TMP",
+      "module_process_isolation": true,
+      "overridden_variables": [
+        "ACFQP_PARALLEL_TEMP_ROOT",
+        "TEMP",
+        "TMP",
+        "TMPDIR"
+      ],
+      "runtime_random_path_in_content_id": false
+    },
+    "working_directory": "REPOSITORY_ROOT"
+  },
+  "profile_key": "v072_confirmatory_test_command_manifest_v1",
+  "proposed_contract_version": "1.36.0",
+  "pytest_configuration": {
+    "file_byte_count": 907,
+    "repository_relative_path": "pyproject.toml",
+    "sha256_file_bytes": "79ccf191abc49cb6d2fd6a0bbf285da036addf891010f43fde4f9841e77beffc"
+  },
+  "schema": "acfqp.v072_confirmatory_test_command_manifest.v1",
+  "schema_version": "1.0.0",
+  "target_access": false,
+  "test_command_manifest_id": "e3bd2612aa412deca7886b780db7e910cc4f1f3f0ee1724840ed4188b14fa9cc",
+  "test_tree": {
+    "selection": "tests/**/*.py",
+    "test_file_count": 195,
+    "test_tree_digest": "3bb81f11943ed224616bb92c04b30cd646f234280768aebc0370049090605f39"
+  }
+}

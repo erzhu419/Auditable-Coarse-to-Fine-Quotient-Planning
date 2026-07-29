@@ -6,27 +6,37 @@ This document governs repository test execution only. It does not change any
 planner, simulator, sample count, confidence statement, artifact schema, or
 research claim.
 
-The current V0-067 collection contains 1,516 pytest cases in 123 test
-modules. These are not 1,516 independent research Gates: many cases are
-attacks and replay checks for the same frozen Gate.
+The exact current case/module count is refreshed at each release Gate. These
+cases are not independent research Gates: many are attacks and replay checks
+for the same frozen Gate.
 
 ## Formal fresh lane
 
-The release-authoritative command remains:
+The V0-072 release-authoritative command is:
 
 ```bash
-PYTHONDONTWRITEBYTECODE=1 python3 -m pytest -p no:cacheprovider
+python3 scripts/run_v072_confirmatory_tests.py
 ```
 
-It recomputes every content-ID property access. The parallel runner can
-execute the same semantics with fresh IDs:
+The wrapper freezes deterministic environment settings, creates a private
+temporary root, and runs the exact same test-module collection through 32
+isolated module processes with `--fresh-ids --no-timing-cache`. It disables
+the pytest-only content-ID property memo and does not consult historical
+timings. Parallelism changes scheduling only: every module and case still
+runs, every content ID is freshly recomputed, and no planner result,
+observation, certificate, sample, or assertion is cached.
+
+The equivalent inner command is:
 
 ```bash
 PYTHONDONTWRITEBYTECODE=1 \
-python3 scripts/run_pytest_parallel.py --fresh-ids -j 4 tests
+python3 scripts/run_pytest_parallel.py \
+  -j 32 --fresh-ids --no-timing-cache tests
 ```
 
-No persistent result cache participates in either command.
+No persistent or cross-process result cache participates in the formal
+command. The command, runner bytes, complete test tree, interpreter, and
+dependency lock are content-addressed by the V0-072 execution manifest.
 
 ## Exact development lane
 
@@ -44,6 +54,12 @@ same object identity
 It does not memoize planner calls, kernel transitions, observations, policy
 search, audit outcomes, exceptions, or values across distinct objects or
 processes. Every test is still collected and executed.
+
+Observation-support campaigns may coordinate independent contexts in outer
+threads. Every process pool created below that thread layer must use the
+`spawn` multiprocessing context. Forking a multithreaded parent can deadlock
+with every worker idle; changing the start method changes scheduling only,
+not observations, exact arithmetic, content identities, or claim scope.
 
 The cache is restricted to an explicit module allowlist. If a collected test
 module contains an in-place frozen-object mutation attack, the plugin keeps
@@ -86,6 +102,54 @@ the six compute shards and the local isolation modules, checked against
 pytest collection so that missing or duplicate modules cannot be hidden.
 
 ## Current measured validation
+
+### V0-072 nonauthorizing-draft validation
+
+The following focused lanes have actually completed on the current
+construction tree:
+
+```text
+exact lazy planner + independent verifier + partial robust = 35 / 35, 6.38 s
+source archive + preauthorization selector                 = 18 / 18, 0.50 s
+later combined lock-regression lane                        = 46 / 46, 0.76 s
+earlier registered/synthetic/preregistration focus         = 52 / 52, 0.69 s
+post-rotation preregistration/observer/synthetic focus      = 28 / 28, 0.34 s
+historical V0-068 full-campaign baseline replay            =  1 /  1, 2632.47 s
+current V0-072 prerequisite focused union                  = 135 / 135, 73.54 s
+manifest-readiness focused lane                            =  10 /  10, 0.22 s
+real V0-068 campaign -> archive -> independent transform   =   1 /   1, 2908.13 s
+public adapter + closure + confidence-row projection       =  53 /  53, 15.23 s
+draft-ID/no-hidden-law identity regression                 =  62 /  62, 42.95 s
+evaluation-only independent exact-ground controls          =  11 /  11, 2.44 s
+```
+
+The focused lanes overlap and must not be summed into a repository case
+count. The earlier 52-case lane exercised a development fake-placeholder
+path; it is retained only as historical lock-debug evidence. All eight
+identities touched by that path are retired, no tape/artifact/endpoint was
+persisted, and its results are not confirmatory evidence. The 28-case
+post-rotation lane uses the clean draft plus the disjoint synthetic-control
+API; registered target APIs remain locked.
+
+The final real-data lane above first ran the complete same-implementation
+V0-068 campaign verification, then built and replayed the production V0-072
+archive, and finally ran the separately implemented V0-072 archive-transform
+verifier over that exact archive. The new verifier does not claim that the
+upstream V0-068 campaign verifier is an independent algorithm. The
+135-case focused union additionally covers exact confidence, source
+abstention, evidence-first cardinality, immutable row transcripts,
+arm-free pairing, fresh promotion, generic cold H2 closure, manifest
+readiness, registered-target locks, and their independent/attack replays.
+The newer lanes additionally bind `96/48/96` as context-total rather than
+category-subcaps, prevent public/confidence construction from rebuilding the
+hidden-law manifest merely to validate the draft identity, and exercise the
+separate evaluation-only exact-ground algorithm. They remain development and
+lock evidence because every registered evaluation and observation entry is
+still hard-locked.
+None of these tests changes
+`NONAUTHORIZING DRAFT / TARGET LOCKED / GATE NOT RUN`.
+
+### V0-067 release validation
 
 V0-067 adds eight focused modules and 102 cases. All focused cases pass:
 

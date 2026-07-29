@@ -23,6 +23,13 @@ class Phase3EIdentityError(ValueError):
     """Raised when a Phase 3E identity input is not canonical or well typed."""
 
 
+# Large exact mixture masses exceed CPython's default 4,300-digit conversion
+# guard.  Keep the allowance local and finite rather than disabling that
+# process-wide protection.  The registered V0-068 artifacts are comfortably
+# below this ceiling.
+MAX_CANONICAL_INTEGER_DECIMAL_DIGITS = 100_000
+
+
 ROUTE_UPPER_BOUND_ENVELOPE_DOMAIN = "acfqp:route-upper-bound-envelope:v1"
 ROUTE_UPPER_FORMULA_DOMAIN = "acfqp:route-upper-formula:v1"
 ROUTE_UPPER_DERIVATION_PROOF_DOMAIN = "acfqp:route-upper-derivation-proof:v1"
@@ -566,6 +573,74 @@ def _canonical_value(value: Any, *, location: str, active: set[int]) -> Any:
     )
 
 
+def _unlimited_decimal_integer(value: int) -> str:
+    """Render an internally bounded exact integer without Python's digit cap."""
+
+    if type(value) is not int:
+        raise Phase3EIdentityError("canonical integer renderer received non-int")
+    if value == 0:
+        return "0"
+    # 100,000 decimal digits require fewer than 332,194 binary digits.
+    if abs(value).bit_length() > 332_193:
+        raise Phase3EIdentityError(
+            "canonical integer exceeds the local decimal-digit ceiling"
+        )
+    sign = "-" if value < 0 else ""
+    remaining = abs(value)
+    base = 1_000_000_000
+    chunks: list[int] = []
+    while remaining:
+        remaining, chunk = divmod(remaining, base)
+        chunks.append(chunk)
+    rendered = sign + str(chunks[-1]) + "".join(
+        f"{chunk:09d}" for chunk in reversed(chunks[:-1])
+    )
+    if len(rendered) - len(sign) > MAX_CANONICAL_INTEGER_DECIMAL_DIGITS:
+        raise Phase3EIdentityError(
+            "canonical integer exceeds the local decimal-digit ceiling"
+        )
+    return rendered
+
+
+def _unlimited_canonical_json_text(value: Any) -> str:
+    """Serialize normalized JSON while preserving stdlib canonical bytes."""
+
+    if value is None:
+        return "null"
+    if value is True:
+        return "true"
+    if value is False:
+        return "false"
+    if type(value) is int:
+        return _unlimited_decimal_integer(value)
+    if type(value) in {str, float}:
+        return json.dumps(
+            value,
+            ensure_ascii=False,
+            allow_nan=False,
+            separators=(",", ":"),
+        )
+    if type(value) is list:
+        return "[" + ",".join(
+            _unlimited_canonical_json_text(item) for item in value
+        ) + "]"
+    if type(value) is dict:
+        return "{" + ",".join(
+            json.dumps(
+                key,
+                ensure_ascii=False,
+                allow_nan=False,
+                separators=(",", ":"),
+            )
+            + ":"
+            + _unlimited_canonical_json_text(value[key])
+            for key in sorted(value)
+        ) + "}"
+    raise Phase3EIdentityError(
+        "unlimited canonical serializer received an unnormalized value"
+    )
+
+
 def canonical_json_bytes(value: Any) -> bytes:
     """Serialize a supported value to compact, sorted-key UTF-8 JSON bytes."""
 
@@ -579,8 +654,24 @@ def canonical_json_bytes(value: Any) -> bytes:
             allow_nan=False,
         )
         return text.encode("utf-8", errors="strict")
-    except (UnicodeEncodeError, ValueError) as error:
-        raise Phase3EIdentityError(f"value is not canonical UTF-8 JSON: {error}") from error
+    except ValueError as error:
+        if "Exceeds the limit" not in str(error):
+            raise Phase3EIdentityError(
+                f"value is not canonical UTF-8 JSON: {error}"
+            ) from error
+        try:
+            return _unlimited_canonical_json_text(normalized).encode(
+                "utf-8",
+                errors="strict",
+            )
+        except (UnicodeEncodeError, ValueError) as fallback_error:
+            raise Phase3EIdentityError(
+                f"value is not canonical UTF-8 JSON: {fallback_error}"
+            ) from fallback_error
+    except UnicodeEncodeError as error:
+        raise Phase3EIdentityError(
+            f"value is not canonical UTF-8 JSON: {error}"
+        ) from error
 
 
 def canonical_json(value: Any) -> str:
@@ -600,6 +691,29 @@ def _unique_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
             raise Phase3EIdentityError(f"duplicate JSON object key: {key!r}")
         result[key] = value
     return result
+
+
+def _parse_unlimited_decimal_integer(token: str) -> int:
+    """Parse a JSON integer without changing Python's process-wide limit."""
+
+    if type(token) is not str or not token:
+        raise ValueError("empty canonical integer")
+    negative = token[0] == "-"
+    digits = token[1:] if negative else token
+    if not digits or not digits.isascii() or not digits.isdigit():
+        raise ValueError("invalid canonical integer")
+    if len(digits) > MAX_CANONICAL_INTEGER_DECIMAL_DIGITS:
+        raise ValueError("canonical integer exceeds the local digit ceiling")
+    value = 0
+    first = len(digits) % 9
+    cursor = 0
+    if first:
+        value = int(digits[:first])
+        cursor = first
+    while cursor < len(digits):
+        value = value * 1_000_000_000 + int(digits[cursor : cursor + 9])
+        cursor += 9
+    return -value if negative else value
 
 
 def _decode_rationals(value: Any, *, location: str) -> Any:
@@ -665,6 +779,7 @@ def loads_canonical_json(data: str | bytes) -> Any:
             text,
             object_pairs_hook=_unique_object,
             parse_constant=_reject_json_constant,
+            parse_int=_parse_unlimited_decimal_integer,
         )
     except Phase3EIdentityError:
         raise
