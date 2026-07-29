@@ -10,7 +10,7 @@ import pytest
 
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 from acfqp import v075_confirmatory_manifest_preregistration_v2 as manifest
-from acfqp import v075_production_campaign_runner_v1 as runner
+from acfqp import v075_production_campaign_profile_v2 as campaign_profile
 from acfqp import v075_public_campaign_authority_v1 as public
 from acfqp import v075_public_target_tape_namespace_v2 as namespace_v2
 from acfqp import v075_remote_main_anchor_verifier_v2 as remote
@@ -84,7 +84,7 @@ def test_exact_v2_namespace_binds_the_complete_public_identity_graph(
 ) -> None:
     root, anchor, commitment, namespace = anchored_graph
     workload = manifest.freeze_v075_confirmatory_public_workload_v2()
-    profile = runner.freeze_v075_production_campaign_runner_profile_v1()
+    profile = campaign_profile.freeze_v075_production_campaign_profile_v2()
     document = namespace.to_document()
 
     assert type(namespace) is namespace_v2.V075PublicTargetTapeNamespaceV2
@@ -308,22 +308,14 @@ def test_stale_workload_and_runner_profile_are_rejected(
         "verify_v075_remote_main_anchor_independently_v2",
         lambda _root: anchor,
     )
-    exact_profile = (
-        runner.freeze_v075_production_campaign_runner_profile_v1()
-    )
     stale_profile = object.__new__(
-        runner.V075ProductionCampaignRunnerProfileV1
+        campaign_profile.V075ProductionCampaignProfileV2
     )
     object.__setattr__(stale_profile, "_issuer", object())
-    object.__setattr__(
-        stale_profile,
-        "max_workers",
-        exact_profile.max_workers,
-    )
     object.__setattr__(stale_profile, "_profile_id", _id("stale-runner"))
     monkeypatch.setattr(
-        runner,
-        "freeze_v075_production_campaign_runner_profile_v1",
+        campaign_profile,
+        "freeze_v075_production_campaign_profile_v2",
         lambda: stale_profile,
     )
     with pytest.raises(

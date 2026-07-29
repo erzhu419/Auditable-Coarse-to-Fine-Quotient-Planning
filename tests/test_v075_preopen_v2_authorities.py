@@ -11,6 +11,7 @@ from acfqp.phase3e_ids import canonical_json_bytes
 from acfqp import v075_preopen_target_authorization_v1 as preopen_v1
 from acfqp import v075_preopen_target_authorization_v2 as preopen
 from acfqp import v075_private_environment_generation_profile_v1 as private_env
+from acfqp import v075_production_campaign_profile_v2 as campaign_profile
 from acfqp import v075_public_campaign_authority_v1 as public
 from acfqp import v075_remote_main_anchor_verifier_v1 as remote_v1
 from acfqp import v075_remote_main_anchor_verifier_v2 as remote
@@ -96,6 +97,7 @@ def _anchor(
         _id(marker + "-semantic-registry-binding"),
         _id(marker + "-semantic-artifact-replay"),
         _id(marker + "-workload"),
+        campaign_profile.freeze_v075_production_campaign_profile_v2().profile_id,
         commitment.family.generation_id,
         commitment.commitment_id,
         registry,

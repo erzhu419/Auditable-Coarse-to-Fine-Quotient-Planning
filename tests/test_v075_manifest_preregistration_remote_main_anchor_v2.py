@@ -15,7 +15,8 @@ from acfqp import v075_confirmatory_manifest_preregistration_v2 as manifest
 from acfqp import (
     v075_campaign_authority_private_signer_runtime_v1 as signer_runtime,
 )
-from acfqp import v075_production_campaign_runner_v1 as runner
+from acfqp import v075_production_campaign_profile_v2 as campaign_profile
+from acfqp import v075_production_semantic_authority_registry_v2 as semantic
 from acfqp import v075_public_campaign_authority_v1 as public
 from acfqp import v075_remote_main_anchor_verifier_v2 as independent
 from tests.v075_signature_test_support import (
@@ -241,6 +242,21 @@ def test_v2_registry_is_independently_duplicated_and_target_closed() -> None:
     ).exists()
 
 
+def test_remote_replays_v2_profile_without_importing_any_runner() -> None:
+    exact = campaign_profile.freeze_v075_production_campaign_profile_v2()
+    replayed_workload = independent._expected_workload()  # noqa: SLF001
+    assert replayed_workload["runner_profile"] == exact.to_document()
+    assert replayed_workload["runner_profile_id"] == exact.profile_id
+
+    import_lines = "\n".join(
+        line
+        for line in inspect.getsource(independent).splitlines()
+        if line.startswith(("from ", "import "))
+    )
+    assert "v075_production_campaign_runner" not in import_lines
+    assert "v075_production_campaign_profile_v2" not in import_lines
+
+
 def test_complete_first_qualifying_remote_main_chain_replays(
     tmp_path: Path,
 ) -> None:
@@ -257,7 +273,7 @@ def test_complete_first_qualifying_remote_main_chain_replays(
     assert document["serialized_artifact_semantic_replay_complete"] is True
     assert document["final_signature_verified"] is True
     assert document["runner_profile_id"] == (
-        runner.freeze_v075_production_campaign_runner_profile_v1().profile_id
+        campaign_profile.freeze_v075_production_campaign_profile_v2().profile_id
     )
     assert document["preopen_v2_migration_status"] == "NOT_READY"
     assert document["observer_open_allowed"] is False
@@ -265,6 +281,66 @@ def test_complete_first_qualifying_remote_main_chain_replays(
         independent.verify_v075_preopen_authority_v2_migration_blocked(root)
     )
     assert blocked.to_document()["legacy_v1_projection_issued"] is False
+
+
+def test_every_semantic_role_binds_its_exact_producer_component(
+    tmp_path: Path,
+) -> None:
+    root = _ready_repository(tmp_path)
+    document = json.loads(
+        (root / manifest.MANIFEST_REPOSITORY_PATH).read_text("utf-8")
+    )
+    components = {
+        item["repository_path"]: item
+        for item in document["component_blobs"]
+    }
+    bindings = document["semantic_registry_binding"]["role_bindings"]
+    specs = semantic.canonical_v075_production_semantic_role_specs_v2()
+    assert len(bindings) == len(specs)
+    for binding, spec in zip(bindings, specs, strict=True):
+        producer = components[spec.implementation_path]
+        assert binding["producer_module"] == spec.producer_module
+        assert binding["producer_component_id"] == producer["component_id"]
+        assert (
+            binding["producer_component_id"]
+            != binding["verifier_component_id"]
+        )
+
+
+@pytest.mark.parametrize(
+    "attack",
+    ("omitted", "rehashed", "transplanted"),
+)
+def test_signed_producer_binding_attacks_cannot_qualify(
+    tmp_path: Path,
+    attack: str,
+) -> None:
+    root = _ready_repository(tmp_path)
+
+    def mutate(document: dict[str, Any]) -> None:
+        bindings = document["semantic_registry_binding"]["role_bindings"]
+        if attack == "omitted":
+            bindings[0].pop("producer_component_id")
+        elif attack == "rehashed":
+            bindings[0]["producer_component_id"] = _id(
+                "attacker-rehashed-producer"
+            )
+        else:
+            bindings[0]["producer_module"] = bindings[1][
+                "producer_module"
+            ]
+            bindings[0]["producer_component_id"] = bindings[1][
+                "producer_component_id"
+            ]
+
+    _rewrite_signed_authority(root, mutate)
+    with pytest.raises(
+        (
+            independent.V075RemoteMainAnchorV2InvariantViolation,
+            independent.V075RemoteMainAnchorV2NotReady,
+        )
+    ):
+        independent.verify_v075_remote_main_anchor_independently_v2(root)
 
 
 def test_real_private_signer_driven_finalizer_and_foreign_rejection(

@@ -30,7 +30,7 @@ from typing import Any, Mapping, Protocol, runtime_checkable
 
 from acfqp.phase3e_ids import canonical_json_bytes, parse_content_id
 from acfqp import v075_private_environment_generation_profile_v1 as generation
-from acfqp import v075_production_campaign_runner_v1 as production_runner
+from acfqp import v075_production_campaign_profile_v2 as campaign_profile
 from acfqp import v075_public_campaign_authority_v1 as public
 from acfqp import v075_registered_occurrence_worker_v1 as worker
 
@@ -54,6 +54,7 @@ EXACT_TEST_COMMAND = (
     "pytest",
     "-q",
     "-s",
+    "tests/test_v075_production_campaign_profile_v2.py",
     "tests/test_v075_campaign_authority_private_signer_runtime_v1.py",
     "tests/test_v075_production_semantic_authority_registry_v2.py",
     "tests/test_v075_tracked_source_authority_v1.py",
@@ -63,6 +64,8 @@ EXACT_TEST_COMMAND = (
     "tests/test_v075_production_occurrence_ipc_v1.py",
     "tests/test_v075_batch_native_total_lift_authority_v1.py",
     "tests/test_v075_preopen_v2_authorities.py",
+    "tests/test_v075_public_target_tape_namespace_v2.py",
+    "tests/test_v075_public_runtime_namespace_v2.py",
     "tests/test_v075_production_occurrence_authority_v1.py",
     "tests/test_v075_production_campaign_reconciliation_v1.py",
     "tests/test_v075_production_complete_bundle_endpoint_v1.py",
@@ -96,6 +99,26 @@ REQUIRED_COMPONENT_SPECS = (
     (
         "PRODUCTION_SEMANTIC_AUTHORITY_REGISTRY_V2",
         "src/acfqp/v075_production_semantic_authority_registry_v2.py",
+    ),
+    (
+        "PRODUCTION_CAMPAIGN_PROFILE_V2",
+        "src/acfqp/v075_production_campaign_profile_v2.py",
+    ),
+    (
+        "PRODUCTION_CAMPAIGN_PROFILE_V2_TEST",
+        "tests/test_v075_production_campaign_profile_v2.py",
+    ),
+    (
+        "PUBLIC_TARGET_TAPE_NAMESPACE_V2",
+        "src/acfqp/v075_public_target_tape_namespace_v2.py",
+    ),
+    (
+        "PUBLIC_TARGET_TAPE_NAMESPACE_V2_TEST",
+        "tests/test_v075_public_target_tape_namespace_v2.py",
+    ),
+    (
+        "PUBLIC_RUNTIME_NAMESPACE_V2_TEST",
+        "tests/test_v075_public_runtime_namespace_v2.py",
     ),
     (
         "PRODUCTION_CAMPAIGN_RUNNER",
@@ -156,6 +179,42 @@ REQUIRED_COMPONENT_SPECS = (
     (
         "MANIFEST_REMOTE_MAIN_ANCHOR_V2_TEST",
         "tests/test_v075_manifest_preregistration_remote_main_anchor_v2.py",
+    ),
+    (
+        "BATCH_NATIVE_STATISTICAL_BACKEND_TEST_DEPENDENCY",
+        "tests/test_v075_batch_native_statistical_backend_v1.py",
+    ),
+    (
+        "BATCH_NATIVE_TOTAL_LIFT_E2E_TEST_DEPENDENCY",
+        "tests/test_v075_batch_native_total_lift_e2e_v1.py",
+    ),
+    (
+        "BATCHED_OBSERVER_AUTHORITY_TEST_DEPENDENCY",
+        "tests/test_v075_batched_observer_authority_v1.py",
+    ),
+    (
+        "INTEGRATED_DIRECT_OCCURRENCE_PIPELINE_TEST_DEPENDENCY",
+        "tests/test_v075_integrated_direct_occurrence_pipeline_v1.py",
+    ),
+    (
+        "INTEGRATED_OCCURRENCE_PIPELINE_TEST_DEPENDENCY",
+        "tests/test_v075_integrated_occurrence_pipeline_v1.py",
+    ),
+    (
+        "PRIVATE_OBSERVER_BOUNDARY_TEST_DEPENDENCY",
+        "tests/test_v075_private_observer_boundary_v1.py",
+    ),
+    (
+        "PREOPEN_TARGET_AUTHORIZATION_TEST_DEPENDENCY",
+        "tests/test_v075_preopen_target_authorization_v1.py",
+    ),
+    (
+        "TOTAL_LIFT_AUTHORITY_TEST_DEPENDENCY",
+        "tests/test_v075_total_lift_authority_v1.py",
+    ),
+    (
+        "SIGNATURE_TEST_SUPPORT",
+        "tests/v075_signature_test_support.py",
     ),
     (
         "PHASE3E_CANONICAL_IDENTITY",
@@ -672,9 +731,7 @@ class V075ConfirmatoryPublicWorkloadV2:
     worker_registry: worker.V075ProductionWorkerRegistryDraftV1
     threshold_profile: worker.V075WorkerThresholdProfileV1
     cap_profile: worker.V075WorkerCapProfileV1
-    runner_profile: (
-        production_runner.V075ProductionCampaignRunnerProfileV1
-    )
+    runner_profile: campaign_profile.V075ProductionCampaignProfileV2
     _workload_id: str = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
@@ -695,9 +752,9 @@ class V075ConfirmatoryPublicWorkloadV2:
             is not worker.V075WorkerThresholdProfileV1
             or type(self.cap_profile) is not worker.V075WorkerCapProfileV1
             or type(self.runner_profile)
-            is not production_runner.V075ProductionCampaignRunnerProfileV1
+            is not campaign_profile.V075ProductionCampaignProfileV2
             or self.runner_profile
-            != production_runner.freeze_v075_production_campaign_runner_profile_v1()
+            != campaign_profile.freeze_v075_production_campaign_profile_v2()
             or tuple(public.ARM_ORDER)
             != tuple(item.arm.value for item in self.worker_registry.registrations)
             or len(self.family.replicate_contexts) != 3
@@ -766,7 +823,7 @@ def freeze_v075_confirmatory_public_workload_v2(
         worker.freeze_v075_worker_registry_draft_v1(),
         worker.V075WorkerThresholdProfileV1(),
         worker.V075WorkerCapProfileV1(),
-        production_runner.freeze_v075_production_campaign_runner_profile_v1(),
+        campaign_profile.freeze_v075_production_campaign_profile_v2(),
     )
 
 
@@ -781,12 +838,14 @@ class V075ManifestSemanticBindingV2:
     _issuer: object = field(repr=False, compare=False)
     ordinal: int
     role: str
+    producer_module: str
     verifier_module: str
     verifier_function: str
     artifact_schemas: tuple[str, ...]
     artifact_domains: tuple[str, ...]
     prerequisite_roles: tuple[str, ...]
     role_spec_id: str
+    producer_component_id: str
     verifier_component_id: str
     _binding_id: str = field(init=False, repr=False)
 
@@ -797,8 +856,12 @@ class V075ManifestSemanticBindingV2:
             or self.ordinal < 0
             or type(self.role) is not str
             or not self.role
+            or type(self.producer_module) is not str
+            or not self.producer_module.startswith("acfqp.v075_")
+            or self.producer_module.count(".") != 1
             or type(self.verifier_module) is not str
             or not self.verifier_module.startswith("acfqp.")
+            or self.producer_module == self.verifier_module
             or type(self.verifier_function) is not str
             or not self.verifier_function.startswith("verify_")
             or type(self.artifact_schemas) is not tuple
@@ -810,7 +873,10 @@ class V075ManifestSemanticBindingV2:
         ):
             _fail("semantic verifier binding is malformed")
         _cid(self.role_spec_id, "semantic role spec")
+        _cid(self.producer_component_id, "semantic producer component")
         _cid(self.verifier_component_id, "semantic verifier component")
+        if self.producer_component_id == self.verifier_component_id:
+            _fail("semantic producer and verifier components alias")
         try:
             module = importlib.import_module(self.verifier_module)
             dispatcher = getattr(
@@ -843,12 +909,14 @@ class V075ManifestSemanticBindingV2:
             "schema_version": SCHEMA_VERSION,
             "ordinal": self.ordinal,
             "role": self.role,
+            "producer_module": self.producer_module,
             "verifier_module": self.verifier_module,
             "verifier_function": self.verifier_function,
             "artifact_schemas": list(self.artifact_schemas),
             "artifact_domains": list(self.artifact_domains),
             "prerequisite_roles": list(self.prerequisite_roles),
             "role_spec_id": self.role_spec_id,
+            "producer_component_id": self.producer_component_id,
             "verifier_component_id": self.verifier_component_id,
             "semantic_verifier_callable_verified": True,
             "string_status_sufficient": False,
@@ -978,6 +1046,48 @@ def _component_for_module(
     return matches[0]
 
 
+def _component_for_producer_spec(
+    *,
+    components: tuple[V075ManifestComponentBlobV2, ...],
+    package_root: Path,
+    producer_module: str,
+    implementation_repository_path: str,
+) -> V075ManifestComponentBlobV2:
+    """Bind a registry-derived producer path to one exact component blob."""
+
+    expected_path = "src/" + producer_module.replace(".", "/") + ".py"
+    if (
+        not isinstance(package_root, Path)
+        or not package_root.is_dir()
+        or type(producer_module) is not str
+        or not producer_module.startswith("acfqp.v075_")
+        or implementation_repository_path != expected_path
+    ):
+        _fail("semantic producer module/path declaration is inconsistent")
+    matches = tuple(
+        item
+        for item in components
+        if item.repository_path == expected_path
+    )
+    if len(matches) != 1:
+        _fail("semantic producer implementation is not one bound component")
+    component = matches[0]
+    source_path = package_root.parent.parent / expected_path
+    try:
+        raw = source_path.read_bytes()
+    except OSError as error:
+        raise V075ManifestV2InvariantViolation(
+            "semantic producer implementation is unreadable"
+        ) from error
+    if (
+        not raw
+        or hashlib.sha256(raw).hexdigest() != component.bytes_sha256
+        or len(raw) != component.byte_count
+    ):
+        _fail("semantic producer bytes differ from the bound component")
+    return component
+
+
 def _verify_executed_module_component_closure(
     *,
     roots: tuple[ModuleType, ...],
@@ -1076,10 +1186,14 @@ def bind_v075_semantic_registry_v2(
         != len(role_specs)
     ):
         _fail("semantic authority registry verification did not pass")
+    if package_root is None:
+        _fail("semantic registry binding requires one repository package root")
     bindings: list[V075ManifestSemanticBindingV2] = []
     for ordinal, spec in enumerate(role_specs):
         try:
             spec_document = spec.to_document()
+            producer_module = spec.producer_module
+            implementation_path = spec.implementation_path
             module_name = spec.semantic_verifier_module
             function_name = spec.semantic_verifier_id
             role = spec.role.value
@@ -1096,28 +1210,37 @@ def bind_v075_semantic_registry_v2(
         if (
             spec_document.get("ordinal") != ordinal
             or spec_document.get("role") != role
+            or spec_document.get("producer_module") != producer_module
+            or spec_document.get("implementation_repository_path")
+            != implementation_path
             or spec_document.get("semantic_verifier_module") != module_name
             or spec_document.get("verifier_function") != function_name
             or spec_document.get("spec_id") != role_spec_id
         ):
             _fail("semantic role spec properties differ from its document")
-        component = _component_for_module(components, module_name)
+        producer_component = _component_for_producer_spec(
+            components=components,
+            package_root=package_root,
+            producer_module=producer_module,
+            implementation_repository_path=implementation_path,
+        )
+        verifier_component = _component_for_module(components, module_name)
         bindings.append(
             V075ManifestSemanticBindingV2(
                 _SEMANTIC_ISSUER,
                 ordinal,
                 role,
+                producer_module,
                 module_name,
                 function_name,
                 schemas,
                 domains,
                 prerequisite_roles,
                 role_spec_id,
-                component.component_id,
+                producer_component.component_id,
+                verifier_component.component_id,
             )
         )
-    if package_root is None:
-        _fail("semantic artifact replay requires one repository package root")
     repository_root = package_root.parent.parent
     try:
         legacy_independent = importlib.import_module(

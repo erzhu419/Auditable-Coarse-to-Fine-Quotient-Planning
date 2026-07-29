@@ -27,7 +27,6 @@ from acfqp.phase3e_ids import (
     parse_content_id,
 )
 from acfqp import v075_private_environment_generation_profile_v1 as generation
-from acfqp import v075_production_campaign_runner_v1 as production_runner
 from acfqp import v075_public_campaign_authority_v1 as public
 from acfqp import v075_registered_occurrence_worker_v1 as worker
 
@@ -52,6 +51,7 @@ EXACT_TEST_COMMAND = (
     "pytest",
     "-q",
     "-s",
+    "tests/test_v075_production_campaign_profile_v2.py",
     "tests/test_v075_campaign_authority_private_signer_runtime_v1.py",
     "tests/test_v075_production_semantic_authority_registry_v2.py",
     "tests/test_v075_tracked_source_authority_v1.py",
@@ -61,6 +61,8 @@ EXACT_TEST_COMMAND = (
     "tests/test_v075_production_occurrence_ipc_v1.py",
     "tests/test_v075_batch_native_total_lift_authority_v1.py",
     "tests/test_v075_preopen_v2_authorities.py",
+    "tests/test_v075_public_target_tape_namespace_v2.py",
+    "tests/test_v075_public_runtime_namespace_v2.py",
     "tests/test_v075_production_occurrence_authority_v1.py",
     "tests/test_v075_production_campaign_reconciliation_v1.py",
     "tests/test_v075_production_complete_bundle_endpoint_v1.py",
@@ -83,6 +85,11 @@ REQUIRED_COMPONENT_SPECS = (
     ("HISTORICAL_MANIFEST_AUTHORITY_V1_DEPENDENCY", "src/acfqp/v075_confirmatory_manifest_preregistration_v1.py"),
     ("INDEPENDENT_REMOTE_MAIN_ANCHOR_VERIFIER_V2", "src/acfqp/v075_remote_main_anchor_verifier_v2.py"),
     ("PRODUCTION_SEMANTIC_AUTHORITY_REGISTRY_V2", "src/acfqp/v075_production_semantic_authority_registry_v2.py"),
+    ("PRODUCTION_CAMPAIGN_PROFILE_V2", "src/acfqp/v075_production_campaign_profile_v2.py"),
+    ("PRODUCTION_CAMPAIGN_PROFILE_V2_TEST", "tests/test_v075_production_campaign_profile_v2.py"),
+    ("PUBLIC_TARGET_TAPE_NAMESPACE_V2", "src/acfqp/v075_public_target_tape_namespace_v2.py"),
+    ("PUBLIC_TARGET_TAPE_NAMESPACE_V2_TEST", "tests/test_v075_public_target_tape_namespace_v2.py"),
+    ("PUBLIC_RUNTIME_NAMESPACE_V2_TEST", "tests/test_v075_public_runtime_namespace_v2.py"),
     ("PRODUCTION_CAMPAIGN_RUNNER", "src/acfqp/v075_production_campaign_runner_v1.py"),
     ("PRODUCTION_CAMPAIGN_RUNNER_TEST", "tests/test_v075_production_campaign_runner_v1.py"),
     ("CAMPAIGN_AUTHORITY_PRIVATE_SIGNER_TEST", "tests/test_v075_campaign_authority_private_signer_runtime_v1.py"),
@@ -98,6 +105,15 @@ REQUIRED_COMPONENT_SPECS = (
     ("PRODUCTION_CAMPAIGN_RECONCILIATION_TEST", "tests/test_v075_production_campaign_reconciliation_v1.py"),
     ("PRODUCTION_COMPLETE_BUNDLE_ENDPOINT_TEST", "tests/test_v075_production_complete_bundle_endpoint_v1.py"),
     ("MANIFEST_REMOTE_MAIN_ANCHOR_V2_TEST", "tests/test_v075_manifest_preregistration_remote_main_anchor_v2.py"),
+    ("BATCH_NATIVE_STATISTICAL_BACKEND_TEST_DEPENDENCY", "tests/test_v075_batch_native_statistical_backend_v1.py"),
+    ("BATCH_NATIVE_TOTAL_LIFT_E2E_TEST_DEPENDENCY", "tests/test_v075_batch_native_total_lift_e2e_v1.py"),
+    ("BATCHED_OBSERVER_AUTHORITY_TEST_DEPENDENCY", "tests/test_v075_batched_observer_authority_v1.py"),
+    ("INTEGRATED_DIRECT_OCCURRENCE_PIPELINE_TEST_DEPENDENCY", "tests/test_v075_integrated_direct_occurrence_pipeline_v1.py"),
+    ("INTEGRATED_OCCURRENCE_PIPELINE_TEST_DEPENDENCY", "tests/test_v075_integrated_occurrence_pipeline_v1.py"),
+    ("PRIVATE_OBSERVER_BOUNDARY_TEST_DEPENDENCY", "tests/test_v075_private_observer_boundary_v1.py"),
+    ("PREOPEN_TARGET_AUTHORIZATION_TEST_DEPENDENCY", "tests/test_v075_preopen_target_authorization_v1.py"),
+    ("TOTAL_LIFT_AUTHORITY_TEST_DEPENDENCY", "tests/test_v075_total_lift_authority_v1.py"),
+    ("SIGNATURE_TEST_SUPPORT", "tests/v075_signature_test_support.py"),
     ("PHASE3E_CANONICAL_IDENTITY", "src/acfqp/phase3e_ids.py"),
     ("ACFQP_PACKAGE_INIT", "src/acfqp/__init__.py"),
     ("PUBLIC_CAMPAIGN_AUTHORITY", "src/acfqp/v075_public_campaign_authority_v1.py"),
@@ -198,6 +214,9 @@ DOMAIN_TAGS = {
     "final_preregistration": "acfqp:v075-final-preregistration:v2",
     "anchor": "acfqp:v075-independent-remote-main-anchor:v2",
 }
+RUNNER_PROFILE_DOMAIN = (
+    "acfqp:v075-production-campaign-runner-profile:v2"
+)
 FINAL_SIGNING_DOMAIN = b"acfqp:v075-final-preregistration-signing:v2"
 
 
@@ -381,9 +400,38 @@ def _expected_workload() -> dict[str, Any]:
     registry = worker.freeze_v075_worker_registry_draft_v1()
     threshold = worker.V075WorkerThresholdProfileV1()
     caps = worker.V075WorkerCapProfileV1()
-    runner_profile = (
-        production_runner.freeze_v075_production_campaign_runner_profile_v1()
-    )
+    runner_payload = {
+        "schema": "acfqp.v075_production_campaign_runner_profile.v2",
+        "schema_version": "2.0.0",
+        "proposed_contract_version": "1.45.0",
+        "profile_key": "v075_production_campaign_profile_v2",
+        "logical_occurrence_count": 15,
+        "max_workers": 15,
+        "executor": "THREAD_POOL_OVER_ISOLATED_OCCURRENCE_IPC",
+        "parallelism_axis": "LOGICAL_OCCURRENCE_ONLY",
+        "one_fresh_ipc_child_per_occurrence": True,
+        "intra_occurrence_parallelism_allowed": False,
+        "result_order": "IMMUTABLE_SCIENTIFIC_ORDER",
+        "scientific_ordinals": list(range(15)),
+        "transport_ordinals": list(range(1, 16)),
+        "per_occurrence_algorithm_changed": False,
+        "accuracy_reduction_allowed": False,
+        "statistical_threshold_reduction_allowed": False,
+        "draw_cap_reduction_allowed": False,
+        "evidence_omission_allowed": False,
+        "final_preregistration_binding_required": True,
+        "target_execution_opened": False,
+        "target_accessed": False,
+        "official_execution_allowed": False,
+    }
+    runner_profile = {
+        **runner_payload,
+        "profile_id": hashlib.sha256(
+            RUNNER_PROFILE_DOMAIN.encode("utf-8")
+            + b"\x00"
+            + canonical_json_bytes(runner_payload)
+        ).hexdigest(),
+    }
     payload = {
         "schema": "acfqp.v075_confirmatory_public_workload.v2",
         "schema_version": SCHEMA_VERSION,
@@ -408,8 +456,8 @@ def _expected_workload() -> dict[str, Any]:
         "threshold_profile_id": threshold.threshold_profile_id,
         "cap_profile": caps.to_document(),
         "cap_profile_id": caps.cap_profile_id,
-        "runner_profile": runner_profile.to_document(),
-        "runner_profile_id": runner_profile.profile_id,
+        "runner_profile": runner_profile,
+        "runner_profile_id": runner_profile["profile_id"],
         "target_law_serialized": False,
         "target_tape_serialized": False,
         "target_accessed": False,
@@ -423,9 +471,11 @@ def _expected_workload() -> dict[str, Any]:
 
 
 _SEMANTIC_BINDING_KEYS = {
-    "schema", "schema_version", "ordinal", "role", "verifier_module",
+    "schema", "schema_version", "ordinal", "role", "producer_module",
+    "verifier_module",
     "verifier_function", "artifact_schemas", "artifact_domains",
-    "prerequisite_roles", "role_spec_id", "verifier_component_id",
+    "prerequisite_roles", "role_spec_id", "producer_component_id",
+    "verifier_component_id",
     "semantic_verifier_callable_verified", "string_status_sufficient",
     "target_accessed", "binding_id",
 }
@@ -572,6 +622,12 @@ def _verify_semantic_registry(
         binding_id = _cid(payload.pop("binding_id"), "semantic binding")
         module_name = spec.semantic_verifier_module
         dispatch_id = spec.semantic_verifier_id
+        producer_module = spec.producer_module
+        producer_path = (
+            "src/" + producer_module.replace(".", "/") + ".py"
+        )
+        producer_component = component_by_path.get(producer_path)
+        spec_document = spec.to_document()
         try:
             dispatcher = getattr(
                 module,
@@ -591,19 +647,28 @@ def _verify_semantic_registry(
             not callable(dispatcher)
             or not callable(verifier)
             or record.role is not spec.role
+            or producer_component is None
+            or spec_document.get("producer_module") != producer_module
+            or spec_document.get("implementation_repository_path")
+            != producer_path
             or binding["schema"]
             != "acfqp.v075_manifest_semantic_binding.v2"
             or binding["schema_version"] != SCHEMA_VERSION
             or binding["ordinal"] != ordinal
             or binding["role"] != spec.role.value
+            or binding["producer_module"] != producer_module
             or binding["verifier_module"] != module_name
             or binding["verifier_function"] != dispatch_id
             or binding["artifact_schemas"] != list(spec.artifact_schemas)
             or binding["artifact_domains"] != list(spec.artifact_domains)
             or binding["prerequisite_roles"] != expected_prerequisites
             or binding["role_spec_id"] != spec.spec_id
+            or binding["producer_component_id"]
+            != producer_component["component_id"]
             or binding["verifier_component_id"]
             != verifier_component["component_id"]
+            or binding["producer_component_id"]
+            == binding["verifier_component_id"]
             or binding["semantic_verifier_callable_verified"] is not True
             or binding["string_status_sufficient"] is not False
             or binding["target_accessed"] is not False

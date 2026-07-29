@@ -21,7 +21,7 @@ from acfqp.phase3e_ids import (
     parse_content_id,
 )
 from acfqp import v075_confirmatory_manifest_preregistration_v2 as manifest
-from acfqp import v075_production_campaign_runner_v1 as runner
+from acfqp import v075_production_campaign_profile_v2 as campaign_profile
 from acfqp import v075_public_campaign_authority_v1 as public
 from acfqp import v075_remote_main_anchor_verifier_v2 as remote
 
@@ -101,7 +101,7 @@ def _workload_runner_profile_id(
     profile = getattr(workload, "runner_profile", None)
     if (
         type(profile)
-        is not runner.V075ProductionCampaignRunnerProfileV1
+        is not campaign_profile.V075ProductionCampaignProfileV2
     ):
         raise V075PublicTargetTapeNamespaceV2NotReady(
             "V075ConfirmatoryPublicWorkloadV2 must explicitly carry "
@@ -122,7 +122,7 @@ class V075PublicTargetTapeNamespaceV2:
     anchor: remote.V075RemoteMainAnchorAttestationV2
     workload: manifest.V075ConfirmatoryPublicWorkloadV2
     family: public.V075PublicFamilyGenerationV1
-    runner_profile: runner.V075ProductionCampaignRunnerProfileV1
+    runner_profile: campaign_profile.V075ProductionCampaignProfileV2
     environment_commitment: public.V075OpaqueEnvironmentCommitmentV1
     signer_registry: public.V075TrustedSignerRegistryV1
     _namespace_id: str = field(init=False, repr=False)
@@ -136,7 +136,7 @@ class V075PublicTargetTapeNamespaceV2:
             is not manifest.V075ConfirmatoryPublicWorkloadV2
             or type(self.family) is not public.V075PublicFamilyGenerationV1
             or type(self.runner_profile)
-            is not runner.V075ProductionCampaignRunnerProfileV1
+            is not campaign_profile.V075ProductionCampaignProfileV2
             or type(self.environment_commitment)
             is not public.V075OpaqueEnvironmentCommitmentV1
             or type(self.signer_registry)
@@ -147,7 +147,7 @@ class V075PublicTargetTapeNamespaceV2:
         workload_runner = _workload_runner_profile_id(self.workload)
         exact_family = public.freeze_v075_public_family_generation_v1()
         exact_runner = (
-            runner.freeze_v075_production_campaign_runner_profile_v1()
+            campaign_profile.freeze_v075_production_campaign_profile_v2()
         )
         exact_workload = manifest.freeze_v075_confirmatory_public_workload_v2()
         if (
@@ -312,7 +312,7 @@ def freeze_v075_public_target_tape_namespace_v2(
     workload = manifest.freeze_v075_confirmatory_public_workload_v2()
     family = public.freeze_v075_public_family_generation_v1()
     runner_profile = (
-        runner.freeze_v075_production_campaign_runner_profile_v1()
+        campaign_profile.freeze_v075_production_campaign_profile_v2()
     )
     return V075PublicTargetTapeNamespaceV2(
         _NAMESPACE_ISSUER,
