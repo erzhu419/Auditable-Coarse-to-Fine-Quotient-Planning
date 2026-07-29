@@ -1712,6 +1712,21 @@ def verify_v075_construction_occurrence_failure_lifecycle_v1(
     return _verify_common(closure)
 
 
+def verify_v075_occurrence_failure_lifecycle_public_v1(
+    *,
+    closure: V075OccurrenceFailureLifecycleClosureV1,
+) -> V075OccurrenceFailureLifecycleVerificationV1:
+    """Replay the complete public, signed failure-closure proof.
+
+    This verifier intentionally uses no private environment.  It checks every
+    retained public batch, lifecycle event, work binding, signed replay
+    attestation, and the observer signature.  Scope-specific construction or
+    production verifiers additionally re-execute the private-law replay.
+    """
+
+    return _verify_common(closure)
+
+
 def verify_v075_production_occurrence_failure_lifecycle_v1(
     *,
     closure: V075OccurrenceFailureLifecycleClosureV1,
@@ -1787,5 +1802,6 @@ __all__ = [
     "occurrence_failure_closure_signing_bytes_v1",
     "open_v075_occurrence_failure_lifecycle_authority_v1",
     "verify_v075_construction_occurrence_failure_lifecycle_v1",
+    "verify_v075_occurrence_failure_lifecycle_public_v1",
     "verify_v075_production_occurrence_failure_lifecycle_v1",
 ]

@@ -174,6 +174,12 @@ def test_root_only_direct_physical_cap_closes_and_replays_every_batch() -> None:
         )
     )
     assert replayed == sealed.verification
+    assert (
+        failure.verify_v075_occurrence_failure_lifecycle_public_v1(
+            closure=closure,
+        )
+        == sealed.verification
+    )
     assert replayed.accepted_draw_count == 32
     assert batch_test._SHARED_SALT.hex() not in (
         closure.canonical_bytes.decode("utf-8")
