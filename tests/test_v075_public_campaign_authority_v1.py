@@ -182,6 +182,12 @@ def test_namespace_requires_complete_typed_authority_graph() -> None:
     assert document["environment_commitment_id"] == (
         namespace.environment_commitment.commitment_id
     )
+    assert document["remote_main_anchor_id"] == anchor.external_id
+    assert document["final_preregistration_id"] == prereg.external_id
+    assert document["observer_profile_id"] == observer.external_id
+    assert document["remote_main_anchor_claim_id"] == anchor.claim_id
+    assert document["final_preregistration_claim_id"] == prereg.claim_id
+    assert document["observer_profile_claim_id"] == observer.claim_id
     assert document["external_authorities_signature_verified"] is True
     with pytest.raises(
         authority.V075PublicCampaignAuthorityInvariantViolation
@@ -195,6 +201,26 @@ def test_namespace_requires_complete_typed_authority_graph() -> None:
             claimed_final_preregistration_registry_id=_id(
                 "wrong-registry"
             ),
+        )
+    with pytest.raises(
+        authority.V075PublicCampaignAuthorityInvariantViolation
+    ):
+        authority.derive_public_target_tape_namespace_v1(
+            family=family,
+            environment_commitment=_commitment(),
+            signer_registry=registry,
+            claimed_final_preregistration_registry_id=registry.registry_id,
+            remote_main_anchor=_claim(
+                registry,
+                role.REMOTE_MAIN_ANCHOR,
+                "aliased-external-authority",
+            ),
+            final_preregistration=_claim(
+                registry,
+                role.FINAL_PREREGISTRATION,
+                "aliased-external-authority",
+            ),
+            observer_profile=observer,
         )
 
 

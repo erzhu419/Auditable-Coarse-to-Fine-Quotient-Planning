@@ -1012,6 +1012,13 @@ class V075PublicTargetTapeNamespaceV1:
                 }
             )
             != 3
+            or len(
+                {
+                    claim.external_id
+                    for claim, _ in expected_roles
+                }
+            )
+            != 3
         ):
             raise V075PublicCampaignAuthorityInvariantViolation(
                 "target-tape namespace typed authority graph is invalid"
@@ -1029,11 +1036,21 @@ class V075PublicTargetTapeNamespaceV1:
             "claimed_final_preregistration_registry_id": (
                 self.claimed_final_preregistration_registry_id
             ),
-            "remote_main_anchor_id": self.remote_main_anchor.claim_id,
+            # Scientific tape identity is bound to the exact external
+            # authorities, not to registry-relative signature envelopes.
+            # Claim IDs remain separate provenance below.
+            "remote_main_anchor_id": self.remote_main_anchor.external_id,
             "final_preregistration_id": (
+                self.final_preregistration.external_id
+            ),
+            "observer_profile_id": self.observer_profile.external_id,
+            "remote_main_anchor_claim_id": (
+                self.remote_main_anchor.claim_id
+            ),
+            "final_preregistration_claim_id": (
                 self.final_preregistration.claim_id
             ),
-            "observer_profile_id": self.observer_profile.claim_id,
+            "observer_profile_claim_id": self.observer_profile.claim_id,
             "external_authorities_signature_verified": True,
             "signature_scope": "REGISTRY_RELATIVE_PROVENANCE_ONLY",
             "caller_registry_is_trust_root": False,
