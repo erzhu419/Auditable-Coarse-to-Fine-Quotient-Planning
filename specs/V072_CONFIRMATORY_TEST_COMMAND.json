@@ -87,10 +87,10 @@
   "schema": "acfqp.v072_confirmatory_test_command_manifest.v1",
   "schema_version": "1.0.0",
   "target_access": false,
-  "test_command_manifest_id": "e3bd2612aa412deca7886b780db7e910cc4f1f3f0ee1724840ed4188b14fa9cc",
+  "test_command_manifest_id": "9a9b027e21c6777fb3ad4b6865eb212a710495d1ff3d95d3cdab1c1dab7aec78",
   "test_tree": {
     "selection": "tests/**/*.py",
-    "test_file_count": 195,
-    "test_tree_digest": "3bb81f11943ed224616bb92c04b30cd646f234280768aebc0370049090605f39"
+    "test_file_count": 197,
+    "test_tree_digest": "3281079f09274ad2408af65210ca788844061c689b9aa07c3fdd8900f01a47a3"
   }
 }

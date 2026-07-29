@@ -102,6 +102,7 @@ COMPONENT_ROLE_ORDER = (
     "matched direct-ground baseline",
     "independent exact ground evaluator",
     "five-arm confirmatory campaign runner",
+    "fresh-only durable attempt progress/failure journal",
     "standalone complete-bundle and endpoint verifier",
     "counter/access-log/accepted-draw reconciliation authority",
     "confirmatory tests and the exact test-command manifest",
@@ -318,7 +319,7 @@ COMPONENT_ROLE_SPECS = (
     _role_spec(
         COMPONENT_ROLE_ORDER[0],
         "specs/TRANSFER_GUIDED_ADAPTIVE_OBSERVATION_ACQUISITION.md",
-        "v072-transfer-guided-adaptive-observation-acquisition-spec-v3",
+        "v072-transfer-guided-adaptive-observation-acquisition-spec-v4",
     ),
     _role_spec(
         COMPONENT_ROLE_ORDER[1],
@@ -361,7 +362,7 @@ COMPONENT_ROLE_SPECS = (
     _role_spec(
         COMPONENT_ROLE_ORDER[8],
         "src/acfqp/v072_registered_cold_h2_orchestrator_v1.py",
-        "v072-registered-cold-h2-observation-model-orchestrator-v1",
+        "v072-registered-cold-h2-observation-model-orchestrator-v2",
     ),
     _role_spec(
         COMPONENT_ROLE_ORDER[9],
@@ -376,7 +377,7 @@ COMPONENT_ROLE_SPECS = (
     _role_spec(
         COMPONENT_ROLE_ORDER[11],
         "src/acfqp/v072_registered_matched_direct_runtime_v1.py",
-        "v072-registered-matched-direct-ground-runtime-v1",
+        "v072-registered-matched-direct-ground-runtime-v2",
     ),
     _role_spec(
         COMPONENT_ROLE_ORDER[12],
@@ -386,10 +387,15 @@ COMPONENT_ROLE_SPECS = (
     _role_spec(
         COMPONENT_ROLE_ORDER[13],
         "src/acfqp/v072_registered_campaign_consumer_v1.py",
-        "v072-registered-three-context-five-arm-executor-v2",
+        "v072-registered-three-context-five-arm-executor-v3",
     ),
     _role_spec(
         COMPONENT_ROLE_ORDER[14],
+        "src/acfqp/v072_registered_campaign_attempt_journal_v1.py",
+        "v072-fresh-only-durable-attempt-journal-v1",
+    ),
+    _role_spec(
+        COMPONENT_ROLE_ORDER[15],
         (
             "src/acfqp/"
             "v072_registered_complete_bundle_endpoint_verifier_v1.py"
@@ -397,17 +403,17 @@ COMPONENT_ROLE_SPECS = (
         "v072-registered-complete-bundle-endpoint-verifier-v2",
     ),
     _role_spec(
-        COMPONENT_ROLE_ORDER[15],
+        COMPONENT_ROLE_ORDER[16],
         "src/acfqp/v072_registered_campaign_reconciliation_v1.py",
-        "v072-registered-four-lane-campaign-reconciliation-v1",
+        "v072-registered-four-lane-campaign-reconciliation-v2",
     ),
     _role_spec(
-        COMPONENT_ROLE_ORDER[16],
+        COMPONENT_ROLE_ORDER[17],
         "specs/V072_CONFIRMATORY_TEST_COMMAND.json",
         "v072-confirmatory-test-command-manifest-v1",
     ),
     _role_spec(
-        COMPONENT_ROLE_ORDER[17],
+        COMPONENT_ROLE_ORDER[18],
         "specs/V072_RUNTIME_DEPENDENCY_LOCK.json",
         "v072-runtime-dependency-interpreter-build-v1",
     ),

@@ -49,6 +49,7 @@ def test_ordered_component_roles_and_binding_profile_are_frozen() -> None:
         "matched direct-ground baseline",
         "independent exact ground evaluator",
         "five-arm confirmatory campaign runner",
+        "fresh-only durable attempt progress/failure journal",
         "standalone complete-bundle and endpoint verifier",
         "counter/access-log/accepted-draw reconciliation authority",
         "confirmatory tests and the exact test-command manifest",
@@ -58,7 +59,7 @@ def test_ordered_component_roles_and_binding_profile_are_frozen() -> None:
     assert tuple(
         item.component_role for item in manifest.COMPONENT_ROLE_SPECS
     ) == expected_roles
-    assert len(expected_roles) == len(set(expected_roles)) == 18
+    assert len(expected_roles) == len(set(expected_roles)) == 19
 
     readiness = (
         manifest.inspect_confirmatory_execution_manifest_readiness_v1(

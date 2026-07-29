@@ -4529,6 +4529,75 @@ sample_efficiency_gate_blocks_mainline = false
 ```
 
 
+## V0-072 anchored-attempt-1 protocol failure and one-time repair
+
+The first final V0-072 identity chain was anchored at remote-main commit
+`b711cc52001419cfb0962e2a94af91cc03c5ffc2`. Its source recipe, manifest,
+final preregistration and remote-main anchor IDs were respectively
+`d836f0b0c7f3b302541ce81dc5372c077d336add5f28a973ebd6ae611ccbd8b9`,
+`acbec3e259e9df0e5b56c172ae2261f6d072f29b3a669b1eaafbcbdcae28b1c6`,
+`b6a543a0e30214338214bf025bbf543994f6afc3251608f522d11f5c20e236f2`
+and
+`157f6c512b912d4e100e76a30fdb4ae43c051cef6ac073778a303dd523e6d88e`.
+The authority-only replay passed with zero source reconstruction and zero
+target access.
+
+The subsequent registered campaign attempt completed its source
+reconstruction, began target execution, and reached the first K7
+`MATCHED_DIRECT_GROUND` 2,048-validation checkpoint. It then failed closed
+with `KeyError(MATCHED_DIRECT_CHECKPOINT)` in
+`v072_cold_h2_closure_independent_verifier_v1._work_payload`: production
+native work already supported this registered purpose, but the independent
+verifier's purpose-to-draw-schedule mapping omitted it. No campaign result,
+typed campaign terminal or scientific endpoint was written. The canonical
+historical record is
+`specs/V072_ANCHORED_ATTEMPT_1_FAILURE.json`, ID
+`ca9159f19534f73291206b5a86d792f5a2336458afe521c46ed77171bfeda74f`.
+
+This attempt is `PROTOCOL_FAILURE / INCOMPLETE_CAMPAIGN_ARTIFACT`, not a plan
+or infeasibility result. Its denominator remains 15. Because no durable
+partial ledger existed, its exact completed-occurrence count, target draws,
+native work and wall time are `UNKNOWN_NOT_DURABLY_PERSISTED` and must never
+be interpreted as zero. The old attempt may not be resumed at occurrence
+five, omitted from future accounting, or combined with a replacement
+attempt.
+
+One replacement attempt is authorized solely as a protocol repair. The
+allowed changes are:
+
+1. exhaustively replay every registered matched-direct checkpoint purpose;
+2. fail closed on unexpected selector-terminal and route-kind enum values;
+3. persist atomic, non-overwriting attempt progress and failure records.
+
+No context, law, seed semantics, arm, schedule, threshold, confidence
+allocation, cap, endpoint or scientific comparison may change. The old
+target tape, observations, occurrence identities and work may not be reused.
+The replacement is attempt ordinal 2 and is bound to predecessor failure
+record
+`ca9159f19534f73291206b5a86d792f5a2336458afe521c46ed77171bfeda74f`.
+Its new authority chain and execution plan own exactly one fresh-only attempt
+slot. The only authorized output transport is
+`artifacts/v072_registered_campaign_result_v1.json`; changing the output path
+must not create another attempt identity or permit another target execution.
+No random nonce, resume, retry, journal-derived seed, or journal evidence
+reuse is allowed.
+The repair must pass the exact fresh-ID Gate, freeze a new source recipe,
+manifest and final preregistration, obtain a new remote-main anchor, and
+restart all 15 occurrences from the beginning. The old authority remains
+historical failed-attempt provenance.
+
+Until a complete replacement result and its independent endpoint replay
+exist, all locks remain:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+```
+
 ## Change log
 
 - **2026-07-19 — 0.1.0:** Transcribed and closed the V0 construction contract from the Normative Decision Addendum and the V0 preconstruction audit. Added the deterministic policy-class and reward-normalization implementation clarifications needed for executable tests.
@@ -4591,3 +4660,4 @@ sample_efficiency_gate_blocks_mainline = false
 - **2026-07-29 — ledger 1.34.4 prerequisite closure (construction contract unchanged at 1.34.0):** Added exact split-support confidence and campaign allocation, evidence-first public novel-child cardinality and selection, immutable row-bound observation/replay records, discovery-only cold-H2 closure, a separately implemented source-archive transform verifier, and nonauthorizing execution-manifest readiness. A real V0-068 campaign now traverses the production V0-072 archive and the independent archive-transform verifier, while the latter explicitly does not claim independence from the upstream same-implementation V0-068 campaign authority. Registered target access remains locked; relational/ground model construction, materialization, fresh round 2, direct baseline, campaign and standalone bundle verification remain incomplete, so no V0-072 result or aggregate Gate opens.
 - **2026-07-29 — ledger 1.34.5 confidence-schedule audit correction (construction contract unchanged at 1.34.0):** Corrected the V0-072 per-row confidence limit from two to three epochs: one initial epoch plus at most two promotions. The distinct two-round execution bound still permits at most two promotion authorities per context, so the conservative total remains 480 authorities per arm and 2,400 per campaign; `beta=1/300000`, joint tail `1/125`, and confidence `124/125` are unchanged. Superseded nonauthorizing draft ID `8b1e4747bb364ccddc04bb45d97a061c621650c907d31c979673f312acdffd29` is retained in audit provenance and replaced by nonauthorizing draft ID `e368be24adad7870d95c8e5059455d31e035783394e48040d113258388eaf4d4`; neither authorizes target access or changes any Gate.
 - **2026-07-29 — ledger 1.34.6 direct-terminal audit correction (construction contract unchanged at 1.34.0):** Added `DIRECT_CHECKPOINT_CAP_EXHAUSTED_NONCERTIFICATE` to the V0-072 terminal registry for the matched-direct arm reaching its complete 16,384-draw checkpoint without a sound certificate. It is distinct from adaptive incremental/two-round exhaustion, exact-DP resource exhaustion, fallback, and infeasibility. Superseded nonauthorizing draft ID `e368be24adad7870d95c8e5059455d31e035783394e48040d113258388eaf4d4` is retained in audit provenance and replaced by nonauthorizing draft ID `7639f1ee57ee2d9a8c871a5f0270d15fdd92f712a735e2ae89b6155e057ba5c2`; both retain null manifests, keep target execution locked, and change no Gate.
+- **2026-07-29 — ledger 1.34.7 anchored-attempt protocol repair (construction contract unchanged at 1.34.0):** Recorded anchored attempt 1 as `PROTOCOL_FAILURE / INCOMPLETE_CAMPAIGN_ARTIFACT` after the independently replayed matched-direct native-work purpose omitted `MATCHED_DIRECT_CHECKPOINT`. No result or endpoint was written; unknown paid work is explicitly not zero and all 15 occurrences remain in the failed-attempt denominator. Authorized one clean, full-restart replacement using only exhaustive enum handling and durable attempt journaling, with new target identities and a new recipe/manifest/preregistration/remote-main anchor. Scientific parameters and every aggregate Gate remain unchanged.

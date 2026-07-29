@@ -1,8 +1,7 @@
 # Transfer-Guided Adaptive Observation Acquisition
 
-Status: **NONAUTHORIZING DRAFT prerequisite**; this document, its current
-content IDs, and any commit containing only this draft are not a confirmatory
-anchor and do not authorize a target tape to be opened
+Status: **FIRST ANCHORED ATTEMPT CLOSED AS PROTOCOL FAILURE; ONE CLEAN
+REPAIR/RE-ANCHOR PENDING**. No scientific endpoint is available.
 
 Proposed contract: `1.36.0`
 
@@ -12,6 +11,32 @@ Profile: `transfer_guided_adaptive_observation_acquisition_v1`
 
 Confirmatory family generation:
 `v072_anchor_clean_confirmatory_family_generation_1`
+
+## Anchored-attempt-1 correction
+
+The first chain was anchored at remote-main commit
+`b711cc52001419cfb0962e2a94af91cc03c5ffc2`. Its authority-only replay
+passed. The actual campaign then reached the first K7 matched-direct 2,048
+checkpoint and failed closed because the independent native-work verifier
+omitted the registered `MATCHED_DIRECT_CHECKPOINT` enum value. No campaign
+result, terminal certificate or endpoint was written. The canonical record is
+`specs/V072_ANCHORED_ATTEMPT_1_FAILURE.json`, with record ID
+`ca9159f19534f73291206b5a86d792f5a2336458afe521c46ed77171bfeda74f`.
+
+Ledger amendment 1.34.7 authorizes one replacement attempt limited to
+exhaustive enum handling and durable attempt journaling. All scientific
+parameters remain byte-identical. The old tape/evidence is non-reusable; the
+replacement must use a new recipe/manifest/preregistration/anchor chain and
+restart all 15 occurrences. The sample-efficiency Gate remains `NOT_RUN`.
+
+The replacement journal is the unique attempt-ordinal-2 slot for that new
+authority chain and execution plan. It binds predecessor failure record
+`ca9159f19534f73291206b5a86d792f5a2336458afe521c46ed77171bfeda74f`
+and the fixed output transport
+`artifacts/v072_registered_campaign_result_v1.json`. It contains no random
+nonce, cannot enter a target seed, and grants no resume, retry, artifact
+reuse, or scientific-input authority. An alternate output path must be
+rejected before authority construction or target access.
 
 ## Purpose and claim boundary
 
@@ -375,9 +400,8 @@ proof identities.
 
 ## Preregistered held-out structural family
 
-This draft is an implementation prerequisite only. It is not the
-preregistration anchor. Before the semantically verified anchor defined at the
-top of this document exists:
+The following records the pre-anchor lock that protected the registered
+family before attempt 1. It remains normative provenance for the replacement:
 
 ```text
 registered_target_tapes_opened       = false
@@ -386,8 +410,8 @@ registered_target_accepted_draws     = 0
 registered_target_evaluation_results = 0
 ```
 
-The registered observer, replay API, and evaluation runner must all reject the
-current null-manifest preregistration. Development tests may draw only through
+The registered observer, replay API, and evaluation runner reject the
+historical null-manifest draft. Development tests may draw only through
 a domain-separated synthetic-control context/law/API with no shared
 confirmatory context, law, stream, observation, evidence, model, work, or
 endpoint ID. Such work is labeled
@@ -459,8 +483,8 @@ separate content-addressed environment manifest:
 | W7 | `(1,99/100), (2,1/100)` |
 | K7-minus-two | `(1,49/50), (2,3/200), (3,1/200)` |
 
-The public context documents do not serialize these laws. The current clean
-draft identities are:
+The public context documents do not serialize these laws. The clean
+family identities, unchanged by the repair, are:
 
 ```text
 K7 public context       5bf58b73e363ff73f65d778f039b46ec96d2176082b9c935423f3ef9bb45681a
@@ -473,7 +497,7 @@ environment manifest    f1b158319b5c059786829fc6b5ca4cda60e0b49e9e173a3c70daa4c8
 draft preregistration   7639f1ee57ee2d9a8c871a5f0270d15fdd92f712a735e2ae89b6155e057ba5c2
 ```
 
-The draft preregistration above has
+The historical draft preregistration above has
 `confirmatory_execution_manifest_id = null`,
 `confirmatory_profile_finalized = false`,
 `anchor_commit_id = null`, and `target_execution_allowed = false`. It is not
@@ -541,6 +565,7 @@ exact lazy H2 planner and independent proof verifier
 matched direct-ground baseline
 independent exact ground evaluator
 five-arm confirmatory campaign runner
+fresh-only durable attempt progress/failure journal
 standalone complete-bundle and endpoint verifier
 counter/access-log/accepted-draw reconciliation authority
 confirmatory tests and the exact test-command manifest

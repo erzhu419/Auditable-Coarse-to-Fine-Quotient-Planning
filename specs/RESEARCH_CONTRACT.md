@@ -184,8 +184,9 @@
   independent recurrence replays all 1,225 obligations. This closes only the
   registered `k<=2` fixed-plan hypothesis and does not authorize brute-force
   `k=3`, sampling, sample-efficiency or project-completion claims.
-- **V0-072 transfer-guided adaptive acquisition (NONAUTHORIZING DRAFT;
-  TARGET LOCKED; Gate NOT RUN):** proposed schema `2.0.0` and profile
+- **V0-072 transfer-guided adaptive acquisition (ATTEMPT 1 PROTOCOL
+  FAILURE; CLEAN REPAIR/RE-ANCHOR PENDING; Gate NOT RUN):** proposed schema
+  `2.0.0` and profile
   `transfer_guided_adaptive_observation_acquisition_v1` freeze a clean
   generation of three seven-vertex contexts, five arms/15 occurrences, cold
   `64+2048` row acquisition, two-round cumulative caps, direct checkpoints,
@@ -194,9 +195,13 @@
   transform replay, exact split-support confidence, evidence-first
   preauthorization/cardinality, immutable row transcripts, generic cold-H2
   closure, an anchor-locked observer/full epoch-chain verifier, a disjoint
-  synthetic K4 control, and nonauthorizing manifest readiness are implemented
-  prerequisites. The current null-manifest draft is not an anchor; no
-  registered target execution or sample-efficiency result is authorized.
+  synthetic K4 control, and manifest/anchor authorities are implemented.
+  The first anchored attempt reached target execution but wrote no result:
+  the independent row-work verifier omitted the registered matched-direct
+  checkpoint purpose. Its content-addressed failure record preserves the
+  full denominator and marks unpersisted work unknown, never zero. One
+  parameter-preserving full restart with durable journaling is authorized;
+  no sample-efficiency result exists.
 - **V0-071 source-guided acquisition mechanics (Gate NOT RUN):** the
   implementation freezes exact one-row slack-gain ranking, a bounded
   proposal-only multiplier, same-prior wrong-control reversal, strict
@@ -345,9 +350,9 @@ V0 covers finite reachable state spaces, finite state-dependent primitive action
 ### Proposed contract 1.36.0: transfer-guided adaptive observation acquisition
 
 Schema `2.0.0` and profile
-`transfer_guided_adaptive_observation_acquisition_v1` are a
-`NONAUTHORIZING DRAFT`; target execution is locked and
-`SAMPLE_EFFICIENCY_GATE_NOT_RUN`. The draft freezes K7, W7 and
+`transfer_guided_adaptive_observation_acquisition_v1` have one historical
+anchored protocol-failure attempt; the replacement is locked pending a new
+identity chain and `SAMPLE_EFFICIENCY_GATE_NOT_RUN`. The profile freezes K7, W7 and
 K7-minus-two, separate environment-only laws, five arms and exactly 15
 context-major occurrences. Every arm starts cold with 64 discovery and 2,048
 validation draws per physical H2 row; the conservative per-arm initial cap is
@@ -438,11 +443,16 @@ The production construction chain is now implemented through:
    preregistration and production remote-`main` anchor authorities.
 
 The implementation does not itself constitute a confirmatory result. The
-fixed source recipe has not yet been generated and committed, the final
-manifest/preregistration pair has not yet been pushed as the first qualifying
-`origin/main` commit, and no held-out target occurrence has been opened.
-After that immutable authority chain exists, the complete registered campaign
-must derive rather than receive the following endpoints:
+first fixed chain was generated, pushed and independently anchored at
+`b711cc52001419cfb0962e2a94af91cc03c5ffc2`. Its campaign reached target
+execution but failed closed at the first K7 matched-direct 2,048 checkpoint
+because an independent-verifier enum mapping was incomplete. No result or
+endpoint was written. The failed attempt remains in its 15-occurrence
+denominator; unknown work is not zero, and no old tape/evidence may be reused.
+
+One ledger-authorized replacement must pass a new exact Gate, bind a new
+recipe/manifest/preregistration/anchor chain, journal durable work prefixes,
+restart all 15 occurrences, and derive rather than receive:
 
 ```text
 SOURCE online draws < NO_PRIOR online draws
@@ -456,7 +466,7 @@ draw endpoints would establish only a preregistered three-context V0-072
 sample result, not broad sample efficiency, total-work dominance, a scalar
 break-even, automatic ontology invention, or completion of the reusable
 hidden-world-model objective. Contract `1.34.0` remains the current completed
-construction contract until the anchored campaign is actually run and its
+construction contract until the replacement campaign is actually run and its
 bundle independently verifies.
 
 ### Proposed contract 1.35.0: source-guided certificate-sensitive acquisition

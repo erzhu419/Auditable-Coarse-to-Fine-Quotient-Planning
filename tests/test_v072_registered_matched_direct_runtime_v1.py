@@ -3,12 +3,19 @@ from __future__ import annotations
 from dataclasses import replace
 import hashlib
 import inspect
+from types import SimpleNamespace
 
 import pytest
 
 from acfqp import heldout_graph_transition_observer_v2 as observer
 from acfqp import transfer_guided_acquisition_preregistration_v1 as prereg
 from acfqp import v072_independent_exact_ground_evaluator_v1 as evaluator
+from acfqp import (
+    v072_registered_campaign_attempt_journal_v1 as attempt_journal,
+)
+from acfqp import (
+    v072_registered_matched_direct_complete_inventory_v1 as inventory,
+)
 from acfqp import v072_registered_matched_direct_runtime_v1 as runtime
 
 
@@ -205,6 +212,142 @@ def test_invalid_anchor_fails_before_every_observer_or_target_access(
             is False
         )
     assert calls == []
+
+
+def test_reached_direct_checkpoints_are_journaled_inside_runtime_loop(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    chain = SimpleNamespace()
+    anchor = SimpleNamespace()
+    plan = SimpleNamespace()
+    context = SimpleNamespace(context_id=_id("journal-context"))
+    accumulator = SimpleNamespace()
+    calls: list[tuple[str, int]] = []
+
+    monkeypatch.setattr(
+        runtime,
+        "_require_production_identity_without_observer_access",
+        lambda **_kwargs: (chain, anchor, plan, context),
+    )
+    monkeypatch.setattr(
+        runtime,
+        "inspect_registered_matched_direct_dependency_protocol_v1",
+        lambda: SimpleNamespace(
+            dependency_available=True,
+            blockers=(),
+        ),
+    )
+    monkeypatch.setattr(runtime, "REGISTERED_RUNTIME_ENABLED", True)
+    monkeypatch.setattr(
+        inventory,
+        "open_registered_matched_direct_complete_inventory_accumulator_v1",
+        lambda **_kwargs: accumulator,
+    )
+
+    def acquire(*, accumulator: Any, checkpoint: int) -> Any:
+        assert accumulator is not None
+        calls.append(("ACQUIRE", checkpoint))
+        return SimpleNamespace(
+            checkpoint=checkpoint,
+            direct_snapshot=SimpleNamespace(
+                planner_model=object(),
+                threshold_profile=object(),
+            ),
+        )
+
+    monkeypatch.setattr(
+        inventory,
+        "acquire_registered_matched_direct_complete_inventory_checkpoint_v1",
+        acquire,
+    )
+    monkeypatch.setattr(
+        inventory,
+        "verify_registered_matched_direct_complete_inventory_checkpoint_v1",
+        lambda *, checkpoint_artifact: checkpoint_artifact,
+    )
+    solver_results = iter(
+        (
+            SimpleNamespace(
+                status=runtime.lazy.ExactLazyH2SolveStatus.SOLVED,
+                audit=SimpleNamespace(
+                    status=runtime.robust.RobustAuditStatus
+                    .FAILED_PROOF_FRONTIER
+                ),
+            ),
+            SimpleNamespace(
+                status=(
+                    runtime.lazy.ExactLazyH2SolveStatus
+                    .EXACT_DP_RESOURCE_EXHAUSTED
+                ),
+                audit=None,
+            ),
+        )
+    )
+    monkeypatch.setattr(
+        runtime.lazy,
+        "solve_exact_lazy_ground_direct_h2_v1",
+        lambda *_args, **_kwargs: next(solver_results),
+    )
+    monkeypatch.setattr(
+        runtime.lazy_independent,
+        "verify_exact_lazy_h2_solve_result_v1",
+        lambda *_args, **_kwargs: SimpleNamespace(),
+    )
+    monkeypatch.setattr(
+        runtime,
+        "_derive_deterministic_policy_v1",
+        lambda **_kwargs: SimpleNamespace(),
+    )
+    monkeypatch.setattr(
+        runtime,
+        "RegisteredMatchedDirectCheckpointRecordV1",
+        lambda checkpoint_artifact, planner_result, proof, status, policy: (
+            SimpleNamespace(
+                checkpoint=checkpoint_artifact.checkpoint,
+                inventory_checkpoint=checkpoint_artifact,
+                planner_result=planner_result,
+                proof_verification=proof,
+                status=status,
+                policy=policy,
+            )
+        ),
+    )
+
+    class ReachedSecondCheckpoint(RuntimeError):
+        pass
+
+    class JournalSink:
+        def commit_direct_checkpoint(
+            self,
+            *,
+            context_id: str,
+            checkpoint_record: Any,
+        ) -> None:
+            assert context_id == context.context_id
+            calls.append(("JOURNAL", checkpoint_record.checkpoint))
+            if checkpoint_record.checkpoint == runtime.CHECKPOINTS[1]:
+                raise ReachedSecondCheckpoint
+
+    monkeypatch.setattr(
+        attempt_journal,
+        "active_attempt_journal_v1",
+        lambda **_kwargs: JournalSink(),
+    )
+
+    with pytest.raises(ReachedSecondCheckpoint):
+        runtime.run_registered_matched_direct_occurrence_v1(
+            authority_chain=chain,
+            anchor=anchor,
+            occurrence_plan=plan,
+            context=context,
+        )
+
+    assert calls == [
+        ("ACQUIRE", runtime.CHECKPOINTS[0]),
+        ("JOURNAL", runtime.CHECKPOINTS[0]),
+        ("ACQUIRE", runtime.CHECKPOINTS[1]),
+        ("JOURNAL", runtime.CHECKPOINTS[1]),
+    ]
 
 
 def test_runtime_access_accounting_separates_online_and_replay_draws() -> None:

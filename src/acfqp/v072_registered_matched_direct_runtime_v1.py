@@ -2534,6 +2534,9 @@ def run_registered_matched_direct_occurrence_v1(
     from acfqp import (
         v072_registered_matched_direct_complete_inventory_v1 as inventory,
     )
+    from acfqp import (
+        v072_registered_campaign_attempt_journal_v1 as attempt_journal,
+    )
 
     accumulator = (
         inventory
@@ -2543,6 +2546,9 @@ def run_registered_matched_direct_occurrence_v1(
             occurrence_plan=canonical_plan,
             context=canonical_context,
         )
+    )
+    journal = attempt_journal.active_attempt_journal_v1(
+        authority_chain=canonical_chain,
     )
     records: list[RegisteredMatchedDirectCheckpointRecordV1] = []
     for checkpoint in CHECKPOINTS:
@@ -2601,15 +2607,19 @@ def run_registered_matched_direct_occurrence_v1(
                 else RegisteredMatchedDirectCheckpointStatusV1.NOT_CERTIFIED
             )
         )
-        records.append(
-            RegisteredMatchedDirectCheckpointRecordV1(
-                checkpoint_artifact,
-                planner_result,
-                proof_verification,
-                status,
-                policy,
-            )
+        record = RegisteredMatchedDirectCheckpointRecordV1(
+            checkpoint_artifact,
+            planner_result,
+            proof_verification,
+            status,
+            policy,
         )
+        records.append(record)
+        if journal is not None:
+            journal.commit_direct_checkpoint(
+                context_id=canonical_context.context_id,
+                checkpoint_record=record,
+            )
         if status is not RegisteredMatchedDirectCheckpointStatusV1.NOT_CERTIFIED:
             break
     final = records[-1]

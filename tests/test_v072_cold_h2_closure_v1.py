@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import fields
+from dataclasses import fields, replace
 import hashlib
 from typing import Any
 
@@ -390,6 +390,71 @@ def test_cold_closure_is_complete_shared_and_independently_replayable(
     assert synthetic_bundle.shared_charge.native_physical_charge_count == 1
     assert verification.closure_id == (
         synthetic_bundle.shared_charge.physical_bundle_id
+    )
+
+
+@pytest.mark.parametrize(
+    "checkpoint",
+    prereg.DIRECT_VALIDATION_CHECKPOINTS,
+)
+def test_actual_matched_direct_checkpoint_closure_is_independently_verified(
+    synthetic_inventory: tuple[closure.ColdRowEvidenceV1, ...],
+    checkpoint: int,
+) -> None:
+    direct_inventory = tuple(
+        sorted(
+            (
+                replace(
+                    row,
+                    native_work=closure.ColdRowNativeWorkV1(
+                        acquisition_purpose=(
+                            closure.ColdRowAcquisitionPurposeV1
+                            .MATCHED_DIRECT_CHECKPOINT
+                        ),
+                        discovery_draws=closure.DISCOVERY_DRAWS_PER_ROW,
+                        validation_draws=checkpoint,
+                        discovery_random_word_calls=(
+                            closure.DISCOVERY_DRAWS_PER_ROW
+                            + row.native_work.discovery_rejections
+                        ),
+                        validation_random_word_calls=(
+                            checkpoint
+                            + row.native_work.validation_rejections
+                        ),
+                        discovery_rejections=(
+                            row.native_work.discovery_rejections
+                        ),
+                        validation_rejections=(
+                            row.native_work.validation_rejections
+                        ),
+                    ),
+                )
+                for row in synthetic_inventory
+            ),
+            key=lambda item: item.row_evidence_id,
+        )
+    )
+    bundle = closure.freeze_v072_cold_h2_closure_v1(
+        public_graph=BuilderSyntheticPublicGraph(),
+        row_evidence=direct_inventory,
+        logical_occurrence_id=_id(
+            f"matched-direct-checkpoint-occurrence:{checkpoint}"
+        ),
+        arm="MATCHED_DIRECT_GROUND",
+        cap_evidence=_synthetic_cap(),
+    )
+
+    verification = _verify(direct_inventory, bundle)
+
+    assert verification.valid
+    assert bundle.counters.matched_direct_checkpoint_row_count == len(
+        direct_inventory
+    )
+    assert bundle.counters.cold_initial_row_count == 0
+    assert bundle.counters.incremental_promotion_row_count == 0
+    assert bundle.counters.incremental_new_child_row_count == 0
+    assert bundle.counters.validation_draws == (
+        checkpoint * len(direct_inventory)
     )
 
 

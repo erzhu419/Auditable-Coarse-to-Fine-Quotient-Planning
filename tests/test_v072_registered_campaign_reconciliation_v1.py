@@ -519,6 +519,41 @@ def test_complete_noncertificate_campaign_reconciles_and_replays(
     assert verification.logical_occurrence_denominator == 15
 
 
+def test_reconciliation_rejects_unknown_route_kind_without_defaulting_direct(
+    mechanics_bundle,
+) -> None:
+    chain, plan, routes, _source_replay = mechanics_bundle
+    valid_plan = plan.occurrences[0]
+    forged_template = _unsafe_clone(
+        valid_plan.template,
+        route_kind=object(),
+    )
+    forged_plan = _unsafe_clone(
+        valid_plan,
+        template=forged_template,
+    )
+    context = next(
+        item
+        for item in prereg.registered_heldout_public_contexts_v2()
+        if item.context_id == valid_plan.template.context_id
+    )
+
+    with pytest.raises(
+        reconciliation.V072RegisteredCampaignReconciliationViolation,
+        match="unknown route kind",
+    ):
+        reconciliation._reconcile_route_occurrence_v1(
+            authority_chain=chain,
+            anchor_id=chain.remote_main_anchor.anchor_id,
+            final_preregistration_id=_id("route-dispatch-final-prereg"),
+            plan=forged_plan,
+            context=context,
+            route_result=routes[0],
+            operational_terminal_authority=None,
+            exact_evaluation=None,
+        )
+
+
 def test_certified_occurrence_is_registration_disjoint_and_replays(
     mechanics_bundle,
 ) -> None:

@@ -2046,6 +2046,26 @@ class RegisteredAdaptiveGroundAdapterStatusV1(str, Enum):
     NOT_APPLICABLE_NONCERTIFICATE = "NOT_APPLICABLE_NONCERTIFICATE"
 
 
+def _terminal_status_from_selector_outcome_v1(
+    outcome: selector.RegisteredSelectorOutcomeV1,
+) -> RegisteredAdaptiveOccurrenceStatusV1:
+    if outcome is selector.RegisteredSelectorOutcomeV1.NO_SOUND_COVER:
+        return RegisteredAdaptiveOccurrenceStatusV1.NO_SOUND_COVER
+    if outcome is selector.RegisteredSelectorOutcomeV1.CAP_EXHAUSTED:
+        return (
+            RegisteredAdaptiveOccurrenceStatusV1
+            .ACQUISITION_CAP_EXHAUSTED
+        )
+    if outcome is selector.RegisteredSelectorOutcomeV1.SELECTED:
+        raise V072RegisteredAdaptiveRuntimeInvariantViolation(
+            "a SELECTED terminal selector outcome was not materialized "
+            "into a subsequent immutable model epoch"
+        )
+    raise V072RegisteredAdaptiveRuntimeInvariantViolation(
+        "adaptive runtime has an unknown terminal selector outcome"
+    )
+
+
 @dataclass(frozen=True, slots=True)
 class RegisteredAdaptiveOccurrenceWorkV1:
     cold_epoch_builds: int
@@ -2420,18 +2440,8 @@ class RegisteredAdaptiveOccurrenceResultV1:
         ):
             expected_status = RegisteredAdaptiveOccurrenceStatusV1.CERTIFIED
         elif final_selector is not None:
-            expected_status = {
-                selector.RegisteredSelectorOutcomeV1.NO_SOUND_COVER: (
-                    RegisteredAdaptiveOccurrenceStatusV1.NO_SOUND_COVER
-                ),
-                selector.RegisteredSelectorOutcomeV1.CAP_EXHAUSTED: (
-                    RegisteredAdaptiveOccurrenceStatusV1
-                    .ACQUISITION_CAP_EXHAUSTED
-                ),
-            }.get(
-                final_selector.claim.decision.outcome,
-                RegisteredAdaptiveOccurrenceStatusV1
-                .NOT_CERTIFIED_MAX_ROUNDS,
+            expected_status = _terminal_status_from_selector_outcome_v1(
+                final_selector.claim.decision.outcome
             )
         elif len(self.epochs) == MAX_LOCAL_ROUNDS + 1:
             expected_status = (

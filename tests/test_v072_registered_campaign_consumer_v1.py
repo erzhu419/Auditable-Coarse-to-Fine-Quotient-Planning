@@ -32,6 +32,9 @@ from acfqp import (
     as reconciliation_independent,
 )
 from acfqp import (
+    v072_registered_campaign_attempt_journal_v1 as attempt_journal,
+)
+from acfqp import (
     v072_registered_campaign_reconciliation_v1 as reconciliation,
 )
 from acfqp import (
@@ -437,6 +440,35 @@ def test_exact_context_major_dispatch_and_certified_only_evidence(
     direct_plan_ids: dict[int, Any] = {}
     terminal_calls: list[tuple[int, Any]] = []
     evaluator_calls: list[int] = []
+    journal_calls: list[tuple[str, int]] = []
+
+    class JournalSink:
+        def begin_occurrence(self, occurrence_plan: Any) -> None:
+            journal_calls.append(
+                ("START", occurrence_plan.template.occurrence_ordinal)
+            )
+
+        def complete_occurrence(
+            self,
+            *,
+            occurrence_plan: Any,
+            route_result: Any,
+            terminal_authority: Any,
+            exact_evaluation: Any,
+        ) -> None:
+            assert route_result is not None
+            assert (terminal_authority is None) == (
+                exact_evaluation is None
+            )
+            journal_calls.append(
+                ("COMPLETE", occurrence_plan.template.occurrence_ordinal)
+            )
+
+    monkeypatch.setattr(
+        attempt_journal,
+        "active_attempt_journal_v1",
+        lambda **_kwargs: JournalSink(),
+    )
     certified_ordinals = {0, 4}
 
     def run_adaptive(**kwargs: Any) -> Any:
@@ -581,6 +613,45 @@ def test_exact_context_major_dispatch_and_certified_only_evidence(
         terminals[index] is None and evaluations[index] is None
         for index in set(range(15)) - certified_ordinals
     )
+    assert journal_calls == [
+        item
+        for ordinal in range(15)
+        for item in (("START", ordinal), ("COMPLETE", ordinal))
+    ]
+
+
+def test_executor_rejects_unknown_route_kind_without_defaulting_direct() -> None:
+    chain = _mechanics_authority_chain()
+    valid_occurrence = consumer._execution_plan_v1(chain).occurrences[0]
+    template_values = {
+        item.name: getattr(valid_occurrence.template, item.name)
+        for item in fields(valid_occurrence.template)
+    }
+    template_values["route_kind"] = object()
+    forged_template = _unsafe_exact(
+        consumer.RegisteredOccurrenceTemplateV1,
+        **template_values,
+    )
+    occurrence_values = {
+        item.name: getattr(valid_occurrence, item.name)
+        for item in fields(valid_occurrence)
+    }
+    occurrence_values["template"] = forged_template
+    forged_occurrence = _unsafe_exact(
+        consumer.RegisteredOccurrenceExecutionPlanV1,
+        **occurrence_values,
+    )
+
+    with pytest.raises(
+        consumer.V072RegisteredCampaignConsumerInvariantViolation,
+        match="unknown route kind",
+    ):
+        consumer._execute_registered_occurrences_v1(
+            authority_chain=chain,
+            execution_plan=SimpleNamespace(
+                occurrences=(forged_occurrence,),
+            ),
+        )
 
 
 def test_production_executor_reconciles_then_verifies_endpoint(

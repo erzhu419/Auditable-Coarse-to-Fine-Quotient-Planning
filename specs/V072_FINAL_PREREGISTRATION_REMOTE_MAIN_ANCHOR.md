@@ -1,7 +1,7 @@
 # V0-072 Final Preregistration and Remote-Main Anchor
 
-Status: implemented schema and nonauthorizing semantic verifier; registered
-execution remains locked.
+Status: first chain anchored; attempt 1 failed as a protocol noncertificate;
+one clean repair/re-anchor is pending.
 
 ## Dependency direction
 
@@ -100,22 +100,27 @@ for both recipe and final preregistration.
 
 ## Current lock
 
-The fixed production source recipe is not yet present at its tracked path and
-has not been replayed into the exact source/archive/component identity graph.
-The execution manifest therefore cannot be finalized, the final
-preregistration factory fails closed, and the remote-main anchor authority
-cannot construct.
+The first chain was anchored at commit
+`b711cc52001419cfb0962e2a94af91cc03c5ffc2`, and its authority-only replay
+passed with zero source reconstruction and target access. Attempt 1 later
+failed closed at the first K7 matched-direct 2,048 checkpoint because the
+independent row-work verifier omitted the registered
+`MATCHED_DIRECT_CHECKPOINT` enum case. No campaign result or endpoint was
+written. The tracked historical record is
+`specs/V072_ANCHORED_ATTEMPT_1_FAILURE.json`.
 
-Current registered outcome:
+Ledger amendment 1.34.7 permits only the exhaustive enum repair and durable
+attempt journaling. The old tape and evidence are non-reusable. A replacement
+must freeze and anchor a new identity chain and restart all 15 occurrences.
+Until then:
 
 ```text
-source_reconstruction_recipe_id = null
-final_manifest_id = null
-final_preregistration_id = null
-remote_main_anchor_id = null
-target_execution_allowed = false
-registered_observer_calls = 0
+replacement_source_reconstruction_recipe_id = null
+replacement_final_manifest_id = null
+replacement_final_preregistration_id = null
+replacement_remote_main_anchor_id = null
+replacement_campaign_result_id = null
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
 ```
 
-No V0-072 target law, seed, draw schedule or stopping rule is changed by this
-slice.
+No V0-072 target law, seed, draw schedule, stopping rule or endpoint changed.

@@ -257,6 +257,18 @@ PHASE3E_BUNDLE_MANIFEST_DOMAIN = "acfqp:phase3e-bundle-manifest:v1"
 SELECTED_ROUTE_BUNDLE_MANIFEST_DOMAIN = (
     "acfqp:selected-route-bundle-manifest:v1"
 )
+V072_ANCHORED_CAMPAIGN_ATTEMPT_FAILURE_DOMAIN = (
+    "acfqp:v072-anchored-campaign-attempt-failure:v1"
+)
+V072_REGISTERED_CAMPAIGN_ATTEMPT_JOURNAL_DOMAIN = (
+    "acfqp:v072-registered-campaign-attempt-journal:v1"
+)
+V072_REGISTERED_CAMPAIGN_ATTEMPT_JOURNAL_OBJECT_DOMAIN = (
+    "acfqp:v072-registered-campaign-attempt-journal-object:v1"
+)
+V072_REGISTERED_CAMPAIGN_ATTEMPT_JOURNAL_EVENT_DOMAIN = (
+    "acfqp:v072-registered-campaign-attempt-journal-event:v1"
+)
 
 
 PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
@@ -457,6 +469,18 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         "phase3e_bundle_manifest": PHASE3E_BUNDLE_MANIFEST_DOMAIN,
         "selected_route_bundle_manifest": (
             SELECTED_ROUTE_BUNDLE_MANIFEST_DOMAIN
+        ),
+        "v072_anchored_campaign_attempt_failure": (
+            V072_ANCHORED_CAMPAIGN_ATTEMPT_FAILURE_DOMAIN
+        ),
+        "v072_registered_campaign_attempt_journal": (
+            V072_REGISTERED_CAMPAIGN_ATTEMPT_JOURNAL_DOMAIN
+        ),
+        "v072_registered_campaign_attempt_journal_object": (
+            V072_REGISTERED_CAMPAIGN_ATTEMPT_JOURNAL_OBJECT_DOMAIN
+        ),
+        "v072_registered_campaign_attempt_journal_event": (
+            V072_REGISTERED_CAMPAIGN_ATTEMPT_JOURNAL_EVENT_DOMAIN
         ),
     }
 )

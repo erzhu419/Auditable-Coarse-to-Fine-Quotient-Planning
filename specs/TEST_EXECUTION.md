@@ -103,7 +103,7 @@ pytest collection so that missing or duplicate modules cannot be hidden.
 
 ## Current measured validation
 
-### V0-072 nonauthorizing-draft validation
+### V0-072 construction and first anchored-attempt validation
 
 The following focused lanes have actually completed on the current
 construction tree:
@@ -121,6 +121,8 @@ real V0-068 campaign -> archive -> independent transform   =   1 /   1, 2908.13 
 public adapter + closure + confidence-row projection       =  53 /  53, 15.23 s
 draft-ID/no-hidden-law identity regression                 =  62 /  62, 42.95 s
 evaluation-only independent exact-ground controls          =  11 /  11, 2.44 s
+first exact fresh-ID full Gate                 = 193 modules / 2307 passed,
+                                                  5635.1 s
 ```
 
 The focused lanes overlap and must not be summed into a repository case
@@ -143,11 +145,18 @@ readiness, registered-target locks, and their independent/attack replays.
 The newer lanes additionally bind `96/48/96` as context-total rather than
 category-subcaps, prevent public/confidence construction from rebuilding the
 hidden-law manifest merely to validate the draft identity, and exercise the
-separate evaluation-only exact-ground algorithm. They remain development and
-lock evidence because every registered evaluation and observation entry is
-still hard-locked.
-None of these tests changes
-`NONAUTHORIZING DRAFT / TARGET LOCKED / GATE NOT RUN`.
+separate evaluation-only exact-ground algorithm. They remain construction and
+lock evidence rather than a scientific endpoint.
+
+After the exact Gate, the first source recipe and final identity chain were
+frozen and anchored at remote-main commit
+`b711cc52001419cfb0962e2a94af91cc03c5ffc2`. Authority-only replay passed.
+The actual target attempt subsequently failed closed at the first K7
+matched-direct 2,048 checkpoint due to an omitted verifier enum case. No
+campaign result or endpoint was written; its tracked record is
+`specs/V072_ANCHORED_ATTEMPT_1_FAILURE.json`. The repair changes the component
+tree, so the first 2,307-case result does not authorize the replacement
+attempt: the exact fresh-ID Gate must run again before a new chain is frozen.
 
 ### V0-067 release validation
 

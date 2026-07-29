@@ -1551,11 +1551,12 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 sample_efficiency_gate_blocks_mainline = false
 ```
 
-### V0-072 transfer-guided adaptive acquisition — NONAUTHORIZING DRAFT, TARGET LOCKED, Gate NOT RUN
+### V0-072 transfer-guided adaptive acquisition — REPAIR/RE-ANCHOR REQUIRED, Gate NOT RUN
 
 Proposed contract `1.36.0`, schema `2.0.0`, and profile
-`transfer_guided_adaptive_observation_acquisition_v1` remain nonauthorizing
-until their fixed source recipe and final committed identity chain exist.
+`transfer_guided_adaptive_observation_acquisition_v1` remain scientifically
+locked until one complete replacement campaign and independent endpoint
+replay exist.
 The clean-generation artifact freezes:
 
 1. three seven-vertex public contexts and separately role-bound hidden
@@ -1609,15 +1610,24 @@ the corrected profile permits one initial plus two promotion confidence
 epochs per row while the two-round total authority cap remains unchanged,
 and adds the precise matched-direct checkpoint-cap noncertificate.
 
-The first possible anchor is the first `origin/main` commit containing a
-fixed source reconstruction recipe, a final non-null execution manifest and
-the final preregistration ID that binds them, whose parent lacks that final
-identity chain. Although the production construction and finalization
-authorities now exist, that source recipe has not yet been executed and
-frozen, the final three-file chain has not been committed and pushed, the
-remote-main anchor has not been minted, and the actual 15-occurrence target
-campaign has not been run. Therefore the current draft does not authorize
-target execution and exposes no campaign endpoint.
+The first identity chain was frozen and anchored at remote-main commit
+`b711cc52001419cfb0962e2a94af91cc03c5ffc2`; its authority-only check passed
+without source or target access. The registered attempt then completed source
+reconstruction, began target execution and failed at the first K7
+matched-direct 2,048 checkpoint because the independent native-work verifier
+omitted the already registered `MATCHED_DIRECT_CHECKPOINT` enum value. No
+campaign result, typed campaign terminal or endpoint was written. The exact
+historical failure record is
+`specs/V072_ANCHORED_ATTEMPT_1_FAILURE.json`. Unpersisted target work is
+unknown and explicitly not zero; the failed attempt retains its full
+15-occurrence denominator.
+
+Ledger amendment 1.34.7 permits one mechanical repair and full restart. It
+forbids reuse of the old target tape/evidence, preserves every scientific
+parameter, and requires exhaustive enum handling, durable attempt journaling,
+a fresh exact test Gate, new recipe/manifest/preregistration identities and a
+new remote-main anchor. Until that replacement closes all 15 occurrences, no
+campaign endpoint exists.
 
 Only after the fixed chain is anchored may SOURCE be compared with NO_PRIOR
 and matched direct ground. SOURCE must use strictly fewer online target draws

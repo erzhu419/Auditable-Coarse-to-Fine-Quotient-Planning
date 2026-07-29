@@ -12,10 +12,13 @@ from typing import Any
 from acfqp.phase3e_ids import canonical_json_bytes
 from acfqp import v072_final_preregistration_authority_v1 as final_authority
 from acfqp import v072_registered_campaign_consumer_v1 as consumer
+from acfqp import (
+    v072_registered_campaign_attempt_journal_v1 as attempt_journal,
+)
 
 
 DEFAULT_OUTPUT_RELATIVE_PATH = Path(
-    "artifacts/v072_registered_campaign_result_v1.json"
+    attempt_journal.CANONICAL_OUTPUT_REPOSITORY_PATH
 )
 
 
@@ -43,6 +46,11 @@ def _output_path_v1(root: Path, supplied: str | None) -> Path:
     if not requested.is_absolute():
         requested = root / requested
     candidate = Path(os.path.abspath(os.fspath(requested)))
+    canonical_output = root / DEFAULT_OUTPUT_RELATIVE_PATH
+    if candidate != canonical_output:
+        raise SystemExit(
+            "official V0-072 execution requires the ledger-frozen output path"
+        )
     if candidate == artifacts or artifacts not in candidate.parents:
         raise SystemExit("output must be a new file under repository artifacts/")
 
@@ -186,8 +194,9 @@ def main(argv: list[str] | None = None) -> int:
         "--output",
         metavar="PATH",
         help=(
-            "new result path under artifacts/ "
-            f"(default: {DEFAULT_OUTPUT_RELATIVE_PATH.as_posix()})"
+            "compatibility spelling for the one ledger-frozen result path; "
+            "alternate paths are rejected before authority construction "
+            f"(required value: {DEFAULT_OUTPUT_RELATIVE_PATH.as_posix()})"
         ),
     )
     parser.add_argument(
@@ -213,12 +222,68 @@ def main(argv: list[str] | None = None) -> int:
         _print_canonical_v1(_authority_report_v1(anchor))
         return 0
 
-    authority_chain, _ = _authority_chain_v1(root)
-    execution_result = consumer.run_registered_v072_campaign_v1(
-        authority_chain=authority_chain
-    )
     assert output_path is not None
-    _atomic_write_new_v1(output_path, execution_result.to_document())
+    journal_writer = None
+    runner_phase = "AUTHORITY_CHAIN_CONSTRUCTION"
+    try:
+        authority_chain, _ = _authority_chain_v1(root)
+        runner_phase = "ATTEMPT_JOURNAL_OPEN"
+        execution_plan = (
+            consumer.prepare_registered_campaign_execution_plan_v1(
+                authority_chain
+            )
+        )
+        journal_writer = (
+            attempt_journal
+            .open_registered_campaign_attempt_journal_v1(
+                repository_root=root,
+                authority_chain=authority_chain,
+                execution_plan=execution_plan,
+                output_repository_path=(
+                    output_path.relative_to(root).as_posix()
+                ),
+            )
+        )
+        journal_writer.bind_source_replay(
+            authority_chain.manifest.source_reconstruction_replay
+        )
+        runner_phase = "CAMPAIGN_EXECUTION"
+        execution_result = consumer.run_registered_v072_campaign_v1(
+            authority_chain=authority_chain
+        )
+        runner_phase = "CAMPAIGN_COMPUTATION_JOURNAL"
+        journal_writer.commit_computation_result(execution_result)
+        attempt_journal.verify_attempt_journal_v1(
+            journal_writer.attempt_directory,
+            expected_identity=journal_writer.identity,
+        )
+        runner_phase = "OUTPUT_PUBLICATION"
+        _atomic_write_new_v1(output_path, execution_result.to_document())
+        journal_writer.commit_output_published(
+            output_path=output_path,
+            execution_result_id=execution_result.execution_result_id,
+        )
+        journal_verification = (
+            attempt_journal.verify_attempt_journal_v1(
+                journal_writer.attempt_directory,
+                expected_identity=journal_writer.identity,
+            )
+        )
+    except BaseException as error:
+        if journal_writer is not None and not journal_writer.terminal:
+            try:
+                journal_writer.commit_caught_failure(
+                    error,
+                    runner_phase=runner_phase,
+                )
+            except BaseException as journal_error:
+                raise journal_error from error
+        raise
+    finally:
+        if journal_writer is not None:
+            attempt_journal.close_active_attempt_journal_v1(
+                journal_writer
+            )
     _print_canonical_v1(
         {
             "schema": "acfqp.v072_registered_campaign_cli_result.v1",
@@ -226,6 +291,10 @@ def main(argv: list[str] | None = None) -> int:
             "authority_chain_id": authority_chain.chain_id,
             "execution_result_id": execution_result.execution_result_id,
             "output_path": output_path.relative_to(root).as_posix(),
+            "attempt_journal_id": journal_verification.attempt_id,
+            "attempt_journal_closure": (
+                journal_verification.closure.value
+            ),
         }
     )
     return 0

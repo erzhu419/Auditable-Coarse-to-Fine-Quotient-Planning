@@ -1389,6 +1389,49 @@ def _totals(
     )
 
 
+def _reconcile_route_occurrence_v1(
+    *,
+    authority_chain: consumer.RegisteredCampaignAuthorityChainV1,
+    anchor_id: str,
+    final_preregistration_id: str,
+    plan: consumer.RegisteredOccurrenceExecutionPlanV1,
+    context: prereg.HeldoutPublicGraphContextV2,
+    route_result: Any,
+    operational_terminal_authority: Any,
+    exact_evaluation: Any,
+) -> RegisteredReconciledOccurrenceV1:
+    if (
+        plan.template.route_kind
+        is consumer.RegisteredRouteKindV1.ADAPTIVE_QUOTIENT
+    ):
+        return _adaptive_occurrence(
+            authority_chain=authority_chain,
+            anchor_id=anchor_id,
+            plan=plan,
+            context=context,
+            route_result=route_result,
+            operational_terminal_authority=operational_terminal_authority,
+            exact_evaluation=exact_evaluation,
+        )
+    if (
+        plan.template.route_kind
+        is consumer.RegisteredRouteKindV1.MATCHED_DIRECT_GROUND
+    ):
+        return _direct_occurrence(
+            authority_chain=authority_chain,
+            anchor_id=anchor_id,
+            final_preregistration_id=final_preregistration_id,
+            plan=plan,
+            context=context,
+            route_result=route_result,
+            operational_terminal_authority=operational_terminal_authority,
+            exact_evaluation=exact_evaluation,
+        )
+    raise V072RegisteredCampaignReconciliationViolation(
+        "registered occurrence has an unknown route kind"
+    )
+
+
 def reconcile_registered_v072_campaign_v1(
     *,
     authority_chain: consumer.RegisteredCampaignAuthorityChainV1,
@@ -1467,27 +1510,16 @@ def reconcile_registered_v072_campaign_v1(
         strict=True,
     ):
         context = contexts[plan.template.context_id]
-        if plan.template.route_kind is consumer.RegisteredRouteKindV1.ADAPTIVE_QUOTIENT:
-            item = _adaptive_occurrence(
-                authority_chain=authority_chain,
-                anchor_id=anchor_id,
-                plan=plan,
-                context=context,
-                route_result=route_result,
-                operational_terminal_authority=terminal_authority,
-                exact_evaluation=evaluation,
-            )
-        else:
-            item = _direct_occurrence(
-                authority_chain=authority_chain,
-                anchor_id=anchor_id,
-                final_preregistration_id=final_preregistration_id,
-                plan=plan,
-                context=context,
-                route_result=route_result,
-                operational_terminal_authority=terminal_authority,
-                exact_evaluation=evaluation,
-            )
+        item = _reconcile_route_occurrence_v1(
+            authority_chain=authority_chain,
+            anchor_id=anchor_id,
+            final_preregistration_id=final_preregistration_id,
+            plan=plan,
+            context=context,
+            route_result=route_result,
+            operational_terminal_authority=terminal_authority,
+            exact_evaluation=evaluation,
+        )
         reconciled.append(item)
     occurrences = tuple(reconciled)
     if (

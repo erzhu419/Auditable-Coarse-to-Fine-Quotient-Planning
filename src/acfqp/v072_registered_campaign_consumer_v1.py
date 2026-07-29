@@ -777,6 +777,19 @@ def _execution_plan_v1(
     )
 
 
+def prepare_registered_campaign_execution_plan_v1(
+    authority_chain: Any,
+) -> RegisteredCampaignExecutionPlanV1:
+    """Derive the immutable schedule without opening source or target data."""
+
+    if type(authority_chain) is not RegisteredCampaignAuthorityChainV1:
+        raise RegisteredCampaignAuthorityGateLockedV1(
+            "campaign-plan preparation requires one exact authority chain",
+            access_audit=ZERO_ACCESS_AUDIT,
+        )
+    return _execution_plan_v1(authority_chain)
+
+
 def _load_and_replay_source_recipe_v1(
     authority_chain: RegisteredCampaignAuthorityChainV1,
 ) -> source_recipe.SourceReconstructionReplayV1:
@@ -857,6 +870,9 @@ def _execute_registered_occurrences_v1(
         v072_registered_operational_terminal_authority_v1 as terminal,
     )
     from acfqp import v072_independent_exact_ground_evaluator_v1 as evaluator
+    from acfqp import (
+        v072_registered_campaign_attempt_journal_v1 as attempt_journal,
+    )
 
     anchor = authority_chain.remote_main_anchor
     contexts = {
@@ -866,10 +882,16 @@ def _execute_registered_occurrences_v1(
     route_results: list[Any] = []
     terminal_authorities: list[Any | None] = []
     exact_evaluations: list[Any | None] = []
+    journal = attempt_journal.active_attempt_journal_v1(
+        authority_chain=authority_chain,
+        execution_plan=execution_plan,
+    )
 
     for occurrence_plan in execution_plan.occurrences:
         context = contexts[occurrence_plan.template.context_id]
         terminal_occurrence_plan: Any = occurrence_plan
+        if journal is not None:
+            journal.begin_occurrence(occurrence_plan)
         if (
             occurrence_plan.template.route_kind
             is RegisteredRouteKindV1.ADAPTIVE_QUOTIENT
@@ -886,7 +908,10 @@ def _execute_registered_occurrences_v1(
                 route_result.execution.status
                 is adaptive.RegisteredAdaptiveOccurrenceStatusV1.CERTIFIED
             )
-        else:
+        elif (
+            occurrence_plan.template.route_kind
+            is RegisteredRouteKindV1.MATCHED_DIRECT_GROUND
+        ):
             terminal_occurrence_plan = (
                 direct.registered_matched_direct_occurrence_plan_v1(
                     anchor=anchor,
@@ -905,11 +930,24 @@ def _execute_registered_occurrences_v1(
                 route_result.terminal_class
                 is direct.RegisteredMatchedDirectTerminalClassV1.PLAN_CERTIFICATE
             )
+        else:
+            raise V072RegisteredCampaignConsumerInvariantViolation(
+                "registered occurrence has an unknown route kind"
+            )
 
-        route_results.append(route_result)
         if not certified:
-            terminal_authorities.append(None)
-            exact_evaluations.append(None)
+            terminal_authority = None
+            exact_evaluation = None
+            if journal is not None:
+                journal.complete_occurrence(
+                    occurrence_plan=occurrence_plan,
+                    route_result=route_result,
+                    terminal_authority=None,
+                    exact_evaluation=None,
+                )
+            route_results.append(route_result)
+            terminal_authorities.append(terminal_authority)
+            exact_evaluations.append(exact_evaluation)
             continue
 
         terminal_authority = (
@@ -935,6 +973,14 @@ def _execute_registered_occurrences_v1(
                 "a route-native plan certificate failed independent exact "
                 "risk/regret evaluation"
             )
+        if journal is not None:
+            journal.complete_occurrence(
+                occurrence_plan=occurrence_plan,
+                route_result=route_result,
+                terminal_authority=terminal_authority,
+                exact_evaluation=exact_evaluation,
+            )
+        route_results.append(route_result)
         terminal_authorities.append(terminal_authority)
         exact_evaluations.append(exact_evaluation)
 
@@ -1120,7 +1166,9 @@ def run_registered_v072_campaign_v1(
             access_audit=ZERO_ACCESS_AUDIT,
         )
     _verify_exact_authority_chain_v1(authority_chain)
-    execution_plan = _execution_plan_v1(authority_chain)
+    execution_plan = prepare_registered_campaign_execution_plan_v1(
+        authority_chain
+    )
     if PRODUCTION_CAPABILITY_BLOCKERS:
         raise RegisteredCampaignProductionCapabilityBlockedV1(
             "exact anchor chain passed, but registered-only production "
@@ -1224,6 +1272,7 @@ __all__ = [
     "V072RegisteredCampaignConsumerInvariantViolation",
     "ZERO_ACCESS_AUDIT",
     "inspect_registered_campaign_consumer_readiness_v1",
+    "prepare_registered_campaign_execution_plan_v1",
     "registered_occurrence_templates_v1",
     "run_registered_v072_campaign_v1",
     "verify_registered_campaign_authority_chain_v1",

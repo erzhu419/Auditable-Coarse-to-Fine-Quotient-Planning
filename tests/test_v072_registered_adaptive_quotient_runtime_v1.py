@@ -493,6 +493,16 @@ def test_fixed_concretizer_gap_does_not_reclassify_certificate_status() -> None:
     }
 
 
+def test_selected_selector_outcome_cannot_be_silently_terminalized() -> None:
+    with pytest.raises(
+        runtime.V072RegisteredAdaptiveRuntimeInvariantViolation,
+        match="SELECTED terminal selector outcome was not materialized",
+    ):
+        runtime._terminal_status_from_selector_outcome_v1(
+            runtime.selector.RegisteredSelectorOutcomeV1.SELECTED
+        )
+
+
 def test_result_verification_and_attestation_cannot_be_publicly_minted() -> None:
     with pytest.raises(
         runtime.V072RegisteredAdaptiveRuntimeInvariantViolation,

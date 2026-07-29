@@ -234,23 +234,45 @@ def _work_payload(work: cold.ColdRowNativeWorkV1) -> dict[str, Any]:
         type(work.acquisition_purpose)
         is not cold.ColdRowAcquisitionPurposeV1
         or (
-            work.discovery_draws,
-            work.validation_draws,
+            work.acquisition_purpose
+            is (
+                cold.ColdRowAcquisitionPurposeV1
+                .MATCHED_DIRECT_CHECKPOINT
+            )
+            and (
+                work.discovery_draws
+                != cold.DISCOVERY_DRAWS_PER_ROW
+                or work.validation_draws
+                not in prereg.DIRECT_VALIDATION_CHECKPOINTS
+            )
         )
-        != {
-            cold.ColdRowAcquisitionPurposeV1.COLD_INITIAL: (
-                cold.DISCOVERY_DRAWS_PER_ROW,
-                cold.VALIDATION_DRAWS_PER_ROW,
-            ),
-            cold.ColdRowAcquisitionPurposeV1.INCREMENTAL_PROMOTION: (
-                0,
-                cold.VALIDATION_DRAWS_PER_ROW,
-            ),
-            cold.ColdRowAcquisitionPurposeV1.INCREMENTAL_NEW_CHILD: (
-                cold.DISCOVERY_DRAWS_PER_ROW,
-                cold.NEW_CHILD_VALIDATION_DRAWS_PER_ROW,
-            ),
-        }[work.acquisition_purpose]
+        or (
+            work.acquisition_purpose
+            is not (
+                cold.ColdRowAcquisitionPurposeV1
+                .MATCHED_DIRECT_CHECKPOINT
+            )
+            and (
+                work.discovery_draws,
+                work.validation_draws,
+            )
+            != {
+                cold.ColdRowAcquisitionPurposeV1.COLD_INITIAL: (
+                    cold.DISCOVERY_DRAWS_PER_ROW,
+                    cold.VALIDATION_DRAWS_PER_ROW,
+                ),
+                cold.ColdRowAcquisitionPurposeV1
+                .INCREMENTAL_PROMOTION: (
+                    0,
+                    cold.VALIDATION_DRAWS_PER_ROW,
+                ),
+                cold.ColdRowAcquisitionPurposeV1
+                .INCREMENTAL_NEW_CHILD: (
+                    cold.DISCOVERY_DRAWS_PER_ROW,
+                    cold.NEW_CHILD_VALIDATION_DRAWS_PER_ROW,
+                ),
+            }[work.acquisition_purpose]
+        )
         or work.discovery_random_word_calls
         != work.discovery_draws + work.discovery_rejections
         or work.validation_random_word_calls
