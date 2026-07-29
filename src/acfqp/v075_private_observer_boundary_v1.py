@@ -41,8 +41,8 @@ from acfqp import v075_public_campaign_authority_v1 as public_authority
 from acfqp import v075_public_graph_semantics_v1 as public_graph
 
 if TYPE_CHECKING:
-    from acfqp.v075_remote_main_anchor_verifier_v1 import (
-        V075ProductionOpenAuthorityV1,
+    from acfqp.v075_preopen_target_authorization_v1 import (
+        V075ObserverOpenAuthorizationV1,
     )
 
 
@@ -339,29 +339,38 @@ def _canonical_private_environment(
 
 def _require_production_open_binding(
     *,
-    authority: "V075ProductionOpenAuthorityV1",
+    authority: "V075ObserverOpenAuthorizationV1",
     namespace: public_authority.V075PublicTargetTapeNamespaceV1,
 ) -> V075ObserverOpenAuthorityBindingV1:
-    # Local import avoids making the independent Git verifier depend on this
+    # Local import keeps the law-free pre-open verifier independent from this
     # private observer boundary in return.
-    from acfqp import v075_remote_main_anchor_verifier_v1 as anchor_verifier
+    from acfqp import v075_preopen_target_authorization_v1 as preopen
 
     if (
         type(authority)
-        is not anchor_verifier.V075ProductionOpenAuthorityV1
+        is not preopen.V075ObserverOpenAuthorizationV1
         or type(namespace)
         is not public_authority.V075PublicTargetTapeNamespaceV1
     ):
         raise V075PrivateObserverBoundaryInvariantViolation(
             "production observer requires the exact independently issued "
-            "remote-main authority and one typed public namespace"
+            "reveal-attested pre-open authorization and one typed public "
+            "namespace"
         )
     anchor = authority.anchor
+    reveal = authority.private_reveal_attestation
     if (
         anchor.family_generation_id != namespace.family.generation_id
         or anchor.opaque_environment_commitment_id
         != namespace.environment_commitment.commitment_id
         or anchor.signer_registry != namespace.signer_registry
+        or authority.signer_registry != namespace.signer_registry
+        or authority.opaque_environment_commitment
+        != namespace.environment_commitment
+        or reveal.anchor != anchor
+        or reveal.anchor.opaque_environment_commitment_id
+        != namespace.environment_commitment.commitment_id
+        or reveal.anchor.signer_registry != namespace.signer_registry
         or anchor.final_preregistration_id
         != namespace.final_preregistration.external_id
         or anchor.observer_profile_id
@@ -375,8 +384,8 @@ def _require_production_open_binding(
         )
     return V075ObserverOpenAuthorityBindingV1(
         namespace=namespace,
-        upstream_authority_id=authority.authority_id,
-        verification_attestation_id=anchor.anchor_id,
+        upstream_authority_id=authority.authorization_id,
+        verification_attestation_id=reveal.attestation_id,
         scope=V075ObserverOpenAuthorityScopeV1.PRODUCTION_OPEN,
         independent_final_authority_verified=True,
         observer_open_authorized=True,
@@ -1185,7 +1194,7 @@ def _open_private_observer_from_binding_v1(
 
 def open_private_observer_v1(
     *,
-    authority: "V075ProductionOpenAuthorityV1",
+    authority: "V075ObserverOpenAuthorizationV1",
     namespace: public_authority.V075PublicTargetTapeNamespaceV1,
     private_salt: bytes,
     private_environment: Iterable[Iterable[tuple[int, Fraction]]],
@@ -1381,7 +1390,7 @@ def _verify_private_observer_journal_closure_from_binding_v1(
 def verify_private_observer_journal_closure_v1(
     *,
     closure: V075ObserverJournalClosureV1,
-    authority: "V075ProductionOpenAuthorityV1",
+    authority: "V075ObserverOpenAuthorizationV1",
     namespace: public_authority.V075PublicTargetTapeNamespaceV1,
     private_salt: bytes,
     private_environment: Iterable[Iterable[tuple[int, Fraction]]],
