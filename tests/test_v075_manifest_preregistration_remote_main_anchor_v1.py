@@ -88,6 +88,9 @@ def test_component_registry_covers_full_pretarget_dependency_surface() -> None:
     assert roles["PRIVATE_OBSERVER_BOUNDARY"] == (
         "src/acfqp/v075_private_observer_boundary_v1.py"
     )
+    assert roles["PRIVATE_ENVIRONMENT_GENERATION_PROFILE"] == (
+        "src/acfqp/v075_private_environment_generation_profile_v1.py"
+    )
     assert roles["FROZEN_SOURCE_PROPOSAL_ARCHIVE"] == (
         "src/acfqp/v075_frozen_source_proposal_archive_v1.py"
     )
@@ -96,6 +99,12 @@ def test_component_registry_covers_full_pretarget_dependency_surface() -> None:
     )
     assert roles["SOURCE_REPLAY_AND_MATERIALIZATION_CONTROLLER"] == (
         "scripts/replay_and_materialize_v075_source_work.py"
+    )
+    assert roles["REGISTERED_OCCURRENCE_WORKER"] == (
+        "src/acfqp/v075_registered_occurrence_worker_v1.py"
+    )
+    assert roles["PREOPEN_TARGET_AUTHORIZATION"] == (
+        "src/acfqp/v075_preopen_target_authorization_v1.py"
     )
     assert {
         "EXACT_H2_TRANSITION_ENGINE",
@@ -145,6 +154,91 @@ def test_caller_cannot_self_attest_a_concrete_authority_binding() -> None:
     )
     assert "AUTHORITY_INPUT_DUCK_TYPE_REJECTED" in readiness.blockers
     assert readiness.manifest is None
+
+
+def test_dependency_lock_is_recomputed_and_semantically_bound() -> None:
+    document, verification, binding = (
+        manifest.verify_and_bind_v075_dependency_lock_v1(PROJECT_ROOT)
+    )
+    assert document["runtime_dependency_lock_id"] == (
+        verification.dependency_lock_id
+    )
+    assert binding.role is (
+        manifest.V075ManifestAuthorityRoleV1.DEPENDENCY_LOCK
+    )
+    assert binding.authority_id == verification.dependency_lock_id
+    assert binding.independent_verification_id == (
+        verification.verification_id
+    )
+    assert binding.canonical_artifact_sha256 == (
+        verification.canonical_artifact_sha256
+    )
+    assert verification.to_document()["target_accessed"] is False
+    assert document["network_access_required"] is False
+    with pytest.raises(
+        manifest.V075ConfirmatoryAuthorityInvariantViolation,
+        match="independently issued",
+    ):
+        manifest.V075DependencyLockVerificationV1(
+            object(),
+            _id("lock"),
+            _id("digest"),
+            _id("component"),
+        )
+
+
+def test_dependency_lock_mutation_is_not_self_authorizing(
+    tmp_path: Path,
+) -> None:
+    repository = _repository(tmp_path)
+    lock_path = repository / manifest.DEPENDENCY_LOCK_REPOSITORY_PATH
+    lock_path.parent.mkdir(parents=True)
+    raw = (
+        PROJECT_ROOT
+        .joinpath(manifest.DEPENDENCY_LOCK_REPOSITORY_PATH)
+        .read_text(encoding="utf-8")
+    )
+    lock_path.write_text(
+        raw.replace('"version": "9.0.3"', '"version": "9.0.2"'),
+        encoding="utf-8",
+    )
+    (repository / "pyproject.toml").write_bytes(
+        (PROJECT_ROOT / "pyproject.toml").read_bytes()
+    )
+    _commit_all(repository, "tampered dependency lock")
+    with pytest.raises(
+        manifest.V075ConfirmatoryAuthorityInvariantViolation,
+        match="contract or identity",
+    ):
+        manifest.verify_and_bind_v075_dependency_lock_v1(repository)
+
+
+def test_remote_verifier_independently_replays_dependency_lock(
+    tmp_path: Path,
+) -> None:
+    repository = _repository(tmp_path)
+    lock_path = repository / manifest.DEPENDENCY_LOCK_REPOSITORY_PATH
+    lock_path.parent.mkdir(parents=True)
+    lock_path.write_bytes(
+        PROJECT_ROOT
+        .joinpath(manifest.DEPENDENCY_LOCK_REPOSITORY_PATH)
+        .read_bytes()
+    )
+    (repository / "pyproject.toml").write_bytes(
+        (PROJECT_ROOT / "pyproject.toml").read_bytes()
+    )
+    commit_id = _commit_all(repository, "exact dependency lock")
+    _document, verification, binding = (
+        manifest.verify_and_bind_v075_dependency_lock_v1(PROJECT_ROOT)
+    )
+    assert independent._verify_dependency_lock_at_commit(  # type: ignore[attr-defined]
+        repository,
+        commit_id,
+    ) == (
+        binding.authority_id,
+        verification.verification_id,
+        verification.canonical_artifact_sha256,
+    )
 
 
 def test_manifest_and_final_preregistration_reject_duck_types() -> None:
@@ -326,11 +420,15 @@ def test_wrong_ancestry_with_either_sentinel_is_detected(
 
 def test_per_role_semantic_verifiers_remain_fail_closed() -> None:
     assert independent._ROLE_SEMANTIC_VERIFIER_IMPLEMENTED == {  # type: ignore[attr-defined]
-        role: False for role in independent.REQUIRED_AUTHORITY_ROLE_ORDER
+        role: role == "DEPENDENCY_LOCK"
+        for role in independent.REQUIRED_AUTHORITY_ROLE_ORDER
     }
     assert (
         independent.V075ProductionOpenAuthorityV1.__doc__
-        == "Exact typed capability for a future private V0-075 observer."
+        == (
+            "Legacy remote-main preauthorization; never an "
+            "observer-open input."
+        )
     )
     source = inspect.getsource(
         independent.verify_and_mint_v075_production_open_authority_v1

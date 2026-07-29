@@ -21,9 +21,14 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 import hashlib
 import hmac
+import importlib.metadata
+import json
 import os
+import platform
 from pathlib import Path, PurePosixPath
 import subprocess
+import sys
+import sysconfig
 from typing import Any, Mapping
 
 from acfqp.phase3e_ids import (
@@ -52,6 +57,7 @@ MANIFEST_REPOSITORY_PATH = (
 FINAL_PREREGISTRATION_REPOSITORY_PATH = (
     "specs/V075_FINAL_PREREGISTRATION.json"
 )
+DEPENDENCY_LOCK_REPOSITORY_PATH = "specs/V075_DEPENDENCY_LOCK.json"
 EXACT_TEST_COMMAND = (
     "python3",
     "-m",
@@ -62,6 +68,8 @@ EXACT_TEST_COMMAND = (
 )
 DETERMINISTIC_ENVIRONMENT = (
     {"name": "LC_ALL", "value": "C.UTF-8"},
+    {"name": "PYTEST_DISABLE_PLUGIN_AUTOLOAD", "value": "1"},
+    {"name": "PYTHONDONTWRITEBYTECODE", "value": "1"},
     {"name": "PYTHONHASHSEED", "value": "0"},
     {"name": "TZ", "value": "UTC"},
 )
@@ -82,6 +90,10 @@ REQUIRED_COMPONENT_SPECS = (
     (
         "PUBLIC_GRAPH_SEMANTICS",
         "src/acfqp/v075_public_graph_semantics_v1.py",
+    ),
+    (
+        "PRIVATE_ENVIRONMENT_GENERATION_PROFILE",
+        "src/acfqp/v075_private_environment_generation_profile_v1.py",
     ),
     (
         "SOURCE_PRIOR_ADAPTER_AUTHORITY",
@@ -106,6 +118,14 @@ REQUIRED_COMPONENT_SPECS = (
     (
         "OCCURRENCE_CAS_TRANSPORT",
         "src/acfqp/v075_occurrence_cas_transport_v1.py",
+    ),
+    (
+        "REGISTERED_OCCURRENCE_WORKER",
+        "src/acfqp/v075_registered_occurrence_worker_v1.py",
+    ),
+    (
+        "PREOPEN_TARGET_AUTHORIZATION",
+        "src/acfqp/v075_preopen_target_authorization_v1.py",
     ),
     (
         "PRIVATE_OBSERVER_BOUNDARY",
@@ -159,7 +179,8 @@ REQUIRED_AUTHORITY_ROLE_ORDER = (
 # and its exact attestation bytes.  The current pre-target slice intentionally
 # leaves every entry unavailable.
 _ROLE_SEMANTIC_VERIFIER_IMPLEMENTED = {
-    role: False for role in REQUIRED_AUTHORITY_ROLE_ORDER
+    role: role == "DEPENDENCY_LOCK"
+    for role in REQUIRED_AUTHORITY_ROLE_ORDER
 }
 
 _DOMAINS = {
@@ -167,6 +188,10 @@ _DOMAINS = {
     "authority_binding": "acfqp:v075-manifest-authority-binding:v1",
     "authority_registry": "acfqp:v075-manifest-authority-registry:v1",
     "component_registry": "acfqp:v075-manifest-component-registry:v1",
+    "dependency_lock": "acfqp:v075-runtime-dependency-lock:v1",
+    "dependency_lock_verification": (
+        "acfqp:v075-runtime-dependency-lock-verification:v1"
+    ),
     "manifest": "acfqp:v075-confirmatory-execution-manifest:v1",
     "final_preregistration": "acfqp:v075-final-preregistration:v1",
     "rsa_public_key": "acfqp:v075-rsa-public-verification-key:v1",
@@ -523,7 +548,273 @@ def _verify_component_document(
     return item
 
 
+_DEPENDENCY_LOCK_KEYS = {
+    "schema",
+    "schema_version",
+    "proposed_contract_version",
+    "profile_key",
+    "runtime_dependency_model",
+    "runtime_third_party_distributions",
+    "test_dependency_distributions",
+    "interpreter",
+    "project",
+    "exact_test_command",
+    "required_environment",
+    "pytest_plugin_autoload_allowed",
+    "package_installer_execution_allowed",
+    "network_access_required",
+    "caller_supplied_digest_accepted",
+    "caller_supplied_status_accepted",
+    "target_access",
+    "runtime_dependency_lock_id",
+}
+_DEPENDENCY_INTERPRETER_KEYS = {
+    "implementation",
+    "version_info",
+    "hexversion",
+    "cache_tag",
+    "soabi",
+    "platform",
+    "machine",
+    "byteorder",
+    "maxsize",
+    "hash_algorithm",
+    "hash_width",
+    "hash_modulus",
+    "compiler",
+    "build",
+    "config_args_sha256",
+}
+_DEPENDENCY_PROJECT_KEYS = {
+    "name",
+    "version",
+    "requires_python",
+    "declared_runtime_dependencies",
+    "pyproject_sha256",
+}
+_DEPENDENCY_DISTRIBUTION_KEYS = {
+    "name",
+    "version",
+    "metadata_sha256",
+    "wheel_sha256",
+}
+
+
+def _strict_noncanonical_json_blob(
+    raw: bytes,
+    *,
+    keys: set[str],
+    label: str,
+) -> tuple[dict[str, Any], bytes]:
+    if type(raw) is not bytes or not raw or len(raw) > 4 * 1024 * 1024:
+        raise V075RemoteMainAnchorInvariantViolation(
+            f"{label} bytes are empty, mistyped, or over cap"
+        )
+    try:
+        value = json.loads(
+            raw.decode("utf-8"),
+            parse_constant=lambda token: (_ for _ in ()).throw(
+                ValueError(token)
+            ),
+        )
+        canonical = canonical_json_bytes(value)
+    except (
+        UnicodeDecodeError,
+        json.JSONDecodeError,
+        Phase3EIdentityError,
+        TypeError,
+        ValueError,
+    ) as error:
+        raise V075RemoteMainAnchorInvariantViolation(
+            f"{label} is not strict UTF-8 JSON"
+        ) from error
+    if type(value) is not dict or set(value) != keys:
+        raise V075RemoteMainAnchorInvariantViolation(
+            f"{label} field set changed"
+        )
+    return value, canonical
+
+
+def _installed_distribution_digest(
+    distribution: importlib.metadata.Distribution,
+    filename: str,
+) -> str:
+    text = distribution.read_text(filename)
+    if type(text) is not str:
+        raise V075RemoteMainAnchorInvariantViolation(
+            f"installed distribution lacks {filename}"
+        )
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def _verify_dependency_lock_at_commit(
+    root: Path,
+    commit_id: str,
+) -> tuple[str, str, str]:
+    raw = _read_blob_at(
+        root,
+        commit_id,
+        DEPENDENCY_LOCK_REPOSITORY_PATH,
+    )
+    pyproject_raw = _read_blob_at(root, commit_id, "pyproject.toml")
+    if raw is None or pyproject_raw is None:
+        raise V075RemoteMainAnchorInvariantViolation(
+            "dependency lock or project configuration is absent"
+        )
+    item, canonical = _strict_noncanonical_json_blob(
+        raw,
+        keys=_DEPENDENCY_LOCK_KEYS,
+        label="dependency lock",
+    )
+    interpreter = item["interpreter"]
+    project = item["project"]
+    distributions = item["test_dependency_distributions"]
+    if (
+        type(interpreter) is not dict
+        or set(interpreter) != _DEPENDENCY_INTERPRETER_KEYS
+        or type(project) is not dict
+        or set(project) != _DEPENDENCY_PROJECT_KEYS
+        or type(distributions) is not list
+        or any(
+            type(value) is not dict
+            or set(value) != _DEPENDENCY_DISTRIBUTION_KEYS
+            for value in distributions
+        )
+    ):
+        raise V075RemoteMainAnchorInvariantViolation(
+            "dependency lock nested schema changed"
+        )
+    payload = dict(item)
+    lock_id = _cid(
+        payload.pop("runtime_dependency_lock_id"),
+        "runtime dependency lock",
+    )
+    if (
+        item["schema"] != "acfqp.v075_runtime_dependency_lock.v1"
+        or item["schema_version"] != SCHEMA_VERSION
+        or item["proposed_contract_version"] != PROPOSED_CONTRACT_VERSION
+        or item["profile_key"]
+        != "v075_stdlib_runtime_and_exact_test_dependency_lock_v1"
+        or item["runtime_dependency_model"]
+        != "PYTHON_STDLIB_PLUS_TRACKED_ACFQP_COMPONENT_BLOBS"
+        or item["runtime_third_party_distributions"] != []
+        or item["exact_test_command"] != list(EXACT_TEST_COMMAND)
+        or item["required_environment"] != list(DETERMINISTIC_ENVIRONMENT)
+        or item["pytest_plugin_autoload_allowed"] is not False
+        or item["package_installer_execution_allowed"] is not False
+        or item["network_access_required"] is not False
+        or item["caller_supplied_digest_accepted"] is not False
+        or item["caller_supplied_status_accepted"] is not False
+        or item["target_access"] is not False
+        or _content_id("dependency_lock", payload) != lock_id
+    ):
+        raise V075RemoteMainAnchorInvariantViolation(
+            "dependency lock contract or identity changed"
+        )
+    if interpreter != {
+        "implementation": sys.implementation.name,
+        "version_info": [
+            sys.version_info.major,
+            sys.version_info.minor,
+            sys.version_info.micro,
+            sys.version_info.releaselevel,
+            sys.version_info.serial,
+        ],
+        "hexversion": sys.hexversion,
+        "cache_tag": sys.implementation.cache_tag,
+        "soabi": sysconfig.get_config_var("SOABI"),
+        "platform": sysconfig.get_platform(),
+        "machine": platform.machine(),
+        "byteorder": sys.byteorder,
+        "maxsize": sys.maxsize,
+        "hash_algorithm": sys.hash_info.algorithm,
+        "hash_width": sys.hash_info.width,
+        "hash_modulus": sys.hash_info.modulus,
+        "compiler": platform.python_compiler(),
+        "build": list(platform.python_build()),
+        "config_args_sha256": hashlib.sha256(
+            str(sysconfig.get_config_var("CONFIG_ARGS")).encode("utf-8")
+        ).hexdigest(),
+    }:
+        raise V075RemoteMainAnchorInvariantViolation(
+            "dependency lock interpreter identity changed"
+        )
+    if project != {
+        "name": "acfqp",
+        "version": "0.0.1",
+        "requires_python": ">=3.10",
+        "declared_runtime_dependencies": [],
+        "pyproject_sha256": hashlib.sha256(pyproject_raw).hexdigest(),
+    }:
+        raise V075RemoteMainAnchorInvariantViolation(
+            "dependency lock project identity changed"
+        )
+    names = [value["name"] for value in distributions]
+    if names != sorted(set(names)):
+        raise V075RemoteMainAnchorInvariantViolation(
+            "dependency lock distributions are not unique and ordered"
+        )
+    for expected in distributions:
+        try:
+            installed = importlib.metadata.distribution(expected["name"])
+        except importlib.metadata.PackageNotFoundError as error:
+            raise V075RemoteMainAnchorInvariantViolation(
+                "locked test distribution is absent"
+            ) from error
+        if (
+            str(installed.metadata["Name"]).lower().replace("_", "-")
+            != expected["name"]
+            or installed.version != expected["version"]
+            or _installed_distribution_digest(installed, "METADATA")
+            != expected["metadata_sha256"]
+            or _installed_distribution_digest(installed, "WHEEL")
+            != expected["wheel_sha256"]
+        ):
+            raise V075RemoteMainAnchorInvariantViolation(
+                "locked test distribution bytes changed"
+            )
+    blob_id, executable = _tree_blob_record(
+        root,
+        commit_id,
+        DEPENDENCY_LOCK_REPOSITORY_PATH,
+    )
+    component_payload = {
+        "schema": "acfqp.v075_manifest_component_blob.v1",
+        "schema_version": SCHEMA_VERSION,
+        "role": "DEPENDENCY_LOCK",
+        "repository_path": DEPENDENCY_LOCK_REPOSITORY_PATH,
+        "git_blob_id": blob_id,
+        "bytes_sha256": hashlib.sha256(raw).hexdigest(),
+        "byte_count": len(raw),
+        "executable": executable,
+        "worktree_bytes_equal_index_blob": True,
+        "target_accessed": False,
+    }
+    component_id = _content_id("component_blob", component_payload)
+    canonical_digest = hashlib.sha256(canonical).hexdigest()
+    verification_payload = {
+        "schema": "acfqp.v075_runtime_dependency_lock_verification.v1",
+        "schema_version": SCHEMA_VERSION,
+        "dependency_lock_id": lock_id,
+        "canonical_artifact_sha256": canonical_digest,
+        "indexed_component_id": component_id,
+        "interpreter_identity_recomputed": True,
+        "distribution_metadata_recomputed": True,
+        "project_configuration_recomputed": True,
+        "network_access": False,
+        "target_accessed": False,
+        "valid": True,
+    }
+    verification_id = _content_id(
+        "dependency_lock_verification",
+        verification_payload,
+    )
+    return lock_id, verification_id, canonical_digest
+
+
 def _verify_binding_document(
+    root: Path,
+    commit_id: str,
     value: Any,
     expected_role: str,
 ) -> dict[str, Any]:
@@ -556,6 +847,12 @@ def _verify_binding_document(
         raise V075RemoteMainAnchorInvariantViolation(
             f"{expected_role} per-role semantic verifier is not implemented"
         )
+    if expected_role == "DEPENDENCY_LOCK":
+        expected = _verify_dependency_lock_at_commit(root, commit_id)
+        if values != expected:
+            raise V075RemoteMainAnchorInvariantViolation(
+                "dependency lock authority binding differs from semantic replay"
+            )
     return item
 
 
@@ -696,7 +993,7 @@ def _verify_manifest(
             "manifest authority registry is incomplete"
         )
     verified_bindings = [
-        _verify_binding_document(value, role)
+        _verify_binding_document(root, commit_id, value, role)
         for value, role in zip(
             bindings, REQUIRED_AUTHORITY_ROLE_ORDER, strict=True
         )
@@ -1065,7 +1362,7 @@ class V075RemoteMainAnchorAttestationV1:
 
 @dataclass(frozen=True, slots=True)
 class V075ProductionOpenAuthorityV1:
-    """Exact typed capability for a future private V0-075 observer."""
+    """Legacy remote-main preauthorization; never an observer-open input."""
 
     _issuer: object = field(repr=False, compare=False)
     anchor: V075RemoteMainAnchorAttestationV1
@@ -1114,7 +1411,9 @@ class V075ProductionOpenAuthorityV1:
             "first_qualifying_origin_main_anchor_verified": True,
             "registry_exact_key_bytes_verified": True,
             "manifest_component_closure_verified": True,
-            "observer_open_allowed": True,
+            "private_reveal_attestation_bound": False,
+            "accepted_by_private_observer_boundary": False,
+            "observer_open_allowed": False,
             "target_access_performed": False,
         }
 
@@ -1298,7 +1597,7 @@ def verify_v075_remote_main_anchor_independently_v1(
 def verify_and_mint_v075_production_open_authority_v1(
     repository_root: str | os.PathLike[str],
 ) -> V075ProductionOpenAuthorityV1:
-    """Mint the sole typed observer-open input after complete Git replay."""
+    """Mint legacy remote-main preauthorization, not an open capability."""
 
     anchor = verify_v075_remote_main_anchor_independently_v1(
         repository_root
@@ -1307,6 +1606,7 @@ def verify_and_mint_v075_production_open_authority_v1(
 
 
 __all__ = [
+    "DEPENDENCY_LOCK_REPOSITORY_PATH",
     "FINAL_PREREGISTRATION_REPOSITORY_PATH",
     "MANIFEST_REPOSITORY_PATH",
     "PROFILE_KEY",

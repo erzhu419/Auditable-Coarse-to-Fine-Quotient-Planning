@@ -16,9 +16,12 @@ remote-main Git objects.  Nothing in this module opens observer authority.
 
 from __future__ import annotations
 
+from collections import OrderedDict
 from dataclasses import dataclass
 from enum import Enum
+from functools import wraps
 import hashlib
+from threading import RLock
 from typing import Any, Iterable, Mapping
 
 from acfqp.h2_graph_transition_engine_v1 import (
@@ -46,6 +49,9 @@ DOMAIN_TAGS = {
     "catalogue": "acfqp:v075-heldout-legal-action-catalogue:v2",
     "row": "acfqp:v075-heldout-observation-row-binding:v2",
     "support_evidence": "acfqp:v075-heldout-support-evidence:v2",
+    "batch_aggregate_support_evidence": (
+        "acfqp:v075-batch-aggregate-support-evidence:v1"
+    ),
     "pairing_support_set": (
         "acfqp:v075-heldout-arm-free-pairing-support-set:v2"
     ),
@@ -75,6 +81,40 @@ if (
 
 class V075PublicGraphSemanticsInvariantViolation(ValueError):
     """A public state/action/support/pairing identity invariant failed."""
+
+
+_MEMOIZED_VALUE_LIMIT = 65_536
+_MEMOIZED_VALUES: OrderedDict[
+    tuple[str, int],
+    tuple[object, Any],
+] = OrderedDict()
+_MEMOIZED_VALUES_LOCK = RLock()
+
+
+def _memoized_property(role: str):
+    """Cache deterministic values by object identity without changing bytes."""
+
+    def decorate(method):
+        @property
+        @wraps(method)
+        def getter(self):
+            key = (role, id(self))
+            with _MEMOIZED_VALUES_LOCK:
+                cached = _MEMOIZED_VALUES.get(key)
+                if cached is not None and cached[0] is self:
+                    _MEMOIZED_VALUES.move_to_end(key)
+                    return cached[1]
+            value = method(self)
+            with _MEMOIZED_VALUES_LOCK:
+                _MEMOIZED_VALUES[key] = (self, value)
+                _MEMOIZED_VALUES.move_to_end(key)
+                while len(_MEMOIZED_VALUES) > _MEMOIZED_VALUE_LIMIT:
+                    _MEMOIZED_VALUES.popitem(last=False)
+            return value
+
+        return getter
+
+    return decorate
 
 
 def _hash(role: str, payload: Mapping[str, Any]) -> str:
@@ -173,7 +213,7 @@ class V075SymbolicGraphStateV1:
                 "state failure flag disagrees with public legal actions"
             )
 
-    @property
+    @_memoized_property("symbolic_state_context_id")
     def context_id(self) -> str:
         return self.context.context_id
 
@@ -186,7 +226,7 @@ class V075SymbolicGraphStateV1:
             "failure": self.failure,
         }
 
-    @property
+    @_memoized_property("symbolic_state_id")
     def state_id(self) -> str:
         return _hash("state", self._payload())
 
@@ -262,7 +302,7 @@ class V075LegalActionCatalogueV1:
                 "legal-action catalogue is incomplete or transplanted"
             )
 
-    @property
+    @_memoized_property("catalogue_context_id")
     def context_id(self) -> str:
         return self.context.context_id
 
@@ -277,7 +317,7 @@ class V075LegalActionCatalogueV1:
             "complete_public_catalogue": True,
         }
 
-    @property
+    @_memoized_property("catalogue_id")
     def catalogue_id(self) -> str:
         return _hash("catalogue", self._payload())
 
@@ -329,15 +369,15 @@ class V075ObservationRowBindingV1:
                 "row binding is outside the complete typed catalogue"
             )
 
-    @property
+    @_memoized_property("row_context_id")
     def context_id(self) -> str:
         return self.context.context_id
 
-    @property
+    @_memoized_property("row_catalogue_id")
     def catalogue_id(self) -> str:
         return self.catalogue.catalogue_id
 
-    @property
+    @_memoized_property("row_state_id")
     def state_id(self) -> str:
         return self.catalogue.state.state_id
 
@@ -357,7 +397,7 @@ class V075ObservationRowBindingV1:
             "ids_reconstructed_from_typed_graph": True,
         }
 
-    @property
+    @_memoized_property("row_binding_id")
     def row_binding_id(self) -> str:
         return _hash("row", self._payload())
 
@@ -458,7 +498,7 @@ class V075SupportEvidenceV1:
             "typed_evidence_graph_complete": True,
         }
 
-    @property
+    @_memoized_property("per_draw_support_evidence_id")
     def evidence_id(self) -> str:
         return _hash("support_evidence", self._payload())
 
@@ -548,6 +588,214 @@ def bind_support_evidence_v1(
     )
 
 
+@dataclass(frozen=True, slots=True)
+class V075BatchAggregateSupportEvidenceV1:
+    """One signed DISCOVERY aggregate, never a fabricated per-draw record."""
+
+    namespace: public_authority.V075PublicTargetTapeNamespaceV1
+    row_binding: V075ObservationRowBindingV1
+    observed_state: V075SymbolicGraphStateV1
+    source_observer_epoch_index: int
+    discovery_request_id: str
+    discovery_batch_id: str
+    discovery_outcome_id: str
+    discovery_outcome_count: int
+    observer_signature_hex: str
+
+    def __post_init__(self) -> None:
+        for value, field in (
+            (self.discovery_request_id, "aggregate discovery request"),
+            (self.discovery_batch_id, "aggregate discovery batch"),
+            (self.discovery_outcome_id, "aggregate discovery outcome"),
+        ):
+            _cid(value, field)
+        if (
+            type(self.namespace)
+            is not public_authority.V075PublicTargetTapeNamespaceV1
+            or type(self.row_binding) is not V075ObservationRowBindingV1
+            or type(self.observed_state) is not V075SymbolicGraphStateV1
+            or self.observed_state.context != self.row_binding.context
+            or type(self.source_observer_epoch_index) is not int
+            or self.source_observer_epoch_index
+            not in range(MAX_OBSERVER_EPOCH_INDEX)
+            or type(self.discovery_outcome_count) is not int
+            or self.discovery_outcome_count <= 0
+            or self.row_binding.context
+            not in self.namespace.family.replicate_contexts
+        ):
+            raise V075PublicGraphSemanticsInvariantViolation(
+                "batch aggregate support evidence is not one row-bound "
+                "DISCOVERY fact"
+            )
+        message = batch_aggregate_support_evidence_signing_bytes_v1(
+            namespace=self.namespace,
+            row_binding=self.row_binding,
+            observed_state=self.observed_state,
+            source_observer_epoch_index=(
+                self.source_observer_epoch_index
+            ),
+            discovery_request_id=self.discovery_request_id,
+            discovery_batch_id=self.discovery_batch_id,
+            discovery_outcome_id=self.discovery_outcome_id,
+            discovery_outcome_count=self.discovery_outcome_count,
+        )
+        if not (
+            public_authority
+            .verify_rsa_pkcs1_v1_5_sha256_signature_v1(
+                public_key=(
+                    self.namespace.signer_registry.observer_evidence_key
+                ),
+                message=message,
+                signature_hex=self.observer_signature_hex,
+            )
+        ):
+            raise V075PublicGraphSemanticsInvariantViolation(
+                "batch aggregate support evidence signature is invalid"
+            )
+
+    def _payload(self) -> dict[str, Any]:
+        return {
+            "schema": "acfqp.v075_batch_aggregate_support_evidence.v1",
+            "schema_version": SCHEMA_VERSION,
+            "target_tape_namespace_id": (
+                self.namespace.target_tape_namespace_id
+            ),
+            "context_id": self.row_binding.context_id,
+            "row_binding_id": self.row_binding.row_binding_id,
+            "observed_state_id": self.observed_state.state_id,
+            "observer_signer_key_id": (
+                self.namespace.signer_registry.observer_evidence_key.key_id
+            ),
+            "source_observer_epoch_index": (
+                self.source_observer_epoch_index
+            ),
+            "discovery_request_id": self.discovery_request_id,
+            "discovery_batch_id": self.discovery_batch_id,
+            "discovery_outcome_id": self.discovery_outcome_id,
+            "discovery_outcome_count": self.discovery_outcome_count,
+            "observer_signature_hex": self.observer_signature_hex,
+            "observer_signature_verified": True,
+            "evidence_granularity": "SIGNED_DISCOVERY_OUTCOME_AGGREGATE",
+            "accepted_draw_index_serialized": False,
+            "individual_draw_identity_serialized": False,
+            "pre_validation_freeze_required": True,
+            "signature_scope": "REGISTRY_RELATIVE_PROVENANCE_ONLY",
+            "independent_final_authority_verified": False,
+            "production_observation_authorized": False,
+            "arm_serialized": False,
+            "typed_evidence_graph_complete": True,
+        }
+
+    @_memoized_property("batch_aggregate_support_evidence_id")
+    def evidence_id(self) -> str:
+        return _hash("batch_aggregate_support_evidence", self._payload())
+
+    def to_document(self) -> dict[str, Any]:
+        return {
+            **self._payload(),
+            "namespace": self.namespace.to_document(),
+            "row_binding": self.row_binding.to_document(),
+            "observed_state": self.observed_state.to_document(),
+            "evidence_id": self.evidence_id,
+        }
+
+
+def batch_aggregate_support_evidence_signing_bytes_v1(
+    *,
+    namespace: public_authority.V075PublicTargetTapeNamespaceV1,
+    row_binding: V075ObservationRowBindingV1,
+    observed_state: V075SymbolicGraphStateV1,
+    source_observer_epoch_index: int,
+    discovery_request_id: str,
+    discovery_batch_id: str,
+    discovery_outcome_id: str,
+    discovery_outcome_count: int,
+) -> bytes:
+    for value, field in (
+        (discovery_request_id, "aggregate discovery request"),
+        (discovery_batch_id, "aggregate discovery batch"),
+        (discovery_outcome_id, "aggregate discovery outcome"),
+    ):
+        _cid(value, field)
+    if (
+        type(namespace)
+        is not public_authority.V075PublicTargetTapeNamespaceV1
+        or type(row_binding) is not V075ObservationRowBindingV1
+        or type(observed_state) is not V075SymbolicGraphStateV1
+        or observed_state.context != row_binding.context
+        or row_binding.context not in namespace.family.replicate_contexts
+        or type(source_observer_epoch_index) is not int
+        or source_observer_epoch_index
+        not in range(MAX_OBSERVER_EPOCH_INDEX)
+        or type(discovery_outcome_count) is not int
+        or discovery_outcome_count <= 0
+    ):
+        raise V075PublicGraphSemanticsInvariantViolation(
+            "batch aggregate support-evidence signing graph is invalid"
+        )
+    return (
+        b"acfqp:v075-batch-aggregate-support-evidence-signature:v1"
+        + b"\x00"
+        + canonical_json_bytes(
+            {
+                "schema": (
+                    "acfqp.v075_batch_aggregate_support_evidence_signature.v1"
+                ),
+                "schema_version": SCHEMA_VERSION,
+                "target_tape_namespace_id": (
+                    namespace.target_tape_namespace_id
+                ),
+                "signer_registry_id": namespace.signer_registry.registry_id,
+                "observer_signer_key_id": (
+                    namespace.signer_registry.observer_evidence_key.key_id
+                ),
+                "context_id": row_binding.context_id,
+                "row_binding_id": row_binding.row_binding_id,
+                "observed_state_id": observed_state.state_id,
+                "source_observer_epoch_index": (
+                    source_observer_epoch_index
+                ),
+                "discovery_request_id": discovery_request_id,
+                "discovery_batch_id": discovery_batch_id,
+                "discovery_outcome_id": discovery_outcome_id,
+                "discovery_outcome_count": discovery_outcome_count,
+                "evidence_granularity": (
+                    "SIGNED_DISCOVERY_OUTCOME_AGGREGATE"
+                ),
+                "accepted_draw_index_serialized": False,
+                "arm_serialized": False,
+            }
+        )
+    )
+
+
+def bind_batch_aggregate_support_evidence_v1(
+    *,
+    namespace: public_authority.V075PublicTargetTapeNamespaceV1,
+    row_binding: V075ObservationRowBindingV1,
+    observed_state: V075SymbolicGraphStateV1,
+    source_observer_epoch_index: int,
+    discovery_request_id: str,
+    discovery_batch_id: str,
+    discovery_outcome_id: str,
+    discovery_outcome_count: int,
+    observer_signature_hex: str,
+) -> V075BatchAggregateSupportEvidenceV1:
+    """Verify one signed aggregate support fact without inventing a draw."""
+
+    return V075BatchAggregateSupportEvidenceV1(
+        namespace,
+        row_binding,
+        observed_state,
+        source_observer_epoch_index,
+        discovery_request_id,
+        discovery_batch_id,
+        discovery_outcome_id,
+        discovery_outcome_count,
+        observer_signature_hex,
+    )
+
+
 class V075ObservationLaneV1(str, Enum):
     DISCOVERY = "DISCOVERY"
     VALIDATION = "VALIDATION"
@@ -558,7 +806,10 @@ class V075SharedSupportEpochV1:
     namespace: public_authority.V075PublicTargetTapeNamespaceV1
     row_binding: V075ObservationRowBindingV1
     epoch_index: int
-    evidence: tuple[V075SupportEvidenceV1, ...]
+    evidence: tuple[
+        V075SupportEvidenceV1 | V075BatchAggregateSupportEvidenceV1,
+        ...,
+    ]
     parent: "V075SharedSupportEpochV1 | None" = None
 
     def __post_init__(self) -> None:
@@ -574,7 +825,11 @@ class V075SharedSupportEpochV1:
             or type(self.evidence) is not tuple
             or len(self.evidence) > MAX_SUPPORT_MEMBERS_PER_ROW
             or any(
-                type(item) is not V075SupportEvidenceV1
+                type(item)
+                not in {
+                    V075SupportEvidenceV1,
+                    V075BatchAggregateSupportEvidenceV1,
+                }
                 for item in self.evidence
             )
         ):
@@ -610,15 +865,15 @@ class V075SharedSupportEpochV1:
                 "promoted support epoch requires immediate typed parent"
             )
 
-    @property
+    @_memoized_property("support_epoch_context_id")
     def context_id(self) -> str:
         return self.row_binding.context_id
 
-    @property
+    @_memoized_property("support_epoch_row_binding_id")
     def row_binding_id(self) -> str:
         return self.row_binding.row_binding_id
 
-    @property
+    @_memoized_property("support_epoch_evidence_ids")
     def evidence_ids(self) -> tuple[str, ...]:
         return tuple(item.evidence_id for item in self.evidence)
 
@@ -630,7 +885,7 @@ class V075SharedSupportEpochV1:
             else V075ObservationLaneV1.VALIDATION
         )
 
-    @property
+    @_memoized_property("pairing_support_set_id")
     def pairing_support_set_id(self) -> str:
         return _hash(
             "pairing_support_set",
@@ -649,7 +904,7 @@ class V075SharedSupportEpochV1:
             },
         )
 
-    @property
+    @_memoized_property("pairing_lineage_id")
     def pairing_lineage_id(self) -> str:
         return _hash(
             "pairing_lineage",
@@ -694,7 +949,7 @@ class V075SharedSupportEpochV1:
             "shared_by_arms": list(public_authority.ARM_ORDER),
         }
 
-    @property
+    @_memoized_property("support_epoch_id")
     def epoch_id(self) -> str:
         return _hash("support_epoch", self._payload())
 
@@ -713,7 +968,9 @@ def derive_shared_support_epoch_v1(
     namespace: public_authority.V075PublicTargetTapeNamespaceV1,
     row_binding: V075ObservationRowBindingV1,
     epoch_index: int,
-    evidence: Iterable[V075SupportEvidenceV1],
+    evidence: Iterable[
+        V075SupportEvidenceV1 | V075BatchAggregateSupportEvidenceV1
+    ],
     parent: V075SharedSupportEpochV1 | None = None,
 ) -> V075SharedSupportEpochV1:
     try:
@@ -793,7 +1050,7 @@ class V075SharedSupportChainV1:
             "arm_serialized": False,
         }
 
-    @property
+    @_memoized_property("support_chain_id")
     def chain_id(self) -> str:
         return _hash("support_chain", self._payload())
 
@@ -849,7 +1106,7 @@ class V075FiveArmPairingAuthorityV1:
     def lane(self) -> V075ObservationLaneV1:
         return self.support_chain.leaf.required_lane
 
-    @property
+    @_memoized_property("raw_word_pairing_key_id")
     def raw_word_pairing_key_id(self) -> str:
         return _hash(
             "raw_pairing_key",
@@ -890,7 +1147,7 @@ class V075FiveArmPairingAuthorityV1:
             "one_shared_lineage_for_all_arms": True,
         }
 
-    @property
+    @_memoized_property("pairing_authority_id")
     def pairing_authority_id(self) -> str:
         return _hash("five_arm_pairing", self._payload())
 
@@ -940,31 +1197,31 @@ class V075TransitionStreamIdentityV1:
     def row_binding(self) -> V075ObservationRowBindingV1:
         return self.pairing_authority.row_binding
 
-    @property
+    @_memoized_property("stream_target_namespace_id")
     def target_tape_namespace_id(self) -> str:
         return self.namespace.target_tape_namespace_id
 
-    @property
+    @_memoized_property("stream_context_id")
     def context_id(self) -> str:
         return self.row_binding.context_id
 
-    @property
+    @_memoized_property("stream_row_binding_id")
     def row_binding_id(self) -> str:
         return self.row_binding.row_binding_id
 
-    @property
+    @_memoized_property("stream_catalogue_id")
     def catalogue_id(self) -> str:
         return self.row_binding.catalogue_id
 
-    @property
+    @_memoized_property("stream_support_epoch_id")
     def support_epoch_id(self) -> str:
         return self.pairing_authority.support_chain.leaf.epoch_id
 
-    @property
+    @_memoized_property("stream_support_chain_id")
     def support_chain_id(self) -> str:
         return self.pairing_authority.support_chain.chain_id
 
-    @property
+    @_memoized_property("stream_pairing_lineage_id")
     def pairing_lineage_id(self) -> str:
         return (
             self.pairing_authority.support_chain.leaf.pairing_lineage_id
@@ -999,7 +1256,7 @@ class V075TransitionStreamIdentityV1:
             "support_evidence_affects_seed": False,
         }
 
-    @property
+    @_memoized_property("pairing_group_id")
     def pairing_group_id(self) -> str:
         return _hash("pairing_group", self._pairing_payload())
 
@@ -1024,11 +1281,11 @@ class V075TransitionStreamIdentityV1:
             "pairing_group_id": self.pairing_group_id,
         }
 
-    @property
+    @_memoized_property("stream_pair_id")
     def pair_id(self) -> str:
         return _hash("stream_pair", self._pair_payload())
 
-    @property
+    @_memoized_property("stream_id")
     def stream_id(self) -> str:
         return _hash(
             "stream",
@@ -1041,7 +1298,7 @@ class V075TransitionStreamIdentityV1:
             },
         )
 
-    @property
+    @_memoized_property("stream_seed")
     def seed(self) -> int:
         return derive_splitmix64_seed_v1(
             seed_domain=SEED_DOMAINS[self.lane.value],
@@ -1109,7 +1366,7 @@ class V075FiveArmStreamSetV1:
             "one_shared_lineage_for_all_arms": True,
         }
 
-    @property
+    @_memoized_property("stream_set_id")
     def stream_set_id(self) -> str:
         return _hash("five_arm_stream_set", self._payload())
 
@@ -1164,6 +1421,7 @@ __all__ = [
     "TARGET_OBSERVER_OPEN_AUTHORITY",
     "V075FiveArmPairingAuthorityV1",
     "V075FiveArmStreamSetV1",
+    "V075BatchAggregateSupportEvidenceV1",
     "V075LegalActionCatalogueV1",
     "V075ObservationLaneV1",
     "V075ObservationRowBindingV1",
@@ -1173,6 +1431,8 @@ __all__ = [
     "V075SupportEvidenceV1",
     "V075SymbolicGraphStateV1",
     "V075TransitionStreamIdentityV1",
+    "batch_aggregate_support_evidence_signing_bytes_v1",
+    "bind_batch_aggregate_support_evidence_v1",
     "bind_support_evidence_v1",
     "derive_shared_support_epoch_v1",
     "derive_transition_stream_identity_v1",

@@ -18,14 +18,20 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from enum import Enum
 import hashlib
+import importlib.metadata
+import json
 import os
+import platform
 from pathlib import Path, PurePosixPath
 import stat
 import subprocess
+import sys
+import sysconfig
 from typing import Any, Mapping
 
 from acfqp.phase3e_ids import canonical_json_bytes, parse_content_id
 from acfqp import v075_public_campaign_authority_v1 as public_authority
+from acfqp import v075_tracked_source_authority_v1 as tracked_source
 
 
 SCHEMA_VERSION = "1.0.0"
@@ -43,6 +49,7 @@ MANIFEST_REPOSITORY_PATH = (
 FINAL_PREREGISTRATION_REPOSITORY_PATH = (
     "specs/V075_FINAL_PREREGISTRATION.json"
 )
+DEPENDENCY_LOCK_REPOSITORY_PATH = "specs/V075_DEPENDENCY_LOCK.json"
 
 EXACT_TEST_COMMAND = (
     "python3",
@@ -54,6 +61,8 @@ EXACT_TEST_COMMAND = (
 )
 DETERMINISTIC_ENVIRONMENT = (
     ("LC_ALL", "C.UTF-8"),
+    ("PYTEST_DISABLE_PLUGIN_AUTOLOAD", "1"),
+    ("PYTHONDONTWRITEBYTECODE", "1"),
     ("PYTHONHASHSEED", "0"),
     ("TZ", "UTC"),
 )
@@ -79,6 +88,10 @@ REQUIRED_COMPONENT_SPECS = (
         "src/acfqp/v075_public_graph_semantics_v1.py",
     ),
     (
+        "PRIVATE_ENVIRONMENT_GENERATION_PROFILE",
+        "src/acfqp/v075_private_environment_generation_profile_v1.py",
+    ),
+    (
         "SOURCE_PRIOR_ADAPTER_AUTHORITY",
         "src/acfqp/v075_source_prior_adapter_v1.py",
     ),
@@ -101,6 +114,14 @@ REQUIRED_COMPONENT_SPECS = (
     (
         "OCCURRENCE_CAS_TRANSPORT",
         "src/acfqp/v075_occurrence_cas_transport_v1.py",
+    ),
+    (
+        "REGISTERED_OCCURRENCE_WORKER",
+        "src/acfqp/v075_registered_occurrence_worker_v1.py",
+    ),
+    (
+        "PREOPEN_TARGET_AUTHORIZATION",
+        "src/acfqp/v075_preopen_target_authorization_v1.py",
     ),
     (
         "PRIVATE_OBSERVER_BOUNDARY",
@@ -168,6 +189,10 @@ DOMAIN_TAGS = {
     "authority_registry": "acfqp:v075-manifest-authority-registry:v1",
     "component_registry": "acfqp:v075-manifest-component-registry:v1",
     "readiness": "acfqp:v075-confirmatory-manifest-readiness:v1",
+    "dependency_lock": "acfqp:v075-runtime-dependency-lock:v1",
+    "dependency_lock_verification": (
+        "acfqp:v075-runtime-dependency-lock-verification:v1"
+    ),
     "manifest": "acfqp:v075-confirmatory-execution-manifest:v1",
     "final_preregistration": "acfqp:v075-final-preregistration:v1",
 }
@@ -452,6 +477,358 @@ class V075AuthorityPlaceholderV1:
 
 
 _ISSUER = object()
+
+
+_DEPENDENCY_LOCK_KEYS = {
+    "schema",
+    "schema_version",
+    "proposed_contract_version",
+    "profile_key",
+    "runtime_dependency_model",
+    "runtime_third_party_distributions",
+    "test_dependency_distributions",
+    "interpreter",
+    "project",
+    "exact_test_command",
+    "required_environment",
+    "pytest_plugin_autoload_allowed",
+    "package_installer_execution_allowed",
+    "network_access_required",
+    "caller_supplied_digest_accepted",
+    "caller_supplied_status_accepted",
+    "target_access",
+    "runtime_dependency_lock_id",
+}
+_DEPENDENCY_INTERPRETER_KEYS = {
+    "implementation",
+    "version_info",
+    "hexversion",
+    "cache_tag",
+    "soabi",
+    "platform",
+    "machine",
+    "byteorder",
+    "maxsize",
+    "hash_algorithm",
+    "hash_width",
+    "hash_modulus",
+    "compiler",
+    "build",
+    "config_args_sha256",
+}
+_DEPENDENCY_PROJECT_KEYS = {
+    "name",
+    "version",
+    "requires_python",
+    "declared_runtime_dependencies",
+    "pyproject_sha256",
+}
+_DEPENDENCY_DISTRIBUTION_KEYS = {
+    "name",
+    "version",
+    "metadata_sha256",
+    "wheel_sha256",
+}
+
+
+def _exact_json_object(
+    raw: bytes,
+    *,
+    expected_keys: set[str],
+    label: str,
+) -> dict[str, Any]:
+    if type(raw) is not bytes or not raw or len(raw) > 4 * 1024 * 1024:
+        raise V075ConfirmatoryAuthorityInvariantViolation(
+            f"{label} bytes are empty, mistyped, or over cap"
+        )
+    try:
+        value = json.loads(
+            raw.decode("utf-8"),
+            parse_constant=lambda token: (_ for _ in ()).throw(
+                ValueError(token)
+            ),
+        )
+    except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as error:
+        raise V075ConfirmatoryAuthorityInvariantViolation(
+            f"{label} is not strict UTF-8 JSON"
+        ) from error
+    if type(value) is not dict or set(value) != expected_keys:
+        raise V075ConfirmatoryAuthorityInvariantViolation(
+            f"{label} has an invalid field set"
+        )
+    try:
+        canonical_json_bytes(value)
+    except (TypeError, ValueError) as error:
+        raise V075ConfirmatoryAuthorityInvariantViolation(
+            f"{label} is outside canonical JSON"
+        ) from error
+    return value
+
+
+def _distribution_metadata_digest(
+    distribution: importlib.metadata.Distribution,
+    filename: str,
+) -> str:
+    text = distribution.read_text(filename)
+    if type(text) is not str:
+        raise V075ConfirmatoryAuthorityInvariantViolation(
+            f"installed distribution lacks {filename}"
+        )
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def _verify_dependency_lock_document_v1(
+    *,
+    repository_root: Path,
+    raw: bytes,
+) -> tuple[dict[str, Any], bytes]:
+    item = _exact_json_object(
+        raw,
+        expected_keys=_DEPENDENCY_LOCK_KEYS,
+        label="V0-075 dependency lock",
+    )
+    interpreter = item["interpreter"]
+    project = item["project"]
+    distributions = item["test_dependency_distributions"]
+    if (
+        type(interpreter) is not dict
+        or set(interpreter) != _DEPENDENCY_INTERPRETER_KEYS
+        or type(project) is not dict
+        or set(project) != _DEPENDENCY_PROJECT_KEYS
+        or type(distributions) is not list
+        or any(
+            type(value) is not dict
+            or set(value) != _DEPENDENCY_DISTRIBUTION_KEYS
+            for value in distributions
+        )
+    ):
+        raise V075ConfirmatoryAuthorityInvariantViolation(
+            "dependency lock nested schema changed"
+        )
+    payload = dict(item)
+    claimed_id = _cid(
+        payload.pop("runtime_dependency_lock_id"),
+        "runtime dependency lock",
+    )
+    canonical_payload = canonical_json_bytes(payload)
+    if (
+        item["schema"] != "acfqp.v075_runtime_dependency_lock.v1"
+        or item["schema_version"] != SCHEMA_VERSION
+        or item["proposed_contract_version"] != PROPOSED_CONTRACT_VERSION
+        or item["profile_key"]
+        != "v075_stdlib_runtime_and_exact_test_dependency_lock_v1"
+        or item["runtime_dependency_model"]
+        != "PYTHON_STDLIB_PLUS_TRACKED_ACFQP_COMPONENT_BLOBS"
+        or item["runtime_third_party_distributions"] != []
+        or item["exact_test_command"] != list(EXACT_TEST_COMMAND)
+        or item["required_environment"]
+        != [
+            {"name": name, "value": value}
+            for name, value in DETERMINISTIC_ENVIRONMENT
+        ]
+        or item["pytest_plugin_autoload_allowed"] is not False
+        or item["package_installer_execution_allowed"] is not False
+        or item["network_access_required"] is not False
+        or item["caller_supplied_digest_accepted"] is not False
+        or item["caller_supplied_status_accepted"] is not False
+        or item["target_access"] is not False
+        or _content_id("dependency_lock", payload) != claimed_id
+    ):
+        raise V075ConfirmatoryAuthorityInvariantViolation(
+            "dependency lock contract or identity changed"
+        )
+    expected_interpreter = {
+        "implementation": sys.implementation.name,
+        "version_info": [
+            sys.version_info.major,
+            sys.version_info.minor,
+            sys.version_info.micro,
+            sys.version_info.releaselevel,
+            sys.version_info.serial,
+        ],
+        "hexversion": sys.hexversion,
+        "cache_tag": sys.implementation.cache_tag,
+        "soabi": sysconfig.get_config_var("SOABI"),
+        "platform": sysconfig.get_platform(),
+        "machine": platform.machine(),
+        "byteorder": sys.byteorder,
+        "maxsize": sys.maxsize,
+        "hash_algorithm": sys.hash_info.algorithm,
+        "hash_width": sys.hash_info.width,
+        "hash_modulus": sys.hash_info.modulus,
+        "compiler": platform.python_compiler(),
+        "build": list(platform.python_build()),
+        "config_args_sha256": hashlib.sha256(
+            str(sysconfig.get_config_var("CONFIG_ARGS")).encode("utf-8")
+        ).hexdigest(),
+    }
+    pyproject = repository_root / "pyproject.toml"
+    if (
+        interpreter != expected_interpreter
+        or project
+        != {
+            "name": "acfqp",
+            "version": "0.0.1",
+            "requires_python": ">=3.10",
+            "declared_runtime_dependencies": [],
+            "pyproject_sha256": hashlib.sha256(
+                pyproject.read_bytes()
+            ).hexdigest(),
+        }
+    ):
+        raise V075ConfirmatoryAuthorityInvariantViolation(
+            "dependency lock interpreter or project binding changed"
+        )
+    names = [value["name"] for value in distributions]
+    if names != sorted(set(names)):
+        raise V075ConfirmatoryAuthorityInvariantViolation(
+            "dependency lock distributions are not unique and ordered"
+        )
+    for expected in distributions:
+        try:
+            installed = importlib.metadata.distribution(expected["name"])
+        except importlib.metadata.PackageNotFoundError as error:
+            raise V075ConfirmatoryAuthorityInvariantViolation(
+                "locked test distribution is absent"
+            ) from error
+        normalized_name = (
+            str(installed.metadata["Name"]).lower().replace("_", "-")
+        )
+        if (
+            normalized_name != expected["name"]
+            or installed.version != expected["version"]
+            or _distribution_metadata_digest(installed, "METADATA")
+            != expected["metadata_sha256"]
+            or _distribution_metadata_digest(installed, "WHEEL")
+            != expected["wheel_sha256"]
+        ):
+            raise V075ConfirmatoryAuthorityInvariantViolation(
+                "locked test distribution bytes changed"
+            )
+    return item, canonical_json_bytes(item)
+
+
+@dataclass(frozen=True, slots=True)
+class V075DependencyLockVerificationV1:
+    _issuer: object = field(repr=False, compare=False)
+    dependency_lock_id: str
+    canonical_artifact_sha256: str
+    indexed_component_id: str
+    _verification_id: str = field(init=False, repr=False)
+
+    def __post_init__(self) -> None:
+        values = (
+            _cid(self.dependency_lock_id, "verified dependency lock"),
+            _cid(
+                self.canonical_artifact_sha256,
+                "dependency lock canonical digest",
+            ),
+            _cid(self.indexed_component_id, "dependency lock component"),
+        )
+        if self._issuer is not _ISSUER or len(set(values)) != 3:
+            raise V075ConfirmatoryAuthorityInvariantViolation(
+                "dependency-lock verification was not independently issued"
+            )
+        object.__setattr__(
+            self,
+            "_verification_id",
+            _content_id("dependency_lock_verification", self._payload()),
+        )
+
+    def _payload(self) -> dict[str, Any]:
+        return {
+            "schema": "acfqp.v075_runtime_dependency_lock_verification.v1",
+            "schema_version": SCHEMA_VERSION,
+            "dependency_lock_id": self.dependency_lock_id,
+            "canonical_artifact_sha256": self.canonical_artifact_sha256,
+            "indexed_component_id": self.indexed_component_id,
+            "interpreter_identity_recomputed": True,
+            "distribution_metadata_recomputed": True,
+            "project_configuration_recomputed": True,
+            "network_access": False,
+            "target_accessed": False,
+            "valid": True,
+        }
+
+    @property
+    def verification_id(self) -> str:
+        return self._verification_id
+
+    def to_document(self) -> dict[str, Any]:
+        return {**self._payload(), "verification_id": self.verification_id}
+
+
+def verify_and_bind_v075_dependency_lock_v1(
+    repository_root: str | os.PathLike[str],
+) -> tuple[
+    dict[str, Any],
+    V075DependencyLockVerificationV1,
+    V075ConcreteAuthorityBindingV1,
+]:
+    """Recompute the exact environment lock and issue its manifest binding."""
+
+    root = Path(repository_root).resolve(strict=True)
+    component = collect_v075_component_blob_v1(
+        root,
+        role="DEPENDENCY_LOCK",
+    )
+    raw = root.joinpath(DEPENDENCY_LOCK_REPOSITORY_PATH).read_bytes()
+    document, canonical = _verify_dependency_lock_document_v1(
+        repository_root=root,
+        raw=raw,
+    )
+    verification = V075DependencyLockVerificationV1(
+        _ISSUER,
+        document["runtime_dependency_lock_id"],
+        hashlib.sha256(canonical).hexdigest(),
+        component.component_id,
+    )
+    binding = V075ConcreteAuthorityBindingV1(
+        _ISSUER,
+        V075ManifestAuthorityRoleV1.DEPENDENCY_LOCK,
+        verification.dependency_lock_id,
+        verification.verification_id,
+        verification.canonical_artifact_sha256,
+    )
+    return document, verification, binding
+
+
+def verify_and_bind_v075_tracked_source_authorities_v1(
+    repository_root: str | os.PathLike[str],
+) -> tuple[
+    tracked_source.V075TrackedSourceAuthorityBundleV1,
+    tracked_source.V075TrackedSourceAuthorityVerificationV1,
+    tuple[V075ConcreteAuthorityBindingV1, ...],
+]:
+    """Replay the eight source artifacts and bind both source manifest roles."""
+
+    bundle, verification = (
+        tracked_source.verify_tracked_v075_source_authorities_v1(
+            repository_root
+        )
+    )
+    artifacts = {item.role: item for item in bundle.artifacts}
+    adapter_binding = V075ConcreteAuthorityBindingV1(
+        _ISSUER,
+        V075ManifestAuthorityRoleV1.SOURCE_PRIOR_ADAPTER,
+        bundle.source_prior_adapter_id,
+        bundle.source_prior_verification_id,
+        artifacts["SOURCE_PRIOR_ADAPTER"].canonical_bytes_sha256,
+    )
+    verification_binding = V075ConcreteAuthorityBindingV1(
+        _ISSUER,
+        V075ManifestAuthorityRoleV1.SOURCE_PRIOR_ADAPTER_VERIFICATION,
+        bundle.source_prior_verification_id,
+        verification.verification_id,
+        artifacts[
+            "SOURCE_PRIOR_ADAPTER_VERIFICATION"
+        ].canonical_bytes_sha256,
+    )
+    return (
+        bundle,
+        verification,
+        (adapter_binding, verification_binding),
+    )
 
 
 @dataclass(frozen=True, slots=True)
@@ -872,6 +1249,7 @@ def current_v075_pretarget_readiness_v1(
 
 __all__ = [
     "DETERMINISTIC_ENVIRONMENT",
+    "DEPENDENCY_LOCK_REPOSITORY_PATH",
     "DOMAIN_TAGS",
     "EXACT_TEST_COMMAND",
     "FINAL_PREREGISTRATION_REPOSITORY_PATH",
@@ -890,6 +1268,7 @@ __all__ = [
     "V075ConfirmatoryAuthorityNotReady",
     "V075ConfirmatoryExecutionManifestV1",
     "V075FinalPreregistrationV1",
+    "V075DependencyLockVerificationV1",
     "V075ManifestAuthorityRoleV1",
     "V075ManifestReadinessV1",
     "assess_v075_manifest_readiness_v1",
@@ -897,4 +1276,6 @@ __all__ = [
     "current_v075_pretarget_readiness_v1",
     "finalize_v075_preregistration_v1",
     "require_ready_v075_manifest_v1",
+    "verify_and_bind_v075_dependency_lock_v1",
+    "verify_and_bind_v075_tracked_source_authorities_v1",
 ]

@@ -190,13 +190,26 @@ source runtime is commit
 `63cc0f5f78f64b7845319d1c1a5856212e3b8097` (tree
 `8c88ef5e2747267a309834d155136c40ba926b61`). A complete work
 materialization therefore requires an exact replay in a clean detached
-worktree at that snapshot. The current tree must reject the replay because its
-component and test-command identities differ. Until that replay has produced
-the exact typed source object and the V0-075 materializer consumes it in the
-same process:
+worktree at that snapshot. The current tree rejects the replay because its
+component and test-command identities differ. The registered detached replay
+and same-process V0-075 materialization have now completed. Their immutable
+public result is:
 
 ```text
-SOURCE_OFFLINE_WORK_PRODUCTION_INTEGRATION_NOT_RUN
+source archive =
+4b25945b07d94ace9a6af8cbf979a9133e3780b6306c0bc3b7d8055b2c25bf92
+
+source work materialization =
+302b6dbf8683f1a335b6e80a223771d9bf2c23ba013ecc847b9d0eab3691641d
+
+verified public source-work bundle =
+fad189d1b352ed816205e733a66880b24c0e0100dfd534db90c3e5d8f4f4d8a8
+
+source prior adapter =
+41a204b8b0a0c28d7b5c10417644635860e741544eef63e20f93d60e5f522e4e
+
+charged offline draws = 1,006,720
+target accesses = 0
 ```
 
 A counters document, compact recipe or caller-supplied values cannot
@@ -209,8 +222,9 @@ then independently compares every frozen input, output ID, ordered Merkle
 commitment and compact artifact before dynamically loading the digest-bound
 current V0-075 materializer against the same exact historical object types.
 Its complete ACFQP import allowlist is frozen and target, held-out,
-confirmatory, unknown, dirty or untracked code is rejected. This establishes a
-safe replay path; it does not claim that the expensive replay has run.
+confirmatory, unknown, dirty or untracked code is rejected. The eight tracked
+source artifacts and their independent tracked-source replay authority now
+constitute the sole source-prior input to the later target campaign.
 
 ## Authority order
 

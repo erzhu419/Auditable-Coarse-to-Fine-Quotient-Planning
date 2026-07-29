@@ -48,9 +48,13 @@ Construction currently keeps target access disabled. The full contract is
 [`specs/FRESH_TOTAL_LIFT_PARALLEL_CONFIRMATORY_CAMPAIGN.md`](specs/FRESH_TOTAL_LIFT_PARALLEL_CONFIRMATORY_CAMPAIGN.md).
 Implemented pre-target boundaries now include a source-only exact replay
 controller, private reveal/observer isolation, strict manifest/preregistration
-construction, and independent remote-Git anchor replay. The expensive source
-replay has not run, and the anchor verifier intentionally refuses every
-production authority role until its semantic verifier exists.
+construction, and independent remote-Git anchor replay. The exact source
+replay has completed and charges all `1,006,720` source draws; its eight
+public artifacts are frozen on `origin/main`. Batch-native partial-support
+construction now also has a real multistage
+observation→model→plan→row-specific-total-lift positive control. Target access
+remains locked while the production occurrence, reconciliation, endpoint and
+remaining semantic-authority chain are completed.
 Sample-efficiency, official, scalar, economics and counter-completeness Gates
 remain locked.
 
