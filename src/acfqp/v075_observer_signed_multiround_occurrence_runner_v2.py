@@ -389,15 +389,13 @@ class V075ObserverSignedRootExecutionV2:
         return {**self._payload(), "execution_id": self.execution_id}
 
 
-def _execute_initial_root_schedule(
-    *,
-    controller: control.V075ConstructionControlledPrivateObserverV2,
-    namespace: namespace_v2.V075PublicTargetTapeNamespaceV2,
+def _root_schedule_parts(
     schedule: acquisition.V075InitialAcquisitionScheduleV2,
-    verification: acquisition.V075InitialAcquisitionVerificationV2,
-) -> V075ObserverSignedRootExecutionV2:
-    """Execute every exact D64/freeze/V2048 root row once."""
-
+) -> tuple[
+    tuple[acquisition.V075InitialRowIntentV2, ...],
+    tuple[acquisition.V075InitialRowIntentV2, ...],
+    tuple[acquisition.V075InitialRowIntentV2, ...],
+]:
     discoveries = tuple(
         item
         for item in schedule.intents
@@ -414,6 +412,237 @@ def _execute_initial_root_schedule(
         for item in schedule.intents
         if item.kind is acquisition.V075InitialIntentKindV2.ROOT_VALIDATION
     )
+    if (
+        not discoveries
+        or len(discoveries) != len(promotions)
+        or len(discoveries) != len(validations)
+        or tuple(item.row_binding for item in discoveries)
+        != tuple(item.row_binding for item in promotions)
+        or tuple(item.row_binding for item in discoveries)
+        != tuple(item.row_binding for item in validations)
+        or tuple(item.dependency_intent_ids for item in promotions)
+        != tuple((item.intent_id,) for item in discoveries)
+        or tuple(item.dependency_intent_ids for item in validations)
+        != tuple((item.intent_id,) for item in promotions)
+    ):
+        _fail("initial root schedule dependency chain is incomplete")
+    return discoveries, promotions, validations
+
+
+def _reconstruct_root_execution_from_exact_prefix(
+    *,
+    namespace: namespace_v2.V075PublicTargetTapeNamespaceV2,
+    schedule: acquisition.V075InitialAcquisitionScheduleV2,
+    verification: acquisition.V075InitialAcquisitionVerificationV2,
+    prefix: control.V075OpenControlledBatchPrefixVerificationV2,
+    root_execution_bytes: bytes,
+) -> V075ObserverSignedRootExecutionV2:
+    discoveries, promotions, validations = _root_schedule_parts(schedule)
+    width = len(discoveries)
+    if (
+        type(root_execution_bytes) is not bytes
+        or not root_execution_bytes
+        or prefix.occurrence_id != schedule.occurrence.occurrence_id
+        or len(prefix.appends) != width * 2
+        or len(prefix.support_freezes) != width
+    ):
+        _fail("root execution prefix or claimed bytes are incomplete")
+    discovery_appends = prefix.appends[:width]
+    validation_appends = prefix.appends[width:]
+    support_by_row = {
+        item.row_binding_id: item for item in prefix.support_freezes
+    }
+    if (
+        len(support_by_row) != width
+        or set(support_by_row)
+        != {
+            item.row_binding.row_binding_id for item in discoveries
+        }
+    ):
+        _fail("root execution support-freeze registry is incomplete")
+    supports = tuple(
+        support_by_row[item.row_binding.row_binding_id]
+        for item in discoveries
+    )
+    if supports != prefix.support_freezes:
+        _fail("root execution support freezes differ from schedule order")
+
+    for scheduled, append, support in zip(
+        discoveries,
+        discovery_appends,
+        supports,
+        strict=True,
+    ):
+        semantic = append.intent.semantic_authority
+        request = append.batch.request
+        expected_stream = _root_discovery_stream(
+            namespace=namespace,
+            row_binding=scheduled.row_binding,
+            arm=schedule.occurrence.arm,
+        )
+        if (
+            semantic.role
+            is not (
+                control.V075ControlledBatchSemanticAuthorityRoleV2
+                .INITIAL_SCHEDULE_ROW_INTENT
+            )
+            or semantic.schema
+            is not (
+                control.V075ControlledBatchSemanticAuthoritySchemaV2
+                .INITIAL_SCHEDULE_ROW_INTENT
+            )
+            or semantic.semantic_artifact_id != scheduled.intent_id
+            or semantic.semantic_verification_id
+            != verification.verification_id
+            or semantic.stage
+            is not control.V075ControlledBatchStageV2.ROOT_DISCOVERY
+            or semantic.round_index != 0
+            or semantic.support_freeze_id is not None
+            or request.stream_identity != expected_stream
+            or request.accepted_draw_start
+            != scheduled.accepted_draw_start
+            or request.accepted_draw_count
+            != scheduled.accepted_draw_count
+            or request.accepted_draw_cap != scheduled.accepted_draw_cap
+            or support.discovery_append != append
+            or support.row_binding_id
+            != scheduled.row_binding.row_binding_id
+        ):
+            _fail("root discovery append differs from exact schedule")
+
+    for scheduled, append, support in zip(
+        validations,
+        validation_appends,
+        supports,
+        strict=True,
+    ):
+        semantic = append.intent.semantic_authority
+        request = append.batch.request
+        expected_stream = (
+            control.derive_v075_controlled_validation_stream_v2(
+                support_freeze=support,
+            )
+        )
+        if (
+            semantic.role
+            is not (
+                control.V075ControlledBatchSemanticAuthorityRoleV2
+                .INITIAL_SCHEDULE_ROW_INTENT
+            )
+            or semantic.schema
+            is not (
+                control.V075ControlledBatchSemanticAuthoritySchemaV2
+                .INITIAL_SCHEDULE_ROW_INTENT
+            )
+            or semantic.semantic_artifact_id != scheduled.intent_id
+            or semantic.semantic_verification_id
+            != verification.verification_id
+            or semantic.stage
+            is not control.V075ControlledBatchStageV2.ROOT_VALIDATION
+            or semantic.round_index != 0
+            or semantic.support_freeze_id != support.freeze_id
+            or request.stream_identity != expected_stream
+            or request.accepted_draw_start
+            != scheduled.accepted_draw_start
+            or request.accepted_draw_count
+            != scheduled.accepted_draw_count
+            or request.accepted_draw_cap != scheduled.accepted_draw_cap
+        ):
+            _fail("root validation append differs from exact schedule")
+
+    expected = V075ObserverSignedRootExecutionV2(
+        _ROOT_EXECUTION_ISSUER,
+        schedule.schedule_id,
+        verification.verification_id,
+        schedule.occurrence.occurrence_id,
+        prefix.current_head_id,
+        prefix.verification_id,
+        tuple(item.intent_id for item in discoveries),
+        tuple(
+            item.receipt.receipt_id for item in discovery_appends
+        ),
+        tuple(item.intent_id for item in promotions),
+        tuple(item.freeze_id for item in supports),
+        tuple(
+            (promotion.intent_id, support.freeze_id)
+            for promotion, support in zip(
+                promotions,
+                supports,
+                strict=True,
+            )
+        ),
+        tuple(item.intent_id for item in validations),
+        tuple(
+            item.receipt.receipt_id for item in validation_appends
+        ),
+        tuple(
+            item.row_binding.row_binding_id for item in discoveries
+        ),
+    )
+    if expected.canonical_bytes != root_execution_bytes:
+        _fail("root execution bytes differ from exact prefix reconstruction")
+    return expected
+
+
+def replay_v075_construction_root_execution_v2(
+    *,
+    repository_root: str | Path,
+    namespace: namespace_v2.V075PublicTargetTapeNamespaceV2,
+    schedule: acquisition.V075InitialAcquisitionScheduleV2,
+    schedule_verification: acquisition.V075InitialAcquisitionVerificationV2,
+    controlled_root_prefix: (
+        control.V075OpenControlledBatchPrefixVerificationV2
+    ),
+    root_execution_bytes: bytes,
+) -> V075ObserverSignedRootExecutionV2:
+    """Reconstruct one owner root without consuming a portable view type."""
+
+    try:
+        exact_schedule, exact_verification = _exact_initial_authority(
+            repository_root=repository_root,
+            namespace=namespace,
+            schedule=schedule,
+            verification=schedule_verification,
+        )
+        exact_prefix = (
+            control.replay_v075_open_controlled_batch_prefix_verification_v2(
+                controlled_root_prefix
+            )
+        )
+        if (
+            type(exact_prefix)
+            is not control.V075OpenControlledBatchPrefixVerificationV2
+            or exact_prefix.verification_id
+            != controlled_root_prefix.verification_id
+            or exact_prefix.to_document()
+            != controlled_root_prefix.to_document()
+        ):
+            _fail("controlled root prefix differs from public exact replay")
+        return _reconstruct_root_execution_from_exact_prefix(
+            namespace=namespace,
+            schedule=exact_schedule,
+            verification=exact_verification,
+            prefix=exact_prefix,
+            root_execution_bytes=root_execution_bytes,
+        )
+    except V075ObserverSignedMultiroundV2InvariantViolation:
+        raise
+    except Exception as error:
+        raise V075ObserverSignedMultiroundV2InvariantViolation(
+            "construction root execution exact replay failed"
+        ) from error
+
+
+def _execute_initial_root_schedule(
+    *,
+    controller: control.V075ConstructionControlledPrivateObserverV2,
+    namespace: namespace_v2.V075PublicTargetTapeNamespaceV2,
+    schedule: acquisition.V075InitialAcquisitionScheduleV2,
+    verification: acquisition.V075InitialAcquisitionVerificationV2,
+) -> V075ObserverSignedRootExecutionV2:
+    """Execute every exact D64/freeze/V2048 root row once."""
+
+    discoveries, promotions, validations = _root_schedule_parts(schedule)
     if (
         not discoveries
         or len(discoveries) != len(promotions)
@@ -1287,6 +1516,648 @@ class V075ObserverSignedMultiroundResultV2:
         return {**self._payload(), "result_id": self.result_id}
 
 
+def _replay_exact_live_epoch_for_result(
+    claimed: live_model.V075LiveIncrementalModelEpochV2,
+    *,
+    label: str,
+) -> live_model.V075LiveIncrementalModelEpochV2:
+    if type(claimed) is not live_model.V075LiveIncrementalModelEpochV2:
+        _fail(f"{label} requires one exact live epoch")
+    exact = live_model.replay_v075_live_incremental_model_epoch_v2(claimed)
+    if (
+        type(exact) is not live_model.V075LiveIncrementalModelEpochV2
+        or exact.model_epoch_id != claimed.model_epoch_id
+        or exact.canonical_bytes != claimed.canonical_bytes
+    ):
+        _fail(f"{label} differs from public exact epoch replay")
+    return exact
+
+
+def _same_typed_document(left: Any, right: Any) -> bool:
+    return canonical_json_bytes(left.to_document()) == canonical_json_bytes(
+        right.to_document()
+    )
+
+
+def freeze_v075_construction_multiround_result_v2(
+    *,
+    repository_root: str | Path,
+    namespace: namespace_v2.V075PublicTargetTapeNamespaceV2,
+    schedule: acquisition.V075InitialAcquisitionScheduleV2,
+    schedule_verification: acquisition.V075InitialAcquisitionVerificationV2,
+    controlled_root_prefix: (
+        control.V075OpenControlledBatchPrefixVerificationV2
+    ),
+    root_execution_bytes: bytes,
+    root_epoch: live_model.V075LiveIncrementalModelEpochV2,
+    child_closure: dynamic.V075LiveDynamicChildClosureV2,
+    child_closure_verification: (
+        dynamic.V075LiveDynamicChildClosureVerificationV2
+    ),
+    final_epoch: live_model.V075LiveIncrementalModelEpochV2,
+    reconciliation: V075ObserverSignedClosedReconciliationV2,
+    child_execution_ledger: (
+        dynamic.V075LiveDynamicChildExecutionLedgerV2 | None
+    ) = None,
+    child_execution_verification: (
+        dynamic.V075LiveDynamicChildExecutionVerificationV2 | None
+    ) = None,
+    child_replanning_barrier: (
+        dynamic.V075LiveDynamicChildReplanningBarrierV2 | None
+    ) = None,
+    child_replanning_barrier_verification: (
+        dynamic.V075LiveDynamicChildReplanningBarrierVerificationV2 | None
+    ) = None,
+    promotion_decisions: tuple[
+        dynamic.V075LivePromotionDecisionV2,
+        ...,
+    ] = (),
+    promotion_decision_verifications: tuple[
+        dynamic.V075LivePromotionDecisionVerificationV2,
+        ...,
+    ] = (),
+    promotion_replanning_barriers: tuple[
+        dynamic.V075LivePromotionReplanningBarrierV2,
+        ...,
+    ] = (),
+    promotion_replanning_barrier_verifications: tuple[
+        dynamic.V075LivePromotionReplanningBarrierVerificationV2,
+        ...,
+    ] = (),
+) -> V075ObserverSignedMultiroundResultV2:
+    """Replay every parent and derive one construction terminal result."""
+
+    try:
+        if (
+            type(namespace)
+            is not namespace_v2.V075PublicTargetTapeNamespaceV2
+            or type(schedule)
+            is not acquisition.V075InitialAcquisitionScheduleV2
+            or type(schedule_verification)
+            is not acquisition.V075InitialAcquisitionVerificationV2
+            or type(controlled_root_prefix)
+            is not control.V075OpenControlledBatchPrefixVerificationV2
+            or type(root_execution_bytes) is not bytes
+            or not root_execution_bytes
+            or type(root_epoch)
+            is not live_model.V075LiveIncrementalModelEpochV2
+            or type(child_closure)
+            is not dynamic.V075LiveDynamicChildClosureV2
+            or type(child_closure_verification)
+            is not dynamic.V075LiveDynamicChildClosureVerificationV2
+            or type(final_epoch)
+            is not live_model.V075LiveIncrementalModelEpochV2
+            or type(reconciliation)
+            is not V075ObserverSignedClosedReconciliationV2
+        ):
+            _fail("multiround result requires exact mandatory parent types")
+        child_optionals = (
+            child_execution_ledger,
+            child_execution_verification,
+            child_replanning_barrier,
+            child_replanning_barrier_verification,
+        )
+        child_optional_types = (
+            dynamic.V075LiveDynamicChildExecutionLedgerV2,
+            dynamic.V075LiveDynamicChildExecutionVerificationV2,
+            dynamic.V075LiveDynamicChildReplanningBarrierV2,
+            dynamic.V075LiveDynamicChildReplanningBarrierVerificationV2,
+        )
+        if any(
+            value is not None and type(value) is not expected_type
+            for value, expected_type in zip(
+                child_optionals,
+                child_optional_types,
+                strict=True,
+            )
+        ):
+            _fail("multiround child optional parent is duck typed")
+        for values, expected_type, label in (
+            (
+                promotion_decisions,
+                dynamic.V075LivePromotionDecisionV2,
+                "promotion decisions",
+            ),
+            (
+                promotion_decision_verifications,
+                dynamic.V075LivePromotionDecisionVerificationV2,
+                "promotion decision verifications",
+            ),
+            (
+                promotion_replanning_barriers,
+                dynamic.V075LivePromotionReplanningBarrierV2,
+                "promotion replanning barriers",
+            ),
+            (
+                promotion_replanning_barrier_verifications,
+                dynamic.V075LivePromotionReplanningBarrierVerificationV2,
+                "promotion replanning barrier verifications",
+            ),
+        ):
+            if (
+                type(values) is not tuple
+                or len(values) > MAXIMUM_PROMOTION_ROUNDS
+                or any(type(item) is not expected_type for item in values)
+            ):
+                _fail(f"multiround {label} are untyped or over cap")
+        if (
+            len(promotion_decision_verifications)
+            != len(promotion_decisions)
+            or len(promotion_replanning_barrier_verifications)
+            != len(promotion_replanning_barriers)
+            or len(promotion_replanning_barriers)
+            > len(promotion_decisions)
+        ):
+            _fail("multiround promotion parent vectors differ in length")
+
+        exact_schedule, exact_schedule_verification = (
+            _exact_initial_authority(
+                repository_root=repository_root,
+                namespace=namespace,
+                schedule=schedule,
+                verification=schedule_verification,
+            )
+        )
+        exact_root_prefix = (
+            control.replay_v075_open_controlled_batch_prefix_verification_v2(
+                controlled_root_prefix
+            )
+        )
+        if (
+            type(exact_root_prefix)
+            is not control.V075OpenControlledBatchPrefixVerificationV2
+            or exact_root_prefix.verification_id
+            != controlled_root_prefix.verification_id
+            or exact_root_prefix.to_document()
+            != controlled_root_prefix.to_document()
+        ):
+            _fail("multiround root prefix differs from public replay")
+        exact_root_execution = (
+            _reconstruct_root_execution_from_exact_prefix(
+                namespace=namespace,
+                schedule=exact_schedule,
+                verification=exact_schedule_verification,
+                prefix=exact_root_prefix,
+                root_execution_bytes=root_execution_bytes,
+            )
+        )
+        exact_root_epoch = _replay_exact_live_epoch_for_result(
+            root_epoch,
+            label="multiround root epoch",
+        )
+        if (
+            exact_root_epoch.parent_epoch is not None
+            or exact_root_epoch.epoch_index != 1
+            or exact_root_epoch.occurrence_identity
+            != exact_schedule.occurrence
+            or exact_root_epoch.context_id
+            != exact_schedule.occurrence.context_id
+            or exact_root_epoch.arm is not exact_schedule.occurrence.arm
+            or exact_root_epoch.route
+            is not planning.V075PlanningRouteV2.ADAPTIVE_QUOTIENT
+            or exact_root_epoch.head_id
+            != exact_root_execution.resulting_head_id
+            or exact_root_epoch.open_prefix_verification.verification_id
+            != exact_root_execution.open_prefix_verification_id
+            or exact_root_epoch.open_prefix_verification.to_document()
+            != exact_root_prefix.to_document()
+        ):
+            _fail("multiround root epoch differs from exact root execution")
+        exact_final_epoch = _replay_exact_live_epoch_for_result(
+            final_epoch,
+            label="multiround final epoch",
+        )
+
+        exact_child_closure, exact_child_closure_verification = (
+            dynamic.verify_v075_live_dynamic_child_closure_bytes_v2(
+                source_epoch=exact_root_epoch,
+                namespace=namespace,
+                claimed_bytes=child_closure.canonical_bytes,
+            )
+        )
+        if (
+            type(exact_child_closure)
+            is not dynamic.V075LiveDynamicChildClosureV2
+            or type(exact_child_closure_verification)
+            is not dynamic.V075LiveDynamicChildClosureVerificationV2
+            or exact_child_closure.canonical_bytes
+            != child_closure.canonical_bytes
+            or not _same_typed_document(
+                exact_child_closure_verification,
+                child_closure_verification,
+            )
+        ):
+            _fail("multiround child closure parents differ from exact replay")
+
+        child_status = exact_child_closure.status
+        child_authorized = child_status is (
+            dynamic.V075LiveDynamicChildClosureStatusV2.AUTHORIZED
+        )
+        if child_authorized != all(
+            item is not None for item in child_optionals
+        ) or (not child_authorized) != all(
+            item is None for item in child_optionals
+        ):
+            _fail(
+                "multiround child execution quartet requiredness changed"
+            )
+
+        exact_child_ledger = None
+        exact_child_execution_verification = None
+        exact_child_barrier = None
+        exact_child_barrier_verification = None
+        current_epoch = exact_root_epoch
+        terminal: V075ObserverSignedMultiroundTerminalStatusV2 | None = None
+        fixed_status = {
+            (
+                dynamic.V075LiveDynamicChildClosureStatusV2
+                .CANDIDATE_EARLY_STOP
+            ): V075ObserverSignedMultiroundTerminalStatusV2.CANDIDATE_EARLY_STOP,
+            (
+                dynamic.V075LiveDynamicChildClosureStatusV2
+                .CHILD_ACTION_ROW_CAP_EXCEEDED
+            ): (
+                V075ObserverSignedMultiroundTerminalStatusV2
+                .CHILD_ACTION_ROW_CAP_EXCEEDED
+            ),
+        }.get(child_status)
+        if fixed_status is not None:
+            if promotion_decisions or promotion_replanning_barriers:
+                _fail("terminal child closure emitted promotion parents")
+            terminal = fixed_status
+        elif child_authorized:
+            assert child_execution_ledger is not None
+            assert child_execution_verification is not None
+            assert child_replanning_barrier is not None
+            assert child_replanning_barrier_verification is not None
+            child_result_claim = (
+                promotion_decisions[0].source_epoch
+                if promotion_decisions
+                else exact_final_epoch
+            )
+            child_result_epoch = _replay_exact_live_epoch_for_result(
+                child_result_claim,
+                label="multiround child resulting epoch",
+            )
+            (
+                exact_child_ledger,
+                exact_child_execution_verification,
+            ) = dynamic.verify_v075_live_dynamic_child_execution_ledger_bytes_v2(
+                closure=exact_child_closure,
+                closure_verification=(
+                    exact_child_closure_verification
+                ),
+                open_prefix_verification=(
+                    child_result_epoch.open_prefix_verification
+                ),
+                claimed_bytes=child_execution_ledger.canonical_bytes,
+            )
+            if (
+                type(exact_child_ledger)
+                is not dynamic.V075LiveDynamicChildExecutionLedgerV2
+                or type(exact_child_execution_verification)
+                is not dynamic.V075LiveDynamicChildExecutionVerificationV2
+                or exact_child_ledger.canonical_bytes
+                != child_execution_ledger.canonical_bytes
+                or not _same_typed_document(
+                    exact_child_execution_verification,
+                    child_execution_verification,
+                )
+            ):
+                _fail(
+                    "multiround child execution differs from exact replay"
+                )
+            (
+                exact_child_barrier,
+                exact_child_barrier_verification,
+            ) = (
+                dynamic
+                .verify_v075_live_dynamic_child_replanning_barrier_bytes_v2(
+                    closure=exact_child_closure,
+                    closure_verification=(
+                        exact_child_closure_verification
+                    ),
+                    execution_ledger=exact_child_ledger,
+                    execution_verification=(
+                        exact_child_execution_verification
+                    ),
+                    resulting_epoch=child_result_epoch,
+                    claimed_bytes=child_replanning_barrier.canonical_bytes,
+                )
+            )
+            if (
+                type(exact_child_barrier)
+                is not dynamic.V075LiveDynamicChildReplanningBarrierV2
+                or type(exact_child_barrier_verification)
+                is not (
+                    dynamic
+                    .V075LiveDynamicChildReplanningBarrierVerificationV2
+                )
+                or exact_child_barrier.canonical_bytes
+                != child_replanning_barrier.canonical_bytes
+                or not _same_typed_document(
+                    exact_child_barrier_verification,
+                    child_replanning_barrier_verification,
+                )
+            ):
+                _fail(
+                    "multiround child replanning barrier differs from "
+                    "exact replay"
+                )
+            current_epoch = child_result_epoch
+            if exact_child_barrier.resulting_outcome is (
+                planning.V075NumericalOutcomeV2.CANDIDATE
+            ):
+                if promotion_decisions or promotion_replanning_barriers:
+                    _fail("candidate child barrier emitted promotion parents")
+                terminal = (
+                    V075ObserverSignedMultiroundTerminalStatusV2
+                    .CANDIDATE_AFTER_CHILD_CLOSURE
+                )
+            elif exact_child_barrier.resulting_outcome is not (
+                planning.V075NumericalOutcomeV2.FAILED_FRONTIER
+            ):
+                _fail("child barrier exposed an unknown numerical outcome")
+        elif child_status is not (
+            dynamic.V075LiveDynamicChildClosureStatusV2.ALREADY_COMPLETE
+        ):
+            _fail("multiround child closure exposed an unknown status")
+
+        exact_promotion_decisions = []
+        exact_promotion_decision_verifications = []
+        exact_promotion_barriers = []
+        exact_promotion_barrier_verifications = []
+        previous_decision = None
+        previous_barrier = None
+        if terminal is None and not promotion_decisions:
+            _fail("failed multiround frontier lacks a promotion decision")
+        for round_index, (
+            claimed_decision,
+            claimed_decision_verification,
+        ) in enumerate(
+            zip(
+                promotion_decisions,
+                promotion_decision_verifications,
+                strict=True,
+            ),
+            start=1,
+        ):
+            if terminal is not None:
+                _fail("promotion parent appears after a terminal outcome")
+            exact_decision, exact_decision_verification = (
+                dynamic.verify_v075_live_promotion_decision_bytes_v2(
+                    source_epoch=current_epoch,
+                    round_index=round_index,
+                    child_closure=exact_child_closure,
+                    child_closure_verification=(
+                        exact_child_closure_verification
+                    ),
+                    child_execution_ledger=exact_child_ledger,
+                    child_execution_verification=(
+                        exact_child_execution_verification
+                    ),
+                    child_replanning_barrier=exact_child_barrier,
+                    child_replanning_barrier_verification=(
+                        exact_child_barrier_verification
+                    ),
+                    previous_decision=previous_decision,
+                    previous_replanning_barrier=previous_barrier,
+                    claimed_bytes=claimed_decision.canonical_bytes,
+                )
+            )
+            if (
+                type(exact_decision)
+                is not dynamic.V075LivePromotionDecisionV2
+                or type(exact_decision_verification)
+                is not dynamic.V075LivePromotionDecisionVerificationV2
+                or exact_decision.canonical_bytes
+                != claimed_decision.canonical_bytes
+                or not _same_typed_document(
+                    exact_decision_verification,
+                    claimed_decision_verification,
+                )
+            ):
+                _fail("promotion decision differs from exact replay")
+            exact_promotion_decisions.append(exact_decision)
+            exact_promotion_decision_verifications.append(
+                exact_decision_verification
+            )
+            if exact_decision.status is (
+                dynamic.V075LivePromotionDecisionStatusV2
+                .CANDIDATE_EARLY_STOP
+            ):
+                _fail(
+                    "promotion early stop contradicts preceding failed "
+                    "barrier"
+                )
+            if exact_decision.status is (
+                dynamic.V075LivePromotionDecisionStatusV2
+                .NO_ELIGIBLE_FRONTIER_ROW
+            ):
+                if (
+                    round_index != len(promotion_decisions)
+                    or len(promotion_replanning_barriers)
+                    != round_index - 1
+                ):
+                    _fail(
+                        "no-eligible promotion must be the final "
+                        "barrier-free decision"
+                    )
+                terminal = (
+                    V075ObserverSignedMultiroundTerminalStatusV2
+                    .NO_ELIGIBLE_PROMOTION_ROW
+                )
+                break
+            if exact_decision.status is not (
+                dynamic.V075LivePromotionDecisionStatusV2.AUTHORIZED
+            ) or round_index > len(promotion_replanning_barriers):
+                _fail("authorized promotion lacks its exact barrier")
+
+            claimed_barrier = promotion_replanning_barriers[
+                round_index - 1
+            ]
+            claimed_barrier_verification = (
+                promotion_replanning_barrier_verifications[
+                    round_index - 1
+                ]
+            )
+            resulting_claim = (
+                promotion_decisions[round_index].source_epoch
+                if round_index < len(promotion_decisions)
+                else exact_final_epoch
+            )
+            resulting_epoch = _replay_exact_live_epoch_for_result(
+                resulting_claim,
+                label=f"promotion round {round_index} resulting epoch",
+            )
+            exact_barrier, exact_barrier_verification = (
+                dynamic.verify_v075_live_promotion_replanning_barrier_bytes_v2(
+                    decision=exact_decision,
+                    decision_verification=exact_decision_verification,
+                    resulting_epoch=resulting_epoch,
+                    child_closure=exact_child_closure,
+                    child_closure_verification=(
+                        exact_child_closure_verification
+                    ),
+                    child_execution_ledger=exact_child_ledger,
+                    child_execution_verification=(
+                        exact_child_execution_verification
+                    ),
+                    child_replanning_barrier=exact_child_barrier,
+                    child_replanning_barrier_verification=(
+                        exact_child_barrier_verification
+                    ),
+                    previous_replanning_barrier=previous_barrier,
+                    claimed_bytes=claimed_barrier.canonical_bytes,
+                )
+            )
+            if (
+                type(exact_barrier)
+                is not dynamic.V075LivePromotionReplanningBarrierV2
+                or type(exact_barrier_verification)
+                is not (
+                    dynamic.V075LivePromotionReplanningBarrierVerificationV2
+                )
+                or exact_barrier.canonical_bytes
+                != claimed_barrier.canonical_bytes
+                or not _same_typed_document(
+                    exact_barrier_verification,
+                    claimed_barrier_verification,
+                )
+            ):
+                _fail("promotion replanning barrier differs from exact replay")
+            exact_promotion_barriers.append(exact_barrier)
+            exact_promotion_barrier_verifications.append(
+                exact_barrier_verification
+            )
+            current_epoch = resulting_epoch
+            if exact_barrier.resulting_outcome is (
+                planning.V075NumericalOutcomeV2.CANDIDATE
+            ):
+                if (
+                    round_index != len(promotion_decisions)
+                    or len(promotion_replanning_barriers) != round_index
+                ):
+                    _fail("candidate promotion emitted later parent work")
+                terminal = (
+                    V075ObserverSignedMultiroundTerminalStatusV2
+                    .CANDIDATE_AFTER_PROMOTION_ONE
+                    if round_index == 1
+                    else (
+                        V075ObserverSignedMultiroundTerminalStatusV2
+                        .CANDIDATE_AFTER_PROMOTION_TWO
+                    )
+                )
+                break
+            if exact_barrier.resulting_outcome is not (
+                planning.V075NumericalOutcomeV2.FAILED_FRONTIER
+            ):
+                _fail("promotion barrier exposed an unknown outcome")
+            if round_index == MAXIMUM_PROMOTION_ROUNDS:
+                if (
+                    len(promotion_decisions) != MAXIMUM_PROMOTION_ROUNDS
+                    or len(promotion_replanning_barriers)
+                    != MAXIMUM_PROMOTION_ROUNDS
+                ):
+                    _fail("promotion budget closure has an incomplete lineage")
+                terminal = (
+                    V075ObserverSignedMultiroundTerminalStatusV2
+                    .PROMOTION_BUDGET_EXHAUSTED
+                )
+                break
+            previous_decision = exact_decision
+            previous_barrier = exact_barrier
+
+        if terminal is None:
+            _fail("multiround exact parent graph reached no terminal status")
+        if (
+            current_epoch.model_epoch_id != exact_final_epoch.model_epoch_id
+            or current_epoch.canonical_bytes
+            != exact_final_epoch.canonical_bytes
+        ):
+            _fail("derived terminal epoch differs from claimed final epoch")
+
+        exact_reconciliation = (
+            freeze_v075_construction_closed_reconciliation_v2(
+                repository_root=repository_root,
+                schedule=exact_schedule,
+                final_epoch=current_epoch,
+                controlled_closure=reconciliation.controlled_closure,
+                lineage=reconciliation.lineage,
+                lifecycle=reconciliation.lifecycle,
+            )
+        )
+        if (
+            type(exact_reconciliation)
+            is not V075ObserverSignedClosedReconciliationV2
+            or exact_reconciliation.reconciliation_id
+            != reconciliation.reconciliation_id
+            or exact_reconciliation.canonical_bytes
+            != reconciliation.canonical_bytes
+            or exact_reconciliation.final_epoch.model_epoch_id
+            != current_epoch.model_epoch_id
+            or exact_reconciliation.final_epoch.canonical_bytes
+            != current_epoch.canonical_bytes
+        ):
+            _fail(
+                "multiround reconciliation differs from exact terminal graph"
+            )
+
+        return V075ObserverSignedMultiroundResultV2(
+            _RESULT_ISSUER,
+            terminal,
+            exact_schedule.schedule_id,
+            exact_schedule_verification.verification_id,
+            exact_root_execution.execution_id,
+            exact_root_epoch.model_epoch_id,
+            exact_child_closure.closure_id,
+            exact_child_closure_verification.verification_id,
+            exact_child_closure.status,
+            (
+                None
+                if exact_child_ledger is None
+                else exact_child_ledger.ledger_id
+            ),
+            (
+                None
+                if exact_child_execution_verification is None
+                else exact_child_execution_verification.verification_id
+            ),
+            (
+                None
+                if exact_child_barrier is None
+                else exact_child_barrier.barrier_id
+            ),
+            (
+                None
+                if exact_child_barrier_verification is None
+                else exact_child_barrier_verification.verification_id
+            ),
+            tuple(
+                item.decision_id for item in exact_promotion_decisions
+            ),
+            tuple(
+                item.verification_id
+                for item in exact_promotion_decision_verifications
+            ),
+            tuple(item.barrier_id for item in exact_promotion_barriers),
+            tuple(
+                item.verification_id
+                for item in exact_promotion_barrier_verifications
+            ),
+            current_epoch.model_epoch_id,
+            current_epoch.model.model_id,
+            current_epoch.proof.proof_id,
+            exact_reconciliation.reconciliation_id,
+        )
+    except V075ObserverSignedMultiroundV2InvariantViolation:
+        raise
+    except Exception as error:
+        raise V075ObserverSignedMultiroundV2InvariantViolation(
+            "construction multiround result exact replay failed"
+        ) from error
+
+
 def _freeze_root_epoch(
     *,
     controller: control.V075ConstructionControlledPrivateObserverV2,
@@ -1613,6 +2484,8 @@ def _execute_authorized_promotion(
 
 def _closed_result(
     *,
+    repository_root: str | Path,
+    namespace: namespace_v2.V075PublicTargetTapeNamespaceV2,
     status: V075ObserverSignedMultiroundTerminalStatusV2,
     schedule: acquisition.V075InitialAcquisitionScheduleV2,
     verification: acquisition.V075InitialAcquisitionVerificationV2,
@@ -1653,76 +2526,36 @@ def _closed_result(
     final_epoch: live_model.V075LiveIncrementalModelEpochV2,
     reconciliation: V075ObserverSignedClosedReconciliationV2,
 ) -> V075ObserverSignedMultiroundResultV2:
-    if (
-        type(child_closure_verification)
-        is not dynamic.V075LiveDynamicChildClosureVerificationV2
-        or child_closure_verification.closure_id
-        != child_closure.closure_id
-        or child_closure_verification.source_model_epoch_id
-        != child_closure.source_epoch.model_epoch_id
-        or child_closure_verification.source_proof_id
-        != child_closure.source_epoch.proof.proof_id
-        or child_closure_verification.source_head_id
-        != child_closure.source_epoch.head_id
-        or child_closure_verification.status is not child_closure.status
-        or child_closure_verification.discovery_intent_ids
-        != tuple(
-            item.intent_id for item in child_closure.discovery_intents
-        )
-        or child_closure_verification.validation_template_ids
-        != tuple(
-            item.template_id
-            for item in child_closure.validation_templates
-        )
-    ):
-        _fail("multiround child closure verification is stale or foreign")
-    return V075ObserverSignedMultiroundResultV2(
-        _issuer=_RESULT_ISSUER,
-        status=status,
-        schedule_id=schedule.schedule_id,
-        schedule_verification_id=verification.verification_id,
-        root_execution_id=root_execution.execution_id,
-        root_model_epoch_id=root_epoch.model_epoch_id,
-        child_closure_id=child_closure.closure_id,
-        child_closure_verification_id=(
-            child_closure_verification.verification_id
+    result = freeze_v075_construction_multiround_result_v2(
+        repository_root=repository_root,
+        namespace=namespace,
+        schedule=schedule,
+        schedule_verification=verification,
+        controlled_root_prefix=root_epoch.open_prefix_verification,
+        root_execution_bytes=root_execution.canonical_bytes,
+        root_epoch=root_epoch,
+        child_closure=child_closure,
+        child_closure_verification=child_closure_verification,
+        final_epoch=final_epoch,
+        reconciliation=reconciliation,
+        child_execution_ledger=child_ledger,
+        child_execution_verification=child_ledger_verification,
+        child_replanning_barrier=child_barrier,
+        child_replanning_barrier_verification=(
+            child_barrier_verification
         ),
-        child_closure_status=child_closure.status,
-        child_execution_ledger_id=(
-            None if child_ledger is None else child_ledger.ledger_id
+        promotion_decisions=promotion_decisions,
+        promotion_decision_verifications=(
+            promotion_decision_verifications
         ),
-        child_execution_verification_id=(
-            None
-            if child_ledger_verification is None
-            else child_ledger_verification.verification_id
+        promotion_replanning_barriers=promotion_barriers,
+        promotion_replanning_barrier_verifications=(
+            promotion_barrier_verifications
         ),
-        child_replanning_barrier_id=(
-            None if child_barrier is None else child_barrier.barrier_id
-        ),
-        child_replanning_barrier_verification_id=(
-            None
-            if child_barrier_verification is None
-            else child_barrier_verification.verification_id
-        ),
-        promotion_decision_ids=tuple(
-            item.decision_id for item in promotion_decisions
-        ),
-        promotion_decision_verification_ids=tuple(
-            item.verification_id
-            for item in promotion_decision_verifications
-        ),
-        promotion_replanning_barrier_ids=tuple(
-            item.barrier_id for item in promotion_barriers
-        ),
-        promotion_replanning_barrier_verification_ids=tuple(
-            item.verification_id
-            for item in promotion_barrier_verifications
-        ),
-        final_model_epoch_id=final_epoch.model_epoch_id,
-        final_numerical_model_id=final_epoch.model.model_id,
-        final_proof_id=final_epoch.proof.proof_id,
-        closed_reconciliation_id=reconciliation.reconciliation_id,
     )
+    if result.status is not status:
+        _fail("runner terminal status differs from exact result derivation")
+    return result
 
 
 def run_v075_construction_observer_signed_multiround_occurrence_v2(
@@ -1959,6 +2792,8 @@ def run_v075_construction_observer_signed_multiround_occurrence_v2(
         private_environment=environment,
     )
     result = _closed_result(
+        repository_root=repository_root,
+        namespace=namespace,
         status=terminal,
         schedule=exact_schedule,
         verification=exact_verification,
@@ -2061,6 +2896,8 @@ __all__ = [
     "V075ObserverSignedMultiroundV2InvariantViolation",
     "V075ObserverSignedRootExecutionV2",
     "freeze_v075_construction_closed_reconciliation_v2",
+    "freeze_v075_construction_multiround_result_v2",
     "open_v075_production_observer_signed_multiround_occurrence_v2",
+    "replay_v075_construction_root_execution_v2",
     "run_v075_construction_observer_signed_multiround_occurrence_v2",
 ]
