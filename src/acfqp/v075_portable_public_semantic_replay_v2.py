@@ -63,6 +63,7 @@ MAX_OUTPUT_BYTES = 64 * 1024 * 1024
 
 DOMAIN_TAGS = MappingProxyType(
     {
+        "typed_graph": "acfqp:v075-portable-public-m0-typed-graph:v2",
         "record_attestation": (
             "acfqp:v075-portable-public-record-semantic-attestation:v2"
         ),
@@ -998,6 +999,663 @@ def _classify_record_dependency_coverage(
     )
 
 
+_M0_TYPED_GRAPH_ISSUER = object()
+
+
+@dataclass(frozen=True, slots=True)
+class V075PortablePublicM0TypedGraphV2:
+    """In-process M0 graph guarded as construction API discipline.
+
+    The issuer gate prevents ordinary caller construction through the public
+    API.  It is not a security boundary against arbitrary code already
+    executing in the same Python process.
+    """
+
+    _issuer: InitVar[object]
+    bundle_id: str
+    public_context_closure_id: str
+    occurrence_id: str
+    target_tape_namespace_id: str
+    occurrence: identity.V075BatchNativeOccurrenceIdentityV1 = field(
+        repr=False
+    )
+    schedule: acquisition.V075InitialAcquisitionScheduleV2 = field(
+        repr=False
+    )
+    verification: acquisition.V075InitialAcquisitionVerificationV2 = field(
+        repr=False
+    )
+    intents: tuple[acquisition.V075InitialRowIntentV2, ...] = field(
+        repr=False
+    )
+    states: tuple[graph.V075SymbolicGraphStateV1, ...] = field(
+        repr=False
+    )
+    catalogues: tuple[graph.V075LegalActionCatalogueV1, ...] = field(
+        repr=False
+    )
+    rows: tuple[graph.V075ObservationRowBindingV1, ...] = field(
+        repr=False
+    )
+    support_evidence: tuple[
+        graph.V075BatchAggregateSupportEvidenceV1,
+        ...,
+    ] = field(repr=False)
+    epochs: tuple[graph.V075SharedSupportEpochV1, ...] = field(
+        repr=False
+    )
+    chains: tuple[graph.V075SharedSupportChainV1, ...] = field(
+        repr=False
+    )
+    pairings: tuple[graph.V075FiveArmPairingAuthorityV1, ...] = field(
+        repr=False
+    )
+    transition_streams: tuple[
+        graph.V075TransitionStreamIdentityV1,
+        ...,
+    ] = field(repr=False)
+    _graph_id: str = field(init=False, repr=False)
+
+    def __post_init__(self, _issuer: object) -> None:
+        for value, label in (
+            (self.bundle_id, "M0 typed graph bundle"),
+            (
+                self.public_context_closure_id,
+                "M0 typed graph public context",
+            ),
+            (self.occurrence_id, "M0 typed graph occurrence"),
+            (
+                self.target_tape_namespace_id,
+                "M0 typed graph namespace",
+            ),
+        ):
+            _cid(value, label)
+        if _issuer is not _M0_TYPED_GRAPH_ISSUER:
+            _fail("M0 typed graph is caller-minted")
+        _validate_m0_typed_graph(self)
+        object.__setattr__(
+            self,
+            "_graph_id",
+            _hash("typed_graph", self._identity_payload()),
+        )
+
+    def _ordered_typed_ids(self) -> dict[str, tuple[str, ...]]:
+        return {
+            "occurrence_id": (self.occurrence.occurrence_id,),
+            "schedule_id": (self.schedule.schedule_id,),
+            "verification_id": (self.verification.verification_id,),
+            "intent_ids": tuple(item.intent_id for item in self.intents),
+            "state_ids": tuple(item.state_id for item in self.states),
+            "catalogue_ids": tuple(
+                item.catalogue_id for item in self.catalogues
+            ),
+            "row_binding_ids": tuple(
+                item.row_binding_id for item in self.rows
+            ),
+            "support_evidence_ids": tuple(
+                item.evidence_id for item in self.support_evidence
+            ),
+            "epoch_ids": tuple(item.epoch_id for item in self.epochs),
+            "chain_ids": tuple(item.chain_id for item in self.chains),
+            "pairing_authority_ids": tuple(
+                item.pairing_authority_id for item in self.pairings
+            ),
+            "transition_stream_ids": tuple(
+                item.stream_id for item in self.transition_streams
+            ),
+        }
+
+    def _role_semantic_ids(self) -> dict[str, tuple[str, ...]]:
+        return {
+            "INITIAL_ROW_INTENT": tuple(
+                sorted(item.intent_id for item in self.intents)
+            ),
+            "INITIAL_ACQUISITION_SCHEDULE": (
+                self.schedule.schedule_id,
+            ),
+            "INITIAL_ACQUISITION_VERIFICATION": (
+                self.verification.verification_id,
+            ),
+            "SYMBOLIC_GRAPH_STATE": tuple(
+                item.state_id for item in self.states
+            ),
+            "LEGAL_ACTION_CATALOGUE": tuple(
+                item.catalogue_id for item in self.catalogues
+            ),
+            "OBSERVATION_ROW_BINDING": tuple(
+                item.row_binding_id for item in self.rows
+            ),
+            "OBSERVER_SIGNED_SUPPORT_EVIDENCE": tuple(
+                item.evidence_id for item in self.support_evidence
+            ),
+            "SHARED_SUPPORT_EPOCH": tuple(
+                item.epoch_id for item in self.epochs
+            ),
+            "SHARED_SUPPORT_CHAIN": tuple(
+                item.chain_id for item in self.chains
+            ),
+            "PAIRING_AUTHORITY": tuple(
+                item.pairing_authority_id for item in self.pairings
+            ),
+            "TRANSITION_STREAM": tuple(
+                item.stream_id for item in self.transition_streams
+            ),
+        }
+
+    @staticmethod
+    def _serializable_id_mapping(
+        value: Mapping[str, tuple[str, ...]],
+    ) -> dict[str, list[str]]:
+        return {key: list(ids) for key, ids in value.items()}
+
+    def _identity_payload(self) -> dict[str, Any]:
+        return {
+            "schema": "acfqp.v075_portable_public_m0_typed_graph.v2",
+            "schema_version": SCHEMA_VERSION,
+            "proposed_contract_version": PROPOSED_CONTRACT_VERSION,
+            "profile_key": PROFILE_KEY,
+            "portable_bundle_id": self.bundle_id,
+            "public_context_closure_id": self.public_context_closure_id,
+            "occurrence_id": self.occurrence_id,
+            "target_tape_namespace_id": self.target_tape_namespace_id,
+            "ordering_rule": (
+                "SCHEDULE_INTENT_ORDER_THEN_LEXICOGRAPHIC_CONTENT_ID"
+            ),
+            "ordered_typed_ids": self._serializable_id_mapping(
+                self._ordered_typed_ids()
+            ),
+            "role_semantic_ids": self._serializable_id_mapping(
+                self._role_semantic_ids()
+            ),
+            "in_memory_only": True,
+            "issuer_gate_semantics": (
+                "CONSTRUCTION_API_DISCIPLINE_ONLY"
+            ),
+            "python_process_security_boundary": False,
+            "typed_objects_serialized": False,
+            "private_material_serialized": False,
+            "source_artifacts_serialized": False,
+            "source_authority_complete": False,
+            "code_provenance_complete": False,
+            "all_registered_arms_complete": False,
+            "portable_semantic_registry_complete": False,
+            "official_execution_allowed": False,
+            "production_authorizing": False,
+        }
+
+    def _assert_content_id(self) -> None:
+        _validate_m0_typed_graph(self)
+        if self.graph_id != _hash(
+            "typed_graph",
+            self._identity_payload(),
+        ):
+            _fail("M0 typed graph content ID is stale or rehashed")
+
+    @property
+    def graph_id(self) -> str:
+        return self._graph_id
+
+    @property
+    def ordered_typed_ids(self) -> Mapping[str, tuple[str, ...]]:
+        return MappingProxyType(self._ordered_typed_ids())
+
+    @property
+    def role_semantic_ids(self) -> Mapping[str, tuple[str, ...]]:
+        return MappingProxyType(self._role_semantic_ids())
+
+    @property
+    def namespace(self) -> Any:
+        return self.schedule.profile.namespace
+
+    @property
+    def intents_by_id(
+        self,
+    ) -> Mapping[str, acquisition.V075InitialRowIntentV2]:
+        return MappingProxyType(
+            {item.intent_id: item for item in self.intents}
+        )
+
+    @property
+    def states_by_id(
+        self,
+    ) -> Mapping[str, graph.V075SymbolicGraphStateV1]:
+        return MappingProxyType(
+            {item.state_id: item for item in self.states}
+        )
+
+    @property
+    def catalogues_by_id(
+        self,
+    ) -> Mapping[str, graph.V075LegalActionCatalogueV1]:
+        return MappingProxyType(
+            {item.catalogue_id: item for item in self.catalogues}
+        )
+
+    @property
+    def rows_by_id(
+        self,
+    ) -> Mapping[str, graph.V075ObservationRowBindingV1]:
+        return MappingProxyType(
+            {item.row_binding_id: item for item in self.rows}
+        )
+
+    @property
+    def evidence_by_id(
+        self,
+    ) -> Mapping[str, graph.V075BatchAggregateSupportEvidenceV1]:
+        return MappingProxyType(
+            {item.evidence_id: item for item in self.support_evidence}
+        )
+
+    @property
+    def epochs_by_id(
+        self,
+    ) -> Mapping[str, graph.V075SharedSupportEpochV1]:
+        return MappingProxyType(
+            {item.epoch_id: item for item in self.epochs}
+        )
+
+    @property
+    def chains_by_id(
+        self,
+    ) -> Mapping[str, graph.V075SharedSupportChainV1]:
+        return MappingProxyType(
+            {item.chain_id: item for item in self.chains}
+        )
+
+    @property
+    def pairings_by_id(
+        self,
+    ) -> Mapping[str, graph.V075FiveArmPairingAuthorityV1]:
+        return MappingProxyType(
+            {
+                item.pairing_authority_id: item
+                for item in self.pairings
+            }
+        )
+
+    @property
+    def streams_by_id(
+        self,
+    ) -> Mapping[str, graph.V075TransitionStreamIdentityV1]:
+        return MappingProxyType(
+            {item.stream_id: item for item in self.transition_streams}
+        )
+
+    def __reduce__(self) -> NoReturn:
+        raise TypeError("M0 typed graph is in-memory-only")
+
+
+def _exact_typed_tuple(
+    values: Any,
+    *,
+    exact_type: type,
+    identity_attribute: str,
+    label: str,
+    schedule_order: tuple[Any, ...] | None = None,
+) -> tuple[str, ...]:
+    if (
+        type(values) is not tuple
+        or not values
+        or any(type(item) is not exact_type for item in values)
+    ):
+        _fail(f"M0 typed graph {label} have foreign producer types")
+    identifiers = tuple(
+        _cid(
+            getattr(item, identity_attribute),
+            f"M0 typed graph {label} identity",
+        )
+        for item in values
+    )
+    if len(set(identifiers)) != len(identifiers):
+        _fail(f"M0 typed graph {label} identities are duplicated")
+    if schedule_order is not None:
+        if values != schedule_order:
+            _fail(f"M0 typed graph {label} differ from schedule order")
+    elif identifiers != tuple(sorted(identifiers)):
+        _fail(f"M0 typed graph {label} are not in canonical ID order")
+    return identifiers
+
+
+def _assert_exact_typed_bytes(
+    claimed: Any,
+    expected: Any,
+    *,
+    label: str,
+) -> None:
+    if type(claimed) is not type(expected) or _raw(claimed) != _raw(expected):
+        _fail(f"M0 typed graph {label} differs from exact producer replay")
+
+
+def _validate_m0_typed_graph(
+    typed_graph: V075PortablePublicM0TypedGraphV2,
+) -> None:
+    if (
+        type(typed_graph.occurrence)
+        is not identity.V075BatchNativeOccurrenceIdentityV1
+        or type(typed_graph.schedule)
+        is not acquisition.V075InitialAcquisitionScheduleV2
+        or type(typed_graph.verification)
+        is not acquisition.V075InitialAcquisitionVerificationV2
+    ):
+        _fail("M0 typed graph initial authority has foreign producer types")
+    try:
+        replayed_occurrence = (
+            identity.replay_v075_batch_native_occurrence_identity_v1(
+                typed_graph.occurrence
+            )
+        )
+        replayed_verification = (
+            acquisition
+            .verify_v075_initial_acquisition_verification_bytes_v2(
+                schedule=typed_graph.schedule,
+                expected_slot=typed_graph.verification.expected_slot,
+                raw=typed_graph.verification.canonical_bytes,
+            )
+        )
+    except Exception as error:
+        raise V075PortablePublicSemanticReplayV2InvariantViolation(
+            "M0 typed graph initial authority failed exact producer replay"
+        ) from error
+    _assert_exact_typed_bytes(
+        typed_graph.occurrence,
+        replayed_occurrence,
+        label="occurrence",
+    )
+    _assert_exact_typed_bytes(
+        typed_graph.verification,
+        replayed_verification,
+        label="initial verification",
+    )
+    namespace = typed_graph.schedule.profile.namespace
+    if (
+        typed_graph.occurrence_id
+        != typed_graph.occurrence.occurrence_id
+        or typed_graph.schedule.occurrence != typed_graph.occurrence
+        or typed_graph.verification.schedule != typed_graph.schedule
+        or typed_graph.target_tape_namespace_id
+        != typed_graph.occurrence.target_tape_namespace_id
+        or typed_graph.target_tape_namespace_id
+        != namespace.target_tape_namespace_id
+    ):
+        _fail("M0 typed graph initial authority was transplanted")
+
+    intent_ids = _exact_typed_tuple(
+        typed_graph.intents,
+        exact_type=acquisition.V075InitialRowIntentV2,
+        identity_attribute="intent_id",
+        label="initial intents",
+        schedule_order=typed_graph.schedule.intents,
+    )
+    intent_position = {
+        intent_id: index for index, intent_id in enumerate(intent_ids)
+    }
+    if any(
+        dependency_id not in intent_position
+        or intent_position[dependency_id] >= index
+        for index, item in enumerate(typed_graph.intents)
+        for dependency_id in item.dependency_intent_ids
+    ):
+        _fail("M0 typed graph initial intent parent order is invalid")
+
+    _exact_typed_tuple(
+        typed_graph.states,
+        exact_type=graph.V075SymbolicGraphStateV1,
+        identity_attribute="state_id",
+        label="states",
+    )
+    _exact_typed_tuple(
+        typed_graph.catalogues,
+        exact_type=graph.V075LegalActionCatalogueV1,
+        identity_attribute="catalogue_id",
+        label="catalogues",
+    )
+    _exact_typed_tuple(
+        typed_graph.rows,
+        exact_type=graph.V075ObservationRowBindingV1,
+        identity_attribute="row_binding_id",
+        label="rows",
+    )
+    _exact_typed_tuple(
+        typed_graph.support_evidence,
+        exact_type=graph.V075BatchAggregateSupportEvidenceV1,
+        identity_attribute="evidence_id",
+        label="support evidence",
+    )
+    _exact_typed_tuple(
+        typed_graph.epochs,
+        exact_type=graph.V075SharedSupportEpochV1,
+        identity_attribute="epoch_id",
+        label="epochs",
+    )
+    _exact_typed_tuple(
+        typed_graph.chains,
+        exact_type=graph.V075SharedSupportChainV1,
+        identity_attribute="chain_id",
+        label="chains",
+    )
+    _exact_typed_tuple(
+        typed_graph.pairings,
+        exact_type=graph.V075FiveArmPairingAuthorityV1,
+        identity_attribute="pairing_authority_id",
+        label="pairings",
+    )
+    _exact_typed_tuple(
+        typed_graph.transition_streams,
+        exact_type=graph.V075TransitionStreamIdentityV1,
+        identity_attribute="stream_id",
+        label="transition streams",
+    )
+    role_semantic_ids = typed_graph._role_semantic_ids()
+    if (
+        tuple(role_semantic_ids) != M0_ROLE_ORDER
+        or any(
+            ids != tuple(sorted(set(ids)))
+            for ids in role_semantic_ids.values()
+        )
+    ):
+        _fail("M0 typed graph role semantic IDs are incomplete or unordered")
+
+    states = {item.state_id: item for item in typed_graph.states}
+    catalogues = {
+        item.catalogue_id: item for item in typed_graph.catalogues
+    }
+    rows = {item.row_binding_id: item for item in typed_graph.rows}
+    evidence = {
+        item.evidence_id: item for item in typed_graph.support_evidence
+    }
+    epochs = {item.epoch_id: item for item in typed_graph.epochs}
+    chains = {item.chain_id: item for item in typed_graph.chains}
+    pairings = {
+        item.pairing_authority_id: item for item in typed_graph.pairings
+    }
+
+    for item in typed_graph.states:
+        if item.context.context_id != typed_graph.occurrence.context_id:
+            _fail("M0 typed graph state crossed occurrence context")
+        try:
+            expected = graph.V075SymbolicGraphStateV1(
+                item.context,
+                item.ranks,
+                item.failure,
+            )
+        except Exception as error:
+            raise V075PortablePublicSemanticReplayV2InvariantViolation(
+                "M0 typed graph state failed exact producer replay"
+            ) from error
+        _assert_exact_typed_bytes(item, expected, label="state")
+
+    for item in typed_graph.catalogues:
+        state = states.get(item.state.state_id)
+        if state is None or item.context.context_id != (
+            typed_graph.occurrence.context_id
+        ):
+            _fail("M0 typed graph catalogue lacks its exact state")
+        try:
+            expected = graph.V075LegalActionCatalogueV1(
+                state.context,
+                state,
+                item.remaining_horizon,
+                graph.legal_action_triples_v1(
+                    state.context,
+                    state.ranks,
+                    state.failure,
+                ),
+            )
+        except Exception as error:
+            raise V075PortablePublicSemanticReplayV2InvariantViolation(
+                "M0 typed graph catalogue failed exact producer replay"
+            ) from error
+        _assert_exact_typed_bytes(item, expected, label="catalogue")
+
+    for item in typed_graph.rows:
+        catalogue = catalogues.get(item.catalogue.catalogue_id)
+        if catalogue is None:
+            _fail("M0 typed graph row lacks its exact catalogue")
+        try:
+            expected = graph.observation_row_binding_v1(
+                catalogue.context,
+                catalogue,
+                item.action,
+            )
+        except Exception as error:
+            raise V075PortablePublicSemanticReplayV2InvariantViolation(
+                "M0 typed graph row failed exact producer replay"
+            ) from error
+        _assert_exact_typed_bytes(item, expected, label="row")
+    if any(
+        rows.get(item.row_binding.row_binding_id) != item.row_binding
+        for item in typed_graph.intents
+    ):
+        _fail("M0 typed graph schedule intent row is absent")
+
+    for item in typed_graph.support_evidence:
+        row = rows.get(item.row_binding.row_binding_id)
+        state = states.get(item.observed_state.state_id)
+        if (
+            row is None
+            or state is None
+            or item.namespace != namespace
+        ):
+            _fail("M0 typed graph support evidence was transplanted")
+        try:
+            expected = graph.bind_batch_aggregate_support_evidence_v1(
+                namespace=namespace,
+                row_binding=row,
+                observed_state=state,
+                source_observer_epoch_index=(
+                    item.source_observer_epoch_index
+                ),
+                discovery_request_id=item.discovery_request_id,
+                discovery_batch_id=item.discovery_batch_id,
+                discovery_outcome_id=item.discovery_outcome_id,
+                discovery_outcome_count=item.discovery_outcome_count,
+                observer_signature_hex=item.observer_signature_hex,
+            )
+        except Exception as error:
+            raise V075PortablePublicSemanticReplayV2InvariantViolation(
+                "M0 typed graph support evidence failed producer replay"
+            ) from error
+        _assert_exact_typed_bytes(item, expected, label="support evidence")
+
+    for item in typed_graph.epochs:
+        row = rows.get(item.row_binding.row_binding_id)
+        parent = (
+            None
+            if item.parent is None
+            else epochs.get(item.parent.epoch_id)
+        )
+        exact_evidence = tuple(
+            evidence.get(evidence_item.evidence_id)
+            for evidence_item in item.evidence
+        )
+        if (
+            row is None
+            or item.namespace != namespace
+            or (
+                item.parent is not None
+                and parent is None
+            )
+            or any(evidence_item is None for evidence_item in exact_evidence)
+        ):
+            _fail("M0 typed graph epoch lacks exact typed parents")
+        try:
+            expected = graph.derive_shared_support_epoch_v1(
+                namespace=namespace,
+                row_binding=row,
+                epoch_index=item.epoch_index,
+                evidence=exact_evidence,
+                parent=parent,
+            )
+        except Exception as error:
+            raise V075PortablePublicSemanticReplayV2InvariantViolation(
+                "M0 typed graph epoch failed exact parent recurrence"
+            ) from error
+        _assert_exact_typed_bytes(item, expected, label="support epoch")
+
+    for item in typed_graph.chains:
+        row = rows.get(item.row_binding.row_binding_id)
+        exact_epochs = tuple(
+            epochs.get(epoch.epoch_id) for epoch in item.epochs
+        )
+        if (
+            row is None
+            or item.namespace != namespace
+            or any(epoch is None for epoch in exact_epochs)
+        ):
+            _fail("M0 typed graph chain lacks exact typed parents")
+        try:
+            expected = graph.freeze_shared_support_chain_v1(
+                namespace=namespace,
+                row_binding=row,
+                epochs=exact_epochs,
+            )
+        except Exception as error:
+            raise V075PortablePublicSemanticReplayV2InvariantViolation(
+                "M0 typed graph chain failed exact parent recurrence"
+            ) from error
+        _assert_exact_typed_bytes(item, expected, label="support chain")
+
+    for item in typed_graph.pairings:
+        row = rows.get(item.row_binding.row_binding_id)
+        chain = chains.get(item.support_chain.chain_id)
+        if (
+            row is None
+            or chain is None
+            or item.namespace != namespace
+        ):
+            _fail("M0 typed graph pairing lacks exact typed parents")
+        try:
+            expected = graph.freeze_five_arm_pairing_authority_v1(
+                namespace=namespace,
+                row_binding=row,
+                support_chain=chain,
+            )
+        except Exception as error:
+            raise V075PortablePublicSemanticReplayV2InvariantViolation(
+                "M0 typed graph pairing failed exact parent recurrence"
+            ) from error
+        _assert_exact_typed_bytes(item, expected, label="pairing authority")
+
+    for item in typed_graph.transition_streams:
+        pairing = pairings.get(item.pairing_authority.pairing_authority_id)
+        if (
+            pairing is None
+            or item.arm != typed_graph.occurrence.arm.value
+        ):
+            _fail("M0 typed graph stream lacks exact typed parents")
+        try:
+            expected = graph.derive_transition_stream_identity_v1(
+                pairing_authority=pairing,
+                arm=item.arm,
+            )
+        except Exception as error:
+            raise V075PortablePublicSemanticReplayV2InvariantViolation(
+                "M0 typed graph stream failed exact parent recurrence"
+            ) from error
+        _assert_exact_typed_bytes(item, expected, label="transition stream")
+
+
 _ATTESTATION_ISSUER = object()
 
 
@@ -1196,6 +1854,7 @@ class V075PortablePublicSemanticReplayResultV2:
     target_tape_namespace_id: str
     namespace_public_key_id: str
     verified_arm: str
+    _typed_graph: V075PortablePublicM0TypedGraphV2 = field(repr=False)
     attestations: tuple[
         V075PortablePublicRecordSemanticAttestationV2,
         ...,
@@ -1221,6 +1880,8 @@ class V075PortablePublicSemanticReplayResultV2:
             _issuer is not _RESULT_ISSUER
             or type(self.attestations) is not tuple
             or not self.attestations
+            or type(self._typed_graph)
+            is not V075PortablePublicM0TypedGraphV2
             or any(
                 type(item)
                 is not V075PortablePublicRecordSemanticAttestationV2
@@ -1251,15 +1912,61 @@ class V075PortablePublicSemanticReplayResultV2:
                 for item in self.attestations
             )
             or self.verified_arm not in SUPPORTED_ARM_COVERAGE
+            or self._typed_graph.bundle_id != self.bundle_id
+            or self._typed_graph.public_context_closure_id
+            != self.public_context_closure_id
+            or self._typed_graph.occurrence_id != self.occurrence_id
+            or self._typed_graph.target_tape_namespace_id
+            != self.target_tape_namespace_id
+            or self._typed_graph.occurrence.arm.value != self.verified_arm
         ):
             _fail("M0 public semantic replay aggregate is incomplete")
+        self._assert_typed_graph_attestation_binding()
         object.__setattr__(
             self,
             "_result_id",
             _hash("aggregate", self._payload()),
         )
 
+    def _assert_typed_graph_attestation_binding(self) -> None:
+        self._typed_graph._assert_content_id()
+        attested = {
+            role: tuple(
+                sorted(
+                    item.semantic_artifact_id
+                    for item in self.attestations
+                    if item.role == role
+                )
+            )
+            for role in M0_ROLE_ORDER
+        }
+        graph_roles = dict(self._typed_graph.role_semantic_ids)
+        if (
+            tuple(attested) != M0_ROLE_ORDER
+            or tuple(graph_roles) != M0_ROLE_ORDER
+            or attested != graph_roles
+            or sum(len(ids) for ids in attested.values())
+            != len(self.attestations)
+            or any(
+                len(attested[role]) != len(graph_roles[role])
+                for role in M0_ROLE_ORDER
+            )
+        ):
+            _fail(
+                "M0 typed graph role semantic IDs differ from record "
+                "attestations"
+            )
+
+    @property
+    def typed_graph(self) -> V075PortablePublicM0TypedGraphV2:
+        """Return the graph only after fresh graph/attestation validation."""
+
+        self._assert_typed_graph_attestation_binding()
+        return self._typed_graph
+
     def _payload(self) -> dict[str, Any]:
+        self._assert_typed_graph_attestation_binding()
+        typed_graph = self._typed_graph
         consumed_dependency_record_ids = sorted(
             {
                 dependency_id
@@ -1306,6 +2013,24 @@ class V075PortablePublicSemanticReplayResultV2:
             "target_tape_namespace_id": self.target_tape_namespace_id,
             "namespace_public_key_id": self.namespace_public_key_id,
             "verified_arm": self.verified_arm,
+            "m0_typed_graph_id": typed_graph.graph_id,
+            "m0_ordered_typed_ids": (
+                typed_graph._serializable_id_mapping(
+                    typed_graph.ordered_typed_ids
+                )
+            ),
+            "m0_role_semantic_ids": (
+                typed_graph._serializable_id_mapping(
+                    typed_graph.role_semantic_ids
+                )
+            ),
+            "m0_typed_graph_in_memory_only": True,
+            "m0_typed_graph_issuer_gate_semantics": (
+                "CONSTRUCTION_API_DISCIPLINE_ONLY"
+            ),
+            "m0_typed_graph_python_process_security_boundary": False,
+            "m0_typed_objects_serialized": False,
+            "source_artifacts_serialized": False,
             "supported_arm_coverage": list(SUPPORTED_ARM_COVERAGE),
             "source_consensus_prior_verified_arm": self.verified_arm,
             "source_consensus_prior_all_arm_complete": False,
@@ -1410,7 +2135,7 @@ def replay_v075_portable_public_semantics_v2(
     )
     namespace = resolution.namespace
     store = _RecordStore(bundle.records)
-    occurrence, schedule, _verification, _intents = (
+    occurrence, schedule, verification, intents = (
         _replay_initial_authority(
             repository_root=repository_root,
             namespace=namespace,
@@ -1452,7 +2177,41 @@ def replay_v075_portable_public_semantics_v2(
         rows=rows,
         chains=chains,
     )
-    _replay_streams(store=store, pairings=pairings)
+    streams = _replay_streams(store=store, pairings=pairings)
+
+    typed_graph = V075PortablePublicM0TypedGraphV2(
+        _M0_TYPED_GRAPH_ISSUER,
+        bundle.bundle_id,
+        closure.closure_id,
+        occurrence.occurrence_id,
+        namespace.target_tape_namespace_id,
+        occurrence,
+        schedule,
+        verification,
+        tuple(intents[item.intent_id] for item in schedule.intents),
+        tuple(sorted(states.values(), key=lambda item: item.state_id)),
+        tuple(
+            sorted(
+                catalogues.values(),
+                key=lambda item: item.catalogue_id,
+            )
+        ),
+        tuple(
+            sorted(rows.values(), key=lambda item: item.row_binding_id)
+        ),
+        tuple(
+            sorted(evidence.values(), key=lambda item: item.evidence_id)
+        ),
+        tuple(sorted(epochs.values(), key=lambda item: item.epoch_id)),
+        tuple(sorted(chains.values(), key=lambda item: item.chain_id)),
+        tuple(
+            sorted(
+                pairings.values(),
+                key=lambda item: item.pairing_authority_id,
+            )
+        ),
+        tuple(sorted(streams.values(), key=lambda item: item.stream_id)),
+    )
 
     m0_records = tuple(
         item for item in bundle.records if item.role in _M0_ROLES
@@ -1500,6 +2259,7 @@ def replay_v075_portable_public_semantics_v2(
         namespace.target_tape_namespace_id,
         closure.namespace_public_key_id,
         occurrence.arm.value,
+        typed_graph,
         tuple(attestations),
     )
 
@@ -1533,6 +2293,7 @@ __all__ = [
     "SCHEMA_VERSION",
     "SOURCE_AUTHORITY_COMPLETE",
     "SUPPORTED_ARM_COVERAGE",
+    "V075PortablePublicM0TypedGraphV2",
     "V075PortablePublicRecordSemanticAttestationV2",
     "V075PortablePublicRoleReplayStatusV2",
     "V075PortablePublicSemanticReplayProductionV2NotReady",

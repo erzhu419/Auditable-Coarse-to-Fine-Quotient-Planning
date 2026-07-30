@@ -394,6 +394,310 @@ def test_minimal_m0_replays_all_eleven_roles_and_keeps_locks_closed(
     assert document["unresolved_dependency_record_ids"]
 
 
+def _mint_typed_graph(
+    source: replay.V075PortablePublicM0TypedGraphV2,
+    *,
+    issuer,
+    **changes,
+):
+    values = {
+        "bundle_id": source.bundle_id,
+        "public_context_closure_id": source.public_context_closure_id,
+        "occurrence_id": source.occurrence_id,
+        "target_tape_namespace_id": source.target_tape_namespace_id,
+        "occurrence": source.occurrence,
+        "schedule": source.schedule,
+        "verification": source.verification,
+        "intents": source.intents,
+        "states": source.states,
+        "catalogues": source.catalogues,
+        "rows": source.rows,
+        "support_evidence": source.support_evidence,
+        "epochs": source.epochs,
+        "chains": source.chains,
+        "pairings": source.pairings,
+        "transition_streams": source.transition_streams,
+    }
+    values.update(changes)
+    return replay.V075PortablePublicM0TypedGraphV2(
+        issuer,
+        **values,
+    )
+
+
+def test_m0_typed_graph_is_honestly_consumable_and_not_serialized(
+    m0_graph,
+) -> None:
+    result = m0_graph["run"]()
+    typed_graph = result.typed_graph
+    document = result.to_document()
+
+    assert type(typed_graph) is replay.V075PortablePublicM0TypedGraphV2
+    assert typed_graph.occurrence is typed_graph.schedule.occurrence
+    assert typed_graph.namespace is typed_graph.schedule.profile.namespace
+    assert typed_graph.intents == typed_graph.schedule.intents
+    assert typed_graph.verification.schedule is typed_graph.schedule
+    assert typed_graph.transition_streams
+    assert all(
+        item.arm == typed_graph.occurrence.arm.value
+        for item in typed_graph.transition_streams
+    )
+    assert tuple(typed_graph.states_by_id) == tuple(
+        item.state_id for item in typed_graph.states
+    )
+    assert tuple(typed_graph.catalogues_by_id) == tuple(
+        item.catalogue_id for item in typed_graph.catalogues
+    )
+    assert tuple(typed_graph.rows_by_id) == tuple(
+        item.row_binding_id for item in typed_graph.rows
+    )
+    assert tuple(typed_graph.evidence_by_id) == tuple(
+        item.evidence_id for item in typed_graph.support_evidence
+    )
+    assert tuple(typed_graph.epochs_by_id) == tuple(
+        item.epoch_id for item in typed_graph.epochs
+    )
+    assert tuple(typed_graph.chains_by_id) == tuple(
+        item.chain_id for item in typed_graph.chains
+    )
+    assert tuple(typed_graph.pairings_by_id) == tuple(
+        item.pairing_authority_id for item in typed_graph.pairings
+    )
+    assert tuple(typed_graph.streams_by_id) == tuple(
+        item.stream_id for item in typed_graph.transition_streams
+    )
+    with pytest.raises(TypeError):
+        typed_graph.states_by_id["foreign"] = typed_graph.states[0]
+    assert all(
+        type(ids) is tuple
+        for ids in typed_graph.ordered_typed_ids.values()
+    )
+    assert all(
+        type(ids) is tuple
+        for ids in typed_graph.role_semantic_ids.values()
+    )
+    with pytest.raises(TypeError):
+        typed_graph.ordered_typed_ids["state_ids"] = ()
+    assert document["m0_typed_graph_id"] == typed_graph.graph_id
+    assert document["m0_ordered_typed_ids"] == {
+        key: list(ids)
+        for key, ids in typed_graph.ordered_typed_ids.items()
+    }
+    assert document["m0_role_semantic_ids"] == {
+        key: list(ids)
+        for key, ids in typed_graph.role_semantic_ids.items()
+    }
+    assert document["m0_typed_graph_in_memory_only"] is True
+    assert document["m0_typed_graph_issuer_gate_semantics"] == (
+        "CONSTRUCTION_API_DISCIPLINE_ONLY"
+    )
+    assert (
+        document["m0_typed_graph_python_process_security_boundary"]
+        is False
+    )
+    assert document["m0_typed_objects_serialized"] is False
+    assert document["source_artifacts_serialized"] is False
+    assert not hasattr(typed_graph, "to_document")
+    assert not hasattr(typed_graph, "canonical_bytes")
+    assert "V075InitialAcquisitionScheduleV2" not in repr(result)
+
+
+def test_m0_typed_graph_rejects_caller_mint_and_exact_typed_transplant(
+    m0_graph,
+) -> None:
+    source = m0_graph["run"]().typed_graph
+    with pytest.raises(
+        replay.V075PortablePublicSemanticReplayV2InvariantViolation,
+        match="caller-minted",
+    ):
+        _mint_typed_graph(source, issuer=object())
+
+    namespace = source.schedule.profile.namespace
+    foreign_context = namespace.family.replicate_contexts[1]
+    foreign_catalogue = graph.root_catalogue_v1(foreign_context)
+    foreign_row = graph.observation_row_binding_v1(
+        foreign_context,
+        foreign_catalogue,
+        foreign_catalogue.actions[0],
+    )
+    transplanted_rows = tuple(
+        sorted(
+            (*source.rows[1:], foreign_row),
+            key=lambda item: item.row_binding_id,
+        )
+    )
+    with pytest.raises(
+        replay.V075PortablePublicSemanticReplayV2InvariantViolation,
+        match="row|schedule intent",
+    ):
+        _mint_typed_graph(
+            source,
+            issuer=replay._M0_TYPED_GRAPH_ISSUER,  # noqa: SLF001
+            rows=transplanted_rows,
+        )
+
+
+def test_m0_typed_graph_rejects_ordered_id_permutation(
+    m0_graph,
+) -> None:
+    source = m0_graph["run"]().typed_graph
+    assert len(source.states) >= 2
+    with pytest.raises(
+        replay.V075PortablePublicSemanticReplayV2InvariantViolation,
+        match="canonical ID order",
+    ):
+        _mint_typed_graph(
+            source,
+            issuer=replay._M0_TYPED_GRAPH_ISSUER,  # noqa: SLF001
+            states=tuple(reversed(source.states)),
+        )
+
+
+def test_result_rejects_self_consistent_graph_with_missing_leaf_role_id(
+    m0_graph,
+) -> None:
+    source_result = m0_graph["run"]()
+    source = source_result.typed_graph
+    assert len(source.transition_streams) >= 2
+    reduced_graph = _mint_typed_graph(
+        source,
+        issuer=replay._M0_TYPED_GRAPH_ISSUER,  # noqa: SLF001
+        transition_streams=source.transition_streams[:-1],
+    )
+    assert reduced_graph.graph_id != source.graph_id
+    with pytest.raises(
+        replay.V075PortablePublicSemanticReplayV2InvariantViolation,
+        match="role semantic IDs differ",
+    ):
+        replay.V075PortablePublicSemanticReplayResultV2(
+            replay._RESULT_ISSUER,  # noqa: SLF001
+            source_result.bundle_id,
+            source_result.occurrence_id,
+            source_result.public_context_closure_id,
+            source_result.repository_binding_id,
+            source_result.source_manifest_id,
+            source_result.target_tape_namespace_id,
+            source_result.namespace_public_key_id,
+            source_result.verified_arm,
+            reduced_graph,
+            source_result.attestations,
+        )
+    object.__setattr__(source_result, "_typed_graph", reduced_graph)
+    try:
+        with pytest.raises(
+            replay.V075PortablePublicSemanticReplayV2InvariantViolation,
+            match="role semantic IDs differ",
+        ):
+            _ = source_result.typed_graph
+        with pytest.raises(
+            replay.V075PortablePublicSemanticReplayV2InvariantViolation,
+            match="role semantic IDs differ",
+        ):
+            source_result.to_document()
+    finally:
+        object.__setattr__(source_result, "_typed_graph", source)
+
+
+def test_m0_typed_graph_rejects_stale_signed_leaf_and_graph_id_rehash(
+    m0_graph,
+) -> None:
+    # This mutates one signed observed-state leaf, clears memoized descendant
+    # IDs, restores canonical tuple order, and rehashes the graph ID.  It does
+    # not construct a producer-valid replacement successor chain.
+    source = m0_graph["run"]().typed_graph
+    victim = source.support_evidence[0].observed_state
+    original_ranks = victim.ranks
+    original_failure = victim.failure
+    original_graph_id = source.graph_id
+    original_sequences = {
+        name: getattr(source, name)
+        for name in (
+            "states",
+            "catalogues",
+            "rows",
+            "support_evidence",
+            "epochs",
+            "chains",
+            "pairings",
+            "transition_streams",
+        )
+    }
+    existing_state_ids = {item.state_id for item in source.states}
+    candidate = None
+    for vertex in range(len(victim.ranks)):
+        for rank in range(victim.context.rank_cap + 1):
+            ranks = list(victim.ranks)
+            ranks[vertex] = rank
+            if tuple(ranks) == victim.ranks:
+                continue
+            failure = not graph.legal_action_triples_v1(
+                victim.context,
+                tuple(ranks),
+                False,
+            )
+            try:
+                proposed = graph.V075SymbolicGraphStateV1(
+                    victim.context,
+                    tuple(ranks),
+                    failure,
+                )
+            except graph.V075PublicGraphSemanticsInvariantViolation:
+                continue
+            if proposed.state_id not in existing_state_ids:
+                candidate = proposed
+                break
+        if candidate is not None:
+            break
+    assert candidate is not None
+
+    try:
+        object.__setattr__(victim, "ranks", candidate.ranks)
+        object.__setattr__(victim, "failure", candidate.failure)
+        with graph._MEMOIZED_VALUES_LOCK:  # noqa: SLF001
+            graph._MEMOIZED_VALUES.clear()  # noqa: SLF001
+        for name, identity_name in (
+            ("states", "state_id"),
+            ("catalogues", "catalogue_id"),
+            ("rows", "row_binding_id"),
+            ("support_evidence", "evidence_id"),
+            ("epochs", "epoch_id"),
+            ("chains", "chain_id"),
+            ("pairings", "pairing_authority_id"),
+            ("transition_streams", "stream_id"),
+        ):
+            object.__setattr__(
+                source,
+                name,
+                tuple(
+                    sorted(
+                        getattr(source, name),
+                        key=lambda item: getattr(item, identity_name),
+                    )
+                ),
+            )
+        object.__setattr__(
+            source,
+            "_graph_id",
+            replay._hash(  # noqa: SLF001
+                "typed_graph",
+                source._identity_payload(),  # noqa: SLF001
+            ),
+        )
+        with pytest.raises(
+            replay.V075PortablePublicSemanticReplayV2InvariantViolation,
+            match="producer replay|transplanted|parent",
+        ):
+            source._assert_content_id()  # noqa: SLF001
+    finally:
+        object.__setattr__(victim, "ranks", original_ranks)
+        object.__setattr__(victim, "failure", original_failure)
+        for name, values in original_sequences.items():
+            object.__setattr__(source, name, values)
+        with graph._MEMOIZED_VALUES_LOCK:  # noqa: SLF001
+            graph._MEMOIZED_VALUES.clear()  # noqa: SLF001
+        object.__setattr__(source, "_graph_id", original_graph_id)
+
+
 def _mutate_record(records, role, mutation):
     mutable = list(records)
     index = next(
@@ -722,6 +1026,11 @@ def test_real_raw_k7_bundle_and_real_context_closure_cross_both_verifiers(
         ),
     )
     document = result.to_document()
+    assert type(result.typed_graph) is (
+        replay.V075PortablePublicM0TypedGraphV2
+    )
+    assert document["m0_typed_graph_id"] == result.typed_graph.graph_id
+    assert result.typed_graph.streams_by_id
     assert document["verified_arm"] == "NO_PRIOR"
     assert document["supported_arm_coverage"] == ["NO_PRIOR"]
     assert document["typed_object_reconstruction_complete"] is True
