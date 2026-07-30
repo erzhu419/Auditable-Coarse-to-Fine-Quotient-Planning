@@ -34,7 +34,7 @@ from acfqp import v075_public_target_tape_namespace_v2 as namespace_v2
 
 
 SCHEMA_VERSION = "2.0.0"
-PROPOSED_CONTRACT_VERSION = "1.54.0"
+PROPOSED_CONTRACT_VERSION = "1.57.0"
 PROFILE_KEY = "v075_observer_signed_batch_control_authority_v2"
 
 OFFICIAL_EXECUTION_ALLOWED = False
@@ -377,6 +377,10 @@ _SEMANTIC_AUTHORITY_ISSUER = object()
 class V075ControlledBatchSemanticAuthorityRoleV2(str, Enum):
     INITIAL_SCHEDULE_ROW_INTENT = "INITIAL_SCHEDULE_ROW_INTENT"
     DYNAMIC_CHILD_DISCOVERY_INTENT = "DYNAMIC_CHILD_DISCOVERY_INTENT"
+    LIVE_DYNAMIC_CHILD_ACQUISITION_INTENT = (
+        "LIVE_DYNAMIC_CHILD_ACQUISITION_INTENT"
+    )
+    LIVE_PROMOTION_AUTHORIZATION = "LIVE_PROMOTION_AUTHORIZATION"
 
 
 class V075ControlledBatchSemanticAuthoritySchemaV2(str, Enum):
@@ -385,6 +389,12 @@ class V075ControlledBatchSemanticAuthoritySchemaV2(str, Enum):
     )
     DYNAMIC_CHILD_DISCOVERY_INTENT = (
         "acfqp.v075_dynamic_child_discovery_intent.v2"
+    )
+    LIVE_DYNAMIC_CHILD_ACQUISITION_INTENT = (
+        "acfqp.v075_live_dynamic_child_acquisition_intent.v2"
+    )
+    LIVE_PROMOTION_AUTHORIZATION = (
+        "acfqp.v075_live_promotion_authorization.v2"
     )
 
 
@@ -405,6 +415,16 @@ _ROLE_SCHEMA = {
     .DYNAMIC_CHILD_DISCOVERY_INTENT: (
         V075ControlledBatchSemanticAuthoritySchemaV2
         .DYNAMIC_CHILD_DISCOVERY_INTENT
+    ),
+    V075ControlledBatchSemanticAuthorityRoleV2
+    .LIVE_DYNAMIC_CHILD_ACQUISITION_INTENT: (
+        V075ControlledBatchSemanticAuthoritySchemaV2
+        .LIVE_DYNAMIC_CHILD_ACQUISITION_INTENT
+    ),
+    V075ControlledBatchSemanticAuthorityRoleV2
+    .LIVE_PROMOTION_AUTHORIZATION: (
+        V075ControlledBatchSemanticAuthoritySchemaV2
+        .LIVE_PROMOTION_AUTHORIZATION
     ),
 }
 
@@ -460,6 +480,30 @@ class V075ControlledBatchSemanticAuthorityBindingV2:
                 V075ControlledBatchStageV2.CHILD_VALIDATION,
             }
             and self.round_index > 0
+        ) or (
+            self.role
+            is (
+                V075ControlledBatchSemanticAuthorityRoleV2
+                .LIVE_DYNAMIC_CHILD_ACQUISITION_INTENT
+            )
+            and self.stage
+            in {
+                V075ControlledBatchStageV2.CHILD_DISCOVERY,
+                V075ControlledBatchStageV2.CHILD_VALIDATION,
+            }
+            and self.round_index == 0
+        ) or (
+            self.role
+            is (
+                V075ControlledBatchSemanticAuthorityRoleV2
+                .LIVE_PROMOTION_AUTHORIZATION
+            )
+            and self.stage
+            in {
+                V075ControlledBatchStageV2.ROOT_VALIDATION,
+                V075ControlledBatchStageV2.CHILD_VALIDATION,
+            }
+            and self.round_index in {1, 2}
         )
         if (
             self._issuer is not _SEMANTIC_AUTHORITY_ISSUER

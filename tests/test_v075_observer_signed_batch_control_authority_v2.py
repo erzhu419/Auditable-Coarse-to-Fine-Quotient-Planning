@@ -362,7 +362,7 @@ def test_signature_tampering_and_production_use_remain_rejected(
     ):
         control.open_v075_production_controlled_private_observer_v2()
     assert not hasattr(controller, "observe_batch_v2")
-    assert control.PROPOSED_CONTRACT_VERSION == "1.54.0"
+    assert control.PROPOSED_CONTRACT_VERSION == "1.57.0"
     assert control.OFFICIAL_EXECUTION_ALLOWED is False
     assert control.PRODUCTION_AUTHORIZING is False
     assert control.PROCESS_ISOLATION_PROVIDED is False
@@ -409,6 +409,97 @@ def test_semantic_role_stage_round_and_support_binding_is_typed(
             accepted_draw_count=1,
             accepted_draw_cap=1,
         )
+
+
+def test_live_child_and_promotion_semantic_roles_are_strictly_typed() -> None:
+    live_child_role = (
+        control.V075ControlledBatchSemanticAuthorityRoleV2
+        .LIVE_DYNAMIC_CHILD_ACQUISITION_INTENT
+    )
+    live_child_schema = (
+        control.V075ControlledBatchSemanticAuthoritySchemaV2
+        .LIVE_DYNAMIC_CHILD_ACQUISITION_INTENT
+    )
+    promotion_role = (
+        control.V075ControlledBatchSemanticAuthorityRoleV2
+        .LIVE_PROMOTION_AUTHORIZATION
+    )
+    promotion_schema = (
+        control.V075ControlledBatchSemanticAuthoritySchemaV2
+        .LIVE_PROMOTION_AUTHORIZATION
+    )
+    support_id = _id("live-role-support")
+    discovery = control.freeze_v075_controlled_batch_semantic_authority_v2(
+        role=live_child_role,
+        schema=live_child_schema,
+        semantic_artifact_id=_id("live-child-discovery"),
+        semantic_verification_id=_id("live-child-verification"),
+        stage=control.V075ControlledBatchStageV2.CHILD_DISCOVERY,
+        round_index=0,
+        support_freeze_id=None,
+    )
+    validation = control.freeze_v075_controlled_batch_semantic_authority_v2(
+        role=live_child_role,
+        schema=live_child_schema,
+        semantic_artifact_id=_id("live-child-validation"),
+        semantic_verification_id=_id("live-child-verification"),
+        stage=control.V075ControlledBatchStageV2.CHILD_VALIDATION,
+        round_index=0,
+        support_freeze_id=support_id,
+    )
+    promotion = control.freeze_v075_controlled_batch_semantic_authority_v2(
+        role=promotion_role,
+        schema=promotion_schema,
+        semantic_artifact_id=_id("live-promotion"),
+        semantic_verification_id=_id("live-promotion-verification"),
+        stage=control.V075ControlledBatchStageV2.ROOT_VALIDATION,
+        round_index=2,
+        support_freeze_id=support_id,
+    )
+    assert discovery.round_index == validation.round_index == 0
+    assert promotion.round_index == 2
+
+    invalid = (
+        (
+            promotion_role,
+            promotion_schema,
+            control.V075ControlledBatchStageV2.CHILD_DISCOVERY,
+            1,
+            None,
+        ),
+        (
+            promotion_role,
+            promotion_schema,
+            control.V075ControlledBatchStageV2.CHILD_VALIDATION,
+            0,
+            support_id,
+        ),
+        (
+            live_child_role,
+            live_child_schema,
+            control.V075ControlledBatchStageV2.CHILD_VALIDATION,
+            1,
+            support_id,
+        ),
+    )
+    for role, schema, stage, round_index, freeze_id in invalid:
+        with pytest.raises(
+            control.V075ObserverSignedBatchControlV2InvariantViolation,
+            match="role, schema, stage, round, or support-freeze",
+        ):
+            control.freeze_v075_controlled_batch_semantic_authority_v2(
+                role=role,
+                schema=schema,
+                semantic_artifact_id=_id(
+                    f"invalid-{role.value}-{stage.value}-{round_index}"
+                ),
+                semantic_verification_id=_id(
+                    f"invalid-verification-{stage.value}-{round_index}"
+                ),
+                stage=stage,
+                round_index=round_index,
+                support_freeze_id=freeze_id,
+            )
 
 
 def test_multi_row_support_freeze_open_prefix_and_validation(
