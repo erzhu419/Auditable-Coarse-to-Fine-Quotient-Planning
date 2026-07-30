@@ -30,11 +30,11 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 
 ## Current fresh-campaign construction (V0-075, target locked)
 
-V0-075 is a new authority family, not a third V0-072 attempt. Proposed
-contract `1.40.0` builds a semantically verified compact source-proposal
-archive, a law-free public target authority, an anchor-derived target
-namespace, and lossless occurrence-level process execution around the V0-074
-total partial-support lift.
+V0-075 is a new authority family, not a third V0-072 attempt. Its construction
+contracts now span `1.40.0` through `1.68.0`: the earlier contracts build the
+source archive, law-free public target graph, private reveal/observer boundary
+and multiround planning path; the newer contracts reconstruct the portable
+evidence graph role by role before any production target access.
 
 The public K7/W7/K7-minus-two structures are retained only as a same-structure
 fresh statistical replication. The initially proposed spawn laws were exposed
@@ -44,7 +44,8 @@ preregistration and remote-main anchor exist; every target identity/tape will
 then be new. No V0-072 target observation, model, policy, certificate,
 journal, result, cache or retry authority is accepted.
 
-Construction currently keeps target access disabled. The full contract is
+Construction currently keeps target access disabled. The full campaign
+contract is
 [`specs/FRESH_TOTAL_LIFT_PARALLEL_CONFIRMATORY_CAMPAIGN.md`](specs/FRESH_TOTAL_LIFT_PARALLEL_CONFIRMATORY_CAMPAIGN.md).
 Implemented pre-target boundaries now include a source-only exact replay
 controller, private reveal/observer isolation, strict manifest/preregistration
@@ -55,6 +56,26 @@ construction now also has a real multistage
 observation→model→plan→row-specific-total-lift positive control. Target access
 remains locked while the production occurrence, reconciliation, endpoint and
 remaining semantic-authority chain are completed.
+
+The current portable cut is deliberately narrower than “bundle verified”:
+
+```text
+raw public context
+-> M0: 11 producer-typed public roles
+-> B1: observer-open binding
+-> M1A: 6 signed-batch roles + iterative O(V+E) dependency DAG
+-> SIGNED_BATCH_JOURNAL_CLOSURE_VERIFICATION remains unresolved
+```
+
+Contract `1.68.0` adds a new construction-only atomic private-replay
+attestation. Its trusted freeze performs the real private replay before
+observer signing and rejects caller-supplied/legacy verification objects. The
+public verifier still claims only `observer_signed=true` and
+`independently_recomputed=false`: a generic signer holder can bypass the
+helper, so production still requires a signer-owning sealed observer service
+and a new non-retroactive portable role. M1B control replay, child/promotion
+semantic authorities, source/code provenance, all-path accounting, campaign
+closure and the independent complete-bundle verifier remain open.
 Sample-efficiency, official, scalar, economics and counter-completeness Gates
 remain locked.
 

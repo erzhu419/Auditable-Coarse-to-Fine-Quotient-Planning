@@ -2,8 +2,8 @@
 
 **Status:** normative source of truth
 
-**Ledger version:** 1.34.8
-**Last updated:** 2026-07-29
+**Ledger version:** 1.68.0
+**Last updated:** 2026-07-30
 
 ## Authority
 
@@ -105,6 +105,80 @@ absent from a public checkout.
 | V0-072 | 2026-07-29 | Transfer-guided adaptive observation acquisition draft | NONAUTHORIZING DRAFT / TARGET LOCKED / GATE NOT RUN | Ledger `1.34.6` extends the audit-corrected prerequisites for proposed contract `1.36.0`, schema `2.0.0`, and profile `transfer_guided_adaptive_observation_acquisition_v1`; completed construction contract remains `1.34.0`. The draft freezes the clean-generation K7/W7/K7-minus-two family, five arms/15 occurrences, cold `64+2048` row schedule, two-round cumulative cap, direct checkpoints, and `beta=1/300000` confidence allocation. A physical row may carry its initial confidence epoch plus at most two promotions (three epochs total); the global schedule still permits at most two promotion authorities per context and conservatively caps each arm at 480 authorities. Implemented prerequisites now include exact lazy planning/independent proof replay; the seven-roll-forward source archive plus a separately implemented archive-transform verifier; exact split-support confidence and campaign allocation; evidence-first public novel-child cardinality/selection plus independent row/count replay; immutable row transcripts and discovery-only cold-H2 closure plus independent verifiers; the anchor-locked observer/full epoch-chain; a disjoint synthetic K4 control; and nonauthorizing manifest readiness. | Audit corrections supersede nonauthorizing drafts `8b1e4747bb364ccddc04bb45d97a061c621650c907d31c979673f312acdffd29` and `e368be24adad7870d95c8e5059455d31e035783394e48040d113258388eaf4d4` with nonauthorizing draft `7639f1ee57ee2d9a8c871a5f0270d15fdd92f712a735e2ae89b6155e057ba5c2`; all have null execution manifests and none is an anchor. The latest correction adds `DIRECT_CHECKPOINT_CAP_EXHAUSTED_NONCERTIFICATE`, which is distinct from adaptive incremental/two-round exhaustion and from infeasibility. Eight earlier development identities remain retired; no tape, artifact, endpoint, or campaign output persisted. The real V0-068 campaign → production archive → independent archive-transform lane passes, but the independent verifier expressly consumes the same-implementation V0-068 campaign authority. Only the first `origin/main` commit containing a final non-null execution manifest and the final preregistration ID that binds it, whose parent lacks that final ID, can become the anchor. Registered row/model integration, relational/ground model construction, materialization, direct baseline, fresh round 2, campaign and standalone bundle verification remain incomplete; no sample-efficiency, held-out, transfer, official-execution, economics or completion claim opens. | `partial_support_confidence_v2.py`; `verified_source_acquisition_archive_independent_verifier_v2.py`; `public_novel_child_cardinality_authority_v2.py`; `public_novel_child_cardinality_independent_verifier_v2.py`; `row_bound_observation_core_v2.py`; `row_bound_observation_independent_verifier_v2.py`; `v072_synthetic_row_observation_adapter_v1.py`; `v072_cold_h2_closure_v1.py`; `v072_cold_h2_closure_independent_verifier_v1.py`; `v072_confirmatory_execution_manifest_v1.py`; prior V0-072 components; focused, real-source-integration, lock and attack tests; `specs/TRANSFER_GUIDED_ADAPTIVE_OBSERVATION_ACQUISITION.md`. |
 | V0-074 | 2026-07-29 | Partial-support total lift and lossless execution acceleration | NONAUTHORIZING REPAIR CONSTRUCTION / FRESH SCIENTIFIC GATE NOT RUN | The V0-072 attempt-2 journal is frozen as a second historical `PROTOCOL_FAILURE`, not a campaign result.  The exhausted chain cannot run again.  Proposed contract `1.39.0` repairs the already-registered `OTHER -> ABSORBING_POLICY_ABORT_FAILURE` exact-lift rule: modeled selected children require their bound decisions, while every exact positive-probability child outside the frozen modeled support contributes failure one and zero continuation reward with a branch witness.  The repaired exact path independently replays the operational authority, exact row/atom partition, and reward/failure/regret envelope containment.  It additionally specifies a content-addressed frozen-source envelope and occurrence-level isolated process mechanics whose canonical merged output must be byte-identical to sequential execution.  The current archive/parallel worker registry is synthetic transport only and is not integrated with the production V0-072 proposal or campaign runner. | Supersedes only the pending-repair wording of ledger `1.34.7`; it does not rewrite either anchored attempt, reuse K7 evidence, change V0-072 scientific parameters, or open a third attempt.  K7 is retrospective regression only.  Any new sample-efficiency result requires a new preregistration, manifest and anchor plus fresh target identities/tapes and genuinely fresh held-out occurrences.  Applying the containment mechanism to a new scientific bundle remains `NOT_RUN`; V0-073 contracts `1.37.0` and `1.38.0` remain the earlier development-only VOI constructions and are not overwritten. | `specs/V072_ANCHORED_ATTEMPT_2_FAILURE.json`; `specs/PARTIAL_SUPPORT_TOTAL_LIFT_AND_PARALLEL_EXECUTION.md`; typed failure/journal verifier; partial-policy exact-lift witness and attacks; independent authority/partition/envelope replay; synthetic frozen-source transport verifier; sequential/parallel equivalence and child-failure tests. |
 | V0-075 | 2026-07-29 | Fresh total-lift parallel confirmatory campaign | PRE-ANCHOR CONSTRUCTION / SOURCE FROZEN / TARGET LOCKED / GATE NOT RUN | Proposed contract `1.40.0` and profile `v075_fresh_total_lift_parallel_confirmatory_campaign_v0` define a new authority family rather than a V0-072 retry.  Three replicate contexts retain the public K7/W7/K7-minus-two structures.  The exact laws proposed during construction were publicly exposed and are now permanently `CONSTRUCTION_FIXTURE_ONLY`; production uses a law-free public dependency graph and may bind a separately held private environment only through a high-entropy salted opaque commitment.  The one-way authority chain is historical-exclusion registry plus public target-family generation plus a semantically verified compact source-proposal archive plus that opaque commitment, then a new execution manifest, final preregistration, first qualifying `origin/main` anchor, anchor-derived tape namespace and immutable 3×5 occurrence plan.  V0-075 now has a profile-neutral exact H2 core, law-free signed batch observation graph, parent-owned multistage lifecycle, observation-driven partial-support model/planner, row-specific total lift, private in-memory reveal/observer boundary, exact frozen source replay, strict manifest/preregistration and independent Git-anchor verifier, plus canonical process/CAS foundations. | Both V0-072 failure records and all historical target observations, models, plans, certificates, journals, results, caches and retry authority are forbidden scientific inputs.  The exact source replay has completed with `1,006,720` charged offline draws and zero target access; eight public artifacts and their tracked-source semantic replay are frozen.  A real construction positive control now traverses signed discovery, support freeze, validation, partial model, exact H2 planning and row-specific total lift without relaxing caps or thresholds.  This is not production evidence: the integrated adaptive occurrence worker, production total-lift terminal, reconciliation, endpoint, complete semantic role chain and first qualifying remote anchor remain incomplete.  Until those pass, target execution remains forbidden and sample-efficiency, official, scalar, economics and counter-completeness Gates remain false/null/`NOT_RUN`. | `specs/FRESH_TOTAL_LIFT_PARALLEL_CONFIRMATORY_CAMPAIGN.md`; eight `specs/V075_*SOURCE*` artifacts; tracked-source authority; batch observer and multistage lifecycle; partial-support backend/planner; adaptive proposal/round authorities; batch-native row-specific total lift; construction E2E/attack tests; private observer boundary; CAS/journal transport; manifest/preregistration and independent remote-anchor verifier. |
+| V0-076 | 2026-07-30 | V0-075 portable semantic and private-replay authority closure | CONSTRUCTION / TARGET LOCKED / PRODUCTION REGISTRY INCOMPLETE | Contracts `1.60.0` through `1.68.0` replace the earlier assumption that a hash-complete portable occurrence bundle is itself semantic evidence.  The canonical bundle currently declares 67 roles.  Raw replay must cross the sealed `python -I -S` source/runtime boundary, reconstruct each producer-typed public object, bind every record to an iterative dependency proof, and keep unresolved private or downstream semantic claims explicit.  Contracts `1.64.0`–`1.66.0` reconstruct the raw public context, eleven-role M0 graph and observer-open binding.  Contract `1.67.0` reconstructs six signed-batch roles and uses an `O(V+E)` direct-edge dependency DAG; `SIGNED_BATCH_JOURNAL_CLOSURE_VERIFICATION` remains `UNRESOLVED_PRIVATE_REPLAY_CLAIM`.  Contract `1.68.0` adds a new observer-signed atomic private-replay attestation that performs private replay before signing within one trusted construction call; it is not a public proof of execution order and is not retroactively attached to old bundles. | Supersedes any interpretation that issuer tokens, same-implementation typed replay, hash-chain validity, an exact-shaped closure-verification object, or a generic observer signature proves private-law replay or all-role semantic closure.  A caller holding the generic signer can still sign a public claim; therefore production requires a signer-owning sealed observer service that owns the session from open through close and emits a new non-retroactive portable role.  M1B control roles, child/promotion authorities, source/code provenance, all-path native accounting, terminal/campaign closure and the full independent bundle verifier remain incomplete.  No fresh held-out identity, tape, law, observation or endpoint may be accessed before those prerequisites and a new final preregistration/manifest/anchor are frozen. | `specs/PORTABLE_PRODUCTION_SEMANTIC_CLOSURE.md`; `v075_portable_public_context_closure_v2.py`; `v075_portable_public_semantic_replay_v2.py`; `v075_portable_observer_open_binding_authority_v2.py`; `v075_portable_signed_batch_graph_authority_v2.py`; `v075_observer_signed_private_replay_attestation_v2.py`; raw replay, duplicate-outcome, mutation/transplant, 4096-node DAG, private-channel and residual signer-risk tests. |
+
+## V0-076 current production-boundary state
+
+The current V0-075 evidence path has three distinct meanings that must not be
+collapsed:
+
+```text
+portable byte/topology validity
+!= producer-semantic reconstruction
+!= private-law replay or production authorization
+```
+
+The highest completed public cut is:
+
+```text
+raw bundle + raw public context
+-> M0: 11 public roles reconstructed for the NO_PRIOR arm
+-> B1: observer-open binding reconstructed
+-> M1A: 6 signed-batch roles reconstructed
+-> closure-verification public projection checked
+-> private native replay claim remains unresolved
+```
+
+M1A record identities commit the record index, role, producer semantic ID,
+direct dependency IDs, canonical-byte digest and byte count.  Its dependency
+proof is an iterative topological direct-edge DAG; it does not materialize a
+quadratic transitive closure.  `4096` chained entries are a mandatory
+non-recursive regression.  Repeated `outcome_id` values are not record keys:
+distinct nested canonical outcome bytes remain distinct records.
+
+The contract-`1.68.0` attestation is a new construction artifact.  Its trusted
+freeze accepts private salt/environment, performs the exact private verifier
+inside that call, then signs the resulting public projection.  Neither private
+material is serialized.  The public verifier recomputes the public
+closure/stream graph and verifies the signature, while retaining:
+
+```text
+private_replay_claim_observer_signed = true
+private_replay_independently_recomputed = false
+public_verifier_proves_private_replay_execution_order = false
+execution_order_is_trusted_api_discipline_not_cryptographic_proof = true
+production_requires_signer_owning_sealed_observer_boundary = true
+```
+
+An old or public-reconstructed
+`SIGNED_BATCH_JOURNAL_CLOSURE_VERIFICATION` has no input path to this freeze
+and cannot be upgraded through it.  The new artifact is not yet a portable
+bundle role, and a caller that possesses the generic observer signer can still
+sign an arbitrary public claim.  A production revision must therefore move
+session open, observation, close, private replay and signing into one
+signer-owning sealed service.  The caller may receive only canonical public
+frames and may not supply the signer, a verification object or an old closure
+for post-hoc upgrade.
+
+The following locks are normative until the 67-role semantic chain, sealed
+service, source/code authority, all-path accounting, campaign closure and
+independent bundle verifier are complete:
+
+```text
+official_execution_allowed = false
+fresh_heldout_access_allowed = false
+scientific_endpoint_credit_allowed = false
+plan_certificate_issuance_allowed = false
+infeasibility_certificate_issuance_allowed = false
+portable_semantic_registry_complete = false
+source_authority_complete = false
+code_provenance_complete = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+```
 
 For V0-051, the affected public interface expressly includes the content-addressed
 `IncrementalProofDAGProtocolV1` and its `protocol_id`, in addition to the node,
@@ -4733,3 +4807,15 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 - **2026-07-29 — ledger 1.34.6 direct-terminal audit correction (construction contract unchanged at 1.34.0):** Added `DIRECT_CHECKPOINT_CAP_EXHAUSTED_NONCERTIFICATE` to the V0-072 terminal registry for the matched-direct arm reaching its complete 16,384-draw checkpoint without a sound certificate. It is distinct from adaptive incremental/two-round exhaustion, exact-DP resource exhaustion, fallback, and infeasibility. Superseded nonauthorizing draft ID `e368be24adad7870d95c8e5059455d31e035783394e48040d113258388eaf4d4` is retained in audit provenance and replaced by nonauthorizing draft ID `7639f1ee57ee2d9a8c871a5f0270d15fdd92f712a735e2ae89b6155e057ba5c2`; both retain null manifests, keep target execution locked, and change no Gate.
 - **2026-07-29 — ledger 1.34.7 anchored-attempt protocol repair (construction contract unchanged at 1.34.0):** Recorded anchored attempt 1 as `PROTOCOL_FAILURE / INCOMPLETE_CAMPAIGN_ARTIFACT` after the independently replayed matched-direct native-work purpose omitted `MATCHED_DIRECT_CHECKPOINT`. No result or endpoint was written; unknown paid work is explicitly not zero and all 15 occurrences remain in the failed-attempt denominator. Authorized one clean, full-restart replacement using only exhaustive enum handling and durable attempt journaling, with new target identities and a new recipe/manifest/preregistration/remote-main anchor. Scientific parameters and every aggregate Gate remain unchanged.
 - **2026-07-29 — ledger 1.34.8 attempt-2 closure and V0-074 repair construction (completed construction contract unchanged at 1.34.0):** Recorded the sole V0-072 replacement as a hash-chain-valid `ATTEMPT_CLOSURE_NONCERTIFICATE.PROTOCOL_FAILURE` after four of 15 completed occurrences; no result or endpoint exists and the old chain has zero remaining attempt slots.  The tracked record ID is `cfcc4173e05f7e1ae0354849c40ae72aef5b80ca1dbd747de185e5e1dabdb64e`.  Proposed contract `1.39.0` now makes the frozen partial-support escape semantics explicit in exact lift, with separate environment/abort risk and branch witnesses, and specifies pre-target frozen-source plus occurrence-parallel mechanics.  The current archive/worker implementation is synthetic transport only; production integration and operational-envelope containment remain `NOT_RUN`.  Existing V0-073 development contracts `1.37.0` and `1.38.0` remain unchanged.  V0-072 K7 evidence is retrospective only; fresh science requires a separate preregistration, manifest and anchor plus fresh target identities/tapes and genuinely fresh held-out occurrences.  All official, scalar, economics, counter and sample-efficiency locks remain unchanged.
+- **2026-07-30 — contracts 1.37.0–1.39.0:** Preserved V0-073 certificate-boundary VOI as a development proposal, added fixed/target-only/source-weighted shared-prefix controls, and implemented the V0-074 `OTHER -> ABSORBING_POLICY_ABORT_FAILURE` total-lift repair plus frozen-source/occurrence-isolation mechanics.  None is a third V0-072 attempt or a fresh scientific endpoint.
+- **2026-07-30 — contract 1.40.0:** Established the V0-075 authority family, source replay, law-free public target graph, private commitment/reveal boundary, construction observer, campaign identities and locked fresh-campaign plan.  This is the foundation contract, not target-execution authority.
+- **2026-07-30 — contracts 1.41.0–1.42.0:** Added batch-native exact H2 total lift and a 15-occurrence plan/transport/reconciliation construction runner.  Process transport and canonical topology do not by themselves establish producer semantics or official execution.
+- **2026-07-30 — contracts 1.43.0–1.44.0:** Froze exact V2 identity closure with no V1 projection, then bound the V2 reveal/preopen and observer-signed aggregate lineage.  Private material remains unexported and target execution remains locked.
+- **2026-07-30 — contracts 1.45.0–1.50.0:** Added target-free production profiles, aggregate total lift, signed lifecycle/failure replay, five-arm pretarget schedules, initial acquisition/support bindings, exact-rational robust planning and schedule-to-numerical-planning construction.  `OTHER` remains distinct from modeled environment failure and is charged as policy-abort failure.
+- **2026-07-30 — contracts 1.51.0–1.53.0:** Added complete child catalogues/all-or-none intents, open-session prefix checkpoints and an in-process support/validation controller.  These revisions explicitly provide no causal-before-draw proof, cryptographic process ownership or production authority.
+- **2026-07-30 — contracts 1.54.0–1.59.0:** Unassigned.  No authority, compatibility or migration meaning may be inferred for these version numbers.
+- **2026-07-30 — contract 1.60.0:** Added signed control heads/intents/appends, finite dynamic caps, at most two promotions, immutable model epochs/barriers and the multiround construction runner.  The implementation remains same-process and construction-only.
+- **2026-07-30 — contracts 1.61.0–1.63.0:** Added portable occurrence bundle transport/topology, sealed `python -I -S` raw replay and the 67-role static semantic registry.  Bundle hash validity and static role declaration are not semantic completion; only the registry's self-contained roles were initially complete.
+- **2026-07-30 — contracts 1.64.0–1.66.0:** Added raw public-context closure, raw eleven-role M0 reconstruction and raw observer-open binding replay.  Source manifests remain opaque construction inputs until source/code authority is separately closed; M0 currently supports only the registered `NO_PRIOR` arm.
+- **2026-07-30 — contract 1.67.0:** Added raw M1A signed-batch reconstruction.  Six public producer roles are complete; repeated outcome IDs use nested canonical bytes rather than global-ID uniqueness; an iterative `O(V+E)` dependency DAG replaces recursive transitive expansion.  The closure-verification private replay claim remains unresolved.
+- **2026-07-30 — contract 1.68.0:** Added an atomic construction freeze that performs exact private replay before observer signing and rejects caller-supplied or legacy verification objects.  The public result is an observer-signed claim, not an independent proof of execution order.  A generic signer can bypass the helper, so a signer-owning sealed service and a new non-retroactive portable role remain mandatory before production.
