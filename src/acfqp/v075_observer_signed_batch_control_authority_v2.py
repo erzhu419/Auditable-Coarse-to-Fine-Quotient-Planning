@@ -17,7 +17,7 @@ ownership or single-private-boundary atomicity.
 
 from __future__ import annotations
 
-from dataclasses import InitVar, dataclass, field
+from dataclasses import InitVar, dataclass, field, fields, is_dataclass
 from enum import Enum
 from fractions import Fraction
 import hashlib
@@ -34,7 +34,7 @@ from acfqp import v075_public_target_tape_namespace_v2 as namespace_v2
 
 
 SCHEMA_VERSION = "2.0.0"
-PROPOSED_CONTRACT_VERSION = "1.57.0"
+PROPOSED_CONTRACT_VERSION = "1.60.0"
 PROFILE_KEY = "v075_observer_signed_batch_control_authority_v2"
 
 OFFICIAL_EXECUTION_ALLOWED = False
@@ -2562,6 +2562,236 @@ def _exact_open_prefix_components(
 
 
 _OPEN_PREFIX_VERIFICATION_ISSUER = object()
+_MAX_TRUSTED_OWNED_OPEN_PREFIXES = 4_096
+_TRUSTED_OWNED_OPEN_PREFIXES: dict[
+    int,
+    tuple[
+        "V075OpenControlledBatchPrefixVerificationV2",
+        backend.V075BatchNativeOccurrenceIdentityV1,
+        str,
+        tuple[Any, ...],
+        str,
+    ],
+] = {}
+
+
+_MAX_SAME_PROCESS_FINGERPRINT_NODES = 2_000_000
+_MAX_SAME_PROCESS_FINGERPRINT_DEPTH = 512
+
+
+def same_process_structural_fingerprint_v2(value: Any) -> str:
+    """Seal a complete in-memory typed graph without invoking computed docs."""
+
+    digest = hashlib.sha256()
+    node_count = 0
+    active: set[int] = set()
+    visited: dict[int, tuple[int, str]] = {}
+
+    def token(label: str, raw: bytes = b"") -> None:
+        encoded = label.encode("utf-8")
+        digest.update(len(encoded).to_bytes(4, "big"))
+        digest.update(encoded)
+        digest.update(len(raw).to_bytes(8, "big"))
+        digest.update(raw)
+
+    def visit(item: Any, depth: int) -> None:
+        nonlocal node_count
+        node_count += 1
+        if (
+            node_count > _MAX_SAME_PROCESS_FINGERPRINT_NODES
+            or depth > _MAX_SAME_PROCESS_FINGERPRINT_DEPTH
+        ):
+            _fail("same-process structural fingerprint exceeded its cap")
+        if item is None:
+            token("none")
+            return
+        if type(item) is bool:
+            token("bool", b"1" if item else b"0")
+            return
+        if type(item) is int:
+            token("int", str(item).encode("ascii"))
+            return
+        if type(item) is str:
+            token("str", item.encode("utf-8"))
+            return
+        if type(item) is bytes:
+            token("bytes", item)
+            return
+        if type(item) is Fraction:
+            token(
+                "fraction",
+                (
+                    f"{item.numerator}/{item.denominator}"
+                ).encode("ascii"),
+            )
+            return
+        if isinstance(item, Enum):
+            token(
+                "enum",
+                (
+                    f"{type(item).__module__}.{type(item).__qualname__}:"
+                    f"{item.name}"
+                ).encode("utf-8"),
+            )
+            visit(item.value, depth + 1)
+            return
+        if type(item) is object:
+            token("opaque-object", str(id(item)).encode("ascii"))
+            return
+        object_id = id(item)
+        if object_id in active:
+            _fail("same-process structural fingerprint encountered a cycle")
+        type_label = f"{type(item).__module__}.{type(item).__qualname__}"
+        prior = visited.get(object_id)
+        if prior is not None:
+            ordinal, prior_type_label = prior
+            if prior_type_label != type_label:
+                _fail(
+                    "same-process structural fingerprint observed one object "
+                    "identity with inconsistent runtime types"
+                )
+            token(
+                "ref",
+                f"{type_label}:{ordinal}:{object_id}".encode("utf-8"),
+            )
+            return
+        visited[object_id] = (len(visited) + 1, type_label)
+        if is_dataclass(item) and not isinstance(item, type):
+            token(
+                "dataclass",
+                (
+                    f"{type_label}:{visited[object_id][0]}:{object_id}"
+                ).encode("utf-8"),
+            )
+            active.add(object_id)
+            try:
+                for member in fields(item):
+                    token("field", member.name.encode("utf-8"))
+                    visit(getattr(item, member.name), depth + 1)
+            finally:
+                active.remove(object_id)
+            token("dataclass-end")
+            return
+        if type(item) in {tuple, list}:
+            token(
+                type(item).__name__,
+                f"{object_id}:{len(item)}".encode("ascii"),
+            )
+            active.add(object_id)
+            try:
+                for member in item:
+                    visit(member, depth + 1)
+            finally:
+                active.remove(object_id)
+            token(f"{type(item).__name__}-end")
+            return
+        if type(item) is dict:
+            token("dict", f"{object_id}:{len(item)}".encode("ascii"))
+            active.add(object_id)
+            try:
+                for key, member in item.items():
+                    visit(key, depth + 1)
+                    visit(member, depth + 1)
+            finally:
+                active.remove(object_id)
+            token("dict-end")
+            return
+        if type(item) in {set, frozenset}:
+            ordered = tuple(
+                sorted(
+                    item,
+                    key=lambda member: (
+                        type(member).__module__,
+                        type(member).__qualname__,
+                        repr(member),
+                    ),
+                )
+            )
+            token(
+                type(item).__name__,
+                f"{object_id}:{len(ordered)}".encode("ascii"),
+            )
+            active.add(object_id)
+            try:
+                for member in ordered:
+                    visit(member, depth + 1)
+            finally:
+                active.remove(object_id)
+            token(f"{type(item).__name__}-end")
+            return
+        _fail(
+            "same-process structural fingerprint encountered unsupported "
+            f"type {type(item).__module__}.{type(item).__qualname__}"
+        )
+
+    visit(value, 0)
+    return digest.hexdigest()
+
+
+def _deep_append_digest(item: V075ControlledBatchAppendV2) -> str:
+    return same_process_structural_fingerprint_v2(item)
+
+
+def _deep_support_freeze_digest(
+    item: V075ControlledCompleteSupportFreezeV2,
+) -> str:
+    return same_process_structural_fingerprint_v2(item)
+
+
+def _owned_open_prefix_object_identity(
+    prefix: "V075OpenControlledBatchPrefixVerificationV2",
+) -> tuple[Any, ...]:
+    return (
+        tuple(id(item) for item in prefix.heads),
+        tuple(
+            (
+                id(item),
+                id(item.prior_head),
+                id(item.intent),
+                id(item.intent.semantic_authority),
+                id(item.intent.stream_identity),
+                id(item.batch),
+                id(item.batch.request),
+                tuple(id(outcome) for outcome in item.batch.outcomes),
+                id(item.resulting_head),
+                id(item.receipt),
+            )
+            for item in prefix.appends
+        ),
+        tuple(
+            (
+                id(item),
+                id(item.discovery_append),
+                id(item.discovery_append.batch),
+                id(item.frozen_at_head),
+                tuple(
+                    (
+                        id(evidence),
+                        id(evidence.observed_state),
+                    )
+                    for evidence in item.evidence
+                ),
+            )
+            for item in prefix.support_freezes
+        ),
+    )
+
+
+def _owned_open_prefix_deep_digest(
+    prefix: "V075OpenControlledBatchPrefixVerificationV2",
+    occurrence_identity: backend.V075BatchNativeOccurrenceIdentityV1,
+) -> str:
+    digest = hashlib.sha256()
+    digest.update(
+        same_process_structural_fingerprint_v2(
+            occurrence_identity
+        ).encode("ascii")
+    )
+    digest.update(b"\x00")
+    digest.update(
+        same_process_structural_fingerprint_v2(prefix).encode("ascii")
+    )
+    return digest.hexdigest()
 
 
 @dataclass(frozen=True, slots=True)
@@ -2691,22 +2921,15 @@ class V075OpenControlledBatchPrefixVerificationV2:
         return {**self._payload(), "verification_id": self.verification_id}
 
 
-def verify_v075_open_controlled_batch_prefix_v2(
+def _mint_v075_open_controlled_batch_prefix_verification_v2(
     *,
     heads: tuple[V075SignedBatchJournalHeadV2, ...],
     appends: tuple[V075ControlledBatchAppendV2, ...],
     support_freezes: tuple[
         V075ControlledCompleteSupportFreezeV2,
         ...,
-    ] = (),
+    ],
 ) -> V075OpenControlledBatchPrefixVerificationV2:
-    """Reconstruct an open typed prefix without closing or signing anything."""
-
-    heads, appends, support_freezes = _exact_open_prefix_components(
-        heads=heads,
-        appends=appends,
-        support_freezes=support_freezes,
-    )
     first = heads[0]
     return V075OpenControlledBatchPrefixVerificationV2(
         _OPEN_PREFIX_VERIFICATION_ISSUER,
@@ -2726,6 +2949,73 @@ def verify_v075_open_controlled_batch_prefix_v2(
         len(appends),
         heads[-1].total_accepted_draw_count,
     )
+
+
+def verify_v075_open_controlled_batch_prefix_v2(
+    *,
+    heads: tuple[V075SignedBatchJournalHeadV2, ...],
+    appends: tuple[V075ControlledBatchAppendV2, ...],
+    support_freezes: tuple[
+        V075ControlledCompleteSupportFreezeV2,
+        ...,
+    ] = (),
+) -> V075OpenControlledBatchPrefixVerificationV2:
+    """Reconstruct an open typed prefix without closing or signing anything."""
+
+    heads, appends, support_freezes = _exact_open_prefix_components(
+        heads=heads,
+        appends=appends,
+        support_freezes=support_freezes,
+    )
+    return _mint_v075_open_controlled_batch_prefix_verification_v2(
+        heads=heads,
+        appends=appends,
+        support_freezes=support_freezes,
+    )
+
+
+def validate_v075_trusted_owned_open_prefix_v2(
+    *,
+    claimed: V075OpenControlledBatchPrefixVerificationV2,
+    occurrence_identity: backend.V075BatchNativeOccurrenceIdentityV1,
+) -> V075OpenControlledBatchPrefixVerificationV2:
+    """Validate a controller-owned prefix without portable signature replay."""
+
+    if (
+        type(claimed) is not V075OpenControlledBatchPrefixVerificationV2
+        or type(occurrence_identity)
+        is not backend.V075BatchNativeOccurrenceIdentityV1
+    ):
+        _fail("trusted owned prefix validation requires exact typed inputs")
+    registration = _TRUSTED_OWNED_OPEN_PREFIXES.get(id(claimed))
+    try:
+        current_object_identity = _owned_open_prefix_object_identity(claimed)
+        current_deep_digest = (
+            None
+            if registration is None
+            else _owned_open_prefix_deep_digest(claimed, registration[1])
+        )
+    except Exception as error:
+        if type(error) is V075ObserverSignedBatchControlV2InvariantViolation:
+            raise
+        raise V075ObserverSignedBatchControlV2InvariantViolation(
+            "trusted owned open-prefix same-process provenance nested graph "
+            "changed"
+        ) from error
+    if (
+        registration is None
+        or registration[0] is not claimed
+        or registration[1].to_document()
+        != occurrence_identity.to_document()
+        or registration[2] != claimed.verification_id
+        or registration[3] != current_object_identity
+        or registration[4] != current_deep_digest
+    ):
+        _fail(
+            "open prefix lacks immutable controller-owned same-process "
+            "provenance"
+        )
+    return claimed
 
 
 def replay_v075_open_controlled_batch_prefix_verification_v2(
@@ -2880,15 +3170,20 @@ class V075ConstructionControlledPrivateObserverV2:
     __slots__ = (
         "__adapter",
         "__appends",
+        "__append_snapshots",
         "__closed",
         "__frontier_state",
+        "__head_snapshots",
         "__heads",
         "__identity",
+        "__identity_snapshot",
         "__pending_intent",
+        "__pending_intent_snapshot",
         "__poisoned",
         "__session",
         "__signer",
         "__support_freezes",
+        "__support_freeze_snapshots",
         "__total_accepted_draw_count",
         "__used_intent_ids",
     )
@@ -2925,15 +3220,28 @@ class V075ConstructionControlledPrivateObserverV2:
         self.__identity = identity
         self.__appends: list[V075ControlledBatchAppendV2] = []
         self.__pending_intent: V075HeadBoundExactBatchIntentV2 | None = None
+        self.__pending_intent_snapshot: tuple[int, str] | None = None
         self.__used_intent_ids: set[str] = set()
         self.__support_freezes: list[
             V075ControlledCompleteSupportFreezeV2
         ] = []
+        self.__append_snapshots: list[tuple[int, str]] = []
+        self.__support_freeze_snapshots: list[tuple[int, str]] = []
         self.__closed = False
         self.__poisoned = False
         self.__frontier_state: dict[str, V075BatchStreamFrontierV2] = {}
         self.__total_accepted_draw_count = 0
         self.__heads = [self.__mint_zero_head()]
+        self.__identity_snapshot = (
+            id(self.__identity),
+            same_process_structural_fingerprint_v2(self.__identity),
+        )
+        self.__head_snapshots = [
+            (
+                id(self.__heads[0]),
+                same_process_structural_fingerprint_v2(self.__heads[0]),
+            )
+        ]
 
     @property
     def occurrence_identity(
@@ -2978,6 +3286,42 @@ class V075ConstructionControlledPrivateObserverV2:
             appends=self.controlled_appends,
             support_freezes=self.support_freezes,
         )
+
+    def freeze_owned_open_prefix_v2(
+        self,
+    ) -> V075OpenControlledBatchPrefixVerificationV2:
+        """Mint a same-process prefix after checking every owned snapshot."""
+
+        self.__require_open()
+        try:
+            self.__assert_exact_controlled_journal()
+            if self.__pending_intent is not None:
+                _fail("owned open prefix cannot freeze a pending intent")
+            self.__assert_immutable_owned_objects()
+        except Exception as error:
+            self.__poisoned = True
+            if type(error) is V075ObserverSignedBatchControlV2InvariantViolation:
+                raise
+            raise V075ObserverSignedBatchControlV2InvariantViolation(
+                "controller-owned object identity or deep snapshot changed"
+            ) from error
+        prefix = _mint_v075_open_controlled_batch_prefix_verification_v2(
+            heads=self.signed_heads,
+            appends=self.controlled_appends,
+            support_freezes=self.support_freezes,
+        )
+        if len(_TRUSTED_OWNED_OPEN_PREFIXES) >= (
+            _MAX_TRUSTED_OWNED_OPEN_PREFIXES
+        ):
+            _fail("trusted owned open-prefix registry reached its hard cap")
+        _TRUSTED_OWNED_OPEN_PREFIXES[id(prefix)] = (
+            prefix,
+            self.__identity,
+            prefix.verification_id,
+            _owned_open_prefix_object_identity(prefix),
+            _owned_open_prefix_deep_digest(prefix, self.__identity),
+        )
+        return prefix
 
     def derive_validation_stream_v2(
         self,
@@ -3109,6 +3453,116 @@ class V075ConstructionControlledPrivateObserverV2:
             self.__poisoned = True
             _fail("raw or out-of-band adapter change violated control chain")
 
+    def __assert_immutable_owned_objects(self) -> None:
+        entries = self.__entries()
+        identity_snapshot = (
+            id(self.__identity),
+            same_process_structural_fingerprint_v2(self.__identity),
+        )
+        head_snapshots = [
+            (
+                id(item),
+                same_process_structural_fingerprint_v2(item),
+            )
+            for item in self.__heads
+        ]
+        append_snapshots = [
+            (
+                id(item),
+                _deep_append_digest(item),
+            )
+            for item in self.__appends
+        ]
+        support_snapshots = [
+            (
+                id(item),
+                _deep_support_freeze_digest(item),
+            )
+            for item in self.__support_freezes
+        ]
+        if (
+            identity_snapshot != self.__identity_snapshot
+            or head_snapshots != self.__head_snapshots
+            or append_snapshots != self.__append_snapshots
+            or support_snapshots != self.__support_freeze_snapshots
+            or len(entries) != len(self.__appends)
+            or any(
+                entry.batch is not append.batch
+                for entry, append in zip(
+                    entries,
+                    self.__appends,
+                    strict=True,
+                )
+            )
+            or any(
+                append.prior_head is not self.__heads[index]
+                or append.resulting_head is not self.__heads[index + 1]
+                for index, append in enumerate(self.__appends)
+            )
+        ):
+            self.__poisoned = True
+            _fail(
+                "controller-owned object identity or deep snapshot changed"
+            )
+
+    def __assert_immutable_pending_intent(self) -> None:
+        intent = self.__pending_intent
+        snapshot = self.__pending_intent_snapshot
+        try:
+            current = (
+                None
+                if intent is None
+                else (
+                    id(intent),
+                    same_process_structural_fingerprint_v2(intent),
+                )
+            )
+            if (
+                intent is None
+                or snapshot is None
+                or current != snapshot
+            ):
+                _fail("pending intent graph changed before observer access")
+            semantic = intent.semantic_authority
+            if semantic.support_freeze_id is not None:
+                matches = tuple(
+                    (
+                        index,
+                        item,
+                    )
+                    for index, item in enumerate(self.__support_freezes)
+                    if item.freeze_id == semantic.support_freeze_id
+                )
+                if len(matches) != 1:
+                    _fail(
+                        "pending validation lost its exact owned support freeze"
+                    )
+                index, support = matches[0]
+                expected_snapshot = self.__support_freeze_snapshots[index]
+                if (
+                    expected_snapshot
+                    != (
+                        id(support),
+                        _deep_support_freeze_digest(support),
+                    )
+                    or intent.stream_identity
+                    != _derive_validation_stream_from_owned_support_freeze(
+                        support
+                    )
+                ):
+                    _fail(
+                        "pending validation support or stream changed before "
+                        "observer access"
+                    )
+        except Exception as error:
+            self.__poisoned = True
+            if type(error) is V075ObserverSignedBatchControlV2InvariantViolation:
+                raise
+            raise V075ObserverSignedBatchControlV2InvariantViolation(
+                "pending intent or support graph changed before observer "
+                "access"
+            ) from error
+
     def prepare_batch_intent_v2(
         self,
         *,
@@ -3211,6 +3665,10 @@ class V075ConstructionControlledPrivateObserverV2:
         if intent.intent_id in self.__used_intent_ids:
             _fail("controlled batch intent was already consumed")
         self.__pending_intent = intent
+        self.__pending_intent_snapshot = (
+            id(intent),
+            same_process_structural_fingerprint_v2(intent),
+        )
         return intent
 
     def freeze_complete_support_v2(
@@ -3341,6 +3799,12 @@ class V075ConstructionControlledPrivateObserverV2:
             self.__closed = True
             raise
         self.__support_freezes.append(support)
+        self.__support_freeze_snapshots.append(
+            (
+                id(support),
+                _deep_support_freeze_digest(support),
+            )
+        )
         self.__poisoned = False
         return support
 
@@ -3352,14 +3816,16 @@ class V075ConstructionControlledPrivateObserverV2:
 
         self.__require_open()
         self.__assert_exact_controlled_journal()
+        self.__assert_immutable_owned_objects()
         if (
             type(intent) is not V075HeadBoundExactBatchIntentV2
             or self.__pending_intent is None
-            or intent != self.__pending_intent
+            or intent is not self.__pending_intent
             or intent.intent_id in self.__used_intent_ids
             or intent.prior_head_id != self.current_signed_head.head_id
         ):
             _fail("controlled batch intent is stale, reused, or unregistered")
+        self.__assert_immutable_pending_intent()
         prior_head = self.current_signed_head
         self.__poisoned = True
         try:
@@ -3436,8 +3902,21 @@ class V075ConstructionControlledPrivateObserverV2:
             raise
         self.__heads.append(resulting_head)
         self.__appends.append(append)
+        self.__head_snapshots.append(
+            (
+                id(resulting_head),
+                same_process_structural_fingerprint_v2(resulting_head),
+            )
+        )
+        self.__append_snapshots.append(
+            (
+                id(append),
+                _deep_append_digest(append),
+            )
+        )
         self.__used_intent_ids.add(intent.intent_id)
         self.__pending_intent = None
+        self.__pending_intent_snapshot = None
         self.__poisoned = False
         return append
 
@@ -3634,6 +4113,8 @@ __all__ = [
     "open_v075_construction_controlled_private_observer_v2",
     "open_v075_production_controlled_private_observer_v2",
     "replay_v075_open_controlled_batch_prefix_verification_v2",
+    "same_process_structural_fingerprint_v2",
+    "validate_v075_trusted_owned_open_prefix_v2",
     "verify_v075_controlled_batch_journal_closure_v2",
     "verify_v075_open_controlled_batch_prefix_v2",
 ]

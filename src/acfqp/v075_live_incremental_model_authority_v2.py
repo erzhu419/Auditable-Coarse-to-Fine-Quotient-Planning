@@ -33,7 +33,7 @@ from acfqp import v075_registered_occurrence_worker_v1 as worker
 
 
 SCHEMA_VERSION = "2.0.0"
-PROPOSED_CONTRACT_VERSION = "1.55.0"
+PROPOSED_CONTRACT_VERSION = "1.60.0"
 PROFILE_KEY = "v075_live_incremental_model_authority_v2"
 MAX_MODEL_EPOCHS = 64
 MAX_CONTROLLED_APPENDS = 256
@@ -578,6 +578,7 @@ def _collect_rows(
         control.V075ControlledCompleteSupportFreezeV2,
         ...,
     ],
+    portable_replay: bool,
 ) -> tuple[_CollectedRow, ...]:
     discoveries: dict[str, list[control.V075ControlledBatchAppendV2]] = {}
     validations: dict[str, list[control.V075ControlledBatchAppendV2]] = {}
@@ -648,6 +649,15 @@ def _collect_rows(
         expected_start = 1
         validation_stream_id: str | None = None
         validation_cap: int | None = None
+        expected_validation_stream = (
+            control.derive_v075_controlled_validation_stream_v2(
+                support_freeze=freeze,
+            )
+            if portable_replay
+            else control._derive_validation_stream_from_owned_support_freeze(  # noqa: SLF001
+                freeze
+            )
+        )
         for append in ordered:
             request = append.batch.request
             stream = request.stream_identity
@@ -658,10 +668,7 @@ def _collect_rows(
                 is not graph.V075ObservationLaneV1.VALIDATION
                 or stream.observer_epoch_index != 1
                 or stream.row_binding != row_binding
-                or stream
-                != control.derive_v075_controlled_validation_stream_v2(
-                    support_freeze=freeze,
-                )
+                or stream != expected_validation_stream
                 or append.intent.semantic_authority.support_freeze_id
                 != freeze.freeze_id
                 or append.prior_head.entry_count
@@ -1071,7 +1078,7 @@ def _exact_prefix_inputs(
     parent_prefix: (
         control.V075OpenControlledBatchPrefixVerificationV2 | None
     ) = None,
-    allow_trusted_incremental_prefix: bool = False,
+    allow_trusted_owned_prefix: bool = False,
 ) -> tuple[
     backend.V075BatchNativeOccurrenceIdentityV1,
     tuple[control.V075ControlledBatchAppendV2, ...],
@@ -1103,12 +1110,12 @@ def _exact_prefix_inputs(
             "live model typed inputs differ from claimed prefix identities"
         )
     prefix = (
-        _replay_open_prefix(open_prefix_verification)
-        if parent_prefix is None or not allow_trusted_incremental_prefix
-        else _replay_open_prefix_incrementally(
+        control.validate_v075_trusted_owned_open_prefix_v2(
             claimed=open_prefix_verification,
-            parent=parent_prefix,
+            occurrence_identity=identity,
         )
+        if allow_trusted_owned_prefix
+        else _replay_open_prefix(open_prefix_verification)
     )
     appends = prefix.appends
     freezes = prefix.support_freezes
@@ -1202,45 +1209,7 @@ def _deep_operational_epoch_snapshot_digest(
             "trusted epoch and open-prefix nested objects lost exact "
             "same-process alignment"
         )
-    append_documents = []
-    for append in epoch.controlled_appends:
-        append_documents.append(
-            {
-                "append": append.to_document(),
-                "prior_head": append.prior_head.to_document(),
-                "intent": append.intent.to_document(),
-                "batch": append.batch.to_document(),
-                "resulting_head": append.resulting_head.to_document(),
-                "receipt": append.receipt.to_document(),
-            }
-        )
-    freeze_documents = []
-    for freeze in epoch.support_freezes:
-        freeze_documents.append(
-            {
-                "freeze": freeze.to_document(),
-                "discovery_append": (
-                    freeze.discovery_append.to_document()
-                ),
-                "discovery_batch": (
-                    freeze.discovery_append.batch.to_document()
-                ),
-                "frozen_at_head": freeze.frozen_at_head.to_document(),
-            }
-        )
-    snapshot = {
-        "schema": "acfqp.v075_live_operational_epoch_deep_snapshot.v2",
-        "model_epoch": epoch.to_document(),
-        "occurrence_identity": epoch.occurrence_identity.to_document(),
-        "open_prefix": epoch.open_prefix_verification.to_document(),
-        "heads": [
-            item.to_document()
-            for item in epoch.open_prefix_verification.heads
-        ],
-        "controlled_appends": append_documents,
-        "support_freezes": freeze_documents,
-    }
-    return hashlib.sha256(canonical_json_bytes(snapshot)).hexdigest()
+    return control.same_process_structural_fingerprint_v2(epoch)
 
 
 def _register_trusted_same_process_epoch(
@@ -1307,13 +1276,14 @@ def _build_epoch(
             if parent is None
             else parent.open_prefix_verification
         ),
-        allow_trusted_incremental_prefix=not portable_prefix_replay,
+        allow_trusted_owned_prefix=not portable_prefix_replay,
     )
 
     collected = _collect_rows(
         occurrence_identity=identity,
         appends=appends,
         support_freezes=freezes,
+        portable_replay=portable_prefix_replay,
     )
     parent_sources = (
         {}

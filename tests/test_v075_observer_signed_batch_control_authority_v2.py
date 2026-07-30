@@ -5,6 +5,7 @@ import hashlib
 
 import pytest
 
+from acfqp.phase3e_ids import canonical_json_bytes
 from acfqp import v075_batch_native_statistical_backend_v1 as backend
 from acfqp import v075_observer_signed_batch_control_authority_v2 as control
 from acfqp import v075_public_graph_semantics_v1 as graph
@@ -362,7 +363,7 @@ def test_signature_tampering_and_production_use_remain_rejected(
     ):
         control.open_v075_production_controlled_private_observer_v2()
     assert not hasattr(controller, "observe_batch_v2")
-    assert control.PROPOSED_CONTRACT_VERSION == "1.57.0"
+    assert control.PROPOSED_CONTRACT_VERSION == "1.60.0"
     assert control.OFFICIAL_EXECUTION_ALLOWED is False
     assert control.PRODUCTION_AUTHORIZING is False
     assert control.PROCESS_ISOLATION_PROVIDED is False
@@ -761,3 +762,333 @@ def test_owned_artifact_copy_cannot_bypass_exact_replay(
             closed,
             reconciliation=forged_reconciliation,
         )
+
+
+def _owned_prefix_fixture(values, *, marker: str, ordinal: int):
+    controller = _controller(values, marker, ordinal=ordinal)
+    stream = _stream(values)
+    discovery_intent = controller.prepare_batch_intent_v2(
+        stream_identity=stream,
+        **_semantic(f"{marker}-discovery"),
+        accepted_draw_start=1,
+        accepted_draw_count=2,
+        accepted_draw_cap=2,
+    )
+    discovery = controller.execute_batch_intent_v2(discovery_intent)
+    support = controller.freeze_complete_support_v2(
+        discovery_append=discovery,
+    )
+    validation_stream = controller.derive_validation_stream_v2(
+        support_freeze=support,
+    )
+    validation_intent = controller.prepare_batch_intent_v2(
+        stream_identity=validation_stream,
+        **_semantic(
+            f"{marker}-validation",
+            stage=control.V075ControlledBatchStageV2.ROOT_VALIDATION,
+            support_freeze_id=support.freeze_id,
+        ),
+        accepted_draw_start=1,
+        accepted_draw_count=2,
+        accepted_draw_cap=2,
+    )
+    controller.execute_batch_intent_v2(validation_intent)
+    return controller
+
+
+def test_owned_prefix_matches_portable_and_registry_rejects_copy_or_mutation(
+    exact_v2_graph,
+) -> None:
+    controller = _owned_prefix_fixture(
+        exact_v2_graph,
+        marker="owned-prefix",
+        ordinal=12,
+    )
+    registry_size = len(control._TRUSTED_OWNED_OPEN_PREFIXES)
+    owned = controller.freeze_owned_open_prefix_v2()
+    assert len(control._TRUSTED_OWNED_OPEN_PREFIXES) == registry_size + 1
+    portable_registry_size = len(control._TRUSTED_OWNED_OPEN_PREFIXES)
+    portable = controller.verify_open_prefix_v2()
+    assert len(control._TRUSTED_OWNED_OPEN_PREFIXES) == portable_registry_size
+    assert owned.verification_id == portable.verification_id
+    assert owned.to_document() == portable.to_document()
+    assert canonical_json_bytes(owned.to_document()) == canonical_json_bytes(
+        portable.to_document()
+    )
+    assert (
+        control.validate_v075_trusted_owned_open_prefix_v2(
+            claimed=owned,
+            occurrence_identity=controller.occurrence_identity,
+        )
+        is owned
+    )
+
+    copied = control._mint_v075_open_controlled_batch_prefix_verification_v2(
+        heads=owned.heads,
+        appends=owned.appends,
+        support_freezes=owned.support_freezes,
+    )
+    assert copied.verification_id == owned.verification_id
+    with pytest.raises(
+        control.V075ObserverSignedBatchControlV2InvariantViolation,
+        match="same-process provenance",
+    ):
+        control.validate_v075_trusted_owned_open_prefix_v2(
+            claimed=copied,
+            occurrence_identity=controller.occurrence_identity,
+        )
+
+    foreign_identity = _identity(exact_v2_graph, ordinal=13)
+    with pytest.raises(
+        control.V075ObserverSignedBatchControlV2InvariantViolation
+    ):
+        control.validate_v075_trusted_owned_open_prefix_v2(
+            claimed=owned,
+            occurrence_identity=foreign_identity,
+        )
+
+    outcome = owned.appends[0].batch.outcomes[0]
+    original_count = outcome.count
+    object.__setattr__(outcome, "count", original_count + 1)
+    try:
+        with pytest.raises(
+            control.V075ObserverSignedBatchControlV2InvariantViolation,
+            match="same-process provenance",
+        ):
+            control.validate_v075_trusted_owned_open_prefix_v2(
+                claimed=owned,
+                occurrence_identity=controller.occurrence_identity,
+            )
+    finally:
+        object.__setattr__(outcome, "count", original_count)
+
+
+def test_owned_prefix_rejects_nested_mutation_before_first_freeze_and_cap(
+    exact_v2_graph,
+    monkeypatch,
+) -> None:
+    mutated = _owned_prefix_fixture(
+        exact_v2_graph,
+        marker="owned-prefix-pre-freeze-mutation",
+        ordinal=14,
+    )
+    outcome = mutated.controlled_appends[0].batch.outcomes[0]
+    object.__setattr__(outcome, "count", outcome.count + 1)
+    with pytest.raises(
+        control.V075ObserverSignedBatchControlV2InvariantViolation,
+        match="deep snapshot",
+    ):
+        mutated.freeze_owned_open_prefix_v2()
+
+    capped = _owned_prefix_fixture(
+        exact_v2_graph,
+        marker="owned-prefix-cap",
+        ordinal=15,
+    )
+    monkeypatch.setattr(
+        control,
+        "_MAX_TRUSTED_OWNED_OPEN_PREFIXES",
+        len(control._TRUSTED_OWNED_OPEN_PREFIXES),
+    )
+    with pytest.raises(
+        control.V075ObserverSignedBatchControlV2InvariantViolation,
+        match="registry reached its hard cap",
+    ):
+        capped.freeze_owned_open_prefix_v2()
+
+
+def test_pending_intent_and_validation_support_mutation_precedes_any_draw(
+    exact_v2_graph,
+) -> None:
+    discovery_controller = _controller(
+        exact_v2_graph,
+        "pending-discovery-mutation",
+        ordinal=16,
+    )
+    discovery_intent = discovery_controller.prepare_batch_intent_v2(
+        stream_identity=_stream(exact_v2_graph),
+        **_semantic("pending-discovery-mutation"),
+        accepted_draw_start=1,
+        accepted_draw_count=2,
+        accepted_draw_cap=2,
+    )
+    before_head = discovery_controller.current_signed_head
+    discovery_session = getattr(
+        discovery_controller,
+        "_V075ConstructionControlledPrivateObserverV2__session",
+    )
+    assert len(discovery_session.batch_journal_entries) == 0
+    semantic = discovery_intent.semantic_authority
+    object.__setattr__(
+        semantic,
+        "semantic_artifact_id",
+        _id("mutated-pending-semantic"),
+    )
+    with pytest.raises(
+        control.V075ObserverSignedBatchControlV2InvariantViolation,
+        match="pending intent graph changed",
+    ):
+        discovery_controller.execute_batch_intent_v2(discovery_intent)
+    assert discovery_controller.current_signed_head is before_head
+    assert discovery_controller.controlled_appends == ()
+    assert len(discovery_session.batch_journal_entries) == 0
+
+    validation_controller = _controller(
+        exact_v2_graph,
+        "pending-support-mutation",
+        ordinal=17,
+    )
+    stream = _stream(exact_v2_graph)
+    intent = validation_controller.prepare_batch_intent_v2(
+        stream_identity=stream,
+        **_semantic("pending-support-discovery"),
+        accepted_draw_start=1,
+        accepted_draw_count=2,
+        accepted_draw_cap=2,
+    )
+    discovery = validation_controller.execute_batch_intent_v2(intent)
+    support = validation_controller.freeze_complete_support_v2(
+        discovery_append=discovery,
+    )
+    validation_stream = validation_controller.derive_validation_stream_v2(
+        support_freeze=support,
+    )
+    validation_intent = validation_controller.prepare_batch_intent_v2(
+        stream_identity=validation_stream,
+        **_semantic(
+            "pending-support-validation",
+            stage=control.V075ControlledBatchStageV2.ROOT_VALIDATION,
+            support_freeze_id=support.freeze_id,
+        ),
+        accepted_draw_start=1,
+        accepted_draw_count=2,
+        accepted_draw_cap=2,
+    )
+    before_validation_head = validation_controller.current_signed_head
+    validation_session = getattr(
+        validation_controller,
+        "_V075ConstructionControlledPrivateObserverV2__session",
+    )
+    assert len(validation_session.batch_journal_entries) == 1
+    state = support.evidence[0].observed_state
+    object.__setattr__(
+        state,
+        "ranks",
+        (state.ranks[0] + 1, *state.ranks[1:]),
+    )
+    with pytest.raises(
+        control.V075ObserverSignedBatchControlV2InvariantViolation,
+        match=(
+            "pending intent|pending validation|"
+            "controller-owned object identity|deep snapshot"
+        ),
+    ):
+        validation_controller.execute_batch_intent_v2(validation_intent)
+    assert validation_controller.current_signed_head is before_validation_head
+    assert len(validation_controller.controlled_appends) == 1
+    assert len(validation_session.batch_journal_entries) == 1
+
+
+def test_pending_draw_rejects_identity_and_unrelated_prior_append_mutation(
+    exact_v2_graph,
+) -> None:
+    identity_controller = _controller(
+        exact_v2_graph,
+        "pending-identity-mutation",
+        ordinal=18,
+    )
+    identity_intent = identity_controller.prepare_batch_intent_v2(
+        stream_identity=_stream(exact_v2_graph),
+        **_semantic("pending-identity-mutation"),
+        accepted_draw_start=1,
+        accepted_draw_count=2,
+        accepted_draw_cap=2,
+    )
+    identity_session = getattr(
+        identity_controller,
+        "_V075ConstructionControlledPrivateObserverV2__session",
+    )
+    identity = getattr(
+        identity_controller,
+        "_V075ConstructionControlledPrivateObserverV2__identity",
+    )
+    before_identity_draws = getattr(
+        identity_controller,
+        "_V075ConstructionControlledPrivateObserverV2"
+        "__total_accepted_draw_count",
+    )
+    object.__setattr__(
+        identity,
+        "occurrence_ordinal",
+        identity.occurrence_ordinal + 1,
+    )
+    with pytest.raises(
+        control.V075ObserverSignedBatchControlV2InvariantViolation,
+        match="controller-owned object identity|deep snapshot",
+    ):
+        identity_controller.execute_batch_intent_v2(identity_intent)
+    assert len(identity_session.batch_journal_entries) == 0
+    assert (
+        getattr(
+            identity_controller,
+            "_V075ConstructionControlledPrivateObserverV2"
+            "__total_accepted_draw_count",
+        )
+        == before_identity_draws
+        == 0
+    )
+
+    append_controller = _controller(
+        exact_v2_graph,
+        "pending-unrelated-append-mutation",
+        ordinal=19,
+    )
+    streams_by_row = {}
+    for stream in _streams(exact_v2_graph):
+        streams_by_row.setdefault(stream.row_binding_id, stream)
+    first_stream, second_stream = tuple(streams_by_row.values())[:2]
+    first_intent = append_controller.prepare_batch_intent_v2(
+        stream_identity=first_stream,
+        **_semantic("pending-unrelated-first"),
+        accepted_draw_start=1,
+        accepted_draw_count=2,
+        accepted_draw_cap=2,
+    )
+    first_append = append_controller.execute_batch_intent_v2(first_intent)
+    second_intent = append_controller.prepare_batch_intent_v2(
+        stream_identity=second_stream,
+        **_semantic("pending-unrelated-second"),
+        accepted_draw_start=1,
+        accepted_draw_count=2,
+        accepted_draw_cap=2,
+    )
+    append_session = getattr(
+        append_controller,
+        "_V075ConstructionControlledPrivateObserverV2__session",
+    )
+    before_append_draws = getattr(
+        append_controller,
+        "_V075ConstructionControlledPrivateObserverV2"
+        "__total_accepted_draw_count",
+    )
+    semantic = first_append.intent.semantic_authority
+    object.__setattr__(
+        semantic,
+        "semantic_artifact_id",
+        _id("mutated-unrelated-prior-append"),
+    )
+    with pytest.raises(
+        control.V075ObserverSignedBatchControlV2InvariantViolation,
+        match="controller-owned object identity|deep snapshot",
+    ):
+        append_controller.execute_batch_intent_v2(second_intent)
+    assert len(append_session.batch_journal_entries) == 1
+    assert (
+        getattr(
+            append_controller,
+            "_V075ConstructionControlledPrivateObserverV2"
+            "__total_accepted_draw_count",
+        )
+        == before_append_draws
+        == 2
+    )

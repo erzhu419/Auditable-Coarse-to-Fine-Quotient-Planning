@@ -133,7 +133,7 @@ def _append_new_row(
 
 
 def _freeze_epoch(controller, identity, *, parent=None):
-    prefix = controller.verify_open_prefix_v2()
+    prefix = controller.freeze_owned_open_prefix_v2()
     return live.freeze_v075_live_incremental_model_epoch_v2(
         occurrence_identity=identity,
         controlled_appends=controller.controlled_appends,
@@ -323,7 +323,7 @@ def test_operational_freeze_compiles_only_changed_rows(
         occurrence_identity=live_graph["identity"],
         controlled_appends=controller.controlled_appends,
         support_freezes=controller.support_freezes,
-        open_prefix_verification=controller.verify_open_prefix_v2(),
+        open_prefix_verification=controller.freeze_owned_open_prefix_v2(),
         route=planning.V075PlanningRouteV2.ADAPTIVE_QUOTIENT,
         parent_epoch=live_graph["epoch2"],
     )
@@ -336,6 +336,9 @@ def test_operational_freeze_compiles_only_changed_rows(
 def test_exact_epoch_bytes_and_complete_parent_replay(live_graph) -> None:
     epoch3 = live_graph["epoch3"]
     registry_size_before = len(live._TRUSTED_SAME_PROCESS_EPOCHS)
+    prefix_registry_size_before = len(
+        control._TRUSTED_OWNED_OPEN_PREFIXES
+    )
     replayed, verification = (
         live.verify_v075_live_incremental_model_epoch_bytes_v2(
             claimed=epoch3,
@@ -346,6 +349,10 @@ def test_exact_epoch_bytes_and_complete_parent_replay(live_graph) -> None:
     assert verification.numerical_proof_id == epoch3.proof.proof_id
     assert verification.parent_epoch_id == epoch3.parent_epoch_id
     assert len(live._TRUSTED_SAME_PROCESS_EPOCHS) == registry_size_before
+    assert (
+        len(control._TRUSTED_OWNED_OPEN_PREFIXES)
+        == prefix_registry_size_before
+    )
     with pytest.raises(
         live.V075LiveIncrementalModelV2InvariantViolation
     ):
@@ -358,12 +365,14 @@ def test_exact_epoch_bytes_and_complete_parent_replay(live_graph) -> None:
 def test_missing_recap_stale_and_route_transplants_fail(live_graph) -> None:
     controller = live_graph["controller"]
     identity = live_graph["identity"]
-    prefix = controller.verify_open_prefix_v2()
+    prefix = controller.freeze_owned_open_prefix_v2()
+    all_appends = controller.controlled_appends
+    all_freezes = controller.support_freezes
     with pytest.raises(live.V075LiveIncrementalModelV2InvariantViolation):
         live.freeze_v075_live_incremental_model_epoch_v2(
             occurrence_identity=identity,
-            controlled_appends=controller.controlled_appends,
-            support_freezes=controller.support_freezes[:-1],
+            controlled_appends=all_appends,
+            support_freezes=all_freezes[:-1],
             open_prefix_verification=prefix,
             route=planning.V075PlanningRouteV2.ADAPTIVE_QUOTIENT,
             parent_epoch=live_graph["epoch2"],
@@ -371,10 +380,10 @@ def test_missing_recap_stale_and_route_transplants_fail(live_graph) -> None:
     with pytest.raises(live.V075LiveIncrementalModelV2InvariantViolation):
         live.freeze_v075_live_incremental_model_epoch_v2(
             occurrence_identity=identity,
-            controlled_appends=controller.controlled_appends,
+            controlled_appends=all_appends,
             support_freezes=(
-                *controller.support_freezes,
-                controller.support_freezes[-1],
+                *all_freezes,
+                all_freezes[-1],
             ),
             open_prefix_verification=prefix,
             route=planning.V075PlanningRouteV2.ADAPTIVE_QUOTIENT,
@@ -383,8 +392,8 @@ def test_missing_recap_stale_and_route_transplants_fail(live_graph) -> None:
     with pytest.raises(live.V075LiveIncrementalModelV2InvariantViolation):
         live.freeze_v075_live_incremental_model_epoch_v2(
             occurrence_identity=identity,
-            controlled_appends=controller.controlled_appends,
-            support_freezes=controller.support_freezes,
+            controlled_appends=all_appends,
+            support_freezes=all_freezes,
             open_prefix_verification=prefix,
             route=planning.V075PlanningRouteV2.MATCHED_DIRECT_GROUND,
             parent_epoch=live_graph["epoch2"],
@@ -407,8 +416,8 @@ def test_missing_recap_stale_and_route_transplants_fail(live_graph) -> None:
     with pytest.raises(live.V075LiveIncrementalModelV2InvariantViolation):
         live.freeze_v075_live_incremental_model_epoch_v2(
             occurrence_identity=identity,
-            controlled_appends=controller.controlled_appends,
-            support_freezes=controller.support_freezes,
+            controlled_appends=all_appends,
+            support_freezes=all_freezes,
             open_prefix_verification=prefix,
             route=planning.V075PlanningRouteV2.ADAPTIVE_QUOTIENT,
             parent_epoch=epoch1,
@@ -456,8 +465,8 @@ def test_missing_recap_stale_and_route_transplants_fail(live_graph) -> None:
     with pytest.raises(live.V075LiveIncrementalModelV2InvariantViolation):
         live.freeze_v075_live_incremental_model_epoch_v2(
             occurrence_identity=identity,
-            controlled_appends=controller.controlled_appends,
-            support_freezes=controller.support_freezes,
+            controlled_appends=all_appends,
+            support_freezes=all_freezes,
             open_prefix_verification=prefix,
             route=planning.V075PlanningRouteV2.ADAPTIVE_QUOTIENT,
             parent_epoch=epoch2,
@@ -472,8 +481,8 @@ def test_missing_recap_stale_and_route_transplants_fail(live_graph) -> None:
     with pytest.raises(live.V075LiveIncrementalModelV2InvariantViolation):
         live.freeze_v075_live_incremental_model_epoch_v2(
             occurrence_identity=identity,
-            controlled_appends=controller.controlled_appends,
-            support_freezes=controller.support_freezes,
+            controlled_appends=all_appends,
+            support_freezes=all_freezes,
             open_prefix_verification=prefix,
             route=planning.V075PlanningRouteV2.ADAPTIVE_QUOTIENT,
             parent_epoch=epoch1,
