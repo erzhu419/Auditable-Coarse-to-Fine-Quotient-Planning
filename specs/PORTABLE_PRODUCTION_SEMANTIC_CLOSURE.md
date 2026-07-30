@@ -1,9 +1,9 @@
 # Portable Production Semantic Closure
 
 **Status:** normative construction contract; production and target access locked  
-**Ledger:** V0-076, V0-090
-**Implemented revisions:** `1.60.0`–`1.82.0`
-**Current completed semantic cut:** exact construction-only 67-role semantic closure for the registered root-only cap occurrence; source/code provenance and production remain locked
+**Ledger:** V0-076, V0-090, V0-091
+**Implemented revisions:** `1.60.0`–`1.83.0`
+**Current completed semantic cut:** exact construction-only 67-role semantic closure plus a complete local tracked-ACFQP Git/archive/compile snapshot for the registered root-only cap occurrence; unqualified source/code authority and production remain locked
 
 ## Objective
 
@@ -528,6 +528,97 @@ raw inputs. Source/code provenance, native accounting, campaign closure,
 production, held-out science, official execution and certificate issuance do
 not move.
 
+## Contract 1.83 construction source/archive/compile provenance
+
+Contract 1.83 first completes the exact five-input raw 1.82 replay. Only then
+may it inspect the repository or construct provenance evidence.
+
+The registered semantic entry roots remain the contract-1.82 authority, the
+contract-1.83 authority and its independent verifier. The archive closure is
+intentionally stronger than their static import closure: every tracked
+`src/acfqp/**/*.py` path is made a closure root. Every entry must be a regular
+nonsymlink file, and its live worktree bytes, index stage-zero blob and local
+`HEAD` blob must be identical. This prevents dynamic-import omissions while
+remaining a local committed snapshot; it does not assert equality with a
+remote branch.
+
+Two provenance lanes remain distinct:
+
+```text
+OCCURRENCE_BUNDLE_SOURCE
+    = the exact historical 64-entry source manifest
+SEMANTIC_REPLAY_CODE
+    = every additional tracked ACFQP Python source
+```
+
+The first lane must be an exact subset of the complete snapshot. Entries
+cannot be dropped, duplicated or charged to both lanes. Git inspection uses
+the digest-bound `/usr/bin/git` executable with a replacement clean
+environment. The source set, live bytes, Git state, dependency lock and
+`pyproject.toml` are checked again after the isolated child closes.
+
+The complete ACFQP snapshot is serialized as a deterministic `ZIP_STORED`
+archive with canonical member order, mode, timestamp and digest. The tracked
+dependency-lock document and `pyproject.toml` bind the registered
+`/usr/bin/python3` execution identity. An isolated `-I -S` child reads the
+sealed descriptor, verifies every exact member and calls `compile()` on its
+bytes. It never places the archive on `sys.path`, imports a tested ACFQP
+module or executes tested code.
+
+This no-execution boundary is normative. An attack test showed that source
+imported inside its verifier process can inspect the wrapper, emit forged
+JSON and terminate before another registered module is imported. Therefore:
+
+```text
+construction_sealed_source_compile_manifest_complete = true
+construction_loaded_source_manifest_complete = false
+future_target_worker_loaded_code_attested = false
+```
+
+A loaded-code receipt can be established only later by the production
+process boundary. Third-party distributions are bound here only by the
+registered runtime/dependency metadata; their complete source trees are not
+archived and receive no unqualified code-provenance claim.
+
+The independent verifier separately reconstructs the clean-environment Git
+closure, both provenance lanes, deterministic archive, runtime/dependency
+binding, sealed compile manifest, DAG and every content ID. It may share only
+the inert archive/runtime primitives; it cannot import or call the authority
+producer, `_freeze_after_raw_182` or an issuer.
+
+Only these scoped flags become true:
+
+```text
+construction_source_archive_replay_complete = true
+construction_local_git_code_closure_complete = true
+construction_all_tracked_acfqp_source_candidates_complete = true
+construction_sealed_source_compile_manifest_complete = true
+construction_two_lane_provenance_dag_complete = true
+```
+
+The terminal remains `ATTEMPT_CLOSURE_NONCERTIFICATE`. No final manifest,
+final preregistration, remote-main anchor, cryptographic/OS attestation or
+future target-worker receipt exists. Consequently:
+
+```text
+source_authority_complete = false
+code_provenance_complete = false
+accounting_gate_passed = false
+portable_semantic_registry_production_complete = false
+official_execution_allowed = false
+production_authorizing = false
+fresh_heldout_accessed = false
+scientific_endpoint_credit_allowed = false
+plan_certificate = false
+infeasibility_certificate = false
+```
+
+The final P0/P1 audit found no remaining blocking issue. The focused
+producer/helper/independent-verifier suite passes 28 tests, and the relevant
+contract-1.63-v2 plus 1.74–1.83 joint regression passes 192 tests. The local
+positive replay seals and compiles all 337 tracked ACFQP members and observes
+zero ACFQP modules both before and after compilation.
+
 ## Mandatory locks
 
 ```text
@@ -547,7 +638,8 @@ COUNTER_COMPLETENESS_GATE_NOT_RUN
 SAMPLE_EFFICIENCY_GATE_NOT_RUN
 ```
 
-These locks may move only after the remaining semantic roles, source/code
-provenance, all-path accounting, campaign closure and independent
-complete-bundle verifier pass. Only then may a new final
-preregistration, manifest, anchor and fresh held-out identities be frozen.
+These locks may move only after unqualified production source/code
+provenance, all-path native accounting, typed terminal/campaign closure and
+the independent production complete-bundle verifier pass. Only then may a
+new final preregistration, manifest, qualifying remote-main anchor, real
+target-worker receipt and fresh held-out identities be frozen.

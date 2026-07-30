@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `1.82.0`: the earlier contracts build the
+contracts now span `1.40.0` through `1.83.0`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -151,8 +151,31 @@ shape-replay status; the new `FULL_TYPED_REPLAY` status is a separate
 construction-only lane. Per-record authority scopes remain unflattened and a
 native-zero-inclusive scope histogram sums exactly to the bundle record count.
 
-Production still requires source/code provenance, complete accounting,
-campaign closure and an independent production complete-bundle verifier.
+Contract `1.83.0` starts only after exact raw 1.82 replay succeeds. It binds
+every tracked `src/acfqp/**/*.py` file—not merely a statically discovered
+runtime subset—to a regular nonsymlink local Git blob whose worktree, index
+and `HEAD` bytes agree. The historical 64-entry occurrence manifest remains
+an exact subset lane; all additional ACFQP files remain in a separate
+semantic-code lane. Git inspection uses the bound `/usr/bin/git` executable
+under a clean environment.
+
+The complete 337-file ACFQP snapshot is packed as a deterministic
+`ZIP_STORED` archive and bound to the tracked dependency lock,
+`pyproject.toml` and `/usr/bin/python3`. An isolated `-I -S` child reads the
+sealed archive and compiles every exact member without adding it to
+`sys.path`, importing it or executing tested code. This deliberately does
+not claim a loaded-source manifest: an adversarial regression proved that
+code imported inside the checking process could forge its own result.
+The independent byte verifier reconstructs Git, both lanes, the archive,
+runtime binding, compile manifest, DAG and content IDs without calling the
+producer freezer or issuer.
+
+This is local construction source/archive/compile provenance only. It is not
+a final campaign manifest, remote-main anchor, OS attestation, third-party
+source-tree proof or future target-worker loaded-code receipt. Production
+still requires unqualified source/code provenance, complete native accounting,
+typed terminal/campaign closure and an independent production complete-bundle
+verifier.
 Sample-efficiency, official, scalar, economics and counter-completeness Gates
 remain locked.
 
