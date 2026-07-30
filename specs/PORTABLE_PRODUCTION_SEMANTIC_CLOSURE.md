@@ -2,8 +2,8 @@
 
 **Status:** normative construction contract; production and target access locked  
 **Ledger:** V0-076  
-**Implemented revisions:** `1.60.0`–`1.73.0`
-**Current completed public cut:** M0 + B1 + M1A + M1B ROOT + M2 root/public lineage
+**Implemented revisions:** `1.60.0`–`1.75.0`
+**Current completed public cut:** M0 + B1 + M1A + M1B ROOT + M2 root/public lineage/lifecycle/live-row-source projection
 
 ## Objective
 
@@ -219,6 +219,44 @@ context and arm relationships. That lineage role remains
 `SIGNED_BATCH_JOURNAL_CLOSURE_VERIFICATION` is still its unresolved private
 frontier. Neither cut calls or consumes the private verifier.
 
+## Contract 1.74 M2 construction-lifecycle cut
+
+Contract 1.74 starts from hardened 1.73 raw replay. It closes
+`LIFECYCLE_SUPPORT_EVIDENCE`, `LIFECYCLE_SUPPORT_FREEZE` and
+`LIFECYCLE_EVENT` as `FULL_PUBLIC`, and verifies the complete public
+construction-lifecycle byte projection.
+
+Lifecycle support evidence also receives content-addressed authority-local
+source edges. Portable-declared, authority-local semantic and effective
+dependency views remain separate. `CONSTRUCTION_LIFECYCLE` and
+`CONSTRUCTION_LIFECYCLE_VERIFICATION` remain structural-only on the exact
+M1A private closure-verification frontier. This cut performs no private replay
+and consumes no B3 claim.
+
+## Contract 1.75 M2 live-epoch cut
+
+Contract 1.75 starts from hardened 1.74 raw replay. It reconstructs live
+epochs only through the producer's portable non-operational path:
+
+```text
+replay_parent = false
+register_operational = false
+portable_prefix_replay = true
+```
+
+Every epoch is rebuilt from the current occurrence, route, open prefix,
+controlled appends, support freezes and independently reconstructed parent.
+Its complete canonical bytes and ID must match the portable record. Embedded
+row sources are unioned by distinct `binding_id`; duplicate IDs must have
+identical bytes, and the resulting map must equal the standalone portable
+row-source registry without omissions or extras.
+
+`LIVE_ROW_SOURCE_BINDING` is `FULL_PUBLIC`. `LIVE_MODEL_EPOCH` remains
+`STRUCTURAL_ONLY_TRANSITIVE_UNRESOLVED` on exactly `NUMERICAL_MODEL` and
+`NUMERICAL_PLANNING_PROOF`. The three dependency views inherited from 1.74
+remain distinct. No operational epoch registry, claimed typed epoch, private
+input, signer, B3, kernel, J0, K7 or held-out authority is accepted.
+
 ## Mandatory locks
 
 ```text
@@ -237,7 +275,7 @@ COUNTER_COMPLETENESS_GATE_NOT_RUN
 SAMPLE_EFFICIENCY_GATE_NOT_RUN
 ```
 
-These locks may move only after the remaining semantic roles, production
-lifecycle/portable-role integration, source/code provenance, all-path accounting, campaign closure and
-independent complete-bundle verifier pass. Only then may a new final
+These locks may move only after the remaining semantic roles, source/code
+provenance, all-path accounting, campaign closure and independent
+complete-bundle verifier pass. Only then may a new final
 preregistration, manifest, anchor and fresh held-out identities be frozen.
