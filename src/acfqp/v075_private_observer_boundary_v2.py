@@ -99,6 +99,7 @@ MAX_BATCH_ACCEPTED_DRAW_COUNT = 25_000_000
 MAX_BATCH_ACCEPTED_DRAW_CAP = 25_000_000
 MAX_BATCH_OUTCOME_COUNT = 4_096
 MAX_BATCHES_PER_SESSION = 4_096
+MAX_OBSERVER_OPEN_BINDING_BYTES = 256 * 1024
 
 BATCH_TRANSCRIPT_INITIAL_DOMAIN = (
     b"acfqp:v075-batch-observation-transcript-initial:v2"
@@ -347,6 +348,58 @@ def _replay_exact_v2_authority_namespace(
         namespace=namespace,
     )
     return authority, namespace, binding
+
+
+def replay_v075_observer_open_authority_binding_bytes_v2(
+    *,
+    repository_root: str | Path,
+    private_reveal_attestation_bytes: bytes,
+    claimed_authorization_bytes: bytes,
+    namespace_bytes: bytes,
+    observer_open_binding_bytes: bytes,
+) -> V075ObserverOpenAuthorityBindingV2:
+    """Replay one public observer-open binding without opening an observer.
+
+    The authorization, reveal attestation, namespace, anchor, commitment, and
+    public signer registry are reconstructed from their canonical bytes before
+    the issuer-gated binding is minted.  No private salt, environment, target
+    law, signer, session, or observer channel is accepted by this API.
+    """
+
+    if (
+        type(observer_open_binding_bytes) is not bytes
+        or not observer_open_binding_bytes
+        or len(observer_open_binding_bytes)
+        > MAX_OBSERVER_OPEN_BINDING_BYTES
+    ):
+        _fail(
+            "observer-open binding bytes are empty, mistyped, or exceed "
+            "their cap"
+        )
+    _authority, _namespace, binding = _replay_exact_v2_authority_namespace(
+        repository_root=repository_root,
+        private_reveal_attestation_bytes=private_reveal_attestation_bytes,
+        claimed_authorization_bytes=claimed_authorization_bytes,
+        namespace_bytes=namespace_bytes,
+    )
+    try:
+        claimed = loads_canonical_json(observer_open_binding_bytes)
+    except (Phase3EIdentityError, TypeError, ValueError) as error:
+        raise V075PrivateObserverBoundaryV2InvariantViolation(
+            "observer-open binding is not strict canonical JSON"
+        ) from error
+    if (
+        type(claimed) is not dict
+        or canonical_json_bytes(claimed) != observer_open_binding_bytes
+        or observer_open_binding_bytes
+        != canonical_json_bytes(binding.to_document())
+    ):
+        _fail(
+            "observer-open binding fields, content ID, namespace, "
+            "authorization, reveal, anchor, commitment, or public key "
+            "differ from exact replay"
+        )
+    return binding
 
 
 def _canonical_private_environment(
@@ -3657,6 +3710,7 @@ __all__ = [
     "EXACT_V2_AUTHORITY_REQUIRED",
     "MAX_BATCHES_PER_SESSION",
     "MAX_CANONICAL_CLOSURE_BYTES",
+    "MAX_OBSERVER_OPEN_BINDING_BYTES",
     "PROFILE_KEY",
     "PRODUCTION_ENVIRONMENT_INCLUDED",
     "PRODUCTION_PRIVATE_SIGNER_INCLUDED",
@@ -3687,6 +3741,7 @@ __all__ = [
     "observer_journal_closure_signing_bytes_v2",
     "open_private_observer_v2",
     "replay_signed_observation_batch_object_v2",
+    "replay_v075_observer_open_authority_binding_bytes_v2",
     "replay_and_verify_private_observer_batch_journal_closure_v2",
     "verify_loaded_private_observer_batch_closure_v2",
     "verify_private_observer_batch_journal_closure_v2",
