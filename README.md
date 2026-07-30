@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `1.84.0`: the earlier contracts build the
+contracts now span `1.40.0` through `1.85.0`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -215,6 +215,30 @@ failed-abstract-prefix stage vectors, exact projections and a typed
 noncertificate occurrence closure. It then expands to every failure/terminal
 path and campaign reconciliation before any new final
 preregistration/manifest/anchor or fresh target access.
+
+Contract `1.85.0` materializes the scoped additive construction accounting-v2
+schema after an exact issuer-backed independent verification of 1.84.  The
+49-leaf immutable v1 prefix is preserved byte-for-byte.  Thirteen initial
+BUILD/ACQUISITION definitions and seven separate closed-reconciliation
+definitions produce a `69`-leaf registry with `53` operational and `62`
+required leaves.  Accepted observer draws project to
+`kernel_transition_calls`; rejection count remains required diagnostic
+telemetry and is not charged again; repeated reconciliation compile/plan
+work cannot reuse the initial-build paths.
+
+Eight construction stages, the unchanged eight shared axes, all 53
+coefficient-one projection terms, and the distinct actual-projection profile
+are content-addressed.  Record and WorkVector schemas bind subject, stage
+instance and stage kind.  This contract nevertheless emits zero live records
+and zero WorkVectors: the trusted stage-start/completion authority and 11
+hash/integrity/protocol/I/O/process/peak recorder gaps are still open.
+Those 11 paths are only the current critical subset, not an exhaustive
+operation-site inventory.  All 87 distinct legacy custom paths still require
+an exact operation-site mapping to v2 or an explicit later registry revision;
+an unmapped operation cannot be silently dropped.
+All-path accounting, typed terminal/occurrence/campaign closure, production,
+fresh science, scalar/break-even and certificate Gates therefore remain
+locked.
 
 ## V0-074 repair construction (NONAUTHORIZING; fresh Gate NOT RUN)
 

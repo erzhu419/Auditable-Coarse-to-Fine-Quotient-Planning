@@ -1,9 +1,9 @@
 # Portable Production Semantic Closure
 
 **Status:** normative construction contract; production and target access locked  
-**Ledger:** V0-076, V0-090, V0-091, V0-092
-**Implemented revisions:** `1.60.0`–`1.84.0`
-**Current completed semantic cut:** exact construction-only 67-role semantic closure, a complete local tracked-ACFQP Git/archive/compile snapshot, and a native-accounting registry/gap foundation for the registered root-only cap occurrence; live all-path accounting, unqualified source/code authority and production remain locked
+**Ledger:** V0-076, V0-090, V0-091, V0-092, V0-093
+**Implemented revisions:** `1.60.0`–`1.85.0`
+**Current completed semantic cut:** exact construction-only 67-role semantic closure, a complete local tracked-ACFQP Git/archive/compile snapshot, and an independently replayed scoped accounting-v2 registry/stage/projection schema for the registered root-only cap occurrence; live all-path accounting, unqualified source/code authority and production remain locked
 
 ## Objective
 
@@ -718,6 +718,59 @@ scientific_endpoint_credit_allowed = false
 plan_certificate = false
 infeasibility_certificate = false
 ```
+
+## Contract 1.85 construction accounting-v2 schema
+
+Contract 1.85 consumes the exact issuer-backed independent verification of
+the 1.84 foundation; it does not rerun or charge raw 1.83 provenance work as
+operational occurrence work.  It materializes an additive v2 registry with
+the exact 49-leaf v1 registry as an immutable prefix:
+
+```text
+base v1                         49 leaves / 34 operational
+initial BUILD/ACQUISITION      13 leaves / 12 operational
+closed reconciliation/replay    7 leaves /  7 operational
+total                           69 leaves / 53 operational / 62 required
+```
+
+The observer rejection leaf is required diagnostic telemetry.  It is a
+subset of random-word calls and has no comparison term.  Each accepted
+observer draw is instead projected once to `kernel_transition_calls`;
+random-word calls, aggregate-row materialization, signed batches, support
+freezes and build/replay operations use registered nonkernel events.
+
+The seven `closure.reconciliation_*` leaves are distinct because the current
+root-only close path performs real compilation, planning and semantic replay
+again.  That work cannot reuse `build.initial_*` records and cannot be hidden
+inside hash, integrity or protocol checks.
+
+Eight stage kinds are separate from the v1 route enum.  Their nonzero
+families are exact and mutually exclusive.  The comparison profile retains
+the same eight axes and contains exactly 53 coefficient-one terms.  The
+actual-projection profile is separately content-addressed.  V2 records bind
+the subject, stage instance and stage kind to prevent cross-stage record
+splicing.
+
+This is still schema closure, not live accounting.  The closure contains:
+
+```text
+live_counter_record_count = 0
+work_vector_count = 0
+comparison_vector_count = 0
+actual_projection_proof_count = 0
+```
+
+The stage-start/completion authority is not yet frozen, and the current
+root-only execution still lacks complete from-start recording for hash,
+integrity, protocol, I/O, process launch/exit and both peak-capacity paths.
+These 11 paths are a current critical subset, not an exhaustive live-operation
+inventory.  The 87 distinct legacy custom paths still require exact
+operation-site mapping to the v2 registry or an explicit future registry
+revision.  Any live operation that remains unmapped is a completeness failure,
+not an implicit zero or a discardable event.
+Therefore no zero may be inferred for those paths, and all-path accounting,
+typed attempt/occurrence/campaign closure and complete-bundle verification
+remain false.
 
 ## Mandatory locks
 

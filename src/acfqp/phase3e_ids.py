@@ -35,6 +35,30 @@ ROUTE_UPPER_FORMULA_DOMAIN = "acfqp:route-upper-formula:v1"
 ROUTE_UPPER_DERIVATION_PROOF_DOMAIN = "acfqp:route-upper-derivation-proof:v1"
 COMPARISON_PROFILE_DOMAIN = "acfqp:comparison-profile:v1"
 COUNTER_REGISTRY_DOMAIN = "acfqp:counter-registry:v1"
+CONSTRUCTION_COMPARISON_PROFILE_V2_DOMAIN = (
+    "acfqp:comparison-profile:v2"
+)
+CONSTRUCTION_COUNTER_REGISTRY_V2_DOMAIN = "acfqp:counter-registry:v2"
+CONSTRUCTION_COUNTER_RECORD_V2_DOMAIN = "acfqp:counter-record:v2"
+CONSTRUCTION_WORK_VECTOR_V2_DOMAIN = "acfqp:work-vector:v2"
+CONSTRUCTION_COMPARISON_VECTOR_V2_DOMAIN = (
+    "acfqp:comparison-vector:v2"
+)
+CONSTRUCTION_STAGE_PROFILE_V2_DOMAIN = (
+    "acfqp:construction-stage-profile:v2"
+)
+CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V2_DOMAIN = (
+    "acfqp:actual-projection-profile:v2"
+)
+CONSTRUCTION_ACTUAL_PROJECTION_PROOF_V2_DOMAIN = (
+    "acfqp:actual-projection-proof:v2"
+)
+V075_CONSTRUCTION_ACCOUNTING_SCHEMA_CLOSURE_V2_DOMAIN = (
+    "acfqp:v075-construction-accounting-schema-closure:v2"
+)
+V075_CONSTRUCTION_ACCOUNTING_SCHEMA_VERIFICATION_V2_DOMAIN = (
+    "acfqp:v075-construction-accounting-schema-independent-verification:v2"
+)
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
 ROUTE_CAP_PROFILE_DOMAIN = "acfqp:route-cap-profile:v1"
@@ -305,6 +329,36 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         "route_upper_derivation_proof": ROUTE_UPPER_DERIVATION_PROOF_DOMAIN,
         "comparison_profile": COMPARISON_PROFILE_DOMAIN,
         "counter_registry": COUNTER_REGISTRY_DOMAIN,
+        "construction_comparison_profile_v2": (
+            CONSTRUCTION_COMPARISON_PROFILE_V2_DOMAIN
+        ),
+        "construction_counter_registry_v2": (
+            CONSTRUCTION_COUNTER_REGISTRY_V2_DOMAIN
+        ),
+        "construction_counter_record_v2": (
+            CONSTRUCTION_COUNTER_RECORD_V2_DOMAIN
+        ),
+        "construction_work_vector_v2": (
+            CONSTRUCTION_WORK_VECTOR_V2_DOMAIN
+        ),
+        "construction_comparison_vector_v2": (
+            CONSTRUCTION_COMPARISON_VECTOR_V2_DOMAIN
+        ),
+        "construction_stage_profile_v2": (
+            CONSTRUCTION_STAGE_PROFILE_V2_DOMAIN
+        ),
+        "construction_actual_projection_profile_v2": (
+            CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V2_DOMAIN
+        ),
+        "construction_actual_projection_proof_v2": (
+            CONSTRUCTION_ACTUAL_PROJECTION_PROOF_V2_DOMAIN
+        ),
+        "v075_construction_accounting_schema_closure_v2": (
+            V075_CONSTRUCTION_ACCOUNTING_SCHEMA_CLOSURE_V2_DOMAIN
+        ),
+        "v075_construction_accounting_schema_verification_v2": (
+            V075_CONSTRUCTION_ACCOUNTING_SCHEMA_VERIFICATION_V2_DOMAIN
+        ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,
         "route_cap_profile": ROUTE_CAP_PROFILE_DOMAIN,
