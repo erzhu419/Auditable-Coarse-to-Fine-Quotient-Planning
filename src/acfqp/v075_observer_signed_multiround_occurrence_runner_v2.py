@@ -27,7 +27,9 @@ from acfqp.phase3e_ids import (
     parse_content_id,
 )
 from acfqp import v075_batch_native_planning_backend_v2 as planning
-from acfqp import v075_batch_occurrence_lifecycle_authority_v2 as lifecycle
+from acfqp import (
+    v075_batch_occurrence_lifecycle_authority_v2 as lifecycle_module,
+)
 from acfqp import v075_batched_observer_authority_v2 as lineage_authority
 from acfqp import v075_five_arm_acquisition_authority_v2 as acquisition
 from acfqp import v075_live_dynamic_acquisition_authority_v2 as dynamic
@@ -572,7 +574,7 @@ class V075ObserverSignedClosedReconciliationV2:
     lineage: lineage_authority.V075BatchOccurrenceLineageV2 = field(
         repr=False
     )
-    lifecycle: lifecycle.V075BatchOccurrenceLifecycleClosureV2 = field(
+    lifecycle: lifecycle_module.V075BatchOccurrenceLifecycleClosureV2 = field(
         repr=False
     )
     planning_input: planning.V075ConstructionPlanningInputV2 = field(
@@ -593,7 +595,7 @@ class V075ObserverSignedClosedReconciliationV2:
             or type(self.lineage)
             is not lineage_authority.V075BatchOccurrenceLineageV2
             or type(self.lifecycle)
-            is not lifecycle.V075BatchOccurrenceLifecycleClosureV2
+            is not lifecycle_module.V075BatchOccurrenceLifecycleClosureV2
             or type(self.planning_input)
             is not planning.V075ConstructionPlanningInputV2
             or type(self.closed_proof)
@@ -661,6 +663,273 @@ class V075ObserverSignedClosedReconciliationV2:
         }
 
 
+def freeze_v075_construction_closed_reconciliation_v2(
+    *,
+    repository_root: str | Path,
+    schedule: acquisition.V075InitialAcquisitionScheduleV2,
+    final_epoch: live_model.V075LiveIncrementalModelEpochV2,
+    controlled_closure: control.V075ControlledBatchJournalClosureV2,
+    lineage: lineage_authority.V075BatchOccurrenceLineageV2,
+    lifecycle: lifecycle_module.V075BatchOccurrenceLifecycleClosureV2,
+) -> V075ObserverSignedClosedReconciliationV2:
+    """Replay and reconcile one already-closed construction occurrence.
+
+    The public producer accepts only upstream evidence roots.  In particular,
+    it never accepts a caller-claimed planning input or proof: both are
+    deterministically rebuilt after the control, lineage, lifecycle, and live
+    epoch graphs have been reconciled.
+    """
+
+    try:
+        if (
+            type(schedule)
+            is not acquisition.V075InitialAcquisitionScheduleV2
+            or type(final_epoch)
+            is not live_model.V075LiveIncrementalModelEpochV2
+            or type(controlled_closure)
+            is not control.V075ControlledBatchJournalClosureV2
+            or type(lineage)
+            is not lineage_authority.V075BatchOccurrenceLineageV2
+            or type(lifecycle)
+            is not lifecycle_module.V075BatchOccurrenceLifecycleClosureV2
+        ):
+            _fail(
+                "closed reconciliation requires exact construction evidence "
+                "root types"
+            )
+        if (
+            lineage.scope
+            is not (
+                lineage_authority
+                .V075BatchOccurrenceAuthorityScopeV2.CONSTRUCTION_ONLY
+            )
+            or lifecycle.scope
+            is not (
+                lifecycle_module
+                .V075BatchLifecycleAuthorityScopeV2.CONSTRUCTION_ONLY
+            )
+        ):
+            _fail("closed reconciliation accepts construction scope only")
+
+        exact_final_epoch = (
+            live_model.replay_v075_live_incremental_model_epoch_v2(
+                final_epoch
+            )
+        )
+        if (
+            type(exact_final_epoch)
+            is not live_model.V075LiveIncrementalModelEpochV2
+            or exact_final_epoch.model_epoch_id != final_epoch.model_epoch_id
+            or exact_final_epoch.canonical_bytes
+            != final_epoch.canonical_bytes
+        ):
+            _fail("final live epoch differs from public exact replay")
+        final_epoch = exact_final_epoch
+
+        replayed_control = (
+            control.verify_v075_controlled_batch_journal_closure_v2(
+                batch_closure=controlled_closure.batch_closure,
+                heads=controlled_closure.heads,
+                appends=controlled_closure.appends,
+                control_closure=controlled_closure.control_closure,
+                support_freezes=controlled_closure.support_freezes,
+            )
+        )
+        if (
+            type(replayed_control)
+            is not control.V075SignedBatchControlReconciliationV2
+            or replayed_control.to_document()
+            != controlled_closure.reconciliation.to_document()
+        ):
+            _fail(
+                "controlled closure differs from public exact graph replay"
+            )
+
+        exact_lineage = (
+            lineage_authority
+            .replay_v075_signed_batch_occurrence_lineage_v2(lineage)
+        )
+        if (
+            exact_lineage.scope
+            is not (
+                lineage_authority
+                .V075BatchOccurrenceAuthorityScopeV2.CONSTRUCTION_ONLY
+            )
+            or exact_lineage.canonical_bytes != lineage.canonical_bytes
+            or exact_lineage.closure.canonical_bytes
+            != controlled_closure.batch_closure.canonical_bytes
+        ):
+            _fail(
+                "lineage is not the exact construction replay of the "
+                "controlled batch closure"
+            )
+
+        streams = tuple(
+            sorted(
+                {
+                    batch.request.stream_identity.stream_id: (
+                        batch.request.stream_identity
+                    )
+                    for batch in exact_lineage.batches
+                }.values(),
+                key=lambda item: item.stream_id,
+            )
+        )
+        exact_lifecycle, lifecycle_verification = (
+            lifecycle_module
+            .verify_v075_batch_occurrence_lifecycle_bytes_v2(
+                lifecycle_bytes=lifecycle.canonical_bytes,
+                lineage_bytes=exact_lineage.canonical_bytes,
+                batch_closure_bytes=(
+                    controlled_closure.batch_closure.canonical_bytes
+                ),
+                known_stream_identities=streams,
+            )
+        )
+        if (
+            type(exact_lifecycle)
+            is not lifecycle_module.V075BatchOccurrenceLifecycleClosureV2
+            or type(lifecycle_verification)
+            is not lifecycle_module.V075BatchOccurrenceLifecycleVerificationV2
+            or exact_lifecycle.scope
+            is not (
+                lifecycle_module
+                .V075BatchLifecycleAuthorityScopeV2.CONSTRUCTION_ONLY
+            )
+            or exact_lifecycle.canonical_bytes != lifecycle.canonical_bytes
+            or exact_lifecycle.lineage_id != exact_lineage.lineage_id
+            or exact_lifecycle.batch_closure_id
+            != controlled_closure.batch_closure.closure_id
+        ):
+            _fail(
+                "lifecycle is not the exact construction replay of lineage "
+                "and controlled closure"
+            )
+
+        occurrence = schedule.occurrence
+        occurrence_id = occurrence.occurrence_id
+        namespace_id = occurrence.target_tape_namespace_id
+        arm = occurrence.arm
+        expected_route = (
+            planning.V075PlanningRouteV2.MATCHED_DIRECT_GROUND
+            if arm is worker.V075WorkerArmV1.MATCHED_DIRECT_GROUND
+            else planning.V075PlanningRouteV2.ADAPTIVE_QUOTIENT
+        )
+        controlled_namespace_id = (
+            controlled_closure.batch_closure.authority_binding.namespace
+            .target_tape_namespace_id
+        )
+        lineage_namespace_id = (
+            exact_lineage.closure.authority_binding.namespace
+            .target_tape_namespace_id
+        )
+        if (
+            final_epoch.occurrence_identity != occurrence
+            or exact_lineage.occurrence_identity != occurrence
+            or controlled_closure.batch_closure.occurrence_id != occurrence_id
+            or controlled_closure.control_closure.occurrence_id != occurrence_id
+            or exact_lifecycle.occurrence_id != occurrence_id
+            or final_epoch.context_id != occurrence.context_id
+            or exact_lifecycle.context_id != occurrence.context_id
+            or final_epoch.arm is not arm
+            or exact_lifecycle.arm != arm.value
+            or final_epoch.route is not expected_route
+            or final_epoch.occurrence_identity.target_tape_namespace_id
+            != namespace_id
+            or exact_lineage.occurrence_identity.target_tape_namespace_id
+            != namespace_id
+            or controlled_namespace_id != namespace_id
+            or lineage_namespace_id != namespace_id
+            or exact_lifecycle.target_tape_namespace_id != namespace_id
+        ):
+            _fail(
+                "closed evidence crossed occurrence, namespace, context, "
+                "arm, or route"
+            )
+
+        append_receipt_ids = tuple(
+            item.receipt.receipt_id for item in controlled_closure.appends
+        )
+        support_freeze_ids = tuple(
+            item.freeze_id for item in controlled_closure.support_freezes
+        )
+        head_ids = tuple(item.head_id for item in controlled_closure.heads)
+        prefix = final_epoch.open_prefix_verification
+        if (
+            final_epoch.controlled_appends != controlled_closure.appends
+            or final_epoch.support_freezes
+            != controlled_closure.support_freezes
+            or prefix.heads != controlled_closure.heads
+            or prefix.appends != controlled_closure.appends
+            or prefix.support_freezes != controlled_closure.support_freezes
+            or prefix.head_ids != head_ids
+            or prefix.receipt_ids != append_receipt_ids
+            or prefix.support_freeze_ids != support_freeze_ids
+            or final_epoch.head_id
+            != controlled_closure.control_closure.final_head_id
+            or prefix.current_head_id != final_epoch.head_id
+        ):
+            _fail(
+                "final live epoch is not the complete controlled "
+                "append/freeze prefix"
+            )
+
+        planning_input = (
+            planning.compile_v075_construction_planning_input_v2(
+                repository_root=repository_root,
+                schedule=schedule,
+                lineage=exact_lineage,
+                lifecycle=exact_lifecycle,
+            )
+        )
+        if (
+            type(planning_input)
+            is not planning.V075ConstructionPlanningInputV2
+            or planning_input.schedule_id != schedule.schedule_id
+            or planning_input.lineage_id != exact_lineage.lineage_id
+            or planning_input.lifecycle_closure_id
+            != exact_lifecycle.closure_id
+            or planning_input.lifecycle_verification_id
+            != lifecycle_verification.verification_id
+            or planning_input.occurrence_id != occurrence_id
+            or planning_input.target_tape_namespace_id != namespace_id
+            or planning_input.arm is not arm
+            or planning_input.route is not expected_route
+            or planning_input.model.model_id != final_epoch.model.model_id
+            or canonical_json_bytes(planning_input.model.to_document())
+            != canonical_json_bytes(final_epoch.model.to_document())
+        ):
+            _fail(
+                "closed planning input differs from the reconciled evidence "
+                "or final live model"
+            )
+        proof = planning.plan_v075_construction_numerical_model_v2(
+            model=planning_input.model,
+            route=planning_input.route,
+        )
+        if (
+            type(proof) is not planning.V075NumericalPlanningProofV2
+            or proof.proof_id != final_epoch.proof.proof_id
+            or proof.canonical_bytes != final_epoch.proof.canonical_bytes
+        ):
+            _fail("closed replanning proof differs from final live proof")
+        return V075ObserverSignedClosedReconciliationV2(
+            _CLOSED_RECONCILIATION_ISSUER,
+            final_epoch,
+            controlled_closure,
+            exact_lineage,
+            exact_lifecycle,
+            planning_input,
+            proof,
+        )
+    except V075ObserverSignedMultiroundV2InvariantViolation:
+        raise
+    except Exception as error:
+        raise V075ObserverSignedMultiroundV2InvariantViolation(
+            "construction closed reconciliation exact replay failed"
+        ) from error
+
+
 def _close_and_reconcile(
     *,
     repository_root: str | Path,
@@ -698,7 +967,7 @@ def _close_and_reconcile(
             )
         )
         exact_lifecycle = (
-            lifecycle.freeze_v075_construction_batch_occurrence_lifecycle_v2(
+            lifecycle_module.freeze_v075_construction_batch_occurrence_lifecycle_v2(
                 lineage=exact_lineage,
                 lineage_bytes=exact_lineage.canonical_bytes,
                 batch_closure_bytes=closed.batch_closure.canonical_bytes,
@@ -1791,6 +2060,7 @@ __all__ = [
     "V075ObserverSignedMultiroundTerminalStatusV2",
     "V075ObserverSignedMultiroundV2InvariantViolation",
     "V075ObserverSignedRootExecutionV2",
+    "freeze_v075_construction_closed_reconciliation_v2",
     "open_v075_production_observer_signed_multiround_occurrence_v2",
     "run_v075_construction_observer_signed_multiround_occurrence_v2",
 ]
