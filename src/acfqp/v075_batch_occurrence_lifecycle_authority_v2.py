@@ -955,17 +955,64 @@ _SUPPORT_EVIDENCE_ISSUER = object()
 
 
 @dataclass(frozen=True, slots=True)
+class V075BatchSupportSourceAggregateV2:
+    """One signed discovery aggregate contributing support presence."""
+
+    _issuer: object = field(repr=False, compare=False)
+    discovery_batch_id: str
+    discovery_request_id: str
+    discovery_outcome_id: str
+    discovery_outcome_count: int
+    discovery_reward_sum: Fraction
+
+    def __post_init__(self) -> None:
+        for value, label in (
+            (self.discovery_batch_id, "V2 support source batch"),
+            (self.discovery_request_id, "V2 support source request"),
+            (self.discovery_outcome_id, "V2 support source outcome"),
+        ):
+            _cid(value, label)
+        if (
+            self._issuer is not _SUPPORT_EVIDENCE_ISSUER
+            or type(self.discovery_outcome_count) is not int
+            or self.discovery_outcome_count <= 0
+            or type(self.discovery_reward_sum) is not Fraction
+            or self.discovery_reward_sum < 0
+        ):
+            _fail("V2 support source aggregate is malformed or caller-minted")
+
+    @property
+    def source_key(self) -> tuple[str, str, str]:
+        return (
+            self.discovery_batch_id,
+            self.discovery_request_id,
+            self.discovery_outcome_id,
+        )
+
+    def to_document(self) -> dict[str, Any]:
+        return {
+            "schema": "acfqp.v075_batch_support_source_aggregate.v2",
+            "schema_version": SCHEMA_VERSION,
+            "discovery_batch_id": self.discovery_batch_id,
+            "discovery_request_id": self.discovery_request_id,
+            "discovery_outcome_id": self.discovery_outcome_id,
+            "discovery_outcome_count": self.discovery_outcome_count,
+            "discovery_reward_sum": _fraction_document(
+                self.discovery_reward_sum
+            ),
+        }
+
+
+@dataclass(frozen=True, slots=True)
 class V075BatchSupportEvidenceV2:
     _issuer: object = field(repr=False, compare=False)
     occurrence_id: str
     target_tape_namespace_id: str
     context_id: str
     row_binding_id: str
-    discovery_batch_id: str
-    discovery_request_id: str
-    discovery_outcome_id: str
-    discovery_outcome_count: int
-    discovery_reward_sum: Fraction
+    source_aggregates: tuple[V075BatchSupportSourceAggregateV2, ...]
+    aggregate_count: int
+    aggregate_reward_sum: Fraction
     next_ranks: tuple[int, ...]
     failure: bool
     terminal: bool
@@ -977,17 +1024,44 @@ class V075BatchSupportEvidenceV2:
             (self.target_tape_namespace_id, "V2 support namespace"),
             (self.context_id, "V2 support context"),
             (self.row_binding_id, "V2 support row"),
-            (self.discovery_batch_id, "V2 support batch"),
-            (self.discovery_request_id, "V2 support request"),
-            (self.discovery_outcome_id, "V2 support outcome"),
         ):
             _cid(value, label)
         if (
             self._issuer is not _SUPPORT_EVIDENCE_ISSUER
-            or type(self.discovery_outcome_count) is not int
-            or self.discovery_outcome_count <= 0
-            or type(self.discovery_reward_sum) is not Fraction
-            or self.discovery_reward_sum < 0
+            or type(self.source_aggregates) is not tuple
+            or not self.source_aggregates
+            or any(
+                type(item) is not V075BatchSupportSourceAggregateV2
+                for item in self.source_aggregates
+            )
+            or self.source_aggregates
+            != tuple(
+                sorted(
+                    self.source_aggregates,
+                    key=lambda item: item.source_key,
+                )
+            )
+            or len(
+                {item.source_key for item in self.source_aggregates}
+            )
+            != len(self.source_aggregates)
+            or type(self.aggregate_count) is not int
+            or self.aggregate_count <= 0
+            or self.aggregate_count
+            != sum(
+                item.discovery_outcome_count
+                for item in self.source_aggregates
+            )
+            or type(self.aggregate_reward_sum) is not Fraction
+            or self.aggregate_reward_sum < 0
+            or self.aggregate_reward_sum
+            != sum(
+                (
+                    item.discovery_reward_sum
+                    for item in self.source_aggregates
+                ),
+                Fraction(0),
+            )
             or type(self.next_ranks) is not tuple
             or not self.next_ranks
             or any(type(item) is not int or item < 0 for item in self.next_ranks)
@@ -1011,17 +1085,28 @@ class V075BatchSupportEvidenceV2:
             "context_id": self.context_id,
             "row_binding_id": self.row_binding_id,
             "source_observer_epoch_index": 0,
-            "discovery_batch_id": self.discovery_batch_id,
-            "discovery_request_id": self.discovery_request_id,
-            "discovery_outcome_id": self.discovery_outcome_id,
-            "discovery_outcome_count": self.discovery_outcome_count,
-            "discovery_reward_sum": _fraction_document(
-                self.discovery_reward_sum
+            "source_aggregate_ids": [
+                item.discovery_outcome_id for item in self.source_aggregates
+            ],
+            "source_aggregates": [
+                item.to_document() for item in self.source_aggregates
+            ],
+            "aggregate_count": self.aggregate_count,
+            "aggregate_reward_sum": _fraction_document(
+                self.aggregate_reward_sum
             ),
             "next_ranks": list(self.next_ranks),
             "failure": self.failure,
             "terminal": self.terminal,
-            "evidence_granularity": "SIGNED_V2_BATCH_OUTCOME_AGGREGATE",
+            "support_key": {
+                "next_ranks": list(self.next_ranks),
+                "failure": self.failure,
+                "terminal": self.terminal,
+            },
+            "evidence_granularity": (
+                "SIGNED_V2_BATCH_OUTCOME_AGGREGATE_PRESENCE_UNION"
+            ),
+            "all_source_aggregates_bound": True,
             "individual_draw_identity_serialized": False,
             "private_material_serialized": False,
         }
@@ -1562,7 +1647,7 @@ def _derive_lifecycle(
     )
     discovery_by_row: dict[str, list[_ParsedBatch]] = {}
     evidence_by_key: dict[
-        tuple[str, str, str],
+        tuple[str, tuple[int, ...], bool, bool],
         V075BatchSupportEvidenceV2,
     ] = {}
     freeze_by_key: dict[
@@ -1572,7 +1657,7 @@ def _derive_lifecycle(
     current_epoch_by_row: dict[str, int] = {}
     support_owner: dict[str, tuple[str, int]] = {}
     events: list[V075BatchLifecycleEventV2] = []
-    global_validation_started = False
+    validation_observed = False
 
     def append_event(
         *,
@@ -1605,8 +1690,11 @@ def _derive_lifecycle(
     for batch in batches:
         row = batch.row_binding_id
         if batch.lane == "DISCOVERY":
-            if global_validation_started:
-                _fail("DISCOVERY occurred after lifecycle validation began")
+            if row in current_epoch_by_row:
+                _fail(
+                    "same-row DISCOVERY occurred after its first support "
+                    "freeze or VALIDATION"
+                )
             discovery_by_row.setdefault(row, []).append(batch)
             append_event(
                 kind=V075BatchLifecycleEventKindV2.DISCOVERY_BATCH,
@@ -1620,7 +1708,7 @@ def _derive_lifecycle(
             )
             continue
 
-        global_validation_started = True
+        validation_observed = True
         discoveries = discovery_by_row.get(row)
         if not discoveries:
             _fail("VALIDATION occurred before any same-row DISCOVERY")
@@ -1636,45 +1724,76 @@ def _derive_lifecycle(
         if key not in freeze_by_key:
             if epoch != current + 1:
                 _fail("validation used a support freeze before it was issued")
+            grouped_sources: dict[
+                tuple[tuple[int, ...], bool, bool],
+                list[V075BatchSupportSourceAggregateV2],
+            ] = {}
             for source in discoveries:
-                representatives: dict[
-                    tuple[tuple[int, ...], bool],
-                    _ParsedOutcome,
-                ] = {}
                 for outcome in source.outcomes:
-                    state_key = (outcome.next_ranks, outcome.failure)
-                    prior = representatives.get(state_key)
-                    if prior is None or outcome.outcome_id < prior.outcome_id:
-                        representatives[state_key] = outcome
-                for outcome in representatives.values():
-                    evidence_key = (
-                        row,
-                        source.batch_id,
-                        outcome.outcome_id,
+                    support_key = (
+                        outcome.next_ranks,
+                        outcome.failure,
+                        outcome.terminal,
                     )
-                    evidence_by_key.setdefault(
-                        evidence_key,
-                        V075BatchSupportEvidenceV2(
+                    grouped_sources.setdefault(support_key, []).append(
+                        V075BatchSupportSourceAggregateV2(
                             _SUPPORT_EVIDENCE_ISSUER,
-                            batch.occurrence_id,
-                            batch.target_tape_namespace_id,
-                            batch.context_id,
-                            row,
                             source.batch_id,
                             source.request_id,
                             outcome.outcome_id,
                             outcome.count,
                             outcome.reward_sum,
-                            outcome.next_ranks,
-                            outcome.failure,
-                            outcome.terminal,
-                        ),
+                        )
                     )
+            for (
+                next_ranks,
+                failure,
+                terminal,
+            ), sources in grouped_sources.items():
+                source_tuple = tuple(
+                    sorted(sources, key=lambda item: item.source_key)
+                )
+                evidence_key = (
+                    row,
+                    next_ranks,
+                    failure,
+                    terminal,
+                )
+                evidence_by_key.setdefault(
+                    evidence_key,
+                    V075BatchSupportEvidenceV2(
+                        _SUPPORT_EVIDENCE_ISSUER,
+                        batch.occurrence_id,
+                        batch.target_tape_namespace_id,
+                        batch.context_id,
+                        row,
+                        source_tuple,
+                        sum(
+                            item.discovery_outcome_count
+                            for item in source_tuple
+                        ),
+                        sum(
+                            (
+                                item.discovery_reward_sum
+                                for item in source_tuple
+                            ),
+                            Fraction(0),
+                        ),
+                        next_ranks,
+                        failure,
+                        terminal,
+                    ),
+                )
             row_evidence = tuple(
                 sorted(
                     (
                         item
-                        for (evidence_row, _batch, _outcome), item
+                        for (
+                            evidence_row,
+                            _ranks,
+                            _failure,
+                            _terminal,
+                        ), item
                         in evidence_by_key.items()
                         if evidence_row == row
                     ),
@@ -1688,18 +1807,16 @@ def _derive_lifecycle(
             source_by_batch_id = {
                 item.batch_id: item for item in discoveries
             }
-            derived_by_source = {
+            derived_by_support_key = {
                 (
-                    item.discovery_batch_id,
-                    item.discovery_outcome_id,
-                    item.discovery_outcome_count,
                     item.next_ranks,
                     item.failure,
+                    item.terminal,
                 ): item
                 for item in row_evidence
             }
             typed_keys: set[
-                tuple[str, str, int, tuple[int, ...], bool]
+                tuple[tuple[int, ...], bool, bool]
             ] = set()
             for item in typed_evidence:
                 source = source_by_batch_id.get(item.discovery_batch_id)
@@ -1712,12 +1829,19 @@ def _derive_lifecycle(
                     }
                 )
                 outcome = outcomes.get(item.discovery_outcome_id)
-                typed_key = (
-                    item.discovery_batch_id,
-                    item.discovery_outcome_id,
-                    item.discovery_outcome_count,
+                support_key = (
                     item.observed_state.ranks,
                     item.observed_state.failure,
+                    False if outcome is None else outcome.terminal,
+                )
+                derived = derived_by_support_key.get(support_key)
+                representative = (
+                    None
+                    if derived is None
+                    else min(
+                        derived.source_aggregates,
+                        key=lambda value: value.source_key,
+                    )
                 )
                 if (
                     source is None
@@ -1728,15 +1852,24 @@ def _derive_lifecycle(
                     or outcome.count != item.discovery_outcome_count
                     or outcome.next_ranks != item.observed_state.ranks
                     or outcome.failure != item.observed_state.failure
-                    or typed_key not in derived_by_source
-                    or typed_key in typed_keys
+                    or derived is None
+                    or representative is None
+                    or representative.source_key
+                    != (
+                        item.discovery_batch_id,
+                        item.discovery_request_id,
+                        item.discovery_outcome_id,
+                    )
+                    or representative.discovery_outcome_count
+                    != item.discovery_outcome_count
+                    or support_key in typed_keys
                 ):
                     _fail(
                         "typed VALIDATION support is foreign, incomplete, "
                         "or differs from signed local discovery aggregates"
                     )
-                typed_keys.add(typed_key)
-            if typed_keys != set(derived_by_source):
+                typed_keys.add(support_key)
+            if typed_keys != set(derived_by_support_key):
                 _fail(
                     "typed VALIDATION support does not exactly equal the "
                     "deterministic V2 support registry"
@@ -1796,7 +1929,7 @@ def _derive_lifecycle(
             accepted_draw_count=batch.accepted_draw_count,
         )
 
-    if not global_validation_started or not evidence_by_key or not freeze_by_key:
+    if not validation_observed or not evidence_by_key or not freeze_by_key:
         _fail("V2 lifecycle requires discovery, support freeze, and validation")
     required_discovery_rows = tuple(
         sorted(
@@ -2819,6 +2952,7 @@ __all__ = [
     "V075BatchOccurrenceLifecycleVerificationV2",
     "V075BatchSupportEvidenceV2",
     "V075BatchSupportFreezeV2",
+    "V075BatchSupportSourceAggregateV2",
     "V075ProductionFailureAuthorityV2NotReady",
     "V075ProductionPositiveLifecycleV2NotReady",
     "freeze_v075_batch_occurrence_failure_closure_v2",

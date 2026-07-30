@@ -65,20 +65,31 @@ def _discovery_stream(namespace, catalogue, action):
     )
 
 
-def _support_evidence(namespace, signer, stream, batch):
+def _support_evidence_from_batches(namespace, signer, stream, batches):
     representatives = {}
-    for outcome in batch.outcomes:
-        state = graph.V075SymbolicGraphStateV1(
-            stream.row_binding.context,
-            outcome.next_ranks,
-            outcome.failure,
-        )
-        current = representatives.get(state.state_id)
-        if current is None or outcome.outcome_id < current.outcome_id:
-            representatives[state.state_id] = outcome
+    for batch in batches:
+        for outcome in batch.outcomes:
+            state = graph.V075SymbolicGraphStateV1(
+                stream.row_binding.context,
+                outcome.next_ranks,
+                outcome.failure,
+            )
+            key = (state.state_id, outcome.terminal)
+            candidate = (
+                batch.batch_id,
+                batch.request.request_id,
+                outcome.outcome_id,
+                batch,
+                outcome,
+            )
+            current = representatives.get(key)
+            if current is None or candidate[:3] < current[:3]:
+                representatives[key] = candidate
     result = []
-    for state_id in sorted(representatives):
-        outcome = representatives[state_id]
+    for support_key in sorted(representatives):
+        _batch_id, _request_id, _outcome_id, batch, outcome = (
+            representatives[support_key]
+        )
         state = graph.V075SymbolicGraphStateV1(
             stream.row_binding.context,
             outcome.next_ranks,
@@ -110,6 +121,15 @@ def _support_evidence(namespace, signer, stream, batch):
             )
         )
     return tuple(result)
+
+
+def _support_evidence(namespace, signer, stream, batch):
+    return _support_evidence_from_batches(
+        namespace,
+        signer,
+        stream,
+        (batch,),
+    )
 
 
 def _validation_stream(namespace, discovery, evidence):
@@ -262,6 +282,31 @@ def _adapter_for_graph(values, identity, marker):
         session=session,
         occurrence_identity=identity,
     )
+
+
+def _first_active_child_catalogue(context, discovery_batch):
+    for outcome in discovery_batch.outcomes:
+        try:
+            state = graph.V075SymbolicGraphStateV1(
+                context,
+                outcome.next_ranks,
+                outcome.failure,
+            )
+        except graph.V075PublicGraphSemanticsInvariantViolation:
+            continue
+        actions = graph.legal_action_triples_v1(
+            context,
+            state.ranks,
+            state.failure,
+        )
+        if actions:
+            return graph.V075LegalActionCatalogueV1(
+                context,
+                state,
+                1,
+                actions,
+            )
+    raise AssertionError("test discovery batch exposed no active child state")
 
 
 @pytest.fixture(scope="module")
@@ -515,6 +560,351 @@ def test_validation_before_same_row_freeze_fails_closed() -> None:
             lineage_bytes=lineage_value.canonical_bytes,
             batch_closure_bytes=closure.canonical_bytes,
         )
+
+
+def test_root_validation_then_new_child_discovery_and_validation_is_legal(
+    lifecycle_graph,
+) -> None:
+    identity = _identity_for_graph(lifecycle_graph, ordinal=11)
+    namespace = lifecycle_graph["namespace"]
+    context = namespace.family.replicate_contexts[0]
+    root = graph.root_catalogue_v1(context)
+    adapter = _adapter_for_graph(
+        lifecycle_graph,
+        identity,
+        "root-validation-then-child-discovery",
+    )
+
+    root_discovery = _discovery_stream(namespace, root, root.actions[0])
+    root_batch = adapter.observe_batch_v2(
+        stream_identity=root_discovery,
+        accepted_draw_start=1,
+        accepted_draw_count=64,
+        accepted_draw_cap=64,
+    )
+    root_validation = _validation_stream(
+        namespace,
+        root_discovery,
+        _support_evidence(
+            namespace,
+            lifecycle_graph["signer"],
+            root_discovery,
+            root_batch,
+        ),
+    )
+    adapter.observe_batch_v2(
+        stream_identity=root_validation,
+        accepted_draw_start=1,
+        accepted_draw_count=64,
+        accepted_draw_cap=64,
+    )
+
+    child_catalogue = _first_active_child_catalogue(context, root_batch)
+    child_discovery = _discovery_stream(
+        namespace,
+        child_catalogue,
+        child_catalogue.actions[0],
+    )
+    child_batch = adapter.observe_batch_v2(
+        stream_identity=child_discovery,
+        accepted_draw_start=1,
+        accepted_draw_count=64,
+        accepted_draw_cap=64,
+    )
+    child_validation = _validation_stream(
+        namespace,
+        child_discovery,
+        _support_evidence(
+            namespace,
+            lifecycle_graph["signer"],
+            child_discovery,
+            child_batch,
+        ),
+    )
+    adapter.observe_batch_v2(
+        stream_identity=child_validation,
+        accepted_draw_start=1,
+        accepted_draw_count=64,
+        accepted_draw_cap=64,
+    )
+    closure = adapter.close_v2()
+    lineage_value = batched.freeze_v075_construction_batch_occurrence_lineage_v2(
+        occurrence_identity=identity,
+        closure=closure,
+        authority=lifecycle_graph["authorization"],
+        namespace=namespace,
+        known_stream_identities=(
+            root_discovery,
+            root_validation,
+            child_discovery,
+            child_validation,
+        ),
+        private_salt=lifecycle_graph["salt"],
+        private_environment=(
+            lifecycle_graph["generated"].secret_laws_for_commitment()
+        ),
+    )
+    value = lifecycle.freeze_v075_construction_batch_occurrence_lifecycle_v2(
+        lineage=lineage_value,
+        lineage_bytes=lineage_value.canonical_bytes,
+        batch_closure_bytes=closure.canonical_bytes,
+    )
+    assert value.required_row_binding_ids == tuple(
+        sorted(
+            (
+                root_discovery.row_binding_id,
+                child_discovery.row_binding_id,
+            )
+        )
+    )
+    assert tuple(item.kind for item in value.events) == (
+        lifecycle.V075BatchLifecycleEventKindV2.DISCOVERY_BATCH,
+        lifecycle.V075BatchLifecycleEventKindV2.SUPPORT_FREEZE,
+        lifecycle.V075BatchLifecycleEventKindV2.VALIDATION_BATCH,
+        lifecycle.V075BatchLifecycleEventKindV2.DISCOVERY_BATCH,
+        lifecycle.V075BatchLifecycleEventKindV2.SUPPORT_FREEZE,
+        lifecycle.V075BatchLifecycleEventKindV2.VALIDATION_BATCH,
+    )
+
+
+def test_same_row_late_discovery_after_validation_is_rejected(
+    lifecycle_graph,
+) -> None:
+    identity = _identity_for_graph(lifecycle_graph, ordinal=12)
+    namespace = lifecycle_graph["namespace"]
+    context = namespace.family.replicate_contexts[0]
+    root = graph.root_catalogue_v1(context)
+    adapter = _adapter_for_graph(
+        lifecycle_graph,
+        identity,
+        "same-row-late-discovery",
+    )
+    discovery = _discovery_stream(namespace, root, root.actions[0])
+    first = adapter.observe_batch_v2(
+        stream_identity=discovery,
+        accepted_draw_start=1,
+        accepted_draw_count=32,
+        accepted_draw_cap=64,
+    )
+    validation = _validation_stream(
+        namespace,
+        discovery,
+        _support_evidence(
+            namespace,
+            lifecycle_graph["signer"],
+            discovery,
+            first,
+        ),
+    )
+    adapter.observe_batch_v2(
+        stream_identity=validation,
+        accepted_draw_start=1,
+        accepted_draw_count=32,
+        accepted_draw_cap=32,
+    )
+    adapter.observe_batch_v2(
+        stream_identity=discovery,
+        accepted_draw_start=33,
+        accepted_draw_count=32,
+        accepted_draw_cap=64,
+    )
+    closure = adapter.close_v2()
+    lineage_value = batched.freeze_v075_construction_batch_occurrence_lineage_v2(
+        occurrence_identity=identity,
+        closure=closure,
+        authority=lifecycle_graph["authorization"],
+        namespace=namespace,
+        known_stream_identities=(discovery, validation),
+        private_salt=lifecycle_graph["salt"],
+        private_environment=(
+            lifecycle_graph["generated"].secret_laws_for_commitment()
+        ),
+    )
+    with pytest.raises(
+        lifecycle.V075BatchOccurrenceLifecycleV2InvariantViolation,
+        match="same-row DISCOVERY",
+    ):
+        lifecycle.freeze_v075_construction_batch_occurrence_lifecycle_v2(
+            lineage=lineage_value,
+            lineage_bytes=lineage_value.canonical_bytes,
+            batch_closure_bytes=closure.canonical_bytes,
+        )
+
+
+def test_support_presence_aggregates_all_duplicate_state_sources(
+    lifecycle_graph,
+) -> None:
+    identity = _identity_for_graph(lifecycle_graph, ordinal=13)
+    namespace = lifecycle_graph["namespace"]
+    context = namespace.family.replicate_contexts[0]
+    root = graph.root_catalogue_v1(context)
+    adapter = _adapter_for_graph(
+        lifecycle_graph,
+        identity,
+        "aggregate-duplicate-support-presence",
+    )
+    discovery = _discovery_stream(namespace, root, root.actions[0])
+    discovery_batches = (
+        adapter.observe_batch_v2(
+            stream_identity=discovery,
+            accepted_draw_start=1,
+            accepted_draw_count=32,
+            accepted_draw_cap=64,
+        ),
+        adapter.observe_batch_v2(
+            stream_identity=discovery,
+            accepted_draw_start=33,
+            accepted_draw_count=32,
+            accepted_draw_cap=64,
+        ),
+    )
+    evidence = _support_evidence_from_batches(
+        namespace,
+        lifecycle_graph["signer"],
+        discovery,
+        discovery_batches,
+    )
+    validation = _validation_stream(namespace, discovery, evidence)
+    adapter.observe_batch_v2(
+        stream_identity=validation,
+        accepted_draw_start=1,
+        accepted_draw_count=64,
+        accepted_draw_cap=64,
+    )
+    closure = adapter.close_v2()
+    lineage_value = batched.freeze_v075_construction_batch_occurrence_lineage_v2(
+        occurrence_identity=identity,
+        closure=closure,
+        authority=lifecycle_graph["authorization"],
+        namespace=namespace,
+        known_stream_identities=(discovery, validation),
+        private_salt=lifecycle_graph["salt"],
+        private_environment=(
+            lifecycle_graph["generated"].secret_laws_for_commitment()
+        ),
+    )
+    value = lifecycle.freeze_v075_construction_batch_occurrence_lifecycle_v2(
+        lineage=lineage_value,
+        lineage_bytes=lineage_value.canonical_bytes,
+        batch_closure_bytes=closure.canonical_bytes,
+    )
+    expected_keys = {
+        (outcome.next_ranks, outcome.failure, outcome.terminal)
+        for batch in discovery_batches
+        for outcome in batch.outcomes
+    }
+    actual_keys = {
+        (item.next_ranks, item.failure, item.terminal)
+        for item in value.support_evidence
+    }
+    assert actual_keys == expected_keys
+    assert any(
+        len(item.source_aggregates) > 1
+        for item in value.support_evidence
+    )
+    for item in value.support_evidence:
+        assert item.aggregate_count == sum(
+            source.discovery_outcome_count
+            for source in item.source_aggregates
+        )
+        assert item.aggregate_reward_sum == sum(
+            (
+                source.discovery_reward_sum
+                for source in item.source_aggregates
+            ),
+            Fraction(0),
+        )
+
+
+def test_typed_support_may_not_omit_a_new_discovery_state(
+    lifecycle_graph,
+) -> None:
+    identity = _identity_for_graph(lifecycle_graph, ordinal=14)
+    namespace = lifecycle_graph["namespace"]
+    context = namespace.family.replicate_contexts[0]
+    root = graph.root_catalogue_v1(context)
+    adapter = _adapter_for_graph(
+        lifecycle_graph,
+        identity,
+        "omit-new-discovery-state",
+    )
+    discovery = _discovery_stream(namespace, root, root.actions[0])
+    batch = adapter.observe_batch_v2(
+        stream_identity=discovery,
+        accepted_draw_start=1,
+        accepted_draw_count=64,
+        accepted_draw_cap=64,
+    )
+    evidence = _support_evidence(
+        namespace,
+        lifecycle_graph["signer"],
+        discovery,
+        batch,
+    )
+    assert len(evidence) > 1
+    validation = _validation_stream(
+        namespace,
+        discovery,
+        evidence[:-1],
+    )
+    adapter.observe_batch_v2(
+        stream_identity=validation,
+        accepted_draw_start=1,
+        accepted_draw_count=64,
+        accepted_draw_cap=64,
+    )
+    closure = adapter.close_v2()
+    lineage_value = batched.freeze_v075_construction_batch_occurrence_lineage_v2(
+        occurrence_identity=identity,
+        closure=closure,
+        authority=lifecycle_graph["authorization"],
+        namespace=namespace,
+        known_stream_identities=(discovery, validation),
+        private_salt=lifecycle_graph["salt"],
+        private_environment=(
+            lifecycle_graph["generated"].secret_laws_for_commitment()
+        ),
+    )
+    with pytest.raises(
+        lifecycle.V075BatchOccurrenceLifecycleV2InvariantViolation,
+        match="does not exactly equal",
+    ):
+        lifecycle.freeze_v075_construction_batch_occurrence_lifecycle_v2(
+            lineage=lineage_value,
+            lineage_bytes=lineage_value.canonical_bytes,
+            batch_closure_bytes=closure.canonical_bytes,
+        )
+
+
+def test_cross_row_typed_support_transplant_is_rejected_upstream(
+    lifecycle_graph,
+) -> None:
+    identity = _identity_for_graph(lifecycle_graph, ordinal=15)
+    namespace = lifecycle_graph["namespace"]
+    context = namespace.family.replicate_contexts[0]
+    root = graph.root_catalogue_v1(context)
+    assert len(root.actions) >= 2
+    first = _discovery_stream(namespace, root, root.actions[0])
+    second = _discovery_stream(namespace, root, root.actions[1])
+    adapter = _adapter_for_graph(
+        lifecycle_graph,
+        identity,
+        "cross-row-support-source",
+    )
+    batch = adapter.observe_batch_v2(
+        stream_identity=first,
+        accepted_draw_start=1,
+        accepted_draw_count=16,
+        accepted_draw_cap=16,
+    )
+    evidence = _support_evidence(
+        namespace,
+        lifecycle_graph["signer"],
+        first,
+        batch,
+    )
+    with pytest.raises(graph.V075PublicGraphSemanticsInvariantViolation):
+        _validation_stream(namespace, second, evidence)
 
 
 def test_local_discovery_with_foreign_typed_support_is_rejected(
