@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `1.80.0`: the earlier contracts build the
+contracts now span `1.40.0` through `1.81.0`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -83,7 +83,8 @@ raw public context
    FULL_CONSTRUCTION_COMPILER_REPLAY
 -> owner-bound replay closes CLOSED_RECONCILIATION as
    FULL_CONSTRUCTION_CLOSED_RECONCILIATION_REPLAY
--> MULTIROUND_RESULT remains self-frontier unresolved
+-> owner-bound root-only replay closes MULTIROUND_RESULT as
+   FULL_CONSTRUCTION_MULTIROUND_RESULT_REPLAY
 ```
 
 Contract `1.68.0` adds a new construction-only atomic private-replay
@@ -132,11 +133,19 @@ input, replans the proof and only then uses the reconciliation issuer inside
 its owning module. The portable authority requires the resulting singleton
 record and every schedule/closure/epoch/model/proof/input parent to match
 byte-for-byte. `CLOSED_RECONCILIATION` closes only as construction
-reconciliation replay; `MULTIROUND_RESULT` remains unresolved at itself.
+reconciliation replay. Contract `1.81.0` then reconstructs issuer-backed root
+execution from the exact schedule and controlled open prefix, and derives the
+terminal result from replayed parents without accepting a caller status or
+claimed result. The portable cut is intentionally limited to the registered
+root-only `CHILD_ACTION_ROW_CAP_EXCEEDED` occurrence: every optional child and
+promotion role must be absent in the fresh bundle, and the result target is
+read only after the owner producer has been fixed. `MULTIROUND_RESULT` closes
+as `FULL_CONSTRUCTION_MULTIROUND_RESULT_REPLAY`; the construction dependency
+frontier is empty.
 
-Production still requires the remaining semantic roles, source/code
-provenance, complete accounting, campaign closure and an independent
-complete-bundle verifier.
+Production still requires the aggregate semantic-registry closure,
+source/code provenance, complete accounting, campaign closure and an
+independent complete-bundle verifier.
 Sample-efficiency, official, scalar, economics and counter-completeness Gates
 remain locked.
 

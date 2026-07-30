@@ -2,8 +2,8 @@
 
 **Status:** normative construction contract; production and target access locked  
 **Ledger:** V0-076  
-**Implemented revisions:** `1.60.0`–`1.80.0`
-**Current completed semantic cut:** public M0/B1/M1A/M1B/M2 producer replay plus construction-private closure-verification/lineage/lifecycle replay
+**Implemented revisions:** `1.60.0`–`1.81.0`
+**Current completed semantic cut:** dependency-aware construction producer replay through `MULTIROUND_RESULT` for the registered root-only cap profile; aggregate registry, source/code provenance and production remain locked
 
 ## Objective
 
@@ -433,6 +433,52 @@ effective dependency lanes remain separate and are recomputed with the
 4096-node iterative Kahn bound. Explicit currentness reruns all five raw
 inputs; production, held-out, science, accounting and certificate locks do
 not move.
+
+## Contract 1.81 construction multiround-result replay cut
+
+Contract 1.81 begins with the exact five-input 1.80 replay. The runner owner
+now exposes two construction-only public producers without exposing either
+private issuer:
+
+1. root execution is rebuilt from the exact schedule, schedule verification
+   and replayed controlled open prefix, including ordered discovery and
+   validation appends, semantic bindings, receipts, same-row support freezes
+   and resulting head;
+2. the multiround result replays the root/final epochs, dynamic-child closure,
+   conditionally present child/promotion parents and the 1.80 reconciliation,
+   then derives its terminal status. It accepts neither a status nor a claimed
+   result.
+
+The external portable authority is deliberately narrower than the general
+owner state machine. It recognizes only the registered root-only
+`CHILD_ACTION_ROW_CAP_EXCEEDED` profile. All child-execution, controlled-child,
+controlled-promotion and live-promotion roles must have zero records in the
+fresh verified bundle. Absence is never inferred from caller-provided
+`None` values. The namespace comes from the fresh public-context resolution
+and must equal the controlled graph namespace by ID and canonical bytes.
+
+Every producer parent is fixed before the portable `MULTIROUND_RESULT` record
+is read. The target participates only in the final exact byte/semantic-ID
+comparison and is forbidden from the source set. Source records bind the
+schedule and verification, controlled root prefix, reconstructed root
+execution, root/final epoch, child closure and verification, final
+model/proof, and closed reconciliation.
+
+The inherited planning-input and reconciliation scopes remain
+`FULL_CONSTRUCTION_COMPILER_REPLAY` and
+`FULL_CONSTRUCTION_CLOSED_RECONCILIATION_REPLAY`.
+`MULTIROUND_RESULT` closes only as
+`FULL_CONSTRUCTION_MULTIROUND_RESULT_REPLAY`. Portable-declared,
+authority-local and effective lanes remain separate, the 4096-node iterative
+Kahn replay is rerun, and the aggregate must derive an empty unresolved
+frontier. This is construction terminal replay for one registered profile,
+not a general authorized-child/promotion result authority.
+
+Explicit currentness still requires all five raw inputs. Ephemeral secrets are
+consumed only by the upstream replay and are not retained, serialized or
+directly hashed by this authority. Source/code provenance, aggregate semantic
+registry, accounting, campaign closure, production, held-out science and
+certificate locks do not move.
 
 ## Mandatory locks
 
