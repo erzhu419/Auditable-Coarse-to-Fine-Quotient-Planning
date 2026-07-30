@@ -2881,6 +2881,7 @@ class V075ConstructionControlledPrivateObserverV2:
         "__adapter",
         "__appends",
         "__closed",
+        "__frontier_state",
         "__heads",
         "__identity",
         "__pending_intent",
@@ -2888,6 +2889,7 @@ class V075ConstructionControlledPrivateObserverV2:
         "__session",
         "__signer",
         "__support_freezes",
+        "__total_accepted_draw_count",
         "__used_intent_ids",
     )
 
@@ -2929,7 +2931,9 @@ class V075ConstructionControlledPrivateObserverV2:
         ] = []
         self.__closed = False
         self.__poisoned = False
-        self.__heads = [self.__mint_current_head()]
+        self.__frontier_state: dict[str, V075BatchStreamFrontierV2] = {}
+        self.__total_accepted_draw_count = 0
+        self.__heads = [self.__mint_zero_head()]
 
     @property
     def occurrence_identity(
@@ -2999,18 +3003,67 @@ class V075ConstructionControlledPrivateObserverV2:
     ) -> tuple[observer.V075ObserverBatchJournalEntryV2, ...]:
         return self.__session.batch_journal_entries
 
-    def __mint_current_head(self) -> V075SignedBatchJournalHeadV2:
+    def __mint_zero_head(self) -> V075SignedBatchJournalHeadV2:
         entries = self.__entries()
-        frontiers = _derive_frontiers_from_owned_entries(entries)
+        if (
+            entries
+            or self.__frontier_state
+            or self.__total_accepted_draw_count != 0
+        ):
+            _fail("controlled zero head requires one empty owned journal")
+        frontiers: tuple[V075BatchStreamFrontierV2, ...] = ()
+        unsigned = _journal_head_payload(
+            occurrence_id=self.__identity.occurrence_id,
+            session_public_id=self.__session.session_public_id,
+            authority_binding=self.__session.authority_binding,
+            entry_count=0,
+            tail_entry_id=None,
+            total_accepted_draw_count=0,
+            stream_frontiers=frontiers,
+        )
+        signature = _sign(
+            signer=self.__signer,
+            binding=self.__session.authority_binding,
+            message=_signing_bytes("journal_head_signature", unsigned),
+        )
+        return V075SignedBatchJournalHeadV2(
+            self.__identity.occurrence_id,
+            self.__session.session_public_id,
+            self.__session.authority_binding,
+            0,
+            None,
+            0,
+            frontiers,
+            signature,
+        )
+
+    def __mint_resulting_head(
+        self,
+        *,
+        batch: observer.V075SignedObservationBatchV2,
+    ) -> V075SignedBatchJournalHeadV2:
+        entries = self.__entries()
+        if (
+            type(batch) is not observer.V075SignedObservationBatchV2
+            or not entries
+            or entries[-1].batch is not batch
+            or len(entries) != len(self.__appends) + 1
+        ):
+            _fail("resulting head requires the sole new owned journal batch")
+        frontiers = _advance_frontier_state_from_exact_batch(
+            state=self.__frontier_state,
+            batch=batch,
+        )
+        self.__total_accepted_draw_count += (
+            batch.request.accepted_draw_count
+        )
         unsigned = _journal_head_payload(
             occurrence_id=self.__identity.occurrence_id,
             session_public_id=self.__session.session_public_id,
             authority_binding=self.__session.authority_binding,
             entry_count=len(entries),
-            tail_entry_id=None if not entries else entries[-1].entry_id,
-            total_accepted_draw_count=sum(
-                entry.batch.request.accepted_draw_count for entry in entries
-            ),
+            tail_entry_id=entries[-1].entry_id,
+            total_accepted_draw_count=self.__total_accepted_draw_count,
             stream_frontiers=frontiers,
         )
         signature = _sign(
@@ -3023,10 +3076,8 @@ class V075ConstructionControlledPrivateObserverV2:
             self.__session.session_public_id,
             self.__session.authority_binding,
             len(entries),
-            None if not entries else entries[-1].entry_id,
-            sum(
-                entry.batch.request.accepted_draw_count for entry in entries
-            ),
+            entries[-1].entry_id,
+            self.__total_accepted_draw_count,
             frontiers,
             signature,
         )
@@ -3045,6 +3096,15 @@ class V075ConstructionControlledPrivateObserverV2:
                 entries
                 and self.__heads[-1].tail_entry_id != entries[-1].entry_id
             )
+            or self.__heads[-1].stream_frontiers
+            != tuple(
+                sorted(
+                    self.__frontier_state.values(),
+                    key=lambda item: item.stream_id,
+                )
+            )
+            or self.__heads[-1].total_accepted_draw_count
+            != self.__total_accepted_draw_count
         ):
             self.__poisoned = True
             _fail("raw or out-of-band adapter change violated control chain")
@@ -3325,7 +3385,7 @@ class V075ConstructionControlledPrivateObserverV2:
                 or request.accepted_draw_cap != intent.accepted_draw_cap
             ):
                 _fail("controlled batch append differs from frozen intent")
-            resulting_head = self.__mint_current_head()
+            resulting_head = self.__mint_resulting_head(batch=batch)
             entry = entries[-1]
             unsigned_receipt = _append_receipt_payload(
                 occurrence_id=intent.occurrence_id,
