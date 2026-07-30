@@ -780,6 +780,111 @@ class V075BatchOccurrenceLineageV2:
         return canonical_json_bytes(self.to_document())
 
 
+def replay_v075_signed_batch_occurrence_lineage_v2(
+    claimed: V075BatchOccurrenceLineageV2,
+) -> V075BatchOccurrenceLineageV2:
+    """Rebuild the public signed closure graph before trusting a lineage.
+
+    Calling ``V075BatchOccurrenceLineageV2`` again is not sufficient: a
+    caller can allocate a nested frozen dataclass with ``object.__new__`` and
+    thereby skip that nested object's ``__post_init__``.  This replay crosses
+    the canonical-byte loader, which reconstructs every request, aggregate
+    outcome, batch, journal entry, stream identity, RSA batch signature, and
+    RSA closure signature.  It deliberately does not redo the private-law
+    replay; that remains the responsibility of the construction/production
+    lineage issuer that created ``closure_verification``.
+    """
+
+    if type(claimed) is not V075BatchOccurrenceLineageV2:
+        _fail("signed V2 lineage replay rejects duck-typed inputs")
+    if claimed.scope is V075BatchOccurrenceAuthorityScopeV2.CONSTRUCTION_ONLY:
+        issuer = _CONSTRUCTION_LINEAGE_ISSUER
+    elif (
+        claimed.scope
+        is V075BatchOccurrenceAuthorityScopeV2.PRODUCTION_BYTE_REPLAY
+    ):
+        issuer = _PRODUCTION_LINEAGE_ISSUER
+    else:  # pragma: no cover - enum/type guard above makes this defensive.
+        _fail("signed V2 lineage replay received an unknown authority scope")
+    try:
+        closure = claimed.closure
+        streams_by_id = {
+            entry.batch.request.stream_identity.stream_id: (
+                entry.batch.request.stream_identity
+            )
+            for entry in closure.entries
+        }
+        if not streams_by_id:
+            _fail("signed V2 lineage replay found an empty stream registry")
+        streams = tuple(
+            streams_by_id[key] for key in sorted(streams_by_id)
+        )
+        replayed_closure = (
+            observer.load_observer_batch_journal_closure_bytes_v2(
+                raw=closure.canonical_bytes,
+                authority_binding=closure.authority_binding,
+                known_stream_identities=streams,
+            )
+        )
+        binding = replayed_closure.authority_binding
+        batches = tuple(entry.batch for entry in replayed_closure.entries)
+        replayed_verification = observer.V075ObserverBatchClosureVerificationV2(
+            observer._BATCH_CLOSURE_VERIFICATION_ISSUER,  # noqa: SLF001
+            replayed_closure.closure_id,
+            replayed_closure.occurrence_id,
+            tuple(batch.batch_id for batch in batches),
+            binding.binding_id,
+            binding.authorization_id,
+            binding.private_reveal_attestation_id,
+            binding.remote_main_anchor_id,
+            binding.namespace.target_tape_namespace_id,
+            len(batches),
+            sum(
+                batch.request.accepted_draw_count for batch in batches
+            ),
+            len(streams),
+        )
+        if (
+            replayed_closure.canonical_bytes != closure.canonical_bytes
+            or replayed_verification.to_document()
+            != claimed.closure_verification.to_document()
+        ):
+            _fail(
+                "signed V2 lineage closure or private-replay attestation "
+                "differs from canonical public replay"
+            )
+        expected = V075BatchOccurrenceLineageV2(
+            issuer,
+            claimed.scope,
+            _replay_occurrence_identity(claimed.occurrence_identity),
+            replayed_closure,
+            replayed_verification,
+            claimed.public_verifications,
+            claimed.sequence_verifications,
+            claimed.private_reveal_attestation_bytes_sha256,
+            claimed.authorization_bytes_sha256,
+            claimed.namespace_bytes_sha256,
+            claimed.closure_bytes_sha256,
+        )
+    except (
+        AttributeError,
+        TypeError,
+        ValueError,
+        observer.V075PrivateObserverBoundaryV2InvariantViolation,
+    ) as error:
+        if type(error) is V075BatchedObserverV2InvariantViolation:
+            raise
+        raise V075BatchedObserverV2InvariantViolation(
+            "signed V2 batch occurrence lineage replay failed"
+        ) from error
+    if (
+        expected.lineage_id != claimed.lineage_id
+        or expected.canonical_bytes != claimed.canonical_bytes
+    ):
+        _fail("signed V2 lineage differs from exact reconstruction")
+    return expected
+
+
 def _group_batches_by_stream(
     batches: tuple[observer.V075SignedObservationBatchV2, ...],
 ) -> dict[str, tuple[observer.V075SignedObservationBatchV2, ...]]:
@@ -1138,6 +1243,7 @@ __all__ = [
     "freeze_v075_construction_batch_occurrence_lineage_v2",
     "freeze_v075_production_batch_occurrence_lineage_v2",
     "open_v075_production_occurrence_batched_observer_v2",
+    "replay_v075_signed_batch_occurrence_lineage_v2",
     "verify_v075_observation_batch_sequence_v2",
     "verify_v075_production_batch_occurrence_lineage_v2",
     "verify_v075_signed_observation_batch_v2",

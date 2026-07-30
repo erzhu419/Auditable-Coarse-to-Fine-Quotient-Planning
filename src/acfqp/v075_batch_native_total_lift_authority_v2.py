@@ -816,32 +816,16 @@ def _compile_backend(
             "controls only"
         )
     try:
-        expected_issuer = (
-            batched_v2._CONSTRUCTION_LINEAGE_ISSUER  # noqa: SLF001
-        )
-        if lineage._issuer is not expected_issuer:  # noqa: SLF001
-            _fail("V2 aggregate lineage has no registered scope issuer")
-        replayed_lineage = batched_v2.V075BatchOccurrenceLineageV2(
-            expected_issuer,
-            lineage.scope,
-            identity_backend.replay_v075_batch_native_occurrence_identity_v1(
-                lineage.occurrence_identity
-            ),
-            lineage.closure,
-            lineage.closure_verification,
-            lineage.public_verifications,
-            lineage.sequence_verifications,
-            lineage.private_reveal_attestation_bytes_sha256,
-            lineage.authorization_bytes_sha256,
-            lineage.namespace_bytes_sha256,
-            lineage.closure_bytes_sha256,
+        replayed_lineage = (
+            batched_v2.replay_v075_signed_batch_occurrence_lineage_v2(
+                lineage
+            )
         )
     except (
         AttributeError,
         TypeError,
         ValueError,
         batched_v2.V075BatchedObserverV2InvariantViolation,
-        identity_backend.V075BatchNativeBackendInvariantViolation,
     ) as error:
         if type(error) is V075BatchNativeTotalLiftV2InvariantViolation:
             raise

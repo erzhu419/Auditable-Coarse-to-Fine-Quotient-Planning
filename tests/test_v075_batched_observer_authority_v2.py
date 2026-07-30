@@ -383,6 +383,63 @@ def test_object_new_closure_graph_is_replaced_by_canonical_byte_replay(
     assert lineage.closure.canonical_bytes == closure.canonical_bytes
 
 
+def test_downstream_signed_lineage_replay_rejects_object_new_bad_rsa_closure(
+    exact_v2_graph,
+) -> None:
+    generated, salt, namespace, authorization, _signer = exact_v2_graph
+    identity, _session, stream, _first, _second, closure = (
+        _two_batch_closure(exact_v2_graph, "downstream-rsa-replay")
+    )
+    lineage = batched.freeze_v075_construction_batch_occurrence_lineage_v2(
+        occurrence_identity=identity,
+        closure=closure,
+        authority=authorization,
+        namespace=namespace,
+        known_stream_identities=(stream,),
+        private_salt=salt,
+        private_environment=generated.secret_laws_for_commitment(),
+    )
+    assert (
+        batched.replay_v075_signed_batch_occurrence_lineage_v2(lineage)
+        .canonical_bytes
+        == lineage.canonical_bytes
+    )
+
+    forged_closure = object.__new__(
+        observer.V075ObserverBatchJournalClosureV2
+    )
+    for item in fields(observer.V075ObserverBatchJournalClosureV2):
+        object.__setattr__(
+            forged_closure,
+            item.name,
+            (
+                "00" * (len(closure.observer_signature_hex) // 2)
+                if item.name == "observer_signature_hex"
+                else getattr(closure, item.name)
+            ),
+        )
+    forged_lineage = object.__new__(
+        batched.V075BatchOccurrenceLineageV2
+    )
+    for item in fields(batched.V075BatchOccurrenceLineageV2):
+        object.__setattr__(
+            forged_lineage,
+            item.name,
+            (
+                forged_closure
+                if item.name == "closure"
+                else getattr(lineage, item.name)
+            ),
+        )
+    with pytest.raises(
+        batched.V075BatchedObserverV2InvariantViolation,
+        match="signed V2 batch occurrence lineage replay failed",
+    ):
+        batched.replay_v075_signed_batch_occurrence_lineage_v2(
+            forged_lineage
+        )
+
+
 def test_one_large_batch_has_constant_artifact_and_signature_cardinality(
     exact_v2_graph,
 ) -> None:

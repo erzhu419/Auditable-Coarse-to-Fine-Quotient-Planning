@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import replace
+from dataclasses import fields, replace
 import hashlib
 import inspect
 import json
@@ -411,6 +411,46 @@ def test_object_new_backend_and_transplanted_lineage_cannot_enter_lift(
                 exact_v2_total_lift_graph["generated"]
                 .secret_laws_for_commitment()
             ),
+        )
+
+
+def test_backend_rejects_object_new_invalid_closure_signature(
+    exact_v2_total_lift_graph,
+) -> None:
+    lineage = exact_v2_total_lift_graph["lineage"]
+    closure = lineage.closure
+    forged_closure = object.__new__(
+        observer.V075ObserverBatchJournalClosureV2
+    )
+    for item in fields(observer.V075ObserverBatchJournalClosureV2):
+        object.__setattr__(
+            forged_closure,
+            item.name,
+            (
+                "00" * (len(closure.observer_signature_hex) // 2)
+                if item.name == "observer_signature_hex"
+                else getattr(closure, item.name)
+            ),
+        )
+    forged_lineage = object.__new__(
+        batched.V075BatchOccurrenceLineageV2
+    )
+    for item in fields(batched.V075BatchOccurrenceLineageV2):
+        object.__setattr__(
+            forged_lineage,
+            item.name,
+            (
+                forged_closure
+                if item.name == "closure"
+                else getattr(lineage, item.name)
+            ),
+        )
+    with pytest.raises(
+        lift.V075BatchNativeTotalLiftV2InvariantViolation,
+        match="full-graph reconstruction failed",
+    ):
+        lift.compile_v075_construction_statistical_backend_v2(
+            lineage=forged_lineage
         )
 
 
