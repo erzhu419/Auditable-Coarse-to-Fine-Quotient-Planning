@@ -1,9 +1,9 @@
 # Portable Production Semantic Closure
 
 **Status:** normative construction contract; production and target access locked  
-**Ledger:** V0-076, V0-090, V0-091, V0-092, V0-093
-**Implemented revisions:** `1.60.0`–`1.85.0`
-**Current completed semantic cut:** exact construction-only 67-role semantic closure, a complete local tracked-ACFQP Git/archive/compile snapshot, and an independently replayed scoped accounting-v2 registry/stage/projection schema for the registered root-only cap occurrence; live all-path accounting, unqualified source/code authority and production remain locked
+**Ledger:** V0-076, V0-090, V0-091, V0-092, V0-093, V0-094
+**Implemented revisions:** `1.60.0`–`1.86.0`
+**Current completed semantic cut:** exact construction-only 67-role semantic closure, a complete local tracked-ACFQP Git/archive/compile snapshot, and an independently replayed additive accounting-v3 registry/stage/projection successor schema for the registered root-only cap occurrence; live all-path accounting, unqualified source/code authority and production remain locked
 
 ## Objective
 
@@ -771,6 +771,53 @@ not an implicit zero or a discardable event.
 Therefore no zero may be inferred for those paths, and all-path accounting,
 typed attempt/occurrence/campaign closure and complete-bundle verification
 remain false.
+
+## Contract 1.86 construction accounting successor registry
+
+The live-path audit required by contract 1.85 found that v2 is not a complete
+operation catalogue.  The five historical catalogues contain 95 entries and
+87 distinct paths.  Their exhaustive, disjoint migration partition is:
+
+```text
+re-instrument on an existing native family       7
+decompose at protocol/integrity/I/O sites        18
+derive or retain as diagnostic from primitives   51
+register a new operational family                11
+```
+
+This partition is an accountability map, not permission to translate an old
+summary.  Every charged value must originate at its real operation site, and
+duplicate catalogue views cannot charge the same primitive twice.
+
+`acfqp_counter_registry_v3` preserves every v2 leaf and metadata item and adds
+truthful stage-local leaves for confidence-event evaluations, exact likelihood
+comparisons, interval-LP allocations, dominance comparisons, deterministic
+tie breaks, outcome projections, proposal-entry bindings, child-catalogue
+builds, quotient cells, semantic actions and concretizer ground actions.  A
+separate `audit.failed_child_catalogues_built` leaf owns the child-catalogue
+work performed after the root epoch fails its abstract proof.  Exact
+cardinalities are:
+
+```text
+v2 immutable base                     69 / 53 operational / 62 required
+v3 additions                          47 / 46 operational / 47 required
+v3 total                             116 / 99 operational / 109 required
+```
+
+The stage profile contains ten stages.  In addition to the eight v2 kinds, it
+registers `OPEN_INCREMENTAL_ACQUISITION` and
+`OPEN_CHECKPOINT_REPLANNING`; validation sampling followed by checkpoint
+compile/plan while an observer remains open cannot be relabelled as initial or
+closed work.  Root-epoch compile and planning belong to
+`INITIAL_MODEL_BUILD`; `FAILED_ABSTRACT_PREFIX` owns only the verified child
+audit.  The compatibility path named `interval_row_evaluations` is governed
+by its frozen `row_behavior_evaluations` unit.
+
+All 99 operational leaves project exactly once with coefficient one onto the
+unchanged eight shared axes.  No live record or vector is emitted.  Exact
+operation-site hooks, derived formulas, hash/check/I/O/peak granularity,
+stage-start/completion authority, terminal/occurrence/campaign closure and the
+complete-bundle verifier remain prerequisites.
 
 ## Mandatory locks
 

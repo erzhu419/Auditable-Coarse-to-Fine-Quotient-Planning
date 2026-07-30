@@ -53,11 +53,30 @@ CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V2_DOMAIN = (
 CONSTRUCTION_ACTUAL_PROJECTION_PROOF_V2_DOMAIN = (
     "acfqp:actual-projection-proof:v2"
 )
+CONSTRUCTION_COUNTER_REGISTRY_V3_DOMAIN = "acfqp:counter-registry:v3"
+CONSTRUCTION_STAGE_PROFILE_V3_DOMAIN = (
+    "acfqp:construction-stage-profile:v3"
+)
+CONSTRUCTION_COMPARISON_PROFILE_V3_DOMAIN = (
+    "acfqp:comparison-profile:v3"
+)
+CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V3_DOMAIN = (
+    "acfqp:actual-projection-profile:v3"
+)
+CONSTRUCTION_LEGACY_MIGRATION_PROFILE_V3_DOMAIN = (
+    "acfqp:construction-legacy-counter-migration-profile:v3"
+)
 V075_CONSTRUCTION_ACCOUNTING_SCHEMA_CLOSURE_V2_DOMAIN = (
     "acfqp:v075-construction-accounting-schema-closure:v2"
 )
 V075_CONSTRUCTION_ACCOUNTING_SCHEMA_VERIFICATION_V2_DOMAIN = (
     "acfqp:v075-construction-accounting-schema-independent-verification:v2"
+)
+V075_CONSTRUCTION_ACCOUNTING_REGISTRY_SUCCESSOR_V3_DOMAIN = (
+    "acfqp:v075-construction-accounting-registry-successor:v3"
+)
+V075_CONSTRUCTION_ACCOUNTING_REGISTRY_SUCCESSOR_VERIFICATION_V3_DOMAIN = (
+    "acfqp:v075-construction-accounting-registry-successor-verification:v3"
 )
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
@@ -353,11 +372,32 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         "construction_actual_projection_proof_v2": (
             CONSTRUCTION_ACTUAL_PROJECTION_PROOF_V2_DOMAIN
         ),
+        "construction_counter_registry_v3": (
+            CONSTRUCTION_COUNTER_REGISTRY_V3_DOMAIN
+        ),
+        "construction_stage_profile_v3": (
+            CONSTRUCTION_STAGE_PROFILE_V3_DOMAIN
+        ),
+        "construction_comparison_profile_v3": (
+            CONSTRUCTION_COMPARISON_PROFILE_V3_DOMAIN
+        ),
+        "construction_actual_projection_profile_v3": (
+            CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V3_DOMAIN
+        ),
+        "construction_legacy_migration_profile_v3": (
+            CONSTRUCTION_LEGACY_MIGRATION_PROFILE_V3_DOMAIN
+        ),
         "v075_construction_accounting_schema_closure_v2": (
             V075_CONSTRUCTION_ACCOUNTING_SCHEMA_CLOSURE_V2_DOMAIN
         ),
         "v075_construction_accounting_schema_verification_v2": (
             V075_CONSTRUCTION_ACCOUNTING_SCHEMA_VERIFICATION_V2_DOMAIN
+        ),
+        "v075_construction_accounting_registry_successor_v3": (
+            V075_CONSTRUCTION_ACCOUNTING_REGISTRY_SUCCESSOR_V3_DOMAIN
+        ),
+        "v075_construction_accounting_registry_successor_verification_v3": (
+            V075_CONSTRUCTION_ACCOUNTING_REGISTRY_SUCCESSOR_VERIFICATION_V3_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,

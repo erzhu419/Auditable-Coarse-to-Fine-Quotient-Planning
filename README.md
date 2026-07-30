@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `1.85.0`: the earlier contracts build the
+contracts now span `1.40.0` through `1.86.0`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -239,6 +239,29 @@ an unmapped operation cannot be silently dropped.
 All-path accounting, typed terminal/occurrence/campaign closure, production,
 fresh science, scalar/break-even and certificate Gates therefore remain
 locked.
+
+Contract `1.86.0` repairs the registry before any live K7 accounting run.
+The five historical counter catalogues contain 95 entries and 87 distinct
+paths.  An exhaustive partition classifies them as 7 operation families to
+re-instrument on existing leaves, 18 to decompose at native
+protocol/integrity/I/O sites, 51 derived or diagnostic views, and 11 genuinely
+missing operational families.  Historical summaries still cannot become
+native records.
+
+The immutable successor retains all 69 v2 leaves and adds stage-local
+confidence, likelihood, LP, dominance, tie-break, outcome-projection,
+proposal-binding, child-catalogue and quotient/action/concretizer work,
+including a separate failed-child-audit leaf.  It has 116 leaves, 99
+operational leaves and 109 required leaves.  Two new stages distinguish
+incremental acquisition and checkpoint replanning while the observer remains
+open; this work cannot be charged as initial construction or closed
+reconciliation.  The unchanged eight axes receive 99 coefficient-one terms.
+
+This is still schema repair, not live accounting.  Operation-site hooks,
+derived formulas, hash/check/I/O/peak granularity and trusted stage lifecycle
+attestations remain open, so the closure emits no CounterRecord, WorkVector,
+terminal or campaign result.  Production, fresh science, scalar/economics and
+certificate Gates remain locked.
 
 ## V0-074 repair construction (NONAUTHORIZING; fresh Gate NOT RUN)
 
