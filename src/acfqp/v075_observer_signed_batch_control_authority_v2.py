@@ -3680,6 +3680,7 @@ class V075ConstructionControlledPrivateObserverV2:
 
         self.__require_open()
         self.__assert_exact_controlled_journal()
+        self.__assert_immutable_owned_objects()
         if self.__pending_intent is not None:
             _fail("support cannot freeze while another intent is pending")
         matching = tuple(
@@ -3927,6 +3928,7 @@ class V075ConstructionControlledPrivateObserverV2:
 
         self.__require_open()
         self.__assert_exact_controlled_journal()
+        self.__assert_immutable_owned_objects()
         if self.__pending_intent is not None:
             _fail("controlled private observer cannot close a pending intent")
         if not self.__appends:

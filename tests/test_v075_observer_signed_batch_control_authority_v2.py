@@ -1092,3 +1092,65 @@ def test_pending_draw_rejects_identity_and_unrelated_prior_append_mutation(
         == before_append_draws
         == 2
     )
+
+
+def test_support_freeze_and_close_reject_old_owned_object_mutation(
+    exact_v2_graph,
+) -> None:
+    support_controller = _controller(
+        exact_v2_graph,
+        "support-old-head-mutation",
+        ordinal=20,
+    )
+    support_intent = support_controller.prepare_batch_intent_v2(
+        stream_identity=_stream(exact_v2_graph),
+        **_semantic("support-old-head-mutation"),
+        accepted_draw_start=1,
+        accepted_draw_count=2,
+        accepted_draw_cap=2,
+    )
+    support_append = support_controller.execute_batch_intent_v2(
+        support_intent
+    )
+    support_zero_head = support_controller.signed_heads[0]
+    object.__setattr__(
+        support_zero_head,
+        "observer_signature_hex",
+        "0" * len(support_zero_head.observer_signature_hex),
+    )
+    with pytest.raises(
+        control.V075ObserverSignedBatchControlV2InvariantViolation,
+        match="controller-owned object identity|deep snapshot",
+    ):
+        support_controller.freeze_complete_support_v2(
+            discovery_append=support_append,
+        )
+    assert support_controller.support_freezes == ()
+
+    close_controller = _controller(
+        exact_v2_graph,
+        "close-old-head-mutation",
+        ordinal=21,
+    )
+    close_intent = close_controller.prepare_batch_intent_v2(
+        stream_identity=_stream(exact_v2_graph),
+        **_semantic("close-old-head-mutation"),
+        accepted_draw_start=1,
+        accepted_draw_count=2,
+        accepted_draw_cap=2,
+    )
+    close_append = close_controller.execute_batch_intent_v2(close_intent)
+    close_controller.freeze_complete_support_v2(
+        discovery_append=close_append,
+    )
+    close_zero_head = close_controller.signed_heads[0]
+    object.__setattr__(
+        close_zero_head,
+        "observer_signature_hex",
+        "0" * len(close_zero_head.observer_signature_hex),
+    )
+    with pytest.raises(
+        control.V075ObserverSignedBatchControlV2InvariantViolation,
+        match="controller-owned object identity|deep snapshot",
+    ):
+        close_controller.close_and_reconcile_v2()
