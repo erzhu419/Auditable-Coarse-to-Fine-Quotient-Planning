@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `1.76.0`: the earlier contracts build the
+contracts now span `1.40.0` through `1.77.0`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -71,9 +71,11 @@ raw public context
 -> M2 lifecycle: support evidence/freezes/events are FULL_PUBLIC
 -> CONSTRUCTION_LIFECYCLE remains private-unresolved
 -> M2 live epoch: row-source bindings are FULL_PUBLIC
--> LIVE_MODEL_EPOCH remains numerical-model/proof-unresolved
--> M2 dynamic child: 4 proposal roles are numerical-model/proof-unresolved
+-> M2 planning: NUMERICAL_MODEL + NUMERICAL_PLANNING_PROOF are FULL_PUBLIC
+-> LIVE_MODEL_EPOCH is transitively FULL_PUBLIC
+-> M2 dynamic child: 4 present proposal roles are transitively FULL_PUBLIC
 -> discovery/validation intent roles are explicitly absent
+-> CONSTRUCTION_PLANNING_INPUT remains its own unresolved frontier
 -> SIGNED_BATCH_JOURNAL_CLOSURE_VERIFICATION remains unresolved
 ```
 
@@ -93,7 +95,13 @@ live row-source/epoch projections while preserving, respectively, the exact
 private closure-verification and numerical model/proof frontiers. Contract
 `1.76.0` reconstructs the dynamic-child proposal and binds every present
 record to its exact epoch/model/proof and causal source graph; its four present
-roles remain numerical-unresolved and two roles are explicitly absent.
+roles initially remain numerical-unresolved and two roles are explicitly
+absent. Contract `1.77.0` then replays every live-epoch model/proof through the
+public exact planner and binds models to their exact occurrence, open-prefix
+and row-source records. Model/proof, live-epoch and the four present proposal
+roles consequently close as `FULL_PUBLIC`. The construction planning input
+deliberately remains unresolved at itself: no issuer-owned typed private
+lineage is reconstructed or fabricated, and its compiler is not called.
 Production still requires the remaining semantic roles, source/code
 provenance, complete accounting, campaign closure and an independent
 complete-bundle verifier.

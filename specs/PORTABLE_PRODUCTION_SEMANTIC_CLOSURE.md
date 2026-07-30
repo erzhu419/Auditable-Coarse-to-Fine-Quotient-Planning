@@ -2,7 +2,7 @@
 
 **Status:** normative construction contract; production and target access locked  
 **Ledger:** V0-076  
-**Implemented revisions:** `1.60.0`–`1.76.0`
+**Implemented revisions:** `1.60.0`–`1.77.0`
 **Current completed public cut:** M0 + B1 + M1A + M1B ROOT + M2 root/public lineage/lifecycle/live-row-source/dynamic-child proposal projection
 
 ## Objective
@@ -284,6 +284,33 @@ intent roles are absent. Every present frontier is exactly the numerical model
 and numerical planning proof; none is `FULL_PUBLIC`. Operational freeze,
 legacy contract-1.51 authority, observer/worker/private/B3/kernel/J0/K7 and
 held-out inputs remain forbidden.
+
+## Contract 1.77 M2 numerical-planning cut
+
+Contract 1.77 begins with hardened 1.76 raw replay. It collects the complete
+deduplicated union of `NUMERICAL_MODEL` and `NUMERICAL_PLANNING_PROOF`
+objects from every reconstructed live epoch and reruns the public exact
+numerical planner for every epoch and its frozen route. Replayed model and
+proof bytes and IDs must equal the standalone portable registries exactly.
+
+Each model is bound to the exact occurrence record, every relevant
+open-prefix verification and every matching live row-source record across all
+epochs that contain that model. Row ID, row-binding ID, support-freeze ID and
+source digest commitments are epoch-qualified. Each proof is bound to its
+exact model record and occurrence. `LIVE_MODEL_EPOCH`,
+`SIGNED_CONTROL_RECONCILIATION`, `CLOSED_RECONCILIATION` and
+`MULTIROUND_RESULT` are forbidden reverse model dependencies. Portable,
+authority-local and effective dependency lanes remain distinct, and the
+complete graph is recomputed with a bounded forward-safe Kahn walk.
+
+`NUMERICAL_MODEL` and `NUMERICAL_PLANNING_PROOF` are `FULL_PUBLIC`. This
+transitively closes every live epoch and the four present dynamic-child roles.
+`CONSTRUCTION_PLANNING_INPUT` remains structural-only with itself as its exact
+unresolved frontier. The public lineage cut does not provide an issuer-owned
+typed private lineage, so this contract neither calls the planning-input
+compiler nor constructs an object with a private issuer. Private/operational
+inputs, B3, observer/worker execution, kernel, J0, K7, held-out data,
+production and certificates remain forbidden.
 
 ## Mandatory locks
 
