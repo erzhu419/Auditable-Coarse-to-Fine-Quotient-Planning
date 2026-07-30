@@ -31,6 +31,7 @@ from typing import Any, Mapping
 from acfqp.phase3e_ids import (
     Phase3EIdentityError,
     canonical_json_bytes,
+    loads_canonical_json,
     parse_content_id,
 )
 from acfqp.sequential_bernoulli_acquisition_v1 import (
@@ -367,6 +368,140 @@ def replay_v075_batch_native_occurrence_identity_v1(
         raise V075BatchNativeBackendInvariantViolation(
             "occurrence identity semantic replay failed"
         ) from error
+    return replayed
+
+
+def load_v075_batch_native_occurrence_identity_bytes_from_namespace_v2(
+    *,
+    repository_root: Any,
+    namespace: Any,
+    raw: bytes,
+    expected_arm: worker.V075WorkerArmV1,
+    source_prior_transport_bytes: bytes | None = None,
+) -> V075BatchNativeOccurrenceIdentityV1:
+    """Strictly replay one occurrence identity against its exact V2 namespace.
+
+    The SOURCE_CONSENSUS_PRIOR arm additionally requires the complete canonical
+    source-transport bytes.  Its adapter and verification documents are
+    reconstructed by ``V075SourcePriorTransportV1``; an opaque transport ID is
+    never sufficient.
+    """
+
+    try:
+        from acfqp import v075_public_target_tape_namespace_v2 as namespace_v2
+    except ImportError as error:  # pragma: no cover - deployment corruption
+        raise V075BatchNativeBackendInvariantViolation(
+            "public target namespace V2 authority is unavailable"
+        ) from error
+    if (
+        type(namespace) is not namespace_v2.V075PublicTargetTapeNamespaceV2
+        or type(expected_arm) is not worker.V075WorkerArmV1
+        or type(raw) is not bytes
+        or not raw
+        or len(raw) > 64 * 1024
+    ):
+        _fail(
+            "V2 occurrence identity loader requires exact namespace and "
+            "bounded nonempty bytes"
+        )
+    try:
+        document = loads_canonical_json(raw)
+    except (Phase3EIdentityError, TypeError, ValueError) as error:
+        raise V075BatchNativeBackendInvariantViolation(
+            "V2 occurrence identity is not strict canonical JSON"
+        ) from error
+    if (
+        type(document) is not dict
+        or canonical_json_bytes(document) != raw
+        or document.get("schema")
+        != "acfqp.v075_batch_native_occurrence.v1"
+    ):
+        _fail("V2 occurrence identity bytes are noncanonical or wrong-schema")
+    if document.get("arm") != expected_arm.value:
+        _fail(
+            "V2 occurrence identity arm differs from the preregistered "
+            "expected arm"
+        )
+    try:
+        arm = worker.V075WorkerArmV1(document["arm"])
+    except (KeyError, TypeError, ValueError) as error:
+        raise V075BatchNativeBackendInvariantViolation(
+            "V2 occurrence identity arm is invalid"
+        ) from error
+    source_transport: worker.V075SourcePriorTransportV1 | None = None
+    if arm is worker.V075WorkerArmV1.SOURCE_CONSENSUS_PRIOR:
+        if (
+            type(source_prior_transport_bytes) is not bytes
+            or not source_prior_transport_bytes
+        ):
+            _fail(
+                "source-prior occurrence requires canonical tracked "
+                "transport bytes"
+            )
+        try:
+            # Lazy import avoids the plan -> backend module cycle.  The plan
+            # loader replays the complete tracked source bundle, adapter,
+            # verification, work references, repository paths, hashes, and
+            # semantic IDs before returning this transport.
+            from acfqp import v075_production_occurrence_plan_v1 as plan
+
+            source_transport = (
+                plan.load_tracked_v075_source_prior_transport_v1(
+                    repository_root
+                )
+            )
+        except Exception as error:
+            if type(error) is V075BatchNativeBackendInvariantViolation:
+                raise
+            raise V075BatchNativeBackendInvariantViolation(
+                "tracked source-prior authority replay failed"
+            ) from error
+        expected_transport_bytes = canonical_json_bytes(
+            source_transport.to_document()
+        )
+        if (
+            source_prior_transport_bytes != expected_transport_bytes
+            or source_transport.transport_id != document.get(
+                "source_transport_id"
+            )
+        ):
+            _fail(
+                "supplied source-prior transport differs from complete "
+                "tracked authority replay"
+            )
+    elif source_prior_transport_bytes is not None:
+        _fail("non-source occurrence rejects source-prior transport bytes")
+    contexts = {
+        item.context_id: item for item in namespace.family.replicate_contexts
+    }
+    context = contexts.get(document.get("context_id"))
+    if (
+        context is None
+        or document.get("target_tape_namespace_id")
+        != namespace.target_tape_namespace_id
+        or document.get("threshold_profile_id")
+        != namespace.workload.threshold_profile.threshold_profile_id
+        or document.get("cap_profile_id")
+        != namespace.workload.cap_profile.cap_profile_id
+    ):
+        _fail(
+            "V2 occurrence identity is transplanted across namespace, "
+            "context, thresholds, or caps"
+        )
+    replayed = freeze_v075_batch_native_occurrence_identity_from_namespace_v2(
+        namespace=namespace,
+        context=context,
+        arm=arm,
+        occurrence_ordinal=document.get("occurrence_ordinal"),
+        threshold_profile=namespace.workload.threshold_profile,
+        cap_profile=namespace.workload.cap_profile,
+        source_prior_transport=source_transport,
+    )
+    if (
+        replayed.to_document() != document
+        or canonical_json_bytes(replayed.to_document()) != raw
+    ):
+        _fail("V2 occurrence identity differs from exact semantic replay")
     return replayed
 
 
@@ -1724,6 +1859,7 @@ __all__ = [
     "freeze_v075_batch_native_backend_request_v1",
     "freeze_v075_batch_native_occurrence_identity_v1",
     "freeze_v075_batch_native_occurrence_identity_from_namespace_v2",
+    "load_v075_batch_native_occurrence_identity_bytes_from_namespace_v2",
     "replay_v075_batch_native_occurrence_identity_v1",
     "plan_v075_batch_native_route_v1",
     "verify_v075_batch_native_backend_result_v1",
