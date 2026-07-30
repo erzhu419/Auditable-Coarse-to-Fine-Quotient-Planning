@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `1.75.0`: the earlier contracts build the
+contracts now span `1.40.0` through `1.76.0`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -72,6 +72,8 @@ raw public context
 -> CONSTRUCTION_LIFECYCLE remains private-unresolved
 -> M2 live epoch: row-source bindings are FULL_PUBLIC
 -> LIVE_MODEL_EPOCH remains numerical-model/proof-unresolved
+-> M2 dynamic child: 4 proposal roles are numerical-model/proof-unresolved
+-> discovery/validation intent roles are explicitly absent
 -> SIGNED_BATCH_JOURNAL_CLOSURE_VERIFICATION remains unresolved
 ```
 
@@ -88,9 +90,13 @@ portable role. Contract `1.70.0` reconstructs the M1B controls; contracts
 `1.72.0` and `1.73.0` close the public root and batch-lineage roles listed
 above. Contracts `1.74.0` and `1.75.0` then reconstruct lifecycle sources and
 live row-source/epoch projections while preserving, respectively, the exact
-private closure-verification and numerical model/proof frontiers. Production
-still requires the remaining semantic roles, source/code provenance, complete
-accounting, campaign closure and an independent complete-bundle verifier.
+private closure-verification and numerical model/proof frontiers. Contract
+`1.76.0` reconstructs the dynamic-child proposal and binds every present
+record to its exact epoch/model/proof and causal source graph; its four present
+roles remain numerical-unresolved and two roles are explicitly absent.
+Production still requires the remaining semantic roles, source/code
+provenance, complete accounting, campaign closure and an independent
+complete-bundle verifier.
 Sample-efficiency, official, scalar, economics and counter-completeness Gates
 remain locked.
 

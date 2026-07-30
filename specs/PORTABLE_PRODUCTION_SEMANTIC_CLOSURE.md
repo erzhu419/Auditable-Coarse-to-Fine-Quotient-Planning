@@ -2,8 +2,8 @@
 
 **Status:** normative construction contract; production and target access locked  
 **Ledger:** V0-076  
-**Implemented revisions:** `1.60.0`–`1.75.0`
-**Current completed public cut:** M0 + B1 + M1A + M1B ROOT + M2 root/public lineage/lifecycle/live-row-source projection
+**Implemented revisions:** `1.60.0`–`1.76.0`
+**Current completed public cut:** M0 + B1 + M1A + M1B ROOT + M2 root/public lineage/lifecycle/live-row-source/dynamic-child proposal projection
 
 ## Objective
 
@@ -256,6 +256,34 @@ row-source registry without omissions or extras.
 `NUMERICAL_PLANNING_PROOF`. The three dependency views inherited from 1.74
 remain distinct. No operational epoch registry, claimed typed epoch, private
 input, signer, B3, kernel, J0, K7 or held-out authority is accepted.
+
+## Contract 1.76 M2 dynamic-child proposal cut
+
+Contract 1.76 starts from hardened 1.75 raw replay and calls only the current
+dynamic-child producer's byte verifier with the exact reconstructed epoch and
+namespace. It compares complete portable registries for:
+
+1. causal edges;
+2. child states;
+3. discovery intents;
+4. validation templates;
+5. the singleton closure;
+6. the singleton closure verification.
+
+Empty registries are explicit. Every present target record receives an
+authority-local source binding to the exact `LIVE_MODEL_EPOCH`,
+`NUMERICAL_MODEL` and `NUMERICAL_PLANNING_PROOF` record identities. Edge and
+state bindings additionally commit the exact numerical row, support
+descriptor, live row source, observation row and support freeze scalars.
+Forward authority-local edges are handled by iterative Kahn replay; portable,
+authority-local and effective dependency views remain separate.
+
+The registered root-only cap-exceeded cut has four structural-only roles:
+causal edge, state, closure and closure verification. Discovery and validation
+intent roles are absent. Every present frontier is exactly the numerical model
+and numerical planning proof; none is `FULL_PUBLIC`. Operational freeze,
+legacy contract-1.51 authority, observer/worker/private/B3/kernel/J0/K7 and
+held-out inputs remain forbidden.
 
 ## Mandatory locks
 
