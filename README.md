@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `1.79.0`: the earlier contracts build the
+contracts now span `1.40.0` through `1.80.0`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -81,7 +81,9 @@ raw public context
    FULL_CONSTRUCTION_TRANSITIVE
 -> construction compiler replay closes CONSTRUCTION_PLANNING_INPUT as
    FULL_CONSTRUCTION_COMPILER_REPLAY
--> CLOSED_RECONCILIATION + MULTIROUND_RESULT remain self-frontier unresolved
+-> owner-bound replay closes CLOSED_RECONCILIATION as
+   FULL_CONSTRUCTION_CLOSED_RECONCILIATION_REPLAY
+-> MULTIROUND_RESULT remains self-frontier unresolved
 ```
 
 Contract `1.68.0` adds a new construction-only atomic private-replay
@@ -122,7 +124,15 @@ lifecycle from 1.78. The complete input, its uniquely selected standalone
 numerical model, and every row-level batch/freeze evidence binding must match
 the portable records byte-for-byte. The input closes only as
 `FULL_CONSTRUCTION_COMPILER_REPLAY`; closed reconciliation and the final
-multiround result remain their own unresolved producer frontiers.
+multiround result initially remain their own unresolved producer frontiers.
+Contract `1.80.0` adds the missing owner-side public construction producer.
+It publicly replays the final live epoch, controlled closure, lineage and
+lifecycle, verifies the complete closed append/freeze prefix, recompiles the
+input, replans the proof and only then uses the reconciliation issuer inside
+its owning module. The portable authority requires the resulting singleton
+record and every schedule/closure/epoch/model/proof/input parent to match
+byte-for-byte. `CLOSED_RECONCILIATION` closes only as construction
+reconciliation replay; `MULTIROUND_RESULT` remains unresolved at itself.
 
 Production still requires the remaining semantic roles, source/code
 provenance, complete accounting, campaign closure and an independent

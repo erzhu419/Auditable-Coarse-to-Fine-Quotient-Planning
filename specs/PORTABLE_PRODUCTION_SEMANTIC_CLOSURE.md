@@ -2,7 +2,7 @@
 
 **Status:** normative construction contract; production and target access locked  
 **Ledger:** V0-076  
-**Implemented revisions:** `1.60.0`–`1.79.0`
+**Implemented revisions:** `1.60.0`–`1.80.0`
 **Current completed semantic cut:** public M0/B1/M1A/M1B/M2 producer replay plus construction-private closure-verification/lineage/lifecycle replay
 
 ## Objective
@@ -397,6 +397,42 @@ Currentness requires all five raw arguments and reruns the complete chain.
 The upstream replay may legally consume the private seed and salt, but this
 authority does not retain, serialize or directly hash them and emits no
 secret digest.
+
+## Contract 1.80 construction closed-reconciliation replay cut
+
+Contract 1.80 begins with the exact five-input 1.79 replay. The multiround
+runner now owns one public construction-only reconciliation producer. Its
+inputs are only the repository root, exact schedule, final live epoch,
+controlled journal closure, construction lineage and lifecycle. It does not
+accept a claimed planning input, proof or reconciliation.
+
+Before the owner issuer can be used, the producer must:
+
+1. publicly replay the complete final live-epoch chain;
+2. replay the signed control graph, construction lineage and lifecycle bytes;
+3. require lineage closure bytes to equal the controlled batch closure;
+4. require the final epoch's complete heads, append receipts and support
+   freezes to equal the closed control prefix;
+5. align occurrence, namespace, context, arm and route across every parent;
+6. recompile the construction planning input and replan its exact proof.
+
+The external portable authority cannot access the issuer. It calls this owner
+producer and requires the singleton `CLOSED_RECONCILIATION` bytes and semantic
+ID to match. The epoch, model and proof named by that record are selected by
+ID from their potentially multi-record registries; each must be unique, and
+the selected epoch must also be the unique maximum epoch. The schedule,
+controlled wrapper, signed control/batch closures, lineage, lifecycle, 1.79
+planning input, epoch, model and proof all have exact portable source records.
+`MULTIROUND_RESULT` is forbidden as a reverse source edge.
+
+The inherited planning-input scope remains
+`FULL_CONSTRUCTION_COMPILER_REPLAY`. `CLOSED_RECONCILIATION` is
+`FULL_CONSTRUCTION_CLOSED_RECONCILIATION_REPLAY`, never `FULL_PUBLIC`.
+`MULTIROUND_RESULT` remains unresolved at its own record. Portable, local and
+effective dependency lanes remain separate and are recomputed with the
+4096-node iterative Kahn bound. Explicit currentness reruns all five raw
+inputs; production, held-out, science, accounting and certificate locks do
+not move.
 
 ## Mandatory locks
 
