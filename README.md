@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `1.77.0`: the earlier contracts build the
+contracts now span `1.40.0` through `1.78.0`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -57,7 +57,8 @@ observation→model→plan→row-specific-total-lift positive control. Target ac
 remains locked while the production occurrence, reconciliation, endpoint and
 remaining semantic-authority chain are completed.
 
-The current portable cut is deliberately narrower than “bundle verified”:
+The current portable semantic cut is deliberately narrower than “production
+authorized”:
 
 ```text
 raw public context
@@ -67,16 +68,18 @@ raw public context
 -> M1B: 16 signed-control roles with exact ROOT/M0 binding
 -> M2 root: OCCURRENCE_IDENTITY + ROOT_EXECUTION are FULL_PUBLIC
 -> M2 lineage: batch public + sequence verification are FULL_PUBLIC
--> CONSTRUCTION_LINEAGE is public-projection complete but private-unresolved
 -> M2 lifecycle: support evidence/freezes/events are FULL_PUBLIC
--> CONSTRUCTION_LIFECYCLE remains private-unresolved
 -> M2 live epoch: row-source bindings are FULL_PUBLIC
 -> M2 planning: NUMERICAL_MODEL + NUMERICAL_PLANNING_PROOF are FULL_PUBLIC
 -> LIVE_MODEL_EPOCH is transitively FULL_PUBLIC
 -> M2 dynamic child: 4 present proposal roles are transitively FULL_PUBLIC
 -> discovery/validation intent roles are explicitly absent
+-> raw construction-private replay regenerates the committed private law
+-> SIGNED_BATCH_JOURNAL_CLOSURE_VERIFICATION is
+   FULL_CONSTRUCTION_PRIVATE_REPLAY
+-> CONSTRUCTION_LINEAGE + lifecycle + lifecycle verification are
+   FULL_CONSTRUCTION_TRANSITIVE
 -> CONSTRUCTION_PLANNING_INPUT remains its own unresolved frontier
--> SIGNED_BATCH_JOURNAL_CLOSURE_VERIFICATION remains unresolved
 ```
 
 Contract `1.68.0` adds a new construction-only atomic private-replay
@@ -102,6 +105,18 @@ and row-source records. Model/proof, live-epoch and the four present proposal
 roles consequently close as `FULL_PUBLIC`. The construction planning input
 deliberately remains unresolved at itself: no issuer-owned typed private
 lineage is reconstructed or fabricated, and its compiler is not called.
+Contract `1.78.0` supplies the missing construction-only authority without
+rewriting it as public authority. It first completes hardened 1.77 replay,
+then regenerates the committed private environment from bounded ephemeral
+seed/salt inputs and calls only the registered construction lineage/lifecycle
+producer APIs. The private closure verification closes as
+`FULL_CONSTRUCTION_PRIVATE_REPLAY`; lineage, lifecycle and lifecycle
+verification close only as `FULL_CONSTRUCTION_TRANSITIVE`. No secret value or
+secret digest is retained or emitted, and currentness requires the five raw
+inputs and a complete replay. This same-process cut is not a sealed production
+secret channel, and the construction planning-input compiler remains
+forbidden until the next atomic authority cut.
+
 Production still requires the remaining semantic roles, source/code
 provenance, complete accounting, campaign closure and an independent
 complete-bundle verifier.

@@ -2,8 +2,8 @@
 
 **Status:** normative construction contract; production and target access locked  
 **Ledger:** V0-076  
-**Implemented revisions:** `1.60.0`–`1.77.0`
-**Current completed public cut:** M0 + B1 + M1A + M1B ROOT + M2 root/public lineage/lifecycle/live-row-source/dynamic-child proposal projection
+**Implemented revisions:** `1.60.0`–`1.78.0`
+**Current completed semantic cut:** public M0/B1/M1A/M1B/M2 producer replay plus construction-private closure-verification/lineage/lifecycle replay
 
 ## Objective
 
@@ -26,7 +26,8 @@ It is not a separate endpoint and does not authorize a held-out campaign.
 ```text
 portable byte/topology validity
 != producer-semantic reconstruction
-!= private-law replay or production authorization
+!= construction-private law replay
+!= sealed production authorization
 ```
 
 A verifier must never infer a stronger claim from a weaker one.
@@ -312,12 +313,56 @@ compiler nor constructs an object with a private issuer. Private/operational
 inputs, B3, observer/worker execution, kernel, J0, K7, held-out data,
 production and certificates remain forbidden.
 
+## Contract 1.78 construction-private replay cut
+
+Contract 1.78 begins by completing hardened 1.77 raw replay before it
+inspects either ephemeral secret input. It independently resolves the exact
+public-context source manifest, namespace, observer-open authorization and
+reveal attestation, then freezes the registered public generation profile.
+A bounded in-memory generation seed reconstructs the private environment and
+a bounded in-memory salt reseals its public commitment. That commitment must
+equal every copy already bound by the anchor, namespace, authorization and
+observer-open graph before private producer replay may continue.
+
+Only these registered public producer APIs may consume the ephemeral values:
+
+1. construction batch-occurrence lineage freeze, which internally performs
+   the exact aggregate private closure replay;
+2. construction lifecycle freeze;
+3. construction lifecycle byte verification.
+
+The resulting singleton records must match the portable bundle by both full
+canonical bytes and semantic ID:
+
+```text
+SIGNED_BATCH_JOURNAL_CLOSURE_VERIFICATION
+CONSTRUCTION_LINEAGE
+CONSTRUCTION_LIFECYCLE
+CONSTRUCTION_LIFECYCLE_VERIFICATION
+```
+
+Authority scope is part of the dependency proof. The private verification is
+`FULL_CONSTRUCTION_PRIVATE_REPLAY`; the other three roles are
+`FULL_CONSTRUCTION_TRANSITIVE`. None is `FULL_PUBLIC`. Portable-declared,
+authority-local and effective dependency lanes remain separate and are
+recomputed with a 4096-node iterative Kahn walk. The construction planning
+input remains its own unresolved frontier, and this cut cannot call its
+compiler.
+
+The seed, salt, generated environment and private laws are never retained,
+serialized, logged, directly hashed by this authority or emitted as secret
+digests. Aggregate currentness has no no-argument shortcut: it requires the
+repository plus the same four raw byte/secret inputs and reruns the complete
+chain. This is a same-process construction authority, not a sealed production
+secret channel or cryptographic process-provenance proof.
+
 ## Mandatory locks
 
 ```text
 official_execution_allowed = false
 fresh_heldout_access_allowed = false
 scientific_endpoint_credit_allowed = false
+production_private_input_channel_allowed = false
 plan_certificate_issuance_allowed = false
 infeasibility_certificate_issuance_allowed = false
 portable_semantic_registry_complete = false
