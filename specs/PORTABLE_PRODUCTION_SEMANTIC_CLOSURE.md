@@ -2,7 +2,7 @@
 
 **Status:** normative construction contract; production and target access locked  
 **Ledger:** V0-076  
-**Implemented revisions:** `1.60.0`–`1.78.0`
+**Implemented revisions:** `1.60.0`–`1.79.0`
 **Current completed semantic cut:** public M0/B1/M1A/M1B/M2 producer replay plus construction-private closure-verification/lineage/lifecycle replay
 
 ## Objective
@@ -355,6 +355,48 @@ digests. Aggregate currentness has no no-argument shortcut: it requires the
 repository plus the same four raw byte/secret inputs and reruns the complete
 chain. This is a same-process construction authority, not a sealed production
 secret channel or cryptographic process-provenance proof.
+
+## Contract 1.79 construction planning-input replay cut
+
+Contract 1.79 begins by completing the raw five-input 1.78 replay. It then
+extracts the exact M0 acquisition schedule and the newly reconstructed
+construction lineage and lifecycle. The only new semantic producer call is
+`compile_v075_construction_planning_input_v2`; callers cannot supply a typed
+1.78 result, claimed planning input, claimed model or claimed row evidence.
+
+The compiler output must equal the singleton portable
+`CONSTRUCTION_PLANNING_INPUT` record by full canonical bytes and semantic ID.
+Its nested numerical model must equal the unique standalone record selected by
+the pair `(NUMERICAL_MODEL, model_id)`. Registry order is not an authority.
+The replay also binds:
+
+```text
+M0 occurrence and acquisition schedule
+construction lineage
+construction lifecycle and lifecycle verification
+target namespace, repository binding and source manifest
+arm and planning route
+every numerical row and row-evidence binding
+every discovery/latest-validation batch and support freeze
+```
+
+The source binding is rebuilt from the fresh producer graph on every
+validation. Its six local dependency records are the exact occurrence,
+schedule, numerical model, lineage, lifecycle and lifecycle-verification
+records. Target and model record bindings require exact upstream type,
+registry-object identity, currentness, bytes and semantic ID. Before adding
+the new local edges, inherited effective dependencies must already equal the
+union of inherited portable and local lanes; the resulting graph is replayed
+with the same 4096-node iterative Kahn bound.
+
+`CONSTRUCTION_PLANNING_INPUT` is
+`FULL_CONSTRUCTION_COMPILER_REPLAY`, not `FULL_PUBLIC`.
+`CLOSED_RECONCILIATION` and `MULTIROUND_RESULT` remain unresolved at their own
+records because contract 1.79 registers no producer for either object.
+Currentness requires all five raw arguments and reruns the complete chain.
+The upstream replay may legally consume the private seed and salt, but this
+authority does not retain, serialize or directly hash them and emits no
+secret digest.
 
 ## Mandatory locks
 
