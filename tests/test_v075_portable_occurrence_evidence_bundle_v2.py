@@ -517,3 +517,91 @@ def test_sink_snapshot_includes_private_cached_content_ids(
         )
     finally:
         object.__setattr__(result, "_result_id", prior_result_id)
+
+
+@pytest.mark.parametrize(
+    ("nested_path", "field", "value"),
+    (
+        (
+            "semantic_authority",
+            "semantic_verification_id",
+            _id("forged-nested-semantic-verification"),
+        ),
+        (
+            "stream_identity",
+            "seed_serialized",
+            True,
+        ),
+    ),
+)
+def test_rehashed_nested_registered_document_byte_mismatch_fails(
+    portable_closed_bundle,
+    nested_path,
+    field,
+    value,
+) -> None:
+    _result, _roots, artifact = portable_closed_bundle
+    attacked = deepcopy(artifact.to_document())
+    intent = _record_for_role(attacked, "CONTROLLED_ROOT_INTENT")
+    document = bundle._strict_json_document(  # noqa: SLF001
+        bytes.fromhex(intent["canonical_artifact_bytes_hex"]),
+        label="nested registered document mismatch attack",
+    )
+    document[nested_path][field] = value
+    intent["canonical_artifact_bytes_hex"] = _raw(document).hex()
+    with pytest.raises(
+        bundle.V075PortableOccurrenceEvidenceV2InvariantViolation,
+        match=(
+            "embedded registered artifact canonical bytes differ from "
+            "its unique record"
+        ),
+    ):
+        bundle.verify_v075_portable_occurrence_evidence_bundle_bytes_v2(
+            _rehash_complete_bundle_wrapper(attacked)
+        )
+
+
+def test_rehashed_nested_registered_document_missing_record_fails(
+    portable_closed_bundle,
+) -> None:
+    _result, _roots, artifact = portable_closed_bundle
+    attacked = deepcopy(artifact.to_document())
+    intent = _record_for_role(attacked, "CONTROLLED_ROOT_INTENT")
+    document = bundle._strict_json_document(  # noqa: SLF001
+        bytes.fromhex(intent["canonical_artifact_bytes_hex"]),
+        label="missing nested record attack",
+    )
+    document["semantic_authority"]["binding_id"] = _id(
+        "missing-nested-authority-record"
+    )
+    intent["canonical_artifact_bytes_hex"] = _raw(document).hex()
+    with pytest.raises(
+        bundle.V075PortableOccurrenceEvidenceV2InvariantViolation,
+        match="has no unique matching record",
+    ):
+        bundle.verify_v075_portable_occurrence_evidence_bundle_bytes_v2(
+            _rehash_complete_bundle_wrapper(attacked)
+        )
+
+
+def test_rehashed_duplicate_semantic_record_ambiguity_fails(
+    portable_closed_bundle,
+) -> None:
+    _result, _roots, artifact = portable_closed_bundle
+    attacked = deepcopy(artifact.to_document())
+    original = _record_for_role(
+        attacked,
+        "CONTROLLED_ROOT_SEMANTIC_AUTHORITY",
+    )
+    duplicate = deepcopy(original)
+    duplicate["index"] = len(attacked["artifact_records"])
+    duplicate["record_id"] = _id("duplicate-record-placeholder")
+    attacked["artifact_records"].append(duplicate)
+    attacked["artifact_count"] += 1
+    with pytest.raises(
+        bundle.V075PortableOccurrenceEvidenceV2InvariantViolation,
+        match="duplicate or cross-role semantic artifact IDs",
+    ):
+        bundle.verify_v075_portable_occurrence_evidence_bundle_bytes_v2(
+            _rehash_complete_bundle_wrapper(attacked)
+        )

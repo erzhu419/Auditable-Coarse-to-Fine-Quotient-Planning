@@ -1857,6 +1857,117 @@ def _derived_record_dependencies(
     )
 
 
+_ROLE_NESTED_PRIMARY_DOCUMENT_ID = MappingProxyType(
+    dict(_ROLE_PRIMARY_DOCUMENT_ID)
+)
+
+_SCHEMA_NESTED_PRIMARY_DOCUMENT_IDS: dict[str, frozenset[str]] = {}
+for _nested_role, _nested_schema in ROLE_SCHEMA_REGISTRY.items():
+    _nested_primary_key = _ROLE_NESTED_PRIMARY_DOCUMENT_ID.get(
+        _nested_role
+    )
+    if _nested_primary_key is not None:
+        _SCHEMA_NESTED_PRIMARY_DOCUMENT_IDS[_nested_schema] = (
+            _SCHEMA_NESTED_PRIMARY_DOCUMENT_IDS.get(
+                _nested_schema,
+                frozenset(),
+            )
+            | frozenset({_nested_primary_key})
+        )
+_SCHEMA_NESTED_PRIMARY_DOCUMENT_IDS = dict(
+    _SCHEMA_NESTED_PRIMARY_DOCUMENT_IDS
+)
+
+
+def _verify_nested_registered_document_bindings(
+    records: tuple[V075PortableEvidenceArtifactRecordV2, ...],
+) -> None:
+    """Bind every embedded registered document to one exact table record."""
+
+    by_semantic_artifact_id: dict[
+        str,
+        list[V075PortableEvidenceArtifactRecordV2],
+    ] = {}
+    by_schema_primary_id: dict[
+        tuple[str, str],
+        list[V075PortableEvidenceArtifactRecordV2],
+    ] = {}
+    for record in records:
+        by_semantic_artifact_id.setdefault(
+            record.semantic_artifact_id,
+            [],
+        ).append(record)
+        primary_key = _ROLE_NESTED_PRIMARY_DOCUMENT_ID.get(record.role)
+        if primary_key is None:
+            continue
+        document = record.artifact_document
+        primary_id = _cid(
+            document.get(primary_key),
+            f"{record.role} nested primary semantic ID",
+        )
+        by_schema_primary_id.setdefault(
+            (record.artifact_schema, primary_id),
+            [],
+        ).append(record)
+
+    if any(
+        len(matches) != 1
+        for matches in by_semantic_artifact_id.values()
+    ):
+        _fail(
+            "portable table has duplicate or cross-role semantic artifact "
+            "IDs"
+        )
+    if any(
+        len(matches) != 1
+        for matches in by_schema_primary_id.values()
+    ):
+        _fail(
+            "portable table has ambiguous schema/primary semantic ID "
+            "registrations"
+        )
+
+    for owner in records:
+        outermost = True
+        for nested in _nested_documents(owner.artifact_document):
+            if outermost:
+                outermost = False
+                continue
+            schema = nested.get("schema")
+            primary_keys = _SCHEMA_NESTED_PRIMARY_DOCUMENT_IDS.get(schema)
+            if primary_keys is None:
+                continue
+            present = tuple(
+                key for key in primary_keys if key in nested
+            )
+            if len(present) != 1:
+                _fail(
+                    "embedded registered artifact lacks one unambiguous "
+                    "primary semantic ID"
+                )
+            primary_id = _cid(
+                nested[present[0]],
+                "embedded registered artifact primary semantic ID",
+            )
+            matches = by_schema_primary_id.get(
+                (schema, primary_id),
+                (),
+            )
+            if len(matches) != 1:
+                _fail(
+                    "embedded registered artifact has no unique matching "
+                    "record"
+                )
+            if (
+                canonical_json_bytes(nested)
+                != matches[0].canonical_artifact_bytes
+            ):
+                _fail(
+                    "embedded registered artifact canonical bytes differ "
+                    "from its unique record"
+                )
+
+
 _CONTROL_KIND_BY_SEMANTIC_ROLE = {
     "INITIAL_SCHEDULE_ROW_INTENT": "ROOT",
     "DYNAMIC_CHILD_DISCOVERY_INTENT": "CHILD",
@@ -2206,6 +2317,7 @@ class V075PortableOccurrenceEvidenceBundleV2:
             != REQUIRED_ROOT_NAMES
         ):
             _fail("portable occurrence evidence bundle is malformed")
+        _verify_nested_registered_document_bindings(self.records)
         _verify_authoritative_dynamic_control_roles(self.records)
         derived_dependencies = _derived_record_dependencies(self.records)
         for record in self.records:
