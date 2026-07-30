@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `1.70.0`: the earlier contracts build the
+contracts now span `1.40.0` through `1.73.0`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -65,6 +65,9 @@ raw public context
 -> B1: observer-open binding
 -> M1A: 6 signed-batch roles + iterative O(V+E) dependency DAG
 -> M1B: 16 signed-control roles with exact ROOT/M0 binding
+-> M2 root: OCCURRENCE_IDENTITY + ROOT_EXECUTION are FULL_PUBLIC
+-> M2 lineage: batch public + sequence verification are FULL_PUBLIC
+-> CONSTRUCTION_LINEAGE is public-projection complete but private-unresolved
 -> SIGNED_BATCH_JOURNAL_CLOSURE_VERIFICATION remains unresolved
 ```
 
@@ -74,11 +77,13 @@ observer signing and rejects caller-supplied/legacy verification objects. The
 public verifier still claims only `observer_signed=true` and
 `independently_recomputed=false`: a generic signer holder can bypass the
 helper. Contract `1.69.0` adds the fail-closed signer-owning sealed-child
-transport, but deliberately stops before observer-session ownership, private
-replay or B3 signing. Contract `1.70.0` reconstructs the 16 M1B control roles
-and binds every ROOT action to its exact M0 row/stage/lane/epoch/draw witness;
-present CHILD/PROMOTION semantics remain structural-only. Production still
-requires one signer-owning service lifecycle from observer open through B3,
+transport. Contract `1.71.0` extends that custody shape through observer open,
+the registered synthetic root batches, close, private replay and B3 signing
+inside one child, but remains a construction-only noncertificate and adds no
+portable role. Contract `1.70.0` reconstructs the M1B controls; contracts
+`1.72.0` and `1.73.0` close the public root and batch-lineage roles listed
+above while preserving the exact unresolved private frontier. Production
+still requires lifecycle evidence to be integrated into a new portable role,
 the remaining semantic roles, source/code provenance, complete accounting,
 campaign closure and an independent complete-bundle verifier.
 Sample-efficiency, official, scalar, economics and counter-completeness Gates

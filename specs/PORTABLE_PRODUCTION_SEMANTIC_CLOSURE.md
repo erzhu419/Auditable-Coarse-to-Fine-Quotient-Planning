@@ -2,8 +2,8 @@
 
 **Status:** normative construction contract; production and target access locked  
 **Ledger:** V0-076  
-**Implemented revisions:** `1.60.0`–`1.70.0`
-**Current completed public cut:** M0 + B1 + M1A + M1B ROOT
+**Implemented revisions:** `1.60.0`–`1.73.0`
+**Current completed public cut:** M0 + B1 + M1A + M1B ROOT + M2 root/public lineage
 
 ## Objective
 
@@ -190,6 +190,35 @@ full public generic/ROOT roles and explicit absent CHILD/PROMOTION roles.
 Present dynamic roles remain structural-only; M1A private verification is not
 consumed.
 
+## Contract 1.71 same-child lifecycle control
+
+One fresh sealed-source child now owns signer load, reveal, observer open,
+the fixed registered root batches, close, private replay and B3 signing for
+the synthetic root-only K7 positive control. The request has no signer,
+private-verification, old-closure, old-B3, observation-result or caller-session
+input channel. Exact fixture and arm/start/count/cap bindings, typed failure
+prefixes and distinct complete/failure journal kinds are publicly replayed.
+
+This is a construction noncertificate. Its B3 is observer-signed, but the
+public verifier neither reruns the private law nor provides cryptographic
+process/order provenance. Contract 1.71 adds no portable role and does not
+upgrade the historical M1A private-verification record.
+
+## Contracts 1.72–1.73 M2 public cuts
+
+Contract 1.72 reconstructs `OCCURRENCE_IDENTITY` and `ROOT_EXECUTION` as
+`FULL_PUBLIC`. It binds exact M0 occurrence/schedule/intents to M1B
+receipts, support freezes, semantic-authority references, resulting head and
+open prefix, while independently rederiving the M1B record/dependency spine.
+
+Contract 1.73 reconstructs `BATCH_PUBLIC_VERIFICATION` and
+`BATCH_SEQUENCE_VERIFICATION` as `FULL_PUBLIC`. It also rebuilds the exact
+public `CONSTRUCTION_LINEAGE` payload, including occurrence, namespace,
+context and arm relationships. That lineage role remains
+`STRUCTURAL_ONLY_TRANSITIVE_UNRESOLVED` because
+`SIGNED_BATCH_JOURNAL_CLOSURE_VERIFICATION` is still its unresolved private
+frontier. Neither cut calls or consumes the private verifier.
+
 ## Mandatory locks
 
 ```text
@@ -208,7 +237,7 @@ COUNTER_COMPLETENESS_GATE_NOT_RUN
 SAMPLE_EFFICIENCY_GATE_NOT_RUN
 ```
 
-These locks may move only after the remaining semantic roles, signer-owning
-service, source/code provenance, all-path accounting, campaign closure and
+These locks may move only after the remaining semantic roles, production
+lifecycle/portable-role integration, source/code provenance, all-path accounting, campaign closure and
 independent complete-bundle verifier pass. Only then may a new final
 preregistration, manifest, anchor and fresh held-out identities be frozen.
