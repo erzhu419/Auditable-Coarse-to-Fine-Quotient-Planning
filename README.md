@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `1.83.0`: the earlier contracts build the
+contracts now span `1.40.0` through `1.84.0`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -178,6 +178,43 @@ typed terminal/campaign closure and an independent production complete-bundle
 verifier.
 Sample-efficiency, official, scalar, economics and counter-completeness Gates
 remain locked.
+
+Contract `1.84.0` freezes the next accounting boundary without pretending
+that old summaries are native work. It first completes independent raw-1.83
+verification, then binds the Phase-3E v1 registry (`49` leaves, `34`
+operational), comparison profile and actual-projection profile. That registry
+is immutable. Initial BUILD/ACQUISITION and REBUILD are separate stages.
+Thirteen v2 path names are reserved, but their full
+unit/lane/scope/reducer/axis semantics and `acfqp_counter_registry_v2`
+artifact remain deliberately unfrozen. The reserved names intersect neither
+the 49 v1 paths nor the 87 distinct legacy custom paths.
+
+Five historical V0-075 custom catalogues contain `23/17/15/22/18` paths and
+have zero exact path overlap with v1. The current root-only portable bundle
+contains none of their typed vectors. Their custom documents, aggregate
+totals and embedded semantic counts therefore cannot be re-labelled as
+`CounterRecord`s, missing records or native zeroes. The 67-role semantic
+registry remains unchanged; accounting and closure use a separate outer
+companion registry.
+
+This foundation freezes only the registry/gap matrix, outer-role topology and
+the future noncertificate derivation
+`CHILD_ACTION_ROW_CAP_EXCEEDED -> ROUTE_ATTEMPT /
+ATTEMPT_BUDGET_EXHAUSTED`. Logical-occurrence closure remains dependent on a
+typed rebuild/retry policy and exhaustion evidence. The foundation
+materializes no WorkVector, actual projection or terminal. Raw 1.83's
+unrecorded Git, subprocess, I/O, hash and peak work remains a
+provenance/evaluation prefix and cannot be reconstructed retrospectively.
+All-path accounting, campaign closure, loaded-source receipt, independent
+complete-bundle verification, production, fresh science and certificate
+Gates remain locked.
+
+The next Gate must instrument the same non-fresh root-only construction
+occurrence from execution start, using separate model-build/acquisition and
+failed-abstract-prefix stage vectors, exact projections and a typed
+noncertificate occurrence closure. It then expands to every failure/terminal
+path and campaign reconciliation before any new final
+preregistration/manifest/anchor or fresh target access.
 
 ## V0-074 repair construction (NONAUTHORIZING; fresh Gate NOT RUN)
 

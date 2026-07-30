@@ -1,9 +1,9 @@
 # Portable Production Semantic Closure
 
 **Status:** normative construction contract; production and target access locked  
-**Ledger:** V0-076, V0-090, V0-091
-**Implemented revisions:** `1.60.0`–`1.83.0`
-**Current completed semantic cut:** exact construction-only 67-role semantic closure plus a complete local tracked-ACFQP Git/archive/compile snapshot for the registered root-only cap occurrence; unqualified source/code authority and production remain locked
+**Ledger:** V0-076, V0-090, V0-091, V0-092
+**Implemented revisions:** `1.60.0`–`1.84.0`
+**Current completed semantic cut:** exact construction-only 67-role semantic closure, a complete local tracked-ACFQP Git/archive/compile snapshot, and a native-accounting registry/gap foundation for the registered root-only cap occurrence; live all-path accounting, unqualified source/code authority and production remain locked
 
 ## Objective
 
@@ -618,6 +618,106 @@ producer/helper/independent-verifier suite passes 28 tests, and the relevant
 contract-1.63-v2 plus 1.74–1.83 joint regression passes 192 tests. The local
 positive replay seals and compiles all 337 tracked ACFQP members and observes
 zero ACFQP modules both before and after compilation.
+
+## Contract 1.84 construction native-accounting foundation
+
+Contract 1.84 takes the contract-1.83 provenance bytes and the original five
+raw inputs. Its first operation is the independent raw-1.83 verification; only
+after that succeeds may it read the claimed foundation or freeze accounting
+metadata. It executes no observer, target, kernel, planner worker or fresh-data
+API.
+
+The foundation binds the exact Phase-3E v1 counter registry, comparison
+profile and actual-projection profile. The base registry has 49 leaves, 34 of
+them operational, and is immutable. Initial BUILD and ACQUISITION stages are
+distinct from REBUILD and cannot be relabelled to fit the v1 route enum.
+Contract 1.84 reserves 13 v2 path names only; it does not yet freeze
+their semantics ID, owner, unit, lane, scope, reducer, comparison axis or
+requiredness and does not materialize `acfqp_counter_registry_v2`. Those
+names have zero intersection with both the 49 v1 paths and the 87 distinct
+legacy custom paths.
+
+All five historical V0-075 custom catalogues are inventoried independently:
+
+```text
+route-native backend       23 paths
+batch-native backend       17 paths
+support/planner            15 paths
+registered worker          22 paths
+direct occurrence pipeline 18 paths
+```
+
+Their exact string intersection with the v1 registry is empty. Their custom
+counter documents and aggregate totals are not native `CounterRecord`
+evidence, and none of those legacy vectors is present in the current
+root-only v2 portable bundle. The coverage matrix separates:
+
+```text
+EXACT_EXISTING_LEAF
+    definition exists in v1; current root-only evidence is still absent
+RESERVED_V2_PATH_NAME
+    namespace and stage reserved; complete counter semantics not yet frozen
+NOT_INSTRUMENTED
+    historical custom path with no native evidence
+```
+
+The 11 critical current-root recorder gaps are reported separately as a
+diagnostic subset of the existing v1 definitions. They are not duplicated as
+coverage rows and cannot be counted twice.
+
+The original 67-role portable semantic registry is unchanged. Accounting is a
+separate outer companion registry. At this cut only its boundary profile,
+coverage matrix, terminal-derivation registry, role registry and readiness
+attestation are present. The v2 registry materialization, loaded-source
+receipt, live stage WorkVectors, exact projections, terminal artifact,
+logical-occurrence/campaign closure and independent complete-bundle
+verification remain explicitly absent.
+
+The terminal registry freezes only a future derivation rule:
+
+```text
+source cause       = CHILD_ACTION_ROW_CAP_EXCEEDED
+terminal scope     = ROUTE_ATTEMPT
+terminal class     = ATTEMPT_CLOSURE_NONCERTIFICATE
+terminal code      = ATTEMPT_BUDGET_EXHAUSTED
+specific cause     = retained
+infeasibility      = forbidden
+```
+
+It does not materialize that attempt terminal. A logical-occurrence outcome
+additionally requires a typed rebuild/retry policy and evidence that the
+allowed attempts are exhausted; those closure layers remain future work.
+
+Raw contract 1.83 performs Git queries, isolated child launches, source and
+archive reads, hashing and capacity-relevant work without live
+`CounterRecord`s. A wrapper invoked afterward cannot reconstruct those events
+as actual route work. This prefix is therefore explicitly
+provenance/evaluation-only for contract 1.84; it cannot be zero-filled,
+estimated from semantic totals or used to claim path completeness. A later
+runner must record from execution start and must use separate model-build /
+acquisition and failed-abstract-prefix stage vectors before it may derive a
+typed noncertificate occurrence closure.
+
+The only positive claim is that the accounting boundary, migration inventory,
+stage separation, outer-role topology and terminal derivation are frozen and
+independently replayable. These remain false:
+
+```text
+counter_registry_v2_materialized = false
+all_path_native_accounting_complete = false
+terminal_campaign_closure_complete = false
+complete_bundle_verifier_complete = false
+counter_completeness_gate_passed = false
+accounting_gate_passed = false
+source_authority_complete = false
+code_provenance_complete = false
+official_execution_allowed = false
+production_authorizing = false
+fresh_heldout_accessed = false
+scientific_endpoint_credit_allowed = false
+plan_certificate = false
+infeasibility_certificate = false
+```
 
 ## Mandatory locks
 
