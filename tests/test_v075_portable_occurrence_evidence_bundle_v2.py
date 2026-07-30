@@ -117,6 +117,54 @@ def _record_for_role(document, role):
     )
 
 
+def _propagate_nested_document(
+    bundle_document,
+    *,
+    schema,
+    id_field,
+    replacement,
+) -> None:
+    target_id = replacement[id_field]
+
+    def replace(value):
+        if type(value) is list:
+            return [replace(item) for item in value]
+        if type(value) is not dict:
+            return value
+        if (
+            value.get("schema") == schema
+            and value.get(id_field) == target_id
+        ):
+            return deepcopy(replacement)
+        return {key: replace(item) for key, item in value.items()}
+
+    for record in bundle_document["artifact_records"]:
+        raw_document = bundle._strict_json_document(  # noqa: SLF001
+            bytes.fromhex(record["canonical_artifact_bytes_hex"]),
+            label="nested document attack propagation",
+        )
+        record["canonical_artifact_bytes_hex"] = _raw(
+            replace(raw_document)
+        ).hex()
+
+
+def _refresh_raw_dependency_claims(bundle_document) -> None:
+    nodes = tuple(
+        bundle._DependencyNode(  # noqa: SLF001
+            record["record_id"],
+            record["role"],
+            record["semantic_artifact_id"],
+            bytes.fromhex(record["canonical_artifact_bytes_hex"]),
+        )
+        for record in bundle_document["artifact_records"]
+    )
+    derived = bundle._derive_dependency_graph(nodes)  # noqa: SLF001
+    for record in bundle_document["artifact_records"]:
+        record["dependency_record_ids"] = sorted(
+            derived[record["record_id"]]
+        )
+
+
 def test_complete_portable_table_raw_replays_and_keeps_all_locks_closed(
     portable_closed_bundle,
 ) -> None:
@@ -426,7 +474,7 @@ def test_rehashed_cached_content_id_and_same_schema_role_transplant_fail(
     )
     with pytest.raises(
         bundle.V075PortableOccurrenceEvidenceV2InvariantViolation,
-        match="embedded semantic authority",
+        match="embedded semantic authority|required child role and schema",
     ):
         bundle.verify_v075_portable_occurrence_evidence_bundle_bytes_v2(
             _rehash_complete_bundle_wrapper(role_attack)
@@ -553,7 +601,8 @@ def test_rehashed_nested_registered_document_byte_mismatch_fails(
         bundle.V075PortableOccurrenceEvidenceV2InvariantViolation,
         match=(
             "embedded registered artifact canonical bytes differ from "
-            "its unique record"
+            "its unique record|required child record|"
+            "missing or undeclared raw fields"
         ),
     ):
         bundle.verify_v075_portable_occurrence_evidence_bundle_bytes_v2(
@@ -577,7 +626,7 @@ def test_rehashed_nested_registered_document_missing_record_fails(
     intent["canonical_artifact_bytes_hex"] = _raw(document).hex()
     with pytest.raises(
         bundle.V075PortableOccurrenceEvidenceV2InvariantViolation,
-        match="has no unique matching record",
+        match="has no unique matching record|has no unique record",
     ):
         bundle.verify_v075_portable_occurrence_evidence_bundle_bytes_v2(
             _rehash_complete_bundle_wrapper(attacked)
@@ -601,6 +650,277 @@ def test_rehashed_duplicate_semantic_record_ambiguity_fails(
     with pytest.raises(
         bundle.V075PortableOccurrenceEvidenceV2InvariantViolation,
         match="duplicate or cross-role semantic artifact IDs",
+    ):
+        bundle.verify_v075_portable_occurrence_evidence_bundle_bytes_v2(
+            _rehash_complete_bundle_wrapper(attacked)
+        )
+
+
+@pytest.mark.parametrize(
+    "operation",
+    ("unknown_schema", "delete_schema", "unknown_schema_extra_key"),
+)
+def test_rehashed_nested_registered_schema_laundering_fails(
+    portable_closed_bundle,
+    operation,
+) -> None:
+    _result, _roots, artifact = portable_closed_bundle
+    attacked = deepcopy(artifact.to_document())
+    intent = _record_for_role(attacked, "CONTROLLED_ROOT_INTENT")
+    document = bundle._strict_json_document(  # noqa: SLF001
+        bytes.fromhex(intent["canonical_artifact_bytes_hex"]),
+        label="nested registered schema laundering attack",
+    )
+    nested = document["semantic_authority"]
+    if operation == "delete_schema":
+        del nested["schema"]
+    else:
+        nested["schema"] = "acfqp.attacker.schema_laundering.v999"
+        if operation == "unknown_schema_extra_key":
+            nested["attacker_extra"] = True
+    intent["canonical_artifact_bytes_hex"] = _raw(document).hex()
+    with pytest.raises(
+        bundle.V075PortableOccurrenceEvidenceV2InvariantViolation,
+        match=(
+            "required child role and schema|"
+            "schema was deleted, laundered, or role-transplanted|"
+            "uses an unknown schema"
+        ),
+    ):
+        bundle.verify_v075_portable_occurrence_evidence_bundle_bytes_v2(
+            _rehash_complete_bundle_wrapper(attacked)
+        )
+
+
+@pytest.mark.parametrize(
+    ("parent_role", "field_name", "replacement_role"),
+    (
+        (
+            "CONTROLLED_ROOT_INTENT",
+            "semantic_authority",
+            "TRANSITION_STREAM",
+        ),
+        (
+            "SIGNED_OBSERVATION_BATCH",
+            "request",
+            "OBSERVER_OPEN_BINDING",
+        ),
+    ),
+)
+def test_rehashed_complete_registered_child_role_transplant_fails(
+    portable_closed_bundle,
+    parent_role,
+    field_name,
+    replacement_role,
+) -> None:
+    _result, _roots, artifact = portable_closed_bundle
+    attacked = deepcopy(artifact.to_document())
+    parent = _record_for_role(attacked, parent_role)
+    replacement = _record_for_role(attacked, replacement_role)
+    parent_document = bundle._strict_json_document(  # noqa: SLF001
+        bytes.fromhex(parent["canonical_artifact_bytes_hex"]),
+        label="registered child role transplant parent",
+    )
+    replacement_document = bundle._strict_json_document(  # noqa: SLF001
+        bytes.fromhex(replacement["canonical_artifact_bytes_hex"]),
+        label="registered child role transplant replacement",
+    )
+    parent_document[field_name] = replacement_document
+    parent["canonical_artifact_bytes_hex"] = _raw(parent_document).hex()
+    with pytest.raises(
+        bundle.V075PortableOccurrenceEvidenceV2InvariantViolation,
+        match="required child role and schema",
+    ):
+        bundle.verify_v075_portable_occurrence_evidence_bundle_bytes_v2(
+            _rehash_complete_bundle_wrapper(attacked)
+        )
+
+
+@pytest.mark.parametrize("operation", ("duplicate", "delete", "reorder"))
+def test_rehashed_signed_batch_outcome_sequence_attacks_fail(
+    portable_closed_bundle,
+    operation,
+) -> None:
+    _result, _roots, artifact = portable_closed_bundle
+    attacked = deepcopy(artifact.to_document())
+    batch_record = next(
+        record
+        for record in attacked["artifact_records"]
+        if record["role"] == "SIGNED_OBSERVATION_BATCH"
+        and len(
+            bundle._strict_json_document(  # noqa: SLF001
+                bytes.fromhex(record["canonical_artifact_bytes_hex"]),
+                label="signed batch outcome sequence candidate",
+            )["outcomes"]
+        )
+        >= 2
+    )
+    document = bundle._strict_json_document(  # noqa: SLF001
+        bytes.fromhex(batch_record["canonical_artifact_bytes_hex"]),
+        label="signed batch outcome sequence attack",
+    )
+    if operation == "duplicate":
+        document["outcomes"].append(deepcopy(document["outcomes"][0]))
+    elif operation == "delete":
+        removed_outcome = document["outcomes"].pop()
+    else:
+        document["outcomes"][0], document["outcomes"][1] = (
+            document["outcomes"][1],
+            document["outcomes"][0],
+        )
+
+    _propagate_nested_document(
+        attacked,
+        schema="acfqp.v075_signed_observation_batch.v2",
+        id_field="batch_id",
+        replacement=document,
+    )
+    if operation == "delete":
+        attacked["artifact_records"] = [
+            record
+            for record in attacked["artifact_records"]
+            if not (
+                record["role"] == "SIGNED_BATCH_OUTCOME"
+                and bundle._strict_json_document(  # noqa: SLF001
+                    bytes.fromhex(record["canonical_artifact_bytes_hex"]),
+                    label="deleted batch outcome record",
+                )
+                == removed_outcome
+            )
+        ]
+        for index, record in enumerate(attacked["artifact_records"]):
+            record["index"] = index
+        attacked["artifact_count"] = len(attacked["artifact_records"])
+    _refresh_raw_dependency_claims(attacked)
+    with pytest.raises(
+        bundle.V075PortableOccurrenceEvidenceV2InvariantViolation,
+        match="exact ordered IDs or commitments",
+    ):
+        bundle.verify_v075_portable_occurrence_evidence_bundle_bytes_v2(
+            _rehash_complete_bundle_wrapper(attacked)
+        )
+
+
+def test_rehashed_numerical_row_content_with_stale_row_id_fails(
+    portable_closed_bundle,
+) -> None:
+    _result, _roots, artifact = portable_closed_bundle
+    attacked = deepcopy(artifact.to_document())
+    model_record = _record_for_role(attacked, "NUMERICAL_MODEL")
+    model = bundle._strict_json_document(  # noqa: SLF001
+        bytes.fromhex(model_record["canonical_artifact_bytes_hex"]),
+        label="stale embedded numerical row ID attack",
+    )
+    row = model["rows"][0]
+    row["immediate_reward"] = {"numerator": 999, "denominator": 1}
+    _propagate_nested_document(
+        attacked,
+        schema="acfqp.v075_batch_planning_numerical_model.v2",
+        id_field="model_id",
+        replacement=model,
+    )
+    with pytest.raises(
+        bundle.V075PortableOccurrenceEvidenceV2InvariantViolation,
+        match="embedded .* cached content ID differs",
+    ):
+        bundle.verify_v075_portable_occurrence_evidence_bundle_bytes_v2(
+            _rehash_complete_bundle_wrapper(attacked)
+        )
+
+
+def test_rehashed_planning_nested_extra_field_through_all_ancestors_fails(
+    portable_closed_bundle,
+) -> None:
+    _result, _roots, artifact = portable_closed_bundle
+    attacked = deepcopy(artifact.to_document())
+    model_record = _record_for_role(attacked, "NUMERICAL_MODEL")
+    model = bundle._strict_json_document(  # noqa: SLF001
+        bytes.fromhex(model_record["canonical_artifact_bytes_hex"]),
+        label="planning nested exact keyset attack",
+    )
+    model["rows"][0]["attacker_extra"] = {
+        "cached_row_id_preserved": model["rows"][0]["row_id"],
+    }
+    _propagate_nested_document(
+        attacked,
+        schema="acfqp.v075_batch_planning_numerical_model.v2",
+        id_field="model_id",
+        replacement=model,
+    )
+    with pytest.raises(
+        bundle.V075PortableOccurrenceEvidenceV2InvariantViolation,
+        match="missing or undeclared raw fields",
+    ):
+        bundle.verify_v075_portable_occurrence_evidence_bundle_bytes_v2(
+            _rehash_complete_bundle_wrapper(attacked)
+        )
+
+
+def test_rehashed_unknown_nested_schema_extra_and_new_primary_id_fails(
+    portable_closed_bundle,
+) -> None:
+    _result, _roots, artifact = portable_closed_bundle
+    attacked = deepcopy(artifact.to_document())
+    state_record = _record_for_role(attacked, "SYMBOLIC_GRAPH_STATE")
+    state = bundle._strict_json_document(  # noqa: SLF001
+        bytes.fromhex(state_record["canonical_artifact_bytes_hex"]),
+        label="unknown nested schema/keyset/primary ID attack",
+    )
+    context = state["context"]
+    context["schema"] = "acfqp.attacker.unknown_nested_context.v999"
+    context["context_id"] = _id("unknown-nested-context-primary-id")
+    context["attacker_extra"] = True
+    state_record["canonical_artifact_bytes_hex"] = _raw(state).hex()
+    with pytest.raises(
+        bundle.V075PortableOccurrenceEvidenceV2InvariantViolation,
+        match="uses an unknown schema",
+    ):
+        bundle.verify_v075_portable_occurrence_evidence_bundle_bytes_v2(
+            _rehash_complete_bundle_wrapper(attacked)
+        )
+
+
+@pytest.mark.parametrize("operation", ("duplicate", "delete", "reorder"))
+def test_rehashed_numerical_model_row_expansion_attacks_fail(
+    portable_closed_bundle,
+    operation,
+) -> None:
+    _result, _roots, artifact = portable_closed_bundle
+    attacked = deepcopy(artifact.to_document())
+    model_record = next(
+        record
+        for record in attacked["artifact_records"]
+        if record["role"] == "NUMERICAL_MODEL"
+        and len(
+            bundle._strict_json_document(  # noqa: SLF001
+                bytes.fromhex(record["canonical_artifact_bytes_hex"]),
+                label="numerical model row expansion candidate",
+            )["rows"]
+        )
+        >= 2
+    )
+    model = bundle._strict_json_document(  # noqa: SLF001
+        bytes.fromhex(model_record["canonical_artifact_bytes_hex"]),
+        label="numerical model row expansion attack",
+    )
+    if operation == "duplicate":
+        model["rows"].append(deepcopy(model["rows"][0]))
+    elif operation == "delete":
+        model["rows"].pop()
+    else:
+        model["rows"][0], model["rows"][1] = (
+            model["rows"][1],
+            model["rows"][0],
+        )
+    _propagate_nested_document(
+        attacked,
+        schema="acfqp.v075_batch_planning_numerical_model.v2",
+        id_field="model_id",
+        replacement=model,
+    )
+    with pytest.raises(
+        bundle.V075PortableOccurrenceEvidenceV2InvariantViolation,
+        match="exact ordered row IDs",
     ):
         bundle.verify_v075_portable_occurrence_evidence_bundle_bytes_v2(
             _rehash_complete_bundle_wrapper(attacked)

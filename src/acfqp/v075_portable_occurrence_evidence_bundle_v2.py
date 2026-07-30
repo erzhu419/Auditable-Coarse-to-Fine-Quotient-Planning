@@ -640,6 +640,9 @@ ROLE_SCHEMA_REGISTRY = MappingProxyType(
         },
     }
 )
+_REGISTERED_ARTIFACT_SCHEMAS = frozenset(
+    ROLE_SCHEMA_REGISTRY.values()
+)
 
 
 def _artifact_spec(value: Any) -> _ArtifactSpec | None:
@@ -1108,6 +1111,286 @@ _SCHEMA_DOCUMENT_KEYSET_SHA256 = dict(
     _SCHEMA_DOCUMENT_KEYSET_SHA256
 )
 
+_CONTENT_ID_AND_EXPANSION_REPLAYED_PLANNING_KEYSETS_SHA256 = (
+    MappingProxyType(
+        {
+            (
+                "acfqp.v075_batch_planning_"
+                "behavioral_quotient.v2"
+            ): frozenset(
+                {
+                    (
+                        "7b1d3de086e2d10bdd9dfb06f8930961b539d2b943"
+                        "44dfa9be242765a97fc7a9"
+                    )
+                }
+            ),
+            "acfqp.v075_batch_planning_event_interval.v2": frozenset(
+                {
+                    (
+                        "0641a8c711e0f25502fd258edf317e0e1c3f7b940f"
+                        "0cf2c36284da0a305cef55"
+                    )
+                }
+            ),
+            "acfqp.v075_batch_planning_failed_frontier.v2": frozenset(
+                {
+                    (
+                        "16f4d80c18100705f747f84416a882eab0efc0bd74"
+                        "2c10bd79ad494c30059b0a"
+                    )
+                }
+            ),
+            "acfqp.v075_batch_planning_numerical_row.v2": frozenset(
+                {
+                    (
+                        "8ea29fc13618a01b1035c4b9ab795346872601d382"
+                        "e74a249c238c779b5a1112"
+                    )
+                }
+            ),
+            "acfqp.v075_batch_planning_quotient_cell.v2": frozenset(
+                {
+                    (
+                        "3c0c337a0bafff9df30f02b1e74bd4749b5374ff7"
+                        "a33a59a68feaa2695da5aaa"
+                    )
+                }
+            ),
+            "acfqp.v075_batch_planning_row_behavior.v2": frozenset(
+                {
+                    (
+                        "0faaf9738f35f7d58dd2177b2260f82b7eb36d9bf"
+                        "7cf51842d8416e565945411"
+                    )
+                }
+            ),
+            (
+                "acfqp.v075_batch_planning_"
+                "row_evidence_binding.v2"
+            ): frozenset(
+                {
+                    (
+                        "b96a2e5c3a4590dd5b03aae3c69195f5d03ffc087"
+                        "2f8ad438731b749e7ce17fd"
+                    )
+                }
+            ),
+            (
+                "acfqp.v075_batch_planning_"
+                "support_descriptor.v2"
+            ): frozenset(
+                {
+                    (
+                        "9ba097b4874c5e4b91066c12f68b1adf850a1fa4f"
+                        "276966d2f1477e5aedfbf7c"
+                    )
+                }
+            ),
+            "acfqp.v075_batch_planning_policy.v2": frozenset(
+                {
+                    (
+                        "949cb977381508f34a1a00c45f4af413de47f82022"
+                        "650c1522fbfc95ddd48626"
+                    )
+                }
+            ),
+            "acfqp.v075_batch_planning_envelope.v2": frozenset(
+                {
+                    (
+                        "22f49693ee7943d45bc3eb12638d0aef764b1ddd13"
+                        "3fb7a52aa8bacbf085a740"
+                    )
+                }
+            ),
+        }
+    )
+)
+
+_BYTE_CARRIED_SEMANTIC_INCOMPLETE_KEYSETS_SHA256 = MappingProxyType(
+    {
+        "acfqp.graph_topology.v1": frozenset(
+            {
+                (
+                    "fdc3f0c09baa5ce90512228c29075f002727e50ec"
+                    "2cd06745f2b99130906dbfe"
+                )
+            }
+        ),
+        "acfqp.v075_batch_support_source_aggregate.v2": frozenset(
+            {
+                (
+                    "a710ccd470910ee3b1512874f6c939ad5e478e346c"
+                    "e6edcb1d7c7814c39b490c"
+                )
+            }
+        ),
+        "acfqp.v075_confirmatory_public_workload.v2": frozenset(
+            {
+                (
+                    "ad0cc51651ea66c3588c6dc7fad046783444153e74"
+                    "667df7d83615f3dd7e1e56"
+                )
+            }
+        ),
+        "acfqp.v075_five_arm_acquisition_profile.v2": frozenset(
+            {
+                (
+                    "d86b29fb609bbdfd1953797640ba79c9f57d3eb517"
+                    "f8867420eb7da46d2cd5fd"
+                )
+            }
+        ),
+        "acfqp.v075_five_arm_acquisition_registration.v2": (
+            frozenset(
+                {
+                    (
+                        "c447fadd2c5c91439bfe0b704d7d58aef8ef83f297"
+                        "1a66542d79e186006c2bea"
+                    )
+                }
+            )
+        ),
+        "acfqp.v075_five_arm_occurrence_slot.v2": frozenset(
+            {
+                (
+                    "08cdeca62dcadaa7d0ca6122fccd5d44b4d6f52cc0"
+                    "d5c9d6aea72127f3e9e9e1"
+                )
+            }
+        ),
+        "acfqp.v075_five_arm_proposal_view.v2": frozenset(
+            {
+                (
+                    "f8b4b10a371185af541b568099fe0f8d3e2b67ecb8"
+                    "828bde972390a15bd4bace"
+                )
+            }
+        ),
+        (
+            "acfqp.v075_independent_remote_main_anchor_"
+            "attestation.v2"
+        ): frozenset(
+            {
+                (
+                    "dc0c8d668f6b3d7a1ca460ebaf14e93359618ec8a"
+                    "a7fc92e2121d002725da8b6"
+                )
+            }
+        ),
+        "acfqp.v075_private_environment_generation_profile.v1": (
+            frozenset(
+                {
+                    (
+                        "5e030832096d8f19b5cf26ae6bebc9b2ffa87f80f4"
+                        "7e92a8477b7d521bfa1755"
+                    )
+                }
+            )
+        ),
+        "acfqp.v075_production_campaign_runner_profile.v2": (
+            frozenset(
+                {
+                    (
+                        "bde1a3a7967cd76d989f6894cffcbbbfb9bf0e04a0"
+                        "08cc0e795f7b703d2342b4"
+                    )
+                }
+            )
+        ),
+        "acfqp.v075_production_worker_registry_draft.v1": frozenset(
+            {
+                (
+                    "c0ae5577dec3d838d1914dca945fb59ea6c086c961"
+                    "e01e4b929a45633fa267d7"
+                )
+            }
+        ),
+        "acfqp.v075_public_family_generation.v1": frozenset(
+            {
+                (
+                    "b05bf8b0bd3c9f2729109ffe501719819fc58a40b2"
+                    "ae0bfe24296ad7a7e4d438"
+                )
+            }
+        ),
+        "acfqp.v075_public_replicate_context.v1": frozenset(
+            {
+                (
+                    "2e247703ec54f99625b0d0a36ee977f3f2fb16deef"
+                    "b6761cb6e3445a56b0c90b"
+                )
+            }
+        ),
+        "acfqp.v075_public_target_tape_namespace.v2": frozenset(
+            {
+                (
+                    "38d3c2f3bbffc19b35e24829131f64b6c61bb0aa11"
+                    "82d827b0edcf7b9c39ee3d"
+                )
+            }
+        ),
+        "acfqp.v075_rsa_public_verification_key.v1": frozenset(
+            {
+                (
+                    "97128cf625f2b91773b0e96550d64034849d7aa2aae"
+                    "c9fbd7f928607eebca4be"
+                )
+            }
+        ),
+        "acfqp.v075_salted_opaque_environment_commitment.v1": (
+            frozenset(
+                {
+                    (
+                        "94d17ed2f8efdc627d4af20f46dafacf22300580d30"
+                        "16be434daa2c9d6b6aac1"
+                    )
+                }
+            )
+        ),
+        "acfqp.v075_trusted_signer_registry.v1": frozenset(
+            {
+                (
+                    "603a0e58937fbf7b2d03ea770a54f45a70430ed18a"
+                    "26eadae1c118370bc618a1"
+                )
+            }
+        ),
+        "acfqp.v075_worker_arm_registration.v1": frozenset(
+            {
+                (
+                    "8c098c1e8ff0ee7309f0264ab14fea126906e5f07f"
+                    "13d4a3516f29f2fe4e1239"
+                )
+            }
+        ),
+        "acfqp.v075_worker_cap_profile.v1": frozenset(
+            {
+                (
+                    "29f4582f008c6099dd9a7cfa610c01ff7911513a2d"
+                    "0967e6ab9420351c327156"
+                )
+            }
+        ),
+        "acfqp.v075_worker_threshold_profile.v1": frozenset(
+            {
+                (
+                    "4fbb5b53a28ed048de6bb6c0289c66bef20491bcc1"
+                    "7f0a21cbcbe7bb0d8503fc"
+                )
+            }
+        ),
+    }
+)
+
+_NESTED_SCHEMA_KEYSET_ALLOWLIST_SHA256 = MappingProxyType(
+    {
+        **_SCHEMA_DOCUMENT_KEYSET_SHA256,
+        **_CONTENT_ID_AND_EXPANSION_REPLAYED_PLANNING_KEYSETS_SHA256,
+        **_BYTE_CARRIED_SEMANTIC_INCOMPLETE_KEYSETS_SHA256,
+    }
+)
+
 
 def _verify_declared_artifact_document_shape(
     *,
@@ -1132,15 +1415,21 @@ def _verify_declared_artifact_document_shape(
             return
         if not outermost:
             schema = value.get("schema")
-            allowed = _SCHEMA_DOCUMENT_KEYSET_SHA256.get(schema)
-            if (
-                allowed is not None
-                and _document_keyset_sha256(value) not in allowed
-            ):
-                _fail(
-                    "embedded portable artifact contains missing or "
-                    "undeclared raw fields"
+            if schema is not None:
+                if type(schema) is not str:
+                    _fail("embedded portable artifact schema is untyped")
+                allowed = _NESTED_SCHEMA_KEYSET_ALLOWLIST_SHA256.get(
+                    schema
                 )
+                if allowed is None:
+                    _fail(
+                        "embedded portable artifact uses an unknown schema"
+                    )
+                if _document_keyset_sha256(value) not in allowed:
+                    _fail(
+                        "embedded portable artifact contains missing or "
+                        "undeclared raw fields"
+                    )
         for item in value.values():
             verify_nested(item)
 
@@ -1558,6 +1847,74 @@ _SEMANTIC_HASH_RULES = MappingProxyType(
 )
 del _SEMANTIC_HASH_RULES_MUTABLE
 
+_EMBEDDED_PLANNING_HASH_RULES = MappingProxyType(
+    {
+        "acfqp.v075_batch_planning_support_descriptor.v2": _rule(
+            planning._hash,  # noqa: SLF001
+            "descriptor",
+            "descriptor_id",
+        ),
+        "acfqp.v075_batch_planning_event_interval.v2": _rule(
+            planning._hash,  # noqa: SLF001
+            "interval",
+            "interval_id",
+        ),
+        "acfqp.v075_batch_planning_numerical_row.v2": _rule(
+            planning._hash,  # noqa: SLF001
+            "row",
+            "row_id",
+            "support",
+            "intervals",
+        ),
+        "acfqp.v075_batch_planning_row_evidence_binding.v2": _rule(
+            planning._hash,  # noqa: SLF001
+            "evidence",
+            "binding_id",
+        ),
+        "acfqp.v075_batch_planning_row_behavior.v2": _rule(
+            planning._hash,  # noqa: SLF001
+            "behavior",
+            "behavior_key",
+            "row_id",
+        ),
+        "acfqp.v075_batch_planning_quotient_cell.v2": _rule(
+            planning._hash,  # noqa: SLF001
+            "cell",
+            "cell_id",
+        ),
+        "acfqp.v075_batch_planning_behavioral_quotient.v2": _rule(
+            planning._hash,  # noqa: SLF001
+            "quotient",
+            "quotient_id",
+            "row_behaviors",
+            "cells",
+        ),
+        "acfqp.v075_batch_planning_policy.v2": _rule(
+            planning._hash,  # noqa: SLF001
+            "policy",
+            "policy_id",
+        ),
+        "acfqp.v075_batch_planning_envelope.v2": _rule(
+            planning._hash,  # noqa: SLF001
+            "envelope",
+            "envelope_id",
+        ),
+        "acfqp.v075_batch_planning_failed_frontier.v2": _rule(
+            planning._hash,  # noqa: SLF001
+            "frontier",
+            "frontier_id",
+        ),
+    }
+)
+
+CONTENT_ID_AND_EXPANSION_REPLAYED_EMBEDDED_PLANNING_SCHEMAS = frozenset(
+    _EMBEDDED_PLANNING_HASH_RULES
+)
+BYTE_CARRIED_SEMANTIC_INCOMPLETE_NESTED_SCHEMAS = frozenset(
+    _BYTE_CARRIED_SEMANTIC_INCOMPLETE_KEYSETS_SHA256
+)
+EMBEDDED_PLANNING_TYPED_SEMANTIC_REPLAY_COMPLETE = False
+
 _ROLES_WITH_DOCUMENT_CONTENT_IDS = {
     role
     for role, key in _ROLE_PRIMARY_DOCUMENT_ID.items()
@@ -1598,6 +1955,292 @@ def _verify_semantic_artifact_content_ids(
         _fail(
             f"{role} cached content ID differs from semantic recomputation"
         )
+
+
+def _planning_embedded_id(
+    document: Any,
+    *,
+    schema: str,
+    label: str,
+) -> str:
+    if type(document) is not dict or document.get("schema") != schema:
+        _fail(f"{label} lacks its exact static planning schema")
+    if _document_keyset_sha256(document) not in (
+        _CONTENT_ID_AND_EXPANSION_REPLAYED_PLANNING_KEYSETS_SHA256[
+            schema
+        ]
+    ):
+        _fail(f"{label} contains missing or undeclared raw fields")
+    rule = _EMBEDDED_PLANNING_HASH_RULES[schema]
+    actual = _cid(document.get(rule.id_key), f"{label} cached content ID")
+    if actual != rule.expected_id(document):
+        _fail(f"{label} cached content ID differs from semantic recomputation")
+    return actual
+
+
+def _verify_embedded_planning_documents(
+    records: tuple[V075PortableEvidenceArtifactRecordV2, ...],
+) -> None:
+    """Replay static planning hashes and their excluded expansion arrays."""
+
+    for owner in records:
+        for document in _nested_documents(owner.artifact_document):
+            schema = document.get("schema")
+            rule = _EMBEDDED_PLANNING_HASH_RULES.get(schema)
+            if rule is not None:
+                if _document_keyset_sha256(document) not in (
+                    _CONTENT_ID_AND_EXPANSION_REPLAYED_PLANNING_KEYSETS_SHA256[
+                        schema
+                    ]
+                ):
+                    _fail(
+                        "embedded planning document contains missing or "
+                        "undeclared raw fields"
+                    )
+                actual = _cid(
+                    document.get(rule.id_key),
+                    "embedded planning cached content ID",
+                )
+                if actual != rule.expected_id(document):
+                    _fail(
+                        "embedded planning cached content ID differs from "
+                        "semantic recomputation"
+                    )
+
+            if schema == (
+                "acfqp.v075_batch_planning_numerical_model.v2"
+            ):
+                rows = document.get("rows")
+                row_ids = document.get("row_ids")
+                if type(rows) is not list or type(row_ids) is not list:
+                    _fail("embedded numerical model row expansion is absent")
+                derived = [
+                    _planning_embedded_id(
+                        row,
+                        schema=(
+                            "acfqp.v075_batch_planning_numerical_row.v2"
+                        ),
+                        label="embedded numerical row",
+                    )
+                    for row in rows
+                ]
+                if len(set(derived)) != len(derived) or derived != row_ids:
+                    _fail(
+                        "embedded numerical model rows differ from exact "
+                        "ordered row IDs"
+                    )
+
+            elif schema == (
+                "acfqp.v075_batch_planning_numerical_row.v2"
+            ):
+                support = document.get("support")
+                intervals = document.get("intervals")
+                support_ids = document.get("support_descriptor_ids")
+                interval_ids = document.get("interval_ids")
+                if (
+                    type(support) is not list
+                    or type(intervals) is not list
+                    or type(support_ids) is not list
+                    or type(interval_ids) is not list
+                ):
+                    _fail("embedded numerical row expansions are absent")
+                derived_support_ids = [
+                    _planning_embedded_id(
+                        item,
+                        schema=(
+                            "acfqp.v075_batch_planning_support_descriptor.v2"
+                        ),
+                        label="embedded support descriptor",
+                    )
+                    for item in support
+                ]
+                derived_interval_ids = [
+                    _planning_embedded_id(
+                        item,
+                        schema=(
+                            "acfqp.v075_batch_planning_event_interval.v2"
+                        ),
+                        label="embedded event interval",
+                    )
+                    for item in intervals
+                ]
+                if (
+                    len(set(derived_support_ids))
+                    != len(derived_support_ids)
+                    or len(set(derived_interval_ids))
+                    != len(derived_interval_ids)
+                    or derived_support_ids != support_ids
+                    or derived_interval_ids != interval_ids
+                ):
+                    _fail(
+                        "embedded numerical row expansions differ from "
+                        "their exact ordered IDs"
+                    )
+                event_keys = [item.get("event_key") for item in intervals]
+                if event_keys != [*derived_support_ids, "OTHER"]:
+                    _fail(
+                        "embedded numerical row intervals differ from its "
+                        "support partition"
+                    )
+                for item in intervals:
+                    event_key = item.get("event_key")
+                    descriptor_id = item.get("descriptor_id")
+                    if (event_key == "OTHER") != (descriptor_id is None):
+                        _fail(
+                            "embedded numerical row interval descriptor "
+                            "optionality changed"
+                        )
+                    if event_key != "OTHER" and descriptor_id != event_key:
+                        _fail(
+                            "embedded numerical row interval descriptor "
+                            "identity changed"
+                        )
+
+            elif schema == (
+                "acfqp.v075_batch_planning_construction_input.v2"
+            ):
+                evidence = document.get("evidence_bindings")
+                evidence_ids = document.get("row_evidence_binding_ids")
+                if type(evidence) is not list or type(evidence_ids) is not list:
+                    _fail("embedded planning evidence expansion is absent")
+                derived = [
+                    _planning_embedded_id(
+                        item,
+                        schema=(
+                            "acfqp.v075_batch_planning_"
+                            "row_evidence_binding.v2"
+                        ),
+                        label="embedded row evidence binding",
+                    )
+                    for item in evidence
+                ]
+                if len(set(derived)) != len(derived) or derived != evidence_ids:
+                    _fail(
+                        "embedded planning evidence differs from exact "
+                        "ordered binding IDs"
+                    )
+                model = document.get("model")
+                if (
+                    type(model) is not dict
+                    or model.get("model_id")
+                    != document.get("numerical_model_id")
+                ):
+                    _fail("embedded planning input model identity changed")
+                row_ids = model.get("row_ids")
+                evidence_row_ids = [
+                    item.get("numerical_row_id") for item in evidence
+                ]
+                if evidence_row_ids != row_ids:
+                    _fail(
+                        "embedded planning evidence/model row order changed"
+                    )
+
+            elif schema == (
+                "acfqp.v075_batch_planning_behavioral_quotient.v2"
+            ):
+                row_behaviors = document.get("row_behaviors")
+                cells = document.get("cells")
+                bindings = document.get("row_behavior_bindings")
+                cell_ids = document.get("cell_ids")
+                if (
+                    type(row_behaviors) is not list
+                    or type(cells) is not list
+                    or type(bindings) is not list
+                    or type(cell_ids) is not list
+                ):
+                    _fail("embedded quotient expansions are absent")
+                derived_bindings = []
+                for behavior in row_behaviors:
+                    behavior_key = _planning_embedded_id(
+                        behavior,
+                        schema=(
+                            "acfqp.v075_batch_planning_row_behavior.v2"
+                        ),
+                        label="embedded row behavior",
+                    )
+                    derived_bindings.append(
+                        {
+                            "row_id": behavior.get("row_id"),
+                            "behavior_key": behavior_key,
+                        }
+                    )
+                derived_cell_ids = [
+                    _planning_embedded_id(
+                        cell,
+                        schema=(
+                            "acfqp.v075_batch_planning_quotient_cell.v2"
+                        ),
+                        label="embedded quotient cell",
+                    )
+                    for cell in cells
+                ]
+                if (
+                    derived_bindings != bindings
+                    or derived_cell_ids != cell_ids
+                    or len(set(derived_cell_ids)) != len(derived_cell_ids)
+                ):
+                    _fail(
+                        "embedded quotient expansions differ from exact "
+                        "ordered bindings"
+                    )
+
+            elif schema == (
+                "acfqp.v075_batch_planning_numerical_proof.v2"
+            ):
+                model = document.get("model")
+                if (
+                    type(model) is not dict
+                    or model.get("model_id")
+                    != document.get("numerical_model_id")
+                ):
+                    _fail("embedded planning proof model identity changed")
+                for field_name, id_field, child_schema in (
+                    (
+                        "quotient",
+                        "quotient_id",
+                        (
+                            "acfqp.v075_batch_planning_"
+                            "behavioral_quotient.v2"
+                        ),
+                    ),
+                    (
+                        "policy",
+                        "policy_id",
+                        "acfqp.v075_batch_planning_policy.v2",
+                    ),
+                    (
+                        "envelope",
+                        "envelope_id",
+                        "acfqp.v075_batch_planning_envelope.v2",
+                    ),
+                    (
+                        "failed_frontier",
+                        "failed_frontier_id",
+                        (
+                            "acfqp.v075_batch_planning_"
+                            "failed_frontier.v2"
+                        ),
+                    ),
+                ):
+                    child = document.get(field_name)
+                    referenced_id = document.get(id_field)
+                    if child is None:
+                        if referenced_id is not None:
+                            _fail(
+                                "embedded proof child/reference "
+                                "nullability differs"
+                            )
+                        continue
+                    child_id = _planning_embedded_id(
+                        child,
+                        schema=child_schema,
+                        label=f"embedded proof {field_name}",
+                    )
+                    if child_id != referenced_id:
+                        _fail(
+                            "embedded proof child differs from its exact "
+                            "reference"
+                        )
 
 
 @dataclass(frozen=True, slots=True)
@@ -1690,6 +2333,15 @@ def _content_ids(value: Any) -> frozenset[str]:
         for item in value:
             result.update(_content_ids(item))
     elif type(value) is dict:
+        schema = value.get("schema")
+        if (
+            type(schema) is str
+            and schema not in _REGISTERED_ARTIFACT_SCHEMAS
+        ):
+            # Nested non-record documents remain carried as parent bytes.
+            # Until a static semantic authority is registered for them they
+            # cannot mint transport topology edges of their own.
+            return frozenset()
         for item in value.values():
             result.update(_content_ids(item))
     return frozenset(result)
@@ -1879,6 +2531,318 @@ _SCHEMA_NESTED_PRIMARY_DOCUMENT_IDS = dict(
 )
 
 
+@dataclass(frozen=True, slots=True)
+class _NestedRegisteredChildRule:
+    child_roles: tuple[str, ...]
+    reference_field: str
+    sequence: bool = False
+    optional: bool = False
+
+
+_NESTED_REGISTERED_CHILD_RULES = MappingProxyType(
+    {
+        ("CONSTRUCTION_LINEAGE", "occurrence_identity"): (
+            _NestedRegisteredChildRule(
+                ("OCCURRENCE_IDENTITY",),
+                "occurrence_id",
+            )
+        ),
+        ("CONSTRUCTION_PLANNING_INPUT", "model"): (
+            _NestedRegisteredChildRule(
+                ("NUMERICAL_MODEL",),
+                "numerical_model_id",
+            )
+        ),
+        ("INITIAL_ROW_INTENT", "row_binding"): (
+            _NestedRegisteredChildRule(
+                ("OBSERVATION_ROW_BINDING",),
+                "row_binding_id",
+            )
+        ),
+        ("INITIAL_ACQUISITION_SCHEDULE", "occurrence"): (
+            _NestedRegisteredChildRule(
+                ("OCCURRENCE_IDENTITY",),
+                "occurrence_id",
+            )
+        ),
+        ("INITIAL_ACQUISITION_SCHEDULE", "intents"): (
+            _NestedRegisteredChildRule(
+                ("INITIAL_ROW_INTENT",),
+                "intent_ids",
+                sequence=True,
+            )
+        ),
+        ("LEGAL_ACTION_CATALOGUE", "state"): (
+            _NestedRegisteredChildRule(
+                ("SYMBOLIC_GRAPH_STATE",),
+                "state_id",
+            )
+        ),
+        ("OBSERVATION_ROW_BINDING", "catalogue"): (
+            _NestedRegisteredChildRule(
+                ("LEGAL_ACTION_CATALOGUE",),
+                "catalogue_id",
+            )
+        ),
+        ("OBSERVER_SIGNED_SUPPORT_EVIDENCE", "row_binding"): (
+            _NestedRegisteredChildRule(
+                ("OBSERVATION_ROW_BINDING",),
+                "row_binding_id",
+            )
+        ),
+        ("OBSERVER_SIGNED_SUPPORT_EVIDENCE", "observed_state"): (
+            _NestedRegisteredChildRule(
+                ("SYMBOLIC_GRAPH_STATE",),
+                "observed_state_id",
+            )
+        ),
+        ("SHARED_SUPPORT_EPOCH", "row_binding"): (
+            _NestedRegisteredChildRule(
+                ("OBSERVATION_ROW_BINDING",),
+                "row_binding_id",
+            )
+        ),
+        ("SHARED_SUPPORT_EPOCH", "evidence"): (
+            _NestedRegisteredChildRule(
+                ("OBSERVER_SIGNED_SUPPORT_EVIDENCE",),
+                "evidence_ids",
+                sequence=True,
+            )
+        ),
+        ("SHARED_SUPPORT_CHAIN", "row_binding"): (
+            _NestedRegisteredChildRule(
+                ("OBSERVATION_ROW_BINDING",),
+                "row_binding_id",
+            )
+        ),
+        ("SHARED_SUPPORT_CHAIN", "epochs"): (
+            _NestedRegisteredChildRule(
+                ("SHARED_SUPPORT_EPOCH",),
+                "epoch_ids",
+                sequence=True,
+            )
+        ),
+        ("PAIRING_AUTHORITY", "row_binding"): (
+            _NestedRegisteredChildRule(
+                ("OBSERVATION_ROW_BINDING",),
+                "row_binding_id",
+            )
+        ),
+        ("PAIRING_AUTHORITY", "support_chain"): (
+            _NestedRegisteredChildRule(
+                ("SHARED_SUPPORT_CHAIN",),
+                "support_chain_id",
+            )
+        ),
+        ("TRANSITION_STREAM", "pairing_authority"): (
+            _NestedRegisteredChildRule(
+                ("PAIRING_AUTHORITY",),
+                "pairing_authority_id",
+            )
+        ),
+        ("SIGNED_OBSERVATION_BATCH", "request"): (
+            _NestedRegisteredChildRule(
+                ("SIGNED_BATCH_REQUEST",),
+                "request_id",
+            )
+        ),
+        ("SIGNED_BATCH_JOURNAL_ENTRY", "batch"): (
+            _NestedRegisteredChildRule(
+                ("SIGNED_OBSERVATION_BATCH",),
+                "batch_id",
+            )
+        ),
+        ("SIGNED_BATCH_JOURNAL_CLOSURE", "observer_open_binding"): (
+            _NestedRegisteredChildRule(
+                ("OBSERVER_OPEN_BINDING",),
+                "observer_open_binding_id",
+            )
+        ),
+        ("SIGNED_BATCH_JOURNAL_CLOSURE", "entries"): (
+            _NestedRegisteredChildRule(
+                ("SIGNED_BATCH_JOURNAL_ENTRY",),
+                "entry_ids",
+                sequence=True,
+            )
+        ),
+        ("SIGNED_CONTROL_JOURNAL_HEAD", "observer_open_binding"): (
+            _NestedRegisteredChildRule(
+                ("OBSERVER_OPEN_BINDING",),
+                "observer_open_binding_id",
+            )
+        ),
+        ("SIGNED_APPEND_RECEIPT", "observer_open_binding"): (
+            _NestedRegisteredChildRule(
+                ("OBSERVER_OPEN_BINDING",),
+                "observer_open_binding_id",
+            )
+        ),
+        ("CONTROLLED_COMPLETE_SUPPORT_FREEZE", "evidence"): (
+            _NestedRegisteredChildRule(
+                ("OBSERVER_SIGNED_SUPPORT_EVIDENCE",),
+                "evidence_ids",
+                sequence=True,
+            )
+        ),
+        ("SIGNED_CONTROL_CLOSURE", "observer_open_binding"): (
+            _NestedRegisteredChildRule(
+                ("OBSERVER_OPEN_BINDING",),
+                "observer_open_binding_id",
+            )
+        ),
+        ("LIVE_MODEL_EPOCH", "row_sources"): (
+            _NestedRegisteredChildRule(
+                ("LIVE_ROW_SOURCE_BINDING",),
+                "row_source_binding_ids",
+                sequence=True,
+            )
+        ),
+        ("LIVE_MODEL_EPOCH", "model"): (
+            _NestedRegisteredChildRule(
+                ("NUMERICAL_MODEL",),
+                "numerical_model_id",
+            )
+        ),
+        ("LIVE_MODEL_EPOCH", "proof"): (
+            _NestedRegisteredChildRule(
+                ("NUMERICAL_PLANNING_PROOF",),
+                "numerical_proof_id",
+            )
+        ),
+        ("NUMERICAL_PLANNING_PROOF", "model"): (
+            _NestedRegisteredChildRule(
+                ("NUMERICAL_MODEL",),
+                "numerical_model_id",
+            )
+        ),
+        ("DYNAMIC_CHILD_STATE", "state"): (
+            _NestedRegisteredChildRule(
+                ("SYMBOLIC_GRAPH_STATE",),
+                "child_state_id",
+            )
+        ),
+        ("DYNAMIC_CHILD_STATE", "catalogue"): (
+            _NestedRegisteredChildRule(
+                ("LEGAL_ACTION_CATALOGUE",),
+                "catalogue_id",
+            )
+        ),
+        ("DYNAMIC_CHILD_STATE", "row_bindings"): (
+            _NestedRegisteredChildRule(
+                ("OBSERVATION_ROW_BINDING",),
+                "complete_action_row_binding_ids",
+                sequence=True,
+            )
+        ),
+        ("DYNAMIC_CHILD_STATE", "causal_edges"): (
+            _NestedRegisteredChildRule(
+                ("DYNAMIC_CHILD_CAUSAL_EDGE",),
+                "causal_edge_ids",
+                sequence=True,
+            )
+        ),
+        ("DYNAMIC_CHILD_DISCOVERY_INTENT", "row_binding"): (
+            _NestedRegisteredChildRule(
+                ("OBSERVATION_ROW_BINDING",),
+                "row_binding_id",
+            )
+        ),
+        ("DYNAMIC_CHILD_DISCOVERY_INTENT", "stream_identity"): (
+            _NestedRegisteredChildRule(
+                ("TRANSITION_STREAM",),
+                "stream_id",
+            )
+        ),
+        ("DYNAMIC_CHILD_CLOSURE", "child_states"): (
+            _NestedRegisteredChildRule(
+                ("DYNAMIC_CHILD_STATE",),
+                "child_binding_ids",
+                sequence=True,
+            )
+        ),
+        ("DYNAMIC_CHILD_CLOSURE", "discovery_intents"): (
+            _NestedRegisteredChildRule(
+                ("DYNAMIC_CHILD_DISCOVERY_INTENT",),
+                "discovery_intent_ids",
+                sequence=True,
+            )
+        ),
+        ("DYNAMIC_CHILD_CLOSURE", "validation_templates"): (
+            _NestedRegisteredChildRule(
+                ("DYNAMIC_CHILD_VALIDATION_TEMPLATE",),
+                "validation_template_ids",
+                sequence=True,
+            )
+        ),
+        ("DYNAMIC_CHILD_EXECUTION_LEDGER", "executed_rows"): (
+            _NestedRegisteredChildRule(
+                ("DYNAMIC_CHILD_EXECUTED_ROW",),
+                "executed_row_ids",
+                sequence=True,
+            )
+        ),
+        ("LIVE_PROMOTION_INTENT", "stream_identity"): (
+            _NestedRegisteredChildRule(
+                ("TRANSITION_STREAM",),
+                "stream_id",
+            )
+        ),
+        ("LIVE_PROMOTION_DECISION", "intent"): (
+            _NestedRegisteredChildRule(
+                ("LIVE_PROMOTION_INTENT",),
+                "selected_intent_id",
+                optional=True,
+            )
+        ),
+        ("CONSTRUCTION_LIFECYCLE", "events"): (
+            _NestedRegisteredChildRule(
+                ("LIFECYCLE_EVENT",),
+                "event_ids",
+                sequence=True,
+            )
+        ),
+        ("CONSTRUCTION_LIFECYCLE", "support_evidence"): (
+            _NestedRegisteredChildRule(
+                ("LIFECYCLE_SUPPORT_EVIDENCE",),
+                "support_evidence_ids",
+                sequence=True,
+            )
+        ),
+        ("CONSTRUCTION_LIFECYCLE", "support_freezes"): (
+            _NestedRegisteredChildRule(
+                ("LIFECYCLE_SUPPORT_FREEZE",),
+                "support_freeze_ids",
+                sequence=True,
+            )
+        ),
+        **{
+            (f"CONTROLLED_{kind}_INTENT", "semantic_authority"): (
+                _NestedRegisteredChildRule(
+                    (f"CONTROLLED_{kind}_SEMANTIC_AUTHORITY",),
+                    "semantic_authority_binding_id",
+                )
+            )
+            for kind in ("ROOT", "CHILD", "PROMOTION")
+        },
+        **{
+            (f"CONTROLLED_{kind}_INTENT", "stream_identity"): (
+                _NestedRegisteredChildRule(
+                    ("TRANSITION_STREAM",),
+                    "stream_id",
+                )
+            )
+            for kind in ("ROOT", "CHILD", "PROMOTION")
+        },
+    }
+)
+
+
+def _document_keyset_without_schema(
+    document: Mapping[str, Any],
+) -> frozenset[str]:
+    return frozenset(key for key in document if key != "schema")
+
+
 def _verify_nested_registered_document_bindings(
     records: tuple[V075PortableEvidenceArtifactRecordV2, ...],
 ) -> None:
@@ -1892,21 +2856,45 @@ def _verify_nested_registered_document_bindings(
         tuple[str, str],
         list[V075PortableEvidenceArtifactRecordV2],
     ] = {}
+    by_role_primary_id: dict[
+        tuple[str, str],
+        list[V075PortableEvidenceArtifactRecordV2],
+    ] = {}
+    by_primary_key_id: dict[
+        tuple[str, str],
+        list[V075PortableEvidenceArtifactRecordV2],
+    ] = {}
+    roles_by_keyset_without_schema: dict[
+        frozenset[str],
+        set[str],
+    ] = {}
     for record in records:
         by_semantic_artifact_id.setdefault(
             record.semantic_artifact_id,
             [],
         ).append(record)
+        document = record.artifact_document
         primary_key = _ROLE_NESTED_PRIMARY_DOCUMENT_ID.get(record.role)
         if primary_key is None:
             continue
-        document = record.artifact_document
+        roles_by_keyset_without_schema.setdefault(
+            _document_keyset_without_schema(document),
+            set(),
+        ).add(record.role)
         primary_id = _cid(
             document.get(primary_key),
             f"{record.role} nested primary semantic ID",
         )
         by_schema_primary_id.setdefault(
             (record.artifact_schema, primary_id),
+            [],
+        ).append(record)
+        by_role_primary_id.setdefault(
+            (record.role, primary_id),
+            [],
+        ).append(record)
+        by_primary_key_id.setdefault(
+            (primary_key, primary_id),
             [],
         ).append(record)
 
@@ -1927,6 +2915,91 @@ def _verify_nested_registered_document_bindings(
             "registrations"
         )
 
+    def exact_record_for_child(
+        child: Any,
+        *,
+        expected_roles: tuple[str, ...],
+        label: str,
+    ) -> V075PortableEvidenceArtifactRecordV2:
+        if type(child) is not dict:
+            _fail(f"{label} is missing or is not one embedded document")
+        matches: list[V075PortableEvidenceArtifactRecordV2] = []
+        for role in expected_roles:
+            expected_schema = ROLE_SCHEMA_REGISTRY[role]
+            primary_key = _ROLE_NESTED_PRIMARY_DOCUMENT_ID.get(role)
+            if primary_key is None or child.get("schema") != expected_schema:
+                continue
+            try:
+                primary_id = _cid(
+                    child.get(primary_key),
+                    f"{label} primary semantic ID",
+                )
+            except V075PortableOccurrenceEvidenceV2InvariantViolation:
+                continue
+            matches.extend(
+                by_role_primary_id.get((role, primary_id), ())
+            )
+        if len(matches) != 1:
+            _fail(
+                f"{label} has no unique record with its required child role "
+                "and schema"
+            )
+        if canonical_json_bytes(child) != matches[0].canonical_artifact_bytes:
+            _fail(
+                f"{label} canonical bytes differ from its required child "
+                "record"
+            )
+        return matches[0]
+
+    for owner in records:
+        document = owner.artifact_document
+        for (parent_role, field_name), rule in (
+            _NESTED_REGISTERED_CHILD_RULES.items()
+        ):
+            if owner.role != parent_role:
+                continue
+            child_value = document.get(field_name)
+            reference_value = document.get(rule.reference_field)
+            if rule.optional and child_value is None:
+                if reference_value is not None:
+                    _fail(
+                        "optional embedded registered child/reference "
+                        "nullability differs"
+                    )
+                continue
+            if rule.sequence:
+                if type(child_value) is not list or type(reference_value) is not list:
+                    _fail(
+                        "embedded registered child sequence/reference is "
+                        "malformed"
+                    )
+                matched = tuple(
+                    exact_record_for_child(
+                        child,
+                        expected_roles=rule.child_roles,
+                        label=f"{parent_role}.{field_name}",
+                    )
+                    for child in child_value
+                )
+                if [item.semantic_artifact_id for item in matched] != (
+                    reference_value
+                ):
+                    _fail(
+                        "embedded registered child sequence differs from "
+                        "its exact ordered references"
+                    )
+            else:
+                matched = exact_record_for_child(
+                    child_value,
+                    expected_roles=rule.child_roles,
+                    label=f"{parent_role}.{field_name}",
+                )
+                if matched.semantic_artifact_id != reference_value:
+                    _fail(
+                        "embedded registered child differs from its exact "
+                        "parent reference"
+                    )
+
     for owner in records:
         outermost = True
         for nested in _nested_documents(owner.artifact_document):
@@ -1934,33 +3007,54 @@ def _verify_nested_registered_document_bindings(
                 outermost = False
                 continue
             schema = nested.get("schema")
-            primary_keys = _SCHEMA_NESTED_PRIMARY_DOCUMENT_IDS.get(schema)
-            if primary_keys is None:
+            nested_keys = _document_keyset_without_schema(nested)
+            shape_roles = roles_by_keyset_without_schema.get(
+                nested_keys,
+                set(),
+            )
+            candidates: dict[
+                str,
+                V075PortableEvidenceArtifactRecordV2,
+            ] = {}
+            for key, value in nested.items():
+                if type(value) is not str:
+                    continue
+                try:
+                    primary_id = parse_content_id(value)
+                except ValueError:
+                    continue
+                for match in by_primary_key_id.get(
+                    (key, primary_id),
+                    (),
+                ):
+                    expected_keys = _document_keyset_without_schema(
+                        match.artifact_document
+                    )
+                    if expected_keys <= nested_keys:
+                        candidates[match.record_id] = match
+            if not shape_roles and not candidates:
                 continue
-            present = tuple(
-                key for key in primary_keys if key in nested
-            )
-            if len(present) != 1:
+            if shape_roles and schema not in {
+                ROLE_SCHEMA_REGISTRY[role] for role in shape_roles
+            }:
                 _fail(
-                    "embedded registered artifact lacks one unambiguous "
-                    "primary semantic ID"
+                    "embedded registered artifact schema was deleted, "
+                    "laundered, or role-transplanted"
                 )
-            primary_id = _cid(
-                nested[present[0]],
-                "embedded registered artifact primary semantic ID",
-            )
-            matches = by_schema_primary_id.get(
-                (schema, primary_id),
-                (),
-            )
-            if len(matches) != 1:
+            if len(candidates) != 1:
                 _fail(
                     "embedded registered artifact has no unique matching "
-                    "record"
+                    f"record (owner={owner.role}, schema={schema!r})"
+                )
+            match = next(iter(candidates.values()))
+            if schema != match.artifact_schema:
+                _fail(
+                    "embedded registered artifact schema was deleted, "
+                    "laundered, or role-transplanted"
                 )
             if (
                 canonical_json_bytes(nested)
-                != matches[0].canonical_artifact_bytes
+                != match.canonical_artifact_bytes
             ):
                 _fail(
                     "embedded registered artifact canonical bytes differ "
@@ -2318,6 +3412,7 @@ class V075PortableOccurrenceEvidenceBundleV2:
         ):
             _fail("portable occurrence evidence bundle is malformed")
         _verify_nested_registered_document_bindings(self.records)
+        _verify_embedded_planning_documents(self.records)
         _verify_authoritative_dynamic_control_roles(self.records)
         derived_dependencies = _derived_record_dependencies(self.records)
         for record in self.records:
@@ -2644,7 +3739,16 @@ def _verify_complete_portable_graph(
         document = batch.artifact_document
         request = document.get("request")
         outcomes = document.get("outcomes")
-        if type(request) is not dict or type(outcomes) is not list:
+        outcome_ids = document.get("outcome_aggregate_ids")
+        outcome_commitments = document.get(
+            "outcome_aggregate_commitments"
+        )
+        if (
+            type(request) is not dict
+            or type(outcomes) is not list
+            or type(outcome_ids) is not list
+            or type(outcome_commitments) is not list
+        ):
             _fail("portable signed batch lacks request or outcomes")
         _require_semantic_id(
             roles,
@@ -2658,7 +3762,11 @@ def _verify_complete_portable_graph(
             semantic_id=document["stream_id"],
             label="portable signed batch stream",
         )
+        derived_outcome_ids: list[str] = []
+        derived_outcome_commitments: list[dict[str, Any]] = []
         for outcome_document in outcomes:
+            if type(outcome_document) is not dict:
+                _fail("portable signed batch outcome is not one document")
             matches = tuple(
                 record
                 for record in roles.get("SIGNED_BATCH_OUTCOME", ())
@@ -2668,6 +3776,27 @@ def _verify_complete_portable_graph(
                 _fail(
                     "portable signed batch outcome is missing or duplicated"
                 )
+            outcome_id = _cid(
+                outcome_document.get("outcome_id"),
+                "portable signed batch outcome",
+            )
+            derived_outcome_ids.append(outcome_id)
+            derived_outcome_commitments.append(
+                {
+                    "outcome_id": outcome_id,
+                    "count": outcome_document.get("count"),
+                    "reward_sum": outcome_document.get("reward_sum"),
+                }
+            )
+        if (
+            len(set(derived_outcome_ids)) != len(derived_outcome_ids)
+            or outcome_ids != derived_outcome_ids
+            or outcome_commitments != derived_outcome_commitments
+        ):
+            _fail(
+                "portable signed batch outcomes differ from their exact "
+                "ordered IDs or commitments"
+            )
     if len(roles.get("SIGNED_OBSERVATION_BATCH", ())) != len(receipt_ids):
         _fail("portable signed batch count differs from controlled receipts")
 
@@ -3056,7 +4185,10 @@ def open_v075_production_portable_occurrence_evidence_bundle_v2(
 
 
 __all__ = [
+    "BYTE_CARRIED_SEMANTIC_INCOMPLETE_NESTED_SCHEMAS",
+    "CONTENT_ID_AND_EXPANSION_REPLAYED_EMBEDDED_PLANNING_SCHEMAS",
     "DOMAIN_TAGS",
+    "EMBEDDED_PLANNING_TYPED_SEMANTIC_REPLAY_COMPLETE",
     "FRESH_HELDOUT_ACCESS_ALLOWED",
     "INFEASIBILITY_CERTIFICATE_ISSUANCE_ALLOWED",
     "MAX_ARTIFACT_BYTES",
