@@ -1,9 +1,9 @@
 # Portable Production Semantic Closure
 
 **Status:** normative construction contract; production and target access locked  
-**Ledger:** V0-076  
-**Implemented revisions:** `1.60.0`–`1.81.0`
-**Current completed semantic cut:** dependency-aware construction producer replay through `MULTIROUND_RESULT` for the registered root-only cap profile; aggregate registry, source/code provenance and production remain locked
+**Ledger:** V0-076, V0-090
+**Implemented revisions:** `1.60.0`–`1.82.0`
+**Current completed semantic cut:** exact construction-only 67-role semantic closure for the registered root-only cap occurrence; source/code provenance and production remain locked
 
 ## Objective
 
@@ -479,6 +479,54 @@ consumed only by the upstream replay and are not retained, serialized or
 directly hashed by this authority. Source/code provenance, aggregate semantic
 registry, accounting, campaign closure, production, held-out science and
 certificate locks do not move.
+
+## Contract 1.82 construction semantic terminal closure
+
+Contract 1.82 begins with the exact five-input raw 1.81 replay. It neither
+changes nor reissues the historical contract-1.63 semantic registry. Instead,
+it regenerates that exact 67-role declaration registry and its complete
+shape/content-ID attestation set from the fresh verified bundle and exact
+public-context source-manifest identity, then joins them to the fully resolved
+1.81 dependency DAG.
+
+The registered root-only cap occurrence has exactly 49 present roles and the
+18 roles in the fresh 1.81 empty-role registry absent. Each present record
+must have the same `(record_id,index,role)` in the bundle, legacy attestation
+set and construction DAG. Its new construction overlay binds:
+
+```text
+declaration and unchanged legacy replay status
+record semantic ID and canonical byte identity
+construction dependency node and source binding
+resolver and portable/local/effective dependency lanes
+unflattened authority scope and dependency depth
+```
+
+The new overlay status is `FULL_TYPED_REPLAY`. It does not rewrite the legacy
+registry's two `COMPLETE` and 65 `INCOMPLETE` shape-replay labels. An absent
+declaration closes only as `NOT_PRESENT_IN_VERIFIED_OCCURRENCE` and only when
+the fresh 1.81 empty-role registry provides the exact zero-count evidence;
+arbitrary omission is not semantic absence.
+
+All 67 declarations close exactly once. A separate 4096-node Kahn walk
+requires a one-to-one, acyclic, foreign-edge-free effective graph with every
+present node resolved and every frontier empty. Per-record authority scopes
+are preserved, and the terminal artifact binds a native-zero-inclusive scope
+histogram whose counts sum exactly to the 49 records.
+
+Only the following construction-qualified claims are established:
+
+```text
+construction_portable_semantic_registry_complete = true
+construction_dependency_aware_typed_object_replay_complete = true
+construction_complete_occurrence_bundle_semantic_replay_complete = true
+```
+
+Their unqualified or production counterparts remain false. The terminal is
+still `ATTEMPT_CLOSURE_NONCERTIFICATE`; explicit currentness requires all five
+raw inputs. Source/code provenance, native accounting, campaign closure,
+production, held-out science, official execution and certificate issuance do
+not move.
 
 ## Mandatory locks
 

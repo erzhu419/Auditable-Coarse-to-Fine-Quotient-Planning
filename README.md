@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `1.81.0`: the earlier contracts build the
+contracts now span `1.40.0` through `1.82.0`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -141,11 +141,18 @@ root-only `CHILD_ACTION_ROW_CAP_EXCEEDED` occurrence: every optional child and
 promotion role must be absent in the fresh bundle, and the result target is
 read only after the owner producer has been fixed. `MULTIROUND_RESULT` closes
 as `FULL_CONSTRUCTION_MULTIROUND_RESULT_REPLAY`; the construction dependency
-frontier is empty.
+frontier is empty. Contract `1.82.0` then overlays the unchanged 67-role
+semantic declaration registry on that exact DAG. It binds each of the 49
+present records one-to-one across the verified bundle, legacy shape/content-ID
+attestation and construction producer replay, while the exact 18 missing
+child/promotion roles are proved absent by the fresh root-only empty-role
+registry. Legacy `COMPLETE`/`INCOMPLETE` labels are preserved as historical
+shape-replay status; the new `FULL_TYPED_REPLAY` status is a separate
+construction-only lane. Per-record authority scopes remain unflattened and a
+native-zero-inclusive scope histogram sums exactly to the bundle record count.
 
-Production still requires the aggregate semantic-registry closure,
-source/code provenance, complete accounting, campaign closure and an
-independent complete-bundle verifier.
+Production still requires source/code provenance, complete accounting,
+campaign closure and an independent production complete-bundle verifier.
 Sample-efficiency, official, scalar, economics and counter-completeness Gates
 remain locked.
 
