@@ -2,8 +2,8 @@
 
 **Status:** normative construction contract; production and target access locked  
 **Ledger:** V0-076  
-**Implemented revisions:** `1.60.0`–`1.68.0`  
-**Current completed public cut:** M0 + B1 + M1A
+**Implemented revisions:** `1.60.0`–`1.70.0`
+**Current completed public cut:** M0 + B1 + M1A + M1B ROOT
 
 ## Objective
 
@@ -153,7 +153,24 @@ SEALED_OBSERVER_PRIVATE_REPLAY_ATTESTATION
 Old bundles and old closure-verification records remain unchanged and
 unresolved.
 
-## Next semantic cut
+## Contract 1.69 Stage A boundary
+
+Stage A now establishes the sealed-source child, separate sealed private
+descriptor, child-only production-signer load, strict public request surface,
+nonce handling, typed failure closure and native journal/work accounting.
+It intentionally emits:
+
+```text
+SESSION_OWNERSHIP_NOT_YET_COMPLETE
+observer_session_owned_from_open = false
+private_replay_calls = 0
+b3_sign_calls = 0
+```
+
+This artifact is a noncertificate transport precursor. It is not the required
+signer-owning lifecycle and cannot upgrade an old closure or B3.
+
+## M1B signed control cut
 
 M1B reconstructs the signed control structure. It must distinguish:
 
@@ -165,6 +182,13 @@ Root semantic authority may close through M0/M1A. Child and promotion
 authority cannot close until their dynamic-closure/promotion-decision
 semantic authorities are reconstructed. A role absent from a root-only
 occurrence is not complete and is not an inferred native zero.
+
+Contract `1.70.0` implements this cut for all 16 registered control roles.
+Every ROOT binding is replayed against the exact ordered M0 row, stage, lane,
+observer epoch and draw interval. The root-only K7 construction therefore has
+full public generic/ROOT roles and explicit absent CHILD/PROMOTION roles.
+Present dynamic roles remain structural-only; M1A private verification is not
+consumed.
 
 ## Mandatory locks
 

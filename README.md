@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `1.68.0`: the earlier contracts build the
+contracts now span `1.40.0` through `1.70.0`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -64,6 +64,7 @@ raw public context
 -> M0: 11 producer-typed public roles
 -> B1: observer-open binding
 -> M1A: 6 signed-batch roles + iterative O(V+E) dependency DAG
+-> M1B: 16 signed-control roles with exact ROOT/M0 binding
 -> SIGNED_BATCH_JOURNAL_CLOSURE_VERIFICATION remains unresolved
 ```
 
@@ -72,10 +73,14 @@ attestation. Its trusted freeze performs the real private replay before
 observer signing and rejects caller-supplied/legacy verification objects. The
 public verifier still claims only `observer_signed=true` and
 `independently_recomputed=false`: a generic signer holder can bypass the
-helper, so production still requires a signer-owning sealed observer service
-and a new non-retroactive portable role. M1B control replay, child/promotion
-semantic authorities, source/code provenance, all-path accounting, campaign
-closure and the independent complete-bundle verifier remain open.
+helper. Contract `1.69.0` adds the fail-closed signer-owning sealed-child
+transport, but deliberately stops before observer-session ownership, private
+replay or B3 signing. Contract `1.70.0` reconstructs the 16 M1B control roles
+and binds every ROOT action to its exact M0 row/stage/lane/epoch/draw witness;
+present CHILD/PROMOTION semantics remain structural-only. Production still
+requires one signer-owning service lifecycle from observer open through B3,
+the remaining semantic roles, source/code provenance, complete accounting,
+campaign closure and an independent complete-bundle verifier.
 Sample-efficiency, official, scalar, economics and counter-completeness Gates
 remain locked.
 
