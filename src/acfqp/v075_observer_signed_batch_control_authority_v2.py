@@ -17,7 +17,7 @@ ownership or single-private-boundary atomicity.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import InitVar, dataclass, field
 from enum import Enum
 from fractions import Fraction
 import hashlib
@@ -52,6 +52,15 @@ DOMAIN_TAGS = {
     "batch_intent": "acfqp:v075-head-bound-exact-batch-intent:v2",
     "semantic_authority": (
         "acfqp:v075-controlled-batch-semantic-authority-binding:v2"
+    ),
+    "support_freeze_signature": (
+        "acfqp:v075-controlled-complete-support-freeze-signature:v2"
+    ),
+    "support_freeze": (
+        "acfqp:v075-controlled-complete-support-freeze:v2"
+    ),
+    "open_prefix_verification": (
+        "acfqp:v075-open-controlled-batch-prefix-verification:v2"
     ),
     "append_receipt_signature": (
         "acfqp:v075-observer-signed-batch-append-receipt-signature:v2"
@@ -836,6 +845,10 @@ class V075ObserverSignedBatchAppendReceiptV2:
         }
 
 
+_OWNED_APPEND_ISSUER = object()
+_REPLAYED_APPEND_ISSUER = object()
+
+
 @dataclass(frozen=True, slots=True)
 class V075ControlledBatchAppendV2:
     """Public artifacts emitted by one fail-closed in-process control step."""
@@ -845,8 +858,9 @@ class V075ControlledBatchAppendV2:
     batch: observer.V075SignedObservationBatchV2 = field(repr=False)
     resulting_head: V075SignedBatchJournalHeadV2
     receipt: V075ObserverSignedBatchAppendReceiptV2
+    _exact_batch_issuer: InitVar[object | None] = None
 
-    def __post_init__(self) -> None:
+    def __post_init__(self, _exact_batch_issuer: object | None) -> None:
         if (
             type(self.prior_head) is not V075SignedBatchJournalHeadV2
             or type(self.intent) is not V075HeadBoundExactBatchIntentV2
@@ -856,14 +870,22 @@ class V075ControlledBatchAppendV2:
             is not V075ObserverSignedBatchAppendReceiptV2
         ):
             _fail("controlled batch append graph is untyped")
-        try:
-            batch = observer.replay_signed_observation_batch_object_v2(
-                self.batch
-            )
-        except observer.V075PrivateObserverBoundaryV2InvariantViolation as error:
-            raise V075ObserverSignedBatchControlV2InvariantViolation(
-                str(error)
-            ) from error
+        if _exact_batch_issuer in {
+            _OWNED_APPEND_ISSUER,
+            _REPLAYED_APPEND_ISSUER,
+        }:
+            batch = self.batch
+        else:
+            try:
+                batch = observer.replay_signed_observation_batch_object_v2(
+                    self.batch
+                )
+            except (
+                observer.V075PrivateObserverBoundaryV2InvariantViolation
+            ) as error:
+                raise V075ObserverSignedBatchControlV2InvariantViolation(
+                    str(error)
+                ) from error
         request = batch.request
         receipt = self.receipt
         intent = self.intent
@@ -914,6 +936,465 @@ class V075ControlledBatchAppendV2:
         }
 
 
+def _complete_support_representatives(
+    batch: observer.V075SignedObservationBatchV2,
+) -> tuple[
+    tuple[
+        str,
+        graph.V075SymbolicGraphStateV1,
+        observer.V075BatchOutcomeAggregateV2,
+    ],
+    ...,
+]:
+    try:
+        batch = observer.replay_signed_observation_batch_object_v2(batch)
+        return _complete_support_representatives_from_exact_batch(batch)
+    except (
+        AttributeError,
+        TypeError,
+        ValueError,
+        graph.V075PublicGraphSemanticsInvariantViolation,
+        observer.V075PrivateObserverBoundaryV2InvariantViolation,
+    ) as error:
+        if type(error) is V075ObserverSignedBatchControlV2InvariantViolation:
+            raise
+        raise V075ObserverSignedBatchControlV2InvariantViolation(
+            "complete support representative reconstruction failed"
+        ) from error
+
+
+def _complete_support_representatives_from_exact_batch(
+    batch: observer.V075SignedObservationBatchV2,
+) -> tuple[
+    tuple[
+        str,
+        graph.V075SymbolicGraphStateV1,
+        observer.V075BatchOutcomeAggregateV2,
+    ],
+    ...,
+]:
+    try:
+        if type(batch) is not observer.V075SignedObservationBatchV2:
+            _fail("complete support requires one exact signed batch")
+        stream = batch.request.stream_identity
+        if (
+            stream.lane is not graph.V075ObservationLaneV1.DISCOVERY
+            or stream.pairing_authority.support_chain.leaf.evidence
+        ):
+            _fail("complete support requires one bootstrap DISCOVERY batch")
+        by_state: dict[
+            str,
+            tuple[
+                graph.V075SymbolicGraphStateV1,
+                observer.V075BatchOutcomeAggregateV2,
+            ],
+        ] = {}
+        for outcome in batch.outcomes:
+            state = graph.V075SymbolicGraphStateV1(
+                stream.row_binding.context,
+                outcome.next_ranks,
+                outcome.failure,
+            )
+            prior = by_state.get(state.state_id)
+            if prior is None or outcome.outcome_id < prior[1].outcome_id:
+                by_state[state.state_id] = (state, outcome)
+        if (
+            not by_state
+            or len(by_state) > graph.MAX_SUPPORT_MEMBERS_PER_ROW
+        ):
+            _fail("complete support is empty or exceeds its hard cap")
+        return tuple(
+            (state_id, *by_state[state_id])
+            for state_id in sorted(by_state)
+        )
+    except (
+        AttributeError,
+        TypeError,
+        ValueError,
+        graph.V075PublicGraphSemanticsInvariantViolation,
+    ) as error:
+        if type(error) is V075ObserverSignedBatchControlV2InvariantViolation:
+            raise
+        raise V075ObserverSignedBatchControlV2InvariantViolation(
+            "complete support representative reconstruction failed"
+        ) from error
+
+
+def _replay_aggregate_support_evidence(
+    claimed: graph.V075BatchAggregateSupportEvidenceV1,
+    *,
+    namespace: namespace_v2.V075PublicTargetTapeNamespaceV2,
+    row_binding: graph.V075ObservationRowBindingV1,
+) -> graph.V075BatchAggregateSupportEvidenceV1:
+    if type(claimed) is not graph.V075BatchAggregateSupportEvidenceV1:
+        _fail("support freeze evidence has a foreign concrete type")
+    try:
+        state = graph.V075SymbolicGraphStateV1(
+            row_binding.context,
+            claimed.observed_state.ranks,
+            claimed.observed_state.failure,
+        )
+        replayed = graph.V075BatchAggregateSupportEvidenceV1(
+            namespace,
+            row_binding,
+            state,
+            claimed.source_observer_epoch_index,
+            claimed.discovery_request_id,
+            claimed.discovery_batch_id,
+            claimed.discovery_outcome_id,
+            claimed.discovery_outcome_count,
+            claimed.observer_signature_hex,
+        )
+        if (
+            replayed != claimed
+            or replayed.to_document() != claimed.to_document()
+        ):
+            _fail("support evidence differs from exact reconstruction")
+        return replayed
+    except (
+        AttributeError,
+        TypeError,
+        ValueError,
+        graph.V075PublicGraphSemanticsInvariantViolation,
+    ) as error:
+        if type(error) is V075ObserverSignedBatchControlV2InvariantViolation:
+            raise
+        raise V075ObserverSignedBatchControlV2InvariantViolation(
+            "support evidence reconstruction failed"
+        ) from error
+
+
+def _support_freeze_payload(
+    *,
+    discovery_append: V075ControlledBatchAppendV2,
+    frozen_at_head: V075SignedBatchJournalHeadV2,
+    evidence: tuple[graph.V075BatchAggregateSupportEvidenceV1, ...],
+) -> dict[str, Any]:
+    batch = discovery_append.batch
+    request = batch.request
+    stream = request.stream_identity
+    return {
+        "schema": "acfqp.v075_controlled_complete_support_freeze.v2",
+        "schema_version": SCHEMA_VERSION,
+        "proposed_contract_version": PROPOSED_CONTRACT_VERSION,
+        "profile_key": PROFILE_KEY,
+        "occurrence_id": request.occurrence_id,
+        "observer_session_public_id": request.session_public_id,
+        "observer_open_binding_id": request.authority_binding.binding_id,
+        "target_tape_namespace_id": stream.target_tape_namespace_id,
+        "context_id": stream.context_id,
+        "row_binding_id": stream.row_binding_id,
+        "discovery_stream_id": stream.stream_id,
+        "discovery_intent_id": discovery_append.intent.intent_id,
+        "discovery_append_receipt_id": (
+            discovery_append.receipt.receipt_id
+        ),
+        "discovery_resulting_head_id": (
+            discovery_append.resulting_head.head_id
+        ),
+        "discovery_request_id": request.request_id,
+        "discovery_batch_id": batch.batch_id,
+        "frozen_at_head_id": frozen_at_head.head_id,
+        "frozen_after_append_count": frozen_at_head.entry_count,
+        "source_observer_epoch_index": stream.observer_epoch_index,
+        "validation_observer_epoch_index": stream.observer_epoch_index + 1,
+        "evidence_ids": [item.evidence_id for item in evidence],
+        "observed_state_ids": [
+            item.observed_state.state_id for item in evidence
+        ],
+        "support_member_count": len(evidence),
+        "all_discovery_outcomes_examined": True,
+        "complete_symbolic_state_support": True,
+        "spawn_aliases_deduplicated": True,
+        "spawn_alias_representative_rule": "MIN_OUTCOME_ID",
+        "caller_selected_support": False,
+        "observer_owned_freeze_path": True,
+        "same_open_controlled_session": True,
+        "freeze_precedes_same_row_validation": True,
+        "observer_signature_required": True,
+        "official_execution_allowed": False,
+        "process_isolation_provided": False,
+        "private_material_serialized": False,
+    }
+
+
+_OWNED_SUPPORT_FREEZE_ISSUER = object()
+_REPLAYED_SUPPORT_FREEZE_ISSUER = object()
+
+
+@dataclass(frozen=True, slots=True)
+class V075ControlledCompleteSupportFreezeV2:
+    """Observer-signed complete symbolic support from one DISCOVERY append."""
+
+    _issuer: object = field(repr=False, compare=False)
+    discovery_append: V075ControlledBatchAppendV2 = field(repr=False)
+    frozen_at_head: V075SignedBatchJournalHeadV2
+    evidence: tuple[
+        graph.V075BatchAggregateSupportEvidenceV1,
+        ...,
+    ] = field(repr=False)
+    observer_signature_hex: str
+
+    def __post_init__(self) -> None:
+        append = self.discovery_append
+        head = self.frozen_at_head
+        if (
+            self._issuer
+            not in {
+                _OWNED_SUPPORT_FREEZE_ISSUER,
+                _REPLAYED_SUPPORT_FREEZE_ISSUER,
+            }
+            or type(append) is not V075ControlledBatchAppendV2
+            or type(head) is not V075SignedBatchJournalHeadV2
+        ):
+            _fail("controlled complete support freeze is caller-minted")
+        batch = append.batch
+        request = batch.request
+        stream = request.stream_identity
+        if (
+            append.resulting_head.entry_count > head.entry_count
+            or append.resulting_head.occurrence_id != head.occurrence_id
+            or append.resulting_head.session_public_id
+            != head.session_public_id
+            or append.resulting_head.authority_binding
+            != head.authority_binding
+            or type(self.evidence) is not tuple
+            or not self.evidence
+            or len(self.evidence) > graph.MAX_SUPPORT_MEMBERS_PER_ROW
+            or stream.lane is not graph.V075ObservationLaneV1.DISCOVERY
+            or append.intent.semantic_authority.stage
+            not in {
+                V075ControlledBatchStageV2.ROOT_DISCOVERY,
+                V075ControlledBatchStageV2.CHILD_DISCOVERY,
+            }
+        ):
+            _fail("controlled complete support freeze is malformed or late")
+        replayed_evidence = tuple(
+            sorted(
+                self.evidence,
+                key=lambda item: item.evidence_id,
+            )
+        )
+        if (
+            any(
+                type(item)
+                is not graph.V075BatchAggregateSupportEvidenceV1
+                for item in self.evidence
+            )
+            or replayed_evidence != self.evidence
+        ):
+            _fail("complete support evidence is reordered or duplicated")
+        expected = _complete_support_representatives_from_exact_batch(batch)
+        by_state = {
+            item.observed_state.state_id: item
+            for item in replayed_evidence
+        }
+        if (
+            len(by_state) != len(replayed_evidence)
+            or set(by_state) != {item[0] for item in expected}
+        ):
+            _fail("complete support omitted or multiplied an observed state")
+        for state_id, state, outcome in expected:
+            item = by_state[state_id]
+            if (
+                item.namespace != request.authority_binding.namespace
+                or item.row_binding != stream.row_binding
+                or item.observed_state != state
+                or item.source_observer_epoch_index
+                != stream.observer_epoch_index
+                or item.discovery_request_id != request.request_id
+                or item.discovery_batch_id != batch.batch_id
+                or item.discovery_outcome_id != outcome.outcome_id
+                or item.discovery_outcome_count != outcome.count
+            ):
+                _fail("complete support uses a noncanonical representative")
+        _verify_signature(
+            binding=request.authority_binding,
+            message=_signing_bytes(
+                "support_freeze_signature",
+                self._unsigned_payload(),
+            ),
+            signature_hex=self.observer_signature_hex,
+        )
+
+    def _unsigned_payload(self) -> dict[str, Any]:
+        return _support_freeze_payload(
+            discovery_append=self.discovery_append,
+            frozen_at_head=self.frozen_at_head,
+            evidence=self.evidence,
+        )
+
+    @property
+    def freeze_id(self) -> str:
+        return _hash(
+            "support_freeze",
+            {
+                **self._unsigned_payload(),
+                "observer_signature_hex": self.observer_signature_hex,
+                "observer_signature_verified": True,
+            },
+        )
+
+    @property
+    def row_binding_id(self) -> str:
+        return self.discovery_append.batch.request.stream_identity.row_binding_id
+
+    @property
+    def discovery_append_receipt_id(self) -> str:
+        return self.discovery_append.receipt.receipt_id
+
+    def to_document(self) -> dict[str, Any]:
+        return {
+            **self._unsigned_payload(),
+            "evidence": [item.to_document() for item in self.evidence],
+            "observer_signature_hex": self.observer_signature_hex,
+            "observer_signature_verified": True,
+            "freeze_id": self.freeze_id,
+        }
+
+
+def _replay_support_freeze(
+    claimed: V075ControlledCompleteSupportFreezeV2,
+) -> V075ControlledCompleteSupportFreezeV2:
+    if type(claimed) is not V075ControlledCompleteSupportFreezeV2:
+        _fail("support freeze replay requires one exact concrete type")
+    try:
+        append = _replay_append(claimed.discovery_append)
+        head = _replay_signed_head(claimed.frozen_at_head)
+        stream = append.batch.request.stream_identity
+        evidence = tuple(
+            _replay_aggregate_support_evidence(
+                item,
+                namespace=append.batch.request.authority_binding.namespace,
+                row_binding=stream.row_binding,
+            )
+            for item in claimed.evidence
+        )
+        replayed = V075ControlledCompleteSupportFreezeV2(
+            _REPLAYED_SUPPORT_FREEZE_ISSUER,
+            append,
+            head,
+            evidence,
+            claimed.observer_signature_hex,
+        )
+        if (
+            replayed != claimed
+            or replayed.to_document() != claimed.to_document()
+        ):
+            _fail("support freeze differs from exact reconstruction")
+        return replayed
+    except (AttributeError, TypeError, ValueError) as error:
+        if type(error) is V075ObserverSignedBatchControlV2InvariantViolation:
+            raise
+        raise V075ObserverSignedBatchControlV2InvariantViolation(
+            "support freeze reconstruction failed"
+        ) from error
+
+
+def _replay_support_freeze_against_prefix(
+    claimed: V075ControlledCompleteSupportFreezeV2,
+    *,
+    discovery_append: V075ControlledBatchAppendV2,
+    frozen_at_head: V075SignedBatchJournalHeadV2,
+) -> V075ControlledCompleteSupportFreezeV2:
+    """Replay a freeze while reusing exact append/head prefix objects."""
+
+    if type(claimed) is not V075ControlledCompleteSupportFreezeV2:
+        _fail("support freeze replay requires one exact concrete type")
+    try:
+        if (
+            claimed.discovery_append != discovery_append
+            or claimed.discovery_append.to_document()
+            != discovery_append.to_document()
+            or claimed.frozen_at_head != frozen_at_head
+            or claimed.frozen_at_head.to_document()
+            != frozen_at_head.to_document()
+        ):
+            _fail("support freeze embeds a foreign append or head")
+        stream = discovery_append.batch.request.stream_identity
+        evidence = tuple(
+            _replay_aggregate_support_evidence(
+                item,
+                namespace=(
+                    discovery_append.batch.request.authority_binding.namespace
+                ),
+                row_binding=stream.row_binding,
+            )
+            for item in claimed.evidence
+        )
+        replayed = V075ControlledCompleteSupportFreezeV2(
+            _REPLAYED_SUPPORT_FREEZE_ISSUER,
+            discovery_append,
+            frozen_at_head,
+            evidence,
+            claimed.observer_signature_hex,
+        )
+        if (
+            replayed != claimed
+            or replayed.to_document() != claimed.to_document()
+        ):
+            _fail("support freeze differs from exact reconstruction")
+        return replayed
+    except (AttributeError, TypeError, ValueError) as error:
+        if type(error) is V075ObserverSignedBatchControlV2InvariantViolation:
+            raise
+        raise V075ObserverSignedBatchControlV2InvariantViolation(
+            "support freeze reconstruction failed"
+        ) from error
+
+
+def derive_v075_controlled_validation_stream_v2(
+    *,
+    support_freeze: V075ControlledCompleteSupportFreezeV2,
+) -> graph.V075TransitionStreamIdentityV1:
+    """Derive the sole next-epoch VALIDATION stream admitted by a freeze."""
+
+    support = _replay_support_freeze(support_freeze)
+    return _derive_validation_stream_from_owned_support_freeze(support)
+
+
+def _derive_validation_stream_from_owned_support_freeze(
+    support: V075ControlledCompleteSupportFreezeV2,
+) -> graph.V075TransitionStreamIdentityV1:
+    if type(support) is not V075ControlledCompleteSupportFreezeV2:
+        _fail("owned validation derivation requires one exact support freeze")
+    discovery = support.discovery_append.batch.request.stream_identity
+    chain = discovery.pairing_authority.support_chain
+    source = chain.leaf
+    if (
+        source.epoch_index != discovery.observer_epoch_index
+        or source.required_lane is not graph.V075ObservationLaneV1.DISCOVERY
+        or source.evidence
+    ):
+        _fail("support freeze discovery stream lacks an empty bootstrap leaf")
+    try:
+        promoted = graph.derive_shared_support_epoch_v1(
+            namespace=discovery.namespace,
+            row_binding=discovery.row_binding,
+            epoch_index=source.epoch_index + 1,
+            evidence=support.evidence,
+            parent=source,
+        )
+        promoted_chain = graph.freeze_shared_support_chain_v1(
+            namespace=discovery.namespace,
+            row_binding=discovery.row_binding,
+            epochs=(*chain.epochs, promoted),
+        )
+        pairing = graph.freeze_five_arm_pairing_authority_v1(
+            namespace=discovery.namespace,
+            row_binding=discovery.row_binding,
+            support_chain=promoted_chain,
+        )
+        return graph.derive_transition_stream_identity_v1(
+            pairing_authority=pairing,
+            arm=discovery.arm,
+        )
+    except graph.V075PublicGraphSemanticsInvariantViolation as error:
+        raise V075ObserverSignedBatchControlV2InvariantViolation(
+            "controlled validation stream derivation failed"
+        ) from error
+
+
 def _control_closure_payload(
     *,
     occurrence_id: str,
@@ -924,6 +1405,7 @@ def _control_closure_payload(
     head_ids: tuple[str, ...],
     intent_ids: tuple[str, ...],
     semantic_authority_binding_ids: tuple[str, ...],
+    support_freeze_ids: tuple[str, ...],
     receipt_ids: tuple[str, ...],
     batch_closure_id: str,
     batch_ids: tuple[str, ...],
@@ -948,6 +1430,8 @@ def _control_closure_payload(
         "semantic_authority_binding_ids": list(
             semantic_authority_binding_ids
         ),
+        "support_freeze_ids": list(support_freeze_ids),
+        "support_freeze_count": len(support_freeze_ids),
         "append_receipt_ids": list(receipt_ids),
         "batch_journal_closure_id": batch_closure_id,
         "signed_batch_ids": list(batch_ids),
@@ -980,6 +1464,7 @@ class V075ObserverSignedBatchControlClosureV2:
     head_ids: tuple[str, ...]
     intent_ids: tuple[str, ...]
     semantic_authority_binding_ids: tuple[str, ...]
+    support_freeze_ids: tuple[str, ...]
     receipt_ids: tuple[str, ...]
     batch_closure_id: str
     batch_ids: tuple[str, ...]
@@ -1002,6 +1487,7 @@ class V075ObserverSignedBatchControlClosureV2:
             or type(self.intent_ids) is not tuple
             or type(self.receipt_ids) is not tuple
             or type(self.semantic_authority_binding_ids) is not tuple
+            or type(self.support_freeze_ids) is not tuple
             or type(self.batch_ids) is not tuple
             or type(self.journal_entry_ids) is not tuple
             or not self.receipt_ids
@@ -1019,6 +1505,7 @@ class V075ObserverSignedBatchControlClosureV2:
                     self.head_ids,
                     self.intent_ids,
                     self.semantic_authority_binding_ids,
+                    self.support_freeze_ids,
                     self.receipt_ids,
                     self.batch_ids,
                     self.journal_entry_ids,
@@ -1030,6 +1517,7 @@ class V075ObserverSignedBatchControlClosureV2:
                 for collection in (
                     self.head_ids,
                     self.intent_ids,
+                    self.support_freeze_ids,
                     self.receipt_ids,
                     self.batch_ids,
                     self.journal_entry_ids,
@@ -1058,6 +1546,7 @@ class V075ObserverSignedBatchControlClosureV2:
             semantic_authority_binding_ids=(
                 self.semantic_authority_binding_ids
             ),
+            support_freeze_ids=self.support_freeze_ids,
             receipt_ids=self.receipt_ids,
             batch_closure_id=self.batch_closure_id,
             batch_ids=self.batch_ids,
@@ -1179,6 +1668,9 @@ class V075SignedBatchControlReconciliationV2:
         }
 
 
+_OWNED_CLOSED_RESULT_ISSUER = object()
+
+
 @dataclass(frozen=True, slots=True)
 class V075ControlledBatchJournalClosureV2:
     """Exact normal batch closure plus independently checked control chain."""
@@ -1190,8 +1682,16 @@ class V075ControlledBatchJournalClosureV2:
     appends: tuple[V075ControlledBatchAppendV2, ...] = field(repr=False)
     control_closure: V075ObserverSignedBatchControlClosureV2
     reconciliation: V075SignedBatchControlReconciliationV2
+    support_freezes: tuple[
+        V075ControlledCompleteSupportFreezeV2,
+        ...,
+    ] = field(default=(), repr=False)
+    _exact_reconciliation_issuer: InitVar[object | None] = None
 
-    def __post_init__(self) -> None:
+    def __post_init__(
+        self,
+        _exact_reconciliation_issuer: object | None,
+    ) -> None:
         if (
             type(self.batch_closure)
             is not observer.V075ObserverBatchJournalClosureV2
@@ -1209,14 +1709,39 @@ class V075ControlledBatchJournalClosureV2:
             is not V075ObserverSignedBatchControlClosureV2
             or type(self.reconciliation)
             is not V075SignedBatchControlReconciliationV2
+            or type(self.support_freezes) is not tuple
+            or any(
+                type(item) is not V075ControlledCompleteSupportFreezeV2
+                for item in self.support_freezes
+            )
         ):
             _fail("controlled batch journal closure graph is untyped")
-        replayed = _verify_controlled_closure_graph(
-            batch_closure=self.batch_closure,
-            heads=self.heads,
-            appends=self.appends,
-            control_closure=self.control_closure,
-        )
+        if _exact_reconciliation_issuer is _OWNED_CLOSED_RESULT_ISSUER:
+            replayed = self.reconciliation
+            if (
+                replayed.occurrence_id != self.batch_closure.occurrence_id
+                or replayed.session_public_id
+                != self.batch_closure.session_public_id
+                or replayed.batch_closure_id != self.batch_closure.closure_id
+                or replayed.control_closure_id
+                != self.control_closure.control_closure_id
+                or replayed.zero_head_id != self.heads[0].head_id
+                or replayed.final_head_id != self.heads[-1].head_id
+                or replayed.append_count != len(self.appends)
+                or replayed.total_accepted_draw_count
+                != self.heads[-1].total_accepted_draw_count
+                or self.control_closure.support_freeze_ids
+                != tuple(item.freeze_id for item in self.support_freezes)
+            ):
+                _fail("owned closed result differs from exact reconciliation")
+        else:
+            replayed = _verify_controlled_closure_graph(
+                batch_closure=self.batch_closure,
+                heads=self.heads,
+                appends=self.appends,
+                control_closure=self.control_closure,
+                support_freezes=self.support_freezes,
+            )
         if replayed != self.reconciliation:
             _fail("claimed batch-control reconciliation differs from replay")
 
@@ -1236,6 +1761,10 @@ class V075ControlledBatchJournalClosureV2:
             "append_receipt_ids": [
                 item.receipt.receipt_id for item in self.appends
             ],
+            "support_freeze_ids": [
+                item.freeze_id for item in self.support_freezes
+            ],
+            "support_freeze_count": len(self.support_freezes),
             "official_execution_allowed": False,
             "production_authorizing": False,
             "process_isolation_provided": False,
@@ -1268,31 +1797,64 @@ def _derive_frontiers(
             raise V075ObserverSignedBatchControlV2InvariantViolation(
                 str(error)
             ) from error
-        request = batch.request
-        stream_id = request.stream_identity.stream_id
-        prior = state.get(stream_id)
+        _advance_frontier_state_from_exact_batch(state=state, batch=batch)
+        expected_previous = entry.entry_id
+    return tuple(sorted(state.values(), key=lambda item: item.stream_id))
+
+
+def _advance_frontier_state_from_exact_batch(
+    *,
+    state: dict[str, V075BatchStreamFrontierV2],
+    batch: observer.V075SignedObservationBatchV2,
+) -> tuple[V075BatchStreamFrontierV2, ...]:
+    if (
+        type(state) is not dict
+        or type(batch) is not observer.V075SignedObservationBatchV2
+    ):
+        _fail("exact frontier advance received a foreign object")
+    request = batch.request
+    stream_id = request.stream_identity.stream_id
+    prior = state.get(stream_id)
+    if (
+        request.accepted_draw_start
+        != (1 if prior is None else prior.accepted_draw_end + 1)
+        or (
+            prior is not None
+            and request.accepted_draw_cap != prior.accepted_draw_cap
+        )
+        or (
+            prior is not None
+            and request.stream_identity.row_binding_id != prior.row_binding_id
+        )
+    ):
+        _fail("controlled observer stream changed cap, row, or prefix")
+    state[stream_id] = V075BatchStreamFrontierV2(
+        stream_id,
+        request.stream_identity.row_binding_id,
+        request.accepted_draw_cap,
+        request.accepted_draw_end,
+        1 if prior is None else prior.batch_count + 1,
+        request.request_id,
+        batch.batch_id,
+    )
+    return tuple(sorted(state.values(), key=lambda item: item.stream_id))
+
+
+def _derive_frontiers_from_owned_entries(
+    entries: tuple[observer.V075ObserverBatchJournalEntryV2, ...],
+) -> tuple[V075BatchStreamFrontierV2, ...]:
+    state: dict[str, V075BatchStreamFrontierV2] = {}
+    expected_previous: str | None = None
+    for sequence_number, entry in enumerate(entries, start=1):
         if (
-            request.accepted_draw_start
-            != (1 if prior is None else prior.accepted_draw_end + 1)
-            or (
-                prior is not None
-                and request.accepted_draw_cap != prior.accepted_draw_cap
-            )
-            or (
-                prior is not None
-                and request.stream_identity.row_binding_id
-                != prior.row_binding_id
-            )
+            type(entry) is not observer.V075ObserverBatchJournalEntryV2
+            or entry.sequence_number != sequence_number
+            or entry.previous_entry_id != expected_previous
         ):
-            _fail("controlled observer stream changed cap, row, or prefix")
-        state[stream_id] = V075BatchStreamFrontierV2(
-            stream_id,
-            request.stream_identity.row_binding_id,
-            request.accepted_draw_cap,
-            request.accepted_draw_end,
-            1 if prior is None else prior.batch_count + 1,
-            request.request_id,
-            batch.batch_id,
+            _fail("owned observer journal is reordered or gapped")
+        _advance_frontier_state_from_exact_batch(
+            state=state,
+            batch=entry.batch,
         )
         expected_previous = entry.entry_id
     return tuple(sorted(state.values(), key=lambda item: item.stream_id))
@@ -1431,6 +1993,53 @@ def _replay_intent(
         ) from error
 
 
+def _replay_intent_against_stream(
+    claimed: V075HeadBoundExactBatchIntentV2,
+    *,
+    stream: graph.V075TransitionStreamIdentityV1,
+) -> V075HeadBoundExactBatchIntentV2:
+    """Replay an intent while reusing an exact batch-reconstructed stream."""
+
+    if (
+        type(claimed) is not V075HeadBoundExactBatchIntentV2
+        or type(stream) is not graph.V075TransitionStreamIdentityV1
+    ):
+        _fail("batch intent/stream replay requires exact concrete types")
+    try:
+        if (
+            claimed.stream_identity != stream
+            or claimed.stream_identity.to_document() != stream.to_document()
+        ):
+            _fail("batch intent embeds a foreign stream")
+        semantic_authority = _replay_semantic_authority(
+            claimed.semantic_authority
+        )
+        replayed = V075HeadBoundExactBatchIntentV2(
+            _INTENT_ISSUER,
+            claimed.prior_head_id,
+            claimed.occurrence_id,
+            claimed.session_public_id,
+            claimed.observer_open_binding_id,
+            semantic_authority,
+            stream,
+            claimed.accepted_draw_start,
+            claimed.accepted_draw_count,
+            claimed.accepted_draw_cap,
+        )
+        if (
+            replayed != claimed
+            or replayed.to_document() != claimed.to_document()
+        ):
+            _fail("batch intent differs from exact reconstruction")
+        return replayed
+    except (AttributeError, TypeError, ValueError) as error:
+        if type(error) is V075ObserverSignedBatchControlV2InvariantViolation:
+            raise
+        raise V075ObserverSignedBatchControlV2InvariantViolation(
+            "batch intent reconstruction failed"
+        ) from error
+
+
 def _replay_receipt(
     claimed: V075ObserverSignedBatchAppendReceiptV2,
 ) -> V075ObserverSignedBatchAppendReceiptV2:
@@ -1471,14 +2080,76 @@ def _replay_append(
     if type(claimed) is not V075ControlledBatchAppendV2:
         _fail("controlled append replay requires one exact concrete type")
     try:
-        replayed = V075ControlledBatchAppendV2(
-            _replay_signed_head(claimed.prior_head),
-            _replay_intent(claimed.intent),
+        replayed_batch = (
             observer.replay_signed_observation_batch_object_v2(
                 claimed.batch
+            )
+        )
+        replayed = V075ControlledBatchAppendV2(
+            _replay_signed_head(claimed.prior_head),
+            _replay_intent_against_stream(
+                claimed.intent,
+                stream=replayed_batch.request.stream_identity,
             ),
+            replayed_batch,
             _replay_signed_head(claimed.resulting_head),
             _replay_receipt(claimed.receipt),
+            _REPLAYED_APPEND_ISSUER,
+        )
+        if (
+            replayed != claimed
+            or replayed.to_document() != claimed.to_document()
+        ):
+            _fail("controlled append differs from exact reconstruction")
+        return replayed
+    except (
+        AttributeError,
+        TypeError,
+        ValueError,
+        observer.V075PrivateObserverBoundaryV2InvariantViolation,
+    ) as error:
+        if type(error) is V075ObserverSignedBatchControlV2InvariantViolation:
+            raise
+        raise V075ObserverSignedBatchControlV2InvariantViolation(
+            "controlled append reconstruction failed"
+        ) from error
+
+
+def _replay_append_against_heads(
+    claimed: V075ControlledBatchAppendV2,
+    *,
+    prior_head: V075SignedBatchJournalHeadV2,
+    resulting_head: V075SignedBatchJournalHeadV2,
+) -> V075ControlledBatchAppendV2:
+    """Replay one append while reusing already reconstructed chain heads."""
+
+    if type(claimed) is not V075ControlledBatchAppendV2:
+        _fail("controlled append replay requires one exact concrete type")
+    try:
+        if (
+            claimed.prior_head != prior_head
+            or claimed.prior_head.to_document()
+            != prior_head.to_document()
+            or claimed.resulting_head != resulting_head
+            or claimed.resulting_head.to_document()
+            != resulting_head.to_document()
+        ):
+            _fail("controlled append embeds a foreign head")
+        replayed_batch = (
+            observer.replay_signed_observation_batch_object_v2(
+                claimed.batch
+            )
+        )
+        replayed = V075ControlledBatchAppendV2(
+            prior_head,
+            _replay_intent_against_stream(
+                claimed.intent,
+                stream=replayed_batch.request.stream_identity,
+            ),
+            replayed_batch,
+            resulting_head,
+            _replay_receipt(claimed.receipt),
+            _REPLAYED_APPEND_ISSUER,
         )
         if (
             replayed != claimed
@@ -1561,6 +2232,74 @@ def _replay_batch_closure(
         ) from error
 
 
+def _replay_batch_closure_against_appends(
+    claimed: observer.V075ObserverBatchJournalClosureV2,
+    *,
+    appends: tuple[V075ControlledBatchAppendV2, ...],
+) -> observer.V075ObserverBatchJournalClosureV2:
+    """Replay closure structure/signature using exact prefix-replayed batches."""
+
+    if (
+        type(claimed)
+        is not observer.V075ObserverBatchJournalClosureV2
+        or type(appends) is not tuple
+        or not appends
+        or len(claimed.entries) != len(appends)
+    ):
+        _fail("batch closure/append replay graph is malformed")
+    try:
+        entries: list[observer.V075ObserverBatchJournalEntryV2] = []
+        for index, (claimed_entry, append) in enumerate(
+            zip(claimed.entries, appends, strict=True),
+            start=1,
+        ):
+            if (
+                type(claimed_entry)
+                is not observer.V075ObserverBatchJournalEntryV2
+                or claimed_entry.batch.batch_id != append.batch.batch_id
+                or claimed_entry.batch.request.request_id
+                != append.batch.request.request_id
+                or claimed_entry.batch.observer_signature_hex
+                != append.batch.observer_signature_hex
+                or claimed_entry.batch.outcomes != append.batch.outcomes
+            ):
+                _fail("batch closure entry differs from replayed prefix batch")
+            entry = observer.V075ObserverBatchJournalEntryV2(
+                index,
+                None if not entries else entries[-1].entry_id,
+                append.batch,
+            )
+            if (
+                entry.sequence_number != claimed_entry.sequence_number
+                or entry.previous_entry_id != claimed_entry.previous_entry_id
+                or entry.entry_id != claimed_entry.entry_id
+            ):
+                _fail("batch closure entry chain differs from replayed prefix")
+            entries.append(entry)
+        first_request = appends[0].batch.request
+        replayed = observer.V075ObserverBatchJournalClosureV2(
+            first_request.occurrence_id,
+            first_request.session_public_id,
+            first_request.authority_binding,
+            tuple(entries),
+            claimed.observer_signature_hex,
+        )
+        if replayed.closure_id != claimed.closure_id:
+            _fail("batch closure differs from exact prefix reconstruction")
+        return replayed
+    except (
+        AttributeError,
+        TypeError,
+        ValueError,
+        observer.V075PrivateObserverBoundaryV2InvariantViolation,
+    ) as error:
+        if type(error) is V075ObserverSignedBatchControlV2InvariantViolation:
+            raise
+        raise V075ObserverSignedBatchControlV2InvariantViolation(
+            "batch closure reconstruction failed"
+        ) from error
+
+
 def _replay_control_closure(
     claimed: V075ObserverSignedBatchControlClosureV2,
 ) -> V075ObserverSignedBatchControlClosureV2:
@@ -1579,6 +2318,7 @@ def _replay_control_closure(
             tuple(claimed.head_ids),
             tuple(claimed.intent_ids),
             tuple(claimed.semantic_authority_binding_ids),
+            tuple(claimed.support_freeze_ids),
             tuple(claimed.receipt_ids),
             claimed.batch_closure_id,
             tuple(claimed.batch_ids),
@@ -1599,18 +2339,399 @@ def _replay_control_closure(
         ) from error
 
 
+def _exact_open_prefix_components(
+    *,
+    heads: tuple[V075SignedBatchJournalHeadV2, ...],
+    appends: tuple[V075ControlledBatchAppendV2, ...],
+    support_freezes: tuple[
+        V075ControlledCompleteSupportFreezeV2,
+        ...,
+    ],
+) -> tuple[
+    tuple[V075SignedBatchJournalHeadV2, ...],
+    tuple[V075ControlledBatchAppendV2, ...],
+    tuple[V075ControlledCompleteSupportFreezeV2, ...],
+]:
+    if (
+        type(heads) is not tuple
+        or type(appends) is not tuple
+        or type(support_freezes) is not tuple
+        or len(heads) != len(appends) + 1
+        or not heads
+    ):
+        _fail("open controlled prefix has noncanonical container lengths")
+    replayed_heads = tuple(_replay_signed_head(item) for item in heads)
+    replayed_appends = tuple(
+        _replay_append_against_heads(
+            item,
+            prior_head=replayed_heads[index],
+            resulting_head=replayed_heads[index + 1],
+        )
+        for index, item in enumerate(appends)
+    )
+    append_by_receipt = {
+        item.receipt.receipt_id: item for item in replayed_appends
+    }
+    head_by_id = {item.head_id: item for item in replayed_heads}
+    try:
+        replayed_freezes = tuple(
+            _replay_support_freeze_against_prefix(
+                item,
+                discovery_append=append_by_receipt[
+                    item.discovery_append.receipt.receipt_id
+                ],
+                frozen_at_head=head_by_id[item.frozen_at_head.head_id],
+            )
+            for item in support_freezes
+        )
+    except (AttributeError, KeyError) as error:
+        raise V075ObserverSignedBatchControlV2InvariantViolation(
+            "open-prefix support freeze cites a foreign append or head"
+        ) from error
+    if (
+        replayed_heads[0].entry_count != 0
+        or replayed_heads[0].tail_entry_id is not None
+        or replayed_heads[0].stream_frontiers
+        or replayed_freezes
+        != tuple(
+            sorted(
+                replayed_freezes,
+                key=lambda item: (
+                    item.frozen_at_head.entry_count,
+                    item.row_binding_id,
+                    item.freeze_id,
+                ),
+            )
+        )
+    ):
+        _fail("open controlled prefix lacks H0 or canonical freeze order")
+
+    occurrence_id = replayed_heads[0].occurrence_id
+    session_public_id = replayed_heads[0].session_public_id
+    binding = replayed_heads[0].authority_binding
+    entries: list[observer.V075ObserverBatchJournalEntryV2] = []
+    previous_entry_id: str | None = None
+    frontier_state: dict[str, V075BatchStreamFrontierV2] = {}
+    for index, append in enumerate(replayed_appends, start=1):
+        entry = observer.V075ObserverBatchJournalEntryV2(
+            index,
+            previous_entry_id,
+            append.batch,
+        )
+        entries.append(entry)
+        expected_frontiers = _advance_frontier_state_from_exact_batch(
+            state=frontier_state,
+            batch=append.batch,
+        )
+        prior = replayed_heads[index - 1]
+        resulting = replayed_heads[index]
+        if (
+            append.prior_head != prior
+            or append.resulting_head != resulting
+            or append.receipt.journal_entry_id != entry.entry_id
+            or append.receipt.journal_sequence_number != index
+            or prior.occurrence_id != occurrence_id
+            or prior.session_public_id != session_public_id
+            or prior.authority_binding != binding
+            or resulting.occurrence_id != occurrence_id
+            or resulting.session_public_id != session_public_id
+            or resulting.authority_binding != binding
+            or resulting.entry_count != index
+            or resulting.tail_entry_id != entry.entry_id
+            or resulting.stream_frontiers != expected_frontiers
+            or resulting.total_accepted_draw_count
+            != sum(
+                item.batch.request.accepted_draw_count for item in entries
+            )
+        ):
+            _fail("open controlled prefix head/append chain is inconsistent")
+        previous_entry_id = entry.entry_id
+
+    freeze_ids: set[str] = set()
+    freeze_rows: set[str] = set()
+    freeze_receipts: set[str] = set()
+    append_index_by_receipt = {
+        item.receipt.receipt_id: index
+        for index, item in enumerate(replayed_appends, start=1)
+    }
+    for support in replayed_freezes:
+        receipt_id = support.discovery_append_receipt_id
+        discovery_index = append_index_by_receipt.get(receipt_id)
+        row_id = support.row_binding_id
+        if (
+            support.freeze_id in freeze_ids
+            or row_id in freeze_rows
+            or receipt_id in freeze_receipts
+            or discovery_index is None
+            or replayed_appends[discovery_index - 1]
+            != support.discovery_append
+            or support.frozen_at_head.entry_count >= len(replayed_heads)
+            or support.frozen_at_head
+            != replayed_heads[support.frozen_at_head.entry_count]
+            or discovery_index > support.frozen_at_head.entry_count
+            or support.frozen_at_head.occurrence_id != occurrence_id
+            or support.frozen_at_head.session_public_id != session_public_id
+            or support.frozen_at_head.authority_binding != binding
+        ):
+            _fail("open prefix support freeze is duplicated or transplanted")
+        freeze_ids.add(support.freeze_id)
+        freeze_rows.add(row_id)
+        freeze_receipts.add(receipt_id)
+
+    freeze_by_row = {
+        item.row_binding_id: item for item in replayed_freezes
+    }
+    for index, append in enumerate(replayed_appends, start=1):
+        stream = append.batch.request.stream_identity
+        row_id = stream.row_binding_id
+        support = freeze_by_row.get(row_id)
+        if stream.lane is graph.V075ObservationLaneV1.VALIDATION:
+            if (
+                support is None
+                or index <= support.frozen_at_head.entry_count
+                or append.intent.semantic_authority.support_freeze_id
+                != support.freeze_id
+                or stream
+                != _derive_validation_stream_from_owned_support_freeze(
+                    support
+                )
+            ):
+                _fail(
+                    "validation append is not exactly downstream of its "
+                    "same-row support freeze"
+                )
+        elif (
+            support is not None
+            and index > support.frozen_at_head.entry_count
+            and stream.lane is graph.V075ObservationLaneV1.DISCOVERY
+        ):
+            _fail("same-row discovery continued after complete support freeze")
+    discovery_rows = tuple(
+        item.batch.request.stream_identity.row_binding_id
+        for item in replayed_appends
+        if item.batch.request.stream_identity.lane
+        is graph.V075ObservationLaneV1.DISCOVERY
+    )
+    if len(discovery_rows) != len(set(discovery_rows)):
+        _fail("open prefix repeats a same-row discovery append")
+    return replayed_heads, replayed_appends, replayed_freezes
+
+
+_OPEN_PREFIX_VERIFICATION_ISSUER = object()
+
+
+@dataclass(frozen=True, slots=True)
+class V075OpenControlledBatchPrefixVerificationV2:
+    """Exact typed H0-to-Hn replay that neither closes nor re-signs."""
+
+    _issuer: InitVar[object]
+    heads: tuple[V075SignedBatchJournalHeadV2, ...] = field(repr=False)
+    appends: tuple[V075ControlledBatchAppendV2, ...] = field(repr=False)
+    support_freezes: tuple[
+        V075ControlledCompleteSupportFreezeV2,
+        ...,
+    ] = field(repr=False)
+    occurrence_id: str
+    session_public_id: str
+    observer_open_binding_id: str
+    zero_head_id: str
+    current_head_id: str
+    head_ids: tuple[str, ...]
+    intent_ids: tuple[str, ...]
+    batch_ids: tuple[str, ...]
+    receipt_ids: tuple[str, ...]
+    support_freeze_ids: tuple[str, ...]
+    append_count: int
+    total_accepted_draw_count: int
+    _verification_id: str = field(init=False, repr=False)
+
+    def __post_init__(self, _issuer: object) -> None:
+        for value, label in (
+            (self.occurrence_id, "open-prefix occurrence"),
+            (self.session_public_id, "open-prefix session"),
+            (self.observer_open_binding_id, "open-prefix binding"),
+            (self.zero_head_id, "open-prefix zero head"),
+            (self.current_head_id, "open-prefix current head"),
+        ):
+            _cid(value, label)
+        if (
+            _issuer is not _OPEN_PREFIX_VERIFICATION_ISSUER
+            or type(self.heads) is not tuple
+            or type(self.appends) is not tuple
+            or type(self.support_freezes) is not tuple
+            or type(self.head_ids) is not tuple
+            or type(self.intent_ids) is not tuple
+            or type(self.batch_ids) is not tuple
+            or type(self.receipt_ids) is not tuple
+            or type(self.support_freeze_ids) is not tuple
+            or type(self.append_count) is not int
+            or self.append_count < 0
+            or type(self.total_accepted_draw_count) is not int
+            or self.total_accepted_draw_count < 0
+            or len(self.heads) != self.append_count + 1
+            or len(self.appends) != self.append_count
+            or self.head_ids != tuple(item.head_id for item in self.heads)
+            or self.intent_ids
+            != tuple(item.intent.intent_id for item in self.appends)
+            or self.batch_ids
+            != tuple(item.batch.batch_id for item in self.appends)
+            or self.receipt_ids
+            != tuple(item.receipt.receipt_id for item in self.appends)
+            or self.support_freeze_ids
+            != tuple(item.freeze_id for item in self.support_freezes)
+            or self.zero_head_id != self.heads[0].head_id
+            or self.current_head_id != self.heads[-1].head_id
+            or self.occurrence_id != self.heads[0].occurrence_id
+            or self.session_public_id != self.heads[0].session_public_id
+            or self.observer_open_binding_id
+            != self.heads[0].authority_binding.binding_id
+            or self.total_accepted_draw_count
+            != self.heads[-1].total_accepted_draw_count
+        ):
+            _fail("open controlled prefix verification is caller-minted")
+        for collection in (
+            self.head_ids,
+            self.intent_ids,
+            self.batch_ids,
+            self.receipt_ids,
+            self.support_freeze_ids,
+        ):
+            if any(_cid(item, "open-prefix member") != item for item in collection):
+                _fail("open controlled prefix contains a malformed ID")
+        object.__setattr__(
+            self,
+            "_verification_id",
+            _hash("open_prefix_verification", self._payload()),
+        )
+
+    def _payload(self) -> dict[str, Any]:
+        return {
+            "schema": (
+                "acfqp.v075_open_controlled_batch_prefix_verification.v2"
+            ),
+            "schema_version": SCHEMA_VERSION,
+            "proposed_contract_version": PROPOSED_CONTRACT_VERSION,
+            "profile_key": PROFILE_KEY,
+            "occurrence_id": self.occurrence_id,
+            "observer_session_public_id": self.session_public_id,
+            "observer_open_binding_id": self.observer_open_binding_id,
+            "zero_head_id": self.zero_head_id,
+            "current_head_id": self.current_head_id,
+            "head_ids": list(self.head_ids),
+            "intent_ids": list(self.intent_ids),
+            "signed_batch_ids": list(self.batch_ids),
+            "append_receipt_ids": list(self.receipt_ids),
+            "support_freeze_ids": list(self.support_freeze_ids),
+            "append_count": self.append_count,
+            "support_freeze_count": len(self.support_freeze_ids),
+            "total_accepted_draw_count": (
+                self.total_accepted_draw_count
+            ),
+            "zero_to_current_head_chain_exactly_reconstructed": True,
+            "ordered_intents_batches_receipts_replayed": True,
+            "support_freezes_exactly_replayed": True,
+            "verifier_closed_session": False,
+            "verifier_resigned_artifacts": False,
+            "session_open_state_verified": False,
+            "typed_open_prefix_only": True,
+            "semantic_authority_reference_status": "OPAQUE_DEFERRED",
+            "official_execution_allowed": False,
+            "process_isolation_provided": False,
+        }
+
+    @property
+    def verification_id(self) -> str:
+        return self._verification_id
+
+    def to_document(self) -> dict[str, Any]:
+        return {**self._payload(), "verification_id": self.verification_id}
+
+
+def verify_v075_open_controlled_batch_prefix_v2(
+    *,
+    heads: tuple[V075SignedBatchJournalHeadV2, ...],
+    appends: tuple[V075ControlledBatchAppendV2, ...],
+    support_freezes: tuple[
+        V075ControlledCompleteSupportFreezeV2,
+        ...,
+    ] = (),
+) -> V075OpenControlledBatchPrefixVerificationV2:
+    """Reconstruct an open typed prefix without closing or signing anything."""
+
+    heads, appends, support_freezes = _exact_open_prefix_components(
+        heads=heads,
+        appends=appends,
+        support_freezes=support_freezes,
+    )
+    first = heads[0]
+    return V075OpenControlledBatchPrefixVerificationV2(
+        _OPEN_PREFIX_VERIFICATION_ISSUER,
+        heads,
+        appends,
+        support_freezes,
+        first.occurrence_id,
+        first.session_public_id,
+        first.authority_binding.binding_id,
+        first.head_id,
+        heads[-1].head_id,
+        tuple(item.head_id for item in heads),
+        tuple(item.intent.intent_id for item in appends),
+        tuple(item.batch.batch_id for item in appends),
+        tuple(item.receipt.receipt_id for item in appends),
+        tuple(item.freeze_id for item in support_freezes),
+        len(appends),
+        heads[-1].total_accepted_draw_count,
+    )
+
+
+def replay_v075_open_controlled_batch_prefix_verification_v2(
+    claimed: V075OpenControlledBatchPrefixVerificationV2,
+) -> V075OpenControlledBatchPrefixVerificationV2:
+    if type(claimed) is not V075OpenControlledBatchPrefixVerificationV2:
+        _fail("open-prefix replay requires one exact verification artifact")
+    try:
+        replayed = verify_v075_open_controlled_batch_prefix_v2(
+            heads=claimed.heads,
+            appends=claimed.appends,
+            support_freezes=claimed.support_freezes,
+        )
+        if (
+            replayed != claimed
+            or replayed.to_document() != claimed.to_document()
+        ):
+            _fail("open-prefix verification differs from exact replay")
+        return replayed
+    except (AttributeError, TypeError, ValueError) as error:
+        if type(error) is V075ObserverSignedBatchControlV2InvariantViolation:
+            raise
+        raise V075ObserverSignedBatchControlV2InvariantViolation(
+            "open-prefix verification reconstruction failed"
+        ) from error
+
+
 def _verify_controlled_closure_graph(
     *,
     batch_closure: observer.V075ObserverBatchJournalClosureV2,
     heads: tuple[V075SignedBatchJournalHeadV2, ...],
     appends: tuple[V075ControlledBatchAppendV2, ...],
     control_closure: V075ObserverSignedBatchControlClosureV2,
+    support_freezes: tuple[
+        V075ControlledCompleteSupportFreezeV2,
+        ...,
+    ] = (),
 ) -> V075SignedBatchControlReconciliationV2:
-    if type(heads) is not tuple or type(appends) is not tuple:
-        _fail("controlled closure heads and appends must be exact tuples")
-    batch_closure = _replay_batch_closure(batch_closure)
-    heads = tuple(_replay_signed_head(item) for item in heads)
-    appends = tuple(_replay_append(item) for item in appends)
+    prefix = verify_v075_open_controlled_batch_prefix_v2(
+        heads=heads,
+        appends=appends,
+        support_freezes=support_freezes,
+    )
+    heads = prefix.heads
+    appends = prefix.appends
+    support_freezes = prefix.support_freezes
+    batch_closure = _replay_batch_closure_against_appends(
+        batch_closure,
+        appends=appends,
+    )
     control_closure = _replay_control_closure(control_closure)
     if (
         type(batch_closure)
@@ -1626,32 +2747,15 @@ def _verify_controlled_closure_graph(
     binding = batch_closure.authority_binding
     occurrence_id = batch_closure.occurrence_id
     session_public_id = batch_closure.session_public_id
-    for index, (prior, append, resulting, entry) in enumerate(
-        zip(heads[:-1], appends, heads[1:], entries, strict=True),
+    for index, (append, entry) in enumerate(
+        zip(appends, entries, strict=True),
         start=1,
     ):
         request = entry.batch.request
-        expected_frontiers = _derive_frontiers(entries[:index])
         if (
-            append.prior_head != prior
-            or append.resulting_head != resulting
-            or append.batch != entry.batch
+            append.batch != entry.batch
             or append.receipt.journal_entry_id != entry.entry_id
             or append.receipt.journal_sequence_number != index
-            or prior.occurrence_id != occurrence_id
-            or prior.session_public_id != session_public_id
-            or prior.authority_binding != binding
-            or resulting.occurrence_id != occurrence_id
-            or resulting.session_public_id != session_public_id
-            or resulting.authority_binding != binding
-            or resulting.entry_count != index
-            or resulting.tail_entry_id != entry.entry_id
-            or resulting.stream_frontiers != expected_frontiers
-            or resulting.total_accepted_draw_count
-            != sum(
-                item.request.accepted_draw_count
-                for item in (entry_.batch for entry_ in entries[:index])
-            )
             or append.intent.stream_identity != request.stream_identity
         ):
             _fail("controlled head/intent/append chain differs from journal")
@@ -1659,6 +2763,9 @@ def _verify_controlled_closure_graph(
     intent_ids = tuple(item.intent.intent_id for item in appends)
     semantic_authority_binding_ids = tuple(
         item.intent.semantic_authority.binding_id for item in appends
+    )
+    support_freeze_ids = tuple(
+        item.freeze_id for item in support_freezes
     )
     receipt_ids = tuple(item.receipt.receipt_id for item in appends)
     batch_ids = tuple(item.batch.batch_id for item in appends)
@@ -1673,6 +2780,7 @@ def _verify_controlled_closure_graph(
         or control_closure.intent_ids != intent_ids
         or control_closure.semantic_authority_binding_ids
         != semantic_authority_binding_ids
+        or control_closure.support_freeze_ids != support_freeze_ids
         or control_closure.receipt_ids != receipt_ids
         or control_closure.batch_closure_id != batch_closure.closure_id
         or control_closure.batch_ids != batch_ids
@@ -1698,6 +2806,10 @@ def verify_v075_controlled_batch_journal_closure_v2(
     heads: tuple[V075SignedBatchJournalHeadV2, ...],
     appends: tuple[V075ControlledBatchAppendV2, ...],
     control_closure: V075ObserverSignedBatchControlClosureV2,
+    support_freezes: tuple[
+        V075ControlledCompleteSupportFreezeV2,
+        ...,
+    ] = (),
 ) -> V075SignedBatchControlReconciliationV2:
     """Exact same-implementation typed replay without re-signing.
 
@@ -1711,6 +2823,7 @@ def verify_v075_controlled_batch_journal_closure_v2(
         heads=heads,
         appends=appends,
         control_closure=control_closure,
+        support_freezes=support_freezes,
     )
 
 
@@ -1730,6 +2843,7 @@ class V075ConstructionControlledPrivateObserverV2:
         "__poisoned",
         "__session",
         "__signer",
+        "__support_freezes",
         "__used_intent_ids",
     )
 
@@ -1766,6 +2880,9 @@ class V075ConstructionControlledPrivateObserverV2:
         self.__appends: list[V075ControlledBatchAppendV2] = []
         self.__pending_intent: V075HeadBoundExactBatchIntentV2 | None = None
         self.__used_intent_ids: set[str] = set()
+        self.__support_freezes: list[
+            V075ControlledCompleteSupportFreezeV2
+        ] = []
         self.__closed = False
         self.__poisoned = False
         self.__heads = [self.__mint_current_head()]
@@ -1784,6 +2901,51 @@ class V075ConstructionControlledPrivateObserverV2:
     def controlled_appends(self) -> tuple[V075ControlledBatchAppendV2, ...]:
         return tuple(self.__appends)
 
+    @property
+    def signed_heads(self) -> tuple[V075SignedBatchJournalHeadV2, ...]:
+        return tuple(self.__heads)
+
+    @property
+    def support_freezes(
+        self,
+    ) -> tuple[V075ControlledCompleteSupportFreezeV2, ...]:
+        return tuple(
+            sorted(
+                self.__support_freezes,
+                key=lambda item: (
+                    item.frozen_at_head.entry_count,
+                    item.row_binding_id,
+                    item.freeze_id,
+                ),
+            )
+        )
+
+    def verify_open_prefix_v2(
+        self,
+    ) -> V075OpenControlledBatchPrefixVerificationV2:
+        self.__require_open()
+        self.__assert_exact_controlled_journal()
+        return verify_v075_open_controlled_batch_prefix_v2(
+            heads=self.signed_heads,
+            appends=self.controlled_appends,
+            support_freezes=self.support_freezes,
+        )
+
+    def derive_validation_stream_v2(
+        self,
+        *,
+        support_freeze: V075ControlledCompleteSupportFreezeV2,
+    ) -> graph.V075TransitionStreamIdentityV1:
+        self.__require_open()
+        self.__assert_exact_controlled_journal()
+        if not any(
+            item is support_freeze for item in self.__support_freezes
+        ):
+            _fail("validation derivation requires this controller's freeze")
+        return _derive_validation_stream_from_owned_support_freeze(
+            support_freeze
+        )
+
     def __require_open(self) -> None:
         if self.__closed or self.__poisoned:
             _fail("controlled private observer is closed or poisoned")
@@ -1795,7 +2957,7 @@ class V075ConstructionControlledPrivateObserverV2:
 
     def __mint_current_head(self) -> V075SignedBatchJournalHeadV2:
         entries = self.__entries()
-        frontiers = _derive_frontiers(entries)
+        frontiers = _derive_frontiers_from_owned_entries(entries)
         unsigned = _journal_head_payload(
             occurrence_id=self.__identity.occurrence_id,
             session_public_id=self.__session.session_public_id,
@@ -1900,6 +3062,33 @@ class V075ConstructionControlledPrivateObserverV2:
         )
         if stream_identity.lane.value != expected_lane:
             _fail("controlled batch stage and stream lane disagree")
+        support_by_row = {
+            item.row_binding_id: item for item in self.support_freezes
+        }
+        row_support = support_by_row.get(stream_identity.row_binding_id)
+        if expected_lane == "VALIDATION":
+            if (
+                row_support is None
+                or support_freeze_id != row_support.freeze_id
+                or stream_identity
+                != _derive_validation_stream_from_owned_support_freeze(
+                    row_support
+                )
+            ):
+                _fail(
+                    "controlled validation intent lacks its exact same-row "
+                    "support freeze"
+                )
+        elif row_support is not None:
+            _fail("controlled discovery cannot continue after row freeze")
+        elif any(
+            item.batch.request.stream_identity.row_binding_id
+            == stream_identity.row_binding_id
+            and item.batch.request.stream_identity.lane
+            is graph.V075ObservationLaneV1.DISCOVERY
+            for item in self.__appends
+        ):
+            _fail("controlled row already has its sole discovery append")
         expected_start = _expected_next_from_head(
             head=self.current_signed_head,
             stream_id=stream_identity.stream_id,
@@ -1919,6 +3108,137 @@ class V075ConstructionControlledPrivateObserverV2:
             _fail("controlled batch intent was already consumed")
         self.__pending_intent = intent
         return intent
+
+    def freeze_complete_support_v2(
+        self,
+        *,
+        discovery_append: V075ControlledBatchAppendV2,
+    ) -> V075ControlledCompleteSupportFreezeV2:
+        """Freeze every symbolic outcome before same-row validation."""
+
+        self.__require_open()
+        self.__assert_exact_controlled_journal()
+        if self.__pending_intent is not None:
+            _fail("support cannot freeze while another intent is pending")
+        matching = tuple(
+            item
+            for item in self.__appends
+            if item is discovery_append
+        )
+        if len(matching) != 1:
+            _fail(
+                "support freeze is duplicate, foreign, non-discovery, or "
+                "after validation"
+            )
+        append = matching[0]
+        stream = append.batch.request.stream_identity
+        same_row_discoveries = tuple(
+            item
+            for item in self.__appends
+            if item.batch.request.stream_identity.row_binding_id
+            == stream.row_binding_id
+            and item.batch.request.stream_identity.lane
+            is graph.V075ObservationLaneV1.DISCOVERY
+        )
+        if (
+            stream.lane is not graph.V075ObservationLaneV1.DISCOVERY
+            or append.intent.semantic_authority.stage
+            not in {
+                V075ControlledBatchStageV2.ROOT_DISCOVERY,
+                V075ControlledBatchStageV2.CHILD_DISCOVERY,
+            }
+            or any(
+                item.discovery_append_receipt_id
+                == append.receipt.receipt_id
+                or item.row_binding_id == stream.row_binding_id
+                for item in self.__support_freezes
+            )
+            or any(
+                item.batch.request.stream_identity.row_binding_id
+                == stream.row_binding_id
+                and item.batch.request.stream_identity.lane
+                is graph.V075ObservationLaneV1.VALIDATION
+                for item in self.__appends
+            )
+            or same_row_discoveries != (append,)
+        ):
+            _fail(
+                "support freeze is duplicate, foreign, non-discovery, or "
+                "after validation"
+            )
+        batch = append.batch
+        request = batch.request
+        namespace = request.authority_binding.namespace
+        row = stream.row_binding
+        evidence: list[graph.V075BatchAggregateSupportEvidenceV1] = []
+        self.__poisoned = True
+        try:
+            for _state_id, state, outcome in (
+                _complete_support_representatives(batch)
+            ):
+                message = (
+                    graph.batch_aggregate_support_evidence_signing_bytes_v1(
+                        namespace=namespace,
+                        row_binding=row,
+                        observed_state=state,
+                        source_observer_epoch_index=(
+                            stream.observer_epoch_index
+                        ),
+                        discovery_request_id=request.request_id,
+                        discovery_batch_id=batch.batch_id,
+                        discovery_outcome_id=outcome.outcome_id,
+                        discovery_outcome_count=outcome.count,
+                    )
+                )
+                signature = _sign(
+                    signer=self.__signer,
+                    binding=request.authority_binding,
+                    message=message,
+                )
+                evidence.append(
+                    graph.bind_batch_aggregate_support_evidence_v1(
+                        namespace=namespace,
+                        row_binding=row,
+                        observed_state=state,
+                        source_observer_epoch_index=(
+                            stream.observer_epoch_index
+                        ),
+                        discovery_request_id=request.request_id,
+                        discovery_batch_id=batch.batch_id,
+                        discovery_outcome_id=outcome.outcome_id,
+                        discovery_outcome_count=outcome.count,
+                        observer_signature_hex=signature,
+                    )
+                )
+            evidence_tuple = tuple(
+                sorted(evidence, key=lambda item: item.evidence_id)
+            )
+            frozen_at_head = self.current_signed_head
+            unsigned = _support_freeze_payload(
+                discovery_append=append,
+                frozen_at_head=frozen_at_head,
+                evidence=evidence_tuple,
+            )
+            support = V075ControlledCompleteSupportFreezeV2(
+                _OWNED_SUPPORT_FREEZE_ISSUER,
+                append,
+                frozen_at_head,
+                evidence_tuple,
+                _sign(
+                    signer=self.__signer,
+                    binding=request.authority_binding,
+                    message=_signing_bytes(
+                        "support_freeze_signature",
+                        unsigned,
+                    ),
+                ),
+            )
+        except Exception:
+            self.__closed = True
+            raise
+        self.__support_freezes.append(support)
+        self.__poisoned = False
+        return support
 
     def execute_batch_intent_v2(
         self,
@@ -2005,6 +3325,7 @@ class V075ConstructionControlledPrivateObserverV2:
                 batch,
                 resulting_head,
                 receipt,
+                _OWNED_APPEND_ISSUER,
             )
         except Exception:
             self.__closed = True
@@ -2032,6 +3353,7 @@ class V075ConstructionControlledPrivateObserverV2:
             batch_closure = self.__adapter.close_v2()
             heads = tuple(self.__heads)
             appends = tuple(self.__appends)
+            support_freezes = self.support_freezes
             batch_ids = tuple(item.batch.batch_id for item in appends)
             entry_ids = tuple(
                 item.entry_id for item in batch_closure.entries
@@ -2049,6 +3371,9 @@ class V075ConstructionControlledPrivateObserverV2:
                 semantic_authority_binding_ids=tuple(
                     item.intent.semantic_authority.binding_id
                     for item in appends
+                ),
+                support_freeze_ids=tuple(
+                    item.freeze_id for item in support_freezes
                 ),
                 receipt_ids=tuple(
                     item.receipt.receipt_id for item in appends
@@ -2069,6 +3394,7 @@ class V075ConstructionControlledPrivateObserverV2:
                     item.intent.semantic_authority.binding_id
                     for item in appends
                 ),
+                tuple(item.freeze_id for item in support_freezes),
                 tuple(item.receipt.receipt_id for item in appends),
                 batch_closure.closure_id,
                 batch_ids,
@@ -2087,6 +3413,7 @@ class V075ConstructionControlledPrivateObserverV2:
                 heads=heads,
                 appends=appends,
                 control_closure=control_closure,
+                support_freezes=support_freezes,
             )
             result = V075ControlledBatchJournalClosureV2(
                 batch_closure,
@@ -2094,6 +3421,8 @@ class V075ConstructionControlledPrivateObserverV2:
                 appends,
                 control_closure,
                 reconciliation,
+                support_freezes,
+                _OWNED_CLOSED_RESULT_ISSUER,
             )
         except Exception:
             self.__closed = True
@@ -2180,6 +3509,7 @@ __all__ = [
     "TERMINAL_CLASS",
     "V075BatchStreamFrontierV2",
     "V075ConstructionControlledPrivateObserverV2",
+    "V075ControlledCompleteSupportFreezeV2",
     "V075ControlledBatchSemanticAuthorityBindingV2",
     "V075ControlledBatchSemanticAuthorityRoleV2",
     "V075ControlledBatchSemanticAuthoritySchemaV2",
@@ -2191,11 +3521,15 @@ __all__ = [
     "V075ObserverSignedBatchControlClosureV2",
     "V075ObserverSignedBatchControlProductionV2NotReady",
     "V075ObserverSignedBatchControlV2InvariantViolation",
+    "V075OpenControlledBatchPrefixVerificationV2",
     "V075SignedBatchControlReconciliationV2",
     "V075SignedBatchJournalHeadV2",
+    "derive_v075_controlled_validation_stream_v2",
     "freeze_v075_controlled_batch_semantic_authority_v2",
     "freeze_v075_head_bound_exact_batch_intent_v2",
     "open_v075_construction_controlled_private_observer_v2",
     "open_v075_production_controlled_private_observer_v2",
+    "replay_v075_open_controlled_batch_prefix_verification_v2",
     "verify_v075_controlled_batch_journal_closure_v2",
+    "verify_v075_open_controlled_batch_prefix_v2",
 ]

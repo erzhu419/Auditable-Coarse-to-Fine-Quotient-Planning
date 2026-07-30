@@ -7,6 +7,7 @@ import pytest
 
 from acfqp import v075_batch_native_statistical_backend_v1 as backend
 from acfqp import v075_observer_signed_batch_control_authority_v2 as control
+from acfqp import v075_public_graph_semantics_v1 as graph
 from acfqp import v075_registered_occurrence_worker_v1 as worker
 from tests import test_v075_private_observer_boundary_v2 as fixture
 
@@ -38,13 +39,47 @@ def _identity(values, *, ordinal: int):
     )
 
 
-def _stream(values):
+def _streams(values):
     _generated, _salt, namespace, _authorization, _signer = values
-    return next(
-        item
-        for item in fixture._streams(namespace).streams
-        if item.arm == worker.V075WorkerArmV1.NO_PRIOR.value
-    )
+    context = namespace.family.replicate_contexts[0]
+    catalogue = graph.root_catalogue_v1(context)
+    result = []
+    for action in catalogue.actions:
+        row = graph.observation_row_binding_v1(
+            context,
+            catalogue,
+            action,
+        )
+        epoch = graph.derive_shared_support_epoch_v1(
+            namespace=namespace,
+            row_binding=row,
+            epoch_index=0,
+            evidence=(),
+        )
+        chain = graph.freeze_shared_support_chain_v1(
+            namespace=namespace,
+            row_binding=row,
+            epochs=(epoch,),
+        )
+        pairing = graph.freeze_five_arm_pairing_authority_v1(
+            namespace=namespace,
+            row_binding=row,
+            support_chain=chain,
+        )
+        result.append(
+            next(
+                item
+                for item in graph.freeze_five_arm_stream_set_v1(
+                    pairing
+                ).streams
+                if item.arm == worker.V075WorkerArmV1.NO_PRIOR.value
+            )
+        )
+    return tuple(result)
+
+
+def _stream(values):
+    return _streams(values)[0]
 
 
 def _controller(values, marker: str, *, ordinal: int):
@@ -60,7 +95,14 @@ def _controller(values, marker: str, *, ordinal: int):
     )
 
 
-def _semantic(marker: str):
+def _semantic(
+    marker: str,
+    *,
+    stage: control.V075ControlledBatchStageV2 = (
+        control.V075ControlledBatchStageV2.ROOT_DISCOVERY
+    ),
+    support_freeze_id: str | None = None,
+):
     return {
         "semantic_authority_role": (
             control.V075ControlledBatchSemanticAuthorityRoleV2
@@ -74,9 +116,9 @@ def _semantic(marker: str):
         "semantic_verification_id": _id(
             f"{marker}-semantic-verification"
         ),
-        "stage": control.V075ControlledBatchStageV2.ROOT_DISCOVERY,
+        "stage": stage,
         "round_index": 0,
-        "support_freeze_id": None,
+        "support_freeze_id": support_freeze_id,
     }
 
 
@@ -97,7 +139,7 @@ def test_signed_zero_head_controlled_appends_and_closure_reconcile(
         **shared_semantic_authority,
         accepted_draw_start=1,
         accepted_draw_count=5,
-        accepted_draw_cap=12,
+        accepted_draw_cap=5,
     )
     assert controller.current_signed_head == zero
     first = controller.execute_batch_intent_v2(first_intent)
@@ -110,12 +152,22 @@ def test_signed_zero_head_controlled_appends_and_closure_reconcile(
     assert first.receipt.resulting_head_id == first.resulting_head.head_id
     assert first.resulting_head.stream_frontiers[0].accepted_draw_end == 5
 
+    support = controller.freeze_complete_support_v2(
+        discovery_append=first,
+    )
+    validation_stream = controller.derive_validation_stream_v2(
+        support_freeze=support,
+    )
     second_intent = controller.prepare_batch_intent_v2(
-        stream_identity=stream,
-        **shared_semantic_authority,
-        accepted_draw_start=6,
+        stream_identity=validation_stream,
+        **_semantic(
+            "happy-validation",
+            stage=control.V075ControlledBatchStageV2.ROOT_VALIDATION,
+            support_freeze_id=support.freeze_id,
+        ),
+        accepted_draw_start=1,
         accepted_draw_count=7,
-        accepted_draw_cap=12,
+        accepted_draw_cap=7,
     )
     second = controller.execute_batch_intent_v2(second_intent)
     assert second.resulting_head.entry_count == 2
@@ -123,8 +175,13 @@ def test_signed_zero_head_controlled_appends_and_closure_reconcile(
         second.receipt.journal_entry_id
     )
     assert second.resulting_head.total_accepted_draw_count == 12
-    assert second.resulting_head.stream_frontiers[0].accepted_draw_end == 12
-    assert second.resulting_head.stream_frontiers[0].batch_count == 2
+    by_stream = {
+        item.stream_id: item
+        for item in second.resulting_head.stream_frontiers
+    }
+    assert by_stream[stream.stream_id].accepted_draw_end == 5
+    assert by_stream[validation_stream.stream_id].accepted_draw_end == 7
+    assert all(item.batch_count == 1 for item in by_stream.values())
 
     closed = controller.close_and_reconcile_v2()
     assert closed.batch_closure.closure_id == (
@@ -133,7 +190,7 @@ def test_signed_zero_head_controlled_appends_and_closure_reconcile(
     assert closed.control_closure.head_ids == tuple(
         item.head_id for item in closed.heads
     )
-    assert len(set(closed.control_closure.semantic_authority_binding_ids)) == 1
+    assert len(set(closed.control_closure.semantic_authority_binding_ids)) == 2
     assert closed.reconciliation.append_count == 2
     assert closed.reconciliation.total_accepted_draw_count == 12
     assert (
@@ -142,6 +199,7 @@ def test_signed_zero_head_controlled_appends_and_closure_reconcile(
             heads=closed.heads,
             appends=closed.appends,
             control_closure=closed.control_closure,
+            support_freezes=closed.support_freezes,
         )
         == closed.reconciliation
     )
@@ -182,7 +240,7 @@ def test_stale_reused_gapped_and_cap_changed_intents_are_rejected(
         **_semantic("stale-first"),
         accepted_draw_start=1,
         accepted_draw_count=3,
-        accepted_draw_cap=9,
+        accepted_draw_cap=3,
     )
     controller.execute_batch_intent_v2(intent)
     with pytest.raises(
@@ -190,13 +248,32 @@ def test_stale_reused_gapped_and_cap_changed_intents_are_rejected(
         match="stale, reused, or unregistered",
     ):
         controller.execute_batch_intent_v2(intent)
+    support = controller.freeze_complete_support_v2(
+        discovery_append=controller.controlled_appends[0],
+    )
+    validation_stream = controller.derive_validation_stream_v2(
+        support_freeze=support,
+    )
+    validation_semantic = _semantic(
+        "stale-validation",
+        stage=control.V075ControlledBatchStageV2.ROOT_VALIDATION,
+        support_freeze_id=support.freeze_id,
+    )
+    validation_intent = controller.prepare_batch_intent_v2(
+        stream_identity=validation_stream,
+        **validation_semantic,
+        accepted_draw_start=1,
+        accepted_draw_count=3,
+        accepted_draw_cap=9,
+    )
+    controller.execute_batch_intent_v2(validation_intent)
     with pytest.raises(
         control.V075ObserverSignedBatchControlV2InvariantViolation,
         match="gapped or overlaps",
     ):
         controller.prepare_batch_intent_v2(
-            stream_identity=stream,
-            **_semantic("stale-gap"),
+            stream_identity=validation_stream,
+            **validation_semantic,
             accepted_draw_start=5,
             accepted_draw_count=2,
             accepted_draw_cap=9,
@@ -206,8 +283,8 @@ def test_stale_reused_gapped_and_cap_changed_intents_are_rejected(
         match="changes a frozen stream cap",
     ):
         controller.prepare_batch_intent_v2(
-            stream_identity=stream,
-            **_semantic("stale-cap"),
+            stream_identity=validation_stream,
+            **validation_semantic,
             accepted_draw_start=4,
             accepted_draw_count=2,
             accepted_draw_cap=10,
@@ -331,4 +408,265 @@ def test_semantic_role_stage_round_and_support_binding_is_typed(
             accepted_draw_start=1,
             accepted_draw_count=1,
             accepted_draw_cap=1,
+        )
+
+
+def test_multi_row_support_freeze_open_prefix_and_validation(
+    exact_v2_graph,
+) -> None:
+    controller = _controller(exact_v2_graph, "multi-row", ordinal=7)
+    signer = exact_v2_graph[-1]
+    streams_by_row = {}
+    for stream in _streams(exact_v2_graph):
+        streams_by_row.setdefault(stream.row_binding_id, stream)
+    discovery_streams = tuple(streams_by_row.values())[:2]
+    assert len(discovery_streams) == 2
+
+    freezes = []
+    for index, stream in enumerate(discovery_streams):
+        intent = controller.prepare_batch_intent_v2(
+            stream_identity=stream,
+            **_semantic(f"multi-discovery-{index}"),
+            accepted_draw_start=1,
+            accepted_draw_count=4,
+            accepted_draw_cap=4,
+        )
+        append = controller.execute_batch_intent_v2(intent)
+        support = controller.freeze_complete_support_v2(
+            discovery_append=append,
+        )
+        assert support.discovery_append_receipt_id == (
+            append.receipt.receipt_id
+        )
+        assert support.frozen_at_head == controller.current_signed_head
+        freezes.append(support)
+
+    signed_before = len(signer.messages)
+    prefix = control.verify_v075_open_controlled_batch_prefix_v2(
+        heads=controller.signed_heads,
+        appends=controller.controlled_appends,
+        support_freezes=controller.support_freezes,
+    )
+    assert len(signer.messages) == signed_before
+    assert prefix.append_count == 2
+    assert prefix.support_freeze_ids == tuple(
+        item.freeze_id for item in controller.support_freezes
+    )
+    assert prefix.to_document()["verifier_closed_session"] is False
+    assert prefix.to_document()["verifier_resigned_artifacts"] is False
+    assert prefix.to_document()["session_open_state_verified"] is False
+
+    for index, support in enumerate(freezes):
+        validation = controller.derive_validation_stream_v2(
+            support_freeze=support,
+        )
+        intent = controller.prepare_batch_intent_v2(
+            stream_identity=validation,
+            **_semantic(
+                f"multi-validation-{index}",
+                stage=control.V075ControlledBatchStageV2.ROOT_VALIDATION,
+                support_freeze_id=support.freeze_id,
+            ),
+            accepted_draw_start=1,
+            accepted_draw_count=3,
+            accepted_draw_cap=3,
+        )
+        controller.execute_batch_intent_v2(intent)
+
+    with pytest.raises(
+        control.V075ObserverSignedBatchControlV2InvariantViolation,
+        match="duplicate, foreign, non-discovery, or after validation",
+    ):
+        controller.freeze_complete_support_v2(
+            discovery_append=freezes[0].discovery_append,
+        )
+    closed = controller.close_and_reconcile_v2()
+    assert closed.reconciliation.append_count == 4
+    assert closed.reconciliation.total_accepted_draw_count == 14
+    assert closed.control_closure.support_freeze_ids == tuple(
+        item.freeze_id for item in closed.support_freezes
+    )
+    assert closed.to_document()["support_freeze_count"] == 2
+
+
+def test_support_freeze_rejects_foreign_duplicate_and_forged_prefix(
+    exact_v2_graph,
+) -> None:
+    first = _controller(exact_v2_graph, "freeze-a", ordinal=8)
+    second = _controller(exact_v2_graph, "freeze-b", ordinal=9)
+    stream = _stream(exact_v2_graph)
+    first_intent = first.prepare_batch_intent_v2(
+        stream_identity=stream,
+        **_semantic("freeze-a"),
+        accepted_draw_start=1,
+        accepted_draw_count=4,
+        accepted_draw_cap=4,
+    )
+    first_append = first.execute_batch_intent_v2(first_intent)
+    support = first.freeze_complete_support_v2(
+        discovery_append=first_append,
+    )
+    with pytest.raises(
+        control.V075ObserverSignedBatchControlV2InvariantViolation,
+        match="duplicate, foreign, non-discovery, or after validation",
+    ):
+        first.freeze_complete_support_v2(
+            discovery_append=first_append,
+        )
+    with pytest.raises(
+        control.V075ObserverSignedBatchControlV2InvariantViolation,
+        match="duplicate, foreign, non-discovery, or after validation",
+    ):
+        second.freeze_complete_support_v2(
+            discovery_append=first_append,
+        )
+
+    with pytest.raises(
+        control.V075ObserverSignedBatchControlV2InvariantViolation
+    ):
+        replace(
+            support,
+            evidence=support.evidence[:-1],
+        )
+
+    forged_head = object.__new__(type(first.current_signed_head))
+    for item in fields(type(first.current_signed_head)):
+        object.__setattr__(
+            forged_head,
+            item.name,
+            (
+                first.current_signed_head.entry_count + 1
+                if item.name == "entry_count"
+                else getattr(first.current_signed_head, item.name)
+            ),
+        )
+    with pytest.raises(
+        control.V075ObserverSignedBatchControlV2InvariantViolation
+    ):
+        control.verify_v075_open_controlled_batch_prefix_v2(
+            heads=(first.signed_heads[0], forged_head),
+            appends=first.controlled_appends,
+            support_freezes=first.support_freezes,
+        )
+
+
+def test_same_row_discovery_is_single_before_and_after_support_freeze(
+    exact_v2_graph,
+) -> None:
+    controller = _controller(exact_v2_graph, "single-discovery", ordinal=10)
+    stream = _stream(exact_v2_graph)
+    first_intent = controller.prepare_batch_intent_v2(
+        stream_identity=stream,
+        **_semantic("single-discovery-first"),
+        accepted_draw_start=1,
+        accepted_draw_count=1,
+        accepted_draw_cap=2,
+    )
+    first_append = controller.execute_batch_intent_v2(first_intent)
+
+    with pytest.raises(
+        control.V075ObserverSignedBatchControlV2InvariantViolation,
+        match="sole discovery append",
+    ):
+        controller.prepare_batch_intent_v2(
+            stream_identity=stream,
+            **_semantic("single-discovery-before-freeze"),
+            accepted_draw_start=2,
+            accepted_draw_count=1,
+            accepted_draw_cap=2,
+        )
+
+    support = controller.freeze_complete_support_v2(
+        discovery_append=first_append,
+    )
+    assert support.discovery_append_receipt_id == first_append.receipt.receipt_id
+    with pytest.raises(
+        control.V075ObserverSignedBatchControlV2InvariantViolation,
+        match="cannot continue after row freeze",
+    ):
+        controller.prepare_batch_intent_v2(
+            stream_identity=stream,
+            **_semantic("single-discovery-after-freeze"),
+            accepted_draw_start=2,
+            accepted_draw_count=1,
+            accepted_draw_cap=2,
+        )
+    prefix = controller.verify_open_prefix_v2()
+    assert prefix.append_count == 1
+    assert prefix.support_freeze_ids == (support.freeze_id,)
+
+
+def test_owned_artifact_copy_cannot_bypass_exact_replay(
+    exact_v2_graph,
+) -> None:
+    controller = _controller(exact_v2_graph, "copy-tamper", ordinal=11)
+    stream = _stream(exact_v2_graph)
+    discovery_intent = controller.prepare_batch_intent_v2(
+        stream_identity=stream,
+        **_semantic("copy-tamper-discovery"),
+        accepted_draw_start=1,
+        accepted_draw_count=2,
+        accepted_draw_cap=2,
+    )
+    discovery_append = controller.execute_batch_intent_v2(discovery_intent)
+
+    forged_batch = object.__new__(type(discovery_append.batch))
+    signature = discovery_append.batch.observer_signature_hex
+    bad_signature = (
+        ("0" if signature[0] != "0" else "1") + signature[1:]
+    )
+    for item in fields(type(discovery_append.batch)):
+        object.__setattr__(
+            forged_batch,
+            item.name,
+            (
+                bad_signature
+                if item.name == "observer_signature_hex"
+                else getattr(discovery_append.batch, item.name)
+            ),
+        )
+    with pytest.raises(
+        control.V075ObserverSignedBatchControlV2InvariantViolation
+    ):
+        replace(discovery_append, batch=forged_batch)
+
+    support = controller.freeze_complete_support_v2(
+        discovery_append=discovery_append,
+    )
+    validation_stream = controller.derive_validation_stream_v2(
+        support_freeze=support,
+    )
+    validation_intent = controller.prepare_batch_intent_v2(
+        stream_identity=validation_stream,
+        **_semantic(
+            "copy-tamper-validation",
+            stage=control.V075ControlledBatchStageV2.ROOT_VALIDATION,
+            support_freeze_id=support.freeze_id,
+        ),
+        accepted_draw_start=1,
+        accepted_draw_count=2,
+        accepted_draw_cap=2,
+    )
+    controller.execute_batch_intent_v2(validation_intent)
+    prefix = controller.verify_open_prefix_v2()
+    with pytest.raises((TypeError, ValueError)):
+        replace(
+            prefix,
+            support_freezes=(),
+            support_freeze_ids=(),
+        )
+
+    closed = controller.close_and_reconcile_v2()
+    forged_reconciliation = replace(
+        closed.reconciliation,
+        append_count=999,
+        total_accepted_draw_count=999,
+    )
+    with pytest.raises(
+        control.V075ObserverSignedBatchControlV2InvariantViolation,
+        match="differs from replay",
+    ):
+        replace(
+            closed,
+            reconciliation=forged_reconciliation,
         )
