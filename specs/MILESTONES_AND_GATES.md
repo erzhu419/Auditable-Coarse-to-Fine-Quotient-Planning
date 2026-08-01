@@ -4054,3 +4054,34 @@ implements no production authority-role verifier yet. Until production
 workers, total lift, reconciliation, endpoint, semantic authority replay,
 tracked artifacts and the first qualifying anchor all pass, the fresh
 scientific and sample-efficiency Gates remain `NOT_RUN`.
+
+## V0-099 construction-accounting completion prerequisite
+
+Contract `1.91.0` closes the evidence-schema boundary, not the live accounting
+Gate. The V6 required set is partitioned exactly and without overlap:
+
+```text
+9 shared-resource receipt obligations
++ 8 derived reconciliation obligations
++ 114 profile-static-zero obligations
++ 71 owner-emittable paths / 89 registered sites
+= 202 required paths
+```
+
+Acceptance at this milestone requires all rows to initialize as unresolved;
+typed unknown must never become zero; syntactically complete hashes must remain
+unverified; receipt claims must not permit projection; zero rules must be
+path-specific; owner sites must remain live-unclosed; and occurrence,
+transcript-terminal, receipt-window, route-attempt and cutoff identities must
+fail closed when any authority is absent or crossed. The implemented current
+readiness artifact and composite prerequisite manifest report these blockers
+deterministically and bind the exact missing sets without turning them into
+evidence.
+
+This milestone does not satisfy the next Gate. That Gate requires live source
+evidence from a sealed worker and trusted outer supervisor, independent
+semantic replay of the 71+114+9+8 resolutions, exact single consumption of all
+202 leaves, and only then derivation of CounterRecords, a WorkVector, the
+eight-axis ComparisonVector, and its projection proof. Until then
+`COUNTER_COMPLETENESS_GATE_NOT_RUN` and every official/economics/certificate
+lock remain unchanged.

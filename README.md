@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `1.90.0`: the earlier contracts build the
+contracts now span `1.40.0` through `1.91.0`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -343,6 +343,17 @@ sandbox, and same-process evidence callbacks remain cooperative.  Official
 execution, scalar/break-even,
 economics, fresh scientific endpoint credit and certificate issuance remain
 false, null or `NOT_RUN`.
+
+Contract `1.91.0` adds the fail-closed accounting-completion prerequisite. It
+partitions the 202 required leaves exactly as `9 shared + 8 derived + 114
+profile-zero + 71 owner-emittable` (89 registered sites), initializes every
+leaf as unresolved, and keeps syntactically complete references explicitly
+unverified. Typed shared-resource claims, path-specific zero rules,
+owner-boundary coverage, occurrence identity joins and cutoff markers cannot
+authorize numeric projection without independent source-byte replay. A
+composite prerequisite manifest content-binds the exact authority graph and
+all six typed missing-evidence sets. The current same-process path therefore
+remains deterministically not ready and emits no formal vectors.
 
 ## V0-074 repair construction (NONAUTHORIZING; fresh Gate NOT RUN)
 

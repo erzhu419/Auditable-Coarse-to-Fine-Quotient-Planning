@@ -201,6 +201,111 @@ CONSTRUCTION_PARTIAL_NATIVE_OCCURRENCE_ABORT_V1_DOMAIN = (
 CONSTRUCTION_PARTIAL_NATIVE_OCCURRENCE_TRANSCRIPT_V1_DOMAIN = (
     "acfqp:construction-partial-native-occurrence-transcript:v1"
 )
+CONSTRUCTION_ACCOUNTING_EVIDENCE_CLOSURE_CONTEXT_V1_DOMAIN = (
+    "acfqp:construction-accounting-evidence-closure-context:v1"
+)
+CONSTRUCTION_ACCOUNTING_REQUIRED_PATH_RESOLUTION_V1_DOMAIN = (
+    "acfqp:construction-accounting-required-path-resolution:v1"
+)
+CONSTRUCTION_ACCOUNTING_EVIDENCE_CLOSURE_V1_DOMAIN = (
+    "acfqp:construction-accounting-evidence-closure:v1"
+)
+CONSTRUCTION_ACCOUNTING_EVIDENCE_CLOSURE_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-accounting-evidence-closure-verification:v1"
+)
+CONSTRUCTION_SHARED_RESOURCE_IDENTITY_BINDING_V1_DOMAIN = (
+    "acfqp:construction-shared-resource-identity-binding:v1"
+)
+CONSTRUCTION_SHARED_RESOURCE_MEASUREMENT_WINDOW_V1_DOMAIN = (
+    "acfqp:construction-shared-resource-measurement-window:v1"
+)
+CONSTRUCTION_SHARED_RESOURCE_MEASUREMENT_METHOD_V1_DOMAIN = (
+    "acfqp:construction-shared-resource-measurement-method:v1"
+)
+CONSTRUCTION_SHARED_RESOURCE_MONITOR_REGISTRATION_V1_DOMAIN = (
+    "acfqp:construction-shared-resource-monitor-registration:v1"
+)
+CONSTRUCTION_SHARED_RESOURCE_MEASUREMENT_REGISTRY_V1_DOMAIN = (
+    "acfqp:construction-shared-resource-measurement-registry:v1"
+)
+CONSTRUCTION_SHARED_RESOURCE_SOURCE_EVIDENCE_V1_DOMAIN = (
+    "acfqp:construction-shared-resource-source-evidence:v1"
+)
+CONSTRUCTION_SHARED_RESOURCE_CHARGE_KEY_V1_DOMAIN = (
+    "acfqp:construction-shared-resource-charge-key:v1"
+)
+CONSTRUCTION_SHARED_RESOURCE_RECEIPT_V1_DOMAIN = (
+    "acfqp:construction-shared-resource-receipt:v1"
+)
+CONSTRUCTION_SHARED_RESOURCE_RECEIPT_SET_V1_DOMAIN = (
+    "acfqp:construction-shared-resource-receipt-set:v1"
+)
+CONSTRUCTION_HASH_PURPOSE_REGISTRATION_V1_DOMAIN = (
+    "acfqp:construction-hash-purpose-registration:v1"
+)
+CONSTRUCTION_RECURSION_SAFE_HASH_METER_PROFILE_V1_DOMAIN = (
+    "acfqp:construction-recursion-safe-hash-meter-profile:v1"
+)
+CONSTRUCTION_NAMED_OBLIGATION_V1_DOMAIN = (
+    "acfqp:construction-named-obligation:v1"
+)
+CONSTRUCTION_NAMED_OBLIGATION_REGISTRY_V1_DOMAIN = (
+    "acfqp:construction-named-obligation-registry:v1"
+)
+CONSTRUCTION_ACCOUNTING_REQUIRED_PATH_PARTITION_V1_DOMAIN = (
+    "acfqp:construction-accounting-required-path-partition:v1"
+)
+CONSTRUCTION_ACCOUNTING_COMPLETION_READINESS_BLOCKER_V1_DOMAIN = (
+    "acfqp:construction-accounting-completion-readiness-blocker:v1"
+)
+CONSTRUCTION_ACCOUNTING_COMPLETION_READINESS_V1_DOMAIN = (
+    "acfqp:construction-accounting-completion-readiness:v1"
+)
+CONSTRUCTION_PROFILE_NATIVE_ZERO_RULE_V1_DOMAIN = (
+    "acfqp:construction-profile-native-zero-rule:v1"
+)
+CONSTRUCTION_PROFILE_NATIVE_ZERO_RULE_REGISTRY_V1_DOMAIN = (
+    "acfqp:construction-profile-native-zero-rule-registry:v1"
+)
+CONSTRUCTION_PROFILE_NATIVE_ZERO_RULE_READINESS_ROW_V1_DOMAIN = (
+    "acfqp:construction-profile-native-zero-rule-readiness-row:v1"
+)
+CONSTRUCTION_PROFILE_NATIVE_ZERO_RULE_READINESS_V1_DOMAIN = (
+    "acfqp:construction-profile-native-zero-rule-readiness:v1"
+)
+CONSTRUCTION_OWNER_BOUNDARY_COVERAGE_SITE_V1_DOMAIN = (
+    "acfqp:construction-owner-boundary-coverage-site:v1"
+)
+CONSTRUCTION_OWNER_BOUNDARY_COVERAGE_PROFILE_V1_DOMAIN = (
+    "acfqp:construction-owner-boundary-coverage-profile:v1"
+)
+CONSTRUCTION_OCCURRENCE_IDENTITY_JOIN_V1_DOMAIN = (
+    "acfqp:construction-occurrence-identity-join:v1"
+)
+CONSTRUCTION_OCCURRENCE_IDENTITY_JOIN_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-occurrence-identity-join-verification:v1"
+)
+CONSTRUCTION_OPERATIONAL_SEQUENCE_MARKER_V1_DOMAIN = (
+    "acfqp:construction-operational-sequence-marker:v1"
+)
+CONSTRUCTION_OPERATIONAL_CUTOFF_ATTESTATION_V1_DOMAIN = (
+    "acfqp:construction-operational-cutoff-attestation:v1"
+)
+CONSTRUCTION_OPERATIONAL_CUTOFF_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-operational-cutoff-verification:v1"
+)
+CONSTRUCTION_IDENTITY_JOIN_READINESS_V1_DOMAIN = (
+    "acfqp:construction-identity-join-readiness:v1"
+)
+CONSTRUCTION_ACCOUNTING_COMPLETION_PREREQUISITE_BLOCKER_V1_DOMAIN = (
+    "acfqp:construction-accounting-completion-prerequisite-blocker:v1"
+)
+CONSTRUCTION_ACCOUNTING_COMPLETION_PREREQUISITE_MANIFEST_V1_DOMAIN = (
+    "acfqp:construction-accounting-completion-prerequisite-manifest:v1"
+)
+CONSTRUCTION_ACCOUNTING_COMPLETION_PREREQUISITE_REPLAY_V1_DOMAIN = (
+    "acfqp:construction-accounting-completion-prerequisite-replay:v1"
+)
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
 ROUTE_CAP_PROFILE_DOMAIN = "acfqp:route-cap-profile:v1"
@@ -653,6 +758,111 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_partial_native_occurrence_transcript_v1": (
             CONSTRUCTION_PARTIAL_NATIVE_OCCURRENCE_TRANSCRIPT_V1_DOMAIN
+        ),
+        "construction_accounting_evidence_closure_context_v1": (
+            CONSTRUCTION_ACCOUNTING_EVIDENCE_CLOSURE_CONTEXT_V1_DOMAIN
+        ),
+        "construction_accounting_required_path_resolution_v1": (
+            CONSTRUCTION_ACCOUNTING_REQUIRED_PATH_RESOLUTION_V1_DOMAIN
+        ),
+        "construction_accounting_evidence_closure_v1": (
+            CONSTRUCTION_ACCOUNTING_EVIDENCE_CLOSURE_V1_DOMAIN
+        ),
+        "construction_accounting_evidence_closure_verification_v1": (
+            CONSTRUCTION_ACCOUNTING_EVIDENCE_CLOSURE_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_shared_resource_identity_binding_v1": (
+            CONSTRUCTION_SHARED_RESOURCE_IDENTITY_BINDING_V1_DOMAIN
+        ),
+        "construction_shared_resource_measurement_window_v1": (
+            CONSTRUCTION_SHARED_RESOURCE_MEASUREMENT_WINDOW_V1_DOMAIN
+        ),
+        "construction_shared_resource_measurement_method_v1": (
+            CONSTRUCTION_SHARED_RESOURCE_MEASUREMENT_METHOD_V1_DOMAIN
+        ),
+        "construction_shared_resource_monitor_registration_v1": (
+            CONSTRUCTION_SHARED_RESOURCE_MONITOR_REGISTRATION_V1_DOMAIN
+        ),
+        "construction_shared_resource_measurement_registry_v1": (
+            CONSTRUCTION_SHARED_RESOURCE_MEASUREMENT_REGISTRY_V1_DOMAIN
+        ),
+        "construction_shared_resource_source_evidence_v1": (
+            CONSTRUCTION_SHARED_RESOURCE_SOURCE_EVIDENCE_V1_DOMAIN
+        ),
+        "construction_shared_resource_charge_key_v1": (
+            CONSTRUCTION_SHARED_RESOURCE_CHARGE_KEY_V1_DOMAIN
+        ),
+        "construction_shared_resource_receipt_v1": (
+            CONSTRUCTION_SHARED_RESOURCE_RECEIPT_V1_DOMAIN
+        ),
+        "construction_shared_resource_receipt_set_v1": (
+            CONSTRUCTION_SHARED_RESOURCE_RECEIPT_SET_V1_DOMAIN
+        ),
+        "construction_hash_purpose_registration_v1": (
+            CONSTRUCTION_HASH_PURPOSE_REGISTRATION_V1_DOMAIN
+        ),
+        "construction_recursion_safe_hash_meter_profile_v1": (
+            CONSTRUCTION_RECURSION_SAFE_HASH_METER_PROFILE_V1_DOMAIN
+        ),
+        "construction_named_obligation_v1": (
+            CONSTRUCTION_NAMED_OBLIGATION_V1_DOMAIN
+        ),
+        "construction_named_obligation_registry_v1": (
+            CONSTRUCTION_NAMED_OBLIGATION_REGISTRY_V1_DOMAIN
+        ),
+        "construction_accounting_required_path_partition_v1": (
+            CONSTRUCTION_ACCOUNTING_REQUIRED_PATH_PARTITION_V1_DOMAIN
+        ),
+        "construction_accounting_completion_readiness_blocker_v1": (
+            CONSTRUCTION_ACCOUNTING_COMPLETION_READINESS_BLOCKER_V1_DOMAIN
+        ),
+        "construction_accounting_completion_readiness_v1": (
+            CONSTRUCTION_ACCOUNTING_COMPLETION_READINESS_V1_DOMAIN
+        ),
+        "construction_profile_native_zero_rule_v1": (
+            CONSTRUCTION_PROFILE_NATIVE_ZERO_RULE_V1_DOMAIN
+        ),
+        "construction_profile_native_zero_rule_registry_v1": (
+            CONSTRUCTION_PROFILE_NATIVE_ZERO_RULE_REGISTRY_V1_DOMAIN
+        ),
+        "construction_profile_native_zero_rule_readiness_row_v1": (
+            CONSTRUCTION_PROFILE_NATIVE_ZERO_RULE_READINESS_ROW_V1_DOMAIN
+        ),
+        "construction_profile_native_zero_rule_readiness_v1": (
+            CONSTRUCTION_PROFILE_NATIVE_ZERO_RULE_READINESS_V1_DOMAIN
+        ),
+        "construction_owner_boundary_coverage_site_v1": (
+            CONSTRUCTION_OWNER_BOUNDARY_COVERAGE_SITE_V1_DOMAIN
+        ),
+        "construction_owner_boundary_coverage_profile_v1": (
+            CONSTRUCTION_OWNER_BOUNDARY_COVERAGE_PROFILE_V1_DOMAIN
+        ),
+        "construction_occurrence_identity_join_v1": (
+            CONSTRUCTION_OCCURRENCE_IDENTITY_JOIN_V1_DOMAIN
+        ),
+        "construction_occurrence_identity_join_verification_v1": (
+            CONSTRUCTION_OCCURRENCE_IDENTITY_JOIN_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_operational_sequence_marker_v1": (
+            CONSTRUCTION_OPERATIONAL_SEQUENCE_MARKER_V1_DOMAIN
+        ),
+        "construction_operational_cutoff_attestation_v1": (
+            CONSTRUCTION_OPERATIONAL_CUTOFF_ATTESTATION_V1_DOMAIN
+        ),
+        "construction_operational_cutoff_verification_v1": (
+            CONSTRUCTION_OPERATIONAL_CUTOFF_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_identity_join_readiness_v1": (
+            CONSTRUCTION_IDENTITY_JOIN_READINESS_V1_DOMAIN
+        ),
+        "construction_accounting_completion_prerequisite_blocker_v1": (
+            CONSTRUCTION_ACCOUNTING_COMPLETION_PREREQUISITE_BLOCKER_V1_DOMAIN
+        ),
+        "construction_accounting_completion_prerequisite_manifest_v1": (
+            CONSTRUCTION_ACCOUNTING_COMPLETION_PREREQUISITE_MANIFEST_V1_DOMAIN
+        ),
+        "construction_accounting_completion_prerequisite_replay_v1": (
+            CONSTRUCTION_ACCOUNTING_COMPLETION_PREREQUISITE_REPLAY_V1_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,

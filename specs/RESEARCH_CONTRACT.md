@@ -4759,3 +4759,27 @@ weakening the partial-model certificate. Formal IID execution, broader
 structures/domains, primitive/ontology invention, H>2 recurrence,
 cross-query reuse, independent target verification, total-work economics and
 the general reusable-hidden-world-model objective remain open.
+
+## Contract 1.91.0: construction accounting completion prerequisite
+
+V0-099 freezes an exact, disjoint disposition for all 202 required V6 paths:
+9 shared-resource receipts, 8 derived reconciliations, 114 path-specific
+profile-zero obligations, and 71 owner-emittable paths represented by 89
+registered boundary sites. Every occurrence closure starts entirely
+`UNRESOLVED`. Structural references can establish only
+`STRUCTURAL_COVERAGE_COMPLETE_UNVERIFIED`; they cannot authorize numeric
+records or vectors. A content-addressed composite prerequisite manifest binds
+the exact V6/V3/V075 authority chain, all child catalogue identities, the
+occurrence closure, and the six complete typed missing-evidence sets; it is a
+deterministic blocker replay, not a semantic evidence artifact.
+
+The current K7 same-process path remains a negative readiness result. It has
+no independently replayed route context or operational cutoff, no live-closed
+receipt for the nine shared paths, no complete owner window for the 71 event
+paths, no satisfied proof set for the 114 zero paths, and no registered replay
+of the eight derived equations. Therefore no `CounterRecord`, `WorkVector`,
+`ComparisonVector`, or actual-projection proof exists under this contract.
+The next construction step is a sealed worker plus trusted outer supervisor,
+followed by source-byte semantic replay and exact evidence consumption; all
+official, economics, counter-completeness, science, and certificate Gates
+remain locked meanwhile.
