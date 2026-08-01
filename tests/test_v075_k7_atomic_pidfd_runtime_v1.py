@@ -630,6 +630,24 @@ def test_output_counter_preserves_observed_bytes_beyond_captured_prefix() -> Non
     counters = runtime.K7AtomicPidfdCountersV1(
         1, 1, 1, 3, 11, 8, runtime.SUCCESS_PATH_CGROUP_CONTROL_READS
     )
+    evidence = runtime.K7AtomicSupervisorResourceEvidenceV1(
+        runtime._SUPERVISOR_EVIDENCE_ISSUER,  # noqa: SLF001
+        _id("result-lease"),
+        123,
+        1,
+        3,
+        2,
+        4,
+        5,
+        6,
+        7,
+        1,
+        4096,
+        runtime.MIN_MEMORY_MAX_BYTES,
+        False,
+        True,
+        True,
+    )
     result = runtime.K7AtomicPidfdRunResultV1(
         runtime._RESULT_ISSUER,  # noqa: SLF001
         lease_id=_id("result-lease"),
@@ -649,6 +667,7 @@ def test_output_counter_preserves_observed_bytes_beyond_captured_prefix() -> Non
         memory_peak_bytes=4096,
         cgroup_empty_verified=True,
         no_descendants_verified=True,
+        supervisor_resource_evidence=evidence,
         elapsed_nanoseconds=100,
         counters=counters,
     )
@@ -799,6 +818,21 @@ def test_real_delegated_scope_executes_sealed_true_and_reaps_by_pidfd() -> None:
         assert result.output_eof_before_reap is True
         assert result.deadline_milliseconds == 5_000
         assert result.output_cap_bytes == runtime.MAX_CHILD_OUTPUT_BYTES
+        evidence = result.supervisor_resource_evidence
+        assert evidence.process_launches == 1
+        assert evidence.memory_peak_bytes == result.memory_peak_bytes
+        assert [
+            row["role"]
+            for row in evidence.to_document()["lifecycle_sequence"]
+        ] == [
+            "PROCESS_LAUNCH",
+            "OUTPUT_EOF",
+            "PROCESS_REAP",
+            "CGROUP_EMPTY",
+            "DESCENDANT_SCAN",
+            "FINAL_MEMORY_PEAK",
+            "MEMORY_CONTROLS_VERIFIED",
+        ]
         assert result.counters.process_launches == 1
         assert result.counters.pidfd_waits == 1
         assert result.memory_peak_bytes >= 0

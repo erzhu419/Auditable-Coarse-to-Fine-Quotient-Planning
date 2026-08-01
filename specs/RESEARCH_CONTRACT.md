@@ -1,8 +1,8 @@
 # Research Contract
 
-**Current construction contract:** `2.0.0`
+**Current construction contract:** `2.0.1`
 
-**Current construction profile:** `v075_k7_parent_atomic_executor_v1`
+**Current construction profile:** `v075_k7_atomic_shared_resource_authority_v1`
 
 ## Definitions
 
@@ -5075,3 +5075,38 @@ scientific endpoint credit or official execution authority. All formal,
 counter-completeness, economics, science and certificate Gates remain locked
 or `NOT_RUN` pending independent nine-path source replay and exact consumption
 of every remaining V6 obligation.
+
+## Contract 2.0.1: K7 atomic shared-resource authority
+
+The atomic runtime now issues its own immutable lifecycle evidence at the
+supervisor call sites. A successful V0-108 result binds an exact contiguous
+launch, EOF, reap, empty-cgroup, descendant-scan, final-peak and
+memory-control-verification sequence to its lease, child, launch count,
+`memory.max`, final `memory.peak` and cgroup facts. The run result must preserve
+those same identities and values. This evidence is not itself a formal counter.
+
+The production shared-resource registry derives exactly nine rows from the
+request-bound parent execution spec, verified shared-resource identity, V6
+registry/stage/execution metadata, sealed parent/runtime source entries and
+native trampoline. It accepts no caller-selected rows or values and preserves
+each V6 path's operational lane, semantics owner and SUM/MAX reducer. The exact
+connection states are zero attempt-scope `CONNECTED_EXACT`, one
+`VERIFIED_CHILD_RUNTIME_WINDOW_SCOPE_INCOMPLETE`, one
+`VERIFIED_RUNTIME_LOCAL_SCOPE_INCOMPLETE` and seven `NOT_CONNECTED`.
+
+`memory.working_bytes_peak` is exact only for the child-runtime window: its
+value is the final cgroup-v2 `memory.peak` after reap, empty-cgroup proof and
+descendant scan. It remains ineligible because the window omits parent
+bootstrap, prelaunch, replay, publication and close work.
+`process.launches=1` is also rederived from runtime-issued evidence, but remains
+ineligible because the entire parent-attempt launch-site scope has not been
+independently proved. `common.hash_invocations`, `common.integrity_checks`,
+`common.protocol_checks`, `io.mounted_bytes_peak`, `io.output_bytes`,
+`io.read_bytes` and `io.staged_bytes` remain unconnected. Same-process issuer
+verification is present; standalone bytes-only OS replay is absent.
+
+Contract `2.0.1` therefore does not complete the nine shared-resource receipts
+or authorize any `CounterRecord`, `WorkVector`, `ComparisonVector`, projection
+proof, 202-leaf reduction, terminal, certificate, scientific endpoint or
+official execution. All formal, counter-completeness, economics, science and
+certificate Gates remain locked or `NOT_RUN`.

@@ -374,6 +374,10 @@ class V075K7AtomicParentExecutionSpecV1:
     repository_root_sha256: str
     signer_private_root_identity: tuple[int, int, int, int, int, int]
     signer_private_key_identity: tuple[int, int, int, int, int, int]
+    _request_id: str = field(init=False, repr=False)
+    _route_identity_id: str = field(init=False, repr=False)
+    _successor_profile_id: str = field(init=False, repr=False)
+    _frozen_payload_bytes: bytes = field(init=False, repr=False)
     _spec_id: str = field(init=False, repr=False)
 
     def __post_init__(self, _issuer: object) -> None:
@@ -420,12 +424,29 @@ class V075K7AtomicParentExecutionSpecV1:
             ):
                 _fail("atomic parent execution input row is malformed")
         object.__setattr__(
+            self, "_request_id", self.request._request_id  # noqa: SLF001
+        )
+        object.__setattr__(
+            self,
+            "_route_identity_id",
+            self.request.route_identity.route_identity_id,
+        )
+        object.__setattr__(
+            self,
+            "_successor_profile_id",
+            self.request.profile._profile_id,  # noqa: SLF001
+        )
+        snapshot = self._snapshot_payload()
+        object.__setattr__(
+            self, "_frozen_payload_bytes", canonical_json_bytes(snapshot)
+        )
+        object.__setattr__(
             self,
             "_spec_id",
-            _hash(V075_K7_ATOMIC_PARENT_EXECUTION_SPEC_V1_DOMAIN, self._payload()),
+            _hash(V075_K7_ATOMIC_PARENT_EXECUTION_SPEC_V1_DOMAIN, snapshot),
         )
 
-    def _payload(self) -> dict[str, Any]:
+    def _snapshot_payload(self) -> dict[str, Any]:
         request = self.request
         transport = request.profile.accounted_profile.transport_profile
         return {
@@ -433,9 +454,9 @@ class V075K7AtomicParentExecutionSpecV1:
             "schema_version": SCHEMA_VERSION,
             "proposed_contract_version": PROPOSED_CONTRACT_VERSION,
             "profile_key": PROFILE_KEY,
-            "successor_profile_id": request.profile.profile_id,
-            "request_id": request.request_id,
-            "route_identity_id": request.route_identity.route_identity_id,
+            "successor_profile_id": self._successor_profile_id,
+            "request_id": self._request_id,
+            "route_identity_id": self._route_identity_id,
             "source_snapshot_id": transport.source_snapshot_id,
             "source_archive_sha256": transport.source_archive_sha256,
             "source_archive_byte_count": transport.source_archive_byte_count,
@@ -517,6 +538,12 @@ class V075K7AtomicParentExecutionSpecV1:
             "v075_103_bootstrap_metadata_used_as_execution_authority": False,
             **_locks(),
         }
+
+    def _payload(self) -> dict[str, Any]:
+        return _canonical_document(
+            self._frozen_payload_bytes,
+            "frozen atomic parent execution-spec payload",
+        )
 
     @property
     def spec_id(self) -> str:
@@ -666,9 +693,9 @@ def _suffix_payload(
         "frame_index": 2,
         "frame_role": PARENT_FRAME_ROLE,
         "atomic_parent_execution_spec_id": spec.spec_id,
-        "successor_profile_id": request.profile.profile_id,
-        "request_id": request.request_id,
-        "route_identity_id": request.route_identity.route_identity_id,
+        "successor_profile_id": spec._successor_profile_id,  # noqa: SLF001
+        "request_id": spec._request_id,  # noqa: SLF001
+        "route_identity_id": spec._route_identity_id,  # noqa: SLF001
         "logical_occurrence_id": request.occurrence_mapping.phase3e_logical_occurrence_id,
         "atomic_child_business_frame_id": child_document["atomic_child_business_frame_id"],
         "child_business_bundle_id": child_document["child_business_bundle_id"],
@@ -816,8 +843,8 @@ class V075K7ParentAtomicExecutionResultV1:
             "proposed_contract_version": PROPOSED_CONTRACT_VERSION,
             "profile_key": PROFILE_KEY,
             "atomic_parent_execution_spec_id": self.spec.spec_id,
-            "request_id": self.request.request_id,
-            "route_identity_id": self.request.route_identity.route_identity_id,
+            "request_id": self.spec._request_id,  # noqa: SLF001
+            "route_identity_id": self.spec._route_identity_id,  # noqa: SLF001
             "atomic_child_business_frame_id": self._validated_frame_ids[0],
             "atomic_parent_accounting_suffix_id": self._validated_frame_ids[1],
             "two_frame_output_sha256": hashlib.sha256(self.two_frame_output).hexdigest(),

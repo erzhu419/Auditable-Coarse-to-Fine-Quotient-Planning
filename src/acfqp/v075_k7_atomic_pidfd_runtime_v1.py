@@ -34,6 +34,11 @@ from typing import Any, Mapping, NoReturn
 import weakref
 
 from acfqp import v075_k7_cgroup_lease_v1 as cgroup_lease
+from acfqp.phase3e_ids import (
+    V075_K7_ATOMIC_SUPERVISOR_RESOURCE_EVIDENCE_V1_DOMAIN,
+    content_id,
+    parse_content_id,
+)
 
 
 SCHEMA_VERSION = "1.0.0"
@@ -81,6 +86,7 @@ _SPEC_ISSUER = object()
 _CAPABILITY_ISSUER = object()
 _BLOCKED_ISSUER = object()
 _RESULT_ISSUER = object()
+_SUPERVISOR_EVIDENCE_ISSUER = object()
 _CONSUMED_LOCK = threading.Lock()
 _CONSUMED_LEASES: set[tuple[int, int, str]] = set()
 _BOOTSTRAP_LOCK = threading.Lock()
@@ -307,6 +313,15 @@ class K7AtomicPidfdSetupStageV1(int, Enum):
 
 def _fail(message: str) -> NoReturn:
     raise V075K7AtomicPidfdRuntimeV1Error(message)
+
+
+def _cid(value: Any, label: str) -> str:
+    try:
+        return parse_content_id(value)
+    except (TypeError, ValueError) as error:
+        raise V075K7AtomicPidfdRuntimeV1Error(
+            f"{label} must be one exact content ID"
+        ) from error
 
 
 def _locks() -> dict[str, bool]:
@@ -1201,6 +1216,152 @@ class K7AtomicPidfdBlockedResultV1:
 
 
 @dataclass(frozen=True, slots=True)
+class K7AtomicSupervisorResourceEvidenceV1:
+    """Runtime-issued lifecycle evidence for launch and final cgroup peak.
+
+    Sequence numbers are allocated at the native supervisor call sites.  The
+    object is not a CounterRecord: a route-bound semantic authority must still
+    join it to the exact request, parent execution spec, V6 registry, and
+    production measurement profile.
+    """
+
+    _issuer: InitVar[object]
+    lease_id: str
+    child_pid: int
+    process_launch_sequence: int
+    output_eof_sequence: int
+    process_reap_sequence: int
+    cgroup_empty_sequence: int
+    descendant_scan_sequence: int
+    final_memory_peak_sequence: int
+    memory_controls_verified_sequence: int
+    process_launches: int
+    memory_peak_bytes: int
+    memory_max_bytes: int
+    output_eof_before_reap: bool
+    cgroup_empty_verified: bool
+    no_descendants_verified: bool
+    _evidence_id: str = field(init=False, repr=False)
+
+    def __post_init__(self, _issuer: object) -> None:
+        if _issuer is not _SUPERVISOR_EVIDENCE_ISSUER:
+            _fail("atomic supervisor resource evidence is runtime-issued")
+        _cid(self.lease_id, "supervisor evidence lease")
+        if (
+            type(self.child_pid) is not int
+            or self.child_pid <= 0
+            or self.process_launches != 1
+            or type(self.memory_peak_bytes) is not int
+            or self.memory_peak_bytes < 0
+            or type(self.memory_max_bytes) is not int
+            or not MIN_MEMORY_MAX_BYTES
+            <= self.memory_max_bytes
+            <= MAX_MEMORY_MAX_BYTES
+            or self.memory_peak_bytes > self.memory_max_bytes
+            or type(self.output_eof_before_reap) is not bool
+            or self.cgroup_empty_verified is not True
+            or self.no_descendants_verified is not True
+        ):
+            _fail("atomic supervisor resource evidence facts are invalid")
+        sequence_by_role = {
+            "PROCESS_LAUNCH": self.process_launch_sequence,
+            "OUTPUT_EOF": self.output_eof_sequence,
+            "PROCESS_REAP": self.process_reap_sequence,
+            "CGROUP_EMPTY": self.cgroup_empty_sequence,
+            "DESCENDANT_SCAN": self.descendant_scan_sequence,
+            "FINAL_MEMORY_PEAK": self.final_memory_peak_sequence,
+            "MEMORY_CONTROLS_VERIFIED": self.memory_controls_verified_sequence,
+        }
+        if any(type(value) is not int for value in sequence_by_role.values()):
+            _fail("atomic supervisor lifecycle sequence is mistyped")
+        expected_order = (
+            (
+                "PROCESS_LAUNCH",
+                "OUTPUT_EOF",
+                "PROCESS_REAP",
+                "CGROUP_EMPTY",
+                "DESCENDANT_SCAN",
+                "FINAL_MEMORY_PEAK",
+                "MEMORY_CONTROLS_VERIFIED",
+            )
+            if self.output_eof_before_reap
+            else (
+                "PROCESS_LAUNCH",
+                "PROCESS_REAP",
+                "OUTPUT_EOF",
+                "CGROUP_EMPTY",
+                "DESCENDANT_SCAN",
+                "FINAL_MEMORY_PEAK",
+                "MEMORY_CONTROLS_VERIFIED",
+            )
+        )
+        if tuple(sequence_by_role[role] for role in expected_order) != tuple(
+            range(1, len(expected_order) + 1)
+        ):
+            _fail("atomic supervisor lifecycle order is incomplete or crossed")
+        object.__setattr__(
+            self,
+            "_evidence_id",
+            content_id(
+                V075_K7_ATOMIC_SUPERVISOR_RESOURCE_EVIDENCE_V1_DOMAIN,
+                self._payload(),
+            ),
+        )
+
+    def _payload(self) -> dict[str, Any]:
+        return {
+            "schema": "acfqp.v075_k7_atomic_supervisor_resource_evidence.v1",
+            "schema_version": SCHEMA_VERSION,
+            "profile_key": PROFILE_KEY,
+            "lease_id": self.lease_id,
+            "child_pid": self.child_pid,
+            "lifecycle_sequence": [
+                {"role": role, "sequence": sequence}
+                for role, sequence in sorted(
+                    {
+                        "PROCESS_LAUNCH": self.process_launch_sequence,
+                        "OUTPUT_EOF": self.output_eof_sequence,
+                        "PROCESS_REAP": self.process_reap_sequence,
+                        "CGROUP_EMPTY": self.cgroup_empty_sequence,
+                        "DESCENDANT_SCAN": self.descendant_scan_sequence,
+                        "FINAL_MEMORY_PEAK": self.final_memory_peak_sequence,
+                        "MEMORY_CONTROLS_VERIFIED": (
+                            self.memory_controls_verified_sequence
+                        ),
+                    }.items(),
+                    key=lambda row: row[1],
+                )
+            ],
+            "process_launches": self.process_launches,
+            "memory_peak_bytes": self.memory_peak_bytes,
+            "memory_max_bytes": self.memory_max_bytes,
+            "output_eof_before_reap": self.output_eof_before_reap,
+            "cgroup_empty_verified": self.cgroup_empty_verified,
+            "no_descendants_verified": self.no_descendants_verified,
+            "runtime_issuer_owned": True,
+            "counter_record_issued": False,
+            "work_vector_issued": False,
+            "comparison_vector_issued": False,
+            "official_execution_allowed": False,
+        }
+
+    @property
+    def evidence_id(self) -> str:
+        if content_id(
+            V075_K7_ATOMIC_SUPERVISOR_RESOURCE_EVIDENCE_V1_DOMAIN,
+            self._payload(),
+        ) != self._evidence_id:
+            _fail("atomic supervisor resource evidence changed after issuance")
+        return self._evidence_id
+
+    def to_document(self) -> dict[str, Any]:
+        return {
+            **self._payload(),
+            "atomic_supervisor_resource_evidence_id": self.evidence_id,
+        }
+
+
+@dataclass(frozen=True, slots=True)
 class K7AtomicPidfdRunResultV1:
     _issuer: InitVar[object]
     lease_id: str
@@ -1220,6 +1381,9 @@ class K7AtomicPidfdRunResultV1:
     memory_peak_bytes: int
     cgroup_empty_verified: bool
     no_descendants_verified: bool
+    supervisor_resource_evidence: K7AtomicSupervisorResourceEvidenceV1 = field(
+        repr=False
+    )
     elapsed_nanoseconds: int
     counters: K7AtomicPidfdCountersV1
 
@@ -1276,6 +1440,19 @@ class K7AtomicPidfdRunResultV1:
             != SUCCESS_PATH_CGROUP_CONTROL_READS
         ):
             _fail("atomic pidfd output counters disagree with captured bytes")
+        evidence = self.supervisor_resource_evidence
+        if (
+            type(evidence) is not K7AtomicSupervisorResourceEvidenceV1
+            or evidence.lease_id != self.lease_id
+            or evidence.child_pid != self.child_pid
+            or evidence.process_launches != self.counters.process_launches
+            or evidence.memory_peak_bytes != self.memory_peak_bytes
+            or evidence.memory_max_bytes != self.memory_max_bytes
+            or evidence.output_eof_before_reap != self.output_eof_before_reap
+            or evidence.cgroup_empty_verified != self.cgroup_empty_verified
+            or evidence.no_descendants_verified != self.no_descendants_verified
+        ):
+            _fail("atomic supervisor evidence differs from the run result")
 
     def to_document(self) -> dict[str, Any]:
         return {
@@ -1305,6 +1482,9 @@ class K7AtomicPidfdRunResultV1:
             "memory_peak_bytes": self.memory_peak_bytes,
             "cgroup_empty_verified": self.cgroup_empty_verified,
             "no_descendants_verified": self.no_descendants_verified,
+            "supervisor_resource_evidence": (
+                self.supervisor_resource_evidence.to_document()
+            ),
             "elapsed_nanoseconds": self.elapsed_nanoseconds,
             "raw_counters": {
                 name: getattr(self.counters, name)
@@ -1693,6 +1873,18 @@ def run_v075_k7_atomic_pidfd_runtime_v1(
     start_ns = time.monotonic_ns()
     lease_closed = False
     reads = 0
+    lifecycle_roles: list[str] = []
+
+    def record_lifecycle(role: str) -> None:
+        if role in lifecycle_roles:
+            _fail("atomic supervisor lifecycle role was recorded twice")
+        lifecycle_roles.append(role)
+
+    def wait_and_record_reap() -> os.waitid_result:
+        observed_wait = _wait_pidfd(pidfd)
+        record_lifecycle("PROCESS_REAP")
+        return observed_wait
+
     previous_signal_mask: set[signal.Signals] | None = None
     signals_blocked = False
     try:
@@ -1845,6 +2037,7 @@ def run_v075_k7_atomic_pidfd_runtime_v1(
             )
         if pidfd < 0:
             raise V075K7AtomicPidfdCleanupV1Error("clone3 did not return its required pidfd")
+        record_lifecycle("PROCESS_LAUNCH")
 
         poller = select.poll()
         poller.register(pidfd, select.POLLIN | select.POLLHUP | select.POLLERR)
@@ -1859,7 +2052,7 @@ def run_v075_k7_atomic_pidfd_runtime_v1(
                 forced_reason = "DEADLINE"
                 _send_pidfd_signal(numbers, pidfd, signal.SIGKILL)
                 signal_count += 1
-                waited = _wait_pidfd(pidfd)
+                waited = wait_and_record_reap()
                 break
             events = poller.poll(max(1, min(100, (remaining_ns + 999_999) // 1_000_000)))
             for descriptor, event in events:
@@ -1873,6 +2066,7 @@ def run_v075_k7_atomic_pidfd_runtime_v1(
                         if not chunk:
                             socket_eof = True
                             socket_eof_before_reap = waited is None
+                            record_lifecycle("OUTPUT_EOF")
                             try:
                                 poller.unregister(descriptor)
                             except KeyError:  # pragma: no cover - local idempotence
@@ -1884,7 +2078,7 @@ def run_v075_k7_atomic_pidfd_runtime_v1(
                             forced_reason = "OUTPUT_CAP"
                             _send_pidfd_signal(numbers, pidfd, signal.SIGKILL)
                             signal_count += 1
-                            waited = _wait_pidfd(pidfd)
+                            waited = wait_and_record_reap()
                             break
                 if waited is None and descriptor == pidfd and event & (select.POLLIN | select.POLLHUP | select.POLLERR):
                     # On normal termination retain the child as a zombie until
@@ -1901,7 +2095,7 @@ def run_v075_k7_atomic_pidfd_runtime_v1(
                 and pidfd_ready
                 and socket_eof
             ):
-                waited = _wait_pidfd(pidfd)
+                waited = wait_and_record_reap()
             if forced_reason is not None:
                 break
 
@@ -1920,6 +2114,7 @@ def run_v075_k7_atomic_pidfd_runtime_v1(
                 socket_reads += 1
                 if not chunk:
                     socket_eof = True
+                    record_lifecycle("OUTPUT_EOF")
                     break
                 total_output_bytes += len(chunk)
                 if len(output) <= output_cap_bytes:
@@ -1937,6 +2132,7 @@ def run_v075_k7_atomic_pidfd_runtime_v1(
         )
 
         cgroup_lease._validate_empty_leaf(leaf_fd)  # noqa: SLF001
+        record_lifecycle("CGROUP_EMPTY")
         # _validate_empty_leaf reads procs, threads, pids.current, and events.
         reads += 4
         controls = {
@@ -1958,6 +2154,7 @@ def run_v075_k7_atomic_pidfd_runtime_v1(
         )
         if not no_descendants:
             _fail("attempt leaf retained a live or dying descendant cgroup")
+        record_lifecycle("DESCENDANT_SCAN")
         # Final peak is intentionally observed after the descendant scan so
         # the parent lifecycle order is: reap -> descendant proof -> peak.
         memory_peak = cgroup_lease._parse_nonnegative(  # noqa: SLF001
@@ -1967,10 +2164,12 @@ def run_v075_k7_atomic_pidfd_runtime_v1(
         reads += 1
         if memory_peak > memory_max_bytes:
             _fail("attempt leaf memory peak exceeded its hard cap")
+        record_lifecycle("FINAL_MEMORY_PEAK")
         reads += _verify_leaf_memory_controls(
             leaf_fd=leaf_fd,
             memory_max_bytes=memory_max_bytes,
         )
+        record_lifecycle("MEMORY_CONTROLS_VERIFIED")
         # K7CgroupAttemptLeaseV1.close performs one final four-control empty
         # proof before removing the leaf.
         reads += 4
@@ -2000,6 +2199,28 @@ def run_v075_k7_atomic_pidfd_runtime_v1(
             len(output),
             reads,
         )
+        lifecycle_sequence = {
+            role: index
+            for index, role in enumerate(lifecycle_roles, start=1)
+        }
+        supervisor_evidence = K7AtomicSupervisorResourceEvidenceV1(
+            _SUPERVISOR_EVIDENCE_ISSUER,
+            lease_id,
+            child_pid,
+            lifecycle_sequence["PROCESS_LAUNCH"],
+            lifecycle_sequence["OUTPUT_EOF"],
+            lifecycle_sequence["PROCESS_REAP"],
+            lifecycle_sequence["CGROUP_EMPTY"],
+            lifecycle_sequence["DESCENDANT_SCAN"],
+            lifecycle_sequence["FINAL_MEMORY_PEAK"],
+            lifecycle_sequence["MEMORY_CONTROLS_VERIFIED"],
+            counters.process_launches,
+            memory_peak,
+            memory_max_bytes,
+            socket_eof_before_reap,
+            True,
+            no_descendants,
+        )
         return K7AtomicPidfdRunResultV1(
             _RESULT_ISSUER,
             lease_id,
@@ -2019,6 +2240,7 @@ def run_v075_k7_atomic_pidfd_runtime_v1(
             memory_peak,
             True,
             no_descendants,
+            supervisor_evidence,
             time.monotonic_ns() - start_ns,
             counters,
         )
@@ -2137,6 +2359,7 @@ __all__ = [
     "K7AtomicPidfdCountersV1",
     "K7AtomicPidfdOutcomeV1",
     "K7AtomicPidfdSetupStageV1",
+    "K7AtomicSupervisorResourceEvidenceV1",
     "K7SealedBootstrapExecV1",
     "MAX_ARGV_COUNT",
     "MAX_ARGV_ENV_BYTES",

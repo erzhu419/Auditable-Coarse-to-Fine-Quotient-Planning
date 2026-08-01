@@ -11,6 +11,7 @@ import pytest
 
 from acfqp.phase3e_ids import canonical_json_bytes, content_id, loads_canonical_json
 from acfqp import v075_k7_atomic_pidfd_runtime_v1 as runtime
+from acfqp import v075_k7_atomic_shared_resource_authority_v1 as shared_authority
 from acfqp import v075_k7_child_business_bundle_v1 as business
 from acfqp import v075_k7_parent_atomic_executor_v1 as parent
 from acfqp import v075_k7_parent_owned_successor_ipc_v1 as successor
@@ -65,6 +66,24 @@ def _runtime_result(
         len(raw),
         runtime.SUCCESS_PATH_CGROUP_CONTROL_READS,
     )
+    evidence = runtime.K7AtomicSupervisorResourceEvidenceV1(
+        runtime._SUPERVISOR_EVIDENCE_ISSUER,  # noqa: SLF001
+        _id("parent-result-lease"),
+        1234,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        1,
+        4096,
+        memory_max_bytes,
+        True,
+        True,
+        True,
+    )
     return runtime.K7AtomicPidfdRunResultV1(
         runtime._RESULT_ISSUER,  # noqa: SLF001
         lease_id=_id("parent-result-lease"),
@@ -84,6 +103,7 @@ def _runtime_result(
         memory_peak_bytes=4096,
         cgroup_empty_verified=True,
         no_descendants_verified=True,
+        supervisor_resource_evidence=evidence,
         elapsed_nanoseconds=100,
         counters=counters,
     )
@@ -408,15 +428,25 @@ def test_real_parent_executor_runs_one_business_and_publishes_two_frames(
                 )
             )
         )
-    child, suffix = parent.verify_v075_k7_parent_atomic_two_frame_output_v1(
-        raw=result.two_frame_output,
-        request=request,
-        spec=result.spec,
-        runtime_result=result.runtime_result,
+    resource_verification = (
+        shared_authority.verify_v075_k7_atomic_shared_resource_evidence_v1(
+            request=request,
+            parent_result=result,
+        )
     )
+    child, suffix = result.child_frame, result.suffix_frame
     assert child["atomic_parent_execution_spec_id"] == result.spec.spec_id
     assert suffix["wrapper_complete_two_frame_output_bytes"] == len(
         result.two_frame_output
     )
+    assert resource_verification.child_runtime_resolution.value == (
+        result.runtime_result.memory_peak_bytes
+    )
+    assert resource_verification.to_document()["exact_connected_paths"] == []
+    assert resource_verification.to_document()[
+        "child_runtime_window_scope_incomplete_paths"
+    ] == [
+        "memory.working_bytes_peak"
+    ]
     assert result.runtime_result.output_eof_before_reap is True
     assert all(value is False for value in parent._locks().values())  # noqa: SLF001

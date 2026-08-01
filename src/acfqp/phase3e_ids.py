@@ -453,6 +453,18 @@ V075_K7_ATOMIC_PARENT_EXECUTION_RESULT_V1_DOMAIN = (
 V075_K7_ATOMIC_PARENT_EXECUTION_FAILURE_V1_DOMAIN = (
     "acfqp:v075-k7-atomic-parent-execution-failure:v1"
 )
+V075_K7_ATOMIC_SUPERVISOR_RESOURCE_EVIDENCE_V1_DOMAIN = (
+    "acfqp:v075-k7-atomic-supervisor-resource-evidence:v1"
+)
+V075_K7_ATOMIC_SHARED_RESOURCE_REGISTRY_V1_DOMAIN = (
+    "acfqp:v075-k7-atomic-shared-resource-registry:v1"
+)
+V075_K7_ATOMIC_SHARED_RESOURCE_RESOLUTION_V1_DOMAIN = (
+    "acfqp:v075-k7-atomic-shared-resource-resolution:v1"
+)
+V075_K7_ATOMIC_SHARED_RESOURCE_VERIFICATION_V1_DOMAIN = (
+    "acfqp:v075-k7-atomic-shared-resource-verification:v1"
+)
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
 ROUTE_CAP_PROFILE_DOMAIN = "acfqp:route-cap-profile:v1"
@@ -1157,6 +1169,18 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "v075_k7_atomic_parent_execution_failure_v1": (
             V075_K7_ATOMIC_PARENT_EXECUTION_FAILURE_V1_DOMAIN
+        ),
+        "v075_k7_atomic_supervisor_resource_evidence_v1": (
+            V075_K7_ATOMIC_SUPERVISOR_RESOURCE_EVIDENCE_V1_DOMAIN
+        ),
+        "v075_k7_atomic_shared_resource_registry_v1": (
+            V075_K7_ATOMIC_SHARED_RESOURCE_REGISTRY_V1_DOMAIN
+        ),
+        "v075_k7_atomic_shared_resource_resolution_v1": (
+            V075_K7_ATOMIC_SHARED_RESOURCE_RESOLUTION_V1_DOMAIN
+        ),
+        "v075_k7_atomic_shared_resource_verification_v1": (
+            V075_K7_ATOMIC_SHARED_RESOURCE_VERIFICATION_V1_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,

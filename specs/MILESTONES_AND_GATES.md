@@ -4325,3 +4325,38 @@ or official authority. Durable atomic artifact writing, independent loaded
 stdlib/native-module provenance, nine-path semantic verification and the exact
 202-required-leaf reduction remain locked. See
 `specs/K7_PARENT_ATOMIC_EXECUTOR.md`.
+
+## V0-109 K7 atomic shared-resource authority
+
+Contract `2.0.1` adds runtime-issuer-owned lifecycle evidence at the real
+V0-108 supervisor call sites. A successful result binds the contiguous order
+`PROCESS_LAUNCH -> OUTPUT_EOF -> PROCESS_REAP -> CGROUP_EMPTY ->
+DESCENDANT_SCAN -> FINAL_MEMORY_PEAK -> MEMORY_CONTROLS_VERIFIED` together with
+the lease, child, launch count, memory cap/peak and final cgroup facts.
+
+A production registry then derives all nine shared-resource rows from the exact
+request/spec, verified route identity, V6 registry/stage/execution profiles,
+sealed parent/runtime source entries and native trampoline. It accepts no
+caller path table or numeric total. Its frozen connection partition is:
+
+```text
+memory.working_bytes_peak = VERIFIED_CHILD_RUNTIME_WINDOW_SCOPE_INCOMPLETE
+process.launches          = VERIFIED_RUNTIME_LOCAL_SCOPE_INCOMPLETE
+other seven paths         = NOT_CONNECTED
+```
+
+The verifier strictly replays the V0-108 two-frame result. It rederives final
+`memory.peak` exactly for the child-runtime window after
+reap/empty/descendant checks, but keeps it ineligible because that window does
+not cover complete parent-attempt work. It also rederives the one native
+launch, but keeps it ineligible because the complete parent-attempt launch-site
+SUM scope is not independently closed.
+Same-process runtime-issuer verification is present; standalone bytes-only OS
+replay is not.
+
+This milestone closes zero attempt-scope semantic shared-resource values. It
+does not upgrade the V0-108 in-memory output-byte fact, issue a complete receipt
+set, or create a `CounterRecord`, `WorkVector`, `ComparisonVector`, projection
+proof, 202-leaf reduction, terminal, certificate, scientific result or official
+authority. Every Gate remains locked. See
+`specs/K7_ATOMIC_SHARED_RESOURCE_AUTHORITY.md`.

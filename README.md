@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `2.0.0`: the earlier contracts build the
+contracts now span `1.40.0` through `2.0.1`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -465,6 +465,23 @@ paths has a semantic receipt, so no `CounterRecord`, `WorkVector`,
 `ComparisonVector`, projection proof, terminal, certificate, scientific result
 or official authority is issued. The exact boundary is documented in
 [`specs/K7_PARENT_ATOMIC_EXECUTOR.md`](specs/K7_PARENT_ATOMIC_EXECUTOR.md).
+
+Contract `2.0.1` adds issuer-owned runtime lifecycle evidence and the exact
+production nine-row shared-resource registry. It binds the V0-108 result to the
+request/route, V6 registry and stage profile, sealed parent/runtime sources and
+native trampoline. Final cgroup `memory.peak` verifies
+`memory.working_bytes_peak` only for the child-runtime window and is frozen as
+`VERIFIED_CHILD_RUNTIME_WINDOW_SCOPE_INCOMPLETE`. The native launch count is
+`VERIFIED_RUNTIME_LOCAL_SCOPE_INCOMPLETE`. Neither covers the complete parent
+attempt; the other seven hash, integrity, protocol, mount and I/O paths are
+`NOT_CONNECTED`.
+
+Thus V0-109 provides two exact window-local observations but zero eligible
+attempt-scope shared-resource resolutions. It still issues no nine-path receipt
+set, `CounterRecord`, `WorkVector`,
+`ComparisonVector`, projection proof, terminal, certificate, scientific result
+or official authority. See
+[`specs/K7_ATOMIC_SHARED_RESOURCE_AUTHORITY.md`](specs/K7_ATOMIC_SHARED_RESOURCE_AUTHORITY.md).
 
 ## V0-074 repair construction (NONAUTHORIZING; fresh Gate NOT RUN)
 
