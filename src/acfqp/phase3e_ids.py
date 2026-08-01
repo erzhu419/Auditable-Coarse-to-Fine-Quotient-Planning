@@ -126,6 +126,12 @@ V075_K7_ROOT_CAP_OPERATION_SITE_V1_DOMAIN = (
 V075_K7_ROOT_CAP_OPERATION_SITE_MANIFEST_V1_DOMAIN = (
     "acfqp:v075-k7-root-cap-operation-site-manifest:v1"
 )
+V075_K7_ROOT_CAP_OPERATION_SITE_AUDIT_V2_DOMAIN = (
+    "acfqp:v075-k7-root-cap-operation-site-audit:v2"
+)
+V075_K7_ROOT_CAP_OPERATION_SITE_MANIFEST_V2_DOMAIN = (
+    "acfqp:v075-k7-root-cap-operation-site-manifest:v2"
+)
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
 ROUTE_CAP_PROFILE_DOMAIN = "acfqp:route-cap-profile:v1"
@@ -500,6 +506,12 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "v075_k7_root_cap_operation_site_manifest_v1": (
             V075_K7_ROOT_CAP_OPERATION_SITE_MANIFEST_V1_DOMAIN
+        ),
+        "v075_k7_root_cap_operation_site_audit_v2": (
+            V075_K7_ROOT_CAP_OPERATION_SITE_AUDIT_V2_DOMAIN
+        ),
+        "v075_k7_root_cap_operation_site_manifest_v2": (
+            V075_K7_ROOT_CAP_OPERATION_SITE_MANIFEST_V2_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,

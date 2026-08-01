@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `1.87.0`: the earlier contracts build the
+contracts now span `1.40.0` through `1.88.0`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -283,10 +283,20 @@ operation-site-complete live vector is issued yet, so
 formula/hash/check/I/O/process/peak, typed terminal/campaign, production,
 fresh-science, scalar/economics and certificate Gates remain locked.
 
-The corresponding nonfresh K7 root-cap manifest now fixes the exact five-stage
-execution plan, 13 audited direct-native hook sites and 10 explicitly pending
-common/hash/I/O/process/peak sites.  It is a hook plan, not instrumentation:
-all live-event and vector counts remain zero until those sites are connected.
+Contract `1.87.0`'s nonfresh K7 root-cap manifest originally classified the
+five-stage execution plan as 13 direct-native hook sites plus 10 pending
+common/hash/I/O/process/peak sites.  Contract `1.88.0` supersedes only that
+manifest's hook-admissibility claim after a strict source-owner audit.  The v2
+audit binds the exact v1 manifest as a negative predecessor and classifies its
+43 audited entries as nine owner-matched v4 targets, 13 native-zero inherited
+families, ten pending common/hash/I/O/process/peak sites, one derived-only route
+reconciliation view and ten missing batch-v2 counter families.  In particular,
+learned-planner, semantic-replay and abstract-planner counters cannot be charged
+for work performed by the batch-v2 planner, and the closure private replay site
+is the private observer verifier rather than the runner wrapper.  The v1 sink
+is inadmissible and is not reused.  No emitter, live event or WorkVector is
+issued; operation-site instrumentation and every Gate remain locked pending an
+additive batch-v2 registry and actual source hooks.
 
 ## V0-074 repair construction (NONAUTHORIZING; fresh Gate NOT RUN)
 
