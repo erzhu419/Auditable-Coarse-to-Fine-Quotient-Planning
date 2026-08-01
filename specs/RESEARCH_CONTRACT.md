@@ -4965,3 +4965,26 @@ accounting. No child is created or attached, no `clone3`/pidfd lifecycle or
 post-reap peak is observed, and no accounting suffix, atomic final output,
 semantic nine-path resolution, CounterRecord, WorkVector, ComparisonVector,
 projection proof, terminal artifact or official/scientific result is issued.
+
+## Contract 1.97.0: K7 fresh-exec successor authority replay
+
+The V0-103 retained-runtime byte verifier continues to require its exact live
+parent request. A separate portable path now reconstructs the authority chain
+inside a fresh process. Its inputs are limited to the sealed source archive and
+canonical transport, complete-lifecycle and successor-profile documents. The
+transport is rebuilt from archive entries and frozen runtime facts; lifecycle,
+V6 accounted and successor profiles are freshly issuer-minted; and all supplied
+profile documents must match the new documents exactly.
+
+The successor request is then reconstructed from its exact accounted route,
+public signer registry, commitments, session, nonce, scientific occurrence and
+schedule. Exact canonical-byte equality is mandatory, and no live parent request
+argument exists. Both results are process-local and unpickleable.
+
+This construction grants no loaded-code, sealed-runtime, cgroup, launch,
+business, accounting or terminal authority. The sealed bootstrap must still
+bind the loaded archive, enter the exact child runtime and execute the business
+body; the parent must still own atomic placement, pidfd supervision, the
+post-cutoff suffix and wrapper-complete output; and an independent verifier
+must still close all nine shared-resource semantics and the remaining 193
+formal leaves before any CounterRecord, WorkVector or ComparisonVector exists.

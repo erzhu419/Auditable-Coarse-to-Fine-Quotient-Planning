@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `1.96.0`: the earlier contracts build the
+contracts now span `1.40.0` through `1.97.0`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -416,6 +416,17 @@ temporary systemd-delegated scope exercised the positive create/readback/close
 path and confirmed leaf removal. This lease still launches no child and grants
 no pidfd, accounting-vector, terminal or official authority; durable
 cross-process nonce replay and the parent-owned executor remain the next Gate.
+
+Contract `1.97.0` removes the fresh-exec request-authority blocker without
+weakening V0-103. From the exact sealed source archive and three canonical
+profile documents, the child side reconstructs the sealed transport, complete
+lifecycle, V6 accounted-profile and successor-profile authority chain, then
+reconstructs the complete successor request and requires byte-for-byte equality.
+No live parent request object crosses the process boundary. The reconstructed
+closure and request are process-local and unpickleable. This is still a
+pre-business boundary: it launches nothing, proves no loaded-code or isolated
+runtime fact, emits no successor frame and grants no shared-resource or formal
+accounting authority.
 
 ## V0-074 repair construction (NONAUTHORIZING; fresh Gate NOT RUN)
 

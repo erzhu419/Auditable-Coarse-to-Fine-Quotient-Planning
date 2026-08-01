@@ -429,6 +429,12 @@ V075_K7_CGROUP_LEASE_AUTHORITY_V1_DOMAIN = (
 V075_K7_CGROUP_LEASE_PRELAUNCH_BLOCKED_RESULT_V1_DOMAIN = (
     "acfqp:v075-k7-cgroup-lease-prelaunch-blocked-result:v1"
 )
+V075_K7_SUCCESSOR_PORTABLE_PROFILE_CLOSURE_V1_DOMAIN = (
+    "acfqp:v075-k7-successor-portable-profile-closure:v1"
+)
+V075_K7_SUCCESSOR_PORTABLE_REQUEST_REPLAY_V1_DOMAIN = (
+    "acfqp:v075-k7-successor-portable-request-replay:v1"
+)
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
 ROUTE_CAP_PROFILE_DOMAIN = "acfqp:route-cap-profile:v1"
@@ -1109,6 +1115,12 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "v075_k7_cgroup_lease_prelaunch_blocked_result_v1": (
             V075_K7_CGROUP_LEASE_PRELAUNCH_BLOCKED_RESULT_V1_DOMAIN
+        ),
+        "v075_k7_successor_portable_profile_closure_v1": (
+            V075_K7_SUCCESSOR_PORTABLE_PROFILE_CLOSURE_V1_DOMAIN
+        ),
+        "v075_k7_successor_portable_request_replay_v1": (
+            V075_K7_SUCCESSOR_PORTABLE_REQUEST_REPLAY_V1_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,

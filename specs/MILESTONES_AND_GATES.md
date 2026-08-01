@@ -4224,3 +4224,20 @@ post-exit emptiness/no descendants, capture the final peak, serialize the
 parent-owned suffix or close any of the nine shared-resource semantics. The
 next Gate is the parent executor using this lease; formal
 `CounterRecord -> WorkVector -> ComparisonVector` issuance remains locked.
+
+## V0-105 K7 fresh-exec successor authority replay
+
+Contract `1.97.0` closes the live-parent-object transport blocker before the
+sealed child business begins. The exact sealed source archive and canonical
+transport/lifecycle/successor-profile documents are used to reconstruct the
+complete issuer-protected profile chain. The exact accounted route, signer
+registry and successor request are then reconstructed and must reproduce the
+parent request bytes exactly, without accepting the parent request object.
+
+The reconstructed profile closure and request are process-local and
+unpickleable. Archive/profile/request mutations, crossed route identities,
+unknown fields and JSON type aliases fail before business execution. This is
+not a child-launch or accounting milestone: loaded-code identity, isolated
+runtime entry, lease consumption, atomic placement, pidfd lifecycle, the K7
+business frame, parent suffix, nine semantic shared-resource values and all
+formal vectors remain locked.
