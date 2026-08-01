@@ -4159,17 +4159,41 @@ science and certificate lock remain unchanged.
 Contract `1.94.0` requires a real, bounded host probe before any future K7
 accounted child launch. Acceptance for this construction cut is limited to:
 
-- exact byte/digest capture of successful `/proc/self/cgroup`, mountinfo and
-  current-cgroup controller reads;
+- bounded byte-count/digest capture of successful `/proc/self/cgroup`,
+  mountinfo and current-cgroup controller reads, without retaining raw bytes;
 - explicit pidfd-open and pidfd-wait primitive facts;
 - a mandatory caller-preopened delegated-parent directory descriptor; and
-- typed `NOT_AVAILABLE` or `PREFLIGHT_ONLY` noncertificate closure with zero
-  child launches and every formal lock false.
+- typed `NOT_AVAILABLE` admission evidence with zero child launches, no
+  attempt-terminal authority and every formal lock false.
 
 The current host has pidfd and cgroup-v2 primitives but no supplied delegated
 parent, so the expected result is `NOT_AVAILABLE`. A supplied directory FD is
-not delegation proof and remains `PREFLIGHT_ONLY` until a successor creates
+not delegation proof and also remains `NOT_AVAILABLE` until a successor creates
 and verifies an exclusive leaf, programs the one-child caps, places the child
 atomically, reaps by pidfd, proves the leaf empty and reads the final peak.
 Only after that successor and a parent-owned accounting suffix may the nine
 shared-resource paths enter independent semantic verification.
+
+## V0-103 K7 parent-owned successor IPC admission
+
+Contract `1.95.0` freezes the complete prelaunch identity graph consumed by
+that successor:
+
+- the exact accounted-sealed route profile and V0-102 admission profile;
+- exactly one bootstrap digest and byte count derived from the sealed source
+  snapshot rather than supplied by the caller;
+- the full route identity, signer registry, public/private commitments,
+  session and nonce;
+- scientific occurrence and schedule mapped to the exact Phase-3E logical
+  occurrence; and
+- exactly two future launched output roles, ordered as child-owned K7 business
+  then parent-owned accounting suffix.
+
+The current `NOT_AVAILABLE` admission can produce only a route-bound structural
+blocked result. It records zero successor launches and zero frames and has no
+attempt-terminal or noncertificate-closure authority. The bootstrap is not
+run, and nonce consumption, delegated-leaf construction, atomic child
+placement, pidfd supervision, the parent suffix and atomic output remain
+unimplemented. The next Gate is the real executor; formal nine-path evidence
+and `CounterRecord -> WorkVector -> ComparisonVector` remain locked until that
+runtime and its independent verifier exist.

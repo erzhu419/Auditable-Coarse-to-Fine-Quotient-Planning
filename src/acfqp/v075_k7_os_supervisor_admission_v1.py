@@ -2,11 +2,11 @@
 
 The probe performs bounded, read-only inspection only.  It never launches a
 child, creates a cgroup, writes a controller file, or turns host primitives
-into execution authority.  A delegated-parent directory descriptor is a
-mandatory input to the future lease constructor; this revision deliberately
-does not implement that mutating lease validation.  Consequently every result
-is either ``NOT_AVAILABLE`` or ``PREFLIGHT_ONLY`` and every formal lock remains
-false.
+into execution authority. Raw source bytes exist only on the probe stack; the
+artifact retains bounded byte counts and digests. A delegated-parent directory
+descriptor is a mandatory input to the future lease constructor; this revision
+deliberately does not implement that mutating lease validation. Consequently
+every issued result is ``NOT_AVAILABLE`` and every formal lock remains false.
 """
 
 from __future__ import annotations
@@ -90,7 +90,6 @@ class V075K7OSSupervisorAdmissionV1Error(ValueError):
 
 class K7OSSupervisorAdmissionStatusV1(str, Enum):
     NOT_AVAILABLE = "NOT_AVAILABLE"
-    PREFLIGHT_ONLY = "PREFLIGHT_ONLY"
 
 
 class K7OSSupervisorBlockerV1(str, Enum):
@@ -109,6 +108,10 @@ class K7OSSupervisorBlockerV1(str, Enum):
     REQUIRED_CONTROLLER_MISSING = "REQUIRED_CONTROLLER_MISSING"
     CURRENT_CGROUP_REQUIRED_FILE_MISSING = (
         "CURRENT_CGROUP_REQUIRED_FILE_MISSING"
+    )
+    CURRENT_CGROUP_FACT_UNOBSERVED = "CURRENT_CGROUP_FACT_UNOBSERVED"
+    CURRENT_CGROUP_REQUIRED_FILE_UNOBSERVED = (
+        "CURRENT_CGROUP_REQUIRED_FILE_UNOBSERVED"
     )
     CURRENT_CGROUP_NOT_WRITABLE = "CURRENT_CGROUP_NOT_WRITABLE"
     DELEGATED_CGROUP_PARENT_FD_NOT_SUPPLIED = (
@@ -265,7 +268,6 @@ class K7OSSupervisorReadEvidenceV1:
     _issuer: InitVar[object]
     role: K7OSSupervisorReadRoleV1
     source_path: str
-    content_hex: str
     byte_count: int
     sha256: str
     _evidence_id: str = field(init=False, repr=False, compare=False)
@@ -280,27 +282,22 @@ class K7OSSupervisorReadEvidenceV1:
                 "OS-supervisor read role is unknown"
             ) from error
         object.__setattr__(self, "role", role)
-        if type(self.source_path) is not str or not self.source_path.startswith("/"):
-            _fail("OS-supervisor read path must be absolute")
         if (
-            type(self.content_hex) is not str
-            or len(self.content_hex) % 2
-            or len(self.content_hex) > 2 * MAX_SOURCE_BYTES
+            type(self.source_path) is not str
+            or not self.source_path.startswith("/")
+            or len(self.source_path.encode("utf-8")) > 4096
+            or "\x00" in self.source_path
+            or os.path.normpath(self.source_path) != self.source_path
         ):
-            _fail("OS-supervisor read content is not bounded hexadecimal")
-        try:
-            raw = bytes.fromhex(self.content_hex)
-        except ValueError as error:
-            raise V075K7OSSupervisorAdmissionV1Error(
-                "OS-supervisor read content is not hexadecimal"
-            ) from error
+            _fail("OS-supervisor read path must be bounded and canonical")
         if (
             type(self.byte_count) is not int
-            or self.byte_count != len(raw)
+            or not 0 <= self.byte_count <= MAX_SOURCE_BYTES
             or type(self.sha256) is not str
-            or self.sha256 != hashlib.sha256(raw).hexdigest()
+            or len(self.sha256) != 64
+            or any(character not in "0123456789abcdef" for character in self.sha256)
         ):
-            _fail("OS-supervisor read digest or byte count changed")
+            _fail("OS-supervisor read digest or byte count is invalid")
         object.__setattr__(
             self,
             "_evidence_id",
@@ -315,10 +312,10 @@ class K7OSSupervisorReadEvidenceV1:
             "profile_key": PROFILE_KEY,
             "read_role": self.role.value,
             "source_path": self.source_path,
-            "content_hex": self.content_hex,
             "byte_count": self.byte_count,
             "sha256": self.sha256,
             "read_was_bounded": True,
+            "source_bytes_retained": False,
             "source_semantics_verified": False,
             "formal_locks": _locks(),
         }
@@ -338,24 +335,26 @@ class K7OSSupervisorReadEvidenceV1:
 
 def _read_evidence(
     path: Path, role: K7OSSupervisorReadRoleV1
-) -> K7OSSupervisorReadEvidenceV1:
+) -> tuple[K7OSSupervisorReadEvidenceV1, bytes]:
     raw = _read_bounded(path, role)
-    return K7OSSupervisorReadEvidenceV1(
-        _READ_ISSUER,
-        role,
-        os.fspath(path),
-        raw.hex(),
-        len(raw),
-        hashlib.sha256(raw).hexdigest(),
+    return (
+        K7OSSupervisorReadEvidenceV1(
+            _READ_ISSUER,
+            role,
+            os.fspath(path),
+            len(raw),
+            hashlib.sha256(raw).hexdigest(),
+        ),
+        raw,
     )
 
 
-def _decode(evidence: K7OSSupervisorReadEvidenceV1) -> str:
+def _decode(raw: bytes, role: K7OSSupervisorReadRoleV1) -> str:
     try:
-        return bytes.fromhex(evidence.content_hex).decode("utf-8")
+        return raw.decode("utf-8")
     except UnicodeError as error:
         raise V075K7OSSupervisorAdmissionV1Error(
-            f"{evidence.role.value} is not UTF-8"
+            f"{role.value} is not UTF-8"
         ) from error
 
 
@@ -373,8 +372,8 @@ def _self_cgroup_path(text: str) -> str:
     return value
 
 
-def _cgroup2_mount(text: str) -> str:
-    mounts: list[str] = []
+def _cgroup2_mount(text: str, membership: str) -> tuple[str, str]:
+    mounts: list[tuple[str, str]] = []
     for line in text.splitlines():
         fields = line.split(" ")
         try:
@@ -384,10 +383,251 @@ def _cgroup2_mount(text: str) -> str:
         if separator + 1 < len(fields) and fields[separator + 1] == "cgroup2":
             if len(fields) <= 4:
                 continue
-            mounts.append(_unescape_mount(fields[4]))
-    if len(mounts) != 1 or not mounts[0].startswith("/"):
-        _fail("mountinfo lacks one unambiguous cgroup2 mount")
-    return mounts[0]
+            root = _unescape_mount(fields[3])
+            mountpoint = _unescape_mount(fields[4])
+            if root.startswith("/") and mountpoint.startswith("/"):
+                mounts.append((root, mountpoint))
+    eligible = [
+        item
+        for item in mounts
+        if item[0] == "/"
+        or membership == item[0]
+        or membership.startswith(item[0].rstrip("/") + "/")
+    ]
+    if not eligible:
+        _fail("mountinfo has no cgroup2 mount covering current membership")
+    longest = max(len(root.rstrip("/")) for root, _mountpoint in eligible)
+    winners = sorted(
+        set(
+            item
+            for item in eligible
+            if len(item[0].rstrip("/")) == longest
+        )
+    )
+    if len(winners) != 1:
+        _fail("mountinfo has ambiguous cgroup2 mounts for current membership")
+    return winners[0]
+
+
+def _current_cgroup_directory(
+    *, membership: str, mount_root: str, mountpoint: str
+) -> Path:
+    if mount_root == "/":
+        relative = membership.lstrip("/")
+    elif membership == mount_root:
+        relative = ""
+    else:
+        relative = membership[len(mount_root.rstrip("/")) + 1 :]
+    candidate = Path(mountpoint) / relative
+    if ".." in candidate.parts:
+        _fail("current cgroup directory escapes its mount")
+    return candidate
+
+
+@dataclass(frozen=True, slots=True)
+class K7OSSupervisorPathFactV1:
+    """Bounded stat/access fact; it grants no source semantics."""
+
+    _issuer: InitVar[object]
+    role: str
+    path_sha256: str
+    stat_observed: bool
+    exists: bool
+    device: int | None
+    inode: int | None
+    mode: int | None
+    owner_uid: int | None
+    owner_gid: int | None
+    is_directory: bool
+    is_regular: bool
+    readable: bool
+    writable: bool
+
+    def __post_init__(self, _issuer: object) -> None:
+        if _issuer is not _PROBE_ISSUER:
+            _fail("OS-supervisor path facts are probe-issued")
+        if (
+            type(self.role) is not str
+            or not self.role
+            or len(self.role) > 128
+            or type(self.path_sha256) is not str
+            or len(self.path_sha256) != 64
+            or any(
+                character not in "0123456789abcdef"
+                for character in self.path_sha256
+            )
+        ):
+            _fail("OS-supervisor path fact identity is invalid")
+        for value in (
+            self.stat_observed,
+            self.exists,
+            self.is_directory,
+            self.is_regular,
+            self.readable,
+            self.writable,
+        ):
+            if type(value) is not bool:
+                _fail("OS-supervisor path fact boolean is mistyped")
+        stat_values = (
+            self.device,
+            self.inode,
+            self.mode,
+            self.owner_uid,
+            self.owner_gid,
+        )
+        if not self.stat_observed:
+            if self.exists or any(value is not None for value in stat_values) or any(
+                (self.is_directory, self.is_regular, self.readable, self.writable)
+            ):
+                _fail("unobserved OS-supervisor path fact carries metadata")
+        elif self.exists:
+            if any(type(value) is not int or value < 0 for value in stat_values):
+                _fail("existing OS-supervisor path fact lacks exact stat values")
+        elif any(value is not None for value in stat_values) or any(
+            (self.is_directory, self.is_regular, self.readable, self.writable)
+        ):
+            _fail("missing OS-supervisor path fact carries positive metadata")
+
+    def to_document(self) -> dict[str, Any]:
+        return {
+            "role": self.role,
+            "path_sha256": self.path_sha256,
+            "stat_observed": self.stat_observed,
+            "exists": self.exists,
+            "device": self.device,
+            "inode": self.inode,
+            "mode": self.mode,
+            "owner_uid": self.owner_uid,
+            "owner_gid": self.owner_gid,
+            "is_directory": self.is_directory,
+            "is_regular": self.is_regular,
+            "readable": self.readable,
+            "writable": self.writable,
+            "source_semantics_verified": False,
+        }
+
+
+def _path_fact(path: Path, role: str) -> K7OSSupervisorPathFactV1:
+    encoded = os.fspath(path).encode("utf-8")
+    if len(encoded) > 4096:
+        _fail("OS-supervisor fact path exceeds its cap")
+    digest = hashlib.sha256(encoded).hexdigest()
+    try:
+        status = path.stat(follow_symlinks=False)
+    except (FileNotFoundError, NotADirectoryError):
+        return K7OSSupervisorPathFactV1(
+            _PROBE_ISSUER,
+            role,
+            digest,
+            True,
+            False,
+            None,
+            None,
+            None,
+            None,
+            None,
+            False,
+            False,
+            False,
+            False,
+        )
+    except OSError:
+        return K7OSSupervisorPathFactV1(
+            _PROBE_ISSUER,
+            role,
+            digest,
+            False,
+            False,
+            None,
+            None,
+            None,
+            None,
+            None,
+            False,
+            False,
+            False,
+            False,
+        )
+    directory = stat.S_ISDIR(status.st_mode)
+    return K7OSSupervisorPathFactV1(
+        _PROBE_ISSUER,
+        role,
+        digest,
+        True,
+        True,
+        status.st_dev,
+        status.st_ino,
+        stat.S_IMODE(status.st_mode),
+        status.st_uid,
+        status.st_gid,
+        directory,
+        stat.S_ISREG(status.st_mode),
+        os.access(path, os.R_OK | (os.X_OK if directory else 0)),
+        os.access(path, os.W_OK | (os.X_OK if directory else 0)),
+    )
+
+
+def _descriptor_fact(descriptor: int | None) -> K7OSSupervisorPathFactV1:
+    role = "DELEGATED_PARENT_DESCRIPTOR"
+    if descriptor is None:
+        return K7OSSupervisorPathFactV1(
+            _PROBE_ISSUER,
+            role,
+            hashlib.sha256(b"NOT_SUPPLIED").hexdigest(),
+            False,
+            False,
+            None,
+            None,
+            None,
+            None,
+            None,
+            False,
+            False,
+            False,
+            False,
+        )
+    try:
+        status = os.fstat(descriptor)
+        target = os.readlink(f"/proc/self/fd/{descriptor}")
+    except OSError:
+        return K7OSSupervisorPathFactV1(
+            _PROBE_ISSUER,
+            role,
+            hashlib.sha256(b"INVALID_DESCRIPTOR").hexdigest(),
+            False,
+            False,
+            None,
+            None,
+            None,
+            None,
+            None,
+            False,
+            False,
+            False,
+            False,
+        )
+    target_bytes = target.encode("utf-8")
+    if len(target_bytes) > 4096:
+        _fail("delegated descriptor target exceeds its cap")
+    return K7OSSupervisorPathFactV1(
+        _PROBE_ISSUER,
+        role,
+        hashlib.sha256(target_bytes).hexdigest(),
+        True,
+        True,
+        status.st_dev,
+        status.st_ino,
+        stat.S_IMODE(status.st_mode),
+        status.st_uid,
+        status.st_gid,
+        stat.S_ISDIR(status.st_mode),
+        stat.S_ISREG(status.st_mode),
+        True,
+        bool(
+            stat.S_ISDIR(status.st_mode)
+            and os.access(f"/proc/self/fd/{descriptor}", os.W_OK | os.X_OK)
+        ),
+    )
 
 
 @dataclass(frozen=True, slots=True)
@@ -400,14 +640,24 @@ class K7OSSupervisorAdmissionProbeV1:
     pidfd_open_present: bool
     pidfd_wait_present: bool
     current_cgroup_path: str | None
+    cgroup2_mount_root: str | None
     cgroup2_mount_path: str | None
-    current_controllers: tuple[str, ...]
-    current_required_files_present: tuple[str, ...]
-    current_cgroup_writable: bool
+    current_delegatable_controllers: tuple[str, ...]
+    current_cgroup_directory_fact: K7OSSupervisorPathFactV1
+    current_required_file_facts: tuple[K7OSSupervisorPathFactV1, ...]
     delegated_parent_fd_supplied: bool
-    delegated_parent_fd_directory: bool
+    delegated_parent_fact: K7OSSupervisorPathFactV1
     blockers: tuple[K7OSSupervisorBlockerV1, ...]
     _probe_id: str = field(init=False, repr=False, compare=False)
+    _validated_read_ids: tuple[str, ...] = field(
+        init=False, repr=False, compare=False
+    )
+    _validated_fact_documents: tuple[dict[str, Any], ...] = field(
+        init=False, repr=False, compare=False
+    )
+    _validated_blocker_values: tuple[str, ...] = field(
+        init=False, repr=False, compare=False
+    )
 
     def __post_init__(self, _issuer: object) -> None:
         if _issuer is not _PROBE_ISSUER:
@@ -425,24 +675,31 @@ class K7OSSupervisorAdmissionProbeV1:
             self.linux_present,
             self.pidfd_open_present,
             self.pidfd_wait_present,
-            self.current_cgroup_writable,
             self.delegated_parent_fd_supplied,
-            self.delegated_parent_fd_directory,
         ):
             if type(value) is not bool:
                 _fail("OS-supervisor probe boolean was mistyped")
         for value, label in (
             (self.current_cgroup_path, "current cgroup path"),
+            (self.cgroup2_mount_root, "cgroup2 mount root"),
             (self.cgroup2_mount_path, "cgroup2 mount path"),
         ):
             if value is not None and (type(value) is not str or not value.startswith("/")):
                 _fail(f"{label} must be absolute or null")
         if (
-            type(self.current_controllers) is not tuple
-            or self.current_controllers != tuple(sorted(set(self.current_controllers)))
-            or type(self.current_required_files_present) is not tuple
-            or self.current_required_files_present
-            != tuple(sorted(set(self.current_required_files_present)))
+            type(self.current_delegatable_controllers) is not tuple
+            or self.current_delegatable_controllers
+            != tuple(sorted(set(self.current_delegatable_controllers)))
+            or type(self.current_cgroup_directory_fact)
+            is not K7OSSupervisorPathFactV1
+            or type(self.current_required_file_facts) is not tuple
+            or len(self.current_required_file_facts) != len(REQUIRED_LEAF_FILES)
+            or any(
+                type(item) is not K7OSSupervisorPathFactV1
+                for item in self.current_required_file_facts
+            )
+            or type(self.delegated_parent_fact)
+            is not K7OSSupervisorPathFactV1
         ):
             _fail("OS-supervisor probe collections are not canonical")
         try:
@@ -456,6 +713,19 @@ class K7OSSupervisorAdmissionProbeV1:
         object.__setattr__(self, "blockers", blockers)
         if not blockers:
             _fail("read-only admission probe cannot be execution-ready")
+        read_ids = tuple(item.evidence_id for item in self.read_evidence)
+        fact_documents = tuple(
+            item.to_document()
+            for item in (
+                self.current_cgroup_directory_fact,
+                *self.current_required_file_facts,
+                self.delegated_parent_fact,
+            )
+        )
+        blocker_values = tuple(item.value for item in blockers)
+        object.__setattr__(self, "_validated_read_ids", read_ids)
+        object.__setattr__(self, "_validated_fact_documents", fact_documents)
+        object.__setattr__(self, "_validated_blocker_values", blocker_values)
         object.__setattr__(
             self,
             "_probe_id",
@@ -475,14 +745,19 @@ class K7OSSupervisorAdmissionProbeV1:
             "pidfd_open_present": self.pidfd_open_present,
             "pidfd_wait_present": self.pidfd_wait_present,
             "current_cgroup_path": self.current_cgroup_path,
+            "cgroup2_mount_root": self.cgroup2_mount_root,
             "cgroup2_mount_path": self.cgroup2_mount_path,
-            "current_controllers": list(self.current_controllers),
-            "current_required_files_present": list(
-                self.current_required_files_present
+            "current_delegatable_controllers": list(
+                self.current_delegatable_controllers
             ),
-            "current_cgroup_writable": self.current_cgroup_writable,
+            "current_cgroup_directory_fact": (
+                self.current_cgroup_directory_fact.to_document()
+            ),
+            "current_required_file_facts": [
+                item.to_document() for item in self.current_required_file_facts
+            ],
             "delegated_parent_fd_supplied": self.delegated_parent_fd_supplied,
-            "delegated_parent_fd_directory": self.delegated_parent_fd_directory,
+            "delegated_parent_fact": self.delegated_parent_fact.to_document(),
             "blockers": [item.value for item in self.blockers],
             "child_launch_attempted": False,
             "cgroup_created": False,
@@ -493,6 +768,38 @@ class K7OSSupervisorAdmissionProbeV1:
 
     @property
     def probe_id(self) -> str:
+        if (
+            any(
+                type(item) is not K7OSSupervisorReadEvidenceV1
+                for item in self.read_evidence
+            )
+            or tuple(item.evidence_id for item in self.read_evidence)
+            != self._validated_read_ids
+            or any(
+                type(item) is not K7OSSupervisorPathFactV1
+                for item in (
+                    self.current_cgroup_directory_fact,
+                    *self.current_required_file_facts,
+                    self.delegated_parent_fact,
+                )
+            )
+            or tuple(
+                item.to_document()
+                for item in (
+                    self.current_cgroup_directory_fact,
+                    *self.current_required_file_facts,
+                    self.delegated_parent_fact,
+                )
+            )
+            != self._validated_fact_documents
+            or any(
+                type(item) is not K7OSSupervisorBlockerV1
+                for item in self.blockers
+            )
+            or tuple(item.value for item in self.blockers)
+            != self._validated_blocker_values
+        ):
+            _fail("OS-supervisor admission probe changed after issuance")
         current = _hash(
             V075_K7_OS_SUPERVISOR_ADMISSION_PROBE_V1_DOMAIN, self._payload()
         )
@@ -531,12 +838,7 @@ class K7OSSupervisorAdmissionResultV1:
                 "OS-supervisor admission status is unknown"
             ) from error
         object.__setattr__(self, "status", status)
-        expected = (
-            K7OSSupervisorAdmissionStatusV1.PREFLIGHT_ONLY
-            if self.probe.delegated_parent_fd_supplied
-            and self.probe.delegated_parent_fd_directory
-            else K7OSSupervisorAdmissionStatusV1.NOT_AVAILABLE
-        )
+        expected = K7OSSupervisorAdmissionStatusV1.NOT_AVAILABLE
         if status is not expected:
             _fail("OS-supervisor admission status disagrees with the probe")
         object.__setattr__(self, "_validated_refs", (self.profile, self.probe))
@@ -568,9 +870,10 @@ class K7OSSupervisorAdmissionResultV1:
             "admission_probe_id": self.probe.probe_id,
             "status": self.status.value,
             "blockers": [item.value for item in self.probe.blockers],
-            "prelaunch_terminal": True,
-            "terminal_class": "ATTEMPT_CLOSURE_NONCERTIFICATE",
-            "terminal_code": "OS_SUPERVISOR_NOT_AVAILABLE",
+            "admission_scope": "PRELAUNCH_CAPABILITY_ONLY",
+            "attempt_identity_bound": False,
+            "attempt_terminal_issued": False,
+            "noncertificate_closure_issued": False,
             "child_launch_attempted": False,
             "nine_shared_resource_paths_semantically_closed": False,
             "formal_locks": _locks(),
@@ -619,41 +922,67 @@ def probe_v075_k7_os_supervisor_admission_v1(
         blockers.add(K7OSSupervisorBlockerV1.PIDFD_WAIT_UNAVAILABLE)
 
     cgroup_path: str | None = None
+    mount_root: str | None = None
     mount_path: str | None = None
     try:
-        row = _read_evidence(
+        row, raw = _read_evidence(
             Path("/proc/self/cgroup"),
             K7OSSupervisorReadRoleV1.PROC_SELF_CGROUP,
         )
         evidence.append(row)
-        cgroup_path = _self_cgroup_path(_decode(row))
     except V075K7OSSupervisorAdmissionV1Error:
         blockers.add(K7OSSupervisorBlockerV1.PROC_SELF_CGROUP_UNREADABLE)
-        blockers.add(K7OSSupervisorBlockerV1.PROC_SELF_CGROUP_INVALID)
+    else:
+        try:
+            cgroup_path = _self_cgroup_path(
+                _decode(raw, K7OSSupervisorReadRoleV1.PROC_SELF_CGROUP)
+            )
+        except V075K7OSSupervisorAdmissionV1Error:
+            blockers.add(K7OSSupervisorBlockerV1.PROC_SELF_CGROUP_INVALID)
     try:
-        row = _read_evidence(
+        row, raw = _read_evidence(
             Path("/proc/self/mountinfo"),
             K7OSSupervisorReadRoleV1.PROC_SELF_MOUNTINFO,
         )
         evidence.append(row)
-        mount_path = _cgroup2_mount(_decode(row))
     except V075K7OSSupervisorAdmissionV1Error:
         blockers.add(K7OSSupervisorBlockerV1.PROC_SELF_MOUNTINFO_UNREADABLE)
-        blockers.add(K7OSSupervisorBlockerV1.CGROUP2_MOUNT_UNRESOLVED)
+    else:
+        if cgroup_path is not None:
+            try:
+                mount_root, mount_path = _cgroup2_mount(
+                    _decode(raw, K7OSSupervisorReadRoleV1.PROC_SELF_MOUNTINFO),
+                    cgroup_path,
+                )
+            except V075K7OSSupervisorAdmissionV1Error:
+                blockers.add(K7OSSupervisorBlockerV1.CGROUP2_MOUNT_UNRESOLVED)
+        else:
+            blockers.add(K7OSSupervisorBlockerV1.CGROUP2_MOUNT_UNRESOLVED)
 
     controllers: tuple[str, ...] = ()
-    present_files: tuple[str, ...] = ()
-    writable = False
     current_directory: Path | None = None
-    if cgroup_path is not None and mount_path is not None:
-        current_directory = Path(mount_path) / cgroup_path.lstrip("/")
+    if cgroup_path is not None and mount_root is not None and mount_path is not None:
+        current_directory = _current_cgroup_directory(
+            membership=cgroup_path,
+            mount_root=mount_root,
+            mountpoint=mount_path,
+        )
         try:
-            row = _read_evidence(
+            row, raw = _read_evidence(
                 current_directory / "cgroup.controllers",
                 K7OSSupervisorReadRoleV1.CURRENT_CGROUP_CONTROLLERS,
             )
             evidence.append(row)
-            controllers = tuple(sorted(set(_decode(row).split())))
+            controllers = tuple(
+                sorted(
+                    set(
+                        _decode(
+                            raw,
+                            K7OSSupervisorReadRoleV1.CURRENT_CGROUP_CONTROLLERS,
+                        ).split()
+                    )
+                )
+            )
         except V075K7OSSupervisorAdmissionV1Error:
             blockers.add(
                 K7OSSupervisorBlockerV1.CURRENT_CGROUP_CONTROLLERS_UNREADABLE
@@ -661,41 +990,56 @@ def probe_v075_k7_os_supervisor_admission_v1(
         subtree = current_directory / "cgroup.subtree_control"
         if subtree.exists():
             try:
-                evidence.append(
-                    _read_evidence(
-                        subtree,
-                        K7OSSupervisorReadRoleV1.CURRENT_CGROUP_SUBTREE_CONTROL,
-                    )
+                row, _raw = _read_evidence(
+                    subtree,
+                    K7OSSupervisorReadRoleV1.CURRENT_CGROUP_SUBTREE_CONTROL,
                 )
+                evidence.append(row)
             except V075K7OSSupervisorAdmissionV1Error:
                 pass
-        present_files = tuple(
-            sorted(name for name in REQUIRED_LEAF_FILES if (current_directory / name).is_file())
+        directory_fact = _path_fact(
+            current_directory, "CURRENT_CGROUP_DIRECTORY"
         )
-        writable = os.access(current_directory, os.W_OK | os.X_OK)
+        required_facts = tuple(
+            _path_fact(current_directory / name, f"CURRENT_REQUIRED_FILE:{name}")
+            for name in REQUIRED_LEAF_FILES
+        )
         if not set(REQUIRED_CONTROLLERS) <= set(controllers):
             blockers.add(K7OSSupervisorBlockerV1.REQUIRED_CONTROLLER_MISSING)
-        if set(present_files) != set(REQUIRED_LEAF_FILES):
+        if not directory_fact.stat_observed:
+            blockers.add(K7OSSupervisorBlockerV1.CURRENT_CGROUP_FACT_UNOBSERVED)
+        if any(not item.stat_observed for item in required_facts):
+            blockers.add(
+                K7OSSupervisorBlockerV1.CURRENT_CGROUP_REQUIRED_FILE_UNOBSERVED
+            )
+        if any(item.stat_observed and not item.exists for item in required_facts):
             blockers.add(
                 K7OSSupervisorBlockerV1.CURRENT_CGROUP_REQUIRED_FILE_MISSING
             )
-        if not writable:
+        if not directory_fact.writable:
             blockers.add(K7OSSupervisorBlockerV1.CURRENT_CGROUP_NOT_WRITABLE)
     else:
         blockers.add(K7OSSupervisorBlockerV1.CURRENT_CGROUP_UNRESOLVED)
+        directory_fact = _path_fact(
+            Path("/unresolved/acfqp-current-cgroup"),
+            "CURRENT_CGROUP_DIRECTORY",
+        )
+        required_facts = tuple(
+            _path_fact(
+                Path("/unresolved/acfqp-current-cgroup") / name,
+                f"CURRENT_REQUIRED_FILE:{name}",
+            )
+            for name in REQUIRED_LEAF_FILES
+        )
 
     supplied = delegated_parent_fd is not None
-    fd_directory = False
+    delegated_fact = _descriptor_fact(delegated_parent_fd)
     if delegated_parent_fd is None:
         blockers.add(
             K7OSSupervisorBlockerV1.DELEGATED_CGROUP_PARENT_FD_NOT_SUPPLIED
         )
     else:
-        try:
-            fd_directory = stat.S_ISDIR(os.fstat(delegated_parent_fd).st_mode)
-        except OSError:
-            fd_directory = False
-        if not fd_directory:
+        if not delegated_fact.exists or not delegated_fact.is_directory:
             blockers.add(
                 K7OSSupervisorBlockerV1.DELEGATED_CGROUP_PARENT_FD_INVALID
             )
@@ -712,19 +1056,16 @@ def probe_v075_k7_os_supervisor_admission_v1(
         pidfd_open_present,
         pidfd_wait_present,
         cgroup_path,
+        mount_root,
         mount_path,
         controllers,
-        present_files,
-        writable,
+        directory_fact,
+        required_facts,
         supplied,
-        fd_directory,
+        delegated_fact,
         tuple(sorted(blockers, key=lambda item: item.value)),
     )
-    status = (
-        K7OSSupervisorAdmissionStatusV1.PREFLIGHT_ONLY
-        if supplied and fd_directory
-        else K7OSSupervisorAdmissionStatusV1.NOT_AVAILABLE
-    )
+    status = K7OSSupervisorAdmissionStatusV1.NOT_AVAILABLE
     return K7OSSupervisorAdmissionResultV1(
         _RESULT_ISSUER, profile, probe, status
     )
@@ -750,6 +1091,7 @@ __all__ = [
     "K7OSSupervisorAdmissionResultV1",
     "K7OSSupervisorAdmissionStatusV1",
     "K7OSSupervisorBlockerV1",
+    "K7OSSupervisorPathFactV1",
     "K7OSSupervisorReadEvidenceV1",
     "K7OSSupervisorReadRoleV1",
     "OFFICIAL_EXECUTION_ALLOWED",

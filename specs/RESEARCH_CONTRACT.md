@@ -4890,18 +4890,19 @@ economics, fresh science and certificate Gates remain `NOT_RUN` or locked.
 
 The K7 accounting route must fail before launch unless an outer authority can
 construct an exclusive process-tree measurement boundary. V0-102 implements a
-bounded, read-only host probe that records exact successful source bytes,
-byte counts and SHA-256 digests for unified-cgroup membership, mount and
+bounded, read-only host probe that uses raw source bytes only on its stack and
+records byte counts and SHA-256 digests for unified-cgroup membership, mount and
 controller inputs, together with pidfd primitive facts. It never infers a
 missing file as zero and never turns a readable cgroup path into delegation.
 
 A preopened delegated-parent directory descriptor is mandatory. If absent,
 the result is `NOT_AVAILABLE` with
 `DELEGATED_CGROUP_PARENT_FD_NOT_SUPPLIED`; if a directory descriptor is
-present, this revision yields only `PREFLIGHT_ONLY` with
+present, this revision still yields `NOT_AVAILABLE` with
 `DELEGATED_PARENT_RUNTIME_LEASE_VALIDATION_NOT_IMPLEMENTED`. Both are
-`ATTEMPT_CLOSURE_NONCERTIFICATE.OS_SUPERVISOR_NOT_AVAILABLE`, carry zero child
-launches and retain every semantic/formal/official lock as false.
+prelaunch capability results only: they carry zero child launches, issue no
+attempt terminal or noncertificate closure, and retain every
+semantic/formal/official lock as false.
 
 The current WSL2 namespace exposes pidfd and cgroup-v2 primitives but does not
 place the project process in a writable delegated attempt subtree. V0-102
@@ -4911,3 +4912,28 @@ next contract must create and validate a fresh leaf under a supplied delegated
 FD, enforce the one-child/depth/descendant caps, place the child atomically,
 complete the pidfd/post-reap sequence, and issue the parent-owned accounting
 suffix. No CounterRecord, WorkVector or ComparisonVector is authorized here.
+
+## Contract 1.95.0: K7 parent-owned successor IPC admission
+
+The successor profile is an exact extension of the accounted-sealed K7 route
+and V0-102 admission profiles. Its bootstrap path, SHA-256 and byte count are
+derived from exactly one entry in the sealed source snapshot; caller-provided
+bootstrap bytes or digests are not accepted. The public request content-binds
+the complete route graph and signer registry, the opaque-environment and
+sealed-secret commitments, session and request nonce, scientific occurrence
+and schedule, and a one-request mapping to the route's Phase-3E logical
+occurrence.
+
+A future successful launch must have exactly two ordered semantic outputs:
+child-owned K7 business, then a parent-owned accounting suffix produced only
+after cutoff, pidfd reap, descendant exclusion and final peak observation. This
+contract reserves those roles but produces neither frame. On a V0-102
+`NOT_AVAILABLE` result it emits only a route-bound structural prelaunch blocked
+result with zero successor launches and zero frames. That result explicitly
+has no attempt-terminal or noncertificate-closure authority.
+
+The nonce has identity binding but no consumption ledger; the bootstrap is not
+executed; and no cgroup lease, child body, parent suffix, wrapper-complete
+atomic output, semantic source verifier or formal 202-leaf reducer exists.
+Accordingly no CounterRecord, WorkVector, ComparisonVector, projection proof,
+terminal artifact or scientific result is authorized.

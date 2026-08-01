@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `1.94.0`: the earlier contracts build the
+contracts now span `1.40.0` through `1.95.0`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -386,12 +386,22 @@ science and certificate locks remain false, null or `NOT_RUN`.
 Contract `1.94.0` adds the first real host-side admission probe for the future
 K7 OS supervisor. It performs bounded read-only capture of pidfd and unified
 cgroup-v2 prerequisites, requires a preopened delegated-parent directory FD,
-and closes before child launch when that authority is absent. The current WSL2
-context therefore returns a typed noncertificate rather than substituting RSS
-polling or a process-group heuristic. A supplied directory FD is still only
-`PREFLIGHT_ONLY`: exclusive leaf creation, atomic child placement, pidfd reap,
+and stops before child launch when that authority is absent. The current WSL2
+context therefore returns nonauthoritative `NOT_AVAILABLE` evidence rather
+than substituting RSS polling or a process-group heuristic. A supplied
+directory FD also remains `NOT_AVAILABLE`: exclusive leaf creation, atomic
+child placement, pidfd reap,
 post-reap peak evidence and the parent-owned accounting suffix remain the next
 construction Gate. No formal accounting or official flag changes.
+
+Contract `1.95.0` freezes that successor's prelaunch identity graph. It derives
+the bootstrap entry from the sealed source snapshot and binds the complete
+accounted route, signer registry, commitments, session/nonce, scientific
+occurrence/schedule and its Phase-3E logical-occurrence mapping. A future
+launched path must emit child-owned K7 business followed by a parent-owned
+accounting suffix. The current unavailable host produces only a zero-launch,
+zero-frame structural blocked result; it is not an attempt terminal and issues
+no formal accounting object.
 
 ## V0-074 repair construction (NONAUTHORIZING; fresh Gate NOT RUN)
 
