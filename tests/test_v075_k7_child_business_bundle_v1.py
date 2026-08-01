@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from dataclasses import asdict
 import hashlib
 import inspect
+import pickle
 from types import SimpleNamespace
 
 import pytest
@@ -668,6 +670,30 @@ def test_naked_or_cross_request_taint_authority_fails(
         authority._scan(  # noqa: SLF001
             raw=bundle.canonical_bytes,
             request_replay=crossed_replay,
+        )
+
+
+def test_private_taint_authority_has_no_exportable_or_mutable_secret_state(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _request, replay, _portable, _wrapped, authority, _bundle = _substrate(monkeypatch)
+    assert "REDACTED" in repr(authority)
+    assert not hasattr(authority, "_patterns")
+    with pytest.raises(TypeError, match="serialization is forbidden"):
+        authority.__reduce__()
+    with pytest.raises(TypeError, match="serialization is forbidden"):
+        pickle.dumps(authority)
+    with pytest.raises(TypeError):
+        asdict(authority)  # type: ignore[arg-type]
+    with pytest.raises((AttributeError, TypeError)):
+        object.__setattr__(authority, "_patterns", (b"attacker-choice",))
+    with pytest.raises(
+        business.V075K7ChildBusinessBundleV1Error,
+        match="known private material",
+    ):
+        authority._scan(  # noqa: SLF001
+            raw=b'"leak":"known-private-seed-value"',
+            request_replay=replay,
         )
 
 

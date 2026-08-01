@@ -19,6 +19,7 @@ from contextlib import contextmanager
 from dataclasses import InitVar, dataclass
 from functools import wraps
 import hashlib
+import os
 from pathlib import Path
 import subprocess
 import threading
@@ -79,6 +80,11 @@ _KEY_TAINT_FIELDS = frozenset(
 _BUNDLE_ISSUER = object()
 _PRIVATE_TAINT_ISSUER = object()
 _SUBPROCESS_GUARD_LOCK = threading.Lock()
+_PRIVATE_TAINT_LOCK = threading.Lock()
+_PRIVATE_TAINT_RECORDS: dict[
+    object,
+    tuple[int, str, str, str, str, tuple[bytes, ...]],
+] = {}
 
 
 class V075K7ChildBusinessBundleV1Error(RuntimeError):
@@ -245,34 +251,61 @@ def _assert_no_private_taint(raw: bytes, patterns: tuple[bytes, ...]) -> None:
         _fail("child business output contains known private material")
 
 
-@dataclass(frozen=True, slots=True)
 class V075K7ChildPrivateTaintAuthorityV1:
     """Nonserializable, request-bound authority for child-local taint scans."""
 
-    _issuer: InitVar[object]
-    _request_id: str
-    _sealed_secret_commitment_id: str
-    _signer_registry_id: str
-    _observer_evidence_key_id: str
-    _patterns: tuple[bytes, ...]
+    # Secret patterns never occupy object attributes.  This blocks dataclass,
+    # slots, vars, reduce and reflective state exporters from returning them.
+    __slots__ = ()
 
-    def __post_init__(self, _issuer: object) -> None:
-        if _issuer is not _PRIVATE_TAINT_ISSUER:
+    def __init__(
+        self,
+        issuer: object,
+        request_id: str,
+        sealed_secret_commitment_id: str,
+        signer_registry_id: str,
+        observer_evidence_key_id: str,
+        patterns: tuple[bytes, ...],
+    ) -> None:
+        if issuer is not _PRIVATE_TAINT_ISSUER:
             _fail("private taint authority is caller-minted")
         for value, label in (
-            (self._request_id, "taint request"),
-            (self._sealed_secret_commitment_id, "taint secret commitment"),
-            (self._signer_registry_id, "taint signer registry"),
-            (self._observer_evidence_key_id, "taint observer key"),
+            (request_id, "taint request"),
+            (sealed_secret_commitment_id, "taint secret commitment"),
+            (signer_registry_id, "taint signer registry"),
+            (observer_evidence_key_id, "taint observer key"),
         ):
             _cid(value, label)
-        _assert_no_private_taint(b"", self._patterns)
+        _assert_no_private_taint(b"", patterns)
+        record = (
+            os.getpid(),
+            request_id,
+            sealed_secret_commitment_id,
+            signer_registry_id,
+            observer_evidence_key_id,
+            patterns,
+        )
+        with _PRIVATE_TAINT_LOCK:
+            if self in _PRIVATE_TAINT_RECORDS:
+                _fail("private taint authority identity was reused")
+            _PRIVATE_TAINT_RECORDS[self] = record
+
+    def _record(self) -> tuple[int, str, str, str, str, tuple[bytes, ...]]:
+        with _PRIVATE_TAINT_LOCK:
+            record = _PRIVATE_TAINT_RECORDS.get(self)
+        if record is None or record[0] != os.getpid():
+            _fail("private taint authority is stale or crossed between processes")
+        return record
 
     def __repr__(self) -> str:
+        record = self._record()
         return (
             "<V075K7ChildPrivateTaintAuthorityV1 "
-            f"request_id={self._request_id} private_patterns=REDACTED>"
+            f"request_id={record[1]} private_patterns=REDACTED>"
         )
+
+    def __reduce__(self) -> object:
+        raise TypeError("private taint authority serialization is forbidden")
 
     def __reduce_ex__(self, protocol: int) -> object:
         del protocol
@@ -288,12 +321,19 @@ class V075K7ChildPrivateTaintAuthorityV1:
         ):
             _fail("private taint authority requires the exact request replay")
         request = request_replay.request
+        (
+            _owner_pid,
+            request_id,
+            sealed_secret_commitment_id,
+            signer_registry_id,
+            observer_evidence_key_id,
+            _patterns,
+        ) = self._record()
         if (
-            self._request_id != request.request_id
-            or self._sealed_secret_commitment_id
-            != request.sealed_secret_commitment_id
-            or self._signer_registry_id != request.signer_registry.registry_id
-            or self._observer_evidence_key_id
+            request_id != request.request_id
+            or sealed_secret_commitment_id != request.sealed_secret_commitment_id
+            or signer_registry_id != request.signer_registry.registry_id
+            or observer_evidence_key_id
             != request.signer_registry.observer_evidence_key.key_id
         ):
             _fail("private taint authority crossed its sealed request identity")
@@ -305,7 +345,7 @@ class V075K7ChildPrivateTaintAuthorityV1:
         request_replay: portable_replay.V075K7SuccessorPortableRequestReplayV1,
     ) -> None:
         self._assert_for_request_replay(request_replay)
-        _assert_no_private_taint(raw, self._patterns)
+        _assert_no_private_taint(raw, self._record()[5])
 
 
 def _issue_private_taint_authority(
