@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `1.97.0`: the earlier contracts build the
+contracts now span `1.40.0` through `1.98.0`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -427,6 +427,15 @@ closure and request are process-local and unpickleable. This is still a
 pre-business boundary: it launches nothing, proves no loaded-code or isolated
 runtime fact, emits no successor frame and grants no shared-resource or formal
 accounting authority.
+
+Contract `1.98.0` implements the child-owned first successor frame. The exact
+fresh-exec request replay drives one registered K7 `NO_PRIOR` owned partial
+run; its real portable evidence graph and owned transcript/cache wrappers are
+embedded and strictly replayed. Private-output scanning is request-bound and
+uses the same single secure key read as signer construction. A real portable
+integration test closes schema/topology drift. The parent-owned cgroup/pidfd
+executor, accounting suffix, complete transcript semantics and formal vectors
+remain the next Gate.
 
 ## V0-074 repair construction (NONAUTHORIZING; fresh Gate NOT RUN)
 

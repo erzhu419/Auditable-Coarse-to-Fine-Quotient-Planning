@@ -4241,3 +4241,25 @@ not a child-launch or accounting milestone: loaded-code identity, isolated
 runtime entry, lease consumption, atomic placement, pidfd lifecycle, the K7
 business frame, parent suffix, nine semantic shared-resource values and all
 formal vectors remain locked.
+
+## V0-106 K7 typed child business frame
+
+Contract `1.98.0` implements the child-owned first frame reserved by V0-103.
+It starts from the exact V0-105 fresh-exec request replay, verifies sealed
+source/runtime and lifecycle-secret descriptors, derives the observer signer
+and request-bound taint scanner from one secure key read, reconstructs the
+registered K7 `NO_PRIOR` schedule and invokes the existing owned partial
+runner exactly once.
+
+The frame embeds the strict portable occurrence evidence bundle plus its
+owned wrapper, partial-native transcript and cold-cache documents. Raw replay
+uses the existing portable semantic/topology verifier and binds all documents
+to every request identity. The real owned K7 path, true portable bundle and
+exact portable request replay pass together; a rehashed nested semantic edit
+fails.
+
+The frame explicitly leaves complete loaded-module verification, OS-level
+spawn exclusion and owned-partial raw semantic replay false. It is not the
+parent accounting suffix and is not a complete two-frame result. Atomic
+cgroup/pidfd execution, parent cutoff/finalization, nine-path verification and
+formal `CounterRecord -> WorkVector -> ComparisonVector` remain locked.

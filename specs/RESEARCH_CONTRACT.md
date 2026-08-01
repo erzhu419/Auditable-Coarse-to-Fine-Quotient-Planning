@@ -4988,3 +4988,26 @@ body; the parent must still own atomic placement, pidfd supervision, the
 post-cutoff suffix and wrapper-complete output; and an independent verifier
 must still close all nine shared-resource semantics and the remaining 193
 formal leaves before any CounterRecord, WorkVector or ComparisonVector exists.
+
+## Contract 1.98.0: K7 typed child business frame
+
+The child-owned first frame now has a strict implementation. It accepts only
+the exact process-local V0-105 replay, validates the sealed descriptors,
+reconstructs the registered K7 schedule and executes the existing owned
+partial runner once. Its evidence payload is the established portable
+occurrence bundle, not an extensible document table, and raw verification
+replays that authority before checking the owned transcript/cache cross-links.
+
+The private signer and known-value taint scanner are derived from the same
+secure key read. The scanner authority is process-local, nonserializable and
+bound to the request, secret commitment, signer registry and observer key;
+callers cannot substitute a naked pattern set. This is a child-local leakage
+guard, not an independent public proof of secret non-disclosure. Likewise the
+stdlib subprocess guard is not an OS-wide no-spawn proof.
+
+The positive integration uses the real owned K7 runner, real portable bundle
+and real portable request replay. Nevertheless this contract emits no parent
+accounting suffix, proves no complete loaded-module graph, and does not replay
+the partial transcript into formal accounting. The atomic parent executor,
+nine shared-resource semantic authorities and exact 202-leaf reduction remain
+required before CounterRecord, WorkVector or ComparisonVector issuance.
