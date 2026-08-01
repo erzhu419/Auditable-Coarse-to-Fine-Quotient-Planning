@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `1.91.0`: the earlier contracts build the
+contracts now span `1.40.0` through `1.92.0`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -354,6 +354,17 @@ authorize numeric projection without independent source-byte replay. A
 composite prerequisite manifest content-binds the exact authority graph and
 all six typed missing-evidence sets. The current same-process path therefore
 remains deterministically not ready and emits no formal vectors.
+
+Contract `1.92.0` adds the first live shared-resource primitives without
+unlocking that Gate: an identity-bound nine-path event meter, a deterministic
+capped eight-role output-byte candidate fixed point, a strict K7 child-frame
+schema, and a structural post-cutoff envelope/finalization join. The parser
+rejects noncanonical/nonfinite JSON, bool-as-integer aliases and frame/identity
+transplants; the envelope only checks local identity distinctness and event
+ordering. A real supervisor-issued post-reap envelope, typed K7 route join,
+atomic output commit including wrapper bytes, independent source replay and
+formal 202-path materialization remain unconnected. Consequently no
+CounterRecord, WorkVector or ComparisonVector is yet issued.
 
 ## V0-074 repair construction (NONAUTHORIZING; fresh Gate NOT RUN)
 

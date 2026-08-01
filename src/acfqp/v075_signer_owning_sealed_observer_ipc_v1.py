@@ -541,6 +541,7 @@ class V075SignerOwningSealedObserverServiceProfileV1:
     runtime_document: Mapping[str, Any] = field(repr=False, compare=False)
     timeout_milliseconds: int
     _archive_bytes: bytes = field(repr=False, compare=False)
+    _validated_archive_bytes: bytes = field(init=False, repr=False, compare=False)
     _source_snapshot_id: str = field(init=False, repr=False)
     _runtime_id: str = field(init=False, repr=False)
     _program_id: str = field(init=False, repr=False)
@@ -561,6 +562,30 @@ class V075SignerOwningSealedObserverServiceProfileV1:
             or type(self._archive_bytes) is not bytes
         ):
             _fail("signer-owning service profile is malformed")
+        # Full ZIP structure and per-entry hashes are immutable construction
+        # checks.  Replaying them on every property access made one 21 MiB
+        # snapshot get decomposed and rehashed dozens of times.  Validate the
+        # complete archive once here; later freshness checks still bind the
+        # exact bytes by size/SHA and bind the immutable entry tuple through
+        # the source-snapshot content ID.
+        if (
+            len(self._archive_bytes) != self.source_archive_byte_count
+            or hashlib.sha256(self._archive_bytes).hexdigest()
+            != self.source_archive_sha256
+            or _archive_entries(self._archive_bytes) != self.source_entries
+        ):
+            _fail("signer-owning service source archive is inconsistent")
+        # ``bytes`` is immutable.  Retaining the exact object that passed the
+        # full ZIP/hash validation lets freshness checks reject any archive
+        # replacement without re-reading and re-hashing 21+ MiB on every
+        # profile property access.  This is stricter than digest-only replay:
+        # even a byte-identical replacement is rejected until a new profile is
+        # constructed and content-addressed.
+        object.__setattr__(
+            self,
+            "_validated_archive_bytes",
+            self._archive_bytes,
+        )
         source_payload = _source_payload(
             archive_sha256=self.source_archive_sha256,
             archive_byte_count=self.source_archive_byte_count,
@@ -625,10 +650,10 @@ class V075SignerOwningSealedObserverServiceProfileV1:
 
     def _assert_current(self) -> None:
         if (
-            len(self._archive_bytes) != self.source_archive_byte_count
+            self._archive_bytes is not self._validated_archive_bytes
+            or len(self._archive_bytes) != self.source_archive_byte_count
             or hashlib.sha256(self._archive_bytes).hexdigest()
             != self.source_archive_sha256
-            or _archive_entries(self._archive_bytes) != self.source_entries
             or _hash(
                 "source_snapshot",
                 _source_payload(

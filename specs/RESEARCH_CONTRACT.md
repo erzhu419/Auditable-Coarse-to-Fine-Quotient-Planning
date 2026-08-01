@@ -4783,3 +4783,48 @@ The next construction step is a sealed worker plus trusted outer supervisor,
 followed by source-byte semantic replay and exact evidence consumption; all
 official, economics, counter-completeness, science, and certificate Gates
 remain locked meanwhile.
+
+## Contract 1.92.0: K7 shared-resource live-supervision boundary
+
+V0-100 implements construction primitives for the nine V6 shared-resource
+paths, but does not yet provide their semantic closure. The live meter owns one
+identity-bound window and records typed exact-integer claims for primitive hash,
+named-obligation, logical-byte-transfer, successful-launch and capacity events.
+Positive SUM events and MAX observations use separate APIs; an empty path
+requires an explicit complete-window zero attestation; missing evidence remains
+typed unknown or unavailable. Accounting/provenance digest finalizations are
+retained as explicit excluded events and cannot recursively charge themselves.
+
+The output path now has a structural fixed-point mechanism. A preregistered
+renderer must return exactly eight ordered role-labelled canonical JSON blobs,
+each candidate is rendered twice, the total must evolve monotonically from
+zero to exact equality within finite caps, and the converged bytes must replay
+identically twice more. Role semantics are not verified. The fixed-point trace,
+result and later outer-finalization wrappers are not inside that eight-role
+total. This mechanism commits no bytes, authorizes no write, and its opaque
+renderer identity is not a semantic execution authority.
+
+The accounted K7 transport schema binds the sealed source/runtime/private-
+replay substrate and the complete Phase-3E occurrence, route-attempt,
+decision-point and transaction graph. Strict canonical replay rejects duplicate
+or nonfinite JSON, Python boolean/integer equality aliases, crossed identities,
+and missing, reordered or extra frames. It remains a structural protocol:
+the reused Stage-A executor admits one child frame, while the provisional K7
+schema describes two. More importantly, no child frame can establish final
+process-group reap, hidden-descendant absence, post-exit cgroup peak or bytes
+written by the parent.
+
+This contract also adds a structural post-cutoff envelope/finalization join. It
+checks local identity equality/distinctness, requires a final peak no smaller
+than the live prefix, and orders caller-supplied sequence claims as `cutoff <
+reap < descendant scan < final peak < terminal`. It does not verify supervisor
+provenance, a global event journal, or the typed K7 route graph.
+
+The next authority must therefore be a real supervisor-issued final envelope
+frozen after reap and joined to a real sealed K7 execution, typed route
+identity, global supervisor event order, mount/cgroup sources, an atomic output
+writer that includes its wrapper bytes, and an independent source-byte
+verifier. Until that verifier closes the nine shared paths—and later the
+remaining `71 + 114 + 8` obligations—no formal CounterRecord, WorkVector,
+ComparisonVector or projection proof may exist. All official, economics,
+counter-completeness, science and certificate Gates remain locked.

@@ -4085,3 +4085,31 @@ semantic replay of the 71+114+9+8 resolutions, exact single consumption of all
 eight-axis ComparisonVector, and its projection proof. Until then
 `COUNTER_COMPLETENESS_GATE_NOT_RUN` and every official/economics/certificate
 lock remain unchanged.
+
+## V0-100 K7 shared-resource live-supervision boundary
+
+Contract `1.92.0` satisfies the construction-mechanics portion of the next
+Gate, not the Gate itself. Acceptance for this milestone requires:
+
+- exactly the nine registered shared-resource paths in one identity-bound live
+  window;
+- separate exact SUM and MAX replay, with no missing-as-zero conversion;
+- registered hash purposes and named PASS/FAIL obligation evaluations;
+- typed unavailability when exact mount/cgroup/output evidence is absent;
+- a finite, deterministic, eight-role `io.output_bytes` fixed point with
+  canonical bytes, duplicate renders and two post-convergence replays;
+- strict route/request/frame canonical replay, including rejection of
+  duplicate keys, nonfinite values, bool-as-integer aliases, identity
+  transplants and missing/reordered/extra frames; and
+- unchanged false/null/`NOT_RUN` authority locks.
+
+The sealed K7 execution is not yet active. A valid next-Gate bundle must add a
+real supervisor-issued final envelope after process-group reap, bind the exact
+K7 schedule and private execution to a typed route graph and global event
+journal, verify mount and cgroup sources, jointly render and atomically commit
+the final artifact bytes including wrapper bytes, and pass an independent
+source-byte semantic verifier. Contract `1.92.0` contains only a structural
+envelope/join over opaque source IDs and ordered integers. Only verified values
+may enter the V0-099 evidence closure. Formal materialization additionally
+requires independent closure of all `71 + 114 + 8` remaining obligations and
+single consumption of every one of the 202 required leaves.

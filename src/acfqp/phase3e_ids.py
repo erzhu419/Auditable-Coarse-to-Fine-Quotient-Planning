@@ -306,6 +306,66 @@ CONSTRUCTION_ACCOUNTING_COMPLETION_PREREQUISITE_MANIFEST_V1_DOMAIN = (
 CONSTRUCTION_ACCOUNTING_COMPLETION_PREREQUISITE_REPLAY_V1_DOMAIN = (
     "acfqp:construction-accounting-completion-prerequisite-replay:v1"
 )
+CONSTRUCTION_SHARED_RESOURCE_LIVE_MEASUREMENT_EVENT_V1_DOMAIN = (
+    "acfqp:construction-shared-resource-live-measurement-event:v1"
+)
+CONSTRUCTION_SHARED_RESOURCE_LIVE_COMPLETE_WINDOW_ZERO_CLAIM_V1_DOMAIN = (
+    "acfqp:construction-shared-resource-live-complete-window-zero-claim:v1"
+)
+CONSTRUCTION_SHARED_RESOURCE_LIVE_TYPED_UNAVAILABLE_RESOLUTION_V1_DOMAIN = (
+    "acfqp:construction-shared-resource-live-typed-unavailable-resolution:v1"
+)
+CONSTRUCTION_SHARED_RESOURCE_LIVE_MEASUREMENT_ROW_V1_DOMAIN = (
+    "acfqp:construction-shared-resource-live-measurement-row:v1"
+)
+CONSTRUCTION_SHARED_RESOURCE_LIVE_MEASUREMENT_SNAPSHOT_V1_DOMAIN = (
+    "acfqp:construction-shared-resource-live-measurement-snapshot:v1"
+)
+V075_K7_ROOT_CAP_ACCOUNTED_SEALED_PROGRAM_V1_DOMAIN = (
+    "acfqp:v075-k7-root-cap-accounted-sealed-program:v1"
+)
+V075_K7_ROOT_CAP_ACCOUNTED_SEALED_PROFILE_V1_DOMAIN = (
+    "acfqp:v075-k7-root-cap-accounted-sealed-profile:v1"
+)
+V075_K7_ROOT_CAP_ACCOUNTED_SEALED_ROUTE_IDENTITY_V1_DOMAIN = (
+    "acfqp:v075-k7-root-cap-accounted-sealed-route-identity:v1"
+)
+V075_K7_ROOT_CAP_ACCOUNTED_SEALED_REQUEST_V1_DOMAIN = (
+    "acfqp:v075-k7-root-cap-accounted-sealed-request:v1"
+)
+V075_K7_ROOT_CAP_ACCOUNTED_SEALED_BUSINESS_FRAME_V1_DOMAIN = (
+    "acfqp:v075-k7-root-cap-accounted-sealed-business-frame:v1"
+)
+V075_K7_ROOT_CAP_ACCOUNTED_SEALED_ACCOUNTING_SUFFIX_FRAME_V1_DOMAIN = (
+    "acfqp:v075-k7-root-cap-accounted-sealed-accounting-suffix-frame:v1"
+)
+V075_K7_ROOT_CAP_ACCOUNTED_SEALED_PROTOCOL_REPLAY_V1_DOMAIN = (
+    "acfqp:v075-k7-root-cap-accounted-sealed-protocol-replay:v1"
+)
+CONSTRUCTION_OUTPUT_BYTES_FIXED_POINT_ITERATION_V1_DOMAIN = (
+    "acfqp:construction-output-bytes-fixed-point-iteration:v1"
+)
+CONSTRUCTION_OUTPUT_BYTES_FIXED_POINT_PROFILE_V1_DOMAIN = (
+    "acfqp:construction-output-bytes-fixed-point-profile:v1"
+)
+CONSTRUCTION_OUTPUT_BYTES_FIXED_POINT_RESULT_V1_DOMAIN = (
+    "acfqp:construction-output-bytes-fixed-point-result:v1"
+)
+CONSTRUCTION_OUTPUT_BYTES_RENDERED_ARTIFACT_SET_V1_DOMAIN = (
+    "acfqp:construction-output-bytes-rendered-artifact-set:v1"
+)
+CONSTRUCTION_OUTPUT_BYTES_RENDERED_ARTIFACT_V1_DOMAIN = (
+    "acfqp:construction-output-bytes-rendered-artifact:v1"
+)
+CONSTRUCTION_SHARED_RESOURCE_OUTER_SOURCE_SET_V1_DOMAIN = (
+    "acfqp:construction-shared-resource-outer-source-set:v1"
+)
+CONSTRUCTION_SHARED_RESOURCE_OUTER_RAW_SOURCE_ROW_V1_DOMAIN = (
+    "acfqp:construction-shared-resource-outer-raw-source-row:v1"
+)
+CONSTRUCTION_SHARED_RESOURCE_OUTER_FINALIZATION_V1_DOMAIN = (
+    "acfqp:construction-shared-resource-outer-finalization:v1"
+)
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
 ROUTE_CAP_PROFILE_DOMAIN = "acfqp:route-cap-profile:v1"
@@ -863,6 +923,66 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_accounting_completion_prerequisite_replay_v1": (
             CONSTRUCTION_ACCOUNTING_COMPLETION_PREREQUISITE_REPLAY_V1_DOMAIN
+        ),
+        "construction_shared_resource_live_measurement_event_v1": (
+            CONSTRUCTION_SHARED_RESOURCE_LIVE_MEASUREMENT_EVENT_V1_DOMAIN
+        ),
+        "construction_shared_resource_live_complete_window_zero_claim_v1": (
+            CONSTRUCTION_SHARED_RESOURCE_LIVE_COMPLETE_WINDOW_ZERO_CLAIM_V1_DOMAIN
+        ),
+        "construction_shared_resource_live_typed_unavailable_resolution_v1": (
+            CONSTRUCTION_SHARED_RESOURCE_LIVE_TYPED_UNAVAILABLE_RESOLUTION_V1_DOMAIN
+        ),
+        "construction_shared_resource_live_measurement_row_v1": (
+            CONSTRUCTION_SHARED_RESOURCE_LIVE_MEASUREMENT_ROW_V1_DOMAIN
+        ),
+        "construction_shared_resource_live_measurement_snapshot_v1": (
+            CONSTRUCTION_SHARED_RESOURCE_LIVE_MEASUREMENT_SNAPSHOT_V1_DOMAIN
+        ),
+        "v075_k7_root_cap_accounted_sealed_program_v1": (
+            V075_K7_ROOT_CAP_ACCOUNTED_SEALED_PROGRAM_V1_DOMAIN
+        ),
+        "v075_k7_root_cap_accounted_sealed_profile_v1": (
+            V075_K7_ROOT_CAP_ACCOUNTED_SEALED_PROFILE_V1_DOMAIN
+        ),
+        "v075_k7_root_cap_accounted_sealed_route_identity_v1": (
+            V075_K7_ROOT_CAP_ACCOUNTED_SEALED_ROUTE_IDENTITY_V1_DOMAIN
+        ),
+        "v075_k7_root_cap_accounted_sealed_request_v1": (
+            V075_K7_ROOT_CAP_ACCOUNTED_SEALED_REQUEST_V1_DOMAIN
+        ),
+        "v075_k7_root_cap_accounted_sealed_business_frame_v1": (
+            V075_K7_ROOT_CAP_ACCOUNTED_SEALED_BUSINESS_FRAME_V1_DOMAIN
+        ),
+        "v075_k7_root_cap_accounted_sealed_accounting_suffix_frame_v1": (
+            V075_K7_ROOT_CAP_ACCOUNTED_SEALED_ACCOUNTING_SUFFIX_FRAME_V1_DOMAIN
+        ),
+        "v075_k7_root_cap_accounted_sealed_protocol_replay_v1": (
+            V075_K7_ROOT_CAP_ACCOUNTED_SEALED_PROTOCOL_REPLAY_V1_DOMAIN
+        ),
+        "construction_output_bytes_fixed_point_iteration_v1": (
+            CONSTRUCTION_OUTPUT_BYTES_FIXED_POINT_ITERATION_V1_DOMAIN
+        ),
+        "construction_output_bytes_fixed_point_profile_v1": (
+            CONSTRUCTION_OUTPUT_BYTES_FIXED_POINT_PROFILE_V1_DOMAIN
+        ),
+        "construction_output_bytes_fixed_point_result_v1": (
+            CONSTRUCTION_OUTPUT_BYTES_FIXED_POINT_RESULT_V1_DOMAIN
+        ),
+        "construction_output_bytes_rendered_artifact_set_v1": (
+            CONSTRUCTION_OUTPUT_BYTES_RENDERED_ARTIFACT_SET_V1_DOMAIN
+        ),
+        "construction_output_bytes_rendered_artifact_v1": (
+            CONSTRUCTION_OUTPUT_BYTES_RENDERED_ARTIFACT_V1_DOMAIN
+        ),
+        "construction_shared_resource_outer_source_set_v1": (
+            CONSTRUCTION_SHARED_RESOURCE_OUTER_SOURCE_SET_V1_DOMAIN
+        ),
+        "construction_shared_resource_outer_raw_source_row_v1": (
+            CONSTRUCTION_SHARED_RESOURCE_OUTER_RAW_SOURCE_ROW_V1_DOMAIN
+        ),
+        "construction_shared_resource_outer_finalization_v1": (
+            CONSTRUCTION_SHARED_RESOURCE_OUTER_FINALIZATION_V1_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,

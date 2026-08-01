@@ -1223,6 +1223,42 @@ def test_profile_to_document_is_a_deep_copy(profile) -> None:
     assert current["source_snapshot"]["entries"][0]["path"] != "forged.py"
 
 
+def test_profile_rejects_even_byte_identical_archive_replacement(profile) -> None:
+    original_archive = profile._archive_bytes  # noqa: SLF001
+    replacement = bytes(bytearray(original_archive))
+    assert replacement == original_archive
+    assert replacement is not original_archive
+    object.__setattr__(profile, "_archive_bytes", replacement)
+    try:
+        with pytest.raises(
+            ipc.V075SignerOwningSealedObserverIPCV1InvariantViolation
+        ):
+            profile.to_document()
+    finally:
+        object.__setattr__(profile, "_archive_bytes", original_archive)
+    profile.to_document()
+
+
+def test_profile_rejects_same_length_archive_and_validated_reference_replacement(
+    profile,
+) -> None:
+    original_archive = profile._archive_bytes  # noqa: SLF001
+    original_validated = profile._validated_archive_bytes  # noqa: SLF001
+    attacked = bytes([original_archive[0] ^ 1]) + original_archive[1:]
+    assert len(attacked) == len(original_archive)
+    object.__setattr__(profile, "_archive_bytes", attacked)
+    object.__setattr__(profile, "_validated_archive_bytes", attacked)
+    try:
+        with pytest.raises(
+            ipc.V075SignerOwningSealedObserverIPCV1InvariantViolation
+        ):
+            profile.to_document()
+    finally:
+        object.__setattr__(profile, "_archive_bytes", original_archive)
+        object.__setattr__(profile, "_validated_archive_bytes", original_validated)
+    profile.to_document()
+
+
 def test_all_claim_locks_and_production_opener_remain_closed(profile) -> None:
     document = profile.to_document()
     assert ipc.PROPOSED_CONTRACT_VERSION == "1.69.0"
