@@ -342,6 +342,24 @@ V075_K7_ROOT_CAP_ACCOUNTED_SEALED_ACCOUNTING_SUFFIX_FRAME_V1_DOMAIN = (
 V075_K7_ROOT_CAP_ACCOUNTED_SEALED_PROTOCOL_REPLAY_V1_DOMAIN = (
     "acfqp:v075-k7-root-cap-accounted-sealed-protocol-replay:v1"
 )
+V075_K7_ROOT_CAP_SHARED_RESOURCE_IDENTITY_DERIVATION_V1_DOMAIN = (
+    "acfqp:v075-k7-root-cap-shared-resource-identity-derivation:v1"
+)
+V075_K7_ROOT_CAP_SHARED_RESOURCE_IDENTITY_VERIFICATION_V1_DOMAIN = (
+    "acfqp:v075-k7-root-cap-shared-resource-identity-verification:v1"
+)
+V075_K7_SHARED_RESOURCE_SUPERVISED_SOURCE_ROLE_V1_DOMAIN = (
+    "acfqp:v075-k7-shared-resource-supervised-source-role:v1"
+)
+V075_K7_SHARED_RESOURCE_REBASED_JOURNAL_EVENT_V1_DOMAIN = (
+    "acfqp:v075-k7-shared-resource-rebased-journal-event:v1"
+)
+V075_K7_SHARED_RESOURCE_SUPERVISED_FINALIZATION_BRIDGE_V1_DOMAIN = (
+    "acfqp:v075-k7-shared-resource-supervised-finalization-bridge:v1"
+)
+V075_K7_SHARED_RESOURCE_SUPERVISED_FINALIZATION_VERIFICATION_V1_DOMAIN = (
+    "acfqp:v075-k7-shared-resource-supervised-finalization-verification:v1"
+)
 CONSTRUCTION_OUTPUT_BYTES_FIXED_POINT_ITERATION_V1_DOMAIN = (
     "acfqp:construction-output-bytes-fixed-point-iteration:v1"
 )
@@ -365,6 +383,18 @@ CONSTRUCTION_SHARED_RESOURCE_OUTER_RAW_SOURCE_ROW_V1_DOMAIN = (
 )
 CONSTRUCTION_SHARED_RESOURCE_OUTER_FINALIZATION_V1_DOMAIN = (
     "acfqp:construction-shared-resource-outer-finalization:v1"
+)
+CONSTRUCTION_SHARED_RESOURCE_GLOBAL_SUPERVISOR_SCOPE_V1_DOMAIN = (
+    "acfqp:construction-shared-resource-global-supervisor-scope:v1"
+)
+CONSTRUCTION_SHARED_RESOURCE_GLOBAL_SUPERVISOR_SOURCE_DOCUMENT_V1_DOMAIN = (
+    "acfqp:construction-shared-resource-global-supervisor-source-document:v1"
+)
+CONSTRUCTION_SHARED_RESOURCE_GLOBAL_SUPERVISOR_EVENT_V1_DOMAIN = (
+    "acfqp:construction-shared-resource-global-supervisor-event:v1"
+)
+CONSTRUCTION_SHARED_RESOURCE_GLOBAL_SUPERVISOR_EVENT_JOURNAL_V1_DOMAIN = (
+    "acfqp:construction-shared-resource-global-supervisor-event-journal:v1"
 )
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
@@ -960,6 +990,24 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         "v075_k7_root_cap_accounted_sealed_protocol_replay_v1": (
             V075_K7_ROOT_CAP_ACCOUNTED_SEALED_PROTOCOL_REPLAY_V1_DOMAIN
         ),
+        "v075_k7_root_cap_shared_resource_identity_derivation_v1": (
+            V075_K7_ROOT_CAP_SHARED_RESOURCE_IDENTITY_DERIVATION_V1_DOMAIN
+        ),
+        "v075_k7_root_cap_shared_resource_identity_verification_v1": (
+            V075_K7_ROOT_CAP_SHARED_RESOURCE_IDENTITY_VERIFICATION_V1_DOMAIN
+        ),
+        "v075_k7_shared_resource_supervised_source_role_v1": (
+            V075_K7_SHARED_RESOURCE_SUPERVISED_SOURCE_ROLE_V1_DOMAIN
+        ),
+        "v075_k7_shared_resource_rebased_journal_event_v1": (
+            V075_K7_SHARED_RESOURCE_REBASED_JOURNAL_EVENT_V1_DOMAIN
+        ),
+        "v075_k7_shared_resource_supervised_finalization_bridge_v1": (
+            V075_K7_SHARED_RESOURCE_SUPERVISED_FINALIZATION_BRIDGE_V1_DOMAIN
+        ),
+        "v075_k7_shared_resource_supervised_finalization_verification_v1": (
+            V075_K7_SHARED_RESOURCE_SUPERVISED_FINALIZATION_VERIFICATION_V1_DOMAIN
+        ),
         "construction_output_bytes_fixed_point_iteration_v1": (
             CONSTRUCTION_OUTPUT_BYTES_FIXED_POINT_ITERATION_V1_DOMAIN
         ),
@@ -983,6 +1031,18 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_shared_resource_outer_finalization_v1": (
             CONSTRUCTION_SHARED_RESOURCE_OUTER_FINALIZATION_V1_DOMAIN
+        ),
+        "construction_shared_resource_global_supervisor_scope_v1": (
+            CONSTRUCTION_SHARED_RESOURCE_GLOBAL_SUPERVISOR_SCOPE_V1_DOMAIN
+        ),
+        "construction_shared_resource_global_supervisor_source_document_v1": (
+            CONSTRUCTION_SHARED_RESOURCE_GLOBAL_SUPERVISOR_SOURCE_DOCUMENT_V1_DOMAIN
+        ),
+        "construction_shared_resource_global_supervisor_event_v1": (
+            CONSTRUCTION_SHARED_RESOURCE_GLOBAL_SUPERVISOR_EVENT_V1_DOMAIN
+        ),
+        "construction_shared_resource_global_supervisor_event_journal_v1": (
+            CONSTRUCTION_SHARED_RESOURCE_GLOBAL_SUPERVISOR_EVENT_JOURNAL_V1_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,

@@ -4113,3 +4113,43 @@ envelope/join over opaque source IDs and ordered integers. Only verified values
 may enter the V0-099 evidence closure. Formal materialization additionally
 requires independent closure of all `71 + 114 + 8` remaining obligations and
 single consumption of every one of the 202 required leaves.
+
+## V0-101 typed K7 structural-supervision join
+
+Contract `1.93.0` closes only the caller-selectable identity/order argument
+surface left by V0-100. Acceptance for this milestone requires:
+
+- exact derivation of all seven shared-resource identity fields from one
+  replayed `V075K7RootCapAccountedSealedRouteIdentityV1`, with no field-level
+  override;
+- one issuer-owned journal containing exactly the six typed event kinds
+  `WINDOW_START`, `BUSINESS_CUTOFF`, `PROCESS_REAP`, `DESCENDANT_SCAN`,
+  `FINAL_CGROUP_PEAK`, and `PARENT_TERMINAL` in contiguous internally assigned
+  order;
+- content-addressed typed source documents embedded in every journal event,
+  with no caller-supplied global sequence;
+- an exact structural join among the route-derived identity, live snapshot,
+  journal scope, output fixed point and existing outer finalizer;
+- internal derivation of every outer source role, post-cutoff sequence,
+  lifecycle boolean and final peak passed to the V0-100 finalizer; and
+- a K7-only signer-loader option whose repository/private-key validation path
+  invokes no Git or other subprocess.
+
+This milestone is not live supervisor authority. Journal source documents are
+caller claims, and its contiguous sequence proves only journal-local schema
+order. Deterministically rebasing that order to the live cutoff does not map it
+to OS observation time. The structural roles labelled process launch, mount,
+reap, descendant scan and cgroup peak do not prove that those operations
+occurred. The subprocess-free signer loader is not connected to the K7 child,
+and no real child body, `Popen`/pidfd lifecycle, delegated cgroup-v2 leaf,
+enforced one-child/no-descendant boundary or supervisor-native source recorder
+exists yet.
+
+The next Gate therefore still requires a real sealed child and outer supervisor
+to own process creation, post-cutoff reap/scan/peak observation and atomic
+wrapper-complete output; the new signer loader must be used on that path; and an
+independent source-byte verifier must close the nine values before the exact
+`71 + 114 + 8` remainder is consumed once. Until a formal
+`CounterRecord -> WorkVector -> ComparisonVector` derivation and projection
+proof exist, `COUNTER_COMPLETENESS_GATE_NOT_RUN` and every official, economics,
+science and certificate lock remain unchanged.

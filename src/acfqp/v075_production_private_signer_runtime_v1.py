@@ -13,6 +13,7 @@ private-observer and reveal-attestation signer protocols.
 
 from __future__ import annotations
 
+import configparser
 import hashlib
 import math
 import os
@@ -42,6 +43,12 @@ PRODUCTION_PRIVATE_SIGNER_RUNTIME_IMPLEMENTED = True
 PRIVATE_KEY_MATERIAL_SERIALIZED = False
 TARGET_EXECUTION_OPENED = False
 POSIX_SECURE_OPEN_REQUIRED = True
+K7_SUBPROCESS_FREE_SIGNER_LOADER_IMPLEMENTED = True
+K7_EXTERNAL_PRIVATE_ROOT_REQUIRED = True
+K7_REPOSITORY_MARKER_NAME = ".git"
+K7_REPOSITORY_MARKER_PROFILE = (
+    "v075_k7_exact_git_directory_repository_marker_v1"
+)
 
 _DIGEST_INFO_PREFIX = bytes.fromhex(
     "3031300d060960864801650304020105000420"
@@ -125,6 +132,220 @@ def _verified_repository_root(repository_root: Path) -> Path:
     return resolved
 
 
+def _read_bounded_marker_file(
+    *,
+    directory_fd: int,
+    name: str,
+    maximum_bytes: int,
+    label: str,
+) -> bytes:
+    """Read one regular, non-symlink marker relative to an open directory."""
+
+    flags = os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC
+    file_fd = -1
+    try:
+        file_fd = os.open(name, flags, dir_fd=directory_fd)
+        before = os.fstat(file_fd)
+        if (
+            not stat.S_ISREG(before.st_mode)
+            or before.st_nlink != 1
+            or before.st_size <= 0
+            or before.st_size > maximum_bytes
+        ):
+            _fail(f"{label} is not one bounded regular file")
+        chunks: list[bytes] = []
+        remaining = before.st_size
+        while remaining:
+            chunk = os.read(file_fd, min(remaining, 4096))
+            if not chunk:
+                _fail(f"{label} changed during verification")
+            chunks.append(chunk)
+            remaining -= len(chunk)
+        if os.read(file_fd, 1):
+            _fail(f"{label} grew during verification")
+        after = os.fstat(file_fd)
+        if (
+            before.st_dev,
+            before.st_ino,
+            before.st_size,
+            before.st_mtime_ns,
+            before.st_ctime_ns,
+        ) != (
+            after.st_dev,
+            after.st_ino,
+            after.st_size,
+            after.st_mtime_ns,
+            after.st_ctime_ns,
+        ):
+            _fail(f"{label} changed during verification")
+        return b"".join(chunks)
+    except V075ProductionPrivateSignerInvariantViolation:
+        raise
+    except OSError as error:
+        raise V075ProductionPrivateSignerInvariantViolation(
+            f"{label} is unavailable or traverses a symbolic link"
+        ) from error
+    finally:
+        if file_fd >= 0:
+            os.close(file_fd)
+
+
+def _require_marker_directory(
+    *,
+    directory_fd: int,
+    name: str,
+    label: str,
+) -> None:
+    flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC
+    marker_fd = -1
+    try:
+        marker_fd = os.open(name, flags, dir_fd=directory_fd)
+        if not stat.S_ISDIR(os.fstat(marker_fd).st_mode):
+            _fail(f"{label} is not a directory")
+    except V075ProductionPrivateSignerInvariantViolation:
+        raise
+    except OSError as error:
+        raise V075ProductionPrivateSignerInvariantViolation(
+            f"{label} is unavailable or traverses a symbolic link"
+        ) from error
+    finally:
+        if marker_fd >= 0:
+            os.close(marker_fd)
+
+
+def _validate_k7_git_head_marker(raw: bytes) -> None:
+    if not raw.endswith(b"\n") or raw.count(b"\n") != 1:
+        _fail("K7 repository HEAD marker is not canonical")
+    value = raw[:-1]
+    if value.startswith(b"ref: refs/heads/"):
+        suffix = value[len(b"ref: refs/heads/") :]
+        if (
+            not suffix
+            or suffix.startswith(b"/")
+            or suffix.endswith(b"/")
+            or b"//" in suffix
+            or any(
+                character
+                not in b"abcdefghijklmnopqrstuvwxyz"
+                b"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                b"0123456789._/-"
+                for character in suffix
+            )
+        ):
+            _fail("K7 repository HEAD reference is invalid")
+        return
+    if len(value) not in {40, 64} or any(
+        character not in b"0123456789abcdef" for character in value
+    ):
+        _fail("K7 repository HEAD marker is invalid")
+
+
+def _validate_k7_git_config_marker(raw: bytes) -> None:
+    try:
+        text = raw.decode("utf-8")
+        parser = configparser.RawConfigParser(
+            interpolation=None,
+            strict=True,
+        )
+        parser.read_string(text)
+        repository_format = parser.get(
+            "core",
+            "repositoryformatversion",
+        )
+        bare = parser.getboolean("core", "bare")
+    except (
+        UnicodeError,
+        configparser.Error,
+        KeyError,
+        ValueError,
+    ) as error:
+        raise V075ProductionPrivateSignerInvariantViolation(
+            "K7 repository config marker is invalid"
+        ) from error
+    if repository_format != "0" or bare:
+        _fail("K7 repository config is not a non-bare format-0 checkout")
+
+
+def _verified_k7_repository_root_without_subprocess_v1(
+    repository_root: Path,
+) -> Path:
+    """Verify the ordinary checkout marker shape using no-follow POSIX I/O.
+
+    This intentionally supports the repository's registered, ordinary
+    ``.git``-directory checkout shape.  Gitfiles, linked worktrees and
+    symlinked marker components are rejected rather than interpreted.
+    """
+
+    if (
+        not hasattr(os, "O_DIRECTORY")
+        or not hasattr(os, "O_NOFOLLOW")
+        or not hasattr(os, "O_CLOEXEC")
+    ):
+        _fail("K7 repository verification requires POSIX no-follow I/O")
+    root = _require_path(repository_root, "repository root")
+    try:
+        resolved = root.resolve(strict=True)
+    except OSError as error:
+        raise V075ProductionPrivateSignerInvariantViolation(
+            "K7 repository root is unavailable"
+        ) from error
+    if resolved != root:
+        _fail("K7 repository root may not traverse symbolic links")
+
+    directory_flags = (
+        os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC
+    )
+    root_fd = -1
+    git_fd = -1
+    try:
+        root_fd = os.open(os.fspath(resolved), directory_flags)
+        if not stat.S_ISDIR(os.fstat(root_fd).st_mode):
+            _fail("K7 repository root is not a directory")
+        git_fd = os.open(
+            K7_REPOSITORY_MARKER_NAME,
+            directory_flags,
+            dir_fd=root_fd,
+        )
+        if not stat.S_ISDIR(os.fstat(git_fd).st_mode):
+            _fail("K7 repository marker is not an exact .git directory")
+        head = _read_bounded_marker_file(
+            directory_fd=git_fd,
+            name="HEAD",
+            maximum_bytes=4096,
+            label="K7 repository HEAD marker",
+        )
+        config = _read_bounded_marker_file(
+            directory_fd=git_fd,
+            name="config",
+            maximum_bytes=1024 * 1024,
+            label="K7 repository config marker",
+        )
+        _require_marker_directory(
+            directory_fd=git_fd,
+            name="objects",
+            label="K7 repository objects marker",
+        )
+        _require_marker_directory(
+            directory_fd=git_fd,
+            name="refs",
+            label="K7 repository refs marker",
+        )
+        _validate_k7_git_head_marker(head)
+        _validate_k7_git_config_marker(config)
+    except V075ProductionPrivateSignerInvariantViolation:
+        raise
+    except OSError as error:
+        raise V075ProductionPrivateSignerInvariantViolation(
+            "K7 repository marker is unavailable or traverses a symbolic link"
+        ) from error
+    finally:
+        if git_fd >= 0:
+            os.close(git_fd)
+        if root_fd >= 0:
+            os.close(root_fd)
+    return resolved
+
+
 def _is_relative_to(path: Path, parent: Path) -> bool:
     try:
         path.relative_to(parent)
@@ -175,6 +396,37 @@ def _verify_untracked_private_location(
     )
     if ignored.returncode != 0:
         _fail("in-repository private key file is not covered by Git ignore")
+
+
+def _verify_k7_strictly_external_private_location_v1(
+    *,
+    repository_root: Path,
+    private_root: Path,
+    private_key_path: Path,
+) -> None:
+    """Accept only one direct private key outside the repository tree."""
+
+    try:
+        resolved_private_root = private_root.resolve(strict=True)
+        resolved_private_key = private_key_path.resolve(strict=True)
+    except OSError as error:
+        raise V075ProductionPrivateSignerInvariantViolation(
+            "K7 private key path is unavailable"
+        ) from error
+    if (
+        resolved_private_root != private_root
+        or resolved_private_key != private_key_path
+    ):
+        _fail("K7 private key path may not traverse symbolic links")
+    if private_root.name != PRIVATE_DIRECTORY_NAME:
+        _fail("K7 private key root must be named .acfqp-private")
+    if private_key_path.parent != private_root:
+        _fail("K7 private key must be a direct child of its private root")
+    if _is_relative_to(private_root, repository_root) or _is_relative_to(
+        repository_root,
+        private_root,
+    ):
+        _fail("K7 private key root must be strictly outside the repository")
 
 
 def _secure_read_private_key(
@@ -492,9 +744,67 @@ def load_v075_production_observer_evidence_signer_v1(
     return signer
 
 
+def load_v075_k7_subprocess_free_observer_evidence_signer_v1(
+    *,
+    repository_root: Path,
+    private_root: Path,
+    private_key_path: Path,
+    signer_registry: public.V075TrustedSignerRegistryV1,
+) -> V075ProductionObserverEvidenceSignerV1:
+    """Load K7's observer signer without invoking Git or any subprocess.
+
+    This is an additive, deliberately narrower loader.  It accepts only the
+    ordinary ``.git``-directory marker shape and requires the
+    owner-only private directory to be disjoint from the repository tree.
+    The historical Git-aware loader above remains unchanged.
+    """
+
+    repository = _verified_k7_repository_root_without_subprocess_v1(
+        repository_root
+    )
+    private_directory = _require_path(private_root, "private key root")
+    key_path = _require_path(private_key_path, "private key path")
+    _verify_k7_strictly_external_private_location_v1(
+        repository_root=repository,
+        private_root=private_directory,
+        private_key_path=key_path,
+    )
+    raw = _secure_read_private_key(
+        private_root=private_directory,
+        private_key_path=key_path,
+    )
+    document = _load_key_document(raw)
+    public_key, private_exponent = _validate_private_key(
+        document=document,
+        signer_registry=signer_registry,
+    )
+    signer = V075ProductionObserverEvidenceSignerV1(
+        _LOADER_ISSUER,
+        public_key,
+        private_exponent,
+    )
+    challenge = (
+        b"acfqp:v075-production-private-signer-load-challenge:v1"
+        + b"\x00"
+        + bytes.fromhex(signer_registry.registry_id)
+    )
+    signature = signer.sign_observer_evidence_v1(challenge)
+    if not public.verify_rsa_pkcs1_v1_5_sha256_signature_v1(
+        public_key=public_key,
+        message=challenge,
+        signature_hex=signature,
+    ):
+        _fail("loaded private signer failed its registry-bound challenge")
+    return signer
+
+
 __all__ = [
     "ALGORITHM",
     "KEY_PURPOSE",
+    "K7_EXTERNAL_PRIVATE_ROOT_REQUIRED",
+    "K7_REPOSITORY_MARKER_NAME",
+    "K7_REPOSITORY_MARKER_PROFILE",
+    "K7_SUBPROCESS_FREE_SIGNER_LOADER_IMPLEMENTED",
     "MAX_PRIVATE_KEY_FILE_BYTES",
     "MAX_SIGNING_MESSAGE_BYTES",
     "PRIVATE_DIRECTORY_NAME",
@@ -507,5 +817,6 @@ __all__ = [
     "TARGET_EXECUTION_OPENED",
     "V075ProductionObserverEvidenceSignerV1",
     "V075ProductionPrivateSignerInvariantViolation",
+    "load_v075_k7_subprocess_free_observer_evidence_signer_v1",
     "load_v075_production_observer_evidence_signer_v1",
 ]

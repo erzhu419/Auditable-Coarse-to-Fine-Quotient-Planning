@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `1.92.0`: the earlier contracts build the
+contracts now span `1.40.0` through `1.93.0`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -365,6 +365,23 @@ ordering. A real supervisor-issued post-reap envelope, typed K7 route join,
 atomic output commit including wrapper bytes, independent source replay and
 formal 202-path materialization remain unconnected. Consequently no
 CounterRecord, WorkVector or ComparisonVector is yet issued.
+
+Contract `1.93.0` removes three structural degrees of freedom without claiming
+an operating-system supervisor. The exact accounted K7 route now derives all
+seven shared-resource identity fields; an issuer-owned six-event journal fixes
+the internal order `window start -> business cutoff -> process reap ->
+descendant scan -> final cgroup peak -> parent terminal`; and a structural
+bridge derives the older outer-finalizer's source roles, post-cutoff sequence
+arguments, lifecycle booleans and final peak from that journal. Journal source
+documents remain caller-provided typed claims, and the journal sequence is
+only an internal structural order—not verified OS time or cgroup/process
+provenance. A new K7-only signer loader can validate the registered ordinary
+`.git`-directory marker shape and an external private-key root without launching
+Git, but it is not wired into the real child path. There is still no real K7
+child, pidfd/cgroup/one-child authority, supervisor-owned source evidence,
+atomic wrapper-complete output commit or formal `CounterRecord -> WorkVector ->
+ComparisonVector` chain. All official, formal, counter-completeness, economics,
+science and certificate locks remain false, null or `NOT_RUN`.
 
 ## V0-074 repair construction (NONAUTHORIZING; fresh Gate NOT RUN)
 

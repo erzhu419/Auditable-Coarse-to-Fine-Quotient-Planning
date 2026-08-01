@@ -4828,3 +4828,60 @@ verifier. Until that verifier closes the nine shared paths—and later the
 remaining `71 + 114 + 8` obligations—no formal CounterRecord, WorkVector,
 ComparisonVector or projection proof may exist. All official, economics,
 counter-completeness, science and certificate Gates remain locked.
+
+## Contract 1.93.0: typed K7 structural-supervision admission
+
+V0-101 connects the V0-100 structural pieces to the complete accounted K7
+route identity without granting them source semantics. One issuer-owned
+derivation accepts only the exact replayed
+`V075K7RootCapAccountedSealedRouteIdentityV1` and derives the shared-resource
+binding's registry, stage, boundary, execution, occurrence, route-attempt and
+decision-point fields. It rechecks the route graph at this boundary and offers
+no caller override for any of the seven fields.
+
+A separate structural global-supervisor journal admits exactly six typed source
+documents and assigns their only accepted contiguous sequence internally:
+
+```text
+WINDOW_START
+-> BUSINESS_CUTOFF
+-> PROCESS_REAP
+-> DESCENDANT_SCAN
+-> FINAL_CGROUP_PEAK
+-> PARENT_TERMINAL
+```
+
+Each event embeds its complete content-addressed source document and common
+scope. These documents are still caller-supplied typed claims. Neither their
+labels nor the journal's issuer-owned sequence establishes a system call,
+process identity, cgroup read, mount enumeration, elapsed time or causal OS
+order. In particular, `global_sequence_mapped_to_os_order_verified=false` and
+`os_source_provenance_verified=false` remain normative.
+
+The K7 structural finalization bridge requires the exact route-derived binding,
+one closed live snapshot, one complete journal and one output fixed point. It
+replays their identity/window joins, derives role-separated source IDs from the
+typed journal events, deterministically rebases the four journal-local
+post-cutoff offsets to the live cutoff, derives lifecycle booleans and the final
+peak from typed source claims, and invokes the existing V0-100 outer envelope
+and finalizer internally. It accepts none of those source IDs, sequences,
+booleans or peak values from its caller. This removes a structural
+caller-control surface only; the rebase is not a verified global OS clock and
+the bridge remains nonsemantic.
+
+The production signer module additionally exposes a K7-only subprocess-free
+loader. It verifies an ordinary nonsymlink `.git`-directory marker
+shape and requires the private-key root to be disjoint from the repository,
+using bounded no-follow POSIX reads rather than Git commands. This is narrower
+than the historical Git-aware loader and does not replace it. More importantly,
+the new loader is not wired into a real K7 child or execution runner, so its
+existence cannot prove a one-launch execution.
+
+Contract 1.93.0 therefore supplies no real child body, supervisor-owned `Popen`
+or pidfd observation, delegated cgroup-v2 authority, enforced one-child or
+no-descendant result, mount/cgroup source provenance, wrapper-complete atomic
+writer, or independent source-byte semantic verifier. It issues no
+`CounterRecord`, `WorkVector`, `ComparisonVector`, actual-projection proof,
+terminal certificate or official result. Every formal/official flag remains
+false; scalar cost and break-even remain null; counter-completeness, workload
+economics, fresh science and certificate Gates remain `NOT_RUN` or locked.

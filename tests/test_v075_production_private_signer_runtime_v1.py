@@ -121,6 +121,38 @@ def _load(
     )
 
 
+def _load_k7_subprocess_free(
+    *,
+    registry: public.V075TrustedSignerRegistryV1,
+    private_root: Path,
+    key_path: Path,
+    repository_root: Path = REPOSITORY_ROOT,
+) -> runtime.V075ProductionObserverEvidenceSignerV1:
+    return runtime.load_v075_k7_subprocess_free_observer_evidence_signer_v1(
+        repository_root=repository_root,
+        private_root=private_root,
+        private_key_path=key_path,
+        signer_registry=registry,
+    )
+
+
+def _write_k7_repository_marker(root: Path) -> Path:
+    root.mkdir(parents=True)
+    git = root / runtime.K7_REPOSITORY_MARKER_NAME
+    git.mkdir()
+    (git / "objects").mkdir()
+    (git / "refs").mkdir()
+    (git / "HEAD").write_bytes(b"ref: refs/heads/main\n")
+    (git / "config").write_text(
+        "[core]\n"
+        "\trepositoryformatversion = 0\n"
+        "\tfilemode = true\n"
+        "\tbare = false\n",
+        encoding="utf-8",
+    )
+    return root.resolve()
+
+
 def test_loaded_signer_implements_both_private_protocols_and_signs(
     tmp_path: Path,
 ) -> None:
@@ -154,6 +186,140 @@ def test_loaded_signer_implements_both_private_protocols_and_signs(
             message=b"acfqp:v075-observer-boundary-protocol-test:v1",
         )
     )
+
+
+def test_k7_subprocess_free_loader_never_calls_subprocess(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    registry = _registry()
+    private_root, key_path = _write_private_key(
+        tmp_path / "external-secrets",
+        _key_document(registry),
+    )
+
+    def forbidden_subprocess(*args: object, **kwargs: object) -> object:
+        del args, kwargs
+        raise AssertionError("K7 signer loader must not spawn subprocesses")
+
+    monkeypatch.setattr(runtime.subprocess, "run", forbidden_subprocess)
+    signer = _load_k7_subprocess_free(
+        registry=registry,
+        private_root=private_root,
+        key_path=key_path,
+    )
+
+    assert signer.public_verification_key_v1() == (
+        registry.observer_evidence_key
+    )
+    message = b"acfqp:v075-k7-subprocess-free-loader-test:v1"
+    assert public.verify_rsa_pkcs1_v1_5_sha256_signature_v1(
+        public_key=registry.observer_evidence_key,
+        message=message,
+        signature_hex=signer.sign_observer_evidence_v1(message),
+    )
+
+
+def test_k7_subprocess_free_loader_rejects_in_repository_private_root(
+    tmp_path: Path,
+) -> None:
+    repository = _write_k7_repository_marker(tmp_path / "repository")
+    registry = _registry()
+    private_root, key_path = _write_private_key(
+        repository,
+        _key_document(registry),
+    )
+
+    with pytest.raises(runtime.V075ProductionPrivateSignerInvariantViolation):
+        _load_k7_subprocess_free(
+            registry=registry,
+            private_root=private_root,
+            key_path=key_path,
+            repository_root=repository,
+        )
+
+
+@pytest.mark.parametrize("marker_kind", ("missing", "empty", "gitfile"))
+def test_k7_subprocess_free_loader_rejects_fake_repository(
+    tmp_path: Path,
+    marker_kind: str,
+) -> None:
+    repository = tmp_path / f"fake-{marker_kind}"
+    repository.mkdir()
+    if marker_kind == "empty":
+        (repository / runtime.K7_REPOSITORY_MARKER_NAME).mkdir()
+    elif marker_kind == "gitfile":
+        (repository / runtime.K7_REPOSITORY_MARKER_NAME).write_text(
+            "gitdir: /untrusted/alternate/worktree\n",
+            encoding="utf-8",
+        )
+    registry = _registry()
+    private_root, key_path = _write_private_key(
+        tmp_path / f"external-{marker_kind}",
+        _key_document(registry),
+    )
+
+    with pytest.raises(runtime.V075ProductionPrivateSignerInvariantViolation):
+        _load_k7_subprocess_free(
+            registry=registry,
+            private_root=private_root,
+            key_path=key_path,
+            repository_root=repository.resolve(),
+        )
+
+
+def test_k7_subprocess_free_loader_rejects_nonroot_repository(
+    tmp_path: Path,
+) -> None:
+    registry = _registry()
+    private_root, key_path = _write_private_key(
+        tmp_path / "external-nonroot",
+        _key_document(registry),
+    )
+
+    with pytest.raises(runtime.V075ProductionPrivateSignerInvariantViolation):
+        _load_k7_subprocess_free(
+            registry=registry,
+            private_root=private_root,
+            key_path=key_path,
+            repository_root=(REPOSITORY_ROOT / "src").resolve(),
+        )
+
+
+@pytest.mark.parametrize("marker_kind", ("git-directory", "head-file"))
+def test_k7_subprocess_free_loader_rejects_symlinked_repository_markers(
+    tmp_path: Path,
+    marker_kind: str,
+) -> None:
+    repository = tmp_path / f"symlink-marker-{marker_kind}"
+    if marker_kind == "git-directory":
+        repository.mkdir()
+        (repository / runtime.K7_REPOSITORY_MARKER_NAME).symlink_to(
+            REPOSITORY_ROOT / runtime.K7_REPOSITORY_MARKER_NAME,
+            target_is_directory=True,
+        )
+    else:
+        _write_k7_repository_marker(repository)
+        head = repository / runtime.K7_REPOSITORY_MARKER_NAME / "HEAD"
+        head.unlink()
+        head.symlink_to(
+            REPOSITORY_ROOT
+            / runtime.K7_REPOSITORY_MARKER_NAME
+            / "HEAD"
+        )
+    registry = _registry()
+    private_root, key_path = _write_private_key(
+        tmp_path / f"external-symlink-{marker_kind}",
+        _key_document(registry),
+    )
+
+    with pytest.raises(runtime.V075ProductionPrivateSignerInvariantViolation):
+        _load_k7_subprocess_free(
+            registry=registry,
+            private_root=private_root,
+            key_path=key_path,
+            repository_root=repository.resolve(),
+        )
 
 
 def test_signer_has_no_secret_serializer_or_path_and_repr_is_redacted(
