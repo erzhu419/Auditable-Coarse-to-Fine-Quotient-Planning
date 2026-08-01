@@ -112,6 +112,16 @@ CONSTRUCTION_COMPARISON_PROFILE_V5_DOMAIN = (
 CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V5_DOMAIN = (
     "acfqp:actual-projection-profile:v5"
 )
+CONSTRUCTION_COUNTER_REGISTRY_V6_DOMAIN = "acfqp:counter-registry:v6"
+CONSTRUCTION_STAGE_PROFILE_V6_DOMAIN = (
+    "acfqp:construction-stage-profile:v6"
+)
+CONSTRUCTION_COMPARISON_PROFILE_V6_DOMAIN = (
+    "acfqp:comparison-profile:v6"
+)
+CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V6_DOMAIN = (
+    "acfqp:actual-projection-profile:v6"
+)
 V075_CONSTRUCTION_ACCOUNTING_SCHEMA_CLOSURE_V2_DOMAIN = (
     "acfqp:v075-construction-accounting-schema-closure:v2"
 )
@@ -147,6 +157,49 @@ V075_K7_ROOT_CAP_OPERATION_SITE_AUDIT_V2_DOMAIN = (
 )
 V075_K7_ROOT_CAP_OPERATION_SITE_MANIFEST_V2_DOMAIN = (
     "acfqp:v075-k7-root-cap-operation-site-manifest:v2"
+)
+V075_K7_ROOT_CAP_OPERATION_BOUNDARY_V3_DOMAIN = (
+    "acfqp:v075-k7-root-cap-operation-boundary:v3"
+)
+V075_K7_ROOT_CAP_OPERATION_BOUNDARY_MANIFEST_V3_DOMAIN = (
+    "acfqp:v075-k7-root-cap-operation-boundary-manifest:v3"
+)
+V075_K7_ROOT_CAP_COLD_CACHE_PROFILE_V1_DOMAIN = (
+    "acfqp:v075-k7-root-cap-cold-cache-profile:v1"
+)
+V075_K7_ROOT_CAP_COLD_CACHE_EPOCH_V1_DOMAIN = (
+    "acfqp:v075-k7-root-cap-cold-cache-epoch:v1"
+)
+V075_K7_ROOT_CAP_OWNED_PARTIAL_RESULT_V1_DOMAIN = (
+    "acfqp:v075-k7-root-cap-owned-partial-result:v1"
+)
+V075_K7_ROOT_CAP_EXECUTION_IDENTITY_PROFILE_V1_DOMAIN = (
+    "acfqp:v075-k7-root-cap-execution-identity-profile:v1"
+)
+V075_CONSTRUCTION_ACCOUNTING_OPERATION_BOUNDARY_VERIFICATION_V6_DOMAIN = (
+    "acfqp:v075-construction-accounting-operation-boundary-"
+    "independent-verification:v6"
+)
+CONSTRUCTION_PARTIAL_NATIVE_OCCURRENCE_START_V1_DOMAIN = (
+    "acfqp:construction-partial-native-occurrence-start:v1"
+)
+CONSTRUCTION_PARTIAL_NATIVE_STAGE_START_V1_DOMAIN = (
+    "acfqp:construction-partial-native-stage-start:v1"
+)
+CONSTRUCTION_PARTIAL_NATIVE_OPERATION_EVENT_V1_DOMAIN = (
+    "acfqp:construction-partial-native-operation-event:v1"
+)
+CONSTRUCTION_PARTIAL_NATIVE_STAGE_COMPLETION_V1_DOMAIN = (
+    "acfqp:construction-partial-native-stage-completion:v1"
+)
+CONSTRUCTION_PARTIAL_NATIVE_OCCURRENCE_COMPLETION_V1_DOMAIN = (
+    "acfqp:construction-partial-native-occurrence-completion:v1"
+)
+CONSTRUCTION_PARTIAL_NATIVE_OCCURRENCE_ABORT_V1_DOMAIN = (
+    "acfqp:construction-partial-native-occurrence-abort:v1"
+)
+CONSTRUCTION_PARTIAL_NATIVE_OCCURRENCE_TRANSCRIPT_V1_DOMAIN = (
+    "acfqp:construction-partial-native-occurrence-transcript:v1"
 )
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
@@ -511,6 +564,18 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         "construction_actual_projection_profile_v5": (
             CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V5_DOMAIN
         ),
+        "construction_counter_registry_v6": (
+            CONSTRUCTION_COUNTER_REGISTRY_V6_DOMAIN
+        ),
+        "construction_stage_profile_v6": (
+            CONSTRUCTION_STAGE_PROFILE_V6_DOMAIN
+        ),
+        "construction_comparison_profile_v6": (
+            CONSTRUCTION_COMPARISON_PROFILE_V6_DOMAIN
+        ),
+        "construction_actual_projection_profile_v6": (
+            CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V6_DOMAIN
+        ),
         "v075_construction_accounting_schema_closure_v2": (
             V075_CONSTRUCTION_ACCOUNTING_SCHEMA_CLOSURE_V2_DOMAIN
         ),
@@ -546,6 +611,48 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "v075_k7_root_cap_operation_site_manifest_v2": (
             V075_K7_ROOT_CAP_OPERATION_SITE_MANIFEST_V2_DOMAIN
+        ),
+        "v075_k7_root_cap_operation_boundary_v3": (
+            V075_K7_ROOT_CAP_OPERATION_BOUNDARY_V3_DOMAIN
+        ),
+        "v075_k7_root_cap_operation_boundary_manifest_v3": (
+            V075_K7_ROOT_CAP_OPERATION_BOUNDARY_MANIFEST_V3_DOMAIN
+        ),
+        "v075_k7_root_cap_cold_cache_profile_v1": (
+            V075_K7_ROOT_CAP_COLD_CACHE_PROFILE_V1_DOMAIN
+        ),
+        "v075_k7_root_cap_cold_cache_epoch_v1": (
+            V075_K7_ROOT_CAP_COLD_CACHE_EPOCH_V1_DOMAIN
+        ),
+        "v075_k7_root_cap_owned_partial_result_v1": (
+            V075_K7_ROOT_CAP_OWNED_PARTIAL_RESULT_V1_DOMAIN
+        ),
+        "v075_k7_root_cap_execution_identity_profile_v1": (
+            V075_K7_ROOT_CAP_EXECUTION_IDENTITY_PROFILE_V1_DOMAIN
+        ),
+        "v075_construction_accounting_operation_boundary_verification_v6": (
+            V075_CONSTRUCTION_ACCOUNTING_OPERATION_BOUNDARY_VERIFICATION_V6_DOMAIN
+        ),
+        "construction_partial_native_occurrence_start_v1": (
+            CONSTRUCTION_PARTIAL_NATIVE_OCCURRENCE_START_V1_DOMAIN
+        ),
+        "construction_partial_native_stage_start_v1": (
+            CONSTRUCTION_PARTIAL_NATIVE_STAGE_START_V1_DOMAIN
+        ),
+        "construction_partial_native_operation_event_v1": (
+            CONSTRUCTION_PARTIAL_NATIVE_OPERATION_EVENT_V1_DOMAIN
+        ),
+        "construction_partial_native_stage_completion_v1": (
+            CONSTRUCTION_PARTIAL_NATIVE_STAGE_COMPLETION_V1_DOMAIN
+        ),
+        "construction_partial_native_occurrence_completion_v1": (
+            CONSTRUCTION_PARTIAL_NATIVE_OCCURRENCE_COMPLETION_V1_DOMAIN
+        ),
+        "construction_partial_native_occurrence_abort_v1": (
+            CONSTRUCTION_PARTIAL_NATIVE_OCCURRENCE_ABORT_V1_DOMAIN
+        ),
+        "construction_partial_native_occurrence_transcript_v1": (
+            CONSTRUCTION_PARTIAL_NATIVE_OCCURRENCE_TRANSCRIPT_V1_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,

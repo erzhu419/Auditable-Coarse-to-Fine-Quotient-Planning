@@ -34,6 +34,7 @@ from acfqp.phase3e_ids import (
     loads_canonical_json,
     parse_content_id,
 )
+from acfqp import construction_accounting_owned_runtime_v1 as accounting_runtime
 from acfqp import construction_operational_context_v3 as operational_context
 from acfqp import v075_batch_native_planning_backend_v2 as planning_v2
 from acfqp import v075_live_incremental_model_authority_v2 as live_model
@@ -1094,10 +1095,16 @@ def _derive_child_states(
     for row in epoch.model.rows:
         if row.remaining_horizon != 2:
             continue
+        accounting_runtime.emit_owned_operation_v1(
+            "dynamic-child.root-row.scan"
+        )
         source = _row_source(epoch, row.row_binding_id)
         if source.numerical_row_id != row.row_id:
             _fail("root row-source numerical row identity changed")
         for descriptor in row.support:
+            accounting_runtime.emit_owned_operation_v1(
+                "dynamic-child.support-descriptor.scan"
+            )
             if descriptor.failure or descriptor.terminal:
                 continue
             try:
@@ -1121,6 +1128,9 @@ def _derive_child_states(
                 source.binding_id,
                 source.support_freeze_id,
             )
+            accounting_runtime.emit_owned_operation_v1(
+                "dynamic-child.causal-edge.build"
+            )
             if state.state_id not in causes:
                 causes[state.state_id] = (state, {})
             causes[state.state_id][1][edge.edge_id] = edge
@@ -1139,16 +1149,23 @@ def _derive_child_states(
                     state.failure,
                 ),
             )
+            accounting_runtime.emit_owned_operation_v1(
+                "dynamic-child.catalogue.accept"
+            )
+            materialized_rows = []
+            for action in catalogue.actions:
+                row_binding = graph.observation_row_binding_v1(
+                    state.context,
+                    catalogue,
+                    action,
+                )
+                materialized_rows.append(row_binding)
+                accounting_runtime.emit_owned_operation_v1(
+                    "dynamic-child.action-row.bind"
+                )
             rows = tuple(
                 sorted(
-                    (
-                        graph.observation_row_binding_v1(
-                            state.context,
-                            catalogue,
-                            action,
-                        )
-                        for action in catalogue.actions
-                    ),
+                    materialized_rows,
                     key=lambda item: item.row_binding_id,
                 )
             )
@@ -1270,47 +1287,51 @@ def _freeze_v075_live_dynamic_child_closure_from_exact_epoch_v2(
             V075LiveDynamicChildValidationIntentTemplateV2,
             ...,
         ] = ()
-    elif len(modeled) + len(unresolved) > MAXIMUM_NEW_CHILD_ACTION_ROWS:
-        status = (
-            V075LiveDynamicChildClosureStatusV2
-            .CHILD_ACTION_ROW_CAP_EXCEEDED
-        )
-        discoveries = ()
-        validations = ()
     else:
-        status = V075LiveDynamicChildClosureStatusV2.AUTHORIZED
-        frontier = epoch.proof.failed_frontier
-        discoveries = tuple(
-            V075LiveDynamicChildDiscoveryIntentV2(
-                _CHILD_DISCOVERY_ISSUER,
-                epoch.model_epoch_id,
-                epoch.model.model_id,
-                epoch.proof.proof_id,
-                None if frontier is None else frontier.frontier_id,
-                epoch.head_id,
-                epoch.occurrence_identity.occurrence_id,
-                epoch.context_id,
-                epoch.arm,
-                child.child_binding_id,
-                child.state.state_id,
-                child.catalogue.catalogue_id,
-                row,
-                _bootstrap_stream(
-                    namespace=namespace,
-                    row_binding=row,
-                    arm=epoch.arm,
-                ),
-                ordinal,
-            )
-            for ordinal, (child, row) in enumerate(unresolved)
+        accounting_runtime.emit_owned_operation_v1(
+            "dynamic-child.row-cap.check"
         )
-        validations = tuple(
-            V075LiveDynamicChildValidationIntentTemplateV2(
-                _CHILD_VALIDATION_TEMPLATE_ISSUER,
-                discovery,
+        if len(modeled) + len(unresolved) > MAXIMUM_NEW_CHILD_ACTION_ROWS:
+            status = (
+                V075LiveDynamicChildClosureStatusV2
+                .CHILD_ACTION_ROW_CAP_EXCEEDED
             )
-            for discovery in discoveries
-        )
+            discoveries = ()
+            validations = ()
+        else:
+            status = V075LiveDynamicChildClosureStatusV2.AUTHORIZED
+            frontier = epoch.proof.failed_frontier
+            discoveries = tuple(
+                V075LiveDynamicChildDiscoveryIntentV2(
+                    _CHILD_DISCOVERY_ISSUER,
+                    epoch.model_epoch_id,
+                    epoch.model.model_id,
+                    epoch.proof.proof_id,
+                    None if frontier is None else frontier.frontier_id,
+                    epoch.head_id,
+                    epoch.occurrence_identity.occurrence_id,
+                    epoch.context_id,
+                    epoch.arm,
+                    child.child_binding_id,
+                    child.state.state_id,
+                    child.catalogue.catalogue_id,
+                    row,
+                    _bootstrap_stream(
+                        namespace=namespace,
+                        row_binding=row,
+                        arm=epoch.arm,
+                    ),
+                    ordinal,
+                )
+                for ordinal, (child, row) in enumerate(unresolved)
+            )
+            validations = tuple(
+                V075LiveDynamicChildValidationIntentTemplateV2(
+                    _CHILD_VALIDATION_TEMPLATE_ISSUER,
+                    discovery,
+                )
+                for discovery in discoveries
+            )
     return V075LiveDynamicChildClosureV2(
         _CHILD_CLOSURE_FROM_REPLAYED_EPOCH_ISSUER,
         epoch,
@@ -1372,6 +1393,9 @@ def freeze_and_attest_v075_live_dynamic_child_closure_owned_v3(
         closure.status,
         tuple(item.intent_id for item in closure.discovery_intents),
         tuple(item.template_id for item in closure.validation_templates),
+    )
+    accounting_runtime.emit_owned_operation_v1(
+        "dynamic-child.closure.attest"
     )
     return closure, verification
 

@@ -11,6 +11,11 @@ binding the global child closure, closure verification, all-or-none execution
 ledger, ledger verification, and resulting live model epoch.  Every promotion
 crosses a second exact execution/model barrier.  A raw post-execution epoch is
 never accepted as permission to inspect its proof or continue planning.
+
+The public V2 entry point remains the unchanged unaccounted route.  A private
+issuer-only successor driver may bracket the exact closed K7 root-cap path for
+partial-native evidence; that path still issues no official accounting vector
+or certificate.
 """
 
 from __future__ import annotations
@@ -28,6 +33,10 @@ from acfqp.phase3e_ids import (
 )
 from acfqp import v075_batch_native_planning_backend_v2 as planning
 from acfqp import construction_operational_context_v3 as operational_context
+from acfqp import construction_accounting_owned_runtime_v1 as accounting_runtime
+from acfqp.construction_accounting_partial_native_v1 import (
+    PartialNativeStageV1,
+)
 from acfqp import (
     v075_batch_occurrence_lifecycle_authority_v2 as lifecycle_module,
 )
@@ -82,6 +91,10 @@ if MAXIMUM_PROMOTION_ROUNDS != dynamic.MAXIMUM_PROMOTION_ROUNDS:
     raise RuntimeError(
         "V0-075 multiround runner/dynamic promotion caps differ"
     )
+
+
+_PUBLIC_DRIVER_ISSUER_V3 = object()
+_OWNED_ROOT_CAP_PARTIAL_DRIVER_ISSUER_V3 = object()
 
 
 class V075ObserverSignedMultiroundV2InvariantViolation(ValueError):
@@ -2656,8 +2669,13 @@ def _closed_result(
     return result
 
 
-def run_v075_construction_observer_signed_multiround_occurrence_v2(
+def _run_v075_construction_observer_signed_multiround_occurrence_driver_v3(
     *,
+    _issuer: object,
+    _owned_root_cap_partial: bool,
+    _cold_cache_epoch_id: str | None,
+    _cold_cache_profile_id: str | None,
+    _execution_profile_id: str | None,
     repository_root: str | Path,
     namespace: namespace_v2.V075PublicTargetTapeNamespaceV2,
     schedule: acquisition.V075InitialAcquisitionScheduleV2,
@@ -2671,10 +2689,34 @@ def run_v075_construction_observer_signed_multiround_occurrence_v2(
         Callable[[Mapping[str, Any]], Any] | None
     ) = None,
 ) -> V075ObserverSignedMultiroundResultV2:
-    """Run one exact construction occurrence through at most two promotions."""
+    """Issuer-only shared driver for the unchanged public and owned paths."""
+
+    if (
+        _issuer is _PUBLIC_DRIVER_ISSUER_V3
+        and _owned_root_cap_partial is False
+        and _cold_cache_epoch_id is None
+        and _cold_cache_profile_id is None
+        and _execution_profile_id is None
+    ):
+        pass
+    elif (
+        _issuer is _OWNED_ROOT_CAP_PARTIAL_DRIVER_ISSUER_V3
+        and _owned_root_cap_partial is True
+        and _cold_cache_epoch_id is not None
+        and _cold_cache_profile_id is not None
+        and _execution_profile_id is not None
+        and operational_context.operational_no_full_replay_enabled_v3()
+    ):
+        pass
+    else:
+        _fail("multiround driver issuer or execution mode is invalid")
 
     if evidence_sink is not None and not callable(evidence_sink):
         _fail("construction evidence sink must be callable or absent")
+    if _owned_root_cap_partial:
+        accounting_runtime.enter_owned_stage_v1(
+            PartialNativeStageV1.PREOPEN_COMMON_PREFIX
+        )
     exact_schedule, exact_verification = _exact_initial_authority(
         repository_root=repository_root,
         namespace=namespace,
@@ -2694,16 +2736,77 @@ def run_v075_construction_observer_signed_multiround_occurrence_v2(
                 occurrence_identity=exact_schedule.occurrence,
             )
         )
+        if _owned_root_cap_partial:
+            accounting_runtime.exit_owned_stage_v1(
+                PartialNativeStageV1.PREOPEN_COMMON_PREFIX,
+                output_bindings=(
+                    (
+                        "cold_cache_epoch",
+                        _cid(
+                            _cold_cache_epoch_id,
+                            "owned root-cap cold cache epoch",
+                        ),
+                    ),
+                    (
+                        "cold_cache_profile",
+                        _cid(
+                            _cold_cache_profile_id,
+                            "owned root-cap cold cache profile",
+                        ),
+                    ),
+                    (
+                        "controlled_observer_zero_head",
+                        controller.current_signed_head.head_id,
+                    ),
+                    (
+                        "execution_profile",
+                        _cid(
+                            _execution_profile_id,
+                            "owned root-cap execution identity profile",
+                        ),
+                    ),
+                    ("initial_schedule", exact_schedule.schedule_id),
+                    (
+                        "initial_schedule_verification",
+                        exact_verification.verification_id,
+                    ),
+                ),
+            )
+            accounting_runtime.enter_owned_stage_v1(
+                PartialNativeStageV1.INITIAL_ACQUISITION
+            )
         root_execution = _execute_initial_root_schedule(
             controller=controller,
             namespace=namespace,
             schedule=exact_schedule,
             verification=exact_verification,
         )
+        if _owned_root_cap_partial:
+            accounting_runtime.exit_owned_stage_v1(
+                PartialNativeStageV1.INITIAL_ACQUISITION,
+                output_bindings=(
+                    ("root_execution", root_execution.execution_id),
+                ),
+            )
+            accounting_runtime.enter_owned_stage_v1(
+                PartialNativeStageV1.INITIAL_MODEL_BUILD
+            )
         root_epoch = _freeze_root_epoch(
             controller=controller,
             schedule=exact_schedule,
         )
+        if _owned_root_cap_partial:
+            accounting_runtime.exit_owned_stage_v1(
+                PartialNativeStageV1.INITIAL_MODEL_BUILD,
+                output_bindings=(
+                    ("root_model", root_epoch.model.model_id),
+                    ("root_model_epoch", root_epoch.model_epoch_id),
+                    ("root_proof", root_epoch.proof.proof_id),
+                ),
+            )
+            accounting_runtime.enter_owned_stage_v1(
+                PartialNativeStageV1.FAILED_ABSTRACT_PREFIX
+            )
         if operational_context.operational_no_full_replay_enabled_v3():
             child_closure, child_verification = (
                 dynamic
@@ -2749,7 +2852,29 @@ def run_v075_construction_observer_signed_multiround_occurrence_v2(
         dynamic.V075LivePromotionReplanningBarrierVerificationV2
     ] = []
     terminal = None
-    if (
+    if _owned_root_cap_partial:
+        if child_closure.status is not (
+            dynamic.V075LiveDynamicChildClosureStatusV2
+            .CHILD_ACTION_ROW_CAP_EXCEEDED
+        ):
+            _fail(
+                "owned root-cap driver reached an open or non-cap child branch"
+            )
+        terminal = (
+            V075ObserverSignedMultiroundTerminalStatusV2
+            .CHILD_ACTION_ROW_CAP_EXCEEDED
+        )
+        accounting_runtime.exit_owned_stage_v1(
+            PartialNativeStageV1.FAILED_ABSTRACT_PREFIX,
+            output_bindings=(
+                ("child_closure", child_closure.closure_id),
+                (
+                    "child_closure_verification",
+                    child_verification.verification_id,
+                ),
+            ),
+        )
+    elif (
         child_closure.status
         is dynamic.V075LiveDynamicChildClosureStatusV2.CANDIDATE_EARLY_STOP
     ):
@@ -2888,6 +3013,30 @@ def run_v075_construction_observer_signed_multiround_occurrence_v2(
         previous_promotion_barrier = promotion_barrier
     if terminal is None:  # pragma: no cover - state-machine exhaustiveness
         _fail("multiround state machine reached no terminal construction state")
+    if _owned_root_cap_partial:
+        if (
+            current_epoch is not root_epoch
+            or child_ledger is not None
+            or child_ledger_verification is not None
+            or child_barrier is not None
+            or child_barrier_verification is not None
+            or promotion_decisions
+            or promotion_decision_verifications
+            or promotion_barriers
+            or promotion_barrier_verifications
+            or terminal
+            is not (
+                V075ObserverSignedMultiroundTerminalStatusV2
+                .CHILD_ACTION_ROW_CAP_EXCEEDED
+            )
+        ):
+            _fail("owned root-cap driver executed an open or promotion branch")
+        accounting_runtime.enter_owned_stage_v1(
+            (
+                PartialNativeStageV1
+                .CLOSED_RECONCILIATION_AND_TERMINALIZATION
+            )
+        )
     reconciliation = _close_and_reconcile(
         repository_root=repository_root,
         controller=controller,
@@ -2964,14 +3113,101 @@ def run_v075_construction_observer_signed_multiround_occurrence_v2(
         )
         before = _snapshot_construction_evidence_roots(roots)
         try:
-            evidence_sink(roots)
+            with accounting_runtime.suppress_owned_operation_emission_v1():
+                evidence_sink(roots)
         except Exception as error:
             raise V075ObserverSignedMultiroundV2InvariantViolation(
                 "construction evidence sink failed after exact closure"
             ) from error
         if _snapshot_construction_evidence_roots(roots) != before:
             _fail("construction evidence sink mutated immutable typed roots")
+    if _owned_root_cap_partial:
+        accounting_runtime.exit_owned_stage_v1(
+            (
+                PartialNativeStageV1
+                .CLOSED_RECONCILIATION_AND_TERMINALIZATION
+            ),
+            output_bindings=(
+                ("closed_reconciliation", reconciliation.reconciliation_id),
+                ("multiround_result", result.result_id),
+            ),
+        )
     return result
+
+
+def run_v075_construction_observer_signed_multiround_occurrence_v2(
+    *,
+    repository_root: str | Path,
+    namespace: namespace_v2.V075PublicTargetTapeNamespaceV2,
+    schedule: acquisition.V075InitialAcquisitionScheduleV2,
+    schedule_verification: acquisition.V075InitialAcquisitionVerificationV2,
+    authority: preopen.V075ObserverOpenAuthorizationV2,
+    private_salt: bytes,
+    private_environment: Iterable[Iterable[tuple[int, Any]]],
+    observer_signer: observer.V075ObserverEvidenceSignerProtocolV2,
+    session_external_id: str,
+    evidence_sink: (
+        Callable[[Mapping[str, Any]], Any] | None
+    ) = None,
+) -> V075ObserverSignedMultiroundResultV2:
+    """Run the unchanged public V2 construction occurrence path."""
+
+    return _run_v075_construction_observer_signed_multiround_occurrence_driver_v3(
+        _issuer=_PUBLIC_DRIVER_ISSUER_V3,
+        _owned_root_cap_partial=False,
+        _cold_cache_epoch_id=None,
+        _cold_cache_profile_id=None,
+        _execution_profile_id=None,
+        repository_root=repository_root,
+        namespace=namespace,
+        schedule=schedule,
+        schedule_verification=schedule_verification,
+        authority=authority,
+        private_salt=private_salt,
+        private_environment=private_environment,
+        observer_signer=observer_signer,
+        session_external_id=session_external_id,
+        evidence_sink=evidence_sink,
+    )
+
+
+def _run_v075_k7_root_cap_owned_partial_driver_v1(
+    *,
+    cold_cache_epoch_id: str,
+    cold_cache_profile_id: str,
+    execution_profile_id: str,
+    repository_root: str | Path,
+    namespace: namespace_v2.V075PublicTargetTapeNamespaceV2,
+    schedule: acquisition.V075InitialAcquisitionScheduleV2,
+    schedule_verification: acquisition.V075InitialAcquisitionVerificationV2,
+    authority: preopen.V075ObserverOpenAuthorizationV2,
+    private_salt: bytes,
+    private_environment: Iterable[Iterable[tuple[int, Any]]],
+    observer_signer: observer.V075ObserverEvidenceSignerProtocolV2,
+    session_external_id: str,
+    evidence_sink: (
+        Callable[[Mapping[str, Any]], Any] | None
+    ) = None,
+) -> V075ObserverSignedMultiroundResultV2:
+    """Private issuer path for the exact closed K7 root-cap occurrence."""
+
+    return _run_v075_construction_observer_signed_multiround_occurrence_driver_v3(
+        _issuer=_OWNED_ROOT_CAP_PARTIAL_DRIVER_ISSUER_V3,
+        _owned_root_cap_partial=True,
+        _cold_cache_epoch_id=cold_cache_epoch_id,
+        _cold_cache_profile_id=cold_cache_profile_id,
+        _execution_profile_id=execution_profile_id,
+        repository_root=repository_root,
+        namespace=namespace,
+        schedule=schedule,
+        schedule_verification=schedule_verification,
+        authority=authority,
+        private_salt=private_salt,
+        private_environment=private_environment,
+        observer_signer=observer_signer,
+        session_external_id=session_external_id,
+        evidence_sink=evidence_sink,
+    )
 
 
 def open_v075_production_observer_signed_multiround_occurrence_v2(

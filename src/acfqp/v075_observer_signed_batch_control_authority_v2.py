@@ -24,6 +24,7 @@ import hashlib
 from typing import Any, Iterable, Mapping
 
 from acfqp.phase3e_ids import canonical_json_bytes, parse_content_id
+from acfqp import construction_accounting_owned_runtime_v1 as accounting_runtime
 from acfqp import v075_batch_native_statistical_backend_v1 as backend
 from acfqp import v075_batched_observer_authority_v2 as batched_v2
 from acfqp import v075_preopen_target_authorization_v2 as preopen
@@ -3805,6 +3806,9 @@ class V075ConstructionControlledPrivateObserverV2:
                 id(support),
                 _deep_support_freeze_digest(support),
             )
+        )
+        accounting_runtime.emit_owned_operation_v1(
+            "observer-control.support-freeze.commit"
         )
         self.__poisoned = False
         return support

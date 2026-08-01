@@ -34,6 +34,7 @@ import itertools
 from pathlib import Path
 from typing import Any, Iterable, Mapping, NoReturn
 
+from acfqp import construction_accounting_owned_runtime_v1 as accounting_runtime
 from acfqp.phase3e_ids import canonical_json_bytes, parse_content_id
 from acfqp.sequential_bernoulli_acquisition_v1 import (
     METHOD_ID as EXACT_BERNOULLI_METHOD_ID,
@@ -778,6 +779,9 @@ def _replay_support_descriptor(
         or expected.to_document() != claimed.to_document()
     ):
         _fail("V2 support descriptor differs from exact semantic replay")
+    accounting_runtime.emit_owned_operation_v1(
+        "batch-planning.typed-replay.support-descriptor"
+    )
     return expected
 
 
@@ -801,6 +805,9 @@ def _replay_event_interval(
                 checkpoints=(claimed.draw_count,),
                 boundary_grid_bits=BOUNDARY_GRID_BITS,
             ),
+        )
+        accounting_runtime.emit_owned_operation_v1(
+            "batch-planning.replay.checkpoint"
         )
         empirical_probability = checkpoint.empirical_probability
         lower_probability = checkpoint.lower_probability
@@ -836,6 +843,12 @@ def _replay_event_interval(
         or expected.to_document() != claimed.to_document()
     ):
         _fail("V2 event interval differs from exact semantic replay")
+    accounting_runtime.emit_owned_operation_v1(
+        "batch-planning.replay.interval-reconstruction"
+    )
+    accounting_runtime.emit_owned_operation_v1(
+        "batch-planning.typed-replay.event-interval"
+    )
     return expected
 
 
@@ -867,6 +880,9 @@ def _replay_numerical_row(
         or expected.to_document() != claimed.to_document()
     ):
         _fail("V2 numerical row differs from exact semantic replay")
+    accounting_runtime.emit_owned_operation_v1(
+        "batch-planning.typed-replay.numerical-row"
+    )
     return expected
 
 
@@ -891,6 +907,9 @@ def _replay_numerical_model(
         or expected.to_document() != claimed.to_document()
     ):
         _fail("V2 numerical model differs from exact semantic replay")
+    accounting_runtime.emit_owned_operation_v1(
+        "batch-planning.typed-replay.numerical-model"
+    )
     return expected
 
 
@@ -914,6 +933,9 @@ def _replay_row_evidence_binding(
         or expected.to_document() != claimed.to_document()
     ):
         _fail("V2 row evidence differs from exact semantic replay")
+    accounting_runtime.emit_owned_operation_v1(
+        "batch-planning.typed-replay.row-evidence-binding"
+    )
     return expected
 
 
@@ -943,6 +965,9 @@ def _replay_construction_planning_input(
         or expected.to_document() != claimed.to_document()
     ):
         _fail("V2 planning input differs from exact semantic replay")
+    accounting_runtime.emit_owned_operation_v1(
+        "batch-planning.typed-replay.construction-planning-input"
+    )
     return expected
 
 
@@ -1052,6 +1077,9 @@ def _checkpoint_interval(
     event_count: int,
     checkpoints: tuple[int, ...],
 ) -> V075EventIntervalV2:
+    accounting_runtime.emit_owned_operation_v1(
+        "batch-planning.confidence-event.evaluate"
+    )
     if draw_count not in checkpoints:
         _fail("latest validation prefix is not a registered checkpoint")
     alpha = ROW_BETA / event_count
@@ -1066,7 +1094,7 @@ def _checkpoint_interval(
         success_count,
         profile,
     )
-    return V075EventIntervalV2(
+    interval = V075EventIntervalV2(
         _INTERVAL_ISSUER,
         "OTHER" if descriptor is None else descriptor.descriptor_id,
         descriptor,
@@ -1080,6 +1108,10 @@ def _checkpoint_interval(
         checkpoint.log_search_evaluations,
         EXACT_BERNOULLI_METHOD_ID,
     )
+    accounting_runtime.emit_owned_operation_v1(
+        "batch-planning.interval-row.construct"
+    )
+    return interval
 
 
 def _replay_construction_lineage(
@@ -1108,6 +1140,9 @@ def _replay_construction_lineage(
         or expected.canonical_bytes != claimed.canonical_bytes
     ):
         _fail("V2 construction lineage differs from exact typed replay")
+    accounting_runtime.emit_owned_operation_v1(
+        "batch-planning.typed-replay.construction-lineage"
+    )
     return expected
 
 
@@ -1227,13 +1262,17 @@ def _compile_aggregate_rows(
                 terminal=item.terminal,
             )
             key = (item.next_ranks, item.failure, item.terminal)
-            descriptors_by_key[key] = V075SupportDescriptorV2(
+            descriptor = V075SupportDescriptorV2(
                 _DESCRIPTOR_ISSUER,
                 row_binding.context_id,
                 state.state_id,
                 item.next_ranks,
                 item.failure,
                 item.terminal,
+            )
+            descriptors_by_key[key] = descriptor
+            accounting_runtime.emit_owned_operation_v1(
+                "batch-planning.aggregate.support-descriptor.compile"
             )
         support = tuple(
             sorted(
@@ -1272,6 +1311,9 @@ def _compile_aggregate_rows(
                     other += outcome.count
                 else:
                     counts[descriptor.descriptor_id] += outcome.count
+                accounting_runtime.emit_owned_operation_v1(
+                    "batch-planning.aggregate.outcome-projection"
+                )
         if sum(counts.values()) + other != draw_count:
             _fail("V2 support-plus-OTHER does not conserve validation draws")
         event_count = len(support) + 1
@@ -1306,17 +1348,22 @@ def _compile_aggregate_rows(
             intervals,
         )
         rows.append(numerical)
-        bindings.append(
-            V075RowEvidenceBindingV2(
-                _EVIDENCE_ISSUER,
-                numerical.row_id,
-                row_id,
-                freeze.freeze_id,
-                tuple(sorted(freeze.source_discovery_batch_ids)),
-                tuple(sorted(item.batch_id for item in latest)),
-                latest_epoch,
-                lifecycle.closure_id,
-            )
+        accounting_runtime.emit_owned_operation_v1(
+            "batch-planning.aggregate.model-row.build"
+        )
+        binding = V075RowEvidenceBindingV2(
+            _EVIDENCE_ISSUER,
+            numerical.row_id,
+            row_id,
+            freeze.freeze_id,
+            tuple(sorted(freeze.source_discovery_batch_ids)),
+            tuple(sorted(item.batch_id for item in latest)),
+            latest_epoch,
+            lifecycle.closure_id,
+        )
+        bindings.append(binding)
+        accounting_runtime.emit_owned_operation_v1(
+            "batch-planning.aggregate.row-evidence-binding.build"
         )
     canonical_rows = tuple(sorted(rows, key=lambda item: item.row_id))
     binding_by_row = {item.numerical_row_id: item for item in bindings}
@@ -2178,6 +2225,9 @@ def _extreme(
         addition = min(residual, upper[index] - lower[index])
         probabilities[index] += addition
         residual -= addition
+        accounting_runtime.emit_owned_operation_v1(
+            "batch-planning.interval-greedy.extreme"
+        )
         if residual == 0:
             break
     if residual != 0:
@@ -2262,12 +2312,16 @@ def _row_behavior(
             key=lambda item: canonical_json_bytes(item.to_document()),
         )
     )
-    return V075RowBehaviorV2(
+    behavior = V075RowBehaviorV2(
         _BEHAVIOR_ISSUER,
         row.row_id,
         row.remaining_horizon,
         canonical,
     )
+    accounting_runtime.emit_owned_operation_v1(
+        "batch-planning.row-behavior.compile"
+    )
+    return behavior
 
 
 def _compile_quotient(
@@ -2303,15 +2357,19 @@ def _compile_quotient(
             )
         )
         signatures.setdefault(signature, []).append(state_id)
-    child_cells = tuple(
-        V075QuotientCellV2(
+    child_cell_values = []
+    for signature, states in sorted(signatures.items()):
+        cell = V075QuotientCellV2(
             _CELL_ISSUER,
             1,
             tuple(sorted(states)),
             signature,
         )
-        for signature, states in sorted(signatures.items())
-    )
+        child_cell_values.append(cell)
+        accounting_runtime.emit_owned_operation_v1(
+            "batch-planning.quotient-cell.compile"
+        )
+    child_cells = tuple(child_cell_values)
     child_cell_by_state = {
         state_id: cell.cell_id
         for cell in child_cells
@@ -2335,6 +2393,9 @@ def _compile_quotient(
         tuple(
             sorted({item.behavior_key for item in root_behaviors.values()})
         ),
+    )
+    accounting_runtime.emit_owned_operation_v1(
+        "batch-planning.quotient-cell.compile"
     )
     return V075BehavioralQuotientV2(
         _QUOTIENT_ISSUER,
@@ -2391,18 +2452,25 @@ def _options(
                 row,
             )
     if route is V075PlanningRouteV2.MATCHED_DIRECT_GROUND:
+        direct_options = []
+        for state_id, rows in rows_by_state.items():
+            for row in rows:
+                option = _Option(
+                    row.row_id,
+                    state_id,
+                    remaining_horizon,
+                    ((state_id, (row,)),),
+                )
+                direct_options.append(option)
+                accounting_runtime.emit_owned_operation_v1(
+                    "batch-planning.semantic-option.compile"
+                )
+                accounting_runtime.emit_owned_operation_v1(
+                    "batch-planning.concretizer-ground-action.bind"
+                )
         return tuple(
             sorted(
-                (
-                    _Option(
-                        row.row_id,
-                        state_id,
-                        remaining_horizon,
-                        ((state_id, (row,)),),
-                    )
-                    for state_id, rows in rows_by_state.items()
-                    for row in rows
-                ),
+                direct_options,
                 key=lambda item: item.option_id,
             )
         )
@@ -2438,14 +2506,21 @@ def _options(
                     "behavior_key": behavior_key,
                 },
             )
-            options.append(
-                _Option(
-                    option_id,
-                    cell.cell_id,
-                    remaining_horizon,
-                    tuple(rows_per_state),
-                )
+            option = _Option(
+                option_id,
+                cell.cell_id,
+                remaining_horizon,
+                tuple(rows_per_state),
             )
+            options.append(option)
+            accounting_runtime.emit_owned_operation_v1(
+                "batch-planning.semantic-option.compile"
+            )
+            for _state_id, rows in option.rows_by_state:
+                for _row in rows:
+                    accounting_runtime.emit_owned_operation_v1(
+                        "batch-planning.concretizer-ground-action.bind"
+                    )
     return tuple(sorted(options, key=lambda item: item.option_id))
 
 
@@ -2500,7 +2575,11 @@ def _option_metric(
         metrics.append(row_metrics[0])
     if any(item != metrics[0] for item in metrics[1:]):
         _fail("semantic action is not representative independent")
-    return metrics[0]
+    metric = metrics[0]
+    accounting_runtime.emit_owned_operation_v1(
+        "batch-planning.option-metric"
+    )
+    return metric
 
 
 def _extreme_bounds(
@@ -2527,6 +2606,9 @@ def _extreme_bounds(
         addition = min(residual, bounds[index][1] - bounds[index][0])
         probabilities[index] += addition
         residual -= addition
+        accounting_runtime.emit_owned_operation_v1(
+            "batch-planning.interval-greedy.extreme-bounds"
+        )
         if residual == 0:
             break
     if residual:
@@ -2657,21 +2739,23 @@ def _frontier(
                 }
             )
         )
-        obligations.append(
-            V075FrontierObligationV2(
-                row.row_id,
-                sum(
-                    (
-                        item.upper_probability - item.lower_probability
-                        for item in row.intervals
-                    ),
-                    Fraction(0),
+        obligation = V075FrontierObligationV2(
+            row.row_id,
+            sum(
+                (
+                    item.upper_probability - item.lower_probability
+                    for item in row.intervals
                 ),
-                other.upper_probability,
-                unmaterialized,
-                row.validation_draw_count,
-                _next_checkpoint(row, route),
-            )
+                Fraction(0),
+            ),
+            other.upper_probability,
+            unmaterialized,
+            row.validation_draw_count,
+            _next_checkpoint(row, route),
+        )
+        obligations.append(obligation)
+        accounting_runtime.emit_owned_operation_v1(
+            "batch-planning.frontier-obligation.build"
         )
     if not obligations:
         _fail("V2 failed frontier selected no rows")
@@ -2765,6 +2849,9 @@ def plan_v075_construction_numerical_model_v2(
         )
         for combination in products:
             assignments += 1
+            accounting_runtime.emit_owned_operation_v1(
+                "batch-planning.policy-assignment-cap-check"
+            )
             if assignments > MAX_EXACT_POLICY_ASSIGNMENTS:
                 exhausted = True
                 break
@@ -2793,12 +2880,26 @@ def plan_v075_construction_numerical_model_v2(
                 key[3],
             )
             record = (key, root, chosen, metric)
-            if diagnostic is None or diagnostic_key > diagnostic[0]:
+            accounting_runtime.emit_owned_operation_v1(
+                "batch-planning.policy-assignment.success"
+            )
+            if diagnostic is None:
                 diagnostic = (diagnostic_key, root, chosen, metric)
-            if metric.failure_upper <= threshold.risk_tolerance and (
-                best is None or key > best[0]
-            ):
-                best = record
+            else:
+                accounting_runtime.emit_owned_operation_v1(
+                    "batch-planning.policy-order.diagnostic"
+                )
+                if diagnostic_key > diagnostic[0]:
+                    diagnostic = (diagnostic_key, root, chosen, metric)
+            if metric.failure_upper <= threshold.risk_tolerance:
+                if best is None:
+                    best = record
+                else:
+                    accounting_runtime.emit_owned_operation_v1(
+                        "batch-planning.policy-order.feasible-best"
+                    )
+                    if key > best[0]:
+                        best = record
         if exhausted:
             break
     if exhausted:

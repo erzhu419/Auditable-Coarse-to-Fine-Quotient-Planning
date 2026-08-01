@@ -23,6 +23,9 @@ import hashlib
 import math
 from typing import Iterable
 
+from acfqp import (
+    construction_accounting_owned_runtime_v1 as accounting_runtime,
+)
 from acfqp.phase3e_ids import parse_content_id
 from acfqp.relational_graph_core_v1 import GraphTopologyV1
 
@@ -508,6 +511,10 @@ class DeterministicH2GraphStreamV1:
                 "stream remaining horizon is invalid"
             )
         board, empty, reward = kernel.merge(state, action)
+        accounting_runtime.emit_owned_operation_v1(
+            "engine.stream-init.merge",
+            amount=1,
+        )
         law_denominator, integer_law = _integer_spawn_law(
             kernel.spawn_law
         )
@@ -549,9 +556,17 @@ class DeterministicH2GraphStreamV1:
             word = splitmix64_v1(
                 self._seed + _SPLITMIX_GAMMA * word_index
             )
+            accounting_runtime.emit_owned_operation_v1(
+                "engine.draw.random-word",
+                amount=1,
+            )
             self._random_word_calls += 1
             words.append(word)
             if word >= self._acceptance_limit:
+                accounting_runtime.emit_owned_operation_v1(
+                    "engine.draw.rejection",
+                    amount=1,
+                )
                 self._rejection_count += 1
                 continue
             token = word % self._outcome_denominator
@@ -572,7 +587,7 @@ class DeterministicH2GraphStreamV1:
         )
         next_state = H2GraphStateV1(successor_ranks, failure)
         self._accepted_draws += 1
-        return H2GraphSampleV1(
+        sample = H2GraphSampleV1(
             next_state=next_state,
             realized_row_reward=self._reward,
             failure=failure,
@@ -583,6 +598,11 @@ class DeterministicH2GraphStreamV1:
             random_word_start_index=start,
             random_words=tuple(words),
         )
+        accounting_runtime.emit_owned_operation_v1(
+            "engine.draw.ground-sample",
+            amount=1,
+        )
+        return sample
 
 
 def verify_deterministic_samples_v1(

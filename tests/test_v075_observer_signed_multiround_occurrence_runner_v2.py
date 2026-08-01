@@ -2,14 +2,27 @@ from __future__ import annotations
 
 from dataclasses import replace
 import hashlib
+from types import SimpleNamespace
 
 import pytest
 
 from acfqp.phase3e_ids import canonical_json_bytes
 from acfqp import construction_operational_context_v3 as operational_context
+from acfqp import construction_accounting_owned_runtime_v1 as accounting_runtime
+from acfqp import sequential_bernoulli_acquisition_v1 as bernoulli
+from acfqp.construction_accounting_partial_native_v1 import (
+    PartialNativeOccurrenceAbortV1,
+    PartialNativeOperationEventV1,
+    PartialNativeStageCompletionV1,
+    PartialNativeStageStartV1,
+    PartialNativeStageV1,
+    PartialNativeTerminalKindV1,
+    ROOT_CAP_FIVE_STAGE_PLAN_V1,
+)
 from acfqp import v075_batch_native_statistical_backend_v1 as backend
 from acfqp import v075_five_arm_acquisition_authority_v2 as acquisition
 from acfqp import v075_observer_signed_multiround_occurrence_runner_v2 as runner
+from acfqp import v075_k7_root_cap_owned_partial_runner_v1 as owned_runner
 from acfqp import v075_registered_occurrence_worker_v1 as worker
 from tests import test_v075_private_observer_boundary_v2 as observer_fixture
 
@@ -80,19 +93,23 @@ def capped_closed_result():
     # intentionally expensive W7 all-18 acquisition.
     schedule, verification = _exact_schedule(namespace, context_index=0)
     roots = {}
-    result = (
-        runner.run_v075_construction_observer_signed_multiround_occurrence_v2(
-            repository_root=REPOSITORY_ROOT,
-            namespace=namespace,
-            schedule=schedule,
-            schedule_verification=verification,
-            authority=authorization,
-            private_salt=salt,
-            private_environment=generated.secret_laws_for_commitment(),
-            observer_signer=signer,
-            session_external_id=_id("capped-session"),
-            evidence_sink=lambda values: roots.update(values),
-        )
+    sink_calls = []
+
+    def sink(values) -> None:
+        roots.update(values)
+        sink_calls.append(tuple(sorted(values)))
+
+    wrapped = owned_runner.run_v075_k7_root_cap_owned_partial_v1(
+        repository_root=REPOSITORY_ROOT,
+        namespace=namespace,
+        schedule=schedule,
+        schedule_verification=verification,
+        authority=authorization,
+        private_salt=salt,
+        private_environment=generated.secret_laws_for_commitment(),
+        observer_signer=signer,
+        session_external_id=_id("capped-session"),
+        evidence_sink=sink,
     )
     return {
         "generated": generated,
@@ -102,7 +119,9 @@ def capped_closed_result():
         "signer": signer,
         "schedule": schedule,
         "verification": verification,
-        "result": result,
+        "result": wrapped.result,
+        "wrapped": wrapped,
+        "sink_calls": sink_calls,
         "roots": roots,
     }
 
@@ -419,3 +438,341 @@ def test_result_and_production_boundaries_reject_forgery(
         runner.V075ObserverSignedMultiroundProductionV2NotReady
     ):
         runner.open_v075_production_observer_signed_multiround_occurrence_v2()
+
+
+def _owned_arguments(values, label: str) -> dict:
+    return {
+        "repository_root": REPOSITORY_ROOT,
+        "namespace": values["namespace"],
+        "schedule": values["schedule"],
+        "schedule_verification": values["verification"],
+        "authority": values["authorization"],
+        "private_salt": values["salt"],
+        "private_environment": (
+            values["generated"].secret_laws_for_commitment()
+        ),
+        "observer_signer": values["signer"],
+        "session_external_id": _id(label),
+    }
+
+
+@pytest.fixture(scope="module")
+def owned_partial_closed_result(capped_closed_result):
+    return (
+        capped_closed_result["wrapped"],
+        capped_closed_result["sink_calls"],
+    )
+
+
+def test_owned_partial_result_preserves_v2_bytes_and_cold_cache(
+    capped_closed_result,
+    owned_partial_closed_result,
+) -> None:
+    wrapped, sink_calls = owned_partial_closed_result
+    assert wrapped.result is capped_closed_result["result"]
+    assert wrapped.result.canonical_bytes == (
+        capped_closed_result["roots"]["multiround_result"].canonical_bytes
+    )
+    assert wrapped.result.status is (
+        runner.V075ObserverSignedMultiroundTerminalStatusV2
+        .CHILD_ACTION_ROW_CAP_EXCEEDED
+    )
+    assert len(sink_calls) == 1
+    assert wrapped.to_document()["original_v2_result_bytes_changed"] is False
+    assert wrapped.to_document()["official_execution_allowed"] is False
+    assert bernoulli.beta_binomial_sequence_mass_v1.cache_info().currsize == 0
+    assert bernoulli._outer_confidence_bounds.cache_info().currsize == 0  # noqa: SLF001
+
+
+def test_owned_partial_exact_stage_outputs_and_sink_boundary(
+    owned_partial_closed_result,
+) -> None:
+    wrapped, sink_calls = owned_partial_closed_result
+    transcript = wrapped.transcript
+    starts = tuple(
+        node
+        for node in transcript.nodes
+        if type(node) is PartialNativeStageStartV1
+    )
+    completions = tuple(
+        node
+        for node in transcript.nodes
+        if type(node) is PartialNativeStageCompletionV1
+    )
+    assert tuple(row.stage_kind for row in starts) == ROOT_CAP_FIVE_STAGE_PLAN_V1
+    assert tuple(row.stage_kind for row in completions) == (
+        ROOT_CAP_FIVE_STAGE_PLAN_V1
+    )
+    assert transcript.terminal_kind is PartialNativeTerminalKindV1.COMPLETED
+    assert [
+        tuple(binding.role for binding in row.output_bindings)
+        for row in completions
+    ] == [
+        (
+            "cold_cache_epoch",
+            "cold_cache_profile",
+            "controlled_observer_zero_head",
+            "execution_profile",
+            "initial_schedule",
+            "initial_schedule_verification",
+        ),
+        ("root_execution",),
+        ("root_model", "root_model_epoch", "root_proof"),
+        ("child_closure", "child_closure_verification"),
+        ("closed_reconciliation", "multiround_result"),
+    ]
+    assert all(
+        node.stage_kind in ROOT_CAP_FIVE_STAGE_PLAN_V1
+        for node in transcript.nodes
+        if hasattr(node, "stage_kind")
+    )
+    first_outputs = {
+        row.role: row.artifact_id for row in completions[0].output_bindings
+    }
+    assert first_outputs["cold_cache_epoch"] == (
+        wrapped.cold_cache_epoch.epoch_id
+    )
+    assert first_outputs["cold_cache_profile"] == (
+        wrapped.cold_cache_profile.profile_id
+    )
+    assert first_outputs["execution_profile"] == (
+        wrapped.execution_profile_id
+    )
+    events = tuple(
+        node
+        for node in transcript.nodes
+        if type(node) is PartialNativeOperationEventV1
+    )
+    assert len(sink_calls) == 1
+    assert all(row.amount != 31_337 for row in events)
+    assert all("sink" not in row.path for row in events)
+
+
+class _InjectedOwnedStageFailure(RuntimeError):
+    pass
+
+
+def _install_fast_owned_roots(monkeypatch, values, failed_stage) -> None:
+    roots = values["roots"]
+
+    def maybe(stage, value):
+        if stage is failed_stage:
+            raise _InjectedOwnedStageFailure(stage.value)
+        return value
+
+    monkeypatch.setattr(
+        runner,
+        "_exact_initial_authority",
+        lambda **_kwargs: maybe(
+            PartialNativeStageV1.PREOPEN_COMMON_PREFIX,
+            (values["schedule"], values["verification"]),
+        ),
+    )
+    monkeypatch.setattr(
+        runner,
+        "_canonical_private_environment",
+        lambda _value: (),
+    )
+    monkeypatch.setattr(
+        runner.control,
+        "open_v075_construction_controlled_private_observer_v2",
+        lambda **_kwargs: SimpleNamespace(
+            current_signed_head=SimpleNamespace(head_id=_id("zero-head"))
+        ),
+    )
+    monkeypatch.setattr(
+        runner,
+        "_execute_initial_root_schedule",
+        lambda **_kwargs: maybe(
+            PartialNativeStageV1.INITIAL_ACQUISITION,
+            roots["root_execution"],
+        ),
+    )
+    monkeypatch.setattr(
+        runner,
+        "_freeze_root_epoch",
+        lambda **_kwargs: maybe(
+            PartialNativeStageV1.INITIAL_MODEL_BUILD,
+            roots["root_model_epoch"],
+        ),
+    )
+    monkeypatch.setattr(
+        runner.dynamic,
+        "freeze_and_attest_v075_live_dynamic_child_closure_owned_v3",
+        lambda **_kwargs: maybe(
+            PartialNativeStageV1.FAILED_ABSTRACT_PREFIX,
+            (
+                roots["child_closure"],
+                roots["child_closure_verification"],
+            ),
+        ),
+    )
+    monkeypatch.setattr(
+        runner,
+        "_close_and_reconcile",
+        lambda **_kwargs: maybe(
+            (
+                PartialNativeStageV1
+                .CLOSED_RECONCILIATION_AND_TERMINALIZATION
+            ),
+            roots["closed_reconciliation"],
+        ),
+    )
+    monkeypatch.setattr(
+        runner,
+        "_closed_result",
+        lambda **_kwargs: values["result"],
+    )
+
+
+@pytest.mark.parametrize("failed_stage", ROOT_CAP_FIVE_STAGE_PLAN_V1)
+def test_owned_partial_stage_failure_preserves_abort_and_resets_contexts(
+    capped_closed_result,
+    monkeypatch,
+    failed_stage,
+) -> None:
+    _install_fast_owned_roots(monkeypatch, capped_closed_result, failed_stage)
+    with pytest.raises(
+        owned_runner.V075K7RootCapOwnedPartialRunnerV1Error
+    ) as caught:
+        owned_runner.run_v075_k7_root_cap_owned_partial_v1(
+            **_owned_arguments(
+                capped_closed_result, f"fail-{failed_stage.value}"
+            )
+        )
+    transcript = caught.value.aborted_transcript
+    assert transcript is not None
+    assert transcript.terminal_kind is PartialNativeTerminalKindV1.ABORTED
+    terminal = transcript.nodes[-1]
+    assert type(terminal) is PartialNativeOccurrenceAbortV1
+    assert terminal.aborted_stage_kind is failed_stage
+    assert terminal.aborted_stage_index == (
+        ROOT_CAP_FIVE_STAGE_PLAN_V1.index(failed_stage) + 1
+    )
+    assert not any(
+        type(node) is PartialNativeStageStartV1
+        and ROOT_CAP_FIVE_STAGE_PLAN_V1.index(node.stage_kind)
+        > ROOT_CAP_FIVE_STAGE_PLAN_V1.index(failed_stage)
+        for node in transcript.nodes
+    )
+    assert accounting_runtime.owned_accounting_active_v1() is False
+    assert operational_context.operational_no_full_replay_enabled_v3() is False
+    assert bernoulli.beta_binomial_sequence_mass_v1.cache_info().currsize == 0
+    assert bernoulli._outer_confidence_bounds.cache_info().currsize == 0  # noqa: SLF001
+
+
+def test_owned_partial_path_skips_portable_and_full_epoch_replay(
+    capped_closed_result,
+    monkeypatch,
+) -> None:
+    _install_fast_owned_roots(monkeypatch, capped_closed_result, None)
+
+    def forbidden(*_args, **_kwargs):
+        raise AssertionError("owned path called portable/full replay")
+
+    monkeypatch.setattr(
+        runner.dynamic,
+        "verify_v075_live_dynamic_child_closure_bytes_v2",
+        forbidden,
+    )
+    monkeypatch.setattr(
+        runner.dynamic,
+        "freeze_v075_live_dynamic_child_closure_v2",
+        forbidden,
+    )
+    monkeypatch.setattr(
+        runner.live_model,
+        "replay_v075_live_incremental_model_epoch_v2",
+        forbidden,
+    )
+    wrapped = owned_runner.run_v075_k7_root_cap_owned_partial_v1(
+        **_owned_arguments(capped_closed_result, "no-portable-replay")
+    )
+    assert wrapped.result.canonical_bytes == (
+        capped_closed_result["result"].canonical_bytes
+    )
+
+
+def test_owned_partial_suppresses_evidence_sink_event_forgery(
+    capped_closed_result,
+    monkeypatch,
+) -> None:
+    _install_fast_owned_roots(monkeypatch, capped_closed_result, None)
+
+    def malicious_sink(_roots) -> None:
+        assert accounting_runtime.owned_accounting_active_v1() is False
+        assert operational_context.operational_no_full_replay_enabled_v3() is False
+        # These replacements would invalidate the lifecycle if the caller
+        # callback still ran before terminalization or post-clear.  The owned
+        # wrapper defers it until both facts have already completed.
+        monkeypatch.setattr(
+            bernoulli,
+            "clear_exact_bernoulli_math_cache_v1",
+            lambda: None,
+        )
+        monkeypatch.setattr(
+            accounting_runtime,
+            "complete_owned_occurrence_v1",
+            lambda: (_ for _ in ()).throw(
+                AssertionError("sink ran before occurrence completion")
+            ),
+        )
+        accounting_runtime.emit_owned_operation_v1(
+            "batch-planning.option-metric",
+            31_337,
+        )
+
+    wrapped = owned_runner.run_v075_k7_root_cap_owned_partial_v1(
+        **_owned_arguments(capped_closed_result, "sink-forgery"),
+        evidence_sink=malicious_sink,
+    )
+    transcript = wrapped.transcript
+    assert transcript.terminal_kind is PartialNativeTerminalKindV1.COMPLETED
+    assert not any(
+        type(node) is PartialNativeOperationEventV1 and node.amount == 31_337
+        for node in transcript.nodes
+    )
+
+
+def test_public_v2_default_delegation_keeps_accounting_disabled(
+    capped_closed_result,
+    monkeypatch,
+) -> None:
+    captured = {}
+
+    def lightweight_driver(**kwargs):
+        captured.update(kwargs)
+        assert accounting_runtime.owned_accounting_active_v1() is False
+        return capped_closed_result["result"]
+
+    monkeypatch.setattr(
+        runner,
+        "_run_v075_construction_observer_signed_multiround_occurrence_driver_v3",
+        lightweight_driver,
+    )
+    result = runner.run_v075_construction_observer_signed_multiround_occurrence_v2(
+        **_owned_arguments(capped_closed_result, "public-lightweight")
+    )
+    assert result.canonical_bytes == capped_closed_result["result"].canonical_bytes
+    assert captured["_owned_root_cap_partial"] is False
+    assert captured["_cold_cache_epoch_id"] is None
+    assert captured["_cold_cache_profile_id"] is None
+    assert captured["_execution_profile_id"] is None
+    assert accounting_runtime.owned_accounting_active_v1() is False
+
+
+def test_owned_partial_process_lock_rejects_nested_or_concurrent_run(
+    capped_closed_result,
+) -> None:
+    assert owned_runner._OWNED_PROCESS_LOCK.acquire(blocking=False)  # noqa: SLF001
+    try:
+        with pytest.raises(
+            owned_runner.V075K7RootCapOwnedPartialRunnerV1Error,
+            match="already active",
+        ) as caught:
+            owned_runner.run_v075_k7_root_cap_owned_partial_v1(
+                **_owned_arguments(capped_closed_result, "lock-rejected")
+            )
+        assert caught.value.aborted_transcript is None
+    finally:
+        owned_runner._OWNED_PROCESS_LOCK.release()  # noqa: SLF001

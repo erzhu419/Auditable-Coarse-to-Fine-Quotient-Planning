@@ -25,6 +25,7 @@ from acfqp.phase3e_ids import (
     loads_canonical_json,
     parse_content_id,
 )
+from acfqp import construction_accounting_owned_runtime_v1 as accounting_runtime
 from acfqp import v075_batch_native_planning_backend_v2 as planning
 from acfqp import v075_batch_native_statistical_backend_v1 as backend
 from acfqp import v075_observer_signed_batch_control_authority_v2 as control
@@ -484,6 +485,9 @@ def _compile_numerical_row(
             terminal,
         )
         descriptors.append(descriptor)
+        accounting_runtime.emit_owned_operation_v1(
+            "live-model.support-descriptor.compile"
+        )
     support = tuple(
         sorted(descriptors, key=lambda item: item.descriptor_id)
     )
@@ -511,6 +515,9 @@ def _compile_numerical_row(
                 outcome.terminal,
             )
             counts[key] = counts.get(key, 0) + outcome.count
+            accounting_runtime.emit_owned_operation_v1(
+                "live-model.outcome-projection"
+            )
     if draw_count != validations[-1].batch.request.accepted_draw_end:
         _fail("live validation aggregate count differs from its prefix")
     if sum(counts.values()) != draw_count:
@@ -567,7 +574,11 @@ def _compile_numerical_row(
         support,
         intervals,
     )
-    return planning._replay_numerical_row(row)  # noqa: SLF001
+    compiled_row = planning._replay_numerical_row(row)  # noqa: SLF001
+    accounting_runtime.emit_owned_operation_v1(
+        "live-model.numerical-row.compile"
+    )
+    return compiled_row
 
 
 def _collect_rows(
@@ -715,6 +726,9 @@ def _collect_rows(
                 ordered,
             )
         )
+        accounting_runtime.emit_owned_operation_v1(
+            "live-model.row-source-unit.compile"
+        )
     return tuple(collected)
 
 
@@ -723,7 +737,7 @@ def _row_source_binding(
     numerical_row: planning.V075NumericalRowV2,
 ) -> V075LiveModelRowSourceBindingV2:
     validations = compiled.validation_appends
-    return V075LiveModelRowSourceBindingV2(
+    binding = V075LiveModelRowSourceBindingV2(
         _ROW_SOURCE_ISSUER,
         compiled.row_binding_id,
         compiled.discovery_append.receipt.receipt_id,
@@ -737,6 +751,10 @@ def _row_source_binding(
         compiled.source_digest,
         numerical_row.row_id,
     )
+    accounting_runtime.emit_owned_operation_v1(
+        "live-model.row-source-binding"
+    )
+    return binding
 
 
 def _replay_row_source_binding(

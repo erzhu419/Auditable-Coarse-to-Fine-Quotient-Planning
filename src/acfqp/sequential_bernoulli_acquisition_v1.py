@@ -37,14 +37,20 @@ from __future__ import annotations
 
 import ctypes
 import ctypes.util
+from contextlib import contextmanager
+from contextvars import ContextVar
 from dataclasses import dataclass
 from enum import Enum
 from fractions import Fraction
 from functools import lru_cache
 import hashlib
 import math
-from typing import Any, Iterable, Mapping
+import threading
+from typing import Any, Iterable, Iterator, Mapping
 
+from acfqp import (
+    construction_accounting_owned_runtime_v1 as accounting_runtime,
+)
 from acfqp.phase3e_ids import canonical_json_bytes, parse_content_id
 
 
@@ -56,6 +62,13 @@ STATISTICAL_CLAIM_SCOPE = (
     "CONDITIONAL_ON_TARGET_LOCAL_BERNOULLI_IID_SIMULATOR_ASSUMPTION"
 )
 INTERVAL_EVIDENCE_SCOPE = "TARGET_ROW_DRAWS_ONLY"
+CONSTRUCTION_ACCOUNTING_CACHE_LIFECYCLE = (
+    "ISOLATED_COLD_CACHE_EPOCH_PER_OCCURRENCE_OR_REPLAY"
+)
+CONSTRUCTION_ACCOUNTING_BETA_BINOMIAL_CACHE_POLICY = (
+    "INTERNAL_TO_ONE_REGISTERED_EXACT_COMPARISON_EVENT_"
+    "NO_SEPARATE_V6_CHARGE"
+)
 
 DOMAIN_TAGS = {
     "binding": "acfqp:target-local-bernoulli-row-binding:v1",
@@ -411,8 +424,103 @@ def v0067_default_sequential_profile_v1() -> SequentialBernoulliProfileV1:
     )
 
 
+class _ExactBernoulliCacheIsolationV1:
+    """Writer-preferring, reentrant epoch isolation for shared exact caches.
+
+    Ordinary registered cache users are readers and remain concurrent.  One
+    cold-cache epoch is the sole writer and excludes those readers from its
+    pre-clear through post-clear boundary.  A writer may call registered cache
+    facades reentrantly; a reader-to-writer upgrade is forbidden.
+    """
+
+    def __init__(self) -> None:
+        self._condition = threading.Condition(threading.RLock())
+        self._active_readers = 0
+        self._waiting_writers = 0
+        self._writer_thread_id: int | None = None
+        self._writer_depth = 0
+        self._local = threading.local()
+
+    @contextmanager
+    def registered_user(self) -> Iterator[None]:
+        thread_id = threading.get_ident()
+        reader_depth = getattr(self._local, "reader_depth", 0)
+        primary_reader = False
+        writer_owned = False
+        with self._condition:
+            if self._writer_thread_id == thread_id:
+                writer_owned = True
+            elif reader_depth > 0:
+                self._local.reader_depth = reader_depth + 1
+            else:
+                while (
+                    self._writer_thread_id is not None
+                    or self._waiting_writers > 0
+                ):
+                    self._condition.wait()
+                self._active_readers += 1
+                self._local.reader_depth = 1
+                primary_reader = True
+        try:
+            yield
+        finally:
+            if not writer_owned:
+                with self._condition:
+                    current_depth = getattr(self._local, "reader_depth", 0)
+                    if current_depth <= 0:  # pragma: no cover
+                        raise SequentialBernoulliInvariantViolation(
+                            "cache reader depth underflow"
+                        )
+                    self._local.reader_depth = current_depth - 1
+                    if primary_reader:
+                        if self._local.reader_depth != 0:  # pragma: no cover
+                            raise SequentialBernoulliInvariantViolation(
+                                "primary cache reader exited before nested readers"
+                            )
+                        self._active_readers -= 1
+                        self._condition.notify_all()
+
+    @contextmanager
+    def exclusive_epoch(self) -> Iterator[None]:
+        thread_id = threading.get_ident()
+        with self._condition:
+            if self._writer_thread_id == thread_id:
+                self._writer_depth += 1
+            else:
+                if getattr(self._local, "reader_depth", 0) != 0:
+                    raise SequentialBernoulliInvariantViolation(
+                        "cache reader cannot upgrade to an exclusive epoch"
+                    )
+                self._waiting_writers += 1
+                try:
+                    while (
+                        self._writer_thread_id is not None
+                        or self._active_readers != 0
+                    ):
+                        self._condition.wait()
+                    self._writer_thread_id = thread_id
+                    self._writer_depth = 1
+                finally:
+                    self._waiting_writers -= 1
+        try:
+            yield
+        finally:
+            with self._condition:
+                if self._writer_thread_id != thread_id:  # pragma: no cover
+                    raise SequentialBernoulliInvariantViolation(
+                        "cache writer ownership changed"
+                    )
+                self._writer_depth -= 1
+                if self._writer_depth == 0:
+                    self._writer_thread_id = None
+                    self._condition.notify_all()
+
+
+_EXACT_BERNOULLI_CACHE_ISOLATION = _ExactBernoulliCacheIsolationV1()
+
+
 @lru_cache(maxsize=32_768)
-def beta_binomial_sequence_mass_v1(
+def _beta_binomial_sequence_mass_cached_v1(
     draw_count: int,
     success_count: int,
 ) -> Fraction:
@@ -431,6 +539,45 @@ def beta_binomial_sequence_mass_v1(
         1,
         (draw_count + 1) * math.comb(draw_count, success_count),
     )
+
+
+def beta_binomial_sequence_mass_v1(
+    draw_count: int,
+    success_count: int,
+) -> Fraction:
+    """Thread-safe facade for the exact uniform-beta mixture cache."""
+
+    with _EXACT_BERNOULLI_CACHE_ISOLATION.registered_user():
+        return _beta_binomial_sequence_mass_cached_v1(
+            draw_count,
+            success_count,
+        )
+
+
+def _beta_binomial_cache_info_v1() -> Any:
+    with _EXACT_BERNOULLI_CACHE_ISOLATION.registered_user():
+        return _beta_binomial_sequence_mass_cached_v1.cache_info()
+
+
+def _beta_binomial_cache_clear_v1() -> None:
+    with _EXACT_BERNOULLI_CACHE_ISOLATION.exclusive_epoch():
+        _beta_binomial_sequence_mass_cached_v1.cache_clear()
+
+
+def _beta_binomial_cache_parameters_v1() -> dict[str, Any]:
+    with _EXACT_BERNOULLI_CACHE_ISOLATION.registered_user():
+        return _beta_binomial_sequence_mass_cached_v1.cache_parameters()
+
+
+beta_binomial_sequence_mass_v1.cache_info = (  # type: ignore[attr-defined]
+    _beta_binomial_cache_info_v1
+)
+beta_binomial_sequence_mass_v1.cache_clear = (  # type: ignore[attr-defined]
+    _beta_binomial_cache_clear_v1
+)
+beta_binomial_sequence_mass_v1.cache_parameters = (  # type: ignore[attr-defined]
+    _beta_binomial_cache_parameters_v1
+)
 
 
 def bernoulli_likelihood_v1(
@@ -549,6 +696,10 @@ class _ExactGridRejectionV1:
         self.comparison_count = 0
 
     def rejects(self, grid_index: int) -> bool:
+        accounting_runtime.emit_owned_operation_v1(
+            "sequential.confidence.exact-reject-comparison",
+            amount=1,
+        )
         self.comparison_count += 1
         native_result = _gmp_exact_likelihood_rejects(
             grid_index=grid_index,
@@ -596,6 +747,10 @@ def _last_rejected_lower_grid_index(
     while high - low > 1:
         middle = (low + high) // 2
         log_evaluations += 1
+        accounting_runtime.emit_owned_operation_v1(
+            "sequential.confidence.log-search.lower",
+            amount=1,
+        )
         if _log_rejects(
             draw_count,
             success_count,
@@ -649,6 +804,10 @@ def _first_rejected_upper_grid_index(
     while high - low > 1:
         middle = (low + high) // 2
         log_evaluations += 1
+        accounting_runtime.emit_owned_operation_v1(
+            "sequential.confidence.log-search.upper",
+            amount=1,
+        )
         if _log_rejects(
             draw_count,
             success_count,
@@ -685,13 +844,22 @@ def _first_rejected_upper_grid_index(
     return candidate, log_evaluations
 
 
+_OUTER_CONFIDENCE_BODY_ENTRY_COUNT: ContextVar[int] = ContextVar(
+    "acfqp_outer_confidence_body_entry_count_v2",
+    default=0,
+)
+
+
 @lru_cache(maxsize=32_768)
-def _outer_confidence_bounds(
+def _outer_confidence_bounds_cached_v1(
     draw_count: int,
     success_count: int,
     confidence_alpha: Fraction,
     boundary_grid_bits: int,
 ) -> tuple[Fraction, Fraction, int, int]:
+    _OUTER_CONFIDENCE_BODY_ENTRY_COUNT.set(
+        _OUTER_CONFIDENCE_BODY_ENTRY_COUNT.get() + 1
+    )
     mixture_mass = beta_binomial_sequence_mass_v1(
         draw_count,
         success_count,
@@ -740,6 +908,126 @@ def _outer_confidence_bounds(
     )
 
 
+def _outer_confidence_bounds_accounted_v2(
+    draw_count: int,
+    success_count: int,
+    confidence_alpha: Fraction,
+    boundary_grid_bits: int,
+) -> tuple[Fraction, Fraction, int, int]:
+    """Classify one cache lookup without charging cached work summaries."""
+
+    with _EXACT_BERNOULLI_CACHE_ISOLATION.registered_user():
+        # The shared functools cache is process-global, while construction
+        # accounting is context-local. Outside an active owned occurrence the
+        # facade remains observationally identical to the pure cached function.
+        if not accounting_runtime.owned_accounting_active_v1():
+            return _outer_confidence_bounds_cached_v1(
+                draw_count,
+                success_count,
+                confidence_alpha,
+                boundary_grid_bits,
+            )
+
+        accounting_runtime.emit_owned_operation_v1(
+            "sequential.confidence.cache.lookup",
+            amount=1,
+        )
+        before_info = _outer_confidence_bounds_cached_v1.cache_info()
+        before_entries = _OUTER_CONFIDENCE_BODY_ENTRY_COUNT.get()
+        try:
+            result = _outer_confidence_bounds_cached_v1(
+                draw_count,
+                success_count,
+                confidence_alpha,
+                boundary_grid_bits,
+            )
+        except Exception:
+            classification = _classify_outer_confidence_cache_access_v2(
+                before_info=before_info,
+                before_entries=before_entries,
+            )
+            if classification == "hit":
+                accounting_runtime.emit_owned_operation_v1(
+                    "sequential.confidence.cache.hit",
+                    amount=1,
+                )
+            elif classification == "miss":
+                accounting_runtime.emit_owned_operation_v1(
+                    "sequential.confidence.cache.miss",
+                    amount=1,
+                )
+            else:  # pragma: no cover - classifier is exact
+                raise SequentialBernoulliInvariantViolation(
+                    "outer-confidence cache classification is unknown"
+                )
+            raise
+        classification = _classify_outer_confidence_cache_access_v2(
+            before_info=before_info,
+            before_entries=before_entries,
+        )
+        if classification == "hit":
+            accounting_runtime.emit_owned_operation_v1(
+                "sequential.confidence.cache.hit",
+                amount=1,
+            )
+        elif classification == "miss":
+            accounting_runtime.emit_owned_operation_v1(
+                "sequential.confidence.cache.miss",
+                amount=1,
+            )
+        else:  # pragma: no cover - classifier is exact
+            raise SequentialBernoulliInvariantViolation(
+                "outer-confidence cache classification is unknown"
+            )
+        return result
+
+
+def _classify_outer_confidence_cache_access_v2(
+    *,
+    before_info: Any,
+    before_entries: int,
+) -> str:
+    after_info = _outer_confidence_bounds_cached_v1.cache_info()
+    body_entries = _OUTER_CONFIDENCE_BODY_ENTRY_COUNT.get() - before_entries
+    if body_entries == 0 and after_info.hits > before_info.hits:
+        return "hit"
+    if body_entries == 1 and after_info.misses > before_info.misses:
+        return "miss"
+    raise SequentialBernoulliInvariantViolation(
+        "outer-confidence cache access was not exactly classifiable"
+    )
+
+
+def _outer_confidence_cache_info_v1() -> Any:
+    with _EXACT_BERNOULLI_CACHE_ISOLATION.registered_user():
+        return _outer_confidence_bounds_cached_v1.cache_info()
+
+
+def _outer_confidence_cache_clear_v1() -> None:
+    with _EXACT_BERNOULLI_CACHE_ISOLATION.exclusive_epoch():
+        _outer_confidence_bounds_cached_v1.cache_clear()
+
+
+def _outer_confidence_cache_parameters_v1() -> dict[str, Any]:
+    with _EXACT_BERNOULLI_CACHE_ISOLATION.registered_user():
+        return _outer_confidence_bounds_cached_v1.cache_parameters()
+
+
+# Compatibility facade: existing callers retain the prior private name and
+# cache inspection/clearing API, while every registered cache access shares
+# the same process-level isolation lock.
+_outer_confidence_bounds_accounted_v2.cache_info = (  # type: ignore[attr-defined]
+    _outer_confidence_cache_info_v1
+)
+_outer_confidence_bounds_accounted_v2.cache_clear = (  # type: ignore[attr-defined]
+    _outer_confidence_cache_clear_v1
+)
+_outer_confidence_bounds_accounted_v2.cache_parameters = (  # type: ignore[attr-defined]
+    _outer_confidence_cache_parameters_v1
+)
+_outer_confidence_bounds = _outer_confidence_bounds_accounted_v2
+
+
 def clear_exact_bernoulli_math_cache_v1() -> None:
     """Clear pure exact-math memoization used only for execution speed.
 
@@ -749,8 +1037,18 @@ def clear_exact_bernoulli_math_cache_v1() -> None:
     fresh-computation regression lanes.
     """
 
-    beta_binomial_sequence_mass_v1.cache_clear()
-    _outer_confidence_bounds.cache_clear()
+    with _EXACT_BERNOULLI_CACHE_ISOLATION.exclusive_epoch():
+        _beta_binomial_sequence_mass_cached_v1.cache_clear()
+        _outer_confidence_bounds_cached_v1.cache_clear()
+        _OUTER_CONFIDENCE_BODY_ENTRY_COUNT.set(0)
+
+
+@contextmanager
+def isolate_exact_bernoulli_math_cache_v1() -> Iterator[None]:
+    """Exclude all registered cache users for one cold-cache epoch."""
+
+    with _EXACT_BERNOULLI_CACHE_ISOLATION.exclusive_epoch():
+        yield
 
 
 @dataclass(frozen=True, slots=True)
@@ -1433,6 +1731,7 @@ __all__ = [
     "beta_binomial_sequence_mass_v1",
     "build_anytime_bernoulli_checkpoint_v1",
     "clear_exact_bernoulli_math_cache_v1",
+    "isolate_exact_bernoulli_math_cache_v1",
     "v0067_default_sequential_profile_v1",
     "verify_sequential_bernoulli_acquisition_v1",
 ]

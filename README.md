@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `1.89.0`: the earlier contracts build the
+contracts now span `1.40.0` through `1.90.0`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -319,6 +319,30 @@ goldens and cannot populate an expected live vector until that full identity
 is bound.  Common/hash/I/O/process/peak work, formulas, typed closure,
 production, fresh science, scalar/economics and certificate Gates remain
 locked.
+
+Contract `1.90.0` adds the owner-correct partial-native execution layer.  The
+additive V6 registry preserves V5 and contains `209` total, `182` operational
+and `202` required leaves with `182` exact projection terms.  Its K7 root-cap
+boundary catalogue has `150` entries.  An inactive-by-default runtime resolves
+each positive event from the trusted active stage and a stage-neutral dispatch,
+then verifies that the direct caller is the registered module's exact code
+object.  The owned wrapper excludes another owned-wrapper run while a separate
+lock isolates registered Bernoulli cache users across the five construction
+stages; it preserves the underlying V2 result bytes and emits only an immutable
+`PARTIAL_NATIVE_ONLY` transcript.  A separate V0-075 identity overlay binds
+the exact public K7 context/arm/route/terminal without reusing the historical
+V0-072 execution identity, and an independent verifier reconstructs the V6
+schema, all boundary identities and the transcript chain from canonical bytes.
+
+This is not a complete or official WorkVector.  No full live K7 transcript has
+been frozen, and no `CounterRecord`, `WorkVector`, `ComparisonVector` or actual
+projection proof is issued.  Seven common additive hash/check/I/O/process paths
+and two mounted/working-set peak paths still require owner-native hooks; absent
+work remains unknown rather than zero.  These locks are not a whole-process
+sandbox, and same-process evidence callbacks remain cooperative.  Official
+execution, scalar/break-even,
+economics, fresh scientific endpoint credit and certificate issuance remain
+false, null or `NOT_RUN`.
 
 ## V0-074 repair construction (NONAUTHORIZING; fresh Gate NOT RUN)
 

@@ -35,6 +35,7 @@ from acfqp.phase3e_ids import (
     loads_canonical_json,
     parse_content_id,
 )
+from acfqp import construction_accounting_owned_runtime_v1 as accounting_runtime
 from acfqp import v075_preopen_target_authorization_v2 as preopen
 from acfqp import v075_public_campaign_authority_v1 as public
 from acfqp import v075_public_graph_semantics_v1 as graph
@@ -1257,6 +1258,9 @@ class _StreamingBatchAccumulatorV2:
             + b"\x00"
             + leaf
         ).digest()
+        accounting_runtime.emit_owned_operation_v1(
+            "private-observer.accumulator.append"
+        )
 
     def finish(self) -> _V075BatchFactsV2:
         if (
@@ -1264,23 +1268,24 @@ class _StreamingBatchAccumulatorV2:
             or self._first_random_word_index is None
         ):
             _fail("batch V2 accumulator did not consume its exact interval")
-        outcomes = tuple(
-            sorted(
-                (
-                    V075BatchOutcomeAggregateV2(
-                        key[0],
-                        key[1],
-                        key[2],
-                        key[3],
-                        key[4],
-                        key[5],
-                        count,
-                        reward,
-                    )
-                    for key, (count, reward) in self._outcomes.items()
-                ),
-                key=lambda item: item.outcome_id,
+        materialized_outcomes: list[V075BatchOutcomeAggregateV2] = []
+        for key, (count, reward) in self._outcomes.items():
+            outcome = V075BatchOutcomeAggregateV2(
+                key[0],
+                key[1],
+                key[2],
+                key[3],
+                key[4],
+                key[5],
+                count,
+                reward,
             )
+            materialized_outcomes.append(outcome)
+            accounting_runtime.emit_owned_operation_v1(
+                "private-observer.outcome-aggregate.materialize"
+            )
+        outcomes = tuple(
+            sorted(materialized_outcomes, key=lambda item: item.outcome_id)
         )
         return _V075BatchFactsV2(
             outcomes,
@@ -2687,11 +2692,17 @@ class V075PrivateObserverSessionV2:
                 facts.transcript_commitment,
                 signature,
             )
+            accounting_runtime.emit_owned_operation_v1(
+                "private-observer.signed-batch.materialize"
+            )
             if len(batch.canonical_bytes) > MAX_CANONICAL_CLOSURE_BYTES:
                 _fail("batch V2 artifact exceeded its generation byte cap")
             self._batch_journal.append(batch)
             self._batch_cap_by_stream[stream_identity.stream_id] = (
                 request.accepted_draw_cap
+            )
+            accounting_runtime.emit_owned_operation_v1(
+                "private-observer.signed-batch.commit"
             )
         except Exception:
             self._clear_private_state_v2(poisoned=True)
