@@ -102,6 +102,16 @@ CONSTRUCTION_COMPARISON_PROFILE_V4_DOMAIN = (
 CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V4_DOMAIN = (
     "acfqp:actual-projection-profile:v4"
 )
+CONSTRUCTION_COUNTER_REGISTRY_V5_DOMAIN = "acfqp:counter-registry:v5"
+CONSTRUCTION_STAGE_PROFILE_V5_DOMAIN = (
+    "acfqp:construction-stage-profile:v5"
+)
+CONSTRUCTION_COMPARISON_PROFILE_V5_DOMAIN = (
+    "acfqp:comparison-profile:v5"
+)
+CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V5_DOMAIN = (
+    "acfqp:actual-projection-profile:v5"
+)
 V075_CONSTRUCTION_ACCOUNTING_SCHEMA_CLOSURE_V2_DOMAIN = (
     "acfqp:v075-construction-accounting-schema-closure:v2"
 )
@@ -119,6 +129,12 @@ V075_CONSTRUCTION_ACCOUNTING_OPERATION_OWNERSHIP_SUCCESSOR_V4_DOMAIN = (
 )
 V075_CONSTRUCTION_ACCOUNTING_OPERATION_OWNERSHIP_VERIFICATION_V4_DOMAIN = (
     "acfqp:v075-construction-accounting-operation-ownership-verification:v4"
+)
+V075_CONSTRUCTION_ACCOUNTING_KNOWN_OWNER_GAP_SUCCESSOR_V5_DOMAIN = (
+    "acfqp:v075-construction-accounting-known-owner-gap-successor:v5"
+)
+V075_CONSTRUCTION_ACCOUNTING_KNOWN_OWNER_GAP_VERIFICATION_V5_DOMAIN = (
+    "acfqp:v075-construction-accounting-known-owner-gap-verification:v5"
 )
 V075_K7_ROOT_CAP_OPERATION_SITE_V1_DOMAIN = (
     "acfqp:v075-k7-root-cap-operation-site:v1"
@@ -483,6 +499,18 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         "construction_actual_projection_profile_v4": (
             CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V4_DOMAIN
         ),
+        "construction_counter_registry_v5": (
+            CONSTRUCTION_COUNTER_REGISTRY_V5_DOMAIN
+        ),
+        "construction_stage_profile_v5": (
+            CONSTRUCTION_STAGE_PROFILE_V5_DOMAIN
+        ),
+        "construction_comparison_profile_v5": (
+            CONSTRUCTION_COMPARISON_PROFILE_V5_DOMAIN
+        ),
+        "construction_actual_projection_profile_v5": (
+            CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V5_DOMAIN
+        ),
         "v075_construction_accounting_schema_closure_v2": (
             V075_CONSTRUCTION_ACCOUNTING_SCHEMA_CLOSURE_V2_DOMAIN
         ),
@@ -500,6 +528,12 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "v075_construction_accounting_operation_ownership_verification_v4": (
             V075_CONSTRUCTION_ACCOUNTING_OPERATION_OWNERSHIP_VERIFICATION_V4_DOMAIN
+        ),
+        "v075_construction_accounting_known_owner_gap_successor_v5": (
+            V075_CONSTRUCTION_ACCOUNTING_KNOWN_OWNER_GAP_SUCCESSOR_V5_DOMAIN
+        ),
+        "v075_construction_accounting_known_owner_gap_verification_v5": (
+            V075_CONSTRUCTION_ACCOUNTING_KNOWN_OWNER_GAP_VERIFICATION_V5_DOMAIN
         ),
         "v075_k7_root_cap_operation_site_v1": (
             V075_K7_ROOT_CAP_OPERATION_SITE_V1_DOMAIN

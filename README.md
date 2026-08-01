@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `1.88.0`: the earlier contracts build the
+contracts now span `1.40.0` through `1.89.0`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -297,6 +297,28 @@ is the private observer verifier rather than the runner wrapper.  The v1 sink
 is inadmissible and is not reused.  No emitter, live event or WorkVector is
 issued; operation-site instrumentation and every Gate remain locked pending an
 additive batch-v2 registry and actual source hooks.
+
+Contract `1.89.0` supplies that additive schema without pretending the hooks
+already exist.  The immutable v4 prefix is preserved exactly and 27 required
+operational leaves are added at their real owners: ten initial-build leaves,
+six failed-prefix dynamic-audit leaves and eleven closed-reconciliation
+leaves.  The v5 registry therefore contains `151` leaves, `133` operational
+leaves, `144` required leaves and `133` coefficient-one projection terms over
+the unchanged ten stages and eight shared axes.  The interval-LP leaf semantics
+is one event per executed greedy-allocation step, and live-model
+descriptor/projection work is not relabelled as batch-planner work.  An
+independent implementation rebuilds the strict-owner manifest, registry, stage
+profile and projections from canonical manifest bytes and verified v4 bytes.
+
+This remains a minimal known-owner-gap closure, not operation-family
+completeness.  Runtime owner match, runtime stage attribution and the complete
+event-boundary profile remain false; no source hook, live event, WorkVector or
+terminal/campaign artifact is emitted.  Also, aggregate-row counts such as `41` are properties
+of one exact private-law/namespace/occurrence fixture; they are not K7-wide
+goldens and cannot populate an expected live vector until that full identity
+is bound.  Common/hash/I/O/process/peak work, formulas, typed closure,
+production, fresh science, scalar/economics and certificate Gates remain
+locked.
 
 ## V0-074 repair construction (NONAUTHORIZING; fresh Gate NOT RUN)
 
