@@ -1,6 +1,6 @@
 # Research Contract
 
-**Current construction contract:** `2.0.2`
+**Current construction contract:** `2.0.3`
 
 **Current construction profile:** `v075_k7_attempt_process_supervisor_v1`
 
@@ -5157,3 +5157,46 @@ therefore issues no shared-resource receipt, `CounterRecord`, `WorkVector`,
 certificate, scientific endpoint or official execution. Every nine-path,
 counter-completeness, economics, science and certificate Gate remains locked
 or `NOT_RUN`.
+
+## Contract 2.0.3: K7 outer attempt cgroup hierarchy
+
+V0-110B-1 establishes a separate external-supervisor scope for later complete-
+attempt memory measurement. It creates an empty cgroup-v2 ancestor and enables
+the `memory` and `pids` controllers before any process enters its subtree. One
+empty worker leaf is created beneath it; a future external broker may create a
+business leaf as its sibling. The ancestor freezes a 4-GiB memory cap, zero
+swap, two concurrent processes, one level of depth and two descendants. The
+worker freezes one process and no descendants. Every object is bound to the
+exact successor request, admission result, preopened delegated-parent FD and
+single-use process-local nonce.
+
+Acquisition requires real cgroup2 semantics, initial empty/domain state and an
+ancestor zero peak before worker-leaf creation. After creation it revalidates
+both nodes, the exact one-descendant topology, all controls and writable
+`cgroup.kill` openability. Unused cleanup replays descriptor identities and
+controls, proves both nodes empty, removes the worker leaf, waits until the
+ancestor reports no live or dying descendants and removes the ancestor. A
+partial cleanup failure retains remaining descriptor authority and is
+retryable, permanently disables lease consumption and no longer depends on
+request/admission currentness. Failed setup transfers remaining descriptors to
+a process-local retry guard only after inode identity capture. The earlier
+`mkdir -> identity capture` gap is explicitly nonretryable without an external
+parent guardian. Control mismatch is reported by a typed protocol error with
+completed cleanup and cannot prevent safe empty-tree deletion. A real
+systemd-delegated execution validates this path; temporary directory tests are
+only negative controls.
+
+This contract is `PREP_ONLY`. No worker is launched, and descendant metadata
+can charge the ancestor after creation; therefore neither a launch baseline nor
+a numeric memory value exists. A future runtime must reset and verify the peak
+immediately before launch. Exclusive parent write authority, atomic
+name-to-inode deletion and a cleanup guardian are not proved, so exact runtime
+consumption remains forbidden. `pids.max` is containment rather than a
+cumulative process SUM. Exact future process accounting requires two externally
+brokered launches—worker and business—with no-spawn enforcement; neither child
+receives writable ancestor authority. Existing V0-107/V0-108 execution requires
+a brokered successor or explicit refactor. The unified evidence window must
+cover final publication/output and cleanup. Contract `2.0.3` therefore issues
+no shared-resource receipt, `CounterRecord`,
+`WorkVector`, `ComparisonVector`, terminal, certificate, scientific endpoint or
+official execution. Every Gate remains locked or `NOT_RUN`.

@@ -486,6 +486,18 @@ V075_K7_ATTEMPT_PROCESS_ENVELOPE_V1_DOMAIN = (
 V075_K7_ATTEMPT_PROCESS_VERIFICATION_V1_DOMAIN = (
     "acfqp:v075-k7-attempt-process-verification:v1"
 )
+V075_K7_OUTER_ATTEMPT_CGROUP_PROFILE_V1_DOMAIN = (
+    "acfqp:v075-k7-outer-attempt-cgroup-profile:v1"
+)
+V075_K7_OUTER_ATTEMPT_CGROUP_LEASE_V1_DOMAIN = (
+    "acfqp:v075-k7-outer-attempt-cgroup-lease:v1"
+)
+V075_K7_OUTER_ATTEMPT_CGROUP_BLOCKED_RESULT_V1_DOMAIN = (
+    "acfqp:v075-k7-outer-attempt-cgroup-blocked-result:v1"
+)
+V075_K7_OUTER_ATTEMPT_MEMORY_EVIDENCE_V1_DOMAIN = (
+    "acfqp:v075-k7-outer-attempt-memory-evidence:v1"
+)
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
 ROUTE_CAP_PROFILE_DOMAIN = "acfqp:route-cap-profile:v1"
@@ -1223,6 +1235,18 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "v075_k7_attempt_process_verification_v1": (
             V075_K7_ATTEMPT_PROCESS_VERIFICATION_V1_DOMAIN
+        ),
+        "v075_k7_outer_attempt_cgroup_profile_v1": (
+            V075_K7_OUTER_ATTEMPT_CGROUP_PROFILE_V1_DOMAIN
+        ),
+        "v075_k7_outer_attempt_cgroup_lease_v1": (
+            V075_K7_OUTER_ATTEMPT_CGROUP_LEASE_V1_DOMAIN
+        ),
+        "v075_k7_outer_attempt_cgroup_blocked_result_v1": (
+            V075_K7_OUTER_ATTEMPT_CGROUP_BLOCKED_RESULT_V1_DOMAIN
+        ),
+        "v075_k7_outer_attempt_memory_evidence_v1": (
+            V075_K7_OUTER_ATTEMPT_MEMORY_EVIDENCE_V1_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,

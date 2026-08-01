@@ -4403,3 +4403,43 @@ resolution, receipt set, `CounterRecord`, `WorkVector`, `ComparisonVector`,
 projection proof, terminal, certificate, scientific result or official
 authority. All nine-path and formal/official Gates remain locked. See
 `specs/K7_ATTEMPT_PROCESS_SUPERVISOR.md`.
+
+## V0-110B-1 K7 outer attempt cgroup hierarchy
+
+Contract `2.0.3` creates the real prepared cgroup-v2 topology required for a
+complete-attempt memory window. A process-local, request/admission/descriptor-
+bound nonce precedes every access. The authority creates a fresh empty ancestor,
+verifies its pre-descendant zero peak, freezes finite memory/swap/process/depth
+and descendant controls, enables `memory+pids` while it remains empty, and
+creates one empty one-process worker leaf. It then verifies the complete empty
+one-descendant topology and writable `cgroup.kill` openability. The ancestor
+retains capacity for a later externally brokered business sibling. No-follow
+descriptor identities protect both names.
+
+Unused close rechecks identities, controls, subtree delegation, empty
+process/thread lists and exact descendant counts, removes the worker leaf,
+waits for `nr_dying_descendants=0`, then removes the ancestor. The real
+systemd-delegated create/readback/close path passes, including retry after a
+partial removal. Cleanup start permanently revokes lease consumption; failed
+post-identity setup transfers remaining descriptor authority to a process-local
+retry guard. The pre-identity create gap explicitly requires an external parent
+guardian. A control mismatch cannot block safe deletion and is reported as a
+typed cleanup-complete protocol failure. Cgroup metadata may charge the
+ancestor after worker-leaf
+creation; unused close discards that observation and never interprets it as
+worker execution.
+
+This milestone is `PREP_ONLY` and does not launch a worker. Descendant metadata
+makes the initial ancestor observation unsuitable as a launch baseline; the
+future runtime must reset and verify the peak immediately before launch.
+Exclusive parent write authority, atomic name-to-inode deletion and a cleanup
+guardian are not yet proved, so exact runtime consumption is forbidden.
+`pids.max=2` is not cumulative launch evidence. Exact process accounting still
+requires the external supervisor to broker both launches while worker and
+business code are no-spawn; the worker receives no writable ancestor FD, and
+existing V0-107/V0-108 execution cannot be silently relabelled. The unified
+window must remain open through final publication/output and cleanup. The
+remaining runtime, seven shared paths, receipts and exact
+`CounterRecord -> WorkVector -> ComparisonVector` materialization are still
+pending, and every formal/official Gate remains locked. See
+`specs/K7_OUTER_ATTEMPT_CGROUP.md`.

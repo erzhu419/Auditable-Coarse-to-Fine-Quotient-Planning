@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `2.0.2`: the earlier contracts build the
+contracts now span `1.40.0` through `2.0.3`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -509,6 +509,30 @@ supervisor/kernel attestation over the intended full publication/cleanup
 scope. The nine shared-resource paths, `CounterRecord -> WorkVector ->
 ComparisonVector`, terminal/certificate and official Gates remain locked. See
 [`specs/K7_ATTEMPT_PROCESS_SUPERVISOR.md`](specs/K7_ATTEMPT_PROCESS_SUPERVISOR.md).
+
+Contract `2.0.3` / V0-110B-1 adds the real prepared cgroup hierarchy needed
+for future complete-attempt memory measurement. A fresh empty ancestor delegates
+`memory+pids` to a one-process worker leaf while retaining capacity for a
+broker-created business sibling. Request/admission/descriptor-bound single-use
+authority, finite controls, a pre-descendant zero-peak check, a complete empty
+topology snapshot, writable `cgroup.kill` openability and retryable unused
+cleanup are enforced. Partial cleanup revokes all consumer access; post-identity
+setup failure retains its descriptors in a process-local retry guard, while the
+pre-identity create gap explicitly requires an external parent guardian. A
+changed cap cannot prevent safe deletion and instead raises a typed
+cleanup-complete protocol error. The positive path passes in a real
+systemd-delegated user scope.
+
+This is `PREP_ONLY`: descendant metadata can raise the ancestor peak, so a
+future runtime must reset and verify it immediately before launch. Exclusive
+parent write authority, atomic descriptor deletion and a cleanup guardian are
+not proved; no worker has run and no pidfd/output lifecycle has been joined.
+Exact process SUM requires an external two-launch broker plus no-spawn
+worker/business execution, and its window must include final publication/output
+and cleanup. Existing V0-107/V0-108 execution is not silently relabelled. The
+remaining seven paths and `CounterRecord -> WorkVector -> ComparisonVector`
+remain locked. See
+[`specs/K7_OUTER_ATTEMPT_CGROUP.md`](specs/K7_OUTER_ATTEMPT_CGROUP.md).
 
 ## V0-074 repair construction (NONAUTHORIZING; fresh Gate NOT RUN)
 
