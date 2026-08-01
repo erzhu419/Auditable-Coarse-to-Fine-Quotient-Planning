@@ -4286,3 +4286,42 @@ The milestone does not yet connect the V0-106 business body to this bootstrap
 or emit the parent accounting suffix and atomic two-frame result. Loaded-module
 closure, nine shared-resource semantic authorities and the exact 202-leaf
 `CounterRecord -> WorkVector -> ComparisonVector` path remain locked.
+
+## V0-108 K7 parent-owned atomic executor
+
+Contract `2.0.0` connects the three previously separate authorities on one
+real path:
+
+```text
+V0-105 portable request replay
+-> V0-106 child-owned K7 business
+-> V0-107 atomic clone3/pidfd runtime
+-> parent-owned accounting suffix
+-> strict two-frame replay
+```
+
+The parent consumes one request-bound nonce and one delegated V0-104 cgroup
+lease, freezes the interpreter plus six exactly ordered sealed inputs, and
+launches the archive-loaded child once under the fixed runtime caps. The child
+reconstructs the request without a live parent object, executes the registered
+owned K7 path once and self-checks that every loaded `acfqp` module originates
+in the sealed archive. Success requires zero exit, untruncated EOF before reap,
+final peak, empty cgroup, no descendants and closed runtime authorities.
+
+Only after public child-frame verification and runtime finalization may the
+parent render frame two. The immutable in-memory result has exactly the ordered
+roles `CHILD_OWNED_K7_BUSINESS` and `PARENT_OWNED_ACCOUNTING_SUFFIX`; strict
+replay rejects truncation, noncanonical framing, reversal, extras, trailing
+bytes or any request/spec/runtime crossing. The suffix's wrapper-complete byte
+count is solved as a bounded exact fixed point. A real delegated-systemd
+integration executes the authentic owned K7 business and replays both frames.
+
+This milestone does not close accounting. The suffix exposes only nonformal
+process-launch, final-working-peak and in-memory output-byte facts; the other
+six shared-resource values are unavailable and none of the nine paths has a
+semantic receipt. It issues no `CounterRecord`, `WorkVector`,
+`ComparisonVector`, projection proof, terminal, certificate, scientific result
+or official authority. Durable atomic artifact writing, independent loaded
+stdlib/native-module provenance, nine-path semantic verification and the exact
+202-required-leaf reduction remain locked. See
+`specs/K7_PARENT_ATOMIC_EXECUTOR.md`.

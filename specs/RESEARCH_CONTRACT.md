@@ -1,8 +1,8 @@
 # Research Contract
 
-**Current construction contract:** `1.34.0`
+**Current construction contract:** `2.0.0`
 
-**Current construction profile:** `k6_model_only_minimal_pair_support_recovery_v0`
+**Current construction profile:** `v075_k7_parent_atomic_executor_v1`
 
 ## Definitions
 
@@ -5043,3 +5043,35 @@ parent-owned suffix and atomic two-frame protocol result. Its raw counters are
 not formal evidence; the nine shared-resource semantics, remaining 193 required
 leaves and final 202-leaf reduction still have no CounterRecord, WorkVector or
 ComparisonVector authority.
+
+## Contract 2.0.0: K7 parent-owned atomic executor
+
+The V0-103 successor now has one real construction execution path. The parent
+consumes the request nonce, acquires the V0-104 delegated cgroup lease, freezes
+an exact interpreter and the ordered source/profile/request/secret inputs, and
+launches the archive-loaded entry through V0-107. Inside the child, V0-105
+reconstructs the portable profile and request authority chain and V0-106 runs
+the registered owned K7 business once. The child rejects any loaded `acfqp`
+module outside the sealed archive; that self-check is not an independent
+parent proof of the complete stdlib/native-extension graph.
+
+The parent accepts only a successful zero-exit runtime result with untruncated
+EOF before reap, final `memory.peak`, an empty leased cgroup, no descendants
+and closed launch authorities. It then publicly replays the EOF-frozen child
+frame and derives the parent suffix from the retained request, execution spec
+and runtime result. The published in-memory protocol object contains exactly
+two canonical length-delimited frames, child business then parent suffix. A
+bounded fixed point binds the suffix's wrapper-complete byte count; strict
+replay rejects any extra/trailing bytes, order change or identity/cap/runtime
+transplant. This is not a durable atomic filesystem writer.
+
+The accounting boundary remains fail-closed. The suffix enumerates the nine
+shared-resource paths but labels only process launch, final working-set peak
+and in-memory two-frame output bytes as nonformal facts; the other six are
+explicitly unavailable. No value is a semantic receipt. Therefore contract
+`2.0.0` creates no `CounterRecord`, `WorkVector`, `ComparisonVector`, actual
+projection proof, 202-leaf reduction, attempt terminal, certificate,
+scientific endpoint credit or official execution authority. All formal,
+counter-completeness, economics, science and certificate Gates remain locked
+or `NOT_RUN` pending independent nine-path source replay and exact consumption
+of every remaining V6 obligation.

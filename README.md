@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `1.99.0`: the earlier contracts build the
+contracts now span `1.40.0` through `2.0.0`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -447,6 +447,24 @@ setup-failure provenance and fork/file/metadata/cgroup/socket/parent-limit
 denial. The runtime still emits only nonformal raw facts:
 the business-entry join, parent accounting suffix, atomic two-frame result and
 formal nine-path/202-leaf accounting remain locked.
+
+Contract `2.0.0` performs that previously missing real join. One parent-owned
+attempt seals the exact V0-105 replay inputs, enters the archive-loaded child,
+executes the V0-106 owned K7 business once through the V0-107 atomic runtime,
+and accepts only zero exit, EOF-before-reap, final peak, empty cgroup and no
+descendants. After public replay of the frozen child frame, the parent creates
+the second frame and strict replay permits exactly
+`CHILD_OWNED_K7_BUSINESS -> PARENT_OWNED_ACCOUNTING_SUFFIX`, with a fixed-point
+wrapper-complete byte count and no trailing data. The result is atomic only as
+one immutable in-memory protocol object; no durable artifact writer is claimed.
+
+This closes the executor integration, not accounting authority. The suffix
+labels process launch, final working-set peak and two-frame output bytes as raw
+nonformal facts and leaves the other shared paths unavailable. None of the nine
+paths has a semantic receipt, so no `CounterRecord`, `WorkVector`,
+`ComparisonVector`, projection proof, terminal, certificate, scientific result
+or official authority is issued. The exact boundary is documented in
+[`specs/K7_PARENT_ATOMIC_EXECUTOR.md`](specs/K7_PARENT_ATOMIC_EXECUTOR.md).
 
 ## V0-074 repair construction (NONAUTHORIZING; fresh Gate NOT RUN)
 

@@ -1213,6 +1213,9 @@ class K7AtomicPidfdRunResultV1:
     setup_errno: int | None
     output: bytes = field(repr=False)
     output_truncated: bool
+    output_eof_before_reap: bool
+    deadline_milliseconds: int
+    output_cap_bytes: int
     memory_max_bytes: int
     memory_peak_bytes: int
     cgroup_empty_verified: bool
@@ -1254,12 +1257,17 @@ class K7AtomicPidfdRunResultV1:
         if (
             type(self.memory_max_bytes) is not int
             or not MIN_MEMORY_MAX_BYTES <= self.memory_max_bytes <= MAX_MEMORY_MAX_BYTES
+            or type(self.deadline_milliseconds) is not int
+            or not 1 <= self.deadline_milliseconds <= MAX_DEADLINE_MILLISECONDS
+            or type(self.output_cap_bytes) is not int
+            or not 1 <= self.output_cap_bytes <= MAX_CHILD_OUTPUT_BYTES
             or type(self.memory_peak_bytes) is not int
             or self.memory_peak_bytes < 0
         ):
             _fail("atomic pidfd memory evidence is invalid")
         if (
-            self.counters.captured_output_bytes != len(self.output)
+            type(self.output_eof_before_reap) is not bool
+            or self.counters.captured_output_bytes != len(self.output)
             or self.output_truncated
             != (self.counters.child_output_bytes > len(self.output))
             or self.counters.process_launches != 1
@@ -1288,7 +1296,10 @@ class K7AtomicPidfdRunResultV1:
             "output_byte_count": len(self.output),
             "output_sha256": hashlib.sha256(self.output).hexdigest(),
             "output_truncated": self.output_truncated,
+            "output_eof_before_reap": self.output_eof_before_reap,
             "total_observed_output_byte_count": self.counters.child_output_bytes,
+            "deadline_milliseconds": self.deadline_milliseconds,
+            "output_cap_bytes": self.output_cap_bytes,
             "memory_max_bytes": self.memory_max_bytes,
             "memory_swap_max_bytes": 0,
             "memory_peak_bytes": self.memory_peak_bytes,
@@ -1840,6 +1851,8 @@ def run_v075_k7_atomic_pidfd_runtime_v1(
         poller.register(parent_socket.fileno(), select.POLLIN | select.POLLHUP | select.POLLERR)
         deadline_ns = start_ns + deadline_milliseconds * 1_000_000
         socket_eof = False
+        socket_eof_before_reap = False
+        pidfd_ready = False
         while waited is None:
             remaining_ns = deadline_ns - time.monotonic_ns()
             if remaining_ns <= 0:
@@ -1859,6 +1872,11 @@ def run_v075_k7_atomic_pidfd_runtime_v1(
                         socket_reads += 1
                         if not chunk:
                             socket_eof = True
+                            socket_eof_before_reap = waited is None
+                            try:
+                                poller.unregister(descriptor)
+                            except KeyError:  # pragma: no cover - local idempotence
+                                pass
                             break
                         total_output_bytes += len(chunk)
                         output.extend(chunk[: output_cap_bytes + 1 - len(output)])
@@ -1869,7 +1887,21 @@ def run_v075_k7_atomic_pidfd_runtime_v1(
                             waited = _wait_pidfd(pidfd)
                             break
                 if waited is None and descriptor == pidfd and event & (select.POLLIN | select.POLLHUP | select.POLLERR):
-                    waited = _wait_pidfd(pidfd)
+                    # On normal termination retain the child as a zombie until
+                    # exact EOF has frozen its sole output stream.  This gives
+                    # the parent a non-racy cutoff-before-reap observation.
+                    pidfd_ready = True
+                    try:
+                        poller.unregister(pidfd)
+                    except KeyError:  # pragma: no cover - local idempotence
+                        pass
+            if (
+                waited is None
+                and forced_reason is None
+                and pidfd_ready
+                and socket_eof
+            ):
+                waited = _wait_pidfd(pidfd)
             if forced_reason is not None:
                 break
 
@@ -1907,19 +1939,13 @@ def run_v075_k7_atomic_pidfd_runtime_v1(
         cgroup_lease._validate_empty_leaf(leaf_fd)  # noqa: SLF001
         # _validate_empty_leaf reads procs, threads, pids.current, and events.
         reads += 4
-        memory_peak = cgroup_lease._parse_nonnegative(  # noqa: SLF001
-            cgroup_lease._read_control(leaf_fd, "memory.peak"),  # noqa: SLF001
-            "memory.peak",
-        )
-        if memory_peak > memory_max_bytes:
-            _fail("attempt leaf memory peak exceeded its hard cap")
         controls = {
             name: cgroup_lease._parse_ascii(  # noqa: SLF001
                 cgroup_lease._read_control(leaf_fd, name), name  # noqa: SLF001
             ).strip()
             for name in ("pids.max", "cgroup.max.depth", "cgroup.max.descendants")
         }
-        reads += 4
+        reads += 3
         if controls != {"pids.max": "1", "cgroup.max.depth": "0", "cgroup.max.descendants": "0"}:
             _fail("attempt leaf descendant/process caps changed")
         cgroup_stat = _parse_cgroup_stat(
@@ -1932,6 +1958,15 @@ def run_v075_k7_atomic_pidfd_runtime_v1(
         )
         if not no_descendants:
             _fail("attempt leaf retained a live or dying descendant cgroup")
+        # Final peak is intentionally observed after the descendant scan so
+        # the parent lifecycle order is: reap -> descendant proof -> peak.
+        memory_peak = cgroup_lease._parse_nonnegative(  # noqa: SLF001
+            cgroup_lease._read_control(leaf_fd, "memory.peak"),  # noqa: SLF001
+            "memory.peak",
+        )
+        reads += 1
+        if memory_peak > memory_max_bytes:
+            _fail("attempt leaf memory peak exceeded its hard cap")
         reads += _verify_leaf_memory_controls(
             leaf_fd=leaf_fd,
             memory_max_bytes=memory_max_bytes,
@@ -1977,6 +2012,9 @@ def run_v075_k7_atomic_pidfd_runtime_v1(
             setup_errno,
             bytes(output),
             total_output_bytes > len(output),
+            socket_eof_before_reap,
+            deadline_milliseconds,
+            output_cap_bytes,
             memory_max_bytes,
             memory_peak,
             True,

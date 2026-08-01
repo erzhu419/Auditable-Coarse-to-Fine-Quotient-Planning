@@ -642,6 +642,9 @@ def test_output_counter_preserves_observed_bytes_beyond_captured_prefix() -> Non
         setup_errno=None,
         output=b"12345678",
         output_truncated=True,
+        output_eof_before_reap=False,
+        deadline_milliseconds=100,
+        output_cap_bytes=8,
         memory_max_bytes=runtime.MIN_MEMORY_MAX_BYTES,
         memory_peak_bytes=4096,
         cgroup_empty_verified=True,
@@ -793,6 +796,9 @@ def test_real_delegated_scope_executes_sealed_true_and_reaps_by_pidfd() -> None:
         assert result.exit_code == 0
         assert result.setup_succeeded is True
         assert result.output == b""
+        assert result.output_eof_before_reap is True
+        assert result.deadline_milliseconds == 5_000
+        assert result.output_cap_bytes == runtime.MAX_CHILD_OUTPUT_BYTES
         assert result.counters.process_launches == 1
         assert result.counters.pidfd_waits == 1
         assert result.memory_peak_bytes >= 0

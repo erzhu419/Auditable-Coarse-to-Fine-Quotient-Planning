@@ -473,13 +473,24 @@ def _require_root_graph(
 ) -> None:
     if type(roots) is not dict or tuple(roots) != EVIDENCE_ROOT_ROLES:
         _fail("construction evidence root registry changed")
+    root_schedule = roots["initial_schedule"]
+    root_verification = roots["initial_schedule_verification"]
     if (
-        roots["initial_schedule"] is not schedule
-        or roots["initial_schedule_verification"] is not verification
-        or roots["multiround_result"] is not wrapped.result
-        or roots["root_model_epoch"] is not roots["final_model_epoch"]
+        type(root_schedule) is not type(schedule)
+        or root_schedule.schedule_id != schedule.schedule_id
+        or root_schedule.canonical_bytes != schedule.canonical_bytes
     ):
-        _fail("construction evidence roots crossed the executed result")
+        _fail("construction evidence root crossed the initial schedule")
+    if (
+        type(root_verification) is not type(verification)
+        or root_verification.verification_id != verification.verification_id
+        or root_verification.canonical_bytes != verification.canonical_bytes
+    ):
+        _fail("construction evidence root crossed the schedule verification")
+    if roots["multiround_result"] is not wrapped.result:
+        _fail("construction evidence root crossed the executed result")
+    if roots["root_model_epoch"] is not roots["final_model_epoch"]:
+        _fail("root-cap construction unexpectedly changed the model epoch")
     for role in _OPTIONAL_EMPTY_SCALARS:
         if roots[role] is not None:
             _fail("root-cap K7 unexpectedly materialized a child branch")
@@ -1099,13 +1110,19 @@ def execute_v075_k7_child_business_bundle_from_sealed_descriptors_v1(
     )
 
 
-def verify_v075_k7_child_business_bundle_bytes_v1(
+def verify_v075_k7_child_business_bundle_public_bytes_v1(
     *,
     raw: bytes,
     expected_request_replay: portable_replay.V075K7SuccessorPortableRequestReplayV1,
-    private_taint_authority: V075K7ChildPrivateTaintAuthorityV1,
 ) -> V075K7ChildBusinessBundleV1:
-    """Strictly replay the child frame against its exact request and secrets."""
+    """Replay every public semantic binding against the exact fresh request.
+
+    This boundary deliberately does not claim an independent replay of the
+    child-private taint scan.  The private verifier below composes this public
+    replay with the process-local taint authority; the parent executor uses
+    this public half only after it has verified the sealed child code/runtime
+    identity and the complete loaded ACFQP module-origin graph.
+    """
 
     if (
         type(expected_request_replay)
@@ -1116,12 +1133,6 @@ def verify_v075_k7_child_business_bundle_bytes_v1(
     expected = expected_request_replay.request
     document = _canonical_document(raw, "business bundle")
     _validate_bundle_document(document)
-    if type(private_taint_authority) is not V075K7ChildPrivateTaintAuthorityV1:
-        _fail("business replay requires one exact private taint authority")
-    private_taint_authority._scan(
-        raw=raw,
-        request_replay=expected_request_replay,
-    )
     if (
         document["portable_profile_closure_id"]
         != expected_request_replay.profile_closure.closure_id
@@ -1148,6 +1159,27 @@ def verify_v075_k7_child_business_bundle_bytes_v1(
     return V075K7ChildBusinessBundleV1(_BUNDLE_ISSUER, raw)
 
 
+def verify_v075_k7_child_business_bundle_bytes_v1(
+    *,
+    raw: bytes,
+    expected_request_replay: portable_replay.V075K7SuccessorPortableRequestReplayV1,
+    private_taint_authority: V075K7ChildPrivateTaintAuthorityV1,
+) -> V075K7ChildBusinessBundleV1:
+    """Strictly replay the child frame against its exact request and secrets."""
+
+    result = verify_v075_k7_child_business_bundle_public_bytes_v1(
+        raw=raw,
+        expected_request_replay=expected_request_replay,
+    )
+    if type(private_taint_authority) is not V075K7ChildPrivateTaintAuthorityV1:
+        _fail("business replay requires one exact private taint authority")
+    private_taint_authority._scan(
+        raw=raw,
+        request_replay=expected_request_replay,
+    )
+    return result
+
+
 __all__ = [
     "BUSINESS_FRAME_ROLE",
     "BUNDLE_DOMAIN",
@@ -1161,4 +1193,5 @@ __all__ = [
     "V075K7ChildPrivateTaintAuthorityV1",
     "execute_v075_k7_child_business_bundle_from_sealed_descriptors_v1",
     "verify_v075_k7_child_business_bundle_bytes_v1",
+    "verify_v075_k7_child_business_bundle_public_bytes_v1",
 ]

@@ -438,6 +438,21 @@ V075_K7_SUCCESSOR_PORTABLE_REQUEST_REPLAY_V1_DOMAIN = (
 V075_K7_CHILD_BUSINESS_BUNDLE_V1_DOMAIN = (
     "acfqp:v075-k7-child-business-bundle:v1"
 )
+V075_K7_ATOMIC_CHILD_BUSINESS_FRAME_V1_DOMAIN = (
+    "acfqp:v075-k7-atomic-child-business-frame:v1"
+)
+V075_K7_ATOMIC_PARENT_EXECUTION_SPEC_V1_DOMAIN = (
+    "acfqp:v075-k7-atomic-parent-execution-spec:v1"
+)
+V075_K7_ATOMIC_PARENT_ACCOUNTING_SUFFIX_V1_DOMAIN = (
+    "acfqp:v075-k7-atomic-parent-accounting-suffix:v1"
+)
+V075_K7_ATOMIC_PARENT_EXECUTION_RESULT_V1_DOMAIN = (
+    "acfqp:v075-k7-atomic-parent-execution-result:v1"
+)
+V075_K7_ATOMIC_PARENT_EXECUTION_FAILURE_V1_DOMAIN = (
+    "acfqp:v075-k7-atomic-parent-execution-failure:v1"
+)
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
 ROUTE_CAP_PROFILE_DOMAIN = "acfqp:route-cap-profile:v1"
@@ -1127,6 +1142,21 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "v075_k7_child_business_bundle_v1": (
             V075_K7_CHILD_BUSINESS_BUNDLE_V1_DOMAIN
+        ),
+        "v075_k7_atomic_child_business_frame_v1": (
+            V075_K7_ATOMIC_CHILD_BUSINESS_FRAME_V1_DOMAIN
+        ),
+        "v075_k7_atomic_parent_execution_spec_v1": (
+            V075_K7_ATOMIC_PARENT_EXECUTION_SPEC_V1_DOMAIN
+        ),
+        "v075_k7_atomic_parent_accounting_suffix_v1": (
+            V075_K7_ATOMIC_PARENT_ACCOUNTING_SUFFIX_V1_DOMAIN
+        ),
+        "v075_k7_atomic_parent_execution_result_v1": (
+            V075_K7_ATOMIC_PARENT_EXECUTION_RESULT_V1_DOMAIN
+        ),
+        "v075_k7_atomic_parent_execution_failure_v1": (
+            V075_K7_ATOMIC_PARENT_EXECUTION_FAILURE_V1_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,

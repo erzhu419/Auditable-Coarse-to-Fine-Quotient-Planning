@@ -36,7 +36,6 @@ anti-conservative.
 from __future__ import annotations
 
 import ctypes
-import ctypes.util
 from contextlib import contextmanager
 from contextvars import ContextVar
 from dataclasses import dataclass
@@ -91,12 +90,25 @@ class _GMPInteger(ctypes.Structure):
 
 
 def _load_gmp_exact_backend() -> Any | None:
-    library_name = ctypes.util.find_library("gmp")
-    if library_name is None:
-        return None
-    try:
-        library = ctypes.CDLL(library_name)
-    except OSError:
+    # ctypes.util.find_library may launch a compiler/linker and create a
+    # temporary file.  That is incompatible with the no-spawn, no-write K7
+    # child.  Loading registered ABI sonames directly preserves the exact GMP
+    # fast path without performing discovery work at import time.
+    library = None
+    for library_name in (
+        "libgmp.so.10",
+        "libgmp.so",
+        "libgmp.10.dylib",
+        "libgmp.dylib",
+        "libgmp-10.dll",
+        "libgmp.dll",
+    ):
+        try:
+            library = ctypes.CDLL(library_name)
+        except OSError:
+            continue
+        break
+    if library is None:
         return None
     pointer = ctypes.POINTER(_GMPInteger)
     signatures = {

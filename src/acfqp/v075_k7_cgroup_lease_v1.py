@@ -761,6 +761,13 @@ class K7CgroupAttemptLeaseV1:
         self._check_process()
         return self
 
+    @property
+    def closed(self) -> bool:
+        """Expose cleanup state without exposing or transferring lease authority."""
+
+        self._check_process()
+        return self._closed
+
     def __exit__(self, *_args: object) -> None:
         self.close()
 
