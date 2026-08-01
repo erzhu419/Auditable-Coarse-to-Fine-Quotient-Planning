@@ -2,7 +2,7 @@
 
 The authority consumes an exact independent verification of contract 1.85,
 then materializes the additive v3 registry, its ten-stage profile, the
-98-term shared-resource projection, and the complete 87-path legacy
+99-term shared-resource projection, and the complete 87-path legacy
 migration partition.  It executes no occurrence and emits no work evidence.
 """
 

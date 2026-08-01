@@ -1,9 +1,9 @@
 # Portable Production Semantic Closure
 
 **Status:** normative construction contract; production and target access locked  
-**Ledger:** V0-076, V0-090, V0-091, V0-092, V0-093, V0-094
-**Implemented revisions:** `1.60.0`–`1.86.0`
-**Current completed semantic cut:** exact construction-only 67-role semantic closure, a complete local tracked-ACFQP Git/archive/compile snapshot, and an independently replayed additive accounting-v3 registry/stage/projection successor schema for the registered root-only cap occurrence; live all-path accounting, unqualified source/code authority and production remain locked
+**Ledger:** V0-076, V0-090, V0-091, V0-092, V0-093, V0-094, V0-095
+**Implemented revisions:** `1.60.0`–`1.87.0`
+**Current completed semantic cut:** exact construction-only 67-role semantic closure, a complete local tracked-ACFQP Git/archive/compile snapshot, and an independently replayed additive accounting-v4 operation-ownership registry/stage/projection successor schema for the registered root-only cap occurrence; live all-path accounting, unqualified source/code authority and production remain locked
 
 ## Objective
 

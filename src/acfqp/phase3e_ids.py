@@ -66,6 +66,42 @@ CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V3_DOMAIN = (
 CONSTRUCTION_LEGACY_MIGRATION_PROFILE_V3_DOMAIN = (
     "acfqp:construction-legacy-counter-migration-profile:v3"
 )
+CONSTRUCTION_ACCOUNTING_LIFECYCLE_V3_DOMAIN = (
+    "acfqp:construction-accounting-lifecycle:v3"
+)
+CONSTRUCTION_STAGE_INSTANCE_V3_DOMAIN = (
+    "acfqp:construction-stage-instance:v3"
+)
+CONSTRUCTION_STAGE_START_ATTESTATION_V3_DOMAIN = (
+    "acfqp:construction-stage-start-attestation:v3"
+)
+CONSTRUCTION_OPERATION_EVENT_V3_DOMAIN = (
+    "acfqp:construction-operation-event:v3"
+)
+CONSTRUCTION_STAGE_EVENT_TRANSCRIPT_V3_DOMAIN = (
+    "acfqp:construction-stage-event-transcript:v3"
+)
+CONSTRUCTION_STAGE_COMPLETION_ATTESTATION_V3_DOMAIN = (
+    "acfqp:construction-stage-completion-attestation:v3"
+)
+CONSTRUCTION_COUNTER_RECORD_V3_DOMAIN = "acfqp:counter-record:v3"
+CONSTRUCTION_WORK_VECTOR_V3_DOMAIN = "acfqp:work-vector:v3"
+CONSTRUCTION_COMPARISON_VECTOR_V3_DOMAIN = (
+    "acfqp:comparison-vector:v3"
+)
+CONSTRUCTION_ACTUAL_PROJECTION_PROOF_V3_DOMAIN = (
+    "acfqp:actual-projection-proof:v3"
+)
+CONSTRUCTION_COUNTER_REGISTRY_V4_DOMAIN = "acfqp:counter-registry:v4"
+CONSTRUCTION_STAGE_PROFILE_V4_DOMAIN = (
+    "acfqp:construction-stage-profile:v4"
+)
+CONSTRUCTION_COMPARISON_PROFILE_V4_DOMAIN = (
+    "acfqp:comparison-profile:v4"
+)
+CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V4_DOMAIN = (
+    "acfqp:actual-projection-profile:v4"
+)
 V075_CONSTRUCTION_ACCOUNTING_SCHEMA_CLOSURE_V2_DOMAIN = (
     "acfqp:v075-construction-accounting-schema-closure:v2"
 )
@@ -77,6 +113,18 @@ V075_CONSTRUCTION_ACCOUNTING_REGISTRY_SUCCESSOR_V3_DOMAIN = (
 )
 V075_CONSTRUCTION_ACCOUNTING_REGISTRY_SUCCESSOR_VERIFICATION_V3_DOMAIN = (
     "acfqp:v075-construction-accounting-registry-successor-verification:v3"
+)
+V075_CONSTRUCTION_ACCOUNTING_OPERATION_OWNERSHIP_SUCCESSOR_V4_DOMAIN = (
+    "acfqp:v075-construction-accounting-operation-ownership-successor:v4"
+)
+V075_CONSTRUCTION_ACCOUNTING_OPERATION_OWNERSHIP_VERIFICATION_V4_DOMAIN = (
+    "acfqp:v075-construction-accounting-operation-ownership-verification:v4"
+)
+V075_K7_ROOT_CAP_OPERATION_SITE_V1_DOMAIN = (
+    "acfqp:v075-k7-root-cap-operation-site:v1"
+)
+V075_K7_ROOT_CAP_OPERATION_SITE_MANIFEST_V1_DOMAIN = (
+    "acfqp:v075-k7-root-cap-operation-site-manifest:v1"
 )
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
@@ -387,6 +435,48 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         "construction_legacy_migration_profile_v3": (
             CONSTRUCTION_LEGACY_MIGRATION_PROFILE_V3_DOMAIN
         ),
+        "construction_accounting_lifecycle_v3": (
+            CONSTRUCTION_ACCOUNTING_LIFECYCLE_V3_DOMAIN
+        ),
+        "construction_stage_instance_v3": (
+            CONSTRUCTION_STAGE_INSTANCE_V3_DOMAIN
+        ),
+        "construction_stage_start_attestation_v3": (
+            CONSTRUCTION_STAGE_START_ATTESTATION_V3_DOMAIN
+        ),
+        "construction_operation_event_v3": (
+            CONSTRUCTION_OPERATION_EVENT_V3_DOMAIN
+        ),
+        "construction_stage_event_transcript_v3": (
+            CONSTRUCTION_STAGE_EVENT_TRANSCRIPT_V3_DOMAIN
+        ),
+        "construction_stage_completion_attestation_v3": (
+            CONSTRUCTION_STAGE_COMPLETION_ATTESTATION_V3_DOMAIN
+        ),
+        "construction_counter_record_v3": (
+            CONSTRUCTION_COUNTER_RECORD_V3_DOMAIN
+        ),
+        "construction_work_vector_v3": (
+            CONSTRUCTION_WORK_VECTOR_V3_DOMAIN
+        ),
+        "construction_comparison_vector_v3": (
+            CONSTRUCTION_COMPARISON_VECTOR_V3_DOMAIN
+        ),
+        "construction_actual_projection_proof_v3": (
+            CONSTRUCTION_ACTUAL_PROJECTION_PROOF_V3_DOMAIN
+        ),
+        "construction_counter_registry_v4": (
+            CONSTRUCTION_COUNTER_REGISTRY_V4_DOMAIN
+        ),
+        "construction_stage_profile_v4": (
+            CONSTRUCTION_STAGE_PROFILE_V4_DOMAIN
+        ),
+        "construction_comparison_profile_v4": (
+            CONSTRUCTION_COMPARISON_PROFILE_V4_DOMAIN
+        ),
+        "construction_actual_projection_profile_v4": (
+            CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V4_DOMAIN
+        ),
         "v075_construction_accounting_schema_closure_v2": (
             V075_CONSTRUCTION_ACCOUNTING_SCHEMA_CLOSURE_V2_DOMAIN
         ),
@@ -398,6 +488,18 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "v075_construction_accounting_registry_successor_verification_v3": (
             V075_CONSTRUCTION_ACCOUNTING_REGISTRY_SUCCESSOR_VERIFICATION_V3_DOMAIN
+        ),
+        "v075_construction_accounting_operation_ownership_successor_v4": (
+            V075_CONSTRUCTION_ACCOUNTING_OPERATION_OWNERSHIP_SUCCESSOR_V4_DOMAIN
+        ),
+        "v075_construction_accounting_operation_ownership_verification_v4": (
+            V075_CONSTRUCTION_ACCOUNTING_OPERATION_OWNERSHIP_VERIFICATION_V4_DOMAIN
+        ),
+        "v075_k7_root_cap_operation_site_v1": (
+            V075_K7_ROOT_CAP_OPERATION_SITE_V1_DOMAIN
+        ),
+        "v075_k7_root_cap_operation_site_manifest_v1": (
+            V075_K7_ROOT_CAP_OPERATION_SITE_MANIFEST_V1_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,

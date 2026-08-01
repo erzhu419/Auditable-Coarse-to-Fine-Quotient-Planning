@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `1.86.0`: the earlier contracts build the
+contracts now span `1.40.0` through `1.87.0`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -262,6 +262,31 @@ derived formulas, hash/check/I/O/peak granularity and trusted stage lifecycle
 attestations remain open, so the closure emits no CounterRecord, WorkVector,
 terminal or campaign result.  Production, fresh science, scalar/economics and
 certificate Gates remain locked.
+
+Contract `1.87.0` corrects two further operation-ownership holes found by
+walking the real K7 root-cap call graph.  Outcome projection and prior binding
+may execute during initial build or open checkpoint replanning, while closed
+private verification actually performs its own deterministic ground/random-
+word/aggregate replay.  The immutable v4 successor preserves all 116 v3
+leaves and adds eight required stage-local leaves, yielding `124` total,
+`106` operational and `117` required leaves with `106` exact projection
+terms.  The registered K7 scientific acquisition remains `4,224` accepted
+draws; the current closure's additional `4,224` ground steps are replay work,
+not new observations, and may not disappear from operational accounting.
+
+This revision also implements issuer-owned stage lifecycle/event replay,
+explicit native-zero WorkVectors and exact actual projection mechanics, plus
+a context-gated same-process failed-child/result-audit hook that can avoid
+redundant full replay.  The hook is not yet wired to an operational runner or
+live-evidenced; legacy V2 portable replay remains the unchanged default.  No
+operation-site-complete live vector is issued yet, so
+formula/hash/check/I/O/process/peak, typed terminal/campaign, production,
+fresh-science, scalar/economics and certificate Gates remain locked.
+
+The corresponding nonfresh K7 root-cap manifest now fixes the exact five-stage
+execution plan, 13 audited direct-native hook sites and 10 explicitly pending
+common/hash/I/O/process/peak sites.  It is a hook plan, not instrumentation:
+all live-event and vector counts remain zero until those sites are connected.
 
 ## V0-074 repair construction (NONAUTHORIZING; fresh Gate NOT RUN)
 

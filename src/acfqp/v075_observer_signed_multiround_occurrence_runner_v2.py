@@ -27,6 +27,7 @@ from acfqp.phase3e_ids import (
     parse_content_id,
 )
 from acfqp import v075_batch_native_planning_backend_v2 as planning
+from acfqp import construction_operational_context_v3 as operational_context
 from acfqp import (
     v075_batch_occurrence_lifecycle_authority_v2 as lifecycle_module,
 )
@@ -2526,6 +2527,103 @@ def _closed_result(
     final_epoch: live_model.V075LiveIncrementalModelEpochV2,
     reconciliation: V075ObserverSignedClosedReconciliationV2,
 ) -> V075ObserverSignedMultiroundResultV2:
+    if operational_context.operational_no_full_replay_enabled_v3():
+        expected_status = (
+            V075ObserverSignedMultiroundTerminalStatusV2
+            .CHILD_ACTION_ROW_CAP_EXCEEDED
+        )
+        expected_child_status = (
+            dynamic.V075LiveDynamicChildClosureStatusV2
+            .CHILD_ACTION_ROW_CAP_EXCEEDED
+        )
+        if (
+            status is not expected_status
+            or child_closure.status is not expected_child_status
+            or child_closure.source_epoch is not root_epoch
+            or final_epoch is not root_epoch
+            or reconciliation.final_epoch is not final_epoch
+            or reconciliation.planning_input.schedule_id
+            != schedule.schedule_id
+            or reconciliation.planning_input.occurrence_id
+            != schedule.occurrence.occurrence_id
+            or reconciliation.planning_input.target_tape_namespace_id
+            != schedule.occurrence.target_tape_namespace_id
+            or reconciliation.planning_input.arm is not schedule.occurrence.arm
+            or reconciliation.planning_input.route is not root_epoch.route
+            or reconciliation.planning_input.model.model_id
+            != root_epoch.model.model_id
+            or reconciliation.closed_proof.proof_id
+            != root_epoch.proof.proof_id
+            or reconciliation.controlled_closure.control_closure.occurrence_id
+            != schedule.occurrence.occurrence_id
+            or reconciliation.controlled_closure.control_closure.final_head_id
+            != root_epoch.head_id
+            or reconciliation.lineage.occurrence_identity
+            != schedule.occurrence
+            or reconciliation.lifecycle.occurrence_id
+            != schedule.occurrence.occurrence_id
+            or schedule.occurrence != root_epoch.occurrence_identity
+            or root_execution.schedule_id != schedule.schedule_id
+            or root_execution.schedule_verification_id
+            != verification.verification_id
+            or root_execution.occurrence_id
+            != schedule.occurrence.occurrence_id
+            or root_execution.resulting_head_id != root_epoch.head_id
+            or child_closure_verification.closure_id
+            != child_closure.closure_id
+            or child_closure_verification.source_model_epoch_id
+            != root_epoch.model_epoch_id
+            or child_closure_verification.source_proof_id
+            != root_epoch.proof.proof_id
+            or child_closure_verification.source_head_id
+            != root_epoch.head_id
+            or child_closure_verification.status is not expected_child_status
+            or child_closure_verification.discovery_intent_ids
+            or child_closure_verification.validation_template_ids
+            or any(
+                item is not None
+                for item in (
+                    child_ledger,
+                    child_ledger_verification,
+                    child_barrier,
+                    child_barrier_verification,
+                )
+            )
+            or promotion_decisions
+            or promotion_decision_verifications
+            or promotion_barriers
+            or promotion_barrier_verifications
+        ):
+            _fail(
+                "owned no-full-replay result is not the registered root-cap "
+                "same-process graph"
+            )
+        result = V075ObserverSignedMultiroundResultV2(
+            _RESULT_ISSUER,
+            expected_status,
+            schedule.schedule_id,
+            verification.verification_id,
+            root_execution.execution_id,
+            root_epoch.model_epoch_id,
+            child_closure.closure_id,
+            child_closure_verification.verification_id,
+            expected_child_status,
+            None,
+            None,
+            None,
+            None,
+            (),
+            (),
+            (),
+            (),
+            final_epoch.model_epoch_id,
+            final_epoch.model.model_id,
+            final_epoch.proof.proof_id,
+            reconciliation.reconciliation_id,
+        )
+        if result.status is not status:
+            _fail("owned root-cap terminal derivation changed")
+        return result
     result = freeze_v075_construction_multiround_result_v2(
         repository_root=repository_root,
         namespace=namespace,
@@ -2606,18 +2704,27 @@ def run_v075_construction_observer_signed_multiround_occurrence_v2(
             controller=controller,
             schedule=exact_schedule,
         )
-        child_closure, child_verification = (
-            dynamic.verify_v075_live_dynamic_child_closure_bytes_v2(
-                source_epoch=root_epoch,
-                namespace=namespace,
-                claimed_bytes=(
-                    dynamic.freeze_v075_live_dynamic_child_closure_v2(
-                        source_epoch=root_epoch,
-                        namespace=namespace,
-                    ).canonical_bytes
-                ),
+        if operational_context.operational_no_full_replay_enabled_v3():
+            child_closure, child_verification = (
+                dynamic
+                .freeze_and_attest_v075_live_dynamic_child_closure_owned_v3(
+                    source_epoch=root_epoch,
+                    namespace=namespace,
+                )
             )
-        )
+        else:
+            child_closure, child_verification = (
+                dynamic.verify_v075_live_dynamic_child_closure_bytes_v2(
+                    source_epoch=root_epoch,
+                    namespace=namespace,
+                    claimed_bytes=(
+                        dynamic.freeze_v075_live_dynamic_child_closure_v2(
+                            source_epoch=root_epoch,
+                            namespace=namespace,
+                        ).canonical_bytes
+                    ),
+                )
+            )
     except Exception as error:
         if type(error) in {
             V075ObserverSignedMultiroundV2InvariantViolation,

@@ -6,6 +6,7 @@ import hashlib
 import pytest
 
 from acfqp.phase3e_ids import canonical_json_bytes
+from acfqp import construction_operational_context_v3 as operational_context
 from acfqp import v075_batch_native_statistical_backend_v1 as backend
 from acfqp import v075_five_arm_acquisition_authority_v2 as acquisition
 from acfqp import v075_observer_signed_multiround_occurrence_runner_v2 as runner
@@ -78,6 +79,7 @@ def capped_closed_result():
     # 19-row cap.  It exercises a fully closed result without running the
     # intentionally expensive W7 all-18 acquisition.
     schedule, verification = _exact_schedule(namespace, context_index=0)
+    roots = {}
     result = (
         runner.run_v075_construction_observer_signed_multiround_occurrence_v2(
             repository_root=REPOSITORY_ROOT,
@@ -89,6 +91,7 @@ def capped_closed_result():
             private_environment=generated.secret_laws_for_commitment(),
             observer_signer=signer,
             session_external_id=_id("capped-session"),
+            evidence_sink=lambda values: roots.update(values),
         )
     )
     return {
@@ -100,6 +103,7 @@ def capped_closed_result():
         "schedule": schedule,
         "verification": verification,
         "result": result,
+        "roots": roots,
     }
 
 
@@ -135,6 +139,73 @@ def test_exact_root_schedule_closes_and_matches_full_recompile(
     assert document["plan_certificate"] is False
     assert document["infeasibility_certificate"] is False
     assert result.canonical_bytes == canonical_json_bytes(document)
+
+
+def test_owned_no_full_replay_context_skips_portable_epoch_rebuild(
+    capped_closed_result,
+    monkeypatch,
+) -> None:
+    values = capped_closed_result
+    roots = values["roots"]
+
+    with pytest.raises(
+        runner.dynamic.V075LiveDynamicAcquisitionV2InvariantViolation,
+        match="scoped no-full-replay context",
+    ):
+        (
+            runner.dynamic
+            .freeze_and_attest_v075_live_dynamic_child_closure_owned_v3(
+                source_epoch=roots["root_model_epoch"],
+                namespace=values["namespace"],
+            )
+        )
+
+    def forbidden_replay(_epoch):
+        raise AssertionError("owned operational child audit must not replay")
+
+    monkeypatch.setattr(runner.dynamic, "_replay_epoch", forbidden_replay)
+    monkeypatch.setattr(
+        runner.live_model,
+        "replay_v075_live_incremental_model_epoch_v2",
+        forbidden_replay,
+    )
+    with operational_context._activate_owned_no_full_replay_v3():  # noqa: SLF001
+        child_closure, child_verification = (
+            runner.dynamic
+            .freeze_and_attest_v075_live_dynamic_child_closure_owned_v3(
+                source_epoch=roots["root_model_epoch"],
+                namespace=values["namespace"],
+            )
+        )
+        result = runner._closed_result(  # noqa: SLF001
+            repository_root=REPOSITORY_ROOT,
+            namespace=values["namespace"],
+            status=(
+                runner.V075ObserverSignedMultiroundTerminalStatusV2
+                .CHILD_ACTION_ROW_CAP_EXCEEDED
+            ),
+            schedule=values["schedule"],
+            verification=values["verification"],
+            root_execution=roots["root_execution"],
+            root_epoch=roots["root_model_epoch"],
+            child_closure=child_closure,
+            child_closure_verification=child_verification,
+            child_ledger=None,
+            child_ledger_verification=None,
+            child_barrier=None,
+            child_barrier_verification=None,
+            promotion_decisions=(),
+            promotion_decision_verifications=(),
+            promotion_barriers=(),
+            promotion_barrier_verifications=(),
+            final_epoch=roots["final_model_epoch"],
+            reconciliation=roots["closed_reconciliation"],
+        )
+    assert result.status is (
+        runner.V075ObserverSignedMultiroundTerminalStatusV2
+        .CHILD_ACTION_ROW_CAP_EXCEEDED
+    )
+    assert operational_context.operational_no_full_replay_enabled_v3() is False
 
 
 def test_schedule_verification_transplant_fails_before_observer_open(

@@ -34,6 +34,7 @@ from acfqp.phase3e_ids import (
     loads_canonical_json,
     parse_content_id,
 )
+from acfqp import construction_operational_context_v3 as operational_context
 from acfqp import v075_batch_native_planning_backend_v2 as planning_v2
 from acfqp import v075_live_incremental_model_authority_v2 as live_model
 from acfqp import v075_observer_signed_batch_control_authority_v2 as control
@@ -1333,6 +1334,46 @@ def freeze_v075_live_dynamic_child_closure_v2(
         epoch=_operational_epoch(source_epoch),
         namespace=namespace,
     )
+
+
+def freeze_and_attest_v075_live_dynamic_child_closure_owned_v3(
+    *,
+    source_epoch: live_model.V075LiveIncrementalModelEpochV2,
+    namespace: namespace_v2.V075PublicTargetTapeNamespaceV2,
+) -> tuple[
+    V075LiveDynamicChildClosureV2,
+    V075LiveDynamicChildClosureVerificationV2,
+]:
+    """Derive and attest an owned closure without replaying its live model.
+
+    The source epoch must still be registered by the live-model authority as
+    the exact same-process object.  Closure semantics are derived normally;
+    only the redundant portable reconstruction of the already-owned epoch is
+    omitted.  Portable byte verification remains available through
+    :func:`verify_v075_live_dynamic_child_closure_bytes_v2`.
+    """
+
+    if not operational_context.operational_no_full_replay_enabled_v3():
+        _fail(
+            "owned child-closure attestation requires the scoped "
+            "no-full-replay context"
+        )
+    epoch = _operational_epoch(source_epoch)
+    closure = _freeze_v075_live_dynamic_child_closure_from_exact_epoch_v2(
+        epoch=epoch,
+        namespace=namespace,
+    )
+    verification = V075LiveDynamicChildClosureVerificationV2(
+        _CHILD_VERIFICATION_ISSUER,
+        closure.closure_id,
+        epoch.model_epoch_id,
+        epoch.proof.proof_id,
+        epoch.head_id,
+        closure.status,
+        tuple(item.intent_id for item in closure.discovery_intents),
+        tuple(item.template_id for item in closure.validation_templates),
+    )
+    return closure, verification
 
 
 def verify_v075_live_dynamic_child_closure_bytes_v2(
@@ -3886,6 +3927,7 @@ __all__ = [
     "V075LivePromotionReplanningBarrierV2",
     "V075LivePromotionReplanningBarrierVerificationV2",
     "freeze_v075_live_dynamic_child_closure_v2",
+    "freeze_and_attest_v075_live_dynamic_child_closure_owned_v3",
     "freeze_v075_live_dynamic_child_execution_ledger_v2",
     "freeze_v075_live_dynamic_child_replanning_barrier_v2",
     "freeze_v075_live_promotion_decision_v2",
