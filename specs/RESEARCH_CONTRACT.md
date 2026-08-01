@@ -5011,3 +5011,35 @@ accounting suffix, proves no complete loaded-module graph, and does not replay
 the partial transcript into formal accounting. The atomic parent executor,
 nine shared-resource semantic authorities and exact 202-leaf reduction remain
 required before CounterRecord, WorkVector or ComparisonVector issuance.
+
+## Contract 1.99.0: K7 atomic clone3/pidfd runtime
+
+The low-level successor runtime now has a real fail-closed implementation. It
+accepts only the exact V0-104 lease type and a runtime-issued opaque authority
+over bounded immutable executable/input memfds. On admitted x86-64 Linux the
+parent retains the GIL across the final single-thread check and a checked-in
+native trampoline's
+`clone3(CLONE_INTO_CGROUP|CLONE_PIDFD|CLONE_CLEAR_SIGHAND)` call. The child
+executes no Python and installs parent-death SIGKILL, `no_new_privs`, Landlock
+write denial and registered x32/spawn/broker/metadata/parent-control seccomp
+denials before descriptor-only `execveat`.
+
+The runtime is admitted only for a non-root parent with non-root primary and
+supplementary groups and zero inherited, permitted, effective and ambient
+capability sets. Descriptor roles and inheritance are rechecked inside the
+signal-blocked final launch section, and parent cleanup identities are frozen
+before its signal mask can be restored.
+
+The parent exactly configures memory and swap, requires `cgroup.kill`, owns all
+pidfd deadline/output enforcement, reaps with bounded polling, distinguishes an
+observed kill from a terminal race, and preserves total observed output apart
+from its bounded captured prefix. Successful completion includes channel EOF,
+final `memory.peak`, empty-leaf and zero-descendant proofs and lease removal;
+exception cleanup attempts both direct child and whole-cgroup containment.
+
+This is intentionally below the accounting/certificate layer. It has not yet
+bound the exact V0-106 business entry to the sealed bootstrap or produced the
+parent-owned suffix and atomic two-frame protocol result. Its raw counters are
+not formal evidence; the nine shared-resource semantics, remaining 193 required
+leaves and final 202-leaf reduction still have no CounterRecord, WorkVector or
+ComparisonVector authority.

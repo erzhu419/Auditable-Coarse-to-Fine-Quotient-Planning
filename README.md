@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `1.98.0`: the earlier contracts build the
+contracts now span `1.40.0` through `1.99.0`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -436,6 +436,17 @@ uses the same single secure key read as signer construction. A real portable
 integration test closes schema/topology drift. The parent-owned cgroup/pidfd
 executor, accounting suffix, complete transcript semantics and formal vectors
 remain the next Gate.
+
+Contract `1.99.0` adds the real atomic Linux runtime beneath that frame. One
+audited x86-64 native trampoline performs `clone3` directly into the leased
+cgroup with a pidfd; the child installs parent-death, Landlock and seccomp
+containment before executing a sealed memfd, while the parent enforces memory,
+swap, output and deadline limits and proves reap, EOF, empty leaf and zero
+descendants. A real delegated-systemd integration verifies execution,
+setup-failure provenance and fork/file/metadata/cgroup/socket/parent-limit
+denial. The runtime still emits only nonformal raw facts:
+the business-entry join, parent accounting suffix, atomic two-frame result and
+formal nine-path/202-leaf accounting remain locked.
 
 ## V0-074 repair construction (NONAUTHORIZING; fresh Gate NOT RUN)
 

@@ -4263,3 +4263,26 @@ spawn exclusion and owned-partial raw semantic replay false. It is not the
 parent accounting suffix and is not a complete two-frame result. Atomic
 cgroup/pidfd execution, parent cutoff/finalization, nine-path verification and
 formal `CounterRecord -> WorkVector -> ComparisonVector` remain locked.
+
+## V0-107 K7 atomic clone3/pidfd runtime
+
+Contract `1.99.0` closes the low-level atomic launch and supervision primitive.
+It consumes the real leased cgroup and an opaque sealed bootstrap, retains the
+GIL through the final signal-blocked thread check and native `clone3` with
+`CLONE_CLEAR_SIGHAND`, and never resumes Python in the child. Before
+descriptor-only execution, fixed assembly installs parent-death containment,
+no-new-privileges, Landlock write denial and a seccomp filter blocking x32,
+spawn, broker/IPC, metadata, namespace and parent-control operations.
+Admission rejects root, root-group and nonzero inherited/permitted/effective/
+ambient capability sets.
+
+The parent freezes and reads back memory/swap caps, verifies `cgroup.kill`,
+uses bounded pidfd signalling and reap, preserves truthful output/status facts,
+and cannot return success without EOF, final peak, an empty descendant-free
+leaf and closed authorities. Unit attacks and a real delegated-systemd run
+cover the positive and denial paths.
+
+The milestone does not yet connect the V0-106 business body to this bootstrap
+or emit the parent accounting suffix and atomic two-frame result. Loaded-module
+closure, nine shared-resource semantic authorities and the exact 202-leaf
+`CounterRecord -> WorkVector -> ComparisonVector` path remain locked.
