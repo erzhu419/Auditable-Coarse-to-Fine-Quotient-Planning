@@ -1,8 +1,8 @@
 # Research Contract
 
-**Current construction contract:** `2.0.1`
+**Current construction contract:** `2.0.2`
 
-**Current construction profile:** `v075_k7_atomic_shared_resource_authority_v1`
+**Current construction profile:** `v075_k7_attempt_process_supervisor_v1`
 
 ## Definitions
 
@@ -5110,3 +5110,50 @@ or authorize any `CounterRecord`, `WorkVector`, `ComparisonVector`, projection
 proof, 202-leaf reduction, terminal, certificate, scientific endpoint or
 official execution. All formal, counter-completeness, economics, science and
 certificate Gates remain locked or `NOT_RUN`.
+
+## Contract 2.0.2: K7 attempt-wide raw process supervisor
+
+V0-110A adds one process-local, single-use attempt session whose first
+operation precedes successor-request binding/replay and whose sink is already
+active during that binding. The sink surrounds the V0-108 parent executor and
+remains active through typed parent-result payload freezing and raw-journal
+closure. The envelope is formed afterward as a no-launch canonical wrapper; it
+is outside the raw cutoff and does not establish complete publication or
+cleanup coverage.
+
+Immediately after `clone3` returns positively in the parent branch, the raw
+receiver first advances a volatile write-ahead launch-edge lower bound. Only
+then does it obtain pinned-call-site provenance, timestamps, hashes and
+canonical event bytes; all occur before pidfd validation, descriptor cleanup,
+signal unmasking and other fallible post-clone work. Event materialization
+failure forces a nonformal `PROTOCOL_FAILURE` prefix instead of reverting the
+lower bound to zero. A successfully materialized event still claims only local
+observation; the later event/journal/typed-result join supplies child, lease,
+pidfd-supervised lifecycle and request/route attribution.
+
+Covered wrapper/type paths preserve a closed journal or canonical nonformal
+emergency prefix. If both ordinary and emergency encoding fail, finalization
+retains only a nonformal raw-field tuple; that tuple is not canonical,
+content-addressed or independently replayable. Any future helper launched after
+the journal cutoff is also outside this raw evidence.
+
+Import-time executor/runtime pinning rejects ordinary public module-symbol
+rebinding and foreign public callers only. It is not a security boundary
+against arbitrary same-process underscore/global/object mutation, and the raw
+model does not treat `object.__setattr__` as a resisted attack. Nor can the
+volatile lower bound prove survival across sink/interpreter failure or a host
+crash. Same-process source/call-site checks therefore cannot prove that no
+native/helper launch bypassed the sink or that no event was lost. The only
+permitted connection state is
+`VERIFIED_ATTEMPT_WINDOW_RAW_SCOPE_INCOMPLETE`; the raw count is ineligible for
+formal accounting.
+
+Promotion to `CONNECTED_EXACT` requires external isolation and a separate
+supervisor/kernel attestation tied to the attempt identity, spanning the
+intended publication/cleanup scope with no-loss event coverage and exhaustive
+success, setup, execution, protocol and cleanup-failure paths. Contract `2.0.2`
+therefore issues no shared-resource receipt, `CounterRecord`, `WorkVector`,
+`ComparisonVector`, projection proof, 202-leaf reduction, terminal,
+certificate, scientific endpoint or official execution. Every nine-path,
+counter-completeness, economics, science and certificate Gate remains locked
+or `NOT_RUN`.

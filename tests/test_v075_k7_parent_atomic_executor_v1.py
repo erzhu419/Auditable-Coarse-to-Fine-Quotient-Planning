@@ -14,6 +14,8 @@ from acfqp import v075_k7_atomic_pidfd_runtime_v1 as runtime
 from acfqp import v075_k7_atomic_shared_resource_authority_v1 as shared_authority
 from acfqp import v075_k7_child_business_bundle_v1 as business
 from acfqp import v075_k7_parent_atomic_executor_v1 as parent
+from acfqp import v075_k7_attempt_process_executor_v1 as attempt_executor
+from acfqp import v075_k7_attempt_process_supervisor_v1 as attempt_supervisor
 from acfqp import v075_k7_parent_owned_successor_ipc_v1 as successor
 from acfqp import v075_signer_owning_complete_observer_lifecycle_ipc_v1 as lifecycle
 from tests.test_v075_k7_atomic_pidfd_runtime_v1 import _id, _successor_request
@@ -409,16 +411,29 @@ def test_real_parent_executor_runs_one_business_and_publishes_two_frames(
     secret_fd = lifecycle._stage_secret_for_testing(secret_raw)  # noqa: SLF001
     try:
         with _delegated_scope_parent_fd() as parent_fd:
-            result = parent.execute_v075_k7_parent_atomic_attempt_v1(
-                request=request,
-                delegated_parent_fd=parent_fd,
-                sealed_lifecycle_secret_fd=secret_fd,
-                repository_root=REPOSITORY_ROOT.resolve(),
-                signer_private_root=private_root,
-                signer_private_key_path=key_path,
+            attempt_envelope = (
+                attempt_executor.execute_v075_k7_attempt_scoped_parent_v1(
+                    request=request,
+                    delegated_parent_fd=parent_fd,
+                    sealed_lifecycle_secret_fd=secret_fd,
+                    repository_root=REPOSITORY_ROOT.resolve(),
+                    signer_private_root=private_root,
+                    signer_private_key_path=key_path,
+                )
             )
     finally:
         os.close(secret_fd)
+    assert (
+        attempt_envelope.outcome
+        is attempt_executor.AttemptScopedParentOutcomeV1.PARENT_SUCCESS
+    )
+    assert (
+        attempt_envelope.journal.close_kind
+        is attempt_supervisor.AttemptProcessCloseKindV1.SUCCESS
+    )
+    assert attempt_envelope.journal.observed_launch_count == 1
+    assert attempt_envelope.to_document()["raw_count_is_not_formal_actual"] is True
+    result = attempt_envelope.parent_result
     if type(result) is not parent.V075K7ParentAtomicExecutionResultV1:
         pytest.fail(
             repr(

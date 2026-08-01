@@ -34,6 +34,7 @@ from typing import Any, Mapping, NoReturn
 import weakref
 
 from acfqp import v075_k7_cgroup_lease_v1 as cgroup_lease
+from acfqp import v075_k7_attempt_process_sink_v1 as attempt_process_sink
 from acfqp.phase3e_ids import (
     V075_K7_ATOMIC_SUPERVISOR_RESOURCE_EVIDENCE_V1_DOMAIN,
     content_id,
@@ -1992,6 +1993,11 @@ def run_v075_k7_atomic_pidfd_runtime_v1(
                     # parent before child_pid/pidfd are recoverable.
                     child_pid = clone_result
                     pidfd = pidfd_cell.value
+                    # The kernel has created the process.  Write the
+                    # attempt-scope edge before descriptor cleanup, signal
+                    # unmasking, or any other fallible post-clone work.
+                    attempt_process_sink.record_v075_k7_attempt_process_launch_v1()
+                    record_lifecycle("PROCESS_LAUNCH")
                     os.close(setup_status_write_fd)
                     setup_status_write_fd = -1
                     os.close(landlock_ruleset_fd)
@@ -2037,7 +2043,6 @@ def run_v075_k7_atomic_pidfd_runtime_v1(
             )
         if pidfd < 0:
             raise V075K7AtomicPidfdCleanupV1Error("clone3 did not return its required pidfd")
-        record_lifecycle("PROCESS_LAUNCH")
 
         poller = select.poll()
         poller.register(pidfd, select.POLLIN | select.POLLHUP | select.POLLERR)
@@ -2342,6 +2347,11 @@ def run_v075_k7_atomic_pidfd_runtime_v1(
             ) from final_cleanup_errors[0]
         if signal_restore_error is not None:
             raise signal_restore_error
+
+
+attempt_process_sink._register_v075_k7_attempt_process_runtime_callsite_v1(  # noqa: SLF001
+    run_v075_k7_atomic_pidfd_runtime_v1
+)
 
 
 __all__ = [

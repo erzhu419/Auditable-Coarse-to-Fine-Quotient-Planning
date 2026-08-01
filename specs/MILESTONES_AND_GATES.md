@@ -4360,3 +4360,46 @@ set, or create a `CounterRecord`, `WorkVector`, `ComparisonVector`, projection
 proof, 202-leaf reduction, terminal, certificate, scientific result or official
 authority. Every Gate remains locked. See
 `specs/K7_ATOMIC_SHARED_RESOURCE_AUTHORITY.md`.
+
+## V0-110A K7 attempt-wide raw process supervisor
+
+Contract `2.0.2` wraps the V0-108 parent executor in one issuer-owned process
+session whose sink is active before successor-request binding/replay. The sink
+remains installed through the parent executor, typed parent-result payload
+freezing and raw-journal closure. The subsequently formed envelope is a
+post-cutoff no-launch canonical join only; it neither extends the raw window nor
+proves complete external/durable publication. A future helper launched after
+that cutoff is not covered by the current journal.
+
+The positive parent branch of `clone3` enters the raw receiver before pidfd
+validation, descriptor cleanup, signal unmasking or other fallible post-clone
+work. The receiver advances its volatile write-ahead launch-edge lower bound
+before obtaining call-site provenance, timestamps, hashes or canonical event
+bytes. A later materialization failure therefore forces a nonformal
+`PROTOCOL_FAILURE` prefix rather than a false zero. The edge itself contains no
+claim of a validated pidfd or completed lifecycle; only a later successful
+event/journal/typed-result join supplies child, lease, pidfd-supervised
+lifecycle and request/route attribution.
+
+The covered wrapper/type paths test closed journals, canonical emergency
+prefixes and, under dual encoding failure, a noncanonical emergency raw-field
+snapshot. Import-time executor/runtime pins reject ordinary public-symbol
+rebinding and foreign public callers, but they are not a same-process security
+boundary: arbitrary underscore/global/object mutation is outside the raw threat
+model, including `object.__setattr__`. The strongest connection state is
+therefore only:
+
+```text
+process.launches = VERIFIED_ATTEMPT_WINDOW_RAW_SCOPE_INCOMPLETE
+```
+
+Canonical raw bytes and same-process issuer replay are not independent OS
+proof; the raw-field fallback is not canonical or independently replayable at
+all. Sink/interpreter crash, no-loss capture, exhaustive failure/cleanup paths
+and post-cutoff helpers remain unproved. `CONNECTED_EXACT` requires external
+isolation and supervisor/kernel attestation spanning the intended publication
+and cleanup scope. V0-110A therefore issues no eligible shared-resource
+resolution, receipt set, `CounterRecord`, `WorkVector`, `ComparisonVector`,
+projection proof, terminal, certificate, scientific result or official
+authority. All nine-path and formal/official Gates remain locked. See
+`specs/K7_ATTEMPT_PROCESS_SUPERVISOR.md`.

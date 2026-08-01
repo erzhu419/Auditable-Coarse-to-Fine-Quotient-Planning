@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `2.0.1`: the earlier contracts build the
+contracts now span `1.40.0` through `2.0.2`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -482,6 +482,33 @@ set, `CounterRecord`, `WorkVector`,
 `ComparisonVector`, projection proof, terminal, certificate, scientific result
 or official authority. See
 [`specs/K7_ATOMIC_SHARED_RESOURCE_AUTHORITY.md`](specs/K7_ATOMIC_SHARED_RESOURCE_AUTHORITY.md).
+
+Contract `2.0.2` / V0-110A opens one process-supervision session and activates
+its process sink before request binding/replay. The sink remains active through
+typed parent-result payload freezing and raw-journal closure. The returned
+envelope is only a post-cutoff no-launch canonical wrapper; it does not prove a
+complete publication/cleanup window, and any future post-cutoff helper launch
+would be outside the current raw coverage.
+
+When the parent branch receives a positive `clone3` result, the receiver first
+advances a volatile write-ahead launch-edge lower bound, then obtains provenance
+and materializes the typed event before pidfd validation or other fallible
+post-clone work. Materialization failure retains a nonformal `PROTOCOL_FAILURE`
+prefix rather than reverting to zero. Covered finalization failures retain a
+closed journal, canonical nonformal emergency prefix, or—if both encodings
+fail—a noncanonical emergency raw-field snapshot.
+
+The resulting status is only
+`VERIFIED_ATTEMPT_WINDOW_RAW_SCOPE_INCOMPLETE`. Canonical raw-byte replay is not
+independent OS evidence. Import-time call-site pins resist ordinary public
+module-symbol rebinding only; arbitrary same-process underscore/global/object
+mutation, including `object.__setattr__`, plus sink/interpreter crashes and
+no-loss coverage are outside the raw threat model. Exact promotion requires
+external isolation and
+supervisor/kernel attestation over the intended full publication/cleanup
+scope. The nine shared-resource paths, `CounterRecord -> WorkVector ->
+ComparisonVector`, terminal/certificate and official Gates remain locked. See
+[`specs/K7_ATTEMPT_PROCESS_SUPERVISOR.md`](specs/K7_ATTEMPT_PROCESS_SUPERVISOR.md).
 
 ## V0-074 repair construction (NONAUTHORIZING; fresh Gate NOT RUN)
 

@@ -465,6 +465,27 @@ V075_K7_ATOMIC_SHARED_RESOURCE_RESOLUTION_V1_DOMAIN = (
 V075_K7_ATOMIC_SHARED_RESOURCE_VERIFICATION_V1_DOMAIN = (
     "acfqp:v075-k7-atomic-shared-resource-verification:v1"
 )
+V075_K7_ATTEMPT_PROCESS_SUPERVISOR_PROFILE_V1_DOMAIN = (
+    "acfqp:v075-k7-attempt-process-supervisor-profile:v1"
+)
+V075_K7_ATTEMPT_PROCESS_SESSION_START_V1_DOMAIN = (
+    "acfqp:v075-k7-attempt-process-session-start:v1"
+)
+V075_K7_ATTEMPT_PROCESS_LAUNCH_EVENT_V1_DOMAIN = (
+    "acfqp:v075-k7-attempt-process-launch-event:v1"
+)
+V075_K7_ATTEMPT_PROCESS_RAW_JOURNAL_V1_DOMAIN = (
+    "acfqp:v075-k7-attempt-process-raw-journal:v1"
+)
+V075_K7_ATTEMPT_PROCESS_EXECUTION_V1_DOMAIN = (
+    "acfqp:v075-k7-attempt-process-execution:v1"
+)
+V075_K7_ATTEMPT_PROCESS_ENVELOPE_V1_DOMAIN = (
+    "acfqp:v075-k7-attempt-process-envelope:v1"
+)
+V075_K7_ATTEMPT_PROCESS_VERIFICATION_V1_DOMAIN = (
+    "acfqp:v075-k7-attempt-process-verification:v1"
+)
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
 ROUTE_CAP_PROFILE_DOMAIN = "acfqp:route-cap-profile:v1"
@@ -1181,6 +1202,27 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "v075_k7_atomic_shared_resource_verification_v1": (
             V075_K7_ATOMIC_SHARED_RESOURCE_VERIFICATION_V1_DOMAIN
+        ),
+        "v075_k7_attempt_process_supervisor_profile_v1": (
+            V075_K7_ATTEMPT_PROCESS_SUPERVISOR_PROFILE_V1_DOMAIN
+        ),
+        "v075_k7_attempt_process_session_start_v1": (
+            V075_K7_ATTEMPT_PROCESS_SESSION_START_V1_DOMAIN
+        ),
+        "v075_k7_attempt_process_launch_event_v1": (
+            V075_K7_ATTEMPT_PROCESS_LAUNCH_EVENT_V1_DOMAIN
+        ),
+        "v075_k7_attempt_process_raw_journal_v1": (
+            V075_K7_ATTEMPT_PROCESS_RAW_JOURNAL_V1_DOMAIN
+        ),
+        "v075_k7_attempt_process_execution_v1": (
+            V075_K7_ATTEMPT_PROCESS_EXECUTION_V1_DOMAIN
+        ),
+        "v075_k7_attempt_process_envelope_v1": (
+            V075_K7_ATTEMPT_PROCESS_ENVELOPE_V1_DOMAIN
+        ),
+        "v075_k7_attempt_process_verification_v1": (
+            V075_K7_ATTEMPT_PROCESS_VERIFICATION_V1_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,
