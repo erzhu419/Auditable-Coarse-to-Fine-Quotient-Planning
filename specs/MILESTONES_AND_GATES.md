@@ -4153,3 +4153,23 @@ independent source-byte verifier must close the nine values before the exact
 `CounterRecord -> WorkVector -> ComparisonVector` derivation and projection
 proof exist, `COUNTER_COMPLETENESS_GATE_NOT_RUN` and every official, economics,
 science and certificate lock remain unchanged.
+
+## V0-102 K7 OS-supervisor prelaunch admission
+
+Contract `1.94.0` requires a real, bounded host probe before any future K7
+accounted child launch. Acceptance for this construction cut is limited to:
+
+- exact byte/digest capture of successful `/proc/self/cgroup`, mountinfo and
+  current-cgroup controller reads;
+- explicit pidfd-open and pidfd-wait primitive facts;
+- a mandatory caller-preopened delegated-parent directory descriptor; and
+- typed `NOT_AVAILABLE` or `PREFLIGHT_ONLY` noncertificate closure with zero
+  child launches and every formal lock false.
+
+The current host has pidfd and cgroup-v2 primitives but no supplied delegated
+parent, so the expected result is `NOT_AVAILABLE`. A supplied directory FD is
+not delegation proof and remains `PREFLIGHT_ONLY` until a successor creates
+and verifies an exclusive leaf, programs the one-child caps, places the child
+atomically, reaps by pidfd, proves the leaf empty and reads the final peak.
+Only after that successor and a parent-owned accounting suffix may the nine
+shared-resource paths enter independent semantic verification.

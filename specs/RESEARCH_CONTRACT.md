@@ -4885,3 +4885,29 @@ writer, or independent source-byte semantic verifier. It issues no
 terminal certificate or official result. Every formal/official flag remains
 false; scalar cost and break-even remain null; counter-completeness, workload
 economics, fresh science and certificate Gates remain `NOT_RUN` or locked.
+
+## Contract 1.94.0: K7 OS-supervisor prelaunch admission
+
+The K7 accounting route must fail before launch unless an outer authority can
+construct an exclusive process-tree measurement boundary. V0-102 implements a
+bounded, read-only host probe that records exact successful source bytes,
+byte counts and SHA-256 digests for unified-cgroup membership, mount and
+controller inputs, together with pidfd primitive facts. It never infers a
+missing file as zero and never turns a readable cgroup path into delegation.
+
+A preopened delegated-parent directory descriptor is mandatory. If absent,
+the result is `NOT_AVAILABLE` with
+`DELEGATED_CGROUP_PARENT_FD_NOT_SUPPLIED`; if a directory descriptor is
+present, this revision yields only `PREFLIGHT_ONLY` with
+`DELEGATED_PARENT_RUNTIME_LEASE_VALIDATION_NOT_IMPLEMENTED`. Both are
+`ATTEMPT_CLOSURE_NONCERTIFICATE.OS_SUPERVISOR_NOT_AVAILABLE`, carry zero child
+launches and retain every semantic/formal/official lock as false.
+
+The current WSL2 namespace exposes pidfd and cgroup-v2 primitives but does not
+place the project process in a writable delegated attempt subtree. V0-102
+therefore records the blocker rather than using a child-reported RSS peak,
+sampling `/proc`, or treating `start_new_session` as no-descendant proof. The
+next contract must create and validate a fresh leaf under a supplied delegated
+FD, enforce the one-child/depth/descendant caps, place the child atomically,
+complete the pidfd/post-reap sequence, and issue the parent-owned accounting
+suffix. No CounterRecord, WorkVector or ComparisonVector is authorized here.

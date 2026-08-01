@@ -396,6 +396,18 @@ CONSTRUCTION_SHARED_RESOURCE_GLOBAL_SUPERVISOR_EVENT_V1_DOMAIN = (
 CONSTRUCTION_SHARED_RESOURCE_GLOBAL_SUPERVISOR_EVENT_JOURNAL_V1_DOMAIN = (
     "acfqp:construction-shared-resource-global-supervisor-event-journal:v1"
 )
+V075_K7_OS_SUPERVISOR_READ_EVIDENCE_V1_DOMAIN = (
+    "acfqp:v075-k7-os-supervisor-read-evidence:v1"
+)
+V075_K7_OS_SUPERVISOR_ADMISSION_PROFILE_V1_DOMAIN = (
+    "acfqp:v075-k7-os-supervisor-admission-profile:v1"
+)
+V075_K7_OS_SUPERVISOR_ADMISSION_PROBE_V1_DOMAIN = (
+    "acfqp:v075-k7-os-supervisor-admission-probe:v1"
+)
+V075_K7_OS_SUPERVISOR_ADMISSION_RESULT_V1_DOMAIN = (
+    "acfqp:v075-k7-os-supervisor-admission-result:v1"
+)
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
 ROUTE_CAP_PROFILE_DOMAIN = "acfqp:route-cap-profile:v1"
@@ -1043,6 +1055,18 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_shared_resource_global_supervisor_event_journal_v1": (
             CONSTRUCTION_SHARED_RESOURCE_GLOBAL_SUPERVISOR_EVENT_JOURNAL_V1_DOMAIN
+        ),
+        "v075_k7_os_supervisor_read_evidence_v1": (
+            V075_K7_OS_SUPERVISOR_READ_EVIDENCE_V1_DOMAIN
+        ),
+        "v075_k7_os_supervisor_admission_profile_v1": (
+            V075_K7_OS_SUPERVISOR_ADMISSION_PROFILE_V1_DOMAIN
+        ),
+        "v075_k7_os_supervisor_admission_probe_v1": (
+            V075_K7_OS_SUPERVISOR_ADMISSION_PROBE_V1_DOMAIN
+        ),
+        "v075_k7_os_supervisor_admission_result_v1": (
+            V075_K7_OS_SUPERVISOR_ADMISSION_RESULT_V1_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,
