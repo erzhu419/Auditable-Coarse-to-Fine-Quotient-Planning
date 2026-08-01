@@ -498,6 +498,15 @@ V075_K7_OUTER_ATTEMPT_CGROUP_BLOCKED_RESULT_V1_DOMAIN = (
 V075_K7_OUTER_ATTEMPT_MEMORY_EVIDENCE_V1_DOMAIN = (
     "acfqp:v075-k7-outer-attempt-memory-evidence:v1"
 )
+V075_K7_OUTER_ATTEMPT_BROKER_IPC_PROFILE_V1_DOMAIN = (
+    "acfqp:v075-k7-outer-attempt-broker-ipc-profile:v1"
+)
+V075_K7_OUTER_ATTEMPT_BROKER_IPC_FRAME_V1_DOMAIN = (
+    "acfqp:v075-k7-outer-attempt-broker-ipc-frame:v1"
+)
+V075_K7_OUTER_ATTEMPT_BROKER_IPC_TRANSCRIPT_V1_DOMAIN = (
+    "acfqp:v075-k7-outer-attempt-broker-ipc-transcript:v1"
+)
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
 ROUTE_CAP_PROFILE_DOMAIN = "acfqp:route-cap-profile:v1"
@@ -1247,6 +1256,15 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "v075_k7_outer_attempt_memory_evidence_v1": (
             V075_K7_OUTER_ATTEMPT_MEMORY_EVIDENCE_V1_DOMAIN
+        ),
+        "v075_k7_outer_attempt_broker_ipc_profile_v1": (
+            V075_K7_OUTER_ATTEMPT_BROKER_IPC_PROFILE_V1_DOMAIN
+        ),
+        "v075_k7_outer_attempt_broker_ipc_frame_v1": (
+            V075_K7_OUTER_ATTEMPT_BROKER_IPC_FRAME_V1_DOMAIN
+        ),
+        "v075_k7_outer_attempt_broker_ipc_transcript_v1": (
+            V075_K7_OUTER_ATTEMPT_BROKER_IPC_TRANSCRIPT_V1_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,

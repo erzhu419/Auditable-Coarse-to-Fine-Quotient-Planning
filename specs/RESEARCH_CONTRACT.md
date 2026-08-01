@@ -1,8 +1,8 @@
 # Research Contract
 
-**Current construction contract:** `2.0.3`
+**Current construction contract:** `2.0.4`
 
-**Current construction profile:** `v075_k7_attempt_process_supervisor_v1`
+**Current construction profile:** `v075_k7_outer_attempt_broker_ipc_v1`
 
 ## Definitions
 
@@ -5200,3 +5200,39 @@ cover final publication/output and cleanup. Contract `2.0.3` therefore issues
 no shared-resource receipt, `CounterRecord`,
 `WorkVector`, `ComparisonVector`, terminal, certificate, scientific endpoint or
 official execution. Every Gate remains locked or `NOT_RUN`.
+
+## Contract 2.0.4: K7 outer-attempt broker protocol
+
+V0-110B-2A freezes the structural IPC and future security contract for an
+attempt-preexisting external broker `O`. One immutable transcript contains
+exactly five canonical length-prefixed frames in fixed order:
+`WORKER_READY`, `BUSINESS_REQUEST`, `BUSINESS_RESULT`, `PARENT_OUTPUT` and
+`WORKER_EOF`. Every frame binds the same successor request, accounted route,
+broker execution spec and session nonce. Role-specific exact payload schemas
+permit one ordinal-zero business request and reject caller-selected FD,
+executable, argv, environment, cgroup or unknown fields. Strict replay checks
+canonical bytes, payload digests/sizes, frame IDs, fixed indices and the final
+transcript identity.
+
+This replay is deliberately offline and nonauthorizing. The caller may
+construct the binding and all five frames; identical bytes under the same
+expected binding remain replayable. No live peer-role ownership, broker-spec
+authority or one-time nonce/request consumption is established, and the
+transcript cannot authorize a launch.
+
+The executable successor is separately frozen to require one external
+single-threaded broker as the only `clone3` caller, two prebound sibling leaves,
+one write-ahead edge for each positive worker/business clone, kernel-enforced
+no-spawn children, two pidfd reaps, a same-open-file-description
+`memory.peak` reset/final read, operational output before worker exit and
+identity-bound empty-tree cleanup. `pids.max` remains containment rather than a
+cumulative launch counter. Existing V0-107/V0-108 results are not reclassified.
+
+Contract `2.0.4` implements only the typed byte protocol. Payload business
+semantics, live session authority, broker OS provenance, both launches, the
+memory window, operational output and crash-surviving guardian are not
+executed. It issues no
+shared-resource resolution, `CounterRecord`, `WorkVector`, `ComparisonVector`,
+terminal, certificate, scientific endpoint or official authority. Every Gate
+remains locked or `NOT_RUN`. See
+`specs/K7_OUTER_ATTEMPT_BROKER_PROTOCOL.md`.

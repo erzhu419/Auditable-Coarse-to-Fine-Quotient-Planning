@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `2.0.3`: the earlier contracts build the
+contracts now span `1.40.0` through `2.0.4`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -533,6 +533,24 @@ and cleanup. Existing V0-107/V0-108 execution is not silently relabelled. The
 remaining seven paths and `CounterRecord -> WorkVector -> ComparisonVector`
 remain locked. See
 [`specs/K7_OUTER_ATTEMPT_CGROUP.md`](specs/K7_OUTER_ATTEMPT_CGROUP.md).
+
+Contract `2.0.4` / V0-110B-2A freezes the external-broker successor protocol.
+Exactly five canonical, length-prefixed roles bind one request/route/broker-spec
+and session: worker ready, one business request, business result, parent output
+and worker EOF. Role-specific exact payload schemas prevent the worker from
+selecting an FD, executable, argv, environment or cgroup. Strict replay rejects
+missing, duplicated, reordered, extra, binding-mismatched/transplanted,
+noncanonical and over-cap frames. The binding and stream are caller-
+constructible offline values: byte-identical replay is allowed, sender
+ownership and one-time nonce consumption are not proved, and the transcript
+can never authorize a launch.
+
+This is structural IPC only. The broker runtime, two sibling `clone3` launches,
+kernel no-spawn proof, same-open-description `memory.peak` reset/read, complete
+output/cleanup window and all nine semantic receipts remain unimplemented.
+Consequently it emits no process or memory value and no `CounterRecord`,
+`WorkVector` or `ComparisonVector`. See
+[`specs/K7_OUTER_ATTEMPT_BROKER_PROTOCOL.md`](specs/K7_OUTER_ATTEMPT_BROKER_PROTOCOL.md).
 
 ## V0-074 repair construction (NONAUTHORIZING; fresh Gate NOT RUN)
 

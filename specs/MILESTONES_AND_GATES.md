@@ -4443,3 +4443,36 @@ remaining runtime, seven shared paths, receipts and exact
 `CounterRecord -> WorkVector -> ComparisonVector` materialization are still
 pending, and every formal/official Gate remains locked. See
 `specs/K7_OUTER_ATTEMPT_CGROUP.md`.
+
+## V0-110B-2A K7 outer-attempt broker protocol
+
+Contract `2.0.4` freezes the external broker's structural successor protocol.
+Exactly five canonical length-prefixed frames appear in one fixed order:
+worker ready, ordinal-zero business request, business result, parent output and
+worker EOF. All frames bind one request, route, broker execution spec and
+session nonce. Exact role payload fields prevent a worker from choosing an FD,
+executable, argv, environment or cgroup. Frame and transcript authorities bind
+canonical bytes, payload digests and sizes, role-derived indices and distinct
+content domains. Duplicate, missing, reordered, extra, crossed, noncanonical,
+unknown-field, `bool`-for-integer and over-cap inputs fail closed.
+
+This is an offline structural verifier. The caller may construct both the
+binding and complete stream, and byte-identical replay under the same binding
+is accepted. It does not prove sender/peer ownership, live broker-spec
+authority or one-time nonce/request consumption; the transcript itself has
+`launch_authority=false` and cannot authorize execution.
+
+The normative successor must use an attempt-preexisting external broker as the
+only two-role `clone3` authority, prebind worker/business sibling leaves,
+write-ahead each positive launch, enforce kernel no-spawn in both children,
+retain both pidfds, use one `A/memory.peak` open file description for reset and
+final read, keep the worker alive through operational output and prove complete
+empty-tree cleanup. Existing V0-107/V0-108 artifacts are not relabelled.
+
+This milestone implements only structural IPC. It has no real broker, live
+session authority, launch, memory reset/read, output writer, cleanup guardian
+or semantic receipt. No shared-resource value, `CounterRecord`, `WorkVector`,
+`ComparisonVector`,
+terminal, certificate, scientific result or official authority is issued. The
+nine-path, counter-completeness, economics, science and certificate Gates stay
+locked. See `specs/K7_OUTER_ATTEMPT_BROKER_PROTOCOL.md`.
