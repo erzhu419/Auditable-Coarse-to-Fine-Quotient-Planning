@@ -4937,3 +4937,31 @@ executed; and no cgroup lease, child body, parent suffix, wrapper-complete
 atomic output, semantic source verifier or formal 202-leaf reducer exists.
 Accordingly no CounterRecord, WorkVector, ComparisonVector, projection proof,
 terminal artifact or scientific result is authorized.
+
+## Contract 1.96.0: K7 delegated cgroup-v2 attempt lease
+
+The V0-103 request now admits one real descriptor-owned cgroup sub-authority.
+Before any cgroup access, an issuer-owned process-local service must consume an
+exactly matching request nonce token. The token is recorded at issue time and
+binds the live request and admission authorities, delegated-parent FD number,
+device/inode/mode/owner tuple and `/proc/self/fd` target digest. Tokens are
+single-use, unpickleable and invalid across processes. Durable cross-process
+replay exclusion is explicitly not claimed.
+
+After consumption, acquisition accepts only the preopened directory FD. It
+duplicates that FD, verifies cgroup2 plus delegated `memory` and `pids`, creates
+one exclusive request-labelled leaf with descriptor-relative no-follow calls,
+and validates every registered control. The new leaf must be empty, unpopulated,
+a domain cgroup and have exact initial `memory.peak=0`. The implementation writes
+and reads back `pids.max=1`, `cgroup.max.depth=0` and
+`cgroup.max.descendants=0`. Any post-creation failure must remove the owned leaf
+or raise a cleanup invariant; lease close revalidates the named inode and empty
+state and closes all owned descriptors even if removal fails.
+
+The real positive syscall path has been exercised inside a temporary
+systemd-delegated user scope, including exact control readback and leaf removal.
+This validates the lease implementation, not the future executor or formal
+accounting. No child is created or attached, no `clone3`/pidfd lifecycle or
+post-reap peak is observed, and no accounting suffix, atomic final output,
+semantic nine-path resolution, CounterRecord, WorkVector, ComparisonVector,
+projection proof, terminal artifact or official/scientific result is issued.

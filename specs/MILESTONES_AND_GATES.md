@@ -4197,3 +4197,30 @@ placement, pidfd supervision, the parent suffix and atomic output remain
 unimplemented. The next Gate is the real executor; formal nine-path evidence
 and `CounterRecord -> WorkVector -> ComparisonVector` remain locked until that
 runtime and its independent verifier exist.
+
+## V0-104 K7 delegated cgroup-v2 attempt lease
+
+Contract `1.96.0` implements the first real mutating sub-authority required by
+the parent-owned runtime. It consumes an issuer-recorded, process-local request
+nonce before any cgroup access and binds the exact request, admission object and
+preopened parent descriptor by FD number, stat identity and descriptor-target
+digest. It then uses descriptor-relative no-follow operations to:
+
+- verify cgroup2 and delegated `memory` and `pids` controllers;
+- create a unique, non-reused attempt leaf;
+- require all registered controls, no process/thread, `pids.current=0`,
+  `populated=0`, `cgroup.type=domain` and initial `memory.peak=0`;
+- write and exactly read back `pids.max=1`, `cgroup.max.depth=0` and
+  `cgroup.max.descendants=0`; and
+- remove only the identity-matched, still-empty owned leaf on failure or close.
+
+The success object is process-local, unpickleable and carries no child-launch
+or formal-accounting authority. A real temporary systemd delegated scope passed
+the positive create/readback/close path; the ordinary workspace shell remains
+non-delegated and fails before mutation.
+
+This Gate does not yet place a child atomically, supervise one by pidfd, prove
+post-exit emptiness/no descendants, capture the final peak, serialize the
+parent-owned suffix or close any of the nine shared-resource semantics. The
+next Gate is the parent executor using this lease; formal
+`CounterRecord -> WorkVector -> ComparisonVector` issuance remains locked.

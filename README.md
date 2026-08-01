@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `1.95.0`: the earlier contracts build the
+contracts now span `1.40.0` through `1.96.0`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -402,6 +402,20 @@ launched path must emit child-owned K7 business followed by a parent-owned
 accounting suffix. The current unavailable host produces only a zero-launch,
 zero-frame structural blocked result; it is not an attempt terminal and issues
 no formal accounting object.
+
+Contract `1.96.0` adds the first real mutating cgroup-v2 sub-authority. A
+process-local issuer consumes the exact request nonce once before any cgroup
+access, binds the admission object and the preopened parent FD by both stat
+identity and `/proc/self/fd` target digest, and then creates a unique leaf only
+through `dir_fd` operations. The leaf must be a domain cgroup on cgroup2, empty
+with zero initial `memory.peak`, and expose the required controls; `pids.max=1`,
+`cgroup.max.depth=0` and `cgroup.max.descendants=0` are written and read back
+exactly. Every post-creation failure removes the owned leaf or raises a cleanup
+failure, and a successful lease is process-local and unpickleable. A real
+temporary systemd-delegated scope exercised the positive create/readback/close
+path and confirmed leaf removal. This lease still launches no child and grants
+no pidfd, accounting-vector, terminal or official authority; durable
+cross-process nonce replay and the parent-owned executor remain the next Gate.
 
 ## V0-074 repair construction (NONAUTHORIZING; fresh Gate NOT RUN)
 
