@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `2.0.7`: the earlier contracts build the
+contracts now span `1.40.0` through `2.0.8`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -607,6 +607,21 @@ complete transcript, final peak/reaps/cleanup envelope and all nine semantic
 receipts remain absent. Formal vectors and every official Gate remain locked.
 See
 [`specs/K7_PRODUCTION_ROLE_AND_OUTPUT_CORE.md`](specs/K7_PRODUCTION_ROLE_AND_OUTPUT_CORE.md).
+
+Contract `2.0.8` / V0-110B-2D-2A issues the required fresh source identity
+instead of relabelling the absent-wrapper template. The new archive contains
+fixed worker/business process entries, a common public-input reconstructor and
+two frozen `python -I -S -B -c` archive bootstraps. Each bootstrap verifies the
+complete environment and FD namespace, sealed-versus-capability lane
+separation, interpreter/archive digests and exact ZIP module origin before
+entry. Runtime call-site provenance now reads exact ZIP member bytes, while the
+business lifecycle secret is metadata-checked but not copied before its sole
+business-core read.
+
+This is executable source closure, not the live broker. Native launch,
+role-specific sandboxing, sender credentials, transcript, output reread,
+reaps, final peak and all nine accounting paths remain locked. See
+[`specs/K7_PRODUCTION_ROLE_ARCHIVE_BOOTSTRAP.md`](specs/K7_PRODUCTION_ROLE_ARCHIVE_BOOTSTRAP.md).
 
 ## V0-074 repair construction (NONAUTHORIZING; fresh Gate NOT RUN)
 

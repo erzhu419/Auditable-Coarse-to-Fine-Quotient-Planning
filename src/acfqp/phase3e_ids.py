@@ -552,6 +552,21 @@ V075_K7_BROKER_OUTPUT_COMMIT_RECEIPT_V1_DOMAIN = (
 V075_K7_BROKER_WORKER_COMPLETION_V1_DOMAIN = (
     "acfqp:v075-k7-broker-worker-completion:v1"
 )
+V075_K7_PRODUCTION_ROLE_BOOTSTRAP_PROFILE_V2_DOMAIN = (
+    "acfqp:v075-k7-production-role-bootstrap-profile:v2"
+)
+V075_K7_PRODUCTION_ROLE_MANIFEST_PROFILE_V2_DOMAIN = (
+    "acfqp:v075-k7-production-role-manifest-profile:v2"
+)
+V075_K7_PRODUCTION_ROLE_SPEC_V2_DOMAIN = (
+    "acfqp:v075-k7-production-role-spec:v2"
+)
+V075_K7_PRODUCTION_ROLE_MANIFEST_V2_DOMAIN = (
+    "acfqp:v075-k7-production-role-manifest:v2"
+)
+V075_K7_PRODUCTION_ROLE_LAUNCH_CONTEXT_V2_DOMAIN = (
+    "acfqp:v075-k7-production-role-launch-context:v2"
+)
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
 ROUTE_CAP_PROFILE_DOMAIN = "acfqp:route-cap-profile:v1"
@@ -1355,6 +1370,21 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "v075_k7_broker_worker_completion_v1": (
             V075_K7_BROKER_WORKER_COMPLETION_V1_DOMAIN
+        ),
+        "v075_k7_production_role_bootstrap_profile_v2": (
+            V075_K7_PRODUCTION_ROLE_BOOTSTRAP_PROFILE_V2_DOMAIN
+        ),
+        "v075_k7_production_role_manifest_profile_v2": (
+            V075_K7_PRODUCTION_ROLE_MANIFEST_PROFILE_V2_DOMAIN
+        ),
+        "v075_k7_production_role_spec_v2": (
+            V075_K7_PRODUCTION_ROLE_SPEC_V2_DOMAIN
+        ),
+        "v075_k7_production_role_manifest_v2": (
+            V075_K7_PRODUCTION_ROLE_MANIFEST_V2_DOMAIN
+        ),
+        "v075_k7_production_role_launch_context_v2": (
+            V075_K7_PRODUCTION_ROLE_LAUNCH_CONTEXT_V2_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,

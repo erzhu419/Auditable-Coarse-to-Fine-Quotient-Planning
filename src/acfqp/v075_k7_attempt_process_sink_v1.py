@@ -25,6 +25,7 @@ import sys
 from threading import RLock, get_ident
 from typing import Any, Iterator, NoReturn
 import weakref
+import zipimport
 
 
 SCHEMA_VERSION = "1.0.0"
@@ -119,6 +120,57 @@ _ACTIVE_SINK: ContextVar[_AttemptProcessSinkBindingV1 | None] = ContextVar(
 )
 
 
+def _runtime_source_snapshot_v1(
+    *, globals_mapping: dict[str, Any], module_name: str
+) -> tuple[str, bytes]:
+    """Read the exact runtime module bytes from disk or its ZIP importer.
+
+    A strict fresh-exec imports the retained package from a path such as
+    ``/proc/self/fd/<n>/acfqp/<module>.py``.  That value is a valid zipimport
+    origin but not a filesystem child beneath the archive FD, so ``Path``
+    cannot open it.  Disk imports retain the historical resolve-and-read
+    validation; only an exact ``zipimporter``/``ModuleSpec`` join may use the
+    loader's raw-data interface.
+    """
+
+    source_path_value = globals_mapping.get("__file__")
+    if type(source_path_value) is not str or not source_path_value:
+        _fail("runtime launch-site registration lacks a source path")
+    specification = globals_mapping.get("__spec__")
+    loader = getattr(specification, "loader", None)
+    if isinstance(loader, zipimport.zipimporter):
+        origin = getattr(specification, "origin", None)
+        archive = getattr(loader, "archive", None)
+        if (
+            getattr(specification, "name", None) != module_name
+            or origin != source_path_value
+            or type(archive) is not str
+            or not archive
+            or not source_path_value.startswith(archive.rstrip("/") + "/")
+        ):
+            _fail("runtime ZIP source origin is not module-spec exact")
+        try:
+            raw = loader.get_data(source_path_value)
+        except OSError as error:
+            raise V075K7AttemptProcessSinkV1Error(
+                "runtime launch-site ZIP source snapshot is unreadable"
+            ) from error
+        if type(raw) is not bytes or not raw:
+            _fail("runtime launch-site ZIP source snapshot is empty or mistyped")
+        return source_path_value, raw
+
+    try:
+        source_path = Path(source_path_value).resolve(strict=True)
+        raw = source_path.read_bytes()
+    except OSError as error:
+        raise V075K7AttemptProcessSinkV1Error(
+            "runtime launch-site source snapshot is unreadable"
+        ) from error
+    if not raw:
+        _fail("runtime launch-site source snapshot is empty")
+    return str(source_path), raw
+
+
 def _register_v075_k7_attempt_process_receiver_v1(
     receiver: object,
 ) -> _AttemptProcessSinkBindingV1:
@@ -175,16 +227,10 @@ def _register_v075_k7_attempt_process_runtime_callsite_v1(
         is not function
     ):
         _fail("runtime launch-site registration is not module-initialization exact")
-    source_path_value = globals_mapping.get("__file__")
-    if type(source_path_value) is not str or not source_path_value:
-        _fail("runtime launch-site registration lacks a source path")
-    source_path = Path(source_path_value).resolve()
-    try:
-        raw = source_path.read_bytes()
-    except OSError as error:
-        raise V075K7AttemptProcessSinkV1Error(
-            "runtime launch-site source snapshot is unreadable"
-        ) from error
+    source_path, raw = _runtime_source_snapshot_v1(
+        globals_mapping=globals_mapping,
+        module_name=function.__module__,
+    )
     candidate = _PinnedRuntimeCallsiteV1(
         _BINDING_ISSUER,
         function,
@@ -192,7 +238,7 @@ def _register_v075_k7_attempt_process_runtime_callsite_v1(
         globals_mapping,
         function.__module__,
         function.__name__,
-        str(source_path),
+        source_path,
         hashlib.sha256(raw).hexdigest(),
         len(raw),
     )
