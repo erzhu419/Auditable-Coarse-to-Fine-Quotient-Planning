@@ -5465,3 +5465,14 @@ The 59-call/54-key source-hook inventory, loaded bytes, stage/path/site binding
 and production execution graph are replayed.  This closes the owner-emittable
 input family only.  No CounterRecord or vector exists until the other three
 families join atomically.  See `specs/K7_OWNER_EVENT_SEMANTIC_CLOSURE.md`.
+
+## Contract 2.0.24: derived reconciliation DAG
+
+V0-110B-2E-14 freezes exact equations and closure dependencies for all eight
+derived-only V6 paths. Verified direct-PIDfd reaps close the two process
+outcomes; a complete five-stage owner chain closes the three solver outcomes.
+The three route outcomes deliberately remain typed-blocked because status,
+hash and owned-wrapper shape are not terminal semantic proof. They require a
+successor binding the full transcript to actual production business-result
+bytes. No incomplete readiness artifact can enter formal materialization.
+See `specs/K7_DERIVED_RECONCILIATION.md`.

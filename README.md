@@ -3200,3 +3200,9 @@ sites into 71 nonformal path candidates.  Missing events are never inferred as
 zero; only a complete owner window may issue a zero candidate.  Formal
 accounting remains locked pending the 114 profile-zero, eight derived and
 atomic 202-path joins.
+
+The eight derived-only equations now have a replayable DAG. Process outcomes
+and solver-stage exclusion are semantically closed; route outcomes remain
+explicitly blocked until the production business-result bytes and the complete
+native transcript share one stronger terminal authority. No incomplete DAG
+result can enter a formal vector.

@@ -4670,3 +4670,12 @@ source-hook inventory and transcript are independently replayed; absence,
 abort, mutation and cross-stage/path substitution fail closed.  These
 candidates remain nonformal until the nine shared, 114 profile-zero and eight
 derived families are joined by the atomic materializer.
+
+## V0-110B-2E-14 derived reconciliation DAG
+
+Contract `2.0.24` registers the exact eight-path arithmetic and closure DAG.
+Fresh verified-nine/PIDfd replay closes process exit success/failure; complete
+five-stage exclusion closes solver attempt/success/failure. Route
+attempt/success/failure remain typed-blocked until the full native transcript
+is joined to actual production business-result bytes and semantic replay.
+Incomplete readiness cannot issue CounterRecords or vectors.

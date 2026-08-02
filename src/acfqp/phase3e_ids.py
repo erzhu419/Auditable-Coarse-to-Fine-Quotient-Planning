@@ -762,6 +762,24 @@ CONSTRUCTION_OWNER_SOURCE_CODE_IDENTITY_V1_DOMAIN = (
 CONSTRUCTION_OWNER_POSTEXEC_BINDING_V1_DOMAIN = (
     "acfqp:construction-owner-postexec-binding:v1"
 )
+CONSTRUCTION_K7_RECONCILIATION_FORMULA_AUTHORITY_V1_DOMAIN = (
+    "acfqp:construction-k7-reconciliation-formula-authority:v1"
+)
+CONSTRUCTION_K7_RECONCILIATION_ARITHMETIC_REPLAY_V1_DOMAIN = (
+    "acfqp:construction-k7-reconciliation-arithmetic-replay:v1"
+)
+CONSTRUCTION_K7_RECONCILIATION_SEMANTIC_DEPENDENCY_V1_DOMAIN = (
+    "acfqp:construction-k7-reconciliation-semantic-dependency:v1"
+)
+CONSTRUCTION_K7_RECONCILIATION_PATH_PROOF_V1_DOMAIN = (
+    "acfqp:construction-k7-reconciliation-path-proof:v1"
+)
+CONSTRUCTION_K7_RECONCILIATION_BLOCKER_V1_DOMAIN = (
+    "acfqp:construction-k7-reconciliation-blocker:v1"
+)
+CONSTRUCTION_K7_RECONCILIATION_READINESS_V1_DOMAIN = (
+    "acfqp:construction-k7-reconciliation-readiness:v1"
+)
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
 ROUTE_CAP_PROFILE_DOMAIN = "acfqp:route-cap-profile:v1"
@@ -1775,6 +1793,24 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_owner_postexec_binding_v1": (
             CONSTRUCTION_OWNER_POSTEXEC_BINDING_V1_DOMAIN
+        ),
+        "construction_k7_reconciliation_formula_authority_v1": (
+            CONSTRUCTION_K7_RECONCILIATION_FORMULA_AUTHORITY_V1_DOMAIN
+        ),
+        "construction_k7_reconciliation_arithmetic_replay_v1": (
+            CONSTRUCTION_K7_RECONCILIATION_ARITHMETIC_REPLAY_V1_DOMAIN
+        ),
+        "construction_k7_reconciliation_semantic_dependency_v1": (
+            CONSTRUCTION_K7_RECONCILIATION_SEMANTIC_DEPENDENCY_V1_DOMAIN
+        ),
+        "construction_k7_reconciliation_path_proof_v1": (
+            CONSTRUCTION_K7_RECONCILIATION_PATH_PROOF_V1_DOMAIN
+        ),
+        "construction_k7_reconciliation_blocker_v1": (
+            CONSTRUCTION_K7_RECONCILIATION_BLOCKER_V1_DOMAIN
+        ),
+        "construction_k7_reconciliation_readiness_v1": (
+            CONSTRUCTION_K7_RECONCILIATION_READINESS_V1_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,
