@@ -4620,3 +4620,11 @@ earliest exact archive-loaded sandbox point. Role entries cannot import common
 or core code until they consume the archive/role/PID/FD-bound attestation.
 System-interpreter fresh-exec and attack regressions pass; the complete live
 broker and accounting authorities remain locked.
+
+## V0-110B-2E-11 honest nine-source window join
+
+Contract `2.0.21` binds all nine source-local closed journals into one
+content-addressed production-attempt envelope without pretending their local
+event counts are identical. Exact path order, components, runtime/occurrence/
+attempt/decision/window identities, runtime replay and terminal closure are
+frozen; numeric semantic replay and formal vectors remain locked.

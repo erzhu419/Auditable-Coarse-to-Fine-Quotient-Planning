@@ -723,6 +723,12 @@ V075_K7_PIDFD_REAP_ATTESTATION_V2_DOMAIN = (
 V075_K7_PROCESS_LIFECYCLE_JOURNAL_V2_DOMAIN = (
     "acfqp:v075-k7-process-lifecycle-journal:v2"
 )
+CONSTRUCTION_SHARED_RESOURCE_BOUND_SOURCE_V3_DOMAIN = (
+    "acfqp:construction-shared-resource-bound-source:v3"
+)
+V075_K7_PRODUCTION_SHARED_RESOURCE_ENVELOPE_V3_DOMAIN = (
+    "acfqp:v075-k7-production-shared-resource-envelope:v3"
+)
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
 ROUTE_CAP_PROFILE_DOMAIN = "acfqp:route-cap-profile:v1"
@@ -1697,6 +1703,12 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "v075_k7_process_lifecycle_journal_v2": (
             V075_K7_PROCESS_LIFECYCLE_JOURNAL_V2_DOMAIN
+        ),
+        "construction_shared_resource_bound_source_v3": (
+            CONSTRUCTION_SHARED_RESOURCE_BOUND_SOURCE_V3_DOMAIN
+        ),
+        "v075_k7_production_shared_resource_envelope_v3": (
+            V075_K7_PRODUCTION_SHARED_RESOURCE_ENVELOPE_V3_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,

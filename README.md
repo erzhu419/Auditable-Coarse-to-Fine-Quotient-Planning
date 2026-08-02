@@ -3183,3 +3183,8 @@ remain required.
 The role bootstrap now installs and verifies post-exec denial from the exact
 sealed-archive sandbox module before importing either role entry; a one-shot
 archive/role/PID/FD-bound attestation gates all common/core imports.
+
+The complete nine-source adapter now preserves each source journal's honest
+local closure while binding all paths to one runtime attempt and measurement
+window; it does not pad unequal event counts or treat that structural join as
+numeric semantic authority.
