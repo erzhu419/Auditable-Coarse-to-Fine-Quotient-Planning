@@ -738,6 +738,12 @@ V075_K7_PRODUCTION_BROKER_RUNTIME_ENVELOPE_V2_DOMAIN = (
 CONSTRUCTION_SHARED_RESOURCE_SEMANTIC_VERIFIER_V2_DOMAIN = (
     "acfqp:construction-shared-resource-semantic-verifier:v2"
 )
+CONSTRUCTION_SHARED_RESOURCE_PATH_EXACT_AUTHORIZATION_V1_DOMAIN = (
+    "acfqp:construction-shared-resource-path-exact-authorization:v1"
+)
+V075_K7_VERIFIED_NINE_SHARED_RESOURCE_ENVELOPE_V1_DOMAIN = (
+    "acfqp:v075-k7-verified-nine-shared-resource-envelope:v1"
+)
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
 ROUTE_CAP_PROFILE_DOMAIN = "acfqp:route-cap-profile:v1"
@@ -1727,6 +1733,12 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_shared_resource_semantic_verifier_v2": (
             CONSTRUCTION_SHARED_RESOURCE_SEMANTIC_VERIFIER_V2_DOMAIN
+        ),
+        "construction_shared_resource_path_exact_authorization_v1": (
+            CONSTRUCTION_SHARED_RESOURCE_PATH_EXACT_AUTHORIZATION_V1_DOMAIN
+        ),
+        "v075_k7_verified_nine_shared_resource_envelope_v1": (
+            V075_K7_VERIFIED_NINE_SHARED_RESOURCE_ENVELOPE_V1_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,

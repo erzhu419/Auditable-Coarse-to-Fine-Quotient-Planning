@@ -4650,3 +4650,12 @@ content-addressed production-attempt envelope without pretending their local
 event counts are identical. Exact path order, components, runtime/occurrence/
 attempt/decision/window identities, runtime replay and terminal closure are
 frozen; numeric semantic replay and formal vectors remain locked.
+
+## V0-110B-2E-12 verified nine-resource semantics
+
+Contract `2.0.22` replays all nine honest V3 sources through the fixed
+path-specific semantic catalogue and issues one exact materialization
+authorization per path. Source-local intervals, raw bytes, verifier identities,
+reducers and the complete runtime context remain bound and attack-tested. The
+nine shared-resource inputs are now semantically closed; no formal record or
+vector is issued until the other 193 required V6 leaves close.

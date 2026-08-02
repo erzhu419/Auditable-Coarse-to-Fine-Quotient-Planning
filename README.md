@@ -3188,3 +3188,8 @@ The complete nine-source adapter now preserves each source journal's honest
 local closure while binding all paths to one runtime attempt and measurement
 window; it does not pad unequal event counts or treat that structural join as
 numeric semantic authority.
+
+The successor verified-nine envelope now executes all nine registered semantic
+replayers and freezes exact per-path materialization authorizations under that
+same runtime identity. Formal accounting remains locked until the 114 explicit
+native-zero, 71 owner-emittable and eight derived paths also close.

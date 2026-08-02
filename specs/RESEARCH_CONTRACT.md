@@ -5441,3 +5441,15 @@ match the three common-work catalogue paths, and independent replay derives
 counts while rejecting omitted, extra, duplicated, reordered or cutoff-hidden
 work. They remain raw-only pending complete live instrumentation. See
 `specs/K7_COMMON_RAW_JOURNALS.md`.
+
+## Contract 2.0.22: verified nine-resource envelope
+
+V0-110B-2E-12 executes the fixed semantic verifier for every path in the V3
+nine-source envelope and freezes an ordered exact authorization set. Each row
+binds its source-local interval, component identities and byte digests,
+semantic verifier, exact integer, reducer, and complete runtime occurrence
+context. Shape-only sources, mutation, duplicate paths and context transplant
+fail replay. The nine shared-resource inputs are now eligible for atomic
+materialization, but no `CounterRecord` or vector is issued until the 114
+native-zero, 71 owner-emittable and eight derived paths also close. See
+`specs/K7_VERIFIED_NINE_SHARED_RESOURCE_ENVELOPE.md`.
