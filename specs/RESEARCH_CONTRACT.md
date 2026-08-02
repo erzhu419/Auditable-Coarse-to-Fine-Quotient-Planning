@@ -5353,3 +5353,72 @@ crash/no-loss evidence and all nine semantic receipts remain absent. No
 shared-resource value, formal accounting object, terminal, certificate,
 scientific result or official Gate authority moves. See
 `specs/K7_PRODUCTION_ROLE_AND_OUTPUT_CORE.md`.
+
+## Contract 2.0.8: fresh production-role archive bootstrap
+
+V0-110B-2D-2A issues a new source archive, request and manifest containing
+both fixed process wrappers. Each isolated bootstrap loads project modules
+only from the pinned ZIP members, binds the exact interpreter/archive digest,
+argv, environment and inherited FD namespace, and marks inherited role FDs
+CLOEXEC before project import. The lifecycle secret is metadata-checked but
+first read only by the business core. This closes executable source
+provenance, not the native launch or accounting envelope. See
+`specs/K7_PRODUCTION_ROLE_ARCHIVE_BOOTSTRAP.md`.
+
+## Contract 2.0.9: broker resource session
+
+V0-110B-2D-2B binds two broker-mediated SEQPACKET pairs, broker-only
+`SO_PASSCRED`, distinct RW/RO descriptions of one result memfd and a fresh
+worker-only output directory to the exact production manifest and contexts.
+Its guardian detects FD, queue, option, seal and directory substitution and
+performs inode-bound empty cleanup. It launches nothing. See
+`specs/K7_BROKER_RESOURCE_SESSION.md`.
+
+## Contract 2.0.10: nine-path semantic catalogue
+
+V0-110B-2E-0 maps every required shared-resource V6 leaf to one exact live
+source family, V2 component set, provenance obligations and semantic verifier
+key. Historical V1 receipts, numeric self-report and schema relabelling are
+ineligible. All nine paths remain pending until their actual replayers close.
+See `specs/K7_NINE_PATH_SEMANTIC_RESOLUTION.md`.
+
+## Contract 2.0.11: production-role sandbox
+
+The parent prepares role-specific Landlock and exact-FD seccomp material. The
+native child installs it before its sole descriptor-only exec edge; the loaded
+entry stacks an exec-denial filter. Descendant creation is denied from birth,
+worker path writes are confined to the output subtree and business has no
+path-write exception. This authority is not yet a complete-attempt no-spawn
+attestation. See `specs/K7_PRODUCTION_ROLE_SANDBOX.md`.
+
+## Contract 2.0.12: production-role launch authority
+
+One-shot launch records join manifest/context, interpreter, separately sealed
+role-public inputs, resource capabilities and the business-only secret/private
+locator without serializing FD numbers or private paths. Exact bytes, seals,
+kernel access modes, inodes and cross-lane disjointness are replayed before the
+fixed argv/environment tuple can be consumed. Consumption is not a launch. See
+`specs/K7_PRODUCTION_ROLE_LAUNCH_AUTHORITY.md`.
+
+## Contract 2.0.13: authenticated broker packets
+
+The broker accepts exactly one SCM credential record per non-truncated packet
+and joins sender PID to both the expected native launch result and its retained
+pidfd, then replays the expected canonical role/binding. Each observation is
+partial and cannot stand for the five-frame transcript or reap proof. See
+`specs/K7_AUTHENTICATED_BROKER_CHANNEL.md`.
+
+## Contract 2.0.14: transfer and mount raw journals
+
+Recorder-owned sequences and preregistered purposes derive read/staged SUMs
+and unique-payload mounted MAX from raw transfers and visibility intervals.
+The closed identity/cutoff-bound components exactly match three catalogue
+paths and reject missing, duplicated, reordered, transplanted or hidden work.
+They remain raw-only until complete live-source semantic replay. See
+`specs/K7_TRANSFER_MOUNT_RAW_JOURNALS.md`.
+
+Contracts 2.0.8--2.0.14 still do not form a joined production attempt. The
+native broker, complete output/reap/peak envelope, remaining six raw sources,
+nine semantic replayers and `CounterRecord -> WorkVector -> ComparisonVector`
+materialization remain required. Every official, economics, counter,
+certificate and scientific Gate stays locked or `NOT_RUN`.

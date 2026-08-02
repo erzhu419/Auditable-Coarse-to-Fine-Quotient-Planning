@@ -3167,3 +3167,10 @@ keeps the official scalar and `N_break_even` null: vector prefix and componentwi
 worst-frontier mechanics may proceed, but scalar crossing is deferred to a later ledger
 revision.
 The earlier profiles retain their original claims and are not retroactively relabelled.
+
+The current K7 accounting-construction edge has executable archive-only role
+bootstraps, a fixed broker resource topology, from-birth role sandbox material,
+one-shot launch records, kernel-credential packet authentication and raw
+read/stage/mount journals. These pieces have not yet been joined into the one
+complete production broker envelope, so the nine semantic resolutions and
+formal `CounterRecord -> WorkVector -> ComparisonVector` chain remain locked.

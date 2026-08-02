@@ -576,6 +576,66 @@ V075_K7_BROKER_ROLE_CAPABILITY_BUNDLE_V2_DOMAIN = (
 V075_K7_BROKER_RESOURCE_SESSION_V2_DOMAIN = (
     "acfqp:v075-k7-broker-resource-session:v2"
 )
+V075_K7_AUTHENTICATED_BROKER_CHANNEL_PROFILE_V2_DOMAIN = (
+    "acfqp:v075-k7-authenticated-broker-channel-profile:v2"
+)
+V075_K7_AUTHENTICATED_BROKER_FRAME_V2_DOMAIN = (
+    "acfqp:v075-k7-authenticated-broker-frame:v2"
+)
+V075_K7_PRODUCTION_ROLE_SANDBOX_PROFILE_V2_DOMAIN = (
+    "acfqp:v075-k7-production-role-sandbox-profile:v2"
+)
+V075_K7_PRODUCTION_ROLE_POSTEXEC_TIGHTENING_V2_DOMAIN = (
+    "acfqp:v075-k7-production-role-postexec-tightening:v2"
+)
+V075_K7_PRODUCTION_ROLE_LAUNCH_AUTHORITY_PROFILE_V2_DOMAIN = (
+    "acfqp:v075-k7-production-role-launch-authority-profile:v2"
+)
+V075_K7_PRODUCTION_ROLE_LAUNCH_AUTHORITY_V2_DOMAIN = (
+    "acfqp:v075-k7-production-role-launch-authority:v2"
+)
+CONSTRUCTION_SHARED_RESOURCE_TRANSFER_MOUNT_SESSION_V2_DOMAIN = (
+    "acfqp:construction-shared-resource-transfer-mount-session:v2"
+)
+CONSTRUCTION_SHARED_RESOURCE_TRANSFER_PURPOSE_V2_DOMAIN = (
+    "acfqp:construction-shared-resource-transfer-purpose:v2"
+)
+CONSTRUCTION_SHARED_RESOURCE_TRANSFER_PAYLOAD_V2_DOMAIN = (
+    "acfqp:construction-shared-resource-transfer-payload:v2"
+)
+CONSTRUCTION_SHARED_RESOURCE_TRANSFER_ID_V2_DOMAIN = (
+    "acfqp:construction-shared-resource-transfer-id:v2"
+)
+CONSTRUCTION_SHARED_RESOURCE_TRANSFER_CHARGE_KEY_V2_DOMAIN = (
+    "acfqp:construction-shared-resource-transfer-charge-key:v2"
+)
+CONSTRUCTION_SHARED_RESOURCE_TRANSFER_EVENT_V2_DOMAIN = (
+    "acfqp:construction-shared-resource-transfer-event:v2"
+)
+CONSTRUCTION_SHARED_RESOURCE_MOUNT_INTERVAL_V2_DOMAIN = (
+    "acfqp:construction-shared-resource-mount-interval:v2"
+)
+CONSTRUCTION_SHARED_RESOURCE_MOUNT_EVENT_V2_DOMAIN = (
+    "acfqp:construction-shared-resource-mount-event:v2"
+)
+V075_K7_OPERATIONAL_CUTOFF_ATTESTATION_V2_DOMAIN = (
+    "acfqp:v075-k7-operational-cutoff-attestation:v2"
+)
+V075_K7_READ_TRANSFER_JOURNAL_V2_DOMAIN = (
+    "acfqp:v075-k7-read-transfer-journal:v2"
+)
+V075_K7_STAGED_TRANSFER_JOURNAL_V2_DOMAIN = (
+    "acfqp:v075-k7-staged-transfer-journal:v2"
+)
+V075_K7_TRANSFER_CHARGE_REGISTRY_V2_DOMAIN = (
+    "acfqp:v075-k7-transfer-charge-registry:v2"
+)
+V075_K7_MOUNT_PAYLOAD_REGISTRY_V2_DOMAIN = (
+    "acfqp:v075-k7-mount-payload-registry:v2"
+)
+V075_K7_MOUNT_VISIBILITY_JOURNAL_V2_DOMAIN = (
+    "acfqp:v075-k7-mount-visibility-journal:v2"
+)
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
 ROUTE_CAP_PROFILE_DOMAIN = "acfqp:route-cap-profile:v1"
@@ -1403,6 +1463,66 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "v075_k7_broker_resource_session_v2": (
             V075_K7_BROKER_RESOURCE_SESSION_V2_DOMAIN
+        ),
+        "v075_k7_authenticated_broker_channel_profile_v2": (
+            V075_K7_AUTHENTICATED_BROKER_CHANNEL_PROFILE_V2_DOMAIN
+        ),
+        "v075_k7_authenticated_broker_frame_v2": (
+            V075_K7_AUTHENTICATED_BROKER_FRAME_V2_DOMAIN
+        ),
+        "v075_k7_production_role_sandbox_profile_v2": (
+            V075_K7_PRODUCTION_ROLE_SANDBOX_PROFILE_V2_DOMAIN
+        ),
+        "v075_k7_production_role_postexec_tightening_v2": (
+            V075_K7_PRODUCTION_ROLE_POSTEXEC_TIGHTENING_V2_DOMAIN
+        ),
+        "v075_k7_production_role_launch_authority_profile_v2": (
+            V075_K7_PRODUCTION_ROLE_LAUNCH_AUTHORITY_PROFILE_V2_DOMAIN
+        ),
+        "v075_k7_production_role_launch_authority_v2": (
+            V075_K7_PRODUCTION_ROLE_LAUNCH_AUTHORITY_V2_DOMAIN
+        ),
+        "construction_shared_resource_transfer_mount_session_v2": (
+            CONSTRUCTION_SHARED_RESOURCE_TRANSFER_MOUNT_SESSION_V2_DOMAIN
+        ),
+        "construction_shared_resource_transfer_purpose_v2": (
+            CONSTRUCTION_SHARED_RESOURCE_TRANSFER_PURPOSE_V2_DOMAIN
+        ),
+        "construction_shared_resource_transfer_payload_v2": (
+            CONSTRUCTION_SHARED_RESOURCE_TRANSFER_PAYLOAD_V2_DOMAIN
+        ),
+        "construction_shared_resource_transfer_id_v2": (
+            CONSTRUCTION_SHARED_RESOURCE_TRANSFER_ID_V2_DOMAIN
+        ),
+        "construction_shared_resource_transfer_charge_key_v2": (
+            CONSTRUCTION_SHARED_RESOURCE_TRANSFER_CHARGE_KEY_V2_DOMAIN
+        ),
+        "construction_shared_resource_transfer_event_v2": (
+            CONSTRUCTION_SHARED_RESOURCE_TRANSFER_EVENT_V2_DOMAIN
+        ),
+        "construction_shared_resource_mount_interval_v2": (
+            CONSTRUCTION_SHARED_RESOURCE_MOUNT_INTERVAL_V2_DOMAIN
+        ),
+        "construction_shared_resource_mount_event_v2": (
+            CONSTRUCTION_SHARED_RESOURCE_MOUNT_EVENT_V2_DOMAIN
+        ),
+        "v075_k7_operational_cutoff_attestation_v2": (
+            V075_K7_OPERATIONAL_CUTOFF_ATTESTATION_V2_DOMAIN
+        ),
+        "v075_k7_read_transfer_journal_v2": (
+            V075_K7_READ_TRANSFER_JOURNAL_V2_DOMAIN
+        ),
+        "v075_k7_staged_transfer_journal_v2": (
+            V075_K7_STAGED_TRANSFER_JOURNAL_V2_DOMAIN
+        ),
+        "v075_k7_transfer_charge_registry_v2": (
+            V075_K7_TRANSFER_CHARGE_REGISTRY_V2_DOMAIN
+        ),
+        "v075_k7_mount_payload_registry_v2": (
+            V075_K7_MOUNT_PAYLOAD_REGISTRY_V2_DOMAIN
+        ),
+        "v075_k7_mount_visibility_journal_v2": (
+            V075_K7_MOUNT_VISIBILITY_JOURNAL_V2_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,

@@ -4572,3 +4572,25 @@ sandbox, two-reap/final-peak/cleanup envelope, crash-persistent journal or
 nine-path receipt exists. Consequently no `CounterRecord`, `WorkVector`,
 `ComparisonVector`, terminal, certificate, scientific endpoint or official
 Gate is authorized. See `specs/K7_PRODUCTION_ROLE_AND_OUTPUT_CORE.md`.
+
+## V0-110B-2D-2A through V0-110B-2E-4 production prelaunch joins
+
+Contracts `2.0.8`--`2.0.14` now provide:
+
+- archive-only fresh-exec role bootstraps and single-read secret ownership;
+- the two-channel/result-memfd/output-directory resource topology;
+- the exact nine-path semantic-source catalogue;
+- from-birth role Landlock/no-spawn plus postexec exec tightening;
+- one-shot manifest/context/input/capability launch records;
+- SCM-credential/PID/pidfd authenticated canonical packets; and
+- raw replayable read, staged and mounted evidence components.
+
+These pieces are individually executable and attack-tested but are not yet one
+production attempt. The next Gate must consume them under a single external
+broker, preserve the complete five-frame/output/reap/same-OFD-peak window, add
+the other six path sources, run all nine semantic replayers and materialize the
+formal accounting chain. Until then no CounterRecord, vector, terminal,
+certificate or official scientific claim is authorized. See the corresponding
+`specs/K7_PRODUCTION_ROLE_*`, `specs/K7_AUTHENTICATED_BROKER_CHANNEL.md`,
+`specs/K7_NINE_PATH_SEMANTIC_RESOLUTION.md` and
+`specs/K7_TRANSFER_MOUNT_RAW_JOURNALS.md`.
