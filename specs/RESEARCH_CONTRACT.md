@@ -1,8 +1,8 @@
 # Research Contract
 
-**Current construction contract:** `2.0.4`
+**Current construction contract:** `2.0.5`
 
-**Current construction profile:** `v075_k7_outer_attempt_broker_ipc_v1`
+**Current construction profile:** `v075_k7_outer_attempt_broker_preparation_v1`
 
 ## Definitions
 
@@ -5187,11 +5187,13 @@ systemd-delegated execution validates this path; temporary directory tests are
 only negative controls.
 
 This contract is `PREP_ONLY`. No worker is launched, and descendant metadata
-can charge the ancestor after creation; therefore neither a launch baseline nor
-a numeric memory value exists. A future runtime must reset and verify the peak
-immediately before launch. Exclusive parent write authority, atomic
-name-to-inode deletion and a cleanup guardian are not proved, so exact runtime
-consumption remains forbidden. `pids.max` is containment rather than a
+can charge the ancestor after creation; therefore contract `2.0.3` issues no
+numeric memory value and deferred the exact window placement. Contract `2.0.5`
+supersedes its proposed immediate-prelaunch reset by starting the retained
+measurement window before descendant creation. Exclusive parent write
+authority, atomic name-to-inode deletion and a crash-surviving guardian are not
+proved, so exact runtime consumption remains forbidden. `pids.max` is
+containment rather than a
 cumulative process SUM. Exact future process accounting requires two externally
 brokered launches—worker and business—with no-spawn enforcement; neither child
 receives writable ancestor authority. Existing V0-107/V0-108 execution requires
@@ -5236,3 +5238,42 @@ shared-resource resolution, `CounterRecord`, `WorkVector`, `ComparisonVector`,
 terminal, certificate, scientific endpoint or official authority. Every Gate
 remains locked or `NOT_RUN`. See
 `specs/K7_OUTER_ATTEMPT_BROKER_PROTOCOL.md`.
+
+## Contract 2.0.5: prepared live broker session
+
+V0-110B-2B adds the first live process-local broker-preparation authority
+without yet launching worker or business. One lock-serialized transfer
+permanently revokes
+the V0-110B-1 lease's descriptor and unused-cleanup access. The receiving
+guardian creates the fixed `business` sibling and owns every parent, hierarchy,
+kill, retained-peak and socket endpoint descriptor. An issuer-owned execution
+spec binds those identities to the exact request, route, lease and V0-110B-2A
+IPC profile; the broker mints the nonce, and the process-local service rejects
+request reuse.
+
+The handoff commit binds one process-local object-identity token to the exact
+guardian under the lease lifecycle lock. Failure resolution uses that token
+under the same lock, so an interrupted stale handoff cannot close a different
+service's committed session; transferred context exit is likewise serialized.
+
+The authentic delegated-cgroup run changed the planned zero-reset order.
+Two empty descendants already charged `253952` bytes to the ancestor, so
+resetting after topology construction cannot yield zero. The retained
+`memory.peak` OFD is now opened and reset when the fresh ancestor is still
+descendant-free and peak/current are both zero. Outer configuration, leaf
+creation and session preparation then occur inside the measurement window. The
+prelaunch peak may be nonzero and is not subtracted; a later exact runtime must
+retain this OFD through its final read.
+
+The execution spec records control-file device/inode metadata only. It does
+not prove OFD continuity or per-OFD reset state; that authority is exclusively
+the live process-local transferred descriptor and cannot be reconstructed from
+serialized bytes.
+
+The process-local guardian provides retryable prelaunch cleanup and reports
+control mismatches only after safe empty-tree deletion. It cannot safely
+resolve the business `mkdir -> inode capture` gap without the preexisting
+parent guardian, and it is not crash persistent. No child/peer authority,
+launch, frame, final memory value, shared-resource receipt or formal vector is
+issued. All official/economics/science/certificate Gates remain locked or
+`NOT_RUN`. See `specs/K7_OUTER_ATTEMPT_BROKER_PREPARATION.md`.

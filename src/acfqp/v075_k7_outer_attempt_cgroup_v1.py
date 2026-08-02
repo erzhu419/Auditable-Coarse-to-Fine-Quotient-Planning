@@ -18,7 +18,7 @@ import stat
 import sys
 import threading
 import time
-from typing import Any, Mapping, NoReturn
+from typing import Any, Callable, Mapping, NoReturn
 
 from acfqp import v075_k7_cgroup_lease_v1 as inner_v1
 from acfqp import v075_k7_os_supervisor_admission_v1 as admission_v1
@@ -87,6 +87,7 @@ _TOKEN_ISSUER = object()
 _LEASE_ISSUER = object()
 _CLEANUP_GUARD_ISSUER = object()
 _BLOCKED_ISSUER = object()
+_BROKER_PREPARATION_TRANSFER_ISSUER = object()
 
 
 class V075K7OuterAttemptCgroupV1Error(RuntimeError):
@@ -131,6 +132,7 @@ class V075K7OuterAttemptCgroupProtocolV1Error(
 
 class K7OuterAttemptCgroupLeaseStateV1(str, Enum):
     ACTIVE = "ACTIVE"
+    TRANSFERRED = "TRANSFERRED"
     CLEANUP_PARTIAL = "CLEANUP_PARTIAL"
     CLOSED = "CLOSED"
 
@@ -248,6 +250,26 @@ def _control_text(directory_fd: int, name: str) -> str:
         inner_v1._read_control(directory_fd, name),  # noqa: SLF001
         name,
     ).strip()
+
+
+def _read_retained_peak(descriptor: int) -> int:
+    """Read one resettable ``memory.peak`` through its retained OFD."""
+
+    os.lseek(descriptor, 0, os.SEEK_SET)
+    chunks: list[bytes] = []
+    total = 0
+    while True:
+        remaining = inner_v1.MAX_CONTROL_BYTES + 1 - total
+        if remaining <= 0:
+            _fail("retained memory.peak exceeds its byte cap")
+        chunk = os.read(descriptor, min(8192, remaining))
+        if not chunk:
+            break
+        chunks.append(chunk)
+        total += len(chunk)
+    return inner_v1._parse_nonnegative(  # noqa: SLF001
+        b"".join(chunks), "memory.peak"
+    )
 
 
 def _controls_match(
@@ -800,6 +822,12 @@ class K7OuterAttemptCgroupLeaseV1:
         "_outer_removed",
         "_protocol_violations",
         "_state",
+        "_lifecycle_lock",
+        "_broker_peak_fd",
+        "_broker_peak_status",
+        "_broker_peak_reset_peak",
+        "_broker_peak_reset_current",
+        "_broker_committed_guardian_token",
     )
 
     def __init__(
@@ -813,6 +841,9 @@ class K7OuterAttemptCgroupLeaseV1:
         worker_name: str,
         request: successor_v1.V075K7ParentOwnedSuccessorRequestV1,
         admission_result: admission_v1.K7OSSupervisorAdmissionResultV1,
+        broker_peak_fd: int = -1,
+        broker_peak_reset_peak: int | None = None,
+        broker_peak_reset_current: int | None = None,
     ) -> None:
         if issuer is not _LEASE_ISSUER:
             _fail("outer-attempt cgroup lease is issuer-owned")
@@ -831,6 +862,24 @@ class K7OuterAttemptCgroupLeaseV1:
         self._outer_removed = False
         self._protocol_violations: list[str] = []
         self._state = K7OuterAttemptCgroupLeaseStateV1.ACTIVE
+        self._lifecycle_lock = threading.Lock()
+        self._broker_peak_fd = broker_peak_fd
+        self._broker_peak_status = (
+            os.fstat(broker_peak_fd) if broker_peak_fd >= 0 else None
+        )
+        self._broker_peak_reset_peak = broker_peak_reset_peak
+        self._broker_peak_reset_current = broker_peak_reset_current
+        self._broker_committed_guardian_token: object | None = None
+        if (
+            (broker_peak_fd >= 0)
+            != (
+                type(broker_peak_reset_peak) is int
+                and broker_peak_reset_peak == 0
+                and type(broker_peak_reset_current) is int
+                and broker_peak_reset_current == 0
+            )
+        ):
+            _fail("retained broker peak authority lacks an exact zero reset baseline")
         self._lease_id = _hash(
             V075_K7_OUTER_ATTEMPT_CGROUP_LEASE_V1_DOMAIN, self._payload()
         )
@@ -864,7 +913,12 @@ class K7OuterAttemptCgroupLeaseV1:
             and inner_v1._fstatfs_magic(self._worker_fd)  # noqa: SLF001
             == inner_v1.CGROUP2_SUPER_MAGIC
         )
-        if not parent_valid or not outer_valid or not worker_valid:
+        peak_valid = self._broker_peak_fd < 0 or (
+            self._broker_peak_status is not None
+            and _descriptor_tuple(os.fstat(self._broker_peak_fd))
+            == _descriptor_tuple(self._broker_peak_status)
+        )
+        if not parent_valid or not outer_valid or not worker_valid or not peak_valid:
             _fail("outer-attempt cgroup descriptor identity changed")
 
     def _assert_consumable(self) -> None:
@@ -946,10 +1000,20 @@ class K7OuterAttemptCgroupLeaseV1:
         return {**self._payload(), "outer_attempt_cgroup_lease_id": self.lease_id}
 
     def close_unused(self) -> None:
+        """Serialize unused cleanup against the irreversible broker transfer."""
+
+        with self._lifecycle_lock:
+            self._close_unused_locked()
+
+    def _close_unused_locked(self) -> None:
         """Remove a never-consumed hierarchy; executed work requires a runtime."""
 
         self._assert_cleanup_authority()
         self._state = K7OuterAttemptCgroupLeaseStateV1.CLEANUP_PARTIAL
+        if self._broker_peak_fd >= 0:
+            descriptor = self._broker_peak_fd
+            self._broker_peak_fd = -1
+            os.close(descriptor)
         # Creating a descendant cgroup may itself charge kernel memory to its
         # ancestor.  This unused close discards that observation; it does not
         # reinterpret a later nonzero peak as proof that a worker ran.
@@ -1043,12 +1107,102 @@ class K7OuterAttemptCgroupLeaseV1:
                 "unused outer hierarchy could not be removed"
             ) from error
 
+    def _transfer_to_broker_preparation(
+        self,
+        issuer: object,
+        *,
+        guardian_factory: Callable[[dict[str, Any]], Any],
+        guardian_holder: list[Any],
+    ) -> Any:
+        """Build the cleanup capability, then irreversibly transfer ownership.
+
+        ``guardian_holder`` is populated before the lease is revoked so the
+        caller's surrounding ``BaseException`` handler can recover the
+        capability even if an asynchronous exception interrupts the final
+        handoff bytecodes.  Until revocation, this lease remains the owner.
+        """
+
+        if issuer is not _BROKER_PREPARATION_TRANSFER_ISSUER:
+            _fail("outer-attempt lease transfer authority is issuer-owned")
+        if (
+            not callable(guardian_factory)
+            or type(guardian_holder) is not list
+            or guardian_holder
+        ):
+            _fail("broker-preparation transfer receiver is invalid")
+        with self._lifecycle_lock:
+            self._assert_consumable()
+            transfer_token = object()
+            authority = {
+                "owner_pid": self._owner_pid,
+                "parent_fd": self._parent_fd,
+                "outer_fd": self._outer_fd,
+                "worker_fd": self._worker_fd,
+                "outer_name": self._outer_name,
+                "worker_name": self._worker_name,
+                "parent_status": self._parent_status,
+                "outer_status": self._outer_status,
+                "worker_status": self._worker_status,
+                "request_id": self._request.request_id,
+                "route_identity_id": self._request.route_identity.route_identity_id,
+                "lease_id": self.lease_id,
+                "broker_peak_fd": self._broker_peak_fd,
+                "broker_peak_status": self._broker_peak_status,
+                "broker_peak_reset_peak": self._broker_peak_reset_peak,
+                "broker_peak_reset_current": self._broker_peak_reset_current,
+                "transfer_token": transfer_token,
+            }
+            # The receiver must exist before the old lease is revoked.  A
+            # constructor failure leaves this ACTIVE lease as sole cleanup
+            # authority; a later handoff interruption leaves the receiver in
+            # the caller-owned holder.
+            guardian = guardian_factory(authority)
+            guardian_holder.append(guardian)
+            self._broker_committed_guardian_token = transfer_token
+            self._state = K7OuterAttemptCgroupLeaseStateV1.TRANSFERRED
+            self._parent_fd = self._outer_fd = self._worker_fd = -1
+            self._broker_peak_fd = -1
+            return guardian
+
+    def _resolve_failed_broker_preparation_transfer(
+        self, issuer: object, transfer_token: object | None
+    ) -> bool:
+        """Atomically choose the sole cleanup authority after handoff failure.
+
+        ``True`` means the exact token-bound guardian owns cleanup. ``False``
+        means this method either closed/retried the old lease or a different
+        committed guardian owns the transferred descriptors.
+        """
+
+        if issuer is not _BROKER_PREPARATION_TRANSFER_ISSUER:
+            _fail("broker-preparation failure resolution is issuer-owned")
+        with self._lifecycle_lock:
+            self._check_process()
+            if self._state is K7OuterAttemptCgroupLeaseStateV1.TRANSFERRED:
+                if self._broker_committed_guardian_token is None:
+                    _fail("transferred lease lacks its committed guardian token")
+                return (
+                    transfer_token is not None
+                    and transfer_token is self._broker_committed_guardian_token
+                )
+            if self._state in (
+                K7OuterAttemptCgroupLeaseStateV1.ACTIVE,
+                K7OuterAttemptCgroupLeaseStateV1.CLEANUP_PARTIAL,
+            ):
+                self._close_unused_locked()
+            return False
+
     def __enter__(self) -> "K7OuterAttemptCgroupLeaseV1":
         self._assert_consumable()
         return self
 
     def __exit__(self, *_args: object) -> None:
-        self.close_unused()
+        with self._lifecycle_lock:
+            self._check_process()
+            if self._state is K7OuterAttemptCgroupLeaseStateV1.TRANSFERRED:
+                # The broker guardian is now the sole cleanup authority.
+                return
+            self._close_unused_locked()
 
     def __reduce__(self):
         raise TypeError("outer-attempt cgroup lease is unpickleable")
@@ -1151,11 +1305,13 @@ def acquire_v075_k7_outer_attempt_cgroup_v1(
             worker_created=False,
         )
 
-    parent_fd = outer_fd = worker_fd = -1
+    parent_fd = outer_fd = worker_fd = broker_peak_fd = -1
     outer_name: str | None = None
     worker_name: str | None = None
     outer_status: os.stat_result | None = None
     worker_status: os.stat_result | None = None
+    broker_peak_reset_peak: int | None = None
+    broker_peak_reset_current: int | None = None
     outer_created = worker_created = False
     blocker: tuple[K7OuterAttemptCgroupBlockerV1, K7OuterAttemptCgroupStageV1] | None = None
     try:
@@ -1230,6 +1386,37 @@ def acquire_v075_k7_outer_attempt_cgroup_v1(
                         inner_v1._read_control(outer_fd, name)  # noqa: SLF001
                 _validate_fresh_domain(outer_fd)
             except (OSError, inner_v1.V075K7CgroupLeaseV1Error, V075K7OuterAttemptCgroupV1Error):
+                blocker = (
+                    K7OuterAttemptCgroupBlockerV1.OUTER_VALIDATION_FAILED,
+                    K7OuterAttemptCgroupStageV1.OUTER_CREATE,
+                )
+        if blocker is None:
+            try:
+                # Start the only exact memory window while A is still a
+                # fresh descendant-free zero-current cgroup.  The same OFD is
+                # retained across all later hierarchy/session preparation and
+                # transferred to the external broker runtime.
+                broker_peak_fd = inner_v1._open_control(  # noqa: SLF001
+                    outer_fd, "memory.peak", os.O_RDWR
+                )
+                os.lseek(broker_peak_fd, 0, os.SEEK_SET)
+                if os.write(broker_peak_fd, b"0") != 1:
+                    _fail("retained memory.peak reset made partial progress")
+                broker_peak_reset_peak = _read_retained_peak(broker_peak_fd)
+                broker_peak_reset_current = inner_v1._parse_nonnegative(  # noqa: SLF001
+                    inner_v1._read_control(outer_fd, "memory.current"),  # noqa: SLF001
+                    "memory.current",
+                )
+                if (
+                    broker_peak_reset_peak != 0
+                    or broker_peak_reset_current != 0
+                ):
+                    _fail("fresh outer cgroup lacks an exact zero reset baseline")
+            except (
+                OSError,
+                inner_v1.V075K7CgroupLeaseV1Error,
+                V075K7OuterAttemptCgroupV1Error,
+            ):
                 blocker = (
                     K7OuterAttemptCgroupBlockerV1.OUTER_VALIDATION_FAILED,
                     K7OuterAttemptCgroupStageV1.OUTER_CREATE,
@@ -1372,12 +1559,18 @@ def acquire_v075_k7_outer_attempt_cgroup_v1(
             worker_name=worker_name,
             request=request,
             admission_result=admission_result,
+            broker_peak_fd=broker_peak_fd,
+            broker_peak_reset_peak=broker_peak_reset_peak,
+            broker_peak_reset_current=broker_peak_reset_current,
         )
-        parent_fd = outer_fd = worker_fd = -1
+        parent_fd = outer_fd = worker_fd = broker_peak_fd = -1
         outer_created = worker_created = False
         return lease
     finally:
         cleanup_error: BaseException | None = None
+        if broker_peak_fd >= 0:
+            os.close(broker_peak_fd)
+            broker_peak_fd = -1
         if outer_created or worker_created:
             cleanup_guard = K7OuterAttemptCgroupCleanupGuardV1(
                 _CLEANUP_GUARD_ISSUER,

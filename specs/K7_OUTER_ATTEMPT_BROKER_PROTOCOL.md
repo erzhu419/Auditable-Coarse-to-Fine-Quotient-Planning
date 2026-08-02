@@ -143,6 +143,30 @@ business, reset/read a real peak handle, count a process, write operational
 output, close any of the nine shared-resource receipts or materialize
 `CounterRecord -> WorkVector -> ComparisonVector`.
 
+## Contract 2.0.5 prepared-session successor
+
+V0-110B-2B supplies an issuer-owned execution spec, broker-minted nonce,
+noninheritable endpoint pair, fixed `business` sibling and process-local
+prelaunch guardian. It consumes the outer lease irreversibly and rejects a
+second process-local session for the same request. This removes caller-minted
+binding from the production successor path, while the standalone V0-110B-2A
+offline verifier remains intentionally caller-constructible.
+
+Real cgroup execution disproved the proposed placement of a zero reset after
+topology preparation: the empty descendants themselves charge memory to the
+ancestor. The exact successor now opens and resets the sole `A/memory.peak`
+OFD while `A` is descendant-free and both peak/current are zero. Configuration,
+descendant creation and session preparation occur inside that retained window;
+the later prelaunch peak may be nonzero, is never subtracted, and the future
+runtime must use the same OFD for its final read.
+
+The execution-spec file-identity mapping alone does not prove OFD continuity;
+that authority exists only in the live process-local transferred capability.
+
+This still proves no live peer role, consumed business ordinal, process launch,
+complete memory window or shared-resource value. See
+`specs/K7_OUTER_ATTEMPT_BROKER_PREPARATION.md`.
+
 The following remain false or unavailable:
 
 ```text

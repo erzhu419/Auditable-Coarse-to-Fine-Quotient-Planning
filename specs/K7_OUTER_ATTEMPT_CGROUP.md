@@ -18,7 +18,7 @@ charged attempt.  It creates a fresh empty hierarchy:
 delegated root
 └── A                         empty attempt domain
     ├── worker               complete parent/worker process
-    └── acfqp-<request>-...  existing V0-104 business leaf, created later
+    └── business             fixed successor business leaf, created later
 ```
 
 `A` enables the `memory` and `pids` controllers before any process enters its
@@ -31,6 +31,10 @@ runtime can make final hierarchical `A/memory.peak` cover worker preparation,
 request replay, business execution, parent replay, final publication/output
 work and attempt-owned cleanup, including simultaneous worker and child
 residency.
+
+Contract `2.0.5` selects the fixed sibling name `business`; the earlier
+V0-104-style random name was illustrative and is not reused as the successor
+identity.
 
 ## Frozen hierarchy
 
@@ -55,11 +59,13 @@ Both directories are opened with no-follow descriptor-relative operations and
 bound by filesystem, device and inode identity.  Before the worker leaf is
 created, the fresh ancestor reports `memory.peak=0`; after the complete empty
 hierarchy is created, both nodes are rechecked as unpopulated and empty, with
-the exact one-descendant topology and frozen controls.  Descendant metadata may
-already have raised the ancestor peak, so this value is not a launch baseline.
-The future runtime must reset and verify the ancestor peak immediately before
-the first launch and bind that reset to the unified event window.  This
-milestone performs no such reset.
+the exact one-descendant topology and frozen controls. Descendant metadata may
+already have raised the ancestor peak, so this value is not an
+immediate-prelaunch zero baseline. Contract `2.0.3` therefore deferred the
+exact window placement. Contract `2.0.5` supersedes its proposed reset order:
+the retained measurement window now begins at the descendant-free zero state
+and charges later topology/session preparation. This milestone itself issues
+no such successor authority.
 
 The ancestor's `cgroup.kill` is opened with write authority during preparation,
 but no cleanup guardian holds that authority after supervisor failure.  Name

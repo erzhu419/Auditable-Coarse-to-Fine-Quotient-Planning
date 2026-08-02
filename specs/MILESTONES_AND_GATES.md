@@ -4430,10 +4430,12 @@ creation; unused close discards that observation and never interprets it as
 worker execution.
 
 This milestone is `PREP_ONLY` and does not launch a worker. Descendant metadata
-makes the initial ancestor observation unsuitable as a launch baseline; the
-future runtime must reset and verify the peak immediately before launch.
-Exclusive parent write authority, atomic name-to-inode deletion and a cleanup
-guardian are not yet proved, so exact runtime consumption is forbidden.
+makes the initial ancestor observation unsuitable as an immediate-prelaunch
+zero baseline. Contract `2.0.5` supersedes contract `2.0.3`'s proposed reset
+order by opening the retained measurement window before descendant creation.
+Exclusive parent write authority, atomic name-to-inode deletion and a
+crash-surviving guardian are not yet proved, so exact runtime consumption is
+forbidden.
 `pids.max=2` is not cumulative launch evidence. Exact process accounting still
 requires the external supervisor to broker both launches while worker and
 business code are no-spawn; the worker receives no writable ancestor FD, and
@@ -4476,3 +4478,43 @@ or semantic receipt. No shared-resource value, `CounterRecord`, `WorkVector`,
 terminal, certificate, scientific result or official authority is issued. The
 nine-path, counter-completeness, economics, science and certificate Gates stay
 locked. See `specs/K7_OUTER_ATTEMPT_BROKER_PROTOCOL.md`.
+
+## V0-110B-2B prepared live broker session
+
+Contract `2.0.5` irreversibly transfers one active outer lease into an
+issuer-owned, process-local prelaunch guardian. The guardian creates and binds
+the fixed `business` sibling, retains the parent/ancestor/worker/business,
+`cgroup.kill`, `memory.peak` and two socket endpoint descriptors, and freezes a
+request/route/lease/topology-bound execution spec plus broker-generated nonce.
+The official process-local service rejects a repeated request; neither the spec
+nor prepared session is caller-mintable.
+
+The lock-serialized commit binds the exact guardian by a process-local
+object-identity token. Interrupted, competing handoffs cannot claim each
+other's cleanup authority, and transferred context exit is checked under that
+same lifecycle lock.
+
+The real delegated-scope test exposed a necessary memory-window correction.
+After both empty descendants exist, `memory.current` and the reset
+`memory.peak` were both `253952`, so a post-topology zero baseline is
+unimplementable. The exact path now opens/resets the sole OFD while the fresh
+ancestor has no descendants and both values are zero. All hierarchy and
+session preparation occurs after that reset, inside the retained window. A
+nonzero prelaunch peak is expected, no baseline subtraction is permitted, and
+the future final read must use that same OFD.
+
+The serialized control-file identity proves only device/inode metadata, not
+OFD continuity. Same-OFD authority is the live process-local transferred
+descriptor and cannot be reconstructed from spec bytes.
+
+Prelaunch empty-tree cleanup is serialized, retryable after partial removal
+and safely completes before reporting frozen-control mismatches. The
+`mkdir(business)`-to-inode-capture gap is explicitly
+`IDENTITY_UNBOUND_REQUIRES_PARENT_GUARD`; crash persistence, exclusive parent
+write ownership and atomic name deletion remain unproved.
+
+No process is launched, no IPC frame is sent and no shared-resource value is
+issued. Live peer ownership, ordinal consumption, the final peak, all nine
+semantic receipts, `CounterRecord`, `WorkVector`, `ComparisonVector`, terminal,
+certificate and official authority remain locked. See
+`specs/K7_OUTER_ATTEMPT_BROKER_PREPARATION.md`.

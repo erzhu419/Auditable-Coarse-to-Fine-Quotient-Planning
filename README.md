@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `2.0.4`: the earlier contracts build the
+contracts now span `1.40.0` through `2.0.5`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -523,10 +523,12 @@ changed cap cannot prevent safe deletion and instead raises a typed
 cleanup-complete protocol error. The positive path passes in a real
 systemd-delegated user scope.
 
-This is `PREP_ONLY`: descendant metadata can raise the ancestor peak, so a
-future runtime must reset and verify it immediately before launch. Exclusive
-parent write authority, atomic descriptor deletion and a cleanup guardian are
-not proved; no worker has run and no pidfd/output lifecycle has been joined.
+This is `PREP_ONLY`: descendant metadata can raise the ancestor peak, so
+contract `2.0.3` deferred the exact window placement. Contract `2.0.5`
+supersedes its proposed immediate-prelaunch reset by starting the retained
+measurement window before descendant creation. Exclusive parent write
+authority, atomic descriptor deletion and a crash-surviving guardian are not
+proved; no worker has run and no pidfd/output lifecycle has been joined.
 Exact process SUM requires an external two-launch broker plus no-spawn
 worker/business execution, and its window must include final publication/output
 and cleanup. Existing V0-107/V0-108 execution is not silently relabelled. The
@@ -551,6 +553,18 @@ output/cleanup window and all nine semantic receipts remain unimplemented.
 Consequently it emits no process or memory value and no `CounterRecord`,
 `WorkVector` or `ComparisonVector`. See
 [`specs/K7_OUTER_ATTEMPT_BROKER_PROTOCOL.md`](specs/K7_OUTER_ATTEMPT_BROKER_PROTOCOL.md).
+
+Contract `2.0.5` / V0-110B-2B now prepares one real live broker session without
+launching it. The outer lease transfers irreversibly into a process-local
+guardian, which adds the fixed `business` sibling, owns the kill/peak/socket
+descriptors, mints the execution spec and nonce, and rejects request reuse.
+Real cgroup evidence corrected the memory-window placement: an empty prepared
+two-leaf tree already carries kernel memory, so the unique `memory.peak` OFD is
+reset at zero before descendant creation and retained across all later
+preparation. No baseline subtraction is used. The real delegated-scope path
+passes; launches, peer ownership, final peak, receipts and formal vectors are
+still locked. See
+[`specs/K7_OUTER_ATTEMPT_BROKER_PREPARATION.md`](specs/K7_OUTER_ATTEMPT_BROKER_PREPARATION.md).
 
 ## V0-074 repair construction (NONAUTHORIZING; fresh Gate NOT RUN)
 
