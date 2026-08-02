@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `2.0.8`: the earlier contracts build the
+contracts now span `1.40.0` through `2.0.10`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -622,6 +622,29 @@ This is executable source closure, not the live broker. Native launch,
 role-specific sandboxing, sender credentials, transcript, output reread,
 reaps, final peak and all nine accounting paths remain locked. See
 [`specs/K7_PRODUCTION_ROLE_ARCHIVE_BOOTSTRAP.md`](specs/K7_PRODUCTION_ROLE_ARCHIVE_BOOTSTRAP.md).
+
+Contract `2.0.9` / V0-110B-2D-2B prepares the concrete nonsealed resource
+topology for those wrappers: two broker-mediated SEQPACKET pairs with
+broker-only `SO_PASSCRED`, one result memfd with distinct business-RW and
+worker/broker-RO descriptions, and one fresh output directory available only
+to the worker and broker. Exact manifest/context/binding identities and
+pairwise-disjoint FD roles are replayed; packet, option, memfd, directory and
+cross-binding attacks fail closed under a process-local cleanup guardian.
+
+No process or frame is created by this slice. Sandbox, native launcher, live
+protocol, post-reap envelope and formal accounting remain locked. See
+[`specs/K7_BROKER_RESOURCE_SESSION.md`](specs/K7_BROKER_RESOURCE_SESSION.md).
+
+Contract `2.0.10` / V0-110B-2E-0 freezes the semantic input contract for all
+nine shared-resource paths. Each path is bound to its V6 metadata, one exact
+live source family, required component schemas, provenance obligations and a
+fixed future replayer. V1 receipts/closures, mappings and self-reported
+numeric values cannot cross this boundary; complete raw components remain
+typed pending until independent path-specific replay exists.
+
+This maps the nine sources but does not yet verify them or issue formal
+records/vectors. See
+[`specs/K7_NINE_PATH_SEMANTIC_RESOLUTION.md`](specs/K7_NINE_PATH_SEMANTIC_RESOLUTION.md).
 
 ## V0-074 repair construction (NONAUTHORIZING; fresh Gate NOT RUN)
 

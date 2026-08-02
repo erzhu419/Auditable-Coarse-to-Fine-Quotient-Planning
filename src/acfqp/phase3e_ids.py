@@ -567,6 +567,15 @@ V075_K7_PRODUCTION_ROLE_MANIFEST_V2_DOMAIN = (
 V075_K7_PRODUCTION_ROLE_LAUNCH_CONTEXT_V2_DOMAIN = (
     "acfqp:v075-k7-production-role-launch-context:v2"
 )
+V075_K7_BROKER_RESOURCE_SESSION_PROFILE_V2_DOMAIN = (
+    "acfqp:v075-k7-broker-resource-session-profile:v2"
+)
+V075_K7_BROKER_ROLE_CAPABILITY_BUNDLE_V2_DOMAIN = (
+    "acfqp:v075-k7-broker-role-capability-bundle:v2"
+)
+V075_K7_BROKER_RESOURCE_SESSION_V2_DOMAIN = (
+    "acfqp:v075-k7-broker-resource-session:v2"
+)
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
 ROUTE_CAP_PROFILE_DOMAIN = "acfqp:route-cap-profile:v1"
@@ -1385,6 +1394,15 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "v075_k7_production_role_launch_context_v2": (
             V075_K7_PRODUCTION_ROLE_LAUNCH_CONTEXT_V2_DOMAIN
+        ),
+        "v075_k7_broker_resource_session_profile_v2": (
+            V075_K7_BROKER_RESOURCE_SESSION_PROFILE_V2_DOMAIN
+        ),
+        "v075_k7_broker_role_capability_bundle_v2": (
+            V075_K7_BROKER_ROLE_CAPABILITY_BUNDLE_V2_DOMAIN
+        ),
+        "v075_k7_broker_resource_session_v2": (
+            V075_K7_BROKER_RESOURCE_SESSION_V2_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,
