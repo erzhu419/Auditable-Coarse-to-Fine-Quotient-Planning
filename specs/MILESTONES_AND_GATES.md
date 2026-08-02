@@ -4621,6 +4621,16 @@ or core code until they consume the archive/role/PID/FD-bound attestation.
 System-interpreter fresh-exec and attack regressions pass; the complete live
 broker and accounting authorities remain locked.
 
+## V0-110B-2E-9 joined production broker runtime
+
+Contract `2.0.19` consumes the prepared cgroup/resource/sandbox/launch graph
+in one irreversible broker lifecycle. Two native sibling-cgroup launches,
+five PID/pidfd/SCM-authenticated frames, direct `P_PIDFD` reaps, pinned output
+replay/no-replace promotion, retained-OFD final peak and retry-safe cleanup are
+joined into one typed nonformal envelope. The operational wrapper has not yet
+been adopted as the first registered output-fixed-point role, and no receipt,
+formal vector, terminal or Gate authority moves.
+
 ## V0-110B-2E-11 honest nine-source window join
 
 Contract `2.0.21` binds all nine source-local closed journals into one
