@@ -681,6 +681,48 @@ V075_K7_PROTOCOL_OBLIGATION_TRANSCRIPT_V2_DOMAIN = (
 V075_K7_LOADED_PROTOCOL_SITE_ATTESTATION_V2_DOMAIN = (
     "acfqp:v075-k7-loaded-protocol-site-attestation:v2"
 )
+CONSTRUCTION_SHARED_RESOURCE_OUTPUT_FINALIZATION_SESSION_V2_DOMAIN = (
+    "acfqp:construction-shared-resource-output-finalization-session:v2"
+)
+CONSTRUCTION_SHARED_RESOURCE_DURABLE_WRITE_EVENT_V2_DOMAIN = (
+    "acfqp:construction-shared-resource-durable-write-event:v2"
+)
+CONSTRUCTION_SHARED_RESOURCE_OUTPUT_FIXED_POINT_ITERATION_V2_DOMAIN = (
+    "acfqp:construction-shared-resource-output-fixed-point-iteration:v2"
+)
+V075_K7_DURABLE_OUTPUT_FIXED_POINT_V2_DOMAIN = (
+    "acfqp:v075-k7-durable-output-fixed-point:v2"
+)
+V075_K7_EXCLUSIVE_WRITER_ATTESTATION_V2_DOMAIN = (
+    "acfqp:v075-k7-exclusive-writer-attestation:v2"
+)
+V075_K7_EIGHT_ROLE_OUTPUT_MANIFEST_V2_DOMAIN = (
+    "acfqp:v075-k7-eight-role-output-manifest:v2"
+)
+CONSTRUCTION_SHARED_RESOURCE_WORKING_PROCESS_EVENT_V2_DOMAIN = (
+    "acfqp:construction-shared-resource-working-process-event:v2"
+)
+V075_K7_CGROUP_EMPTY_ATTESTATION_V2_DOMAIN = (
+    "acfqp:v075-k7-cgroup-empty-attestation:v2"
+)
+V075_K7_MEMORY_PEAK_POST_READ_V2_DOMAIN = (
+    "acfqp:v075-k7-memory-peak-post-read:v2"
+)
+V075_K7_MEMORY_PEAK_PRE_READ_V2_DOMAIN = (
+    "acfqp:v075-k7-memory-peak-pre-read:v2"
+)
+V075_K7_SAME_OFD_ATTESTATION_V2_DOMAIN = (
+    "acfqp:v075-k7-same-ofd-attestation:v2"
+)
+V075_K7_NO_SPAWN_ATTESTATION_V2_DOMAIN = (
+    "acfqp:v075-k7-no-spawn-attestation:v2"
+)
+V075_K7_PIDFD_REAP_ATTESTATION_V2_DOMAIN = (
+    "acfqp:v075-k7-pidfd-reap-attestation:v2"
+)
+V075_K7_PROCESS_LIFECYCLE_JOURNAL_V2_DOMAIN = (
+    "acfqp:v075-k7-process-lifecycle-journal:v2"
+)
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
 ROUTE_CAP_PROFILE_DOMAIN = "acfqp:route-cap-profile:v1"
@@ -1613,6 +1655,48 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "v075_k7_loaded_protocol_site_attestation_v2": (
             V075_K7_LOADED_PROTOCOL_SITE_ATTESTATION_V2_DOMAIN
+        ),
+        "construction_shared_resource_output_finalization_session_v2": (
+            CONSTRUCTION_SHARED_RESOURCE_OUTPUT_FINALIZATION_SESSION_V2_DOMAIN
+        ),
+        "construction_shared_resource_durable_write_event_v2": (
+            CONSTRUCTION_SHARED_RESOURCE_DURABLE_WRITE_EVENT_V2_DOMAIN
+        ),
+        "construction_shared_resource_output_fixed_point_iteration_v2": (
+            CONSTRUCTION_SHARED_RESOURCE_OUTPUT_FIXED_POINT_ITERATION_V2_DOMAIN
+        ),
+        "v075_k7_durable_output_fixed_point_v2": (
+            V075_K7_DURABLE_OUTPUT_FIXED_POINT_V2_DOMAIN
+        ),
+        "v075_k7_exclusive_writer_attestation_v2": (
+            V075_K7_EXCLUSIVE_WRITER_ATTESTATION_V2_DOMAIN
+        ),
+        "v075_k7_eight_role_output_manifest_v2": (
+            V075_K7_EIGHT_ROLE_OUTPUT_MANIFEST_V2_DOMAIN
+        ),
+        "construction_shared_resource_working_process_event_v2": (
+            CONSTRUCTION_SHARED_RESOURCE_WORKING_PROCESS_EVENT_V2_DOMAIN
+        ),
+        "v075_k7_cgroup_empty_attestation_v2": (
+            V075_K7_CGROUP_EMPTY_ATTESTATION_V2_DOMAIN
+        ),
+        "v075_k7_memory_peak_post_read_v2": (
+            V075_K7_MEMORY_PEAK_POST_READ_V2_DOMAIN
+        ),
+        "v075_k7_memory_peak_pre_read_v2": (
+            V075_K7_MEMORY_PEAK_PRE_READ_V2_DOMAIN
+        ),
+        "v075_k7_same_ofd_attestation_v2": (
+            V075_K7_SAME_OFD_ATTESTATION_V2_DOMAIN
+        ),
+        "v075_k7_no_spawn_attestation_v2": (
+            V075_K7_NO_SPAWN_ATTESTATION_V2_DOMAIN
+        ),
+        "v075_k7_pidfd_reap_attestation_v2": (
+            V075_K7_PIDFD_REAP_ATTESTATION_V2_DOMAIN
+        ),
+        "v075_k7_process_lifecycle_journal_v2": (
+            V075_K7_PROCESS_LIFECYCLE_JOURNAL_V2_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,

@@ -4603,3 +4603,12 @@ Together with the transfer/mount journals, six of nine source families now
 have internal arithmetic replay. None is yet semantically complete without the
 single live broker cutoff and full source-site coverage; no formal accounting
 or Gate authority moves.
+
+## V0-110B-2E-7 remaining raw source families
+
+Contract `2.0.17` adds durable eight-role output fixed-point evidence,
+same-OFD descendant-free working-peak evidence, and two-role native
+clone/PID/pidfd/SCM/no-spawn/direct-reap process evidence. All nine shared
+paths now have raw arithmetic replayers. The complete production envelope,
+path-semantic authorities and formal `202 -> 182 -> 8` vector chain remain the
+next construction Gate.
