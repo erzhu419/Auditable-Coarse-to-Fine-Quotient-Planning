@@ -76,8 +76,11 @@ It cannot be reconstructed from the execution-spec document.
 The process-local guardian owns every descriptor after transfer. Before any
 launch, it verifies empty leaves, descriptor/name identities, controls and
 descendant counts, then removes `business`, `worker` and `A`. Partial removal is
-monotonic and retryable. A frozen-control mismatch is reported only after safe
-empty-tree deletion and carries `cleanup_complete=true`.
+monotonic and retryable. The writable `cgroup.kill` OFD remains retained until
+all emptiness checks pass and the owned hierarchy is removed, so an unexpected
+tree occupant cannot turn a partial cleanup into permanent authority loss. A
+frozen-control mismatch is reported only after safe empty-tree deletion and
+carries `cleanup_complete=true`.
 
 If creation fails between `mkdir("business")` and inode capture, cleanup is
 explicitly `IDENTITY_UNBOUND_REQUIRES_PARENT_GUARD`; name-based deletion is not
@@ -89,7 +92,8 @@ and atomic name-to-inode deletion are not proved.
 Unit tests cover immutable spec fields, same-request replay rejection,
 concurrent preparation, nonzero/inconsistent observations, transfer/cleanup
 races, stale-request cleanup, safe control-mismatch deletion and retry after a
-partial removal. An opt-in `systemd-run --user --scope -p Delegate=yes` test
+partial removal, including preservation of tree-kill authority across a failed
+emptiness check. An opt-in `systemd-run --user --scope -p Delegate=yes` test
 passes on a real cgroup-v2 hierarchy and replays the retained zero-reset
 path.
 
@@ -112,6 +116,8 @@ COUNTER_COMPLETENESS_GATE_NOT_RUN
 SAMPLE_EFFICIENCY_GATE_NOT_RUN
 ```
 
-The next milestone is a two-role native broker probe with role-specific
-write-ahead launch edges, kernel no-spawn enforcement, pidfd lifecycle and
-truthful `0/1/2` failed-prefix counts. It is not yet the production K7 worker.
+Contract `2.0.6` implements the successor two-role native probe with
+role-specific write-ahead edges, kernel no-spawn enforcement, pidfd lifecycle
+and truthful `0/1/2` failed-prefix counts. It remains nonformal. The next
+milestone must add broker-observed live-frame provenance and the real K7
+worker/business/output protocol before any shared-resource receipt can close.

@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `2.0.5`: the earlier contracts build the
+contracts now span `1.40.0` through `2.0.6`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -565,6 +565,27 @@ preparation. No baseline subtraction is used. The real delegated-scope path
 passes; launches, peer ownership, final peak, receipts and formal vectors are
 still locked. See
 [`specs/K7_OUTER_ATTEMPT_BROKER_PREPARATION.md`](specs/K7_OUTER_ATTEMPT_BROKER_PREPARATION.md).
+
+Contract `2.0.6` / V0-110B-2C consumes that prepared session in a real
+two-role native launch probe. One signal-blocked, single-threaded broker calls
+`clone3(CLONE_INTO_CGROUP|CLONE_PIDFD|CLONE_CLEAR_SIGHAND)` first for
+`worker`, then for `business`; the native parent branch writes the role edge
+before returning to Python. Both children enter their fixed sibling cgroups,
+install the existing no-spawn Landlock/seccomp bootstrap before `execveat`,
+and are reaped through distinct pidfds. Failed runs retain only the valid
+`(0,0)`, `(1,0)` or `(1,1)` prefix, and an interrupted reap retains a
+process-local retry authority instead of closing its pidfd. That authority is
+guardian-bound before the first clone; signals stay blocked through native-fact
+recovery, retired pidfds cannot be resurrected from stale cells, and
+`cgroup.kill` remains available for tree-only retry. A real delegated scope
+launches and reaps two `/bin/true` images and closes the tree.
+
+This remains a probe. Its launch cells are volatile, the direct peer
+socketpair cannot prove authorship of the five protocol frames, and the final
+peak is not yet a complete operational output window. It therefore signs no
+exact `process.launches`, shared-resource receipt, `CounterRecord`,
+`WorkVector` or `ComparisonVector`. See
+[`specs/K7_TWO_ROLE_BROKER_PROBE.md`](specs/K7_TWO_ROLE_BROKER_PROBE.md).
 
 ## V0-074 repair construction (NONAUTHORIZING; fresh Gate NOT RUN)
 

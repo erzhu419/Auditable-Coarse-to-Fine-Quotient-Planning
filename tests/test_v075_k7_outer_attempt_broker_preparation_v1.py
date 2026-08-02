@@ -364,6 +364,41 @@ def test_cleanup_is_retryable_and_does_not_consult_stale_request(
         assert session.guardian.closed is True
 
 
+def test_partial_emptiness_failure_retains_tree_kill_authority(
+    tmp_path, monkeypatch
+) -> None:
+    with _fake_lease(tmp_path, monkeypatch, "prepared-retained-tree-kill") as (
+        lease,
+        _request,
+        _parent,
+        _outer,
+        _worker,
+        _rmdir,
+    ):
+        session = prep_v1.K7OuterAttemptBrokerPreparationServiceV1().prepare(lease)
+        original_validate = prep_v1.inner_v1._validate_empty_leaf  # noqa: SLF001
+        failed = False
+
+        def fail_once(descriptor):
+            nonlocal failed
+            if not failed:
+                failed = True
+                raise RuntimeError("injected populated-tree observation")
+            return original_validate(descriptor)
+
+        monkeypatch.setattr(prep_v1.inner_v1, "_validate_empty_leaf", fail_once)
+        with pytest.raises(
+            prep_v1.V075K7OuterAttemptBrokerPreparationV1Error,
+            match="partial and retryable",
+        ):
+            session.close_prelaunch()
+        assert session.guardian._kill_fd >= 0  # noqa: SLF001
+        os.fstat(session.guardian._kill_fd)  # noqa: SLF001
+        session.close_prelaunch()
+        assert session.guardian.closed is True
+        assert session.guardian._kill_fd == -1  # noqa: SLF001
+
+
 def test_nonzero_or_inconsistent_reset_observation_fails_closed_and_consumes_request(
     tmp_path, monkeypatch
 ) -> None:

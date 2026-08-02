@@ -1,8 +1,8 @@
 # Research Contract
 
-**Current construction contract:** `2.0.5`
+**Current construction contract:** `2.0.6`
 
-**Current construction profile:** `v075_k7_outer_attempt_broker_preparation_v1`
+**Current construction profile:** `v075_k7_two_role_broker_probe_v1`
 
 ## Definitions
 
@@ -5277,3 +5277,42 @@ parent guardian, and it is not crash persistent. No child/peer authority,
 launch, frame, final memory value, shared-resource receipt or formal vector is
 issued. All official/economics/science/certificate Gates remain locked or
 `NOT_RUN`. See `specs/K7_OUTER_ATTEMPT_BROKER_PREPARATION.md`.
+
+## Contract 2.0.6: two-role native broker probe
+
+V0-110B-2C consumes one admitted V0-110B-2B prepared session and two
+caller-supplied sealed probe bootstraps before its first launch. They are
+positionally frozen for this invocation but are not yet bound by a production
+role manifest. The guardian lock and blocked signal
+mask span the fixed `worker -> business` sequence. Each call uses the audited
+from-birth cgroup/pidfd/clear-sighand flags and a successor native trampoline
+whose positive parent branch writes a distinct aligned role cell before any
+Python return, pidfd validation or descriptor cleanup. The child-side
+parent-death, no-new-privileges, Landlock, no-spawn seccomp and descriptor-only
+`execveat` setup is unchanged. The executed image receives only its sealed
+bootstrap inputs and role endpoint; broker control descriptors are CLOEXEC and
+remain confined to the trusted pre-exec bootstrap interval.
+
+The only accepted native prefixes are `(0,0)`, `(1,0)` and `(1,1)`. A later
+setup, pidfd or cleanup failure cannot roll a positive edge back. Every known
+positive PID must be directly reaped. A guardian-bound cleanup authority exists
+before the first clone, and signals stay blocked until native facts reach that
+authority; failure-prefix hashing is downstream and may itself fail without
+losing cleanup. If reap is not yet provable, the path raises a typed nonformal
+failure carrying any materializable prefix, unresolved-role mask, live pidfds
+and guardian in that process-local retry authority; it does not infer reap from
+an empty cgroup or close those pidfds. Reaped roles monotonically retire their
+native pidfd cells. Ancestor kill is replayed for tree-only contamination, and
+the guardian retains its kill OFD until hierarchy deletion. Once both reaps are
+proved, the retained original `memory.peak` OFD is read and the empty
+identity-bound tree is removed. The authentic delegated-systemd test launches
+and reaps two real sibling-cgroup processes.
+
+This probe deliberately does not execute the five-frame K7 protocol or commit
+operational output. Its write-ahead cells do not survive broker death, and the
+current direct socketpair does not establish live sender provenance. The
+observed launch prefix and peak therefore remain nonformal and cannot produce
+a shared-resource value, `CounterRecord`, `WorkVector`, `ComparisonVector`,
+terminal, certificate or official execution. All economics, counter,
+scientific and certificate Gates remain locked or `NOT_RUN`. See
+`specs/K7_TWO_ROLE_BROKER_PROBE.md`.

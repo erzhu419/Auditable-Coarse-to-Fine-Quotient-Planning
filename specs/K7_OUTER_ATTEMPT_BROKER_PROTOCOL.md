@@ -167,6 +167,22 @@ This still proves no live peer role, consumed business ordinal, process launch,
 complete memory window or shared-resource value. See
 `specs/K7_OUTER_ATTEMPT_BROKER_PREPARATION.md`.
 
+## Contract 2.0.6 two-role-probe successor
+
+V0-110B-2C executes the first real fixed two-role launch sequence from the
+prepared session. It proves surviving-process-local native edge order,
+from-birth sibling-cgroup placement, no-spawn child setup, two distinct pidfd
+reaps and retryable failed-prefix cleanup. Its cleanup guard is installed
+before the first clone, receives native facts before signal unmasking or
+failure hashing, retires stale pidfds monotonically and retains ancestor-kill
+authority across tree-only cleanup retry. It deliberately does not feed the
+five structural frames through a broker-observed channel. The current direct
+worker/business socketpair still cannot establish which live role authored a
+frame, and the worker does not remain alive through a real operational output
+commit. Therefore the offline transcript is not upgraded, and no exact launch
+or shared-resource authority is issued. See
+`specs/K7_TWO_ROLE_BROKER_PROBE.md`.
+
 The following remain false or unavailable:
 
 ```text

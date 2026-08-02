@@ -433,7 +433,6 @@ class K7OuterAttemptPrelaunchGuardianV1:
             for attribute in (
                 "_worker_socket_fd",
                 "_business_socket_fd",
-                "_kill_fd",
                 "_peak_fd",
             ):
                 descriptor = getattr(self, attribute)
@@ -504,6 +503,13 @@ class K7OuterAttemptPrelaunchGuardianV1:
                 self._outer_removed = True
                 os.close(self._outer_fd)
                 self._outer_fd = -1
+            # Keep cgroup.kill retry authority until every descendant has
+            # passed emptiness checks and the owned hierarchy is gone.  A
+            # partial cleanup caused by an unexpected migrated process must
+            # not irreversibly discard the only tree-wide containment OFD.
+            if self._kill_fd >= 0:
+                os.close(self._kill_fd)
+                self._kill_fd = -1
             os.close(self._parent_fd)
             self._parent_fd = -1
             self._state = K7PreparedBrokerCleanupStateV1.CLOSED

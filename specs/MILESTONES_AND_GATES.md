@@ -4518,3 +4518,32 @@ issued. Live peer ownership, ordinal consumption, the final peak, all nine
 semantic receipts, `CounterRecord`, `WorkVector`, `ComparisonVector`, terminal,
 certificate and official authority remain locked. See
 `specs/K7_OUTER_ATTEMPT_BROKER_PREPARATION.md`.
+
+## V0-110B-2C two-role native broker probe
+
+Contract `2.0.6` consumes one admitted prepared session and two caller-supplied
+sealed probe bootstraps under the guardian lifecycle lock; no production role
+manifest is claimed. A signal-blocked single-threaded
+broker performs exactly the fixed `worker -> business` clone sequence into the
+two sibling cgroups. The checked-in x86-64 parent branch writes a role-specific
+native edge before returning to Python; the child reuses the audited
+parent-death, Landlock, no-spawn seccomp and descriptor-only `execveat` path.
+Success requires distinct PIDs/pidfds, both final direct-child reaps, a final
+read through the retained original peak OFD and empty identity-bound cleanup.
+A real delegated-systemd test executes two `/bin/true` processes.
+
+Failures preserve only `(0,0)`, `(1,0)` or `(1,1)`. A post-clone Python or
+pidfd failure cannot reduce the prefix. If direct reap remains unresolved, the
+path retains the affected pidfds and guardian in an unpickleable process-local
+retry authority installed before the first clone. Native facts reach it before
+signal unmasking or fallible prefix hashing; reaped pidfds are retired
+monotonically, and tree-only retries retain and replay ancestor-kill authority.
+Empty cgroups are not substituted for reap proof.
+
+This is not yet production K7 execution. The write-ahead cells are not
+crash-persistent, the direct socketpair proves no five-frame sender provenance,
+and no operational output is committed inside a complete attempt window.
+Consequently the two role edges and peak are nonformal probe facts only. No
+shared-resource receipt, `CounterRecord`, `WorkVector`, `ComparisonVector`,
+terminal, certificate, scientific result or official authority is issued, and
+every Gate remains locked. See `specs/K7_TWO_ROLE_BROKER_PROBE.md`.

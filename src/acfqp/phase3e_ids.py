@@ -516,6 +516,15 @@ V075_K7_OUTER_ATTEMPT_BROKER_EXECUTION_SPEC_V1_DOMAIN = (
 V075_K7_OUTER_ATTEMPT_PREPARED_BROKER_SESSION_V1_DOMAIN = (
     "acfqp:v075-k7-outer-attempt-prepared-broker-session:v1"
 )
+V075_K7_TWO_ROLE_BROKER_PROBE_PROFILE_V1_DOMAIN = (
+    "acfqp:v075-k7-two-role-broker-probe-profile:v1"
+)
+V075_K7_TWO_ROLE_BROKER_PROBE_RESULT_V1_DOMAIN = (
+    "acfqp:v075-k7-two-role-broker-probe-result:v1"
+)
+V075_K7_TWO_ROLE_BROKER_FAILURE_PREFIX_V1_DOMAIN = (
+    "acfqp:v075-k7-two-role-broker-failure-prefix:v1"
+)
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
 ROUTE_CAP_PROFILE_DOMAIN = "acfqp:route-cap-profile:v1"
@@ -1283,6 +1292,15 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "v075_k7_outer_attempt_prepared_broker_session_v1": (
             V075_K7_OUTER_ATTEMPT_PREPARED_BROKER_SESSION_V1_DOMAIN
+        ),
+        "v075_k7_two_role_broker_probe_profile_v1": (
+            V075_K7_TWO_ROLE_BROKER_PROBE_PROFILE_V1_DOMAIN
+        ),
+        "v075_k7_two_role_broker_probe_result_v1": (
+            V075_K7_TWO_ROLE_BROKER_PROBE_RESULT_V1_DOMAIN
+        ),
+        "v075_k7_two_role_broker_failure_prefix_v1": (
+            V075_K7_TWO_ROLE_BROKER_FAILURE_PREFIX_V1_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,
