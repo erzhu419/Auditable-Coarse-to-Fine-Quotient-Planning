@@ -57,3 +57,18 @@ It therefore authorizes no shared-resource resolution, `CounterRecord`,
 `WorkVector`, `ComparisonVector`, terminal, certificate or official execution.
 The next slice must add the role-specific Landlock/seccomp authority and live
 PID/pidfd/SCM/reap/peak broker envelope.
+
+## Additive runtime transfer (`2.0.15`)
+
+`consume_for_runtime_v2()` now replays the complete prepared topology under
+the guardian lock and irreversibly moves it to `RUNTIME_TRANSFERRED`. The old
+session and capability bundles are then revoked. The unpickleable runtime
+authority exposes fixed broker/worker/business FD roles, replays inode identity
+on every access and monotonically retires the parent's child-role copies after
+each independently proved clone.
+
+Runtime cleanup never deletes a nonempty output directory. An empty directory
+is unlinked while its verified FDs remain open; parent-directory fsync and FD
+closure are separate monotone retry steps, so a failure after unlink does not
+lose durability authority. The transfer itself still claims no launch,
+protocol, output or accounting event.

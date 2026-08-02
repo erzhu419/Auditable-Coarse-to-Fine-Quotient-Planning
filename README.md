@@ -3174,3 +3174,7 @@ one-shot launch records, kernel-credential packet authentication and raw
 read/stage/mount journals. These pieces have not yet been joined into the one
 complete production broker envelope, so the nine semantic resolutions and
 formal `CounterRecord -> WorkVector -> ComparisonVector` chain remain locked.
+The resource graph now transfers irreversibly to a runtime owner, and six of
+nine shared paths have raw internal replayers; complete live-source coverage,
+the output/working-peak/process sources and all semantic replayers are still
+required.

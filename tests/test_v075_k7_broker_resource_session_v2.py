@@ -408,3 +408,204 @@ def test_process_local_authorities_are_unpickleable(
                 pickle.dumps(authority)
     finally:
         session.close()
+
+
+def test_runtime_transfer_atomically_replays_revokes_session_and_binds_fds(
+    tmp_path: Path,
+    frozen_manifest: tuple[object, manifest_v2.K7ProductionRoleManifestV2],
+) -> None:
+    session, output_parent = _prepare(
+        tmp_path,
+        frozen_manifest,
+        "runtime-transfer",
+    )
+    transfer: session_v2.K7BrokerRuntimeTransferAuthorityV2 | None = None
+    worker_child = session.worker_capabilities.descriptor("BROKER_CHANNEL")
+    broker_worker = session.broker_descriptor("WORKER_CHANNEL")
+    assert os.write(worker_child, b"queued-before-transfer") == len(
+        b"queued-before-transfer"
+    )
+    with pytest.raises(
+        session_v2.V075K7BrokerResourceSessionV2Error,
+        match="not empty",
+    ):
+        session.consume_for_runtime_v2()
+    assert (
+        session.guardian.state
+        is session_v2.K7BrokerResourceSessionStateV2.PREPARED
+    )
+    assert os.read(broker_worker, 64) == b"queued-before-transfer"
+    resource_session_id = session.session_id
+
+    try:
+        transfer = session.consume_for_runtime_v2()
+        assert (
+            session.guardian.state
+            is session_v2.K7BrokerResourceSessionStateV2.RUNTIME_TRANSFERRED
+        )
+        assert transfer.resource_session_id == resource_session_id
+        assert transfer.broker_descriptor_roles == session_v2.BROKER_DESCRIPTOR_ROLES
+        assert (
+            transfer.worker_descriptor_roles
+            == session_v2.WORKER_RUNTIME_DESCRIPTOR_ROLES
+        )
+        assert (
+            transfer.business_descriptor_roles
+            == session_v2.BUSINESS_RUNTIME_DESCRIPTOR_ROLES
+        )
+        for role in transfer.broker_descriptor_roles:
+            os.fstat(transfer.broker_descriptor(role))
+        for role in transfer.worker_descriptor_roles:
+            os.fstat(transfer.worker_descriptor(role))
+        for role in transfer.business_descriptor_roles:
+            os.fstat(transfer.business_descriptor(role))
+        transfer.assert_current()
+
+        for operation in (
+            session.assert_current,
+            session.to_document,
+            session.close,
+            session.consume_for_runtime_v2,
+            lambda: session.broker_descriptor("WORKER_CHANNEL"),
+            lambda: session.role_capabilities(
+                manifest_v2.K7ProductionBrokerRoleV2.WORKER
+            ),
+            lambda: session.worker_capabilities.descriptor("BROKER_CHANNEL"),
+        ):
+            with pytest.raises(session_v2.V075K7BrokerResourceSessionV2Error):
+                operation()
+        with pytest.raises(TypeError, match="process-local"):
+            pickle.dumps(transfer)
+
+        target = transfer.broker_descriptor("WORKER_CHANNEL")
+        backup = fcntl.fcntl(target, fcntl.F_DUPFD_CLOEXEC, 3)
+        replacement = os.open("/dev/null", os.O_RDONLY | os.O_CLOEXEC)
+        try:
+            os.dup2(replacement, target, inheritable=False)
+            with pytest.raises(
+                session_v2.V075K7BrokerResourceSessionV2Error,
+                match="descriptor identity changed",
+            ):
+                transfer.broker_descriptor("WORKER_CHANNEL")
+            os.dup2(backup, target, inheritable=False)
+        finally:
+            os.close(backup)
+            os.close(replacement)
+        transfer.assert_current()
+        transfer.close()
+        assert transfer.closed is True
+        transfer = None
+    finally:
+        if transfer is not None and not transfer.closed:
+            transfer.close()
+    assert list(output_parent.iterdir()) == []
+
+
+def test_runtime_retirement_is_monotone_and_nonempty_output_is_preserved(
+    tmp_path: Path,
+    frozen_manifest: tuple[object, manifest_v2.K7ProductionRoleManifestV2],
+) -> None:
+    session, output_parent = _prepare(
+        tmp_path,
+        frozen_manifest,
+        "runtime-retirement",
+    )
+    transfer = session.consume_for_runtime_v2()
+    worker_fds = tuple(
+        transfer.worker_descriptor(role)
+        for role in transfer.worker_descriptor_roles
+    )
+    business_fds = tuple(
+        transfer.business_descriptor(role)
+        for role in transfer.business_descriptor_roles
+    )
+
+    transfer.retire_parent_side_descriptors_after_clone_v2(
+        manifest_v2.K7ProductionBrokerRoleV2.WORKER
+    )
+    for descriptor in worker_fds:
+        with pytest.raises(OSError):
+            os.fstat(descriptor)
+    with pytest.raises(
+        session_v2.V075K7BrokerResourceSessionV2Error,
+        match="permanently retired",
+    ):
+        transfer.worker_descriptor("BROKER_CHANNEL")
+    with pytest.raises(
+        session_v2.V075K7BrokerResourceSessionV2Error,
+        match="already retired",
+    ):
+        transfer.retire_parent_side_descriptors_after_clone_v2("WORKER")
+
+    transfer.retire_parent_side_descriptors_after_clone_v2("BUSINESS")
+    for descriptor in business_fds:
+        with pytest.raises(OSError):
+            os.fstat(descriptor)
+    transfer.assert_current()
+    output_fd = transfer.broker_descriptor("OUTPUT_DIRECTORY")
+    contaminant = os.open(
+        "must-survive.txt",
+        os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_CLOEXEC,
+        0o600,
+        dir_fd=output_fd,
+    )
+    os.write(contaminant, b"must not be silently deleted")
+    os.close(contaminant)
+    output_directory = next(output_parent.iterdir())
+
+    with pytest.raises(
+        session_v2.V075K7BrokerResourceSessionCleanupV2Error,
+        match="cleanup is partial",
+    ):
+        transfer.close()
+    assert output_directory.is_dir()
+    assert (output_directory / "must-survive.txt").read_bytes() == (
+        b"must not be silently deleted"
+    )
+    assert (
+        session.guardian.state
+        is session_v2.K7BrokerResourceSessionStateV2.CLEANUP_PARTIAL
+    )
+
+    recovery_output_fd = transfer.broker_descriptor("OUTPUT_DIRECTORY")
+    assert recovery_output_fd == output_fd
+    os.unlink("must-survive.txt", dir_fd=recovery_output_fd)
+    transfer.close()
+    assert transfer.closed is True
+    assert list(output_parent.iterdir()) == []
+
+
+def test_runtime_cleanup_retries_parent_fsync_after_successful_unlink(
+    tmp_path: Path,
+    frozen_manifest: tuple[object, manifest_v2.K7ProductionRoleManifestV2],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    session, output_parent = _prepare(
+        tmp_path,
+        frozen_manifest,
+        "runtime-fsync-retry",
+    )
+    transfer = session.consume_for_runtime_v2()
+    original_fsync = os.fsync
+    calls = 0
+
+    def fail_once(descriptor: int) -> None:
+        nonlocal calls
+        calls += 1
+        if calls == 1:
+            raise OSError("injected parent fsync failure")
+        original_fsync(descriptor)
+
+    monkeypatch.setattr(os, "fsync", fail_once)
+    with pytest.raises(
+        session_v2.V075K7BrokerResourceSessionCleanupV2Error,
+        match="cleanup is partial",
+    ):
+        transfer.close()
+    assert list(output_parent.iterdir()) == []
+    assert session.guardian._output_unlinked is True  # noqa: SLF001
+    assert session.guardian._output_parent_synced is False  # noqa: SLF001
+
+    transfer.close()
+    assert transfer.closed is True
+    assert calls == 2

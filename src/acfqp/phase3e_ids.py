@@ -636,6 +636,51 @@ V075_K7_MOUNT_PAYLOAD_REGISTRY_V2_DOMAIN = (
 V075_K7_MOUNT_VISIBILITY_JOURNAL_V2_DOMAIN = (
     "acfqp:v075-k7-mount-visibility-journal:v2"
 )
+CONSTRUCTION_SHARED_RESOURCE_COMMON_SESSION_V2_DOMAIN = (
+    "acfqp:construction-shared-resource-common-session:v2"
+)
+CONSTRUCTION_SHARED_RESOURCE_COMMON_SOURCE_SITE_V2_DOMAIN = (
+    "acfqp:construction-shared-resource-common-source-site:v2"
+)
+CONSTRUCTION_SHARED_RESOURCE_HASH_PURPOSE_V2_DOMAIN = (
+    "acfqp:construction-shared-resource-hash-purpose:v2"
+)
+CONSTRUCTION_SHARED_RESOURCE_NAMED_OBLIGATION_V2_DOMAIN = (
+    "acfqp:construction-shared-resource-named-obligation:v2"
+)
+CONSTRUCTION_SHARED_RESOURCE_BROKER_OBSERVATION_BINDING_V2_DOMAIN = (
+    "acfqp:construction-shared-resource-broker-observation-binding:v2"
+)
+CONSTRUCTION_SHARED_RESOURCE_COMMON_EVENT_V2_DOMAIN = (
+    "acfqp:construction-shared-resource-common-event:v2"
+)
+V075_K7_HASH_EVENT_TRANSCRIPT_V2_DOMAIN = (
+    "acfqp:v075-k7-hash-event-transcript:v2"
+)
+V075_K7_HASH_PURPOSE_REGISTRY_V2_DOMAIN = (
+    "acfqp:v075-k7-hash-purpose-registry:v2"
+)
+V075_K7_LOADED_HASH_SITE_ATTESTATION_V2_DOMAIN = (
+    "acfqp:v075-k7-loaded-hash-site-attestation:v2"
+)
+V075_K7_INTEGRITY_OBLIGATION_REGISTRY_V2_DOMAIN = (
+    "acfqp:v075-k7-integrity-obligation-registry:v2"
+)
+V075_K7_INTEGRITY_OBLIGATION_TRANSCRIPT_V2_DOMAIN = (
+    "acfqp:v075-k7-integrity-obligation-transcript:v2"
+)
+V075_K7_LOADED_INTEGRITY_SITE_ATTESTATION_V2_DOMAIN = (
+    "acfqp:v075-k7-loaded-integrity-site-attestation:v2"
+)
+V075_K7_PROTOCOL_OBLIGATION_REGISTRY_V2_DOMAIN = (
+    "acfqp:v075-k7-protocol-obligation-registry:v2"
+)
+V075_K7_PROTOCOL_OBLIGATION_TRANSCRIPT_V2_DOMAIN = (
+    "acfqp:v075-k7-protocol-obligation-transcript:v2"
+)
+V075_K7_LOADED_PROTOCOL_SITE_ATTESTATION_V2_DOMAIN = (
+    "acfqp:v075-k7-loaded-protocol-site-attestation:v2"
+)
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
 ROUTE_CAP_PROFILE_DOMAIN = "acfqp:route-cap-profile:v1"
@@ -1523,6 +1568,51 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "v075_k7_mount_visibility_journal_v2": (
             V075_K7_MOUNT_VISIBILITY_JOURNAL_V2_DOMAIN
+        ),
+        "construction_shared_resource_common_session_v2": (
+            CONSTRUCTION_SHARED_RESOURCE_COMMON_SESSION_V2_DOMAIN
+        ),
+        "construction_shared_resource_common_source_site_v2": (
+            CONSTRUCTION_SHARED_RESOURCE_COMMON_SOURCE_SITE_V2_DOMAIN
+        ),
+        "construction_shared_resource_hash_purpose_v2": (
+            CONSTRUCTION_SHARED_RESOURCE_HASH_PURPOSE_V2_DOMAIN
+        ),
+        "construction_shared_resource_named_obligation_v2": (
+            CONSTRUCTION_SHARED_RESOURCE_NAMED_OBLIGATION_V2_DOMAIN
+        ),
+        "construction_shared_resource_broker_observation_binding_v2": (
+            CONSTRUCTION_SHARED_RESOURCE_BROKER_OBSERVATION_BINDING_V2_DOMAIN
+        ),
+        "construction_shared_resource_common_event_v2": (
+            CONSTRUCTION_SHARED_RESOURCE_COMMON_EVENT_V2_DOMAIN
+        ),
+        "v075_k7_hash_event_transcript_v2": (
+            V075_K7_HASH_EVENT_TRANSCRIPT_V2_DOMAIN
+        ),
+        "v075_k7_hash_purpose_registry_v2": (
+            V075_K7_HASH_PURPOSE_REGISTRY_V2_DOMAIN
+        ),
+        "v075_k7_loaded_hash_site_attestation_v2": (
+            V075_K7_LOADED_HASH_SITE_ATTESTATION_V2_DOMAIN
+        ),
+        "v075_k7_integrity_obligation_registry_v2": (
+            V075_K7_INTEGRITY_OBLIGATION_REGISTRY_V2_DOMAIN
+        ),
+        "v075_k7_integrity_obligation_transcript_v2": (
+            V075_K7_INTEGRITY_OBLIGATION_TRANSCRIPT_V2_DOMAIN
+        ),
+        "v075_k7_loaded_integrity_site_attestation_v2": (
+            V075_K7_LOADED_INTEGRITY_SITE_ATTESTATION_V2_DOMAIN
+        ),
+        "v075_k7_protocol_obligation_registry_v2": (
+            V075_K7_PROTOCOL_OBLIGATION_REGISTRY_V2_DOMAIN
+        ),
+        "v075_k7_protocol_obligation_transcript_v2": (
+            V075_K7_PROTOCOL_OBLIGATION_TRANSCRIPT_V2_DOMAIN
+        ),
+        "v075_k7_loaded_protocol_site_attestation_v2": (
+            V075_K7_LOADED_PROTOCOL_SITE_ATTESTATION_V2_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,

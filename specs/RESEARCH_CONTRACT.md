@@ -5422,3 +5422,22 @@ native broker, complete output/reap/peak envelope, remaining six raw sources,
 nine semantic replayers and `CounterRecord -> WorkVector -> ComparisonVector`
 materialization remain required. Every official, economics, counter,
 certificate and scientific Gate stays locked or `NOT_RUN`.
+
+## Contract 2.0.15: one-shot broker runtime transfer
+
+The prepared resource guardian now atomically replays and transfers the exact
+descriptor graph to one unpickleable runtime authority. Prepared-session
+access is permanently revoked; child-side parent copies retire monotonically
+after their corresponding clone. Empty-output cleanup separates unlink,
+parent fsync and descriptor closure into retryable irreversible stages and
+never removes a nonempty directory. No launch or accounting fact is inferred
+from transfer. See `specs/K7_BROKER_RESOURCE_SESSION.md`.
+
+## Contract 2.0.16: common-work raw journals
+
+Pre-window registries of exact source sites, hash purposes and integrity or
+protocol obligations drive recorder-owned event sequences. Closed components
+match the three common-work catalogue paths, and independent replay derives
+counts while rejecting omitted, extra, duplicated, reordered or cutoff-hidden
+work. They remain raw-only pending complete live instrumentation. See
+`specs/K7_COMMON_RAW_JOURNALS.md`.

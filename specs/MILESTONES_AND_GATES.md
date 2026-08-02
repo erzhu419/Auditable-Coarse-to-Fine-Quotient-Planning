@@ -4594,3 +4594,12 @@ certificate or official scientific claim is authorized. See the corresponding
 `specs/K7_PRODUCTION_ROLE_*`, `specs/K7_AUTHENTICATED_BROKER_CHANNEL.md`,
 `specs/K7_NINE_PATH_SEMANTIC_RESOLUTION.md` and
 `specs/K7_TRANSFER_MOUNT_RAW_JOURNALS.md`.
+
+## V0-110B-2E-5..6 runtime transfer and common raw sources
+
+Contracts `2.0.15` and `2.0.16` add irreversible prepared-to-runtime resource
+ownership plus raw source-registered journals for the three common-work paths.
+Together with the transfer/mount journals, six of nine source families now
+have internal arithmetic replay. None is yet semantically complete without the
+single live broker cutoff and full source-site coverage; no formal accounting
+or Gate authority moves.

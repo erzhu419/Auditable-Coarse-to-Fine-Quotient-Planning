@@ -40,7 +40,7 @@ from acfqp.phase3e_ids import (
 
 
 SCHEMA_VERSION = "2.0.0"
-PROPOSED_CONTRACT_VERSION = "2.0.9"
+PROPOSED_CONTRACT_VERSION = "2.0.15"
 PROFILE_KEY = "v075_k7_broker_resource_session_v2"
 
 BROKER_RESOURCE_SESSION_PROFILE_V2_DOMAIN = (
@@ -66,11 +66,36 @@ BROKER_DESCRIPTOR_ROLES = (
     "BUSINESS_RESULT_READONLY",
     "OUTPUT_DIRECTORY",
 )
+WORKER_RUNTIME_DESCRIPTOR_ROLES = bootstrap_v2.WORKER_CAPABILITY_ROLES
+BUSINESS_RUNTIME_DESCRIPTOR_ROLES = bootstrap_v2.BUSINESS_CAPABILITY_ROLES
+
+_BROKER_RUNTIME_DESCRIPTOR_MAP = MappingProxyType(
+    {
+        "WORKER_CHANNEL": "worker_broker_channel",
+        "BUSINESS_CHANNEL": "business_broker_channel",
+        "BUSINESS_RESULT_READONLY": "broker_result_readonly",
+        "OUTPUT_DIRECTORY": "broker_output_directory",
+    }
+)
+_WORKER_RUNTIME_DESCRIPTOR_MAP = MappingProxyType(
+    {
+        "BROKER_CHANNEL": "worker_child_channel",
+        "BUSINESS_RESULT_READONLY": "worker_result_readonly",
+        "OUTPUT_DIRECTORY": "worker_output_directory",
+    }
+)
+_BUSINESS_RUNTIME_DESCRIPTOR_MAP = MappingProxyType(
+    {
+        "BROKER_CHANNEL": "business_child_channel",
+        "BUSINESS_RESULT_WRITABLE": "business_result_readwrite",
+    }
+)
 
 _PROFILE_ISSUER = object()
 _BUNDLE_ISSUER = object()
 _SESSION_ISSUER = object()
 _GUARDIAN_ISSUER = object()
+_RUNTIME_TRANSFER_ISSUER = object()
 _PREPARATION_LOCK = threading.Lock()
 _CONSUMED_CONTEXTS: set[tuple[int, str, str, str]] = set()
 
@@ -91,6 +116,7 @@ class V075K7BrokerResourceSessionCleanupV2Error(
 
 class K7BrokerResourceSessionStateV2(str, Enum):
     PREPARED = "PREPARED"
+    RUNTIME_TRANSFERRED = "RUNTIME_TRANSFERRED"
     CLEANUP_PARTIAL = "CLEANUP_PARTIAL"
     CLOSED = "CLOSED"
 
@@ -315,6 +341,11 @@ class K7BrokerResourceSessionProfileV2:
             "exclusive_global_output_writer_verified": False,
             "capability_fd_numbers_cross_role_disjoint": True,
             "sealed_input_lane_join_deferred_to_native_launcher": True,
+            "one_shot_runtime_transfer": True,
+            "runtime_transfer_replays_prepared_state_under_guardian_lock": True,
+            "runtime_parent_descriptor_retirement_is_monotone": True,
+            "runtime_transfer_claims_launch_or_output": False,
+            "runtime_transfer_claims_accounting": False,
             "process_local": True,
             "central_domain_registration_pending_merge": False,
             "construction_only": True,
@@ -351,6 +382,7 @@ class K7BrokerRoleCapabilityBundleV2:
     route_identity_id: str
     broker_execution_spec_id: str
     session_nonce: str
+    _guardian: Any = field(repr=False, compare=False)
     _descriptors: Mapping[str, int] = field(repr=False, compare=False)
     _identities: Mapping[str, tuple[int, int, int, int, int, int]] = field(
         repr=False, compare=False
@@ -383,6 +415,7 @@ class K7BrokerRoleCapabilityBundleV2:
             or tuple(self._identities) != expected_roles
             or any(type(fd) is not int or fd < 3 for fd in self._descriptors.values())
             or len(set(self._descriptors.values())) != len(expected_roles)
+            or type(self._guardian) is not K7BrokerResourceGuardianV2
         ):
             _fail("broker role capability descriptor lanes are malformed")
         for name in expected_roles:
@@ -444,6 +477,7 @@ class K7BrokerRoleCapabilityBundleV2:
     def descriptor(self, role: str) -> int:
         if type(role) is not str or role not in self._descriptors:
             _fail("broker role capability requested an unknown descriptor role")
+        self._guardian._assert_session_capability_access()  # noqa: SLF001
         descriptor = self._descriptors[role]
         if _descriptor_identity(descriptor) != self._identities[role]:
             _fail("broker role capability descriptor changed")
@@ -483,6 +517,10 @@ class K7BrokerResourceGuardianV2:
         self._output_name = output_name
         self._output_status = output_status
         self._output_removed = False
+        self._output_unlinked = False
+        self._output_parent_synced = False
+        self._runtime_transferred = False
+        self._retired_runtime_roles: set[str] = set()
         self._state = K7BrokerResourceSessionStateV2.PREPARED
         self._lock = threading.Lock()
 
@@ -501,6 +539,12 @@ class K7BrokerResourceGuardianV2:
             _fail("broker resource guardian crossed a process boundary")
         if self._state is K7BrokerResourceSessionStateV2.CLOSED:
             _fail("broker resource guardian is closed")
+
+    def _assert_session_capability_access(self) -> None:
+        with self._lock:
+            self._check_owner()
+            if self._state is not K7BrokerResourceSessionStateV2.PREPARED:
+                _fail("broker resource session authority is no longer PREPARED")
 
     def _assert_current_locked(self) -> None:
         self._check_owner()
@@ -568,38 +612,131 @@ class K7BrokerResourceGuardianV2:
         ) != self._identities["broker_output_directory"]:
             _fail("prepared output directory name crossed its inode")
 
-    def assert_current(self) -> None:
-        with self._lock:
-            self._assert_current_locked()
-
-    def broker_descriptor(self, role: str) -> int:
-        mapping = {
-            "WORKER_CHANNEL": "worker_broker_channel",
-            "BUSINESS_CHANNEL": "business_broker_channel",
-            "BUSINESS_RESULT_READONLY": "broker_result_readonly",
-            "OUTPUT_DIRECTORY": "broker_output_directory",
-        }
-        if type(role) is not str or role not in mapping:
-            _fail("broker resource guardian requested an unknown broker FD role")
-        with self._lock:
-            self._assert_current_locked()
-            return self._descriptors[mapping[role]]
-
-    def close(self) -> None:
-        with self._lock:
-            self._check_owner()
-            self._state = K7BrokerResourceSessionStateV2.CLEANUP_PARTIAL
-            first_error: BaseException | None = None
-            for name in (
-                "worker_broker_channel",
-                "worker_child_channel",
-                "business_broker_channel",
-                "business_child_channel",
-                "business_result_readwrite",
-                "worker_result_readonly",
-                "broker_result_readonly",
+    def _assert_runtime_identity_locked(self) -> None:
+        self._check_owner()
+        if (
+            not self._runtime_transferred
+            or self._state
+            not in {
+                K7BrokerResourceSessionStateV2.RUNTIME_TRANSFERRED,
+                K7BrokerResourceSessionStateV2.CLEANUP_PARTIAL,
+            }
+        ):
+            _fail("broker resources are not owned by a live runtime transfer")
+        for name, descriptor in self._descriptors.items():
+            if descriptor < 0:
+                continue
+            if _descriptor_identity(descriptor) != self._identities[name]:
+                _fail("runtime transfer descriptor identity changed")
+        if self._output_parent_fd >= 0:
+            if (
+                _descriptor_identity(self._output_parent_fd)
+                != self._output_parent_identity
             ):
-                descriptor = self._descriptors.get(name, -1)
+                _fail("runtime transfer output-parent FD identity changed")
+            if not self._output_unlinked:
+                try:
+                    named = os.stat(
+                        self._output_name,
+                        dir_fd=self._output_parent_fd,
+                        follow_symlinks=False,
+                    )
+                except OSError as error:
+                    raise V075K7BrokerResourceSessionV2Error(
+                        "runtime output directory name cannot be replayed"
+                    ) from error
+                if (
+                    named.st_dev,
+                    named.st_ino,
+                    named.st_mode,
+                    named.st_uid,
+                    named.st_gid,
+                    named.st_rdev,
+                ) != self._identities["broker_output_directory"]:
+                    _fail("runtime output directory name crossed its inode")
+
+    def _assert_bundle_maps_locked(
+        self, session: "K7BrokerResourceSessionV2"
+    ) -> None:
+        rows = (
+            (session.worker_capabilities, _WORKER_RUNTIME_DESCRIPTOR_MAP),
+            (session.business_capabilities, _BUSINESS_RUNTIME_DESCRIPTOR_MAP),
+        )
+        for bundle, mapping in rows:
+            if bundle._guardian is not self:  # noqa: SLF001
+                _fail("broker capability bundle crossed its cleanup guardian")
+            if tuple(bundle._descriptors) != tuple(mapping):  # noqa: SLF001
+                _fail("broker capability runtime role map changed")
+            for role, name in mapping.items():
+                if (
+                    bundle._descriptors[role] != self._descriptors[name]  # noqa: SLF001
+                    or bundle._identities[role] != self._identities[name]  # noqa: SLF001
+                ):
+                    _fail("broker capability runtime descriptor crossed")
+
+    def _consume_for_runtime_locked(
+        self, session: "K7BrokerResourceSessionV2"
+    ) -> "K7BrokerRuntimeTransferAuthorityV2":
+        self._assert_current_locked()
+        session._assert_static_binding()  # noqa: SLF001
+        self._assert_bundle_maps_locked(session)
+        if (
+            _hash(BROKER_RESOURCE_SESSION_V2_DOMAIN, session._payload())  # noqa: SLF001
+            != session._session_id  # noqa: SLF001
+        ):
+            _fail("broker resource session changed before runtime transfer")
+        authority = K7BrokerRuntimeTransferAuthorityV2(
+            _RUNTIME_TRANSFER_ISSUER,
+            guardian=self,
+            resource_session_id=session._session_id,  # noqa: SLF001
+        )
+        self._runtime_transferred = True
+        self._state = K7BrokerResourceSessionStateV2.RUNTIME_TRANSFERRED
+        return authority
+
+    def consume_for_runtime(
+        self, session: "K7BrokerResourceSessionV2"
+    ) -> "K7BrokerRuntimeTransferAuthorityV2":
+        with self._lock:
+            return self._consume_for_runtime_locked(session)
+
+    def _runtime_descriptor(
+        self,
+        *,
+        mapping: Mapping[str, str],
+        role: str,
+    ) -> int:
+        if type(role) is not str or role not in mapping:
+            _fail("runtime transfer requested an unknown descriptor role")
+        with self._lock:
+            self._assert_runtime_identity_locked()
+            name = mapping[role]
+            descriptor = self._descriptors[name]
+            if descriptor < 0:
+                _fail("runtime transfer descriptor was permanently retired")
+            if _descriptor_identity(descriptor) != self._identities[name]:
+                _fail("runtime transfer descriptor identity changed")
+            return descriptor
+
+    def _retire_parent_role_descriptors(
+        self, role: manifest_v2.K7ProductionBrokerRoleV2
+    ) -> None:
+        exact_role = manifest_v2.K7ProductionBrokerRoleV2(role)
+        role_name = exact_role.value
+        mapping = (
+            _WORKER_RUNTIME_DESCRIPTOR_MAP
+            if exact_role is manifest_v2.K7ProductionBrokerRoleV2.WORKER
+            else _BUSINESS_RUNTIME_DESCRIPTOR_MAP
+        )
+        with self._lock:
+            self._assert_runtime_identity_locked()
+            if self._state is not K7BrokerResourceSessionStateV2.RUNTIME_TRANSFERRED:
+                _fail("runtime descriptor retirement is unavailable during cleanup")
+            if role_name in self._retired_runtime_roles:
+                _fail("runtime role parent descriptors were already retired")
+            first_error: BaseException | None = None
+            for name in mapping.values():
+                descriptor = self._descriptors[name]
                 if descriptor < 0:
                     continue
                 try:
@@ -608,64 +745,258 @@ class K7BrokerResourceGuardianV2:
                 except BaseException as error:
                     if first_error is None:
                         first_error = error
-            if not self._output_removed:
-                try:
-                    broker_fd = self._descriptors["broker_output_directory"]
-                    worker_fd = self._descriptors["worker_output_directory"]
-                    _assert_output_directory(
-                        broker_fd,
-                        expected_identity=self._identities[
-                            "broker_output_directory"
-                        ],
-                    )
-                    _assert_output_directory(
-                        worker_fd,
-                        expected_identity=self._identities[
-                            "worker_output_directory"
-                        ],
-                    )
-                    named = os.stat(
-                        self._output_name,
-                        dir_fd=self._output_parent_fd,
-                        follow_symlinks=False,
-                    )
-                    if (named.st_dev, named.st_ino) != (
-                        self._output_status.st_dev,
-                        self._output_status.st_ino,
-                    ):
-                        _fail("output directory name changed before cleanup")
+            if first_error is not None:
+                raise V075K7BrokerResourceSessionCleanupV2Error(
+                    "runtime parent-side descriptor retirement is partial",
+                    guardian=self,
+                ) from first_error
+            self._retired_runtime_roles.add(role_name)
+
+    def assert_current(self) -> None:
+        with self._lock:
+            self._assert_current_locked()
+
+    def broker_descriptor(self, role: str) -> int:
+        if type(role) is not str or role not in _BROKER_RUNTIME_DESCRIPTOR_MAP:
+            _fail("broker resource guardian requested an unknown broker FD role")
+        with self._lock:
+            self._assert_current_locked()
+            return self._descriptors[_BROKER_RUNTIME_DESCRIPTOR_MAP[role]]
+
+    def _close_locked(self, *, runtime_owner: bool) -> None:
+        self._check_owner()
+        if runtime_owner != self._runtime_transferred:
+            _fail("broker resource cleanup authority was transferred")
+        allowed_states = (
+            {
+                K7BrokerResourceSessionStateV2.RUNTIME_TRANSFERRED,
+                K7BrokerResourceSessionStateV2.CLEANUP_PARTIAL,
+            }
+            if runtime_owner
+            else {
+                K7BrokerResourceSessionStateV2.PREPARED,
+                K7BrokerResourceSessionStateV2.CLEANUP_PARTIAL,
+            }
+        )
+        if self._state not in allowed_states:
+            _fail("broker resource cleanup state is invalid")
+        self._state = K7BrokerResourceSessionStateV2.CLEANUP_PARTIAL
+        first_error: BaseException | None = None
+        for name in (
+            "worker_broker_channel",
+            "worker_child_channel",
+            "business_broker_channel",
+            "business_child_channel",
+            "business_result_readwrite",
+            "worker_result_readonly",
+            "broker_result_readonly",
+        ):
+            descriptor = self._descriptors.get(name, -1)
+            if descriptor < 0:
+                continue
+            try:
+                os.close(descriptor)
+                self._descriptors[name] = -1
+            except BaseException as error:
+                if first_error is None:
+                    first_error = error
+        if not self._output_unlinked:
+            try:
+                live_output_names = tuple(
+                    name
                     for name in (
                         "worker_output_directory",
                         "broker_output_directory",
-                    ):
-                        descriptor = self._descriptors[name]
-                        os.close(descriptor)
-                        self._descriptors[name] = -1
-                    os.rmdir(self._output_name, dir_fd=self._output_parent_fd)
-                    os.fsync(self._output_parent_fd)
-                    self._output_removed = True
-                except BaseException as error:
-                    if first_error is None:
-                        first_error = error
-            if self._output_removed and self._output_parent_fd >= 0:
+                    )
+                    if self._descriptors[name] >= 0
+                )
+                if "broker_output_directory" not in live_output_names:
+                    _fail("broker output cleanup descriptor was retired")
+                for name in live_output_names:
+                    _assert_output_directory(
+                        self._descriptors[name],
+                        expected_identity=self._identities[name],
+                    )
+                if (
+                    _descriptor_identity(self._output_parent_fd)
+                    != self._output_parent_identity
+                ):
+                    _fail("output parent changed before cleanup")
+                named = os.stat(
+                    self._output_name,
+                    dir_fd=self._output_parent_fd,
+                    follow_symlinks=False,
+                )
+                if (named.st_dev, named.st_ino) != (
+                    self._output_status.st_dev,
+                    self._output_status.st_ino,
+                ):
+                    _fail("output directory name changed before cleanup")
+                # rmdir is intentionally attempted while both verified
+                # directory handles remain open.  ENOTEMPTY preserves every
+                # handle and byte for explicit caller recovery.
+                os.rmdir(self._output_name, dir_fd=self._output_parent_fd)
+                self._output_unlinked = True
+            except BaseException as error:
+                if first_error is None:
+                    first_error = error
+        if self._output_unlinked:
+            for name in (
+                "worker_output_directory",
+                "broker_output_directory",
+            ):
+                descriptor = self._descriptors[name]
+                if descriptor < 0:
+                    continue
                 try:
-                    os.close(self._output_parent_fd)
-                    self._output_parent_fd = -1
+                    os.close(descriptor)
+                    self._descriptors[name] = -1
                 except BaseException as error:
                     if first_error is None:
                         first_error = error
-            if first_error is not None:
-                raise V075K7BrokerResourceSessionCleanupV2Error(
-                    "broker resource-session cleanup is partial",
-                    guardian=self,
-                ) from first_error
-            self._state = K7BrokerResourceSessionStateV2.CLOSED
+        if self._output_unlinked and not self._output_parent_synced:
+            try:
+                os.fsync(self._output_parent_fd)
+                self._output_parent_synced = True
+            except BaseException as error:
+                if first_error is None:
+                    first_error = error
+        if self._output_parent_synced and self._output_parent_fd >= 0:
+            try:
+                os.close(self._output_parent_fd)
+                self._output_parent_fd = -1
+                self._output_removed = True
+            except BaseException as error:
+                if first_error is None:
+                    first_error = error
+        if first_error is not None:
+            raise V075K7BrokerResourceSessionCleanupV2Error(
+                "broker resource-session cleanup is partial",
+                guardian=self,
+            ) from first_error
+        self._state = K7BrokerResourceSessionStateV2.CLOSED
+
+    def close(self) -> None:
+        with self._lock:
+            self._close_locked(runtime_owner=False)
+
+    def _close_runtime(self) -> None:
+        with self._lock:
+            self._close_locked(runtime_owner=True)
 
     def __reduce__(self):
         raise TypeError("broker resource guardian is process-local")
 
     def __reduce_ex__(self, _protocol: int):
         raise TypeError("broker resource guardian is process-local")
+
+
+class K7BrokerRuntimeTransferAuthorityV2:
+    """One-shot runtime view over fixed role descriptors and guardian cleanup.
+
+    It records neither a clone nor a protocol/output/accounting event.  The
+    caller may retire its parent copies only after independently establishing
+    the corresponding clone edge.
+    """
+
+    __slots__ = ("_guardian", "_owner_pid", "_resource_session_id")
+
+    def __init__(
+        self,
+        issuer: object,
+        *,
+        guardian: K7BrokerResourceGuardianV2,
+        resource_session_id: str,
+    ) -> None:
+        if (
+            issuer is not _RUNTIME_TRANSFER_ISSUER
+            or type(guardian) is not K7BrokerResourceGuardianV2
+        ):
+            _fail("broker runtime transfer authority is caller-minted")
+        self._resource_session_id = _cid(
+            resource_session_id,
+            "runtime transfer resource session",
+        )
+        self._guardian = guardian
+        self._owner_pid = os.getpid()
+
+    def _check_owner(self) -> None:
+        if os.getpid() != self._owner_pid:
+            _fail("broker runtime transfer authority crossed a process boundary")
+
+    @property
+    def resource_session_id(self) -> str:
+        self._check_owner()
+        return self._resource_session_id
+
+    @property
+    def broker_descriptor_roles(self) -> tuple[str, ...]:
+        return BROKER_DESCRIPTOR_ROLES
+
+    @property
+    def worker_descriptor_roles(self) -> tuple[str, ...]:
+        return WORKER_RUNTIME_DESCRIPTOR_ROLES
+
+    @property
+    def business_descriptor_roles(self) -> tuple[str, ...]:
+        return BUSINESS_RUNTIME_DESCRIPTOR_ROLES
+
+    @property
+    def closed(self) -> bool:
+        self._check_owner()
+        return self._guardian.state is K7BrokerResourceSessionStateV2.CLOSED
+
+    def assert_current(self) -> None:
+        self._check_owner()
+        with self._guardian._lock:  # noqa: SLF001 - issuer-owned authority
+            self._guardian._assert_runtime_identity_locked()  # noqa: SLF001
+
+    def broker_descriptor(self, role: str) -> int:
+        self._check_owner()
+        return self._guardian._runtime_descriptor(  # noqa: SLF001
+            mapping=_BROKER_RUNTIME_DESCRIPTOR_MAP,
+            role=role,
+        )
+
+    def worker_descriptor(self, role: str) -> int:
+        self._check_owner()
+        return self._guardian._runtime_descriptor(  # noqa: SLF001
+            mapping=_WORKER_RUNTIME_DESCRIPTOR_MAP,
+            role=role,
+        )
+
+    def business_descriptor(self, role: str) -> int:
+        self._check_owner()
+        return self._guardian._runtime_descriptor(  # noqa: SLF001
+            mapping=_BUSINESS_RUNTIME_DESCRIPTOR_MAP,
+            role=role,
+        )
+
+    def retire_parent_side_descriptors_after_clone_v2(
+        self,
+        role: manifest_v2.K7ProductionBrokerRoleV2 | str,
+    ) -> None:
+        self._check_owner()
+        self._guardian._retire_parent_role_descriptors(  # noqa: SLF001
+            manifest_v2.K7ProductionBrokerRoleV2(role)
+        )
+
+    def close(self) -> None:
+        self._check_owner()
+        self._guardian._close_runtime()  # noqa: SLF001
+
+    def __enter__(self) -> "K7BrokerRuntimeTransferAuthorityV2":
+        self.assert_current()
+        return self
+
+    def __exit__(self, *_args: object) -> None:
+        self.close()
+
+    def __reduce__(self):
+        raise TypeError("broker runtime transfer authority is process-local")
+
+    def __reduce_ex__(self, _protocol: int):
+        raise TypeError("broker runtime transfer authority is process-local")
 
 
 @dataclass(frozen=True, slots=True)
@@ -771,13 +1102,14 @@ class K7BrokerResourceSessionV2:
 
     @property
     def session_id(self) -> str:
+        self.guardian._assert_session_capability_access()  # noqa: SLF001
         if _hash(BROKER_RESOURCE_SESSION_V2_DOMAIN, self._payload()) != self._session_id:
             _fail("broker resource session changed")
         return self._session_id
 
     def assert_current(self) -> None:
-        self._assert_static_binding()
         self.guardian.assert_current()
+        self._assert_static_binding()
         for bundle in (self.worker_capabilities, self.business_capabilities):
             for role in bundle.descriptor_roles:
                 bundle.descriptor(role)
@@ -804,6 +1136,11 @@ class K7BrokerResourceSessionV2:
 
     def close(self) -> None:
         self.guardian.close()
+
+    def consume_for_runtime_v2(self) -> K7BrokerRuntimeTransferAuthorityV2:
+        """Atomically replay and permanently transfer this prepared session."""
+
+        return self.guardian.consume_for_runtime(self)
 
     def __enter__(self) -> "K7BrokerResourceSessionV2":
         self.assert_current()
@@ -999,6 +1336,7 @@ def prepare_v075_k7_broker_resource_session_v2(
                 binding.route_identity_id,
                 binding.broker_execution_spec_id,
                 binding.session_nonce,
+                guardian,
                 {
                     "BROKER_CHANNEL": descriptors["worker_child_channel"],
                     "BUSINESS_RESULT_READONLY": descriptors[
@@ -1023,6 +1361,7 @@ def prepare_v075_k7_broker_resource_session_v2(
                 binding.route_identity_id,
                 binding.broker_execution_spec_id,
                 binding.session_nonce,
+                guardian,
                 {
                     "BROKER_CHANNEL": descriptors["business_child_channel"],
                     "BUSINESS_RESULT_WRITABLE": descriptors[
@@ -1086,7 +1425,9 @@ __all__ = (
     "BROKER_RESOURCE_SESSION_PROFILE_V2_DOMAIN",
     "BROKER_RESOURCE_SESSION_V2_DOMAIN",
     "BROKER_ROLE_CAPABILITY_BUNDLE_V2_DOMAIN",
+    "BUSINESS_RUNTIME_DESCRIPTOR_ROLES",
     "K7BrokerResourceGuardianV2",
+    "K7BrokerRuntimeTransferAuthorityV2",
     "K7BrokerResourceSessionProfileV2",
     "K7BrokerResourceSessionStateV2",
     "K7BrokerResourceSessionV2",
@@ -1096,6 +1437,7 @@ __all__ = (
     "PROPOSED_CONTRACT_VERSION",
     "REQUESTED_PHASE3E_DOMAIN_TAGS",
     "SCHEMA_VERSION",
+    "WORKER_RUNTIME_DESCRIPTOR_ROLES",
     "V075K7BrokerResourceSessionCleanupV2Error",
     "V075K7BrokerResourceSessionV2Error",
     "official_v075_k7_broker_resource_session_profile_v2",
