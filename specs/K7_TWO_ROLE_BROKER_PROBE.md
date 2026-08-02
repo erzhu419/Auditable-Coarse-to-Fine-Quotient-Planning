@@ -143,7 +143,9 @@ COUNTER_COMPLETENESS_GATE_NOT_RUN
 SAMPLE_EFFICIENCY_GATE_NOT_RUN
 ```
 
-The next milestone must replace the direct peer channel with broker-observable
-role provenance (or equivalent authenticated sender binding), execute the real
-K7 worker/business protocol, retain the worker through committed operational
-output, and close all nine semantic shared-resource paths.
+Contract `2.0.7` now freezes the production role plan and implements the two
+role-local protocol/output cores without launching them. The next milestone
+must replace the direct peer channel with broker-observable role provenance,
+issue and launch a new archive/request/manifest version with present executable
+wrappers, retain the worker through the committed output and final supervisor
+envelope, and only then close all nine semantic shared-resource paths.

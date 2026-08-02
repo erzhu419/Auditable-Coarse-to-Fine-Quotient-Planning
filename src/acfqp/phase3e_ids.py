@@ -525,6 +525,33 @@ V075_K7_TWO_ROLE_BROKER_PROBE_RESULT_V1_DOMAIN = (
 V075_K7_TWO_ROLE_BROKER_FAILURE_PREFIX_V1_DOMAIN = (
     "acfqp:v075-k7-two-role-broker-failure-prefix:v1"
 )
+V075_K7_BUSINESS_ENTRY_CORE_PROFILE_V1_DOMAIN = (
+    "acfqp:v075-k7-business-entry-core-profile:v1"
+)
+V075_K7_BUSINESS_ENTRY_CORE_EMISSION_V1_DOMAIN = (
+    "acfqp:v075-k7-business-entry-core-emission:v1"
+)
+V075_K7_PRODUCTION_ROLE_MANIFEST_PROFILE_V1_DOMAIN = (
+    "acfqp:v075-k7-production-role-manifest-profile:v1"
+)
+V075_K7_PRODUCTION_ROLE_SPEC_V1_DOMAIN = (
+    "acfqp:v075-k7-production-role-spec:v1"
+)
+V075_K7_PRODUCTION_ROLE_MANIFEST_V1_DOMAIN = (
+    "acfqp:v075-k7-production-role-manifest:v1"
+)
+V075_K7_BROKER_WORKER_ENTRY_CORE_PROFILE_V1_DOMAIN = (
+    "acfqp:v075-k7-broker-worker-entry-core-profile:v1"
+)
+V075_K7_BROKER_OPERATIONAL_OUTPUT_V1_DOMAIN = (
+    "acfqp:v075-k7-broker-operational-output:v1"
+)
+V075_K7_BROKER_OUTPUT_COMMIT_RECEIPT_V1_DOMAIN = (
+    "acfqp:v075-k7-broker-output-commit-receipt:v1"
+)
+V075_K7_BROKER_WORKER_COMPLETION_V1_DOMAIN = (
+    "acfqp:v075-k7-broker-worker-completion:v1"
+)
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
 ROUTE_CAP_PROFILE_DOMAIN = "acfqp:route-cap-profile:v1"
@@ -1301,6 +1328,33 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "v075_k7_two_role_broker_failure_prefix_v1": (
             V075_K7_TWO_ROLE_BROKER_FAILURE_PREFIX_V1_DOMAIN
+        ),
+        "v075_k7_business_entry_core_profile_v1": (
+            V075_K7_BUSINESS_ENTRY_CORE_PROFILE_V1_DOMAIN
+        ),
+        "v075_k7_business_entry_core_emission_v1": (
+            V075_K7_BUSINESS_ENTRY_CORE_EMISSION_V1_DOMAIN
+        ),
+        "v075_k7_production_role_manifest_profile_v1": (
+            V075_K7_PRODUCTION_ROLE_MANIFEST_PROFILE_V1_DOMAIN
+        ),
+        "v075_k7_production_role_spec_v1": (
+            V075_K7_PRODUCTION_ROLE_SPEC_V1_DOMAIN
+        ),
+        "v075_k7_production_role_manifest_v1": (
+            V075_K7_PRODUCTION_ROLE_MANIFEST_V1_DOMAIN
+        ),
+        "v075_k7_broker_worker_entry_core_profile_v1": (
+            V075_K7_BROKER_WORKER_ENTRY_CORE_PROFILE_V1_DOMAIN
+        ),
+        "v075_k7_broker_operational_output_v1": (
+            V075_K7_BROKER_OPERATIONAL_OUTPUT_V1_DOMAIN
+        ),
+        "v075_k7_broker_output_commit_receipt_v1": (
+            V075_K7_BROKER_OUTPUT_COMMIT_RECEIPT_V1_DOMAIN
+        ),
+        "v075_k7_broker_worker_completion_v1": (
+            V075_K7_BROKER_WORKER_COMPLETION_V1_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,

@@ -124,6 +124,42 @@ def test_verified_payload_is_immutable_and_document_access_is_a_copy() -> None:
     assert transcript.transcript_id
 
 
+def test_single_frame_reader_reuses_the_strict_canonical_parser() -> None:
+    binding = _binding()
+    role = ipc.K7OuterAttemptBrokerFrameRoleV1.BUSINESS_RESULT
+    raw = ipc.encode_v075_k7_outer_attempt_broker_ipc_frame_v1(
+        binding=binding,
+        role=role,
+        payload={"business_result_id": _id("business-result")},
+    )
+    frame = ipc.verify_v075_k7_outer_attempt_broker_ipc_frame_v1(
+        raw=raw,
+        expected_binding=binding,
+        expected_role=role,
+    )
+    assert frame.role is role
+    assert frame.framed_bytes == raw
+    for attack in (raw[:-1], raw + b"x"):
+        with pytest.raises(
+            ipc.V075K7OuterAttemptBrokerIPCV1Error,
+            match="truncated|trailing",
+        ):
+            ipc.verify_v075_k7_outer_attempt_broker_ipc_frame_v1(
+                raw=attack,
+                expected_binding=binding,
+                expected_role=role,
+            )
+    with pytest.raises(
+        ipc.V075K7OuterAttemptBrokerIPCV1Error,
+        match="out of order",
+    ):
+        ipc.verify_v075_k7_outer_attempt_broker_ipc_frame_v1(
+            raw=raw,
+            expected_binding=binding,
+            expected_role=ipc.K7OuterAttemptBrokerFrameRoleV1.WORKER_READY,
+        )
+
+
 def test_duplicate_reorder_omission_and_extra_frames_fail_closed() -> None:
     binding = _binding()
     parts = _split(_stream(binding))

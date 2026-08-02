@@ -183,6 +183,20 @@ commit. Therefore the offline transcript is not upgraded, and no exact launch
 or shared-resource authority is issued. See
 `specs/K7_TWO_ROLE_BROKER_PROBE.md`.
 
+## Contract 2.0.7 role-core successor
+
+V0-110B-2D-1 freezes the non-caller-selectable production role manifest and
+implements the business-result memfd/frame core plus worker prefix, nested
+replay, local atomic output and suffix core. A strict public single-frame
+reader is shared by these paths, and the worker accepts exactly one forwarded
+result followed by broker write-half EOF. An in-process two-channel integration
+control closes the structural five-frame stream. The manifest's future entry
+members are intentionally absent, so it is a non-launchable template; the next
+version must issue a new archive/request/manifest and executable bootstrap. It
+does not authenticate live process senders or relabel threads as the future
+broker runtime. See
+`specs/K7_PRODUCTION_ROLE_AND_OUTPUT_CORE.md`.
+
 The following remain false or unavailable:
 
 ```text

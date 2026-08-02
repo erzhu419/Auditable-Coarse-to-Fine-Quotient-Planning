@@ -1,8 +1,9 @@
 # Research Contract
 
-**Current construction contract:** `2.0.6`
+**Current construction contract:** `2.0.7`
 
-**Current construction profile:** `v075_k7_two_role_broker_probe_v1`
+**Current construction profiles:** `v075_k7_production_role_manifest_v1`,
+`v075_k7_business_entry_core_v1`, `v075_k7_broker_worker_entry_core_v1`
 
 ## Definitions
 
@@ -5316,3 +5317,39 @@ a shared-resource value, `CounterRecord`, `WorkVector`, `ComparisonVector`,
 terminal, certificate or official execution. All economics, counter,
 scientific and certificate Gates remain locked or `NOT_RUN`. See
 `specs/K7_TWO_ROLE_BROKER_PROBE.md`.
+
+## Contract 2.0.7: production role and durable-output core
+
+V0-110B-2D-1 replaces the probe's caller-selected role plan with an
+issuer-owned manifest derived from one exact successor request and prepared
+broker session. It freezes the request/route/session/spec, sealed-source,
+runtime/interpreter, cgroup, dispatch program, argv, environment, ordered
+input and FD-role identities, plus the five-frame author vector. Public callers
+cannot select those template fields, but Python-private sentinels are not a
+same-address-space security capability. Each binding replays the live guardian,
+descriptors, controls, empty topology, socket queues and peak monotonicity under
+one lock. The absent entry members/current argv are non-launchable; 2D-2 must
+issue a new source archive/request/manifest and real archive-loading bootstrap.
+
+The business core invokes the existing child-business computation once,
+replays it, publishes it through one empty read-write memfd, fsyncs and seals
+the memfd, replays the sealed bytes and emits one canonical
+`BUSINESS_RESULT`. The worker core emits the fixed prefix, accepts only one
+broker-forwarded result followed by peer half-close plus a read-only sealed
+memfd, replays the nested bundle, and commits a canonical pre-reap operational
+output with `openat(O_EXCL|O_NOFOLLOW)`, file fsync,
+`renameat2(RENAME_NOREPLACE)`, directory fsync and descriptor-pinned readback
+before emitting `PARENT_OUTPUT` and `WORKER_EOF`. Kernel socket domain/flags,
+binding snapshots and owned output/channel duplicates close metadata and FD
+replacement attacks. The worker waits through a frozen delayed-half-close
+window. Irreversible commit facts are immutable; temporary cleanup and recovery
+are inode/directory-bound, and completion retains exact output/receipt objects.
+
+These are role-local construction authorities, not a joined live run. The v2
+broker topology, materialized CLI entries, kernel credential/pidfd sender
+join, exclusive output-directory authority, role-specific Landlock, complete
+five-frame transcript, two reaps, same-OFD final peak, cleanup envelope,
+crash/no-loss evidence and all nine semantic receipts remain absent. No
+shared-resource value, formal accounting object, terminal, certificate,
+scientific result or official Gate authority moves. See
+`specs/K7_PRODUCTION_ROLE_AND_OUTPUT_CORE.md`.

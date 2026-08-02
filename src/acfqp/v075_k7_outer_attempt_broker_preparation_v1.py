@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import InitVar, dataclass, field
 from enum import Enum
+import fcntl
 import hashlib
 import os
 import secrets
@@ -414,6 +415,173 @@ class K7OuterAttemptPrelaunchGuardianV1:
     def closed(self) -> bool:
         return self.cleanup_state is K7PreparedBrokerCleanupStateV1.CLOSED
 
+    def assert_prepared_current(
+        self,
+        *,
+        expected_spec: K7OuterAttemptBrokerExecutionSpecV1,
+    ) -> None:
+        """Fail unless every retained prelaunch capability is still live.
+
+        A prepared-session content ID is only a static description.  This
+        process-local replay prevents a later role plan from treating a
+        closed, partially-cleaned, fork-stale, or descriptor-substituted
+        session as launch preparation.
+        """
+
+        with self._lifecycle_lock:
+            self._check()
+            if type(expected_spec) is not K7OuterAttemptBrokerExecutionSpecV1:
+                _fail("prelaunch guardian expected execution spec is mistyped")
+            if self._state is not K7PreparedBrokerCleanupStateV1.PREPARED:
+                _fail("prelaunch guardian is not in the PREPARED state")
+            if (
+                not self._business_created
+                or self._business_removed
+                or self._worker_removed
+                or self._outer_removed
+                or self._business_status is None
+            ):
+                _fail("prelaunch guardian topology is no longer complete")
+            retained = (
+                (self._parent_fd, self._parent_status, "parent"),
+                (self._outer_fd, self._outer_status, "outer"),
+                (self._worker_fd, self._worker_status, "worker"),
+                (self._business_fd, self._business_status, "business"),
+                (self._peak_fd, self._peak_status, "memory.peak"),
+            )
+            for descriptor, expected, label in retained:
+                if descriptor < 0 or expected is None:
+                    _fail(f"prelaunch guardian lost its {label} descriptor")
+                try:
+                    os.fstat(descriptor)
+                except OSError as error:
+                    raise V075K7OuterAttemptBrokerPreparationV1Error(
+                        f"prelaunch guardian cannot replay its {label} descriptor"
+                    ) from error
+                if not _same_status(descriptor, expected):
+                    _fail(f"prelaunch guardian {label} descriptor changed")
+            for descriptor, label in (
+                (self._kill_fd, "cgroup.kill"),
+                (self._worker_socket_fd, "worker socket"),
+                (self._business_socket_fd, "business socket"),
+            ):
+                if descriptor < 0:
+                    _fail(f"prelaunch guardian lost its {label} descriptor")
+                try:
+                    os.fstat(descriptor)
+                except OSError as error:
+                    raise V075K7OuterAttemptBrokerPreparationV1Error(
+                        f"prelaunch guardian cannot replay its {label} descriptor"
+                    ) from error
+            outer_v1._verify_named_descriptor(  # noqa: SLF001
+                self._parent_fd, self._outer_name, self._outer_status
+            )
+            outer_v1._verify_named_descriptor(  # noqa: SLF001
+                self._outer_fd, self._worker_name, self._worker_status
+            )
+            outer_v1._verify_named_descriptor(  # noqa: SLF001
+                self._outer_fd, self._business_name, self._business_status
+            )
+            descriptor_pairs = (
+                (self._parent_fd, expected_spec.parent_identity),
+                (self._outer_fd, expected_spec.outer_identity),
+                (self._worker_fd, expected_spec.worker_identity),
+                (self._business_fd, expected_spec.business_identity),
+                (self._kill_fd, expected_spec.cgroup_kill_identity),
+                (self._peak_fd, expected_spec.memory_peak_identity),
+                (self._worker_socket_fd, expected_spec.worker_socket_identity),
+                (self._business_socket_fd, expected_spec.business_socket_identity),
+            )
+            try:
+                current = tuple(
+                    _descriptor(os.fstat(fd)) for fd, _expected in descriptor_pairs
+                )
+            except OSError as error:
+                raise V075K7OuterAttemptBrokerPreparationV1Error(
+                    "prepared broker session lost a retained descriptor"
+                ) from error
+            expected = tuple(dict(value) for _fd, value in descriptor_pairs)
+            if current != expected:
+                _fail("prepared broker session descriptor/spec binding changed")
+
+            inner_v1._validate_empty_leaf(self._worker_fd)  # noqa: SLF001
+            inner_v1._validate_empty_leaf(self._business_fd)  # noqa: SLF001
+            if not outer_v1._controls_match(  # noqa: SLF001
+                self._worker_fd, LEAF_CONTROL_READBACKS
+            ):
+                _fail("prepared worker controls changed")
+            if not outer_v1._controls_match(  # noqa: SLF001
+                self._business_fd, LEAF_CONTROL_READBACKS
+            ):
+                _fail("prepared business controls changed")
+            if not outer_v1._controls_match(  # noqa: SLF001
+                self._outer_fd, outer_v1.OUTER_CONTROL_READBACKS
+            ):
+                _fail("prepared outer controls changed")
+            topology = outer_v1._cgroup_stat(self._outer_fd)  # noqa: SLF001
+            if (
+                topology["nr_descendants"] != 2
+                or topology["nr_dying_descendants"] != 0
+            ):
+                _fail("prepared outer topology changed")
+
+            for descriptor, label in (
+                (self._worker_socket_fd, "worker"),
+                (self._business_socket_fd, "business"),
+            ):
+                duplicate = -1
+                try:
+                    flags = fcntl.fcntl(descriptor, fcntl.F_GETFL)
+                    inheritable = os.get_inheritable(descriptor)
+                    duplicate = os.dup(descriptor)
+                    os.set_inheritable(duplicate, False)
+                    endpoint = socket.socket(fileno=duplicate)
+                    duplicate = -1
+                    try:
+                        socket_type = endpoint.getsockopt(
+                            socket.SOL_SOCKET, socket.SO_TYPE
+                        )
+                        kernel_domain = endpoint.getsockopt(
+                            socket.SOL_SOCKET, socket.SO_DOMAIN
+                        )
+                        endpoint.getpeername()
+                        try:
+                            queued = endpoint.recv(
+                                1,
+                                socket.MSG_PEEK | socket.MSG_DONTWAIT,
+                            )
+                        except BlockingIOError:
+                            queued = None
+                    finally:
+                        endpoint.close()
+                except OSError as error:
+                    raise V075K7OuterAttemptBrokerPreparationV1Error(
+                        f"prepared {label} socket cannot be replayed"
+                    ) from error
+                finally:
+                    if duplicate >= 0:
+                        os.close(duplicate)
+                        duplicate = -1
+                if (
+                    socket_type != socket.SOCK_STREAM
+                    or kernel_domain != socket.AF_UNIX
+                    or flags & os.O_NONBLOCK
+                    or inheritable
+                    or queued is not None
+                ):
+                    _fail(f"prepared {label} socket state changed")
+
+            current_peak = _read_open_control(self._peak_fd, "memory.peak")
+            current_memory = inner_v1._parse_nonnegative(  # noqa: SLF001
+                inner_v1._read_control(self._outer_fd, "memory.current"),  # noqa: SLF001
+                "memory.current",
+            )
+            if (
+                current_peak < expected_spec.prelaunch_memory_peak
+                or current_peak < current_memory
+            ):
+                _fail("prepared memory.peak lost monotonic authority")
+
     def close_prelaunch(self) -> None:
         """Verify the still-empty topology and retryably delete all owned nodes."""
 
@@ -625,6 +793,13 @@ class K7OuterAttemptPreparedBrokerSessionV1:
 
     def close_prelaunch(self) -> None:
         self.guardian.close_prelaunch()
+
+    def assert_prepared_current(self) -> None:
+        """Replay live guardian state and all descriptor/spec joins."""
+
+        if type(self.guardian) is not K7OuterAttemptPrelaunchGuardianV1:
+            _fail("prepared broker session guardian is mistyped")
+        self.guardian.assert_prepared_current(expected_spec=self.execution_spec)
 
 
 class K7OuterAttemptBrokerPreparationServiceV1:

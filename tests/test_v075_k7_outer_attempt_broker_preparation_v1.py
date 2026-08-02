@@ -210,6 +210,46 @@ def test_transferred_lease_context_exit_defers_to_guardian(
         assert tuple(parent.iterdir()) == ()
 
 
+def test_prepared_current_replays_controls_emptiness_socket_queue_and_spec_under_lock(
+    tmp_path, monkeypatch
+) -> None:
+    with _fake_lease(tmp_path, monkeypatch, "prepared-live-replay") as (
+        lease,
+        _request,
+        _parent,
+        outer,
+        worker,
+        _rmdir,
+    ):
+        session = prep_v1.K7OuterAttemptBrokerPreparationServiceV1().prepare(lease)
+        session.assert_prepared_current()
+
+        control = worker / "pids.max"
+        control.write_text("2\n", encoding="ascii")
+        with pytest.raises(
+            prep_v1.V075K7OuterAttemptBrokerPreparationV1Error,
+            match="worker controls changed",
+        ):
+            session.assert_prepared_current()
+        control.write_text("1\n", encoding="ascii")
+
+        procs = outer / "business" / "cgroup.procs"
+        procs.write_text("123\n", encoding="ascii")
+        with pytest.raises(Exception):
+            session.assert_prepared_current()
+        procs.write_text("", encoding="ascii")
+
+        os.write(session.guardian._worker_socket_fd, b"x")  # noqa: SLF001
+        with pytest.raises(
+            prep_v1.V075K7OuterAttemptBrokerPreparationV1Error,
+            match="business socket state changed",
+        ):
+            session.assert_prepared_current()
+        assert os.read(session.guardian._business_socket_fd, 1) == b"x"  # noqa: SLF001
+        session.assert_prepared_current()
+        session.close_prelaunch()
+
+
 def test_stale_handoff_token_cannot_claim_committed_guardian(
     tmp_path, monkeypatch
 ) -> None:

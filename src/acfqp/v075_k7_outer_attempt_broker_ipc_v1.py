@@ -658,6 +658,42 @@ def verify_v075_k7_outer_attempt_broker_ipc_stream_v1(
     )
 
 
+def verify_v075_k7_outer_attempt_broker_ipc_frame_v1(
+    *,
+    raw: bytes,
+    expected_binding: K7OuterAttemptBrokerIPCBindingV1,
+    expected_role: K7OuterAttemptBrokerFrameRoleV1,
+) -> K7OuterAttemptBrokerIPCFrameV1:
+    """Strictly replay one complete length-prefixed role frame.
+
+    Live role endpoints need the same canonical parser as the final five-frame
+    transcript without accepting a caller-supplied sequence or a partial body.
+    This additive reader does not change the historical structural authority of
+    the V1 frame/transcript schemas.
+    """
+
+    if type(raw) is not bytes or len(raw) <= FRAME_WIDTH or len(raw) > (
+        FRAME_WIDTH + MAX_FRAME_BYTES
+    ):
+        _fail("broker IPC single-frame bytes are empty, mistyped, or over cap")
+    if type(expected_binding) is not K7OuterAttemptBrokerIPCBindingV1:
+        _fail("broker IPC single-frame verifier requires one exact binding")
+    try:
+        role = K7OuterAttemptBrokerFrameRoleV1(expected_role)
+    except (TypeError, ValueError) as error:
+        raise V075K7OuterAttemptBrokerIPCV1Error(
+            "broker IPC single-frame verifier received an unknown role"
+        ) from error
+    size = _parse_header(raw[:FRAME_WIDTH])
+    if len(raw) != FRAME_WIDTH + size:
+        _fail("broker IPC single frame is truncated or has trailing bytes")
+    return _parse_frame_body(
+        raw[FRAME_WIDTH:],
+        expected_binding=expected_binding,
+        expected_role=role,
+    )
+
+
 __all__ = (
     "FRAME_ROLES",
     "FRAME_WIDTH",
@@ -679,4 +715,5 @@ __all__ = (
     "encode_v075_k7_outer_attempt_broker_ipc_stream_v1",
     "official_v075_k7_outer_attempt_broker_ipc_profile_v1",
     "verify_v075_k7_outer_attempt_broker_ipc_stream_v1",
+    "verify_v075_k7_outer_attempt_broker_ipc_frame_v1",
 )

@@ -119,5 +119,8 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 Contract `2.0.6` implements the successor two-role native probe with
 role-specific write-ahead edges, kernel no-spawn enforcement, pidfd lifecycle
 and truthful `0/1/2` failed-prefix counts. It remains nonformal. The next
-milestone must add broker-observed live-frame provenance and the real K7
-worker/business/output protocol before any shared-resource receipt can close.
+contract, `2.0.7`, freezes the production role plan and role-local
+business/worker/output cores but does not mutate this historical prepared
+session. A v2 preparation/runtime must issue a new source/request/manifest with
+present archive-loading wrappers, add broker-observed live-frame provenance
+and launch those new entries before any shared-resource receipt can close.

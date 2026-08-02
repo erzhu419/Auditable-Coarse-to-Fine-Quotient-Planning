@@ -31,7 +31,7 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction
-contracts now span `1.40.0` through `2.0.6`: the earlier contracts build the
+contracts now span `1.40.0` through `2.0.7`: the earlier contracts build the
 source archive, law-free public target graph, private reveal/observer boundary
 and multiround planning path; the newer contracts reconstruct the portable
 evidence graph role by role before any production target access.
@@ -586,6 +586,27 @@ peak is not yet a complete operational output window. It therefore signs no
 exact `process.launches`, shared-resource receipt, `CounterRecord`,
 `WorkVector` or `ComparisonVector`. See
 [`specs/K7_TWO_ROLE_BROKER_PROBE.md`](specs/K7_TWO_ROLE_BROKER_PROBE.md).
+
+Contract `2.0.7` / V0-110B-2D-1 freezes the production worker/business role
+plan and implements both role-local protocol cores. The manifest derives the
+dispatch program, argv, environment, cgroup, source/interpreter and exact FD
+roles from the request and live-replayed prepared session rather than public
+caller input. Its absent entry members and current argv are explicitly a
+non-launchable template; 2D-2 must issue a new archive/request/manifest with a
+real archive-loading bootstrap. Business uses owned FD duplicates, kernel
+socket-domain/flag checks, binding snapshots, pre-seal rollback and typed
+irreversible stages to publish one `BUSINESS_RESULT`. Worker admits a delayed
+half-close without the old scheduling race and durably commits the canonical
+pre-reap output. Temporary cleanup is inode-bound; post-rename recovery is
+bound to the original directory/inode; successful completion retains both
+output and receipt preimages.
+
+This is not yet the live broker join. Kernel sender credentials, production
+role launch, exclusive output-directory authority, role-specific sandboxing,
+complete transcript, final peak/reaps/cleanup envelope and all nine semantic
+receipts remain absent. Formal vectors and every official Gate remain locked.
+See
+[`specs/K7_PRODUCTION_ROLE_AND_OUTPUT_CORE.md`](specs/K7_PRODUCTION_ROLE_AND_OUTPUT_CORE.md).
 
 ## V0-074 repair construction (NONAUTHORIZING; fresh Gate NOT RUN)
 

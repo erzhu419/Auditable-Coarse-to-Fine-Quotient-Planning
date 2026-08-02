@@ -4547,3 +4547,28 @@ Consequently the two role edges and peak are nonformal probe facts only. No
 shared-resource receipt, `CounterRecord`, `WorkVector`, `ComparisonVector`,
 terminal, certificate, scientific result or official authority is issued, and
 every Gate remains locked. See `specs/K7_TWO_ROLE_BROKER_PROBE.md`.
+
+## V0-110B-2D-1 production role and durable-output core
+
+Contract `2.0.7` freezes an issuer-owned worker/business role manifest from the
+exact successor request, prepared session, source archive and interpreter.
+Role order, cgroups, dispatch programs, argv, environments, sealed inputs,
+inherited/writable/forbidden FD roles and the five-frame author vector are no
+longer caller-selectable. The business core executes and publicly replays the
+existing K7 bundle, fsyncs/seals it in a caller-provided memfd that the future
+broker runtime must own exclusively, and emits exactly
+one `BUSINESS_RESULT`. The worker core verifies the sole broker-forwarded
+frame, channel half-close and read-only sealed bundle, then commits a canonical
+pre-reap output with no-replace rename, file+directory fsync and
+descriptor-pinned readback before emitting the two suffix frames. Typed
+post-rename/suffix failures retain immutable directory/inode-bound output state;
+successful completion retains the exact output and receipt preimages. The
+manifest is explicitly non-launchable because its future entry members are
+absent; 2D-2 must issue a new archive/request/manifest and archive bootstrap.
+
+The three authorities are not yet joined by a production broker. No live
+kernel sender provenance, exclusive output-directory capability, role-specific
+sandbox, two-reap/final-peak/cleanup envelope, crash-persistent journal or
+nine-path receipt exists. Consequently no `CounterRecord`, `WorkVector`,
+`ComparisonVector`, terminal, certificate, scientific endpoint or official
+Gate is authorized. See `specs/K7_PRODUCTION_ROLE_AND_OUTPUT_CORE.md`.
