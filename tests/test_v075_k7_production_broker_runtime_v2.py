@@ -8,6 +8,7 @@ import os
 from pathlib import Path
 import signal
 import socket
+import stat
 import struct
 import tempfile
 from types import SimpleNamespace
@@ -176,6 +177,7 @@ def test_profile_exposes_nonformal_output_role_mismatch_and_no_receipts() -> Non
     assert document["registered_eight_role_business_result_claimed"] is False
     assert document["failure_never_deletes_nonempty_output"] is True
     assert document["native_clone3_into_fixed_sibling_cgroups"] is True
+    assert document["success_output_post_reap_sealed_readonly"] is True
     assert document["central_domain_registration_pending"] is False
     assert runtime_v2.RUNTIME_PROFILE_DOMAIN in PHASE3E_DOMAIN_TAGS
     assert runtime_v2.RUNTIME_ENVELOPE_DOMAIN in PHASE3E_DOMAIN_TAGS
@@ -189,7 +191,7 @@ def test_profile_exposes_nonformal_output_role_mismatch_and_no_receipts() -> Non
     not hasattr(os, "pidfd_open"),
     reason="pidfd lifecycle support is unavailable",
 )
-def test_fake_two_process_five_frame_protocol_authenticates_and_freezes_envelope() -> None:
+def test_fake_protocol_authentication_and_private_envelope_invariants() -> None:
     binding = _binding("five-frame")
     output_raw = canonical_json_bytes({"fake": "pre-reap-operational-output"})
     result_id = _id("runtime-fake-business-result")
@@ -241,6 +243,7 @@ def test_fake_two_process_five_frame_protocol_authenticates_and_freezes_envelope
         runtime_v2._send_exact_packet_and_half_close_v2(  # noqa: SLF001
             worker_broker,
             observations[2].frame.framed_bytes,
+            deadline,
         )
         observations.extend(
             (
@@ -292,9 +295,11 @@ def test_fake_two_process_five_frame_protocol_authenticates_and_freezes_envelope
             }
             for launch in (worker, business)
         )
-        identity = runtime_v2._identity_document(  # noqa: SLF001
+        peak_identity = runtime_v2._identity_document(  # noqa: SLF001
             runtime_v2._descriptor_identity(worker_pidfd)  # noqa: SLF001
         )
+        output_identity = dict(peak_identity)
+        output_identity["mode"] = stat.S_IFREG | 0o400
         envelope = runtime_v2.K7ProductionBrokerRuntimeEnvelopeV2(
             runtime_v2._ENVELOPE_ISSUER,  # noqa: SLF001
             _id("runtime-prepared"),
@@ -312,10 +317,10 @@ def test_fake_two_process_five_frame_protocol_authenticates_and_freezes_envelope
             _id("runtime-operational-output"),
             hashlib.sha256(output_raw).hexdigest(),
             len(output_raw),
-            identity,
+            output_identity,
             f"{runtime_v2.PROMOTED_OUTPUT_PREFIX}{_id('runtime-resource')}.json",
             4096,
-            identity,
+            peak_identity,
             True,
             True,
         )
@@ -326,6 +331,7 @@ def test_fake_two_process_five_frame_protocol_authenticates_and_freezes_envelope
         assert document["receipts"] is None
         assert document["counter_records"] is None
         assert document["durable_output_fixed_point_joined"] is False
+        assert document["output_post_reap_write_bits_removed"] is True
     finally:
         worker_broker.close()
         business_broker.close()
@@ -454,6 +460,7 @@ def test_native_launch_seam_uses_write_ahead_cell_and_consumes_setup_eof(
             ),
             sandbox_material=Material(),  # type: ignore[arg-type]
             native_cells=cells,
+            deadline_ns=runtime_v2.time.monotonic_ns() + 5_000_000_000,
         )
         assert outcome.pid == 4321
         assert outcome.pidfd == pidfd
@@ -469,6 +476,64 @@ def test_native_launch_seam_uses_write_ahead_cell_and_consumes_setup_eof(
                 pass
 
 
+def test_setup_status_and_relay_obey_one_absolute_deadline() -> None:
+    read_fd, write_fd = os.pipe2(os.O_CLOEXEC | os.O_NONBLOCK)
+    try:
+        with pytest.raises(
+            runtime_v2.V075K7ProductionBrokerRuntimeV2Error,
+            match="timed out|deadline expired",
+        ):
+            runtime_v2._read_setup_status_until_v2(  # noqa: SLF001
+                read_fd,
+                runtime_v2.time.monotonic_ns() + 20_000_000,
+            )
+    finally:
+        os.close(read_fd)
+        os.close(write_fd)
+
+    sender, receiver = socket.socketpair(socket.AF_UNIX, socket.SOCK_SEQPACKET)
+    try:
+        sender.setblocking(False)
+        packet = b"x" * 4096
+        while True:
+            try:
+                sender.send(packet)
+            except BlockingIOError:
+                break
+        sender.setblocking(True)
+        with pytest.raises(
+            runtime_v2.V075K7ProductionBrokerRuntimeV2Error,
+            match="timed out|deadline expired",
+        ):
+            runtime_v2._send_exact_packet_and_half_close_v2(  # noqa: SLF001
+                sender,
+                b"relay",
+                runtime_v2.time.monotonic_ns() + 20_000_000,
+            )
+    finally:
+        sender.close()
+        receiver.close()
+
+
+def test_cleanup_takes_and_retires_pinned_output_fd() -> None:
+    descriptor = os.open("/dev/null", os.O_RDONLY | os.O_CLOEXEC)
+    pinned = runtime_v2._PinnedOutputV2(  # noqa: SLF001
+        descriptor,
+        runtime_v2._descriptor_identity(descriptor),  # noqa: SLF001
+        _id("pinned-cleanup-output"),
+        b"raw",
+    )
+    cleanup = runtime_v2.K7ProductionBrokerRuntimeCleanupAuthorityV2(
+        guardian=SimpleNamespace(),
+        resource_session=SimpleNamespace(),
+    )
+    cleanup._take_pinned_output(pinned)  # noqa: SLF001
+    cleanup._retire_launch_resources()  # noqa: SLF001
+    assert cleanup._pinned_output_fd == -1  # noqa: SLF001
+    with pytest.raises(OSError):
+        os.fstat(descriptor)
+
+
 def test_postreap_inode_pinned_output_replay_and_no_replace_promotion(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -478,6 +543,7 @@ def test_postreap_inode_pinned_output_replay_and_no_replace_promotion(
     output.mkdir(parents=True)
     raw = canonical_json_bytes({"output": "wrapper"})
     (output / runtime_v2.worker_v1.OUTPUT_NAME).write_bytes(raw)
+    (output / runtime_v2.worker_v1.OUTPUT_NAME).chmod(0o600)
     output_fd = os.open(output, os.O_RDONLY | os.O_DIRECTORY | os.O_CLOEXEC)
     parent_fd = os.open(parent, os.O_RDONLY | os.O_DIRECTORY | os.O_CLOEXEC)
     expected_id = _id("runtime-pinned-output")
@@ -526,6 +592,7 @@ def test_postreap_inode_pinned_output_replay_and_no_replace_promotion(
             pinned.identity[index] for index in stable_identity_indices
         )
         assert os.pread(pinned.descriptor, len(raw), 0) == raw
+        assert stat.S_IMODE(os.fstat(pinned.descriptor).st_mode) == 0o400
         os.close(pinned.descriptor)
     finally:
         os.close(output_fd)
@@ -542,6 +609,7 @@ def test_output_extra_file_and_target_collision_fail_without_deleting_bytes(
     output.mkdir(parents=True)
     raw = b"preserve-me"
     (output / runtime_v2.worker_v1.OUTPUT_NAME).write_bytes(raw)
+    (output / runtime_v2.worker_v1.OUTPUT_NAME).chmod(0o600)
     (output / "injected").write_bytes(b"attack")
     output_fd = os.open(output, os.O_RDONLY | os.O_DIRECTORY | os.O_CLOEXEC)
     parent_fd = os.open(parent, os.O_RDONLY | os.O_DIRECTORY | os.O_CLOEXEC)
@@ -599,6 +667,64 @@ def test_output_extra_file_and_target_collision_fail_without_deleting_bytes(
         assert (parent / target).read_bytes() == b"existing"
         os.close(pinned.descriptor)
     finally:
+        os.close(output_fd)
+        os.close(parent_fd)
+        temporary.cleanup()
+
+
+def test_postrename_failure_retains_promoted_output_provenance(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    temporary = tempfile.TemporaryDirectory(dir="/tmp")
+    parent = Path(temporary.name) / "parent"
+    output = parent / "ephemeral"
+    output.mkdir(parents=True)
+    raw = b"sealed-promoted-output"
+    source = output / runtime_v2.worker_v1.OUTPUT_NAME
+    source.write_bytes(raw)
+    source.chmod(0o400)
+    output_fd = os.open(output, os.O_RDONLY | os.O_DIRECTORY | os.O_CLOEXEC)
+    parent_fd = os.open(parent, os.O_RDONLY | os.O_DIRECTORY | os.O_CLOEXEC)
+    pinned_fd = os.open(source, os.O_RDONLY | os.O_CLOEXEC)
+
+    class Transfer:
+        _guardian = SimpleNamespace(_output_parent_fd=parent_fd)
+
+        def broker_descriptor(self, role: str) -> int:
+            assert role == "OUTPUT_DIRECTORY"
+            return output_fd
+
+    transfer = Transfer()
+    cleanup = runtime_v2.K7ProductionBrokerRuntimeCleanupAuthorityV2(
+        guardian=SimpleNamespace(),
+        resource_session=transfer,
+    )
+    cleanup._transfer = transfer  # noqa: SLF001
+    pinned = runtime_v2._PinnedOutputV2(  # noqa: SLF001
+        pinned_fd,
+        runtime_v2._descriptor_identity(pinned_fd),  # noqa: SLF001
+        _id("postrename-output"),
+        raw,
+    )
+    monkeypatch.setattr(
+        runtime_v2.os,
+        "fsync",
+        lambda _fd: (_ for _ in ()).throw(OSError("injected fsync failure")),
+    )
+    try:
+        with pytest.raises(OSError, match="injected fsync failure"):
+            runtime_v2._promote_output_v2(  # noqa: SLF001
+                transfer=transfer,  # type: ignore[arg-type]
+                pinned=pinned,
+                resource_session_id=_id("postrename-resource"),
+                on_renamed=cleanup._record_promoted_output,  # noqa: SLF001
+            )
+        assert cleanup.promoted_output_name is not None
+        assert cleanup.output_preserved is True
+        assert (parent / cleanup.promoted_output_name).read_bytes() == raw
+        assert tuple(output.iterdir()) == ()
+    finally:
+        os.close(pinned_fd)
         os.close(output_fd)
         os.close(parent_fd)
         temporary.cleanup()

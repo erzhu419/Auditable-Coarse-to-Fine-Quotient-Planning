@@ -21,7 +21,8 @@ Under the sole outer guardian lock, the broker:
 - publicly replays the sealed business bundle before relaying it;
 - directly reaps both children through `P_PIDFD` before output inspection;
 - replays the worker output from a pinned inode, checks the authenticated
-  byte count and digest, and promotes that inode with
+  byte count and digest, removes all write bits with file/directory fsync, and
+  promotes that sealed inode with
   `renameat2(RENAME_NOREPLACE)` plus directory fsync;
 - reads final `memory.peak` through the retained prepared OFD; and
 - closes the cgroup and resource guardians only after successful cleanup.
@@ -30,6 +31,10 @@ Every success identity uses a centrally registered, role-separated content
 domain. Failure cleanup retains pidfds, tree-control OFDs and resource
 ownership until all known children are reaped. A nonempty failed output is
 preserved and exposed through a retry authority instead of being deleted.
+The single absolute deadline also governs setup-status EOF and a backpressured
+business-result relay; neither may block beyond the registered attempt bound.
+After readback, pinned-output FD ownership transfers immediately to cleanup,
+and a post-rename failure retains the promoted-name provenance.
 
 ## Claim boundary
 

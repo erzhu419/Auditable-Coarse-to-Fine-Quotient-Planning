@@ -29,7 +29,7 @@ import stat
 import threading
 import time
 from types import MappingProxyType
-from typing import Any, Mapping, NoReturn
+from typing import Any, Callable, Mapping, NoReturn
 
 from acfqp import v075_k7_atomic_pidfd_runtime_v1 as atomic_v1
 from acfqp import v075_k7_authenticated_broker_channel_v2 as channel_v2
@@ -78,12 +78,14 @@ class V075K7ProductionBrokerRuntimeV2Error(RuntimeError):
         cleanup_authority: Any = None,
         unresolved_roles: tuple[str, ...] = (),
         output_preserved: bool = False,
+        promoted_output_name: str | None = None,
     ) -> None:
         super().__init__(message)
         self.cleanup_complete = cleanup_complete
         self.cleanup_authority = cleanup_authority
         self.unresolved_roles = unresolved_roles
         self.output_preserved = output_preserved
+        self.promoted_output_name = promoted_output_name
 
 
 class V075K7ProductionBrokerRuntimeCleanupV2Error(
@@ -192,6 +194,7 @@ class K7ProductionBrokerRuntimeProfileV2:
             "direct_pidfd_zero_exit_reap_required": True,
             "same_memory_peak_open_file_description_required": True,
             "success_output_promoted_without_replace": True,
+            "success_output_post_reap_sealed_readonly": True,
             "failure_never_deletes_nonempty_output": True,
             "output_role": "PRE_REAP_OPERATIONAL_RESULT",
             "registered_eight_role_business_result_claimed": False,
@@ -324,6 +327,9 @@ class K7ProductionBrokerRuntimeEnvelopeV2:
             or self.final_memory_peak < 0
             or type(self.promoted_output_name) is not str
             or not self.promoted_output_name.startswith(PROMOTED_OUTPUT_PREFIX)
+            or not isinstance(self.output_inode_identity, Mapping)
+            or type(self.output_inode_identity.get("mode")) is not int
+            or stat.S_IMODE(self.output_inode_identity["mode"]) != 0o400
             or self.cgroup_cleanup_complete is not True
             or self.resource_cleanup_complete is not True
         ):
@@ -379,6 +385,7 @@ class K7ProductionBrokerRuntimeEnvelopeV2:
             "promoted_output_name": self.promoted_output_name,
             "promoted_output_no_replace": True,
             "promoted_output_parent_fsync_completed": True,
+            "output_post_reap_write_bits_removed": True,
             "output_role": "PRE_REAP_OPERATIONAL_RESULT",
             "registered_eight_role_business_result_claimed": False,
             "durable_output_fixed_point_joined": False,
@@ -436,6 +443,38 @@ def _wait_readable(descriptor: int, deadline_ns: int, label: str) -> None:
             _fail(f"production broker timed out waiting for {label}")
 
 
+def _wait_writable(descriptor: int, deadline_ns: int, label: str) -> None:
+    poller = select.poll()
+    poller.register(descriptor, select.POLLOUT | select.POLLHUP | select.POLLERR)
+    while True:
+        remaining = _remaining_milliseconds(deadline_ns)
+        events = poller.poll(min(remaining, 100))
+        if events:
+            return
+        if time.monotonic_ns() >= deadline_ns:
+            _fail(f"production broker timed out waiting for {label}")
+
+
+def _read_setup_status_until_v2(status_fd: int, deadline_ns: int) -> bytes:
+    chunks: list[bytes] = []
+    total = 0
+    while True:
+        _wait_readable(status_fd, deadline_ns, "native setup status EOF")
+        while True:
+            try:
+                chunk = os.read(status_fd, 33 - total)
+            except BlockingIOError:
+                break
+            except InterruptedError:
+                continue
+            if not chunk:
+                return b"".join(chunks)
+            chunks.append(chunk)
+            total += len(chunk)
+            if total > 32:
+                _fail("native setup status exceeded two fixed records")
+
+
 def _reconstruct_request_replay_v2(
     worker_authority: launch_v2.K7ProductionRoleLaunchAuthorityV2,
     business_authority: launch_v2.K7ProductionRoleLaunchAuthorityV2,
@@ -471,6 +510,7 @@ def _launch_production_role_v2(
     launch_record: launch_v2.K7ProductionRoleNativeLaunchRecordV2,
     sandbox_material: sandbox_v2.K7ProductionRolePreexecSandboxMaterialV2,
     native_cells: _RoleNativeCellsV2,
+    deadline_ns: int,
 ) -> _LaunchOutcomeV2:
     if role not in ROLE_ORDER:
         _fail("production native launcher received an unknown role")
@@ -550,7 +590,7 @@ def _launch_production_role_v2(
         # is CLOEXEC, so EOF now proves either successful exec or child exit.
         os.close(setup_write)
         setup_write = -1
-        setup_raw = atomic_v1._read_setup_status(setup_read)  # noqa: SLF001
+        setup_raw = _read_setup_status_until_v2(setup_read, deadline_ns)
         os.close(setup_read)
         setup_read = -1
         native_cells.setup_read.value = -1
@@ -607,11 +647,23 @@ def _receive_authenticated_v2(
 def _send_exact_packet_and_half_close_v2(
     endpoint: socket.socket,
     raw: bytes,
+    deadline_ns: int,
 ) -> None:
     try:
-        sent = endpoint.send(raw, getattr(socket, "MSG_NOSIGNAL", 0))
-        if sent != len(raw):
-            _fail("business result relay was not one exact packet")
+        flags = getattr(socket, "MSG_NOSIGNAL", 0) | getattr(
+            socket, "MSG_DONTWAIT", 0
+        )
+        while True:
+            try:
+                sent = endpoint.send(raw, flags)
+            except (BlockingIOError, InterruptedError):
+                _wait_writable(
+                    endpoint.fileno(), deadline_ns, "business result relay"
+                )
+                continue
+            if sent != len(raw):
+                _fail("business result relay was not one exact packet")
+            break
         endpoint.shutdown(socket.SHUT_WR)
     except OSError as error:
         raise V075K7ProductionBrokerRuntimeV2Error(
@@ -695,6 +747,7 @@ def _reread_operational_output_v2(
             not stat.S_ISREG(before[2])
             or before[6] <= 0
             or before[6] > MAX_OUTPUT_BYTES
+            or stat.S_IMODE(before[2]) != 0o600
         ):
             _fail("pinned operational output inode is invalid")
         raw = _read_exact_file(descriptor, before[6])
@@ -719,7 +772,28 @@ def _reread_operational_output_v2(
             or payload["output_sha256"] != digest
         ):
             _fail("authenticated PARENT_OUTPUT crossed durable output bytes")
-        return _PinnedOutputV2(descriptor, before, replayed.output_id, raw)
+        # Both direct children have already been reaped.  Remove the worker's
+        # write bits before the envelope can expose these bytes as immutable.
+        os.fchmod(descriptor, 0o400)
+        os.fsync(descriptor)
+        os.fsync(output_directory_fd)
+        sealed = _descriptor_identity(descriptor)
+        sealed_named = os.stat(
+            worker_v1.OUTPUT_NAME,
+            dir_fd=output_directory_fd,
+            follow_symlinks=False,
+        )
+        stable_indices = (0, 1, 3, 4, 5, 6, 7, 9, 10)
+        if (
+            tuple(sealed[index] for index in stable_indices)
+            != tuple(before[index] for index in stable_indices)
+            or stat.S_IMODE(sealed[2]) != 0o400
+            or (sealed_named.st_dev, sealed_named.st_ino) != sealed[:2]
+            or stat.S_IMODE(sealed_named.st_mode) != 0o400
+            or _read_exact_file(descriptor, sealed[6]) != raw
+        ):
+            _fail("post-reap operational output sealing changed its bytes or inode")
+        return _PinnedOutputV2(descriptor, sealed, replayed.output_id, raw)
     except BaseException:
         os.close(descriptor)
         raise
@@ -760,6 +834,7 @@ def _promote_output_v2(
     transfer: resource_v2.K7BrokerRuntimeTransferAuthorityV2,
     pinned: _PinnedOutputV2,
     resource_session_id: str,
+    on_renamed: Callable[[str], None] | None = None,
 ) -> str:
     guardian = transfer._guardian  # noqa: SLF001 - runtime owns transfer
     output_directory_fd = transfer.broker_descriptor("OUTPUT_DIRECTORY")
@@ -771,6 +846,8 @@ def _promote_output_v2(
         target_directory_fd=parent_fd,
         target_name=target_name,
     )
+    if on_renamed is not None:
+        on_renamed(target_name)
     named = os.stat(target_name, dir_fd=parent_fd, follow_symlinks=False)
     if (named.st_dev, named.st_ino) != pinned.identity[:2]:
         _fail("promoted operational output crossed its pinned inode")
@@ -816,6 +893,8 @@ class K7ProductionBrokerRuntimeCleanupAuthorityV2:
         self._sandbox_authorities: list[Any] = []
         self._sandbox_materials: list[Any] = []
         self._broker_endpoints: list[socket.socket] = []
+        self._pinned_output_fd = -1
+        self._promoted_output_name: str | None = None
         self._cgroup_closed = False
         self._resource_closed = False
         self._closed = False
@@ -831,7 +910,41 @@ class K7ProductionBrokerRuntimeCleanupAuthorityV2:
     @property
     def output_preserved(self) -> bool:
         owner = self._transfer if self._transfer is not None else self._resource_session
-        return bool(_output_entries(owner))
+        if bool(_output_entries(owner)):
+            return True
+        if self._promoted_output_name is None:
+            return False
+        if self._resource_closed:
+            return True
+        try:
+            parent_fd = owner._guardian._output_parent_fd  # noqa: SLF001
+            os.stat(
+                self._promoted_output_name,
+                dir_fd=parent_fd,
+                follow_symlinks=False,
+            )
+            return True
+        except (AttributeError, OSError):
+            return False
+
+    @property
+    def promoted_output_name(self) -> str | None:
+        return self._promoted_output_name
+
+    def _record_promoted_output(self, target_name: str) -> None:
+        if self._promoted_output_name is not None:
+            _fail("production output promotion was recorded twice")
+        self._promoted_output_name = target_name
+
+    def _take_pinned_output(self, pinned: _PinnedOutputV2) -> None:
+        if (
+            type(pinned) is not _PinnedOutputV2
+            or pinned.descriptor < 3
+            or self._pinned_output_fd >= 0
+            or _descriptor_identity(pinned.descriptor) != pinned.identity
+        ):
+            _fail("production pinned output ownership transfer is invalid")
+        self._pinned_output_fd = pinned.descriptor
 
     def _launch_pid(self, role: str) -> int:
         launch = self._launches.get(role)
@@ -882,6 +995,12 @@ class K7ProductionBrokerRuntimeCleanupAuthorityV2:
             except OSError:
                 pass
         self._launch_owned_fds.clear()
+        if self._pinned_output_fd >= 0:
+            try:
+                os.close(self._pinned_output_fd)
+            except OSError:
+                pass
+            self._pinned_output_fd = -1
 
     def _cleanup_locked(self) -> None:
         self._refresh_native()
@@ -919,6 +1038,7 @@ class K7ProductionBrokerRuntimeCleanupAuthorityV2:
                 cleanup_authority=self,
                 unresolved_roles=unresolved,
                 output_preserved=self.output_preserved,
+                promoted_output_name=self._promoted_output_name,
             )
         for role, launch in tuple(self._launches.items()):
             try:
@@ -938,6 +1058,7 @@ class K7ProductionBrokerRuntimeCleanupAuthorityV2:
                 cleanup_authority=self,
                 unresolved_roles=(),
                 output_preserved=True,
+                promoted_output_name=self._promoted_output_name,
             )
         if not self._resource_closed:
             owner.close()
@@ -1153,6 +1274,7 @@ def run_v075_k7_production_broker_runtime_v2(
                 launch_record=launch_records["WORKER"],
                 sandbox_material=materials["WORKER"],
                 native_cells=cleanup._native_cells["WORKER"],  # noqa: SLF001
+                deadline_ns=deadline_ns,
             )
             cleanup._launches["WORKER"] = launches["WORKER"]  # noqa: SLF001
             transfer.retire_parent_side_descriptors_after_clone_v2("WORKER")
@@ -1181,6 +1303,7 @@ def run_v075_k7_production_broker_runtime_v2(
                 launch_record=launch_records["BUSINESS"],
                 sandbox_material=materials["BUSINESS"],
                 native_cells=cleanup._native_cells["BUSINESS"],  # noqa: SLF001
+                deadline_ns=deadline_ns,
             )
             cleanup._launches["BUSINESS"] = launches["BUSINESS"]  # noqa: SLF001
             transfer.retire_parent_side_descriptors_after_clone_v2("BUSINESS")
@@ -1201,6 +1324,7 @@ def run_v075_k7_production_broker_runtime_v2(
             _send_exact_packet_and_half_close_v2(
                 worker_endpoint,
                 observations[2].frame.framed_bytes,
+                deadline_ns,
             )
             observations.append(
                 _receive_authenticated_v2(
@@ -1237,6 +1361,7 @@ def run_v075_k7_production_broker_runtime_v2(
                 binding=prepared_session.binding,
                 parent_output=observations[3],
             )
+            cleanup._take_pinned_output(pinned)  # noqa: SLF001
             peak_identity = _descriptor_identity(guardian._peak_fd)  # noqa: SLF001
             final_peak = preparation_v1._read_open_control(  # noqa: SLF001
                 guardian._peak_fd, "memory.peak"  # noqa: SLF001
@@ -1256,6 +1381,7 @@ def run_v075_k7_production_broker_runtime_v2(
                 transfer=transfer,
                 pinned=pinned,
                 resource_session_id=resource_session_id,
+                on_renamed=cleanup._record_promoted_output,  # noqa: SLF001
             )
             transfer.close()
             cleanup._resource_closed = True  # noqa: SLF001
@@ -1263,15 +1389,12 @@ def run_v075_k7_production_broker_runtime_v2(
                 os.close(launch.pidfd)
                 cleanup._native_cells[launch.role].pidfd.value = -1  # noqa: SLF001
             cleanup._retire_launch_resources()  # noqa: SLF001
-            os.close(pinned.descriptor)
-            pinned_descriptor = pinned.descriptor
             pinned = _PinnedOutputV2(
                 -1,
                 pinned.identity,
                 pinned.operational_output_id,
                 pinned.raw,
             )
-            del pinned_descriptor
             cleanup._closed = True  # noqa: SLF001
             guardian._production_broker_runtime_cleanup_authority = None
         except BaseException as error:
@@ -1287,6 +1410,7 @@ def run_v075_k7_production_broker_runtime_v2(
                     cleanup_authority=cleanup,
                     unresolved_roles=cleanup.unresolved_roles,
                     output_preserved=cleanup.output_preserved,
+                    promoted_output_name=cleanup.promoted_output_name,
                 ) from cleanup_error
             raise V075K7ProductionBrokerRuntimeV2Error(
                 "production broker runtime failed closed",
@@ -1294,6 +1418,7 @@ def run_v075_k7_production_broker_runtime_v2(
                 cleanup_authority=None,
                 unresolved_roles=(),
                 output_preserved=promoted_name is not None,
+                promoted_output_name=cleanup.promoted_output_name,
             ) from error
         finally:
             if previous_mask is not None:
@@ -1306,6 +1431,7 @@ def run_v075_k7_production_broker_runtime_v2(
                             cleanup_complete=cleanup._closed,  # noqa: SLF001
                             cleanup_authority=None if cleanup._closed else cleanup,  # noqa: SLF001
                             output_preserved=promoted_name is not None,
+                            promoted_output_name=cleanup.promoted_output_name,
                         ) from error
 
     assert (

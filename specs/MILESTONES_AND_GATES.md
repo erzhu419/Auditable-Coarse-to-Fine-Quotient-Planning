@@ -4626,7 +4626,8 @@ broker and accounting authorities remain locked.
 Contract `2.0.19` consumes the prepared cgroup/resource/sandbox/launch graph
 in one irreversible broker lifecycle. Two native sibling-cgroup launches,
 five PID/pidfd/SCM-authenticated frames, direct `P_PIDFD` reaps, pinned output
-replay/no-replace promotion, retained-OFD final peak and retry-safe cleanup are
+replay/post-reap read-only sealing/no-replace promotion, absolute-deadline
+backpressure handling, retained-OFD final peak and retry-safe cleanup are
 joined into one typed nonformal envelope. The operational wrapper has not yet
 been adopted as the first registered output-fixed-point role, and no receipt,
 formal vector, terminal or Gate authority moves.
