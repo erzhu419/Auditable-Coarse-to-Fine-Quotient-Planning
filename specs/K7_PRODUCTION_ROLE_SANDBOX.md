@@ -1,6 +1,12 @@
 # K7 production-role sandbox
 
 **Contract:** `2.0.11`
+
+Contract `2.0.18` closes the bootstrap-to-entry gap: the sandbox module itself
+must have exact ZIP-member origin under the sealed archive FD, post-exec
+tightening installs once before role-entry import, both exec syscalls are
+live-probed as `EPERM`, and the entry consumes an archive/role/PID/FD-bound
+one-shot attestation before loading common or business/worker core modules.
 **Profile:** `v075_k7_production_role_sandbox_v2`
 
 The parent freezes a role-specific Landlock ruleset and a seccomp program

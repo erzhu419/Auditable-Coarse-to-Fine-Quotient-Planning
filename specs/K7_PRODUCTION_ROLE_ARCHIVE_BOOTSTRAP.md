@@ -3,6 +3,11 @@
 **Milestone:** `V0-110B-2D-2A`
 
 **Contract:** `2.0.8`
+
+**Post-exec amendment:** contract `2.0.18` installs and live-probes the
+archive-loaded role's post-exec `execve`/`execveat` denial before importing the
+fixed role entry. A process-local one-shot attestation binds the archive OFD,
+source bytes, role and PID and must be consumed before common/core imports.
 **Profiles:** `v075_k7_production_role_bootstrap_v2`,
 `v075_k7_production_role_manifest_v2`,
 `v075_k7_broker_process_entry_common_v2`

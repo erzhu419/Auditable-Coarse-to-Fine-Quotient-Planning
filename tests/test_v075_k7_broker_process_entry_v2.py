@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 import socket
 import sys
+from types import SimpleNamespace
 
 import pytest
 
@@ -206,3 +207,136 @@ def test_process_entries_return_typed_exit_without_protocol_diagnostic(
     assert business_entry.run_v075_k7_broker_business_process_entry_v2() == (
         business_entry.INPUT_FAILURE_EXIT
     )
+
+
+def test_worker_entry_consumes_attestation_before_common_and_core_imports(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    events: list[str] = []
+    attestation = object()
+    archive_fd = 73
+    inputs = SimpleNamespace(
+        request_replay=object(),
+        binding=object(),
+        endpoint=object(),
+        result_fd=74,
+        output_directory_fd=75,
+        close_endpoint=lambda: events.append("close"),
+    )
+
+    def consume(value, *, role, source_archive_fd):
+        assert value is attestation
+        assert role is worker_entry.sandbox_v2.K7ProductionSandboxRoleV2.WORKER
+        assert source_archive_fd == archive_fd
+        events.append("consume")
+
+    def load(*, role):
+        assert role is manifest_v2.K7ProductionBrokerRoleV2.WORKER
+        events.append("load")
+        return inputs
+
+    def execute(**kwargs):
+        assert kwargs["endpoint"] is inputs.endpoint
+        events.append("core")
+
+    modules = {
+        "acfqp.v075_k7_production_role_manifest_v2": manifest_v2,
+        "acfqp.v075_k7_broker_process_entry_common_v2": SimpleNamespace(
+            load_v075_k7_broker_process_inputs_v2=load
+        ),
+        "acfqp.v075_k7_broker_worker_entry_v1": SimpleNamespace(
+            execute_v075_k7_broker_worker_core_v1=execute
+        ),
+    }
+
+    def import_module(name):
+        events.append(f"import:{name}")
+        return modules[name]
+
+    monkeypatch.setattr(
+        worker_entry.sandbox_v2,
+        "consume_v075_k7_production_role_postexec_entry_attestation_v2",
+        consume,
+    )
+    monkeypatch.setattr(worker_entry.importlib, "import_module", import_module)
+    monkeypatch.setattr(worker_entry.os, "umask", lambda _mode: 0o022)
+    assert worker_entry.run_v075_k7_broker_worker_process_entry_v2(
+        attestation, archive_fd
+    ) == worker_entry.SUCCESS_EXIT
+    assert events == [
+        "consume",
+        "import:acfqp.v075_k7_production_role_manifest_v2",
+        "import:acfqp.v075_k7_broker_process_entry_common_v2",
+        "import:acfqp.v075_k7_broker_worker_entry_v1",
+        "load",
+        "core",
+        "close",
+    ]
+
+
+def test_business_entry_consumes_attestation_before_common_and_core_imports(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    events: list[str] = []
+    attestation = object()
+    archive_fd = 83
+    inputs = SimpleNamespace(
+        request_replay=object(),
+        source_archive_fd=archive_fd,
+        sealed_secret_fd=84,
+        repository_root=Path("/repository"),
+        signer_private_root=Path("/private"),
+        signer_private_key_path=Path("/private/key"),
+        result_fd=85,
+        endpoint=object(),
+        binding=object(),
+        close_endpoint=lambda: events.append("close"),
+    )
+
+    def consume(value, *, role, source_archive_fd):
+        assert value is attestation
+        assert role is worker_entry.sandbox_v2.K7ProductionSandboxRoleV2.BUSINESS
+        assert source_archive_fd == archive_fd
+        events.append("consume")
+
+    def load(*, role):
+        assert role is manifest_v2.K7ProductionBrokerRoleV2.BUSINESS
+        events.append("load")
+        return inputs
+
+    def execute(**kwargs):
+        assert kwargs["business_result_endpoint"] is inputs.endpoint
+        events.append("core")
+
+    modules = {
+        "acfqp.v075_k7_production_role_manifest_v2": manifest_v2,
+        "acfqp.v075_k7_broker_process_entry_common_v2": SimpleNamespace(
+            load_v075_k7_broker_process_inputs_v2=load
+        ),
+        "acfqp.v075_k7_business_entry_core_v1": SimpleNamespace(
+            execute_v075_k7_business_entry_core_v1=execute
+        ),
+    }
+
+    def import_module(name):
+        events.append(f"import:{name}")
+        return modules[name]
+
+    monkeypatch.setattr(
+        business_entry.sandbox_v2,
+        "consume_v075_k7_production_role_postexec_entry_attestation_v2",
+        consume,
+    )
+    monkeypatch.setattr(business_entry.importlib, "import_module", import_module)
+    assert business_entry.run_v075_k7_broker_business_process_entry_v2(
+        attestation, archive_fd
+    ) == business_entry.SUCCESS_EXIT
+    assert events == [
+        "consume",
+        "import:acfqp.v075_k7_production_role_manifest_v2",
+        "import:acfqp.v075_k7_broker_process_entry_common_v2",
+        "import:acfqp.v075_k7_business_entry_core_v1",
+        "load",
+        "core",
+        "close",
+    ]

@@ -117,6 +117,7 @@ import os
 import socket
 import stat
 import sys
+import zipimport
 
 def die(code):
     os._exit(code)
@@ -247,9 +248,55 @@ try:
     archive_path = "/proc/self/fd/" + str(archive_fd)
     sys.path.insert(0, archive_path)
     failure_code = 96
+    def require_archive_module(module_name):
+        module = sys.modules.get(module_name)
+        specification = getattr(module, "__spec__", None)
+        loader = getattr(specification, "loader", None)
+        member = (
+            "acfqp/__init__.py" if module_name == "acfqp"
+            else module_name.replace(".", "/") + ".py"
+        )
+        expected_origin = archive_path + "/" + member
+        if (
+            module is None
+            or type(loader) is not zipimport.zipimporter
+            or getattr(loader, "archive", None) != archive_path
+            or getattr(specification, "name", None) != module_name
+            or getattr(specification, "origin", None) != expected_origin
+            or getattr(module, "__file__", None) != expected_origin
+        ):
+            die(94)
+        try:
+            source = loader.get_data(expected_origin)
+        except OSError:
+            die(94)
+        if not isinstance(source, bytes) or not source:
+            die(94)
+        return module
+    sandbox_name = "acfqp.v075_k7_production_role_sandbox_v2"
+    sandbox = importlib.import_module(sandbox_name)
+    for project_name in tuple(sys.modules):
+        if project_name == "acfqp" or project_name.startswith("acfqp."):
+            require_archive_module(project_name)
+    if sandbox is not sys.modules.get(sandbox_name):
+        die(94)
+    attestation = sandbox.install_v075_k7_production_role_archive_postexec_tightening_v2(
+        role={role!r},
+        source_archive_fd=archive_fd,
+    )
+    sandbox.verify_v075_k7_production_role_postexec_exec_denial_v2()
     module = importlib.import_module({entry_module!r})
-    origin = getattr(getattr(module, "__spec__", None), "origin", None)
-    if not isinstance(origin, str) or not origin.startswith(archive_path + "/"):
+    for project_name in tuple(sys.modules):
+        if project_name == "acfqp" or project_name.startswith("acfqp."):
+            require_archive_module(project_name)
+    if any(name in sys.modules for name in (
+        "acfqp.v075_k7_broker_process_entry_common_v2",
+        "acfqp.v075_k7_broker_worker_entry_v1",
+        "acfqp.v075_k7_business_entry_core_v1",
+        "acfqp.v075_k7_production_role_manifest_v2",
+    )):
+        die(94)
+    if require_archive_module({entry_module!r}) is not module:
         die(94)
     entry = getattr(module, {entry_symbol!r}, None)
     if not callable(entry):
@@ -259,7 +306,7 @@ try:
         private_key, manifest_id, role_spec_id, launch_context_id,
     ]
     failure_code = 97
-    raise SystemExit(entry())
+    raise SystemExit(entry(attestation, archive_fd))
 except SystemExit:
     raise
 except BaseException:
@@ -330,6 +377,12 @@ class K7ProductionRoleBootstrapProfileV2:
                 BUSINESS_BOOTSTRAP_SOURCE.encode("utf-8")
             ),
             "source_archive_loaded_from_proc_fd": True,
+            "sandbox_module_exact_archive_origin_required": True,
+            "postexec_tightening_before_role_entry_import": True,
+            "entry_consumes_one_shot_role_archive_attestation": True,
+            "common_and_role_core_import_before_attestation_allowed": False,
+            "historical_archive_or_manifest_relabelled": False,
+            "fresh_archive_and_manifest_required": True,
             "live_workspace_import_allowed": False,
             "exact_descriptor_namespace_required": True,
             "sealed_and_capability_fd_lanes_distinct": True,

@@ -2,11 +2,10 @@
 
 from __future__ import annotations
 
+import importlib
 import os
 
-from acfqp import v075_k7_broker_process_entry_common_v2 as common_v2
-from acfqp import v075_k7_broker_worker_entry_v1 as worker_v1
-from acfqp import v075_k7_production_role_manifest_v2 as manifest_v2
+from acfqp import v075_k7_production_role_sandbox_v2 as sandbox_v2
 
 
 ENTRY_MODULE = "acfqp.v075_k7_broker_worker_process_entry_v2"
@@ -16,11 +15,28 @@ INPUT_FAILURE_EXIT = 111
 EXECUTION_FAILURE_EXIT = 112
 
 
-def run_v075_k7_broker_worker_process_entry_v2() -> int:
+def run_v075_k7_broker_worker_process_entry_v2(
+    postexec_attestation: object = None,
+    source_archive_fd: object = None,
+) -> int:
     """Run the fixed worker core; never write diagnostics to its protocol FD."""
 
     inputs = None
     try:
+        sandbox_v2.consume_v075_k7_production_role_postexec_entry_attestation_v2(
+            postexec_attestation,
+            role=sandbox_v2.K7ProductionSandboxRoleV2.WORKER,
+            source_archive_fd=source_archive_fd,
+        )
+        manifest_v2 = importlib.import_module(
+            "acfqp.v075_k7_production_role_manifest_v2"
+        )
+        common_v2 = importlib.import_module(
+            "acfqp.v075_k7_broker_process_entry_common_v2"
+        )
+        worker_v1 = importlib.import_module(
+            "acfqp.v075_k7_broker_worker_entry_v1"
+        )
         inputs = common_v2.load_v075_k7_broker_process_inputs_v2(
             role=manifest_v2.K7ProductionBrokerRoleV2.WORKER
         )

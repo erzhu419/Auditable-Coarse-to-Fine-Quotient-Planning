@@ -4612,3 +4612,11 @@ clone/PID/pidfd/SCM/no-spawn/direct-reap process evidence. All nine shared
 paths now have raw arithmetic replayers. The complete production envelope,
 path-semantic authorities and formal `202 -> 182 -> 8` vector chain remain the
 next construction Gate.
+
+## V0-110B-2E-8 archive-bound postexec entry
+
+Contract `2.0.18` moves the one-shot postexec `execve`/`execveat` denial to the
+earliest exact archive-loaded sandbox point. Role entries cannot import common
+or core code until they consume the archive/role/PID/FD-bound attestation.
+System-interpreter fresh-exec and attack regressions pass; the complete live
+broker and accounting authorities remain locked.

@@ -26,6 +26,7 @@ import os
 import platform
 import stat
 import sys
+import zipimport
 from threading import Lock
 from types import MappingProxyType
 from typing import Any, Mapping, NoReturn
@@ -834,6 +835,9 @@ _PROFILE_ISSUER = object()
 _AUTHORITY_ISSUER = object()
 _MATERIAL_ISSUER = object()
 _POSTEXEC_ISSUER = object()
+_POSTEXEC_ENTRY_ATTESTATION_ISSUER = object()
+_POSTEXEC_INSTALL_LOCK = Lock()
+_POSTEXEC_INSTALLATION: "K7ProductionRolePostexecTighteningV2 | None" = None
 _OFFICIAL_PROFILE = K7ProductionRoleSandboxProfileV2(_PROFILE_ISSUER)
 
 
@@ -1285,6 +1289,66 @@ def consume_v075_k7_production_role_preexec_sandbox_v2(
     return authority._consume()  # noqa: SLF001 - issuer-owned one-shot boundary
 
 
+_SANDBOX_MODULE_NAME = "acfqp.v075_k7_production_role_sandbox_v2"
+_SANDBOX_ARCHIVE_MEMBER = "acfqp/v075_k7_production_role_sandbox_v2.py"
+_REQUIRED_ARCHIVE_SEALS = 0x0008 | 0x0004 | 0x0002 | 0x0001
+
+
+def _postexec_archive_binding_v2(
+    source_archive_fd: int,
+) -> tuple[tuple[int, ...], str, str]:
+    if type(source_archive_fd) is not int or source_archive_fd < 3:
+        _fail("post-exec entry attestation requires one source-archive FD")
+    archive_path = f"/proc/self/fd/{source_archive_fd}"
+    specification = globals().get("__spec__")
+    loader = getattr(specification, "loader", None)
+    origin = getattr(specification, "origin", None)
+    expected_origin = f"{archive_path}/{_SANDBOX_ARCHIVE_MEMBER}"
+    if (
+        type(loader) is not zipimport.zipimporter
+        or getattr(loader, "archive", None) != archive_path
+        or getattr(specification, "name", None) != _SANDBOX_MODULE_NAME
+        or origin != expected_origin
+        or globals().get("__file__") != expected_origin
+        or sys.modules.get(_SANDBOX_MODULE_NAME) is not sys.modules.get(__name__)
+    ):
+        _fail("sandbox module is not exact-source-archive loaded")
+    try:
+        status = os.fstat(source_archive_fd)
+        seals = fcntl.fcntl(source_archive_fd, 1034)
+        descriptor_flags = fcntl.fcntl(source_archive_fd, fcntl.F_GETFD)
+        raw = loader.get_data(expected_origin)
+    except OSError as error:
+        raise V075K7ProductionRoleSandboxV2Error(
+            "sandbox source-archive binding cannot be replayed"
+        ) from error
+    if (
+        not stat.S_ISREG(status.st_mode)
+        or status.st_size <= 0
+        or seals & _REQUIRED_ARCHIVE_SEALS != _REQUIRED_ARCHIVE_SEALS
+        or descriptor_flags & fcntl.FD_CLOEXEC == 0
+        or type(raw) is not bytes
+        or not raw
+    ):
+        _fail("sandbox source-archive FD lost its sealed CLOEXEC contract")
+    return (
+        (
+            status.st_dev,
+            status.st_ino,
+            status.st_mode,
+            status.st_uid,
+            status.st_gid,
+            status.st_size,
+            status.st_mtime_ns,
+            status.st_ctime_ns,
+            seals,
+            descriptor_flags,
+        ),
+        expected_origin,
+        hashlib.sha256(raw).hexdigest(),
+    )
+
+
 @dataclass(frozen=True, slots=True)
 class K7ProductionRolePostexecTighteningV2:
     _issuer: InitVar[object]
@@ -1336,37 +1400,200 @@ class K7ProductionRolePostexecTighteningV2:
             "production_role_postexec_tightening_id": self.tightening_id,
         }
 
+    def __reduce__(self) -> NoReturn:
+        raise TypeError("post-exec sandbox tightening is process-local")
+
+    def __reduce_ex__(self, _protocol: int) -> NoReturn:
+        raise TypeError("post-exec sandbox tightening is process-local")
+
+
+class K7ProductionRolePostexecEntryAttestationV2:
+    """Archive/role-bound one-shot permit consumed before entry imports."""
+
+    __slots__ = (
+        "_archive_identity",
+        "_consumed",
+        "_lock",
+        "_owner_pid",
+        "_sandbox_origin",
+        "_sandbox_source_sha256",
+        "_source_archive_fd",
+        "_tightening",
+        "role",
+    )
+
+    def __init__(
+        self,
+        issuer: object,
+        *,
+        tightening: K7ProductionRolePostexecTighteningV2,
+        source_archive_fd: int,
+        archive_identity: tuple[int, ...],
+        sandbox_origin: str,
+        sandbox_source_sha256: str,
+    ) -> None:
+        if (
+            issuer is not _POSTEXEC_ENTRY_ATTESTATION_ISSUER
+            or type(tightening) is not K7ProductionRolePostexecTighteningV2
+            or type(source_archive_fd) is not int
+            or source_archive_fd < 3
+            or type(archive_identity) is not tuple
+            or len(archive_identity) != 10
+            or type(sandbox_origin) is not str
+            or not sandbox_origin
+            or type(sandbox_source_sha256) is not str
+            or len(sandbox_source_sha256) != 64
+        ):
+            _fail("post-exec entry attestation is caller-minted")
+        self.role = tightening.role
+        self._tightening = tightening
+        self._source_archive_fd = source_archive_fd
+        self._archive_identity = archive_identity
+        self._sandbox_origin = sandbox_origin
+        self._sandbox_source_sha256 = sandbox_source_sha256
+        self._owner_pid = os.getpid()
+        self._consumed = False
+        self._lock = Lock()
+
+    def _consume(
+        self,
+        *,
+        role: K7ProductionSandboxRoleV2,
+        source_archive_fd: int,
+    ) -> None:
+        with self._lock:
+            if os.getpid() != self._owner_pid:
+                _fail("post-exec entry attestation crossed a process")
+            if self._consumed:
+                _fail("post-exec entry attestation was already consumed")
+            if role is not self.role:
+                _fail("post-exec entry attestation crossed its role")
+            if source_archive_fd != self._source_archive_fd:
+                _fail("post-exec entry attestation crossed its archive FD")
+            if _POSTEXEC_INSTALLATION is not self._tightening:
+                _fail("post-exec entry attestation lost its installation")
+            identity, origin, source_sha256 = _postexec_archive_binding_v2(
+                source_archive_fd
+            )
+            if (
+                identity != self._archive_identity
+                or origin != self._sandbox_origin
+                or source_sha256 != self._sandbox_source_sha256
+                or self._tightening.role is not role
+                or len(self._tightening.tightening_id) != 64
+            ):
+                _fail("post-exec entry attestation replay changed")
+            self._consumed = True
+
+    def __reduce__(self) -> NoReturn:
+        raise TypeError("post-exec entry attestation is process-local")
+
+    def __reduce_ex__(self, _protocol: int) -> NoReturn:
+        raise TypeError("post-exec entry attestation is process-local")
+
 
 def install_v075_k7_production_role_postexec_tightening_v2(
     *, role: K7ProductionSandboxRoleV2 | str
 ) -> K7ProductionRolePostexecTighteningV2:
     """Add only the exec-denial filter in the fresh-exec role process."""
 
-    _assert_platform_v2()
-    exact_role = K7ProductionSandboxRoleV2(role)
-    if _thread_count_v2() != 1:
-        _fail("post-exec tightening requires one role-process thread")
-    rows = postexec_seccomp_filter_rows_v2()
-    filter_sha256 = hashlib.sha256(
-        canonical_json_bytes([list(row) for row in rows])
-    ).hexdigest()
-    filters, program = _postexec_seccomp_program_v2()
-    result, error = _raw_syscall(
-        SECCOMP_SYSCALL_X86_64,
-        SECCOMP_SET_MODE_FILTER,
-        SECCOMP_FILTER_FLAG_TSYNC,
-        ctypes.byref(program),
-    )
-    del filters
-    if result != 0:
-        raise V075K7ProductionRoleSandboxV2Error(
-            f"post-exec seccomp TSYNC failed with result {result} errno {error}"
+    global _POSTEXEC_INSTALLATION
+    with _POSTEXEC_INSTALL_LOCK:
+        if _POSTEXEC_INSTALLATION is not None:
+            _fail("post-exec tightening was already installed")
+        _assert_platform_v2()
+        exact_role = K7ProductionSandboxRoleV2(role)
+        if _thread_count_v2() != 1:
+            _fail("post-exec tightening requires one role-process thread")
+        rows = postexec_seccomp_filter_rows_v2()
+        filter_sha256 = hashlib.sha256(
+            canonical_json_bytes([list(row) for row in rows])
+        ).hexdigest()
+        filters, program = _postexec_seccomp_program_v2()
+        result, error = _raw_syscall(
+            SECCOMP_SYSCALL_X86_64,
+            SECCOMP_SET_MODE_FILTER,
+            SECCOMP_FILTER_FLAG_TSYNC,
+            ctypes.byref(program),
         )
-    return K7ProductionRolePostexecTighteningV2(
-        _POSTEXEC_ISSUER,
-        exact_role,
-        filter_sha256,
+        del filters
+        if result != 0:
+            raise V075K7ProductionRoleSandboxV2Error(
+                f"post-exec seccomp TSYNC failed with result {result} errno {error}"
+            )
+        installation = K7ProductionRolePostexecTighteningV2(
+            _POSTEXEC_ISSUER,
+            exact_role,
+            filter_sha256,
+        )
+        _POSTEXEC_INSTALLATION = installation
+        return installation
+
+
+def install_v075_k7_production_role_archive_postexec_tightening_v2(
+    *,
+    role: K7ProductionSandboxRoleV2 | str,
+    source_archive_fd: int,
+) -> K7ProductionRolePostexecEntryAttestationV2:
+    """Validate this module's archive origin, install once, and bind entry."""
+
+    exact_role = K7ProductionSandboxRoleV2(role)
+    before = _postexec_archive_binding_v2(source_archive_fd)
+    tightening = install_v075_k7_production_role_postexec_tightening_v2(
+        role=exact_role
     )
+    after = _postexec_archive_binding_v2(source_archive_fd)
+    if after != before:
+        _fail("sandbox source archive changed across post-exec installation")
+    return K7ProductionRolePostexecEntryAttestationV2(
+        _POSTEXEC_ENTRY_ATTESTATION_ISSUER,
+        tightening=tightening,
+        source_archive_fd=source_archive_fd,
+        archive_identity=before[0],
+        sandbox_origin=before[1],
+        sandbox_source_sha256=before[2],
+    )
+
+
+def consume_v075_k7_production_role_postexec_entry_attestation_v2(
+    attestation: K7ProductionRolePostexecEntryAttestationV2,
+    *,
+    role: K7ProductionSandboxRoleV2 | str,
+    source_archive_fd: int,
+) -> None:
+    """Replay and consume the exact archive-bound entry permit once."""
+
+    if type(attestation) is not K7ProductionRolePostexecEntryAttestationV2:
+        _fail("role entry lacks its exact post-exec attestation")
+    attestation._consume(  # noqa: SLF001 - issuer-owned one-shot boundary
+        role=K7ProductionSandboxRoleV2(role),
+        source_archive_fd=source_archive_fd,
+    )
+
+
+def verify_v075_k7_production_role_postexec_exec_denial_v2() -> None:
+    """Live-probe both exec syscalls after the one post-exec installation."""
+
+    if type(_POSTEXEC_INSTALLATION) is not K7ProductionRolePostexecTighteningV2:
+        _fail("post-exec exec-denial probe precedes filter installation")
+    result, error = _raw_syscall(
+        X86_64_SYSCALL_NUMBERS["execve"],
+        ctypes.c_void_p(1),
+        ctypes.c_void_p(0),
+        ctypes.c_void_p(0),
+    )
+    if result != -1 or error != errno.EPERM:
+        _fail("post-exec execve denial did not replay")
+    result, error = _raw_syscall(
+        X86_64_SYSCALL_NUMBERS["execveat"],
+        -1,
+        ctypes.c_void_p(1),
+        ctypes.c_void_p(0),
+        ctypes.c_void_p(0),
+        AT_EMPTY_PATH,
+    )
+    if result != -1 or error != errno.EPERM:
+        _fail("post-exec execveat denial did not replay")
 
 
 __all__ = (
@@ -1376,6 +1603,7 @@ __all__ = (
     "EXISTING_ENDPOINT_SYSCALLS",
     "K7ProductionRoleSandboxAuthorityV2",
     "K7ProductionRolePostexecTighteningV2",
+    "K7ProductionRolePostexecEntryAttestationV2",
     "K7ProductionRolePreexecSandboxMaterialV2",
     "K7ProductionRoleSandboxProfileV2",
     "K7ProductionSandboxRoleV2",
@@ -1389,12 +1617,15 @@ __all__ = (
     "SCHEMA_VERSION",
     "V075K7ProductionRoleSandboxV2Error",
     "V075K7ProductionRoleSandboxV2Unavailable",
+    "consume_v075_k7_production_role_postexec_entry_attestation_v2",
     "consume_v075_k7_production_role_preexec_sandbox_v2",
     "denied_syscalls_for_role_v2",
     "freeze_v075_k7_production_role_preexec_sandbox_authority_v2",
+    "install_v075_k7_production_role_archive_postexec_tightening_v2",
     "install_v075_k7_production_role_postexec_tightening_v2",
     "official_v075_k7_production_role_sandbox_profile_v2",
     "postexec_seccomp_filter_rows_v2",
     "preexec_seccomp_filter_rows_for_role_v2",
     "probe_v075_k7_production_landlock_abi_v2",
+    "verify_v075_k7_production_role_postexec_exec_denial_v2",
 )

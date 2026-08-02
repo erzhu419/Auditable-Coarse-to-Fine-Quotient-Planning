@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import ctypes
 import hashlib
 import os
 from pathlib import Path
@@ -19,6 +20,131 @@ from tests.test_v075_k7_atomic_pidfd_runtime_v1 import _id, _successor_request
 
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
+_LIBC = ctypes.CDLL(None, use_errno=True)
+_LIBC.prctl.restype = ctypes.c_int
+
+
+def _set_no_new_privileges() -> None:
+    if _LIBC.prctl(38, 1, 0, 0, 0) != 0:
+        os._exit(78)
+
+
+_ARCHIVE_ATTESTATION_PROBE = r'''
+import ctypes
+import fcntl
+import os
+import sys
+
+archive_fd = int(sys.argv[1])
+mode = sys.argv[2]
+fcntl.fcntl(
+    archive_fd,
+    fcntl.F_SETFD,
+    fcntl.fcntl(archive_fd, fcntl.F_GETFD) | fcntl.FD_CLOEXEC,
+)
+sys.path.insert(0, "/proc/self/fd/" + str(archive_fd))
+from acfqp import v075_k7_production_role_sandbox_v2 as sandbox
+
+libc = ctypes.CDLL(None, use_errno=True)
+if libc.prctl(38, 1, 0, 0, 0) != 0:
+    raise SystemExit(78)
+role = sandbox.K7ProductionSandboxRoleV2.WORKER
+attestation = sandbox.install_v075_k7_production_role_archive_postexec_tightening_v2(
+    role=role,
+    source_archive_fd=archive_fd,
+)
+sandbox.verify_v075_k7_production_role_postexec_exec_denial_v2()
+if mode == "consume-attacks":
+    try:
+        sandbox.install_v075_k7_production_role_archive_postexec_tightening_v2(
+            role=role, source_archive_fd=archive_fd
+        )
+    except sandbox.V075K7ProductionRoleSandboxV2Error:
+        pass
+    else:
+        raise SystemExit(80)
+    try:
+        sandbox.consume_v075_k7_production_role_postexec_entry_attestation_v2(
+            object(), role=role, source_archive_fd=archive_fd
+        )
+    except sandbox.V075K7ProductionRoleSandboxV2Error:
+        pass
+    else:
+        raise SystemExit(81)
+    try:
+        sandbox.consume_v075_k7_production_role_postexec_entry_attestation_v2(
+            attestation,
+            role=sandbox.K7ProductionSandboxRoleV2.BUSINESS,
+            source_archive_fd=archive_fd,
+        )
+    except sandbox.V075K7ProductionRoleSandboxV2Error:
+        pass
+    else:
+        raise SystemExit(82)
+    sandbox.consume_v075_k7_production_role_postexec_entry_attestation_v2(
+        attestation, role=role, source_archive_fd=archive_fd
+    )
+    try:
+        sandbox.consume_v075_k7_production_role_postexec_entry_attestation_v2(
+            attestation, role=role, source_archive_fd=archive_fd
+        )
+    except sandbox.V075K7ProductionRoleSandboxV2Error:
+        pass
+    else:
+        raise SystemExit(83)
+elif mode == "rebound":
+    replacement = os.open("/dev/null", os.O_RDONLY | os.O_CLOEXEC)
+    os.dup2(replacement, archive_fd, inheritable=False)
+    if replacement != archive_fd:
+        os.close(replacement)
+    try:
+        sandbox.consume_v075_k7_production_role_postexec_entry_attestation_v2(
+            attestation, role=role, source_archive_fd=archive_fd
+        )
+    except sandbox.V075K7ProductionRoleSandboxV2Error:
+        pass
+    else:
+        raise SystemExit(84)
+else:
+    raise SystemExit(85)
+sys.stdout.write("OK")
+'''
+
+
+def _run_archive_attestation_probe(archive_raw: bytes, mode: str) -> None:
+    descriptor = runtime_v1.create_v075_k7_sealed_memfd_from_bytes_v1(
+        raw=archive_raw,
+        name=f"acfqp-archive-attestation-{mode}",
+    )
+    try:
+        completed = subprocess.run(
+            [
+                sys.executable,
+                "-I",
+                "-S",
+                "-B",
+                "-c",
+                _ARCHIVE_ATTESTATION_PROBE,
+                str(descriptor),
+                mode,
+            ],
+            env=bootstrap_v2.BASE_ENVIRONMENT,
+            pass_fds=(descriptor,),
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+            timeout=30,
+        )
+    finally:
+        os.close(descriptor)
+    assert completed.returncode == 0, (
+        completed.returncode,
+        completed.stdout,
+        completed.stderr,
+    )
+    assert completed.stdout == b"OK"
+    assert completed.stderr == b""
 
 
 def _private_paths(tmp_path: Path) -> tuple[Path, Path]:
@@ -196,12 +322,31 @@ def test_profile_and_bootstrap_sources_are_frozen_and_non_authorizing() -> None:
     assert bootstrap_profile.to_document()["sealed_and_capability_fd_lanes_distinct"] is True
     for role in bootstrap_v2.ROLE_ORDER:
         source = bootstrap_v2.bootstrap_source_for_role_v2(role)
+        entry_module = (
+            bootstrap_v2.WORKER_ENTRY_MODULE
+            if role == bootstrap_v2.WORKER_ROLE
+            else bootstrap_v2.BUSINESS_ENTRY_MODULE
+        )
         compile(source, f"<{role.lower()}-bootstrap>", "exec")
         assert hashlib.sha256(source.encode()).hexdigest() == (
             bootstrap_v2.bootstrap_sha256_for_role_v2(role)
         )
         assert "sys.path.insert(0, archive_path)" in source
+        assert source.index(
+            "install_v075_k7_production_role_archive_postexec_tightening_v2"
+        ) < source.index(f"importlib.import_module({entry_module!r})")
+        assert "verify_v075_k7_production_role_postexec_exec_denial_v2" in source
+        assert "entry(attestation, archive_fd)" in source
         assert "os._exit" in source
+
+
+@pytest.mark.parametrize("mode", ("consume-attacks", "rebound"))
+def test_archive_bound_postexec_attestation_rejects_attack(
+    mode: str,
+) -> None:
+    request = _successor_request(f"role-bootstrap-v2-attestation-{mode}")
+    transport = request.profile.accounted_profile.transport_profile
+    _run_archive_attestation_probe(transport._archive_bytes, mode)  # noqa: SLF001
 
 
 def test_worker_bootstrap_loads_entry_from_sealed_archive_before_typed_input_failure(
@@ -275,6 +420,7 @@ def test_worker_bootstrap_loads_entry_from_sealed_archive_before_typed_input_fai
             stdin=subprocess.DEVNULL,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
+            preexec_fn=_set_no_new_privileges,
             check=False,
             timeout=30,
         )
@@ -287,6 +433,139 @@ def test_worker_bootstrap_loads_entry_from_sealed_archive_before_typed_input_fai
     finally:
         worker_endpoint.close()
         broker_endpoint.close()
+        os.close(ro_result)
+        os.close(rw_result)
+        os.close(output_fd)
+        os.close(executable_identity_fd)
+        for descriptor in sealed:
+            os.close(descriptor)
+
+
+def test_worker_fresh_exec_postexec_denial_keeps_fixed_core_endpoint_prefix(
+    tmp_path: Path,
+) -> None:
+    request, _private_root, _private_key, manifest = _manifest(
+        tmp_path, "role-bootstrap-v2-live-core"
+    )
+    transport = request.profile.accounted_profile.transport_profile
+    lifecycle = request.profile.accounted_profile.private_replay_profile
+    binding = ipc_v1.K7OuterAttemptBrokerIPCBindingV1(
+        request.request_id,
+        request.route_identity.route_identity_id,
+        _id("role-bootstrap-v2-live-core-spec"),
+        _id("role-bootstrap-v2-live-core-nonce"),
+    )
+    role = manifest_v2.K7ProductionBrokerRoleV2.WORKER
+    context = manifest_v2.freeze_v075_k7_production_role_launch_context_v2(
+        manifest=manifest,
+        binding=binding,
+        role=role,
+    )
+    rows = (
+        transport._archive_bytes,  # noqa: SLF001
+        canonical_json_bytes(transport.to_document()),
+        canonical_json_bytes(lifecycle.to_document()),
+        canonical_json_bytes(request.profile.to_document()),
+        request.canonical_bytes,
+        manifest.canonical_bytes,
+        context.canonical_bytes,
+    )
+    sealed = [
+        runtime_v1.create_v075_k7_sealed_memfd_from_bytes_v1(
+            raw=raw,
+            name=f"acfqp-bootstrap-v2-live-core-{index}",
+        )
+        for index, raw in enumerate(rows)
+    ]
+    rw_result = runtime_v1._new_sealable_memfd(  # noqa: SLF001
+        "acfqp-bootstrap-v2-live-core-result"
+    )
+    ro_result = os.open(f"/proc/self/fd/{rw_result}", os.O_RDONLY | os.O_CLOEXEC)
+    output_directory = tmp_path / "worker-live-core-output"
+    output_directory.mkdir(mode=0o700)
+    output_fd = os.open(
+        output_directory, os.O_RDONLY | os.O_DIRECTORY | os.O_CLOEXEC
+    )
+    worker_endpoint, broker_endpoint = socket.socketpair(
+        socket.AF_UNIX,
+        socket.SOCK_SEQPACKET,
+    )
+    executable_path = Path(sys.executable).resolve(strict=True)
+    executable_raw = executable_path.read_bytes()
+    executable_identity_fd = os.open(executable_path, os.O_RDONLY | os.O_CLOEXEC)
+    environment = {
+        **bootstrap_v2.BASE_ENVIRONMENT,
+        bootstrap_v2.ROLE_ENV: bootstrap_v2.WORKER_ROLE,
+        bootstrap_v2.SEALED_FD_ENV: ",".join(str(value) for value in sealed),
+        bootstrap_v2.CHANNEL_FD_ENV: str(worker_endpoint.fileno()),
+        bootstrap_v2.RESULT_FD_ENV: str(ro_result),
+        bootstrap_v2.OUTPUT_DIRECTORY_FD_ENV: str(output_fd),
+    }
+    argv = [
+        os.fspath(executable_path),
+        "-I",
+        "-S",
+        "-B",
+        "-c",
+        bootstrap_v2.WORKER_BOOTSTRAP_SOURCE,
+        transport.source_archive_sha256,
+        str(transport.source_archive_byte_count),
+        hashlib.sha256(executable_raw).hexdigest(),
+        str(len(executable_raw)),
+        os.fspath(REPOSITORY_ROOT),
+        "NOT_APPLICABLE",
+        "NOT_APPLICABLE",
+        manifest.manifest_id,
+        manifest.worker_role.role_spec_id,
+        context.context_id,
+    ]
+    process = None
+    try:
+        process = subprocess.Popen(
+            argv,
+            env=environment,
+            pass_fds=(
+                *sealed,
+                worker_endpoint.fileno(),
+                ro_result,
+                output_fd,
+                executable_identity_fd,
+            ),
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            preexec_fn=_set_no_new_privileges,
+        )
+        worker_endpoint.close()
+        worker_endpoint = None
+        broker_endpoint.settimeout(120)
+        roles = ipc_v1.K7OuterAttemptBrokerFrameRoleV1
+        ready = ipc_v1.verify_v075_k7_outer_attempt_broker_ipc_frame_v1(
+            raw=broker_endpoint.recv(ipc_v1.MAX_FRAME_BYTES + ipc_v1.FRAME_WIDTH),
+            expected_binding=binding,
+            expected_role=roles.WORKER_READY,
+        )
+        request_frame = ipc_v1.verify_v075_k7_outer_attempt_broker_ipc_frame_v1(
+            raw=broker_endpoint.recv(ipc_v1.MAX_FRAME_BYTES + ipc_v1.FRAME_WIDTH),
+            expected_binding=binding,
+            expected_role=roles.BUSINESS_REQUEST,
+        )
+        assert ready.payload == {"worker_replay_id": _replay(request).replay_id}
+        assert request_frame.payload == {"request_ordinal": 0}
+        broker_endpoint.close()
+        broker_endpoint = None
+        stdout, stderr = process.communicate(timeout=30)
+        assert process.returncode == 112
+        assert stdout == b""
+        assert stderr == b""
+    finally:
+        if process is not None and process.poll() is None:
+            process.kill()
+            process.wait(timeout=10)
+        if worker_endpoint is not None:
+            worker_endpoint.close()
+        if broker_endpoint is not None:
+            broker_endpoint.close()
         os.close(ro_result)
         os.close(rw_result)
         os.close(output_fd)

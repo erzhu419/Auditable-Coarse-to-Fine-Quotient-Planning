@@ -3179,3 +3179,7 @@ shared paths have raw internal replayers. They have not yet been joined into
 one production live envelope: the actual worker first-role output join,
 path-specific semantic replayers, and the atomic formal vector materializer
 remain required.
+
+The role bootstrap now installs and verifies post-exec denial from the exact
+sealed-archive sandbox module before importing either role entry; a one-shot
+archive/role/PID/FD-bound attestation gates all common/core imports.
