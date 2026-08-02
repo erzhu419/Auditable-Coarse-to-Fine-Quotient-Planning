@@ -1,10 +1,13 @@
 """Raw durable-output evidence for ``io.output_bytes``.
 
-The worker first commits one immutable ``BUSINESS_RESULT`` file with
-``O_EXCL``/no-replace, file fsync, directory fsync, inode-pinned readback, and
-a canonical commit receipt.  Only after two direct-child reap observations,
-an empty-child-cgroup observation, and an exclusive broker-writer observation
-are bound may the broker open finalization.
+The production worker V1 first commits ``operational-output.json`` with its
+existing no-replace and durability protocol.  This journal adopts that exact
+inode from an authenticated ``PARENT_OUTPUT`` observation: it neither copies,
+renames, nor requires the worker output to pretend it has an ``artifact_role``
+field.  Only after two direct-child reap observations, an empty-child-cgroup
+observation, and an exclusive broker-writer observation are bound may the
+broker remove its write bits, fsync the file and directory, and open suffix
+finalization.
 
 The broker pins and reads the worker result as ``P``, solves an exact
 eight-role byte-count fixed point in memory (``P`` plus seven broker-rendered
@@ -17,6 +20,10 @@ Only exact newly written file extents are summed.  Nested model/epoch/
 serialized-byte fields are never charged again.  The emitted four components
 match the exact schemas required by
 :mod:`construction_shared_resource_resolution_v2`.
+
+The legacy construction helper remains available only as an explicitly
+synthetic, nonproduction first role and cannot produce an exact-semantic live
+source.
 
 This module emits raw evidence only.  Kernel observation IDs and source
 completeness still require later semantic verification; no CounterRecord or
@@ -33,10 +40,14 @@ import os
 import re
 import stat
 import threading
+from types import MappingProxyType
 from typing import Any, Callable, Mapping, NoReturn
 
 from acfqp import construction_output_bytes_fixed_point_v1 as fixed_v1
 from acfqp import construction_shared_resource_resolution_v2 as resolution_v2
+from acfqp import v075_k7_authenticated_broker_channel_v2 as channel_v2
+from acfqp import v075_k7_broker_worker_entry_v1 as worker_v1
+from acfqp import v075_k7_outer_attempt_broker_ipc_v1 as ipc_v1
 from acfqp.phase3e_ids import (
     CONSTRUCTION_SHARED_RESOURCE_DURABLE_WRITE_EVENT_V2_DOMAIN,
     CONSTRUCTION_SHARED_RESOURCE_OUTPUT_FINALIZATION_SESSION_V2_DOMAIN,
@@ -54,6 +65,7 @@ from acfqp.phase3e_ids import (
 
 
 SCHEMA_VERSION = "2.0.0"
+PROPOSED_CONTRACT_VERSION = "2.0.20"
 PROFILE_KEY = "construction_shared_resource_output_journal_v2"
 OUTPUT_PATH = "io.output_bytes"
 
@@ -70,7 +82,7 @@ MANIFEST_ROLE = fixed_v1.OperationalArtifactRoleV1.OUTPUT_MANIFEST.value
 BROKER_ROLE_ORDER = tuple(role for role in ROLE_ORDER if role != BUSINESS_ROLE)
 
 ROLE_FILENAMES = {
-    "BUSINESS_RESULT": "business_result.json",
+    "BUSINESS_RESULT": worker_v1.OUTPUT_NAME,
     "OPERATIONAL_TRACE": "operational_trace.json",
     "TERMINAL_ARTIFACT": "terminal_artifact.json",
     "COUNTER_RECORD_SET": "counter_record_set.json",
@@ -119,10 +131,13 @@ REQUESTED_PHASE3E_DOMAIN_TAGS = tuple(
 
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 _BUSINESS_ISSUER = object()
+_FINALIZATION_ISSUER = object()
 _BUNDLE_ISSUER = object()
 _REPLAY_ISSUER = object()
 _DIRECTORY_LEASE_LOCK = threading.Lock()
 _CONSUMED_DIRECTORY_IDENTITIES: set[tuple[int, int, int]] = set()
+_PARENT_OUTPUT_CONSUMPTION_LOCK = threading.Lock()
+_CONSUMED_PARENT_OUTPUT_OBSERVATION_IDS: set[str] = set()
 
 RendererV2 = Callable[[int], Mapping[str, bytes]]
 
@@ -135,6 +150,11 @@ class OutputFinalizationStateV2(str, Enum):
     OPEN = "OPEN"
     FINALIZED = "FINALIZED"
     FAILED = "FAILED"
+
+
+class OutputFirstRoleAuthorityV2(str, Enum):
+    PRODUCTION_WORKER_V1_ADOPTED = "PRODUCTION_WORKER_V1_ADOPTED"
+    SYNTHETIC_CONSTRUCTION_ONLY = "SYNTHETIC_CONSTRUCTION_ONLY"
 
 
 def _fail(message: str) -> NoReturn:
@@ -228,11 +248,17 @@ _IDENTITY_FIELDS = {
 _COMMON_COMPONENT_FIELDS = {
     "schema",
     "schema_version",
+    "proposed_contract_version",
     "profile_key",
     "raw_evidence_only",
     "semantic_source_verified",
     "counter_record_issued",
     "formal_value_authorized",
+}
+_ELIGIBILITY_FIELDS = {
+    "first_role_authority",
+    "production_semantic_eligible",
+    "synthetic_construction_only",
 }
 
 
@@ -312,17 +338,27 @@ def _validate_role_bytes(role: str, raw: bytes, candidate: int | None) -> None:
     if type(raw) is not bytes or not raw or len(raw) > MAX_ROLE_BYTES:
         _fail("operational role bytes are empty, mistyped, or over cap")
     document = _canonical_object(raw, f"{role} role bytes")
+    if role == BUSINESS_ROLE:
+        _fail("production first-role bytes require the worker V1 verifier")
     if document.get("artifact_role") != role:
         _fail("operational artifact role label differs from its role")
     embedded = document.get("io.output_bytes")
-    if role == BUSINESS_ROLE:
-        if "io.output_bytes" in document:
-            _fail("worker BUSINESS_RESULT cannot predeclare output bytes")
-    elif role == MANIFEST_ROLE:
+    if role == MANIFEST_ROLE:
         if type(embedded) is not int or embedded != candidate:
             _fail("OUTPUT_MANIFEST does not embed the fixed-point candidate")
     elif "io.output_bytes" in document and embedded != candidate:
         _fail("broker role embeds a stale output-byte candidate")
+
+
+def _validate_synthetic_first_role_bytes(raw: bytes) -> None:
+    if type(raw) is not bytes or not raw or len(raw) > MAX_ROLE_BYTES:
+        _fail("synthetic first-role bytes are empty, mistyped, or over cap")
+    document = _canonical_object(raw, "synthetic BUSINESS_RESULT role bytes")
+    if (
+        document.get("artifact_role") != BUSINESS_ROLE
+        or "io.output_bytes" in document
+    ):
+        _fail("synthetic BUSINESS_RESULT role label or output claim changed")
 
 
 def _durable_create(
@@ -372,6 +408,7 @@ def _component_payload(
     return {
         "schema": schema_id,
         "schema_version": SCHEMA_VERSION,
+        "proposed_contract_version": PROPOSED_CONTRACT_VERSION,
         "profile_key": PROFILE_KEY,
         **dict(body),
         "raw_evidence_only": True,
@@ -402,6 +439,8 @@ def _replay_component(raw: bytes, schema_id: str) -> dict[str, Any]:
         _fail("output component content ID does not replay")
     if (
         payload.get("schema_version") != SCHEMA_VERSION
+        or payload.get("proposed_contract_version")
+        != PROPOSED_CONTRACT_VERSION
         or payload.get("profile_key") != PROFILE_KEY
         or payload.get("raw_evidence_only") is not True
         or payload.get("semantic_source_verified") is not False
@@ -428,6 +467,10 @@ class WorkerBusinessResultCommitV2:
     artifact_sha256: str
     artifact_byte_extent: int
     commit_event_id: str
+    first_role_authority: OutputFirstRoleAuthorityV2
+    authenticated_parent_output_observation_id: str | None
+    parent_output_frame_id: str | None
+    broker_operational_output_id: str | None
     _payload_bytes: bytes = field(repr=False, compare=False)
 
     def __post_init__(self, _issuer: object) -> None:
@@ -447,6 +490,34 @@ class WorkerBusinessResultCommitV2:
         _nonnegative(self.measurement_start_sequence, "measurement start")
         _sha256(self.artifact_sha256, "BUSINESS_RESULT digest")
         _positive(self.artifact_byte_extent, "BUSINESS_RESULT extent")
+        try:
+            authority = OutputFirstRoleAuthorityV2(self.first_role_authority)
+        except (TypeError, ValueError) as error:
+            raise ConstructionSharedResourceOutputJournalV2Error(
+                "first-role authority is invalid"
+            ) from error
+        object.__setattr__(self, "first_role_authority", authority)
+        production = (
+            authority
+            is OutputFirstRoleAuthorityV2.PRODUCTION_WORKER_V1_ADOPTED
+        )
+        authority_ids = (
+            self.authenticated_parent_output_observation_id,
+            self.parent_output_frame_id,
+            self.broker_operational_output_id,
+        )
+        if production:
+            for value, label in zip(
+                authority_ids,
+                (
+                    "authenticated PARENT_OUTPUT observation",
+                    "PARENT_OUTPUT frame",
+                    "broker operational output",
+                ),
+            ):
+                _cid(value, label)
+        elif any(value is not None for value in authority_ids):
+            _fail("synthetic first-role commit retained production authority")
         if (
             type(self._payload_bytes) is not bytes
             or len(self._payload_bytes) != self.artifact_byte_extent
@@ -454,29 +525,90 @@ class WorkerBusinessResultCommitV2:
             != self.artifact_sha256
         ):
             _fail("BUSINESS_RESULT receipt differs from retained P")
+        object.__setattr__(
+            self,
+            "output_directory_identity",
+            MappingProxyType(dict(self.output_directory_identity)),
+        )
+        object.__setattr__(
+            self,
+            "artifact_identity",
+            MappingProxyType(dict(self.artifact_identity)),
+        )
 
     @property
     def commit_sequence(self) -> int:
         return self.measurement_start_sequence + 1
 
-    def event_document(self) -> dict[str, Any]:
-        return {
+    @property
+    def production_semantic_eligible(self) -> bool:
+        return (
+            self.first_role_authority
+            is OutputFirstRoleAuthorityV2.PRODUCTION_WORKER_V1_ADOPTED
+        )
+
+    def _event_document_after_reap_v2(
+        self,
+        issuer: object,
+        *,
+        session_id: str,
+        pre_seal_identity: Mapping[str, int],
+        sealed_identity: Mapping[str, int],
+        broker_removed_write_bits: bool,
+    ) -> dict[str, Any]:
+        if issuer is not _FINALIZATION_ISSUER:
+            _fail("first-role post-reap event is finalizer-owned")
+        production = self.production_semantic_eligible
+        if (
+            not _same_inode(pre_seal_identity, self.artifact_identity)
+            or not _same_inode(sealed_identity, self.artifact_identity)
+            or sealed_identity["byte_extent"] != self.artifact_byte_extent
+            or stat.S_IMODE(sealed_identity["mode"]) & 0o222
+            or broker_removed_write_bits is not production
+        ):
+            _fail("first-role post-reap sealing facts are inconsistent")
+        row = {
+            "proposed_contract_version": PROPOSED_CONTRACT_VERSION,
             "global_sequence": self.commit_sequence,
             "artifact_role": BUSINESS_ROLE,
             "filename": ROLE_FILENAMES[BUSINESS_ROLE],
             "artifact_sha256": self.artifact_sha256,
             "artifact_byte_extent": self.artifact_byte_extent,
-            "artifact_identity": dict(self.artifact_identity),
-            "durable_write_event_id": self.commit_event_id,
-            "writer_role": "WORKER",
+            "artifact_identity": dict(sealed_identity),
+            "writer_role": "WORKER" if production else "CONSTRUCTION_SYNTHETIC",
+            "first_role_authority": self.first_role_authority.value,
+            "authenticated_parent_output_observation_id": (
+                self.authenticated_parent_output_observation_id
+            ),
+            "parent_output_frame_id": self.parent_output_frame_id,
+            "broker_operational_output_id": self.broker_operational_output_id,
+            "worker_created_and_durably_committed": production,
+            "broker_post_reap_write_bits_removed": broker_removed_write_bits,
+            "broker_post_reap_file_fsync_completed": production,
+            "broker_post_reap_directory_fsync_completed": production,
+            "pre_seal_artifact_identity": dict(pre_seal_identity),
+            "sealed_artifact_identity": dict(sealed_identity),
+            "production_semantic_eligible": production,
+            "synthetic_construction_only": not production,
             "o_excl_no_replace": True,
             "file_fsync_completed": True,
             "directory_fsync_completed": True,
             "inode_pinned_readback_equal": True,
         }
+        core = {
+            "schema": "acfqp.construction_shared_resource_durable_write_event.v2",
+            "schema_version": SCHEMA_VERSION,
+            "proposed_contract_version": PROPOSED_CONTRACT_VERSION,
+            "session_id": session_id,
+            **row,
+        }
+        return {
+            **row,
+            "durable_write_event_id": _hash(DURABLE_WRITE_EVENT_V2_DOMAIN, core),
+        }
 
 
-def commit_worker_business_result_v2(
+def commit_synthetic_construction_first_role_v2(
     *,
     output_directory_fd: int,
     payload_bytes: bytes,
@@ -489,7 +621,7 @@ def commit_worker_business_result_v2(
     measurement_start_sequence: int,
     worker_commit_observation_id: str,
 ) -> WorkerBusinessResultCommitV2:
-    """Durably create P; neither a byte count nor a digest is accepted."""
+    """Create a synthetic construction P; never production-eligible."""
 
     for value, label in (
         (live_envelope_id, "business envelope"),
@@ -507,7 +639,7 @@ def commit_worker_business_result_v2(
         _fail("worker output-directory descriptor must be CLOEXEC")
     if os.listdir(output_directory_fd):
         _fail("worker BUSINESS_RESULT requires one fresh empty output directory")
-    _validate_role_bytes(BUSINESS_ROLE, payload_bytes, None)
+    _validate_synthetic_first_role_bytes(payload_bytes)
     artifact_identity, readback = _durable_create(
         directory_fd=output_directory_fd,
         filename=ROLE_FILENAMES[BUSINESS_ROLE],
@@ -523,6 +655,7 @@ def commit_worker_business_result_v2(
     core = {
         "schema": "acfqp.construction_shared_resource_business_result_commit.v2",
         "schema_version": SCHEMA_VERSION,
+        "proposed_contract_version": PROPOSED_CONTRACT_VERSION,
         **_identity_document(
             live_envelope_id=live_envelope_id,
             occurrence_id=occurrence_id,
@@ -537,6 +670,11 @@ def commit_worker_business_result_v2(
         "output_directory_identity": directory_identity,
         "artifact_role": BUSINESS_ROLE,
         "filename": ROLE_FILENAMES[BUSINESS_ROLE],
+        "first_role_authority": (
+            OutputFirstRoleAuthorityV2.SYNTHETIC_CONSTRUCTION_ONLY.value
+        ),
+        "production_semantic_eligible": False,
+        "synthetic_construction_only": True,
         "artifact_identity": artifact_identity,
         "artifact_sha256": digest,
         "artifact_byte_extent": extent,
@@ -548,21 +686,185 @@ def commit_worker_business_result_v2(
     event_id = _hash(DURABLE_WRITE_EVENT_V2_DOMAIN, core)
     return WorkerBusinessResultCommitV2(
         _BUSINESS_ISSUER,
-        live_envelope_id,
-        occurrence_id,
-        route_attempt_id,
-        decision_point_id,
-        measurement_window_id,
-        operational_cutoff_id,
-        measurement_start_sequence,
-        worker_commit_observation_id,
-        directory_identity,
-        artifact_identity,
-        digest,
-        extent,
-        event_id,
-        readback,
+        live_envelope_id=live_envelope_id,
+        occurrence_id=occurrence_id,
+        route_attempt_id=route_attempt_id,
+        decision_point_id=decision_point_id,
+        measurement_window_id=measurement_window_id,
+        operational_cutoff_id=operational_cutoff_id,
+        measurement_start_sequence=measurement_start_sequence,
+        worker_commit_observation_id=worker_commit_observation_id,
+        output_directory_identity=directory_identity,
+        artifact_identity=artifact_identity,
+        artifact_sha256=digest,
+        artifact_byte_extent=extent,
+        commit_event_id=event_id,
+        first_role_authority=(
+            OutputFirstRoleAuthorityV2.SYNTHETIC_CONSTRUCTION_ONLY
+        ),
+        authenticated_parent_output_observation_id=None,
+        parent_output_frame_id=None,
+        broker_operational_output_id=None,
+        _payload_bytes=readback,
     )
+
+
+# Historical construction-only spelling.  It is an alias to the explicitly
+# synthetic API and cannot issue production semantic eligibility.
+commit_worker_business_result_v2 = commit_synthetic_construction_first_role_v2
+
+
+def adopt_production_worker_operational_output_v2(
+    *,
+    output_directory_fd: int,
+    authenticated_parent_output: channel_v2.K7AuthenticatedBrokerFrameV2,
+    expected_request_replay: Any,
+    expected_binding: ipc_v1.K7OuterAttemptBrokerIPCBindingV1,
+    live_envelope_id: str,
+    occurrence_id: str,
+    route_attempt_id: str,
+    decision_point_id: str,
+    measurement_window_id: str,
+    operational_cutoff_id: str,
+    measurement_start_sequence: int,
+) -> WorkerBusinessResultCommitV2:
+    """Adopt the existing worker V1 output inode without copying or renaming."""
+
+    for value, label in (
+        (live_envelope_id, "adopted envelope"),
+        (occurrence_id, "adopted occurrence"),
+        (route_attempt_id, "adopted attempt"),
+        (decision_point_id, "adopted decision"),
+        (measurement_window_id, "adopted window"),
+        (operational_cutoff_id, "adopted cutoff"),
+    ):
+        _cid(value, label)
+    _nonnegative(measurement_start_sequence, "measurement start")
+    if (
+        type(authenticated_parent_output)
+        is not channel_v2.K7AuthenticatedBrokerFrameV2
+        or type(expected_binding) is not ipc_v1.K7OuterAttemptBrokerIPCBindingV1
+    ):
+        _fail("production adoption requires exact authenticated frame authority")
+    frame = authenticated_parent_output.frame
+    if (
+        frame.role is not ipc_v1.K7OuterAttemptBrokerFrameRoleV1.PARENT_OUTPUT
+        or frame.binding != expected_binding
+    ):
+        _fail("authenticated PARENT_OUTPUT crossed its role or binding")
+    observation_id = authenticated_parent_output.observation_id
+    frame_id = frame.frame_id
+    directory_identity = _fd_identity(output_directory_fd, directory=True)
+    if os.get_inheritable(output_directory_fd):
+        _fail("production adoption output-directory descriptor must be CLOEXEC")
+    try:
+        names = tuple(sorted(os.listdir(output_directory_fd)))
+    except OSError as error:
+        raise ConstructionSharedResourceOutputJournalV2Error(
+            "production output directory cannot be enumerated"
+        ) from error
+    if names != (worker_v1.OUTPUT_NAME,):
+        _fail("production adoption requires one exact worker operational output")
+    reader = _open_readonly_at(output_directory_fd, worker_v1.OUTPUT_NAME)
+    try:
+        before = _fd_identity(reader, directory=False)
+        if (
+            before["link_count"] != 1
+            or not 0 < before["byte_extent"] <= worker_v1.MAX_OUTPUT_BYTES
+        ):
+            _fail("production operational output inode is invalid")
+        raw = _read_exact(reader, before["byte_extent"])
+        after = _fd_identity(reader, directory=False)
+        named = os.stat(
+            worker_v1.OUTPUT_NAME,
+            dir_fd=output_directory_fd,
+            follow_symlinks=False,
+        )
+        if (
+            before != after
+            or (named.st_dev, named.st_ino)
+            != (before["device"], before["inode"])
+        ):
+            _fail("production operational output mutated or was replaced")
+        try:
+            verified = worker_v1.verify_v075_k7_broker_operational_output_bytes_v1(
+                raw=raw,
+                expected_request_replay=expected_request_replay,
+                expected_binding=expected_binding,
+            )
+        except Exception as error:
+            raise ConstructionSharedResourceOutputJournalV2Error(
+                "worker V1 operational-output semantic replay failed"
+            ) from error
+        digest, extent = _hash_payload(raw)
+        if (
+            frame.payload["output_byte_count"] != extent
+            or frame.payload["output_sha256"] != digest
+        ):
+            _fail("authenticated PARENT_OUTPUT crossed its output count or SHA")
+        core = {
+            "schema": "acfqp.construction_shared_resource_business_result_commit.v2",
+            "schema_version": SCHEMA_VERSION,
+            "proposed_contract_version": PROPOSED_CONTRACT_VERSION,
+            **_identity_document(
+                live_envelope_id=live_envelope_id,
+                occurrence_id=occurrence_id,
+                route_attempt_id=route_attempt_id,
+                decision_point_id=decision_point_id,
+                measurement_window_id=measurement_window_id,
+            ),
+            "operational_cutoff_id": operational_cutoff_id,
+            "measurement_start_sequence": measurement_start_sequence,
+            "global_sequence": measurement_start_sequence + 1,
+            "worker_commit_observation_id": observation_id,
+            "authenticated_parent_output_observation_id": observation_id,
+            "parent_output_frame_id": frame_id,
+            "broker_operational_output_id": verified.output_id,
+            "output_directory_identity": directory_identity,
+            "artifact_role": BUSINESS_ROLE,
+            "filename": worker_v1.OUTPUT_NAME,
+            "first_role_authority": (
+                OutputFirstRoleAuthorityV2.PRODUCTION_WORKER_V1_ADOPTED.value
+            ),
+            "production_semantic_eligible": True,
+            "synthetic_construction_only": False,
+            "artifact_identity": before,
+            "artifact_sha256": digest,
+            "artifact_byte_extent": extent,
+            "worker_created_and_durably_committed": True,
+            "broker_post_reap_write_bits_removed": False,
+        }
+        event_id = _hash(DURABLE_WRITE_EVENT_V2_DOMAIN, core)
+        adopted = WorkerBusinessResultCommitV2(
+            _BUSINESS_ISSUER,
+            live_envelope_id=live_envelope_id,
+            occurrence_id=occurrence_id,
+            route_attempt_id=route_attempt_id,
+            decision_point_id=decision_point_id,
+            measurement_window_id=measurement_window_id,
+            operational_cutoff_id=operational_cutoff_id,
+            measurement_start_sequence=measurement_start_sequence,
+            worker_commit_observation_id=observation_id,
+            output_directory_identity=directory_identity,
+            artifact_identity=before,
+            artifact_sha256=digest,
+            artifact_byte_extent=extent,
+            commit_event_id=event_id,
+            first_role_authority=(
+                OutputFirstRoleAuthorityV2.PRODUCTION_WORKER_V1_ADOPTED
+            ),
+            authenticated_parent_output_observation_id=observation_id,
+            parent_output_frame_id=frame_id,
+            broker_operational_output_id=verified.output_id,
+            _payload_bytes=raw,
+        )
+    finally:
+        os.close(reader)
+    with _PARENT_OUTPUT_CONSUMPTION_LOCK:
+        if observation_id in _CONSUMED_PARENT_OUTPUT_OBSERVATION_IDS:
+            _fail("authenticated PARENT_OUTPUT observation was already consumed")
+        _CONSUMED_PARENT_OUTPUT_OBSERVATION_IDS.add(observation_id)
+    return adopted
 
 
 @dataclass(frozen=True, slots=True)
@@ -575,6 +877,9 @@ class OutputRawReplayV2:
     measurement_window_id: str
     operational_cutoff_id: str
     raw_output_bytes: int
+    first_role_authority: OutputFirstRoleAuthorityV2
+    production_semantic_eligible: bool
+    synthetic_construction_only: bool
     semantic_source_verified: bool = False
     counter_record_issuance_authorized: bool = False
 
@@ -591,8 +896,21 @@ class OutputRawReplayV2:
         ):
             _cid(value, "output replay identity")
         _positive(self.raw_output_bytes, "raw output bytes")
+        try:
+            authority = OutputFirstRoleAuthorityV2(self.first_role_authority)
+        except (TypeError, ValueError) as error:
+            raise ConstructionSharedResourceOutputJournalV2Error(
+                "raw output first-role authority is invalid"
+            ) from error
+        object.__setattr__(self, "first_role_authority", authority)
+        production = (
+            authority
+            is OutputFirstRoleAuthorityV2.PRODUCTION_WORKER_V1_ADOPTED
+        )
         if (
-            self.semantic_source_verified is not False
+            self.production_semantic_eligible is not production
+            or self.synthetic_construction_only is production
+            or self.semantic_source_verified is not False
             or self.counter_record_issuance_authorized is not False
         ):
             _fail("output raw replay cannot claim formal authority")
@@ -631,6 +949,8 @@ class OutputRawEvidenceBundleV2:
             _fail("output bundle contains a mistyped component")
 
     def live_source_v2(self) -> resolution_v2.SharedResourceLiveSourceV2:
+        if not self.raw_replay.production_semantic_eligible:
+            _fail("synthetic construction output cannot become an exact live source")
         contract = next(
             row
             for row in resolution_v2.official_shared_resource_resolution_catalogue_v2()
@@ -713,13 +1033,10 @@ class BrokerDurableOutputSessionV2:
             )
             result_identity = _fd_identity(result_fd, directory=False)
             if (
-                not _same_inode(result_identity, business_commit.artifact_identity)
-                or result_identity["byte_extent"]
-                != business_commit.artifact_byte_extent
+                result_identity != business_commit.artifact_identity
                 or result_identity["link_count"] != 1
-                or stat.S_IMODE(result_identity["mode"]) & 0o222
             ):
-                _fail("broker-pinned P differs from the immutable worker inode")
+                _fail("broker-pinned P differs from the adopted first-role inode")
             pre_read = _read_exact(result_fd, result_identity["byte_extent"])
             if (
                 pre_read != business_commit._payload_bytes
@@ -727,6 +1044,39 @@ class BrokerDurableOutputSessionV2:
                 != business_commit.artifact_sha256
             ):
                 _fail("broker pre-read P differs from the worker commit")
+            pre_seal_identity = result_identity
+            production = business_commit.production_semantic_eligible
+            pre_mode = stat.S_IMODE(pre_seal_identity["mode"])
+            if production:
+                if pre_mode != 0o600:
+                    _fail(
+                        "production P must retain exact worker write bits until reaps"
+                    )
+                os.fchmod(result_fd, pre_mode & ~0o222)
+                os.fsync(result_fd)
+                os.fsync(output_directory_fd)
+                result_identity = _fd_identity(result_fd, directory=False)
+                named = os.stat(
+                    ROLE_FILENAMES[BUSINESS_ROLE],
+                    dir_fd=output_directory_fd,
+                    follow_symlinks=False,
+                )
+                sealed_read = _read_exact(
+                    result_fd, result_identity["byte_extent"]
+                )
+                if (
+                    not _same_inode(pre_seal_identity, result_identity)
+                    or (named.st_dev, named.st_ino)
+                    != (result_identity["device"], result_identity["inode"])
+                    or stat.S_IMODE(result_identity["mode"]) != 0o400
+                    or sealed_read != pre_read
+                ):
+                    _fail("broker post-reap P sealing or pinned reread failed")
+                broker_removed_write_bits = True
+            else:
+                if pre_mode & 0o222:
+                    _fail("synthetic construction P unexpectedly remains writable")
+                broker_removed_write_bits = False
         except BaseException:
             if result_fd >= 0:
                 os.close(result_fd)
@@ -735,6 +1085,8 @@ class BrokerDurableOutputSessionV2:
         self._directory_identity = directory_identity
         self._result_fd = result_fd
         self._result_identity = result_identity
+        self._result_identity_pre_seal = pre_seal_identity
+        self._broker_removed_write_bits = broker_removed_write_bits
         self._business_commit = business_commit
         self._pre_read_p = pre_read
         self._worker_reap_observation_id = worker_reap_observation_id
@@ -747,6 +1099,7 @@ class BrokerDurableOutputSessionV2:
         session_payload = {
             "schema": "acfqp.construction_shared_resource_output_finalization_session.v2",
             "schema_version": SCHEMA_VERSION,
+            "proposed_contract_version": PROPOSED_CONTRACT_VERSION,
             **_identity_document(
                 live_envelope_id=business_commit.live_envelope_id,
                 occurrence_id=business_commit.occurrence_id,
@@ -764,7 +1117,13 @@ class BrokerDurableOutputSessionV2:
             ),
             "exclusive_writer_observation_id": exclusive_writer_observation_id,
             "output_directory_identity": directory_identity,
-            "business_result_identity": result_identity,
+            "business_result_pre_seal_identity": pre_seal_identity,
+            "business_result_sealed_identity": result_identity,
+            "first_role_authority": business_commit.first_role_authority.value,
+            "production_semantic_eligible": (
+                business_commit.production_semantic_eligible
+            ),
+            "broker_post_reap_write_bits_removed": broker_removed_write_bits,
         }
         self._session_id = _hash(
             OUTPUT_FINALIZATION_SESSION_V2_DOMAIN, session_payload
@@ -823,6 +1182,7 @@ class BrokerDurableOutputSessionV2:
             iteration_payload = {
                 "schema": "acfqp.construction_shared_resource_output_fixed_point_iteration.v2",
                 "schema_version": SCHEMA_VERSION,
+                "proposed_contract_version": PROPOSED_CONTRACT_VERSION,
                 "session_id": self._session_id,
                 "iteration_index": index,
                 "candidate_output_bytes": candidate,
@@ -879,7 +1239,15 @@ class BrokerDurableOutputSessionV2:
                 _fail("failed output finalization cannot be reused")
             try:
                 fixed_total, suffix, iterations = self._solve_fixed_point(renderer)
-                role_rows = [self._business_commit.event_document()]
+                role_rows = [
+                    self._business_commit._event_document_after_reap_v2(  # noqa: SLF001
+                        _FINALIZATION_ISSUER,
+                        session_id=self._session_id,
+                        pre_seal_identity=self._result_identity_pre_seal,
+                        sealed_identity=self._result_identity,
+                        broker_removed_write_bits=self._broker_removed_write_bits,
+                    )
+                ]
                 for ordinal, role in enumerate(BROKER_ROLE_ORDER, start=2):
                     raw = suffix[role]
                     identity, readback = _durable_create(
@@ -891,6 +1259,7 @@ class BrokerDurableOutputSessionV2:
                     core = {
                         "schema": "acfqp.construction_shared_resource_durable_write_event.v2",
                         "schema_version": SCHEMA_VERSION,
+                        "proposed_contract_version": PROPOSED_CONTRACT_VERSION,
                         "session_id": self._session_id,
                         "global_sequence": (
                             self._business_commit.measurement_start_sequence
@@ -922,6 +1291,7 @@ class BrokerDurableOutputSessionV2:
                     core = {
                         "schema": "acfqp.construction_shared_resource_durable_write_event.v2",
                         "schema_version": SCHEMA_VERSION,
+                        "proposed_contract_version": PROPOSED_CONTRACT_VERSION,
                         "session_id": self._session_id,
                         **{
                             key: value
@@ -956,6 +1326,8 @@ class BrokerDurableOutputSessionV2:
                     or not _same_inode(current_p_identity, self._result_identity)
                     or current_p_identity["byte_extent"]
                     != self._result_identity["byte_extent"]
+                    or current_p_identity != self._result_identity
+                    or stat.S_IMODE(current_p_identity["mode"]) & 0o222
                 ):
                     _fail("P mutation or replacement detected between P and P'")
                 raw_total = sum(row["artifact_byte_extent"] for row in role_rows)
@@ -972,8 +1344,18 @@ class BrokerDurableOutputSessionV2:
                     self._business_commit.measurement_start_sequence
                     + len(ROLE_ORDER)
                 )
+                authority = self._business_commit.first_role_authority.value
+                production_eligible = (
+                    self._business_commit.production_semantic_eligible
+                )
+                eligibility = {
+                    "first_role_authority": authority,
+                    "production_semantic_eligible": production_eligible,
+                    "synthetic_construction_only": not production_eligible,
+                }
                 manifest_body = {
                     **identity,
+                    **eligibility,
                     "operational_cutoff_id": self._business_commit.operational_cutoff_id,
                     "session_id": self._session_id,
                     "path": OUTPUT_PATH,
@@ -985,6 +1367,7 @@ class BrokerDurableOutputSessionV2:
                 }
                 fixed_body = {
                     **identity,
+                    **eligibility,
                     "operational_cutoff_id": self._business_commit.operational_cutoff_id,
                     "session_id": self._session_id,
                     "path": OUTPUT_PATH,
@@ -1008,6 +1391,7 @@ class BrokerDurableOutputSessionV2:
                 }
                 writer_body = {
                     **identity,
+                    **eligibility,
                     "operational_cutoff_id": self._business_commit.operational_cutoff_id,
                     "session_id": self._session_id,
                     "path": OUTPUT_PATH,
@@ -1023,7 +1407,9 @@ class BrokerDurableOutputSessionV2:
                         self._exclusive_writer_observation_id
                     ),
                     "output_directory_identity": self._directory_identity,
-                    "business_result_pre_identity": self._result_identity,
+                    "business_result_pre_identity": (
+                        self._result_identity_pre_seal
+                    ),
                     "business_result_post_identity": current_p_identity,
                     "durable_write_events": role_rows,
                     "direct_children_reaped_before_broker_suffix": True,
@@ -1034,9 +1420,15 @@ class BrokerDurableOutputSessionV2:
                     "directory_fsync_after_complete_set": True,
                     "inode_pinned_readback_all_roles": True,
                     "business_result_pre_post_equal": True,
+                    "worker_created_and_durably_committed_first_role": (
+                        production_eligible
+                    ),
+                    "broker_post_reap_sealed_first_role": production_eligible,
+                    "first_role_filename_is_worker_operational_output": True,
                 }
                 cutoff_body = {
                     **identity,
+                    **eligibility,
                     "operational_cutoff_id": self._business_commit.operational_cutoff_id,
                     "session_id": self._session_id,
                     "measurement_start_sequence": (
@@ -1152,14 +1544,17 @@ def _replay_inode(row: Any) -> dict[str, int]:
     return result
 
 
-def _replay_role_rows(rows: Any) -> tuple[list[dict[str, Any]], int]:
+def _replay_role_rows(
+    rows: Any, *, session_id: str
+) -> tuple[list[dict[str, Any]], int]:
     if type(rows) is not list or len(rows) != len(ROLE_ORDER):
         _fail("output manifest has a missing or extra role")
     result: list[dict[str, Any]] = []
     event_ids: set[str] = set()
     inode_keys: set[tuple[int, int]] = set()
     total = 0
-    fields = {
+    common_fields = {
+        "proposed_contract_version",
         "global_sequence",
         "artifact_role",
         "filename",
@@ -1173,15 +1568,32 @@ def _replay_role_rows(rows: Any) -> tuple[list[dict[str, Any]], int]:
         "directory_fsync_completed",
         "inode_pinned_readback_equal",
     }
-    for ordinal, (raw, role) in enumerate(zip(rows, ROLE_ORDER), start=1):
-        _exact_fields(raw, fields, "durable role row")
+    first_fields = common_fields | {
+        "first_role_authority",
+        "authenticated_parent_output_observation_id",
+        "parent_output_frame_id",
+        "broker_operational_output_id",
+        "worker_created_and_durably_committed",
+        "broker_post_reap_write_bits_removed",
+        "broker_post_reap_file_fsync_completed",
+        "broker_post_reap_directory_fsync_completed",
+        "pre_seal_artifact_identity",
+        "sealed_artifact_identity",
+        "production_semantic_eligible",
+        "synthetic_construction_only",
+    }
+    for raw, role in zip(rows, ROLE_ORDER):
+        _exact_fields(
+            raw,
+            first_fields if role == BUSINESS_ROLE else common_fields,
+            "durable role row",
+        )
         row = dict(raw)
         if (
-            row["artifact_role"] != role
+            row["proposed_contract_version"] != PROPOSED_CONTRACT_VERSION
+            or row["artifact_role"] != role
             or row["filename"] != ROLE_FILENAMES[role]
             or row["global_sequence"] <= 0
-            or row["writer_role"]
-            != ("WORKER" if role == BUSINESS_ROLE else "BROKER")
             or row["o_excl_no_replace"] is not True
             or row["file_fsync_completed"] is not True
             or row["directory_fsync_completed"] is not True
@@ -1194,6 +1606,69 @@ def _replay_role_rows(rows: Any) -> tuple[list[dict[str, Any]], int]:
         if identity["byte_extent"] != row["artifact_byte_extent"]:
             _fail("durable role inode extent differs from its charge")
         event_id = _cid(row["durable_write_event_id"], "durable write event")
+        event_core = {
+            "schema": "acfqp.construction_shared_resource_durable_write_event.v2",
+            "schema_version": SCHEMA_VERSION,
+            "proposed_contract_version": PROPOSED_CONTRACT_VERSION,
+            "session_id": session_id,
+            **{
+                key: value
+                for key, value in row.items()
+                if key != "durable_write_event_id"
+            },
+        }
+        if event_id != _hash(DURABLE_WRITE_EVENT_V2_DOMAIN, event_core):
+            _fail("durable role event ID does not replay")
+        if role == BUSINESS_ROLE:
+            try:
+                authority = OutputFirstRoleAuthorityV2(
+                    row["first_role_authority"]
+                )
+            except (TypeError, ValueError) as error:
+                raise ConstructionSharedResourceOutputJournalV2Error(
+                    "first-role authority is invalid"
+                ) from error
+            production = (
+                authority
+                is OutputFirstRoleAuthorityV2.PRODUCTION_WORKER_V1_ADOPTED
+            )
+            pre_seal = _replay_inode(row["pre_seal_artifact_identity"])
+            sealed = _replay_inode(row["sealed_artifact_identity"])
+            authority_ids = (
+                row["authenticated_parent_output_observation_id"],
+                row["parent_output_frame_id"],
+                row["broker_operational_output_id"],
+            )
+            if production:
+                for value in authority_ids:
+                    _cid(value, "production first-role authority")
+            elif any(value is not None for value in authority_ids):
+                _fail("synthetic first role retained production IDs")
+            if (
+                row["writer_role"]
+                != ("WORKER" if production else "CONSTRUCTION_SYNTHETIC")
+                or row["worker_created_and_durably_committed"] is not production
+                or row["broker_post_reap_write_bits_removed"] is not production
+                or row["broker_post_reap_file_fsync_completed"] is not production
+                or row["broker_post_reap_directory_fsync_completed"]
+                is not production
+                or row["production_semantic_eligible"] is not production
+                or row["synthetic_construction_only"] is production
+                or not _same_inode(pre_seal, sealed)
+                or sealed != identity
+                or stat.S_IMODE(sealed["mode"]) & 0o222
+                or (
+                    production
+                    and (
+                        stat.S_IMODE(pre_seal["mode"]) != 0o600
+                        or stat.S_IMODE(sealed["mode"]) != 0o400
+                    )
+                )
+                or ((not production) and pre_seal != sealed)
+            ):
+                _fail("first-role adoption or post-reap sealing evidence changed")
+        elif row["writer_role"] != "BROKER":
+            _fail("durable broker suffix writer role changed")
         inode_key = (identity["device"], identity["inode"])
         if event_id in event_ids or inode_key in inode_keys:
             _fail("durable roles duplicate an event or alias one inode")
@@ -1219,7 +1694,8 @@ def replay_output_raw_evidence_v2(
     manifest = _replay_component(
         output_manifest_bytes, OUTPUT_MANIFEST_SCHEMA_ID
     )
-    fixed_fields = _COMMON_COMPONENT_FIELDS | _IDENTITY_FIELDS | {
+    fixed_fields = (
+        _COMMON_COMPONENT_FIELDS | _IDENTITY_FIELDS | _ELIGIBILITY_FIELDS | {
         "durable_output_fixed_point_id",
         "operational_cutoff_id",
         "session_id",
@@ -1232,8 +1708,10 @@ def replay_output_raw_evidence_v2(
         "same_candidate_double_rendered",
         "terminal_candidate_double_replayed",
         "business_result_pre_post_equal",
-    }
-    writer_fields = _COMMON_COMPONENT_FIELDS | _IDENTITY_FIELDS | {
+        }
+    )
+    writer_fields = (
+        _COMMON_COMPONENT_FIELDS | _IDENTITY_FIELDS | _ELIGIBILITY_FIELDS | {
         "exclusive_writer_attestation_id",
         "operational_cutoff_id",
         "session_id",
@@ -1255,8 +1733,13 @@ def replay_output_raw_evidence_v2(
         "directory_fsync_after_complete_set",
         "inode_pinned_readback_all_roles",
         "business_result_pre_post_equal",
-    }
-    cutoff_fields = _COMMON_COMPONENT_FIELDS | _IDENTITY_FIELDS | {
+        "worker_created_and_durably_committed_first_role",
+        "broker_post_reap_sealed_first_role",
+        "first_role_filename_is_worker_operational_output",
+        }
+    )
+    cutoff_fields = (
+        _COMMON_COMPONENT_FIELDS | _IDENTITY_FIELDS | _ELIGIBILITY_FIELDS | {
         "operational_cutoff_attestation_id",
         "operational_cutoff_id",
         "session_id",
@@ -1266,8 +1749,10 @@ def replay_output_raw_evidence_v2(
         "global_event_index",
         "window_closed",
         "cutoff_is_inclusive",
-    }
-    manifest_fields = _COMMON_COMPONENT_FIELDS | _IDENTITY_FIELDS | {
+        }
+    )
+    manifest_fields = (
+        _COMMON_COMPONENT_FIELDS | _IDENTITY_FIELDS | _ELIGIBILITY_FIELDS | {
         "eight_role_output_manifest_id",
         "operational_cutoff_id",
         "session_id",
@@ -1277,7 +1762,8 @@ def replay_output_raw_evidence_v2(
         "raw_derived_output_bytes",
         "nested_serialized_aliases_charged_separately",
         "exact_new_inode_extents_only",
-    }
+        }
+    )
     _exact_fields(fixed, fixed_fields, "output fixed point")
     _exact_fields(writer, writer_fields, "exclusive writer")
     _exact_fields(cutoff, cutoff_fields, "output cutoff")
@@ -1285,9 +1771,29 @@ def replay_output_raw_evidence_v2(
     identity = _identity_tuple(fixed)
     if any(_identity_tuple(row) != identity for row in (writer, cutoff, manifest)):
         _fail("output raw components crossed occurrence/window identity")
-    if fixed["path"] != OUTPUT_PATH or writer["path"] != OUTPUT_PATH or manifest["path"] != OUTPUT_PATH:
+    try:
+        authority = OutputFirstRoleAuthorityV2(fixed["first_role_authority"])
+    except (TypeError, ValueError) as error:
+        raise ConstructionSharedResourceOutputJournalV2Error(
+            "output components name an invalid first-role authority"
+        ) from error
+    production = (
+        authority is OutputFirstRoleAuthorityV2.PRODUCTION_WORKER_V1_ADOPTED
+    )
+    if any(
+        row["first_role_authority"] != authority.value
+        or row["production_semantic_eligible"] is not production
+        or row["synthetic_construction_only"] is production
+        for row in (fixed, writer, cutoff, manifest)
+    ):
+        _fail("output components crossed first-role semantic eligibility")
+    if any(
+        row["path"] != OUTPUT_PATH for row in (fixed, writer, manifest)
+    ):
         _fail("output raw component crossed its counter path")
-    role_rows, total = _replay_role_rows(manifest["role_artifacts"])
+    role_rows, total = _replay_role_rows(
+        manifest["role_artifacts"], session_id=manifest["session_id"]
+    )
     if (
         manifest["required_role_order"] != list(ROLE_ORDER)
         or manifest["raw_derived_output_bytes"] != total
@@ -1295,7 +1801,9 @@ def replay_output_raw_evidence_v2(
         or manifest["exact_new_inode_extents_only"] is not True
     ):
         _fail("output bytes are under-counted, double-counted, or alias-charged")
-    writer_rows, writer_total = _replay_role_rows(writer["durable_write_events"])
+    writer_rows, writer_total = _replay_role_rows(
+        writer["durable_write_events"], session_id=writer["session_id"]
+    )
     if writer_rows != role_rows or writer_total != total:
         _fail("exclusive writer rows differ from the output manifest")
     observation_fields = (
@@ -1320,8 +1828,19 @@ def replay_output_raw_evidence_v2(
     )
     if any(writer[key] is not True for key in required_true):
         _fail("exclusive writer, reap, fsync, or P equality evidence is absent")
-    if writer["business_result_pre_identity"] != writer["business_result_post_identity"]:
-        _fail("P inode identity changed between pre and post read")
+    pre_identity = _replay_inode(writer["business_result_pre_identity"])
+    post_identity = _replay_inode(writer["business_result_post_identity"])
+    first_row = role_rows[0]
+    if (
+        not _same_inode(pre_identity, post_identity)
+        or post_identity != first_row["artifact_identity"]
+        or writer["worker_created_and_durably_committed_first_role"]
+        is not production
+        or writer["broker_post_reap_sealed_first_role"] is not production
+        or writer["first_role_filename_is_worker_operational_output"] is not True
+        or first_row["production_semantic_eligible"] is not production
+    ):
+        _fail("P adoption or post-reap sealing identity changed")
     iterations = fixed["iterations"]
     if type(iterations) is not list or not iterations:
         _fail("output fixed point lacks its iteration trace")
@@ -1330,6 +1849,7 @@ def replay_output_raw_evidence_v2(
         fields = {
             "schema",
             "schema_version",
+            "proposed_contract_version",
             "session_id",
             "iteration_index",
             "candidate_output_bytes",
@@ -1339,7 +1859,12 @@ def replay_output_raw_evidence_v2(
             "converged",
         }
         _exact_fields(row, fields, "fixed-point iteration")
-        if row["iteration_index"] != index or row["candidate_output_bytes"] != candidate:
+        if (
+            row["schema_version"] != SCHEMA_VERSION
+            or row["proposed_contract_version"] != PROPOSED_CONTRACT_VERSION
+            or row["iteration_index"] != index
+            or row["candidate_output_bytes"] != candidate
+        ):
             _fail("output fixed-point recurrence is missing or reordered")
         extents = row["role_byte_extents"]
         if (
@@ -1351,7 +1876,11 @@ def replay_output_raw_evidence_v2(
         rendered = sum(item["byte_extent"] for item in extents)
         if row["rendered_total_bytes"] != rendered or rendered < candidate:
             _fail("fixed-point iteration total is unstable")
-        payload = {key: value for key, value in row.items() if key not in {"iteration_id", "converged"}}
+        payload = {
+            key: value
+            for key, value in row.items()
+            if key not in {"iteration_id", "converged"}
+        }
         if row["iteration_id"] != _hash(FIXED_POINT_ITERATION_V2_DOMAIN, payload):
             _fail("fixed-point iteration ID does not replay")
         converged = rendered == candidate
@@ -1408,9 +1937,32 @@ def replay_output_raw_evidence_v2(
         fixed["measurement_window_id"],
         fixed["operational_cutoff_id"],
         total,
+        authority,
+        production,
+        not production,
         False,
         False,
     )
+
+
+def replay_production_output_exact_semantic_evidence_v2(
+    *,
+    fixed_point_bytes: bytes,
+    exclusive_writer_bytes: bytes,
+    cutoff_bytes: bytes,
+    output_manifest_bytes: bytes,
+) -> OutputRawReplayV2:
+    """Replay raw output and reject synthetic construction promotion."""
+
+    replay = replay_output_raw_evidence_v2(
+        fixed_point_bytes=fixed_point_bytes,
+        exclusive_writer_bytes=exclusive_writer_bytes,
+        cutoff_bytes=cutoff_bytes,
+        output_manifest_bytes=output_manifest_bytes,
+    )
+    if not replay.production_semantic_eligible:
+        _fail("synthetic construction output is not exact-semantic eligible")
+    return replay
 
 
 __all__ = [
@@ -1425,16 +1977,21 @@ __all__ = [
     "MAX_FIXED_POINT_ITERATIONS",
     "OUTPUT_MANIFEST_SCHEMA_ID",
     "OUTPUT_PATH",
+    "OutputFirstRoleAuthorityV2",
     "OutputFinalizationStateV2",
     "OutputRawEvidenceBundleV2",
     "OutputRawReplayV2",
     "PROFILE_KEY",
+    "PROPOSED_CONTRACT_VERSION",
     "REQUESTED_PHASE3E_DOMAIN_TAGS",
     "ROLE_FILENAMES",
     "ROLE_ORDER",
     "SCHEMA_VERSION",
     "WorkerBusinessResultCommitV2",
+    "adopt_production_worker_operational_output_v2",
+    "commit_synthetic_construction_first_role_v2",
     "commit_worker_business_result_v2",
     "open_broker_durable_output_session_v2",
     "replay_output_raw_evidence_v2",
+    "replay_production_output_exact_semantic_evidence_v2",
 ]

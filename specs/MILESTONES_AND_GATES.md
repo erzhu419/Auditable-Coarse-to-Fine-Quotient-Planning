@@ -4632,6 +4632,17 @@ joined into one typed nonformal envelope. The operational wrapper has not yet
 been adopted as the first registered output-fixed-point role, and no receipt,
 formal vector, terminal or Gate authority moves.
 
+## V0-110B-2E-10 production output adoption and semantic replay
+
+Contract `2.0.20` adopts the exact worker `operational-output.json` inode as
+the first `BUSINESS_RESULT` fixed-point role under authenticated
+`PARENT_OUTPUT` and worker-V1 replay, then post-reap seals it `0600 -> 0400`
+before the seven-role suffix. Synthetic commits cannot become live evidence.
+Fixed catalogue dispatch now semantically replays all nine source families to
+source-local exact integers with central ID/SHA, identity, cutoff, provenance
+and reducer checks. Results still issue no CounterRecord; the V3 nine-source
+join and the remaining 193 V6 records must be closed next.
+
 ## V0-110B-2E-11 honest nine-source window join
 
 Contract `2.0.21` binds all nine source-local closed journals into one

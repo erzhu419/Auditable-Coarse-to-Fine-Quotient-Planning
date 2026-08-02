@@ -735,6 +735,9 @@ V075_K7_PRODUCTION_BROKER_RUNTIME_PROFILE_V2_DOMAIN = (
 V075_K7_PRODUCTION_BROKER_RUNTIME_ENVELOPE_V2_DOMAIN = (
     "acfqp:v075-k7-production-broker-runtime-envelope:v2"
 )
+CONSTRUCTION_SHARED_RESOURCE_SEMANTIC_VERIFIER_V2_DOMAIN = (
+    "acfqp:construction-shared-resource-semantic-verifier:v2"
+)
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
 ROUTE_CAP_PROFILE_DOMAIN = "acfqp:route-cap-profile:v1"
@@ -1721,6 +1724,9 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "v075_k7_production_broker_runtime_envelope_v2": (
             V075_K7_PRODUCTION_BROKER_RUNTIME_ENVELOPE_V2_DOMAIN
+        ),
+        "construction_shared_resource_semantic_verifier_v2": (
+            CONSTRUCTION_SHARED_RESOURCE_SEMANTIC_VERIFIER_V2_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,
