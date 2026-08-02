@@ -5453,3 +5453,15 @@ fail replay. The nine shared-resource inputs are now eligible for atomic
 materialization, but no `CounterRecord` or vector is issued until the 114
 native-zero, 71 owner-emittable and eight derived paths also close. See
 `specs/K7_VERIFIED_NINE_SHARED_RESOURCE_ENVELOPE.md`.
+
+## Contract 2.0.23: owner-event semantic closure
+
+V0-110B-2E-13 independently reconstructs the complete five-stage native
+transcript from production child-business bytes and binds it to the joined
+runtime and sealed source archive.  Exact source inspection closes all 89 V3
+owner sites and yields exactly 71 nonformal per-path candidates; positive unit
+events retain order, while zero is allowed only from a complete owner window.
+The 59-call/54-key source-hook inventory, loaded bytes, stage/path/site binding
+and production execution graph are replayed.  This closes the owner-emittable
+input family only.  No CounterRecord or vector exists until the other three
+families join atomically.  See `specs/K7_OWNER_EVENT_SEMANTIC_CLOSURE.md`.

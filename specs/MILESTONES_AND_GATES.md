@@ -4659,3 +4659,14 @@ authorization per path. Source-local intervals, raw bytes, verifier identities,
 reducers and the complete runtime context remain bound and attack-tested. The
 nine shared-resource inputs are now semantically closed; no formal record or
 vector is issued until the other 193 required V6 leaves close.
+
+## V0-110B-2E-13 owner-emittable semantic closure
+
+Contract `2.0.23` binds the actual production child-business result and its
+complete five-stage native transcript to the joined runtime, source archive
+and exact loaded owner code.  All 89 registered operation sites are closed and
+reduced to 71 ordered positive or complete-window-zero path candidates.  The
+source-hook inventory and transcript are independently replayed; absence,
+abort, mutation and cross-stage/path substitution fail closed.  These
+candidates remain nonformal until the nine shared, 114 profile-zero and eight
+derived families are joined by the atomic materializer.

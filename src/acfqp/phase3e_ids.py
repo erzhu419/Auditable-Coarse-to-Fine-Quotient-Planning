@@ -744,6 +744,24 @@ CONSTRUCTION_SHARED_RESOURCE_PATH_EXACT_AUTHORIZATION_V1_DOMAIN = (
 V075_K7_VERIFIED_NINE_SHARED_RESOURCE_ENVELOPE_V1_DOMAIN = (
     "acfqp:v075-k7-verified-nine-shared-resource-envelope:v1"
 )
+CONSTRUCTION_OWNER_BOUNDARY_SITE_CLOSURE_V1_DOMAIN = (
+    "acfqp:construction-owner-boundary-site-closure:v1"
+)
+CONSTRUCTION_OWNER_PATH_COUNTER_CANDIDATE_V1_DOMAIN = (
+    "acfqp:construction-owner-path-counter-candidate:v1"
+)
+CONSTRUCTION_OWNER_EVENT_CANDIDATE_SET_V1_DOMAIN = (
+    "acfqp:construction-owner-event-candidate-set:v1"
+)
+CONSTRUCTION_OWNER_EVENT_EXECUTION_BINDING_V1_DOMAIN = (
+    "acfqp:construction-owner-event-execution-binding:v1"
+)
+CONSTRUCTION_OWNER_SOURCE_CODE_IDENTITY_V1_DOMAIN = (
+    "acfqp:construction-owner-source-code-identity:v1"
+)
+CONSTRUCTION_OWNER_POSTEXEC_BINDING_V1_DOMAIN = (
+    "acfqp:construction-owner-postexec-binding:v1"
+)
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
 ROUTE_CAP_PROFILE_DOMAIN = "acfqp:route-cap-profile:v1"
@@ -1739,6 +1757,24 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "v075_k7_verified_nine_shared_resource_envelope_v1": (
             V075_K7_VERIFIED_NINE_SHARED_RESOURCE_ENVELOPE_V1_DOMAIN
+        ),
+        "construction_owner_boundary_site_closure_v1": (
+            CONSTRUCTION_OWNER_BOUNDARY_SITE_CLOSURE_V1_DOMAIN
+        ),
+        "construction_owner_path_counter_candidate_v1": (
+            CONSTRUCTION_OWNER_PATH_COUNTER_CANDIDATE_V1_DOMAIN
+        ),
+        "construction_owner_event_candidate_set_v1": (
+            CONSTRUCTION_OWNER_EVENT_CANDIDATE_SET_V1_DOMAIN
+        ),
+        "construction_owner_event_execution_binding_v1": (
+            CONSTRUCTION_OWNER_EVENT_EXECUTION_BINDING_V1_DOMAIN
+        ),
+        "construction_owner_source_code_identity_v1": (
+            CONSTRUCTION_OWNER_SOURCE_CODE_IDENTITY_V1_DOMAIN
+        ),
+        "construction_owner_postexec_binding_v1": (
+            CONSTRUCTION_OWNER_POSTEXEC_BINDING_V1_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,

@@ -3193,3 +3193,10 @@ The successor verified-nine envelope now executes all nine registered semantic
 replayers and freezes exact per-path materialization authorizations under that
 same runtime identity. Formal accounting remains locked until the 114 explicit
 native-zero, 71 owner-emittable and eight derived paths also close.
+
+The owner-event successor now independently replays the complete production
+five-stage chain and exact loaded source inventory, closing all 89 operation
+sites into 71 nonformal path candidates.  Missing events are never inferred as
+zero; only a complete owner window may issue a zero candidate.  Formal
+accounting remains locked pending the 114 profile-zero, eight derived and
+atomic 202-path joins.
