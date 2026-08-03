@@ -1,10 +1,11 @@
 # Research Contract
 
-**Current construction contract:** `2.0.50`
+**Current construction contract:** `2.0.51`
 
 **Current construction profiles:** `v075_k7_production_role_manifest_v1`,
 `v075_k7_business_entry_core_v1`, `v075_k7_broker_worker_entry_core_v1`,
-`construction_k7_h1_direct_fallback_two_role_recipe_v1`
+`construction_k7_h1_direct_fallback_two_role_recipe_v1`,
+`construction_k7_h1_branch_aware_output_contract_v1`
 
 ## Definitions
 
@@ -5832,3 +5833,30 @@ continuous broker/child scope and either an outer-only or broker-inclusive
 formula are semantically authorized. No numeric aggregate, V7 upper/decision,
 execution, CounterRecord, vector, terminal, occurrence closure or Gate is
 issued. See `specs/K7_H1_DIRECT_FALLBACK_TWO_ROLE_RECIPE_V1.md`.
+
+## Contract 2.0.51: H1 branch-aware eight-role output contract
+
+V0-110B-2E-40 replaces the recipe's vague failure-phase split and opaque
+renderer dependency with a construction authority over the exact ordered
+eight-role universe. Its 72-row presence matrix factors eight primary
+outcome/business contexts across incomplete broker prefixes, finalized P7 and
+post-manifest P7 closure failure. Partial finalization preserves the exact
+committed subset and represents every missing role by typed absence; it
+invalidates an official run rather than fabricating a complete bundle.
+
+The module owns deterministic canonical role serializers and a branch-aware
+fixed-point solver. `BUSINESS_RESULT` can only arrive through a separately
+issued outcome fixture independent of later broker progress, never through the
+broker. Common committed prefixes are byte-stable across later failures, and
+`OUTPUT_MANIFEST` binds the
+IDs, hashes and extents of present non-manifest roles, typed absent roles and
+the candidate total, while excluding its own identity/hash/extent and any
+ninth wrapper. Exact equality, double renders, terminal replays and finite
+role/total/iteration caps fail closed on reorder, omission, self-reference,
+cross-branch inputs, nondeterminism and nonconvergence.
+
+This remains a typed-fixture structural authority. Production business,
+trace, terminal and accounting semantics; the numeric aggregate; formal V7
+route decision; official execution; CounterRecords/vectors; terminal closure;
+and both Gates remain absent or locked. See
+`specs/K7_H1_BRANCH_AWARE_EIGHT_ROLE_OUTPUT_CONTRACT_V1.md`.

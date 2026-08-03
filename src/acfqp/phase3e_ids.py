@@ -786,6 +786,30 @@ CONSTRUCTION_K7_H1_DIRECT_FALLBACK_TWO_ROLE_RECIPE_PROFILE_V1_DOMAIN = (
 CONSTRUCTION_K7_H1_DIRECT_FALLBACK_TWO_ROLE_RECIPE_V1_DOMAIN = (
     "acfqp:construction-k7-h1-direct-fallback-two-role-recipe:v1"
 )
+CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_PROFILE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-branch-aware-output-profile:v1"
+)
+CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_BUSINESS_FIXTURE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-branch-aware-output-business-fixture:v1"
+)
+CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_BROKER_FIXTURE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-branch-aware-output-broker-fixture:v1"
+)
+CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_INPUT_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-branch-aware-output-input:v1"
+)
+CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_ROLE_ARTIFACT_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-branch-aware-output-role-artifact:v1"
+)
+CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_ARTIFACT_SET_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-branch-aware-output-artifact-set:v1"
+)
+CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_FIXED_POINT_ITERATION_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-branch-aware-output-fixed-point-iteration:v1"
+)
+CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_FIXED_POINT_RESULT_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-branch-aware-output-fixed-point-result:v1"
+)
 CONSTRUCTION_OWNER_BOUNDARY_SITE_CLOSURE_V1_DOMAIN = (
     "acfqp:construction-owner-boundary-site-closure:v1"
 )
@@ -2177,6 +2201,30 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_h1_direct_fallback_two_role_recipe_v1": (
             CONSTRUCTION_K7_H1_DIRECT_FALLBACK_TWO_ROLE_RECIPE_V1_DOMAIN
+        ),
+        "construction_k7_h1_branch_aware_output_profile_v1": (
+            CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_PROFILE_V1_DOMAIN
+        ),
+        "construction_k7_h1_branch_aware_output_business_fixture_v1": (
+            CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_BUSINESS_FIXTURE_V1_DOMAIN
+        ),
+        "construction_k7_h1_branch_aware_output_broker_fixture_v1": (
+            CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_BROKER_FIXTURE_V1_DOMAIN
+        ),
+        "construction_k7_h1_branch_aware_output_input_v1": (
+            CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_INPUT_V1_DOMAIN
+        ),
+        "construction_k7_h1_branch_aware_output_role_artifact_v1": (
+            CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_ROLE_ARTIFACT_V1_DOMAIN
+        ),
+        "construction_k7_h1_branch_aware_output_artifact_set_v1": (
+            CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_ARTIFACT_SET_V1_DOMAIN
+        ),
+        "construction_k7_h1_branch_aware_output_fixed_point_iteration_v1": (
+            CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_FIXED_POINT_ITERATION_V1_DOMAIN
+        ),
+        "construction_k7_h1_branch_aware_output_fixed_point_result_v1": (
+            CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_FIXED_POINT_RESULT_V1_DOMAIN
         ),
         "construction_owner_boundary_site_closure_v1": (
             CONSTRUCTION_OWNER_BOUNDARY_SITE_CLOSURE_V1_DOMAIN

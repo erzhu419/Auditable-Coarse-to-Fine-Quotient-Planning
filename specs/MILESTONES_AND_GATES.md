@@ -4814,3 +4814,27 @@ official memory formula, all numeric operands and every aggregate cap remain
 null. This milestone authorizes no execution, V7 route decision, accounting
 artifact, terminal, certificate or Gate. See
 `specs/K7_H1_DIRECT_FALLBACK_TWO_ROLE_RECIPE_V1.md`.
+
+## V0-110B-2E-40 H1 branch-aware eight-role output contract
+
+Contract `2.0.51` freezes exactly eight ordered durable output roles and 72
+phase-specific presence cases: eight primary outcome/business contexts times
+incomplete prefixes P0--P6, finalized P7 and post-manifest P7 closure failure.
+There is no residual `PHASE_SPLIT`. Early and partial failures preserve the
+exact committed subset with typed absence and explicitly invalidate an
+official run; future failures cannot rewrite a committed business result or
+broker prefix.
+
+Owner-separated typed fixtures prevent the broker from fabricating
+`BUSINESS_RESULT`. Module-owned canonical serializers and a subset-aware exact
+fixed point bind each present role's bytes/hash/extent and make the manifest
+bind only present non-manifest roles, typed absences and candidate total. No
+manifest self-reference, ninth wrapper or caller renderer/ID/total is accepted.
+Focused attacks cover reorder, missing/ninth roles, owner fabrication,
+cross-branch/wrong-prefix inputs, nondeterminism, cap/nonconvergence and
+partial finalization.
+
+The slice is structural and fixture-backed. Production role semantics,
+numeric aggregate/V7 authority, official execution, accounting artifacts,
+terminal closure, scalar/break-even and both Phase 3E Gates remain locked. See
+`specs/K7_H1_BRANCH_AWARE_EIGHT_ROLE_OUTPUT_CONTRACT_V1.md`.
