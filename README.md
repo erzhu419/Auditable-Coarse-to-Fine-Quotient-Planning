@@ -3217,3 +3217,12 @@ certificate or Gate result. See
 [`specs/K7_CANONICAL_INFEASIBLE_FALLBACK_RAW_ACQUISITION.md`](specs/K7_CANONICAL_INFEASIBLE_FALLBACK_RAW_ACQUISITION.md)
 and
 [`specs/K7_ABSTRACT_PASS_RETAINED_V1_EVIDENCE_INVENTORY.md`](specs/K7_ABSTRACT_PASS_RETAINED_V1_EVIDENCE_INVENTORY.md).
+
+Contract `2.0.44` adds a separately versioned, single-stage V6
+`DIRECT_FALLBACK` construction chain and an exact seven-site source manifest.
+It validates owner/gateway binding, immutable positive-event chaining and
+failure-prefix retention without changing the frozen five-stage V1 runtime.
+Its seven source methods are explicitly a test shim rather than fallback
+business primitives, so the profile issues no production owner evidence or
+accounting artifact. See
+[`specs/K7_DIRECT_FALLBACK_ROUTE_SEGMENT_CONSTRUCTION_V2.md`](specs/K7_DIRECT_FALLBACK_ROUTE_SEGMENT_CONSTRUCTION_V2.md).

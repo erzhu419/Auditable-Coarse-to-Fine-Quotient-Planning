@@ -5667,3 +5667,23 @@ or certificate claim. Seven role-separated domains are central; all official,
 scalar/break-even, Counter Completeness, economics and sample-efficiency states
 remain locked or `NOT_RUN`. See
 `specs/K7_ABSTRACT_PASS_RETAINED_V1_EVIDENCE_INVENTORY.md`.
+
+## Contract 2.0.44: additive DIRECT_FALLBACK route-segment control
+
+The historical five-stage root-cap runtime and Contract-2.0.36 inventory are
+unchanged. The additive V2 runtime owns one V6 `DIRECT_FALLBACK` segment and
+records only positive literal-unit events in a content-addressed
+start/stage/event/completion-or-abort chain. It binds seven owner-family paths
+to complete source bytes, symbol/call AST and the exact Contract-2.0.36 parent
+manifest and fallback-site documents.
+
+The current seven methods are a construction/test shim. They do not perform
+fallback business work and therefore cannot authorize a production event,
+CounterRecord, WorkVector, ComparisonVector, terminal or Gate. The profile
+retains local construction domains and marks central registration pending. A
+production successor must use real fallback-ledger sites and a new manifest
+version. The normative boundary and attack evidence are frozen in
+`K7_DIRECT_FALLBACK_ROUTE_SEGMENT_CONSTRUCTION_V2.md`.
+
+The official execution, scalar, break-even, workload-economics,
+counter-completeness and sample-efficiency locks remain unchanged.
