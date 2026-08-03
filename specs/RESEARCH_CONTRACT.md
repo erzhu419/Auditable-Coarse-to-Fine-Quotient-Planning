@@ -5476,3 +5476,102 @@ hash and owned-wrapper shape are not terminal semantic proof. They require a
 successor binding the full transcript to actual production business-result
 bytes. No incomplete readiness artifact can enter formal materialization.
 See `specs/K7_DERIVED_RECONCILIATION.md`.
+
+## Contract 2.0.25: occurrence and cutoff semantic authority
+
+V0-110B-2E-15 joins the exact production role manifest, runtime operational
+output, embedded business result and complete owner transcript to the
+production-derived 71-path owner candidate set. It also replays the verified
+nine-resource local intervals and proves the four post-cutoff evidence tails
+are excluded from durable output charges. The registered result explicitly
+maps `CHILD_ACTION_ROW_CAP_EXCEEDED` to one failed route attempt. This is only
+a semantic prerequisite for the atomic 202-path materializer; no formal
+record, vector, projection or Gate authority is issued. See
+`specs/K7_OCCURRENCE_CUTOFF_SEMANTIC_AUTHORITY.md`.
+
+## Contracts 2.0.26--2.0.32: complete K7 occurrence-accounting chain
+
+Contract `2.0.26` replaces the route blocker only in a new V2 reconciliation
+authority and closes all eight derived paths. Contract `2.0.27` proves 114
+profile-native zeros through complete source/owner obligations. Contract
+`2.0.28` joins the exact 202-path semantic partition with path-unique evidence
+and recorder identities. Contract `2.0.29` atomically materializes 202 formal
+records, one failed-prefix WorkVector and the V6 182-term/eight-axis actual
+projection. Contract `2.0.30` derives the genuine child-row-cap terminal while
+retaining that complete work. Contract `2.0.31` independently reconstructs
+the portable production bundle in a separate evaluation lane. Contract
+`2.0.32` retains the complete attempt work and closes the canonical
+non-retryable logical occurrence in every denominator with certificate
+coverage false.
+
+None of these contracts treats missing events, status strings, hashes, ID-only
+artifacts or worker budget claims as semantic evidence. Cap exhaustion is a
+noncertificate attempt closure and never an infeasibility result. This chain
+still requires campaign closure and all-path production coverage before
+Counter Completeness can run. See
+`specs/K7_COMPLETE_DERIVED_RECONCILIATION_V2.md`,
+`specs/K7_PROFILE_NATIVE_ZERO_SEMANTIC_AUTHORITY.md`,
+`specs/K7_202_PATH_SEMANTIC_EVIDENCE_CLOSURE.md`,
+`specs/K7_FORMAL_ACCOUNTING_MATERIALIZATION.md`,
+`specs/K7_ROOT_CAP_TERMINAL_ACCOUNTING.md`,
+`specs/K7_PRODUCTION_COMPLETE_BUNDLE_VERIFICATION.md` and
+`specs/K7_LOGICAL_OCCURRENCE_CLOSURE.md`.
+
+## Contracts 2.0.33--2.0.34: all-path profile and durable infeasibility
+
+Contract `2.0.33` freezes the complete FQ9 terminal, route, stage and
+accounting-family obligation matrix. Its exact source replay inventories 47
+V075 terminal/status enum classes and 164 members with an explicit
+`22 MAP_TO_FQ9 / 14 PROFILE_EXTENSION_REQUIRED / 128 NONTERMINAL` partition;
+no unknown member receives a default. Contract `2.0.34` packages the canonical
+G2048 infeasibility regression as a self-contained finite proof and
+independently recomputes 46 states, 16 state-action rows, 96 outcomes, 256 H1
+deterministic policies and minimum failure probability `383/410`.
+
+These contracts do not execute the remaining paths or create their formal
+accounting. Opaque fallback completeness, cap exhaustion and status labels are
+not infeasibility proofs. Operation-boundary manifests, the 14 profile
+extensions, production route authorities and campaign-wide independent replay
+remain open. See `specs/K7_ALL_PATH_ACCOUNTING_PROFILE.md` and
+`specs/PHASE3E_DURABLE_EXACT_INFEASIBILITY_PROOF.md`.
+
+## Contract 2.0.35: integrity-failure accounting
+
+V0-110B-2E-24 derives `INTEGRITY_FAILURE` from an externally anchored expected
+identity and the canonical bytes actually read, never from an invalid
+WorkVector. Every V6 required leaf is an observed CounterRecord through the
+cutoff, with native zeros explicit; exact actual projection produces the valid
+eight-axis comparison. Read/hash work is single charged and diagnostic hashed
+volume remains non-costed.
+
+Protocol-order, counter, route and reconciliation violations are rejected as
+protocol errors. The independent bytes verifier reconstructs all 202 records,
+the identity mismatch and the sole FQ9 terminal without calling the producer.
+The contract does not issue a certificate or close an occurrence/campaign.
+See `specs/K7_INTEGRITY_FAILURE_ACCOUNTING.md`.
+
+## Contract 2.0.36: all-path operation-boundary manifest
+
+V0-110B-2E-25 freezes ten exact real-source call sites covering PREOPEN/common,
+ABSTRACT, LOCAL, FALLBACK, REBUILD and VERIFICATION/terminal. Each entry binds
+the complete module, enclosing symbol AST, call target/cardinality/location and
+AST, stage, applicable routes/terminals, accounting families and evidence
+roles. Independent source-archive replay returns typed blockers instead of
+silently adapting to edits.
+
+This catalogue performs no execution and cannot mint a native zero, record,
+vector or terminal. It authorizes where successor instrumentation must attach;
+it is not that instrumentation. See
+`specs/K7_ALL_PATH_OPERATION_BOUNDARY_MANIFEST.md`.
+
+## Contract 2.0.37: protocol-failure accounting negative control
+
+V0-110B-2E-26 requests one forbidden `KERNEL_STEP` before route-decision freeze
+under the exact production access profile. Semantic replay rejects the request;
+detection work is retained but no kernel transition is charged. The authority
+materializes all 202 observed records, a failed-prefix WorkVector and exact
+eight-axis projection before issuing only `PROTOCOL_FAILURE`.
+
+Because the correct runner did not produce this event, the bundle carries a
+typed no-production-violation blocker and cannot count toward production
+coverage. See `specs/K7_PROTOCOL_FAILURE_NEGATIVE_CONTROL.md`.

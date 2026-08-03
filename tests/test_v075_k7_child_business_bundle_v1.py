@@ -492,7 +492,7 @@ def _real_request_replay(
         _id("real-selected-plan"),
         _id("real-threshold"),
         _id("real-build-epoch"),
-        _id("real-rebuild"),
+        campaign.RebuildPolicyV1().rebuild_policy_id,
     )
     attempt = campaign.RouteAttemptV1.initial(occurrence)
     context = routing.RouteDecisionContextV1(

@@ -4787,6 +4787,157 @@ COUNTER_COMPLETENESS_GATE_NOT_RUN
 SAMPLE_EFFICIENCY_GATE_NOT_RUN
 ```
 
+## V0-110B-2E-16..22 complete K7 occurrence-accounting chain
+
+Contracts `2.0.26`--`2.0.32` freeze one non-retroactive successor chain over
+the genuine production K7 occurrence:
+
+1. complete all eight derived reconciliation proofs using the semantically
+   bound route result `1/0/1`;
+2. prove all 114 profile-native zeros from closed owner/source obligations;
+3. resolve the exact `9 + 71 + 114 + 8 = 202` V6 path partition;
+4. atomically materialize 202 CounterRecords, one failed-prefix WorkVector,
+   the 182-term V6 projection proof and eight-axis ComparisonVector;
+5. derive the root-cap attempt terminal as
+   `ATTEMPT_CLOSURE_NONCERTIFICATE.ATTEMPT_BUDGET_EXHAUSTED`; and
+6. independently reconstruct that complete bundle in the evaluation lane
+   without invoking the production materializer or terminal producer; and
+7. retain the unchanged complete work and close the non-retryable logical
+   occurrence in every denominator with certificate coverage false.
+
+Missing events are never interpreted as zero. Status strings, ID-only
+artifacts, hash-only integrity, worker budget claims and cap exhaustion cannot
+mint semantic evidence, infeasibility or a certificate. Operational and
+evaluation work remain separate. The terminal authority closes one route
+attempt; the successor occurrence authority closes only this registered
+non-retryable occurrence, not a campaign. Therefore these contracts do not yet
+establish all-path campaign Counter Completeness and do not unlock official
+execution, scalar/break-even economics, fresh science or sample efficiency.
+
+All locks remain:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+```
+
+## V0-110B-2E-23 all-path profile and durable exact infeasibility
+
+Contracts `2.0.33`--`2.0.34` freeze two prerequisites for the remaining
+all-path campaign accounting:
+
+1. an exhaustive profile over the ten FQ9 terminal codes, five route kinds,
+   ten stages and seven accounting families, together with an AST-replayed
+   inventory of all 47 current V075 terminal/status enum classes and 164
+   members; and
+2. a self-contained exact-infeasibility proof for the unchanged canonical
+   G2048 regression, independently reconstructed as 46 states, 16
+   state-action rows, 96 positive outcomes and 256 deterministic H1 policies,
+   with minimum failure probability `383/410 > 1/20`.
+
+The source inventory has no default mapping: 22 members map to FQ9, 128 are
+explicitly nonterminal and 14 remain typed `PROFILE_EXTENSION_REQUIRED`
+blockers. The durable proof separates `IDENTICAL_MATCH`, `NO_MATCH` and
+`INVALID`; a cap, status string or opaque live search seal cannot mint
+infeasibility. Neither contract supplies the still-missing route executions,
+formal vectors, operation-boundary instrumentation or campaign aggregation.
+
+All locks remain:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+```
+
+## V0-110B-2E-24 integrity-failure accounting
+
+Contract `2.0.35` replaces the generic `WORK_VECTOR=INVALID` shortcut with a
+non-retroactive integrity-failure authority. It proves an externally anchored
+expected-artifact identity differs from the actual canonical bytes, retains
+all work through the detection cutoff, materializes all 202 observed V6
+CounterRecords and derives a valid WorkVector and eight-axis ComparisonVector.
+Read and hash work are charged once; diagnostic hashed volume is retained but
+not double charged.
+
+The exact terminal is
+`ROUTE_ATTEMPT / ATTEMPT_CLOSURE_NONCERTIFICATE / INTEGRITY_FAILURE`.
+Protocol sequence, route-family, counter and reconciliation violations cannot
+be relabelled as integrity failures. The independent verifier reconstructs the
+identity violation and complete accounting from bytes without invoking the
+producer. This closes one attempt path, not logical-occurrence/campaign
+coverage or all-path Counter Completeness.
+
+All locks remain:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+```
+
+## V0-110B-2E-25 all-path operation-boundary manifest
+
+Contract `2.0.36` binds ten existing production call sites across the six
+PREOPEN/common, ABSTRACT, LOCAL, FALLBACK, REBUILD and
+VERIFICATION/terminal families. Complete source bytes, symbol and call ASTs,
+locations, cardinalities, stages, route/terminal applicability and
+counter/evidence families are content-addressed and independently replayed.
+Any source or manifest change yields a typed blocker.
+
+The manifest is intentionally non-executing: it emits no event, zero,
+CounterRecord, WorkVector, ComparisonVector or terminal. It closes the exact
+hook-placement prerequisite only; the route-native instrumentation and all
+formal campaign paths remain open.
+
+All locks remain:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+```
+
+## V0-110B-2E-26 protocol-failure accounting negative control
+
+Contract `2.0.37` uses the production FQ13 access profile and semantic replay
+to reject a canonical pre-freeze `KERNEL_STEP`. It retains all 202 observed
+records and the valid failed-prefix WorkVector/eight-axis projection, then
+derives exactly
+`ROUTE_ATTEMPT / ATTEMPT_CLOSURE_NONCERTIFICATE / PROTOCOL_FAILURE`.
+The rejected access is not charged as a kernel call.
+
+The registered production runner currently has no such violation. A typed
+`NO_PRODUCTION_PREDECISION_VIOLATION_OBSERVED` blocker and
+`production_violation_claimed=false` prevent this negative control from being
+used as production evidence. Thus the protocol-failure state machine and
+accounting are regression-closed, while genuine all-path production coverage
+remains open.
+
+All locks remain:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+```
+
 ## Change log
 
 - **2026-07-19 — 0.1.0:** Transcribed and closed the V0 construction contract from the Normative Decision Addendum and the V0 preconstruction audit. Added the deterministic policy-class and reward-normalization implementation clarifications needed for executable tests.
@@ -4916,3 +5067,9 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 - **2026-08-02 — contract 2.0.22 / V0-110B-2E-12:** Replayed all nine exact source-local journals through their fixed semantic verifiers and froze path-specific materialization authorizations. No formal record is issued before the remaining 193 paths close.
 - **2026-08-02 — contract 2.0.23 / V0-110B-2E-13:** Closed the production owner-event family by binding the actual child-business transcript and joined runtime to the exact source archive and loaded code. All 89 sites reduce to 71 ordered positive or complete-window-zero candidates; absence, abort and cross-site/stage substitution cannot mint zero or formal accounting. The atomic 202-path materializer remains locked.
 - **2026-08-02 — contract 2.0.24 / V0-110B-2E-14:** Froze the exact eight-path reconciliation DAG. Direct-PIDfd replay closes process outcomes and the complete five-stage chain closes solver exclusion, while route outcomes retain a typed semantic-authority blocker; status, hashes and wrapper shape cannot substitute for a production business-bytes/transcript join. Incomplete readiness remains nonformal.
+- **2026-08-02 — contract 2.0.25 / V0-110B-2E-15:** Added the positive occurrence/cutoff semantic prerequisite without relabelling the historical V1 structural objects. Issuance requires the exact current production role manifest and transport archive, broker runtime, raw operational output and embedded business result, complete owner transcript, production-rederived 71-path candidate set, verified nine-resource envelope and independently replayed output tails. It freezes `CHILD_ACTION_ROW_CAP_EXCEEDED -> FAILURE` with route counts `(1,0,1)` and centrally registers six role-separated domains. This is not the atomic 202-path materializer: no CounterRecord, WorkVector, ComparisonVector, projection, terminal certificate or official authority is issued, and every Counter Completeness, economics, scalar/break-even, fresh-science and certificate Gate remains locked or `NOT_RUN`.
+- **2026-08-02 — contracts 2.0.26--2.0.32 / V0-110B-2E-16..22:** Closed the genuine K7 route-derived, 114 profile-zero and atomic 202-path semantic authorities; materialized the exact `CounterRecord -> WorkVector -> ComparisonVector` chain; derived the cap-exhausted noncertificate attempt terminal while retaining all work; added an independent evaluation-lane semantic reconstruction; and closed the canonical non-retryable logical occurrence in every denominator with certificate coverage false. Campaign all-path completeness, official execution, economics, scalar/break-even, sample efficiency and scientific claims remain locked or `NOT_RUN`.
+- **2026-08-03 — contracts 2.0.33--2.0.34 / V0-110B-2E-23:** Froze the complete FQ9 route/stage/family accounting profile and fail-closed 47-class/164-member V075 terminal-status inventory, leaving 14 explicit extension blockers; added a self-contained independently replayable exact-infeasibility proof for the canonical G2048 fixture with `46/16/96/256` finite enumeration and minimum failure `383/410`. These are all-path prerequisites, not route execution, operation-boundary instrumentation, formal campaign accounting or any Gate unlock.
+- **2026-08-03 — contract 2.0.35 / V0-110B-2E-24:** Replaced invalid-WorkVector integrity closure with externally anchored expected-versus-actual byte evidence and complete last-valid-prefix accounting: 202 observed records, a valid WorkVector and exact eight-axis projection. Integrity and protocol failures remain disjoint, fully re-signed attacks fail independent replay, and no certificate, occurrence closure or Gate is minted.
+- **2026-08-03 — contract 2.0.36 / V0-110B-2E-25:** Froze an exact source/AST manifest of ten real production operation boundaries spanning all six required route/control families. Missing or changed source produces typed blockers; the catalogue performs no execution and emits no accounting or terminal authority.
+- **2026-08-03 — contract 2.0.37 / V0-110B-2E-26:** Exercised the production FQ13 access semantics with a canonical pre-freeze forbidden-access negative control, preserving a complete 202-record failed-prefix vector and exact `PROTOCOL_FAILURE` terminal. A typed real-site blocker prevents the control from masquerading as a production violation, so all-path coverage remains open.

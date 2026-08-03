@@ -780,6 +780,234 @@ CONSTRUCTION_K7_RECONCILIATION_BLOCKER_V1_DOMAIN = (
 CONSTRUCTION_K7_RECONCILIATION_READINESS_V1_DOMAIN = (
     "acfqp:construction-k7-reconciliation-readiness:v1"
 )
+CONSTRUCTION_K7_OCCURRENCE_IDENTITY_SEMANTIC_AUTHORITY_V2_DOMAIN = (
+    "acfqp:construction-k7-occurrence-identity-semantic-authority:v2"
+)
+CONSTRUCTION_K7_OPERATIONAL_CUTOFF_SEMANTIC_AUTHORITY_V2_DOMAIN = (
+    "acfqp:construction-k7-operational-cutoff-semantic-authority:v2"
+)
+CONSTRUCTION_K7_OCCURRENCE_CUTOFF_SEMANTIC_AUTHORITY_BUNDLE_V2_DOMAIN = (
+    "acfqp:construction-k7-occurrence-cutoff-semantic-authority-bundle:v2"
+)
+CONSTRUCTION_K7_PRODUCTION_MEASUREMENT_START_V2_DOMAIN = (
+    "acfqp:construction-k7-production-measurement-start:v2"
+)
+CONSTRUCTION_K7_PRODUCTION_MEASUREMENT_CUTOFF_V2_DOMAIN = (
+    "acfqp:construction-k7-production-measurement-cutoff:v2"
+)
+CONSTRUCTION_K7_PRODUCTION_TERMINAL_CLOSURE_V2_DOMAIN = (
+    "acfqp:construction-k7-production-terminal-closure:v2"
+)
+CONSTRUCTION_K7_ROUTE_TERMINAL_SEMANTIC_DEPENDENCY_V2_DOMAIN = (
+    "acfqp:construction-k7-route-terminal-semantic-dependency:v2"
+)
+CONSTRUCTION_K7_EXACT_ROUTE_DERIVED_PATH_PROOF_V2_DOMAIN = (
+    "acfqp:construction-k7-exact-route-derived-path-proof:v2"
+)
+CONSTRUCTION_K7_COMPLETE_DERIVED_RECONCILIATION_READINESS_V2_DOMAIN = (
+    "acfqp:construction-k7-complete-derived-reconciliation-readiness:v2"
+)
+CONSTRUCTION_K7_NATIVE_ZERO_SOURCE_HOOK_INVENTORY_V1_DOMAIN = (
+    "acfqp:construction-k7-native-zero-source-hook-inventory:v1"
+)
+CONSTRUCTION_K7_NATIVE_ZERO_OWNER_WINDOW_CLOSURE_V1_DOMAIN = (
+    "acfqp:construction-k7-native-zero-owner-window-closure:v1"
+)
+CONSTRUCTION_K7_NATIVE_ZERO_STAGE_EVIDENCE_V1_DOMAIN = (
+    "acfqp:construction-k7-native-zero-stage-evidence:v1"
+)
+CONSTRUCTION_K7_NATIVE_ZERO_BRANCH_EVIDENCE_V1_DOMAIN = (
+    "acfqp:construction-k7-native-zero-branch-evidence:v1"
+)
+CONSTRUCTION_K7_NATIVE_ZERO_REPLACEMENT_EVIDENCE_V1_DOMAIN = (
+    "acfqp:construction-k7-native-zero-replacement-evidence:v1"
+)
+CONSTRUCTION_K7_NATIVE_ZERO_SEMANTIC_VERIFIER_V1_DOMAIN = (
+    "acfqp:construction-k7-native-zero-semantic-verifier:v1"
+)
+CONSTRUCTION_K7_PROFILE_NATIVE_ZERO_ATTESTATION_V1_DOMAIN = (
+    "acfqp:construction-k7-profile-native-zero-attestation:v1"
+)
+CONSTRUCTION_K7_PROFILE_NATIVE_ZERO_ENVELOPE_V1_DOMAIN = (
+    "acfqp:construction-k7-profile-native-zero-envelope:v1"
+)
+CONSTRUCTION_K7_SEMANTIC_PATH_RECORDER_AUTHORITY_V1_DOMAIN = (
+    "acfqp:construction-k7-semantic-path-recorder-authority:v1"
+)
+CONSTRUCTION_K7_SEMANTIC_PATH_RESOLUTION_V1_DOMAIN = (
+    "acfqp:construction-k7-semantic-path-resolution:v1"
+)
+CONSTRUCTION_K7_SEMANTIC_EVIDENCE_CLOSURE_CONTEXT_V1_DOMAIN = (
+    "acfqp:construction-k7-semantic-evidence-closure-context:v1"
+)
+CONSTRUCTION_K7_SEMANTIC_EVIDENCE_CLOSURE_V1_DOMAIN = (
+    "acfqp:construction-k7-semantic-evidence-closure:v1"
+)
+CONSTRUCTION_K7_FORMAL_ACTUAL_PROJECTION_PROOF_V6_DOMAIN = (
+    "acfqp:construction-k7-formal-actual-projection-proof:v6"
+)
+CONSTRUCTION_K7_FORMAL_ACCOUNTING_MATERIALIZATION_BUNDLE_V1_DOMAIN = (
+    "acfqp:construction-k7-formal-accounting-materialization-bundle:v1"
+)
+CONSTRUCTION_K7_ROOT_CAP_SEMANTICS_PROFILE_V1_DOMAIN = (
+    "acfqp:construction-k7-root-cap-semantics-profile:v1"
+)
+CONSTRUCTION_K7_ROOT_CAP_EXHAUSTION_EVIDENCE_V1_DOMAIN = (
+    "acfqp:construction-k7-root-cap-exhaustion-evidence:v1"
+)
+CONSTRUCTION_K7_ROOT_CAP_ATTEMPT_TERMINAL_AUTHORITY_V1_DOMAIN = (
+    "acfqp:construction-k7-root-cap-attempt-terminal-authority:v1"
+)
+CONSTRUCTION_K7_ROOT_CAP_TERMINAL_ACCOUNTING_BUNDLE_V1_DOMAIN = (
+    "acfqp:construction-k7-root-cap-terminal-accounting-bundle:v1"
+)
+CONSTRUCTION_K7_ROOT_CAP_TERMINAL_ACCOUNTING_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-root-cap-terminal-accounting-verification:v1"
+)
+CONSTRUCTION_K7_PRODUCTION_COMPLETE_BUNDLE_VERIFICATION_PROFILE_V1_DOMAIN = (
+    "acfqp:construction-k7-production-complete-bundle-verification-profile:v1"
+)
+CONSTRUCTION_K7_PRODUCTION_COMPLETE_BUNDLE_SEMANTIC_VERIFIER_V1_DOMAIN = (
+    "acfqp:construction-k7-production-complete-bundle-semantic-verifier:v1"
+)
+CONSTRUCTION_K7_PRODUCTION_COMPLETE_BUNDLE_EVALUATION_RECORDER_V1_DOMAIN = (
+    "acfqp:construction-k7-production-complete-bundle-evaluation-recorder:v1"
+)
+CONSTRUCTION_K7_PRODUCTION_COMPLETE_BUNDLE_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-production-complete-bundle-verification:v1"
+)
+CONSTRUCTION_K7_LOGICAL_OCCURRENCE_WORK_SUM_V1_DOMAIN = (
+    "acfqp:construction-k7-logical-occurrence-work-sum:v1"
+)
+CONSTRUCTION_K7_LOGICAL_OCCURRENCE_CLOSURE_AUTHORITY_V1_DOMAIN = (
+    "acfqp:construction-k7-logical-occurrence-closure-authority:v1"
+)
+CONSTRUCTION_K7_LOGICAL_OCCURRENCE_CLOSURE_BUNDLE_V1_DOMAIN = (
+    "acfqp:construction-k7-logical-occurrence-closure-bundle:v1"
+)
+CONSTRUCTION_K7_LOGICAL_OCCURRENCE_CLOSURE_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-logical-occurrence-closure-verification:v1"
+)
+CONSTRUCTION_K7_ALL_PATH_ACCOUNTING_PROFILE_V1_DOMAIN = (
+    "acfqp:construction-k7-all-path-accounting-profile:v1"
+)
+CONSTRUCTION_K7_ALL_PATH_ACCOUNTING_PROFILE_REPLAY_V1_DOMAIN = (
+    "acfqp:construction-k7-all-path-accounting-profile-replay:v1"
+)
+CONSTRUCTION_K7_V075_TERMINAL_STATUS_INVENTORY_V1_DOMAIN = (
+    "acfqp:construction-k7-v075-terminal-status-inventory:v1"
+)
+PHASE3E_EXACT_INFEASIBILITY_DURABLE_PROOF_V1_DOMAIN = (
+    "acfqp:phase3e-exact-infeasibility-durable-proof:v1"
+)
+PHASE3E_EXACT_INFEASIBILITY_IDENTITY_V1_DOMAIN = (
+    "acfqp:phase3e-exact-infeasibility-identity:v1"
+)
+PHASE3E_EXACT_INFEASIBILITY_STRUCTURAL_V1_DOMAIN = (
+    "acfqp:phase3e-exact-infeasibility-structural:v1"
+)
+PHASE3E_EXACT_INFEASIBILITY_QUERY_V1_DOMAIN = (
+    "acfqp:phase3e-exact-infeasibility-query:v1"
+)
+PHASE3E_EXACT_INFEASIBILITY_KERNEL_V1_DOMAIN = (
+    "acfqp:phase3e-exact-infeasibility-kernel:v1"
+)
+PHASE3E_EXACT_INFEASIBILITY_BUILD_EPOCH_V1_DOMAIN = (
+    "acfqp:phase3e-exact-infeasibility-build-epoch:v1"
+)
+PHASE3E_EXACT_INFEASIBILITY_THRESHOLD_V1_DOMAIN = (
+    "acfqp:phase3e-exact-infeasibility-threshold:v1"
+)
+PHASE3E_EXACT_INFEASIBILITY_REWARD_V1_DOMAIN = (
+    "acfqp:phase3e-exact-infeasibility-reward:v1"
+)
+PHASE3E_EXACT_INFEASIBILITY_POLICY_CLASS_V1_DOMAIN = (
+    "acfqp:phase3e-exact-infeasibility-policy-class:v1"
+)
+PHASE3E_EXACT_INFEASIBILITY_SEARCH_PROFILE_V1_DOMAIN = (
+    "acfqp:phase3e-exact-infeasibility-search-profile:v1"
+)
+PHASE3E_EXACT_INFEASIBILITY_STATE_V1_DOMAIN = (
+    "acfqp:phase3e-exact-infeasibility-state:v1"
+)
+PHASE3E_EXACT_INFEASIBILITY_STATE_ACTION_V1_DOMAIN = (
+    "acfqp:phase3e-exact-infeasibility-state-action:v1"
+)
+PHASE3E_EXACT_INFEASIBILITY_SOURCE_PROJECTION_V1_DOMAIN = (
+    "acfqp:phase3e-exact-infeasibility-source-projection:v1"
+)
+PHASE3E_EXACT_INFEASIBILITY_VERIFICATION_PROFILE_V1_DOMAIN = (
+    "acfqp:phase3e-exact-infeasibility-verification-profile:v1"
+)
+PHASE3E_EXACT_INFEASIBILITY_VERIFICATION_V1_DOMAIN = (
+    "acfqp:phase3e-exact-infeasibility-verification:v1"
+)
+PHASE3E_EXACT_INFEASIBILITY_CACHE_CONSUMPTION_V1_DOMAIN = (
+    "acfqp:phase3e-exact-infeasibility-cache-consumption:v1"
+)
+PHASE3E_EXACT_INFEASIBILITY_BLOCKER_V1_DOMAIN = (
+    "acfqp:phase3e-exact-infeasibility-blocker:v1"
+)
+CONSTRUCTION_K7_EXPECTED_ARTIFACT_IDENTITY_V1_DOMAIN = (
+    "acfqp:construction-k7-expected-artifact-identity:v1"
+)
+CONSTRUCTION_K7_INTEGRITY_ATTEMPT_CONTEXT_V1_DOMAIN = (
+    "acfqp:construction-k7-integrity-attempt-context:v1"
+)
+CONSTRUCTION_K7_INTEGRITY_ACCESS_EVENT_V1_DOMAIN = (
+    "acfqp:construction-k7-integrity-access-event:v1"
+)
+CONSTRUCTION_K7_INTEGRITY_READ_RECEIPT_V1_DOMAIN = (
+    "acfqp:construction-k7-integrity-read-receipt:v1"
+)
+CONSTRUCTION_K7_INTEGRITY_ACCESS_SEQUENCE_V1_DOMAIN = (
+    "acfqp:construction-k7-integrity-access-sequence:v1"
+)
+CONSTRUCTION_K7_INTEGRITY_PREFIX_RECORDER_V1_DOMAIN = (
+    "acfqp:construction-k7-integrity-prefix-recorder:v1"
+)
+CONSTRUCTION_K7_INTEGRITY_PREFIX_COMPLETENESS_V1_DOMAIN = (
+    "acfqp:construction-k7-integrity-prefix-completeness:v1"
+)
+CONSTRUCTION_K7_INTEGRITY_TERMINAL_AUTHORITY_V1_DOMAIN = (
+    "acfqp:construction-k7-integrity-terminal-authority:v1"
+)
+CONSTRUCTION_K7_INTEGRITY_FAILURE_BUNDLE_V1_DOMAIN = (
+    "acfqp:construction-k7-integrity-failure-bundle:v1"
+)
+CONSTRUCTION_K7_INTEGRITY_FAILURE_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-integrity-failure-verification:v1"
+)
+CONSTRUCTION_K7_ALL_PATH_OPERATION_BOUNDARY_MANIFEST_V1_DOMAIN = (
+    "acfqp:construction-k7-all-path-operation-boundary-manifest:v1"
+)
+CONSTRUCTION_K7_ALL_PATH_OPERATION_BOUNDARY_SOURCE_ARCHIVE_V1_DOMAIN = (
+    "acfqp:construction-k7-all-path-operation-boundary-source-archive:v1"
+)
+CONSTRUCTION_K7_ALL_PATH_OPERATION_BOUNDARY_SITE_V1_DOMAIN = (
+    "acfqp:construction-k7-all-path-operation-boundary-site:v1"
+)
+CONSTRUCTION_K7_ALL_PATH_OPERATION_BOUNDARY_REPLAY_V1_DOMAIN = (
+    "acfqp:construction-k7-all-path-operation-boundary-replay:v1"
+)
+CONSTRUCTION_K7_ALL_PATH_OPERATION_BOUNDARY_BLOCKER_V1_DOMAIN = (
+    "acfqp:construction-k7-all-path-operation-boundary-blocker:v1"
+)
+CONSTRUCTION_K7_PROTOCOL_REAL_SITE_BLOCKER_V1_DOMAIN = (
+    "acfqp:construction-k7-protocol-real-site-blocker:v1"
+)
+CONSTRUCTION_K7_PROTOCOL_PREFIX_RECORDER_V1_DOMAIN = (
+    "acfqp:construction-k7-protocol-prefix-recorder:v1"
+)
+CONSTRUCTION_K7_PROTOCOL_FAILURE_TERMINAL_AUTHORITY_V1_DOMAIN = (
+    "acfqp:construction-k7-protocol-failure-terminal-authority:v1"
+)
+CONSTRUCTION_K7_PROTOCOL_FAILURE_BUNDLE_V1_DOMAIN = (
+    "acfqp:construction-k7-protocol-failure-bundle:v1"
+)
+CONSTRUCTION_K7_PROTOCOL_FAILURE_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-protocol-failure-verification:v1"
+)
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
 ROUTE_CAP_PROFILE_DOMAIN = "acfqp:route-cap-profile:v1"
@@ -1811,6 +2039,234 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_reconciliation_readiness_v1": (
             CONSTRUCTION_K7_RECONCILIATION_READINESS_V1_DOMAIN
+        ),
+        "construction_k7_occurrence_identity_semantic_authority_v2": (
+            CONSTRUCTION_K7_OCCURRENCE_IDENTITY_SEMANTIC_AUTHORITY_V2_DOMAIN
+        ),
+        "construction_k7_operational_cutoff_semantic_authority_v2": (
+            CONSTRUCTION_K7_OPERATIONAL_CUTOFF_SEMANTIC_AUTHORITY_V2_DOMAIN
+        ),
+        "construction_k7_occurrence_cutoff_semantic_authority_bundle_v2": (
+            CONSTRUCTION_K7_OCCURRENCE_CUTOFF_SEMANTIC_AUTHORITY_BUNDLE_V2_DOMAIN
+        ),
+        "construction_k7_production_measurement_start_v2": (
+            CONSTRUCTION_K7_PRODUCTION_MEASUREMENT_START_V2_DOMAIN
+        ),
+        "construction_k7_production_measurement_cutoff_v2": (
+            CONSTRUCTION_K7_PRODUCTION_MEASUREMENT_CUTOFF_V2_DOMAIN
+        ),
+        "construction_k7_production_terminal_closure_v2": (
+            CONSTRUCTION_K7_PRODUCTION_TERMINAL_CLOSURE_V2_DOMAIN
+        ),
+        "construction_k7_route_terminal_semantic_dependency_v2": (
+            CONSTRUCTION_K7_ROUTE_TERMINAL_SEMANTIC_DEPENDENCY_V2_DOMAIN
+        ),
+        "construction_k7_exact_route_derived_path_proof_v2": (
+            CONSTRUCTION_K7_EXACT_ROUTE_DERIVED_PATH_PROOF_V2_DOMAIN
+        ),
+        "construction_k7_complete_derived_reconciliation_readiness_v2": (
+            CONSTRUCTION_K7_COMPLETE_DERIVED_RECONCILIATION_READINESS_V2_DOMAIN
+        ),
+        "construction_k7_native_zero_source_hook_inventory_v1": (
+            CONSTRUCTION_K7_NATIVE_ZERO_SOURCE_HOOK_INVENTORY_V1_DOMAIN
+        ),
+        "construction_k7_native_zero_owner_window_closure_v1": (
+            CONSTRUCTION_K7_NATIVE_ZERO_OWNER_WINDOW_CLOSURE_V1_DOMAIN
+        ),
+        "construction_k7_native_zero_stage_evidence_v1": (
+            CONSTRUCTION_K7_NATIVE_ZERO_STAGE_EVIDENCE_V1_DOMAIN
+        ),
+        "construction_k7_native_zero_branch_evidence_v1": (
+            CONSTRUCTION_K7_NATIVE_ZERO_BRANCH_EVIDENCE_V1_DOMAIN
+        ),
+        "construction_k7_native_zero_replacement_evidence_v1": (
+            CONSTRUCTION_K7_NATIVE_ZERO_REPLACEMENT_EVIDENCE_V1_DOMAIN
+        ),
+        "construction_k7_native_zero_semantic_verifier_v1": (
+            CONSTRUCTION_K7_NATIVE_ZERO_SEMANTIC_VERIFIER_V1_DOMAIN
+        ),
+        "construction_k7_profile_native_zero_attestation_v1": (
+            CONSTRUCTION_K7_PROFILE_NATIVE_ZERO_ATTESTATION_V1_DOMAIN
+        ),
+        "construction_k7_profile_native_zero_envelope_v1": (
+            CONSTRUCTION_K7_PROFILE_NATIVE_ZERO_ENVELOPE_V1_DOMAIN
+        ),
+        "construction_k7_semantic_path_recorder_authority_v1": (
+            CONSTRUCTION_K7_SEMANTIC_PATH_RECORDER_AUTHORITY_V1_DOMAIN
+        ),
+        "construction_k7_semantic_path_resolution_v1": (
+            CONSTRUCTION_K7_SEMANTIC_PATH_RESOLUTION_V1_DOMAIN
+        ),
+        "construction_k7_semantic_evidence_closure_context_v1": (
+            CONSTRUCTION_K7_SEMANTIC_EVIDENCE_CLOSURE_CONTEXT_V1_DOMAIN
+        ),
+        "construction_k7_semantic_evidence_closure_v1": (
+            CONSTRUCTION_K7_SEMANTIC_EVIDENCE_CLOSURE_V1_DOMAIN
+        ),
+        "construction_k7_formal_actual_projection_proof_v6": (
+            CONSTRUCTION_K7_FORMAL_ACTUAL_PROJECTION_PROOF_V6_DOMAIN
+        ),
+        "construction_k7_formal_accounting_materialization_bundle_v1": (
+            CONSTRUCTION_K7_FORMAL_ACCOUNTING_MATERIALIZATION_BUNDLE_V1_DOMAIN
+        ),
+        "construction_k7_root_cap_semantics_profile_v1": (
+            CONSTRUCTION_K7_ROOT_CAP_SEMANTICS_PROFILE_V1_DOMAIN
+        ),
+        "construction_k7_root_cap_exhaustion_evidence_v1": (
+            CONSTRUCTION_K7_ROOT_CAP_EXHAUSTION_EVIDENCE_V1_DOMAIN
+        ),
+        "construction_k7_root_cap_attempt_terminal_authority_v1": (
+            CONSTRUCTION_K7_ROOT_CAP_ATTEMPT_TERMINAL_AUTHORITY_V1_DOMAIN
+        ),
+        "construction_k7_root_cap_terminal_accounting_bundle_v1": (
+            CONSTRUCTION_K7_ROOT_CAP_TERMINAL_ACCOUNTING_BUNDLE_V1_DOMAIN
+        ),
+        "construction_k7_root_cap_terminal_accounting_verification_v1": (
+            CONSTRUCTION_K7_ROOT_CAP_TERMINAL_ACCOUNTING_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_production_complete_bundle_verification_profile_v1": (
+            CONSTRUCTION_K7_PRODUCTION_COMPLETE_BUNDLE_VERIFICATION_PROFILE_V1_DOMAIN
+        ),
+        "construction_k7_production_complete_bundle_semantic_verifier_v1": (
+            CONSTRUCTION_K7_PRODUCTION_COMPLETE_BUNDLE_SEMANTIC_VERIFIER_V1_DOMAIN
+        ),
+        "construction_k7_production_complete_bundle_evaluation_recorder_v1": (
+            CONSTRUCTION_K7_PRODUCTION_COMPLETE_BUNDLE_EVALUATION_RECORDER_V1_DOMAIN
+        ),
+        "construction_k7_production_complete_bundle_verification_v1": (
+            CONSTRUCTION_K7_PRODUCTION_COMPLETE_BUNDLE_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_logical_occurrence_work_sum_v1": (
+            CONSTRUCTION_K7_LOGICAL_OCCURRENCE_WORK_SUM_V1_DOMAIN
+        ),
+        "construction_k7_logical_occurrence_closure_authority_v1": (
+            CONSTRUCTION_K7_LOGICAL_OCCURRENCE_CLOSURE_AUTHORITY_V1_DOMAIN
+        ),
+        "construction_k7_logical_occurrence_closure_bundle_v1": (
+            CONSTRUCTION_K7_LOGICAL_OCCURRENCE_CLOSURE_BUNDLE_V1_DOMAIN
+        ),
+        "construction_k7_logical_occurrence_closure_verification_v1": (
+            CONSTRUCTION_K7_LOGICAL_OCCURRENCE_CLOSURE_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_all_path_accounting_profile_v1": (
+            CONSTRUCTION_K7_ALL_PATH_ACCOUNTING_PROFILE_V1_DOMAIN
+        ),
+        "construction_k7_all_path_accounting_profile_replay_v1": (
+            CONSTRUCTION_K7_ALL_PATH_ACCOUNTING_PROFILE_REPLAY_V1_DOMAIN
+        ),
+        "construction_k7_v075_terminal_status_inventory_v1": (
+            CONSTRUCTION_K7_V075_TERMINAL_STATUS_INVENTORY_V1_DOMAIN
+        ),
+        "phase3e_exact_infeasibility_durable_proof_v1": (
+            PHASE3E_EXACT_INFEASIBILITY_DURABLE_PROOF_V1_DOMAIN
+        ),
+        "phase3e_exact_infeasibility_identity_v1": (
+            PHASE3E_EXACT_INFEASIBILITY_IDENTITY_V1_DOMAIN
+        ),
+        "phase3e_exact_infeasibility_structural_v1": (
+            PHASE3E_EXACT_INFEASIBILITY_STRUCTURAL_V1_DOMAIN
+        ),
+        "phase3e_exact_infeasibility_query_v1": (
+            PHASE3E_EXACT_INFEASIBILITY_QUERY_V1_DOMAIN
+        ),
+        "phase3e_exact_infeasibility_kernel_v1": (
+            PHASE3E_EXACT_INFEASIBILITY_KERNEL_V1_DOMAIN
+        ),
+        "phase3e_exact_infeasibility_build_epoch_v1": (
+            PHASE3E_EXACT_INFEASIBILITY_BUILD_EPOCH_V1_DOMAIN
+        ),
+        "phase3e_exact_infeasibility_threshold_v1": (
+            PHASE3E_EXACT_INFEASIBILITY_THRESHOLD_V1_DOMAIN
+        ),
+        "phase3e_exact_infeasibility_reward_v1": (
+            PHASE3E_EXACT_INFEASIBILITY_REWARD_V1_DOMAIN
+        ),
+        "phase3e_exact_infeasibility_policy_class_v1": (
+            PHASE3E_EXACT_INFEASIBILITY_POLICY_CLASS_V1_DOMAIN
+        ),
+        "phase3e_exact_infeasibility_search_profile_v1": (
+            PHASE3E_EXACT_INFEASIBILITY_SEARCH_PROFILE_V1_DOMAIN
+        ),
+        "phase3e_exact_infeasibility_state_v1": (
+            PHASE3E_EXACT_INFEASIBILITY_STATE_V1_DOMAIN
+        ),
+        "phase3e_exact_infeasibility_state_action_v1": (
+            PHASE3E_EXACT_INFEASIBILITY_STATE_ACTION_V1_DOMAIN
+        ),
+        "phase3e_exact_infeasibility_source_projection_v1": (
+            PHASE3E_EXACT_INFEASIBILITY_SOURCE_PROJECTION_V1_DOMAIN
+        ),
+        "phase3e_exact_infeasibility_verification_profile_v1": (
+            PHASE3E_EXACT_INFEASIBILITY_VERIFICATION_PROFILE_V1_DOMAIN
+        ),
+        "phase3e_exact_infeasibility_verification_v1": (
+            PHASE3E_EXACT_INFEASIBILITY_VERIFICATION_V1_DOMAIN
+        ),
+        "phase3e_exact_infeasibility_cache_consumption_v1": (
+            PHASE3E_EXACT_INFEASIBILITY_CACHE_CONSUMPTION_V1_DOMAIN
+        ),
+        "phase3e_exact_infeasibility_blocker_v1": (
+            PHASE3E_EXACT_INFEASIBILITY_BLOCKER_V1_DOMAIN
+        ),
+        "construction_k7_expected_artifact_identity_v1": (
+            CONSTRUCTION_K7_EXPECTED_ARTIFACT_IDENTITY_V1_DOMAIN
+        ),
+        "construction_k7_integrity_attempt_context_v1": (
+            CONSTRUCTION_K7_INTEGRITY_ATTEMPT_CONTEXT_V1_DOMAIN
+        ),
+        "construction_k7_integrity_access_event_v1": (
+            CONSTRUCTION_K7_INTEGRITY_ACCESS_EVENT_V1_DOMAIN
+        ),
+        "construction_k7_integrity_read_receipt_v1": (
+            CONSTRUCTION_K7_INTEGRITY_READ_RECEIPT_V1_DOMAIN
+        ),
+        "construction_k7_integrity_access_sequence_v1": (
+            CONSTRUCTION_K7_INTEGRITY_ACCESS_SEQUENCE_V1_DOMAIN
+        ),
+        "construction_k7_integrity_prefix_recorder_v1": (
+            CONSTRUCTION_K7_INTEGRITY_PREFIX_RECORDER_V1_DOMAIN
+        ),
+        "construction_k7_integrity_prefix_completeness_v1": (
+            CONSTRUCTION_K7_INTEGRITY_PREFIX_COMPLETENESS_V1_DOMAIN
+        ),
+        "construction_k7_integrity_terminal_authority_v1": (
+            CONSTRUCTION_K7_INTEGRITY_TERMINAL_AUTHORITY_V1_DOMAIN
+        ),
+        "construction_k7_integrity_failure_bundle_v1": (
+            CONSTRUCTION_K7_INTEGRITY_FAILURE_BUNDLE_V1_DOMAIN
+        ),
+        "construction_k7_integrity_failure_verification_v1": (
+            CONSTRUCTION_K7_INTEGRITY_FAILURE_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_all_path_operation_boundary_manifest_v1": (
+            CONSTRUCTION_K7_ALL_PATH_OPERATION_BOUNDARY_MANIFEST_V1_DOMAIN
+        ),
+        "construction_k7_all_path_operation_boundary_source_archive_v1": (
+            CONSTRUCTION_K7_ALL_PATH_OPERATION_BOUNDARY_SOURCE_ARCHIVE_V1_DOMAIN
+        ),
+        "construction_k7_all_path_operation_boundary_site_v1": (
+            CONSTRUCTION_K7_ALL_PATH_OPERATION_BOUNDARY_SITE_V1_DOMAIN
+        ),
+        "construction_k7_all_path_operation_boundary_replay_v1": (
+            CONSTRUCTION_K7_ALL_PATH_OPERATION_BOUNDARY_REPLAY_V1_DOMAIN
+        ),
+        "construction_k7_all_path_operation_boundary_blocker_v1": (
+            CONSTRUCTION_K7_ALL_PATH_OPERATION_BOUNDARY_BLOCKER_V1_DOMAIN
+        ),
+        "construction_k7_protocol_real_site_blocker_v1": (
+            CONSTRUCTION_K7_PROTOCOL_REAL_SITE_BLOCKER_V1_DOMAIN
+        ),
+        "construction_k7_protocol_prefix_recorder_v1": (
+            CONSTRUCTION_K7_PROTOCOL_PREFIX_RECORDER_V1_DOMAIN
+        ),
+        "construction_k7_protocol_failure_terminal_authority_v1": (
+            CONSTRUCTION_K7_PROTOCOL_FAILURE_TERMINAL_AUTHORITY_V1_DOMAIN
+        ),
+        "construction_k7_protocol_failure_bundle_v1": (
+            CONSTRUCTION_K7_PROTOCOL_FAILURE_BUNDLE_V1_DOMAIN
+        ),
+        "construction_k7_protocol_failure_verification_v1": (
+            CONSTRUCTION_K7_PROTOCOL_FAILURE_VERIFICATION_V1_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,

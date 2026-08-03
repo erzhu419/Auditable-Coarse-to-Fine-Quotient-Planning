@@ -4679,3 +4679,78 @@ five-stage exclusion closes solver attempt/success/failure. Route
 attempt/success/failure remain typed-blocked until the full native transcript
 is joined to actual production business-result bytes and semantic replay.
 Incomplete readiness cannot issue CounterRecords or vectors.
+
+## V0-110B-2E-15 occurrence/cutoff semantic authority
+
+Contract `2.0.25` replaces neither historical V1 structural object. It adds a
+positive authority that independently joins the current role manifest and
+transport archive, runtime and raw operational output, embedded owner
+transcript, production-derived owner candidates, verified nine-source
+envelope and output tails. The registered terminal maps to exactly one failed
+route attempt. This closes the semantic input required by the route
+reconciliation family, but remains only a prerequisite to the atomic
+202-path materializer. Counter Completeness, economics, scalar/break-even,
+fresh science, certificate and official-execution Gates remain locked.
+
+## V0-110B-2E-16..22 K7 formal occurrence accounting
+
+Contracts `2.0.26`--`2.0.32` close the remaining semantic families for the
+genuine K7 occurrence and then perform one atomic formal materialization. The
+frozen sequence is `8 derived proofs -> 114 native-zero proofs -> 202-path
+closure -> 202 CounterRecords -> failed-prefix WorkVector -> 182-term/eight-axis
+actual projection -> root-cap attempt terminal -> independent evaluation-lane
+reconstruction -> denominator-preserving non-retryable occurrence closure`.
+
+The resulting terminal is exactly
+`ATTEMPT_CLOSURE_NONCERTIFICATE.ATTEMPT_BUDGET_EXHAUSTED`; it is neither
+infeasibility nor a certificate. The next Gate is production-complete
+verification of every registered route/terminal family and campaign
+aggregation. Until that
+all-path work passes, Counter Completeness and every official/economics/scalar,
+sample-efficiency and scientific Gate remain locked or `NOT_RUN`.
+
+## V0-110B-2E-23 all-path profile and durable infeasibility prerequisite
+
+Contracts `2.0.33`--`2.0.34` freeze the exact FQ9 route/stage/family matrix and
+exhaustively classify all current V075 terminal/status enum members. Fourteen
+members remain typed extension blockers; they cannot silently inherit a
+terminal recipe. The same milestone adds the first durable, planner-free exact
+infeasibility proof consumer for the canonical G2048 fixture and reproduces
+`383/410 > 1/20` from a self-contained finite enumeration.
+
+This milestone closes taxonomy and one proof role only. Production operation
+boundaries, all remaining route/terminal semantic authorities, formal vectors
+and campaign aggregation are still required before Counter Completeness can
+run. See `specs/K7_ALL_PATH_ACCOUNTING_PROFILE.md` and
+`specs/PHASE3E_DURABLE_EXACT_INFEASIBILITY_PROOF.md`.
+
+## V0-110B-2E-24 integrity-failure accounting
+
+Contract `2.0.35` implements the complete FQ9 integrity-failure attempt path.
+The authority proves expected-versus-actual byte identity mismatch, retains a
+valid 202-record last-prefix WorkVector/eight-axis projection and independently
+replays the exact terminal. Protocol violations remain a separate path.
+
+This removes one all-path blocker but does not close its logical occurrence or
+the remaining route/terminal families. See
+`specs/K7_INTEGRITY_FAILURE_ACCOUNTING.md`.
+
+## V0-110B-2E-25 all-path operation-boundary manifest
+
+Contract `2.0.36` source- and AST-binds ten real call sites across all six
+required production boundary families. Exact replay fails closed on any
+archive, symbol, call, stage, route, terminal or evidence-role change.
+
+The result is a hook-placement catalogue, not native accounting. Instrumenting
+the sites and independently closing their route-specific evidence remains the
+next Gate. See `specs/K7_ALL_PATH_OPERATION_BOUNDARY_MANIFEST.md`.
+
+## V0-110B-2E-26 protocol-failure negative control
+
+Contract `2.0.37` independently replays a production-profile FQ13 forbidden
+pre-freeze access and closes its complete 202-record `PROTOCOL_FAILURE`
+accounting. The fixture is explicitly non-production because no real positive
+occurrence violated the access order.
+
+This passes the protocol-failure regression requirement but not genuine
+production-path coverage. See `specs/K7_PROTOCOL_FAILURE_NEGATIVE_CONTROL.md`.
