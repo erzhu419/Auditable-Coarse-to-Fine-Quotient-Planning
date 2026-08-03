@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import fields
+from dataclasses import FrozenInstanceError, fields
 import os
 from pathlib import Path
 
@@ -9,6 +9,7 @@ import pytest
 from acfqp import construction_shared_resource_common_journal_v2 as common_v2
 from acfqp import construction_shared_resource_live_envelope_v3 as live_v3
 from acfqp import construction_shared_resource_resolution_v2 as resolution_v2
+from acfqp import construction_shared_resource_semantic_replay_v2 as replay_v2
 from acfqp import construction_shared_resource_transfer_mount_journal_v2 as transfer_v2
 from acfqp import construction_shared_resource_verified_envelope_v1 as verified_v1
 from acfqp import construction_shared_resource_working_process_evidence_v2 as working_v2
@@ -152,6 +153,155 @@ def _real_envelope(
     finally:
         output_session.close()
         os.close(output_fd)
+
+
+def _synthetic_semantic_result(
+    source: resolution_v2.SharedResourceLiveSourceV2,
+) -> replay_v2.SharedResourceSemanticReplayResultV2:
+    contract = next(
+        row
+        for row in resolution_v2.official_shared_resource_resolution_catalogue_v2()
+        if row.path == source.path
+    )
+    components = source.components
+    return replay_v2.SharedResourceSemanticReplayResultV2(
+        replay_v2._RESULT_ISSUER,  # noqa: SLF001 - exact unit-test authority
+        source.path,
+        resolution_v2.SHARED_RESOURCE_PATHS.index(source.path) + 1,
+        contract.reducer,
+        contract.semantic_verifier_key,
+        _cid(8000 + resolution_v2.SHARED_RESOURCE_PATHS.index(source.path)),
+        "acfqp.synthetic_exact_replayer",
+        "replay_once",
+        source.live_envelope_id,
+        source.occurrence_id,
+        source.route_attempt_id,
+        source.decision_point_id,
+        source.measurement_window_id,
+        source.operational_cutoff_id,
+        source.covered_start_sequence,
+        source.covered_cutoff_sequence,
+        contract.exact_source_kind,
+        contract.required_provenance,
+        tuple(item.component_key for item in components),
+        tuple(item.source_artifact_id for item in components),
+        tuple(item.source_bytes_sha256 for item in components),
+        True,
+        True,
+        True,
+        True,
+        True,
+        True,
+        True,
+        True,
+        False,
+    )
+
+
+def test_transaction_snapshot_validates_each_expected_and_supplied_row_once(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    source = live_test._freeze(live_test._sources())  # noqa: SLF001
+    semantic_calls: list[str] = []
+
+    def synthetic_replay(
+        row: resolution_v2.SharedResourceLiveSourceV2,
+    ) -> replay_v2.SharedResourceSemanticReplayResultV2:
+        semantic_calls.append(row.path)
+        return _synthetic_semantic_result(row)
+
+    monkeypatch.setattr(
+        replay_v2,
+        "verify_shared_resource_source_exact_v2",
+        synthetic_replay,
+    )
+    supplied = verified_v1.verify_k7_production_shared_resource_envelope_exact_v1(
+        source
+    )
+    semantic_calls.clear()
+    validation_calls: list[str] = []
+    original = verified_v1._validate_path_authorization_values_once_v1  # noqa: SLF001
+
+    def counted(values):
+        validation_calls.append(values.authorization_id)
+        return original(values)
+
+    monkeypatch.setattr(
+        verified_v1,
+        "_validate_path_authorization_values_once_v1",
+        counted,
+    )
+    snapshot = verified_v1.validate_k7_verified_nine_shared_resource_pair_once_v1(
+        source_envelope=source,
+        supplied_verified_envelope=supplied,
+    )
+    assert semantic_calls == list(resolution_v2.SHARED_RESOURCE_PATHS)
+    assert len(validation_calls) == 18
+    assert {
+        authorization_id: validation_calls.count(authorization_id)
+        for authorization_id in set(validation_calls)
+    } == {row.authorization_id: 2 for row in supplied.authorizations}
+    assert snapshot.expected_canonical_document_bytes == (
+        snapshot.supplied_canonical_document_bytes
+    )
+    assert tuple(
+        row.canonical_document_bytes for row in snapshot.expected_authorizations
+    ) == tuple(
+        row.canonical_document_bytes for row in snapshot.supplied_authorizations
+    )
+    assert all(
+        not isinstance(value, (dict, list, set, bytearray))
+        for row in snapshot.supplied_authorizations
+        for value in (getattr(row, item.name) for item in fields(row))
+    )
+    with pytest.raises(FrozenInstanceError):
+        snapshot.source_v3_envelope_id = _cid(9999)  # type: ignore[misc]
+
+    # Public standalone access deliberately performs a fresh full row pass.
+    validation_calls.clear()
+    supplied.to_document()
+    assert len(validation_calls) == 9
+    assert set(validation_calls) == {
+        row.authorization_id for row in supplied.authorizations
+    }
+
+    # A second caller transaction is independent; no snapshot survives it.
+    semantic_calls.clear()
+    validation_calls.clear()
+    replayed = verified_v1.validate_k7_verified_nine_shared_resource_pair_once_v1(
+        source_envelope=source,
+        supplied_verified_envelope=supplied,
+    )
+    assert replayed == snapshot
+    assert semantic_calls == list(resolution_v2.SHARED_RESOURCE_PATHS)
+    assert len(validation_calls) == 18
+
+
+def test_transaction_snapshot_rejects_postissuance_row_replacement(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    source = live_test._freeze(live_test._sources())  # noqa: SLF001
+    monkeypatch.setattr(
+        replay_v2,
+        "verify_shared_resource_source_exact_v2",
+        _synthetic_semantic_result,
+    )
+    supplied = verified_v1.verify_k7_production_shared_resource_envelope_exact_v1(
+        source
+    )
+    object.__setattr__(
+        supplied.authorizations[0],
+        "semantic_replay_document_sha256",
+        "0" * 64,
+    )
+    with pytest.raises(
+        verified_v1.ConstructionSharedResourceVerifiedEnvelopeV1Error,
+        match="mutated|transplanted",
+    ):
+        verified_v1.validate_k7_verified_nine_shared_resource_pair_once_v1(
+            source_envelope=source,
+            supplied_verified_envelope=supplied,
+        )
 
 
 def test_real_nine_sources_replay_and_authorize_materialization(

@@ -11,7 +11,9 @@ import time
 
 import pytest
 
-from acfqp.exact_frozen_memo_v1 import disable_exact_frozen_memoization_v1
+from acfqp.exact_frozen_memo_v1 import (
+    disable_exact_frozen_memoization_v1,
+)
 from acfqp import v075_k7_atomic_pidfd_runtime_v1 as atomic_runtime
 from acfqp import v075_k7_broker_worker_entry_v1 as worker
 from acfqp import v075_k7_outer_attempt_broker_ipc_v1 as ipc
@@ -113,7 +115,7 @@ def _receive_frame(endpoint: socket.socket, binding, role):
     )
 
 
-def test_operational_output_transaction_cache_equal_copy_and_disabled_reference(
+def test_operational_output_public_replay_equal_copy_and_disabled_reference(
     substrate,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -157,9 +159,123 @@ def test_operational_output_transaction_cache_equal_copy_and_disabled_reference(
         )
         reference_id = reference.output_id
     assert cached.output_id == copied.output_id == reference_id
-    # Disabled construction performs both raw replays, and every issued
-    # property access preserves the frozen V1 full-current-validation rule.
-    assert calls == before_disabled + 5
+    # Every issued property access preserves the full-current-validation rule;
+    # construction carries only its same-frame immutable validation facts.
+    assert calls == before_disabled + 4
+
+
+def test_operational_output_public_verifiers_always_replay(
+    substrate,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    replay, bundle, binding = substrate
+    output = worker._freeze_output(  # noqa: SLF001
+        request_replay=replay,
+        binding=binding,
+        bundle=bundle,
+    )
+    raw = output.canonical_bytes
+    original = worker._compute_output_validation_facts_v1  # noqa: SLF001
+    calls = 0
+
+    def counted(*args):
+        nonlocal calls
+        calls += 1
+        return original(*args)
+
+    monkeypatch.setattr(worker, "_compute_output_validation_facts_v1", counted)
+    first = worker.verify_v075_k7_broker_operational_output_bytes_v1(
+        raw=raw,
+        expected_request_replay=replay,
+        expected_binding=binding,
+    )
+    assert first.to_document()["broker_operational_output_id"] == first.output_id
+    second = worker.verify_v075_k7_broker_operational_output_bytes_v1(
+        raw=bytes(bytearray(raw)),
+        expected_request_replay=replay,
+        expected_binding=binding,
+    )
+    assert second.output_id == first.output_id
+    assert calls == 6
+    with disable_exact_frozen_memoization_v1():
+        disabled = worker.verify_v075_k7_broker_operational_output_bytes_v1(
+            raw=raw,
+            expected_request_replay=replay,
+            expected_binding=binding,
+        )
+    assert disabled.output_id == first.output_id
+    assert calls == 9
+    assert second.output_id == first.output_id
+    assert calls == 11
+    # A new public call is a fresh replay, despite equal bytes and authorities.
+    worker.verify_v075_k7_broker_operational_output_bytes_v1(
+        raw=raw,
+        expected_request_replay=replay,
+        expected_binding=binding,
+    )
+    assert calls == 12
+
+
+def test_operational_output_replay_rejects_changed_raw(
+    substrate,
+) -> None:
+    replay, bundle, binding = substrate
+    output = worker._freeze_output(  # noqa: SLF001
+        request_replay=replay,
+        binding=binding,
+        bundle=bundle,
+    )
+    raw = output.canonical_bytes
+    attacked = bytearray(raw)
+    offset = raw.index(binding.request_id.encode("ascii"))
+    attacked[offset] = ord("0") if attacked[offset] != ord("0") else ord("1")
+    worker.verify_v075_k7_broker_operational_output_bytes_v1(
+        raw=raw,
+        expected_request_replay=replay,
+        expected_binding=binding,
+    )
+    with pytest.raises(worker.V075K7BrokerWorkerEntryV1Error):
+        worker.verify_v075_k7_broker_operational_output_bytes_v1(
+            raw=bytes(attacked),
+            expected_request_replay=replay,
+            expected_binding=binding,
+        )
+
+
+def test_operational_output_rechecks_nested_verifier_on_every_call(
+    substrate,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    replay, bundle, binding = substrate
+    output = worker._freeze_output(  # noqa: SLF001
+        request_replay=replay,
+        binding=binding,
+        bundle=bundle,
+    )
+    raw = output.canonical_bytes
+    worker.verify_v075_k7_broker_operational_output_bytes_v1(
+        raw=raw,
+        expected_request_replay=replay,
+        expected_binding=binding,
+    )
+
+    def rejected(**_kwargs):
+        raise ValueError("nested-verifier attack")
+
+    monkeypatch.setattr(
+        worker.business_bundle,
+        "verify_v075_k7_child_business_bundle_public_bytes_v1",
+        rejected,
+    )
+    with pytest.raises(
+        worker.V075K7BrokerWorkerEntryV1Error,
+        match="nested business replay failed",
+    ):
+        worker.verify_v075_k7_broker_operational_output_bytes_v1(
+            raw=raw,
+            expected_request_replay=replay,
+            expected_binding=binding,
+        )
 
 
 def test_operational_output_exact_cache_rejects_one_byte_mutation(
@@ -230,7 +346,7 @@ def test_operational_output_formula_monkeypatch_invalidates_cache(
             )
 
 
-def test_operational_output_validation_does_not_cross_transaction_boundary(
+def test_operational_output_validation_does_not_cross_public_boundary(
     substrate,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -250,17 +366,16 @@ def test_operational_output_validation_does_not_cross_transaction_boundary(
         return original(*args)
 
     monkeypatch.setattr(worker, "_compute_output_validation_facts_v1", counted)
-    with worker._output_validation_transaction_v1():  # noqa: SLF001
-        for _ in range(2):
-            worker.verify_v075_k7_broker_operational_output_bytes_v1(
-                raw=raw,
-                expected_request_replay=replay,
-                expected_binding=binding,
-            )
+    for _ in range(2):
+        worker.verify_v075_k7_broker_operational_output_bytes_v1(
+            raw=raw,
+            expected_request_replay=replay,
+            expected_binding=binding,
+        )
     assert calls == 2
 
 
-def test_operational_output_disabled_path_bypasses_transaction_cache(
+def test_operational_output_disabled_switch_keeps_full_public_replay(
     substrate,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -287,7 +402,7 @@ def test_operational_output_disabled_path_bypasses_transaction_cache(
                 expected_request_replay=replay,
                 expected_binding=binding,
             )
-    assert calls == 4
+    assert calls == 2
 
 
 def test_operational_output_portable_mutations_cross_transaction_boundary(
@@ -688,6 +803,15 @@ def test_profile_and_issued_types_are_not_caller_mintable(substrate) -> None:
     with pytest.raises(worker.V075K7BrokerWorkerEntryV1Error, match="caller-minted"):
         worker.V075K7BrokerOperationalOutputV1(
             object(), b"{}", replay, binding
+        )
+    with pytest.raises(worker.V075K7BrokerWorkerEntryV1Error, match="caller-minted"):
+        worker._ValidatedOutputIssuanceFrameV1(  # noqa: SLF001
+            object(),
+            (_id("forged-output"), _id("forged-output-sha"), bundle.bundle_id),
+            bundle.canonical_bytes,
+            bundle,
+            id(replay),
+            id(binding),
         )
     output = worker._freeze_output(  # noqa: SLF001
         request_replay=replay,

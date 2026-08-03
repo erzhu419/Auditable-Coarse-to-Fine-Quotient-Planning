@@ -411,7 +411,13 @@ class K7ProductionBrokerRuntimeEnvelopeV2:
         return self._envelope_id
 
     def to_document(self) -> dict[str, Any]:
-        return {**self._payload(), "production_broker_runtime_envelope_id": self.envelope_id}
+        payload = self._payload()
+        if _hash(RUNTIME_ENVELOPE_DOMAIN, payload) != self._envelope_id:
+            _fail("production runtime envelope changed")
+        return {
+            **payload,
+            "production_broker_runtime_envelope_id": self._envelope_id,
+        }
 
 
 class _RoleNativeCellsV2:

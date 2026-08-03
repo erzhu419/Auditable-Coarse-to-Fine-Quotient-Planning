@@ -452,7 +452,11 @@ class OwnerEventCandidateSetV1:
         return _local_id(CANDIDATE_SET_DOMAIN, self._payload())
 
     def to_document(self) -> dict[str, Any]:
-        return {**self._payload(), "owner_event_candidate_set_id": self.candidate_set_id}
+        payload = self._payload()
+        return {
+            **payload,
+            "owner_event_candidate_set_id": _local_id(CANDIDATE_SET_DOMAIN, payload),
+        }
 
 
 _START_FIELDS = {
@@ -924,17 +928,19 @@ def _derive_from_verified_inputs(
     return result
 
 
-def derive_v075_k7_owner_event_candidates_v1(
+def _derive_v075_k7_owner_event_candidates_from_verified_bundle_v1(
     *,
     role_manifest: Any,
     runtime_envelope: Any,
-    business_bundle_raw: bytes,
+    request_replay: Any,
+    verified_business_bundle: Any,
 ) -> OwnerEventCandidateSetV1:
-    """Join the exact production manifest/runtime/business artifacts.
+    """Derive candidates from a bundle validated in the current call frame.
 
-    This wrapper reconstructs the portable request and publicly replays the
-    business bundle.  Its output remains nonformal until the other counter
-    families and the independent bundle verifier are joined.
+    This private boundary never accepts raw bytes or caller-minted facts.  The
+    public entry point below remains the independent raw-byte verifier; trusted
+    aggregate validation may reuse its issuer-owned bundle only within the
+    same complete validation frame.
     """
 
     from acfqp import v075_k7_child_business_bundle_v1 as business_v1
@@ -945,34 +951,35 @@ def derive_v075_k7_owner_event_candidates_v1(
     if (
         type(role_manifest) is not manifest_v2.K7ProductionRoleManifestV2
         or type(runtime_envelope) is not runtime_v2.K7ProductionBrokerRuntimeEnvelopeV2
-        or type(business_bundle_raw) is not bytes
+        or type(request_replay) is not replay_v1.V075K7SuccessorPortableRequestReplayV1
+        or type(verified_business_bundle)
+        is not business_v1.V075K7ChildBusinessBundleV1
     ):
         _fail("production owner-event join received a foreign artifact")
     role_manifest.assert_current()
-    request = role_manifest.request
+    request = request_replay.request
+    business_bundle_raw = verified_business_bundle.canonical_bytes
+    bundle_doc = verified_business_bundle.to_document()
+    actual_request_facts = tuple(
+        bundle_doc[field]
+        for field in business_v1._BUNDLE_VALIDATION_FACT_FIELDS[1:]  # noqa: SLF001
+    )
+    if (
+        role_manifest.request.canonical_bytes != request.canonical_bytes
+        or actual_request_facts
+        != business_v1._request_identity_primitives_v1(request_replay)  # noqa: SLF001
+    ):
+        _fail("verified business bundle crossed its exact manifest request")
     accounted = request.profile.accounted_profile
     transport = accounted.transport_profile
-    lifecycle = accounted.private_replay_profile
     archive_raw = transport._archive_bytes  # noqa: SLF001
-    closure = replay_v1.reconstruct_v075_k7_successor_portable_profile_closure_v1(
-        source_archive_raw=archive_raw,
-        transport_profile_raw=canonical_json_bytes(transport.to_document()),
-        lifecycle_profile_raw=canonical_json_bytes(lifecycle.to_document()),
-        successor_profile_raw=canonical_json_bytes(request.profile.to_document()),
-    )
-    replay = replay_v1.replay_v075_k7_successor_request_bytes_portable_v1(
-        raw=request.canonical_bytes, profile_closure=closure
-    )
-    bundle = business_v1.verify_v075_k7_child_business_bundle_public_bytes_v1(
-        raw=business_bundle_raw, expected_request_replay=replay
-    )
-    bundle_doc = bundle.to_document()
+    bundle_id = verified_business_bundle.bundle_id
     if (
         runtime_envelope.manifest_id != role_manifest.manifest_id
         or runtime_envelope.binding.request_id != request.request_id
         or runtime_envelope.binding.route_identity_id
         != request.route_identity.route_identity_id
-        or runtime_envelope.business_result_id != bundle.bundle_id
+        or runtime_envelope.business_result_id != bundle_id
         or runtime_envelope.business_result_sha256
         != hashlib.sha256(business_bundle_raw).hexdigest()
         or runtime_envelope.business_result_byte_count != len(business_bundle_raw)
@@ -1005,7 +1012,7 @@ def derive_v075_k7_owner_event_candidates_v1(
         role_manifest.manifest_id,
         runtime_envelope.envelope_id,
         runtime_envelope.transcript.transcript_id,
-        bundle.bundle_id,
+        bundle_id,
         role_manifest.source_snapshot_id,
         role_manifest.source_archive_sha256,
         role_manifest.source_archive_byte_count,
@@ -1018,16 +1025,60 @@ def derive_v075_k7_owner_event_candidates_v1(
     )
 
 
-def verify_owner_event_candidate_set_v1(
+def derive_v075_k7_owner_event_candidates_v1(
+    *,
+    role_manifest: Any,
+    runtime_envelope: Any,
+    business_bundle_raw: bytes,
+) -> OwnerEventCandidateSetV1:
+    """Join and independently replay production manifest/runtime/business bytes."""
+
+    from acfqp import v075_k7_child_business_bundle_v1 as business_v1
+    from acfqp import v075_k7_production_broker_runtime_v2 as runtime_v2
+    from acfqp import v075_k7_production_role_manifest_v2 as manifest_v2
+    from acfqp import v075_k7_successor_portable_replay_v1 as replay_v1
+
+    if (
+        type(role_manifest) is not manifest_v2.K7ProductionRoleManifestV2
+        or type(runtime_envelope) is not runtime_v2.K7ProductionBrokerRuntimeEnvelopeV2
+        or type(business_bundle_raw) is not bytes
+    ):
+        _fail("production owner-event join received a foreign artifact")
+    role_manifest.assert_current()
+    request = role_manifest.request
+    accounted = request.profile.accounted_profile
+    transport = accounted.transport_profile
+    lifecycle = accounted.private_replay_profile
+    archive_raw = transport._archive_bytes  # noqa: SLF001
+    closure = replay_v1.reconstruct_v075_k7_successor_portable_profile_closure_v1(
+        source_archive_raw=archive_raw,
+        transport_profile_raw=canonical_json_bytes(transport.to_document()),
+        lifecycle_profile_raw=canonical_json_bytes(lifecycle.to_document()),
+        successor_profile_raw=canonical_json_bytes(request.profile.to_document()),
+    )
+    replay = replay_v1.replay_v075_k7_successor_request_bytes_portable_v1(
+        raw=request.canonical_bytes, profile_closure=closure
+    )
+    bundle = business_v1.verify_v075_k7_child_business_bundle_public_bytes_v1(
+        raw=business_bundle_raw, expected_request_replay=replay
+    )
+    return _derive_v075_k7_owner_event_candidates_from_verified_bundle_v1(
+        role_manifest=role_manifest,
+        runtime_envelope=runtime_envelope,
+        request_replay=replay,
+        verified_business_bundle=bundle,
+    )
+
+
+def _verify_owner_event_candidate_set_document_v1(
     artifact: OwnerEventCandidateSetV1,
-) -> None:
-    """Replay the candidate topology and event conservation identities."""
+) -> dict[str, Any]:
+    """Replay topology once and return its exact already-built document."""
 
     if type(artifact) is not OwnerEventCandidateSetV1:
         _fail("owner event verifier received a foreign artifact")
-    if artifact.execution_binding.binding_id != artifact.to_document()[
-        "execution_binding_id"
-    ]:
+    document = artifact.to_document()
+    if artifact.execution_binding.binding_id != document["execution_binding_id"]:
         _fail("owner event candidate execution binding changed")
     closure_by_id = {row.site_closure_id: row for row in artifact.site_closures}
     seen_events: list[str] = []
@@ -1049,7 +1100,16 @@ def verify_owner_event_candidate_set_v1(
         seen_events.extend(candidate.ordered_event_ids)
     if len(seen_events) != len(set(seen_events)):
         _fail("one runtime event resolves to multiple owner paths")
-    _sha(artifact.candidate_set_id, "owner candidate set")
+    _sha(document["owner_event_candidate_set_id"], "owner candidate set")
+    return document
+
+
+def verify_owner_event_candidate_set_v1(
+    artifact: OwnerEventCandidateSetV1,
+) -> None:
+    """Replay the candidate topology and event conservation identities."""
+
+    _verify_owner_event_candidate_set_document_v1(artifact)
 
 
 __all__ = [

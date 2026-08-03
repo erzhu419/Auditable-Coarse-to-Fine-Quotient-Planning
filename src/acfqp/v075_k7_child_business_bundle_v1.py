@@ -16,7 +16,6 @@ from __future__ import annotations
 
 import base64
 from contextlib import contextmanager
-from contextvars import ContextVar
 from dataclasses import InitVar, dataclass
 from functools import wraps
 import hashlib
@@ -27,10 +26,6 @@ import threading
 from typing import Any, Mapping, NoReturn
 import weakref
 
-from acfqp.exact_frozen_memo_v1 import (
-    exact_callable_guard_v1,
-    exact_frozen_memoization_enabled_v1,
-)
 from acfqp import construction_accounting_partial_native_v1 as partial_native
 from acfqp import construction_accounting_registry_v6 as registry_v6
 from acfqp import v075_batch_native_statistical_backend_v1 as backend
@@ -91,9 +86,6 @@ _PRIVATE_TAINT_RECORDS: dict[
     object,
     tuple[int, str, str, str, str, tuple[bytes, ...]],
 ] = {}
-_BUNDLE_VALIDATION_TRANSACTION_V1: ContextVar[
-    dict[tuple[Any, ...], object] | None
-] = ContextVar("acfqp_k7_bundle_validation_transaction_v1", default=None)
 _BUNDLE_ISSUANCE_LOCK = threading.Lock()
 
 
@@ -905,130 +897,18 @@ _BUNDLE_VALIDATION_FACT_FIELDS = (
 _BundleValidationFactsV1 = tuple[str, ...]
 
 
-def _bundle_validation_recipe_v1() -> tuple[Any, ...]:
-    """Record directly owned inputs for one transaction-local replay."""
-
-    return (
-        SCHEMA_VERSION,
-        PROPOSED_CONTRACT_VERSION,
-        PROFILE_KEY,
-        BUSINESS_FRAME_ROLE,
-        BUNDLE_DOMAIN,
-        MAX_BUNDLE_BYTES,
-        tuple(sorted(_BUNDLE_FIELDS)),
-        tuple(sorted(_OWNED_FIELDS)),
-        tuple(sorted(_CACHE_PROFILE_FIELDS)),
-        tuple(sorted(_CACHE_EPOCH_FIELDS)),
-        tuple(sorted(_TRANSCRIPT_FIELDS)),
-        tuple(EVIDENCE_ROOT_ROLES),
-        tuple(sorted(_locks().items())),
-        partial_native.SCHEMA_VERSION,
-        partial_native.PARTIAL_NATIVE_OCCURRENCE_START_V1_DOMAIN,
-        partial_native.PARTIAL_NATIVE_OCCURRENCE_TRANSCRIPT_V1_DOMAIN,
-        partial_native.NOT_APPLICABLE_KIND,
-        partial_native.CHAIN_GENESIS_REASON,
-        partial_native.COVERAGE_STATE,
-        partial_native.UNAVAILABLE_KIND,
-        partial_native.UNAVAILABLE_REASON,
-        tuple(item.value for item in partial_native.ROOT_CAP_FIVE_STAGE_PLAN_V1),
-        owned_runner.SCHEMA_VERSION,
-        owned_runner.PROFILE_KEY,
-        owned_runner.RECORDER_ID,
-        owned_runner.OWNED_PARTIAL_RESULT_DOMAIN,
-        owned_runner.COLD_CACHE_PROFILE_DOMAIN,
-        owned_runner.COLD_CACHE_EPOCH_DOMAIN,
-    )
-
-
-def _bundle_validation_callable_guard_v1(
-) -> tuple[tuple[object, ...], ...]:
-    return exact_callable_guard_v1(
-        _canonical_document,
-        _validate_bundle_document,
-        _validate_known_child_documents,
-        _verify_content_id_document,
-        _one_portable_record,
-        _hash,
-        _locks,
-        canonical_json_bytes,
-        content_id,
-        portable_evidence.verify_v075_portable_occurrence_evidence_bundle_bytes_v2,
-        registry_v6.official_counter_registry_v6,
-        registry_v6.official_stage_profile_v6,
-        boundary.official_k7_root_cap_operation_boundary_manifest_v3,
-        execution.official_v075_k7_root_cap_execution_identity_profile_v1,
-        owned_runner.official_v075_k7_root_cap_cold_cache_profile_v1,
-        _compute_bundle_validation_facts_v1,
-    )
-
-
 def _compute_bundle_validation_facts_v1(
     raw: bytes,
-    formula_recipe: tuple[Any, ...],
-    callable_guard: tuple[tuple[object, ...], ...],
 ) -> _BundleValidationFactsV1:
     """Run the original full raw replay and retain only primitive facts."""
 
-    del formula_recipe, callable_guard
     document = _canonical_document(raw, "business bundle")
     _validate_bundle_document(document)
     return tuple(document[field] for field in _BUNDLE_VALIDATION_FACT_FIELDS)
 
 
-@contextmanager
-def _bundle_validation_transaction_v1():
-    """Share exact replay facts only inside one explicit validation call tree.
-
-    The portable verifier has mutable module-level role, schema, and topology
-    authorities.  Enumerating every present and future dependency into one
-    persistent-cache recipe is not a closed proof obligation.  A fresh public
-    verification therefore always starts with an empty cache; nested replay
-    and construction may reuse only complete exact inputs from that same
-    transaction.
-    """
-
-    token = _BUNDLE_VALIDATION_TRANSACTION_V1.set({})
-    try:
-        yield
-    finally:
-        _BUNDLE_VALIDATION_TRANSACTION_V1.reset(token)
-
-
-def _bundle_validation_inputs_v1(raw: bytes) -> tuple[Any, ...]:
-    return (
-        raw,
-        _bundle_validation_recipe_v1(),
-        _bundle_validation_callable_guard_v1(),
-    )
-
-
 def _validated_bundle_facts_v1(raw: bytes) -> _BundleValidationFactsV1:
-    inputs = _bundle_validation_inputs_v1(raw)
-    transaction = _BUNDLE_VALIDATION_TRANSACTION_V1.get()
-    if not exact_frozen_memoization_enabled_v1() or transaction is None:
-        return _compute_bundle_validation_facts_v1(*inputs)
-    key = ("BUNDLE_VALIDATION_FACTS_V1", *inputs)
-    cached = transaction.get(key)
-    if cached is not None:
-        return cached  # type: ignore[return-value]
-    result = _compute_bundle_validation_facts_v1(*inputs)
-    transaction[key] = result
-    return result
-
-
-def _compute_request_bound_bundle_id_v1(
-    raw: bytes,
-    expected_identity_primitives: tuple[str, ...],
-    formula_recipe: tuple[Any, ...],
-    callable_guard: tuple[tuple[object, ...], ...],
-) -> str:
-    """Replay raw validation and its complete expected-request identity join."""
-
-    del formula_recipe, callable_guard
-    facts = _validated_bundle_facts_v1(raw)
-    if facts[1:] != expected_identity_primitives:
-        _fail("business bundle crossed its exact V0-103 request")
-    return facts[0]
+    return _compute_bundle_validation_facts_v1(raw)
 
 
 def _request_identity_primitives_v1(
@@ -1053,29 +933,16 @@ def _request_identity_primitives_v1(
     )
 
 
-def _validated_request_bound_bundle_id_v1(
+def _validated_request_bound_bundle_facts_v1(
     raw: bytes,
     expected_identity_primitives: tuple[str, ...],
-) -> str:
-    request_inputs = (
-        raw,
-        expected_identity_primitives,
-        _bundle_validation_recipe_v1(),
-        exact_callable_guard_v1(
-            _validated_bundle_facts_v1,
-            _compute_request_bound_bundle_id_v1,
-        ),
-    )
-    transaction = _BUNDLE_VALIDATION_TRANSACTION_V1.get()
-    if not exact_frozen_memoization_enabled_v1() or transaction is None:
-        return _compute_request_bound_bundle_id_v1(*request_inputs)
-    key = ("REQUEST_BOUND_BUNDLE_ID_V1", *request_inputs)
-    cached = transaction.get(key)
-    if cached is not None:
-        return cached  # type: ignore[return-value]
-    result = _compute_request_bound_bundle_id_v1(*request_inputs)
-    transaction[key] = result
-    return result
+) -> _BundleValidationFactsV1:
+    """Fully replay once and retain immutable facts in the current frame."""
+
+    facts = _validated_bundle_facts_v1(raw)
+    if facts[1:] != expected_identity_primitives:
+        _fail("business bundle crossed its exact V0-103 request")
+    return facts
 
 
 class _WeakReferenceableBundleV1:
@@ -1089,11 +956,24 @@ class V075K7ChildBusinessBundleV1(_WeakReferenceableBundleV1):
 
     _issuer: InitVar[object]
     _raw: bytes
+    _validated_facts: InitVar[_BundleValidationFactsV1 | None] = None
 
-    def __post_init__(self, _issuer: object) -> None:
+    def __post_init__(
+        self,
+        _issuer: object,
+        _validated_facts: _BundleValidationFactsV1 | None,
+    ) -> None:
         if _issuer is not _BUNDLE_ISSUER or type(self._raw) is not bytes:
             _fail("child business bundle is caller-minted")
-        facts = _validated_bundle_facts_v1(self._raw)
+        facts = _validated_facts
+        if facts is None:
+            facts = _validated_bundle_facts_v1(self._raw)
+        elif (
+            type(facts) is not tuple
+            or len(facts) != len(_BUNDLE_VALIDATION_FACT_FIELDS)
+            or any(type(value) is not str for value in facts)
+        ):
+            _fail("child business bundle received invalid local validation facts")
         record = _BundleIssuanceRecordV1(os.getpid(), self._raw, facts[0])
         _register_bundle_issuance_v1(self, record)
 
@@ -1410,13 +1290,12 @@ def verify_v075_k7_child_business_bundle_public_bytes_v1(
         is not portable_replay.V075K7SuccessorPortableRequestReplayV1
     ):
         _fail("business bundle replay requires the exact request replay")
-    with _bundle_validation_transaction_v1():
-        expected_request_replay.profile_closure._assert_current()  # noqa: SLF001
-        _validated_request_bound_bundle_id_v1(
-            raw,
-            _request_identity_primitives_v1(expected_request_replay),
-        )
-        return V075K7ChildBusinessBundleV1(_BUNDLE_ISSUER, raw)
+    expected_request_replay.profile_closure._assert_current()  # noqa: SLF001
+    facts = _validated_request_bound_bundle_facts_v1(
+        raw,
+        _request_identity_primitives_v1(expected_request_replay),
+    )
+    return V075K7ChildBusinessBundleV1(_BUNDLE_ISSUER, raw, facts)
 
 
 def verify_v075_k7_child_business_bundle_bytes_v1(

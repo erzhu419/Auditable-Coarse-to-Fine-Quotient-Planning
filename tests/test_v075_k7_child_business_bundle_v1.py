@@ -11,7 +11,9 @@ from types import SimpleNamespace
 
 import pytest
 
-from acfqp.exact_frozen_memo_v1 import disable_exact_frozen_memoization_v1
+from acfqp.exact_frozen_memo_v1 import (
+    disable_exact_frozen_memoization_v1,
+)
 from acfqp import construction_accounting_partial_native_v1 as partial_native
 from acfqp import construction_accounting_registry_v6 as registry_v6
 from acfqp import campaign_v1 as campaign
@@ -333,7 +335,7 @@ def test_bundle_replays_strict_portable_evidence_and_all_request_coordinates(
     assert document["official_execution_allowed"] is False
 
 
-def test_exact_raw_validation_transaction_cached_disabled_and_equal_copy(
+def test_exact_raw_public_replay_disabled_and_equal_copy(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     _request, replay, _portable, _wrapped, _authority, bundle = _substrate(
@@ -372,7 +374,127 @@ def test_exact_raw_validation_transaction_cached_disabled_and_equal_copy(
         )
         reference_id = reference.bundle_id
     assert cached.bundle_id == copied.bundle_id == reference_id
-    assert calls == before_disabled + 2
+    assert calls == before_disabled + 1
+
+
+def test_exact_raw_public_verifiers_always_replay(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _request, replay, _portable, _wrapped, _authority, bundle = _substrate(
+        monkeypatch
+    )
+    raw = bundle.canonical_bytes
+    original = business._compute_bundle_validation_facts_v1  # noqa: SLF001
+    calls = 0
+
+    def counted(*args):
+        nonlocal calls
+        calls += 1
+        return original(*args)
+
+    monkeypatch.setattr(business, "_compute_bundle_validation_facts_v1", counted)
+    first = business.verify_v075_k7_child_business_bundle_public_bytes_v1(
+        raw=raw,
+        expected_request_replay=replay,
+    )
+    assert first.to_document()["child_business_bundle_id"] == first.bundle_id
+    second = business.verify_v075_k7_child_business_bundle_public_bytes_v1(
+        raw=bytes(bytearray(raw)),
+        expected_request_replay=replay,
+    )
+    assert second.bundle_id == first.bundle_id
+    assert calls == 2
+    with disable_exact_frozen_memoization_v1():
+        disabled = business.verify_v075_k7_child_business_bundle_public_bytes_v1(
+            raw=raw,
+            expected_request_replay=replay,
+        )
+    assert disabled.bundle_id == first.bundle_id
+    assert calls == 3
+    assert second.bundle_id == first.bundle_id
+    assert calls == 3
+    business.verify_v075_k7_child_business_bundle_public_bytes_v1(
+        raw=raw,
+        expected_request_replay=replay,
+    )
+    assert calls == 4
+
+
+def test_public_replay_cannot_hide_changed_canonical_loader(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _request, replay, _portable, _wrapped, _authority, bundle = _substrate(
+        monkeypatch
+    )
+    raw = bundle.canonical_bytes
+    business.verify_v075_k7_child_business_bundle_public_bytes_v1(
+        raw=raw,
+        expected_request_replay=replay,
+    )
+
+    def rejected(_raw: bytes):
+        raise ValueError("changed canonical loader")
+
+    monkeypatch.setattr(business, "loads_canonical_json", rejected)
+    with pytest.raises(
+        business.V075K7ChildBusinessBundleV1Error,
+        match="not canonical JSON",
+    ):
+        business.verify_v075_k7_child_business_bundle_public_bytes_v1(
+            raw=raw,
+            expected_request_replay=replay,
+        )
+
+
+def test_exact_raw_public_replay_rejects_changed_raw(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    request, replay, _portable, _wrapped, _authority, bundle = _substrate(
+        monkeypatch
+    )
+    raw = bundle.canonical_bytes
+    attacked = bytearray(raw)
+    offset = raw.index(request.request_id.encode("ascii"))
+    attacked[offset] = ord("0") if attacked[offset] != ord("0") else ord("1")
+    business.verify_v075_k7_child_business_bundle_public_bytes_v1(
+        raw=raw,
+        expected_request_replay=replay,
+    )
+    with pytest.raises(business.V075K7ChildBusinessBundleV1Error):
+        business.verify_v075_k7_child_business_bundle_public_bytes_v1(
+            raw=bytes(attacked),
+            expected_request_replay=replay,
+        )
+
+
+def test_exact_raw_public_replay_rechecks_changed_formula_authority(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _request, replay, _portable, _wrapped, _authority, bundle = _substrate(
+        monkeypatch
+    )
+    raw = bundle.canonical_bytes
+    original = business._validate_bundle_document  # noqa: SLF001
+    business.verify_v075_k7_child_business_bundle_public_bytes_v1(
+        raw=raw,
+        expected_request_replay=replay,
+    )
+
+    def rejected(document):
+        original(document)
+        raise business.V075K7ChildBusinessBundleV1Error(
+            "public replay formula attack"
+        )
+
+    monkeypatch.setattr(business, "_validate_bundle_document", rejected)
+    with pytest.raises(
+        business.V075K7ChildBusinessBundleV1Error,
+        match="public replay formula attack",
+    ):
+        business.verify_v075_k7_child_business_bundle_public_bytes_v1(
+            raw=raw,
+            expected_request_replay=replay,
+        )
 
 
 def test_exact_raw_validation_rejects_one_byte_mutation(
@@ -430,7 +552,7 @@ def test_exact_raw_validation_formula_monkeypatch_invalidates_cache(
             )
 
 
-def test_exact_raw_validation_does_not_cross_transaction_boundary(
+def test_exact_raw_validation_does_not_cross_public_boundary(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     _request, replay, _portable, _wrapped, _authority, bundle = _substrate(
@@ -445,16 +567,15 @@ def test_exact_raw_validation_does_not_cross_transaction_boundary(
         return original(*args)
 
     monkeypatch.setattr(business, "_compute_bundle_validation_facts_v1", counted)
-    with business._bundle_validation_transaction_v1():  # noqa: SLF001
-        for _ in range(2):
-            business.verify_v075_k7_child_business_bundle_public_bytes_v1(
-                raw=bundle.canonical_bytes,
-                expected_request_replay=replay,
-            )
+    for _ in range(2):
+        business.verify_v075_k7_child_business_bundle_public_bytes_v1(
+            raw=bundle.canonical_bytes,
+            expected_request_replay=replay,
+        )
     assert calls == 2
 
 
-def test_exact_raw_validation_disabled_path_bypasses_transaction_cache(
+def test_exact_raw_validation_disabled_switch_keeps_full_public_replay(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     _request, replay, _portable, _wrapped, _authority, bundle = _substrate(
@@ -475,7 +596,7 @@ def test_exact_raw_validation_disabled_path_bypasses_transaction_cache(
                 raw=bundle.canonical_bytes,
                 expected_request_replay=replay,
             )
-    assert calls == 4
+    assert calls == 2
 
 
 def test_portable_schema_in_place_mutation_cannot_reuse_prior_transaction(

@@ -5,6 +5,7 @@ import hashlib
 import os
 from pathlib import Path
 import stat
+from types import SimpleNamespace
 
 import pytest
 
@@ -60,6 +61,120 @@ def test_six_domains_are_central_unique_and_role_separated() -> None:
     assert set(expected) <= ids_v1.PHASE3E_DOMAIN_TAGS
     payload = {"schema": "same-occurrence-cutoff-payload"}
     assert len({ids_v1.content_id(domain, payload) for domain in expected}) == 6
+
+
+def test_positive_validation_calls_exact_validator_on_every_entry(monkeypatch) -> None:
+    calls = 0
+
+    def inner(**_kwargs):
+        nonlocal calls
+        calls += 1
+        return calls
+
+    monkeypatch.setattr(v2, "_validate_positive_context_once_v2", inner)
+    probe_kwargs = {
+        name: None
+        for name in (
+            "identity_join",
+            "receipt_set",
+            "runtime_envelope",
+            "request_replay",
+            "source_envelope",
+            "verified_envelope",
+            "output_bundle",
+            "owned_result",
+            "operational_output_bytes",
+            "owner_event_candidates",
+            "role_manifest",
+        )
+    }
+    first = v2._validate_positive_context(**probe_kwargs)  # noqa: SLF001
+    second = v2._validate_positive_context(**probe_kwargs)  # noqa: SLF001
+    assert (first, second) == (1, 2)
+
+
+def test_runtime_business_join_reuses_one_complete_output_validation_frame(
+    monkeypatch,
+) -> None:
+    output_id = _id("fast-output")
+    business_id = _id("fast-business")
+    owned_id = _id("fast-owned")
+    transcript_id = _id("fast-transcript")
+    owned_document = {"terminal_status": "CHILD_ACTION_ROW_CAP_EXCEEDED"}
+    transcript_document = {"terminal_kind": "COMPLETED"}
+    business_document = {
+        "owned_partial_result_id": owned_id,
+        "owned_partial_result": owned_document,
+        "partial_native_transcript_id": transcript_id,
+        "partial_native_transcript": transcript_document,
+    }
+    business_raw = canonical_json_bytes(business_document)
+    output_document = {
+        "business_result_id": business_id,
+        "business_result_sha256": hashlib.sha256(business_raw).hexdigest(),
+        "business_result_byte_count": len(business_raw),
+        "business_result": business_document,
+    }
+    output_raw = canonical_json_bytes(output_document)
+    output_sha = hashlib.sha256(output_raw).hexdigest()
+    runtime = SimpleNamespace(
+        binding=object(),
+        operational_output_id=output_id,
+        output_sha256=output_sha,
+        output_byte_count=len(output_raw),
+        business_result_id=business_id,
+        business_result_sha256=hashlib.sha256(business_raw).hexdigest(),
+        business_result_byte_count=len(business_raw),
+    )
+    owned = SimpleNamespace(
+        wrapper_id=owned_id,
+        to_document=lambda: owned_document,
+        transcript=SimpleNamespace(
+            transcript_id=transcript_id,
+            to_document=lambda: transcript_document,
+        ),
+    )
+    verified_business_bundle = object()
+    calls = 0
+
+    def validate_once(raw, **kwargs):
+        nonlocal calls
+        calls += 1
+        assert raw == output_raw
+        assert kwargs["expected_binding"] is runtime.binding
+        return SimpleNamespace(
+            output_facts=(output_id, output_sha, business_id),
+            business_raw=business_raw,
+            verified_business_bundle=verified_business_bundle,
+            request_object_id=id(kwargs["expected_request_replay"]),
+            binding_object_id=id(kwargs["expected_binding"]),
+        )
+
+    monkeypatch.setattr(
+        worker_v1, "_validate_output_document_for_issuance_v1", validate_once
+    )
+    monkeypatch.setattr(
+        child_bundle_v1,
+        "verify_v075_k7_child_business_bundle_public_bytes_v1",
+        lambda **_kwargs: (_ for _ in ()).throw(
+            AssertionError("nested business replay must not run twice")
+        ),
+    )
+    result = v2._validate_runtime_business_join(  # noqa: SLF001
+        runtime_envelope=runtime,
+        request_replay=object(),
+        owned_result=owned,
+        operational_output_bytes=output_raw,
+    )
+    assert calls == 1
+    assert result == (
+        business_id,
+        hashlib.sha256(business_raw).hexdigest(),
+        len(business_raw),
+        output_sha,
+        business_raw,
+        verified_business_bundle,
+    )
 
 
 def _authenticated(
@@ -542,20 +657,58 @@ def test_positive_authorities_issue_and_independently_replay(
     positive, monkeypatch
 ) -> None:
     original_validate = v2._validate_positive_context  # noqa: SLF001
+    original_runtime_validate = v2._validate_runtime_request  # noqa: SLF001
+    original_output_validate = worker_v1._compute_output_validation_issuance_frame_v1  # noqa: SLF001
+    original_business_validate = child_bundle_v1._compute_bundle_validation_facts_v1  # noqa: SLF001
     validation_calls = 0
+    runtime_validation_calls = 0
+    output_validation_calls = 0
+    business_validation_calls = 0
 
     def counted_validate(**kwargs):
         nonlocal validation_calls
         validation_calls += 1
         return original_validate(**kwargs)
 
+    def counted_runtime_validate(**kwargs):
+        nonlocal runtime_validation_calls
+        runtime_validation_calls += 1
+        return original_runtime_validate(**kwargs)
+
+    def counted_output_validate(*args):
+        nonlocal output_validation_calls
+        output_validation_calls += 1
+        return original_output_validate(*args)
+
+    def counted_business_validate(*args):
+        nonlocal business_validation_calls
+        business_validation_calls += 1
+        return original_business_validate(*args)
+
     monkeypatch.setattr(v2, "_validate_positive_context", counted_validate)
+    monkeypatch.setattr(v2, "_validate_runtime_request", counted_runtime_validate)
+    monkeypatch.setattr(
+        worker_v1,
+        "_compute_output_validation_issuance_frame_v1",
+        counted_output_validate,
+    )
+    monkeypatch.setattr(
+        child_bundle_v1,
+        "_compute_bundle_validation_facts_v1",
+        counted_business_validate,
+    )
     issued = v2.issue_k7_occurrence_cutoff_semantic_authorities_v2(**positive)
     assert validation_calls == 1
+    assert runtime_validation_calls == 1
+    assert output_validation_calls == 1
+    assert business_validation_calls == 1
     replayed = v2.replay_k7_occurrence_cutoff_semantic_authorities_v2(
         issued, **positive
     )
     assert validation_calls == 2
+    assert runtime_validation_calls == 2
+    assert output_validation_calls == 2
+    assert business_validation_calls == 2
     assert replayed.bundle_id == issued.bundle_id
     occurrence = issued.occurrence_authority.to_document()
     cutoff = issued.cutoff_authority.to_document()

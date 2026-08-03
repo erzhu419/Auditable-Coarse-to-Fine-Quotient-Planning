@@ -153,11 +153,24 @@ def _runtime_request_payload(
     }
 
 
+@dataclass(frozen=True, slots=True)
+class _ValidatedRuntimeRequestV2:
+    runtime_id: str
+    request_replay_id: str
+    request_id: str
+    route_identity_id: str
+    broker_transcript_id: str
+    frame_observation_ids: tuple[str, ...]
+    operational_output_id: str
+    cgroup_cleanup_complete: bool
+    resource_cleanup_complete: bool
+
+
 def _validate_runtime_request(
     *,
     runtime_envelope: Any,
     request_replay: Any,
-) -> tuple[str, str]:
+) -> _ValidatedRuntimeRequestV2:
     if type(runtime_envelope) is not runtime_v2.K7ProductionBrokerRuntimeEnvelopeV2:
         _fail("positive authority requires one exact real production runtime envelope")
     if (
@@ -166,13 +179,14 @@ def _validate_runtime_request(
     ):
         _fail("positive authority requires one exact independent request replay")
     try:
-        runtime_id = runtime_envelope.envelope_id
-        runtime_envelope.to_document()
-        replay_id = request_replay.replay_id
+        runtime_document = runtime_envelope.to_document()
         request = request_replay.request
-        request._assert_current()  # noqa: SLF001 - exact authority replay
+        replay_id = request_replay.replay_id
         route = request.route_identity
-        route._assert_current()  # noqa: SLF001 - exact authority replay
+        runtime_id = _cid(
+            runtime_document.get("production_broker_runtime_envelope_id"),
+            "production runtime envelope",
+        )
     except Exception as error:
         raise ConstructionOccurrenceIdentityCutoffSemanticAuthorityV2Error(
             "production runtime or request replay is stale"
@@ -182,7 +196,56 @@ def _validate_runtime_request(
         or runtime_envelope.binding.route_identity_id != route.route_identity_id
     ):
         _fail("production runtime crossed its request or route identity")
-    return runtime_id, replay_id
+    return _ValidatedRuntimeRequestV2(
+        runtime_id,
+        replay_id,
+        request.request_id,
+        route.route_identity_id,
+        runtime_envelope.transcript.transcript_id,
+        tuple(row.observation_id for row in runtime_envelope.frame_observations),
+        runtime_envelope.operational_output_id,
+        runtime_envelope.cgroup_cleanup_complete,
+        runtime_envelope.resource_cleanup_complete,
+    )
+
+
+def _derive_runtime_marker_id_from_snapshot_v2(
+    *,
+    snapshot: _ValidatedRuntimeRequestV2,
+    kind: str,
+    domain: str,
+) -> str:
+    return _local_id(
+        domain,
+        _runtime_request_payload(
+            kind=kind,
+            runtime_envelope_id=snapshot.runtime_id,
+            request_replay_id=snapshot.request_replay_id,
+            request_id=snapshot.request_id,
+            route_identity_id=snapshot.route_identity_id,
+        ),
+    )
+
+
+def _derive_terminal_closure_id_from_snapshot_v2(
+    snapshot: _ValidatedRuntimeRequestV2,
+) -> str:
+    payload = {
+        **_runtime_request_payload(
+            kind="terminal_closure",
+            runtime_envelope_id=snapshot.runtime_id,
+            request_replay_id=snapshot.request_replay_id,
+            request_id=snapshot.request_id,
+            route_identity_id=snapshot.route_identity_id,
+        ),
+        "outer_attempt_broker_ipc_transcript_id": snapshot.broker_transcript_id,
+        "authenticated_frame_observation_ids": list(snapshot.frame_observation_ids),
+        "operational_output_id": snapshot.operational_output_id,
+        "direct_children_reaped": True,
+        "cgroup_cleanup_complete": snapshot.cgroup_cleanup_complete,
+        "resource_cleanup_complete": snapshot.resource_cleanup_complete,
+    }
+    return _local_id(TERMINAL_CLOSURE_V2_DOMAIN, payload)
 
 
 def derive_k7_production_measurement_start_id_v2(
@@ -190,20 +253,14 @@ def derive_k7_production_measurement_start_id_v2(
     runtime_envelope: runtime_v2.K7ProductionBrokerRuntimeEnvelopeV2,
     request_replay: request_replay_v1.V075K7SuccessorPortableRequestReplayV1,
 ) -> str:
-    runtime_id, replay_id = _validate_runtime_request(
+    snapshot = _validate_runtime_request(
         runtime_envelope=runtime_envelope,
         request_replay=request_replay,
     )
-    request = request_replay.request
-    return _local_id(
-        MEASUREMENT_START_V2_DOMAIN,
-        _runtime_request_payload(
-            kind="measurement_start",
-            runtime_envelope_id=runtime_id,
-            request_replay_id=replay_id,
-            request_id=request.request_id,
-            route_identity_id=request.route_identity.route_identity_id,
-        ),
+    return _derive_runtime_marker_id_from_snapshot_v2(
+        snapshot=snapshot,
+        kind="measurement_start",
+        domain=MEASUREMENT_START_V2_DOMAIN,
     )
 
 
@@ -212,20 +269,14 @@ def derive_k7_production_measurement_cutoff_id_v2(
     runtime_envelope: runtime_v2.K7ProductionBrokerRuntimeEnvelopeV2,
     request_replay: request_replay_v1.V075K7SuccessorPortableRequestReplayV1,
 ) -> str:
-    runtime_id, replay_id = _validate_runtime_request(
+    snapshot = _validate_runtime_request(
         runtime_envelope=runtime_envelope,
         request_replay=request_replay,
     )
-    request = request_replay.request
-    return _local_id(
-        MEASUREMENT_CUTOFF_V2_DOMAIN,
-        _runtime_request_payload(
-            kind="measurement_cutoff",
-            runtime_envelope_id=runtime_id,
-            request_replay_id=replay_id,
-            request_id=request.request_id,
-            route_identity_id=request.route_identity.route_identity_id,
-        ),
+    return _derive_runtime_marker_id_from_snapshot_v2(
+        snapshot=snapshot,
+        kind="measurement_cutoff",
+        domain=MEASUREMENT_CUTOFF_V2_DOMAIN,
     )
 
 
@@ -234,31 +285,11 @@ def derive_k7_production_terminal_closure_id_v2(
     runtime_envelope: runtime_v2.K7ProductionBrokerRuntimeEnvelopeV2,
     request_replay: request_replay_v1.V075K7SuccessorPortableRequestReplayV1,
 ) -> str:
-    runtime_id, replay_id = _validate_runtime_request(
+    snapshot = _validate_runtime_request(
         runtime_envelope=runtime_envelope,
         request_replay=request_replay,
     )
-    request = request_replay.request
-    payload = {
-        **_runtime_request_payload(
-            kind="terminal_closure",
-            runtime_envelope_id=runtime_id,
-            request_replay_id=replay_id,
-            request_id=request.request_id,
-            route_identity_id=request.route_identity.route_identity_id,
-        ),
-        "outer_attempt_broker_ipc_transcript_id": (
-            runtime_envelope.transcript.transcript_id
-        ),
-        "authenticated_frame_observation_ids": [
-            row.observation_id for row in runtime_envelope.frame_observations
-        ],
-        "operational_output_id": runtime_envelope.operational_output_id,
-        "direct_children_reaped": True,
-        "cgroup_cleanup_complete": runtime_envelope.cgroup_cleanup_complete,
-        "resource_cleanup_complete": runtime_envelope.resource_cleanup_complete,
-    }
-    return _local_id(TERMINAL_CLOSURE_V2_DOMAIN, payload)
+    return _derive_terminal_closure_id_from_snapshot_v2(snapshot)
 
 
 @dataclass(frozen=True, slots=True)
@@ -779,22 +810,34 @@ def _validate_runtime_business_join(
     request_replay: request_replay_v1.V075K7SuccessorPortableRequestReplayV1,
     owned_result: owned_v1.V075K7RootCapOwnedPartialResultV1,
     operational_output_bytes: Any,
-) -> tuple[str, str, int, str, bytes]:
+) -> tuple[
+    str,
+    str,
+    int,
+    str,
+    bytes,
+    child_bundle_v1.V075K7ChildBusinessBundleV1,
+]:
     if type(operational_output_bytes) is not bytes or not operational_output_bytes:
         _fail("positive authority requires independently held operational-output bytes")
     try:
-        output = worker_v1.verify_v075_k7_broker_operational_output_bytes_v1(
-            raw=operational_output_bytes,
+        # One complete private validator call already authenticates the outer
+        # document and performs the nested business-bundle replay.  Retain its
+        # immutable primitive facts in this frame instead of constructing a
+        # public wrapper and then triggering the same full replay again from
+        # ``to_document`` and ``output_id``.
+        output_frame = worker_v1._validate_output_document_for_issuance_v1(  # noqa: SLF001
+            operational_output_bytes,
             expected_request_replay=request_replay,
             expected_binding=runtime_envelope.binding,
         )
-        output_document = output.to_document()
+        output_document = loads_canonical_json(operational_output_bytes)
+        if type(output_document) is not dict:  # full validator proves this
+            _fail("runtime operational output is not one canonical object")
         business_document = output_document["business_result"]
         business_raw = canonical_json_bytes(business_document)
-        business = child_bundle_v1.verify_v075_k7_child_business_bundle_public_bytes_v1(
-            raw=business_raw,
-            expected_request_replay=request_replay,
-        )
+        output_id, validated_output_sha, business_id = output_frame.output_facts
+        verified_business_bundle = output_frame.verified_business_bundle
     except Exception as error:
         raise ConstructionOccurrenceIdentityCutoffSemanticAuthorityV2Error(
             "runtime operational output or embedded business result failed public replay"
@@ -802,13 +845,17 @@ def _validate_runtime_business_join(
     business_sha = hashlib.sha256(business_raw).hexdigest()
     output_sha = hashlib.sha256(operational_output_bytes).hexdigest()
     if (
-        output.output_id != runtime_envelope.operational_output_id
+        output_id != runtime_envelope.operational_output_id
+        or validated_output_sha != output_sha
+        or output_frame.business_raw != business_raw
+        or output_frame.request_object_id != id(request_replay)
+        or output_frame.binding_object_id != id(runtime_envelope.binding)
         or output_sha != runtime_envelope.output_sha256
         or len(operational_output_bytes) != runtime_envelope.output_byte_count
-        or business.bundle_id != runtime_envelope.business_result_id
+        or business_id != runtime_envelope.business_result_id
         or business_sha != runtime_envelope.business_result_sha256
         or len(business_raw) != runtime_envelope.business_result_byte_count
-        or output_document.get("business_result_id") != business.bundle_id
+        or output_document.get("business_result_id") != business_id
         or output_document.get("business_result_sha256") != business_sha
         or output_document.get("business_result_byte_count") != len(business_raw)
         or business_document.get("owned_partial_result_id") != owned_result.wrapper_id
@@ -823,7 +870,14 @@ def _validate_runtime_business_join(
         != "COMPLETED"
     ):
         _fail("runtime business bytes do not contain the exact owner result/transcript")
-    return business.bundle_id, business_sha, len(business_raw), output_sha, business_raw
+    return (
+        business_id,
+        business_sha,
+        len(business_raw),
+        output_sha,
+        business_raw,
+        verified_business_bundle,
+    )
 
 
 def _validate_owner_event_authority(
@@ -835,6 +889,7 @@ def _validate_owner_event_authority(
     owned_result: owned_v1.V075K7RootCapOwnedPartialResultV1,
     runtime_business_result_id: str,
     business_bundle_raw: bytes,
+    verified_business_bundle: child_bundle_v1.V075K7ChildBusinessBundleV1,
 ) -> tuple[str, str, str, str, str, int]:
     """Bind the independently derived 71-path owner semantic authority.
 
@@ -850,18 +905,23 @@ def _validate_owner_event_authority(
     if type(role_manifest) is not role_manifest_v2.K7ProductionRoleManifestV2:
         _fail("positive authority requires one exact production role manifest")
     try:
-        role_manifest.assert_current()
         expected_candidates = (
-            owner_events_v1.derive_v075_k7_owner_event_candidates_v1(
+            owner_events_v1._derive_v075_k7_owner_event_candidates_from_verified_bundle_v1(  # noqa: SLF001
                 role_manifest=role_manifest,
                 runtime_envelope=runtime_envelope,
-                business_bundle_raw=business_bundle_raw,
+                request_replay=request_replay,
+                verified_business_bundle=verified_business_bundle,
             )
         )
-        owner_events_v1.verify_owner_event_candidate_set_v1(
-            owner_event_candidates
+        candidate_document = (
+            owner_events_v1._verify_owner_event_candidate_set_document_v1(  # noqa: SLF001
+                owner_event_candidates
+            )
         )
-        candidate_document = owner_event_candidates.to_document()
+        expected_document = expected_candidates.to_document()
+        expected_binding_document = (
+            expected_candidates.execution_binding.to_document()
+        )
         binding = owner_event_candidates.execution_binding
         binding_document = binding.to_document()
     except Exception as error:
@@ -873,10 +933,10 @@ def _validate_owner_event_authority(
     transcript = owned_result.transcript
     transport = request.profile.accounted_profile.transport_profile
     if (
-        expected_candidates.candidate_set_id != owner_event_candidates.candidate_set_id
-        or expected_candidates.to_document() != owner_event_candidates.to_document()
-        or expected_candidates.execution_binding.to_document()
-        != owner_event_candidates.execution_binding.to_document()
+        expected_document["owner_event_candidate_set_id"]
+        != candidate_document["owner_event_candidate_set_id"]
+        or expected_document != candidate_document
+        or expected_binding_document != binding_document
         or role_manifest.request_id != request.request_id
         or role_manifest.route_identity_id != route.route_identity_id
         or role_manifest.request.canonical_bytes != request.canonical_bytes
@@ -918,8 +978,8 @@ def _validate_owner_event_authority(
     ):
         _fail("owner event candidate set crossed transcript/runtime/business/source identity")
     return (
-        owner_event_candidates.candidate_set_id,
-        binding.binding_id,
+        candidate_document["owner_event_candidate_set_id"],
+        binding_document["owner_event_execution_binding_id"],
         binding.production_role_manifest_id,
         binding.source_snapshot_id,
         binding.source_archive_sha256,
@@ -942,7 +1002,9 @@ def _validate_output_source(
     *,
     runtime_envelope: runtime_v2.K7ProductionBrokerRuntimeEnvelopeV2,
     source_envelope: live_v3.K7ProductionSharedResourceEnvelopeV3,
-    verified_envelope: verified_v1.K7VerifiedNineSharedResourceEnvelopeV1,
+    output_authorization: (
+        verified_v1.K7ValidatedSharedResourcePathSnapshotV1 | None
+    ),
     output_bundle: Any,
 ) -> tuple[
     tuple[K7PostCutoffTailRowV2, ...],
@@ -969,10 +1031,12 @@ def _validate_output_source(
         raise ConstructionOccurrenceIdentityCutoffSemanticAuthorityV2Error(
             "production output source bytes failed independent replay"
         ) from error
-    output_authorization = verified_envelope.by_path.get(output_v2.OUTPUT_PATH)
     if output_authorization is None:
         _fail("verified nine-source envelope lacks io.output_bytes")
-    source = output_authorization.bound_source.source
+    live_source_component_bytes = tuple(
+        canonical_json_bytes(component.to_internal_document())
+        for component in live_source.components
+    )
     if (
         replay.live_envelope_id != runtime_envelope.envelope_id
         or replay.live_envelope_id != source_envelope.production_runtime_envelope_id
@@ -980,9 +1044,12 @@ def _validate_output_source(
         or replay.route_attempt_id != source_envelope.route_attempt_id
         or replay.decision_point_id != source_envelope.decision_point_id
         or replay.measurement_window_id != source_envelope.measurement_window_id
-        or replay.operational_cutoff_id != source.operational_cutoff_id
+        or replay.operational_cutoff_id
+        != output_authorization.source_operational_cutoff_id
+        or output_authorization.path != output_v2.OUTPUT_PATH
         or live_source.path != output_v2.OUTPUT_PATH
-        or live_source.components != source.components
+        or live_source_component_bytes
+        != output_authorization.source_component_canonical_bytes
         or output_authorization.exact_value != replay.raw_output_bytes
     ):
         _fail("production output bundle was transplanted across runtime/source context")
@@ -1045,7 +1112,7 @@ def _validate_output_source(
     return tail_rows, replay.raw_output_bytes, durable_ids
 
 
-def _validate_positive_context(
+def _validate_positive_context_once_v2(
     *,
     identity_join: join_v1.ConstructionOccurrenceIdentityJoinV1,
     receipt_set: receipts_v1.SharedResourceReceiptSetV1,
@@ -1064,10 +1131,12 @@ def _validate_positive_context(
         or type(receipt_set) is not receipts_v1.SharedResourceReceiptSetV1
     ):
         _fail("positive context requires the exact historical structural roots")
-    runtime_id, replay_id = _validate_runtime_request(
+    runtime_snapshot = _validate_runtime_request(
         runtime_envelope=runtime_envelope,
         request_replay=request_replay,
     )
+    runtime_id = runtime_snapshot.runtime_id
+    replay_id = runtime_snapshot.request_replay_id
     if type(source_envelope) is not live_v3.K7ProductionSharedResourceEnvelopeV3:
         _fail("positive context requires one exact V3 nine-source envelope")
     if (
@@ -1076,36 +1145,44 @@ def _validate_positive_context(
     ):
         _fail("positive context requires one exact verified nine-source envelope")
     try:
-        replayed = verified_v1.verify_k7_production_shared_resource_envelope_exact_v1(
-            source_envelope
+        nine_source_snapshot = (
+            verified_v1.validate_k7_verified_nine_shared_resource_pair_once_v1(
+                source_envelope=source_envelope,
+                supplied_verified_envelope=verified_envelope,
+            )
         )
-        verified_envelope.to_document()
     except Exception as error:
         raise ConstructionOccurrenceIdentityCutoffSemanticAuthorityV2Error(
             "nine source-local event streams failed independent replay"
         ) from error
-    if (
-        replayed.verified_envelope_id != verified_envelope.verified_envelope_id
-        or replayed.to_document() != verified_envelope.to_document()
-        or verified_envelope.source_v3_envelope_id != source_envelope.envelope_id
-    ):
-        _fail("verified nine-source authority was transplanted or stale")
+    source_envelope_id = nine_source_snapshot.source_v3_envelope_id
+    output_authorization = next(
+        (
+            row
+            for row in nine_source_snapshot.supplied_authorizations
+            if row.path == output_v2.OUTPUT_PATH
+        ),
+        None,
+    )
+    if output_authorization is None:
+        _fail("verified nine-source envelope lacks io.output_bytes")
     request = request_replay.request
     route = request.route_identity
     logical_occurrence_id = route.logical_occurrence.logical_occurrence_id
     route_attempt_id = route.route_attempt.route_attempt_id
     decision_point_id = route.decision_point.decision_point_id
-    expected_terminal = derive_k7_production_terminal_closure_id_v2(
-        runtime_envelope=runtime_envelope,
-        request_replay=request_replay,
+    expected_terminal = _derive_terminal_closure_id_from_snapshot_v2(
+        runtime_snapshot
     )
-    expected_start = derive_k7_production_measurement_start_id_v2(
-        runtime_envelope=runtime_envelope,
-        request_replay=request_replay,
+    expected_start = _derive_runtime_marker_id_from_snapshot_v2(
+        snapshot=runtime_snapshot,
+        kind="measurement_start",
+        domain=MEASUREMENT_START_V2_DOMAIN,
     )
-    expected_cutoff = derive_k7_production_measurement_cutoff_id_v2(
-        runtime_envelope=runtime_envelope,
-        request_replay=request_replay,
+    expected_cutoff = _derive_runtime_marker_id_from_snapshot_v2(
+        snapshot=runtime_snapshot,
+        kind="measurement_cutoff",
+        domain=MEASUREMENT_CUTOFF_V2_DOMAIN,
     )
     route_profile = route.profile
     window = receipt_set.window
@@ -1142,18 +1219,25 @@ def _validate_positive_context(
             source_operational_cutoff_id=row.source_operational_cutoff_id,
             source_local_start_sequence=row.source_local_start_sequence,
             source_local_cutoff_sequence=row.source_local_cutoff_sequence,
-            source_artifact_ids=row.semantic_replay_result.source_artifact_ids,
-            source_bytes_sha256=row.semantic_replay_result.source_bytes_sha256,
+            source_artifact_ids=row.source_artifact_ids,
+            source_bytes_sha256=row.source_bytes_sha256,
         )
-        for row in verified_envelope.authorizations
+        for row in nine_source_snapshot.supplied_authorizations
     )
     tail_rows, charged_output, durable_ids = _validate_output_source(
         runtime_envelope=runtime_envelope,
         source_envelope=source_envelope,
-        verified_envelope=verified_envelope,
+        output_authorization=output_authorization,
         output_bundle=output_bundle,
     )
-    business_id, business_sha, business_size, operational_sha, business_raw = (
+    (
+        business_id,
+        business_sha,
+        business_size,
+        operational_sha,
+        business_raw,
+        verified_business_bundle,
+    ) = (
         _validate_runtime_business_join(
             runtime_envelope=runtime_envelope,
             request_replay=request_replay,
@@ -1176,12 +1260,13 @@ def _validate_positive_context(
         owned_result=owned_result,
         runtime_business_result_id=business_id,
         business_bundle_raw=business_raw,
+        verified_business_bundle=verified_business_bundle,
     )
     return _ValidatedPositiveContextV2(
         runtime_id,
         replay_id,
-        source_envelope.envelope_id,
-        verified_envelope.verified_envelope_id,
+        source_envelope_id,
+        nine_source_snapshot.supplied_verified_envelope_id,
         expected_terminal,
         expected_start,
         expected_cutoff,
@@ -1199,6 +1284,37 @@ def _validate_positive_context(
         source_snapshot_id,
         source_archive_sha256,
         source_archive_byte_count,
+    )
+
+
+def _validate_positive_context(
+    *,
+    identity_join: join_v1.ConstructionOccurrenceIdentityJoinV1,
+    receipt_set: receipts_v1.SharedResourceReceiptSetV1,
+    runtime_envelope: runtime_v2.K7ProductionBrokerRuntimeEnvelopeV2,
+    request_replay: request_replay_v1.V075K7SuccessorPortableRequestReplayV1,
+    source_envelope: live_v3.K7ProductionSharedResourceEnvelopeV3,
+    verified_envelope: verified_v1.K7VerifiedNineSharedResourceEnvelopeV1,
+    output_bundle: output_v2.OutputRawEvidenceBundleV2,
+    owned_result: owned_v1.V075K7RootCapOwnedPartialResultV1,
+    operational_output_bytes: bytes,
+    owner_event_candidates: owner_events_v1.OwnerEventCandidateSetV1,
+    role_manifest: role_manifest_v2.K7ProductionRoleManifestV2,
+) -> _ValidatedPositiveContextV2:
+    """Replay one positive context without a cross-verifier memo scope."""
+
+    return _validate_positive_context_once_v2(
+        identity_join=identity_join,
+        receipt_set=receipt_set,
+        runtime_envelope=runtime_envelope,
+        request_replay=request_replay,
+        source_envelope=source_envelope,
+        verified_envelope=verified_envelope,
+        output_bundle=output_bundle,
+        owned_result=owned_result,
+        operational_output_bytes=operational_output_bytes,
+        owner_event_candidates=owner_event_candidates,
+        role_manifest=role_manifest,
     )
 
 

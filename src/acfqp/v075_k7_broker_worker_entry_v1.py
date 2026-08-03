@@ -12,7 +12,6 @@ core.
 from __future__ import annotations
 
 import ctypes
-from contextlib import contextmanager
 from contextvars import ContextVar
 from dataclasses import InitVar, dataclass, field
 import errno
@@ -26,10 +25,6 @@ import threading
 from typing import Any, Mapping, NoReturn
 import weakref
 
-from acfqp.exact_frozen_memo_v1 import (
-    exact_callable_guard_v1,
-    exact_frozen_memoization_enabled_v1,
-)
 from acfqp import v075_k7_atomic_pidfd_runtime_v1 as atomic_runtime
 from acfqp import v075_k7_child_business_bundle_v1 as business_bundle
 from acfqp import v075_k7_outer_attempt_broker_ipc_v1 as broker_ipc
@@ -76,6 +71,11 @@ REQUESTED_PHASE3E_DOMAIN_CONSTANTS = (
 
 _PROFILE_ISSUER = object()
 _OUTPUT_ISSUER = object()
+_OUTPUT_FRAME_ISSUER = object()
+_PRODUCTION_REQUEST_REPLAY_TYPE = (
+    portable_replay.V075K7SuccessorPortableRequestReplayV1
+)
+_PRODUCTION_BUSINESS_BUNDLE_TYPE = business_bundle.V075K7ChildBusinessBundleV1
 _COMMIT_ISSUER = object()
 _COMPLETION_ISSUER = object()
 _BOUNDARY_ISSUER = object()
@@ -83,9 +83,6 @@ _BOUNDARY_FACTS_ISSUER = object()
 _OUTPUT_VALIDATION_AUTHORITIES_V1: ContextVar[tuple[object, object] | None] = (
     ContextVar("acfqp_k7_output_validation_authorities_v1", default=None)
 )
-_OUTPUT_VALIDATION_TRANSACTION_V1: ContextVar[
-    dict[tuple[Any, ...], object] | None
-] = ContextVar("acfqp_k7_output_validation_transaction_v1", default=None)
 _OUTPUT_ISSUANCE_LOCK = threading.Lock()
 
 
@@ -717,19 +714,33 @@ class V075K7BrokerOperationalOutputV1(_WeakReferenceableOutputV1):
         repr=False,
         compare=False,
     )
+    _validated_facts: InitVar[tuple[str, str, str] | None] = None
 
-    def __post_init__(self, _issuer: object) -> None:
+    def __post_init__(
+        self,
+        _issuer: object,
+        _validated_facts: tuple[str, str, str] | None,
+    ) -> None:
         if _issuer is not _OUTPUT_ISSUER or type(self._raw) is not bytes:
             _fail("broker operational output is caller-minted")
         expected_identity_primitives = _output_expected_identity_primitives_v1(
             self._request_replay,
             self._binding,
         )
-        facts = _validate_output_document(
-            self._raw,
-            expected_request_replay=self._request_replay,
-            expected_binding=self._binding,
-        )
+        facts = _validated_facts
+        if facts is None:
+            facts = _validate_output_document(
+                self._raw,
+                expected_request_replay=self._request_replay,
+                expected_binding=self._binding,
+            )
+        elif (
+            type(facts) is not tuple
+            or len(facts) != 3
+            or any(type(value) is not str for value in facts)
+            or facts[1] != hashlib.sha256(self._raw).hexdigest()
+        ):
+            _fail("broker operational output received invalid local validation facts")
         record = _OutputIssuanceRecordV1(
             os.getpid(),
             self._raw,
@@ -783,13 +794,35 @@ class V075K7BrokerOperationalOutputV1(_WeakReferenceableOutputV1):
 _OutputValidationFactsV1 = tuple[str, str, str]
 
 
-def _compute_output_validation_facts_v1(
+@dataclass(frozen=True, slots=True)
+class _ValidatedOutputIssuanceFrameV1:
+    """Issuer-only outer+nested facts retained within one validation call."""
+
+    _issuer: InitVar[object]
+    output_facts: _OutputValidationFactsV1
+    business_raw: bytes
+    verified_business_bundle: Any
+    request_object_id: int
+    binding_object_id: int
+
+    def __post_init__(self, _issuer: object) -> None:
+        if (
+            _issuer is not _OUTPUT_FRAME_ISSUER
+            or type(self.output_facts) is not tuple
+            or len(self.output_facts) != 3
+            or any(type(value) is not str for value in self.output_facts)
+            or type(self.business_raw) is not bytes
+            or not self.business_raw
+            or type(self.request_object_id) is not int
+            or type(self.binding_object_id) is not int
+        ):
+            _fail("validated output issuance frame is caller-minted")
+
+
+def _compute_output_validation_issuance_frame_v1(
     raw: bytes,
     expected_identity_primitives: tuple[Any, ...],
-    formula_recipe: tuple[Any, ...],
-    callable_guard: tuple[tuple[object, ...], ...],
-) -> _OutputValidationFactsV1:
-    del formula_recipe, callable_guard
+) -> _ValidatedOutputIssuanceFrameV1:
     (
         expected_request_id,
         expected_route_identity_id,
@@ -866,55 +899,40 @@ def _compute_output_validation_facts_v1(
             "broker operational output nested business replay failed"
         ) from error
     verified_business_id = verified.bundle_id
+    if (
+        type(expected_request_replay) is _PRODUCTION_REQUEST_REPLAY_TYPE
+        and type(verified) is not _PRODUCTION_BUSINESS_BUNDLE_TYPE
+    ):
+        _fail("production output validation returned a foreign business bundle")
     if verified_business_id != _cid(
         document["business_result_id"],
         "business result",
     ):
         _fail("broker operational output crossed its business-result identity")
-    return (
-        claimed,
-        hashlib.sha256(raw).hexdigest(),
-        verified_business_id,
+    return _ValidatedOutputIssuanceFrameV1(
+        _OUTPUT_FRAME_ISSUER,
+        (
+            claimed,
+            hashlib.sha256(raw).hexdigest(),
+            verified_business_id,
+        ),
+        business_raw,
+        verified,
+        id(expected_request_replay),
+        id(expected_binding),
     )
 
 
-def _output_validation_recipe_v1() -> tuple[Any, ...]:
-    return (
-        SCHEMA_VERSION,
-        PROPOSED_CONTRACT_VERSION,
-        PROFILE_KEY,
-        MAX_OUTPUT_BYTES,
-        V075_K7_BROKER_OPERATIONAL_OUTPUT_V1_DOMAIN,
-        tuple(sorted(_OUTPUT_FIELDS)),
-        tuple(sorted(_formal_locks().items())),
-        _OFFICIAL_PROFILE.profile_id,
-        broker_ipc.official_v075_k7_outer_attempt_broker_ipc_profile_v1().profile_id,
-    )
+def _compute_output_validation_facts_v1(
+    raw: bytes,
+    expected_identity_primitives: tuple[Any, ...],
+) -> _OutputValidationFactsV1:
+    """Preserve the strict public-validator primitive-facts boundary."""
 
-
-def _output_validation_callable_guard_v1(
-) -> tuple[tuple[object, ...], ...]:
-    return exact_callable_guard_v1(
-        _assert_request_and_binding,
-        loads_canonical_json,
-        canonical_json_bytes,
-        content_id,
-        _hash,
-        _formal_locks,
-        business_bundle.verify_v075_k7_child_business_bundle_public_bytes_v1,
-        _compute_output_validation_facts_v1,
-    )
-
-
-@contextmanager
-def _output_validation_transaction_v1():
-    """Share exact output replay only within one public validation call tree."""
-
-    token = _OUTPUT_VALIDATION_TRANSACTION_V1.set({})
-    try:
-        yield
-    finally:
-        _OUTPUT_VALIDATION_TRANSACTION_V1.reset(token)
+    return _compute_output_validation_issuance_frame_v1(
+        raw,
+        expected_identity_primitives,
+    ).output_facts
 
 
 def _output_expected_identity_primitives_v1(
@@ -931,7 +949,7 @@ def _output_expected_identity_primitives_v1(
     except AttributeError:
         # Construction test doubles predate the complete production request
         # schema.  Their object guard below prevents authority aliasing inside
-        # one validation transaction; production requests always take the
+        # one validation invocation; production requests always take the
         # complete primitive identity path.
         child_request_identity = (
             "CONSTRUCTION_TEST_DOUBLE_WITHOUT_COMPLETE_REQUEST_IDENTITY",
@@ -960,23 +978,36 @@ def _validate_output_document(
             expected_request_replay,
             expected_binding,
         ),
-        _output_validation_recipe_v1(),
-        _output_validation_callable_guard_v1(),
     )
     token = _OUTPUT_VALIDATION_AUTHORITIES_V1.set(
         (expected_request_replay, expected_binding)
     )
     try:
-        transaction = _OUTPUT_VALIDATION_TRANSACTION_V1.get()
-        if not exact_frozen_memoization_enabled_v1() or transaction is None:
-            return _compute_output_validation_facts_v1(*inputs)
-        key = ("OUTPUT_VALIDATION_FACTS_V1", *inputs)
-        cached = transaction.get(key)
-        if cached is not None:
-            return cached  # type: ignore[return-value]
-        result = _compute_output_validation_facts_v1(*inputs)
-        transaction[key] = result
-        return result
+        return _compute_output_validation_facts_v1(*inputs)
+    finally:
+        _OUTPUT_VALIDATION_AUTHORITIES_V1.reset(token)
+
+
+def _validate_output_document_for_issuance_v1(
+    raw: bytes,
+    *,
+    expected_request_replay: portable_replay.V075K7SuccessorPortableRequestReplayV1,
+    expected_binding: broker_ipc.K7OuterAttemptBrokerIPCBindingV1,
+) -> _ValidatedOutputIssuanceFrameV1:
+    """Expose issuer-only nested facts to one trusted aggregate call frame."""
+
+    inputs = (
+        raw,
+        _output_expected_identity_primitives_v1(
+            expected_request_replay,
+            expected_binding,
+        ),
+    )
+    token = _OUTPUT_VALIDATION_AUTHORITIES_V1.set(
+        (expected_request_replay, expected_binding)
+    )
+    try:
+        return _compute_output_validation_issuance_frame_v1(*inputs)
     finally:
         _OUTPUT_VALIDATION_AUTHORITIES_V1.reset(token)
 
@@ -987,18 +1018,18 @@ def verify_v075_k7_broker_operational_output_bytes_v1(
     expected_request_replay: portable_replay.V075K7SuccessorPortableRequestReplayV1,
     expected_binding: broker_ipc.K7OuterAttemptBrokerIPCBindingV1,
 ) -> V075K7BrokerOperationalOutputV1:
-    with _output_validation_transaction_v1():
-        _validate_output_document(
-            raw,
-            expected_request_replay=expected_request_replay,
-            expected_binding=expected_binding,
-        )
-        return V075K7BrokerOperationalOutputV1(
-            _OUTPUT_ISSUER,
-            raw,
-            expected_request_replay,
-            expected_binding,
-        )
+    facts = _validate_output_document(
+        raw,
+        expected_request_replay=expected_request_replay,
+        expected_binding=expected_binding,
+    )
+    return V075K7BrokerOperationalOutputV1(
+        _OUTPUT_ISSUER,
+        raw,
+        expected_request_replay,
+        expected_binding,
+        facts,
+    )
 
 
 def _freeze_output(

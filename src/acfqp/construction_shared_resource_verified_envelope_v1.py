@@ -83,7 +83,15 @@ def _semantic_document_digest(
 def _path_payload(
     *,
     source_envelope_id: str,
-    envelope: live_v3.K7ProductionSharedResourceEnvelopeV3,
+    production_runtime_envelope_id: str,
+    counter_registry_id: str,
+    stage_profile_id: str,
+    occurrence_id: str,
+    route_attempt_id: str,
+    decision_point_id: str,
+    measurement_window_id: str,
+    production_runtime_replay_id: str,
+    terminal_closure_observation_id: str,
     bound_source_id: str,
     source: resolution_v2.SharedResourceLiveSourceV2,
     result: replay_v2.SharedResourceSemanticReplayResultV2,
@@ -95,17 +103,15 @@ def _path_payload(
         "proposed_contract_version": PROPOSED_CONTRACT_VERSION,
         "profile_key": PROFILE_KEY,
         "source_v3_envelope_id": source_envelope_id,
-        "production_runtime_envelope_id": envelope.production_runtime_envelope_id,
-        "counter_registry_id": envelope.counter_registry_id,
-        "stage_profile_id": envelope.stage_profile_id,
-        "occurrence_id": envelope.occurrence_id,
-        "route_attempt_id": envelope.route_attempt_id,
-        "decision_point_id": envelope.decision_point_id,
-        "measurement_window_id": envelope.measurement_window_id,
-        "production_runtime_replay_id": envelope.production_runtime_replay_id,
-        "terminal_closure_observation_id": (
-            envelope.terminal_closure_observation_id
-        ),
+        "production_runtime_envelope_id": production_runtime_envelope_id,
+        "counter_registry_id": counter_registry_id,
+        "stage_profile_id": stage_profile_id,
+        "occurrence_id": occurrence_id,
+        "route_attempt_id": route_attempt_id,
+        "decision_point_id": decision_point_id,
+        "measurement_window_id": measurement_window_id,
+        "production_runtime_replay_id": production_runtime_replay_id,
+        "terminal_closure_observation_id": terminal_closure_observation_id,
         "bound_source_id": bound_source_id,
         "path": source.path,
         "exact_value": result.exact_value,
@@ -127,6 +133,223 @@ def _path_payload(
         "comparison_vector_issued": False,
         "formal_vector_authorized": False,
     }
+
+
+@dataclass(frozen=True, slots=True)
+class K7ValidatedSharedResourcePathSnapshotV1:
+    """Immutable non-artifact facts from one exact path validation."""
+
+    authorization_id: str
+    source_v3_envelope_id: str
+    production_runtime_envelope_id: str
+    counter_registry_id: str
+    stage_profile_id: str
+    occurrence_id: str
+    route_attempt_id: str
+    decision_point_id: str
+    measurement_window_id: str
+    production_runtime_replay_id: str
+    terminal_closure_observation_id: str
+    bound_source_id: str
+    path: str
+    exact_value: int
+    reducer: str
+    semantic_verifier_key: str
+    semantic_verifier_id: str
+    semantic_replay_document_sha256: str
+    source_operational_cutoff_id: str
+    source_local_start_sequence: int
+    source_local_cutoff_sequence: int
+    source_component_canonical_bytes: tuple[bytes, ...]
+    source_artifact_ids: tuple[str, ...]
+    source_bytes_sha256: tuple[str, ...]
+    canonical_document_bytes: bytes
+
+
+@dataclass(frozen=True, slots=True)
+class K7VerifiedNineSharedResourceTransactionSnapshotV1:
+    """Bounded pair replay containing only immutable primitive facts."""
+
+    source_v3_envelope_id: str
+    expected_verified_envelope_id: str
+    supplied_verified_envelope_id: str
+    expected_authorizations: tuple[K7ValidatedSharedResourcePathSnapshotV1, ...]
+    supplied_authorizations: tuple[K7ValidatedSharedResourcePathSnapshotV1, ...]
+    expected_canonical_document_bytes: bytes
+    supplied_canonical_document_bytes: bytes
+
+
+@dataclass(frozen=True, slots=True)
+class _PathAuthorizationValidationInputV1:
+    authorization_id: str
+    source_v3_envelope_id: str
+    production_runtime_envelope_id: str
+    counter_registry_id: str
+    stage_profile_id: str
+    occurrence_id: str
+    route_attempt_id: str
+    decision_point_id: str
+    measurement_window_id: str
+    production_runtime_replay_id: str
+    terminal_closure_observation_id: str
+    bound_source_id: str
+    path: str
+    exact_value: int
+    reducer: Any
+    semantic_verifier_key: str
+    semantic_verifier_id: str
+    semantic_replay_document_sha256: str
+    source_operational_cutoff_id: str
+    source_local_start_sequence: int
+    source_local_cutoff_sequence: int
+    bound_source: live_v3.BoundSharedResourceSourceV3 = field(repr=False)
+    semantic_replay_result: replay_v2.SharedResourceSemanticReplayResultV2 = field(
+        repr=False
+    )
+
+
+def _path_payload_from_validation_input_v1(
+    values: _PathAuthorizationValidationInputV1,
+) -> dict[str, Any]:
+    return _path_payload(
+        source_envelope_id=values.source_v3_envelope_id,
+        production_runtime_envelope_id=values.production_runtime_envelope_id,
+        counter_registry_id=values.counter_registry_id,
+        stage_profile_id=values.stage_profile_id,
+        occurrence_id=values.occurrence_id,
+        route_attempt_id=values.route_attempt_id,
+        decision_point_id=values.decision_point_id,
+        measurement_window_id=values.measurement_window_id,
+        production_runtime_replay_id=values.production_runtime_replay_id,
+        terminal_closure_observation_id=values.terminal_closure_observation_id,
+        bound_source_id=values.bound_source_id,
+        source=values.bound_source.source,
+        result=values.semantic_replay_result,
+        semantic_replay_document_sha256=(
+            values.semantic_replay_document_sha256
+        ),
+    )
+
+
+def _validate_path_authorization_values_once_v1(
+    values: _PathAuthorizationValidationInputV1,
+) -> K7ValidatedSharedResourcePathSnapshotV1:
+    """Strictly validate one row and freeze only immutable replay facts."""
+
+    for value, label in (
+        (values.authorization_id, "path authorization"),
+        (values.source_v3_envelope_id, "source V3 envelope"),
+        (values.production_runtime_envelope_id, "production runtime envelope"),
+        (values.counter_registry_id, "counter registry"),
+        (values.stage_profile_id, "stage profile"),
+        (values.occurrence_id, "occurrence"),
+        (values.route_attempt_id, "route attempt"),
+        (values.decision_point_id, "decision point"),
+        (values.measurement_window_id, "measurement window"),
+        (values.production_runtime_replay_id, "production runtime replay"),
+        (
+            values.terminal_closure_observation_id,
+            "terminal closure observation",
+        ),
+        (values.bound_source_id, "bound source"),
+        (values.semantic_verifier_id, "semantic verifier"),
+        (values.source_operational_cutoff_id, "source operational cutoff"),
+    ):
+        _cid(value, label)
+    _nonnegative(values.exact_value, "exact shared-resource value")
+    _nonnegative(values.source_local_start_sequence, "source local start")
+    _nonnegative(values.source_local_cutoff_sequence, "source local cutoff")
+    if values.source_local_cutoff_sequence < values.source_local_start_sequence:
+        _fail("source local cutoff precedes its start")
+    try:
+        reducer = ReducerEnum(values.reducer)
+    except (TypeError, ValueError) as error:
+        raise ConstructionSharedResourceVerifiedEnvelopeV1Error(
+            "path authorization reducer is invalid"
+        ) from error
+    if (
+        type(values.bound_source) is not live_v3.BoundSharedResourceSourceV3
+        or type(values.semantic_replay_result)
+        is not replay_v2.SharedResourceSemanticReplayResultV2
+    ):
+        _fail("path authorization contains a foreign source or replay result")
+    source = values.bound_source.source
+    result = values.semantic_replay_result
+    if (
+        values.bound_source.bound_source_id != values.bound_source_id
+        or source.path != values.path
+        or source.live_envelope_id != values.production_runtime_envelope_id
+        or source.occurrence_id != values.occurrence_id
+        or source.route_attempt_id != values.route_attempt_id
+        or source.decision_point_id != values.decision_point_id
+        or source.measurement_window_id != values.measurement_window_id
+        or source.operational_cutoff_id != values.source_operational_cutoff_id
+        or source.covered_start_sequence != values.source_local_start_sequence
+        or source.covered_cutoff_sequence != values.source_local_cutoff_sequence
+        or result.path != values.path
+        or result.exact_value != values.exact_value
+        or result.reducer is not reducer
+        or result.semantic_verifier_key != values.semantic_verifier_key
+        or result.semantic_verifier_id != values.semantic_verifier_id
+        or result.live_envelope_id != values.production_runtime_envelope_id
+        or result.occurrence_id != values.occurrence_id
+        or result.route_attempt_id != values.route_attempt_id
+        or result.decision_point_id != values.decision_point_id
+        or result.measurement_window_id != values.measurement_window_id
+        or result.operational_cutoff_id != values.source_operational_cutoff_id
+        or result.covered_start_sequence != values.source_local_start_sequence
+        or result.covered_cutoff_sequence != values.source_local_cutoff_sequence
+        or result.semantic_source_verified is not True
+        or result.counter_record_issuance_authorized is not False
+        or _semantic_document_digest(result)
+        != values.semantic_replay_document_sha256
+    ):
+        _fail("path authorization was mutated or transplanted")
+    digest = values.semantic_replay_document_sha256
+    if (
+        type(digest) is not str
+        or len(digest) != 64
+        or any(character not in "0123456789abcdef" for character in digest)
+    ):
+        _fail("semantic replay document digest is invalid")
+    payload = _path_payload_from_validation_input_v1(values)
+    expected = content_id(PATH_EXACT_AUTHORIZATION_V1_DOMAIN, payload)
+    if expected != values.authorization_id:
+        _fail("path authorization content identity was mutated or transplanted")
+    return K7ValidatedSharedResourcePathSnapshotV1(
+        authorization_id=values.authorization_id,
+        source_v3_envelope_id=values.source_v3_envelope_id,
+        production_runtime_envelope_id=values.production_runtime_envelope_id,
+        counter_registry_id=values.counter_registry_id,
+        stage_profile_id=values.stage_profile_id,
+        occurrence_id=values.occurrence_id,
+        route_attempt_id=values.route_attempt_id,
+        decision_point_id=values.decision_point_id,
+        measurement_window_id=values.measurement_window_id,
+        production_runtime_replay_id=values.production_runtime_replay_id,
+        terminal_closure_observation_id=(
+            values.terminal_closure_observation_id
+        ),
+        bound_source_id=values.bound_source_id,
+        path=values.path,
+        exact_value=values.exact_value,
+        reducer=reducer.value,
+        semantic_verifier_key=values.semantic_verifier_key,
+        semantic_verifier_id=values.semantic_verifier_id,
+        semantic_replay_document_sha256=digest,
+        source_operational_cutoff_id=values.source_operational_cutoff_id,
+        source_local_start_sequence=values.source_local_start_sequence,
+        source_local_cutoff_sequence=values.source_local_cutoff_sequence,
+        source_component_canonical_bytes=tuple(
+            canonical_json_bytes(component.to_internal_document())
+            for component in source.components
+        ),
+        source_artifact_ids=result.source_artifact_ids,
+        source_bytes_sha256=result.source_bytes_sha256,
+        canonical_document_bytes=canonical_json_bytes(
+            {**payload, "path_exact_authorization_id": values.authorization_id}
+        ),
+    )
 
 
 @dataclass(frozen=True, slots=True)
@@ -165,31 +388,6 @@ class VerifiedSharedResourcePathAuthorizationV1:
     def __post_init__(self, _issuer: object) -> None:
         if _issuer is not _PATH_ISSUER:
             _fail("path exact authorization is caller-minted")
-        for value, label in (
-            (self.authorization_id, "path authorization"),
-            (self.source_v3_envelope_id, "source V3 envelope"),
-            (self.production_runtime_envelope_id, "production runtime envelope"),
-            (self.counter_registry_id, "counter registry"),
-            (self.stage_profile_id, "stage profile"),
-            (self.occurrence_id, "occurrence"),
-            (self.route_attempt_id, "route attempt"),
-            (self.decision_point_id, "decision point"),
-            (self.measurement_window_id, "measurement window"),
-            (self.production_runtime_replay_id, "production runtime replay"),
-            (
-                self.terminal_closure_observation_id,
-                "terminal closure observation",
-            ),
-            (self.bound_source_id, "bound source"),
-            (self.semantic_verifier_id, "semantic verifier"),
-            (self.source_operational_cutoff_id, "source operational cutoff"),
-        ):
-            _cid(value, label)
-        _nonnegative(self.exact_value, "exact shared-resource value")
-        _nonnegative(self.source_local_start_sequence, "source local start")
-        _nonnegative(self.source_local_cutoff_sequence, "source local cutoff")
-        if self.source_local_cutoff_sequence < self.source_local_start_sequence:
-            _fail("source local cutoff precedes its start")
         try:
             reducer = ReducerEnum(self.reducer)
         except (TypeError, ValueError) as error:
@@ -197,66 +395,13 @@ class VerifiedSharedResourcePathAuthorizationV1:
                 "path authorization reducer is invalid"
             ) from error
         object.__setattr__(self, "reducer", reducer)
-        if (
-            type(self.bound_source) is not live_v3.BoundSharedResourceSourceV3
-            or type(self.semantic_replay_result)
-            is not replay_v2.SharedResourceSemanticReplayResultV2
-        ):
-            _fail("path authorization contains a foreign source or replay result")
-        source = self.bound_source.source
-        result = self.semantic_replay_result
-        if (
-            self.bound_source.bound_source_id != self.bound_source_id
-            or source.path != self.path
-            or source.live_envelope_id != self.production_runtime_envelope_id
-            or source.occurrence_id != self.occurrence_id
-            or source.route_attempt_id != self.route_attempt_id
-            or source.decision_point_id != self.decision_point_id
-            or source.measurement_window_id != self.measurement_window_id
-            or source.operational_cutoff_id != self.source_operational_cutoff_id
-            or source.covered_start_sequence != self.source_local_start_sequence
-            or source.covered_cutoff_sequence != self.source_local_cutoff_sequence
-            or result.path != self.path
-            or result.exact_value != self.exact_value
-            or result.reducer is not self.reducer
-            or result.semantic_verifier_key != self.semantic_verifier_key
-            or result.semantic_verifier_id != self.semantic_verifier_id
-            or result.live_envelope_id != self.production_runtime_envelope_id
-            or result.occurrence_id != self.occurrence_id
-            or result.route_attempt_id != self.route_attempt_id
-            or result.decision_point_id != self.decision_point_id
-            or result.measurement_window_id != self.measurement_window_id
-            or result.operational_cutoff_id != self.source_operational_cutoff_id
-            or result.covered_start_sequence != self.source_local_start_sequence
-            or result.covered_cutoff_sequence != self.source_local_cutoff_sequence
-            or result.semantic_source_verified is not True
-            or result.counter_record_issuance_authorized is not False
-            or _semantic_document_digest(result)
-            != self.semantic_replay_document_sha256
-        ):
-            _fail("path authorization was mutated or transplanted")
-        digest = self.semantic_replay_document_sha256
-        if (
-            type(digest) is not str
-            or len(digest) != 64
-            or any(character not in "0123456789abcdef" for character in digest)
-        ):
-            _fail("semantic replay document digest is invalid")
-        expected = content_id(
-            PATH_EXACT_AUTHORIZATION_V1_DOMAIN,
-            self._payload(),
+        _validate_path_authorization_values_once_v1(
+            _path_authorization_validation_input_v1(self)
         )
-        if expected != self.authorization_id:
-            _fail("path authorization content identity was mutated or transplanted")
 
     def _payload(self) -> dict[str, Any]:
-        return _path_payload(
-            source_envelope_id=self.source_v3_envelope_id,
-            envelope=_EnvelopeIdentityView(self),
-            bound_source_id=self.bound_source_id,
-            source=self.bound_source.source,
-            result=self.semantic_replay_result,
-            semantic_replay_document_sha256=self.semantic_replay_document_sha256,
+        return _path_payload_from_validation_input_v1(
+            _path_authorization_validation_input_v1(self)
         )
 
     def _assert_current(self) -> None:
@@ -267,24 +412,34 @@ class VerifiedSharedResourcePathAuthorizationV1:
         return {**self._payload(), "path_exact_authorization_id": self.authorization_id}
 
 
-class _EnvelopeIdentityView:
-    """Minimal attribute view reused by the canonical path payload."""
-
-    __slots__ = (
-        "production_runtime_envelope_id",
-        "counter_registry_id",
-        "stage_profile_id",
-        "occurrence_id",
-        "route_attempt_id",
-        "decision_point_id",
-        "measurement_window_id",
-        "production_runtime_replay_id",
-        "terminal_closure_observation_id",
+def _path_authorization_validation_input_v1(
+    row: VerifiedSharedResourcePathAuthorizationV1,
+) -> _PathAuthorizationValidationInputV1:
+    return _PathAuthorizationValidationInputV1(
+        authorization_id=row.authorization_id,
+        source_v3_envelope_id=row.source_v3_envelope_id,
+        production_runtime_envelope_id=row.production_runtime_envelope_id,
+        counter_registry_id=row.counter_registry_id,
+        stage_profile_id=row.stage_profile_id,
+        occurrence_id=row.occurrence_id,
+        route_attempt_id=row.route_attempt_id,
+        decision_point_id=row.decision_point_id,
+        measurement_window_id=row.measurement_window_id,
+        production_runtime_replay_id=row.production_runtime_replay_id,
+        terminal_closure_observation_id=row.terminal_closure_observation_id,
+        bound_source_id=row.bound_source_id,
+        path=row.path,
+        exact_value=row.exact_value,
+        reducer=row.reducer,
+        semantic_verifier_key=row.semantic_verifier_key,
+        semantic_verifier_id=row.semantic_verifier_id,
+        semantic_replay_document_sha256=row.semantic_replay_document_sha256,
+        source_operational_cutoff_id=row.source_operational_cutoff_id,
+        source_local_start_sequence=row.source_local_start_sequence,
+        source_local_cutoff_sequence=row.source_local_cutoff_sequence,
+        bound_source=row.bound_source,
+        semantic_replay_result=row.semantic_replay_result,
     )
-
-    def __init__(self, row: VerifiedSharedResourcePathAuthorizationV1) -> None:
-        for name in self.__slots__:
-            setattr(self, name, getattr(row, name))
 
 
 def _freeze_path_authorization(
@@ -298,7 +453,17 @@ def _freeze_path_authorization(
     digest = _semantic_document_digest(result)
     payload = _path_payload(
         source_envelope_id=source_envelope_id,
-        envelope=envelope,
+        production_runtime_envelope_id=envelope.production_runtime_envelope_id,
+        counter_registry_id=envelope.counter_registry_id,
+        stage_profile_id=envelope.stage_profile_id,
+        occurrence_id=envelope.occurrence_id,
+        route_attempt_id=envelope.route_attempt_id,
+        decision_point_id=envelope.decision_point_id,
+        measurement_window_id=envelope.measurement_window_id,
+        production_runtime_replay_id=envelope.production_runtime_replay_id,
+        terminal_closure_observation_id=(
+            envelope.terminal_closure_observation_id
+        ),
         bound_source_id=bound_source.bound_source_id,
         source=source,
         result=result,
@@ -336,7 +501,7 @@ def _envelope_payload(
     *,
     source_envelope: live_v3.K7ProductionSharedResourceEnvelopeV3,
     source_envelope_id: str,
-    authorizations: tuple[VerifiedSharedResourcePathAuthorizationV1, ...],
+    authorizations: tuple[Any, ...],
 ) -> dict[str, Any]:
     return {
         "schema": "acfqp.v075_k7_verified_nine_shared_resource_envelope.v1",
@@ -364,7 +529,15 @@ def _envelope_payload(
             row.authorization_id for row in authorizations
         ],
         "exact_values": [
-            {"path": row.path, "value": row.exact_value, "reducer": row.reducer.value}
+            {
+                "path": row.path,
+                "value": row.exact_value,
+                "reducer": (
+                    row.reducer.value
+                    if type(row.reducer) is ReducerEnum
+                    else row.reducer
+                ),
+            }
             for row in authorizations
         ],
         "source_local_windows": [
@@ -389,6 +562,125 @@ def _envelope_payload(
 
 
 @dataclass(frozen=True, slots=True)
+class _ValidatedNineEnvelopePrimitiveV1:
+    verified_envelope_id: str
+    source_v3_envelope_id: str
+    authorization_snapshots: tuple[
+        K7ValidatedSharedResourcePathSnapshotV1, ...
+    ]
+    canonical_document_bytes: bytes
+
+
+def _validate_verified_nine_envelope_once_v1(
+    envelope: Any,
+    *,
+    authorization_snapshots: tuple[
+        K7ValidatedSharedResourcePathSnapshotV1, ...
+    ]
+    | None = None,
+) -> _ValidatedNineEnvelopePrimitiveV1:
+    """Validate one envelope; prevalidated row snapshots avoid a second pass."""
+
+    if type(envelope) is not K7VerifiedNineSharedResourceEnvelopeV1:
+        _fail("verified envelope contains a foreign V3 source envelope")
+    _cid(envelope.verified_envelope_id, "verified nine-path envelope")
+    _cid(envelope.source_v3_envelope_id, "source V3 envelope")
+    if type(envelope.source_envelope) is not live_v3.K7ProductionSharedResourceEnvelopeV3:
+        _fail("verified envelope contains a foreign V3 source envelope")
+    if envelope.source_envelope.envelope_id != envelope.source_v3_envelope_id:
+        _fail("source V3 envelope was mutated or transplanted")
+    if (
+        type(envelope.authorizations) is not tuple
+        or any(
+            type(row) is not VerifiedSharedResourcePathAuthorizationV1
+            for row in envelope.authorizations
+        )
+        or tuple(row.path for row in envelope.authorizations)
+        != resolution_v2.SHARED_RESOURCE_PATHS
+        or len({row.authorization_id for row in envelope.authorizations})
+        != len(resolution_v2.SHARED_RESOURCE_PATHS)
+        or tuple(row.bound_source_id for row in envelope.authorizations)
+        != tuple(
+            row.bound_source_id for row in envelope.source_envelope.bound_sources
+        )
+    ):
+        _fail("verified envelope lacks the exact ordered distinct nine-path set")
+    if authorization_snapshots is None:
+        validated = tuple(
+            _validate_path_authorization_values_once_v1(
+                _path_authorization_validation_input_v1(row)
+            )
+            for row in envelope.authorizations
+        )
+    else:
+        if (
+            type(authorization_snapshots) is not tuple
+            or len(authorization_snapshots) != len(envelope.authorizations)
+            or any(
+                type(row) is not K7ValidatedSharedResourcePathSnapshotV1
+                for row in authorization_snapshots
+            )
+            or tuple(
+                (row.path, row.authorization_id, row.bound_source_id)
+                for row in envelope.authorizations
+            )
+            != tuple(
+                (row.path, row.authorization_id, row.bound_source_id)
+                for row in authorization_snapshots
+            )
+        ):
+            _fail("prevalidated path snapshots differ from the verified envelope")
+        validated = authorization_snapshots
+    context = (
+        envelope.source_v3_envelope_id,
+        envelope.source_envelope.production_runtime_envelope_id,
+        envelope.source_envelope.counter_registry_id,
+        envelope.source_envelope.stage_profile_id,
+        envelope.source_envelope.occurrence_id,
+        envelope.source_envelope.route_attempt_id,
+        envelope.source_envelope.decision_point_id,
+        envelope.source_envelope.measurement_window_id,
+        envelope.source_envelope.production_runtime_replay_id,
+        envelope.source_envelope.terminal_closure_observation_id,
+    )
+    for row in validated:
+        if (
+            row.source_v3_envelope_id,
+            row.production_runtime_envelope_id,
+            row.counter_registry_id,
+            row.stage_profile_id,
+            row.occurrence_id,
+            row.route_attempt_id,
+            row.decision_point_id,
+            row.measurement_window_id,
+            row.production_runtime_replay_id,
+            row.terminal_closure_observation_id,
+        ) != context:
+            _fail("one exact authorization was transplanted across context")
+    payload = _envelope_payload(
+        source_envelope=envelope.source_envelope,
+        source_envelope_id=envelope.source_v3_envelope_id,
+        authorizations=validated,
+    )
+    expected = content_id(VERIFIED_NINE_ENVELOPE_V1_DOMAIN, payload)
+    if expected != envelope.verified_envelope_id:
+        _fail("verified nine-path envelope content identity was mutated")
+    return _ValidatedNineEnvelopePrimitiveV1(
+        verified_envelope_id=envelope.verified_envelope_id,
+        source_v3_envelope_id=envelope.source_v3_envelope_id,
+        authorization_snapshots=validated,
+        canonical_document_bytes=canonical_json_bytes(
+            {
+                **payload,
+                "verified_nine_shared_resource_envelope_id": (
+                    envelope.verified_envelope_id
+                ),
+            }
+        ),
+    )
+
+
+@dataclass(frozen=True, slots=True)
 class K7VerifiedNineSharedResourceEnvelopeV1:
     """Ordered exact replay closure for all nine shared-resource paths."""
 
@@ -405,61 +697,7 @@ class K7VerifiedNineSharedResourceEnvelopeV1:
     def __post_init__(self, _issuer: object) -> None:
         if _issuer is not _ENVELOPE_ISSUER:
             _fail("verified nine-path envelope is caller-minted")
-        _cid(self.verified_envelope_id, "verified nine-path envelope")
-        _cid(self.source_v3_envelope_id, "source V3 envelope")
-        if type(self.source_envelope) is not live_v3.K7ProductionSharedResourceEnvelopeV3:
-            _fail("verified envelope contains a foreign V3 source envelope")
-        if self.source_envelope.envelope_id != self.source_v3_envelope_id:
-            _fail("source V3 envelope was mutated or transplanted")
-        if (
-            type(self.authorizations) is not tuple
-            or any(
-                type(row) is not VerifiedSharedResourcePathAuthorizationV1
-                for row in self.authorizations
-            )
-            or tuple(row.path for row in self.authorizations)
-            != resolution_v2.SHARED_RESOURCE_PATHS
-            or len({row.authorization_id for row in self.authorizations})
-            != len(resolution_v2.SHARED_RESOURCE_PATHS)
-            or tuple(row.bound_source_id for row in self.authorizations)
-            != tuple(
-                row.bound_source_id for row in self.source_envelope.bound_sources
-            )
-        ):
-            _fail("verified envelope lacks the exact ordered distinct nine-path set")
-        context = (
-            self.source_v3_envelope_id,
-            self.source_envelope.production_runtime_envelope_id,
-            self.source_envelope.counter_registry_id,
-            self.source_envelope.stage_profile_id,
-            self.source_envelope.occurrence_id,
-            self.source_envelope.route_attempt_id,
-            self.source_envelope.decision_point_id,
-            self.source_envelope.measurement_window_id,
-            self.source_envelope.production_runtime_replay_id,
-            self.source_envelope.terminal_closure_observation_id,
-        )
-        for row in self.authorizations:
-            row._assert_current()
-            if (
-                row.source_v3_envelope_id,
-                row.production_runtime_envelope_id,
-                row.counter_registry_id,
-                row.stage_profile_id,
-                row.occurrence_id,
-                row.route_attempt_id,
-                row.decision_point_id,
-                row.measurement_window_id,
-                row.production_runtime_replay_id,
-                row.terminal_closure_observation_id,
-            ) != context:
-                _fail("one exact authorization was transplanted across context")
-        expected = content_id(
-            VERIFIED_NINE_ENVELOPE_V1_DOMAIN,
-            self._payload(),
-        )
-        if expected != self.verified_envelope_id:
-            _fail("verified nine-path envelope content identity was mutated")
+        _validate_verified_nine_envelope_once_v1(self)
 
     def _payload(self) -> dict[str, Any]:
         return _envelope_payload(
@@ -529,9 +767,168 @@ def verify_k7_production_shared_resource_envelope_exact_v1(
     )
 
 
+def _replay_expected_path_snapshot_once_v1(
+    *,
+    envelope: live_v3.K7ProductionSharedResourceEnvelopeV3,
+    source_envelope_id: str,
+    bound_source: live_v3.BoundSharedResourceSourceV3,
+) -> K7ValidatedSharedResourcePathSnapshotV1:
+    try:
+        result = replay_v2.verify_shared_resource_source_exact_v2(
+            bound_source.source
+        )
+    except replay_v2.ConstructionSharedResourceSemanticReplayV2Error as error:
+        raise ConstructionSharedResourceVerifiedEnvelopeV1Error(
+            f"{bound_source.source.path} exact semantic replay failed"
+        ) from error
+    source = bound_source.source
+    digest = _semantic_document_digest(result)
+    payload = _path_payload(
+        source_envelope_id=source_envelope_id,
+        production_runtime_envelope_id=envelope.production_runtime_envelope_id,
+        counter_registry_id=envelope.counter_registry_id,
+        stage_profile_id=envelope.stage_profile_id,
+        occurrence_id=envelope.occurrence_id,
+        route_attempt_id=envelope.route_attempt_id,
+        decision_point_id=envelope.decision_point_id,
+        measurement_window_id=envelope.measurement_window_id,
+        production_runtime_replay_id=envelope.production_runtime_replay_id,
+        terminal_closure_observation_id=(
+            envelope.terminal_closure_observation_id
+        ),
+        bound_source_id=bound_source.bound_source_id,
+        source=source,
+        result=result,
+        semantic_replay_document_sha256=digest,
+    )
+    return _validate_path_authorization_values_once_v1(
+        _PathAuthorizationValidationInputV1(
+            authorization_id=content_id(
+                PATH_EXACT_AUTHORIZATION_V1_DOMAIN, payload
+            ),
+            source_v3_envelope_id=source_envelope_id,
+            production_runtime_envelope_id=(
+                envelope.production_runtime_envelope_id
+            ),
+            counter_registry_id=envelope.counter_registry_id,
+            stage_profile_id=envelope.stage_profile_id,
+            occurrence_id=envelope.occurrence_id,
+            route_attempt_id=envelope.route_attempt_id,
+            decision_point_id=envelope.decision_point_id,
+            measurement_window_id=envelope.measurement_window_id,
+            production_runtime_replay_id=envelope.production_runtime_replay_id,
+            terminal_closure_observation_id=(
+                envelope.terminal_closure_observation_id
+            ),
+            bound_source_id=bound_source.bound_source_id,
+            path=source.path,
+            exact_value=result.exact_value,
+            reducer=result.reducer,
+            semantic_verifier_key=result.semantic_verifier_key,
+            semantic_verifier_id=result.semantic_verifier_id,
+            semantic_replay_document_sha256=digest,
+            source_operational_cutoff_id=source.operational_cutoff_id,
+            source_local_start_sequence=source.covered_start_sequence,
+            source_local_cutoff_sequence=source.covered_cutoff_sequence,
+            bound_source=bound_source,
+            semantic_replay_result=result,
+        )
+    )
+
+
+def validate_k7_verified_nine_shared_resource_pair_once_v1(
+    *,
+    source_envelope: Any,
+    supplied_verified_envelope: Any,
+) -> K7VerifiedNineSharedResourceTransactionSnapshotV1:
+    """Replay one expected/supplied pair exactly once for one transaction.
+
+    This deliberately returns no live authorization or mutable document.  It
+    is a bounded validation primitive for a caller-owned public transaction;
+    the standalone verifier and public artifact properties continue to replay
+    their full authoritative checks on every call.
+    """
+
+    if type(source_envelope) is not live_v3.K7ProductionSharedResourceEnvelopeV3:
+        _fail("exact nine-path pair replay requires one exact V3 source envelope")
+    if (
+        type(supplied_verified_envelope)
+        is not K7VerifiedNineSharedResourceEnvelopeV1
+    ):
+        _fail("exact nine-path pair replay requires one exact verified envelope")
+    source_envelope_id = source_envelope.envelope_id
+    if tuple(row.source.path for row in source_envelope.bound_sources) != (
+        resolution_v2.SHARED_RESOURCE_PATHS
+    ):
+        _fail("V3 source envelope is not the fixed ordered nine-path set")
+    authorization_rows = supplied_verified_envelope.authorizations
+    if (
+        type(authorization_rows) is not tuple
+        or any(
+            type(row) is not VerifiedSharedResourcePathAuthorizationV1
+            for row in authorization_rows
+        )
+    ):
+        _fail("verified envelope lacks the exact ordered distinct nine-path set")
+    expected = tuple(
+        _replay_expected_path_snapshot_once_v1(
+            envelope=source_envelope,
+            source_envelope_id=source_envelope_id,
+            bound_source=bound_source,
+        )
+        for bound_source in source_envelope.bound_sources
+    )
+    supplied = tuple(
+        _validate_path_authorization_values_once_v1(
+            _path_authorization_validation_input_v1(row)
+        )
+        for row in authorization_rows
+    )
+    supplied_envelope = _validate_verified_nine_envelope_once_v1(
+        supplied_verified_envelope,
+        authorization_snapshots=supplied,
+    )
+    expected_payload = _envelope_payload(
+        source_envelope=source_envelope,
+        source_envelope_id=source_envelope_id,
+        authorizations=expected,
+    )
+    expected_envelope_id = content_id(
+        VERIFIED_NINE_ENVELOPE_V1_DOMAIN,
+        expected_payload,
+    )
+    expected_document_bytes = canonical_json_bytes(
+        {
+            **expected_payload,
+            "verified_nine_shared_resource_envelope_id": expected_envelope_id,
+        }
+    )
+    if (
+        expected_envelope_id != supplied_envelope.verified_envelope_id
+        or expected_document_bytes != supplied_envelope.canonical_document_bytes
+        or supplied_envelope.source_v3_envelope_id != source_envelope_id
+        or tuple(row.canonical_document_bytes for row in expected)
+        != tuple(row.canonical_document_bytes for row in supplied)
+    ):
+        _fail("verified nine-source authority was transplanted or stale")
+    return K7VerifiedNineSharedResourceTransactionSnapshotV1(
+        source_v3_envelope_id=source_envelope_id,
+        expected_verified_envelope_id=expected_envelope_id,
+        supplied_verified_envelope_id=supplied_envelope.verified_envelope_id,
+        expected_authorizations=expected,
+        supplied_authorizations=supplied,
+        expected_canonical_document_bytes=expected_document_bytes,
+        supplied_canonical_document_bytes=(
+            supplied_envelope.canonical_document_bytes
+        ),
+    )
+
+
 __all__ = (
     "ConstructionSharedResourceVerifiedEnvelopeV1Error",
+    "K7ValidatedSharedResourcePathSnapshotV1",
     "K7VerifiedNineSharedResourceEnvelopeV1",
+    "K7VerifiedNineSharedResourceTransactionSnapshotV1",
     "PATH_EXACT_AUTHORIZATION_V1_DOMAIN",
     "PROFILE_KEY",
     "PROPOSED_CONTRACT_VERSION",
@@ -539,5 +936,6 @@ __all__ = (
     "SCHEMA_VERSION",
     "VERIFIED_NINE_ENVELOPE_V1_DOMAIN",
     "VerifiedSharedResourcePathAuthorizationV1",
+    "validate_k7_verified_nine_shared_resource_pair_once_v1",
     "verify_k7_production_shared_resource_envelope_exact_v1",
 )
