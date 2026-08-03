@@ -4852,3 +4852,41 @@ do not prove live provenance, route-time access is unobserved, and every V1
 candidate is rejected at the production boundary. Current-access authority,
 formal V7 selection, execution, accounting and all official Gates remain
 locked. See `specs/K7_H1_PRODUCTION_CURRENT_IDENTITY_V1.md`.
+
+## V0-110B-2E-42..43 sealed-source and source-owned H1 fallback
+
+Contracts `2.0.53`--`2.0.54` first freeze a path-free seven-boundary V4
+segment, then connect a separate sealed owner to the real deterministic H1
+ground fallback. The completed segment binds exact runtime query/kernel/search
+semantics, result/frontier/policy/work and the positive event transcript.
+Indirect canonical G2048 transition dependencies are live-replayed; changed
+helpers or synchronized fingerprint substitutions close before the first
+event. Exact infeasibility and cap-exhausted prefixes remain distinct.
+
+These milestones close the seven fallback/control owners only. Nine shared
+resources, formal 202-record materialization, terminal/campaign closure and
+official execution remain absent. See `specs/K7_SEALED_SOURCE_ROUTE_SEGMENT_V4.md`
+and `specs/K7_SEALED_OWNED_FALLBACK_ENGINE_V3.md`.
+
+## V0-110B-2E-44 H1 adapter, topology and five-frame construction core
+
+Contract `2.0.55` freezes nonauthoritative H1 request/result candidates,
+distinct broker/worker/business descriptor capabilities and the sole
+five-frame protocol. The durable/V4 bridge is explicitly limited to
+metadata/configuration compatibility; transition/source/fresh-exec authority
+stays false. No live role is launched, and the reserved production interfaces
+always reject. See `specs/K7_H1_BUSINESS_ADAPTER_CORE_V1.md`.
+
+## V0-110B-2E-45 exact V6 accounting semantic replay
+
+Contract `2.0.56` independently enforces the exact 202-required-leaf stage
+profile and deterministically reconstructs WorkVector and the 182-term,
+eight-axis ComparisonVector. It closes numeric accounting replay, including
+all explicit DIRECT_FALLBACK forbidden zeros, but not recorder provenance,
+upper compliance, terminal or occurrence closure. See
+`specs/K7_CONSTRUCTION_ACCOUNTING_SEMANTIC_VERIFICATION_V6.md`.
+
+The next construction milestone is a non-circular fresh-exec predecision
+current-access authority, followed by the formal V7 upper/decision and the
+two-process nine-receipt runtime. All official/economics/scalar,
+Counter-Completeness and sample-efficiency Gates remain locked or `NOT_RUN`.

@@ -828,6 +828,57 @@ CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_FIXED_POINT_ITERATION_V1_DOMAIN = (
 CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_FIXED_POINT_RESULT_V1_DOMAIN = (
     "acfqp:construction-k7-h1-branch-aware-output-fixed-point-result:v1"
 )
+CONSTRUCTION_K7_H1_BUSINESS_ADAPTER_PROFILE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-business-adapter-profile:v1"
+)
+CONSTRUCTION_K7_H1_PRODUCTION_BUSINESS_REQUEST_CANDIDATE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-production-business-request-candidate:v1"
+)
+CONSTRUCTION_K7_H1_PRODUCTION_BUSINESS_RESULT_CANDIDATE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-production-business-result-candidate:v1"
+)
+CONSTRUCTION_K7_H1_CURRENT_ACCESS_CANDIDATE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-current-access-candidate:v1"
+)
+CONSTRUCTION_K7_H1_FORMAL_V7_DECISION_CANDIDATE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-formal-v7-decision-candidate:v1"
+)
+CONSTRUCTION_K7_H1_SEARCH_SEMANTICS_BRIDGE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-search-semantics-bridge:v1"
+)
+CONSTRUCTION_K7_H1_BUSINESS_RESULT_COMMIT_RECEIPT_CANDIDATE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-business-result-commit-receipt-candidate:v1"
+)
+CONSTRUCTION_K7_H1_WORKER_RESULT_VERIFICATION_CANDIDATE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-worker-result-verification-candidate:v1"
+)
+CONSTRUCTION_K7_H1_EXECUTION_TOPOLOGY_PROFILE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-execution-topology-profile:v1"
+)
+CONSTRUCTION_K7_H1_BROKER_IPC_PROFILE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-broker-ipc-profile:v1"
+)
+CONSTRUCTION_K7_H1_BROKER_IPC_BINDING_CANDIDATE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-broker-ipc-binding-candidate:v1"
+)
+CONSTRUCTION_K7_H1_BROKER_IPC_WORKER_READY_CANDIDATE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-broker-ipc-worker-ready-candidate:v1"
+)
+CONSTRUCTION_K7_H1_BROKER_IPC_BUSINESS_REQUEST_CANDIDATE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-broker-ipc-business-request-candidate:v1"
+)
+CONSTRUCTION_K7_H1_BROKER_IPC_BUSINESS_RESULT_CANDIDATE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-broker-ipc-business-result-candidate:v1"
+)
+CONSTRUCTION_K7_H1_BROKER_IPC_WORKER_ACK_CANDIDATE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-broker-ipc-worker-ack-candidate:v1"
+)
+CONSTRUCTION_K7_H1_BROKER_IPC_WORKER_EOF_CANDIDATE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-broker-ipc-worker-eof-candidate:v1"
+)
+CONSTRUCTION_K7_H1_BROKER_IPC_TRANSCRIPT_CANDIDATE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-broker-ipc-transcript-candidate:v1"
+)
 CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_SOURCE_AUTHORITY_DOMAIN = (
     "acfqp:construction-accounting-route-segment-source-authority:v4"
 )
@@ -848,6 +899,57 @@ CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_TERMINAL_DOMAIN = (
 )
 CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_TRANSCRIPT_DOMAIN = (
     "acfqp:construction-accounting-route-segment-transcript:v4"
+)
+CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_ENGINE_SOURCE_DOMAIN = (
+    "acfqp:construction-accounting-route-segment-owned-engine-source:v4"
+)
+CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_ENGINE_BOUNDARY_DOMAIN = (
+    "acfqp:construction-accounting-route-segment-owned-engine-boundary:v4"
+)
+CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_ENGINE_AUTHORITY_DOMAIN = (
+    "acfqp:construction-accounting-route-segment-owned-engine-authority:v4"
+)
+CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_START_DOMAIN = (
+    "acfqp:construction-accounting-route-segment-owned-start:v4"
+)
+CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_EVENT_DOMAIN = (
+    "acfqp:construction-accounting-route-segment-owned-event:v4"
+)
+CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_EXECUTION_BINDING_DOMAIN = (
+    "acfqp:construction-accounting-route-segment-owned-execution-binding:v4"
+)
+CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_STRUCTURAL_SEMANTICS_DOMAIN = (
+    "acfqp:construction-accounting-route-segment-owned-structural-semantics:v4"
+)
+CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_KERNEL_SEMANTICS_DOMAIN = (
+    "acfqp:construction-accounting-route-segment-owned-kernel-semantics:v4"
+)
+CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_QUERY_SEMANTICS_DOMAIN = (
+    "acfqp:construction-accounting-route-segment-owned-query-semantics:v4"
+)
+CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_THRESHOLD_SEMANTICS_DOMAIN = (
+    "acfqp:construction-accounting-route-segment-owned-threshold-semantics:v4"
+)
+CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_REWARD_SEMANTICS_DOMAIN = (
+    "acfqp:construction-accounting-route-segment-owned-reward-semantics:v4"
+)
+CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_POLICY_CLASS_DOMAIN = (
+    "acfqp:construction-accounting-route-segment-owned-policy-class:v4"
+)
+CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_SEARCH_PROFILE_DOMAIN = (
+    "acfqp:construction-accounting-route-segment-owned-search-profile:v4"
+)
+CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_SEARCH_SEMANTICS_DOMAIN = (
+    "acfqp:construction-accounting-route-segment-owned-search-semantics:v4"
+)
+CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_G2048_TRANSITION_CLOSURE_DOMAIN = (
+    "acfqp:construction-accounting-route-segment-owned-g2048-transition-closure:v4"
+)
+CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_TERMINAL_DOMAIN = (
+    "acfqp:construction-accounting-route-segment-owned-terminal:v4"
+)
+CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_TRANSCRIPT_DOMAIN = (
+    "acfqp:construction-accounting-route-segment-owned-transcript:v4"
 )
 CONSTRUCTION_OWNER_BOUNDARY_SITE_CLOSURE_V1_DOMAIN = (
     "acfqp:construction-owner-boundary-site-closure:v1"
@@ -2283,6 +2385,57 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         "construction_k7_h1_branch_aware_output_fixed_point_result_v1": (
             CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_FIXED_POINT_RESULT_V1_DOMAIN
         ),
+        "construction_k7_h1_business_adapter_profile_v1": (
+            CONSTRUCTION_K7_H1_BUSINESS_ADAPTER_PROFILE_V1_DOMAIN
+        ),
+        "construction_k7_h1_production_business_request_candidate_v1": (
+            CONSTRUCTION_K7_H1_PRODUCTION_BUSINESS_REQUEST_CANDIDATE_V1_DOMAIN
+        ),
+        "construction_k7_h1_production_business_result_candidate_v1": (
+            CONSTRUCTION_K7_H1_PRODUCTION_BUSINESS_RESULT_CANDIDATE_V1_DOMAIN
+        ),
+        "construction_k7_h1_current_access_candidate_v1": (
+            CONSTRUCTION_K7_H1_CURRENT_ACCESS_CANDIDATE_V1_DOMAIN
+        ),
+        "construction_k7_h1_formal_v7_decision_candidate_v1": (
+            CONSTRUCTION_K7_H1_FORMAL_V7_DECISION_CANDIDATE_V1_DOMAIN
+        ),
+        "construction_k7_h1_search_semantics_bridge_v1": (
+            CONSTRUCTION_K7_H1_SEARCH_SEMANTICS_BRIDGE_V1_DOMAIN
+        ),
+        "construction_k7_h1_business_result_commit_receipt_candidate_v1": (
+            CONSTRUCTION_K7_H1_BUSINESS_RESULT_COMMIT_RECEIPT_CANDIDATE_V1_DOMAIN
+        ),
+        "construction_k7_h1_worker_result_verification_candidate_v1": (
+            CONSTRUCTION_K7_H1_WORKER_RESULT_VERIFICATION_CANDIDATE_V1_DOMAIN
+        ),
+        "construction_k7_h1_execution_topology_profile_v1": (
+            CONSTRUCTION_K7_H1_EXECUTION_TOPOLOGY_PROFILE_V1_DOMAIN
+        ),
+        "construction_k7_h1_broker_ipc_profile_v1": (
+            CONSTRUCTION_K7_H1_BROKER_IPC_PROFILE_V1_DOMAIN
+        ),
+        "construction_k7_h1_broker_ipc_binding_candidate_v1": (
+            CONSTRUCTION_K7_H1_BROKER_IPC_BINDING_CANDIDATE_V1_DOMAIN
+        ),
+        "construction_k7_h1_broker_ipc_worker_ready_candidate_v1": (
+            CONSTRUCTION_K7_H1_BROKER_IPC_WORKER_READY_CANDIDATE_V1_DOMAIN
+        ),
+        "construction_k7_h1_broker_ipc_business_request_candidate_v1": (
+            CONSTRUCTION_K7_H1_BROKER_IPC_BUSINESS_REQUEST_CANDIDATE_V1_DOMAIN
+        ),
+        "construction_k7_h1_broker_ipc_business_result_candidate_v1": (
+            CONSTRUCTION_K7_H1_BROKER_IPC_BUSINESS_RESULT_CANDIDATE_V1_DOMAIN
+        ),
+        "construction_k7_h1_broker_ipc_worker_ack_candidate_v1": (
+            CONSTRUCTION_K7_H1_BROKER_IPC_WORKER_ACK_CANDIDATE_V1_DOMAIN
+        ),
+        "construction_k7_h1_broker_ipc_worker_eof_candidate_v1": (
+            CONSTRUCTION_K7_H1_BROKER_IPC_WORKER_EOF_CANDIDATE_V1_DOMAIN
+        ),
+        "construction_k7_h1_broker_ipc_transcript_candidate_v1": (
+            CONSTRUCTION_K7_H1_BROKER_IPC_TRANSCRIPT_CANDIDATE_V1_DOMAIN
+        ),
         "construction_accounting_route_segment_v4_source_authority": (
             CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_SOURCE_AUTHORITY_DOMAIN
         ),
@@ -2303,6 +2456,57 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_accounting_route_segment_v4_transcript": (
             CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_TRANSCRIPT_DOMAIN
+        ),
+        "construction_accounting_route_segment_v4_owned_engine_source": (
+            CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_ENGINE_SOURCE_DOMAIN
+        ),
+        "construction_accounting_route_segment_v4_owned_engine_boundary": (
+            CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_ENGINE_BOUNDARY_DOMAIN
+        ),
+        "construction_accounting_route_segment_v4_owned_engine_authority": (
+            CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_ENGINE_AUTHORITY_DOMAIN
+        ),
+        "construction_accounting_route_segment_v4_owned_start": (
+            CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_START_DOMAIN
+        ),
+        "construction_accounting_route_segment_v4_owned_event": (
+            CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_EVENT_DOMAIN
+        ),
+        "construction_accounting_route_segment_v4_owned_execution_binding": (
+            CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_EXECUTION_BINDING_DOMAIN
+        ),
+        "construction_accounting_route_segment_v4_owned_structural_semantics": (
+            CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_STRUCTURAL_SEMANTICS_DOMAIN
+        ),
+        "construction_accounting_route_segment_v4_owned_kernel_semantics": (
+            CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_KERNEL_SEMANTICS_DOMAIN
+        ),
+        "construction_accounting_route_segment_v4_owned_query_semantics": (
+            CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_QUERY_SEMANTICS_DOMAIN
+        ),
+        "construction_accounting_route_segment_v4_owned_threshold_semantics": (
+            CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_THRESHOLD_SEMANTICS_DOMAIN
+        ),
+        "construction_accounting_route_segment_v4_owned_reward_semantics": (
+            CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_REWARD_SEMANTICS_DOMAIN
+        ),
+        "construction_accounting_route_segment_v4_owned_policy_class": (
+            CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_POLICY_CLASS_DOMAIN
+        ),
+        "construction_accounting_route_segment_v4_owned_search_profile": (
+            CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_SEARCH_PROFILE_DOMAIN
+        ),
+        "construction_accounting_route_segment_v4_owned_search_semantics": (
+            CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_SEARCH_SEMANTICS_DOMAIN
+        ),
+        "construction_accounting_route_segment_v4_owned_g2048_transition_closure": (
+            CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_G2048_TRANSITION_CLOSURE_DOMAIN
+        ),
+        "construction_accounting_route_segment_v4_owned_terminal": (
+            CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_TERMINAL_DOMAIN
+        ),
+        "construction_accounting_route_segment_v4_owned_transcript": (
+            CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNED_TRANSCRIPT_DOMAIN
         ),
         "construction_owner_boundary_site_closure_v1": (
             CONSTRUCTION_OWNER_BOUNDARY_SITE_CLOSURE_V1_DOMAIN

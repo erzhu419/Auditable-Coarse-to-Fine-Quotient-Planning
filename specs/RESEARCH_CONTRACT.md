@@ -1,11 +1,16 @@
 # Research Contract
 
-**Current construction contract:** `2.0.51`
+**Current construction contract:** `2.0.56`
 
 **Current construction profiles:** `v075_k7_production_role_manifest_v1`,
 `v075_k7_business_entry_core_v1`, `v075_k7_broker_worker_entry_core_v1`,
 `construction_k7_h1_direct_fallback_two_role_recipe_v1`,
-`construction_k7_h1_branch_aware_output_contract_v1`
+`construction_k7_h1_branch_aware_output_contract_v1`,
+`construction_k7_h1_production_current_identity_v1`,
+`construction_accounting_route_segment_v4`,
+`phase3e_fallback_owned_v3`,
+`construction_k7_h1_business_adapter_v1`, and
+`construction_accounting_semantic_verification_v6`
 
 ## Definitions
 
@@ -5878,6 +5883,56 @@ outside its unforgeability claim. A production-consumer guard rejects every V1
 candidate, including a process-locally injected one. Observed access evidence,
 the freeze barrier, formal V7 decision, execution and accounting remain
 absent. See `specs/K7_H1_PRODUCTION_CURRENT_IDENTITY_V1.md`.
+
+Official execution, scalar/break-even, workload economics, Counter
+Completeness and sample-efficiency remain locked or `NOT_RUN`.
+
+## Contract 2.0.53: path-free sealed-source route segment
+
+V0-110B-2E-42 verifies the exact owned-engine member and seven V6 operation
+boundaries directly from supplied canonical bytes. It issues a path-free,
+construction-only start/event/terminal/transcript chain and retains a typed
+blocker because the historical owner imports the V3 gateways. It does not
+reinterpret the construction harness as production work. See
+`specs/K7_SEALED_SOURCE_ROUTE_SEGMENT_V4.md`.
+
+## Contract 2.0.54: source-owned exact H1 fallback segment
+
+V0-110B-2E-43 adds a separate sealed owner that performs the real exhaustive
+deterministic H1 ground fallback and emits all seven primitive event families
+through V4. The start and bind independently derive the canonical
+`G2048Kernel(2)` query/search package and verify a live recursive transition
+dependency closure. Completion binds the exact result, frontier, policy,
+WorkVector, cap outcome and explicit raw-search provenance state. The exact
+infeasible regression and every cap closure retain their actual positive
+prefix; cap exhaustion is never infeasibility. This is still a Python
+construction authority, not a complete production route. See
+`specs/K7_SEALED_OWNED_FALLBACK_ENGINE_V3.md`.
+
+## Contract 2.0.55: H1 business-adapter/topology construction core
+
+V0-110B-2E-44 freezes construction-only request/result candidates, a
+three-role descriptor topology and a strict five-frame broker protocol. The
+request replays the durable proof and binds a canonical H1 V4
+metadata/configuration compatibility package; it explicitly does not prove
+transition-table, kernel-source or fresh-exec equivalence. Result replay binds
+both infeasible and cap-exhausted owned transcripts. Reserved production
+types are unissuable, socket endpoints are distinct objects joined by a pair
+ID, and the output plan uses a regular O_TMPFILE commit with business reap
+before relay. No process is launched and all production consumers must reject
+the candidates. See `specs/K7_H1_BUSINESS_ADAPTER_CORE_V1.md`.
+
+## Contract 2.0.56: exact V6 accounting semantic replay
+
+V0-110B-2E-45 consumes exactly 202 required native CounterRecords and
+reconstructs the canonical WorkVector, all 182 operational projection terms
+and the eight-axis ComparisonVector under the exact V6 registry, stage,
+comparison and projection profiles. For DIRECT_FALLBACK it requires all 178
+stage-forbidden paths as explicit observed zeros and preserves legitimate
+stage-authorized common work. It proves accounting semantics only; recorder
+process provenance, selected-upper compliance, terminal and occurrence
+closure remain downstream. See
+`specs/K7_CONSTRUCTION_ACCOUNTING_SEMANTIC_VERIFICATION_V6.md`.
 
 Official execution, scalar/break-even, workload economics, Counter
 Completeness and sample-efficiency remain locked or `NOT_RUN`.
