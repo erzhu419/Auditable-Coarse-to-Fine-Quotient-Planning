@@ -3236,3 +3236,11 @@ The production-owner source/runtime binding has independent mutation-boundary
 coverage, but the result still stops before the nine shared-resource receipts,
 formal 202-record accounting, FQ9 terminal and occurrence closure. See
 [`specs/K7_DIRECT_FALLBACK_PRODUCTION_OWNER_SLICE_V2.md`](specs/K7_DIRECT_FALLBACK_PRODUCTION_OWNER_SLICE_V2.md).
+
+Contract `2.0.46` adds the next pre-execution blocker: durable proof/current
+identity and typed access-order replay produce an exact 182-leaf candidate
+(`166+7+9`) and exactly eight comparison axes. The nine shared-resource rows
+are finite but not yet enforced by the selected runner, so the object remains
+`FINITE_ADMISSION_CAP_CANDIDATE` with route selection, execution and formal
+actual-compliance disabled. See
+[`specs/K7_DIRECT_FALLBACK_ROUTE_UPPER_V6.md`](specs/K7_DIRECT_FALLBACK_ROUTE_UPPER_V6.md).

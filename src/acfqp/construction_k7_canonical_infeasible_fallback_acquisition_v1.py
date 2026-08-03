@@ -1341,6 +1341,34 @@ def _preexecution_candidate(
     )
 
 
+def replay_canonical_direct_fallback_preexecution_candidate_v1(
+    proof_bytes: bytes,
+    *,
+    current_identity: CanonicalFallbackCurrentIdentityV1 | None = None,
+    cap_profile: GroundFallbackCapProfileV1 | None = None,
+) -> CanonicalDirectFallbackPreexecutionCandidateV1:
+    """Independently reissue the canonical pre-execution authority.
+
+    This is the narrow evaluation-lane replay boundary for downstream
+    construction artifacts that need the typed pre-execution decision but
+    must not trust a supplied candidate object's type or self-reported
+    content ID.  The durable proof and the separately issued current identity
+    are both replayed before a new issuer-owned candidate is returned.  No
+    fallback transition is executed here.
+    """
+
+    _require_unsubstituted_raw_callables()
+    proof, _verified, current = _proof_document(
+        proof_bytes,
+        current_identity=current_identity,
+    )
+    return _preexecution_candidate(
+        proof,
+        current_identity=current,
+        cap_profile=cap_profile,
+    )
+
+
 def _verify_live_execution(
     *,
     execution: GroundFallbackExecutionV1,
@@ -1711,5 +1739,6 @@ __all__ = (
     "SCHEMA_VERSION",
     "acquire_canonical_infeasible_direct_fallback_v1",
     "build_current_canonical_fallback_identity_v1",
+    "replay_canonical_direct_fallback_preexecution_candidate_v1",
     "verify_canonical_infeasible_direct_fallback_acquisition_bytes_v1",
 )

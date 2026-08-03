@@ -1,6 +1,6 @@
 # Research Contract
 
-**Current construction contract:** `2.0.45`
+**Current construction contract:** `2.0.46`
 
 **Current construction profiles:** `v075_k7_production_role_manifest_v1`,
 `v075_k7_business_entry_core_v1`, `v075_k7_broker_worker_entry_core_v1`
@@ -5714,3 +5714,21 @@ receipts, 178 stage-forbidden zeros, eight derived reconciliations, 202 V6
 CounterRecords, WorkVector, ComparisonVector, FQ9 terminal and occurrence
 closure remain absent. No official or Gate state changes. See
 `specs/K7_DIRECT_FALLBACK_PRODUCTION_OWNER_SLICE_V2.md`.
+
+## Contract 2.0.46: V6 finite direct-fallback admission candidate
+
+V0-110B-2E-35 replays the canonical H1 durable proof against its separately
+issued current identity and reissues the complete pre-execution authority;
+exact type plus a recomputed content ID is not sufficient. A typed access log
+is replayed under the official estimate-before-execute profile before the
+candidate decision is frozen.
+
+The operational formula partitions exactly 182 V6 leaves into 166
+stage-forbidden zeros, seven exact typed owner cardinalities and nine finite
+shared-resource admission-cap candidates, then projects them onto exactly the
+eight official comparison axes. The current selected runner does not enforce
+all nine shared caps, so the envelope is only
+`FINITE_ADMISSION_CAP_CANDIDATE`; formal actual-compliance, route selection
+and execution authorization are all false. No accounting vector, terminal or
+Gate state changes. See
+`specs/K7_DIRECT_FALLBACK_ROUTE_UPPER_V6.md`.
