@@ -4938,6 +4938,37 @@ COUNTER_COMPLETENESS_GATE_NOT_RUN
 SAMPLE_EFFICIENCY_GATE_NOT_RUN
 ```
 
+## V0-110B-2E-27..28 abstract and exact-fallback readiness blockers
+
+Contracts `2.0.38`--`2.0.39` replace two possible false promotions with exact
+source- and identity-bound blocker artifacts.
+
+For the live model-only H1 PASS, all 202 required V6 paths partition as
+`160` without a V1 leaf/hook, `15` with positive V1 records but no V6
+occurrence/stage/cutoff evidence, and `27` with V1 zeros but no V6 native-zero
+proof. Nine shared receipts and eight derived proofs are also absent.
+
+For the canonical exact-infeasible H1 query, direct fallback genuinely returns
+`INFEASIBLE_CERTIFIED` with the same query identity as the durable proof, but
+retains only a 42-leaf V1 WorkVector. It lacks the formal 202-record/shared
+receipt/route decision/materializer/verifier/terminal/occurrence chain. The
+durable proof remains evaluation-only and cannot replace operational work.
+
+Both artifacts are centrally domain-separated and independently replayable,
+but issue zero formal vectors or terminals. They freeze the next concrete
+instrumentation work; they do not close either route.
+
+All locks remain:
+
+```text
+official_execution_allowed = false
+official_scalar_cost = null
+official_N_break_even = null
+WORKLOAD_ECONOMICS_GATE_NOT_RUN
+COUNTER_COMPLETENESS_GATE_NOT_RUN
+SAMPLE_EFFICIENCY_GATE_NOT_RUN
+```
+
 ## Change log
 
 - **2026-07-19 — 0.1.0:** Transcribed and closed the V0 construction contract from the Normative Decision Addendum and the V0 preconstruction audit. Added the deterministic policy-class and reward-normalization implementation clarifications needed for executable tests.
@@ -5073,3 +5104,4 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 - **2026-08-03 — contract 2.0.35 / V0-110B-2E-24:** Replaced invalid-WorkVector integrity closure with externally anchored expected-versus-actual byte evidence and complete last-valid-prefix accounting: 202 observed records, a valid WorkVector and exact eight-axis projection. Integrity and protocol failures remain disjoint, fully re-signed attacks fail independent replay, and no certificate, occurrence closure or Gate is minted.
 - **2026-08-03 — contract 2.0.36 / V0-110B-2E-25:** Froze an exact source/AST manifest of ten real production operation boundaries spanning all six required route/control families. Missing or changed source produces typed blockers; the catalogue performs no execution and emits no accounting or terminal authority.
 - **2026-08-03 — contract 2.0.37 / V0-110B-2E-26:** Exercised the production FQ13 access semantics with a canonical pre-freeze forbidden-access negative control, preserving a complete 202-record failed-prefix vector and exact `PROTOCOL_FAILURE` terminal. A typed real-site blocker prevents the control from masquerading as a production violation, so all-path coverage remains open.
+- **2026-08-03 — contracts 2.0.38--2.0.39 / V0-110B-2E-27..28:** Audited the live abstract PASS and genuine exact-infeasible direct fallback against the K7/V6 all-path contract. The former has an exact `160/15/27` required-path gap plus missing `9+8` shared/derived evidence; the latter matches the durable proof but retains only a 42-leaf V1 vector. Both produce centrally registered replayable blockers, never formal vectors or terminals.

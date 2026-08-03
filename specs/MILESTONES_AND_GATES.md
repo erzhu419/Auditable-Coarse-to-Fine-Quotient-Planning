@@ -4754,3 +4754,15 @@ occurrence violated the access order.
 
 This passes the protocol-failure regression requirement but not genuine
 production-path coverage. See `specs/K7_PROTOCOL_FAILURE_NEGATIVE_CONTROL.md`.
+
+## V0-110B-2E-27..28 abstract and exact-fallback readiness
+
+Contracts `2.0.38`--`2.0.39` independently freeze the exact blockers on two
+positive semantic paths. The abstract PASS lacks V6 evidence for every one of
+its 202 paths (`160/15/27`) plus all `9+8` shared/derived authorities. The
+exact-infeasible fallback agrees with the durable proof but carries only 42 V1
+leaves and no formal route/terminal/occurrence chain.
+
+The next milestone is real route-native instrumentation, not adapter
+relabeling. See `specs/K7_ABSTRACT_CERTIFIED_ACCOUNTING_COVERAGE.md` and
+`specs/K7_DIRECT_FALLBACK_EXACT_INFEASIBILITY_READINESS.md`.

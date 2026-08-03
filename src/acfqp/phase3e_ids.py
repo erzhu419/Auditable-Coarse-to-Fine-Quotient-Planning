@@ -1008,6 +1008,24 @@ CONSTRUCTION_K7_PROTOCOL_FAILURE_BUNDLE_V1_DOMAIN = (
 CONSTRUCTION_K7_PROTOCOL_FAILURE_VERIFICATION_V1_DOMAIN = (
     "acfqp:construction-k7-protocol-failure-verification:v1"
 )
+CONSTRUCTION_K7_ABSTRACT_CERTIFIED_SOURCE_ARCHIVE_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-certified-source-archive:v1"
+)
+CONSTRUCTION_K7_ABSTRACT_CERTIFIED_PATH_GAP_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-certified-path-gap:v1"
+)
+CONSTRUCTION_K7_ABSTRACT_CERTIFIED_COVERAGE_REPORT_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-certified-coverage-report:v1"
+)
+CONSTRUCTION_K7_ABSTRACT_CERTIFIED_SOURCE_BLOCKER_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-certified-source-blocker:v1"
+)
+CONSTRUCTION_K7_ABSTRACT_CERTIFIED_COVERAGE_REPLAY_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-certified-coverage-replay:v1"
+)
+CONSTRUCTION_K7_DIRECT_FALLBACK_EXACT_INFEASIBILITY_READINESS_V1_DOMAIN = (
+    "acfqp:construction-k7-direct-fallback-exact-infeasibility-readiness:v1"
+)
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
 ROUTE_CAP_PROFILE_DOMAIN = "acfqp:route-cap-profile:v1"
@@ -2267,6 +2285,24 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_protocol_failure_verification_v1": (
             CONSTRUCTION_K7_PROTOCOL_FAILURE_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_abstract_certified_source_archive_v1": (
+            CONSTRUCTION_K7_ABSTRACT_CERTIFIED_SOURCE_ARCHIVE_V1_DOMAIN
+        ),
+        "construction_k7_abstract_certified_path_gap_v1": (
+            CONSTRUCTION_K7_ABSTRACT_CERTIFIED_PATH_GAP_V1_DOMAIN
+        ),
+        "construction_k7_abstract_certified_coverage_report_v1": (
+            CONSTRUCTION_K7_ABSTRACT_CERTIFIED_COVERAGE_REPORT_V1_DOMAIN
+        ),
+        "construction_k7_abstract_certified_source_blocker_v1": (
+            CONSTRUCTION_K7_ABSTRACT_CERTIFIED_SOURCE_BLOCKER_V1_DOMAIN
+        ),
+        "construction_k7_abstract_certified_coverage_replay_v1": (
+            CONSTRUCTION_K7_ABSTRACT_CERTIFIED_COVERAGE_REPLAY_V1_DOMAIN
+        ),
+        "construction_k7_direct_fallback_exact_infeasibility_readiness_v1": (
+            CONSTRUCTION_K7_DIRECT_FALLBACK_EXACT_INFEASIBILITY_READINESS_V1_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,

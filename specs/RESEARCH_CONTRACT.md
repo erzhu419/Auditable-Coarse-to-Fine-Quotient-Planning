@@ -5575,3 +5575,18 @@ eight-axis projection before issuing only `PROTOCOL_FAILURE`.
 Because the correct runner did not produce this event, the bundle carries a
 typed no-production-violation blocker and cannot count toward production
 coverage. See `specs/K7_PROTOCOL_FAILURE_NEGATIVE_CONTROL.md`.
+
+## Contracts 2.0.38--2.0.39: positive-route readiness blockers
+
+V0-110B-2E-27 binds a live model-only H1 PASS to the exact source/hook archive
+and partitions all required V6 leaves into `160` absent hooks, `15` positive V1
+records lacking V6 identity evidence and `27` V1 zeros lacking native-zero
+proofs. It also records missing nine-resource and eight-derived authorities.
+
+V0-110B-2E-28 runs the genuine canonical exact-infeasible direct fallback and
+proves query identity agreement with the durable proof. Its 42-leaf V1 vector,
+however, is not a 202-record K7 occurrence and cannot support a formal terminal.
+The durable proof stays evaluation-only. Both readiness objects are
+domain-separated fail-closed blockers and mint no execution claim. See
+`specs/K7_ABSTRACT_CERTIFIED_ACCOUNTING_COVERAGE.md` and
+`specs/K7_DIRECT_FALLBACK_EXACT_INFEASIBILITY_READINESS.md`.
