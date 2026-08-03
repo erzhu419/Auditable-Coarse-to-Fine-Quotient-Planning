@@ -1,9 +1,10 @@
 # Research Contract
 
-**Current construction contract:** `2.0.49`
+**Current construction contract:** `2.0.50`
 
 **Current construction profiles:** `v075_k7_production_role_manifest_v1`,
-`v075_k7_business_entry_core_v1`, `v075_k7_broker_worker_entry_core_v1`
+`v075_k7_business_entry_core_v1`, `v075_k7_broker_worker_entry_core_v1`,
+`construction_k7_h1_direct_fallback_two_role_recipe_v1`
 
 ## Definitions
 
@@ -5806,3 +5807,28 @@ peak, production owner wiring, CounterRecords, vectors and FQ9 closure remain
 required. All official, scalar/break-even, Counter Completeness, economics and
 sample-efficiency locks remain unchanged. See
 `specs/K7_PRODUCTION_SHARED_CAP_ENGINE_V2_LOCKED.md`.
+
+## Contract 2.0.50: canonical H1 two-role execution recipe
+
+V0-110B-2E-39 freezes a construction-only successor recipe around the exact
+legacy H1 preexecution-candidate bytes. The consumer structurally replays the
+nested current identity, route context, decision point, legacy upper and
+selected `FALLBACK` chain without calling `kernel.step`, the fallback solver or
+a post-run acquisition. The legacy current-identity builder remains
+evaluation-only because it performs ground transition replay.
+
+The existing V2 role-manifest/runtime profile IDs are reference root-cap
+implementations only; their instances and entry semantics cannot be used as
+H1. H1-specific manifest/runtime profiles, business adapter and production
+current-identity verifier remain absent. The recipe freezes the exact
+post-decision order, the exact eight-role output universe with branch-specific
+presence, a minimum failure-branch schema and the requirement for complete
+read/stage/mount catalogues.
+
+Memory remains deliberately unresolved. Child-only peak evidence omits broker
+work, while `min(OUTER, WORKER+BUSINESS)` omits the broker from its role sum.
+The official formula and every numeric cap operand therefore remain null until
+continuous broker/child scope and either an outer-only or broker-inclusive
+formula are semantically authorized. No numeric aggregate, V7 upper/decision,
+execution, CounterRecord, vector, terminal, occurrence closure or Gate is
+issued. See `specs/K7_H1_DIRECT_FALLBACK_TWO_ROLE_RECIPE_V1.md`.

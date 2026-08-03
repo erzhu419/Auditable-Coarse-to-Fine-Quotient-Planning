@@ -780,6 +780,12 @@ CONSTRUCTION_K7_DIRECT_FALLBACK_AGGREGATE_CAP_FORMULA_SPEC_V1_DOMAIN = (
 CONSTRUCTION_K7_DIRECT_FALLBACK_MANIFEST_BOUND_CAP_JOIN_V1_DOMAIN = (
     "acfqp:construction-k7-direct-fallback-manifest-bound-cap-join:v1"
 )
+CONSTRUCTION_K7_H1_DIRECT_FALLBACK_TWO_ROLE_RECIPE_PROFILE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-direct-fallback-two-role-recipe-profile:v1"
+)
+CONSTRUCTION_K7_H1_DIRECT_FALLBACK_TWO_ROLE_RECIPE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-direct-fallback-two-role-recipe:v1"
+)
 CONSTRUCTION_OWNER_BOUNDARY_SITE_CLOSURE_V1_DOMAIN = (
     "acfqp:construction-owner-boundary-site-closure:v1"
 )
@@ -2165,6 +2171,12 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_direct_fallback_manifest_bound_cap_join_v1": (
             CONSTRUCTION_K7_DIRECT_FALLBACK_MANIFEST_BOUND_CAP_JOIN_V1_DOMAIN
+        ),
+        "construction_k7_h1_direct_fallback_two_role_recipe_profile_v1": (
+            CONSTRUCTION_K7_H1_DIRECT_FALLBACK_TWO_ROLE_RECIPE_PROFILE_V1_DOMAIN
+        ),
+        "construction_k7_h1_direct_fallback_two_role_recipe_v1": (
+            CONSTRUCTION_K7_H1_DIRECT_FALLBACK_TWO_ROLE_RECIPE_V1_DOMAIN
         ),
         "construction_owner_boundary_site_closure_v1": (
             CONSTRUCTION_OWNER_BOUNDARY_SITE_CLOSURE_V1_DOMAIN

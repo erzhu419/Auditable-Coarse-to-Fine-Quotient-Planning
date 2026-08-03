@@ -4798,3 +4798,19 @@ zero. The five role-specific domains are central and independently replayed,
 but no V6 CounterRecord, WorkVector, ComparisonVector, terminal, occurrence
 closure or Gate is issued. See
 `specs/K7_ABSTRACT_CERTIFIED_ZERO_VALUE_CLOSURE.md`.
+
+## V0-110B-2E-39 canonical H1 two-role recipe
+
+Contract `2.0.50` freezes an immutable construction recipe from the canonical
+legacy H1 preexecution bytes without invoking ground transitions, fallback
+execution or a post-run acquisition. It separates the existing root-cap
+two-role profiles from the missing H1 manifest/runtime/business adapter,
+freezes the post-decision operation order and branch-specific eight-role
+output obligations, and exposes the missing branch-complete renderer and
+read/stage/mount catalogues.
+
+Broker-parent memory makes the former child-only formula incomplete, so the
+official memory formula, all numeric operands and every aggregate cap remain
+null. This milestone authorizes no execution, V7 route decision, accounting
+artifact, terminal, certificate or Gate. See
+`specs/K7_H1_DIRECT_FALLBACK_TWO_ROLE_RECIPE_V1.md`.
