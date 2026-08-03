@@ -5860,3 +5860,24 @@ trace, terminal and accounting semantics; the numeric aggregate; formal V7
 route decision; official execution; CounterRecords/vectors; terminal closure;
 and both Gates remain absent or locked. See
 `specs/K7_H1_BRANCH_AWARE_EIGHT_ROLE_OUTPUT_CONTRACT_V1.md`.
+
+## Contract 2.0.52: honest H1 current-identity candidate
+
+V0-110B-2E-41 separates the canonical H1 current source from the claimant
+durable proof, verifies the claimant against an explicitly supplied
+eight-coordinate current identity, and binds the retained verifier handle to
+the selected plan. The five recipe-chain identities omitted by the legacy
+projection are read from exact preregistered preexecution bytes before recipe
+registry replay; constants only check the observed values.
+
+This slice deliberately issues a construction candidate, not a production
+authority. Its source archive is only a caller-supplied self-consistent compile
+fixture, route-time calls are typed `UNOBSERVED`, the verifier handle is
+validated and plan-bound but not revoked, and mutable private Python state is
+outside its unforgeability claim. A production-consumer guard rejects every V1
+candidate, including a process-locally injected one. Observed access evidence,
+the freeze barrier, formal V7 decision, execution and accounting remain
+absent. See `specs/K7_H1_PRODUCTION_CURRENT_IDENTITY_V1.md`.
+
+Official execution, scalar/break-even, workload economics, Counter
+Completeness and sample-efficiency remain locked or `NOT_RUN`.

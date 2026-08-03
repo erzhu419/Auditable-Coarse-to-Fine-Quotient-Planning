@@ -4838,3 +4838,17 @@ The slice is structural and fixture-backed. Production role semantics,
 numeric aggregate/V7 authority, official execution, accounting artifacts,
 terminal closure, scalar/break-even and both Phase 3E Gates remain locked. See
 `specs/K7_H1_BRANCH_AWARE_EIGHT_ROLE_OUTPUT_CONTRACT_V1.md`.
+
+## V0-110B-2E-41 honest H1 current-identity candidate
+
+Contract `2.0.52` freezes a three-stage current-source, claimant-proof and
+route-time crosswalk for the canonical H1 fallback. The claimant is checked
+against an explicit eight-coordinate identity; all hidden recipe identities
+come from exact preexecution bytes and the verifier handle is truthfully
+reported as plan-bound but not revoked.
+
+The output is intentionally only a construction candidate. Compile archives
+do not prove live provenance, route-time access is unobserved, and every V1
+candidate is rejected at the production boundary. Current-access authority,
+formal V7 selection, execution, accounting and all official Gates remain
+locked. See `specs/K7_H1_PRODUCTION_CURRENT_IDENTITY_V1.md`.
