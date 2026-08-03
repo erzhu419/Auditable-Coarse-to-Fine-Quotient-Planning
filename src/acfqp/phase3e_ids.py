@@ -786,6 +786,24 @@ CONSTRUCTION_K7_H1_DIRECT_FALLBACK_TWO_ROLE_RECIPE_PROFILE_V1_DOMAIN = (
 CONSTRUCTION_K7_H1_DIRECT_FALLBACK_TWO_ROLE_RECIPE_V1_DOMAIN = (
     "acfqp:construction-k7-h1-direct-fallback-two-role-recipe:v1"
 )
+CONSTRUCTION_K7_H1_CURRENT_BUILD_KERNEL_ATTESTATION_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-current-build-kernel-attestation:v1"
+)
+CONSTRUCTION_K7_H1_CURRENT_QUERY_ATTESTATION_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-current-query-attestation:v1"
+)
+CONSTRUCTION_K7_H1_CURRENT_SOURCE_FIXTURE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-current-source-fixture:v1"
+)
+CONSTRUCTION_K7_H1_DURABLE_PROOF_MATCH_ATTESTATION_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-durable-proof-match-attestation:v1"
+)
+CONSTRUCTION_K7_H1_PRODUCTION_CURRENT_IDENTITY_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-production-current-identity:v1"
+)
+CONSTRUCTION_K7_H1_PRODUCTION_CURRENT_IDENTITY_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-production-current-identity-verification:v1"
+)
 CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_PROFILE_V1_DOMAIN = (
     "acfqp:construction-k7-h1-branch-aware-output-profile:v1"
 )
@@ -2222,6 +2240,24 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_h1_direct_fallback_two_role_recipe_v1": (
             CONSTRUCTION_K7_H1_DIRECT_FALLBACK_TWO_ROLE_RECIPE_V1_DOMAIN
+        ),
+        "construction_k7_h1_current_build_kernel_attestation_v1": (
+            CONSTRUCTION_K7_H1_CURRENT_BUILD_KERNEL_ATTESTATION_V1_DOMAIN
+        ),
+        "construction_k7_h1_current_query_attestation_v1": (
+            CONSTRUCTION_K7_H1_CURRENT_QUERY_ATTESTATION_V1_DOMAIN
+        ),
+        "construction_k7_h1_current_source_fixture_v1": (
+            CONSTRUCTION_K7_H1_CURRENT_SOURCE_FIXTURE_V1_DOMAIN
+        ),
+        "construction_k7_h1_durable_proof_match_attestation_v1": (
+            CONSTRUCTION_K7_H1_DURABLE_PROOF_MATCH_ATTESTATION_V1_DOMAIN
+        ),
+        "construction_k7_h1_production_current_identity_v1": (
+            CONSTRUCTION_K7_H1_PRODUCTION_CURRENT_IDENTITY_V1_DOMAIN
+        ),
+        "construction_k7_h1_production_current_identity_verification_v1": (
+            CONSTRUCTION_K7_H1_PRODUCTION_CURRENT_IDENTITY_VERIFICATION_V1_DOMAIN
         ),
         "construction_k7_h1_branch_aware_output_profile_v1": (
             CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_PROFILE_V1_DOMAIN
