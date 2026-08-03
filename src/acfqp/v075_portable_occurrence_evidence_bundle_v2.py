@@ -2367,23 +2367,77 @@ def _nested_documents(value: Any) -> Iterable[dict[str, Any]]:
         yield from _nested_documents(item)
 
 
+def _direct_json_value_shape(value: Any) -> tuple[Any, ...]:
+    """Return a cheap necessary shape for exact JSON equality.
+
+    This deliberately does not include ordinary primitive values.  Two
+    documents with the same shape therefore remain candidates and are still
+    separated by their complete canonical bytes below.
+    """
+
+    if value is None:
+        return ("null",)
+    if type(value) is bool:
+        return ("bool",)
+    if type(value) is int:
+        return ("int",)
+    if type(value) is float:
+        return ("float",)
+    if type(value) is str:
+        return ("str",)
+    if type(value) is list:
+        return ("list", len(value))
+    if type(value) is dict:
+        return ("dict", len(value))
+    # Strict JSON parsing makes this branch unreachable for production
+    # documents.  Keeping a deterministic fallback preserves the necessary-
+    # condition property if this helper is exercised directly in a test.
+    return ("other", type(value).__module__, type(value).__qualname__)
+
+
+def _complete_document_candidate_signature(
+    document: dict[str, Any],
+) -> tuple[Any, ...]:
+    """Index key that every canonically equal complete document must share."""
+
+    exact_keys = tuple(sorted(document))
+    if "schema" not in document:
+        schema = ("absent",)
+    elif type(document["schema"]) is str:
+        schema = ("str", document["schema"])
+    else:
+        schema = (
+            "non-str",
+            *_direct_json_value_shape(document["schema"]),
+        )
+    primitive_shape = tuple(
+        (key, _direct_json_value_shape(document[key]))
+        for key in exact_keys
+    )
+    return exact_keys, schema, primitive_shape
+
+
 def _derive_dependency_graph(
     nodes: tuple[_DependencyNode, ...],
 ) -> dict[Any, frozenset[Any]]:
     """Derive every edge from canonical documents, never claimed topology."""
 
     keys_by_semantic_id: dict[str, set[Any]] = {}
-    keys_by_raw: dict[bytes, set[Any]] = {}
+    keys_by_structure: dict[int, set[Any]] = {}
     append_keys_by_receipt_id: dict[str, set[Any]] = {}
     documents: dict[Any, dict[str, Any]] = {}
+    structural_interner = _ExactJSONStructuralInternerV1()
     for node in nodes:
         keys_by_semantic_id.setdefault(
             node.semantic_artifact_id,
             set(),
         ).add(node.key)
-        keys_by_raw.setdefault(node.raw, set()).add(node.key)
         document = _strict_json_document(node.raw, label=node.role)
         documents[node.key] = document
+        keys_by_structure.setdefault(
+            structural_interner.intern(document),
+            set(),
+        ).add(node.key)
         if node.role in {
             "CONTROLLED_ROOT_APPEND",
             "CONTROLLED_CHILD_APPEND",
@@ -2411,8 +2465,12 @@ def _derive_dependency_graph(
         for semantic_id in content_ids:
             referenced.update(keys_by_semantic_id.get(semantic_id, ()))
         for nested in _nested_documents(document):
-            nested_raw = canonical_json_bytes(nested)
-            referenced.update(keys_by_raw.get(nested_raw, ()))
+            referenced.update(
+                keys_by_structure.get(
+                    structural_interner.intern(nested),
+                    (),
+                )
+            )
         if node.role not in append_reference_excluded_roles:
             for semantic_id in content_ids:
                 referenced.update(
@@ -2843,6 +2901,99 @@ def _document_keyset_without_schema(
     return frozenset(key for key in document if key != "schema")
 
 
+class _ExactJSONStructuralInternerV1:
+    """Intern complete canonical-JSON trees without lossy fingerprints.
+
+    Every node signature contains a type tag and the complete primitive value
+    or the already-interned IDs of every ordered child.  Python hashes only
+    accelerate dictionary lookup; full tuple equality resolves collisions.
+    Consequently two supported trees receive the same node ID exactly when
+    :func:`canonical_json_bytes` would emit the same bytes (including the
+    canonical collapse of ``-0.0`` to ``0.0``), while ``bool``, ``int``, and
+    ``float`` remain distinct JSON value types.
+
+    Compound objects are retained alongside their identity-cache entries.
+    This prevents Python object-ID reuse and makes each edge in the live,
+    parsed document forest enter a signature once.  No digest, content ID, or
+    schema/primary-ID surrogate participates in structural equality.
+    """
+
+    __slots__ = (
+        "_compound_nodes_by_identity",
+        "_node_ids_by_signature",
+        "_next_node_id",
+        "_visiting",
+    )
+
+    def __init__(self) -> None:
+        self._compound_nodes_by_identity: dict[int, tuple[Any, int]] = {}
+        self._node_ids_by_signature: dict[tuple[Any, ...], int] = {}
+        self._next_node_id = 0
+        self._visiting: set[int] = set()
+
+    def _intern_signature(self, signature: tuple[Any, ...]) -> int:
+        known = self._node_ids_by_signature.get(signature)
+        if known is not None:
+            return known
+        node_id = self._next_node_id
+        self._next_node_id += 1
+        self._node_ids_by_signature[signature] = node_id
+        return node_id
+
+    def intern(self, value: Any) -> int:
+        if value is None:
+            return self._intern_signature(("null",))
+        if type(value) is bool:
+            return self._intern_signature(("bool", value))
+        if type(value) is int:
+            return self._intern_signature(("int", value))
+        if type(value) is float:
+            # Strict artifact parsing has already rejected non-finite values.
+            # Normalize signed zero exactly as canonical_json_bytes does.
+            normalized = 0.0 if value == 0.0 else value
+            return self._intern_signature(("float", normalized.hex()))
+        if type(value) is str:
+            return self._intern_signature(("str", value))
+        if type(value) not in {list, dict}:
+            _fail(
+                "structural interner received a non-canonical JSON value: "
+                f"{type(value).__module__}.{type(value).__qualname__}"
+            )
+
+        identity = id(value)
+        known_compound = self._compound_nodes_by_identity.get(identity)
+        if known_compound is not None:
+            # Retaining the object makes identity reuse impossible.  The
+            # identity assertion is defensive documentation of that invariant.
+            if known_compound[0] is not value:  # pragma: no cover
+                _fail("structural interner compound identity was reused")
+            return known_compound[1]
+        if identity in self._visiting:
+            _fail("structural interner received a cyclic JSON value")
+        self._visiting.add(identity)
+        try:
+            if type(value) is list:
+                signature = (
+                    "list",
+                    tuple(self.intern(item) for item in value),
+                )
+            else:
+                if any(type(key) is not str for key in value):
+                    _fail("structural interner received a non-string object key")
+                signature = (
+                    "dict",
+                    tuple(
+                        (key, self.intern(value[key]))
+                        for key in sorted(value)
+                    ),
+                )
+            node_id = self._intern_signature(signature)
+            self._compound_nodes_by_identity[identity] = (value, node_id)
+            return node_id
+        finally:
+            self._visiting.remove(identity)
+
+
 def _verify_nested_registered_document_bindings(
     records: tuple[V075PortableEvidenceArtifactRecordV2, ...],
 ) -> None:
@@ -2868,12 +3019,14 @@ def _verify_nested_registered_document_bindings(
         frozenset[str],
         set[str],
     ] = {}
+    documents_by_record_id: dict[str, dict[str, Any]] = {}
     for record in records:
         by_semantic_artifact_id.setdefault(
             record.semantic_artifact_id,
             [],
         ).append(record)
         document = record.artifact_document
+        documents_by_record_id[record.record_id] = document
         primary_key = _ROLE_NESTED_PRIMARY_DOCUMENT_ID.get(record.role)
         if primary_key is None:
             continue
@@ -2915,6 +3068,12 @@ def _verify_nested_registered_document_bindings(
             "registrations"
         )
 
+    structural_interner = _ExactJSONStructuralInternerV1()
+    structure_by_record_id = {
+        record_id: structural_interner.intern(document)
+        for record_id, document in documents_by_record_id.items()
+    }
+
     def exact_record_for_child(
         child: Any,
         *,
@@ -2944,7 +3103,10 @@ def _verify_nested_registered_document_bindings(
                 f"{label} has no unique record with its required child role "
                 "and schema"
             )
-        if canonical_json_bytes(child) != matches[0].canonical_artifact_bytes:
+        if (
+            structural_interner.intern(child)
+            != structure_by_record_id[matches[0].record_id]
+        ):
             _fail(
                 f"{label} canonical bytes differ from its required child "
                 "record"
@@ -2952,7 +3114,7 @@ def _verify_nested_registered_document_bindings(
         return matches[0]
 
     for owner in records:
-        document = owner.artifact_document
+        document = documents_by_record_id[owner.record_id]
         for (parent_role, field_name), rule in (
             _NESTED_REGISTERED_CHILD_RULES.items()
         ):
@@ -3002,7 +3164,9 @@ def _verify_nested_registered_document_bindings(
 
     for owner in records:
         outermost = True
-        for nested in _nested_documents(owner.artifact_document):
+        for nested in _nested_documents(
+            documents_by_record_id[owner.record_id]
+        ):
             if outermost:
                 outermost = False
                 continue
@@ -3028,7 +3192,7 @@ def _verify_nested_registered_document_bindings(
                     (),
                 ):
                     expected_keys = _document_keyset_without_schema(
-                        match.artifact_document
+                        documents_by_record_id[match.record_id]
                     )
                     if expected_keys <= nested_keys:
                         candidates[match.record_id] = match
@@ -3053,8 +3217,8 @@ def _verify_nested_registered_document_bindings(
                     "laundered, or role-transplanted"
                 )
             if (
-                canonical_json_bytes(nested)
-                != match.canonical_artifact_bytes
+                structural_interner.intern(nested)
+                != structure_by_record_id[match.record_id]
             ):
                 _fail(
                     "embedded registered artifact canonical bytes differ "

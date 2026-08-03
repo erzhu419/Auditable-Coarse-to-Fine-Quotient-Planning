@@ -4,12 +4,14 @@ from copy import deepcopy
 import fcntl
 import hashlib
 import os
+import signal
 import socket
 import threading
 import time
 
 import pytest
 
+from acfqp.exact_frozen_memo_v1 import disable_exact_frozen_memoization_v1
 from acfqp import v075_k7_atomic_pidfd_runtime_v1 as atomic_runtime
 from acfqp import v075_k7_broker_worker_entry_v1 as worker
 from acfqp import v075_k7_outer_attempt_broker_ipc_v1 as ipc
@@ -109,6 +111,332 @@ def _receive_frame(endpoint: socket.socket, binding, role):
         expected_binding=binding,
         expected_role=role,
     )
+
+
+def test_operational_output_transaction_cache_equal_copy_and_disabled_reference(
+    substrate,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    replay, bundle, binding = substrate
+    output = worker._freeze_output(  # noqa: SLF001
+        request_replay=replay,
+        binding=binding,
+        bundle=bundle,
+    )
+    raw = output.canonical_bytes
+    equal_copy = bytes(bytearray(raw))
+    assert equal_copy == raw
+    assert equal_copy is not raw
+    original = worker._compute_output_validation_facts_v1  # noqa: SLF001
+    calls = 0
+
+    def counted(*args):
+        nonlocal calls
+        calls += 1
+        return original(*args)
+
+    monkeypatch.setattr(worker, "_compute_output_validation_facts_v1", counted)
+    cached = worker.verify_v075_k7_broker_operational_output_bytes_v1(
+        raw=raw,
+        expected_request_replay=replay,
+        expected_binding=binding,
+    )
+    assert calls == 1
+    copied = worker.verify_v075_k7_broker_operational_output_bytes_v1(
+        raw=equal_copy,
+        expected_request_replay=replay,
+        expected_binding=binding,
+    )
+    assert calls == 2
+    before_disabled = calls
+    with disable_exact_frozen_memoization_v1():
+        reference = worker.verify_v075_k7_broker_operational_output_bytes_v1(
+            raw=raw,
+            expected_request_replay=replay,
+            expected_binding=binding,
+        )
+        reference_id = reference.output_id
+    assert cached.output_id == copied.output_id == reference_id
+    # Disabled construction performs both raw replays, and every issued
+    # property access preserves the frozen V1 full-current-validation rule.
+    assert calls == before_disabled + 5
+
+
+def test_operational_output_exact_cache_rejects_one_byte_mutation(
+    substrate,
+) -> None:
+    replay, bundle, binding = substrate
+    output = worker._freeze_output(  # noqa: SLF001
+        request_replay=replay,
+        binding=binding,
+        bundle=bundle,
+    )
+    raw = output.canonical_bytes
+    attacked = bytearray(raw)
+    offset = raw.index(binding.request_id.encode("ascii"))
+    attacked[offset] = ord("0") if attacked[offset] != ord("0") else ord("1")
+    with pytest.raises(worker.V075K7BrokerWorkerEntryV1Error):
+        worker.verify_v075_k7_broker_operational_output_bytes_v1(
+            raw=bytes(attacked),
+            expected_request_replay=replay,
+            expected_binding=binding,
+        )
+
+
+def test_operational_output_formula_monkeypatch_invalidates_cache(
+    substrate,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    replay, bundle, binding = substrate
+    output = worker._freeze_output(  # noqa: SLF001
+        request_replay=replay,
+        binding=binding,
+        bundle=bundle,
+    )
+    raw = output.canonical_bytes
+    worker.verify_v075_k7_broker_operational_output_bytes_v1(
+        raw=raw,
+        expected_request_replay=replay,
+        expected_binding=binding,
+    )
+
+    def rejected(**kwargs):
+        del kwargs
+        raise ValueError("broker nested verifier monkeypatch probe")
+
+    monkeypatch.setattr(
+        worker.business_bundle,
+        "verify_v075_k7_child_business_bundle_public_bytes_v1",
+        rejected,
+    )
+    with pytest.raises(
+        worker.V075K7BrokerWorkerEntryV1Error,
+        match="nested business replay failed",
+    ):
+        worker.verify_v075_k7_broker_operational_output_bytes_v1(
+            raw=raw,
+            expected_request_replay=replay,
+            expected_binding=binding,
+        )
+    with disable_exact_frozen_memoization_v1():
+        with pytest.raises(
+            worker.V075K7BrokerWorkerEntryV1Error,
+            match="nested business replay failed",
+        ):
+            worker.verify_v075_k7_broker_operational_output_bytes_v1(
+                raw=raw,
+                expected_request_replay=replay,
+                expected_binding=binding,
+            )
+
+
+def test_operational_output_validation_does_not_cross_transaction_boundary(
+    substrate,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    replay, bundle, binding = substrate
+    output = worker._freeze_output(  # noqa: SLF001
+        request_replay=replay,
+        binding=binding,
+        bundle=bundle,
+    )
+    raw = output.canonical_bytes
+    original = worker._compute_output_validation_facts_v1  # noqa: SLF001
+    calls = 0
+
+    def counted(*args):
+        nonlocal calls
+        calls += 1
+        return original(*args)
+
+    monkeypatch.setattr(worker, "_compute_output_validation_facts_v1", counted)
+    with worker._output_validation_transaction_v1():  # noqa: SLF001
+        for _ in range(2):
+            worker.verify_v075_k7_broker_operational_output_bytes_v1(
+                raw=raw,
+                expected_request_replay=replay,
+                expected_binding=binding,
+            )
+    assert calls == 2
+
+
+def test_operational_output_disabled_path_bypasses_transaction_cache(
+    substrate,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    replay, bundle, binding = substrate
+    output = worker._freeze_output(  # noqa: SLF001
+        request_replay=replay,
+        binding=binding,
+        bundle=bundle,
+    )
+    raw = output.canonical_bytes
+    original = worker._compute_output_validation_facts_v1  # noqa: SLF001
+    calls = 0
+
+    def counted(*args):
+        nonlocal calls
+        calls += 1
+        return original(*args)
+
+    monkeypatch.setattr(worker, "_compute_output_validation_facts_v1", counted)
+    with disable_exact_frozen_memoization_v1():
+        for _ in range(2):
+            worker.verify_v075_k7_broker_operational_output_bytes_v1(
+                raw=raw,
+                expected_request_replay=replay,
+                expected_binding=binding,
+            )
+    assert calls == 4
+
+
+def test_operational_output_portable_mutations_cross_transaction_boundary(
+    substrate,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    replay, bundle, binding = substrate
+    output = worker._freeze_output(  # noqa: SLF001
+        request_replay=replay,
+        binding=binding,
+        bundle=bundle,
+    )
+    raw = output.canonical_bytes
+    portable = worker.business_bundle.portable_evidence
+    nested_registry = portable._SCHEMA_NESTED_PRIMARY_DOCUMENT_IDS  # noqa: SLF001
+    expected_roles = portable.ROLE_SCHEMA_REGISTRY
+    probe = "acfqp.broker-transaction-schema-mutation-probe.v1"
+    original_verifier = (
+        worker.business_bundle
+        .verify_v075_k7_child_business_bundle_public_bytes_v1
+    )
+
+    def state_sensitive_verifier(**kwargs):
+        if probe in nested_registry:
+            raise ValueError("in-place portable schema mutation observed")
+        if portable.ROLE_SCHEMA_REGISTRY is not expected_roles:
+            raise ValueError("portable role registry replacement observed")
+        return original_verifier(**kwargs)
+
+    monkeypatch.setattr(
+        worker.business_bundle,
+        "verify_v075_k7_child_business_bundle_public_bytes_v1",
+        state_sensitive_verifier,
+    )
+    worker.verify_v075_k7_broker_operational_output_bytes_v1(
+        raw=raw,
+        expected_request_replay=replay,
+        expected_binding=binding,
+    )
+    nested_registry[probe] = frozenset({"probe_id"})
+    try:
+        with pytest.raises(
+            worker.V075K7BrokerWorkerEntryV1Error,
+            match="nested business replay failed",
+        ):
+            worker.verify_v075_k7_broker_operational_output_bytes_v1(
+                raw=raw,
+                expected_request_replay=replay,
+                expected_binding=binding,
+            )
+    finally:
+        nested_registry.pop(probe)
+    monkeypatch.setattr(portable, "ROLE_SCHEMA_REGISTRY", dict(expected_roles))
+    with pytest.raises(
+        worker.V075K7BrokerWorkerEntryV1Error,
+        match="nested business replay failed",
+    ):
+        worker.verify_v075_k7_broker_operational_output_bytes_v1(
+            raw=raw,
+            expected_request_replay=replay,
+            expected_binding=binding,
+        )
+
+
+def test_issued_output_rejects_current_validation_authority_mutations(
+    substrate,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    replay, bundle, binding = substrate
+    output = worker._freeze_output(  # noqa: SLF001
+        request_replay=replay,
+        binding=binding,
+        bundle=bundle,
+    )
+    original_locks = worker._formal_locks  # noqa: SLF001
+
+    def mutate_locks(scoped: pytest.MonkeyPatch) -> None:
+        scoped.setattr(
+            worker,
+            "_formal_locks",
+            lambda: {**original_locks(), "authority_mutation_probe": True},
+        )
+
+    def mutate_schema(scoped: pytest.MonkeyPatch) -> None:
+        scoped.setattr(worker, "SCHEMA_VERSION", "1.0.0-authority-probe")
+
+    for mutate in (mutate_locks, mutate_schema):
+        with monkeypatch.context() as scoped:
+            mutate(scoped)
+            with pytest.raises(worker.V075K7BrokerWorkerEntryV1Error):
+                output.output_id
+            with disable_exact_frozen_memoization_v1():
+                with pytest.raises(worker.V075K7BrokerWorkerEntryV1Error):
+                    output.output_id
+
+
+def test_issued_output_replays_child_validator_internal_authorities(
+    substrate,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    replay, bundle, binding = substrate
+    output = worker._freeze_output(  # noqa: SLF001
+        request_replay=replay,
+        binding=binding,
+        bundle=bundle,
+    )
+    expected_id = output.output_id
+    portable = worker.business_bundle.portable_evidence
+    nested_registry = portable._SCHEMA_NESTED_PRIMARY_DOCUMENT_IDS  # noqa: SLF001
+    schema_probe = "acfqp.issued-output-schema-mutation-probe.v1"
+    original_verifier = (
+        worker.business_bundle
+        .verify_v075_k7_child_business_bundle_public_bytes_v1
+    )
+    mutable_roles = dict(portable.ROLE_SCHEMA_REGISTRY)
+    original_roles = dict(mutable_roles)
+
+    def state_sensitive_verifier(**kwargs):
+        if schema_probe in nested_registry:
+            raise ValueError("in-place portable schema mutation observed")
+        if mutable_roles != original_roles:
+            raise ValueError("in-place portable role mutation observed")
+        return original_verifier(**kwargs)
+
+    monkeypatch.setattr(
+        worker.business_bundle,
+        "verify_v075_k7_child_business_bundle_public_bytes_v1",
+        state_sensitive_verifier,
+    )
+    monkeypatch.setattr(portable, "ROLE_SCHEMA_REGISTRY", mutable_roles)
+    assert output.output_id == expected_id
+
+    nested_registry[schema_probe] = frozenset({"probe_id"})
+    try:
+        with pytest.raises(worker.V075K7BrokerWorkerEntryV1Error):
+            output.output_id
+        with disable_exact_frozen_memoization_v1():
+            with pytest.raises(worker.V075K7BrokerWorkerEntryV1Error):
+                output.output_id
+    finally:
+        nested_registry.pop(schema_probe)
+
+    first_role = next(iter(mutable_roles))
+    mutable_roles[first_role] = "acfqp.issued-output-role-probe.v1"
+    with pytest.raises(worker.V075K7BrokerWorkerEntryV1Error):
+        output.output_id
+    with disable_exact_frozen_memoization_v1():
+        with pytest.raises(worker.V075K7BrokerWorkerEntryV1Error):
+            output.output_id
 
 
 def test_worker_core_commits_output_and_emits_exact_protocol(
@@ -588,6 +916,148 @@ def test_post_issue_output_mutation_is_rejected_before_commit(
         assert list(tmp_path.iterdir()) == []
     finally:
         os.close(directory_fd)
+
+
+def test_output_external_issuance_seal_rejects_complete_state_transplant(
+    substrate,
+) -> None:
+    replay, bundle, binding = substrate
+    output = worker._freeze_output(  # noqa: SLF001
+        request_replay=replay,
+        binding=binding,
+        bundle=bundle,
+    )
+    alternate_binding = ipc.K7OuterAttemptBrokerIPCBindingV1(
+        binding.request_id,
+        binding.route_identity_id,
+        _id("transplant-broker-execution-spec"),
+        _id("transplant-session-nonce"),
+    )
+    alternate = worker._freeze_output(  # noqa: SLF001
+        request_replay=replay,
+        binding=alternate_binding,
+        bundle=bundle,
+    )
+    for name, value in (
+        ("_validated_raw", alternate.canonical_bytes),
+        ("_validated_output_id", alternate.output_id),
+        ("_validated_expected_identity_primitives", ()),
+    ):
+        with pytest.raises(AttributeError):
+            object.__setattr__(output, name, value)
+    object.__setattr__(output, "_raw", alternate.canonical_bytes)
+    object.__setattr__(output, "_request_replay", replay)
+    object.__setattr__(output, "_binding", alternate_binding)
+    with pytest.raises(
+        worker.V075K7BrokerWorkerEntryV1Error,
+        match="changed after issuance",
+    ):
+        _ = output.output_id
+
+
+def test_equal_raw_outputs_keep_original_equality_and_independent_seals(
+    substrate,
+) -> None:
+    replay, bundle, binding = substrate
+    first = worker._freeze_output(  # noqa: SLF001
+        request_replay=replay,
+        binding=binding,
+        bundle=bundle,
+    )
+    second = worker._freeze_output(  # noqa: SLF001
+        request_replay=replay,
+        binding=binding,
+        bundle=bundle,
+    )
+    raw = second.canonical_bytes
+    assert first is not second
+    assert first == second
+    assert hash(first) == hash(second) == hash((raw,))
+    first_record = worker._output_issuance_record_v1(first)  # noqa: SLF001
+    second_record = worker._output_issuance_record_v1(second)  # noqa: SLF001
+    assert first_record is not second_record
+    expected_id = second.output_id
+
+    object.__setattr__(first, "_raw", b"{}")
+    with pytest.raises(
+        worker.V075K7BrokerWorkerEntryV1Error,
+        match="changed after issuance",
+    ):
+        first.output_id
+    assert second.output_id == expected_id
+
+
+@pytest.mark.skipif(not hasattr(os, "fork"), reason="requires POSIX fork")
+def test_output_issuance_seal_rejects_cross_pid_use(substrate) -> None:
+    replay, bundle, binding = substrate
+    output = worker._freeze_output(  # noqa: SLF001
+        request_replay=replay,
+        binding=binding,
+        bundle=bundle,
+    )
+    reader, writer = os.pipe()
+    child_pid = os.fork()
+    if child_pid == 0:  # pragma: no cover - asserted through the pipe
+        os.close(reader)
+        outcome = b"unexpected-accept"
+        try:
+            _ = output.output_id
+        except worker.V075K7BrokerWorkerEntryV1Error:
+            outcome = b"rejected"
+        except BaseException:
+            outcome = b"wrong-error"
+        os.write(writer, outcome)
+        os.close(writer)
+        os._exit(0)
+    os.close(writer)
+    try:
+        outcome = os.read(reader, 64)
+    finally:
+        os.close(reader)
+    waited_pid, status = os.waitpid(child_pid, 0)
+    assert waited_pid == child_pid
+    assert os.waitstatus_to_exitcode(status) == 0
+    assert outcome == b"rejected"
+
+
+@pytest.mark.skipif(not hasattr(os, "fork"), reason="requires POSIX fork")
+def test_output_fork_child_reinitializes_parent_held_issuance_lock(
+    substrate,
+) -> None:
+    replay, bundle, binding = substrate
+    output = worker._freeze_output(  # noqa: SLF001
+        request_replay=replay,
+        binding=binding,
+        bundle=bundle,
+    )
+    reader, writer = os.pipe()
+    parent_lock = worker._OUTPUT_ISSUANCE_LOCK  # noqa: SLF001
+    parent_lock.acquire()
+    child_pid = os.fork()
+    if child_pid == 0:  # pragma: no cover - asserted through the pipe
+        os.close(reader)
+        signal.alarm(5)
+        outcome = b"unexpected-accept"
+        try:
+            _ = output.output_id
+        except worker.V075K7BrokerWorkerEntryV1Error:
+            outcome = b"rejected"
+        except BaseException:
+            outcome = b"wrong-error"
+        os.write(writer, outcome)
+        signal.alarm(0)
+        os.close(writer)
+        os._exit(0)
+    os.close(writer)
+    try:
+        outcome = os.read(reader, 64)
+    finally:
+        parent_lock.release()
+        os.close(reader)
+    waited_pid, status = os.waitpid(child_pid, 0)
+    assert waited_pid == child_pid
+    assert os.waitstatus_to_exitcode(status) == 0
+    assert outcome == b"rejected"
 
 
 def test_post_rename_failure_retains_typed_state_and_recovers(

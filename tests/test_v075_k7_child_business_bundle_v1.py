@@ -4,11 +4,14 @@ from copy import deepcopy
 from dataclasses import asdict
 import hashlib
 import inspect
+import os
 import pickle
+import signal
 from types import SimpleNamespace
 
 import pytest
 
+from acfqp.exact_frozen_memo_v1 import disable_exact_frozen_memoization_v1
 from acfqp import construction_accounting_partial_native_v1 as partial_native
 from acfqp import construction_accounting_registry_v6 as registry_v6
 from acfqp import campaign_v1 as campaign
@@ -328,6 +331,410 @@ def test_bundle_replays_strict_portable_evidence_and_all_request_coordinates(
     assert document["work_vector_issued"] is False
     assert document["comparison_vector_issued"] is False
     assert document["official_execution_allowed"] is False
+
+
+def test_exact_raw_validation_transaction_cached_disabled_and_equal_copy(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _request, replay, _portable, _wrapped, _authority, bundle = _substrate(
+        monkeypatch
+    )
+    raw = bundle.canonical_bytes
+    equal_copy = bytes(bytearray(raw))
+    assert equal_copy == raw
+    assert equal_copy is not raw
+    original = business._compute_bundle_validation_facts_v1  # noqa: SLF001
+    calls = 0
+
+    def counted(*args):
+        nonlocal calls
+        calls += 1
+        return original(*args)
+
+    monkeypatch.setattr(business, "_compute_bundle_validation_facts_v1", counted)
+    cached = business.verify_v075_k7_child_business_bundle_public_bytes_v1(
+        raw=raw,
+        expected_request_replay=replay,
+    )
+    assert calls == 1
+    copied = business.verify_v075_k7_child_business_bundle_public_bytes_v1(
+        raw=equal_copy,
+        expected_request_replay=replay,
+    )
+    assert calls == 2
+    before_disabled = calls
+    with disable_exact_frozen_memoization_v1():
+        reference = (
+            business.verify_v075_k7_child_business_bundle_public_bytes_v1(
+                raw=raw,
+                expected_request_replay=replay,
+            )
+        )
+        reference_id = reference.bundle_id
+    assert cached.bundle_id == copied.bundle_id == reference_id
+    assert calls == before_disabled + 2
+
+
+def test_exact_raw_validation_rejects_one_byte_mutation(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    request, replay, _portable, _wrapped, _authority, bundle = _substrate(
+        monkeypatch
+    )
+    attacked = bytearray(bundle.canonical_bytes)
+    offset = bundle.canonical_bytes.index(request.request_id.encode("ascii"))
+    attacked[offset] = ord("0") if attacked[offset] != ord("0") else ord("1")
+    with pytest.raises(business.V075K7ChildBusinessBundleV1Error):
+        business.verify_v075_k7_child_business_bundle_public_bytes_v1(
+            raw=bytes(attacked),
+            expected_request_replay=replay,
+        )
+
+
+def test_exact_raw_validation_formula_monkeypatch_invalidates_cache(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _request, replay, _portable, _wrapped, _authority, bundle = _substrate(
+        monkeypatch
+    )
+    raw = bundle.canonical_bytes
+    business.verify_v075_k7_child_business_bundle_public_bytes_v1(
+        raw=raw,
+        expected_request_replay=replay,
+    )
+    original = business._validate_bundle_document  # noqa: SLF001
+
+    def altered(document):
+        original(document)
+        raise business.V075K7ChildBusinessBundleV1Error(
+            "exact validation monkeypatch probe"
+        )
+
+    monkeypatch.setattr(business, "_validate_bundle_document", altered)
+    with pytest.raises(
+        business.V075K7ChildBusinessBundleV1Error,
+        match="monkeypatch probe",
+    ):
+        business.verify_v075_k7_child_business_bundle_public_bytes_v1(
+            raw=raw,
+            expected_request_replay=replay,
+        )
+    with disable_exact_frozen_memoization_v1():
+        with pytest.raises(
+            business.V075K7ChildBusinessBundleV1Error,
+            match="monkeypatch probe",
+        ):
+            business.verify_v075_k7_child_business_bundle_public_bytes_v1(
+                raw=raw,
+                expected_request_replay=replay,
+            )
+
+
+def test_exact_raw_validation_does_not_cross_transaction_boundary(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _request, replay, _portable, _wrapped, _authority, bundle = _substrate(
+        monkeypatch
+    )
+    original = business._compute_bundle_validation_facts_v1  # noqa: SLF001
+    calls = 0
+
+    def counted(*args):
+        nonlocal calls
+        calls += 1
+        return original(*args)
+
+    monkeypatch.setattr(business, "_compute_bundle_validation_facts_v1", counted)
+    with business._bundle_validation_transaction_v1():  # noqa: SLF001
+        for _ in range(2):
+            business.verify_v075_k7_child_business_bundle_public_bytes_v1(
+                raw=bundle.canonical_bytes,
+                expected_request_replay=replay,
+            )
+    assert calls == 2
+
+
+def test_exact_raw_validation_disabled_path_bypasses_transaction_cache(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _request, replay, _portable, _wrapped, _authority, bundle = _substrate(
+        monkeypatch
+    )
+    original = business._compute_bundle_validation_facts_v1  # noqa: SLF001
+    calls = 0
+
+    def counted(*args):
+        nonlocal calls
+        calls += 1
+        return original(*args)
+
+    monkeypatch.setattr(business, "_compute_bundle_validation_facts_v1", counted)
+    with disable_exact_frozen_memoization_v1():
+        for _ in range(2):
+            business.verify_v075_k7_child_business_bundle_public_bytes_v1(
+                raw=bundle.canonical_bytes,
+                expected_request_replay=replay,
+            )
+    assert calls == 4
+
+
+def test_portable_schema_in_place_mutation_cannot_reuse_prior_transaction(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _request, replay, _portable, _wrapped, _authority, bundle = _substrate(
+        monkeypatch
+    )
+    nested_registry = (
+        business.portable_evidence._SCHEMA_NESTED_PRIMARY_DOCUMENT_IDS  # noqa: SLF001
+    )
+    probe = "acfqp.transaction-local-schema-mutation-probe.v1"
+    original_verifier = (
+        business.portable_evidence
+        .verify_v075_portable_occurrence_evidence_bundle_bytes_v2
+    )
+
+    def state_sensitive_verifier(raw: bytes):
+        if probe in nested_registry:
+            raise ValueError("in-place portable schema mutation observed")
+        return original_verifier(raw)
+
+    monkeypatch.setattr(
+        business.portable_evidence,
+        "verify_v075_portable_occurrence_evidence_bundle_bytes_v2",
+        state_sensitive_verifier,
+    )
+    business.verify_v075_k7_child_business_bundle_public_bytes_v1(
+        raw=bundle.canonical_bytes,
+        expected_request_replay=replay,
+    )
+    nested_registry[probe] = frozenset({"probe_id"})
+    try:
+        with pytest.raises(
+            business.V075K7ChildBusinessBundleV1Error,
+            match="portable evidence bundle semantic/topology replay failed",
+        ):
+            business.verify_v075_k7_child_business_bundle_public_bytes_v1(
+                raw=bundle.canonical_bytes,
+                expected_request_replay=replay,
+            )
+    finally:
+        nested_registry.pop(probe)
+
+
+def test_portable_role_and_global_replacement_cannot_reuse_prior_transaction(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _request, replay, _portable, _wrapped, _authority, bundle = _substrate(
+        monkeypatch
+    )
+    expected_roles = business.portable_evidence.ROLE_SCHEMA_REGISTRY
+    expected_scope = business.portable_evidence.TERMINAL_SCOPE
+    original_verifier = (
+        business.portable_evidence
+        .verify_v075_portable_occurrence_evidence_bundle_bytes_v2
+    )
+
+    def state_sensitive_verifier(raw: bytes):
+        if business.portable_evidence.ROLE_SCHEMA_REGISTRY is not expected_roles:
+            raise ValueError("portable role registry replacement observed")
+        if business.portable_evidence.TERMINAL_SCOPE != expected_scope:
+            raise ValueError("portable global replacement observed")
+        return original_verifier(raw)
+
+    monkeypatch.setattr(
+        business.portable_evidence,
+        "verify_v075_portable_occurrence_evidence_bundle_bytes_v2",
+        state_sensitive_verifier,
+    )
+    business.verify_v075_k7_child_business_bundle_public_bytes_v1(
+        raw=bundle.canonical_bytes,
+        expected_request_replay=replay,
+    )
+    monkeypatch.setattr(
+        business.portable_evidence,
+        "ROLE_SCHEMA_REGISTRY",
+        dict(expected_roles),
+    )
+    with pytest.raises(
+        business.V075K7ChildBusinessBundleV1Error,
+        match="portable evidence bundle semantic/topology replay failed",
+    ):
+        business.verify_v075_k7_child_business_bundle_public_bytes_v1(
+            raw=bundle.canonical_bytes,
+            expected_request_replay=replay,
+        )
+    monkeypatch.setattr(
+        business.portable_evidence,
+        "ROLE_SCHEMA_REGISTRY",
+        expected_roles,
+    )
+    monkeypatch.setattr(
+        business.portable_evidence,
+        "TERMINAL_SCOPE",
+        "TRANSACTION_LOCAL_GLOBAL_MUTATION_PROBE",
+    )
+    with pytest.raises(
+        business.V075K7ChildBusinessBundleV1Error,
+        match="portable evidence bundle semantic/topology replay failed",
+    ):
+        business.verify_v075_k7_child_business_bundle_public_bytes_v1(
+            raw=bundle.canonical_bytes,
+            expected_request_replay=replay,
+        )
+
+
+def test_bundle_external_issuance_seal_rejects_raw_and_fact_replacement(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _request, _replay, _portable, _wrapped, _authority, bundle = _substrate(
+        monkeypatch
+    )
+    forged_id = _id("forged-object-local-bundle-id")
+    for name, value in (
+        ("_validated_raw", b"{}"),
+        ("_validated_bundle_id", forged_id),
+    ):
+        with pytest.raises(AttributeError):
+            object.__setattr__(bundle, name, value)
+    object.__setattr__(bundle, "_raw", b"{}")
+    with pytest.raises(
+        business.V075K7ChildBusinessBundleV1Error,
+        match="changed after issuance",
+    ):
+        _ = bundle.bundle_id
+
+
+def test_equal_raw_bundles_keep_original_equality_and_independent_seals(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _request, _replay, _portable, _wrapped, _authority, issued = _substrate(
+        monkeypatch
+    )
+    raw = issued.canonical_bytes
+    first = business.V075K7ChildBusinessBundleV1(  # noqa: SLF001
+        business._BUNDLE_ISSUER,  # noqa: SLF001
+        raw,
+    )
+    second = business.V075K7ChildBusinessBundleV1(  # noqa: SLF001
+        business._BUNDLE_ISSUER,  # noqa: SLF001
+        raw,
+    )
+    assert first is not second
+    assert first == second
+    assert hash(first) == hash(second) == hash((raw,))
+    first_record = business._bundle_issuance_record_v1(first)  # noqa: SLF001
+    second_record = business._bundle_issuance_record_v1(second)  # noqa: SLF001
+    assert first_record is not second_record
+    expected_id = second.bundle_id
+
+    object.__setattr__(first, "_raw", b"{}")
+    with pytest.raises(
+        business.V075K7ChildBusinessBundleV1Error,
+        match="changed after issuance",
+    ):
+        first.bundle_id
+    assert second.bundle_id == expected_id
+
+
+def test_bundle_properties_preserve_original_parse_only_semantics(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _request, _replay, _portable, _wrapped, _authority, bundle = _substrate(
+        monkeypatch
+    )
+    expected_id = bundle.bundle_id
+    raw = bundle.canonical_bytes
+    original_parser = business._canonical_document  # noqa: SLF001
+    parse_calls = 0
+
+    def counted_parser(*args):
+        nonlocal parse_calls
+        parse_calls += 1
+        return original_parser(*args)
+
+    def forbidden_full_validator(document):
+        del document
+        raise AssertionError("issued child property performed full replay")
+
+    monkeypatch.setattr(business, "_canonical_document", counted_parser)
+    monkeypatch.setattr(
+        business,
+        "_validate_bundle_document",
+        forbidden_full_validator,
+    )
+    assert bundle.bundle_id == expected_id
+    assert bundle.to_document()["child_business_bundle_id"] == expected_id
+    assert bundle.canonical_bytes == raw
+    assert parse_calls == 2
+
+
+@pytest.mark.skipif(not hasattr(os, "fork"), reason="requires POSIX fork")
+def test_bundle_issuance_seal_rejects_cross_pid_use(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _request, _replay, _portable, _wrapped, _authority, bundle = _substrate(
+        monkeypatch
+    )
+    reader, writer = os.pipe()
+    child_pid = os.fork()
+    if child_pid == 0:  # pragma: no cover - asserted through the pipe
+        os.close(reader)
+        outcome = b"unexpected-accept"
+        try:
+            _ = bundle.bundle_id
+        except business.V075K7ChildBusinessBundleV1Error:
+            outcome = b"rejected"
+        except BaseException:
+            outcome = b"wrong-error"
+        os.write(writer, outcome)
+        os.close(writer)
+        os._exit(0)
+    os.close(writer)
+    try:
+        outcome = os.read(reader, 64)
+    finally:
+        os.close(reader)
+    waited_pid, status = os.waitpid(child_pid, 0)
+    assert waited_pid == child_pid
+    assert os.waitstatus_to_exitcode(status) == 0
+    assert outcome == b"rejected"
+
+
+@pytest.mark.skipif(not hasattr(os, "fork"), reason="requires POSIX fork")
+def test_bundle_fork_child_reinitializes_parent_held_issuance_lock(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _request, _replay, _portable, _wrapped, _authority, bundle = _substrate(
+        monkeypatch
+    )
+    reader, writer = os.pipe()
+    parent_lock = business._BUNDLE_ISSUANCE_LOCK  # noqa: SLF001
+    parent_lock.acquire()
+    child_pid = os.fork()
+    if child_pid == 0:  # pragma: no cover - asserted through the pipe
+        os.close(reader)
+        signal.alarm(5)
+        outcome = b"unexpected-accept"
+        try:
+            _ = bundle.bundle_id
+        except business.V075K7ChildBusinessBundleV1Error:
+            outcome = b"rejected"
+        except BaseException:
+            outcome = b"wrong-error"
+        os.write(writer, outcome)
+        signal.alarm(0)
+        os.close(writer)
+        os._exit(0)
+    os.close(writer)
+    try:
+        outcome = os.read(reader, 64)
+    finally:
+        parent_lock.release()
+        os.close(reader)
+    waited_pid, status = os.waitpid(child_pid, 0)
+    assert waited_pid == child_pid
+    assert os.waitstatus_to_exitcode(status) == 0
+    assert outcome == b"rejected"
 
 
 def test_all_roots_absent_and_request_as_main_attacks_fail(

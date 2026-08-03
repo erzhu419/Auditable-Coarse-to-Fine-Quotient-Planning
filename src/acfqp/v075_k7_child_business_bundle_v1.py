@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import base64
 from contextlib import contextmanager
+from contextvars import ContextVar
 from dataclasses import InitVar, dataclass
 from functools import wraps
 import hashlib
@@ -24,7 +25,12 @@ from pathlib import Path
 import subprocess
 import threading
 from typing import Any, Mapping, NoReturn
+import weakref
 
+from acfqp.exact_frozen_memo_v1 import (
+    exact_callable_guard_v1,
+    exact_frozen_memoization_enabled_v1,
+)
 from acfqp import construction_accounting_partial_native_v1 as partial_native
 from acfqp import construction_accounting_registry_v6 as registry_v6
 from acfqp import v075_batch_native_statistical_backend_v1 as backend
@@ -85,6 +91,35 @@ _PRIVATE_TAINT_RECORDS: dict[
     object,
     tuple[int, str, str, str, str, tuple[bytes, ...]],
 ] = {}
+_BUNDLE_VALIDATION_TRANSACTION_V1: ContextVar[
+    dict[tuple[Any, ...], object] | None
+] = ContextVar("acfqp_k7_bundle_validation_transaction_v1", default=None)
+_BUNDLE_ISSUANCE_LOCK = threading.Lock()
+
+
+@dataclass(frozen=True, slots=True)
+class _BundleIssuanceRecordV1:
+    owner_pid: int
+    raw: bytes
+    bundle_id: str
+
+
+_BUNDLE_ISSUANCE_RECORDS: dict[
+    int,
+    tuple[weakref.ReferenceType[object], _BundleIssuanceRecordV1],
+] = {}
+
+
+def _reset_bundle_issuance_after_fork_v1() -> None:
+    """Discard inherited seals without touching a possibly locked mutex."""
+
+    global _BUNDLE_ISSUANCE_LOCK, _BUNDLE_ISSUANCE_RECORDS
+    _BUNDLE_ISSUANCE_LOCK = threading.Lock()
+    _BUNDLE_ISSUANCE_RECORDS = {}
+
+
+if hasattr(os, "register_at_fork"):
+    os.register_at_fork(after_in_child=_reset_bundle_issuance_after_fork_v1)
 
 
 class V075K7ChildBusinessBundleV1Error(RuntimeError):
@@ -93,6 +128,36 @@ class V075K7ChildBusinessBundleV1Error(RuntimeError):
 
 def _fail(message: str) -> NoReturn:
     raise V075K7ChildBusinessBundleV1Error(message)
+
+
+def _register_bundle_issuance_v1(
+    bundle: object,
+    record: _BundleIssuanceRecordV1,
+) -> None:
+    object_id = id(bundle)
+
+    def discard(reference: weakref.ReferenceType[object]) -> None:
+        with _BUNDLE_ISSUANCE_LOCK:
+            current = _BUNDLE_ISSUANCE_RECORDS.get(object_id)
+            if current is not None and current[0] is reference:
+                _BUNDLE_ISSUANCE_RECORDS.pop(object_id, None)
+
+    reference = weakref.ref(bundle, discard)
+    with _BUNDLE_ISSUANCE_LOCK:
+        current = _BUNDLE_ISSUANCE_RECORDS.get(object_id)
+        if current is not None and current[0]() is not None:  # pragma: no cover
+            _fail("child business bundle identity was already issued")
+        _BUNDLE_ISSUANCE_RECORDS[object_id] = (reference, record)
+
+
+def _bundle_issuance_record_v1(
+    bundle: object,
+) -> _BundleIssuanceRecordV1:
+    with _BUNDLE_ISSUANCE_LOCK:
+        current = _BUNDLE_ISSUANCE_RECORDS.get(id(bundle))
+    if current is None or current[0]() is not bundle:
+        _fail("child business bundle is stale or crossed between processes")
+    return current[1]
 
 
 def _cid(value: Any, label: str) -> str:
@@ -820,25 +885,241 @@ def _validate_bundle_document(document: Mapping[str, Any]) -> None:
     )
 
 
+_BUNDLE_VALIDATION_FACT_FIELDS = (
+    "child_business_bundle_id",
+    "portable_profile_closure_id",
+    "portable_request_replay_id",
+    "successor_profile_id",
+    "request_id",
+    "request_document_sha256",
+    "route_identity_id",
+    "scientific_occurrence_id",
+    "schedule_id",
+    "phase3e_logical_occurrence_id",
+    "signer_registry_id",
+    "observer_evidence_key_id",
+    "opaque_environment_commitment_id",
+    "sealed_secret_commitment_id",
+    "session_external_id",
+)
+_BundleValidationFactsV1 = tuple[str, ...]
+
+
+def _bundle_validation_recipe_v1() -> tuple[Any, ...]:
+    """Record directly owned inputs for one transaction-local replay."""
+
+    return (
+        SCHEMA_VERSION,
+        PROPOSED_CONTRACT_VERSION,
+        PROFILE_KEY,
+        BUSINESS_FRAME_ROLE,
+        BUNDLE_DOMAIN,
+        MAX_BUNDLE_BYTES,
+        tuple(sorted(_BUNDLE_FIELDS)),
+        tuple(sorted(_OWNED_FIELDS)),
+        tuple(sorted(_CACHE_PROFILE_FIELDS)),
+        tuple(sorted(_CACHE_EPOCH_FIELDS)),
+        tuple(sorted(_TRANSCRIPT_FIELDS)),
+        tuple(EVIDENCE_ROOT_ROLES),
+        tuple(sorted(_locks().items())),
+        partial_native.SCHEMA_VERSION,
+        partial_native.PARTIAL_NATIVE_OCCURRENCE_START_V1_DOMAIN,
+        partial_native.PARTIAL_NATIVE_OCCURRENCE_TRANSCRIPT_V1_DOMAIN,
+        partial_native.NOT_APPLICABLE_KIND,
+        partial_native.CHAIN_GENESIS_REASON,
+        partial_native.COVERAGE_STATE,
+        partial_native.UNAVAILABLE_KIND,
+        partial_native.UNAVAILABLE_REASON,
+        tuple(item.value for item in partial_native.ROOT_CAP_FIVE_STAGE_PLAN_V1),
+        owned_runner.SCHEMA_VERSION,
+        owned_runner.PROFILE_KEY,
+        owned_runner.RECORDER_ID,
+        owned_runner.OWNED_PARTIAL_RESULT_DOMAIN,
+        owned_runner.COLD_CACHE_PROFILE_DOMAIN,
+        owned_runner.COLD_CACHE_EPOCH_DOMAIN,
+    )
+
+
+def _bundle_validation_callable_guard_v1(
+) -> tuple[tuple[object, ...], ...]:
+    return exact_callable_guard_v1(
+        _canonical_document,
+        _validate_bundle_document,
+        _validate_known_child_documents,
+        _verify_content_id_document,
+        _one_portable_record,
+        _hash,
+        _locks,
+        canonical_json_bytes,
+        content_id,
+        portable_evidence.verify_v075_portable_occurrence_evidence_bundle_bytes_v2,
+        registry_v6.official_counter_registry_v6,
+        registry_v6.official_stage_profile_v6,
+        boundary.official_k7_root_cap_operation_boundary_manifest_v3,
+        execution.official_v075_k7_root_cap_execution_identity_profile_v1,
+        owned_runner.official_v075_k7_root_cap_cold_cache_profile_v1,
+        _compute_bundle_validation_facts_v1,
+    )
+
+
+def _compute_bundle_validation_facts_v1(
+    raw: bytes,
+    formula_recipe: tuple[Any, ...],
+    callable_guard: tuple[tuple[object, ...], ...],
+) -> _BundleValidationFactsV1:
+    """Run the original full raw replay and retain only primitive facts."""
+
+    del formula_recipe, callable_guard
+    document = _canonical_document(raw, "business bundle")
+    _validate_bundle_document(document)
+    return tuple(document[field] for field in _BUNDLE_VALIDATION_FACT_FIELDS)
+
+
+@contextmanager
+def _bundle_validation_transaction_v1():
+    """Share exact replay facts only inside one explicit validation call tree.
+
+    The portable verifier has mutable module-level role, schema, and topology
+    authorities.  Enumerating every present and future dependency into one
+    persistent-cache recipe is not a closed proof obligation.  A fresh public
+    verification therefore always starts with an empty cache; nested replay
+    and construction may reuse only complete exact inputs from that same
+    transaction.
+    """
+
+    token = _BUNDLE_VALIDATION_TRANSACTION_V1.set({})
+    try:
+        yield
+    finally:
+        _BUNDLE_VALIDATION_TRANSACTION_V1.reset(token)
+
+
+def _bundle_validation_inputs_v1(raw: bytes) -> tuple[Any, ...]:
+    return (
+        raw,
+        _bundle_validation_recipe_v1(),
+        _bundle_validation_callable_guard_v1(),
+    )
+
+
+def _validated_bundle_facts_v1(raw: bytes) -> _BundleValidationFactsV1:
+    inputs = _bundle_validation_inputs_v1(raw)
+    transaction = _BUNDLE_VALIDATION_TRANSACTION_V1.get()
+    if not exact_frozen_memoization_enabled_v1() or transaction is None:
+        return _compute_bundle_validation_facts_v1(*inputs)
+    key = ("BUNDLE_VALIDATION_FACTS_V1", *inputs)
+    cached = transaction.get(key)
+    if cached is not None:
+        return cached  # type: ignore[return-value]
+    result = _compute_bundle_validation_facts_v1(*inputs)
+    transaction[key] = result
+    return result
+
+
+def _compute_request_bound_bundle_id_v1(
+    raw: bytes,
+    expected_identity_primitives: tuple[str, ...],
+    formula_recipe: tuple[Any, ...],
+    callable_guard: tuple[tuple[object, ...], ...],
+) -> str:
+    """Replay raw validation and its complete expected-request identity join."""
+
+    del formula_recipe, callable_guard
+    facts = _validated_bundle_facts_v1(raw)
+    if facts[1:] != expected_identity_primitives:
+        _fail("business bundle crossed its exact V0-103 request")
+    return facts[0]
+
+
+def _request_identity_primitives_v1(
+    expected_request_replay: portable_replay.V075K7SuccessorPortableRequestReplayV1,
+) -> tuple[str, ...]:
+    expected = expected_request_replay.request
+    return (
+        expected_request_replay.profile_closure.closure_id,
+        expected_request_replay.replay_id,
+        expected.profile.profile_id,
+        expected.request_id,
+        hashlib.sha256(expected.canonical_bytes).hexdigest(),
+        expected.route_identity.route_identity_id,
+        expected.scientific_occurrence_id,
+        expected.schedule_id,
+        expected.occurrence_mapping.phase3e_logical_occurrence_id,
+        expected.signer_registry.registry_id,
+        expected.signer_registry.observer_evidence_key.key_id,
+        expected.opaque_environment_commitment_id,
+        expected.sealed_secret_commitment_id,
+        expected.session_external_id,
+    )
+
+
+def _validated_request_bound_bundle_id_v1(
+    raw: bytes,
+    expected_identity_primitives: tuple[str, ...],
+) -> str:
+    request_inputs = (
+        raw,
+        expected_identity_primitives,
+        _bundle_validation_recipe_v1(),
+        exact_callable_guard_v1(
+            _validated_bundle_facts_v1,
+            _compute_request_bound_bundle_id_v1,
+        ),
+    )
+    transaction = _BUNDLE_VALIDATION_TRANSACTION_V1.get()
+    if not exact_frozen_memoization_enabled_v1() or transaction is None:
+        return _compute_request_bound_bundle_id_v1(*request_inputs)
+    key = ("REQUEST_BOUND_BUNDLE_ID_V1", *request_inputs)
+    cached = transaction.get(key)
+    if cached is not None:
+        return cached  # type: ignore[return-value]
+    result = _compute_request_bound_bundle_id_v1(*request_inputs)
+    transaction[key] = result
+    return result
+
+
+class _WeakReferenceableBundleV1:
+    """Supply a weakref slot while retaining Python 3.10 compatibility."""
+
+    __slots__ = ("__weakref__",)
+
+
 @dataclass(frozen=True, slots=True)
-class V075K7ChildBusinessBundleV1:
+class V075K7ChildBusinessBundleV1(_WeakReferenceableBundleV1):
+
     _issuer: InitVar[object]
     _raw: bytes
 
     def __post_init__(self, _issuer: object) -> None:
         if _issuer is not _BUNDLE_ISSUER or type(self._raw) is not bytes:
             _fail("child business bundle is caller-minted")
-        _validate_bundle_document(_canonical_document(self._raw, "business bundle"))
+        facts = _validated_bundle_facts_v1(self._raw)
+        record = _BundleIssuanceRecordV1(os.getpid(), self._raw, facts[0])
+        _register_bundle_issuance_v1(self, record)
+
+    def _issuance_record(self) -> _BundleIssuanceRecordV1:
+        record = _bundle_issuance_record_v1(self)
+        if record.owner_pid != os.getpid():
+            _fail("child business bundle is stale or crossed between processes")
+        if type(self._raw) is not bytes or self._raw != record.raw:
+            _fail("child business bundle changed after issuance")
+        return record
 
     @property
     def bundle_id(self) -> str:
-        return self.to_document()["child_business_bundle_id"]
+        record = self._issuance_record()
+        document = _canonical_document(self._raw, "business bundle")
+        if document.get("child_business_bundle_id") != record.bundle_id:
+            _fail("child business bundle identity changed after issuance")
+        return record.bundle_id
 
     @property
     def canonical_bytes(self) -> bytes:
+        self._issuance_record()
         return self._raw
 
     def to_document(self) -> dict[str, Any]:
+        self._issuance_record()
         return _canonical_document(self._raw, "business bundle")
 
 
@@ -1129,34 +1410,13 @@ def verify_v075_k7_child_business_bundle_public_bytes_v1(
         is not portable_replay.V075K7SuccessorPortableRequestReplayV1
     ):
         _fail("business bundle replay requires the exact request replay")
-    expected_request_replay.profile_closure._assert_current()  # noqa: SLF001
-    expected = expected_request_replay.request
-    document = _canonical_document(raw, "business bundle")
-    _validate_bundle_document(document)
-    if (
-        document["portable_profile_closure_id"]
-        != expected_request_replay.profile_closure.closure_id
-        or document["portable_request_replay_id"] != expected_request_replay.replay_id
-        or document["successor_profile_id"] != expected.profile.profile_id
-        or document["request_id"] != expected.request_id
-        or document["request_document_sha256"]
-        != hashlib.sha256(expected.canonical_bytes).hexdigest()
-        or document["route_identity_id"] != expected.route_identity.route_identity_id
-        or document["scientific_occurrence_id"] != expected.scientific_occurrence_id
-        or document["schedule_id"] != expected.schedule_id
-        or document["phase3e_logical_occurrence_id"]
-        != expected.occurrence_mapping.phase3e_logical_occurrence_id
-        or document["signer_registry_id"] != expected.signer_registry.registry_id
-        or document["observer_evidence_key_id"]
-        != expected.signer_registry.observer_evidence_key.key_id
-        or document["opaque_environment_commitment_id"]
-        != expected.opaque_environment_commitment_id
-        or document["sealed_secret_commitment_id"]
-        != expected.sealed_secret_commitment_id
-        or document["session_external_id"] != expected.session_external_id
-    ):
-        _fail("business bundle crossed its exact V0-103 request")
-    return V075K7ChildBusinessBundleV1(_BUNDLE_ISSUER, raw)
+    with _bundle_validation_transaction_v1():
+        expected_request_replay.profile_closure._assert_current()  # noqa: SLF001
+        _validated_request_bound_bundle_id_v1(
+            raw,
+            _request_identity_primitives_v1(expected_request_replay),
+        )
+        return V075K7ChildBusinessBundleV1(_BUNDLE_ISSUER, raw)
 
 
 def verify_v075_k7_child_business_bundle_bytes_v1(
