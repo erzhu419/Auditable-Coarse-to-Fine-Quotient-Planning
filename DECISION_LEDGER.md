@@ -5011,6 +5011,43 @@ shared receipts, all formal derived reconciliations and every official,
 Counter Completeness, economics, scalar/break-even, sample-efficiency and
 scientific Gate remain locked or `NOT_RUN`.
 
+## V0-110B-2E-31 canonical exact-infeasible fallback raw acquisition
+
+Contract `2.0.42` binds the canonical G2048 H1 exact-infeasibility proof to an
+issuer-owned current identity reconstructed separately from the claimant using
+the current source, live kernel/query law and explicit build, threshold,
+reward, policy-class and complete-search identities. The marginal fallback
+decision freezes before ground access; claimant self-match, stale identity and
+solver/kernel substitution fail closed.
+
+The historical raw in-process solver retains seven native-operation values and
+six route/solver reconciliation values. They remain V1 source candidates. The
+exact V6 partition is `178 stage-zero candidates + 7 legacy native values + 6
+legacy reconciliation values + 9 missing shared receipts + 2 missing process
+proofs = 202 formally blocked paths`. Stage-forbidden does not prove native
+zero, and null trusted provenance plus the missing occurrence stages prevent
+production use. Cap exhaustion remains noncertificate.
+
+Seven content domains are central and role-separated. Production V6 recorders,
+CounterRecords, vectors, terminal/occurrence authority and all Gates remain
+absent or locked.
+
+## V0-110B-2E-32 abstract PASS retained-V1 evidence inventory
+
+Contract `2.0.43` inventories only what the real historical model-only PASS
+retained: eight shared aggregate claims, one unmeasured mounted-payload result,
+two owner-event candidates and eight internal reconciliation claims. None has
+the prospective V6 stage/window/cutoff or dependency authority required for
+formal accounting.
+
+Independent replay proves the pairwise-disjoint blocker partition `160 no V1
+event + 23 value-only proofs + 8 shared aggregates + 1 unmeasured mounted peak
++ 2 owner candidates + 8 reconciliation claims = 202`. No V1 row is promoted,
+no missing event becomes zero and no vector, terminal or certificate is
+issued. Seven content domains are central and role-separated; all official,
+Counter Completeness, economics, scalar/break-even, sample-efficiency and
+scientific Gates remain locked or `NOT_RUN`.
+
 ## Change log
 
 - **2026-07-19 — 0.1.0:** Transcribed and closed the V0 construction contract from the Normative Decision Addendum and the V0 preconstruction audit. Added the deterministic policy-class and reward-normalization implementation clarifications needed for executable tests.
@@ -5149,3 +5186,5 @@ scientific Gate remain locked or `NOT_RUN`.
 - **2026-08-03 — contracts 2.0.38--2.0.39 / V0-110B-2E-27..28:** Audited the live abstract PASS and genuine exact-infeasible direct fallback against the K7/V6 all-path contract. The former has an exact `160/15/27` required-path gap plus missing `9+8` shared/derived evidence; the latter matches the durable proof but retains only a 42-leaf V1 vector. Both produce centrally registered replayable blockers, never formal vectors or terminals.
 - **2026-08-03 — contract 2.0.40 / V0-110B-2E-29:** Closed the 14 V075 extension-row interpretations with exact evidence-conditioned normalization. Candidate FQ9 targets still require downstream semantic terminal authorities; the profile issues no terminal or Gate claim.
 - **2026-08-03 — contract 2.0.41 / V0-110B-2E-30:** Closed exactly 23 forbidden-route-stage native-zero values (without issuing the formal profile-native-zero authority) plus three separately typed derived-complement values for the live abstract PASS, rejected the unmeasured mounted-payload zero, and retained an exact 176-gap nonterminal partition. No formal V6 record, vector, terminal or Gate claim was issued.
+- **2026-08-03 — contract 2.0.42 / V0-110B-2E-31:** Acquired 13 exact source values from the canonical raw infeasible fallback under an independently issued current source/kernel/query identity, while preserving the exact `178+7+6+9+2=202` all-formal-blocker partition. The raw marginal solver has null trusted provenance and no complete occurrence stage chain; no V6 record, vector, terminal or Gate claim was issued.
+- **2026-08-03 — contract 2.0.43 / V0-110B-2E-32:** Inventoried the real abstract-PASS V1 evidence as an exact `160+23+8+1+2+8=202` formal-blocker partition. Shared aggregates, owner candidates, value-only proofs and reconciliations retain their source semantics and cannot become V6 records, native zeros, vectors or certificates.

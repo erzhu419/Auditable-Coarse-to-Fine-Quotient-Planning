@@ -3206,3 +3206,14 @@ and solver-stage exclusion are semantically closed; route outcomes remain
 explicitly blocked until the production business-result bytes and the complete
 native transcript share one stronger terminal authority. No incomplete DAG
 result can enter a formal vector.
+
+Contracts `2.0.42` and `2.0.43` now freeze honest migration inventories for
+the canonical raw infeasible fallback and real abstract-PASS path. The fallback
+retains 13 exact V1 source values but all 202 V6 paths remain formally blocked;
+the abstract path independently partitions all 202 blockers without promoting
+legacy aggregates, events, reconciliations or an unmeasured mounted peak.
+Neither contract creates a production CounterRecord, vector, terminal,
+certificate or Gate result. See
+[`specs/K7_CANONICAL_INFEASIBLE_FALLBACK_RAW_ACQUISITION.md`](specs/K7_CANONICAL_INFEASIBLE_FALLBACK_RAW_ACQUISITION.md)
+and
+[`specs/K7_ABSTRACT_PASS_RETAINED_V1_EVIDENCE_INVENTORY.md`](specs/K7_ABSTRACT_PASS_RETAINED_V1_EVIDENCE_INVENTORY.md).

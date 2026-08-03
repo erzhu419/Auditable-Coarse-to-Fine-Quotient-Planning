@@ -1041,6 +1041,48 @@ CONSTRUCTION_K7_ABSTRACT_CERTIFIED_ZERO_VALUE_REPLAY_V1_DOMAIN = (
 CONSTRUCTION_K7_DIRECT_FALLBACK_EXACT_INFEASIBILITY_READINESS_V1_DOMAIN = (
     "acfqp:construction-k7-direct-fallback-exact-infeasibility-readiness:v1"
 )
+CONSTRUCTION_K7_CANONICAL_INFEASIBLE_FALLBACK_PREEXECUTION_V1_DOMAIN = (
+    "acfqp:construction-k7-canonical-infeasible-fallback-preexecution:v1"
+)
+CONSTRUCTION_K7_CANONICAL_INFEASIBLE_FALLBACK_CURRENT_IDENTITY_V1_DOMAIN = (
+    "acfqp:construction-k7-canonical-infeasible-fallback-current-identity:v1"
+)
+CONSTRUCTION_K7_CANONICAL_INFEASIBLE_FALLBACK_CARDINALITY_SOURCE_V1_DOMAIN = (
+    "acfqp:construction-k7-canonical-infeasible-fallback-cardinality-source:v1"
+)
+CONSTRUCTION_K7_CANONICAL_INFEASIBLE_FALLBACK_TRANSITION_TRACE_V1_DOMAIN = (
+    "acfqp:construction-k7-canonical-infeasible-fallback-transition-trace:v1"
+)
+CONSTRUCTION_K7_CANONICAL_INFEASIBLE_FALLBACK_PATH_EVIDENCE_V1_DOMAIN = (
+    "acfqp:construction-k7-canonical-infeasible-fallback-path-evidence:v1"
+)
+CONSTRUCTION_K7_CANONICAL_INFEASIBLE_FALLBACK_ACQUISITION_V1_DOMAIN = (
+    "acfqp:construction-k7-canonical-infeasible-fallback-acquisition:v1"
+)
+CONSTRUCTION_K7_CANONICAL_INFEASIBLE_FALLBACK_SUPPORT_V1_DOMAIN = (
+    "acfqp:construction-k7-canonical-infeasible-fallback-support:v1"
+)
+CONSTRUCTION_K7_ABSTRACT_PASS_RETAINED_V1_INVENTORY_CONTEXT_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-pass-retained-v1-inventory-context:v1"
+)
+CONSTRUCTION_K7_ABSTRACT_PASS_LEGACY_SHARED_AGGREGATE_CLAIM_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-pass-legacy-shared-aggregate-claim:v1"
+)
+CONSTRUCTION_K7_ABSTRACT_PASS_LEGACY_OWNER_EVENT_CANDIDATE_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-pass-legacy-owner-event-candidate:v1"
+)
+CONSTRUCTION_K7_ABSTRACT_PASS_LEGACY_RECONCILIATION_CLAIM_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-pass-legacy-reconciliation-claim:v1"
+)
+CONSTRUCTION_K7_ABSTRACT_PASS_RETAINED_V1_FORMAL_BLOCKER_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-pass-retained-v1-formal-blocker:v1"
+)
+CONSTRUCTION_K7_ABSTRACT_PASS_RETAINED_V1_EVIDENCE_INVENTORY_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-pass-retained-v1-evidence-inventory:v1"
+)
+CONSTRUCTION_K7_ABSTRACT_PASS_RETAINED_V1_INVENTORY_REPLAY_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-pass-retained-v1-inventory-replay:v1"
+)
 CONSTRUCTION_K7_CONDITIONAL_TERMINAL_NORMALIZATION_PROFILE_V1_DOMAIN = (
     "acfqp:construction-k7-conditional-terminal-normalization-profile:v1"
 )
@@ -2348,6 +2390,48 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_direct_fallback_exact_infeasibility_readiness_v1": (
             CONSTRUCTION_K7_DIRECT_FALLBACK_EXACT_INFEASIBILITY_READINESS_V1_DOMAIN
+        ),
+        "construction_k7_canonical_infeasible_fallback_preexecution_v1": (
+            CONSTRUCTION_K7_CANONICAL_INFEASIBLE_FALLBACK_PREEXECUTION_V1_DOMAIN
+        ),
+        "construction_k7_canonical_infeasible_fallback_current_identity_v1": (
+            CONSTRUCTION_K7_CANONICAL_INFEASIBLE_FALLBACK_CURRENT_IDENTITY_V1_DOMAIN
+        ),
+        "construction_k7_canonical_infeasible_fallback_cardinality_source_v1": (
+            CONSTRUCTION_K7_CANONICAL_INFEASIBLE_FALLBACK_CARDINALITY_SOURCE_V1_DOMAIN
+        ),
+        "construction_k7_canonical_infeasible_fallback_transition_trace_v1": (
+            CONSTRUCTION_K7_CANONICAL_INFEASIBLE_FALLBACK_TRANSITION_TRACE_V1_DOMAIN
+        ),
+        "construction_k7_canonical_infeasible_fallback_path_evidence_v1": (
+            CONSTRUCTION_K7_CANONICAL_INFEASIBLE_FALLBACK_PATH_EVIDENCE_V1_DOMAIN
+        ),
+        "construction_k7_canonical_infeasible_fallback_acquisition_v1": (
+            CONSTRUCTION_K7_CANONICAL_INFEASIBLE_FALLBACK_ACQUISITION_V1_DOMAIN
+        ),
+        "construction_k7_canonical_infeasible_fallback_support_v1": (
+            CONSTRUCTION_K7_CANONICAL_INFEASIBLE_FALLBACK_SUPPORT_V1_DOMAIN
+        ),
+        "construction_k7_abstract_pass_retained_v1_inventory_context_v1": (
+            CONSTRUCTION_K7_ABSTRACT_PASS_RETAINED_V1_INVENTORY_CONTEXT_V1_DOMAIN
+        ),
+        "construction_k7_abstract_pass_legacy_shared_aggregate_claim_v1": (
+            CONSTRUCTION_K7_ABSTRACT_PASS_LEGACY_SHARED_AGGREGATE_CLAIM_V1_DOMAIN
+        ),
+        "construction_k7_abstract_pass_legacy_owner_event_candidate_v1": (
+            CONSTRUCTION_K7_ABSTRACT_PASS_LEGACY_OWNER_EVENT_CANDIDATE_V1_DOMAIN
+        ),
+        "construction_k7_abstract_pass_legacy_reconciliation_claim_v1": (
+            CONSTRUCTION_K7_ABSTRACT_PASS_LEGACY_RECONCILIATION_CLAIM_V1_DOMAIN
+        ),
+        "construction_k7_abstract_pass_retained_v1_formal_blocker_v1": (
+            CONSTRUCTION_K7_ABSTRACT_PASS_RETAINED_V1_FORMAL_BLOCKER_V1_DOMAIN
+        ),
+        "construction_k7_abstract_pass_retained_v1_evidence_inventory_v1": (
+            CONSTRUCTION_K7_ABSTRACT_PASS_RETAINED_V1_EVIDENCE_INVENTORY_V1_DOMAIN
+        ),
+        "construction_k7_abstract_pass_retained_v1_inventory_replay_v1": (
+            CONSTRUCTION_K7_ABSTRACT_PASS_RETAINED_V1_INVENTORY_REPLAY_V1_DOMAIN
         ),
         "construction_k7_conditional_terminal_normalization_profile_v1": (
             CONSTRUCTION_K7_CONDITIONAL_TERMINAL_NORMALIZATION_PROFILE_V1_DOMAIN

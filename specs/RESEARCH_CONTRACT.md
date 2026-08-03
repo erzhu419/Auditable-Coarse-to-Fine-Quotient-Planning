@@ -5627,3 +5627,43 @@ identity `202 = 23 + 3 + 176`. The nine shared-resource authorities, formal
 V6 CounterRecords, WorkVector, ComparisonVector, projection proof and FQ9
 terminal remain absent. No Gate state changes. See
 `specs/K7_ABSTRACT_CERTIFIED_ZERO_VALUE_CLOSURE.md`.
+
+## Contract 2.0.42: canonical fallback raw acquisition
+
+V0-110B-2E-31 binds the canonical G2048 H1 infeasibility witness to a
+separately issued current source/kernel/query identity, freezes the marginal
+fallback decision before ground access and runs the historical in-process
+fallback solver once. It retains seven native-operation values and six
+route/solver reconciliation values as typed V1 source candidates.
+
+No source row is relabelled as V6. The exact required-path partition is 178
+stage-forbidden zero candidates, seven legacy native-value candidates, six
+legacy reconciliation-value candidates, nine missing shared-resource receipts
+and two missing process-exit derived proofs. All 202 paths therefore remain
+formally blocked. The acquisition is a raw marginal segment with null trusted
+provenance and lacks the complete FQ9 occurrence stage chain.
+
+Current identity cannot default to the claimant proof; source, live kernel and
+the five explicit query/build/search identities are replayed independently.
+Cap exhaustion remains noncertificate. Seven role-separated domains are
+central, but production V6 recorders, vectors, terminal/occurrence authority
+and every Gate remain absent. See
+`specs/K7_CANONICAL_INFEASIBLE_FALLBACK_RAW_ACQUISITION.md`.
+
+## Contract 2.0.43: abstract PASS retained-V1 inventory
+
+V0-110B-2E-32 replays the real model-only `ABSTRACT_CERTIFIED` path and records
+only the evidence retained by its historical V1 runtime. It freezes eight
+shared aggregate claims, one explicit unmeasured mounted-payload result, two
+owner-event candidates and eight internal reconciliation claims without
+promoting any of them into V6 accounting.
+
+The exact pairwise-disjoint blocker partition is 160 paths with no V1 event,
+23 paths with value-only proofs, eight legacy shared aggregates, one
+unmeasured mounted peak, two legacy owner candidates and eight legacy
+reconciliations, totalling all 202 required paths. Independent replay rejects
+mounted-zero promotion, overlap, omission, mutation and any vector, terminal
+or certificate claim. Seven role-separated domains are central; all official,
+scalar/break-even, Counter Completeness, economics and sample-efficiency states
+remain locked or `NOT_RUN`. See
+`specs/K7_ABSTRACT_PASS_RETAINED_V1_EVIDENCE_INVENTORY.md`.
