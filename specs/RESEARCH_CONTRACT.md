@@ -1,6 +1,6 @@
 # Research Contract
 
-**Current construction contract:** `2.0.48`
+**Current construction contract:** `2.0.49`
 
 **Current construction profiles:** `v075_k7_production_role_manifest_v1`,
 `v075_k7_business_entry_core_v1`, `v075_k7_broker_worker_entry_core_v1`
@@ -5782,3 +5782,27 @@ semantic cardinality evidence and a numeric V7 upper do not exist, and no
 production execution, CounterRecord, WorkVector, ComparisonVector, terminal,
 occurrence or Gate result is issued. See
 `specs/K7_DIRECT_FALLBACK_SHARED_SOURCE_MANIFEST_V1.md`.
+
+## Contract 2.0.49: production shared-cap V2 pending boundary
+
+V0-110B-2E-38 separates the future production cap owner from the executable
+construction V1 session. The only issuable activation, profile and engine are
+explicitly `V7_AUTHORITY_PENDING`. The engine is an issuer-retained exact
+nested tuple with nine fixed owner names mapped to non-callable string
+sentinels; it exposes no callback method, mutable backing, transaction,
+receipt/event mint or lifecycle mutation path. Caller exact tuples and tuple
+subclasses fail the live verifier.
+
+Only activation/profile/engine identity candidates may be hashed locally.
+Receipt, semantic-event and atomic-pair domain candidates are not centrally
+registered and are rejected by the helper, including malicious string-subclass
+dispatch. The full reachable runtime tuple graph contains only immutable
+tuples and exact strings.
+
+This contract freezes the V7 adapter obligations; it does not implement them.
+Formal route decision, semantic cardinalities, aggregate upper, atomic
+receipt/event authority, output fixed point, launch, mount, cgroup same-OFD
+peak, production owner wiring, CounterRecords, vectors and FQ9 closure remain
+required. All official, scalar/break-even, Counter Completeness, economics and
+sample-efficiency locks remain unchanged. See
+`specs/K7_PRODUCTION_SHARED_CAP_ENGINE_V2_LOCKED.md`.

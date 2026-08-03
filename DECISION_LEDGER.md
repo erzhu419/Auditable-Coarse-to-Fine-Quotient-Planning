@@ -5109,6 +5109,26 @@ splicing. Live owner wiring, semantic cardinalities, a numeric V7 upper,
 production execution, formal vectors, FQ9 closure and every Gate remain
 blocked.
 
+## V0-110B-2E-38 production shared-cap V2 pending boundary
+
+Contract `2.0.49` creates a production-only successor namespace without
+promoting the construction V1 cap session. The only issuable activation and
+engine state is `V7_AUTHORITY_PENDING`. The engine is an issuer-retained exact
+nested-tuple capability containing nine fixed owner-name/pending-sentinel
+pairs; it has no callback, transaction, receipt, semantic-event or lifecycle
+surface. Caller tuples and tuple subclasses are not authorities, and the
+reachable runtime object graph has no mutable backing.
+
+Activation, profile and engine identity candidates use three distinct local
+domains. Receipt, semantic-event and atomic-pair domains remain unregistered
+non-mintable candidates; the local identity helper rejects them and rejects
+non-exact string domains. Exact-type, mutation, class/subclass, object-new,
+GC-referent, malicious-string and private-mint attacks fail closed. A future
+V7 adapter must supply a formal fallback decision, exact aggregate caps,
+atomic receipt/event authority and all output, launch, mount and same-OFD peak
+semantics before any owner operation can exist. No execution, vector,
+terminal or Gate is authorized.
+
 ## Change log
 
 - **2026-07-19 — 0.1.0:** Transcribed and closed the V0 construction contract from the Normative Decision Addendum and the V0 preconstruction audit. Added the deterministic policy-class and reward-normalization implementation clarifications needed for executable tests.
@@ -5254,3 +5274,4 @@ blocked.
 - **2026-08-03 — contract 2.0.46 / V0-110B-2E-35:** Reissued the canonical H1 pre-execution authority from durable proof/current identity, replayed the typed preselection access log and froze an exact 182-leaf/eight-axis V6 finite admission candidate. All nine shared caps remain unenforced by the selected runner, so execution, formal actual-compliance and every Gate remain locked.
 - **2026-08-03 — contract 2.0.47 / V0-110B-2E-36:** Added an issuer-owned one-shot construction admission authority for all nine V6 shared-resource paths. SUM work is reserved before side effects and conservatively settled on unverifiable failure; MAX working and distinct-payload mounted peaks are retained; staging is restricted to named sandbox COPY/BIND ingress; every admission adds one nonrecursive cap check. External issuer seals reject budget forks, object forgery, mutation, stale/foreign capabilities and callback attempts to erase work, while protocol failure still permits sealed mount cleanup. The source-site IDs remain construction-only and semantically unverified, no formal V7 route decision or production owner consumes the session, and no CounterRecord, vector, terminal or Gate is issued.
 - **2026-08-03 — contract 2.0.48 / V0-110B-2E-37:** Froze the exact nine-path successor-source and typed aggregate-formula schema without issuing numeric operands or an upper. Added an independently replayed manifest-bound cap-profile join that derives all site IDs internally and rejects exact-manifest/fake-site splicing. Production wiring, semantic cardinality, formal V7 routing, vectors, terminal authority and every Gate remain blocked.
+- **2026-08-03 — contract 2.0.49 / V0-110B-2E-38:** Added a production-only, permanently `V7_AUTHORITY_PENDING` shared-cap boundary. Its exact immutable tuple exposes nine non-callable pending sentinels and no private live kernel; receipt/event/pair domains are non-mintable. Production methods may appear only behind a later independently verified V7 adapter, so all execution and Gate locks remain unchanged.

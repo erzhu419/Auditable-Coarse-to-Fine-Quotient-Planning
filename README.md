@@ -3263,3 +3263,11 @@ bytes, closing manifest/site splicing without promoting the historical generic
 cap factory. Live owner wiring, V7 routing, formal vectors and all Gates remain
 locked. See
 [`specs/K7_DIRECT_FALLBACK_SHARED_SOURCE_MANIFEST_V1.md`](specs/K7_DIRECT_FALLBACK_SHARED_SOURCE_MANIFEST_V1.md).
+
+Contract `2.0.49` adds the separate production-only cap boundary but keeps it
+permanently `V7_AUTHORITY_PENDING`. The issuable engine is an exact immutable
+tuple of nine non-callable owner sentinels; it contains no mutable backing,
+callback, receipt/event mint or private transaction path. A later V7 adapter
+must independently bind the formal route decision and semantic aggregate
+evidence before executable owner methods can exist. See
+[`specs/K7_PRODUCTION_SHARED_CAP_ENGINE_V2_LOCKED.md`](specs/K7_PRODUCTION_SHARED_CAP_ENGINE_V2_LOCKED.md).
