@@ -810,6 +810,27 @@ CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_FIXED_POINT_ITERATION_V1_DOMAIN = (
 CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_FIXED_POINT_RESULT_V1_DOMAIN = (
     "acfqp:construction-k7-h1-branch-aware-output-fixed-point-result:v1"
 )
+CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_SOURCE_AUTHORITY_DOMAIN = (
+    "acfqp:construction-accounting-route-segment-source-authority:v4"
+)
+CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_MANIFEST_AUTHORITY_DOMAIN = (
+    "acfqp:construction-accounting-route-segment-manifest-authority:v4"
+)
+CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNER_BLOCKER_DOMAIN = (
+    "acfqp:construction-accounting-route-segment-owner-blocker:v4"
+)
+CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_START_DOMAIN = (
+    "acfqp:construction-accounting-route-segment-start:v4"
+)
+CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_EVENT_DOMAIN = (
+    "acfqp:construction-accounting-route-segment-event:v4"
+)
+CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_TERMINAL_DOMAIN = (
+    "acfqp:construction-accounting-route-segment-terminal:v4"
+)
+CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_TRANSCRIPT_DOMAIN = (
+    "acfqp:construction-accounting-route-segment-transcript:v4"
+)
 CONSTRUCTION_OWNER_BOUNDARY_SITE_CLOSURE_V1_DOMAIN = (
     "acfqp:construction-owner-boundary-site-closure:v1"
 )
@@ -2225,6 +2246,27 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_h1_branch_aware_output_fixed_point_result_v1": (
             CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_FIXED_POINT_RESULT_V1_DOMAIN
+        ),
+        "construction_accounting_route_segment_v4_source_authority": (
+            CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_SOURCE_AUTHORITY_DOMAIN
+        ),
+        "construction_accounting_route_segment_v4_manifest_authority": (
+            CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_MANIFEST_AUTHORITY_DOMAIN
+        ),
+        "construction_accounting_route_segment_v4_owner_blocker": (
+            CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_OWNER_BLOCKER_DOMAIN
+        ),
+        "construction_accounting_route_segment_v4_start": (
+            CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_START_DOMAIN
+        ),
+        "construction_accounting_route_segment_v4_event": (
+            CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_EVENT_DOMAIN
+        ),
+        "construction_accounting_route_segment_v4_terminal": (
+            CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_TERMINAL_DOMAIN
+        ),
+        "construction_accounting_route_segment_v4_transcript": (
+            CONSTRUCTION_ACCOUNTING_ROUTE_SEGMENT_V4_TRANSCRIPT_DOMAIN
         ),
         "construction_owner_boundary_site_closure_v1": (
             CONSTRUCTION_OWNER_BOUNDARY_SITE_CLOSURE_V1_DOMAIN
