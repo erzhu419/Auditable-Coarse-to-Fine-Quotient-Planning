@@ -1023,8 +1023,38 @@ CONSTRUCTION_K7_ABSTRACT_CERTIFIED_SOURCE_BLOCKER_V1_DOMAIN = (
 CONSTRUCTION_K7_ABSTRACT_CERTIFIED_COVERAGE_REPLAY_V1_DOMAIN = (
     "acfqp:construction-k7-abstract-certified-coverage-replay:v1"
 )
+CONSTRUCTION_K7_ABSTRACT_CERTIFIED_ZERO_EXECUTION_WINDOW_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-certified-zero-execution-window:v1"
+)
+CONSTRUCTION_K7_ABSTRACT_CERTIFIED_ZERO_VALUE_PROOF_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-certified-zero-value-proof:v1"
+)
+CONSTRUCTION_K7_ABSTRACT_CERTIFIED_RESIDUAL_GAP_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-certified-residual-gap:v1"
+)
+CONSTRUCTION_K7_ABSTRACT_CERTIFIED_ZERO_VALUE_CLOSURE_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-certified-zero-value-closure:v1"
+)
+CONSTRUCTION_K7_ABSTRACT_CERTIFIED_ZERO_VALUE_REPLAY_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-certified-zero-value-closure-replay:v1"
+)
 CONSTRUCTION_K7_DIRECT_FALLBACK_EXACT_INFEASIBILITY_READINESS_V1_DOMAIN = (
     "acfqp:construction-k7-direct-fallback-exact-infeasibility-readiness:v1"
+)
+CONSTRUCTION_K7_CONDITIONAL_TERMINAL_NORMALIZATION_PROFILE_V1_DOMAIN = (
+    "acfqp:construction-k7-conditional-terminal-normalization-profile:v1"
+)
+CONSTRUCTION_K7_CONDITIONAL_TERMINAL_NORMALIZATION_RULE_V1_DOMAIN = (
+    "acfqp:construction-k7-conditional-terminal-normalization-rule:v1"
+)
+CONSTRUCTION_K7_CONDITIONAL_TERMINAL_NORMALIZATION_EVIDENCE_V1_DOMAIN = (
+    "acfqp:construction-k7-conditional-terminal-normalization-evidence:v1"
+)
+CONSTRUCTION_K7_CONDITIONAL_TERMINAL_NORMALIZATION_RESULT_V1_DOMAIN = (
+    "acfqp:construction-k7-conditional-terminal-normalization-result:v1"
+)
+CONSTRUCTION_K7_CONDITIONAL_TERMINAL_NORMALIZATION_REPLAY_V1_DOMAIN = (
+    "acfqp:construction-k7-conditional-terminal-normalization-replay:v1"
 )
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
@@ -2301,8 +2331,38 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         "construction_k7_abstract_certified_coverage_replay_v1": (
             CONSTRUCTION_K7_ABSTRACT_CERTIFIED_COVERAGE_REPLAY_V1_DOMAIN
         ),
+        "construction_k7_abstract_certified_zero_execution_window_v1": (
+            CONSTRUCTION_K7_ABSTRACT_CERTIFIED_ZERO_EXECUTION_WINDOW_V1_DOMAIN
+        ),
+        "construction_k7_abstract_certified_zero_value_proof_v1": (
+            CONSTRUCTION_K7_ABSTRACT_CERTIFIED_ZERO_VALUE_PROOF_V1_DOMAIN
+        ),
+        "construction_k7_abstract_certified_residual_gap_v1": (
+            CONSTRUCTION_K7_ABSTRACT_CERTIFIED_RESIDUAL_GAP_V1_DOMAIN
+        ),
+        "construction_k7_abstract_certified_zero_value_closure_v1": (
+            CONSTRUCTION_K7_ABSTRACT_CERTIFIED_ZERO_VALUE_CLOSURE_V1_DOMAIN
+        ),
+        "construction_k7_abstract_certified_zero_value_replay_v1": (
+            CONSTRUCTION_K7_ABSTRACT_CERTIFIED_ZERO_VALUE_REPLAY_V1_DOMAIN
+        ),
         "construction_k7_direct_fallback_exact_infeasibility_readiness_v1": (
             CONSTRUCTION_K7_DIRECT_FALLBACK_EXACT_INFEASIBILITY_READINESS_V1_DOMAIN
+        ),
+        "construction_k7_conditional_terminal_normalization_profile_v1": (
+            CONSTRUCTION_K7_CONDITIONAL_TERMINAL_NORMALIZATION_PROFILE_V1_DOMAIN
+        ),
+        "construction_k7_conditional_terminal_normalization_rule_v1": (
+            CONSTRUCTION_K7_CONDITIONAL_TERMINAL_NORMALIZATION_RULE_V1_DOMAIN
+        ),
+        "construction_k7_conditional_terminal_normalization_evidence_v1": (
+            CONSTRUCTION_K7_CONDITIONAL_TERMINAL_NORMALIZATION_EVIDENCE_V1_DOMAIN
+        ),
+        "construction_k7_conditional_terminal_normalization_result_v1": (
+            CONSTRUCTION_K7_CONDITIONAL_TERMINAL_NORMALIZATION_RESULT_V1_DOMAIN
+        ),
+        "construction_k7_conditional_terminal_normalization_replay_v1": (
+            CONSTRUCTION_K7_CONDITIONAL_TERMINAL_NORMALIZATION_REPLAY_V1_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,

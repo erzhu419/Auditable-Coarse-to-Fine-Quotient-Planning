@@ -4766,3 +4766,35 @@ leaves and no formal route/terminal/occurrence chain.
 The next milestone is real route-native instrumentation, not adapter
 relabeling. See `specs/K7_ABSTRACT_CERTIFIED_ACCOUNTING_COVERAGE.md` and
 `specs/K7_DIRECT_FALLBACK_EXACT_INFEASIBILITY_READINESS.md`.
+
+## V0-110B-2E-29 conditional terminal normalization
+
+Contract `2.0.40` consumes the exact 14 V075 extension rows and freezes their
+evidence-conditioned interpretations. Route provenance distinguishes the
+three plan targets; process/protocol evidence, cap/replay evidence and typed
+noncertificate causes remain mandatory where applicable. Risk, regret,
+statistical miss, missing frontier, policy abort and construction control stay
+nonterminal route-continuation states.
+
+This milestone removes a taxonomy ambiguity only. Every FQ9 code is a
+candidate target requiring its downstream semantic authority; no terminal,
+formal accounting, occurrence closure or Gate is issued. See
+`specs/K7_CONDITIONAL_TERMINAL_NORMALIZATION.md`.
+
+## V0-110B-2E-30 abstract PASS zero-value subset
+
+Contract `2.0.41` reduces the Contract-2.0.38 abstract-PASS blocker without
+promoting its V1 accounting. Retained route-specific source and forbidden-stage
+evidence closes 23 LOCAL/FALLBACK/REBUILD native-zero values, without issuing
+the formal profile-native-zero authority. Exact successful
+process/route/solver complements close three additional values under a
+distinct derived-complement proof type; they are not native-zero attestations
+and the formal eight-path reconciliation remains incomplete.
+
+The remaining partition is exactly 176 typed gaps: `100` required-stage,
+`60` optional-stage reachability/transitive-source, `15` positive V1 binding
+and one unmeasured mounted-payload peak. No additional V6-only path is inferred
+zero. The five role-specific domains are central and independently replayed,
+but no V6 CounterRecord, WorkVector, ComparisonVector, terminal, occurrence
+closure or Gate is issued. See
+`specs/K7_ABSTRACT_CERTIFIED_ZERO_VALUE_CLOSURE.md`.

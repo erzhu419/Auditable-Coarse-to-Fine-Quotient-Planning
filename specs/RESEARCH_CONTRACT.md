@@ -5590,3 +5590,40 @@ The durable proof stays evaluation-only. Both readiness objects are
 domain-separated fail-closed blockers and mint no execution claim. See
 `specs/K7_ABSTRACT_CERTIFIED_ACCOUNTING_COVERAGE.md` and
 `specs/K7_DIRECT_FALLBACK_EXACT_INFEASIBILITY_READINESS.md`.
+
+## Contract 2.0.40: conditional terminal normalization
+
+V0-110B-2E-29 binds all 14 Contract-2.0.33 extension rows to exact conditional
+rules. Successful total lift needs route provenance; process failure needs
+retained process and protocol evidence; timeout needs preregistered cap plus
+trusted replay to select a cap code; generic noncertificate needs typed cause
+evidence. Risk/regret/statistical miss, missing frontier, policy abort and
+construction control remain route-continuation nonterminals.
+
+Normalization selects only a candidate FQ9 class/code and explicitly issues
+no terminal artifact. Downstream evidence verification and semantic terminal
+authority remain mandatory, and all Counter Completeness, official,
+economics, scalar/break-even, sample-efficiency and scientific Gates remain
+locked or `NOT_RUN`. See
+`specs/K7_CONDITIONAL_TERMINAL_NORMALIZATION.md`.
+
+## Contract 2.0.41: abstract PASS zero-value subset closure
+
+V0-110B-2E-30 consumes the exact Contract-2.0.38 abstract-certified coverage
+blocker and closes only values justified by retained route-specific model-only
+PASS evidence. It issues 23 forbidden-route-stage native-zero value proofs for
+LOCAL, FALLBACK and REBUILD paths, not the formal profile-native-zero authority.
+Three failure-family values
+(`process.exit_failures`, `route.failures` and `solver.failures`) are instead
+typed derived-complement value proofs and are never relabelled as native-zero
+attestations. All eight formal derived reconciliations therefore remain
+incomplete.
+
+The contract rejects `io.mounted_bytes_peak=0` because the peak was not
+measured. Its exact residual partition is 100 required-stage reachability
+gaps, 60 optional-stage transitive-source gaps, 15 positive V1-to-V6 binding
+gaps and one unmeasured mounted-byte gap, for 176 residual gaps and the exact
+identity `202 = 23 + 3 + 176`. The nine shared-resource authorities, formal
+V6 CounterRecords, WorkVector, ComparisonVector, projection proof and FQ9
+terminal remain absent. No Gate state changes. See
+`specs/K7_ABSTRACT_CERTIFIED_ZERO_VALUE_CLOSURE.md`.

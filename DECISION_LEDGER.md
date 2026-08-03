@@ -4969,6 +4969,48 @@ COUNTER_COMPLETENESS_GATE_NOT_RUN
 SAMPLE_EFFICIENCY_GATE_NOT_RUN
 ```
 
+## V0-110B-2E-29 conditional terminal normalization
+
+Contract `2.0.40` replaces the 14 unresolved V075 status interpretations with
+one exact source-bound conditional profile. Two successful-total-lift rows
+require route provenance; seven risk/regret/statistical/no-frontier,
+policy-abort or construction-control rows remain route-continuation
+nonterminals; two process failures require retained process and protocol
+evidence; two timeouts require preregistered cap plus trusted replay before a
+cap code can be selected; and the generic noncertificate requires typed cause
+evidence.
+
+The profile selects only a candidate FQ9 target. It never creates a live
+terminal, certificate, vector or occurrence closure, and unknown/new members
+receive no default. Independent replay binds all 14 source rows and five
+centrally registered role-separated domains. All official, Counter
+Completeness, economics, scalar/break-even, sample-efficiency and scientific
+Gates remain locked or `NOT_RUN`.
+
+## V0-110B-2E-30 ABSTRACT_CERTIFIED zero-value closure
+
+Contract `2.0.41` consumes the exact Contract-2.0.38 live PASS blocker and
+closes only values supported by its retained process, event and source window.
+Twenty-three inactive LOCAL/FALLBACK/REBUILD paths receive forbidden-route-stage
+native-zero value proofs, not the formal profile-native-zero authority. The
+zero-valued process, route and solver failure rows receive three
+separately typed derived-complement value proofs; those are not native-zero
+attestations and do not complete the eight-path derived reconciliation.
+
+The unmeasured `io.mounted_bytes_peak` zero is rejected. The revised exact
+partition is `23 native zero + 3 derived value + 176 residual gaps = 202`;
+the residuals are `100` required-stage owner gaps, `60` optional-stage
+reachability/transitive-source gaps, `15` positive V1 records without V6
+occurrence/stage/cutoff binding, and one mounted-peak gap. No V1 record is
+relabelled as V6 and no missing event becomes zero.
+
+Five central domains separate the execution window, zero-value proof,
+residual gap, closure and replay roles. The contract issues no V6
+CounterRecord, vector, terminal, certificate or occurrence closure. Nine
+shared receipts, all formal derived reconciliations and every official,
+Counter Completeness, economics, scalar/break-even, sample-efficiency and
+scientific Gate remain locked or `NOT_RUN`.
+
 ## Change log
 
 - **2026-07-19 — 0.1.0:** Transcribed and closed the V0 construction contract from the Normative Decision Addendum and the V0 preconstruction audit. Added the deterministic policy-class and reward-normalization implementation clarifications needed for executable tests.
@@ -5105,3 +5147,5 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 - **2026-08-03 — contract 2.0.36 / V0-110B-2E-25:** Froze an exact source/AST manifest of ten real production operation boundaries spanning all six required route/control families. Missing or changed source produces typed blockers; the catalogue performs no execution and emits no accounting or terminal authority.
 - **2026-08-03 — contract 2.0.37 / V0-110B-2E-26:** Exercised the production FQ13 access semantics with a canonical pre-freeze forbidden-access negative control, preserving a complete 202-record failed-prefix vector and exact `PROTOCOL_FAILURE` terminal. A typed real-site blocker prevents the control from masquerading as a production violation, so all-path coverage remains open.
 - **2026-08-03 — contracts 2.0.38--2.0.39 / V0-110B-2E-27..28:** Audited the live abstract PASS and genuine exact-infeasible direct fallback against the K7/V6 all-path contract. The former has an exact `160/15/27` required-path gap plus missing `9+8` shared/derived evidence; the latter matches the durable proof but retains only a 42-leaf V1 vector. Both produce centrally registered replayable blockers, never formal vectors or terminals.
+- **2026-08-03 — contract 2.0.40 / V0-110B-2E-29:** Closed the 14 V075 extension-row interpretations with exact evidence-conditioned normalization. Candidate FQ9 targets still require downstream semantic terminal authorities; the profile issues no terminal or Gate claim.
+- **2026-08-03 — contract 2.0.41 / V0-110B-2E-30:** Closed exactly 23 forbidden-route-stage native-zero values (without issuing the formal profile-native-zero authority) plus three separately typed derived-complement values for the live abstract PASS, rejected the unmeasured mounted-payload zero, and retained an exact 176-gap nonterminal partition. No formal V6 record, vector, terminal or Gate claim was issued.
