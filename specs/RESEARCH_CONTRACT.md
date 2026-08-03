@@ -1,6 +1,6 @@
 # Research Contract
 
-**Current construction contract:** `2.0.7`
+**Current construction contract:** `2.0.45`
 
 **Current construction profiles:** `v075_k7_production_role_manifest_v1`,
 `v075_k7_business_entry_core_v1`, `v075_k7_broker_worker_entry_core_v1`
@@ -5687,3 +5687,30 @@ version. The normative boundary and attack evidence are frozen in
 
 The official execution, scalar, break-even, workload-economics,
 counter-completeness and sample-efficiency locks remain unchanged.
+
+## Contract 2.0.45: production-owned DIRECT_FALLBACK primitives
+
+V0-110B-2E-34 replaces the seven Contract-2.0.44 shim methods with an
+independent copy of the real deterministic finite-horizon ground fallback.
+Seven literal unit-event sites are owned by the actual fallback ledger for
+state expansion, action evaluation, transition reservation, positive outcome
+rows, Bellman backup, cap check and cap rejection. The canonical H1
+infeasibility regression produces the exact positive event counts
+`8/16/16/96/16/56/0`, 208 positive events and `INFEASIBLE_CERTIFIED`.
+
+The V3 source manifest binds complete source bytes and all seven method/call
+ASTs to import-time class, method, gateway and validator identities. At run
+time one route session binds one issuer-created ledger to the exact frozen
+search invocation. Every owner site requires a durable event acknowledgement
+before mutating its counter; bind, event, finish and completion independently
+replay their immediate wrapper, search-frame and live-source ancestry. Ledger
+values and the event chain are reconciled before search return and again at
+completion. Direct ledger driving, readable private issuers, transient gateway
+or search-authorizer replacement, and in-place code replacement fail closed.
+
+This is still a Python construction control and a positive owner-event
+segment, not a complete production accounting route. Nine shared-resource
+receipts, 178 stage-forbidden zeros, eight derived reconciliations, 202 V6
+CounterRecords, WorkVector, ComparisonVector, FQ9 terminal and occurrence
+closure remain absent. No official or Gate state changes. See
+`specs/K7_DIRECT_FALLBACK_PRODUCTION_OWNER_SLICE_V2.md`.

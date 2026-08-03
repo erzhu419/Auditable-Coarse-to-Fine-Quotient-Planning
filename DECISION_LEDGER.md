@@ -2,8 +2,8 @@
 
 **Status:** normative source of truth
 
-**Ledger version:** 2.0.2
-**Last updated:** 2026-08-02
+**Ledger version:** 2.0.3
+**Last updated:** 2026-08-03
 
 ## Authority
 
@@ -5048,6 +5048,26 @@ issued. Seven content domains are central and role-separated; all official,
 Counter Completeness, economics, scalar/break-even, sample-efficiency and
 scientific Gates remain locked or `NOT_RUN`.
 
+## V0-110B-2E-34 production-owned DIRECT_FALLBACK primitives
+
+Contract `2.0.45` replaces the additive construction shim with seven literal
+unit-event sites in an independent real fallback implementation. One exact
+V3 source/runtime manifest binds the complete owner source, method and call
+ASTs, class/method/gateway/validator identities, one ledger instance and one
+frozen search invocation. Every event must be durably acknowledged before its
+native counter changes; search finish and segment completion independently
+reconcile the ledger and immutable event chain.
+
+The canonical H1 exact-infeasible route yields
+`states/actions/steps/outcomes/backups/checks/rejections =
+8/16/16/96/16/56/0`, exactly 208 positive events, and exact parity with the
+historical ground search. Direct ledger driving, readable private bind/finish
+issuers, transient gateway or search-authorizer replacement, and live-code
+replacement fail closed. This remains a Python construction control and does
+not issue shared receipts, formal V6 accounting, a semantic terminal or an
+occurrence closure. All official, scalar/break-even, Counter Completeness,
+economics and sample-efficiency states remain locked or `NOT_RUN`.
+
 ## Change log
 
 - **2026-07-19 — 0.1.0:** Transcribed and closed the V0 construction contract from the Normative Decision Addendum and the V0 preconstruction audit. Added the deterministic policy-class and reward-normalization implementation clarifications needed for executable tests.
@@ -5189,3 +5209,4 @@ scientific Gates remain locked or `NOT_RUN`.
 - **2026-08-03 — contract 2.0.42 / V0-110B-2E-31:** Acquired 13 exact source values from the canonical raw infeasible fallback under an independently issued current source/kernel/query identity, while preserving the exact `178+7+6+9+2=202` all-formal-blocker partition. The raw marginal solver has null trusted provenance and no complete occurrence stage chain; no V6 record, vector, terminal or Gate claim was issued.
 - **2026-08-03 — contract 2.0.43 / V0-110B-2E-32:** Inventoried the real abstract-PASS V1 evidence as an exact `160+23+8+1+2+8=202` formal-blocker partition. Shared aggregates, owner candidates, value-only proofs and reconciliations retain their source semantics and cannot become V6 records, native zeros, vectors or certificates.
 - **2026-08-03 — contract 2.0.44 / V0-110B-2E-33:** Added an independently replayed, single-stage DIRECT_FALLBACK construction chain with seven exact owner-path shim sites and fail-closed Python-API spoof controls. The shim is not production fallback work and issues no formal accounting or terminal authority. A production successor must bind real fallback-ledger primitives under a new manifest version.
+- **2026-08-03 — contract 2.0.45 / V0-110B-2E-34:** Replaced the seven-site shim with real exact-fallback ledger primitives, bound one issuer-created ledger to the frozen search invocation, required event acknowledgement before counter mutation, and independently reconciled the 208-event H1 transcript at search finish and completion. The slice remains construction-only and emits no shared-resource receipts, formal V6 vector or terminal.

@@ -3226,3 +3226,13 @@ Its seven source methods are explicitly a test shim rather than fallback
 business primitives, so the profile issues no production owner evidence or
 accounting artifact. See
 [`specs/K7_DIRECT_FALLBACK_ROUTE_SEGMENT_CONSTRUCTION_V2.md`](specs/K7_DIRECT_FALLBACK_ROUTE_SEGMENT_CONSTRUCTION_V2.md).
+
+Contract `2.0.45` replaces that shim with an independently copied real exact
+fallback whose seven ledger primitives own the corresponding positive events.
+The route session is bound to one ledger and the exact authorized search
+frame; each counter mutation requires a recorded-event acknowledgement, and
+the 208-event canonical H1 chain is reconciled before return and completion.
+The production-owner source/runtime binding has independent mutation-boundary
+coverage, but the result still stops before the nine shared-resource receipts,
+formal 202-record accounting, FQ9 terminal and occurrence closure. See
+[`specs/K7_DIRECT_FALLBACK_PRODUCTION_OWNER_SLICE_V2.md`](specs/K7_DIRECT_FALLBACK_PRODUCTION_OWNER_SLICE_V2.md).
