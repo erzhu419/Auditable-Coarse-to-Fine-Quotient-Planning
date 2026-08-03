@@ -1,6 +1,6 @@
 # Research Contract
 
-**Current construction contract:** `2.0.46`
+**Current construction contract:** `2.0.48`
 
 **Current construction profiles:** `v075_k7_production_role_manifest_v1`,
 `v075_k7_business_entry_core_v1`, `v075_k7_broker_worker_entry_core_v1`
@@ -5753,3 +5753,32 @@ source-site manifest, aggregate cap formulas, brokered fallback runner, formal
 202-record materialization, independent verifier and FQ9 closure remain open.
 No Gate state changes. See
 `specs/K7_DIRECT_FALLBACK_SHARED_CAP_AUTHORITY_V1.md`.
+
+## Contract 2.0.48: exact nine-path successor-source schema
+
+V0-110B-2E-37 binds every shared-resource path to one exact proposed owner
+site, V6 reducer/unit, admission primitive, downstream side-effect boundary,
+ordered local protocol and cross-site happens-before graph. Site, manifest,
+aggregate-formula schema and manifest-bound cap-profile join use four distinct
+central content domains.
+
+The aggregate schema is typed but intentionally nonnumeric. It requires
+paired count/extent evidence for reads and staging, registered count/unit
+evidence for common work, a distinct-payload visibility interval sweep, an
+eight-role whole-route output fixed point, a two-role cgroup cap plus same-OFD
+hierarchy peak plan and exact positive native launch roles. It forbids
+cross-path operand reuse, shared-admission reuse and zero placeholders. No
+operand API or aggregate candidate exists in this contract.
+
+The manifest-bound join accepts canonical manifest bytes rather than caller
+manifest/site IDs, independently replays them and derives the nine site IDs
+before invoking and rechecking the historical construction cap factory. An
+exact manifest ID paired with altered site IDs therefore cannot satisfy the
+new boundary. Issuer-retained canonical-byte seals reject mutation, object
+forgery and recomputed-ID attacks.
+
+This remains construction-only. The proposed owner symbols are not live,
+semantic cardinality evidence and a numeric V7 upper do not exist, and no
+production execution, CounterRecord, WorkVector, ComparisonVector, terminal,
+occurrence or Gate result is issued. See
+`specs/K7_DIRECT_FALLBACK_SHARED_SOURCE_MANIFEST_V1.md`.

@@ -768,6 +768,18 @@ CONSTRUCTION_SHARED_CAP_RECEIPT_V1_DOMAIN = (
 CONSTRUCTION_SHARED_CAP_SNAPSHOT_V1_DOMAIN = (
     "acfqp:construction-shared-cap-snapshot:v1"
 )
+CONSTRUCTION_K7_DIRECT_FALLBACK_SHARED_SOURCE_SITE_V1_DOMAIN = (
+    "acfqp:construction-k7-direct-fallback-shared-source-site:v1"
+)
+CONSTRUCTION_K7_DIRECT_FALLBACK_SHARED_SOURCE_MANIFEST_V1_DOMAIN = (
+    "acfqp:construction-k7-direct-fallback-shared-source-manifest:v1"
+)
+CONSTRUCTION_K7_DIRECT_FALLBACK_AGGREGATE_CAP_FORMULA_SPEC_V1_DOMAIN = (
+    "acfqp:construction-k7-direct-fallback-aggregate-cap-formula-spec:v1"
+)
+CONSTRUCTION_K7_DIRECT_FALLBACK_MANIFEST_BOUND_CAP_JOIN_V1_DOMAIN = (
+    "acfqp:construction-k7-direct-fallback-manifest-bound-cap-join:v1"
+)
 CONSTRUCTION_OWNER_BOUNDARY_SITE_CLOSURE_V1_DOMAIN = (
     "acfqp:construction-owner-boundary-site-closure:v1"
 )
@@ -2141,6 +2153,18 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_shared_cap_snapshot_v1": (
             CONSTRUCTION_SHARED_CAP_SNAPSHOT_V1_DOMAIN
+        ),
+        "construction_k7_direct_fallback_shared_source_site_v1": (
+            CONSTRUCTION_K7_DIRECT_FALLBACK_SHARED_SOURCE_SITE_V1_DOMAIN
+        ),
+        "construction_k7_direct_fallback_shared_source_manifest_v1": (
+            CONSTRUCTION_K7_DIRECT_FALLBACK_SHARED_SOURCE_MANIFEST_V1_DOMAIN
+        ),
+        "construction_k7_direct_fallback_aggregate_cap_formula_spec_v1": (
+            CONSTRUCTION_K7_DIRECT_FALLBACK_AGGREGATE_CAP_FORMULA_SPEC_V1_DOMAIN
+        ),
+        "construction_k7_direct_fallback_manifest_bound_cap_join_v1": (
+            CONSTRUCTION_K7_DIRECT_FALLBACK_MANIFEST_BOUND_CAP_JOIN_V1_DOMAIN
         ),
         "construction_owner_boundary_site_closure_v1": (
             CONSTRUCTION_OWNER_BOUNDARY_SITE_CLOSURE_V1_DOMAIN

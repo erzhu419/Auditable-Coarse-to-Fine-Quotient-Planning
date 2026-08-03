@@ -5083,6 +5083,32 @@ are false. It creates no CounterRecord, vector, terminal, occurrence or Gate
 result. Caller actual hints, V1 upper relabelling, stale access logs and
 self-consistent but non-authoritative source objects are rejected.
 
+## V0-110B-2E-37 exact nine-path successor-source schema
+
+Contract `2.0.48` freezes one exact successor owner-site definition for each
+of the nine shared-resource paths, including its V6 reducer/unit, intended
+admission primitive, downstream side-effect boundary, ordered local protocol
+and the cross-site happens-before edges required by the two-role broker. Four
+central domains separate site, manifest, aggregate-formula schema and
+manifest-bound cap-profile join identities.
+
+The aggregate layer is deliberately nonnumeric. It specifies typed
+`count x extent`, distinct-payload interval, eight-role output fixed-point,
+two-role hierarchy-cap/same-OFD peak and positive launch-cardinality evidence,
+but accepts no operands and issues no upper. Cross-path evidence reuse,
+shared-admission reuse and zero placeholders are forbidden. The former stream,
+worker-output and `memory.max` values cannot be relabelled as route aggregates
+or actual peak evidence.
+
+The public join factory accepts exact canonical manifest bytes and derives all
+nine site IDs internally; it accepts neither a manifest ID nor caller-provided
+site IDs. A profile produced directly by the historical generic factory is not
+join evidence. Issuer-retained byte seals and independent exact-byte replay
+reject object forgery, mutation, recomputed IDs and manifest/site identity
+splicing. Live owner wiring, semantic cardinalities, a numeric V7 upper,
+production execution, formal vectors, FQ9 closure and every Gate remain
+blocked.
+
 ## Change log
 
 - **2026-07-19 — 0.1.0:** Transcribed and closed the V0 construction contract from the Normative Decision Addendum and the V0 preconstruction audit. Added the deterministic policy-class and reward-normalization implementation clarifications needed for executable tests.
@@ -5227,3 +5253,4 @@ self-consistent but non-authoritative source objects are rejected.
 - **2026-08-03 — contract 2.0.45 / V0-110B-2E-34:** Replaced the seven-site shim with real exact-fallback ledger primitives, bound one issuer-created ledger to the frozen search invocation, required event acknowledgement before counter mutation, and independently reconciled the 208-event H1 transcript at search finish and completion. The slice remains construction-only and emits no shared-resource receipts, formal V6 vector or terminal.
 - **2026-08-03 — contract 2.0.46 / V0-110B-2E-35:** Reissued the canonical H1 pre-execution authority from durable proof/current identity, replayed the typed preselection access log and froze an exact 182-leaf/eight-axis V6 finite admission candidate. All nine shared caps remain unenforced by the selected runner, so execution, formal actual-compliance and every Gate remain locked.
 - **2026-08-03 — contract 2.0.47 / V0-110B-2E-36:** Added an issuer-owned one-shot construction admission authority for all nine V6 shared-resource paths. SUM work is reserved before side effects and conservatively settled on unverifiable failure; MAX working and distinct-payload mounted peaks are retained; staging is restricted to named sandbox COPY/BIND ingress; every admission adds one nonrecursive cap check. External issuer seals reject budget forks, object forgery, mutation, stale/foreign capabilities and callback attempts to erase work, while protocol failure still permits sealed mount cleanup. The source-site IDs remain construction-only and semantically unverified, no formal V7 route decision or production owner consumes the session, and no CounterRecord, vector, terminal or Gate is issued.
+- **2026-08-03 — contract 2.0.48 / V0-110B-2E-37:** Froze the exact nine-path successor-source and typed aggregate-formula schema without issuing numeric operands or an upper. Added an independently replayed manifest-bound cap-profile join that derives all site IDs internally and rejects exact-manifest/fake-site splicing. Production wiring, semantic cardinality, formal V7 routing, vectors, terminal authority and every Gate remain blocked.

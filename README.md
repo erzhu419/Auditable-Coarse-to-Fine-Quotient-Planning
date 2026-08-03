@@ -3253,3 +3253,13 @@ source-site registrations remain explicitly unverified and no formal V7
 decision or production runner consumes it, so the V6 candidate and all Gates
 remain locked. See
 [`specs/K7_DIRECT_FALLBACK_SHARED_CAP_AUTHORITY_V1.md`](specs/K7_DIRECT_FALLBACK_SHARED_CAP_AUTHORITY_V1.md).
+
+Contract `2.0.48` freezes the exact nine successor source sites and the typed
+aggregate-evidence formula schema. It deliberately emits no numeric upper:
+paired count/extent, mount intervals, whole-route output fixed point, cgroup
+peak plan and launch-cardinality authorities are still required. Its
+manifest-bound join derives all site IDs from independently replayed canonical
+bytes, closing manifest/site splicing without promoting the historical generic
+cap factory. Live owner wiring, V7 routing, formal vectors and all Gates remain
+locked. See
+[`specs/K7_DIRECT_FALLBACK_SHARED_SOURCE_MANIFEST_V1.md`](specs/K7_DIRECT_FALLBACK_SHARED_SOURCE_MANIFEST_V1.md).
