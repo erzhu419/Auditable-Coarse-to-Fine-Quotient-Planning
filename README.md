@@ -3244,3 +3244,12 @@ are finite but not yet enforced by the selected runner, so the object remains
 `FINITE_ADMISSION_CAP_CANDIDATE` with route selection, execution and formal
 actual-compliance disabled. See
 [`specs/K7_DIRECT_FALLBACK_ROUTE_UPPER_V6.md`](specs/K7_DIRECT_FALLBACK_ROUTE_UPPER_V6.md).
+
+Contract `2.0.47` implements the bounded nine-path cap mechanics behind that
+blocker. One issuer-owned construction session atomically reserves SUM work,
+retains working/mounted MAX peaks, admits only named sandbox staging and
+preserves all failure prefixes under mutation and callback attacks. Its
+source-site registrations remain explicitly unverified and no formal V7
+decision or production runner consumes it, so the V6 candidate and all Gates
+remain locked. See
+[`specs/K7_DIRECT_FALLBACK_SHARED_CAP_AUTHORITY_V1.md`](specs/K7_DIRECT_FALLBACK_SHARED_CAP_AUTHORITY_V1.md).

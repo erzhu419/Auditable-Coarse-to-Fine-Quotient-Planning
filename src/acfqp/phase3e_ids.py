@@ -744,6 +744,30 @@ CONSTRUCTION_SHARED_RESOURCE_PATH_EXACT_AUTHORIZATION_V1_DOMAIN = (
 V075_K7_VERIFIED_NINE_SHARED_RESOURCE_ENVELOPE_V1_DOMAIN = (
     "acfqp:v075-k7-verified-nine-shared-resource-envelope:v1"
 )
+CONSTRUCTION_SHARED_CAP_PROFILE_V1_DOMAIN = (
+    "acfqp:construction-shared-cap-profile:v1"
+)
+CONSTRUCTION_SHARED_CAP_FALLBACK_DECISION_CANDIDATE_V1_DOMAIN = (
+    "acfqp:construction-shared-cap-fallback-decision-candidate:v1"
+)
+CONSTRUCTION_SHARED_CAP_FALLBACK_DECISION_PREREQUISITE_V1_DOMAIN = (
+    "acfqp:construction-shared-cap-fallback-decision-prerequisite:v1"
+)
+CONSTRUCTION_SHARED_CAP_SESSION_V1_DOMAIN = (
+    "acfqp:construction-shared-cap-session:v1"
+)
+CONSTRUCTION_SHARED_CAP_RESERVATION_V1_DOMAIN = (
+    "acfqp:construction-shared-cap-reservation:v1"
+)
+CONSTRUCTION_SHARED_CAP_MOUNT_TOKEN_V1_DOMAIN = (
+    "acfqp:construction-shared-cap-mount-token:v1"
+)
+CONSTRUCTION_SHARED_CAP_RECEIPT_V1_DOMAIN = (
+    "acfqp:construction-shared-cap-receipt:v1"
+)
+CONSTRUCTION_SHARED_CAP_SNAPSHOT_V1_DOMAIN = (
+    "acfqp:construction-shared-cap-snapshot:v1"
+)
 CONSTRUCTION_OWNER_BOUNDARY_SITE_CLOSURE_V1_DOMAIN = (
     "acfqp:construction-owner-boundary-site-closure:v1"
 )
@@ -2093,6 +2117,30 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "v075_k7_verified_nine_shared_resource_envelope_v1": (
             V075_K7_VERIFIED_NINE_SHARED_RESOURCE_ENVELOPE_V1_DOMAIN
+        ),
+        "construction_shared_cap_profile_v1": (
+            CONSTRUCTION_SHARED_CAP_PROFILE_V1_DOMAIN
+        ),
+        "construction_shared_cap_fallback_decision_candidate_v1": (
+            CONSTRUCTION_SHARED_CAP_FALLBACK_DECISION_CANDIDATE_V1_DOMAIN
+        ),
+        "construction_shared_cap_fallback_decision_prerequisite_v1": (
+            CONSTRUCTION_SHARED_CAP_FALLBACK_DECISION_PREREQUISITE_V1_DOMAIN
+        ),
+        "construction_shared_cap_session_v1": (
+            CONSTRUCTION_SHARED_CAP_SESSION_V1_DOMAIN
+        ),
+        "construction_shared_cap_reservation_v1": (
+            CONSTRUCTION_SHARED_CAP_RESERVATION_V1_DOMAIN
+        ),
+        "construction_shared_cap_mount_token_v1": (
+            CONSTRUCTION_SHARED_CAP_MOUNT_TOKEN_V1_DOMAIN
+        ),
+        "construction_shared_cap_receipt_v1": (
+            CONSTRUCTION_SHARED_CAP_RECEIPT_V1_DOMAIN
+        ),
+        "construction_shared_cap_snapshot_v1": (
+            CONSTRUCTION_SHARED_CAP_SNAPSHOT_V1_DOMAIN
         ),
         "construction_owner_boundary_site_closure_v1": (
             CONSTRUCTION_OWNER_BOUNDARY_SITE_CLOSURE_V1_DOMAIN

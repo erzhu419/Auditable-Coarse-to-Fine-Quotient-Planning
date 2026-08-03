@@ -5732,3 +5732,24 @@ all nine shared caps, so the envelope is only
 and execution authorization are all false. No accounting vector, terminal or
 Gate state changes. See
 `specs/K7_DIRECT_FALLBACK_ROUTE_UPPER_V6.md`.
+
+## Contract 2.0.47: construction shared-cap admission authority
+
+V0-110B-2E-36 implements atomic reserve-before-side-effect mechanics for all
+nine V6 shared-resource paths.  One issuer-owned session exists per exact
+profile/route attempt; every admission adds exactly one nonrecursive cap
+check.  SUM callback failure is conservatively charged, sandbox staging is
+restricted to named COPY/BIND ingress, mounted bytes use simultaneous
+distinct-payload MAX semantics, and protocol failure preserves terminal mount
+cleanup.
+
+Issuer-side seals cover the complete session state and every issued
+capability/artifact.  Budget forks, object forgery, post-issuance mutation,
+recomputed IDs, foreign/stale reuse and callback mutation attacks fail closed
+without losing admitted work.  Source sites are still explicitly
+construction-only and unverified; the prerequisite is not a formal V7 route
+decision and cannot authorize production execution.  The production
+source-site manifest, aggregate cap formulas, brokered fallback runner, formal
+202-record materialization, independent verifier and FQ9 closure remain open.
+No Gate state changes. See
+`specs/K7_DIRECT_FALLBACK_SHARED_CAP_AUTHORITY_V1.md`.
