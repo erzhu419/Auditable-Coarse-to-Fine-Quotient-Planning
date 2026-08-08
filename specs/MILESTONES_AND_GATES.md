@@ -5199,3 +5199,25 @@ cleanup execution, output close/readback, current access, V7, formal vectors,
 terminal/campaign and complete-bundle authority remain absent. All official
 and economics/sample Gates remain locked or `NOT_RUN`. See
 `specs/K7_H1_OWNER_CLEANUP_CONTINUATION_SIDECAR_V1.md`.
+
+## V0-110B-2E-48E-C-NATIVE-A H1 native-resource receipt journal
+
+Contract `2.0.59-E-C-NATIVE-A` predeclares an exact sealed registry of ten
+mount OFD slots and two child PIDFD slots before normal ordinal 1. Spec freeze
+and journal initialization each retain the exact normal-journal lock from
+genesis validation through artifact construction or allocation completion.
+The durable stream is strictly `START -> CALLBACK_RESULT -> exact
+normal-event-bound receipt/absence`; a start permanently forbids callback
+replay, event and intent reuse fail closed, later-slot evidence cannot satisfy
+an earlier cutoff, and cutoff is terminal.
+
+Runtime replay uses the slot declarations sealed into the content-addressed
+spec rather than exported module containers. Immutable records, cursor,
+high-water states, hard-link seals and physical identities close the registered
+append/recovery frontiers. Recovery is limited to the original broker process
+and thread; a foreign process is rejected before any seal or completion write.
+No raw descriptor is serialized and opaque receipt identities are not kernel
+credentials. The journal therefore issues no native cleanup, V2 integration,
+current-access, production, formal accounting or V7 authority. All official,
+scalar/economics, Counter-Completeness and sample Gates remain locked or
+`NOT_RUN`. See `specs/K7_H1_NATIVE_RESOURCE_RECEIPT_JOURNAL_V1.md`.

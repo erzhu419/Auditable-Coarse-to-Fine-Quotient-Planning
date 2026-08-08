@@ -6367,3 +6367,31 @@ current-access, V7, formal counter/vector, attempt closure, terminal/campaign,
 production or official authority. Scalar/break-even remain null; economics,
 Counter Completeness and sample efficiency remain `NOT_RUN`. See
 `specs/K7_H1_OWNER_CLEANUP_CONTINUATION_SIDECAR_V1.md`.
+
+## Contract 2.0.59-E-C-NATIVE-A: sealed native-resource receipt evidence
+
+The H1 normal-prefix construction now predeclares exactly ten mount OFD and two
+child PIDFD slots at genesis. The spec and allocation gates hold the exact
+normal journal lock until their artifacts are constructed or durably complete,
+preventing a concurrent ordinal-1 transition from invalidating the
+predeclaration claim. Native callbacks publish an immutable start before the
+effect and a typed result before the normal event; only the exact issuer-owned
+event can finalize the present receipt or absence resolution. A durable start
+is one-shot and never authorizes callback replay.
+
+Slot rows are read-only construction templates, while all issuance and replay
+semantics are derived from the declarations sealed into the exact spec. Replay
+validates schema-specific fields and content IDs, intent/event uniqueness,
+slot order, terminal cutoff, cursor/high-water/seal identities and the exact
+normal failure prefix. Initialization recovery is same-broker only. Process
+death consumes the allocation; another process is rejected before it can
+publish recovery state.
+
+The journal deliberately erases raw descriptor references after observation
+and never serializes them. Its opaque identities and receipts are not live
+kernel credentials, a retained capability vault, cleanup execution or current
+access. V2 cutoff integration, production execution, formal accounting, V7,
+attempt/terminal/campaign closure and complete-bundle verification remain open.
+Official execution stays false; scalar/break-even remain null; economics,
+Counter Completeness and sample efficiency remain `NOT_RUN`. See
+`specs/K7_H1_NATIVE_RESOURCE_RECEIPT_JOURNAL_V1.md`.
