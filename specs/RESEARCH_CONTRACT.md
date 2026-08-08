@@ -1,6 +1,6 @@
 # Research Contract
 
-**Current construction contract:** `2.0.59-E-B`
+**Current construction contract:** `2.0.59-E-C-A`
 
 **Current construction profiles:** `v075_k7_production_role_manifest_v1`,
 `v075_k7_business_entry_core_v1`, `v075_k7_broker_worker_entry_core_v1`,
@@ -16,6 +16,7 @@
 `construction_k7_h1_anchored_lifecycle_dispatch_v1`,
 `construction_k7_h1_tail_bound_prefix_attestation_v1`,
 `construction_k7_h1_attempt_execution_phase_owner_v1`,
+`construction_k7_h1_phase_aware_normal_prefix_pretransition_v1`,
 `construction_k7_h1_lifecycle_output_leaf_join_v1`,
 `construction_k7_h1_lifecycle_complete_cleanup_v1`,
 `construction_k7_h1_production_output_upper_v1`,
@@ -6267,3 +6268,47 @@ accounting, terminal/campaign closure and complete-bundle verification remain
 absent. Official execution stays false; scalar and break-even remain null;
 economics, Counter Completeness and sample-efficiency remain `NOT_RUN`. See
 `specs/K7_H1_ATTEMPT_EXECUTION_PHASE_OWNER_V1.md`.
+
+## Contract 2.0.59-E-C-A: phase-aware normal prefix before transition
+
+The anchored lifecycle ordinals `1..40` now execute under one retained
+`PHASE -> GATE -> NORMAL JOURNAL -> OWNER -> native` lease without reentering
+the historical dispatcher or public Owner APIs. Each site has a durable intent,
+optional callback-result record and exact event. Intent precedes admission;
+native-start precedes callback; callback result precedes settlement. A missing
+callback result after native start is conservatively settled without callback
+reexecution by the implemented deterministic recovery mechanics. Events bind
+the exact Owner record interval. Registered cap-rejection fault injection
+converges its exact gate commit, Owner admission/pair, ACK and failure event
+without invoking the callback. Real process-exit coverage across all of those
+boundaries remains unratified, so broad recovery flags stay false.
+Dangling-intent replay admits only an exact intent-scoped Owner suffix prefix;
+an append owned by any other operation/site is rejected rather than charged to
+the recovering site.
+
+The normal journal binds allocation/lock/cursor inodes, immutable record seals
+and an independent inode-bound high-water frontier. Replay accepts only one
+adjacent append crash edge, repairs a uniquely determined staged record or
+strict cursor tear, and rejects joint record/seal/cursor rollback below the
+intact frontier. This assumes no actor can coherently mutate or relink the
+bound root namespace; that stronger threat requires an external monotonic
+witness. Bootstrap of a missing genesis state is legal only before allocation.
+All directly used upstream symbols are frozen into an import-time dependency
+registry; execution resolves through captured objects and live namespaces are
+checked for replacement or registered mutable-constant drift. Callback
+continuations are PID/thread-bound, and fork children cannot publish records.
+Registered callback mutation of module bindings, frozen dependency views,
+lease fields or the durable intent fails closed. Because callbacks still run
+inside the host interpreter, this is not arbitrary same-process Python or
+interpreter/stdlib isolation; production remains gated on fresh-exec roles.
+
+This is intentionally a `PRETRANSITION_ONLY` authority. Success stops before
+ordinal 41. Failure and rejection poison the durable prefix, but the phase
+remains `NORMAL`; no cleanup transition, cleanup pass or cleanup execution
+authority is issued. Broad process-crash recovery, complete no-event recovery,
+ordinals `41..62`, conditional skip/readback, output fixed point, current
+access, V7, formal accounting, terminal/campaign and complete-bundle authority
+remain open. Official
+execution remains false; scalar and break-even remain null; economics, Counter
+Completeness and sample-efficiency remain `NOT_RUN`. See
+`specs/K7_H1_PHASE_AWARE_NORMAL_PREFIX_PRETRANSITION_V1.md`.

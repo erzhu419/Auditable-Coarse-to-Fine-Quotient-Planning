@@ -5114,3 +5114,41 @@ point, V7, formal vectors, terminal/campaign and complete-bundle authority are
 still open. Every official/scalar/economics/Counter-Completeness/sample Gate
 remains locked or `NOT_RUN`. See
 `specs/K7_H1_ATTEMPT_EXECUTION_PHASE_OWNER_V1.md`.
+
+## V0-110B-2E-48E-C-A H1 phase-aware normal-prefix pretransition authority
+
+Contract `2.0.59-E-C-A` executes anchored ordinals `1..40` under one retained
+phase/gate/journal/Owner lease. Durable intent precedes admission, native-start
+precedes callback, callback result precedes settlement, and each event binds
+the exact Owner record delta. Recovery never reexecutes a callback after a
+durable native cell in the registered in-process recovery mechanics. Local cap
+rejection likewise converges its exact commit, Owner pair, ACK and failure
+event in deterministic fault-injection controls with zero callback
+invocations. Real process-exit recovery coverage remains unratified.
+
+An inode-bound high-water frontier, immutable root seals and an exact chained
+cursor close the registered one-record append crash windows and reject rollback
+below an intact frontier. This is crash consistency under a trusted bound-root
+namespace, not protection from an actor able to mutate or relink that
+namespace; the latter requires an external monotonic witness. Import-captured
+dependency objects plus live namespace checks reject registered runtime drift.
+Fork children and foreign threads cannot consume the parent's site authority.
+Focused tests cover all forty
+sites/nine paths, intent/reservation/native-cell/callback/cap recovery,
+high-water rollback and inode substitution, partial bootstrap, allocation
+semantic re-signing, dependency mutation and callback fork/thread attacks.
+
+Callbacks still run in the host interpreter. The implementation detects and
+revokes registered namespace, frozen-view, lease and durable-input mutation,
+but does not claim isolation from arbitrary same-process Python or hostile
+interpreter/stdlib mutation; production remains dependent on the fresh-exec
+role boundary.
+
+The Gate is deliberately pretransition. It does not change the phase after a
+failure or rejection, does not execute ordinal 41, and does not authorize
+cleanup. Broad normal-prefix crash recovery, atomic failure-to-cleanup
+transition, cleanup/skip/readback, output fixed point, current access, V7,
+formal vectors, terminal/campaign and the complete-bundle verifier remain
+open. Every official/scalar/economics/Counter
+Completeness/sample-efficiency state remains false, null or `NOT_RUN`. See
+`specs/K7_H1_PHASE_AWARE_NORMAL_PREFIX_PRETRANSITION_V1.md`.
