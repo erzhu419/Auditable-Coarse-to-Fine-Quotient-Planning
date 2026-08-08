@@ -1,12 +1,14 @@
 # Research Contract
 
-**Current construction contract:** `2.0.56`
+**Current construction contract:** `2.0.57`
 
 **Current construction profiles:** `v075_k7_production_role_manifest_v1`,
 `v075_k7_business_entry_core_v1`, `v075_k7_broker_worker_entry_core_v1`,
 `construction_k7_h1_direct_fallback_two_role_recipe_v1`,
 `construction_k7_h1_branch_aware_output_contract_v1`,
 `construction_k7_h1_production_current_identity_v1`,
+`construction_k7_h1_current_access_authority_v1`,
+`construction_k7_h1_current_access_fresh_exec_runtime_v1`,
 `construction_accounting_route_segment_v4`,
 `phase3e_fallback_owned_v3`,
 `construction_k7_h1_business_adapter_v1`, and
@@ -5936,3 +5938,32 @@ closure remain downstream. See
 
 Official execution, scalar/break-even, workload economics, Counter
 Completeness and sample-efficiency remain locked or `NOT_RUN`.
+
+## Contract 2.0.57: H1 fresh-exec predecision current-access authority
+
+V0-110B-2E-46 closes a non-circular predecision chain from the retained
+Contract-2.0.52 source/proof identity through a six-input sealed fresh-exec
+structural replay, broker-observed runtime facts, an append-only four-event
+cutoff and a retained one-shot production current-access authority. The
+semantic context does not contain the later input-set ID, and neither context
+nor authority contains a decision point, common-prefix result, route upper,
+route decision, selected route or freeze identity.
+
+The child runs as a distinct isolated Python process with an exact frozen
+source/AST/helper/launcher closure. The broker verifies the executable,
+command line, sealed descriptor set, SCM credentials, output EOF and zero
+exit, then performs the actual reap with `waitid(P_PIDFD, ..., WEXITED)`.
+Production issuance revalidates the retained runtime verification and current
+recorder head on every require or consume; fixture evidence, stale cutoffs,
+look-alike objects and repeated consumption fail closed. Raw preparation work
+is retained but is not relabelled as a CounterRecord or WorkVector. This is a
+trusted-process checkpoint contract and explicitly excludes concurrent
+mutation of private Python state between checkpoints.
+
+This component does not yet provide the H1-specific non-circular shared cap
+profile, three-role memory bound, production output fixed point, exact
+182-term V7 upper/decision, selected-route execution, nine receipts, 202
+CounterRecords, terminal or occurrence closure. Official execution,
+scalar/break-even, workload economics, Counter Completeness and
+sample-efficiency remain locked or `NOT_RUN`. See
+`specs/K7_H1_CURRENT_ACCESS_AUTHORITY_V1.md`.

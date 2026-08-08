@@ -804,6 +804,57 @@ CONSTRUCTION_K7_H1_PRODUCTION_CURRENT_IDENTITY_V1_DOMAIN = (
 CONSTRUCTION_K7_H1_PRODUCTION_CURRENT_IDENTITY_VERIFICATION_V1_DOMAIN = (
     "acfqp:construction-k7-h1-production-current-identity-verification:v1"
 )
+CONSTRUCTION_K7_H1_CURRENT_ACCESS_EXECUTION_PROFILE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-current-access-execution-profile:v1"
+)
+CONSTRUCTION_K7_H1_CURRENT_ACCESS_PREDECISION_CONTEXT_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-current-access-predecision-context:v1"
+)
+CONSTRUCTION_K7_H1_CURRENT_ACCESS_PREDECISION_INPUT_SET_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-current-access-predecision-input-set:v1"
+)
+CONSTRUCTION_K7_H1_PREDECISION_ACCESS_EVENT_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-predecision-access-event:v1"
+)
+CONSTRUCTION_K7_H1_PREDECISION_ACCESS_LOG_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-predecision-access-log:v1"
+)
+CONSTRUCTION_K7_H1_CURRENT_ACCESS_CHILD_RESULT_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-current-access-child-result:v1"
+)
+CONSTRUCTION_K7_H1_CURRENT_ACCESS_OBSERVED_EVIDENCE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-current-access-observed-evidence:v1"
+)
+CONSTRUCTION_K7_H1_PREDECISION_CURRENT_ACCESS_CUTOFF_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-predecision-current-access-cutoff:v1"
+)
+CONSTRUCTION_K7_H1_PRODUCTION_CURRENT_ACCESS_AUTHORITY_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-production-current-access-authority:v1"
+)
+CONSTRUCTION_K7_H1_CURRENT_ACCESS_CONSTRUCTION_FIXTURE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-current-access-construction-fixture:v1"
+)
+CONSTRUCTION_K7_H1_CURRENT_ACCESS_AUTHORITY_BLOCKER_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-current-access-authority-blocker:v1"
+)
+CONSTRUCTION_K7_H1_CURRENT_ACCESS_FRESH_EXEC_RUNTIME_PROFILE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-current-access-fresh-exec-runtime-profile:v1"
+)
+CONSTRUCTION_K7_H1_CURRENT_ACCESS_FRESH_EXEC_SOURCE_MANIFEST_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-current-access-fresh-exec-source-manifest:v1"
+)
+CONSTRUCTION_K7_H1_CURRENT_ACCESS_FRESH_EXEC_RUNTIME_MANIFEST_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-current-access-fresh-exec-runtime-manifest:v1"
+)
+CONSTRUCTION_K7_H1_CURRENT_ACCESS_RUNTIME_UNAVAILABLE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-current-access-runtime-unavailable:v1"
+)
+CONSTRUCTION_K7_H1_CURRENT_ACCESS_OBSERVED_RUNTIME_FACTS_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-current-access-observed-runtime-facts:v1"
+)
+CONSTRUCTION_K7_H1_CURRENT_ACCESS_OBSERVED_RUNTIME_FACTS_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-current-access-observed-runtime-facts-verification:v1"
+)
 CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_PROFILE_V1_DOMAIN = (
     "acfqp:construction-k7-h1-branch-aware-output-profile:v1"
 )
@@ -2360,6 +2411,57 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_h1_production_current_identity_verification_v1": (
             CONSTRUCTION_K7_H1_PRODUCTION_CURRENT_IDENTITY_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_h1_current_access_execution_profile_v1": (
+            CONSTRUCTION_K7_H1_CURRENT_ACCESS_EXECUTION_PROFILE_V1_DOMAIN
+        ),
+        "construction_k7_h1_current_access_predecision_context_v1": (
+            CONSTRUCTION_K7_H1_CURRENT_ACCESS_PREDECISION_CONTEXT_V1_DOMAIN
+        ),
+        "construction_k7_h1_current_access_predecision_input_set_v1": (
+            CONSTRUCTION_K7_H1_CURRENT_ACCESS_PREDECISION_INPUT_SET_V1_DOMAIN
+        ),
+        "construction_k7_h1_predecision_access_event_v1": (
+            CONSTRUCTION_K7_H1_PREDECISION_ACCESS_EVENT_V1_DOMAIN
+        ),
+        "construction_k7_h1_predecision_access_log_v1": (
+            CONSTRUCTION_K7_H1_PREDECISION_ACCESS_LOG_V1_DOMAIN
+        ),
+        "construction_k7_h1_current_access_child_result_v1": (
+            CONSTRUCTION_K7_H1_CURRENT_ACCESS_CHILD_RESULT_V1_DOMAIN
+        ),
+        "construction_k7_h1_current_access_observed_evidence_v1": (
+            CONSTRUCTION_K7_H1_CURRENT_ACCESS_OBSERVED_EVIDENCE_V1_DOMAIN
+        ),
+        "construction_k7_h1_predecision_current_access_cutoff_v1": (
+            CONSTRUCTION_K7_H1_PREDECISION_CURRENT_ACCESS_CUTOFF_V1_DOMAIN
+        ),
+        "construction_k7_h1_production_current_access_authority_v1": (
+            CONSTRUCTION_K7_H1_PRODUCTION_CURRENT_ACCESS_AUTHORITY_V1_DOMAIN
+        ),
+        "construction_k7_h1_current_access_construction_fixture_v1": (
+            CONSTRUCTION_K7_H1_CURRENT_ACCESS_CONSTRUCTION_FIXTURE_V1_DOMAIN
+        ),
+        "construction_k7_h1_current_access_authority_blocker_v1": (
+            CONSTRUCTION_K7_H1_CURRENT_ACCESS_AUTHORITY_BLOCKER_V1_DOMAIN
+        ),
+        "construction_k7_h1_current_access_fresh_exec_runtime_profile_v1": (
+            CONSTRUCTION_K7_H1_CURRENT_ACCESS_FRESH_EXEC_RUNTIME_PROFILE_V1_DOMAIN
+        ),
+        "construction_k7_h1_current_access_fresh_exec_source_manifest_v1": (
+            CONSTRUCTION_K7_H1_CURRENT_ACCESS_FRESH_EXEC_SOURCE_MANIFEST_V1_DOMAIN
+        ),
+        "construction_k7_h1_current_access_fresh_exec_runtime_manifest_v1": (
+            CONSTRUCTION_K7_H1_CURRENT_ACCESS_FRESH_EXEC_RUNTIME_MANIFEST_V1_DOMAIN
+        ),
+        "construction_k7_h1_current_access_runtime_unavailable_v1": (
+            CONSTRUCTION_K7_H1_CURRENT_ACCESS_RUNTIME_UNAVAILABLE_V1_DOMAIN
+        ),
+        "construction_k7_h1_current_access_observed_runtime_facts_v1": (
+            CONSTRUCTION_K7_H1_CURRENT_ACCESS_OBSERVED_RUNTIME_FACTS_V1_DOMAIN
+        ),
+        "construction_k7_h1_current_access_observed_runtime_facts_verification_v1": (
+            CONSTRUCTION_K7_H1_CURRENT_ACCESS_OBSERVED_RUNTIME_FACTS_VERIFICATION_V1_DOMAIN
         ),
         "construction_k7_h1_branch_aware_output_profile_v1": (
             CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_PROFILE_V1_DOMAIN

@@ -4890,3 +4890,21 @@ The next construction milestone is a non-circular fresh-exec predecision
 current-access authority, followed by the formal V7 upper/decision and the
 two-process nine-receipt runtime. All official/economics/scalar,
 Counter-Completeness and sample-efficiency Gates remain locked or `NOT_RUN`.
+
+## V0-110B-2E-46 H1 fresh-exec predecision current-access authority
+
+Contract `2.0.57` implements the non-circular
+`Context -> six-input InputSet -> fresh-exec observation -> current log-head
+cutoff -> one-shot authority` chain. A distinct isolated child performs only
+the exact structural replay; the broker verifies its source/runtime/FD/SCM/EOF
+facts and reaps it through `P_PIDFD`. Authority use rechecks both the retained
+runtime verifier and the still-current four-event recorder head, so a later
+registered event invalidates the earlier authority.
+
+This milestone closes current access only. It deliberately precedes and does
+not bind a DecisionPoint, V7 upper/decision or freeze artifact. The next
+construction milestone must first replace the circular historical cap profile
+and two-child memory formula with an H1-specific predecision owner/operand
+authority covering broker, worker and business; only then can the exact V7
+route authority be issued. All official/economics/scalar,
+Counter-Completeness and sample-efficiency Gates remain locked or `NOT_RUN`.
