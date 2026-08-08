@@ -855,6 +855,108 @@ CONSTRUCTION_K7_H1_CURRENT_ACCESS_OBSERVED_RUNTIME_FACTS_V1_DOMAIN = (
 CONSTRUCTION_K7_H1_CURRENT_ACCESS_OBSERVED_RUNTIME_FACTS_VERIFICATION_V1_DOMAIN = (
     "acfqp:construction-k7-h1-current-access-observed-runtime-facts-verification:v1"
 )
+CONSTRUCTION_K7_H1_SHARED_CAP_PROFILE_V2_DOMAIN = (
+    "acfqp:construction-k7-h1-shared-cap-profile:v2"
+)
+CONSTRUCTION_K7_H1_SHARED_CAP_SOURCE_MANIFEST_V2_DOMAIN = (
+    "acfqp:construction-k7-h1-shared-cap-source-manifest:v2"
+)
+CONSTRUCTION_K7_H1_SHARED_CAP_RUNTIME_V2_DOMAIN = (
+    "acfqp:construction-k7-h1-shared-cap-runtime:v2"
+)
+CONSTRUCTION_K7_H1_SHARED_CAP_RECEIPT_V2_DOMAIN = (
+    "acfqp:construction-k7-h1-shared-cap-receipt:v2"
+)
+CONSTRUCTION_K7_H1_SHARED_CAP_EVENT_V2_DOMAIN = (
+    "acfqp:construction-k7-h1-shared-cap-event:v2"
+)
+CONSTRUCTION_K7_H1_SHARED_CAP_MOUNT_TOKEN_V2_DOMAIN = (
+    "acfqp:construction-k7-h1-shared-cap-mount-token:v2"
+)
+CONSTRUCTION_K7_H1_SHARED_CAP_OUTPUT_TOKEN_V2_DOMAIN = (
+    "acfqp:construction-k7-h1-shared-cap-output-token:v2"
+)
+CONSTRUCTION_K7_H1_SHARED_CAP_MEMORY_BINDING_V2_DOMAIN = (
+    "acfqp:construction-k7-h1-shared-cap-memory-binding:v2"
+)
+CONSTRUCTION_K7_H1_PRODUCTION_OUTPUT_BRANCH_DAG_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-production-output-branch-dag:v1"
+)
+CONSTRUCTION_K7_H1_PRODUCTION_OUTPUT_SERIALIZER_UNIVERSE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-production-output-serializer-universe:v1"
+)
+CONSTRUCTION_K7_H1_PRODUCTION_OUTPUT_OPERAND_CONTEXT_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-production-output-operand-context:v1"
+)
+CONSTRUCTION_K7_H1_PRODUCTION_OUTPUT_ROLE_UPPER_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-production-output-role-upper:v1"
+)
+CONSTRUCTION_K7_H1_PRODUCTION_OUTPUT_FIXED_POINT_ITERATION_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-production-output-fixed-point-iteration:v1"
+)
+CONSTRUCTION_K7_H1_PRODUCTION_OUTPUT_BRANCH_FIXED_POINT_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-production-output-branch-fixed-point:v1"
+)
+CONSTRUCTION_K7_H1_PRODUCTION_OUTPUT_OPERAND_AUTHORITY_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-production-output-operand-authority:v1"
+)
+CONSTRUCTION_K7_H1_PRODUCTION_OUTPUT_OPERAND_CANDIDATE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-production-output-operand-candidate:v1"
+)
+CONSTRUCTION_K7_H1_SHARED_RESOURCE_BRANCH_PROGRAM_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-shared-resource-branch-program:v1"
+)
+CONSTRUCTION_K7_H1_SHARED_COMMON_CATALOGUE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-shared-common-catalogue:v1"
+)
+CONSTRUCTION_K7_H1_SHARED_IO_CATALOGUE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-shared-io-catalogue:v1"
+)
+CONSTRUCTION_K7_H1_PHYSICAL_MOUNT_CATALOGUE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-physical-mount-catalogue:v1"
+)
+CONSTRUCTION_K7_H1_MEMORY_SCOPE_AUTHORITY_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-memory-scope-authority:v1"
+)
+CONSTRUCTION_K7_H1_LAUNCH_AUTHORITY_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-launch-authority:v1"
+)
+CONSTRUCTION_K7_H1_MEMORY_SCOPE_CANDIDATE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-memory-scope-candidate:v1"
+)
+CONSTRUCTION_K7_H1_LAUNCH_CATALOGUE_CANDIDATE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-launch-catalogue-candidate:v1"
+)
+CONSTRUCTION_K7_H1_SHARED_OPERAND_CONTEXT_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-shared-operand-context:v1"
+)
+CONSTRUCTION_K7_H1_SHARED_OPERAND_ROW_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-shared-operand-row:v1"
+)
+CONSTRUCTION_K7_H1_SHARED_OPERAND_AUTHORITY_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-shared-operand-authority:v1"
+)
+CONSTRUCTION_K7_H1_PREDECISION_COMMON_PREFIX_RESERVATION_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-predecision-common-prefix-reservation:v1"
+)
+CONSTRUCTION_K7_H1_PRODUCTION_LIFECYCLE_SOURCE_MANIFEST_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-production-lifecycle-source-manifest:v1"
+)
+CONSTRUCTION_K7_H1_PRODUCTION_LIFECYCLE_PROGRAM_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-production-lifecycle-program:v1"
+)
+CONSTRUCTION_K7_H1_PRODUCTION_LIFECYCLE_BRANCH_ANALYSIS_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-production-lifecycle-branch-analysis:v1"
+)
+CONSTRUCTION_K7_H1_PRODUCTION_LIFECYCLE_REPLAY_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-production-lifecycle-replay:v1"
+)
+CONSTRUCTION_K7_H1_PRODUCTION_LIFECYCLE_SOURCE_AUTHORITY_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-production-lifecycle-source-authority:v1"
+)
+CONSTRUCTION_K7_H1_PRODUCTION_LIFECYCLE_SOURCE_CANDIDATE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-production-lifecycle-source-candidate:v1"
+)
 CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_PROFILE_V1_DOMAIN = (
     "acfqp:construction-k7-h1-branch-aware-output-profile:v1"
 )
@@ -2462,6 +2564,108 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_h1_current_access_observed_runtime_facts_verification_v1": (
             CONSTRUCTION_K7_H1_CURRENT_ACCESS_OBSERVED_RUNTIME_FACTS_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_h1_shared_cap_profile_v2": (
+            CONSTRUCTION_K7_H1_SHARED_CAP_PROFILE_V2_DOMAIN
+        ),
+        "construction_k7_h1_shared_cap_source_manifest_v2": (
+            CONSTRUCTION_K7_H1_SHARED_CAP_SOURCE_MANIFEST_V2_DOMAIN
+        ),
+        "construction_k7_h1_shared_cap_runtime_v2": (
+            CONSTRUCTION_K7_H1_SHARED_CAP_RUNTIME_V2_DOMAIN
+        ),
+        "construction_k7_h1_shared_cap_receipt_v2": (
+            CONSTRUCTION_K7_H1_SHARED_CAP_RECEIPT_V2_DOMAIN
+        ),
+        "construction_k7_h1_shared_cap_event_v2": (
+            CONSTRUCTION_K7_H1_SHARED_CAP_EVENT_V2_DOMAIN
+        ),
+        "construction_k7_h1_shared_cap_mount_token_v2": (
+            CONSTRUCTION_K7_H1_SHARED_CAP_MOUNT_TOKEN_V2_DOMAIN
+        ),
+        "construction_k7_h1_shared_cap_output_token_v2": (
+            CONSTRUCTION_K7_H1_SHARED_CAP_OUTPUT_TOKEN_V2_DOMAIN
+        ),
+        "construction_k7_h1_shared_cap_memory_binding_v2": (
+            CONSTRUCTION_K7_H1_SHARED_CAP_MEMORY_BINDING_V2_DOMAIN
+        ),
+        "construction_k7_h1_production_output_branch_dag_v1": (
+            CONSTRUCTION_K7_H1_PRODUCTION_OUTPUT_BRANCH_DAG_V1_DOMAIN
+        ),
+        "construction_k7_h1_production_output_serializer_universe_v1": (
+            CONSTRUCTION_K7_H1_PRODUCTION_OUTPUT_SERIALIZER_UNIVERSE_V1_DOMAIN
+        ),
+        "construction_k7_h1_production_output_operand_context_v1": (
+            CONSTRUCTION_K7_H1_PRODUCTION_OUTPUT_OPERAND_CONTEXT_V1_DOMAIN
+        ),
+        "construction_k7_h1_production_output_role_upper_v1": (
+            CONSTRUCTION_K7_H1_PRODUCTION_OUTPUT_ROLE_UPPER_V1_DOMAIN
+        ),
+        "construction_k7_h1_production_output_fixed_point_iteration_v1": (
+            CONSTRUCTION_K7_H1_PRODUCTION_OUTPUT_FIXED_POINT_ITERATION_V1_DOMAIN
+        ),
+        "construction_k7_h1_production_output_branch_fixed_point_v1": (
+            CONSTRUCTION_K7_H1_PRODUCTION_OUTPUT_BRANCH_FIXED_POINT_V1_DOMAIN
+        ),
+        "construction_k7_h1_production_output_operand_authority_v1": (
+            CONSTRUCTION_K7_H1_PRODUCTION_OUTPUT_OPERAND_AUTHORITY_V1_DOMAIN
+        ),
+        "construction_k7_h1_production_output_operand_candidate_v1": (
+            CONSTRUCTION_K7_H1_PRODUCTION_OUTPUT_OPERAND_CANDIDATE_V1_DOMAIN
+        ),
+        "construction_k7_h1_shared_resource_branch_program_v1": (
+            CONSTRUCTION_K7_H1_SHARED_RESOURCE_BRANCH_PROGRAM_V1_DOMAIN
+        ),
+        "construction_k7_h1_shared_common_catalogue_v1": (
+            CONSTRUCTION_K7_H1_SHARED_COMMON_CATALOGUE_V1_DOMAIN
+        ),
+        "construction_k7_h1_shared_io_catalogue_v1": (
+            CONSTRUCTION_K7_H1_SHARED_IO_CATALOGUE_V1_DOMAIN
+        ),
+        "construction_k7_h1_physical_mount_catalogue_v1": (
+            CONSTRUCTION_K7_H1_PHYSICAL_MOUNT_CATALOGUE_V1_DOMAIN
+        ),
+        "construction_k7_h1_memory_scope_authority_v1": (
+            CONSTRUCTION_K7_H1_MEMORY_SCOPE_AUTHORITY_V1_DOMAIN
+        ),
+        "construction_k7_h1_launch_authority_v1": (
+            CONSTRUCTION_K7_H1_LAUNCH_AUTHORITY_V1_DOMAIN
+        ),
+        "construction_k7_h1_memory_scope_candidate_v1": (
+            CONSTRUCTION_K7_H1_MEMORY_SCOPE_CANDIDATE_V1_DOMAIN
+        ),
+        "construction_k7_h1_launch_catalogue_candidate_v1": (
+            CONSTRUCTION_K7_H1_LAUNCH_CATALOGUE_CANDIDATE_V1_DOMAIN
+        ),
+        "construction_k7_h1_shared_operand_context_v1": (
+            CONSTRUCTION_K7_H1_SHARED_OPERAND_CONTEXT_V1_DOMAIN
+        ),
+        "construction_k7_h1_shared_operand_row_v1": (
+            CONSTRUCTION_K7_H1_SHARED_OPERAND_ROW_V1_DOMAIN
+        ),
+        "construction_k7_h1_shared_operand_authority_v1": (
+            CONSTRUCTION_K7_H1_SHARED_OPERAND_AUTHORITY_V1_DOMAIN
+        ),
+        "construction_k7_h1_predecision_common_prefix_reservation_v1": (
+            CONSTRUCTION_K7_H1_PREDECISION_COMMON_PREFIX_RESERVATION_V1_DOMAIN
+        ),
+        "construction_k7_h1_production_lifecycle_source_manifest_v1": (
+            CONSTRUCTION_K7_H1_PRODUCTION_LIFECYCLE_SOURCE_MANIFEST_V1_DOMAIN
+        ),
+        "construction_k7_h1_production_lifecycle_program_v1": (
+            CONSTRUCTION_K7_H1_PRODUCTION_LIFECYCLE_PROGRAM_V1_DOMAIN
+        ),
+        "construction_k7_h1_production_lifecycle_branch_analysis_v1": (
+            CONSTRUCTION_K7_H1_PRODUCTION_LIFECYCLE_BRANCH_ANALYSIS_V1_DOMAIN
+        ),
+        "construction_k7_h1_production_lifecycle_replay_v1": (
+            CONSTRUCTION_K7_H1_PRODUCTION_LIFECYCLE_REPLAY_V1_DOMAIN
+        ),
+        "construction_k7_h1_production_lifecycle_source_authority_v1": (
+            CONSTRUCTION_K7_H1_PRODUCTION_LIFECYCLE_SOURCE_AUTHORITY_V1_DOMAIN
+        ),
+        "construction_k7_h1_production_lifecycle_source_candidate_v1": (
+            CONSTRUCTION_K7_H1_PRODUCTION_LIFECYCLE_SOURCE_CANDIDATE_V1_DOMAIN
         ),
         "construction_k7_h1_branch_aware_output_profile_v1": (
             CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_PROFILE_V1_DOMAIN

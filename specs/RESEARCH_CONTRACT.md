@@ -1,6 +1,6 @@
 # Research Contract
 
-**Current construction contract:** `2.0.57`
+**Current construction contract:** `2.0.58-D`
 
 **Current construction profiles:** `v075_k7_production_role_manifest_v1`,
 `v075_k7_business_entry_core_v1`, `v075_k7_broker_worker_entry_core_v1`,
@@ -9,6 +9,10 @@
 `construction_k7_h1_production_current_identity_v1`,
 `construction_k7_h1_current_access_authority_v1`,
 `construction_k7_h1_current_access_fresh_exec_runtime_v1`,
+`construction_k7_h1_shared_cap_owner_v2`,
+`construction_k7_h1_production_output_upper_v1`,
+`construction_k7_h1_shared_resource_catalogues_v1`,
+`construction_k7_h1_production_lifecycle_source_candidate_v1`,
 `construction_accounting_route_segment_v4`,
 `phase3e_fallback_owned_v3`,
 `construction_k7_h1_business_adapter_v1`, and
@@ -5967,3 +5971,77 @@ CounterRecords, terminal or occurrence closure. Official execution,
 scalar/break-even, workload economics, Counter Completeness and
 sample-efficiency remain locked or `NOT_RUN`. See
 `specs/K7_H1_CURRENT_ACCESS_AUTHORITY_V1.md`.
+
+## Contract 2.0.58-A--D: H1 shared-resource owner and source candidates
+
+Contract `2.0.58-A` replaces the nine pending sentinels with one issuer-owned,
+serialized owner kernel. It reserves before every side effect, preserves known
+overruns rather than clipping them, emits atomic construction receipt/event
+pairs, charges one rejection, tracks distinct mount tokens, retains the one
+memory reservation through same-OFD settlement and supports only proven
+known-prefix cleanup. Production calls remain locked until exact operand and
+formal-route authorities are joined; ambiguous native hierarchy/launch
+existence remains a typed blocker. See `specs/K7_H1_SHARED_CAP_OWNER_V2.md`.
+Its so-called source manifest is only a structural owner-site declaration bound
+to caller-provided archive/topology IDs; it binds neither source bytes, AST nor
+loaded method semantics and is not production source authority. Owner
+exceptions carry only local failure kinds and issue no attempt terminal.
+
+Contract `2.0.58-B` registers an internally replayable eight-role serializer
+template over ten contexts and ninety prefix leaves. Independent review found
+that the table is not derived from a production lifecycle, its width ceilings
+are not source-owned and its placeholder accounting documents are not formal
+V6 objects. The implementation therefore explicitly remains a
+`serializer-template candidate`: cap-exhausted closure is separated from
+run-invalid protocol/integrity failure, later output failure overlays any
+provisional terminal, and no independent consume or numeric output authority
+is exposed. Its aggregate has a candidate-specific schema/domain/ID; all legacy
+authority APIs fail closed. Embedded 202/182/8 and terminal objects use
+`.width_witness.v1` schemas, set actual/formal claims false and cannot be parsed
+as formal accounting artifacts. DAG/universe access is candidate-specific and
+legacy `official_*` entry points fail closed; intermediate role/fixed-point IDs
+also explicitly deny source-authoritative upper status. See
+`specs/K7_H1_PRODUCTION_OUTPUT_UPPER_V1.md`.
+
+Contract `2.0.58-C` records issuer-owned *catalogue candidates* for common,
+read/stage, physical mount, route-wide memory and WORKER-then-BUSINESS launch
+sites. It is not a production structural source authority. COPY rows identify
+distinct structural targets only; BIND rows remain distinct unresolved slots
+until native inode/OFD evidence proves sharing. The handwritten interval sweep,
+common multiplicities, I/O failure prefixes and output admission are explicitly
+non-authoritative because they are not derived from the owner lifecycle. The
+memory candidate separates preexecution caps/PID membership from the post-run
+same-OFD peak receipt, and records the missing BUSINESS-launch ambiguity branch.
+All extents, cgroup values, native physical identities, complete source prefixes
+and the joint `(output,read)` fixed point remain typed unbound. No numeric
+operand, V7 upper/decision, receipt, accounting object or Gate result is issued.
+See `specs/K7_H1_SHARED_RESOURCE_CATALOGUES_V1.md`.
+
+Contract `2.0.58-D` adds one content-addressed declarative lifecycle candidate.
+The same 62-transition tuple drives candidate-prefix replay and the derived set
+of 144 first-failure prefixes, including both child-launch ambiguity edges and
+each declared stage/read/mount admission. Its manifest binds the complete
+module bytes, normalized AST and five defining function spans, but it is minted
+from the currently imported module and has no external preregistration anchor.
+Its module/profile/schema/domain/ID are candidate-specific and every deprecated
+authority accessor/verifier fails closed.
+It is therefore neither production source authority nor proof that the declared
+table is complete. The live broker/worker/business runtime is not dispatched by
+the table; common-event multiplicities are not derived from native source
+sites; intended owner methods lack a semantic owner binding; output-DAG
+role-presence leaves are not joined to readback; and cleanup continuations after
+the first failure do not form complete failed-attempt branches. First failure
+is provisional and issues neither attempt closure nor terminal classification.
+The candidate therefore supplies no production execution, numeric operand or
+accounting authority. See
+`specs/K7_H1_PRODUCTION_LIFECYCLE_SOURCE_CANDIDATE_V1.md`.
+
+The next construction contract must bind the live runtime to the declarative
+lifecycle, add the complete post-failure cleanup continuation program, and
+provide native extent/cardinality/cgroup/physical-instance authorities. It must
+then replace provisional serializer ceilings with formally parsed V6 object
+bounds, solve the joint output/read fixed point and atomically join retained
+current-access/operand evidence. Only then may the exact 182-term V7 fallback
+upper and decision be constructed.
+Official execution, scalar/break-even, workload economics, Counter
+Completeness and sample-efficiency remain locked or `NOT_RUN`.

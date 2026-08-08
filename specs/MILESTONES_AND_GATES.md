@@ -4908,3 +4908,58 @@ and two-child memory formula with an H1-specific predecision owner/operand
 authority covering broker, worker and business; only then can the exact V7
 route authority be issued. All official/economics/scalar,
 Counter-Completeness and sample-efficiency Gates remain locked or `NOT_RUN`.
+
+## V0-110B-2E-47A--D H1 shared-resource owner and source candidates
+
+Contracts `2.0.58-A--C` replace the nine pending sentinels with one serialized
+issuer-owned construction kernel and record finite candidate inputs for later
+aggregate formulas. The owner reserves before side effects, preserves known
+overruns, tracks mount/output/memory tokens, retains one route-wide memory
+reservation and permits only proven known-prefix cleanup. Production methods
+remain locked behind exact operand and formal-route joins.
+The structural owner-site manifest binds no source bytes/AST/loaded symbols,
+and owner exceptions issue local failure kinds rather than attempt terminals.
+
+An eight-role output component now replays ten registered contexts and ninety
+prefix leaves, but independent audit correctly demoted it to a
+serializer-template candidate: the branch table is not derived from a native
+production lifecycle, provisional width ceilings lack source authority and
+the placeholder 202/182/8 documents are not formal V6 objects. Legal
+cap-exhausted noncertificate closure is distinct from run-invalid
+protocol/integrity failure, and a later output failure cannot inherit an
+earlier provisional certificate terminal.
+The aggregate uses a dedicated candidate schema/domain/ID, all deprecated
+authority APIs fail closed, and every embedded accounting/terminal payload uses
+a `.width_witness.v1` schema with formal/actual claims false.
+DAG/universe accessors and intermediate role/fixed-point objects are likewise
+candidate-specific and explicitly deny production-upper authority.
+
+Issuer-owned common/read/stage/mount/memory/launch *candidate* catalogues
+explicitly partition every registered template leaf, but do not prove a
+production source universe. COPY rows are distinct target slots, while BIND
+rows remain distinct until native inode/OFD evidence permits sharing. The
+handwritten mount intervals are owner-incompatible candidates, source-symbol
+multiplicities and per-admission failure prefixes remain unbound, and both
+WORKER and BUSINESS launch ambiguity require a production lifecycle source.
+Memory preexecution caps/PID membership are separated from its post-run peak
+receipt. All numeric extents/caps, native physical identities and the joint
+`(output,read)` fixed point remain typed blocked. Therefore no shared operand,
+exact V7 upper/decision, receipt, CounterRecord, vector, terminal or Gate result
+is issued. The next milestone must add source-owned lifecycle/extents/caps and
+formal serializer replay before any numeric promotion. All official/economics/scalar,
+Counter-Completeness and sample-efficiency Gates remain locked or `NOT_RUN`.
+
+Contract `2.0.58-D` adds a separate content-addressed, unanchored declarative
+lifecycle candidate. One 62-transition table drives candidate-prefix replay and
+derives 144 first-failure prefixes relative to its own declared edges. Complete
+module bytes, normalized AST and defining function spans are bound, but a fresh
+import can mint a changed candidate because no external preregistration anchor
+exists. This is not the production branch source: live dispatch, native source
+multiplicities, shared-owner semantic identity, output-DAG leaf-specific
+readback, and post-first-failure cleanup continuations remain unbound. First
+failure issues no attempt terminal. Complete attempt branches and numeric
+operands are therefore unavailable. The next milestone must preregister and
+connect a real source/runtime program and close those continuations before
+extent/fixed-point and formal V7 work can begin.
+The candidate has a dedicated module/profile/schema/domain/ID, while every
+deprecated authority accessor and verifier fails closed.
