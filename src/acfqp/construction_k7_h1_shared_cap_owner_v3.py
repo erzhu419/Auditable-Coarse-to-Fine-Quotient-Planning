@@ -2710,6 +2710,129 @@ def replay_h1_shared_cap_owner_v3(
             _release_joined_owner_locked(gate_context, root_fd, directory_fd)
 
 
+def inspect_h1_shared_cap_owner_v3_record_index(
+    handle: H1SharedCapOwnerV3Handle,
+) -> dict[str, Any]:
+    """Return an atomic read-only index after the full durable replay.
+
+    The index is a construction verifier aid, not a new accounting artifact or
+    native-evidence authority.  All IDs come from records already validated by
+    the same journal and gate-owner join used by ``replay_*``.
+    """
+
+    _guard_key, same_runtime_guard, same_gate_guard = _active_guard_for_gate(handle)
+    if same_gate_guard:
+        _protocol("V3 record index is unavailable while a side effect is guarded")
+    (
+        gate_context,
+        root_fd,
+        directory_fd,
+        state,
+        gate_snapshot,
+        gate_join,
+    ) = _acquire_joined_owner_locked(handle)
+    try:
+        pair_frontier = _incomplete_pair_frontier(state)
+        if (
+            state.pending_cursor is not None
+            or pair_frontier is not None
+            or gate_join.recovery_required
+        ):
+            _protocol("V3 record index requires one completely replayed frontier")
+        return {
+            "schema": "acfqp.k7_h1_shared_cap_owner_v3_record_index.v1",
+            "schema_version": SCHEMA_VERSION,
+            "h1_shared_cap_owner_v3_runtime_id": handle.runtime_id,
+            "journal_sequence": state.sequence,
+            "journal_head_id": (
+                state.head_id if state.head_id is not None else _typed_null("JOURNAL_GENESIS")
+            ),
+            "charged_values": dict(state.charged),
+            "outstanding_values": dict(state.outstanding),
+            "reservation_count": len(state.reservations),
+            "settlement_count": len(state.settlements),
+            "observed_overrun_count": state.observed_overrun_count,
+            "new_work_allowed": (
+                state.observed_overrun_count == 0
+                and gate_join.status
+                is H1SharedGateOwnerJoinStatusV3.OPEN_NO_REJECTION
+            ),
+            "record_ids_by_role": {
+                "reservation": sorted(state.reservations),
+                "rejection_admission": sorted(
+                    _record_id(row) for row in state.rejection_admissions.values()
+                ),
+                "native_cell": sorted(_record_id(row) for row in state.cells.values()),
+                "native_evidence": sorted(
+                    _record_id(row) for row in state.evidence.values()
+                ),
+                "settlement": sorted(
+                    _record_id(row) for row in state.settlements.values()
+                ),
+                "receipt": sorted(state.receipts),
+                "event": sorted(state.events),
+                "snapshot": sorted(_record_id(row) for row in state.snapshots),
+            },
+            "records_by_role": {
+                "reservation": [
+                    dict(state.reservations[record_id])
+                    for record_id in sorted(state.reservations)
+                ],
+                "native_cell": [
+                    dict(row)
+                    for row in sorted(state.cells.values(), key=_record_id)
+                ],
+                "native_evidence": [
+                    dict(row)
+                    for row in sorted(state.evidence.values(), key=_record_id)
+                ],
+                "settlement": [
+                    dict(row)
+                    for row in sorted(state.settlements.values(), key=_record_id)
+                ],
+                "receipt": [
+                    dict(state.receipts[record_id])
+                    for record_id in sorted(state.receipts)
+                ],
+                "event": [
+                    dict(state.events[record_id])
+                    for record_id in sorted(state.events)
+                ],
+                "snapshot": [
+                    dict(row) for row in sorted(state.snapshots, key=_record_id)
+                ],
+                "rejection_admission": [
+                    dict(state.rejection_admissions[record_id])
+                    for record_id in sorted(state.rejection_admissions)
+                ],
+            },
+            "rejection_commit_id": (
+                state.rejection_commit_id
+                if state.rejection_commit_id is not None
+                else _typed_null("NO_REJECTION_COMMIT")
+            ),
+            "rejection_ack_id": (
+                gate_snapshot.acknowledgement_id
+                if gate_snapshot.acknowledgement_id is not None
+                else _typed_null("NO_REJECTION_ACK")
+            ),
+            "gate_owner_join_status": gate_join.status.value,
+            "gate_owner_join_verified": (
+                gate_join.status
+                in {
+                    H1SharedGateOwnerJoinStatusV3.OPEN_NO_REJECTION,
+                    H1SharedGateOwnerJoinStatusV3.LOCAL_ACK_VERIFIED,
+                }
+            ),
+            "construction_verifier_view_only": True,
+            "native_evidence_authority_present": False,
+            "formal_counter_eligible": False,
+            "official_execution_allowed": False,
+        }
+    finally:
+        _release_joined_owner_locked(gate_context, root_fd, directory_fd)
+
+
 def _reservation_document_for_request(
     handle: H1SharedCapOwnerV3Handle,
     state: _ReplayState,
@@ -3998,6 +4121,7 @@ __all__ = (
     "freeze_h1_shared_cap_profile_core_v3",
     "hold_h1_shared_cap_owner_v3_side_effect",
     "initialize_h1_shared_cap_owner_v3",
+    "inspect_h1_shared_cap_owner_v3_record_index",
     "open_h1_shared_cap_owner_v3",
     "replay_h1_shared_cap_owner_v3",
     "reserve_h1_shared_cap_owner_v3",

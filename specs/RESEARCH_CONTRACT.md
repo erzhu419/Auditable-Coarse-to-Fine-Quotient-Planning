@@ -1,6 +1,6 @@
 # Research Contract
 
-**Current construction contract:** `2.0.59-B`
+**Current construction contract:** `2.0.59-C`
 
 **Current construction profiles:** `v075_k7_production_role_manifest_v1`,
 `v075_k7_business_entry_core_v1`, `v075_k7_broker_worker_entry_core_v1`,
@@ -12,6 +12,7 @@
 `construction_k7_h1_shared_cap_owner_v2`,
 `construction_k7_h1_attempt_rejection_gate_v1`,
 `construction_k7_h1_shared_cap_owner_v3`,
+`construction_k7_h1_anchored_lifecycle_dispatch_v1`,
 `construction_k7_h1_production_output_upper_v1`,
 `construction_k7_h1_shared_resource_catalogues_v1`,
 `construction_k7_h1_production_lifecycle_source_candidate_v1`,
@@ -6111,3 +6112,44 @@ formal V7 routing, CounterRecords/vectors, terminal/campaign closure and the
 independent complete-bundle verifier remain absent. Accordingly official
 execution, scalar/break-even, workload economics, Counter Completeness and
 sample efficiency remain locked or `NOT_RUN`.
+
+## Contract 2.0.59-C: anchored H1 lifecycle construction dispatcher
+
+The caller-pinned Git-object snapshot now drives one ordered typed construction
+dispatcher. It rebuilds exactly 62 sites, 16 operation families, 143 declared
+failure edges and 144 declared branches; the mutable candidate module is only
+an equality cross-check. The handler registry contains 48 reservation sites:
+five immediate unit settlements, 41 immediate magnitude settlements and two
+deferred origins, plus two deferred completions and twelve no-charge controls.
+All reservation uppers and identities are frozen before the first callback.
+Dispatch can execute only the next site and uses explicit Owner-V3 callables,
+never the legacy Owner-V2 method strings.
+
+The memory and output deferred origins are admission-only. They reserve but do
+not hold, call native work, issue a native cell/evidence, or settle; each later
+completion reuses the origin reservation and performs the construction
+callback and settlement. This does not establish a real long-lived resource
+lifetime. Callback failure or an invalid magnitude is conservatively settled
+and closes normal dispatch; cap rejection precedes callback; overrun is not
+clipped; reentry, identity crossing, callable drift and out-of-band Owner
+records fail closed. A gate closure by another transaction invalidates the
+prefix rather than leaving a false next-site claim. Pre-admission callback
+shape errors may emit no event and remain retryable.
+
+The exact-schema/content-ID trace verifier replays state/order/outcome semantics
+and joins every charged event to the durable Owner-V3
+reservation/cell/evidence/settlement/receipt/event/snapshot chain, including
+journal sequence/head and exact record-set coverage. The Owner journal is
+durable, but dispatch events/traces remain in-memory and are not durable
+exactly-once evidence. Values and uppers remain caller construction assertions.
+A complete positive trace claims only the declared 62-site success path; a
+first failure remains provisional.
+
+Production source/loaded-byte/TOCTOU authority, native/live hooks, complete
+cleanup continuations, output-leaf join, current-access atomic bridge, joint
+output/read fixed point, numeric V7 routing, formal
+`CounterRecord -> WorkVector -> ComparisonVector`, terminal/campaign closure
+and the complete-bundle verifier remain absent. Official execution stays
+false; scalar and break-even remain null; workload-economics, Counter
+Completeness and sample-efficiency remain `NOT_RUN`. See
+`specs/K7_H1_ANCHORED_LIFECYCLE_DISPATCH_V1.md`.

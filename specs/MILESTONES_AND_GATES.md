@@ -5010,3 +5010,24 @@ points, formal numeric operands, V7 decision, CounterRecords/vectors,
 terminal/campaign closure and the complete-bundle verifier remain open. All
 official and economics/Counter-Completeness/sample-efficiency Gates remain
 locked or `NOT_RUN`.
+
+## V0-110B-2E-48C H1 anchored lifecycle construction dispatch
+
+Contract `2.0.59-C` rebuilds the caller-pinned lifecycle Git blob into an exact
+62-site typed registry and dispatches only the next frozen site through Owner
+V3. The partition is `5/41/2/2/12` immediate-unit, immediate-magnitude,
+deferred-origin, deferred-completion and no-charge handlers, with 48 frozen
+reservation uppers and 46 immediate settlements. The two origins are strictly
+admission-only; their completions perform the construction callback and settle
+the reused reservations.
+
+Verifier replay binds exact event schemas, order, state transitions and
+outcomes to the durable Owner-V3 journal sequence/head and complete
+reservation-to-snapshot record set. Failure, cap rejection, overrun, reentry,
+identity crossing, coherent re-signing and out-of-band append controls fail
+closed; an external transaction's gate closure also invalidates the prefix.
+Dispatch events remain in-memory, values remain caller assertions, and
+first failure is only a provisional prefix. Production/live/native authority,
+complete cleanup, output/read joins, current-access bridge, V7 routing, formal
+vectors, terminal/campaign closure and every official/economics/sample Gate
+remain locked. See `specs/K7_H1_ANCHORED_LIFECYCLE_DISPATCH_V1.md`.
