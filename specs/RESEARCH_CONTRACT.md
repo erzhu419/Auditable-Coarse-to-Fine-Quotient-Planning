@@ -6312,3 +6312,32 @@ remain open. Official
 execution remains false; scalar and break-even remain null; economics, Counter
 Completeness and sample-efficiency remain `NOT_RUN`. See
 `specs/K7_H1_PHASE_AWARE_NORMAL_PREFIX_PRETRANSITION_V1.md`.
+
+## Contract 2.0.59-E-C-B: pre-admitted structural cleanup transition
+
+Before ordinal 1, the exact anchored normal-prefix contracts and complete
+cleanup analysis now produce one durable structural envelope with 112
+registered and 111 dispatcher-reachable branches. It contains only
+non-executable cleanup plans and explicitly excludes output
+readback/finalization/owner-close, native capabilities, Owner continuation and
+cleanup-budget authority. The integrated normal entrypoint verifies this
+envelope before any callback and never returns a bare durable first failure:
+under the retained `PHASE -> GATE -> NORMAL JOURNAL -> OWNER` lease it binds the
+event, exact Owner tail, gate state, reachable branch and cleanup pass into a
+tagged V2 transition ending in `CLEANUP_ONLY`.
+
+V2 replay requires identical intent/root-seal/commit inodes, rejects a terminal
+cursor without its commit, revalidates all frozen envelope claims and rebinds
+the transition to the immutable normal-prefix baseline, envelope and retained
+live gate before phase repair. Cap rejection requires
+the exact acknowledged commit/ACK; lifecycle failure requires an OPEN gate and
+typed-null rejection references. Historical V1 recovery remains byte-exact
+and is behaviorally delegated by schema. The V2 cleanup-only lease carries only
+the phase/gate exclusion barrier. Registered recovery after native start does
+not replay the callback, but broad real-process-exit coverage remains open.
+
+No cleanup action is executed and no production output, current-access, V7,
+formal counter/vector, terminal/campaign or complete-bundle authority is
+issued. Official execution remains false; scalar and break-even remain null;
+economics, Counter Completeness and sample efficiency remain `NOT_RUN`. See
+`specs/K7_H1_PREADMITTED_CLEANUP_TRANSITION_V2.md`.

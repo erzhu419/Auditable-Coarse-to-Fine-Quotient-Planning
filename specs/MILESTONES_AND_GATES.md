@@ -5152,3 +5152,27 @@ formal vectors, terminal/campaign and the complete-bundle verifier remain
 open. Every official/scalar/economics/Counter
 Completeness/sample-efficiency state remains false, null or `NOT_RUN`. See
 `specs/K7_H1_PHASE_AWARE_NORMAL_PREFIX_PRETRANSITION_V1.md`.
+
+## V0-110B-2E-48E-C-B H1 pre-admitted cleanup transition V2
+
+Contract `2.0.59-E-C-B` pre-admits before ordinal 1 the exact structural
+cleanup universe for normal ordinals `1..40`: 112 registered branches, 111
+dispatcher-reachable and one retained unreachable negative control. The
+envelope rejects output readback/finalization/owner-close authority and binds
+only non-executable cleanup plans. Integrated execution validates that durable
+envelope before a callback and converts the first durable failure or cap
+rejection into the exact selected cleanup pass and tagged V2
+`NORMAL -> CLEANUP_INTENT_DURABLE -> CLEANUP_ONLY` transition under the retained
+phase/gate/journal/Owner lease.
+
+Successor replay keeps historical V1 parsing exact and separately verifies V2
+envelope, branch, retained-gate, intent/seal/commit and terminal-cursor
+bindings. A missing or non-hard-linked commit, rehashed dishonest envelope,
+crossed transition or leaked nested context fails closed. The cleanup-only
+lease is solely a phase/gate barrier: no cleanup budget, PIDFD/OFD capability,
+Owner continuation, native action, output authority, formal accounting or V7
+route authority is present. Ordinals `41..62`, cleanup execution,
+skip/finalization/readback, current access, vectors, terminal/campaign and the
+complete-bundle verifier remain open. All official/scalar/economics/Counter
+Completeness/sample-efficiency states remain false, null or `NOT_RUN`. See
+`specs/K7_H1_PREADMITTED_CLEANUP_TRANSITION_V2.md`.
