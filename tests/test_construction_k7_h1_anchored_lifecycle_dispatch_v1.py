@@ -10,6 +10,8 @@ import pytest
 
 from acfqp import construction_k7_h1_anchored_lifecycle_dispatch_v1 as dispatch_v1
 from acfqp import construction_k7_h1_attempt_rejection_gate_v1 as rejection_v1
+from acfqp import construction_k7_h1_lifecycle_complete_cleanup_v1 as cleanup_v1
+from acfqp import construction_k7_h1_lifecycle_output_leaf_join_v1 as output_join_v1
 from acfqp import construction_k7_h1_shared_cap_owner_v3 as owner_v3
 from acfqp.phase3e_ids import canonical_json_bytes, content_id, loads_canonical_json
 
@@ -141,6 +143,25 @@ def _dispatch_success(session, *, through_ordinal: int) -> None:
         assert event.outcome == "SUCCESS"
 
 
+def _append_exact_owner_tail(owner, *, suffix: str) -> None:
+    reservation = owner_v3.reserve_h1_shared_cap_owner_v3(
+        owner,
+        operation_id=_id(f"prefix-tail-operation-{suffix}"),
+        site_key=f"cleanup:prefix-tail:{suffix}",
+        path="io.read_bytes",
+        reservation_upper=2,
+    )
+    with owner_v3.hold_h1_shared_cap_owner_v3_side_effect(owner, reservation):
+        pass
+    owner_v3.settle_h1_shared_cap_owner_v3(
+        owner,
+        reservation,
+        value_basis=owner_v3.H1SharedValueBasisV3.EXACT_NATIVE,
+        native_observed_value=1,
+        evidence_source_id=_id(f"prefix-tail-evidence-{suffix}"),
+    )
+
+
 def _resign_trace(document: dict) -> bytes:
     payload = copy.deepcopy(document)
     payload.pop("h1_lifecycle_dispatch_trace_id", None)
@@ -209,6 +230,17 @@ def test_anchor_registry_partition_and_authority_locks(bundle) -> None:
             bundle.program.snapshot_id,
             bundle.program.program_id,
             (),
+        )
+
+
+def test_candidate_crosscheck_rejects_loaded_source_path_crossing(
+    bundle, monkeypatch
+) -> None:
+    monkeypatch.setattr(dispatch_v1.candidate_v1, "__file__", __file__)
+    with pytest.raises(ValueError, match="loaded lifecycle candidate source"):
+        dispatch_v1.freeze_h1_anchored_lifecycle_dispatch_bundle_v1(
+            REPOSITORY_ROOT,
+            expected_anchor_id=EXPECTED_ANCHOR_ID,
         )
 
 
@@ -463,6 +495,70 @@ def test_observed_overrun_is_not_clipped_and_poison_is_visible(
     )
 
 
+def test_mount_open_overrun_is_preserved_as_supplemental_protocol_abort(
+    fast_root: Path, bundle
+) -> None:
+    session, profile, owner = _session(
+        fast_root, bundle, suffix="mount-open-overrun"
+    )
+    _dispatch_success(session, through_ordinal=6)
+    event = dispatch_v1.dispatch_next_h1_lifecycle_site_v1(
+        session, callback=lambda: 11
+    )
+    assert event.outcome == dispatch_v1.ANCHOR_GRAMMAR_VIOLATION_AFTER_ADMISSION
+    assert event.document["anchored_transition_semantics_present"] is False
+    assert event.document["supplemental_protocol_abort"] is True
+    assert event.document["declared_first_failure"] is False
+    assert event.document["native_observed_value"] == 11
+    assert event.document["value_basis"] == "OBSERVED_OVERRUN"
+    replay = owner_v3.replay_h1_shared_cap_owner_v3(owner)
+    assert replay["charged_values"]["io.mounted_bytes_peak"] == 11
+    assert replay["observed_overrun_count"] == 1
+    assert replay["new_work_allowed"] is False
+    trace = dispatch_v1.snapshot_h1_lifecycle_dispatch_trace_v1(session)
+    verified = dispatch_v1.verify_h1_lifecycle_dispatch_trace_bytes_v1(
+        trace.canonical_bytes, bundle=bundle, profile=profile, owner=owner
+    )
+    verified_document = verified.to_document()
+    assert verified_document["declared_first_failure_replay_complete"] is False
+    assert verified_document["first_failure_is_provisional_prefix_only"] is True
+    assert verified_document["post_admission_protocol_abort_sites"] == [
+        "mount-open:WORKER:sealed_runtime_archive"
+    ]
+    assert verified_document["active_mount_open_sites"] == [
+        "mount-open:WORKER:sealed_runtime_archive"
+    ]
+    output_join = output_join_v1.build_h1_lifecycle_output_leaf_join_v1(bundle)
+    analysis = cleanup_v1.derive_h1_lifecycle_complete_branch_analysis_v1(
+        bundle, output_join
+    )
+    cleanup_pass = (
+        cleanup_v1.select_h1_lifecycle_cleanup_pass_for_dispatch_trace_bytes_v1(
+            analysis,
+            trace.canonical_bytes,
+            bundle=bundle,
+            profile=profile,
+            owner=owner,
+        )
+    )
+    assert cleanup_pass.payload["branch_key"] == (
+        "SUPPLEMENTAL:mount-open:WORKER:sealed_runtime_archive:"
+        "ANCHOR_GRAMMAR_VIOLATION_AFTER_ADMISSION"
+    )
+    assert cleanup_pass.payload["runtime_trace_bound"] is False
+    forged_declared = trace.to_document()
+    forged_declared["consumed_events"][-1]["declared_first_failure"] = True
+    with pytest.raises(ValueError, match="construction claim boundary"):
+        dispatch_v1.verify_h1_lifecycle_dispatch_trace_bytes_v1(
+            _resign_event_in_trace(
+                forged_declared, len(forged_declared["consumed_events"]) - 1
+            ),
+            bundle=bundle,
+            profile=profile,
+            owner=owner,
+        )
+
+
 def test_swallowed_dispatch_reentry_cannot_be_reported_as_success(
     fast_root: Path, bundle
 ) -> None:
@@ -660,4 +756,166 @@ def test_external_transaction_gate_closure_invalidates_dispatch_prefix(
     with pytest.raises(ValueError, match="attempt gate changed"):
         dispatch_v1.dispatch_next_h1_lifecycle_site_v1(
             session, callback=lambda: None
+        )
+
+
+def test_prefix_verifier_preserves_cutoff_across_exact_append_only_owner_tail(
+    fast_root: Path, bundle
+) -> None:
+    assert dispatch_v1.PREFIX_VERIFICATION_ATTESTATION_ISSUED is False
+    session, profile, owner = _session(
+        fast_root, bundle, suffix="prefix-tail-valid"
+    )
+    _dispatch_success(session, through_ordinal=2)
+    trace = dispatch_v1.snapshot_h1_lifecycle_dispatch_trace_v1(session)
+    cutoff = trace.to_document()
+
+    dispatch_v1.verify_h1_lifecycle_dispatch_trace_bytes_v1(
+        trace.canonical_bytes,
+        bundle=bundle,
+        profile=profile,
+        owner=owner,
+    )
+    dispatch_v1.verify_h1_lifecycle_dispatch_trace_prefix_bytes_v1(
+        trace.canonical_bytes,
+        bundle=bundle,
+        profile=profile,
+        owner=owner,
+    )
+
+    _append_exact_owner_tail(owner, suffix="valid")
+    current = owner_v3.inspect_h1_shared_cap_owner_v3_record_index(owner)
+    assert current["journal_sequence"] == (
+        cutoff["owner_journal_sequence_at_snapshot"] + 7
+    )
+    with pytest.raises(ValueError, match="terminal snapshot|record set"):
+        dispatch_v1.verify_h1_lifecycle_dispatch_trace_bytes_v1(
+            trace.canonical_bytes,
+            bundle=bundle,
+            profile=profile,
+            owner=owner,
+        )
+    verified = dispatch_v1.verify_h1_lifecycle_dispatch_trace_prefix_bytes_v1(
+        trace.canonical_bytes,
+        bundle=bundle,
+        profile=profile,
+        owner=owner,
+    )
+    assert verified.trace_id == trace.trace_id
+    prefix = owner_v3.inspect_h1_shared_cap_owner_v3_record_prefix(
+        owner,
+        journal_sequence=cutoff["owner_journal_sequence_at_snapshot"],
+        journal_head_id=cutoff["owner_journal_head_id_at_snapshot"],
+    )
+    assert prefix["append_only_tail_record_count"] == 7
+    assert prefix["charged_values"] == cutoff["owner_charged_values_at_snapshot"]
+    assert prefix["outstanding_values"] == cutoff[
+        "owner_outstanding_values_at_snapshot"
+    ]
+    assert prefix["record_ids_by_role"] == cutoff[
+        "owner_record_ids_at_snapshot"
+    ]
+
+
+def test_prefix_verifier_rejects_resigned_cutoff_and_runtime_crossing(
+    fast_root: Path, bundle
+) -> None:
+    session, profile, owner = _session(
+        fast_root, bundle, suffix="prefix-cutoff-tamper"
+    )
+    _dispatch_success(session, through_ordinal=2)
+    trace = dispatch_v1.snapshot_h1_lifecycle_dispatch_trace_v1(session)
+    _append_exact_owner_tail(owner, suffix="tamper")
+
+    tampered = trace.to_document()
+    tampered["owner_charged_values_at_snapshot"]["io.read_bytes"] = 1
+    with pytest.raises(ValueError, match="terminal snapshot"):
+        dispatch_v1.verify_h1_lifecycle_dispatch_trace_prefix_bytes_v1(
+            _resign_trace(tampered),
+            bundle=bundle,
+            profile=profile,
+            owner=owner,
+        )
+
+    foreign_session, _foreign_profile, foreign_owner = _session(
+        fast_root, bundle, suffix="prefix-foreign-runtime"
+    )
+    _dispatch_success(foreign_session, through_ordinal=2)
+    with pytest.raises(ValueError, match="cutoff head"):
+        dispatch_v1.verify_h1_lifecycle_dispatch_trace_prefix_bytes_v1(
+            trace.canonical_bytes,
+            bundle=bundle,
+            profile=profile,
+            owner=foreign_owner,
+        )
+
+
+def test_prefix_verifier_rejects_inserted_and_replaced_owner_records(
+    fast_root: Path, bundle
+) -> None:
+    inserted_session, inserted_profile, inserted_owner = _session(
+        fast_root, bundle, suffix="prefix-record-insertion"
+    )
+    _dispatch_success(inserted_session, through_ordinal=2)
+    inserted_trace = dispatch_v1.snapshot_h1_lifecycle_dispatch_trace_v1(
+        inserted_session
+    )
+    _append_exact_owner_tail(inserted_owner, suffix="insertion")
+    record_files = sorted(
+        path
+        for path in Path(inserted_owner.owner_directory).iterdir()
+        if path.name[:8].isdigit() and path.suffix == ".json"
+    )
+    inserted = Path(inserted_owner.owner_directory) / (
+        "00000001-" + "0" * 64 + ".json"
+    )
+    inserted.write_bytes(record_files[-1].read_bytes())
+    inserted.chmod(0o600)
+    with pytest.raises(ValueError, match="journal|filename|gap|duplicate"):
+        dispatch_v1.verify_h1_lifecycle_dispatch_trace_prefix_bytes_v1(
+            inserted_trace.canonical_bytes,
+            bundle=bundle,
+            profile=inserted_profile,
+            owner=inserted_owner,
+        )
+
+    replaced_session, replaced_profile, replaced_owner = _session(
+        fast_root, bundle, suffix="prefix-record-replacement"
+    )
+    _dispatch_success(replaced_session, through_ordinal=2)
+    replaced_trace = dispatch_v1.snapshot_h1_lifecycle_dispatch_trace_v1(
+        replaced_session
+    )
+    _append_exact_owner_tail(replaced_owner, suffix="replacement")
+    replacement_files = sorted(
+        path
+        for path in Path(replaced_owner.owner_directory).iterdir()
+        if path.name[:8].isdigit() and path.suffix == ".json"
+    )
+    replacement_files[0].chmod(0o600)
+    replacement_files[0].write_bytes(replacement_files[-1].read_bytes())
+    with pytest.raises(ValueError, match="journal|filename|identity|context"):
+        dispatch_v1.verify_h1_lifecycle_dispatch_trace_prefix_bytes_v1(
+            replaced_trace.canonical_bytes,
+            bundle=bundle,
+            profile=replaced_profile,
+            owner=replaced_owner,
+        )
+
+
+def test_prefix_verifier_rejects_transitive_owner_helper_drift(
+    fast_root: Path, bundle, monkeypatch
+) -> None:
+    session, profile, owner = _session(
+        fast_root, bundle, suffix="prefix-helper-drift"
+    )
+    _dispatch_success(session, through_ordinal=2)
+    trace = dispatch_v1.snapshot_h1_lifecycle_dispatch_trace_v1(session)
+    monkeypatch.setattr(owner_v3, "_replay_records_fd", lambda *args, **kwargs: None)
+    with pytest.raises(ValueError, match="prefix dependency"):
+        dispatch_v1.verify_h1_lifecycle_dispatch_trace_prefix_bytes_v1(
+            trace.canonical_bytes,
+            bundle=bundle,
+            profile=profile,
+            owner=owner,
         )

@@ -124,6 +124,18 @@ no event and may leave the session retryable. Contract 2.0.59-C does not execute
 the remaining cleanup continuation, close the attempt, classify a terminal, or
 issue a certificate.
 
+Contract `2.0.59-D` hardens this boundary without changing the pinned
+`143`-edge grammar. The ten mount-open handlers can return an observed value
+above their frozen upper even though those rows lack a declared overrun edge.
+Such a result is charged without clipping and emitted as the supplemental
+`ANCHOR_GRAMMAR_VIOLATION_AFTER_ADMISSION` protocol abort. It is not recast as
+a declared edge, has `declared_first_failure=false`, and remains in the active
+mount frontier for cleanup. A separate prefix verifier reconstructs the exact
+Owner journal at the trace cutoff and permits only append-only records after
+that cutoff; the original verifier remains exact-tail. The prefix result is a
+synchronous check and carries no durable-tail-bound attestation. See
+`specs/K7_H1_COMPLETE_BRANCH_CLEANUP_OUTPUT_JOIN_V1.md`.
+
 ## Explicit non-authorities
 
 This contract does not provide:
@@ -153,8 +165,15 @@ SAMPLE_EFFICIENCY_GATE_NOT_RUN
 
 ## Next construction boundary
 
-The next stage must add the complete first-failure cleanup program and bind
-output-role leaf selection to readback without changing this trace's claim.
-Production activation and the current-access/output-read authority chain remain
-separate later stages. Only after those boundaries close may the formal V7 and
+Contract 2.0.59-D now supplies cleanup plans complete for the registered
+analysis branch/resource grammar (`143` declared candidate failures, including
+two dispatcher-unreachable candidates, plus ten emitted supplemental aborts and
+success) and a registered output role-presence/readback projection without
+changing this trace's claim. The next stage must add the
+durable cleanup-only attempt phase,
+no-event post-admission recovery, a tail-bound prefix attestation, actual
+terminal-leaf selection, absent-role skip/advance semantics and
+crash-reconciled execution. Production
+activation and the current-access/output-read authority chain remain separate
+later stages. Only after those boundaries close may the formal V7 and
 accounting artifacts be constructed.

@@ -2257,14 +2257,24 @@ def _record_names(directory_fd: int) -> list[tuple[int, str, str]]:
 
 
 def _replay_records_fd(
-    directory_fd: int, handle: H1SharedCapOwnerV3Handle
+    directory_fd: int,
+    handle: H1SharedCapOwnerV3Handle,
+    *,
+    stop_after_sequence: int | None = None,
 ) -> _ReplayState:
-    state = _initial_state()
-    for expected_sequence, (sequence, filename_id, name) in enumerate(
-        _record_names(directory_fd), start=1
+    if stop_after_sequence is not None and (
+        type(stop_after_sequence) is not int or stop_after_sequence < 0
     ):
+        _protocol("V3 journal replay cutoff is invalid")
+    state = _initial_state()
+    records = _record_names(directory_fd)
+    if stop_after_sequence is not None and stop_after_sequence > len(records):
+        _protocol("V3 journal replay cutoff exceeds the durable tail")
+    for expected_sequence, (sequence, filename_id, name) in enumerate(records, start=1):
         if sequence != expected_sequence:
             _protocol("V3 append-only journal has a gap or duplicate sequence")
+        if stop_after_sequence is not None and sequence > stop_after_sequence:
+            break
         raw = _read_file(directory_fd, name)
         if raw is None:  # pragma: no cover - locked directory invariant
             _protocol("V3 journal record disappeared during replay")
@@ -2824,6 +2834,174 @@ def inspect_h1_shared_cap_owner_v3_record_index(
                     H1SharedGateOwnerJoinStatusV3.LOCAL_ACK_VERIFIED,
                 }
             ),
+            "construction_verifier_view_only": True,
+            "native_evidence_authority_present": False,
+            "formal_counter_eligible": False,
+            "official_execution_allowed": False,
+        }
+    finally:
+        _release_joined_owner_locked(gate_context, root_fd, directory_fd)
+
+
+def inspect_h1_shared_cap_owner_v3_record_prefix(
+    handle: H1SharedCapOwnerV3Handle,
+    *,
+    journal_sequence: int,
+    journal_head_id: Any,
+) -> dict[str, Any]:
+    """Replay one immutable journal prefix while validating the complete tail.
+
+    This construction-only view is intended for a trace captured before a
+    later cleanup continuation appended more Owner records.  The current
+    journal is first replayed in full.  The requested cutoff is then replayed
+    independently and must end at the caller-supplied content head.  Therefore
+    later records may only form the already-enforced append-only hash chain;
+    an insertion, replacement, gap, or reordered record fails before a prefix
+    view is returned.
+    """
+
+    if type(journal_sequence) is not int or journal_sequence < 0:
+        _fail("V3 record-prefix sequence is invalid")
+    expected_head = (
+        _typed_null("JOURNAL_GENESIS")
+        if journal_sequence == 0
+        else _cid(journal_head_id, "V3 record-prefix head")
+    )
+    if journal_sequence == 0 and journal_head_id != expected_head:
+        _protocol("V3 record-prefix genesis head changed")
+
+    _guard_key, _same_runtime_guard, same_gate_guard = _active_guard_for_gate(handle)
+    if same_gate_guard:
+        _protocol("V3 record prefix is unavailable while a side effect is guarded")
+    (
+        gate_context,
+        root_fd,
+        directory_fd,
+        full_state,
+        gate_snapshot,
+        gate_join,
+    ) = _acquire_joined_owner_locked(handle)
+    try:
+        full_pair_frontier = _incomplete_pair_frontier(full_state)
+        if (
+            full_state.pending_cursor is not None
+            or full_pair_frontier is not None
+            or gate_join.recovery_required
+        ):
+            _protocol(
+                "V3 record prefix requires one completely replayed durable tail"
+            )
+        prefix = _replay_records_fd(
+            directory_fd,
+            handle,
+            stop_after_sequence=journal_sequence,
+        )
+        if _incomplete_pair_frontier(prefix) is not None:
+            _protocol("V3 record-prefix cutoff splits one semantic journal unit")
+        prefix_head = (
+            prefix.head_id
+            if prefix.head_id is not None
+            else _typed_null("JOURNAL_GENESIS")
+        )
+        if prefix.sequence != journal_sequence or prefix_head != expected_head:
+            _protocol("V3 record-prefix cutoff head differs from durable replay")
+
+        if prefix.rejection_commit_id is None:
+            if full_state.rejection_commit_id is None:
+                if gate_join.status is not H1SharedGateOwnerJoinStatusV3.OPEN_NO_REJECTION:
+                    _protocol("V3 record-prefix gate changed without a local journal tail")
+            elif gate_join.status is not H1SharedGateOwnerJoinStatusV3.LOCAL_ACK_VERIFIED:
+                _protocol("V3 record-prefix later rejection lacks a local joined tail")
+            prefix_gate_status = H1SharedGateOwnerJoinStatusV3.OPEN_NO_REJECTION.value
+            prefix_ack: Any = _typed_null("NO_REJECTION_ACK")
+        else:
+            if (
+                full_state.rejection_commit_id != prefix.rejection_commit_id
+                or gate_join.status is not H1SharedGateOwnerJoinStatusV3.LOCAL_ACK_VERIFIED
+                or gate_snapshot.acknowledgement_id is None
+            ):
+                _protocol("V3 record-prefix rejection differs from the joined gate")
+            prefix_gate_status = H1SharedGateOwnerJoinStatusV3.LOCAL_ACK_VERIFIED.value
+            prefix_ack = gate_snapshot.acknowledgement_id
+
+        record_ids_by_role = {
+            "reservation": sorted(prefix.reservations),
+            "rejection_admission": sorted(
+                _record_id(row) for row in prefix.rejection_admissions.values()
+            ),
+            "native_cell": sorted(_record_id(row) for row in prefix.cells.values()),
+            "native_evidence": sorted(
+                _record_id(row) for row in prefix.evidence.values()
+            ),
+            "settlement": sorted(
+                _record_id(row) for row in prefix.settlements.values()
+            ),
+            "receipt": sorted(prefix.receipts),
+            "event": sorted(prefix.events),
+            "snapshot": sorted(_record_id(row) for row in prefix.snapshots),
+        }
+        records_by_role = {
+            "reservation": [
+                dict(prefix.reservations[record_id])
+                for record_id in sorted(prefix.reservations)
+            ],
+            "rejection_admission": [
+                dict(prefix.rejection_admissions[record_id])
+                for record_id in sorted(prefix.rejection_admissions)
+            ],
+            "native_cell": [
+                dict(row) for row in sorted(prefix.cells.values(), key=_record_id)
+            ],
+            "native_evidence": [
+                dict(row) for row in sorted(prefix.evidence.values(), key=_record_id)
+            ],
+            "settlement": [
+                dict(row)
+                for row in sorted(prefix.settlements.values(), key=_record_id)
+            ],
+            "receipt": [
+                dict(prefix.receipts[record_id])
+                for record_id in sorted(prefix.receipts)
+            ],
+            "event": [
+                dict(prefix.events[record_id]) for record_id in sorted(prefix.events)
+            ],
+            "snapshot": [
+                dict(row) for row in sorted(prefix.snapshots, key=_record_id)
+            ],
+        }
+        return {
+            "schema": "acfqp.k7_h1_shared_cap_owner_v3_record_prefix.v1",
+            "schema_version": SCHEMA_VERSION,
+            "h1_shared_cap_owner_v3_runtime_id": handle.runtime_id,
+            "journal_sequence": prefix.sequence,
+            "journal_head_id": prefix_head,
+            "charged_values": dict(prefix.charged),
+            "outstanding_values": dict(prefix.outstanding),
+            "reservation_count": len(prefix.reservations),
+            "settlement_count": len(prefix.settlements),
+            "observed_overrun_count": prefix.observed_overrun_count,
+            "new_work_allowed": (
+                prefix.observed_overrun_count == 0
+                and prefix.rejection_commit_id is None
+            ),
+            "record_ids_by_role": record_ids_by_role,
+            "records_by_role": records_by_role,
+            "rejection_commit_id": (
+                prefix.rejection_commit_id
+                if prefix.rejection_commit_id is not None
+                else _typed_null("NO_REJECTION_COMMIT")
+            ),
+            "rejection_ack_id": prefix_ack,
+            "gate_owner_join_status": prefix_gate_status,
+            "gate_owner_join_verified": True,
+            "durable_tail_sequence": full_state.sequence,
+            "durable_tail_head_id": (
+                full_state.head_id
+                if full_state.head_id is not None
+                else _typed_null("JOURNAL_GENESIS")
+            ),
+            "append_only_tail_record_count": full_state.sequence - prefix.sequence,
             "construction_verifier_view_only": True,
             "native_evidence_authority_present": False,
             "formal_counter_eligible": False,
@@ -4122,6 +4300,7 @@ __all__ = (
     "hold_h1_shared_cap_owner_v3_side_effect",
     "initialize_h1_shared_cap_owner_v3",
     "inspect_h1_shared_cap_owner_v3_record_index",
+    "inspect_h1_shared_cap_owner_v3_record_prefix",
     "open_h1_shared_cap_owner_v3",
     "replay_h1_shared_cap_owner_v3",
     "reserve_h1_shared_cap_owner_v3",

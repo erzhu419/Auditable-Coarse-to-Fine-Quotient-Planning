@@ -5031,3 +5031,34 @@ first failure is only a provisional prefix. Production/live/native authority,
 complete cleanup, output/read joins, current-access bridge, V7 routing, formal
 vectors, terminal/campaign closure and every official/economics/sample Gate
 remain locked. See `specs/K7_H1_ANCHORED_LIFECYCLE_DISPATCH_V1.md`.
+
+## V0-110B-2E-48D H1 complete structural cleanup and output-role join
+
+Contract `2.0.59-D` preserves the anchored `62/143/144` candidate identities
+and adds ten explicit mount-open overrun protocol-abort branches, yielding a
+154-row registered analysis universe: 143 declared candidate failures (two
+dispatcher-unreachable), ten emitted supplemental aborts and one success.
+Each branch has a deterministic registered-resource frontier and ordered
+structural cleanup continuation; admission-only memory/output reservations do
+not fabricate native resources, ambiguity is
+never silently absent, mounts close LIFO, primary failure cannot be replaced by
+secondary cleanup errors, and the two declared but dispatcher-unreachable
+edges remain visible. An Owner-prefix verifier admits only append-only records
+after the exact dispatch cutoff while the original exact-tail verifier remains
+strict. It emits no durable-tail-bound attestation and does not cover admitted
+work lost before event append.
+
+The separate output join projects all ten registered contexts and ninety
+leaves across sixteen role-presence sets onto readback ordinals `53..60`, with
+one site per present role and one typed skip per absent role. The linear
+dispatcher cannot yet execute those conditional skips. This closes the
+registered role-presence projection only. Cleanup is not executed, no runtime
+terminal context is selected, and no durable commit/readback evidence exists.
+A cleanup-only attempt phase/lease, crash-safe step journal, no-event recovery,
+conditional skip semantics, tail-bound attestation and FQ11 cleanup cost leaf
+remain prerequisites. Production hooks/current access, the joint
+output/read fixed point, V7 route authority, formal accounting,
+terminal/campaign closure and the complete-bundle verifier remain open. All
+official/scalar/economics/Counter-Completeness/sample Gates remain locked or
+`NOT_RUN`. See
+`specs/K7_H1_COMPLETE_BRANCH_CLEANUP_OUTPUT_JOIN_V1.md`.

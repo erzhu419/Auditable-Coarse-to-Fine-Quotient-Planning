@@ -1,6 +1,6 @@
 # Research Contract
 
-**Current construction contract:** `2.0.59-C`
+**Current construction contract:** `2.0.59-D`
 
 **Current construction profiles:** `v075_k7_production_role_manifest_v1`,
 `v075_k7_business_entry_core_v1`, `v075_k7_broker_worker_entry_core_v1`,
@@ -13,6 +13,8 @@
 `construction_k7_h1_attempt_rejection_gate_v1`,
 `construction_k7_h1_shared_cap_owner_v3`,
 `construction_k7_h1_anchored_lifecycle_dispatch_v1`,
+`construction_k7_h1_lifecycle_output_leaf_join_v1`,
+`construction_k7_h1_lifecycle_complete_cleanup_v1`,
 `construction_k7_h1_production_output_upper_v1`,
 `construction_k7_h1_shared_resource_catalogues_v1`,
 `construction_k7_h1_production_lifecycle_source_candidate_v1`,
@@ -6153,3 +6155,47 @@ and the complete-bundle verifier remain absent. Official execution stays
 false; scalar and break-even remain null; workload-economics, Counter
 Completeness and sample-efficiency remain `NOT_RUN`. See
 `specs/K7_H1_ANCHORED_LIFECYCLE_DISPATCH_V1.md`.
+
+## Contract 2.0.59-D: complete structural cleanup and output-role join
+
+The anchored analysis now independently replays the unchanged `62/143/144`
+candidate identities and adds ten explicit supplemental protocol-abort
+branches for observed mount-open overruns missing from the old edge grammar.
+The registered analysis universe is `154` rows: `143` declared candidate
+failures, ten dispatcher-emitted supplemental aborts and one success. Two of
+the declared candidate edges cannot be produced by the construction dispatcher
+and remain visible as unreachable rather than being deleted. Every such row has an exact folded
+registered-resource frontier and an ordered best-effort cleanup plan: resolve
+ambiguity, reap BUSINESS then WORKER, conservatively settle the admission-only
+memory reservation, close mounts LIFO, then conservatively settle the
+admission-only output reservation. No native memory/output object is inferred.
+Primary failure is immutable and later cleanup failures are ordered secondary
+causes.
+
+A separate append-only prefix verifier replays the current Owner-V3 journal at
+the trace cutoff, allowing later records without permitting them to insert,
+replace or satisfy an earlier dispatch obligation. The original exact-tail
+verifier is unchanged. This synchronous verifier emits no durable-tail-bound
+attestation. A Python-minor AST-dump difference can no longer break
+the secondary mutable-candidate cross-check: only source-derived manifest and
+program identities are substituted with the anchored values after an exact
+loaded-path/source-byte check against the Git blob; all other program fields
+are still compared exactly. Artifact IDs remain Python-runtime-specific.
+
+The output join binds the anchored program to the registered ten-context,
+ninety-leaf serializer candidate. Across sixteen role-presence sets, each
+present role maps to exactly one of readback ordinals `53..60` and each absent
+role has one typed skip. The linear dispatcher cannot execute those skips.
+This closes the structural role-presence projection, not runtime
+terminal-context selection or durable output evidence.
+
+Cleanup passes remain `NOT_RUN`. The attempt gate has no durable one-way
+`NORMAL -> CLEANUP_ONLY` phase, cleanup-only lease or crash-reconciled native
+step journal. No-event post-admission recovery, conditional output skip
+semantics and a frozen FQ11 cleanup cost leaf are also absent. Output
+terminal-context selection, live/native source hooks, current-access/fixed-point
+authority, formal V7 routing, accounting vectors, terminal/campaign closure and
+the complete-bundle verifier remain absent. Official execution stays false;
+scalar and break-even remain null; workload-economics, Counter Completeness and
+sample-efficiency remain `NOT_RUN`. See
+`specs/K7_H1_COMPLETE_BRANCH_CLEANUP_OUTPUT_JOIN_V1.md`.

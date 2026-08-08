@@ -64,10 +64,14 @@ FORMAL_V7_ROUTE_AUTHORITY_PRESENT = False
 FORMAL_COUNTER_RECORDS_ISSUED = False
 FORMAL_WORK_VECTOR_ISSUED = False
 FORMAL_COMPARISON_VECTOR_ISSUED = False
+PREFIX_VERIFICATION_ATTESTATION_ISSUED = False
 
 COUNTER_COMPLETENESS_GATE_STATUS = "COUNTER_COMPLETENESS_GATE_NOT_RUN"
 WORKLOAD_ECONOMICS_GATE_STATUS = "WORKLOAD_ECONOMICS_GATE_NOT_RUN"
 SAMPLE_EFFICIENCY_GATE_STATUS = "SAMPLE_EFFICIENCY_GATE_NOT_RUN"
+ANCHOR_GRAMMAR_VIOLATION_AFTER_ADMISSION = (
+    "ANCHOR_GRAMMAR_VIOLATION_AFTER_ADMISSION"
+)
 
 HANDLER_REGISTRY_DOMAIN = (
     CONSTRUCTION_K7_H1_ANCHORED_LIFECYCLE_HANDLER_REGISTRY_V1_DOMAIN
@@ -98,6 +102,9 @@ if (
 SHARED_RESOURCE_PATHS = owner_v3.SHARED_RESOURCE_PATHS
 PATH_REDUCERS = owner_v3.PATH_REDUCERS
 PROGRAM_SNAPSHOT_REPOSITORY_PATH = anchor_v1.PROGRAM_SNAPSHOT_REPOSITORY_PATH
+LIFECYCLE_CANDIDATE_REPOSITORY_PATH = (
+    "src/acfqp/construction_k7_h1_production_lifecycle_source_candidate_v1.py"
+)
 
 _CID_PATTERN_LENGTH = 64
 _TYPED_NULL_KEYS = frozenset({"kind", "reason"})
@@ -355,6 +362,46 @@ _OWNER_ENTRYPOINTS: dict[str, Callable[..., Any]] = {
 _OWNER_ENTRYPOINT_CODE_IDS = {
     name: _callable_code_id(function) for name, function in _OWNER_ENTRYPOINTS.items()
 }
+_OWNER_PREFIX_INDEX_ENTRYPOINT = (
+    owner_v3.inspect_h1_shared_cap_owner_v3_record_prefix
+)
+
+
+def _owner_function_dependency_closure(
+    root_name: str,
+) -> dict[str, Callable[..., Any]]:
+    pending = [root_name]
+    closure: dict[str, Callable[..., Any]] = {}
+    namespace = vars(owner_v3)
+    while pending:
+        name = pending.pop()
+        if name in closure:
+            continue
+        function = namespace.get(name)
+        if (
+            type(function) is not FunctionType
+            or function.__module__ != owner_v3.__name__
+        ):
+            _protocol("Owner-V3 prefix dependency closure changed")
+        closure[name] = function
+        for dependency_name in function.__code__.co_names:
+            dependency = namespace.get(dependency_name)
+            if (
+                type(dependency) is FunctionType
+                and dependency.__module__ == owner_v3.__name__
+                and dependency_name not in closure
+            ):
+                pending.append(dependency_name)
+    return dict(sorted(closure.items()))
+
+
+_OWNER_PREFIX_DEPENDENCY_FUNCTIONS = _owner_function_dependency_closure(
+    "inspect_h1_shared_cap_owner_v3_record_prefix"
+)
+_OWNER_PREFIX_DEPENDENCY_CODE_IDS = {
+    name: _callable_code_id(function)
+    for name, function in _OWNER_PREFIX_DEPENDENCY_FUNCTIONS.items()
+}
 
 
 def _verify_owner_entrypoints() -> None:
@@ -370,6 +417,20 @@ def _verify_owner_entrypoints() -> None:
             _callable_code_id(frozen), _OWNER_ENTRYPOINT_CODE_IDS[name]
         ):
             _protocol("Owner-V3 dispatch entrypoint changed before native work")
+
+
+def _verify_owner_prefix_index_entrypoint() -> None:
+    current = _owner_function_dependency_closure(
+        "inspect_h1_shared_cap_owner_v3_record_prefix"
+    )
+    if set(current) != set(_OWNER_PREFIX_DEPENDENCY_FUNCTIONS):
+        _protocol("Owner-V3 prefix dependency set changed before verification")
+    for name, frozen in _OWNER_PREFIX_DEPENDENCY_FUNCTIONS.items():
+        if current[name] is not frozen or not hmac.compare_digest(
+            _callable_code_id(current[name]),
+            _OWNER_PREFIX_DEPENDENCY_CODE_IDS[name],
+        ):
+            _protocol("Owner-V3 prefix dependency changed before verification")
 
 
 def _operation_id(profile_id: str, ordinal: int, site_key: str) -> str:
@@ -547,6 +608,8 @@ def _handler_row(row: Mapping[str, Any]) -> dict[str, Any]:
 def _verify_snapshot(
     raw: bytes,
     *,
+    repository_root: Path,
+    parent_commit_id: str,
     expected_snapshot_id: str,
     expected_program_id: str,
     expected_analysis_id: str,
@@ -621,9 +684,34 @@ def _verify_snapshot(
         or rows[-1]["operation"] != "OUTPUT_CLOSE"
     ):
         _fail("anchored lifecycle program cardinalities or boundary order changed")
-    candidate_document = (
+    expected_candidate_path = (
+        repository_root / LIFECYCLE_CANDIDATE_REPOSITORY_PATH
+    ).resolve(strict=True)
+    loaded_candidate_path = Path(candidate_v1.__file__).resolve(strict=True)
+    pinned_candidate_source = _git_blob(
+        repository_root,
+        parent_commit_id,
+        LIFECYCLE_CANDIDATE_REPOSITORY_PATH,
+    )
+    if (
+        loaded_candidate_path != expected_candidate_path
+        or expected_candidate_path.read_bytes() != pinned_candidate_source
+    ):
+        _fail("loaded lifecycle candidate source differs from the anchored Git blob")
+    candidate_document = dict(
         candidate_v1.registered_h1_production_lifecycle_program_candidate_v1().to_document()
     )
+    # Exact source bytes were checked above.  ``ast.dump`` is not byte-stable
+    # across supported Python minor versions, so the same bytes can produce a
+    # different source-manifest ID and therefore a different program ID.  Only
+    # those two derived identities are normalized for the secondary structural
+    # comparison; every program field remains exact.
+    candidate_document["h1_production_lifecycle_source_manifest_id"] = program[
+        "h1_production_lifecycle_source_manifest_id"
+    ]
+    candidate_document["h1_production_lifecycle_program_id"] = program[
+        "h1_production_lifecycle_program_id"
+    ]
     if not hmac.compare_digest(
         canonical_json_bytes(program), canonical_json_bytes(candidate_document)
     ):
@@ -741,6 +829,9 @@ class H1AnchoredLifecycleProgramV1:
     snapshot_id: str
     program_id: str
     branch_analysis_id: str
+    source_manifest_id: str
+    execution_topology_profile_id: str
+    output_branch_dag_id: str
     handler_registry_id: str
     _transition_rows: tuple[bytes, ...] = field(repr=False)
     _anchored_program_id: str = field(init=False, repr=False)
@@ -754,6 +845,9 @@ class H1AnchoredLifecycleProgramV1:
             self.snapshot_id,
             self.program_id,
             self.branch_analysis_id,
+            self.source_manifest_id,
+            self.execution_topology_profile_id,
+            self.output_branch_dag_id,
             self.handler_registry_id,
         ):
             _cid(value, "anchored-program identity")
@@ -781,6 +875,9 @@ class H1AnchoredLifecycleProgramV1:
             "lifecycle_program_snapshot_id": self.snapshot_id,
             "lifecycle_program_id": self.program_id,
             "lifecycle_branch_analysis_id": self.branch_analysis_id,
+            "h1_production_lifecycle_source_manifest_id": self.source_manifest_id,
+            "h1_execution_topology_profile_id": self.execution_topology_profile_id,
+            "h1_production_output_branch_dag_id": self.output_branch_dag_id,
             "h1_anchored_lifecycle_handler_registry_id": self.handler_registry_id,
             "transition_count": len(rows),
             "operation_family_count": len(_EXPECTED_OPERATION_COUNTS),
@@ -856,6 +953,8 @@ def freeze_h1_anchored_lifecycle_dispatch_bundle_v1(
     )
     _program_document, transitions = _verify_snapshot(
         snapshot_raw,
+        repository_root=root,
+        parent_commit_id=anchor.parent_commit_id,
         expected_snapshot_id=provenance.program_snapshot_id,
         expected_program_id=provenance.program_id,
         expected_analysis_id=provenance.branch_analysis_id,
@@ -889,6 +988,9 @@ def freeze_h1_anchored_lifecycle_dispatch_bundle_v1(
         provenance.program_snapshot_id,
         provenance.program_id,
         provenance.branch_analysis_id,
+        _program_document["h1_production_lifecycle_source_manifest_id"],
+        _program_document["h1_execution_topology_profile_id"],
+        _program_document["h1_production_output_branch_dag_id"],
         registry.registry_id,
         tuple(_frozen_json(row) for row in transitions),
     )
@@ -1086,6 +1188,8 @@ _EVENT_DOCUMENT_FIELDS = frozenset(
         "owner_journal_sequence_after_event",
         "owner_journal_head_id_after_event",
         "declared_first_failure",
+        "anchored_transition_semantics_present",
+        "supplemental_protocol_abort",
         "first_failure_is_provisional_prefix_only",
         "normal_forward_dispatch_allowed_after_event",
         "construction_callback_value_only",
@@ -1117,6 +1221,7 @@ _TRACE_DOCUMENT_FIELDS = frozenset(
         "deferred_reservation_ids",
         "active_mount_open_sites",
         "ambiguous_native_sites",
+        "post_admission_protocol_abort_sites",
         "owner_journal_sequence_at_snapshot",
         "owner_journal_head_id_at_snapshot",
         "owner_charged_values_at_snapshot",
@@ -1379,7 +1484,15 @@ def _issue_event(
         "owner_journal_head_id_before_event": session._owner_journal_head_id,
         "owner_journal_sequence_after_event": owner_index["journal_sequence"],
         "owner_journal_head_id_after_event": owner_index["journal_head_id"],
-        "declared_first_failure": outcome != "SUCCESS",
+        "declared_first_failure": (
+            outcome != "SUCCESS" and outcome in _failure_outcomes(row)
+        ),
+        "anchored_transition_semantics_present": (
+            outcome == "SUCCESS" or outcome in _failure_outcomes(row)
+        ),
+        "supplemental_protocol_abort": (
+            outcome == ANCHOR_GRAMMAR_VIOLATION_AFTER_ADMISSION
+        ),
         "first_failure_is_provisional_prefix_only": outcome != "SUCCESS",
         "normal_forward_dispatch_allowed_after_event": (
             outcome == "SUCCESS" and row["ordinal"] < 62
@@ -1442,6 +1555,7 @@ class H1LifecycleConstructionDispatcherV1:
     _deferred: dict[str, owner_v3.H1SharedReservationV3] = field(default_factory=dict)
     _active_mount_sites: list[str] = field(default_factory=list)
     _ambiguous_native_sites: list[str] = field(default_factory=list)
+    _post_admission_protocol_abort_sites: list[str] = field(default_factory=list)
     _owner_journal_sequence: int = 0
     _owner_journal_head_id: Any = field(
         default_factory=lambda: _typed_null("JOURNAL_GENESIS")
@@ -1555,7 +1669,11 @@ def _validate_session(session: H1LifecycleConstructionDispatcherV1) -> None:
     else:
         expected_new_work = not (
             last_failure is not None
-            and last_failure.outcome == "OBSERVED_UPPER_BOUND_VIOLATION"
+            and last_failure.outcome
+            in {
+                "OBSERVED_UPPER_BOUND_VIOLATION",
+                ANCHOR_GRAMMAR_VIOLATION_AFTER_ADMISSION,
+            }
         )
         if (
             owner_index["gate_owner_join_status"] != "OPEN_NO_REJECTION"
@@ -1602,6 +1720,9 @@ def _invoke_callback(
             },
             "active_mount_sites": list(session._active_mount_sites),
             "ambiguous_native_sites": list(session._ambiguous_native_sites),
+            "post_admission_protocol_abort_sites": list(
+                session._post_admission_protocol_abort_sites
+            ),
             "normal_closed": session._normal_closed,
             "owner_sequence": session._owner_journal_sequence,
             "owner_head": session._owner_journal_head_id,
@@ -1622,6 +1743,9 @@ def _invoke_callback(
                 },
                 "active_mount_sites": list(session._active_mount_sites),
                 "ambiguous_native_sites": list(session._ambiguous_native_sites),
+                "post_admission_protocol_abort_sites": list(
+                    session._post_admission_protocol_abort_sites
+                ),
                 "normal_closed": session._normal_closed,
                 "owner_sequence": session._owner_journal_sequence,
                 "owner_head": session._owner_journal_head_id,
@@ -1966,8 +2090,12 @@ def dispatch_next_h1_lifecycle_site_v1(
     refs = _settlement_refs(settlement)
     outcome = "OBSERVED_UPPER_BOUND_VIOLATION" if overrun else "SUCCESS"
     if overrun and outcome not in _failure_outcomes(row):
-        _protocol("observed overrun is absent from the anchored failure grammar")
-    if outcome == "SUCCESS" and row["operation"] == "MOUNT_OPEN":
+        outcome = ANCHOR_GRAMMAR_VIOLATION_AFTER_ADMISSION
+        session._post_admission_protocol_abort_sites.append(row["site_key"])
+    if (
+        outcome in {"SUCCESS", ANCHOR_GRAMMAR_VIOLATION_AFTER_ADMISSION}
+        and row["operation"] == "MOUNT_OPEN"
+    ):
         session._active_mount_sites.append(row["site_key"])
     event = _issue_event(
         session,
@@ -2028,6 +2156,9 @@ def snapshot_h1_lifecycle_dispatch_trace_v1(
         },
         "active_mount_open_sites": list(session._active_mount_sites),
         "ambiguous_native_sites": list(session._ambiguous_native_sites),
+        "post_admission_protocol_abort_sites": list(
+            session._post_admission_protocol_abort_sites
+        ),
         "owner_journal_sequence_at_snapshot": owner_replay["journal_sequence"],
         "owner_journal_head_id_at_snapshot": owner_replay["journal_head_id"],
         "owner_charged_values_at_snapshot": owner_replay["charged_values"],
@@ -2042,7 +2173,10 @@ def snapshot_h1_lifecycle_dispatch_trace_v1(
         "owner_rejection_ack_id_at_snapshot": owner_replay["rejection_ack_id"],
         "owner_new_work_allowed_at_snapshot": owner_replay["new_work_allowed"],
         "declared_prefix_replay_complete": True,
-        "declared_first_failure_replay_complete": first_failure is not None,
+        "declared_first_failure_replay_complete": (
+            first_failure is not None
+            and first_failure.document["declared_first_failure"] is True
+        ),
         "first_failure_is_provisional_prefix_only": first_failure is not None,
         "normal_dispatch_closed": session._normal_closed,
         "event_trace_durable_exactly_once": False,
@@ -2075,22 +2209,27 @@ def snapshot_h1_lifecycle_dispatch_trace_v1(
     return H1LifecycleDispatchTraceV1(_TRACE_ISSUER, canonical_json_bytes(document))
 
 
-def verify_h1_lifecycle_dispatch_trace_bytes_v1(
+def _verify_h1_lifecycle_dispatch_trace_against_owner_index_v1(
     data: bytes,
     *,
     bundle: H1AnchoredLifecycleDispatchBundleV1,
     profile: H1LifecycleDispatchProfileV1,
     owner: owner_v3.H1SharedCapOwnerV3Handle,
+    owner_index: Mapping[str, Any],
 ) -> H1LifecycleDispatchTraceV1:
-    """Replay the full construction trace against the durable Owner-V3 journal."""
+    """Replay one construction trace against one already-verified Owner view."""
 
     if (
         type(data) is not bytes
         or type(bundle) is not H1AnchoredLifecycleDispatchBundleV1
         or type(profile) is not H1LifecycleDispatchProfileV1
         or type(owner) is not owner_v3.H1SharedCapOwnerV3Handle
+        or type(owner_index) is not dict
     ):
-        _fail("trace verification requires exact bytes, bundle, profile, and owner")
+        _fail(
+            "trace verification requires exact bytes, bundle, profile, owner, "
+            "and Owner view"
+        )
     try:
         document = loads_canonical_json(data)
     except (TypeError, ValueError) as error:
@@ -2120,8 +2259,6 @@ def verify_h1_lifecycle_dispatch_trace_bytes_v1(
         or profile.owner_runtime_id != owner.runtime_id
     ):
         _fail("dispatch trace crossed its program, registry, profile, or runtime")
-    _verify_owner_entrypoints()
-    owner_index = _OWNER_ENTRYPOINTS["index"](owner)
     records_by_role = owner_index["records_by_role"]
     record_ids_by_role = owner_index["record_ids_by_role"]
     id_fields = {
@@ -2152,6 +2289,7 @@ def verify_h1_lifecycle_dispatch_trace_bytes_v1(
     deferred: dict[str, str] = {}
     active_mounts: list[str] = []
     ambiguous_sites: list[str] = []
+    protocol_abort_sites: list[str] = []
     previous_owner_sequence = 0
     previous_owner_head: Any = _typed_null("JOURNAL_GENESIS")
     for index, event in enumerate(events):
@@ -2215,7 +2353,16 @@ def verify_h1_lifecycle_dispatch_trace_bytes_v1(
             _fail("dispatch trace reused one deterministic operation ID")
         operation_ids.add(expected_operation_id)
         outcome = event.get("outcome")
-        if outcome != "SUCCESS" and outcome not in _failure_outcomes(row):
+        supplemental_abort = (
+            outcome == ANCHOR_GRAMMAR_VIOLATION_AFTER_ADMISSION
+            and row["operation"] == "MOUNT_OPEN"
+            and "OBSERVED_UPPER_BOUND_VIOLATION" not in _failure_outcomes(row)
+        )
+        if (
+            outcome != "SUCCESS"
+            and outcome not in _failure_outcomes(row)
+            and not supplemental_abort
+        ):
             _fail("dispatch trace used an outcome absent from the anchored edge set")
         if failure_id is not None:
             _fail("dispatch trace continued after its first failure")
@@ -2316,7 +2463,10 @@ def verify_h1_lifecycle_dispatch_trace_bytes_v1(
                 _fail("nonsettling dispatch success claims a native value")
             if not _is_typed_null(callback_exception):
                 _fail("successful dispatch event claims a callback exception")
-        elif outcome == "OBSERVED_UPPER_BOUND_VIOLATION":
+        elif outcome in {
+            "OBSERVED_UPPER_BOUND_VIOLATION",
+            ANCHOR_GRAMMAR_VIOLATION_AFTER_ADMISSION,
+        }:
             if (
                 type(native_value) is not int
                 or type(upper) is not int
@@ -2348,7 +2498,11 @@ def verify_h1_lifecycle_dispatch_trace_bytes_v1(
             _fail("failed admitted callback is not conservatively settled")
 
         if (
-            event.get("declared_first_failure") is not (outcome != "SUCCESS")
+            event.get("declared_first_failure")
+            is not (outcome != "SUCCESS" and not supplemental_abort)
+            or event.get("anchored_transition_semantics_present")
+            is not (not supplemental_abort)
+            or event.get("supplemental_protocol_abort") is not supplemental_abort
             or event.get("first_failure_is_provisional_prefix_only")
             is not (outcome != "SUCCESS")
             or event.get("normal_forward_dispatch_allowed_after_event")
@@ -2370,7 +2524,10 @@ def verify_h1_lifecycle_dispatch_trace_bytes_v1(
             if deferred.get(origin) != refs["reservation_id"]:
                 _fail("deferred completion changed its origin reservation")
             deferred.pop(origin)
-        if row["operation"] == "MOUNT_OPEN" and outcome == "SUCCESS":
+        if row["operation"] == "MOUNT_OPEN" and outcome in {
+            "SUCCESS",
+            ANCHOR_GRAMMAR_VIOLATION_AFTER_ADMISSION,
+        }:
             active_mounts.append(row["site_key"])
         elif row["operation"] == "MOUNT_CLOSE" and outcome == "SUCCESS":
             expected_open = _pair_site(row)
@@ -2379,6 +2536,8 @@ def verify_h1_lifecycle_dispatch_trace_bytes_v1(
             active_mounts.pop()
         if outcome == "NATIVE_EXISTENCE_AMBIGUOUS_AFTER_ADMISSION":
             ambiguous_sites.append(row["site_key"])
+        if supplemental_abort:
+            protocol_abort_sites.append(row["site_key"])
 
         role_for_ref = {
             "reservation_id": "reservation",
@@ -2509,6 +2668,8 @@ def verify_h1_lifecycle_dispatch_trace_bytes_v1(
         _fail("dispatch trace active-mount frontier is inconsistent")
     if document.get("ambiguous_native_sites") != ambiguous_sites:
         _fail("dispatch trace ambiguous-native frontier is inconsistent")
+    if document.get("post_admission_protocol_abort_sites") != protocol_abort_sites:
+        _fail("dispatch trace supplemental protocol-abort frontier is inconsistent")
     if (
         document.get("owner_journal_sequence_at_snapshot")
         != owner_index["journal_sequence"]
@@ -2554,7 +2715,10 @@ def verify_h1_lifecycle_dispatch_trace_bytes_v1(
             or owner_index["new_work_allowed"]
             is not (
                 failure_event["outcome"]
-                != "OBSERVED_UPPER_BOUND_VIOLATION"
+                not in {
+                    "OBSERVED_UPPER_BOUND_VIOLATION",
+                    ANCHOR_GRAMMAR_VIOLATION_AFTER_ADMISSION,
+                }
             )
         ):
             _fail("attempt gate changed outside the dispatch trace")
@@ -2569,10 +2733,13 @@ def verify_h1_lifecycle_dispatch_trace_bytes_v1(
         if referenced_owner_ids[role] != set(record_ids_by_role[role]):
             _fail("dispatch trace does not exactly cover its Owner-V3 record set")
     expected_closed = failure_id is not None or full_success
+    declared_first_failure_replayed = (
+        failure_id is not None and failure_event["declared_first_failure"] is True
+    )
     if (
         document.get("declared_prefix_replay_complete") is not True
         or document.get("declared_first_failure_replay_complete")
-        is not (failure_id is not None)
+        is not declared_first_failure_replayed
         or document.get("first_failure_is_provisional_prefix_only")
         is not (failure_id is not None)
         or document.get("normal_dispatch_closed") is not expected_closed
@@ -2606,7 +2773,85 @@ def verify_h1_lifecycle_dispatch_trace_bytes_v1(
     return H1LifecycleDispatchTraceV1(_TRACE_ISSUER, canonical_json_bytes(document))
 
 
+def verify_h1_lifecycle_dispatch_trace_bytes_v1(
+    data: bytes,
+    *,
+    bundle: H1AnchoredLifecycleDispatchBundleV1,
+    profile: H1LifecycleDispatchProfileV1,
+    owner: owner_v3.H1SharedCapOwnerV3Handle,
+) -> H1LifecycleDispatchTraceV1:
+    """Replay the trace against the exact current durable Owner-V3 journal."""
+
+    if (
+        type(data) is not bytes
+        or type(bundle) is not H1AnchoredLifecycleDispatchBundleV1
+        or type(profile) is not H1LifecycleDispatchProfileV1
+        or type(owner) is not owner_v3.H1SharedCapOwnerV3Handle
+    ):
+        _fail("trace verification requires exact bytes, bundle, profile, and owner")
+    _verify_owner_entrypoints()
+    owner_index = _OWNER_ENTRYPOINTS["index"](owner)
+    return _verify_h1_lifecycle_dispatch_trace_against_owner_index_v1(
+        data,
+        bundle=bundle,
+        profile=profile,
+        owner=owner,
+        owner_index=owner_index,
+    )
+
+
+def verify_h1_lifecycle_dispatch_trace_prefix_bytes_v1(
+    data: bytes,
+    *,
+    bundle: H1AnchoredLifecycleDispatchBundleV1,
+    profile: H1LifecycleDispatchProfileV1,
+    owner: owner_v3.H1SharedCapOwnerV3Handle,
+) -> H1LifecycleDispatchTraceV1:
+    """Verify the trace at its cutoff and admit only an append-only Owner tail.
+
+    Unlike the exact verifier, this entrypoint permits later durable Owner-V3
+    records.  It still replays the complete current journal and reconstructs
+    the exact prefix named by the trace's sequence/head snapshot.  The normal
+    semantic verifier then uses only that prefix, so later cleanup records
+    cannot satisfy, replace, or alter any dispatch obligation at the cutoff.
+    """
+
+    if (
+        type(data) is not bytes
+        or type(bundle) is not H1AnchoredLifecycleDispatchBundleV1
+        or type(profile) is not H1LifecycleDispatchProfileV1
+        or type(owner) is not owner_v3.H1SharedCapOwnerV3Handle
+    ):
+        _fail(
+            "trace prefix verification requires exact bytes, bundle, profile, "
+            "and owner"
+        )
+    try:
+        preliminary = loads_canonical_json(data)
+    except (TypeError, ValueError) as error:
+        raise ConstructionK7H1AnchoredLifecycleDispatchV1Error(
+            "dispatch trace is not canonical JSON"
+        ) from error
+    if type(preliminary) is not dict:
+        _fail("dispatch trace document is not one object")
+    _verify_owner_entrypoints()
+    _verify_owner_prefix_index_entrypoint()
+    owner_index = _OWNER_PREFIX_INDEX_ENTRYPOINT(
+        owner,
+        journal_sequence=preliminary.get("owner_journal_sequence_at_snapshot"),
+        journal_head_id=preliminary.get("owner_journal_head_id_at_snapshot"),
+    )
+    return _verify_h1_lifecycle_dispatch_trace_against_owner_index_v1(
+        data,
+        bundle=bundle,
+        profile=profile,
+        owner=owner,
+        owner_index=owner_index,
+    )
+
+
 __all__ = (
+    "ANCHOR_GRAMMAR_VIOLATION_AFTER_ADMISSION",
     "ANCHORED_PROGRAM_DOMAIN",
     "CLEANUP_CONTINUATION_COMPLETE",
     "COUNTER_COMPLETENESS_GATE_STATUS",
@@ -2633,6 +2878,7 @@ __all__ = (
     "NATIVE_EVIDENCE_AUTHORITY_PRESENT",
     "OFFICIAL_EXECUTION_ALLOWED",
     "OUTPUT_LEAF_JOIN_BOUND",
+    "PREFIX_VERIFICATION_ATTESTATION_ISSUED",
     "PRODUCTION_EXECUTION_AUTHORIZED",
     "PRODUCTION_LIVE_HOOKS_COMPLETE",
     "PROFILE_KEY",
@@ -2647,4 +2893,5 @@ __all__ = (
     "snapshot_h1_lifecycle_dispatch_trace_v1",
     "start_h1_lifecycle_construction_dispatch_v1",
     "verify_h1_lifecycle_dispatch_trace_bytes_v1",
+    "verify_h1_lifecycle_dispatch_trace_prefix_bytes_v1",
 )
