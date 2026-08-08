@@ -1,6 +1,6 @@
 # Research Contract
 
-**Current construction contract:** `2.0.58-D`
+**Current construction contract:** `2.0.59-B`
 
 **Current construction profiles:** `v075_k7_production_role_manifest_v1`,
 `v075_k7_business_entry_core_v1`, `v075_k7_broker_worker_entry_core_v1`,
@@ -10,6 +10,8 @@
 `construction_k7_h1_current_access_authority_v1`,
 `construction_k7_h1_current_access_fresh_exec_runtime_v1`,
 `construction_k7_h1_shared_cap_owner_v2`,
+`construction_k7_h1_attempt_rejection_gate_v1`,
+`construction_k7_h1_shared_cap_owner_v3`,
 `construction_k7_h1_production_output_upper_v1`,
 `construction_k7_h1_shared_resource_catalogues_v1`,
 `construction_k7_h1_production_lifecycle_source_candidate_v1`,
@@ -5893,34 +5895,6 @@ absent. See `specs/K7_H1_PRODUCTION_CURRENT_IDENTITY_V1.md`.
 Official execution, scalar/break-even, workload economics, Counter
 Completeness and sample-efficiency remain locked or `NOT_RUN`.
 
-## Contract 2.0.59-A: caller-pinned local-Git lifecycle provenance
-
-The Contract-2.0.58-D migration seed is frozen by a non-circular two-commit
-local-Git record. The implementation commit contains a canonical program
-snapshot plus a twelve-row explicit non-transitive component boundary, but no
-final preregistration. Its single-parent child adds exactly one `100644`
-preregistration file. The verifier disables replace objects, binds SHA-1 Git
-object types and exact tree modes, rejects shallow history, and independently derives all 62
-transitions, 143 failure edges and 144 branch documents from the snapshot
-without importing the candidate module.
-
-This is `CALLER_PINNED_LOCAL_GIT_PROVENANCE`, not source authority. The
-expected anchor ID is still a caller argument, the component set is not a
-transitive semantic closure, and a one-time worktree equality observation has
-no TOCTOU or loaded-byte guarantee. Consequently
-`fresh_import_self_mint_prevented=false`, `source_authority_present=false` and
-`usable_as_execution_source=false`. Internal transition/branch replay is
-complete, but embedded source-manifest/topology/output-DAG IDs remain pinned
-references rather than independently rederived bindings. A later activation identity and fresh-exec
-binding are mandatory before dispatch. Live distributed dispatch, complete
-failure cleanup, owner V3, output-leaf joins and native resource evidence also
-remain absent. The record is local under the current no-push workflow;
-`remote_published=false`. See
-`specs/K7_H1_LIFECYCLE_LOCAL_MAIN_ANCHOR_V1.md`.
-
-Official execution, scalar/break-even, workload economics, Counter
-Completeness and sample efficiency remain locked or `NOT_RUN`.
-
 ## Contract 2.0.53: path-free sealed-source route segment
 
 V0-110B-2E-42 verifies the exact owned-engine member and seven V6 operation
@@ -6073,3 +6047,67 @@ current-access/operand evidence. Only then may the exact 182-term V7 fallback
 upper and decision be constructed.
 Official execution, scalar/break-even, workload economics, Counter
 Completeness and sample-efficiency remain locked or `NOT_RUN`.
+
+## Contract 2.0.59-A: caller-pinned local-Git lifecycle provenance
+
+The Contract-2.0.58-D migration seed is frozen by a non-circular two-commit
+local-Git record. The implementation commit contains a canonical program
+snapshot plus a twelve-row explicit non-transitive component boundary, but no
+final preregistration. Its single-parent child adds exactly one `100644`
+preregistration file. The verifier disables replace objects, binds SHA-1 Git
+object types and exact tree modes, rejects shallow history, and independently
+derives all 62 transitions, 143 failure edges and 144 branch documents from the
+snapshot without importing the candidate module.
+
+This is `CALLER_PINNED_LOCAL_GIT_PROVENANCE`, not source authority. The
+expected anchor ID is still a caller argument, the component set is not a
+transitive semantic closure, and a one-time worktree equality observation has
+no TOCTOU or loaded-byte guarantee. Consequently
+`fresh_import_self_mint_prevented=false`, `source_authority_present=false` and
+`usable_as_execution_source=false`. Internal transition/branch replay is
+complete, but embedded source-manifest/topology/output-DAG IDs remain pinned
+references rather than independently rederived bindings. A later activation
+identity and fresh-exec binding are mandatory before dispatch. At the
+2.0.59-A boundary, live distributed dispatch, complete failure cleanup, Owner
+V3, output-leaf joins and native resource evidence were also absent. The record
+is local under the current no-push workflow; `remote_published=false`. See
+`specs/K7_H1_LIFECYCLE_LOCAL_MAIN_ANCHOR_V1.md`.
+
+Official execution, scalar/break-even, workload economics, Counter
+Completeness and sample efficiency remain locked or `NOT_RUN`.
+
+## Contract 2.0.59-B: durable H1 shared-cap settlement boundary
+
+The nine H1 shared-resource paths now have one construction-only durable owner
+per decision-point/transaction and one route-attempt-wide rejection gate.
+Reservations precede cooperative side effects; lifecycle start, caller-asserted
+evidence, exact reducer settlement and the complete
+cell/evidence/settlement/receipt/event/snapshot frontier are append-only and
+replayable. An inode-pinned high-water cursor prevents silent journal-tail
+rollback. SUM/MAX admission, distinct asserted-native/source-event bases,
+known-not-started
+zero, conservative cutoff settlement and unclipped overrun poison are checked
+against the frozen profile. Producer and replay apply the same site, basis/path
+and evidence-ID grammar.
+
+An over-cap path closes the attempt gate before publishing exact owner rejection
+admission evidence. A crash in between remains globally closed and recoverable
+only from the same request; transaction-local replay distinguishes its own
+verified pair from an externally owned rejection. Exact pending reservation
+publication can converge after another transaction closes the attempt, while a
+pending start can only complete through conservative settlement without
+re-executing the effect. Durable overrun evidence poisons new work immediately.
+Gate-to-owner lock order, thread/context-bound admission leases, same-gate
+reentrancy rejection, ACK preflight, pre-write size limits, locked open/replay
+and no-burial preflight close the focused concurrency and crash windows. A
+partial first initialization consumes its runtime identity and requires a new
+transaction/runtime. See `specs/K7_H1_ATTEMPT_REJECTION_GATE_V1.md` and
+`specs/K7_H1_SHARED_CAP_OWNER_V3.md`.
+
+This is still construction arithmetic over caller assertions. Native/source
+authority, production credentials and activation, real dispatcher hooks,
+post-first-failure cleanup continuation, output/read fixed-point operands,
+formal V7 routing, CounterRecords/vectors, terminal/campaign closure and the
+independent complete-bundle verifier remain absent. Accordingly official
+execution, scalar/break-even, workload economics, Counter Completeness and
+sample efficiency remain locked or `NOT_RUN`.

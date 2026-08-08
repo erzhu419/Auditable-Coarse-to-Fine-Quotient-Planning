@@ -4978,9 +4978,35 @@ caller argument, no earlier activation binds it, and the worktree check is an
 instantaneous non-authorizing observation. Therefore source authority,
 fresh-import anti-self-mint, execution-byte binding and complete dependency
 closure all remain false. Snapshot dependency IDs are pinned references, not
-independently rederived semantic bindings. The next Gate is an external activation/fresh-exec
-binding, owner V3 exact settlement and a source-driven distributed dispatcher
-with complete cleanup continuations and output-leaf selection.
+independently rederived semantic bindings. At the 2.0.59-A boundary, the next
+Gate comprised an external activation/fresh-exec binding, Owner-V3 exact
+settlement and a source-driven distributed dispatcher with complete cleanup
+continuations and output-leaf selection.
 Official execution, scalar/break-even, economics, Counter Completeness and
 sample efficiency remain locked or `NOT_RUN`. See
 `specs/K7_H1_LIFECYCLE_LOCAL_MAIN_ANCHOR_V1.md`.
+
+## V0-110B-2E-48B H1 durable shared-cap construction settlement
+
+Contract `2.0.59-B` closes the focused local mechanics for the nine H1 shared
+paths. A transaction-bound owner durably reserves before cooperative effects,
+records mutually exclusive started/known-not-started lifecycle cells, preserves
+caller assertions and conservative charges, applies exact SUM/MAX reducers,
+and completes cell/evidence/settlement/receipt/event/snapshot units under an
+inode-pinned high-water cursor. One attempt-wide gate serializes shared-owner,
+business and fallback rejection. Over-cap handling commits that gate first,
+then publishes exact owner admission evidence and pair; exact crash recovery
+cannot reopen the attempt or substitute another request.
+
+Focused review covers multi-transaction ownership, gate-to-owner lock order,
+same-gate reentrancy, concurrent open/cursor replay, journal-tail rollback,
+semantic-frontier burial, forged pair/context mismatches, oversize pre-write
+rejection, ACK preflight, thread-bound admission leases, producer/replay
+semantic equivalence, pending-cursor convergence, immediate overrun poison,
+partial-initialization identity consumption and restarted closed-gate cleanup. This is
+not production activation: source/native authorities, OS credential isolation,
+live dispatcher integration, complete cleanup continuations, output fixed
+points, formal numeric operands, V7 decision, CounterRecords/vectors,
+terminal/campaign closure and the complete-bundle verifier remain open. All
+official and economics/Counter-Completeness/sample-efficiency Gates remain
+locked or `NOT_RUN`.
