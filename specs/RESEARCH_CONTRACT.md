@@ -1,6 +1,6 @@
 # Research Contract
 
-**Current construction contract:** `2.0.59-D`
+**Current construction contract:** `2.0.59-E-A`
 
 **Current construction profiles:** `v075_k7_production_role_manifest_v1`,
 `v075_k7_business_entry_core_v1`, `v075_k7_broker_worker_entry_core_v1`,
@@ -12,7 +12,9 @@
 `construction_k7_h1_shared_cap_owner_v2`,
 `construction_k7_h1_attempt_rejection_gate_v1`,
 `construction_k7_h1_shared_cap_owner_v3`,
+`construction_k7_h1_shared_cap_owner_v4_wal`,
 `construction_k7_h1_anchored_lifecycle_dispatch_v1`,
+`construction_k7_h1_tail_bound_prefix_attestation_v1`,
 `construction_k7_h1_lifecycle_output_leaf_join_v1`,
 `construction_k7_h1_lifecycle_complete_cleanup_v1`,
 `construction_k7_h1_production_output_upper_v1`,
@@ -6199,3 +6201,32 @@ the complete-bundle verifier remain absent. Official execution stays false;
 scalar and break-even remain null; workload-economics, Counter Completeness and
 sample-efficiency remain `NOT_RUN`. See
 `specs/K7_H1_COMPLETE_BRANCH_CLEANUP_OUTPUT_JOIN_V1.md`.
+
+## Contract 2.0.59-E-A: crash-safe Owner payload and observed-tail attestation
+
+The Owner-V4 construction successor durably writes the exact next journal
+payload before pending cursor `P`. Its runtime-scoped activation is represented
+by a complete seven-record zero-valued control intent before the root binding
+marker. Durable intent recovery is monotonic and remains possible after a later
+attempt rejection; an exactly empty namespace created before that intent is
+the sole safely rolled-back preactivation state. Public crash retry and
+concurrent initialization converge, and subprocess death controls cover every
+WAL/P/journal/C/unlink boundary.
+
+A runtime-specific semantic closure now includes the actual attestor and V4
+replay path, registered closure-cell originals, mutable semantic globals,
+project behavior descriptors and the registered generator-context-manager
+protocol. It remains explicitly non-authoritative across processes or against
+arbitrary interpreter/stdlib mutation. Tail issuance verifies the dispatch
+prefix and requires equal V4 gate/Owner observations around the record index.
+The resulting content-addressed artifact binds one caller-pinned observed tail;
+later appends require an explicit predecessor-linked successor and invalidate
+exact-current replay of the old artifact. No atomic future-consumer lease or
+current-use authority is claimed.
+
+No admitted no-event recovery, cleanup-only execution, output terminal/readback
+authority, current-access fixed point, V7 route decision, formal accounting,
+terminal/campaign closure or complete-bundle verifier is issued. Official
+execution stays false; scalar and break-even remain null; workload-economics,
+Counter Completeness and sample-efficiency remain `NOT_RUN`. See
+`specs/K7_H1_WAL_TAIL_ATTESTATION_V1.md`.

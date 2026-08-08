@@ -24,7 +24,7 @@ from __future__ import annotations
 
 from contextlib import contextmanager
 from contextvars import ContextVar
-from dataclasses import InitVar, dataclass, field
+from dataclasses import InitVar, dataclass, field, replace
 from enum import Enum
 import fcntl
 import hashlib
@@ -37,6 +37,10 @@ import stat
 from typing import Any, Iterator, Mapping, NoReturn
 
 from acfqp import construction_k7_h1_attempt_rejection_gate_v1 as rejection_v1
+from acfqp.construction_k7_h1_domain_registry_extension_v1 import (
+    CONSTRUCTION_K7_H1_SHARED_CAP_OWNER_V4_WAL_BINDING_V1_DOMAIN,
+    extension_content_id_v1,
+)
 from acfqp.phase3e_ids import (
     CONSTRUCTION_K7_H1_SHARED_CAP_OWNER_V3_EVENT_V1_DOMAIN,
     CONSTRUCTION_K7_H1_SHARED_CAP_OWNER_V3_NATIVE_CELL_V1_DOMAIN,
@@ -143,6 +147,16 @@ _MAGNITUDE_PATHS = frozenset(SHARED_RESOURCE_PATHS) - _UNIT_EVENT_PATHS
 _PROFILE_FILE = "profile-core.json"
 _SOURCE_FILE = "source-manifest.json"
 _RUNTIME_FILE = "runtime-binding.json"
+_V4_WAL_BINDING_FILE_PREFIX = ".acfqp-h1-owner-v4-wal-binding-"
+_V4_WAL_BINDING_SITE_KEY = "control:v4-pending-payload-wal-binding"
+_V4_WAL_BINDING_PATH = "io.read_bytes"
+_V4_WAL_DIRECTORY_PREFIX = ".acfqp-h1-owner-v4-wal-"
+_V4_WAL_PENDING_PATTERN = re.compile(
+    r"pending-([0-9]{8})-([0-9a-f]{64})[.]json\Z"
+)
+_V4_WAL_BINDING_DOMAIN = (
+    CONSTRUCTION_K7_H1_SHARED_CAP_OWNER_V4_WAL_BINDING_V1_DOMAIN
+)
 _OWNER_ROOT_DIRECTORY = ".acfqp-h1-shared-cap-owner-v3"
 _STATIC_FILES = frozenset({_PROFILE_FILE, _SOURCE_FILE, _RUNTIME_FILE})
 _RECORD_PATTERN = re.compile(r"([0-9]{8})-([0-9a-f]{64})[.]json\Z")
@@ -531,6 +545,10 @@ class H1SharedCapOwnerV3Handle:
     owner_directory_inode: int
     cursor_token_device: int
     cursor_token_inode: int
+    pending_payload_wal_directory: str | None = None
+    pending_payload_wal_device: int | None = None
+    pending_payload_wal_inode: int | None = None
+    pending_payload_wal_binding_id: str | None = None
 
     def __post_init__(self) -> None:
         if (
@@ -553,6 +571,38 @@ class H1SharedCapOwnerV3Handle:
             (self.cursor_token_inode, "V3 cursor token inode"),
         ):
             _nonnegative(value, label)
+        wal_fields = (
+            self.pending_payload_wal_directory,
+            self.pending_payload_wal_device,
+            self.pending_payload_wal_inode,
+            self.pending_payload_wal_binding_id,
+        )
+        if any(value is not None for value in wal_fields):
+            if any(value is None for value in wal_fields):
+                _fail("V4 pending-payload WAL handle fields are partial")
+            assert self.pending_payload_wal_directory is not None
+            assert self.pending_payload_wal_device is not None
+            assert self.pending_payload_wal_inode is not None
+            assert self.pending_payload_wal_binding_id is not None
+            wal_path = Path(self.pending_payload_wal_directory)
+            if (
+                not wal_path.is_absolute()
+                or wal_path.parent != Path(self.owner_root_realpath)
+                or wal_path.name != f"{_V4_WAL_DIRECTORY_PREFIX}{self.runtime_id}"
+            ):
+                _fail("V4 pending-payload WAL path is malformed")
+            _nonnegative(
+                self.pending_payload_wal_device,
+                "V4 pending-payload WAL device",
+            )
+            _nonnegative(
+                self.pending_payload_wal_inode,
+                "V4 pending-payload WAL inode",
+            )
+            _cid(
+                self.pending_payload_wal_binding_id,
+                "V4 pending-payload WAL binding",
+            )
 
 
 @dataclass(frozen=True, slots=True)
@@ -950,6 +1000,259 @@ def _publish_exact(directory_fd: int, name: str, raw: bytes) -> None:
         _protocol(f"V3 durable record conflicts at {name}")
 
 
+_V4_WAL_BINDING_FIELDS = frozenset(
+    {
+        "schema",
+        "schema_version",
+        "proposed_contract_version",
+        "profile_key",
+        "h1_shared_cap_owner_v3_runtime_id",
+        "owner_root_realpath",
+        "owner_root_device",
+        "owner_root_inode",
+        "pending_payload_wal_directory_name",
+        "pending_payload_wal_device",
+        "pending_payload_wal_inode",
+        "binding_control_operation_id",
+        "binding_control_site_key",
+        "pending_payload_wal_required_for_runtime",
+        "historical_v3_claim_relabelled",
+        "production_execution_authority_present",
+        "official_execution_allowed",
+        "h1_shared_cap_owner_v4_wal_binding_id",
+    }
+)
+
+
+def _v4_wal_binding_name(runtime_id: str) -> str:
+    return f"{_V4_WAL_BINDING_FILE_PREFIX}{runtime_id}.json"
+
+
+def _v4_wal_directory_name(runtime_id: str) -> str:
+    return f"{_V4_WAL_DIRECTORY_PREFIX}{runtime_id}"
+
+
+def _v4_wal_binding_temp_prefix(runtime_id: str) -> str:
+    return f".tmp-v4-wal-binding-{runtime_id}-"
+
+
+def _cleanup_v4_wal_binding_temps(root_fd: int, runtime_id: str) -> None:
+    """Remove only this runtime's abandoned marker-publication temp links."""
+
+    prefix = _v4_wal_binding_temp_prefix(runtime_id)
+    pattern = re.compile(
+        rf"{re.escape(prefix)}[1-9][0-9]*-[0-9a-f]{{32}}\Z"
+    )
+    changed = False
+    for name in os.listdir(root_fd):
+        if not name.startswith(prefix):
+            continue
+        if pattern.fullmatch(name) is None:
+            _protocol("V4 WAL binding temp name is malformed")
+        metadata = os.stat(name, dir_fd=root_fd, follow_symlinks=False)
+        if (
+            not stat.S_ISREG(metadata.st_mode)
+            or stat.S_IMODE(metadata.st_mode) != 0o600
+        ):
+            _protocol("V4 WAL binding temp is not one private regular file")
+        os.unlink(name, dir_fd=root_fd)
+        changed = True
+    if changed:
+        os.fsync(root_fd)
+
+
+def _publish_v4_wal_binding(
+    root_fd: int,
+    runtime_id: str,
+    raw: bytes,
+) -> bool:
+    """Publish a root marker with a runtime-scoped crash-cleanable temp."""
+
+    if not raw or len(raw) > _MAX_DOCUMENT_BYTES:
+        _fail("V4 WAL binding exceeds its byte cap before publication")
+    temporary = (
+        f"{_v4_wal_binding_temp_prefix(runtime_id)}"
+        f"{os.getpid()}-{secrets.token_hex(16)}"
+    )
+    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_CLOEXEC
+    if hasattr(os, "O_NOFOLLOW"):
+        flags |= os.O_NOFOLLOW
+    descriptor = os.open(temporary, flags, 0o600, dir_fd=root_fd)
+    try:
+        _write_all(descriptor, raw)
+        os.fsync(descriptor)
+    finally:
+        os.close(descriptor)
+    published = False
+    try:
+        try:
+            os.link(
+                temporary,
+                _v4_wal_binding_name(runtime_id),
+                src_dir_fd=root_fd,
+                dst_dir_fd=root_fd,
+                follow_symlinks=False,
+            )
+            os.fsync(root_fd)
+            published = True
+        except FileExistsError:
+            published = False
+    finally:
+        try:
+            os.unlink(temporary, dir_fd=root_fd)
+            os.fsync(root_fd)
+        except FileNotFoundError:  # pragma: no cover
+            pass
+    return published
+
+
+def _v4_wal_namespace_metadata(
+    root_fd: int,
+    runtime_id: str,
+) -> tuple[int, int] | None:
+    """Return the reserved WAL directory identity without following links."""
+
+    name = _v4_wal_directory_name(runtime_id)
+    try:
+        os.stat(name, dir_fd=root_fd, follow_symlinks=False)
+    except FileNotFoundError:
+        return None
+    wal_fd = _open_private_directory_at(root_fd, name)
+    try:
+        metadata = os.fstat(wal_fd)
+        return metadata.st_dev, metadata.st_ino
+    finally:
+        os.close(wal_fd)
+
+
+def _v4_wal_control_operation_id(
+    runtime_id: str,
+    wal_device: int,
+    wal_inode: int,
+) -> str:
+    return hashlib.sha256(
+        b"acfqp:k7-h1-owner-v4-wal-control-operation:v1\x00"
+        + canonical_json_bytes(
+            {
+                "h1_shared_cap_owner_v3_runtime_id": runtime_id,
+                "pending_payload_wal_device": wal_device,
+                "pending_payload_wal_inode": wal_inode,
+            }
+        )
+    ).hexdigest()
+
+
+def _v4_wal_binding_document(
+    *,
+    runtime_id: str,
+    owner_root_realpath: str,
+    owner_root_device: int,
+    owner_root_inode: int,
+    wal_device: int,
+    wal_inode: int,
+) -> dict[str, Any]:
+    payload = {
+        "schema": "acfqp.k7_h1_shared_cap_owner_v4_wal_binding.v1",
+        "schema_version": "1.0.0",
+        "proposed_contract_version": "2.0.59-E-A",
+        "profile_key": "construction_k7_h1_shared_cap_owner_v4_wal",
+        "h1_shared_cap_owner_v3_runtime_id": _cid(runtime_id, "V4 WAL runtime"),
+        "owner_root_realpath": owner_root_realpath,
+        "owner_root_device": _nonnegative(
+            owner_root_device, "V4 WAL owner-root device"
+        ),
+        "owner_root_inode": _nonnegative(
+            owner_root_inode, "V4 WAL owner-root inode"
+        ),
+        "pending_payload_wal_directory_name": _v4_wal_directory_name(runtime_id),
+        "pending_payload_wal_device": _nonnegative(
+            wal_device, "V4 WAL directory device"
+        ),
+        "pending_payload_wal_inode": _nonnegative(
+            wal_inode, "V4 WAL directory inode"
+        ),
+        "binding_control_operation_id": _v4_wal_control_operation_id(
+            runtime_id,
+            wal_device,
+            wal_inode,
+        ),
+        "binding_control_site_key": _V4_WAL_BINDING_SITE_KEY,
+        "pending_payload_wal_required_for_runtime": True,
+        "historical_v3_claim_relabelled": False,
+        "production_execution_authority_present": False,
+        "official_execution_allowed": False,
+    }
+    return {
+        **payload,
+        "h1_shared_cap_owner_v4_wal_binding_id": extension_content_id_v1(
+            _V4_WAL_BINDING_DOMAIN, payload
+        ),
+    }
+
+
+def _load_v4_wal_binding(
+    root_fd: int,
+    root_path: Path,
+    runtime_id: str,
+) -> dict[str, Any] | None:
+    raw = _read_file(root_fd, _v4_wal_binding_name(runtime_id))
+    if raw is None:
+        return None
+    document = _parse_document(raw, "V4 pending-payload WAL binding")
+    if frozenset(document) != _V4_WAL_BINDING_FIELDS:
+        _protocol("V4 pending-payload WAL binding fields are not exact")
+    payload = dict(document)
+    binding_id = _cid(
+        payload.pop("h1_shared_cap_owner_v4_wal_binding_id", None),
+        "V4 pending-payload WAL binding",
+    )
+    if (
+        extension_content_id_v1(_V4_WAL_BINDING_DOMAIN, payload) != binding_id
+        or document["schema"]
+        != "acfqp.k7_h1_shared_cap_owner_v4_wal_binding.v1"
+        or document["schema_version"] != "1.0.0"
+        or document["proposed_contract_version"] != "2.0.59-E-A"
+        or document["profile_key"]
+        != "construction_k7_h1_shared_cap_owner_v4_wal"
+        or document["h1_shared_cap_owner_v3_runtime_id"] != runtime_id
+        or document["owner_root_realpath"] != str(root_path)
+        or document["pending_payload_wal_directory_name"]
+        != _v4_wal_directory_name(runtime_id)
+        or document["binding_control_operation_id"]
+        != _v4_wal_control_operation_id(
+            runtime_id,
+            document["pending_payload_wal_device"],
+            document["pending_payload_wal_inode"],
+        )
+        or document["binding_control_site_key"]
+        != _V4_WAL_BINDING_SITE_KEY
+        or document["pending_payload_wal_required_for_runtime"] is not True
+        or document["historical_v3_claim_relabelled"] is not False
+        or document["production_execution_authority_present"] is not False
+        or document["official_execution_allowed"] is not False
+    ):
+        _protocol("V4 pending-payload WAL binding changed semantics")
+    root_metadata = os.fstat(root_fd)
+    if (
+        document["owner_root_device"] != root_metadata.st_dev
+        or document["owner_root_inode"] != root_metadata.st_ino
+    ):
+        _protocol("V4 pending-payload WAL binding crossed its owner root")
+    wal_fd = _open_private_directory_at(
+        root_fd, document["pending_payload_wal_directory_name"]
+    )
+    try:
+        wal_metadata = os.fstat(wal_fd)
+        if (
+            document["pending_payload_wal_device"] != wal_metadata.st_dev
+            or document["pending_payload_wal_inode"] != wal_metadata.st_ino
+        ):
+            _protocol("V4 pending-payload WAL directory inode changed")
+    finally:
+        os.close(wal_fd)
+    return document
+
+
 def _open_cursor_token(root_fd: int, runtime_id: str) -> int:
     name = _cursor_token_name(runtime_id)
     flags = os.O_RDONLY | os.O_CLOEXEC
@@ -1111,6 +1414,205 @@ def _initialize_owner_cursor(
             expected_inode=metadata.st_ino,
         )
     return token_fd
+
+
+def _open_v4_wal_directory(handle: H1SharedCapOwnerV3Handle) -> int:
+    if (
+        handle.pending_payload_wal_directory is None
+        or handle.pending_payload_wal_device is None
+        or handle.pending_payload_wal_inode is None
+        or handle.pending_payload_wal_binding_id is None
+    ):
+        _protocol("V4 pending-payload WAL is not bound to this Owner handle")
+    wal_path = Path(handle.pending_payload_wal_directory)
+    descriptor = _open_private_directory(wal_path)
+    metadata = os.fstat(descriptor)
+    if (metadata.st_dev, metadata.st_ino) != (
+        handle.pending_payload_wal_device,
+        handle.pending_payload_wal_inode,
+    ):
+        os.close(descriptor)
+        _protocol("V4 pending-payload WAL handle inode changed")
+    return descriptor
+
+
+def _v4_wal_pending_name(sequence: int, record_id: str) -> str:
+    return f"pending-{sequence:08d}-{_cid(record_id, 'V4 WAL record')}.json"
+
+
+def _v4_wal_pending_rows(wal_fd: int) -> list[tuple[int, str, str]]:
+    # A hard process death inside ``_publish_new`` may leave its private temp
+    # inode before or after the exact hard-link publication.  Owner-directory
+    # replay already removes this shape; the WAL directory must do the same
+    # under the same Owner lock before classifying durable payloads.
+    _cleanup_owner_temps(wal_fd)
+    try:
+        names = os.listdir(wal_fd)
+    except OSError as error:
+        raise H1SharedCapOwnerV3ProtocolFailure(
+            "V4 pending-payload WAL cannot be enumerated"
+        ) from error
+    rows: list[tuple[int, str, str]] = []
+    for name in names:
+        match = _V4_WAL_PENDING_PATTERN.fullmatch(name)
+        if match is None:
+            _protocol("V4 pending-payload WAL contains an unknown entry")
+        rows.append((int(match.group(1)), _cid(match.group(2), "V4 WAL head"), name))
+    if len(rows) > 1:
+        _protocol("V4 pending-payload WAL contains multiple in-flight records")
+    return rows
+
+
+def _verify_v4_wal_payload(
+    raw: bytes,
+    *,
+    handle: H1SharedCapOwnerV3Handle,
+    state: _ReplayState,
+    expected_sequence: int,
+    expected_record_id: str,
+) -> tuple[dict[str, Any], str]:
+    document = _parse_document(raw, "V4 pending-payload WAL record")
+    try:
+        record_id = _verify_record_identity(document)
+    except (KeyError, TypeError, ValueError) as error:
+        if isinstance(error, ConstructionK7H1SharedCapOwnerV3Error):
+            raise
+        raise H1SharedCapOwnerV3ProtocolFailure(
+            "V4 pending-payload WAL record failed identity replay"
+        ) from error
+    previous: Any = (
+        state.head_id
+        if state.head_id is not None
+        else _typed_null("JOURNAL_GENESIS")
+    )
+    if (
+        document["h1_shared_cap_owner_v3_runtime_id"] != handle.runtime_id
+        or document["h1_shared_cap_profile_core_v3_id"]
+        != handle.profile.profile_id
+        or document["sequence"] != expected_sequence
+        or record_id != expected_record_id
+        or document["previous_head_id"] != previous
+        or canonical_json_bytes(document) != raw
+    ):
+        _protocol("V4 pending-payload WAL record crossed its exact append context")
+    return document, record_id
+
+
+def _remove_v4_wal_payload(wal_fd: int, name: str) -> None:
+    try:
+        os.unlink(name, dir_fd=wal_fd)
+        os.fsync(wal_fd)
+    except FileNotFoundError:
+        return
+
+
+def _publish_v4_wal_payload(
+    handle: H1SharedCapOwnerV3Handle,
+    state: _ReplayState,
+    *,
+    sequence: int,
+    record_id: str,
+    raw: bytes,
+) -> None:
+    wal_fd = _open_v4_wal_directory(handle)
+    try:
+        expected_name = _v4_wal_pending_name(sequence, record_id)
+        rows = _v4_wal_pending_rows(wal_fd)
+        if rows and rows[0] != (sequence, record_id, expected_name):
+            _protocol("V4 pending-payload WAL belongs to another append")
+        _verify_v4_wal_payload(
+            raw,
+            handle=handle,
+            state=state,
+            expected_sequence=sequence,
+            expected_record_id=record_id,
+        )
+        _publish_exact(wal_fd, expected_name, raw)
+    finally:
+        os.close(wal_fd)
+
+
+def _reconcile_v4_wal_payload(
+    root_fd: int,
+    directory_fd: int,
+    handle: H1SharedCapOwnerV3Handle,
+    state: _ReplayState,
+) -> _ReplayState:
+    if handle.pending_payload_wal_directory is None:
+        return state
+    wal_fd = _open_v4_wal_directory(handle)
+    try:
+        rows = _v4_wal_pending_rows(wal_fd)
+        if state.pending_cursor is None:
+            if rows:
+                sequence, record_id, name = rows[0]
+                raw = _read_file(wal_fd, name)
+                if raw is None:  # pragma: no cover - exact directory listing
+                    _protocol("V4 pending-payload WAL entry disappeared")
+                if (sequence, record_id) == (state.sequence, state.head_id):
+                    journal_name = f"{sequence:08d}-{record_id}.json"
+                    journal_raw = _read_file(directory_fd, journal_name)
+                    if journal_raw is None or not hmac.compare_digest(
+                        journal_raw, raw
+                    ):
+                        _protocol("V4 committed WAL payload differs from Owner tail")
+                    _remove_v4_wal_payload(wal_fd, name)
+                    return state
+                if sequence != state.sequence + 1:
+                    _protocol("V4 orphan WAL payload is not the next append")
+                _verify_v4_wal_payload(
+                    raw,
+                    handle=handle,
+                    state=state,
+                    expected_sequence=sequence,
+                    expected_record_id=record_id,
+                )
+                _remove_v4_wal_payload(wal_fd, name)
+            return state
+        sequence, record_id = state.pending_cursor
+        expected_name = _v4_wal_pending_name(sequence, record_id)
+        if rows != [(sequence, record_id, expected_name)]:
+            _protocol("UNRECOVERABLE_LEGACY_PENDING_APPEND_WITHOUT_PAYLOAD_WAL")
+        raw = _read_file(wal_fd, expected_name)
+        if raw is None:  # pragma: no cover - exact rows above
+            _protocol("UNRECOVERABLE_LEGACY_PENDING_APPEND_WITHOUT_PAYLOAD_WAL")
+        document, verified_id = _verify_v4_wal_payload(
+            raw,
+            handle=handle,
+            state=state,
+            expected_sequence=sequence,
+            expected_record_id=record_id,
+        )
+        _, id_field = _RECORD_META[document["schema"]]
+        name = f"{sequence:08d}-{document[id_field]}.json"
+        _publish_exact(directory_fd, name, raw)
+        replayed = _replay_records_fd(directory_fd, handle)
+        if (replayed.sequence, replayed.head_id) != (sequence, verified_id):
+            _protocol("V4 WAL publication did not become the exact Owner tail")
+        next_committed = _link_cursor_state(
+            root_fd,
+            handle.runtime_id,
+            "C",
+            sequence,
+            verified_id,
+        )
+        current_committed = _cursor_state_name(
+            handle.runtime_id,
+            "C",
+            state.sequence,
+            state.head_id,
+        )
+        _unlink_cursor_state(
+            root_fd,
+            _cursor_state_name(handle.runtime_id, "P", sequence, verified_id),
+        )
+        if current_committed != next_committed:
+            _unlink_cursor_state(root_fd, current_committed)
+        _remove_v4_wal_payload(wal_fd, expected_name)
+        replayed.pending_cursor = None
+        return replayed
+    finally:
+        os.close(wal_fd)
 
 
 def _recover_owner_cursor(
@@ -1335,6 +1837,7 @@ def initialize_h1_shared_cap_owner_v3(
         owner_root_inode=root_metadata.st_ino,
     )
     runtime_id = runtime["h1_shared_cap_owner_v3_runtime_id"]
+    wal_binding: dict[str, Any] | None = None
     try:
         created = False
         try:
@@ -1374,6 +1877,7 @@ def initialize_h1_shared_cap_owner_v3(
                         _protocol(
                             "V3 existing owner static record is absent or changed"
                         )
+            wal_binding = _load_v4_wal_binding(root_fd, root_path, runtime_id)
         finally:
             if cursor_token_fd >= 0:
                 os.close(cursor_token_fd)
@@ -1394,6 +1898,26 @@ def initialize_h1_shared_cap_owner_v3(
         allocation["owner_directory_inode"],
         allocation["cursor_token_device"],
         allocation["cursor_token_inode"],
+        (
+            str(root_path / wal_binding["pending_payload_wal_directory_name"])
+            if wal_binding is not None
+            else None
+        ),
+        (
+            wal_binding["pending_payload_wal_device"]
+            if wal_binding is not None
+            else None
+        ),
+        (
+            wal_binding["pending_payload_wal_inode"]
+            if wal_binding is not None
+            else None
+        ),
+        (
+            wal_binding["h1_shared_cap_owner_v4_wal_binding_id"]
+            if wal_binding is not None
+            else None
+        ),
     )
     replay_h1_shared_cap_owner_v3(handle)
     return handle
@@ -1404,6 +1928,7 @@ def open_h1_shared_cap_owner_v3(
     *,
     expected_runtime_id: str,
     gate_directory: str | Path,
+    _allow_v4_activation_recovery: bool = False,
 ) -> H1SharedCapOwnerV3Handle:
     expected = _cid(expected_runtime_id, "expected V3 runtime")
     requested_gate_id = _cid(
@@ -1419,6 +1944,7 @@ def open_h1_shared_cap_owner_v3(
         _fail("V3 owner directory name differs from expected runtime")
     root_path = supplied_path.parent.resolve(strict=True)
     root_fd = _open_private_directory(root_path)
+    wal_binding: dict[str, Any] | None = None
     try:
         directory_fd = _open_private_directory_at(root_fd, expected)
         cursor_token_fd = -1
@@ -1461,6 +1987,7 @@ def open_h1_shared_cap_owner_v3(
                 _fail("V3 runtime binding names another rejection gate")
             _validate_profile_source(profile, source)
             _validate_gate(profile, gate)
+            wal_binding = _load_v4_wal_binding(root_fd, root_path, expected)
         finally:
             if cursor_token_fd >= 0:
                 os.close(cursor_token_fd)
@@ -1474,9 +2001,505 @@ def open_h1_shared_cap_owner_v3(
         allocation["owner_root_inode"], allocation["owner_directory_device"],
         allocation["owner_directory_inode"], allocation["cursor_token_device"],
         allocation["cursor_token_inode"],
+        (
+            str(root_path / wal_binding["pending_payload_wal_directory_name"])
+            if wal_binding is not None
+            else None
+        ),
+        (
+            wal_binding["pending_payload_wal_device"]
+            if wal_binding is not None
+            else None
+        ),
+        (
+            wal_binding["pending_payload_wal_inode"]
+            if wal_binding is not None
+            else None
+        ),
+        (
+            wal_binding["h1_shared_cap_owner_v4_wal_binding_id"]
+            if wal_binding is not None
+            else None
+        ),
     )
-    replay_h1_shared_cap_owner_v3(handle)
+    if not _allow_v4_activation_recovery:
+        replay_h1_shared_cap_owner_v3(handle)
     return handle
+
+
+def _hydrate_v4_wal_handle_from_binding_without_gate(
+    handle: H1SharedCapOwnerV3Handle,
+) -> H1SharedCapOwnerV3Handle | None:
+    """Hydrate a stale handle while its caller already owns the gate lease."""
+
+    root_path = Path(handle.owner_root_realpath)
+    root_fd = _open_private_directory(root_path)
+    directory_fd = -1
+    try:
+        root_metadata = os.fstat(root_fd)
+        if (root_metadata.st_dev, root_metadata.st_ino) != (
+            handle.owner_root_device,
+            handle.owner_root_inode,
+        ):
+            _protocol("V4 hydration owner root inode changed")
+        directory_fd = _open_private_directory_at(root_fd, handle.runtime_id)
+        directory_metadata = os.fstat(directory_fd)
+        if (directory_metadata.st_dev, directory_metadata.st_ino) != (
+            handle.owner_directory_device,
+            handle.owner_directory_inode,
+        ):
+            _protocol("V4 hydration Owner directory inode changed")
+        fcntl.flock(directory_fd, fcntl.LOCK_EX)
+        _cleanup_v4_wal_binding_temps(root_fd, handle.runtime_id)
+        binding = _load_v4_wal_binding(root_fd, root_path, handle.runtime_id)
+        if binding is None:
+            return None
+        hydrated = replace(
+            handle,
+            pending_payload_wal_directory=str(
+                root_path / binding["pending_payload_wal_directory_name"]
+            ),
+            pending_payload_wal_device=binding["pending_payload_wal_device"],
+            pending_payload_wal_inode=binding["pending_payload_wal_inode"],
+            pending_payload_wal_binding_id=binding[
+                "h1_shared_cap_owner_v4_wal_binding_id"
+            ],
+        )
+    finally:
+        if directory_fd >= 0:
+            os.close(directory_fd)
+        os.close(root_fd)
+    verify_root_fd, verify_directory_fd, _state = _require_handle_locked(hydrated)
+    os.close(verify_directory_fd)
+    os.close(verify_root_fd)
+    return hydrated
+
+
+def _enable_h1_shared_cap_owner_v4_pending_payload_wal(
+    handle: H1SharedCapOwnerV3Handle,
+) -> H1SharedCapOwnerV3Handle:
+    """Upgrade one construction Owner runtime to mandatory payload-WAL replay.
+
+    Historical V3 runtimes remain unchanged.  Once the binding marker is
+    durable, every reopening of this runtime discovers the WAL binding before
+    replay and a handle without the exact binding fails closed.
+    """
+
+    if type(handle) is not H1SharedCapOwnerV3Handle:
+        _fail("V4 pending-payload WAL enablement requires an exact V3 handle")
+    if handle.pending_payload_wal_directory is not None:
+        root_fd, directory_fd, _state = _require_handle_locked(handle)
+        os.close(directory_fd)
+        os.close(root_fd)
+        return handle
+    refreshed = open_h1_shared_cap_owner_v3(
+        handle.owner_directory,
+        expected_runtime_id=handle.runtime_id,
+        gate_directory=handle.gate_directory,
+        _allow_v4_activation_recovery=True,
+    )
+    if refreshed.pending_payload_wal_directory is not None:
+        root_fd, directory_fd, _state = _require_handle_locked(refreshed)
+        os.close(directory_fd)
+        os.close(root_fd)
+        return refreshed
+    handle = refreshed
+    recovery_root_fd, recovery_directory_fd, recovery_state = (
+        _require_handle_locked(
+            handle,
+            allow_v4_activation_recovery=True,
+        )
+    )
+    recovered_handle: H1SharedCapOwnerV3Handle | None = None
+    try:
+        root_path = Path(handle.owner_root_realpath)
+        wal_name = _v4_wal_directory_name(handle.runtime_id)
+        if _v4_wal_namespace_metadata(recovery_root_fd, handle.runtime_id) is not None:
+            wal_fd = _open_private_directory_at(recovery_root_fd, wal_name)
+            try:
+                wal_metadata = os.fstat(wal_fd)
+                root_metadata = os.fstat(recovery_root_fd)
+                recovery_binding = _v4_wal_binding_document(
+                    runtime_id=handle.runtime_id,
+                    owner_root_realpath=str(root_path),
+                    owner_root_device=root_metadata.st_dev,
+                    owner_root_inode=root_metadata.st_ino,
+                    wal_device=wal_metadata.st_dev,
+                    wal_inode=wal_metadata.st_ino,
+                )
+                candidate_handle = replace(
+                    handle,
+                    pending_payload_wal_directory=str(root_path / wal_name),
+                    pending_payload_wal_device=recovery_binding[
+                        "pending_payload_wal_device"
+                    ],
+                    pending_payload_wal_inode=recovery_binding[
+                        "pending_payload_wal_inode"
+                    ],
+                    pending_payload_wal_binding_id=recovery_binding[
+                        "h1_shared_cap_owner_v4_wal_binding_id"
+                    ],
+                )
+                recovery_state = _reconcile_v4_wal_payload(
+                    recovery_root_fd,
+                    recovery_directory_fd,
+                    candidate_handle,
+                    recovery_state,
+                )
+                recovery_intent = _v4_wal_binding_intent(recovery_state)
+                if recovery_intent is not None:
+                    if (
+                        recovery_intent["operation_id"]
+                        != recovery_binding["binding_control_operation_id"]
+                        or recovery_intent["site_key"]
+                        != recovery_binding["binding_control_site_key"]
+                    ):
+                        _protocol(
+                            "V4 WAL recovery intent differs from its namespace"
+                        )
+                    recovery_state = _settle_v4_wal_binding_intent_locked(
+                        recovery_root_fd,
+                        recovery_directory_fd,
+                        candidate_handle,
+                        recovery_state,
+                        recovery_binding,
+                    )
+                    if _incomplete_pair_frontier(recovery_state) is not None:
+                        _protocol("V4 WAL recovery settlement did not converge")
+                    recovery_raw = canonical_json_bytes(recovery_binding)
+                    recovery_marker = _v4_wal_binding_name(handle.runtime_id)
+                    if not _publish_v4_wal_binding(
+                        recovery_root_fd, handle.runtime_id, recovery_raw
+                    ):
+                        existing = _read_file(
+                            recovery_root_fd, recovery_marker
+                        )
+                        if existing is None or not hmac.compare_digest(
+                            existing, recovery_raw
+                        ):
+                            _protocol("V4 WAL recovery binding conflicted")
+                    recovered_handle = candidate_handle
+                else:
+                    # ``mkdir + root fsync`` precedes the first durable
+                    # activation intent.  A crash in that narrow window leaves
+                    # an empty namespace, but no monotonic activation fact.
+                    # Roll back only that exact pristine directory while the
+                    # Owner lock is held.  Any payload is ambiguous and must
+                    # remain fail-closed; an existing journal intent follows
+                    # the recovery branch above and can never be downgraded.
+                    if os.listdir(wal_fd):
+                        _protocol(
+                            "V4 WAL namespace without activation intent is not empty"
+                        )
+                    os.rmdir(wal_name, dir_fd=recovery_root_fd)
+                    os.fsync(recovery_root_fd)
+            finally:
+                os.close(wal_fd)
+    finally:
+        os.close(recovery_directory_fd)
+        os.close(recovery_root_fd)
+    if recovered_handle is not None:
+        replay_h1_shared_cap_owner_v3(recovered_handle)
+        return recovered_handle
+    try:
+        with rejection_v1.hold_h1_attempt_gate_open_for_admission_v1(
+            _gate_for(handle)
+        ):
+            concurrent_refresh = _hydrate_v4_wal_handle_from_binding_without_gate(
+                handle
+            )
+            if concurrent_refresh is not None:
+                return concurrent_refresh
+            root_fd, directory_fd, state = _require_handle_locked(
+                handle,
+                allow_v4_activation_recovery=True,
+            )
+            try:
+                _require_owner_open_join(state)
+                if state.observed_overrun_count:
+                    _protocol(
+                        "V4 WAL activation refuses an Owner poisoned by overrun"
+                    )
+                root_path = Path(handle.owner_root_realpath)
+                wal_name = _v4_wal_directory_name(handle.runtime_id)
+                namespace = _v4_wal_namespace_metadata(root_fd, handle.runtime_id)
+                if namespace is None:
+                    if (
+                        state.pending_cursor is not None
+                        or _incomplete_pair_frontier(state) is not None
+                    ):
+                        _protocol(
+                            "V4 WAL enablement requires a fully converged "
+                            "historical V3 tail"
+                        )
+                    os.mkdir(wal_name, mode=0o700, dir_fd=root_fd)
+                    os.fsync(root_fd)
+                wal_fd = _open_private_directory_at(root_fd, wal_name)
+                try:
+                    wal_metadata = os.fstat(wal_fd)
+                    root_metadata = os.fstat(root_fd)
+                    binding = _v4_wal_binding_document(
+                        runtime_id=handle.runtime_id,
+                        owner_root_realpath=str(root_path),
+                        owner_root_device=root_metadata.st_dev,
+                        owner_root_inode=root_metadata.st_ino,
+                        wal_device=wal_metadata.st_dev,
+                        wal_inode=wal_metadata.st_ino,
+                    )
+                    upgrade_handle = replace(
+                        handle,
+                        pending_payload_wal_directory=str(root_path / wal_name),
+                        pending_payload_wal_device=binding[
+                            "pending_payload_wal_device"
+                        ],
+                        pending_payload_wal_inode=binding[
+                            "pending_payload_wal_inode"
+                        ],
+                        pending_payload_wal_binding_id=binding[
+                            "h1_shared_cap_owner_v4_wal_binding_id"
+                        ],
+                    )
+                    state = _reconcile_v4_wal_payload(
+                        root_fd,
+                        directory_fd,
+                        upgrade_handle,
+                        state,
+                    )
+                    intent = _v4_wal_binding_intent(state)
+                    frontier = _incomplete_pair_frontier(state)
+                    if intent is None:
+                        if state.pending_cursor is not None or frontier is not None:
+                            _protocol(
+                                "V4 WAL enablement found a non-activation "
+                                "historical frontier"
+                            )
+                        document, candidate = _reservation_document_for_request(
+                            upgrade_handle,
+                            state,
+                            operation_id=binding[
+                                "binding_control_operation_id"
+                            ],
+                            site_key=binding["binding_control_site_key"],
+                            path=_V4_WAL_BINDING_PATH,
+                            reservation_upper=0,
+                        )
+                        if (
+                            candidate
+                            > _limit(
+                                handle.profile, _V4_WAL_BINDING_PATH
+                            ).hard_cap
+                            or document["record_kind"]
+                            != "RESERVATION_DURABLE"
+                        ):
+                            _protocol(
+                                "V4 WAL zero-reservation intent was not admissible"
+                            )
+                        _append_record(
+                            root_fd,
+                            directory_fd,
+                            upgrade_handle,
+                            state,
+                            schema=(
+                                "acfqp.k7_h1_shared_cap_reservation.v3"
+                            ),
+                            kind="RESERVATION_DURABLE",
+                            extra={
+                                key: value
+                                for key, value in document.items()
+                                if key
+                                in _EXTRA_FIELDS[
+                                    "acfqp.k7_h1_shared_cap_reservation.v3"
+                                ]
+                            },
+                        )
+                        state = _replay_records_fd(
+                            directory_fd, upgrade_handle
+                        )
+                        intent = _v4_wal_binding_intent(state)
+                    if (
+                        intent is None
+                        or intent["operation_id"]
+                        != binding["binding_control_operation_id"]
+                        or intent["site_key"]
+                        != binding["binding_control_site_key"]
+                    ):
+                        _protocol(
+                            "V4 WAL activation intent differs from its binding"
+                        )
+                    state = _settle_v4_wal_binding_intent_locked(
+                        root_fd,
+                        directory_fd,
+                        upgrade_handle,
+                        state,
+                        binding,
+                    )
+                    if _incomplete_pair_frontier(state) is not None:
+                        _protocol(
+                            "V4 WAL activation settlement did not converge"
+                        )
+                    binding_raw = canonical_json_bytes(binding)
+                    marker_name = _v4_wal_binding_name(handle.runtime_id)
+                    if not _publish_v4_wal_binding(
+                        root_fd, handle.runtime_id, binding_raw
+                    ):
+                        existing = _read_file(root_fd, marker_name)
+                        if existing is None or not hmac.compare_digest(
+                            existing, binding_raw
+                        ):
+                            _protocol(
+                                "V4 pending-payload WAL binding was already "
+                                "consumed"
+                            )
+                finally:
+                    os.close(wal_fd)
+            finally:
+                os.close(directory_fd)
+                os.close(root_fd)
+    except rejection_v1.H1AttemptRejectedV1 as error:
+        raise H1SharedCapOwnerV3ProtocolFailure(
+            "V4 WAL activation requires the attempt gate to remain OPEN"
+        ) from error
+    upgraded = replace(
+        handle,
+        pending_payload_wal_directory=str(root_path / wal_name),
+        pending_payload_wal_device=binding["pending_payload_wal_device"],
+        pending_payload_wal_inode=binding["pending_payload_wal_inode"],
+        pending_payload_wal_binding_id=binding[
+            "h1_shared_cap_owner_v4_wal_binding_id"
+        ],
+    )
+    replay_h1_shared_cap_owner_v3(upgraded)
+    return upgraded
+
+
+def _settle_v4_wal_binding_intent_locked(
+    root_fd: int,
+    directory_fd: int,
+    handle: H1SharedCapOwnerV3Handle,
+    state: _ReplayState,
+    binding: Mapping[str, Any],
+) -> _ReplayState:
+    """Idempotently close the zero control reservation under Owner EX."""
+
+    intent = _v4_wal_binding_intent(state)
+    if intent is None:
+        _protocol("V4 WAL activation settlement lost its intent")
+    reservation_id = _record_id(intent)
+    evidence_source_id = hashlib.sha256(
+        b"acfqp:k7-h1-owner-v4-wal-binding-zero-evidence:v1\x00"
+        + canonical_json_bytes(
+            {
+                "h1_shared_cap_owner_v3_runtime_id": handle.runtime_id,
+                "h1_shared_cap_owner_v4_wal_binding_id": binding[
+                    "h1_shared_cap_owner_v4_wal_binding_id"
+                ],
+            }
+        )
+    ).hexdigest()
+    cell_extra = {
+        "h1_shared_cap_owner_v3_reservation_id": reservation_id,
+        "operation_id": intent["operation_id"],
+        "path": intent["path"],
+        "lifecycle_state": H1SharedNativeStateV3.KNOWN_NOT_STARTED.value,
+        "durable_before_native_effect": True,
+    }
+    cell = state.cells.get(reservation_id)
+    if cell is None:
+        cell = _append_record(
+            root_fd,
+            directory_fd,
+            handle,
+            state,
+            schema="acfqp.k7_h1_shared_cap_native_cell.v3",
+            kind="NATIVE_CELL_DURABLE",
+            extra=cell_extra,
+        )
+        state = _replay_records_fd(directory_fd, handle)
+    elif any(cell[key] != value for key, value in cell_extra.items()):
+        _protocol("V4 WAL activation cell changed semantics")
+
+    evidence_extra = {
+        "h1_shared_cap_owner_v3_reservation_id": reservation_id,
+        "h1_shared_cap_owner_v3_native_cell_id": _record_id(cell),
+        "operation_id": intent["operation_id"],
+        "path": intent["path"],
+        "value_basis": H1SharedValueBasisV3.KNOWN_NOT_STARTED_ZERO.value,
+        "native_observed_value": 0,
+        "charged_value": 0,
+        "construction_exact_value_assertion": True,
+        "native_authority_verified": False,
+        "evidence_source_authority_verified": False,
+        "conservative_charge": False,
+        "upper_bound_violation": False,
+        "evidence_source_id": evidence_source_id,
+    }
+    evidence = state.evidence.get(reservation_id)
+    if evidence is None:
+        evidence = _append_record(
+            root_fd,
+            directory_fd,
+            handle,
+            state,
+            schema="acfqp.k7_h1_shared_cap_native_evidence.v3",
+            kind="NATIVE_EVIDENCE_DURABLE",
+            extra=evidence_extra,
+        )
+        state = _replay_records_fd(directory_fd, handle)
+    elif any(evidence[key] != value for key, value in evidence_extra.items()):
+        _protocol("V4 WAL activation evidence changed semantics")
+
+    settlement = state.settlements.get(reservation_id)
+    if settlement is None:
+        path = intent["path"]
+        settlement_extra = {
+            "h1_shared_cap_owner_v3_reservation_id": reservation_id,
+            "h1_shared_cap_owner_v3_native_evidence_id": _record_id(evidence),
+            "operation_id": intent["operation_id"],
+            "path": path,
+            "reducer": H1SharedReducerV3.SUM.value,
+            "value_basis": H1SharedValueBasisV3.KNOWN_NOT_STARTED_ZERO.value,
+            "native_observed_value": 0,
+            "charged_value": 0,
+            "reservation_upper": 0,
+            "charged_before": state.charged[path],
+            "charged_after": state.charged[path],
+            "outstanding_before": state.outstanding[path],
+            "outstanding_after": state.outstanding[path],
+            "single_spend": True,
+        }
+        settlement = _append_record(
+            root_fd,
+            directory_fd,
+            handle,
+            state,
+            schema="acfqp.k7_h1_shared_cap_settlement.v3",
+            kind="SETTLEMENT_DURABLE",
+            extra=settlement_extra,
+        )
+        state = _replay_records_fd(directory_fd, handle)
+
+    pair_extra = _pair_extra(
+        subject_kind="SETTLEMENT",
+        subject_id=_record_id(settlement),
+        path=intent["path"],
+        reducer=H1SharedReducerV3.SUM.value,
+        reservation_upper=0,
+        native_observed_value=0,
+        charged_value=0,
+        value_basis=H1SharedValueBasisV3.KNOWN_NOT_STARTED_ZERO.value,
+        construction_exact_value_assertion=True,
+        conservative_charge=False,
+        upper_bound_violation=False,
+        control_cap_rejections=0,
+    )
+    _append_receipt_event_snapshot(
+        root_fd,
+        directory_fd,
+        handle,
+        state,
+        pair_extra=pair_extra,
+    )
+    return _replay_records_fd(directory_fd, handle)
 
 
 def _gate_for(handle: H1SharedCapOwnerV3Handle):
@@ -1704,6 +2727,14 @@ def _append_record(
     if not raw or len(raw) > _MAX_DOCUMENT_BYTES:
         _fail("V3 journal record exceeds its byte cap before cursor advance")
     _require_next_pair_record(state, document)
+    if handle.pending_payload_wal_directory is not None:
+        _publish_v4_wal_payload(
+            handle,
+            state,
+            sequence=next_cursor[0],
+            record_id=next_cursor[1],
+            raw=raw,
+        )
     if state.pending_cursor is None:
         _link_cursor_state(
             root_fd,
@@ -1740,6 +2771,15 @@ def _append_record(
     _unlink_cursor_state(root_fd, pending)
     if current_committed != next_committed:
         _unlink_cursor_state(root_fd, current_committed)
+    if handle.pending_payload_wal_directory is not None:
+        wal_fd = _open_v4_wal_directory(handle)
+        try:
+            _remove_v4_wal_payload(
+                wal_fd,
+                _v4_wal_pending_name(next_cursor[0], next_cursor[1]),
+            )
+        finally:
+            os.close(wal_fd)
     return document
 
 
@@ -1781,6 +2821,49 @@ def _initial_state() -> _ReplayState:
         conservative_settlement_count=0,
         observed_overrun_count=0,
     )
+
+
+def _v4_wal_binding_intent(
+    state: _ReplayState,
+) -> dict[str, Any] | None:
+    rows = [
+        row
+        for row in state.reservations.values()
+        if row.get("site_key") == _V4_WAL_BINDING_SITE_KEY
+    ]
+    if len(rows) > 1:
+        _protocol("Owner journal contains multiple V4 WAL binding intents")
+    if not rows:
+        return None
+    row = rows[0]
+    expected_candidate = row["charged_before"] + row["outstanding_before"]
+    if (
+        row["record_kind"] != "RESERVATION_DURABLE"
+        or row["path"] != _V4_WAL_BINDING_PATH
+        or row["reducer"] != H1SharedReducerV3.SUM.value
+        or row["reservation_upper"] != 0
+        or row["admission_candidate"] != expected_candidate
+        or row["admission_outcome"] != "ADMITTED"
+        or row["durable_before_side_effect"] is not True
+    ):
+        _protocol("V4 WAL binding intent changed its zero-reservation semantics")
+    reservation_id = _record_id(row)
+    settlement = state.settlements.get(reservation_id)
+    if settlement is not None:
+        cell = state.cells.get(reservation_id)
+        evidence = state.evidence.get(reservation_id)
+        if (
+            cell is None
+            or evidence is None
+            or cell["lifecycle_state"]
+            != H1SharedNativeStateV3.KNOWN_NOT_STARTED.value
+            or evidence["value_basis"]
+            != H1SharedValueBasisV3.KNOWN_NOT_STARTED_ZERO.value
+            or evidence["charged_value"] != 0
+            or settlement["charged_value"] != 0
+        ):
+            _protocol("V4 WAL binding intent settlement changed semantics")
+    return row
 
 
 def _record_id(document: Mapping[str, Any]) -> str:
@@ -2315,6 +3398,8 @@ def _replay_records_fd(
 
 def _require_handle_locked(
     handle: H1SharedCapOwnerV3Handle,
+    *,
+    allow_v4_activation_recovery: bool = False,
 ) -> tuple[int, int, _ReplayState]:
     if type(handle) is not H1SharedCapOwnerV3Handle:
         _fail("V3 owner handle has a foreign type")
@@ -2354,6 +3439,48 @@ def _require_handle_locked(
         ):
             _protocol("V3 owner directory inode changed")
         fcntl.flock(directory_fd, fcntl.LOCK_EX)
+        _cleanup_v4_wal_binding_temps(root_fd, handle.runtime_id)
+        wal_binding = _load_v4_wal_binding(root_fd, root_path, handle.runtime_id)
+        wal_namespace = _v4_wal_namespace_metadata(root_fd, handle.runtime_id)
+        replay_handle = handle
+        if wal_binding is None:
+            if handle.pending_payload_wal_directory is not None:
+                _protocol("V4 pending-payload WAL handle lost its durable binding")
+            if wal_namespace is not None and not allow_v4_activation_recovery:
+                _protocol(
+                    "V4 WAL activation namespace exists without its durable binding"
+                )
+        else:
+            wal_path = root_path / wal_binding["pending_payload_wal_directory_name"]
+            if (
+                allow_v4_activation_recovery
+                and handle.pending_payload_wal_directory is None
+            ):
+                replay_handle = replace(
+                    handle,
+                    pending_payload_wal_directory=str(wal_path),
+                    pending_payload_wal_device=wal_binding[
+                        "pending_payload_wal_device"
+                    ],
+                    pending_payload_wal_inode=wal_binding[
+                        "pending_payload_wal_inode"
+                    ],
+                    pending_payload_wal_binding_id=wal_binding[
+                        "h1_shared_cap_owner_v4_wal_binding_id"
+                    ],
+                )
+            elif (
+                handle.pending_payload_wal_directory != str(wal_path)
+                or handle.pending_payload_wal_device
+                != wal_binding["pending_payload_wal_device"]
+                or handle.pending_payload_wal_inode
+                != wal_binding["pending_payload_wal_inode"]
+                or handle.pending_payload_wal_binding_id
+                != wal_binding["h1_shared_cap_owner_v4_wal_binding_id"]
+            ):
+                _protocol(
+                    "V4 WAL-required Owner runtime was opened without its exact binding"
+                )
         _cleanup_owner_temps(directory_fd)
         profile_raw = _read_file(directory_fd, _PROFILE_FILE)
         source_raw = _read_file(directory_fd, _SOURCE_FILE)
@@ -2378,8 +3505,42 @@ def _require_handle_locked(
             or runtime["h1_shared_cap_owner_v3_runtime_id"] != handle.runtime_id
         ):
             _protocol("V3 owner handle or static identity was transplanted")
-        state = _replay_records_fd(directory_fd, handle)
-        state = _recover_owner_cursor(root_fd, handle, state)
+        state = _replay_records_fd(directory_fd, replay_handle)
+        state = _recover_owner_cursor(root_fd, replay_handle, state)
+        binding_intent = _v4_wal_binding_intent(state)
+        if wal_binding is None:
+            if binding_intent is not None:
+                if wal_namespace is None:
+                    _protocol(
+                        "V4 WAL activation intent lost its inode-bound namespace"
+                    )
+                expected_operation = _v4_wal_control_operation_id(
+                    handle.runtime_id,
+                    wal_namespace[0],
+                    wal_namespace[1],
+                )
+                if binding_intent["operation_id"] != expected_operation:
+                    _protocol("V4 WAL activation intent crossed its namespace")
+                if not allow_v4_activation_recovery:
+                    _protocol(
+                        "V4 WAL activation intent exists without its durable binding"
+                    )
+        else:
+            if binding_intent is None:
+                _protocol("V4 WAL binding lacks its monotonic Owner-journal intent")
+            if (
+                binding_intent["operation_id"]
+                != wal_binding["binding_control_operation_id"]
+                or binding_intent["site_key"]
+                != wal_binding["binding_control_site_key"]
+            ):
+                _protocol("V4 WAL binding and Owner-journal intent differ")
+            state = _reconcile_v4_wal_payload(
+                root_fd,
+                directory_fd,
+                replay_handle,
+                state,
+            )
         return root_fd, directory_fd, state
     except BaseException:
         if cursor_token_fd >= 0:
@@ -3783,6 +4944,8 @@ def reserve_h1_shared_cap_owner_v3(
         )
     operation = _cid(operation_id, "V3 operation")
     site = _nonempty(site_key, "V3 site key")
+    if site == _V4_WAL_BINDING_SITE_KEY:
+        _protocol("V4 WAL activation site is reserved for Owner control")
     upper = _nonnegative(reservation_upper, "V3 reservation upper")
     limit = _limit(handle.profile, path)
     gate = _gate_for(handle)

@@ -5062,3 +5062,27 @@ terminal/campaign closure and the complete-bundle verifier remain open. All
 official/scalar/economics/Counter-Completeness/sample Gates remain locked or
 `NOT_RUN`. See
 `specs/K7_H1_COMPLETE_BRANCH_CLEANUP_OUTPUT_JOIN_V1.md`.
+
+## V0-110B-2E-48E-A H1 payload WAL and observed-tail attestation
+
+Contract `2.0.59-E-A` adds a construction-only V4 Owner wrapper. The exact next
+journal payload is durable before pending cursor `P`; replay converges every
+registered WAL/P/journal/C/unlink crash frontier. Activation is bound by a
+complete seven-record zero control intent before marker publication. A durable
+intent cannot be downgraded, while the sole pre-intent empty namespace can be
+rolled back under lock even after later attempt rejection. Public retry and
+concurrent initialization converge.
+
+The runtime semantic closure now binds the actual attestor/V4/index/dispatcher
+path, transitive registered closure-cell dependencies and project behavior
+descriptors. It explicitly excludes arbitrary interpreter/stdlib mutation and
+cross-process authority. A content-addressed attestation double-collects the
+gate/Owner view around the record index and binds one exact observed tail to
+the verified prefix. Later appends invalidate exact-current replay and require
+an explicit predecessor-linked successor; no future-consumer lease exists.
+
+Admitted no-event recovery, cleanup-only execution, terminal output/readback,
+current-access fixed point, V7, formal accounting, campaign closure and the
+complete-bundle verifier remain open. Every official/scalar/economics/
+Counter-Completeness/sample Gate remains locked or `NOT_RUN`. See
+`specs/K7_H1_WAL_TAIL_ATTESTATION_V1.md`.
