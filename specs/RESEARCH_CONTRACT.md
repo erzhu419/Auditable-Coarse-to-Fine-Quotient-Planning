@@ -5893,6 +5893,34 @@ absent. See `specs/K7_H1_PRODUCTION_CURRENT_IDENTITY_V1.md`.
 Official execution, scalar/break-even, workload economics, Counter
 Completeness and sample-efficiency remain locked or `NOT_RUN`.
 
+## Contract 2.0.59-A: caller-pinned local-Git lifecycle provenance
+
+The Contract-2.0.58-D migration seed is frozen by a non-circular two-commit
+local-Git record. The implementation commit contains a canonical program
+snapshot plus a twelve-row explicit non-transitive component boundary, but no
+final preregistration. Its single-parent child adds exactly one `100644`
+preregistration file. The verifier disables replace objects, binds SHA-1 Git
+object types and exact tree modes, rejects shallow history, and independently derives all 62
+transitions, 143 failure edges and 144 branch documents from the snapshot
+without importing the candidate module.
+
+This is `CALLER_PINNED_LOCAL_GIT_PROVENANCE`, not source authority. The
+expected anchor ID is still a caller argument, the component set is not a
+transitive semantic closure, and a one-time worktree equality observation has
+no TOCTOU or loaded-byte guarantee. Consequently
+`fresh_import_self_mint_prevented=false`, `source_authority_present=false` and
+`usable_as_execution_source=false`. Internal transition/branch replay is
+complete, but embedded source-manifest/topology/output-DAG IDs remain pinned
+references rather than independently rederived bindings. A later activation identity and fresh-exec
+binding are mandatory before dispatch. Live distributed dispatch, complete
+failure cleanup, owner V3, output-leaf joins and native resource evidence also
+remain absent. The record is local under the current no-push workflow;
+`remote_published=false`. See
+`specs/K7_H1_LIFECYCLE_LOCAL_MAIN_ANCHOR_V1.md`.
+
+Official execution, scalar/break-even, workload economics, Counter
+Completeness and sample efficiency remain locked or `NOT_RUN`.
+
 ## Contract 2.0.53: path-free sealed-source route segment
 
 V0-110B-2E-42 verifies the exact owned-engine member and seven V6 operation

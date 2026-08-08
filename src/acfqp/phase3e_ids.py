@@ -957,6 +957,108 @@ CONSTRUCTION_K7_H1_PRODUCTION_LIFECYCLE_SOURCE_AUTHORITY_V1_DOMAIN = (
 CONSTRUCTION_K7_H1_PRODUCTION_LIFECYCLE_SOURCE_CANDIDATE_V1_DOMAIN = (
     "acfqp:construction-k7-h1-production-lifecycle-source-candidate:v1"
 )
+CONSTRUCTION_K7_H1_LIFECYCLE_LOCAL_SOURCE_REGISTRY_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-lifecycle-local-source-registry:v1"
+)
+CONSTRUCTION_K7_H1_LIFECYCLE_PROGRAM_SNAPSHOT_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-lifecycle-program-snapshot:v1"
+)
+CONSTRUCTION_K7_H1_LIFECYCLE_FINAL_PREREGISTRATION_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-lifecycle-final-preregistration:v1"
+)
+CONSTRUCTION_K7_H1_LIFECYCLE_LOCAL_MAIN_ANCHOR_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-lifecycle-local-main-anchor:v1"
+)
+CONSTRUCTION_K7_H1_CALLER_PINNED_LIFECYCLE_PROVENANCE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-caller-pinned-lifecycle-provenance:v1"
+)
+CONSTRUCTION_K7_H1_SHARED_CAP_OWNER_V3_PROFILE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-shared-cap-owner-v3-profile:v1"
+)
+CONSTRUCTION_K7_H1_SHARED_CAP_OWNER_V3_SOURCE_MANIFEST_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-shared-cap-owner-v3-source-manifest:v1"
+)
+CONSTRUCTION_K7_H1_SHARED_CAP_OWNER_V3_RUNTIME_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-shared-cap-owner-v3-runtime:v1"
+)
+CONSTRUCTION_K7_H1_SHARED_CAP_OWNER_V3_RESERVATION_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-shared-cap-owner-v3-reservation:v1"
+)
+CONSTRUCTION_K7_H1_SHARED_CAP_OWNER_V3_NATIVE_CELL_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-shared-cap-owner-v3-native-cell:v1"
+)
+CONSTRUCTION_K7_H1_SHARED_CAP_OWNER_V3_NATIVE_EVIDENCE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-shared-cap-owner-v3-native-evidence:v1"
+)
+CONSTRUCTION_K7_H1_SHARED_CAP_OWNER_V3_SETTLEMENT_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-shared-cap-owner-v3-settlement:v1"
+)
+CONSTRUCTION_K7_H1_SHARED_CAP_OWNER_V3_RECEIPT_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-shared-cap-owner-v3-receipt:v1"
+)
+CONSTRUCTION_K7_H1_SHARED_CAP_OWNER_V3_EVENT_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-shared-cap-owner-v3-event:v1"
+)
+CONSTRUCTION_K7_H1_SHARED_CAP_OWNER_V3_SNAPSHOT_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-shared-cap-owner-v3-snapshot:v1"
+)
+CONSTRUCTION_K7_H1_ATTEMPT_REJECTION_GATE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-attempt-rejection-gate:v1"
+)
+CONSTRUCTION_K7_H1_ATTEMPT_REJECTION_COMMIT_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-attempt-rejection-commit:v1"
+)
+CONSTRUCTION_K7_H1_ATTEMPT_REJECTION_ACK_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-attempt-rejection-ack:v1"
+)
+CONSTRUCTION_K7_H1_ANCHORED_LIFECYCLE_HANDLER_REGISTRY_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-anchored-lifecycle-handler-registry:v1"
+)
+CONSTRUCTION_K7_H1_ANCHORED_LIFECYCLE_PROGRAM_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-anchored-lifecycle-program:v1"
+)
+CONSTRUCTION_K7_H1_LIFECYCLE_DISPATCH_PROFILE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-lifecycle-dispatch-profile:v1"
+)
+CONSTRUCTION_K7_H1_LIFECYCLE_DISPATCH_EVENT_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-lifecycle-dispatch-event:v1"
+)
+CONSTRUCTION_K7_H1_LIFECYCLE_DISPATCH_TRACE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-lifecycle-dispatch-trace:v1"
+)
+CONSTRUCTION_K7_H1_LIFECYCLE_COMPLETE_BRANCH_ANALYSIS_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-lifecycle-complete-branch-analysis:v1"
+)
+CONSTRUCTION_K7_H1_LIFECYCLE_CLEANUP_PASS_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-lifecycle-cleanup-pass:v1"
+)
+CONSTRUCTION_K7_H1_LIFECYCLE_OUTPUT_LEAF_JOIN_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-lifecycle-output-leaf-join:v1"
+)
+CONSTRUCTION_K7_H1_CURRENT_ACCESS_ATOMIC_BRIDGE_PROFILE_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-current-access-atomic-bridge-profile:v1"
+)
+CONSTRUCTION_K7_H1_CURRENT_ACCESS_ATOMIC_BRIDGE_EXPORT_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-current-access-atomic-bridge-export:v1"
+)
+CONSTRUCTION_K7_H1_CURRENT_ACCESS_ATOMIC_BRIDGE_REQUEST_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-current-access-atomic-bridge-request:v1"
+)
+CONSTRUCTION_K7_H1_CURRENT_ACCESS_ATOMIC_BRIDGE_COMMIT_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-current-access-atomic-bridge-commit:v1"
+)
+CONSTRUCTION_K7_H1_CURRENT_ACCESS_ATOMIC_BRIDGE_RECEIPT_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-current-access-atomic-bridge-receipt:v1"
+)
+CONSTRUCTION_K7_H1_POSTFREEZE_CURRENT_ACCESS_AUTHORITY_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-postfreeze-current-access-authority:v1"
+)
+CONSTRUCTION_K7_H1_JOINT_OUTPUT_READ_ITERATION_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-joint-output-read-iteration:v1"
+)
+CONSTRUCTION_K7_H1_JOINT_OUTPUT_READ_FIXED_POINT_V1_DOMAIN = (
+    "acfqp:construction-k7-h1-joint-output-read-fixed-point:v1"
+)
 CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_PROFILE_V1_DOMAIN = (
     "acfqp:construction-k7-h1-branch-aware-output-profile:v1"
 )
@@ -2666,6 +2768,108 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_h1_production_lifecycle_source_candidate_v1": (
             CONSTRUCTION_K7_H1_PRODUCTION_LIFECYCLE_SOURCE_CANDIDATE_V1_DOMAIN
+        ),
+        "construction_k7_h1_lifecycle_local_source_registry_v1": (
+            CONSTRUCTION_K7_H1_LIFECYCLE_LOCAL_SOURCE_REGISTRY_V1_DOMAIN
+        ),
+        "construction_k7_h1_lifecycle_program_snapshot_v1": (
+            CONSTRUCTION_K7_H1_LIFECYCLE_PROGRAM_SNAPSHOT_V1_DOMAIN
+        ),
+        "construction_k7_h1_lifecycle_final_preregistration_v1": (
+            CONSTRUCTION_K7_H1_LIFECYCLE_FINAL_PREREGISTRATION_V1_DOMAIN
+        ),
+        "construction_k7_h1_lifecycle_local_main_anchor_v1": (
+            CONSTRUCTION_K7_H1_LIFECYCLE_LOCAL_MAIN_ANCHOR_V1_DOMAIN
+        ),
+        "construction_k7_h1_caller_pinned_lifecycle_provenance_v1": (
+            CONSTRUCTION_K7_H1_CALLER_PINNED_LIFECYCLE_PROVENANCE_V1_DOMAIN
+        ),
+        "construction_k7_h1_shared_cap_owner_v3_profile_v1": (
+            CONSTRUCTION_K7_H1_SHARED_CAP_OWNER_V3_PROFILE_V1_DOMAIN
+        ),
+        "construction_k7_h1_shared_cap_owner_v3_source_manifest_v1": (
+            CONSTRUCTION_K7_H1_SHARED_CAP_OWNER_V3_SOURCE_MANIFEST_V1_DOMAIN
+        ),
+        "construction_k7_h1_shared_cap_owner_v3_runtime_v1": (
+            CONSTRUCTION_K7_H1_SHARED_CAP_OWNER_V3_RUNTIME_V1_DOMAIN
+        ),
+        "construction_k7_h1_shared_cap_owner_v3_reservation_v1": (
+            CONSTRUCTION_K7_H1_SHARED_CAP_OWNER_V3_RESERVATION_V1_DOMAIN
+        ),
+        "construction_k7_h1_shared_cap_owner_v3_native_cell_v1": (
+            CONSTRUCTION_K7_H1_SHARED_CAP_OWNER_V3_NATIVE_CELL_V1_DOMAIN
+        ),
+        "construction_k7_h1_shared_cap_owner_v3_native_evidence_v1": (
+            CONSTRUCTION_K7_H1_SHARED_CAP_OWNER_V3_NATIVE_EVIDENCE_V1_DOMAIN
+        ),
+        "construction_k7_h1_shared_cap_owner_v3_settlement_v1": (
+            CONSTRUCTION_K7_H1_SHARED_CAP_OWNER_V3_SETTLEMENT_V1_DOMAIN
+        ),
+        "construction_k7_h1_shared_cap_owner_v3_receipt_v1": (
+            CONSTRUCTION_K7_H1_SHARED_CAP_OWNER_V3_RECEIPT_V1_DOMAIN
+        ),
+        "construction_k7_h1_shared_cap_owner_v3_event_v1": (
+            CONSTRUCTION_K7_H1_SHARED_CAP_OWNER_V3_EVENT_V1_DOMAIN
+        ),
+        "construction_k7_h1_shared_cap_owner_v3_snapshot_v1": (
+            CONSTRUCTION_K7_H1_SHARED_CAP_OWNER_V3_SNAPSHOT_V1_DOMAIN
+        ),
+        "construction_k7_h1_attempt_rejection_gate_v1": (
+            CONSTRUCTION_K7_H1_ATTEMPT_REJECTION_GATE_V1_DOMAIN
+        ),
+        "construction_k7_h1_attempt_rejection_commit_v1": (
+            CONSTRUCTION_K7_H1_ATTEMPT_REJECTION_COMMIT_V1_DOMAIN
+        ),
+        "construction_k7_h1_attempt_rejection_ack_v1": (
+            CONSTRUCTION_K7_H1_ATTEMPT_REJECTION_ACK_V1_DOMAIN
+        ),
+        "construction_k7_h1_anchored_lifecycle_handler_registry_v1": (
+            CONSTRUCTION_K7_H1_ANCHORED_LIFECYCLE_HANDLER_REGISTRY_V1_DOMAIN
+        ),
+        "construction_k7_h1_anchored_lifecycle_program_v1": (
+            CONSTRUCTION_K7_H1_ANCHORED_LIFECYCLE_PROGRAM_V1_DOMAIN
+        ),
+        "construction_k7_h1_lifecycle_dispatch_profile_v1": (
+            CONSTRUCTION_K7_H1_LIFECYCLE_DISPATCH_PROFILE_V1_DOMAIN
+        ),
+        "construction_k7_h1_lifecycle_dispatch_event_v1": (
+            CONSTRUCTION_K7_H1_LIFECYCLE_DISPATCH_EVENT_V1_DOMAIN
+        ),
+        "construction_k7_h1_lifecycle_dispatch_trace_v1": (
+            CONSTRUCTION_K7_H1_LIFECYCLE_DISPATCH_TRACE_V1_DOMAIN
+        ),
+        "construction_k7_h1_lifecycle_complete_branch_analysis_v1": (
+            CONSTRUCTION_K7_H1_LIFECYCLE_COMPLETE_BRANCH_ANALYSIS_V1_DOMAIN
+        ),
+        "construction_k7_h1_lifecycle_cleanup_pass_v1": (
+            CONSTRUCTION_K7_H1_LIFECYCLE_CLEANUP_PASS_V1_DOMAIN
+        ),
+        "construction_k7_h1_lifecycle_output_leaf_join_v1": (
+            CONSTRUCTION_K7_H1_LIFECYCLE_OUTPUT_LEAF_JOIN_V1_DOMAIN
+        ),
+        "construction_k7_h1_current_access_atomic_bridge_profile_v1": (
+            CONSTRUCTION_K7_H1_CURRENT_ACCESS_ATOMIC_BRIDGE_PROFILE_V1_DOMAIN
+        ),
+        "construction_k7_h1_current_access_atomic_bridge_export_v1": (
+            CONSTRUCTION_K7_H1_CURRENT_ACCESS_ATOMIC_BRIDGE_EXPORT_V1_DOMAIN
+        ),
+        "construction_k7_h1_current_access_atomic_bridge_request_v1": (
+            CONSTRUCTION_K7_H1_CURRENT_ACCESS_ATOMIC_BRIDGE_REQUEST_V1_DOMAIN
+        ),
+        "construction_k7_h1_current_access_atomic_bridge_commit_v1": (
+            CONSTRUCTION_K7_H1_CURRENT_ACCESS_ATOMIC_BRIDGE_COMMIT_V1_DOMAIN
+        ),
+        "construction_k7_h1_current_access_atomic_bridge_receipt_v1": (
+            CONSTRUCTION_K7_H1_CURRENT_ACCESS_ATOMIC_BRIDGE_RECEIPT_V1_DOMAIN
+        ),
+        "construction_k7_h1_postfreeze_current_access_authority_v1": (
+            CONSTRUCTION_K7_H1_POSTFREEZE_CURRENT_ACCESS_AUTHORITY_V1_DOMAIN
+        ),
+        "construction_k7_h1_joint_output_read_iteration_v1": (
+            CONSTRUCTION_K7_H1_JOINT_OUTPUT_READ_ITERATION_V1_DOMAIN
+        ),
+        "construction_k7_h1_joint_output_read_fixed_point_v1": (
+            CONSTRUCTION_K7_H1_JOINT_OUTPUT_READ_FIXED_POINT_V1_DOMAIN
         ),
         "construction_k7_h1_branch_aware_output_profile_v1": (
             CONSTRUCTION_K7_H1_BRANCH_AWARE_OUTPUT_PROFILE_V1_DOMAIN

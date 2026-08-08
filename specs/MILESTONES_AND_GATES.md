@@ -4963,3 +4963,24 @@ connect a real source/runtime program and close those continuations before
 extent/fixed-point and formal V7 work can begin.
 The candidate has a dedicated module/profile/schema/domain/ID, while every
 deprecated authority accessor and verifier fails closed.
+
+## V0-110B-2E-48A H1 caller-pinned local-Git lifecycle provenance
+
+Contract `2.0.59-A` freezes the migration seed in a non-circular K -> C Git
+record. K contains a canonical snapshot and twelve explicitly pinned (but
+non-transitive) component blobs; C adds exactly one `100644` preregistration.
+The independent verifier disables replace objects, validates SHA-1 object
+types and exact tree diffs, rejects shallow history, and derives the 62 transitions, 143 failure edges,
+144 branches and their IDs from snapshot bytes without importing the candidate.
+
+This closes local integrity provenance only. The expected anchor ID remains a
+caller argument, no earlier activation binds it, and the worktree check is an
+instantaneous non-authorizing observation. Therefore source authority,
+fresh-import anti-self-mint, execution-byte binding and complete dependency
+closure all remain false. Snapshot dependency IDs are pinned references, not
+independently rederived semantic bindings. The next Gate is an external activation/fresh-exec
+binding, owner V3 exact settlement and a source-driven distributed dispatcher
+with complete cleanup continuations and output-leaf selection.
+Official execution, scalar/break-even, economics, Counter Completeness and
+sample efficiency remain locked or `NOT_RUN`. See
+`specs/K7_H1_LIFECYCLE_LOCAL_MAIN_ANCHOR_V1.md`.
