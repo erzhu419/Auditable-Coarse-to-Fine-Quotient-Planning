@@ -5086,3 +5086,31 @@ current-access fixed point, V7, formal accounting, campaign closure and the
 complete-bundle verifier remain open. Every official/scalar/economics/
 Counter-Completeness/sample Gate remains locked or `NOT_RUN`. See
 `specs/K7_H1_WAL_TAIL_ATTESTATION_V1.md`.
+
+## V0-110B-2E-48E-B H1 attempt-wide monotonic phase owner
+
+Contract `2.0.59-E-B` adds an independent attempt-wide durable phase with the
+only legal chain `NORMAL -> CLEANUP_INTENT_DURABLE -> CLEANUP_ONLY`. It binds
+the exact gate, anchored program/registry, cleanup analysis, failing
+transaction, Owner-V4 tail, trace, primary event and cleanup pass. The private
+layout binds allocation/lock/cursor inodes; exact intent is sealed at the root
+and committed by hard link; expected-prefix cursor repair and four real
+process-exit controls converge without reopening NORMAL.
+
+Exclusive normal, transition-only and cleanup-phase leases retain the fixed
+`PHASE -> GATE -> OWNER -> native` order, reject nesting/fork/thread crossing,
+and conservatively revoke NORMAL authority before immutable intent publication
+begins. An inherited child
+context may close only its own descriptor copies, never `LOCK_UN` the parent's
+shared open-file-description; the creating PID/thread alone releases locks.
+A real fork-in-lease regression keeps a contender blocked until the parent
+finishes. Phase plus gate replay is collected atomically under those locks.
+
+This Gate passes only the phase primitive. It explicitly does not connect the
+historical same-gate-reacquiring dispatcher/Owner APIs, so phase-aware normal
+execution, cap-rejection transition evidence and cleanup execution remain
+false. No-event recovery, cleanup envelope/journal, output skip/readback fixed
+point, V7, formal vectors, terminal/campaign and complete-bundle authority are
+still open. Every official/scalar/economics/Counter-Completeness/sample Gate
+remains locked or `NOT_RUN`. See
+`specs/K7_H1_ATTEMPT_EXECUTION_PHASE_OWNER_V1.md`.

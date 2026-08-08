@@ -1,6 +1,6 @@
 # Research Contract
 
-**Current construction contract:** `2.0.59-E-A`
+**Current construction contract:** `2.0.59-E-B`
 
 **Current construction profiles:** `v075_k7_production_role_manifest_v1`,
 `v075_k7_business_entry_core_v1`, `v075_k7_broker_worker_entry_core_v1`,
@@ -15,6 +15,7 @@
 `construction_k7_h1_shared_cap_owner_v4_wal`,
 `construction_k7_h1_anchored_lifecycle_dispatch_v1`,
 `construction_k7_h1_tail_bound_prefix_attestation_v1`,
+`construction_k7_h1_attempt_execution_phase_owner_v1`,
 `construction_k7_h1_lifecycle_output_leaf_join_v1`,
 `construction_k7_h1_lifecycle_complete_cleanup_v1`,
 `construction_k7_h1_production_output_upper_v1`,
@@ -6230,3 +6231,39 @@ terminal/campaign closure or complete-bundle verifier is issued. Official
 execution stays false; scalar and break-even remain null; workload-economics,
 Counter Completeness and sample-efficiency remain `NOT_RUN`. See
 `specs/K7_H1_WAL_TAIL_ATTESTATION_V1.md`.
+
+## Contract 2.0.59-E-B: attempt-wide monotonic execution phase
+
+An independent attempt-wide owner now persists the sole legal lifecycle phase
+transition `NORMAL -> CLEANUP_INTENT_DURABLE -> CLEANUP_ONLY`. The phase is
+orthogonal to cap rejection, binds the exact gate/program/registry/cleanup
+analysis, and records the failing transaction, Owner-V4 tail attestation,
+trace, primary event and cleanup pass in one immutable transition. Allocation,
+lock and cursor inodes are bound; genesis is atomically published; intent,
+root seal and commit are identical hard links. Replay repairs only the strict
+prefix of the uniquely expected cursor frame and recovers phase-local rollback
+from the root seal. Real process exits cover all four durable boundaries.
+
+Exclusive PID/thread-bound phase leases retain locks in
+`PHASE -> GATE -> OWNER -> native` order. A normal-phase lease requires an OPEN
+gate, a transition-only lease can observe a closed gate without authorizing
+normal work, and a cleanup-phase lease requires the exact transition ID. The
+publication attempt conservatively consumes the originating NORMAL authority
+before the first write; therefore the first durable intent cannot precede
+revocation, even when temp unlink or its directory fsync fails.
+Phase/gate replay is one ordered atomic diagnostic snapshot. Fork-in-lease
+unwinding is fail-closed: a child clears its copied contexts and closes only
+its descriptor copies without `LOCK_UN`; only the creating PID/thread may
+release either retained lock. A real fork-child-exit regression verifies that
+a contender remains blocked while the parent lease stays live.
+
+This closes the phase primitive only. Historical dispatcher/Owner entrypoints
+reacquire the retained gate and therefore are not phase-aware execution APIs.
+Historical cap rejection cannot be followed by Owner-V4 activation or a new
+exact-prefix attestation after closure. Durable normal-site intent/result,
+no-event recovery, pre-admitted cleanup envelope, cleanup execution,
+conditional output skip/readback, current-access fixed point, V7, formal
+accounting, terminal/campaign closure and complete-bundle verification remain
+absent. Official execution stays false; scalar and break-even remain null;
+economics, Counter Completeness and sample-efficiency remain `NOT_RUN`. See
+`specs/K7_H1_ATTEMPT_EXECUTION_PHASE_OWNER_V1.md`.

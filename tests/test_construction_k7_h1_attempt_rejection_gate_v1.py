@@ -8,6 +8,7 @@ from pathlib import Path
 import shutil
 import tempfile
 import threading
+import time
 
 import pytest
 
@@ -741,6 +742,86 @@ def test_admission_lease_cannot_cross_threads_or_corrupt_cursor(
     assert gate_v1.h1_attempt_rejection_gate_snapshot_v1(gate)["state"] == (
         "COMMITTED_UNACKNOWLEDGED"
     )
+
+
+@pytest.mark.parametrize("context_kind", ["admission", "replay", "side-effect"])
+def test_fork_child_context_exit_never_unlocks_parent_gate(
+    tmp_path: Path,
+    context_kind: str,
+) -> None:
+    gate = _gate(tmp_path, f"fork-context-{context_kind}")
+    factories = {
+        "admission": lambda: gate_v1.hold_h1_attempt_gate_open_for_admission_v1(
+            gate
+        ),
+        "replay": lambda: gate_v1.hold_h1_attempt_rejection_gate_for_replay_v1(
+            gate
+        ),
+        "side-effect": lambda: gate_v1.hold_h1_attempt_gate_open_for_side_effect_v1(
+            gate
+        ),
+    }
+
+    class _LeaveInheritedContext(Exception):
+        pass
+
+    try:
+        with factories[context_kind]() as active_value:
+            child = os.fork()
+            if child == 0:  # pragma: no branch - child exits in outer handler
+                if context_kind == "admission":
+                    try:
+                        gate_v1.commit_h1_attempt_rejection_with_admission_lease_v1(
+                            active_value,
+                            writer_role=(
+                                gate_v1.H1AttemptRejectionWriterRoleV1.BROKER
+                            ),
+                            decision_point_id=_id("fork-child-decision"),
+                            transaction_id=_id("fork-child-transaction"),
+                            shared_owner_profile_core_id=_id("fork-child-owner"),
+                            rejection_request_id=_id("fork-child-request"),
+                            source_kind=(
+                                gate_v1.H1RejectionSourceKindV1.SHARED_OWNER
+                            ),
+                            site_key="read:sealed-input:0",
+                            path="io.read_bytes",
+                            limit_kind=(
+                                gate_v1.H1RejectionLimitKindV1.SHARED_PATH
+                            ),
+                            reservation_upper=4,
+                            candidate=11,
+                            hard_cap=10,
+                            reason_code="SHARED_CAP_EXHAUSTED",
+                        )
+                    except ValueError as error:
+                        if "owning thread or process" not in str(error):
+                            os._exit(92)
+                    else:
+                        os._exit(91)
+                raise _LeaveInheritedContext
+            _, status = os.waitpid(child, 0)
+            assert os.WIFEXITED(status) and os.WEXITSTATUS(status) == 0
+
+            committed = threading.Event()
+            failures: list[BaseException] = []
+
+            def contender() -> None:
+                try:
+                    _commit(gate)
+                    committed.set()
+                except BaseException as error:
+                    failures.append(error)
+
+            contender_thread = threading.Thread(target=contender)
+            contender_thread.start()
+            time.sleep(0.1)
+            assert not committed.is_set()
+        contender_thread.join(timeout=10)
+        assert not contender_thread.is_alive()
+        assert not failures
+        assert committed.is_set()
+    except _LeaveInheritedContext:
+        os._exit(0)
 
 
 def test_same_spec_cannot_be_initialized_under_another_base(tmp_path: Path) -> None:

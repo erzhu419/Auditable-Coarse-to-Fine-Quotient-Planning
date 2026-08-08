@@ -213,6 +213,58 @@ def _activate_gate_context(gate_id: str, mode: str) -> Any:
     return _ACTIVE_GATE_CONTEXTS.set((*active, (gate_id, mode)))
 
 
+def _drop_fork_inherited_gate_context(gate_id: str, mode: str) -> None:
+    """Remove only the child's copied context entry after ``fork``.
+
+    Context variables are process-local after a fork, whereas ``flock`` state
+    belongs to the inherited open-file-description.  The child may therefore
+    clear its copied logical context and close its descriptor copies, but it
+    must never issue ``LOCK_UN`` for a lease still owned by the parent.
+    """
+
+    active = list(_ACTIVE_GATE_CONTEXTS.get())
+    expected = (gate_id, mode)
+    for index in range(len(active) - 1, -1, -1):
+        if active[index] == expected:
+            del active[index]
+            _ACTIVE_GATE_CONTEXTS.set(tuple(active))
+            return
+
+
+def _release_retained_gate_context(
+    *,
+    gate_id: str,
+    mode: str,
+    directory_fd: int,
+    lock_fd: int,
+    context_token: Any | None,
+    owner_pid: int,
+    owner_thread_id: int,
+) -> None:
+    """Release a retained gate lock without a fork-child unlock leak."""
+
+    current_pid = os.getpid()
+    current_thread_id = threading.get_ident()
+    if current_pid == owner_pid and current_thread_id == owner_thread_id:
+        if context_token is not None:
+            _ACTIVE_GATE_CONTEXTS.reset(context_token)
+        _acquire_lock(lock_fd, fcntl.LOCK_UN)
+        os.close(lock_fd)
+        os.close(directory_fd)
+        return
+    if current_pid != owner_pid:
+        if context_token is not None:
+            _drop_fork_inherited_gate_context(gate_id, mode)
+        # close(2) in the child only drops the child's descriptor references;
+        # unlike LOCK_UN it does not release the parent's still-referenced OFD.
+        os.close(lock_fd)
+        os.close(directory_fd)
+        return
+    # Threads share one descriptor table.  A foreign thread must neither
+    # unlock nor close the owning thread's descriptors; fail closed instead.
+    _fail("retained attempt-rejection gate context crossed its owning thread")
+
+
 def _cid(value: Any, label: str) -> str:
     try:
         return parse_content_id(value)
@@ -690,6 +742,7 @@ class H1AttemptRejectionAdmissionLeaseV1:
     gate: H1AttemptRejectionGateHandleV1
     _directory_fd: int = field(repr=False)
     _lock_fd: int = field(repr=False)
+    _owner_pid: int = field(repr=False)
     _owner_thread_id: int = field(repr=False)
     _commit_mutex: Any = field(default_factory=threading.Lock, repr=False)
     _active: bool = field(default=True, repr=False)
@@ -2005,12 +2058,15 @@ def hold_h1_attempt_gate_open_for_admission_v1(
     """Serialize one admission decision against rejection under ``LOCK_EX``."""
 
     gate, directory_fd, lock_fd = _require_handle(gate, fcntl.LOCK_EX)
+    owner_pid = os.getpid()
+    owner_thread_id = threading.get_ident()
     lease = H1AttemptRejectionAdmissionLeaseV1(
         _LEASE_ISSUER,
         gate,
         directory_fd,
         lock_fd,
-        threading.get_ident(),
+        owner_pid,
+        owner_thread_id,
     )
     context_token: Any | None = None
     try:
@@ -2025,12 +2081,16 @@ def hold_h1_attempt_gate_open_for_admission_v1(
         )
         yield lease
     finally:
-        if context_token is not None:
-            _ACTIVE_GATE_CONTEXTS.reset(context_token)
         lease._active = False
-        _acquire_lock(lock_fd, fcntl.LOCK_UN)
-        os.close(lock_fd)
-        os.close(directory_fd)
+        _release_retained_gate_context(
+            gate_id=gate.spec.gate_id,
+            mode=_CONTEXT_ADMISSION_EXCLUSIVE,
+            directory_fd=directory_fd,
+            lock_fd=lock_fd,
+            context_token=context_token,
+            owner_pid=owner_pid,
+            owner_thread_id=owner_thread_id,
+        )
 
 
 def commit_h1_attempt_rejection_with_admission_lease_v1(
@@ -2053,8 +2113,13 @@ def commit_h1_attempt_rejection_with_admission_lease_v1(
 ) -> H1AttemptRejectionCommitV1:
     if type(lease) is not H1AttemptRejectionAdmissionLeaseV1 or not lease._active:
         _fail("attempt-rejection admission lease is absent or stale")
-    if threading.get_ident() != lease._owner_thread_id:
-        _fail("attempt-rejection admission lease crossed its owning thread")
+    if (
+        os.getpid() != lease._owner_pid
+        or threading.get_ident() != lease._owner_thread_id
+    ):
+        _fail(
+            "attempt-rejection admission lease crossed its owning thread or process"
+        )
     if _active_gate_modes(lease.gate.spec.gate_id) != (
         _CONTEXT_ADMISSION_EXCLUSIVE,
     ):
@@ -2142,6 +2207,8 @@ def hold_h1_attempt_rejection_gate_for_replay_v1(
     """
 
     gate, directory_fd, lock_fd = _require_handle(gate, fcntl.LOCK_EX)
+    owner_pid = os.getpid()
+    owner_thread_id = threading.get_ident()
     context_token: Any | None = None
     try:
         _replay_gate_locked(gate, directory_fd)
@@ -2163,11 +2230,15 @@ def hold_h1_attempt_rejection_gate_for_replay_v1(
         )
         yield snapshot
     finally:
-        if context_token is not None:
-            _ACTIVE_GATE_CONTEXTS.reset(context_token)
-        _acquire_lock(lock_fd, fcntl.LOCK_UN)
-        os.close(lock_fd)
-        os.close(directory_fd)
+        _release_retained_gate_context(
+            gate_id=gate.spec.gate_id,
+            mode=_CONTEXT_DEPENDENT_REPLAY_EXCLUSIVE,
+            directory_fd=directory_fd,
+            lock_fd=lock_fd,
+            context_token=context_token,
+            owner_pid=owner_pid,
+            owner_thread_id=owner_thread_id,
+        )
 
 
 def read_h1_attempt_rejection_commit_v1(
@@ -2277,6 +2348,8 @@ def hold_h1_attempt_gate_open_for_side_effect_v1(
     """
 
     gate, directory_fd, lock_fd = _require_handle(gate, fcntl.LOCK_SH)
+    owner_pid = os.getpid()
+    owner_thread_id = threading.get_ident()
     context_token: Any | None = None
     try:
         state, _, _ = _observe_gate_locked(
@@ -2294,11 +2367,15 @@ def hold_h1_attempt_gate_open_for_side_effect_v1(
         )
         yield
     finally:
-        if context_token is not None:
-            _ACTIVE_GATE_CONTEXTS.reset(context_token)
-        _acquire_lock(lock_fd, fcntl.LOCK_UN)
-        os.close(lock_fd)
-        os.close(directory_fd)
+        _release_retained_gate_context(
+            gate_id=gate.spec.gate_id,
+            mode=_CONTEXT_SIDE_EFFECT_SHARED,
+            directory_fd=directory_fd,
+            lock_fd=lock_fd,
+            context_token=context_token,
+            owner_pid=owner_pid,
+            owner_thread_id=owner_thread_id,
+        )
 
 
 def h1_attempt_rejection_gate_snapshot_v1(
