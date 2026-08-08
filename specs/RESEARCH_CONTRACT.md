@@ -6341,3 +6341,29 @@ formal counter/vector, terminal/campaign or complete-bundle authority is
 issued. Official execution remains false; scalar and break-even remain null;
 economics, Counter Completeness and sample efficiency remain `NOT_RUN`. See
 `specs/K7_H1_PREADMITTED_CLEANUP_TRANSITION_V2.md`.
+
+## Contract 2.0.59-E-C-C: conservative Owner cleanup continuation
+
+An additive sidecar now closes the semantic gap left by V3/V4 for the
+admission-only memory and output origins. One allocation binds the canonical
+phase root, exact Owner runtime/WAL cutoff, V2 transition, structural envelope,
+selected pass/action and one outstanding deferred reservation. No historical
+Owner record kind or byte is modified. The sole legal release charges the
+reservation upper, applies the frozen reducer, records a typed-null native
+value and releases the exposure once without native start, memory read or
+output finalization. Repeated release is the same immutable spend.
+
+Initialization rejects any alternate storage base before allocation. Every
+cutoff check uses a non-repairing stable-V4 observation under
+`PHASE -> GATE -> OWNER`; pending cursor, WAL payload, temp or adjacent state is
+left unchanged and rejected. The private allocation/release seals and cursor
+repair converge only the uniquely expected append prefix, and every descriptor
+failure path closes its FD. Combined replay applies the sidecar release to the
+unchanged V3 state.
+
+This is conservative reservation accounting, not cleanup execution. It issues
+no native capability, output-owner close/readback, arbitrary executor,
+current-access, V7, formal counter/vector, attempt closure, terminal/campaign,
+production or official authority. Scalar/break-even remain null; economics,
+Counter Completeness and sample efficiency remain `NOT_RUN`. See
+`specs/K7_H1_OWNER_CLEANUP_CONTINUATION_SIDECAR_V1.md`.

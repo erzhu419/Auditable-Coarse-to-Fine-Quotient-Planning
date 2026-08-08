@@ -5176,3 +5176,26 @@ skip/finalization/readback, current access, vectors, terminal/campaign and the
 complete-bundle verifier remain open. All official/scalar/economics/Counter
 Completeness/sample-efficiency states remain false, null or `NOT_RUN`. See
 `specs/K7_H1_PREADMITTED_CLEANUP_TRANSITION_V2.md`.
+
+## V0-110B-2E-48E-C-C H1 Owner cleanup continuation sidecar
+
+Contract `2.0.59-E-C-C` adds an append-only sidecar for the two admission-only
+deferred reservations that frozen Owner V3/V4 cannot honestly settle during
+cleanup. It binds one exact V3/V4 cutoff, V2 transition, pre-admitted envelope,
+cleanup pass, action and still-outstanding memory or output reservation. Its
+only operation is `CONSERVATIVE_RELEASE_WITHOUT_NATIVE_START`: native value is
+typed null, the full reservation upper is charged with the original SUM/MAX
+reducer, and outstanding exposure is released exactly once without reading
+memory or finalizing output.
+
+The storage root is derived from the phase-frozen realpath/device/inode, so the
+same reservation cannot be spent again through a caller-selected root. A
+read-only stable-V4 preflight rejects pending/WAL/temporary recovery frontiers
+without changing historical V3/V4 bytes. Allocation/release root seals,
+inode-bound locks/cursor and validate-before-truncate cursor repair provide
+idempotent reopen and registered crash recovery. This closes only conservative
+Owner accounting continuation. Native cleanup, PIDFD/OFD use, arbitrary
+cleanup execution, output close/readback, current access, V7, formal vectors,
+terminal/campaign and complete-bundle authority remain absent. All official
+and economics/sample Gates remain locked or `NOT_RUN`. See
+`specs/K7_H1_OWNER_CLEANUP_CONTINUATION_SIDECAR_V1.md`.
