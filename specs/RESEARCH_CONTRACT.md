@@ -6435,3 +6435,35 @@ formal vectors, terminal/campaign, production or official authority. Scalar
 and break-even remain null; economics, Counter Completeness and sample
 efficiency remain `NOT_RUN`. See
 `specs/K7_H1_FAILED_PREFIX_CLEANUP_BUDGET_ADMISSION_V1.md`.
+
+## Contract 2.0.59-E-C-E1: process-local native-capability guardian
+
+The exact V6 callback sequence may now be coupled to a process-local live
+OFD/PIDFD-class token without treating its durable receipt as a credential.
+Before normal ordinal 1, E1 verifies a pristine live lease, stable gate/Owner
+cutoff, exact V6 genesis and the issuer-owned C-D admission. It separately
+reopens C-D primary/seal bytes and publishes a one-shot marker whose primary
+and phase-base seal are independently replayed before any Guardian enters the
+process registry. A crash after marker primary fsync consumes initialization;
+there is no repair or broker-restart recovery.
+
+The trusted callback must surrender the observed descriptor immediately.
+Under one process-wide mutex E1 creates a master/witness/registry-anchor
+CLOEXEC triple, closes the caller-owned original, checks class-specific
+`fdinfo` and `fstat`, proves all pairwise OFD identities with Linux `kcmp`, and
+excludes the same OFD from every other live slot/allocation in that broker.
+Python atfork handlers close pending and installed aliases in the child.
+Guardian, acquisition, pending and bound tokens use strong `Thread` object,
+PID and process-start identities; delayed copied contexts and every invalid
+binding state reject. This strengthens E1 token calls only and does not
+retroactively replace the upstream V6 numeric-thread bootstrap.
+
+The construction claim stops at a currently verified descriptor triple or
+known absence. It does not establish a mount path, expected child PID,
+exclusive ownership, liveness, reap or underlying resource release. The
+binding bytes are not durable capability authority, private same-process state
+is trusted, raw libc/C-extension fork is out of scope, and no cleanup effect,
+current access, FQ11 vector, V7 route, terminal/campaign, production or
+official authority is issued. Scalar/break-even stay null; economics,
+Counter-Completeness and sample-efficiency remain `NOT_RUN`. See
+`specs/K7_H1_NATIVE_CAPABILITY_GUARDIAN_V1.md`.

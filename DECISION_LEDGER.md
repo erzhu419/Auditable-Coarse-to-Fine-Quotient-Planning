@@ -5153,6 +5153,34 @@ This admits construction tokens only. It executes no cleanup, issues no FQ11
 counter or formal vector, and opens no current-access, V7, production,
 official or economics authority.
 
+## V0-110B-2E-48E-C-E1 H1 native-capability guardian
+
+Contract `2.0.59-E-C-E1` adds a construction-only, process-local bridge from
+the exact V6 callback/result/receipt sequence to a currently live Linux OFD or
+PIDFD-class capability. Initialization accepts any exact reopened pristine
+lease for the admitted attempt, but independently replays the immutable C-D
+primary/seal and burns an irreversible Guardian marker before publishing a
+live handle. The marker is then independently reopened and verified; neither
+an in-memory registry nor a publisher-returned ID can substitute for its
+durable bytes and hard-link topology.
+
+Present observations are adopted inside the callback into three distinct
+CLOEXEC aliases. Master and witness live in the sealed cell while a registry
+anchor detects same-stat/same-fdinfo replacement with a different OFD through
+pairwise `kcmp(KCMP_FILE)`. A process-wide mutex closes cross-allocation races
+and Python atfork handlers close pending and installed aliases in the child.
+E1 tokens additionally bind the originating `Thread` object; copied-context,
+thread, process, fork, descriptor-reuse and invalid-state access fail closed.
+
+The exact claim remains narrow. V6 receipts are durable evidence but not live
+credentials; the E1 binding document is not a durable capability authority.
+The trusted callback proves only the declared OFD/PIDFD class, not a mount
+identity, expected child PID, exclusive ownership, successful reap or final
+resource release. E1 issues no cleanup token or action, ordinals `41..62`,
+current access, FQ11 vector, V7, terminal/campaign, production or official
+authority. All economics, Counter-Completeness and sample-efficiency Gates
+remain locked or `NOT_RUN`.
+
 ## Change log
 
 - **2026-07-19 — 0.1.0:** Transcribed and closed the V0 construction contract from the Normative Decision Addendum and the V0 preconstruction audit. Added the deterministic policy-class and reward-normalization implementation clarifications needed for executable tests.

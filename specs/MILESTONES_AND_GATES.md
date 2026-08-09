@@ -5243,3 +5243,24 @@ issue FQ11 accounting, current-access, V7, terminal/campaign, production or
 official authority. All economics and sample-efficiency Gates remain locked
 or `NOT_RUN`. See
 `specs/K7_H1_FAILED_PREFIX_CLEANUP_BUDGET_ADMISSION_V1.md`.
+
+## V0-110B-2E-48E-C-E1 H1 native-capability guardian
+
+Contract `2.0.59-E-C-E1` closes only the process-local live-capability gap
+left by V6. It read-only replays the exact durable C-D admission, burns and
+independently replays an irreversible Guardian marker, and joins guarded V6
+present/absence results to strong-thread-bound live tokens. A present result
+is retained as a CLOEXEC master/witness/registry-anchor triple; `fstat`,
+`fdinfo` and pairwise Linux `kcmp(KCMP_FILE)` checks reject descriptor reuse,
+same-stat different-OFD replacement and same-broker cross-slot/allocation
+duplication. Immediate pinning, one process mutex, Python atfork cleanup and
+complete exception rollback close the registered TOCTOU, fork and leak paths.
+
+This milestone does not upgrade V6 receipts or serialized binding bytes into
+kernel credentials. It proves neither resource-specific identity, expected
+child identity, exclusive ownership, reap nor final release, and it is not a
+hostile-same-process or cross-process security boundary. Cleanup tokens,
+action journaling, ordinals `41..62`, output/current access, formal FQ11
+vectors, V7, terminal/campaign, production and official execution remain
+absent. All economics and sample-efficiency Gates remain locked or `NOT_RUN`.
+See `specs/K7_H1_NATIVE_CAPABILITY_GUARDIAN_V1.md`.
