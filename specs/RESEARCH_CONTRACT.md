@@ -6612,3 +6612,30 @@ current-access/V7, terminal/campaign, production or official authority.
 Scalar/break-even remain null and the economics, Counter-Completeness and
 sample-efficiency Gates remain locked or `NOT_RUN`. See
 `specs/K7_H1_E4_IN_SUPERVISOR_AUTHORITATIVE_ATTESTATION_V1.md`.
+
+## Contract 2.0.59-E-C-E5B-B1: guardian-owned external process journal
+
+The future E5B guardian now has a construction-only ordered escrow-record
+journal for `SUPERVISOR`, `PIDFD_PROBE`, `BROKER`, `WORKER`, and `BUSINESS`.
+Two prebound credentialled SEQPACKET channels carry exact one-pidfd packets;
+the guardian checks SCM sender, pidfd PID, start ticks and record identities,
+persists ACK preparation before send, and separates release preparation from
+successful authorization. Probe and worker records must reach pidfd death
+plus authenticated creator reap-report before their respective successor
+records are admitted.
+
+This is record protocol, not execution authority. Its permits do not gate
+kernel birth; cgroup and PID-cell values remain opaque or sender-observed, and
+record order cannot prove launch order or topology. Retained record FDs,
+exact inventories and one process-wide at-fork barrier close the registered
+same-process mutation/fork windows. Fallible close uses a private same-OFD
+witness and Linux `kcmp(KCMP_FILE)` so a same-target replacement FD is never
+closed by retry; persistent original-OFD failures remain close-only
+quarantine.
+
+The journal does not execute or upgrade E3 V1, authenticate a sealed
+supervisor, establish production placement/reap semantics, or issue formal
+launch counters, CounterRecords/vectors, current-access/V7, terminal/campaign
+or official authority. Scalar/break-even and all economics/sample Gates remain
+locked or `NOT_RUN`. See
+`specs/K7_H1_EXTERNAL_PROCESS_JOURNAL_V1.md`.

@@ -5344,6 +5344,47 @@ production or official authority is issued. Scalar and break-even remain
 null and all Counter-Completeness, economics and sample-efficiency Gates stay
 locked or `NOT_RUN`.
 
+## V0-110B-2E-48E-C-E5B-B1 guardian-owned external process journal
+
+Contract `2.0.59-E-C-E5B-B1` freezes a construction-only, guardian-owned
+ordered escrow-record protocol for the five future route slots
+`SUPERVISOR -> PIDFD_PROBE -> BROKER -> WORKER -> BUSINESS`. Every slot has a
+durable intent and permit before its escrow record, but the permit is not a
+kernel launch gate and the recorded order is not process-birth or topology
+authority. Probe death plus creator reap-report gates the broker record;
+worker death plus creator reap-report gates the business record.
+
+Two distinct prebound `AF_UNIX/SOCK_SEQPACKET` channels authenticate packet
+senders through kernel SCM credentials. Each accepted packet contains exactly
+one pidfd and binds its fdinfo PID, process start ticks, sender and opaque
+launch/cgroup/PID-cell identities. The cgroup identity remains opaque and the
+shared PID value remains sender testimony: no cgroup membership or
+guardian-read PID-cell claim is issued. Pidfd `poll` death and the direct
+creator's consuming reap report remain separate facts; the latter is
+authenticated testimony through the trusted helper, not independent guardian
+proof for arbitrary creator code.
+
+ACK preparation precedes ACK send. Creator release remains unauthorized in a
+durable `PREPARED_UNSENT` state until the release send succeeds and a separate
+`SENT_AND_AUTHORIZED` record is frozen. Retained record FDs and exact
+name/inode/byte inventories guard each transition. One process-wide at-fork
+barrier closes copied guardian endpoints, records, pidfds, close witnesses and
+quarantine entries in children while leaving explicitly non-owned creator
+send endpoints outside guardian authority.
+
+Every fallible canonical close first publishes a distinct same-OFD witness.
+Linux `kcmp(KCMP_FILE)`, not `fstat` identity, decides whether a surviving FD
+number still denotes the original OFD; same-target replacements are retired
+without being closed. Witness and canonical descriptors share the fork and
+quarantine lifecycle, with a bounded no-nested-witness final close rule.
+
+This journal does not execute E3 V2/E5B, gate or authenticate real births,
+verify the five-process topology, cgroup placement or guardian-read PID cells,
+or issue `process.launches`, CounterRecord, WorkVector, ComparisonVector,
+current-access/V7, terminal/campaign, production or official authority.
+Scalar/break-even remain null and the Counter-Completeness, economics and
+sample-efficiency Gates remain locked or `NOT_RUN`.
+
 ## Change log
 
 - **2026-07-19 — 0.1.0:** Transcribed and closed the V0 construction contract from the Normative Decision Addendum and the V0 preconstruction audit. Added the deterministic policy-class and reward-normalization implementation clarifications needed for executable tests.

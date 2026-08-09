@@ -5367,3 +5367,20 @@ Authenticated supervisor launch, E5B execution, actual peak, formal
 accounting, current-access/V7, terminal/campaign and official authority remain
 open; all Gates stay locked. See
 `specs/K7_H1_E4_IN_SUPERVISOR_AUTHORITATIVE_ATTESTATION_V1.md`.
+
+## V0-110B-2E-48E-C-E5B-B1 guardian-owned external process journal
+
+Contract `2.0.59-E-C-E5B-B1` adds the durable five-slot escrow-record
+prerequisite for a later observed E3 V2/E5B route. It provides exact
+intent/permit/escrow/ACK/release/death/reap-report ordering over two distinct
+SCM-credentialled creator channels, retains all record and pidfd evidence
+through transition freezes, and prevents forked children from retaining
+guardian authority. Identity-safe close retry uses a distinct same-OFD
+witness plus `kcmp(KCMP_FILE)` and rejects same-target FD replacement.
+
+The milestone is deliberately below live integration: permits are not launch
+gates, environmental cgroup/PID-cell bindings are unverified, and record order
+is not process-birth order. E3 V2, E5A runtime placement/peak, E4 V2, formal
+`process.launches`, CounterRecord -> WorkVector -> ComparisonVector,
+current-access/V7, terminal/campaign and official authority remain open; all
+Gates stay locked. See `specs/K7_H1_EXTERNAL_PROCESS_JOURNAL_V1.md`.
