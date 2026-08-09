@@ -6467,3 +6467,32 @@ current access, FQ11 vector, V7 route, terminal/campaign, production or
 official authority is issued. Scalar/break-even stay null; economics,
 Counter-Completeness and sample-efficiency remain `NOT_RUN`. See
 `specs/K7_H1_NATIVE_CAPABILITY_GUARDIAN_V1.md`.
+
+## Contract 2.0.59-E-C-E2: cleanup action journal
+
+The failed H1 normal prefix now has one construction-only action journal under
+the exact V2 `CLEANUP_ONLY` lease. The manifest joins the selected C-B cleanup
+pass to the terminal V6 cutoff, E1 live/absent/unresolved state, C-D
+componentwise admission and C-C conservative release. V9 content domains
+separate manifest/allocation/intent/PIDFD-preobservation/result/cursor/drain
+objects, while pinned directories, no-follow opens, inode/mode/link checks and
+an immutable route-attempt primary/seal prevent an alternate journal from
+creating another spend.
+
+Intent durability precedes every effect and charges one exact C-D category.
+PIDFD completion requires an exited-child `WNOWAIT` preobservation followed by
+consuming `waitid(P_PIDFD)`; descriptor close alone is never reap. Mount
+cleanup consumes only the E1 alias triple and keeps last-reference,
+mount-resource and external-alias claims false. Deferred memory/output
+reservations use C-C's no-native-start conservative release; journal replay
+independently reopens and rehashes its allocation/release seals and recomputes
+the embedded combined state. Process-local one-shot reservations, atfork
+poisoning, strict cursor-prefix repair and before/after external-replay
+snapshots make the registered same-broker crash/concurrency cases fail closed.
+
+This does not create cross-process native recovery, normal ordinal `41..52`
+success events, output ordinal `53..62` authority, attempt/terminal/campaign
+closure, current access, formal CounterRecords/vectors, V7, production or
+official execution. Scalar and break-even remain null; economics,
+Counter-Completeness and sample-efficiency stay `NOT_RUN`. See
+`specs/K7_H1_CLEANUP_ACTION_JOURNAL_V1.md`.

@@ -5181,6 +5181,34 @@ current access, FQ11 vector, V7, terminal/campaign, production or official
 authority. All economics, Counter-Completeness and sample-efficiency Gates
 remain locked or `NOT_RUN`.
 
+## V0-110B-2E-48E-C-E2 H1 cleanup action journal
+
+Contract `2.0.59-E-C-E2` joins one exact V2 `CLEANUP_ONLY` transition, the
+selected C-B cleanup pass, terminal V6 cutoff, independently replayed E1
+Guardian marker/state, C-D componentwise budget and C-C conservative Owner
+release. Its V9 journal freezes one ordered action manifest and records
+immutable intent, optional PIDFD exit preobservation and result rows behind a
+chained cursor. Every intent spends exactly one selected C-D category unit;
+blocked, skipped and failed actions retain that debit and later independent
+cleanup continues.
+
+A positive PIDFD result requires non-consuming and consuming
+`waitid(P_PIDFD)` calls on the exact guarded waitable-child slot. A mount
+action closes only the Guardian master/witness/anchor aliases and explicitly
+does not prove last-reference, mount-resource or external-alias release.
+Memory/output actions invoke the existing C-C single-spend conservative
+release without native read/finalize work; replay pins and rehashes its durable
+allocation/release primary-seal pairs and recomputes the embedded combined
+state. Storage, cursor, fork, concurrent-effect and coherent-rehash attacks
+fail closed within the stated same-broker boundary.
+
+E2 is failure-continuation authority only. It emits no synthetic normal
+ordinal `41..52` events, cannot recover a consumed live token across broker
+death/restart, and supplies no output ordinals `53..62`, attempt closure,
+current access, FQ11 vectors, V7, production or official authority. All
+economics, Counter-Completeness and sample-efficiency Gates remain locked or
+`NOT_RUN`.
+
 ## Change log
 
 - **2026-07-19 — 0.1.0:** Transcribed and closed the V0 construction contract from the Normative Decision Addendum and the V0 preconstruction audit. Added the deterministic policy-class and reward-normalization implementation clarifications needed for executable tests.

@@ -5264,3 +5264,23 @@ action journaling, ordinals `41..62`, output/current access, formal FQ11
 vectors, V7, terminal/campaign, production and official execution remain
 absent. All economics and sample-efficiency Gates remain locked or `NOT_RUN`.
 See `specs/K7_H1_NATIVE_CAPABILITY_GUARDIAN_V1.md`.
+
+## V0-110B-2E-48E-C-E2 H1 cleanup action journal
+
+Contract `2.0.59-E-C-E2` makes the registered failure continuation executable
+inside the exact retained V2 cleanup-only phase. It binds the selected C-B
+actions to the terminal V6 cutoff, independently replayed E1 Guardian state,
+C-D five-axis budget and C-C conservative Owner release, then records durable
+intent/preobservation/result rows in an inode-bound, primary/seal-backed V9
+journal. Replay derives action order and componentwise debits, validates
+PIDFD `waitid` evidence, replays C-C allocation/release semantics and rejects
+crossed, torn, relinked, concurrently reentered or coherently rehashed state.
+
+The positive native claim remains deliberately narrow: PIDFD work proves only
+reap of the guarded waitable child, while OFD work proves only closure of the
+Guardian alias triple. E2 neither proves exclusive/last-reference release nor
+emits normal-lane ordinals `41..52`. Output ordinals `53..62`, broker-restart
+recovery, attempt closure, current access, FQ11 vectors, V7, terminal/campaign,
+production and official execution remain absent. All economics and
+sample-efficiency Gates remain locked or `NOT_RUN`. See
+`specs/K7_H1_CLEANUP_ACTION_JOURNAL_V1.md`.
