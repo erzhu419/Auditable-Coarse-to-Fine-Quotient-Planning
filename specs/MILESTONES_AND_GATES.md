@@ -5418,3 +5418,26 @@ the first real supervisor birth. Runtime, peak, formal launch/accounting,
 current-access/V7, terminal/campaign and official/economics/sample Gates stay
 false, null or `NOT_RUN`. See
 `specs/K7_H1_E5A_RUNTIME_LEASE_SUCCESSOR_V1.md`.
+
+## V0-110B-2E-48E-C-E5B-B2-B bounded guardian runtime genesis
+
+Contract `2.0.59-E-C-E5B-B2-B` advances slice 1 only to a source/context-bound
+guardian session in `RUNNING`, without creating a process. It rejects any
+PREPARED B2-A runtime that still has a live leaf candidate, exclusively
+reserves the clean runtime, pins writable outer `cgroup.kill`, creates one
+distinct private CONTROL O_PATH grant, and persists the SUPERVISOR intent and
+unconsumed permit before the one-way state commit.
+
+Transactional journal recovery, durable precommit abort, exact runtime
+reservation, open-time same-OFD witnesses, replayed guardian credentials,
+boot/namespace/executable facts and cleanup-only B2-A handoff close the
+registered partial-write, FD-reuse, async-fault and orphan-authority paths.
+Normal B2-B cleanup never writes the kill capability. The retained source
+closure is deliberately bounded and self-anchored, and the audit-only `.S`
+contains no executable instruction.
+
+Supervisor birth and every later PID-cell/pidfd/cgroup/reap, route-peak,
+E3/E4 V2, formal launch/accounting, current-access/V7, terminal/campaign and
+official claim remain absent. Scalar/break-even stay null and all
+Counter-Completeness, economics and sample-efficiency Gates stay locked or
+`NOT_RUN`. See `specs/K7_H1_GUARDIAN_RUNTIME_GENESIS_V1.md`.

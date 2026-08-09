@@ -6683,3 +6683,30 @@ No source closure, guardian session, cgroup-kill pin, launch permit, process,
 peak, E3/E4 V2 or formal accounting authority exists. Slice 1 and all later
 current-access/V7/terminal/official/economics/sample Gates remain open or
 `NOT_RUN`. See `specs/K7_H1_E5A_RUNTIME_LEASE_SUCCESSOR_V1.md`.
+
+## Contract 2.0.59-E-C-E5B-B2-B: bounded guardian runtime genesis
+
+The exact B2-A successor may now enter a bounded guardian-owned `RUNNING`
+state only when all five B2-A candidate slots are pristine and no live
+candidate references that runtime. The guardian freezes its single-thread
+PID/start/credential/boot identity, namespace and executable pins, the exact
+retained source set and V2 clone ABI metadata. It pre-opens writable outer
+`cgroup.kill`, a distinct CONTROL O_PATH grant and their lifetime same-OFD
+witnesses, then durably records source closure, genesis, SUPERVISOR intent and
+one unconsumed permit.
+
+Journal creation is a recoverable transaction rather than evidence inferred
+from an O_EXCL open. Precommit failure persists an abort and retains exclusive
+runtime ownership until exact retry; postcommit cleanup persists revocation,
+never writes `cgroup.kill`, closes or quarantines every B2-B descriptor and
+passes the runtime to B2-A only in `CLEANUP_PENDING`. Source/context and
+journal replay failure can invalidate authority but cannot authorize unsafe
+cleanup guesses.
+
+This contract intentionally has no permit consumer. Its comments-only x86-64
+audit source is not an executable trampoline, and its self-source expectation
+has no independent preregistration anchor. No process/PID cell/pidfd,
+membership/reap, peak, E3/E4 V2 or formal accounting result is issued.
+Production/current-access/V7/terminal/official claims and all scalar,
+economics, Counter-Completeness and sample-efficiency Gates remain locked or
+`NOT_RUN`. See `specs/K7_H1_GUARDIAN_RUNTIME_GENESIS_V1.md`.

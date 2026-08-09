@@ -5462,6 +5462,35 @@ resource artifact. All runtime/current-access/V7/terminal/campaign/official
 claims remain false; scalar/break-even and every economics/sample Gate remain
 null, locked or `NOT_RUN`.
 
+## V0-110B-2E-48E-C-E5B-B2-B bounded guardian runtime genesis
+
+Contract `2.0.59-E-C-E5B-B2-B` closes the no-birth remainder of the V2
+slice-1 prerequisite. One exact B2-A `PREPARED_SUCCESSOR` with no live B2-A
+candidate is exclusively reserved, bound to the exact single-thread guardian
+identity and bounded retained source/context closure, and moved one way to
+`RUNNING`. Before that commit the guardian pins a writable outer
+`cgroup.kill` capability, creates a distinct private `CONTROL` O_PATH grant,
+and durably records one `SUPERVISOR` intent and one unconsumed permit.
+
+The record path is transactional and retryable across open/write/fsync
+boundaries. Every retained descriptor has an open-time same-OFD witness;
+ambiguous or crossed descriptors remain quarantined rather than being guessed
+or closed. Precommit failure durably aborts any issued intent/permit and keeps
+the runtime exclusively reserved until exact cleanup succeeds. Postcommit
+cleanup first records permit revocation, closes the B2-B capabilities without
+writing `cgroup.kill`, and hands the runtime to B2-A only as
+`CLEANUP_PENDING`. Import/source, credential/boot, namespace/executable,
+journal and no-live-candidate bindings are replayed before authority use.
+
+This remains a bounded self-anchored construction control. The checked-in
+x86-64 trampoline file is comments-only and is neither assembled nor
+executed; the permit has no consumer. There is no clone, process birth, PID
+cell, pidfd/cgroup/reap observation, peak read, E3/E4 V2 completion or formal
+shared-resource artifact. Production source authority, current-access/V7,
+terminal/campaign and official claims remain false; scalar/break-even and all
+Counter-Completeness, economics and sample-efficiency Gates remain null,
+locked or `NOT_RUN`.
+
 ## Change log
 
 - **2026-07-19 — 0.1.0:** Transcribed and closed the V0 construction contract from the Normative Decision Addendum and the V0 preconstruction audit. Added the deterministic policy-class and reward-normalization implementation clarifications needed for executable tests.
