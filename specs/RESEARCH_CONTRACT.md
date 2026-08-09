@@ -6539,3 +6539,76 @@ current-access authority, V7 route, terminal/campaign closure or official
 execution. Scalar and break-even stay null; economics, Counter-Completeness
 and sample-efficiency remain `NOT_RUN`. See
 `specs/K7_H1_EXCLUSIVE_NATIVE_RESOURCE_BROKER_V1.md`.
+
+## Contract 2.0.59-E-C-E4: E3-bound output ordinal continuation
+
+One exact output continuation may now be bound before E3 launch and consumed
+only by the matching successful E3 broker completion. The process/thread-bound
+context retains a fresh native output directory and is closed in forked
+children. Its deterministic renderer produces exactly the eight registered
+construction roles and reaches the bounded joint fixed point for additive
+output bytes and exact output readback bytes before allocating the writer.
+
+The writer uses exclusive no-follow creation, byte and metadata fsyncs,
+read-only committed modes, distinct pinned inodes and exact descriptor
+readbacks. Ordinals `53..60` correspond one-to-one with the role set; ordinal
+61 proves the inventory/fixed point and ordinal 62 consumes every retained
+handle. Authoritative verification starts from the original context and exact
+E3 completion and re-renders the bytes; structural content-ID replay alone is
+not authority. Partial execution is only a protocol noncertificate; any
+still-live descriptor remains in retryable quarantine rather than being
+silently discarded or described as consumed.
+
+This contract does not promote the role documents into formal FQ11 schemas,
+does not use E3's child maximum as a route-wide peak, and does not issue
+current-access, V7, terminal/campaign, production or official authority.
+Scalar/break-even remain null; Counter-Completeness, economics and sample
+efficiency remain locked or `NOT_RUN`. See
+`specs/K7_H1_E3_BOUND_OUTPUT_ORDINAL_CONTINUATION_V1.md`.
+
+## Contract 2.0.59-E-C-E5A: route-wide working-set cgroup admission
+
+One future H1 route may now be pre-admitted to a fresh finite delegated
+cgroup-v2 topology. The outer group enforces the registered working-set cap
+and contains exactly `CONTROL`, `WORKER`, and `BUSINESS`; their process limits
+encode the frozen supervisor/probe/broker/role non-overlap plan. Exact limit,
+controller, identity, emptiness and admission `memory.current` observations
+are content bound before launch.
+
+The outer `memory.peak` is reset once at the process-empty boundary, its exact
+kernel baseline is retained through one shared OFD, and the upper remains the
+preexecution enforced cap rather than any observed peak. The process-local
+one-shot lease has unified construction/live/quarantine at-fork poisoning and
+retryable identity-safe removal, including partially removed child
+hierarchies. Closure follows only definitive descriptor close; a persistent
+live close failure stays in close-only quarantine with its OFD witness.
+
+E5A is only admission. It does not place a supervisor, run E3/E4, read an
+actual route peak or issue any CounterRecord/vector/current-access/V7 or
+terminal/campaign authority. Official/scalar/economics and sample Gates remain
+locked or `NOT_RUN`. See
+`specs/K7_H1_ROUTE_WIDE_WORKING_SET_CGROUP_V1.md`.
+
+## Contract 2.0.59-E-C-E5B-A: in-supervisor E4 authority attestation
+
+A future E5B supervisor can now issue a construction-only attestation after
+calling the existing E4 authoritative verifier in the exact process/thread
+that retains the E4 continuation context. The attestation binds the complete
+E3/E4/session/route identity chain and the final eight-file output inventory.
+Because E3/E4 V1 do not retain completion-object identity, exact runtime types
+and full semantic reconstruction are required while exact issuer ownership of
+those completion objects remains explicitly false.
+
+Guardian replay is deliberately weaker. It pins the output parent, opens the
+bound child relative to that descriptor and retains all eight role-file FDs
+through final path/descriptor revalidation. It neither has the retained
+context nor calls, repeats, infers or substitutes the E4 authority. Content
+addressing proves structural integrity only, not authenticated issuance; a
+coherently replaced completion/file/attestation set remains nonauthoritative.
+
+This slice does not authenticate a sealed supervisor, execute E5B, observe a
+route-wide peak, close the FQ11 sources or issue formal accounting,
+current-access/V7, terminal/campaign, production or official authority.
+Scalar/break-even remain null and the economics, Counter-Completeness and
+sample-efficiency Gates remain locked or `NOT_RUN`. See
+`specs/K7_H1_E4_IN_SUPERVISOR_AUTHORITATIVE_ATTESTATION_V1.md`.

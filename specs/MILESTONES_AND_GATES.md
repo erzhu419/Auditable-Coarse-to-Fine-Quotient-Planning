@@ -5309,3 +5309,61 @@ This milestone closes native success ordinals `41..52` only. Output ordinals
 current access, V7, terminal/campaign, production and official execution
 remain absent. All economics and sample-efficiency Gates remain locked or
 `NOT_RUN`. See `specs/K7_H1_EXCLUSIVE_NATIVE_RESOURCE_BROKER_V1.md`.
+
+## V0-110B-2E-48E-C-E4 H1 E3-bound output ordinal continuation
+
+Contract `2.0.59-E-C-E4` binds one output continuation context before E3
+launch and accepts only the exact successful E3 completion that echoes it.
+After that gate, a one-shot pinned-directory writer renders exactly eight
+construction roles, solves the exact joint output/readback fixed point, and
+durably commits/readbacks those roles at ordinals `53..60`. Ordinal 61 proves
+the complete inode-bound directory inventory and fixed-point equality;
+ordinal 62 definitively closes and consumes all writer handles. The completion
+is in memory and is not a ninth durable output file.
+
+Authoritative replay requires the original issuer-retained context and exact
+E3 object, then independently re-renders all bytes. Coherent re-signing,
+cross-context/E3 substitution, fork/copy/reentry, inode/link/path attacks,
+close ambiguity and every registered partial-prefix fault fail closed. The
+E4 roles are construction witnesses only. Route-wide peak remains unresolved,
+and formal FQ11 vectors, current access, V7, terminal/campaign, production,
+official execution and every economics/sample Gate remain locked. See
+`specs/K7_H1_E3_BOUND_OUTPUT_ORDINAL_CONTINUATION_V1.md`.
+
+## V0-110B-2E-48E-C-E5A H1 route-wide working-set cgroup admission
+
+Contract `2.0.59-E-C-E5A` constructs one fresh retained cgroup-v2 hierarchy
+for a future complete H1 route: finite-cap outer `A` plus empty
+`CONTROL/WORKER/BUSINESS` children with `pids.max=2/1/1`. It issues the exact
+prelaunch allowed-cap envelope
+`U=min(registered hard cap, enforced outer memory.max)`, freezes the four
+process-empty `memory.current` observations, resets outer `memory.peak` once
+and pins the same peak OFD through identity-bound retryable cleanup.
+
+Real delegated-cgroup tests cover limit/topology readbacks, partial-removal
+retry, old two-leaf rejection, construction/live/quarantine fork poisoning,
+same-inode/new-OFD reuse and persistent-live close-only quarantine. Closure is
+minted only after every retained descriptor is definitively closed. E5A
+remains `PRELAUNCH_ONLY`: it performs no route process placement or execution,
+observes no actual route peak and emits no formal accounting,
+current-access/V7, terminal/campaign, production or official authority. All
+Gates remain locked.
+See `specs/K7_H1_ROUTE_WIDE_WORKING_SET_CGROUP_V1.md`.
+
+## V0-110B-2E-48E-C-E5B-A in-supervisor E4 authority attestation
+
+Contract `2.0.59-E-C-E5B-A` supplies the future E5B supervisor with a
+construction-only attestation step: in the E4 preparer process/thread it
+replays the exact retained context through the existing E4 authoritative
+verifier and binds the complete E3/E4/session/route/output identity chain.
+E3/E4 completion inputs are exact runtime types, not falsely claimed
+issuer-owned objects.
+
+The external guardian may only replay the attestation structure and the eight
+persisted files. Its path uses a pinned parent FD, relative no-follow child
+open and retained eight-file descriptors through the final inventory, but it
+has no E4 context and cannot repeat, infer or replace same-process authority.
+Authenticated supervisor launch, E5B execution, actual peak, formal
+accounting, current-access/V7, terminal/campaign and official authority remain
+open; all Gates stay locked. See
+`specs/K7_H1_E4_IN_SUPERVISOR_AUTHORITATIVE_ATTESTATION_V1.md`.

@@ -5240,6 +5240,110 @@ CounterRecords/vectors, current access, V7, terminal/campaign, production or
 official execution. All economics, Counter-Completeness and sample-efficiency
 Gates remain locked or `NOT_RUN`.
 
+## V0-110B-2E-48E-C-E4 H1 E3-bound output ordinal continuation
+
+Contract `2.0.59-E-C-E4` freezes the construction-only continuation after one
+exact successful E3 broker completion. The continuation context is minted and
+bound before E3 launch, is process/thread-local and at-fork poisoned, and binds
+the exact E3 profile/source, occurrence/attempt identities, lifecycle payloads
+and a fresh pinned native output directory. A successful E3 completion must
+echo that exact context identity before any output operation is admitted.
+
+The writer deterministically renders exactly eight registered construction
+witness roles and solves the joint fixed point
+`O = sum(eight durable extents)` and
+`R = read_bytes_base + sum(eight exact readback extents)` by bounded double
+render. It creates the eight distinct single-link files with
+`O_EXCL|O_NOFOLLOW`, fsyncs bytes, changes them from `0600` to `0400`, pins
+their inode identities and performs exact descriptor-based readback at
+ordinals `53..60`. Ordinal 61 requires the complete directory inventory,
+directory fsync and fixed-point replay; ordinal 62 consumes the one-shot
+writer lease and definitively closes every file and directory descriptor.
+There is no ninth durable wrapper.
+
+Only an issuer-retained exact context plus the exact E3 completion can drive
+the authoritative verifier, which re-renders every role and fixed-point byte;
+the mapping-only structural verifier is explicitly nonauthoritative. Any
+registered filesystem/order/crash failure returns a typed protocol
+noncertificate without ordinal-62 success. Definitively closed handles are
+dropped from ownership; a still-live close failure remains in an exact
+retryable quarantine and cannot falsely claim context consumption.
+
+The eight documents remain construction witnesses and are rejected as formal
+FQ11 artifacts. E3 ordinal 42 is still only a child-role diagnostic, so E4
+freezes `PEAK_SCOPE_UNRESOLVED` and issues no route-wide peak, CounterRecord,
+WorkVector, ComparisonVector, projection proof, current-access/V7,
+terminal/campaign, production or official authority. Scalar/break-even remain
+null and the Counter-Completeness, economics and sample-efficiency Gates remain
+locked or `NOT_RUN`.
+
+## V0-110B-2E-48E-C-E5A H1 route-wide working-set cgroup admission
+
+Contract `2.0.59-E-C-E5A` adds a prelaunch-only retained cgroup-v2 admission
+for the future integrated H1 route. From one fresh empty delegated parent it
+creates a finite-cap outer cgroup and exactly three empty children:
+`CONTROL`, `WORKER`, and `BUSINESS`. The outer enforces
+`memory.max=U`, `memory.swap.max=0`, `pids.max=3`, depth one and exactly three
+descendants, where
+`U=min(registered hard cap, requested outer memory.max)`. Child PID limits are
+`2/1/1`; controller, limit, emptiness and device/inode identities are replayed
+from pinned close-on-exec descriptors.
+
+The hierarchy content-binds process-empty admission observations for outer and
+all three children, including exact `memory.current` values and their frozen
+observation order. E5A resets outer `memory.peak` exactly once, records the
+kernel's possibly nonzero post-reset baseline, retains two descriptors sharing
+the same open file description and rejects a later value below that baseline.
+The prelaunch envelope exposes only the enforced allowed-cap upper on
+`peak_working_bytes`; it never derives an upper from a post-run peak and never
+relabels E3's two child peaks.
+
+One module-global at-fork protocol covers construction, live-lease and
+quarantine registries; inherited children raw-close the frozen descriptor
+snapshot and poison every copied owner slot. Closed leases cannot retain
+callbacks or close reused FD numbers. Identity-bound cleanup is retryable
+after population or partial child removal, replays absent names before
+touching removed cgroup FDs and retains the peak OFD until outer removal. A
+closure is issued only after every retained descriptor is definitively
+closed; a persistent live close failure remains in close-only quarantine.
+
+This contract moves or launches no process, runs neither E3 nor E4 and issues
+no route-wide actual peak or FQ11 artifact. Integrated placement/execution,
+CounterRecords, vectors/projection, current-access/V7, terminal/campaign,
+production and official authority remain absent. Scalar/break-even remain null
+and all Counter-Completeness, economics and sample-efficiency Gates remain
+locked or `NOT_RUN`.
+
+## V0-110B-2E-48E-C-E5B-A in-supervisor E4 authority attestation
+
+Contract `2.0.59-E-C-E5B-A` adds one construction-only mechanism for a future
+E5B supervisor to preserve that it actually invoked the existing E4
+authoritative verifier while the exact retained continuation context was
+still live in its preparing process and thread. E3 and E4 V1 expose no
+completion-object registry, so their inputs are required to have exact
+runtime types but are explicitly **not** relabelled as exact issuer-owned
+objects. Authority comes from E4's full semantic reconstruction; the context
+and the issued E5B-A attestation are the only exact retained objects at this
+boundary.
+
+The content-addressed attestation binds the E3/E4 profile and source chain,
+completion/context/session and route identities, output parent/name/directory
+identity, and all eight role bytes, commits, ordinal events and distinct
+regular inodes. Guardian replay pins the parent directory, opens the child by
+name relative to that FD, retains all eight file FDs through a final paired
+path/descriptor inventory, and rechecks the parent/name/child identities. It
+never receives the retained E4 context, never calls the authoritative
+verifier and cannot infer or substitute same-process authority. A coherent
+replacement of completion, files and attestation remains only a new
+nonauthoritative structural image; the content ID is not a signature.
+
+No authenticated sealed-supervisor binding, integrated E5B execution,
+route-wide actual peak, production output-leaf/FQ11 authority,
+CounterRecords/vectors/projection, current-access/V7, terminal/campaign,
+production or official authority is issued. Scalar and break-even remain
+null and all Counter-Completeness, economics and sample-efficiency Gates stay
+locked or `NOT_RUN`.
+
 ## Change log
 
 - **2026-07-19 — 0.1.0:** Transcribed and closed the V0 construction contract from the Normative Decision Addendum and the V0 preconstruction audit. Added the deterministic policy-class and reward-normalization implementation clarifications needed for executable tests.
