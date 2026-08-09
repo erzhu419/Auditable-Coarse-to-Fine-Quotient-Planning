@@ -24,6 +24,8 @@ from types import MappingProxyType
 from typing import Any, Mapping, NoReturn
 
 from acfqp import construction_k7_h1_domain_registry_extension_v12 as domains_v12
+from acfqp import construction_k7_h1_domain_registry_extension_v15 as domains_v15
+from acfqp import construction_k7_h1_domain_registry_extension_v16 as domains_v16
 from acfqp import construction_k7_h1_e3_bound_output_ordinal_continuation_v1 as e4_v1
 from acfqp import construction_k7_h1_exclusive_native_resource_broker_v1 as e3_v1
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json, parse_content_id
@@ -102,6 +104,8 @@ _PLAN_ISSUER = object()
 _ENVELOPE_ISSUER = object()
 _CLOSURE_ISSUER = object()
 _LEASE_ISSUER = object()
+_POSTRUN_EVIDENCE_ISSUER = object()
+_FAILED_BIRTH_EVIDENCE_ISSUER = object()
 
 _PARENT_FD_SLOT = "parent"
 _OUTER_FD_SLOT = "outer"
@@ -296,6 +300,400 @@ def _verify_content_object(
     if _domain_id(domain, payload) != supplied:
         _fail(f"{label} content ID changed")
     return payload
+
+
+def _verify_external_record(
+    record: Any,
+    *,
+    domain: str,
+    id_field: str,
+    label: str,
+    version: int,
+) -> dict[str, Any]:
+    """Verify one foreign durable record without trusting its Python class."""
+
+    raw = getattr(record, "canonical_bytes", None)
+    record_id = getattr(record, "record_id", None)
+    if type(raw) is not bytes or type(record_id) is not str:
+        _fail(f"{label} is not one exact durable record")
+    document = _canonical_document(raw, label)
+    payload = dict(document)
+    supplied = _cid(payload.pop(id_field, None), label)
+    if supplied != record_id:
+        _fail(f"{label} object identity changed")
+    try:
+        expected = (
+            domains_v15.extension_content_id_v15(domain, payload)
+            if version == 15
+            else domains_v16.extension_content_id_v16(domain, payload)
+        )
+    except (TypeError, ValueError) as error:
+        raise ConstructionK7H1RouteWideWorkingSetCgroupV1Error(
+            f"{label} domain is not registered"
+        ) from error
+    if expected != supplied:
+        _fail(f"{label} content ID changed")
+    return document
+
+
+def verify_h1_route_wide_postrun_cleanup_evidence_v1(
+    *,
+    birth_observation: Any,
+    creator_reap_attestation: Any,
+    bounded_peak_observation: Any,
+    expected_permit_consumption_id: str,
+    expected_runtime_successor_id: str,
+    hierarchy_document: Mapping[str, Any],
+) -> H1RouteWidePostrunCleanupEvidenceV1:
+    """Join the exact V15 birth/reap and V16 bounded-peak observations.
+
+    The returned issuer-only value is the only postrun evidence accepted by
+    the E5A cleanup branch.  Validation reads no cgroup control and therefore
+    cannot consume ``memory.peak`` a second time.
+    """
+
+    expected_permit_consumption_id = _cid(
+        expected_permit_consumption_id, "E5A expected permit consumption"
+    )
+    expected_runtime_successor_id = _cid(
+        expected_runtime_successor_id, "E5A expected runtime successor"
+    )
+    if type(hierarchy_document) is not dict:
+        _fail("E5A postrun hierarchy document is not exact")
+    hierarchy_payload = _verify_content_object(
+        hierarchy_document,
+        domain=domains_v12.CONSTRUCTION_K7_H1_ROUTE_WIDE_CGROUP_HIERARCHY_V1_DOMAIN,
+        id_field="h1_route_wide_cgroup_hierarchy_id",
+        label="E5A postrun hierarchy",
+    )
+    hierarchy_id = _cid(
+        hierarchy_document.get("h1_route_wide_cgroup_hierarchy_id"),
+        "E5A postrun hierarchy",
+    )
+    birth = _verify_external_record(
+        birth_observation,
+        domain=domains_v15.CONSTRUCTION_K7_H1_ACTUAL_PROCESS_BIRTH_OBSERVATION_V1_DOMAIN,
+        id_field="actual_process_birth_observation_id",
+        label="E5A actual-process birth observation",
+        version=15,
+    )
+    reap = _verify_external_record(
+        creator_reap_attestation,
+        domain=(
+            domains_v15.CONSTRUCTION_K7_H1_ACTUAL_PROCESS_CREATOR_REAP_ATTESTATION_V1_DOMAIN
+        ),
+        id_field="actual_process_creator_reap_attestation_id",
+        label="E5A creator reap attestation",
+        version=15,
+    )
+    peak = _verify_external_record(
+        bounded_peak_observation,
+        domain=(
+            domains_v16.CONSTRUCTION_K7_H1_BOUNDED_SUPERVISOR_BIRTH_PEAK_OBSERVATION_V1_DOMAIN
+        ),
+        id_field="bounded_supervisor_birth_peak_observation_id",
+        label="E5A bounded supervisor-birth peak observation",
+        version=16,
+    )
+    birth_id = _cid(
+        birth.get("actual_process_birth_observation_id"),
+        "E5A actual-process birth observation",
+    )
+    reap_id = _cid(
+        reap.get("actual_process_creator_reap_attestation_id"),
+        "E5A creator reap attestation",
+    )
+    peak_id = _cid(
+        peak.get("bounded_supervisor_birth_peak_observation_id"),
+        "E5A bounded supervisor-birth peak observation",
+    )
+    child_pid = birth.get("child_pid")
+    peak_bytes = peak.get("memory_peak_bytes")
+    final_current = peak.get("final_outer_memory_current_bytes")
+    baseline_peak = peak.get("baseline_peak_bytes")
+    allowed_cap = peak.get("allowed_cap_bytes")
+    frozen_peak = hierarchy_payload.get("outer_memory_peak")
+    expected_allowed_cap = min(
+        hierarchy_payload.get("registered_hard_cap_bytes", -1),
+        hierarchy_payload.get("outer", {}).get("memory_max_bytes", -1),
+    )
+    if (
+        birth.get("schema")
+        != "acfqp.k7_h1_actual_process_birth_observation.v1"
+        or reap.get("schema")
+        != "acfqp.k7_h1_actual_process_creator_reap_attestation.v1"
+        or peak.get("schema")
+        != "acfqp.k7_h1_bounded_supervisor_birth_peak_observation.v1"
+        or birth.get("schema_version") != SCHEMA_VERSION
+        or reap.get("schema_version") != SCHEMA_VERSION
+        or peak.get("schema_version") != SCHEMA_VERSION
+        or type(child_pid) is not int
+        or child_pid <= 0
+        or birth.get("actual_process_birth_permit_consumption_id")
+        != expected_permit_consumption_id
+        or reap.get("actual_process_birth_observation_id") != birth_id
+        or reap.get("child_pid") != child_pid
+        or reap.get("creator_is_guardian_pid") != os.getpid()
+        or reap.get("creator_reap_exactly_once") is not True
+        or reap.get("observed_wnowait_status")
+        != reap.get("consuming_wait_status")
+        or reap.get("third_wait_errno") != errno.ECHILD
+        or birth.get("child_is_inert_and_blocked_before_release") is not True
+        or peak.get("actual_process_creator_reap_attestation_id") != reap_id
+        or peak.get("runtime_successor_id") != expected_runtime_successor_id
+        or peak.get("observation_after_exact_reap_and_two_empty_snapshots")
+        is not True
+        or peak.get("primary_and_witness_same_open_file_description") is not True
+        or peak.get("primary_read_count") != 1
+        or peak.get("witness_read_count") != 0
+        or type(frozen_peak) is not dict
+        or peak.get("retained_memory_peak_identity") != frozen_peak.get("identity")
+        or type(peak_bytes) is not int
+        or type(final_current) is not int
+        or type(baseline_peak) is not int
+        or type(allowed_cap) is not int
+        or min(peak_bytes, final_current, baseline_peak, allowed_cap) < 0
+        or not final_current <= peak_bytes
+        or not baseline_peak <= peak_bytes <= allowed_cap
+        or baseline_peak != frozen_peak.get("baseline_peak_bytes")
+        or allowed_cap != expected_allowed_cap
+    ):
+        _fail("E5A postrun evidence did not form one exact bounded birth/reap/peak join")
+    evidence_document = {
+        "schema": "acfqp.k7_h1_route_wide_postrun_cleanup_evidence.v1",
+        "schema_version": SCHEMA_VERSION,
+        "h1_route_wide_cgroup_hierarchy_id": hierarchy_id,
+        "runtime_successor_id": expected_runtime_successor_id,
+        "actual_process_birth_permit_consumption_id": (
+            expected_permit_consumption_id
+        ),
+        "actual_process_birth_observation_id": birth_id,
+        "actual_process_creator_reap_attestation_id": reap_id,
+        "bounded_supervisor_birth_peak_observation_id": peak_id,
+        "child_pid": child_pid,
+        "memory_peak_bytes": peak_bytes,
+        "allowed_cap_bytes": allowed_cap,
+        "primary_peak_read_count": 1,
+        "witness_peak_read_count": 0,
+    }
+    return H1RouteWidePostrunCleanupEvidenceV1(
+        canonical_json_bytes(evidence_document),
+        _issuer=_POSTRUN_EVIDENCE_ISSUER,
+    )
+
+
+def _verify_failed_birth_empty_snapshot(
+    snapshot: Any,
+    *,
+    sequence: int,
+    expected_runtime_successor_id: str,
+    hierarchy_payload: Mapping[str, Any],
+) -> None:
+    """Verify one embedded post-reap snapshot without touching live controls."""
+
+    if type(snapshot) is not dict:
+        _fail("E5A failed-birth empty snapshot is not one exact object")
+    outer_identity = snapshot.get("outer_directory_identity")
+    frozen_outer = hierarchy_payload.get("outer")
+    frozen_outer_identity = (
+        frozen_outer.get("identity") if type(frozen_outer) is dict else None
+    )
+    entries = snapshot.get("role_entries")
+    frozen_rows = hierarchy_payload.get("leaves")
+    if (
+        snapshot.get("schema") != "acfqp.k7_h1_empty_cgroup_snapshot.v1"
+        or snapshot.get("sequence") != sequence
+        or snapshot.get("runtime_successor_id")
+        != expected_runtime_successor_id
+        or type(frozen_outer) is not dict
+        or type(frozen_outer_identity) is not dict
+        or type(outer_identity) is not list
+        or len(outer_identity) != 5
+        or any(type(value) is not int for value in outer_identity)
+        or outer_identity[0] != frozen_outer_identity.get("device")
+        or outer_identity[1] != frozen_outer_identity.get("inode")
+        or not stat.S_ISDIR(outer_identity[2])
+        or stat.S_IMODE(outer_identity[2])
+        != frozen_outer_identity.get("mode")
+        or outer_identity[4] != frozen_outer_identity.get("mount_id")
+        or snapshot.get("outer_direct_procs") != []
+        or snapshot.get("outer_pids_current") != 0
+        or snapshot.get("outer_populated") != 0
+        or type(snapshot.get("outer_memory_current_bytes")) is not int
+        or snapshot.get("outer_memory_current_bytes") < 0
+        or type(entries) is not list
+        or type(frozen_rows) is not list
+        or len(entries) != 3
+        or len(frozen_rows) != 3
+    ):
+        _fail("E5A failed-birth outer empty snapshot semantics changed")
+    frozen_by_role = {
+        row.get("role"): row for row in frozen_rows if type(row) is dict
+    }
+    if set(frozen_by_role) != set(ROLE_ORDER):
+        _fail("E5A failed-birth frozen role identities changed")
+    if [entry.get("role") for entry in entries if type(entry) is dict] != list(
+        ROLE_ORDER
+    ):
+        _fail("E5A failed-birth empty snapshot role order changed")
+    for entry in entries:
+        if type(entry) is not dict:
+            _fail("E5A failed-birth empty role snapshot is not exact")
+        role = entry.get("role")
+        identity = entry.get("directory_identity")
+        frozen = frozen_by_role.get(role)
+        frozen_identity = frozen.get("identity") if type(frozen) is dict else None
+        if (
+            type(frozen) is not dict
+            or type(frozen_identity) is not dict
+            or type(identity) is not list
+            or len(identity) != 5
+            or any(type(value) is not int for value in identity)
+            or identity[0] != frozen_identity.get("device")
+            or identity[1] != frozen_identity.get("inode")
+            or not stat.S_ISDIR(identity[2])
+            or stat.S_IMODE(identity[2]) != frozen_identity.get("mode")
+            or identity[4] != frozen_identity.get("mount_id")
+            or entry.get("cgroup_procs") != []
+            or entry.get("pids_current") != 0
+            or entry.get("populated") != 0
+            or type(entry.get("memory_current_bytes")) is not int
+            or entry.get("memory_current_bytes") < 0
+        ):
+            _fail("E5A failed-birth empty role snapshot semantics changed")
+
+
+def verify_h1_route_wide_failed_birth_cleanup_evidence_v1(
+    *,
+    failure_attestation: Any,
+    expected_permit_consumption_id: str,
+    expected_runtime_successor_id: str,
+    hierarchy_document: Mapping[str, Any],
+) -> H1RouteWideFailedBirthCleanupEvidenceV1:
+    """Verify birth/kill/reap/empty/no-peak evidence without live peak access."""
+
+    expected_permit_consumption_id = _cid(
+        expected_permit_consumption_id, "E5A failed-birth permit consumption"
+    )
+    expected_runtime_successor_id = _cid(
+        expected_runtime_successor_id, "E5A failed-birth runtime successor"
+    )
+    if type(hierarchy_document) is not dict:
+        _fail("E5A failed-birth hierarchy document is not exact")
+    hierarchy_payload = _verify_content_object(
+        hierarchy_document,
+        domain=domains_v12.CONSTRUCTION_K7_H1_ROUTE_WIDE_CGROUP_HIERARCHY_V1_DOMAIN,
+        id_field="h1_route_wide_cgroup_hierarchy_id",
+        label="E5A failed-birth hierarchy",
+    )
+    hierarchy_id = _cid(
+        hierarchy_document.get("h1_route_wide_cgroup_hierarchy_id"),
+        "E5A failed-birth hierarchy",
+    )
+    failure = _verify_external_record(
+        failure_attestation,
+        domain=(
+            domains_v15.CONSTRUCTION_K7_H1_ACTUAL_OBSERVED_E3_V2_PROTOCOL_FAILURE_CLOSURE_V1_DOMAIN
+        ),
+        id_field="actual_observed_e3_v2_protocol_failure_closure_id",
+        label="E5A failed-birth protocol-failure closure",
+        version=15,
+    )
+    failure_id = _cid(
+        failure.get("actual_observed_e3_v2_protocol_failure_closure_id"),
+        "E5A failed-birth protocol-failure closure",
+    )
+    guardian_session_id = _cid(
+        failure.get("guardian_session_genesis_id"),
+        "E5A failed-birth guardian session",
+    )
+    child_pid = failure.get("child_pid")
+    wait_status = failure.get("creator_reap_wait_status")
+    primary_failure_stage = failure.get("primary_failure_stage")
+    snapshots = failure.get("empty_cgroup_snapshots")
+    if (
+        failure.get("schema")
+        != "acfqp.k7_h1_actual_observed_e3_v2_protocol_failure_closure.v1"
+        or failure.get("schema_version") != SCHEMA_VERSION
+        or failure.get("actual_process_birth_permit_consumption_id")
+        != expected_permit_consumption_id
+        or failure.get("runtime_successor_id") != expected_runtime_successor_id
+        or failure.get("failure_reason")
+        != "POST_CONSUMPTION_BIRTH_PROTOCOL_FAILURE"
+        or type(primary_failure_stage) is not str
+        or re.fullmatch(r"[A-Z][A-Z0-9_]{0,127}", primary_failure_stage) is None
+        or failure.get("permit_was_consumed") is not True
+        or failure.get("clone_syscall_performed") is not True
+        or failure.get("actual_process_birth_present") is not True
+        or type(child_pid) is not int
+        or child_pid <= 0
+        or failure.get("cgroup_kill_written") is not True
+        or failure.get("creator_reap_completed") is not True
+        or failure.get("creator_is_guardian_pid") != os.getpid()
+        or failure.get("creator_reap_exactly_once") is not True
+        or failure.get("third_wait_errno") != errno.ECHILD
+        or type(wait_status) is not dict
+        or set(wait_status)
+        != {"si_pid", "si_uid", "si_signo", "si_status", "si_code"}
+        or any(type(value) is not int for value in wait_status.values())
+        or wait_status.get("si_pid") != child_pid
+        or wait_status.get("si_uid") != os.geteuid()
+        or wait_status.get("si_signo") != int(signal.SIGCHLD)
+        or (
+            wait_status.get("si_code"),
+            wait_status.get("si_status"),
+        )
+        not in {
+            (int(getattr(os, "CLD_KILLED", 2)), int(signal.SIGKILL)),
+            (int(getattr(os, "CLD_EXITED", 1)), 0),
+        }
+        or failure.get("process_death_or_reap_present") is not True
+        or failure.get("peak_read_started") is not False
+        or failure.get("peak_read_present") is not False
+        or failure.get("actual_peak_issued") is not False
+        or failure.get("primary_peak_read_count") != 0
+        or failure.get("witness_peak_read_count") != 0
+        or failure.get("unconsumed_revoke_forbidden") is not True
+        or failure.get("terminal_scope") != "ROUTE_ATTEMPT"
+        or failure.get("terminal_class")
+        != "ATTEMPT_CLOSURE_NONCERTIFICATE"
+        or failure.get("terminal_code") != "PROTOCOL_FAILURE"
+        or type(snapshots) is not list
+        or len(snapshots) != 2
+    ):
+        _fail("E5A failed-birth protocol-failure semantics changed")
+    for sequence, snapshot in enumerate(snapshots, start=1):
+        _verify_failed_birth_empty_snapshot(
+            snapshot,
+            sequence=sequence,
+            expected_runtime_successor_id=expected_runtime_successor_id,
+            hierarchy_payload=hierarchy_payload,
+        )
+    evidence_document = {
+        "schema": "acfqp.k7_h1_route_wide_failed_birth_cleanup_evidence.v1",
+        "schema_version": SCHEMA_VERSION,
+        "h1_route_wide_cgroup_hierarchy_id": hierarchy_id,
+        "runtime_successor_id": expected_runtime_successor_id,
+        "actual_process_birth_permit_consumption_id": (
+            expected_permit_consumption_id
+        ),
+        "guardian_session_genesis_id": guardian_session_id,
+        "actual_observed_e3_v2_protocol_failure_closure_id": failure_id,
+        "primary_failure_stage": primary_failure_stage,
+        "child_pid": child_pid,
+        "creator_reap_wait_status": dict(wait_status),
+        "empty_cgroup_snapshot_count": 2,
+        "cgroup_kill_written": True,
+        "actual_process_birth_present": True,
+        "process_death_or_reap_present": True,
+        "primary_peak_read_count": 0,
+        "witness_peak_read_count": 0,
+        "actual_peak_issued": False,
+    }
+    return H1RouteWideFailedBirthCleanupEvidenceV1(
+        canonical_json_bytes(evidence_document),
+        _issuer=_FAILED_BIRTH_EVIDENCE_ISSUER,
+    )
 
 
 def _locked_claims() -> dict[str, Any]:
@@ -1470,6 +1868,63 @@ class H1RouteWideWorkingSetCgroupCleanupClosureV1:
         return _canonical_document(self.canonical_bytes, "E5A cleanup closure")
 
 
+@dataclass(frozen=True, slots=True)
+class H1RouteWidePostrunCleanupEvidenceV1:
+    """Issuer-only join of the exact birth, reap, and bounded-peak records.
+
+    This is a process-local typed proof input, not a fourth durable artifact.
+    Its bytes contain only facts re-derived from the three content-addressed
+    records.  The source records retain their V15/V16 identities.
+    """
+
+    canonical_bytes: bytes = field(repr=False)
+    _issuer: object = field(repr=False, compare=False, default=None)
+
+    def __post_init__(self) -> None:
+        if self._issuer is not _POSTRUN_EVIDENCE_ISSUER:
+            _fail("E5A postrun cleanup evidence is caller-minted")
+        document = _canonical_document(
+            self.canonical_bytes, "E5A postrun cleanup evidence"
+        )
+        if (
+            document.get("schema")
+            != "acfqp.k7_h1_route_wide_postrun_cleanup_evidence.v1"
+            or document.get("schema_version") != SCHEMA_VERSION
+        ):
+            _fail("E5A postrun cleanup evidence schema changed")
+
+    def to_document(self) -> dict[str, Any]:
+        return _canonical_document(
+            self.canonical_bytes, "E5A postrun cleanup evidence"
+        )
+
+
+@dataclass(frozen=True, slots=True)
+class H1RouteWideFailedBirthCleanupEvidenceV1:
+    """Issuer-only V15 birth/kill/reap/empty/no-peak proof input."""
+
+    canonical_bytes: bytes = field(repr=False)
+    _issuer: object = field(repr=False, compare=False, default=None)
+
+    def __post_init__(self) -> None:
+        if self._issuer is not _FAILED_BIRTH_EVIDENCE_ISSUER:
+            _fail("E5A failed-birth cleanup evidence is caller-minted")
+        document = _canonical_document(
+            self.canonical_bytes, "E5A failed-birth cleanup evidence"
+        )
+        if (
+            document.get("schema")
+            != "acfqp.k7_h1_route_wide_failed_birth_cleanup_evidence.v1"
+            or document.get("schema_version") != SCHEMA_VERSION
+        ):
+            _fail("E5A failed-birth cleanup evidence schema changed")
+
+    def to_document(self) -> dict[str, Any]:
+        return _canonical_document(
+            self.canonical_bytes, "E5A failed-birth cleanup evidence"
+        )
+
+
 class H1RouteWideWorkingSetCgroupLeaseV1:
     """Issuer-owned, PID-bound retained E5A hierarchy lease."""
 
@@ -2204,12 +2659,14 @@ def _verify_peak_retention_before_outer_removal(
             _fail("E5A cleanup retained memory.peak OFD changed")
 
 
-def close_h1_route_wide_working_set_cgroup_lease_v1(
+def _close_h1_route_wide_working_set_cgroup_lease_impl_v1(
     lease: H1RouteWideWorkingSetCgroupLeaseV1,
     *,
     fault: H1RouteWideWorkingSetCgroupFaultV1 = H1RouteWideWorkingSetCgroupFaultV1.NONE,
+    postrun_evidence: H1RouteWidePostrunCleanupEvidenceV1 | None,
+    failed_birth_evidence: H1RouteWideFailedBirthCleanupEvidenceV1 | None,
 ) -> H1RouteWideWorkingSetCgroupCleanupClosureV1:
-    """Identity-check, remove and close one E5A lease; failures are retryable."""
+    """Shared identity-bound removal/FD-close implementation."""
 
     if type(lease) is not H1RouteWideWorkingSetCgroupLeaseV1:
         _fail("E5A cleanup requires one exact retained lease")
@@ -2220,7 +2677,48 @@ def close_h1_route_wide_working_set_cgroup_lease_v1(
         _fail("E5A cleanup fault injection is not exact")
     if lease._owner_pid != os.getpid():
         _fail("E5A cleanup crossed its owner process")
+    if postrun_evidence is not None and failed_birth_evidence is not None:
+        _fail("E5A cleanup evidence category is ambiguous")
+    evidence_document: dict[str, Any] | None = None
+    failure_document: dict[str, Any] | None = None
+    if postrun_evidence is not None:
+        if type(postrun_evidence) is not H1RouteWidePostrunCleanupEvidenceV1:
+            _fail("E5A postrun cleanup requires exact typed evidence")
+        evidence_document = postrun_evidence.to_document()
+        if (
+            evidence_document.get("h1_route_wide_cgroup_hierarchy_id")
+            != lease._hierarchy_id
+        ):
+            _fail("E5A postrun cleanup evidence crossed its hierarchy")
+    if failed_birth_evidence is not None:
+        if (
+            type(failed_birth_evidence)
+            is not H1RouteWideFailedBirthCleanupEvidenceV1
+        ):
+            _fail("E5A failed-birth cleanup requires exact typed evidence")
+        failure_document = failed_birth_evidence.to_document()
+        if (
+            failure_document.get("h1_route_wide_cgroup_hierarchy_id")
+            != lease._hierarchy_id
+        ):
+            _fail("E5A failed-birth cleanup evidence crossed its hierarchy")
     if lease._state == "CLOSED" and lease._closure is not None:
+        if evidence_document is not None and (
+            lease._closure.to_document().get(
+                "bounded_supervisor_birth_peak_observation_id"
+            )
+            != evidence_document["bounded_supervisor_birth_peak_observation_id"]
+        ):
+            _fail("E5A closed postrun cleanup evidence changed")
+        if failure_document is not None and (
+            lease._closure.to_document().get(
+                "actual_observed_e3_v2_protocol_failure_closure_id"
+            )
+            != failure_document[
+                "actual_observed_e3_v2_protocol_failure_closure_id"
+            ]
+        ):
+            _fail("E5A closed failed-birth cleanup evidence changed")
         return lease._closure
     lease = _require_live_lease(lease, allow_cleanup_pending=True)
     with lease._lock:
@@ -2343,6 +2841,77 @@ def close_h1_route_wide_working_set_cgroup_lease_v1(
                 "readiness": READINESS,
                 **_locked_claims(),
             }
+            if evidence_document is not None:
+                closure_payload.update(
+                    {
+                        "actual_process_birth_observation_id": evidence_document[
+                            "actual_process_birth_observation_id"
+                        ],
+                        "actual_process_creator_reap_attestation_id": (
+                            evidence_document[
+                                "actual_process_creator_reap_attestation_id"
+                            ]
+                        ),
+                        "bounded_supervisor_birth_peak_observation_id": (
+                            evidence_document[
+                                "bounded_supervisor_birth_peak_observation_id"
+                            ]
+                        ),
+                        "postrun_runtime_successor_id": evidence_document[
+                            "runtime_successor_id"
+                        ],
+                        "bounded_actual_peak_bytes": evidence_document[
+                            "memory_peak_bytes"
+                        ],
+                        "bounded_actual_peak_allowed_cap_bytes": evidence_document[
+                            "allowed_cap_bytes"
+                        ],
+                        "bounded_single_supervisor_birth_present": True,
+                        "runtime_process_placement_present": True,
+                        "memory_peak_read_count": 1,
+                        "memory_peak_witness_read_count": 0,
+                        "actual_peak_issued": True,
+                        "readiness": (
+                            "POSTRUN_CLOSED_AFTER_BOUNDED_SUPERVISOR_PEAK"
+                        ),
+                    }
+                )
+            elif failure_document is not None:
+                closure_payload.update(
+                    {
+                        "actual_process_birth_permit_consumption_id": (
+                            failure_document[
+                                "actual_process_birth_permit_consumption_id"
+                            ]
+                        ),
+                        "actual_observed_e3_v2_protocol_failure_closure_id": (
+                            failure_document[
+                                "actual_observed_e3_v2_protocol_failure_closure_id"
+                            ]
+                        ),
+                        "postrun_runtime_successor_id": failure_document[
+                            "runtime_successor_id"
+                        ],
+                        "primary_failure_stage": failure_document[
+                            "primary_failure_stage"
+                        ],
+                        "child_pid": failure_document["child_pid"],
+                        "construction_only_cleanup_without_route_birth": False,
+                        "bounded_single_supervisor_birth_present": True,
+                        "runtime_process_placement_present": True,
+                        "actual_process_birth_present": True,
+                        "cgroup_kill_write_performed": True,
+                        "process_death_or_reap_present": True,
+                        "peak_read_started": False,
+                        "peak_read_present": False,
+                        "memory_peak_read_count": 0,
+                        "memory_peak_witness_read_count": 0,
+                        "actual_peak_issued": False,
+                        "readiness": (
+                            "POSTRUN_CLOSED_AFTER_BIRTH_FAILURE_KILL_REAP_NO_PEAK"
+                        ),
+                    }
+                )
             closure_document = _with_id(
                 closure_payload,
                 domain=(
@@ -2359,6 +2928,57 @@ def close_h1_route_wide_working_set_cgroup_lease_v1(
             _QUARANTINED_LEASES.pop(id(lease), None)
             _LIVE_LEASES.pop(id(lease), None)
         return closure
+
+
+def close_h1_route_wide_working_set_cgroup_lease_v1(
+    lease: H1RouteWideWorkingSetCgroupLeaseV1,
+    *,
+    fault: H1RouteWideWorkingSetCgroupFaultV1 = H1RouteWideWorkingSetCgroupFaultV1.NONE,
+) -> H1RouteWideWorkingSetCgroupCleanupClosureV1:
+    """Legacy prelaunch cleanup; its semantics and closure remain unchanged."""
+
+    return _close_h1_route_wide_working_set_cgroup_lease_impl_v1(
+        lease,
+        fault=fault,
+        postrun_evidence=None,
+        failed_birth_evidence=None,
+    )
+
+
+def close_h1_route_wide_working_set_cgroup_lease_postrun_v1(
+    lease: H1RouteWideWorkingSetCgroupLeaseV1,
+    *,
+    evidence: H1RouteWidePostrunCleanupEvidenceV1,
+    fault: H1RouteWideWorkingSetCgroupFaultV1 = H1RouteWideWorkingSetCgroupFaultV1.NONE,
+) -> H1RouteWideWorkingSetCgroupCleanupClosureV1:
+    """Close after the one registered peak read without reading peak again."""
+
+    if type(evidence) is not H1RouteWidePostrunCleanupEvidenceV1:
+        _fail("E5A postrun cleanup requires exact typed evidence")
+    return _close_h1_route_wide_working_set_cgroup_lease_impl_v1(
+        lease,
+        fault=fault,
+        postrun_evidence=evidence,
+        failed_birth_evidence=None,
+    )
+
+
+def close_h1_route_wide_working_set_cgroup_lease_failed_birth_v1(
+    lease: H1RouteWideWorkingSetCgroupLeaseV1,
+    *,
+    evidence: H1RouteWideFailedBirthCleanupEvidenceV1,
+    fault: H1RouteWideWorkingSetCgroupFaultV1 = H1RouteWideWorkingSetCgroupFaultV1.NONE,
+) -> H1RouteWideWorkingSetCgroupCleanupClosureV1:
+    """Close a killed/reaped birth failure without any memory.peak read."""
+
+    if type(evidence) is not H1RouteWideFailedBirthCleanupEvidenceV1:
+        _fail("E5A failed-birth cleanup requires exact typed evidence")
+    return _close_h1_route_wide_working_set_cgroup_lease_impl_v1(
+        lease,
+        fault=fault,
+        postrun_evidence=None,
+        failed_birth_evidence=evidence,
+    )
 
 
 if set(
@@ -2389,6 +3009,8 @@ __all__ = (
     "H1RouteWideWorkingSetCgroupCleanupClosureV1",
     "H1RouteWideWorkingSetCgroupFaultV1",
     "H1RouteWideWorkingSetCgroupLeaseV1",
+    "H1RouteWideFailedBirthCleanupEvidenceV1",
+    "H1RouteWidePostrunCleanupEvidenceV1",
     "H1RouteWideWorkingSetCgroupProfileV1",
     "H1RouteWideWorkingSetCgroupTopologyPlanV1",
     "H1RouteWideWorkingSetPrelaunchAllowedCapEnvelopeV1",
@@ -2412,8 +3034,12 @@ __all__ = (
     "UPPER_KIND",
     "WORKLOAD_ECONOMICS_GATE",
     "close_h1_route_wide_working_set_cgroup_lease_v1",
+    "close_h1_route_wide_working_set_cgroup_lease_failed_birth_v1",
+    "close_h1_route_wide_working_set_cgroup_lease_postrun_v1",
     "official_h1_route_wide_working_set_cgroup_profile_v1",
     "official_h1_route_wide_working_set_cgroup_topology_plan_v1",
     "prepare_h1_route_wide_working_set_cgroup_v1",
     "verify_h1_route_wide_working_set_prelaunch_allowed_cap_v1",
+    "verify_h1_route_wide_failed_birth_cleanup_evidence_v1",
+    "verify_h1_route_wide_postrun_cleanup_evidence_v1",
 )

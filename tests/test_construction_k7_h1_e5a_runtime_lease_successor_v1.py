@@ -63,7 +63,7 @@ def delegated_parent_fd():
 def test_bridge_manifest_freezes_exact_reviewed_e5a_source_and_layout() -> None:
     manifest = b2a_v1.frozen_e5a_runtime_bridge_manifest_v1()
     assert manifest["expected_e5a_source_sha256"] == (
-        "768b3cae4d7ed5edadb6596e3463e54022e54cacb3522a91381c751aaefe7d56"
+        "70a32237ba72bf33aa924b65e8b45ee285090dd800ed049e66636e882d969287"
     )
     assert manifest["exact_lease_slots"] == list(
         b2a_v1._EXPECTED_E5A_LEASE_SLOTS

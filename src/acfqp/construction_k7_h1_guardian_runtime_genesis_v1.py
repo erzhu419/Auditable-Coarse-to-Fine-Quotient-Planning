@@ -30,6 +30,8 @@ from typing import Any, Mapping, NoReturn
 import uuid
 
 from acfqp import construction_k7_h1_domain_registry_extension_v15 as domains_v15
+from acfqp import construction_k7_h1_domain_registry_extension_v16 as domains_v16
+from acfqp import construction_k7_h1_domain_registry_extension_v17 as domains_v17
 from acfqp import construction_k7_h1_e5a_runtime_lease_successor_v1 as b2a_v1
 from acfqp import construction_k7_h1_route_wide_working_set_cgroup_v1 as e5a_v1
 from acfqp import phase3e_ids as ids_v1
@@ -78,9 +80,11 @@ WORKLOAD_ECONOMICS_GATE = "NOT_RUN"
 
 _EXPECTED_UPSTREAM_SHA256 = MappingProxyType(
     {
-        "b2a": "4277e529079b71c2fa48b7bd845b757b16af4fa163b589964dcfafe9b31ec11e",
-        "e5a": "768b3cae4d7ed5edadb6596e3463e54022e54cacb3522a91381c751aaefe7d56",
+        "b2a": "c4340e95901ba41c9ba686b56a2f81a39958f4bd2003e736524285723cf9d3c4",
+        "e5a": "70a32237ba72bf33aa924b65e8b45ee285090dd800ed049e66636e882d969287",
         "v15": "a54493f6431e0a5fa57afdc18bd185802f434ef88d88299285d0e1f40e0e0469",
+        "v16": "76c35a2b2967598f303b14c13d531dbe1ef086fbc8ef653fe949e56282035a50",
+        "v17": "2541a41749962461cd5bf0e4d545df81cdf7a31740966c37cbd131ad5b1d02c9",
         "phase3e_ids": "3eb435bfec4692961d61b4edf6e067cc128810509b5e35ec1d7348079288c4c2",
         "trampoline_audit_source": "83ee8434bd99cf046fe85d6975886c6cbeb2b8cadd5c19edf1bc2bd4deacbf91",
     }
@@ -97,6 +101,8 @@ _SOURCE_PATHS = MappingProxyType(
         "b2a": Path(b2a_v1.__file__).resolve(strict=True),
         "e5a": Path(e5a_v1.__file__).resolve(strict=True),
         "v15": Path(domains_v15.__file__).resolve(strict=True),
+        "v16": Path(domains_v16.__file__).resolve(strict=True),
+        "v17": Path(domains_v17.__file__).resolve(strict=True),
         "phase3e_ids": Path(ids_v1.__file__).resolve(strict=True),
         "trampoline_audit_source": _TRAMPOLINE_SOURCE_PATH,
     }
@@ -175,6 +181,8 @@ _UPSTREAM_CALLABLES = MappingProxyType(
             "_verify_source_lease_retired",
             "_verify_runtime_fd_registry_unlocked",
             "close_h1_e5a_runtime_lease_successor_v1",
+            "close_h1_e5a_runtime_lease_successor_postrun_v1",
+            "close_h1_e5a_runtime_lease_successor_failed_birth_v1",
         )
     }
     | {
@@ -191,12 +199,22 @@ _UPSTREAM_CALLABLES = MappingProxyType(
             "_restore_fd_publication_signals",
             "_verify_live_hierarchy",
             "_same_open_file_description_for_close",
+            "verify_h1_route_wide_postrun_cleanup_evidence_v1",
+            "verify_h1_route_wide_failed_birth_cleanup_evidence_v1",
         )
     }
     | {
         ("v15", "extension_content_id_v15"): (
             domains_v15.extension_content_id_v15,
             domains_v15.extension_content_id_v15.__code__,
+        ),
+        ("v17", "extension_content_id_v17"): (
+            domains_v17.extension_content_id_v17,
+            domains_v17.extension_content_id_v17.__code__,
+        ),
+        ("v16", "extension_content_id_v16"): (
+            domains_v16.extension_content_id_v16,
+            domains_v16.extension_content_id_v16.__code__,
         ),
         ("ids", "parse_content_id"): (
             ids_v1.parse_content_id,
@@ -254,7 +272,13 @@ def _cid(value: Any, label: str) -> str:
 
 
 def _domain_id(domain: str, payload: Any) -> str:
-    return domains_v15.extension_content_id_v15(domain, payload)
+    if domain in domains_v15.K7_H1_DOMAIN_TAG_EXTENSION_V15:
+        return domains_v15.extension_content_id_v15(domain, payload)
+    if domain in domains_v16.K7_H1_DOMAIN_TAG_EXTENSION_V16:
+        return domains_v16.extension_content_id_v16(domain, payload)
+    if domain in domains_v17.K7_H1_DOMAIN_TAG_EXTENSION_V17:
+        return domains_v17.extension_content_id_v17(domain, payload)
+    _fail("B2-B domain tag is absent from the frozen V15/V16/V17 registries")
 
 
 def _validate_live_code_closure() -> None:
@@ -262,6 +286,8 @@ def _validate_live_code_closure() -> None:
         "b2a": b2a_v1,
         "e5a": e5a_v1,
         "v15": domains_v15,
+        "v16": domains_v16,
+        "v17": domains_v17,
         "ids": ids_v1,
     }
     for (module_name, name), (expected, expected_code) in _UPSTREAM_CALLABLES.items():
@@ -619,6 +645,7 @@ class H1GuardianRuntimeGenesisV1:
         "_permit_record",
         "_permit",
         "_revoke",
+        "_consumed_barrier",
         "_b2a_closure",
         "_start_token",
     )
@@ -655,6 +682,7 @@ class H1GuardianRuntimeGenesisV1:
         self._permit_record: H1GuardianRuntimeRecordV1 | None = None
         self._permit: H1SupervisorBirthPermitV1 | None = None
         self._revoke: H1GuardianRuntimeRecordV1 | None = None
+        self._consumed_barrier: H1GuardianRuntimeRecordV1 | None = None
         self._b2a_closure: b2a_v1.H1E5ARuntimeLeaseClosureV1 | None = None
         self._start_token = start_token
 
@@ -1115,6 +1143,7 @@ def _persist_record(
         "_intent",
         "_permit_record",
         "_revoke",
+        "_consumed_barrier",
     }:
         _fail("B2-B durable record target field is not registered")
     document = dict(payload)
@@ -1245,6 +1274,55 @@ def _require_session(
     return session
 
 
+def _require_postconsumed_session(
+    session: H1GuardianRuntimeGenesisV1,
+) -> H1GuardianRuntimeGenesisV1:
+    if type(session) is not H1GuardianRuntimeGenesisV1 or not _same_owner(session):
+        _fail("B2-B post-consumption cleanup requires one exact owner session")
+    if (
+        session._state
+        not in {"COMPANION_CONSUME_COMMITTED", "POSTCONSUMPTION_CLEANUP_PENDING"}
+        or _QUARANTINED_SESSIONS.get(id(session)) is not session
+        or _RUNTIME_RESERVATIONS.get(id(session._runtime)) is not session
+        or session._permit is not None
+        or session._permit_record is None
+        or session._revoke is not None
+    ):
+        _fail("B2-B post-consumption session identity or one-way state changed")
+    return session
+
+
+def _verify_retained_b2b_authority_under_locks(
+    session: H1GuardianRuntimeGenesisV1,
+) -> None:
+    runtime = session._runtime
+    _verify_preregistration(session._preregistration)
+    _verify_retained_sources_and_records(session)
+    kill_fd = _verify_managed_fd(session, "cgroup:kill")
+    grant_fd = _verify_managed_fd(session, "grant:SUPERVISOR:CONTROL")
+    outer_fd = runtime._outer_fd
+    control_fd = runtime._role_fds["CONTROL"]
+    kill_named = os.stat("cgroup.kill", dir_fd=outer_fd, follow_symlinks=False)
+    kill_status = os.fstat(kill_fd)
+    grant_status = os.fstat(grant_fd)
+    control_status = os.fstat(control_fd)
+    if (
+        not stat.S_ISREG(kill_status.st_mode)
+        or (kill_status.st_dev, kill_status.st_ino)
+        != (kill_named.st_dev, kill_named.st_ino)
+        or fcntl.fcntl(kill_fd, fcntl.F_GETFL) & os.O_ACCMODE != os.O_WRONLY
+        or fcntl.fcntl(kill_fd, fcntl.F_GETFD) & fcntl.FD_CLOEXEC == 0
+        or grant_fd == control_fd
+        or not stat.S_ISDIR(grant_status.st_mode)
+        or (grant_status.st_dev, grant_status.st_ino)
+        != (control_status.st_dev, control_status.st_ino)
+        or e5a_v1._same_open_file_description_for_close(grant_fd, control_fd)
+        or fcntl.fcntl(grant_fd, fcntl.F_GETFL) & os.O_PATH != os.O_PATH
+        or fcntl.fcntl(grant_fd, fcntl.F_GETFD) & fcntl.FD_CLOEXEC == 0
+    ):
+        _fail("B2-B cgroup.kill pin or distinct CONTROL O_PATH grant changed")
+
+
 def _verify_running_under_locks(session: H1GuardianRuntimeGenesisV1) -> dict[str, Any]:
     _validate_live_code_closure()
     _require_session(session)
@@ -1259,30 +1337,7 @@ def _verify_running_under_locks(session: H1GuardianRuntimeGenesisV1) -> dict[str
     b2a_v1._verify_source_lease_retired(runtime)
     b2a_v1._verify_runtime_fd_registry_unlocked(runtime)
     e5a_v1._verify_live_hierarchy(runtime)
-    _verify_preregistration(session._preregistration)
-    _verify_retained_sources_and_records(session)
-    kill_fd = _verify_managed_fd(session, "cgroup:kill")
-    grant_fd = _verify_managed_fd(session, "grant:SUPERVISOR:CONTROL")
-    outer_fd = runtime._outer_fd
-    control_fd = runtime._role_fds["CONTROL"]
-    kill_named = os.stat("cgroup.kill", dir_fd=outer_fd, follow_symlinks=False)
-    kill_status = os.fstat(kill_fd)
-    grant_status = os.fstat(grant_fd)
-    control_status = os.fstat(control_fd)
-    if (
-        not stat.S_ISREG(kill_status.st_mode)
-        or (kill_status.st_dev, kill_status.st_ino) != (kill_named.st_dev, kill_named.st_ino)
-        or fcntl.fcntl(kill_fd, fcntl.F_GETFL) & os.O_ACCMODE != os.O_WRONLY
-        or fcntl.fcntl(kill_fd, fcntl.F_GETFD) & fcntl.FD_CLOEXEC == 0
-        or grant_fd == control_fd
-        or not stat.S_ISDIR(grant_status.st_mode)
-        or (grant_status.st_dev, grant_status.st_ino)
-        != (control_status.st_dev, control_status.st_ino)
-        or e5a_v1._same_open_file_description_for_close(grant_fd, control_fd)
-        or fcntl.fcntl(grant_fd, fcntl.F_GETFL) & os.O_PATH != os.O_PATH
-        or fcntl.fcntl(grant_fd, fcntl.F_GETFD) & fcntl.FD_CLOEXEC == 0
-    ):
-        _fail("B2-B cgroup.kill pin or distinct CONTROL O_PATH grant changed")
+    _verify_retained_b2b_authority_under_locks(session)
     assert session._genesis is not None
     assert session._permit is not None
     return {
@@ -1895,6 +1950,393 @@ def _close_managed_slot(session: H1GuardianRuntimeGenesisV1, slot: str) -> OSErr
     return _close_final_witness(session, slot)
 
 
+def _verify_v16_permit_consumption_record(record: Any) -> dict[str, Any]:
+    raw = getattr(record, "canonical_bytes", None)
+    record_id = getattr(record, "record_id", None)
+    if type(raw) is not bytes or type(record_id) is not str:
+        _fail("B2-B consumed cleanup lacks one exact permit-consumption record")
+    try:
+        document = ids_v1.loads_canonical_json(raw)
+    except (TypeError, ValueError) as error:
+        raise ConstructionK7H1GuardianRuntimeGenesisV1Error(
+            "B2-B permit-consumption record is not canonical JSON"
+        ) from error
+    if type(document) is not dict or ids_v1.canonical_json_bytes(document) != raw:
+        _fail("B2-B permit-consumption record is not one canonical object")
+    payload = dict(document)
+    supplied = payload.pop("actual_process_birth_permit_consumption_id", None)
+    if (
+        supplied != record_id
+        or type(supplied) is not str
+        or domains_v16.extension_content_id_v16(
+            domains_v16.CONSTRUCTION_K7_H1_SUPERVISOR_BIRTH_PERMIT_CONSUMPTION_V1_DOMAIN,
+            payload,
+        )
+        != supplied
+        or document.get("schema")
+        != "acfqp.k7_h1_supervisor_birth_permit_consumption.v1"
+        or document.get("schema_version") != SCHEMA_VERSION
+        or document.get("permit_state_before") != "TAKEN_OVER_UNCONSUMED"
+        or document.get("permit_state_after") != "CONSUME_COMMITTED"
+        or document.get("target_role") != "SUPERVISOR"
+        or document.get("target_leaf") != "CONTROL"
+    ):
+        _fail("B2-B permit-consumption record identity or semantics changed")
+    return document
+
+
+def _verify_v15_clone_rejection_attestation(
+    record: Any,
+    *,
+    permit_consumption_document: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Verify the exact no-child native edge before issuing that barrier."""
+
+    raw = getattr(record, "canonical_bytes", None)
+    record_id = getattr(record, "record_id", None)
+    if type(raw) is not bytes or type(record_id) is not str:
+        _fail("B2-B clone rejection lacks one exact durable attestation")
+    try:
+        document = ids_v1.loads_canonical_json(raw)
+    except (TypeError, ValueError) as error:
+        raise ConstructionK7H1GuardianRuntimeGenesisV1Error(
+            "B2-B clone-rejection attestation is not canonical JSON"
+        ) from error
+    payload = dict(document)
+    supplied = payload.pop(
+        "actual_observed_e3_v2_protocol_failure_closure_id", None
+    )
+    edge = document.get("native_parent_edge")
+    clone_result = edge.get("clone_result") if type(edge) is dict else None
+    rejected_pidfd_cell_is_closed = (
+        edge.get("rejected_pidfd_cell_is_closed")
+        if type(edge) is dict
+        else None
+    )
+    if (
+        ids_v1.canonical_json_bytes(document) != raw
+        or supplied != record_id
+        or type(supplied) is not str
+        or domains_v15.extension_content_id_v15(
+            domains_v15.CONSTRUCTION_K7_H1_ACTUAL_OBSERVED_E3_V2_PROTOCOL_FAILURE_CLOSURE_V1_DOMAIN,
+            payload,
+        )
+        != supplied
+        or document.get("schema")
+        != "acfqp.k7_h1_actual_observed_e3_v2_protocol_failure_closure.v1"
+        or document.get("schema_version") != SCHEMA_VERSION
+        or document.get("actual_process_birth_permit_consumption_id")
+        != permit_consumption_document.get(
+            "actual_process_birth_permit_consumption_id"
+        )
+        or document.get("guardian_session_genesis_id")
+        != permit_consumption_document.get("guardian_session_genesis_id")
+        or document.get("runtime_successor_id")
+        != permit_consumption_document.get("runtime_successor_id")
+        or document.get("failure_reason")
+        != "CLONE3_REJECTED_AFTER_DURABLE_PERMIT_CONSUMPTION"
+        or document.get("permit_was_consumed") is not True
+        or document.get("clone_syscall_performed") is not True
+        or document.get("actual_process_birth_present") is not False
+        or document.get("pidfd_issued") is not False
+        or document.get("process_death_or_reap_present") is not False
+        or document.get("peak_read_present") is not False
+        or document.get("unconsumed_revoke_forbidden") is not True
+        or document.get("terminal_class")
+        != "ATTEMPT_CLOSURE_NONCERTIFICATE"
+        or document.get("terminal_code") != "PROTOCOL_FAILURE"
+        or type(edge) is not dict
+        or type(clone_result) is not int
+        or not -4095 <= clone_result <= -1
+        or edge.get("native_return") != clone_result
+        or edge.get("status_bits") != 61
+        or edge.get("first_cleanup_error") != 0
+        or edge.get("reserved_zero") != 0
+        or edge.get("child_gate_source_close_errno") != 0
+        or rejected_pidfd_cell_is_closed != 1
+    ):
+        _fail("B2-B clone-rejection attestation semantics changed")
+    return document
+
+
+def _persist_consumed_barrier_if_needed(
+    session: H1GuardianRuntimeGenesisV1,
+    *,
+    permit_consumption_document: Mapping[str, Any],
+    rejection_document: Mapping[str, Any] | None,
+    postrun_evidence: e5a_v1.H1RouteWidePostrunCleanupEvidenceV1 | None,
+    failed_birth_evidence: (
+        e5a_v1.H1RouteWideFailedBirthCleanupEvidenceV1 | None
+    ),
+) -> H1GuardianRuntimeRecordV1:
+    assert session._permit_record is not None
+    assert session._intent is not None
+    assert session._genesis is not None
+    runtime = session._runtime
+    consumption_id = _cid(
+        permit_consumption_document.get(
+            "actual_process_birth_permit_consumption_id"
+        ),
+        "B2-B permit-consumption record",
+    )
+    if (
+        permit_consumption_document.get("guardian_session_genesis_id")
+        != session._genesis.record_id
+        or permit_consumption_document.get("actual_process_birth_intent_id")
+        != session._intent.record_id
+        or permit_consumption_document.get("actual_process_birth_permit_id")
+        != session._permit_record.record_id
+        or permit_consumption_document.get("runtime_successor_id")
+        != runtime.successor_id
+    ):
+        _fail("B2-B consumed cleanup crossed its session or runtime")
+    evidence_document = (
+        None if postrun_evidence is None else postrun_evidence.to_document()
+    )
+    failure_document = (
+        None
+        if failed_birth_evidence is None
+        else failed_birth_evidence.to_document()
+    )
+    if sum(
+        item is not None
+        for item in (rejection_document, evidence_document, failure_document)
+    ) != 1:
+        _fail("B2-B consumed cleanup barrier category is ambiguous")
+    if evidence_document is not None:
+        outcome = "BIRTH_REAP_PEAK_COMPLETE"
+    elif failure_document is not None:
+        outcome = "BIRTH_FAILURE_KILL_REAP_NO_PEAK"
+    else:
+        outcome = "CLONE_REJECTED_NO_BIRTH"
+    payload: dict[str, Any] = {
+        "schema": "acfqp.k7_h1_guardian_runtime_consumed_cleanup_barrier.v1",
+        "schema_version": SCHEMA_VERSION,
+        "profile_key": PROFILE_KEY,
+        "guardian_session_genesis_id": session._genesis.record_id,
+        "actual_process_birth_intent_id": session._intent.record_id,
+        "actual_process_birth_permit_id": session._permit_record.record_id,
+        "actual_process_birth_permit_consumption_id": consumption_id,
+        "runtime_successor_id": runtime.successor_id,
+        "permit_state_before_cleanup": "CONSUME_COMMITTED",
+        "permit_state_after_cleanup_barrier": "CONSUMED_CLEANUP_ONLY",
+        "cleanup_outcome": outcome,
+        "unconsumed_revoke_record_issued": False,
+        "cgroup_kill_write_performed": failure_document is not None,
+        "production_full_execution_source_closure_present": False,
+        "external_preregistration_anchor_present": False,
+        "actual_observed_e3_v2_completion_present": False,
+        "production_shared_resource_receipts_present": False,
+        "fq11_counter_completeness_present": False,
+        "formal_counter_records_issued": False,
+        "formal_work_vector_issued": False,
+        "formal_comparison_vector_issued": False,
+        "formal_actual_projection_proof_issued": False,
+        "current_access_authority_present": False,
+        "formal_v7_authority_present": False,
+        "official_execution_allowed": False,
+        "official_scalar_cost": None,
+        "official_N_break_even": None,
+        "COUNTER_COMPLETENESS_GATE": "NOT_RUN",
+        "WORKLOAD_ECONOMICS_GATE": "NOT_RUN",
+    }
+    if rejection_document is not None:
+        payload.update(
+            {
+                "actual_observed_e3_v2_protocol_failure_closure_id": (
+                    rejection_document[
+                        "actual_observed_e3_v2_protocol_failure_closure_id"
+                    ]
+                ),
+                "native_parent_edge": rejection_document["native_parent_edge"],
+                "clone_syscall_performed": True,
+                "clone_result_positive": False,
+                "actual_process_birth_present": False,
+                "process_death_or_reap_present": False,
+                "peak_read_present": False,
+                "actual_peak_issued": False,
+            }
+        )
+    elif evidence_document is not None:
+        payload.update(
+            {
+                "actual_process_birth_observation_id": evidence_document[
+                    "actual_process_birth_observation_id"
+                ],
+                "actual_process_creator_reap_attestation_id": evidence_document[
+                    "actual_process_creator_reap_attestation_id"
+                ],
+                "bounded_supervisor_birth_peak_observation_id": evidence_document[
+                    "bounded_supervisor_birth_peak_observation_id"
+                ],
+                "child_pid": evidence_document["child_pid"],
+                "clone_syscall_performed": True,
+                "clone_result_positive": True,
+                "actual_process_birth_present": True,
+                "process_death_or_reap_present": True,
+                "peak_read_present": True,
+                "actual_peak_issued": True,
+                "bounded_actual_peak_bytes": evidence_document[
+                    "memory_peak_bytes"
+                ],
+            }
+        )
+    else:
+        assert failure_document is not None
+        payload.update(
+            {
+                "actual_observed_e3_v2_protocol_failure_closure_id": (
+                    failure_document[
+                        "actual_observed_e3_v2_protocol_failure_closure_id"
+                    ]
+                ),
+                "primary_failure_stage": failure_document[
+                    "primary_failure_stage"
+                ],
+                "child_pid": failure_document["child_pid"],
+                "clone_syscall_performed": True,
+                "clone_result_positive": True,
+                "actual_process_birth_present": True,
+                "cgroup_kill_written": True,
+                "process_death_or_reap_present": True,
+                "peak_read_started": False,
+                "peak_read_present": False,
+                "actual_peak_issued": False,
+                "primary_peak_read_count": 0,
+                "witness_peak_read_count": 0,
+            }
+        )
+    return _persist_record(
+        session,
+        domain=(
+            domains_v17.CONSTRUCTION_K7_H1_GUARDIAN_RUNTIME_CONSUMED_CLEANUP_BARRIER_V1_DOMAIN
+        ),
+        id_field="guardian_runtime_consumed_cleanup_barrier_id",
+        event=(
+            "CONSUMED_PERMIT_CLONE_REJECTED_CLEANUP_BARRIER"
+            if rejection_document is not None
+            else (
+                "CONSUMED_PERMIT_FAILED_BIRTH_CLEANUP_BARRIER"
+                if failure_document is not None
+                else "CONSUMED_PERMIT_POSTRUN_CLEANUP_BARRIER"
+            )
+        ),
+        target_field="_consumed_barrier",
+        payload=payload,
+    )
+
+
+def _verify_consumed_barrier_matches(
+    session: H1GuardianRuntimeGenesisV1,
+    *,
+    permit_consumption_document: Mapping[str, Any],
+    rejection_document: Mapping[str, Any] | None,
+    postrun_evidence: e5a_v1.H1RouteWidePostrunCleanupEvidenceV1 | None,
+    failed_birth_evidence: (
+        e5a_v1.H1RouteWideFailedBirthCleanupEvidenceV1 | None
+    ),
+) -> None:
+    record = session._consumed_barrier
+    if type(record) is not H1GuardianRuntimeRecordV1:
+        _fail("B2-B consumed cleanup lost its durable barrier")
+    document = record.to_document()
+    payload = dict(document)
+    supplied = payload.pop("guardian_runtime_consumed_cleanup_barrier_id", None)
+    expected_peak = (
+        None
+        if postrun_evidence is None
+        else postrun_evidence.to_document()[
+            "bounded_supervisor_birth_peak_observation_id"
+        ]
+    )
+    expected_rejection = (
+        None
+        if rejection_document is None
+        else rejection_document[
+            "actual_observed_e3_v2_protocol_failure_closure_id"
+        ]
+    )
+    expected_failure = (
+        None
+        if failed_birth_evidence is None
+        else failed_birth_evidence.to_document()[
+            "actual_observed_e3_v2_protocol_failure_closure_id"
+        ]
+    )
+    expected_protocol_failure = (
+        expected_rejection if expected_rejection is not None else expected_failure
+    )
+    expected_outcome = (
+        "BIRTH_REAP_PEAK_COMPLETE"
+        if postrun_evidence is not None
+        else (
+            "BIRTH_FAILURE_KILL_REAP_NO_PEAK"
+            if failed_birth_evidence is not None
+            else "CLONE_REJECTED_NO_BIRTH"
+        )
+    )
+    if (
+        supplied != record.record_id
+        or domains_v17.extension_content_id_v17(
+            domains_v17.CONSTRUCTION_K7_H1_GUARDIAN_RUNTIME_CONSUMED_CLEANUP_BARRIER_V1_DOMAIN,
+            payload,
+        )
+        != supplied
+        or document.get("actual_process_birth_permit_consumption_id")
+        != permit_consumption_document.get(
+            "actual_process_birth_permit_consumption_id"
+        )
+        or document.get("bounded_supervisor_birth_peak_observation_id")
+        != expected_peak
+        or document.get(
+            "actual_observed_e3_v2_protocol_failure_closure_id"
+        )
+        != expected_protocol_failure
+        or document.get("cleanup_outcome") != expected_outcome
+        or document.get("cgroup_kill_write_performed")
+        is not (failed_birth_evidence is not None)
+        or document.get("unconsumed_revoke_record_issued") is not False
+    ):
+        _fail("B2-B consumed cleanup barrier identity changed")
+
+
+def _close_retained_b2b_authority_under_locks(
+    session: H1GuardianRuntimeGenesisV1,
+) -> None:
+    """Use the one registered B2-B close order for every cleanup branch."""
+
+    close_order = ["grant:SUPERVISOR:CONTROL"]
+    close_order.extend(
+        slot
+        for slot in session._fd_order
+        if slot.startswith("source:")
+        or slot.startswith("namespace:")
+        or slot == "guardian:exe"
+    )
+    close_order.extend(
+        slot for slot in session._fd_order if slot.startswith("journal-record:")
+    )
+    close_order.append("journal:directory")
+    close_order.append("cgroup:kill")
+    first_error: OSError | None = None
+    seen: set[str] = set()
+    for slot in close_order:
+        if slot in seen:
+            continue
+        seen.add(slot)
+        error = _close_managed_slot(session, slot)
+        if first_error is None and error is not None:
+            first_error = error
+    if first_error is not None or any(
+        descriptor >= 0 for descriptor in session._fd_slots.values()
+    ):
+        raise RuntimeError(
+            "B2-B cleanup retained same-OFD close quarantine"
+        ) from first_error
+    if any(record.owner is session for record in _MANAGED_FDS.values()):
+        _fail("B2-B cleanup left a descriptor ownership record")
+
+
 def _persist_revoke_if_needed(session: H1GuardianRuntimeGenesisV1) -> None:
     if session._revoke is not None:
         return
@@ -1920,6 +2362,53 @@ def _persist_revoke_if_needed(session: H1GuardianRuntimeGenesisV1) -> None:
         domain=domains_v15.CONSTRUCTION_K7_H1_ACTUAL_OBSERVED_E3_V2_NATIVE_CLEANUP_BARRIER_V1_DOMAIN,
         id_field="native_cleanup_barrier_id",
         event="SUPERVISOR_PERMIT_REVOKED",
+        target_field="_revoke",
+        payload=payload,
+    )
+
+
+def _persist_companion_unconsumed_revoke_if_needed(
+    session: H1GuardianRuntimeGenesisV1,
+) -> None:
+    """Persist the same V15 no-birth revoke after companion escrow."""
+
+    if session._revoke is not None:
+        document = session._revoke.to_document()
+        if (
+            document.get("companion_takeover_state_before_revoke")
+            != "COMPANION_ESCROW_UNCONSUMED"
+            or document.get("actual_process_birth_permit_consumption_present")
+            is not False
+        ):
+            _fail("B2-B companion-unconsumed revoke identity changed")
+        return
+    assert session._permit_record is not None
+    assert session._intent is not None
+    assert session._genesis is not None
+    payload = {
+        "schema": "acfqp.k7_h1_guardian_runtime_native_cleanup_barrier.v1",
+        "schema_version": SCHEMA_VERSION,
+        "profile_key": PROFILE_KEY,
+        "guardian_session_genesis_id": session._genesis.record_id,
+        "actual_process_birth_intent_id": session._intent.record_id,
+        "actual_process_birth_permit_id": session._permit_record.record_id,
+        "permit_state_before_revoke": "ISSUED_UNCONSUMED",
+        "permit_state_after_revoke": "REVOKED_BEFORE_CONSUMPTION",
+        "companion_takeover_state_before_revoke": (
+            "COMPANION_ESCROW_UNCONSUMED"
+        ),
+        "permit_object_escrowed_by_companion": True,
+        "actual_process_birth_permit_consumption_present": False,
+        "durable_revoke_precedes_descriptor_cleanup": True,
+        "clone_or_process_birth_performed": False,
+        "cgroup_kill_write_performed": False,
+        **_locked_claims(),
+    }
+    session._revoke = _persist_record(
+        session,
+        domain=domains_v15.CONSTRUCTION_K7_H1_ACTUAL_OBSERVED_E3_V2_NATIVE_CLEANUP_BARRIER_V1_DOMAIN,
+        id_field="native_cleanup_barrier_id",
+        event="COMPANION_ESCROW_UNCONSUMED_PERMIT_REVOKED",
         target_field="_revoke",
         payload=payload,
     )
@@ -1961,42 +2450,7 @@ def close_h1_guardian_runtime_genesis_v1(
                                 session._state = "CLEANUP_PENDING"
                                 _LIVE_SESSIONS.pop(id(session), None)
                                 _QUARANTINED_SESSIONS[id(session)] = session
-                            close_order = ["grant:SUPERVISOR:CONTROL"]
-                            close_order.extend(
-                                slot
-                                for slot in session._fd_order
-                                if slot.startswith("source:")
-                                or slot.startswith("namespace:")
-                                or slot == "guardian:exe"
-                            )
-                            close_order.extend(
-                                slot
-                                for slot in session._fd_order
-                                if slot.startswith("journal-record:")
-                            )
-                            close_order.append("journal:directory")
-                            close_order.append("cgroup:kill")
-                            first_error: OSError | None = None
-                            seen: set[str] = set()
-                            for slot in close_order:
-                                if slot in seen:
-                                    continue
-                                seen.add(slot)
-                                error = _close_managed_slot(session, slot)
-                                if first_error is None and error is not None:
-                                    first_error = error
-                            if first_error is not None or any(
-                                descriptor >= 0
-                                for descriptor in session._fd_slots.values()
-                            ):
-                                raise RuntimeError(
-                                    "B2-B cleanup retained same-OFD close quarantine"
-                                ) from first_error
-                            if any(
-                                record.owner is session
-                                for record in _MANAGED_FDS.values()
-                            ):
-                                _fail("B2-B cleanup left a descriptor ownership record")
+                            _close_retained_b2b_authority_under_locks(session)
                             if runtime._state == "RUNNING":
                                 runtime._state = "CLEANUP_PENDING"
                                 b2a_v1._LIVE_RUNTIME_LEASES.pop(id(runtime), None)
@@ -2076,6 +2530,438 @@ def close_h1_guardian_runtime_genesis_v1(
     return closure
 
 
+def close_h1_guardian_runtime_companion_unconsumed_v1(
+    session: H1GuardianRuntimeGenesisV1,
+) -> b2a_v1.H1E5ARuntimeLeaseClosureV1:
+    """Revoke a companion-escrowed permit before any durable consumption."""
+
+    if type(session) is not H1GuardianRuntimeGenesisV1 or not _same_owner(session):
+        _fail("B2-B companion-unconsumed cleanup requires one exact owner session")
+    if session._state == "CLOSED" and session._b2a_closure is not None:
+        if session._revoke is None:
+            _fail("B2-B closed companion cleanup lost its revoke")
+        _persist_companion_unconsumed_revoke_if_needed(session)
+        return session._b2a_closure
+    runtime = session._runtime
+    source = runtime._source_lease
+    ready_for_b2a = False
+    already_closed_closure: b2a_v1.H1E5ARuntimeLeaseClosureV1 | None = None
+    original_mask = e5a_v1._block_fd_publication_signals()
+    try:
+        with _B2B_LOCK:
+            with b2a_v1._ADAPTER_LOCK:
+                with source._lock:
+                    with runtime._lock:
+                        with e5a_v1._FD_OWNERSHIP_LOCK:
+                            _validate_live_code_closure()
+                            if (
+                                session._state
+                                not in {
+                                    "COMPANION_ESCROW_UNCONSUMED",
+                                    "CLEANUP_PENDING",
+                                }
+                                or _QUARANTINED_SESSIONS.get(id(session))
+                                is not session
+                                or _RUNTIME_RESERVATIONS.get(id(runtime))
+                                is not session
+                                or session._permit is not None
+                                or session._permit_record is None
+                                or session._consumed_barrier is not None
+                                or runtime._state
+                                not in {"RUNNING", "CLEANUP_PENDING", "CLOSED"}
+                            ):
+                                _fail(
+                                    "B2-B companion-unconsumed state or registry changed"
+                                )
+                            if session._state == "COMPANION_ESCROW_UNCONSUMED":
+                                if session._pending_record is not None:
+                                    _resume_pending_record(session)
+                                b2a_v1._validate_e5a_bridge()
+                                b2a_v1._verify_source_lease_retired(runtime)
+                                b2a_v1._verify_runtime_fd_registry_unlocked(runtime)
+                                _verify_retained_b2b_authority_under_locks(session)
+                                _persist_companion_unconsumed_revoke_if_needed(session)
+                                session._state = "CLEANUP_PENDING"
+                            else:
+                                _persist_companion_unconsumed_revoke_if_needed(session)
+                            _close_retained_b2b_authority_under_locks(session)
+                            if runtime._state == "RUNNING":
+                                runtime._state = "CLEANUP_PENDING"
+                                b2a_v1._LIVE_RUNTIME_LEASES.pop(id(runtime), None)
+                                b2a_v1._QUARANTINED_RUNTIME_LEASES[
+                                    id(runtime)
+                                ] = runtime
+                            if (
+                                runtime._state == "CLOSED"
+                                and runtime._closure is not None
+                            ):
+                                already_closed_closure = runtime._closure
+                            elif (
+                                runtime._state != "CLEANUP_PENDING"
+                                or b2a_v1._QUARANTINED_RUNTIME_LEASES.get(
+                                    id(runtime)
+                                )
+                                is not runtime
+                            ):
+                                _fail(
+                                    "B2-B companion-unconsumed handoff did not reach B2-A"
+                                )
+                            ready_for_b2a = True
+    finally:
+        e5a_v1._restore_fd_publication_signals(original_mask)
+    if not ready_for_b2a:
+        _fail("B2-B companion-unconsumed cleanup did not reach B2-A handoff")
+    b2a_error: BaseException | None = None
+    if already_closed_closure is not None:
+        closure = already_closed_closure
+    else:
+        try:
+            closure = b2a_v1.close_h1_e5a_runtime_lease_successor_v1(runtime)
+        except BaseException as error:
+            if runtime._state != "CLOSED" or runtime._closure is None:
+                raise
+            closure = runtime._closure
+            b2a_error = error
+    with _B2B_LOCK:
+        if runtime._state != "CLOSED":
+            _fail("B2-A companion-unconsumed cleanup did not close the runtime")
+        original_mask = e5a_v1._block_fd_publication_signals()
+        try:
+            def finish_closed(*, inject_fault: bool) -> None:
+                step = 0
+
+                def boundary() -> None:
+                    nonlocal step
+                    step += 1
+                    if (
+                        inject_fault
+                        and _TEST_ONLY_CLOSURE_COMMIT_FAULT_AFTER_STEP == step
+                    ):
+                        raise RuntimeError(
+                            "injected B2-B companion closure commit fault "
+                            f"after step {step}"
+                        )
+
+                session._b2a_closure = closure
+                boundary()
+                session._state = "CLOSED"
+                boundary()
+                _QUARANTINED_SESSIONS.pop(id(session), None)
+                _LIVE_SESSIONS.pop(id(session), None)
+                _RUNTIME_RESERVATIONS.pop(id(runtime), None)
+
+            try:
+                finish_closed(inject_fault=True)
+            except BaseException:
+                finish_closed(inject_fault=False)
+        finally:
+            e5a_v1._restore_fd_publication_signals(original_mask)
+    if b2a_error is not None:
+        raise b2a_error
+    return closure
+
+
+def _close_h1_guardian_runtime_after_consumption_impl_v1(
+    session: H1GuardianRuntimeGenesisV1,
+    *,
+    permit_consumption_record: Any,
+    rejection_attestation: Any | None,
+    birth_observation: Any | None,
+    creator_reap_attestation: Any | None,
+    bounded_peak_observation: Any | None,
+    failure_attestation: Any | None,
+) -> b2a_v1.H1E5ARuntimeLeaseClosureV1:
+    """Close a consumed session without ever issuing an unconsumed revoke."""
+
+    if type(session) is not H1GuardianRuntimeGenesisV1 or not _same_owner(session):
+        _fail("B2-B consumed cleanup requires one exact owner session")
+    runtime = session._runtime
+    permit_document = _verify_v16_permit_consumption_record(
+        permit_consumption_record
+    )
+    rejection_document = (
+        None
+        if rejection_attestation is None
+        else _verify_v15_clone_rejection_attestation(
+            rejection_attestation,
+            permit_consumption_document=permit_document,
+        )
+    )
+    evidence_inputs = (
+        birth_observation,
+        creator_reap_attestation,
+        bounded_peak_observation,
+    )
+    if all(item is None for item in evidence_inputs):
+        postrun_evidence = None
+    elif any(item is None for item in evidence_inputs):
+        _fail("B2-B postrun cleanup evidence is incomplete")
+    else:
+        postrun_evidence = (
+            e5a_v1.verify_h1_route_wide_postrun_cleanup_evidence_v1(
+                birth_observation=birth_observation,
+                creator_reap_attestation=creator_reap_attestation,
+                bounded_peak_observation=bounded_peak_observation,
+                expected_permit_consumption_id=(
+                    permit_document[
+                        "actual_process_birth_permit_consumption_id"
+                    ]
+                ),
+                expected_runtime_successor_id=runtime.successor_id,
+                hierarchy_document=runtime._hierarchy_document,
+            )
+        )
+    failed_birth_evidence = (
+        None
+        if failure_attestation is None
+        else e5a_v1.verify_h1_route_wide_failed_birth_cleanup_evidence_v1(
+            failure_attestation=failure_attestation,
+            expected_permit_consumption_id=(
+                permit_document["actual_process_birth_permit_consumption_id"]
+            ),
+            expected_runtime_successor_id=runtime.successor_id,
+            hierarchy_document=runtime._hierarchy_document,
+        )
+    )
+    if failed_birth_evidence is not None and (
+        failed_birth_evidence.to_document().get("guardian_session_genesis_id")
+        != permit_document.get("guardian_session_genesis_id")
+    ):
+        _fail("B2-B failed-birth evidence crossed its guardian session")
+    if sum(
+        item is not None
+        for item in (
+            rejection_document,
+            postrun_evidence,
+            failed_birth_evidence,
+        )
+    ) != 1:
+        _fail("B2-B consumed cleanup evidence category is ambiguous")
+    if session._state == "CLOSED" and session._b2a_closure is not None:
+        document = session._b2a_closure.to_document()
+        expected_peak = (
+            None
+            if postrun_evidence is None
+            else postrun_evidence.to_document()[
+                "bounded_supervisor_birth_peak_observation_id"
+            ]
+        )
+        expected_failure = (
+            None
+            if failed_birth_evidence is None
+            else failed_birth_evidence.to_document()[
+                "actual_observed_e3_v2_protocol_failure_closure_id"
+            ]
+        )
+        if (
+            document.get("bounded_supervisor_birth_peak_observation_id")
+            != expected_peak
+            or document.get(
+                "actual_observed_e3_v2_protocol_failure_closure_id"
+            )
+            != expected_failure
+        ):
+            _fail("B2-B closed consumed-cleanup evidence changed")
+        return session._b2a_closure
+    _require_postconsumed_session(session)
+    source = runtime._source_lease
+    ready_for_b2a = False
+    already_closed_closure: b2a_v1.H1E5ARuntimeLeaseClosureV1 | None = None
+    original_mask = e5a_v1._block_fd_publication_signals()
+    try:
+        with _B2B_LOCK:
+            with b2a_v1._ADAPTER_LOCK:
+                with source._lock:
+                    with runtime._lock:
+                        with e5a_v1._FD_OWNERSHIP_LOCK:
+                            _validate_live_code_closure()
+                            _require_postconsumed_session(session)
+                            if session._state == "COMPANION_CONSUME_COMMITTED":
+                                if session._pending_record is not None:
+                                    _resume_pending_record(session)
+                                b2a_v1._validate_e5a_bridge()
+                                b2a_v1._verify_source_lease_retired(runtime)
+                                b2a_v1._verify_runtime_fd_registry_unlocked(runtime)
+                                _verify_retained_b2b_authority_under_locks(session)
+                                if postrun_evidence is None:
+                                    if runtime._state != "RUNNING":
+                                        _fail("B2-B no-peak runtime left RUNNING")
+                                elif runtime._state != "PEAK_READ":
+                                    _fail("B2-B postrun runtime left PEAK_READ")
+                                session._consumed_barrier = (
+                                    _persist_consumed_barrier_if_needed(
+                                        session,
+                                        permit_consumption_document=permit_document,
+                                        rejection_document=rejection_document,
+                                        postrun_evidence=postrun_evidence,
+                                        failed_birth_evidence=failed_birth_evidence,
+                                    )
+                                )
+                                session._state = "POSTCONSUMPTION_CLEANUP_PENDING"
+                            else:
+                                _verify_consumed_barrier_matches(
+                                    session,
+                                    permit_consumption_document=permit_document,
+                                    rejection_document=rejection_document,
+                                    postrun_evidence=postrun_evidence,
+                                    failed_birth_evidence=failed_birth_evidence,
+                                )
+                            _close_retained_b2b_authority_under_locks(session)
+                            if postrun_evidence is None and runtime._state == "RUNNING":
+                                runtime._state = "CLEANUP_PENDING"
+                                b2a_v1._LIVE_RUNTIME_LEASES.pop(id(runtime), None)
+                                b2a_v1._QUARANTINED_RUNTIME_LEASES[id(runtime)] = runtime
+                            if runtime._state == "CLOSED" and runtime._closure is not None:
+                                already_closed_closure = runtime._closure
+                            elif postrun_evidence is None:
+                                if (
+                                    runtime._state != "CLEANUP_PENDING"
+                                    or b2a_v1._QUARANTINED_RUNTIME_LEASES.get(
+                                        id(runtime)
+                                    )
+                                    is not runtime
+                                ):
+                                    _fail("B2-B no-peak handoff did not reach B2-A")
+                            elif runtime._state == "PEAK_READ":
+                                if (
+                                    b2a_v1._LIVE_RUNTIME_LEASES.get(id(runtime))
+                                    is not runtime
+                                ):
+                                    _fail("B2-B postrun PEAK_READ registry changed")
+                            elif (
+                                runtime._state != "CLEANUP_PENDING"
+                                or b2a_v1._QUARANTINED_RUNTIME_LEASES.get(
+                                    id(runtime)
+                                )
+                                is not runtime
+                            ):
+                                _fail("B2-B postrun handoff left its retryable states")
+                            ready_for_b2a = True
+    finally:
+        e5a_v1._restore_fd_publication_signals(original_mask)
+    if not ready_for_b2a:
+        _fail("B2-B consumed cleanup did not reach B2-A handoff")
+    b2a_error: BaseException | None = None
+    if already_closed_closure is not None:
+        closure = already_closed_closure
+    else:
+        try:
+            if failed_birth_evidence is not None:
+                closure = (
+                    b2a_v1.close_h1_e5a_runtime_lease_successor_failed_birth_v1(
+                        runtime,
+                        evidence=failed_birth_evidence,
+                    )
+                )
+            elif postrun_evidence is None:
+                closure = b2a_v1.close_h1_e5a_runtime_lease_successor_v1(runtime)
+            else:
+                closure = b2a_v1.close_h1_e5a_runtime_lease_successor_postrun_v1(
+                    runtime,
+                    evidence=postrun_evidence,
+                )
+        except BaseException as error:
+            if runtime._state != "CLOSED" or runtime._closure is None:
+                raise
+            closure = runtime._closure
+            b2a_error = error
+    with _B2B_LOCK:
+        if runtime._state != "CLOSED":
+            _fail("B2-A consumed cleanup did not close the runtime")
+        original_mask = e5a_v1._block_fd_publication_signals()
+        try:
+            def finish_closed(*, inject_fault: bool) -> None:
+                step = 0
+
+                def boundary() -> None:
+                    nonlocal step
+                    step += 1
+                    if (
+                        inject_fault
+                        and _TEST_ONLY_CLOSURE_COMMIT_FAULT_AFTER_STEP == step
+                    ):
+                        raise RuntimeError(
+                            f"injected B2-B closure commit fault after step {step}"
+                        )
+
+                session._b2a_closure = closure
+                boundary()
+                session._state = "CLOSED"
+                boundary()
+                _QUARANTINED_SESSIONS.pop(id(session), None)
+                _LIVE_SESSIONS.pop(id(session), None)
+                _RUNTIME_RESERVATIONS.pop(id(runtime), None)
+
+            try:
+                finish_closed(inject_fault=True)
+            except BaseException:
+                finish_closed(inject_fault=False)
+        finally:
+            e5a_v1._restore_fd_publication_signals(original_mask)
+    if b2a_error is not None:
+        raise b2a_error
+    return closure
+
+
+def close_h1_guardian_runtime_after_rejected_consumption_v1(
+    session: H1GuardianRuntimeGenesisV1,
+    *,
+    permit_consumption_record: Any,
+    rejection_attestation: Any,
+) -> b2a_v1.H1E5ARuntimeLeaseClosureV1:
+    """Close after durable consumption when clone3 returned no child."""
+
+    return _close_h1_guardian_runtime_after_consumption_impl_v1(
+        session,
+        permit_consumption_record=permit_consumption_record,
+        rejection_attestation=rejection_attestation,
+        birth_observation=None,
+        creator_reap_attestation=None,
+        bounded_peak_observation=None,
+        failure_attestation=None,
+    )
+
+
+def close_h1_guardian_runtime_postrun_v1(
+    session: H1GuardianRuntimeGenesisV1,
+    *,
+    permit_consumption_record: Any,
+    birth_observation: Any,
+    creator_reap_attestation: Any,
+    bounded_peak_observation: Any,
+) -> b2a_v1.H1E5ARuntimeLeaseClosureV1:
+    """Close an exactly reaped PEAK_READ session using typed joined evidence."""
+
+    return _close_h1_guardian_runtime_after_consumption_impl_v1(
+        session,
+        permit_consumption_record=permit_consumption_record,
+        rejection_attestation=None,
+        birth_observation=birth_observation,
+        creator_reap_attestation=creator_reap_attestation,
+        bounded_peak_observation=bounded_peak_observation,
+        failure_attestation=None,
+    )
+
+
+def close_h1_guardian_runtime_after_failed_birth_v1(
+    session: H1GuardianRuntimeGenesisV1,
+    *,
+    permit_consumption_record: Any,
+    failure_attestation: Any,
+) -> b2a_v1.H1E5ARuntimeLeaseClosureV1:
+    """Close a consumed, killed and reaped birth failure with no peak read."""
+
+    return _close_h1_guardian_runtime_after_consumption_impl_v1(
+        session,
+        permit_consumption_record=permit_consumption_record,
+        rejection_attestation=None,
+        birth_observation=None,
+        creator_reap_attestation=None,
+        bounded_peak_observation=None,
+        failure_attestation=failure_attestation,
+    )
+
+
 def _before_fork() -> None:
     # Registration order makes the full before-chain B2-B -> B2-A -> E5A.
     _B2B_LOCK.acquire()
@@ -2115,7 +3001,12 @@ _SELF_CALLABLES = MappingProxyType(
             "_verify_retained_sources_and_records",
             "_require_pristine_b2a_grants",
             "_close_managed_slot",
+            "_close_retained_b2b_authority_under_locks",
             "_persist_revoke_if_needed",
+            "_persist_companion_unconsumed_revoke_if_needed",
+            "_persist_consumed_barrier_if_needed",
+            "_verify_consumed_barrier_matches",
+            "_verify_v16_permit_consumption_record",
             "_cleanup_precommit_session_v1",
             "_precommit_cleanup_is_exactly_terminal",
         )
@@ -2145,6 +3036,10 @@ __all__ = tuple(
                 "retry_h1_guardian_runtime_precommit_cleanup_v1",
                 "verify_h1_guardian_runtime_genesis_v1",
                 "close_h1_guardian_runtime_genesis_v1",
+                "close_h1_guardian_runtime_companion_unconsumed_v1",
+                "close_h1_guardian_runtime_after_rejected_consumption_v1",
+                "close_h1_guardian_runtime_after_failed_birth_v1",
+                "close_h1_guardian_runtime_postrun_v1",
             }
         )
         and not name.startswith("_")

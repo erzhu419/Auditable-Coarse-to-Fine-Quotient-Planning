@@ -56,7 +56,7 @@ COUNTER_COMPLETENESS_GATE = "NOT_RUN"
 WORKLOAD_ECONOMICS_GATE = "NOT_RUN"
 
 _EXPECTED_E5A_SOURCE_SHA256 = (
-    "768b3cae4d7ed5edadb6596e3463e54022e54cacb3522a91381c751aaefe7d56"
+    "70a32237ba72bf33aa924b65e8b45ee285090dd800ed049e66636e882d969287"
 )
 _EXPECTED_E5A_SOURCE_PATH = Path(e5a_v1.__file__).resolve(strict=True)
 _EXPECTED_E5A_LEASE_SLOTS = (
@@ -108,6 +108,10 @@ _BRIDGE_CALLABLE_NAMES = (
     "_assert_named_identity",
     "_name_missing",
     "_fstatfs_magic",
+    "close_h1_route_wide_working_set_cgroup_lease_postrun_v1",
+    "close_h1_route_wide_working_set_cgroup_lease_failed_birth_v1",
+    "verify_h1_route_wide_postrun_cleanup_evidence_v1",
+    "verify_h1_route_wide_failed_birth_cleanup_evidence_v1",
 )
 _BRIDGE_CALLABLES = MappingProxyType(
     {name: getattr(e5a_v1, name) for name in _BRIDGE_CALLABLE_NAMES}
@@ -119,6 +123,8 @@ _BRIDGE_GLOBAL_NAMES = (
     "_QUARANTINED_LEASES",
     "_OwnedFDRecordV1",
     "H1RouteWideWorkingSetCgroupLeaseV1",
+    "H1RouteWidePostrunCleanupEvidenceV1",
+    "H1RouteWideFailedBirthCleanupEvidenceV1",
     "_PROFILE",
     "_TOPOLOGY_PLAN",
     "_OS_CLOSE",
@@ -350,6 +356,8 @@ class H1E5ARuntimeLeaseSuccessorV1:
         "_source_lease",
         "_source_handed_back",
         "_handoff_phase",
+        "_postrun_cleanup_evidence",
+        "_failed_birth_cleanup_evidence",
     )
 
     def __init__(
@@ -383,6 +391,12 @@ class H1E5ARuntimeLeaseSuccessorV1:
         self._source_lease = source_lease
         self._source_handed_back = False
         self._handoff_phase = "NOT_STARTED"
+        self._postrun_cleanup_evidence: (
+            e5a_v1.H1RouteWidePostrunCleanupEvidenceV1 | None
+        ) = None
+        self._failed_birth_cleanup_evidence: (
+            e5a_v1.H1RouteWideFailedBirthCleanupEvidenceV1 | None
+        ) = None
 
     @property
     def _parent_fd(self) -> int:
@@ -537,6 +551,92 @@ def _require_runtime(
     if registry.get(id(runtime)) is not runtime:
         _fail("B2-A runtime lease is not issuer-live")
     return runtime
+
+
+def _require_postrun_runtime(
+    runtime: H1E5ARuntimeLeaseSuccessorV1,
+) -> H1E5ARuntimeLeaseSuccessorV1:
+    if type(runtime) is not H1E5ARuntimeLeaseSuccessorV1:
+        _fail("B2-A postrun cleanup requires one exact runtime lease")
+    if not _same_owner_context(runtime):
+        _fail("B2-A postrun runtime crossed its owner PID or thread")
+    if runtime._state == "PEAK_READ":
+        registry = _LIVE_RUNTIME_LEASES
+    elif runtime._state == "CLEANUP_PENDING":
+        registry = _QUARANTINED_RUNTIME_LEASES
+    else:
+        _fail("B2-A postrun runtime is not at PEAK_READ or cleanup-pending")
+    if registry.get(id(runtime)) is not runtime:
+        _fail("B2-A postrun runtime is not issuer-live")
+    return runtime
+
+
+def _bind_postrun_evidence_unlocked(
+    runtime: H1E5ARuntimeLeaseSuccessorV1,
+    evidence: e5a_v1.H1RouteWidePostrunCleanupEvidenceV1,
+) -> None:
+    if type(evidence) is not e5a_v1.H1RouteWidePostrunCleanupEvidenceV1:
+        _fail("B2-A postrun cleanup requires exact typed evidence")
+    document = evidence.to_document()
+    if (
+        document.get("runtime_successor_id") != runtime.successor_id
+        or document.get("h1_route_wide_cgroup_hierarchy_id")
+        != runtime._hierarchy_id
+    ):
+        _fail("B2-A postrun evidence crossed its runtime")
+    if runtime._failed_birth_cleanup_evidence is not None:
+        _fail("B2-A postrun evidence crossed failed-birth evidence")
+    retained = runtime._postrun_cleanup_evidence
+    if retained is None:
+        runtime._postrun_cleanup_evidence = evidence
+    elif (
+        type(retained) is not e5a_v1.H1RouteWidePostrunCleanupEvidenceV1
+        or retained.canonical_bytes != evidence.canonical_bytes
+    ):
+        _fail("B2-A postrun cleanup evidence changed during retry")
+
+
+def _require_failed_birth_runtime(
+    runtime: H1E5ARuntimeLeaseSuccessorV1,
+) -> H1E5ARuntimeLeaseSuccessorV1:
+    if type(runtime) is not H1E5ARuntimeLeaseSuccessorV1:
+        _fail("B2-A failed-birth cleanup requires one exact runtime lease")
+    if not _same_owner_context(runtime):
+        _fail("B2-A failed-birth runtime crossed its owner PID or thread")
+    if runtime._state == "RUNNING":
+        registry = _LIVE_RUNTIME_LEASES
+    elif runtime._state == "CLEANUP_PENDING":
+        registry = _QUARANTINED_RUNTIME_LEASES
+    else:
+        _fail("B2-A failed-birth runtime is not cleanup-eligible")
+    if registry.get(id(runtime)) is not runtime:
+        _fail("B2-A failed-birth runtime is not issuer-live")
+    return runtime
+
+
+def _bind_failed_birth_evidence_unlocked(
+    runtime: H1E5ARuntimeLeaseSuccessorV1,
+    evidence: e5a_v1.H1RouteWideFailedBirthCleanupEvidenceV1,
+) -> None:
+    if type(evidence) is not e5a_v1.H1RouteWideFailedBirthCleanupEvidenceV1:
+        _fail("B2-A failed-birth cleanup requires exact typed evidence")
+    document = evidence.to_document()
+    if (
+        document.get("runtime_successor_id") != runtime.successor_id
+        or document.get("h1_route_wide_cgroup_hierarchy_id")
+        != runtime._hierarchy_id
+    ):
+        _fail("B2-A failed-birth evidence crossed its runtime")
+    if runtime._postrun_cleanup_evidence is not None:
+        _fail("B2-A failed-birth evidence crossed postrun evidence")
+    retained = runtime._failed_birth_cleanup_evidence
+    if retained is None:
+        runtime._failed_birth_cleanup_evidence = evidence
+    elif (
+        type(retained) is not e5a_v1.H1RouteWideFailedBirthCleanupEvidenceV1
+        or retained.canonical_bytes != evidence.canonical_bytes
+    ):
+        _fail("B2-A failed-birth cleanup evidence changed during retry")
 
 
 def _require_live_grant(
@@ -909,9 +1009,14 @@ def _close_all_runtime_grants_unlocked(
 def _runtime_cleanup_payload(
     runtime: H1E5ARuntimeLeaseSuccessorV1,
     source_closure: Mapping[str, Any],
+    *,
+    postrun_evidence: e5a_v1.H1RouteWidePostrunCleanupEvidenceV1 | None,
+    failed_birth_evidence: (
+        e5a_v1.H1RouteWideFailedBirthCleanupEvidenceV1 | None
+    ),
 ) -> dict[str, Any]:
     hierarchy = runtime._hierarchy_document
-    return {
+    payload = {
         "schema": "acfqp.k7_h1_route_wide_runtime_lease_closure.v1",
         "schema_version": SCHEMA_VERSION,
         "proposed_contract_version": PROPOSED_CONTRACT_VERSION,
@@ -939,6 +1044,61 @@ def _runtime_cleanup_payload(
         "readiness": "CLOSED_WITHOUT_PROCESS_BIRTH_OR_PEAK_READ",
         **_locked_claims(),
     }
+    if postrun_evidence is not None:
+        evidence = postrun_evidence.to_document()
+        payload.update(
+            {
+                "actual_process_birth_observation_id": evidence[
+                    "actual_process_birth_observation_id"
+                ],
+                "actual_process_creator_reap_attestation_id": evidence[
+                    "actual_process_creator_reap_attestation_id"
+                ],
+                "bounded_supervisor_birth_peak_observation_id": evidence[
+                    "bounded_supervisor_birth_peak_observation_id"
+                ],
+                "construction_only_cleanup_without_route_birth": False,
+                "bounded_single_supervisor_birth_present": True,
+                "clone_or_process_placement_performed": True,
+                "actual_process_birth_present": True,
+                "process_death_or_reap_present": True,
+                "peak_read_present": True,
+                "route_peak_read_performed": True,
+                "actual_peak_issued": True,
+                "bounded_actual_peak_bytes": evidence["memory_peak_bytes"],
+                "readiness": "POSTRUN_CLOSED_AFTER_BOUNDED_SUPERVISOR_PEAK",
+            }
+        )
+    elif failed_birth_evidence is not None:
+        evidence = failed_birth_evidence.to_document()
+        payload.update(
+            {
+                "actual_process_birth_permit_consumption_id": evidence[
+                    "actual_process_birth_permit_consumption_id"
+                ],
+                "actual_observed_e3_v2_protocol_failure_closure_id": evidence[
+                    "actual_observed_e3_v2_protocol_failure_closure_id"
+                ],
+                "primary_failure_stage": evidence["primary_failure_stage"],
+                "child_pid": evidence["child_pid"],
+                "construction_only_cleanup_without_route_birth": False,
+                "bounded_single_supervisor_birth_present": True,
+                "clone_or_process_placement_performed": True,
+                "actual_process_birth_present": True,
+                "cgroup_kill_write_performed": True,
+                "process_death_or_reap_present": True,
+                "peak_read_started": False,
+                "peak_read_present": False,
+                "route_peak_read_performed": False,
+                "actual_peak_issued": False,
+                "memory_peak_read_count": 0,
+                "memory_peak_witness_read_count": 0,
+                "readiness": (
+                    "POSTRUN_CLOSED_AFTER_BIRTH_FAILURE_KILL_REAP_NO_PEAK"
+                ),
+            }
+        )
+    return payload
 
 
 def _handback_runtime_to_e5a_cleanup_unlocked(
@@ -1037,25 +1197,70 @@ def _handback_runtime_to_e5a_cleanup_unlocked(
         e5a_v1._restore_fd_publication_signals(original_mask)
 
 
-def close_h1_e5a_runtime_lease_successor_v1(
+def _close_h1_e5a_runtime_lease_successor_impl_v1(
     runtime: H1E5ARuntimeLeaseSuccessorV1,
+    *,
+    postrun_evidence: e5a_v1.H1RouteWidePostrunCleanupEvidenceV1 | None,
+    failed_birth_evidence: (
+        e5a_v1.H1RouteWideFailedBirthCleanupEvidenceV1 | None
+    ),
 ) -> H1E5ARuntimeLeaseClosureV1:
-    """Remove/close the unused hierarchy; failures stay close-only retryable."""
+    """Shared runtime handback/closure implementation."""
 
     if type(runtime) is not H1E5ARuntimeLeaseSuccessorV1:
         _fail("B2-A cleanup requires one exact runtime lease")
+    if postrun_evidence is not None and failed_birth_evidence is not None:
+        _fail("B2-A cleanup evidence category is ambiguous")
     if runtime._state == "CLOSED" and runtime._closure is not None:
         if not _same_owner_context(runtime):
             _fail("B2-A closed runtime lease crossed its owner context")
+        if postrun_evidence is not None and (
+            runtime._closure.to_document().get(
+                "bounded_supervisor_birth_peak_observation_id"
+            )
+            != postrun_evidence.to_document().get(
+                "bounded_supervisor_birth_peak_observation_id"
+            )
+        ):
+            _fail("B2-A closed postrun evidence changed")
+        if failed_birth_evidence is not None and (
+            runtime._closure.to_document().get(
+                "actual_observed_e3_v2_protocol_failure_closure_id"
+            )
+            != failed_birth_evidence.to_document().get(
+                "actual_observed_e3_v2_protocol_failure_closure_id"
+            )
+        ):
+            _fail("B2-A closed failed-birth evidence changed")
         return runtime._closure
-    runtime = _require_runtime(runtime, cleanup=True)
+    if postrun_evidence is not None:
+        runtime = _require_postrun_runtime(runtime)
+    elif failed_birth_evidence is not None:
+        runtime = _require_failed_birth_runtime(runtime)
+    else:
+        runtime = _require_runtime(runtime, cleanup=True)
     source = runtime._source_lease
     with _ADAPTER_LOCK:
         with source._lock:
             with runtime._lock:
                 with e5a_v1._FD_OWNERSHIP_LOCK:
                     _validate_e5a_bridge()
-                    _require_runtime(runtime, cleanup=True)
+                    if postrun_evidence is None and failed_birth_evidence is None:
+                        _require_runtime(runtime, cleanup=True)
+                        if (
+                            runtime._postrun_cleanup_evidence is not None
+                            or runtime._failed_birth_cleanup_evidence is not None
+                        ):
+                            _fail("B2-A legacy cleanup crossed an evidenced runtime")
+                    elif postrun_evidence is not None:
+                        _require_postrun_runtime(runtime)
+                        _bind_postrun_evidence_unlocked(runtime, postrun_evidence)
+                    else:
+                        assert failed_birth_evidence is not None
+                        _require_failed_birth_runtime(runtime)
+                        _bind_failed_birth_evidence_unlocked(
+                            runtime, failed_birth_evidence
+                        )
                     runtime._cleanup_attempts += 1
                     try:
                         _close_all_runtime_grants_unlocked(runtime)
@@ -1067,15 +1272,34 @@ def close_h1_e5a_runtime_lease_successor_v1(
                     if not runtime._source_handed_back:
                         _verify_source_lease_retired(runtime)
                         _verify_runtime_fd_registry_unlocked(runtime)
-                        e5a_v1._verify_live_hierarchy(runtime)
+                        if (
+                            postrun_evidence is None
+                            and failed_birth_evidence is None
+                        ):
+                            e5a_v1._verify_live_hierarchy(runtime)
                     _handback_runtime_to_e5a_cleanup_unlocked(runtime)
 
     # The reviewed V1 cleanup is the sole hierarchy-removal authority.  It is
     # invoked after the adapter releases its locks; the source is already
     # irreversibly CLEANUP_PENDING in V1's quarantine registry.
-    source_closure = e5a_v1.close_h1_route_wide_working_set_cgroup_lease_v1(
-        source
-    )
+    if postrun_evidence is not None:
+        source_closure = (
+            e5a_v1.close_h1_route_wide_working_set_cgroup_lease_postrun_v1(
+                source,
+                evidence=postrun_evidence,
+            )
+        )
+    elif failed_birth_evidence is not None:
+        source_closure = (
+            e5a_v1.close_h1_route_wide_working_set_cgroup_lease_failed_birth_v1(
+                source,
+                evidence=failed_birth_evidence,
+            )
+        )
+    else:
+        source_closure = e5a_v1.close_h1_route_wide_working_set_cgroup_lease_v1(
+            source
+        )
     source_document = source_closure.to_document()
     with _ADAPTER_LOCK:
         with source._lock:
@@ -1104,7 +1328,12 @@ def close_h1_e5a_runtime_lease_successor_v1(
                         )
                     ):
                         _fail("B2-A cleanup-only E5A handoff did not close exactly")
-                    payload = _runtime_cleanup_payload(runtime, source_document)
+                    payload = _runtime_cleanup_payload(
+                        runtime,
+                        source_document,
+                        postrun_evidence=postrun_evidence,
+                        failed_birth_evidence=failed_birth_evidence,
+                    )
                     closure_id = domains_v15.extension_content_id_v15(
                         domains_v15.CONSTRUCTION_K7_H1_ROUTE_WIDE_RUNTIME_LEASE_CLOSURE_V1_DOMAIN,
                         payload,
@@ -1146,6 +1375,50 @@ def close_h1_e5a_runtime_lease_successor_v1(
                     finally:
                         e5a_v1._restore_fd_publication_signals(original_mask)
                     return closure
+
+
+def close_h1_e5a_runtime_lease_successor_v1(
+    runtime: H1E5ARuntimeLeaseSuccessorV1,
+) -> H1E5ARuntimeLeaseClosureV1:
+    """Legacy unused-hierarchy cleanup; preserve the prelaunch semantics."""
+
+    return _close_h1_e5a_runtime_lease_successor_impl_v1(
+        runtime,
+        postrun_evidence=None,
+        failed_birth_evidence=None,
+    )
+
+
+def close_h1_e5a_runtime_lease_successor_postrun_v1(
+    runtime: H1E5ARuntimeLeaseSuccessorV1,
+    *,
+    evidence: e5a_v1.H1RouteWidePostrunCleanupEvidenceV1,
+) -> H1E5ARuntimeLeaseClosureV1:
+    """Hand back after PEAK_READ without replaying live-hierarchy peak reads."""
+
+    if type(evidence) is not e5a_v1.H1RouteWidePostrunCleanupEvidenceV1:
+        _fail("B2-A postrun cleanup requires exact typed evidence")
+    return _close_h1_e5a_runtime_lease_successor_impl_v1(
+        runtime,
+        postrun_evidence=evidence,
+        failed_birth_evidence=None,
+    )
+
+
+def close_h1_e5a_runtime_lease_successor_failed_birth_v1(
+    runtime: H1E5ARuntimeLeaseSuccessorV1,
+    *,
+    evidence: e5a_v1.H1RouteWideFailedBirthCleanupEvidenceV1,
+) -> H1E5ARuntimeLeaseClosureV1:
+    """Hand back a killed/reaped failed birth without reading memory.peak."""
+
+    if type(evidence) is not e5a_v1.H1RouteWideFailedBirthCleanupEvidenceV1:
+        _fail("B2-A failed-birth cleanup requires exact typed evidence")
+    return _close_h1_e5a_runtime_lease_successor_impl_v1(
+        runtime,
+        postrun_evidence=None,
+        failed_birth_evidence=evidence,
+    )
 
 
 def _before_fork() -> None:
@@ -1216,7 +1489,9 @@ __all__ = (
     "SLOT_TO_LEAF",
     "WORKLOAD_ECONOMICS_GATE",
     "close_h1_e5a_nonlaunchable_leaf_candidate_v1",
+    "close_h1_e5a_runtime_lease_successor_failed_birth_v1",
     "close_h1_e5a_runtime_lease_successor_v1",
+    "close_h1_e5a_runtime_lease_successor_postrun_v1",
     "consume_h1_e5a_runtime_lease_successor_v1",
     "frozen_e5a_runtime_bridge_manifest_v1",
     "issue_h1_e5a_nonlaunchable_leaf_candidate_v1",
