@@ -5129,6 +5129,30 @@ atomic receipt/event authority and all output, launch, mount and same-OFD peak
 semantics before any owner operation can exist. No execution, vector,
 terminal or Gate is authorized.
 
+## V0-110B-2E-48E-C-D H1 failed-prefix cleanup budget admission
+
+Contract `2.0.59-E-C-D` freezes before normal ordinal 1 the exact cleanup
+budget required by the complete C-B failure universe. It derives 112
+registered branches, 111 dispatcher-reachable branches and the exact
+componentwise maxima `RESOLVE/REAP/MOUNT_CLOSE/MEMORY_RELEASE/OUTPUT_RELEASE =
+1/2/10/1/1`; caller availability must cover every component rather than only
+the scalar total 15.
+
+Admission requires one live `PHASE -> GATE -> NORMAL` lease and retains stable
+read-only `OWNER -> V6 receipt` through the immutable publication. The live
+gate must remain pristine `OPEN`, Owner must equal the C-B preadmission cutoff,
+and V6 must remain its real twelve-slot genesis allocation. V5 remains an
+explicit prospective typed-null baseline because its selected failure action
+and failure-time cutoff do not yet exist.
+
+Normal, Owner and V6 repairable frontiers are rejected without repair. The
+phase base, admission root and attempt directory are descriptor/inode bound;
+the immutable primary/seal pair accepts only the exact one-link recovery or
+two-link stable topology and rejects foreign hard links before recovery.
+This admits construction tokens only. It executes no cleanup, issues no FQ11
+counter or formal vector, and opens no current-access, V7, production,
+official or economics authority.
+
 ## Change log
 
 - **2026-07-19 — 0.1.0:** Transcribed and closed the V0 construction contract from the Normative Decision Addendum and the V0 preconstruction audit. Added the deterministic policy-class and reward-normalization implementation clarifications needed for executable tests.

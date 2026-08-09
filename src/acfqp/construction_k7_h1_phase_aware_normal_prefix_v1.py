@@ -2943,12 +2943,28 @@ def _replay_journal_locked(
     *,
     repair: bool,
 ) -> _JournalState:
-    _cleanup_temps(journal_fd)
+    if repair:
+        _cleanup_temps(journal_fd)
+    elif any(name.startswith(_TEMP_PREFIX) for name in os.listdir(journal_fd)):
+        _protocol("normal-prefix read-only replay refuses an orphan temp")
     cursor_rows, tail, complete_length = _read_cursor_locked(
         cursor_fd, handle.spec.spec_id
     )
     committed_record_count = len(cursor_rows) - 1
-    _restore_sealed_records_locked(handle, root_fd, journal_fd)
+    if repair:
+        _restore_sealed_records_locked(handle, root_fd, journal_fd)
+    else:
+        present = {(o, k, r) for o, k, r, _ in _record_files(journal_fd)}
+        sealed = {
+            (o, k, r)
+            for o, k, r, _ in _root_seals_for_attempt(
+                root_fd, handle.route_attempt_id
+            )
+        }
+        if not sealed.issubset(present):
+            _protocol(
+                "normal-prefix read-only replay refuses sealed-record restoration"
+            )
     files = _record_files(journal_fd)
     intents: list[dict[str, Any]] = []
     callbacks: dict[int, dict[str, Any]] = {}
@@ -3143,6 +3159,10 @@ def _replay_journal_locked(
     if len(stable_states) == 2:
         if (stable_states[-1][0], stable_states[-1][1]) != expected_stable:
             _protocol("normal-prefix high-water transition did not reach cursor")
+        if not repair:
+            _protocol(
+                "normal-prefix read-only replay refuses adjacent high-water cleanup"
+            )
         _unlink_high_water_state(root_fd, stable_states[0][2])
         stable_states = _high_water_states(root_fd, handle)
     if (

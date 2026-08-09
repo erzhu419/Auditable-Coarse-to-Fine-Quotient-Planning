@@ -1659,6 +1659,8 @@ def _load_state_locked(
     handle: H1NativeReceiptJournalHandleV1,
     cursor_fd: int,
     normal_evidence: _NormalEvidence,
+    *,
+    repair: bool = True,
 ) -> _State:
     _require_physical_identity(handle)
     record_rows: list[tuple[int, str, str, dict[str, Any]]] = []
@@ -1719,10 +1721,14 @@ def _load_state_locked(
     ):
         _fail("native receipt immutable high-water cannot reconcile the journal")
     if raw != expected_raw:
+        if not repair:
+            _fail("native receipt read-only replay refuses a repairable cursor frontier")
         os.lseek(cursor_fd, 0, os.SEEK_END)
         _write_all(cursor_fd, expected_raw[len(raw) :])
         os.fsync(cursor_fd)
     if high < target:
+        if not repair:
+            _fail("native receipt read-only replay refuses a repairable high-water frontier")
         _publish(handle.attempt_directory / f"cursor-high-water-{target:04d}-{expected[target]['h1_native_receipt_cursor_id']}", b"")
     rows = expected
     starts: dict[str, dict[str, Any]] = {}
@@ -1814,6 +1820,7 @@ def _with_locked(
     handle: H1NativeReceiptJournalHandleV1,
     *,
     normal_evidence: _NormalEvidence | None = None,
+    repair: bool = True,
 ) -> tuple[int, int, _State]:
     if normal_evidence is None:
         normal_evidence = _load_normal_evidence(handle)
@@ -1833,8 +1840,9 @@ def _with_locked(
         os.close(lock_fd)
         _fail("opened native receipt journal lock identity changed")
     fcntl.flock(lock_fd, fcntl.LOCK_EX)
-    cursor_fd = os.open(handle.attempt_directory / _CURSOR_FILE, flags)
+    cursor_fd = -1
     try:
+        cursor_fd = os.open(handle.attempt_directory / _CURSOR_FILE, flags)
         cursor_metadata = os.fstat(cursor_fd)
         if (
             not stat.S_ISREG(cursor_metadata.st_mode)
@@ -1844,10 +1852,13 @@ def _with_locked(
             != (handle.cursor_device, handle.cursor_inode)
         ):
             _fail("opened native receipt cursor identity changed")
-        state = _load_state_locked(handle, cursor_fd, normal_evidence)
+        state = _load_state_locked(
+            handle, cursor_fd, normal_evidence, repair=repair
+        )
         return lock_fd, cursor_fd, state
     except BaseException:
-        os.close(cursor_fd)
+        if cursor_fd >= 0:
+            os.close(cursor_fd)
         fcntl.flock(lock_fd, fcntl.LOCK_UN)
         os.close(lock_fd)
         raise

@@ -6395,3 +6395,43 @@ attempt/terminal/campaign closure and complete-bundle verification remain open.
 Official execution stays false; scalar/break-even remain null; economics,
 Counter Completeness and sample efficiency remain `NOT_RUN`. See
 `specs/K7_H1_NATIVE_RESOURCE_RECEIPT_JOURNAL_V1.md`.
+
+## Contract 2.0.59-E-C-D: pre-ordinal failed-prefix cleanup budget
+
+The exact non-executable C-B failure whitelist now has one immutable budget
+admission before normal ordinal 1. The constructor independently replays all
+112 registered branches, including 111 dispatcher-reachable branches and the
+unreachable negative control, and maps every exact cleanup action to one of
+five categories. Their branchwise maxima are respectively
+`RESOLVE=1`, `REAP=2`, `MOUNT_CLOSE=10`, `MEMORY_RELEASE=1` and
+`OUTPUT_RELEASE=1`. A caller must provide every category and cannot substitute
+an equal scalar total.
+
+The admission API consumes the existing live phase-aware lease, so
+`PHASE -> GATE -> NORMAL` remains held while it acquires stable read-only
+`OWNER -> V6 receipt`. It requires the live gate to remain pristine `OPEN`,
+the stable Owner head/sequence to equal the C-B cutoff, the normal journal to
+remain before ordinal 1, and the actual issuer-owned twelve-slot V6 allocation
+to remain at genesis. V5 is represented only by a separately domain-tagged
+prospective baseline with typed-null spec/allocation IDs; no future selected
+failure action or cutoff is fabricated.
+
+All upstream observations are non-repairing. A repairable normal cursor,
+Owner WAL/pending/temp frontier or V6 cursor/high-water frontier is left for
+its owning recovery authority and causes rejection. Publication pins the
+phase base by descriptor/device/inode, serializes through a validated private
+coordination lock, and revalidates the root and attempt name-to-inode mapping.
+The admission primary and base-level seal are one immutable inode: a lone
+recovery edge must have link count one and the stable pair link count two, so
+preplanted foreign links are rejected before any recovery mutation. The
+registered primary-before-seal and seal-before-primary frontiers replay to the
+same content ID and bytes.
+
+The resulting fifteen units are construction admission tokens, not formal
+FQ11 events. This contract does not consume those units, create a cleanup
+action journal, retain or exercise a live kernel capability, run ordinals
+`41..62`, finalize/read output, close an attempt, or issue current-access, V7,
+formal vectors, terminal/campaign, production or official authority. Scalar
+and break-even remain null; economics, Counter Completeness and sample
+efficiency remain `NOT_RUN`. See
+`specs/K7_H1_FAILED_PREFIX_CLEANUP_BUDGET_ADMISSION_V1.md`.

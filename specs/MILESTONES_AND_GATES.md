@@ -5221,3 +5221,25 @@ credentials. The journal therefore issues no native cleanup, V2 integration,
 current-access, production, formal accounting or V7 authority. All official,
 scalar/economics, Counter-Completeness and sample Gates remain locked or
 `NOT_RUN`. See `specs/K7_H1_NATIVE_RESOURCE_RECEIPT_JOURNAL_V1.md`.
+
+## V0-110B-2E-48E-C-D H1 failed-prefix cleanup budget admission
+
+Contract `2.0.59-E-C-D` admits before normal ordinal 1 one exact immutable
+budget for all 112 registered and 111 reachable C-B failure branches. The
+branch rows rederive the exact cleanup pass/actions and conservative category
+maxima `1/2/10/1/1`, total 15. Availability is checked componentwise.
+
+The admission is created under the same live `PHASE -> GATE -> NORMAL` lease,
+then stable read-only `OWNER -> V6 receipt`, retained until the durable seal.
+It rechecks the pristine gate, exact Owner cutoff, normal genesis and the real
+twelve-slot V6 genesis. The eventual V5 allocation remains prospective and
+typed null. Repairable upstream frontiers, path/inode substitution, foreign
+hard links, late admission and crossed identities fail closed; registered
+single-edge primary/seal crash frontiers converge idempotently.
+
+This milestone supplies budget admission only. It does not consume a token,
+execute ordinals `41..62`, use a native capability, finalize/read output, or
+issue FQ11 accounting, current-access, V7, terminal/campaign, production or
+official authority. All economics and sample-efficiency Gates remain locked
+or `NOT_RUN`. See
+`specs/K7_H1_FAILED_PREFIX_CLEANUP_BUDGET_ADMISSION_V1.md`.
