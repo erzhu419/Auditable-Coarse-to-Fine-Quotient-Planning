@@ -5209,6 +5209,37 @@ current access, FQ11 vectors, V7, production or official authority. All
 economics, Counter-Completeness and sample-efficiency Gates remain locked or
 `NOT_RUN`.
 
+## V0-110B-2E-48E-C-E3 H1 exclusive native-resource broker
+
+Contract `2.0.59-E-C-E3` adds a separate sealed-source fresh-exec authority;
+it does not upgrade an E1/V8 `PRESENT_LIVE` receipt. The broker copies ten
+immutable source payloads into ten new sealed target memfds, retains exactly
+one master/anchor pair for each target OFD, and launches the disjoint WORKER
+and BUSINESS roles with real `clone3(CLONE_PIDFD | CLONE_PARENT_SETTID |
+CLONE_CLEAR_SIGHAND | CLONE_INTO_CGROUP)`. SCM credentials, kernel-written
+PIDs, escrow pidfds, exact post-exec FD inventories and delegated cgroup-v2
+leaf identities must agree.
+
+Both roles close their payloads, drain authenticated channels through EOF and
+are consume-reaped through `waitid(P_PIDFD)` before ordinal 41. Ordinal 42
+records the two empty leaves' maximum `memory.peak`. The single-threaded
+broker then inventories every target OFD with `kcmp(KCMP_FILE)` and closes the
+exact master/anchor pairs in reverse order at ordinals `43..52`. Only this
+path issues `BROKER_EXCLUSIVE_PRESENT` and a native cleanup barrier for
+ordinals `41..52`. The claim is last *legal* reference under the sealed
+broker/transfer ledger; no global kernel reference count, physical unmount or
+mount-resource release is claimed.
+
+Admission performs real self-cleaning pidfd/wait and subreaper probes, and
+every probe/broker/role process launch remains visible for later accounting.
+Post-launch failure receives an independent bounded cleanup window and can
+return only a typed noncertificate after broker/role reap, cgroup and caller-
+control facts are recorded; a persistent restoration failure is untyped
+fail-closed. E3 does not authorize output ordinals `53..62`, formal FQ11
+CounterRecords/vectors, current access, V7, terminal/campaign, production or
+official execution. All economics, Counter-Completeness and sample-efficiency
+Gates remain locked or `NOT_RUN`.
+
 ## Change log
 
 - **2026-07-19 — 0.1.0:** Transcribed and closed the V0 construction contract from the Normative Decision Addendum and the V0 preconstruction audit. Added the deterministic policy-class and reward-normalization implementation clarifications needed for executable tests.

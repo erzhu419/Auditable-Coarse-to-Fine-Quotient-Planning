@@ -5284,3 +5284,28 @@ recovery, attempt closure, current access, FQ11 vectors, V7, terminal/campaign,
 production and official execution remain absent. All economics and
 sample-efficiency Gates remain locked or `NOT_RUN`. See
 `specs/K7_H1_CLEANUP_ACTION_JOURNAL_V1.md`.
+
+## V0-110B-2E-48E-C-E3 H1 exclusive native-resource broker
+
+Contract `2.0.59-E-C-E3` supplies a new fresh-exec authority rather than
+promoting E1/V8 receipts. A sealed-source broker creates ten distinct sealed
+target memfds, authenticates two disjoint role launches through real clone3
+PIDFD/cgroup-v2 edges, verifies SCM credentials and exact role FD inventories,
+drains both channels through EOF, and consume-reaps both roles. Ordinals 41
+and 42 bind the exact role reaps and cgroup `memory.peak`; ordinals `43..52`
+close the broker's exact master/anchor OFD pairs in registered reverse order
+after `kcmp(KCMP_FILE)` inventory.
+
+The success disposition `BROKER_EXCLUSIVE_PRESENT` proves only the final
+legal references under the sealed program and exact transfer ledger. It does
+not claim a global kernel OFD count, physical unmount or mount-resource
+release. Real pidfd/subreaper admission probes are self-cleaning and their
+process work remains visible. Timeout and crash recovery use a separate
+cleanup window; incomplete reap/cgroup facts cannot become a success barrier,
+and persistent caller-control restoration failure is untyped fail-closed.
+
+This milestone closes native success ordinals `41..52` only. Output ordinals
+`53..62`, the output/read fixed point, FQ11 CounterRecords and vectors,
+current access, V7, terminal/campaign, production and official execution
+remain absent. All economics and sample-efficiency Gates remain locked or
+`NOT_RUN`. See `specs/K7_H1_EXCLUSIVE_NATIVE_RESOURCE_BROKER_V1.md`.

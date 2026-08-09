@@ -6496,3 +6496,46 @@ closure, current access, formal CounterRecords/vectors, V7, production or
 official execution. Scalar and break-even remain null; economics,
 Counter-Completeness and sample-efficiency stay `NOT_RUN`. See
 `specs/K7_H1_CLEANUP_ACTION_JOURNAL_V1.md`.
+
+## Contract 2.0.59-E-C-E3: exclusive native-resource broker
+
+The positive native lifecycle is now implemented by a new sealed-source
+fresh-exec broker and never by relabelling E1/V8 `PRESENT_LIVE`. Ten immutable
+caller source memfds are verified and copied into ten different broker-created
+sealed target memfds. For each target, the read-write creator is closed and
+the broker retains exactly one read-only master and one audit anchor. Source
+and target inode/OFD identities remain distinct.
+
+WORKER and BUSINESS launch sequentially through real
+`clone3(CLONE_PIDFD | CLONE_PARENT_SETTID | CLONE_CLEAR_SIGHAND |
+CLONE_INTO_CGROUP)` calls into distinct empty delegated cgroup-v2 leaves.
+Kernel SCM credentials, the clone result, shared parent-tid cell, escrow pidfd
+identity, `/proc/<pid>/cgroup`, sole `cgroup.procs` member and the exact
+post-exec FD inventory must agree. Each role executes the interpreter pinned
+and hashed through the same `/proc/self/exe` FD, closes all target aliases,
+emits one authenticated close record and drains its channel through EOF.
+
+Both role pidfds receive non-consuming and consuming `waitid(P_PIDFD)` before
+ordinal 41; ordinal 42 reads the empty leaves' maximum `memory.peak`. The
+single-threaded broker then scans its live FD table with `kcmp(KCMP_FILE)` and
+closes each exact `{master, anchor}` pair in reverse registered order at
+ordinals `43..52`. Only this full path issues the native cleanup barrier and
+`BROKER_EXCLUSIVE_PRESENT`. The exact claim is last legal reference under the
+sealed broker and transfer ledger, not a global kernel reference count,
+physical unmount, memory reclamation or mount-resource release.
+
+Missing/invalid cgroups are classified before runtime admission. Valid
+admission uses real self-cleaning pidfd/wait and state-changing-then-restored
+subreaper probes; every probe child, broker and role launch remains raw work
+for the later accounting consumer. Execution timeout never consumes the
+cleanup budget: post-launch failures obtain a separate bounded reap/cgroup
+window. Typed noncertificate closure records whether broker/role reap and
+cgroup cleanup actually completed. Prelaunch failure and persistent caller-
+control restoration failure remain untyped fail-closed boundaries.
+
+E3 emits no output ordinals `53..62`, production output leaf, joint
+output/read fixed point, formal CounterRecord, WorkVector, ComparisonVector,
+current-access authority, V7 route, terminal/campaign closure or official
+execution. Scalar and break-even stay null; economics, Counter-Completeness
+and sample-efficiency remain `NOT_RUN`. See
+`specs/K7_H1_EXCLUSIVE_NATIVE_RESOURCE_BROKER_V1.md`.
