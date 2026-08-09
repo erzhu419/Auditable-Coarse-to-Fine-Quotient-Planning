@@ -5423,6 +5423,45 @@ terminal/campaign, production or official authority exists yet.
 Scalar/break-even remain null and all Counter-Completeness, economics and
 sample-efficiency Gates remain locked or `NOT_RUN`.
 
+## V0-110B-2E-48E-C-E5B-B2-A prepared E5A lease successor
+
+Contract `2.0.59-E-C-E5B-B2-A` implements only the first ownership prerequisite
+beneath V2 slice 1. A frozen companion adapter consumes one exact issuer-live
+E5A `ACTIVE` lease and, under the compatible lock order
+`adapter -> source lease -> successor -> E5A ownership`, transfers every
+canonical FD registry record into a PID/thread-bound `PREPARED_SUCCESSOR`.
+The old lease becomes `RUNTIME_TRANSFERRED`, loses all FD slots and can never
+return to `ACTIVE`.
+
+E5A V1 remains byte-for-byte unchanged. The companion pins its reviewed
+source SHA, callable/global/layout identities and exact live registries, and
+must enter the later execution-source closure. It rejects public-API
+lookalikes, copies and registry-absent objects, but does not claim resistance
+to arbitrary hostile Python private-state mutation.
+
+At most one ephemeral candidate may be prepared for each of the five future
+slots. It contains one private `O_PATH|O_DIRECTORY|O_CLOEXEC|O_NOFOLLOW`
+descriptor for the registered leaf, exposes no public raw-FD method and is
+explicitly not a launch permit. Candidate reservation enters
+`ISSUE_PENDING` under a safe-signal shield before open; open/validation
+failure becomes `ABORTED` or retryable `CLOSE_PENDING`. E5A's reviewed
+same-OFD close machinery, unified FD registry and at-fork raw close cover the
+candidate without adding a second ownership system.
+
+Abandonment closes every candidate and hands all canonical records back only
+to the same old E5A lease in `CLEANUP_PENDING` inside the quarantine registry.
+The frozen V1 cleanup remains the sole hierarchy removal authority. Transfer,
+issue, handback and closure commit points use signal shielding, pre-reserved
+registries and idempotent finish-forward; they never restore `ACTIVE` or leave
+an unregistered FD owner.
+
+This is not the E5A runtime successor promised by slice 1: there is no source-
+closed guardian, `cgroup.kill`, launch-authorizing grant, supervisor birth,
+PID cell, pidfd/cgroup/reap observation, peak read, E3/E4 V2 or formal shared-
+resource artifact. All runtime/current-access/V7/terminal/campaign/official
+claims remain false; scalar/break-even and every economics/sample Gate remain
+null, locked or `NOT_RUN`.
+
 ## Change log
 
 - **2026-07-19 — 0.1.0:** Transcribed and closed the V0 construction contract from the Normative Decision Addendum and the V0 preconstruction audit. Added the deterministic policy-class and reward-normalization implementation clarifications needed for executable tests.

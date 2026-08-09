@@ -5401,3 +5401,20 @@ V2 authority path. Actual execution, peak, formal launch work, vectors,
 current-access/V7, terminal/campaign and every official/economics/sample Gate
 remain absent or `NOT_RUN`. See
 `specs/K7_H1_ACTUAL_OBSERVED_E3_V2.md`.
+
+## V0-110B-2E-48E-C-E5B-B2-A prepared E5A lease successor
+
+Contract `2.0.59-E-C-E5B-B2-A` closes the bounded ownership-transfer
+prerequisite: exact E5A `ACTIVE` authority moves one-way into a frozen
+companion `PREPARED_SUCCESSOR`, five private one-shot leaf candidates can be
+created and closed without public FD exposure, and abandonment hands the
+canonical records back only through E5A `CLEANUP_PENDING`. Lock ordering,
+safe-signal finish-forward, at-fork poisoning and same-OFD retry prevent the
+registered deadlock, reentrancy, FD-reuse and orphan-owner attacks.
+
+This milestone deliberately stops before V2 slice 1. A later source-closed
+guardian must add cgroup-kill authority and a distinct launch permit before
+the first real supervisor birth. Runtime, peak, formal launch/accounting,
+current-access/V7, terminal/campaign and official/economics/sample Gates stay
+false, null or `NOT_RUN`. See
+`specs/K7_H1_E5A_RUNTIME_LEASE_SUCCESSOR_V1.md`.

@@ -6661,3 +6661,25 @@ and drift tests. Runtime slices 1--5, formal shared-resource projection,
 current-access/V7, terminal/campaign and official authority are absent; all
 scalar/economics/sample Gates remain locked or `NOT_RUN`. See
 `specs/K7_H1_ACTUAL_OBSERVED_E3_V2.md`.
+
+## Contract 2.0.59-E-C-E5B-B2-A: prepared E5A lease successor
+
+One frozen companion can now irreversibly consume an exact live E5A lease and
+move its canonical FD registry ownership into an uncopyable
+`PREPARED_SUCCESSOR`. The old object becomes `RUNTIME_TRANSFERRED`; ordinary
+public verification/cleanup and any return to `ACTIVE` are impossible. The
+adapter pins the unchanged E5A source and exact callable/global/layout
+objects, while retaining the existing non-hostile-private-Python threat
+boundary.
+
+The successor can prepare one private nonlaunchable O_PATH leaf candidate per
+future process slot, with no public raw-FD accessor. Compatible lock order,
+safe-signal reservation/finish-forward, E5A's same-OFD close machinery and
+combined at-fork poisoning cover transfer, candidate and cleanup failure
+windows. Cleanup hands authority back only as E5A `CLEANUP_PENDING`, then uses
+the frozen V1 hierarchy remover.
+
+No source closure, guardian session, cgroup-kill pin, launch permit, process,
+peak, E3/E4 V2 or formal accounting authority exists. Slice 1 and all later
+current-access/V7/terminal/official/economics/sample Gates remain open or
+`NOT_RUN`. See `specs/K7_H1_E5A_RUNTIME_LEASE_SUCCESSOR_V1.md`.
