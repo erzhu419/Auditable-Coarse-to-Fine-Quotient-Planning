@@ -322,6 +322,33 @@ not a post-launch crash closure.
 
 ## Output and FQ11 interface locks
 
+### Optional output-continuation prebinding
+
+The public runner accepts an optional
+`prebound_output_continuation_context_id`.  The only accepted caller values
+are `None` or one exact lowercase 64-hex content ID.  Before broker launch,
+`None` is irreversibly normalized to:
+
+```json
+{"kind":"NOT_APPLICABLE","reason":"OUTPUT_CONTINUATION_NOT_PREBOUND"}
+```
+
+The resulting exact value is encoded in a one-field canonical-JSON broker argv
+input and is content-bound under the single field
+`prebound_output_continuation_context_id` in session genesis,
+the native cleanup barrier, completion, and any post-launch crash closure.  The
+fresh-exec broker parses only canonical JSON and echoes the value; the
+supervisor rejects a missing, malformed, wrong, or crossed echo before source
+provisioning.  Completion verification requires exact equality across genesis,
+barrier, completion, and the supervisor-held launch input.
+
+The typed null is durable evidence that no continuation identity was bound at
+launch.  A later wrapper cannot replace it in the existing artifact: doing so
+changes the content ID, and recomputing only an outer ID still fails the nested
+identity-equality checks.  Prebinding is identity plumbing only.  It does not
+authorize or execute output work and does not create a downstream continuation
+artifact or authority.
+
 E3 emits the cleanup barrier and raw native evidence only.  It does not build
 output ordinals `53..62`, resolve their output-byte fixed point, register new
 FQ11 counter semantics or issue:

@@ -29,6 +29,13 @@ def _sources() -> dict[str, bytes]:
     }
 
 
+def _not_prebound_output_context() -> dict[str, str]:
+    return {
+        "kind": "NOT_APPLICABLE",
+        "reason": "OUTPUT_CONTINUATION_NOT_PREBOUND",
+    }
+
+
 def test_v10_domains_are_additive_disjoint_and_canonical() -> None:
     assert not (
         domains_v10.K7_H1_DOMAIN_TAG_EXTENSION_V10
@@ -63,6 +70,8 @@ def test_profile_freezes_new_authority_and_all_downstream_false_flags() -> None:
     assert document["cgroup_classification_precedes_runtime_admission"] is True
     assert document["execution_cleanup_window_milliseconds"] == 5_000
     assert document["prelaunch_failure_typed_crash_closure_forbidden"] is True
+    assert document["optional_output_continuation_prebinding_present"] is True
+    assert document["output_continuation_prebinding_authorizes_output"] is False
     assert document["output_ordinals_53_to_62_authorized"] is False
     assert document["formal_counter_records_issued"] is False
     assert document["formal_work_vector_issued"] is False
@@ -371,6 +380,53 @@ def test_source_order_and_caller_minted_results_fail_closed() -> None:
         )
 
 
+@pytest.mark.parametrize(
+    "invalid_value",
+    (
+        "a" * 63,
+        "A" * 64,
+        "g" * 64,
+        "",
+        7,
+        _not_prebound_output_context(),
+    ),
+)
+def test_invalid_public_output_continuation_prebinding_fails_closed(
+    invalid_value: object,
+) -> None:
+    with pytest.raises(
+        broker_v1.ConstructionK7H1ExclusiveNativeResourceBrokerV1Error,
+        match="lowercase 64-hex or None",
+    ):
+        broker_v1.run_h1_exclusive_native_resource_broker_v1(
+            source_payloads=_sources(),
+            prebound_output_continuation_context_id=invalid_value,  # type: ignore[arg-type]
+        )
+
+
+def test_prebound_context_echo_rejects_wrong_or_crossed_identity() -> None:
+    expected = "ab" * 32
+    broker_v1._verify_prebound_output_continuation_echo(  # noqa: SLF001
+        expected, expected
+    )
+    with pytest.raises(RuntimeError, match="echo crossed launch input"):
+        broker_v1._verify_prebound_output_continuation_echo(  # noqa: SLF001
+            "cd" * 32, expected
+        )
+    with pytest.raises(RuntimeError, match="echo crossed launch input"):
+        broker_v1._verify_prebound_output_continuation_echo(  # noqa: SLF001
+            _not_prebound_output_context(), expected
+        )
+
+
+def test_absent_prebinding_normalizes_to_one_durable_typed_null() -> None:
+    first = broker_v1._normalize_prebound_output_continuation_context_id(None)  # noqa: SLF001
+    second = broker_v1._normalize_prebound_output_continuation_context_id(None)  # noqa: SLF001
+    assert first == _not_prebound_output_context()
+    assert second == _not_prebound_output_context()
+    assert first is not second
+
+
 def test_source_manifest_binds_the_current_full_fresh_exec_source() -> None:
     document = broker_v1.official_h1_exclusive_broker_source_manifest_v1().to_document()
     raw = Path(broker_v1.__file__).read_bytes()
@@ -556,6 +612,14 @@ def test_real_fresh_exec_clone3_pidfd_exclusive_cleanup_vertical_slice() -> None
     assert broker_v1._get_subreaper() == before_subreaper  # noqa: SLF001
     assert type(result) is broker_v1.H1ExclusiveBrokerCompletionV1
     document = result.to_document()
+    typed_null = _not_prebound_output_context()
+    assert document["prebound_output_continuation_context_id"] == typed_null
+    assert document["broker_session_genesis"][
+        "prebound_output_continuation_context_id"
+    ] == typed_null
+    assert document["native_cleanup_barrier"][
+        "prebound_output_continuation_context_id"
+    ] == typed_null
     assert document["h1_exclusive_broker_profile_id"] == (
         broker_v1.official_h1_exclusive_broker_profile_v1().profile_id
     )
@@ -586,6 +650,77 @@ def test_real_fresh_exec_clone3_pidfd_exclusive_cleanup_vertical_slice() -> None
         for row in document["last_legal_reference_closures"]
     )
     assert document["output_ordinals_53_to_62_authorized"] is False
+    assert document["formal_counter_records_issued"] is False
+    assert document["official_execution_allowed"] is False
+    forged = dict(document)
+    forged["prebound_output_continuation_context_id"] = "ab" * 32
+    with pytest.raises(
+        broker_v1.ConstructionK7H1ExclusiveNativeResourceBrokerV1Error,
+        match="completion content ID changed",
+    ):
+        broker_v1.H1ExclusiveBrokerCompletionV1(
+            broker_v1._RESULT_ISSUER,  # noqa: SLF001
+            canonical_json_bytes(forged),
+        )
+    crossed = dict(forged)
+    crossed_payload = dict(crossed)
+    crossed_payload.pop("h1_exclusive_broker_completion_id")
+    crossed["h1_exclusive_broker_completion_id"] = broker_v1._domain_id(  # noqa: SLF001
+        domains_v10.CONSTRUCTION_K7_H1_EXCLUSIVE_BROKER_COMPLETION_V1_DOMAIN,
+        crossed_payload,
+    )
+    with pytest.raises(
+        broker_v1.ConstructionK7H1ExclusiveNativeResourceBrokerV1Error,
+        match="completion topology changed",
+    ):
+        broker_v1.H1ExclusiveBrokerCompletionV1(
+            broker_v1._RESULT_ISSUER,  # noqa: SLF001
+            canonical_json_bytes(crossed),
+        )
+
+
+@pytest.mark.skipif(
+    not (
+        os.environ.get("ACFQP_E3_WORKER_CGROUP")
+        and os.environ.get("ACFQP_E3_BUSINESS_CGROUP")
+    ),
+    reason="two preconfigured delegated cgroup-v2 leaves were not registered",
+)
+def test_bound_output_continuation_context_propagates_without_authorizing_output() -> None:
+    context_id = "ab" * 32
+    worker_fd = os.open(
+        os.environ["ACFQP_E3_WORKER_CGROUP"],
+        os.O_RDONLY | os.O_DIRECTORY | os.O_CLOEXEC,
+    )
+    business_fd = os.open(
+        os.environ["ACFQP_E3_BUSINESS_CGROUP"],
+        os.O_RDONLY | os.O_DIRECTORY | os.O_CLOEXEC,
+    )
+    try:
+        result = broker_v1.run_h1_exclusive_native_resource_broker_v1(
+            source_payloads=_sources(),
+            worker_cgroup_fd=worker_fd,
+            business_cgroup_fd=business_fd,
+            prebound_output_continuation_context_id=context_id,
+            deadline_milliseconds=30_000,
+        )
+    finally:
+        os.close(worker_fd)
+        os.close(business_fd)
+    assert type(result) is broker_v1.H1ExclusiveBrokerCompletionV1
+    document = result.to_document()
+    assert document["prebound_output_continuation_context_id"] == context_id
+    assert document["broker_session_genesis"][
+        "prebound_output_continuation_context_id"
+    ] == context_id
+    assert document["native_cleanup_barrier"][
+        "prebound_output_continuation_context_id"
+    ] == context_id
+    assert document["output_ordinals_53_to_62_authorized"] is False
+    assert document["native_cleanup_barrier"][
+        "output_ordinals_53_to_62_authorized"
+    ] is False
+    assert document["production_output_leaf_authority_present"] is False
     assert document["formal_counter_records_issued"] is False
     assert document["official_execution_allowed"] is False
 
@@ -741,6 +876,12 @@ def test_expired_execution_deadline_gets_a_distinct_bounded_cleanup_window() -> 
 def test_real_broker_crash_is_cleanup_complete_but_never_a_barrier(
     crash_point: broker_v1.H1ExclusiveBrokerCrashPointV1,
 ) -> None:
+    prebound_context_id = (
+        "cd" * 32
+        if crash_point
+        is broker_v1.H1ExclusiveBrokerCrashPointV1.AFTER_TARGET_CREATION
+        else None
+    )
     worker_fd = os.open(
         os.environ["ACFQP_E3_WORKER_CGROUP"],
         os.O_RDONLY | os.O_DIRECTORY | os.O_CLOEXEC,
@@ -754,6 +895,7 @@ def test_real_broker_crash_is_cleanup_complete_but_never_a_barrier(
             source_payloads=_sources(),
             worker_cgroup_fd=worker_fd,
             business_cgroup_fd=business_fd,
+            prebound_output_continuation_context_id=prebound_context_id,
             deadline_milliseconds=30_000,
             crash_point=crash_point,
         )
@@ -762,6 +904,11 @@ def test_real_broker_crash_is_cleanup_complete_but_never_a_barrier(
         os.close(business_fd)
     assert type(result) is broker_v1.H1ExclusiveBrokerCrashClosureV1
     document = result.to_document()
+    assert document["prebound_output_continuation_context_id"] == (
+        prebound_context_id
+        if prebound_context_id is not None
+        else _not_prebound_output_context()
+    )
     assert document["broker_exit_status"] == 97, document
     assert document["broker_pidfd_reap_confirmed"] is True
     assert document["crash_cleanup_complete"] is True

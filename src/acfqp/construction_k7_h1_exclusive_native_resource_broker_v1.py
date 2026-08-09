@@ -120,6 +120,7 @@ _CRASH_POINTS = (
 )
 _F_DUPFD_CLOEXEC = getattr(fcntl, "F_DUPFD_CLOEXEC", 1030)
 _MSG_CMSG_CLOEXEC = getattr(socket, "MSG_CMSG_CLOEXEC", 0x40000000)
+_OUTPUT_CONTINUATION_NOT_PREBOUND_REASON = "OUTPUT_CONTINUATION_NOT_PREBOUND"
 
 # cleanup ordinal, original V6 normal ordinal, site key, role
 PAYLOAD_SLOTS: tuple[tuple[int, int, str, str], ...] = (
@@ -290,6 +291,20 @@ def _json_bytes(value: Any) -> bytes:
         ensure_ascii=False,
         allow_nan=False,
     ).encode("utf-8")
+
+
+def _not_prebound_output_continuation_context() -> dict[str, str]:
+    return {
+        "kind": "NOT_APPLICABLE",
+        "reason": _OUTPUT_CONTINUATION_NOT_PREBOUND_REASON,
+    }
+
+
+def _valid_prebound_output_continuation_value(value: Any) -> bool:
+    return (
+        type(value) is str
+        and re.fullmatch(r"[0-9a-f]{64}", value) is not None
+    ) or value == _not_prebound_output_continuation_context()
 
 
 def _raw_content_id(domain: str, payload: Any) -> str:
@@ -1085,7 +1100,7 @@ def _clone_role(
 
 
 def _broker_child_main(argv: Sequence[str]) -> int:
-    if len(argv) != 13 or argv[1] != _CHILD_MODE:
+    if len(argv) != 14 or argv[1] != _CHILD_MODE:
         return 64
     control_fd = int(argv[2])
     worker_cgroup_fd = int(argv[3])
@@ -1097,11 +1112,28 @@ def _broker_child_main(argv: Sequence[str]) -> int:
     session_nonce = argv[9]
     expected_profile_id = argv[10]
     expected_source_manifest_id = argv[11]
-    crash_point = argv[12]
+    try:
+        prebinding_launch_input = json.loads(argv[12])
+    except (TypeError, ValueError):
+        return 65
+    prebound_output_continuation_context_id = (
+        prebinding_launch_input.get("prebound_output_continuation_context_id")
+        if type(prebinding_launch_input) is dict
+        else None
+    )
+    crash_point = argv[13]
     if (
         crash_point not in _CRASH_POINTS
         or re.fullmatch(r"[0-9a-f]{64}", expected_profile_id) is None
         or re.fullmatch(r"[0-9a-f]{64}", expected_source_manifest_id) is None
+        or type(prebinding_launch_input) is not dict
+        or set(prebinding_launch_input) != {
+            "prebound_output_continuation_context_id"
+        }
+        or _json_bytes(prebinding_launch_input).decode("utf-8") != argv[12]
+        or not _valid_prebound_output_continuation_value(
+            prebound_output_continuation_context_id
+        )
     ):
         return 65
     parent_pid = os.getppid()
@@ -1202,6 +1234,9 @@ def _broker_child_main(argv: Sequence[str]) -> int:
             "interpreter_execution_identity": interpreter_execution_identity,
             "h1_exclusive_broker_profile_id": expected_profile_id,
             "h1_exclusive_broker_source_manifest_id": expected_source_manifest_id,
+            "prebound_output_continuation_context_id": (
+                prebound_output_continuation_context_id
+            ),
             "test_crash_point": crash_point,
             "fresh_exec_observed": True,
             "dumpable_zero": True,
@@ -1377,6 +1412,9 @@ def _broker_child_main(argv: Sequence[str]) -> int:
             "schema_version": SCHEMA_VERSION,
             "session_nonce": session_nonce,
             "authority_disposition": "BROKER_EXCLUSIVE_PRESENT",
+            "prebound_output_continuation_context_id": (
+                prebound_output_continuation_context_id
+            ),
             "completed_normal_ordinals": list(range(41, 53)),
             "ordinal_41_event": ordinal_41,
             "ordinal_42_event": ordinal_42,
@@ -1401,6 +1439,9 @@ def _broker_child_main(argv: Sequence[str]) -> int:
             "authority_disposition": "BROKER_EXCLUSIVE_PRESENT",
             "h1_exclusive_broker_profile_id": expected_profile_id,
             "h1_exclusive_broker_source_manifest_id": expected_source_manifest_id,
+            "prebound_output_continuation_context_id": (
+                prebound_output_continuation_context_id
+            ),
             "broker_session_genesis": genesis,
             "payload_creations": creations,
             "role_launches": launches,
@@ -1511,6 +1552,24 @@ class H1ExclusiveBrokerCrashPointV1(str, Enum):
 
 def _fail(message: str) -> NoReturn:
     raise ConstructionK7H1ExclusiveNativeResourceBrokerV1Error(message)
+
+
+def _normalize_prebound_output_continuation_context_id(
+    value: str | None,
+) -> str | dict[str, str]:
+    if value is None:
+        return _not_prebound_output_continuation_context()
+    if type(value) is str and _CONTENT_ID_PATTERN.fullmatch(value) is not None:
+        return value
+    _fail("prebound output-continuation context ID is not lowercase 64-hex or None")
+
+
+def _verify_prebound_output_continuation_echo(
+    observed: Any,
+    expected: str | Mapping[str, str],
+) -> None:
+    if not _valid_prebound_output_continuation_value(observed) or observed != expected:
+        raise RuntimeError("prebound output-continuation context echo crossed launch input")
 
 
 def _cid(value: Any, label: str) -> str:
@@ -1708,6 +1767,8 @@ def _profile_payload() -> dict[str, Any]:
         "cgroup_classification_precedes_runtime_admission": True,
         "execution_cleanup_window_milliseconds": CLEANUP_TIMEOUT_MILLISECONDS,
         "prelaunch_failure_typed_crash_closure_forbidden": True,
+        "optional_output_continuation_prebinding_present": True,
+        "output_continuation_prebinding_authorizes_output": False,
         "kcmp_broker_inventory_required": True,
         "output_ordinals_53_to_62_authorized": False,
         "formal_counter_records_issued": False,
@@ -2022,6 +2083,9 @@ def _verify_completion_document(document: Mapping[str, Any]) -> None:
         document.get("h1_exclusive_broker_source_manifest_id"),
         "exclusive broker source-manifest reference",
     )
+    prebound_output_continuation_context_id = document.get(
+        "prebound_output_continuation_context_id"
+    )
     if (
         document.get("schema") != "acfqp.k7_h1_exclusive_broker_completion.v1"
         or document.get("schema_version") != SCHEMA_VERSION
@@ -2029,6 +2093,9 @@ def _verify_completion_document(document: Mapping[str, Any]) -> None:
         or profile_id != official_h1_exclusive_broker_profile_v1().profile_id
         or source_manifest_id
         != official_h1_exclusive_broker_source_manifest_v1().manifest_id
+        or not _valid_prebound_output_continuation_value(
+            prebound_output_continuation_context_id
+        )
         or document.get("authority_disposition") != "BROKER_EXCLUSIVE_PRESENT"
         or document.get("broker_exclusive_present") is not True
         or document.get("v8_present_live_used") is not False
@@ -2078,6 +2145,8 @@ def _verify_completion_document(document: Mapping[str, Any]) -> None:
         or barrier.get("completed_normal_ordinals") != list(range(41, 53))
         or barrier.get("session_nonce") != session_nonce
         or barrier.get("authority_disposition") != "BROKER_EXCLUSIVE_PRESENT"
+        or barrier.get("prebound_output_continuation_context_id")
+        != prebound_output_continuation_context_id
         or barrier.get("normal_ordinal_41_to_52_success_events_issued") is not True
         or barrier.get("native_cleanup_complete") is not True
         or barrier.get("output_ordinal_53_prerequisite_satisfied") is not True
@@ -2093,6 +2162,8 @@ def _verify_completion_document(document: Mapping[str, Any]) -> None:
         genesis.get("session_nonce") != session_nonce
         or genesis.get("h1_exclusive_broker_profile_id") != profile_id
         or genesis.get("h1_exclusive_broker_source_manifest_id") != source_manifest_id
+        or genesis.get("prebound_output_continuation_context_id")
+        != prebound_output_continuation_context_id
         or genesis.get("test_crash_point") != "NONE"
         or genesis.get("fresh_exec_observed") is not True
         or genesis.get("dumpable_zero") is not True
@@ -2323,6 +2394,7 @@ def run_h1_exclusive_native_resource_broker_v1(
     source_payloads: Mapping[str, bytes],
     worker_cgroup_fd: int | None = None,
     business_cgroup_fd: int | None = None,
+    prebound_output_continuation_context_id: str | None = None,
     deadline_milliseconds: int = 30_000,
     crash_point: H1ExclusiveBrokerCrashPointV1 = H1ExclusiveBrokerCrashPointV1.NONE,
 ) -> H1ExclusiveBrokerUnavailableV1 | H1ExclusiveBrokerCrashClosureV1 | H1ExclusiveBrokerCompletionV1:
@@ -2334,6 +2406,11 @@ def run_h1_exclusive_native_resource_broker_v1(
     directory as a positive fixture.
     """
 
+    prebound_output_continuation_context = (
+        _normalize_prebound_output_continuation_context_id(
+            prebound_output_continuation_context_id
+        )
+    )
     sources = _validate_sources(source_payloads)
     if (
         type(deadline_milliseconds) is not int
@@ -2451,6 +2528,13 @@ def run_h1_exclusive_native_resource_broker_v1(
                 session_nonce,
                 profile.profile_id,
                 source_manifest.manifest_id,
+                _json_bytes(
+                    {
+                        "prebound_output_continuation_context_id": (
+                            prebound_output_continuation_context
+                        )
+                    }
+                ).decode("utf-8"),
                 crash_point.value,
             )
             environment = {"LANG": "C", "LC_ALL": "C", "TZ": "UTC"}
@@ -2499,6 +2583,10 @@ def run_h1_exclusive_native_resource_broker_v1(
                 genesis,
                 id_name="h1_exclusive_broker_session_genesis_id",
                 domain=domains_v10.CONSTRUCTION_K7_H1_EXCLUSIVE_BROKER_SESSION_GENESIS_V1_DOMAIN,
+            )
+            _verify_prebound_output_continuation_echo(
+                genesis.get("prebound_output_continuation_context_id"),
+                prebound_output_continuation_context,
             )
             execution_identity = genesis.get("interpreter_execution_identity")
             base_broker_fds = {
@@ -2659,6 +2747,8 @@ def run_h1_exclusive_native_resource_broker_v1(
             result = H1ExclusiveBrokerCompletionV1(_RESULT_ISSUER, raw_completion)
             if (
                 result.to_document()["session_nonce"] != session_nonce
+                or result.to_document()["prebound_output_continuation_context_id"]
+                != prebound_output_continuation_context
                 or result.to_document()["h1_exclusive_broker_profile_id"]
                 != profile.profile_id
                 or result.to_document()["h1_exclusive_broker_source_manifest_id"]
@@ -2735,6 +2825,9 @@ def run_h1_exclusive_native_resource_broker_v1(
                 "h1_exclusive_broker_profile_id": profile.profile_id,
                 "h1_exclusive_broker_source_manifest_id": source_manifest.manifest_id,
                 "session_nonce": session_nonce,
+                "prebound_output_continuation_context_id": (
+                    prebound_output_continuation_context
+                ),
                 "failure_stage": failure_stage,
                 "failure_type": type(error).__name__,
                 "failure_message": str(error)[:512],
