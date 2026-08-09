@@ -5385,6 +5385,44 @@ current-access/V7, terminal/campaign, production or official authority.
 Scalar/break-even remain null and the Counter-Completeness, economics and
 sample-efficiency Gates remain locked or `NOT_RUN`.
 
+## V0-110B-2E-48E-C-E5B-B2 actual-observed E3 V2 staged contract
+
+Contract `2.0.59-E-C-E5B-B2` freezes the additive construction target that
+must replace E3 V1's internally launched topology before H1 may claim an
+actual route-wide process and working-set observation. V15 reserves 22
+disjoint content domains, but the current slice is specification-only and
+implements none of them as an issued runtime authority.
+
+The target has exactly five registered births:
+`SUPERVISOR -> PIDFD_PROBE -> BROKER -> WORKER -> BUSINESS`. The external
+guardian creates the supervisor; the live supervisor creates and reaps the
+probe and broker; the live broker creates and reaps worker and business.
+Probe reap gates broker birth and worker reap gates business birth, limiting
+the route population to three and matching E5A's frozen
+`CONTROL=2/WORKER=1/BUSINESS=1` topology.
+
+Each birth must cross a persisted one-shot permit, native gated `clone3`,
+guardian-read sealed shared PID cell, exactly one credentialled pidfd escrow,
+live retained-FD cgroup membership replay, durable birth observation and ACK
+before child release. Because a non-`CLONE_VM` child still inherits writable
+`MAP_SHARED` references, both creator and child release-stub branches must
+withdraw their writable PID-cell mappings/FDs before READY; the guardian must
+successfully apply `F_SEAL_WRITE`, with `EBUSY` failing closed.
+
+The E5A successor is one-way
+`ACTIVE -> RUNNING -> PEAK_READ -> CLOSED`. The supervisor stays alive with
+the exact E3 V2 completion and E4 V2 context, performs E4 V2 in the same
+process/thread without a sixth birth, and exits only after guardian ACK. The
+retained outer `memory.peak` OFD is read exactly once only after E4 completes,
+all five reaps close and all leaves are empty.
+
+E3/E4 V1, E5B-A and the V14 external journal remain frozen and cannot be
+relabelled. No implementation slice, actual birth, route peak,
+`process.launches`, CounterRecord/vector/projection, current-access/V7,
+terminal/campaign, production or official authority exists yet.
+Scalar/break-even remain null and all Counter-Completeness, economics and
+sample-efficiency Gates remain locked or `NOT_RUN`.
+
 ## Change log
 
 - **2026-07-19 — 0.1.0:** Transcribed and closed the V0 construction contract from the Normative Decision Addendum and the V0 preconstruction audit. Added the deterministic policy-class and reward-normalization implementation clarifications needed for executable tests.

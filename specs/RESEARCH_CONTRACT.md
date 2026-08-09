@@ -6639,3 +6639,25 @@ launch counters, CounterRecords/vectors, current-access/V7, terminal/campaign
 or official authority. Scalar/break-even and all economics/sample Gates remain
 locked or `NOT_RUN`. See
 `specs/K7_H1_EXTERNAL_PROCESS_JOURNAL_V1.md`.
+
+## Contract 2.0.59-E-C-E5B-B2: actual-observed E3 V2 staged contract
+
+V15 now freezes, without implementing, the route architecture required for
+actual observed H1 execution. One exact E5A lease must irreversibly become a
+runtime successor; a guardian-gated five-birth topology then places
+supervisor/probe/broker/worker/business into the registered three leaves.
+Every birth joins a one-shot native permit, sealed guardian-read PID cell,
+credentialled pidfd, retained-FD cgroup membership and ACK-before-release.
+Both parent and child branches must withdraw inherited writable PID-cell
+mappings before the guardian applies `F_SEAL_WRITE`.
+
+The live supervisor retains the exact E3 V2 completion and continues through
+a new same-process E4 V2. Only after E4 authority, all five normal reaps and
+empty cgroups may the guardian read the route-wide retained peak OFD and close
+the lease. E3/E4 V1, E5B-A and V14 remain non-relabelled predecessors.
+
+This commit contains only the normative specification, 22 reserved domains
+and drift tests. Runtime slices 1--5, formal shared-resource projection,
+current-access/V7, terminal/campaign and official authority are absent; all
+scalar/economics/sample Gates remain locked or `NOT_RUN`. See
+`specs/K7_H1_ACTUAL_OBSERVED_E3_V2.md`.

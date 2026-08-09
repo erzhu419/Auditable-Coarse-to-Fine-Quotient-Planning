@@ -5384,3 +5384,20 @@ is not process-birth order. E3 V2, E5A runtime placement/peak, E4 V2, formal
 `process.launches`, CounterRecord -> WorkVector -> ComparisonVector,
 current-access/V7, terminal/campaign and official authority remain open; all
 Gates stay locked. See `specs/K7_H1_EXTERNAL_PROCESS_JOURNAL_V1.md`.
+
+## V0-110B-2E-48E-C-E5B-B2 actual-observed E3 V2 staged contract
+
+Contract `2.0.59-E-C-E5B-B2` registers the five additive implementation
+slices needed to turn the current construction prerequisites into a real
+route: E5A runtime lease plus supervisor birth; complete five-birth topology;
+E3 V2 semantics; same-supervisor E4 V2 plus route peak/closure; and finally
+formal shared-resource projection. V15 reserves the exact 22 content domains
+and freezes the guardian-gated clone/pidfd/PID-cell/cgroup/reap protocol.
+
+No slice is implemented by this milestone. The shared PID cell explicitly
+requires both parent and inherited child writable mappings to disappear
+before `F_SEAL_WRITE` and birth ACK. Existing V1 artifacts cannot satisfy a
+V2 authority path. Actual execution, peak, formal launch work, vectors,
+current-access/V7, terminal/campaign and every official/economics/sample Gate
+remain absent or `NOT_RUN`. See
+`specs/K7_H1_ACTUAL_OBSERVED_E3_V2.md`.
