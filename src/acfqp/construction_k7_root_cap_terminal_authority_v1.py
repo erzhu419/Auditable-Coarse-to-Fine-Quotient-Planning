@@ -918,6 +918,24 @@ def _issue(
         raise ConstructionK7RootCapTerminalAuthorityV1Error(
             "complete formal accounting materialization failed replay"
         ) from error
+    return _issue_from_verified_formal(
+        formal=formal,
+        semantic_closure_raw=semantic_closure_raw,
+        closure_replay_inputs=closure_replay_inputs,
+    )
+
+
+def _issue_from_verified_formal(
+    *,
+    formal: materializer_v1.K7FormalAccountingMaterializationBundleV1,
+    semantic_closure_raw: bytes,
+    closure_replay_inputs: Mapping[str, Any],
+) -> K7RootCapTerminalAccountingBundleV1:
+    if type(formal) is not materializer_v1.K7FormalAccountingMaterializationBundleV1:
+        _fail("terminal derivation requires exact verified formal materialization")
+    # Re-evaluate the content identity before using any embedded vector.
+    formal.bundle_id
+    formal.to_document()
     cap = _derive_root_cap_evidence(
         closure_replay_inputs=closure_replay_inputs,
     )
@@ -989,6 +1007,29 @@ def issue_k7_root_cap_terminal_accounting_bundle_v1(
 
     return _issue(
         formal_materialization_raw=formal_materialization_raw,
+        semantic_closure_raw=semantic_closure_raw,
+        closure_replay_inputs=closure_replay_inputs,
+    )
+
+
+def issue_k7_root_cap_terminal_accounting_from_verified_materialization_v1(
+    *,
+    formal_materialization: (
+        materializer_v1.K7FormalAccountingMaterializationBundleV1
+    ),
+    semantic_closure_raw: bytes,
+    closure_replay_inputs: Mapping[str, Any],
+) -> K7RootCapTerminalAccountingBundleV1:
+    """Derive the terminal from the preceding verified proof-DAG node.
+
+    The exact cap evidence is still reconstructed from complete roots here.
+    Only the immediately preceding formal materialization is reused.  The
+    standalone terminal and complete-bundle verifiers continue to replay the
+    formal node from semantic roots.
+    """
+
+    return _issue_from_verified_formal(
+        formal=formal_materialization,
         semantic_closure_raw=semantic_closure_raw,
         closure_replay_inputs=closure_replay_inputs,
     )
@@ -1088,6 +1129,7 @@ __all__ = (
     "TERMINAL_CLASS",
     "TERMINAL_CODE",
     "TERMINAL_SCOPE",
+    "issue_k7_root_cap_terminal_accounting_from_verified_materialization_v1",
     "issue_k7_root_cap_terminal_accounting_bundle_v1",
     "verify_k7_root_cap_terminal_accounting_bundle_bytes_v1",
 )

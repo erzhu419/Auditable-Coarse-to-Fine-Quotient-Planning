@@ -860,6 +860,34 @@ def materialize_k7_formal_accounting_v1(
     return _materialize_verified_closure(semantic_closure)
 
 
+def materialize_k7_formal_accounting_from_verified_semantic_closure_v1(
+    *,
+    semantic_closure: closure_v1.K7SemanticEvidenceClosureV1,
+) -> K7FormalAccountingMaterializationBundleV1:
+    """Materialize from one already full-root-verified semantic authority.
+
+    This is the production proof-DAG edge.  It does not replace the portable
+    verifier above or below: the input must be the exact issuer-owned closure,
+    its content identity and completion flags are rechecked, and the eventual
+    complete-bundle verifier still reconstructs the closure from all roots.
+    It only prevents one transaction from recursively rebuilding the same
+    closure immediately after issuing it.
+    """
+
+    if type(semantic_closure) is not closure_v1.K7SemanticEvidenceClosureV1:
+        _fail("verified semantic materialization requires the exact closure type")
+    document = semantic_closure.to_document()
+    if (
+        semantic_closure.closure_id
+        != document.get("semantic_evidence_closure_id")
+        or len(semantic_closure.resolutions) != EXPECTED_COUNTER_RECORD_COUNT
+        or document.get("next_atomic_materialization_authorized") is not True
+        or document.get("semantic_replay_complete") is not True
+    ):
+        _fail("verified semantic closure is not a complete materialization input")
+    return _materialize_verified_closure(semantic_closure)
+
+
 def verify_k7_formal_accounting_materialization_bytes_v1(
     *,
     raw: bytes,
@@ -898,6 +926,7 @@ __all__ = (
     "PROFILE_KEY",
     "PROPOSED_CONTRACT_VERSION",
     "SCHEMA_VERSION",
+    "materialize_k7_formal_accounting_from_verified_semantic_closure_v1",
     "materialize_k7_formal_accounting_v1",
     "verify_k7_formal_accounting_materialization_bytes_v1",
 )

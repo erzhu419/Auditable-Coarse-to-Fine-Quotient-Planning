@@ -154,6 +154,28 @@ def complete_case():
     return closure, bundle
 
 
+def test_verified_semantic_proof_dag_edge_is_byte_identical(complete_case) -> None:
+    closure, expected = complete_case
+    actual = (
+        materializer
+        .materialize_k7_formal_accounting_from_verified_semantic_closure_v1(
+            semantic_closure=closure,
+        )
+    )
+    assert actual.to_document() == expected.to_document()
+    assert actual.canonical_bytes == expected.canonical_bytes
+
+
+def test_verified_semantic_proof_dag_edge_rejects_foreign_input() -> None:
+    with pytest.raises(
+        materializer.ConstructionK7FormalAccountingMaterializerV1Error,
+        match="exact closure type",
+    ):
+        materializer.materialize_k7_formal_accounting_from_verified_semantic_closure_v1(
+            semantic_closure=object(),  # type: ignore[arg-type]
+        )
+
+
 @pytest.fixture
 def formal_case(monkeypatch, complete_case):
     closure, bundle = complete_case

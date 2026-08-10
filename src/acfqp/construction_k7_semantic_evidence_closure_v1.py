@@ -616,6 +616,58 @@ def _issue(
         profile_native_zeros=profile_native_zeros,
         derived_reconciliation=derived_reconciliation,
     )
+    return _issue_from_verified_authorities(
+        occurrence=occurrence,
+        verified=verified,
+        owners=owners,
+        profile_native_zeros=profile_native_zeros,
+        derived=derived,
+    )
+
+
+def _issue_from_verified_authorities(
+    *,
+    occurrence: occurrence_v2.K7OccurrenceCutoffSemanticAuthorityBundleV2,
+    verified: verified_v1.K7VerifiedNineSharedResourceEnvelopeV1,
+    owners: owner_v1.OwnerEventCandidateSetV1,
+    profile_native_zeros: zero_v1.K7ProfileNativeZeroEnvelopeV1,
+    derived: derived_v2.K7CompleteDerivedReconciliationReadinessV2,
+) -> K7SemanticEvidenceClosureV1:
+    """Assemble the closure from the exact preceding proof-DAG nodes."""
+
+    if (
+        type(occurrence)
+        is not occurrence_v2.K7OccurrenceCutoffSemanticAuthorityBundleV2
+        or type(verified)
+        is not verified_v1.K7VerifiedNineSharedResourceEnvelopeV1
+        or type(owners) is not owner_v1.OwnerEventCandidateSetV1
+        or type(profile_native_zeros)
+        is not zero_v1.K7ProfileNativeZeroEnvelopeV1
+        or type(derived)
+        is not derived_v2.K7CompleteDerivedReconciliationReadinessV2
+    ):
+        _fail("verified semantic assembly received a foreign authority")
+    occurrence_document = occurrence.to_document()
+    verified_document = verified.to_document()
+    owners_document = owners.to_document()
+    zeros_document = profile_native_zeros.to_document()
+    derived_document = derived.to_document()
+    if (
+        occurrence.bundle_id
+        != occurrence_document.get("occurrence_cutoff_semantic_authority_bundle_id")
+        or verified.verified_envelope_id
+        != verified_document.get("verified_nine_shared_resource_envelope_id")
+        or owners.candidate_set_id
+        != owners_document.get("owner_event_candidate_set_id")
+        or profile_native_zeros.envelope_id
+        != zeros_document.get("profile_native_zero_envelope_id")
+        or derived.readiness_id
+        != derived_document.get("complete_derived_reconciliation_readiness_id")
+        or derived_document.get("all_eight_exact") is not True
+        or derived_document.get("unresolved_paths") != []
+        or len(derived.exact_values) != EXPECTED_DERIVED_PATH_COUNT
+    ):
+        _fail("verified semantic authority identity or completion changed")
     occurrence_row = occurrence.occurrence_authority
     cutoff = occurrence.cutoff_authority
     registry = registry_v6.official_counter_registry_v6()
@@ -753,6 +805,34 @@ def issue_k7_semantic_evidence_closure_v1(**kwargs: Any) -> K7SemanticEvidenceCl
     return _issue(**kwargs)
 
 
+def issue_k7_semantic_evidence_closure_from_verified_authorities_v1(
+    *,
+    occurrence_authority: (
+        occurrence_v2.K7OccurrenceCutoffSemanticAuthorityBundleV2
+    ),
+    verified_nine: verified_v1.K7VerifiedNineSharedResourceEnvelopeV1,
+    owner_candidates: owner_v1.OwnerEventCandidateSetV1,
+    profile_native_zeros: zero_v1.K7ProfileNativeZeroEnvelopeV1,
+    derived_reconciliation: (
+        derived_v2.K7CompleteDerivedReconciliationReadinessV2
+    ),
+) -> K7SemanticEvidenceClosureV1:
+    """Close 202 paths from already verified transaction-local authorities.
+
+    The portable semantic verifier remains the full-root replay boundary.  This
+    entrypoint only prevents a production orchestrator from rebuilding its
+    immediately preceding proof nodes before forming their deterministic join.
+    """
+
+    return _issue_from_verified_authorities(
+        occurrence=occurrence_authority,
+        verified=verified_nine,
+        owners=owner_candidates,
+        profile_native_zeros=profile_native_zeros,
+        derived=derived_reconciliation,
+    )
+
+
 def replay_k7_semantic_evidence_closure_v1(
     claimed: Any, **kwargs: Any
 ) -> K7SemanticEvidenceClosureV1:
@@ -797,6 +877,7 @@ __all__ = (
     "PROPOSED_CONTRACT_VERSION",
     "SCHEMA_VERSION",
     "SemanticResolutionKindV1",
+    "issue_k7_semantic_evidence_closure_from_verified_authorities_v1",
     "issue_k7_semantic_evidence_closure_v1",
     "replay_k7_semantic_evidence_closure_v1",
     "verify_k7_semantic_evidence_closure_bytes_v1",

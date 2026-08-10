@@ -64,6 +64,24 @@ def test_exact_202_path_semantic_partition_and_materialization_lock(semantic_cas
     assert document["official_execution_allowed"] is False
 
 
+def test_verified_authority_proof_dag_edge_matches_full_root_closure(
+    semantic_case,
+) -> None:
+    inputs, expected = semantic_case
+    actual = (
+        closure_v1
+        .issue_k7_semantic_evidence_closure_from_verified_authorities_v1(
+            occurrence_authority=inputs["occurrence_authority"],
+            verified_nine=inputs["verified_nine"],
+            owner_candidates=inputs["owner_candidates"],
+            profile_native_zeros=inputs["profile_native_zeros"],
+            derived_reconciliation=inputs["derived_reconciliation"],
+        )
+    )
+    assert actual.to_document() == expected.to_document()
+    assert actual.canonical_bytes == expected.canonical_bytes
+
+
 def test_owner_stream_and_owner_window_zero_remain_distinct(semantic_case) -> None:
     inputs, result = semantic_case
     candidates = {

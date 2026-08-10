@@ -260,17 +260,17 @@ def _install_stage_stubs(
         ),
         (
             pipeline_v1.semantic_v1,
-            "issue_k7_semantic_evidence_closure_v1",
+            "issue_k7_semantic_evidence_closure_from_verified_authorities_v1",
             stage("semantic", case.semantic_closure),
         ),
         (
             pipeline_v1.materializer_v1,
-            "materialize_k7_formal_accounting_v1",
+            "materialize_k7_formal_accounting_from_verified_semantic_closure_v1",
             stage("formal", case.formal),
         ),
         (
             pipeline_v1.terminal_v1,
-            "issue_k7_root_cap_terminal_accounting_bundle_v1",
+            "issue_k7_root_cap_terminal_accounting_from_verified_materialization_v1",
             stage("terminal", case.terminal_bundle),
         ),
         (
@@ -285,7 +285,7 @@ def _install_stage_stubs(
         ),
         (
             pipeline_v1.occurrence_closure_v1,
-            "verify_k7_logical_occurrence_closure_bundle_bytes_v1",
+            "verify_k7_logical_occurrence_closure_claim_bytes_v1",
             stage("logical_verify", expected.logical_occurrence_verification),
         ),
     )
@@ -312,6 +312,42 @@ def test_orchestrator_requires_every_stage_before_returning(
     )
     assert result.to_document() == expected.to_document()
     assert tuple(calls) == _STAGE_ORDER
+
+
+def test_pipeline_uses_verified_proof_dag_without_replaying_predecessors(
+    monkeypatch: pytest.MonkeyPatch,
+    assembled_case,
+) -> None:
+    case, expected = assembled_case
+    _install_stage_stubs(monkeypatch, case=case, expected=expected)
+
+    def repeated_predecessor_replay(**_kwargs):
+        raise AssertionError("pipeline recursively replayed a verified predecessor")
+
+    for owner, name in (
+        (
+            pipeline_v1.semantic_v1,
+            "issue_k7_semantic_evidence_closure_v1",
+        ),
+        (
+            pipeline_v1.materializer_v1,
+            "materialize_k7_formal_accounting_v1",
+        ),
+        (
+            pipeline_v1.terminal_v1,
+            "issue_k7_root_cap_terminal_accounting_bundle_v1",
+        ),
+        (
+            pipeline_v1.occurrence_closure_v1,
+            "verify_k7_logical_occurrence_closure_bundle_bytes_v1",
+        ),
+    ):
+        monkeypatch.setattr(owner, name, repeated_predecessor_replay)
+    result = pipeline_v1.run_k7_production_accounting_pipeline_v1(
+        replay_roots=_stub_roots(case),
+        source_archive_raw=b"frozen-source",
+    )
+    assert result.to_document() == expected.to_document()
 
 
 @pytest.mark.parametrize(

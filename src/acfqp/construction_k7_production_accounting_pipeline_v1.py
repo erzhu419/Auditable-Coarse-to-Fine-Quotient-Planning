@@ -259,17 +259,29 @@ def run_k7_production_accounting_pipeline_v1(
             "profile_native_zeros": zeros,
             "derived_reconciliation": derived,
         }
-        semantic = semantic_v1.issue_k7_semantic_evidence_closure_v1(
-            **closure_inputs
+        semantic = (
+            semantic_v1
+            .issue_k7_semantic_evidence_closure_from_verified_authorities_v1(
+                occurrence_authority=occurrence,
+                verified_nine=roots["verified_envelope"],
+                owner_candidates=roots["owner_event_candidates"],
+                profile_native_zeros=zeros,
+                derived_reconciliation=derived,
+            )
         )
-        formal = materializer_v1.materialize_k7_formal_accounting_v1(
-            semantic_closure_raw=semantic.canonical_bytes,
-            closure_replay_inputs=closure_inputs,
+        formal = (
+            materializer_v1
+            .materialize_k7_formal_accounting_from_verified_semantic_closure_v1(
+                semantic_closure=semantic,
+            )
         )
-        terminal = terminal_v1.issue_k7_root_cap_terminal_accounting_bundle_v1(
-            formal_materialization_raw=formal.canonical_bytes,
-            semantic_closure_raw=semantic.canonical_bytes,
-            closure_replay_inputs=closure_inputs,
+        terminal = (
+            terminal_v1
+            .issue_k7_root_cap_terminal_accounting_from_verified_materialization_v1(
+                formal_materialization=formal,
+                semantic_closure_raw=semantic.canonical_bytes,
+                closure_replay_inputs=closure_inputs,
+            )
         )
         complete = complete_v1.verify_k7_production_complete_bundle_independently_v1(
             semantic_closure_raw=semantic.canonical_bytes,
@@ -284,14 +296,21 @@ def run_k7_production_accounting_pipeline_v1(
             request_route_identity=route,
             rebuild_policy=campaign_v1.RebuildPolicyV1(),
         )
+        # ``complete`` is already the independently replayed full-root
+        # authority minted immediately above.  Re-entering the portable
+        # occurrence verifier here would recreate that same authority before
+        # checking the closure bytes, adding a second identical full-root
+        # replay to one production transaction.  The claim verifier consumes
+        # the exact typed authority, terminal bytes, route and rebuild policy;
+        # the standalone portable entrypoint remains the independent replay
+        # boundary used by campaign verification.
         logical_verification = (
-            occurrence_closure_v1.verify_k7_logical_occurrence_closure_bundle_bytes_v1(
+            occurrence_closure_v1.verify_k7_logical_occurrence_closure_claim_bytes_v1(
                 raw=logical.canonical_bytes,
-                complete_bundle_verification_raw=complete.canonical_bytes,
-                semantic_closure_raw=semantic.canonical_bytes,
-                formal_materialization_raw=formal.canonical_bytes,
+                complete_bundle_verification=complete,
                 terminal_accounting_bundle_raw=terminal.canonical_bytes,
-                closure_replay_inputs=closure_inputs,
+                request_route_identity=route,
+                rebuild_policy=campaign_v1.RebuildPolicyV1(),
             )
         )
     except Exception as error:
