@@ -62,6 +62,7 @@ def test_live_prefix_handle_is_not_caller_mintable_copyable_or_pickleable() -> N
         "close_bounded_nested_creator_two_birth_live_prefix_v1",
         "abort_bounded_nested_creator_two_birth_live_prefix_v1",
         "run_bounded_nested_creator_two_birth_runtime_v1",
+        "snapshot_bounded_nested_creator_two_birth_live_prefix_v1",
     ),
 )
 def test_live_prefix_public_api_is_explicit(name: str) -> None:
@@ -90,6 +91,19 @@ def test_begin_stops_live_and_close_returns_compatible_closed_result() -> None:
         == "acfqp.k7_h1_nested_creator_probe_observed_facts.v2"
     )
     assert result["v2_protocol_receive_observation_count"] > 0
+    assert (
+        result["snapshot_schema"]
+        == "acfqp.k7_h1_two_birth_live_observation.v1"
+    )
+    assert result["snapshot_entry_populations"] == [0, 0]
+    assert result["snapshot_current_populations"] == [1, 1]
+    assert result["snapshot_birth_order"] == ["SUPERVISOR", "PIDFD_PROBE"]
+    assert result["snapshot_broker_supported"] is False
+    assert result["snapshot_exact_topology"] is False
+    assert result["snapshot_authority"] is False
+    assert result["snapshot_peak_read_count"] == 0
+    assert result["snapshot_mutation_errors"] == ["TypeError", "TypeError"]
+    assert result["snapshot_repeat_equal"] is True
     assert result["terminal_state"] == "CLOSED"
     assert result["result_type"] == "BoundedNestedCreatorTwoBirthRawResultV1"
     assert (
@@ -102,6 +116,9 @@ def test_begin_stops_live_and_close_returns_compatible_closed_result() -> None:
     assert result["result_birth_order"] == ["SUPERVISOR", "PIDFD_PROBE"]
     assert result["repeated_close_same_result"] is True
     assert result["abort_after_close_error_type"] == (
+        "ConstructionK7H1NestedCreatorTwoBirthRuntimeV1Error"
+    )
+    assert result["snapshot_after_close_error_type"] == (
         "ConstructionK7H1NestedCreatorTwoBirthRuntimeV1Error"
     )
     assert result["v2_identity_retained_after_close"] is True
@@ -132,6 +149,9 @@ def test_explicit_abort_closes_live_prefix_exactly() -> None:
     assert result["close_after_abort_error_type"] == (
         "ConstructionK7H1NestedCreatorTwoBirthRuntimeV1Error"
     )
+    assert result["snapshot_after_abort_error_type"] == (
+        "ConstructionK7H1NestedCreatorTwoBirthRuntimeV1Error"
+    )
     _assert_exact_terminal_cleanup(result)
 
 
@@ -142,6 +162,9 @@ def test_explicit_abort_closes_live_prefix_exactly() -> None:
 def test_wrong_thread_cannot_consume_live_prefix() -> None:
     result = _run_real_helper("WRONG_THREAD")
     assert result["wrong_thread_error_type"] == (
+        "ConstructionK7H1NestedCreatorTwoBirthRuntimeV1Error"
+    )
+    assert result["wrong_thread_snapshot_error_type"] == (
         "ConstructionK7H1NestedCreatorTwoBirthRuntimeV1Error"
     )
     assert result["state_after_wrong_thread"] == (
@@ -191,6 +214,9 @@ def test_atfork_poison_is_child_only_and_parent_remains_live() -> None:
         "ConstructionK7H1NestedCreatorTwoBirthRuntimeV1Error"
     )
     assert child["abort_error_type"] == (
+        "ConstructionK7H1NestedCreatorTwoBirthRuntimeV1Error"
+    )
+    assert child["snapshot_error_type"] == (
         "ConstructionK7H1NestedCreatorTwoBirthRuntimeV1Error"
     )
     assert child["effect_calls"] == {"kill": 0, "reap": 0, "subreaper": 0}
@@ -378,6 +404,7 @@ def test_begin_failure_recovery_commit_interruption_is_replayable(
 def test_live_handle_private_tampering_cannot_change_authoritative_record() -> None:
     result = _run_real_helper("HANDLE_PRIVATE_TAMPER")
     assert result["public_record_authoritative"] is True
+    assert result["snapshot_record_authoritative"] is True
     assert result["terminal_state"] == "CLOSED"
     assert result["result_supervisor_pid"] == result["expected_supervisor_pid"]
     assert result["result_supervisor_pid"] == result["supervisor_pid"]

@@ -587,6 +587,25 @@ def _run_mode(control_fd: int, mode: str) -> dict[str, object]:
         expected_pids=(handle.supervisor_pid,),
         sequence=11001,
     )
+    portable_snapshot = (
+        runtime.snapshot_bounded_nested_creator_two_birth_live_prefix_v1(
+            handle
+        )
+    )
+    snapshot_mutation_errors: list[str] = []
+    try:
+        portable_snapshot["control_cgroup_identity"]["inode"] = -1
+    except BaseException as error:
+        snapshot_mutation_errors.append(type(error).__name__)
+    try:
+        portable_snapshot["birth_order"][0] = "TAMPERED"
+    except BaseException as error:
+        snapshot_mutation_errors.append(type(error).__name__)
+    repeated_portable_snapshot = (
+        runtime.snapshot_bounded_nested_creator_two_birth_live_prefix_v1(
+            handle
+        )
+    )
     common = {
         "live_state": handle.state,
         "live_population": live_snapshot["pids_current"],
@@ -610,6 +629,34 @@ def _run_mode(control_fd: int, mode: str) -> dict[str, object]:
         "v2_schema": handle.probe_observed_facts_v2.to_document()["schema"],
         "v2_protocol_receive_observation_count": len(
             handle.probe_observed_facts_v2.protocol_receive_observations
+        ),
+        "snapshot_schema": portable_snapshot["schema"],
+        "snapshot_entry_populations": [
+            item["pids_current"]
+            for item in portable_snapshot["entry_empty_control_snapshots"]
+        ],
+        "snapshot_current_populations": [
+            item["pids_current"]
+            for item in portable_snapshot[
+                "checkpoint_current_control_snapshots"
+            ]
+        ],
+        "snapshot_birth_order": portable_snapshot["birth_order"],
+        "snapshot_broker_supported": portable_snapshot[
+            "broker_launch_supported_by_live_process"
+        ],
+        "snapshot_exact_topology": portable_snapshot[
+            "exact_two_birth_os_topology_observed"
+        ],
+        "snapshot_authority": portable_snapshot[
+            "two_birth_prefix_authority_present"
+        ],
+        "snapshot_peak_read_count": portable_snapshot[
+            "memory_peak_read_count"
+        ],
+        "snapshot_mutation_errors": snapshot_mutation_errors,
+        "snapshot_repeat_equal": (
+            portable_snapshot == repeated_portable_snapshot
         ),
     }
 
@@ -662,7 +709,13 @@ def _run_mode(control_fd: int, mode: str) -> dict[str, object]:
         if child_pid == 0:
             os.close(read_fd)
             try:
-                close_error = abort_error = ""
+                close_error = abort_error = snapshot_error = ""
+                try:
+                    runtime.snapshot_bounded_nested_creator_two_birth_live_prefix_v1(
+                        handle
+                    )
+                except BaseException as error:
+                    snapshot_error = type(error).__name__
                 try:
                     runtime.close_bounded_nested_creator_two_birth_live_prefix_v1(
                         handle
@@ -696,6 +749,7 @@ def _run_mode(control_fd: int, mode: str) -> dict[str, object]:
                     ],
                     "close_error_type": close_error,
                     "abort_error_type": abort_error,
+                    "snapshot_error_type": snapshot_error,
                     "effect_calls": dict(effect_calls),
                     "supervisor_still_live": (
                         child_live_snapshot["pids_current"] == 1
@@ -966,6 +1020,18 @@ def _run_mode(control_fd: int, mode: str) -> dict[str, object]:
             and handle.probe_observed_facts_v2
             is original_public["probe_observed_facts_v2"]
         )
+        tamper_snapshot = (
+            runtime.snapshot_bounded_nested_creator_two_birth_live_prefix_v1(
+                handle
+            )
+        )
+        snapshot_record_authoritative = (
+            tamper_snapshot["supervisor_pid"]
+            == original_public["supervisor_pid"]
+            and tamper_snapshot["probe_pid"] == original_public["probe_pid"]
+            and tamper_snapshot["live_prefix_state_at_issuance"]
+            == original_public["state"]
+        )
         result = runtime.close_bounded_nested_creator_two_birth_live_prefix_v1(
             handle
         )
@@ -977,6 +1043,9 @@ def _run_mode(control_fd: int, mode: str) -> dict[str, object]:
             extra={
                 **common,
                 "public_record_authoritative": public_record_authoritative,
+                "snapshot_record_authoritative": (
+                    snapshot_record_authoritative
+                ),
                 "terminal_state": handle.state,
                 "result_supervisor_pid": result.supervisor_pid,
                 "expected_supervisor_pid": original_public["supervisor_pid"],
@@ -1092,6 +1161,15 @@ def _run_mode(control_fd: int, mode: str) -> dict[str, object]:
             abort_after_close_error = type(error).__name__
         if not abort_after_close_error:
             raise RuntimeError("abort-after-close unexpectedly succeeded")
+        snapshot_after_close_error = ""
+        try:
+            runtime.snapshot_bounded_nested_creator_two_birth_live_prefix_v1(
+                handle
+            )
+        except BaseException as error:
+            snapshot_after_close_error = type(error).__name__
+        if not snapshot_after_close_error:
+            raise RuntimeError("snapshot-after-close unexpectedly succeeded")
         document = result.to_document()
         legacy_result = runtime.run_bounded_nested_creator_two_birth_runtime_v1(
             control_cgroup_fd=control_fd
@@ -1115,6 +1193,9 @@ def _run_mode(control_fd: int, mode: str) -> dict[str, object]:
                 "result_birth_order": document["birth_order"],
                 "repeated_close_same_result": repeated_result is result,
                 "abort_after_close_error_type": abort_after_close_error,
+                "snapshot_after_close_error_type": (
+                    snapshot_after_close_error
+                ),
                 "v2_identity_retained_after_close": (
                     handle.probe_observed_facts_v2 is retained_v2
                 ),
@@ -1158,6 +1239,15 @@ def _run_mode(control_fd: int, mode: str) -> dict[str, object]:
             close_after_abort_error = type(error).__name__
         if not close_after_abort_error:
             raise RuntimeError("close-after-abort unexpectedly succeeded")
+        snapshot_after_abort_error = ""
+        try:
+            runtime.snapshot_bounded_nested_creator_two_birth_live_prefix_v1(
+                handle
+            )
+        except BaseException as error:
+            snapshot_after_abort_error = type(error).__name__
+        if not snapshot_after_abort_error:
+            raise RuntimeError("snapshot-after-abort unexpectedly succeeded")
         return _closed_summary(
             mode=mode,
             control_fd=control_fd,
@@ -1169,24 +1259,38 @@ def _run_mode(control_fd: int, mode: str) -> dict[str, object]:
                 "abort_state": abort_facts["state"],
                 "repeated_abort_facts_equal": repeated_abort_facts == abort_facts,
                 "close_after_abort_error_type": close_after_abort_error,
+                "snapshot_after_abort_error_type": (
+                    snapshot_after_abort_error
+                ),
             },
         )
 
     if mode == "WRONG_THREAD":
-        errors: list[str] = []
+        close_errors: list[str] = []
+        snapshot_errors: list[str] = []
 
         def wrong_owner_close() -> None:
+            try:
+                runtime.snapshot_bounded_nested_creator_two_birth_live_prefix_v1(
+                    handle
+                )
+            except BaseException as error:
+                snapshot_errors.append(type(error).__name__)
             try:
                 runtime.close_bounded_nested_creator_two_birth_live_prefix_v1(
                     handle
                 )
             except BaseException as error:  # test process must retain exact type
-                errors.append(type(error).__name__)
+                close_errors.append(type(error).__name__)
 
         thread = threading.Thread(target=wrong_owner_close)
         thread.start()
         thread.join(timeout=10)
-        if thread.is_alive() or len(errors) != 1:
+        if (
+            thread.is_alive()
+            or len(close_errors) != 1
+            or len(snapshot_errors) != 1
+        ):
             raise RuntimeError("wrong-owner close did not fail exactly once")
         state_after_rejection = handle.state
         result = runtime.close_bounded_nested_creator_two_birth_live_prefix_v1(
@@ -1199,7 +1303,8 @@ def _run_mode(control_fd: int, mode: str) -> dict[str, object]:
             baseline_subreaper=baseline_subreaper,
             extra={
                 **common,
-                "wrong_thread_error_type": errors[0],
+                "wrong_thread_error_type": close_errors[0],
+                "wrong_thread_snapshot_error_type": snapshot_errors[0],
                 "state_after_wrong_thread": state_after_rejection,
                 "terminal_state": handle.state,
                 "result_supervisor_pid": result.supervisor_pid,

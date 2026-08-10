@@ -253,6 +253,7 @@ class BoundedNestedCreatorTwoBirthLivePrefixV1:
         "_outer_pidfd_fact",
         "_outer_seal_set",
         "_outer_role_source_fact",
+        "_outer_entry_empty_snapshots",
         "_outer_live_snapshots",
         "_probe_facts",
         "_probe_observed_facts_v2",
@@ -287,6 +288,7 @@ class BoundedNestedCreatorTwoBirthLivePrefixV1:
         outer_pidfd_fact: Mapping[str, Any],
         outer_seal_set: int,
         outer_role_source_fact: Mapping[str, Any],
+        outer_entry_empty_snapshots: tuple[Mapping[str, Any], ...],
         outer_live_snapshots: tuple[Mapping[str, Any], ...],
         probe_facts: probe_v1.NestedCreatorProbeRawFactsV1,
         probe_observed_facts_v2: probe_v1.NestedCreatorProbeObservedFactsV2,
@@ -310,6 +312,9 @@ class BoundedNestedCreatorTwoBirthLivePrefixV1:
         self._outer_seal_set = outer_seal_set
         self._outer_role_source_fact = _freeze_json(
             dict(outer_role_source_fact)
+        )
+        self._outer_entry_empty_snapshots = _freeze_json(
+            outer_entry_empty_snapshots
         )
         self._outer_live_snapshots = _freeze_json(outer_live_snapshots)
         self._probe_facts = probe_facts
@@ -428,6 +433,7 @@ class _LivePrefixOwnershipV1:
     outer_pidfd_fact: Mapping[str, Any]
     outer_seal_set: int
     outer_role_source_fact: Mapping[str, Any]
+    outer_entry_empty_snapshots: tuple[Mapping[str, Any], ...]
     outer_live_snapshots: tuple[Mapping[str, Any], ...]
     probe_facts: probe_v1.NestedCreatorProbeRawFactsV1
     probe_observed_facts_v2: probe_v1.NestedCreatorProbeObservedFactsV2
@@ -835,11 +841,15 @@ def begin_bounded_nested_creator_two_birth_live_prefix_v1(
                         ),
                     }
                 )
-            probe_v1.observe_nested_creator_control_population_v1(
-                control_cgroup_fd, expected_pids=(), sequence=7000
+            outer_entry_empty_one = (
+                probe_v1.observe_nested_creator_control_population_v1(
+                    control_cgroup_fd, expected_pids=(), sequence=7000
+                )
             )
-            probe_v1.observe_nested_creator_control_population_v1(
-                control_cgroup_fd, expected_pids=(), sequence=7001
+            outer_entry_empty_two = (
+                probe_v1.observe_nested_creator_control_population_v1(
+                    control_cgroup_fd, expected_pids=(), sequence=7001
+                )
             )
             recovery_control_cgroup_fd = fcntl.fcntl(
                 control_cgroup_fd, fcntl.F_DUPFD_CLOEXEC, 5
@@ -1088,6 +1098,10 @@ def begin_bounded_nested_creator_two_birth_live_prefix_v1(
                 outer_pidfd_fact=outer_pidfd_fact,
                 outer_seal_set=outer_seal_set,
                 outer_role_source_fact=outer_role_source_fact,
+                outer_entry_empty_snapshots=(
+                    outer_entry_empty_one,
+                    outer_entry_empty_two,
+                ),
                 outer_live_snapshots=(outer_live_one, outer_live_two),
                 probe_facts=probe_facts,
                 probe_observed_facts_v2=probe_observed_facts_v2,
@@ -1109,6 +1123,7 @@ def begin_bounded_nested_creator_two_birth_live_prefix_v1(
                 outer_pidfd_fact=handle._outer_pidfd_fact,
                 outer_seal_set=handle._outer_seal_set,
                 outer_role_source_fact=handle._outer_role_source_fact,
+                outer_entry_empty_snapshots=handle._outer_entry_empty_snapshots,
                 outer_live_snapshots=handle._outer_live_snapshots,
                 probe_facts=handle._probe_facts,
                 probe_observed_facts_v2=handle._probe_observed_facts_v2,
@@ -1646,6 +1661,221 @@ def recover_bounded_nested_creator_two_birth_begin_failure_v1() -> dict[str, Any
             raise
 
 
+def snapshot_bounded_nested_creator_two_birth_live_prefix_v1(
+    handle: BoundedNestedCreatorTwoBirthLivePrefixV1,
+) -> Mapping[str, Any]:
+    """Freeze an issuance-time raw observation without exporting capability.
+
+    The returned document contains no retained live descriptor number and
+    cannot resume the process-local session.  Nested recvmsg receipts retain
+    the historical integer payload of SCM_RIGHTS observations for audit; those
+    integers are not live capabilities.  The document deliberately carries no
+    E5A/B2 lease join and therefore cannot authorize an exact or exclusive
+    topology claim.
+    """
+
+    with _RUNTIME_LOCK:
+        record = _require_live_prefix(
+            handle, allowed_states={"PROBE_REAPED_SUPERVISOR_LIVE"}
+        )
+        control_status = os.fstat(record.control_cgroup_fd)
+        current_one = probe_v1.observe_nested_creator_control_population_v1(
+            record.control_cgroup_fd,
+            expected_pids=(record.supervisor_pid,),
+            sequence=8000,
+        )
+        current_two = probe_v1.observe_nested_creator_control_population_v1(
+            record.control_cgroup_fd,
+            expected_pids=(record.supervisor_pid,),
+            sequence=8001,
+        )
+        live_session = probe_v1.verify_nested_creator_live_session_v1(
+            record.nested_session
+        )
+        expected_frames = (
+            (
+                "CELL_WITHDRAWN",
+                b"ACFQP:EXEC_CELL_WITHDRAWN:v1:" + record.outer_nonce.hex().encode("ascii"),
+            ),
+            (
+                "GATE_READY",
+                b"ACFQP:EXEC_GATE_READY:v1:" + record.outer_nonce.hex().encode("ascii"),
+            ),
+            (
+                "RELEASE_ECHO",
+                b"ACFQP:EXEC_RELEASE:v1:" + record.outer_nonce.hex().encode("ascii"),
+            ),
+        )
+        def require_snapshot(
+            value: Mapping[str, Any],
+            *,
+            sequence: int,
+            expected_pids: tuple[int, ...],
+        ) -> None:
+            expected = tuple(expected_pids)
+            if (
+                value.get("sequence") != sequence
+                or value.get("directory_device") != record.control_cgroup_device
+                or value.get("directory_inode") != record.control_cgroup_inode
+                or tuple(value.get("first_cgroup_procs", ())) != expected
+                or tuple(value.get("second_cgroup_procs", ())) != expected
+                or value.get("pids_current") != len(expected)
+                or value.get("events", {}).get("populated")
+                != int(bool(expected))
+                or value.get("events", {}).get("frozen") != 0
+            ):
+                _fail("two-birth stored CONTROL snapshot join changed")
+
+        for value, sequence in zip(
+            record.outer_entry_empty_snapshots,
+            (7000, 7001),
+            strict=True,
+        ):
+            require_snapshot(value, sequence=sequence, expected_pids=())
+        for value, sequence in zip(
+            record.outer_live_snapshots, (1, 2), strict=True
+        ):
+            require_snapshot(
+                value,
+                sequence=sequence,
+                expected_pids=(record.supervisor_pid,),
+            )
+        require_snapshot(
+            current_one,
+            sequence=8000,
+            expected_pids=(record.supervisor_pid,),
+        )
+        require_snapshot(
+            current_two,
+            sequence=8001,
+            expected_pids=(record.supervisor_pid,),
+        )
+        if (
+            record.outer_parent_edge.get("clone_result")
+            != record.supervisor_pid
+            or record.outer_parent_edge.get("status_bits")
+            != exec_v1.PARENT_EDGE_REQUIRED_SUCCESS_BITS
+            or record.outer_parent_edge.get("first_cleanup_error") != 0
+            or record.outer_parent_edge.get("reserved_zero") != 0
+            or record.outer_pid_cell_value != record.supervisor_pid
+            or record.outer_pidfd_fact.get("pid") != record.supervisor_pid
+            or record.outer_seal_set != REQUIRED_SEALS
+            or record.outer_role_source_fact.get("elf_sha256")
+            != role_v1.ELF_SHA256
+            or record.outer_role_source_fact.get("elf_byte_count")
+            != role_v1.ELF_BYTE_COUNT
+            or record.outer_role_source_fact.get(
+                "source_witness_same_identity"
+            )
+            is not True
+        ):
+            _fail("two-birth stored outer supervisor evidence changed")
+        for fact, (kind, raw) in zip(
+            record.outer_gate_facts, expected_frames, strict=True
+        ):
+            if (
+                fact["kind"] != kind
+                or fact["sha256"] != hashlib.sha256(raw).hexdigest()
+                or fact["byte_count"] != len(raw)
+                or fact["credential_pid"] != record.supervisor_pid
+            ):
+                _fail("two-birth outer gate snapshot join changed")
+        document = {
+            "schema": "acfqp.k7_h1_two_birth_live_observation.v1",
+            "schema_version": "1.0.0",
+            "profile_key": PROFILE_KEY,
+            "readiness": READINESS,
+            "live_prefix_state_at_issuance": record.state,
+            "guardian_identity": {
+                "pid": record.owner_pid,
+                "process_start_ticks": record.owner_process_start_ticks,
+                "thread_id": record.owner_thread_id,
+                "native_thread_id": record.owner_native_thread_id,
+            },
+            "control_cgroup_identity": {
+                "device": control_status.st_dev,
+                "inode": control_status.st_ino,
+                "mode": control_status.st_mode,
+            },
+            "birth_order": ["SUPERVISOR", "PIDFD_PROBE"],
+            "creator_by_role": {
+                "SUPERVISOR": "GUARDIAN",
+                "PIDFD_PROBE": "SUPERVISOR",
+            },
+            "supervisor_pid": record.supervisor_pid,
+            "supervisor_start_ticks": record.supervisor_start_ticks,
+            "probe_pid": record.probe_pid,
+            "probe_start_ticks": record.probe_start_ticks,
+            "outer_pid_cell_value": record.outer_pid_cell_value,
+            "outer_parent_edge": _thaw_json(record.outer_parent_edge),
+            "outer_nonce_hex": record.outer_nonce.hex(),
+            "outer_registered_expected_frames": [
+                {
+                    "kind": kind,
+                    "payload_hex": raw.hex(),
+                    "sha256": hashlib.sha256(raw).hexdigest(),
+                    "byte_count": len(raw),
+                }
+                for kind, raw in expected_frames
+            ],
+            "outer_receive_facts": _thaw_json(record.outer_gate_facts),
+            "outer_pidfd_fact": _thaw_json(record.outer_pidfd_fact),
+            "outer_seal_set": record.outer_seal_set,
+            "outer_role_source_fact": _thaw_json(record.outer_role_source_fact),
+            "entry_empty_control_snapshots": _thaw_json(
+                record.outer_entry_empty_snapshots
+            ),
+            "outer_supervisor_live_snapshots": _thaw_json(
+                record.outer_live_snapshots
+            ),
+            "checkpoint_current_control_snapshots": [
+                dict(current_one),
+                dict(current_two),
+            ],
+            "live_session_verification": _thaw_json(live_session),
+            "nested_probe_observed_facts_v2": (
+                record.probe_observed_facts_v2.to_document()
+            ),
+            "retained_descriptor_roles": [
+                "CONTROL_CGROUP",
+                "SUPERVISOR_CONTROL_SOCKET",
+                "SUPERVISOR_PIDFD",
+            ],
+            "retained_live_descriptor_numbers_serialized": False,
+            "historical_scm_rights_descriptor_number_observation_present": True,
+            "historical_descriptor_numbers_are_not_resume_capability": True,
+            "memory_peak_read_count": 0,
+            "supervisor_v1_only_accepts_shutdown_after_probe": True,
+            "broker_launch_supported_by_live_process": False,
+            "target_two_birth_creator_chain_observed": True,
+            "exact_creator_reap_ownership_observed": True,
+            "portable_observation_checkpoint_present": False,
+            "durable_two_birth_artifact_graph_present": False,
+            "portable_checkpoint_authority_present": False,
+            "live_continuation_capability_portable": False,
+            "e5a_runtime_lease_join_present": False,
+            "exact_two_birth_os_topology_observed": False,
+            "two_birth_prefix_authority_present": False,
+            "five_birth_process_authority_present": False,
+            "actual_observed_e3_v2_completion_present": False,
+            "e4_v2_completion_present": False,
+            "production_shared_resource_receipts_present": False,
+            "fq11_counter_completeness_present": False,
+            "formal_counter_records_issued": False,
+            "formal_work_vector_issued": False,
+            "formal_comparison_vector_issued": False,
+            "formal_actual_projection_proof_issued": False,
+            "current_access_authority_present": False,
+            "formal_v7_authority_present": False,
+            "official_execution_allowed": False,
+            "official_scalar_cost": None,
+            "official_N_break_even": None,
+            "COUNTER_COMPLETENESS_GATE": "NOT_RUN",
+            "WORKLOAD_ECONOMICS_GATE": "NOT_RUN",
+        }
+        return _freeze_json(document)
+
+
 def close_bounded_nested_creator_two_birth_live_prefix_v1(
     handle: BoundedNestedCreatorTwoBirthLivePrefixV1,
 ) -> BoundedNestedCreatorTwoBirthRawResultV1:
@@ -1788,4 +2018,5 @@ __all__ = (
     "close_bounded_nested_creator_two_birth_live_prefix_v1",
     "recover_bounded_nested_creator_two_birth_begin_failure_v1",
     "run_bounded_nested_creator_two_birth_runtime_v1",
+    "snapshot_bounded_nested_creator_two_birth_live_prefix_v1",
 )
