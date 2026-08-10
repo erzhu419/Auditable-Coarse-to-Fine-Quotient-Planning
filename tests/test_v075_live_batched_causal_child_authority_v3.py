@@ -115,6 +115,44 @@ def test_authorized_intents_preserve_the_support_phase_barrier(
     )
 
 
+def test_selected_intents_are_exact_v2_control_schema_projections(
+    batched_authorization,
+) -> None:
+    _values, authorization = batched_authorization
+    discovery = authorization.discovery_intents[0]
+    expected_discovery = dynamic.V075LiveDynamicChildDiscoveryIntentV2(
+        dynamic._CHILD_DISCOVERY_ISSUER,  # noqa: SLF001
+        discovery.source_model_epoch_id,
+        discovery.source_numerical_model_id,
+        discovery.source_proof_id,
+        discovery.source_frontier_id,
+        discovery.source_head_id,
+        discovery.occurrence_id,
+        discovery.context_id,
+        discovery.arm,
+        discovery.child_binding_id,
+        discovery.child_state_id,
+        discovery.catalogue_id,
+        discovery.row_binding,
+        discovery.stream_identity,
+        discovery.ordinal,
+    )
+    expected_template = (
+        dynamic.V075LiveDynamicChildValidationIntentTemplateV2(
+            dynamic._CHILD_VALIDATION_TEMPLATE_ISSUER,  # noqa: SLF001
+            expected_discovery,
+        )
+    )
+    assert discovery.intent_id == expected_discovery.intent_id
+    assert discovery.to_document() == expected_discovery.to_document()
+    assert authorization.validation_templates[0].template_id == (
+        expected_template.template_id
+    )
+    assert authorization.validation_templates[0].to_document() == (
+        expected_template.to_document()
+    )
+
+
 def test_authorization_is_pretarget_and_not_a_certificate(
     batched_authorization,
 ) -> None:

@@ -68,6 +68,22 @@ DOMAIN_TAGS = {
 if len(DOMAIN_TAGS) != len(set(DOMAIN_TAGS.values())):  # pragma: no cover
     raise RuntimeError("live batched causal child domains must be unique")
 
+_V2_CHILD_SEMANTIC_DOMAINS = {
+    "discovery": (
+        "acfqp:v075-live-dynamic-child-discovery-intent:v2"
+    ),
+    "validation": (
+        "acfqp:v075-live-dynamic-child-validation-template:v2"
+    ),
+}
+if (
+    dynamic.DOMAIN_TAGS.get("child_discovery_intent")
+    != _V2_CHILD_SEMANTIC_DOMAINS["discovery"]
+    or dynamic.DOMAIN_TAGS.get("child_validation_template")
+    != _V2_CHILD_SEMANTIC_DOMAINS["validation"]
+):  # pragma: no cover - import-time source/schema compatibility lock
+    raise RuntimeError("V2 child semantic projection domains changed")
+
 
 class V075LiveBatchedCausalChildV3InvariantViolation(ValueError):
     """The root epoch, frontier cone, complete catalogue, or cap changed."""
@@ -90,6 +106,19 @@ def _hash(role: str, payload: Mapping[str, Any]) -> str:
     try:
         return hashlib.sha256(
             DOMAIN_TAGS[role].encode("utf-8")
+            + b"\x00"
+            + canonical_json_bytes(dict(payload))
+        ).hexdigest()
+    except (KeyError, TypeError, ValueError) as error:
+        raise V075LiveBatchedCausalChildV3InvariantViolation(
+            str(error)
+        ) from error
+
+
+def _v2_semantic_hash(role: str, payload: Mapping[str, Any]) -> str:
+    try:
+        return hashlib.sha256(
+            _V2_CHILD_SEMANTIC_DOMAINS[role].encode("utf-8")
             + b"\x00"
             + canonical_json_bytes(dict(payload))
         ).hexdigest()
@@ -271,6 +300,7 @@ class V075LiveBatchedCausalChildCandidateV3:
 class V075LiveBatchedCausalChildDiscoveryIntentV3:
     _issuer: object = field(repr=False, compare=False)
     source_model_epoch_id: str
+    source_numerical_model_id: str
     source_proof_id: str
     source_frontier_id: str
     source_head_id: str
@@ -292,6 +322,10 @@ class V075LiveBatchedCausalChildDiscoveryIntentV3:
     def __post_init__(self) -> None:
         for value, label in (
             (self.source_model_epoch_id, "batched child intent epoch"),
+            (
+                self.source_numerical_model_id,
+                "batched child intent numerical model",
+            ),
             (self.source_proof_id, "batched child intent proof"),
             (self.source_frontier_id, "batched child intent frontier"),
             (self.source_head_id, "batched child intent head"),
@@ -337,44 +371,39 @@ class V075LiveBatchedCausalChildDiscoveryIntentV3:
         object.__setattr__(
             self,
             "_intent_id",
-            _hash("discovery", self._payload()),
+            _v2_semantic_hash("discovery", self._payload()),
         )
 
     def _payload(self) -> dict[str, Any]:
         return {
-            "schema": (
-                "acfqp.v075_live_batched_causal_child_discovery_intent.v3"
-            ),
-            "schema_version": SCHEMA_VERSION,
-            "profile_key": PROFILE_KEY,
-            "stage": "OPEN_INCREMENTAL_ACQUISITION",
-            "semantic_role": "BATCHED_CAUSAL_CHILD_DISCOVERY",
+            "schema": dynamic.LIVE_DYNAMIC_CHILD_SEMANTIC_SCHEMA,
+            "schema_version": dynamic.SCHEMA_VERSION,
+            "profile_key": dynamic.PROFILE_KEY,
+            "semantic_role": dynamic.LIVE_DYNAMIC_CHILD_SEMANTIC_ROLE,
+            "stage": "CHILD_DISCOVERY",
+            "round_index": 0,
             "source_model_epoch_id": self.source_model_epoch_id,
+            "source_numerical_model_id": self.source_numerical_model_id,
             "source_proof_id": self.source_proof_id,
             "source_frontier_id": self.source_frontier_id,
             "source_head_id": self.source_head_id,
             "occurrence_id": self.occurrence_id,
-            "target_tape_namespace_id": self.target_tape_namespace_id,
             "context_id": self.context_id,
             "arm": self.arm.value,
-            "operator_profile_id": self.operator_profile_id,
-            "candidate_id": self.candidate_id,
             "child_binding_id": self.child_binding_id,
             "child_state_id": self.child_state_id,
             "catalogue_id": self.catalogue_id,
-            "source_obligation_row_ids": list(
-                self.source_obligation_row_ids
-            ),
             "row_binding_id": self.row_binding.row_binding_id,
             "stream_id": self.stream_identity.stream_id,
+            "support_freeze_id": None,
             "accepted_draw_start": 1,
             "accepted_draw_count": dynamic.CHILD_DISCOVERY_DRAWS,
             "accepted_draw_end": dynamic.CHILD_DISCOVERY_DRAWS,
             "accepted_draw_cap": dynamic.CHILD_DISCOVERY_DRAWS,
             "ordinal": self.ordinal,
             "observer_execution_ready": True,
-            "observer_calls": 0,
-            "kernel_calls": 0,
+            "base_child_acquisition_consumes_promotion_round": False,
+            "official_execution_allowed": False,
         }
 
     @property
@@ -410,34 +439,27 @@ class V075LiveBatchedCausalChildValidationTemplateV3:
         object.__setattr__(
             self,
             "_template_id",
-            _hash("validation", self._payload()),
+            _v2_semantic_hash("validation", self._payload()),
         )
 
     def _payload(self) -> dict[str, Any]:
         discovery = self.discovery_intent
         return {
-            "schema": (
-                "acfqp.v075_live_batched_causal_child_validation_template.v3"
-            ),
-            "schema_version": SCHEMA_VERSION,
-            "profile_key": PROFILE_KEY,
-            "stage": "OPEN_INCREMENTAL_ACQUISITION",
-            "semantic_role": "BATCHED_CAUSAL_CHILD_VALIDATION",
+            "schema": dynamic.LIVE_DYNAMIC_CHILD_VALIDATION_TEMPLATE_SCHEMA,
+            "schema_version": dynamic.SCHEMA_VERSION,
+            "profile_key": dynamic.PROFILE_KEY,
+            "semantic_role": dynamic.LIVE_DYNAMIC_CHILD_SEMANTIC_ROLE,
+            "stage": "CHILD_VALIDATION",
+            "round_index": 0,
             "source_model_epoch_id": discovery.source_model_epoch_id,
             "source_proof_id": discovery.source_proof_id,
-            "source_frontier_id": discovery.source_frontier_id,
             "source_head_id": discovery.source_head_id,
             "occurrence_id": discovery.occurrence_id,
             "context_id": discovery.context_id,
             "arm": discovery.arm.value,
-            "operator_profile_id": discovery.operator_profile_id,
-            "candidate_id": discovery.candidate_id,
             "child_binding_id": discovery.child_binding_id,
             "child_state_id": discovery.child_state_id,
             "catalogue_id": discovery.catalogue_id,
-            "source_obligation_row_ids": list(
-                discovery.source_obligation_row_ids
-            ),
             "row_binding_id": discovery.row_binding.row_binding_id,
             "dependency_discovery_intent_id": discovery.intent_id,
             "stream_id": None,
@@ -453,8 +475,8 @@ class V075LiveBatchedCausalChildValidationTemplateV3:
             "observer_execution_ready": False,
             "observer_signed_complete_support_required": True,
             "validation_stream_must_be_derived_from_support_freeze": True,
-            "observer_calls": 0,
-            "kernel_calls": 0,
+            "base_child_acquisition_consumes_promotion_round": False,
+            "official_execution_allowed": False,
         }
 
     @property
@@ -741,6 +763,16 @@ class V075LiveBatchedCausalChildAuthorizationV3:
             "discovery_intent_ids": [
                 item.intent_id for item in self.discovery_intents
             ],
+            "discovery_candidate_bindings": [
+                {
+                    "discovery_intent_id": item.intent_id,
+                    "candidate_id": item.candidate_id,
+                    "source_obligation_row_ids": list(
+                        item.source_obligation_row_ids
+                    ),
+                }
+                for item in self.discovery_intents
+            ],
             "validation_template_ids": [
                 item.template_id for item in self.validation_templates
             ],
@@ -848,6 +880,7 @@ def _authorize_from_closure(
         V075LiveBatchedCausalChildDiscoveryIntentV3(
             _DISCOVERY_ISSUER,
             epoch.model_epoch_id,
+            epoch.model.model_id,
             epoch.proof.proof_id,
             frontier.frontier_id,
             epoch.head_id,
