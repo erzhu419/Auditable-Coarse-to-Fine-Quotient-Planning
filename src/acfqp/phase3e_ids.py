@@ -1647,6 +1647,12 @@ CONSTRUCTION_K7_V075_PLAN_ROUTE_NORMALIZATION_BINDING_V1_DOMAIN = (
 CONSTRUCTION_K7_V075_PLAN_ROUTE_PROVENANCE_REPLAY_V1_DOMAIN = (
     "acfqp:construction-k7-v075-plan-route-provenance-replay:v1"
 )
+CONSTRUCTION_K7_V075_BATCHED_CAUSAL_ROUTE_PROVENANCE_V1_DOMAIN = (
+    "acfqp:construction-k7-v075-batched-causal-route-provenance:v1"
+)
+CONSTRUCTION_K7_V075_BATCHED_CAUSAL_ROUTE_NORMALIZATION_BINDING_V1_DOMAIN = (
+    "acfqp:construction-k7-v075-batched-causal-route-normalization-binding:v1"
+)
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
 ROUTE_CAP_PROFILE_DOMAIN = "acfqp:route-cap-profile:v1"
@@ -3545,6 +3551,12 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_v075_plan_route_provenance_replay_v1": (
             CONSTRUCTION_K7_V075_PLAN_ROUTE_PROVENANCE_REPLAY_V1_DOMAIN
+        ),
+        "construction_k7_v075_batched_causal_route_provenance_v1": (
+            CONSTRUCTION_K7_V075_BATCHED_CAUSAL_ROUTE_PROVENANCE_V1_DOMAIN
+        ),
+        "construction_k7_v075_batched_causal_route_normalization_binding_v1": (
+            CONSTRUCTION_K7_V075_BATCHED_CAUSAL_ROUTE_NORMALIZATION_BINDING_V1_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,
