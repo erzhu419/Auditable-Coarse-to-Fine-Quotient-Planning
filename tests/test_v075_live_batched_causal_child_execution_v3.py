@@ -1,21 +1,18 @@
 from __future__ import annotations
 
+from collections import Counter
 from dataclasses import replace
 
 import pytest
 
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 from acfqp import v075_batch_native_planning_backend_v2 as planning
-from acfqp import v075_live_batched_causal_child_authority_v3 as causal
 from acfqp import v075_live_batched_causal_child_execution_v3 as execution
-from acfqp import v075_live_batched_causal_budget_closure_v3 as budget_closure
 from acfqp import v075_live_batched_causal_promotion_v3 as promotion
+from acfqp import v075_live_batched_causal_accounted_occurrence_v1 as accounted
 from acfqp import v075_live_dynamic_acquisition_authority_v2 as dynamic
-from acfqp import v075_observer_signed_batch_control_authority_v2 as control
-from acfqp import v075_observer_signed_multiround_occurrence_runner_v2 as runner
 from tests import test_v075_private_observer_boundary_v2 as observer_fixture
 from tests.test_v075_observer_signed_multiround_occurrence_runner_v2 import (
-    REPOSITORY_ROOT,
     _exact_schedule,
     _id,
 )
@@ -30,56 +27,24 @@ def executed_causal_child_union():
         namespace,
         context_index=0,
     )
-    controller = control.open_v075_construction_controlled_private_observer_v2(
-        authority=authority,
+    result = accounted.run_v075_live_batched_causal_accounted_occurrence_v1(
         namespace=namespace,
+        schedule=schedule,
+        schedule_verification=schedule_verification,
+        authority=authority,
         private_salt=salt,
         private_environment=generated.secret_laws_for_commitment(),
         observer_signer=signer,
         session_external_id=_id("live-batched-causal-execution-session"),
-        occurrence_identity=schedule.occurrence,
     )
-    root_execution = runner._execute_initial_root_schedule(  # noqa: SLF001
-        controller=controller,
-        namespace=namespace,
-        schedule=schedule,
-        verification=schedule_verification,
-    )
-    root_epoch = runner._freeze_root_epoch(  # noqa: SLF001
-        controller=controller,
-        schedule=schedule,
-    )
-    authorization = causal.authorize_v075_live_batched_causal_children_v3(
-        source_epoch=root_epoch,
-        namespace=namespace,
-    )
-    authorization, authorization_verification = (
-        causal.verify_v075_live_batched_causal_child_authorization_bytes_v3(
-            source_epoch=root_epoch,
-            namespace=namespace,
-            claimed_bytes=authorization.canonical_bytes,
-        )
-    )
-    bundle = execution.execute_v075_live_batched_causal_children_v3(
-        controller=controller,
-        namespace=namespace,
-        schedule=schedule,
-        authorization=authorization,
-        authorization_verification=authorization_verification,
-    )
-    promotion_bundle = (
-        promotion.execute_v075_live_batched_causal_promotions_v3(
-            controller=controller,
-            schedule=schedule,
-            child_execution_bundle=bundle,
-        )
-    )
-    closed_occurrence, closed_verification = (
-        budget_closure.close_v075_live_batched_causal_budget_exhausted_v3(
-            controller=controller,
-            promotion_bundle=promotion_bundle,
-        )
-    )
+    root_execution = result.root_execution
+    root_epoch = result.root_epoch
+    authorization = result.child_authorization
+    authorization_verification = result.child_authorization_verification
+    bundle = result.child_execution
+    promotion_bundle = result.promotion_bundle
+    closed_occurrence = result.budget_closure
+    closed_verification = result.budget_closure_verification
     closed = closed_occurrence.observer_closure
     return {
         "namespace": namespace,
@@ -93,6 +58,8 @@ def executed_causal_child_union():
         "promotion_bundle": promotion_bundle,
         "budget_closure": closed_occurrence,
         "budget_closure_verification": closed_verification,
+        "accounted_occurrence": result,
+        "accounting_result": result.accounting_result,
         "closed": closed,
     }
 
@@ -400,3 +367,41 @@ def test_budget_exhaustion_closes_observer_without_minting_terminal_authority(
     assert document["work_vector_issued"] is False
     assert verification.closure_id == occurrence.closure_id
     assert verification.trusted_budget_replay_id == replay.replay_id
+
+
+def test_accounted_occurrence_materializes_exact_stage_local_vectors(
+    executed_causal_child_union,
+) -> None:
+    result = executed_causal_child_union["accounted_occurrence"]
+    accounting = executed_causal_child_union["accounting_result"]
+    stages = accounting.recorded_stages
+    assert result.accounting_result is accounting
+    assert len(stages) == 12
+    assert Counter(row.stage_start.stage_kind.value for row in stages) == {
+        "PREOPEN_COMMON_PREFIX": 1,
+        "INITIAL_ACQUISITION": 1,
+        "INITIAL_MODEL_BUILD": 1,
+        "FAILED_ABSTRACT_PREFIX": 1,
+        "OPEN_INCREMENTAL_ACQUISITION": 3,
+        "OPEN_CHECKPOINT_REPLANNING": 4,
+        "CLOSED_RECONCILIATION_AND_TERMINALIZATION": 1,
+    }
+    assert all(len(row.work_vector.records) == 202 for row in stages)
+    assert sum(len(row.work_vector.records) for row in stages) == 2_424
+    assert sum(
+        row.work_vector.values["audit.dynamic_child_closure_attestations"]
+        for row in stages
+    ) == 1
+    assert all(
+        row.work_vector.values["audit.dynamic_root_rows_scanned"] == 0
+        for row in stages
+        if row.stage_start.stage_kind.value
+        == "OPEN_CHECKPOINT_REPLANNING"
+    )
+    document = accounting.to_document()
+    assert document["stage_local_counter_record_count"] == 2_424
+    assert document["stage_local_vectors_only"] is True
+    assert document["occurrence_work_vector_issued"] is False
+    assert document["shared_resource_fixed_point_complete"] is False
+    assert document["all_site_completeness_claimed"] is False
+    assert document["official_execution_allowed"] is False

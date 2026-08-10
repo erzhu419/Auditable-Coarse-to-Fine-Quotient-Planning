@@ -28,6 +28,9 @@ from acfqp.phase3e_ids import (
     loads_canonical_json,
     parse_content_id,
 )
+from acfqp import construction_operational_context_v3 as operational_context
+from acfqp import construction_accounting_owned_runtime_v2 as accounting_v2
+from acfqp import construction_accounting_registry_v6 as registry_v6
 from acfqp import v075_batch_native_planning_backend_v2 as planning
 from acfqp import v075_five_arm_acquisition_authority_v2 as acquisition
 from acfqp import v075_live_batched_causal_child_authority_v3 as causal
@@ -115,6 +118,8 @@ _LEDGER_VERIFICATION_ISSUER = object()
 _BARRIER_ISSUER = object()
 _BARRIER_VERIFICATION_ISSUER = object()
 _BUNDLE_ISSUER = object()
+_MAX_TRUSTED_OWNED_EXECUTION_BUNDLES = 4_096
+_TRUSTED_OWNED_EXECUTION_BUNDLES: dict[int, tuple[Any, ...]] = {}
 
 
 @dataclass(frozen=True, slots=True)
@@ -1064,6 +1069,62 @@ class V075LiveBatchedCausalExecutionBundleV3:
         }
 
 
+def _register_trusted_owned_execution_bundle(
+    bundle: V075LiveBatchedCausalExecutionBundleV3,
+) -> V075LiveBatchedCausalExecutionBundleV3:
+    if len(_TRUSTED_OWNED_EXECUTION_BUNDLES) >= (
+        _MAX_TRUSTED_OWNED_EXECUTION_BUNDLES
+    ):
+        _fail("trusted causal execution bundle registry reached its cap")
+    _TRUSTED_OWNED_EXECUTION_BUNDLES[id(bundle)] = (
+        bundle,
+        bundle.bundle_id,
+        bundle.authorization,
+        bundle.authorization_verification,
+        bundle.resulting_epoch,
+        control.same_process_structural_fingerprint_v2(bundle),
+    )
+    return bundle
+
+
+def validate_v075_trusted_owned_batched_causal_execution_bundle_v3(
+    bundle: V075LiveBatchedCausalExecutionBundleV3,
+) -> V075LiveBatchedCausalExecutionBundleV3:
+    """Validate an issuer-owned execution graph without re-running it."""
+
+    if not operational_context.operational_no_full_replay_enabled_v3():
+        _fail("trusted execution validation requires no-full-replay context")
+    if type(bundle) is not V075LiveBatchedCausalExecutionBundleV3:
+        _fail("trusted execution validation requires one exact bundle")
+    registration = _TRUSTED_OWNED_EXECUTION_BUNDLES.get(id(bundle))
+    if (
+        registration is None
+        or registration[0] is not bundle
+        or registration[1] != bundle.bundle_id
+        or registration[2] is not bundle.authorization
+        or registration[3] is not bundle.authorization_verification
+        or registration[4] is not bundle.resulting_epoch
+        or registration[5]
+        != control.same_process_structural_fingerprint_v2(bundle)
+    ):
+        _fail("causal execution bundle lacks immutable owned provenance")
+    causal.validate_v075_trusted_owned_batched_causal_authorization_v3(
+        bundle.authorization,
+        bundle.authorization_verification,
+    )
+    try:
+        exact_epoch = live_model._validate_operational_parent(  # noqa: SLF001
+            bundle.resulting_epoch
+        )
+    except Exception as error:
+        raise V075LiveBatchedCausalExecutionV3InvariantViolation(
+            "trusted execution resulting epoch changed"
+        ) from error
+    if exact_epoch is not bundle.resulting_epoch:
+        _fail("trusted execution resulting epoch identity changed")
+    return bundle
+
+
 def execute_v075_live_batched_causal_children_v3(
     *,
     controller: control.V075ConstructionControlledPrivateObserverV2,
@@ -1084,13 +1145,21 @@ def execute_v075_live_batched_causal_children_v3(
         != authorization.source_closure.source_epoch.occurrence_identity
     ):
         _fail("causal executor controller or schedule was transplanted")
-    exact_authorization, exact_verification = (
-        causal.verify_v075_live_batched_causal_child_authorization_bytes_v3(
-            source_epoch=authorization.source_closure.source_epoch,
-            namespace=namespace,
-            claimed_bytes=authorization.canonical_bytes,
+    if operational_context.operational_no_full_replay_enabled_v3():
+        exact_authorization, exact_verification = (
+            causal.validate_v075_trusted_owned_batched_causal_authorization_v3(
+                authorization,
+                authorization_verification,
+            )
         )
-    )
+    else:
+        exact_authorization, exact_verification = (
+            causal.verify_v075_live_batched_causal_child_authorization_bytes_v3(
+                source_epoch=authorization.source_closure.source_epoch,
+                namespace=namespace,
+                claimed_bytes=authorization.canonical_bytes,
+            )
+        )
     if (
         exact_authorization.authorization_id != authorization.authorization_id
         or exact_verification.to_document()
@@ -1104,6 +1173,19 @@ def execute_v075_live_batched_causal_children_v3(
         or current_prefix.to_document() != source_prefix.to_document()
     ):
         _fail("causal executor did not start at the authorization source head")
+    accounting_v2.exit_owned_causal_promotion_stage_v2(
+        registry_v6.ConstructionStageKindV6.FAILED_ABSTRACT_PREFIX,
+        output_bindings=(
+            ("causal_child_authorization", authorization.authorization_id),
+            (
+                "causal_child_authorization_verification",
+                exact_verification.verification_id,
+            ),
+        ),
+    )
+    accounting_v2.enter_owned_causal_promotion_stage_v2(
+        registry_v6.ConstructionStageKindV6.OPEN_INCREMENTAL_ACQUISITION
+    )
     templates = {
         item.discovery_intent.intent_id: item
         for item in authorization.validation_templates
@@ -1172,6 +1254,15 @@ def execute_v075_live_batched_causal_children_v3(
     ):
         _fail("causal executor appended partial or extra observation work")
     prefix = controller.freeze_owned_open_prefix_v2()
+    accounting_v2.exit_owned_causal_promotion_stage_v2(
+        registry_v6.ConstructionStageKindV6.OPEN_INCREMENTAL_ACQUISITION,
+        output_bindings=(
+            ("causal_child_signed_prefix", prefix.verification_id),
+        ),
+    )
+    accounting_v2.enter_owned_causal_promotion_stage_v2(
+        registry_v6.ConstructionStageKindV6.OPEN_CHECKPOINT_REPLANNING
+    )
     ledger = freeze_v075_live_batched_causal_execution_ledger_v3(
         authorization=authorization,
         authorization_verification=exact_verification,
@@ -1210,7 +1301,23 @@ def execute_v075_live_batched_causal_children_v3(
             claimed_bytes=barrier.canonical_bytes,
         )
     )
-    return V075LiveBatchedCausalExecutionBundleV3(
+    accounting_v2.exit_owned_causal_promotion_stage_v2(
+        registry_v6.ConstructionStageKindV6.OPEN_CHECKPOINT_REPLANNING,
+        output_bindings=(
+            ("causal_child_execution_ledger", ledger.ledger_id),
+            (
+                "causal_child_execution_verification",
+                ledger_verification.verification_id,
+            ),
+            ("causal_child_model_epoch", resulting_epoch.model_epoch_id),
+            ("causal_child_replanning_barrier", barrier.barrier_id),
+            (
+                "causal_child_replanning_verification",
+                barrier_verification.verification_id,
+            ),
+        ),
+    )
+    result = V075LiveBatchedCausalExecutionBundleV3(
         _BUNDLE_ISSUER,
         authorization,
         exact_verification,
@@ -1224,6 +1331,9 @@ def execute_v075_live_batched_causal_children_v3(
             .CHILD_MODEL_READY_FOR_VERIFIED_REPLANNING
         ),
     )
+    if operational_context.operational_no_full_replay_enabled_v3():
+        return _register_trusted_owned_execution_bundle(result)
+    return result
 
 
 __all__ = (
@@ -1240,6 +1350,7 @@ __all__ = (
     "execute_v075_live_batched_causal_children_v3",
     "freeze_v075_live_batched_causal_execution_ledger_v3",
     "freeze_v075_live_batched_causal_replanning_barrier_v3",
+    "validate_v075_trusted_owned_batched_causal_execution_bundle_v3",
     "verify_v075_live_batched_causal_execution_ledger_bytes_v3",
     "verify_v075_live_batched_causal_replanning_barrier_bytes_v3",
 )

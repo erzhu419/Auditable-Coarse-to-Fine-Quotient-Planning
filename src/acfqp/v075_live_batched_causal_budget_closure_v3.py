@@ -27,6 +27,8 @@ from acfqp.phase3e_ids import (
     parse_content_id,
 )
 from acfqp.routing_v1 import TerminalClass, TerminalCode
+from acfqp import construction_accounting_owned_runtime_v2 as accounting_v2
+from acfqp import construction_accounting_registry_v6 as registry_v6
 from acfqp import v075_batch_native_planning_backend_v2 as planning
 from acfqp import v075_live_batched_causal_promotion_v3 as promotion
 from acfqp import v075_observer_signed_batch_control_authority_v2 as control
@@ -507,6 +509,12 @@ def close_v075_live_batched_causal_budget_exhausted_v3(
     V075LiveBatchedCausalBudgetClosedOccurrenceV3,
     V075LiveBatchedCausalBudgetClosureVerificationV3,
 ]:
+    accounting_v2.enter_owned_causal_promotion_stage_v2(
+        (
+            registry_v6.ConstructionStageKindV6
+            .CLOSED_RECONCILIATION_AND_TERMINALIZATION
+        )
+    )
     exact_bundle, bundle_verification = (
         promotion.validate_v075_trusted_owned_batched_causal_promotion_bundle_v3(
             promotion_bundle
@@ -545,7 +553,27 @@ def close_v075_live_batched_causal_budget_exhausted_v3(
         budget_replay,
         closed,
     )
-    return closure, _exact_closure_verification(closure)
+    verification = _exact_closure_verification(closure)
+    accounting_v2.exit_owned_causal_promotion_stage_v2(
+        (
+            registry_v6.ConstructionStageKindV6
+            .CLOSED_RECONCILIATION_AND_TERMINALIZATION
+        ),
+        output_bindings=(
+            ("causal_promotion_budget_cap_profile", cap_profile.profile_id),
+            ("causal_promotion_budget_closure", closure.closure_id),
+            (
+                "causal_promotion_budget_closure_verification",
+                verification.verification_id,
+            ),
+            ("causal_promotion_budget_replay", budget_replay.replay_id),
+            (
+                "causal_promotion_control_reconciliation",
+                closed.reconciliation.reconciliation_id,
+            ),
+        ),
+    )
+    return closure, verification
 
 
 def verify_v075_live_batched_causal_budget_closure_bytes_v3(

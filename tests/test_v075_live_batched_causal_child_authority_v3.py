@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import replace
+from dataclasses import dataclass, replace
 
 import pytest
 
@@ -10,6 +10,31 @@ from acfqp import v075_live_dynamic_acquisition_authority_v2 as dynamic
 from tests.test_v075_observer_signed_multiround_occurrence_runner_v2 import (
     capped_closed_result,
 )
+
+
+@dataclass(frozen=True)
+class _StableFingerprintProbe:
+    label: str
+    count: int
+
+
+def test_owned_authorization_fingerprint_does_not_hash_temporary_container_id(
+) -> None:
+    authorization = _StableFingerprintProbe("authorization", 1)
+    verification = _StableFingerprintProbe("verification", 2)
+    first = batched._owned_authorization_fingerprint(  # noqa: SLF001
+        authorization,
+        verification,
+    )
+    second = batched._owned_authorization_fingerprint(  # noqa: SLF001
+        authorization,
+        verification,
+    )
+    assert first == second
+    assert first != batched._owned_authorization_fingerprint(  # noqa: SLF001
+        authorization,
+        _StableFingerprintProbe("verification", 3),
+    )
 
 
 @pytest.fixture(scope="module")

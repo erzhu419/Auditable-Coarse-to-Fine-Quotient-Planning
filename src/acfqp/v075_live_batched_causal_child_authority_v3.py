@@ -27,9 +27,11 @@ from acfqp.phase3e_ids import (
     loads_canonical_json,
     parse_content_id,
 )
+from acfqp import construction_operational_context_v3 as operational_context
 from acfqp import v075_batch_native_planning_backend_v2 as planning
 from acfqp import v075_live_dynamic_acquisition_authority_v2 as dynamic
 from acfqp import v075_live_incremental_model_authority_v2 as live_model
+from acfqp import v075_observer_signed_batch_control_authority_v2 as control
 from acfqp import v075_public_graph_semantics_v1 as graph
 from acfqp import v075_public_target_tape_namespace_v2 as namespace_v2
 from acfqp import v075_registered_occurrence_worker_v1 as worker
@@ -134,6 +136,8 @@ _DISCOVERY_ISSUER = object()
 _VALIDATION_ISSUER = object()
 _AUTHORIZATION_ISSUER = object()
 _VERIFICATION_ISSUER = object()
+_MAX_TRUSTED_OWNED_AUTHORIZATIONS = 4_096
+_TRUSTED_OWNED_AUTHORIZATIONS: dict[int, tuple[Any, ...]] = {}
 
 
 @dataclass(frozen=True, slots=True)
@@ -1003,6 +1007,163 @@ class V075LiveBatchedCausalChildVerificationV3:
         return {**self._payload(), "verification_id": self.verification_id}
 
 
+def _exact_authorization_verification(
+    authorization: V075LiveBatchedCausalChildAuthorizationV3,
+) -> V075LiveBatchedCausalChildVerificationV3:
+    frontier = authorization.source_closure.source_epoch.proof.failed_frontier
+    if frontier is None:
+        _fail("batched causal authorization lost its failed frontier")
+    return V075LiveBatchedCausalChildVerificationV3(
+        _VERIFICATION_ISSUER,
+        authorization.authorization_id,
+        authorization.source_closure.source_epoch.model_epoch_id,
+        frontier.frontier_id,
+        authorization.source_closure.closure_id,
+        authorization.selected_candidate_ids,
+        authorization.selected_row_binding_ids,
+        authorization.incremental_draw_count,
+    )
+
+
+def _owned_authorization_fingerprint(
+    authorization: V075LiveBatchedCausalChildAuthorizationV3,
+    verification: V075LiveBatchedCausalChildVerificationV3,
+) -> str:
+    digest = hashlib.sha256(
+        b"acfqp:trusted-owned-causal-authorization-fingerprint:v3\x00"
+    )
+    digest.update(
+        control.same_process_structural_fingerprint_v2(
+            authorization
+        ).encode("ascii")
+    )
+    digest.update(
+        control.same_process_structural_fingerprint_v2(
+            verification
+        ).encode("ascii")
+    )
+    return digest.hexdigest()
+
+
+def _register_trusted_owned_authorization(
+    authorization: V075LiveBatchedCausalChildAuthorizationV3,
+    verification: V075LiveBatchedCausalChildVerificationV3,
+) -> tuple[
+    V075LiveBatchedCausalChildAuthorizationV3,
+    V075LiveBatchedCausalChildVerificationV3,
+]:
+    if len(_TRUSTED_OWNED_AUTHORIZATIONS) >= (
+        _MAX_TRUSTED_OWNED_AUTHORIZATIONS
+    ):
+        _fail("trusted owned causal authorization registry reached its cap")
+    fingerprint = _owned_authorization_fingerprint(
+        authorization,
+        verification,
+    )
+    _TRUSTED_OWNED_AUTHORIZATIONS[id(authorization)] = (
+        authorization,
+        verification,
+        authorization.authorization_id,
+        verification.verification_id,
+        fingerprint,
+    )
+    return authorization, verification
+
+
+def authorize_and_attest_v075_live_batched_causal_children_owned_v3(
+    *,
+    source_epoch: live_model.V075LiveIncrementalModelEpochV2,
+    namespace: namespace_v2.V075PublicTargetTapeNamespaceV2,
+) -> tuple[
+    V075LiveBatchedCausalChildAuthorizationV3,
+    V075LiveBatchedCausalChildVerificationV3,
+]:
+    """Issue one owned authorization without replaying the source model.
+
+    Portable byte verification remains the public replay boundary.  This
+    construction-only path accepts only an epoch already present in the live
+    model's immutable same-process registry and registers the resulting typed
+    authorization for downstream operational consumers.
+    """
+
+    if not operational_context.operational_no_full_replay_enabled_v3():
+        _fail("owned causal authorization requires no-full-replay context")
+    closure, closure_verification = (
+        dynamic.freeze_and_attest_v075_live_dynamic_child_closure_owned_v3(
+            source_epoch=source_epoch,
+            namespace=namespace,
+        )
+    )
+    authorization = _authorize_from_closure(
+        closure=closure,
+        namespace=namespace,
+    )
+    replayed_authorization = _authorize_from_closure(
+        closure=closure,
+        namespace=namespace,
+    )
+    if (
+        replayed_authorization.authorization_id
+        != authorization.authorization_id
+        or replayed_authorization.canonical_bytes
+        != authorization.canonical_bytes
+    ):
+        _fail("owned causal authorization semantic replay changed")
+    verification = _exact_authorization_verification(authorization)
+    if (
+        closure_verification.closure_id != closure.closure_id
+        or closure_verification.source_model_epoch_id
+        != source_epoch.model_epoch_id
+        or closure_verification.source_proof_id != source_epoch.proof.proof_id
+        or closure_verification.source_head_id != source_epoch.head_id
+    ):
+        _fail("owned causal closure attestation changed")
+    return _register_trusted_owned_authorization(
+        authorization,
+        verification,
+    )
+
+
+def validate_v075_trusted_owned_batched_causal_authorization_v3(
+    authorization: V075LiveBatchedCausalChildAuthorizationV3,
+    verification: V075LiveBatchedCausalChildVerificationV3,
+) -> tuple[
+    V075LiveBatchedCausalChildAuthorizationV3,
+    V075LiveBatchedCausalChildVerificationV3,
+]:
+    """Validate exact same-process provenance without semantic re-execution."""
+
+    if not operational_context.operational_no_full_replay_enabled_v3():
+        _fail("trusted owned causal validation requires no-full-replay context")
+    if (
+        type(authorization) is not V075LiveBatchedCausalChildAuthorizationV3
+        or type(verification) is not V075LiveBatchedCausalChildVerificationV3
+    ):
+        _fail("trusted owned causal authorization has the wrong type")
+    registration = _TRUSTED_OWNED_AUTHORIZATIONS.get(id(authorization))
+    if (
+        registration is None
+        or registration[0] is not authorization
+        or registration[1] is not verification
+        or registration[2] != authorization.authorization_id
+        or registration[3] != verification.verification_id
+        or registration[4]
+        != _owned_authorization_fingerprint(authorization, verification)
+    ):
+        _fail("causal authorization lacks immutable owned provenance")
+    try:
+        exact_epoch = live_model._validate_operational_parent(  # noqa: SLF001
+            authorization.source_closure.source_epoch
+        )
+    except Exception as error:
+        raise V075LiveBatchedCausalChildV3InvariantViolation(
+            "owned causal authorization source epoch changed"
+        ) from error
+    if exact_epoch is not authorization.source_closure.source_epoch:
+        _fail("owned causal authorization source epoch identity changed")
+    return authorization, verification
+
+
 def verify_v075_live_batched_causal_child_authorization_bytes_v3(
     *,
     source_epoch: live_model.V075LiveIncrementalModelEpochV2,
@@ -1034,18 +1195,7 @@ def verify_v075_live_batched_causal_child_authorization_bytes_v3(
     )
     if exact.canonical_bytes != claimed_bytes:
         _fail("claimed batched causal authorization differs from exact replay")
-    frontier = exact.source_closure.source_epoch.proof.failed_frontier
-    assert frontier is not None
-    verification = V075LiveBatchedCausalChildVerificationV3(
-        _VERIFICATION_ISSUER,
-        exact.authorization_id,
-        exact.source_closure.source_epoch.model_epoch_id,
-        frontier.frontier_id,
-        exact.source_closure.closure_id,
-        exact.selected_candidate_ids,
-        exact.selected_row_binding_ids,
-        exact.incremental_draw_count,
-    )
+    verification = _exact_authorization_verification(exact)
     return exact, verification
 
 
@@ -1062,7 +1212,9 @@ __all__ = (
     "V075LiveBatchedCausalChildV3InvariantViolation",
     "V075LiveBatchedCausalChildValidationTemplateV3",
     "V075LiveBatchedCausalChildVerificationV3",
+    "authorize_and_attest_v075_live_batched_causal_children_owned_v3",
     "authorize_v075_live_batched_causal_children_v3",
+    "validate_v075_trusted_owned_batched_causal_authorization_v3",
     "freeze_v075_live_batched_causal_child_profile_v3",
     "verify_v075_live_batched_causal_child_authorization_bytes_v3",
 )

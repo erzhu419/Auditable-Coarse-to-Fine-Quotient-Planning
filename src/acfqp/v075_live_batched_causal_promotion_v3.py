@@ -32,6 +32,9 @@ from acfqp.phase3e_ids import (
     loads_canonical_json,
     parse_content_id,
 )
+from acfqp import construction_operational_context_v3 as operational_context
+from acfqp import construction_accounting_owned_runtime_v2 as accounting_v2
+from acfqp import construction_accounting_registry_v6 as registry_v6
 from acfqp import v075_batch_native_planning_backend_v2 as planning
 from acfqp import v075_five_arm_acquisition_authority_v2 as acquisition
 from acfqp import v075_live_batched_causal_child_authority_v3 as causal
@@ -170,6 +173,16 @@ def _exact_child_bundle(
 
     if type(bundle) is not child_execution.V075LiveBatchedCausalExecutionBundleV3:
         _fail("promotion predecessor is not one causal execution bundle")
+    if (
+        not portable_replay
+        and operational_context.operational_no_full_replay_enabled_v3()
+    ):
+        return (
+            child_execution
+            .validate_v075_trusted_owned_batched_causal_execution_bundle_v3(
+                bundle
+            )
+        )
     authorization = bundle.authorization
     if not authorization.discovery_intents:
         _fail("promotion predecessor has no authorized child rows")
@@ -332,6 +345,8 @@ _BARRIER_ISSUER = object()
 _BARRIER_VERIFICATION_ISSUER = object()
 _BUNDLE_ISSUER = object()
 _BUNDLE_VERIFICATION_ISSUER = object()
+_MAX_TRUSTED_OWNED_PROMOTION_BUNDLES = 4_096
+_TRUSTED_OWNED_PROMOTION_BUNDLES: dict[int, tuple[Any, ...]] = {}
 
 
 @dataclass(frozen=True, slots=True)
@@ -1548,6 +1563,24 @@ def _exact_bundle_verification(
     )
 
 
+def _register_trusted_owned_promotion_bundle(
+    bundle: V075LiveBatchedCausalPromotionBundleV3,
+) -> V075LiveBatchedCausalPromotionBundleV3:
+    if len(_TRUSTED_OWNED_PROMOTION_BUNDLES) >= (
+        _MAX_TRUSTED_OWNED_PROMOTION_BUNDLES
+    ):
+        _fail("trusted causal promotion bundle registry reached its cap")
+    _TRUSTED_OWNED_PROMOTION_BUNDLES[id(bundle)] = (
+        bundle,
+        bundle.bundle_id,
+        bundle.child_execution_bundle,
+        bundle.final_epoch,
+        bundle.outcome,
+        control.same_process_structural_fingerprint_v2(bundle),
+    )
+    return bundle
+
+
 def _replay_promotion_bundle(
     claimed: V075LiveBatchedCausalPromotionBundleV3,
     *,
@@ -1677,8 +1710,39 @@ def validate_v075_trusted_owned_batched_causal_promotion_bundle_v3(
     V075LiveBatchedCausalPromotionBundleV3,
     V075LiveBatchedCausalPromotionBundleVerificationV3,
 ]:
-    """Exact same-process replay without repeating portable planner replay."""
+    """Validate same-process provenance without semantic re-execution."""
 
+    if not operational_context.operational_no_full_replay_enabled_v3():
+        expected = _replay_promotion_bundle(claimed, portable_replay=False)
+        return expected, _exact_bundle_verification(expected)
+    if type(claimed) is not V075LiveBatchedCausalPromotionBundleV3:
+        _fail("trusted promotion validation requires one exact bundle")
+    registration = _TRUSTED_OWNED_PROMOTION_BUNDLES.get(id(claimed))
+    if (
+        registration is None
+        or registration[0] is not claimed
+        or registration[1] != claimed.bundle_id
+        or registration[2] is not claimed.child_execution_bundle
+        or registration[3] is not claimed.final_epoch
+        or registration[4] is not claimed.outcome
+        or registration[5]
+        != control.same_process_structural_fingerprint_v2(claimed)
+    ):
+        _fail("promotion bundle lacks immutable owned provenance")
+    child_execution.validate_v075_trusted_owned_batched_causal_execution_bundle_v3(
+        claimed.child_execution_bundle
+    )
+    for epoch in claimed.resulting_epochs:
+        try:
+            exact_epoch = live_model._validate_operational_parent(  # noqa: SLF001
+                epoch
+            )
+        except Exception as error:
+            raise V075LiveBatchedCausalPromotionV3InvariantViolation(
+                "trusted promotion epoch changed"
+            ) from error
+        if exact_epoch is not epoch:
+            _fail("trusted promotion epoch identity changed")
     expected = _replay_promotion_bundle(claimed, portable_replay=False)
     return expected, _exact_bundle_verification(expected)
 
@@ -1708,6 +1772,9 @@ def execute_v075_live_batched_causal_promotions_v3(
 ) -> V075LiveBatchedCausalPromotionBundleV3:
     """Execute at most two exact validation promotions and leave owner open."""
 
+    accounting_v2.enter_owned_causal_promotion_stage_v2(
+        registry_v6.ConstructionStageKindV6.OPEN_CHECKPOINT_REPLANNING
+    )
     child = _exact_child_bundle(child_execution_bundle, portable_replay=False)
     if (
         type(controller)
@@ -1725,6 +1792,22 @@ def execute_v075_live_batched_causal_promotions_v3(
     previous_decision = None
     previous_barrier = None
     stopped_without_append = False
+    checkpoint_open = True
+    checkpoint_outputs: list[tuple[str, str]] = [
+        ("promotion_source_child_bundle", child.bundle_id)
+    ]
+
+    def close_checkpoint() -> None:
+        nonlocal checkpoint_open, checkpoint_outputs
+        if not checkpoint_open:
+            _fail("promotion accounting checkpoint closed twice")
+        accounting_v2.exit_owned_causal_promotion_stage_v2(
+            registry_v6.ConstructionStageKindV6.OPEN_CHECKPOINT_REPLANNING,
+            output_bindings=tuple(checkpoint_outputs),
+        )
+        checkpoint_open = False
+        checkpoint_outputs = []
+
     for round_index in range(1, MAXIMUM_PROMOTION_ROUNDS + 1):
         prefix = controller.freeze_owned_open_prefix_v2()
         if (
@@ -1746,11 +1829,25 @@ def execute_v075_live_batched_causal_promotions_v3(
         verification = _exact_decision_verification(decision)
         decisions.append(decision)
         decision_verifications.append(verification)
+        checkpoint_outputs.extend(
+            (
+                (f"promotion_decision_{round_index}", decision.decision_id),
+                (
+                    f"promotion_decision_verification_{round_index}",
+                    verification.verification_id,
+                ),
+            )
+        )
         if decision.status is not V075LiveBatchedCausalPromotionDecisionStatusV3.AUTHORIZED:
             stopped_without_append = True
+            close_checkpoint()
             break
         intent = decision.intent
         assert intent is not None
+        close_checkpoint()
+        accounting_v2.enter_owned_causal_promotion_stage_v2(
+            registry_v6.ConstructionStageKindV6.OPEN_INCREMENTAL_ACQUISITION
+        )
         stage = (
             control.V075ControlledBatchStageV2.ROOT_VALIDATION
             if intent.stage == "ROOT_VALIDATION"
@@ -1775,8 +1872,28 @@ def execute_v075_live_batched_causal_promotions_v3(
             accepted_draw_count=intent.accepted_draw_count,
             accepted_draw_cap=intent.accepted_draw_cap,
         )
-        controller.execute_batch_intent_v2(controlled_intent)
+        controlled_append = controller.execute_batch_intent_v2(
+            controlled_intent
+        )
         resulting_prefix = controller.freeze_owned_open_prefix_v2()
+        accounting_v2.exit_owned_causal_promotion_stage_v2(
+            registry_v6.ConstructionStageKindV6.OPEN_INCREMENTAL_ACQUISITION,
+            output_bindings=(
+                (
+                    f"promotion_append_receipt_{round_index}",
+                    controlled_append.receipt.receipt_id,
+                ),
+                (
+                    f"promotion_signed_prefix_{round_index}",
+                    resulting_prefix.verification_id,
+                ),
+            ),
+        )
+        accounting_v2.enter_owned_causal_promotion_stage_v2(
+            registry_v6.ConstructionStageKindV6.OPEN_CHECKPOINT_REPLANNING
+        )
+        checkpoint_open = True
+        checkpoint_outputs = []
         result = live_model.freeze_v075_live_incremental_model_epoch_v2(
             occurrence_identity=schedule.occurrence,
             controlled_appends=controller.controlled_appends,
@@ -1795,6 +1912,22 @@ def execute_v075_live_batched_causal_promotions_v3(
             child_prevalidated=True,
         )
         barrier_verification = _exact_barrier_verification(barrier)
+        checkpoint_outputs.extend(
+            (
+                (
+                    f"promotion_model_epoch_{round_index}",
+                    result.model_epoch_id,
+                ),
+                (
+                    f"promotion_replanning_barrier_{round_index}",
+                    barrier.barrier_id,
+                ),
+                (
+                    f"promotion_replanning_verification_{round_index}",
+                    barrier_verification.verification_id,
+                ),
+            )
+        )
         resulting_epochs.append(result)
         barriers.append(barrier)
         barrier_verifications.append(barrier_verification)
@@ -1802,7 +1935,10 @@ def execute_v075_live_batched_causal_promotions_v3(
         previous_decision = decision
         previous_barrier = barrier
         if result.proof.outcome is planning.V075NumericalOutcomeV2.CANDIDATE:
+            close_checkpoint()
             break
+    if checkpoint_open:
+        close_checkpoint()
     if source_epoch.proof.outcome is planning.V075NumericalOutcomeV2.CANDIDATE:
         outcome = (
             V075LiveBatchedCausalPromotionOutcomeV3
@@ -1812,7 +1948,7 @@ def execute_v075_live_batched_causal_promotions_v3(
         outcome = V075LiveBatchedCausalPromotionOutcomeV3.NO_ELIGIBLE_FRONTIER_ROW
     else:
         outcome = V075LiveBatchedCausalPromotionOutcomeV3.PROMOTION_BUDGET_EXHAUSTED
-    return V075LiveBatchedCausalPromotionBundleV3(
+    result = V075LiveBatchedCausalPromotionBundleV3(
         _BUNDLE_ISSUER,
         child,
         tuple(decisions),
@@ -1823,6 +1959,9 @@ def execute_v075_live_batched_causal_promotions_v3(
         source_epoch,
         outcome,
     )
+    if operational_context.operational_no_full_replay_enabled_v3():
+        return _register_trusted_owned_promotion_bundle(result)
+    return result
 
 
 __all__ = (
