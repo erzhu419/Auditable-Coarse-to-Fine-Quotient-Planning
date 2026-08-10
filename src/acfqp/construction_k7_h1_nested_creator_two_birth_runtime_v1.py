@@ -234,8 +234,10 @@ class BoundedNestedCreatorTwoBirthLivePrefixV1:
 
     This is a process-local capability, not a portable artifact.  It retains
     the exact live SUPERVISOR session and an owned CONTROL cgroup descriptor so
-    a later construction slice can continue with BROKER rather than first
-    closing the topology.
+    lifecycle handoff can be audited without first closing the topology.  The
+    V1 supervisor protocol accepts only SHUTDOWN after the probe reap, so this
+    handle cannot itself launch BROKER and is not a composable five-birth
+    prefix.
     """
 
     __slots__ = (
