@@ -39,7 +39,7 @@ from acfqp.routing_v1 import TerminalCode
 
 
 SCHEMA_VERSION = "1.0.0"
-PROPOSED_CONTRACT_VERSION = "2.0.68"
+PROPOSED_CONTRACT_VERSION = "2.0.69"
 PROFILE_KEY = "construction_k7_terminal_accounting_coverage_matrix_v1"
 
 EXPECTED_TERMINAL_CODE_COUNT = 10
@@ -155,12 +155,12 @@ _SOURCE_SPECS = (
         ),
     ),
     _SourceSpecV1(
-        "acfqp.construction_k7_abstract_certified_common_shared_authority_v1",
-        "construction_k7_abstract_certified_common_shared_authority_v1.py",
-        "construction_k7_abstract_certified_common_shared_authority_v1",
+        "acfqp.construction_k7_abstract_accounted_shared_authority_v2",
+        "construction_k7_abstract_accounted_shared_authority_v2.py",
+        "construction_k7_abstract_accounted_shared_authority_v2",
         (
-            "issue_abstract_certified_common_shared_authority_v1",
-            "verify_abstract_certified_common_shared_authority_bytes_v1",
+            "issue_abstract_accounted_shared_authority_v2",
+            "verify_abstract_accounted_shared_authority_bytes_v2",
         ),
     ),
     _SourceSpecV1(
@@ -320,12 +320,12 @@ _ROW_SPECS = (
     _RowSpecV1(
         TerminalCode.ABSTRACT_CERTIFIED,
         TerminalAccountingCoverageStateV1.REPLAYABLE_PARTIAL_COVERAGE_ONLY,
-        "acfqp.construction_k7_abstract_certified_common_shared_authority_v1",
-        36,
+        "acfqp.construction_k7_abstract_accounted_shared_authority_v2",
+        41,
         False,
         False,
         False,
-        "ABSTRACT_CERTIFIED_REQUIRES_166_ADDITIONAL_V6_PATH_AUTHORITIES",
+        "ABSTRACT_CERTIFIED_REQUIRES_161_ADDITIONAL_V6_PATH_AUTHORITIES",
     ),
     _RowSpecV1(
         TerminalCode.LOCAL_GROUND_RECOVERY,

@@ -1605,6 +1605,24 @@ CONSTRUCTION_K7_ABSTRACT_CERTIFIED_COMMON_SHARED_ENVELOPE_V1_DOMAIN = (
 CONSTRUCTION_K7_ABSTRACT_CERTIFIED_COMMON_SHARED_REPLAY_V1_DOMAIN = (
     "acfqp:construction-k7-abstract-certified-common-shared-replay:v1"
 )
+CONSTRUCTION_K7_ABSTRACT_ACCOUNTED_RUNTIME_PREPARATION_V2_DOMAIN = (
+    "acfqp:construction-k7-abstract-accounted-runtime-preparation:v2"
+)
+CONSTRUCTION_K7_ABSTRACT_ACCOUNTED_WORKER_OUTPUT_V2_DOMAIN = (
+    "acfqp:construction-k7-abstract-accounted-worker-output:v2"
+)
+CONSTRUCTION_K7_ABSTRACT_ACCOUNTED_MEASUREMENT_WINDOW_V2_DOMAIN = (
+    "acfqp:construction-k7-abstract-accounted-measurement-window:v2"
+)
+CONSTRUCTION_K7_ABSTRACT_ACCOUNTED_SHARED_RESOLUTION_V2_DOMAIN = (
+    "acfqp:construction-k7-abstract-accounted-shared-resolution:v2"
+)
+CONSTRUCTION_K7_ABSTRACT_ACCOUNTED_SHARED_ENVELOPE_V2_DOMAIN = (
+    "acfqp:construction-k7-abstract-accounted-shared-envelope:v2"
+)
+CONSTRUCTION_K7_ABSTRACT_ACCOUNTED_SHARED_REPLAY_V2_DOMAIN = (
+    "acfqp:construction-k7-abstract-accounted-shared-replay:v2"
+)
 CONSTRUCTION_K7_CONDITIONAL_TERMINAL_NORMALIZATION_PROFILE_V1_DOMAIN = (
     "acfqp:construction-k7-conditional-terminal-normalization-profile:v1"
 )
@@ -3476,6 +3494,24 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_abstract_certified_common_shared_replay_v1": (
             CONSTRUCTION_K7_ABSTRACT_CERTIFIED_COMMON_SHARED_REPLAY_V1_DOMAIN
+        ),
+        "construction_k7_abstract_accounted_runtime_preparation_v2": (
+            CONSTRUCTION_K7_ABSTRACT_ACCOUNTED_RUNTIME_PREPARATION_V2_DOMAIN
+        ),
+        "construction_k7_abstract_accounted_worker_output_v2": (
+            CONSTRUCTION_K7_ABSTRACT_ACCOUNTED_WORKER_OUTPUT_V2_DOMAIN
+        ),
+        "construction_k7_abstract_accounted_measurement_window_v2": (
+            CONSTRUCTION_K7_ABSTRACT_ACCOUNTED_MEASUREMENT_WINDOW_V2_DOMAIN
+        ),
+        "construction_k7_abstract_accounted_shared_resolution_v2": (
+            CONSTRUCTION_K7_ABSTRACT_ACCOUNTED_SHARED_RESOLUTION_V2_DOMAIN
+        ),
+        "construction_k7_abstract_accounted_shared_envelope_v2": (
+            CONSTRUCTION_K7_ABSTRACT_ACCOUNTED_SHARED_ENVELOPE_V2_DOMAIN
+        ),
+        "construction_k7_abstract_accounted_shared_replay_v2": (
+            CONSTRUCTION_K7_ABSTRACT_ACCOUNTED_SHARED_REPLAY_V2_DOMAIN
         ),
         "construction_k7_conditional_terminal_normalization_profile_v1": (
             CONSTRUCTION_K7_CONDITIONAL_TERMINAL_NORMALIZATION_PROFILE_V1_DOMAIN

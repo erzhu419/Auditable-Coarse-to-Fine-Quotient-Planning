@@ -42,10 +42,10 @@ def test_matrix_keeps_capability_and_observed_campaign_evidence_separate(matrix)
     attempt = rows[TerminalCode.ATTEMPT_BUDGET_EXHAUSTED].to_document()
     exact_infeasible = rows[TerminalCode.FULL_GROUND_EXACT_INFEASIBLE].to_document()
 
-    assert abstract["closed_required_path_count"] == 36
-    assert abstract["open_required_path_count"] == 166
+    assert abstract["closed_required_path_count"] == 41
+    assert abstract["open_required_path_count"] == 161
     assert abstract["blocker_code"] == (
-        "ABSTRACT_CERTIFIED_REQUIRES_166_ADDITIONAL_V6_PATH_AUTHORITIES"
+        "ABSTRACT_CERTIFIED_REQUIRES_161_ADDITIONAL_V6_PATH_AUTHORITIES"
     )
     assert abstract["complete_202_counter_record_to_work_vector_to_comparison_vector_present"] is False
     assert exact_infeasible["closed_required_path_count"] == 0
