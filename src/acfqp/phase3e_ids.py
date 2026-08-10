@@ -1638,6 +1638,15 @@ CONSTRUCTION_K7_CONDITIONAL_TERMINAL_NORMALIZATION_RESULT_V1_DOMAIN = (
 CONSTRUCTION_K7_CONDITIONAL_TERMINAL_NORMALIZATION_REPLAY_V1_DOMAIN = (
     "acfqp:construction-k7-conditional-terminal-normalization-replay:v1"
 )
+CONSTRUCTION_K7_V075_PLAN_ROUTE_PROVENANCE_V1_DOMAIN = (
+    "acfqp:construction-k7-v075-plan-route-provenance:v1"
+)
+CONSTRUCTION_K7_V075_PLAN_ROUTE_NORMALIZATION_BINDING_V1_DOMAIN = (
+    "acfqp:construction-k7-v075-plan-route-normalization-binding:v1"
+)
+CONSTRUCTION_K7_V075_PLAN_ROUTE_PROVENANCE_REPLAY_V1_DOMAIN = (
+    "acfqp:construction-k7-v075-plan-route-provenance-replay:v1"
+)
 CARDINALITY_EVIDENCE_DOMAIN = "acfqp:cardinality-evidence:v1"
 CARDINALITY_SOURCE_DOMAIN = "acfqp:cardinality-source:v1"
 ROUTE_CAP_PROFILE_DOMAIN = "acfqp:route-cap-profile:v1"
@@ -3527,6 +3536,15 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_conditional_terminal_normalization_replay_v1": (
             CONSTRUCTION_K7_CONDITIONAL_TERMINAL_NORMALIZATION_REPLAY_V1_DOMAIN
+        ),
+        "construction_k7_v075_plan_route_provenance_v1": (
+            CONSTRUCTION_K7_V075_PLAN_ROUTE_PROVENANCE_V1_DOMAIN
+        ),
+        "construction_k7_v075_plan_route_normalization_binding_v1": (
+            CONSTRUCTION_K7_V075_PLAN_ROUTE_NORMALIZATION_BINDING_V1_DOMAIN
+        ),
+        "construction_k7_v075_plan_route_provenance_replay_v1": (
+            CONSTRUCTION_K7_V075_PLAN_ROUTE_PROVENANCE_REPLAY_V1_DOMAIN
         ),
         "cardinality_evidence": CARDINALITY_EVIDENCE_DOMAIN,
         "cardinality_source": CARDINALITY_SOURCE_DOMAIN,
