@@ -961,6 +961,140 @@ def _credential_expected_keys() -> set[str]:
     }
 
 
+def _verify_credential_evidence(document: Mapping[str, Any]) -> None:
+    """Verify the credential/V2 evidence even when no root row exists yet."""
+
+    guardian = _exact_keys(
+        document["guardian_identity"],
+        {"pid", "process_start_ticks", "thread_id", "native_thread_id"},
+        "credential guardian identity",
+    )
+    guardian_pid = _positive(guardian["pid"], "credential guardian PID")
+    for field in ("process_start_ticks", "thread_id", "native_thread_id"):
+        _positive(guardian[field], f"credential guardian {field}")
+    control = _exact_keys(
+        document["control_cgroup_identity"],
+        {"device", "inode", "mode"},
+        "credential CONTROL identity",
+    )
+    _nonnegative(control["device"], "credential CONTROL device")
+    _positive(control["inode"], "credential CONTROL inode")
+    _expect(
+        type(control["mode"]) is int and stat.S_ISDIR(control["mode"]),
+        "credential CONTROL mode changed",
+    )
+    supervisor_pid = _positive(document["supervisor_pid"], "credential supervisor PID")
+    supervisor_ticks = _positive(
+        document["supervisor_start_ticks"], "credential supervisor start ticks"
+    )
+    probe_pid = _positive(document["probe_pid"], "credential probe PID")
+    probe_ticks = _positive(
+        document["probe_start_ticks"], "credential probe start ticks"
+    )
+    _expect(
+        len({guardian_pid, supervisor_pid, probe_pid}) == 3,
+        "credential process identities overlap",
+    )
+
+    registered = document["outer_registered_expected_frames"]
+    received = document["outer_receive_facts"]
+    _expect(
+        type(registered) is list
+        and len(registered) == 3
+        and type(received) is list
+        and len(received) == 3,
+        "credential outer gate inventory changed",
+    )
+    frame_prefixes = (
+        ("CELL_WITHDRAWN", b"ACFQP:EXEC_CELL_WITHDRAWN:v1:"),
+        ("GATE_READY", b"ACFQP:EXEC_GATE_READY:v1:"),
+        ("RELEASE_ECHO", b"ACFQP:EXEC_RELEASE:v1:"),
+    )
+    outer_nonce: bytes | None = None
+    outer_uid: int | None = None
+    outer_gid: int | None = None
+    for registered_row, received_row, (kind, prefix) in zip(
+        registered, received, frame_prefixes, strict=True
+    ):
+        registered_row = _exact_keys(
+            registered_row,
+            {"kind", "payload_hex", "sha256", "byte_count"},
+            f"credential registered {kind}",
+        )
+        payload = _hex_bytes(
+            registered_row["payload_hex"],
+            f"credential registered {kind} payload",
+        )
+        _expect(
+            payload.startswith(prefix) and len(payload) == len(prefix) + 32,
+            f"credential registered {kind} grammar changed",
+        )
+        nonce = payload[len(prefix) :]
+        _expect(
+            all(byte in b"0123456789abcdef" for byte in nonce),
+            f"credential registered {kind} nonce changed",
+        )
+        outer_nonce = nonce if outer_nonce is None else outer_nonce
+        _expect(nonce == outer_nonce, "credential outer nonces diverged")
+        expected_hash = hashlib.sha256(payload).hexdigest()
+        _expect(
+            registered_row["kind"] == kind
+            and registered_row["sha256"] == expected_hash
+            and registered_row["byte_count"] == len(payload),
+            f"credential registered {kind} hash join changed",
+        )
+
+        received_row = _exact_keys(
+            received_row,
+            {
+                "kind", "sha256", "byte_count", "credential_pid",
+                "credential_uid", "credential_gid", "message_flags",
+            },
+            f"credential receive {kind}",
+        )
+        _expect(
+            received_row["kind"] == kind
+            and received_row["sha256"] == expected_hash
+            and received_row["byte_count"] == len(payload)
+            and received_row["credential_pid"] == supervisor_pid,
+            f"credential receive {kind} payload or PID join changed",
+        )
+        uid = _nonnegative(
+            received_row["credential_uid"], f"credential receive {kind} uid"
+        )
+        gid = _nonnegative(
+            received_row["credential_gid"], f"credential receive {kind} gid"
+        )
+        outer_uid = uid if outer_uid is None else outer_uid
+        outer_gid = gid if outer_gid is None else outer_gid
+        _expect(
+            (uid, gid) == (outer_uid, outer_gid),
+            "credential outer UID/GID observations diverged",
+        )
+        flags = received_row["message_flags"]
+        _expect(
+            type(flags) is int
+            and flags >= 0
+            and flags & (socket.MSG_TRUNC | socket.MSG_CTRUNC) == 0
+            and flags & ~_ALLOWED_RECEIVE_FLAGS == 0,
+            f"credential receive {kind} flags changed",
+        )
+
+    nested_uid, nested_gid = _verify_nested_v2(
+        document["nested_probe_observed_facts_v2"],
+        guardian_pid=guardian_pid,
+        supervisor_pid=supervisor_pid,
+        supervisor_start_ticks=supervisor_ticks,
+        probe_pid=probe_pid,
+        probe_start_ticks=probe_ticks,
+        control_identity=control,
+    )
+    _expect(
+        (nested_uid, nested_gid) == (outer_uid, outer_gid),
+        "credential outer and nested UID/GID observations diverged",
+    )
+
+
 def _verify_credential_bundle(document: dict[str, Any], *, source_id: str, live: Mapping[str, Any] | None = None) -> str:
     _exact_keys(document, _credential_expected_keys(), "credential bundle")
     _expect(document["schema"] == _CREDENTIAL_SCHEMA and document["schema_version"] == SCHEMA_VERSION and document["profile_key"] == PRODUCER_PROFILE_KEY, "credential bundle identity changed")
@@ -969,6 +1103,7 @@ def _verify_credential_bundle(document: dict[str, Any], *, source_id: str, live:
     for field in ("nested_receive_credential_observations_present", "nested_receive_rights_observations_present", "credential_observations_are_not_lease_authority"):
         _expect(document[field] is True, f"credential {field} changed")
     _claims(document, "credential bundle")
+    _verify_credential_evidence(document)
     if live is not None:
         for field in ("guardian_identity", "control_cgroup_identity", "supervisor_pid", "supervisor_start_ticks", "probe_pid", "probe_start_ticks", "outer_registered_expected_frames", "outer_receive_facts", "nested_probe_observed_facts_v2"):
             _expect(document[field] == live[field], f"credential/live join changed for {field}")

@@ -909,6 +909,28 @@ def test_failure_closure_authority_flip_is_rejected() -> None:
         )
 
 
+def test_prefix_two_credential_v2_semantics_are_verified_without_root() -> None:
+    documents = _success_documents()[:2]
+    credentials = documents[1]
+    credentials["nested_probe_observed_facts_v2"]["raw_facts_v1"][
+        "guardian_waitid_errno"
+    ] = 0
+    _rehash(
+        credentials,
+        domains.CONSTRUCTION_K7_H1_NESTED_PROBE_CREDENTIAL_OBSERVATION_BUNDLE_V1_DOMAIN,
+        "nested_probe_credential_observation_bundle_id",
+    )
+    raw = _bytes(documents)
+    closure = _failure_document(documents, raw)
+    with pytest.raises(
+        verifier.TwoBirthPortableCheckpointIndependentVerificationViolation,
+        match="nested PID-cell or reap ownership changed",
+    ):
+        verifier.verify_two_birth_portable_checkpoint_journal_bytes_v1(
+            (*raw, canonical_json_bytes(closure))
+        )
+
+
 def test_failure_cleanup_frozen_snapshot_resigned_is_rejected() -> None:
     documents = _success_documents()[:1]
     raw = _bytes(documents)
