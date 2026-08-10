@@ -27,6 +27,7 @@ import socket
 import struct
 import threading
 import time
+from types import MappingProxyType
 from typing import Any, Mapping, NoReturn
 
 from acfqp import construction_k7_h1_nested_creator_supervisor_native_v1 as role_v1
@@ -71,6 +72,7 @@ F_SEAL_GROW = getattr(fcntl, "F_SEAL_GROW", 0x0004)
 F_SEAL_WRITE = getattr(fcntl, "F_SEAL_WRITE", 0x0008)
 REQUIRED_SEALS = F_SEAL_SEAL | F_SEAL_SHRINK | F_SEAL_GROW | F_SEAL_WRITE
 P_PIDFD = getattr(os, "P_PIDFD", 3)
+P_ALL = getattr(os, "P_ALL", 0)
 FRAME = struct.Struct("<QIIQ16sqiIQ")
 UCRED = struct.Struct("=iII")
 FRAME_BYTES = FRAME.size
@@ -87,6 +89,7 @@ _SESSION_ISSUER = object()
 _FACTS_ISSUER = object()
 _LIVE_SESSIONS: dict[int, "NestedCreatorProbeLiveSessionV1"] = {}
 _SESSION_LOCK = threading.RLock()
+_TEST_FAULT_PHASE: str | None = None
 
 
 class ConstructionK7H1NestedCreatorProbeNativeV1Error(RuntimeError):
@@ -95,6 +98,31 @@ class ConstructionK7H1NestedCreatorProbeNativeV1Error(RuntimeError):
 
 def _fail(message: str) -> NoReturn:
     raise ConstructionK7H1NestedCreatorProbeNativeV1Error(message)
+
+
+def _test_fault(phase: str) -> None:
+    global _TEST_FAULT_PHASE
+    if _TEST_FAULT_PHASE == phase:
+        _TEST_FAULT_PHASE = None
+        _fail(f"injected nested-creator fault after {phase}")
+
+
+def _freeze_json(value: Any) -> Any:
+    if type(value) is dict:
+        return MappingProxyType(
+            {key: _freeze_json(item) for key, item in value.items()}
+        )
+    if type(value) in {list, tuple}:
+        return tuple(_freeze_json(item) for item in value)
+    return value
+
+
+def _thaw_json(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        return {key: _thaw_json(item) for key, item in value.items()}
+    if type(value) is tuple:
+        return [_thaw_json(item) for item in value]
+    return value
 
 
 @dataclass(frozen=True, slots=True)
@@ -175,6 +203,17 @@ class NestedCreatorProbeRawFactsV1:
     def __post_init__(self) -> None:
         if self._issuer is not _FACTS_ISSUER:
             _fail("nested-creator raw facts are caller-minted")
+        object.__setattr__(self, "pidfd_fact", _freeze_json(self.pidfd_fact))
+        object.__setattr__(
+            self,
+            "live_cgroup_snapshots",
+            _freeze_json(self.live_cgroup_snapshots),
+        )
+        object.__setattr__(
+            self,
+            "post_reap_cgroup_snapshots",
+            _freeze_json(self.post_reap_cgroup_snapshots),
+        )
 
     def __copy__(self) -> NoReturn:
         _fail("nested-creator raw facts cannot be copied")
@@ -203,13 +242,11 @@ class NestedCreatorProbeRawFactsV1:
             ),
             "creator_reap_frame": _frame_document(self.creator_reap_frame),
             "pid_cell_value": self.pid_cell_value,
-            "pidfd_fact": dict(self.pidfd_fact),
-            "live_cgroup_snapshots": [
-                dict(snapshot) for snapshot in self.live_cgroup_snapshots
-            ],
-            "post_reap_cgroup_snapshots": [
-                dict(snapshot) for snapshot in self.post_reap_cgroup_snapshots
-            ],
+            "pidfd_fact": _thaw_json(self.pidfd_fact),
+            "live_cgroup_snapshots": _thaw_json(self.live_cgroup_snapshots),
+            "post_reap_cgroup_snapshots": _thaw_json(
+                self.post_reap_cgroup_snapshots
+            ),
             "guardian_waitid_errno": self.guardian_waitid_errno,
             "actual_nested_pidfd_probe_birth_present": True,
             "actual_non_guardian_creator_reap_present": True,
@@ -236,7 +273,9 @@ class NestedCreatorProbeLiveSessionV1:
     owner_pid: int
     owner_thread_id: int
     state: str
+    active_probe_pid: int = -1
     raw_facts: NestedCreatorProbeRawFactsV1 | None = field(default=None, repr=False)
+    abort_facts: Mapping[str, Any] | None = field(default=None, repr=False)
     _issuer: object = field(default=None, repr=False)
 
     def __post_init__(self) -> None:
@@ -277,6 +316,26 @@ def _read_start_ticks(pid: int) -> int:
     if len(fields) < 20 or not fields[19].isdigit():
         _fail("nested-creator process start ticks are malformed")
     return int(fields[19])
+
+
+def _direct_child_pids() -> tuple[int, ...]:
+    try:
+        raw = Path(
+            f"/proc/self/task/{threading.get_native_id()}/children"
+        ).read_text(encoding="ascii").strip()
+    except OSError as error:
+        raise ConstructionK7H1NestedCreatorProbeNativeV1Error(
+            "nested-creator direct-child inventory is unavailable"
+        ) from error
+    if not raw:
+        return ()
+    fields = raw.split()
+    if any(not field.isdigit() or int(field) <= 0 for field in fields):
+        _fail("nested-creator direct-child inventory is malformed")
+    values = tuple(sorted(int(field) for field in fields))
+    if len(values) != len(set(values)):
+        _fail("nested-creator direct-child inventory contains a duplicate")
+    return values
 
 
 def _pidfd_fact(descriptor: int) -> dict[str, int]:
@@ -410,15 +469,34 @@ def _send_frame(
         wrapper.detach()
 
 
-def _read_control(directory_fd: int, name: str, cap: int = 65536) -> bytes:
+def _read_control(
+    directory_fd: int,
+    name: str,
+    cap: int = 65536,
+    *,
+    allow_empty: bool = False,
+) -> bytes:
     descriptor = os.open(name, os.O_RDONLY | os.O_CLOEXEC, dir_fd=directory_fd)
     try:
         raw = os.read(descriptor, cap + 1)
     finally:
         os.close(descriptor)
-    if not raw or len(raw) > cap:
+    if (not raw and not allow_empty) or len(raw) > cap:
         _fail(f"nested-creator {name} exceeded its exact bound")
     return raw
+
+
+def _write_control(directory_fd: int, name: str, raw: bytes) -> None:
+    descriptor = os.open(name, os.O_WRONLY | os.O_CLOEXEC, dir_fd=directory_fd)
+    try:
+        offset = 0
+        while offset < len(raw):
+            written = os.write(descriptor, raw[offset:])
+            if written <= 0:
+                _fail(f"nested-creator {name} write was short")
+            offset += written
+    finally:
+        os.close(descriptor)
 
 
 def _parse_pid_lines(raw: bytes) -> list[int]:
@@ -459,10 +537,14 @@ def _cgroup_snapshot(
     expected_pids: tuple[int, ...],
     sequence: int,
 ) -> dict[str, Any]:
-    first = _parse_pid_lines(_read_control(directory_fd, "cgroup.procs"))
+    first = _parse_pid_lines(
+        _read_control(directory_fd, "cgroup.procs", allow_empty=True)
+    )
     events = _parse_events(_read_control(directory_fd, "cgroup.events"))
     current = _parse_single(_read_control(directory_fd, "pids.current"), "pids.current")
-    second = _parse_pid_lines(_read_control(directory_fd, "cgroup.procs"))
+    second = _parse_pid_lines(
+        _read_control(directory_fd, "cgroup.procs", allow_empty=True)
+    )
     expected = sorted(expected_pids)
     if (
         first != expected
@@ -521,6 +603,57 @@ def _require_dead_pidfd(descriptor: int) -> None:
         _fail("nested-creator pidfd did not reach exact death readiness")
 
 
+def _drain_owned_children_after_kill() -> tuple[dict[str, int], ...]:
+    deadline = time.monotonic() + PROTOCOL_TIMEOUT_SECONDS
+    facts: list[dict[str, int]] = []
+    while True:
+        try:
+            result = os.waitid(P_ALL, 0, os.WEXITED | os.WNOHANG)
+        except ChildProcessError:
+            break
+        except OSError as error:
+            if error.errno == errno.ECHILD:
+                break
+            raise
+        if result is None:
+            if time.monotonic() >= deadline:
+                _fail("nested-creator abort children did not become waitable")
+            time.sleep(0.005)
+            continue
+        facts.append(
+            {
+                name: int(getattr(result, name))
+                for name in ("si_pid", "si_uid", "si_signo", "si_status", "si_code")
+            }
+        )
+    if _direct_child_pids():
+        _fail("nested-creator abort left a direct child")
+    return tuple(facts)
+
+
+def observe_nested_creator_control_population_v1(
+    directory_fd: int,
+    *,
+    expected_pids: tuple[int, ...],
+    sequence: int,
+) -> dict[str, Any]:
+    """Public raw cgroup observation; it mints no artifact or authority."""
+
+    if (
+        type(directory_fd) is not int
+        or directory_fd < 0
+        or type(expected_pids) is not tuple
+        or any(type(pid) is not int or pid <= 0 for pid in expected_pids)
+        or len(expected_pids) != len(set(expected_pids))
+        or type(sequence) is not int
+        or sequence < 0
+    ):
+        _fail("nested-creator raw cgroup observation inputs changed")
+    return _cgroup_snapshot(
+        directory_fd, expected_pids=expected_pids, sequence=sequence
+    )
+
+
 def begin_nested_creator_supervisor_session_v1(
     *,
     supervisor_pid: int,
@@ -560,6 +693,8 @@ def begin_nested_creator_supervisor_session_v1(
     if pidfd["pid"] != supervisor_pid:
         _fail("nested-creator supervisor pidfd identity changed")
     _require_live_pidfd(supervisor_pidfd)
+    if _direct_child_pids() != (supervisor_pid,):
+        _fail("nested-creator supervisor was not the sole direct child")
     session = NestedCreatorProbeLiveSessionV1(
         supervisor_pid=supervisor_pid,
         supervisor_start_ticks=start_ticks,
@@ -692,6 +827,8 @@ def run_nested_creator_pidfd_probe_v1(
         ):
             _fail("nested-creator parent-return frame changed")
         probe_pid = parent_return.pid
+        session.active_probe_pid = probe_pid
+        _test_fault("PROBE_PARENT_RETURN")
         child_withdrawn, rights = _recv_frame(
             parent_gate.fileno(),
             expected_credentials=(probe_pid, session.guardian_uid, session.guardian_gid),
@@ -819,6 +956,7 @@ def run_nested_creator_pidfd_probe_v1(
             _issuer=_FACTS_ISSUER,
         )
         session.raw_facts = facts
+        session.active_probe_pid = -1
         session.state = "PROBE_REAPED_SUPERVISOR_LIVE"
         return facts
     except BaseException:
@@ -842,6 +980,66 @@ def run_nested_creator_pidfd_probe_v1(
             child_gate.close()
         if parent_gate is not None:
             parent_gate.close()
+
+
+def abort_nested_creator_supervisor_session_v1(
+    session: NestedCreatorProbeLiveSessionV1,
+    *,
+    control_cgroup_fd: int,
+) -> dict[str, Any]:
+    """Idempotently kill/reap this raw session and close its live registry."""
+
+    if (
+        type(session) is not NestedCreatorProbeLiveSessionV1
+        or session._issuer is not _SESSION_ISSUER
+        or session.owner_pid != os.getpid()
+        or session.owner_thread_id != threading.get_ident()
+        or type(control_cgroup_fd) is not int
+        or control_cgroup_fd < 0
+    ):
+        _fail("nested-creator abort session identity changed")
+    if session.state == "ABORTED_CLOSED":
+        if session.abort_facts is None or _LIVE_SESSIONS.get(id(session)) is session:
+            _fail("nested-creator closed abort state changed")
+        return _thaw_json(session.abort_facts)
+    if _LIVE_SESSIONS.get(id(session)) is not session or session.state == "CLOSED":
+        _fail("nested-creator abort session was not live")
+
+    children_before = _direct_child_pids()
+    if session.supervisor_pid not in children_before and session.state not in {
+        "SUPERVISOR_RELEASED_TO_EXIT",
+        "PROTOCOL_FAILURE_CLEANUP_REQUIRED",
+    }:
+        _fail("nested-creator abort lost the direct supervisor")
+    if len(children_before) > 2:
+        _fail("nested-creator abort found an unrelated direct child")
+    if session.control_fd >= 0:
+        os.close(session.control_fd)
+        session.control_fd = -1
+    _write_control(control_cgroup_fd, "cgroup.kill", b"1\n")
+    reaped = _drain_owned_children_after_kill()
+    empty_one = _wait_for_snapshot(
+        control_cgroup_fd, expected_pids=(), sequence=9001
+    )
+    empty_two = _cgroup_snapshot(
+        control_cgroup_fd, expected_pids=(), sequence=9002
+    )
+    if session.supervisor_pidfd >= 0:
+        os.close(session.supervisor_pidfd)
+        session.supervisor_pidfd = -1
+    facts: dict[str, Any] = {
+        "state": "ABORTED_CLOSED",
+        "supervisor_pid": session.supervisor_pid,
+        "active_probe_pid": session.active_probe_pid,
+        "children_before": list(children_before),
+        "reaped": [dict(fact) for fact in reaped],
+        "empty_snapshots": [dict(empty_one), dict(empty_two)],
+    }
+    session.active_probe_pid = -1
+    session.state = "ABORTED_CLOSED"
+    session.abort_facts = _freeze_json(facts)
+    _LIVE_SESSIONS.pop(id(session), None)
+    return _thaw_json(session.abort_facts)
 
 
 def shutdown_nested_creator_supervisor_v1(
@@ -937,8 +1135,10 @@ __all__ = (
     "PROPOSED_CONTRACT_VERSION",
     "READINESS",
     "SCHEMA_VERSION",
+    "abort_nested_creator_supervisor_session_v1",
     "begin_nested_creator_supervisor_session_v1",
     "finish_nested_creator_supervisor_reap_v1",
+    "observe_nested_creator_control_population_v1",
     "run_nested_creator_pidfd_probe_v1",
     "shutdown_nested_creator_supervisor_v1",
 )
