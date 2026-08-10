@@ -39,12 +39,12 @@ from acfqp.routing_v1 import TerminalCode
 
 
 SCHEMA_VERSION = "1.0.0"
-PROPOSED_CONTRACT_VERSION = "2.0.64"
+PROPOSED_CONTRACT_VERSION = "2.0.66"
 PROFILE_KEY = "construction_k7_terminal_accounting_coverage_matrix_v1"
 
 EXPECTED_TERMINAL_CODE_COUNT = 10
 EXPECTED_REQUIRED_PATH_COUNT = 202
-EXPECTED_SOURCE_MEMBER_COUNT = 11
+EXPECTED_SOURCE_MEMBER_COUNT = 12
 EXPECTED_FORMAL_IMPLEMENTATION_COUNT = 3
 EXPECTED_PRODUCTION_SITE_IMPLEMENTATION_COUNT = 2
 EXPECTED_FIXTURE_ONLY_IMPLEMENTATION_COUNT = 1
@@ -143,6 +143,15 @@ _SOURCE_SPECS = (
         (
             "issue_abstract_certified_query_owner_authority_v1",
             "verify_abstract_certified_query_owner_authority_bytes_v1",
+        ),
+    ),
+    _SourceSpecV1(
+        "acfqp.construction_k7_abstract_certified_lifecycle_reconciliation_authority_v1",
+        "construction_k7_abstract_certified_lifecycle_reconciliation_authority_v1.py",
+        "construction_k7_abstract_certified_lifecycle_reconciliation_authority_v1",
+        (
+            "issue_abstract_certified_lifecycle_reconciliation_authority_v1",
+            "verify_abstract_certified_lifecycle_reconciliation_bytes_v1",
         ),
     ),
     _SourceSpecV1(
@@ -302,12 +311,12 @@ _ROW_SPECS = (
     _RowSpecV1(
         TerminalCode.ABSTRACT_CERTIFIED,
         TerminalAccountingCoverageStateV1.REPLAYABLE_PARTIAL_COVERAGE_ONLY,
-        "acfqp.construction_k7_abstract_certified_query_owner_authority_v1",
-        28,
+        "acfqp.construction_k7_abstract_certified_lifecycle_reconciliation_authority_v1",
+        34,
         False,
         False,
         False,
-        "ABSTRACT_CERTIFIED_REQUIRES_174_ADDITIONAL_V6_PATH_AUTHORITIES",
+        "ABSTRACT_CERTIFIED_REQUIRES_168_ADDITIONAL_V6_PATH_AUTHORITIES",
     ),
     _RowSpecV1(
         TerminalCode.LOCAL_GROUND_RECOVERY,

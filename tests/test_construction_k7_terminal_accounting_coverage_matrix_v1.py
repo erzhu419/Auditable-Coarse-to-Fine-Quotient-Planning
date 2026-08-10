@@ -25,7 +25,7 @@ def test_matrix_assesses_every_terminal_code_exactly_once(matrix) -> None:
         code.value for code in TerminalCode
     ]
     assert document["terminal_code_count"] == 10
-    assert document["source_member_count"] == 11
+    assert document["source_member_count"] == 12
     assert document["formal_202_path_implementation_count"] == 3
     assert document["production_site_formal_implementation_count"] == 2
     assert document["registered_fixture_formal_implementation_only_count"] == 1
@@ -42,10 +42,10 @@ def test_matrix_keeps_capability_and_observed_campaign_evidence_separate(matrix)
     attempt = rows[TerminalCode.ATTEMPT_BUDGET_EXHAUSTED].to_document()
     exact_infeasible = rows[TerminalCode.FULL_GROUND_EXACT_INFEASIBLE].to_document()
 
-    assert abstract["closed_required_path_count"] == 28
-    assert abstract["open_required_path_count"] == 174
+    assert abstract["closed_required_path_count"] == 34
+    assert abstract["open_required_path_count"] == 168
     assert abstract["blocker_code"] == (
-        "ABSTRACT_CERTIFIED_REQUIRES_174_ADDITIONAL_V6_PATH_AUTHORITIES"
+        "ABSTRACT_CERTIFIED_REQUIRES_168_ADDITIONAL_V6_PATH_AUTHORITIES"
     )
     assert abstract["complete_202_counter_record_to_work_vector_to_comparison_vector_present"] is False
     assert exact_infeasible["closed_required_path_count"] == 0

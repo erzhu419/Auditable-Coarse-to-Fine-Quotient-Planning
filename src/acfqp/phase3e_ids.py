@@ -1581,6 +1581,18 @@ CONSTRUCTION_K7_ABSTRACT_CERTIFIED_QUERY_OWNER_ENVELOPE_V1_DOMAIN = (
 CONSTRUCTION_K7_ABSTRACT_CERTIFIED_QUERY_OWNER_REPLAY_V1_DOMAIN = (
     "acfqp:construction-k7-abstract-certified-query-owner-replay:v1"
 )
+CONSTRUCTION_K7_ABSTRACT_CERTIFIED_LIFECYCLE_WINDOW_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-certified-lifecycle-window:v1"
+)
+CONSTRUCTION_K7_ABSTRACT_CERTIFIED_LIFECYCLE_RESOLUTION_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-certified-lifecycle-resolution:v1"
+)
+CONSTRUCTION_K7_ABSTRACT_CERTIFIED_LIFECYCLE_ENVELOPE_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-certified-lifecycle-envelope:v1"
+)
+CONSTRUCTION_K7_ABSTRACT_CERTIFIED_LIFECYCLE_REPLAY_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-certified-lifecycle-replay:v1"
+)
 CONSTRUCTION_K7_CONDITIONAL_TERMINAL_NORMALIZATION_PROFILE_V1_DOMAIN = (
     "acfqp:construction-k7-conditional-terminal-normalization-profile:v1"
 )
@@ -3428,6 +3440,18 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_abstract_certified_query_owner_replay_v1": (
             CONSTRUCTION_K7_ABSTRACT_CERTIFIED_QUERY_OWNER_REPLAY_V1_DOMAIN
+        ),
+        "construction_k7_abstract_certified_lifecycle_window_v1": (
+            CONSTRUCTION_K7_ABSTRACT_CERTIFIED_LIFECYCLE_WINDOW_V1_DOMAIN
+        ),
+        "construction_k7_abstract_certified_lifecycle_resolution_v1": (
+            CONSTRUCTION_K7_ABSTRACT_CERTIFIED_LIFECYCLE_RESOLUTION_V1_DOMAIN
+        ),
+        "construction_k7_abstract_certified_lifecycle_envelope_v1": (
+            CONSTRUCTION_K7_ABSTRACT_CERTIFIED_LIFECYCLE_ENVELOPE_V1_DOMAIN
+        ),
+        "construction_k7_abstract_certified_lifecycle_replay_v1": (
+            CONSTRUCTION_K7_ABSTRACT_CERTIFIED_LIFECYCLE_REPLAY_V1_DOMAIN
         ),
         "construction_k7_conditional_terminal_normalization_profile_v1": (
             CONSTRUCTION_K7_CONDITIONAL_TERMINAL_NORMALIZATION_PROFILE_V1_DOMAIN
