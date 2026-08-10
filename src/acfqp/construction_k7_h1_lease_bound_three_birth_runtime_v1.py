@@ -14,12 +14,15 @@ verified, every three-birth and accounting authority remains false.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+import errno
 import fcntl
 import hashlib
 import os
 from pathlib import Path
+import signal
 import socket
 import stat
+import sys
 import threading
 from types import MappingProxyType
 from typing import Any, Mapping, NoReturn
@@ -29,13 +32,14 @@ from acfqp import construction_k7_h1_guardian_runtime_genesis_v2 as guardian_v2
 from acfqp import construction_k7_h1_nested_creator_broker_native_v2 as broker_v2
 from acfqp import construction_k7_h1_nested_creator_probe_native_v1 as probe_v1
 from acfqp import construction_k7_h1_nested_creator_supervisor_native_v2 as supervisor_v2
+from acfqp import construction_k7_h1_supervisor_v2_prebound_clone_v1 as prebound_v20
 from acfqp import phase3e_ids as ids_v1
 
 
 SCHEMA_VERSION = "1.0.0"
 PROPOSED_CONTRACT_VERSION = "2.0.62-E-C-E5B-B2-D-V19-THREE-BIRTH"
 PROFILE_KEY = "construction_k7_h1_lease_bound_three_birth_runtime_v1"
-READINESS = "SOURCE_CLOSED_PRELAUNCH_PREPARATION_PUBLIC_SEAM_REQUIRED"
+READINESS = "SOURCE_CLOSED_PREBOUND_CAPSULE_BINDING_NO_CONSUMPTION"
 
 EXACT_B2A_PREPARED_THROUGH_GUARDIAN_V2_REQUIRED = True
 GUARDIAN_V2_PUBLIC_HANDOFF_REQUIRED = True
@@ -44,6 +48,12 @@ DURABLE_PRELAUNCH_GRAPH_PRESENT = True
 SUPERVISOR_V2_AND_BROKER_V2_IMAGES_FROZEN = True
 PID_CELLS_AND_INDEPENDENT_CHANNELS_FROZEN = True
 NO_B2C_PRIVATE_API_IMPORTED = True
+PUBLIC_PREBOUND_CAPSULE_BINDING_SEAM_PRESENT = True
+PREBOUND_CAPSULE_DUPLICATE_OWNS_INPUTS = True
+PREBOUND_CAPSULE_SOURCE_DESCRIPTORS_RETAINED = True
+RAW_DESCRIPTOR_ACCESSOR_PRESENT = False
+PREBOUND_BINDING_IS_OWNER_LOCAL_LIVE_TYPED_PROOF_ONLY = True
+PREBOUND_BINDING_DURABLE_ARTIFACT_PRESENT = False
 
 PUBLIC_ATOMIC_TAKEOVER_SEAM_AVAILABLE = False
 PERMIT_CONSUMPTION_PATH_PRESENT = False
@@ -98,8 +108,37 @@ REQUIRED_GUARDIAN_ACTIVATION_SEAM = (
 )
 
 _ISSUER = object()
+_PREBOUND_BINDING_ISSUER = object()
+_PREBOUND_TERMINAL_ORIGIN_TOKENS = MappingProxyType(
+    {
+        "LIVE_DUPLICATE_OWNED_PREBOUND_CAPSULE": object(),
+        "PREBOUND_CAPSULE_PREPARING": object(),
+        "PREBOUND_CAPSULE_CLEANUP_REQUIRED": object(),
+    }
+)
 _LOCK = threading.RLock()
 _LIVE: dict[int, "_PreparationRecordV1"] = {}
+_RAW_OS_GETRANDOM = os.getrandom
+_RAW_PTHREAD_SIGMASK = signal.pthread_sigmask
+_RAW_SYS_GETFRAME = sys._getframe  # noqa: SLF001
+_EXPECTED_PREBOUND_CAPSULE_TYPE = prebound_v20.H1SupervisorV2PreboundNativeCloneV1
+_EXPECTED_PREBOUND_MAX_FRAME_BYTES = prebound_v20.MAX_FRAME_BYTES
+_BLOCKABLE_SIGNALS = frozenset(signal.valid_signals()) - {
+    signal.SIGKILL,
+    signal.SIGSTOP,
+}
+_STATIC_IDENTITY_GLOBALS = MappingProxyType(
+    {
+        "_ISSUER": _ISSUER,
+        "_PREBOUND_BINDING_ISSUER": _PREBOUND_BINDING_ISSUER,
+        "_PREBOUND_TERMINAL_ORIGIN_TOKENS": _PREBOUND_TERMINAL_ORIGIN_TOKENS,
+        "_RAW_OS_GETRANDOM": _RAW_OS_GETRANDOM,
+        "_RAW_PTHREAD_SIGMASK": _RAW_PTHREAD_SIGMASK,
+        "_RAW_SYS_GETFRAME": _RAW_SYS_GETFRAME,
+        "_EXPECTED_PREBOUND_CAPSULE_TYPE": _EXPECTED_PREBOUND_CAPSULE_TYPE,
+        "_BLOCKABLE_SIGNALS": _BLOCKABLE_SIGNALS,
+    }
+)
 _SOURCE_PATHS = MappingProxyType(
     {
         "three_birth_runtime_v1": Path(__file__).resolve(strict=True),
@@ -110,6 +149,9 @@ _SOURCE_PATHS = MappingProxyType(
         "broker_native_v2": Path(broker_v2.__file__).resolve(strict=True),
         "broker_native_source_v2": broker_v2.SOURCE_PATH,
         "probe_native_v1": Path(probe_v1.__file__).resolve(strict=True),
+        "supervisor_v2_prebound_clone_v1": Path(prebound_v20.__file__).resolve(
+            strict=True
+        ),
         "phase3e_ids": Path(ids_v1.__file__).resolve(strict=True),
     }
 )
@@ -205,6 +247,18 @@ _UPSTREAM_CALLABLES = MappingProxyType(
         ("broker", "create_sealed_nested_creator_broker_memfd_v2"): (
             broker_v2.create_sealed_nested_creator_broker_memfd_v2,
             broker_v2.create_sealed_nested_creator_broker_memfd_v2.__code__,
+        ),
+        ("prebound", "prepare_h1_supervisor_v2_prebound_native_clone_v1"): (
+            prebound_v20.prepare_h1_supervisor_v2_prebound_native_clone_v1,
+            prebound_v20.prepare_h1_supervisor_v2_prebound_native_clone_v1.__code__,
+        ),
+        ("prebound", "verify_h1_supervisor_v2_prebound_native_clone_v1"): (
+            prebound_v20.verify_h1_supervisor_v2_prebound_native_clone_v1,
+            prebound_v20.verify_h1_supervisor_v2_prebound_native_clone_v1.__code__,
+        ),
+        ("prebound", "cancel_h1_supervisor_v2_prebound_native_clone_v1"): (
+            prebound_v20.cancel_h1_supervisor_v2_prebound_native_clone_v1,
+            prebound_v20.cancel_h1_supervisor_v2_prebound_native_clone_v1.__code__,
         ),
     }
 )
@@ -327,6 +381,100 @@ def _deep_canonical_copy(value: Mapping[str, Any]) -> dict[str, Any]:
     return copied
 
 
+def _restore_signal_mask_finish_forward_v1(
+    expected_mask: set[signal.Signals],
+) -> None:
+    """Restore/read back the mask, then re-raise any deferred interruption."""
+
+    deferred_error: BaseException | None = None
+    mismatch_error: BaseException | None = None
+    for _attempt in range(3):
+        try:
+            _RAW_PTHREAD_SIGMASK(signal.SIG_SETMASK, expected_mask)
+            observed = _RAW_PTHREAD_SIGMASK(signal.SIG_BLOCK, frozenset())
+            if observed == expected_mask:
+                if deferred_error is not None:
+                    raise deferred_error
+                return
+            mismatch_error = RuntimeError("signal mask read-back did not match")
+        except BaseException as error:  # includes one-shot async interruption
+            if error is deferred_error:
+                raise
+            if deferred_error is None:
+                deferred_error = error
+    raise ConstructionK7H1LeaseBoundThreeBirthRuntimeV1Error(
+        "V19 could not prove restoration of the caller signal mask"
+    ) from (deferred_error or mismatch_error)
+
+
+def _close_prepared_descriptors_finish_forward_v1(
+    record: "_PreparationRecordV1",
+) -> None:
+    """Close each source FD through replayable pending ownership state.
+
+    The pending row is installed before the descriptor is removed from the
+    active inventory.  Therefore an opcode-level interruption cannot strand a
+    closed numeric FD in ``record.descriptors``.  On replay, EBADF or a
+    different kernel identity proves that the original authority is already
+    gone; a replacement descriptor is deliberately left open.
+    """
+
+    old_mask = _RAW_PTHREAD_SIGMASK(signal.SIG_BLOCK, frozenset())
+    restore_pending = True
+    _RAW_PTHREAD_SIGMASK(signal.SIG_BLOCK, _BLOCKABLE_SIGNALS)
+    try:
+        roles = tuple(row["role"] for row in record.expected_close_rows)
+        for role in roles:
+            if role in record.closed_roles:
+                record.closing_descriptors.pop(role, None)
+                record.descriptors.pop(role, None)
+                continue
+            pending = record.closing_descriptors.get(role)
+            if pending is None:
+                descriptor = record.descriptors.get(role)
+                if type(descriptor) is not int:
+                    _fail(f"V19 source descriptor ownership was lost: {role}")
+                status = os.fstat(descriptor)
+                pending = (
+                    descriptor,
+                    status.st_dev,
+                    status.st_ino,
+                    status.st_mode,
+                )
+                record.closing_descriptors[role] = pending
+            descriptor, device, inode, mode = pending
+            active_descriptor = record.descriptors.get(role)
+            if active_descriptor is not None:
+                if active_descriptor != descriptor:
+                    _fail(f"V19 source descriptor number changed: {role}")
+                record.descriptors.pop(role)
+            try:
+                status = os.fstat(descriptor)
+            except OSError as error:
+                if error.errno != errno.EBADF:
+                    raise
+            else:
+                if (
+                    status.st_dev,
+                    status.st_ino,
+                    status.st_mode,
+                ) == (device, inode, mode):
+                    try:
+                        os.close(descriptor)
+                    except OSError as error:
+                        if error.errno != errno.EBADF:
+                            raise
+            record.closed_roles.add(role)
+            record.closing_descriptors.pop(role)
+    finally:
+        try:
+            _restore_signal_mask_finish_forward_v1(old_mask)
+            restore_pending = False
+        finally:
+            if restore_pending:
+                _restore_signal_mask_finish_forward_v1(old_mask)
+
+
 def _validate_local_code_closure() -> None:
     """Reject runtime rebinding even when source bytes on disk are unchanged."""
 
@@ -342,6 +490,7 @@ def _validate_local_code_closure() -> None:
         "guardian": guardian_v2,
         "supervisor": supervisor_v2,
         "broker": broker_v2,
+        "prebound": prebound_v20,
     }
     for (module_name, name), (function, code) in _UPSTREAM_CALLABLES.items():
         current = getattr(upstream_modules[module_name], name, None)
@@ -368,6 +517,21 @@ def _validate_local_code_closure() -> None:
             or module.ELF_SHA256 != expected_sha256
         ):
             _fail(f"V19 expected role image globals changed: {role}")
+    if (
+        _RAW_OS_GETRANDOM is not os.getrandom
+        or _RAW_PTHREAD_SIGMASK is not signal.pthread_sigmask
+        or _RAW_SYS_GETFRAME is not sys._getframe  # noqa: SLF001
+        or any(
+            globals().get(name) is not expected
+            for name, expected in _STATIC_IDENTITY_GLOBALS.items()
+        )
+        or prebound_v20.H1SupervisorV2PreboundNativeCloneV1
+        is not _EXPECTED_PREBOUND_CAPSULE_TYPE
+        or prebound_v20.MAX_FRAME_BYTES != _EXPECTED_PREBOUND_MAX_FRAME_BYTES
+        or prebound_v20.CLONE_SYSCALL_PERFORMED is not False
+        or prebound_v20.NATIVE_ENTRY_INVOKED is not False
+    ):
+        _fail("V19 prebound-capsule dependency or entropy source changed")
 
 
 def _public_seam_rows(names: tuple[str, ...]) -> list[dict[str, Any]]:
@@ -439,6 +603,12 @@ def verify_lease_bound_three_birth_runtime_surface_v1() -> dict[str, Any]:
         "supervisor_v2_elf_sha256": supervisor_v2.ELF_SHA256,
         "broker_v2_elf_sha256": broker_v2.ELF_SHA256,
         "guardian_public_seam": guardian_public_consumer_seam_status_v1(),
+        "public_prebound_capsule_binding_seam_present": True,
+        "prebound_capsule_duplicate_owns_inputs": True,
+        "prebound_capsule_source_descriptors_retained": True,
+        "raw_descriptor_accessor_present": False,
+        "prebound_binding_is_owner_local_live_typed_proof_only": True,
+        "prebound_binding_durable_artifact_present": False,
         "b2b_v1_imported_or_started": False,
         "b2c_private_api_imported_or_used": False,
         **_claims(),
@@ -648,6 +818,8 @@ def _append_exclusive(
 
 
 _TEST_ONLY_JOURNAL_FAULT_AFTER_DURABLE: str | None = None
+_TEST_ONLY_FAIL_AFTER_PREBOUND_PREPARE = False
+_TEST_ONLY_FAIL_DURING_PREBOUND_COMMIT = False
 
 
 def _append_or_verify_exclusive(
@@ -682,6 +854,21 @@ def _append_or_verify_exclusive(
         return raw
 
 
+@dataclass(frozen=True, slots=True)
+class _PreboundLifecycleV1:
+    issuer: object | None = None
+    state: str = "ABSENT"
+    launch_id: str | None = None
+    capsule_id: str | None = None
+    capsule: Any = None
+    binding_bytes: bytes | None = None
+    terminal_capsule: Any = None
+    cancellation_bytes: bytes | None = None
+    terminal_state_before: str | None = None
+    terminal_origin_token: object | None = None
+    capsule_was_crossed: bool | None = None
+
+
 @dataclass(slots=True)
 class _PreparationRecordV1:
     handle: "LeaseBoundThreeBirthPreparationV1"
@@ -692,16 +879,21 @@ class _PreparationRecordV1:
     owner_pid: int
     owner_thread: threading.Thread
     owner_thread_id: int
+    owner_native_thread_id: int
     state: str
     documents: dict[str, dict[str, Any]]
     descriptors: dict[str, int]
     descriptor_facts: tuple[dict[str, Any], ...] = ()
     expected_close_rows: tuple[dict[str, Any], ...] = ()
     closed_roles: set[str] = field(default_factory=set)
+    closing_descriptors: dict[str, tuple[int, int, int, int]] = field(
+        default_factory=dict
+    )
     adapter: Any = None
     takeover: Any = None
     cancellation_document: dict[str, Any] | None = None
     close_facts: dict[str, Any] | None = None
+    prebound: _PreboundLifecycleV1 = field(default_factory=_PreboundLifecycleV1)
 
 
 class LeaseBoundThreeBirthPreparationV1:
@@ -761,12 +953,65 @@ def _require(handle: LeaseBoundThreeBirthPreparationV1) -> _PreparationRecordV1:
         or record.owner_pid != handle._owner_pid
         or record.owner_thread is not handle._owner_thread
         or record.owner_thread_id != handle._owner_thread_id
+        or record.owner_native_thread_id != threading.get_native_id()
         or record.owner_pid != os.getpid()
         or record.owner_thread is not threading.current_thread()
         or record.owner_thread_id != threading.get_ident()
     ):
         _fail("V19 three-birth preparation is not live")
     return record
+
+
+def _prebound_document_from_bytes_v1(
+    raw: bytes | None,
+    *,
+    label: str,
+) -> dict[str, Any]:
+    if type(raw) is not bytes:
+        _fail(f"V19 {label} canonical bytes are absent")
+    document = ids_v1.loads_canonical_json(raw)
+    if (
+        type(document) is not dict
+        or ids_v1.canonical_json_bytes(document) != raw
+    ):
+        _fail(f"V19 {label} canonical bytes changed")
+    return document
+
+
+def _prebound_operation_active_on_ancestor_stack_v1() -> str | None:
+    """Return a live ancestor operation without mutable enter/leave flags."""
+
+    frame = _RAW_SYS_GETFRAME(3)
+    targets = {
+        prepare_lease_bound_three_birth_prebound_clone_v1.__code__: "prepare",
+        cancel_lease_bound_three_birth_prebound_clone_v1.__code__: "cancel",
+        abort_lease_bound_three_birth_preparation_v1.__code__: "abort",
+    }
+    try:
+        while frame is not None:
+            operation = targets.get(frame.f_code)
+            if operation is not None and frame.f_globals is globals():
+                return operation
+            frame = frame.f_back
+        return None
+    finally:
+        del frame
+
+
+def _reject_reentrant_prebound_operation_v1(
+    handle: "LeaseBoundThreeBirthPreparationV1",
+) -> None:
+    active = _prebound_operation_active_on_ancestor_stack_v1()
+    if active is None:
+        return
+    if active == "prepare":
+        message = "V19 prebound operation is forbidden before prebound prepare returns"
+    else:
+        message = f"V19 prebound operation cannot reenter active {active}"
+    raise ConstructionK7H1LeaseBoundThreeBirthRuntimeV1Error(
+        message,
+        cleanup_handle=handle,
+    )
 
 
 def prepare_lease_bound_three_birth_v1(
@@ -810,6 +1055,7 @@ def prepare_lease_bound_three_birth_v1(
         owner_pid=os.getpid(),
         owner_thread=threading.current_thread(),
         owner_thread_id=threading.get_ident(),
+        owner_native_thread_id=threading.get_native_id(),
         state="PREPARING_NO_CLONE",
         documents={},
         descriptors={},
@@ -1023,6 +1269,837 @@ def verify_lease_bound_three_birth_preparation_v1(
     }
 
 
+def _new_outer_nonce_v1() -> bytes:
+    nonce = bytearray()
+    while len(nonce) < 16:
+        chunk = _RAW_OS_GETRANDOM(16 - len(nonce))
+        if type(chunk) is not bytes or not chunk:
+            _fail("V19 outer-frame nonce source made no exact progress")
+        nonce.extend(chunk)
+    result = bytes(nonce)
+    if len(result) != 16:
+        _fail("V19 outer-frame nonce width changed")
+    return result
+
+
+def _outer_frames_v1(nonce: bytes) -> tuple[bytes, bytes, bytes]:
+    if type(nonce) is not bytes or len(nonce) != 16:
+        _fail("V19 outer-frame nonce is not one exact 128-bit value")
+    suffix = nonce.hex().encode("ascii")
+    frames = (
+        b"ACFQP:EXEC_CELL_WITHDRAWN:v1:" + suffix,
+        b"ACFQP:EXEC_GATE_READY:v1:" + suffix,
+        b"ACFQP:EXEC_RELEASE:v1:" + suffix,
+    )
+    if len(set(frames)) != 3 or any(
+        not 0 < len(frame) <= prebound_v20.MAX_FRAME_BYTES for frame in frames
+    ):
+        _fail("V19 exact outer-frame grammar changed")
+    return frames
+
+
+def _prebound_descriptor_join_v1(
+    record: _PreparationRecordV1,
+    capsule: Mapping[str, Any],
+) -> list[dict[str, Any]]:
+    launch_facts = record.documents.get("launch_preparation", {}).get(
+        "descriptor_facts_without_fd_numbers"
+    )
+    source_facts = capsule.get("source_fd_facts")
+    duplicate_facts = capsule.get("fd_facts")
+    if (
+        type(launch_facts) is not list
+        or type(source_facts) is not list
+        or duplicate_facts != source_facts
+    ):
+        _fail("V19/V20 prebound descriptor fact inventories changed")
+    launch_by_role = {
+        row.get("role"): row for row in launch_facts if type(row) is dict
+    }
+    capsule_by_role = {
+        row.get("role"): row for row in source_facts if type(row) is dict
+    }
+    if len(launch_by_role) != 8 or set(capsule_by_role) != {
+        "creator_pid_cell_fd",
+        "child_gate_fd",
+        "child_gate_peer_fd",
+        "supervisor_executable_fd",
+    }:
+        _fail("V19/V20 prebound descriptor roles changed")
+    role_join = (
+        ("supervisor_pid_cell", "creator_pid_cell_fd"),
+        ("supervisor_child_channel", "child_gate_fd"),
+        ("supervisor_guardian_channel", "child_gate_peer_fd"),
+        ("supervisor_role", "supervisor_executable_fd"),
+    )
+    rows: list[dict[str, Any]] = []
+    for launch_role, capsule_role in role_join:
+        launch_fact = launch_by_role.get(launch_role)
+        capsule_fact = capsule_by_role.get(capsule_role)
+        if type(launch_fact) is not dict or type(capsule_fact) is not dict:
+            _fail(f"V19/V20 prebound role join is absent: {launch_role}")
+        device = launch_fact.get("device")
+        inode = launch_fact.get("inode")
+        if (
+            type(device) is not int
+            or type(inode) is not int
+            or capsule_fact.get("device") != device
+            or capsule_fact.get("inode") != inode
+        ):
+            _fail(f"V19/V20 prebound kernel identity crossed: {launch_role}")
+        rows.append(
+            {
+                "launch_role": launch_role,
+                "capsule_role": capsule_role,
+                "device": device,
+                "inode": inode,
+            }
+        )
+    return rows
+
+
+def _prebound_binding_document_v1(
+    record: _PreparationRecordV1,
+    capsule: Mapping[str, Any],
+    *,
+    nonce: bytes,
+) -> dict[str, Any]:
+    launch = record.documents.get("launch_preparation")
+    if type(launch) is not dict:
+        _fail("V19 launch preparation is absent from the prebound join")
+    launch_id = launch.get("supervisor_v2_launch_preparation_id")
+    capsule_id = capsule.get("prebound_native_edge_capsule_id")
+    source_id = capsule.get("prebound_native_edge_source_closure_id")
+    if not all(type(value) is str and len(value) == 64 for value in (
+        launch_id,
+        capsule_id,
+        source_id,
+    )):
+        _fail("V19/V20 prebound content identities are absent")
+    frames = _outer_frames_v1(nonce)
+    expected_frame_facts = [
+        {
+            "role": role,
+            "byte_count": len(frame),
+            "sha256": hashlib.sha256(frame).hexdigest(),
+        }
+        for role, frame in zip(
+            (
+                "cell_withdrawn_frame",
+                "gate_ready_frame",
+                "release_frame",
+            ),
+            frames,
+            strict=True,
+        )
+    ]
+    if (
+        capsule.get("state") != "PREBOUND_NO_ACTIVATION"
+        or capsule.get("frame_facts") != expected_frame_facts
+        or capsule.get("supervisor_v2_elf_sha256")
+        != launch.get("supervisor_v2_elf_sha256")
+        or capsule.get("input_ownership")
+        != {
+            "caller_retains_original_descriptors": 4,
+            "capsule_owns_f_dupfd_cloexec_duplicates": True,
+            "duplicates_preserve_kernel_identity": True,
+        }
+        or capsule.get("raw_descriptor_accessor_present") is not False
+        or capsule.get("raw_native_callable_accessor_present") is not False
+        or capsule.get("permit_consumption_path_present") is not False
+        or capsule.get("native_entry_invoked") is not False
+        or capsule.get("clone_syscall_performed") is not False
+    ):
+        _fail("V19/V20 prebound state, frames, ownership, or claim locks changed")
+    return {
+        "schema": "acfqp.k7_h1_lease_bound_three_birth_prebound_clone_live_proof.v1",
+        "schema_version": SCHEMA_VERSION,
+        "profile_key": PROFILE_KEY,
+        "content_id": {
+            "kind": "NOT_APPLICABLE",
+            "reason": "OWNER_LOCAL_LIVE_TYPED_PROOF_NOT_DURABLE_ARTIFACT",
+        },
+        "owner_local_live_typed_proof_only": True,
+        "durable_artifact_present": False,
+        "live_launch_and_capsule_handles_required_for_replay": True,
+        "binding_state": "LIVE_DUPLICATE_OWNED_PREBOUND_CAPSULE",
+        "binding_issuer": PROFILE_KEY,
+        "owner_identity": {
+            "pid": record.owner_pid,
+            "thread_id": record.owner_thread_id,
+            "native_thread_id": record.owner_native_thread_id,
+        },
+        "supervisor_v2_launch_preparation_id": launch_id,
+        "prebound_native_edge_source_closure_id": source_id,
+        "prebound_native_edge_capsule_id": capsule_id,
+        "outer_nonce_hex": nonce.hex(),
+        "outer_frame_facts": expected_frame_facts,
+        "descriptor_identity_joins": _prebound_descriptor_join_v1(record, capsule),
+        "source_descriptors_retained_by_v19": True,
+        "capsule_descriptors_are_owned_duplicates": True,
+        "duplicate_descriptors_preserve_kernel_identity": True,
+        "raw_descriptor_exposed": False,
+        "permit_consumed": False,
+        "native_entry_invoked": False,
+        "clone_syscall_performed": False,
+        **_claims(),
+    }
+
+
+def prepare_lease_bound_three_birth_prebound_clone_v1(
+    handle: LeaseBoundThreeBirthPreparationV1,
+) -> prebound_v20.H1SupervisorV2PreboundNativeCloneV1:
+    """Bind V19 originals to a V20 duplicate-owned opaque capsule."""
+
+    _reject_reentrant_prebound_operation_v1(handle)
+    _validate_local_code_closure()
+    verify_lease_bound_three_birth_preparation_v1(handle)
+    with _LOCK:
+        record = _require(handle)
+        lifecycle = record.prebound
+        if lifecycle.state == "LIVE_DUPLICATE_OWNED_PREBOUND_CAPSULE":
+            capsule = lifecycle.capsule
+            if type(capsule) is not _EXPECTED_PREBOUND_CAPSULE_TYPE:
+                _fail("V19 retained prebound capsule type changed")
+            verify_lease_bound_three_birth_prebound_clone_binding_v1(
+                handle, prebound_capsule=capsule
+            )
+            return capsule
+        if (
+            lifecycle.state != "ABSENT"
+            or lifecycle.issuer is not None
+            or lifecycle.capsule is not None
+            or lifecycle.binding_bytes is not None
+            or lifecycle.terminal_capsule is not None
+            or lifecycle.cancellation_bytes is not None
+        ):
+            _fail("V19 prebound capsule binding is terminal and cannot be reissued")
+        nonce = _new_outer_nonce_v1()
+        cell_frame, gate_frame, release_frame = _outer_frames_v1(nonce)
+        launch_id = record.documents["launch_preparation"][
+            "supervisor_v2_launch_preparation_id"
+        ]
+        capsule: Any = None
+        binding_bytes: bytes | None = None
+        old_signal_mask: set[signal.Signals] | None = None
+        signal_mask_restore_pending = False
+        try:
+            record.prebound = _PreboundLifecycleV1(
+                issuer=_PREBOUND_BINDING_ISSUER,
+                state="PREBOUND_PREPARE_CALL_IN_PROGRESS",
+                launch_id=launch_id,
+            )
+            old_signal_mask = _RAW_PTHREAD_SIGMASK(signal.SIG_BLOCK, frozenset())
+            signal_mask_restore_pending = True
+            _RAW_PTHREAD_SIGMASK(signal.SIG_BLOCK, _BLOCKABLE_SIGNALS)
+            try:
+                capsule = (
+                    prebound_v20.prepare_h1_supervisor_v2_prebound_native_clone_v1(
+                        creator_pid_cell_fd=record.descriptors[
+                            "supervisor_pid_cell"
+                        ],
+                        child_gate_fd=record.descriptors[
+                            "supervisor_child_channel"
+                        ],
+                        child_gate_peer_fd=record.descriptors[
+                            "supervisor_guardian_channel"
+                        ],
+                        supervisor_executable_fd=record.descriptors[
+                            "supervisor_role"
+                        ],
+                        cell_withdrawn_frame=cell_frame,
+                        gate_ready_frame=gate_frame,
+                        release_frame=release_frame,
+                    )
+                )
+                record.prebound = _PreboundLifecycleV1(
+                    issuer=_PREBOUND_BINDING_ISSUER,
+                    state="PREBOUND_CAPSULE_PREPARING",
+                    launch_id=launch_id,
+                    capsule=capsule,
+                )
+                if _TEST_ONLY_FAIL_AFTER_PREBOUND_PREPARE:
+                    raise RuntimeError("injected V19 post-prebound-prepare fault")
+                capsule_document = (
+                    prebound_v20.verify_h1_supervisor_v2_prebound_native_clone_v1(
+                        capsule
+                    )
+                )
+                binding = _prebound_binding_document_v1(
+                    record, capsule_document, nonce=nonce
+                )
+                binding_bytes = ids_v1.canonical_json_bytes(binding)
+                capsule_id = binding["prebound_native_edge_capsule_id"]
+                if _TEST_ONLY_FAIL_DURING_PREBOUND_COMMIT:
+                    raise RuntimeError("injected V19 prebound binding commit fault")
+            finally:
+                _restore_signal_mask_finish_forward_v1(old_signal_mask)
+                signal_mask_restore_pending = False
+            record.prebound = _PreboundLifecycleV1(
+                issuer=_PREBOUND_BINDING_ISSUER,
+                state="LIVE_DUPLICATE_OWNED_PREBOUND_CAPSULE",
+                launch_id=launch_id,
+                capsule_id=capsule_id,
+                capsule=capsule,
+                binding_bytes=binding_bytes,
+            )
+            return capsule
+        except BaseException as primary:
+            restoration_error: BaseException | None = None
+            if signal_mask_restore_pending and old_signal_mask is not None:
+                for _restore_attempt in range(2):
+                    try:
+                        _restore_signal_mask_finish_forward_v1(old_signal_mask)
+                    except BaseException as error:
+                        restoration_error = error
+                    else:
+                        signal_mask_restore_pending = False
+                        restoration_error = None
+                        break
+            if type(capsule) is _EXPECTED_PREBOUND_CAPSULE_TYPE:
+                cleanup_primary: BaseException | None = None
+                try:
+                    capsule_cancellation = (
+                        prebound_v20.cancel_h1_supervisor_v2_prebound_native_clone_v1(
+                            capsule
+                        )
+                    )
+                except prebound_v20.ConstructionK7H1SupervisorV2PreboundCloneV1Error as cleanup_error:
+                    cleanup_primary = cleanup_error
+                    capsule_cancellation = cleanup_error.cleanup_document
+                except BaseException as cleanup_error:  # pragma: no cover - fatal dependency edge
+                    cleanup_primary = cleanup_error
+                    capsule_cancellation = None
+                capsule_id = (
+                    capsule_cancellation.get("prebound_native_edge_capsule_id")
+                    if type(capsule_cancellation) is dict
+                    else None
+                )
+                if _exact_capsule_cancellation_v1(
+                    capsule_cancellation, capsule_id=capsule_id
+                ):
+                    state_before = record.prebound.state
+                    if state_before not in {
+                        "PREBOUND_CAPSULE_PREPARING",
+                        "LIVE_DUPLICATE_OWNED_PREBOUND_CAPSULE",
+                    }:
+                        state_before = "PREBOUND_CAPSULE_PREPARING"
+                    capsule_was_crossed = (
+                        capsule_cancellation.get(
+                            "input_integrity_valid_before_cleanup"
+                        )
+                        is False
+                    )
+                    tombstone = _prebound_tombstone_v1(
+                        launch_id=launch_id,
+                        capsule_id=capsule_id,
+                        capsule_cancellation=capsule_cancellation,
+                        state_before=state_before,
+                        capsule_was_crossed=capsule_was_crossed,
+                    )
+                    record.prebound = _PreboundLifecycleV1(
+                        issuer=_PREBOUND_BINDING_ISSUER,
+                        state="CANCELLED_DUPLICATES_CLOSED_TOMBSTONED",
+                        launch_id=launch_id,
+                        capsule_id=capsule_id,
+                        binding_bytes=binding_bytes,
+                        terminal_capsule=capsule,
+                        cancellation_bytes=ids_v1.canonical_json_bytes(tombstone),
+                        terminal_state_before=state_before,
+                        terminal_origin_token=(
+                            _PREBOUND_TERMINAL_ORIGIN_TOKENS[state_before]
+                        ),
+                        capsule_was_crossed=capsule_was_crossed,
+                    )
+                else:
+                    record.prebound = _PreboundLifecycleV1(
+                        issuer=_PREBOUND_BINDING_ISSUER,
+                        state="PREBOUND_CAPSULE_CLEANUP_REQUIRED",
+                        launch_id=launch_id,
+                        capsule=capsule,
+                        binding_bytes=binding_bytes,
+                    )
+            else:
+                record.prebound = _PreboundLifecycleV1()
+            raise ConstructionK7H1LeaseBoundThreeBirthRuntimeV1Error(
+                (
+                    "V19 failed to establish the duplicate-owned prebound capsule"
+                    if not signal_mask_restore_pending
+                    else "V19 prebound failure cleanup could not prove signal-mask restoration"
+                ),
+                cleanup_handle=handle,
+            ) from (restoration_error or primary)
+
+
+def verify_lease_bound_three_birth_prebound_clone_binding_v1(
+    handle: LeaseBoundThreeBirthPreparationV1,
+    *,
+    prebound_capsule: prebound_v20.H1SupervisorV2PreboundNativeCloneV1,
+) -> dict[str, Any]:
+    """Replay the owner, launch/capsule IDs, frames, and four FD joins."""
+
+    _validate_local_code_closure()
+    verify_lease_bound_three_birth_preparation_v1(handle)
+    with _LOCK:
+        record = _require(handle)
+        lifecycle = record.prebound
+        if (
+            type(prebound_capsule) is not _EXPECTED_PREBOUND_CAPSULE_TYPE
+            or lifecycle.issuer is not _PREBOUND_BINDING_ISSUER
+            or lifecycle.state
+            != "LIVE_DUPLICATE_OWNED_PREBOUND_CAPSULE"
+            or lifecycle.capsule is not prebound_capsule
+            or lifecycle.terminal_capsule is not None
+            or lifecycle.cancellation_bytes is not None
+        ):
+            _fail("V19 prebound capsule is not live under its exact binding")
+        binding_document = _prebound_document_from_bytes_v1(
+            lifecycle.binding_bytes,
+            label="live prebound binding",
+        )
+        capsule = prebound_v20.verify_h1_supervisor_v2_prebound_native_clone_v1(
+            prebound_capsule
+        )
+        nonce_hex = binding_document.get("outer_nonce_hex")
+        if type(nonce_hex) is not str or len(nonce_hex) != 32:
+            _fail("V19 retained outer nonce changed")
+        try:
+            nonce = bytes.fromhex(nonce_hex)
+        except ValueError as error:
+            raise ConstructionK7H1LeaseBoundThreeBirthRuntimeV1Error(
+                "V19 retained outer nonce is not hexadecimal"
+            ) from error
+        expected = _prebound_binding_document_v1(record, capsule, nonce=nonce)
+        if ids_v1.canonical_json_bytes(expected) != lifecycle.binding_bytes:
+            _fail("V19 live prebound binding document changed")
+        return _deep_canonical_copy(expected)
+
+
+def _exact_capsule_cancellation_v1(
+    cancellation: Any,
+    *,
+    capsule_id: str,
+) -> bool:
+    return (
+        type(cancellation) is dict
+        and type(capsule_id) is str
+        and len(capsule_id) == 64
+        and cancellation.get("prebound_native_edge_capsule_id") == capsule_id
+        and cancellation.get("all_capsule_owned_resources_closed") is True
+        and cancellation.get("permit_consumed") is False
+        and cancellation.get("native_entry_invoked") is False
+        and cancellation.get("clone_syscall_performed") is False
+        and cancellation.get("actual_process_birth_present") is False
+        and type(cancellation.get("input_integrity_valid_before_cleanup")) is bool
+    )
+
+
+def _prebound_tombstone_v1(
+    *,
+    launch_id: str,
+    capsule_id: str,
+    capsule_cancellation: Mapping[str, Any],
+    state_before: str,
+    capsule_was_crossed: bool,
+) -> dict[str, Any]:
+    if (
+        type(launch_id) is not str
+        or len(launch_id) != 64
+        or type(state_before) is not str
+        or type(capsule_was_crossed) is not bool
+        or capsule_was_crossed
+        is not (
+            capsule_cancellation.get("input_integrity_valid_before_cleanup")
+            is False
+        )
+        or not _exact_capsule_cancellation_v1(
+            capsule_cancellation, capsule_id=capsule_id
+        )
+    ):
+        _fail("V19 cannot issue a prebound tombstone without exact closure")
+    return {
+        "schema": "acfqp.k7_h1_lease_bound_three_birth_prebound_clone_live_tombstone.v1",
+        "schema_version": SCHEMA_VERSION,
+        "profile_key": PROFILE_KEY,
+        "content_id": {
+            "kind": "NOT_APPLICABLE",
+            "reason": "OWNER_LOCAL_LIVE_TYPED_WRAPPER_AROUND_V20_CANCELLATION",
+        },
+        "owner_local_live_typed_proof_only": True,
+        "durable_artifact_present": False,
+        "binding_state_before": state_before,
+        "binding_state_after": "CANCELLED_DUPLICATES_CLOSED_TOMBSTONED",
+        "supervisor_v2_launch_preparation_id": launch_id,
+        "prebound_native_edge_capsule_id": capsule_id,
+        "prebound_native_edge_cancellation": dict(capsule_cancellation),
+        "capsule_duplicates_closed_before_v19_source_release": True,
+        "capsule_was_crossed_before_cancellation": capsule_was_crossed,
+        "source_descriptors_retained_by_v19": True,
+        "permit_consumed": False,
+        "native_entry_invoked": False,
+        "clone_syscall_performed": False,
+        **_claims(),
+    }
+
+
+def _authoritative_launch_preparation_v1(
+    record: _PreparationRecordV1,
+) -> tuple[dict[str, Any], str]:
+    """Rejoin terminal live state to the durable V19 launch record."""
+
+    launch = record.documents.get("launch_preparation")
+    if type(launch) is not dict or record.directory_fd < 0:
+        _fail("V19 authoritative launch preparation is unavailable")
+    launch_id = _verify_id(
+        launch,
+        domain=(
+            domains_v19.CONSTRUCTION_K7_H1_SUPERVISOR_V2_LAUNCH_PREPARATION_V1_DOMAIN
+        ),
+        id_field="supervisor_v2_launch_preparation_id",
+        label="V19 authoritative launch preparation",
+    )
+    descriptor = os.open(
+        "0002_LAUNCH_PREPARATION.json",
+        os.O_RDONLY | os.O_CLOEXEC | os.O_NOFOLLOW,
+        dir_fd=record.directory_fd,
+    )
+    try:
+        status = os.fstat(descriptor)
+        raw = os.read(descriptor, status.st_size + 1)
+    finally:
+        os.close(descriptor)
+    if (
+        not stat.S_ISREG(status.st_mode)
+        or raw != ids_v1.canonical_json_bytes(launch)
+    ):
+        _fail("V19 authoritative launch preparation bytes changed")
+    return launch, launch_id
+
+
+def _verify_terminal_prebound_binding_v1(
+    record: _PreparationRecordV1,
+    lifecycle: _PreboundLifecycleV1,
+) -> None:
+    """Replay the exact live-binding schema retained by a terminal state."""
+
+    state_before = lifecycle.terminal_state_before
+    if lifecycle.binding_bytes is None:
+        if state_before == "LIVE_DUPLICATE_OWNED_PREBOUND_CAPSULE":
+            _fail("V19 terminal live binding bytes are absent")
+        return
+    binding = _prebound_document_from_bytes_v1(
+        lifecycle.binding_bytes,
+        label="terminal retained prebound binding",
+    )
+    nonce_hex = binding.get("outer_nonce_hex")
+    source_id = binding.get("prebound_native_edge_source_closure_id")
+    if (
+        type(nonce_hex) is not str
+        or len(nonce_hex) != 32
+        or type(source_id) is not str
+        or len(source_id) != 64
+        or any(character not in "0123456789abcdef" for character in source_id)
+    ):
+        _fail("V19 terminal retained binding identities changed")
+    try:
+        nonce = bytes.fromhex(nonce_hex)
+    except ValueError as error:
+        raise ConstructionK7H1LeaseBoundThreeBirthRuntimeV1Error(
+            "V19 terminal retained nonce is not hexadecimal"
+        ) from error
+    if len(nonce) != 16:
+        _fail("V19 terminal retained nonce width changed")
+    launch, _launch_id = _authoritative_launch_preparation_v1(record)
+    launch_facts = launch.get("descriptor_facts_without_fd_numbers")
+    if type(launch_facts) is not list:
+        _fail("V19 terminal retained descriptor facts are absent")
+    launch_by_role = {
+        row.get("role"): row for row in launch_facts if type(row) is dict
+    }
+    role_join = (
+        ("supervisor_pid_cell", "creator_pid_cell_fd"),
+        ("supervisor_child_channel", "child_gate_fd"),
+        ("supervisor_guardian_channel", "child_gate_peer_fd"),
+        ("supervisor_role", "supervisor_executable_fd"),
+    )
+    source_facts: list[dict[str, Any]] = []
+    for launch_role, capsule_role in role_join:
+        row = launch_by_role.get(launch_role)
+        if (
+            type(row) is not dict
+            or type(row.get("device")) is not int
+            or type(row.get("inode")) is not int
+        ):
+            _fail(f"V19 terminal retained role join changed: {launch_role}")
+        source_facts.append(
+            {
+                "role": capsule_role,
+                "device": row["device"],
+                "inode": row["inode"],
+            }
+        )
+    frames = _outer_frames_v1(nonce)
+    frame_facts = [
+        {
+            "role": role,
+            "byte_count": len(frame),
+            "sha256": hashlib.sha256(frame).hexdigest(),
+        }
+        for role, frame in zip(
+            ("cell_withdrawn_frame", "gate_ready_frame", "release_frame"),
+            frames,
+            strict=True,
+        )
+    ]
+    capsule_projection = {
+        "state": "PREBOUND_NO_ACTIVATION",
+        "prebound_native_edge_capsule_id": lifecycle.capsule_id,
+        "prebound_native_edge_source_closure_id": source_id,
+        "frame_facts": frame_facts,
+        "supervisor_v2_elf_sha256": launch.get("supervisor_v2_elf_sha256"),
+        "input_ownership": {
+            "caller_retains_original_descriptors": 4,
+            "capsule_owns_f_dupfd_cloexec_duplicates": True,
+            "duplicates_preserve_kernel_identity": True,
+        },
+        "source_fd_facts": source_facts,
+        "fd_facts": source_facts,
+        "raw_descriptor_accessor_present": False,
+        "raw_native_callable_accessor_present": False,
+        "permit_consumption_path_present": False,
+        "native_entry_invoked": False,
+        "clone_syscall_performed": False,
+    }
+    expected = _prebound_binding_document_v1(
+        record,
+        capsule_projection,
+        nonce=nonce,
+    )
+    if ids_v1.canonical_json_bytes(expected) != lifecycle.binding_bytes:
+        _fail("V19 terminal retained live-binding schema changed")
+
+
+def _verify_prebound_tombstone_v1(
+    record: _PreparationRecordV1,
+    prebound_capsule: prebound_v20.H1SupervisorV2PreboundNativeCloneV1,
+) -> dict[str, Any]:
+    lifecycle = record.prebound
+    if (
+        lifecycle.issuer is not _PREBOUND_BINDING_ISSUER
+        or lifecycle.state
+        != "CANCELLED_DUPLICATES_CLOSED_TOMBSTONED"
+        or lifecycle.terminal_capsule is not prebound_capsule
+        or lifecycle.capsule is not None
+    ):
+        _fail("V19 prebound tombstone ownership changed")
+    document = _prebound_document_from_bytes_v1(
+        lifecycle.cancellation_bytes,
+        label="prebound terminal tombstone",
+    )
+    nested = document.get("prebound_native_edge_cancellation")
+    capsule_id = document.get("prebound_native_edge_capsule_id")
+    replayed = prebound_v20.cancel_h1_supervisor_v2_prebound_native_clone_v1(
+        prebound_capsule
+    )
+    state_before = lifecycle.terminal_state_before
+    capsule_was_crossed = lifecycle.capsule_was_crossed
+    _launch, authoritative_launch_id = _authoritative_launch_preparation_v1(record)
+    if (
+        type(lifecycle.launch_id) is not str
+        or lifecycle.launch_id != authoritative_launch_id
+        or type(lifecycle.capsule_id) is not str
+        or lifecycle.capsule_id != capsule_id
+        or type(state_before) is not str
+        or state_before
+        not in {
+            "LIVE_DUPLICATE_OWNED_PREBOUND_CAPSULE",
+            "PREBOUND_CAPSULE_PREPARING",
+            "PREBOUND_CAPSULE_CLEANUP_REQUIRED",
+        }
+        or type(capsule_was_crossed) is not bool
+        or lifecycle.terminal_origin_token
+        is not _PREBOUND_TERMINAL_ORIGIN_TOKENS.get(state_before)
+        or document.get("binding_state_before") != state_before
+        or document.get("capsule_was_crossed_before_cancellation")
+        is not capsule_was_crossed
+        or ids_v1.canonical_json_bytes(replayed)
+        != ids_v1.canonical_json_bytes(nested)
+        or not _exact_capsule_cancellation_v1(nested, capsule_id=capsule_id)
+    ):
+        _fail("V19 prebound tombstone semantics changed")
+    _verify_terminal_prebound_binding_v1(record, lifecycle)
+    expected = _prebound_tombstone_v1(
+        launch_id=lifecycle.launch_id,
+        capsule_id=lifecycle.capsule_id,
+        capsule_cancellation=replayed,
+        state_before=state_before,
+        capsule_was_crossed=capsule_was_crossed,
+    )
+    if ids_v1.canonical_json_bytes(expected) != lifecycle.cancellation_bytes:
+        _fail("V19 prebound tombstone contains unknown or changed fields")
+    return expected
+
+
+def _cancel_prebound_clone_v1(
+    record: _PreparationRecordV1,
+    prebound_capsule: prebound_v20.H1SupervisorV2PreboundNativeCloneV1,
+) -> tuple[dict[str, Any], BaseException | None]:
+    lifecycle = record.prebound
+    if (
+        lifecycle.state == "CANCELLED_DUPLICATES_CLOSED_TOMBSTONED"
+        and lifecycle.terminal_capsule is prebound_capsule
+        and lifecycle.cancellation_bytes is not None
+    ):
+        return _verify_prebound_tombstone_v1(record, prebound_capsule), None
+    if (
+        type(prebound_capsule) is not _EXPECTED_PREBOUND_CAPSULE_TYPE
+        or lifecycle.issuer is not _PREBOUND_BINDING_ISSUER
+        or lifecycle.state
+        != "LIVE_DUPLICATE_OWNED_PREBOUND_CAPSULE"
+        or lifecycle.capsule is not prebound_capsule
+        or type(lifecycle.launch_id) is not str
+        or type(lifecycle.capsule_id) is not str
+    ):
+        _fail("V19 cannot cancel a capsule outside its exact live binding")
+    _verify_terminal_prebound_binding_v1(record, lifecycle)
+    binding = _prebound_document_from_bytes_v1(
+        lifecycle.binding_bytes,
+        label="prebound binding before cancellation",
+    )
+    if (
+        binding.get("supervisor_v2_launch_preparation_id") != lifecycle.launch_id
+        or binding.get("prebound_native_edge_capsule_id") != lifecycle.capsule_id
+    ):
+        _fail("V19 prebound cancellation identity join changed")
+    primary: BaseException | None = None
+    try:
+        capsule_cancellation = (
+            prebound_v20.cancel_h1_supervisor_v2_prebound_native_clone_v1(
+                prebound_capsule
+            )
+        )
+    except prebound_v20.ConstructionK7H1SupervisorV2PreboundCloneV1Error as error:
+        primary = error
+        capsule_cancellation = error.cleanup_document
+    capsule_id = lifecycle.capsule_id
+    if not _exact_capsule_cancellation_v1(
+        capsule_cancellation, capsule_id=capsule_id
+    ):
+        if primary is not None:
+            raise ConstructionK7H1LeaseBoundThreeBirthRuntimeV1Error(
+                "V19 prebound capsule cancellation did not prove duplicate closure",
+            ) from primary
+        _fail("V19 prebound capsule cancellation semantics changed")
+    document = _prebound_tombstone_v1(
+        launch_id=lifecycle.launch_id,
+        capsule_id=capsule_id,
+        capsule_cancellation=capsule_cancellation,
+        state_before="LIVE_DUPLICATE_OWNED_PREBOUND_CAPSULE",
+        capsule_was_crossed=(
+            capsule_cancellation.get("input_integrity_valid_before_cleanup")
+            is False
+        ),
+    )
+    record.prebound = _PreboundLifecycleV1(
+        issuer=_PREBOUND_BINDING_ISSUER,
+        state="CANCELLED_DUPLICATES_CLOSED_TOMBSTONED",
+        launch_id=lifecycle.launch_id,
+        capsule_id=lifecycle.capsule_id,
+        binding_bytes=lifecycle.binding_bytes,
+        terminal_capsule=prebound_capsule,
+        cancellation_bytes=ids_v1.canonical_json_bytes(document),
+        terminal_state_before="LIVE_DUPLICATE_OWNED_PREBOUND_CAPSULE",
+        terminal_origin_token=_PREBOUND_TERMINAL_ORIGIN_TOKENS[
+            "LIVE_DUPLICATE_OWNED_PREBOUND_CAPSULE"
+        ],
+        capsule_was_crossed=(
+            capsule_cancellation.get("input_integrity_valid_before_cleanup")
+            is False
+        ),
+    )
+    return document, primary
+
+
+def _cancel_partial_prebound_clone_v1(
+    record: _PreparationRecordV1,
+) -> tuple[dict[str, Any], BaseException | None]:
+    lifecycle = record.prebound
+    capsule = lifecycle.capsule
+    if (
+        lifecycle.issuer is not _PREBOUND_BINDING_ISSUER
+        or lifecycle.state != "PREBOUND_CAPSULE_CLEANUP_REQUIRED"
+        or type(capsule) is not _EXPECTED_PREBOUND_CAPSULE_TYPE
+        or type(lifecycle.launch_id) is not str
+        or lifecycle.terminal_capsule is not None
+    ):
+        _fail("V19 partial prebound cleanup ownership changed")
+    primary: BaseException | None = None
+    try:
+        cancellation = prebound_v20.cancel_h1_supervisor_v2_prebound_native_clone_v1(
+            capsule
+        )
+    except prebound_v20.ConstructionK7H1SupervisorV2PreboundCloneV1Error as error:
+        primary = error
+        cancellation = error.cleanup_document
+    capsule_id = (
+        cancellation.get("prebound_native_edge_capsule_id")
+        if type(cancellation) is dict
+        else None
+    )
+    if not _exact_capsule_cancellation_v1(
+        cancellation, capsule_id=capsule_id
+    ):
+        raise ConstructionK7H1LeaseBoundThreeBirthRuntimeV1Error(
+            "V19 partial prebound capsule cleanup remains unproven"
+        ) from primary
+    document = _prebound_tombstone_v1(
+        launch_id=lifecycle.launch_id,
+        capsule_id=capsule_id,
+        capsule_cancellation=cancellation,
+        state_before="PREBOUND_CAPSULE_CLEANUP_REQUIRED",
+        capsule_was_crossed=(
+            cancellation.get("input_integrity_valid_before_cleanup") is False
+        ),
+    )
+    record.prebound = _PreboundLifecycleV1(
+        issuer=_PREBOUND_BINDING_ISSUER,
+        state="CANCELLED_DUPLICATES_CLOSED_TOMBSTONED",
+        launch_id=lifecycle.launch_id,
+        capsule_id=capsule_id,
+        binding_bytes=lifecycle.binding_bytes,
+        terminal_capsule=capsule,
+        cancellation_bytes=ids_v1.canonical_json_bytes(document),
+        terminal_state_before="PREBOUND_CAPSULE_CLEANUP_REQUIRED",
+        terminal_origin_token=_PREBOUND_TERMINAL_ORIGIN_TOKENS[
+            "PREBOUND_CAPSULE_CLEANUP_REQUIRED"
+        ],
+        capsule_was_crossed=(
+            cancellation.get("input_integrity_valid_before_cleanup") is False
+        ),
+    )
+    return document, primary
+
+
+def cancel_lease_bound_three_birth_prebound_clone_v1(
+    handle: LeaseBoundThreeBirthPreparationV1,
+    *,
+    prebound_capsule: prebound_v20.H1SupervisorV2PreboundNativeCloneV1,
+) -> dict[str, Any]:
+    """Close capsule duplicates first; retain every V19 source for abort."""
+
+    _reject_reentrant_prebound_operation_v1(handle)
+    _validate_local_code_closure()
+    with _LOCK:
+        record = _require(handle)
+        document, primary = _cancel_prebound_clone_v1(record, prebound_capsule)
+    if primary is not None:
+        raise ConstructionK7H1LeaseBoundThreeBirthRuntimeV1Error(
+            "V19 crossed prebound capsule was tombstoned after duplicate closure",
+            cleanup_handle=handle,
+        ) from primary
+    return document
+
+
 def begin_lease_bound_three_birth_v1(
     handle: LeaseBoundThreeBirthPreparationV1,
 ) -> NoReturn:
@@ -1050,22 +2127,58 @@ def abort_lease_bound_three_birth_preparation_v1(
 ) -> dict[str, Any]:
     """Close every prepared FD and cancel the still-unconsumed Guardian handoff."""
 
+    _reject_reentrant_prebound_operation_v1(handle)
     _validate_local_code_closure()
     record = _require(handle)
+    lifecycle = record.prebound
+    if lifecycle.state == "PREBOUND_PREPARE_CALL_IN_PROGRESS":
+        if lifecycle.capsule is not None:
+            _fail("V19 in-progress prebound state unexpectedly owns a capsule")
+        record.prebound = _PreboundLifecycleV1()
+        lifecycle = record.prebound
+    if lifecycle.state == "PREBOUND_CAPSULE_PREPARING":
+        if type(lifecycle.capsule) is not _EXPECTED_PREBOUND_CAPSULE_TYPE:
+            _fail("V19 preparing prebound state lost its capsule")
+        record.prebound = _PreboundLifecycleV1(
+            issuer=lifecycle.issuer,
+            state="PREBOUND_CAPSULE_CLEANUP_REQUIRED",
+            launch_id=lifecycle.launch_id,
+            capsule_id=lifecycle.capsule_id,
+            capsule=lifecycle.capsule,
+            binding_bytes=lifecycle.binding_bytes,
+        )
+        lifecycle = record.prebound
+    if lifecycle.state == "PREBOUND_CAPSULE_CLEANUP_REQUIRED":
+        _cancel_partial_prebound_clone_v1(record)
+        lifecycle = record.prebound
+    if lifecycle.state == "LIVE_DUPLICATE_OWNED_PREBOUND_CAPSULE":
+        capsule = lifecycle.capsule
+        if type(capsule) is not _EXPECTED_PREBOUND_CAPSULE_TYPE:
+            _fail("V19 live prebound capsule type changed before abort")
+        _cancel_prebound_clone_v1(record, capsule)
+        lifecycle = record.prebound
+    if lifecycle.state == "CANCELLED_DUPLICATES_CLOSED_TOMBSTONED":
+        terminal_capsule = lifecycle.terminal_capsule
+        if type(terminal_capsule) is not _EXPECTED_PREBOUND_CAPSULE_TYPE:
+            _fail("V19 prebound terminal capsule type changed before abort")
+        _verify_prebound_tombstone_v1(record, terminal_capsule)
+    elif lifecycle.state != "ABSENT":
+        _fail("V19 prebound binding did not reach a safe abort cut")
     record.state = "PRELAUNCH_ABORT_PENDING"
     if not record.expected_close_rows:
         record.expected_close_rows = tuple(
             {"role": role, "closed": True}
             for role in reversed(tuple(record.descriptors))
         )
-    for role in reversed(tuple(record.descriptors)):
-        descriptor = record.descriptors.pop(role)
-        os.close(descriptor)
-        record.closed_roles.add(role)
+    _close_prepared_descriptors_finish_forward_v1(record)
     expected_closed_roles = {
         row["role"] for row in record.expected_close_rows
     }
-    if record.closed_roles != expected_closed_roles or record.descriptors:
+    if (
+        record.closed_roles != expected_closed_roles
+        or record.descriptors
+        or record.closing_descriptors
+    ):
         _fail("V19 prepared descriptor closure inventory changed")
     if record.cancellation_document is None:
         if record.takeover is not None:
@@ -1145,12 +2258,17 @@ def abort_lease_bound_three_birth_preparation_v1(
 def _after_fork_child() -> None:
     global _LOCK
     for record in tuple(_LIVE.values()):
-        for descriptor in tuple(record.descriptors.values()):
+        descriptors = set(record.descriptors.values()) | {
+            pending[0] for pending in record.closing_descriptors.values()
+        }
+        for descriptor in descriptors:
             try:
                 os.close(descriptor)
             except OSError:
                 pass
         record.descriptors.clear()
+        record.closing_descriptors.clear()
+        record.prebound = _PreboundLifecycleV1(state="FORK_POISONED")
         if record.directory_fd >= 0:
             try:
                 os.close(record.directory_fd)
@@ -1171,6 +2289,8 @@ def _freeze_local_callable_closure() -> None:
         "_verify_id",
         "_source_rows",
         "_deep_canonical_copy",
+        "_restore_signal_mask_finish_forward_v1",
+        "_close_prepared_descriptors_finish_forward_v1",
         "_validate_local_code_closure",
         "_public_seam_rows",
         "guardian_public_consumer_seam_status_v1",
@@ -1184,8 +2304,25 @@ def _freeze_local_callable_closure() -> None:
         "_append_exclusive",
         "_append_or_verify_exclusive",
         "_require",
+        "_prebound_document_from_bytes_v1",
+        "_prebound_operation_active_on_ancestor_stack_v1",
+        "_reject_reentrant_prebound_operation_v1",
         "prepare_lease_bound_three_birth_v1",
         "verify_lease_bound_three_birth_preparation_v1",
+        "_new_outer_nonce_v1",
+        "_outer_frames_v1",
+        "_prebound_descriptor_join_v1",
+        "_prebound_binding_document_v1",
+        "_exact_capsule_cancellation_v1",
+        "_prebound_tombstone_v1",
+        "_authoritative_launch_preparation_v1",
+        "_verify_terminal_prebound_binding_v1",
+        "_verify_prebound_tombstone_v1",
+        "prepare_lease_bound_three_birth_prebound_clone_v1",
+        "verify_lease_bound_three_birth_prebound_clone_binding_v1",
+        "_cancel_prebound_clone_v1",
+        "_cancel_partial_prebound_clone_v1",
+        "cancel_lease_bound_three_birth_prebound_clone_v1",
         "begin_lease_bound_three_birth_v1",
         "abort_lease_bound_three_birth_preparation_v1",
         "_after_fork_child",
@@ -1227,6 +2364,9 @@ __all__ = tuple(
                 "verify_lease_bound_three_birth_runtime_surface_v1",
                 "prepare_lease_bound_three_birth_v1",
                 "verify_lease_bound_three_birth_preparation_v1",
+                "prepare_lease_bound_three_birth_prebound_clone_v1",
+                "verify_lease_bound_three_birth_prebound_clone_binding_v1",
+                "cancel_lease_bound_three_birth_prebound_clone_v1",
                 "begin_lease_bound_three_birth_v1",
                 "abort_lease_bound_three_birth_preparation_v1",
             }
