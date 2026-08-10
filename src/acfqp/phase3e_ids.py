@@ -1593,6 +1593,18 @@ CONSTRUCTION_K7_ABSTRACT_CERTIFIED_LIFECYCLE_ENVELOPE_V1_DOMAIN = (
 CONSTRUCTION_K7_ABSTRACT_CERTIFIED_LIFECYCLE_REPLAY_V1_DOMAIN = (
     "acfqp:construction-k7-abstract-certified-lifecycle-replay:v1"
 )
+CONSTRUCTION_K7_ABSTRACT_CERTIFIED_COMMON_SHARED_WINDOW_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-certified-common-shared-window:v1"
+)
+CONSTRUCTION_K7_ABSTRACT_CERTIFIED_COMMON_SHARED_RESOLUTION_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-certified-common-shared-resolution:v1"
+)
+CONSTRUCTION_K7_ABSTRACT_CERTIFIED_COMMON_SHARED_ENVELOPE_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-certified-common-shared-envelope:v1"
+)
+CONSTRUCTION_K7_ABSTRACT_CERTIFIED_COMMON_SHARED_REPLAY_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-certified-common-shared-replay:v1"
+)
 CONSTRUCTION_K7_CONDITIONAL_TERMINAL_NORMALIZATION_PROFILE_V1_DOMAIN = (
     "acfqp:construction-k7-conditional-terminal-normalization-profile:v1"
 )
@@ -3452,6 +3464,18 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_abstract_certified_lifecycle_replay_v1": (
             CONSTRUCTION_K7_ABSTRACT_CERTIFIED_LIFECYCLE_REPLAY_V1_DOMAIN
+        ),
+        "construction_k7_abstract_certified_common_shared_window_v1": (
+            CONSTRUCTION_K7_ABSTRACT_CERTIFIED_COMMON_SHARED_WINDOW_V1_DOMAIN
+        ),
+        "construction_k7_abstract_certified_common_shared_resolution_v1": (
+            CONSTRUCTION_K7_ABSTRACT_CERTIFIED_COMMON_SHARED_RESOLUTION_V1_DOMAIN
+        ),
+        "construction_k7_abstract_certified_common_shared_envelope_v1": (
+            CONSTRUCTION_K7_ABSTRACT_CERTIFIED_COMMON_SHARED_ENVELOPE_V1_DOMAIN
+        ),
+        "construction_k7_abstract_certified_common_shared_replay_v1": (
+            CONSTRUCTION_K7_ABSTRACT_CERTIFIED_COMMON_SHARED_REPLAY_V1_DOMAIN
         ),
         "construction_k7_conditional_terminal_normalization_profile_v1": (
             CONSTRUCTION_K7_CONDITIONAL_TERMINAL_NORMALIZATION_PROFILE_V1_DOMAIN
