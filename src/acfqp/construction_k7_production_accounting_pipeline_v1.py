@@ -15,7 +15,7 @@ and can still be verified without trusting this orchestrator.
 
 from __future__ import annotations
 
-from dataclasses import InitVar, dataclass
+from dataclasses import InitVar, dataclass, field
 from typing import Any, Mapping, NoReturn
 
 from acfqp import campaign_v1
@@ -60,6 +60,16 @@ _ROOT_KEYS = frozenset(
         "role_manifest",
     }
 )
+_CLOSURE_INPUT_KEYS = frozenset(
+    {
+        "replay_roots",
+        "occurrence_authority",
+        "verified_nine",
+        "owner_candidates",
+        "profile_native_zeros",
+        "derived_reconciliation",
+    }
+)
 _RESULT_ISSUER = object()
 
 
@@ -88,6 +98,10 @@ class K7ProductionAccountingPipelineResultV1:
     """All role-specific outputs from one all-or-nothing K7 replay."""
 
     _issuer: InitVar[object]
+    closure_replay_inputs: Mapping[str, Any] = field(
+        repr=False,
+        compare=False,
+    )
     semantic_closure: semantic_v1.K7SemanticEvidenceClosureV1
     formal_materialization: materializer_v1.K7FormalAccountingMaterializationBundleV1
     terminal_accounting: terminal_v1.K7RootCapTerminalAccountingBundleV1
@@ -101,7 +115,9 @@ class K7ProductionAccountingPipelineResultV1:
         if _issuer is not _RESULT_ISSUER:
             _fail("production accounting pipeline result is caller-minted")
         if (
-            type(self.semantic_closure)
+            type(self.closure_replay_inputs) is not dict
+            or set(self.closure_replay_inputs) != _CLOSURE_INPUT_KEYS
+            or type(self.semantic_closure)
             is not semantic_v1.K7SemanticEvidenceClosureV1
             or type(self.formal_materialization)
             is not materializer_v1.K7FormalAccountingMaterializationBundleV1
@@ -198,6 +214,7 @@ class K7ProductionAccountingPipelineResultV1:
             "counter_record_to_work_vector_to_comparison_vector_complete": True,
             "independent_complete_bundle_replay_passed": True,
             "logical_occurrence_replay_passed": True,
+            "complete_replay_inputs_retained_for_campaign": True,
             "counter_completeness_gate_passed": False,
             "workload_economics_gate_passed": False,
             "official_execution_allowed": False,
@@ -283,6 +300,7 @@ def run_k7_production_accounting_pipeline_v1(
         ) from error
     return K7ProductionAccountingPipelineResultV1(
         _RESULT_ISSUER,
+        closure_inputs,
         semantic,
         formal,
         terminal,

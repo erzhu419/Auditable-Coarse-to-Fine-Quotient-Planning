@@ -1350,6 +1350,18 @@ CONSTRUCTION_K7_LOGICAL_OCCURRENCE_CLOSURE_BUNDLE_V1_DOMAIN = (
 CONSTRUCTION_K7_LOGICAL_OCCURRENCE_CLOSURE_VERIFICATION_V1_DOMAIN = (
     "acfqp:construction-k7-logical-occurrence-closure-verification:v1"
 )
+CONSTRUCTION_K7_CAMPAIGN_REGISTRATION_V1_DOMAIN = (
+    "acfqp:construction-k7-campaign-registration:v1"
+)
+CONSTRUCTION_K7_CAMPAIGN_OCCURRENCE_ROW_V1_DOMAIN = (
+    "acfqp:construction-k7-campaign-occurrence-row:v1"
+)
+CONSTRUCTION_K7_CAMPAIGN_CLOSURE_SUMMARY_V1_DOMAIN = (
+    "acfqp:construction-k7-campaign-closure-summary:v1"
+)
+CONSTRUCTION_K7_CAMPAIGN_CLOSURE_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-campaign-closure-verification:v1"
+)
 CONSTRUCTION_K7_ALL_PATH_ACCOUNTING_PROFILE_V1_DOMAIN = (
     "acfqp:construction-k7-all-path-accounting-profile:v1"
 )
@@ -3161,6 +3173,18 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_logical_occurrence_closure_verification_v1": (
             CONSTRUCTION_K7_LOGICAL_OCCURRENCE_CLOSURE_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_campaign_registration_v1": (
+            CONSTRUCTION_K7_CAMPAIGN_REGISTRATION_V1_DOMAIN
+        ),
+        "construction_k7_campaign_occurrence_row_v1": (
+            CONSTRUCTION_K7_CAMPAIGN_OCCURRENCE_ROW_V1_DOMAIN
+        ),
+        "construction_k7_campaign_closure_summary_v1": (
+            CONSTRUCTION_K7_CAMPAIGN_CLOSURE_SUMMARY_V1_DOMAIN
+        ),
+        "construction_k7_campaign_closure_verification_v1": (
+            CONSTRUCTION_K7_CAMPAIGN_CLOSURE_VERIFICATION_V1_DOMAIN
         ),
         "construction_k7_all_path_accounting_profile_v1": (
             CONSTRUCTION_K7_ALL_PATH_ACCOUNTING_PROFILE_V1_DOMAIN

@@ -73,8 +73,16 @@ def assembled_case():
         )
     finally:
         patcher.undo()
+    closure_inputs = {
+        **case.replay_inputs,
+        "verified_nine": object(),
+        "owner_candidates": object(),
+        "profile_native_zeros": object(),
+        "derived_reconciliation": object(),
+    }
     result = pipeline_v1.K7ProductionAccountingPipelineResultV1(
         pipeline_v1._RESULT_ISSUER,  # noqa: SLF001
+        closure_inputs,
         case.semantic_closure,
         case.formal,
         case.terminal_bundle,
@@ -118,6 +126,7 @@ def test_one_entry_closes_nine_sources_formal_vectors_and_occurrence(
     )
     assert document["independent_complete_bundle_replay_passed"] is True
     assert document["logical_occurrence_replay_passed"] is True
+    assert document["complete_replay_inputs_retained_for_campaign"] is True
     assert document["logical_occurrence_closed"] is True
     assert document["terminal_class"] == "ATTEMPT_CLOSURE_NONCERTIFICATE"
     assert document["terminal_code"] == "ATTEMPT_BUDGET_EXHAUSTED"
