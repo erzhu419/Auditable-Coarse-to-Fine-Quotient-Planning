@@ -24,7 +24,9 @@ import mmap
 import os
 from pathlib import Path
 import select
+import signal
 import socket
+import stat
 import struct
 import threading
 import time
@@ -73,7 +75,6 @@ F_SEAL_GROW = getattr(fcntl, "F_SEAL_GROW", 0x0004)
 F_SEAL_WRITE = getattr(fcntl, "F_SEAL_WRITE", 0x0008)
 REQUIRED_SEALS = F_SEAL_SEAL | F_SEAL_SHRINK | F_SEAL_GROW | F_SEAL_WRITE
 P_PIDFD = getattr(os, "P_PIDFD", 3)
-P_ALL = getattr(os, "P_ALL", 0)
 FRAME = struct.Struct("<QIIQ16sqiIQ")
 UCRED = struct.Struct("=iII")
 FRAME_BYTES = FRAME.size
@@ -88,7 +89,6 @@ _ABSTRACT_AUTOBIND_HEX = frozenset(b"0123456789abcdef")
 
 _SESSION_ISSUER = object()
 _FACTS_ISSUER = object()
-_LIVE_SESSIONS: dict[int, "NestedCreatorProbeLiveSessionV1"] = {}
 _SESSION_LOCK = threading.RLock()
 _TEST_FAULT_PHASE: str | None = None
 
@@ -341,6 +341,8 @@ class NestedCreatorProbeLiveSessionV1:
         default=None, repr=False
     )
     abort_facts: Mapping[str, Any] | None = field(default=None, repr=False)
+    shutdown_frame: NativeProtocolFrameV1 | None = field(default=None, repr=False)
+    finish_facts: Mapping[str, Any] | None = field(default=None, repr=False)
     _issuer: object = field(default=None, repr=False)
 
     def __post_init__(self) -> None:
@@ -349,7 +351,6 @@ class NestedCreatorProbeLiveSessionV1:
         self.supervisor_ready_observation = _freeze_json(
             self.supervisor_ready_observation
         )
-
     def __copy__(self) -> NoReturn:
         _fail("nested-creator live session cannot be copied")
 
@@ -358,6 +359,108 @@ class NestedCreatorProbeLiveSessionV1:
 
     def __reduce__(self) -> NoReturn:
         _fail("nested-creator live session cannot be copied or pickled")
+
+
+@dataclass(slots=True)
+class _LiveSessionOwnershipV1:
+    """Single trusted authority for one caller-visible mutable session."""
+
+    session: NestedCreatorProbeLiveSessionV1
+    supervisor_pid: int
+    supervisor_start_ticks: int
+    supervisor_pidfd: int
+    supervisor_pidfd_device: int
+    supervisor_pidfd_inode: int
+    control_fd: int
+    control_socket_device: int
+    control_socket_inode: int
+    control_peer_credentials: tuple[int, int, int]
+    guardian_pid: int
+    guardian_uid: int
+    guardian_gid: int
+    owner_pid: int
+    owner_thread_id: int
+    state: str
+    control_open: bool = True
+    pidfd_open: bool = True
+    active_probe_pid: int = -1
+    active_probe_start_ticks: int = -1
+    probe_command_issued: bool = False
+    control_cgroup_device: int | None = None
+    control_cgroup_inode: int | None = None
+    shutdown_frame: NativeProtocolFrameV1 | None = None
+    finish_facts: Mapping[str, Any] | None = None
+    abort_facts: Mapping[str, Any] | None = None
+
+
+class _LiveSessionRegistryV1:
+    """One-record registry with a narrow legacy observation surface."""
+
+    __slots__ = ("_records",)
+
+    def __init__(self) -> None:
+        self._records: dict[int, _LiveSessionOwnershipV1] = {}
+
+    def __len__(self) -> int:
+        return len(self._records)
+
+    def __bool__(self) -> bool:
+        return bool(self._records)
+
+    def get(
+        self, key: int, default: Any = None
+    ) -> NestedCreatorProbeLiveSessionV1 | Any:
+        record = self._records.get(key)
+        return record.session if record is not None else default
+
+    def values(self) -> tuple[NestedCreatorProbeLiveSessionV1, ...]:
+        return tuple(record.session for record in self._records.values())
+
+    def record(
+        self, session: NestedCreatorProbeLiveSessionV1
+    ) -> _LiveSessionOwnershipV1 | None:
+        record = self._records.get(id(session))
+        return record if record is not None and record.session is session else None
+
+    def register(self, record: _LiveSessionOwnershipV1) -> None:
+        key = id(record.session)
+        if key in self._records:
+            _fail("nested-creator live session identity was reused")
+        self._records[key] = record
+
+    def remove(self, session: NestedCreatorProbeLiveSessionV1) -> None:
+        key = id(session)
+        record = self._records.get(key)
+        if record is None or record.session is not session:
+            _fail("nested-creator live session registry removal changed")
+        del self._records[key]
+
+    def records(self) -> tuple[_LiveSessionOwnershipV1, ...]:
+        return tuple(self._records.values())
+
+    def clear(self) -> None:
+        self._records.clear()
+
+
+_LIVE_SESSIONS = _LiveSessionRegistryV1()
+
+
+def _socket_peer_credentials(descriptor: int) -> tuple[int, int, int]:
+    try:
+        wrapper = socket.socket(fileno=descriptor)
+        try:
+            raw = wrapper.getsockopt(
+                socket.SOL_SOCKET, socket.SO_PEERCRED, UCRED.size
+            )
+        finally:
+            wrapper.detach()
+    except OSError as error:
+        raise ConstructionK7H1NestedCreatorProbeNativeV1Error(
+            "nested-creator control SO_PEERCRED is unavailable"
+        ) from error
+    if type(raw) is not bytes or len(raw) != UCRED.size:
+        _fail("nested-creator control SO_PEERCRED byte count changed")
+    return UCRED.unpack(raw)
 
 
 def _frame_document(frame: NativeProtocolFrameV1) -> dict[str, Any]:
@@ -384,6 +487,20 @@ def _read_start_ticks(pid: int) -> int:
     if len(fields) < 20 or not fields[19].isdigit():
         _fail("nested-creator process start ticks are malformed")
     return int(fields[19])
+
+
+def _read_parent_pid(pid: int) -> int:
+    try:
+        raw = Path(f"/proc/{pid}/stat").read_bytes()
+    except OSError as error:
+        raise ConstructionK7H1NestedCreatorProbeNativeV1Error(
+            "nested-creator process parent stat is unavailable"
+        ) from error
+    close = raw.rfind(b")")
+    fields = raw[close + 2 :].split() if close >= 0 else []
+    if len(fields) < 2 or not fields[1].isdigit():
+        _fail("nested-creator process parent PID is malformed")
+    return int(fields[1])
 
 
 def _direct_child_pids() -> tuple[int, ...]:
@@ -745,32 +862,86 @@ def _require_dead_pidfd(descriptor: int) -> None:
         _fail("nested-creator pidfd did not reach exact death readiness")
 
 
-def _drain_owned_children_after_kill() -> tuple[dict[str, int], ...]:
+def _drain_exact_owned_children_after_kill(
+    expected_pids: tuple[int, ...],
+) -> tuple[dict[str, int], ...]:
+    """Reap only registered children; never let P_ALL consume unrelated work."""
+
     deadline = time.monotonic() + PROTOCOL_TIMEOUT_SECONDS
     facts: list[dict[str, int]] = []
-    while True:
-        try:
-            result = os.waitid(P_ALL, 0, os.WEXITED | os.WNOHANG)
-        except ChildProcessError:
-            break
-        except OSError as error:
-            if error.errno == errno.ECHILD:
-                break
-            raise
-        if result is None:
+    remaining = set(expected_pids)
+    while remaining:
+        progressed = False
+        for child_pid in tuple(sorted(remaining)):
+            try:
+                result = os.waitid(os.P_PID, child_pid, os.WEXITED | os.WNOHANG)
+            except ChildProcessError:
+                result = None
+                if not Path(f"/proc/{child_pid}").exists():
+                    remaining.remove(child_pid)
+                    progressed = True
+            except OSError as error:
+                if error.errno != errno.ECHILD:
+                    raise
+                result = None
+                if not Path(f"/proc/{child_pid}").exists():
+                    remaining.remove(child_pid)
+                    progressed = True
+            if result is not None:
+                facts.append(
+                    {
+                        name: int(getattr(result, name))
+                        for name in (
+                            "si_pid",
+                            "si_uid",
+                            "si_signo",
+                            "si_status",
+                            "si_code",
+                        )
+                    }
+                )
+                remaining.remove(child_pid)
+                progressed = True
+        if remaining and not progressed:
             if time.monotonic() >= deadline:
                 _fail("nested-creator abort children did not become waitable")
             time.sleep(0.005)
-            continue
-        facts.append(
-            {
-                name: int(getattr(result, name))
-                for name in ("si_pid", "si_uid", "si_signo", "si_status", "si_code")
-            }
-        )
     if _direct_child_pids():
         _fail("nested-creator abort left a direct child")
     return tuple(facts)
+
+
+def _block_terminal_signals() -> set[signal.Signals]:
+    blockable = signal.valid_signals() - {signal.SIGKILL, signal.SIGSTOP}
+    return signal.pthread_sigmask(signal.SIG_BLOCK, blockable)
+
+
+def _restore_terminal_signals(previous: set[signal.Signals]) -> None:
+    signal.pthread_sigmask(signal.SIG_SETMASK, previous)
+
+
+def _close_finish_forward(descriptor: int) -> None:
+    try:
+        os.close(descriptor)
+    except OSError as error:
+        if error.errno != errno.EBADF:
+            raise
+
+
+def _stable_control_cgroup_members(directory_fd: int) -> tuple[int, ...]:
+    first = tuple(
+        _parse_pid_lines(
+            _read_control(directory_fd, "cgroup.procs", allow_empty=True)
+        )
+    )
+    second = tuple(
+        _parse_pid_lines(
+            _read_control(directory_fd, "cgroup.procs", allow_empty=True)
+        )
+    )
+    if first != second or len(first) > 2:
+        _fail("nested-creator cleanup cgroup membership was not exclusive")
+    return first
 
 
 def observe_nested_creator_control_population_v1(
@@ -815,6 +986,20 @@ def begin_nested_creator_supervisor_session_v1(
         or os.getpid() == supervisor_pid
     ):
         _fail("nested-creator supervisor session inputs are invalid")
+    try:
+        initial_control_status = os.fstat(control_fd)
+        initial_control_flags = fcntl.fcntl(control_fd, fcntl.F_GETFD)
+        initial_pidfd_flags = fcntl.fcntl(supervisor_pidfd, fcntl.F_GETFD)
+    except OSError as error:
+        raise ConstructionK7H1NestedCreatorProbeNativeV1Error(
+            "nested-creator supervisor session descriptors are unavailable"
+        ) from error
+    if (
+        not stat.S_ISSOCK(initial_control_status.st_mode)
+        or initial_control_flags & fcntl.FD_CLOEXEC == 0
+        or initial_pidfd_flags & fcntl.FD_CLOEXEC == 0
+    ):
+        _fail("nested-creator supervisor session descriptor contract changed")
     _set_passcred(control_fd, True)
     expected_credentials = (supervisor_pid, os.getuid(), os.getgid())
     ready_observations: list[dict[str, Any]] = []
@@ -839,6 +1024,9 @@ def begin_nested_creator_supervisor_session_v1(
     _require_live_pidfd(supervisor_pidfd)
     if _direct_child_pids() != (supervisor_pid,):
         _fail("nested-creator supervisor was not the sole direct child")
+    control_status = os.fstat(control_fd)
+    pidfd_status = os.fstat(supervisor_pidfd)
+    control_peer_credentials = _socket_peer_credentials(control_fd)
     session = NestedCreatorProbeLiveSessionV1(
         supervisor_pid=supervisor_pid,
         supervisor_start_ticks=start_ticks,
@@ -853,28 +1041,229 @@ def begin_nested_creator_supervisor_session_v1(
         supervisor_ready_observation=_freeze_json(ready_observations[0]),
         _issuer=_SESSION_ISSUER,
     )
+    record = _LiveSessionOwnershipV1(
+        session=session,
+        supervisor_pid=supervisor_pid,
+        supervisor_start_ticks=start_ticks,
+        supervisor_pidfd=supervisor_pidfd,
+        supervisor_pidfd_device=pidfd_status.st_dev,
+        supervisor_pidfd_inode=pidfd_status.st_ino,
+        control_fd=control_fd,
+        control_socket_device=control_status.st_dev,
+        control_socket_inode=control_status.st_ino,
+        control_peer_credentials=control_peer_credentials,
+        guardian_pid=os.getpid(),
+        guardian_uid=os.getuid(),
+        guardian_gid=os.getgid(),
+        owner_pid=os.getpid(),
+        owner_thread_id=threading.get_ident(),
+        state="SUPERVISOR_READY",
+    )
     with _SESSION_LOCK:
-        if id(session) in _LIVE_SESSIONS:
-            _fail("nested-creator live session identity was reused")
-        _LIVE_SESSIONS[id(session)] = session
+        _LIVE_SESSIONS.register(record)
+        try:
+            _test_fault("AFTER_SESSION_RECORD_REGISTER")
+        except BaseException:
+            _LIVE_SESSIONS.remove(session)
+            raise
     return session
 
 
 def _require_session(
     session: NestedCreatorProbeLiveSessionV1, *, allowed_states: set[str]
-) -> None:
+) -> _LiveSessionOwnershipV1:
+    with _SESSION_LOCK:
+        record = _LIVE_SESSIONS.record(session)
     if (
         type(session) is not NestedCreatorProbeLiveSessionV1
         or session._issuer is not _SESSION_ISSUER
-        or session.owner_pid != os.getpid()
-        or session.owner_thread_id != threading.get_ident()
-        or session.state not in allowed_states
-        or _LIVE_SESSIONS.get(id(session)) is not session
-        or _pidfd_fact(session.supervisor_pidfd)["pid"] != session.supervisor_pid
-        or _read_start_ticks(session.supervisor_pid) != session.supervisor_start_ticks
+        or record is None
+        or record.owner_pid != os.getpid()
+        or record.owner_thread_id != threading.get_ident()
+        or session.owner_pid != record.owner_pid
+        or session.owner_thread_id != record.owner_thread_id
+        or session.guardian_pid != record.guardian_pid
+        or session.guardian_uid != record.guardian_uid
+        or session.guardian_gid != record.guardian_gid
+        or session.supervisor_pid != record.supervisor_pid
+        or session.supervisor_start_ticks != record.supervisor_start_ticks
+        or session.supervisor_pidfd
+        != (record.supervisor_pidfd if record.pidfd_open else -1)
+        or session.control_fd != (record.control_fd if record.control_open else -1)
+        or session.state != record.state
+        or record.state not in allowed_states
+        or session.active_probe_pid != record.active_probe_pid
+        or _pidfd_fact(record.supervisor_pidfd)["pid"] != record.supervisor_pid
+        or _read_start_ticks(record.supervisor_pid)
+        != record.supervisor_start_ticks
     ):
         _fail("nested-creator live session identity or state changed")
-    _require_live_pidfd(session.supervisor_pidfd)
+    try:
+        control_status = os.fstat(record.control_fd)
+        pidfd_status = os.fstat(record.supervisor_pidfd)
+    except OSError as error:
+        raise ConstructionK7H1NestedCreatorProbeNativeV1Error(
+            "nested-creator live session descriptor identity is unavailable"
+        ) from error
+    if (
+        control_status.st_dev != record.control_socket_device
+        or control_status.st_ino != record.control_socket_inode
+        or pidfd_status.st_dev != record.supervisor_pidfd_device
+        or pidfd_status.st_ino != record.supervisor_pidfd_inode
+        or _socket_peer_credentials(record.control_fd)
+        != record.control_peer_credentials
+    ):
+        _fail("nested-creator live session descriptor identity changed")
+    _require_live_pidfd(record.supervisor_pidfd)
+    return record
+
+
+def _require_terminal_session_identity(
+    session: NestedCreatorProbeLiveSessionV1,
+    *,
+    allowed_states: set[str],
+    require_control: bool,
+) -> _LiveSessionOwnershipV1:
+    """Validate frozen authority before any destructive close or wait."""
+
+    with _SESSION_LOCK:
+        record = _LIVE_SESSIONS.record(session)
+    if (
+        type(session) is not NestedCreatorProbeLiveSessionV1
+        or session._issuer is not _SESSION_ISSUER
+        or record is None
+        or record.owner_pid != os.getpid()
+        or record.owner_thread_id != threading.get_ident()
+        or session.owner_pid != record.owner_pid
+        or session.owner_thread_id != record.owner_thread_id
+        or session.guardian_pid != record.guardian_pid
+        or session.guardian_uid != record.guardian_uid
+        or session.guardian_gid != record.guardian_gid
+        or session.supervisor_pid != record.supervisor_pid
+        or session.supervisor_start_ticks != record.supervisor_start_ticks
+        or record.state not in allowed_states
+        or not record.pidfd_open
+        or require_control != record.control_open
+    ):
+        _fail("nested-creator terminal session authority changed")
+    try:
+        pidfd_status = os.fstat(record.supervisor_pidfd)
+        pidfd_flags = fcntl.fcntl(record.supervisor_pidfd, fcntl.F_GETFD)
+    except OSError as error:
+        raise ConstructionK7H1NestedCreatorProbeNativeV1Error(
+            "nested-creator terminal pidfd identity is unavailable"
+        ) from error
+    if (
+        pidfd_status.st_dev != record.supervisor_pidfd_device
+        or pidfd_status.st_ino != record.supervisor_pidfd_inode
+        or pidfd_flags & fcntl.FD_CLOEXEC == 0
+        or _pidfd_fact(record.supervisor_pidfd)["pid"] != record.supervisor_pid
+    ):
+        _fail("nested-creator terminal pidfd identity changed")
+    if require_control:
+        try:
+            control_status = os.fstat(record.control_fd)
+            control_flags = fcntl.fcntl(record.control_fd, fcntl.F_GETFD)
+        except OSError as error:
+            raise ConstructionK7H1NestedCreatorProbeNativeV1Error(
+                "nested-creator terminal control identity is unavailable"
+            ) from error
+        if (
+            control_status.st_dev != record.control_socket_device
+            or control_status.st_ino != record.control_socket_inode
+            or control_flags & fcntl.FD_CLOEXEC == 0
+            or _socket_peer_credentials(record.control_fd)
+            != record.control_peer_credentials
+        ):
+            _fail("nested-creator terminal control identity changed")
+    return record
+
+
+def verify_nested_creator_live_session_v1(
+    session: NestedCreatorProbeLiveSessionV1,
+) -> Mapping[str, Any]:
+    """Recheck one owner-bound live session without changing its state."""
+
+    record = _require_session(
+        session,
+        allowed_states={"SUPERVISOR_READY", "PROBE_REAPED_SUPERVISOR_LIVE"},
+    )
+    if (
+        record.guardian_pid != os.getpid()
+        or record.guardian_uid != os.getuid()
+        or record.guardian_gid != os.getgid()
+        or record.control_fd < 0
+    ):
+        _fail("nested-creator live session guardian identity changed")
+    try:
+        control_status = os.fstat(record.control_fd)
+        control_flags = fcntl.fcntl(record.control_fd, fcntl.F_GETFD)
+        wrapper = socket.socket(fileno=record.control_fd)
+        try:
+            socket_type = wrapper.getsockopt(socket.SOL_SOCKET, socket.SO_TYPE)
+            passcred = wrapper.getsockopt(socket.SOL_SOCKET, socket.SO_PASSCRED)
+            peer_address = wrapper.getpeername()
+        finally:
+            wrapper.detach()
+    except OSError as error:
+        raise ConstructionK7H1NestedCreatorProbeNativeV1Error(
+            "nested-creator live session control channel is unavailable"
+        ) from error
+    peer_credentials = _socket_peer_credentials(record.control_fd)
+    if (
+        not stat.S_ISSOCK(control_status.st_mode)
+        or socket_type != socket.SOCK_SEQPACKET
+        or passcred != 1
+        or control_flags & fcntl.FD_CLOEXEC == 0
+        or control_status.st_dev != record.control_socket_device
+        or control_status.st_ino != record.control_socket_inode
+        or peer_credentials != record.control_peer_credentials
+    ):
+        _fail("nested-creator live session control channel identity changed")
+    if peer_address is None:
+        peer_document: dict[str, Any] = {"kind": "NONE"}
+    elif type(peer_address) is str:
+        peer_document = {"kind": "TEXT", "value": peer_address}
+    elif type(peer_address) is bytes:
+        peer_document = {"kind": "BYTES_HEX", "value": peer_address.hex()}
+    else:
+        _fail("nested-creator live session peer address type changed")
+    pidfd_flags = fcntl.fcntl(record.supervisor_pidfd, fcntl.F_GETFD)
+    pidfd_status = os.fstat(record.supervisor_pidfd)
+    if (
+        pidfd_flags & fcntl.FD_CLOEXEC == 0
+        or pidfd_status.st_dev != record.supervisor_pidfd_device
+        or pidfd_status.st_ino != record.supervisor_pidfd_inode
+    ):
+        _fail("nested-creator live session pidfd identity changed")
+    facts = {
+        "profile_key": PROFILE_KEY,
+        "session_state": record.state,
+        "supervisor_pid": record.supervisor_pid,
+        "supervisor_start_ticks": record.supervisor_start_ticks,
+        "supervisor_pidfd_fact": _pidfd_fact(record.supervisor_pidfd),
+        "supervisor_pidfd_cloexec": bool(pidfd_flags & fcntl.FD_CLOEXEC),
+        "control_socket_fact": {
+            "device": control_status.st_dev,
+            "inode": control_status.st_ino,
+            "socket_type": socket_type,
+            "passcred": passcred,
+            "descriptor_flags": control_flags,
+            "cloexec": bool(control_flags & fcntl.FD_CLOEXEC),
+            "connected_peer_address": peer_document,
+            "peer_credentials": {
+                "pid": peer_credentials[0],
+                "uid": peer_credentials[1],
+                "gid": peer_credentials[2],
+            },
+        },
+        "owner_pid": record.owner_pid,
+        "owner_thread_id": record.owner_thread_id,
+        "active_probe_pid": record.active_probe_pid,
+        "live_session_verified": True,
+        "verification_mutated_session": False,
+    }
+    return _freeze_json(facts)
 
 
 def _run_nested_creator_pidfd_probe_impl_v1(
@@ -885,15 +1274,21 @@ def _run_nested_creator_pidfd_probe_impl_v1(
 ) -> NestedCreatorProbeRawFactsV1:
     """Run one real nested probe and leave the exact supervisor live."""
 
-    _require_session(session, allowed_states={"SUPERVISOR_READY"})
+    record = _require_session(session, allowed_states={"SUPERVISOR_READY"})
     if type(control_cgroup_fd) is not int or control_cgroup_fd < 0:
         _fail("nested-creator CONTROL cgroup descriptor is invalid")
+    cgroup_status = os.fstat(control_cgroup_fd)
     before = _cgroup_snapshot(
         control_cgroup_fd,
         expected_pids=(session.supervisor_pid,),
         sequence=0,
     )
     del before
+    with _SESSION_LOCK:
+        if record.control_cgroup_device is not None:
+            _fail("nested-creator control cgroup lease was already registered")
+        record.control_cgroup_device = cgroup_status.st_dev
+        record.control_cgroup_inode = cgroup_status.st_ino
     parent_gate: socket.socket | None = None
     child_gate: socket.socket | None = None
     release_duplicate = -1
@@ -946,11 +1341,20 @@ def _run_nested_creator_pidfd_probe_impl_v1(
             session.supervisor_pid,
         )
         _send_frame(session.control_fd, command, rights)
+        with _SESSION_LOCK:
+            record.probe_command_issued = True
         for descriptor in (cgroup_grant, pid_creator, release_duplicate):
             os.close(descriptor)
         cgroup_grant = pid_creator = release_duplicate = -1
         child_gate.close()
         child_gate = None
+        if _TEST_FAULT_PHASE == "BEFORE_PARENT_RETURN":
+            fault_deadline = time.monotonic() + PROTOCOL_TIMEOUT_SECONDS
+            while len(_stable_control_cgroup_members(control_cgroup_fd)) < 2:
+                if time.monotonic() >= fault_deadline:
+                    _fail("nested-creator pre-return fault probe did not appear")
+                time.sleep(0.005)
+            _test_fault("BEFORE_PARENT_RETURN")
 
         parent_return, installed = _recv_frame(
             session.control_fd,
@@ -974,6 +1378,10 @@ def _run_nested_creator_pidfd_probe_impl_v1(
         ):
             _fail("nested-creator parent-return frame changed")
         probe_pid = parent_return.pid
+        trusted_probe_start_ticks = _read_start_ticks(probe_pid)
+        with _SESSION_LOCK:
+            record.active_probe_pid = probe_pid
+            record.active_probe_start_ticks = trusted_probe_start_ticks
         session.active_probe_pid = probe_pid
         _test_fault("PROBE_PARENT_RETURN")
         child_withdrawn, rights = _recv_frame(
@@ -1013,6 +1421,8 @@ def _run_nested_creator_pidfd_probe_impl_v1(
             _fail("nested-creator sealed PID cell value changed")
         pidfd_fact = _pidfd_fact(probe_pidfd)
         probe_start_ticks = _read_start_ticks(probe_pid)
+        if probe_start_ticks != trusted_probe_start_ticks:
+            _fail("nested-creator probe start identity changed")
         if pidfd_fact["pid"] != probe_pid:
             _fail("nested-creator probe pidfd identity changed")
         _require_live_pidfd(probe_pidfd)
@@ -1107,10 +1517,48 @@ def _run_nested_creator_pidfd_probe_impl_v1(
             _issuer=_FACTS_ISSUER,
         )
         session.raw_facts = facts
+        with _SESSION_LOCK:
+            record.active_probe_pid = -1
+            record.active_probe_start_ticks = -1
+            record.state = "PROBE_REAPED_SUPERVISOR_LIVE"
         session.active_probe_pid = -1
         session.state = "PROBE_REAPED_SUPERVISOR_LIVE"
         return facts
     except BaseException:
+        if record.active_probe_pid <= 0 and pid_reader >= 0:
+            try:
+                pending_raw = os.pread(pid_reader, role_v1.PID_CELL_BYTES, 0)
+                pending_pid = int.from_bytes(
+                    pending_raw[:4], "little", signed=True
+                )
+                if (
+                    len(pending_raw) != role_v1.PID_CELL_BYTES
+                    or any(pending_raw[4:])
+                ):
+                    pending_pid = -1
+                pending_members = set(
+                    _stable_control_cgroup_members(control_cgroup_fd)
+                )
+                pending_parent = (
+                    _read_parent_pid(pending_pid) if pending_pid > 0 else -1
+                )
+            except (OSError, ConstructionK7H1NestedCreatorProbeNativeV1Error):
+                pending_pid = -1
+                pending_parent = -1
+                pending_members = set()
+            if (
+                pending_pid > 0
+                and pending_pid in pending_members
+                and pending_parent == record.supervisor_pid
+            ):
+                with _SESSION_LOCK:
+                    record.active_probe_pid = pending_pid
+                    record.active_probe_start_ticks = _read_start_ticks(
+                        pending_pid
+                    )
+                session.active_probe_pid = pending_pid
+        with _SESSION_LOCK:
+            record.state = "PROTOCOL_FAILURE_CLEANUP_REQUIRED"
         session.state = "PROTOCOL_FAILURE_CLEANUP_REQUIRED"
         raise
     finally:
@@ -1190,47 +1638,128 @@ def abort_nested_creator_supervisor_session_v1(
         or control_cgroup_fd < 0
     ):
         _fail("nested-creator abort session identity changed")
-    if session.state == "ABORTED_CLOSED":
-        if session.abort_facts is None or _LIVE_SESSIONS.get(id(session)) is session:
+    with _SESSION_LOCK:
+        registered = _LIVE_SESSIONS.record(session)
+    if registered is None and session.state == "ABORTED_CLOSED":
+        if session.abort_facts is None:
             _fail("nested-creator closed abort state changed")
         return _thaw_json(session.abort_facts)
-    if _LIVE_SESSIONS.get(id(session)) is not session or session.state == "CLOSED":
+    if registered is None:
         _fail("nested-creator abort session was not live")
+    record = _require_terminal_session_identity(
+        session,
+        allowed_states={
+            "SUPERVISOR_READY",
+            "PROBE_REAPED_SUPERVISOR_LIVE",
+            "PROTOCOL_FAILURE_CLEANUP_REQUIRED",
+            "SUPERVISOR_RELEASED_TO_EXIT",
+            "ABORT_CONTROL_CLOSED_CLEANUP_REQUIRED",
+        },
+        require_control=registered.control_open,
+    )
+
+    cgroup_status = os.fstat(control_cgroup_fd)
+    if record.control_cgroup_device is not None and (
+        cgroup_status.st_dev != record.control_cgroup_device
+        or cgroup_status.st_ino != record.control_cgroup_inode
+    ):
+        _fail("nested-creator abort control cgroup lease changed")
+    cgroup_members = _stable_control_cgroup_members(control_cgroup_fd)
+    member_set = set(cgroup_members)
+    if (
+        record.control_cgroup_device is None
+        and record.supervisor_pid not in member_set
+    ):
+        _fail("nested-creator abort control cgroup lacked the supervisor")
+    if record.control_cgroup_device is None:
+        record.control_cgroup_device = cgroup_status.st_dev
+        record.control_cgroup_inode = cgroup_status.st_ino
+    unknown_members = member_set - {record.supervisor_pid}
+    if record.active_probe_pid > 0:
+        active_exists = Path(f"/proc/{record.active_probe_pid}").exists()
+        if unknown_members - {record.active_probe_pid} or (
+            active_exists
+            and (
+                record.active_probe_pid not in member_set
+                or _read_start_ticks(record.active_probe_pid)
+                != record.active_probe_start_ticks
+            )
+        ):
+            _fail("nested-creator abort cgroup contains an unregistered process")
+    elif unknown_members:
+        _fail("nested-creator abort cgroup contains an unknown process")
 
     children_before = _direct_child_pids()
-    if session.supervisor_pid not in children_before and session.state not in {
+    trusted_children = {record.supervisor_pid}
+    if record.active_probe_pid > 0:
+        trusted_children.add(record.active_probe_pid)
+    if any(child not in trusted_children for child in children_before):
+        _fail("nested-creator abort found an unrelated direct child")
+    if record.supervisor_pid not in children_before and record.state not in {
         "SUPERVISOR_RELEASED_TO_EXIT",
         "PROTOCOL_FAILURE_CLEANUP_REQUIRED",
+        "ABORT_CONTROL_CLOSED_CLEANUP_REQUIRED",
     }:
         _fail("nested-creator abort lost the direct supervisor")
-    if len(children_before) > 2:
-        _fail("nested-creator abort found an unrelated direct child")
-    if session.control_fd >= 0:
-        os.close(session.control_fd)
-        session.control_fd = -1
+    if record.control_open:
+        pending: BaseException | None = None
+        previous_signals = _block_terminal_signals()
+        try:
+            record.state = "ABORT_CONTROL_CLOSED_CLEANUP_REQUIRED"
+            session.state = record.state
+            _close_finish_forward(record.control_fd)
+            record.control_open = False
+            session.control_fd = -1
+            try:
+                _test_fault("AFTER_INNER_CONTROL_CLOSE")
+            except BaseException as error:
+                pending = error
+        finally:
+            _restore_terminal_signals(previous_signals)
+        if pending is not None:
+            raise pending
     _write_control(control_cgroup_fd, "cgroup.kill", b"1\n")
-    reaped = _drain_owned_children_after_kill()
+    reaped = _drain_exact_owned_children_after_kill(
+        tuple(sorted(trusted_children))
+    )
     empty_one = _wait_for_snapshot(
         control_cgroup_fd, expected_pids=(), sequence=9001
     )
     empty_two = _cgroup_snapshot(
         control_cgroup_fd, expected_pids=(), sequence=9002
     )
-    if session.supervisor_pidfd >= 0:
-        os.close(session.supervisor_pidfd)
-        session.supervisor_pidfd = -1
     facts: dict[str, Any] = {
         "state": "ABORTED_CLOSED",
-        "supervisor_pid": session.supervisor_pid,
-        "active_probe_pid": session.active_probe_pid,
+        "supervisor_pid": record.supervisor_pid,
+        "active_probe_pid": record.active_probe_pid,
         "children_before": list(children_before),
         "reaped": [dict(fact) for fact in reaped],
         "empty_snapshots": [dict(empty_one), dict(empty_two)],
     }
-    session.active_probe_pid = -1
-    session.state = "ABORTED_CLOSED"
-    session.abort_facts = _freeze_json(facts)
-    _LIVE_SESSIONS.pop(id(session), None)
+    pending = None
+    previous_signals = _block_terminal_signals()
+    try:
+        record.abort_facts = _freeze_json(facts)
+        session.abort_facts = record.abort_facts
+        record.active_probe_pid = -1
+        record.active_probe_start_ticks = -1
+        session.active_probe_pid = -1
+        record.state = "ABORTED_CLOSED"
+        session.state = "ABORTED_CLOSED"
+        if record.pidfd_open:
+            _close_finish_forward(record.supervisor_pidfd)
+            record.pidfd_open = False
+            session.supervisor_pidfd = -1
+        try:
+            _test_fault("AFTER_INNER_PIDFD_CLOSE")
+        except BaseException as error:
+            pending = error
+        with _SESSION_LOCK:
+            _LIVE_SESSIONS.remove(session)
+    finally:
+        _restore_terminal_signals(previous_signals)
+    if pending is not None:
+        raise pending
     return _thaw_json(session.abort_facts)
 
 
@@ -1239,34 +1768,68 @@ def shutdown_nested_creator_supervisor_v1(
 ) -> NativeProtocolFrameV1:
     """Release the raw role to exit; the real parent must consume-reap it."""
 
-    _require_session(
-        session, allowed_states={"PROBE_REAPED_SUPERVISOR_LIVE"}
+    with _SESSION_LOCK:
+        registered = _LIVE_SESSIONS.record(session)
+    if registered is None:
+        _fail("nested-creator shutdown ownership record is unavailable")
+    if (
+        registered.state == "SUPERVISOR_RELEASED_TO_EXIT"
+        and registered.shutdown_frame is not None
+    ):
+        _require_terminal_session_identity(
+            session,
+            allowed_states={"SUPERVISOR_RELEASED_TO_EXIT"},
+            require_control=False,
+        )
+        session.state = registered.state
+        session.control_fd = -1
+        session.shutdown_frame = registered.shutdown_frame
+        return registered.shutdown_frame
+    record = _require_terminal_session_identity(
+        session,
+        allowed_states={"PROBE_REAPED_SUPERVISOR_LIVE"},
+        require_control=True,
     )
     nonce = os.getrandom(16) if callable(getattr(os, "getrandom", None)) else os.urandom(16)
     shutdown = NativeProtocolFrameV1(
         role_v1.OPCODES["SUPERVISOR_SHUTDOWN"],
         2,
         nonce,
-        session.supervisor_pid,
+        record.supervisor_pid,
     )
-    _send_frame(session.control_fd, shutdown)
+    _send_frame(record.control_fd, shutdown)
     bye, rights = _recv_frame(
-        session.control_fd,
+        record.control_fd,
         expected_credentials=(
-            session.supervisor_pid,
-            session.guardian_uid,
-            session.guardian_gid,
+            record.supervisor_pid,
+            record.guardian_uid,
+            record.guardian_gid,
         ),
         expected_rights=0,
     )
     expected = NativeProtocolFrameV1(
-        role_v1.OPCODES["SUPERVISOR_BYE"], 2, nonce, session.supervisor_pid
+        role_v1.OPCODES["SUPERVISOR_BYE"], 2, nonce, record.supervisor_pid
     )
     if rights or bye != expected:
         _fail("nested-creator supervisor shutdown echo changed")
-    os.close(session.control_fd)
-    session.control_fd = -1
-    session.state = "SUPERVISOR_RELEASED_TO_EXIT"
+    pending: BaseException | None = None
+    previous_signals = _block_terminal_signals()
+    try:
+        record.shutdown_frame = bye
+        session.shutdown_frame = record.shutdown_frame
+        record.state = "SUPERVISOR_RELEASED_TO_EXIT"
+        session.state = record.state
+        _close_finish_forward(record.control_fd)
+        record.control_open = False
+        session.control_fd = -1
+        try:
+            _test_fault("AFTER_INNER_CONTROL_CLOSE")
+        except BaseException as error:
+            pending = error
+    finally:
+        _restore_terminal_signals(previous_signals)
+    if pending is not None:
+        raise pending
     return bye
 
 
@@ -1276,46 +1839,117 @@ def finish_nested_creator_supervisor_reap_v1(
     """Direct guardian WNOWAIT/consume-reap for the bounded raw fixture."""
 
     if (
-        type(session) is not NestedCreatorProbeLiveSessionV1
-        or session._issuer is not _SESSION_ISSUER
-        or session.owner_pid != os.getpid()
-        or session.owner_thread_id != threading.get_ident()
-        or session.state != "SUPERVISOR_RELEASED_TO_EXIT"
-        or _LIVE_SESSIONS.get(id(session)) is not session
+        type(session) is NestedCreatorProbeLiveSessionV1
+        and session._issuer is _SESSION_ISSUER
+        and session.state == "CLOSED"
+        and session.finish_facts is not None
+        and _LIVE_SESSIONS.get(id(session)) is not session
     ):
-        _fail("nested-creator supervisor reap session changed")
-    _require_dead_pidfd(session.supervisor_pidfd)
-    observed = os.waitid(P_PIDFD, session.supervisor_pidfd, os.WEXITED | os.WNOWAIT)
-    consumed = os.waitid(P_PIDFD, session.supervisor_pidfd, os.WEXITED)
-    fields = ("si_pid", "si_uid", "si_signo", "si_status", "si_code")
-    observed_fact = {name: int(getattr(observed, name)) for name in fields}
-    consumed_fact = {name: int(getattr(consumed, name)) for name in fields}
-    if (
-        observed_fact != consumed_fact
-        or observed_fact["si_pid"] != session.supervisor_pid
-        or observed_fact["si_status"] != 0
-    ):
-        _fail("nested-creator supervisor direct reap status changed")
+        return _thaw_json(session.finish_facts)
+    record = _require_terminal_session_identity(
+        session,
+        allowed_states={"SUPERVISOR_RELEASED_TO_EXIT"},
+        require_control=False,
+    )
+    _require_dead_pidfd(record.supervisor_pidfd)
+    pending: BaseException | None = None
+    previous_signals = _block_terminal_signals()
     try:
-        os.waitid(P_PIDFD, session.supervisor_pidfd, os.WEXITED | os.WNOHANG)
-    except ChildProcessError:
-        third_errno = errno.ECHILD
-    except OSError as error:
-        if error.errno != errno.ECHILD:
-            raise
-        third_errno = error.errno
-    else:
-        _fail("nested-creator supervisor remained waitable after consume")
-    os.close(session.supervisor_pidfd)
-    session.supervisor_pidfd = -1
-    session.state = "CLOSED"
-    _LIVE_SESSIONS.pop(id(session), None)
-    return {
-        "observed_wnowait": observed_fact,
-        "consumed": consumed_fact,
-        "third_wait_errno": third_errno,
-        "supervisor_reaped_exactly_once": True,
-    }
+        observed = os.waitid(
+            P_PIDFD, record.supervisor_pidfd, os.WEXITED | os.WNOWAIT
+        )
+        consumed = os.waitid(P_PIDFD, record.supervisor_pidfd, os.WEXITED)
+        try:
+            _test_fault("AFTER_INNER_PIDFD_CONSUME")
+        except BaseException as error:
+            pending = error
+        fields = ("si_pid", "si_uid", "si_signo", "si_status", "si_code")
+        observed_fact = {name: int(getattr(observed, name)) for name in fields}
+        consumed_fact = {name: int(getattr(consumed, name)) for name in fields}
+        if (
+            observed_fact != consumed_fact
+            or observed_fact["si_pid"] != record.supervisor_pid
+            or observed_fact["si_status"] != 0
+        ):
+            _fail("nested-creator supervisor direct reap status changed")
+        try:
+            os.waitid(P_PIDFD, record.supervisor_pidfd, os.WEXITED | os.WNOHANG)
+        except ChildProcessError:
+            third_errno = errno.ECHILD
+        except OSError as error:
+            if error.errno != errno.ECHILD:
+                raise
+            third_errno = error.errno
+        else:
+            _fail("nested-creator supervisor remained waitable after consume")
+        facts = {
+            "observed_wnowait": observed_fact,
+            "consumed": consumed_fact,
+            "third_wait_errno": third_errno,
+            "supervisor_reaped_exactly_once": True,
+        }
+        record.finish_facts = _freeze_json(facts)
+        session.finish_facts = record.finish_facts
+        record.state = "CLOSED"
+        session.state = record.state
+        _close_finish_forward(record.supervisor_pidfd)
+        record.pidfd_open = False
+        session.supervisor_pidfd = -1
+        try:
+            _test_fault("AFTER_INNER_PIDFD_CLOSE")
+        except BaseException as error:
+            pending = error
+        with _SESSION_LOCK:
+            _LIVE_SESSIONS.remove(session)
+    finally:
+        _restore_terminal_signals(previous_signals)
+    if pending is not None:
+        raise pending
+    return _thaw_json(session.finish_facts)
+
+
+def _live_sessions_atfork_before_v1() -> None:
+    _SESSION_LOCK.acquire()
+
+
+def _live_sessions_atfork_after_parent_v1() -> None:
+    _SESSION_LOCK.release()
+
+
+def _poison_live_sessions_after_fork_child_v1() -> None:
+    """Drop inherited capabilities; ownership and cleanup remain in the parent."""
+
+    try:
+        records = _LIVE_SESSIONS.records()
+        descriptors = {
+            descriptor
+            for record in records
+            for descriptor in (
+                record.control_fd if record.control_open else -1,
+                record.supervisor_pidfd if record.pidfd_open else -1,
+            )
+            if type(descriptor) is int and descriptor >= 0
+        }
+        for descriptor in descriptors:
+            try:
+                os.close(descriptor)
+            except OSError:
+                pass
+        for record in records:
+            record.session.control_fd = -1
+            record.session.supervisor_pidfd = -1
+            record.session.state = "FORK_CHILD_POISONED"
+        _LIVE_SESSIONS.clear()
+    finally:
+        _SESSION_LOCK.release()
+
+
+if hasattr(os, "register_at_fork"):
+    os.register_at_fork(
+        before=_live_sessions_atfork_before_v1,
+        after_in_parent=_live_sessions_atfork_after_parent_v1,
+        after_in_child=_poison_live_sessions_after_fork_child_v1,
+    )
 
 
 __all__ = (
@@ -1335,4 +1969,5 @@ __all__ = (
     "run_nested_creator_pidfd_probe_v1",
     "run_nested_creator_pidfd_probe_observed_v2",
     "shutdown_nested_creator_supervisor_v1",
+    "verify_nested_creator_live_session_v1",
 )

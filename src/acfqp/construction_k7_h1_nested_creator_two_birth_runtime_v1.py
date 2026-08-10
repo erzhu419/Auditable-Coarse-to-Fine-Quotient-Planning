@@ -3,9 +3,10 @@
 This construction runtime composes the clone3/release/execveat native edge
 with the source-closed supervisor role and its real nested-creator probe
 protocol.  It observes the target SUPERVISOR -> PIDFD_PROBE creator chain in a
-caller-provided CONTROL cgroup and closes both parent/reap chains.  It emits
-only issuer-local raw facts: without the E5A/B2-A/B2-B exclusive lease and a
-durable artifact graph, exact/exclusive two-birth authority remains absent.
+caller-provided CONTROL cgroup and can stop with the SUPERVISOR live; the
+historical compatibility runner closes both parent/reap chains.  It emits only
+issuer-local raw facts: without the E5A/B2-A/B2-B exclusive lease and a durable
+artifact graph, exact/exclusive two-birth authority remains absent.
 """
 
 from __future__ import annotations
@@ -28,6 +29,7 @@ import threading
 import time
 from types import MappingProxyType
 from typing import Any, Mapping, NoReturn
+import weakref
 
 from acfqp import construction_k7_h1_nested_creator_probe_native_v1 as probe_v1
 from acfqp import construction_k7_h1_nested_creator_supervisor_exec_birth_native_v1 as exec_v1
@@ -42,6 +44,7 @@ READINESS = "ACTUAL_TWO_BIRTH_RAW_RUNTIME_ONLY"
 ACTUAL_GATED_SUPERVISOR_EXEC_BIRTH_IMPLEMENTATION_PRESENT = True
 ACTUAL_NESTED_PIDFD_PROBE_BIRTH_IMPLEMENTATION_PRESENT = True
 TARGET_TWO_BIRTH_CREATOR_CHAIN_IMPLEMENTATION_PRESENT = True
+OWNER_BOUND_LIVE_PREFIX_IMPLEMENTATION_PRESENT = True
 EXACT_TWO_BIRTH_OS_TOPOLOGY_OBSERVED = False
 EXACT_CREATOR_REAP_OWNERSHIP_OBSERVED = True
 
@@ -83,7 +86,16 @@ PR_SET_CHILD_SUBREAPER = 36
 PR_GET_CHILD_SUBREAPER = 37
 
 _RESULT_ISSUER = object()
+_PREFIX_ISSUER = object()
 _RUNTIME_LOCK = threading.RLock()
+_PREFIX_REGISTRY_LOCK = threading.RLock()
+_LIVE_PREFIXES: dict[int, "_LivePrefixOwnershipV1"] = {}
+_TERMINAL_PREFIXES: weakref.WeakKeyDictionary[
+    "BoundedNestedCreatorTwoBirthLivePrefixV1", "_TerminalPrefixTombstoneV1"
+] = weakref.WeakKeyDictionary()
+_BEGIN_FAILURE_QUARANTINE: "_BeginFailureQuarantineV1 | None" = None
+_LAST_BEGIN_FAILURE_RECOVERY: Any = None
+_BEGIN_FORK_GUARD: Mapping[str, Any] | None = None
 _LIBC = ctypes.CDLL(None, use_errno=True)
 _TEST_FAULT_PHASE: str | None = None
 
@@ -217,6 +229,260 @@ class BoundedNestedCreatorTwoBirthRawResultV1:
         }
 
 
+class BoundedNestedCreatorTwoBirthLivePrefixV1:
+    """Unserializable owner-bound cut after creator-reaping PIDFD_PROBE.
+
+    This is a process-local capability, not a portable artifact.  It retains
+    the exact live SUPERVISOR session and an owned CONTROL cgroup descriptor so
+    a later construction slice can continue with BROKER rather than first
+    closing the topology.
+    """
+
+    __slots__ = (
+        "__weakref__",
+        "_supervisor_pid",
+        "_supervisor_start_ticks",
+        "_probe_pid",
+        "_probe_start_ticks",
+        "_outer_pid_cell_value",
+        "_outer_parent_edge",
+        "_outer_nonce",
+        "_outer_gate_facts",
+        "_outer_pidfd_fact",
+        "_outer_seal_set",
+        "_outer_role_source_fact",
+        "_outer_live_snapshots",
+        "_probe_facts",
+        "_probe_observed_facts_v2",
+        "_nested_session",
+        "_control_cgroup_fd",
+        "_control_cgroup_device",
+        "_control_cgroup_inode",
+        "_owner_pid",
+        "_owner_process_start_ticks",
+        "_owner_thread",
+        "_owner_thread_id",
+        "_owner_native_thread_id",
+        "_old_subreaper",
+        "_subreaper_was_promoted",
+        "_state",
+        "_closed_result",
+        "_abort_facts",
+        "_issuer",
+    )
+
+    def __init__(
+        self,
+        *,
+        supervisor_pid: int,
+        supervisor_start_ticks: int,
+        probe_pid: int,
+        probe_start_ticks: int,
+        outer_pid_cell_value: int,
+        outer_parent_edge: Mapping[str, Any],
+        outer_nonce: bytes,
+        outer_gate_facts: tuple[Mapping[str, Any], ...],
+        outer_pidfd_fact: Mapping[str, Any],
+        outer_seal_set: int,
+        outer_role_source_fact: Mapping[str, Any],
+        outer_live_snapshots: tuple[Mapping[str, Any], ...],
+        probe_facts: probe_v1.NestedCreatorProbeRawFactsV1,
+        probe_observed_facts_v2: probe_v1.NestedCreatorProbeObservedFactsV2,
+        nested_session: probe_v1.NestedCreatorProbeLiveSessionV1,
+        control_cgroup_fd: int,
+        old_subreaper: bool,
+        issuer: object,
+    ) -> None:
+        if issuer is not _PREFIX_ISSUER:
+            _fail("two-birth live prefix is caller-minted")
+        control_status = os.fstat(control_cgroup_fd)
+        self._supervisor_pid = supervisor_pid
+        self._supervisor_start_ticks = supervisor_start_ticks
+        self._probe_pid = probe_pid
+        self._probe_start_ticks = probe_start_ticks
+        self._outer_pid_cell_value = outer_pid_cell_value
+        self._outer_parent_edge = _freeze_json(dict(outer_parent_edge))
+        self._outer_nonce = bytes(outer_nonce)
+        self._outer_gate_facts = _freeze_json(outer_gate_facts)
+        self._outer_pidfd_fact = _freeze_json(dict(outer_pidfd_fact))
+        self._outer_seal_set = outer_seal_set
+        self._outer_role_source_fact = _freeze_json(
+            dict(outer_role_source_fact)
+        )
+        self._outer_live_snapshots = _freeze_json(outer_live_snapshots)
+        self._probe_facts = probe_facts
+        self._probe_observed_facts_v2 = probe_observed_facts_v2
+        self._nested_session = nested_session
+        self._control_cgroup_fd = control_cgroup_fd
+        self._control_cgroup_device = control_status.st_dev
+        self._control_cgroup_inode = control_status.st_ino
+        self._owner_pid = os.getpid()
+        self._owner_process_start_ticks = _read_start_ticks(os.getpid())
+        self._owner_thread = threading.current_thread()
+        self._owner_thread_id = threading.get_ident()
+        self._owner_native_thread_id = threading.get_native_id()
+        self._old_subreaper = old_subreaper
+        self._subreaper_was_promoted = not old_subreaper
+        self._state = "PROBE_REAPED_SUPERVISOR_LIVE"
+        self._closed_result: BoundedNestedCreatorTwoBirthRawResultV1 | None = None
+        self._abort_facts: Any = None
+        self._issuer = issuer
+
+    @property
+    def supervisor_pid(self) -> int:
+        record = _LIVE_PREFIXES.get(id(self))
+        if record is not None and record.handle is self:
+            return record.supervisor_pid
+        tombstone = _TERMINAL_PREFIXES.get(self)
+        if tombstone is not None:
+            return tombstone.supervisor_pid
+        return self._supervisor_pid
+
+    @property
+    def supervisor_start_ticks(self) -> int:
+        record = _LIVE_PREFIXES.get(id(self))
+        if record is not None and record.handle is self:
+            return record.supervisor_start_ticks
+        tombstone = _TERMINAL_PREFIXES.get(self)
+        if tombstone is not None:
+            return tombstone.supervisor_start_ticks
+        return self._supervisor_start_ticks
+
+    @property
+    def probe_pid(self) -> int:
+        record = _LIVE_PREFIXES.get(id(self))
+        if record is not None and record.handle is self:
+            return record.probe_pid
+        tombstone = _TERMINAL_PREFIXES.get(self)
+        if tombstone is not None:
+            return tombstone.probe_pid
+        return self._probe_pid
+
+    @property
+    def probe_start_ticks(self) -> int:
+        record = _LIVE_PREFIXES.get(id(self))
+        if record is not None and record.handle is self:
+            return record.probe_start_ticks
+        tombstone = _TERMINAL_PREFIXES.get(self)
+        if tombstone is not None:
+            return tombstone.probe_start_ticks
+        return self._probe_start_ticks
+
+    @property
+    def state(self) -> str:
+        record = _LIVE_PREFIXES.get(id(self))
+        if record is not None and record.handle is self:
+            return record.state
+        tombstone = _TERMINAL_PREFIXES.get(self)
+        if tombstone is not None:
+            return tombstone.state
+        return self._state
+
+    @property
+    def probe_facts(self) -> probe_v1.NestedCreatorProbeRawFactsV1:
+        record = _LIVE_PREFIXES.get(id(self))
+        if record is not None and record.handle is self:
+            return record.probe_facts
+        tombstone = _TERMINAL_PREFIXES.get(self)
+        if tombstone is not None:
+            return tombstone.probe_facts
+        return self._probe_facts
+
+    @property
+    def probe_observed_facts_v2(
+        self,
+    ) -> probe_v1.NestedCreatorProbeObservedFactsV2:
+        record = _LIVE_PREFIXES.get(id(self))
+        if record is not None and record.handle is self:
+            return record.probe_observed_facts_v2
+        tombstone = _TERMINAL_PREFIXES.get(self)
+        if tombstone is not None:
+            return tombstone.probe_observed_facts_v2
+        return self._probe_observed_facts_v2
+
+    def __copy__(self) -> NoReturn:
+        _fail("two-birth live prefix cannot be copied")
+
+    def __deepcopy__(self, _memo: object) -> NoReturn:
+        _fail("two-birth live prefix cannot be copied")
+
+    def __reduce__(self) -> NoReturn:
+        _fail("two-birth live prefix cannot be copied or pickled")
+
+
+@dataclass(slots=True)
+class _LivePrefixOwnershipV1:
+    """Trusted mutable ownership kept outside the caller-visible handle."""
+
+    handle: BoundedNestedCreatorTwoBirthLivePrefixV1
+    supervisor_pid: int
+    supervisor_start_ticks: int
+    probe_pid: int
+    probe_start_ticks: int
+    outer_pid_cell_value: int
+    outer_parent_edge: Mapping[str, Any]
+    outer_nonce: bytes
+    outer_gate_facts: tuple[Mapping[str, Any], ...]
+    outer_pidfd_fact: Mapping[str, Any]
+    outer_seal_set: int
+    outer_role_source_fact: Mapping[str, Any]
+    outer_live_snapshots: tuple[Mapping[str, Any], ...]
+    probe_facts: probe_v1.NestedCreatorProbeRawFactsV1
+    probe_observed_facts_v2: probe_v1.NestedCreatorProbeObservedFactsV2
+    nested_session: probe_v1.NestedCreatorProbeLiveSessionV1
+    control_cgroup_fd: int
+    control_cgroup_device: int
+    control_cgroup_inode: int
+    owner_pid: int
+    owner_process_start_ticks: int
+    owner_thread: threading.Thread
+    owner_thread_id: int
+    owner_native_thread_id: int
+    old_subreaper: bool
+    subreaper_was_promoted: bool
+    state: str = "PROBE_REAPED_SUPERVISOR_LIVE"
+    hidden_begin_failure: bool = False
+    terminal_prevalidated: bool = False
+    closed_result: BoundedNestedCreatorTwoBirthRawResultV1 | None = None
+    abort_facts: Any = None
+
+
+@dataclass(frozen=True, slots=True)
+class _TerminalPrefixTombstoneV1:
+    state: str
+    supervisor_pid: int
+    supervisor_start_ticks: int
+    probe_pid: int
+    probe_start_ticks: int
+    probe_facts: probe_v1.NestedCreatorProbeRawFactsV1
+    probe_observed_facts_v2: probe_v1.NestedCreatorProbeObservedFactsV2
+    owner_pid: int
+    owner_process_start_ticks: int
+    owner_thread: threading.Thread
+    owner_thread_id: int
+    owner_native_thread_id: int
+    closed_result: BoundedNestedCreatorTwoBirthRawResultV1 | None
+    abort_facts: Any
+
+
+@dataclass(slots=True)
+class _BeginFailureQuarantineV1:
+    control_cgroup_fd: int
+    control_cgroup_device: int
+    control_cgroup_inode: int
+    live_session: probe_v1.NestedCreatorProbeLiveSessionV1 | None
+    owner_pid: int
+    owner_process_start_ticks: int
+    owner_thread: threading.Thread
+    owner_thread_id: int
+    owner_native_thread_id: int
+    old_subreaper: bool
+    allowed_direct_child_pids: tuple[int, ...]
+    state: str = "BEGIN_CLEANUP_FAILED_QUARANTINED"
+    cleanup_complete: bool = False
+    cleanup_result: Any = None
+
+
 def _fd_at_least(descriptor: int, minimum: int) -> int:
     if descriptor >= minimum:
         return descriptor
@@ -285,6 +551,20 @@ def _single_thread_guardian() -> None:
             raise ConstructionK7H1NestedCreatorTwoBirthRuntimeV1Error(
                 "two-birth raw runtime requires standard descriptors"
             ) from error
+
+
+def _open_fd_numbers() -> frozenset[int]:
+    descriptors: set[int] = set()
+    for name in os.listdir("/proc/self/fd"):
+        if not name.isdigit():
+            continue
+        descriptor = int(name)
+        try:
+            os.fstat(descriptor)
+        except OSError:
+            continue
+        descriptors.add(descriptor)
+    return frozenset(descriptors)
 
 
 def _new_seqpacket_pair() -> tuple[int, int]:
@@ -493,11 +773,18 @@ def _abort_control_population(control_cgroup_fd: int) -> dict[str, Any]:
     }
 
 
-def run_bounded_nested_creator_two_birth_runtime_v1(
+def begin_bounded_nested_creator_two_birth_live_prefix_v1(
     *,
     control_cgroup_fd: int,
-) -> BoundedNestedCreatorTwoBirthRawResultV1:
-    """Observe SUPERVISOR then PIDFD_PROBE and close both target births."""
+) -> BoundedNestedCreatorTwoBirthLivePrefixV1:
+    """Stop after creator-reaping PIDFD_PROBE in caller-exclusive CONTROL.
+
+    This raw API verifies two empty entry snapshots but does not mint the
+    upstream exclusive lease; callers must own the supplied CONTROL cgroup.
+    """
+
+    global _BEGIN_FAILURE_QUARANTINE, _LAST_BEGIN_FAILURE_RECOVERY
+    global _BEGIN_FORK_GUARD
 
     exec_v1.verify_nested_creator_supervisor_exec_birth_native_image_v1()
     role_v1.verify_nested_creator_supervisor_native_image_v1()
@@ -515,11 +802,46 @@ def run_bounded_nested_creator_two_birth_runtime_v1(
     creator_mapping = guardian_mapping = 0
     supervisor_pidfd = -1
     supervisor_pid = -1
+    owned_control_cgroup_fd = -1
+    recovery_control_cgroup_fd = -1
     live_session: probe_v1.NestedCreatorProbeLiveSessionV1 | None = None
-    old_subreaper = _get_subreaper()
+    old_subreaper: bool | None = None
     original_mask: set[signal.Signals] | None = None
+    birth_may_have_occurred = False
+    begin_cleanup_complete = False
+    live_prefix_committed = False
+    registered_record: _LivePrefixOwnershipV1 | None = None
     try:
+        all_signals = set(signal.valid_signals()) - {
+            signal.SIGKILL,
+            signal.SIGSTOP,
+        }
+        original_mask = signal.pthread_sigmask(signal.SIG_BLOCK, all_signals)
+        old_subreaper = _get_subreaper()
         with _RUNTIME_LOCK:
+            with _PREFIX_REGISTRY_LOCK:
+                if _LIVE_PREFIXES or _BEGIN_FAILURE_QUARANTINE is not None:
+                    _fail("two-birth runtime already owns one live prefix")
+                _LAST_BEGIN_FAILURE_RECOVERY = None
+                baseline_fds = _open_fd_numbers()
+                _BEGIN_FORK_GUARD = _freeze_json(
+                    {
+                        "owner_pid": os.getpid(),
+                        "owner_thread_id": threading.get_ident(),
+                        "allowed_child_fds": tuple(
+                            sorted(baseline_fds - {control_cgroup_fd})
+                        ),
+                    }
+                )
+            probe_v1.observe_nested_creator_control_population_v1(
+                control_cgroup_fd, expected_pids=(), sequence=7000
+            )
+            probe_v1.observe_nested_creator_control_population_v1(
+                control_cgroup_fd, expected_pids=(), sequence=7001
+            )
+            recovery_control_cgroup_fd = fcntl.fcntl(
+                control_cgroup_fd, fcntl.F_DUPFD_CLOEXEC, 5
+            )
             if not old_subreaper:
                 _set_subreaper(True)
             parent_gate_fd, child_gate_fd = _new_seqpacket_pair()
@@ -612,8 +934,7 @@ def run_bounded_nested_creator_two_birth_runtime_v1(
                 supervisor_argv=ctypes.addressof(argv),
                 supervisor_envp=ctypes.addressof(envp),
             )
-            all_signals = set(signal.valid_signals()) - {signal.SIGKILL, signal.SIGSTOP}
-            original_mask = signal.pthread_sigmask(signal.SIG_BLOCK, all_signals)
+            native_return = -1
             try:
                 native_return = int(
                     exec_v1.load_nested_creator_supervisor_exec_birth_entry_v1()(
@@ -621,6 +942,13 @@ def run_bounded_nested_creator_two_birth_runtime_v1(
                     )
                 )
             finally:
+                # clone3 ownership must be captured before any other fallible
+                # Python cleanup.
+                if int(parent_edge.clone_result) > 0:
+                    birth_may_have_occurred = True
+                    supervisor_pid = int(parent_edge.clone_result)
+                    if int(pidfd_cell.value) >= 0:
+                        supervisor_pidfd = int(pidfd_cell.value)
                 try:
                     os.close(child_gate_fd)
                 except OSError:
@@ -728,20 +1056,16 @@ def run_bounded_nested_creator_two_birth_runtime_v1(
             parent_gate_fd = -1
             if live_session.supervisor_start_ticks != supervisor_start:
                 _fail("two-birth supervisor start identity changed across exec")
-            probe_facts = probe_v1.run_nested_creator_pidfd_probe_v1(
-                live_session, control_cgroup_fd=control_cgroup_fd
+            probe_observed_facts_v2 = (
+                probe_v1.run_nested_creator_pidfd_probe_observed_v2(
+                    live_session, control_cgroup_fd=control_cgroup_fd
+                )
             )
-            probe_v1.shutdown_nested_creator_supervisor_v1(live_session)
-            supervisor_reap = probe_v1.finish_nested_creator_supervisor_reap_v1(
-                live_session
+            probe_facts = probe_observed_facts_v2.raw_facts_v1
+            owned_control_cgroup_fd = fcntl.fcntl(
+                control_cgroup_fd, fcntl.F_DUPFD_CLOEXEC, 5
             )
-            live_session = None
-            supervisor_pid = -1
-            final_one = _wait_empty(control_cgroup_fd, 5)
-            final_two = probe_v1.observe_nested_creator_control_population_v1(
-                control_cgroup_fd, expected_pids=(), sequence=6
-            )
-            result = BoundedNestedCreatorTwoBirthRawResultV1(
+            handle = BoundedNestedCreatorTwoBirthLivePrefixV1(
                 supervisor_pid=probe_facts.supervisor_pid,
                 supervisor_start_ticks=probe_facts.supervisor_start_ticks,
                 probe_pid=probe_facts.probe_pid,
@@ -764,56 +1088,702 @@ def run_bounded_nested_creator_two_birth_runtime_v1(
                 outer_role_source_fact=outer_role_source_fact,
                 outer_live_snapshots=(outer_live_one, outer_live_two),
                 probe_facts=probe_facts,
-                supervisor_reap=supervisor_reap,
-                final_empty_snapshots=(final_one, final_two),
-                _issuer=_RESULT_ISSUER,
+                probe_observed_facts_v2=probe_observed_facts_v2,
+                nested_session=live_session,
+                control_cgroup_fd=owned_control_cgroup_fd,
+                old_subreaper=old_subreaper,
+                issuer=_PREFIX_ISSUER,
             )
-            if result.to_document()["maximum_observed_control_population"] != 2:
-                _fail("two-birth result population join changed")
-            return result
-    except BaseException:
-        if live_session is not None:
-            probe_v1.abort_nested_creator_supervisor_session_v1(
-                live_session, control_cgroup_fd=control_cgroup_fd
+            record = _LivePrefixOwnershipV1(
+                handle=handle,
+                supervisor_pid=handle._supervisor_pid,
+                supervisor_start_ticks=handle._supervisor_start_ticks,
+                probe_pid=handle._probe_pid,
+                probe_start_ticks=handle._probe_start_ticks,
+                outer_pid_cell_value=handle._outer_pid_cell_value,
+                outer_parent_edge=handle._outer_parent_edge,
+                outer_nonce=handle._outer_nonce,
+                outer_gate_facts=handle._outer_gate_facts,
+                outer_pidfd_fact=handle._outer_pidfd_fact,
+                outer_seal_set=handle._outer_seal_set,
+                outer_role_source_fact=handle._outer_role_source_fact,
+                outer_live_snapshots=handle._outer_live_snapshots,
+                probe_facts=handle._probe_facts,
+                probe_observed_facts_v2=handle._probe_observed_facts_v2,
+                nested_session=handle._nested_session,
+                control_cgroup_fd=handle._control_cgroup_fd,
+                control_cgroup_device=handle._control_cgroup_device,
+                control_cgroup_inode=handle._control_cgroup_inode,
+                owner_pid=handle._owner_pid,
+                owner_process_start_ticks=handle._owner_process_start_ticks,
+                owner_thread=handle._owner_thread,
+                owner_thread_id=handle._owner_thread_id,
+                owner_native_thread_id=handle._owner_native_thread_id,
+                old_subreaper=handle._old_subreaper,
+                subreaper_was_promoted=handle._subreaper_was_promoted,
             )
+            with _PREFIX_REGISTRY_LOCK:
+                if _LIVE_PREFIXES:
+                    _fail("two-birth live prefix registry changed")
+                _LIVE_PREFIXES[id(handle)] = record
+                registered_record = record
+            _test_fault("AFTER_PREFIX_REGISTER")
             live_session = None
-        else:
-            _abort_control_population(control_cgroup_fd)
+            owned_control_cgroup_fd = -1
+            live_prefix_committed = True
+            return handle
+    except BaseException as original_error:
+        try:
+            if registered_record is not None:
+                _abort_live_prefix_under_lock(registered_record.handle)
+                registered_record = None
+                live_session = None
+                owned_control_cgroup_fd = -1
+            elif live_session is not None:
+                probe_v1.abort_nested_creator_supervisor_session_v1(
+                    live_session, control_cgroup_fd=control_cgroup_fd
+                )
+                live_session = None
+            elif birth_may_have_occurred:
+                _abort_control_population(control_cgroup_fd)
+        except BaseException as cleanup_error:
+            if registered_record is not None:
+                registered_record.hidden_begin_failure = True
+                registered_record.state = "BEGIN_COMMIT_ABORT_FAILED_QUARANTINED"
+                registered_record.handle._state = registered_record.state
+                live_session = None
+                owned_control_cgroup_fd = -1
+                live_prefix_committed = True
+            else:
+                recovery_status = os.fstat(recovery_control_cgroup_fd)
+                with _PREFIX_REGISTRY_LOCK:
+                    if _BEGIN_FAILURE_QUARANTINE is not None:
+                        _fail("two-birth begin quarantine identity changed")
+                    _BEGIN_FAILURE_QUARANTINE = _BeginFailureQuarantineV1(
+                        control_cgroup_fd=recovery_control_cgroup_fd,
+                        control_cgroup_device=recovery_status.st_dev,
+                        control_cgroup_inode=recovery_status.st_ino,
+                        live_session=live_session,
+                        owner_pid=os.getpid(),
+                        owner_process_start_ticks=_read_start_ticks(os.getpid()),
+                        owner_thread=threading.current_thread(),
+                        owner_thread_id=threading.get_ident(),
+                        owner_native_thread_id=threading.get_native_id(),
+                        old_subreaper=bool(old_subreaper),
+                        allowed_direct_child_pids=tuple(
+                            sorted(
+                                {
+                                    pid
+                                    for pid in (
+                                        getattr(
+                                            live_session,
+                                            "supervisor_pid",
+                                            supervisor_pid,
+                                        ),
+                                        getattr(
+                                            live_session,
+                                            "active_probe_pid",
+                                            -1,
+                                        ),
+                                    )
+                                    if type(pid) is int and pid > 0
+                                }
+                            )
+                        ),
+                    )
+                recovery_control_cgroup_fd = -1
+                live_session = None
+                live_prefix_committed = True
+            raise cleanup_error from original_error
+        begin_cleanup_complete = True
         raise
     finally:
-        if original_mask is not None:
-            signal.pthread_sigmask(signal.SIG_SETMASK, original_mask)
-        if creator_mapping:
-            _LIBC.munmap(ctypes.c_void_p(creator_mapping), PID_CELL_BYTES)
-        if guardian_mapping:
-            _LIBC.munmap(ctypes.c_void_p(guardian_mapping), PID_CELL_BYTES)
-        for descriptor in (
-            supervisor_pidfd,
-            parent_gate_fd,
-            child_gate_fd,
-            pid_creator_fd,
-            pid_reader_fd,
-            pid_cell_fd,
-            creator_cgroup_fd,
-            child_role_fd,
-            role_witness_fd,
-            role_fd,
-        ):
-            if descriptor >= 0:
+        try:
+            if creator_mapping:
+                _LIBC.munmap(ctypes.c_void_p(creator_mapping), PID_CELL_BYTES)
+            if guardian_mapping:
+                _LIBC.munmap(ctypes.c_void_p(guardian_mapping), PID_CELL_BYTES)
+            for descriptor in (
+                supervisor_pidfd,
+                parent_gate_fd,
+                child_gate_fd,
+                pid_creator_fd,
+                pid_reader_fd,
+                pid_cell_fd,
+                creator_cgroup_fd,
+                child_role_fd,
+                role_witness_fd,
+                role_fd,
+                owned_control_cgroup_fd,
+                recovery_control_cgroup_fd,
+            ):
+                if descriptor >= 0:
+                    try:
+                        os.close(descriptor)
+                    except OSError:
+                        pass
+            if not live_prefix_committed and begin_cleanup_complete:
+                if old_subreaper is False:
+                    _set_subreaper(False)
+        finally:
+            _BEGIN_FORK_GUARD = None
+            if original_mask is not None:
                 try:
-                    os.close(descriptor)
-                except OSError:
-                    pass
-        if not old_subreaper:
+                    signal.pthread_sigmask(signal.SIG_SETMASK, original_mask)
+                except BaseException:
+                    if registered_record is not None:
+                        registered_record.hidden_begin_failure = True
+                        registered_record.state = (
+                            "BEGIN_RETURN_SIGNAL_FAILED_QUARANTINED"
+                        )
+                        registered_record.handle._state = registered_record.state
+                    raise
+
+
+def _direct_child_pids() -> tuple[int, ...]:
+    raw = Path(
+        f"/proc/self/task/{threading.get_native_id()}/children"
+    ).read_text(encoding="ascii").strip()
+    if not raw:
+        return ()
+    return tuple(sorted(int(value) for value in raw.split()))
+
+
+def _require_single_cleanup_thread() -> None:
+    task_ids = sorted(
+        int(name) for name in os.listdir("/proc/self/task") if name.isdigit()
+    )
+    if task_ids != [threading.get_native_id()] or threading.active_count() != 1:
+        _fail("two-birth cleanup requires one exact owner thread")
+
+
+def _require_prefix_owner(
+    handle: BoundedNestedCreatorTwoBirthLivePrefixV1,
+) -> _LivePrefixOwnershipV1 | None:
+    with _PREFIX_REGISTRY_LOCK:
+        record = _LIVE_PREFIXES.get(id(handle))
+        tombstone = _TERMINAL_PREFIXES.get(handle)
+    if record is not None and record.handle is not handle:
+        record = None
+    if record is not None and record.handle is handle:
+        owner_pid = record.owner_pid
+        owner_process_start_ticks = record.owner_process_start_ticks
+        owner_thread = record.owner_thread
+        owner_thread_id = record.owner_thread_id
+        owner_native_thread_id = record.owner_native_thread_id
+    elif tombstone is not None:
+        owner_pid = tombstone.owner_pid
+        owner_process_start_ticks = tombstone.owner_process_start_ticks
+        owner_thread = tombstone.owner_thread
+        owner_thread_id = tombstone.owner_thread_id
+        owner_native_thread_id = tombstone.owner_native_thread_id
+    else:
+        owner_pid = getattr(handle, "_owner_pid", -1)
+        owner_process_start_ticks = getattr(
+            handle, "_owner_process_start_ticks", -1
+        )
+        owner_thread = getattr(handle, "_owner_thread", None)
+        owner_thread_id = getattr(handle, "_owner_thread_id", -1)
+        owner_native_thread_id = getattr(
+            handle, "_owner_native_thread_id", -1
+        )
+    if (
+        type(handle) is not BoundedNestedCreatorTwoBirthLivePrefixV1
+        or (
+            record is None
+            and tombstone is None
+            and getattr(handle, "_issuer", None) is not _PREFIX_ISSUER
+        )
+        or owner_pid != os.getpid()
+        or owner_process_start_ticks != _read_start_ticks(os.getpid())
+        or owner_thread is not threading.current_thread()
+        or owner_thread_id != threading.get_ident()
+        or owner_native_thread_id != threading.get_native_id()
+    ):
+        _fail("two-birth live prefix owner identity changed")
+    return record
+
+
+def _require_live_prefix(
+    handle: BoundedNestedCreatorTwoBirthLivePrefixV1,
+    *,
+    allowed_states: set[str],
+) -> _LivePrefixOwnershipV1:
+    record = _require_prefix_owner(handle)
+    if (
+        record is None
+        or record.state not in allowed_states
+        or record.control_cgroup_fd < 0
+        or record.outer_pid_cell_value != record.supervisor_pid
+        or record.outer_pidfd_fact["pid"] != record.supervisor_pid
+        or record.probe_facts.supervisor_pid != record.supervisor_pid
+        or record.probe_facts.probe_pid != record.probe_pid
+        or record.probe_observed_facts_v2.raw_facts_v1
+        is not record.probe_facts
+    ):
+        _fail("two-birth live prefix identity or state changed")
+    control_status = os.fstat(record.control_cgroup_fd)
+    if (
+        control_status.st_dev != record.control_cgroup_device
+        or control_status.st_ino != record.control_cgroup_inode
+        or not stat.S_ISDIR(control_status.st_mode)
+    ):
+        _fail("two-birth live prefix CONTROL identity changed")
+    session_facts = probe_v1.verify_nested_creator_live_session_v1(
+        record.nested_session
+    )
+    if (
+        session_facts["session_state"] != "PROBE_REAPED_SUPERVISOR_LIVE"
+        or session_facts["supervisor_pid"] != record.supervisor_pid
+        or session_facts["supervisor_start_ticks"]
+        != record.supervisor_start_ticks
+        or _direct_child_pids() != (record.supervisor_pid,)
+    ):
+        _fail("two-birth live prefix supervisor ownership changed")
+    probe_v1.observe_nested_creator_control_population_v1(
+        record.control_cgroup_fd,
+        expected_pids=(record.supervisor_pid,),
+        sequence=3,
+    )
+    return record
+
+
+def _build_closed_result(
+    record: _LivePrefixOwnershipV1,
+    *,
+    supervisor_reap: Mapping[str, Any],
+    final_empty_snapshots: tuple[Mapping[str, Any], Mapping[str, Any]],
+) -> BoundedNestedCreatorTwoBirthRawResultV1:
+    result = BoundedNestedCreatorTwoBirthRawResultV1(
+        supervisor_pid=record.supervisor_pid,
+        supervisor_start_ticks=record.supervisor_start_ticks,
+        probe_pid=record.probe_pid,
+        probe_start_ticks=record.probe_start_ticks,
+        outer_pid_cell_value=record.outer_pid_cell_value,
+        outer_parent_edge=record.outer_parent_edge,
+        outer_nonce=record.outer_nonce,
+        outer_gate_facts=record.outer_gate_facts,
+        outer_pidfd_fact=record.outer_pidfd_fact,
+        outer_seal_set=record.outer_seal_set,
+        outer_role_source_fact=record.outer_role_source_fact,
+        outer_live_snapshots=record.outer_live_snapshots,
+        probe_facts=record.probe_facts,
+        supervisor_reap=supervisor_reap,
+        final_empty_snapshots=final_empty_snapshots,
+        _issuer=_RESULT_ISSUER,
+    )
+    if result.to_document()["maximum_observed_control_population"] != 2:
+        _fail("two-birth result population join changed")
+    return result
+
+
+def _finish_prefix_terminal(
+    record: _LivePrefixOwnershipV1,
+    *,
+    terminal_state: str,
+    closed_result: BoundedNestedCreatorTwoBirthRawResultV1 | None = None,
+    abort_facts: Any = None,
+) -> None:
+    if terminal_state not in {"CLOSED", "ABORTED_CLOSED"}:
+        _fail("two-birth terminal state is invalid")
+    with _PREFIX_REGISTRY_LOCK:
+        if _LIVE_PREFIXES.get(id(record.handle)) is not record:
+            _fail("two-birth live prefix registry changed before terminal commit")
+    if terminal_state == "CLOSED":
+        if closed_result is None or abort_facts is not None:
+            _fail("two-birth normal terminal payload changed")
+    elif abort_facts is None or closed_result is not None:
+        _fail("two-birth abort terminal payload changed")
+    if not record.terminal_prevalidated:
+        if _direct_child_pids():
+            _fail("two-birth terminal closure retained one direct child")
+        control_status = os.fstat(record.control_cgroup_fd)
+        if (
+            control_status.st_dev != record.control_cgroup_device
+            or control_status.st_ino != record.control_cgroup_inode
+        ):
+            _fail("two-birth terminal CONTROL identity changed")
+        probe_v1.observe_nested_creator_control_population_v1(
+            record.control_cgroup_fd, expected_pids=(), sequence=9998
+        )
+        record.terminal_prevalidated = True
+
+    tombstone = _TerminalPrefixTombstoneV1(
+        state=terminal_state,
+        supervisor_pid=record.supervisor_pid,
+        supervisor_start_ticks=record.supervisor_start_ticks,
+        probe_pid=record.probe_pid,
+        probe_start_ticks=record.probe_start_ticks,
+        probe_facts=record.probe_facts,
+        probe_observed_facts_v2=record.probe_observed_facts_v2,
+        owner_pid=record.owner_pid,
+        owner_process_start_ticks=record.owner_process_start_ticks,
+        owner_thread=record.owner_thread,
+        owner_thread_id=record.owner_thread_id,
+        owner_native_thread_id=record.owner_native_thread_id,
+        closed_result=closed_result,
+        abort_facts=abort_facts,
+    )
+    all_signals = set(signal.valid_signals()) - {signal.SIGKILL, signal.SIGSTOP}
+    previous_mask = signal.pthread_sigmask(signal.SIG_BLOCK, all_signals)
+    try:
+        _test_fault("BEFORE_SUBREAPER_RESTORE")
+        current_subreaper = _get_subreaper()
+        if current_subreaper not in {True, record.old_subreaper}:
+            _fail("two-birth terminal subreaper state changed")
+        if record.subreaper_was_promoted and current_subreaper:
             _set_subreaper(False)
+        if _get_subreaper() is not record.old_subreaper:
+            _fail("two-birth terminal subreaper restoration changed")
+        if record.control_cgroup_fd >= 0:
+            descriptor = record.control_cgroup_fd
+            try:
+                os.close(descriptor)
+            except OSError:
+                try:
+                    os.fstat(descriptor)
+                except OSError as status_error:
+                    if status_error.errno != errno.EBADF:
+                        raise
+                else:
+                    raise
+            record.control_cgroup_fd = -1
+            record.handle._control_cgroup_fd = -1
+        _test_fault("AFTER_CONTROL_CLOSE")
+        record.closed_result = closed_result
+        record.abort_facts = abort_facts
+        record.handle._closed_result = closed_result
+        record.handle._abort_facts = abort_facts
+        record.state = terminal_state
+        record.handle._state = terminal_state
+        with _PREFIX_REGISTRY_LOCK:
+            _TERMINAL_PREFIXES[record.handle] = tombstone
+            del _LIVE_PREFIXES[id(record.handle)]
+        _test_fault("AFTER_REGISTRY_DELETE")
+    finally:
+        signal.pthread_sigmask(signal.SIG_SETMASK, previous_mask)
+
+
+def _abort_live_prefix_under_lock(
+    handle: BoundedNestedCreatorTwoBirthLivePrefixV1,
+) -> dict[str, Any]:
+    record = _require_prefix_owner(handle)
+    with _PREFIX_REGISTRY_LOCK:
+        tombstone = _TERMINAL_PREFIXES.get(handle)
+    if record is None and tombstone is not None and tombstone.state == "ABORTED_CLOSED":
+        if tombstone.abort_facts is None:
+            _fail("two-birth cached abort facts are absent")
+        return _thaw_json(tombstone.abort_facts)
+    if record is None and tombstone is not None and tombstone.state == "CLOSED":
+        _fail("two-birth closed prefix cannot be aborted")
+    if record is None:
+        _fail("two-birth abort prefix was not registered")
+    _require_single_cleanup_thread()
+    expected_children = (
+        ()
+        if record.nested_session.state in {"CLOSED", "ABORTED_CLOSED"}
+        else (record.supervisor_pid,)
+    )
+    if _direct_child_pids() != expected_children:
+        _fail("two-birth abort found an unrelated direct child")
+    record.state = "ABORT_PENDING"
+    handle._state = record.state
+    try:
+        if record.nested_session.state == "CLOSED":
+            inner_abort: dict[str, Any] = {
+                "state": "ALREADY_CREATOR_REAPED",
+                "supervisor_pid": record.supervisor_pid,
+            }
+        else:
+            inner_abort = probe_v1.abort_nested_creator_supervisor_session_v1(
+                record.nested_session,
+                control_cgroup_fd=record.control_cgroup_fd,
+            )
+        if record.control_cgroup_fd >= 0:
+            empty_one: Mapping[str, Any] = _wait_empty(
+                record.control_cgroup_fd, 9996
+            )
+            empty_two: Mapping[str, Any] = (
+                probe_v1.observe_nested_creator_control_population_v1(
+                    record.control_cgroup_fd, expected_pids=(), sequence=9997
+                )
+            )
+        elif record.terminal_prevalidated:
+            empty_one = {"kind": "TERMINAL_EMPTY_PREVALIDATED"}
+            empty_two = {"kind": "TERMINAL_EMPTY_PREVALIDATED"}
+        else:
+            _fail("two-birth abort lost CONTROL before empty verification")
+        facts = {
+            "state": "ABORTED_CLOSED",
+            "supervisor_pid": record.supervisor_pid,
+            "probe_pid": record.probe_pid,
+            "inner_abort": inner_abort,
+            "empty_snapshots": [dict(empty_one), dict(empty_two)],
+        }
+        record.abort_facts = _freeze_json(facts)
+        _finish_prefix_terminal(
+            record,
+            terminal_state="ABORTED_CLOSED",
+            abort_facts=record.abort_facts,
+        )
+        return _thaw_json(record.abort_facts)
+    except BaseException:
+        record.state = "ABORT_FAILED_QUARANTINED"
+        handle._state = record.state
+        raise
+
+
+def abort_bounded_nested_creator_two_birth_live_prefix_v1(
+    handle: BoundedNestedCreatorTwoBirthLivePrefixV1,
+) -> dict[str, Any]:
+    """Kill/reap a live prefix and close its exact process-local ownership."""
+
+    with _RUNTIME_LOCK:
+        return _abort_live_prefix_under_lock(handle)
+
+
+def recover_bounded_nested_creator_two_birth_begin_failure_v1() -> dict[str, Any]:
+    """Retry exact cleanup when begin failed before returning a capability."""
+
+    global _BEGIN_FAILURE_QUARANTINE, _LAST_BEGIN_FAILURE_RECOVERY
+
+    with _RUNTIME_LOCK:
+        with _PREFIX_REGISTRY_LOCK:
+            hidden_records = tuple(
+                record
+                for record in _LIVE_PREFIXES.values()
+                if record.hidden_begin_failure
+            )
+            quarantine = _BEGIN_FAILURE_QUARANTINE
+        if len(hidden_records) > 1 or (hidden_records and quarantine is not None):
+            _fail("two-birth begin failure recovery identity changed")
+        if hidden_records:
+            return _abort_live_prefix_under_lock(hidden_records[0].handle)
+        if quarantine is None:
+            if _LAST_BEGIN_FAILURE_RECOVERY is not None:
+                return _thaw_json(_LAST_BEGIN_FAILURE_RECOVERY)
+            _fail("two-birth begin failure quarantine is absent")
+        if (
+            quarantine.owner_pid != os.getpid()
+            or quarantine.owner_process_start_ticks != _read_start_ticks(os.getpid())
+            or quarantine.owner_thread is not threading.current_thread()
+            or quarantine.owner_thread_id != threading.get_ident()
+            or quarantine.owner_native_thread_id != threading.get_native_id()
+        ):
+            _fail("two-birth begin failure recovery owner changed")
+        quarantine.state = "BEGIN_CLEANUP_RETRY_PENDING"
+        try:
+            if not quarantine.cleanup_complete:
+                _require_single_cleanup_thread()
+                if not set(_direct_child_pids()).issubset(
+                    quarantine.allowed_direct_child_pids
+                ):
+                    _fail(
+                        "two-birth begin recovery found an unrelated direct child"
+                    )
+                status = os.fstat(quarantine.control_cgroup_fd)
+                if (
+                    status.st_dev != quarantine.control_cgroup_device
+                    or status.st_ino != quarantine.control_cgroup_inode
+                ):
+                    _fail("two-birth begin failure recovery CONTROL changed")
+                if quarantine.live_session is not None:
+                    cleanup = probe_v1.abort_nested_creator_supervisor_session_v1(
+                        quarantine.live_session,
+                        control_cgroup_fd=quarantine.control_cgroup_fd,
+                    )
+                else:
+                    cleanup = _abort_control_population(
+                        quarantine.control_cgroup_fd
+                    )
+                quarantine.cleanup_result = _freeze_json(cleanup)
+                quarantine.cleanup_complete = True
+            facts = {
+                "state": "BEGIN_FAILURE_RECOVERED_CLOSED",
+                "cleanup": _thaw_json(quarantine.cleanup_result),
+            }
+            frozen_facts = _freeze_json(facts)
+            with _PREFIX_REGISTRY_LOCK:
+                if _BEGIN_FAILURE_QUARANTINE is not quarantine:
+                    _fail("two-birth begin quarantine identity changed")
+            all_signals = set(signal.valid_signals()) - {
+                signal.SIGKILL,
+                signal.SIGSTOP,
+            }
+            previous_mask = signal.pthread_sigmask(signal.SIG_BLOCK, all_signals)
+            try:
+                if quarantine.old_subreaper is False and _get_subreaper():
+                    _set_subreaper(False)
+                if _get_subreaper() is not quarantine.old_subreaper:
+                    _fail("two-birth begin failure subreaper restoration changed")
+                if quarantine.control_cgroup_fd >= 0:
+                    descriptor = quarantine.control_cgroup_fd
+                    try:
+                        os.close(descriptor)
+                    except OSError:
+                        try:
+                            os.fstat(descriptor)
+                        except OSError as status_error:
+                            if status_error.errno != errno.EBADF:
+                                raise
+                        else:
+                            raise
+                    quarantine.control_cgroup_fd = -1
+                _test_fault("AFTER_BEGIN_RECOVERY_CONTROL_CLOSE")
+                quarantine.state = facts["state"]
+                _LAST_BEGIN_FAILURE_RECOVERY = frozen_facts
+                with _PREFIX_REGISTRY_LOCK:
+                    _BEGIN_FAILURE_QUARANTINE = None
+                _test_fault("AFTER_BEGIN_RECOVERY_REGISTRY_CLEAR")
+            finally:
+                signal.pthread_sigmask(signal.SIG_SETMASK, previous_mask)
+            return _thaw_json(frozen_facts)
+        except BaseException:
+            if _BEGIN_FAILURE_QUARANTINE is quarantine:
+                quarantine.state = "BEGIN_CLEANUP_FAILED_QUARANTINED"
+            raise
+
+
+def close_bounded_nested_creator_two_birth_live_prefix_v1(
+    handle: BoundedNestedCreatorTwoBirthLivePrefixV1,
+) -> BoundedNestedCreatorTwoBirthRawResultV1:
+    """Normally close the live SUPERVISOR and emit the historical V1 result."""
+
+    _require_prefix_owner(handle)
+    with _RUNTIME_LOCK:
+        record = _require_prefix_owner(handle)
+        with _PREFIX_REGISTRY_LOCK:
+            tombstone = _TERMINAL_PREFIXES.get(handle)
+        if record is None and tombstone is not None and tombstone.state == "CLOSED":
+            if tombstone.closed_result is None:
+                _fail("two-birth cached closed result is absent")
+            return tombstone.closed_result
+        if (
+            record is None
+            and tombstone is not None
+            and tombstone.state == "ABORTED_CLOSED"
+        ):
+            _fail("two-birth aborted prefix cannot be normally closed")
+        record = _require_live_prefix(
+            handle, allowed_states={"PROBE_REAPED_SUPERVISOR_LIVE"}
+        )
+        _require_single_cleanup_thread()
+        record.state = "NORMAL_CLOSE_PENDING"
+        handle._state = record.state
+        try:
+            probe_v1.shutdown_nested_creator_supervisor_v1(
+                record.nested_session
+            )
+            record.state = "SUPERVISOR_RELEASED_TO_EXIT"
+            handle._state = record.state
+            _test_fault("AFTER_SHUTDOWN_ECHO")
+            supervisor_reap = probe_v1.finish_nested_creator_supervisor_reap_v1(
+                record.nested_session
+            )
+            record.state = "SUPERVISOR_REAPED"
+            handle._state = record.state
+            _test_fault("AFTER_SUPERVISOR_REAP")
+            final_one = _wait_empty(record.control_cgroup_fd, 5)
+            final_two = probe_v1.observe_nested_creator_control_population_v1(
+                record.control_cgroup_fd, expected_pids=(), sequence=6
+            )
+            result = _build_closed_result(
+                record,
+                supervisor_reap=supervisor_reap,
+                final_empty_snapshots=(final_one, final_two),
+            )
+            record.closed_result = result
+            _finish_prefix_terminal(
+                record, terminal_state="CLOSED", closed_result=result
+            )
+            return result
+        except BaseException:
+            if record.state not in {"CLOSED", "ABORTED_CLOSED"}:
+                _abort_live_prefix_under_lock(handle)
+            raise
+
+
+def run_bounded_nested_creator_two_birth_runtime_v1(
+    *,
+    control_cgroup_fd: int,
+) -> BoundedNestedCreatorTwoBirthRawResultV1:
+    """Compatibility adapter: begin the live cut, then close it normally."""
+
+    handle = begin_bounded_nested_creator_two_birth_live_prefix_v1(
+        control_cgroup_fd=control_cgroup_fd
+    )
+    return close_bounded_nested_creator_two_birth_live_prefix_v1(handle)
+
+
+def _runtime_atfork_before() -> None:
+    _RUNTIME_LOCK.acquire()
+    _PREFIX_REGISTRY_LOCK.acquire()
+
+
+def _runtime_atfork_after_parent() -> None:
+    _PREFIX_REGISTRY_LOCK.release()
+    _RUNTIME_LOCK.release()
+
+
+def _runtime_atfork_after_child() -> None:
+    global _RUNTIME_LOCK, _PREFIX_REGISTRY_LOCK, _BEGIN_FAILURE_QUARANTINE
+    global _BEGIN_FORK_GUARD
+    if _BEGIN_FORK_GUARD is not None:
+        allowed = set(_BEGIN_FORK_GUARD["allowed_child_fds"])
+        for name in os.listdir("/proc/self/fd"):
+            if not name.isdigit():
+                continue
+            descriptor = int(name)
+            if descriptor in allowed:
+                continue
+            try:
+                os.close(descriptor)
+            except OSError:
+                pass
+        os._exit(190)
+    for record in tuple(_LIVE_PREFIXES.values()):
+        if record.control_cgroup_fd >= 0:
+            try:
+                os.close(record.control_cgroup_fd)
+            except OSError:
+                pass
+            record.control_cgroup_fd = -1
+            record.handle._control_cgroup_fd = -1
+        record.state = "FORK_CHILD_POISONED"
+        record.handle._state = record.state
+    _LIVE_PREFIXES.clear()
+    _TERMINAL_PREFIXES.clear()
+    if _BEGIN_FAILURE_QUARANTINE is not None:
+        if _BEGIN_FAILURE_QUARANTINE.control_cgroup_fd >= 0:
+            try:
+                os.close(_BEGIN_FAILURE_QUARANTINE.control_cgroup_fd)
+            except OSError:
+                pass
+        _BEGIN_FAILURE_QUARANTINE.state = "FORK_CHILD_POISONED"
+        _BEGIN_FAILURE_QUARANTINE = None
+    _PREFIX_REGISTRY_LOCK = threading.RLock()
+    _RUNTIME_LOCK = threading.RLock()
+
+
+if hasattr(os, "register_at_fork"):
+    os.register_at_fork(
+        before=_runtime_atfork_before,
+        after_in_parent=_runtime_atfork_after_parent,
+        after_in_child=_runtime_atfork_after_child,
+    )
 
 
 __all__ = (
+    "BoundedNestedCreatorTwoBirthLivePrefixV1",
     "BoundedNestedCreatorTwoBirthRawResultV1",
     "ConstructionK7H1NestedCreatorTwoBirthRuntimeV1Error",
     "PROFILE_KEY",
     "PROPOSED_CONTRACT_VERSION",
     "READINESS",
     "SCHEMA_VERSION",
+    "abort_bounded_nested_creator_two_birth_live_prefix_v1",
+    "begin_bounded_nested_creator_two_birth_live_prefix_v1",
+    "close_bounded_nested_creator_two_birth_live_prefix_v1",
+    "recover_bounded_nested_creator_two_birth_begin_failure_v1",
     "run_bounded_nested_creator_two_birth_runtime_v1",
 )

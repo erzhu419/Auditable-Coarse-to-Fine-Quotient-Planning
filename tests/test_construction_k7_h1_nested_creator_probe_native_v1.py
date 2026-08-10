@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import copy
+import fcntl
 import hashlib
 import os
 from pathlib import Path
 import pickle
 import shutil
+import socket
 import subprocess
 import sys
 
@@ -16,6 +18,36 @@ from acfqp import construction_k7_h1_nested_creator_supervisor_native_v1 as role
 
 
 HELPER = Path(__file__).with_name("_nested_creator_probe_subprocess.py")
+
+
+def _run_real_helper(mode: str) -> dict[str, object]:
+    repository = HELPER.parent.parent
+    completed = subprocess.run(
+        [
+            "systemd-run",
+            "--user",
+            "--scope",
+            "--collect",
+            "-p",
+            "Delegate=yes",
+            "-p",
+            "TasksMax=infinity",
+            f"--working-directory={repository}",
+            "env",
+            f"PYTHONPATH={repository / 'src'}",
+            sys.executable,
+            os.fspath(HELPER),
+            mode,
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+        env=dict(os.environ),
+        timeout=30,
+    )
+    import json
+
+    return json.loads(completed.stdout.splitlines()[-1])
 
 
 def test_registered_native_role_replays_exact_static_elf_and_locked_claims() -> None:
@@ -32,6 +64,7 @@ def test_registered_native_role_replays_exact_static_elf_and_locked_claims() -> 
     assert evidence["actual_process_birth_present"] is False
     assert evidence["five_birth_process_authority_present"] is False
     assert evidence["official_execution_allowed"] is False
+    assert "verify_nested_creator_live_session_v1" in probe.__all__
 
 
 def test_registered_role_memfd_is_exact_cloexec_and_immutable() -> None:
@@ -44,6 +77,27 @@ def test_registered_role_memfd_is_exact_cloexec_and_immutable() -> None:
             os.write(descriptor, b"x")
     finally:
         os.close(descriptor)
+
+
+def test_session_begin_rejects_non_cloexec_before_registration() -> None:
+    parent, child = socket.socketpair(socket.AF_UNIX, socket.SOCK_SEQPACKET)
+    pidfd = os.pidfd_open(os.getpid(), 0)
+    try:
+        fcntl.fcntl(parent.fileno(), fcntl.F_SETFD, 0)
+        with pytest.raises(
+            probe.ConstructionK7H1NestedCreatorProbeNativeV1Error,
+            match="descriptor contract changed",
+        ):
+            probe.begin_nested_creator_supervisor_session_v1(
+                supervisor_pid=os.getpid() + 1,
+                supervisor_pidfd=pidfd,
+                control_fd=parent.fileno(),
+            )
+        assert len(probe._LIVE_SESSIONS) == 0  # noqa: SLF001
+    finally:
+        os.close(pidfd)
+        parent.close()
+        child.close()
 
 
 def test_frame_abi_is_exact_and_rejects_mutation() -> None:
@@ -132,32 +186,7 @@ def test_registered_toolchain_rebuilds_exact_static_elf(tmp_path: Path) -> None:
     reason="requires a transient delegated systemd user scope",
 )
 def test_real_non_guardian_creator_birth_and_reap() -> None:
-    repository = HELPER.parent.parent
-    completed = subprocess.run(
-        [
-            "systemd-run",
-            "--user",
-            "--scope",
-            "--collect",
-            "-p",
-            "Delegate=yes",
-            "-p",
-            "TasksMax=infinity",
-            f"--working-directory={repository}",
-            "env",
-            f"PYTHONPATH={repository / 'src'}",
-            sys.executable,
-            os.fspath(HELPER),
-        ],
-        check=True,
-        capture_output=True,
-        text=True,
-        env=dict(os.environ),
-        timeout=30,
-    )
-    import json
-
-    result = json.loads(completed.stdout.splitlines()[-1])
+    result = _run_real_helper("SUCCESS")
     assert result["probe_pid"] > 0
     assert result["supervisor_pid"] > 0
     assert result["probe_pid"] != result["supervisor_pid"]
@@ -193,3 +222,174 @@ def test_real_non_guardian_creator_birth_and_reap() -> None:
     assert result["installed_pidfd_cloexec"] is True
     assert result["installed_pidfd_descriptor_flags"] & 1 == 1
     assert result["mutation_rejections"] == 2
+    assert result["live_verifier_before_state"] == "SUPERVISOR_READY"
+    assert result["live_verifier_after_state"] == "SUPERVISOR_READY"
+    assert result["live_verifier_parent_pid"] > 0
+    assert result["live_verifier_pidfd_pid"] == result["supervisor_pid"]
+    assert result["live_verifier_control_cloexec"] is True
+    assert result["live_verifier_verified"] is True
+    assert result["live_verifier_mutation_rejected"] is True
+    assert result["control_substitution_rejected"] is True
+    assert result["control_abort_substitution_rejected"] is True
+    assert result["pidfd_substitution_rejected"] is True
+    assert result["pidfd_abort_substitution_rejected"] is True
+    assert result["finish_pidfd_substitution_rejected"] is True
+    assert result["finish_attack_victim_remained_waitable"] is True
+    assert result["restored_control_device"] == result["frozen_control_device"]
+    assert result["restored_control_inode"] == result["frozen_control_inode"]
+    assert result["restored_pidfd_device"] == result["frozen_pidfd_device"]
+    assert result["restored_pidfd_inode"] == result["frozen_pidfd_inode"]
+    assert result["frozen_control_peer_pid"] > 0
+    assert result["terminal_trusted_record_registry_count"] == 0
+    assert result["atfork_child"] == {
+        "control_fd_closed": True,
+        "trusted_record_registry_count": 0,
+        "pidfd_closed": True,
+        "registry_count": 0,
+        "session_state": "FORK_CHILD_POISONED",
+        "session_control_fd": -1,
+        "session_pidfd": -1,
+        "verify_rejected": True,
+        "supervisor_not_child": True,
+    }
+
+
+@pytest.mark.skipif(
+    os.environ.get("ACFQP_RUN_REAL_NESTED_CREATOR") != "1",
+    reason="requires a transient delegated systemd user scope",
+)
+def test_between_registration_fault_leaves_no_half_registry() -> None:
+    result = _run_real_helper("AFTER_SESSION_RECORD_REGISTER")
+    assert result == {
+        "mode": "AFTER_SESSION_RECORD_REGISTER",
+        "begin_error_type": (
+            "ConstructionK7H1NestedCreatorProbeNativeV1Error"
+        ),
+        "trusted_record_registry_count": 0,
+    }
+
+
+@pytest.mark.skipif(
+    os.environ.get("ACFQP_RUN_REAL_NESTED_CREATOR") != "1",
+    reason="requires a transient delegated systemd user scope",
+)
+@pytest.mark.parametrize(
+    ("mode", "expected_state"),
+    [
+        ("AFTER_INNER_CONTROL_CLOSE", "SUPERVISOR_RELEASED_TO_EXIT"),
+        ("AFTER_INNER_PIDFD_CLOSE", "CLOSED"),
+        ("AFTER_INNER_PIDFD_CONSUME", "CLOSED"),
+    ],
+)
+def test_terminal_inner_close_fault_finishes_forward_and_retries(
+    mode: str, expected_state: str
+) -> None:
+    result = _run_real_helper(mode)
+    assert result["first_error_type"] == (
+        "ConstructionK7H1NestedCreatorProbeNativeV1Error"
+    )
+    assert result["partial_state"] == expected_state
+    assert result["partial_fd"] == -1
+    assert result["retry_idempotent"] is True
+    assert result["supervisor_reaped"] is True
+    assert result["trusted_record_registry_count"] == 0
+
+
+@pytest.mark.skipif(
+    os.environ.get("ACFQP_RUN_REAL_NESTED_CREATOR") != "1",
+    reason="requires a transient delegated systemd user scope",
+)
+@pytest.mark.parametrize(
+    "mode",
+    [
+        "ABORT_AFTER_INNER_CONTROL_CLOSE",
+        "ABORT_AFTER_INNER_PIDFD_CLOSE",
+    ],
+)
+def test_abort_inner_close_fault_is_recoverable_and_idempotent(mode: str) -> None:
+    result = _run_real_helper(mode)
+    assert result["first_error_type"] == (
+        "ConstructionK7H1NestedCreatorProbeNativeV1Error"
+    )
+    assert result["partial_control_fd"] == -1
+    if mode.endswith("CONTROL_CLOSE"):
+        assert result["partial_state"] == (
+            "ABORT_CONTROL_CLOSED_CLEANUP_REQUIRED"
+        )
+    else:
+        assert result["partial_state"] == "ABORTED_CLOSED"
+        assert result["partial_pidfd"] == -1
+    assert result["retry_idempotent"] is True
+    assert result["trusted_record_registry_count"] == 0
+
+
+@pytest.mark.skipif(
+    os.environ.get("ACFQP_RUN_REAL_NESTED_CREATOR") != "1",
+    reason="requires a transient delegated systemd user scope",
+)
+def test_abort_rejects_unrelated_child_without_reaping_it() -> None:
+    result = _run_real_helper("ABORT_UNRELATED_CHILD")
+    assert result["unrelated_rejected"] is True
+    assert result["unrelated_still_live"] is True
+    assert result["unrelated_reaped_by_test"] is True
+    assert result["session_still_live"] is True
+    assert result["abort_idempotent"] is True
+    assert result["trusted_record_registry_count"] == 0
+
+
+@pytest.mark.skipif(
+    os.environ.get("ACFQP_RUN_REAL_NESTED_CREATOR") != "1",
+    reason="requires a transient delegated systemd user scope",
+)
+def test_before_parent_return_unknown_probe_is_recovered_exactly() -> None:
+    result = _run_real_helper("BEFORE_PARENT_RETURN")
+    assert result["first_error_type"] == (
+        "ConstructionK7H1NestedCreatorProbeNativeV1Error"
+    )
+    assert result["unknown_probe_pid"] > 0
+    assert result["unknown_probe_pid"] in result["reaped_pids"]
+    assert result["session_fds_closed"] is True
+    assert result["cgroup_empty"] is True
+    assert result["trusted_record_registry_count"] == 0
+
+
+@pytest.mark.skipif(
+    os.environ.get("ACFQP_RUN_REAL_NESTED_CREATOR") != "1",
+    reason="requires a transient delegated systemd user scope",
+)
+def test_abort_rejects_fake_control_member_even_if_session_claims_it() -> None:
+    result = _run_real_helper("ABORT_FAKE_CONTROL_MEMBER")
+    assert result["fake_member_rejected"] is True
+    assert result["fake_member_still_live"] is True
+    assert result["fake_member_reaped_by_test"] is True
+    assert result["abort_closed"] is True
+    assert result["trusted_record_registry_count"] == 0
+
+
+@pytest.mark.skipif(
+    os.environ.get("ACFQP_RUN_REAL_NESTED_CREATOR") != "1",
+    reason="requires a transient delegated systemd user scope",
+)
+def test_wrong_cgroup_before_command_does_not_poison_cleanup_lease() -> None:
+    result = _run_real_helper("WRONG_CGROUP_BEFORE_COMMAND")
+    assert result["first_error_type"] == (
+        "ConstructionK7H1NestedCreatorProbeNativeV1Error"
+    )
+    assert result["abort_closed"] is True
+    assert result["trusted_record_registry_count"] == 0
+
+
+@pytest.mark.skipif(
+    os.environ.get("ACFQP_RUN_REAL_NESTED_CREATOR") != "1",
+    reason="requires a transient delegated systemd user scope",
+)
+def test_atfork_does_not_close_reused_already_closed_control_number() -> None:
+    result = _run_real_helper("ATFORK_REUSED_CLOSED_CONTROL")
+    assert result["fork_clean"] is True
+    assert result["child_report"] == {
+        "replacement_open": True,
+        "inherited_pidfd_closed": True,
+        "session_state": "FORK_CHILD_POISONED",
+    }
+    assert result["supervisor_reaped"] is True
+    assert result["trusted_record_registry_count"] == 0
