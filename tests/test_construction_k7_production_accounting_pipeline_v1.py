@@ -94,9 +94,10 @@ def assembled_case():
 
 
 @pytest.fixture(scope="module")
-def full_pipeline_case(positive):
+def full_pipeline_case(request):
     if os.environ.get("ACFQP_RUN_FULL_K7_PIPELINE_REPLAY") != "1":
         pytest.skip("full production-root pipeline is an explicit slow gate")
+    positive = request.getfixturevalue("positive")
     result = pipeline_v1.run_k7_production_accounting_pipeline_v1(
         replay_roots=dict(positive),
         source_archive_raw=_archive(positive),

@@ -14,6 +14,7 @@ import hashlib
 from typing import Any, Mapping, NoReturn
 
 from acfqp import construction_accounting_partial_native_v1 as partial_v1
+from acfqp import construction_accounting_registry_v6 as registry_v6
 from acfqp import construction_k7_derived_reconciliation_v1 as v1
 from acfqp import construction_occurrence_identity_cutoff_semantic_authority_v2 as occurrence_v2
 from acfqp import construction_shared_resource_verified_envelope_v1 as verified_v1
@@ -27,9 +28,11 @@ from acfqp.phase3e_ids import (
 )
 
 
-SCHEMA_VERSION = "2.0.0"
-PROPOSED_CONTRACT_VERSION = "2.0.26"
+SCHEMA_VERSION = "2.1.0"
+PROPOSED_CONTRACT_VERSION = "2.0.63"
 PROFILE_KEY = "construction_k7_derived_reconciliation_v2"
+
+MAPPED_SOLVER_PROOF_VERSION = "V2_OCCURRENCE_MAPPING"
 
 ROUTE_DEPENDENCY_V2_DOMAIN = (
     CONSTRUCTION_K7_ROUTE_TERMINAL_SEMANTIC_DEPENDENCY_V2_DOMAIN
@@ -647,6 +650,161 @@ def _route_proofs_v2(
     return attempts, failures, successes
 
 
+def _derive_occurrence_mapped_solver_dependency_v2(
+    *,
+    verified_nine: verified_v1.K7VerifiedNineSharedResourceEnvelopeV1,
+    owner_transcript: partial_v1.PartialNativeOccurrenceTranscriptV1,
+    route_dependency: K7RouteTerminalSemanticDependencyV2,
+) -> v1.K7ExactReconciliationSemanticDependencyV1:
+    """Bind the scientific owner trace to its logical route occurrence.
+
+    The historical V1 helper assumes those two identifiers are identical.
+    Production keeps them distinct and the occurrence authority proves their
+    mapping.  This successor consumes that already replayed mapping instead of
+    weakening either identity check.
+    """
+
+    if (
+        type(verified_nine)
+        is not verified_v1.K7VerifiedNineSharedResourceEnvelopeV1
+        or type(owner_transcript)
+        is not partial_v1.PartialNativeOccurrenceTranscriptV1
+        or type(route_dependency) is not K7RouteTerminalSemanticDependencyV2
+    ):
+        _fail("mapped solver dependency requires exact typed predecessors")
+    try:
+        verified_nine._assert_current()  # noqa: SLF001 - predecessor replay
+        partial_v1.verify_partial_native_occurrence_transcript_v1(
+            owner_transcript
+        )
+    except Exception as error:
+        raise ConstructionK7DerivedReconciliationV2Error(
+            "mapped solver predecessor replay failed"
+        ) from error
+
+    source = verified_nine.source_envelope
+    terminal = owner_transcript.nodes[-1]
+    facts = route_dependency.by_fact
+    registry = registry_v6.official_counter_registry_v6()
+    stage = registry_v6.official_stage_profile_v6(registry)
+    solver_paths = {
+        "solver.attempts",
+        "solver.failures",
+        "solver.successes",
+    }
+    solver_stages = {
+        row.stage_kind.value
+        for row in stage.rules
+        if solver_paths & set(row.allowed_nonzero_paths)
+    }
+    if (
+        route_dependency.counter_registry_id != source.counter_registry_id
+        or route_dependency.stage_profile_id != source.stage_profile_id
+        or route_dependency.logical_occurrence_id != source.occurrence_id
+        or route_dependency.verified_nine_envelope_id
+        != verified_nine.verified_envelope_id
+        or facts["scientific_occurrence_id"]
+        != owner_transcript.start.occurrence_id
+        or facts["logical_occurrence_id"] != source.occurrence_id
+        or facts["partial_native_transcript_id"]
+        != owner_transcript.transcript_id
+        or facts["partial_native_terminal_id"] != terminal.chain_id
+        or owner_transcript.start.counter_registry_id
+        != source.counter_registry_id
+        or owner_transcript.start.stage_profile_id != source.stage_profile_id
+        or registry.registry_id != source.counter_registry_id
+        or stage.stage_profile_id != source.stage_profile_id
+        or owner_transcript.start.stage_plan
+        != partial_v1.ROOT_CAP_FIVE_STAGE_PLAN_V1
+        or owner_transcript.terminal_kind
+        is not partial_v1.PartialNativeTerminalKindV1.COMPLETED
+        or type(terminal) is not partial_v1.PartialNativeOccurrenceCompletionV1
+        or solver_stages != {"DIRECT_FALLBACK", "LOCAL_ATTEMPT"}
+        or solver_stages
+        & {item.value for item in owner_transcript.start.stage_plan}
+    ):
+        _fail("occurrence mapping cannot prove root-cap solver exclusion")
+
+    return v1.K7ExactReconciliationSemanticDependencyV1(
+        v1._DEPENDENCY_ISSUER,  # noqa: SLF001 - additive successor issuer
+        v1.SemanticDependencyKindV1.ROOT_CAP_STAGE_EXCLUSION,
+        source.counter_registry_id,
+        source.stage_profile_id,
+        source.occurrence_id,
+        (
+            verified_nine.verified_envelope_id,
+            owner_transcript.transcript_id,
+            terminal.chain_id,
+            route_dependency.dependency_id,
+            route_dependency.authority_bundle_id,
+            facts["occurrence_authority_id"],
+        ),
+        (
+            ("root_stage_profile.solver_failures", 0),
+            ("root_stage_profile.solver_successes", 0),
+        ),
+        tuple(
+            sorted(
+                (
+                    "exact_five_stage_chain_replayed",
+                    "local_and_fallback_stages_absent",
+                    "logical_occurrence_context_bound",
+                    "scientific_occurrence_context_bound",
+                    "scientific_to_logical_occurrence_mapping_replayed",
+                    "solver_nonzero_stage_set_replayed",
+                )
+            )
+        ),
+    )
+
+
+def _assemble_occurrence_mapped_v1_shape_v2(
+    *,
+    verified_nine: verified_v1.K7VerifiedNineSharedResourceEnvelopeV1,
+    owner_transcript: partial_v1.PartialNativeOccurrenceTranscriptV1,
+    route_dependency: K7RouteTerminalSemanticDependencyV2,
+) -> tuple[
+    v1.K7DerivedReconciliationReadinessV1,
+    v1.K7ExactReconciliationSemanticDependencyV1,
+    v1.K7ExactReconciliationSemanticDependencyV1,
+]:
+    """Assemble the unchanged V1 proof shapes from stronger V2 semantics."""
+
+    process_dependency = v1.derive_process_reap_dependency_v1(verified_nine)
+    solver_dependency = _derive_occurrence_mapped_solver_dependency_v2(
+        verified_nine=verified_nine,
+        owner_transcript=owner_transcript,
+        route_dependency=route_dependency,
+    )
+    proofs = (
+        *v1._family_proofs(  # noqa: SLF001 - exact frozen proof constructor
+            verified=verified_nine,
+            dependency=process_dependency,
+            family="process",
+        ),
+        *v1._family_proofs(  # noqa: SLF001 - exact frozen proof constructor
+            verified=verified_nine,
+            dependency=solver_dependency,
+            family="solver",
+        ),
+    )
+    formulas = v1.official_k7_reconciliation_formulas_v1()
+    base = v1.K7DerivedReconciliationReadinessV1(
+        v1._READINESS_ISSUER,  # noqa: SLF001 - additive successor issuer
+        v1.ReconciliationReadinessStatusV1.INCOMPLETE_TYPED,
+        tuple(row.formula_id for row in formulas),
+        verified_nine.verified_envelope_id,
+        tuple(proofs),
+        (
+            v1._blocker(  # noqa: SLF001 - exact frozen blocker constructor
+                v1.ReconciliationBlockerCodeV1
+                .ROUTE_TERMINAL_SEMANTIC_AUTHORITY_UNAVAILABLE
+            ),
+        ),
+    )
+    return base, process_dependency, solver_dependency
+
+
 @dataclass(frozen=True, slots=True)
 class K7ExactProofRowV2:
     """Stable public bridge from mixed V1/V2 proofs to semantic closure."""
@@ -670,8 +828,20 @@ class K7ExactProofRowV2:
             or formula is None
             or self.formula_id != formula.formula_id
             or self.closure_dependency_paths != formula.closure_dependency_paths
-            or self.proof_version not in {"V1", "V2_ROUTE"}
-            or (self.path in ROUTE_PATHS) != (self.proof_version == "V2_ROUTE")
+            or self.proof_version
+            not in {"V1", MAPPED_SOLVER_PROOF_VERSION, "V2_ROUTE"}
+            or (
+                self.proof_version
+                != (
+                    "V2_ROUTE"
+                    if self.path in ROUTE_PATHS
+                    else (
+                        MAPPED_SOLVER_PROOF_VERSION
+                        if self.path.startswith("solver.")
+                        else "V1"
+                    )
+                )
+            )
         ):
             _fail("public proof row differs from its exact formula/proof version")
 
@@ -753,6 +923,13 @@ class K7CompleteDerivedReconciliationReadinessV2:
             for row in dependencies
         ):
             _fail("V1 and V2 semantic dependencies crossed occurrence context")
+        if (
+            self.route_dependency_v2.dependency_id
+            not in self.solver_dependency_v1.source_ids
+            or "scientific_to_logical_occurrence_mapping_replayed"
+            not in self.solver_dependency_v1.semantic_checks
+        ):
+            _fail("solver dependency lacks its explicit occurrence mapping")
         base_by_path = {row.path: row for row in base.proofs}
         process_id = self.process_dependency_v1.dependency_id
         solver_id = self.solver_dependency_v1.dependency_id
@@ -830,7 +1007,15 @@ class K7CompleteDerivedReconciliationReadinessV2:
                     proof.proof_id,
                     formulas[path].formula_id,
                     formulas[path].closure_dependency_paths,
-                    "V2_ROUTE" if path in route else "V1",
+                    (
+                        "V2_ROUTE"
+                        if path in route
+                        else (
+                            MAPPED_SOLVER_PROOF_VERSION
+                            if path.startswith("solver.")
+                            else "V1"
+                        )
+                    ),
                 )
             )
         return tuple(rows)
@@ -872,6 +1057,9 @@ class K7CompleteDerivedReconciliationReadinessV2:
             "comparison_vector_issued": False,
             "formal_vector_authorized": False,
             "v1_payloads_or_ids_changed": False,
+            "v1_public_derivation_changed": False,
+            "scientific_to_logical_occurrence_mapping_explicit": True,
+            "solver_dependency_uses_successor_mapping": True,
         }
 
     @property
@@ -912,14 +1100,12 @@ def derive_k7_complete_eight_path_reconciliation_v2(
         or owner_transcript.to_document() != replay_transcript.to_document()
     ):
         _fail("solver transcript was transplanted across route authority")
-    base = v1.derive_k7_eight_path_reconciliation_v1(
-        verified_nine=verified_nine,
-        owner_transcript=owner_transcript,
-    )
-    process_dependency = v1.derive_process_reap_dependency_v1(verified_nine)
-    solver_dependency = v1.derive_solver_stage_exclusion_dependency_v1(
-        verified=verified_nine,
-        transcript=owner_transcript,
+    base, process_dependency, solver_dependency = (
+        _assemble_occurrence_mapped_v1_shape_v2(
+            verified_nine=verified_nine,
+            owner_transcript=owner_transcript,
+            route_dependency=route_dependency,
+        )
     )
     route_proofs = _route_proofs_v2(
         verified_nine=verified_nine,
@@ -962,6 +1148,7 @@ __all__ = (
     "K7ExactRouteDerivedPathProofV2",
     "K7ExactProofRowV2",
     "K7RouteTerminalSemanticDependencyV2",
+    "MAPPED_SOLVER_PROOF_VERSION",
     "PROFILE_KEY",
     "PROPOSED_CONTRACT_VERSION",
     "REQUESTED_PHASE3E_DOMAIN_TAGS",
