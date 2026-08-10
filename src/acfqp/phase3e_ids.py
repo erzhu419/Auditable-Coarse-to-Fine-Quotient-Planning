@@ -1362,6 +1362,18 @@ CONSTRUCTION_K7_CAMPAIGN_CLOSURE_SUMMARY_V1_DOMAIN = (
 CONSTRUCTION_K7_CAMPAIGN_CLOSURE_VERIFICATION_V1_DOMAIN = (
     "acfqp:construction-k7-campaign-closure-verification:v1"
 )
+CONSTRUCTION_K7_TERMINAL_ACCOUNTING_COVERAGE_SOURCE_V1_DOMAIN = (
+    "acfqp:construction-k7-terminal-accounting-coverage-source:v1"
+)
+CONSTRUCTION_K7_TERMINAL_ACCOUNTING_COVERAGE_ROW_V1_DOMAIN = (
+    "acfqp:construction-k7-terminal-accounting-coverage-row:v1"
+)
+CONSTRUCTION_K7_TERMINAL_ACCOUNTING_COVERAGE_MATRIX_V1_DOMAIN = (
+    "acfqp:construction-k7-terminal-accounting-coverage-matrix:v1"
+)
+CONSTRUCTION_K7_TERMINAL_ACCOUNTING_COVERAGE_REPLAY_V1_DOMAIN = (
+    "acfqp:construction-k7-terminal-accounting-coverage-replay:v1"
+)
 CONSTRUCTION_K7_ALL_PATH_ACCOUNTING_PROFILE_V1_DOMAIN = (
     "acfqp:construction-k7-all-path-accounting-profile:v1"
 )
@@ -3185,6 +3197,18 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_campaign_closure_verification_v1": (
             CONSTRUCTION_K7_CAMPAIGN_CLOSURE_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_terminal_accounting_coverage_source_v1": (
+            CONSTRUCTION_K7_TERMINAL_ACCOUNTING_COVERAGE_SOURCE_V1_DOMAIN
+        ),
+        "construction_k7_terminal_accounting_coverage_row_v1": (
+            CONSTRUCTION_K7_TERMINAL_ACCOUNTING_COVERAGE_ROW_V1_DOMAIN
+        ),
+        "construction_k7_terminal_accounting_coverage_matrix_v1": (
+            CONSTRUCTION_K7_TERMINAL_ACCOUNTING_COVERAGE_MATRIX_V1_DOMAIN
+        ),
+        "construction_k7_terminal_accounting_coverage_replay_v1": (
+            CONSTRUCTION_K7_TERMINAL_ACCOUNTING_COVERAGE_REPLAY_V1_DOMAIN
         ),
         "construction_k7_all_path_accounting_profile_v1": (
             CONSTRUCTION_K7_ALL_PATH_ACCOUNTING_PROFILE_V1_DOMAIN
