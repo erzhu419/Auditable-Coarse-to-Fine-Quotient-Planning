@@ -69,6 +69,9 @@ DOMAIN_TAGS = {
         "acfqp:v075-live-batched-causal-promotion-barrier-verification:v3"
     ),
     "bundle": "acfqp:v075-live-batched-causal-promotion-bundle:v3",
+    "bundle_verification": (
+        "acfqp:v075-live-batched-causal-promotion-bundle-verification:v3"
+    ),
 }
 if len(DOMAIN_TAGS) != len(set(DOMAIN_TAGS.values())):  # pragma: no cover
     raise RuntimeError("V3 causal promotion domains must be unique")
@@ -328,6 +331,7 @@ _DECISION_VERIFICATION_ISSUER = object()
 _BARRIER_ISSUER = object()
 _BARRIER_VERIFICATION_ISSUER = object()
 _BUNDLE_ISSUER = object()
+_BUNDLE_VERIFICATION_ISSUER = object()
 
 
 @dataclass(frozen=True, slots=True)
@@ -1467,6 +1471,235 @@ class V075LiveBatchedCausalPromotionBundleV3:
         }
 
 
+@dataclass(frozen=True, slots=True)
+class V075LiveBatchedCausalPromotionBundleVerificationV3:
+    _issuer: object = field(repr=False, compare=False)
+    bundle_id: str
+    child_execution_bundle_id: str
+    final_model_epoch_id: str
+    final_proof_id: str
+    outcome: V075LiveBatchedCausalPromotionOutcomeV3
+    executed_round_count: int
+    _verification_id: str = field(init=False, repr=False)
+
+    def __post_init__(self) -> None:
+        for value, label in (
+            (self.bundle_id, "promotion bundle verification bundle"),
+            (
+                self.child_execution_bundle_id,
+                "promotion bundle verification child bundle",
+            ),
+            (self.final_model_epoch_id, "promotion bundle verification epoch"),
+            (self.final_proof_id, "promotion bundle verification proof"),
+        ):
+            _cid(value, label)
+        if (
+            self._issuer is not _BUNDLE_VERIFICATION_ISSUER
+            or type(self.outcome) is not V075LiveBatchedCausalPromotionOutcomeV3
+            or type(self.executed_round_count) is not int
+            or self.executed_round_count not in range(0, MAXIMUM_PROMOTION_ROUNDS + 1)
+        ):
+            _fail("causal promotion bundle verification is malformed")
+        object.__setattr__(
+            self,
+            "_verification_id",
+            _hash("bundle_verification", self._payload()),
+        )
+
+    def _payload(self) -> dict[str, Any]:
+        return {
+            "schema": (
+                "acfqp.v075_live_batched_causal_promotion_bundle_"
+                "verification.v3"
+            ),
+            "schema_version": SCHEMA_VERSION,
+            "bundle_id": self.bundle_id,
+            "child_execution_bundle_id": self.child_execution_bundle_id,
+            "final_model_epoch_id": self.final_model_epoch_id,
+            "final_proof_id": self.final_proof_id,
+            "outcome": self.outcome.value,
+            "executed_round_count": self.executed_round_count,
+            "all_decisions_exactly_replayed": True,
+            "all_signed_appends_exactly_replayed": True,
+            "all_model_and_proof_barriers_exactly_replayed": True,
+            "observer_closed": False,
+            "official_execution_allowed": False,
+        }
+
+    @property
+    def verification_id(self) -> str:
+        return self._verification_id
+
+    def to_document(self) -> dict[str, Any]:
+        return {**self._payload(), "verification_id": self.verification_id}
+
+
+def _exact_bundle_verification(
+    bundle: V075LiveBatchedCausalPromotionBundleV3,
+) -> V075LiveBatchedCausalPromotionBundleVerificationV3:
+    return V075LiveBatchedCausalPromotionBundleVerificationV3(
+        _BUNDLE_VERIFICATION_ISSUER,
+        bundle.bundle_id,
+        bundle.child_execution_bundle.bundle_id,
+        bundle.final_epoch.model_epoch_id,
+        bundle.final_epoch.proof.proof_id,
+        bundle.outcome,
+        len(bundle.barriers),
+    )
+
+
+def _replay_promotion_bundle(
+    claimed: V075LiveBatchedCausalPromotionBundleV3,
+    *,
+    portable_replay: bool,
+) -> V075LiveBatchedCausalPromotionBundleV3:
+    if type(claimed) is not V075LiveBatchedCausalPromotionBundleV3:
+        _fail("promotion bundle replay requires one typed bundle")
+    child = _exact_child_bundle(
+        claimed.child_execution_bundle,
+        portable_replay=portable_replay,
+    )
+    source = child.resulting_epoch
+    previous_decision = None
+    previous_barrier = None
+    exact_decisions = []
+    exact_decision_verifications = []
+    exact_epochs = []
+    exact_barriers = []
+    exact_barrier_verifications = []
+    barrier_index = 0
+    for index, supplied_decision in enumerate(claimed.decisions, start=1):
+        exact_decision = _freeze_decision(
+            child_bundle=child,
+            source_epoch=source,
+            round_index=index,
+            previous_decision=previous_decision,
+            previous_barrier=previous_barrier,
+            portable_replay=portable_replay,
+            child_prevalidated=True,
+        )
+        exact_decision_verification = _exact_decision_verification(
+            exact_decision
+        )
+        if (
+            supplied_decision.decision_id != exact_decision.decision_id
+            or supplied_decision.canonical_bytes
+            != exact_decision.canonical_bytes
+            or claimed.decision_verifications[index - 1].to_document()
+            != exact_decision_verification.to_document()
+        ):
+            _fail("promotion bundle decision sequence differs from replay")
+        exact_decisions.append(exact_decision)
+        exact_decision_verifications.append(exact_decision_verification)
+        if (
+            exact_decision.status
+            is not V075LiveBatchedCausalPromotionDecisionStatusV3.AUTHORIZED
+        ):
+            if index != len(claimed.decisions):
+                _fail("promotion bundle continued after an exact stop decision")
+            break
+        if barrier_index >= len(claimed.resulting_epochs):
+            _fail("promotion bundle omitted an authorized resulting epoch")
+        supplied_epoch = claimed.resulting_epochs[barrier_index]
+        exact_barrier = _freeze_barrier(
+            child_bundle=child,
+            decision=exact_decision,
+            decision_verification=exact_decision_verification,
+            resulting_epoch=supplied_epoch,
+            previous_barrier=previous_barrier,
+            portable_replay=portable_replay,
+            child_prevalidated=True,
+        )
+        exact_barrier_verification = _exact_barrier_verification(exact_barrier)
+        if (
+            claimed.barriers[barrier_index].barrier_id
+            != exact_barrier.barrier_id
+            or claimed.barriers[barrier_index].canonical_bytes
+            != exact_barrier.canonical_bytes
+            or claimed.barrier_verifications[barrier_index].to_document()
+            != exact_barrier_verification.to_document()
+        ):
+            _fail("promotion bundle replanning barrier differs from replay")
+        exact_epoch = (
+            _replay_epoch(supplied_epoch)
+            if portable_replay
+            else _operational_epoch(supplied_epoch)
+        )
+        exact_epochs.append(exact_epoch)
+        exact_barriers.append(exact_barrier)
+        exact_barrier_verifications.append(exact_barrier_verification)
+        source = exact_epoch
+        previous_decision = exact_decision
+        previous_barrier = exact_barrier
+        barrier_index += 1
+    if (
+        barrier_index != len(claimed.resulting_epochs)
+        or barrier_index != len(claimed.barriers)
+        or barrier_index != len(claimed.barrier_verifications)
+    ):
+        _fail("promotion bundle contains extra resulting epochs or barriers")
+    if source.proof.outcome is planning.V075NumericalOutcomeV2.CANDIDATE:
+        outcome = (
+            V075LiveBatchedCausalPromotionOutcomeV3
+            .CANDIDATE_READY_FOR_INDEPENDENT_TOTAL_LIFT
+        )
+    elif (
+        exact_decisions[-1].status
+        is V075LiveBatchedCausalPromotionDecisionStatusV3.NO_ELIGIBLE_FRONTIER_ROW
+    ):
+        outcome = V075LiveBatchedCausalPromotionOutcomeV3.NO_ELIGIBLE_FRONTIER_ROW
+    elif barrier_index == MAXIMUM_PROMOTION_ROUNDS:
+        outcome = V075LiveBatchedCausalPromotionOutcomeV3.PROMOTION_BUDGET_EXHAUSTED
+    else:
+        _fail("promotion bundle stopped without candidate, frontier stop, or cap")
+    expected = V075LiveBatchedCausalPromotionBundleV3(
+        _BUNDLE_ISSUER,
+        child,
+        tuple(exact_decisions),
+        tuple(exact_decision_verifications),
+        tuple(exact_epochs),
+        tuple(exact_barriers),
+        tuple(exact_barrier_verifications),
+        source,
+        outcome,
+    )
+    if (
+        expected.bundle_id != claimed.bundle_id
+        or expected.canonical_bytes != claimed.canonical_bytes
+    ):
+        _fail("promotion bundle differs from exact replay")
+    return expected
+
+
+def validate_v075_trusted_owned_batched_causal_promotion_bundle_v3(
+    claimed: V075LiveBatchedCausalPromotionBundleV3,
+) -> tuple[
+    V075LiveBatchedCausalPromotionBundleV3,
+    V075LiveBatchedCausalPromotionBundleVerificationV3,
+]:
+    """Exact same-process replay without repeating portable planner replay."""
+
+    expected = _replay_promotion_bundle(claimed, portable_replay=False)
+    return expected, _exact_bundle_verification(expected)
+
+
+def verify_v075_live_batched_causal_promotion_bundle_bytes_v3(
+    *,
+    claimed: V075LiveBatchedCausalPromotionBundleV3,
+    claimed_bytes: bytes,
+) -> tuple[
+    V075LiveBatchedCausalPromotionBundleV3,
+    V075LiveBatchedCausalPromotionBundleVerificationV3,
+]:
+    document = _strict_document(claimed_bytes, "causal promotion bundle")
+    expected = _replay_promotion_bundle(claimed, portable_replay=True)
+    if set(document) != set(expected.to_document()) or claimed_bytes != (
+        expected.canonical_bytes
+    ):
+        _fail("causal promotion bundle bytes differ from exact replay")
+    return expected, _exact_bundle_verification(expected)
+
+
 def execute_v075_live_batched_causal_promotions_v3(
     *,
     controller: control.V075ConstructionControlledPrivateObserverV2,
@@ -1603,6 +1836,7 @@ __all__ = (
     "V075LiveBatchedCausalPromotionBarrierV3",
     "V075LiveBatchedCausalPromotionBarrierVerificationV3",
     "V075LiveBatchedCausalPromotionBundleV3",
+    "V075LiveBatchedCausalPromotionBundleVerificationV3",
     "V075LiveBatchedCausalPromotionDecisionStatusV3",
     "V075LiveBatchedCausalPromotionDecisionV3",
     "V075LiveBatchedCausalPromotionDecisionVerificationV3",
@@ -1612,6 +1846,8 @@ __all__ = (
     "execute_v075_live_batched_causal_promotions_v3",
     "freeze_v075_live_batched_causal_promotion_barrier_v3",
     "freeze_v075_live_batched_causal_promotion_decision_v3",
+    "validate_v075_trusted_owned_batched_causal_promotion_bundle_v3",
     "verify_v075_live_batched_causal_promotion_barrier_bytes_v3",
     "verify_v075_live_batched_causal_promotion_decision_bytes_v3",
+    "verify_v075_live_batched_causal_promotion_bundle_bytes_v3",
 )

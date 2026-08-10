@@ -8,6 +8,7 @@ from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 from acfqp import v075_batch_native_planning_backend_v2 as planning
 from acfqp import v075_live_batched_causal_child_authority_v3 as causal
 from acfqp import v075_live_batched_causal_child_execution_v3 as execution
+from acfqp import v075_live_batched_causal_budget_closure_v3 as budget_closure
 from acfqp import v075_live_batched_causal_promotion_v3 as promotion
 from acfqp import v075_live_dynamic_acquisition_authority_v2 as dynamic
 from acfqp import v075_observer_signed_batch_control_authority_v2 as control
@@ -73,7 +74,13 @@ def executed_causal_child_union():
             child_execution_bundle=bundle,
         )
     )
-    closed = controller.close_and_reconcile_v2()
+    closed_occurrence, closed_verification = (
+        budget_closure.close_v075_live_batched_causal_budget_exhausted_v3(
+            controller=controller,
+            promotion_bundle=promotion_bundle,
+        )
+    )
+    closed = closed_occurrence.observer_closure
     return {
         "namespace": namespace,
         "schedule": schedule,
@@ -84,6 +91,8 @@ def executed_causal_child_union():
         "authorization_verification": authorization_verification,
         "bundle": bundle,
         "promotion_bundle": promotion_bundle,
+        "budget_closure": closed_occurrence,
+        "budget_closure_verification": closed_verification,
         "closed": closed,
     }
 
@@ -362,3 +371,32 @@ def test_promotion_result_is_honestly_candidate_or_budget_exhausted(
     assert document["semantic_terminal_issued"] is False
     assert document["counter_records_issued"] == 0
     assert document["official_execution_allowed"] is False
+
+
+def test_budget_exhaustion_closes_observer_without_minting_terminal_authority(
+    executed_causal_child_union,
+) -> None:
+    values = executed_causal_child_union
+    promoted = values["promotion_bundle"]
+    occurrence = values["budget_closure"]
+    verification = values["budget_closure_verification"]
+    document = occurrence.to_document()
+    replay = occurrence.budget_replay
+    assert occurrence.observer_closure is values["closed"]
+    assert replay.executed_round_count == 2
+    assert replay.executed_promotion_draw_count == 4_096
+    assert replay.final_model_epoch_id == promoted.final_epoch.model_epoch_id
+    assert replay.final_proof_id == promoted.final_epoch.proof.proof_id
+    assert document["observer_closed_and_exactly_reconciled"] is True
+    assert document["selected_terminal_class"] == (
+        "ATTEMPT_CLOSURE_NONCERTIFICATE"
+    )
+    assert document["selected_terminal_code"] == "ATTEMPT_BUDGET_EXHAUSTED"
+    assert document["semantic_terminal_verifier_status"] == (
+        "TRUSTED_BUDGET_REPLAY_NOT_IMPLEMENTED"
+    )
+    assert document["terminal_artifact_issued"] is False
+    assert document["counter_records_issued"] == 0
+    assert document["work_vector_issued"] is False
+    assert verification.closure_id == occurrence.closure_id
+    assert verification.trusted_budget_replay_id == replay.replay_id
