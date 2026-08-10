@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 from pathlib import Path
 import signal
 import socket
+import struct
 import sys
 import uuid
 
@@ -123,9 +125,10 @@ def main() -> int:
             control_fd=control_channel,
         )
         supervisor_pidfd = -1
-        facts = probe.run_nested_creator_pidfd_probe_v1(
+        observed_facts = probe.run_nested_creator_pidfd_probe_observed_v2(
             session, control_cgroup_fd=control_fd
         )
+        facts = observed_facts.raw_facts_v1
         probe.shutdown_nested_creator_supervisor_v1(session)
         reap = probe.finish_nested_creator_supervisor_reap_v1(session)
         session = None
@@ -134,6 +137,68 @@ def main() -> int:
         supervisor_pid = -1
         if _read_at(control_fd, "cgroup.procs"):
             raise RuntimeError("control cgroup did not become empty")
+        observed_document = observed_facts.to_document()
+        ready_observation = observed_document["supervisor_ready_observation"]
+        observations = observed_document["protocol_receive_observations"]
+        all_observations = [ready_observation, *observations]
+
+        def decoded_frame(observation: dict[str, object]) -> dict[str, object]:
+            frame = probe.NativeProtocolFrameV1.from_bytes(
+                bytes.fromhex(str(observation["raw_payload_hex"]))
+            )
+            return {
+                "opcode": frame.opcode,
+                "sequence": frame.sequence,
+                "nonce_hex": frame.nonce.hex(),
+                "pid": frame.pid,
+                "status": frame.status,
+                "flags": frame.flags,
+                "fact_a": frame.fact_a,
+            }
+
+        def ancillary_matches(observation: dict[str, object]) -> bool:
+            ancillary = observation["ancillary"]
+            credentials = observation["credentials"]
+            rights_count = observation["rights_count"]
+            credential_rows = [
+                row
+                for row in ancillary
+                if row["kind"] == socket.SCM_CREDENTIALS
+            ]
+            rights_rows = [
+                row for row in ancillary if row["kind"] == socket.SCM_RIGHTS
+            ]
+            if len(credential_rows) != 1:
+                return False
+            raw_credentials = struct.unpack(
+                "=iII", bytes.fromhex(credential_rows[0]["data_hex"])
+            )
+            if raw_credentials != (
+                credentials["pid"],
+                credentials["uid"],
+                credentials["gid"],
+            ):
+                return False
+            return (
+                (len(rights_rows) == 1 and rights_rows[0]["byte_count"] == 4)
+                if rights_count == 1
+                else not rights_rows
+            )
+        mutation_rejections = 0
+        for target, key, value in (
+            (observed_facts.supervisor_ready_observation, "opcode", 0),
+            (
+                observed_facts.protocol_receive_observations[0][
+                    "installed_pidfd_facts"
+                ][0],
+                "pid",
+                0,
+            ),
+        ):
+            try:
+                target[key] = value
+            except TypeError:
+                mutation_rejections += 1
         output = {
             "probe_pid": facts.probe_pid,
             "supervisor_pid": facts.supervisor_pid,
@@ -147,6 +212,48 @@ def main() -> int:
             "two_birth_prefix_authority_present": facts.to_document()[
                 "two_birth_prefix_authority_present"
             ],
+            "ready_payload_hex_bytes": len(
+                bytes.fromhex(
+                    observed_document["supervisor_ready_observation"][
+                        "raw_payload_hex"
+                    ]
+                )
+            ),
+            "ready_credential_pid": observed_document[
+                "supervisor_ready_observation"
+            ]["credentials"]["pid"],
+            "receive_count": len(observations),
+            "receive_opcodes": [item["opcode"] for item in observations],
+            "receive_credential_pids": [
+                item["credentials"]["pid"] for item in observations
+            ],
+            "receive_rights_counts": [item["rights_count"] for item in observations],
+            "all_payloads_exact_frame_size": all(
+                len(bytes.fromhex(item["raw_payload_hex"])) == role.FRAME_BYTES
+                for item in observations
+            ),
+            "all_payload_hashes_match": all(
+                hashlib.sha256(bytes.fromhex(item["raw_payload_hex"])).hexdigest()
+                == item["payload_sha256"]
+                for item in all_observations
+            ),
+            "all_decoded_frames_match": all(
+                decoded_frame(item) == item["decoded_frame"]
+                for item in all_observations
+            ),
+            "all_ancillary_semantics_match": all(
+                ancillary_matches(item) for item in all_observations
+            ),
+            "installed_pidfd_pid": observations[0]["installed_pidfd_facts"][0][
+                "pid"
+            ],
+            "installed_pidfd_cloexec": observations[0][
+                "installed_pidfd_facts"
+            ][0]["cloexec"],
+            "installed_pidfd_descriptor_flags": observations[0][
+                "installed_pidfd_facts"
+            ][0]["descriptor_flags"],
+            "mutation_rejections": mutation_rejections,
         }
         print(json.dumps(output, sort_keys=True, separators=(",", ":")))
         return 0

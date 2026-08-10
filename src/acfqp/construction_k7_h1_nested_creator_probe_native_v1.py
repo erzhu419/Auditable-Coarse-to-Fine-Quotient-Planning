@@ -19,6 +19,7 @@ from dataclasses import dataclass, field
 import copy
 import errno
 import fcntl
+import hashlib
 import mmap
 import os
 from pathlib import Path
@@ -259,6 +260,64 @@ class NestedCreatorProbeRawFactsV1:
         }
 
 
+@dataclass(frozen=True, slots=True)
+class NestedCreatorProbeObservedFactsV2:
+    """V1 semantics plus replayable SCM/rights receive observations."""
+
+    raw_facts_v1: NestedCreatorProbeRawFactsV1 = field(repr=False)
+    supervisor_ready_observation: Mapping[str, Any]
+    protocol_receive_observations: tuple[Mapping[str, Any], ...]
+    _issuer: object = field(default=None, repr=False, compare=False)
+
+    def __post_init__(self) -> None:
+        if (
+            self._issuer is not _FACTS_ISSUER
+            or type(self.raw_facts_v1) is not NestedCreatorProbeRawFactsV1
+            or self.raw_facts_v1._issuer is not _FACTS_ISSUER
+        ):
+            _fail("nested-creator observed V2 facts are caller-minted")
+        object.__setattr__(
+            self,
+            "supervisor_ready_observation",
+            _freeze_json(self.supervisor_ready_observation),
+        )
+        object.__setattr__(
+            self,
+            "protocol_receive_observations",
+            _freeze_json(self.protocol_receive_observations),
+        )
+
+    def __copy__(self) -> NoReturn:
+        _fail("nested-creator observed V2 facts cannot be copied")
+
+    def __deepcopy__(self, _memo: object) -> NoReturn:
+        _fail("nested-creator observed V2 facts cannot be copied")
+
+    def __reduce__(self) -> NoReturn:
+        _fail("nested-creator observed V2 facts cannot be copied or pickled")
+
+    def to_document(self) -> dict[str, Any]:
+        return {
+            "schema": "acfqp.k7_h1_nested_creator_probe_observed_facts.v2",
+            "schema_version": "2.0.0",
+            "profile_key": (
+                "construction_k7_h1_nested_creator_probe_observed_v2"
+            ),
+            "raw_facts_v1": self.raw_facts_v1.to_document(),
+            "supervisor_ready_observation": _thaw_json(
+                self.supervisor_ready_observation
+            ),
+            "protocol_receive_observations": _thaw_json(
+                self.protocol_receive_observations
+            ),
+            "nested_receive_credential_observations_present": True,
+            "nested_receive_rights_observations_present": True,
+            "portable_checkpoint_authority_present": False,
+            "two_birth_prefix_authority_present": False,
+            "official_execution_allowed": False,
+        }
+
+
 @dataclass(slots=True)
 class NestedCreatorProbeLiveSessionV1:
     """Owner-bound exact native SUPERVISOR session after its READY frame."""
@@ -273,14 +332,23 @@ class NestedCreatorProbeLiveSessionV1:
     owner_pid: int
     owner_thread_id: int
     state: str
+    supervisor_ready_observation: Mapping[str, Any] = field(
+        default_factory=dict, repr=False
+    )
     active_probe_pid: int = -1
     raw_facts: NestedCreatorProbeRawFactsV1 | None = field(default=None, repr=False)
+    observed_facts_v2: NestedCreatorProbeObservedFactsV2 | None = field(
+        default=None, repr=False
+    )
     abort_facts: Mapping[str, Any] | None = field(default=None, repr=False)
     _issuer: object = field(default=None, repr=False)
 
     def __post_init__(self) -> None:
         if self._issuer is not _SESSION_ISSUER:
             _fail("nested-creator live session is caller-minted")
+        self.supervisor_ready_observation = _freeze_json(
+            self.supervisor_ready_observation
+        )
 
     def __copy__(self) -> NoReturn:
         _fail("nested-creator live session cannot be copied")
@@ -379,6 +447,7 @@ def _recv_frame(
     *,
     expected_credentials: tuple[int, int, int],
     expected_rights: int,
+    observation_sink: list[dict[str, Any]] | None = None,
 ) -> tuple[NativeProtocolFrameV1, list[int]]:
     wrapper = socket.socket(fileno=descriptor)
     rights: list[int] = []
@@ -435,7 +504,80 @@ def _recv_frame(
             for descriptor_value in rights
         ):
             _fail("nested-creator installed right lost CLOEXEC")
-        return NativeProtocolFrameV1.from_bytes(raw), rights
+        frame = NativeProtocolFrameV1.from_bytes(raw)
+        if observation_sink is not None:
+            if type(observation_sink) is not list:
+                _fail("nested-creator observation sink changed type")
+            if address is None:
+                address_document: dict[str, Any] = {"kind": "NONE"}
+            elif type(address) is str:
+                address_document = {"kind": "TEXT", "value": address}
+            else:
+                address_document = {
+                    "kind": "BYTES_HEX",
+                    "value": address.hex(),
+                }
+            if peer_address is None:
+                peer_document: dict[str, Any] = {"kind": "NONE"}
+            elif type(peer_address) is str:
+                peer_document = {"kind": "TEXT", "value": peer_address}
+            else:
+                peer_document = {
+                    "kind": "BYTES_HEX",
+                    "value": peer_address.hex(),
+                }
+            observation_sink.append(
+                {
+                    "event_index": len(observation_sink),
+                    "opcode": frame.opcode,
+                    "sequence": frame.sequence,
+                    "frame_pid": frame.pid,
+                    "payload_sha256": hashlib.sha256(raw).hexdigest(),
+                    "payload_byte_count": len(raw),
+                    "raw_payload_hex": raw.hex(),
+                    "decoded_frame": {
+                        "opcode": frame.opcode,
+                        "sequence": frame.sequence,
+                        "nonce_hex": frame.nonce.hex(),
+                        "pid": frame.pid,
+                        "status": frame.status,
+                        "flags": frame.flags,
+                        "fact_a": frame.fact_a,
+                    },
+                    "credentials": {
+                        "pid": credentials[0][0],
+                        "uid": credentials[0][1],
+                        "gid": credentials[0][2],
+                    },
+                    "rights_count": len(rights),
+                    "installed_pidfd_facts": [
+                        {
+                            **_pidfd_fact(installed_fd),
+                            "descriptor_flags": fcntl.fcntl(
+                                installed_fd, fcntl.F_GETFD
+                            ),
+                            "cloexec": bool(
+                                fcntl.fcntl(installed_fd, fcntl.F_GETFD)
+                                & fcntl.FD_CLOEXEC
+                            ),
+                        }
+                        for installed_fd in rights
+                    ],
+                    "recv_flags": flags,
+                    "address": address_document,
+                    "connected_peer_address": peer_document,
+                    "ancillary": [
+                        {
+                            "level": level,
+                            "kind": kind,
+                            "byte_count": len(data),
+                            "data_hex": data.hex(),
+                        }
+                        for level, kind, data in ancillary
+                    ],
+                }
+            )
+        return frame, rights
     except BaseException:
         for installed_fd in installed:
             try:
@@ -675,10 +817,12 @@ def begin_nested_creator_supervisor_session_v1(
         _fail("nested-creator supervisor session inputs are invalid")
     _set_passcred(control_fd, True)
     expected_credentials = (supervisor_pid, os.getuid(), os.getgid())
+    ready_observations: list[dict[str, Any]] = []
     frame, rights = _recv_frame(
         control_fd,
         expected_credentials=expected_credentials,
         expected_rights=0,
+        observation_sink=ready_observations,
     )
     if rights or frame != NativeProtocolFrameV1(
         role_v1.OPCODES["SUPERVISOR_READY"],
@@ -706,6 +850,7 @@ def begin_nested_creator_supervisor_session_v1(
         owner_pid=os.getpid(),
         owner_thread_id=threading.get_ident(),
         state="SUPERVISOR_READY",
+        supervisor_ready_observation=_freeze_json(ready_observations[0]),
         _issuer=_SESSION_ISSUER,
     )
     with _SESSION_LOCK:
@@ -732,10 +877,11 @@ def _require_session(
     _require_live_pidfd(session.supervisor_pidfd)
 
 
-def run_nested_creator_pidfd_probe_v1(
+def _run_nested_creator_pidfd_probe_impl_v1(
     session: NestedCreatorProbeLiveSessionV1,
     *,
     control_cgroup_fd: int,
+    observation_sink: list[dict[str, Any]] | None,
 ) -> NestedCreatorProbeRawFactsV1:
     """Run one real nested probe and leave the exact supervisor live."""
 
@@ -814,6 +960,7 @@ def run_nested_creator_pidfd_probe_v1(
                 session.guardian_gid,
             ),
             expected_rights=1,
+            observation_sink=observation_sink,
         )
         probe_pidfd = installed[0]
         if (
@@ -833,11 +980,13 @@ def run_nested_creator_pidfd_probe_v1(
             parent_gate.fileno(),
             expected_credentials=(probe_pid, session.guardian_uid, session.guardian_gid),
             expected_rights=0,
+            observation_sink=observation_sink,
         )
         child_ready, rights_two = _recv_frame(
             parent_gate.fileno(),
             expected_credentials=(probe_pid, session.guardian_uid, session.guardian_gid),
             expected_rights=0,
+            observation_sink=observation_sink,
         )
         if (
             rights
@@ -885,6 +1034,7 @@ def run_nested_creator_pidfd_probe_v1(
             parent_gate.fileno(),
             expected_credentials=(probe_pid, session.guardian_uid, session.guardian_gid),
             expected_rights=0,
+            observation_sink=observation_sink,
         )
         if echo_rights or release_echo != NativeProtocolFrameV1(
             role_v1.OPCODES["CHILD_RELEASE_ECHO"], 1, nonce, probe_pid
@@ -899,6 +1049,7 @@ def run_nested_creator_pidfd_probe_v1(
                 session.guardian_gid,
             ),
             expected_rights=0,
+            observation_sink=observation_sink,
         )
         if (
             reap_rights
@@ -980,6 +1131,47 @@ def run_nested_creator_pidfd_probe_v1(
             child_gate.close()
         if parent_gate is not None:
             parent_gate.close()
+
+
+def run_nested_creator_pidfd_probe_v1(
+    session: NestedCreatorProbeLiveSessionV1,
+    *,
+    control_cgroup_fd: int,
+) -> NestedCreatorProbeRawFactsV1:
+    """Run the registered V1 probe summary without issuing V2 observations."""
+
+    return _run_nested_creator_pidfd_probe_impl_v1(
+        session,
+        control_cgroup_fd=control_cgroup_fd,
+        observation_sink=None,
+    )
+
+
+def run_nested_creator_pidfd_probe_observed_v2(
+    session: NestedCreatorProbeLiveSessionV1,
+    *,
+    control_cgroup_fd: int,
+) -> NestedCreatorProbeObservedFactsV2:
+    """Run the probe and retain every nested receive credential/right fact."""
+
+    observations: list[dict[str, Any]] = []
+    raw_facts = _run_nested_creator_pidfd_probe_impl_v1(
+        session,
+        control_cgroup_fd=control_cgroup_fd,
+        observation_sink=observations,
+    )
+    if len(observations) != 5 or [
+        observation["event_index"] for observation in observations
+    ] != list(range(5)):
+        _fail("nested-creator V2 receive observation inventory changed")
+    facts = NestedCreatorProbeObservedFactsV2(
+        raw_facts_v1=raw_facts,
+        supervisor_ready_observation=session.supervisor_ready_observation,
+        protocol_receive_observations=tuple(observations),
+        _issuer=_FACTS_ISSUER,
+    )
+    session.observed_facts_v2 = facts
+    return facts
 
 
 def abort_nested_creator_supervisor_session_v1(
@@ -1129,6 +1321,7 @@ def finish_nested_creator_supervisor_reap_v1(
 __all__ = (
     "ConstructionK7H1NestedCreatorProbeNativeV1Error",
     "NestedCreatorProbeLiveSessionV1",
+    "NestedCreatorProbeObservedFactsV2",
     "NestedCreatorProbeRawFactsV1",
     "NativeProtocolFrameV1",
     "PROFILE_KEY",
@@ -1140,5 +1333,6 @@ __all__ = (
     "finish_nested_creator_supervisor_reap_v1",
     "observe_nested_creator_control_population_v1",
     "run_nested_creator_pidfd_probe_v1",
+    "run_nested_creator_pidfd_probe_observed_v2",
     "shutdown_nested_creator_supervisor_v1",
 )

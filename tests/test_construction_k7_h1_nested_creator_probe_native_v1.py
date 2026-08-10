@@ -79,6 +79,13 @@ def test_runtime_authority_types_are_not_caller_mintable_or_copyable() -> None:
         copy.deepcopy(facts)
     with pytest.raises(probe.ConstructionK7H1NestedCreatorProbeNativeV1Error):
         pickle.dumps(facts)
+    observed = object.__new__(probe.NestedCreatorProbeObservedFactsV2)
+    with pytest.raises(probe.ConstructionK7H1NestedCreatorProbeNativeV1Error):
+        copy.copy(observed)
+    with pytest.raises(probe.ConstructionK7H1NestedCreatorProbeNativeV1Error):
+        copy.deepcopy(observed)
+    with pytest.raises(probe.ConstructionK7H1NestedCreatorProbeNativeV1Error):
+        pickle.dumps(observed)
 
 
 def test_import_and_verification_do_not_invoke_toolchain(monkeypatch) -> None:
@@ -160,3 +167,29 @@ def test_real_non_guardian_creator_birth_and_reap() -> None:
     assert result["creator_reap_opcode"] == role.OPCODES["PROBE_REAP"]
     assert result["supervisor_reap"] is True
     assert result["two_birth_prefix_authority_present"] is False
+    assert result["ready_payload_hex_bytes"] == role.FRAME_BYTES
+    assert result["ready_credential_pid"] == result["supervisor_pid"]
+    assert result["receive_count"] == 5
+    assert result["receive_opcodes"] == [
+        role.OPCODES["PROBE_PARENT_RETURN"],
+        role.OPCODES["CHILD_CELL_WITHDRAWN"],
+        role.OPCODES["CHILD_GATE_READY"],
+        role.OPCODES["CHILD_RELEASE_ECHO"],
+        role.OPCODES["PROBE_REAP"],
+    ]
+    assert result["receive_credential_pids"] == [
+        result["supervisor_pid"],
+        result["probe_pid"],
+        result["probe_pid"],
+        result["probe_pid"],
+        result["supervisor_pid"],
+    ]
+    assert result["receive_rights_counts"] == [1, 0, 0, 0, 0]
+    assert result["all_payloads_exact_frame_size"] is True
+    assert result["all_payload_hashes_match"] is True
+    assert result["all_decoded_frames_match"] is True
+    assert result["all_ancillary_semantics_match"] is True
+    assert result["installed_pidfd_pid"] == result["probe_pid"]
+    assert result["installed_pidfd_cloexec"] is True
+    assert result["installed_pidfd_descriptor_flags"] & 1 == 1
+    assert result["mutation_rejections"] == 2
