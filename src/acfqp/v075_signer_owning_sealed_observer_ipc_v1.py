@@ -22,6 +22,7 @@ from copy import deepcopy
 from dataclasses import dataclass, field
 import ctypes
 import fcntl
+from functools import lru_cache
 import hashlib
 import io
 import json
@@ -533,6 +534,13 @@ def _program_payload(
     }
 
 
+@lru_cache(maxsize=4)
+def _immutable_bytes_sha256(raw: bytes) -> str:
+    """Hash immutable archive bytes once per distinct archive value."""
+
+    return hashlib.sha256(raw).hexdigest()
+
+
 @dataclass(frozen=True, slots=True)
 class V075SignerOwningSealedObserverServiceProfileV1:
     source_archive_sha256: str
@@ -570,7 +578,7 @@ class V075SignerOwningSealedObserverServiceProfileV1:
         # the source-snapshot content ID.
         if (
             len(self._archive_bytes) != self.source_archive_byte_count
-            or hashlib.sha256(self._archive_bytes).hexdigest()
+            or _immutable_bytes_sha256(self._archive_bytes)
             != self.source_archive_sha256
             or _archive_entries(self._archive_bytes) != self.source_entries
         ):
@@ -652,7 +660,7 @@ class V075SignerOwningSealedObserverServiceProfileV1:
         if (
             self._archive_bytes is not self._validated_archive_bytes
             or len(self._archive_bytes) != self.source_archive_byte_count
-            or hashlib.sha256(self._archive_bytes).hexdigest()
+            or _immutable_bytes_sha256(self._archive_bytes)
             != self.source_archive_sha256
             or _hash(
                 "source_snapshot",

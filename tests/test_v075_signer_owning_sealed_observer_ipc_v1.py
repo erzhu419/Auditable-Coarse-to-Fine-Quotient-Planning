@@ -1223,6 +1223,27 @@ def test_profile_to_document_is_a_deep_copy(profile) -> None:
     assert current["source_snapshot"]["entries"][0]["path"] != "forged.py"
 
 
+def test_profile_reuses_exact_digest_of_immutable_archive(
+    profile,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    archive = profile._archive_bytes  # noqa: SLF001
+    original_sha256 = ipc.hashlib.sha256
+    archive_hash_calls = 0
+
+    def counted_sha256(raw=b""):
+        nonlocal archive_hash_calls
+        if raw is archive:
+            archive_hash_calls += 1
+        return original_sha256(raw)
+
+    ipc._immutable_bytes_sha256.cache_clear()  # noqa: SLF001
+    monkeypatch.setattr(ipc.hashlib, "sha256", counted_sha256)
+    profile.to_document()
+    profile.to_document()
+    assert archive_hash_calls == 1
+
+
 def test_profile_rejects_even_byte_identical_archive_replacement(profile) -> None:
     original_archive = profile._archive_bytes  # noqa: SLF001
     replacement = bytes(bytearray(original_archive))
