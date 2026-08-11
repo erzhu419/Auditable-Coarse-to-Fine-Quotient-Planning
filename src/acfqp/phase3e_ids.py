@@ -243,6 +243,24 @@ CONSTRUCTION_K7_QUERY_BOUND_TRANSACTION_2_GROUND_TRANSACTION_V1_DOMAIN = (
 CONSTRUCTION_K7_QUERY_BOUND_FINAL_LOCAL_REPLANNING_V1_DOMAIN = (
     "acfqp:construction-k7-query-bound-final-local-replanning:v1"
 )
+CONSTRUCTION_K7_QUERY_BOUND_DIRECT_FALLBACK_ROW_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-direct-fallback-row:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_DIRECT_FALLBACK_INVENTORY_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-direct-fallback-inventory:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_DIRECT_FALLBACK_POLICY_DECISION_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-direct-fallback-policy-decision:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_DIRECT_FALLBACK_WORK_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-direct-fallback-work:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_DIRECT_FALLBACK_RESULT_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-direct-fallback-result:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_DIRECT_FALLBACK_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-direct-fallback-verification:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -2267,6 +2285,24 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_query_bound_final_local_replanning_v1": (
             CONSTRUCTION_K7_QUERY_BOUND_FINAL_LOCAL_REPLANNING_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_direct_fallback_row_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_DIRECT_FALLBACK_ROW_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_direct_fallback_inventory_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_DIRECT_FALLBACK_INVENTORY_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_direct_fallback_policy_decision_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_DIRECT_FALLBACK_POLICY_DECISION_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_direct_fallback_work_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_DIRECT_FALLBACK_WORK_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_direct_fallback_result_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_DIRECT_FALLBACK_RESULT_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_direct_fallback_verification_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_DIRECT_FALLBACK_VERIFICATION_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN

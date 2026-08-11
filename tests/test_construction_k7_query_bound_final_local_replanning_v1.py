@@ -26,6 +26,7 @@ def test_domain_and_public_surface_remain_additive() -> None:
         "LOCAL_DOMAINS",
         "QueryBoundFinalLocalReplanningV1",
         "compile_and_replan_final_local_transaction_v1",
+        "require_query_bound_final_local_replanning_v1",
         "verify_query_bound_final_local_replanning_v1",
     }
 

@@ -337,10 +337,29 @@ def verify_query_bound_final_local_replanning_v1(
     return expected
 
 
+def require_query_bound_final_local_replanning_v1(
+    claimed: QueryBoundFinalLocalReplanningV1,
+) -> QueryBoundFinalLocalReplanningV1:
+    """Revalidate one issuer-minted in-process result without replanning.
+
+    Operational continuations use this boundary after the exact final-local
+    compiler has already issued the object.  Portable or independent trust
+    boundaries must continue to call
+    :func:`verify_query_bound_final_local_replanning_v1`, which recompiles the
+    signed deltas, model, and proof.
+    """
+
+    if type(claimed) is not QueryBoundFinalLocalReplanningV1:
+        _fail("final local replanning result has a foreign type")
+    claimed.__post_init__(_RESULT_ISSUER)
+    return claimed
+
+
 __all__ = [
     "ConstructionK7QueryBoundFinalLocalReplanningV1Error",
     "LOCAL_DOMAINS",
     "QueryBoundFinalLocalReplanningV1",
     "compile_and_replan_final_local_transaction_v1",
+    "require_query_bound_final_local_replanning_v1",
     "verify_query_bound_final_local_replanning_v1",
 ]
