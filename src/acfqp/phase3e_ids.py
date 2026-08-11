@@ -597,6 +597,27 @@ CONSTRUCTION_K7_POSITIVE_PROMOTED_OVERLAY_INDEPENDENT_VERIFICATION_V1_DOMAIN = (
 CONSTRUCTION_K7_POSITIVE_PROMOTED_STAGE_ACCOUNTING_V1_DOMAIN = (
     "acfqp:construction-k7-positive-promoted-stage-accounting:v1"
 )
+CONSTRUCTION_K7_POSITIVE_PROMOTED_SHARED_MEASUREMENT_V1_DOMAIN = (
+    "acfqp:construction-k7-positive-promoted-shared-measurement:v1"
+)
+CONSTRUCTION_K7_POSITIVE_PROMOTED_SHARED_RECEIPT_V1_DOMAIN = (
+    "acfqp:construction-k7-positive-promoted-shared-receipt:v1"
+)
+CONSTRUCTION_K7_POSITIVE_PROMOTED_SHARED_RECEIPT_SET_V1_DOMAIN = (
+    "acfqp:construction-k7-positive-promoted-shared-receipt-set:v1"
+)
+CONSTRUCTION_K7_POSITIVE_PROMOTED_PATH_AGGREGATION_V1_DOMAIN = (
+    "acfqp:construction-k7-positive-promoted-path-aggregation:v1"
+)
+CONSTRUCTION_K7_POSITIVE_PROMOTED_OCCURRENCE_ACCOUNTING_V1_DOMAIN = (
+    "acfqp:construction-k7-positive-promoted-occurrence-accounting:v1"
+)
+CONSTRUCTION_K7_POSITIVE_PROMOTED_OUTPUT_RENDERER_V1_DOMAIN = (
+    "acfqp:construction-k7-positive-promoted-output-renderer:v1"
+)
+CONSTRUCTION_K7_POSITIVE_PROMOTED_OUTPUT_COMMIT_V1_DOMAIN = (
+    "acfqp:construction-k7-positive-promoted-output-commit:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -2975,6 +2996,27 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_positive_promoted_stage_accounting_v1": (
             CONSTRUCTION_K7_POSITIVE_PROMOTED_STAGE_ACCOUNTING_V1_DOMAIN
+        ),
+        "construction_k7_positive_promoted_shared_measurement_v1": (
+            CONSTRUCTION_K7_POSITIVE_PROMOTED_SHARED_MEASUREMENT_V1_DOMAIN
+        ),
+        "construction_k7_positive_promoted_shared_receipt_v1": (
+            CONSTRUCTION_K7_POSITIVE_PROMOTED_SHARED_RECEIPT_V1_DOMAIN
+        ),
+        "construction_k7_positive_promoted_shared_receipt_set_v1": (
+            CONSTRUCTION_K7_POSITIVE_PROMOTED_SHARED_RECEIPT_SET_V1_DOMAIN
+        ),
+        "construction_k7_positive_promoted_path_aggregation_v1": (
+            CONSTRUCTION_K7_POSITIVE_PROMOTED_PATH_AGGREGATION_V1_DOMAIN
+        ),
+        "construction_k7_positive_promoted_occurrence_accounting_v1": (
+            CONSTRUCTION_K7_POSITIVE_PROMOTED_OCCURRENCE_ACCOUNTING_V1_DOMAIN
+        ),
+        "construction_k7_positive_promoted_output_renderer_v1": (
+            CONSTRUCTION_K7_POSITIVE_PROMOTED_OUTPUT_RENDERER_V1_DOMAIN
+        ),
+        "construction_k7_positive_promoted_output_commit_v1": (
+            CONSTRUCTION_K7_POSITIVE_PROMOTED_OUTPUT_COMMIT_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
