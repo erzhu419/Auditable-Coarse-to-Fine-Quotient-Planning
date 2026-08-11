@@ -504,6 +504,36 @@ CONSTRUCTION_K7_RECOVERY_ELIGIBLE_STAGE_ACCOUNTING_V1_DOMAIN = (
 CONSTRUCTION_K7_RECOVERY_ELIGIBLE_NATIVE_ACCOUNTING_V1_DOMAIN = (
     "acfqp:construction-k7-recovery-eligible-native-accounting:v1"
 )
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_RUNTIME_PREPARATION_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-runtime-preparation:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_SUPERVISED_REQUEST_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-supervised-request:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_OPERATIONAL_TRACE_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-operational-trace:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_SHARED_MEASUREMENT_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-shared-measurement:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_SHARED_RECEIPT_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-shared-receipt:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_SHARED_RECEIPT_SET_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-shared-receipt-set:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_PATH_AGGREGATION_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-path-aggregation:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_OCCURRENCE_ACCOUNTING_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-occurrence-accounting:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_OUTPUT_RENDERER_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-output-renderer:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_OUTPUT_COMMIT_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-output-commit:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -2789,6 +2819,36 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_recovery_eligible_native_accounting_v1": (
             CONSTRUCTION_K7_RECOVERY_ELIGIBLE_NATIVE_ACCOUNTING_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_runtime_preparation_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_RUNTIME_PREPARATION_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_supervised_request_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_SUPERVISED_REQUEST_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_operational_trace_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_OPERATIONAL_TRACE_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_shared_measurement_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_SHARED_MEASUREMENT_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_shared_receipt_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_SHARED_RECEIPT_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_shared_receipt_set_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_SHARED_RECEIPT_SET_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_path_aggregation_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_PATH_AGGREGATION_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_occurrence_accounting_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_OCCURRENCE_ACCOUNTING_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_output_renderer_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_OUTPUT_RENDERER_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_output_commit_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_OUTPUT_COMMIT_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
