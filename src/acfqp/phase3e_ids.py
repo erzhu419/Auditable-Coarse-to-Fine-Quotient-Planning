@@ -573,6 +573,9 @@ CONSTRUCTION_K7_RECOVERY_OVERLAY_PROMOTED_CONSUMPTION_V1_DOMAIN = (
 CONSTRUCTION_K7_RECOVERY_OVERLAY_PROMOTION_RESULT_V1_DOMAIN = (
     "acfqp:construction-k7-recovery-overlay-promotion-result:v1"
 )
+CONSTRUCTION_K7_RECOVERY_OVERLAY_PROMOTION_INDEPENDENT_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-overlay-promotion-independent-verification:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -2927,6 +2930,9 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_recovery_overlay_promotion_result_v1": (
             CONSTRUCTION_K7_RECOVERY_OVERLAY_PROMOTION_RESULT_V1_DOMAIN
+        ),
+        "construction_k7_recovery_overlay_promotion_independent_verification_v1": (
+            CONSTRUCTION_K7_RECOVERY_OVERLAY_PROMOTION_INDEPENDENT_VERIFICATION_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
