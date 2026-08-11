@@ -228,6 +228,23 @@ def test_content_id_is_the_normative_full_domain_separated_sha256() -> None:
     )
 
 
+def test_registry_includes_causal_promotion_terminal_and_bundle_verifier_domains() -> None:
+    domains = {
+        ids.V075_K7_CAUSAL_PROMOTION_BUDGET_REPLAY_ATTESTATION_V1_DOMAIN,
+        ids.V075_K7_CAUSAL_PROMOTION_ROUTE_CONTEXT_V1_DOMAIN,
+        ids.V075_K7_CAUSAL_PROMOTION_ROUTE_ATTEMPT_V1_DOMAIN,
+        ids.V075_K7_CAUSAL_PROMOTION_TERMINAL_DERIVATION_V1_DOMAIN,
+        ids.V075_K7_CAUSAL_PROMOTION_COMPLETE_BUNDLE_VERIFICATION_PROFILE_V1_DOMAIN,
+        ids.V075_K7_CAUSAL_PROMOTION_COMPLETE_BUNDLE_SEMANTIC_VERIFIER_V1_DOMAIN,
+        ids.V075_K7_CAUSAL_PROMOTION_COMPLETE_BUNDLE_VERIFICATION_V1_DOMAIN,
+    }
+    assert domains.issubset(ids.PHASE3E_DOMAIN_TAGS)
+    payload = {"schema": "same-causal-promotion-terminal-payload"}
+    assert len({ids.content_id(domain, payload) for domain in domains}) == len(
+        domains
+    )
+
+
 def test_equal_json_in_different_domains_cannot_reuse_an_id() -> None:
     document = {"schema_version": "1.0.0", "payload": []}
     upper_id = content_id(ROUTE_UPPER_BOUND_ENVELOPE_DOMAIN, document)

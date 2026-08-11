@@ -8,9 +8,11 @@ twelve verified stages, solves the exact eight-role output-byte fixed point,
 commits those eight roles once, and issues the formal
 CounterRecord -> WorkVector -> ComparisonVector chain.
 
-The result remains a construction-only noncertificate.  It does not turn the
-registered ``ATTEMPT_BUDGET_EXHAUSTED`` science outcome into a semantic
-terminal authority, run either official Gate, or set an official scalar.
+The result remains a construction-only noncertificate.  It joins the sealed
+worker's exact registered-budget replay to the complete actual vector and
+therefore emits one attempt-scoped ``ATTEMPT_BUDGET_EXHAUSTED`` typed terminal.
+It does not implement the generic trusted-budget authority, close the logical
+occurrence, run either official Gate, or set an official scalar.
 """
 
 from __future__ import annotations
@@ -48,6 +50,7 @@ from acfqp import construction_accounting_registry_v6 as registry_v6
 from acfqp import construction_output_bytes_fixed_point_v1 as fixed_v1
 from acfqp import construction_shared_resource_receipts_v1 as shared_v1
 from acfqp import v075_k7_causal_promotion_accounted_executor_v1 as executor_v1
+from acfqp import v075_k7_causal_promotion_terminal_authority_v1 as terminal_v1
 
 
 SCHEMA_VERSION = "1.0.0"
@@ -566,7 +569,9 @@ def _candidate_independent_role_bytes(
             "BUSINESS_RESULT": canonical_json_bytes(
                 {
                     "artifact_role": "BUSINESS_RESULT",
-                    "schema": "acfqp.v075_k7_causal_promotion_business_result.v1",
+                    "schema": "acfqp.v075_k7_causal_promotion_business_result.v2",
+                    "schema_version": "2.0.0",
+                    "profile_key": PROFILE_KEY,
                     "occurrence_id": execution.measurement.occurrence_id,
                     "accounted_occurrence_id": (
                         execution.measurement.accounted_occurrence_id
@@ -576,6 +581,9 @@ def _candidate_independent_role_bytes(
                     ),
                     "budget_closure_id": science["budget_closure_id"],
                     "shared_measurement_id": execution.measurement.measurement_id,
+                    "runtime_preparation": execution.preparation.to_document(),
+                    "supervised_request": dict(execution.request_document),
+                    "shared_measurement": execution.measurement.to_document(),
                     "terminal_target_class": (
                         "ATTEMPT_CLOSURE_NONCERTIFICATE"
                     ),
@@ -617,22 +625,19 @@ def _render_candidate(
     ):
         _fail("candidate-independent role cache is malformed")
     role_bytes: dict[str, bytes] = dict(static_role_bytes)
+    terminal = terminal_v1.issue_v075_k7_causal_promotion_budget_terminal_v1(
+        budget_replay_attestation=(
+            execution.trace_document["budget_replay_attestation"]
+        ),
+        occurrence_id=vector.subject_id,
+        accounted_occurrence_id=execution.measurement.accounted_occurrence_id,
+        supervised_execution_id=execution.execution_id,
+        work_vector_id=vector.work_vector_id,
+        comparison_vector_id=comparison.comparison_vector_id,
+        projection_proof_id=proof.actual_projection_proof_id,
+    )
     role_bytes["TERMINAL_ARTIFACT"] = canonical_json_bytes(
-        {
-            "artifact_role": "TERMINAL_ARTIFACT",
-            "schema": "acfqp.v075_k7_attempt_budget_terminal_candidate.v1",
-            "occurrence_id": vector.subject_id,
-            "terminal_scope": "ROUTE_ATTEMPT",
-            "terminal_class": "ATTEMPT_CLOSURE_NONCERTIFICATE",
-            "terminal_code": "ATTEMPT_BUDGET_EXHAUSTED",
-            "budget_closure_id": execution.science_summary["budget_closure_id"],
-            "actual_work_vector_id": vector.work_vector_id,
-            "actual_comparison_vector_id": comparison.comparison_vector_id,
-            "actual_projection_proof_id": proof.actual_projection_proof_id,
-            "io.output_bytes": output_candidate,
-            "semantic_terminal_artifact_issued": False,
-            "trusted_budget_replay_semantic_authority_implemented": False,
-        }
+        terminal.to_role_document(output_bytes=output_candidate)
     )
     role_bytes["COUNTER_RECORD_SET"] = canonical_json_bytes(
         {
@@ -950,8 +955,14 @@ class CausalPromotionOccurrenceAccountingBundleV1:
                 EXPECTED_STAGE_COUNT * EXPECTED_REQUIRED_PATH_COUNT
             ),
             "eight_operational_roles_committed_once": True,
-            "terminal_candidate_rendered": True,
-            "semantic_terminal_artifact_issued": False,
+            "terminal_candidate_rendered": False,
+            "semantic_terminal_artifact_issued": True,
+            "semantic_terminal_scope": "ROUTE_ATTEMPT",
+            "semantic_terminal_class": "ATTEMPT_CLOSURE_NONCERTIFICATE",
+            "semantic_terminal_code": "ATTEMPT_BUDGET_EXHAUSTED",
+            "generic_trusted_budget_replay_v1_implemented": False,
+            "logical_occurrence_closed": False,
+            "campaign_closure_issued": False,
             "counter_completeness_gate_status": (
                 "COUNTER_COMPLETENESS_GATE_NOT_RUN"
             ),

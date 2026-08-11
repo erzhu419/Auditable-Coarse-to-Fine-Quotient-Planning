@@ -8,7 +8,9 @@ from pathlib import Path
 import pytest
 
 from acfqp.phase3e_ids import PHASE3E_DOMAIN_TAGS
+from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 from acfqp import construction_output_bytes_fixed_point_v1 as fixed_v1
+from acfqp import v075_k7_causal_promotion_complete_bundle_independent_verifier_v1 as independent_v1
 from acfqp import v075_k7_causal_promotion_occurrence_accounting_v1 as subject
 
 
@@ -109,7 +111,14 @@ def test_real_supervised_nine_path_chain_and_output_commit(real_bundle) -> None:
     assert document["complete_202_counter_record_chain_present"] is True
     assert document["all_182_operational_leaves_projected_exactly_once"] is True
     assert document["eight_operational_roles_committed_once"] is True
-    assert document["semantic_terminal_artifact_issued"] is False
+    assert document["semantic_terminal_artifact_issued"] is True
+    assert document["semantic_terminal_scope"] == "ROUTE_ATTEMPT"
+    assert document["semantic_terminal_class"] == (
+        "ATTEMPT_CLOSURE_NONCERTIFICATE"
+    )
+    assert document["semantic_terminal_code"] == "ATTEMPT_BUDGET_EXHAUSTED"
+    assert document["generic_trusted_budget_replay_v1_implemented"] is False
+    assert document["logical_occurrence_closed"] is False
     assert document["counter_completeness_gate_status"] == (
         "COUNTER_COMPLETENESS_GATE_NOT_RUN"
     )
@@ -141,3 +150,98 @@ def test_real_bundle_rejects_crossed_commit_and_counter_mutations(real_bundle) -
     )
     with pytest.raises(subject.V075K7CausalPromotionOccurrenceAccountingV1Error):
         subject.verify_v075_causal_promotion_occurrence_accounting_v1(forged)
+
+
+def test_real_complete_bundle_is_independently_replayed(real_bundle) -> None:
+    bundle, output = real_bundle
+    verification = (
+        independent_v1
+        .verify_v075_k7_causal_promotion_complete_bundle_directory_v1(output)
+    )
+
+    assert verification.occurrence_id == bundle.work_vector.subject_id
+    assert verification.work_vector_id == bundle.work_vector.work_vector_id
+    assert verification.comparison_vector_id == (
+        bundle.comparison_vector.comparison_vector_id
+    )
+    assert verification.projection_proof_id == (
+        bundle.actual_projection_proof.actual_projection_proof_id
+    )
+    assert verification.output_bytes == bundle.fixed_point.output_bytes
+    document = verification.to_document()
+    assert document["all_eight_canonical_roles_replayed"] is True
+    assert document["all_202_counter_records_reconstructed"] is True
+    assert document["all_182_operational_leaves_projected_exactly_once"] is True
+    assert document["typed_attempt_budget_terminal_reconstructed"] is True
+    assert document["verification_lane"] == "EVALUATION"
+    assert document["logical_occurrence_closed"] is False
+    assert document["official_execution_allowed"] is False
+
+    role_bytes = {
+        role: (output / f"{role}.json").read_bytes()
+        for role in independent_v1.REQUIRED_ROLES
+    }
+
+    budget = loads_canonical_json(role_bytes["OPERATIONAL_TRACE"])[
+        "budget_replay_attestation"
+    ]
+    cap = budget["budget_closure"]["cap_profile"]
+    cap["profile_kez"] = cap.pop("profile_key")
+    with pytest.raises(
+        independent_v1
+        .V075K7CausalPromotionCompleteBundleIndependentVerifierV1Error
+    ):
+        independent_v1._verify_budget_attestation(budget)  # noqa: SLF001
+
+    changed = loads_canonical_json(role_bytes["WORK_VECTOR"])
+    changed["work_vector"]["work_vector_id"] = (
+        "0" if changed["work_vector"]["work_vector_id"][0] != "0" else "1"
+    ) + changed["work_vector"]["work_vector_id"][1:]
+    role_bytes["WORK_VECTOR"] = canonical_json_bytes(changed)
+    manifest = loads_canonical_json(role_bytes["OUTPUT_MANIFEST"])
+    manifest_row = next(
+        row
+        for row in manifest["ordered_preceding_roles"]
+        if row["artifact_role"] == "WORK_VECTOR"
+    )
+    assert manifest_row["byte_count"] == len(role_bytes["WORK_VECTOR"])
+    manifest_row["bytes_sha256"] = hashlib.sha256(
+        role_bytes["WORK_VECTOR"]
+    ).hexdigest()
+    role_bytes["OUTPUT_MANIFEST"] = canonical_json_bytes(manifest)
+    with pytest.raises(
+        independent_v1
+        .V075K7CausalPromotionCompleteBundleIndependentVerifierV1Error
+    ):
+        independent_v1.verify_v075_k7_causal_promotion_complete_bundle_bytes_v1(
+            role_bytes
+        )
+
+    terminal_roles = {
+        role: (output / f"{role}.json").read_bytes()
+        for role in independent_v1.REQUIRED_ROLES
+    }
+    terminal = loads_canonical_json(terminal_roles["TERMINAL_ARTIFACT"])
+    context = terminal["route_decision_context"]
+    context["route_kond"] = context.pop("route_kind")
+    terminal_roles["TERMINAL_ARTIFACT"] = canonical_json_bytes(terminal)
+    manifest = loads_canonical_json(terminal_roles["OUTPUT_MANIFEST"])
+    manifest_row = next(
+        row
+        for row in manifest["ordered_preceding_roles"]
+        if row["artifact_role"] == "TERMINAL_ARTIFACT"
+    )
+    assert manifest_row["byte_count"] == len(
+        terminal_roles["TERMINAL_ARTIFACT"]
+    )
+    manifest_row["bytes_sha256"] = hashlib.sha256(
+        terminal_roles["TERMINAL_ARTIFACT"]
+    ).hexdigest()
+    terminal_roles["OUTPUT_MANIFEST"] = canonical_json_bytes(manifest)
+    with pytest.raises(
+        independent_v1
+        .V075K7CausalPromotionCompleteBundleIndependentVerifierV1Error
+    ):
+        independent_v1.verify_v075_k7_causal_promotion_complete_bundle_bytes_v1(
+            terminal_roles
+        )

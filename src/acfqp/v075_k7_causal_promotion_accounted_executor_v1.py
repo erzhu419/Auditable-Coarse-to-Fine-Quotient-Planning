@@ -33,6 +33,7 @@ from acfqp import _v075_construction_source_runtime_v2 as source_runtime
 from acfqp import construction_accounting_live_v3 as live_v3
 from acfqp import construction_accounting_owned_runtime_v2 as owned_v2
 from acfqp import construction_accounting_registry_v6 as registry_v6
+from acfqp import v075_k7_causal_promotion_terminal_authority_v1 as terminal_v1
 from acfqp.phase3e_ids import (
     V075_K7_CAUSAL_PROMOTION_OPERATIONAL_TRACE_V1_DOMAIN,
     V075_K7_CAUSAL_PROMOTION_RUNTIME_PREPARATION_V1_DOMAIN,
@@ -54,6 +55,7 @@ from acfqp.phase3e_sealed_executor_v1 import (
 
 
 SCHEMA_VERSION = "1.0.0"
+TRACE_SCHEMA_VERSION = "2.0.0"
 PROFILE_KEY = "v075_k7_causal_promotion_accounted_executor_v1"
 RUNTIME_ROOT_MODULES = (
     "acfqp.v075_k7_causal_promotion_accounted_runtime_v1",
@@ -107,6 +109,7 @@ EXPECTED_CHILD_INTEGRITY_OBLIGATIONS = tuple(
         (
             "request-canonical-and-content-id-replayed",
             "terminal-identity-chain-replayed",
+            "budget-closure-semantic-verification-consumed",
             "twelve-stage-inventory-replayed",
             "science-summary-derived-from-live-result",
             *(
@@ -121,6 +124,7 @@ EXPECTED_CHILD_PROTOCOL_OBLIGATIONS = tuple(
         (
             "request-construction-only-profile-bound",
             "budget-exhaustion-route-outcome-replayed",
+            "construction-terminal-mapping-prerequisites-frozen",
             "route-and-solver-reconciliation-derived",
             *(
                 f"stage-{index:02d}-owner-and-sequence-binding"
@@ -379,6 +383,7 @@ SCIENCE_SUMMARY_KEYS = {
     "causal_promotion_bundle_id",
     "budget_closure_id",
     "budget_closure_verification_id",
+    "budget_replay_attestation_id",
     "terminal_class",
     "terminal_code",
     "route_attempts",
@@ -661,6 +666,7 @@ TRACE_KEYS = {
     "runtime_preparation_id",
     "runtime_tree_id",
     "science_summary",
+    "budget_replay_attestation",
     "recorded_stages",
     "business_hash_invocations",
     "child_integrity_obligations",
@@ -788,8 +794,8 @@ def execute_v075_k7_causal_promotion_accounted_v1(
                     trace_document["artifact_role"] != "OPERATIONAL_TRACE"
                     or
                     trace_document["schema"]
-                    != "acfqp.v075_k7_causal_promotion_operational_trace.v1"
-                    or trace_document["schema_version"] != SCHEMA_VERSION
+                    != "acfqp.v075_k7_causal_promotion_operational_trace.v2"
+                    or trace_document["schema_version"] != TRACE_SCHEMA_VERSION
                     or trace_document["profile_key"]
                     != "v075_k7_causal_promotion_accounted_runtime_v1"
                     or trace_document["supervised_request_id"]
@@ -829,6 +835,13 @@ def execute_v075_k7_causal_promotion_accounted_v1(
                     or len(trace_document["recorded_stages"]) != 12
                 ):
                     _fail("causal-promotion child evidence inventory changed")
+
+                budget_attestation = (
+                    terminal_v1
+                    .verify_v075_k7_causal_promotion_budget_replay_attestation_document_v1(
+                        trace_document["budget_replay_attestation"]
+                    )
+                )
 
                 registry = registry_v6.official_counter_registry_v6()
                 stage_profile = registry_v6.official_stage_profile_v6(registry)
@@ -873,6 +886,7 @@ def execute_v075_k7_causal_promotion_accounted_v1(
                     "causal_promotion_bundle_id",
                     "budget_closure_id",
                     "budget_closure_verification_id",
+                    "budget_replay_attestation_id",
                 ):
                     _cid(science[key], f"science summary {key}")
                 if (
@@ -888,6 +902,12 @@ def execute_v075_k7_causal_promotion_accounted_v1(
                     or science["observer_closed_and_exactly_reconciled"] is not True
                     or science["stage_instance_count"] != 12
                     or science["stage_local_counter_record_count"] != 2_424
+                    or science["budget_replay_attestation_id"]
+                    != budget_attestation["budget_replay_attestation_id"]
+                    or science["budget_closure_id"]
+                    != budget_attestation["budget_closure_id"]
+                    or science["budget_closure_verification_id"]
+                    != budget_attestation["budget_closure_verification_id"]
                 ):
                     _fail("causal-promotion science or derived route facts changed")
                 obligations.checked_integrity("science-summary-identity-chain-replayed")

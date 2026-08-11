@@ -22,7 +22,8 @@ from typing import Any
 
 SCHEMA_VERSION = "1.0.0"
 PROFILE_KEY = "v075_k7_causal_promotion_accounted_runtime_v1"
-TRACE_SCHEMA = "acfqp.v075_k7_causal_promotion_operational_trace.v1"
+TRACE_SCHEMA = "acfqp.v075_k7_causal_promotion_operational_trace.v2"
+TRACE_SCHEMA_VERSION = "2.0.0"
 
 
 class _BusinessHashMeterV1:
@@ -86,6 +87,7 @@ def main(argv: list[str] | None = None) -> int:
     from acfqp import construction_accounting_owned_runtime_v2 as owned_v2
     from acfqp import construction_accounting_registry_v6 as registry_v6
     from acfqp import v075_k7_causal_promotion_construction_fixture_v1 as fixture
+    from acfqp import v075_k7_causal_promotion_terminal_authority_v1 as terminal_v1
     from acfqp.phase3e_ids import (
         V075_K7_CAUSAL_PROMOTION_OPERATIONAL_TRACE_V1_DOMAIN,
         V075_K7_CAUSAL_PROMOTION_SUPERVISED_REQUEST_V1_DOMAIN,
@@ -155,6 +157,23 @@ def main(argv: list[str] | None = None) -> int:
             raise RuntimeError("causal-promotion terminal semantics changed")
         obligations.checked_integrity("terminal-identity-chain-replayed")
         obligations.checked_protocol("budget-exhaustion-route-outcome-replayed")
+        budget_attestation = (
+            terminal_v1
+            .issue_v075_k7_causal_promotion_budget_replay_attestation_v1(
+                budget_closure=result.budget_closure,
+                budget_closure_verification=result.budget_closure_verification,
+            )
+        )
+        budget_attestation_document = budget_attestation.to_document()
+        terminal_v1.verify_v075_k7_causal_promotion_budget_replay_attestation_document_v1(
+            budget_attestation_document
+        )
+        obligations.checked_integrity(
+            "budget-closure-semantic-verification-consumed"
+        )
+        obligations.checked_protocol(
+            "construction-terminal-mapping-prerequisites-frozen"
+        )
 
         registry = registry_v6.official_counter_registry_v6()
         stage_profile = registry_v6.official_stage_profile_v6(registry)
@@ -213,6 +232,7 @@ def main(argv: list[str] | None = None) -> int:
             "budget_closure_verification_id": (
                 result.budget_closure_verification.verification_id
             ),
+            "budget_replay_attestation_id": budget_attestation.attestation_id,
             "terminal_class": "ATTEMPT_CLOSURE_NONCERTIFICATE",
             "terminal_code": "ATTEMPT_BUDGET_EXHAUSTED",
             "route_attempts": 1,
@@ -236,12 +256,13 @@ def main(argv: list[str] | None = None) -> int:
     payload = {
         "artifact_role": "OPERATIONAL_TRACE",
         "schema": TRACE_SCHEMA,
-        "schema_version": SCHEMA_VERSION,
+        "schema_version": TRACE_SCHEMA_VERSION,
         "profile_key": PROFILE_KEY,
         "supervised_request_id": observed_request_id,
         "runtime_preparation_id": request["runtime_preparation_id"],
         "runtime_tree_id": request["runtime_tree_id"],
         "science_summary": science_summary,
+        "budget_replay_attestation": budget_attestation_document,
         "recorded_stages": stage_documents,
         "business_hash_invocations": meter.count,
         "child_integrity_obligations": sorted(obligations.integrity),

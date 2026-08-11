@@ -204,6 +204,27 @@ V075_K7_CAUSAL_PROMOTION_OCCURRENCE_ACCOUNTING_V1_DOMAIN = (
 V075_K7_CAUSAL_PROMOTION_OUTPUT_RENDERER_V1_DOMAIN = (
     "acfqp:v075-k7-causal-promotion-output-renderer:v1"
 )
+V075_K7_CAUSAL_PROMOTION_BUDGET_REPLAY_ATTESTATION_V1_DOMAIN = (
+    "acfqp:v075-k7-causal-promotion-budget-replay-attestation:v1"
+)
+V075_K7_CAUSAL_PROMOTION_ROUTE_CONTEXT_V1_DOMAIN = (
+    "acfqp:v075-k7-causal-promotion-route-context:v1"
+)
+V075_K7_CAUSAL_PROMOTION_ROUTE_ATTEMPT_V1_DOMAIN = (
+    "acfqp:v075-k7-causal-promotion-route-attempt:v1"
+)
+V075_K7_CAUSAL_PROMOTION_TERMINAL_DERIVATION_V1_DOMAIN = (
+    "acfqp:v075-k7-causal-promotion-terminal-derivation:v1"
+)
+V075_K7_CAUSAL_PROMOTION_COMPLETE_BUNDLE_VERIFICATION_PROFILE_V1_DOMAIN = (
+    "acfqp:v075-k7-causal-promotion-complete-bundle-verification-profile:v1"
+)
+V075_K7_CAUSAL_PROMOTION_COMPLETE_BUNDLE_SEMANTIC_VERIFIER_V1_DOMAIN = (
+    "acfqp:v075-k7-causal-promotion-complete-bundle-semantic-verifier:v1"
+)
+V075_K7_CAUSAL_PROMOTION_COMPLETE_BUNDLE_VERIFICATION_V1_DOMAIN = (
+    "acfqp:v075-k7-causal-promotion-complete-bundle-verification:v1"
+)
 CONSTRUCTION_PARTIAL_NATIVE_OCCURRENCE_START_V1_DOMAIN = (
     "acfqp:construction-partial-native-occurrence-start:v1"
 )
@@ -2132,6 +2153,27 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "v075_k7_causal_promotion_output_renderer_v1": (
             V075_K7_CAUSAL_PROMOTION_OUTPUT_RENDERER_V1_DOMAIN
+        ),
+        "v075_k7_causal_promotion_budget_replay_attestation_v1": (
+            V075_K7_CAUSAL_PROMOTION_BUDGET_REPLAY_ATTESTATION_V1_DOMAIN
+        ),
+        "v075_k7_causal_promotion_route_context_v1": (
+            V075_K7_CAUSAL_PROMOTION_ROUTE_CONTEXT_V1_DOMAIN
+        ),
+        "v075_k7_causal_promotion_route_attempt_v1": (
+            V075_K7_CAUSAL_PROMOTION_ROUTE_ATTEMPT_V1_DOMAIN
+        ),
+        "v075_k7_causal_promotion_terminal_derivation_v1": (
+            V075_K7_CAUSAL_PROMOTION_TERMINAL_DERIVATION_V1_DOMAIN
+        ),
+        "v075_k7_causal_promotion_complete_bundle_verification_profile_v1": (
+            V075_K7_CAUSAL_PROMOTION_COMPLETE_BUNDLE_VERIFICATION_PROFILE_V1_DOMAIN
+        ),
+        "v075_k7_causal_promotion_complete_bundle_semantic_verifier_v1": (
+            V075_K7_CAUSAL_PROMOTION_COMPLETE_BUNDLE_SEMANTIC_VERIFIER_V1_DOMAIN
+        ),
+        "v075_k7_causal_promotion_complete_bundle_verification_v1": (
+            V075_K7_CAUSAL_PROMOTION_COMPLETE_BUNDLE_VERIFICATION_V1_DOMAIN
         ),
         "construction_partial_native_occurrence_start_v1": (
             CONSTRUCTION_PARTIAL_NATIVE_OCCURRENCE_START_V1_DOMAIN
