@@ -583,7 +583,7 @@ class RecoveryEligibleDirectGroundFallbackV1:
             or type(self.terminal_code) is not RecoveryEligibleFallbackTerminalCodeV1
         ):
             _fail("recovery direct fallback is malformed or caller-minted")
-        loop_v1.verify_recovery_eligible_world_model_loop_v1(self.predecessor)
+        loop_v1.require_recovery_eligible_world_model_loop_v1(self.predecessor)
         backend_v1.replay_v075_batch_native_occurrence_identity_v1(
             self.occurrence_identity
         )
@@ -752,7 +752,7 @@ class RecoveryEligibleDirectGroundFallbackV1:
 def _build_direct_fallback(
     predecessor: loop_v1.RecoveryEligibleWorldModelLoopV1,
 ) -> RecoveryEligibleDirectGroundFallbackV1:
-    predecessor = loop_v1.verify_recovery_eligible_world_model_loop_v1(predecessor)
+    predecessor = loop_v1.require_recovery_eligible_world_model_loop_v1(predecessor)
     frontier = predecessor.successor_proof.failed_frontier
     if (
         frontier is None
@@ -941,6 +941,7 @@ def verify_recovery_eligible_direct_ground_fallback_v1(
 ) -> RecoveryEligibleDirectFallbackVerificationV1:
     if type(claimed) is not RecoveryEligibleDirectGroundFallbackV1:
         _fail("recovery fallback verifier requires one exact result")
+    loop_v1.verify_recovery_eligible_world_model_loop_v1(claimed.predecessor)
     expected = _build_direct_fallback(claimed.predecessor)
     if expected.canonical_bytes != claimed.canonical_bytes:
         _fail("recovery fallback differs from complete exact recomputation")

@@ -31,6 +31,7 @@ def test_domains_and_public_surface_are_additive() -> None:
         "compile_recovery_eligible_world_model_loop_v1",
         "execute_prepared_recovery_eligible_ground_transaction_v1",
         "prepare_recovery_eligible_ground_transaction_v1",
+        "require_recovery_eligible_world_model_loop_v1",
         "verify_recovery_eligible_ground_transaction_v1",
         "verify_recovery_eligible_world_model_loop_bytes_v1",
         "verify_recovery_eligible_world_model_loop_v1",

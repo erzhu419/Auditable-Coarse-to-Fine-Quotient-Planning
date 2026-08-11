@@ -492,6 +492,18 @@ CONSTRUCTION_K7_RECOVERY_ELIGIBLE_DIRECT_FALLBACK_RESULT_V1_DOMAIN = (
 CONSTRUCTION_K7_RECOVERY_ELIGIBLE_DIRECT_FALLBACK_VERIFICATION_V1_DOMAIN = (
     "acfqp:construction-k7-recovery-eligible-direct-fallback-verification:v1"
 )
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_ACCOUNTING_BOUNDARY_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-accounting-boundary:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_ACCOUNTING_MANIFEST_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-accounting-manifest:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_STAGE_ACCOUNTING_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-stage-accounting:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_NATIVE_ACCOUNTING_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-native-accounting:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -2765,6 +2777,18 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_recovery_eligible_direct_fallback_verification_v1": (
             CONSTRUCTION_K7_RECOVERY_ELIGIBLE_DIRECT_FALLBACK_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_accounting_boundary_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_ACCOUNTING_BOUNDARY_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_accounting_manifest_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_ACCOUNTING_MANIFEST_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_stage_accounting_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_STAGE_ACCOUNTING_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_native_accounting_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_NATIVE_ACCOUNTING_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN

@@ -843,6 +843,23 @@ def verify_recovery_eligible_world_model_loop_v1(
     return expected
 
 
+def require_recovery_eligible_world_model_loop_v1(
+    claimed: RecoveryEligibleWorldModelLoopV1,
+) -> RecoveryEligibleWorldModelLoopV1:
+    """Validate the live typed object without repeating scientific planning.
+
+    The complete recomputation remains available through ``verify_*`` for the
+    standalone evaluation lane.  Operational consumers use this exact-type,
+    issuer-bound structural check so predecessor planning is not charged a
+    second time to a later route.
+    """
+
+    if type(claimed) is not RecoveryEligibleWorldModelLoopV1:
+        _fail("recovery-eligible world-model loop has a foreign type")
+    claimed.__post_init__(_RESULT_ISSUER)
+    return claimed
+
+
 def verify_recovery_eligible_world_model_loop_bytes_v1(
     *,
     transaction: RecoveryEligibleGroundTransactionV1,
@@ -870,6 +887,7 @@ __all__ = [
     "compile_recovery_eligible_world_model_loop_v1",
     "execute_prepared_recovery_eligible_ground_transaction_v1",
     "prepare_recovery_eligible_ground_transaction_v1",
+    "require_recovery_eligible_world_model_loop_v1",
     "verify_recovery_eligible_ground_transaction_v1",
     "verify_recovery_eligible_world_model_loop_bytes_v1",
     "verify_recovery_eligible_world_model_loop_v1",
