@@ -180,6 +180,30 @@ V075_CONSTRUCTION_ACCOUNTING_OPERATION_BOUNDARY_VERIFICATION_V6_DOMAIN = (
     "acfqp:v075-construction-accounting-operation-boundary-"
     "independent-verification:v6"
 )
+V075_K7_CAUSAL_PROMOTION_SHARED_MEASUREMENT_V1_DOMAIN = (
+    "acfqp:v075-k7-causal-promotion-shared-measurement:v1"
+)
+V075_K7_CAUSAL_PROMOTION_RUNTIME_PREPARATION_V1_DOMAIN = (
+    "acfqp:v075-k7-causal-promotion-runtime-preparation:v1"
+)
+V075_K7_CAUSAL_PROMOTION_SUPERVISED_REQUEST_V1_DOMAIN = (
+    "acfqp:v075-k7-causal-promotion-supervised-request:v1"
+)
+V075_K7_CAUSAL_PROMOTION_OPERATIONAL_TRACE_V1_DOMAIN = (
+    "acfqp:v075-k7-causal-promotion-operational-trace:v1"
+)
+V075_K7_CAUSAL_PROMOTION_OUTPUT_COMMIT_V1_DOMAIN = (
+    "acfqp:v075-k7-causal-promotion-output-commit:v1"
+)
+V075_K7_CAUSAL_PROMOTION_PATH_AGGREGATION_V1_DOMAIN = (
+    "acfqp:v075-k7-causal-promotion-path-aggregation:v1"
+)
+V075_K7_CAUSAL_PROMOTION_OCCURRENCE_ACCOUNTING_V1_DOMAIN = (
+    "acfqp:v075-k7-causal-promotion-occurrence-accounting:v1"
+)
+V075_K7_CAUSAL_PROMOTION_OUTPUT_RENDERER_V1_DOMAIN = (
+    "acfqp:v075-k7-causal-promotion-output-renderer:v1"
+)
 CONSTRUCTION_PARTIAL_NATIVE_OCCURRENCE_START_V1_DOMAIN = (
     "acfqp:construction-partial-native-occurrence-start:v1"
 )
@@ -2084,6 +2108,30 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "v075_construction_accounting_operation_boundary_verification_v6": (
             V075_CONSTRUCTION_ACCOUNTING_OPERATION_BOUNDARY_VERIFICATION_V6_DOMAIN
+        ),
+        "v075_k7_causal_promotion_shared_measurement_v1": (
+            V075_K7_CAUSAL_PROMOTION_SHARED_MEASUREMENT_V1_DOMAIN
+        ),
+        "v075_k7_causal_promotion_runtime_preparation_v1": (
+            V075_K7_CAUSAL_PROMOTION_RUNTIME_PREPARATION_V1_DOMAIN
+        ),
+        "v075_k7_causal_promotion_supervised_request_v1": (
+            V075_K7_CAUSAL_PROMOTION_SUPERVISED_REQUEST_V1_DOMAIN
+        ),
+        "v075_k7_causal_promotion_operational_trace_v1": (
+            V075_K7_CAUSAL_PROMOTION_OPERATIONAL_TRACE_V1_DOMAIN
+        ),
+        "v075_k7_causal_promotion_output_commit_v1": (
+            V075_K7_CAUSAL_PROMOTION_OUTPUT_COMMIT_V1_DOMAIN
+        ),
+        "v075_k7_causal_promotion_path_aggregation_v1": (
+            V075_K7_CAUSAL_PROMOTION_PATH_AGGREGATION_V1_DOMAIN
+        ),
+        "v075_k7_causal_promotion_occurrence_accounting_v1": (
+            V075_K7_CAUSAL_PROMOTION_OCCURRENCE_ACCOUNTING_V1_DOMAIN
+        ),
+        "v075_k7_causal_promotion_output_renderer_v1": (
+            V075_K7_CAUSAL_PROMOTION_OUTPUT_RENDERER_V1_DOMAIN
         ),
         "construction_partial_native_occurrence_start_v1": (
             CONSTRUCTION_PARTIAL_NATIVE_OCCURRENCE_START_V1_DOMAIN

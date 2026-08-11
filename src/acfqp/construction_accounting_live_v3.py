@@ -1177,6 +1177,322 @@ class RecordedStageWorkV3:
             ),
         }
 
+    @classmethod
+    def from_document(
+        cls,
+        document: Mapping[str, Any],
+        registry: CounterRegistryV3,
+        stage_profile: StageProfileV3,
+        comparison: ComparisonProfileV3,
+        actual_profile: ActualProjectionProfileV3,
+    ) -> "RecordedStageWorkV3":
+        """Reconstruct and fully replay one portable recorded-stage document.
+
+        The historical issuer tokens remain private to this mechanics module.
+        A supervisor can therefore replay worker bytes without accepting
+        caller-created stage objects or relabelling a WorkVector-only summary
+        as operation-event evidence.
+        """
+
+        if (
+            type(document) is not dict
+            or set(document)
+            != {
+                "schema",
+                "schema_version",
+                "stage_start",
+                "operation_events",
+                "stage_completion",
+                "work_vector",
+                "comparison_vector",
+                "actual_projection_proof",
+            }
+            or document["schema"] != "acfqp.recorded_stage_work.v3"
+            or document["schema_version"] != SCHEMA_VERSION
+            or type(document["operation_events"]) is not list
+        ):
+            raise ConstructionAccountingLiveV3Error(
+                "recorded-stage document field set mismatch"
+            )
+
+        start_document = document["stage_start"]
+        if (
+            type(start_document) is not dict
+            or set(start_document)
+            != {
+                "schema",
+                "schema_version",
+                "lifecycle_id",
+                "counter_registry_id",
+                "stage_profile_id",
+                "subject_id",
+                "stage_instance_id",
+                "stage_index",
+                "stage_kind",
+                "predecessor_completion_attestation_id",
+                "recorder_id",
+                "issued_before_first_operation_event",
+                "stage_start_attestation_id",
+            }
+            or start_document["schema"]
+            != "acfqp.construction_stage_start_attestation.v3"
+            or start_document["schema_version"] != SCHEMA_VERSION
+            or start_document["issued_before_first_operation_event"] is not True
+        ):
+            raise ConstructionAccountingLiveV3Error(
+                "recorded-stage start document is malformed"
+            )
+        start = StageStartAttestationV3(
+            _START_ISSUER,
+            start_document["lifecycle_id"],
+            start_document["counter_registry_id"],
+            start_document["stage_profile_id"],
+            start_document["subject_id"],
+            start_document["stage_instance_id"],
+            start_document["stage_index"],
+            start_document["stage_kind"],
+            start_document["predecessor_completion_attestation_id"],
+            start_document["recorder_id"],
+        )
+        if start_document["stage_start_attestation_id"] != start.start_attestation_id:
+            raise ConstructionAccountingLiveV3Error(
+                "recorded-stage start content ID mismatch"
+            )
+
+        events: list[ConstructionOperationEventV3] = []
+        event_keys = {
+            "schema",
+            "schema_version",
+            "lifecycle_id",
+            "counter_registry_id",
+            "subject_id",
+            "stage_instance_id",
+            "stage_start_attestation_id",
+            "stage_index",
+            "stage_kind",
+            "event_sequence",
+            "operation_site_id",
+            "path",
+            "value",
+            "recorder_id",
+            "semantics_id",
+            "owner",
+            "unit",
+            "lane",
+            "scope",
+            "reducer",
+            "operation_event_id",
+        }
+        for row in document["operation_events"]:
+            if (
+                type(row) is not dict
+                or set(row) != event_keys
+                or row["schema"] != "acfqp.construction_operation_event.v3"
+                or row["schema_version"] != SCHEMA_VERSION
+            ):
+                raise ConstructionAccountingLiveV3Error(
+                    "recorded-stage operation-event document is malformed"
+                )
+            event = ConstructionOperationEventV3(
+                _EVENT_ISSUER,
+                row["lifecycle_id"],
+                row["counter_registry_id"],
+                row["subject_id"],
+                row["stage_instance_id"],
+                row["stage_start_attestation_id"],
+                row["stage_index"],
+                row["stage_kind"],
+                row["event_sequence"],
+                row["operation_site_id"],
+                row["path"],
+                row["value"],
+                row["recorder_id"],
+                row["semantics_id"],
+                row["owner"],
+                row["unit"],
+                row["lane"],
+                row["scope"],
+                row["reducer"],
+            )
+            if row["operation_event_id"] != event.event_id:
+                raise ConstructionAccountingLiveV3Error(
+                    "recorded-stage operation-event content ID mismatch"
+                )
+            events.append(event)
+
+        completion_document = document["stage_completion"]
+        if (
+            type(completion_document) is not dict
+            or set(completion_document)
+            != {
+                "schema",
+                "schema_version",
+                "lifecycle_id",
+                "counter_registry_id",
+                "stage_profile_id",
+                "subject_id",
+                "stage_instance_id",
+                "stage_start_attestation_id",
+                "stage_index",
+                "stage_kind",
+                "event_transcript_id",
+                "event_count",
+                "outcome",
+                "output_artifact_ids",
+                "failure_evidence_ids",
+                "issued_after_last_operation_event",
+                "stage_completion_attestation_id",
+            }
+            or completion_document["schema"]
+            != "acfqp.construction_stage_completion_attestation.v3"
+            or completion_document["schema_version"] != SCHEMA_VERSION
+            or completion_document["issued_after_last_operation_event"] is not True
+            or type(completion_document["output_artifact_ids"]) is not list
+            or type(completion_document["failure_evidence_ids"]) is not list
+        ):
+            raise ConstructionAccountingLiveV3Error(
+                "recorded-stage completion document is malformed"
+            )
+        completion = StageCompletionAttestationV3(
+            _COMPLETION_ISSUER,
+            completion_document["lifecycle_id"],
+            completion_document["counter_registry_id"],
+            completion_document["stage_profile_id"],
+            completion_document["subject_id"],
+            completion_document["stage_instance_id"],
+            completion_document["stage_start_attestation_id"],
+            completion_document["stage_index"],
+            completion_document["stage_kind"],
+            completion_document["event_transcript_id"],
+            completion_document["event_count"],
+            completion_document["outcome"],
+            tuple(completion_document["output_artifact_ids"]),
+            tuple(completion_document["failure_evidence_ids"]),
+        )
+        if (
+            completion_document["stage_completion_attestation_id"]
+            != completion.completion_attestation_id
+        ):
+            raise ConstructionAccountingLiveV3Error(
+                "recorded-stage completion content ID mismatch"
+            )
+
+        vector = WorkVectorV3.from_document(
+            document["work_vector"], registry, stage_profile
+        )
+        comparison_document = document["comparison_vector"]
+        if (
+            type(comparison_document) is not dict
+            or set(comparison_document)
+            != {
+                "schema",
+                "schema_version",
+                "comparison_profile_id",
+                "work_vector_id",
+                "lifecycle_id",
+                "subject_id",
+                "stage_instance_id",
+                "stage_index",
+                "stage_kind",
+                "values",
+                "comparison_vector_id",
+            }
+            or comparison_document["schema"] != "acfqp.comparison_vector.v3"
+            or comparison_document["schema_version"] != SCHEMA_VERSION
+            or type(comparison_document["values"]) is not list
+            or any(
+                type(row) is not dict or set(row) != {"axis", "value"}
+                for row in comparison_document["values"]
+            )
+        ):
+            raise ConstructionAccountingLiveV3Error(
+                "recorded-stage comparison-vector document is malformed"
+            )
+        projected = ComparisonVectorV3(
+            comparison_document["comparison_profile_id"],
+            comparison_document["work_vector_id"],
+            comparison_document["lifecycle_id"],
+            comparison_document["subject_id"],
+            comparison_document["stage_instance_id"],
+            comparison_document["stage_index"],
+            comparison_document["stage_kind"],
+            tuple(
+                (row["axis"], row["value"])
+                for row in comparison_document["values"]
+            ),
+        )
+        if (
+            comparison_document["comparison_vector_id"]
+            != projected.comparison_vector_id
+        ):
+            raise ConstructionAccountingLiveV3Error(
+                "recorded-stage comparison-vector content ID mismatch"
+            )
+
+        proof_document = document["actual_projection_proof"]
+        if (
+            type(proof_document) is not dict
+            or set(proof_document)
+            != {
+                "schema",
+                "schema_version",
+                "actual_projection_profile_id",
+                "work_vector_id",
+                "comparison_vector_id",
+                "counter_record_ids",
+                "operation_event_ids",
+                "all_operational_leaves_projected_exactly_once",
+                "nonoperational_leaves_projected",
+                "values_derived_from_event_replay",
+                "scalar_cost_defined",
+                "actual_projection_proof_id",
+            }
+            or proof_document["schema"]
+            != "acfqp.actual_projection_proof.v3"
+            or proof_document["schema_version"] != SCHEMA_VERSION
+            or proof_document["all_operational_leaves_projected_exactly_once"]
+            is not True
+            or proof_document["nonoperational_leaves_projected"] is not False
+            or proof_document["values_derived_from_event_replay"] is not True
+            or proof_document["scalar_cost_defined"] is not False
+            or type(proof_document["counter_record_ids"]) is not list
+            or type(proof_document["operation_event_ids"]) is not list
+        ):
+            raise ConstructionAccountingLiveV3Error(
+                "recorded-stage projection-proof document is malformed"
+            )
+        proof = ActualProjectionProofV3(
+            proof_document["actual_projection_profile_id"],
+            proof_document["work_vector_id"],
+            proof_document["comparison_vector_id"],
+            tuple(proof_document["counter_record_ids"]),
+            tuple(proof_document["operation_event_ids"]),
+        )
+        if (
+            proof_document["actual_projection_proof_id"]
+            != proof.actual_projection_proof_id
+        ):
+            raise ConstructionAccountingLiveV3Error(
+                "recorded-stage projection-proof content ID mismatch"
+            )
+
+        result = cls(
+            start,
+            tuple(events),
+            completion,
+            vector,
+            projected,
+            proof,
+        )
+        verify_recorded_stage_work_v3(
+            result,
+            registry,
+            stage_profile,
+            comparison,
+            actual_profile,
+        )
+        return result
+
 
 def verify_recorded_stage_work_v3(
     recorded: RecordedStageWorkV3,

@@ -153,6 +153,26 @@ def test_two_stage_lifecycle_replays_native_zeroes_and_projection() -> None:
     assert second_axes["kernel_transition_calls"] != 4300
     _verify(first)
     _verify(second)
+    registry, stage, comparison, actual = _profiles()
+    replayed = live.RecordedStageWorkV3.from_document(
+        first.to_document(),
+        registry,
+        stage,
+        comparison,
+        actual,
+    )
+    assert replayed == first
+
+    changed = first.to_document()
+    changed["stage_start"]["stage_index"] = 2
+    with pytest.raises(live.ConstructionAccountingLiveV3Error):
+        live.RecordedStageWorkV3.from_document(
+            changed,
+            registry,
+            stage,
+            comparison,
+            actual,
+        )
 
 
 def test_sum_max_and_reconciliation_are_replayed_from_events() -> None:

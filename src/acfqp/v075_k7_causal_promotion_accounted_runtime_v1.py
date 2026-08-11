@@ -1,0 +1,288 @@
+"""Sealed worker for the non-fresh K7 causal-promotion occurrence.
+
+The worker owns the full twelve-stage business execution.  It emits one
+candidate-independent ``OPERATIONAL_TRACE`` document containing the exact
+stage event/record/vector/projection documents and a globally metered business
+SHA-256 count.  Accounting/provenance hashes used to serialize this trace are
+outside the operational hash window; the trusted parent supplies process,
+I/O, and wait4 peak evidence and later solves the final output-byte fixed
+point.
+"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import os
+from pathlib import Path
+import resource
+import sys
+from typing import Any
+
+
+SCHEMA_VERSION = "1.0.0"
+PROFILE_KEY = "v075_k7_causal_promotion_accounted_runtime_v1"
+TRACE_SCHEMA = "acfqp.v075_k7_causal_promotion_operational_trace.v1"
+
+
+class _BusinessHashMeterV1:
+    def __init__(self) -> None:
+        self.count = 0
+        self._original: Any = None
+        self._installed: Any = None
+
+    def __enter__(self) -> "_BusinessHashMeterV1":
+        if self._original is not None:
+            raise RuntimeError("causal-promotion hash meter is single-use")
+        self._original = hashlib.sha256
+
+        def metered_sha256(*args: Any, **kwargs: Any) -> Any:
+            self.count += 1
+            return self._original(*args, **kwargs)
+
+        self._installed = metered_sha256
+        hashlib.sha256 = metered_sha256  # type: ignore[assignment]
+        return self
+
+    def __exit__(self, _kind: object, _value: object, _traceback: object) -> None:
+        changed = hashlib.sha256 is not self._installed
+        hashlib.sha256 = self._original  # type: ignore[assignment]
+        if changed:
+            raise RuntimeError("causal-promotion hash meter binding changed")
+
+
+class _NamedObligationsV1:
+    def __init__(self) -> None:
+        self.integrity: list[str] = []
+        self.protocol: list[str] = []
+
+    def checked_integrity(self, name: str) -> None:
+        if type(name) is not str or not name or name in self.integrity:
+            raise RuntimeError("child integrity obligation is invalid or duplicated")
+        self.integrity.append(name)
+
+    def checked_protocol(self, name: str) -> None:
+        if type(name) is not str or not name or name in self.protocol:
+            raise RuntimeError("child protocol obligation is invalid or duplicated")
+        self.protocol.append(name)
+
+
+def _parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--runtime-source", required=True, type=Path)
+    parser.add_argument("--request", required=True, type=Path)
+    parser.add_argument("--trace-output", required=True, type=Path)
+    return parser
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = _parser().parse_args(argv)
+    runtime_source = args.runtime_source.resolve(strict=True)
+    sys.path.insert(0, str(runtime_source))
+
+    # Infrastructure imports happen before the operational hash window.  The
+    # fixture itself performs no work at import time.
+    from acfqp import construction_accounting_live_v3 as live_v3
+    from acfqp import construction_accounting_owned_runtime_v2 as owned_v2
+    from acfqp import construction_accounting_registry_v6 as registry_v6
+    from acfqp import v075_k7_causal_promotion_construction_fixture_v1 as fixture
+    from acfqp.phase3e_ids import (
+        V075_K7_CAUSAL_PROMOTION_OPERATIONAL_TRACE_V1_DOMAIN,
+        V075_K7_CAUSAL_PROMOTION_SUPERVISED_REQUEST_V1_DOMAIN,
+        canonical_json_bytes,
+        content_id,
+        loads_canonical_json,
+        require_exact_fields,
+    )
+
+    obligations = _NamedObligationsV1()
+    meter = _BusinessHashMeterV1()
+    with meter:
+        request_raw = args.request.read_bytes()
+        request = loads_canonical_json(request_raw)
+        if type(request) is not dict or canonical_json_bytes(request) != request_raw:
+            raise RuntimeError("supervised request is not one canonical object")
+        require_exact_fields(
+            request,
+            {
+                "schema",
+                "schema_version",
+                "profile_key",
+                "runtime_preparation_id",
+                "runtime_tree_id",
+                "construction_fixture_marker",
+                "construction_only",
+                "fresh_heldout_accessed",
+                "official_execution_allowed",
+                "supervised_request_id",
+            },
+            context="causal-promotion supervised request",
+        )
+        if (
+            request["schema"]
+            != "acfqp.v075_k7_causal_promotion_supervised_request.v1"
+            or request["schema_version"] != SCHEMA_VERSION
+            or request["profile_key"]
+            != "v075_k7_causal_promotion_accounted_executor_v1"
+            or request["construction_only"] is not True
+            or request["fresh_heldout_accessed"] is not False
+            or request["official_execution_allowed"] is not False
+        ):
+            raise RuntimeError("supervised request contract changed")
+        request_payload = dict(request)
+        observed_request_id = request_payload.pop("supervised_request_id")
+        if observed_request_id != content_id(
+            V075_K7_CAUSAL_PROMOTION_SUPERVISED_REQUEST_V1_DOMAIN,
+            request_payload,
+        ):
+            raise RuntimeError("supervised request content ID mismatch")
+        obligations.checked_integrity("request-canonical-and-content-id-replayed")
+        obligations.checked_protocol("request-construction-only-profile-bound")
+
+        result = fixture.run_v075_k7_causal_promotion_construction_fixture_v1(
+            repository_root=runtime_source,
+            marker=request["construction_fixture_marker"],
+        )
+        result_document = result.to_document()
+        if (
+            result_document["terminal_target_class"]
+            != "ATTEMPT_CLOSURE_NONCERTIFICATE"
+            or result_document["terminal_target_code"]
+            != "ATTEMPT_BUDGET_EXHAUSTED"
+            or result_document["observer_closed_and_exactly_reconciled"] is not True
+            or result_document["official_execution_allowed"] is not False
+        ):
+            raise RuntimeError("causal-promotion terminal semantics changed")
+        obligations.checked_integrity("terminal-identity-chain-replayed")
+        obligations.checked_protocol("budget-exhaustion-route-outcome-replayed")
+
+        registry = registry_v6.official_counter_registry_v6()
+        stage_profile = registry_v6.official_stage_profile_v6(registry)
+        comparison = registry_v6.official_comparison_profile_v6(registry)
+        actual = registry_v6.official_actual_projection_profile_v6(
+            registry,
+            comparison,
+        )
+        stages = result.accounting_result.recorded_stages
+        if (
+            len(stages) != 12
+            or tuple(
+                registry_v6.ConstructionStageKindV6(
+                    row.stage_start.stage_kind.value
+                )
+                for row in stages
+            )
+            != owned_v2.CANONICAL_CAUSAL_PROMOTION_STAGE_PLAN_V2
+        ):
+            raise RuntimeError("causal-promotion stage plan changed")
+        obligations.checked_integrity("twelve-stage-inventory-replayed")
+        stage_documents: list[dict[str, Any]] = []
+        for index, recorded in enumerate(stages, 1):
+            live_v3.verify_recorded_stage_work_v3(
+                recorded,
+                registry,
+                stage_profile,
+                comparison,
+                actual,
+            )
+            if recorded.stage_start.stage_index != index:
+                raise RuntimeError("causal-promotion stage sequence changed")
+            stage_documents.append(recorded.to_document())
+            obligations.checked_integrity(
+                f"stage-{index:02d}-event-to-vector-replay"
+            )
+            obligations.checked_protocol(
+                f"stage-{index:02d}-owner-and-sequence-binding"
+            )
+
+        occurrence_id = result.schedule.occurrence.occurrence_id
+        accounted_occurrence_id = result.result_id
+        owned_accounting_result_id = result.accounting_result.result_id
+        science_summary = {
+            "occurrence_id": occurrence_id,
+            "accounted_occurrence_id": accounted_occurrence_id,
+            "owned_accounting_result_id": owned_accounting_result_id,
+            "schedule_id": result.schedule.schedule_id,
+            "schedule_verification_id": result.schedule_verification.verification_id,
+            "root_execution_id": result.root_execution.execution_id,
+            "root_model_epoch_id": result.root_epoch.model_epoch_id,
+            "causal_child_authorization_id": result.child_authorization.authorization_id,
+            "causal_child_execution_bundle_id": result.child_execution.bundle_id,
+            "causal_promotion_bundle_id": result.promotion_bundle.bundle_id,
+            "budget_closure_id": result.budget_closure.closure_id,
+            "budget_closure_verification_id": (
+                result.budget_closure_verification.verification_id
+            ),
+            "terminal_class": "ATTEMPT_CLOSURE_NONCERTIFICATE",
+            "terminal_code": "ATTEMPT_BUDGET_EXHAUSTED",
+            "route_attempts": 1,
+            "route_successes": 0,
+            "route_failures": 1,
+            "solver_attempts": 0,
+            "solver_successes": 0,
+            "solver_failures": 0,
+            "observer_closed_and_exactly_reconciled": True,
+            "stage_instance_count": len(stages),
+            "stage_local_counter_record_count": sum(
+                len(row.work_vector.records) for row in stages
+            ),
+        }
+        obligations.checked_integrity("science-summary-derived-from-live-result")
+        obligations.checked_protocol("route-and-solver-reconciliation-derived")
+
+    if meter.count <= 0:
+        raise RuntimeError("causal-promotion business hash window is empty")
+    peak_bytes = int(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss) * 1024
+    payload = {
+        "artifact_role": "OPERATIONAL_TRACE",
+        "schema": TRACE_SCHEMA,
+        "schema_version": SCHEMA_VERSION,
+        "profile_key": PROFILE_KEY,
+        "supervised_request_id": observed_request_id,
+        "runtime_preparation_id": request["runtime_preparation_id"],
+        "runtime_tree_id": request["runtime_tree_id"],
+        "science_summary": science_summary,
+        "recorded_stages": stage_documents,
+        "business_hash_invocations": meter.count,
+        "child_integrity_obligations": sorted(obligations.integrity),
+        "child_protocol_obligations": sorted(obligations.protocol),
+        "child_self_peak_working_bytes_diagnostic": peak_bytes,
+        "hash_measurement_window_start": "AFTER_RUNTIME_INFRASTRUCTURE_IMPORTS",
+        "hash_measurement_window_end": (
+            "AFTER_STAGE_AND_TERMINAL_REPLAY_BEFORE_TRACE_PROVENANCE"
+        ),
+        "accounting_provenance_hashes_excluded": True,
+        "global_hashlib_sha256_constructor_hook_present": True,
+        "construction_only": True,
+        "fresh_heldout_accessed": False,
+        "formal_counter_record_issued_by_worker": False,
+        "occurrence_vector_issued_by_worker": False,
+        "official_execution_allowed": False,
+    }
+    document = {
+        **payload,
+        "operational_trace_id": content_id(
+            V075_K7_CAUSAL_PROMOTION_OPERATIONAL_TRACE_V1_DOMAIN,
+            payload,
+        ),
+    }
+    raw = canonical_json_bytes(document)
+    descriptor = os.open(
+        args.trace_output,
+        os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_CLOEXEC,
+        0o600,
+    )
+    try:
+        written = 0
+        while written < len(raw):
+            count = os.write(descriptor, raw[written:])
+            if count <= 0:
+                raise RuntimeError("operational trace write made no progress")
+            written += count
+    finally:
+        os.close(descriptor)
+    return 0
+
+
+if __name__ == "__main__":  # pragma: no cover - executed by the supervisor
+    raise SystemExit(main())
