@@ -558,6 +558,9 @@ CONSTRUCTION_K7_RECOVERY_ELIGIBLE_CAMPAIGN_CLOSURE_V1_DOMAIN = (
 CONSTRUCTION_K7_RECOVERY_ELIGIBLE_CAMPAIGN_RESULT_V1_DOMAIN = (
     "acfqp:construction-k7-recovery-eligible-campaign-result:v1"
 )
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_CAMPAIGN_INDEPENDENT_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-campaign-independent-verification:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -2897,6 +2900,9 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_recovery_eligible_campaign_result_v1": (
             CONSTRUCTION_K7_RECOVERY_ELIGIBLE_CAMPAIGN_RESULT_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_campaign_independent_verification_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_CAMPAIGN_INDEPENDENT_VERIFICATION_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
