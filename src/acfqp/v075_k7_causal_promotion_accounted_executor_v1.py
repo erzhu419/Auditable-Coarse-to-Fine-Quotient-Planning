@@ -33,12 +33,14 @@ from acfqp import _v075_construction_source_runtime_v2 as source_runtime
 from acfqp import construction_accounting_live_v3 as live_v3
 from acfqp import construction_accounting_owned_runtime_v2 as owned_v2
 from acfqp import construction_accounting_registry_v6 as registry_v6
+from acfqp import v075_batch_native_planning_backend_v2 as planning_v2
 from acfqp import v075_k7_causal_promotion_terminal_authority_v1 as terminal_v1
 from acfqp.phase3e_ids import (
     V075_K7_CAUSAL_PROMOTION_OPERATIONAL_TRACE_V1_DOMAIN,
     V075_K7_CAUSAL_PROMOTION_RUNTIME_PREPARATION_V1_DOMAIN,
     V075_K7_CAUSAL_PROMOTION_SHARED_MEASUREMENT_V1_DOMAIN,
     V075_K7_CAUSAL_PROMOTION_SUPERVISED_REQUEST_V1_DOMAIN,
+    V075_K7_REUSABLE_MODEL_OPERATIONAL_TRACE_V1_DOMAIN,
     canonical_json_bytes,
     content_id,
     loads_canonical_json,
@@ -56,6 +58,10 @@ from acfqp.phase3e_sealed_executor_v1 import (
 
 SCHEMA_VERSION = "1.0.0"
 TRACE_SCHEMA_VERSION = "2.0.0"
+MODEL_EXPORT_TRACE_SCHEMA = (
+    "acfqp.v075_k7_reusable_model_operational_trace.v1"
+)
+MODEL_EXPORT_TRACE_SCHEMA_VERSION = "1.0.0"
 PROFILE_KEY = "v075_k7_causal_promotion_accounted_executor_v1"
 RUNTIME_ROOT_MODULES = (
     "acfqp.v075_k7_causal_promotion_accounted_runtime_v1",
@@ -70,6 +76,7 @@ PREPARATION_DOMAIN = (
 )
 REQUEST_DOMAIN = V075_K7_CAUSAL_PROMOTION_SUPERVISED_REQUEST_V1_DOMAIN
 TRACE_DOMAIN = V075_K7_CAUSAL_PROMOTION_OPERATIONAL_TRACE_V1_DOMAIN
+MODEL_EXPORT_TRACE_DOMAIN = V075_K7_REUSABLE_MODEL_OPERATIONAL_TRACE_V1_DOMAIN
 MEASUREMENT_DOMAIN = V075_K7_CAUSAL_PROMOTION_SHARED_MEASUREMENT_V1_DOMAIN
 
 PRE_OUTPUT_SHARED_PATHS = (
@@ -577,6 +584,9 @@ class SupervisedCausalPromotionExecutionV1:
         repr=False, compare=False
     )
     measurement: CausalPromotionPreOutputMeasurementV1
+    root_model_raw: bytes | None = field(
+        default=None, repr=False, compare=False
+    )
 
     def __post_init__(self, _issuer: object) -> None:
         if (
@@ -589,6 +599,10 @@ class SupervisedCausalPromotionExecutionV1:
             or type(self.recorded_stages) is not tuple
             or len(self.recorded_stages) != 12
             or type(self.measurement) is not CausalPromotionPreOutputMeasurementV1
+            or (
+                self.root_model_raw is not None
+                and type(self.root_model_raw) is not bytes
+            )
         ):
             _fail("supervised causal-promotion execution is caller-minted")
         if (
@@ -602,9 +616,28 @@ class SupervisedCausalPromotionExecutionV1:
         ):
             _fail("supervised causal-promotion execution identities crossed")
 
+        if self.root_model_raw is not None:
+            model = planning_v2.replay_v075_numerical_model_bytes_v2(
+                self.root_model_raw
+            )
+            if (
+                model.model_id != self.trace_document["root_model_id"]
+                or self.trace_document["root_model_epoch_id"]
+                != self.science_summary["root_model_epoch_id"]
+                or canonical_json_bytes(
+                    self.trace_document["root_numerical_model"]
+                )
+                != self.root_model_raw
+            ):
+                _fail("supervised reusable model export identities crossed")
+
     @property
     def execution_id(self) -> str:
         return self.measurement.measurement_id
+
+    @property
+    def root_model_bytes(self) -> bytes | None:
+        return self.root_model_raw
 
     def to_document(self) -> dict[str, Any]:
         return {
@@ -683,14 +716,24 @@ TRACE_KEYS = {
     "official_execution_allowed",
     "operational_trace_id",
 }
+MODEL_EXPORT_TRACE_KEYS = TRACE_KEYS | {
+    "root_numerical_model",
+    "root_model_id",
+    "root_model_epoch_id",
+    "model_occurrence_or_arm_fields_present",
+    "model_threshold_fields_present",
+    "model_private_law_access",
+    "reusable_model_export_only",
+}
 
 
-def execute_v075_k7_causal_promotion_accounted_v1(
+def _execute_v075_k7_causal_promotion_accounted(
     preparation: CausalPromotionRuntimePreparationV1,
     *,
     trace_output_path: str | Path,
     construction_fixture_marker: str = "nonfresh-k7-causal-promotion",
     timeout_seconds: int = DEFAULT_TIMEOUT_SECONDS,
+    export_root_model: bool,
 ) -> SupervisedCausalPromotionExecutionV1:
     """Execute, supervise, and replay one sealed construction occurrence."""
 
@@ -746,7 +789,7 @@ def execute_v075_k7_causal_promotion_accounted_v1(
                     str(request_path),
                     "--trace-output",
                     str(trace_path),
-                )
+                ) + (("--export-root-model",) if export_root_model else ())
                 obligations.checked_protocol("fresh-python-I-argv-executed")
                 with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
                     process = subprocess.Popen(
@@ -787,15 +830,28 @@ def execute_v075_k7_causal_promotion_accounted_v1(
                     _fail("causal-promotion trace is not canonical")
                 require_exact_fields(
                     trace_document,
-                    TRACE_KEYS,
+                    (
+                        MODEL_EXPORT_TRACE_KEYS
+                        if export_root_model
+                        else TRACE_KEYS
+                    ),
                     context="causal-promotion operational trace",
                 )
                 if (
                     trace_document["artifact_role"] != "OPERATIONAL_TRACE"
                     or
                     trace_document["schema"]
-                    != "acfqp.v075_k7_causal_promotion_operational_trace.v2"
-                    or trace_document["schema_version"] != TRACE_SCHEMA_VERSION
+                    != (
+                        MODEL_EXPORT_TRACE_SCHEMA
+                        if export_root_model
+                        else "acfqp.v075_k7_causal_promotion_operational_trace.v2"
+                    )
+                    or trace_document["schema_version"]
+                    != (
+                        MODEL_EXPORT_TRACE_SCHEMA_VERSION
+                        if export_root_model
+                        else TRACE_SCHEMA_VERSION
+                    )
                     or trace_document["profile_key"]
                     != "v075_k7_causal_promotion_accounted_runtime_v1"
                     or trace_document["supervised_request_id"]
@@ -819,7 +875,10 @@ def execute_v075_k7_causal_promotion_accounted_v1(
                     _fail("causal-promotion operational trace contract changed")
                 trace_payload = dict(trace_document)
                 observed_trace_id = trace_payload.pop("operational_trace_id")
-                if observed_trace_id != content_id(TRACE_DOMAIN, trace_payload):
+                trace_domain = (
+                    MODEL_EXPORT_TRACE_DOMAIN if export_root_model else TRACE_DOMAIN
+                )
+                if observed_trace_id != content_id(trace_domain, trace_payload):
                     _fail("causal-promotion operational trace ID mismatch")
                 obligations.checked_integrity("trace-canonical-and-content-id-replayed")
                 obligations.checked_protocol("worker-trace-schema-enforced")
@@ -918,6 +977,35 @@ def execute_v075_k7_causal_promotion_accounted_v1(
                 )
                 obligations.close()
 
+                root_model_raw: bytes | None = None
+                if export_root_model:
+                    model_document = trace_document["root_numerical_model"]
+                    if type(model_document) is not dict:
+                        _fail("reusable root model export is not one object")
+                    model = planning_v2.replay_v075_numerical_model_bytes_v2(
+                        canonical_json_bytes(model_document)
+                    )
+                    initial_build = recorded_stages[2]
+                    if (
+                        trace_document["root_model_id"] != model.model_id
+                        or trace_document["root_model_epoch_id"]
+                        != science["root_model_epoch_id"]
+                        or model.model_id
+                        not in initial_build.stage_completion.output_artifact_ids
+                        or science["root_model_epoch_id"]
+                        not in initial_build.stage_completion.output_artifact_ids
+                        or trace_document[
+                            "model_occurrence_or_arm_fields_present"
+                        ]
+                        is not False
+                        or trace_document["model_threshold_fields_present"]
+                        is not False
+                        or trace_document["model_private_law_access"] is not False
+                        or trace_document["reusable_model_export_only"] is not True
+                    ):
+                        _fail("reusable root model export contract changed")
+                    root_model_raw = canonical_json_bytes(model_document)
+
     if parent_meter.count <= 0:
         _fail("parent causal-promotion hash window produced no observation")
     measurement = CausalPromotionPreOutputMeasurementV1(
@@ -951,7 +1039,69 @@ def execute_v075_k7_causal_promotion_accounted_v1(
         MappingProxyType(dict(science)),
         recorded_stages,
         measurement,
+        root_model_raw,
     )
+
+
+def execute_v075_k7_causal_promotion_accounted_v1(
+    preparation: CausalPromotionRuntimePreparationV1,
+    *,
+    trace_output_path: str | Path,
+    construction_fixture_marker: str = "nonfresh-k7-causal-promotion",
+    timeout_seconds: int = DEFAULT_TIMEOUT_SECONDS,
+) -> SupervisedCausalPromotionExecutionV1:
+    """Execute the historical closed trace without a model export."""
+
+    return _execute_v075_k7_causal_promotion_accounted(
+        preparation,
+        trace_output_path=trace_output_path,
+        construction_fixture_marker=construction_fixture_marker,
+        timeout_seconds=timeout_seconds,
+        export_root_model=False,
+    )
+
+
+def execute_v075_k7_causal_promotion_with_model_export_v2(
+    preparation: CausalPromotionRuntimePreparationV1,
+    *,
+    trace_output_path: str | Path,
+    construction_fixture_marker: str = "nonfresh-k7-reusable-model-export",
+    timeout_seconds: int = DEFAULT_TIMEOUT_SECONDS,
+) -> SupervisedCausalPromotionExecutionV1:
+    """Execute one construction occurrence and retain its query-neutral model."""
+
+    return _execute_v075_k7_causal_promotion_accounted(
+        preparation,
+        trace_output_path=trace_output_path,
+        construction_fixture_marker=construction_fixture_marker,
+        timeout_seconds=timeout_seconds,
+        export_root_model=True,
+    )
+
+
+def require_supervised_causal_promotion_execution_v1(
+    execution: SupervisedCausalPromotionExecutionV1,
+) -> SupervisedCausalPromotionExecutionV1:
+    """Revalidate one live supervised execution before additive consumption."""
+
+    if type(execution) is not SupervisedCausalPromotionExecutionV1:
+        _fail("supervised causal-promotion execution has a foreign type")
+    execution.__post_init__(_EXECUTION_ISSUER)
+    registry = registry_v6.official_counter_registry_v6()
+    stage_profile = registry_v6.official_stage_profile_v6(registry)
+    comparison = registry_v6.official_comparison_profile_v6(registry)
+    actual = registry_v6.official_actual_projection_profile_v6(
+        registry, comparison
+    )
+    for recorded in execution.recorded_stages:
+        live_v3.verify_recorded_stage_work_v3(
+            recorded,
+            registry,
+            stage_profile,
+            comparison,
+            actual,
+        )
+    return execution
 
 
 __all__ = (
@@ -962,5 +1112,7 @@ __all__ = (
     "SupervisedCausalPromotionExecutionV1",
     "V075K7CausalPromotionAccountedExecutorV1Error",
     "execute_v075_k7_causal_promotion_accounted_v1",
+    "execute_v075_k7_causal_promotion_with_model_export_v2",
     "prepare_v075_k7_causal_promotion_accounted_runtime_v1",
+    "require_supervised_causal_promotion_execution_v1",
 )

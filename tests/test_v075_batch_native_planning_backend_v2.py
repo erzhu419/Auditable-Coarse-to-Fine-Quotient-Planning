@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import fields, replace
 from fractions import Fraction
+import copy
 import hashlib
 from pathlib import Path
 from typing import Any
@@ -431,6 +432,61 @@ def test_numerical_proof_is_prior_and_occurrence_free(manual_models) -> None:
     assert document["arm_field_present"] is False
     assert document["proposal_field_present"] is False
     assert document["source_provenance_field_present"] is False
+
+
+def test_query_neutral_model_bytes_replay_without_acquisition_inputs(
+    manual_models,
+) -> None:
+    _context, _partial, complete = manual_models
+    raw = canonical_json_bytes(complete.to_document())
+
+    replayed = planning.replay_v075_numerical_model_bytes_v2(raw)
+
+    assert replayed.model_id == complete.model_id
+    assert replayed.to_document() == complete.to_document()
+    assert replayed is not complete
+    original_proof = planning.plan_v075_construction_numerical_model_v2(
+        model=complete,
+        route=planning.V075PlanningRouteV2.ADAPTIVE_QUOTIENT,
+    )
+    replayed_proof = planning.plan_v075_construction_numerical_model_v2(
+        model=replayed,
+        route=planning.V075PlanningRouteV2.ADAPTIVE_QUOTIENT,
+    )
+    assert replayed_proof.proof_id == original_proof.proof_id
+    assert replayed_proof.to_document() == original_proof.to_document()
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    (
+        lambda value: value.update(
+            {"occurrence_id": _id("forged-occurrence")}
+        ),
+        lambda value: value.update(
+            {"threshold_profile_id": _id("forged-threshold")}
+        ),
+        lambda value: value["rows"][0].update({"unknown": True}),
+        lambda value: value["rows"][0]["intervals"][0].update(
+            {
+                "success_count": (
+                    value["rows"][0]["intervals"][0]["success_count"] - 1
+                )
+            }
+        ),
+    ),
+)
+def test_query_neutral_model_bytes_replay_rejects_resigned_mutations(
+    manual_models,
+    mutation,
+) -> None:
+    _context, _partial, complete = manual_models
+    document = copy.deepcopy(complete.to_document())
+    mutation(document)
+    with pytest.raises(planning.V075BatchNativePlanningV2InvariantViolation):
+        planning.replay_v075_numerical_model_bytes_v2(
+            canonical_json_bytes(document)
+        )
 
 
 def test_familywise_bound_is_fixed_not_actual_row_count(manual_models) -> None:

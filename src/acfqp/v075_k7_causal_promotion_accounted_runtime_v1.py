@@ -24,6 +24,10 @@ SCHEMA_VERSION = "1.0.0"
 PROFILE_KEY = "v075_k7_causal_promotion_accounted_runtime_v1"
 TRACE_SCHEMA = "acfqp.v075_k7_causal_promotion_operational_trace.v2"
 TRACE_SCHEMA_VERSION = "2.0.0"
+MODEL_EXPORT_TRACE_SCHEMA = (
+    "acfqp.v075_k7_reusable_model_operational_trace.v1"
+)
+MODEL_EXPORT_TRACE_SCHEMA_VERSION = "1.0.0"
 
 
 class _BusinessHashMeterV1:
@@ -73,6 +77,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--runtime-source", required=True, type=Path)
     parser.add_argument("--request", required=True, type=Path)
     parser.add_argument("--trace-output", required=True, type=Path)
+    parser.add_argument("--export-root-model", action="store_true")
     return parser
 
 
@@ -90,6 +95,7 @@ def main(argv: list[str] | None = None) -> int:
     from acfqp import v075_k7_causal_promotion_terminal_authority_v1 as terminal_v1
     from acfqp.phase3e_ids import (
         V075_K7_CAUSAL_PROMOTION_OPERATIONAL_TRACE_V1_DOMAIN,
+        V075_K7_REUSABLE_MODEL_OPERATIONAL_TRACE_V1_DOMAIN,
         V075_K7_CAUSAL_PROMOTION_SUPERVISED_REQUEST_V1_DOMAIN,
         canonical_json_bytes,
         content_id,
@@ -255,8 +261,14 @@ def main(argv: list[str] | None = None) -> int:
     peak_bytes = int(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss) * 1024
     payload = {
         "artifact_role": "OPERATIONAL_TRACE",
-        "schema": TRACE_SCHEMA,
-        "schema_version": TRACE_SCHEMA_VERSION,
+        "schema": (
+            MODEL_EXPORT_TRACE_SCHEMA if args.export_root_model else TRACE_SCHEMA
+        ),
+        "schema_version": (
+            MODEL_EXPORT_TRACE_SCHEMA_VERSION
+            if args.export_root_model
+            else TRACE_SCHEMA_VERSION
+        ),
         "profile_key": PROFILE_KEY,
         "supervised_request_id": observed_request_id,
         "runtime_preparation_id": request["runtime_preparation_id"],
@@ -280,10 +292,27 @@ def main(argv: list[str] | None = None) -> int:
         "occurrence_vector_issued_by_worker": False,
         "official_execution_allowed": False,
     }
+    if args.export_root_model:
+        payload.update(
+            {
+                "root_numerical_model": result.root_epoch.model.to_document(),
+                "root_model_id": result.root_epoch.model.model_id,
+                "root_model_epoch_id": result.root_epoch.model_epoch_id,
+                "model_occurrence_or_arm_fields_present": False,
+                "model_threshold_fields_present": False,
+                "model_private_law_access": False,
+                "reusable_model_export_only": True,
+            }
+        )
+    trace_domain = (
+        V075_K7_REUSABLE_MODEL_OPERATIONAL_TRACE_V1_DOMAIN
+        if args.export_root_model
+        else V075_K7_CAUSAL_PROMOTION_OPERATIONAL_TRACE_V1_DOMAIN
+    )
     document = {
         **payload,
         "operational_trace_id": content_id(
-            V075_K7_CAUSAL_PROMOTION_OPERATIONAL_TRACE_V1_DOMAIN,
+            trace_domain,
             payload,
         ),
     }

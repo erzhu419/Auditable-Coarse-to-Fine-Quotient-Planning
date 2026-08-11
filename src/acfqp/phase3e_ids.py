@@ -192,6 +192,21 @@ V075_K7_CAUSAL_PROMOTION_SUPERVISED_REQUEST_V1_DOMAIN = (
 V075_K7_CAUSAL_PROMOTION_OPERATIONAL_TRACE_V1_DOMAIN = (
     "acfqp:v075-k7-causal-promotion-operational-trace:v1"
 )
+V075_K7_REUSABLE_MODEL_OPERATIONAL_TRACE_V1_DOMAIN = (
+    "acfqp:v075-k7-reusable-model-operational-trace:v1"
+)
+CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
+    "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
+)
+CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_ENVELOPE_V1_DOMAIN = (
+    "acfqp:construction-k7-reusable-build-epoch-envelope:v1"
+)
+CONSTRUCTION_K7_REUSABLE_ABSTRACT_QUERY_SPEC_V1_DOMAIN = (
+    "acfqp:construction-k7-reusable-abstract-query-spec:v1"
+)
+CONSTRUCTION_K7_REUSABLE_ABSTRACT_QUERY_RESULT_V1_DOMAIN = (
+    "acfqp:construction-k7-reusable-abstract-query-result:v1"
+)
 V075_K7_CAUSAL_PROMOTION_OUTPUT_COMMIT_V1_DOMAIN = (
     "acfqp:v075-k7-causal-promotion-output-commit:v1"
 )
@@ -2153,6 +2168,21 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "v075_k7_causal_promotion_operational_trace_v1": (
             V075_K7_CAUSAL_PROMOTION_OPERATIONAL_TRACE_V1_DOMAIN
+        ),
+        "v075_k7_reusable_model_operational_trace_v1": (
+            V075_K7_REUSABLE_MODEL_OPERATIONAL_TRACE_V1_DOMAIN
+        ),
+        "construction_k7_reusable_build_epoch_resolution_v1": (
+            CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
+        ),
+        "construction_k7_reusable_build_epoch_envelope_v1": (
+            CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_ENVELOPE_V1_DOMAIN
+        ),
+        "construction_k7_reusable_abstract_query_spec_v1": (
+            CONSTRUCTION_K7_REUSABLE_ABSTRACT_QUERY_SPEC_V1_DOMAIN
+        ),
+        "construction_k7_reusable_abstract_query_result_v1": (
+            CONSTRUCTION_K7_REUSABLE_ABSTRACT_QUERY_RESULT_V1_DOMAIN
         ),
         "v075_k7_causal_promotion_output_commit_v1": (
             V075_K7_CAUSAL_PROMOTION_OUTPUT_COMMIT_V1_DOMAIN

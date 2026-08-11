@@ -651,6 +651,12 @@ def _official_partition() -> tuple[
     return forbidden, optional, required, contexts
 
 
+def required_build_epoch_paths_v1() -> tuple[str, ...]:
+    """Return the frozen 100-path construction cost partition."""
+
+    return _official_partition()[2]
+
+
 def _operation_evidence_for_optional_paths(
     optional_paths: tuple[str, ...],
 ) -> tuple[dict[str, tuple[str, ...]], dict[str, tuple[str, ...]], str]:
@@ -1018,5 +1024,6 @@ __all__ = [
     "QueryZeroReplayOutcomeV1",
     "RuntimeSourceFactV1",
     "issue_abstract_query_native_zero_authority_v1",
+    "required_build_epoch_paths_v1",
     "verify_abstract_query_native_zero_authority_bytes_v1",
 ]

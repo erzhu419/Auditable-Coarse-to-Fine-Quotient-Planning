@@ -35,7 +35,11 @@ from pathlib import Path
 from typing import Any, Iterable, Mapping, NoReturn
 
 from acfqp import construction_accounting_owned_runtime_v1 as accounting_runtime
-from acfqp.phase3e_ids import canonical_json_bytes, parse_content_id
+from acfqp.phase3e_ids import (
+    canonical_json_bytes,
+    loads_canonical_json,
+    parse_content_id,
+)
 from acfqp.sequential_bernoulli_acquisition_v1 import (
     METHOD_ID as EXACT_BERNOULLI_METHOD_ID,
     SequentialBernoulliProfileV1,
@@ -3250,6 +3254,187 @@ def freeze_v075_manual_construction_model_v2(
     )
 
 
+def _replay_fraction_document_v2(value: Any, *, label: str) -> Fraction:
+    if type(value) is Fraction:
+        return value
+    if (
+        type(value) is not dict
+        or set(value) != {"numerator", "denominator"}
+        or type(value["numerator"]) is not int
+        or type(value["denominator"]) is not int
+        or value["denominator"] <= 0
+    ):
+        _fail(f"{label} is not one reduced rational document")
+    result = Fraction(value["numerator"], value["denominator"])
+    if _fdoc(result) != value:
+        _fail(f"{label} is not reduced")
+    return result
+
+
+def _replay_support_descriptor_document_v2(
+    document: Any,
+) -> V075SupportDescriptorV2:
+    if type(document) is not dict:
+        _fail("portable support descriptor is not one object")
+    try:
+        value = V075SupportDescriptorV2(
+            _DESCRIPTOR_ISSUER,
+            document["context_id"],
+            document["next_state_id"],
+            tuple(document["next_ranks"]),
+            document["failure"],
+            document["terminal"],
+        )
+    except (KeyError, TypeError, ValueError) as error:
+        raise V075BatchNativePlanningV2InvariantViolation(
+            "portable support descriptor failed typed replay"
+        ) from error
+    if canonical_json_bytes(value.to_document()) != canonical_json_bytes(document):
+        _fail("portable support descriptor differs from typed replay")
+    return value
+
+
+def _replay_interval_document_v2(
+    document: Any,
+    *,
+    descriptors: Mapping[str, V075SupportDescriptorV2],
+) -> V075EventIntervalV2:
+    if type(document) is not dict:
+        _fail("portable event interval is not one object")
+    try:
+        event_key = document["event_key"]
+        descriptor = None if event_key == "OTHER" else descriptors[event_key]
+        value = V075EventIntervalV2(
+            _INTERVAL_ISSUER,
+            event_key,
+            descriptor,
+            document["draw_count"],
+            document["success_count"],
+            _replay_fraction_document_v2(
+                document["empirical_probability"],
+                label="portable empirical probability",
+            ),
+            _replay_fraction_document_v2(
+                document["lower_probability"],
+                label="portable lower probability",
+            ),
+            _replay_fraction_document_v2(
+                document["upper_probability"],
+                label="portable upper probability",
+            ),
+            _replay_fraction_document_v2(
+                document["event_alpha"],
+                label="portable event alpha",
+            ),
+            document["exact_likelihood_comparisons"],
+            document["log_search_evaluations"],
+            document["method_id"],
+        )
+    except (KeyError, TypeError, ValueError) as error:
+        raise V075BatchNativePlanningV2InvariantViolation(
+            "portable event interval failed typed replay"
+        ) from error
+    if canonical_json_bytes(value.to_document()) != canonical_json_bytes(document):
+        _fail("portable event interval differs from typed replay")
+    return value
+
+
+def _replay_numerical_row_document_v2(
+    document: Any,
+) -> V075NumericalRowV2:
+    if type(document) is not dict:
+        _fail("portable numerical row is not one object")
+    try:
+        support_documents = document["support"]
+        interval_documents = document["intervals"]
+        if type(support_documents) is not list or type(interval_documents) is not list:
+            _fail("portable numerical row expansions are absent")
+        support = tuple(
+            _replay_support_descriptor_document_v2(item)
+            for item in support_documents
+        )
+        descriptors = {item.descriptor_id: item for item in support}
+        intervals = tuple(
+            _replay_interval_document_v2(item, descriptors=descriptors)
+            for item in interval_documents
+        )
+        value = V075NumericalRowV2(
+            _ROW_ISSUER,
+            document["context_id"],
+            document["row_binding_id"],
+            document["source_state_id"],
+            tuple(document["source_ranks"]),
+            document["remaining_horizon"],
+            tuple(document["action"]),
+            _replay_fraction_document_v2(
+                document["immediate_reward"],
+                label="portable immediate reward",
+            ),
+            support,
+            intervals,
+        )
+    except (KeyError, TypeError, ValueError) as error:
+        raise V075BatchNativePlanningV2InvariantViolation(
+            "portable numerical row failed typed replay"
+        ) from error
+    if canonical_json_bytes(value.to_document()) != canonical_json_bytes(document):
+        _fail("portable numerical row differs from typed replay")
+    return value
+
+
+def replay_v075_numerical_model_bytes_v2(
+    claimed_bytes: bytes,
+) -> V075NumericalModelV2:
+    """Reconstruct one query-neutral model without acquisition-side access.
+
+    The replay consumes canonical public bytes only.  It reconstructs every
+    descriptor, confidence interval and numerical row through this module's
+    typed invariants, then requires byte-exact equality with the regenerated
+    model document.  No occurrence, threshold, observer, signer, worker or
+    private-law input is accepted by this boundary.
+    """
+
+    if type(claimed_bytes) is not bytes or not claimed_bytes:
+        _fail("portable numerical model must be nonempty bytes")
+    try:
+        document = loads_canonical_json(claimed_bytes)
+    except Exception as error:
+        raise V075BatchNativePlanningV2InvariantViolation(
+            "portable numerical model is not canonical JSON"
+        ) from error
+    if type(document) is not dict or canonical_json_bytes(document) != claimed_bytes:
+        _fail("portable numerical model is not one canonical object")
+    try:
+        context_id = document["context_id"]
+        contexts = (
+            public_authority.freeze_v075_public_family_generation_v1()
+            .replicate_contexts
+        )
+        matches = tuple(item for item in contexts if item.context_id == context_id)
+        if len(matches) != 1:
+            _fail("portable numerical model context is not registered")
+        row_documents = document["rows"]
+        if type(row_documents) is not list:
+            _fail("portable numerical model rows are absent")
+        rows = tuple(
+            _replay_numerical_row_document_v2(item)
+            for item in row_documents
+        )
+        value = V075NumericalModelV2(
+            _MODEL_ISSUER,
+            matches[0],
+            rows,
+            document["evidence_kind"],
+        )
+    except (KeyError, TypeError, ValueError) as error:
+        raise V075BatchNativePlanningV2InvariantViolation(
+            "portable numerical model failed typed replay"
+        ) from error
+    if canonical_json_bytes(value.to_document()) != claimed_bytes:
+        _fail("portable numerical model differs from typed replay")
+    return value
+
+
 __all__ = [
     "BOUNDARY_GRID_BITS",
     "COMPARATOR_RULE",
@@ -3281,5 +3466,6 @@ __all__ = [
     "freeze_v075_manual_construction_row_v2",
     "plan_v075_construction_aggregate_input_v2",
     "plan_v075_construction_numerical_model_v2",
+    "replay_v075_numerical_model_bytes_v2",
     "verify_v075_construction_planning_result_bytes_v2",
 ]
