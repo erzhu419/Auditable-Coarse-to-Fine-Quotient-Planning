@@ -441,6 +441,9 @@ CONSTRUCTION_K7_QUERY_BOUND_PROOF_CACHE_CONSUMPTION_V1_DOMAIN = (
 CONSTRUCTION_K7_QUERY_BOUND_PROOF_CACHE_NO_REUSE_CONTROL_V1_DOMAIN = (
     "acfqp:construction-k7-query-bound-proof-cache-no-reuse-control:v1"
 )
+CONSTRUCTION_K7_QUERY_BOUND_PERSISTENT_PROOF_CACHE_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-persistent-proof-cache-verification:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -2663,6 +2666,9 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_query_bound_proof_cache_no_reuse_control_v1": (
             CONSTRUCTION_K7_QUERY_BOUND_PROOF_CACHE_NO_REUSE_CONTROL_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_persistent_proof_cache_verification_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_PERSISTENT_PROOF_CACHE_VERIFICATION_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
