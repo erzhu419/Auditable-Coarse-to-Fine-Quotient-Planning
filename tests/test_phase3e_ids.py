@@ -481,8 +481,10 @@ def test_k7_complete_accounting_successor_domains_are_central_and_role_separated
         ids.CONSTRUCTION_K7_QUERY_BOUND_REUSABLE_RAPM_QUERY_SPEC_V1_DOMAIN,
         ids.CONSTRUCTION_K7_QUERY_BOUND_REUSABLE_RAPM_QUERY_RESULT_V1_DOMAIN,
         ids.CONSTRUCTION_K7_QUERY_BOUND_REUSABLE_RAPM_VERIFICATION_V1_DOMAIN,
+        ids.CONSTRUCTION_K7_QUERY_BOUND_REUSABLE_RAPM_SOURCE_BUNDLE_BINDING_V1_DOMAIN,
+        ids.CONSTRUCTION_K7_QUERY_BOUND_REUSABLE_RAPM_SOURCE_BUNDLE_BINDING_VERIFICATION_V1_DOMAIN,
     )
-    assert len(domains) == len(set(domains)) == 126
+    assert len(domains) == len(set(domains)) == 128
     assert set(domains) <= ids.PHASE3E_DOMAIN_TAGS
     payload = {"schema": "same-k7-accounting-successor-payload"}
     assert len({ids.content_id(domain, payload) for domain in domains}) == len(domains)

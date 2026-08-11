@@ -408,6 +408,12 @@ CONSTRUCTION_K7_QUERY_BOUND_REUSABLE_RAPM_QUERY_RESULT_V1_DOMAIN = (
 CONSTRUCTION_K7_QUERY_BOUND_REUSABLE_RAPM_VERIFICATION_V1_DOMAIN = (
     "acfqp:construction-k7-query-bound-reusable-rapm-verification:v1"
 )
+CONSTRUCTION_K7_QUERY_BOUND_REUSABLE_RAPM_SOURCE_BUNDLE_BINDING_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-reusable-rapm-source-bundle-binding:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_REUSABLE_RAPM_SOURCE_BUNDLE_BINDING_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-reusable-rapm-source-bundle-binding-verification:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -2597,6 +2603,12 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_query_bound_reusable_rapm_verification_v1": (
             CONSTRUCTION_K7_QUERY_BOUND_REUSABLE_RAPM_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_reusable_rapm_source_bundle_binding_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_REUSABLE_RAPM_SOURCE_BUNDLE_BINDING_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_reusable_rapm_source_bundle_binding_verification_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_REUSABLE_RAPM_SOURCE_BUNDLE_BINDING_VERIFICATION_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN

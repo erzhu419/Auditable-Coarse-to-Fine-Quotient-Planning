@@ -284,6 +284,54 @@ def _verify_snapshot(
     return document, model
 
 
+def verify_query_bound_reusable_rapm_snapshot_bytes_v1(
+    snapshot_bytes: bytes,
+) -> dict[str, Any]:
+    """Return the independently replayed portable snapshot identity summary."""
+
+    document, model = _verify_snapshot(snapshot_bytes)
+    return {
+        "reusable_rapm_snapshot_id": document[
+            "query_bound_reusable_rapm_snapshot_id"
+        ],
+        "source_operational_trace_id": document["source_operational_trace_id"],
+        "source_logical_occurrence_id": document[
+            "source_logical_occurrence_id"
+        ],
+        "source_reusable_abstract_query_id": document[
+            "source_reusable_abstract_query_id"
+        ],
+        "source_final_local_replanning_id": document[
+            "source_final_local_replanning_id"
+        ],
+        "transaction_1_replanning_id": document[
+            "transaction_1_replanning_id"
+        ],
+        "transaction_2_recovery_request_id": document[
+            "transaction_2_recovery_request_id"
+        ],
+        "transaction_2_ground_transaction_id": document[
+            "transaction_2_ground_transaction_id"
+        ],
+        "source_numerical_model_id": document["source_numerical_model_id"],
+        "source_numerical_proof_id": document["source_numerical_proof_id"],
+        "source_frontier_id": document["source_frontier_id"],
+        "reusable_numerical_model_id": model.model_id,
+        "reusable_numerical_proof_id": document[
+            "reusable_numerical_proof_id"
+        ],
+        "reusable_frontier_id": document["reusable_frontier_id"],
+        "reusable_row_count": len(model.rows),
+        "changed_row_count": document["changed_row_count"],
+        "preserved_row_count": document["preserved_row_count"],
+        "cumulative_local_ground_draw_count": document[
+            "cumulative_local_ground_draw_count"
+        ],
+        "source_occurrence_bundle_binding_present": False,
+        "portable_source_ground_transaction_replay_present": False,
+    }
+
+
 def _verify_query(
     document: Any,
     *,
@@ -459,4 +507,5 @@ __all__ = [
     "ConstructionK7QueryBoundReusableRAPMIndependentVerifierV1Error",
     "LOCAL_DOMAINS",
     "verify_query_bound_reusable_rapm_bundle_bytes_v1",
+    "verify_query_bound_reusable_rapm_snapshot_bytes_v1",
 ]
