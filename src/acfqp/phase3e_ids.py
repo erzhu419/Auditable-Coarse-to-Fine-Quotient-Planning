@@ -387,6 +387,15 @@ CONSTRUCTION_K7_QUERY_BOUND_CAMPAIGN_PREFIX_FAILURE_CLOSURE_VERIFICATION_PROFILE
 CONSTRUCTION_K7_QUERY_BOUND_CAMPAIGN_PREFIX_FAILURE_CLOSURE_VERIFICATION_V2_DOMAIN = (
     "acfqp:construction-k7-query-bound-campaign-prefix-failure-closure-verification:v2"
 )
+CONSTRUCTION_K7_QUERY_BOUND_CAMPAIGN_ORCHESTRATION_ACCOUNTING_PROFILE_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-campaign-orchestration-accounting-profile:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_CAMPAIGN_ORCHESTRATION_ACCOUNTING_PROFILE_VERIFICATION_PROFILE_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-campaign-orchestration-accounting-profile-verification-profile:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_CAMPAIGN_ORCHESTRATION_ACCOUNTING_PROFILE_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-campaign-orchestration-accounting-profile-verification:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -2555,6 +2564,15 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_query_bound_campaign_prefix_failure_closure_verification_v2": (
             CONSTRUCTION_K7_QUERY_BOUND_CAMPAIGN_PREFIX_FAILURE_CLOSURE_VERIFICATION_V2_DOMAIN
+        ),
+        "construction_k7_query_bound_campaign_orchestration_accounting_profile_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_CAMPAIGN_ORCHESTRATION_ACCOUNTING_PROFILE_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_campaign_orchestration_accounting_profile_verification_profile_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_CAMPAIGN_ORCHESTRATION_ACCOUNTING_PROFILE_VERIFICATION_PROFILE_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_campaign_orchestration_accounting_profile_verification_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_CAMPAIGN_ORCHESTRATION_ACCOUNTING_PROFILE_VERIFICATION_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
