@@ -633,6 +633,27 @@ CONSTRUCTION_K7_POSITIVE_PROMOTED_CAMPAIGN_RESULT_V1_DOMAIN = (
 CONSTRUCTION_K7_POSITIVE_PROMOTED_CAMPAIGN_INDEPENDENT_VERIFICATION_V1_DOMAIN = (
     "acfqp:construction-k7-positive-promoted-campaign-independent-verification:v1"
 )
+CONSTRUCTION_K7_HELDOUT_CHECKPOINT_PREREGISTRATION_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-checkpoint-preregistration:v1"
+)
+CONSTRUCTION_K7_HELDOUT_COORDINATE_CHECKPOINT_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-coordinate-checkpoint:v1"
+)
+CONSTRUCTION_K7_HELDOUT_CAUSAL_ROW_EVIDENCE_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-causal-row-evidence:v1"
+)
+CONSTRUCTION_K7_HELDOUT_RECOVERY_REQUEST_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-recovery-request:v1"
+)
+CONSTRUCTION_K7_HELDOUT_VALIDATION_DELTA_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-validation-delta:v1"
+)
+CONSTRUCTION_K7_HELDOUT_OVERLAY_EPOCH_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-overlay-epoch:v1"
+)
+CONSTRUCTION_K7_HELDOUT_RECERTIFICATION_RESULT_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-recertification-result:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -3047,6 +3068,27 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_positive_promoted_campaign_independent_verification_v1": (
             CONSTRUCTION_K7_POSITIVE_PROMOTED_CAMPAIGN_INDEPENDENT_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_heldout_checkpoint_preregistration_v1": (
+            CONSTRUCTION_K7_HELDOUT_CHECKPOINT_PREREGISTRATION_V1_DOMAIN
+        ),
+        "construction_k7_heldout_coordinate_checkpoint_v1": (
+            CONSTRUCTION_K7_HELDOUT_COORDINATE_CHECKPOINT_V1_DOMAIN
+        ),
+        "construction_k7_heldout_causal_row_evidence_v1": (
+            CONSTRUCTION_K7_HELDOUT_CAUSAL_ROW_EVIDENCE_V1_DOMAIN
+        ),
+        "construction_k7_heldout_recovery_request_v1": (
+            CONSTRUCTION_K7_HELDOUT_RECOVERY_REQUEST_V1_DOMAIN
+        ),
+        "construction_k7_heldout_validation_delta_v1": (
+            CONSTRUCTION_K7_HELDOUT_VALIDATION_DELTA_V1_DOMAIN
+        ),
+        "construction_k7_heldout_overlay_epoch_v1": (
+            CONSTRUCTION_K7_HELDOUT_OVERLAY_EPOCH_V1_DOMAIN
+        ),
+        "construction_k7_heldout_recertification_result_v1": (
+            CONSTRUCTION_K7_HELDOUT_RECERTIFICATION_RESULT_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
