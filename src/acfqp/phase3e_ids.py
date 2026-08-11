@@ -309,6 +309,24 @@ CONSTRUCTION_K7_QUERY_BOUND_COMPLETE_BUNDLE_VERIFICATION_PROFILE_V1_DOMAIN = (
 CONSTRUCTION_K7_QUERY_BOUND_COMPLETE_BUNDLE_VERIFICATION_V1_DOMAIN = (
     "acfqp:construction-k7-query-bound-complete-bundle-verification:v1"
 )
+CONSTRUCTION_K7_QUERY_BOUND_CAMPAIGN_ANALYSIS_SPEC_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-campaign-analysis-spec:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_CAMPAIGN_OCCURRENCE_ROW_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-campaign-occurrence-row:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_CAMPAIGN_VECTOR_PREFIX_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-campaign-vector-prefix:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_CAMPAIGN_ANALYSIS_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-campaign-analysis:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_CAMPAIGN_ANALYSIS_VERIFICATION_PROFILE_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-campaign-analysis-verification-profile:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_CAMPAIGN_ANALYSIS_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-campaign-analysis-verification:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -2399,6 +2417,24 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_query_bound_complete_bundle_verification_v1": (
             CONSTRUCTION_K7_QUERY_BOUND_COMPLETE_BUNDLE_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_campaign_analysis_spec_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_CAMPAIGN_ANALYSIS_SPEC_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_campaign_occurrence_row_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_CAMPAIGN_OCCURRENCE_ROW_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_campaign_vector_prefix_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_CAMPAIGN_VECTOR_PREFIX_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_campaign_analysis_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_CAMPAIGN_ANALYSIS_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_campaign_analysis_verification_profile_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_CAMPAIGN_ANALYSIS_VERIFICATION_PROFILE_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_campaign_analysis_verification_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_CAMPAIGN_ANALYSIS_VERIFICATION_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
