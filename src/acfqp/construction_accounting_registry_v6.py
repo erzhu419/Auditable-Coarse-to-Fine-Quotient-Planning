@@ -25,6 +25,8 @@ from acfqp.accounting_v1 import (
     LaneEnum,
     ProjectionTermV1,
     ReducerEnum,
+    RouteKindEnum,
+    WorkVectorV1,
     official_shared_axes_v1,
 )
 from acfqp import construction_accounting_registry_v5 as v5
@@ -492,6 +494,92 @@ class CounterRegistryV6:
         if self != _expected_registry_v6():
             raise ConstructionAccountingRegistryV6Error(
                 "official V6 counter catalogue changed"
+            )
+
+    def validate_vector(self, vector: WorkVectorV1) -> None:
+        """Validate one V6 WorkVector without downgrading it to V1 metadata."""
+
+        self.validate_official_catalogue()
+        if (
+            type(vector) is not WorkVectorV1
+            or vector.counter_registry_id != self.registry_id
+            or tuple(sorted(vector.records, key=lambda row: row.path))
+            != vector.records
+            or len({row.path for row in vector.records}) != len(vector.records)
+        ):
+            raise ConstructionAccountingRegistryV6Error(
+                "V6 work vector identity or ordering changed"
+            )
+        for row in vector.records:
+            leaf = self.by_path.get(row.path)
+            if leaf is None or row.counter_registry_id != self.registry_id:
+                raise ConstructionAccountingRegistryV6Error(
+                    "V6 work vector contains an unknown or crossed record"
+                )
+            row.verify_against(leaf)
+        values = vector.values
+        if set(self.required_paths) - set(values):
+            raise ConstructionAccountingRegistryV6Error(
+                "V6 work vector omits a required record"
+            )
+        for total, successes, failures in (
+            ("route.attempts", "route.successes", "route.failures"),
+            ("solver.attempts", "solver.successes", "solver.failures"),
+        ):
+            present = {path for path in (total, successes, failures) if path in values}
+            if present and (
+                len(present) != 3
+                or values[total] != values[successes] + values[failures]
+            ):
+                raise ConstructionAccountingRegistryV6Error(
+                    f"V6 work vector reconciliation failed for {total}"
+                )
+        exits = {"process.exit_successes", "process.exit_failures"}
+        if exits & set(values) and (
+            not exits <= set(values)
+            or values["process.launches"]
+            != values["process.exit_successes"] + values["process.exit_failures"]
+        ):
+            raise ConstructionAccountingRegistryV6Error(
+                "V6 process launch/exit reconciliation failed"
+            )
+        if any(
+            values.get(path, 0) > values["io.output_bytes"]
+            for path in (
+                "epoch.serialized_bytes",
+                "model.serialized_bytes",
+                "capability.serialized_bytes",
+            )
+        ) or values.get("branch.evaluations", 0) != 0:
+            raise ConstructionAccountingRegistryV6Error(
+                "V6 derived byte or branch accounting changed"
+            )
+        if vector.route_kind is RouteKindEnum.LOCAL_ATTEMPT:
+            forbidden = ("fallback.", "rebuild.")
+        elif vector.route_kind is RouteKindEnum.DIRECT_FALLBACK:
+            forbidden = ("local.", "rebuild.")
+        elif vector.route_kind in {
+            RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE,
+            RouteKindEnum.ABSTRACT_FAILED_PREFIX,
+        }:
+            forbidden = ("local.", "fallback.", "rebuild.")
+        elif vector.route_kind is RouteKindEnum.REBUILD:
+            forbidden = ("common.", "local.", "fallback.", "control.")
+        else:  # pragma: no cover - enum exhaustiveness
+            raise ConstructionAccountingRegistryV6Error("unknown V6 route kind")
+        nonzero = tuple(
+            path
+            for path, value in values.items()
+            if value
+            and any(path.startswith(prefix) for prefix in forbidden)
+            and not (
+                vector.route_kind is RouteKindEnum.ABSTRACT_FAILED_PREFIX
+                and path == "local.causal_candidate_evaluations"
+            )
+        )
+        if nonzero:
+            raise ConstructionAccountingRegistryV6Error(
+                f"V6 route-family exclusivity failed: {nonzero!r}"
             )
 
 

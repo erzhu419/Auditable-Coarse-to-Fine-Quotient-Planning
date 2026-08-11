@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 from dataclasses import replace
+import hashlib
 
 import pytest
 
 from acfqp import construction_accounting_registry_v5 as v5
 from acfqp import construction_accounting_registry_v6 as v6
+from acfqp.accounting_v1 import CounterRecordV1, RouteKindEnum, WorkVectorV1
 from acfqp.phase3e_ids import (
     CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V6_DOMAIN,
     CONSTRUCTION_COMPARISON_PROFILE_V6_DOMAIN,
@@ -218,3 +220,68 @@ def test_v6_domains_and_tamper_guards() -> None:
     forged = replace(registry, leaves=registry.leaves[:-1])
     with pytest.raises(v6.ConstructionAccountingRegistryV6Error):
         forged.validate_official_catalogue()
+
+
+def _zero_v6_vector(route_kind: RouteKindEnum) -> WorkVectorV1:
+    registry = v6.official_counter_registry_v6()
+    records = tuple(
+        CounterRecordV1(
+            registry.registry_id,
+            leaf.path,
+            0,
+            True,
+            hashlib.sha256(f"{route_kind.value}:{leaf.path}".encode()).hexdigest(),
+            leaf.semantics_id,
+            leaf.owner,
+            leaf.unit,
+            leaf.lane,
+            leaf.scope,
+            leaf.reducer,
+        )
+        for leaf in registry.leaves
+        if leaf.required
+    )
+    return WorkVectorV1(
+        registry.registry_id,
+        hashlib.sha256(b"v6-work-vector-test-subject").hexdigest(),
+        route_kind,
+        records,
+    )
+
+
+def test_v6_registry_validates_complete_route_exclusive_vectors() -> None:
+    registry = v6.official_counter_registry_v6()
+    vector = _zero_v6_vector(RouteKindEnum.LOCAL_ATTEMPT)
+    registry.validate_vector(vector)
+    assert WorkVectorV1.from_dict(vector.to_dict(), registry) == vector
+
+
+def test_v6_registry_rejects_cross_route_nonzero_work() -> None:
+    registry = v6.official_counter_registry_v6()
+    vector = _zero_v6_vector(RouteKindEnum.LOCAL_ATTEMPT)
+    rows = list(vector.records)
+    index = next(
+        index for index, row in enumerate(rows) if row.path == "fallback.states_expanded"
+    )
+    leaf = registry.by_path[rows[index].path]
+    rows[index] = CounterRecordV1(
+        registry.registry_id,
+        leaf.path,
+        1,
+        True,
+        hashlib.sha256(b"forged-cross-route-work").hexdigest(),
+        leaf.semantics_id,
+        leaf.owner,
+        leaf.unit,
+        leaf.lane,
+        leaf.scope,
+        leaf.reducer,
+    )
+    forged = WorkVectorV1(
+        vector.counter_registry_id,
+        vector.subject_id,
+        vector.route_kind,
+        tuple(rows),
+    )
+    with pytest.raises(v6.ConstructionAccountingRegistryV6Error):
+        registry.validate_vector(forged)

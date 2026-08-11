@@ -273,6 +273,42 @@ CONSTRUCTION_K7_QUERY_BOUND_STAGE_RUNTIME_RESULT_V1_DOMAIN = (
 CONSTRUCTION_K7_QUERY_BOUND_ACCOUNTED_CONTINUATION_V1_DOMAIN = (
     "acfqp:construction-k7-query-bound-accounted-continuation:v1"
 )
+CONSTRUCTION_K7_QUERY_BOUND_RUNTIME_PREPARATION_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-runtime-preparation:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_SUPERVISED_REQUEST_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-supervised-request:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_OPERATIONAL_TRACE_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-operational-trace:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_SHARED_MEASUREMENT_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-shared-measurement:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_SHARED_RECEIPT_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-shared-receipt:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_SHARED_RECEIPT_SET_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-shared-receipt-set:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_PATH_AGGREGATION_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-path-aggregation:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_OCCURRENCE_ACCOUNTING_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-occurrence-accounting:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_OUTPUT_RENDERER_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-output-renderer:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_OUTPUT_COMMIT_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-output-commit:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_COMPLETE_BUNDLE_VERIFICATION_PROFILE_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-complete-bundle-verification-profile:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_COMPLETE_BUNDLE_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-complete-bundle-verification:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -2327,6 +2363,42 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_query_bound_accounted_continuation_v1": (
             CONSTRUCTION_K7_QUERY_BOUND_ACCOUNTED_CONTINUATION_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_runtime_preparation_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_RUNTIME_PREPARATION_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_supervised_request_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_SUPERVISED_REQUEST_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_operational_trace_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_OPERATIONAL_TRACE_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_shared_measurement_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_SHARED_MEASUREMENT_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_shared_receipt_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_SHARED_RECEIPT_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_shared_receipt_set_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_SHARED_RECEIPT_SET_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_path_aggregation_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_PATH_AGGREGATION_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_occurrence_accounting_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_OCCURRENCE_ACCOUNTING_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_output_renderer_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_OUTPUT_RENDERER_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_output_commit_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_OUTPUT_COMMIT_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_complete_bundle_verification_profile_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_COMPLETE_BUNDLE_VERIFICATION_PROFILE_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_complete_bundle_verification_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_COMPLETE_BUNDLE_VERIFICATION_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
