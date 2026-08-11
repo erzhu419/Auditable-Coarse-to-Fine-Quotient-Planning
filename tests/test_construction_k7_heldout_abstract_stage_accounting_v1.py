@@ -60,6 +60,7 @@ def test_domains_and_public_surface_are_additive() -> None:
         "official_heldout_abstract_operation_manifest_v1",
         "official_heldout_abstract_stage_profile_v1",
         "record_heldout_abstract_route_v1",
+        "run_and_record_heldout_abstract_route_v1",
         "verify_heldout_abstract_stage_accounting_v1",
     }
 

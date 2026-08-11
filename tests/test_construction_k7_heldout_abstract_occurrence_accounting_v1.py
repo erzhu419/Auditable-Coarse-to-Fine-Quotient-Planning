@@ -36,6 +36,7 @@ def test_domains_and_surface_are_additive() -> None:
         "HeldoutAbstractSharedReceiptSetV1",
         "HeldoutAbstractSharedReceiptV1",
         "run_heldout_abstract_occurrence_accounting_v1",
+        "run_preaccounted_heldout_abstract_occurrence_v1",
         "verify_heldout_abstract_occurrence_accounting_v1",
     }
 

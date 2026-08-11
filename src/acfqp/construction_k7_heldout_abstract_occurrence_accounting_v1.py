@@ -978,13 +978,20 @@ def _operational_input_document(
     }
 
 
-def run_heldout_abstract_occurrence_accounting_v1(
+def _run_heldout_abstract_occurrence_from_stage_v1(
     result: reuse_v1.HeldoutOverlayAbstractReuseResultV1,
+    stage: stage_v1.HeldoutAbstractStageAccountingResultV1,
     *,
     output_directory: str | Path,
+    replay_before_return: bool,
 ) -> HeldoutAbstractOccurrenceAccountingBundleV1:
-    if type(result) is not reuse_v1.HeldoutOverlayAbstractReuseResultV1:
-        _fail("held-out occurrence accounting requires one exact typed result")
+    if (
+        type(result) is not reuse_v1.HeldoutOverlayAbstractReuseResultV1
+        or type(stage) is not stage_v1.HeldoutAbstractStageAccountingResultV1
+        or stage.reuse_result is not result
+    ):
+        _fail("held-out occurrence accounting requires one exact accounted result")
+    stage_v1.verify_heldout_abstract_stage_accounting_v1(stage)
     output = Path(output_directory)
     if output.exists():
         _fail("held-out output directory must be absent")
@@ -992,7 +999,6 @@ def run_heldout_abstract_occurrence_accounting_v1(
     parsed_input = loads_canonical_json(input_raw)
     if canonical_json_bytes(parsed_input) != input_raw:
         _fail("held-out input bytes failed canonical readback")
-    stage = stage_v1.record_heldout_abstract_route_v1(result)
     measurement = HeldoutAbstractSharedMeasurementV1(
         result.query.logical_occurrence_id,
         result.result_id,
@@ -1062,7 +1068,48 @@ def run_heldout_abstract_occurrence_accounting_v1(
         materialized.comparison_vector,
         materialized.projection_proof,
     )
-    return verify_heldout_abstract_occurrence_accounting_v1(bundle)
+    return (
+        verify_heldout_abstract_occurrence_accounting_v1(bundle)
+        if replay_before_return
+        else bundle
+    )
+
+
+def run_heldout_abstract_occurrence_accounting_v1(
+    result: reuse_v1.HeldoutOverlayAbstractReuseResultV1,
+    *,
+    output_directory: str | Path,
+) -> HeldoutAbstractOccurrenceAccountingBundleV1:
+    """Replay a frozen plan once inside the owner-accounted route window."""
+
+    if type(result) is not reuse_v1.HeldoutOverlayAbstractReuseResultV1:
+        _fail("held-out occurrence accounting requires one exact typed result")
+    if Path(output_directory).exists():
+        _fail("held-out output directory must be absent")
+    stage = stage_v1.record_heldout_abstract_route_v1(result)
+    return _run_heldout_abstract_occurrence_from_stage_v1(
+        result,
+        stage,
+        output_directory=output_directory,
+        replay_before_return=True,
+    )
+
+
+def run_preaccounted_heldout_abstract_occurrence_v1(
+    stage: stage_v1.HeldoutAbstractStageAccountingResultV1,
+    *,
+    output_directory: str | Path,
+) -> HeldoutAbstractOccurrenceAccountingBundleV1:
+    """Materialize receipts without executing a second planner call."""
+
+    if type(stage) is not stage_v1.HeldoutAbstractStageAccountingResultV1:
+        _fail("preaccounted held-out occurrence requires one exact stage result")
+    return _run_heldout_abstract_occurrence_from_stage_v1(
+        stage.reuse_result,
+        stage,
+        output_directory=output_directory,
+        replay_before_return=False,
+    )
 
 
 def verify_heldout_abstract_occurrence_accounting_v1(
@@ -1134,5 +1181,6 @@ __all__ = (
     "HeldoutAbstractSharedReceiptSetV1",
     "HeldoutAbstractSharedReceiptV1",
     "run_heldout_abstract_occurrence_accounting_v1",
+    "run_preaccounted_heldout_abstract_occurrence_v1",
     "verify_heldout_abstract_occurrence_accounting_v1",
 )

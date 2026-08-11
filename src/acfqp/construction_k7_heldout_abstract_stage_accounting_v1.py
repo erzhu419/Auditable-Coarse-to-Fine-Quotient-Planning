@@ -24,6 +24,7 @@ from acfqp import construction_accounting_live_v3 as live_v3
 from acfqp import construction_accounting_owned_runtime_v1 as owned_v1
 from acfqp import construction_accounting_registry_v3 as registry_v3
 from acfqp import construction_accounting_registry_v6 as registry_v6
+from acfqp import construction_k7_heldout_checkpoint_recertification_v1 as source_v1
 from acfqp import construction_k7_heldout_overlay_abstract_reuse_v1 as reuse_v1
 from acfqp import partial_support_robust_planner_v1 as robust
 from acfqp.accounting_v1 import ReducerEnum
@@ -587,22 +588,35 @@ class HeldoutAbstractStageAccountingResultV1:
         }
 
 
-def record_heldout_abstract_route_v1(
-    result: reuse_v1.HeldoutOverlayAbstractReuseResultV1,
+def _record_heldout_abstract_query_v1(
+    source: source_v1.HeldoutCheckpointRecertificationResultV1,
+    query: reuse_v1.HeldoutOverlayQueryV1,
+    expected_result: reuse_v1.HeldoutOverlayAbstractReuseResultV1 | None,
 ) -> HeldoutAbstractStageAccountingResultV1:
-    if type(result) is not reuse_v1.HeldoutOverlayAbstractReuseResultV1:
-        _fail("held-out stage accounting rejects a foreign result")
-    result.result_id
-    result.source.result_id
-    result.query.query_id
-    result.plan.plan_id
     if (
-        result.plan.query != result.query
-        or result.query.source_result_id != result.source.result_id
-        or result.plan.audit.model_id
-        != result.source.final_overlay.bridge.quotient_model.model_id
+        type(source) is not source_v1.HeldoutCheckpointRecertificationResultV1
+        or type(query) is not reuse_v1.HeldoutOverlayQueryV1
+        or query.source_result_id != source.result_id
+        or query.source_overlay_id != source.final_overlay.overlay_id
+        or query.context_id != source.context.context_id
+        or query.quotient_model_id
+        != source.final_overlay.bridge.quotient_model.model_id
+        or query.threshold_profile_id != source.threshold.threshold_profile_id
     ):
-        _fail("held-out stage-accounting input identity graph changed")
+        _fail("held-out stage-accounting source/query identity graph changed")
+    query.query_id
+    if expected_result is not None:
+        if (
+            type(expected_result)
+            is not reuse_v1.HeldoutOverlayAbstractReuseResultV1
+            or expected_result.source is not source
+            or expected_result.query != query
+            or expected_result.plan.query != query
+            or expected_result.plan.audit.model_id != query.quotient_model_id
+        ):
+            _fail("held-out stage-accounting frozen result changed")
+        expected_result.result_id
+        expected_result.plan.plan_id
     if not _PROCESS_LOCK.acquire(blocking=False):
         _fail("another held-out stage-accounting scope is active")
     token = None
@@ -619,7 +633,7 @@ def record_heldout_abstract_route_v1(
             registry, stage_profile
         )
         lifecycle = live_v3.open_construction_accounting_lifecycle_v3(
-            subject_id=result.query.logical_occurrence_id,
+            subject_id=query.logical_occurrence_id,
             recorder_id=RECORDER_ID,
             stage_plan=tuple(_live_stage(item) for item in CANONICAL_STAGE_PLAN_V1),
             registry=registry,
@@ -629,9 +643,9 @@ def record_heldout_abstract_route_v1(
         )
         rows: list[live_v3.RecordedStageWorkV3] = []
         outputs = (
-            (result.query.query_id,),
-            (result.source.final_overlay.overlay_id,),
-            (result.source.final_overlay.bridge.quotient_model.model_id,),
+            (query.query_id,),
+            (source.final_overlay.overlay_id,),
+            (source.final_overlay.bridge.quotient_model.model_id,),
         )
         for stage, output_ids in zip(CANONICAL_STAGE_PLAN_V1[:3], outputs):
             active = lifecycle.begin_stage(_live_stage(stage))
@@ -644,17 +658,23 @@ def record_heldout_abstract_route_v1(
         try:
             with meter:
                 operational_audit = robust.solve_quotient_robust_h2_v1(
-                    result.source.final_overlay.bridge.quotient_model,
-                    result.source.threshold,
+                    source.final_overlay.bridge.quotient_model,
+                    source.threshold,
                 )
         finally:
             owned_v1._ACTIVE_RUNTIME.reset(token)  # noqa: SLF001
             token = None
-        if (
-            operational_audit != result.plan.audit
-            or operational_audit.audit_id != result.plan.audit.audit_id
-        ):
-            _fail("owner-accounted quotient planner changed the frozen plan")
+        if expected_result is None:
+            result = reuse_v1.complete_heldout_overlay_abstract_reuse_v1(
+                source, query, operational_audit
+            )
+        else:
+            result = expected_result
+            if (
+                operational_audit != result.plan.audit
+                or operational_audit.audit_id != result.plan.audit.audit_id
+            ):
+                _fail("owner-accounted quotient planner changed the frozen plan")
         hook.flush()
         rows.append(
             active.complete(
@@ -697,6 +717,25 @@ def record_heldout_abstract_route_v1(
         if token is not None:
             owned_v1._ACTIVE_RUNTIME.reset(token)  # noqa: SLF001
         _PROCESS_LOCK.release()
+
+
+def record_heldout_abstract_route_v1(
+    result: reuse_v1.HeldoutOverlayAbstractReuseResultV1,
+) -> HeldoutAbstractStageAccountingResultV1:
+    """Replay and account an already frozen held-out plan."""
+
+    if type(result) is not reuse_v1.HeldoutOverlayAbstractReuseResultV1:
+        _fail("held-out stage accounting rejects a foreign result")
+    return _record_heldout_abstract_query_v1(result.source, result.query, result)
+
+
+def run_and_record_heldout_abstract_route_v1(
+    source: source_v1.HeldoutCheckpointRecertificationResultV1,
+    query: reuse_v1.HeldoutOverlayQueryV1,
+) -> HeldoutAbstractStageAccountingResultV1:
+    """Execute and account exactly one planner call for a frozen query."""
+
+    return _record_heldout_abstract_query_v1(source, query, None)
 
 
 def verify_heldout_abstract_stage_accounting_v1(
@@ -742,5 +781,6 @@ __all__ = (
     "official_heldout_abstract_operation_manifest_v1",
     "official_heldout_abstract_stage_profile_v1",
     "record_heldout_abstract_route_v1",
+    "run_and_record_heldout_abstract_route_v1",
     "verify_heldout_abstract_stage_accounting_v1",
 )

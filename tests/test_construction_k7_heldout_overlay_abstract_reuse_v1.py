@@ -52,6 +52,8 @@ def test_domains_and_public_surface_are_additive() -> None:
         "OFFICIAL_EXECUTION_ALLOWED",
         "SCIENTIFIC_ENDPOINT_CREDIT_ALLOWED",
         "WORKLOAD_ECONOMICS_GATE_STATUS",
+        "complete_heldout_overlay_abstract_reuse_v1",
+        "freeze_heldout_overlay_query_v1",
         "run_heldout_overlay_abstract_reuse_v1",
         "verify_heldout_overlay_abstract_reuse_v1",
     }

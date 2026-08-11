@@ -248,16 +248,10 @@ def run_heldout_overlay_abstract_reuse_v1(
 ) -> HeldoutOverlayAbstractReuseResultV1:
     """Freeze a fresh query, then plan only on the promoted quotient model."""
 
-    source_v1.verify_heldout_checkpoint_recertification_v1(source)
-    query = HeldoutOverlayQueryV1(
-        _QUERY_ISSUER,
-        logical_occurrence_id,
-        occurrence_ordinal,
-        source.result_id,
-        source.final_overlay.overlay_id,
-        source.context.context_id,
-        source.final_overlay.bridge.quotient_model.model_id,
-        source.threshold.threshold_profile_id,
+    query = freeze_heldout_overlay_query_v1(
+        source,
+        logical_occurrence_id=logical_occurrence_id,
+        occurrence_ordinal=occurrence_ordinal,
     )
     audit = robust.solve_quotient_robust_h2_v1(
         source.final_overlay.bridge.quotient_model,
@@ -268,6 +262,55 @@ def run_heldout_overlay_abstract_reuse_v1(
         source.threshold,
         audit,
     )
+    return complete_heldout_overlay_abstract_reuse_v1(source, query, audit)
+
+
+def freeze_heldout_overlay_query_v1(
+    source: source_v1.HeldoutCheckpointRecertificationResultV1,
+    *,
+    logical_occurrence_id: str,
+    occurrence_ordinal: int,
+) -> HeldoutOverlayQueryV1:
+    """Verify the reusable source and freeze a query before planner access."""
+
+    source_v1.verify_heldout_checkpoint_recertification_v1(source)
+    return HeldoutOverlayQueryV1(
+        _QUERY_ISSUER,
+        logical_occurrence_id,
+        occurrence_ordinal,
+        source.result_id,
+        source.final_overlay.overlay_id,
+        source.context.context_id,
+        source.final_overlay.bridge.quotient_model.model_id,
+        source.threshold.threshold_profile_id,
+    )
+
+
+def complete_heldout_overlay_abstract_reuse_v1(
+    source: source_v1.HeldoutCheckpointRecertificationResultV1,
+    query: HeldoutOverlayQueryV1,
+    audit: robust.RobustPlanAuditV1,
+) -> HeldoutOverlayAbstractReuseResultV1:
+    """Bind one already executed quotient audit to its frozen fresh query.
+
+    This boundary intentionally does not replay the planner.  It is used by
+    owner-bound accounting, where the single planner execution has already
+    emitted all operation events.  Portable semantic replay remains the job
+    of the independent bytes verifier.
+    """
+
+    if (
+        type(source) is not source_v1.HeldoutCheckpointRecertificationResultV1
+        or type(query) is not HeldoutOverlayQueryV1
+        or type(audit) is not robust.RobustPlanAuditV1
+        or query.source_result_id != source.result_id
+        or query.source_overlay_id != source.final_overlay.overlay_id
+        or query.context_id != source.context.context_id
+        or query.quotient_model_id
+        != source.final_overlay.bridge.quotient_model.model_id
+        or query.threshold_profile_id != source.threshold.threshold_profile_id
+    ):
+        _fail("completed held-out reuse crossed its frozen source/query")
     plan = HeldoutOverlayAbstractPlanV1(
         _PLAN_ISSUER,
         query,
@@ -325,6 +368,8 @@ __all__ = [
     "OFFICIAL_EXECUTION_ALLOWED",
     "SCIENTIFIC_ENDPOINT_CREDIT_ALLOWED",
     "WORKLOAD_ECONOMICS_GATE_STATUS",
+    "complete_heldout_overlay_abstract_reuse_v1",
+    "freeze_heldout_overlay_query_v1",
     "run_heldout_overlay_abstract_reuse_v1",
     "verify_heldout_overlay_abstract_reuse_v1",
 ]
