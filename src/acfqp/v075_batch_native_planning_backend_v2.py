@@ -3435,6 +3435,51 @@ def replay_v075_numerical_model_bytes_v2(
     return value
 
 
+def replay_v075_numerical_proof_bytes_v2(
+    claimed_bytes: bytes,
+) -> V075NumericalPlanningProofV2:
+    """Recompute one planning proof from its embedded query-neutral model.
+
+    This boundary accepts canonical public proof bytes only.  It first
+    reconstructs the embedded numerical model through the model replay above,
+    then reruns the registered planner for the claimed route and requires the
+    complete regenerated proof document to be byte-identical.  In particular,
+    a caller cannot supply a frontier, quotient, policy, envelope, occurrence,
+    threshold, observer, signer, or private-law authority independently of the
+    exact replanning result.
+    """
+
+    if type(claimed_bytes) is not bytes or not claimed_bytes:
+        _fail("portable numerical proof must be nonempty bytes")
+    try:
+        document = loads_canonical_json(claimed_bytes)
+    except Exception as error:
+        raise V075BatchNativePlanningV2InvariantViolation(
+            "portable numerical proof is not canonical JSON"
+        ) from error
+    if type(document) is not dict or canonical_json_bytes(document) != claimed_bytes:
+        _fail("portable numerical proof is not one canonical object")
+    try:
+        model_document = document["model"]
+        if type(model_document) is not dict:
+            _fail("portable numerical proof model is absent")
+        model = replay_v075_numerical_model_bytes_v2(
+            canonical_json_bytes(model_document)
+        )
+        route = V075PlanningRouteV2(document["route"])
+        value = plan_v075_construction_numerical_model_v2(
+            model=model,
+            route=route,
+        )
+    except (KeyError, TypeError, ValueError) as error:
+        raise V075BatchNativePlanningV2InvariantViolation(
+            "portable numerical proof failed exact replanning"
+        ) from error
+    if canonical_json_bytes(value.to_document()) != claimed_bytes:
+        _fail("portable numerical proof differs from exact replanning")
+    return value
+
+
 __all__ = [
     "BOUNDARY_GRID_BITS",
     "COMPARATOR_RULE",
@@ -3467,5 +3512,6 @@ __all__ = [
     "plan_v075_construction_aggregate_input_v2",
     "plan_v075_construction_numerical_model_v2",
     "replay_v075_numerical_model_bytes_v2",
+    "replay_v075_numerical_proof_bytes_v2",
     "verify_v075_construction_planning_result_bytes_v2",
 ]

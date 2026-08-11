@@ -28,6 +28,10 @@ MODEL_EXPORT_TRACE_SCHEMA = (
     "acfqp.v075_k7_reusable_model_operational_trace.v1"
 )
 MODEL_EXPORT_TRACE_SCHEMA_VERSION = "1.0.0"
+RECOVERY_EXPORT_TRACE_SCHEMA = (
+    "acfqp.v075_k7_causal_recovery_operational_trace.v1"
+)
+RECOVERY_EXPORT_TRACE_SCHEMA_VERSION = "1.0.0"
 
 
 class _BusinessHashMeterV1:
@@ -78,11 +82,15 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--request", required=True, type=Path)
     parser.add_argument("--trace-output", required=True, type=Path)
     parser.add_argument("--export-root-model", action="store_true")
+    parser.add_argument("--export-recovery-chain", action="store_true")
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
+    if args.export_root_model and args.export_recovery_chain:
+        raise RuntimeError("model and recovery exports are mutually exclusive")
+    export_model = args.export_root_model or args.export_recovery_chain
     runtime_source = args.runtime_source.resolve(strict=True)
     sys.path.insert(0, str(runtime_source))
 
@@ -95,7 +103,9 @@ def main(argv: list[str] | None = None) -> int:
     from acfqp import v075_k7_causal_promotion_terminal_authority_v1 as terminal_v1
     from acfqp.phase3e_ids import (
         V075_K7_CAUSAL_PROMOTION_OPERATIONAL_TRACE_V1_DOMAIN,
+        V075_K7_CAUSAL_RECOVERY_OPERATIONAL_TRACE_V1_DOMAIN,
         V075_K7_REUSABLE_MODEL_OPERATIONAL_TRACE_V1_DOMAIN,
+        CONSTRUCTION_K7_CAUSAL_RECOVERY_CHAIN_V1_DOMAIN,
         V075_K7_CAUSAL_PROMOTION_SUPERVISED_REQUEST_V1_DOMAIN,
         canonical_json_bytes,
         content_id,
@@ -256,18 +266,86 @@ def main(argv: list[str] | None = None) -> int:
         obligations.checked_integrity("science-summary-derived-from-live-result")
         obligations.checked_protocol("route-and-solver-reconciliation-derived")
 
+        causal_recovery_chain_document: dict[str, Any] | None = None
+        if args.export_recovery_chain:
+            root_proof = result.root_epoch.proof
+            root_frontier = root_proof.failed_frontier
+            final_epoch = result.promotion_bundle.final_epoch
+            final_proof = final_epoch.proof
+            final_frontier = final_proof.failed_frontier
+            if root_frontier is None or final_frontier is None:
+                raise RuntimeError("recovery export requires failed root/final proofs")
+            chain_payload = {
+                "schema": "acfqp.construction_k7_causal_recovery_chain.v1",
+                "schema_version": SCHEMA_VERSION,
+                "profile_key": PROFILE_KEY,
+                "occurrence_id": occurrence_id,
+                "root_model_epoch_id": result.root_epoch.model_epoch_id,
+                "root_numerical_model_id": result.root_epoch.model.model_id,
+                "root_proof_id": root_proof.proof_id,
+                "root_frontier_id": root_frontier.frontier_id,
+                "causal_child_authorization_id": (
+                    result.child_authorization.authorization_id
+                ),
+                "causal_child_authorization_verification_id": (
+                    result.child_authorization_verification.verification_id
+                ),
+                "causal_child_execution_bundle_id": result.child_execution.bundle_id,
+                "causal_promotion_bundle_id": result.promotion_bundle.bundle_id,
+                "final_model_epoch_id": final_epoch.model_epoch_id,
+                "final_numerical_model_id": final_epoch.model.model_id,
+                "final_proof_id": final_proof.proof_id,
+                "final_frontier_id": final_frontier.frontier_id,
+                "root_model_epoch": result.root_epoch.to_document(),
+                "root_numerical_proof": root_proof.to_document(),
+                "causal_child_authorization": (
+                    result.child_authorization.to_document()
+                ),
+                "causal_child_authorization_verification": (
+                    result.child_authorization_verification.to_document()
+                ),
+                "causal_child_execution_bundle": result.child_execution.to_document(),
+                "causal_promotion_bundle": result.promotion_bundle.to_document(),
+                "final_model_epoch": final_epoch.to_document(),
+                "final_numerical_proof": final_proof.to_document(),
+                "root_failed_proof_precedes_causal_authorization": True,
+                "authorization_target_access_count": 0,
+                "authorization_kernel_call_count": 0,
+                "ground_acquisition_executed_after_authorization": True,
+                "immutable_successor_epoch_present": True,
+                "post_recovery_replanning_present": True,
+                "source_occurrence_recovery_only": True,
+                "fresh_query_rebinding_performed": False,
+                "local_ground_recovery_authority_for_fresh_query": False,
+                "final_plan_certificate_issued": False,
+                "official_execution_allowed": False,
+            }
+            causal_recovery_chain_document = {
+                **chain_payload,
+                "causal_recovery_chain_id": content_id(
+                    CONSTRUCTION_K7_CAUSAL_RECOVERY_CHAIN_V1_DOMAIN,
+                    chain_payload,
+                ),
+            }
+
     if meter.count <= 0:
         raise RuntimeError("causal-promotion business hash window is empty")
     peak_bytes = int(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss) * 1024
     payload = {
         "artifact_role": "OPERATIONAL_TRACE",
         "schema": (
-            MODEL_EXPORT_TRACE_SCHEMA if args.export_root_model else TRACE_SCHEMA
+            RECOVERY_EXPORT_TRACE_SCHEMA
+            if args.export_recovery_chain
+            else (MODEL_EXPORT_TRACE_SCHEMA if args.export_root_model else TRACE_SCHEMA)
         ),
         "schema_version": (
-            MODEL_EXPORT_TRACE_SCHEMA_VERSION
-            if args.export_root_model
-            else TRACE_SCHEMA_VERSION
+            RECOVERY_EXPORT_TRACE_SCHEMA_VERSION
+            if args.export_recovery_chain
+            else (
+                MODEL_EXPORT_TRACE_SCHEMA_VERSION
+                if args.export_root_model
+                else TRACE_SCHEMA_VERSION
+            )
         ),
         "profile_key": PROFILE_KEY,
         "supervised_request_id": observed_request_id,
@@ -292,7 +370,7 @@ def main(argv: list[str] | None = None) -> int:
         "occurrence_vector_issued_by_worker": False,
         "official_execution_allowed": False,
     }
-    if args.export_root_model:
+    if export_model:
         payload.update(
             {
                 "root_numerical_model": result.root_epoch.model.to_document(),
@@ -304,10 +382,26 @@ def main(argv: list[str] | None = None) -> int:
                 "reusable_model_export_only": True,
             }
         )
+    if args.export_recovery_chain:
+        assert causal_recovery_chain_document is not None
+        payload.update(
+            {
+                "causal_recovery_chain": causal_recovery_chain_document,
+                "causal_recovery_chain_id": causal_recovery_chain_document[
+                    "causal_recovery_chain_id"
+                ],
+                "reusable_model_export_only": False,
+                "causal_recovery_export_only": True,
+            }
+        )
     trace_domain = (
-        V075_K7_REUSABLE_MODEL_OPERATIONAL_TRACE_V1_DOMAIN
-        if args.export_root_model
-        else V075_K7_CAUSAL_PROMOTION_OPERATIONAL_TRACE_V1_DOMAIN
+        V075_K7_CAUSAL_RECOVERY_OPERATIONAL_TRACE_V1_DOMAIN
+        if args.export_recovery_chain
+        else (
+            V075_K7_REUSABLE_MODEL_OPERATIONAL_TRACE_V1_DOMAIN
+            if args.export_root_model
+            else V075_K7_CAUSAL_PROMOTION_OPERATIONAL_TRACE_V1_DOMAIN
+        )
     )
     document = {
         **payload,

@@ -30,6 +30,7 @@ from acfqp.phase3e_ids import (
     CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_ENVELOPE_V1_DOMAIN,
     CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN,
     PHASE3E_DOMAIN_TAGS,
+    V075_K7_CAUSAL_RECOVERY_OPERATIONAL_TRACE_V1_DOMAIN,
     V075_K7_REUSABLE_MODEL_OPERATIONAL_TRACE_V1_DOMAIN,
     canonical_json_bytes,
     content_id,
@@ -372,13 +373,31 @@ def _replay_model_export_trace_stages(
         raise ConstructionK7ReusableBuildEpochAuthorityV1Error(
             "model-export trace is not canonical JSON"
         ) from error
+    recovery_export = (
+        type(document) is dict
+        and document.get("schema") == executor_v1.RECOVERY_EXPORT_TRACE_SCHEMA
+    )
+    expected_keys = (
+        executor_v1.RECOVERY_EXPORT_TRACE_KEYS
+        if recovery_export
+        else executor_v1.MODEL_EXPORT_TRACE_KEYS
+    )
+    expected_schema = (
+        executor_v1.RECOVERY_EXPORT_TRACE_SCHEMA
+        if recovery_export
+        else executor_v1.MODEL_EXPORT_TRACE_SCHEMA
+    )
+    expected_version = (
+        executor_v1.RECOVERY_EXPORT_TRACE_SCHEMA_VERSION
+        if recovery_export
+        else executor_v1.MODEL_EXPORT_TRACE_SCHEMA_VERSION
+    )
     if (
         type(document) is not dict
         or canonical_json_bytes(document) != trace_raw
-        or set(document) != executor_v1.MODEL_EXPORT_TRACE_KEYS
-        or document["schema"] != executor_v1.MODEL_EXPORT_TRACE_SCHEMA
-        or document["schema_version"]
-        != executor_v1.MODEL_EXPORT_TRACE_SCHEMA_VERSION
+        or set(document) != expected_keys
+        or document["schema"] != expected_schema
+        or document["schema_version"] != expected_version
         or document["artifact_role"] != "OPERATIONAL_TRACE"
         or document["profile_key"]
         != "v075_k7_causal_promotion_accounted_runtime_v1"
@@ -389,16 +408,28 @@ def _replay_model_export_trace_stages(
         or document["official_execution_allowed"] is not False
         or document["accounting_provenance_hashes_excluded"] is not True
         or document["global_hashlib_sha256_constructor_hook_present"] is not True
-        or document["reusable_model_export_only"] is not True
+        or document["reusable_model_export_only"] is not (not recovery_export)
         or document["model_occurrence_or_arm_fields_present"] is not False
         or document["model_threshold_fields_present"] is not False
         or document["model_private_law_access"] is not False
     ):
         _fail("model-export trace contract changed")
+    if recovery_export and (
+        document["causal_recovery_export_only"] is not True
+        or type(document["causal_recovery_chain"]) is not dict
+        or document["causal_recovery_chain_id"]
+        != document["causal_recovery_chain"].get("causal_recovery_chain_id")
+    ):
+        _fail("causal-recovery trace contract changed")
     payload = dict(document)
     supplied = payload.pop("operational_trace_id")
     if supplied != content_id(
-        V075_K7_REUSABLE_MODEL_OPERATIONAL_TRACE_V1_DOMAIN, payload
+        (
+            V075_K7_CAUSAL_RECOVERY_OPERATIONAL_TRACE_V1_DOMAIN
+            if recovery_export
+            else V075_K7_REUSABLE_MODEL_OPERATIONAL_TRACE_V1_DOMAIN
+        ),
+        payload,
     ):
         _fail("model-export trace content ID changed")
     science = document["science_summary"]

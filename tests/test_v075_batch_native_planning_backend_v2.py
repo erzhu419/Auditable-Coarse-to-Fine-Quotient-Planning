@@ -457,6 +457,26 @@ def test_query_neutral_model_bytes_replay_without_acquisition_inputs(
     assert replayed_proof.to_document() == original_proof.to_document()
 
 
+def test_portable_numerical_proof_replay_recomputes_and_rejects_tamper(
+    manual_models,
+) -> None:
+    _context, partial, _complete = manual_models
+    proof = planning.plan_v075_construction_numerical_model_v2(
+        model=partial,
+        route=planning.V075PlanningRouteV2.ADAPTIVE_QUOTIENT,
+    )
+    replayed = planning.replay_v075_numerical_proof_bytes_v2(
+        proof.canonical_bytes
+    )
+    assert replayed.proof_id == proof.proof_id
+    changed = copy.deepcopy(proof.to_document())
+    changed["policy_assignments_evaluated"] += 1
+    with pytest.raises(planning.V075BatchNativePlanningV2InvariantViolation):
+        planning.replay_v075_numerical_proof_bytes_v2(
+            canonical_json_bytes(changed)
+        )
+
+
 @pytest.mark.parametrize(
     "mutation",
     (
