@@ -444,6 +444,33 @@ CONSTRUCTION_K7_QUERY_BOUND_PROOF_CACHE_NO_REUSE_CONTROL_V1_DOMAIN = (
 CONSTRUCTION_K7_QUERY_BOUND_PERSISTENT_PROOF_CACHE_VERIFICATION_V1_DOMAIN = (
     "acfqp:construction-k7-query-bound-persistent-proof-cache-verification:v1"
 )
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_CHECKPOINT_FIXTURE_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-checkpoint-fixture:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_CHECKPOINT_QUERY_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-checkpoint-query:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_CHECKPOINT_CONSUMPTION_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-checkpoint-consumption:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_VALIDATION_REQUEST_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-validation-request:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_RECOVERY_REQUEST_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-recovery-request:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_NAMESPACE_BINDING_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-namespace-binding:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_ROW_ACQUISITION_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-row-acquisition:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_GROUND_TRANSACTION_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-ground-transaction:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_WORLD_MODEL_LOOP_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-world-model-loop:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -2669,6 +2696,33 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_query_bound_persistent_proof_cache_verification_v1": (
             CONSTRUCTION_K7_QUERY_BOUND_PERSISTENT_PROOF_CACHE_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_checkpoint_fixture_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_CHECKPOINT_FIXTURE_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_checkpoint_query_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_CHECKPOINT_QUERY_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_checkpoint_consumption_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_CHECKPOINT_CONSUMPTION_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_validation_request_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_VALIDATION_REQUEST_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_recovery_request_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_RECOVERY_REQUEST_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_namespace_binding_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_NAMESPACE_BINDING_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_row_acquisition_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_ROW_ACQUISITION_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_ground_transaction_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_GROUND_TRANSACTION_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_world_model_loop_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_WORLD_MODEL_LOOP_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
