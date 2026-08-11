@@ -15,6 +15,7 @@ terminal, campaign, scientific, official, scalar, or economics authority.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+import hashlib
 import importlib
 import threading
 from typing import Any, NoReturn
@@ -64,6 +65,21 @@ SHARED_PLACEHOLDER_PATHS = (
 EXPECTED_STAGE_COUNT = len(CANONICAL_STAGE_PLAN_V1)
 EXPECTED_STAGE_LOCAL_RECORD_COUNT = (
     EXPECTED_STAGE_COUNT * registry_v6.EXPECTED_V6_REQUIRED_LEAF_COUNT
+)
+EXPECTED_INTEGRITY_OBLIGATIONS = (
+    "typed-positive-input-identity-graph",
+    "v6-profile-chain",
+    "open-boundary-manifest",
+    "operational-plan-byte-identity",
+    "five-stage-event-replay",
+    "route-reconciliation",
+)
+EXPECTED_PROTOCOL_OBLIGATIONS = (
+    "single-owner-accounting-scope",
+    "promoted-model-reuse-before-planning",
+    "one-fresh-planner-call",
+    "no-operational-exact-lift-replay",
+    "abstract-route-family-exclusivity",
 )
 _PROCESS_LOCK = threading.Lock()
 
@@ -118,6 +134,30 @@ def _owner_binding(module_name: str, symbol: str) -> tuple[Any, Any]:
     if code is None:
         _fail(f"positive operation owner {module_name}.{symbol} has no code")
     return module.__dict__, code
+
+
+class _BusinessHashMeterV1:
+    def __init__(self) -> None:
+        self.count = 0
+        self._original: Any = None
+        self._installed: Any = None
+
+    def __enter__(self) -> "_BusinessHashMeterV1":
+        self._original = hashlib.sha256
+
+        def metered(*args: Any, **kwargs: Any) -> Any:
+            self.count += 1
+            return self._original(*args, **kwargs)
+
+        self._installed = metered
+        hashlib.sha256 = metered  # type: ignore[assignment]
+        return self
+
+    def __exit__(self, _kind: object, _value: object, _traceback: object) -> None:
+        changed = hashlib.sha256 is not self._installed
+        hashlib.sha256 = self._original  # type: ignore[assignment]
+        if changed:
+            _fail("positive planner business-hash meter binding changed")
 
 
 class _PositiveStageHookV1:
@@ -202,6 +242,9 @@ class PositivePromotedStageAccountingResultV1:
     actual_projection_profile_id: str
     boundary_manifest_id: str
     lifecycle_id: str
+    business_hash_invocations: int
+    integrity_obligations: tuple[str, ...]
+    protocol_obligations: tuple[str, ...]
     recorded_stages: tuple[live_v3.RecordedStageWorkV3, ...]
     _result_id: str = field(init=False, repr=False)
 
@@ -232,6 +275,10 @@ class PositivePromotedStageAccountingResultV1:
                 for row in self.recorded_stages
                 for path in SHARED_PLACEHOLDER_PATHS
             )
+            or type(self.business_hash_invocations) is not int
+            or self.business_hash_invocations <= 0
+            or self.integrity_obligations != EXPECTED_INTEGRITY_OBLIGATIONS
+            or self.protocol_obligations != EXPECTED_PROTOCOL_OBLIGATIONS
         ):
             _fail("positive stage-accounting chain is malformed")
         values = self.recorded_stages[3].work_vector.values
@@ -264,6 +311,9 @@ class PositivePromotedStageAccountingResultV1:
             "actual_projection_profile_id": self.actual_projection_profile_id,
             "operation_boundary_manifest_id": self.boundary_manifest_id,
             "accounting_lifecycle_id": self.lifecycle_id,
+            "business_hash_invocations": self.business_hash_invocations,
+            "named_integrity_obligations": list(self.integrity_obligations),
+            "named_protocol_obligations": list(self.protocol_obligations),
             "stage_plan": [item.value for item in CANONICAL_STAGE_PLAN_V1],
             "stage_work_vector_ids": [
                 row.work_vector.work_vector_id for row in self.recorded_stages
@@ -314,7 +364,23 @@ class PositivePromotedStageAccountingResultV1:
 def record_positive_promoted_abstract_route_v1(
     result: positive_v1.PositivePromotedOverlayResultV1,
 ) -> PositivePromotedStageAccountingResultV1:
-    verified = positive_v1.verify_positive_promoted_overlay_v1(result)
+    if type(result) is not positive_v1.PositivePromotedOverlayResultV1:
+        _fail("positive stage accounting rejects a foreign result")
+    # The producer-free verifier is the independent evaluation boundary.
+    # Operational accounting consumes the already-issued typed authority and
+    # checks its live identity graph; it must not replay the full producer.
+    result.result_id
+    result.epoch.epoch_id
+    result.query.query_id
+    result.plan.plan_id
+    result.exact_lift.binding_id
+    if (
+        result.query.epoch != result.epoch
+        or result.plan.query != result.query
+        or result.exact_lift.plan != result.plan
+    ):
+        _fail("positive stage-accounting input identity graph changed")
+    verified = result
     if not _PROCESS_LOCK.acquire(blocking=False):
         _fail("another positive stage-accounting scope is active")
     token = None
@@ -351,10 +417,12 @@ def record_positive_promoted_abstract_route_v1(
         active = lifecycle.begin_stage(_live_stage(CANONICAL_STAGE_PLAN_V1[3]))
         hook = _PositiveStageHookV1(active=active, manifest=manifest)
         token = owned_v1._ACTIVE_RUNTIME.set(hook)  # noqa: SLF001
+        meter = _BusinessHashMeterV1()
         try:
-            operational_plan = positive_v1.plan_positive_promoted_overlay_query_v1(
-                verified.query
-            )
+            with meter:
+                operational_plan = positive_v1.plan_positive_promoted_overlay_query_v1(
+                    verified.query
+                )
         finally:
             owned_v1._ACTIVE_RUNTIME.reset(token)  # noqa: SLF001
             token = None
@@ -400,6 +468,9 @@ def record_positive_promoted_abstract_route_v1(
             actual.actual_projection_profile_id,
             manifest.manifest_id,
             lifecycle.lifecycle_id,
+            meter.count,
+            EXPECTED_INTEGRITY_OBLIGATIONS,
+            EXPECTED_PROTOCOL_OBLIGATIONS,
             recorded,
         )
         return verify_positive_promoted_stage_accounting_v1(issued)

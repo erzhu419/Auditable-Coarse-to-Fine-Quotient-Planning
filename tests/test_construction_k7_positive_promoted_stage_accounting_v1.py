@@ -44,6 +44,13 @@ def test_fresh_route_has_five_native_zero_preserving_stage_vectors(
     assert document["fresh_ground_or_observer_event_count"] == 0
     assert document["local_fallback_rebuild_native_zero"] is True
     assert document["nine_shared_paths_are_stage_placeholders"] is True
+    assert document["business_hash_invocations"] > 0
+    assert tuple(document["named_integrity_obligations"]) == (
+        subject.EXPECTED_INTEGRITY_OBLIGATIONS
+    )
+    assert tuple(document["named_protocol_obligations"]) == (
+        subject.EXPECTED_PROTOCOL_OBLIGATIONS
+    )
 
 
 def test_only_open_checkpoint_stage_records_fresh_planner_work(
