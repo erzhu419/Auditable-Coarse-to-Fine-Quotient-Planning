@@ -345,6 +345,21 @@ CONSTRUCTION_K7_QUERY_BOUND_CAMPAIGN_PREREGISTRATION_VERIFICATION_PROFILE_V1_DOM
 CONSTRUCTION_K7_QUERY_BOUND_CAMPAIGN_PREREGISTRATION_VERIFICATION_V1_DOMAIN = (
     "acfqp:construction-k7-query-bound-campaign-preregistration-verification:v1"
 )
+CONSTRUCTION_K7_QUERY_BOUND_PREREGISTERED_CAMPAIGN_COMMIT_EVENT_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-preregistered-campaign-commit-event:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_PREREGISTERED_CAMPAIGN_OCCURRENCE_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-preregistered-campaign-occurrence:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_PREREGISTERED_CAMPAIGN_RESULT_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-preregistered-campaign-result:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_PREREGISTERED_CAMPAIGN_VERIFICATION_PROFILE_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-preregistered-campaign-verification-profile:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_PREREGISTERED_CAMPAIGN_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-preregistered-campaign-verification:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -2471,6 +2486,21 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_query_bound_campaign_preregistration_verification_v1": (
             CONSTRUCTION_K7_QUERY_BOUND_CAMPAIGN_PREREGISTRATION_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_preregistered_campaign_commit_event_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_PREREGISTERED_CAMPAIGN_COMMIT_EVENT_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_preregistered_campaign_occurrence_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_PREREGISTERED_CAMPAIGN_OCCURRENCE_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_preregistered_campaign_result_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_PREREGISTERED_CAMPAIGN_RESULT_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_preregistered_campaign_verification_profile_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_PREREGISTERED_CAMPAIGN_VERIFICATION_PROFILE_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_preregistered_campaign_verification_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_PREREGISTERED_CAMPAIGN_VERIFICATION_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
