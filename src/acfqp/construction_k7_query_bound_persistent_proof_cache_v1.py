@@ -9,8 +9,8 @@ whose query identity is outside the frozen dependency closure.
 
 An evaluation-only no-reuse control reruns the exact planner and requires its
 proof bytes to equal the cached proof.  The operational cache result remains a
-failed-certificate result: it authorizes only the next query-local recovery
-request and performs no ground access itself.
+failed-certificate result and derives whether a registered local checkpoint
+still exists; it performs no ground access and otherwise requires fallback.
 """
 
 from __future__ import annotations
@@ -993,6 +993,9 @@ class QueryBoundProofCacheConsumptionV1:
     proof_id: str
     frontier_id: str
     reused_node_ids: tuple[str, ...]
+    frontier_row_count: int
+    requestable_frontier_row_count: int
+    cap_blocked_frontier_row_count: int
     _result_id: str = field(init=False, repr=False)
 
     def __post_init__(self, _issuer: object) -> None:
@@ -1002,6 +1005,15 @@ class QueryBoundProofCacheConsumptionV1:
             or type(self.reused_node_ids) is not tuple
             or len(self.reused_node_ids) != 41
             or len(set(self.reused_node_ids)) != 41
+            or type(self.frontier_row_count) is not int
+            or self.frontier_row_count <= 0
+            or type(self.requestable_frontier_row_count) is not int
+            or self.requestable_frontier_row_count < 0
+            or type(self.cap_blocked_frontier_row_count) is not int
+            or self.cap_blocked_frontier_row_count < 0
+            or self.requestable_frontier_row_count
+            + self.cap_blocked_frontier_row_count
+            != self.frontier_row_count
         ):
             _fail("proof-cache consumption is caller-minted")
         self.query.__post_init__(_QUERY_ISSUER)
@@ -1016,6 +1028,7 @@ class QueryBoundProofCacheConsumptionV1:
         )
 
     def _payload(self) -> dict[str, Any]:
+        local_allowed = self.requestable_frontier_row_count > 0
         return {
             "schema": "acfqp.construction_k7_query_bound_proof_cache_consumption.v1",
             "schema_version": SCHEMA_VERSION,
@@ -1033,12 +1046,23 @@ class QueryBoundProofCacheConsumptionV1:
             "model_construction_repeated": False,
             "new_ground_access_count": 0,
             "ground_input_parameter_present": False,
+            "cached_frontier_row_count": self.frontier_row_count,
+            "requestable_frontier_row_count": self.requestable_frontier_row_count,
+            "cap_blocked_frontier_row_count": self.cap_blocked_frontier_row_count,
             "exact_cached_certificate_failure_replayed": True,
-            "query_local_ground_recovery_eligible": True,
+            "query_local_ground_recovery_eligible": local_allowed,
             "query_local_ground_recovery_executed_here": False,
+            "local_allowed_after_result": local_allowed,
+            "local_forbidden_reason": (
+                None if local_allowed else "NO_REGISTERED_CHECKPOINT"
+            ),
             "plan_certificate_issued": False,
             "official_execution_allowed": False,
-            "next_required_action": "FREEZE_QUERY_LOCAL_RECOVERY_REQUEST_FROM_CACHED_FRONTIER",
+            "next_required_action": (
+                "FREEZE_QUERY_LOCAL_RECOVERY_REQUEST_FROM_CACHED_FRONTIER"
+                if local_allowed
+                else "DIRECT_GROUND_FALLBACK"
+            ),
         }
 
     @property
@@ -1072,12 +1096,25 @@ def run_query_bound_proof_cache_consumer_v1(
         or query.source_logical_occurrence_id != binding["logical_occurrence_id"]
     ):
         _fail("proof-cache consumer query crossed its cache")
+    proof = loads_canonical_json(cache.target_proof_bytes)
+    try:
+        obligations = proof["failed_frontier"]["obligations"]
+    except (KeyError, TypeError) as error:  # pragma: no cover - source replay guards it
+        raise ConstructionK7QueryBoundPersistentProofCacheV1Error(
+            "cached frontier obligations are absent"
+        ) from error
+    requestable = sum(
+        item["next_registered_checkpoint"] is not None for item in obligations
+    )
     return QueryBoundProofCacheConsumptionV1(
         _CONSUMPTION_ISSUER,
         query,
-        loads_canonical_json(cache.target_proof_bytes)["proof_id"],
-        loads_canonical_json(cache.target_proof_bytes)["failed_frontier_id"],
+        proof["proof_id"],
+        proof["failed_frontier_id"],
         tuple(node_id for _role, node_id in cache.node_inventory),
+        len(obligations),
+        requestable,
+        len(obligations) - requestable,
     )
 
 

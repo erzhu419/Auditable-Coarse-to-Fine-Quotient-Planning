@@ -165,8 +165,14 @@ def test_fresh_occurrence_consumes_all_nodes_without_planner_or_ground(
     assert document["full_planner_call_count"] == 0
     assert document["new_ground_access_count"] == 0
     assert document["exact_cached_certificate_failure_replayed"] is True
-    assert document["query_local_ground_recovery_eligible"] is True
+    assert document["cached_frontier_row_count"] == 7
+    assert document["requestable_frontier_row_count"] == 0
+    assert document["cap_blocked_frontier_row_count"] == 7
+    assert document["query_local_ground_recovery_eligible"] is False
     assert document["query_local_ground_recovery_executed_here"] is False
+    assert document["local_allowed_after_result"] is False
+    assert document["local_forbidden_reason"] == "NO_REGISTERED_CHECKPOINT"
+    assert document["next_required_action"] == "DIRECT_GROUND_FALLBACK"
     assert document["plan_certificate_issued"] is False
 
 
