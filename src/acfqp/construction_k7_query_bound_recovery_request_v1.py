@@ -372,11 +372,23 @@ def verify_query_bound_recovery_request_bytes_v1(
     return expected
 
 
+def require_query_bound_recovery_request_v1(
+    claimed: QueryBoundRecoveryRequestV1,
+) -> QueryBoundRecoveryRequestV1:
+    """Revalidate one exact issuer-minted in-process request."""
+
+    if type(claimed) is not QueryBoundRecoveryRequestV1:
+        _fail("query-bound recovery request has a foreign type")
+    claimed.__post_init__(_REQUEST_ISSUER)
+    return claimed
+
+
 __all__ = [
     "ConstructionK7QueryBoundRecoveryRequestV1Error",
     "LOCAL_DOMAINS",
     "QueryBoundRecoveryRequestV1",
     "QueryBoundValidationRequestV1",
     "prepare_query_bound_recovery_request_v1",
+    "require_query_bound_recovery_request_v1",
     "verify_query_bound_recovery_request_bytes_v1",
 ]

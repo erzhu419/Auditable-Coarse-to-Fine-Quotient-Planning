@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import hashlib
 import math
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
@@ -206,24 +207,60 @@ class _ConstructionSigner:
         return signature.to_bytes(width, "big").hex()
 
 
-def _fixture(
-    marker: str,
-) -> tuple[
-    Any,
-    bytes,
-    namespace_v2.V075PublicTargetTapeNamespaceV2,
-    preopen.V075ObserverOpenAuthorizationV2,
-    _ConstructionSigner,
-]:
-    if type(marker) is not str or not marker or len(marker.encode("utf-8")) > 128:
-        _fail("construction fixture marker is invalid")
+_ENVIRONMENT_ISSUER = object()
+
+
+@dataclass(frozen=True, slots=True)
+class V075K7ConstructionEnvironmentV1:
+    """Live construction-only namespace plus the private material it owns."""
+
+    _issuer: object = field(repr=False, compare=False)
+    environment_marker: str
+    identity_marker: str
+    generated_environment: Any = field(repr=False, compare=False)
+    private_salt: bytes = field(repr=False, compare=False)
+    namespace: namespace_v2.V075PublicTargetTapeNamespaceV2
+    observer_open_authorization: preopen.V075ObserverOpenAuthorizationV2 = field(
+        repr=False,
+        compare=False,
+    )
+    observer_signer: _ConstructionSigner = field(repr=False, compare=False)
+
+    def __post_init__(self) -> None:
+        if (
+            self._issuer is not _ENVIRONMENT_ISSUER
+            or type(self.environment_marker) is not str
+            or not self.environment_marker
+            or type(self.identity_marker) is not str
+            or not self.identity_marker
+            or type(self.private_salt) is not bytes
+            or len(self.private_salt) != 64
+            or type(self.namespace)
+            is not namespace_v2.V075PublicTargetTapeNamespaceV2
+            or type(self.observer_open_authorization)
+            is not preopen.V075ObserverOpenAuthorizationV2
+            or type(self.observer_signer) is not _ConstructionSigner
+        ):
+            _fail("construction environment handle is malformed")
+
+
+def prepare_v075_k7_construction_environment_v1(
+    *,
+    environment_marker: str,
+    identity_marker: str,
+) -> V075K7ConstructionEnvironmentV1:
+    """Create a fresh public namespace over one deterministic private law."""
+
+    for marker in (environment_marker, identity_marker):
+        if type(marker) is not str or not marker or len(marker.encode("utf-8")) > 128:
+            _fail("construction fixture marker is invalid")
     generated = private_env.generate_v075_private_environment_v1(
         profile=private_env.freeze_v075_private_environment_generation_profile_v1(),
         secret_generation_seed=hashlib.sha256(
-            ("generated-" + marker).encode("utf-8")
+            ("generated-" + environment_marker).encode("utf-8")
         ).digest(),
     )
-    salt = hashlib.sha512(("salt-" + marker).encode("utf-8")).digest()
+    salt = hashlib.sha512(("salt-" + environment_marker).encode("utf-8")).digest()
     commitment = private_env.seal_v075_generated_private_environment_commitment_v1(
         generated_environment=generated,
         secret_salt=salt,
@@ -251,16 +288,16 @@ def _fixture(
     runner_profile = campaign_profile.freeze_v075_production_campaign_profile_v2()
     anchor = remote.V075RemoteMainAnchorAttestationV2(
         remote._ANCHOR_ISSUER,  # noqa: SLF001
-        _oid(marker + "-commit"),
-        _oid(marker + "-tree"),
-        (_oid(marker + "-parent"),),
-        _oid(marker + "-manifest-blob"),
-        _oid(marker + "-final-blob"),
-        _id(marker + "-manifest"),
-        _id(marker + "-final"),
-        _id(marker + "-component-registry"),
-        _id(marker + "-semantic-registry-binding"),
-        _id(marker + "-semantic-artifact-replay"),
+        _oid(identity_marker + "-commit"),
+        _oid(identity_marker + "-tree"),
+        (_oid(identity_marker + "-parent"),),
+        _oid(identity_marker + "-manifest-blob"),
+        _oid(identity_marker + "-final-blob"),
+        _id(identity_marker + "-manifest"),
+        _id(identity_marker + "-final"),
+        _id(identity_marker + "-component-registry"),
+        _id(identity_marker + "-semantic-registry-binding"),
+        _id(identity_marker + "-semantic-artifact-replay"),
         workload.workload_id,
         runner_profile.profile_id,
         commitment.family.generation_id,
@@ -287,8 +324,8 @@ def _fixture(
     tracked = preopen.V075TrackedPreopenBlobClosureV2(
         preopen._BLOB_CLOSURE_ISSUER,  # noqa: SLF001
         anchor,
-        _id(marker + "-manifest-bytes"),
-        _id(marker + "-final-bytes"),
+        _id(identity_marker + "-manifest-bytes"),
+        _id(identity_marker + "-final-bytes"),
     )
     authorization = preopen.V075ObserverOpenAuthorizationV2(
         preopen._AUTHORIZATION_ISSUER,  # noqa: SLF001
@@ -298,7 +335,38 @@ def _fixture(
         commitment,
         attestation,
     )
-    return generated, salt, namespace, authorization, signer
+    return V075K7ConstructionEnvironmentV1(
+        _ENVIRONMENT_ISSUER,
+        environment_marker,
+        identity_marker,
+        generated,
+        salt,
+        namespace,
+        authorization,
+        signer,
+    )
+
+
+def _fixture(
+    marker: str,
+) -> tuple[
+    Any,
+    bytes,
+    namespace_v2.V075PublicTargetTapeNamespaceV2,
+    preopen.V075ObserverOpenAuthorizationV2,
+    _ConstructionSigner,
+]:
+    prepared = prepare_v075_k7_construction_environment_v1(
+        environment_marker=marker,
+        identity_marker=marker,
+    )
+    return (
+        prepared.generated_environment,
+        prepared.private_salt,
+        prepared.namespace,
+        prepared.observer_open_authorization,
+        prepared.observer_signer,
+    )
 
 
 def run_v075_k7_causal_promotion_construction_fixture_v1(
@@ -371,6 +439,8 @@ __all__ = (
     "CONSTRUCTION_ONLY",
     "FRESH_HELDOUT_ACCESSED",
     "OFFICIAL_EXECUTION_ALLOWED",
+    "V075K7ConstructionEnvironmentV1",
     "V075K7CausalPromotionConstructionFixtureV1Error",
+    "prepare_v075_k7_construction_environment_v1",
     "run_v075_k7_causal_promotion_construction_fixture_v1",
 )

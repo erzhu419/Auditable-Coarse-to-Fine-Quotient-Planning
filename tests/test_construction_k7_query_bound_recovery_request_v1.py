@@ -31,6 +31,7 @@ def test_domains_and_public_surface_remain_additive() -> None:
         "QueryBoundRecoveryRequestV1",
         "QueryBoundValidationRequestV1",
         "prepare_query_bound_recovery_request_v1",
+        "require_query_bound_recovery_request_v1",
         "verify_query_bound_recovery_request_bytes_v1",
     }
 
