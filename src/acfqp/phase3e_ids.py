@@ -576,6 +576,24 @@ CONSTRUCTION_K7_RECOVERY_OVERLAY_PROMOTION_RESULT_V1_DOMAIN = (
 CONSTRUCTION_K7_RECOVERY_OVERLAY_PROMOTION_INDEPENDENT_VERIFICATION_V1_DOMAIN = (
     "acfqp:construction-k7-recovery-overlay-promotion-independent-verification:v1"
 )
+CONSTRUCTION_K7_POSITIVE_PROMOTED_OVERLAY_EPOCH_V1_DOMAIN = (
+    "acfqp:construction-k7-positive-promoted-overlay-epoch:v1"
+)
+CONSTRUCTION_K7_POSITIVE_PROMOTED_OVERLAY_QUERY_V1_DOMAIN = (
+    "acfqp:construction-k7-positive-promoted-overlay-query:v1"
+)
+CONSTRUCTION_K7_POSITIVE_PROMOTED_ABSTRACT_PLAN_V1_DOMAIN = (
+    "acfqp:construction-k7-positive-promoted-abstract-plan:v1"
+)
+CONSTRUCTION_K7_POSITIVE_PROMOTED_EXACT_LIFT_BINDING_V1_DOMAIN = (
+    "acfqp:construction-k7-positive-promoted-exact-lift-binding:v1"
+)
+CONSTRUCTION_K7_POSITIVE_PROMOTED_OVERLAY_RESULT_V1_DOMAIN = (
+    "acfqp:construction-k7-positive-promoted-overlay-result:v1"
+)
+CONSTRUCTION_K7_POSITIVE_PROMOTED_OVERLAY_INDEPENDENT_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-positive-promoted-overlay-independent-verification:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -2933,6 +2951,24 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_recovery_overlay_promotion_independent_verification_v1": (
             CONSTRUCTION_K7_RECOVERY_OVERLAY_PROMOTION_INDEPENDENT_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_positive_promoted_overlay_epoch_v1": (
+            CONSTRUCTION_K7_POSITIVE_PROMOTED_OVERLAY_EPOCH_V1_DOMAIN
+        ),
+        "construction_k7_positive_promoted_overlay_query_v1": (
+            CONSTRUCTION_K7_POSITIVE_PROMOTED_OVERLAY_QUERY_V1_DOMAIN
+        ),
+        "construction_k7_positive_promoted_abstract_plan_v1": (
+            CONSTRUCTION_K7_POSITIVE_PROMOTED_ABSTRACT_PLAN_V1_DOMAIN
+        ),
+        "construction_k7_positive_promoted_exact_lift_binding_v1": (
+            CONSTRUCTION_K7_POSITIVE_PROMOTED_EXACT_LIFT_BINDING_V1_DOMAIN
+        ),
+        "construction_k7_positive_promoted_overlay_result_v1": (
+            CONSTRUCTION_K7_POSITIVE_PROMOTED_OVERLAY_RESULT_V1_DOMAIN
+        ),
+        "construction_k7_positive_promoted_overlay_independent_verification_v1": (
+            CONSTRUCTION_K7_POSITIVE_PROMOTED_OVERLAY_INDEPENDENT_VERIFICATION_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
