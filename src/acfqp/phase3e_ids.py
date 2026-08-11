@@ -1668,6 +1668,18 @@ CONSTRUCTION_K7_ABSTRACT_ACCOUNTED_SHARED_ENVELOPE_V2_DOMAIN = (
 CONSTRUCTION_K7_ABSTRACT_ACCOUNTED_SHARED_REPLAY_V2_DOMAIN = (
     "acfqp:construction-k7-abstract-accounted-shared-replay:v2"
 )
+CONSTRUCTION_K7_ABSTRACT_QUERY_ZERO_RUNTIME_WINDOW_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-query-zero-runtime-window:v1"
+)
+CONSTRUCTION_K7_ABSTRACT_QUERY_ZERO_RESOLUTION_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-query-zero-resolution:v1"
+)
+CONSTRUCTION_K7_ABSTRACT_QUERY_ZERO_ENVELOPE_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-query-zero-envelope:v1"
+)
+CONSTRUCTION_K7_ABSTRACT_QUERY_ZERO_REPLAY_V1_DOMAIN = (
+    "acfqp:construction-k7-abstract-query-zero-replay:v1"
+)
 CONSTRUCTION_K7_CONDITIONAL_TERMINAL_NORMALIZATION_PROFILE_V1_DOMAIN = (
     "acfqp:construction-k7-conditional-terminal-normalization-profile:v1"
 )
@@ -3617,6 +3629,18 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_abstract_accounted_shared_replay_v2": (
             CONSTRUCTION_K7_ABSTRACT_ACCOUNTED_SHARED_REPLAY_V2_DOMAIN
+        ),
+        "construction_k7_abstract_query_zero_runtime_window_v1": (
+            CONSTRUCTION_K7_ABSTRACT_QUERY_ZERO_RUNTIME_WINDOW_V1_DOMAIN
+        ),
+        "construction_k7_abstract_query_zero_resolution_v1": (
+            CONSTRUCTION_K7_ABSTRACT_QUERY_ZERO_RESOLUTION_V1_DOMAIN
+        ),
+        "construction_k7_abstract_query_zero_envelope_v1": (
+            CONSTRUCTION_K7_ABSTRACT_QUERY_ZERO_ENVELOPE_V1_DOMAIN
+        ),
+        "construction_k7_abstract_query_zero_replay_v1": (
+            CONSTRUCTION_K7_ABSTRACT_QUERY_ZERO_REPLAY_V1_DOMAIN
         ),
         "construction_k7_conditional_terminal_normalization_profile_v1": (
             CONSTRUCTION_K7_CONDITIONAL_TERMINAL_NORMALIZATION_PROFILE_V1_DOMAIN

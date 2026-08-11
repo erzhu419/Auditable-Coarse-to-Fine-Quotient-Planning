@@ -453,6 +453,10 @@ def test_k7_complete_accounting_successor_domains_are_central_and_role_separated
         ids.CONSTRUCTION_K7_ABSTRACT_ACCOUNTED_SHARED_RESOLUTION_V2_DOMAIN,
         ids.CONSTRUCTION_K7_ABSTRACT_ACCOUNTED_SHARED_ENVELOPE_V2_DOMAIN,
         ids.CONSTRUCTION_K7_ABSTRACT_ACCOUNTED_SHARED_REPLAY_V2_DOMAIN,
+        ids.CONSTRUCTION_K7_ABSTRACT_QUERY_ZERO_RUNTIME_WINDOW_V1_DOMAIN,
+        ids.CONSTRUCTION_K7_ABSTRACT_QUERY_ZERO_RESOLUTION_V1_DOMAIN,
+        ids.CONSTRUCTION_K7_ABSTRACT_QUERY_ZERO_ENVELOPE_V1_DOMAIN,
+        ids.CONSTRUCTION_K7_ABSTRACT_QUERY_ZERO_REPLAY_V1_DOMAIN,
         ids.CONSTRUCTION_K7_DIRECT_FALLBACK_EXACT_INFEASIBILITY_READINESS_V1_DOMAIN,
         ids.CONSTRUCTION_K7_CANONICAL_INFEASIBLE_FALLBACK_PREEXECUTION_V1_DOMAIN,
         ids.CONSTRUCTION_K7_CANONICAL_INFEASIBLE_FALLBACK_CURRENT_IDENTITY_V1_DOMAIN,
@@ -474,7 +478,7 @@ def test_k7_complete_accounting_successor_domains_are_central_and_role_separated
         ids.CONSTRUCTION_K7_CONDITIONAL_TERMINAL_NORMALIZATION_RESULT_V1_DOMAIN,
         ids.CONSTRUCTION_K7_CONDITIONAL_TERMINAL_NORMALIZATION_REPLAY_V1_DOMAIN,
     )
-    assert len(domains) == len(set(domains)) == 118
+    assert len(domains) == len(set(domains)) == 122
     assert set(domains) <= ids.PHASE3E_DOMAIN_TAGS
     payload = {"schema": "same-k7-accounting-successor-payload"}
     assert len({ids.content_id(domain, payload) for domain in domains}) == len(domains)
