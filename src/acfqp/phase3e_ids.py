@@ -207,6 +207,12 @@ CONSTRUCTION_K7_CAUSAL_RECOVERY_CHAIN_REPLAY_V1_DOMAIN = (
 CONSTRUCTION_K7_QUERY_BOUND_RECOVERY_OVERLAY_V1_DOMAIN = (
     "acfqp:construction-k7-query-bound-recovery-overlay:v1"
 )
+CONSTRUCTION_K7_QUERY_BOUND_VALIDATION_REQUEST_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-validation-request:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_RECOVERY_REQUEST_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-recovery-request:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -2195,6 +2201,12 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_query_bound_recovery_overlay_v1": (
             CONSTRUCTION_K7_QUERY_BOUND_RECOVERY_OVERLAY_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_validation_request_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_VALIDATION_REQUEST_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_recovery_request_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_RECOVERY_REQUEST_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
