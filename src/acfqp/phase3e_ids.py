@@ -471,6 +471,9 @@ CONSTRUCTION_K7_RECOVERY_ELIGIBLE_GROUND_TRANSACTION_V1_DOMAIN = (
 CONSTRUCTION_K7_RECOVERY_ELIGIBLE_WORLD_MODEL_LOOP_V1_DOMAIN = (
     "acfqp:construction-k7-recovery-eligible-world-model-loop:v1"
 )
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_WORLD_MODEL_LOOP_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-world-model-loop-verification:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -2723,6 +2726,9 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_recovery_eligible_world_model_loop_v1": (
             CONSTRUCTION_K7_RECOVERY_ELIGIBLE_WORLD_MODEL_LOOP_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_world_model_loop_verification_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_WORLD_MODEL_LOOP_VERIFICATION_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
