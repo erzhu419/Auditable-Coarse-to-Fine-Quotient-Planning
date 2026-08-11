@@ -699,6 +699,9 @@ CONSTRUCTION_K7_HELDOUT_ABSTRACT_OUTPUT_RENDERER_V1_DOMAIN = (
 CONSTRUCTION_K7_HELDOUT_ABSTRACT_OUTPUT_COMMIT_V1_DOMAIN = (
     "acfqp:construction-k7-heldout-abstract-output-commit:v1"
 )
+CONSTRUCTION_K7_HELDOUT_ABSTRACT_OCCURRENCE_INDEPENDENT_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-abstract-occurrence-independent-verification:v1"
+)
 CONSTRUCTION_K7_HELDOUT_ABSTRACT_CAMPAIGN_PREREGISTRATION_V1_DOMAIN = (
     "acfqp:construction-k7-heldout-abstract-campaign-preregistration:v1"
 )
@@ -725,6 +728,9 @@ CONSTRUCTION_K7_HELDOUT_MULTIQUERY_CAMPAIGN_CLOSURE_V1_DOMAIN = (
 )
 CONSTRUCTION_K7_HELDOUT_MULTIQUERY_CAMPAIGN_RESULT_V1_DOMAIN = (
     "acfqp:construction-k7-heldout-multiquery-campaign-result:v1"
+)
+CONSTRUCTION_K7_HELDOUT_MULTIQUERY_CAMPAIGN_INDEPENDENT_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-multiquery-campaign-independent-verification:v1"
 )
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
@@ -3207,6 +3213,9 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         "construction_k7_heldout_abstract_output_commit_v1": (
             CONSTRUCTION_K7_HELDOUT_ABSTRACT_OUTPUT_COMMIT_V1_DOMAIN
         ),
+        "construction_k7_heldout_abstract_occurrence_independent_verification_v1": (
+            CONSTRUCTION_K7_HELDOUT_ABSTRACT_OCCURRENCE_INDEPENDENT_VERIFICATION_V1_DOMAIN
+        ),
         "construction_k7_heldout_abstract_campaign_preregistration_v1": (
             CONSTRUCTION_K7_HELDOUT_ABSTRACT_CAMPAIGN_PREREGISTRATION_V1_DOMAIN
         ),
@@ -3233,6 +3242,9 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_heldout_multiquery_campaign_result_v1": (
             CONSTRUCTION_K7_HELDOUT_MULTIQUERY_CAMPAIGN_RESULT_V1_DOMAIN
+        ),
+        "construction_k7_heldout_multiquery_campaign_independent_verification_v1": (
+            CONSTRUCTION_K7_HELDOUT_MULTIQUERY_CAMPAIGN_INDEPENDENT_VERIFICATION_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN

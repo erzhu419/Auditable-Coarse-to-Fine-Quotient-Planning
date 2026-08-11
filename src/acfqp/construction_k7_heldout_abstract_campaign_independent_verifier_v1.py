@@ -45,6 +45,7 @@ from acfqp.phase3e_ids import (
     CONSTRUCTION_K7_HELDOUT_ABSTRACT_CAMPAIGN_OCCURRENCE_ROW_V1_DOMAIN,
     CONSTRUCTION_K7_HELDOUT_ABSTRACT_CAMPAIGN_PREREGISTRATION_V1_DOMAIN,
     CONSTRUCTION_K7_HELDOUT_ABSTRACT_OCCURRENCE_ACCOUNTING_V1_DOMAIN,
+    CONSTRUCTION_K7_HELDOUT_ABSTRACT_OCCURRENCE_INDEPENDENT_VERIFICATION_V1_DOMAIN,
     CONSTRUCTION_K7_HELDOUT_ABSTRACT_OPERATION_BOUNDARY_V1_DOMAIN,
     CONSTRUCTION_K7_HELDOUT_ABSTRACT_OPERATION_MANIFEST_V1_DOMAIN,
     CONSTRUCTION_K7_HELDOUT_ABSTRACT_OUTPUT_COMMIT_V1_DOMAIN,
@@ -68,7 +69,10 @@ PROFILE_KEY = "construction_k7_heldout_abstract_campaign_independent_verifier_v1
 VERIFICATION_DOMAIN = (
     CONSTRUCTION_K7_HELDOUT_ABSTRACT_CAMPAIGN_INDEPENDENT_VERIFICATION_V1_DOMAIN
 )
-LOCAL_DOMAINS = frozenset({VERIFICATION_DOMAIN})
+OCCURRENCE_VERIFICATION_DOMAIN = (
+    CONSTRUCTION_K7_HELDOUT_ABSTRACT_OCCURRENCE_INDEPENDENT_VERIFICATION_V1_DOMAIN
+)
+LOCAL_DOMAINS = frozenset({VERIFICATION_DOMAIN, OCCURRENCE_VERIFICATION_DOMAIN})
 if not LOCAL_DOMAINS <= PHASE3E_DOMAIN_TAGS:  # pragma: no cover
     raise RuntimeError("held-out campaign independent domain is not central")
 
@@ -484,7 +488,6 @@ def _replay_stage_trace(
 def _verify_occurrence(
     occurrence_directory: Path,
     *,
-    reuse_result_bytes: bytes,
     reuse: reuse_verifier_v1.HeldoutOverlayAbstractReuseIndependentVerificationV1,
     reuse_document: dict[str, Any],
     embedded_bundle: dict[str, Any],
@@ -943,6 +946,120 @@ def _verify_occurrence(
 
 
 @dataclass(frozen=True, slots=True)
+class HeldoutAbstractOccurrenceDirectoryVerificationV1:
+    reuse_verification_id: str
+    occurrence_id: str
+    occurrence_bundle_id: str
+    work_vector_id: str
+    comparison_vector_id: str
+    projection_proof_id: str
+    fixed_point_result_id: str
+    output_commit_id: str
+    output_bytes: int
+    comparison_values: tuple[tuple[str, int], ...]
+    _verification_id: str = field(init=False, repr=False)
+
+    def __post_init__(self) -> None:
+        for value, label in (
+            (self.reuse_verification_id, "reuse verification"),
+            (self.occurrence_id, "occurrence"),
+            (self.occurrence_bundle_id, "occurrence bundle"),
+            (self.work_vector_id, "occurrence WorkVector"),
+            (self.comparison_vector_id, "occurrence ComparisonVector"),
+            (self.projection_proof_id, "occurrence projection proof"),
+            (self.fixed_point_result_id, "occurrence fixed point"),
+            (self.output_commit_id, "occurrence output commit"),
+        ):
+            _cid(value, label)
+        if (
+            type(self.output_bytes) is not int
+            or self.output_bytes <= 0
+            or tuple(axis for axis, _value in self.comparison_values) != SHARED_AXES
+        ):
+            _fail("held-out occurrence verification values changed")
+        object.__setattr__(
+            self,
+            "_verification_id",
+            content_id(OCCURRENCE_VERIFICATION_DOMAIN, self._payload()),
+        )
+
+    def _payload(self) -> dict[str, Any]:
+        return {
+            "schema": "acfqp.construction_k7_heldout_abstract_occurrence_independent_verification.v1",
+            "schema_version": SCHEMA_VERSION,
+            "profile_key": PROFILE_KEY,
+            "heldout_overlay_abstract_reuse_independent_verification_id": self.reuse_verification_id,
+            "occurrence_id": self.occurrence_id,
+            "occurrence_accounting_bundle_id": self.occurrence_bundle_id,
+            "work_vector_id": self.work_vector_id,
+            "comparison_vector_id": self.comparison_vector_id,
+            "actual_projection_proof_id": self.projection_proof_id,
+            "output_bytes_fixed_point_result_id": self.fixed_point_result_id,
+            "output_commit_id": self.output_commit_id,
+            "io.output_bytes": self.output_bytes,
+            "comparison_values": [
+                {"axis": axis, "value": value}
+                for axis, value in self.comparison_values
+            ],
+            "route_kind": "ABSTRACT_ONLY_CERTIFICATE",
+            "terminal_class": "PLAN_CERTIFICATE",
+            "terminal_code": "ABSTRACT_CERTIFIED",
+            "producer_modules_imported": False,
+            "physical_output_fixed_point_equality_replayed": True,
+            "valid": True,
+        }
+
+    @property
+    def verification_id(self) -> str:
+        current = content_id(OCCURRENCE_VERIFICATION_DOMAIN, self._payload())
+        if current != self._verification_id:
+            _fail("held-out occurrence independent verification changed")
+        return current
+
+    def to_document(self) -> dict[str, Any]:
+        return {
+            **self._payload(),
+            "heldout_abstract_occurrence_independent_verification_id": self.verification_id,
+        }
+
+
+def verify_heldout_abstract_occurrence_directory_bytes_v1(
+    *,
+    reuse_result_bytes: bytes,
+    occurrence_directory: str | Path,
+    occurrence_bundle_document: dict[str, Any],
+    fixed_point_result_document: dict[str, Any],
+    output_commit_document: dict[str, Any],
+) -> HeldoutAbstractOccurrenceDirectoryVerificationV1:
+    """Independently replay one physical held-out occurrence directory."""
+
+    reuse = reuse_verifier_v1.verify_heldout_overlay_abstract_reuse_bytes_v1(
+        reuse_result_bytes
+    )
+    reuse_document = loads_canonical_json(reuse_result_bytes)
+    occurrence = _verify_occurrence(
+        Path(occurrence_directory),
+        reuse=reuse,
+        reuse_document=reuse_document,
+        embedded_bundle=occurrence_bundle_document,
+        embedded_fixed=fixed_point_result_document,
+        embedded_commit=output_commit_document,
+    )
+    return HeldoutAbstractOccurrenceDirectoryVerificationV1(
+        reuse.verification_id,
+        occurrence["occurrence_id"],
+        occurrence["bundle_id"],
+        occurrence["work_vector_id"],
+        occurrence["comparison_vector_id"],
+        occurrence["projection_proof_id"],
+        occurrence["fixed_id"],
+        occurrence["output_commit_id"],
+        occurrence["output_bytes"],
+        occurrence["comparison_values"],
+    )
+
+
+@dataclass(frozen=True, slots=True)
 class HeldoutAbstractCampaignDirectoryVerificationV1:
     reuse_verification_id: str
     preregistration_id: str
@@ -1107,7 +1224,6 @@ def verify_heldout_abstract_campaign_directory_bytes_v1(
         ) from error
     occurrence = _verify_occurrence(
         occurrence_directory,
-        reuse_result_bytes=reuse_result_bytes,
         reuse=reuse,
         reuse_document=reuse_document,
         embedded_bundle=embedded_bundle,
@@ -1201,5 +1317,7 @@ __all__ = (
     "ConstructionK7HeldoutAbstractCampaignIndependentVerifierV1Error",
     "LOCAL_DOMAINS",
     "HeldoutAbstractCampaignDirectoryVerificationV1",
+    "HeldoutAbstractOccurrenceDirectoryVerificationV1",
+    "verify_heldout_abstract_occurrence_directory_bytes_v1",
     "verify_heldout_abstract_campaign_directory_bytes_v1",
 )

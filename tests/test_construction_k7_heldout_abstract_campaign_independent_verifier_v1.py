@@ -45,12 +45,14 @@ def heldout_campaign(tmp_path_factory):
 
 def test_independent_surface_and_import_boundary_are_narrow() -> None:
     assert verifier.LOCAL_DOMAINS <= PHASE3E_DOMAIN_TAGS
-    assert len(verifier.LOCAL_DOMAINS) == 1
+    assert len(verifier.LOCAL_DOMAINS) == 2
     assert set(verifier.__all__) == {
         "ConstructionK7HeldoutAbstractCampaignIndependentVerifierV1Error",
         "LOCAL_DOMAINS",
         "HeldoutAbstractCampaignDirectoryVerificationV1",
+        "HeldoutAbstractOccurrenceDirectoryVerificationV1",
         "verify_heldout_abstract_campaign_directory_bytes_v1",
+        "verify_heldout_abstract_occurrence_directory_bytes_v1",
     }
     tree = ast.parse(Path(verifier.__file__).read_text(encoding="utf-8"))
     imported: set[str] = set()

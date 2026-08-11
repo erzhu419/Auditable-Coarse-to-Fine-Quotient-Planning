@@ -38,7 +38,7 @@ from acfqp.phase3e_ids import (
 
 
 SCHEMA_VERSION = "1.0.0"
-PROPOSED_CONTRACT_VERSION = "2.0.125"
+PROPOSED_CONTRACT_VERSION = "2.0.126"
 PROFILE_KEY = "construction_k7_heldout_multiquery_campaign_v1"
 
 PREREGISTRATION_DOMAIN = (
@@ -205,6 +205,10 @@ class HeldoutMultiqueryCampaignOccurrenceRowV1:
             "comparison_vector_id": bundle.comparison_vector.comparison_vector_id,
             "actual_projection_proof_id": bundle.actual_projection_proof.actual_projection_proof_id,
             "output_commit_id": bundle.output_commit.output_commit_id,
+            "reuse_result": self.reuse_result.to_document(),
+            "occurrence_accounting_bundle": bundle.to_document(),
+            "output_bytes_fixed_point_result": bundle.fixed_point.to_document(),
+            "output_commit": bundle.output_commit.to_document(),
             "comparison_values": [
                 {"axis": axis, "value": value}
                 for axis, value in bundle.comparison_vector.values
@@ -215,6 +219,7 @@ class HeldoutMultiqueryCampaignOccurrenceRowV1:
             "fresh_planner_invocations": 1,
             "accounting_planner_replay_invocations": 0,
             "fresh_ground_or_observer_event_count": 0,
+            "portable_occurrence_evidence_embedded": True,
             "closure_denominator_contribution": 1,
             "certificate_coverage_denominator_contribution": 1,
             "future_economics_denominator_contribution": 1,
