@@ -414,6 +414,21 @@ CONSTRUCTION_K7_QUERY_BOUND_REUSABLE_RAPM_SOURCE_BUNDLE_BINDING_V1_DOMAIN = (
 CONSTRUCTION_K7_QUERY_BOUND_REUSABLE_RAPM_SOURCE_BUNDLE_BINDING_VERIFICATION_V1_DOMAIN = (
     "acfqp:construction-k7-query-bound-reusable-rapm-source-bundle-binding-verification:v1"
 )
+CONSTRUCTION_K7_QUERY_BOUND_RAPM_PROOF_DEPENDENCY_NODE_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-rapm-proof-dependency-node:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_RAPM_PROOF_PARTITION_RESULT_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-rapm-proof-partition-result:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_RAPM_PROOF_SEARCH_RESULT_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-rapm-proof-search-result:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_RAPM_PROOF_DEPENDENCY_GRAPH_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-rapm-proof-dependency-graph:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_RAPM_PROOF_DEPENDENCY_TRANSITION_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-rapm-proof-dependency-transition:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -2609,6 +2624,21 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_query_bound_reusable_rapm_source_bundle_binding_verification_v1": (
             CONSTRUCTION_K7_QUERY_BOUND_REUSABLE_RAPM_SOURCE_BUNDLE_BINDING_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_rapm_proof_dependency_node_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_RAPM_PROOF_DEPENDENCY_NODE_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_rapm_proof_partition_result_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_RAPM_PROOF_PARTITION_RESULT_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_rapm_proof_search_result_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_RAPM_PROOF_SEARCH_RESULT_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_rapm_proof_dependency_graph_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_RAPM_PROOF_DEPENDENCY_GRAPH_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_rapm_proof_dependency_transition_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_RAPM_PROOF_DEPENDENCY_TRANSITION_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
