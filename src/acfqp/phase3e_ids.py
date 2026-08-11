@@ -666,6 +666,18 @@ CONSTRUCTION_K7_HELDOUT_ABSTRACT_REUSE_RESULT_V1_DOMAIN = (
 CONSTRUCTION_K7_HELDOUT_ABSTRACT_REUSE_INDEPENDENT_VERIFICATION_V1_DOMAIN = (
     "acfqp:construction-k7-heldout-abstract-reuse-independent-verification:v1"
 )
+CONSTRUCTION_K7_HELDOUT_ABSTRACT_STAGE_PROFILE_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-abstract-stage-profile:v1"
+)
+CONSTRUCTION_K7_HELDOUT_ABSTRACT_OPERATION_MANIFEST_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-abstract-operation-manifest:v1"
+)
+CONSTRUCTION_K7_HELDOUT_ABSTRACT_OPERATION_BOUNDARY_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-abstract-operation-boundary:v1"
+)
+CONSTRUCTION_K7_HELDOUT_ABSTRACT_STAGE_ACCOUNTING_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-abstract-stage-accounting:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -3113,6 +3125,18 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_heldout_abstract_reuse_independent_verification_v1": (
             CONSTRUCTION_K7_HELDOUT_ABSTRACT_REUSE_INDEPENDENT_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_heldout_abstract_stage_profile_v1": (
+            CONSTRUCTION_K7_HELDOUT_ABSTRACT_STAGE_PROFILE_V1_DOMAIN
+        ),
+        "construction_k7_heldout_abstract_operation_manifest_v1": (
+            CONSTRUCTION_K7_HELDOUT_ABSTRACT_OPERATION_MANIFEST_V1_DOMAIN
+        ),
+        "construction_k7_heldout_abstract_operation_boundary_v1": (
+            CONSTRUCTION_K7_HELDOUT_ABSTRACT_OPERATION_BOUNDARY_V1_DOMAIN
+        ),
+        "construction_k7_heldout_abstract_stage_accounting_v1": (
+            CONSTRUCTION_K7_HELDOUT_ABSTRACT_STAGE_ACCOUNTING_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN

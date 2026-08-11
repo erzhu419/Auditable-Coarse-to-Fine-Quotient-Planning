@@ -21,6 +21,7 @@ import hashlib
 import itertools
 from typing import Any, Iterable, Mapping, Sequence
 
+from acfqp import construction_accounting_owned_runtime_v1 as accounting_runtime
 from acfqp.phase3e_ids import canonical_json_bytes, parse_content_id
 
 
@@ -1450,6 +1451,9 @@ def _evaluate_ground_row(
     category: SelectedRowCategory,
     policy_scope_key: str,
 ) -> _RowEvaluation:
+    accounting_runtime.emit_owned_operation_v1(
+        "partial-support.robust-bellman-backup"
+    )
     risk_values: dict[str, Fraction] = {}
     reward_lower_values: dict[str, Fraction] = {}
     reward_upper_values: dict[str, Fraction] = {}
@@ -2064,6 +2068,9 @@ def _make_audit(
     threshold: RobustThresholdProfileV1,
     solver_kind: RobustSolverKind,
 ) -> RobustPlanAuditV1:
+    accounting_runtime.emit_owned_operation_v1(
+        "partial-support.robust-audit-obligation"
+    )
     core = _solve_core(model, threshold, solver_kind)
     counterfactual = _counterfactual(
         model,
