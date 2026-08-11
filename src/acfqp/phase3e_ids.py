@@ -594,6 +594,9 @@ CONSTRUCTION_K7_POSITIVE_PROMOTED_OVERLAY_RESULT_V1_DOMAIN = (
 CONSTRUCTION_K7_POSITIVE_PROMOTED_OVERLAY_INDEPENDENT_VERIFICATION_V1_DOMAIN = (
     "acfqp:construction-k7-positive-promoted-overlay-independent-verification:v1"
 )
+CONSTRUCTION_K7_POSITIVE_PROMOTED_STAGE_ACCOUNTING_V1_DOMAIN = (
+    "acfqp:construction-k7-positive-promoted-stage-accounting:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -2969,6 +2972,9 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_positive_promoted_overlay_independent_verification_v1": (
             CONSTRUCTION_K7_POSITIVE_PROMOTED_OVERLAY_INDEPENDENT_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_positive_promoted_stage_accounting_v1": (
+            CONSTRUCTION_K7_POSITIVE_PROMOTED_STAGE_ACCOUNTING_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
