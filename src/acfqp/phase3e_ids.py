@@ -474,6 +474,24 @@ CONSTRUCTION_K7_RECOVERY_ELIGIBLE_WORLD_MODEL_LOOP_V1_DOMAIN = (
 CONSTRUCTION_K7_RECOVERY_ELIGIBLE_WORLD_MODEL_LOOP_VERIFICATION_V1_DOMAIN = (
     "acfqp:construction-k7-recovery-eligible-world-model-loop-verification:v1"
 )
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_EXACT_GROUND_ROW_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-exact-ground-row:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_FALLBACK_INVENTORY_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-fallback-inventory:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_FALLBACK_POLICY_DECISION_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-fallback-policy-decision:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_FALLBACK_WORK_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-fallback-work:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_DIRECT_FALLBACK_RESULT_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-direct-fallback-result:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_DIRECT_FALLBACK_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-direct-fallback-verification:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -2729,6 +2747,24 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_recovery_eligible_world_model_loop_verification_v1": (
             CONSTRUCTION_K7_RECOVERY_ELIGIBLE_WORLD_MODEL_LOOP_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_exact_ground_row_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_EXACT_GROUND_ROW_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_fallback_inventory_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_FALLBACK_INVENTORY_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_fallback_policy_decision_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_FALLBACK_POLICY_DECISION_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_fallback_work_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_FALLBACK_WORK_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_direct_fallback_result_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_DIRECT_FALLBACK_RESULT_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_direct_fallback_verification_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_DIRECT_FALLBACK_VERIFICATION_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN

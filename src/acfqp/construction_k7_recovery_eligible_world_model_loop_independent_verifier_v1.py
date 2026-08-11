@@ -1104,6 +1104,10 @@ def _verify_overlay_and_result(
         != canonical_json_bytes(target_proof.to_document())
         or frontier is None
         or len(frontier.obligations) != 7
+        or any(
+            item.next_registered_checkpoint is not None
+            for item in frontier.obligations
+        )
         or document["logical_occurrence_id"] != logical_occurrence_id
         or document["recovery_eligible_checkpoint_id"] != checkpoint_id
         or document["ground_transaction_id"] != transaction_id

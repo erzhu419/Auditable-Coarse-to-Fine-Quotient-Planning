@@ -503,8 +503,14 @@ def test_k7_complete_accounting_successor_domains_are_central_and_role_separated
         ids.CONSTRUCTION_K7_RECOVERY_ELIGIBLE_GROUND_TRANSACTION_V1_DOMAIN,
         ids.CONSTRUCTION_K7_RECOVERY_ELIGIBLE_WORLD_MODEL_LOOP_V1_DOMAIN,
         ids.CONSTRUCTION_K7_RECOVERY_ELIGIBLE_WORLD_MODEL_LOOP_VERIFICATION_V1_DOMAIN,
+        ids.CONSTRUCTION_K7_RECOVERY_ELIGIBLE_EXACT_GROUND_ROW_V1_DOMAIN,
+        ids.CONSTRUCTION_K7_RECOVERY_ELIGIBLE_FALLBACK_INVENTORY_V1_DOMAIN,
+        ids.CONSTRUCTION_K7_RECOVERY_ELIGIBLE_FALLBACK_POLICY_DECISION_V1_DOMAIN,
+        ids.CONSTRUCTION_K7_RECOVERY_ELIGIBLE_FALLBACK_WORK_V1_DOMAIN,
+        ids.CONSTRUCTION_K7_RECOVERY_ELIGIBLE_DIRECT_FALLBACK_RESULT_V1_DOMAIN,
+        ids.CONSTRUCTION_K7_RECOVERY_ELIGIBLE_DIRECT_FALLBACK_VERIFICATION_V1_DOMAIN,
     )
-    assert len(domains) == len(set(domains)) == 148
+    assert len(domains) == len(set(domains)) == 154
     assert set(domains) <= ids.PHASE3E_DOMAIN_TAGS
     payload = {"schema": "same-k7-accounting-successor-payload"}
     assert len({ids.content_id(domain, payload) for domain in domains}) == len(domains)

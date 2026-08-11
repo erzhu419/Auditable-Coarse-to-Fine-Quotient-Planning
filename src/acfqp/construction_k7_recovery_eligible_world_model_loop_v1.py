@@ -631,6 +631,11 @@ class RecoveryEligibleWorldModelLoopV1:
             or {item.source_model_id for item in self.deltas}
             != {self.source_model.model_id}
             or self.added_validation_draw_count != 12_288
+            or self.successor_proof.failed_frontier is None
+            or any(
+                item.next_registered_checkpoint is not None
+                for item in self.successor_proof.failed_frontier.obligations
+            )
         ):
             _fail("recovery-eligible overlay identity graph crossed")
         source_by_binding = {
