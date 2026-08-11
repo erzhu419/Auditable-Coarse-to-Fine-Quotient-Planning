@@ -188,10 +188,10 @@ def test_v075_terminal_status_inventory_is_exhaustive_and_explicit() -> None:
     expected = profile_v1._EXPECTED_V075_STATUS_ENUM_INVENTORY_V1  # noqa: SLF001
 
     assert live == expected
-    assert len(live) == 47
-    assert sum(len(row[2]) for row in live) == 164
-    assert len(profile.v075_status_mappings) == 164
-    assert len(profile.v075_status_mapping_by_key) == 164
+    assert len(live) == 48
+    assert sum(len(row[2]) for row in live) == 167
+    assert len(profile.v075_status_mappings) == 167
+    assert len(profile.v075_status_mapping_by_key) == 167
     assert {
         row.disposition for row in profile.v075_status_mappings
     } == set(profile_v1.V075StatusDispositionV1)
@@ -206,10 +206,25 @@ def test_v075_terminal_status_inventory_is_exhaustive_and_explicit() -> None:
     assert counts == {
         profile_v1.V075StatusDispositionV1.MAP_TO_FQ9: 22,
         profile_v1.V075StatusDispositionV1.PROFILE_EXTENSION_REQUIRED: 14,
-        profile_v1.V075StatusDispositionV1.NONTERMINAL: 128,
+        profile_v1.V075StatusDispositionV1.NONTERMINAL: 131,
     }
 
     by_key = profile.v075_status_mapping_by_key
+    for member in (
+        "AUTHORIZED",
+        "CANDIDATE_EARLY_STOP",
+        "NO_ELIGIBLE_FRONTIER_ROW",
+    ):
+        promotion = by_key[
+            "v075_live_batched_causal_promotion_v3:"
+            "V075LiveBatchedCausalPromotionDecisionStatusV3:"
+            f"{member}"
+        ]
+        assert promotion.disposition is (
+            profile_v1.V075StatusDispositionV1.NONTERMINAL
+        )
+        assert promotion.fq9_terminal_code is None
+
     direct_cap = by_key[
         "v075_production_occurrence_authority_v1:"
         "V075ProductionOccurrenceTerminalCodeV1:"
@@ -254,11 +269,11 @@ def test_independent_document_replay_recomputes_identity_and_keeps_gates_locked(
     assert replay.route_kind_count == 5
     assert replay.stage_count == 10
     assert replay.accounting_family_count == 7
-    assert replay.v075_status_enum_class_count == 47
-    assert replay.v075_status_enum_member_count == 164
+    assert replay.v075_status_enum_class_count == 48
+    assert replay.v075_status_enum_member_count == 167
     assert replay.mapped_to_fq9_count == 22
     assert replay.profile_extension_required_count == 14
-    assert replay.nonterminal_count == 128
+    assert replay.nonterminal_count == 131
     assert replay.execution_performed is False
     assert replay.gate_unlocked is False
     assert replay.to_document()["counter_completeness_gate_status"].endswith(

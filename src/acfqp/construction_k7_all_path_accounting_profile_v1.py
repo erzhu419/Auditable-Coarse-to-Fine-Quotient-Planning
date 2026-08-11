@@ -72,8 +72,8 @@ EXPECTED_FQ9_TERMINAL_CODE_COUNT = 10
 EXPECTED_ROUTE_KIND_COUNT = 5
 EXPECTED_STAGE_COUNT = 10
 EXPECTED_ACCOUNTING_FAMILY_COUNT = 7
-EXPECTED_V075_STATUS_ENUM_CLASS_COUNT = 47
-EXPECTED_V075_STATUS_ENUM_MEMBER_COUNT = 164
+EXPECTED_V075_STATUS_ENUM_CLASS_COUNT = 48
+EXPECTED_V075_STATUS_ENUM_MEMBER_COUNT = 167
 
 COUNTER_COMPLETENESS_GATE_STATUS = "COUNTER_COMPLETENESS_GATE_NOT_RUN"
 WORKLOAD_ECONOMICS_GATE_STATUS = "WORKLOAD_ECONOMICS_GATE_NOT_RUN"
@@ -632,6 +632,15 @@ _EXPECTED_V075_STATUS_ENUM_INVENTORY_V1 = (
         ),
     ),
     (
+        "v075_live_batched_causal_promotion_v3",
+        "V075LiveBatchedCausalPromotionDecisionStatusV3",
+        (
+            ("AUTHORIZED", "PROMOTION_AUTHORIZED"),
+            ("CANDIDATE_EARLY_STOP", "CANDIDATE_EARLY_STOP"),
+            ("NO_ELIGIBLE_FRONTIER_ROW", "NO_ELIGIBLE_FRONTIER_ROW"),
+        ),
+    ),
+    (
         "v075_live_dynamic_acquisition_authority_v2",
         "V075LiveDynamicChildClosureStatusV2",
         (
@@ -926,6 +935,7 @@ _EXPLICIT_NONTERMINAL_ENUM_CLASSES_V1 = frozenset(
         ("v075_k7_atomic_shared_resource_authority_v1", "ProductionConnectionStatusV1"),
         ("v075_k7_os_supervisor_admission_v1", "K7OSSupervisorAdmissionStatusV1"),
         ("v075_learned_support_quotient_planners_v1", "V075PlannerStatusV1"),
+        ("v075_live_batched_causal_promotion_v3", "V075LiveBatchedCausalPromotionDecisionStatusV3"),
         ("v075_live_dynamic_acquisition_authority_v2", "V075LiveDynamicChildClosureStatusV2"),
         ("v075_live_dynamic_acquisition_authority_v2", "V075LivePromotionDecisionStatusV2"),
         ("v075_observer_signed_multiround_occurrence_runner_v2", "V075ObserverSignedMultiroundTerminalStatusV2"),
