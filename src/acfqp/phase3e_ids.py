@@ -261,6 +261,18 @@ CONSTRUCTION_K7_QUERY_BOUND_DIRECT_FALLBACK_RESULT_V1_DOMAIN = (
 CONSTRUCTION_K7_QUERY_BOUND_DIRECT_FALLBACK_VERIFICATION_V1_DOMAIN = (
     "acfqp:construction-k7-query-bound-direct-fallback-verification:v1"
 )
+CONSTRUCTION_K7_QUERY_BOUND_ACCOUNTING_BOUNDARY_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-accounting-boundary:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_ACCOUNTING_MANIFEST_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-accounting-manifest:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_STAGE_RUNTIME_RESULT_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-stage-runtime-result:v1"
+)
+CONSTRUCTION_K7_QUERY_BOUND_ACCOUNTED_CONTINUATION_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-accounted-continuation:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -2303,6 +2315,18 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_query_bound_direct_fallback_verification_v1": (
             CONSTRUCTION_K7_QUERY_BOUND_DIRECT_FALLBACK_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_accounting_boundary_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_ACCOUNTING_BOUNDARY_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_accounting_manifest_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_ACCOUNTING_MANIFEST_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_stage_runtime_result_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_STAGE_RUNTIME_RESULT_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_accounted_continuation_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_ACCOUNTED_CONTINUATION_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN

@@ -27,9 +27,12 @@ def test_domains_and_public_surface_remain_additive() -> None:
         "ENVIRONMENT_MARKER",
         "LOCAL_DOMAINS",
         "QueryBoundGroundTransactionV1",
+        "QueryBoundGroundTransactionPreparationV1",
         "QueryBoundNamespaceBindingV1",
         "QueryBoundRowExecutionV1",
         "execute_query_bound_ground_transaction_v1",
+        "execute_prepared_query_bound_ground_transaction_v1",
+        "prepare_query_bound_ground_transaction_v1",
         "verify_query_bound_ground_transaction_v1",
     }
 
@@ -138,4 +141,13 @@ def test_namespace_binding_is_not_caller_mintable() -> None:
             _id("generation"),
             _id("context"),
             "NO_PRIOR",
+        )
+
+
+def test_ground_free_preparation_is_not_caller_mintable() -> None:
+    with pytest.raises(subject.ConstructionK7QueryBoundGroundTransactionV1Error):
+        subject.QueryBoundGroundTransactionPreparationV1(
+            object(),
+            object(),
+            object(),
         )

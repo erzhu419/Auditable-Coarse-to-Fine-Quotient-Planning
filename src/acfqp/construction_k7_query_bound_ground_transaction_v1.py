@@ -52,6 +52,7 @@ if len(LOCAL_DOMAINS) != 3 or not LOCAL_DOMAINS <= PHASE3E_DOMAIN_TAGS:  # pragm
 _NAMESPACE_ISSUER = object()
 _ROW_ISSUER = object()
 _TRANSACTION_ISSUER = object()
+_PREPARATION_ISSUER = object()
 
 
 class ConstructionK7QueryBoundGroundTransactionV1Error(ValueError):
@@ -60,6 +61,27 @@ class ConstructionK7QueryBoundGroundTransactionV1Error(ValueError):
 
 def _fail(message: str) -> NoReturn:
     raise ConstructionK7QueryBoundGroundTransactionV1Error(message)
+
+
+@dataclass(frozen=True, slots=True)
+class QueryBoundGroundTransactionPreparationV1:
+    """Issuer-bound ground-free input frozen before acquisition begins."""
+
+    _issuer: InitVar[object]
+    request: request_v1.QueryBoundRecoveryRequestV1 = field(repr=False)
+    source_model: planning_v2.V075NumericalModelV2 = field(repr=False)
+
+    def __post_init__(self, _issuer: object) -> None:
+        if (
+            _issuer is not _PREPARATION_ISSUER
+            or type(self.request) is not request_v1.QueryBoundRecoveryRequestV1
+            or type(self.source_model) is not planning_v2.V075NumericalModelV2
+        ):
+            _fail("query-bound transaction preparation is caller-minted")
+        request_v1.require_query_bound_recovery_request_v1(self.request)
+        self.source_model.__post_init__()
+        if self.source_model.model_id != self.request.overlay_model_id:
+            _fail("query-bound transaction preparation crossed its request")
 
 
 def _cid(value: Any, label: str) -> str:
@@ -371,21 +393,14 @@ def _row_binding(
     return binding
 
 
-def execute_query_bound_ground_transaction_v1(
+def prepare_query_bound_ground_transaction_v1(
     *,
     source_trace_bytes: bytes,
-    build_epoch_envelope_bytes: bytes,
-    root_query_result_bytes: bytes,
-    overlay_bytes: bytes,
-    request_bytes: bytes,
-) -> QueryBoundGroundTransactionV1:
-    request = request_v1.verify_query_bound_recovery_request_bytes_v1(
-        source_trace_bytes=source_trace_bytes,
-        build_epoch_envelope_bytes=build_epoch_envelope_bytes,
-        root_query_result_bytes=root_query_result_bytes,
-        overlay_bytes=overlay_bytes,
-        request_bytes=request_bytes,
-    )
+    request: request_v1.QueryBoundRecoveryRequestV1,
+) -> QueryBoundGroundTransactionPreparationV1:
+    """Replay the cached model without opening a ground namespace."""
+
+    request = request_v1.require_query_bound_recovery_request_v1(request)
     trace = loads_canonical_json(source_trace_bytes)
     try:
         model = planning_v2.replay_v075_numerical_model_bytes_v2(
@@ -399,6 +414,23 @@ def execute_query_bound_ground_transaction_v1(
         ) from error
     if model.model_id != request.overlay_model_id:
         _fail("query-bound transaction model crossed its request")
+    return QueryBoundGroundTransactionPreparationV1(
+        _PREPARATION_ISSUER,
+        request,
+        model,
+    )
+
+
+def execute_prepared_query_bound_ground_transaction_v1(
+    preparation: QueryBoundGroundTransactionPreparationV1,
+) -> QueryBoundGroundTransactionV1:
+    """Execute only the acquisition half of one frozen transaction."""
+
+    if type(preparation) is not QueryBoundGroundTransactionPreparationV1:
+        _fail("query-bound transaction preparation has a foreign type")
+    preparation.__post_init__(_PREPARATION_ISSUER)
+    request = preparation.request
+    model = preparation.source_model
     prepared = fixture_v1.prepare_v075_k7_construction_environment_v1(
         environment_marker=ENVIRONMENT_MARKER,
         identity_marker=request.logical_occurrence_id,
@@ -542,6 +574,30 @@ def execute_query_bound_ground_transaction_v1(
     )
 
 
+def execute_query_bound_ground_transaction_v1(
+    *,
+    source_trace_bytes: bytes,
+    build_epoch_envelope_bytes: bytes,
+    root_query_result_bytes: bytes,
+    overlay_bytes: bytes,
+    request_bytes: bytes,
+) -> QueryBoundGroundTransactionV1:
+    """Compatibility wrapper: verify, prepare, then execute one transaction."""
+
+    request = request_v1.verify_query_bound_recovery_request_bytes_v1(
+        source_trace_bytes=source_trace_bytes,
+        build_epoch_envelope_bytes=build_epoch_envelope_bytes,
+        root_query_result_bytes=root_query_result_bytes,
+        overlay_bytes=overlay_bytes,
+        request_bytes=request_bytes,
+    )
+    preparation = prepare_query_bound_ground_transaction_v1(
+        source_trace_bytes=source_trace_bytes,
+        request=request,
+    )
+    return execute_prepared_query_bound_ground_transaction_v1(preparation)
+
+
 def verify_query_bound_ground_transaction_v1(
     claimed: QueryBoundGroundTransactionV1,
 ) -> QueryBoundGroundTransactionV1:
@@ -556,8 +612,11 @@ __all__ = [
     "ENVIRONMENT_MARKER",
     "LOCAL_DOMAINS",
     "QueryBoundGroundTransactionV1",
+    "QueryBoundGroundTransactionPreparationV1",
     "QueryBoundNamespaceBindingV1",
     "QueryBoundRowExecutionV1",
     "execute_query_bound_ground_transaction_v1",
+    "execute_prepared_query_bound_ground_transaction_v1",
+    "prepare_query_bound_ground_transaction_v1",
     "verify_query_bound_ground_transaction_v1",
 ]

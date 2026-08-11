@@ -21,6 +21,7 @@ from enum import Enum
 from fractions import Fraction
 from typing import Any, Iterable, Mapping, NoReturn
 
+from acfqp import construction_accounting_owned_runtime_v1 as accounting_runtime
 from acfqp import construction_k7_query_bound_final_local_replanning_v1 as final_v1
 from acfqp import construction_k7_query_bound_ground_transaction_v1 as ground_v1
 from acfqp import v075_batch_native_statistical_backend_v1 as backend_v1
@@ -338,20 +339,139 @@ class _GroundPoint:
 
 
 @dataclass(slots=True)
-class _SolverCounters:
+class _QueryBoundFallbackLedgerV1:
+    """Source-owned exact fallback counters and stage-local hook sites."""
+
+    states_expanded: int = 0
+    actions_evaluated: int = 0
+    ground_steps: int = 0
+    outcome_rows: int = 0
     bellman_backups: int = 0
     dominance_comparisons: int = 0
+    cap_checks: int = 0
+    cap_rejections: int = 0
+    route_started: bool = False
+    route_finished: bool = False
+    solver_started: bool = False
+    solver_finished: bool = False
+
+    def _guard(self, proposed: int, maximum: int, label: str) -> None:
+        accounting_runtime.emit_owned_operation_v1(
+            "query-fallback.control.cap-check"
+        )
+        self.cap_checks += 1
+        if proposed > maximum:
+            accounting_runtime.emit_owned_operation_v1(
+                "query-fallback.control.cap-rejection"
+            )
+            self.cap_rejections += 1
+            _fail(f"direct fallback {label} cap exhausted")
+
+    def begin_route(self) -> None:
+        if self.route_started:
+            _fail("direct fallback route attempt was duplicated")
+        self.route_started = True
+
+    def finish_route(self, *, success: bool) -> None:
+        if not self.route_started or self.route_finished or type(success) is not bool:
+            _fail("direct fallback route terminal changed")
+        accounting_runtime.emit_owned_operation_v1(
+            (
+                "query-fallback.route.success"
+                if success
+                else "query-fallback.route.failure"
+            )
+        )
+        self.route_finished = True
+
+    def begin_solver(self) -> None:
+        if self.solver_started:
+            _fail("direct fallback solver attempt was duplicated")
+        self.solver_started = True
+
+    def finish_solver(self, *, success: bool) -> None:
+        if not self.solver_started or self.solver_finished or type(success) is not bool:
+            _fail("direct fallback solver terminal changed")
+        accounting_runtime.emit_owned_operation_v1(
+            (
+                "query-fallback.solver.success"
+                if success
+                else "query-fallback.solver.failure"
+            )
+        )
+        self.solver_finished = True
+
+    def expand_state(self) -> None:
+        self._guard(
+            self.states_expanded + 1,
+            MAX_FALLBACK_STATES,
+            "state-expansion",
+        )
+        accounting_runtime.emit_owned_operation_v1(
+            "query-fallback.state.expanded"
+        )
+        self.states_expanded += 1
+
+    def evaluate_action(self) -> None:
+        self._guard(
+            self.actions_evaluated + 1,
+            MAX_FALLBACK_ACTIONS,
+            "action-evaluation",
+        )
+        accounting_runtime.emit_owned_operation_v1(
+            "query-fallback.action.evaluated"
+        )
+        self.actions_evaluated += 1
+
+    def ground_step(self) -> None:
+        self._guard(
+            self.ground_steps + 1,
+            MAX_FALLBACK_ACTIONS,
+            "ground-step",
+        )
+        accounting_runtime.emit_owned_operation_v1(
+            "query-fallback.kernel.transition"
+        )
+        self.ground_steps += 1
+
+    def record_outcomes(self, count: int) -> None:
+        if type(count) is not int or count <= 0:
+            _fail("direct fallback exact row has no outcome atom")
+        self._guard(
+            self.outcome_rows + count,
+            MAX_FALLBACK_OUTCOME_ROWS,
+            "outcome-row",
+        )
+        for _ in range(count):
+            accounting_runtime.emit_owned_operation_v1(
+                "query-fallback.outcome.row"
+            )
+            self.outcome_rows += 1
+
+    def bellman_backup(self) -> None:
+        self._guard(
+            self.bellman_backups + 1,
+            MAX_FALLBACK_BELLMAN_BACKUPS,
+            "Bellman-backup",
+        )
+        accounting_runtime.emit_owned_operation_v1(
+            "query-fallback.bellman.backup"
+        )
+        self.bellman_backups += 1
+
+    def dominance_comparison(self) -> None:
+        self.dominance_comparisons += 1
 
 
 def _pareto(
     points: Iterable[_GroundPoint],
-    counters: _SolverCounters,
+    ledger: _QueryBoundFallbackLedgerV1,
 ) -> tuple[_GroundPoint, ...]:
     best_at_failure: dict[Fraction, _GroundPoint] = {}
     for item in points:
         prior = best_at_failure.get(item.failure)
         if prior is not None:
-            counters.dominance_comparisons += 1
+            ledger.dominance_comparison()
         if (
             prior is None
             or item.reward > prior.reward
@@ -363,7 +483,7 @@ def _pareto(
     for failure in sorted(best_at_failure):
         point = best_at_failure[failure]
         if best_reward is not None:
-            counters.dominance_comparisons += 1
+            ledger.dominance_comparison()
         if best_reward is not None and point.reward <= best_reward:
             continue
         kept.append(point)
@@ -375,7 +495,8 @@ def _enumerate_exact_rows(
     *,
     context: public_v1.V075PublicReplicateContextV1,
     law: tuple[tuple[int, Fraction], ...],
-) -> tuple[tuple[QueryBoundExactGroundRowV1, ...], int]:
+    ledger: _QueryBoundFallbackLedgerV1,
+) -> tuple[QueryBoundExactGroundRowV1, ...]:
     kernel = H2GraphKernelV1(
         context.topology,
         context.rank_cap,
@@ -390,16 +511,15 @@ def _enumerate_exact_rows(
         catalogue: graph_v1.V075LegalActionCatalogueV1,
         action: tuple[int, int, int],
     ) -> None:
-        if len(rows) >= MAX_FALLBACK_ACTIONS:
-            _fail("direct fallback action cap exhausted before complete inventory")
+        ledger.evaluate_action()
+        ledger.ground_step()
         binding = graph_v1.observation_row_binding_v1(context, catalogue, action)
         atoms = kernel.exact_atoms(
             catalogue.state.to_kernel_state(),
             H2GraphActionV1(*action),
             remaining_horizon=catalogue.remaining_horizon,
         )
-        if sum(len(item.atoms) for item in rows.values()) + len(atoms) > MAX_FALLBACK_OUTCOME_ROWS:
-            _fail("direct fallback outcome-row cap exhausted before complete inventory")
+        ledger.record_outcomes(len(atoms))
         row = QueryBoundExactGroundRowV1(_ROW_ISSUER, binding, atoms)
         key = (binding.state_id, binding.remaining_horizon, binding.action)
         if key in rows:
@@ -418,11 +538,11 @@ def _enumerate_exact_rows(
                 if prior != state:
                     _fail("direct fallback exact successor identity collided")
 
+    ledger.expand_state()
     for action in root.actions:
         add(root, action)
-    if 1 + len(children) > MAX_FALLBACK_STATES:
-        _fail("direct fallback state cap exhausted before complete inventory")
     for state_id in sorted(children):
+        ledger.expand_state()
         state = children[state_id]
         catalogue = graph_v1.V075LegalActionCatalogueV1(
             context,
@@ -432,10 +552,7 @@ def _enumerate_exact_rows(
         )
         for action in catalogue.actions:
             add(catalogue, action)
-    return (
-        tuple(sorted(rows.values(), key=lambda item: item.row_id)),
-        1 + len(children),
-    )
+    return tuple(sorted(rows.values(), key=lambda item: item.row_id))
 
 
 def _solve_exact_ground(
@@ -443,7 +560,8 @@ def _solve_exact_ground(
     context: public_v1.V075PublicReplicateContextV1,
     rows: tuple[QueryBoundExactGroundRowV1, ...],
     risk_tolerance: Fraction,
-) -> tuple[_GroundPoint | None, _SolverCounters]:
+    ledger: _QueryBoundFallbackLedgerV1,
+) -> _GroundPoint | None:
     by_key = {
         (item.binding.state_id, item.binding.remaining_horizon, item.binding.action): item
         for item in rows
@@ -451,7 +569,6 @@ def _solve_exact_ground(
     if len(by_key) != len(rows):
         _fail("direct fallback exact inventory key collision")
     root = graph_v1.root_catalogue_v1(context)
-    counters = _SolverCounters()
     all_points = []
     for root_action in root.actions:
         root_row = by_key[(root.state.state_id, 2, root_action)]
@@ -480,7 +597,7 @@ def _solve_exact_ground(
                 ((root.state.state_id, 2, root_action),),
             ),
         )
-        counters.bellman_backups += 1
+        ledger.bellman_backup()
         for state_id in sorted(child_states):
             actions = graph_v1.legal_action_triples_v1(
                 context,
@@ -503,21 +620,19 @@ def _solve_exact_ground(
                             point.signature + ((state_id, 1, action),),
                         )
                     )
-                    counters.bellman_backups += 1
-                    if counters.bellman_backups > MAX_FALLBACK_BELLMAN_BACKUPS:
-                        _fail("direct fallback Bellman cap exhausted")
-            points = _pareto(expanded, counters)
+                    ledger.bellman_backup()
+            points = _pareto(expanded, ledger)
         all_points.extend(points)
     feasible = tuple(
         item
-        for item in _pareto(all_points, counters)
+        for item in _pareto(all_points, ledger)
         if item.failure <= risk_tolerance
     )
     if not feasible:
-        return None, counters
-    return (
-        max(feasible, key=lambda item: (item.reward, -item.failure, item.signature)),
-        counters,
+        return None
+    return max(
+        feasible,
+        key=lambda item: (item.reward, -item.failure, item.signature),
     )
 
 
@@ -743,6 +858,24 @@ def _build_direct_fallback(
     predecessor: final_v1.QueryBoundFinalLocalReplanningV1,
 ) -> QueryBoundDirectGroundFallbackV1:
     predecessor = final_v1.require_query_bound_final_local_replanning_v1(predecessor)
+    ledger = _QueryBoundFallbackLedgerV1()
+    ledger.begin_route()
+    try:
+        result = _build_direct_fallback_under_ledger(predecessor, ledger)
+    except BaseException:
+        if ledger.solver_started and not ledger.solver_finished:
+            ledger.finish_solver(success=False)
+        if not ledger.route_finished:
+            ledger.finish_route(success=False)
+        raise
+    ledger.finish_route(success=True)
+    return result
+
+
+def _build_direct_fallback_under_ledger(
+    predecessor: final_v1.QueryBoundFinalLocalReplanningV1,
+    ledger: _QueryBoundFallbackLedgerV1,
+) -> QueryBoundDirectGroundFallbackV1:
     predecessor_document = predecessor.to_document()
     frontier = predecessor.successor_proof.failed_frontier
     if (
@@ -797,16 +930,20 @@ def _build_direct_fallback(
     if not reveal.matched:
         _fail("direct fallback private environment does not match its commitment")
     context_index = prepared.namespace.family.replicate_contexts.index(context)
-    rows, states_expanded = _enumerate_exact_rows(
+    rows = _enumerate_exact_rows(
         context=context,
         law=laws[context_index],
+        ledger=ledger,
     )
     threshold = worker_v1.V075WorkerThresholdProfileV1()
-    optimum, counters = _solve_exact_ground(
+    ledger.begin_solver()
+    optimum = _solve_exact_ground(
         context=context,
         rows=rows,
         risk_tolerance=threshold.risk_tolerance,
+        ledger=ledger,
     )
+    ledger.finish_solver(success=True)
     rows_by_key = {
         (item.binding.state_id, item.binding.remaining_horizon, item.binding.action): item
         for item in rows
@@ -825,12 +962,12 @@ def _build_direct_fallback(
         )
     work = QueryBoundDirectFallbackWorkV1(
         _WORK_ISSUER,
-        states_expanded,
-        len(rows),
-        len(rows),
-        sum(len(item.atoms) for item in rows),
-        counters.bellman_backups,
-        counters.dominance_comparisons,
+        ledger.states_expanded,
+        ledger.actions_evaluated,
+        ledger.ground_steps,
+        ledger.outcome_rows,
+        ledger.bellman_backups,
+        ledger.dominance_comparisons,
     )
     feasible = optimum is not None
     return QueryBoundDirectGroundFallbackV1(

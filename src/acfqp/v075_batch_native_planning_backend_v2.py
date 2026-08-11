@@ -1425,9 +1425,6 @@ def compile_v075_query_bound_validation_overlay_v2(
     )
     if successor.model_id == source_model.model_id:
         _fail("query-bound validation overlay did not change the model")
-    accounting_runtime.emit_owned_operation_v1(
-        "batch-planning.query-delta.model-build"
-    )
     return successor
 
 
