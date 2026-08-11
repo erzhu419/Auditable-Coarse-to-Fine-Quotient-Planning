@@ -534,6 +534,30 @@ CONSTRUCTION_K7_RECOVERY_ELIGIBLE_OUTPUT_RENDERER_V1_DOMAIN = (
 CONSTRUCTION_K7_RECOVERY_ELIGIBLE_OUTPUT_COMMIT_V1_DOMAIN = (
     "acfqp:construction-k7-recovery-eligible-output-commit:v1"
 )
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_CAMPAIGN_INPUT_BLOB_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-campaign-input-blob:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_CAMPAIGN_OCCURRENCE_SPEC_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-campaign-occurrence-spec:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_CAMPAIGN_WORKLOAD_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-campaign-workload:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_CAMPAIGN_PREREGISTRATION_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-campaign-preregistration:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_CAMPAIGN_COMMIT_EVENT_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-campaign-commit-event:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_CAMPAIGN_OCCURRENCE_ROW_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-campaign-occurrence-row:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_CAMPAIGN_CLOSURE_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-campaign-closure:v1"
+)
+CONSTRUCTION_K7_RECOVERY_ELIGIBLE_CAMPAIGN_RESULT_V1_DOMAIN = (
+    "acfqp:construction-k7-recovery-eligible-campaign-result:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -2849,6 +2873,30 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_recovery_eligible_output_commit_v1": (
             CONSTRUCTION_K7_RECOVERY_ELIGIBLE_OUTPUT_COMMIT_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_campaign_input_blob_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_CAMPAIGN_INPUT_BLOB_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_campaign_occurrence_spec_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_CAMPAIGN_OCCURRENCE_SPEC_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_campaign_workload_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_CAMPAIGN_WORKLOAD_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_campaign_preregistration_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_CAMPAIGN_PREREGISTRATION_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_campaign_commit_event_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_CAMPAIGN_COMMIT_EVENT_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_campaign_occurrence_row_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_CAMPAIGN_OCCURRENCE_ROW_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_campaign_closure_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_CAMPAIGN_CLOSURE_V1_DOMAIN
+        ),
+        "construction_k7_recovery_eligible_campaign_result_v1": (
+            CONSTRUCTION_K7_RECOVERY_ELIGIBLE_CAMPAIGN_RESULT_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
