@@ -104,6 +104,7 @@ DOMAIN_TAGS = {
     "proof": "acfqp:v075-batch-planning-numerical-proof:v2",
     "result": "acfqp:v075-batch-planning-construction-result:v2",
     "verification": "acfqp:v075-batch-planning-verification:v2",
+    "query_delta": "acfqp:v075-query-bound-validation-delta:v2",
 }
 
 if len(DOMAIN_TAGS) != len(set(DOMAIN_TAGS.values())):  # pragma: no cover
@@ -577,6 +578,96 @@ class V075NumericalModelV2:
             **self._payload(),
             "rows": [item.to_document() for item in self.rows],
             "model_id": self.model_id,
+        }
+
+
+_QUERY_DELTA_ISSUER = object()
+
+
+@dataclass(frozen=True, slots=True)
+class V075QueryBoundValidationDeltaV2:
+    """One signed independent validation increment for a frozen model row.
+
+    The acquisition namespace remains in the signed batch.  The compiled
+    numerical successor projects that provenance out again and therefore
+    remains reusable and query-neutral.
+    """
+
+    _issuer: object = field(repr=False, compare=False)
+    source_model_id: str
+    source_row_id: str
+    row_binding_id: str
+    source_validation_draw_count: int
+    target_validation_draw_count: int
+    signed_batch: observer_v2.V075SignedObservationBatchV2 = field(
+        repr=False,
+    )
+    _delta_id: str = field(init=False, repr=False)
+
+    def __post_init__(self) -> None:
+        for value, label in (
+            (self.source_model_id, "query delta source model"),
+            (self.source_row_id, "query delta source row"),
+            (self.row_binding_id, "query delta row binding"),
+        ):
+            _cid(value, label)
+        if (
+            self._issuer is not _QUERY_DELTA_ISSUER
+            or type(self.source_validation_draw_count) is not int
+            or self.source_validation_draw_count <= 0
+            or type(self.target_validation_draw_count) is not int
+            or self.target_validation_draw_count
+            <= self.source_validation_draw_count
+            or type(self.signed_batch)
+            is not observer_v2.V075SignedObservationBatchV2
+        ):
+            _fail("query-bound validation delta is malformed or caller-minted")
+        object.__setattr__(
+            self,
+            "_delta_id",
+            _hash("query_delta", self._payload()),
+        )
+
+    @property
+    def additional_validation_draw_count(self) -> int:
+        return (
+            self.target_validation_draw_count
+            - self.source_validation_draw_count
+        )
+
+    def _payload(self) -> dict[str, Any]:
+        return {
+            "schema": "acfqp.v075_query_bound_validation_delta.v2",
+            "schema_version": SCHEMA_VERSION,
+            "profile_key": PROFILE_KEY,
+            "source_numerical_model_id": self.source_model_id,
+            "source_numerical_row_id": self.source_row_id,
+            "semantic_row_binding_id": self.row_binding_id,
+            "source_validation_draw_count": (
+                self.source_validation_draw_count
+            ),
+            "additional_validation_draw_count": (
+                self.additional_validation_draw_count
+            ),
+            "target_validation_draw_count": (
+                self.target_validation_draw_count
+            ),
+            "signed_validation_batch_id": self.signed_batch.batch_id,
+            "independent_validation_stream_starts_at_one": True,
+            "support_expansion_allowed": False,
+            "unseen_outcomes_project_to_other": True,
+            "query_provenance_projected_out_of_successor_model": True,
+        }
+
+    @property
+    def delta_id(self) -> str:
+        return self._delta_id
+
+    def to_document(self) -> dict[str, Any]:
+        return {
+            **self._payload(),
+            "signed_validation_batch": self.signed_batch.to_document(),
+            "delta_id": self.delta_id,
         }
 
 
@@ -1116,6 +1207,228 @@ def _checkpoint_interval(
         "batch-planning.interval-row.construct"
     )
     return interval
+
+
+def _query_delta_row_binding(
+    *,
+    model: V075NumericalModelV2,
+    row: V075NumericalRowV2,
+    batch: observer_v2.V075SignedObservationBatchV2,
+) -> graph.V075ObservationRowBindingV1:
+    stream = batch.request.stream_identity
+    binding = stream.row_binding
+    if (
+        stream.lane is not graph.V075ObservationLaneV1.VALIDATION
+        or stream.arm != worker.V075WorkerArmV1.NO_PRIOR.value
+        or stream.observer_epoch_index != 1
+        or binding.context != model.context
+        or binding.context_id != row.context_id
+        or binding.row_binding_id != row.row_binding_id
+        or binding.state_id != row.source_state_id
+        or binding.catalogue.state.ranks != row.source_ranks
+        or binding.remaining_horizon != row.remaining_horizon
+        or binding.action != row.action
+    ):
+        _fail("query-bound validation batch crossed its numerical row")
+    return binding
+
+
+def freeze_v075_query_bound_validation_delta_v2(
+    *,
+    source_model: V075NumericalModelV2,
+    source_row_id: str,
+    signed_validation_batch: observer_v2.V075SignedObservationBatchV2,
+    target_validation_draw_count: int,
+) -> V075QueryBoundValidationDeltaV2:
+    """Bind one independently signed batch to one registered next checkpoint."""
+
+    source_model = _replay_numerical_model(source_model)
+    try:
+        signed_validation_batch = (
+            observer_v2.replay_signed_observation_batch_object_v2(
+                signed_validation_batch
+            )
+        )
+    except observer_v2.V075PrivateObserverBoundaryV2InvariantViolation as error:
+        raise V075BatchNativePlanningV2InvariantViolation(
+            "query-bound validation batch failed exact signed replay"
+        ) from error
+    rows = tuple(
+        item for item in source_model.rows if item.row_id == source_row_id
+    )
+    if len(rows) != 1:
+        _fail("query-bound validation source row is absent or duplicated")
+    row = rows[0]
+    binding = _query_delta_row_binding(
+        model=source_model,
+        row=row,
+        batch=signed_validation_batch,
+    )
+    request = signed_validation_batch.request
+    additional = target_validation_draw_count - row.validation_draw_count
+    checkpoints = _allowed_checkpoints(
+        arm=worker.V075WorkerArmV1.NO_PRIOR,
+        remaining_horizon=row.remaining_horizon,
+        caps=worker.V075WorkerCapProfileV1(),
+    )
+    if (
+        type(target_validation_draw_count) is not int
+        or target_validation_draw_count not in checkpoints
+        or additional <= 0
+        or request.accepted_draw_start != 1
+        or request.accepted_draw_count != additional
+        or request.accepted_draw_end != additional
+        or request.accepted_draw_cap != additional
+    ):
+        _fail("query-bound validation batch is not the exact next checkpoint delta")
+    reward = _merge_reward(binding)
+    for outcome in signed_validation_batch.outcomes:
+        if (
+            outcome.realized_row_reward != reward
+            or outcome.reward_sum != reward * outcome.count
+        ):
+            _fail("query-bound validation delta changed structural reward")
+        _structural_state(
+            binding,
+            next_ranks=outcome.next_ranks,
+            failure=outcome.failure,
+            terminal=outcome.terminal,
+        )
+    delta = V075QueryBoundValidationDeltaV2(
+        _QUERY_DELTA_ISSUER,
+        source_model.model_id,
+        row.row_id,
+        row.row_binding_id,
+        row.validation_draw_count,
+        target_validation_draw_count,
+        signed_validation_batch,
+    )
+    accounting_runtime.emit_owned_operation_v1(
+        "batch-planning.query-delta.freeze"
+    )
+    return delta
+
+
+def compile_v075_query_bound_validation_overlay_v2(
+    *,
+    source_model: V075NumericalModelV2,
+    deltas: tuple[V075QueryBoundValidationDeltaV2, ...],
+) -> V075NumericalModelV2:
+    """Compile signed query-local increments into one immutable model.
+
+    Existing support remains frozen.  Outcomes absent from that support are
+    accumulated in the explicit OTHER event.  Rows outside ``deltas`` retain
+    byte-identical numerical documents.
+    """
+
+    source_model = _replay_numerical_model(source_model)
+    if (
+        type(deltas) is not tuple
+        or not deltas
+        or any(type(item) is not V075QueryBoundValidationDeltaV2 for item in deltas)
+        or tuple(item.source_row_id for item in deltas)
+        != tuple(sorted({item.source_row_id for item in deltas}))
+    ):
+        _fail("query-bound validation deltas are absent, reordered, or duplicated")
+    source_rows = {item.row_id: item for item in source_model.rows}
+    replayed_deltas: list[V075QueryBoundValidationDeltaV2] = []
+    for claimed in deltas:
+        expected = freeze_v075_query_bound_validation_delta_v2(
+            source_model=source_model,
+            source_row_id=claimed.source_row_id,
+            signed_validation_batch=claimed.signed_batch,
+            target_validation_draw_count=claimed.target_validation_draw_count,
+        )
+        if expected.to_document() != claimed.to_document():
+            _fail("query-bound validation delta differs from exact replay")
+        replayed_deltas.append(expected)
+    by_row = {item.source_row_id: item for item in replayed_deltas}
+    compiled_rows: list[V075NumericalRowV2] = []
+    for source_row in source_model.rows:
+        delta = by_row.get(source_row.row_id)
+        if delta is None:
+            compiled_rows.append(source_row)
+            continue
+        binding = _query_delta_row_binding(
+            model=source_model,
+            row=source_row,
+            batch=delta.signed_batch,
+        )
+        counts = {
+            item.event_key: item.success_count
+            for item in source_row.intervals
+        }
+        support_by_key = {
+            (item.next_ranks, item.failure, item.terminal): item
+            for item in source_row.support
+        }
+        for outcome in delta.signed_batch.outcomes:
+            descriptor = support_by_key.get(
+                (outcome.next_ranks, outcome.failure, outcome.terminal)
+            )
+            event_key = "OTHER" if descriptor is None else descriptor.descriptor_id
+            counts[event_key] += outcome.count
+            accounting_runtime.emit_owned_operation_v1(
+                "batch-planning.query-delta.outcome-project"
+            )
+        target = delta.target_validation_draw_count
+        if sum(counts.values()) != target:
+            _fail("query-bound validation overlay does not conserve draws")
+        checkpoints = _allowed_checkpoints(
+            arm=worker.V075WorkerArmV1.NO_PRIOR,
+            remaining_horizon=source_row.remaining_horizon,
+            caps=worker.V075WorkerCapProfileV1(),
+        )
+        event_count = len(source_row.support) + 1
+        intervals = tuple(
+            _checkpoint_interval(
+                descriptor=descriptor,
+                draw_count=target,
+                success_count=counts[descriptor.descriptor_id],
+                event_count=event_count,
+                checkpoints=checkpoints,
+            )
+            for descriptor in source_row.support
+        ) + (
+            _checkpoint_interval(
+                descriptor=None,
+                draw_count=target,
+                success_count=counts["OTHER"],
+                event_count=event_count,
+                checkpoints=checkpoints,
+            ),
+        )
+        compiled_rows.append(
+            V075NumericalRowV2(
+                _ROW_ISSUER,
+                source_row.context_id,
+                source_row.row_binding_id,
+                source_row.source_state_id,
+                source_row.source_ranks,
+                source_row.remaining_horizon,
+                source_row.action,
+                source_row.immediate_reward,
+                source_row.support,
+                intervals,
+            )
+        )
+        accounting_runtime.emit_owned_operation_v1(
+            "batch-planning.query-delta.model-row-build"
+        )
+    if set(by_row) - set(source_rows):
+        _fail("query-bound validation delta names an unknown source row")
+    successor = V075NumericalModelV2(
+        _MODEL_ISSUER,
+        source_model.context,
+        tuple(sorted(compiled_rows, key=lambda item: item.row_id)),
+        source_model.evidence_kind,
+    )
+    if successor.model_id == source_model.model_id:
+        _fail("query-bound validation overlay did not change the model")
+    accounting_runtime.emit_owned_operation_v1(
+        "batch-planning.query-delta.model-build"
+    )
+    return successor
 
 
 def _replay_construction_lineage(
@@ -3505,10 +3818,13 @@ __all__ = [
     "V075NumericalPlanningProofV2",
     "V075NumericalRowV2",
     "V075PlanningRouteV2",
+    "V075QueryBoundValidationDeltaV2",
     "compile_v075_construction_planning_input_v2",
+    "compile_v075_query_bound_validation_overlay_v2",
     "execute_v075_production_planning_bytes_v2",
     "freeze_v075_manual_construction_model_v2",
     "freeze_v075_manual_construction_row_v2",
+    "freeze_v075_query_bound_validation_delta_v2",
     "plan_v075_construction_aggregate_input_v2",
     "plan_v075_construction_numerical_model_v2",
     "replay_v075_numerical_model_bytes_v2",

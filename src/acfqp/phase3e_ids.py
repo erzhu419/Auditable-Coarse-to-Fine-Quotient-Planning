@@ -222,6 +222,9 @@ CONSTRUCTION_K7_QUERY_BOUND_ROW_EXECUTION_V1_DOMAIN = (
 CONSTRUCTION_K7_QUERY_BOUND_GROUND_TRANSACTION_V1_DOMAIN = (
     "acfqp:construction-k7-query-bound-ground-transaction:v1"
 )
+CONSTRUCTION_K7_QUERY_BOUND_OVERLAY_REPLANNING_V1_DOMAIN = (
+    "acfqp:construction-k7-query-bound-overlay-replanning:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -2225,6 +2228,9 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_query_bound_ground_transaction_v1": (
             CONSTRUCTION_K7_QUERY_BOUND_GROUND_TRANSACTION_V1_DOMAIN
+        ),
+        "construction_k7_query_bound_overlay_replanning_v1": (
+            CONSTRUCTION_K7_QUERY_BOUND_OVERLAY_REPLANNING_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
