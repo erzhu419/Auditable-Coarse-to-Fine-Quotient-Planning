@@ -107,6 +107,8 @@ class ObservationDrivenWorldModelSynthesisV3ResultV1:
             "literal_values_observation_derived": True,
             "fixed_human_signature_value_table_authoritative": False,
             "v2_fixed_signature_rows_compatibility_cross_check_only": True,
+            "operational_program_replay_performed": False,
+            "complete_program_replay_reserved_for_evaluation_verifier": True,
             "exact_catalogue_hit_bypasses_constructor": (
                 dispatch.dispatch_outcome == "REUSE_EXACT_MODEL"
             ),
@@ -142,7 +144,6 @@ def run_observation_driven_world_model_synthesis_v3(
     selected_reuse_result_bytes: bytes | None,
 ) -> ObservationDrivenWorldModelSynthesisV3ResultV1:
     decision = program_v1.propose_observed_capability_program_v1(context)
-    program_v1.verify_observed_capability_program_v1(context, decision)
     result = executor_v2.run_observation_driven_world_model_synthesis_v2(
         catalogue,
         context,

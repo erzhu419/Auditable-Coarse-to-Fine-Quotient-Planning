@@ -22,6 +22,8 @@ from acfqp import construction_k7_heldout_k6_checkpoint_recertification_v1 as k6
 from acfqp import construction_k7_heldout_k6_overlay_abstract_reuse_v1 as k6_reuse_v1
 from acfqp import construction_k7_heldout_overlay_abstract_reuse_v1 as w5_reuse_v1
 from acfqp import construction_k7_heldout_reusable_model_catalogue_v1 as catalogue_v1
+from acfqp import construction_accounting_owned_runtime_v1 as accounting_runtime
+from acfqp import construction_k7_adaptive_accounting_phase_v1 as accounting_phase
 from acfqp import partial_support_robust_planner_v1 as robust
 from acfqp import transition_tuple_observer_v1 as observer_v1
 from acfqp.phase3e_ids import (
@@ -431,13 +433,16 @@ def run_observation_driven_world_model_synthesis_v1(
     """Reuse, synthesize, or safely reject one registered structural query."""
 
     catalogue_v1.verify_heldout_reusable_model_catalogue_v1(catalogue)
-    initial_route = router_v1.run_heldout_catalogue_query_v1(
-        catalogue,
-        context,
-        logical_occurrence_id=_cid(logical_occurrence_id, "logical occurrence"),
-        occurrence_ordinal=occurrence_ordinal,
-        selected_reuse_result_bytes=selected_reuse_result_bytes,
-    )
+    with accounting_phase.adaptive_accounting_phase_v1(
+        accounting_phase.AdaptiveAccountingPhaseV1.COMMON_PREFIX
+    ):
+        initial_route = router_v1.run_heldout_catalogue_query_v1(
+            catalogue,
+            context,
+            logical_occurrence_id=_cid(logical_occurrence_id, "logical occurrence"),
+            occurrence_ordinal=occurrence_ordinal,
+            selected_reuse_result_bytes=selected_reuse_result_bytes,
+        )
     constructor = _CONSTRUCTOR_BY_CONTEXT.get(context.context_key)
     dispatch_outcome = (
         "REUSE_EXACT_MODEL"
@@ -487,11 +492,14 @@ def run_observation_driven_world_model_synthesis_v1(
 
     if context.context_key == "opaque_graph_w5_v0":
         source = w5_source_v1.run_heldout_checkpoint_recertification_v1()
-        reuse = w5_reuse_v1.run_heldout_overlay_abstract_reuse_v1(
-            source,
-            logical_occurrence_id=_logical("w5-reuse", dispatch.dispatch_id),
-            occurrence_ordinal=occurrence_ordinal + 1,
-        )
+        with accounting_phase.adaptive_accounting_phase_v1(
+            accounting_phase.AdaptiveAccountingPhaseV1.ABSTRACT_CERTIFICATE
+        ):
+            reuse = w5_reuse_v1.run_heldout_overlay_abstract_reuse_v1(
+                source,
+                logical_occurrence_id=_logical("w5-reuse", dispatch.dispatch_id),
+                occurrence_ordinal=occurrence_ordinal + 1,
+            )
         family = "W5"
         source_document = source.to_document()
         base_audit = source.base_audit
@@ -499,11 +507,14 @@ def run_observation_driven_world_model_synthesis_v1(
         changed_count, preserved_count, draws = 2, 6, 4_096
     else:
         source = k6_source_v1.run_heldout_k6_checkpoint_recertification_v1()
-        reuse = k6_reuse_v1.run_heldout_k6_overlay_abstract_reuse_v1(
-            source,
-            logical_occurrence_id=_logical("k6-reuse", dispatch.dispatch_id),
-            occurrence_ordinal=occurrence_ordinal + 1,
-        )
+        with accounting_phase.adaptive_accounting_phase_v1(
+            accounting_phase.AdaptiveAccountingPhaseV1.ABSTRACT_CERTIFICATE
+        ):
+            reuse = k6_reuse_v1.run_heldout_k6_overlay_abstract_reuse_v1(
+                source,
+                logical_occurrence_id=_logical("k6-reuse", dispatch.dispatch_id),
+                occurrence_ordinal=occurrence_ordinal + 1,
+            )
         family = "K6"
         source_document = source.to_document()
         base_audit = source.base_audit
@@ -518,35 +529,44 @@ def run_observation_driven_world_model_synthesis_v1(
     ):
         _fail("registered constructor did not form its minimal certified overlay")
 
-    reuse_document = reuse.to_document()
-    reuse_bytes = canonical_json_bytes(reuse_document)
-    entry = catalogue_v1.build_heldout_reusable_model_catalogue_entry_v1(
-        family, reuse_bytes
-    )
-    promoted_catalogue = _promoted_snapshot(catalogue, entry)
-    promotion = ObservationDrivenModelPromotionV1(
-        _PROMOTION_ISSUER,
-        dispatch,
-        family,
-        source.result_id,
-        base_audit.audit_id,
-        overlay.overlay_id,
-        overlay.audit.audit_id,
-        changed_count,
-        preserved_count,
-        draws,
-        reuse.result_id,
-        entry,
-        catalogue.catalogue_id,
-        promoted_catalogue,
-    )
-    final_route = router_v1.run_heldout_catalogue_query_v1(
-        promoted_catalogue,
-        context,
-        logical_occurrence_id=_logical("fresh-postpromotion", promotion.promotion_id),
-        occurrence_ordinal=occurrence_ordinal + 2,
-        selected_reuse_result_bytes=reuse_bytes,
-    )
+    with accounting_phase.adaptive_accounting_phase_v1(
+        accounting_phase.AdaptiveAccountingPhaseV1.LOCAL_RECOVERY
+    ):
+        reuse_document = reuse.to_document()
+        reuse_bytes = canonical_json_bytes(reuse_document)
+        entry = catalogue_v1.build_heldout_reusable_model_catalogue_entry_v1(
+            family, reuse_bytes
+        )
+        promoted_catalogue = _promoted_snapshot(catalogue, entry)
+        promotion = ObservationDrivenModelPromotionV1(
+            _PROMOTION_ISSUER,
+            dispatch,
+            family,
+            source.result_id,
+            base_audit.audit_id,
+            overlay.overlay_id,
+            overlay.audit.audit_id,
+            changed_count,
+            preserved_count,
+            draws,
+            reuse.result_id,
+            entry,
+            catalogue.catalogue_id,
+            promoted_catalogue,
+        )
+        accounting_runtime.emit_owned_operation_v1(
+            "adaptive-world-model.catalogue-promotion"
+        )
+    with accounting_phase.adaptive_accounting_phase_v1(
+        accounting_phase.AdaptiveAccountingPhaseV1.ABSTRACT_CERTIFICATE
+    ):
+        final_route = router_v1.run_heldout_catalogue_query_v1(
+            promoted_catalogue,
+            context,
+            logical_occurrence_id=_logical("fresh-postpromotion", promotion.promotion_id),
+            occurrence_ordinal=occurrence_ordinal + 2,
+            selected_reuse_result_bytes=reuse_bytes,
+        )
     return ObservationDrivenWorldModelSynthesisResultV1(
         _RESULT_ISSUER,
         initial_route,

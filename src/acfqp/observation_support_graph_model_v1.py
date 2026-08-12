@@ -26,6 +26,7 @@ import acfqp.observation_support_relational_adapter_v1 as relational
 import acfqp.partial_support_confidence_v1 as confidence
 import acfqp.partial_support_robust_planner_v1 as robust
 import acfqp.transition_tuple_observer_v1 as observer
+from acfqp import construction_accounting_owned_runtime_v1 as accounting_runtime
 from acfqp.phase3e_ids import canonical_json_bytes, parse_content_id
 
 
@@ -926,6 +927,9 @@ def build_observation_support_graph_models_v1(
         catalogues,
     )
     rows = _validated_rows(context, public_catalogues, partial_rows)
+    accounting_runtime.emit_owned_operation_v1(
+        "adaptive-world-model.graph-model-row-build", len(rows)
+    )
     catalogue_by_id = {
         item.catalogue_id: item for item in public_catalogues
     }

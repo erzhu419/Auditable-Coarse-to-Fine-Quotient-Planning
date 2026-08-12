@@ -22,6 +22,7 @@ from itertools import combinations
 from typing import Any, NoReturn
 
 from acfqp import construction_k7_observed_constructor_capability_v1 as signature_v1
+from acfqp import construction_accounting_owned_runtime_v1 as accounting_runtime
 from acfqp import transition_tuple_observer_v1 as observer_v1
 from acfqp.phase3e_ids import (
     CONSTRUCTION_K7_OBSERVED_PROGRAM_CANDIDATE_V1_DOMAIN,
@@ -535,6 +536,9 @@ def synthesize_observed_capability_program_v1(
     for ordinal, names in enumerate(atom_sets):
         atoms = tuple((name, values[name]) for name in names)
         evaluations = _evaluation_rows(corpus=corpus, family_key=family_key, atoms=atoms)
+        accounting_runtime.emit_owned_operation_v1(
+            "adaptive-world-model.constructor-program-candidate"
+        )
         candidates.append(
             ObservedCapabilityProgramCandidateV1(
                 _CANDIDATE_ISSUER,

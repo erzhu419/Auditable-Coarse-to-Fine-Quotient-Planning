@@ -35,6 +35,8 @@ from typing import Any, Iterable, Mapping
 
 import acfqp.partial_support_confidence_v1 as support_confidence
 import acfqp.transition_tuple_observer_v1 as transition_observer
+from acfqp import construction_accounting_owned_runtime_v1 as accounting_runtime
+from acfqp import construction_k7_adaptive_accounting_phase_v1 as accounting_phase
 from acfqp.phase3e_ids import canonical_json_bytes, parse_content_id
 
 
@@ -747,6 +749,9 @@ def _split_observation(
     GraphObservedOutcomeDescriptorV1,
     str,
 ]:
+    accounting_runtime.emit_owned_operation_v1(
+        "adaptive-world-model.outcome-projection"
+    )
     key = (
         observation.next_state.state_id,
         observation.realized_row_reward,
@@ -921,23 +926,32 @@ class _GraphPartialSupportPrefixStreamV1:
             raise ObservationSupportGraphAcquisitionInvariantViolation(
                 "validation extension violates checkpoints or chronology"
             )
-        while len(self._validation_split) < checkpoint_draw_count:
-            observation = self._validation_stream.draw()
-            split, descriptor, observation_id = _split_observation(
-                observation,
-                self._validation_stream.stream_id,
-                len(self._validation_split),
-                self._outcome_projection_cache,
-            )
-            self._validation_observer_ids.append(observation_id)
-            self._validation_split.append(split)
-            self._validation_descriptors.append(descriptor)
-        authority = (
-            support_confidence.build_partial_support_confidence_v1(
-                self._support_epoch,
-                tuple(self._validation_split),
-            )
+        selected_phase = (
+            accounting_phase.AdaptiveAccountingPhaseV1.LOCAL_RECOVERY
+            if self._validation_split
+            else accounting_phase.current_adaptive_accounting_phase_v1()
         )
+        with accounting_phase.adaptive_accounting_phase_v1(selected_phase):
+            while len(self._validation_split) < checkpoint_draw_count:
+                observation = self._validation_stream.draw()
+                split, descriptor, observation_id = _split_observation(
+                    observation,
+                    self._validation_stream.stream_id,
+                    len(self._validation_split),
+                    self._outcome_projection_cache,
+                )
+                self._validation_observer_ids.append(observation_id)
+                self._validation_split.append(split)
+                self._validation_descriptors.append(descriptor)
+            authority = (
+                support_confidence.build_partial_support_confidence_v1(
+                    self._support_epoch,
+                    tuple(self._validation_split),
+                )
+            )
+            accounting_runtime.emit_owned_operation_v1(
+                "adaptive-world-model.support-confidence-build"
+            )
         support_ids = set(self._support_epoch.support_outcome_ids)
         novel = _representative_descriptors(
             item

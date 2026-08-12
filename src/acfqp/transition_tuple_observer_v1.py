@@ -34,6 +34,7 @@ from threading import RLock
 from typing import Any, Callable, Iterable, Mapping
 
 from acfqp.phase3e_ids import canonical_json_bytes, parse_content_id
+from acfqp import construction_accounting_owned_runtime_v1 as accounting_runtime
 from acfqp.relational_graph_core_v1 import GraphTopologyV1
 
 
@@ -1284,6 +1285,16 @@ class OpaqueTargetLocalTransitionStreamV1:
             len(words) - 1,
             digest,
         )
+        accounting_runtime.emit_owned_operation_v1(
+            "adaptive-world-model.target-ground-draw"
+        )
+        accounting_runtime.emit_owned_operation_v1(
+            "adaptive-world-model.target-random-word", len(words)
+        )
+        if len(words) > 1:
+            accounting_runtime.emit_owned_operation_v1(
+                "adaptive-world-model.target-random-rejection", len(words) - 1
+            )
         return ObservedJointTransitionV1(
             self._context.context_id,
             self._catalogue.catalogue_id,

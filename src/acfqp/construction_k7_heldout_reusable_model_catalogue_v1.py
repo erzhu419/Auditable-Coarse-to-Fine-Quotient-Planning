@@ -23,6 +23,7 @@ from acfqp import (
     as k6_verifier_v1,
 )
 from acfqp import transition_tuple_observer_v1 as observer_v1
+from acfqp import construction_accounting_owned_runtime_v1 as accounting_runtime
 from acfqp.phase3e_ids import (
     CONSTRUCTION_K7_HELDOUT_MODEL_CATALOGUE_ENTRY_V1_DOMAIN,
     CONSTRUCTION_K7_HELDOUT_MODEL_CATALOGUE_V1_DOMAIN,
@@ -476,6 +477,9 @@ def select_heldout_reusable_model_v1(
     ):
         _fail("model selector requires exact catalogue and public context types")
     catalogue.catalogue_id
+    accounting_runtime.emit_owned_operation_v1(
+        "adaptive-world-model.catalogue-selection"
+    )
     registered = observer_v1.public_context_by_key_v1(context.context_key)
     if registered != context:
         _fail("model selector context differs from the registered public identity")

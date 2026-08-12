@@ -918,6 +918,39 @@ CONSTRUCTION_K7_OBSERVED_PROGRAM_DECISION_V1_DOMAIN = (
 CONSTRUCTION_K7_OBSERVATION_DRIVEN_SYNTHESIS_V3_RESULT_V1_DOMAIN = (
     "acfqp:construction-k7-observation-driven-synthesis-v3-result:v1"
 )
+CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
+    "acfqp:construction-counter-registry:v7"
+)
+CONSTRUCTION_STAGE_PROFILE_V7_DOMAIN = (
+    "acfqp:construction-stage-profile:v7"
+)
+CONSTRUCTION_COMPARISON_PROFILE_V7_DOMAIN = (
+    "acfqp:construction-comparison-profile:v7"
+)
+CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V7_DOMAIN = (
+    "acfqp:construction-actual-projection-profile:v7"
+)
+CONSTRUCTION_K7_ADAPTIVE_OPERATION_BOUNDARY_V1_DOMAIN = (
+    "acfqp:construction-k7-adaptive-operation-boundary:v1"
+)
+CONSTRUCTION_K7_ADAPTIVE_OPERATION_MANIFEST_V1_DOMAIN = (
+    "acfqp:construction-k7-adaptive-operation-manifest:v1"
+)
+CONSTRUCTION_K7_ADAPTIVE_OPERATION_EVENT_V1_DOMAIN = (
+    "acfqp:construction-k7-adaptive-operation-event:v1"
+)
+CONSTRUCTION_K7_ADAPTIVE_ACCOUNTING_PREREGISTRATION_V1_DOMAIN = (
+    "acfqp:construction-k7-adaptive-accounting-preregistration:v1"
+)
+CONSTRUCTION_K7_ADAPTIVE_OCCURRENCE_NATIVE_ACCOUNTING_V1_DOMAIN = (
+    "acfqp:construction-k7-adaptive-occurrence-native-accounting:v1"
+)
+CONSTRUCTION_K7_ADAPTIVE_COMPONENT_NATIVE_ACCOUNTING_V1_DOMAIN = (
+    "acfqp:construction-k7-adaptive-component-native-accounting:v1"
+)
+CONSTRUCTION_K7_ADAPTIVE_CAMPAIGN_NATIVE_ACCOUNTING_V1_DOMAIN = (
+    "acfqp:construction-k7-adaptive-campaign-native-accounting:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -3617,6 +3650,39 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_observation_driven_synthesis_v3_result_v1": (
             CONSTRUCTION_K7_OBSERVATION_DRIVEN_SYNTHESIS_V3_RESULT_V1_DOMAIN
+        ),
+        "construction_counter_registry_v7": (
+            CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
+        ),
+        "construction_stage_profile_v7": (
+            CONSTRUCTION_STAGE_PROFILE_V7_DOMAIN
+        ),
+        "construction_comparison_profile_v7": (
+            CONSTRUCTION_COMPARISON_PROFILE_V7_DOMAIN
+        ),
+        "construction_actual_projection_profile_v7": (
+            CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V7_DOMAIN
+        ),
+        "construction_k7_adaptive_operation_boundary_v1": (
+            CONSTRUCTION_K7_ADAPTIVE_OPERATION_BOUNDARY_V1_DOMAIN
+        ),
+        "construction_k7_adaptive_operation_manifest_v1": (
+            CONSTRUCTION_K7_ADAPTIVE_OPERATION_MANIFEST_V1_DOMAIN
+        ),
+        "construction_k7_adaptive_operation_event_v1": (
+            CONSTRUCTION_K7_ADAPTIVE_OPERATION_EVENT_V1_DOMAIN
+        ),
+        "construction_k7_adaptive_accounting_preregistration_v1": (
+            CONSTRUCTION_K7_ADAPTIVE_ACCOUNTING_PREREGISTRATION_V1_DOMAIN
+        ),
+        "construction_k7_adaptive_occurrence_native_accounting_v1": (
+            CONSTRUCTION_K7_ADAPTIVE_OCCURRENCE_NATIVE_ACCOUNTING_V1_DOMAIN
+        ),
+        "construction_k7_adaptive_component_native_accounting_v1": (
+            CONSTRUCTION_K7_ADAPTIVE_COMPONENT_NATIVE_ACCOUNTING_V1_DOMAIN
+        ),
+        "construction_k7_adaptive_campaign_native_accounting_v1": (
+            CONSTRUCTION_K7_ADAPTIVE_CAMPAIGN_NATIVE_ACCOUNTING_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
