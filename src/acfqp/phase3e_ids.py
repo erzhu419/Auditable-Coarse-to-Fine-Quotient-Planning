@@ -765,6 +765,9 @@ CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_PLAN_V1_DOMAIN = (
 CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_REUSE_RESULT_V1_DOMAIN = (
     "acfqp:construction-k7-heldout-k6-abstract-reuse-result:v1"
 )
+CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_REUSE_INDEPENDENT_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-k6-abstract-reuse-independent-verification:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -3311,6 +3314,9 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_heldout_k6_abstract_reuse_result_v1": (
             CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_REUSE_RESULT_V1_DOMAIN
+        ),
+        "construction_k7_heldout_k6_abstract_reuse_independent_verification_v1": (
+            CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_REUSE_INDEPENDENT_VERIFICATION_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
