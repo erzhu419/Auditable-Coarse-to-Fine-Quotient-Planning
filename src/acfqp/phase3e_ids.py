@@ -888,6 +888,18 @@ CONSTRUCTION_K7_OBSERVATION_DRIVEN_CAMPAIGN_RESULT_V1_DOMAIN = (
 CONSTRUCTION_K7_OBSERVATION_DRIVEN_CAMPAIGN_INDEPENDENT_VERIFICATION_V1_DOMAIN = (
     "acfqp:construction-k7-observation-driven-campaign-independent-verification:v1"
 )
+CONSTRUCTION_K7_OBSERVED_CONSTRUCTOR_SIGNATURE_V1_DOMAIN = (
+    "acfqp:construction-k7-observed-constructor-signature:v1"
+)
+CONSTRUCTION_K7_OBSERVED_CONSTRUCTOR_CANDIDATE_V1_DOMAIN = (
+    "acfqp:construction-k7-observed-constructor-candidate:v1"
+)
+CONSTRUCTION_K7_OBSERVED_CONSTRUCTOR_DECISION_V1_DOMAIN = (
+    "acfqp:construction-k7-observed-constructor-decision:v1"
+)
+CONSTRUCTION_K7_OBSERVATION_DRIVEN_SYNTHESIS_V2_RESULT_V1_DOMAIN = (
+    "acfqp:construction-k7-observation-driven-synthesis-v2-result:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -3557,6 +3569,18 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_observation_driven_campaign_independent_verification_v1": (
             CONSTRUCTION_K7_OBSERVATION_DRIVEN_CAMPAIGN_INDEPENDENT_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_observed_constructor_signature_v1": (
+            CONSTRUCTION_K7_OBSERVED_CONSTRUCTOR_SIGNATURE_V1_DOMAIN
+        ),
+        "construction_k7_observed_constructor_candidate_v1": (
+            CONSTRUCTION_K7_OBSERVED_CONSTRUCTOR_CANDIDATE_V1_DOMAIN
+        ),
+        "construction_k7_observed_constructor_decision_v1": (
+            CONSTRUCTION_K7_OBSERVED_CONSTRUCTOR_DECISION_V1_DOMAIN
+        ),
+        "construction_k7_observation_driven_synthesis_v2_result_v1": (
+            CONSTRUCTION_K7_OBSERVATION_DRIVEN_SYNTHESIS_V2_RESULT_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
