@@ -16,6 +16,7 @@ from acfqp.domains.standard_2048 import (
     select_seeded_outcome_v1,
     state_from_board_v1,
     step_v1,
+    support_outcomes_v1,
     swipe_board_v1,
     transform_action_v1,
     transform_board_v1,
@@ -64,6 +65,23 @@ def test_post_swipe_spawn_row_is_exact_and_normalized() -> None:
             (row.probability for row in outcomes if row.spawned_cell == cell),
             Fraction(),
         ) == Fraction(1, empty_count)
+
+
+def test_public_spawn_support_is_probability_free_and_matches_exact_kernel() -> None:
+    source = state_from_board_v1(
+        _board((1, 2, 3, 4), (2, 3, 4, 5), (3, 4, 5, 6), (1, 1, 2, 2))
+    )
+    support = support_outcomes_v1(source, Swipe2048Action.LEFT)
+    exact = step_v1(source, Swipe2048Action.LEFT)
+    assert len(support) == len(exact)
+    assert all(not hasattr(row, "probability") for row in support)
+    assert {
+        (row.next_state, row.merge_score, row.spawned_cell, row.spawned_rank)
+        for row in support
+    } == {
+        (row.next_state, row.merge_score, row.spawned_cell, row.spawned_rank)
+        for row in exact
+    }
 
 
 def test_d4_transport_commutes_with_swipe_and_spawn() -> None:

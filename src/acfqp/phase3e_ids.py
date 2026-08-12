@@ -987,6 +987,39 @@ CONSTRUCTION_K7_STANDARD_2048_RECEDING_CAMPAIGN_V1_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_INDEPENDENT_VERIFICATION_V1_DOMAIN = (
     "acfqp:construction-k7-standard-2048-independent-verification:v1"
 )
+CONSTRUCTION_K7_STANDARD_2048_STATISTICAL_PREREGISTRATION_V1_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-statistical-preregistration:v1"
+)
+CONSTRUCTION_K7_STANDARD_2048_SPAWN_OBSERVATION_ARCHIVE_V1_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-spawn-observation-archive:v1"
+)
+CONSTRUCTION_K7_STANDARD_2048_SPAWN_INTERVAL_V1_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-spawn-interval:v1"
+)
+CONSTRUCTION_K7_STANDARD_2048_PARTIAL_ROW_V1_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-partial-row:v1"
+)
+CONSTRUCTION_K7_STANDARD_2048_PARTIAL_MODEL_V1_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-partial-model:v1"
+)
+CONSTRUCTION_K7_STANDARD_2048_STATISTICAL_AUDIT_V1_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-statistical-audit:v1"
+)
+CONSTRUCTION_K7_STANDARD_2048_ROBUST_PLAN_V1_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-robust-plan:v1"
+)
+CONSTRUCTION_K7_STANDARD_2048_STATISTICAL_MATCHED_DIRECT_V1_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-statistical-matched-direct:v1"
+)
+CONSTRUCTION_K7_STANDARD_2048_STATISTICAL_EPISODE_V1_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-statistical-episode:v1"
+)
+CONSTRUCTION_K7_STANDARD_2048_MULTISEED_CAMPAIGN_V1_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-multiseed-campaign:v1"
+)
+CONSTRUCTION_K7_STANDARD_2048_STATISTICAL_INDEPENDENT_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-statistical-independent-verification:v1"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -3821,6 +3854,39 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_independent_verification_v1": (
             CONSTRUCTION_K7_STANDARD_2048_INDEPENDENT_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_standard_2048_statistical_preregistration_v1": (
+            CONSTRUCTION_K7_STANDARD_2048_STATISTICAL_PREREGISTRATION_V1_DOMAIN
+        ),
+        "construction_k7_standard_2048_spawn_observation_archive_v1": (
+            CONSTRUCTION_K7_STANDARD_2048_SPAWN_OBSERVATION_ARCHIVE_V1_DOMAIN
+        ),
+        "construction_k7_standard_2048_spawn_interval_v1": (
+            CONSTRUCTION_K7_STANDARD_2048_SPAWN_INTERVAL_V1_DOMAIN
+        ),
+        "construction_k7_standard_2048_partial_row_v1": (
+            CONSTRUCTION_K7_STANDARD_2048_PARTIAL_ROW_V1_DOMAIN
+        ),
+        "construction_k7_standard_2048_partial_model_v1": (
+            CONSTRUCTION_K7_STANDARD_2048_PARTIAL_MODEL_V1_DOMAIN
+        ),
+        "construction_k7_standard_2048_statistical_audit_v1": (
+            CONSTRUCTION_K7_STANDARD_2048_STATISTICAL_AUDIT_V1_DOMAIN
+        ),
+        "construction_k7_standard_2048_robust_plan_v1": (
+            CONSTRUCTION_K7_STANDARD_2048_ROBUST_PLAN_V1_DOMAIN
+        ),
+        "construction_k7_standard_2048_statistical_matched_direct_v1": (
+            CONSTRUCTION_K7_STANDARD_2048_STATISTICAL_MATCHED_DIRECT_V1_DOMAIN
+        ),
+        "construction_k7_standard_2048_statistical_episode_v1": (
+            CONSTRUCTION_K7_STANDARD_2048_STATISTICAL_EPISODE_V1_DOMAIN
+        ),
+        "construction_k7_standard_2048_multiseed_campaign_v1": (
+            CONSTRUCTION_K7_STANDARD_2048_MULTISEED_CAMPAIGN_V1_DOMAIN
+        ),
+        "construction_k7_standard_2048_statistical_independent_verification_v1": (
+            CONSTRUCTION_K7_STANDARD_2048_STATISTICAL_INDEPENDENT_VERIFICATION_V1_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN

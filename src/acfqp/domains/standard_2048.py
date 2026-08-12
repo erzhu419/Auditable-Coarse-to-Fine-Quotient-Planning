@@ -89,6 +89,26 @@ class Swipe2048Outcome:
             raise Swipe2048InvariantViolation("spawned rank must denote a 2 or 4")
 
 
+@dataclass(frozen=True, order=True, slots=True)
+class Swipe2048SupportOutcome:
+    """One possible post-swipe outcome without a probability assignment."""
+
+    next_state: Swipe2048State
+    merge_score: int
+    spawned_cell: int
+    spawned_rank: int
+
+    def __post_init__(self) -> None:
+        if type(self.next_state) is not Swipe2048State:
+            raise Swipe2048InvariantViolation("support outcome state must be exact")
+        if type(self.merge_score) is not int or self.merge_score < 0:
+            raise Swipe2048InvariantViolation("support merge score must be nonnegative")
+        if type(self.spawned_cell) is not int or not 0 <= self.spawned_cell < CELL_COUNT:
+            raise Swipe2048InvariantViolation("support spawn cell lies outside the board")
+        if self.spawned_rank not in (1, 2):
+            raise Swipe2048InvariantViolation("support spawn rank must denote a 2 or 4")
+
+
 def validate_board_v1(board: tuple[int, ...]) -> tuple[int, ...]:
     if type(board) is not tuple or len(board) != CELL_COUNT:
         raise Swipe2048InvariantViolation("a standard board has exactly sixteen cells")
@@ -175,29 +195,55 @@ def step_v1(
         raise Swipe2048InvariantViolation("state status disagrees with its board")
     if state.status is not Swipe2048Status.ACTIVE or action not in legal_actions_v1(state.board):
         raise Swipe2048InvariantViolation("action is not legal in this active board")
-    moved, score, changed = swipe_board_v1(state.board, action)
-    if not changed:
-        raise AssertionError("legal action did not change the board")
-    empty = tuple(index for index, rank in enumerate(moved) if rank == 0)
-    if not empty:
-        raise AssertionError("a legal standard swipe left no spawn cell")
-    outcomes: list[Swipe2048Outcome] = []
-    for cell in empty:
-        for rank, rank_probability in SPAWN_DISTRIBUTION:
-            spawned = list(moved)
-            spawned[cell] = rank
-            outcomes.append(
-                Swipe2048Outcome(
-                    Fraction(1, len(empty)) * rank_probability,
-                    state_from_board_v1(tuple(spawned)),
-                    score,
-                    cell,
-                    rank,
-                )
-            )
+    support = support_outcomes_v1(state, action)
+    empty_count = len(support) // len(SPAWN_DISTRIBUTION)
+    if empty_count <= 0 or len(support) != empty_count * len(SPAWN_DISTRIBUTION):
+        raise AssertionError("standard 2048 support cardinality changed")
+    probabilities = dict(SPAWN_DISTRIBUTION)
+    outcomes = [
+        Swipe2048Outcome(
+            Fraction(1, empty_count) * probabilities[row.spawned_rank],
+            row.next_state,
+            row.merge_score,
+            row.spawned_cell,
+            row.spawned_rank,
+        )
+        for row in support
+    ]
     if sum((row.probability for row in outcomes), Fraction()) != 1:
         raise AssertionError("standard 2048 outcome mass is not one")
     return tuple(outcomes)
+
+
+def support_outcomes_v1(
+    state: Swipe2048State, action: Swipe2048Action
+) -> tuple[Swipe2048SupportOutcome, ...]:
+    """Enumerate public support geometry without assigning spawn probabilities."""
+
+    if type(state) is not Swipe2048State or type(action) is not Swipe2048Action:
+        raise Swipe2048InvariantViolation("support enumeration requires exact inputs")
+    expected_state = state_from_board_v1(state.board)
+    if expected_state.status is not state.status:
+        raise Swipe2048InvariantViolation("state status disagrees with its board")
+    if state.status is not Swipe2048Status.ACTIVE or action not in legal_actions_v1(state.board):
+        raise Swipe2048InvariantViolation("support action is not legal")
+    moved, score, changed = swipe_board_v1(state.board, action)
+    if not changed:
+        raise AssertionError("legal support action did not change the board")
+    empty = tuple(index for index, rank in enumerate(moved) if rank == 0)
+    if not empty:
+        raise AssertionError("legal support action left no spawn cell")
+    result: list[Swipe2048SupportOutcome] = []
+    for cell in empty:
+        for rank in (1, 2):
+            spawned = list(moved)
+            spawned[cell] = rank
+            result.append(
+                Swipe2048SupportOutcome(
+                    state_from_board_v1(tuple(spawned)), score, cell, rank
+                )
+            )
+    return tuple(result)
 
 
 _ACTION_VECTOR = {
@@ -336,6 +382,7 @@ __all__ = (
     "Swipe2048Action",
     "Swipe2048InvariantViolation",
     "Swipe2048Outcome",
+    "Swipe2048SupportOutcome",
     "Swipe2048State",
     "Swipe2048Status",
     "boards_from_rows_v1",
@@ -345,6 +392,7 @@ __all__ = (
     "select_seeded_outcome_v1",
     "state_from_board_v1",
     "step_v1",
+    "support_outcomes_v1",
     "swipe_board_v1",
     "transform_action_v1",
     "transform_board_v1",
