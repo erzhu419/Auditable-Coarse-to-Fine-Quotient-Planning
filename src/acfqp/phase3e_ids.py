@@ -792,6 +792,18 @@ CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_OUTPUT_RENDERER_V1_DOMAIN = (
 CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_OUTPUT_COMMIT_V1_DOMAIN = (
     "acfqp:construction-k7-heldout-k6-abstract-output-commit:v1"
 )
+CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_CAMPAIGN_PREREGISTRATION_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-k6-abstract-campaign-preregistration:v1"
+)
+CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_CAMPAIGN_OCCURRENCE_ROW_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-k6-abstract-campaign-occurrence-row:v1"
+)
+CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_CAMPAIGN_CLOSURE_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-k6-abstract-campaign-closure:v1"
+)
+CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_CAMPAIGN_RESULT_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-k6-abstract-campaign-result:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -3365,6 +3377,18 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_heldout_k6_abstract_output_commit_v1": (
             CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_OUTPUT_COMMIT_V1_DOMAIN
+        ),
+        "construction_k7_heldout_k6_abstract_campaign_preregistration_v1": (
+            CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_CAMPAIGN_PREREGISTRATION_V1_DOMAIN
+        ),
+        "construction_k7_heldout_k6_abstract_campaign_occurrence_row_v1": (
+            CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_CAMPAIGN_OCCURRENCE_ROW_V1_DOMAIN
+        ),
+        "construction_k7_heldout_k6_abstract_campaign_closure_v1": (
+            CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_CAMPAIGN_CLOSURE_V1_DOMAIN
+        ),
+        "construction_k7_heldout_k6_abstract_campaign_result_v1": (
+            CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_CAMPAIGN_RESULT_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
