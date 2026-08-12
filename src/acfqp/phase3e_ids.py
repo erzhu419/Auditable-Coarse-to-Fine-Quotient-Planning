@@ -1020,6 +1020,45 @@ CONSTRUCTION_K7_STANDARD_2048_MULTISEED_CAMPAIGN_V1_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_STATISTICAL_INDEPENDENT_VERIFICATION_V1_DOMAIN = (
     "acfqp:construction-k7-standard-2048-statistical-independent-verification:v1"
 )
+CONSTRUCTION_K7_STANDARD_2048_SUPPORT_SOURCE_ARCHIVE_V2_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-support-source-archive:v2"
+)
+CONSTRUCTION_K7_STANDARD_2048_SUPPORT_VALIDATION_ARCHIVE_V2_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-support-validation-archive:v2"
+)
+CONSTRUCTION_K7_STANDARD_2048_SUPPORT_PROPOSAL_V2_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-support-proposal:v2"
+)
+CONSTRUCTION_K7_STANDARD_2048_PARTIAL_DYNAMICS_INTERVAL_V2_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-partial-dynamics-interval:v2"
+)
+CONSTRUCTION_K7_STANDARD_2048_SUPPORT_PREREGISTRATION_V2_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-support-preregistration:v2"
+)
+CONSTRUCTION_K7_STANDARD_2048_SUPPORT_PARTIAL_ROW_V2_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-support-partial-row:v2"
+)
+CONSTRUCTION_K7_STANDARD_2048_SUPPORT_PARTIAL_MODEL_V2_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-support-partial-model:v2"
+)
+CONSTRUCTION_K7_STANDARD_2048_SUPPORT_AUDIT_V2_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-support-audit:v2"
+)
+CONSTRUCTION_K7_STANDARD_2048_SUPPORT_ROBUST_PLAN_V2_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-support-robust-plan:v2"
+)
+CONSTRUCTION_K7_STANDARD_2048_SUPPORT_MATCHED_DIRECT_V2_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-support-matched-direct:v2"
+)
+CONSTRUCTION_K7_STANDARD_2048_FRESH_BOARD_EPISODE_V2_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-fresh-board-episode:v2"
+)
+CONSTRUCTION_K7_STANDARD_2048_FRESH_BOARD_CAMPAIGN_V2_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-fresh-board-campaign:v2"
+)
+CONSTRUCTION_K7_STANDARD_2048_SUPPORT_INDEPENDENT_VERIFICATION_V2_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-support-independent-verification:v2"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -3887,6 +3926,45 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_statistical_independent_verification_v1": (
             CONSTRUCTION_K7_STANDARD_2048_STATISTICAL_INDEPENDENT_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_standard_2048_support_source_archive_v2": (
+            CONSTRUCTION_K7_STANDARD_2048_SUPPORT_SOURCE_ARCHIVE_V2_DOMAIN
+        ),
+        "construction_k7_standard_2048_support_validation_archive_v2": (
+            CONSTRUCTION_K7_STANDARD_2048_SUPPORT_VALIDATION_ARCHIVE_V2_DOMAIN
+        ),
+        "construction_k7_standard_2048_support_proposal_v2": (
+            CONSTRUCTION_K7_STANDARD_2048_SUPPORT_PROPOSAL_V2_DOMAIN
+        ),
+        "construction_k7_standard_2048_partial_dynamics_interval_v2": (
+            CONSTRUCTION_K7_STANDARD_2048_PARTIAL_DYNAMICS_INTERVAL_V2_DOMAIN
+        ),
+        "construction_k7_standard_2048_support_preregistration_v2": (
+            CONSTRUCTION_K7_STANDARD_2048_SUPPORT_PREREGISTRATION_V2_DOMAIN
+        ),
+        "construction_k7_standard_2048_support_partial_row_v2": (
+            CONSTRUCTION_K7_STANDARD_2048_SUPPORT_PARTIAL_ROW_V2_DOMAIN
+        ),
+        "construction_k7_standard_2048_support_partial_model_v2": (
+            CONSTRUCTION_K7_STANDARD_2048_SUPPORT_PARTIAL_MODEL_V2_DOMAIN
+        ),
+        "construction_k7_standard_2048_support_audit_v2": (
+            CONSTRUCTION_K7_STANDARD_2048_SUPPORT_AUDIT_V2_DOMAIN
+        ),
+        "construction_k7_standard_2048_support_robust_plan_v2": (
+            CONSTRUCTION_K7_STANDARD_2048_SUPPORT_ROBUST_PLAN_V2_DOMAIN
+        ),
+        "construction_k7_standard_2048_support_matched_direct_v2": (
+            CONSTRUCTION_K7_STANDARD_2048_SUPPORT_MATCHED_DIRECT_V2_DOMAIN
+        ),
+        "construction_k7_standard_2048_fresh_board_episode_v2": (
+            CONSTRUCTION_K7_STANDARD_2048_FRESH_BOARD_EPISODE_V2_DOMAIN
+        ),
+        "construction_k7_standard_2048_fresh_board_campaign_v2": (
+            CONSTRUCTION_K7_STANDARD_2048_FRESH_BOARD_CAMPAIGN_V2_DOMAIN
+        ),
+        "construction_k7_standard_2048_support_independent_verification_v2": (
+            CONSTRUCTION_K7_STANDARD_2048_SUPPORT_INDEPENDENT_VERIFICATION_V2_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
