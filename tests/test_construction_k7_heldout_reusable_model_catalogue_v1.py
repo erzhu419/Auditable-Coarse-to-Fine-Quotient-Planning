@@ -31,6 +31,8 @@ def test_domains_surface_and_import_boundary_are_narrow() -> None:
         "HeldoutReusableModelSelectionV1",
         "LOCAL_DOMAINS",
         "build_heldout_reusable_model_catalogue_v1",
+        "build_heldout_reusable_model_catalogue_entry_v1",
+        "build_heldout_reusable_model_catalogue_snapshot_v1",
         "select_heldout_reusable_model_v1",
         "verify_heldout_reusable_model_catalogue_v1",
     }
@@ -111,6 +113,42 @@ def test_registered_nearby_topology_is_a_typed_model_miss(catalogue) -> None:
     assert document["local_ground_recovery_authorized_here"] is False
     assert document["direct_fallback_executed_here"] is False
     assert document["plan_certificate_issued"] is False
+
+
+def test_immutable_partial_snapshot_misses_until_exact_entry_is_promoted(
+    child_campaigns,
+) -> None:
+    w5_entry = subject.build_heldout_reusable_model_catalogue_entry_v1(
+        "W5", child_campaigns["W5"]["reuse_bytes"]
+    )
+    initial = subject.build_heldout_reusable_model_catalogue_snapshot_v1(
+        (w5_entry,)
+    )
+    initial_document = initial.to_document()
+    assert initial_document["registered_model_count"] == 1
+    assert initial_document["registered_structural_context_keys"] == [
+        "opaque_graph_w5_v0"
+    ]
+    miss = subject.select_heldout_reusable_model_v1(
+        initial,
+        observer.public_context_by_key_v1("opaque_graph_k6_v0"),
+    )
+    assert miss.outcome == "MODEL_MISS"
+
+    k6_entry = subject.build_heldout_reusable_model_catalogue_entry_v1(
+        "K6", child_campaigns["K6"]["reuse_bytes"]
+    )
+    promoted = subject.build_heldout_reusable_model_catalogue_snapshot_v1(
+        (w5_entry, k6_entry)
+    )
+    hit = subject.select_heldout_reusable_model_v1(
+        promoted,
+        observer.public_context_by_key_v1("opaque_graph_k6_v0"),
+    )
+    assert promoted.catalogue_id != initial.catalogue_id
+    assert promoted.to_document()["registered_model_count"] == 2
+    assert hit.outcome == "EXACT_MODEL_MATCH"
+    assert hit.selected_entry_id == k6_entry.entry_id
 
 
 def test_selection_does_not_replay_model_or_touch_observer(

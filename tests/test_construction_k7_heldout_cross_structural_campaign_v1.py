@@ -12,7 +12,7 @@ from acfqp import construction_k7_heldout_cross_structural_campaign_v1 as subjec
 from acfqp.phase3e_ids import PHASE3E_DOMAIN_TAGS, loads_canonical_json
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def child_campaigns(tmp_path_factory):
     root = tmp_path_factory.mktemp("heldout-cross-structural-children")
     helper = Path(__file__).with_name("_heldout_cross_structural_campaign_worker.py")

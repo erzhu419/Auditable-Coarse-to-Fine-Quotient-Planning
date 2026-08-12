@@ -249,14 +249,18 @@ class HeldoutReusableModelCatalogueV1:
     def __post_init__(self) -> None:
         entries = tuple(self.entries)
         object.__setattr__(self, "entries", entries)
+        family_keys = tuple(item.family_key for item in entries)
         if (
             self._issuer is not _CATALOGUE_ISSUER
-            or len(entries) != 2
-            or tuple(item.family_key for item in entries) != ("W5", "K6")
+            or not entries
+            or len(entries) > len(_FAMILY_SPECS)
+            or family_keys
+            != tuple(key for key in _FAMILY_SPECS if key in family_keys)
+            or len(set(family_keys)) != len(family_keys)
             or any(type(item) is not HeldoutReusableModelCatalogueEntryV1 for item in entries)
-            or len({item.context_id for item in entries}) != 2
-            or len({item.topology_id for item in entries}) != 2
-            or len({item.quotient_model_id for item in entries}) != 2
+            or len({item.context_id for item in entries}) != len(entries)
+            or len({item.topology_id for item in entries}) != len(entries)
+            or len({item.quotient_model_id for item in entries}) != len(entries)
         ):
             _fail("reusable model catalogue inventory changed")
         object.__setattr__(
@@ -276,7 +280,7 @@ class HeldoutReusableModelCatalogueV1:
             "registered_target_vertex_counts": [
                 item.target_vertex_count for item in self.entries
             ],
-            "registered_model_count": 2,
+            "registered_model_count": len(self.entries),
             "selector_kind": "EXACT_CONTEXT_AND_TOPOLOGY_IDENTITY",
             "nearby_structure_transfer_allowed": False,
             "model_miss_requires_new_construction_or_fallback": True,
@@ -396,18 +400,20 @@ class HeldoutReusableModelSelectionV1:
         return {**self._payload(), "model_selection_id": self.selection_id}
 
 
-def _entry(
+def build_heldout_reusable_model_catalogue_entry_v1(
     family_key: str,
-    reuse_bytes: bytes,
+    reuse_result_bytes: bytes,
 ) -> HeldoutReusableModelCatalogueEntryV1:
-    document = _canonical(reuse_bytes, f"{family_key} reuse result")
+    if family_key not in _FAMILY_SPECS:
+        _fail("model entry family is not registered")
+    document = _canonical(reuse_result_bytes, f"{family_key} reuse result")
     if family_key == "W5":
         verification = w5_verifier_v1.verify_heldout_overlay_abstract_reuse_bytes_v1(
-            reuse_bytes
+            reuse_result_bytes
         )
     else:
         verification = k6_verifier_v1.verify_heldout_k6_overlay_abstract_reuse_bytes_v1(
-            reuse_bytes
+            reuse_result_bytes
         )
     facts = _structural_entry_facts(family_key, document)
     context_key, vertex_count, _reuse_schema, _source_schema = _FAMILY_SPECS[family_key]
@@ -424,9 +430,19 @@ def _entry(
         facts["threshold_profile_id"],
         facts["certified_audit_id"],
         _cid(document.get("result_id"), f"{family_key} reuse result"),
-        hashlib.sha256(reuse_bytes).hexdigest(),
+        hashlib.sha256(reuse_result_bytes).hexdigest(),
         verification.verification_id,
     )
+
+
+def build_heldout_reusable_model_catalogue_snapshot_v1(
+    entries: tuple[HeldoutReusableModelCatalogueEntryV1, ...],
+) -> HeldoutReusableModelCatalogueV1:
+    """Freeze one nonempty exact subset of the registered model inventory."""
+
+    if type(entries) is not tuple:
+        _fail("model catalogue snapshot entries must be one exact tuple")
+    return HeldoutReusableModelCatalogueV1(_CATALOGUE_ISSUER, entries)
 
 
 def build_heldout_reusable_model_catalogue_v1(
@@ -439,8 +455,12 @@ def build_heldout_reusable_model_catalogue_v1(
     return HeldoutReusableModelCatalogueV1(
         _CATALOGUE_ISSUER,
         (
-            _entry("W5", w5_reuse_result_bytes),
-            _entry("K6", k6_reuse_result_bytes),
+            build_heldout_reusable_model_catalogue_entry_v1(
+                "W5", w5_reuse_result_bytes
+            ),
+            build_heldout_reusable_model_catalogue_entry_v1(
+                "K6", k6_reuse_result_bytes
+            ),
         ),
     )
 
@@ -526,6 +546,8 @@ __all__ = (
     "HeldoutReusableModelSelectionV1",
     "LOCAL_DOMAINS",
     "build_heldout_reusable_model_catalogue_v1",
+    "build_heldout_reusable_model_catalogue_entry_v1",
+    "build_heldout_reusable_model_catalogue_snapshot_v1",
     "select_heldout_reusable_model_v1",
     "verify_heldout_reusable_model_catalogue_v1",
 )
