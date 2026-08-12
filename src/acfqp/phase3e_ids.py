@@ -810,6 +810,21 @@ CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_OCCURRENCE_INDEPENDENT_VERIFICATION_V1_DOMAI
 CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_CAMPAIGN_INDEPENDENT_VERIFICATION_V1_DOMAIN = (
     "acfqp:construction-k7-heldout-k6-abstract-campaign-independent-verification:v1"
 )
+CONSTRUCTION_K7_HELDOUT_CROSS_STRUCTURAL_CAMPAIGN_PREREGISTRATION_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-cross-structural-campaign-preregistration:v1"
+)
+CONSTRUCTION_K7_HELDOUT_CROSS_STRUCTURAL_CAMPAIGN_CHILD_ROW_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-cross-structural-campaign-child-row:v1"
+)
+CONSTRUCTION_K7_HELDOUT_CROSS_STRUCTURAL_CAMPAIGN_CLOSURE_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-cross-structural-campaign-closure:v1"
+)
+CONSTRUCTION_K7_HELDOUT_CROSS_STRUCTURAL_CAMPAIGN_RESULT_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-cross-structural-campaign-result:v1"
+)
+CONSTRUCTION_K7_HELDOUT_CROSS_STRUCTURAL_CAMPAIGN_INDEPENDENT_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-cross-structural-campaign-independent-verification:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -3401,6 +3416,21 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_heldout_k6_abstract_campaign_independent_verification_v1": (
             CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_CAMPAIGN_INDEPENDENT_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_heldout_cross_structural_campaign_preregistration_v1": (
+            CONSTRUCTION_K7_HELDOUT_CROSS_STRUCTURAL_CAMPAIGN_PREREGISTRATION_V1_DOMAIN
+        ),
+        "construction_k7_heldout_cross_structural_campaign_child_row_v1": (
+            CONSTRUCTION_K7_HELDOUT_CROSS_STRUCTURAL_CAMPAIGN_CHILD_ROW_V1_DOMAIN
+        ),
+        "construction_k7_heldout_cross_structural_campaign_closure_v1": (
+            CONSTRUCTION_K7_HELDOUT_CROSS_STRUCTURAL_CAMPAIGN_CLOSURE_V1_DOMAIN
+        ),
+        "construction_k7_heldout_cross_structural_campaign_result_v1": (
+            CONSTRUCTION_K7_HELDOUT_CROSS_STRUCTURAL_CAMPAIGN_RESULT_V1_DOMAIN
+        ),
+        "construction_k7_heldout_cross_structural_campaign_independent_verification_v1": (
+            CONSTRUCTION_K7_HELDOUT_CROSS_STRUCTURAL_CAMPAIGN_INDEPENDENT_VERIFICATION_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
