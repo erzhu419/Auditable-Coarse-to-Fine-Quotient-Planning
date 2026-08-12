@@ -47,6 +47,7 @@ from acfqp.phase3e_ids import (
     PHASE3E_DOMAIN_TAGS,
     canonical_json_bytes,
     content_id,
+    loads_canonical_json,
     parse_content_id,
 )
 
@@ -651,6 +652,7 @@ def _render(
     measurement: AdaptiveSharedMeasurementV1,
     fixed_profile: fixed_v1.OutputBytesFixedPointProfileV1,
     output_candidate: int,
+    static_role_bytes: Mapping[str, bytes],
 ) -> tuple[_MaterializedV1, Mapping[str, bytes]]:
     materialized = _materialize(
         occurrence,
@@ -670,31 +672,7 @@ def _render(
         if vector.route_kind is RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE
         else "NO_CERTIFIABLE_CONSTRUCTOR"
     )
-    roles: dict[str, bytes] = {}
-    roles["BUSINESS_RESULT"] = canonical_json_bytes(
-        {
-            "artifact_role": "BUSINESS_RESULT",
-            "schema": "acfqp.construction_k7_adaptive_business_result.v1",
-            "adaptive_native_occurrence_id": occurrence.occurrence_id,
-            "synthesis_result_id": occurrence.synthesis_result_id,
-            "result_outcome": occurrence.result_outcome,
-            "context_id": occurrence.context_id,
-            "catalogue_id_before": occurrence.catalogue_id_before,
-            "catalogue_id_after": occurrence.catalogue_id_after,
-            "route_kind": vector.route_kind.value,
-            "io.output_bytes": output_candidate,
-        }
-    )
-    roles["OPERATIONAL_TRACE"] = canonical_json_bytes(
-        {
-            "artifact_role": "OPERATIONAL_TRACE",
-            "schema": "acfqp.construction_k7_adaptive_operational_trace.v1",
-            "native_component_ids": [row.component_id for row in occurrence.components],
-            "native_shared_event_ids": [row.event_id for row in occurrence.shared_events],
-            "shared_measurement": measurement.to_document(),
-            "evaluation_replay_included": False,
-        }
-    )
+    roles: dict[str, bytes] = dict(static_role_bytes)
     roles["TERMINAL_ARTIFACT"] = canonical_json_bytes(
         {
             "artifact_role": "TERMINAL_ARTIFACT",
@@ -720,6 +698,9 @@ def _render(
             ],
             "path_aggregation_ids": [
                 row.aggregation_id for row in materialized.aggregations
+            ],
+            "path_aggregations": [
+                row.to_document() for row in materialized.aggregations
             ],
             "counter_record_ids": [row.record_id for row in vector.records],
             "counter_record_count": len(vector.records),
@@ -775,6 +756,60 @@ def _render(
     if tuple(roles) != fixed_v1.REGISTERED_OPERATIONAL_ARTIFACT_ROLES:
         _fail("adaptive output role order changed")
     return materialized, MappingProxyType(roles)
+
+
+def _static_role_bytes(
+    occurrence: native_v1.AdaptiveOccurrenceNativeAccountingV1,
+    measurement: AdaptiveSharedMeasurementV1,
+) -> Mapping[str, bytes]:
+    registry = registry_v7.official_counter_registry_v7()
+    comparison = registry_v7.official_comparison_profile_v7(registry)
+    actual = registry_v7.official_actual_projection_profile_v7(
+        registry, comparison
+    )
+    route = _route_kind(occurrence.result_outcome)
+    native_summary = {
+        **occurrence._payload(),  # noqa: SLF001 - exact producer payload archive
+        "adaptive_occurrence_native_accounting_id": occurrence.occurrence_id,
+    }
+    return MappingProxyType(
+        {
+            "BUSINESS_RESULT": canonical_json_bytes(
+                {
+                    "artifact_role": "BUSINESS_RESULT",
+                    "schema": "acfqp.construction_k7_adaptive_business_result.v1",
+                    "adaptive_native_occurrence_id": occurrence.occurrence_id,
+                    "synthesis_result_id": occurrence.synthesis_result_id,
+                    "result_outcome": occurrence.result_outcome,
+                    "context_id": occurrence.context_id,
+                    "catalogue_id_before": occurrence.catalogue_id_before,
+                    "catalogue_id_after": occurrence.catalogue_id_after,
+                    "route_kind": route.value,
+                }
+            ),
+            "OPERATIONAL_TRACE": canonical_json_bytes(
+                {
+                    "artifact_role": "OPERATIONAL_TRACE",
+                    "schema": "acfqp.construction_k7_adaptive_operational_trace.v1",
+                    "native_occurrence": native_summary,
+                    "route_input_envelope": loads_canonical_json(
+                        occurrence.route_input_bytes
+                    ),
+                    "native_components": [
+                        row.to_document() for row in occurrence.components
+                    ],
+                    "native_shared_events": [
+                        row.to_document() for row in occurrence.shared_events
+                    ],
+                    "shared_measurement": measurement.to_document(),
+                    "counter_registry": registry.to_document(),
+                    "comparison_profile": comparison.to_document(),
+                    "actual_projection_profile": actual.to_document(),
+                    "evaluation_replay_included": False,
+                }
+            ),
+        }
+    )
 
 
 def _fixed_profile(
@@ -976,16 +1011,21 @@ def verify_adaptive_occurrence_actual_accounting_v1(
         _fail("adaptive occurrence verifier rejects foreign values")
     expected_measurement = _measurement(bundle.native_occurrence)
     profile = _fixed_profile(bundle.native_occurrence, expected_measurement)
+    static = _static_role_bytes(bundle.native_occurrence, expected_measurement)
+    cache: dict[int, tuple[_MaterializedV1, Mapping[str, bytes]]] = {}
 
     def renderer(candidate: int) -> dict[str, bytes]:
-        return dict(
-            _render(
+        rendered = cache.get(candidate)
+        if rendered is None:
+            rendered = _render(
                 bundle.native_occurrence,
                 expected_measurement,
                 profile,
                 candidate,
-            )[1]
-        )
+                static,
+            )
+            cache[candidate] = rendered
+        return dict(rendered[1])
 
     fixed_v1.replay_output_bytes_fixed_point_v1(
         result=bundle.fixed_point,
@@ -996,6 +1036,7 @@ def verify_adaptive_occurrence_actual_accounting_v1(
         expected_measurement,
         profile,
         bundle.fixed_point.output_bytes,
+        static,
     )
     registry = registry_v7.official_counter_registry_v7()
     comparison = registry_v7.official_comparison_profile_v7(registry)
@@ -1037,9 +1078,21 @@ def run_adaptive_campaign_actual_accounting_v1(
     for occurrence in native.occurrences:
         measurement = _measurement(occurrence)
         profile = _fixed_profile(occurrence, measurement)
+        static = _static_role_bytes(occurrence, measurement)
+        cache: dict[int, tuple[_MaterializedV1, Mapping[str, bytes]]] = {}
 
         def renderer(candidate: int) -> dict[str, bytes]:
-            return dict(_render(occurrence, measurement, profile, candidate)[1])
+            rendered = cache.get(candidate)
+            if rendered is None:
+                rendered = _render(
+                    occurrence,
+                    measurement,
+                    profile,
+                    candidate,
+                    static,
+                )
+                cache[candidate] = rendered
+            return dict(rendered[1])
 
         fixed_point = fixed_v1.solve_output_bytes_fixed_point_v1(
             profile=profile,
@@ -1054,6 +1107,7 @@ def run_adaptive_campaign_actual_accounting_v1(
             measurement,
             profile,
             fixed_point.output_bytes,
+            static,
         )
         if dict(role_bytes) != fixed_point.artifact_bytes_by_role:
             _fail("adaptive final render differs from fixed-point bytes")

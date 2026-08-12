@@ -978,6 +978,12 @@ CONSTRUCTION_K7_ADAPTIVE_OUTPUT_RENDERER_V1_DOMAIN = (
 CONSTRUCTION_K7_ADAPTIVE_OUTPUT_COMMIT_V1_DOMAIN = (
     "acfqp:construction-k7-adaptive-output-commit:v1"
 )
+CONSTRUCTION_K7_ADAPTIVE_OCCURRENCE_INDEPENDENT_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-adaptive-occurrence-independent-verification:v1"
+)
+CONSTRUCTION_K7_ADAPTIVE_CAMPAIGN_INDEPENDENT_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-adaptive-campaign-independent-verification:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -3737,6 +3743,12 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_adaptive_output_commit_v1": (
             CONSTRUCTION_K7_ADAPTIVE_OUTPUT_COMMIT_V1_DOMAIN
+        ),
+        "construction_k7_adaptive_occurrence_independent_verification_v1": (
+            CONSTRUCTION_K7_ADAPTIVE_OCCURRENCE_INDEPENDENT_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_adaptive_campaign_independent_verification_v1": (
+            CONSTRUCTION_K7_ADAPTIVE_CAMPAIGN_INDEPENDENT_VERIFICATION_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
