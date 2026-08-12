@@ -39,7 +39,10 @@ import acfqp.observation_support_h2_closure_v1 as h2_closure
 import acfqp.observation_support_relational_adapter_v1 as adapter
 import acfqp.partial_support_confidence_v1 as support_confidence
 import acfqp.partial_support_robust_planner_v1 as robust
+import acfqp.sequential_bernoulli_acquisition_v1 as sequential
 import acfqp.transition_tuple_observer_v1 as observer
+from acfqp import construction_accounting_owned_runtime_v1 as accounting_runtime
+from acfqp import construction_k7_adaptive_accounting_phase_v1 as accounting_phase
 from acfqp.phase3e_ids import canonical_json_bytes, parse_content_id
 from acfqp.portable_relational_skeleton_v1 import (
     FailedRelationalProofRefV1,
@@ -1098,6 +1101,109 @@ class _CandidateEvaluationTaskV1:
     candidate: CoordinateCandidateSpecV1
 
 
+class _CandidateWorkerOperationCollectorV1:
+    """Capture exact child compute before returning it to the parent route."""
+
+    def __init__(self) -> None:
+        self._allowed = {
+            "adaptive-world-model.graph-model-row-build": (
+                graph_model.__dict__,
+                graph_model.build_observation_support_graph_models_v1.__code__,
+            ),
+            "partial-support.robust-bellman-backup": (
+                robust.__dict__,
+                robust._evaluate_ground_row.__code__,  # noqa: SLF001
+            ),
+            "partial-support.robust-audit-obligation": (
+                robust.__dict__,
+                robust._make_audit.__code__,  # noqa: SLF001
+            ),
+            "sequential.confidence.exact-reject-comparison": (
+                sequential.__dict__,
+                sequential._ExactGridRejectionV1.rejects.__code__,  # noqa: SLF001
+            ),
+            "sequential.confidence.log-search.lower": (
+                sequential.__dict__,
+                sequential._last_rejected_lower_grid_index.__code__,  # noqa: SLF001
+            ),
+            "sequential.confidence.log-search.upper": (
+                sequential.__dict__,
+                sequential._first_rejected_upper_grid_index.__code__,  # noqa: SLF001
+            ),
+            "sequential.confidence.cache.lookup": (
+                sequential.__dict__,
+                sequential._outer_confidence_bounds_accounted_v2.__code__,  # noqa: SLF001
+            ),
+            "sequential.confidence.cache.hit": (
+                sequential.__dict__,
+                sequential._outer_confidence_bounds_accounted_v2.__code__,  # noqa: SLF001
+            ),
+            "sequential.confidence.cache.miss": (
+                sequential.__dict__,
+                sequential._outer_confidence_bounds_accounted_v2.__code__,  # noqa: SLF001
+            ),
+        }
+        self._values: dict[str, list[int]] = {}
+
+    def emit_operation(
+        self,
+        dispatch_key: Any,
+        amount: Any = 1,
+        *,
+        caller_module: Any,
+        caller_globals: Any,
+        caller_code: Any,
+    ) -> None:
+        expected = self._allowed.get(dispatch_key)
+        if (
+            expected is None
+            or type(amount) is not int
+            or amount <= 0
+            or caller_globals is not expected[0]
+            or caller_code is not expected[1]
+            or caller_module != caller_globals.get("__name__")
+        ):
+            raise ObservationSupportCoordinateRefinementInvariantViolation(
+                f"candidate worker emitted an unregistered operation {dispatch_key!r}"
+            )
+        bucket = self._values.setdefault(dispatch_key, [0, 0])
+        bucket[0] += 1
+        bucket[1] += amount
+
+    @property
+    def values(self) -> tuple[tuple[str, int, int], ...]:
+        return tuple(
+            (key, value[0], value[1])
+            for key, value in sorted(self._values.items())
+        )
+
+
+class _CandidateWorkerHashMeterV1:
+    def __init__(self) -> None:
+        self.count = 0
+        self._original: Any = None
+        self._installed: Any = None
+
+    def __enter__(self) -> "_CandidateWorkerHashMeterV1":
+        self._original = hashlib.sha256
+
+        def metered(*args: Any, **kwargs: Any) -> Any:
+            self.count += 1
+            return self._original(*args, **kwargs)
+
+        self._installed = metered
+        hashlib.sha256 = metered  # type: ignore[assignment]
+        return self
+
+    def __exit__(self, _kind: object, _value: object, _traceback: object) -> None:
+        changed = hashlib.sha256 is not self._installed
+        hashlib.sha256 = self._original  # type: ignore[assignment]
+        if changed:
+            raise ObservationSupportCoordinateRefinementInvariantViolation(
+                "candidate worker hash meter binding changed"
+            )
+
+
 def _evaluate_candidate_task_v1(
     task: _CandidateEvaluationTaskV1,
 ) -> tuple[
@@ -1105,36 +1211,48 @@ def _evaluate_candidate_task_v1(
     str,
     robust.RobustPlanAuditV1,
     str,
+    tuple[tuple[str, int, int], ...],
+    int,
+    int,
 ]:
-    rebuilt = graph_model.build_observation_support_graph_models_v1(
-        context=task.context,
-        root_catalogue=task.root_catalogue,
-        catalogues=task.catalogues,
-        partial_rows=task.partial_rows,
-        coordinate_profile=task.candidate.coordinate_profile,
-    )
-    bridge_replay = graph_model.verify_observation_support_graph_models_v1(
-        context=task.context,
-        root_catalogue=task.root_catalogue,
-        catalogues=task.catalogues,
-        partial_rows=task.partial_rows,
-        bridge=rebuilt,
-        coordinate_profile=task.candidate.coordinate_profile,
-    )
-    audit = robust.solve_quotient_robust_h2_v1(
-        rebuilt.quotient_model,
-        task.threshold,
-    )
-    audit_replay = robust.verify_robust_plan_audit_v1(
-        rebuilt.quotient_model,
-        task.threshold,
-        audit,
-    )
+    collector = _CandidateWorkerOperationCollectorV1()
+    token = accounting_runtime._ACTIVE_RUNTIME.set(collector)  # noqa: SLF001
+    try:
+        with _CandidateWorkerHashMeterV1() as hash_meter:
+            rebuilt = graph_model.build_observation_support_graph_models_v1(
+                context=task.context,
+                root_catalogue=task.root_catalogue,
+                catalogues=task.catalogues,
+                partial_rows=task.partial_rows,
+                coordinate_profile=task.candidate.coordinate_profile,
+            )
+            bridge_replay = graph_model.verify_observation_support_graph_models_v1(
+                context=task.context,
+                root_catalogue=task.root_catalogue,
+                catalogues=task.catalogues,
+                partial_rows=task.partial_rows,
+                bridge=rebuilt,
+                coordinate_profile=task.candidate.coordinate_profile,
+            )
+            audit = robust.solve_quotient_robust_h2_v1(
+                rebuilt.quotient_model,
+                task.threshold,
+            )
+            audit_replay = robust.verify_robust_plan_audit_v1(
+                rebuilt.quotient_model,
+                task.threshold,
+                audit,
+            )
+    finally:
+        accounting_runtime._ACTIVE_RUNTIME.reset(token)  # noqa: SLF001
     return (
         rebuilt,
         bridge_replay.verification_id,
         audit,
         audit_replay.verification_id,
+        collector.values,
+        hash_meter.count,
+        os.getpid(),
     )
 
 
@@ -1188,6 +1306,83 @@ def _validate_base_authorities(
         failed_audit,
     )
     return base, threshold
+
+
+def _emit_candidate_accounting_v1(
+    evaluated: tuple[tuple[Any, ...], ...],
+    launched_worker_count: int,
+) -> None:
+    """Project child-process candidate work into the local-recovery phase."""
+
+    with accounting_phase.adaptive_accounting_phase_v1(
+        accounting_phase.AdaptiveAccountingPhaseV1.LOCAL_RECOVERY
+    ):
+        accounting_runtime.emit_owned_operation_v1(
+            "adaptive-world-model.coordinate-candidate-evaluation",
+            len(evaluated),
+        )
+        child_totals: dict[str, int] = {}
+        child_hash_invocations = 0
+        for item in evaluated:
+            for dispatch_key, _calls, value in item[4]:
+                child_totals[dispatch_key] = (
+                    child_totals.get(dispatch_key, 0) + value
+                )
+            child_hash_invocations += item[5]
+        for child_dispatch, parent_dispatch in (
+            (
+                "adaptive-world-model.graph-model-row-build",
+                "adaptive-world-model.coordinate-candidate-model-row-build",
+            ),
+            (
+                "partial-support.robust-bellman-backup",
+                "adaptive-world-model.coordinate-candidate-bellman-backup",
+            ),
+            (
+                "partial-support.robust-audit-obligation",
+                "adaptive-world-model.coordinate-candidate-audit-obligation",
+            ),
+            (
+                "sequential.confidence.exact-reject-comparison",
+                "adaptive-world-model.coordinate-candidate-exact-reject-comparison",
+            ),
+            (
+                "sequential.confidence.log-search.lower",
+                "adaptive-world-model.coordinate-candidate-log-search-evaluation",
+            ),
+            (
+                "sequential.confidence.log-search.upper",
+                "adaptive-world-model.coordinate-candidate-log-search-evaluation",
+            ),
+            (
+                "sequential.confidence.cache.lookup",
+                "adaptive-world-model.coordinate-candidate-cache-lookup",
+            ),
+            (
+                "sequential.confidence.cache.hit",
+                "adaptive-world-model.coordinate-candidate-cache-hit",
+            ),
+            (
+                "sequential.confidence.cache.miss",
+                "adaptive-world-model.coordinate-candidate-cache-miss",
+            ),
+        ):
+            value = child_totals.get(child_dispatch, 0)
+            if value:
+                accounting_runtime.emit_owned_operation_v1(
+                    parent_dispatch,
+                    value,
+                )
+        if child_hash_invocations:
+            accounting_runtime.emit_owned_operation_v1(
+                "adaptive-world-model.coordinate-child-hash-invocation",
+                child_hash_invocations,
+            )
+        if launched_worker_count:
+            accounting_runtime.emit_owned_operation_v1(
+                "adaptive-world-model.coordinate-worker-launch",
+                launched_worker_count,
+            )
 
 
 def refine_observation_support_coordinates_v1(
@@ -1266,6 +1461,7 @@ def refine_observation_support_coordinates_v1(
             evaluated = tuple(
                 _evaluate_candidate_task_v1(task) for task in tasks
             )
+            launched_worker_count = 0
         else:
             with ProcessPoolExecutor(
                 max_workers=workers,
@@ -1274,16 +1470,22 @@ def refine_observation_support_coordinates_v1(
                 evaluated = tuple(
                     executor.map(_evaluate_candidate_task_v1, tasks)
                 )
+                launched_worker_count = len(executor._processes)  # noqa: SLF001
     else:
         evaluated = tuple(
             _evaluate_candidate_task_v1(task) for task in tasks
         )
+        launched_worker_count = 0
+    _emit_candidate_accounting_v1(evaluated, launched_worker_count)
     traces: list[CoordinateCandidateTraceV1] = []
     for candidate, (
         rebuilt,
         bridge_replay_id,
         audit,
         audit_replay_id,
+        _worker_events,
+        _worker_hash_invocations,
+        _worker_pid,
     ) in zip(specs, evaluated):
         traces.append(
             CoordinateCandidateTraceV1(

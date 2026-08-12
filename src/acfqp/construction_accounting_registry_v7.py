@@ -48,11 +48,11 @@ ACTUAL_PROJECTION_PROFILE_KEY = "actual_projection_construction_v7"
 EXPECTED_V6_LEAF_COUNT = v6.EXPECTED_V6_LEAF_COUNT
 EXPECTED_V6_OPERATIONAL_LEAF_COUNT = v6.EXPECTED_V6_OPERATIONAL_LEAF_COUNT
 EXPECTED_V6_REQUIRED_LEAF_COUNT = v6.EXPECTED_V6_REQUIRED_LEAF_COUNT
-EXPECTED_V7_ADDITION_COUNT = 15
-EXPECTED_V7_OPERATIONAL_ADDITION_COUNT = 13
-EXPECTED_V7_LEAF_COUNT = 224
-EXPECTED_V7_OPERATIONAL_LEAF_COUNT = 195
-EXPECTED_V7_REQUIRED_LEAF_COUNT = 217
+EXPECTED_V7_ADDITION_COUNT = 19
+EXPECTED_V7_OPERATIONAL_ADDITION_COUNT = 17
+EXPECTED_V7_LEAF_COUNT = 228
+EXPECTED_V7_OPERATIONAL_LEAF_COUNT = 199
+EXPECTED_V7_REQUIRED_LEAF_COUNT = 221
 EXPECTED_V7_STAGE_COUNT = v6.EXPECTED_V6_STAGE_COUNT
 
 ConstructionStageKindV7 = v6.ConstructionStageKindV6
@@ -63,6 +63,7 @@ _MODEL = "observation_support_graph_model_v1"
 _PROGRAM = "construction_k7_observed_capability_program_synthesis_v1"
 _CATALOGUE = "construction_k7_heldout_reusable_model_catalogue_v1"
 _PROMOTION = "construction_k7_observation_driven_world_model_synthesis_v1"
+_REFINEMENT = "observation_support_coordinate_refinement_v1"
 
 
 class ConstructionAccountingRegistryV7Error(ValueError):
@@ -219,6 +220,34 @@ def _v7_additions() -> tuple[CounterSemanticsV1, ...]:
             "adaptive-model-catalogue-promotion-v7",
             _PROMOTION,
             "promotion_events",
+            local_scope,
+        ),
+        _operational(
+            "local.model_coordinate_candidate_evaluations",
+            "adaptive-coordinate-candidate-evaluation-v7",
+            _REFINEMENT,
+            "candidate_evaluations",
+            local_scope,
+        ),
+        _operational(
+            "local.model_coordinate_candidate_rows_built",
+            "adaptive-coordinate-candidate-row-build-v7",
+            _REFINEMENT,
+            "model_rows",
+            local_scope,
+        ),
+        _operational(
+            "local.model_coordinate_candidate_bellman_backups",
+            "adaptive-coordinate-candidate-bellman-backup-v7",
+            _REFINEMENT,
+            "backups",
+            local_scope,
+        ),
+        _operational(
+            "local.model_coordinate_candidate_audit_obligations",
+            "adaptive-coordinate-candidate-audit-obligation-v7",
+            _REFINEMENT,
+            "obligations",
             local_scope,
         ),
     )
@@ -393,6 +422,10 @@ _ADDITION_STAGE = {
     "local.model_support_confidence_builds": ConstructionStageKindV7.OPEN_INCREMENTAL_ACQUISITION,
     "local.model_bridge_rows_built": ConstructionStageKindV7.OPEN_CHECKPOINT_REPLANNING,
     "local.model_catalogue_promotion_events": ConstructionStageKindV7.CLOSED_RECONCILIATION_AND_TERMINALIZATION,
+    "local.model_coordinate_candidate_evaluations": ConstructionStageKindV7.OPEN_CHECKPOINT_REPLANNING,
+    "local.model_coordinate_candidate_rows_built": ConstructionStageKindV7.OPEN_CHECKPOINT_REPLANNING,
+    "local.model_coordinate_candidate_bellman_backups": ConstructionStageKindV7.OPEN_CHECKPOINT_REPLANNING,
+    "local.model_coordinate_candidate_audit_obligations": ConstructionStageKindV7.OPEN_CHECKPOINT_REPLANNING,
 }
 
 

@@ -20,9 +20,9 @@ def test_v7_is_an_exact_v6_prefix_plus_registered_adaptive_families():
     comparison = v7.official_comparison_profile_v7(new)
     actual = v7.official_actual_projection_profile_v7(new, comparison)
 
-    assert len(new.leaves) == 224
-    assert len(new.operational_leaves) == 195
-    assert len(new.required_paths) == 217
+    assert len(new.leaves) == 228
+    assert len(new.operational_leaves) == 199
+    assert len(new.required_paths) == 221
     assert [new.by_path[row.path].to_dict() for row in old.leaves] == [
         row.to_dict() for row in old.leaves
     ]
@@ -65,6 +65,10 @@ def test_constructed_models_charge_exact_local_evidence_and_recertification(camp
         assert local.values["local.model_acquisition_ground_draws"] == expected_draws
         assert local.values["local.model_outcome_projections"] == expected_draws
         assert local.values["local.model_catalogue_promotion_events"] == 1
+        assert local.values["local.model_coordinate_candidate_evaluations"] > 0
+        assert local.values["local.model_coordinate_candidate_rows_built"] > 0
+        assert local.values["local.model_coordinate_candidate_bellman_backups"] > 0
+        assert local.values["local.model_coordinate_candidate_audit_obligations"] > 0
         assert local.values["common.abstract_audit_obligations"] > 0
         assert abstract.values["common.abstract_audit_obligations"] > 0
         assert abstract.values["common.abstract_bellman_backups"] > 0
@@ -109,7 +113,7 @@ def test_every_component_has_explicit_nonshared_records_but_no_fake_receipts(cam
     )
     for occurrence in campaign.occurrences:
         for component in occurrence.components:
-            assert len(component.records) == expected_count == 208
+            assert len(component.records) == expected_count == 212
             assert {row.path for row in component.records}.isdisjoint(
                 subject.SHARED_RESOURCE_PATHS
             )
@@ -121,6 +125,18 @@ def test_every_component_has_explicit_nonshared_records_but_no_fake_receipts(cam
     assert document["counter_completeness_gate_status"] == "NOT_RUN"
     assert document["workload_economics_gate_status"] == "NOT_RUN"
     assert document["official_execution_allowed"] is False
+    assert all(
+        any(event.target_path == "common.hash_invocations" for event in row.shared_events)
+        for row in campaign.occurrences
+    )
+    assert all(
+        any(event.target_path == "process.launches" for event in row.shared_events)
+        for row in (campaign.occurrences[0], campaign.occurrences[2])
+    )
+    assert all(
+        not any(event.target_path == "process.launches" for event in row.shared_events)
+        for row in (campaign.occurrences[1], campaign.occurrences[3], campaign.occurrences[4])
+    )
 
 
 def test_component_rejects_missing_or_duplicate_counter_records(campaign):

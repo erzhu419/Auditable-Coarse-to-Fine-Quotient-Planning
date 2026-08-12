@@ -307,6 +307,106 @@ _BOUNDARY_ROWS = (
         "local.model_catalogue_promotion_events",
         "local.model_catalogue_promotion_events",
     ),
+    (
+        "adaptive-world-model.coordinate-candidate-evaluation",
+        "acfqp.observation_support_coordinate_refinement_v1",
+        "_emit_candidate_accounting_v1",
+        (_P.LOCAL_RECOVERY.value,),
+        "local.model_coordinate_candidate_evaluations",
+        "local.model_coordinate_candidate_evaluations",
+    ),
+    (
+        "adaptive-world-model.coordinate-candidate-model-row-build",
+        "acfqp.observation_support_coordinate_refinement_v1",
+        "_emit_candidate_accounting_v1",
+        (_P.LOCAL_RECOVERY.value,),
+        "local.model_coordinate_candidate_rows_built",
+        "local.model_coordinate_candidate_rows_built",
+    ),
+    (
+        "adaptive-world-model.coordinate-candidate-bellman-backup",
+        "acfqp.observation_support_coordinate_refinement_v1",
+        "_emit_candidate_accounting_v1",
+        (_P.LOCAL_RECOVERY.value,),
+        "local.model_coordinate_candidate_bellman_backups",
+        "local.model_coordinate_candidate_bellman_backups",
+    ),
+    (
+        "adaptive-world-model.coordinate-candidate-audit-obligation",
+        "acfqp.observation_support_coordinate_refinement_v1",
+        "_emit_candidate_accounting_v1",
+        (_P.LOCAL_RECOVERY.value,),
+        "local.model_coordinate_candidate_audit_obligations",
+        "local.model_coordinate_candidate_audit_obligations",
+    ),
+    (
+        "adaptive-world-model.coordinate-candidate-exact-reject-comparison",
+        "acfqp.observation_support_coordinate_refinement_v1",
+        "_emit_candidate_accounting_v1",
+        (_P.LOCAL_RECOVERY.value,),
+        "build.open_checkpoint_sequential_exact_likelihood_comparisons",
+        "build.open_checkpoint_sequential_exact_likelihood_comparisons",
+    ),
+    (
+        "adaptive-world-model.coordinate-candidate-log-search-evaluation",
+        "acfqp.observation_support_coordinate_refinement_v1",
+        "_emit_candidate_accounting_v1",
+        (_P.LOCAL_RECOVERY.value,),
+        "build.open_checkpoint_sequential_interval_log_search_evaluations",
+        "build.open_checkpoint_sequential_interval_log_search_evaluations",
+    ),
+    (
+        "adaptive-world-model.coordinate-candidate-cache-lookup",
+        "acfqp.observation_support_coordinate_refinement_v1",
+        "_emit_candidate_accounting_v1",
+        (_P.LOCAL_RECOVERY.value,),
+        "build.open_checkpoint_confidence_cache_lookups",
+        "build.open_checkpoint_confidence_cache_lookups",
+    ),
+    (
+        "adaptive-world-model.coordinate-candidate-cache-hit",
+        "acfqp.observation_support_coordinate_refinement_v1",
+        "_emit_candidate_accounting_v1",
+        (_P.LOCAL_RECOVERY.value,),
+        "build.open_checkpoint_confidence_cache_hits",
+        "build.open_checkpoint_confidence_cache_hits",
+    ),
+    (
+        "adaptive-world-model.coordinate-candidate-cache-miss",
+        "acfqp.observation_support_coordinate_refinement_v1",
+        "_emit_candidate_accounting_v1",
+        (_P.LOCAL_RECOVERY.value,),
+        "build.open_checkpoint_confidence_cache_misses",
+        "build.open_checkpoint_confidence_cache_misses",
+    ),
+    (
+        "adaptive-world-model.coordinate-child-hash-invocation",
+        "acfqp.observation_support_coordinate_refinement_v1",
+        "_emit_candidate_accounting_v1",
+        (_P.LOCAL_RECOVERY.value,),
+        "common.hash_invocations",
+        "common.hash_invocations",
+    ),
+    (
+        "adaptive-world-model.coordinate-worker-launch",
+        "acfqp.observation_support_coordinate_refinement_v1",
+        "_emit_candidate_accounting_v1",
+        (_P.LOCAL_RECOVERY.value,),
+        "process.launches",
+        "process.launches",
+    ),
+    (
+        "adaptive-world-model.main-hash-invocation",
+        "acfqp.construction_k7_adaptive_campaign_native_accounting_v1",
+        "run_adaptive_campaign_native_accounting_v1",
+        (
+            _P.ABSTRACT_CERTIFICATE.value,
+            _P.COMMON_PREFIX.value,
+            _P.LOCAL_RECOVERY.value,
+        ),
+        "common.hash_invocations",
+        None,
+    ),
 )
 
 
@@ -636,6 +736,7 @@ class AdaptiveOccurrenceNativeAccountingV1:
     catalogue_id_before: str
     catalogue_id_after: str
     components: tuple[AdaptiveNativeComponentV1, ...]
+    shared_events: tuple[AdaptiveAggregatedOperationEventV1, ...]
     _occurrence_id: str = field(init=False, repr=False)
 
     def __post_init__(self, _issuer: object) -> None:
@@ -647,6 +748,8 @@ class AdaptiveOccurrenceNativeAccountingV1:
             != _SPEC_ROWS[self.occurrence_index - 1]
             or tuple(item.phase for item in self.components)
             != _EXPECTED_PHASES_BY_OUTCOME[self.result_outcome]
+            or tuple(sorted(self.shared_events, key=lambda item: item.event_id))
+            != self.shared_events
         ):
             _fail("adaptive occurrence is caller-minted or differs from preregistration")
         context = observer_v1.public_context_by_key_v1(self.context_key)
@@ -671,6 +774,12 @@ class AdaptiveOccurrenceNativeAccountingV1:
         )
         if any(item.occurrence_id != expected_occurrence_id for item in self.components):
             _fail("adaptive component crossed its occurrence identity")
+        if any(
+            item.occurrence_id != expected_occurrence_id
+            or item.target_path not in _SHARED
+            for item in self.shared_events
+        ):
+            _fail("adaptive shared event crossed its occurrence or path registry")
         common = self.components[0].values
         if common["common.constructor_program_candidate_evaluations"] <= 0 or common[
             "common.model_catalogue_selection_evaluations"
@@ -727,6 +836,7 @@ class AdaptiveOccurrenceNativeAccountingV1:
             "catalogue_id_before": self.catalogue_id_before,
             "catalogue_id_after": self.catalogue_id_after,
             "component_ids": [item.component_id for item in self.components],
+            "shared_native_event_ids": [item.event_id for item in self.shared_events],
             "same_window_native_events_present": True,
             "nonshared_counter_records_complete": True,
             "shared_resource_receipts_present": False,
@@ -739,6 +849,7 @@ class AdaptiveOccurrenceNativeAccountingV1:
         return {
             **self._payload(),
             "components": [item.to_document() for item in self.components],
+            "shared_native_events": [item.to_document() for item in self.shared_events],
             "adaptive_occurrence_native_accounting_id": self.occurrence_id,
         }
 
@@ -808,7 +919,12 @@ class _AdaptiveAccountingSessionV1:
         bucket[0] += 1
         bucket[1] += amount
 
-    def finish(self, result_outcome: str) -> tuple[AdaptiveNativeComponentV1, ...]:
+    def finish(
+        self, result_outcome: str
+    ) -> tuple[
+        tuple[AdaptiveNativeComponentV1, ...],
+        tuple[AdaptiveAggregatedOperationEventV1, ...],
+    ]:
         if self._terminal or threading.get_ident() != self._owner_thread:
             _fail("adaptive session terminalization is invalid")
         if result_outcome == "EXISTING_MODEL_REUSED":
@@ -822,22 +938,22 @@ class _AdaptiveAccountingSessionV1:
                     merged[1] += value[1]
         phases = tuple(_P(item) for item in _EXPECTED_PHASES_BY_OUTCOME[result_outcome])
         events: dict[_P, list[AdaptiveAggregatedOperationEventV1]] = {item: [] for item in phases}
+        shared_events: list[AdaptiveAggregatedOperationEventV1] = []
         for (phase, dispatch, path), (calls, value) in sorted(
             self._buckets.items(), key=lambda item: (item[0][0].value, item[0][1], item[0][2])
         ):
             if phase not in events:
                 _fail("adaptive event phase is inconsistent with the route outcome")
-            events[phase].append(
-                AdaptiveAggregatedOperationEventV1(
-                    _EVENT_ISSUER,
-                    self._occurrence_id,
-                    self._manifest.by_dispatch[dispatch].boundary_id,
-                    phase.value,
-                    path,
-                    calls,
-                    value,
-                )
+            event = AdaptiveAggregatedOperationEventV1(
+                _EVENT_ISSUER,
+                self._occurrence_id,
+                self._manifest.by_dispatch[dispatch].boundary_id,
+                phase.value,
+                path,
+                calls,
+                value,
             )
+            (shared_events if path in _SHARED else events[phase]).append(event)
         required = tuple(path for path in self._registry.required_paths if path not in _SHARED)
         components: list[AdaptiveNativeComponentV1] = []
         for phase in phases:
@@ -875,7 +991,10 @@ class _AdaptiveAccountingSessionV1:
                 )
             )
         self._terminal = True
-        return tuple(components)
+        return (
+            tuple(components),
+            tuple(sorted(shared_events, key=lambda item: item.event_id)),
+        )
 
 
 @dataclass(frozen=True, slots=True)
@@ -960,6 +1079,30 @@ def _logical(role: str, parent: str) -> str:
     return hashlib.sha256(f"{PROFILE_KEY}:{role}:{parent}".encode()).hexdigest()
 
 
+class _BusinessHashMeterV1:
+    def __init__(self) -> None:
+        self.count = 0
+        self._original: Any = None
+        self._installed: Any = None
+
+    def __enter__(self) -> "_BusinessHashMeterV1":
+        self._original = hashlib.sha256
+
+        def metered(*args: Any, **kwargs: Any) -> Any:
+            self.count += 1
+            return self._original(*args, **kwargs)
+
+        self._installed = metered
+        hashlib.sha256 = metered  # type: ignore[assignment]
+        return self
+
+    def __exit__(self, _kind: object, _value: object, _traceback: object) -> None:
+        changed = hashlib.sha256 is not self._installed
+        hashlib.sha256 = self._original  # type: ignore[assignment]
+        if changed:
+            _fail("adaptive business-hash meter binding changed")
+
+
 def run_adaptive_campaign_native_accounting_v1() -> AdaptiveCampaignNativeAccountingResultV1:
     """Execute and natively account the frozen five-occurrence campaign."""
 
@@ -1010,12 +1153,17 @@ def run_adaptive_campaign_native_accounting_v1() -> AdaptiveCampaignNativeAccoun
             )
             token = owned_runtime._ACTIVE_RUNTIME.set(session)  # noqa: SLF001
             try:
-                result = synthesis_v3.run_observation_driven_world_model_synthesis_v3(
-                    catalogue,
-                    context,
-                    logical_occurrence_id=_logical(role, preregistration.preregistration_id),
-                    occurrence_ordinal=index,
-                    selected_reuse_result_bytes=selected_reuse,
+                with _BusinessHashMeterV1() as hash_meter:
+                    result = synthesis_v3.run_observation_driven_world_model_synthesis_v3(
+                        catalogue,
+                        context,
+                        logical_occurrence_id=_logical(role, preregistration.preregistration_id),
+                        occurrence_ordinal=index,
+                        selected_reuse_result_bytes=selected_reuse,
+                    )
+                owned_runtime.emit_owned_operation_v1(
+                    "adaptive-world-model.main-hash-invocation",
+                    hash_meter.count,
                 )
             finally:
                 owned_runtime._ACTIVE_RUNTIME.reset(token)  # noqa: SLF001
@@ -1023,7 +1171,7 @@ def run_adaptive_campaign_native_accounting_v1() -> AdaptiveCampaignNativeAccoun
             result_outcome = executor.to_document()["result_outcome"]
             if result_outcome != expected_outcome:
                 _fail("adaptive synthesis outcome differs from preregistration")
-            components = session.finish(result_outcome)
+            components, shared_events = session.finish(result_outcome)
             if executor.promotion is not None:
                 if executor.reuse_result_document is None:
                     _fail("constructed adaptive occurrence omitted reusable model bytes")
@@ -1044,6 +1192,7 @@ def run_adaptive_campaign_native_accounting_v1() -> AdaptiveCampaignNativeAccoun
                     catalogue_before,
                     catalogue.catalogue_id,
                     components,
+                    shared_events,
                 )
             )
         return AdaptiveCampaignNativeAccountingResultV1(
