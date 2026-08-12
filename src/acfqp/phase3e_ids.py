@@ -1110,6 +1110,24 @@ CONSTRUCTION_K7_STANDARD_2048_EXCHANGEABILITY_CAMPAIGN_V5_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_EXCHANGEABILITY_VERIFICATION_V5_DOMAIN = (
     "acfqp:construction-k7-standard-2048-exchangeability-independent-verification:v5"
 )
+CONSTRUCTION_K7_STANDARD_2048_FRONTIER_ACQUISITION_PREREGISTRATION_V6_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-frontier-acquisition-preregistration:v6"
+)
+CONSTRUCTION_K7_STANDARD_2048_FRONTIER_ACQUISITION_CERTIFICATE_V6_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-frontier-acquisition-certificate:v6"
+)
+CONSTRUCTION_K7_STANDARD_2048_FRONTIER_ACQUISITION_ROUTE_DECISION_V6_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-frontier-acquisition-route-decision:v6"
+)
+CONSTRUCTION_K7_STANDARD_2048_FRONTIER_ACQUISITION_EPISODE_V6_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-frontier-acquisition-episode:v6"
+)
+CONSTRUCTION_K7_STANDARD_2048_FRONTIER_ACQUISITION_CAMPAIGN_V6_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-frontier-acquisition-campaign:v6"
+)
+CONSTRUCTION_K7_STANDARD_2048_FRONTIER_ACQUISITION_VERIFICATION_V6_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-frontier-acquisition-independent-verification:v6"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -4067,6 +4085,24 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_exchangeability_verification_v5": (
             CONSTRUCTION_K7_STANDARD_2048_EXCHANGEABILITY_VERIFICATION_V5_DOMAIN
+        ),
+        "construction_k7_standard_2048_frontier_acquisition_preregistration_v6": (
+            CONSTRUCTION_K7_STANDARD_2048_FRONTIER_ACQUISITION_PREREGISTRATION_V6_DOMAIN
+        ),
+        "construction_k7_standard_2048_frontier_acquisition_certificate_v6": (
+            CONSTRUCTION_K7_STANDARD_2048_FRONTIER_ACQUISITION_CERTIFICATE_V6_DOMAIN
+        ),
+        "construction_k7_standard_2048_frontier_acquisition_route_decision_v6": (
+            CONSTRUCTION_K7_STANDARD_2048_FRONTIER_ACQUISITION_ROUTE_DECISION_V6_DOMAIN
+        ),
+        "construction_k7_standard_2048_frontier_acquisition_episode_v6": (
+            CONSTRUCTION_K7_STANDARD_2048_FRONTIER_ACQUISITION_EPISODE_V6_DOMAIN
+        ),
+        "construction_k7_standard_2048_frontier_acquisition_campaign_v6": (
+            CONSTRUCTION_K7_STANDARD_2048_FRONTIER_ACQUISITION_CAMPAIGN_V6_DOMAIN
+        ),
+        "construction_k7_standard_2048_frontier_acquisition_verification_v6": (
+            CONSTRUCTION_K7_STANDARD_2048_FRONTIER_ACQUISITION_VERIFICATION_V6_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
