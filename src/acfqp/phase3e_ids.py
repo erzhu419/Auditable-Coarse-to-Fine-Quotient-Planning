@@ -1152,6 +1152,24 @@ CONSTRUCTION_K7_STANDARD_2048_TARGETED_CAMPAIGN_V7_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_TARGETED_VERIFICATION_V7_DOMAIN = (
     "acfqp:construction-k7-standard-2048-targeted-independent-verification:v7"
 )
+CONSTRUCTION_K7_STANDARD_2048_H3_REUSE_PREREGISTRATION_V8_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-h3-reuse-preregistration:v8"
+)
+CONSTRUCTION_K7_STANDARD_2048_H3_TARGETED_INTERVAL_BINDING_V8_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-h3-targeted-interval-binding:v8"
+)
+CONSTRUCTION_K7_STANDARD_2048_H3_TARGETED_SUPPORT_PROPOSAL_V8_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-h3-targeted-support-proposal:v8"
+)
+CONSTRUCTION_K7_STANDARD_2048_H3_REUSE_EPISODE_V8_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-h3-reuse-episode:v8"
+)
+CONSTRUCTION_K7_STANDARD_2048_H3_REUSE_CAMPAIGN_V8_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-h3-reuse-campaign:v8"
+)
+CONSTRUCTION_K7_STANDARD_2048_H3_REUSE_VERIFICATION_V8_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-h3-reuse-independent-verification:v8"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -4151,6 +4169,24 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_targeted_verification_v7": (
             CONSTRUCTION_K7_STANDARD_2048_TARGETED_VERIFICATION_V7_DOMAIN
+        ),
+        "construction_k7_standard_2048_h3_reuse_preregistration_v8": (
+            CONSTRUCTION_K7_STANDARD_2048_H3_REUSE_PREREGISTRATION_V8_DOMAIN
+        ),
+        "construction_k7_standard_2048_h3_targeted_interval_binding_v8": (
+            CONSTRUCTION_K7_STANDARD_2048_H3_TARGETED_INTERVAL_BINDING_V8_DOMAIN
+        ),
+        "construction_k7_standard_2048_h3_targeted_support_proposal_v8": (
+            CONSTRUCTION_K7_STANDARD_2048_H3_TARGETED_SUPPORT_PROPOSAL_V8_DOMAIN
+        ),
+        "construction_k7_standard_2048_h3_reuse_episode_v8": (
+            CONSTRUCTION_K7_STANDARD_2048_H3_REUSE_EPISODE_V8_DOMAIN
+        ),
+        "construction_k7_standard_2048_h3_reuse_campaign_v8": (
+            CONSTRUCTION_K7_STANDARD_2048_H3_REUSE_CAMPAIGN_V8_DOMAIN
+        ),
+        "construction_k7_standard_2048_h3_reuse_verification_v8": (
+            CONSTRUCTION_K7_STANDARD_2048_H3_REUSE_VERIFICATION_V8_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
