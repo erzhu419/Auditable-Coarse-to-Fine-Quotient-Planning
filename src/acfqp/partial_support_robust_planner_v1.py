@@ -22,7 +22,11 @@ import itertools
 from typing import Any, Iterable, Mapping, Sequence
 
 from acfqp import construction_accounting_owned_runtime_v1 as accounting_runtime
-from acfqp.phase3e_ids import canonical_json_bytes, parse_content_id
+from acfqp.phase3e_ids import (
+    canonical_json_bytes,
+    loads_canonical_json,
+    parse_content_id,
+)
 
 
 SCHEMA_VERSION = "1.0.0"
@@ -685,6 +689,93 @@ def build_partial_support_model_v1(
     )
 
 
+def replay_partial_support_interval_model_bytes_v1(
+    canonical_model_bytes: bytes,
+) -> PartialSupportIntervalModelV1:
+    """Rebuild one strict typed model from its canonical portable document.
+
+    This is a serialization boundary only.  It does not run a planner, open an
+    observer, inspect a kernel, or acquire ground evidence.
+    """
+
+    try:
+        document = loads_canonical_json(canonical_model_bytes)
+    except (TypeError, ValueError) as error:
+        raise PartialSupportRobustPlannerInvariantViolation(
+            "partial-support model is not canonical JSON"
+        ) from error
+    if type(document) is not dict or canonical_json_bytes(document) != canonical_model_bytes:
+        raise PartialSupportRobustPlannerInvariantViolation(
+            "partial-support model is not one canonical object"
+        )
+
+    try:
+        catalogues = tuple(
+            StateActionCatalogueV1(
+                item["state_id"],
+                item["state_coordinate_key"],
+                tuple(
+                    CatalogueActionV1(
+                        action["action_id"], action["action_coordinate_key"]
+                    )
+                    for action in item["actions"]
+                ),
+            )
+            for item in document["catalogues"]
+        )
+        destinations = tuple(
+            RegisteredDestinationV1(
+                item["destination_id"],
+                DestinationCategory(item["category"]),
+                item["state_id"],
+            )
+            for item in document["destinations"]
+        )
+        rows = tuple(
+            IntervalSimplexRowV1(
+                item["state_id"],
+                item["remaining_horizon"],
+                item["action_id"],
+                item["reward_lower"],
+                item["reward_upper"],
+                item["other_destination_id"],
+                tuple(
+                    IntervalDestinationMassV1(
+                        mass["destination_id"], mass["lower"], mass["upper"]
+                    )
+                    for mass in item["masses"]
+                ),
+            )
+            for item in document["rows"]
+        )
+        concretizers = tuple(
+            DistinctActionConcretizerEntryV1(
+                item["state_coordinate_key"],
+                item["state_id"],
+                item["abstract_action_key"],
+                tuple(item["ground_action_ids"]),
+            )
+            for item in document["concretizer_entries"]
+        )
+        model = build_partial_support_model_v1(
+            context_id=document["context_id"],
+            root_state_id=document["root_state_id"],
+            catalogues=catalogues,
+            destinations=destinations,
+            rows=rows,
+            concretizer_entries=concretizers,
+        )
+    except (KeyError, TypeError, ValueError) as error:
+        raise PartialSupportRobustPlannerInvariantViolation(
+            "partial-support model failed typed literal replay"
+        ) from error
+    if canonical_json_bytes(model.to_document()) != canonical_model_bytes:
+        raise PartialSupportRobustPlannerInvariantViolation(
+            "partial-support model differs from exact typed replay"
+        )
+    return model
+
+
 @dataclass(frozen=True, slots=True)
 class RobustThresholdProfileV1:
     context_id: str
@@ -737,6 +828,39 @@ class RobustThresholdProfileV1:
             **self._payload(),
             "threshold_profile_id": self.threshold_profile_id,
         }
+
+
+def replay_robust_threshold_profile_bytes_v1(
+    canonical_threshold_bytes: bytes,
+) -> RobustThresholdProfileV1:
+    """Rebuild one robust threshold without planning or ground access."""
+
+    try:
+        document = loads_canonical_json(canonical_threshold_bytes)
+    except (TypeError, ValueError) as error:
+        raise PartialSupportRobustPlannerInvariantViolation(
+            "robust threshold is not canonical JSON"
+        ) from error
+    if type(document) is not dict or canonical_json_bytes(document) != canonical_threshold_bytes:
+        raise PartialSupportRobustPlannerInvariantViolation(
+            "robust threshold is not one canonical object"
+        )
+    try:
+        threshold = RobustThresholdProfileV1(
+            document["context_id"],
+            document["risk_tolerance"],
+            document["reward_ceiling"],
+            document["normalized_regret_tolerance"],
+        )
+    except (KeyError, TypeError, ValueError) as error:
+        raise PartialSupportRobustPlannerInvariantViolation(
+            "robust threshold failed typed literal replay"
+        ) from error
+    if canonical_json_bytes(threshold.to_document()) != canonical_threshold_bytes:
+        raise PartialSupportRobustPlannerInvariantViolation(
+            "robust threshold differs from exact typed replay"
+        )
+    return threshold
 
 
 @dataclass(frozen=True, slots=True)
@@ -2244,6 +2368,8 @@ __all__ = [
     "StateActionCatalogueV1",
     "CatalogueActionV1",
     "build_partial_support_model_v1",
+    "replay_partial_support_interval_model_bytes_v1",
+    "replay_robust_threshold_profile_bytes_v1",
     "solve_ground_direct_robust_h2_v1",
     "solve_quotient_robust_h2_v1",
     "verify_robust_plan_audit_v1",
