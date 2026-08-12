@@ -1092,6 +1092,24 @@ CONSTRUCTION_K7_STANDARD_2048_AFFINE_CAMPAIGN_V4_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_AFFINE_VERIFICATION_V4_DOMAIN = (
     "acfqp:construction-k7-standard-2048-affine-independent-verification:v4"
 )
+CONSTRUCTION_K7_STANDARD_2048_EXCHANGEABILITY_PREREGISTRATION_V5_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-exchangeability-preregistration:v5"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXCHANGEABILITY_CERTIFICATE_V5_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-exchangeability-certificate:v5"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXCHANGEABILITY_ROUTE_DECISION_V5_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-exchangeability-route-decision:v5"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXCHANGEABILITY_EPISODE_V5_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-exchangeability-episode:v5"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXCHANGEABILITY_CAMPAIGN_V5_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-exchangeability-campaign:v5"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXCHANGEABILITY_VERIFICATION_V5_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-exchangeability-independent-verification:v5"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -4031,6 +4049,24 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_affine_verification_v4": (
             CONSTRUCTION_K7_STANDARD_2048_AFFINE_VERIFICATION_V4_DOMAIN
+        ),
+        "construction_k7_standard_2048_exchangeability_preregistration_v5": (
+            CONSTRUCTION_K7_STANDARD_2048_EXCHANGEABILITY_PREREGISTRATION_V5_DOMAIN
+        ),
+        "construction_k7_standard_2048_exchangeability_certificate_v5": (
+            CONSTRUCTION_K7_STANDARD_2048_EXCHANGEABILITY_CERTIFICATE_V5_DOMAIN
+        ),
+        "construction_k7_standard_2048_exchangeability_route_decision_v5": (
+            CONSTRUCTION_K7_STANDARD_2048_EXCHANGEABILITY_ROUTE_DECISION_V5_DOMAIN
+        ),
+        "construction_k7_standard_2048_exchangeability_episode_v5": (
+            CONSTRUCTION_K7_STANDARD_2048_EXCHANGEABILITY_EPISODE_V5_DOMAIN
+        ),
+        "construction_k7_standard_2048_exchangeability_campaign_v5": (
+            CONSTRUCTION_K7_STANDARD_2048_EXCHANGEABILITY_CAMPAIGN_V5_DOMAIN
+        ),
+        "construction_k7_standard_2048_exchangeability_verification_v5": (
+            CONSTRUCTION_K7_STANDARD_2048_EXCHANGEABILITY_VERIFICATION_V5_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
