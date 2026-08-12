@@ -1074,6 +1074,24 @@ CONSTRUCTION_K7_STANDARD_2048_SAMPLE_TAX_CAMPAIGN_V3_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_SAMPLE_TAX_VERIFICATION_V3_DOMAIN = (
     "acfqp:construction-k7-standard-2048-sample-tax-independent-verification:v3"
 )
+CONSTRUCTION_K7_STANDARD_2048_AFFINE_META_PRIOR_V4_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-affine-meta-prior:v4"
+)
+CONSTRUCTION_K7_STANDARD_2048_AFFINE_CERTIFICATE_V4_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-affine-certificate:v4"
+)
+CONSTRUCTION_K7_STANDARD_2048_AFFINE_ROUTE_DECISION_V4_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-affine-route-decision:v4"
+)
+CONSTRUCTION_K7_STANDARD_2048_AFFINE_LONG_EPISODE_V4_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-affine-long-episode:v4"
+)
+CONSTRUCTION_K7_STANDARD_2048_AFFINE_CAMPAIGN_V4_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-affine-meta-prior-campaign:v4"
+)
+CONSTRUCTION_K7_STANDARD_2048_AFFINE_VERIFICATION_V4_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-affine-independent-verification:v4"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -3995,6 +4013,24 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_sample_tax_verification_v3": (
             CONSTRUCTION_K7_STANDARD_2048_SAMPLE_TAX_VERIFICATION_V3_DOMAIN
+        ),
+        "construction_k7_standard_2048_affine_meta_prior_v4": (
+            CONSTRUCTION_K7_STANDARD_2048_AFFINE_META_PRIOR_V4_DOMAIN
+        ),
+        "construction_k7_standard_2048_affine_certificate_v4": (
+            CONSTRUCTION_K7_STANDARD_2048_AFFINE_CERTIFICATE_V4_DOMAIN
+        ),
+        "construction_k7_standard_2048_affine_route_decision_v4": (
+            CONSTRUCTION_K7_STANDARD_2048_AFFINE_ROUTE_DECISION_V4_DOMAIN
+        ),
+        "construction_k7_standard_2048_affine_long_episode_v4": (
+            CONSTRUCTION_K7_STANDARD_2048_AFFINE_LONG_EPISODE_V4_DOMAIN
+        ),
+        "construction_k7_standard_2048_affine_campaign_v4": (
+            CONSTRUCTION_K7_STANDARD_2048_AFFINE_CAMPAIGN_V4_DOMAIN
+        ),
+        "construction_k7_standard_2048_affine_verification_v4": (
+            CONSTRUCTION_K7_STANDARD_2048_AFFINE_VERIFICATION_V4_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
