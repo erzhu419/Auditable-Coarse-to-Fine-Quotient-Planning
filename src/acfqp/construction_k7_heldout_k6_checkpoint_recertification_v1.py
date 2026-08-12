@@ -864,7 +864,7 @@ class K6CheckpointRecertificationResultV1:
             ),
             "formal_exact_iid_plan_certificate": False,
             "heldout_family_scope": (
-                "REGISTERED_N4_SOURCE_TO_W5_AND_K6_TARGETS_ONLY"
+                "REGISTERED_N4_SOURCE_TO_K6_TARGET_ONLY"
             ),
             "broad_cross_domain_generalization_claimed": False,
             "official_execution_allowed": False,
