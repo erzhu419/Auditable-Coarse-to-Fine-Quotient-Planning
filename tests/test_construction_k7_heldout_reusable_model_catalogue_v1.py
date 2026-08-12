@@ -151,6 +151,18 @@ def test_immutable_partial_snapshot_misses_until_exact_entry_is_promoted(
     assert hit.selected_entry_id == k6_entry.entry_id
 
 
+def test_empty_bootstrap_catalogue_is_an_exact_no_model_snapshot() -> None:
+    empty = subject.build_heldout_reusable_model_catalogue_snapshot_v1(())
+    document = empty.to_document()
+    assert document["registered_model_count"] == 0
+    assert document["ordered_entry_ids"] == []
+    assert document["registered_structural_context_keys"] == []
+    for context in observer.registered_public_graph_contexts_v1():
+        selection = subject.select_heldout_reusable_model_v1(empty, context)
+        assert selection.outcome == "MODEL_MISS"
+        assert selection.selected_entry_id is None
+
+
 def test_selection_does_not_replay_model_or_touch_observer(
     catalogue,
     monkeypatch,

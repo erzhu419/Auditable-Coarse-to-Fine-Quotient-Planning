@@ -252,7 +252,6 @@ class HeldoutReusableModelCatalogueV1:
         family_keys = tuple(item.family_key for item in entries)
         if (
             self._issuer is not _CATALOGUE_ISSUER
-            or not entries
             or len(entries) > len(_FAMILY_SPECS)
             or family_keys
             != tuple(key for key in _FAMILY_SPECS if key in family_keys)
@@ -438,7 +437,7 @@ def build_heldout_reusable_model_catalogue_entry_v1(
 def build_heldout_reusable_model_catalogue_snapshot_v1(
     entries: tuple[HeldoutReusableModelCatalogueEntryV1, ...],
 ) -> HeldoutReusableModelCatalogueV1:
-    """Freeze one nonempty exact subset of the registered model inventory."""
+    """Freeze one exact subset, including the empty bootstrap inventory."""
 
     if type(entries) is not tuple:
         _fail("model catalogue snapshot entries must be one exact tuple")
