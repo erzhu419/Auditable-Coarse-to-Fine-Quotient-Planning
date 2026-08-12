@@ -900,6 +900,24 @@ CONSTRUCTION_K7_OBSERVED_CONSTRUCTOR_DECISION_V1_DOMAIN = (
 CONSTRUCTION_K7_OBSERVATION_DRIVEN_SYNTHESIS_V2_RESULT_V1_DOMAIN = (
     "acfqp:construction-k7-observation-driven-synthesis-v2-result:v1"
 )
+CONSTRUCTION_K7_OBSERVED_PROGRAM_GRAMMAR_V1_DOMAIN = (
+    "acfqp:construction-k7-observed-program-grammar:v1"
+)
+CONSTRUCTION_K7_OBSERVED_PROGRAM_CORPUS_V1_DOMAIN = (
+    "acfqp:construction-k7-observed-program-corpus:v1"
+)
+CONSTRUCTION_K7_OBSERVED_PROGRAM_CANDIDATE_V1_DOMAIN = (
+    "acfqp:construction-k7-observed-program-candidate:v1"
+)
+CONSTRUCTION_K7_OBSERVED_PROGRAM_PROPOSAL_V1_DOMAIN = (
+    "acfqp:construction-k7-observed-program-proposal:v1"
+)
+CONSTRUCTION_K7_OBSERVED_PROGRAM_DECISION_V1_DOMAIN = (
+    "acfqp:construction-k7-observed-program-decision:v1"
+)
+CONSTRUCTION_K7_OBSERVATION_DRIVEN_SYNTHESIS_V3_RESULT_V1_DOMAIN = (
+    "acfqp:construction-k7-observation-driven-synthesis-v3-result:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -3581,6 +3599,24 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_observation_driven_synthesis_v2_result_v1": (
             CONSTRUCTION_K7_OBSERVATION_DRIVEN_SYNTHESIS_V2_RESULT_V1_DOMAIN
+        ),
+        "construction_k7_observed_program_grammar_v1": (
+            CONSTRUCTION_K7_OBSERVED_PROGRAM_GRAMMAR_V1_DOMAIN
+        ),
+        "construction_k7_observed_program_corpus_v1": (
+            CONSTRUCTION_K7_OBSERVED_PROGRAM_CORPUS_V1_DOMAIN
+        ),
+        "construction_k7_observed_program_candidate_v1": (
+            CONSTRUCTION_K7_OBSERVED_PROGRAM_CANDIDATE_V1_DOMAIN
+        ),
+        "construction_k7_observed_program_proposal_v1": (
+            CONSTRUCTION_K7_OBSERVED_PROGRAM_PROPOSAL_V1_DOMAIN
+        ),
+        "construction_k7_observed_program_decision_v1": (
+            CONSTRUCTION_K7_OBSERVED_PROGRAM_DECISION_V1_DOMAIN
+        ),
+        "construction_k7_observation_driven_synthesis_v3_result_v1": (
+            CONSTRUCTION_K7_OBSERVATION_DRIVEN_SYNTHESIS_V3_RESULT_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
