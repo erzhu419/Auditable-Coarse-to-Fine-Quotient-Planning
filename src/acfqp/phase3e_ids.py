@@ -1128,6 +1128,30 @@ CONSTRUCTION_K7_STANDARD_2048_FRONTIER_ACQUISITION_CAMPAIGN_V6_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_FRONTIER_ACQUISITION_VERIFICATION_V6_DOMAIN = (
     "acfqp:construction-k7-standard-2048-frontier-acquisition-independent-verification:v6"
 )
+CONSTRUCTION_K7_STANDARD_2048_TARGETED_SOURCE_ARCHIVE_V7_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-targeted-source-archive:v7"
+)
+CONSTRUCTION_K7_STANDARD_2048_TARGETED_VALIDATION_ARCHIVE_V7_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-targeted-validation-archive:v7"
+)
+CONSTRUCTION_K7_STANDARD_2048_TARGETED_PREREGISTRATION_V7_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-targeted-preregistration:v7"
+)
+CONSTRUCTION_K7_STANDARD_2048_TARGETED_CERTIFICATE_V7_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-targeted-certificate:v7"
+)
+CONSTRUCTION_K7_STANDARD_2048_TARGETED_ROUTE_DECISION_V7_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-targeted-route-decision:v7"
+)
+CONSTRUCTION_K7_STANDARD_2048_TARGETED_EPISODE_V7_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-targeted-episode:v7"
+)
+CONSTRUCTION_K7_STANDARD_2048_TARGETED_CAMPAIGN_V7_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-targeted-campaign:v7"
+)
+CONSTRUCTION_K7_STANDARD_2048_TARGETED_VERIFICATION_V7_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-targeted-independent-verification:v7"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -4103,6 +4127,30 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_frontier_acquisition_verification_v6": (
             CONSTRUCTION_K7_STANDARD_2048_FRONTIER_ACQUISITION_VERIFICATION_V6_DOMAIN
+        ),
+        "construction_k7_standard_2048_targeted_source_archive_v7": (
+            CONSTRUCTION_K7_STANDARD_2048_TARGETED_SOURCE_ARCHIVE_V7_DOMAIN
+        ),
+        "construction_k7_standard_2048_targeted_validation_archive_v7": (
+            CONSTRUCTION_K7_STANDARD_2048_TARGETED_VALIDATION_ARCHIVE_V7_DOMAIN
+        ),
+        "construction_k7_standard_2048_targeted_preregistration_v7": (
+            CONSTRUCTION_K7_STANDARD_2048_TARGETED_PREREGISTRATION_V7_DOMAIN
+        ),
+        "construction_k7_standard_2048_targeted_certificate_v7": (
+            CONSTRUCTION_K7_STANDARD_2048_TARGETED_CERTIFICATE_V7_DOMAIN
+        ),
+        "construction_k7_standard_2048_targeted_route_decision_v7": (
+            CONSTRUCTION_K7_STANDARD_2048_TARGETED_ROUTE_DECISION_V7_DOMAIN
+        ),
+        "construction_k7_standard_2048_targeted_episode_v7": (
+            CONSTRUCTION_K7_STANDARD_2048_TARGETED_EPISODE_V7_DOMAIN
+        ),
+        "construction_k7_standard_2048_targeted_campaign_v7": (
+            CONSTRUCTION_K7_STANDARD_2048_TARGETED_CAMPAIGN_V7_DOMAIN
+        ),
+        "construction_k7_standard_2048_targeted_verification_v7": (
+            CONSTRUCTION_K7_STANDARD_2048_TARGETED_VERIFICATION_V7_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
