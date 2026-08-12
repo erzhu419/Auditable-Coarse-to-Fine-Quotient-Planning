@@ -32,6 +32,7 @@ from acfqp.phase3e_ids import (
     PHASE3E_DOMAIN_TAGS,
     canonical_json_bytes,
     content_id,
+    loads_canonical_json,
     parse_content_id,
 )
 
@@ -97,6 +98,7 @@ class CataloguePromotionPreregistrationV1:
     _issuer: InitVar[object]
     initial_catalogue: catalogue_v1.HeldoutReusableModelCatalogueV1
     initial_miss: router_v1.HeldoutCatalogueQueryResultV1
+    w5_reuse_result_bytes: bytes = field(repr=False)
     target_context_id: str
     target_topology_id: str
     _preregistration_id: str = field(init=False, repr=False)
@@ -115,8 +117,24 @@ class CataloguePromotionPreregistrationV1:
             or self.initial_miss.query.context_key != source_v1.TARGET_CONTEXT_KEY
             or self.initial_miss.query.context_id != self.target_context_id
             or self.initial_miss.query.topology_id != self.target_topology_id
+            or type(self.w5_reuse_result_bytes) is not bytes
+            or hashlib.sha256(self.w5_reuse_result_bytes).hexdigest()
+            != self.initial_catalogue.entries[0].source_reuse_bytes_sha256
         ):
             _fail("catalogue promotion preregistration is not the exact K6 miss")
+        try:
+            w5_document = loads_canonical_json(self.w5_reuse_result_bytes)
+        except (TypeError, ValueError) as error:
+            raise ConstructionK7HeldoutCatalogueMissRecoveryPromotionV1Error(
+                "initial W5 reuse evidence is not canonical JSON"
+            ) from error
+        if (
+            type(w5_document) is not dict
+            or canonical_json_bytes(w5_document) != self.w5_reuse_result_bytes
+            or w5_document.get("result_id")
+            != self.initial_catalogue.entries[0].source_reuse_result_id
+        ):
+            _fail("initial W5 reuse evidence changed")
         _cid(self.target_context_id, "promotion target context")
         _cid(self.target_topology_id, "promotion target topology")
         object.__setattr__(
@@ -164,6 +182,7 @@ class CataloguePromotionPreregistrationV1:
             **self._payload(),
             "initial_catalogue": self.initial_catalogue.to_document(),
             "initial_miss": self.initial_miss.to_document(),
+            "w5_reuse_result": loads_canonical_json(self.w5_reuse_result_bytes),
             "promotion_preregistration_id": self.preregistration_id,
         }
 
@@ -491,6 +510,7 @@ def run_catalogue_miss_recovery_promotion_v1(
         _PREREG_ISSUER,
         initial_catalogue,
         initial_miss,
+        w5_reuse_result_bytes,
         context.context_id,
         context.topology.topology_id,
     )
