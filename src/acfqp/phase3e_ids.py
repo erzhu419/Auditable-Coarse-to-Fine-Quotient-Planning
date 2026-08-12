@@ -963,6 +963,30 @@ CONSTRUCTION_K7_BASIS_HELDOUT_SYNTHESIS_CAMPAIGN_V1_DOMAIN = (
 CONSTRUCTION_K7_BASIS_HELDOUT_INDEPENDENT_VERIFICATION_V1_DOMAIN = (
     "acfqp:construction-k7-basis-heldout-independent-verification:v1"
 )
+CONSTRUCTION_K7_STANDARD_2048_PREREGISTRATION_V1_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-preregistration:v1"
+)
+CONSTRUCTION_K7_STANDARD_2048_QUOTIENT_ROW_V1_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-quotient-row:v1"
+)
+CONSTRUCTION_K7_STANDARD_2048_WORLD_MODEL_V1_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-world-model:v1"
+)
+CONSTRUCTION_K7_STANDARD_2048_MODEL_AUDIT_V1_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-model-audit:v1"
+)
+CONSTRUCTION_K7_STANDARD_2048_ABSTRACT_PLAN_V1_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-abstract-plan:v1"
+)
+CONSTRUCTION_K7_STANDARD_2048_MATCHED_DIRECT_V1_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-matched-direct:v1"
+)
+CONSTRUCTION_K7_STANDARD_2048_RECEDING_CAMPAIGN_V1_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-receding-campaign:v1"
+)
+CONSTRUCTION_K7_STANDARD_2048_INDEPENDENT_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-independent-verification:v1"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -3773,6 +3797,30 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_basis_heldout_independent_verification_v1": (
             CONSTRUCTION_K7_BASIS_HELDOUT_INDEPENDENT_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_standard_2048_preregistration_v1": (
+            CONSTRUCTION_K7_STANDARD_2048_PREREGISTRATION_V1_DOMAIN
+        ),
+        "construction_k7_standard_2048_quotient_row_v1": (
+            CONSTRUCTION_K7_STANDARD_2048_QUOTIENT_ROW_V1_DOMAIN
+        ),
+        "construction_k7_standard_2048_world_model_v1": (
+            CONSTRUCTION_K7_STANDARD_2048_WORLD_MODEL_V1_DOMAIN
+        ),
+        "construction_k7_standard_2048_model_audit_v1": (
+            CONSTRUCTION_K7_STANDARD_2048_MODEL_AUDIT_V1_DOMAIN
+        ),
+        "construction_k7_standard_2048_abstract_plan_v1": (
+            CONSTRUCTION_K7_STANDARD_2048_ABSTRACT_PLAN_V1_DOMAIN
+        ),
+        "construction_k7_standard_2048_matched_direct_v1": (
+            CONSTRUCTION_K7_STANDARD_2048_MATCHED_DIRECT_V1_DOMAIN
+        ),
+        "construction_k7_standard_2048_receding_campaign_v1": (
+            CONSTRUCTION_K7_STANDARD_2048_RECEDING_CAMPAIGN_V1_DOMAIN
+        ),
+        "construction_k7_standard_2048_independent_verification_v1": (
+            CONSTRUCTION_K7_STANDARD_2048_INDEPENDENT_VERIFICATION_V1_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
