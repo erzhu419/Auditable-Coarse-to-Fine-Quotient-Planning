@@ -825,6 +825,15 @@ CONSTRUCTION_K7_HELDOUT_CROSS_STRUCTURAL_CAMPAIGN_RESULT_V1_DOMAIN = (
 CONSTRUCTION_K7_HELDOUT_CROSS_STRUCTURAL_CAMPAIGN_INDEPENDENT_VERIFICATION_V1_DOMAIN = (
     "acfqp:construction-k7-heldout-cross-structural-campaign-independent-verification:v1"
 )
+CONSTRUCTION_K7_HELDOUT_MODEL_CATALOGUE_ENTRY_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-model-catalogue-entry:v1"
+)
+CONSTRUCTION_K7_HELDOUT_MODEL_CATALOGUE_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-model-catalogue:v1"
+)
+CONSTRUCTION_K7_HELDOUT_MODEL_SELECTION_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-model-selection:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -3431,6 +3440,15 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_heldout_cross_structural_campaign_independent_verification_v1": (
             CONSTRUCTION_K7_HELDOUT_CROSS_STRUCTURAL_CAMPAIGN_INDEPENDENT_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_heldout_model_catalogue_entry_v1": (
+            CONSTRUCTION_K7_HELDOUT_MODEL_CATALOGUE_ENTRY_V1_DOMAIN
+        ),
+        "construction_k7_heldout_model_catalogue_v1": (
+            CONSTRUCTION_K7_HELDOUT_MODEL_CATALOGUE_V1_DOMAIN
+        ),
+        "construction_k7_heldout_model_selection_v1": (
+            CONSTRUCTION_K7_HELDOUT_MODEL_SELECTION_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
