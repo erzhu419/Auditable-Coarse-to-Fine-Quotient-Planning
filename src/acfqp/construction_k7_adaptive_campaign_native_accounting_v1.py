@@ -19,6 +19,7 @@ from __future__ import annotations
 from dataclasses import InitVar, dataclass, field
 import hashlib
 import importlib
+import resource
 import threading
 from types import MappingProxyType
 from typing import Any, Mapping, NoReturn
@@ -41,12 +42,13 @@ from acfqp.phase3e_ids import (
     PHASE3E_DOMAIN_TAGS,
     canonical_json_bytes,
     content_id,
+    loads_canonical_json,
     parse_content_id,
 )
 
 
-SCHEMA_VERSION = "1.0.0"
-PROPOSED_CONTRACT_VERSION = "2.0.147"
+SCHEMA_VERSION = "1.1.0"
+PROPOSED_CONTRACT_VERSION = "2.0.148"
 PROFILE_KEY = "construction_k7_adaptive_campaign_native_accounting_v1"
 RECORDER_KEY = "construction-k7-adaptive-native-v1"
 
@@ -396,6 +398,22 @@ _BOUNDARY_ROWS = (
         "process.launches",
     ),
     (
+        "adaptive-world-model.coordinate-worker-staged-payload-byte",
+        "acfqp.observation_support_coordinate_refinement_v1",
+        "_emit_candidate_accounting_v1",
+        (_P.LOCAL_RECOVERY.value,),
+        "io.staged_bytes",
+        "io.staged_bytes",
+    ),
+    (
+        "adaptive-world-model.coordinate-worker-working-bytes-upper",
+        "acfqp.observation_support_coordinate_refinement_v1",
+        "_emit_candidate_accounting_v1",
+        (_P.LOCAL_RECOVERY.value,),
+        "memory.working_bytes_peak",
+        "memory.working_bytes_peak",
+    ),
+    (
         "adaptive-world-model.main-hash-invocation",
         "acfqp.construction_k7_adaptive_campaign_native_accounting_v1",
         "run_adaptive_campaign_native_accounting_v1",
@@ -405,6 +423,50 @@ _BOUNDARY_ROWS = (
             _P.LOCAL_RECOVERY.value,
         ),
         "common.hash_invocations",
+        None,
+    ),
+    (
+        "adaptive-world-model.route-input-read-byte",
+        "acfqp.construction_k7_adaptive_campaign_native_accounting_v1",
+        "_emit_route_input_accounting_v1",
+        (_P.COMMON_PREFIX.value,),
+        "io.read_bytes",
+        None,
+    ),
+    (
+        "adaptive-world-model.route-input-hash-invocation",
+        "acfqp.construction_k7_adaptive_campaign_native_accounting_v1",
+        "_emit_route_input_accounting_v1",
+        (_P.COMMON_PREFIX.value,),
+        "common.hash_invocations",
+        None,
+    ),
+    (
+        "adaptive-world-model.route-input-integrity-check",
+        "acfqp.construction_k7_adaptive_campaign_native_accounting_v1",
+        "_emit_route_input_accounting_v1",
+        (_P.COMMON_PREFIX.value,),
+        "common.integrity_checks",
+        None,
+    ),
+    (
+        "adaptive-world-model.route-input-protocol-check",
+        "acfqp.construction_k7_adaptive_campaign_native_accounting_v1",
+        "_emit_route_input_accounting_v1",
+        (_P.COMMON_PREFIX.value,),
+        "common.protocol_checks",
+        None,
+    ),
+    (
+        "adaptive-world-model.main-working-bytes-peak",
+        "acfqp.construction_k7_adaptive_campaign_native_accounting_v1",
+        "_emit_main_working_peak_v1",
+        (
+            _P.ABSTRACT_CERTIFICATE.value,
+            _P.COMMON_PREFIX.value,
+            _P.LOCAL_RECOVERY.value,
+        ),
+        "memory.working_bytes_peak",
         None,
     ),
 )
@@ -607,7 +669,9 @@ class AdaptiveAggregatedOperationEventV1:
             "target_path": self.target_path,
             "emission_call_count": self.emission_call_count,
             "value": self.value,
-            "reducer": "sum",
+            "reducer": registry_v7.official_counter_registry_v7()
+            .by_path[self.target_path]
+            .reducer.value,
             "same_window_native_event": True,
         }
 
@@ -737,6 +801,8 @@ class AdaptiveOccurrenceNativeAccountingV1:
     catalogue_id_after: str
     components: tuple[AdaptiveNativeComponentV1, ...]
     shared_events: tuple[AdaptiveAggregatedOperationEventV1, ...]
+    route_input_bytes: bytes = field(repr=False, compare=False)
+    route_input_sha256: str
     _occurrence_id: str = field(init=False, repr=False)
 
     def __post_init__(self, _issuer: object) -> None:
@@ -750,6 +816,8 @@ class AdaptiveOccurrenceNativeAccountingV1:
             != _EXPECTED_PHASES_BY_OUTCOME[self.result_outcome]
             or tuple(sorted(self.shared_events, key=lambda item: item.event_id))
             != self.shared_events
+            or type(self.route_input_bytes) is not bytes
+            or not self.route_input_bytes
         ):
             _fail("adaptive occurrence is caller-minted or differs from preregistration")
         context = observer_v1.public_context_by_key_v1(self.context_key)
@@ -760,8 +828,16 @@ class AdaptiveOccurrenceNativeAccountingV1:
             (self.synthesis_result_id, "synthesis result"),
             (self.catalogue_id_before, "catalogue before"),
             (self.catalogue_id_after, "catalogue after"),
+            (self.route_input_sha256, "route input digest"),
         ):
             _cid(value, label)
+        if (
+            hashlib.sha256(self.route_input_bytes).hexdigest()
+            != self.route_input_sha256
+            or canonical_json_bytes(loads_canonical_json(self.route_input_bytes))
+            != self.route_input_bytes
+        ):
+            _fail("adaptive route-input envelope changed after execution")
         expected_occurrence_id = content_id(
             OCCURRENCE_DOMAIN,
             {
@@ -837,6 +913,9 @@ class AdaptiveOccurrenceNativeAccountingV1:
             "catalogue_id_after": self.catalogue_id_after,
             "component_ids": [item.component_id for item in self.components],
             "shared_native_event_ids": [item.event_id for item in self.shared_events],
+            "route_input_bytes_sha256": self.route_input_sha256,
+            "route_input_byte_count": len(self.route_input_bytes),
+            "route_input_envelope_retained_out_of_band": True,
             "same_window_native_events_present": True,
             "nonshared_counter_records_complete": True,
             "shared_resource_receipts_present": False,
@@ -917,7 +996,10 @@ class _AdaptiveAccountingSessionV1:
         key = (effective_phase, dispatch_key, path)
         bucket = self._buckets.setdefault(key, [0, 0])
         bucket[0] += 1
-        bucket[1] += amount
+        if self._registry.by_path[path].reducer.value == "sum":
+            bucket[1] += amount
+        else:
+            bucket[1] = max(bucket[1], amount)
 
     def finish(
         self, result_outcome: str
@@ -1103,6 +1185,103 @@ class _BusinessHashMeterV1:
             _fail("adaptive business-hash meter binding changed")
 
 
+def _route_input_envelope_v1(
+    *,
+    preregistration_id: str,
+    occurrence_id: str,
+    occurrence_index: int,
+    occurrence_role: str,
+    context: observer_v1.PublicGraphContextV1,
+    catalogue: catalogue_v1.HeldoutReusableModelCatalogueV1,
+    selected_reuse_result_bytes: bytes | None,
+) -> bytes:
+    reuse_document = (
+        None
+        if selected_reuse_result_bytes is None
+        else loads_canonical_json(selected_reuse_result_bytes)
+    )
+    return canonical_json_bytes(
+        {
+            "schema": "acfqp.construction_k7_adaptive_route_input_envelope.v1",
+            "schema_version": SCHEMA_VERSION,
+            "preregistration_id": preregistration_id,
+            "occurrence_id": occurrence_id,
+            "occurrence_index": occurrence_index,
+            "occurrence_role": occurrence_role,
+            "public_context": context.to_document(),
+            "catalogue": catalogue.to_document(),
+            "catalogue_entries": [item.to_document() for item in catalogue.entries],
+            "selected_reuse_result": reuse_document,
+            "selected_reuse_present": reuse_document is not None,
+        }
+    )
+
+
+def _emit_route_input_accounting_v1(
+    raw: bytes,
+    *,
+    occurrence_id: str,
+    context_id: str,
+    catalogue_id: str,
+    reuse_expected: bool,
+) -> str:
+    """Perform and charge the named route-input read/integrity obligations."""
+
+    if type(raw) is not bytes or not raw:
+        _fail("adaptive route-input envelope bytes are absent")
+    document = loads_canonical_json(raw)
+    canonical_ok = canonical_json_bytes(document) == raw
+    exact_keys = {
+        "schema",
+        "schema_version",
+        "preregistration_id",
+        "occurrence_id",
+        "occurrence_index",
+        "occurrence_role",
+        "public_context",
+        "catalogue",
+        "catalogue_entries",
+        "selected_reuse_result",
+        "selected_reuse_present",
+    }
+    protocol_results = (
+        set(document) == exact_keys,
+        document.get("schema")
+        == "acfqp.construction_k7_adaptive_route_input_envelope.v1",
+        document.get("occurrence_id") == occurrence_id,
+        document.get("public_context", {}).get("context_id") == context_id,
+        document.get("catalogue", {}).get("model_catalogue_id") == catalogue_id,
+        document.get("selected_reuse_present") is reuse_expected,
+    )
+    if not canonical_ok or not all(protocol_results):
+        _fail("adaptive route-input integrity or protocol obligation failed")
+    digest = hashlib.sha256(raw).hexdigest()
+    owned_runtime.emit_owned_operation_v1(
+        "adaptive-world-model.route-input-read-byte", len(raw)
+    )
+    owned_runtime.emit_owned_operation_v1(
+        "adaptive-world-model.route-input-hash-invocation", 1
+    )
+    owned_runtime.emit_owned_operation_v1(
+        "adaptive-world-model.route-input-integrity-check", 2
+    )
+    owned_runtime.emit_owned_operation_v1(
+        "adaptive-world-model.route-input-protocol-check", len(protocol_results)
+    )
+    return digest
+
+
+def _emit_main_working_peak_v1() -> None:
+    working_bytes = max(
+        1,
+        int(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss) * 1024,
+    )
+    owned_runtime.emit_owned_operation_v1(
+        "adaptive-world-model.main-working-bytes-peak",
+        working_bytes,
+    )
+
+
 def run_adaptive_campaign_native_accounting_v1() -> AdaptiveCampaignNativeAccountingResultV1:
     """Execute and natively account the frozen five-occurrence campaign."""
 
@@ -1151,8 +1330,24 @@ def run_adaptive_campaign_native_accounting_v1() -> AdaptiveCampaignNativeAccoun
             session = _AdaptiveAccountingSessionV1(
                 occurrence_id=occurrence_id, registry=registry, manifest=manifest
             )
+            route_input_bytes = _route_input_envelope_v1(
+                preregistration_id=preregistration.preregistration_id,
+                occurrence_id=occurrence_id,
+                occurrence_index=index,
+                occurrence_role=role,
+                context=context,
+                catalogue=catalogue,
+                selected_reuse_result_bytes=selected_reuse,
+            )
             token = owned_runtime._ACTIVE_RUNTIME.set(session)  # noqa: SLF001
             try:
+                route_input_sha256 = _emit_route_input_accounting_v1(
+                    route_input_bytes,
+                    occurrence_id=occurrence_id,
+                    context_id=context.context_id,
+                    catalogue_id=catalogue.catalogue_id,
+                    reuse_expected=selected_reuse is not None,
+                )
                 with _BusinessHashMeterV1() as hash_meter:
                     result = synthesis_v3.run_observation_driven_world_model_synthesis_v3(
                         catalogue,
@@ -1165,6 +1360,7 @@ def run_adaptive_campaign_native_accounting_v1() -> AdaptiveCampaignNativeAccoun
                     "adaptive-world-model.main-hash-invocation",
                     hash_meter.count,
                 )
+                _emit_main_working_peak_v1()
             finally:
                 owned_runtime._ACTIVE_RUNTIME.reset(token)  # noqa: SLF001
             executor = result.executor_result.executor_result
@@ -1193,6 +1389,8 @@ def run_adaptive_campaign_native_accounting_v1() -> AdaptiveCampaignNativeAccoun
                     catalogue.catalogue_id,
                     components,
                     shared_events,
+                    route_input_bytes,
+                    route_input_sha256,
                 )
             )
         return AdaptiveCampaignNativeAccountingResultV1(

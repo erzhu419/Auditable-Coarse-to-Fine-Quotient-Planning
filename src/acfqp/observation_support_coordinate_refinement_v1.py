@@ -31,6 +31,8 @@ from enum import Enum
 import hashlib
 from multiprocessing import get_context
 import os
+import pickle
+import resource
 from typing import Any, Mapping
 
 import acfqp.observation_support_graph_acquisition_v1 as acquisition
@@ -1253,6 +1255,7 @@ def _evaluate_candidate_task_v1(
         collector.values,
         hash_meter.count,
         os.getpid(),
+        max(1, int(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss) * 1024),
     )
 
 
@@ -1311,6 +1314,7 @@ def _validate_base_authorities(
 def _emit_candidate_accounting_v1(
     evaluated: tuple[tuple[Any, ...], ...],
     launched_worker_count: int,
+    staged_payload_bytes: int,
 ) -> None:
     """Project child-process candidate work into the local-recovery phase."""
 
@@ -1382,6 +1386,26 @@ def _emit_candidate_accounting_v1(
             accounting_runtime.emit_owned_operation_v1(
                 "adaptive-world-model.coordinate-worker-launch",
                 launched_worker_count,
+            )
+        if staged_payload_bytes:
+            accounting_runtime.emit_owned_operation_v1(
+                "adaptive-world-model.coordinate-worker-staged-payload-byte",
+                staged_payload_bytes,
+            )
+        child_peak_by_pid: dict[int, int] = {}
+        for item in evaluated:
+            child_peak_by_pid[item[6]] = max(
+                child_peak_by_pid.get(item[6], 0),
+                item[7],
+            )
+        if child_peak_by_pid:
+            parent_peak = max(
+                1,
+                int(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss) * 1024,
+            )
+            accounting_runtime.emit_owned_operation_v1(
+                "adaptive-world-model.coordinate-worker-working-bytes-upper",
+                parent_peak + sum(child_peak_by_pid.values()),
             )
 
 
@@ -1462,7 +1486,11 @@ def refine_observation_support_coordinates_v1(
                 _evaluate_candidate_task_v1(task) for task in tasks
             )
             launched_worker_count = 0
+            staged_payload_bytes = 0
         else:
+            staged_payload_bytes = sum(
+                len(pickle.dumps(task, protocol=5)) for task in tasks
+            )
             with ProcessPoolExecutor(
                 max_workers=workers,
                 mp_context=get_context("spawn"),
@@ -1476,7 +1504,12 @@ def refine_observation_support_coordinates_v1(
             _evaluate_candidate_task_v1(task) for task in tasks
         )
         launched_worker_count = 0
-    _emit_candidate_accounting_v1(evaluated, launched_worker_count)
+        staged_payload_bytes = 0
+    _emit_candidate_accounting_v1(
+        evaluated,
+        launched_worker_count,
+        staged_payload_bytes,
+    )
     traces: list[CoordinateCandidateTraceV1] = []
     for candidate, (
         rebuilt,
@@ -1486,6 +1519,7 @@ def refine_observation_support_coordinates_v1(
         _worker_events,
         _worker_hash_invocations,
         _worker_pid,
+        _worker_peak_bytes,
     ) in zip(specs, evaluated):
         traces.append(
             CoordinateCandidateTraceV1(

@@ -951,6 +951,33 @@ CONSTRUCTION_K7_ADAPTIVE_COMPONENT_NATIVE_ACCOUNTING_V1_DOMAIN = (
 CONSTRUCTION_K7_ADAPTIVE_CAMPAIGN_NATIVE_ACCOUNTING_V1_DOMAIN = (
     "acfqp:construction-k7-adaptive-campaign-native-accounting:v1"
 )
+CONSTRUCTION_K7_ADAPTIVE_ROUTE_INPUT_ENVELOPE_V1_DOMAIN = (
+    "acfqp:construction-k7-adaptive-route-input-envelope:v1"
+)
+CONSTRUCTION_K7_ADAPTIVE_SHARED_MEASUREMENT_V1_DOMAIN = (
+    "acfqp:construction-k7-adaptive-shared-measurement:v1"
+)
+CONSTRUCTION_K7_ADAPTIVE_SHARED_RECEIPT_V1_DOMAIN = (
+    "acfqp:construction-k7-adaptive-shared-receipt:v1"
+)
+CONSTRUCTION_K7_ADAPTIVE_SHARED_RECEIPT_SET_V1_DOMAIN = (
+    "acfqp:construction-k7-adaptive-shared-receipt-set:v1"
+)
+CONSTRUCTION_K7_ADAPTIVE_PATH_AGGREGATION_V1_DOMAIN = (
+    "acfqp:construction-k7-adaptive-path-aggregation:v1"
+)
+CONSTRUCTION_K7_ADAPTIVE_OCCURRENCE_ACCOUNTING_V1_DOMAIN = (
+    "acfqp:construction-k7-adaptive-occurrence-accounting:v1"
+)
+CONSTRUCTION_K7_ADAPTIVE_CAMPAIGN_ACCOUNTING_V1_DOMAIN = (
+    "acfqp:construction-k7-adaptive-campaign-accounting:v1"
+)
+CONSTRUCTION_K7_ADAPTIVE_OUTPUT_RENDERER_V1_DOMAIN = (
+    "acfqp:construction-k7-adaptive-output-renderer:v1"
+)
+CONSTRUCTION_K7_ADAPTIVE_OUTPUT_COMMIT_V1_DOMAIN = (
+    "acfqp:construction-k7-adaptive-output-commit:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -3683,6 +3710,33 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_adaptive_campaign_native_accounting_v1": (
             CONSTRUCTION_K7_ADAPTIVE_CAMPAIGN_NATIVE_ACCOUNTING_V1_DOMAIN
+        ),
+        "construction_k7_adaptive_route_input_envelope_v1": (
+            CONSTRUCTION_K7_ADAPTIVE_ROUTE_INPUT_ENVELOPE_V1_DOMAIN
+        ),
+        "construction_k7_adaptive_shared_measurement_v1": (
+            CONSTRUCTION_K7_ADAPTIVE_SHARED_MEASUREMENT_V1_DOMAIN
+        ),
+        "construction_k7_adaptive_shared_receipt_v1": (
+            CONSTRUCTION_K7_ADAPTIVE_SHARED_RECEIPT_V1_DOMAIN
+        ),
+        "construction_k7_adaptive_shared_receipt_set_v1": (
+            CONSTRUCTION_K7_ADAPTIVE_SHARED_RECEIPT_SET_V1_DOMAIN
+        ),
+        "construction_k7_adaptive_path_aggregation_v1": (
+            CONSTRUCTION_K7_ADAPTIVE_PATH_AGGREGATION_V1_DOMAIN
+        ),
+        "construction_k7_adaptive_occurrence_accounting_v1": (
+            CONSTRUCTION_K7_ADAPTIVE_OCCURRENCE_ACCOUNTING_V1_DOMAIN
+        ),
+        "construction_k7_adaptive_campaign_accounting_v1": (
+            CONSTRUCTION_K7_ADAPTIVE_CAMPAIGN_ACCOUNTING_V1_DOMAIN
+        ),
+        "construction_k7_adaptive_output_renderer_v1": (
+            CONSTRUCTION_K7_ADAPTIVE_OUTPUT_RENDERER_V1_DOMAIN
+        ),
+        "construction_k7_adaptive_output_commit_v1": (
+            CONSTRUCTION_K7_ADAPTIVE_OUTPUT_COMMIT_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
