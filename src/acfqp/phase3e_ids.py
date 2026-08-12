@@ -933,6 +933,30 @@ CONSTRUCTION_K7_OBSERVED_PROGRAM_HELDOUT_INDEPENDENT_VERIFICATION_V1_DOMAIN = (
 CONSTRUCTION_K7_OBSERVATION_DRIVEN_SYNTHESIS_V3_RESULT_V1_DOMAIN = (
     "acfqp:construction-k7-observation-driven-synthesis-v3-result:v1"
 )
+CONSTRUCTION_K7_OBSERVATION_DERIVED_PRIMITIVE_CANDIDATE_V1_DOMAIN = (
+    "acfqp:construction-k7-observation-derived-primitive-candidate:v1"
+)
+CONSTRUCTION_K7_OBSERVATION_DERIVED_PRIMITIVE_BASIS_V1_DOMAIN = (
+    "acfqp:construction-k7-observation-derived-primitive-basis:v1"
+)
+CONSTRUCTION_K7_OBSERVATION_DERIVED_PRIMITIVE_EVALUATION_V1_DOMAIN = (
+    "acfqp:construction-k7-observation-derived-primitive-evaluation:v1"
+)
+CONSTRUCTION_K7_OBSERVATION_DERIVED_PRIMITIVE_CAMPAIGN_V1_DOMAIN = (
+    "acfqp:construction-k7-observation-derived-primitive-campaign:v1"
+)
+CONSTRUCTION_K7_OBSERVATION_DERIVED_PRIMITIVE_INDEPENDENT_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-observation-derived-primitive-independent-verification:v1"
+)
+CONSTRUCTION_K7_BASIS_HELDOUT_MODEL_TRANSPORT_V1_DOMAIN = (
+    "acfqp:construction-k7-basis-heldout-model-transport:v1"
+)
+CONSTRUCTION_K7_BASIS_HELDOUT_ABSTRACT_PLAN_V1_DOMAIN = (
+    "acfqp:construction-k7-basis-heldout-abstract-plan:v1"
+)
+CONSTRUCTION_K7_BASIS_HELDOUT_SYNTHESIS_CAMPAIGN_V1_DOMAIN = (
+    "acfqp:construction-k7-basis-heldout-synthesis-campaign:v1"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -3713,6 +3737,30 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_observation_driven_synthesis_v3_result_v1": (
             CONSTRUCTION_K7_OBSERVATION_DRIVEN_SYNTHESIS_V3_RESULT_V1_DOMAIN
+        ),
+        "construction_k7_observation_derived_primitive_candidate_v1": (
+            CONSTRUCTION_K7_OBSERVATION_DERIVED_PRIMITIVE_CANDIDATE_V1_DOMAIN
+        ),
+        "construction_k7_observation_derived_primitive_basis_v1": (
+            CONSTRUCTION_K7_OBSERVATION_DERIVED_PRIMITIVE_BASIS_V1_DOMAIN
+        ),
+        "construction_k7_observation_derived_primitive_evaluation_v1": (
+            CONSTRUCTION_K7_OBSERVATION_DERIVED_PRIMITIVE_EVALUATION_V1_DOMAIN
+        ),
+        "construction_k7_observation_derived_primitive_campaign_v1": (
+            CONSTRUCTION_K7_OBSERVATION_DERIVED_PRIMITIVE_CAMPAIGN_V1_DOMAIN
+        ),
+        "construction_k7_observation_derived_primitive_independent_verification_v1": (
+            CONSTRUCTION_K7_OBSERVATION_DERIVED_PRIMITIVE_INDEPENDENT_VERIFICATION_V1_DOMAIN
+        ),
+        "construction_k7_basis_heldout_model_transport_v1": (
+            CONSTRUCTION_K7_BASIS_HELDOUT_MODEL_TRANSPORT_V1_DOMAIN
+        ),
+        "construction_k7_basis_heldout_abstract_plan_v1": (
+            CONSTRUCTION_K7_BASIS_HELDOUT_ABSTRACT_PLAN_V1_DOMAIN
+        ),
+        "construction_k7_basis_heldout_synthesis_campaign_v1": (
+            CONSTRUCTION_K7_BASIS_HELDOUT_SYNTHESIS_CAMPAIGN_V1_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
