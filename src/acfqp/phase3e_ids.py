@@ -1059,6 +1059,21 @@ CONSTRUCTION_K7_STANDARD_2048_FRESH_BOARD_CAMPAIGN_V2_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_SUPPORT_INDEPENDENT_VERIFICATION_V2_DOMAIN = (
     "acfqp:construction-k7-standard-2048-support-independent-verification:v2"
 )
+CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_PROFILE_V3_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-adaptive-acquisition-profile:v3"
+)
+CONSTRUCTION_K7_STANDARD_2048_META_PRIOR_V3_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-identity-bound-meta-prior:v3"
+)
+CONSTRUCTION_K7_STANDARD_2048_ACQUISITION_ARM_V3_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-acquisition-arm:v3"
+)
+CONSTRUCTION_K7_STANDARD_2048_SAMPLE_TAX_CAMPAIGN_V3_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-sample-tax-campaign:v3"
+)
+CONSTRUCTION_K7_STANDARD_2048_SAMPLE_TAX_VERIFICATION_V3_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-sample-tax-independent-verification:v3"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -3965,6 +3980,21 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_support_independent_verification_v2": (
             CONSTRUCTION_K7_STANDARD_2048_SUPPORT_INDEPENDENT_VERIFICATION_V2_DOMAIN
+        ),
+        "construction_k7_standard_2048_adaptive_profile_v3": (
+            CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_PROFILE_V3_DOMAIN
+        ),
+        "construction_k7_standard_2048_meta_prior_v3": (
+            CONSTRUCTION_K7_STANDARD_2048_META_PRIOR_V3_DOMAIN
+        ),
+        "construction_k7_standard_2048_acquisition_arm_v3": (
+            CONSTRUCTION_K7_STANDARD_2048_ACQUISITION_ARM_V3_DOMAIN
+        ),
+        "construction_k7_standard_2048_sample_tax_campaign_v3": (
+            CONSTRUCTION_K7_STANDARD_2048_SAMPLE_TAX_CAMPAIGN_V3_DOMAIN
+        ),
+        "construction_k7_standard_2048_sample_tax_verification_v3": (
+            CONSTRUCTION_K7_STANDARD_2048_SAMPLE_TAX_VERIFICATION_V3_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN

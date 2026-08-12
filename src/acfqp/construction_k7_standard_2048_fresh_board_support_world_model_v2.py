@@ -849,6 +849,68 @@ def _direct_plan(root: Swipe2048State, horizon: int) -> dict[str, Any]:
     return {**payload, "matched_direct_plan_id": content_id(DOMAINS["direct"], payload)}
 
 
+def _direct_plan_forced_action(
+    root: Swipe2048State,
+    horizon: int,
+    forced_action: Swipe2048Action,
+) -> dict[str, Any]:
+    """Evaluate one registered root action with the same exact continuation."""
+
+    if (
+        type(root) is not Swipe2048State
+        or type(horizon) is not int
+        or horizon <= 0
+        or type(forced_action) is not Swipe2048Action
+        or forced_action not in legal_actions_v1(root.board)
+    ):
+        _fail("forced direct evaluation input changed")
+
+    @lru_cache(maxsize=None)
+    def solve(board: tuple[int, ...], status_value: str, remaining: int) -> _ExactValueV1:
+        state = Swipe2048State(board, Swipe2048Status(status_value))
+        if remaining == 0 or state.status is Swipe2048Status.WON:
+            return _ExactValueV1(Fraction(), Fraction(), None)
+        if state.status is Swipe2048Status.LOST:
+            return _ExactValueV1(Fraction(), Fraction(1), None)
+        best: _ExactValueV1 | None = None
+        for action in legal_actions_v1(state.board):
+            score = Fraction()
+            loss = Fraction()
+            for outcome in step_v1(state, action):
+                child = solve(
+                    outcome.next_state.board,
+                    outcome.next_state.status.value,
+                    remaining - 1,
+                )
+                score += outcome.probability * (
+                    outcome.merge_score + child.expected_score
+                )
+                loss += outcome.probability * child.loss_probability
+            candidate = _ExactValueV1(score, loss, action)
+            if _better_exact(candidate, best):
+                best = candidate
+        if best is None:
+            return _ExactValueV1(Fraction(), Fraction(1), None)
+        return best
+
+    score = Fraction()
+    loss = Fraction()
+    for outcome in step_v1(root, forced_action):
+        child = solve(
+            outcome.next_state.board,
+            outcome.next_state.status.value,
+            horizon - 1,
+        )
+        score += outcome.probability * (outcome.merge_score + child.expected_score)
+        loss += outcome.probability * child.loss_probability
+    return {
+        "forced_action": forced_action.value,
+        "expected_merge_score": _fdoc(score),
+        "loss_probability_within_horizon": _fdoc(loss),
+        "evaluation_lane_only": True,
+    }
+
+
 def _preregistration_document(
     evidence: Standard2048SpawnSupportEvidenceV2,
 ) -> dict[str, Any]:
