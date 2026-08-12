@@ -771,6 +771,27 @@ CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_REUSE_INDEPENDENT_VERIFICATION_V1_DOMAIN = (
 CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_STAGE_ACCOUNTING_V1_DOMAIN = (
     "acfqp:construction-k7-heldout-k6-abstract-stage-accounting:v1"
 )
+CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_SHARED_MEASUREMENT_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-k6-abstract-shared-measurement:v1"
+)
+CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_SHARED_RECEIPT_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-k6-abstract-shared-receipt:v1"
+)
+CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_SHARED_RECEIPT_SET_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-k6-abstract-shared-receipt-set:v1"
+)
+CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_PATH_AGGREGATION_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-k6-abstract-path-aggregation:v1"
+)
+CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_OCCURRENCE_ACCOUNTING_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-k6-abstract-occurrence-accounting:v1"
+)
+CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_OUTPUT_RENDERER_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-k6-abstract-output-renderer:v1"
+)
+CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_OUTPUT_COMMIT_V1_DOMAIN = (
+    "acfqp:construction-k7-heldout-k6-abstract-output-commit:v1"
+)
 CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN = (
     "acfqp:construction-k7-reusable-build-epoch-resolution:v1"
 )
@@ -3323,6 +3344,27 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_heldout_k6_abstract_stage_accounting_v1": (
             CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_STAGE_ACCOUNTING_V1_DOMAIN
+        ),
+        "construction_k7_heldout_k6_abstract_shared_measurement_v1": (
+            CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_SHARED_MEASUREMENT_V1_DOMAIN
+        ),
+        "construction_k7_heldout_k6_abstract_shared_receipt_v1": (
+            CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_SHARED_RECEIPT_V1_DOMAIN
+        ),
+        "construction_k7_heldout_k6_abstract_shared_receipt_set_v1": (
+            CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_SHARED_RECEIPT_SET_V1_DOMAIN
+        ),
+        "construction_k7_heldout_k6_abstract_path_aggregation_v1": (
+            CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_PATH_AGGREGATION_V1_DOMAIN
+        ),
+        "construction_k7_heldout_k6_abstract_occurrence_accounting_v1": (
+            CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_OCCURRENCE_ACCOUNTING_V1_DOMAIN
+        ),
+        "construction_k7_heldout_k6_abstract_output_renderer_v1": (
+            CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_OUTPUT_RENDERER_V1_DOMAIN
+        ),
+        "construction_k7_heldout_k6_abstract_output_commit_v1": (
+            CONSTRUCTION_K7_HELDOUT_K6_ABSTRACT_OUTPUT_COMMIT_V1_DOMAIN
         ),
         "construction_k7_reusable_build_epoch_resolution_v1": (
             CONSTRUCTION_K7_REUSABLE_BUILD_EPOCH_RESOLUTION_V1_DOMAIN
