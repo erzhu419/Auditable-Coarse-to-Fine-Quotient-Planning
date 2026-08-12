@@ -915,6 +915,21 @@ CONSTRUCTION_K7_OBSERVED_PROGRAM_PROPOSAL_V1_DOMAIN = (
 CONSTRUCTION_K7_OBSERVED_PROGRAM_DECISION_V1_DOMAIN = (
     "acfqp:construction-k7-observed-program-decision:v1"
 )
+CONSTRUCTION_K7_OBSERVED_PROGRAM_HELDOUT_OBSERVATION_V1_DOMAIN = (
+    "acfqp:construction-k7-observed-program-heldout-observation:v1"
+)
+CONSTRUCTION_K7_OBSERVED_PROGRAM_HELDOUT_PREREGISTRATION_V1_DOMAIN = (
+    "acfqp:construction-k7-observed-program-heldout-preregistration:v1"
+)
+CONSTRUCTION_K7_OBSERVED_PROGRAM_HELDOUT_EVALUATION_V1_DOMAIN = (
+    "acfqp:construction-k7-observed-program-heldout-evaluation:v1"
+)
+CONSTRUCTION_K7_OBSERVED_PROGRAM_HELDOUT_CAMPAIGN_V1_DOMAIN = (
+    "acfqp:construction-k7-observed-program-heldout-campaign:v1"
+)
+CONSTRUCTION_K7_OBSERVED_PROGRAM_HELDOUT_INDEPENDENT_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-observed-program-heldout-independent-verification:v1"
+)
 CONSTRUCTION_K7_OBSERVATION_DRIVEN_SYNTHESIS_V3_RESULT_V1_DOMAIN = (
     "acfqp:construction-k7-observation-driven-synthesis-v3-result:v1"
 )
@@ -3680,6 +3695,21 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_observed_program_decision_v1": (
             CONSTRUCTION_K7_OBSERVED_PROGRAM_DECISION_V1_DOMAIN
+        ),
+        "construction_k7_observed_program_heldout_observation_v1": (
+            CONSTRUCTION_K7_OBSERVED_PROGRAM_HELDOUT_OBSERVATION_V1_DOMAIN
+        ),
+        "construction_k7_observed_program_heldout_preregistration_v1": (
+            CONSTRUCTION_K7_OBSERVED_PROGRAM_HELDOUT_PREREGISTRATION_V1_DOMAIN
+        ),
+        "construction_k7_observed_program_heldout_evaluation_v1": (
+            CONSTRUCTION_K7_OBSERVED_PROGRAM_HELDOUT_EVALUATION_V1_DOMAIN
+        ),
+        "construction_k7_observed_program_heldout_campaign_v1": (
+            CONSTRUCTION_K7_OBSERVED_PROGRAM_HELDOUT_CAMPAIGN_V1_DOMAIN
+        ),
+        "construction_k7_observed_program_heldout_independent_verification_v1": (
+            CONSTRUCTION_K7_OBSERVED_PROGRAM_HELDOUT_INDEPENDENT_VERIFICATION_V1_DOMAIN
         ),
         "construction_k7_observation_driven_synthesis_v3_result_v1": (
             CONSTRUCTION_K7_OBSERVATION_DRIVEN_SYNTHESIS_V3_RESULT_V1_DOMAIN
