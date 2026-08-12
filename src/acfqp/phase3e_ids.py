@@ -951,11 +951,17 @@ CONSTRUCTION_K7_OBSERVATION_DERIVED_PRIMITIVE_INDEPENDENT_VERIFICATION_V1_DOMAIN
 CONSTRUCTION_K7_BASIS_HELDOUT_MODEL_TRANSPORT_V1_DOMAIN = (
     "acfqp:construction-k7-basis-heldout-model-transport:v1"
 )
+CONSTRUCTION_K7_BASIS_HELDOUT_QUERY_PREREGISTRATION_V1_DOMAIN = (
+    "acfqp:construction-k7-basis-heldout-query-preregistration:v1"
+)
 CONSTRUCTION_K7_BASIS_HELDOUT_ABSTRACT_PLAN_V1_DOMAIN = (
     "acfqp:construction-k7-basis-heldout-abstract-plan:v1"
 )
 CONSTRUCTION_K7_BASIS_HELDOUT_SYNTHESIS_CAMPAIGN_V1_DOMAIN = (
     "acfqp:construction-k7-basis-heldout-synthesis-campaign:v1"
+)
+CONSTRUCTION_K7_BASIS_HELDOUT_INDEPENDENT_VERIFICATION_V1_DOMAIN = (
+    "acfqp:construction-k7-basis-heldout-independent-verification:v1"
 )
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
@@ -3756,11 +3762,17 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         "construction_k7_basis_heldout_model_transport_v1": (
             CONSTRUCTION_K7_BASIS_HELDOUT_MODEL_TRANSPORT_V1_DOMAIN
         ),
+        "construction_k7_basis_heldout_query_preregistration_v1": (
+            CONSTRUCTION_K7_BASIS_HELDOUT_QUERY_PREREGISTRATION_V1_DOMAIN
+        ),
         "construction_k7_basis_heldout_abstract_plan_v1": (
             CONSTRUCTION_K7_BASIS_HELDOUT_ABSTRACT_PLAN_V1_DOMAIN
         ),
         "construction_k7_basis_heldout_synthesis_campaign_v1": (
             CONSTRUCTION_K7_BASIS_HELDOUT_SYNTHESIS_CAMPAIGN_V1_DOMAIN
+        ),
+        "construction_k7_basis_heldout_independent_verification_v1": (
+            CONSTRUCTION_K7_BASIS_HELDOUT_INDEPENDENT_VERIFICATION_V1_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN

@@ -49,9 +49,13 @@ if len(LOCAL_DOMAINS) != 4 or not LOCAL_DOMAINS <= PHASE3E_DOMAIN_TAGS:  # pragm
 RELATIONAL_META_OPERATORS = (
     "CARDINALITY",
     "CONNECTED_CLOSURE",
+    "DISTINCT",
     "INCIDENCE_COUNT",
+    "MAXIMUM",
+    "ORDERED_PAIR_LIFT",
     "SORTED_MULTISET",
     "THREE_CLIQUE_WITNESS",
+    "ZERO_COUNT",
 )
 SOURCE_RELATIONS = ("EDGE_RELATION", "VERTEX_RELATION")
 
@@ -71,6 +75,32 @@ EXPRESSION_SPECS: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("vertex_count", ("CARDINALITY", "VERTEX_RELATION")),
 )
 COMPATIBILITY_PRIMITIVES = tuple(name for name, _expression in EXPRESSION_SPECS)
+CANDIDATE_SPECS: tuple[tuple[str, tuple[str, ...]], ...] = (
+    *EXPRESSION_SPECS,
+    (
+        "connected_component_count_candidate",
+        ("CARDINALITY", "CONNECTED_CLOSURE", "EDGE_RELATION"),
+    ),
+    (
+        "maximum_degree_candidate",
+        ("MAXIMUM", "INCIDENCE_COUNT", "EDGE_RELATION", "VERTEX_RELATION"),
+    ),
+    (
+        "distinct_degree_count_candidate",
+        (
+            "CARDINALITY",
+            "DISTINCT",
+            "INCIDENCE_COUNT",
+            "EDGE_RELATION",
+            "VERTEX_RELATION",
+        ),
+    ),
+    ("ordered_edge_endpoint_count_candidate", ("CARDINALITY", "ORDERED_PAIR_LIFT", "EDGE_RELATION")),
+    (
+        "isolated_vertex_count_candidate",
+        ("ZERO_COUNT", "INCIDENCE_COUNT", "EDGE_RELATION", "VERTEX_RELATION"),
+    ),
+)
 
 _CANDIDATE_ISSUER = object()
 _BASIS_ISSUER = object()
@@ -135,6 +165,21 @@ def evaluate_compiled_primitive_v1(
         ),
         EXPRESSION_SPECS[3][1]: lambda: _triangle_count(topology),
         EXPRESSION_SPECS[4][1]: lambda: topology.vertex_count,
+        CANDIDATE_SPECS[5][1]: lambda: len(_component_sizes(topology)),
+        CANDIDATE_SPECS[6][1]: lambda: max(
+            len(topology.neighbors(vertex)) for vertex in range(topology.vertex_count)
+        ),
+        CANDIDATE_SPECS[7][1]: lambda: len(
+            {
+                len(topology.neighbors(vertex))
+                for vertex in range(topology.vertex_count)
+            }
+        ),
+        CANDIDATE_SPECS[8][1]: lambda: 2 * len(topology.edges),
+        CANDIDATE_SPECS[9][1]: lambda: sum(
+            len(topology.neighbors(vertex)) == 0
+            for vertex in range(topology.vertex_count)
+        ),
     }
     evaluator = by_expression.get(expression)
     if evaluator is None:
@@ -157,7 +202,8 @@ def evaluate_basis_v1(
 class ObservationDerivedPrimitiveCandidateV1:
     _issuer: InitVar[object]
     candidate_ordinal: int
-    compatibility_name: str
+    candidate_key: str
+    compatibility_name: str | None
     expression: tuple[str, ...]
     source_observation_column: tuple[Any, ...]
     heldout_observation_column: tuple[Any, ...]
@@ -165,18 +211,25 @@ class ObservationDerivedPrimitiveCandidateV1:
     _candidate_id: str = field(init=False, repr=False)
 
     def __post_init__(self, _issuer: object) -> None:
-        expected_name, expected_expression = EXPRESSION_SPECS[self.candidate_ordinal]
         if (
             _issuer is not _CANDIDATE_ISSUER
             or type(self.candidate_ordinal) is not int
-            or not 0 <= self.candidate_ordinal < len(EXPRESSION_SPECS)
-            or self.compatibility_name != expected_name
+            or not 0 <= self.candidate_ordinal < len(CANDIDATE_SPECS)
+        ):
+            _fail("primitive candidate ordinal changed")
+        expected_key, expected_expression = CANDIDATE_SPECS[self.candidate_ordinal]
+        if (
+            self.candidate_key != expected_key
+            or (
+                self.compatibility_name is not None
+                and self.compatibility_name not in COMPATIBILITY_PRIMITIVES
+            )
             or self.expression != expected_expression
             or type(self.source_observation_column) is not tuple
             or len(self.source_observation_column) != 3
             or type(self.heldout_observation_column) is not tuple
             or len(self.heldout_observation_column) != 4
-            or self.selected is not True
+            or self.selected is not (self.compatibility_name is not None)
         ):
             _fail("primitive candidate changed")
         object.__setattr__(
@@ -190,6 +243,7 @@ class ObservationDerivedPrimitiveCandidateV1:
             "proposed_contract_version": PROPOSED_CONTRACT_VERSION,
             "profile_key": PROFILE_KEY,
             "candidate_ordinal": self.candidate_ordinal,
+            "candidate_key": self.candidate_key,
             "compatibility_name": self.compatibility_name,
             "compiled_expression": list(self.expression),
             "source_observation_column": [_json(value) for value in self.source_observation_column],
@@ -227,13 +281,18 @@ class ObservationDerivedPrimitiveBasisV1:
             or type(self.heldout_preregistration_id) is not str
             or len(self.heldout_preregistration_id) != 64
             or type(self.candidates) is not tuple
-            or len(self.candidates) != len(EXPRESSION_SPECS)
+            or len(self.candidates) != len(CANDIDATE_SPECS)
             or tuple(row.candidate_ordinal for row in self.candidates)
-            != tuple(range(len(EXPRESSION_SPECS)))
-            or tuple(row.compatibility_name for row in self.candidates)
+            != tuple(range(len(CANDIDATE_SPECS)))
+            or tuple(row.compatibility_name for row in self.selected_candidates)
             != COMPATIBILITY_PRIMITIVES
-            or len({row.source_observation_column for row in self.candidates})
-            != len(self.candidates)
+            or len({row.expression for row in self.candidates}) != len(self.candidates)
+            or any(
+                candidate.source_observation_column == other.source_observation_column
+                and candidate.heldout_observation_column == other.heldout_observation_column
+                for index, candidate in enumerate(self.candidates)
+                for other in self.candidates[index + 1 :]
+            )
         ):
             _fail("observation-derived primitive basis changed")
         object.__setattr__(self, "_basis_id", content_id(BASIS_DOMAIN, self._payload()))
@@ -424,22 +483,44 @@ def run_observation_derived_primitive_campaign_v1() -> ObservationDerivedPrimiti
         case for case in program_campaign.preregistration.cases
         if case.observation.topology is not None
     )
-    candidates = tuple(
-        ObservationDerivedPrimitiveCandidateV1(
-            _CANDIDATE_ISSUER,
-            ordinal,
-            name,
-            expression,
-            tuple(evaluate_compiled_primitive_v1(expression, topology) for topology in source),
-            tuple(
-                evaluate_compiled_primitive_v1(expression, case.observation.topology)
-                for case in graph_cases
-                if case.observation.topology is not None
-            ),
-            True,
+    required_columns = {
+        name: (
+            tuple(getattr(signature, name) for signature in program_campaign.corpus.real_signatures),
+            tuple(dict(case.observation.feature_rows)[name] for case in graph_cases),
         )
-        for ordinal, (name, expression) in enumerate(EXPRESSION_SPECS)
-    )
+        for name in COMPATIBILITY_PRIMITIVES
+    }
+    candidate_rows = []
+    for ordinal, (candidate_key, expression) in enumerate(CANDIDATE_SPECS):
+        source_column = tuple(
+            evaluate_compiled_primitive_v1(expression, topology) for topology in source
+        )
+        heldout_column = tuple(
+            evaluate_compiled_primitive_v1(expression, case.observation.topology)
+            for case in graph_cases
+            if case.observation.topology is not None
+        )
+        matches = tuple(
+            name
+            for name, columns in required_columns.items()
+            if columns == (source_column, heldout_column)
+        )
+        if len(matches) > 1:
+            _fail("one candidate ambiguously implements multiple program obligations")
+        compatibility_name = matches[0] if matches else None
+        candidate_rows.append(
+            ObservationDerivedPrimitiveCandidateV1(
+                _CANDIDATE_ISSUER,
+                ordinal,
+                candidate_key,
+                compatibility_name,
+                expression,
+                source_column,
+                heldout_column,
+                compatibility_name is not None,
+            )
+        )
+    candidates = tuple(candidate_rows)
     basis = ObservationDerivedPrimitiveBasisV1(
         _BASIS_ISSUER,
         tuple(topology.topology_id for topology in source),

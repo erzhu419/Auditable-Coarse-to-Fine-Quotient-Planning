@@ -17,7 +17,9 @@ def test_basis_is_compiled_from_raw_relational_meta_grammar(campaign) -> None:
     assert subject.LOCAL_DOMAINS <= PHASE3E_DOMAIN_TAGS
     basis = campaign.basis
     assert tuple(row.compatibility_name for row in basis.selected_candidates) == subject.COMPATIBILITY_PRIMITIVES
-    assert all(row.selected for row in basis.candidates)
+    assert len(basis.candidates) == 10
+    assert sum(row.selected for row in basis.candidates) == 5
+    assert all(not row.selected for row in basis.candidates[5:])
     document = basis.to_document()
     assert document["final_feature_names_used_as_candidate_inputs"] is False
     assert document["primitive_values_compiled_from_raw_relations"] is True
@@ -28,12 +30,19 @@ def test_basis_is_compiled_from_raw_relational_meta_grammar(campaign) -> None:
 
 def test_source_columns_are_unique_and_observation_derived(campaign) -> None:
     columns = [row.source_observation_column for row in campaign.basis.candidates]
-    assert len(set(columns)) == len(columns) == 5
+    assert len(set(columns)) == len(columns) == 10
     assert columns[0] == ((5,), (6,), (6,))
     assert columns[1] == (8, 15, 14)
     assert columns[2] == ((3, 3, 3, 3, 4), (5, 5, 5, 5, 5, 5), (4, 4, 5, 5, 5, 5))
     assert columns[3] == (4, 20, 16)
     assert columns[4] == (5, 6, 6)
+    assert columns[5:] == [
+        (1, 1, 1),
+        (4, 5, 5),
+        (2, 1, 2),
+        (16, 30, 28),
+        (0, 0, 0),
+    ]
 
 
 def test_all_graph_heldout_rows_replay_from_topology(campaign) -> None:
@@ -66,4 +75,3 @@ def test_candidate_mutation_is_rejected(campaign) -> None:
         subject.verify_observation_derived_primitive_campaign_v1(campaign)
     object.__setattr__(candidate, "source_observation_column", original)
     subject.verify_observation_derived_primitive_campaign_v1(campaign)
-

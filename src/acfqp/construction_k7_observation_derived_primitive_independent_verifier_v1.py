@@ -37,9 +37,13 @@ if VERIFY_DOMAIN not in PHASE3E_DOMAIN_TAGS:  # pragma: no cover
 META_OPERATORS = (
     "CARDINALITY",
     "CONNECTED_CLOSURE",
+    "DISTINCT",
     "INCIDENCE_COUNT",
+    "MAXIMUM",
+    "ORDERED_PAIR_LIFT",
     "SORTED_MULTISET",
     "THREE_CLIQUE_WITNESS",
+    "ZERO_COUNT",
 )
 SOURCE_RELATIONS = ("EDGE_RELATION", "VERTEX_RELATION")
 SPECS = (
@@ -48,6 +52,11 @@ SPECS = (
     ("sorted_degree_sequence", ("SORTED_MULTISET", "INCIDENCE_COUNT", "EDGE_RELATION", "VERTEX_RELATION")),
     ("triangle_count", ("CARDINALITY", "THREE_CLIQUE_WITNESS", "EDGE_RELATION")),
     ("vertex_count", ("CARDINALITY", "VERTEX_RELATION")),
+    ("connected_component_count_candidate", ("CARDINALITY", "CONNECTED_CLOSURE", "EDGE_RELATION")),
+    ("maximum_degree_candidate", ("MAXIMUM", "INCIDENCE_COUNT", "EDGE_RELATION", "VERTEX_RELATION")),
+    ("distinct_degree_count_candidate", ("CARDINALITY", "DISTINCT", "INCIDENCE_COUNT", "EDGE_RELATION", "VERTEX_RELATION")),
+    ("ordered_edge_endpoint_count_candidate", ("CARDINALITY", "ORDERED_PAIR_LIFT", "EDGE_RELATION")),
+    ("isolated_vertex_count_candidate", ("ZERO_COUNT", "INCIDENCE_COUNT", "EDGE_RELATION", "VERTEX_RELATION")),
 )
 GRAPH_TOPOLOGY_DOMAIN = "acfqp:relational-graph-topology:v1"
 SOURCE_GRAPHS = (
@@ -123,6 +132,11 @@ def _values(vertex_count: int, edges: tuple[tuple[int, int], ...]) -> tuple[Any,
         tuple(sorted(len(row) for row in neighbours.values())),
         triangles,
         vertex_count,
+        len(components),
+        max(len(row) for row in neighbours.values()),
+        len({len(row) for row in neighbours.values()}),
+        2 * len(edges),
+        sum(len(row) == 0 for row in neighbours.values()),
     )
 
 
@@ -231,7 +245,7 @@ def verify_observation_derived_primitive_campaign_bytes_independently_v1(
             candidate,
             {
                 "schema", "schema_version", "proposed_contract_version", "profile_key",
-                "candidate_ordinal", "compatibility_name", "compiled_expression",
+                "candidate_ordinal", "candidate_key", "compatibility_name", "compiled_expression",
                 "source_observation_column", "heldout_observation_column", "selected",
                 "raw_relation_inputs", "query_value_policy_or_ground_input_present",
                 "primitive_candidate_id",
@@ -244,11 +258,13 @@ def verify_observation_derived_primitive_campaign_bytes_independently_v1(
             or candidate["proposed_contract_version"] != CONTRACT
             or candidate["profile_key"] != PROFILE
             or candidate["candidate_ordinal"] != ordinal
-            or candidate["compatibility_name"] != spec[0]
+            or candidate["candidate_key"] != spec[0]
+            or candidate["compatibility_name"]
+            != (spec[0] if ordinal < 5 else None)
             or candidate["compiled_expression"] != list(spec[1])
             or tuple(_decode(value) for value in candidate["source_observation_column"])
             != expected_column
-            or candidate["selected"] is not True
+            or candidate["selected"] is not (ordinal < 5)
             or candidate["raw_relation_inputs"] != list(SOURCE_RELATIONS)
             or candidate["query_value_policy_or_ground_input_present"] is not False
         ):
@@ -271,9 +287,9 @@ def verify_observation_derived_primitive_campaign_bytes_independently_v1(
         or basis["relational_meta_operators"] != list(META_OPERATORS)
         or basis["source_relations"] != list(SOURCE_RELATIONS)
         or basis["ordered_candidate_ids"] != candidate_ids
-        or basis["selected_candidate_ids"] != candidate_ids
-        or basis["selected_compatibility_primitives"] != [name for name, _ in SPECS]
-        or basis["candidate_count"] != 5
+        or basis["selected_candidate_ids"] != candidate_ids[:5]
+        or basis["selected_compatibility_primitives"] != [name for name, _ in SPECS[:5]]
+        or basis["candidate_count"] != 10
         or basis["selected_count"] != 5
         or basis["selection_rule"] != "UNIQUE_SOURCE_COLUMN_THEN_PROGRAM_OBLIGATION_CLOSURE"
         or basis["final_feature_names_used_as_candidate_inputs"] is not False
@@ -306,7 +322,7 @@ def verify_observation_derived_primitive_campaign_bytes_independently_v1(
             },
             "primitive evaluation",
         )
-        expected_values = tuple(column[index] for column in heldout_columns) if index < 4 else ()
+        expected_values = tuple(column[index] for column in heldout_columns[:5]) if index < 4 else ()
         derived_values = tuple(_decode(row["value"]) for row in evaluation["derived_feature_rows"])
         expected_row_values = tuple(_decode(row["value"]) for row in evaluation["expected_feature_rows"])
         expected_outcome = "BASIS_REPLAY_MATCH" if index < 4 else "TYPED_SCHEMA_NO_EVALUATION"
