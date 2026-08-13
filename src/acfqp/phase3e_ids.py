@@ -1299,6 +1299,24 @@ CONSTRUCTION_K7_STANDARD_2048_PROGRAM_CAMPAIGN_V14_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_PROGRAM_VERIFICATION_V14_DOMAIN = (
     "acfqp:construction-k7-standard-2048-program-verification:v14"
 )
+CONSTRUCTION_K7_STANDARD_2048_EXACT_FACTOR_PREREGISTRATION_V15_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-exact-factor-preregistration:v15"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXACT_FACTOR_SOURCE_CLOSURE_V15_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-exact-factor-source-closure:v15"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXACT_FACTOR_CERTIFICATE_V15_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-exact-factor-certificate:v15"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXACT_FACTOR_EPISODE_V15_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-exact-factor-episode:v15"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXACT_FACTOR_CAMPAIGN_V15_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-exact-factor-campaign:v15"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXACT_FACTOR_VERIFICATION_V15_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-exact-factor-verification:v15"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -4457,6 +4475,24 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_program_verification_v14": (
             CONSTRUCTION_K7_STANDARD_2048_PROGRAM_VERIFICATION_V14_DOMAIN
+        ),
+        "construction_k7_standard_2048_exact_factor_preregistration_v15": (
+            CONSTRUCTION_K7_STANDARD_2048_EXACT_FACTOR_PREREGISTRATION_V15_DOMAIN
+        ),
+        "construction_k7_standard_2048_exact_factor_source_closure_v15": (
+            CONSTRUCTION_K7_STANDARD_2048_EXACT_FACTOR_SOURCE_CLOSURE_V15_DOMAIN
+        ),
+        "construction_k7_standard_2048_exact_factor_certificate_v15": (
+            CONSTRUCTION_K7_STANDARD_2048_EXACT_FACTOR_CERTIFICATE_V15_DOMAIN
+        ),
+        "construction_k7_standard_2048_exact_factor_episode_v15": (
+            CONSTRUCTION_K7_STANDARD_2048_EXACT_FACTOR_EPISODE_V15_DOMAIN
+        ),
+        "construction_k7_standard_2048_exact_factor_campaign_v15": (
+            CONSTRUCTION_K7_STANDARD_2048_EXACT_FACTOR_CAMPAIGN_V15_DOMAIN
+        ),
+        "construction_k7_standard_2048_exact_factor_verification_v15": (
+            CONSTRUCTION_K7_STANDARD_2048_EXACT_FACTOR_VERIFICATION_V15_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
