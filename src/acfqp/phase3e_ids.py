@@ -1383,6 +1383,30 @@ CONSTRUCTION_K7_STANDARD_2048_LOCAL_REPAIR_CAMPAIGN_V18_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_LOCAL_REPAIR_VERIFICATION_V18_DOMAIN = (
     "acfqp:construction-k7-standard-2048-local-repair-verification:v18"
 )
+CONSTRUCTION_K7_STANDARD_2048_MATCHED_REPAIR_PREREGISTRATION_V19_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-matched-repair-preregistration:v19"
+)
+CONSTRUCTION_K7_STANDARD_2048_MATCHED_REPAIR_FAILURE_V19_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-matched-repair-failure:v19"
+)
+CONSTRUCTION_K7_STANDARD_2048_MATCHED_REPAIR_ACQUISITION_V19_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-matched-repair-acquisition:v19"
+)
+CONSTRUCTION_K7_STANDARD_2048_MATCHED_REPAIR_OVERLAY_V19_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-matched-repair-overlay:v19"
+)
+CONSTRUCTION_K7_STANDARD_2048_MATCHED_REPAIR_CERTIFICATE_V19_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-matched-repair-certificate:v19"
+)
+CONSTRUCTION_K7_STANDARD_2048_MATCHED_REPAIR_EPISODE_V19_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-matched-repair-episode:v19"
+)
+CONSTRUCTION_K7_STANDARD_2048_MATCHED_REPAIR_CAMPAIGN_V19_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-matched-repair-campaign:v19"
+)
+CONSTRUCTION_K7_STANDARD_2048_MATCHED_REPAIR_VERIFICATION_V19_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-matched-repair-verification:v19"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -4625,6 +4649,30 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_local_repair_verification_v18": (
             CONSTRUCTION_K7_STANDARD_2048_LOCAL_REPAIR_VERIFICATION_V18_DOMAIN
+        ),
+        "construction_k7_standard_2048_matched_repair_preregistration_v19": (
+            CONSTRUCTION_K7_STANDARD_2048_MATCHED_REPAIR_PREREGISTRATION_V19_DOMAIN
+        ),
+        "construction_k7_standard_2048_matched_repair_failure_v19": (
+            CONSTRUCTION_K7_STANDARD_2048_MATCHED_REPAIR_FAILURE_V19_DOMAIN
+        ),
+        "construction_k7_standard_2048_matched_repair_acquisition_v19": (
+            CONSTRUCTION_K7_STANDARD_2048_MATCHED_REPAIR_ACQUISITION_V19_DOMAIN
+        ),
+        "construction_k7_standard_2048_matched_repair_overlay_v19": (
+            CONSTRUCTION_K7_STANDARD_2048_MATCHED_REPAIR_OVERLAY_V19_DOMAIN
+        ),
+        "construction_k7_standard_2048_matched_repair_certificate_v19": (
+            CONSTRUCTION_K7_STANDARD_2048_MATCHED_REPAIR_CERTIFICATE_V19_DOMAIN
+        ),
+        "construction_k7_standard_2048_matched_repair_episode_v19": (
+            CONSTRUCTION_K7_STANDARD_2048_MATCHED_REPAIR_EPISODE_V19_DOMAIN
+        ),
+        "construction_k7_standard_2048_matched_repair_campaign_v19": (
+            CONSTRUCTION_K7_STANDARD_2048_MATCHED_REPAIR_CAMPAIGN_V19_DOMAIN
+        ),
+        "construction_k7_standard_2048_matched_repair_verification_v19": (
+            CONSTRUCTION_K7_STANDARD_2048_MATCHED_REPAIR_VERIFICATION_V19_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
