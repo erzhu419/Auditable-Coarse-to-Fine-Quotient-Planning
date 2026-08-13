@@ -469,16 +469,19 @@ def verify_standard_2048_coordinate_basis_bytes_independently_v13(
     ):
         _fail("coordinate basis root is not exact canonical JSON")
 
-    source = _expected_archive("SOURCE_SELECTION", SOURCE_SEED, SOURCE_COUNT)
-    validation = _expected_archive("HELDOUT_VALIDATION", VALIDATION_SEED, VALIDATION_COUNT)
+    expected_bytes = replay_standard_2048_coordinate_basis_bytes_independently_v13()
+    expected = loads_canonical_json(expected_bytes)
+    if type(expected) is not dict:
+        raise AssertionError("independent coordinate basis replay is not an object")
+    source = expected["source_archive"]
+    validation = expected["validation_archive"]
     if source["coordinate_observation_archive_id"] != SOURCE_ARCHIVE_ID:
         _fail("independent source archive identity changed")
     if validation["coordinate_observation_archive_id"] != VALIDATION_ARCHIVE_ID:
         _fail("independent validation archive identity changed")
-    basis = _expected_basis(source, validation)
+    basis = expected["basis"]
     if basis["coordinate_basis_id"] != COORDINATE_BASIS_ID:
         _fail("independent coordinate basis identity changed")
-    expected = {"source_archive": source, "validation_archive": validation, "basis": basis}
     if document != expected:
         _fail("coordinate basis bytes differ from independent replay")
 
@@ -516,9 +519,34 @@ def verify_standard_2048_coordinate_basis_bytes_independently_v13(
     )
 
 
+def replay_standard_2048_coordinate_basis_bytes_independently_v13() -> bytes:
+    """Regenerate immutable producer-free coordinate evidence for consumers."""
+
+    source = _expected_archive("SOURCE_SELECTION", SOURCE_SEED, SOURCE_COUNT)
+    validation = _expected_archive(
+        "HELDOUT_VALIDATION", VALIDATION_SEED, VALIDATION_COUNT
+    )
+    basis = _expected_basis(source, validation)
+    if (
+        source["coordinate_observation_archive_id"] != SOURCE_ARCHIVE_ID
+        or validation["coordinate_observation_archive_id"]
+        != VALIDATION_ARCHIVE_ID
+        or basis["coordinate_basis_id"] != COORDINATE_BASIS_ID
+    ):
+        _fail("producer-free coordinate replay identity changed")
+    return canonical_json_bytes(
+        {
+            "source_archive": source,
+            "validation_archive": validation,
+            "basis": basis,
+        }
+    )
+
+
 __all__ = (
     "COORDINATE_BASIS_ID",
     "ConstructionK7Standard2048CoordinateBasisIndependentVerifierV13Error",
     "Standard2048CoordinateBasisIndependentVerificationV13",
+    "replay_standard_2048_coordinate_basis_bytes_independently_v13",
     "verify_standard_2048_coordinate_basis_bytes_independently_v13",
 )

@@ -8,6 +8,7 @@ import pytest
 from acfqp import construction_k7_standard_2048_coordinate_basis_v13 as basis_producer
 from acfqp import construction_k7_standard_2048_observation_proposed_program_independent_verifier_v14 as verifier
 from acfqp import construction_k7_standard_2048_observation_proposed_program_v14 as producer
+from acfqp.domains.standard_2048 import Swipe2048Action, swipe_board_v1
 from acfqp.phase3e_ids import (
     CONSTRUCTION_K7_STANDARD_2048_FACTORED_WORLD_MODEL_V14_DOMAIN,
     CONSTRUCTION_K7_STANDARD_2048_PROGRAM_LINE_PROOF_V14_DOMAIN,
@@ -76,6 +77,19 @@ def test_independent_verifier_replays_proposal_and_all_line_inputs(
     assert document["deterministic_swipe_program_equivalence_verified"] is True
     assert document["stochastic_spawn_component_verified"] is False
     assert document["sample_tax_reduction_verified"] is False
+
+
+def test_public_replayed_program_primitive_matches_ground_swipe() -> None:
+    board = (1, 1, 2, 2, 3, 0, 3, 0, 4, 4, 4, 4, 0, 5, 5, 0)
+    for action in Swipe2048Action:
+        expected_board, expected_score, _ = swipe_board_v1(board, action)
+        assert verifier.apply_independently_replayed_swipe_program_v14(
+            board, action.value
+        ) == (expected_board, expected_score)
+    with pytest.raises(
+        verifier.ConstructionK7Standard2048ObservationProposedProgramIndependentVerifierV14Error
+    ):
+        verifier.apply_independently_replayed_swipe_program_v14(board, "DIAGONAL")
 
 
 @pytest.mark.parametrize(

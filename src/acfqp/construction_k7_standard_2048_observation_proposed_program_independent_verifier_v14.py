@@ -155,6 +155,21 @@ def _board(board: tuple[int, ...], action: str, candidate: str) -> tuple[tuple[i
     return tuple(result), score
 
 
+def apply_independently_replayed_swipe_program_v14(
+    board: tuple[int, ...], action: str
+) -> tuple[tuple[int, ...], int]:
+    """Apply only the independently selected and exhaustively proved program."""
+
+    if (
+        type(board) is not tuple
+        or len(board) != 16
+        or any(type(rank) is not int or not 0 <= rank <= 19 for rank in board)
+        or action not in {"LEFT", "RIGHT", "UP", "DOWN"}
+    ):
+        _fail("independent swipe-program input changed")
+    return _board(board, action, CANDIDATES[1][0])
+
+
 def _candidate_document(ordinal: int) -> dict[str, Any]:
     key, instructions = CANDIDATES[ordinal]
     payload = {
@@ -474,6 +489,7 @@ def verify_standard_2048_observation_proposed_program_bytes_independently_v14(
 
 
 __all__ = (
+    "apply_independently_replayed_swipe_program_v14",
     "ConstructionK7Standard2048ObservationProposedProgramIndependentVerifierV14Error",
     "Standard2048ObservationProposedProgramIndependentVerificationV14",
     "VERIFICATION_ID",
