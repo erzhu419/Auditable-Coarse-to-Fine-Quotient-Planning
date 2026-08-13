@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import ast
+import hashlib
 import os
 from pathlib import Path
 
@@ -53,6 +54,13 @@ def test_independent_binding_and_no_transfer_are_frozen() -> None:
     assert no_transfer["target_execution_performed"] is False
 
 
+def test_full_replay_byte_identity_is_frozen_from_independent_runs() -> None:
+    assert verifier.EXPECTED_CANONICAL_BYTE_COUNT == 431255
+    assert verifier.EXPECTED_CANONICAL_SHA256 == (
+        "d23ae1212c073343ee63395c759bec7dfb08a65e8734f88c66ec137253238ee9"
+    )
+
+
 def test_first_h3_certificate_replays_registered_factored_counts() -> None:
     binding, bounds, lower, upper = verifier._operator_binding()
     state = state_from_board_v1(pre.PREREGISTERED_INITIAL_BOARDS[0])
@@ -94,6 +102,10 @@ def test_real_campaign_bytes_pass_full_producer_free_replay() -> None:
     campaign = (
         construction_k7_standard_2048_long_episode_campaign_v11
         .run_standard_2048_long_episode_campaign_v11()
+    )
+    assert len(campaign.canonical_bytes) == verifier.EXPECTED_CANONICAL_BYTE_COUNT
+    assert hashlib.sha256(campaign.canonical_bytes).hexdigest() == (
+        verifier.EXPECTED_CANONICAL_SHA256
     )
     verified = (
         verifier.verify_standard_2048_long_episode_campaign_bytes_independently_v11(
