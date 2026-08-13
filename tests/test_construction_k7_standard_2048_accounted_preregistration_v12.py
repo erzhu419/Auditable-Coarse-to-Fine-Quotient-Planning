@@ -34,19 +34,19 @@ def test_accounting_topology_binds_all_nine_shared_paths_and_v8_profiles() -> No
     profiles = document["accounting_profiles"]
     assert profiles == {
         "counter_registry_id": (
-            "829b6b18c3e94e4e36ff145ac8bee55be3bed9697dfa9d618016942b1565c49e"
+            "c85bc3bc127f2c64ae6010db7eb44f9f79a5b37843da1b641e0f06f2f3c9a519"
         ),
         "comparison_profile_id": (
-            "564bb8018190fbc4cb4b7d882242c1e37e9ae7e3421e5a3e664e437b524ccc2b"
+            "3ed1f6367dcfdbab2f5d9a893b505cd17e109e9d758ba188d1b5a547d8f1ad6b"
         ),
         "actual_projection_profile_id": (
-            "3196248a681554d2b821ba4c40d985fa0ebefbe19257fd681b5fbf6765999037"
+            "bed3454cd28806e222b0e2c7bba5dccbac0af4cf313c094d7196d8400b9f7d76"
         ),
         "stage_profile_id": (
-            "9c11abec500e356668ffc242c5e8d1b56fdf0be8cbe77d82ba58b901d21a04a6"
+            "3a5628c312c0c81a2f9f62e6536da5e51055e93244f69aaa928b94d42dfe56f9"
         ),
-        "required_counter_path_count": 235,
-        "operational_counter_path_count": 203,
+        "required_counter_path_count": 246,
+        "operational_counter_path_count": 205,
     }
     shared = document["shared_resource_receipt_contract"]["required_paths"]
     assert len(shared) == 9

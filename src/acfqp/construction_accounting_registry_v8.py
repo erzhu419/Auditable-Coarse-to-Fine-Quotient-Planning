@@ -45,13 +45,13 @@ ACTUAL_PROJECTION_PROFILE_KEY = "actual_projection_construction_v8"
 EXPECTED_V7_LEAF_COUNT = v7.EXPECTED_V7_LEAF_COUNT
 EXPECTED_V7_OPERATIONAL_LEAF_COUNT = v7.EXPECTED_V7_OPERATIONAL_LEAF_COUNT
 EXPECTED_V7_REQUIRED_LEAF_COUNT = v7.EXPECTED_V7_REQUIRED_LEAF_COUNT
-EXPECTED_V8_ADDITION_COUNT = 14
-EXPECTED_V8_OPERATIONAL_ADDITION_COUNT = 4
-EXPECTED_V8_EVALUATION_ADDITION_COUNT = 6
-EXPECTED_V8_DIAGNOSTIC_ADDITION_COUNT = 4
-EXPECTED_V8_LEAF_COUNT = 242
-EXPECTED_V8_OPERATIONAL_LEAF_COUNT = 203
-EXPECTED_V8_REQUIRED_LEAF_COUNT = 235
+EXPECTED_V8_ADDITION_COUNT = 25
+EXPECTED_V8_OPERATIONAL_ADDITION_COUNT = 6
+EXPECTED_V8_EVALUATION_ADDITION_COUNT = 13
+EXPECTED_V8_DIAGNOSTIC_ADDITION_COUNT = 6
+EXPECTED_V8_LEAF_COUNT = 253
+EXPECTED_V8_OPERATIONAL_LEAF_COUNT = 205
+EXPECTED_V8_REQUIRED_LEAF_COUNT = 246
 
 
 class ConstructionAccountingRegistryV8Error(ValueError):
@@ -66,6 +66,7 @@ def _leaf(
     lane: LaneEnum,
     scope: str,
     axis: str | None,
+    reducer: ReducerEnum = ReducerEnum.SUM,
 ) -> CounterSemanticsV1:
     return CounterSemanticsV1(
         path,
@@ -74,7 +75,7 @@ def _leaf(
         unit,
         lane,
         scope,
-        ReducerEnum.SUM,
+        reducer,
         axis,
         True,
     )
@@ -107,6 +108,42 @@ def _v8_additions() -> tuple[CounterSemanticsV1, ...]:
             "misses",
             LaneEnum.DIAGNOSTIC,
             "logical_occurrence_abstract_certificate",
+            None,
+        ),
+        _leaf(
+            "common.abstract_support_outcome_evaluations",
+            "abstract-support-outcome-evaluation-v8",
+            "standard_2048_factored_bellman_v12",
+            "evaluations",
+            LaneEnum.OPERATIONAL,
+            "logical_occurrence_abstract_certificate",
+            NONKERNEL_COMPUTE_EVENTS,
+        ),
+        _leaf(
+            "fallback.subproof_cache_lookups",
+            "fallback-subproof-cache-lookup-v8",
+            "standard_2048_exact_fallback_v12",
+            "lookups",
+            LaneEnum.OPERATIONAL,
+            "logical_occurrence_direct_fallback",
+            NONKERNEL_COMPUTE_EVENTS,
+        ),
+        _leaf(
+            "fallback.subproof_cache_hits",
+            "fallback-subproof-cache-hit-v8",
+            "standard_2048_exact_fallback_v12",
+            "hits",
+            LaneEnum.DIAGNOSTIC,
+            "logical_occurrence_direct_fallback",
+            None,
+        ),
+        _leaf(
+            "fallback.subproof_cache_misses",
+            "fallback-subproof-cache-miss-v8",
+            "standard_2048_exact_fallback_v12",
+            "misses",
+            LaneEnum.DIAGNOSTIC,
+            "logical_occurrence_direct_fallback",
             None,
         ),
         _leaf(
@@ -205,6 +242,71 @@ def _v8_additions() -> tuple[CounterSemanticsV1, ...]:
             "standard_2048_independent_exact_replay_v12",
             "misses",
             LaneEnum.DIAGNOSTIC,
+            "standalone_evaluation_replay",
+            None,
+        ),
+        _leaf(
+            "evaluation.hash_invocations",
+            "evaluation-hash-invocation-v8",
+            "standard_2048_independent_exact_replay_v12",
+            "invocations",
+            LaneEnum.EVALUATION,
+            "standalone_evaluation_replay",
+            None,
+        ),
+        _leaf(
+            "evaluation.io_read_bytes",
+            "evaluation-io-read-byte-v8",
+            "standard_2048_independent_exact_replay_v12",
+            "bytes",
+            LaneEnum.EVALUATION,
+            "standalone_evaluation_replay",
+            None,
+        ),
+        _leaf(
+            "evaluation.io_staged_bytes",
+            "evaluation-io-staged-byte-v8",
+            "standard_2048_independent_exact_replay_v12",
+            "bytes",
+            LaneEnum.EVALUATION,
+            "standalone_evaluation_replay",
+            None,
+        ),
+        _leaf(
+            "evaluation.io_output_bytes",
+            "evaluation-io-output-byte-v8",
+            "standard_2048_independent_exact_replay_v12",
+            "bytes",
+            LaneEnum.EVALUATION,
+            "standalone_evaluation_replay",
+            None,
+        ),
+        _leaf(
+            "evaluation.io_mounted_bytes_peak",
+            "evaluation-mounted-byte-peak-v8",
+            "standard_2048_independent_exact_replay_v12",
+            "bytes",
+            LaneEnum.EVALUATION,
+            "standalone_evaluation_replay",
+            None,
+            ReducerEnum.MAX,
+        ),
+        _leaf(
+            "evaluation.memory_working_bytes_peak",
+            "evaluation-working-byte-peak-v8",
+            "standard_2048_independent_exact_replay_v12",
+            "bytes",
+            LaneEnum.EVALUATION,
+            "standalone_evaluation_replay",
+            None,
+            ReducerEnum.MAX,
+        ),
+        _leaf(
+            "evaluation.process_launches",
+            "evaluation-process-launch-v8",
+            "standard_2048_independent_exact_replay_v12",
+            "launches",
+            LaneEnum.EVALUATION,
             "standalone_evaluation_replay",
             None,
         ),

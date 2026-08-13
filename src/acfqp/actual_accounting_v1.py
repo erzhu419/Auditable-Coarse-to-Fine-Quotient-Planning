@@ -100,6 +100,7 @@ class UpperBoundViolationError(ActualAccountingProtocolError):
 
 class ActualWorkScope(str, Enum):
     COMMON_PREFIX = "COMMON_PREFIX"
+    ABSTRACT_SELECTED_ROUTE_EXECUTION = "ABSTRACT_SELECTED_ROUTE_EXECUTION"
     MARGINAL_ROUTE_EXECUTION = "MARGINAL_ROUTE_EXECUTION"
     MARGINAL_ROUTE_VERIFICATION = "MARGINAL_ROUTE_VERIFICATION"
     MARGINAL_ROUTE_AGGREGATE = "MARGINAL_ROUTE_AGGREGATE"
@@ -332,6 +333,15 @@ def _validate_work_scope(
             raise ActualAccountingV1Error(
                 "common-prefix work must use the non-route-execution vector kind"
             )
+        forbidden = ("local.", "fallback.", "rebuild.")
+    elif work_scope is ActualWorkScope.ABSTRACT_SELECTED_ROUTE_EXECUTION:
+        if vector.route_kind is not RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE:
+            raise ActualAccountingV1Error(
+                "abstract selected-route work requires an abstract certificate vector"
+            )
+        # The root certificate and the subsequently executed target transition
+        # are one selected abstract-route window.  It contains no local,
+        # fallback, or rebuild work; target.* leaves remain operational.
         forbidden = ("local.", "fallback.", "rebuild.")
     elif work_scope is ActualWorkScope.MARGINAL_ROUTE_EXECUTION:
         if vector.route_kind not in {

@@ -35,10 +35,10 @@ def test_v8_preserves_v7_and_adds_exact_lane_inventory() -> None:
     assert tuple(row.to_dict() for row in new.leaves if row.path in old.by_path) == tuple(
         row.to_dict() for row in old.leaves
     )
-    assert len(new.leaves) == 242
-    assert len(new.operational_leaves) == 203
-    assert len(new.evaluation_leaves) == 8
-    assert len(new.required_paths) == 235
+    assert len(new.leaves) == 253
+    assert len(new.operational_leaves) == 205
+    assert len(new.evaluation_leaves) == 15
+    assert len(new.required_paths) == 246
 
 
 def test_target_execution_projects_but_evaluation_replay_does_not() -> None:
@@ -70,12 +70,13 @@ def test_cache_lookups_are_costed_and_hits_are_diagnostic() -> None:
     vector = _vector(
         {
             "common.abstract_subproof_cache_lookups": 100,
+            "common.abstract_support_outcome_evaluations": 500,
             "common.abstract_subproof_cache_hits": 90,
             "common.abstract_subproof_cache_misses": 10,
         }
     )
     comparison = derive_comparison_vector_v1(vector, registry, profile)
-    assert comparison.value("nonkernel_compute_events") == 100
+    assert comparison.value("nonkernel_compute_events") == 600
     assert registry.by_path["common.abstract_subproof_cache_hits"].comparison_axis is None
     assert registry.by_path["common.abstract_subproof_cache_misses"].comparison_axis is None
 
@@ -83,12 +84,14 @@ def test_cache_lookups_are_costed_and_hits_are_diagnostic() -> None:
 def test_frozen_v8_profile_ids_are_stable() -> None:
     frozen = v8.freeze_construction_accounting_registry_v8()
     assert frozen["counter_registry"]["counter_registry_id"] == (
-        "829b6b18c3e94e4e36ff145ac8bee55be3bed9697dfa9d618016942b1565c49e"
+        "c85bc3bc127f2c64ae6010db7eb44f9f79a5b37843da1b641e0f06f2f3c9a519"
     )
     assert frozen["comparison_profile"]["comparison_profile_id"] == (
-        "564bb8018190fbc4cb4b7d882242c1e37e9ae7e3421e5a3e664e437b524ccc2b"
+        "3ed1f6367dcfdbab2f5d9a893b505cd17e109e9d758ba188d1b5a547d8f1ad6b"
     )
     assert frozen["actual_projection_profile"]["actual_projection_profile_id"] == (
-        "3196248a681554d2b821ba4c40d985fa0ebefbe19257fd681b5fbf6765999037"
+        "bed3454cd28806e222b0e2c7bba5dccbac0af4cf313c094d7196d8400b9f7d76"
     )
-
+    assert frozen["stage_profile"]["stage_profile_id"] == (
+        "3a5628c312c0c81a2f9f62e6536da5e51055e93244f69aaa928b94d42dfe56f9"
+    )
