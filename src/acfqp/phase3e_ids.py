@@ -1260,6 +1260,9 @@ CONSTRUCTION_K7_STANDARD_2048_COORDINATE_PREREGISTRATION_V13_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_COORDINATE_CANDIDATE_V13_DOMAIN = (
     "acfqp:construction-k7-standard-2048-coordinate-candidate:v13"
 )
+CONSTRUCTION_K7_STANDARD_2048_COORDINATE_OBSERVATION_ARCHIVE_V13_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-coordinate-observation-archive:v13"
+)
 CONSTRUCTION_K7_STANDARD_2048_COORDINATE_BASIS_V13_DOMAIN = (
     "acfqp:construction-k7-standard-2048-coordinate-basis:v13"
 )
@@ -1268,6 +1271,9 @@ CONSTRUCTION_K7_STANDARD_2048_PARTIAL_QUOTIENT_MODEL_V13_DOMAIN = (
 )
 CONSTRUCTION_K7_STANDARD_2048_COORDINATE_CAMPAIGN_V13_DOMAIN = (
     "acfqp:construction-k7-standard-2048-coordinate-campaign:v13"
+)
+CONSTRUCTION_K7_STANDARD_2048_COORDINATE_DECISION_V13_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-coordinate-decision:v13"
 )
 CONSTRUCTION_K7_STANDARD_2048_COORDINATE_VERIFICATION_V13_DOMAIN = (
     "acfqp:construction-k7-standard-2048-coordinate-verification:v13"
@@ -4392,6 +4398,9 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         "construction_k7_standard_2048_coordinate_candidate_v13": (
             CONSTRUCTION_K7_STANDARD_2048_COORDINATE_CANDIDATE_V13_DOMAIN
         ),
+        "construction_k7_standard_2048_coordinate_observation_archive_v13": (
+            CONSTRUCTION_K7_STANDARD_2048_COORDINATE_OBSERVATION_ARCHIVE_V13_DOMAIN
+        ),
         "construction_k7_standard_2048_coordinate_basis_v13": (
             CONSTRUCTION_K7_STANDARD_2048_COORDINATE_BASIS_V13_DOMAIN
         ),
@@ -4400,6 +4409,9 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_coordinate_campaign_v13": (
             CONSTRUCTION_K7_STANDARD_2048_COORDINATE_CAMPAIGN_V13_DOMAIN
+        ),
+        "construction_k7_standard_2048_coordinate_decision_v13": (
+            CONSTRUCTION_K7_STANDARD_2048_COORDINATE_DECISION_V13_DOMAIN
         ),
         "construction_k7_standard_2048_coordinate_verification_v13": (
             CONSTRUCTION_K7_STANDARD_2048_COORDINATE_VERIFICATION_V13_DOMAIN
