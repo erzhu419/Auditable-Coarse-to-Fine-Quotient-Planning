@@ -1437,6 +1437,39 @@ CONSTRUCTION_K7_STANDARD_2048_CONTEXT_PROGRAM_CAMPAIGN_V20_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_CONTEXT_PROGRAM_VERIFICATION_V20_DOMAIN = (
     "acfqp:construction-k7-standard-2048-context-program-verification:v20"
 )
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_PROGRAM_PREREGISTRATION_V21_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-program-preregistration:v21"
+)
+CONSTRUCTION_K7_STANDARD_2048_STRUCTURAL_CONTEXT_POOL_V21_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-structural-context-pool:v21"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_CANDIDATE_V21_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-candidate:v21"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_ACQUISITION_V21_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-acquisition:v21"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_PROPOSAL_V21_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-proposal:v21"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_PROOF_V21_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-proof:v21"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_WORLD_MODEL_V21_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-world-model:v21"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_PLAN_CERTIFICATE_V21_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-plan-certificate:v21"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_EPISODE_V21_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-episode:v21"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_CAMPAIGN_V21_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-campaign:v21"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_VERIFICATION_V21_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-verification:v21"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -4733,6 +4766,39 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_context_program_verification_v20": (
             CONSTRUCTION_K7_STANDARD_2048_CONTEXT_PROGRAM_VERIFICATION_V20_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_program_preregistration_v21": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_PROGRAM_PREREGISTRATION_V21_DOMAIN
+        ),
+        "construction_k7_standard_2048_structural_context_pool_v21": (
+            CONSTRUCTION_K7_STANDARD_2048_STRUCTURAL_CONTEXT_POOL_V21_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_candidate_v21": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_CANDIDATE_V21_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_acquisition_v21": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_ACQUISITION_V21_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_proposal_v21": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_PROPOSAL_V21_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_proof_v21": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_PROOF_V21_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_world_model_v21": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_WORLD_MODEL_V21_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_plan_certificate_v21": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_PLAN_CERTIFICATE_V21_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_episode_v21": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_EPISODE_V21_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_campaign_v21": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_CAMPAIGN_V21_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_verification_v21": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_VERIFICATION_V21_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
