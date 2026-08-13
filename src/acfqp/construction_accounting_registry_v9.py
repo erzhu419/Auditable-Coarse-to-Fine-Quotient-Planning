@@ -15,6 +15,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
+from functools import lru_cache
 from typing import Any
 
 from acfqp import construction_accounting_registry_v8 as v8
@@ -307,6 +308,7 @@ def _expected_registry_v9() -> CounterRegistryV9:
     )
 
 
+@lru_cache(maxsize=1)
 def official_counter_registry_v9() -> CounterRegistryV9:
     result = _expected_registry_v9()
     if (
@@ -393,6 +395,7 @@ class StageProfileV9:
             raise ConstructionAccountingRegistryV9Error("V9 stage binding changed")
 
 
+@lru_cache(maxsize=2)
 def official_stage_profile_v9(registry: CounterRegistryV9 | None = None) -> StageProfileV9:
     selected = registry or official_counter_registry_v9()
     base = v8.official_stage_profile_v8()
@@ -453,6 +456,7 @@ class ComparisonProfileV9:
             raise ConstructionAccountingRegistryV9Error("V9 comparison profile changed")
 
 
+@lru_cache(maxsize=2)
 def official_comparison_profile_v9(registry: CounterRegistryV9 | None = None) -> ComparisonProfileV9:
     selected = registry or official_counter_registry_v9()
     result = ComparisonProfileV9(
@@ -509,6 +513,7 @@ class ActualProjectionProfileV9:
             raise ConstructionAccountingRegistryV9Error("V9 projection profile changed")
 
 
+@lru_cache(maxsize=4)
 def official_actual_projection_profile_v9(
     registry: CounterRegistryV9 | None = None,
     comparison: ComparisonProfileV9 | None = None,
