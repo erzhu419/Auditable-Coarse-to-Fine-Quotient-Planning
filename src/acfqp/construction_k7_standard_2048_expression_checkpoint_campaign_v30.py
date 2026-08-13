@@ -1,0 +1,407 @@
+"""Continue the certified expression-world-model episodes from V29 checkpoints."""
+
+from __future__ import annotations
+
+from concurrent.futures import ProcessPoolExecutor
+from dataclasses import dataclass, field
+from fractions import Fraction
+from functools import lru_cache
+import hashlib
+from pathlib import Path
+from typing import Any, NoReturn
+
+from acfqp import construction_k7_standard_2048_commit_reveal_target_kernel_v22 as target
+from acfqp import construction_k7_standard_2048_expression_checkpoint_preregistration_v30 as pre
+from acfqp import construction_k7_standard_2048_expression_long_preregistration_v23 as long_pre
+from acfqp import construction_k7_standard_2048_expression_planner_v1 as planner
+from acfqp.domains.standard_2048 import (
+    GOAL_RANK,
+    Swipe2048Action,
+    Swipe2048Status,
+    select_seeded_outcome_v1,
+    state_from_board_v1,
+)
+from acfqp.phase3e_ids import canonical_json_bytes, content_id, loads_canonical_json
+
+
+SCHEMA_VERSION = pre.SCHEMA_VERSION
+PROFILE_KEY = "construction_k7_standard_2048_expression_checkpoint_campaign_v30"
+EXPECTED_CAMPAIGN_ID = "5371b59f0d65097c7ceb2135d0e14671db42a156531a03cba8d21e95ec7485a7"
+EXPECTED_CANONICAL_BYTE_COUNT = 1323469
+EXPECTED_CANONICAL_SHA256 = "e9719b7f11ccd47074ba0ee8653df08ecabc9cd06722110854c9b5ccd0feadff"
+MAXIMUM_PROCESSES = 4
+SOURCE_ROOT = Path(__file__).resolve().parents[2]
+SOURCE_PATHS = (
+    "src/acfqp/construction_k7_standard_2048_expression_checkpoint_preregistration_v30.py",
+    "src/acfqp/construction_k7_standard_2048_expression_planner_v1.py",
+    "src/acfqp/construction_k7_standard_2048_commit_reveal_target_kernel_v22.py",
+    "src/acfqp/domains/standard_2048.py",
+)
+
+
+class ConstructionK7Standard2048ExpressionCheckpointCampaignV30Error(ValueError):
+    """The predecessor, checkpoint plan, transition, or claim changed."""
+
+
+def _fail(message: str) -> NoReturn:
+    raise ConstructionK7Standard2048ExpressionCheckpointCampaignV30Error(message)
+
+
+def _state_document(state: Any) -> dict[str, Any]:
+    return {"board_ranks": list(state.board), "status": state.status.value}
+
+
+def _source_binding() -> dict[str, Any]:
+    source_facts = []
+    for relative in SOURCE_PATHS:
+        raw = (SOURCE_ROOT / relative).read_bytes()
+        source_facts.append(
+            {
+                "relative_path": relative,
+                "byte_count": len(raw),
+                "sha256": hashlib.sha256(raw).hexdigest(),
+            }
+        )
+    return {
+        "schema": "acfqp.standard_2048_expression_checkpoint_source_binding.v30",
+        "schema_version": SCHEMA_VERSION,
+        "expression_checkpoint_preregistration_id": pre.PREREGISTRATION_ID,
+        "v29_checkpoint_campaign_id": pre.V29_CAMPAIGN_ID,
+        "v29_checkpoint_verification_id": pre.V29_VERIFICATION_ID,
+        "expression_world_model_id": pre.WORLD_MODEL_ID,
+        "source_facts": source_facts,
+        "expression_ast": {
+            "operator": "COUNT_EQ",
+            "vector_source": "POST_SWIPE_BOARD_RANKS",
+            "constant": 1,
+        },
+        "threshold": 2,
+        "base_probability": Fraction(1, 10),
+        "override_probability": Fraction(3, 20),
+        "planning_horizon": pre.PLANNING_HORIZON,
+        "empty_cache_at_checkpoint_start": True,
+        "persistent_cache_within_segment": True,
+        "target_probability_query_count_in_segment": 0,
+        "binding_frozen_before_checkpoint_target_execution": True,
+    }
+
+
+def _episode(task: tuple[int, dict[str, Any]]) -> dict[str, Any]:
+    episode_index, binding = task
+    state = state_from_board_v1(pre.CHECKPOINT_BOARDS[episode_index])
+    initial = _state_document(state)
+    session = planner.create_expression_planning_session_v1(
+        expression_ast=binding["expression_ast"],
+        threshold=binding["threshold"],
+        base_probability=binding["base_probability"],
+        override_probability=binding["override_probability"],
+        horizon=binding["planning_horizon"],
+    )
+    decisions = []
+    for local_index in range(pre.SEGMENT_DECISION_LIMIT):
+        if state.status is not Swipe2048Status.ACTIVE:
+            break
+        global_index = pre.GLOBAL_DECISION_START + local_index
+        model = session.plan_root(state)
+        if model.get("target_transition_accessed") is not False:
+            _fail("checkpoint planner accessed target before certificate")
+        certificate_payload = {
+            "schema": "acfqp.standard_2048_expression_checkpoint_certificate.v30",
+            "schema_version": SCHEMA_VERSION,
+            "expression_checkpoint_preregistration_id": pre.PREREGISTRATION_ID,
+            "expression_world_model_id": pre.WORLD_MODEL_ID,
+            "source_episode_id": pre.CHECKPOINT_EPISODE_IDS[episode_index],
+            "episode_index": episode_index,
+            "local_decision_index": local_index,
+            "global_decision_index": global_index,
+            "root_state": _state_document(state),
+            "planning_horizon": pre.PLANNING_HORIZON,
+            "root_action_exact_values": model["root_action_exact_values"],
+            "selected_action": model["selected_action"],
+            "selected_expected_merge_score": model["selected_expected_merge_score"],
+            "selected_loss_probability_within_horizon": model[
+                "selected_loss_probability_within_horizon"
+            ],
+            "factored_action_row_evaluation_count": model[
+                "factored_action_row_evaluation_count"
+            ],
+            "factored_support_outcome_evaluation_count": model[
+                "factored_support_outcome_evaluation_count"
+            ],
+            "subproof_cache_hit_count": model["subproof_cache_hit_count"],
+            "subproof_cache_miss_count": model["subproof_cache_miss_count"],
+            "cross_decision_subproof_cache_hit_count": model[
+                "cross_decision_subproof_cache_hit_count"
+            ],
+            "persistent_subproof_cache_entry_count": model[
+                "persistent_subproof_cache_entry_count"
+            ],
+            "operational_target_probability_query_count": 0,
+            "operational_ground_state_action_row_count": 0,
+            "target_transition_accessed_before_certificate_freeze": False,
+            "status": "CERTIFIED_CHECKPOINT_EXPRESSION_MODEL_H3",
+        }
+        certificate = {
+            **certificate_payload,
+            "expression_checkpoint_certificate_id": content_id(
+                pre.FUTURE_DOMAINS["certificate"], certificate_payload
+            ),
+        }
+        cold = None
+        if local_index in pre.LOCAL_COLD_CHECKPOINTS:
+            cold = planner.evaluate_ground_root_v1(
+                state,
+                outcome_provider=target.target_outcomes_v22,
+                horizon=pre.PLANNING_HORIZON,
+            )
+            if (
+                cold["root_action_exact_values"] != model["root_action_exact_values"]
+                or cold["selected_action"] != model["selected_action"]
+            ):
+                _fail("checkpoint cold target differs from expression model")
+        selected = Swipe2048Action(model["selected_action"])
+        outcome, tape = select_seeded_outcome_v1(
+            target.target_outcomes_v22(state, selected),
+            seed=long_pre.EPISODE_SEEDS[episode_index],
+            decision_index=global_index,
+        )
+        decisions.append(
+            {
+                "local_decision_index": local_index,
+                "global_decision_index": global_index,
+                "predecision_state": _state_document(state),
+                "certificate": certificate,
+                "route": "CHECKPOINT_EXPRESSION_WORLD_MODEL_CERTIFIED",
+                "cold_target_checkpoint": cold,
+                "checkpoint_root_values_and_action_exactly_equal": cold is None
+                or (
+                    cold["root_action_exact_values"]
+                    == model["root_action_exact_values"]
+                    and cold["selected_action"] == model["selected_action"]
+                ),
+                "certificate_frozen_before_cold_checkpoint_and_target_transition": True,
+                "executed_action": selected.value,
+                "execution_tape_sha256": tape,
+                "executed_next_state": _state_document(outcome.next_state),
+                "online_target_transition_observation_count": 1,
+                "execution_transition_used_to_modify_world_model": False,
+            }
+        )
+        state = outcome.next_state
+    checkpoints = [row for row in decisions if row["cold_target_checkpoint"] is not None]
+    payload = {
+        "schema": "acfqp.standard_2048_expression_checkpoint_episode.v30",
+        "schema_version": SCHEMA_VERSION,
+        "expression_checkpoint_preregistration_id": pre.PREREGISTRATION_ID,
+        "expression_world_model_id": pre.WORLD_MODEL_ID,
+        "source_episode_id": pre.CHECKPOINT_EPISODE_IDS[episode_index],
+        "episode_index": episode_index,
+        "execution_seed": long_pre.EPISODE_SEEDS[episode_index],
+        "global_decision_start_inclusive": pre.GLOBAL_DECISION_START,
+        "initial_state": initial,
+        "decisions": decisions,
+        "segment_decision_count": len(decisions),
+        "cumulative_decision_count": pre.SOURCE_DECISION_COUNT + len(decisions),
+        "closure_reason": (
+            "TERMINAL_STATE"
+            if state.status is not Swipe2048Status.ACTIVE
+            else "REGISTERED_CHECKPOINT_LIMIT"
+        ),
+        "model_certificate_count": len(decisions),
+        "local_ground_recovery_count": 0,
+        "additional_model_acquisition_label_count": 0,
+        "cold_evaluation_checkpoint_count": len(checkpoints),
+        "all_checkpoint_root_values_and_actions_exactly_equal": all(
+            row["checkpoint_root_values_and_action_exactly_equal"]
+            for row in checkpoints
+        ),
+        "factored_action_row_evaluation_count": sum(
+            row["certificate"]["factored_action_row_evaluation_count"]
+            for row in decisions
+        ),
+        "factored_support_outcome_evaluation_count": sum(
+            row["certificate"]["factored_support_outcome_evaluation_count"]
+            for row in decisions
+        ),
+        "subproof_cache_hit_count": sum(
+            row["certificate"]["subproof_cache_hit_count"] for row in decisions
+        ),
+        "subproof_cache_miss_count": sum(
+            row["certificate"]["subproof_cache_miss_count"] for row in decisions
+        ),
+        "cross_decision_subproof_cache_hit_count": sum(
+            row["certificate"]["cross_decision_subproof_cache_hit_count"]
+            for row in decisions
+        ),
+        "final_state": _state_document(state),
+        "maximum_final_board_tile_rank": max(state.board),
+        "tile_2048_reached": max(state.board) >= GOAL_RANK,
+    }
+    return {
+        **payload,
+        "expression_checkpoint_episode_id": content_id(
+            pre.FUTURE_DOMAINS["episode"], payload
+        ),
+    }
+
+
+def _campaign_document() -> dict[str, Any]:
+    preregistration = pre.verify_standard_2048_expression_checkpoint_preregistration_v30(
+        pre.freeze_standard_2048_expression_checkpoint_preregistration_v30()
+    )
+    binding = _source_binding()
+    with ProcessPoolExecutor(max_workers=MAXIMUM_PROCESSES) as executor:
+        episodes = list(
+            executor.map(
+                _episode,
+                ((index, binding) for index in range(len(pre.CHECKPOINT_BOARDS))),
+                chunksize=1,
+            )
+        )
+    episodes.sort(key=lambda row: row["episode_index"])
+    decisions = [row for episode in episodes for row in episode["decisions"]]
+    checkpoints = [row for row in decisions if row["cold_target_checkpoint"] is not None]
+    payload = {
+        "schema": "acfqp.standard_2048_expression_checkpoint_campaign.v30",
+        "schema_version": SCHEMA_VERSION,
+        "proposed_contract_version": pre.PROPOSED_CONTRACT_VERSION,
+        "profile_key": PROFILE_KEY,
+        "expression_checkpoint_preregistration": preregistration.to_document(),
+        "source_binding": binding,
+        "episodes": episodes,
+        "episode_count": len(episodes),
+        "segment_decision_count": len(decisions),
+        "cumulative_decision_count_across_episodes": (
+            len(pre.CHECKPOINT_BOARDS) * pre.SOURCE_DECISION_COUNT + len(decisions)
+        ),
+        "model_certificate_count": len(decisions),
+        "local_ground_recovery_count": 0,
+        "cold_evaluation_checkpoint_count": len(checkpoints),
+        "all_checkpoint_root_values_and_actions_exactly_equal": all(
+            row["checkpoint_root_values_and_action_exactly_equal"]
+            for row in checkpoints
+        ),
+        "inherited_target_probability_label_count": 4,
+        "additional_model_acquisition_label_count": 0,
+        "strict_no_prior_context_label_count": 8,
+        "inherited_label_fraction_of_no_prior": Fraction(1, 2),
+        "cumulative_certified_decisions_per_acquired_target_label": Fraction(
+            len(pre.CHECKPOINT_BOARDS) * pre.SOURCE_DECISION_COUNT + len(decisions),
+            4,
+        ),
+        "online_target_transition_observation_count": len(decisions),
+        "factored_action_row_evaluation_count": sum(
+            episode["factored_action_row_evaluation_count"] for episode in episodes
+        ),
+        "factored_support_outcome_evaluation_count": sum(
+            episode["factored_support_outcome_evaluation_count"] for episode in episodes
+        ),
+        "subproof_cache_hit_count": sum(
+            episode["subproof_cache_hit_count"] for episode in episodes
+        ),
+        "subproof_cache_miss_count": sum(
+            episode["subproof_cache_miss_count"] for episode in episodes
+        ),
+        "cross_decision_subproof_cache_hit_count": sum(
+            episode["cross_decision_subproof_cache_hit_count"] for episode in episodes
+        ),
+        "evaluation_cold_target_ground_state_action_row_count": sum(
+            row["cold_target_checkpoint"]["ground_state_action_row_count"]
+            for row in checkpoints
+        ),
+        "evaluation_cold_target_ground_outcome_count": sum(
+            row["cold_target_checkpoint"]["ground_outcome_count"]
+            for row in checkpoints
+        ),
+        "exact_cache_checkpoint_reset_preserved_values_and_actions": True,
+        "all_segment_planning_performed_in_expression_world_model": True,
+        "operational_target_probability_query_count_in_segment": 0,
+        "operational_ground_state_action_row_count_in_segment": 0,
+        "registered_label_axis_sample_tax_reduction_preserved": True,
+        "broad_or_physical_iid_sample_efficiency_claimed": False,
+        "total_operational_work_saving_claimed": False,
+        "full_standard_2048_game_completed": all(
+            episode["closure_reason"] == "TERMINAL_STATE" for episode in episodes
+        ),
+        "tile_2048_reached": any(episode["tile_2048_reached"] for episode in episodes),
+        "maximum_final_board_tile_rank": max(
+            episode["maximum_final_board_tile_rank"] for episode in episodes
+        ),
+        "official_execution_allowed": False,
+        "official_scalar_cost": None,
+        "official_N_break_even": None,
+        "counter_completeness_gate_status": "NOT_RUN",
+        "workload_economics_gate_status": "NOT_RUN",
+    }
+    return {
+        **payload,
+        "expression_checkpoint_campaign_id": content_id(
+            pre.FUTURE_DOMAINS["campaign"], payload
+        ),
+    }
+
+
+_ISSUER = object()
+
+
+@dataclass(frozen=True, slots=True)
+class Standard2048ExpressionCheckpointCampaignV30:
+    _issuer: object = field(repr=False, compare=False)
+    canonical_bytes: bytes = field(repr=False)
+    campaign_id: str
+
+    def __post_init__(self) -> None:
+        if self._issuer is not _ISSUER or type(self.canonical_bytes) is not bytes:
+            _fail("checkpoint campaign is not issuer-created")
+        document = loads_canonical_json(self.canonical_bytes)
+        if type(document) is not dict or canonical_json_bytes(document) != self.canonical_bytes:
+            _fail("checkpoint campaign bytes changed")
+        payload = {
+            key: value
+            for key, value in document.items()
+            if key != "expression_checkpoint_campaign_id"
+        }
+        if (
+            document.get("expression_checkpoint_campaign_id") != self.campaign_id
+            or content_id(pre.FUTURE_DOMAINS["campaign"], payload) != self.campaign_id
+        ):
+            _fail("checkpoint campaign identity changed")
+
+    def to_document(self) -> dict[str, Any]:
+        document = loads_canonical_json(self.canonical_bytes)
+        if type(document) is not dict:
+            raise AssertionError("checkpoint campaign is not an object")
+        return document
+
+
+@lru_cache(maxsize=1)
+def run_standard_2048_expression_checkpoint_campaign_v30(
+) -> Standard2048ExpressionCheckpointCampaignV30:
+    document = _campaign_document()
+    raw = canonical_json_bytes(document)
+    if EXPECTED_CAMPAIGN_ID != "0" * 64 and (
+        document["expression_checkpoint_campaign_id"] != EXPECTED_CAMPAIGN_ID
+        or len(raw) != EXPECTED_CANONICAL_BYTE_COUNT
+        or hashlib.sha256(raw).hexdigest() != EXPECTED_CANONICAL_SHA256
+    ):
+        _fail("frozen checkpoint campaign outcome changed")
+    return Standard2048ExpressionCheckpointCampaignV30(
+        _ISSUER, raw, document["expression_checkpoint_campaign_id"]
+    )
+
+
+def verify_standard_2048_expression_checkpoint_campaign_v30(
+    value: Standard2048ExpressionCheckpointCampaignV30,
+) -> Standard2048ExpressionCheckpointCampaignV30:
+    if type(value) is not Standard2048ExpressionCheckpointCampaignV30:
+        _fail("checkpoint campaign verifier rejects foreign values")
+    value.__post_init__()
+    return value
+
+
+__all__ = (
+    "EXPECTED_CAMPAIGN_ID",
+    "Standard2048ExpressionCheckpointCampaignV30",
+    "run_standard_2048_expression_checkpoint_campaign_v30",
+    "verify_standard_2048_expression_checkpoint_campaign_v30",
+)
