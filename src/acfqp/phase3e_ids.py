@@ -1668,6 +1668,27 @@ CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_CHECKPOINT_CAMPAIGN_V33_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_CHECKPOINT_VERIFICATION_V33_DOMAIN = (
     "acfqp:construction-k7-standard-2048-expression-checkpoint-verification:v33"
 )
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_FULL_ACCOUNTING_PREREGISTRATION_V34_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-full-accounting-preregistration:v34"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_FULL_ACCOUNTING_MEASUREMENT_V34_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-full-accounting-measurement:v34"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_FULL_ACCOUNTING_COUNTER_BUNDLE_V34_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-full-accounting-counter-bundle:v34"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_FULL_ACCOUNTING_SEGMENT_V34_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-full-accounting-segment:v34"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_FULL_ACCOUNTING_EPISODE_V34_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-full-accounting-episode:v34"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_FULL_ACCOUNTING_CAMPAIGN_V34_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-full-accounting-campaign:v34"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_FULL_ACCOUNTING_VERIFICATION_V34_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-full-accounting-verification:v34"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -5207,6 +5228,27 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_expression_checkpoint_verification_v33": (
             CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_CHECKPOINT_VERIFICATION_V33_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_full_accounting_preregistration_v34": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_FULL_ACCOUNTING_PREREGISTRATION_V34_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_full_accounting_measurement_v34": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_FULL_ACCOUNTING_MEASUREMENT_V34_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_full_accounting_counter_bundle_v34": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_FULL_ACCOUNTING_COUNTER_BUNDLE_V34_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_full_accounting_segment_v34": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_FULL_ACCOUNTING_SEGMENT_V34_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_full_accounting_episode_v34": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_FULL_ACCOUNTING_EPISODE_V34_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_full_accounting_campaign_v34": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_FULL_ACCOUNTING_CAMPAIGN_V34_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_full_accounting_verification_v34": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_FULL_ACCOUNTING_VERIFICATION_V34_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
