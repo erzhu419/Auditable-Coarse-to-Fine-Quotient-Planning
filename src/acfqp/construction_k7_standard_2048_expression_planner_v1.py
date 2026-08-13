@@ -276,6 +276,76 @@ class _GroundPlanner:
         return tuple(self.action_value(state, action, horizon) for action in legal_actions_v1(state.board))
 
 
+class ExpressionPlanningSessionV1:
+    """Reuse exact Bellman subproofs across receding-horizon decisions."""
+
+    __slots__ = ("_horizon", "_planner")
+
+    def __init__(
+        self,
+        *,
+        expression_ast: dict[str, Any],
+        threshold: int,
+        base_probability: Fraction,
+        override_probability: Fraction,
+        horizon: int,
+    ) -> None:
+        if type(threshold) is not int or type(horizon) is not int or horizon <= 0:
+            _fail("expression planning session configuration changed")
+        self._horizon = horizon
+        self._planner = _ExpressionPlanner(
+            expression_ast,
+            threshold,
+            Fraction(base_probability),
+            Fraction(override_probability),
+        )
+
+    def plan_root(self, state: Swipe2048State) -> dict[str, Any]:
+        if type(state) is not Swipe2048State:
+            _fail("expression planning session state changed")
+        before_rows = self._planner.rows
+        before_outcomes = self._planner.outcomes
+        before_hits = self._planner.hits
+        before_misses = self._planner.misses
+        values = self._planner.roots(state, self._horizon)
+        selected = _best(values)
+        return {
+            "root_action_exact_values": _rows(values),
+            "selected_action": selected.action,
+            "selected_expected_merge_score": selected.score,
+            "selected_loss_probability_within_horizon": selected.loss,
+            "factored_action_row_evaluation_count": self._planner.rows - before_rows,
+            "factored_support_outcome_evaluation_count": (
+                self._planner.outcomes - before_outcomes
+            ),
+            "subproof_cache_hit_count": self._planner.hits - before_hits,
+            "subproof_cache_miss_count": self._planner.misses - before_misses,
+            "cumulative_factored_action_row_evaluation_count": self._planner.rows,
+            "cumulative_factored_support_outcome_evaluation_count": self._planner.outcomes,
+            "cumulative_subproof_cache_hit_count": self._planner.hits,
+            "cumulative_subproof_cache_miss_count": self._planner.misses,
+            "persistent_subproof_cache_entry_count": len(self._planner.cache),
+            "target_transition_accessed": False,
+        }
+
+
+def create_expression_planning_session_v1(
+    *,
+    expression_ast: dict[str, Any],
+    threshold: int,
+    base_probability: Fraction,
+    override_probability: Fraction,
+    horizon: int,
+) -> ExpressionPlanningSessionV1:
+    return ExpressionPlanningSessionV1(
+        expression_ast=expression_ast,
+        threshold=threshold,
+        base_probability=base_probability,
+        override_probability=override_probability,
+        horizon=horizon,
+    )
+
+
 def plan_expression_world_model_root_v1(
     state: Swipe2048State,
     *,
@@ -329,6 +399,8 @@ def evaluate_ground_root_v1(
 
 __all__ = (
     "ConstructionK7Standard2048ExpressionPlannerV1Error",
+    "ExpressionPlanningSessionV1",
+    "create_expression_planning_session_v1",
     "evaluate_ground_root_v1",
     "evaluate_structural_expression_v1",
     "plan_expression_world_model_root_v1",
