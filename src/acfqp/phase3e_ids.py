@@ -1203,6 +1203,30 @@ CONSTRUCTION_K7_STANDARD_2048_META_ROUTE_CAMPAIGN_V10_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_META_ROUTE_VERIFICATION_V10_DOMAIN = (
     "acfqp:construction-k7-standard-2048-meta-route-independent-verification:v10"
 )
+CONSTRUCTION_K7_STANDARD_2048_LONG_PREREGISTRATION_V11_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-long-preregistration:v11"
+)
+CONSTRUCTION_K7_STANDARD_2048_LONG_DYNAMICS_IDENTITY_V11_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-long-dynamics-identity:v11"
+)
+CONSTRUCTION_K7_STANDARD_2048_LONG_OPERATOR_BINDING_V11_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-long-operator-binding:v11"
+)
+CONSTRUCTION_K7_STANDARD_2048_LONG_CERTIFICATE_V11_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-long-certificate:v11"
+)
+CONSTRUCTION_K7_STANDARD_2048_LONG_EPISODE_V11_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-long-episode:v11"
+)
+CONSTRUCTION_K7_STANDARD_2048_LONG_NO_TRANSFER_V11_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-long-no-transfer:v11"
+)
+CONSTRUCTION_K7_STANDARD_2048_LONG_CAMPAIGN_V11_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-long-campaign:v11"
+)
+CONSTRUCTION_K7_STANDARD_2048_LONG_VERIFICATION_V11_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-long-independent-verification:v11"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -4253,6 +4277,30 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_meta_route_verification_v10": (
             CONSTRUCTION_K7_STANDARD_2048_META_ROUTE_VERIFICATION_V10_DOMAIN
+        ),
+        "construction_k7_standard_2048_long_preregistration_v11": (
+            CONSTRUCTION_K7_STANDARD_2048_LONG_PREREGISTRATION_V11_DOMAIN
+        ),
+        "construction_k7_standard_2048_long_dynamics_identity_v11": (
+            CONSTRUCTION_K7_STANDARD_2048_LONG_DYNAMICS_IDENTITY_V11_DOMAIN
+        ),
+        "construction_k7_standard_2048_long_operator_binding_v11": (
+            CONSTRUCTION_K7_STANDARD_2048_LONG_OPERATOR_BINDING_V11_DOMAIN
+        ),
+        "construction_k7_standard_2048_long_certificate_v11": (
+            CONSTRUCTION_K7_STANDARD_2048_LONG_CERTIFICATE_V11_DOMAIN
+        ),
+        "construction_k7_standard_2048_long_episode_v11": (
+            CONSTRUCTION_K7_STANDARD_2048_LONG_EPISODE_V11_DOMAIN
+        ),
+        "construction_k7_standard_2048_long_no_transfer_v11": (
+            CONSTRUCTION_K7_STANDARD_2048_LONG_NO_TRANSFER_V11_DOMAIN
+        ),
+        "construction_k7_standard_2048_long_campaign_v11": (
+            CONSTRUCTION_K7_STANDARD_2048_LONG_CAMPAIGN_V11_DOMAIN
+        ),
+        "construction_k7_standard_2048_long_verification_v11": (
+            CONSTRUCTION_K7_STANDARD_2048_LONG_VERIFICATION_V11_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
