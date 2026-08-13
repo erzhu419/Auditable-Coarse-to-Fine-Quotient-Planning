@@ -481,6 +481,58 @@ def _value_rows(values: tuple[_Value, ...]) -> list[dict[str, Any]]:
     ]
 
 
+def plan_proved_context_program_root_v20(
+    state: Swipe2048State,
+    *,
+    feature_name: str,
+    threshold: int,
+    override_probability: Fraction,
+) -> dict[str, Any]:
+    """Plan one root in the proved factored model without target access."""
+
+    if type(state) is not Swipe2048State:
+        _fail("public context-model planner requires an exact state")
+    if feature_name not in pre.FEATURE_BASIS or type(threshold) is not int:
+        _fail("public context-model program changed")
+    program = (feature_name, threshold, Fraction(override_probability))
+    planner = _ModelPlanner(program)
+    values = planner.roots(state)
+    selected = _best(values)
+    return {
+        "root_action_exact_values": _value_rows(values),
+        "selected_action": selected.action,
+        "selected_expected_merge_score": _fdoc(selected.score),
+        "selected_loss_probability_within_horizon": _fdoc(selected.loss),
+        "factored_action_row_evaluation_count": planner.rows,
+        "factored_support_outcome_evaluation_count": planner.outcomes,
+        "subproof_cache_hit_count": planner.hits,
+        "subproof_cache_miss_count": planner.misses,
+        "target_transition_accessed": False,
+    }
+
+
+def evaluate_target_root_v20(state: Swipe2048State) -> dict[str, Any]:
+    """Evaluate one cold target root for the standalone comparison lane."""
+
+    if type(state) is not Swipe2048State:
+        _fail("public target evaluator requires an exact state")
+    planner = _DirectPlanner()
+    values = planner.roots(state)
+    selected = _best(values)
+    return {
+        "root_action_exact_values": _value_rows(values),
+        "selected_action": selected.action,
+        "selected_expected_merge_score": _fdoc(selected.score),
+        "selected_loss_probability_within_horizon": _fdoc(selected.loss),
+        "ground_state_action_row_count": planner.rows,
+        "ground_outcome_count": planner.outcomes,
+        "subproof_cache_hit_count": planner.hits,
+        "subproof_cache_miss_count": planner.misses,
+        "lane": "STANDALONE_EVALUATION_ONLY",
+        "route_or_certificate_authority": False,
+    }
+
+
 def _episode(
     task: tuple[int, tuple[int, ...], str, Program, str]
 ) -> dict[str, Any]:
@@ -754,6 +806,8 @@ __all__ = (
     "ConstructionK7Standard2048ContextProgramCampaignV20Error",
     "EXPECTED_CAMPAIGN_ID",
     "Standard2048ContextProgramCampaignV20",
+    "evaluate_target_root_v20",
+    "plan_proved_context_program_root_v20",
     "run_standard_2048_context_program_campaign_v20",
     "verify_standard_2048_context_program_campaign_v20",
 )
