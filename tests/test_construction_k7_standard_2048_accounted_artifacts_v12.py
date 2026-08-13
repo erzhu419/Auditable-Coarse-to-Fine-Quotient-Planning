@@ -84,6 +84,10 @@ def test_evaluation_output_is_typed_and_never_gets_comparison_vector(
     output = tmp_path / "evaluation"
     result = artifacts.materialize_evaluation_v12(
         subject_id=subject,
+        transport_document={
+            "schema": "test.evaluation.transport",
+            "subject_id": subject,
+        },
         exact_document={"selected_action": "LEFT", "exact": True},
         forced_document=None,
         base_values=counters.freeze(),

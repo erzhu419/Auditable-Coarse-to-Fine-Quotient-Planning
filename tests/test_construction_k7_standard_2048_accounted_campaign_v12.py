@@ -33,7 +33,7 @@ def test_one_decision_smoke_closes_worker_route_and_campaign_vectors(
         episode_count=1,
     )
     assert document["accounted_campaign_id"] == (
-        "28e0f5dd02157094d02c3ffd0df523a157dc10ef66c6afadc85e476e8da31bd1"
+        "e3e25b8f7e931efece856b59d5261a0a6140c8dda7c3c9cb26976689552fa3c3"
     )
     assert document["episode_count"] == 1
     assert document["decision_count"] == 1

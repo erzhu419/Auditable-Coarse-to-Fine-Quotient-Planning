@@ -618,6 +618,7 @@ def materialize_operational_segment_v12(
 def _evaluation_candidate(
     *,
     subject_id: str,
+    transport_document: Mapping[str, Any],
     exact_document: Mapping[str, Any],
     forced_document: Mapping[str, Any] | None,
     base_values: Mapping[str, int],
@@ -674,6 +675,9 @@ def _evaluation_candidate(
         "schema_version": SCHEMA_VERSION,
         "subject_id": subject_id,
         "evaluation.io_output_bytes": candidate,
+        "evaluation_transport": _exact_document(
+            transport_document, "evaluation transport"
+        ),
         "accounting_measurement": measurement,
         "exact_plan": _exact_document(exact_document, "evaluation exact plan"),
         "forced_selected_action_exact_evaluation": (
@@ -691,6 +695,7 @@ def _evaluation_candidate(
 def materialize_evaluation_v12(
     *,
     subject_id: str,
+    transport_document: Mapping[str, Any],
     exact_document: Mapping[str, Any],
     forced_document: Mapping[str, Any] | None,
     base_values: Mapping[str, int],
@@ -708,6 +713,7 @@ def materialize_evaluation_v12(
     for _ in range(32):
         current = _evaluation_candidate(
             subject_id=subject_id,
+            transport_document=transport_document,
             exact_document=exact_document,
             forced_document=forced_document,
             base_values=base_values,
@@ -727,6 +733,7 @@ def materialize_evaluation_v12(
         _fail("evaluation output-byte fixed point did not converge")
     replayed = _evaluation_candidate(
         subject_id=subject_id,
+        transport_document=transport_document,
         exact_document=exact_document,
         forced_document=forced_document,
         base_values=base_values,

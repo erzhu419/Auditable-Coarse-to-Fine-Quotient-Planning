@@ -554,6 +554,7 @@ def _materialize_campaign(
                 evaluation_values["evaluation.io_read_bytes"] = len(evaluation_raw)
                 evaluation_bundle = artifacts.materialize_evaluation_v12(
                     subject_id=decision_id,
+                    transport_document=evaluation,
                     exact_document=evaluation["exact_plan"],
                     forced_document=evaluation[
                         "forced_selected_action_exact_evaluation"
@@ -661,14 +662,14 @@ def _materialize_campaign(
             "schema": "acfqp.standard_2048_accounted_episode.v12",
             "schema_version": SCHEMA_VERSION,
             "business_episode_id": episode_id,
+            "business_episode": episode,
+            "worker_task": loads_canonical_json(reply.task_bytes),
             "episode_index": episode_ordinal,
             "worker_accounting_measurement": worker_measurement.to_document(),
-            "worker_work_vector_id": worker_chain.work_vector.work_vector_id,
-            "worker_comparison_vector_id": (
-                worker_chain.comparison_vector.comparison_vector_id
-            ),
-            "worker_projection_proof_id": (
-                worker_chain.projection_proof.actual_projection_proof_id
+            "worker_work_vector": worker_chain.work_vector.to_dict(),
+            "worker_comparison_vector": worker_chain.comparison_vector.to_dict(),
+            "worker_actual_projection_proof": (
+                worker_chain.projection_proof.to_dict()
             ),
             "decisions": decision_summaries,
             "decision_count": len(decision_summaries),
