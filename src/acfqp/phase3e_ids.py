@@ -1545,6 +1545,9 @@ CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_ACCOUNTED_CAMPAIGN_V24_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_ACCOUNTED_VERIFICATION_V24_DOMAIN = (
     "acfqp:construction-k7-standard-2048-expression-accounted-verification:v24"
 )
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_ACCOUNTED_SEMANTIC_VERIFICATION_V25_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-accounted-semantic-verification:v25"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -4961,6 +4964,9 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_expression_accounted_verification_v24": (
             CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_ACCOUNTED_VERIFICATION_V24_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_accounted_semantic_verification_v25": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_ACCOUNTED_SEMANTIC_VERIFICATION_V25_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
