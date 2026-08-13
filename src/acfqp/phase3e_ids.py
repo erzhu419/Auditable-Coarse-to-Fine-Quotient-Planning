@@ -1506,6 +1506,24 @@ CONSTRUCTION_K7_STANDARD_2048_BLIND_EXPRESSION_CAMPAIGN_V22_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_BLIND_EXPRESSION_VERIFICATION_V22_DOMAIN = (
     "acfqp:construction-k7-standard-2048-blind-expression-verification:v22"
 )
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_LONG_PREREGISTRATION_V23_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-long-preregistration:v23"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_LONG_SOURCE_BINDING_V23_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-long-source-binding:v23"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_LONG_CERTIFICATE_V23_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-long-certificate:v23"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_LONG_EPISODE_V23_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-long-episode:v23"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_LONG_CAMPAIGN_V23_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-long-campaign:v23"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_LONG_VERIFICATION_V23_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-long-verification:v23"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -4871,6 +4889,24 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_blind_expression_verification_v22": (
             CONSTRUCTION_K7_STANDARD_2048_BLIND_EXPRESSION_VERIFICATION_V22_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_long_preregistration_v23": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_LONG_PREREGISTRATION_V23_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_long_source_binding_v23": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_LONG_SOURCE_BINDING_V23_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_long_certificate_v23": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_LONG_CERTIFICATE_V23_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_long_episode_v23": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_LONG_EPISODE_V23_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_long_campaign_v23": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_LONG_CAMPAIGN_V23_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_long_verification_v23": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_LONG_VERIFICATION_V23_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
