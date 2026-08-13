@@ -1524,6 +1524,27 @@ CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_LONG_CAMPAIGN_V23_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_LONG_VERIFICATION_V23_DOMAIN = (
     "acfqp:construction-k7-standard-2048-expression-long-verification:v23"
 )
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_ACCOUNTED_PREREGISTRATION_V24_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-accounted-preregistration:v24"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_ACCOUNTED_MEASUREMENT_V24_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-accounted-measurement:v24"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_ACCOUNTED_COUNTER_BUNDLE_V24_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-accounted-counter-bundle:v24"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_ACCOUNTED_DECISION_V24_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-accounted-decision:v24"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_ACCOUNTED_EPISODE_V24_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-accounted-episode:v24"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_ACCOUNTED_CAMPAIGN_V24_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-accounted-campaign:v24"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_ACCOUNTED_VERIFICATION_V24_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-accounted-verification:v24"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -4919,6 +4940,27 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_expression_long_verification_v23": (
             CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_LONG_VERIFICATION_V23_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_accounted_preregistration_v24": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_ACCOUNTED_PREREGISTRATION_V24_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_accounted_measurement_v24": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_ACCOUNTED_MEASUREMENT_V24_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_accounted_counter_bundle_v24": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_ACCOUNTED_COUNTER_BUNDLE_V24_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_accounted_decision_v24": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_ACCOUNTED_DECISION_V24_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_accounted_episode_v24": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_ACCOUNTED_EPISODE_V24_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_accounted_campaign_v24": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_ACCOUNTED_CAMPAIGN_V24_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_accounted_verification_v24": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_ACCOUNTED_VERIFICATION_V24_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
