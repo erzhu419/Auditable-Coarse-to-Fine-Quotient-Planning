@@ -1,12 +1,17 @@
 from __future__ import annotations
 
+import ast
 import os
 from pathlib import Path
 
 import pytest
 
 from acfqp import construction_k7_standard_2048_accounted_campaign_v12 as campaign
+from acfqp import (
+    construction_k7_standard_2048_accounted_independent_verifier_v12 as independent,
+)
 from acfqp import construction_k7_standard_2048_accounted_preregistration_v12 as pre
+from acfqp.phase3e_ids import canonical_json_bytes
 
 
 def test_predecessor_and_fresh_task_are_frozen_before_execution() -> None:
@@ -21,6 +26,26 @@ def test_predecessor_and_fresh_task_are_frozen_before_execution() -> None:
     task = campaign._task_document(0, 1)
     assert task["accounted_preregistration_id"] == pre.PREREGISTRATION_ID
     assert task["evaluation_lane_separate_from_operational_route"] is True
+
+
+def test_accounting_verifier_has_no_producer_import() -> None:
+    source = Path(independent.__file__).read_text(encoding="utf-8")
+    tree = ast.parse(source)
+    forbidden = {
+        "acfqp.construction_k7_standard_2048_accounted_campaign_v12",
+        "acfqp.construction_k7_standard_2048_accounted_artifacts_v12",
+        "acfqp.construction_k7_standard_2048_instrumented_runtime_v12",
+    }
+    imported = {
+        node.module
+        for node in ast.walk(tree)
+        if isinstance(node, ast.ImportFrom) and node.module is not None
+    }
+    assert imported.isdisjoint(forbidden)
+    with pytest.raises(
+        independent.ConstructionK7Standard2048AccountedIndependentVerifierV12Error
+    ):
+        independent._object(b"{}\n", "noncanonical attack")
 
 
 def test_one_decision_smoke_closes_worker_route_and_campaign_vectors(
@@ -55,6 +80,25 @@ def test_one_decision_smoke_closes_worker_route_and_campaign_vectors(
     assert final["nonkernel_compute_events"] > 0
     assert final["process_launches"] == 1
     assert final["output_bytes"] > 0
+    verification = independent.verify_standard_2048_accounted_campaign_bundle_independently_v12(
+        campaign_bytes=canonical_json_bytes(document),
+        output_root=output,
+    )
+    assert verification.verification_id == (
+        "7be3fea230495add2f6c9f7ed5a1359eff64a75635e90341452b3877fadbf672"
+    )
+    assert verification.operational_work_vector_count == 4
+    assert verification.evaluation_work_vector_count == 0
+    attacked = output / "episode-0000" / "decision-0000" / "common" / "WORK_VECTOR.json"
+    attacked.chmod(0o600)
+    attacked.write_bytes(attacked.read_bytes() + b"\n")
+    with pytest.raises(
+        independent.ConstructionK7Standard2048AccountedIndependentVerifierV12Error
+    ):
+        independent.verify_standard_2048_accounted_campaign_bundle_independently_v12(
+            campaign_bytes=canonical_json_bytes(document),
+            output_root=output,
+        )
 
 
 @pytest.mark.skipif(

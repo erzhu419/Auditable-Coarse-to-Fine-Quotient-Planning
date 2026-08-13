@@ -7,9 +7,12 @@ from acfqp.accounting_v1 import RouteKindEnum
 from acfqp.actual_accounting_v1 import ActualWorkScope
 from acfqp import construction_k7_standard_2048_accounted_artifacts_v12 as artifacts
 from acfqp import construction_k7_standard_2048_accounted_preregistration_v12 as pre
+from acfqp import (
+    construction_k7_standard_2048_accounted_independent_verifier_v12 as independent,
+)
 from acfqp import construction_k7_standard_2048_instrumented_runtime_v12 as runtime
 from acfqp import construction_output_bytes_fixed_point_v1 as fixed_v1
-from acfqp.phase3e_ids import content_id
+from acfqp.phase3e_ids import canonical_json_bytes, content_id
 
 
 def _subject(label: str) -> str:
@@ -114,3 +117,83 @@ def test_evaluation_output_is_typed_and_never_gets_comparison_vector(
     raw = (output / "EVALUATION_WORK_VECTOR.json").read_bytes()
     assert raw == result.canonical_bytes
     assert result.to_document()["comparison_vector_issued"] is False
+
+
+def test_evaluation_artifact_is_independently_reconstructed_from_transport(
+    tmp_path: Path,
+) -> None:
+    counters = runtime.NativeCounterSetV12()
+    counters.add("evaluation.exact_states_expanded", 2)
+    counters.add("evaluation.exact_actions_evaluated", 5)
+    counters.add("evaluation.exact_ground_steps", 5)
+    counters.add("evaluation.exact_outcome_rows", 11)
+    counters.add("evaluation.exact_bellman_backups", 5)
+    counters.add("evaluation.hash_invocations")
+    worker_values = dict(counters.freeze())
+    subject = _subject("independent-evaluation-replay")
+    exact = {"selected_action": "LEFT", "exact": True}
+    transport_payload = {
+        "schema": "acfqp.standard_2048_accounted_evaluation_transport.v12",
+        "schema_version": pre.SCHEMA_VERSION,
+        "accounted_preregistration_id": pre.PREREGISTRATION_ID,
+        "episode_index": 0,
+        "decision_index": 0,
+        "state_before_decision": {"test_state": True},
+        "selected_action": "LEFT",
+        "exact_plan": exact,
+        "forced_selected_action_exact_evaluation": None,
+        "selected_action_exact_value_and_loss_equivalent": True,
+        "selected_action_label_identical": True,
+        "evaluation_counter_values": worker_values,
+        "operational_route_work_present": False,
+    }
+    transport = {
+        **transport_payload,
+        "accounted_counter_bundle_id": content_id(
+            pre.FUTURE_DOMAINS["counter_bundle"], transport_payload
+        ),
+    }
+    parent_values = dict(worker_values)
+    parent_values["evaluation.hash_invocations"] += 1
+    parent_values["evaluation.semantic_integrity_checks"] += 1
+    parent_values["evaluation.semantic_protocol_checks"] += 1
+    parent_values["evaluation.io_read_bytes"] = len(canonical_json_bytes(transport))
+    result = artifacts.materialize_evaluation_v12(
+        subject_id=subject,
+        transport_document=transport,
+        exact_document=exact,
+        forced_document=None,
+        base_values=parent_values,
+        transport_output_bytes=len(canonical_json_bytes(transport)),
+        working_bytes_peak=pre.EPISODE_WORKER_WORKING_BYTES_PEAK_UPPER,
+        output_directory=tmp_path / "evaluation",
+        output_key="evaluation",
+    )
+    full = result.to_document()
+    summary = {
+        "accounted_counter_bundle_id": full["accounted_counter_bundle_id"],
+        "work_vector_id": result.work_vector.work_vector_id,
+        "accounting_measurement_id": result.measurement[
+            "accounting_measurement_id"
+        ],
+        "output_commit_id": result.output_commit.output_commit_id,
+        "output_key": "evaluation",
+        "evaluation.io.output_bytes": result.work_vector.value(
+            "evaluation.io_output_bytes"
+        ),
+        "comparison_vector_issued": False,
+    }
+    seen: set[Path] = set()
+    replayed = independent._verify_evaluation_bundle(
+        root=tmp_path,
+        summary=summary,
+        seen=seen,
+        expected_subject_id=subject,
+        expected_transport_id=transport["accounted_counter_bundle_id"],
+        expected_episode_index=0,
+        expected_decision_index=0,
+        expected_state={"test_state": True},
+        expected_action="LEFT",
+    )
+    assert replayed == result.work_vector
+    assert seen == {(tmp_path / "evaluation" / "EVALUATION_WORK_VECTOR.json").resolve()}
