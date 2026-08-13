@@ -1227,6 +1227,27 @@ CONSTRUCTION_K7_STANDARD_2048_LONG_CAMPAIGN_V11_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_LONG_VERIFICATION_V11_DOMAIN = (
     "acfqp:construction-k7-standard-2048-long-independent-verification:v11"
 )
+CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_PREREGISTRATION_V12_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-accounted-preregistration:v12"
+)
+CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_MEASUREMENT_V12_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-accounted-measurement:v12"
+)
+CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_COUNTER_BUNDLE_V12_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-accounted-counter-bundle:v12"
+)
+CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_DECISION_V12_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-accounted-decision:v12"
+)
+CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_EPISODE_V12_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-accounted-episode:v12"
+)
+CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_CAMPAIGN_V12_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-accounted-campaign:v12"
+)
+CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_VERIFICATION_V12_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-accounted-independent-verification:v12"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -1238,6 +1259,18 @@ CONSTRUCTION_COMPARISON_PROFILE_V7_DOMAIN = (
 )
 CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V7_DOMAIN = (
     "acfqp:construction-actual-projection-profile:v7"
+)
+CONSTRUCTION_COUNTER_REGISTRY_V8_DOMAIN = (
+    "acfqp:construction-counter-registry:v8"
+)
+CONSTRUCTION_STAGE_PROFILE_V8_DOMAIN = (
+    "acfqp:construction-stage-profile:v8"
+)
+CONSTRUCTION_COMPARISON_PROFILE_V8_DOMAIN = (
+    "acfqp:construction-comparison-profile:v8"
+)
+CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V8_DOMAIN = (
+    "acfqp:construction-actual-projection-profile:v8"
 )
 CONSTRUCTION_K7_ADAPTIVE_OPERATION_BOUNDARY_V1_DOMAIN = (
     "acfqp:construction-k7-adaptive-operation-boundary:v1"
@@ -4302,6 +4335,27 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         "construction_k7_standard_2048_long_verification_v11": (
             CONSTRUCTION_K7_STANDARD_2048_LONG_VERIFICATION_V11_DOMAIN
         ),
+        "construction_k7_standard_2048_accounted_preregistration_v12": (
+            CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_PREREGISTRATION_V12_DOMAIN
+        ),
+        "construction_k7_standard_2048_accounted_measurement_v12": (
+            CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_MEASUREMENT_V12_DOMAIN
+        ),
+        "construction_k7_standard_2048_accounted_counter_bundle_v12": (
+            CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_COUNTER_BUNDLE_V12_DOMAIN
+        ),
+        "construction_k7_standard_2048_accounted_decision_v12": (
+            CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_DECISION_V12_DOMAIN
+        ),
+        "construction_k7_standard_2048_accounted_episode_v12": (
+            CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_EPISODE_V12_DOMAIN
+        ),
+        "construction_k7_standard_2048_accounted_campaign_v12": (
+            CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_CAMPAIGN_V12_DOMAIN
+        ),
+        "construction_k7_standard_2048_accounted_verification_v12": (
+            CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_VERIFICATION_V12_DOMAIN
+        ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
         ),
@@ -4313,6 +4367,18 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_actual_projection_profile_v7": (
             CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V7_DOMAIN
+        ),
+        "construction_counter_registry_v8": (
+            CONSTRUCTION_COUNTER_REGISTRY_V8_DOMAIN
+        ),
+        "construction_stage_profile_v8": (
+            CONSTRUCTION_STAGE_PROFILE_V8_DOMAIN
+        ),
+        "construction_comparison_profile_v8": (
+            CONSTRUCTION_COMPARISON_PROFILE_V8_DOMAIN
+        ),
+        "construction_actual_projection_profile_v8": (
+            CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V8_DOMAIN
         ),
         "construction_k7_adaptive_operation_boundary_v1": (
             CONSTRUCTION_K7_ADAPTIVE_OPERATION_BOUNDARY_V1_DOMAIN
