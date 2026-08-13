@@ -1548,6 +1548,18 @@ CONSTRUCTION_COMPARISON_PROFILE_V8_DOMAIN = (
 CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V8_DOMAIN = (
     "acfqp:construction-actual-projection-profile:v8"
 )
+CONSTRUCTION_COUNTER_REGISTRY_V9_DOMAIN = (
+    "acfqp:construction-counter-registry:v9"
+)
+CONSTRUCTION_STAGE_PROFILE_V9_DOMAIN = (
+    "acfqp:construction-stage-profile:v9"
+)
+CONSTRUCTION_COMPARISON_PROFILE_V9_DOMAIN = (
+    "acfqp:construction-comparison-profile:v9"
+)
+CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V9_DOMAIN = (
+    "acfqp:construction-actual-projection-profile:v9"
+)
 CONSTRUCTION_K7_ADAPTIVE_OPERATION_BOUNDARY_V1_DOMAIN = (
     "acfqp:construction-k7-adaptive-operation-boundary:v1"
 )
@@ -4931,6 +4943,18 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_actual_projection_profile_v8": (
             CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V8_DOMAIN
+        ),
+        "construction_counter_registry_v9": (
+            CONSTRUCTION_COUNTER_REGISTRY_V9_DOMAIN
+        ),
+        "construction_stage_profile_v9": (
+            CONSTRUCTION_STAGE_PROFILE_V9_DOMAIN
+        ),
+        "construction_comparison_profile_v9": (
+            CONSTRUCTION_COMPARISON_PROFILE_V9_DOMAIN
+        ),
+        "construction_actual_projection_profile_v9": (
+            CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V9_DOMAIN
         ),
         "construction_k7_adaptive_operation_boundary_v1": (
             CONSTRUCTION_K7_ADAPTIVE_OPERATION_BOUNDARY_V1_DOMAIN
