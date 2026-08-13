@@ -1254,6 +1254,24 @@ CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_OUTPUT_RENDERER_V12_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_OUTPUT_COMMIT_V12_DOMAIN = (
     "acfqp:construction-k7-standard-2048-accounted-output-commit:v12"
 )
+CONSTRUCTION_K7_STANDARD_2048_COORDINATE_PREREGISTRATION_V13_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-coordinate-preregistration:v13"
+)
+CONSTRUCTION_K7_STANDARD_2048_COORDINATE_CANDIDATE_V13_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-coordinate-candidate:v13"
+)
+CONSTRUCTION_K7_STANDARD_2048_COORDINATE_BASIS_V13_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-coordinate-basis:v13"
+)
+CONSTRUCTION_K7_STANDARD_2048_PARTIAL_QUOTIENT_MODEL_V13_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-partial-quotient-model:v13"
+)
+CONSTRUCTION_K7_STANDARD_2048_COORDINATE_CAMPAIGN_V13_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-coordinate-campaign:v13"
+)
+CONSTRUCTION_K7_STANDARD_2048_COORDINATE_VERIFICATION_V13_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-coordinate-verification:v13"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -4367,6 +4385,24 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_accounted_output_commit_v12": (
             CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_OUTPUT_COMMIT_V12_DOMAIN
+        ),
+        "construction_k7_standard_2048_coordinate_preregistration_v13": (
+            CONSTRUCTION_K7_STANDARD_2048_COORDINATE_PREREGISTRATION_V13_DOMAIN
+        ),
+        "construction_k7_standard_2048_coordinate_candidate_v13": (
+            CONSTRUCTION_K7_STANDARD_2048_COORDINATE_CANDIDATE_V13_DOMAIN
+        ),
+        "construction_k7_standard_2048_coordinate_basis_v13": (
+            CONSTRUCTION_K7_STANDARD_2048_COORDINATE_BASIS_V13_DOMAIN
+        ),
+        "construction_k7_standard_2048_partial_quotient_model_v13": (
+            CONSTRUCTION_K7_STANDARD_2048_PARTIAL_QUOTIENT_MODEL_V13_DOMAIN
+        ),
+        "construction_k7_standard_2048_coordinate_campaign_v13": (
+            CONSTRUCTION_K7_STANDARD_2048_COORDINATE_CAMPAIGN_V13_DOMAIN
+        ),
+        "construction_k7_standard_2048_coordinate_verification_v13": (
+            CONSTRUCTION_K7_STANDARD_2048_COORDINATE_VERIFICATION_V13_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
