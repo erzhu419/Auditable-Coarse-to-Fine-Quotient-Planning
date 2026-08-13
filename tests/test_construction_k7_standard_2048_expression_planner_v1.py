@@ -46,6 +46,7 @@ def test_persistent_session_preserves_exact_values_and_reuses_subproofs() -> Non
         "factored_action_row_evaluation_count"
     ]
     assert reused["subproof_cache_miss_count"] < stateless["subproof_cache_miss_count"]
+    assert reused["cross_decision_subproof_cache_hit_count"] > 0
     assert reused["cumulative_subproof_cache_hit_count"] > reused["subproof_cache_hit_count"]
     assert reused["persistent_subproof_cache_entry_count"] > 0
     assert reused["target_transition_accessed"] is False

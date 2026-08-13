@@ -174,6 +174,8 @@ class _ExpressionPlanner:
         self.override = override
         self.cache: dict[tuple[tuple[int, ...], str, int], _Value] = {}
         self.hits = self.misses = self.rows = self.outcomes = 0
+        self.reusable_keys: frozenset[tuple[tuple[int, ...], str, int]] = frozenset()
+        self.cross_decision_hits = 0
 
     def action_value(self, board: tuple[int, ...], action: str, remaining: int) -> _Value:
         self.rows += 1
@@ -208,6 +210,8 @@ class _ExpressionPlanner:
         cached = self.cache.get(key)
         if cached is not None:
             self.hits += 1
+            if key in self.reusable_keys:
+                self.cross_decision_hits += 1
             return cached
         self.misses += 1
         if remaining == 0 or status == "WON":
@@ -307,6 +311,8 @@ class ExpressionPlanningSessionV1:
         before_outcomes = self._planner.outcomes
         before_hits = self._planner.hits
         before_misses = self._planner.misses
+        before_cross_decision_hits = self._planner.cross_decision_hits
+        self._planner.reusable_keys = frozenset(self._planner.cache)
         values = self._planner.roots(state, self._horizon)
         selected = _best(values)
         return {
@@ -320,10 +326,16 @@ class ExpressionPlanningSessionV1:
             ),
             "subproof_cache_hit_count": self._planner.hits - before_hits,
             "subproof_cache_miss_count": self._planner.misses - before_misses,
+            "cross_decision_subproof_cache_hit_count": (
+                self._planner.cross_decision_hits - before_cross_decision_hits
+            ),
             "cumulative_factored_action_row_evaluation_count": self._planner.rows,
             "cumulative_factored_support_outcome_evaluation_count": self._planner.outcomes,
             "cumulative_subproof_cache_hit_count": self._planner.hits,
             "cumulative_subproof_cache_miss_count": self._planner.misses,
+            "cumulative_cross_decision_subproof_cache_hit_count": (
+                self._planner.cross_decision_hits
+            ),
             "persistent_subproof_cache_entry_count": len(self._planner.cache),
             "target_transition_accessed": False,
         }
