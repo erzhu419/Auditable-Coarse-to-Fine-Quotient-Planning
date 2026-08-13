@@ -1278,6 +1278,27 @@ CONSTRUCTION_K7_STANDARD_2048_COORDINATE_DECISION_V13_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_COORDINATE_VERIFICATION_V13_DOMAIN = (
     "acfqp:construction-k7-standard-2048-coordinate-verification:v13"
 )
+CONSTRUCTION_K7_STANDARD_2048_PROGRAM_PREREGISTRATION_V14_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-program-preregistration:v14"
+)
+CONSTRUCTION_K7_STANDARD_2048_PROGRAM_CANDIDATE_V14_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-program-candidate:v14"
+)
+CONSTRUCTION_K7_STANDARD_2048_PROGRAM_PROPOSAL_V14_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-program-proposal:v14"
+)
+CONSTRUCTION_K7_STANDARD_2048_PROGRAM_LINE_PROOF_V14_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-program-line-proof:v14"
+)
+CONSTRUCTION_K7_STANDARD_2048_FACTORED_WORLD_MODEL_V14_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-factored-world-model:v14"
+)
+CONSTRUCTION_K7_STANDARD_2048_PROGRAM_CAMPAIGN_V14_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-program-campaign:v14"
+)
+CONSTRUCTION_K7_STANDARD_2048_PROGRAM_VERIFICATION_V14_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-program-verification:v14"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -4415,6 +4436,27 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_coordinate_verification_v13": (
             CONSTRUCTION_K7_STANDARD_2048_COORDINATE_VERIFICATION_V13_DOMAIN
+        ),
+        "construction_k7_standard_2048_program_preregistration_v14": (
+            CONSTRUCTION_K7_STANDARD_2048_PROGRAM_PREREGISTRATION_V14_DOMAIN
+        ),
+        "construction_k7_standard_2048_program_candidate_v14": (
+            CONSTRUCTION_K7_STANDARD_2048_PROGRAM_CANDIDATE_V14_DOMAIN
+        ),
+        "construction_k7_standard_2048_program_proposal_v14": (
+            CONSTRUCTION_K7_STANDARD_2048_PROGRAM_PROPOSAL_V14_DOMAIN
+        ),
+        "construction_k7_standard_2048_program_line_proof_v14": (
+            CONSTRUCTION_K7_STANDARD_2048_PROGRAM_LINE_PROOF_V14_DOMAIN
+        ),
+        "construction_k7_standard_2048_factored_world_model_v14": (
+            CONSTRUCTION_K7_STANDARD_2048_FACTORED_WORLD_MODEL_V14_DOMAIN
+        ),
+        "construction_k7_standard_2048_program_campaign_v14": (
+            CONSTRUCTION_K7_STANDARD_2048_PROGRAM_CAMPAIGN_V14_DOMAIN
+        ),
+        "construction_k7_standard_2048_program_verification_v14": (
+            CONSTRUCTION_K7_STANDARD_2048_PROGRAM_VERIFICATION_V14_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
