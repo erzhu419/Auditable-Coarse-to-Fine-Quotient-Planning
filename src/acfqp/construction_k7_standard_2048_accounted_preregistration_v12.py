@@ -14,6 +14,8 @@ from acfqp.phase3e_ids import (
     CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_DECISION_V12_DOMAIN,
     CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_EPISODE_V12_DOMAIN,
     CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_MEASUREMENT_V12_DOMAIN,
+    CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_OUTPUT_COMMIT_V12_DOMAIN,
+    CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_OUTPUT_RENDERER_V12_DOMAIN,
     CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_PREREGISTRATION_V12_DOMAIN,
     CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_VERIFICATION_V12_DOMAIN,
     canonical_json_bytes,
@@ -26,7 +28,7 @@ SCHEMA_VERSION = "12.0.0"
 PROPOSED_CONTRACT_VERSION = "2.0.171"
 PROFILE_KEY = "construction_k7_standard_2048_accounted_long_episode_v12"
 PREREGISTRATION_ID = (
-    "c3c3d5ce61e8a247fe9b3c6f35e8d15a735b9d6dd25f881fcd64490af833fd34"
+    "fd85fa29e952449d16ab767174be0a214748fee13e1fb1e2b6092781c362a2b7"
 )
 V169_LONG_CAMPAIGN_ID = (
     "158dfab7d25c70d46aabc98620d4bccd55ff5f2a39c354aa6ca918346e191fdd"
@@ -60,6 +62,12 @@ FUTURE_DOMAINS = {
     "campaign": CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_CAMPAIGN_V12_DOMAIN,
     "verification": (
         CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_VERIFICATION_V12_DOMAIN
+    ),
+    "output_renderer": (
+        CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_OUTPUT_RENDERER_V12_DOMAIN
+    ),
+    "output_commit": (
+        CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_OUTPUT_COMMIT_V12_DOMAIN
     ),
 }
 
@@ -180,6 +188,16 @@ def _document() -> dict[str, Any]:
             "output_bytes_use_exact_fixed_point": True,
             "mounted_and_working_bytes_use_verified_peak_or_preregistered_upper": True,
             "hash_invocations_count_each_actual_content_or_tape_hash": True,
+            "business_hashes_include_route_plan_transition_and_business_output": True,
+            "post_cutoff_accounting_provenance_hashes_excluded": True,
+            "accounting_hash_exclusion_avoids_recursive_self_charging": True,
+            "process_memory_and_mount_peaks_use_nonoverlapping_scope_allocation": True,
+        },
+        "named_obligation_contract": {
+            "protocol_checks_are_explicit_registered_predicate_invocations": True,
+            "integrity_checks_are_explicit_registered_join_invocations": True,
+            "source_code_if_statement_count_is_not_a_counter": True,
+            "missing_named_check_cannot_be_inferred_as_zero": True,
         },
         "fallback_counter_semantics": {
             "fallback.states_expanded": (

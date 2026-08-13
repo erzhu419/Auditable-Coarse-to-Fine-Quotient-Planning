@@ -18,9 +18,14 @@ def test_fallback_decision_preserves_common_and_route_work_separately() -> None:
     fallback = draft.fallback_counter_values
     assert common["common.abstract_bellman_backups"] > 0
     assert common["common.abstract_support_outcome_evaluations"] > 0
+    assert common["common.hash_invocations"] > 0
+    assert common["common.protocol_checks"] > 0
     assert common["fallback.ground_steps"] == 0
     assert common["target.execution_ground_steps"] == 0
     assert fallback["fallback.ground_steps"] > 0
+    assert fallback["common.hash_invocations"] > 0
+    assert fallback["common.integrity_checks"] > 0
+    assert fallback["common.protocol_checks"] > 0
     assert fallback["target.execution_ground_steps"] == 1
     assert fallback["target.transition_observations"] == 1
     common_chain = runtime.build_operational_accounting_chain_v12(
@@ -63,6 +68,7 @@ def test_abstract_decision_keeps_exact_replay_in_evaluation_lane() -> None:
     assert draft.evaluation_counter_values is not None
     assert draft.common_counter_values["target.execution_ground_steps"] == 1
     assert draft.evaluation_counter_values["evaluation.exact_ground_steps"] > 0
+    assert draft.evaluation_counter_values["evaluation.hash_invocations"] > 0
     assert all(
         draft.evaluation_counter_values[path] == 0
         for path in (
@@ -109,4 +115,3 @@ def test_cache_and_support_reconciliation_is_exact() -> None:
     )
     assert fallback["fallback.actions_evaluated"] == fallback["fallback.ground_steps"]
     assert fallback["fallback.actions_evaluated"] == fallback["fallback.bellman_backups"]
-

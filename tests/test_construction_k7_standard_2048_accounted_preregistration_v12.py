@@ -50,6 +50,20 @@ def test_accounting_topology_binds_all_nine_shared_paths_and_v8_profiles() -> No
     }
     shared = document["shared_resource_receipt_contract"]["required_paths"]
     assert len(shared) == 9
+    contract = document["shared_resource_receipt_contract"]
+    assert contract["post_cutoff_accounting_provenance_hashes_excluded"] is True
+    assert contract["accounting_hash_exclusion_avoids_recursive_self_charging"] is True
+    assert set(document["future_content_domains"]) == {
+        "preregistration",
+        "measurement",
+        "counter_bundle",
+        "decision",
+        "episode",
+        "campaign",
+        "verification",
+        "output_renderer",
+        "output_commit",
+    }
     assert len(set(shared)) == 9
     topology = document["native_accounting_topology"]
     assert topology["failed_certificate_common_and_fallback_vectors_are_distinct"]

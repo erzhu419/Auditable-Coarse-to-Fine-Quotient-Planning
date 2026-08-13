@@ -66,6 +66,17 @@ def _state_document(state: Swipe2048State) -> dict[str, Any]:
     return {"board_ranks": list(state.board), "status": state.status.value}
 
 
+def _named_check(
+    counters: "NativeCounterSetV12",
+    path: str,
+    condition: bool,
+    message: str,
+) -> None:
+    counters.add(path)
+    if type(condition) is not bool or not condition:
+        _fail(message)
+
+
 class NativeCounterSetV12:
     """Mutable only while one owner executes one registered call window."""
 
@@ -354,6 +365,7 @@ def _certificate(
         "ground_transition_accessed": False,
         "target_observation_accessed": False,
     }
+    counters.add("common.hash_invocations")
     return {
         **payload,
         "accounted_route_certificate_id": content_id(
@@ -507,6 +519,11 @@ def _exact_plan(
         "loss_probability_within_horizon": _fdoc(loss),
         "exact_rational_arithmetic": True,
     }
+    counters.add(
+        "common.hash_invocations"
+        if lane == "OPERATIONAL_FALLBACK"
+        else "evaluation.hash_invocations"
+    )
     return {
         **payload,
         "accounted_exact_plan_id": content_id(DOMAINS["decision"], payload),
@@ -576,14 +593,24 @@ class OperationalAccountingChainV12:
 
 
 def _records(
-    values: Mapping[str, int], *, recorder_id: str
+    values: Mapping[str, int],
+    *,
+    recorder_id: str,
+    recorder_ids_by_path: Mapping[str, str] | None = None,
 ) -> tuple[CounterRecordV1, ...]:
     registry = registry_v8.official_counter_registry_v8()
     if set(values) != set(registry.by_path):
         _fail("native counter values do not cover the full V8 registry")
     return tuple(
         CounterRecordV1.observe(
-            registry, path, values[path], recorder_id=recorder_id
+            registry,
+            path,
+            values[path],
+            recorder_id=(
+                recorder_id
+                if recorder_ids_by_path is None
+                else recorder_ids_by_path.get(path, recorder_id)
+            ),
         )
         for path in sorted(values)
     )
@@ -596,6 +623,7 @@ def build_operational_accounting_chain_v12(
     work_scope: ActualWorkScope,
     values: Mapping[str, int],
     recorder_id: str,
+    recorder_ids_by_path: Mapping[str, str] | None = None,
 ) -> OperationalAccountingChainV12:
     registry = registry_v8.official_counter_registry_v8()
     comparison_profile = registry_v8.official_comparison_profile_v8(registry)
@@ -606,7 +634,11 @@ def build_operational_accounting_chain_v12(
         registry.registry_id,
         subject_id,
         route_kind,
-        _records(values, recorder_id=recorder_id),
+        _records(
+            values,
+            recorder_id=recorder_id,
+            recorder_ids_by_path=recorder_ids_by_path,
+        ),
     )
     comparison, proof = derive_actual_projection_v1(
         vector,
@@ -620,14 +652,22 @@ def build_operational_accounting_chain_v12(
 
 
 def build_evaluation_work_vector_v12(
-    *, subject_id: str, values: Mapping[str, int], recorder_id: str
+    *,
+    subject_id: str,
+    values: Mapping[str, int],
+    recorder_id: str,
+    recorder_ids_by_path: Mapping[str, str] | None = None,
 ) -> WorkVectorV1:
     registry = registry_v8.official_counter_registry_v8()
     vector = WorkVectorV1(
         registry.registry_id,
         subject_id,
         RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE,
-        _records(values, recorder_id=recorder_id),
+        _records(
+            values,
+            recorder_id=recorder_id,
+            recorder_ids_by_path=recorder_ids_by_path,
+        ),
     )
     registry.validate_vector(vector)
     if any(
@@ -648,15 +688,21 @@ def execute_instrumented_decision_v12(
     bellman: InstrumentedPersistentBellmanV12,
     common_counters: NativeCounterSetV12,
 ) -> InstrumentedDecisionDraftV12:
-    if (
-        type(state) is not Swipe2048State
-        or state.status is not Swipe2048Status.ACTIVE
-        or type(decision_index) is not int
-        or decision_index < 0
-        or type(seed) is not str
-        or not seed
-    ):
-        _fail("instrumented decision input changed")
+    if type(common_counters) is not NativeCounterSetV12:
+        _fail("instrumented counter owner changed")
+    _named_check(
+        common_counters,
+        "common.protocol_checks",
+        (
+            type(state) is Swipe2048State
+            and state.status is Swipe2048Status.ACTIVE
+            and type(decision_index) is int
+            and decision_index >= 0
+            and type(seed) is str
+            and bool(seed)
+        ),
+        "instrumented decision input changed",
+    )
     rows.begin_counter_window(common_counters)
     bellman.begin_counter_window(common_counters)
     certificate = _certificate(
@@ -702,6 +748,12 @@ def execute_instrumented_decision_v12(
         evaluation.add("evaluation.semantic_protocol_checks")
         evaluation_values = evaluation.freeze()
     selected_counters = common_counters if fallback is None else fallback
+    _named_check(
+        selected_counters,
+        "common.protocol_checks",
+        selected in legal_actions_v1(state.board),
+        "selected action is not legal after route freeze",
+    )
     selected_counters.add("target.execution_ground_steps")
     outcomes = step_v1(state, selected)
     selected_counters.add("target.execution_outcome_rows", len(outcomes))
@@ -710,6 +762,12 @@ def execute_instrumented_decision_v12(
     )
     selected_counters.add("target.transition_observations")
     selected_counters.add("common.hash_invocations")
+    _named_check(
+        selected_counters,
+        "common.integrity_checks",
+        outcome in outcomes and outcome.next_state.status is not None,
+        "selected target outcome changed after tape selection",
+    )
     transition = {
         "selected_action": selected.value,
         "spawn_tape_digest": tape_digest,

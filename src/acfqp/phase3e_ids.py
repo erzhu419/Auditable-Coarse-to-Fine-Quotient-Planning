@@ -1248,6 +1248,12 @@ CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_CAMPAIGN_V12_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_VERIFICATION_V12_DOMAIN = (
     "acfqp:construction-k7-standard-2048-accounted-independent-verification:v12"
 )
+CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_OUTPUT_RENDERER_V12_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-accounted-output-renderer:v12"
+)
+CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_OUTPUT_COMMIT_V12_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-accounted-output-commit:v12"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -4355,6 +4361,12 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_accounted_verification_v12": (
             CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_VERIFICATION_V12_DOMAIN
+        ),
+        "construction_k7_standard_2048_accounted_output_renderer_v12": (
+            CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_OUTPUT_RENDERER_V12_DOMAIN
+        ),
+        "construction_k7_standard_2048_accounted_output_commit_v12": (
+            CONSTRUCTION_K7_STANDARD_2048_ACCOUNTED_OUTPUT_COMMIT_V12_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
