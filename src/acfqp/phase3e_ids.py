@@ -1563,6 +1563,21 @@ CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_CHECKPOINT_CAMPAIGN_V26_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_CHECKPOINT_VERIFICATION_V26_DOMAIN = (
     "acfqp:construction-k7-standard-2048-expression-checkpoint-verification:v26"
 )
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_CHECKPOINT_PREREGISTRATION_V27_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-checkpoint-preregistration:v27"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_CHECKPOINT_CERTIFICATE_V27_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-checkpoint-certificate:v27"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_CHECKPOINT_EPISODE_V27_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-checkpoint-episode:v27"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_CHECKPOINT_CAMPAIGN_V27_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-checkpoint-campaign:v27"
+)
+CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_CHECKPOINT_VERIFICATION_V27_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-expression-checkpoint-verification:v27"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -4997,6 +5012,21 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_expression_checkpoint_verification_v26": (
             CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_CHECKPOINT_VERIFICATION_V26_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_checkpoint_preregistration_v27": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_CHECKPOINT_PREREGISTRATION_V27_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_checkpoint_certificate_v27": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_CHECKPOINT_CERTIFICATE_V27_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_checkpoint_episode_v27": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_CHECKPOINT_EPISODE_V27_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_checkpoint_campaign_v27": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_CHECKPOINT_CAMPAIGN_V27_DOMAIN
+        ),
+        "construction_k7_standard_2048_expression_checkpoint_verification_v27": (
+            CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_CHECKPOINT_VERIFICATION_V27_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
