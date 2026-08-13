@@ -1356,6 +1356,33 @@ CONSTRUCTION_K7_STANDARD_2048_SYNTHESIZED_PLAN_CAMPAIGN_V17_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_SYNTHESIZED_PLAN_VERIFICATION_V17_DOMAIN = (
     "acfqp:construction-k7-standard-2048-synthesized-plan-verification:v17"
 )
+CONSTRUCTION_K7_STANDARD_2048_LOCAL_REPAIR_KERNEL_V18_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-local-repair-kernel:v18"
+)
+CONSTRUCTION_K7_STANDARD_2048_LOCAL_REPAIR_PREREGISTRATION_V18_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-local-repair-preregistration:v18"
+)
+CONSTRUCTION_K7_STANDARD_2048_LOCAL_REPAIR_FAILURE_V18_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-local-repair-failure:v18"
+)
+CONSTRUCTION_K7_STANDARD_2048_LOCAL_REPAIR_ACQUISITION_V18_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-local-repair-acquisition:v18"
+)
+CONSTRUCTION_K7_STANDARD_2048_LOCAL_REPAIR_OVERLAY_V18_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-local-repair-overlay:v18"
+)
+CONSTRUCTION_K7_STANDARD_2048_LOCAL_REPAIR_CERTIFICATE_V18_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-local-repair-certificate:v18"
+)
+CONSTRUCTION_K7_STANDARD_2048_LOCAL_REPAIR_EPISODE_V18_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-local-repair-episode:v18"
+)
+CONSTRUCTION_K7_STANDARD_2048_LOCAL_REPAIR_CAMPAIGN_V18_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-local-repair-campaign:v18"
+)
+CONSTRUCTION_K7_STANDARD_2048_LOCAL_REPAIR_VERIFICATION_V18_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-local-repair-verification:v18"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -4571,6 +4598,33 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_synthesized_plan_verification_v17": (
             CONSTRUCTION_K7_STANDARD_2048_SYNTHESIZED_PLAN_VERIFICATION_V17_DOMAIN
+        ),
+        "construction_k7_standard_2048_local_repair_kernel_v18": (
+            CONSTRUCTION_K7_STANDARD_2048_LOCAL_REPAIR_KERNEL_V18_DOMAIN
+        ),
+        "construction_k7_standard_2048_local_repair_preregistration_v18": (
+            CONSTRUCTION_K7_STANDARD_2048_LOCAL_REPAIR_PREREGISTRATION_V18_DOMAIN
+        ),
+        "construction_k7_standard_2048_local_repair_failure_v18": (
+            CONSTRUCTION_K7_STANDARD_2048_LOCAL_REPAIR_FAILURE_V18_DOMAIN
+        ),
+        "construction_k7_standard_2048_local_repair_acquisition_v18": (
+            CONSTRUCTION_K7_STANDARD_2048_LOCAL_REPAIR_ACQUISITION_V18_DOMAIN
+        ),
+        "construction_k7_standard_2048_local_repair_overlay_v18": (
+            CONSTRUCTION_K7_STANDARD_2048_LOCAL_REPAIR_OVERLAY_V18_DOMAIN
+        ),
+        "construction_k7_standard_2048_local_repair_certificate_v18": (
+            CONSTRUCTION_K7_STANDARD_2048_LOCAL_REPAIR_CERTIFICATE_V18_DOMAIN
+        ),
+        "construction_k7_standard_2048_local_repair_episode_v18": (
+            CONSTRUCTION_K7_STANDARD_2048_LOCAL_REPAIR_EPISODE_V18_DOMAIN
+        ),
+        "construction_k7_standard_2048_local_repair_campaign_v18": (
+            CONSTRUCTION_K7_STANDARD_2048_LOCAL_REPAIR_CAMPAIGN_V18_DOMAIN
+        ),
+        "construction_k7_standard_2048_local_repair_verification_v18": (
+            CONSTRUCTION_K7_STANDARD_2048_LOCAL_REPAIR_VERIFICATION_V18_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
