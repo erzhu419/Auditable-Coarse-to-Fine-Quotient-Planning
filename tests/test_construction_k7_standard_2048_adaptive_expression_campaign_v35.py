@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import os
+from pathlib import Path
 
 import pytest
 
@@ -24,6 +25,13 @@ def test_v34_preexecution_gate_fails_before_any_target_query(monkeypatch: pytest
         match="V34 accounting predecessor",
     ):
         campaign.run_standard_2048_adaptive_expression_campaign_v35()
+
+
+def test_campaign_source_uses_one_occurrence_per_worker_process() -> None:
+    source = Path(campaign.__file__).read_text(encoding="utf-8")
+    assert "ProcessPoolExecutor(max_workers=1)" in source
+    assert "executor.submit(_episode, task)" in source
+    assert "executor.map(_episode" not in source
 
 
 @pytest.mark.skipif(not FULL, reason="requires registered adaptive acquisition")

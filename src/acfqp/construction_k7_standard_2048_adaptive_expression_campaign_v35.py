@@ -608,8 +608,19 @@ def _campaign_document() -> dict[str, Any]:
         )
         for index, board in enumerate(pre.INITIAL_BOARDS)
     )
-    with ProcessPoolExecutor(max_workers=pre.MAXIMUM_WORKER_PROCESSES) as executor:
-        episodes = list(executor.map(_episode, tasks, chunksize=1))
+    episodes = []
+    for start in range(0, len(tasks), pre.MAXIMUM_WORKER_PROCESSES):
+        batch = tasks[start : start + pre.MAXIMUM_WORKER_PROCESSES]
+        executors = [ProcessPoolExecutor(max_workers=1) for _ in batch]
+        try:
+            futures = [
+                executor.submit(_episode, task)
+                for executor, task in zip(executors, batch, strict=True)
+            ]
+            episodes.extend(future.result() for future in futures)
+        finally:
+            for executor in executors:
+                executor.shutdown(wait=True, cancel_futures=True)
     episodes.sort(key=lambda row: row["episode_index"])
     decisions = [row for episode in episodes for row in episode["decisions"]]
     checkpoints = [
