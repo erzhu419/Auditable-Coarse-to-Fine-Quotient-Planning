@@ -48,6 +48,22 @@ def test_complete_accounting_requires_native_windows_not_summary_translation(
     assert len(protocol["shared_resource_paths"]) == 9
 
 
+def test_failed_cap_is_replaced_by_one_occurrence_worker_lifetimes(frozen) -> None:
+    document = frozen.to_document()
+    correction = document["resource_cap_correction"]
+    assert correction["failed_v34_preregistration_id"] == pre.FAILED_V34_PREREGISTRATION_ID
+    assert correction["failed_attempt_terminal_code"] == (
+        "WORKER_WORKING_SET_CAP_EXCEEDED"
+    )
+    assert correction["failed_attempt_formal_campaign_id"] is None
+    assert correction["failed_attempt_v31_observed_rss_lower_bound_kib"] == 18_170_916
+    assert correction["corrected_worker_working_bytes_peak_upper"] == 24 * 1024**3
+    assert correction["maximum_tasks_per_worker_process"] == 1
+    assert correction["all_nine_segments_must_rerun"] is True
+    assert correction["failed_attempt_partial_bundles_may_be_reused"] is False
+    assert correction["scientific_target_or_workload_changed"] is False
+
+
 def test_complete_accounting_identity_and_claim_locks_are_frozen(frozen) -> None:
     assert frozen.preregistration_id == pre.PREREGISTRATION_ID
     assert len(frozen.canonical_bytes) == pre.EXPECTED_CANONICAL_BYTE_COUNT

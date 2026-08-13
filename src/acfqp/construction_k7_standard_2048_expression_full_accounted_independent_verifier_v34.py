@@ -832,8 +832,9 @@ def _verify_native_segment_evidence(
         total_cold += segment_cold
         process = bundles[segment["process_bundle"]["counter_bundle_id"]]
         process_evidence = process.document.get("evidence")
-        expected_processes = min(
-            pre.MAXIMUM_WORKER_PROCESSES, segment["active_worker_count"]
+        expected_processes = segment["active_worker_count"]
+        maximum_concurrent_processes = min(
+            pre.MAXIMUM_WORKER_PROCESSES, expected_processes
         )
         if (
             process_evidence
@@ -841,6 +842,12 @@ def _verify_native_segment_evidence(
                 "profile": segment["profile"],
                 "task_count": segment["active_worker_count"],
                 "worker_process_count": expected_processes,
+                "maximum_concurrent_worker_process_count": (
+                    maximum_concurrent_processes
+                ),
+                "maximum_tasks_per_worker_process": (
+                    pre.MAXIMUM_TASKS_PER_WORKER_PROCESS
+                ),
                 "all_worker_replies_received": True,
             }
             or process.vector.subject_id

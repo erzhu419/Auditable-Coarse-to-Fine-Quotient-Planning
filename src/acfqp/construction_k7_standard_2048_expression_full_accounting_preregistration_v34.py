@@ -30,12 +30,15 @@ from acfqp.phase3e_ids import (
 )
 
 
-SCHEMA_VERSION = "34.0.0"
-PROPOSED_CONTRACT_VERSION = "2.0.192"
-PROFILE_KEY = "construction_k7_standard_2048_expression_full_actual_accounting_v34"
-PREREGISTRATION_ID = "9a02a999b32b3753c4cbfc9dde0baf7b783f661e696875d5bbf97d986bbc3fc5"
-EXPECTED_CANONICAL_BYTE_COUNT = 218439
-EXPECTED_CANONICAL_SHA256 = "bd5c8cf684a9fa3f5439e71a9fd4273d246661019bdc78c46ae317ee9406663d"
+SCHEMA_VERSION = "34.1.0"
+PROPOSED_CONTRACT_VERSION = "2.0.194"
+PROFILE_KEY = "construction_k7_standard_2048_expression_full_actual_accounting_v34r1"
+PREREGISTRATION_ID = "4546af82f1f4e6429c83148b0f37f9a3995b80e9a0bb4abc2971ada13b115920"
+EXPECTED_CANONICAL_BYTE_COUNT = 219225
+EXPECTED_CANONICAL_SHA256 = "e29962aad3910c94bc1a3f09d11b8e57eac35266c4e750dbfa8683e4954dbc3b"
+FAILED_V34_PREREGISTRATION_ID = (
+    "9a02a999b32b3753c4cbfc9dde0baf7b783f661e696875d5bbf97d986bbc3fc5"
+)
 V33_PREREGISTRATION_ID = "00c9afa984008a065e31b955b3ff8802cb94b5c5e2998e78ced9827a9b83c66b"
 V33_CAMPAIGN_ID = "9aface12cb25891de77588b4d25fe1526b0266515fd137b89478c162c1242bd5"
 V33_VERIFICATION_ID = "bea5881b9b92f49e603d46160d29f88fbee3eea46f35300efe6c4b1782cbb6f4"
@@ -47,7 +50,9 @@ EXPECTED_COMPLETE_DECISION_COUNT = 3187
 EXPECTED_WON_OCCURRENCE_COUNT = 2
 EXPECTED_LOST_OCCURRENCE_COUNT = 2
 MAXIMUM_WORKER_PROCESSES = 2
-WORKER_WORKING_BYTES_PEAK_UPPER = 16 * 1024 * 1024 * 1024
+MAXIMUM_TASKS_PER_WORKER_PROCESS = 1
+FAILED_V31_OBSERVED_RSS_LOWER_BOUND_KIB = 18_170_916
+WORKER_WORKING_BYTES_PEAK_UPPER = 24 * 1024 * 1024 * 1024
 PARENT_WORKING_BYTES_PEAK_UPPER = 4 * 1024 * 1024 * 1024
 MAXIMUM_ACCOUNTING_OUTPUT_BYTES = 2 * 1024 * 1024 * 1024
 
@@ -174,6 +179,26 @@ def _document() -> dict[str, Any]:
             "fresh_blind_scientific_confirmation_claimed": False,
             "predecessor_summary_counters_relabelled_as_actual": False,
         },
+        "resource_cap_correction": {
+            "failed_v34_preregistration_id": FAILED_V34_PREREGISTRATION_ID,
+            "failed_attempt_terminal_code": "WORKER_WORKING_SET_CAP_EXCEEDED",
+            "failed_attempt_formal_campaign_id": None,
+            "failed_attempt_formal_verification_id": None,
+            "failed_attempt_v31_observed_rss_lower_bound_kib": (
+                FAILED_V31_OBSERVED_RSS_LOWER_BOUND_KIB
+            ),
+            "failed_attempt_worker_working_bytes_peak_upper": (
+                16 * 1024 * 1024 * 1024
+            ),
+            "corrected_worker_working_bytes_peak_upper": (
+                WORKER_WORKING_BYTES_PEAK_UPPER
+            ),
+            "maximum_tasks_per_worker_process": MAXIMUM_TASKS_PER_WORKER_PROCESS,
+            "worker_recycling_prevents_cross_occurrence_cache_retention": True,
+            "all_nine_segments_must_rerun": True,
+            "failed_attempt_partial_bundles_may_be_reused": False,
+            "scientific_target_or_workload_changed": False,
+        },
         "frozen_registry_profiles": frozen,
         "registered_segment_plan": segments,
         "registered_complete_campaign": {
@@ -201,6 +226,7 @@ def _document() -> dict[str, Any]:
             "evaluation_lane_excluded_from_operational_comparison": True,
             "summary_to_counter_translation_allowed": False,
             "maximum_worker_processes": MAXIMUM_WORKER_PROCESSES,
+            "maximum_tasks_per_worker_process": MAXIMUM_TASKS_PER_WORKER_PROCESS,
             "worker_working_bytes_peak_upper": WORKER_WORKING_BYTES_PEAK_UPPER,
             "parent_working_bytes_peak_upper": PARENT_WORKING_BYTES_PEAK_UPPER,
             "maximum_accounting_output_bytes": MAXIMUM_ACCOUNTING_OUTPUT_BYTES,
@@ -212,6 +238,7 @@ def _document() -> dict[str, Any]:
             "TWO_WON_AND_TWO_LOST_OCCURRENCES_REPRODUCED",
             "EVERY_OPERATIONAL_LEAF_PROJECTS_EXACTLY_ONCE",
             "NINE_SHARED_RESOURCE_PATHS_HAVE_NATIVE_MEASUREMENT_RECEIPTS",
+            "EVERY_WORKER_PROCESS_EXECUTES_EXACTLY_ONE_OCCURRENCE",
             "EVALUATION_REPLAY_NEVER_ENTERS_OPERATIONAL_COMPARISON",
         ],
         "outcome_fields_present": False,
@@ -302,6 +329,7 @@ __all__ = (
     "EXPECTED_COMPLETE_DECISION_COUNT",
     "FUTURE_DOMAINS",
     "MAXIMUM_WORKER_PROCESSES",
+    "MAXIMUM_TASKS_PER_WORKER_PROCESS",
     "MODEL_EVALUATION_PATHS",
     "MODEL_OPERATIONAL_PATHS",
     "PREREGISTRATION_ID",

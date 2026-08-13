@@ -464,7 +464,8 @@ def _run_segment_workers(
     if not tasks:
         return ()
     with ProcessPoolExecutor(
-        max_workers=min(pre.MAXIMUM_WORKER_PROCESSES, len(tasks))
+        max_workers=min(pre.MAXIMUM_WORKER_PROCESSES, len(tasks)),
+        max_tasks_per_child=pre.MAXIMUM_TASKS_PER_WORKER_PROCESS,
     ) as executor:
         results = tuple(executor.map(_worker, tasks, chunksize=1))
     replies = []
@@ -755,7 +756,10 @@ def _materialize_campaign(output_root: Path) -> dict[str, Any]:
                     "evaluation_bundle": evaluation_summary,
                 }
             )
-        expected_process_count = min(pre.MAXIMUM_WORKER_PROCESSES, len(replies))
+        expected_process_count = len(replies)
+        maximum_concurrent_process_count = min(
+            pre.MAXIMUM_WORKER_PROCESSES, len(replies)
+        )
         if len(worker_pids) != expected_process_count:
             _fail("worker process launch cardinality changed")
         process_summary = None
@@ -770,6 +774,12 @@ def _materialize_campaign(output_root: Path) -> dict[str, Any]:
                 "profile": profile,
                 "task_count": len(replies),
                 "worker_process_count": expected_process_count,
+                "maximum_concurrent_worker_process_count": (
+                    maximum_concurrent_process_count
+                ),
+                "maximum_tasks_per_worker_process": (
+                    pre.MAXIMUM_TASKS_PER_WORKER_PROCESS
+                ),
                 "all_worker_replies_received": True,
             }
             process_bundle = artifacts.materialize_operational_bundle_v34(
