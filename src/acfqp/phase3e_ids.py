@@ -1185,6 +1185,24 @@ CONSTRUCTION_K7_STANDARD_2048_FACTORED_CAMPAIGN_V9_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_FACTORED_VERIFICATION_V9_DOMAIN = (
     "acfqp:construction-k7-standard-2048-factored-independent-verification:v9"
 )
+CONSTRUCTION_K7_STANDARD_2048_META_ROUTE_PREREGISTRATION_V10_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-meta-route-preregistration:v10"
+)
+CONSTRUCTION_K7_STANDARD_2048_META_ROUTE_OPERATOR_V10_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-meta-route-operator:v10"
+)
+CONSTRUCTION_K7_STANDARD_2048_META_ROUTE_CERTIFICATE_V10_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-meta-route-certificate:v10"
+)
+CONSTRUCTION_K7_STANDARD_2048_META_ROUTE_EPISODE_V10_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-meta-route-episode:v10"
+)
+CONSTRUCTION_K7_STANDARD_2048_META_ROUTE_CAMPAIGN_V10_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-meta-route-campaign:v10"
+)
+CONSTRUCTION_K7_STANDARD_2048_META_ROUTE_VERIFICATION_V10_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-meta-route-independent-verification:v10"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -4217,6 +4235,24 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_factored_verification_v9": (
             CONSTRUCTION_K7_STANDARD_2048_FACTORED_VERIFICATION_V9_DOMAIN
+        ),
+        "construction_k7_standard_2048_meta_route_preregistration_v10": (
+            CONSTRUCTION_K7_STANDARD_2048_META_ROUTE_PREREGISTRATION_V10_DOMAIN
+        ),
+        "construction_k7_standard_2048_meta_route_operator_v10": (
+            CONSTRUCTION_K7_STANDARD_2048_META_ROUTE_OPERATOR_V10_DOMAIN
+        ),
+        "construction_k7_standard_2048_meta_route_certificate_v10": (
+            CONSTRUCTION_K7_STANDARD_2048_META_ROUTE_CERTIFICATE_V10_DOMAIN
+        ),
+        "construction_k7_standard_2048_meta_route_episode_v10": (
+            CONSTRUCTION_K7_STANDARD_2048_META_ROUTE_EPISODE_V10_DOMAIN
+        ),
+        "construction_k7_standard_2048_meta_route_campaign_v10": (
+            CONSTRUCTION_K7_STANDARD_2048_META_ROUTE_CAMPAIGN_V10_DOMAIN
+        ),
+        "construction_k7_standard_2048_meta_route_verification_v10": (
+            CONSTRUCTION_K7_STANDARD_2048_META_ROUTE_VERIFICATION_V10_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
