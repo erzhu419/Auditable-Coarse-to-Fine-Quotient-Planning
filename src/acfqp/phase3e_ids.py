@@ -1689,6 +1689,42 @@ CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_FULL_ACCOUNTING_CAMPAIGN_V34_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_FULL_ACCOUNTING_VERIFICATION_V34_DOMAIN = (
     "acfqp:construction-k7-standard-2048-expression-full-accounting-verification:v34"
 )
+CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_TARGET_V35_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-adaptive-expression-target:v35"
+)
+CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_PREREGISTRATION_V35_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-adaptive-expression-preregistration:v35"
+)
+CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_FAILURE_V35_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-adaptive-expression-failure:v35"
+)
+CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_ACQUISITION_V35_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-adaptive-expression-acquisition:v35"
+)
+CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_CANDIDATE_V35_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-adaptive-expression-candidate:v35"
+)
+CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_OVERLAY_V35_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-adaptive-expression-overlay:v35"
+)
+CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_CERTIFICATE_V35_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-adaptive-expression-certificate:v35"
+)
+CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_GROUND_CONTROL_V35_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-adaptive-expression-ground-control:v35"
+)
+CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_EPISODE_V35_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-adaptive-expression-episode:v35"
+)
+CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_COUNTER_BUNDLE_V35_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-adaptive-expression-counter-bundle:v35"
+)
+CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_CAMPAIGN_V35_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-adaptive-expression-campaign:v35"
+)
+CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_VERIFICATION_V35_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-adaptive-expression-verification:v35"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -5249,6 +5285,42 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_expression_full_accounting_verification_v34": (
             CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_FULL_ACCOUNTING_VERIFICATION_V34_DOMAIN
+        ),
+        "construction_k7_standard_2048_adaptive_expression_target_v35": (
+            CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_TARGET_V35_DOMAIN
+        ),
+        "construction_k7_standard_2048_adaptive_expression_preregistration_v35": (
+            CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_PREREGISTRATION_V35_DOMAIN
+        ),
+        "construction_k7_standard_2048_adaptive_expression_failure_v35": (
+            CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_FAILURE_V35_DOMAIN
+        ),
+        "construction_k7_standard_2048_adaptive_expression_acquisition_v35": (
+            CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_ACQUISITION_V35_DOMAIN
+        ),
+        "construction_k7_standard_2048_adaptive_expression_candidate_v35": (
+            CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_CANDIDATE_V35_DOMAIN
+        ),
+        "construction_k7_standard_2048_adaptive_expression_overlay_v35": (
+            CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_OVERLAY_V35_DOMAIN
+        ),
+        "construction_k7_standard_2048_adaptive_expression_certificate_v35": (
+            CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_CERTIFICATE_V35_DOMAIN
+        ),
+        "construction_k7_standard_2048_adaptive_expression_ground_control_v35": (
+            CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_GROUND_CONTROL_V35_DOMAIN
+        ),
+        "construction_k7_standard_2048_adaptive_expression_episode_v35": (
+            CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_EPISODE_V35_DOMAIN
+        ),
+        "construction_k7_standard_2048_adaptive_expression_counter_bundle_v35": (
+            CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_COUNTER_BUNDLE_V35_DOMAIN
+        ),
+        "construction_k7_standard_2048_adaptive_expression_campaign_v35": (
+            CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_CAMPAIGN_V35_DOMAIN
+        ),
+        "construction_k7_standard_2048_adaptive_expression_verification_v35": (
+            CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_VERIFICATION_V35_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
