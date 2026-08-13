@@ -11,6 +11,10 @@ from acfqp import (
     construction_k7_standard_2048_accounted_independent_verifier_v12 as independent,
 )
 from acfqp import construction_k7_standard_2048_accounted_preregistration_v12 as pre
+from acfqp import (
+    construction_k7_standard_2048_accounted_semantic_independent_verifier_v12
+    as semantic,
+)
 from acfqp.phase3e_ids import canonical_json_bytes
 
 
@@ -29,6 +33,16 @@ def test_predecessor_and_fresh_task_are_frozen_before_execution() -> None:
 
 
 def test_accounting_verifier_has_no_producer_import() -> None:
+    def imports(tree: ast.AST) -> set[str]:
+        output = set()
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.ImportFrom) or node.module is None:
+                continue
+            output.add(node.module)
+            if node.module == "acfqp":
+                output.update(f"acfqp.{alias.name}" for alias in node.names)
+        return output
+
     source = Path(independent.__file__).read_text(encoding="utf-8")
     tree = ast.parse(source)
     forbidden = {
@@ -36,12 +50,11 @@ def test_accounting_verifier_has_no_producer_import() -> None:
         "acfqp.construction_k7_standard_2048_accounted_artifacts_v12",
         "acfqp.construction_k7_standard_2048_instrumented_runtime_v12",
     }
-    imported = {
-        node.module
-        for node in ast.walk(tree)
-        if isinstance(node, ast.ImportFrom) and node.module is not None
-    }
+    imported = imports(tree)
     assert imported.isdisjoint(forbidden)
+    semantic_tree = ast.parse(Path(semantic.__file__).read_text(encoding="utf-8"))
+    semantic_imported = imports(semantic_tree)
+    assert semantic_imported.isdisjoint(forbidden)
     with pytest.raises(
         independent.ConstructionK7Standard2048AccountedIndependentVerifierV12Error
     ):
@@ -80,22 +93,26 @@ def test_one_decision_smoke_closes_worker_route_and_campaign_vectors(
     assert final["nonkernel_compute_events"] > 0
     assert final["process_launches"] == 1
     assert final["output_bytes"] > 0
-    verification = independent.verify_standard_2048_accounted_campaign_bundle_independently_v12(
-        campaign_bytes=canonical_json_bytes(document),
-        output_root=output,
+    verification = (
+        semantic.verify_standard_2048_accounted_campaign_semantically_independently_v12(
+            campaign_bytes=canonical_json_bytes(document),
+            output_root=output,
+        )
     )
     assert verification.verification_id == (
+        "d4f8e50c650d48dfc3abaa2f2ce6d15c128687f475fd4f229c640481ad159479"
+    )
+    assert verification.accounting_verification_id == (
         "7be3fea230495add2f6c9f7ed5a1359eff64a75635e90341452b3877fadbf672"
     )
-    assert verification.operational_work_vector_count == 4
-    assert verification.evaluation_work_vector_count == 0
+    assert verification.decision_count == 1
     attacked = output / "episode-0000" / "decision-0000" / "common" / "WORK_VECTOR.json"
     attacked.chmod(0o600)
     attacked.write_bytes(attacked.read_bytes() + b"\n")
     with pytest.raises(
-        independent.ConstructionK7Standard2048AccountedIndependentVerifierV12Error
+        semantic.ConstructionK7Standard2048AccountedSemanticIndependentVerifierV12Error
     ):
-        independent.verify_standard_2048_accounted_campaign_bundle_independently_v12(
+        semantic.verify_standard_2048_accounted_campaign_semantically_independently_v12(
             campaign_bytes=canonical_json_bytes(document),
             output_root=output,
         )
