@@ -5,6 +5,7 @@ import copy
 import pytest
 
 from acfqp import construction_k7_standard_2048_spawn_program_v16 as program
+from fractions import Fraction
 
 
 @pytest.fixture(scope="module")
@@ -48,6 +49,18 @@ def test_composed_world_model_has_two_observation_proposed_components(campaign) 
     assert model["full_state_action_rows_materialized"] is False
     assert model["exact_multistep_planning_semantics_available"] is True
     assert model["ground_access_before_certificate_failure"] is False
+
+
+def test_public_spawn_program_emits_exact_factorized_row() -> None:
+    board = (1, 2, 0, 0, 3, 0, 4, 0, 5, 0, 6, 0, 0, 0, 0, 0)
+    rows = program.apply_observation_proposed_spawn_program_v16(board)
+    empty = tuple(index for index, rank in enumerate(board) if rank == 0)
+    assert rows == tuple(
+        (cell, rank, probability / len(empty))
+        for cell in empty
+        for rank, probability in ((1, Fraction(9, 10)), (2, Fraction(1, 10)))
+    )
+    assert sum(row[2] for row in rows) == 1
 
 
 def test_sample_tax_claim_is_positive_but_strictly_scoped(campaign) -> None:

@@ -29,6 +29,10 @@ STREAM_DOMAIN = b"acfqp:standard-2048-spawn-program-observation-tape:v16\x00"
 PROOF_TRACE_DOMAIN = b"acfqp:standard-2048-spawn-program-support-proof-trace:v16\x00"
 MAXIMUM_GENERATOR_ATTEMPTS_PER_OBSERVATION = 4096
 SELECTED_CANDIDATE_KEY = "UNIFORM_OVER_EMPTY_CELLS__RANK_TWO_1_OVER_10"
+SELECTED_RANK_DISTRIBUTION = (
+    (1, Fraction(9, 10)),
+    (2, Fraction(1, 10)),
+)
 EXPECTED_SOURCE_ARCHIVE_ID = "630af9f4bff7d0581c809f5990a27f5e9ad432a1cdd94159bd8179db1882c3b5"
 EXPECTED_VALIDATION_ARCHIVE_ID = "45ba6ebfb190f71f3fe4227d018b57b4ace0a29490d71b075bc427cccb163b6c"
 EXPECTED_PROPOSAL_ID = "32856e6557710cb7a97f40400a5b5cb8f34afb7851b25f966e595df579437ebf"
@@ -439,6 +443,35 @@ def _world_model(proposal: dict[str, Any], proof: dict[str, Any]) -> dict[str, A
     }
 
 
+def apply_observation_proposed_spawn_program_v16(
+    post_swipe_board: tuple[int, ...],
+) -> tuple[tuple[int, int, Fraction], ...]:
+    """Generate the exact proved spawn row without calling the ground kernel."""
+
+    if (
+        type(post_swipe_board) is not tuple
+        or len(post_swipe_board) != 16
+        or any(
+            type(rank) is not int or not 0 <= rank <= 19
+            for rank in post_swipe_board
+        )
+    ):
+        _fail("observation-proposed spawn-program board changed")
+    empty = tuple(
+        index for index, rank in enumerate(post_swipe_board) if rank == 0
+    )
+    if not empty or len(empty) == 16:
+        _fail("observation-proposed spawn-program support is out of scope")
+    # The selected candidate is frozen and independently proved.  Apply its
+    # reduced program directly; rebuilding its content-addressed proposal for
+    # every Bellman row would add serialization work without new semantics.
+    return tuple(
+        (cell, rank, probability / len(empty))
+        for cell in empty
+        for rank, probability in SELECTED_RANK_DISTRIBUTION
+    )
+
+
 _ISSUER = object()
 
 
@@ -575,6 +608,7 @@ def verify_standard_2048_spawn_program_campaign_v16(
 
 
 __all__ = (
+    "apply_observation_proposed_spawn_program_v16",
     "ConstructionK7Standard2048SpawnProgramV16Error",
     "EXPECTED_CAMPAIGN_ID",
     "SELECTED_CANDIDATE_KEY",
