@@ -1317,6 +1317,30 @@ CONSTRUCTION_K7_STANDARD_2048_EXACT_FACTOR_CAMPAIGN_V15_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_EXACT_FACTOR_VERIFICATION_V15_DOMAIN = (
     "acfqp:construction-k7-standard-2048-exact-factor-verification:v15"
 )
+CONSTRUCTION_K7_STANDARD_2048_SPAWN_PROGRAM_PREREGISTRATION_V16_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-spawn-program-preregistration:v16"
+)
+CONSTRUCTION_K7_STANDARD_2048_SPAWN_PROGRAM_CANDIDATE_V16_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-spawn-program-candidate:v16"
+)
+CONSTRUCTION_K7_STANDARD_2048_SPAWN_OBSERVATION_ARCHIVE_V16_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-spawn-observation-archive:v16"
+)
+CONSTRUCTION_K7_STANDARD_2048_SPAWN_PROGRAM_PROPOSAL_V16_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-spawn-program-proposal:v16"
+)
+CONSTRUCTION_K7_STANDARD_2048_SPAWN_PROGRAM_SUPPORT_PROOF_V16_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-spawn-program-support-proof:v16"
+)
+CONSTRUCTION_K7_STANDARD_2048_SYNTHESIZED_WORLD_MODEL_V16_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-synthesized-world-model:v16"
+)
+CONSTRUCTION_K7_STANDARD_2048_SPAWN_PROGRAM_CAMPAIGN_V16_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-spawn-program-campaign:v16"
+)
+CONSTRUCTION_K7_STANDARD_2048_SPAWN_PROGRAM_VERIFICATION_V16_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-spawn-program-verification:v16"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -4493,6 +4517,30 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_exact_factor_verification_v15": (
             CONSTRUCTION_K7_STANDARD_2048_EXACT_FACTOR_VERIFICATION_V15_DOMAIN
+        ),
+        "construction_k7_standard_2048_spawn_program_preregistration_v16": (
+            CONSTRUCTION_K7_STANDARD_2048_SPAWN_PROGRAM_PREREGISTRATION_V16_DOMAIN
+        ),
+        "construction_k7_standard_2048_spawn_program_candidate_v16": (
+            CONSTRUCTION_K7_STANDARD_2048_SPAWN_PROGRAM_CANDIDATE_V16_DOMAIN
+        ),
+        "construction_k7_standard_2048_spawn_observation_archive_v16": (
+            CONSTRUCTION_K7_STANDARD_2048_SPAWN_OBSERVATION_ARCHIVE_V16_DOMAIN
+        ),
+        "construction_k7_standard_2048_spawn_program_proposal_v16": (
+            CONSTRUCTION_K7_STANDARD_2048_SPAWN_PROGRAM_PROPOSAL_V16_DOMAIN
+        ),
+        "construction_k7_standard_2048_spawn_program_support_proof_v16": (
+            CONSTRUCTION_K7_STANDARD_2048_SPAWN_PROGRAM_SUPPORT_PROOF_V16_DOMAIN
+        ),
+        "construction_k7_standard_2048_synthesized_world_model_v16": (
+            CONSTRUCTION_K7_STANDARD_2048_SYNTHESIZED_WORLD_MODEL_V16_DOMAIN
+        ),
+        "construction_k7_standard_2048_spawn_program_campaign_v16": (
+            CONSTRUCTION_K7_STANDARD_2048_SPAWN_PROGRAM_CAMPAIGN_V16_DOMAIN
+        ),
+        "construction_k7_standard_2048_spawn_program_verification_v16": (
+            CONSTRUCTION_K7_STANDARD_2048_SPAWN_PROGRAM_VERIFICATION_V16_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
