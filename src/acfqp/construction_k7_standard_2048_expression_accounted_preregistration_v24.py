@@ -26,9 +26,11 @@ from acfqp.phase3e_ids import (
 SCHEMA_VERSION = "24.0.0"
 PROPOSED_CONTRACT_VERSION = "2.0.183"
 PROFILE_KEY = "construction_k7_standard_2048_expression_actual_accounting_v24"
-PREREGISTRATION_ID = "11ab423f4214e71e00e4a5df3dd023ba7df8b4c88fa75bab8e8179cef2365c92"
-EXPECTED_CANONICAL_BYTE_COUNT = 211424
-EXPECTED_CANONICAL_SHA256 = "f3a7a6784b2dcf916f1b6b0a4bb60caf5b869ff4c466bf4828639b8f8c98e45b"
+PREREGISTRATION_ID = "122fe5ae5121bc55bebafbac1208810c29b9486924985457f6636de2f9e4979d"
+EXPECTED_CANONICAL_BYTE_COUNT = 211688
+EXPECTED_CANONICAL_SHA256 = "17e8d3f941d2ac15652e0775dc88397dfff0642ca6fe1d9242104289ff4d6e18"
+EPISODE_WORKER_WORKING_BYTES_PEAK_UPPER = 4 * 1024 * 1024 * 1024
+CAMPAIGN_PARENT_WORKING_BYTES_PEAK_UPPER = 4 * 1024 * 1024 * 1024
 V22_CAMPAIGN_ID = "85a0f59d0751dfcad87517ed8167d66943d4be0ab9159f78aeaaef7f85923c3e"
 V22_VERIFICATION_ID = "6b60d2e7d4585716784a6b9a93c7511f96de2f4742ada0d61d6e1ec78aa2e7b2"
 V23_CAMPAIGN_ID = "cd198082b21cd1d6365f17081669bbdeac1172ac3da8247b68db4b649a3b0660"
@@ -149,6 +151,11 @@ def _document() -> dict[str, Any]:
             "output_bytes_use_fixed_point_materialization": True,
             "peak_capacity_and_additive_traffic_remain_separate": True,
             "legacy_summary_to_actual_counter_translation_allowed": False,
+            "episode_worker_working_bytes_peak_upper": EPISODE_WORKER_WORKING_BYTES_PEAK_UPPER,
+            "campaign_parent_working_bytes_peak_upper": CAMPAIGN_PARENT_WORKING_BYTES_PEAK_UPPER,
+            "working_byte_cap_frozen_before_execution": True,
+            "observed_ru_maxrss_must_not_exceed_frozen_cap": True,
+            "transient_ru_maxrss_not_used_as_content_identity": True,
         },
         "required_positive_conditions": [
             "V22_MODEL_SYNTHESIS_IS_RERUN_UNDER_NATIVE_COUNTER_WINDOWS",
@@ -239,6 +246,8 @@ def verify_standard_2048_expression_accounted_preregistration_v24(
 
 
 __all__ = (
+    "CAMPAIGN_PARENT_WORKING_BYTES_PEAK_UPPER",
+    "EPISODE_WORKER_WORKING_BYTES_PEAK_UPPER",
     "EXPECTED_CANONICAL_BYTE_COUNT",
     "EXPECTED_CANONICAL_SHA256",
     "FUTURE_DOMAINS",

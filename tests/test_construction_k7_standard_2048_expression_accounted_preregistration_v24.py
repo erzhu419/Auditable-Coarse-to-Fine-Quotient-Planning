@@ -51,6 +51,8 @@ def test_long_workload_and_nine_shared_paths_are_frozen(frozen) -> None:
     assert workload["maximum_evaluation_work_vector_count"] == 12
     assert tuple(document["actual_accounting_protocol"]["shared_resource_paths"]) == pre.SHARED_RESOURCE_PATHS
     assert len(pre.SHARED_RESOURCE_PATHS) == 9
+    assert document["actual_accounting_protocol"]["episode_worker_working_bytes_peak_upper"] == 4 * 1024**3
+    assert document["actual_accounting_protocol"]["transient_ru_maxrss_not_used_as_content_identity"] is True
 
 
 def test_official_gates_remain_locked_and_caller_mutation_is_rejected(frozen) -> None:

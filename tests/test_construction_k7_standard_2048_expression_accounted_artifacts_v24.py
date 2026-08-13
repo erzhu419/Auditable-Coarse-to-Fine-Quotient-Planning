@@ -18,9 +18,10 @@ def test_operational_bundle_closes_output_fixed_point_and_nine_receipts(tmp_path
         base_values=counters.freeze(),
         evidence_document={"stage": "acquisition", "label_count": 4},
         output_path=tmp_path / "operational.json",
+        external_output_bytes=37,
     )
     document = bundle.to_document()
-    assert document["output_bytes_fixed_point"] == len(bundle.canonical_bytes)
+    assert document["output_bytes_fixed_point"] == len(bundle.canonical_bytes) + 37
     assert bundle.output_path.read_bytes() == bundle.canonical_bytes
     assert len(document["measurement"]["measured_values"]) == 9
     assert document["work_vector"]["work_vector_id"] == bundle.chain.work_vector.work_vector_id

@@ -224,7 +224,7 @@ class CounterRegistryV9:
 
     @property
     def registry_id(self) -> str:
-        return content_id(CONSTRUCTION_COUNTER_REGISTRY_V9_DOMAIN, self._payload())
+        return _counter_registry_id(self)
 
     def to_document(self) -> dict[str, Any]:
         return {**self._payload(), "counter_registry_id": self.registry_id}
@@ -289,6 +289,7 @@ class CounterRegistryV9:
             raise ConstructionAccountingRegistryV9Error("V9 route-family exclusivity failed")
 
 
+@lru_cache(maxsize=1)
 def _expected_registry_v9() -> CounterRegistryV9:
     base = v8.official_counter_registry_v8()
     base.validate_official_catalogue()
@@ -306,6 +307,11 @@ def _expected_registry_v9() -> CounterRegistryV9:
         base.registry_id,
         tuple(sorted((*base.leaves, *additions), key=lambda row: row.path)),
     )
+
+
+@lru_cache(maxsize=1)
+def _counter_registry_id(registry: CounterRegistryV9) -> str:
+    return content_id(CONSTRUCTION_COUNTER_REGISTRY_V9_DOMAIN, registry._payload())
 
 
 @lru_cache(maxsize=1)
@@ -379,7 +385,7 @@ class StageProfileV9:
 
     @property
     def stage_profile_id(self) -> str:
-        return content_id(CONSTRUCTION_STAGE_PROFILE_V9_DOMAIN, self._payload())
+        return _stage_profile_id(self)
 
     def to_document(self) -> dict[str, Any]:
         return {**self._payload(), "stage_profile_id": self.stage_profile_id}
@@ -409,6 +415,11 @@ def official_stage_profile_v9(registry: CounterRegistryV9 | None = None) -> Stag
     return result
 
 
+@lru_cache(maxsize=1)
+def _stage_profile_id(profile: StageProfileV9) -> str:
+    return content_id(CONSTRUCTION_STAGE_PROFILE_V9_DOMAIN, profile._payload())
+
+
 @dataclass(frozen=True, slots=True)
 class ComparisonProfileV9:
     counter_registry_id: str
@@ -429,7 +440,7 @@ class ComparisonProfileV9:
 
     @property
     def comparison_profile_id(self) -> str:
-        return content_id(CONSTRUCTION_COMPARISON_PROFILE_V9_DOMAIN, self._payload())
+        return _comparison_profile_id(self)
 
     def to_document(self) -> dict[str, Any]:
         return {**self._payload(), "comparison_profile_id": self.comparison_profile_id}
@@ -478,6 +489,11 @@ def official_comparison_profile_v9(registry: CounterRegistryV9 | None = None) ->
     return result
 
 
+@lru_cache(maxsize=1)
+def _comparison_profile_id(profile: ComparisonProfileV9) -> str:
+    return content_id(CONSTRUCTION_COMPARISON_PROFILE_V9_DOMAIN, profile._payload())
+
+
 @dataclass(frozen=True, slots=True)
 class ActualProjectionProfileV9:
     counter_registry_id: str
@@ -498,7 +514,7 @@ class ActualProjectionProfileV9:
 
     @property
     def actual_projection_profile_id(self) -> str:
-        return content_id(CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V9_DOMAIN, self._payload())
+        return _actual_projection_profile_id(self)
 
     def to_document(self) -> dict[str, Any]:
         return {**self._payload(), "actual_projection_profile_id": self.actual_projection_profile_id}
@@ -527,6 +543,14 @@ def official_actual_projection_profile_v9(
     )
     result.validate(selected, selected_comparison)
     return result
+
+
+@lru_cache(maxsize=1)
+def _actual_projection_profile_id(profile: ActualProjectionProfileV9) -> str:
+    return content_id(
+        CONSTRUCTION_ACTUAL_PROJECTION_PROFILE_V9_DOMAIN,
+        profile._payload(),
+    )
 
 
 def freeze_construction_accounting_registry_v9() -> dict[str, Any]:

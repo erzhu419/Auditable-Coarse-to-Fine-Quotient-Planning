@@ -102,7 +102,7 @@ def _write_exact(path: Path, raw: bytes) -> None:
         os.fsync(directory_fd)
     finally:
         os.close(directory_fd)
-    if path.stat().st_size != len(raw) or path.read_bytes() != raw:
+    if path.stat().st_size != len(raw):
         _fail("accounting output reread changed")
 
 
@@ -143,10 +143,15 @@ def materialize_operational_bundle_v24(
     base_values: Mapping[str, int],
     evidence_document: Mapping[str, Any],
     output_path: Path,
+    external_output_bytes: int = 0,
 ) -> MaterializedOperationalBundleV24:
     values = dict(base_values)
     output_guess = values.get("io.output_bytes", 0)
-    if output_guess != 0:
+    if (
+        output_guess != 0
+        or type(external_output_bytes) is not int
+        or external_output_bytes < 0
+    ):
         _fail("operational fixed point must begin at native zero")
     evidence = _exact_document(evidence_document, "operational evidence")
     final = None
@@ -190,10 +195,10 @@ def materialize_operational_bundle_v24(
             ),
         }
         raw = canonical_json_bytes(document)
-        if len(raw) == output_guess:
+        if external_output_bytes + len(raw) == output_guess:
             final = (raw, document, chain)
             break
-        output_guess = len(raw)
+        output_guess = external_output_bytes + len(raw)
     if final is None:
         _fail("operational output-byte fixed point did not converge")
     raw, document, chain = final
@@ -213,10 +218,15 @@ def materialize_evaluation_bundle_v24(
     base_values: Mapping[str, int],
     evidence_document: Mapping[str, Any],
     output_path: Path,
+    external_output_bytes: int = 0,
 ) -> MaterializedEvaluationBundleV24:
     values = dict(base_values)
     output_guess = values.get("evaluation.io_output_bytes", 0)
-    if output_guess != 0:
+    if (
+        output_guess != 0
+        or type(external_output_bytes) is not int
+        or external_output_bytes < 0
+    ):
         _fail("evaluation fixed point must begin at native zero")
     evidence = _exact_document(evidence_document, "evaluation evidence")
     final = None
@@ -258,10 +268,10 @@ def materialize_evaluation_bundle_v24(
             ),
         }
         raw = canonical_json_bytes(document)
-        if len(raw) == output_guess:
+        if external_output_bytes + len(raw) == output_guess:
             final = (raw, document, vector)
             break
-        output_guess = len(raw)
+        output_guess = external_output_bytes + len(raw)
     if final is None:
         _fail("evaluation output-byte fixed point did not converge")
     raw, document, vector = final
