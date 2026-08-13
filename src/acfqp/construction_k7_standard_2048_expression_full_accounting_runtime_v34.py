@@ -257,6 +257,12 @@ def evaluate_ground_root_with_native_counters_v34(
             "evaluation.exact_ground_steps"
         ),
         "ground_outcome_count": counters.value("evaluation.exact_outcome_rows"),
+        "subproof_cache_hit_count": counters.value(
+            "evaluation.exact_subproof_cache_hits"
+        ),
+        "subproof_cache_miss_count": counters.value(
+            "evaluation.exact_subproof_cache_misses"
+        ),
         "lane": "STANDALONE_EVALUATION_ONLY",
         "route_or_certificate_authority": False,
     }

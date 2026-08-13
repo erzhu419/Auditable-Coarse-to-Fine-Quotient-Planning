@@ -48,6 +48,12 @@ def test_exact_evaluation_replay_matches_ground_planner() -> None:
     assert actual["selected_action"] == expected["selected_action"]
     assert counters["evaluation.exact_ground_steps"] == actual["ground_state_action_row_count"]
     assert counters["evaluation.exact_outcome_rows"] == actual["ground_outcome_count"]
+    assert counters["evaluation.exact_subproof_cache_hits"] == actual[
+        "subproof_cache_hit_count"
+    ]
+    assert counters["evaluation.exact_subproof_cache_misses"] == actual[
+        "subproof_cache_miss_count"
+    ]
     assert counters["evaluation.exact_states_expanded"] > 0
 
 
