@@ -1731,6 +1731,21 @@ CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_PROPOSAL_V35_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_PROOF_V35_DOMAIN = (
     "acfqp:construction-k7-standard-2048-adaptive-expression-proof:v35"
 )
+CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_ACCOUNTING_PREREGISTRATION_V36_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-adaptive-accounting-preregistration:v36"
+)
+CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_ACCOUNTING_MEASUREMENT_V36_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-adaptive-accounting-measurement:v36"
+)
+CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_ACCOUNTING_COUNTER_BUNDLE_V36_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-adaptive-accounting-counter-bundle:v36"
+)
+CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_ACCOUNTING_CAMPAIGN_V36_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-adaptive-accounting-campaign:v36"
+)
+CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_ACCOUNTING_VERIFICATION_V36_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-adaptive-accounting-verification:v36"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -5333,6 +5348,21 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_adaptive_expression_proof_v35": (
             CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_PROOF_V35_DOMAIN
+        ),
+        "construction_k7_standard_2048_adaptive_accounting_preregistration_v36": (
+            CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_ACCOUNTING_PREREGISTRATION_V36_DOMAIN
+        ),
+        "construction_k7_standard_2048_adaptive_accounting_measurement_v36": (
+            CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_ACCOUNTING_MEASUREMENT_V36_DOMAIN
+        ),
+        "construction_k7_standard_2048_adaptive_accounting_counter_bundle_v36": (
+            CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_ACCOUNTING_COUNTER_BUNDLE_V36_DOMAIN
+        ),
+        "construction_k7_standard_2048_adaptive_accounting_campaign_v36": (
+            CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_ACCOUNTING_CAMPAIGN_V36_DOMAIN
+        ),
+        "construction_k7_standard_2048_adaptive_accounting_verification_v36": (
+            CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_ACCOUNTING_VERIFICATION_V36_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
