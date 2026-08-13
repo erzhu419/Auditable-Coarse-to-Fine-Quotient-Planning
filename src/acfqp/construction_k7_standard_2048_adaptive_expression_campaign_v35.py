@@ -595,39 +595,18 @@ def _episode(
     }
 
 
-def _campaign_document() -> dict[str, Any]:
+def _assemble_campaign_document(
+    preregistration: dict[str, Any],
+    acquired: _AcquiredModelV35,
+    episode_documents: list[dict[str, Any]],
+) -> dict[str, Any]:
+    episodes = sorted(episode_documents, key=lambda row: row["episode_index"])
     if (
-        V34_ACCOUNTED_CAMPAIGN_ID == "0" * 64
-        or V34_ACCOUNTING_VERIFICATION_ID == "0" * 64
+        len(episodes) != len(pre.INITIAL_BOARDS)
+        or [row.get("episode_index") for row in episodes]
+        != list(range(len(pre.INITIAL_BOARDS)))
     ):
-        _fail("V34 accounting predecessor has not been frozen")
-    preregistration = pre.freeze_standard_2048_adaptive_expression_preregistration_v35()
-    acquired = _acquire_model()
-    candidate_document = acquired.candidate.to_document()
-    tasks = tuple(
-        (
-            index,
-            board,
-            pre.EPISODE_SEEDS[index],
-            acquired.overlay,
-            candidate_document,
-        )
-        for index, board in enumerate(pre.INITIAL_BOARDS)
-    )
-    episodes = []
-    for start in range(0, len(tasks), pre.MAXIMUM_WORKER_PROCESSES):
-        batch = tasks[start : start + pre.MAXIMUM_WORKER_PROCESSES]
-        executors = [ProcessPoolExecutor(max_workers=1) for _ in batch]
-        try:
-            futures = [
-                executor.submit(_episode, task)
-                for executor, task in zip(executors, batch, strict=True)
-            ]
-            episodes.extend(future.result() for future in futures)
-        finally:
-            for executor in executors:
-                executor.shutdown(wait=True, cancel_futures=True)
-    episodes.sort(key=lambda row: row["episode_index"])
+        _fail("adaptive-expression episode inventory changed")
     decisions = [row for episode in episodes for row in episode["decisions"]]
     checkpoints = [
         row for row in decisions if row["cold_target_checkpoint"] is not None
@@ -641,7 +620,7 @@ def _campaign_document() -> dict[str, Any]:
         "schema_version": SCHEMA_VERSION,
         "proposed_contract_version": pre.PROPOSED_CONTRACT_VERSION,
         "profile_key": PROFILE_KEY,
-        "adaptive_expression_preregistration": preregistration.to_document(),
+        "adaptive_expression_preregistration": preregistration,
         "additive_role_domains": {
             "proposal": CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_PROPOSAL_V35_DOMAIN,
             "proof": CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_PROOF_V35_DOMAIN,
@@ -742,6 +721,43 @@ def _campaign_document() -> dict[str, Any]:
             pre.FUTURE_DOMAINS["campaign"], payload
         ),
     }
+
+
+def _campaign_document() -> dict[str, Any]:
+    if (
+        V34_ACCOUNTED_CAMPAIGN_ID == "0" * 64
+        or V34_ACCOUNTING_VERIFICATION_ID == "0" * 64
+    ):
+        _fail("V34 accounting predecessor has not been frozen")
+    preregistration = pre.freeze_standard_2048_adaptive_expression_preregistration_v35()
+    acquired = _acquire_model()
+    candidate_document = acquired.candidate.to_document()
+    tasks = tuple(
+        (
+            index,
+            board,
+            pre.EPISODE_SEEDS[index],
+            acquired.overlay,
+            candidate_document,
+        )
+        for index, board in enumerate(pre.INITIAL_BOARDS)
+    )
+    episodes = []
+    for start in range(0, len(tasks), pre.MAXIMUM_WORKER_PROCESSES):
+        batch = tasks[start : start + pre.MAXIMUM_WORKER_PROCESSES]
+        executors = [ProcessPoolExecutor(max_workers=1) for _ in batch]
+        try:
+            futures = [
+                executor.submit(_episode, task)
+                for executor, task in zip(executors, batch, strict=True)
+            ]
+            episodes.extend(future.result() for future in futures)
+        finally:
+            for executor in executors:
+                executor.shutdown(wait=True, cancel_futures=True)
+    return _assemble_campaign_document(
+        preregistration.to_document(), acquired, episodes
+    )
 
 
 _ISSUER = object()
