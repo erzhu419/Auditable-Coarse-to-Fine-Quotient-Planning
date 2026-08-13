@@ -36,6 +36,12 @@ EXPECTED_CANONICAL_BYTE_COUNT = 0
 EXPECTED_CANONICAL_SHA256 = "0" * 64
 V34_ACCOUNTED_CAMPAIGN_ID = "0" * 64
 V34_ACCOUNTING_VERIFICATION_ID = "0" * 64
+V35_REGISTERED_V34_PREREGISTRATION_ID = (
+    "9a02a999b32b3753c4cbfc9dde0baf7b783f661e696875d5bbf97d986bbc3fc5"
+)
+EXECUTED_V34R1_PREREGISTRATION_ID = (
+    "4546af82f1f4e6429c83148b0f37f9a3995b80e9a0bb4abc2971ada13b115920"
+)
 COLD_EVALUATION_CHECKPOINTS = (0, 63, 127)
 SOURCE_ROOT = Path(__file__).resolve().parents[2]
 SOURCE_PATHS = (
@@ -642,8 +648,17 @@ def _campaign_document() -> dict[str, Any]:
             "roles_are_not_reused_as_overlay_or_plan_certificate": True,
         },
         "preexecution_v34_accounting_binding": {
+            "v35_registered_v34_preregistration_id": (
+                V35_REGISTERED_V34_PREREGISTRATION_ID
+            ),
+            "executed_v34r1_preregistration_id": (
+                EXECUTED_V34R1_PREREGISTRATION_ID
+            ),
             "v34_accounted_campaign_id": V34_ACCOUNTED_CAMPAIGN_ID,
             "v34_accounting_verification_id": V34_ACCOUNTING_VERIFICATION_ID,
+            "failed_v34_predecessor_preserved": True,
+            "resource_cap_successor_preserves_scientific_workload": True,
+            "partial_failed_predecessor_bundles_reused": False,
             "verified_before_first_target_probability_query": True,
         },
         "certificate_failure": acquired.failure,
