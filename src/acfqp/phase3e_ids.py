@@ -1341,6 +1341,21 @@ CONSTRUCTION_K7_STANDARD_2048_SPAWN_PROGRAM_CAMPAIGN_V16_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_SPAWN_PROGRAM_VERIFICATION_V16_DOMAIN = (
     "acfqp:construction-k7-standard-2048-spawn-program-verification:v16"
 )
+CONSTRUCTION_K7_STANDARD_2048_SYNTHESIZED_PLAN_PREREGISTRATION_V17_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-synthesized-plan-preregistration:v17"
+)
+CONSTRUCTION_K7_STANDARD_2048_SYNTHESIZED_PLAN_CERTIFICATE_V17_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-synthesized-plan-certificate:v17"
+)
+CONSTRUCTION_K7_STANDARD_2048_SYNTHESIZED_PLAN_EPISODE_V17_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-synthesized-plan-episode:v17"
+)
+CONSTRUCTION_K7_STANDARD_2048_SYNTHESIZED_PLAN_CAMPAIGN_V17_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-synthesized-plan-campaign:v17"
+)
+CONSTRUCTION_K7_STANDARD_2048_SYNTHESIZED_PLAN_VERIFICATION_V17_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-synthesized-plan-verification:v17"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -4541,6 +4556,21 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_spawn_program_verification_v16": (
             CONSTRUCTION_K7_STANDARD_2048_SPAWN_PROGRAM_VERIFICATION_V16_DOMAIN
+        ),
+        "construction_k7_standard_2048_synthesized_plan_preregistration_v17": (
+            CONSTRUCTION_K7_STANDARD_2048_SYNTHESIZED_PLAN_PREREGISTRATION_V17_DOMAIN
+        ),
+        "construction_k7_standard_2048_synthesized_plan_certificate_v17": (
+            CONSTRUCTION_K7_STANDARD_2048_SYNTHESIZED_PLAN_CERTIFICATE_V17_DOMAIN
+        ),
+        "construction_k7_standard_2048_synthesized_plan_episode_v17": (
+            CONSTRUCTION_K7_STANDARD_2048_SYNTHESIZED_PLAN_EPISODE_V17_DOMAIN
+        ),
+        "construction_k7_standard_2048_synthesized_plan_campaign_v17": (
+            CONSTRUCTION_K7_STANDARD_2048_SYNTHESIZED_PLAN_CAMPAIGN_V17_DOMAIN
+        ),
+        "construction_k7_standard_2048_synthesized_plan_verification_v17": (
+            CONSTRUCTION_K7_STANDARD_2048_SYNTHESIZED_PLAN_VERIFICATION_V17_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
