@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import ast
 import copy
+from fractions import Fraction
 from pathlib import Path
 
 import pytest
@@ -13,6 +14,7 @@ from acfqp.phase3e_ids import (
     canonical_json_bytes,
     content_id,
 )
+from acfqp.domains.standard_2048 import Swipe2048Action, state_from_board_v1
 
 
 @pytest.fixture(scope="module")
@@ -55,6 +57,22 @@ def test_failure_repair_plans_and_targets_replay(campaign_and_verification) -> N
     assert document["all_12_repaired_abstract_h3_plans_independently_replayed"] is True
     assert document["all_12_target_transitions_independently_replayed"] is True
     assert document["all_root_values_and_actions_match_cold_target_ground"] is True
+
+
+def test_public_independent_target_primitives_replay_registered_root() -> None:
+    state = state_from_board_v1(
+        (1, 2, 4, 4, 3, 4, 4, 0, 3, 2, 3, 2, 6, 3, 1, 1)
+    )
+    frontier = verifier.independently_replay_structural_frontier_v18(state)
+    assert frontier == tuple(range(1, 9))
+    assert verifier.independently_replay_rank_two_probability_v18(4) == Fraction(1, 5)
+    assert verifier.independently_replay_rank_two_probability_v18(5) == Fraction(1, 10)
+    rows = verifier.apply_independently_replayed_target_outcomes_v18(
+        state, Swipe2048Action.LEFT
+    )
+    assert sum(row.probability for row in rows) == 1
+    roots = verifier.independently_replay_target_root_values_v18(state)
+    assert tuple(row[0] for row in roots) == ("UP", "DOWN", "LEFT", "RIGHT")
 
 
 def test_sample_and_claim_boundaries_remain_scoped(campaign_and_verification) -> None:

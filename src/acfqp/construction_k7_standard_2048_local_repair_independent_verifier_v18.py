@@ -239,6 +239,46 @@ def _expected_root_rows(values: tuple[_Value, ...]) -> list[dict[str, Any]]:
     ]
 
 
+def apply_independently_replayed_target_outcomes_v18(
+    state: Swipe2048State,
+    action: Swipe2048Action,
+) -> tuple[Swipe2048Outcome, ...]:
+    """Expose the producer-free target row for successor verifiers."""
+
+    if type(state) is not Swipe2048State or type(action) is not Swipe2048Action:
+        _fail("independent target-row primitive requires exact inputs")
+    return _target_outcomes(state, action)
+
+
+def independently_replay_rank_two_probability_v18(empty_count: int) -> Fraction:
+    """Expose the exact producer-free local distinction query result."""
+
+    if type(empty_count) is not int or not 1 <= empty_count <= 16:
+        _fail("independent rank-law query is outside the registered board")
+    return _target_probability(empty_count)
+
+
+def independently_replay_structural_frontier_v18(
+    state: Swipe2048State,
+) -> tuple[int, ...]:
+    """Expose the exact H=3 empty-count proof frontier."""
+
+    if type(state) is not Swipe2048State:
+        _fail("independent frontier primitive requires one exact state")
+    return _frontier(state)
+
+
+def independently_replay_target_root_values_v18(
+    state: Swipe2048State,
+) -> tuple[tuple[str, Fraction, Fraction], ...]:
+    """Return exact H=3 root values from the independent target semantics."""
+
+    if type(state) is not Swipe2048State:
+        _fail("independent root-value primitive requires one exact state")
+    values = _Planner().roots(state)
+    return tuple((row.action, row.score, row.loss) for row in values if row.action is not None)
+
+
 def _verify_preregistration(document: Any) -> None:
     if type(document) is not dict:
         _fail("embedded preregistration changed")
@@ -443,5 +483,9 @@ __all__ = (
     "EXPECTED_CAMPAIGN_ID",
     "EXPECTED_VERIFICATION_ID",
     "Standard2048LocalRepairIndependentVerificationV18",
+    "apply_independently_replayed_target_outcomes_v18",
+    "independently_replay_rank_two_probability_v18",
+    "independently_replay_structural_frontier_v18",
+    "independently_replay_target_root_values_v18",
     "verify_standard_2048_local_repair_bytes_independently_v18",
 )
