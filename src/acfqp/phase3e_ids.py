@@ -1470,6 +1470,42 @@ CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_CAMPAIGN_V21_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_VERIFICATION_V21_DOMAIN = (
     "acfqp:construction-k7-standard-2048-expression-verification:v21"
 )
+CONSTRUCTION_K7_STANDARD_2048_COMMIT_REVEAL_TARGET_KERNEL_V22_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-commit-reveal-target-kernel:v22"
+)
+CONSTRUCTION_K7_STANDARD_2048_BLIND_EXPRESSION_PREREGISTRATION_V22_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-blind-expression-preregistration:v22"
+)
+CONSTRUCTION_K7_STANDARD_2048_BLIND_STRUCTURAL_POOL_V22_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-blind-structural-pool:v22"
+)
+CONSTRUCTION_K7_STANDARD_2048_BLIND_EXPRESSION_CANDIDATE_V22_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-blind-expression-candidate:v22"
+)
+CONSTRUCTION_K7_STANDARD_2048_BLIND_EXPRESSION_ACQUISITION_V22_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-blind-expression-acquisition:v22"
+)
+CONSTRUCTION_K7_STANDARD_2048_BLIND_EXPRESSION_PROPOSAL_V22_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-blind-expression-proposal:v22"
+)
+CONSTRUCTION_K7_STANDARD_2048_BLIND_EXPRESSION_PROOF_V22_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-blind-expression-proof:v22"
+)
+CONSTRUCTION_K7_STANDARD_2048_BLIND_EXPRESSION_WORLD_MODEL_V22_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-blind-expression-world-model:v22"
+)
+CONSTRUCTION_K7_STANDARD_2048_BLIND_EXPRESSION_CERTIFICATE_V22_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-blind-expression-certificate:v22"
+)
+CONSTRUCTION_K7_STANDARD_2048_BLIND_EXPRESSION_EPISODE_V22_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-blind-expression-episode:v22"
+)
+CONSTRUCTION_K7_STANDARD_2048_BLIND_EXPRESSION_CAMPAIGN_V22_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-blind-expression-campaign:v22"
+)
+CONSTRUCTION_K7_STANDARD_2048_BLIND_EXPRESSION_VERIFICATION_V22_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-blind-expression-verification:v22"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -4799,6 +4835,42 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_expression_verification_v21": (
             CONSTRUCTION_K7_STANDARD_2048_EXPRESSION_VERIFICATION_V21_DOMAIN
+        ),
+        "construction_k7_standard_2048_commit_reveal_target_kernel_v22": (
+            CONSTRUCTION_K7_STANDARD_2048_COMMIT_REVEAL_TARGET_KERNEL_V22_DOMAIN
+        ),
+        "construction_k7_standard_2048_blind_expression_preregistration_v22": (
+            CONSTRUCTION_K7_STANDARD_2048_BLIND_EXPRESSION_PREREGISTRATION_V22_DOMAIN
+        ),
+        "construction_k7_standard_2048_blind_structural_pool_v22": (
+            CONSTRUCTION_K7_STANDARD_2048_BLIND_STRUCTURAL_POOL_V22_DOMAIN
+        ),
+        "construction_k7_standard_2048_blind_expression_candidate_v22": (
+            CONSTRUCTION_K7_STANDARD_2048_BLIND_EXPRESSION_CANDIDATE_V22_DOMAIN
+        ),
+        "construction_k7_standard_2048_blind_expression_acquisition_v22": (
+            CONSTRUCTION_K7_STANDARD_2048_BLIND_EXPRESSION_ACQUISITION_V22_DOMAIN
+        ),
+        "construction_k7_standard_2048_blind_expression_proposal_v22": (
+            CONSTRUCTION_K7_STANDARD_2048_BLIND_EXPRESSION_PROPOSAL_V22_DOMAIN
+        ),
+        "construction_k7_standard_2048_blind_expression_proof_v22": (
+            CONSTRUCTION_K7_STANDARD_2048_BLIND_EXPRESSION_PROOF_V22_DOMAIN
+        ),
+        "construction_k7_standard_2048_blind_expression_world_model_v22": (
+            CONSTRUCTION_K7_STANDARD_2048_BLIND_EXPRESSION_WORLD_MODEL_V22_DOMAIN
+        ),
+        "construction_k7_standard_2048_blind_expression_certificate_v22": (
+            CONSTRUCTION_K7_STANDARD_2048_BLIND_EXPRESSION_CERTIFICATE_V22_DOMAIN
+        ),
+        "construction_k7_standard_2048_blind_expression_episode_v22": (
+            CONSTRUCTION_K7_STANDARD_2048_BLIND_EXPRESSION_EPISODE_V22_DOMAIN
+        ),
+        "construction_k7_standard_2048_blind_expression_campaign_v22": (
+            CONSTRUCTION_K7_STANDARD_2048_BLIND_EXPRESSION_CAMPAIGN_V22_DOMAIN
+        ),
+        "construction_k7_standard_2048_blind_expression_verification_v22": (
+            CONSTRUCTION_K7_STANDARD_2048_BLIND_EXPRESSION_VERIFICATION_V22_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
