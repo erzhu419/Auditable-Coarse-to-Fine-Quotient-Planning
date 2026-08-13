@@ -74,6 +74,45 @@ def test_worker_rejects_crossed_source_episode_identity() -> None:
         campaign._worker(canonical_json_bytes(forged))
 
 
+def test_each_worker_executor_is_bound_to_one_occurrence(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    created = []
+    submitted = []
+
+    class ImmediateFuture:
+        def __init__(self, value):
+            self._value = value
+
+        def result(self):
+            return self._value
+
+    class SingleWorkerExecutor:
+        def __init__(self, *, max_workers: int):
+            assert max_workers == 1
+            self.submission_count = 0
+            created.append(self)
+
+        def submit(self, function, task):
+            self.submission_count += 1
+            assert self.submission_count == 1
+            submitted.append(task)
+            return ImmediateFuture((b"{}", 0, 1234 + len(submitted)))
+
+        def shutdown(self, *, wait: bool, cancel_futures: bool):
+            assert wait is True
+            assert cancel_futures is True
+
+    monkeypatch.setattr(campaign, "ProcessPoolExecutor", SingleWorkerExecutor)
+    monkeypatch.setattr(campaign, "loads_canonical_json", lambda raw: {})
+    monkeypatch.setattr(campaign, "_WorkerReplyV34", lambda *args: args)
+    rows = ((0, None), (1, None), (2, None), (3, None))
+    replies = campaign._run_segment_workers("V24_INITIAL_32", rows)
+    assert len(created) == 4
+    assert len(submitted) == 4
+    assert len(replies) == 4
+
+
 @pytest.mark.skipif(
     os.environ.get("ACFQP_RUN_FULL_2048_ACCOUNTING") != "1",
     reason="requires the preregistered multi-segment exact accounting run",

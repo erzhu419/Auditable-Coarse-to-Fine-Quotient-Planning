@@ -463,11 +463,20 @@ def _run_segment_workers(
     )
     if not tasks:
         return ()
-    with ProcessPoolExecutor(
-        max_workers=min(pre.MAXIMUM_WORKER_PROCESSES, len(tasks)),
-        max_tasks_per_child=pre.MAXIMUM_TASKS_PER_WORKER_PROCESS,
-    ) as executor:
-        results = tuple(executor.map(_worker, tasks, chunksize=1))
+    results_list = []
+    for start in range(0, len(tasks), pre.MAXIMUM_WORKER_PROCESSES):
+        batch = tasks[start : start + pre.MAXIMUM_WORKER_PROCESSES]
+        executors = [ProcessPoolExecutor(max_workers=1) for _ in batch]
+        try:
+            futures = [
+                executor.submit(_worker, task)
+                for executor, task in zip(executors, batch, strict=True)
+            ]
+            results_list.extend(future.result() for future in futures)
+        finally:
+            for executor in executors:
+                executor.shutdown(wait=True, cancel_futures=True)
+    results = tuple(results_list)
     replies = []
     for task_bytes, (reply_bytes, observed_peak, worker_pid) in zip(
         tasks, results, strict=True
