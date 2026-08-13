@@ -1407,6 +1407,36 @@ CONSTRUCTION_K7_STANDARD_2048_MATCHED_REPAIR_CAMPAIGN_V19_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_MATCHED_REPAIR_VERIFICATION_V19_DOMAIN = (
     "acfqp:construction-k7-standard-2048-matched-repair-verification:v19"
 )
+CONSTRUCTION_K7_STANDARD_2048_CONTEXT_PROGRAM_PREREGISTRATION_V20_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-context-program-preregistration:v20"
+)
+CONSTRUCTION_K7_STANDARD_2048_CONTEXT_OBSERVATION_ARCHIVE_V20_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-context-observation-archive:v20"
+)
+CONSTRUCTION_K7_STANDARD_2048_CONTEXT_PROGRAM_CANDIDATE_V20_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-context-program-candidate:v20"
+)
+CONSTRUCTION_K7_STANDARD_2048_CONTEXT_PROGRAM_PROPOSAL_V20_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-context-program-proposal:v20"
+)
+CONSTRUCTION_K7_STANDARD_2048_CONTEXT_PROGRAM_PROOF_V20_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-context-program-proof:v20"
+)
+CONSTRUCTION_K7_STANDARD_2048_CONTEXT_WORLD_MODEL_V20_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-context-world-model:v20"
+)
+CONSTRUCTION_K7_STANDARD_2048_CONTEXT_PLAN_CERTIFICATE_V20_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-context-plan-certificate:v20"
+)
+CONSTRUCTION_K7_STANDARD_2048_CONTEXT_PROGRAM_EPISODE_V20_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-context-program-episode:v20"
+)
+CONSTRUCTION_K7_STANDARD_2048_CONTEXT_PROGRAM_CAMPAIGN_V20_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-context-program-campaign:v20"
+)
+CONSTRUCTION_K7_STANDARD_2048_CONTEXT_PROGRAM_VERIFICATION_V20_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-context-program-verification:v20"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -4673,6 +4703,36 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_matched_repair_verification_v19": (
             CONSTRUCTION_K7_STANDARD_2048_MATCHED_REPAIR_VERIFICATION_V19_DOMAIN
+        ),
+        "construction_k7_standard_2048_context_program_preregistration_v20": (
+            CONSTRUCTION_K7_STANDARD_2048_CONTEXT_PROGRAM_PREREGISTRATION_V20_DOMAIN
+        ),
+        "construction_k7_standard_2048_context_observation_archive_v20": (
+            CONSTRUCTION_K7_STANDARD_2048_CONTEXT_OBSERVATION_ARCHIVE_V20_DOMAIN
+        ),
+        "construction_k7_standard_2048_context_program_candidate_v20": (
+            CONSTRUCTION_K7_STANDARD_2048_CONTEXT_PROGRAM_CANDIDATE_V20_DOMAIN
+        ),
+        "construction_k7_standard_2048_context_program_proposal_v20": (
+            CONSTRUCTION_K7_STANDARD_2048_CONTEXT_PROGRAM_PROPOSAL_V20_DOMAIN
+        ),
+        "construction_k7_standard_2048_context_program_proof_v20": (
+            CONSTRUCTION_K7_STANDARD_2048_CONTEXT_PROGRAM_PROOF_V20_DOMAIN
+        ),
+        "construction_k7_standard_2048_context_world_model_v20": (
+            CONSTRUCTION_K7_STANDARD_2048_CONTEXT_WORLD_MODEL_V20_DOMAIN
+        ),
+        "construction_k7_standard_2048_context_plan_certificate_v20": (
+            CONSTRUCTION_K7_STANDARD_2048_CONTEXT_PLAN_CERTIFICATE_V20_DOMAIN
+        ),
+        "construction_k7_standard_2048_context_program_episode_v20": (
+            CONSTRUCTION_K7_STANDARD_2048_CONTEXT_PROGRAM_EPISODE_V20_DOMAIN
+        ),
+        "construction_k7_standard_2048_context_program_campaign_v20": (
+            CONSTRUCTION_K7_STANDARD_2048_CONTEXT_PROGRAM_CAMPAIGN_V20_DOMAIN
+        ),
+        "construction_k7_standard_2048_context_program_verification_v20": (
+            CONSTRUCTION_K7_STANDARD_2048_CONTEXT_PROGRAM_VERIFICATION_V20_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
