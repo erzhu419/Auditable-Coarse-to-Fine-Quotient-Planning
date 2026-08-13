@@ -76,7 +76,7 @@ def result():
 def test_v36_issues_native_vectors_for_every_lane(result) -> None:
     document = result.to_document()
     assert document["v35_native_replay_campaign_id"] == campaign.V35_CAMPAIGN_ID
-    assert document["operational_work_vector_count"] == 8
+    assert document["operational_work_vector_count"] == 15
     assert document["evaluation_work_vector_count"] >= 1
     assert document[
         "all_required_counter_leaves_have_explicit_native_records"

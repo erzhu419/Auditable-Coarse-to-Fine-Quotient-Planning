@@ -20,16 +20,19 @@ def test_v35_native_accounting_stages_are_preregistered(frozen) -> None:
     assert [row["stage"] for row in stages] == [
         "CERTIFICATE_FAILURE_FRONTIER_FREEZE",
         "ADAPTIVE_LABEL_ACQUISITION_AND_CANDIDATE_ELIMINATION",
-        "PROPOSAL_EXACT_PROOF_AND_OVERLAY_FREEZE",
-        "EPISODE_ABSTRACT_PLANNING_AND_TARGET_EXECUTION",
+        "EXPRESSION_PROPOSAL_FREEZE",
+        "EXACT_PROGRAM_PROOF",
+        "PROVED_OVERLAY_FREEZE",
+        "EPISODE_ABSTRACT_PLANNING_AND_CERTIFICATION",
+        "EPISODE_SELECTED_TARGET_EXECUTION",
         "MATCHED_FIRST_FRONTIER_NO_PRIOR_CONTROL",
         "COLD_EXACT_GROUND_CHECKPOINT_REPLAY",
         "PROCESS_AND_IO_SUPERVISION",
     ]
     assert stages[0]["target_probability_access_allowed"] is False
     assert stages[1]["query_must_reference_previously_failed_frontier"] is True
-    assert stages[4]["may_modify_operational_overlay"] is False
-    assert stages[5]["may_enter_operational_comparison"] is False
+    assert stages[7]["may_modify_operational_overlay"] is False
+    assert stages[8]["may_enter_operational_comparison"] is False
 
 
 def test_counter_registry_and_nine_shared_resources_are_frozen(frozen) -> None:
@@ -56,6 +59,12 @@ def test_predecessors_are_pending_without_outcome_leakage(frozen) -> None:
     )
     assert document["outcome_fields_present"] is False
     assert document["accounting_execution_performed"] is False
+    correction = document["stage_separation_contract_correction"]
+    assert correction["superseded_v36_preregistration_id"] == (
+        pre.SUPERSEDED_V36_PREREGISTRATION_ID
+    )
+    assert correction["superseded_preregistration_executed"] is False
+    assert correction["outcomes_known_when_corrected"] is False
 
 
 def test_preregistration_identity_domains_and_claim_locks(frozen) -> None:

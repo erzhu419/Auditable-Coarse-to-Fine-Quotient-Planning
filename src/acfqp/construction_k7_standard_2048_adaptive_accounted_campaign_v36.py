@@ -153,7 +153,8 @@ def _accounted_episode(
     episode_index, initial_board, seed, overlay, candidate_document = task
     state = state_from_board_v1(initial_board)
     initial = _state_document(state)
-    operational = runtime.NativeCounterSetV36()
+    planning_operational = runtime.NativeCounterSetV36()
+    execution_operational = runtime.NativeCounterSetV36()
     evaluation = runtime.NativeCounterSetV36()
     session = planner.create_expression_planning_session_v1(
         expression_ast=candidate_document["expression_ast"],
@@ -169,6 +170,10 @@ def _accounted_episode(
         if state.status is not Swipe2048Status.ACTIVE:
             break
         model = session.plan_root(state)
+        _add_mapping(
+            planning_operational,
+            runtime.planning_decision_counter_values_v36(model=model),
+        )
         certificate_payload = {
             "schema": "acfqp.standard_2048_adaptive_expression_certificate.v35",
             "schema_version": v35.SCHEMA_VERSION,
@@ -233,9 +238,9 @@ def _accounted_episode(
         selected = Swipe2048Action(model["selected_action"])
         outcomes = target.target_outcomes_v35(state, selected)
         _add_mapping(
-            operational,
-            runtime.operational_decision_counter_values_v36(
-                model=model, target_outcome_count=len(outcomes)
+            execution_operational,
+            runtime.execution_transition_counter_values_v36(
+                target_outcome_count=len(outcomes)
             ),
         )
         outcome, tape = select_seeded_outcome_v1(
@@ -323,7 +328,12 @@ def _accounted_episode(
         "schema_version": SCHEMA_VERSION,
         "adaptive_accounting_preregistration_id": pre.PREREGISTRATION_ID,
         "episode": episode,
-        "operational_counter_values": dict(operational.freeze()),
+        "planning_operational_counter_values": dict(
+            planning_operational.freeze()
+        ),
+        "execution_operational_counter_values": dict(
+            execution_operational.freeze()
+        ),
         "evaluation_counter_values": dict(evaluation.freeze()),
         "cold_evaluation_checkpoint_count": len(checkpoints),
         "summary_to_counter_translation_used": False,
@@ -405,55 +415,66 @@ def _materialize_campaign(
     episode_dir.mkdir(mode=0o700)
 
     acquired = v35._acquire_model()  # noqa: SLF001
-    acquisition_values = runtime.NativeCounterSetV36()
-    _add_mapping(
-        acquisition_values,
-        runtime.model_stage_counter_values_v36(
-            acquired.operational_counts, stage="ACQUISITION"
-        ),
-    )
-    acquisition_values.maximum(
-        "memory.working_bytes_peak", pre.PARENT_WORKING_BYTES_PEAK_UPPER
+    def materialize_model_stage(
+        *, stage: str, role: str, evidence: Mapping[str, Any], filename: str
+    ) -> artifacts.MaterializedOperationalBundleV36:
+        values = runtime.NativeCounterSetV36()
+        _add_mapping(
+            values,
+            runtime.model_stage_counter_values_v36(
+                acquired.operational_counts, stage=stage
+            ),
+        )
+        values.maximum(
+            "memory.working_bytes_peak", pre.PARENT_WORKING_BYTES_PEAK_UPPER
+        )
+        return artifacts.materialize_operational_bundle_v36(
+            subject_id=_subject_id(role, evidence),
+            window_role=role,
+            route_kind=RouteKindEnum.ABSTRACT_FAILED_PREFIX,
+            work_scope=ActualWorkScope.COMMON_PREFIX,
+            base_values=values.freeze(),
+            evidence_document=evidence,
+            output_path=model_dir / filename,
+        )
+
+    failure_bundle = materialize_model_stage(
+        stage="FAILURE_FRONTIER",
+        role="CERTIFICATE_FAILURE_FRONTIER_FREEZE",
+        evidence=acquired.failure,
+        filename="operational-failure-frontier.json",
     )
     acquisition_evidence = {
-        "certificate_failure": acquired.failure,
-        "expression_acquisitions": list(acquired.acquisitions),
-        "expression_proposal_id": acquired.proposal[
-            "adaptive_expression_proposal_id"
+        "adaptive_expression_failure_id": acquired.failure[
+            "adaptive_expression_failure_id"
         ],
+        "expression_acquisitions": list(acquired.acquisitions),
         "actual_target_probability_query_invocations": len(acquired.acquisitions),
         "duplicate_label_query_for_artifact_recording": False,
     }
-    acquisition_bundle = artifacts.materialize_operational_bundle_v36(
-        subject_id=_subject_id("MODEL_ACQUISITION", acquisition_evidence),
-        window_role="CERTIFICATE_FAILURE_AND_ADAPTIVE_LABEL_ACQUISITION",
-        route_kind=RouteKindEnum.ABSTRACT_FAILED_PREFIX,
-        work_scope=ActualWorkScope.COMMON_PREFIX,
-        base_values=acquisition_values.freeze(),
-        evidence_document=acquisition_evidence,
-        output_path=model_dir / "operational-acquisition.json",
+    acquisition_bundle = materialize_model_stage(
+        stage="ACQUISITION",
+        role="ADAPTIVE_LABEL_ACQUISITION_AND_CANDIDATE_ELIMINATION",
+        evidence=acquisition_evidence,
+        filename="operational-acquisition.json",
     )
-
-    proof_values = runtime.NativeCounterSetV36()
-    _add_mapping(
-        proof_values,
-        runtime.model_stage_counter_values_v36(
-            acquired.operational_counts, stage="PROOF_AND_OVERLAY"
-        ),
+    proposal_bundle = materialize_model_stage(
+        stage="PROPOSAL",
+        role="EXPRESSION_PROPOSAL_FREEZE",
+        evidence=acquired.proposal,
+        filename="operational-proposal.json",
     )
-    proof_evidence = {
-        "expression_proposal": acquired.proposal,
-        "expression_proof": acquired.proof,
-        "expression_overlay": acquired.overlay,
-    }
-    proof_bundle = artifacts.materialize_operational_bundle_v36(
-        subject_id=_subject_id("MODEL_PROOF_AND_OVERLAY", proof_evidence),
-        window_role="PROPOSAL_EXACT_PROOF_AND_OVERLAY_FREEZE",
-        route_kind=RouteKindEnum.ABSTRACT_FAILED_PREFIX,
-        work_scope=ActualWorkScope.COMMON_PREFIX,
-        base_values=proof_values.freeze(),
-        evidence_document=proof_evidence,
-        output_path=model_dir / "operational-proof-overlay.json",
+    proof_bundle = materialize_model_stage(
+        stage="PROOF",
+        role="EXACT_PROGRAM_PROOF",
+        evidence=acquired.proof,
+        filename="operational-proof.json",
+    )
+    overlay_bundle = materialize_model_stage(
+        stage="OVERLAY",
+        role="PROVED_OVERLAY_FREEZE",
+        evidence=acquired.overlay,
+        filename="operational-overlay.json",
     )
 
     control_values = runtime.NativeCounterSetV36()
@@ -496,7 +517,13 @@ def _materialize_campaign(
     ):
         _fail("V36 native replay differs from frozen V35 semantic campaign")
 
-    operational_bundles = [acquisition_bundle, proof_bundle]
+    operational_bundles = [
+        failure_bundle,
+        acquisition_bundle,
+        proposal_bundle,
+        proof_bundle,
+        overlay_bundle,
+    ]
     evaluation_bundles = [control_bundle]
     episode_rows = []
     worker_pids = set()
@@ -505,22 +532,27 @@ def _materialize_campaign(
         episode_index = episode["episode_index"]
         episode_id = episode["adaptive_expression_episode_id"]
         worker_pids.add(reply.worker_pid)
-        values = runtime.NativeCounterSetV36()
-        _add_mapping(values, reply.reply["operational_counter_values"])
-        values.add("common.hash_invocations", 2)
-        values.add("common.integrity_checks", 2)
-        values.add("common.protocol_checks", 2)
-        values.add("io.staged_bytes", len(reply.task_bytes))
-        values.add("io.read_bytes", len(reply.task_bytes) + len(reply.reply_bytes))
-        values.maximum(
+        planning_values = runtime.NativeCounterSetV36()
+        _add_mapping(
+            planning_values,
+            reply.reply["planning_operational_counter_values"],
+        )
+        planning_values.add("common.hash_invocations", 2)
+        planning_values.add("common.integrity_checks", 2)
+        planning_values.add("common.protocol_checks", 2)
+        planning_values.add("io.staged_bytes", len(reply.task_bytes))
+        planning_values.add(
+            "io.read_bytes", len(reply.task_bytes) + len(reply.reply_bytes)
+        )
+        planning_values.maximum(
             "memory.working_bytes_peak", pre.WORKER_WORKING_BYTES_PEAK_UPPER
         )
-        op_bundle = artifacts.materialize_operational_bundle_v36(
+        planning_bundle = artifacts.materialize_operational_bundle_v36(
             subject_id=episode_id,
-            window_role="EPISODE_ABSTRACT_PLANNING_AND_TARGET_EXECUTION",
+            window_role="EPISODE_ABSTRACT_PLANNING_AND_CERTIFICATION",
             route_kind=RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE,
             work_scope=ActualWorkScope.ABSTRACT_SELECTED_ROUTE_EXECUTION,
-            base_values=values.freeze(),
+            base_values=planning_values.freeze(),
             evidence_document={
                 "task_sha256": hashlib.sha256(reply.task_bytes).hexdigest(),
                 "task_byte_count": len(reply.task_bytes),
@@ -532,10 +564,40 @@ def _materialize_campaign(
                 "observed_worker_ru_maxrss_within_preregistered_cap": True,
             },
             output_path=episode_dir
-            / f"episode-{episode_index:04d}-operational.json",
+            / f"episode-{episode_index:04d}-planning-operational.json",
             external_output_bytes=len(reply.reply_bytes),
         )
-        operational_bundles.append(op_bundle)
+        operational_bundles.append(planning_bundle)
+
+        execution_values = runtime.NativeCounterSetV36()
+        _add_mapping(
+            execution_values,
+            reply.reply["execution_operational_counter_values"],
+        )
+        execution_values.maximum(
+            "memory.working_bytes_peak", pre.WORKER_WORKING_BYTES_PEAK_UPPER
+        )
+        execution_bundle = artifacts.materialize_operational_bundle_v36(
+            subject_id=episode_id,
+            window_role="EPISODE_SELECTED_TARGET_EXECUTION",
+            route_kind=RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE,
+            work_scope=ActualWorkScope.ABSTRACT_SELECTED_ROUTE_EXECUTION,
+            base_values=execution_values.freeze(),
+            evidence_document={
+                "episode_id": episode_id,
+                "worker_reply_sha256": hashlib.sha256(
+                    reply.reply_bytes
+                ).hexdigest(),
+                "worker_reply_byte_count": len(reply.reply_bytes),
+                "decision_count": episode["decision_count"],
+                "execution_counter_values": reply.reply[
+                    "execution_operational_counter_values"
+                ],
+            },
+            output_path=episode_dir
+            / f"episode-{episode_index:04d}-execution-operational.json",
+        )
+        operational_bundles.append(execution_bundle)
         evaluation_summary = None
         if reply.reply["cold_evaluation_checkpoint_count"]:
             eval_bundle = artifacts.materialize_evaluation_bundle_v36(
@@ -563,8 +625,11 @@ def _materialize_campaign(
                 "decision_count": episode["decision_count"],
                 "closure_reason": episode["closure_reason"],
                 "final_state": episode["final_state"],
-                "operational_bundle": _bundle_summary(
-                    op_bundle, output_root=output_root
+                "planning_operational_bundle": _bundle_summary(
+                    planning_bundle, output_root=output_root
+                ),
+                "execution_operational_bundle": _bundle_summary(
+                    execution_bundle, output_root=output_root
                 ),
                 "evaluation_bundle": evaluation_summary,
             }
@@ -673,12 +738,16 @@ def _materialize_campaign(
         "actual_projection_profile_id": profiles[
             "actual_projection_profile"
         ]["actual_projection_profile_id"],
-        "model_acquisition_bundle": _bundle_summary(
-            acquisition_bundle, output_root=output_root
-        ),
-        "model_proof_overlay_bundle": _bundle_summary(
-            proof_bundle, output_root=output_root
-        ),
+        "model_stage_bundles": [
+            _bundle_summary(bundle, output_root=output_root)
+            for bundle in (
+                failure_bundle,
+                acquisition_bundle,
+                proposal_bundle,
+                proof_bundle,
+                overlay_bundle,
+            )
+        ],
         "matched_no_prior_control_bundle": _bundle_summary(
             control_bundle, output_root=output_root
         ),

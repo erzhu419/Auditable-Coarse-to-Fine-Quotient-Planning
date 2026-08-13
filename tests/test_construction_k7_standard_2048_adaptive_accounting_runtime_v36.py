@@ -26,17 +26,22 @@ def _model_counts() -> dict[str, int]:
 
 
 def test_model_native_windows_partition_without_double_charging() -> None:
-    acquisition = runtime.model_stage_counter_values_v36(
-        _model_counts(), stage="ACQUISITION"
-    )
-    proof = runtime.model_stage_counter_values_v36(
-        _model_counts(), stage="PROOF_AND_OVERLAY"
-    )
+    stages = [
+        runtime.model_stage_counter_values_v36(_model_counts(), stage=stage)
+        for stage in (
+            "FAILURE_FRONTIER",
+            "ACQUISITION",
+            "PROPOSAL",
+            "PROOF",
+            "OVERLAY",
+        )
+    ]
     for path, value in _model_counts().items():
-        assert acquisition[path] + proof[path] == value
-    assert acquisition["model.exact_program_proof_rows_evaluated"] == 0
-    assert acquisition["model.world_model_freezes"] == 0
-    assert proof["model.target_probability_labels_acquired"] == 0
+        assert sum(stage[path] for stage in stages) == value
+    assert stages[0]["model.structural_context_rows_frozen"] == 2400
+    assert stages[2]["model.target_probability_labels_acquired"] == 0
+    assert stages[3]["model.exact_program_proof_rows_evaluated"] == 4
+    assert stages[4]["model.world_model_freezes"] == 1
 
 
 def test_operational_decision_records_planning_and_one_target_transition() -> None:
@@ -56,6 +61,22 @@ def test_operational_decision_records_planning_and_one_target_transition() -> No
     assert values["target.execution_ground_steps"] == 1
     assert values["target.execution_outcome_rows"] == 28
     assert values["target.transition_observations"] == 1
+    planning = runtime.planning_decision_counter_values_v36(
+        model={
+            "factored_action_row_evaluation_count": 7,
+            "factored_support_outcome_evaluation_count": 84,
+            "subproof_cache_hit_count": 5,
+            "subproof_cache_miss_count": 9,
+            "cross_decision_subproof_cache_hit_count": 3,
+        }
+    )
+    execution = runtime.execution_transition_counter_values_v36(
+        target_outcome_count=28
+    )
+    assert planning["common.abstract_bellman_backups"] == 7
+    assert planning["target.execution_ground_steps"] == 0
+    assert execution["common.abstract_bellman_backups"] == 0
+    assert execution["target.execution_ground_steps"] == 1
 
 
 def test_no_prior_control_is_evaluation_only() -> None:
@@ -84,6 +105,33 @@ def test_complete_native_zero_vector_projects_once() -> None:
     assert chain.native_zero_attestation.work_vector_id == (
         chain.work_vector.work_vector_id
     )
+
+
+def test_planning_and_execution_vectors_are_independently_valid() -> None:
+    model = {
+        "factored_action_row_evaluation_count": 7,
+        "factored_support_outcome_evaluation_count": 84,
+        "subproof_cache_hit_count": 5,
+        "subproof_cache_miss_count": 9,
+        "cross_decision_subproof_cache_hit_count": 3,
+    }
+    for label, values in (
+        ("planning", runtime.planning_decision_counter_values_v36(model=model)),
+        (
+            "execution",
+            runtime.execution_transition_counter_values_v36(
+                target_outcome_count=28
+            ),
+        ),
+    ):
+        chain = runtime.build_operational_accounting_chain_v36(
+            subject_id=_subject(label),
+            route_kind=RouteKindEnum.ABSTRACT_ONLY_CERTIFICATE,
+            work_scope=ActualWorkScope.ABSTRACT_SELECTED_ROUTE_EXECUTION,
+            values=values,
+            recorder_id=_subject(label + "-recorder"),
+        )
+        assert chain.work_vector.subject_id == _subject(label)
 
 
 def test_evaluation_vector_cannot_enter_operational_comparison() -> None:

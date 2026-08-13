@@ -168,16 +168,20 @@ def model_stage_counter_values_v36(
     ):
         _fail("model-stage native counter mapping changed")
     values = NativeCounterSetV36()
-    if stage == "ACQUISITION":
+    if stage == "FAILURE_FRONTIER":
+        paths = {"model.structural_context_rows_frozen"}
+    elif stage == "ACQUISITION":
         paths = expected - {
+            "model.structural_context_rows_frozen",
             "model.exact_program_proof_rows_evaluated",
             "model.world_model_freezes",
         }
-    elif stage == "PROOF_AND_OVERLAY":
-        paths = {
-            "model.exact_program_proof_rows_evaluated",
-            "model.world_model_freezes",
-        }
+    elif stage == "PROPOSAL":
+        paths = set()
+    elif stage == "PROOF":
+        paths = {"model.exact_program_proof_rows_evaluated"}
+    elif stage == "OVERLAY":
+        paths = {"model.world_model_freezes"}
     else:
         _fail("unknown model accounting stage")
     for path in paths:
@@ -227,6 +231,49 @@ def operational_decision_counter_values_v36(
     values.add("common.hash_invocations", 2)
     values.add("route.attempts")
     values.add("route.successes")
+    values.add("target.execution_ground_steps")
+    values.add("target.execution_outcome_rows", target_outcome_count)
+    values.add("target.transition_observations")
+    return values.freeze()
+
+
+def planning_decision_counter_values_v36(
+    *, model: Mapping[str, Any]
+) -> Mapping[str, int]:
+    """Charge one exact abstract certificate without target execution."""
+
+    combined = operational_decision_counter_values_v36(
+        model=model, target_outcome_count=1
+    )
+    values = NativeCounterSetV36()
+    planning_paths = (
+        "common.abstract_bellman_backups",
+        "common.abstract_support_outcome_evaluations",
+        "common.abstract_subproof_cache_lookups",
+        "common.abstract_subproof_cache_hits",
+        "common.abstract_subproof_cache_misses",
+        "common.protocol_checks",
+        "common.integrity_checks",
+        "common.hash_invocations",
+        "route.attempts",
+        "route.successes",
+    )
+    for path in planning_paths:
+        values.add(path, combined[path])
+    return values.freeze()
+
+
+def execution_transition_counter_values_v36(
+    *, target_outcome_count: int
+) -> Mapping[str, int]:
+    """Charge only the selected target transition after certificate freeze."""
+
+    if type(target_outcome_count) is not int or target_outcome_count <= 0:
+        _fail("execution transition outcome count changed")
+    values = NativeCounterSetV36()
+    values.add("common.protocol_checks")
+    values.add("common.integrity_checks")
+    values.add("common.hash_invocations")
     values.add("target.execution_ground_steps")
     values.add("target.execution_outcome_rows", target_outcome_count)
     values.add("target.transition_observations")
@@ -384,5 +431,7 @@ __all__ = (
     "evaluate_ground_root_with_native_counters_v36",
     "model_stage_counter_values_v36",
     "no_prior_control_counter_values_v36",
+    "planning_decision_counter_values_v36",
+    "execution_transition_counter_values_v36",
     "operational_decision_counter_values_v36",
 )

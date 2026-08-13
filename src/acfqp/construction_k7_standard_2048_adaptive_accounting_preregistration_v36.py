@@ -19,12 +19,15 @@ from acfqp.phase3e_ids import (
 )
 
 
-SCHEMA_VERSION = "36.0.0"
-PROPOSED_CONTRACT_VERSION = "2.0.195"
-PROFILE_KEY = "construction_k7_standard_2048_adaptive_expression_actual_accounting_v36"
-PREREGISTRATION_ID = "b6d209f4a0e285653349a66293c21597b39dcd1f74c95fbd69d9e3e439accb65"
-EXPECTED_CANONICAL_BYTE_COUNT = 214_492
-EXPECTED_CANONICAL_SHA256 = "0050e81497cf57c6834c6345189870a2db3aacccfbc294b858c9b664b97774d4"
+SCHEMA_VERSION = "36.1.0"
+PROPOSED_CONTRACT_VERSION = "2.0.196"
+PROFILE_KEY = "construction_k7_standard_2048_adaptive_expression_actual_accounting_v36r1"
+PREREGISTRATION_ID = "b74c33f607b3a6523a1ec341a0bd059f94edc251bab35f003233e63488815dde"
+EXPECTED_CANONICAL_BYTE_COUNT = 215_334
+EXPECTED_CANONICAL_SHA256 = "0dd9fd2ffec819ba39529f6ec2a627b5bca19937d5e4b01be98d42200cb997dd"
+SUPERSEDED_V36_PREREGISTRATION_ID = (
+    "b6d209f4a0e285653349a66293c21597b39dcd1f74c95fbd69d9e3e439accb65"
+)
 V34R1_PREREGISTRATION_ID = (
     "4546af82f1f4e6429c83148b0f37f9a3995b80e9a0bb4abc2971ada13b115920"
 )
@@ -132,21 +135,47 @@ def _stage_plan() -> list[dict[str, Any]]:
             "query_must_reference_previously_failed_frontier": True,
         },
         {
-            "stage": "PROPOSAL_EXACT_PROOF_AND_OVERLAY_FREEZE",
+            "stage": "EXPRESSION_PROPOSAL_FREEZE",
             "lane": "OPERATIONAL",
             "cardinality": 1,
-            "counter_paths": [
-                "model.exact_program_proof_rows_evaluated",
-                "model.world_model_freezes",
-            ],
+            "counter_paths": [],
             "proposal_must_precede_target_semantics_reveal": True,
         },
         {
-            "stage": "EPISODE_ABSTRACT_PLANNING_AND_TARGET_EXECUTION",
+            "stage": "EXACT_PROGRAM_PROOF",
+            "lane": "OPERATIONAL",
+            "cardinality": 1,
+            "counter_paths": ["model.exact_program_proof_rows_evaluated"],
+            "proposal_must_precede_target_semantics_reveal": True,
+        },
+        {
+            "stage": "PROVED_OVERLAY_FREEZE",
+            "lane": "OPERATIONAL",
+            "cardinality": 1,
+            "counter_paths": ["model.world_model_freezes"],
+            "proof_must_precede_overlay_authority": True,
+        },
+        {
+            "stage": "EPISODE_ABSTRACT_PLANNING_AND_CERTIFICATION",
             "lane": "OPERATIONAL",
             "cardinality": MAXIMUM_EPISODES,
-            "counter_paths": list(PLANNING_OPERATIONAL_PATHS),
+            "counter_paths": [
+                path
+                for path in PLANNING_OPERATIONAL_PATHS
+                if not path.startswith("target.")
+            ],
             "one_occurrence_per_worker_process": True,
+        },
+        {
+            "stage": "EPISODE_SELECTED_TARGET_EXECUTION",
+            "lane": "OPERATIONAL",
+            "cardinality": MAXIMUM_EPISODES,
+            "counter_paths": [
+                path
+                for path in PLANNING_OPERATIONAL_PATHS
+                if path.startswith("target.")
+            ],
+            "certificate_must_freeze_before_target_execution": True,
         },
         {
             "stage": "MATCHED_FIRST_FRONTIER_NO_PRIOR_CONTROL",
@@ -198,6 +227,19 @@ def _document() -> dict[str, Any]:
         "schema_version": SCHEMA_VERSION,
         "proposed_contract_version": PROPOSED_CONTRACT_VERSION,
         "profile_key": PROFILE_KEY,
+        "stage_separation_contract_correction": {
+            "superseded_v36_preregistration_id": (
+                SUPERSEDED_V36_PREREGISTRATION_ID
+            ),
+            "superseded_preregistration_executed": False,
+            "outcomes_known_when_corrected": False,
+            "scientific_target_or_workload_changed": False,
+            "correction": (
+                "SEPARATE_FAILURE_ACQUISITION_PROPOSAL_PROOF_OVERLAY_"
+                "PLANNING_AND_EXECUTION_NATIVE_WINDOWS"
+            ),
+            "partial_superseded_bundles_may_be_reused": False,
+        },
         "frozen_predecessors": {
             "v34r1_accounting_preregistration_id": V34R1_PREREGISTRATION_ID,
             "v34r1_accounted_campaign_id": {
@@ -365,6 +407,7 @@ __all__ = (
     "PLANNING_OPERATIONAL_PATHS",
     "PREREGISTRATION_ID",
     "SHARED_RESOURCE_PATHS",
+    "SUPERSEDED_V36_PREREGISTRATION_ID",
     "Standard2048AdaptiveAccountingPreregistrationV36",
     "freeze_standard_2048_adaptive_accounting_preregistration_v36",
     "verify_standard_2048_adaptive_accounting_preregistration_v36",
