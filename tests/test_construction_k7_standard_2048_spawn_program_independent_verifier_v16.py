@@ -5,6 +5,7 @@ import copy
 from pathlib import Path
 
 import pytest
+from fractions import Fraction
 
 from acfqp import construction_k7_standard_2048_spawn_program_independent_verifier_v16 as verifier
 from acfqp import construction_k7_standard_2048_spawn_program_v16 as producer
@@ -77,6 +78,16 @@ def test_sample_and_claim_boundaries_remain_scoped(campaign_and_verification) ->
     assert document["official_execution_allowed"] is False
     assert document["official_scalar_cost"] is None
     assert document["official_N_break_even"] is None
+
+
+def test_public_independent_spawn_primitive_is_exact() -> None:
+    board = (1, 2, 0, 0, 3, 0, 4, 0, 5, 0, 6, 0, 0, 0, 0, 0)
+    empty = tuple(index for index, rank in enumerate(board) if rank == 0)
+    assert verifier.apply_independently_replayed_spawn_program_v16(board) == tuple(
+        (cell, rank, probability / len(empty))
+        for cell in empty
+        for rank, probability in ((1, Fraction(9, 10)), (2, Fraction(1, 10)))
+    )
 
 
 @pytest.mark.parametrize(

@@ -442,6 +442,32 @@ def _model(proposal: dict[str, Any], proof: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def apply_independently_replayed_spawn_program_v16(
+    post_swipe_board: tuple[int, ...],
+) -> tuple[tuple[int, int, Fraction], ...]:
+    """Apply only the independently selected and exhaustively proved program."""
+
+    if (
+        type(post_swipe_board) is not tuple
+        or len(post_swipe_board) != 16
+        or any(
+            type(rank) is not int or not 0 <= rank <= 19
+            for rank in post_swipe_board
+        )
+    ):
+        _fail("independent spawn-program board changed")
+    empty = tuple(
+        index for index, rank in enumerate(post_swipe_board) if rank == 0
+    )
+    if not empty or len(empty) == 16:
+        _fail("independent spawn-program support is out of scope")
+    return tuple(
+        (cell, rank, probability / len(empty))
+        for cell in empty
+        for rank, probability in ((1, Fraction(9, 10)), (2, Fraction(1, 10)))
+    )
+
+
 def _verify_preregistration(document: Any) -> dict[str, Any]:
     if type(document) is not dict:
         _fail("embedded preregistration changed")
@@ -624,6 +650,7 @@ def verify_standard_2048_spawn_program_bytes_independently_v16(
 
 
 __all__ = (
+    "apply_independently_replayed_spawn_program_v16",
     "ConstructionK7Standard2048SpawnProgramIndependentVerifierV16Error",
     "EXPECTED_CAMPAIGN_ID",
     "EXPECTED_VERIFICATION_ID",
