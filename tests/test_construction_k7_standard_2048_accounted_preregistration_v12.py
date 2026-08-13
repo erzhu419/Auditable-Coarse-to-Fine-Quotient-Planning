@@ -25,6 +25,8 @@ def test_fresh_long_boards_and_identity_are_preregistered() -> None:
     assert document["initial_boards_are_fresh_and_d4_disjoint_from_v169"] is True
     assert document["episode_count"] == 4
     assert document["maximum_decision_count"] == 256
+    assert document["episode_worker_working_bytes_peak_upper"] == 2**31
+    assert document["campaign_parent_working_bytes_peak_upper"] == 2**32
     assert document["maximum_decisions_per_episode"] == 64
     assert len(set(document["preregistered_episode_seeds"])) == 4
 

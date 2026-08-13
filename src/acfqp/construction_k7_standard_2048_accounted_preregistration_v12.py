@@ -28,7 +28,7 @@ SCHEMA_VERSION = "12.0.0"
 PROPOSED_CONTRACT_VERSION = "2.0.171"
 PROFILE_KEY = "construction_k7_standard_2048_accounted_long_episode_v12"
 PREREGISTRATION_ID = (
-    "fd85fa29e952449d16ab767174be0a214748fee13e1fb1e2b6092781c362a2b7"
+    "164fbac4f23d4c05b16b2f0e21dfbc44031eac2ac7e26e927827c7af9d432efb"
 )
 V169_LONG_CAMPAIGN_ID = (
     "158dfab7d25c70d46aabc98620d4bccd55ff5f2a39c354aa6ca918346e191fdd"
@@ -37,6 +37,8 @@ PLANNING_HORIZON = 3
 MAXIMUM_DECISIONS_PER_EPISODE = 64
 OFFLINE_OBSERVATION_COUNT = 192
 EPISODE_WORKER_COUNT = 4
+EPISODE_WORKER_WORKING_BYTES_PEAK_UPPER = 2 * 1024 * 1024 * 1024
+CAMPAIGN_PARENT_WORKING_BYTES_PEAK_UPPER = 4 * 1024 * 1024 * 1024
 
 PREREGISTERED_INITIAL_BOARDS = (
     (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0),
@@ -124,6 +126,12 @@ def _document() -> dict[str, Any]:
         "maximum_decisions_per_episode": MAXIMUM_DECISIONS_PER_EPISODE,
         "early_terminal_closure_allowed": True,
         "episode_worker_count": EPISODE_WORKER_COUNT,
+        "episode_worker_working_bytes_peak_upper": (
+            EPISODE_WORKER_WORKING_BYTES_PEAK_UPPER
+        ),
+        "campaign_parent_working_bytes_peak_upper": (
+            CAMPAIGN_PARENT_WORKING_BYTES_PEAK_UPPER
+        ),
         "preregistered_initial_boards": [
             list(board) for board in PREREGISTERED_INITIAL_BOARDS
         ],
@@ -319,6 +327,8 @@ def verify_standard_2048_accounted_preregistration_v12(
 __all__ = (
     "ConstructionK7Standard2048AccountedPreregistrationV12Error",
     "EPISODE_WORKER_COUNT",
+    "EPISODE_WORKER_WORKING_BYTES_PEAK_UPPER",
+    "CAMPAIGN_PARENT_WORKING_BYTES_PEAK_UPPER",
     "FUTURE_DOMAINS",
     "MAXIMUM_DECISIONS_PER_EPISODE",
     "OFFLINE_OBSERVATION_COUNT",

@@ -87,12 +87,13 @@ def test_evaluation_output_is_typed_and_never_gets_comparison_vector(
         exact_document={"selected_action": "LEFT", "exact": True},
         forced_document=None,
         base_values=counters.freeze(),
+        transport_output_bytes=113,
         working_bytes_peak=4096,
         output_directory=output,
         output_key="episode-0000/decision-0001/evaluation",
     )
-    assert result.work_vector.value("evaluation.io_output_bytes") == len(
-        result.canonical_bytes
+    assert result.work_vector.value("evaluation.io_output_bytes") == (
+        113 + len(result.canonical_bytes)
     )
     assert result.work_vector.value("evaluation.io_mounted_bytes_peak") >= len(
         result.canonical_bytes

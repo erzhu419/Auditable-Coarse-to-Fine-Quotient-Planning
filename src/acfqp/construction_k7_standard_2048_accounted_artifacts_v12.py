@@ -251,13 +251,14 @@ class MaterializedEvaluationV12:
     measurement: Mapping[str, Any]
     work_vector: WorkVectorV1 = field(repr=False, compare=False)
     canonical_bytes: bytes = field(repr=False, compare=False)
+    transport_output_bytes: int
     output_commit: Standard2048OutputCommitV12
 
     def __post_init__(self) -> None:
         if (
             self.work_vector.subject_id != self.subject_id
             or self.work_vector.value("evaluation.io_output_bytes")
-            != len(self.canonical_bytes)
+            != self.transport_output_bytes + len(self.canonical_bytes)
             or self.output_commit.subject_id != self.subject_id
             or not self.output_commit.evaluation_only
         ):
@@ -272,6 +273,10 @@ class MaterializedEvaluationV12:
             "work_vector_id": self.work_vector.work_vector_id,
             "output_commit": self.output_commit.to_document(),
             "canonical_byte_count": len(self.canonical_bytes),
+            "transport_output_byte_count": self.transport_output_bytes,
+            "total_evaluation_output_byte_count": (
+                self.transport_output_bytes + len(self.canonical_bytes)
+            ),
             "canonical_bytes_sha256": hashlib.sha256(self.canonical_bytes).hexdigest(),
             "evaluation_lane_excluded_from_operational_comparison": True,
             "comparison_vector_issued": False,
@@ -286,16 +291,22 @@ class MaterializedEvaluationV12:
 
 
 def _with_output_candidate(
-    base_values: Mapping[str, int], candidate: int
+    base_values: Mapping[str, int],
+    candidate: int,
+    *,
+    allocation_profile: str,
 ) -> dict[str, int]:
     registry = registry_v8.official_counter_registry_v8()
     if set(base_values) != set(registry.by_path):
         _fail("base values do not cover the full V8 registry")
     values = dict(base_values)
     values["io.output_bytes"] = _nonnegative(candidate, "output candidate")
-    values["io.mounted_bytes_peak"] = max(
-        values["io.mounted_bytes_peak"], candidate
-    )
+    if allocation_profile == "CAMPAIGN_GLOBAL_MOUNT_PEAK_PLUS_OWN_OUTPUT":
+        values["io.mounted_bytes_peak"] += candidate
+    else:
+        values["io.mounted_bytes_peak"] = max(
+            values["io.mounted_bytes_peak"], candidate
+        )
     return values
 
 
@@ -375,7 +386,11 @@ def _render_operational(
     runtime.OperationalAccountingChainV12,
     Mapping[str, bytes],
 ]:
-    values = _with_output_candidate(base_values, candidate)
+    values = _with_output_candidate(
+        base_values,
+        candidate,
+        allocation_profile=allocation_profile,
+    )
     measurement = _measurement(
         subject_id,
         segment_role,
@@ -679,12 +694,16 @@ def materialize_evaluation_v12(
     exact_document: Mapping[str, Any],
     forced_document: Mapping[str, Any] | None,
     base_values: Mapping[str, int],
+    transport_output_bytes: int = 0,
     working_bytes_peak: int,
     output_directory: str | Path,
     output_key: str,
 ) -> MaterializedEvaluationV12:
     _cid(subject_id, "evaluation subject")
-    candidate = 0
+    transport_output_bytes = _nonnegative(
+        transport_output_bytes, "evaluation transport output bytes"
+    )
+    candidate = transport_output_bytes
     final: tuple[dict[str, Any], WorkVectorV1, bytes] | None = None
     for _ in range(32):
         current = _evaluation_candidate(
@@ -697,7 +716,7 @@ def materialize_evaluation_v12(
                 working_bytes_peak, "evaluation working peak"
             ),
         )
-        rendered = len(current[2])
+        rendered = transport_output_bytes + len(current[2])
         if rendered < candidate:
             _fail("evaluation output-byte fixed point decreased")
         if rendered == candidate:
@@ -732,6 +751,7 @@ def materialize_evaluation_v12(
         MappingProxyType(final[0]),
         final[1],
         final[2],
+        transport_output_bytes,
         commit,
     )
 
