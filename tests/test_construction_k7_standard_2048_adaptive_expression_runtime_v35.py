@@ -8,6 +8,7 @@ import pytest
 from acfqp import construction_k7_standard_2048_adaptive_expression_runtime_v35 as runtime
 from acfqp import construction_k7_standard_2048_expression_program_preregistration_v21 as v21
 from acfqp.domains.standard_2048 import state_from_board_v1
+from acfqp.phase3e_ids import content_id
 
 
 def _contexts() -> tuple[runtime.RawExpressionContextV35, ...]:
@@ -163,6 +164,15 @@ def test_candidate_is_immutable_and_identity_bound() -> None:
         archived_contexts=contexts, labels=labels
     )
     candidate = candidates[0]
+    artifact = candidate.to_document()
+    assert content_id(
+        runtime.pre.FUTURE_DOMAINS["candidate"],
+        {
+            key: value
+            for key, value in artifact.items()
+            if key != "expression_candidate_id"
+        },
+    ) == artifact["expression_candidate_id"]
     with pytest.raises(TypeError):
         candidate.expression_ast["operator"] = "FORGED"  # type: ignore[index]
     tampered = copy.copy(candidate)

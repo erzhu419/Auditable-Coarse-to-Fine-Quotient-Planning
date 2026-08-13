@@ -250,14 +250,13 @@ class ExpressionProgramCandidateV35:
         )
 
     def to_document(self) -> dict[str, Any]:
-        return {
-            "expression_candidate_id": self.candidate_id,
-            "expression_ast": dict(self.expression_ast),
-            "threshold": self.threshold,
-            "direction": self.direction,
-            "base_rank_two_probability": _fdoc(BASE_RANK_TWO_PROBABILITY),
-            "override_rank_two_probability": _fdoc(self.override_probability),
-        }
+        payload = _candidate_payload(
+            dict(self.expression_ast),
+            self.threshold,
+            self.override_probability,
+            self.direction,
+        )
+        return {**payload, "expression_candidate_id": self.candidate_id}
 
 
 def _candidate_payload(

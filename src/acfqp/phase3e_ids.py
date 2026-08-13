@@ -1725,6 +1725,12 @@ CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_CAMPAIGN_V35_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_VERIFICATION_V35_DOMAIN = (
     "acfqp:construction-k7-standard-2048-adaptive-expression-verification:v35"
 )
+CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_PROPOSAL_V35_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-adaptive-expression-proposal:v35"
+)
+CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_PROOF_V35_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-adaptive-expression-proof:v35"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -5321,6 +5327,12 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_adaptive_expression_verification_v35": (
             CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_VERIFICATION_V35_DOMAIN
+        ),
+        "construction_k7_standard_2048_adaptive_expression_proposal_v35": (
+            CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_PROPOSAL_V35_DOMAIN
+        ),
+        "construction_k7_standard_2048_adaptive_expression_proof_v35": (
+            CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_EXPRESSION_PROOF_V35_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
