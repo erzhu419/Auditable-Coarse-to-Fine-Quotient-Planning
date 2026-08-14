@@ -1878,6 +1878,27 @@ CONSTRUCTION_K7_LMB_DERIVED_PROGRAM_CAMPAIGN_V44_DOMAIN = (
 CONSTRUCTION_K7_LMB_DERIVED_PROGRAM_VERIFICATION_V44_DOMAIN = (
     "acfqp:construction-k7-lmb-derived-program-verification:v44"
 )
+CONSTRUCTION_K7_LMB_DIFFERENCE_GRAMMAR_SUCCESSOR_PREREGISTRATION_V44R1_DOMAIN = (
+    "acfqp:construction-k7-lmb-difference-grammar-successor-preregistration:v44r1"
+)
+CONSTRUCTION_K7_LMB_MODEL_DERIVED_SOURCE_OBSERVATION_V44R1_DOMAIN = (
+    "acfqp:construction-k7-lmb-model-derived-source-observation:v44r1"
+)
+CONSTRUCTION_K7_LMB_DERIVED_TRANSITION_PROGRAM_V44R1_DOMAIN = (
+    "acfqp:construction-k7-lmb-derived-transition-program:v44r1"
+)
+CONSTRUCTION_K7_LMB_DERIVED_PROGRAM_DISTINCTION_V44R1_DOMAIN = (
+    "acfqp:construction-k7-lmb-derived-program-distinction:v44r1"
+)
+CONSTRUCTION_K7_LMB_DERIVED_PROGRAM_EPISODE_V44R1_DOMAIN = (
+    "acfqp:construction-k7-lmb-derived-program-episode:v44r1"
+)
+CONSTRUCTION_K7_LMB_DERIVED_PROGRAM_CAMPAIGN_V44R1_DOMAIN = (
+    "acfqp:construction-k7-lmb-derived-program-campaign:v44r1"
+)
+CONSTRUCTION_K7_LMB_DERIVED_PROGRAM_VERIFICATION_V44R1_DOMAIN = (
+    "acfqp:construction-k7-lmb-derived-program-verification:v44r1"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -5627,6 +5648,27 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_lmb_derived_program_verification_v44": (
             CONSTRUCTION_K7_LMB_DERIVED_PROGRAM_VERIFICATION_V44_DOMAIN
+        ),
+        "construction_k7_lmb_difference_grammar_successor_preregistration_v44r1": (
+            CONSTRUCTION_K7_LMB_DIFFERENCE_GRAMMAR_SUCCESSOR_PREREGISTRATION_V44R1_DOMAIN
+        ),
+        "construction_k7_lmb_model_derived_source_observation_v44r1": (
+            CONSTRUCTION_K7_LMB_MODEL_DERIVED_SOURCE_OBSERVATION_V44R1_DOMAIN
+        ),
+        "construction_k7_lmb_derived_transition_program_v44r1": (
+            CONSTRUCTION_K7_LMB_DERIVED_TRANSITION_PROGRAM_V44R1_DOMAIN
+        ),
+        "construction_k7_lmb_derived_program_distinction_v44r1": (
+            CONSTRUCTION_K7_LMB_DERIVED_PROGRAM_DISTINCTION_V44R1_DOMAIN
+        ),
+        "construction_k7_lmb_derived_program_episode_v44r1": (
+            CONSTRUCTION_K7_LMB_DERIVED_PROGRAM_EPISODE_V44R1_DOMAIN
+        ),
+        "construction_k7_lmb_derived_program_campaign_v44r1": (
+            CONSTRUCTION_K7_LMB_DERIVED_PROGRAM_CAMPAIGN_V44R1_DOMAIN
+        ),
+        "construction_k7_lmb_derived_program_verification_v44r1": (
+            CONSTRUCTION_K7_LMB_DERIVED_PROGRAM_VERIFICATION_V44R1_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
