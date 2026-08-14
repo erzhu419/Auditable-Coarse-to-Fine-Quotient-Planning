@@ -1839,6 +1839,24 @@ CONSTRUCTION_K7_LMB_REUSABLE_WORLD_MODEL_CAMPAIGN_V42_DOMAIN = (
 CONSTRUCTION_K7_LMB_REUSABLE_WORLD_MODEL_VERIFICATION_V42_DOMAIN = (
     "acfqp:construction-k7-lmb-reusable-world-model-verification:v42"
 )
+CONSTRUCTION_K7_LMB_WITNESS_BLIND_PREREGISTRATION_V43_DOMAIN = (
+    "acfqp:construction-k7-lmb-witness-blind-preregistration:v43"
+)
+CONSTRUCTION_K7_LMB_WITNESS_BLIND_PROPOSAL_V43_DOMAIN = (
+    "acfqp:construction-k7-lmb-witness-blind-proposal:v43"
+)
+CONSTRUCTION_K7_LMB_WITNESS_BLIND_DISTINCTION_V43_DOMAIN = (
+    "acfqp:construction-k7-lmb-witness-blind-distinction:v43"
+)
+CONSTRUCTION_K7_LMB_CROSS_CARDINALITY_EPISODE_V43_DOMAIN = (
+    "acfqp:construction-k7-lmb-cross-cardinality-episode:v43"
+)
+CONSTRUCTION_K7_LMB_WITNESS_BLIND_CAMPAIGN_V43_DOMAIN = (
+    "acfqp:construction-k7-lmb-witness-blind-campaign:v43"
+)
+CONSTRUCTION_K7_LMB_WITNESS_BLIND_VERIFICATION_V43_DOMAIN = (
+    "acfqp:construction-k7-lmb-witness-blind-verification:v43"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -5549,6 +5567,24 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_lmb_reusable_world_model_verification_v42": (
             CONSTRUCTION_K7_LMB_REUSABLE_WORLD_MODEL_VERIFICATION_V42_DOMAIN
+        ),
+        "construction_k7_lmb_witness_blind_preregistration_v43": (
+            CONSTRUCTION_K7_LMB_WITNESS_BLIND_PREREGISTRATION_V43_DOMAIN
+        ),
+        "construction_k7_lmb_witness_blind_proposal_v43": (
+            CONSTRUCTION_K7_LMB_WITNESS_BLIND_PROPOSAL_V43_DOMAIN
+        ),
+        "construction_k7_lmb_witness_blind_distinction_v43": (
+            CONSTRUCTION_K7_LMB_WITNESS_BLIND_DISTINCTION_V43_DOMAIN
+        ),
+        "construction_k7_lmb_cross_cardinality_episode_v43": (
+            CONSTRUCTION_K7_LMB_CROSS_CARDINALITY_EPISODE_V43_DOMAIN
+        ),
+        "construction_k7_lmb_witness_blind_campaign_v43": (
+            CONSTRUCTION_K7_LMB_WITNESS_BLIND_CAMPAIGN_V43_DOMAIN
+        ),
+        "construction_k7_lmb_witness_blind_verification_v43": (
+            CONSTRUCTION_K7_LMB_WITNESS_BLIND_VERIFICATION_V43_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
