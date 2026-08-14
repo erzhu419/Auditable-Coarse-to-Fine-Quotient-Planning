@@ -1857,6 +1857,27 @@ CONSTRUCTION_K7_LMB_WITNESS_BLIND_CAMPAIGN_V43_DOMAIN = (
 CONSTRUCTION_K7_LMB_WITNESS_BLIND_VERIFICATION_V43_DOMAIN = (
     "acfqp:construction-k7-lmb-witness-blind-verification:v43"
 )
+CONSTRUCTION_K7_LMB_DIFFERENCE_GRAMMAR_PREREGISTRATION_V44_DOMAIN = (
+    "acfqp:construction-k7-lmb-difference-grammar-preregistration:v44"
+)
+CONSTRUCTION_K7_LMB_RAW_TRANSITION_OBSERVATION_V44_DOMAIN = (
+    "acfqp:construction-k7-lmb-raw-transition-observation:v44"
+)
+CONSTRUCTION_K7_LMB_DERIVED_TRANSITION_PROGRAM_V44_DOMAIN = (
+    "acfqp:construction-k7-lmb-derived-transition-program:v44"
+)
+CONSTRUCTION_K7_LMB_DERIVED_PROGRAM_DISTINCTION_V44_DOMAIN = (
+    "acfqp:construction-k7-lmb-derived-program-distinction:v44"
+)
+CONSTRUCTION_K7_LMB_DERIVED_PROGRAM_EPISODE_V44_DOMAIN = (
+    "acfqp:construction-k7-lmb-derived-program-episode:v44"
+)
+CONSTRUCTION_K7_LMB_DERIVED_PROGRAM_CAMPAIGN_V44_DOMAIN = (
+    "acfqp:construction-k7-lmb-derived-program-campaign:v44"
+)
+CONSTRUCTION_K7_LMB_DERIVED_PROGRAM_VERIFICATION_V44_DOMAIN = (
+    "acfqp:construction-k7-lmb-derived-program-verification:v44"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -5585,6 +5606,27 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_lmb_witness_blind_verification_v43": (
             CONSTRUCTION_K7_LMB_WITNESS_BLIND_VERIFICATION_V43_DOMAIN
+        ),
+        "construction_k7_lmb_difference_grammar_preregistration_v44": (
+            CONSTRUCTION_K7_LMB_DIFFERENCE_GRAMMAR_PREREGISTRATION_V44_DOMAIN
+        ),
+        "construction_k7_lmb_raw_transition_observation_v44": (
+            CONSTRUCTION_K7_LMB_RAW_TRANSITION_OBSERVATION_V44_DOMAIN
+        ),
+        "construction_k7_lmb_derived_transition_program_v44": (
+            CONSTRUCTION_K7_LMB_DERIVED_TRANSITION_PROGRAM_V44_DOMAIN
+        ),
+        "construction_k7_lmb_derived_program_distinction_v44": (
+            CONSTRUCTION_K7_LMB_DERIVED_PROGRAM_DISTINCTION_V44_DOMAIN
+        ),
+        "construction_k7_lmb_derived_program_episode_v44": (
+            CONSTRUCTION_K7_LMB_DERIVED_PROGRAM_EPISODE_V44_DOMAIN
+        ),
+        "construction_k7_lmb_derived_program_campaign_v44": (
+            CONSTRUCTION_K7_LMB_DERIVED_PROGRAM_CAMPAIGN_V44_DOMAIN
+        ),
+        "construction_k7_lmb_derived_program_verification_v44": (
+            CONSTRUCTION_K7_LMB_DERIVED_PROGRAM_VERIFICATION_V44_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
