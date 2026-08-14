@@ -1899,6 +1899,27 @@ CONSTRUCTION_K7_LMB_DERIVED_PROGRAM_CAMPAIGN_V44R1_DOMAIN = (
 CONSTRUCTION_K7_LMB_DERIVED_PROGRAM_VERIFICATION_V44R1_DOMAIN = (
     "acfqp:construction-k7-lmb-derived-program-verification:v44r1"
 )
+CONSTRUCTION_K7_LMB_ANONYMOUS_DESCRIPTOR_PREREGISTRATION_V45_DOMAIN = (
+    "acfqp:construction-k7-lmb-anonymous-descriptor-preregistration:v45"
+)
+CONSTRUCTION_K7_LMB_ANONYMOUS_DESCRIPTOR_OBSERVATION_V45_DOMAIN = (
+    "acfqp:construction-k7-lmb-anonymous-descriptor-observation:v45"
+)
+CONSTRUCTION_K7_LMB_ANONYMOUS_DESCRIPTOR_PROGRAM_V45_DOMAIN = (
+    "acfqp:construction-k7-lmb-anonymous-descriptor-program:v45"
+)
+CONSTRUCTION_K7_LMB_DEPENDENCY_DERIVED_DISTINCTION_V45_DOMAIN = (
+    "acfqp:construction-k7-lmb-dependency-derived-distinction:v45"
+)
+CONSTRUCTION_K7_LMB_ANONYMOUS_DESCRIPTOR_EPISODE_V45_DOMAIN = (
+    "acfqp:construction-k7-lmb-anonymous-descriptor-episode:v45"
+)
+CONSTRUCTION_K7_LMB_ANONYMOUS_DESCRIPTOR_CAMPAIGN_V45_DOMAIN = (
+    "acfqp:construction-k7-lmb-anonymous-descriptor-campaign:v45"
+)
+CONSTRUCTION_K7_LMB_ANONYMOUS_DESCRIPTOR_VERIFICATION_V45_DOMAIN = (
+    "acfqp:construction-k7-lmb-anonymous-descriptor-verification:v45"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -5669,6 +5690,27 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_lmb_derived_program_verification_v44r1": (
             CONSTRUCTION_K7_LMB_DERIVED_PROGRAM_VERIFICATION_V44R1_DOMAIN
+        ),
+        "construction_k7_lmb_anonymous_descriptor_preregistration_v45": (
+            CONSTRUCTION_K7_LMB_ANONYMOUS_DESCRIPTOR_PREREGISTRATION_V45_DOMAIN
+        ),
+        "construction_k7_lmb_anonymous_descriptor_observation_v45": (
+            CONSTRUCTION_K7_LMB_ANONYMOUS_DESCRIPTOR_OBSERVATION_V45_DOMAIN
+        ),
+        "construction_k7_lmb_anonymous_descriptor_program_v45": (
+            CONSTRUCTION_K7_LMB_ANONYMOUS_DESCRIPTOR_PROGRAM_V45_DOMAIN
+        ),
+        "construction_k7_lmb_dependency_derived_distinction_v45": (
+            CONSTRUCTION_K7_LMB_DEPENDENCY_DERIVED_DISTINCTION_V45_DOMAIN
+        ),
+        "construction_k7_lmb_anonymous_descriptor_episode_v45": (
+            CONSTRUCTION_K7_LMB_ANONYMOUS_DESCRIPTOR_EPISODE_V45_DOMAIN
+        ),
+        "construction_k7_lmb_anonymous_descriptor_campaign_v45": (
+            CONSTRUCTION_K7_LMB_ANONYMOUS_DESCRIPTOR_CAMPAIGN_V45_DOMAIN
+        ),
+        "construction_k7_lmb_anonymous_descriptor_verification_v45": (
+            CONSTRUCTION_K7_LMB_ANONYMOUS_DESCRIPTOR_VERIFICATION_V45_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
