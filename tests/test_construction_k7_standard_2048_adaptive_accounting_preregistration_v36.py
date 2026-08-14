@@ -84,9 +84,21 @@ def test_failure_successor_and_predecessors_are_exactly_bound(frozen) -> None:
     assert successor["partial_model_bundles_may_be_reused"] is False
     assert successor["scientific_workload_changed"] is False
     assert successor["planning_or_target_semantics_changed"] is False
+    rehydration = document["worker_board_rehydration_failure_successor"]
+    assert rehydration["failed_v36r2_preregistration_id"] == (
+        pre.FAILED_V36R2_PREREGISTRATION_ID
+    )
+    assert rehydration["episode_worker_process_launched"] is True
+    assert rehydration["episode_worker_reply_count"] == 0
+    assert rehydration["planning_session_created"] is False
+    assert rehydration["target_transition_accessed"] is False
+    assert rehydration["partial_model_bundles_may_be_reused"] is False
     worker_task = document["actual_accounting_protocol"]["worker_task_schema"]
     assert worker_task["canonical_root_type"] == "OBJECT"
     assert worker_task["schema_version"] == pre.SCHEMA_VERSION
+    assert worker_task["domain_board_rehydration"] == (
+        "JSON_LIST_TO_EXACT_16_RANK_TUPLE"
+    )
 
 
 def test_preregistration_identity_domains_and_claim_locks(frozen) -> None:

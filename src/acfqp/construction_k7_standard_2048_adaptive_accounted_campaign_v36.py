@@ -167,6 +167,17 @@ def _worker_task_v36(
     }
 
 
+def _domain_board_from_worker_task_v36(task: dict[str, Any]) -> tuple[int, ...]:
+    values = task.get("initial_board_ranks")
+    if (
+        type(values) is not list
+        or len(values) != 16
+        or any(type(value) is not int for value in values)
+    ):
+        _fail("V36 worker board representation changed")
+    return tuple(values)
+
+
 def _accounted_episode(
     task: dict[str, Any],
 ) -> tuple[bytes, int, int]:
@@ -198,7 +209,7 @@ def _accounted_episode(
     ):
         _fail("V36 worker task schema changed")
     episode_index = task["episode_index"]
-    initial_board = task["initial_board_ranks"]
+    initial_board = _domain_board_from_worker_task_v36(task)
     seed = task["execution_seed"]
     overlay = task["overlay"]
     candidate_document = task["candidate"]

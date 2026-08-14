@@ -79,6 +79,9 @@ def test_worker_task_is_an_exact_canonical_object() -> None:
         campaign.pre.PREREGISTRATION_ID
     )
     assert type(task["initial_board_ranks"]) is list
+    board = campaign._domain_board_from_worker_task_v36(task)  # noqa: SLF001
+    assert type(board) is tuple
+    assert board == (0,) * 16
 
 
 @pytest.fixture(scope="module")

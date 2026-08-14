@@ -19,12 +19,15 @@ from acfqp.phase3e_ids import (
 )
 
 
-SCHEMA_VERSION = "36.2.0"
-PROPOSED_CONTRACT_VERSION = "2.0.197"
-PROFILE_KEY = "construction_k7_standard_2048_adaptive_expression_actual_accounting_v36r2"
-PREREGISTRATION_ID = "9bece9cfa434fd854705b796006125f3b913a25986a07c6c3db64aa7c8edf86f"
-EXPECTED_CANONICAL_BYTE_COUNT = 217_715
-EXPECTED_CANONICAL_SHA256 = "66130ab7c7be86b8b4a6223857941cd1631dffbdc58baca091cd2d414413fac8"
+SCHEMA_VERSION = "36.3.0"
+PROPOSED_CONTRACT_VERSION = "2.0.198"
+PROFILE_KEY = "construction_k7_standard_2048_adaptive_expression_actual_accounting_v36r3"
+PREREGISTRATION_ID = "8559184bc2729b7b5c7867bafde5180642e39016ebff3bd7ad02d07300a7159a"
+EXPECTED_CANONICAL_BYTE_COUNT = 220_047
+EXPECTED_CANONICAL_SHA256 = "83bc43b7584f06f3e8241fb7ead7565d1eb8973ec6bd03cf233b04030729265a"
+FAILED_V36R2_PREREGISTRATION_ID = (
+    "9bece9cfa434fd854705b796006125f3b913a25986a07c6c3db64aa7c8edf86f"
+)
 FAILED_V36R1_PREREGISTRATION_ID = (
     "b74c33f607b3a6523a1ec341a0bd059f94edc251bab35f003233e63488815dde"
 )
@@ -309,6 +312,63 @@ def _document() -> dict[str, Any]:
             "accounting_counter_semantics_changed": False,
             "correction": "REPLACE_UNTYPED_TUPLE_WITH_EXACT_CANONICAL_WORKER_TASK_OBJECT",
         },
+        "worker_board_rehydration_failure_successor": {
+            "failed_v36r2_preregistration_id": FAILED_V36R2_PREREGISTRATION_ID,
+            "failed_execution_performed": True,
+            "failure_phase": "FIRST_EPISODE_WORKER_BOARD_REHYDRATION_BEFORE_STATE_CREATION",
+            "failure_class": "SWIPE_2048_INVARIANT_VIOLATION",
+            "failure_detail": "CANONICAL_JSON_LIST_NOT_REHYDRATED_TO_DOMAIN_TUPLE",
+            "episode_worker_process_launched": True,
+            "episode_worker_reply_count": 0,
+            "planning_session_created": False,
+            "target_transition_accessed": False,
+            "accounted_campaign_issued": False,
+            "independent_verification_issued": False,
+            "partial_model_bundle_count": 6,
+            "partial_model_bundles_may_be_reused": False,
+            "partial_model_bundle_inventory": [
+                {
+                    "path": "model/evaluation-no-prior-control.json",
+                    "byte_count": 575317,
+                    "sha256": "c8e7d9b68ffbc0815c6b931b56bf80023e10da71a78649b236ecc6a9cbe12df6",
+                    "counter_bundle_id": "9bee01ae10616595f8cdca4678de44e3d122058a2289654acec1e3e22d550ee4",
+                },
+                {
+                    "path": "model/operational-acquisition.json",
+                    "byte_count": 215272,
+                    "sha256": "2a34d9db0a86f99301e6e9bf78e496ebf428093a98967571b07260ecb5f07275",
+                    "counter_bundle_id": "3b6bec4502652f789e32c19b7dc387df21340c84c873426e7cafb49026ae5524",
+                },
+                {
+                    "path": "model/operational-failure-frontier.json",
+                    "byte_count": 799895,
+                    "sha256": "db8d23dae81df9650e67c7cab02758c86fb6fe712d30329499d81d5da5859c5e",
+                    "counter_bundle_id": "f47bbaa941f5b3ee222f61c0debbf38c3bb98254686132f8fbff8210e659f217",
+                },
+                {
+                    "path": "model/operational-overlay.json",
+                    "byte_count": 211795,
+                    "sha256": "ca7143e19f85abd32c84c60b8a74cb254e0c7c2ec7571d6f3beb136195b16a77",
+                    "counter_bundle_id": "6526ccc6b09d1a4247639d274fc0c3779b334fc2b73c98712db74172fa2fb308",
+                },
+                {
+                    "path": "model/operational-proof.json",
+                    "byte_count": 210868,
+                    "sha256": "f9d6e7a0adc913571b4c62e16327aeaf9c7f52f56eb387913fdc3b70db3aa094",
+                    "counter_bundle_id": "561c95ecd18f736ae9b89274adab3f8c6be78123753182e4e56c6ebb710c74aa",
+                },
+                {
+                    "path": "model/operational-proposal.json",
+                    "byte_count": 225159,
+                    "sha256": "307383a073b48699cea24dc7375e915385dd9b13fa7089bae380fc9ffc137522",
+                    "counter_bundle_id": "a19160fd6edf8d81eda1c3e89674c370ac9106b4d18cce5754c79ca91f7c6bea",
+                },
+            ],
+            "scientific_workload_changed": False,
+            "planning_or_target_semantics_changed": False,
+            "accounting_counter_semantics_changed": False,
+            "correction": "REHYDRATE_16_ELEMENT_JSON_LIST_TO_IMMUTABLE_DOMAIN_TUPLE",
+        },
         "frozen_predecessors": {
             "v34r1_accounting_preregistration_id": V34R1_PREREGISTRATION_ID,
             "v34r1_accounted_campaign_id": V34R1_ACCOUNTED_CAMPAIGN_ID,
@@ -372,6 +432,7 @@ def _document() -> dict[str, Any]:
                     "schema_version",
                 ],
                 "canonical_root_type": "OBJECT",
+                "domain_board_rehydration": "JSON_LIST_TO_EXACT_16_RANK_TUPLE",
             },
         },
         "required_positive_conditions": [
