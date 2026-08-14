@@ -1947,6 +1947,33 @@ CONSTRUCTION_K7_LMB_OPAQUE_COLUMN_CAMPAIGN_V46_DOMAIN = (
 CONSTRUCTION_K7_LMB_OPAQUE_COLUMN_VERIFICATION_V46_DOMAIN = (
     "acfqp:construction-k7-lmb-opaque-column-verification:v46"
 )
+CONSTRUCTION_K7_LMB_OPAQUE_COLUMN_SUCCESSOR_PREREGISTRATION_V46R1_DOMAIN = (
+    "acfqp:construction-k7-lmb-opaque-column-successor-preregistration:v46r1"
+)
+CONSTRUCTION_K7_LMB_OPAQUE_COLUMN_OBSERVATION_V46R1_DOMAIN = (
+    "acfqp:construction-k7-lmb-opaque-column-observation:v46r1"
+)
+CONSTRUCTION_K7_LMB_COLUMN_FACTORIZATION_V46R1_DOMAIN = (
+    "acfqp:construction-k7-lmb-column-factorization:v46r1"
+)
+CONSTRUCTION_K7_LMB_RELATION_PROGRAM_V46R1_DOMAIN = (
+    "acfqp:construction-k7-lmb-relation-program:v46r1"
+)
+CONSTRUCTION_K7_LMB_FACTORIZED_DISTINCTION_V46R1_DOMAIN = (
+    "acfqp:construction-k7-lmb-factorized-distinction:v46r1"
+)
+CONSTRUCTION_K7_LMB_FACTORIZED_EPISODE_V46R1_DOMAIN = (
+    "acfqp:construction-k7-lmb-factorized-episode:v46r1"
+)
+CONSTRUCTION_K7_LMB_OPAQUE_SCHEMA_OOD_REJECTION_V46R1_DOMAIN = (
+    "acfqp:construction-k7-lmb-opaque-schema-ood-rejection:v46r1"
+)
+CONSTRUCTION_K7_LMB_OPAQUE_COLUMN_CAMPAIGN_V46R1_DOMAIN = (
+    "acfqp:construction-k7-lmb-opaque-column-campaign:v46r1"
+)
+CONSTRUCTION_K7_LMB_OPAQUE_COLUMN_VERIFICATION_V46R1_DOMAIN = (
+    "acfqp:construction-k7-lmb-opaque-column-verification:v46r1"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -5765,6 +5792,33 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_lmb_opaque_column_verification_v46": (
             CONSTRUCTION_K7_LMB_OPAQUE_COLUMN_VERIFICATION_V46_DOMAIN
+        ),
+        "construction_k7_lmb_opaque_column_successor_preregistration_v46r1": (
+            CONSTRUCTION_K7_LMB_OPAQUE_COLUMN_SUCCESSOR_PREREGISTRATION_V46R1_DOMAIN
+        ),
+        "construction_k7_lmb_opaque_column_observation_v46r1": (
+            CONSTRUCTION_K7_LMB_OPAQUE_COLUMN_OBSERVATION_V46R1_DOMAIN
+        ),
+        "construction_k7_lmb_column_factorization_v46r1": (
+            CONSTRUCTION_K7_LMB_COLUMN_FACTORIZATION_V46R1_DOMAIN
+        ),
+        "construction_k7_lmb_relation_program_v46r1": (
+            CONSTRUCTION_K7_LMB_RELATION_PROGRAM_V46R1_DOMAIN
+        ),
+        "construction_k7_lmb_factorized_distinction_v46r1": (
+            CONSTRUCTION_K7_LMB_FACTORIZED_DISTINCTION_V46R1_DOMAIN
+        ),
+        "construction_k7_lmb_factorized_episode_v46r1": (
+            CONSTRUCTION_K7_LMB_FACTORIZED_EPISODE_V46R1_DOMAIN
+        ),
+        "construction_k7_lmb_opaque_schema_ood_rejection_v46r1": (
+            CONSTRUCTION_K7_LMB_OPAQUE_SCHEMA_OOD_REJECTION_V46R1_DOMAIN
+        ),
+        "construction_k7_lmb_opaque_column_campaign_v46r1": (
+            CONSTRUCTION_K7_LMB_OPAQUE_COLUMN_CAMPAIGN_V46R1_DOMAIN
+        ),
+        "construction_k7_lmb_opaque_column_verification_v46r1": (
+            CONSTRUCTION_K7_LMB_OPAQUE_COLUMN_VERIFICATION_V46R1_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
