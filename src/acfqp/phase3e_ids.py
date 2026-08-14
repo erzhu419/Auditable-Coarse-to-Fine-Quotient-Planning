@@ -1821,6 +1821,24 @@ CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_CHECKPOINT_CAMPAIGN_V41_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_CHECKPOINT_VERIFICATION_V41_DOMAIN = (
     "acfqp:construction-k7-standard-2048-adaptive-checkpoint-verification:v41"
 )
+CONSTRUCTION_K7_LMB_REUSABLE_WORLD_MODEL_PREREGISTRATION_V42_DOMAIN = (
+    "acfqp:construction-k7-lmb-reusable-world-model-preregistration:v42"
+)
+CONSTRUCTION_K7_LMB_REUSABLE_PRIMITIVE_PROPOSAL_V42_DOMAIN = (
+    "acfqp:construction-k7-lmb-reusable-primitive-proposal:v42"
+)
+CONSTRUCTION_K7_LMB_LOCAL_GROUND_DISTINCTION_V42_DOMAIN = (
+    "acfqp:construction-k7-lmb-local-ground-distinction:v42"
+)
+CONSTRUCTION_K7_LMB_RECEDING_EPISODE_V42_DOMAIN = (
+    "acfqp:construction-k7-lmb-receding-episode:v42"
+)
+CONSTRUCTION_K7_LMB_REUSABLE_WORLD_MODEL_CAMPAIGN_V42_DOMAIN = (
+    "acfqp:construction-k7-lmb-reusable-world-model-campaign:v42"
+)
+CONSTRUCTION_K7_LMB_REUSABLE_WORLD_MODEL_VERIFICATION_V42_DOMAIN = (
+    "acfqp:construction-k7-lmb-reusable-world-model-verification:v42"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -5513,6 +5531,24 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_adaptive_checkpoint_verification_v41": (
             CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_CHECKPOINT_VERIFICATION_V41_DOMAIN
+        ),
+        "construction_k7_lmb_reusable_world_model_preregistration_v42": (
+            CONSTRUCTION_K7_LMB_REUSABLE_WORLD_MODEL_PREREGISTRATION_V42_DOMAIN
+        ),
+        "construction_k7_lmb_reusable_primitive_proposal_v42": (
+            CONSTRUCTION_K7_LMB_REUSABLE_PRIMITIVE_PROPOSAL_V42_DOMAIN
+        ),
+        "construction_k7_lmb_local_ground_distinction_v42": (
+            CONSTRUCTION_K7_LMB_LOCAL_GROUND_DISTINCTION_V42_DOMAIN
+        ),
+        "construction_k7_lmb_receding_episode_v42": (
+            CONSTRUCTION_K7_LMB_RECEDING_EPISODE_V42_DOMAIN
+        ),
+        "construction_k7_lmb_reusable_world_model_campaign_v42": (
+            CONSTRUCTION_K7_LMB_REUSABLE_WORLD_MODEL_CAMPAIGN_V42_DOMAIN
+        ),
+        "construction_k7_lmb_reusable_world_model_verification_v42": (
+            CONSTRUCTION_K7_LMB_REUSABLE_WORLD_MODEL_VERIFICATION_V42_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
