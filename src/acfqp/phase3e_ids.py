@@ -1791,6 +1791,21 @@ CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_CHECKPOINT_CAMPAIGN_V39_DOMAIN = (
 CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_CHECKPOINT_VERIFICATION_V39_DOMAIN = (
     "acfqp:construction-k7-standard-2048-adaptive-checkpoint-verification:v39"
 )
+CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_CHECKPOINT_PREREGISTRATION_V40_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-adaptive-checkpoint-preregistration:v40"
+)
+CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_CHECKPOINT_CERTIFICATE_V40_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-adaptive-checkpoint-certificate:v40"
+)
+CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_CHECKPOINT_EPISODE_V40_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-adaptive-checkpoint-episode:v40"
+)
+CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_CHECKPOINT_CAMPAIGN_V40_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-adaptive-checkpoint-campaign:v40"
+)
+CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_CHECKPOINT_VERIFICATION_V40_DOMAIN = (
+    "acfqp:construction-k7-standard-2048-adaptive-checkpoint-verification:v40"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -5453,6 +5468,21 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_standard_2048_adaptive_checkpoint_verification_v39": (
             CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_CHECKPOINT_VERIFICATION_V39_DOMAIN
+        ),
+        "construction_k7_standard_2048_adaptive_checkpoint_preregistration_v40": (
+            CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_CHECKPOINT_PREREGISTRATION_V40_DOMAIN
+        ),
+        "construction_k7_standard_2048_adaptive_checkpoint_certificate_v40": (
+            CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_CHECKPOINT_CERTIFICATE_V40_DOMAIN
+        ),
+        "construction_k7_standard_2048_adaptive_checkpoint_episode_v40": (
+            CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_CHECKPOINT_EPISODE_V40_DOMAIN
+        ),
+        "construction_k7_standard_2048_adaptive_checkpoint_campaign_v40": (
+            CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_CHECKPOINT_CAMPAIGN_V40_DOMAIN
+        ),
+        "construction_k7_standard_2048_adaptive_checkpoint_verification_v40": (
+            CONSTRUCTION_K7_STANDARD_2048_ADAPTIVE_CHECKPOINT_VERIFICATION_V40_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
