@@ -93,6 +93,15 @@ def test_failure_successor_and_predecessors_are_exactly_bound(frozen) -> None:
     assert rehydration["planning_session_created"] is False
     assert rehydration["target_transition_accessed"] is False
     assert rehydration["partial_model_bundles_may_be_reused"] is False
+    wrapper = document["campaign_wrapper_path_type_failure_successor"]
+    assert wrapper["failed_v36r3_preregistration_id"] == (
+        pre.FAILED_V36R3_PREREGISTRATION_ID
+    )
+    assert wrapper["episode_worker_reply_count"] == 4
+    assert wrapper["all_twenty_counter_bundles_materialized"] is True
+    assert wrapper["durable_accounted_campaign_bytes_issued"] is False
+    assert wrapper["partial_bundle_count"] == 20
+    assert wrapper["partial_bundles_may_be_reused"] is False
     worker_task = document["actual_accounting_protocol"]["worker_task_schema"]
     assert worker_task["canonical_root_type"] == "OBJECT"
     assert worker_task["schema_version"] == pre.SCHEMA_VERSION

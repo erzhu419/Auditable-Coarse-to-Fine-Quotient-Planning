@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 from acfqp import construction_k7_standard_2048_adaptive_accounted_campaign_v36 as campaign
-from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
+from acfqp.phase3e_ids import canonical_json_bytes, content_id, loads_canonical_json
 
 
 FULL = os.environ.get("ACFQP_RUN_ADAPTIVE_ACCOUNTING_V36") == "1"
@@ -82,6 +82,19 @@ def test_worker_task_is_an_exact_canonical_object() -> None:
     board = campaign._domain_board_from_worker_task_v36(task)  # noqa: SLF001
     assert type(board) is tuple
     assert board == (0,) * 16
+
+
+def test_campaign_wrapper_accepts_the_platform_path_subclass(tmp_path: Path) -> None:
+    payload = {"schema": "test-only-wrapper-payload"}
+    campaign_id = content_id(campaign.pre.FUTURE_DOMAINS["campaign"], payload)
+    document = {**payload, "adaptive_accounted_campaign_id": campaign_id}
+    value = campaign.Standard2048AdaptiveAccountedCampaignV36(
+        campaign._ISSUER,  # noqa: SLF001
+        canonical_json_bytes(document),
+        campaign_id,
+        tmp_path,
+    )
+    assert value.output_root == tmp_path
 
 
 @pytest.fixture(scope="module")

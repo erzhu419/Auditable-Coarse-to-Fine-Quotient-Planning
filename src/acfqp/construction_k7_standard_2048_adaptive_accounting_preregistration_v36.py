@@ -19,12 +19,15 @@ from acfqp.phase3e_ids import (
 )
 
 
-SCHEMA_VERSION = "36.3.0"
-PROPOSED_CONTRACT_VERSION = "2.0.198"
-PROFILE_KEY = "construction_k7_standard_2048_adaptive_expression_actual_accounting_v36r3"
-PREREGISTRATION_ID = "8559184bc2729b7b5c7867bafde5180642e39016ebff3bd7ad02d07300a7159a"
-EXPECTED_CANONICAL_BYTE_COUNT = 220_047
-EXPECTED_CANONICAL_SHA256 = "83bc43b7584f06f3e8241fb7ead7565d1eb8973ec6bd03cf233b04030729265a"
+SCHEMA_VERSION = "36.4.0"
+PROPOSED_CONTRACT_VERSION = "2.0.199"
+PROFILE_KEY = "construction_k7_standard_2048_adaptive_expression_actual_accounting_v36r4"
+PREREGISTRATION_ID = "78494b3a611b198a99e00d324eb570ba3a6b6346e3c432c93a47d0456835de2a"
+EXPECTED_CANONICAL_BYTE_COUNT = 225_706
+EXPECTED_CANONICAL_SHA256 = "e71de41d17ca42c709dab62ae55747851738ad42f28beb057e98f07aba452313"
+FAILED_V36R3_PREREGISTRATION_ID = (
+    "8559184bc2729b7b5c7867bafde5180642e39016ebff3bd7ad02d07300a7159a"
+)
 FAILED_V36R2_PREREGISTRATION_ID = (
     "9bece9cfa434fd854705b796006125f3b913a25986a07c6c3db64aa7c8edf86f"
 )
@@ -368,6 +371,48 @@ def _document() -> dict[str, Any]:
             "planning_or_target_semantics_changed": False,
             "accounting_counter_semantics_changed": False,
             "correction": "REHYDRATE_16_ELEMENT_JSON_LIST_TO_IMMUTABLE_DOMAIN_TUPLE",
+        },
+        "campaign_wrapper_path_type_failure_successor": {
+            "failed_v36r3_preregistration_id": FAILED_V36R3_PREREGISTRATION_ID,
+            "failed_execution_performed": True,
+            "failure_phase": "FINAL_ISSUER_WRAPPER_CONSTRUCTION_AFTER_CAMPAIGN_DOCUMENT_MATERIALIZATION",
+            "failure_class": "INVALID_EXACT_TYPE_CHECK_FOR_PATH_FACTORY_RESULT",
+            "failure_detail": "TYPE_POSIXPATH_IS_NOT_PATH_EVALUATED_TRUE",
+            "episode_worker_process_count": 4,
+            "episode_worker_reply_count": 4,
+            "decision_count": 512,
+            "all_twenty_counter_bundles_materialized": True,
+            "transient_campaign_document_created": True,
+            "durable_accounted_campaign_bytes_issued": False,
+            "independent_verification_issued": False,
+            "partial_bundle_count": 20,
+            "partial_bundles_may_be_reused": False,
+            "partial_bundle_inventory": [
+                {"path": "campaign-aggregation.json", "byte_count": 210070, "sha256": "ed6508d93ae83b5ad3dc8149a088a8ec1581f123cc663ce90d021462fe917fec", "counter_bundle_id": "3f1279e949847b168d08a60d7adfd24ac51597197d427c123313b048f7642ec9"},
+                {"path": "episodes/episode-0000-evaluation.json", "byte_count": 207958, "sha256": "113a4db274bf4e7bebafe5c50c5060afce84cf01d953d4c8abcb6655a874ca1d", "counter_bundle_id": "e0064eed3ae3a1030b01552b1de812d22a29961dcb815327bc7376aff04c1656"},
+                {"path": "episodes/episode-0000-execution-operational.json", "byte_count": 221969, "sha256": "13869232168db8e014817a17a424e474349b8a0964ceb1a34a33d7e97a238cbc", "counter_bundle_id": "bf3e9e5759998edf4c8a7fe941169b8ff6cc26a99c13d7eb7ebb0a3f77d05901"},
+                {"path": "episodes/episode-0000-planning-operational.json", "byte_count": 571402, "sha256": "3033c90a1b0e51295afa6b3ab185271175044ccb28f449f3f1d873775a2da6bf", "counter_bundle_id": "008c07b8abe088ca722a43175426dd29ca54df1349cc0d28569f94ccc09a0f0a"},
+                {"path": "episodes/episode-0001-evaluation.json", "byte_count": 207958, "sha256": "a513f69ff9f5c29cf9ba22496ad587dcc60d04b9813c12d5c47975913717005d", "counter_bundle_id": "dc25164a7c60cc65998a4955d8430a91f09badfd920aacadff9d2174f003cea5"},
+                {"path": "episodes/episode-0001-execution-operational.json", "byte_count": 221969, "sha256": "7d90dd1885a467e0a63efd907d7306e46ec18fade81fea1c62182375440e185e", "counter_bundle_id": "3aa9e920aecbcb117f48efe6f525b63a1ad8987789ded45a6b2dfb674076cb8b"},
+                {"path": "episodes/episode-0001-planning-operational.json", "byte_count": 571510, "sha256": "8ea4b23ce8bcd6378312ddff7f57ea5085315d139e9ea24f1cb20900d1eca417", "counter_bundle_id": "5225c4de8c255a2d786c1eba03e121a4f2f50f989cb628a1283a284a48f8d8d3"},
+                {"path": "episodes/episode-0002-evaluation.json", "byte_count": 207958, "sha256": "3baba9b2835b3e488666dc193c3d0f4ed2457e7d6127e804bb5ccba556ae1563", "counter_bundle_id": "acccce9d8fdcb08b1b4247f9a953f85a2589726b9cf233f70526fc114088d218"},
+                {"path": "episodes/episode-0002-execution-operational.json", "byte_count": 221969, "sha256": "f3a461aef2742e0301f35140de66774382e08263acb77e3834292a6522e5df6e", "counter_bundle_id": "ffbefd1b328a249c50b27bff84d34f00b2e78d74b7f966ca5a91498e66b6bb2b"},
+                {"path": "episodes/episode-0002-planning-operational.json", "byte_count": 571430, "sha256": "d87dded38bc3dfcccc7f66a05cb128cf14f7fc91a3395e271f5f79f2950f2b7c", "counter_bundle_id": "4c24a785b67875914930d0a5fe6993f41dcaf37513fa8c63cbcca3c002e9bf3f"},
+                {"path": "episodes/episode-0003-evaluation.json", "byte_count": 207958, "sha256": "969d8ff4eb90cb00567f6d0605a4d576add2b6ef1e33464cef835b7227db4ae0", "counter_bundle_id": "7cb780be8066ca85b7738baad1e1229ece19bbf361b0f21d42a101edf8d30b49"},
+                {"path": "episodes/episode-0003-execution-operational.json", "byte_count": 221969, "sha256": "777a66f85a1791d5258d1e60446d512bde416a7aebda08d05ea0292a1f7a6112", "counter_bundle_id": "4a66a66df286a33e074c027090fae9890a28398f02f5f98c169d780aa27f4fec"},
+                {"path": "episodes/episode-0003-planning-operational.json", "byte_count": 572095, "sha256": "e89eb645e14c3e1d2261852b1f022fc3dd710c261a3b3dae88a121e8e01d85ce", "counter_bundle_id": "02fa4a27868dc74a96b5c289b6b889be080527e64914c2099a1c27b9bb3523f8"},
+                {"path": "model/evaluation-no-prior-control.json", "byte_count": 575317, "sha256": "ba0100b3a067837be92b56e25e5f2f4bdda0f401822c071b6073c46f55cec48c", "counter_bundle_id": "b7df24fa9518c41cb6946eea6461ef9f1570d0f42ed24ab7f8e673bdff214b59"},
+                {"path": "model/operational-acquisition.json", "byte_count": 215272, "sha256": "3e754ff4475bea998ee6a95b10b33817d527a8bd73f0930b965f4bfa1f4c1431", "counter_bundle_id": "ade4e3131e3696cab621444fefa86b947567f9c386c0956af18cb4222de25b7f"},
+                {"path": "model/operational-failure-frontier.json", "byte_count": 799895, "sha256": "1893e33e9e9e8e82e4f4741ce3fd7988d761719674f8103e1f538542c2a27e86", "counter_bundle_id": "6f47f51363f905336b79b5b9e7d1b0a3a59f4f36777353d0aa5fe9f5ea6e9e60"},
+                {"path": "model/operational-overlay.json", "byte_count": 211795, "sha256": "4a6d9626b4a72f30836c8b788487cb3590acb7cc803b1508cce2cd6de5fa1eae", "counter_bundle_id": "06ecb463336e1b66de4d90531f266705bf060e1d963d152591b6f6e51878dfc3"},
+                {"path": "model/operational-proof.json", "byte_count": 210868, "sha256": "4b5585e6f81e72a94d16eded40ae99cab4c08b4089bd0f90751b8077c806f3d9", "counter_bundle_id": "f462db9f451df22572ece10d60888ad1b9878b8e1549f497bd78989e5bf26f26"},
+                {"path": "model/operational-proposal.json", "byte_count": 225159, "sha256": "73b22aa438ade886391ffae4f7bd00b9f0bdd23d1f0dca37e0790fb6d0b27047", "counter_bundle_id": "1ed05b4cb84eacf435bd3f5fe0e847e65db47abf63ee7c92f9dcc840aaa62984"},
+                {"path": "process-supervision.json", "byte_count": 209624, "sha256": "faf313edd65d9745f2939f6cdd7556b634892195f84e4a7d83006ce7003910ca", "counter_bundle_id": "1cb68d7b82d5e561e3bc3e45d54791cd135295da4c20db2b3057d839d14f415c"},
+            ],
+            "scientific_workload_changed": False,
+            "planning_or_target_semantics_changed": False,
+            "accounting_counter_semantics_changed": False,
+            "correction": "ACCEPT_PATH_SUBCLASS_INSTANCES_WHILE_RETAINING_EXACT_BYTES_AND_CONTENT_ID_CHECKS",
         },
         "frozen_predecessors": {
             "v34r1_accounting_preregistration_id": V34R1_PREREGISTRATION_ID,

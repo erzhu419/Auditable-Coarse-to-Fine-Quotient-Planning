@@ -881,7 +881,7 @@ class Standard2048AdaptiveAccountedCampaignV36:
         if (
             self._issuer is not _ISSUER
             or type(self.canonical_bytes) is not bytes
-            or type(self.output_root) is not Path
+            or not isinstance(self.output_root, Path)
         ):
             _fail("adaptive-accounted campaign is not issuer-created")
         document = loads_canonical_json(self.canonical_bytes)
