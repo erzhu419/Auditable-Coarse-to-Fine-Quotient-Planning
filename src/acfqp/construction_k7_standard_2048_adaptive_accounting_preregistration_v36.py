@@ -1,4 +1,4 @@
-"""Outcome-free native-accounting registration for the V35 adaptive campaign."""
+"""Failure-successor native-accounting registration for the V35 campaign."""
 
 from __future__ import annotations
 
@@ -19,12 +19,15 @@ from acfqp.phase3e_ids import (
 )
 
 
-SCHEMA_VERSION = "36.1.0"
-PROPOSED_CONTRACT_VERSION = "2.0.196"
-PROFILE_KEY = "construction_k7_standard_2048_adaptive_expression_actual_accounting_v36r1"
-PREREGISTRATION_ID = "b74c33f607b3a6523a1ec341a0bd059f94edc251bab35f003233e63488815dde"
-EXPECTED_CANONICAL_BYTE_COUNT = 215_334
-EXPECTED_CANONICAL_SHA256 = "0dd9fd2ffec819ba39529f6ec2a627b5bca19937d5e4b01be98d42200cb997dd"
+SCHEMA_VERSION = "36.2.0"
+PROPOSED_CONTRACT_VERSION = "2.0.197"
+PROFILE_KEY = "construction_k7_standard_2048_adaptive_expression_actual_accounting_v36r2"
+PREREGISTRATION_ID = "9bece9cfa434fd854705b796006125f3b913a25986a07c6c3db64aa7c8edf86f"
+EXPECTED_CANONICAL_BYTE_COUNT = 217_715
+EXPECTED_CANONICAL_SHA256 = "66130ab7c7be86b8b4a6223857941cd1631dffbdc58baca091cd2d414413fac8"
+FAILED_V36R1_PREREGISTRATION_ID = (
+    "b74c33f607b3a6523a1ec341a0bd059f94edc251bab35f003233e63488815dde"
+)
 SUPERSEDED_V36_PREREGISTRATION_ID = (
     "b6d209f4a0e285653349a66293c21597b39dcd1f74c95fbd69d9e3e439accb65"
 )
@@ -33,6 +36,18 @@ V34R1_PREREGISTRATION_ID = (
 )
 V35_PREREGISTRATION_ID = (
     "d2705f1b310b2f88f41799376a69f55b3355b53a54a2a103ba11e5dbf00491a9"
+)
+V34R1_ACCOUNTED_CAMPAIGN_ID = (
+    "f5e83e7cb6eaee01d35b325e83e6b50676843a32af40c21aae237144b5784f05"
+)
+V34R1_ACCOUNTING_VERIFICATION_ID = (
+    "40baaf3c66d42ebc53e686f9dc91ae96ee92ebda442a176ac4db32c75cbc421a"
+)
+V35_ADAPTIVE_EXPRESSION_CAMPAIGN_ID = (
+    "c33002f8bac5415d94c5185876ce104ac859243e7b50ee5922c1be9b4a812d25"
+)
+V35_ADAPTIVE_EXPRESSION_VERIFICATION_ID = (
+    "0591b03140cb3e807b68ee4e90129c93863a45ef29ed44896df49c7d4caea348"
 )
 MAXIMUM_WORKER_PROCESSES = 2
 MAXIMUM_TASKS_PER_WORKER_PROCESS = 1
@@ -240,25 +255,67 @@ def _document() -> dict[str, Any]:
             ),
             "partial_superseded_bundles_may_be_reused": False,
         },
+        "canonical_worker_task_failure_successor": {
+            "failed_v36r1_preregistration_id": FAILED_V36R1_PREREGISTRATION_ID,
+            "failed_execution_performed": True,
+            "failure_phase": "PARENT_WORKER_TASK_CANONICALIZATION_BEFORE_EXECUTOR_CONSTRUCTION",
+            "failure_class": "UNSUPPORTED_CANONICAL_JSON_TYPE",
+            "failure_detail": "PYTHON_TUPLE_AT_CANONICAL_ROOT",
+            "episode_worker_reply_count": 0,
+            "accounted_campaign_issued": False,
+            "independent_verification_issued": False,
+            "partial_model_bundle_count": 6,
+            "partial_model_bundles_may_be_reused": False,
+            "partial_model_bundle_inventory": [
+                {
+                    "path": "model/evaluation-no-prior-control.json",
+                    "byte_count": 575317,
+                    "sha256": "8ec06a5b554880cd97bc464ac37e44725d9dc0239a663426807c2998f789db1c",
+                    "counter_bundle_id": "5dc859105fad8efdcfcdab4148bbae59797dcc9a9ec5e20fbe8ebba4afa06488",
+                },
+                {
+                    "path": "model/operational-acquisition.json",
+                    "byte_count": 215272,
+                    "sha256": "f401612c2b10f670793f6a91d4a70a4642b9a793b3ab75e9a85155333e9e89a8",
+                    "counter_bundle_id": "d66c880b969a34e71db66b19079af4631c90addd1c7194fb7991dd9fbe6b56ed",
+                },
+                {
+                    "path": "model/operational-failure-frontier.json",
+                    "byte_count": 799895,
+                    "sha256": "7f2174e3da9a3b4ffc421d3b9c5773c2f888c2eb8c6ce69e9a1f8412ac0975a0",
+                    "counter_bundle_id": "933527d0e7fb203953d0530b3bb9e09ddd8123c0f7cd53cdb28ddbfeee898379",
+                },
+                {
+                    "path": "model/operational-overlay.json",
+                    "byte_count": 211795,
+                    "sha256": "78fab44a18164e3a931cdc4f4c45e50d0eb6ef6ca9b30eadb670a55c2f159ef0",
+                    "counter_bundle_id": "bf6673f4ec9183e1fa01c4486dc8519e0590366efc18d3ee23bcf1ffafe4a7f8",
+                },
+                {
+                    "path": "model/operational-proof.json",
+                    "byte_count": 210868,
+                    "sha256": "c1b08618e4066aa8f2c530dfc4227fbc2f67165cd1d73d3b02bf95df95b475fa",
+                    "counter_bundle_id": "ff6dfe782433fd927fa28cba23a620dd191b8649bea299f0e9c172fa8de96cec",
+                },
+                {
+                    "path": "model/operational-proposal.json",
+                    "byte_count": 225159,
+                    "sha256": "5d2640d642776fd8fa76eeee262e251eaf056dd6075332b8c03c1824b970b664",
+                    "counter_bundle_id": "290552dc927d8591f0662406adcbe7be5f7f80cad436613c164d2e94c2806fff",
+                },
+            ],
+            "scientific_workload_changed": False,
+            "planning_or_target_semantics_changed": False,
+            "accounting_counter_semantics_changed": False,
+            "correction": "REPLACE_UNTYPED_TUPLE_WITH_EXACT_CANONICAL_WORKER_TASK_OBJECT",
+        },
         "frozen_predecessors": {
             "v34r1_accounting_preregistration_id": V34R1_PREREGISTRATION_ID,
-            "v34r1_accounted_campaign_id": {
-                "kind": "PENDING_PREEXECUTION_BINDING",
-                "reason": "V34R1_REGISTERED_EXECUTION_ACTIVE_AT_V36_FREEZE",
-            },
-            "v34r1_accounting_verification_id": {
-                "kind": "PENDING_PREEXECUTION_BINDING",
-                "reason": "V34R1_INDEPENDENT_VERIFICATION_REQUIRED_BEFORE_V35",
-            },
+            "v34r1_accounted_campaign_id": V34R1_ACCOUNTED_CAMPAIGN_ID,
+            "v34r1_accounting_verification_id": V34R1_ACCOUNTING_VERIFICATION_ID,
             "v35_adaptive_expression_preregistration_id": V35_PREREGISTRATION_ID,
-            "v35_adaptive_expression_campaign_id": {
-                "kind": "PENDING_POSTEXECUTION_BINDING",
-                "reason": "V35_HAS_NOT_EXECUTED_AT_V36_FREEZE",
-            },
-            "v35_adaptive_expression_verification_id": {
-                "kind": "PENDING_POSTEXECUTION_BINDING",
-                "reason": "V35_SEMANTIC_REPLAY_MUST_PRECEDE_V36_ACCOUNTING",
-            },
+            "v35_adaptive_expression_campaign_id": V35_ADAPTIVE_EXPRESSION_CAMPAIGN_ID,
+            "v35_adaptive_expression_verification_id": V35_ADAPTIVE_EXPRESSION_VERIFICATION_ID,
             "V35_execution_may_start_only_after_verified_V34r1": True,
             "V36_accounting_may_start_only_after_verified_V35": True,
         },
@@ -301,6 +358,21 @@ def _document() -> dict[str, Any]:
             "parent_working_bytes_peak_upper": PARENT_WORKING_BYTES_PEAK_UPPER,
             "maximum_accounting_output_bytes": MAXIMUM_ACCOUNTING_OUTPUT_BYTES,
             "resource_caps_frozen_before_execution": True,
+            "worker_task_schema": {
+                "schema": "acfqp.standard_2048_adaptive_accounting_worker_task.v36",
+                "schema_version": SCHEMA_VERSION,
+                "exact_fields": [
+                    "adaptive_accounting_preregistration_id",
+                    "candidate",
+                    "episode_index",
+                    "execution_seed",
+                    "initial_board_ranks",
+                    "overlay",
+                    "schema",
+                    "schema_version",
+                ],
+                "canonical_root_type": "OBJECT",
+            },
         },
         "required_positive_conditions": [
             "V34R1_ACCOUNTING_AND_V35_SEMANTICS_VERIFY_BEFORE_ACCOUNTING",
@@ -312,6 +384,7 @@ def _document() -> dict[str, Any]:
             "COUNTER_RECORD_WORK_VECTOR_COMPARISON_VECTOR_CHAIN_REPLAYS",
         ],
         "outcome_fields_present": False,
+        "failed_predecessor_evidence_present": True,
         "accounting_execution_performed": False,
         "counter_records_issued": False,
         "work_vectors_issued": False,

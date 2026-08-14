@@ -7,6 +7,7 @@ from pathlib import Path
 import pytest
 
 from acfqp import construction_k7_standard_2048_adaptive_accounted_campaign_v36 as campaign
+from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
 FULL = os.environ.get("ACFQP_RUN_ADAPTIVE_ACCOUNTING_V36") == "1"
@@ -59,6 +60,25 @@ def test_v36_source_reruns_operations_without_summary_translation() -> None:
     assert "v35._episode" not in source
     assert "v35._campaign_document" not in source
     assert '"summary_to_counter_translation_used": False' in source
+
+
+def test_worker_task_is_an_exact_canonical_object() -> None:
+    task = campaign._worker_task_v36(  # noqa: SLF001
+        episode_index=0,
+        initial_board=(0,) * 16,
+        execution_seed="0" * 64,
+        overlay={},
+        candidate={},
+    )
+    raw = canonical_json_bytes(task)
+    assert loads_canonical_json(raw) == task
+    assert task["schema"] == (
+        "acfqp.standard_2048_adaptive_accounting_worker_task.v36"
+    )
+    assert task["adaptive_accounting_preregistration_id"] == (
+        campaign.pre.PREREGISTRATION_ID
+    )
+    assert type(task["initial_board_ranks"]) is list
 
 
 @pytest.fixture(scope="module")

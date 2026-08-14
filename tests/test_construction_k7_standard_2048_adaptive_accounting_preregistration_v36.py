@@ -45,7 +45,7 @@ def test_counter_registry_and_nine_shared_resources_are_frozen(frozen) -> None:
     assert len(protocol["shared_resource_paths"]) == 9
 
 
-def test_predecessors_are_pending_without_outcome_leakage(frozen) -> None:
+def test_failure_successor_and_predecessors_are_exactly_bound(frozen) -> None:
     document = frozen.to_document()
     predecessors = document["frozen_predecessors"]
     assert predecessors["v34r1_accounting_preregistration_id"] == (
@@ -54,10 +54,20 @@ def test_predecessors_are_pending_without_outcome_leakage(frozen) -> None:
     assert predecessors["v35_adaptive_expression_preregistration_id"] == (
         pre.V35_PREREGISTRATION_ID
     )
-    assert predecessors["v35_adaptive_expression_campaign_id"]["kind"] == (
-        "PENDING_POSTEXECUTION_BINDING"
+    assert predecessors["v34r1_accounted_campaign_id"] == (
+        pre.V34R1_ACCOUNTED_CAMPAIGN_ID
+    )
+    assert predecessors["v34r1_accounting_verification_id"] == (
+        pre.V34R1_ACCOUNTING_VERIFICATION_ID
+    )
+    assert predecessors["v35_adaptive_expression_campaign_id"] == (
+        pre.V35_ADAPTIVE_EXPRESSION_CAMPAIGN_ID
+    )
+    assert predecessors["v35_adaptive_expression_verification_id"] == (
+        pre.V35_ADAPTIVE_EXPRESSION_VERIFICATION_ID
     )
     assert document["outcome_fields_present"] is False
+    assert document["failed_predecessor_evidence_present"] is True
     assert document["accounting_execution_performed"] is False
     correction = document["stage_separation_contract_correction"]
     assert correction["superseded_v36_preregistration_id"] == (
@@ -65,6 +75,18 @@ def test_predecessors_are_pending_without_outcome_leakage(frozen) -> None:
     )
     assert correction["superseded_preregistration_executed"] is False
     assert correction["outcomes_known_when_corrected"] is False
+    successor = document["canonical_worker_task_failure_successor"]
+    assert successor["failed_v36r1_preregistration_id"] == (
+        pre.FAILED_V36R1_PREREGISTRATION_ID
+    )
+    assert successor["episode_worker_reply_count"] == 0
+    assert successor["partial_model_bundle_count"] == 6
+    assert successor["partial_model_bundles_may_be_reused"] is False
+    assert successor["scientific_workload_changed"] is False
+    assert successor["planning_or_target_semantics_changed"] is False
+    worker_task = document["actual_accounting_protocol"]["worker_task_schema"]
+    assert worker_task["canonical_root_type"] == "OBJECT"
+    assert worker_task["schema_version"] == pre.SCHEMA_VERSION
 
 
 def test_preregistration_identity_domains_and_claim_locks(frozen) -> None:

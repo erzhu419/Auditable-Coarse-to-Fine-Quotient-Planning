@@ -147,10 +147,61 @@ def _verify_v35_inputs(
     return campaign, verification
 
 
+def _worker_task_v36(
+    *,
+    episode_index: int,
+    initial_board: tuple[int, ...],
+    execution_seed: str,
+    overlay: dict[str, Any],
+    candidate: dict[str, Any],
+) -> dict[str, Any]:
+    return {
+        "schema": "acfqp.standard_2048_adaptive_accounting_worker_task.v36",
+        "schema_version": SCHEMA_VERSION,
+        "adaptive_accounting_preregistration_id": pre.PREREGISTRATION_ID,
+        "episode_index": episode_index,
+        "initial_board_ranks": list(initial_board),
+        "execution_seed": execution_seed,
+        "overlay": overlay,
+        "candidate": candidate,
+    }
+
+
 def _accounted_episode(
-    task: tuple[int, tuple[int, ...], str, dict[str, Any], dict[str, Any]]
+    task: dict[str, Any],
 ) -> tuple[bytes, int, int]:
-    episode_index, initial_board, seed, overlay, candidate_document = task
+    if (
+        type(task) is not dict
+        or set(task)
+        != {
+            "schema",
+            "schema_version",
+            "adaptive_accounting_preregistration_id",
+            "episode_index",
+            "initial_board_ranks",
+            "execution_seed",
+            "overlay",
+            "candidate",
+        }
+        or task["schema"]
+        != "acfqp.standard_2048_adaptive_accounting_worker_task.v36"
+        or task["schema_version"] != SCHEMA_VERSION
+        or task["adaptive_accounting_preregistration_id"]
+        != pre.PREREGISTRATION_ID
+        or type(task["episode_index"]) is not int
+        or type(task["initial_board_ranks"]) is not list
+        or len(task["initial_board_ranks"]) != 16
+        or any(type(value) is not int for value in task["initial_board_ranks"])
+        or type(task["execution_seed"]) is not str
+        or type(task["overlay"]) is not dict
+        or type(task["candidate"]) is not dict
+    ):
+        _fail("V36 worker task schema changed")
+    episode_index = task["episode_index"]
+    initial_board = task["initial_board_ranks"]
+    seed = task["execution_seed"]
+    overlay = task["overlay"]
+    candidate_document = task["candidate"]
     state = state_from_board_v1(initial_board)
     initial = _state_document(state)
     planning_operational = runtime.NativeCounterSetV36()
@@ -355,9 +406,7 @@ class _WorkerReplyV36:
 
 
 def _run_episode_workers(
-    tasks: tuple[
-        tuple[int, tuple[int, ...], str, dict[str, Any], dict[str, Any]], ...
-    ]
+    tasks: tuple[dict[str, Any], ...]
 ) -> tuple[_WorkerReplyV36, ...]:
     results = []
     for start in range(0, len(tasks), pre.MAXIMUM_WORKER_PROCESSES):
@@ -494,12 +543,12 @@ def _materialize_campaign(
 
     candidate_document = acquired.candidate.to_document()
     tasks = tuple(
-        (
-            index,
-            board,
-            v35_pre.EPISODE_SEEDS[index],
-            acquired.overlay,
-            candidate_document,
+        _worker_task_v36(
+            episode_index=index,
+            initial_board=board,
+            execution_seed=v35_pre.EPISODE_SEEDS[index],
+            overlay=acquired.overlay,
+            candidate=candidate_document,
         )
         for index, board in enumerate(v35_pre.INITIAL_BOARDS)
     )

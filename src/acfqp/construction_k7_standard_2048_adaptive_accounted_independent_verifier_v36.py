@@ -615,13 +615,16 @@ def _planning_expected(
     evidence = bundle.document["evidence"]
     worker_reply = evidence["worker_reply"]
     candidate = overlay["selected_candidate"]
-    task = (
-        episode["episode_index"],
-        tuple(episode["initial_state"]["board_ranks"]),
-        episode["execution_seed"],
-        overlay,
-        candidate,
-    )
+    task = {
+        "schema": "acfqp.standard_2048_adaptive_accounting_worker_task.v36",
+        "schema_version": SCHEMA_VERSION,
+        "adaptive_accounting_preregistration_id": pre.PREREGISTRATION_ID,
+        "episode_index": episode["episode_index"],
+        "initial_board_ranks": list(episode["initial_state"]["board_ranks"]),
+        "execution_seed": episode["execution_seed"],
+        "overlay": overlay,
+        "candidate": candidate,
+    }
     task_bytes = canonical_json_bytes(task)
     if (
         len(task_bytes) != evidence.get("task_byte_count")
