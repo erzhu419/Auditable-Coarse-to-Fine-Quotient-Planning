@@ -1974,6 +1974,33 @@ CONSTRUCTION_K7_LMB_OPAQUE_COLUMN_CAMPAIGN_V46R1_DOMAIN = (
 CONSTRUCTION_K7_LMB_OPAQUE_COLUMN_VERIFICATION_V46R1_DOMAIN = (
     "acfqp:construction-k7-lmb-opaque-column-verification:v46r1"
 )
+CONSTRUCTION_K7_GENERIC_BYTECODE_PREREGISTRATION_V47_DOMAIN = (
+    "acfqp:construction-k7-generic-bytecode-preregistration:v47"
+)
+CONSTRUCTION_K7_GENERIC_RAW_OBSERVATION_V47_DOMAIN = (
+    "acfqp:construction-k7-generic-raw-observation:v47"
+)
+CONSTRUCTION_K7_GENERIC_BYTECODE_PROGRAM_V47_DOMAIN = (
+    "acfqp:construction-k7-generic-bytecode-program:v47"
+)
+CONSTRUCTION_K7_GENERIC_LOCAL_DISTINCTION_V47_DOMAIN = (
+    "acfqp:construction-k7-generic-local-distinction:v47"
+)
+CONSTRUCTION_K7_GENERIC_RECEDING_EPISODE_V47_DOMAIN = (
+    "acfqp:construction-k7-generic-receding-episode:v47"
+)
+CONSTRUCTION_K7_GENERIC_STOCHASTIC_PARTIAL_V47_DOMAIN = (
+    "acfqp:construction-k7-generic-stochastic-partial:v47"
+)
+CONSTRUCTION_K7_GENERIC_SAMPLE_TAX_V47_DOMAIN = (
+    "acfqp:construction-k7-generic-sample-tax:v47"
+)
+CONSTRUCTION_K7_GENERIC_CROSS_DOMAIN_CAMPAIGN_V47_DOMAIN = (
+    "acfqp:construction-k7-generic-cross-domain-campaign:v47"
+)
+CONSTRUCTION_K7_GENERIC_CROSS_DOMAIN_VERIFICATION_V47_DOMAIN = (
+    "acfqp:construction-k7-generic-cross-domain-verification:v47"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -5819,6 +5846,33 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_lmb_opaque_column_verification_v46r1": (
             CONSTRUCTION_K7_LMB_OPAQUE_COLUMN_VERIFICATION_V46R1_DOMAIN
+        ),
+        "construction_k7_generic_bytecode_preregistration_v47": (
+            CONSTRUCTION_K7_GENERIC_BYTECODE_PREREGISTRATION_V47_DOMAIN
+        ),
+        "construction_k7_generic_raw_observation_v47": (
+            CONSTRUCTION_K7_GENERIC_RAW_OBSERVATION_V47_DOMAIN
+        ),
+        "construction_k7_generic_bytecode_program_v47": (
+            CONSTRUCTION_K7_GENERIC_BYTECODE_PROGRAM_V47_DOMAIN
+        ),
+        "construction_k7_generic_local_distinction_v47": (
+            CONSTRUCTION_K7_GENERIC_LOCAL_DISTINCTION_V47_DOMAIN
+        ),
+        "construction_k7_generic_receding_episode_v47": (
+            CONSTRUCTION_K7_GENERIC_RECEDING_EPISODE_V47_DOMAIN
+        ),
+        "construction_k7_generic_stochastic_partial_v47": (
+            CONSTRUCTION_K7_GENERIC_STOCHASTIC_PARTIAL_V47_DOMAIN
+        ),
+        "construction_k7_generic_sample_tax_v47": (
+            CONSTRUCTION_K7_GENERIC_SAMPLE_TAX_V47_DOMAIN
+        ),
+        "construction_k7_generic_cross_domain_campaign_v47": (
+            CONSTRUCTION_K7_GENERIC_CROSS_DOMAIN_CAMPAIGN_V47_DOMAIN
+        ),
+        "construction_k7_generic_cross_domain_verification_v47": (
+            CONSTRUCTION_K7_GENERIC_CROSS_DOMAIN_VERIFICATION_V47_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
