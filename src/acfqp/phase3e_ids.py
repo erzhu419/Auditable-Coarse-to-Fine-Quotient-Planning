@@ -2001,6 +2001,9 @@ CONSTRUCTION_K7_GENERIC_CROSS_DOMAIN_CAMPAIGN_V47_DOMAIN = (
 CONSTRUCTION_K7_GENERIC_CROSS_DOMAIN_VERIFICATION_V47_DOMAIN = (
     "acfqp:construction-k7-generic-cross-domain-verification:v47"
 )
+CONSTRUCTION_K7_GENERIC_BYTECODE_FAILURE_V47_DOMAIN = (
+    "acfqp:construction-k7-generic-bytecode-failure:v47"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -5873,6 +5876,9 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_generic_cross_domain_verification_v47": (
             CONSTRUCTION_K7_GENERIC_CROSS_DOMAIN_VERIFICATION_V47_DOMAIN
+        ),
+        "construction_k7_generic_bytecode_failure_v47": (
+            CONSTRUCTION_K7_GENERIC_BYTECODE_FAILURE_V47_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
