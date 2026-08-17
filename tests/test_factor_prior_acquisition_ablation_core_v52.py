@@ -30,8 +30,10 @@ def _config():
         "target_seeds": tuple(range(529_101, 529_117)),
         "maximum_prior_layout_labels": 32,
         "maximum_relation_output_candidate": 64,
+        "maximum_no_prior_labels_per_occurrence": 2_048,
         "minimum_reused_factor_count": 5,
         "historical_factor_prior_labels": 583,
+        "maximum_registered_break_even_occurrences": 16,
     }
 
 
