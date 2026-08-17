@@ -2358,6 +2358,33 @@ CONSTRUCTION_K7_FACTOR_PRIOR_ABLATION_CAMPAIGN_V52_DOMAIN = (
 CONSTRUCTION_K7_FACTOR_PRIOR_ABLATION_VERIFICATION_V52_DOMAIN = (
     "acfqp:construction-k7-factor-prior-ablation-verification:v52"
 )
+CONSTRUCTION_K7_FACTOR_PRIOR_SINGLE_SWITCH_PREREGISTRATION_V53_DOMAIN = (
+    "acfqp:construction-k7-factor-prior-single-switch-preregistration:v53"
+)
+CONSTRUCTION_K7_FACTOR_PRIOR_SINGLE_SWITCH_ACQUISITION_V53_DOMAIN = (
+    "acfqp:construction-k7-factor-prior-single-switch-acquisition:v53"
+)
+CONSTRUCTION_K7_FACTOR_PRIOR_SINGLE_SWITCH_PROGRAM_V53_DOMAIN = (
+    "acfqp:construction-k7-factor-prior-single-switch-program:v53"
+)
+CONSTRUCTION_K7_FACTOR_PRIOR_SINGLE_SWITCH_FAILED_CERTIFICATE_V53_DOMAIN = (
+    "acfqp:construction-k7-factor-prior-single-switch-failed-certificate:v53"
+)
+CONSTRUCTION_K7_FACTOR_PRIOR_SINGLE_SWITCH_LOCAL_DISTINCTION_V53_DOMAIN = (
+    "acfqp:construction-k7-factor-prior-single-switch-local-distinction:v53"
+)
+CONSTRUCTION_K7_FACTOR_PRIOR_SINGLE_SWITCH_EPISODE_V53_DOMAIN = (
+    "acfqp:construction-k7-factor-prior-single-switch-episode:v53"
+)
+CONSTRUCTION_K7_FACTOR_PRIOR_SINGLE_SWITCH_SAMPLE_TAX_V53_DOMAIN = (
+    "acfqp:construction-k7-factor-prior-single-switch-sample-tax:v53"
+)
+CONSTRUCTION_K7_FACTOR_PRIOR_SINGLE_SWITCH_CAMPAIGN_V53_DOMAIN = (
+    "acfqp:construction-k7-factor-prior-single-switch-campaign:v53"
+)
+CONSTRUCTION_K7_FACTOR_PRIOR_SINGLE_SWITCH_VERIFICATION_V53_DOMAIN = (
+    "acfqp:construction-k7-factor-prior-single-switch-verification:v53"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -6587,6 +6614,33 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_factor_prior_ablation_verification_v52": (
             CONSTRUCTION_K7_FACTOR_PRIOR_ABLATION_VERIFICATION_V52_DOMAIN
+        ),
+        "construction_k7_factor_prior_single_switch_preregistration_v53": (
+            CONSTRUCTION_K7_FACTOR_PRIOR_SINGLE_SWITCH_PREREGISTRATION_V53_DOMAIN
+        ),
+        "construction_k7_factor_prior_single_switch_acquisition_v53": (
+            CONSTRUCTION_K7_FACTOR_PRIOR_SINGLE_SWITCH_ACQUISITION_V53_DOMAIN
+        ),
+        "construction_k7_factor_prior_single_switch_program_v53": (
+            CONSTRUCTION_K7_FACTOR_PRIOR_SINGLE_SWITCH_PROGRAM_V53_DOMAIN
+        ),
+        "construction_k7_factor_prior_single_switch_failed_certificate_v53": (
+            CONSTRUCTION_K7_FACTOR_PRIOR_SINGLE_SWITCH_FAILED_CERTIFICATE_V53_DOMAIN
+        ),
+        "construction_k7_factor_prior_single_switch_local_distinction_v53": (
+            CONSTRUCTION_K7_FACTOR_PRIOR_SINGLE_SWITCH_LOCAL_DISTINCTION_V53_DOMAIN
+        ),
+        "construction_k7_factor_prior_single_switch_episode_v53": (
+            CONSTRUCTION_K7_FACTOR_PRIOR_SINGLE_SWITCH_EPISODE_V53_DOMAIN
+        ),
+        "construction_k7_factor_prior_single_switch_sample_tax_v53": (
+            CONSTRUCTION_K7_FACTOR_PRIOR_SINGLE_SWITCH_SAMPLE_TAX_V53_DOMAIN
+        ),
+        "construction_k7_factor_prior_single_switch_campaign_v53": (
+            CONSTRUCTION_K7_FACTOR_PRIOR_SINGLE_SWITCH_CAMPAIGN_V53_DOMAIN
+        ),
+        "construction_k7_factor_prior_single_switch_verification_v53": (
+            CONSTRUCTION_K7_FACTOR_PRIOR_SINGLE_SWITCH_VERIFICATION_V53_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
