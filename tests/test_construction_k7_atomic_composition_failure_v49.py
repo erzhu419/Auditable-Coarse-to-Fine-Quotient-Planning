@@ -1,0 +1,21 @@
+from __future__ import annotations
+
+import hashlib
+
+from acfqp import construction_k7_atomic_composition_failure_v49 as failure
+
+
+def test_v49_registered_failure_is_frozen_and_noncertificate() -> None:
+    frozen = failure.freeze_atomic_composition_failure_v49()
+    assert frozen.failure_id == failure.FAILURE_ID
+    assert len(frozen.canonical_bytes) == failure.EXPECTED_CANONICAL_BYTE_COUNT
+    assert hashlib.sha256(frozen.canonical_bytes).hexdigest() == failure.EXPECTED_CANONICAL_SHA256
+    document = frozen.to_document()
+    assert document["registered_execution_started"] is True
+    assert document["target_local_ground_support_queries_performed"] == 1
+    assert document["local_distinction_artifact_issued"] is False
+    assert document["campaign_artifact_issued"] is False
+    assert document["correction_under_same_identity_forbidden"] is True
+    assert document["status"] == "PRESERVED_REGISTERED_PROTOCOL_FAILURE_NONCERTIFICATE"
+    assert document["official_execution_allowed"] is False
+
