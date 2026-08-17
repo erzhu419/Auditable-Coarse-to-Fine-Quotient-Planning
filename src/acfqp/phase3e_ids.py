@@ -2385,6 +2385,42 @@ CONSTRUCTION_K7_FACTOR_PRIOR_SINGLE_SWITCH_CAMPAIGN_V53_DOMAIN = (
 CONSTRUCTION_K7_FACTOR_PRIOR_SINGLE_SWITCH_VERIFICATION_V53_DOMAIN = (
     "acfqp:construction-k7-factor-prior-single-switch-verification:v53"
 )
+CONSTRUCTION_K7_JOINT_FACTOR_RESIDUAL_PREREGISTRATION_V54_DOMAIN = (
+    "acfqp:construction-k7-joint-factor-residual-preregistration:v54"
+)
+CONSTRUCTION_K7_JOINT_FACTOR_RESIDUAL_RAW_OBSERVATION_V54_DOMAIN = (
+    "acfqp:construction-k7-joint-factor-residual-raw-observation:v54"
+)
+CONSTRUCTION_K7_JOINT_FACTOR_RESIDUAL_LAYOUT_V54_DOMAIN = (
+    "acfqp:construction-k7-joint-factor-residual-layout:v54"
+)
+CONSTRUCTION_K7_JOINT_FACTOR_RESIDUAL_PROGRAM_V54_DOMAIN = (
+    "acfqp:construction-k7-joint-factor-residual-program:v54"
+)
+CONSTRUCTION_K7_JOINT_FACTOR_RESIDUAL_SUPPORT_V54_DOMAIN = (
+    "acfqp:construction-k7-joint-factor-residual-support:v54"
+)
+CONSTRUCTION_K7_JOINT_FACTOR_RESIDUAL_MODEL_V54_DOMAIN = (
+    "acfqp:construction-k7-joint-factor-residual-model:v54"
+)
+CONSTRUCTION_K7_JOINT_FACTOR_RESIDUAL_FAILED_CERTIFICATE_V54_DOMAIN = (
+    "acfqp:construction-k7-joint-factor-residual-failed-certificate:v54"
+)
+CONSTRUCTION_K7_JOINT_FACTOR_RESIDUAL_LOCAL_DISTINCTION_V54_DOMAIN = (
+    "acfqp:construction-k7-joint-factor-residual-local-distinction:v54"
+)
+CONSTRUCTION_K7_JOINT_FACTOR_RESIDUAL_EPISODE_V54_DOMAIN = (
+    "acfqp:construction-k7-joint-factor-residual-episode:v54"
+)
+CONSTRUCTION_K7_JOINT_FACTOR_RESIDUAL_OOD_REJECTION_V54_DOMAIN = (
+    "acfqp:construction-k7-joint-factor-residual-ood-rejection:v54"
+)
+CONSTRUCTION_K7_JOINT_FACTOR_RESIDUAL_CAMPAIGN_V54_DOMAIN = (
+    "acfqp:construction-k7-joint-factor-residual-campaign:v54"
+)
+CONSTRUCTION_K7_JOINT_FACTOR_RESIDUAL_VERIFICATION_V54_DOMAIN = (
+    "acfqp:construction-k7-joint-factor-residual-verification:v54"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -6641,6 +6677,42 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_factor_prior_single_switch_verification_v53": (
             CONSTRUCTION_K7_FACTOR_PRIOR_SINGLE_SWITCH_VERIFICATION_V53_DOMAIN
+        ),
+        "construction_k7_joint_factor_residual_preregistration_v54": (
+            CONSTRUCTION_K7_JOINT_FACTOR_RESIDUAL_PREREGISTRATION_V54_DOMAIN
+        ),
+        "construction_k7_joint_factor_residual_raw_observation_v54": (
+            CONSTRUCTION_K7_JOINT_FACTOR_RESIDUAL_RAW_OBSERVATION_V54_DOMAIN
+        ),
+        "construction_k7_joint_factor_residual_layout_v54": (
+            CONSTRUCTION_K7_JOINT_FACTOR_RESIDUAL_LAYOUT_V54_DOMAIN
+        ),
+        "construction_k7_joint_factor_residual_program_v54": (
+            CONSTRUCTION_K7_JOINT_FACTOR_RESIDUAL_PROGRAM_V54_DOMAIN
+        ),
+        "construction_k7_joint_factor_residual_support_v54": (
+            CONSTRUCTION_K7_JOINT_FACTOR_RESIDUAL_SUPPORT_V54_DOMAIN
+        ),
+        "construction_k7_joint_factor_residual_model_v54": (
+            CONSTRUCTION_K7_JOINT_FACTOR_RESIDUAL_MODEL_V54_DOMAIN
+        ),
+        "construction_k7_joint_factor_residual_failed_certificate_v54": (
+            CONSTRUCTION_K7_JOINT_FACTOR_RESIDUAL_FAILED_CERTIFICATE_V54_DOMAIN
+        ),
+        "construction_k7_joint_factor_residual_local_distinction_v54": (
+            CONSTRUCTION_K7_JOINT_FACTOR_RESIDUAL_LOCAL_DISTINCTION_V54_DOMAIN
+        ),
+        "construction_k7_joint_factor_residual_episode_v54": (
+            CONSTRUCTION_K7_JOINT_FACTOR_RESIDUAL_EPISODE_V54_DOMAIN
+        ),
+        "construction_k7_joint_factor_residual_ood_rejection_v54": (
+            CONSTRUCTION_K7_JOINT_FACTOR_RESIDUAL_OOD_REJECTION_V54_DOMAIN
+        ),
+        "construction_k7_joint_factor_residual_campaign_v54": (
+            CONSTRUCTION_K7_JOINT_FACTOR_RESIDUAL_CAMPAIGN_V54_DOMAIN
+        ),
+        "construction_k7_joint_factor_residual_verification_v54": (
+            CONSTRUCTION_K7_JOINT_FACTOR_RESIDUAL_VERIFICATION_V54_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
