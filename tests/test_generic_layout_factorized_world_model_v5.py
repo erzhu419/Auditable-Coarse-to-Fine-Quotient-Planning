@@ -27,6 +27,9 @@ from acfqp.generic_layout_factorized_world_model_v5 import (
     synthesize_layout_factorized_world_model_v5,
     verify_target_layout_compatibility_v5,
 )
+from acfqp.generic_layout_factorized_world_model_v6 import (
+    synthesize_layout_factorized_world_model_v6,
+)
 from acfqp.phase3e_ids import content_id
 
 
@@ -346,3 +349,39 @@ def test_structural_meta_prior_recovers_target_layout_from_two_raw_support_label
         if key not in {"schema", "layout_id"}
     }
     assert content_id(DEV_LAYOUT_DOMAIN, payload) == document["layout_id"]
+
+
+def test_v6_safe_terminal_tree_excludes_its_own_unavailable_next_column() -> None:
+    rows = {}
+    catalogues = {}
+    for occurrence, seed in enumerate((598_241, 598_242, 598_243)):
+        rows[occurrence], catalogues[occurrence], _, _ = _inventory(seed, occurrence)
+    model = synthesize_layout_factorized_world_model_v6(
+        rows,
+        catalogues,
+        layout_domain=DEV_LAYOUT_DOMAIN,
+        program_domain=DEV_PROGRAM_DOMAIN,
+        support_domain=DEV_SUPPORT_DOMAIN,
+    )
+    program = model["compiled_program"]
+    status_column = program["occurrence_bindings"][0]["status_column"]
+    status_expression = next(
+        row["expression"]
+        for row in program["compiled_assignments"]
+        if row["target_column"] == status_column
+    )
+
+    def contains_self_next(expression) -> bool:
+        return type(expression) is list and (
+            (
+                len(expression) == 2
+                and expression[0] == "E02"
+                and expression[1] == status_column
+            )
+            or any(contains_self_next(item) for item in expression)
+        )
+
+    assert contains_self_next(status_expression) is False
+    assert program["terminal_next_status_column_candidates_excluded"] is True
+    assert program["terminal_self_next_dependency_count"] == 0
+    assert model["dependency_support"]["all_retained_dependencies_failed_single_deletion"] is True
