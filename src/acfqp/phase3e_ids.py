@@ -2031,6 +2031,42 @@ CONSTRUCTION_K7_GENERIC_CROSS_DOMAIN_CAMPAIGN_V47R1_DOMAIN = (
 CONSTRUCTION_K7_GENERIC_CROSS_DOMAIN_VERIFICATION_V47R1_DOMAIN = (
     "acfqp:construction-k7-generic-cross-domain-verification:v47r1"
 )
+CONSTRUCTION_K7_TEMPLATE_FREE_PREREGISTRATION_V48_DOMAIN = (
+    "acfqp:construction-k7-template-free-preregistration:v48"
+)
+CONSTRUCTION_K7_TEMPLATE_FREE_RAW_OBSERVATION_V48_DOMAIN = (
+    "acfqp:construction-k7-template-free-raw-observation:v48"
+)
+CONSTRUCTION_K7_TEMPLATE_FREE_TYPED_AST_PROGRAM_V48_DOMAIN = (
+    "acfqp:construction-k7-template-free-typed-ast-program:v48"
+)
+CONSTRUCTION_K7_TEMPLATE_FREE_DEPENDENCY_SUPPORT_V48_DOMAIN = (
+    "acfqp:construction-k7-template-free-dependency-support:v48"
+)
+CONSTRUCTION_K7_TEMPLATE_FREE_LOCAL_DISTINCTION_V48_DOMAIN = (
+    "acfqp:construction-k7-template-free-local-distinction:v48"
+)
+CONSTRUCTION_K7_TEMPLATE_FREE_RECEDING_EPISODE_V48_DOMAIN = (
+    "acfqp:construction-k7-template-free-receding-episode:v48"
+)
+CONSTRUCTION_K7_TEMPLATE_FREE_PARTIAL_DYNAMICS_V48_DOMAIN = (
+    "acfqp:construction-k7-template-free-partial-dynamics:v48"
+)
+CONSTRUCTION_K7_TEMPLATE_FREE_ADAPTIVE_ACQUISITION_V48_DOMAIN = (
+    "acfqp:construction-k7-template-free-adaptive-acquisition:v48"
+)
+CONSTRUCTION_K7_TEMPLATE_FREE_SAMPLE_TAX_V48_DOMAIN = (
+    "acfqp:construction-k7-template-free-sample-tax:v48"
+)
+CONSTRUCTION_K7_TEMPLATE_FREE_OOD_REJECTION_V48_DOMAIN = (
+    "acfqp:construction-k7-template-free-ood-rejection:v48"
+)
+CONSTRUCTION_K7_TEMPLATE_FREE_CAMPAIGN_V48_DOMAIN = (
+    "acfqp:construction-k7-template-free-campaign:v48"
+)
+CONSTRUCTION_K7_TEMPLATE_FREE_VERIFICATION_V48_DOMAIN = (
+    "acfqp:construction-k7-template-free-verification:v48"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -5933,6 +5969,42 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_generic_cross_domain_verification_v47r1": (
             CONSTRUCTION_K7_GENERIC_CROSS_DOMAIN_VERIFICATION_V47R1_DOMAIN
+        ),
+        "construction_k7_template_free_preregistration_v48": (
+            CONSTRUCTION_K7_TEMPLATE_FREE_PREREGISTRATION_V48_DOMAIN
+        ),
+        "construction_k7_template_free_raw_observation_v48": (
+            CONSTRUCTION_K7_TEMPLATE_FREE_RAW_OBSERVATION_V48_DOMAIN
+        ),
+        "construction_k7_template_free_typed_ast_program_v48": (
+            CONSTRUCTION_K7_TEMPLATE_FREE_TYPED_AST_PROGRAM_V48_DOMAIN
+        ),
+        "construction_k7_template_free_dependency_support_v48": (
+            CONSTRUCTION_K7_TEMPLATE_FREE_DEPENDENCY_SUPPORT_V48_DOMAIN
+        ),
+        "construction_k7_template_free_local_distinction_v48": (
+            CONSTRUCTION_K7_TEMPLATE_FREE_LOCAL_DISTINCTION_V48_DOMAIN
+        ),
+        "construction_k7_template_free_receding_episode_v48": (
+            CONSTRUCTION_K7_TEMPLATE_FREE_RECEDING_EPISODE_V48_DOMAIN
+        ),
+        "construction_k7_template_free_partial_dynamics_v48": (
+            CONSTRUCTION_K7_TEMPLATE_FREE_PARTIAL_DYNAMICS_V48_DOMAIN
+        ),
+        "construction_k7_template_free_adaptive_acquisition_v48": (
+            CONSTRUCTION_K7_TEMPLATE_FREE_ADAPTIVE_ACQUISITION_V48_DOMAIN
+        ),
+        "construction_k7_template_free_sample_tax_v48": (
+            CONSTRUCTION_K7_TEMPLATE_FREE_SAMPLE_TAX_V48_DOMAIN
+        ),
+        "construction_k7_template_free_ood_rejection_v48": (
+            CONSTRUCTION_K7_TEMPLATE_FREE_OOD_REJECTION_V48_DOMAIN
+        ),
+        "construction_k7_template_free_campaign_v48": (
+            CONSTRUCTION_K7_TEMPLATE_FREE_CAMPAIGN_V48_DOMAIN
+        ),
+        "construction_k7_template_free_verification_v48": (
+            CONSTRUCTION_K7_TEMPLATE_FREE_VERIFICATION_V48_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
