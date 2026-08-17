@@ -2067,6 +2067,45 @@ CONSTRUCTION_K7_TEMPLATE_FREE_CAMPAIGN_V48_DOMAIN = (
 CONSTRUCTION_K7_TEMPLATE_FREE_VERIFICATION_V48_DOMAIN = (
     "acfqp:construction-k7-template-free-verification:v48"
 )
+CONSTRUCTION_K7_ATOMIC_COMPOSITION_PREREGISTRATION_V49_DOMAIN = (
+    "acfqp:construction-k7-atomic-composition-preregistration:v49"
+)
+CONSTRUCTION_K7_ATOMIC_COMPOSITION_RAW_OBSERVATION_V49_DOMAIN = (
+    "acfqp:construction-k7-atomic-composition-raw-observation:v49"
+)
+CONSTRUCTION_K7_ATOMIC_COMPOSITION_PROGRAM_V49_DOMAIN = (
+    "acfqp:construction-k7-atomic-composition-program:v49"
+)
+CONSTRUCTION_K7_ATOMIC_COMPOSITION_DEPENDENCY_SUPPORT_V49_DOMAIN = (
+    "acfqp:construction-k7-atomic-composition-dependency-support:v49"
+)
+CONSTRUCTION_K7_ATOMIC_COMPOSITION_FAILED_CERTIFICATE_V49_DOMAIN = (
+    "acfqp:construction-k7-atomic-composition-failed-certificate:v49"
+)
+CONSTRUCTION_K7_ATOMIC_COMPOSITION_LOCAL_DISTINCTION_V49_DOMAIN = (
+    "acfqp:construction-k7-atomic-composition-local-distinction:v49"
+)
+CONSTRUCTION_K7_ATOMIC_COMPOSITION_RECEDING_EPISODE_V49_DOMAIN = (
+    "acfqp:construction-k7-atomic-composition-receding-episode:v49"
+)
+CONSTRUCTION_K7_ATOMIC_COMPOSITION_PARTIAL_DYNAMICS_V49_DOMAIN = (
+    "acfqp:construction-k7-atomic-composition-partial-dynamics:v49"
+)
+CONSTRUCTION_K7_ATOMIC_COMPOSITION_ADAPTIVE_ACQUISITION_V49_DOMAIN = (
+    "acfqp:construction-k7-atomic-composition-adaptive-acquisition:v49"
+)
+CONSTRUCTION_K7_ATOMIC_COMPOSITION_SAMPLE_TAX_V49_DOMAIN = (
+    "acfqp:construction-k7-atomic-composition-sample-tax:v49"
+)
+CONSTRUCTION_K7_ATOMIC_COMPOSITION_OOD_REJECTION_V49_DOMAIN = (
+    "acfqp:construction-k7-atomic-composition-ood-rejection:v49"
+)
+CONSTRUCTION_K7_ATOMIC_COMPOSITION_CAMPAIGN_V49_DOMAIN = (
+    "acfqp:construction-k7-atomic-composition-campaign:v49"
+)
+CONSTRUCTION_K7_ATOMIC_COMPOSITION_VERIFICATION_V49_DOMAIN = (
+    "acfqp:construction-k7-atomic-composition-verification:v49"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -6005,6 +6044,45 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_template_free_verification_v48": (
             CONSTRUCTION_K7_TEMPLATE_FREE_VERIFICATION_V48_DOMAIN
+        ),
+        "construction_k7_atomic_composition_preregistration_v49": (
+            CONSTRUCTION_K7_ATOMIC_COMPOSITION_PREREGISTRATION_V49_DOMAIN
+        ),
+        "construction_k7_atomic_composition_raw_observation_v49": (
+            CONSTRUCTION_K7_ATOMIC_COMPOSITION_RAW_OBSERVATION_V49_DOMAIN
+        ),
+        "construction_k7_atomic_composition_program_v49": (
+            CONSTRUCTION_K7_ATOMIC_COMPOSITION_PROGRAM_V49_DOMAIN
+        ),
+        "construction_k7_atomic_composition_dependency_support_v49": (
+            CONSTRUCTION_K7_ATOMIC_COMPOSITION_DEPENDENCY_SUPPORT_V49_DOMAIN
+        ),
+        "construction_k7_atomic_composition_failed_certificate_v49": (
+            CONSTRUCTION_K7_ATOMIC_COMPOSITION_FAILED_CERTIFICATE_V49_DOMAIN
+        ),
+        "construction_k7_atomic_composition_local_distinction_v49": (
+            CONSTRUCTION_K7_ATOMIC_COMPOSITION_LOCAL_DISTINCTION_V49_DOMAIN
+        ),
+        "construction_k7_atomic_composition_receding_episode_v49": (
+            CONSTRUCTION_K7_ATOMIC_COMPOSITION_RECEDING_EPISODE_V49_DOMAIN
+        ),
+        "construction_k7_atomic_composition_partial_dynamics_v49": (
+            CONSTRUCTION_K7_ATOMIC_COMPOSITION_PARTIAL_DYNAMICS_V49_DOMAIN
+        ),
+        "construction_k7_atomic_composition_adaptive_acquisition_v49": (
+            CONSTRUCTION_K7_ATOMIC_COMPOSITION_ADAPTIVE_ACQUISITION_V49_DOMAIN
+        ),
+        "construction_k7_atomic_composition_sample_tax_v49": (
+            CONSTRUCTION_K7_ATOMIC_COMPOSITION_SAMPLE_TAX_V49_DOMAIN
+        ),
+        "construction_k7_atomic_composition_ood_rejection_v49": (
+            CONSTRUCTION_K7_ATOMIC_COMPOSITION_OOD_REJECTION_V49_DOMAIN
+        ),
+        "construction_k7_atomic_composition_campaign_v49": (
+            CONSTRUCTION_K7_ATOMIC_COMPOSITION_CAMPAIGN_V49_DOMAIN
+        ),
+        "construction_k7_atomic_composition_verification_v49": (
+            CONSTRUCTION_K7_ATOMIC_COMPOSITION_VERIFICATION_V49_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
