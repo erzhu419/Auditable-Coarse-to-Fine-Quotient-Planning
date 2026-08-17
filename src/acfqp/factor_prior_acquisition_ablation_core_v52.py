@@ -581,6 +581,8 @@ def build_factor_prior_acquisition_ablation_document_v52(
         exact_cache, exact_labels, reachable, exact_digest = (
             _acquire_no_prior_exact_support(kernel, encode)
         )
+        if exact_labels > config["maximum_no_prior_labels_per_occurrence"]:
+            _fail("V52 no-prior acquisition exceeded its registered label cap")
         no_prior_acquisition_payload = {
             "schema": "acfqp.factor_prior_acquisition.v52",
             "seed": seed,
@@ -674,6 +676,8 @@ def build_factor_prior_acquisition_ablation_document_v52(
             break_even = index
     if reduction <= 0 or break_even is None:
         _fail("V52 factor-prior acquisition did not amortize its frozen sample tax")
+    if break_even > config["maximum_registered_break_even_occurrences"]:
+        _fail("V52 acquisition break-even exceeded its registered horizon")
     sample_payload = {
         "schema": "acfqp.factor_prior_acquisition_sample_tax.v52",
         "historical_factor_prior_labels": offline_labels,
