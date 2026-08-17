@@ -2334,6 +2334,30 @@ CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_CAMPAIGN_V51_DOMAIN = (
 CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_VERIFICATION_V51_DOMAIN = (
     "acfqp:construction-k7-cross-schema-factor-verification:v51"
 )
+CONSTRUCTION_K7_FACTOR_PRIOR_ABLATION_PREREGISTRATION_V52_DOMAIN = (
+    "acfqp:construction-k7-factor-prior-ablation-preregistration:v52"
+)
+CONSTRUCTION_K7_FACTOR_PRIOR_ABLATION_ACQUISITION_V52_DOMAIN = (
+    "acfqp:construction-k7-factor-prior-ablation-acquisition:v52"
+)
+CONSTRUCTION_K7_FACTOR_PRIOR_ABLATION_FAILED_CERTIFICATE_V52_DOMAIN = (
+    "acfqp:construction-k7-factor-prior-ablation-failed-certificate:v52"
+)
+CONSTRUCTION_K7_FACTOR_PRIOR_ABLATION_LOCAL_DISTINCTION_V52_DOMAIN = (
+    "acfqp:construction-k7-factor-prior-ablation-local-distinction:v52"
+)
+CONSTRUCTION_K7_FACTOR_PRIOR_ABLATION_EPISODE_V52_DOMAIN = (
+    "acfqp:construction-k7-factor-prior-ablation-episode:v52"
+)
+CONSTRUCTION_K7_FACTOR_PRIOR_ABLATION_SAMPLE_TAX_V52_DOMAIN = (
+    "acfqp:construction-k7-factor-prior-ablation-sample-tax:v52"
+)
+CONSTRUCTION_K7_FACTOR_PRIOR_ABLATION_CAMPAIGN_V52_DOMAIN = (
+    "acfqp:construction-k7-factor-prior-ablation-campaign:v52"
+)
+CONSTRUCTION_K7_FACTOR_PRIOR_ABLATION_VERIFICATION_V52_DOMAIN = (
+    "acfqp:construction-k7-factor-prior-ablation-verification:v52"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -6539,6 +6563,30 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_cross_schema_factor_verification_v51": (
             CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_VERIFICATION_V51_DOMAIN
+        ),
+        "construction_k7_factor_prior_ablation_preregistration_v52": (
+            CONSTRUCTION_K7_FACTOR_PRIOR_ABLATION_PREREGISTRATION_V52_DOMAIN
+        ),
+        "construction_k7_factor_prior_ablation_acquisition_v52": (
+            CONSTRUCTION_K7_FACTOR_PRIOR_ABLATION_ACQUISITION_V52_DOMAIN
+        ),
+        "construction_k7_factor_prior_ablation_failed_certificate_v52": (
+            CONSTRUCTION_K7_FACTOR_PRIOR_ABLATION_FAILED_CERTIFICATE_V52_DOMAIN
+        ),
+        "construction_k7_factor_prior_ablation_local_distinction_v52": (
+            CONSTRUCTION_K7_FACTOR_PRIOR_ABLATION_LOCAL_DISTINCTION_V52_DOMAIN
+        ),
+        "construction_k7_factor_prior_ablation_episode_v52": (
+            CONSTRUCTION_K7_FACTOR_PRIOR_ABLATION_EPISODE_V52_DOMAIN
+        ),
+        "construction_k7_factor_prior_ablation_sample_tax_v52": (
+            CONSTRUCTION_K7_FACTOR_PRIOR_ABLATION_SAMPLE_TAX_V52_DOMAIN
+        ),
+        "construction_k7_factor_prior_ablation_campaign_v52": (
+            CONSTRUCTION_K7_FACTOR_PRIOR_ABLATION_CAMPAIGN_V52_DOMAIN
+        ),
+        "construction_k7_factor_prior_ablation_verification_v52": (
+            CONSTRUCTION_K7_FACTOR_PRIOR_ABLATION_VERIFICATION_V52_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
