@@ -2223,6 +2223,42 @@ CONSTRUCTION_K7_ATOMIC_COMPOSITION_CAMPAIGN_V49R3_DOMAIN = (
 CONSTRUCTION_K7_ATOMIC_COMPOSITION_VERIFICATION_V49R3_DOMAIN = (
     "acfqp:construction-k7-atomic-composition-verification:v49r3"
 )
+CONSTRUCTION_K7_LAYOUT_FACTORIZATION_PREREGISTRATION_V50_DOMAIN = (
+    "acfqp:construction-k7-layout-factorization-preregistration:v50"
+)
+CONSTRUCTION_K7_LAYOUT_FACTORIZATION_RAW_OBSERVATION_V50_DOMAIN = (
+    "acfqp:construction-k7-layout-factorization-raw-observation:v50"
+)
+CONSTRUCTION_K7_LAYOUT_FACTORIZATION_LAYOUT_V50_DOMAIN = (
+    "acfqp:construction-k7-layout-factorization-layout:v50"
+)
+CONSTRUCTION_K7_LAYOUT_FACTORIZATION_PROGRAM_V50_DOMAIN = (
+    "acfqp:construction-k7-layout-factorization-program:v50"
+)
+CONSTRUCTION_K7_LAYOUT_FACTORIZATION_DEPENDENCY_SUPPORT_V50_DOMAIN = (
+    "acfqp:construction-k7-layout-factorization-dependency-support:v50"
+)
+CONSTRUCTION_K7_LAYOUT_FACTORIZATION_FAILED_CERTIFICATE_V50_DOMAIN = (
+    "acfqp:construction-k7-layout-factorization-failed-certificate:v50"
+)
+CONSTRUCTION_K7_LAYOUT_FACTORIZATION_LOCAL_DISTINCTION_V50_DOMAIN = (
+    "acfqp:construction-k7-layout-factorization-local-distinction:v50"
+)
+CONSTRUCTION_K7_LAYOUT_FACTORIZATION_RECEDING_EPISODE_V50_DOMAIN = (
+    "acfqp:construction-k7-layout-factorization-receding-episode:v50"
+)
+CONSTRUCTION_K7_LAYOUT_FACTORIZATION_SAMPLE_TAX_V50_DOMAIN = (
+    "acfqp:construction-k7-layout-factorization-sample-tax:v50"
+)
+CONSTRUCTION_K7_LAYOUT_FACTORIZATION_OOD_REJECTION_V50_DOMAIN = (
+    "acfqp:construction-k7-layout-factorization-ood-rejection:v50"
+)
+CONSTRUCTION_K7_LAYOUT_FACTORIZATION_CAMPAIGN_V50_DOMAIN = (
+    "acfqp:construction-k7-layout-factorization-campaign:v50"
+)
+CONSTRUCTION_K7_LAYOUT_FACTORIZATION_VERIFICATION_V50_DOMAIN = (
+    "acfqp:construction-k7-layout-factorization-verification:v50"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -6317,6 +6353,42 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_atomic_composition_verification_v49r3": (
             CONSTRUCTION_K7_ATOMIC_COMPOSITION_VERIFICATION_V49R3_DOMAIN
+        ),
+        "construction_k7_layout_factorization_preregistration_v50": (
+            CONSTRUCTION_K7_LAYOUT_FACTORIZATION_PREREGISTRATION_V50_DOMAIN
+        ),
+        "construction_k7_layout_factorization_raw_observation_v50": (
+            CONSTRUCTION_K7_LAYOUT_FACTORIZATION_RAW_OBSERVATION_V50_DOMAIN
+        ),
+        "construction_k7_layout_factorization_layout_v50": (
+            CONSTRUCTION_K7_LAYOUT_FACTORIZATION_LAYOUT_V50_DOMAIN
+        ),
+        "construction_k7_layout_factorization_program_v50": (
+            CONSTRUCTION_K7_LAYOUT_FACTORIZATION_PROGRAM_V50_DOMAIN
+        ),
+        "construction_k7_layout_factorization_dependency_support_v50": (
+            CONSTRUCTION_K7_LAYOUT_FACTORIZATION_DEPENDENCY_SUPPORT_V50_DOMAIN
+        ),
+        "construction_k7_layout_factorization_failed_certificate_v50": (
+            CONSTRUCTION_K7_LAYOUT_FACTORIZATION_FAILED_CERTIFICATE_V50_DOMAIN
+        ),
+        "construction_k7_layout_factorization_local_distinction_v50": (
+            CONSTRUCTION_K7_LAYOUT_FACTORIZATION_LOCAL_DISTINCTION_V50_DOMAIN
+        ),
+        "construction_k7_layout_factorization_receding_episode_v50": (
+            CONSTRUCTION_K7_LAYOUT_FACTORIZATION_RECEDING_EPISODE_V50_DOMAIN
+        ),
+        "construction_k7_layout_factorization_sample_tax_v50": (
+            CONSTRUCTION_K7_LAYOUT_FACTORIZATION_SAMPLE_TAX_V50_DOMAIN
+        ),
+        "construction_k7_layout_factorization_ood_rejection_v50": (
+            CONSTRUCTION_K7_LAYOUT_FACTORIZATION_OOD_REJECTION_V50_DOMAIN
+        ),
+        "construction_k7_layout_factorization_campaign_v50": (
+            CONSTRUCTION_K7_LAYOUT_FACTORIZATION_CAMPAIGN_V50_DOMAIN
+        ),
+        "construction_k7_layout_factorization_verification_v50": (
+            CONSTRUCTION_K7_LAYOUT_FACTORIZATION_VERIFICATION_V50_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
