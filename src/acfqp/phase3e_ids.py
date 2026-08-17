@@ -2295,6 +2295,45 @@ CONSTRUCTION_K7_LAYOUT_FACTORIZATION_CAMPAIGN_V50R1_DOMAIN = (
 CONSTRUCTION_K7_LAYOUT_FACTORIZATION_VERIFICATION_V50R1_DOMAIN = (
     "acfqp:construction-k7-layout-factorization-verification:v50r1"
 )
+CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_PREREGISTRATION_V51_DOMAIN = (
+    "acfqp:construction-k7-cross-schema-factor-preregistration:v51"
+)
+CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_RAW_OBSERVATION_V51_DOMAIN = (
+    "acfqp:construction-k7-cross-schema-factor-raw-observation:v51"
+)
+CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_BOUNDARY_V51_DOMAIN = (
+    "acfqp:construction-k7-cross-schema-factor-boundary:v51"
+)
+CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_LIBRARY_V51_DOMAIN = (
+    "acfqp:construction-k7-cross-schema-factor-library:v51"
+)
+CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_PROGRAM_V51_DOMAIN = (
+    "acfqp:construction-k7-cross-schema-factor-program:v51"
+)
+CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_SUPPORT_V51_DOMAIN = (
+    "acfqp:construction-k7-cross-schema-factor-support:v51"
+)
+CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_FAILED_CERTIFICATE_V51_DOMAIN = (
+    "acfqp:construction-k7-cross-schema-factor-failed-certificate:v51"
+)
+CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_LOCAL_DISTINCTION_V51_DOMAIN = (
+    "acfqp:construction-k7-cross-schema-factor-local-distinction:v51"
+)
+CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_EPISODE_V51_DOMAIN = (
+    "acfqp:construction-k7-cross-schema-factor-episode:v51"
+)
+CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_SAMPLE_TAX_V51_DOMAIN = (
+    "acfqp:construction-k7-cross-schema-factor-sample-tax:v51"
+)
+CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_OOD_REJECTION_V51_DOMAIN = (
+    "acfqp:construction-k7-cross-schema-factor-ood-rejection:v51"
+)
+CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_CAMPAIGN_V51_DOMAIN = (
+    "acfqp:construction-k7-cross-schema-factor-campaign:v51"
+)
+CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_VERIFICATION_V51_DOMAIN = (
+    "acfqp:construction-k7-cross-schema-factor-verification:v51"
+)
 CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN = (
     "acfqp:construction-counter-registry:v7"
 )
@@ -6461,6 +6500,45 @@ PHASE3E_DOMAIN_TAG_REGISTRY: Mapping[str, str] = MappingProxyType(
         ),
         "construction_k7_layout_factorization_verification_v50r1": (
             CONSTRUCTION_K7_LAYOUT_FACTORIZATION_VERIFICATION_V50R1_DOMAIN
+        ),
+        "construction_k7_cross_schema_factor_preregistration_v51": (
+            CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_PREREGISTRATION_V51_DOMAIN
+        ),
+        "construction_k7_cross_schema_factor_raw_observation_v51": (
+            CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_RAW_OBSERVATION_V51_DOMAIN
+        ),
+        "construction_k7_cross_schema_factor_boundary_v51": (
+            CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_BOUNDARY_V51_DOMAIN
+        ),
+        "construction_k7_cross_schema_factor_library_v51": (
+            CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_LIBRARY_V51_DOMAIN
+        ),
+        "construction_k7_cross_schema_factor_program_v51": (
+            CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_PROGRAM_V51_DOMAIN
+        ),
+        "construction_k7_cross_schema_factor_support_v51": (
+            CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_SUPPORT_V51_DOMAIN
+        ),
+        "construction_k7_cross_schema_factor_failed_certificate_v51": (
+            CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_FAILED_CERTIFICATE_V51_DOMAIN
+        ),
+        "construction_k7_cross_schema_factor_local_distinction_v51": (
+            CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_LOCAL_DISTINCTION_V51_DOMAIN
+        ),
+        "construction_k7_cross_schema_factor_episode_v51": (
+            CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_EPISODE_V51_DOMAIN
+        ),
+        "construction_k7_cross_schema_factor_sample_tax_v51": (
+            CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_SAMPLE_TAX_V51_DOMAIN
+        ),
+        "construction_k7_cross_schema_factor_ood_rejection_v51": (
+            CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_OOD_REJECTION_V51_DOMAIN
+        ),
+        "construction_k7_cross_schema_factor_campaign_v51": (
+            CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_CAMPAIGN_V51_DOMAIN
+        ),
+        "construction_k7_cross_schema_factor_verification_v51": (
+            CONSTRUCTION_K7_CROSS_SCHEMA_FACTOR_VERIFICATION_V51_DOMAIN
         ),
         "construction_counter_registry_v7": (
             CONSTRUCTION_COUNTER_REGISTRY_V7_DOMAIN
