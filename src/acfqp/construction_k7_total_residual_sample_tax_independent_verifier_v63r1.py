@@ -205,6 +205,66 @@ def _verify_occurrence(row: dict[str, Any]) -> tuple[int, int, int, int, int]:
     )
 
 
+def reconstruct_total_residual_occurrences_v63r1(
+    occurrences: list[dict[str, Any]],
+) -> dict[str, Any]:
+    if type(occurrences) is not list or not occurrences:
+        _fail("V63r1 reconstruct occurrence inventory changed")
+    if len({(row.get("family"), row.get("seed")) for row in occurrences}) != len(
+        occurrences
+    ):
+        _fail("V63r1 reconstruct occurrence identity duplicated")
+    checked = [_verify_occurrence(row) for row in occurrences]
+    family_rows = {}
+    for family in sorted({row["family"] for row in occurrences}):
+        selected = [row for row in occurrences if row["family"] == family]
+        family_prior = sum(
+            row["safety_episode"]["prior_residual_acquisition_labels"]
+            for row in selected
+        )
+        family_strict = sum(
+            row["safety_episode"]["strict_residual_acquisition_labels"]
+            for row in selected
+        )
+        family_rows[family] = {
+            "occurrence_count": len(selected),
+            "prior_residual_acquisition_labels": family_prior,
+            "strict_residual_acquisition_labels": family_strict,
+            "residual_label_reduction": family_strict - family_prior,
+            "prior_proposal_count": sum(
+                row["safety_episode"]["prior_status"]
+                == "STATISTICAL_PROPOSAL_ISSUED"
+                for row in selected
+            ),
+            "strict_proposal_count": sum(
+                row["safety_episode"]["strict_status"]
+                == "STATISTICAL_PROPOSAL_ISSUED"
+                for row in selected
+            ),
+            "all_occurrences_retained": True,
+        }
+    return {
+        "occurrence_count": len(occurrences),
+        "prior_labels": sum(row[0] for row in checked),
+        "strict_labels": sum(row[1] for row in checked),
+        "common_partial_acquisition_labels": sum(row[2] for row in checked),
+        "full_safety_local_labels": sum(row[3] for row in checked),
+        "abstract_planning_compute_events": sum(row[4] for row in checked),
+        "execution_steps": sum(
+            row["safety_episode"]["execution_steps"] for row in occurrences
+        ),
+        "prior_proposal_count": sum(
+            row["safety_episode"]["prior_status"] == "STATISTICAL_PROPOSAL_ISSUED"
+            for row in occurrences
+        ),
+        "strict_proposal_count": sum(
+            row["safety_episode"]["strict_status"] == "STATISTICAL_PROPOSAL_ISSUED"
+            for row in occurrences
+        ),
+        "family_projections": family_rows,
+    }
+
+
 def verify_total_residual_sample_tax_campaign_bytes_v63r1(raw: bytes) -> bytes:
     document = loads_canonical_json(raw)
     if type(document) is not dict or canonical_json_bytes(document) != raw:
@@ -363,4 +423,7 @@ def verify_total_residual_sample_tax_campaign_bytes_v63r1(raw: bytes) -> bytes:
     return result
 
 
-__all__ = ("verify_total_residual_sample_tax_campaign_bytes_v63r1",)
+__all__ = (
+    "reconstruct_total_residual_occurrences_v63r1",
+    "verify_total_residual_sample_tax_campaign_bytes_v63r1",
+)
