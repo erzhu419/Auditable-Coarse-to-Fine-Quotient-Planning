@@ -26,9 +26,9 @@ from acfqp.generic_overlay_residual_factor_compiler_v18 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-LIBRARY_ARTIFACT_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+LIBRARY_ARTIFACT_ID = "26e5e031eb6b57e73253bc85bc3d0c372f6444248ad0c4e3343a01f43353b3d0"
+EXPECTED_CANONICAL_BYTE_COUNT = 279_966
+EXPECTED_CANONICAL_SHA256 = "a90880c455caa6f585bbadf67b84c7effb9e207c98296cd8e46b2a0555b9b1dc"
 DEVELOPMENT_OCCURRENCES = (
     ("O0", "BALANCED_BATCH_REFINEMENT", 590_541),
     ("O1", "COUPLED_EXCHANGE", 590_542),
@@ -106,6 +106,8 @@ def _build_source_occurrence(
             "unknown_residual_target_columns"
         ],
         "raw_acquisition_batches": acquisition_batches,
+        "failed_certificates": episode["failed_certificates"],
+        "local_distinctions": episode["local_distinctions"],
         "raw_local_transition_rows": episode["raw_local_transition_rows"],
         "acquisition_ground_support_labels": len(acquisition_batches),
         "local_ground_support_labels": episode["local_ground_support_labels"],

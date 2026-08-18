@@ -32,9 +32,8 @@ def test_v62_rejects_foreign_and_copy_values():
         verify_residual_factor_library_v62(object())
     if __import__("os").environ.get("ACFQP_RUN_REAL_RESIDUAL_LIBRARY") == "1":
         artifact = freeze_residual_factor_library_v62()
-        forged = ResidualFactorLibraryArtifactV62(
-            object(), artifact.canonical_bytes, artifact.library_artifact_id
-        )
         with pytest.raises(Exception):
-            verify_residual_factor_library_v62(forged)
+            ResidualFactorLibraryArtifactV62(
+                object(), artifact.canonical_bytes, artifact.library_artifact_id
+            )
         assert copy.deepcopy(artifact.to_document()) == artifact.to_document()
