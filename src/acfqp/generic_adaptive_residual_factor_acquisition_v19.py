@@ -149,19 +149,6 @@ def _generic_templates(
     return result
 
 
-def _binding_templates_for_expression(
-    expression: Any,
-    rows: list[tuple[list[int], list[int], list[int]]],
-    target: int,
-) -> list[tuple[Any, int | None, int | None]]:
-    encoded = canonical_json_bytes(expression)
-    return [
-        row
-        for row in _generic_templates(rows, target)
-        if canonical_json_bytes(row[0]) == encoded
-    ]
-
-
 def _nodes(expression: Any) -> int:
     if type(expression) is not list:
         return 0
@@ -206,23 +193,16 @@ def _candidates(
 ) -> tuple[list[dict[str, Any]], int]:
     result = []
     evaluations = 0
-    expressions = (
-        prior_expressions
-        if prior_expressions is not None
-        else None
+    prior_by_expression = (
+        {}
+        if prior_expressions is None
+        else {
+            canonical_json_bytes(expression): index
+            for index, expression in enumerate(prior_expressions)
+        }
     )
     for target in targets:
-        templates = (
-            [
-                template
-                for expression in expressions
-                for template in _binding_templates_for_expression(
-                    expression, rows, target
-                )
-            ]
-            if expressions is not None
-            else _generic_templates(rows, target)
-        )
+        templates = _generic_templates(rows, target)
         seen = set()
         for expression, field, constant in templates:
             key = (canonical_json_bytes(expression), field, constant)
@@ -239,13 +219,7 @@ def _candidates(
                     break
                 excess += len(support) - 1
             if exact:
-                prior_index = None
-                if expressions is not None:
-                    prior_index = next(
-                        index
-                        for index, value in enumerate(expressions)
-                        if canonical_json_bytes(value) == canonical_json_bytes(expression)
-                    )
+                prior_index = prior_by_expression.get(canonical_json_bytes(expression))
                 candidate = {
                     "target_column": target,
                     "normalized_expression": expression,
