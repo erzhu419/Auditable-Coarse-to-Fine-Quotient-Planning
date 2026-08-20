@@ -25,6 +25,9 @@ from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 CAMPAIGN_ID = "0" * 64
 EXPECTED_CANONICAL_BYTE_COUNT = 0
 EXPECTED_CANONICAL_SHA256 = "0" * 64
+FROZEN_FAILURE_ID = "9fa9260a647c5b975f4b441d2666c06c66dccc335d52794f7df4733d84490e6c"
+EXPECTED_FAILURE_CANONICAL_BYTE_COUNT = 1_287
+EXPECTED_FAILURE_CANONICAL_SHA256 = "0b2af555695d17c64ee8c5258b67884aa97c9dd501d333e54f187526ac7b0b79"
 
 
 class ConstructionK7BoundedSourceCampaignV82Error(ValueError):
@@ -69,13 +72,105 @@ class BoundedSourceCampaignV82:
         return document
 
 
+@dataclass(frozen=True, slots=True)
+class BoundedSourceFailureV82:
+    _issuer: object = field(repr=False, compare=False)
+    canonical_bytes: bytes = field(repr=False)
+    failure_id: str
+
+    def __post_init__(self) -> None:
+        document = loads_canonical_json(self.canonical_bytes)
+        payload = {
+            key: value for key, value in document.items() if key != "failure_id"
+        }
+        if (
+            self._issuer is not _ISSUER
+            or type(document) is not dict
+            or canonical_json_bytes(document) != self.canonical_bytes
+            or document.get("failure_id") != self.failure_id
+            or pre.domains.extension_content_id_v82(
+                pre.domains.CONSTRUCTION_K7_BOUNDED_SOURCE_CAMPAIGN_V82_DOMAIN,
+                payload,
+            )
+            != self.failure_id
+        ):
+            _fail("V82 failure bytes or issuer changed")
+
+    def to_document(self) -> dict[str, Any]:
+        document = loads_canonical_json(self.canonical_bytes)
+        if type(document) is not dict:  # pragma: no cover
+            raise AssertionError
+        return document
+
+
 _CACHE: BoundedSourceCampaignV82 | None = None
+_FAILURE_CACHE: BoundedSourceFailureV82 | None = None
+
+
+def _failure_document() -> dict[str, Any]:
+    payload = {
+        "schema": "acfqp.bounded_multi_source_failure.v82",
+        "preregistration_id": pre.PREREGISTRATION_ID,
+        "v81_failed_campaign_id": pre.V81_FAILED_CAMPAIGN_ID,
+        "source_family": pre.SOURCE_FAMILY,
+        "source_pool_seeds": list(pre.SOURCE_POOL_SEEDS),
+        "failure_phase": "TERMINAL_FRONTIER_COMPILATION_EXACTNESS_CHECK",
+        "exception_module": (
+            "acfqp.generic_version_space_retaining_model_compiler_v51"
+        ),
+        "exception_type": "GenericVersionSpaceRetainingModelCompilerV51Error",
+        "exception_message": (
+            "V51 terminal frontier is not exact on acquired successors"
+        ),
+        "all_preregistered_source_member_processes_completed": True,
+        "structural_partition_completed": True,
+        "at_least_one_group_model_compilation_attempted": True,
+        "campaign_document_emitted": False,
+        "campaign_id": None,
+        "fresh_target_outcome_count": 0,
+        "target_execution_performed": False,
+        "same_identity_rerun_forbidden": True,
+        "resource_schedule_violated": False,
+        "typed_noncertificate": True,
+        "complete_world_model_synthesized": False,
+        "official_execution_allowed": False,
+        "official_scalar_cost": None,
+        "official_N_break_even": None,
+        "WORKLOAD_ECONOMICS_GATE": "NOT_RUN",
+        "COUNTER_COMPLETENESS_GATE": "NOT_RUN",
+    }
+    return {
+        **payload,
+        "failure_id": pre.domains.extension_content_id_v82(
+            pre.domains.CONSTRUCTION_K7_BOUNDED_SOURCE_CAMPAIGN_V82_DOMAIN,
+            payload,
+        ),
+    }
+
+
+def freeze_bounded_source_failure_v82() -> BoundedSourceFailureV82:
+    global _FAILURE_CACHE
+    if _FAILURE_CACHE is not None:
+        return _FAILURE_CACHE
+    document = _failure_document()
+    raw = canonical_json_bytes(document)
+    identity = document["failure_id"]
+    if FROZEN_FAILURE_ID != "0" * 64 and (
+        identity != FROZEN_FAILURE_ID
+        or len(raw) != EXPECTED_FAILURE_CANONICAL_BYTE_COUNT
+        or hashlib.sha256(raw).hexdigest() != EXPECTED_FAILURE_CANONICAL_SHA256
+    ):
+        _fail("frozen V82 failure changed")
+    _FAILURE_CACHE = BoundedSourceFailureV82(_ISSUER, raw, identity)
+    return _FAILURE_CACHE
 
 
 def run_bounded_source_campaign_v82() -> BoundedSourceCampaignV82:
     global _CACHE
     if _CACHE is not None:
         return _CACHE
+    if FROZEN_FAILURE_ID != "0" * 64:
+        _fail("frozen V82 execution failed; same identity will not be rerun")
     preregistration = pre.verify_bounded_source_preregistration_v82(
         pre.freeze_bounded_source_preregistration_v82()
     )
@@ -128,6 +223,8 @@ def verify_bounded_source_campaign_v82(value: Any) -> BoundedSourceCampaignV82:
 
 __all__ = (
     "CAMPAIGN_ID",
+    "FROZEN_FAILURE_ID",
+    "freeze_bounded_source_failure_v82",
     "run_bounded_source_campaign_v82",
     "verify_bounded_source_campaign_v82",
 )

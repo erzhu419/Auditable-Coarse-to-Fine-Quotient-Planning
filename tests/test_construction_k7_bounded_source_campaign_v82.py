@@ -1,9 +1,8 @@
-import os
-
 import pytest
 
 from acfqp.construction_k7_bounded_source_campaign_v82 import (
     ConstructionK7BoundedSourceCampaignV82Error,
+    freeze_bounded_source_failure_v82,
     run_bounded_source_campaign_v82,
     verify_bounded_source_campaign_v82,
 )
@@ -14,16 +13,21 @@ def test_v82_campaign_rejects_foreign_values():
         verify_bounded_source_campaign_v82(object())
 
 
-@pytest.mark.skipif(
-    os.environ.get("ACFQP_RUN_REAL_BOUNDED_SOURCE_V82") != "1",
-    reason="explicit preregistered V82 source-only execution",
-)
-def test_v82_runs_exact_frozen_source_gate():
-    document = run_bounded_source_campaign_v82().to_document()
-    assert document["preregistration_id"]
-    assert document["registered_gate"]["actual_source_member_count"] == 6
-    assert document["registered_gate"]["fresh_target_outcome_count"] == 0
-    assert document["target_execution_performed"] is False
-    assert document["official_execution_allowed"] is False
+def test_v82_preserves_terminal_frontier_compilation_failure():
+    document = freeze_bounded_source_failure_v82().to_document()
+    assert document["failure_phase"] == (
+        "TERMINAL_FRONTIER_COMPILATION_EXACTNESS_CHECK"
+    )
+    assert document["all_preregistered_source_member_processes_completed"] is True
+    assert document["campaign_document_emitted"] is False
+    assert document["fresh_target_outcome_count"] == 0
+    assert document["same_identity_rerun_forbidden"] is True
     assert document["official_scalar_cost"] is None
-    assert document["WORKLOAD_ECONOMICS_GATE"] == "NOT_RUN"
+
+
+def test_v82_same_identity_cannot_be_rerun():
+    with pytest.raises(
+        ConstructionK7BoundedSourceCampaignV82Error,
+        match="same identity will not be rerun",
+    ):
+        run_bounded_source_campaign_v82()
