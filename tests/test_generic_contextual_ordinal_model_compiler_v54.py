@@ -26,6 +26,13 @@ from acfqp.generic_context_stratified_model_compiler_v55 import (
     compile_context_stratified_model_v55,
     verify_context_stratified_model_v55,
 )
+from acfqp.generic_projected_disagreement_model_compiler_v56 import (
+    compile_projected_disagreement_model_v56,
+    verify_projected_disagreement_model_v56,
+)
+from acfqp.generic_projected_disagreement_planner_v56 import (
+    plan_projected_disagreement_model_v56,
+)
 from acfqp.generic_partial_factor_proposal_v15 import (
     V51_FACTOR_TEMPLATE_PROJECTION,
     synthesize_partial_factor_candidate_v15,
@@ -39,6 +46,8 @@ from acfqp.phase3e_ids import canonical_json_bytes
 _ACQ_DOMAIN = b"acfqp:generic-contextual-ordinal-frontier-acquisition:v54\x00"
 _BUNDLE_DOMAIN = b"acfqp:relation-covering-contextual-ordinal-frontier-acquisition:v54\x00"
 _V55_BUNDLE_DOMAIN = b"acfqp:context-stratified-contextual-ordinal-acquisition:v55\x00"
+_V56_ACQ_DOMAIN = b"acfqp:generic-projected-disagreement-acquisition:v56\x00"
+_V56_BUNDLE_DOMAIN = b"acfqp:projected-disagreement-contextual-acquisition:v56\x00"
 
 
 def _fixture():
@@ -102,6 +111,7 @@ def _fixture():
         public_rows.append(document)
     evidence = {
         "layout": layout,
+        "known_partial_factor_assignments": list(candidate.assignments),
         "unknown_residual_target_columns": candidate.public_document[
             "unknown_residual_target_columns"
         ],
@@ -285,3 +295,72 @@ def test_v55_compiler_preserves_v54_model_semantics_under_context_schedule():
     assert verified["context_and_relation_round_robin_used"] is True
     assert verified["contextual_ordinal_action_support_operator_present"] is True
     assert verified["complete_world_model_claimed"] is False
+
+
+def test_v56_compiler_and_planner_preserve_adaptive_acquisition_boundary():
+    candidate, catalogue, evidence, v54_bundle = _fixture()
+    old = v54_bundle["contextual_ordinal_frontier_acquisition"]
+    stop = old["stopped_physical_ground_support_labels"]
+    scheduled = v54_bundle["query_schedule"]["scheduled_raw_transition_rows"]
+    grouped = []
+    by_key = {}
+    for row in scheduled:
+        key = (tuple(row["pre_vector"]), row["selected_action"]["action_key"])
+        if key not in by_key:
+            by_key[key] = []
+            grouped.append(by_key[key])
+        by_key[key].append(row)
+    rows = [row for group in grouped[:stop] for row in group]
+    acquisition_payload = {
+        "schema": "acfqp.generic_projected_disagreement_acquisition.v56",
+        "source_context_stratified_query_schedule_id": "e" * 64,
+        "executed_raw_transition_rows": rows,
+        "adaptive_query_selection_ledger": [
+            {"query_index": index} for index in range(stop)
+        ],
+        "stopped_physical_ground_support_labels": stop,
+        "selected_terminal_program": old["selected_terminal_program"],
+        "selected_terminal_program_id": old["selected_terminal_program_id"],
+        "selected_residual_version_spaces": old["selected_residual_version_spaces"],
+        "status": "PROPOSAL_ISSUED_HELDOUT_VALIDATED",
+        "heldout_exact_prediction": True,
+        "heldout_rows_accessed_before_stop": False,
+        "candidate_disagreement_scheduling_uses_only_abstract_successor_support": True,
+        "unacquired_post_state_or_label_accessed_by_query_selection": False,
+        "every_retained_terminal_frontier_candidate_prequentially_checked": True,
+        "every_retained_residual_frontier_candidate_prequentially_checked": True,
+        "proposal_only_not_safety_authority": True,
+        "query_selection_projection_compute_events": 17,
+    }
+    acquisition = {
+        **acquisition_payload,
+        "projected_disagreement_acquisition_id": hashlib.sha256(
+            _V56_ACQ_DOMAIN + canonical_json_bytes(acquisition_payload)
+        ).hexdigest(),
+    }
+    bundle_payload = {
+        "schema": "acfqp.projected_disagreement_contextual_acquisition.v56",
+        "projected_disagreement_acquisition": acquisition,
+        "projected_disagreement_acquisition_id": acquisition[
+            "projected_disagreement_acquisition_id"
+        ],
+    }
+    bundle = {
+        **bundle_payload,
+        "projected_disagreement_contextual_acquisition_id": hashlib.sha256(
+            _V56_BUNDLE_DOMAIN + canonical_json_bytes(bundle_payload)
+        ).hexdigest(),
+    }
+    model = compile_projected_disagreement_model_v56(candidate, evidence, bundle)
+    verified = verify_projected_disagreement_model_v56(model)
+    assert verified["projected_candidate_disagreement_schedule_used"] is True
+    plan = plan_projected_disagreement_model_v56(
+        model,
+        candidate,
+        catalogue,
+        (0, 4, 9, 4),
+        maximum_depth=4,
+    )
+    assert plan["initial_action_key"] in (0, 1)
+    assert plan["v54_semantic_planner_reused_through_exact_nonpersistent_view"] is True
+    assert plan["ground_transition_accessed_during_abstract_search"] is False
