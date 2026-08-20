@@ -22,9 +22,9 @@ from acfqp.contextual_ordinal_source_campaign_core_v84 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "1828a9c92459da992f2e691b5a8f935005d4da5981070728f4c5d9a0a4e9db28"
+EXPECTED_CANONICAL_BYTE_COUNT = 8_666_449
+EXPECTED_CANONICAL_SHA256 = "66bf9d5e1252c527cb4e4208b5590b6047a121921552f66442a6248ed7745c13"
 
 
 class ConstructionK7ContextualOrdinalCampaignV84Error(ValueError):
