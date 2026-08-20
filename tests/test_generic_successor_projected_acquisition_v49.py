@@ -5,6 +5,7 @@ from acfqp import construction_k7_domain_registry_extension_v58 as domains_v58
 from acfqp import generic_adaptive_role_free_terminal_acquisition_v35 as v35
 from acfqp import generic_learned_successor_support_acquisition_v41 as v41
 from acfqp import generic_prequential_role_free_acquisition_v37 as v37
+from acfqp import generic_frontier_prequential_acquisition_v53 as v53
 from acfqp.generic_atomic_expression_world_model_v4 import (
     FlatRawActionV4,
     FlatRawTransitionV4,
@@ -38,6 +39,9 @@ from acfqp.generic_compiler_ready_acquisition_v52 import (
 )
 from acfqp.generic_compiler_ready_model_compiler_v52 import (
     compile_compiler_ready_model_v52,
+)
+from acfqp.generic_frontier_prequential_model_compiler_v53 import (
+    compile_frontier_prequential_model_v53,
 )
 from acfqp.phase3e_ids import canonical_json_bytes
 
@@ -383,5 +387,49 @@ def test_v52_waits_for_nonempty_version_space_then_compiles():
         "COMPILER_READY_VERSION_SPACE_V52"
     )
     assert verified["nonempty_residual_version_space_used_as_acquisition_gate"] is True
+    assert verified["every_batch_exact_residual_expression_retained"] is True
+    assert verified["complete_world_model_claimed"] is False
+
+
+def test_v53_checks_every_terminal_frontier_candidate_not_only_primary():
+    program = _program()
+    row = _row(0, [0, 0, 1, 4], [1, 1, 2, 9], True)
+    primary = v37._predict_group(program, [row], [0, 1, 2, 3])  # noqa: SLF001
+    frontier = v53._predict_frontier_group(  # noqa: SLF001
+        program, [row], [0, 1, 2, 3]
+    )
+    assert primary["query_exact"] is True
+    assert frontier["query_exact"] is False
+    assert frontier["terminal_frontier_candidate_count"] == 2
+    assert [row["candidate_exact"] for row in frontier["candidate_predictions"]] == [
+        True,
+        False,
+    ]
+
+
+def test_v53_all_frontier_acquisition_compiles_to_joint_model():
+    candidate, evidence, library = _compiler_fixture()
+    acquisition = v53.run_relation_covering_frontier_prequential_acquisition_v53(
+        evidence,
+        role_free_template_library=library,
+        required_terminal_classes=("ACCEPT", "ACTIVE"),
+        confidence_denominator=2,
+    )
+    learned = acquisition["frontier_prequential_acquisition"]
+    assert learned["status"] == "PROPOSAL_ISSUED_HELDOUT_VALIDATED"
+    assert learned[
+        "every_retained_terminal_frontier_candidate_prequentially_checked"
+    ] is True
+    assert learned[
+        "every_retained_terminal_frontier_candidate_heldout_checked"
+    ] is True
+    model = compile_frontier_prequential_model_v53(
+        candidate, evidence, acquisition
+    )
+    verified = verify_joint_successor_version_space_model_v42(model)
+    assert verified["source_acquisition_protocol"] == "ALL_FRONTIER_PREQUENTIAL_V53"
+    assert verified[
+        "every_retained_terminal_frontier_candidate_prequentially_checked"
+    ] is True
     assert verified["every_batch_exact_residual_expression_retained"] is True
     assert verified["complete_world_model_claimed"] is False
