@@ -1,9 +1,8 @@
-import os
-
 import pytest
 
 from acfqp.construction_k7_successor_projected_campaign_v79 import (
     ConstructionK7SuccessorProjectedCampaignV79Error,
+    freeze_successor_projected_failure_v79,
     run_successor_projected_campaign_v79,
     verify_successor_projected_campaign_v79,
 )
@@ -14,16 +13,23 @@ def test_v79_campaign_rejects_foreign_values():
         verify_successor_projected_campaign_v79(object())
 
 
-@pytest.mark.skipif(
-    os.environ.get("ACFQP_RUN_REAL_SUCCESSOR_PROJECTED_V79") != "1",
-    reason="explicit preregistered V79 source-only execution",
-)
-def test_v79_runs_exact_frozen_source_gate():
-    document = run_successor_projected_campaign_v79().to_document()
-    assert document["preregistration_id"]
-    assert document["registered_gate"]["actual_source_member_count"] == 2
-    assert document["registered_gate"]["fresh_target_outcome_count"] == 0
-    assert document["target_execution_performed"] is False
-    assert document["official_execution_allowed"] is False
+def test_v79_preserves_structural_incompatibility_failure():
+    document = freeze_successor_projected_failure_v79().to_document()
+    assert document["failure_phase"] == "CANONICAL_SOURCE_POOL_COMPATIBILITY_CHECK"
+    assert document["exception_message"] == (
+        "V48 source members are not structurally compatible"
+    )
+    assert document["campaign_document_emitted"] is False
+    assert document["fresh_target_outcome_count"] == 0
+    assert document["same_identity_rerun_forbidden"] is True
+    assert document["typed_noncertificate"] is True
     assert document["official_scalar_cost"] is None
     assert document["WORKLOAD_ECONOMICS_GATE"] == "NOT_RUN"
+
+
+def test_v79_same_identity_cannot_be_rerun():
+    with pytest.raises(
+        ConstructionK7SuccessorProjectedCampaignV79Error,
+        match="same identity will not be rerun",
+    ):
+        run_successor_projected_campaign_v79()

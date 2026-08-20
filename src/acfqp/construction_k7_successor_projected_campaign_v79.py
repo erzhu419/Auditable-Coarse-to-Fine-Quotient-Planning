@@ -25,6 +25,9 @@ from acfqp.successor_projected_pooled_source_campaign_core_v79 import (
 CAMPAIGN_ID = "0" * 64
 EXPECTED_CANONICAL_BYTE_COUNT = 0
 EXPECTED_CANONICAL_SHA256 = "0" * 64
+FROZEN_FAILURE_ID = "8f506014e933c2cf83dff2e33a1f1bef11d49617074d7d978f16964bd9d19a88"
+EXPECTED_FAILURE_CANONICAL_BYTE_COUNT = 1_139
+EXPECTED_FAILURE_CANONICAL_SHA256 = "dcc71d7144013ebc5675ed2de2c8730184380fb25486ea46709f264620ed4e98"
 
 
 class ConstructionK7SuccessorProjectedCampaignV79Error(ValueError):
@@ -69,13 +72,99 @@ class SuccessorProjectedCampaignV79:
         return document
 
 
+@dataclass(frozen=True, slots=True)
+class SuccessorProjectedFailureV79:
+    _issuer: object = field(repr=False, compare=False)
+    canonical_bytes: bytes = field(repr=False)
+    failure_id: str
+
+    def __post_init__(self) -> None:
+        document = loads_canonical_json(self.canonical_bytes)
+        payload = {
+            key: value for key, value in document.items() if key != "failure_id"
+        }
+        if (
+            self._issuer is not _ISSUER
+            or type(document) is not dict
+            or canonical_json_bytes(document) != self.canonical_bytes
+            or document.get("failure_id") != self.failure_id
+            or pre.domains.extension_content_id_v79(
+                pre.domains.CONSTRUCTION_K7_SUCCESSOR_PROJECTED_CAMPAIGN_V79_DOMAIN,
+                payload,
+            )
+            != self.failure_id
+        ):
+            _fail("V79 failure bytes or issuer changed")
+
+    def to_document(self) -> dict[str, Any]:
+        document = loads_canonical_json(self.canonical_bytes)
+        if type(document) is not dict:  # pragma: no cover
+            raise AssertionError
+        return document
+
+
 _CACHE: SuccessorProjectedCampaignV79 | None = None
+_FAILURE_CACHE: SuccessorProjectedFailureV79 | None = None
+
+
+def _failure_document() -> dict[str, Any]:
+    payload = {
+        "schema": "acfqp.successor_projected_pooled_source_failure.v79",
+        "preregistration_id": pre.PREREGISTRATION_ID,
+        "v78_failed_campaign_id": pre.V78_FAILED_CAMPAIGN_ID,
+        "source_family": pre.SOURCE_FAMILY,
+        "source_pool_seeds": list(pre.SOURCE_POOL_SEEDS),
+        "failure_phase": "CANONICAL_SOURCE_POOL_COMPATIBILITY_CHECK",
+        "exception_module": "acfqp.generic_canonical_source_pool_v48",
+        "exception_type": "GenericCanonicalSourcePoolV48Error",
+        "exception_message": "V48 source members are not structurally compatible",
+        "source_member_processes_completed_before_pool_attempt": True,
+        "campaign_document_emitted": False,
+        "campaign_id": None,
+        "fresh_target_outcome_count": 0,
+        "target_execution_performed": False,
+        "same_identity_rerun_forbidden": True,
+        "resource_schedule_violated": False,
+        "typed_noncertificate": True,
+        "complete_world_model_synthesized": False,
+        "official_execution_allowed": False,
+        "official_scalar_cost": None,
+        "official_N_break_even": None,
+        "WORKLOAD_ECONOMICS_GATE": "NOT_RUN",
+        "COUNTER_COMPLETENESS_GATE": "NOT_RUN",
+    }
+    return {
+        **payload,
+        "failure_id": pre.domains.extension_content_id_v79(
+            pre.domains.CONSTRUCTION_K7_SUCCESSOR_PROJECTED_CAMPAIGN_V79_DOMAIN,
+            payload,
+        ),
+    }
+
+
+def freeze_successor_projected_failure_v79() -> SuccessorProjectedFailureV79:
+    global _FAILURE_CACHE
+    if _FAILURE_CACHE is not None:
+        return _FAILURE_CACHE
+    document = _failure_document()
+    raw = canonical_json_bytes(document)
+    identity = document["failure_id"]
+    if FROZEN_FAILURE_ID != "0" * 64 and (
+        identity != FROZEN_FAILURE_ID
+        or len(raw) != EXPECTED_FAILURE_CANONICAL_BYTE_COUNT
+        or hashlib.sha256(raw).hexdigest() != EXPECTED_FAILURE_CANONICAL_SHA256
+    ):
+        _fail("frozen V79 failure changed")
+    _FAILURE_CACHE = SuccessorProjectedFailureV79(_ISSUER, raw, identity)
+    return _FAILURE_CACHE
 
 
 def run_successor_projected_campaign_v79() -> SuccessorProjectedCampaignV79:
     global _CACHE
     if _CACHE is not None:
         return _CACHE
+    if FROZEN_FAILURE_ID != "0" * 64:
+        _fail("frozen V79 execution failed; same identity will not be rerun")
     preregistration = pre.verify_successor_projected_preregistration_v79(
         pre.freeze_successor_projected_preregistration_v79()
     )
@@ -130,6 +219,8 @@ def verify_successor_projected_campaign_v79(
 
 __all__ = (
     "CAMPAIGN_ID",
+    "FROZEN_FAILURE_ID",
+    "freeze_successor_projected_failure_v79",
     "run_successor_projected_campaign_v79",
     "verify_successor_projected_campaign_v79",
 )
