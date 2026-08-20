@@ -22,9 +22,9 @@ from acfqp.construction_k7_role_free_relational_template_library_v70 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "9befdfcfd6b5a6673cd9e6a9f88837865f9c535febbc8cf57eadbbaae18e7bb4"
+EXPECTED_CANONICAL_BYTE_COUNT = 4_214_582
+EXPECTED_CANONICAL_SHA256 = "437cc104ba40ea3e28adcf7c69c0b4a271acd3628947d055dc02a9120f911ca9"
 
 
 class ConstructionK7AllFrontierCampaignV83Error(ValueError):
