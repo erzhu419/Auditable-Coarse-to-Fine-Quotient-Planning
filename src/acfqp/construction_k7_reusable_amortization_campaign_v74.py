@@ -22,9 +22,9 @@ from acfqp.reusable_amortization_campaign_core_v74 import (
 )
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "a60009b54923558baca3dd26af35c298b6618a86c3c4ec64639d7efa4c7a76f4"
+EXPECTED_CANONICAL_BYTE_COUNT = 16_861_847
+EXPECTED_CANONICAL_SHA256 = "c71d4cd434e40a2f4e8a6d19a5442e11b35a13c0026a2d93eae7ba02a94c7669"
 
 
 class ConstructionK7ReusableAmortizationCampaignV74Error(ValueError):
