@@ -12,10 +12,10 @@ from acfqp.construction_k7_projected_target_campaign_v86 import (
 )
 
 
-def test_v86_campaign_identity_is_unfrozen_before_outcomes():
-    assert CAMPAIGN_ID == "0" * 64
-    assert EXPECTED_CANONICAL_BYTE_COUNT == 0
-    assert EXPECTED_CANONICAL_SHA256 == "0" * 64
+def test_v86_campaign_identity_is_frozen_after_the_registered_outcome():
+    assert CAMPAIGN_ID == "7e40be0ebf5f68c42f050e5cd441ba1d81dca603328fda380de6fe01d52f7cae"
+    assert EXPECTED_CANONICAL_BYTE_COUNT == 595_978
+    assert EXPECTED_CANONICAL_SHA256 == "39ab8fb785c063a764fc8348ec3e583626e7d0309250c6e77d9fa2414aad6fd1"
 
 
 def test_v86_campaign_rejects_foreign_values():

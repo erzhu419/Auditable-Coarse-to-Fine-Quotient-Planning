@@ -17,9 +17,9 @@ from acfqp.projected_disagreement_target_campaign_core_v86 import (
 )
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "7e40be0ebf5f68c42f050e5cd441ba1d81dca603328fda380de6fe01d52f7cae"
+EXPECTED_CANONICAL_BYTE_COUNT = 595_978
+EXPECTED_CANONICAL_SHA256 = "39ab8fb785c063a764fc8348ec3e583626e7d0309250c6e77d9fa2414aad6fd1"
 
 
 class ConstructionK7ProjectedTargetCampaignV86Error(ValueError):
@@ -72,7 +72,7 @@ def run_projected_target_campaign_v86() -> ProjectedTargetCampaignV86:
     preregistration = pre.verify_projected_target_preregistration_v86(
         pre.freeze_projected_target_preregistration_v86()
     )
-    if pre._source_facts() != preregistration.to_document()["source_closure"]["source_facts"]:  # noqa: SLF001
+    if pre._frozen_source_facts() != preregistration.to_document()["source_closure"]["source_facts"]:  # noqa: SLF001
         _fail("V86 preregistered source closure changed")
     model_artifact = load_projected_model_artifact_v86()
     if model_artifact["model_artifact_id"] != pre.MODEL_ARTIFACT_ID:

@@ -41,6 +41,16 @@ BOUND_SOURCE_PATHS = (
     "src/acfqp/projected_disagreement_target_campaign_core_v86.py",
     "src/acfqp/construction_k7_projected_target_campaign_v86.py",
 )
+FROZEN_SOURCE_FACTS = (
+    ("artifacts/world_model/v86_projected_disagreement_model.json", 136251, "30c5b8775ae05039a971c20c52450efb29fcc8b57d81a38f70c9567fd9ef2bec"),
+    ("src/acfqp/construction_k7_domain_registry_extension_v86.py", 1601, "e17b2748253ea80c378042e6e122092c2fab66ecf7245510340a13c6f8b76a9a"),
+    ("src/acfqp/construction_k7_projected_model_artifact_v86.py", 2816, "9ce071589f9fa60bf6cc32f56518e88316152827832206654e96c78754f0b5e2"),
+    ("src/acfqp/generic_projected_disagreement_certificate_planner_v57.py", 15779, "f7b25b02b901f70318446a6c06fb809d7ce128b7972262cecd8738d643abc48e"),
+    ("src/acfqp/generic_projected_disagreement_planner_v56.py", 1893, "7029052eb45ead4666fd6d1536831711a2836ace9b8608a678dd170545fd20e3"),
+    ("src/acfqp/generic_projected_disagreement_model_compiler_v56.py", 12065, "e92b87e65151bcaaf9aa7ab30a4421760f46f4cc15015e66d6d5e6931c8e2364"),
+    ("src/acfqp/projected_disagreement_target_campaign_core_v86.py", 13322, "c70a1e6d7395744e787d4db9fbe5c641285f638dacc4f7a4c7437ba75dbf5479"),
+    ("src/acfqp/construction_k7_projected_target_campaign_v86.py", 4186, "b8134457245f0f8313bed0970de3345681f29197b35d533c51c56b268435c8d6"),
+)
 
 
 class ConstructionK7ProjectedTargetPreregistrationV86Error(ValueError):
@@ -63,6 +73,13 @@ def _source_facts() -> list[dict[str, Any]]:
             }
         )
     return result
+
+
+def _frozen_source_facts() -> list[dict[str, Any]]:
+    return [
+        {"relative_path": path, "byte_count": count, "sha256": digest}
+        for path, count, digest in FROZEN_SOURCE_FACTS
+    ]
 
 
 def _callable_fact(value: Any) -> dict[str, Any]:
@@ -100,7 +117,7 @@ def _document() -> dict[str, Any]:
             "v85_pre_outcome_failure_id": previous.V85_PRE_OUTCOME_FAILURE_ID,
         },
         "source_closure": {
-            "source_facts": _source_facts(),
+            "source_facts": _frozen_source_facts(),
             "v86_domains": dict(domains.K7_DOMAIN_TAG_EXTENSION_REGISTRY_V86),
             "canonicalizer_callable": _callable_fact(canonical_json_bytes),
             "campaign_builder_callable": _callable_fact(
