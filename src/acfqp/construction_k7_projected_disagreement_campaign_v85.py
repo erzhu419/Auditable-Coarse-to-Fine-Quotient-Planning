@@ -25,6 +25,9 @@ from acfqp.projected_disagreement_source_campaign_core_v85 import (
 CAMPAIGN_ID = "0" * 64
 EXPECTED_CANONICAL_BYTE_COUNT = 0
 EXPECTED_CANONICAL_SHA256 = "0" * 64
+PRE_OUTCOME_FAILURE_ID = "82f3212d9e755c769795d1a908bbb1aac33b18de8f6cbe5a407256cac3e60acb"
+PRE_OUTCOME_FAILURE_BYTE_COUNT = 797
+PRE_OUTCOME_FAILURE_SHA256 = "e6235deeb980b2f7cc64d2ac5db0fc23064930ad82012fcc84b61aea1098d44d"
 
 
 class ConstructionK7ProjectedDisagreementCampaignV85Error(ValueError):
@@ -70,8 +73,55 @@ class ProjectedDisagreementCampaignV85:
 _CACHE: ProjectedDisagreementCampaignV85 | None = None
 
 
+def _pre_outcome_failure_document() -> dict[str, Any]:
+    payload = {
+        "schema": "acfqp.projected_disagreement_pre_outcome_failure.v85",
+        "preregistration_id": pre.PREREGISTRATION_ID,
+        "failed_operation": "MATERIALIZE_FROZEN_V70_TEMPLATE_LIBRARY",
+        "exception_type": (
+            "ConstructionK7SourceCompleteRelationalPreregistrationV69Error"
+        ),
+        "exception_message": "frozen V69 preregistration changed",
+        "fresh_source_member_execution_started": False,
+        "fresh_source_outcome_count": 0,
+        "campaign_document_created": False,
+        "same_identity_rerun_forbidden": True,
+        "withdrawn_earlier_preregistration_preserved": True,
+        "official_execution_allowed": False,
+        "official_scalar_cost": None,
+        "official_N_break_even": None,
+        "WORKLOAD_ECONOMICS_GATE": "NOT_RUN",
+        "COUNTER_COMPLETENESS_GATE": "NOT_RUN",
+    }
+    return {
+        **payload,
+        "failure_id": pre.domains.extension_content_id_v85(
+            pre.domains.CONSTRUCTION_K7_PROJECTED_DISAGREEMENT_CAMPAIGN_V85_DOMAIN,
+            payload,
+        ),
+    }
+
+
+def frozen_pre_outcome_failure_v85() -> dict[str, Any]:
+    document = _pre_outcome_failure_document()
+    raw = canonical_json_bytes(document)
+    if PRE_OUTCOME_FAILURE_ID != "0" * 64 and (
+        document["failure_id"] != PRE_OUTCOME_FAILURE_ID
+        or len(raw) != PRE_OUTCOME_FAILURE_BYTE_COUNT
+        or hashlib.sha256(raw).hexdigest() != PRE_OUTCOME_FAILURE_SHA256
+    ):
+        _fail("frozen V85 pre-outcome failure changed")
+    return document
+
+
 def run_projected_disagreement_campaign_v85() -> ProjectedDisagreementCampaignV85:
     global _CACHE
+    if PRE_OUTCOME_FAILURE_ID != "0" * 64:
+        failure = frozen_pre_outcome_failure_v85()
+        _fail(
+            "V85 failed before fresh outcomes and is frozen; same-identity rerun "
+            f"forbidden: {failure['failure_id']}"
+        )
     if _CACHE is not None:
         return _CACHE
     preregistration = pre.verify_projected_disagreement_preregistration_v85(
@@ -126,6 +176,8 @@ def verify_projected_disagreement_campaign_v85(
 
 __all__ = (
     "CAMPAIGN_ID",
+    "PRE_OUTCOME_FAILURE_ID",
+    "frozen_pre_outcome_failure_v85",
     "run_projected_disagreement_campaign_v85",
     "verify_projected_disagreement_campaign_v85",
 )

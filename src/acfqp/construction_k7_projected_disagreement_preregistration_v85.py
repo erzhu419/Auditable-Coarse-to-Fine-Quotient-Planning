@@ -54,6 +54,25 @@ BOUND_SOURCE_PATHS = (
     "src/acfqp/generic_source_complete_relational_world_model_v31.py",
     "src/acfqp/construction_k7_contextual_ordinal_campaign_v84.py",
 )
+FROZEN_SOURCE_FACTS = (
+    ("src/acfqp/construction_k7_domain_registry_extension_v85.py", 1543, "5d61d16e4d931ab79c34a03004b6a537257b7bb61d1a2bb88333e9d9cc76f051"),
+    ("src/acfqp/generic_projected_disagreement_acquisition_v56.py", 21335, "641737c6f5b200ec86b1051f62c8e83e6f9014218fe294a213cad1b27c541c3b"),
+    ("src/acfqp/generic_projected_disagreement_model_compiler_v56.py", 12065, "e92b87e65151bcaaf9aa7ab30a4421760f46f4cc15015e66d6d5e6931c8e2364"),
+    ("src/acfqp/generic_projected_disagreement_planner_v56.py", 1893, "7029052eb45ead4666fd6d1536831711a2836ace9b8608a678dd170545fd20e3"),
+    ("src/acfqp/generic_context_stratified_schedule_v55.py", 4498, "a95c93e2566672ba1470f5c7f26c0f3538e7868098b183ebddfd1e7aff588df1"),
+    ("src/acfqp/generic_contextual_ordinal_residual_v54.py", 15495, "0f4f9b42cdfe991481cd17d1a0c7239d287d97fca4d57a9ae2d284f857e9b81d"),
+    ("src/acfqp/generic_contextual_ordinal_frontier_acquisition_v54.py", 17154, "1153bd95c7f698aa1be4d0779723ac50e89719ad379eaf55d25f0359ae985dc5"),
+    ("src/acfqp/generic_contextual_ordinal_model_compiler_v54.py", 16005, "446558176449420620f0a32cb1a4e763906b3b24df622cc63b5bfe54c4b1704a"),
+    ("src/acfqp/projected_disagreement_source_campaign_core_v85.py", 14055, "11570b3f941900edd22fd53730778134ac5470c364f8016654084a110d54d290"),
+    ("src/acfqp/construction_k7_projected_disagreement_campaign_v85.py", 4861, "e8f2102822673cf684f6591183a2ce003ad18b1deba0b3d69a7a16fefa74869b"),
+    ("src/acfqp/contextual_ordinal_source_campaign_core_v84.py", 13852, "5adb462d5133dedd34a2153f8ec25fa33cc546f99eca2c40d0427d8d71d68975"),
+    ("src/acfqp/generic_frontier_prequential_acquisition_v53.py", 15431, "eb3d63f1cda91a28f2ac91820d20001dc704b606b67736422a6f56c95011e094"),
+    ("src/acfqp/generic_structural_source_partition_v50.py", 6913, "50bfd1d146ff509a862037079f8a1bfb646924826d81b40efc290f360dbf9c01"),
+    ("src/acfqp/generic_canonical_source_pool_v48.py", 10924, "d066f256e5b0e9b8cf512999fc86d8b699752df452681310473eda2cb4d2a835"),
+    ("src/acfqp/generic_joint_successor_version_space_planner_v42.py", 36033, "d4b99c0f96688fc4d4dc4fae01a1d6896d254f166881ad5611c1e755c8bc1005"),
+    ("src/acfqp/generic_source_complete_relational_world_model_v31.py", 5009, "efb982d243604a038dd9a173f84a8ccf8e26a87f9183e9393f23465ba5177bf0"),
+    ("src/acfqp/construction_k7_contextual_ordinal_campaign_v84.py", 4901, "5080efbe67726bdbe7c86909c71254267b6d02ba09a3ac7f6094972bd6487e3c"),
+)
 
 
 class ConstructionK7ProjectedDisagreementPreregistrationV85Error(ValueError):
@@ -76,6 +95,13 @@ def _source_facts() -> list[dict[str, Any]]:
             }
         )
     return result
+
+
+def _frozen_source_facts() -> list[dict[str, Any]]:
+    return [
+        {"relative_path": path, "byte_count": count, "sha256": digest}
+        for path, count, digest in FROZEN_SOURCE_FACTS
+    ]
 
 
 def _callable_fact(value: Any) -> dict[str, Any]:
@@ -114,7 +140,7 @@ def _document() -> dict[str, Any]:
             "template_library_artifact_id": TEMPLATE_LIBRARY_ARTIFACT_ID,
         },
         "source_closure": {
-            "source_facts": _source_facts(),
+            "source_facts": _frozen_source_facts(),
             "v85_domains": dict(domains.K7_DOMAIN_TAG_EXTENSION_REGISTRY_V85),
             "canonicalizer_callable": _callable_fact(canonical_json_bytes),
             "campaign_builder_callable": _callable_fact(
