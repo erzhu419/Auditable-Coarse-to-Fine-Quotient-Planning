@@ -23,6 +23,15 @@ def test_v81_runs_exact_frozen_source_gate():
     assert document["preregistration_id"]
     assert document["registered_gate"]["actual_source_member_count"] == 2
     assert document["registered_gate"]["fresh_target_outcome_count"] == 0
+    assert document["registered_gate"]["structural_group_count"] == 2
+    assert document["registered_gate"][
+        "every_structural_group_model_compiled"
+    ] is False
+    assert document["registered_gate"]["passed"] is False
+    assert document["acquisition_diagnostics"][
+        "acquisition_eligible_attempt_count"
+    ] == 1
+    assert document["retained_model_diagnostics"]["compiled_model_count"] == 0
     assert document["target_execution_performed"] is False
     assert document["official_execution_allowed"] is False
     assert document["official_scalar_cost"] is None
