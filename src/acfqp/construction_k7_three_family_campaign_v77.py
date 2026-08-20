@@ -22,9 +22,9 @@ from acfqp.fail_closed_three_family_campaign_core_v77 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "5dadee6779c1d18779f41f90aa360816def2333c3f07983b95d1da2d1c28558c"
+EXPECTED_CANONICAL_BYTE_COUNT = 3_286_606
+EXPECTED_CANONICAL_SHA256 = "044a8a669fd8680e835efc58b5e31ba59c5c15c617cca8b9632fdb93fa2490dc"
 
 
 class ConstructionK7ThreeFamilyCampaignV77Error(ValueError):

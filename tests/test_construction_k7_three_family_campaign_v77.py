@@ -20,12 +20,18 @@ def test_v77_campaign_rejects_foreign_values():
 )
 def test_v77_registered_three_family_gate_and_claim_boundary():
     document = run_three_family_campaign_v77().to_document()
-    assert document["registered_gate"]["passed"] is True
-    assert document["registered_gate"]["usable_source_family_count"] == 3
-    assert document["typed_source_abstention_count"] == 0
+    assert document["registered_gate"]["passed"] is False
+    assert document["registered_gate"]["usable_source_family_count"] == 2
+    assert document["typed_source_abstention_count"] == 1
+    balanced = next(
+        row for row in document["sources"]
+        if row["family"] == "BALANCED_BATCH_REFINEMENT"
+    )
+    assert balanced["source_status"] == "SOURCE_MODEL_ABSTAINED_NONCERTIFICATE"
     assert document["sample_tax_comparison"][
         "three_family_cross_occurrence_noninferiority_observed"
-    ] is True
+    ] is False
+    assert document["sample_tax_comparison"]["filtered_minus_strict_labels"] == 0
     assert document["cross_family_model_transfer_claimed"] is False
     assert document["query_local_exact_overlay_exclusively_used_for_safety"] is True
     assert document["official_scalar_cost"] is None
