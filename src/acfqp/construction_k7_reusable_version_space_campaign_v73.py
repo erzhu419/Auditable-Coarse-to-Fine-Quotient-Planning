@@ -22,9 +22,9 @@ from acfqp.reusable_version_space_campaign_core_v73 import (
 )
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "5a896a845e4767f78c30e183b11a11e66ecf98a2cad56dabd739fdec11c941be"
+EXPECTED_CANONICAL_BYTE_COUNT = 4_706_817
+EXPECTED_CANONICAL_SHA256 = "ac6698c95f20f65842ffe45ece7dfa941f53e5167938eafdb7bbd5787c5254a9"
 
 
 class ConstructionK7ReusableVersionSpaceCampaignV73Error(ValueError):
