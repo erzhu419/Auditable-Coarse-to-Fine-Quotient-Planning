@@ -22,9 +22,9 @@ from acfqp.pooled_source_campaign_core_v78 import (
 )
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "2d3fd7a1470914b5bf945f07b519f3930144a6393635e4ccf9c6d568fdbfcb19"
+EXPECTED_CANONICAL_BYTE_COUNT = 1_355_876
+EXPECTED_CANONICAL_SHA256 = "1a5feaaf3c3ac9a06d8abf2dcecb3e54f874af76351a693f00dba95c0c721986"
 
 
 class ConstructionK7PooledSourceCampaignV78Error(ValueError):
