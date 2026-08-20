@@ -21,9 +21,9 @@ from acfqp.projected_disagreement_source_campaign_core_v85r1 import (
 )
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "da749b6ad8996aba86896476fd7293540cca77cd1b4db7145b9bf4fe2759ec70"
+EXPECTED_CANONICAL_BYTE_COUNT = 6_400_725
+EXPECTED_CANONICAL_SHA256 = "9371c385cdbfa795752c79e57e3a557f278707df5341b52f81cfdc291e440541"
 
 
 class ConstructionK7ProjectedDisagreementCampaignV85R1Error(ValueError):

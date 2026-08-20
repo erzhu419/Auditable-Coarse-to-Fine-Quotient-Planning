@@ -47,6 +47,20 @@ BOUND_SOURCE_PATHS = (
     "src/acfqp/generic_contextual_ordinal_residual_v54.py",
     "src/acfqp/generic_structural_source_partition_v50.py",
 )
+FROZEN_SOURCE_FACTS = (
+    ("artifacts/world_model/v85r1_v84_balanced_template_library.json", 49262, "433e4fe332da6629532e6b84a46e9cfafee2c2378de414cc2c6af3d881133706"),
+    ("src/acfqp/construction_k7_domain_registry_extension_v85r1.py", 1584, "df15f1e7255f81384cba882f10b9b13250fba90c2c5a61ab2f62cd4667de8c78"),
+    ("src/acfqp/construction_k7_v84_template_library_v85r1.py", 3024, "efd6fd0653731ab959d64d140bb56c184311c0b566231cfd3510593527e11625"),
+    ("src/acfqp/projected_disagreement_source_campaign_core_v85r1.py", 2469, "36e7c8ff7df5b91f9458446f398ea71a4f7c66479910a97db3fb834b957168ee"),
+    ("src/acfqp/construction_k7_projected_disagreement_campaign_v85r1.py", 4790, "e64a7679bdcfc3ab985aa9a6f67b31b8bca2be84bc2239d163f6d573c3f2004a"),
+    ("src/acfqp/projected_disagreement_source_campaign_core_v85.py", 14055, "11570b3f941900edd22fd53730778134ac5470c364f8016654084a110d54d290"),
+    ("src/acfqp/generic_projected_disagreement_acquisition_v56.py", 21335, "641737c6f5b200ec86b1051f62c8e83e6f9014218fe294a213cad1b27c541c3b"),
+    ("src/acfqp/generic_projected_disagreement_model_compiler_v56.py", 12065, "e92b87e65151bcaaf9aa7ab30a4421760f46f4cc15015e66d6d5e6931c8e2364"),
+    ("src/acfqp/generic_projected_disagreement_planner_v56.py", 1893, "7029052eb45ead4666fd6d1536831711a2836ace9b8608a678dd170545fd20e3"),
+    ("src/acfqp/generic_context_stratified_schedule_v55.py", 4498, "a95c93e2566672ba1470f5c7f26c0f3538e7868098b183ebddfd1e7aff588df1"),
+    ("src/acfqp/generic_contextual_ordinal_residual_v54.py", 15495, "0f4f9b42cdfe991481cd17d1a0c7239d287d97fca4d57a9ae2d284f857e9b81d"),
+    ("src/acfqp/generic_structural_source_partition_v50.py", 6913, "50bfd1d146ff509a862037079f8a1bfb646924826d81b40efc290f360dbf9c01"),
+)
 
 
 class ConstructionK7ProjectedDisagreementPreregistrationV85R1Error(ValueError):
@@ -69,6 +83,13 @@ def _source_facts() -> list[dict[str, Any]]:
             }
         )
     return result
+
+
+def _frozen_source_facts() -> list[dict[str, Any]]:
+    return [
+        {"relative_path": path, "byte_count": count, "sha256": digest}
+        for path, count, digest in FROZEN_SOURCE_FACTS
+    ]
 
 
 def _callable_fact(value: Any) -> dict[str, Any]:
@@ -102,7 +123,7 @@ def _document() -> dict[str, Any]:
             "self_contained_template_library_id": TEMPLATE_LIBRARY_ARTIFACT_ID,
         },
         "source_closure": {
-            "source_facts": _source_facts(),
+            "source_facts": _frozen_source_facts(),
             "v85r1_domains": dict(domains.K7_DOMAIN_TAG_EXTENSION_REGISTRY_V85R1),
             "canonicalizer_callable": _callable_fact(canonical_json_bytes),
             "campaign_builder_callable": _callable_fact(

@@ -12,10 +12,14 @@ from acfqp.construction_k7_projected_disagreement_campaign_v85r1 import (
 )
 
 
-def test_v85r1_campaign_identity_is_unfrozen_before_registered_execution():
-    assert CAMPAIGN_ID == "0" * 64
-    assert EXPECTED_CANONICAL_BYTE_COUNT == 0
-    assert EXPECTED_CANONICAL_SHA256 == "0" * 64
+def test_v85r1_campaign_identity_is_frozen_after_registered_execution():
+    assert CAMPAIGN_ID == (
+        "da749b6ad8996aba86896476fd7293540cca77cd1b4db7145b9bf4fe2759ec70"
+    )
+    assert EXPECTED_CANONICAL_BYTE_COUNT == 6_400_725
+    assert EXPECTED_CANONICAL_SHA256 == (
+        "9371c385cdbfa795752c79e57e3a557f278707df5341b52f81cfdc291e440541"
+    )
 
 
 def test_v85r1_campaign_rejects_foreign_values():
