@@ -44,6 +44,7 @@ def run_reusable_version_space_certificate_episode_v43(
     episode_index: int,
     maximum_abstract_depth: int,
     maximum_execution_steps: int,
+    maximum_target_ground_support_labels: int = 100_000,
     maximum_abstract_support_branch_evaluations: int = 1_000_000,
     abstract_support_feasible_beam_width: int = 64,
 ) -> dict[str, Any]:
@@ -54,6 +55,7 @@ def run_reusable_version_space_certificate_episode_v43(
         or type(episode_index) is not int
         or maximum_abstract_depth <= 0
         or maximum_execution_steps <= 0
+        or maximum_target_ground_support_labels <= 0
         or maximum_abstract_support_branch_evaluations <= 0
         or abstract_support_feasible_beam_width <= 0
     ):
@@ -142,6 +144,8 @@ def run_reusable_version_space_certificate_episode_v43(
             _fail("V43 adapter raw state changed")
         legal = legal_by_raw.get(raw)
         if legal is None:
+            if local_labels >= maximum_target_ground_support_labels:
+                _fail("V43 target ground-support label cap reached before legality query")
             failure_index = failed_certificate(
                 "MISSING_QUERY_LOCAL_LEGALITY_SUPPORT", state, None
             )
@@ -171,6 +175,8 @@ def run_reusable_version_space_certificate_episode_v43(
         pair = (state, key)
         if pair in transition_cache:
             return transition_cache[pair]
+        if local_labels >= maximum_target_ground_support_labels:
+            _fail("V43 target ground-support label cap reached before query")
         raw = adapter.encode(state)
         failure_index = failed_certificate(
             "UNSEEN_TRANSITION_SUPPORT_PREVENTS_EXACT_BRANCH_PROOF", state, key
@@ -277,6 +283,7 @@ def run_reusable_version_space_certificate_episode_v43(
         "outcome_tape_sha256": outcome_tapes,
         "execution_steps": len(action_keys),
         "target_certificate_local_ground_support_labels": local_labels,
+        "maximum_target_ground_support_labels": maximum_target_ground_support_labels,
         "queried_state_action_count": len(transition_cache),
         "abstract_plan_attempt_count": abstract_plan_attempts,
         "abstract_plan_success_count": abstract_plan_successes,
@@ -315,6 +322,7 @@ def run_matched_reusable_version_space_ablation_v43(
     episode_index: int,
     maximum_abstract_depth: int,
     maximum_execution_steps: int,
+    maximum_target_ground_support_labels: int = 100_000,
     maximum_abstract_support_branch_evaluations: int = 1_000_000,
     abstract_support_feasible_beam_width: int = 64,
 ) -> dict[str, Any]:
@@ -324,6 +332,7 @@ def run_matched_reusable_version_space_ablation_v43(
         "episode_index": episode_index,
         "maximum_abstract_depth": maximum_abstract_depth,
         "maximum_execution_steps": maximum_execution_steps,
+        "maximum_target_ground_support_labels": maximum_target_ground_support_labels,
         "maximum_abstract_support_branch_evaluations": (
             maximum_abstract_support_branch_evaluations
         ),
