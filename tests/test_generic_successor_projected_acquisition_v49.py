@@ -33,6 +33,12 @@ from acfqp.generic_version_space_retaining_acquisition_v51 import (
 from acfqp.generic_version_space_retaining_model_compiler_v51 import (
     compile_version_space_retaining_model_v51,
 )
+from acfqp.generic_compiler_ready_acquisition_v52 import (
+    run_relation_covering_compiler_ready_acquisition_v52,
+)
+from acfqp.generic_compiler_ready_model_compiler_v52 import (
+    compile_compiler_ready_model_v52,
+)
 from acfqp.phase3e_ids import canonical_json_bytes
 
 
@@ -342,3 +348,40 @@ def test_v51_compiles_and_retains_joint_residual_version_space():
     assert verified["all_state_coordinates_represented"] is True
     assert verified["complete_world_model_claimed"] is False
     assert verified["abstract_plan_safety_authority_present"] is False
+
+
+def test_v52_waits_for_nonempty_version_space_then_compiles():
+    candidate, evidence, library = _compiler_fixture()
+    acquisition = run_relation_covering_compiler_ready_acquisition_v52(
+        evidence,
+        role_free_template_library=library,
+        required_terminal_classes=("ACCEPT", "ACTIVE"),
+        confidence_denominator=2,
+    )
+    learned = acquisition["compiler_ready_acquisition"]
+    assert learned["status"] == "PROPOSAL_ISSUED_HELDOUT_VALIDATED"
+    assert learned[
+        "residual_successor_version_space_consensus_required_before_issuance"
+    ] is False
+    assert learned["nonempty_residual_version_space_required_before_issuance"] is True
+    eligible = [
+        row
+        for row in learned["proposal_attempts"]
+        if row["training_calibrated_after_all_acquisition_guards"] is True
+    ]
+    assert eligible
+    assert all(
+        row["compiler_readiness"][
+            "all_non_status_residual_version_spaces_nonempty"
+        ]
+        is True
+        for row in eligible
+    )
+    model = compile_compiler_ready_model_v52(candidate, evidence, acquisition)
+    verified = verify_joint_successor_version_space_model_v42(model)
+    assert verified["source_acquisition_protocol"] == (
+        "COMPILER_READY_VERSION_SPACE_V52"
+    )
+    assert verified["nonempty_residual_version_space_used_as_acquisition_gate"] is True
+    assert verified["every_batch_exact_residual_expression_retained"] is True
+    assert verified["complete_world_model_claimed"] is False
