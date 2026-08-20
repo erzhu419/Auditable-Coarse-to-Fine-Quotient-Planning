@@ -18,14 +18,17 @@ def test_v75_campaign_rejects_foreign_values():
     os.environ.get("ACFQP_RUN_REAL_REUSABLE_V75") != "1",
     reason="explicit preregistered V75 cross-occurrence campaign execution",
 )
-def test_v75_registered_campaign_gate_and_claim_boundary():
+def test_v75_registered_campaign_preserves_failed_reduction_gate():
     value = verify_cross_occurrence_reuse_campaign_v75(
         run_cross_occurrence_reuse_campaign_v75()
     )
     document = value.to_document()
-    assert document["registered_gate"]["passed"] is True
+    assert document["registered_gate"]["passed"] is False
     sample = document["sample_tax_comparison"]
-    assert sample["cross_occurrence_actual_target_sample_reduction_observed"] is True
+    assert sample["cross_occurrence_actual_target_sample_reduction_observed"] is False
+    assert sample["derived_target_certificate_local_labels"] == 91
+    assert sample["strict_target_certificate_local_labels"] == 91
+    assert sample["reduced_target_occurrence_count"] == 0
     assert document["source_and_target_seed_identities_disjoint"] is True
     assert document["all_ground_queries_followed_failed_certificates"] is True
     assert document["query_local_exact_overlay_exclusively_used_for_safety"] is True

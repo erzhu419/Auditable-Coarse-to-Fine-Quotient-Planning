@@ -22,9 +22,9 @@ from acfqp.cross_occurrence_reusable_model_campaign_core_v75 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "2879cfb4bb3267d13fc1eef588f9d37c0cbe7a01ee9f5b6bda7385720e256c6c"
+EXPECTED_CANONICAL_BYTE_COUNT = 1_682_606
+EXPECTED_CANONICAL_SHA256 = "db8ed958b7e36055ab123435e5c3f6a26d345f1b024c6639c6bc1553d5ec8e9a"
 
 
 class ConstructionK7CrossOccurrenceReuseCampaignV75Error(ValueError):
