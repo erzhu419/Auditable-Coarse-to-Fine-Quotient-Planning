@@ -6,12 +6,16 @@ import pytest
 
 from acfqp.construction_k7_reusable_amortization_independent_verifier_v74 import (
     ConstructionK7ReusableAmortizationIndependentVerifierV74Error,
+    EXPECTED_CANONICAL_BYTE_COUNT,
+    VERIFICATION_ID,
     verify_reusable_amortization_campaign_bytes_v74,
 )
 from acfqp.phase3e_ids import loads_canonical_json
 
 
 def test_v74_independent_verifier_rejects_foreign_bytes():
+    assert len(VERIFICATION_ID) == 64
+    assert EXPECTED_CANONICAL_BYTE_COUNT == 1_121
     with pytest.raises(ConstructionK7ReusableAmortizationIndependentVerifierV74Error):
         verify_reusable_amortization_campaign_bytes_v74(b"{}")
 
