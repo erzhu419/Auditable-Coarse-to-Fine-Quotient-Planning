@@ -163,6 +163,11 @@ def schedule_role_free_acquisition_queries_v36(
         ).hexdigest(),
         "query_count": len(groups),
         "raw_transition_row_count": len(rows),
+        "outcome_blind_score_evaluation_count": (
+            len(groups) * (len(known) * (len(known) - 1) // 2)
+            if structural_prior
+            else len(groups)
+        ),
         "schedule": schedule,
         "scheduled_raw_transition_rows": scheduled_rows,
         "pre_state_fields_accessed": True,
