@@ -65,6 +65,7 @@ def acquire_multi_residual_factors_v24(
     shared_labels, shared_rows = _shared_pool_facts(evidence)
     target_results = []
     actionable = []
+    compilable = []
     for target in targets:
         singleton_evidence = {
             "layout": layout,
@@ -80,9 +81,15 @@ def acquire_multi_residual_factors_v24(
             acquisition, singleton_evidence
         )
         candidate = acquisition.get("candidate")
-        usable = (
+        compilable_for_abstract_planning = (
             type(candidate) is dict
             and candidate.get("target_column") == target
+            and type(candidate.get("normalized_expression")) is list
+            and type(candidate.get("predictive_support_excess")) is int
+            and candidate.get("predictive_support_excess") >= 0
+        )
+        usable = (
+            compilable_for_abstract_planning
             and type(candidate.get("action_field_binding")) is int
             and candidate.get("predictive_support_excess") == 0
         )
@@ -90,11 +97,16 @@ def acquire_multi_residual_factors_v24(
             "target_column": target,
             "total_acquisition": acquisition,
             "full_shared_pool_replay": replay,
+            "compilable_for_proposal_only_abstract_planning": (
+                compilable_for_abstract_planning
+            ),
             "actionable_for_abstract_planning": usable,
         }
         target_results.append(row)
         if usable:
             actionable.append(candidate)
+        if compilable_for_abstract_planning:
+            compilable.append(candidate)
     payload = {
         "schema": "acfqp.generic_multi_residual_acquisition.v24",
         "arm": (
@@ -121,6 +133,9 @@ def acquire_multi_residual_factors_v24(
         ],
         "per_target_label_consumption_summed_as_physical_samples": False,
         "target_results": target_results,
+        "compilable_candidates": compilable,
+        "compilable_target_columns": [row["target_column"] for row in compilable],
+        "compilable_candidate_count": len(compilable),
         "actionable_candidates": actionable,
         "actionable_target_columns": [row["target_column"] for row in actionable],
         "actionable_candidate_count": len(actionable),
@@ -131,8 +146,15 @@ def acquire_multi_residual_factors_v24(
         ),
         "same_shared_raw_query_pool_for_every_target": True,
         "proposal_only_not_safety_authority": True,
-        "unmodeled_targets_remain_explicit": len(actionable) < len(targets),
-        "complete_residual_world_model_synthesized": len(actionable) == len(targets),
+        "positive_excess_supports_may_only_overapproximate_successors": True,
+        "unmodeled_targets_remain_explicit": len(compilable) < len(targets),
+        "all_residual_targets_have_actionable_statistical_proposals": (
+            len(actionable) == len(targets)
+        ),
+        "all_residual_targets_have_compilable_statistical_proposals": (
+            len(compilable) == len(targets)
+        ),
+        "complete_residual_world_model_synthesized": False,
         "global_exact_dynamics_claimed": False,
     }
     return {
@@ -165,6 +187,7 @@ def replay_multi_residual_factors_v24(
         ],
         "target_count": len(expected["target_results"]),
         "actionable_candidate_count": expected["actionable_candidate_count"],
+        "compilable_candidate_count": expected["compilable_candidate_count"],
         "abstention_count": expected["abstention_count"],
         "all_target_totalizers_reconstructed": True,
         "per_target_label_consumption_summed_as_physical_samples": False,

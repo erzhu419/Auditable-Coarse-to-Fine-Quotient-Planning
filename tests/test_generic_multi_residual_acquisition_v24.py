@@ -77,6 +77,13 @@ def test_v24_real_shared_pool_totalizes_each_unknown_target_without_double_tax()
     assert acquisition[
         "per_target_label_consumption_summed_as_physical_samples"
     ] is False
+    assert acquisition["complete_residual_world_model_synthesized"] is False
+    assert acquisition[
+        "positive_excess_supports_may_only_overapproximate_successors"
+    ] is True
+    assert acquisition["compilable_candidate_count"] >= acquisition[
+        "actionable_candidate_count"
+    ]
     assert len(acquisition["target_results"]) == len(
         candidate["unknown_residual_target_columns"]
     )
