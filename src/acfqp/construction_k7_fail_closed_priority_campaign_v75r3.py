@@ -22,9 +22,9 @@ from acfqp.fail_closed_normalized_priority_campaign_core_v75r3 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "6ea230d88e962268e924c457a0e3de960797238affb8b3ff518b55fda8c40902"
+EXPECTED_CANONICAL_BYTE_COUNT = 1_921_557
+EXPECTED_CANONICAL_SHA256 = "517a1e2b7fd2054ef6c8accf7d9291445e5ea90d6b3b2de68f6c7dd6de3aacd9"
 
 
 class ConstructionK7FailClosedPriorityCampaignV75R3Error(ValueError):
