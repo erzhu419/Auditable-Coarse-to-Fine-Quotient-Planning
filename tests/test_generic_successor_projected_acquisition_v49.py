@@ -26,6 +26,13 @@ from acfqp.generic_successor_projected_acquisition_v49 import (
 from acfqp.generic_successor_projected_model_compiler_v49 import (
     compile_successor_projected_model_v49,
 )
+from acfqp.generic_version_space_retaining_acquisition_v51 import (
+    acquire_version_space_retaining_terminal_program_v51,
+    run_relation_covering_version_space_retaining_acquisition_v51,
+)
+from acfqp.generic_version_space_retaining_model_compiler_v51 import (
+    compile_version_space_retaining_model_v51,
+)
 from acfqp.phase3e_ids import canonical_json_bytes
 
 
@@ -258,6 +265,80 @@ def test_v49_compiles_to_verified_joint_successor_model():
     verified = verify_joint_successor_version_space_model_v42(model)
     assert verified["source_acquisition_protocol"] == "SUCCESSOR_PROJECTED_V49"
     assert verified["terminal_frontier_evaluated_on_query_prestates"] is False
+    assert verified["all_state_coordinates_represented"] is True
+    assert verified["complete_world_model_claimed"] is False
+    assert verified["abstract_plan_safety_authority_present"] is False
+
+
+def test_v51_issues_without_a_residual_successor_consensus_gate(monkeypatch):
+    program = _program()
+    evidence = {
+        "layout": {
+            "state_canonical_to_raw": [0, 1, 2, 3],
+            "action_canonical_to_raw": [0],
+        },
+        "unknown_residual_target_columns": [3],
+        "raw_transition_rows": [
+            _row(0, [0, 1, 0, 4], [1, 1, 1, 9], True),
+            _row(1, [2, 3, 2, 4], [3, 4, 5, 4], False),
+            _row(2, [4, 5, 4, 4], [5, 5, 5, 9], True),
+            _row(3, [6, 7, 6, 4], [7, 8, 9, 4], False),
+        ],
+    }
+    monkeypatch.setattr(
+        v37,
+        "_candidate",
+        lambda *_args, **_kwargs: {
+            "candidate_present": True,
+            "candidate_program": program,
+            "candidate_program_id": program["terminal_program_id"],
+            "training_calibrated": True,
+        },
+    )
+    monkeypatch.setattr(
+        v37,
+        "_predict_group",
+        lambda *_args, **_kwargs: {
+            "query_exact": True,
+            "raw_row_predictions": [],
+        },
+    )
+    result = acquire_version_space_retaining_terminal_program_v51(
+        evidence,
+        role_free_template_library={},
+        required_terminal_classes=("ACCEPT", "ACTIVE"),
+        confidence_denominator=2,
+    )
+    assert result["status"] == "PROPOSAL_ISSUED_HELDOUT_VALIDATED"
+    assert result[
+        "residual_successor_version_space_consensus_required_before_issuance"
+    ] is False
+    assert result[
+        "every_batch_exact_residual_proposal_retained_by_compiler_required"
+    ] is True
+    assert result["heldout_rows_accessed_before_stop"] is False
+
+
+def test_v51_compiles_and_retains_joint_residual_version_space():
+    candidate, evidence, library = _compiler_fixture()
+    acquisition = run_relation_covering_version_space_retaining_acquisition_v51(
+        evidence,
+        role_free_template_library=library,
+        required_terminal_classes=("ACCEPT", "ACTIVE"),
+        confidence_denominator=2,
+    )
+    assert acquisition["version_space_retaining_acquisition"]["status"] == (
+        "PROPOSAL_ISSUED_HELDOUT_VALIDATED"
+    )
+    model = compile_version_space_retaining_model_v51(
+        candidate, evidence, acquisition
+    )
+    verified = verify_joint_successor_version_space_model_v42(model)
+    assert verified["source_acquisition_protocol"] == "VERSION_SPACE_RETAINING_V51"
+    assert verified[
+        "residual_successor_consensus_used_as_acquisition_gate"
+    ] is False
+    assert verified["every_batch_exact_residual_expression_retained"] is True
     assert verified["all_state_coordinates_represented"] is True
     assert verified["complete_world_model_claimed"] is False
     assert verified["abstract_plan_safety_authority_present"] is False
