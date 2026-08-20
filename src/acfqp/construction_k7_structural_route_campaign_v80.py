@@ -22,9 +22,9 @@ from acfqp.structurally_routed_source_campaign_core_v80 import (
 )
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "baba3898eec69852d3275dd61daa2a6823512879bd44df1a031cc50d8106476d"
+EXPECTED_CANONICAL_BYTE_COUNT = 1_452_985
+EXPECTED_CANONICAL_SHA256 = "e0a142adc327f32d49de6313ab9af001c659e05fe80c25c5ae55348b54935d4c"
 
 
 class ConstructionK7StructuralRouteCampaignV80Error(ValueError):
