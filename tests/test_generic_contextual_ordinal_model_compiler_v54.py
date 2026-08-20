@@ -19,6 +19,13 @@ from acfqp.generic_contextual_ordinal_residual_v54 import version_space_v54
 from acfqp.generic_contextual_ordinal_planner_v54 import (
     plan_contextual_ordinal_model_v54,
 )
+from acfqp.generic_context_stratified_schedule_v55 import (
+    schedule_context_stratified_queries_v55,
+)
+from acfqp.generic_context_stratified_model_compiler_v55 import (
+    compile_context_stratified_model_v55,
+    verify_context_stratified_model_v55,
+)
 from acfqp.generic_partial_factor_proposal_v15 import (
     V51_FACTOR_TEMPLATE_PROJECTION,
     synthesize_partial_factor_candidate_v15,
@@ -31,6 +38,7 @@ from acfqp.phase3e_ids import canonical_json_bytes
 
 _ACQ_DOMAIN = b"acfqp:generic-contextual-ordinal-frontier-acquisition:v54\x00"
 _BUNDLE_DOMAIN = b"acfqp:relation-covering-contextual-ordinal-frontier-acquisition:v54\x00"
+_V55_BUNDLE_DOMAIN = b"acfqp:context-stratified-contextual-ordinal-acquisition:v55\x00"
 
 
 def _fixture():
@@ -242,3 +250,38 @@ def test_v54_model_rejects_claim_flip():
     model["complete_world_model_claimed"] = True
     with pytest.raises(GenericContextualOrdinalModelCompilerV54Error):
         verify_contextual_ordinal_model_v54(model)
+
+
+def test_v55_compiler_preserves_v54_model_semantics_under_context_schedule():
+    candidate, _catalogue, evidence, v54_bundle = _fixture()
+    schedule = schedule_context_stratified_queries_v55(evidence)
+    acquisition = v54_bundle["contextual_ordinal_frontier_acquisition"]
+    payload = {
+        "schema": "acfqp.context_stratified_contextual_ordinal_acquisition.v55",
+        "query_schedule": schedule,
+        "contextual_ordinal_frontier_acquisition": acquisition,
+        "context_stratified_query_schedule_id": schedule[
+            "context_stratified_query_schedule_id"
+        ],
+        "contextual_ordinal_frontier_acquisition_id": acquisition[
+            "contextual_ordinal_frontier_acquisition_id"
+        ],
+        "outcome_witness_used_for_scheduling_or_unacquired_guard": False,
+        "context_and_relation_round_robin": True,
+        "all_terminal_and_residual_frontier_candidates_checked_prequentially": True,
+        "contextual_action_supports_derived_from_catalogue_only": True,
+        "retrospective_acquisition_only": True,
+        "online_execution_integrated": False,
+        "proposal_only_not_safety_authority": True,
+    }
+    bundle = {
+        **payload,
+        "context_stratified_contextual_ordinal_acquisition_id": hashlib.sha256(
+            _V55_BUNDLE_DOMAIN + canonical_json_bytes(payload)
+        ).hexdigest(),
+    }
+    model = compile_context_stratified_model_v55(candidate, evidence, bundle)
+    verified = verify_context_stratified_model_v55(model)
+    assert verified["context_and_relation_round_robin_used"] is True
+    assert verified["contextual_ordinal_action_support_operator_present"] is True
+    assert verified["complete_world_model_claimed"] is False
