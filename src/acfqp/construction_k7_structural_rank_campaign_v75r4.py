@@ -22,9 +22,9 @@ from acfqp.structural_rank_transfer_campaign_core_v75r4 import (
 )
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "cc3ad3f14573acecea2a6001f0f7f706a3fbb585385f7aa873c5bdb0b3dfcb96"
+EXPECTED_CANONICAL_BYTE_COUNT = 2_132_765
+EXPECTED_CANONICAL_SHA256 = "5ee5438496f0bdc808576423e1363f377b18ff14c5b9c513d61670b98286a99d"
 
 
 class ConstructionK7StructuralRankCampaignV75R4Error(ValueError):
