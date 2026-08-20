@@ -17,9 +17,12 @@ from acfqp.projected_disagreement_source_campaign_core_v85 import (
 
 
 IMPLEMENTATION_COMMIT = "808fb7b"
-PREREGISTRATION_ID = "01bbe4a0924535e11fea1a04d0a9205e6f0bfbefa9216a88f8aa2d7b4a2d77fb"
-EXPECTED_CANONICAL_BYTE_COUNT = 7_641
-EXPECTED_CANONICAL_SHA256 = "007f0e3d57b8dc9c1b57107171cbe28671bfc75f1c8f16e818ca113844f1f261"
+WITHDRAWN_INCOMPLETE_SOURCE_CLOSURE_PREREGISTRATION_ID = (
+    "01bbe4a0924535e11fea1a04d0a9205e6f0bfbefa9216a88f8aa2d7b4a2d77fb"
+)
+PREREGISTRATION_ID = "87ba0a081d8b007bcd267323269407febcd95ee3019c679f543022baf8c40138"
+EXPECTED_CANONICAL_BYTE_COUNT = 8_083
+EXPECTED_CANONICAL_SHA256 = "8cae7b6438ea7a78f5646593366f9db299c8076b6620089509ab8a90725c331d"
 V84_FAILED_CAMPAIGN_ID = (
     "1828a9c92459da992f2e691b5a8f935005d4da5981070728f4c5d9a0a4e9db28"
 )
@@ -42,6 +45,7 @@ BOUND_SOURCE_PATHS = (
     "src/acfqp/generic_contextual_ordinal_frontier_acquisition_v54.py",
     "src/acfqp/generic_contextual_ordinal_model_compiler_v54.py",
     "src/acfqp/projected_disagreement_source_campaign_core_v85.py",
+    "src/acfqp/construction_k7_projected_disagreement_campaign_v85.py",
     "src/acfqp/contextual_ordinal_source_campaign_core_v84.py",
     "src/acfqp/generic_frontier_prequential_acquisition_v53.py",
     "src/acfqp/generic_structural_source_partition_v50.py",
@@ -101,6 +105,9 @@ def _document() -> dict[str, Any]:
         "schema": "acfqp.projected_disagreement_source_preregistration.v85",
         "implementation_commit": IMPLEMENTATION_COMMIT,
         "frozen_predecessors": {
+            "withdrawn_incomplete_source_closure_preregistration_id": (
+                WITHDRAWN_INCOMPLETE_SOURCE_CLOSURE_PREREGISTRATION_ID
+            ),
             "v84_failed_campaign_id": V84_FAILED_CAMPAIGN_ID,
             "v84_preregistration_id": previous.PREREGISTRATION_ID,
             "v83_failed_campaign_id": previous.V83_FAILED_CAMPAIGN_ID,
@@ -116,6 +123,8 @@ def _document() -> dict[str, Any]:
             "frozen_before_any_registered_v85_source_outcome": True,
         },
         "failure_driven_successor_contract": {
+            "earlier_outcome_free_v85_preregistration_with_unbound_producer_preserved": True,
+            "no_outcome_executed_under_withdrawn_preregistration": True,
             "v84_context_schedule_failure_preserved": True,
             "v84_raw_transitions_used_only_for_offline_schedule_diagnosis": True,
             "projected_disagreement_schedule_is_generic_not_family_named": True,
