@@ -67,6 +67,7 @@ def plan_role_free_relational_world_model_v34(
         "schema": "acfqp.generic_role_free_relational_world_model_plan.v34",
         "template_library_id": role_free_template_library.get("template_library_id"),
         "target_instantiation_id": instantiation["instantiation_id"],
+        "target_instantiation": instantiation,
         "instantiated_terminal_program_id": terminal["terminal_program_id"],
         "batch_exact_multi_residual_id": batch_exact_residual_support.get(
             "batch_exact_multi_residual_id"

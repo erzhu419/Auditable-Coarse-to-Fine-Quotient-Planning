@@ -71,5 +71,6 @@ def test_v34_reuses_role_free_terminal_template_in_abstract_planning():
         maximum_depth=12,
     )
     assert result["cross_occurrence_role_free_template_reused"] is True
+    assert result["target_instantiation"]["binding_evaluation_count"] > 0
     assert result["abstract_plan"]["support_feasible_receding_plan_found"] is True
     assert result["abstract_plan_used_as_safety_authority"] is False
