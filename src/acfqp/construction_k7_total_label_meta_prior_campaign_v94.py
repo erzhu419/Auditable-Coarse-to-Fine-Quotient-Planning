@@ -33,9 +33,13 @@ from acfqp.total_label_meta_prior_campaign_core_v94 import (
 )
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = (
+    "8fcb91339c02f818ef9ff829e99ab1ac000fbc6940888d700c31c461fafabde8"
+)
+EXPECTED_CANONICAL_BYTE_COUNT = 278_767
+EXPECTED_CANONICAL_SHA256 = (
+    "b1419448d18011bec11dfe604573856b6f7e4a56c642a078c0804a1cb410465f"
+)
 
 
 class ConstructionK7TotalLabelMetaPriorCampaignV94Error(ValueError):
