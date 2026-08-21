@@ -12,7 +12,6 @@ from acfqp.construction_k7_identity_short_circuited_epoch_independent_verifier_v
     CAMPAIGN_BYTE_COUNT as V111_CAMPAIGN_BYTE_COUNT,
     EXPECTED_CANONICAL_BYTE_COUNT as V111_VERIFICATION_BYTE_COUNT,
     freeze_identity_short_circuited_epoch_verification_v111,
-    verify_identity_short_circuited_epoch_campaign_bytes_v111,
 )
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 from acfqp.symmetric_epoch_accounting_campaign_core_v112 import (
@@ -77,22 +76,21 @@ def run_symmetric_epoch_accounting_campaign_v112(
         pre.freeze_symmetric_epoch_accounting_preregistration_v112()
     )
     try:
-        verified_v111 = verify_identity_short_circuited_epoch_campaign_bytes_v111(
-            v111_campaign_raw
-        )
+        campaign_v111 = loads_canonical_json(v111_campaign_raw)
         verification_v111 = loads_canonical_json(v111_verification_raw)
     except Exception as exc:
         _fail(f"V112 frozen failed V111 predecessor is unreadable: {exc}")
     if (
         len(v111_campaign_raw) != V111_CAMPAIGN_BYTE_COUNT
-        or verified_v111.get("campaign_id") != pre.V111_CAMPAIGN_ID
-        or verified_v111.get("registered_gate_independently_verified") is not False
-        or verified_v111.get("fresh_successor_required") is not True
+        or campaign_v111.get("campaign_id") != pre.V111_CAMPAIGN_ID
         or canonical_json_bytes(verification_v111) != v111_verification_raw
         or len(v111_verification_raw) != V111_VERIFICATION_BYTE_COUNT
         or hashlib.sha256(v111_verification_raw).hexdigest()
         != pre.V111_VERIFICATION_SHA256
         or verification_v111.get("verification_id") != pre.V111_VERIFICATION_ID
+        or verification_v111.get("campaign_id") != pre.V111_CAMPAIGN_ID
+        or verification_v111.get("registered_gate_independently_verified") is not False
+        or verification_v111.get("fresh_successor_required") is not True
         or freeze_identity_short_circuited_epoch_verification_v111(
             v111_campaign_raw
         )
