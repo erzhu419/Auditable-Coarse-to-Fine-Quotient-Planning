@@ -21,9 +21,9 @@ from acfqp.source_unseen_residual_campaign_core_v119 import (
 )
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "611c995b93af4016bb85e070f5c1f263d6028ec424cc860e2b67da2bb9aeb3d4"
+EXPECTED_CANONICAL_BYTE_COUNT = 4_479_714
+EXPECTED_CANONICAL_SHA256 = "22565e57114973fbf1c2fc16d11785eb67c9aebcb5df2c61dc39cc0ba64e301e"
 
 
 class ConstructionK7SourceUnseenResidualCampaignV119Error(ValueError):
