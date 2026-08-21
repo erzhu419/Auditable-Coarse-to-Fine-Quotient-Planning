@@ -232,6 +232,106 @@ def _distance(value: int, rule: Mapping[str, Any]) -> int:
     _fail("V122 terminal rule kind changed")
 
 
+def _add_coefficients(
+    left: tuple[tuple[int, int], ...], right: tuple[tuple[int, int], ...]
+) -> tuple[tuple[int, int], ...]:
+    result = dict(left)
+    for key, value in right:
+        result[key] = result.get(key, 0) + value
+    return tuple(sorted((key, value) for key, value in result.items() if value))
+
+
+def _affine_forms(
+    expression: Any,
+) -> frozenset[
+    tuple[int, tuple[tuple[int, int], ...], tuple[tuple[int, int], ...]]
+] | None:
+    """Exact finite affine abstraction for the supported arithmetic fragment.
+
+    Unsupported typed opcodes return ``None`` and therefore contribute a zero
+    heuristic.  No expression-shape template is recognized here: E05 composes
+    affine forms and E07 forms their finite union recursively.
+    """
+
+    if type(expression) is bool:
+        return None
+    if type(expression) is int:
+        return frozenset(((expression, (), ()),))
+    opcode = expression[0]
+    if opcode == "E00":
+        return frozenset(((0, ((expression[1], 1),), ()),))
+    if opcode == "E01":
+        return frozenset(((0, (), ((expression[1], 1),)),))
+    if opcode == "E05":
+        left = _affine_forms(expression[1])
+        right = _affine_forms(expression[2])
+        if left is None or right is None:
+            return None
+        return frozenset(
+            (
+                left_constant + right_constant,
+                _add_coefficients(left_state, right_state),
+                _add_coefficients(left_action, right_action),
+            )
+            for left_constant, left_state, left_action in left
+            for right_constant, right_state, right_action in right
+        )
+    if opcode == "E07":
+        left = _affine_forms(expression[1])
+        right = _affine_forms(expression[2])
+        if left is None or right is None:
+            return None
+        return left | right
+    return None
+
+
+def _translation_deltas(
+    assignment: Mapping[str, Any], actions: tuple[FlatRawActionV4, ...]
+) -> tuple[int, ...] | None:
+    forms = _affine_forms(assignment["expression"])
+    target = assignment["target_column"]
+    if forms is None or any(state != ((target, 1),) for _constant, state, _action in forms):
+        return None
+    deltas = set()
+    for constant, _state, action_coefficients in forms:
+        for action in actions:
+            deltas.add(
+                constant
+                + sum(
+                    coefficient * action.fields[field]
+                    for field, coefficient in action_coefficients
+                )
+            )
+    return tuple(sorted(deltas))
+
+
+def _sound_progress_bound(
+    state: tuple[int, ...],
+    rules: tuple[Mapping[str, Any], ...],
+    delta_supports: tuple[tuple[int, ...] | None, ...],
+) -> int | None:
+    bounds = []
+    for value, rule, deltas in zip(state, rules, delta_supports, strict=True):
+        distance = _distance(value, rule)
+        if distance == 0:
+            bounds.append(0)
+            continue
+        if deltas is None:
+            bounds.append(0)
+            continue
+        kind = rule["kind"]
+        if kind == "AT_LEAST":
+            maximum = max(deltas)
+        elif kind == "AT_MOST":
+            maximum = max(-delta for delta in deltas)
+        else:
+            maximum = max(abs(delta) for delta in deltas)
+        if maximum <= 0:
+            return None
+        bounds.append(ceil(distance / maximum))
+    return max(bounds, default=0)
+
+
 def _canonical_actions(
     candidate: PartialFactorCandidateV15,
     catalogue: tuple[FlatRawActionV4, ...],
@@ -276,7 +376,15 @@ def plan_generic_factor_program_v122(
     ):
         _fail("V122 planner inventory changed")
 
-    new_evaluations = reused_evaluations = heuristic_evaluations = 0
+    new_evaluations = reused_evaluations = 0
+    delta_supports = tuple(
+        _translation_deltas(assignment, actions)
+        for assignment in candidate.assignments
+    )
+    heuristic_derivation_compute = sum(
+        len(rows) * len(actions) if rows is not None else 1
+        for rows in delta_supports
+    )
 
     def successors(state: tuple[int, ...], action: FlatRawActionV4) -> tuple[tuple[int, ...], ...]:
         nonlocal new_evaluations, reused_evaluations
@@ -290,30 +398,11 @@ def plan_generic_factor_program_v122(
             reused_evaluations += len(result)
         return result
 
-    def priority_bound(state: tuple[int, ...]) -> int:
-        nonlocal heuristic_evaluations
-        distances = tuple(
-            _distance(value, rule)
-            for value, rule in zip(state, terminal_rules, strict=True)
-        )
-        if not any(distances):
-            return 0
-        progress = [0] * len(state)
-        for action in actions:
-            for successor in successors(state, action):
-                heuristic_evaluations += 1
-                for offset, rule in enumerate(terminal_rules):
-                    progress[offset] = max(
-                        progress[offset],
-                        distances[offset] - _distance(successor[offset], rule),
-                    )
-        bounds = [
-            0 if distance == 0 else ceil(distance / step) if step > 0 else 0
-            for distance, step in zip(distances, progress, strict=True)
-        ]
-        return max(bounds, default=0)
-
-    initial_bound = priority_bound(initial_projected_state)
+    initial_bound = _sound_progress_bound(
+        initial_projected_state, terminal_rules, delta_supports
+    )
+    if initial_bound is None or initial_bound > maximum_depth:
+        _fail("V122 generic factor program found no support-feasible continuation")
     frontier = [(initial_bound, 0, initial_projected_state)]
     best_depth = {initial_projected_state: 0}
     predecessor: dict[tuple[int, ...], tuple[tuple[int, ...], int] | None] = {
@@ -336,13 +425,20 @@ def plan_generic_factor_program_v122(
                 if next_state == state:
                     continue
                 next_depth = depth + 1
-                if next_depth >= best_depth.get(next_state, maximum_depth + 1):
+                bound = _sound_progress_bound(
+                    next_state, terminal_rules, delta_supports
+                )
+                if (
+                    bound is None
+                    or next_depth + bound > maximum_depth
+                    or next_depth >= best_depth.get(next_state, maximum_depth + 1)
+                ):
                     continue
                 best_depth[next_state] = next_depth
                 predecessor[next_state] = (state, action.key)
                 heapq.heappush(
                     frontier,
-                    (next_depth + priority_bound(next_state), next_depth, next_state),
+                    (next_depth + bound, next_depth, next_state),
                 )
     if terminal is None:
         _fail("V122 generic factor program found no support-feasible continuation")
@@ -369,10 +465,11 @@ def plan_generic_factor_program_v122(
         ),
         "projected_branch_cache_hit_count": reused_evaluations,
         "projected_branch_cache_entry_count": len(branch_cache),
-        "generic_expression_heuristic_evaluations": heuristic_evaluations,
+        "generic_affine_heuristic_derivation_compute_events": heuristic_derivation_compute,
         "generic_typed_opcode_interpreter_used_for_every_new_successor": True,
         "terminal_rule_derived_from_anonymous_dependencies_and_projected_deltas": True,
-        "heuristic_used_for_queue_order_only_not_depth_pruning": True,
+        "unsupported_expression_fragments_receive_zero_lower_bound": True,
+        "exact_affine_translation_bounds_used_for_sound_depth_pruning": True,
         "hand_written_expression_shape_case_count": 0,
         "legacy_shape_specific_planner_execution_adapter_present": False,
         "generic_planner_execution_adapter_verified": True,
