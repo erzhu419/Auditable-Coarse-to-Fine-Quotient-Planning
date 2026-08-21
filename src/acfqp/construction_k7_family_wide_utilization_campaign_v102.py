@@ -14,9 +14,9 @@ from acfqp.construction_k7_residual_factor_library_v62 import freeze_residual_fa
 from acfqp.family_wide_abstract_utilization_campaign_core_v102 import build_family_wide_utilization_campaign_document_v102
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "f0b45ab4a6466988ac6cef39bd2723869d7bb3d4409afc60b9d00e035609d3d7"
+EXPECTED_CANONICAL_BYTE_COUNT = 4_755_021
+EXPECTED_CANONICAL_SHA256 = "116d325ac9e2aa5f8cf34278fe97736b54a52586c5d6b5138d932644dc592a25"
 
 
 class ConstructionK7FamilyWideUtilizationCampaignV102Error(ValueError): pass
