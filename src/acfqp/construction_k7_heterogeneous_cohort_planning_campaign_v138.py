@@ -13,9 +13,11 @@ from acfqp.heterogeneous_cohort_planning_campaign_core_v138 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "1339d749a40b3b52d3af05017553e64b3f27b89ee837d93951c9eb72c56bfbc3"
+EXPECTED_CANONICAL_BYTE_COUNT = 7_612_784
+EXPECTED_CANONICAL_SHA256 = (
+    "24dbe3684fccd7816390420b0ec722f1370c03e9e92daf4ef9316a458087400b"
+)
 
 
 class ConstructionK7HeterogeneousCohortPlanningCampaignV138Error(ValueError):
