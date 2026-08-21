@@ -24,9 +24,9 @@ from acfqp.receipted_abstract_utilization_campaign_core_v103 import (
     build_receipted_utilization_campaign_document_v103,
 )
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "ae93067c6dfacbe158d3db700bc7c1b187e7e2d05d862d8cffcf971e1866d006"
+EXPECTED_CANONICAL_BYTE_COUNT = 4_763_416
+EXPECTED_CANONICAL_SHA256 = "810500096381e789a39bcce5f4e9650d36d2cfc431dbf9513fe20aeefc3c3b16"
 
 
 class ConstructionK7ReceiptedUtilizationCampaignV103Error(ValueError):
