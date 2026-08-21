@@ -16,8 +16,10 @@ from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 CAMPAIGN_ID = "0" * 64
 EXPECTED_CANONICAL_BYTE_COUNT = 0
 EXPECTED_CANONICAL_SHA256 = "0" * 64
-ATTEMPT_TERMINAL_STATE = "UNEXECUTED"
-FAILURE_RECORD_SHA256 = "0" * 64
+ATTEMPT_TERMINAL_STATE = "FROZEN_PREREGISTERED_RESOURCE_CAP_FAILURE"
+FAILURE_RECORD_SHA256 = (
+    "15b157c5301a650603a6d131e5c6feb6d35481be1aaf4be2f537bd7fd30163de"
+)
 
 
 class ConstructionK7OccurrenceFactorBankUpdatePlanningCampaignV143Error(ValueError):
