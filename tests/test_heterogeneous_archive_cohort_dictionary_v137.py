@@ -45,8 +45,9 @@ def test_v137_records_incompatible_source_and_selects_maximal_coherent_cohort(fr
     assert document["official_scalar_cost"] is None
 
 
-def test_v137_frozen_dictionary_bytes_when_registered(frozen):
-    raw, document = frozen
+def test_v137_frozen_dictionary_bytes_when_registered():
+    raw = (ROOT / "v137_heterogeneous_archive_cohort_dictionary.json").read_bytes()
+    document = loads_canonical_json(raw)
     if DICTIONARY_ID != "0" * 64:
         assert document["dictionary_id"] == DICTIONARY_ID
         assert len(raw) == EXPECTED_CANONICAL_BYTE_COUNT

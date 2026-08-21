@@ -15,9 +15,11 @@ from acfqp.auto_calibrated_archive_dictionary_v135 import (
 from acfqp.phase3e_ids import canonical_json_bytes
 
 
-DICTIONARY_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+DICTIONARY_ID = "e1a97462b7a3d16a7f1d071fd14f0d22a0bf4e94209cabb67107598f3479e6f6"
+EXPECTED_CANONICAL_BYTE_COUNT = 6_146
+EXPECTED_CANONICAL_SHA256 = (
+    "b52020a585bf3e9fd21aafe56e03f62361a331eb43894b10111baa06f17ca661"
+)
 
 
 class HeterogeneousArchiveCohortDictionaryV137Error(ValueError):
