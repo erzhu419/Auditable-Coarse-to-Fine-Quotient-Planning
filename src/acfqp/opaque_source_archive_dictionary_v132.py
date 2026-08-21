@@ -17,9 +17,9 @@ from acfqp.generic_bit_codelength_universal_synthesizer_v14 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-DICTIONARY_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+DICTIONARY_ID = "10094aa8ced24dadc18cef22bd21587e54d44215e86fd3d6633b28c9e6d32836"
+EXPECTED_CANONICAL_BYTE_COUNT = 6_774
+EXPECTED_CANONICAL_SHA256 = "5daa55fef0366594bb566874578bf90c8a6033394be39d07d2f47056d42e5ed9"
 
 
 class OpaqueSourceArchiveDictionaryV132Error(ValueError):
