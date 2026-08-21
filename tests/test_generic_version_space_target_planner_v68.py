@@ -89,6 +89,14 @@ def test_v68_receding_abstract_ordering_reduces_exact_local_queries(ablation):
     assert derived["target_certificate_local_ground_support_labels"] == 11
     assert strict["target_certificate_local_ground_support_labels"] == 17
     assert derived["abstract_plan_success_count"] > 0
+    assert len(derived["abstract_plan_receipts"]) == derived[
+        "abstract_plan_success_count"
+    ]
+    assert all(
+        row["abstract_plan"]["all_residual_version_spaces_jointly_propagated"]
+        is True
+        for row in derived["abstract_plan_receipts"]
+    )
     assert derived["execution_action_matches_abstract_proposal_count"] >= 2
     assert derived["execution_steps"] >= 3
     assert ablation["actual_target_sample_reduction_observed"] is True

@@ -431,6 +431,7 @@ def run_version_space_certificate_episode_v68(
     abstract_robust_closures = 0
     abstract_resource_truncations = 0
     abstract_proposal_by_raw: dict[tuple[int, ...], int] = {}
+    abstract_plan_receipts: list[dict[str, Any]] = []
     plan_cache: dict[tuple[int, ...], dict[str, Any] | None] = {}
 
     def failure(kind: str, state: Any, key: int | None) -> int:
@@ -480,6 +481,9 @@ def run_version_space_certificate_episode_v68(
                 abstract_abstentions += 1
                 return []
             plan_cache[raw] = plan
+            abstract_plan_receipts.append(
+                {"raw_state": list(raw), "abstract_plan": copy.deepcopy(plan)}
+            )
             abstract_successes += 1
             abstract_compute += plan["abstract_support_branch_evaluations"]
             abstract_robust_closures += (
@@ -654,6 +658,7 @@ def run_version_space_certificate_episode_v68(
         "abstract_robust_resource_truncation_count": (
             abstract_resource_truncations
         ),
+        "abstract_plan_receipts": abstract_plan_receipts,
         "execution_action_matches_abstract_proposal": execution_abstract_matches,
         "execution_action_matches_abstract_proposal_count": sum(
             execution_abstract_matches
