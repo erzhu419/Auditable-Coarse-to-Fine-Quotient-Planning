@@ -13,9 +13,11 @@ from acfqp.occurrence_factor_bank_update_planning_campaign_core_v142r1 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "bce11c716fe7d8d47e7181cfab8a4aa00204c015794bb62c7e6376278b94b19a"
+EXPECTED_CANONICAL_BYTE_COUNT = 7_977_801
+EXPECTED_CANONICAL_SHA256 = (
+    "c470ec0f47637c5911c95bf13c67ad96d43d40a4cebea24dcf9aa077de622c47"
+)
 ATTEMPT_TERMINAL_STATE = "UNEXECUTED"
 FAILURE_RECORD_SHA256 = "0" * 64
 
