@@ -13,9 +13,9 @@ from acfqp.opaque_source_archive_dictionary_v132 import (
 from acfqp.phase3e_ids import canonical_json_bytes
 
 
-DICTIONARY_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+DICTIONARY_ID = "b7c1f1898090c168fdf39daf5b6aa10863680d066a3fadf0719826b3062bd5b3"
+EXPECTED_CANONICAL_BYTE_COUNT = 8_466
+EXPECTED_CANONICAL_SHA256 = "27c411000f048445d70a475ddb11d7ccba77ef097b80fa6c4f819164ce36ec3b"
 
 
 class AutoCalibratedArchiveDictionaryV135Error(ValueError):
