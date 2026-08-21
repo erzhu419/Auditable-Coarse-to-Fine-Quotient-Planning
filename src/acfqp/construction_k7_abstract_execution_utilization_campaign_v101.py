@@ -25,9 +25,9 @@ from acfqp.construction_k7_sequence_wide_agreement_shielded_independent_verifier
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "f6cafbcdb148095f351202764d97550b1fda115e290dd8de3f205f62762ae155"
+EXPECTED_CANONICAL_BYTE_COUNT = 4_931_196
+EXPECTED_CANONICAL_SHA256 = "886392986af01580de4782ef58dea3792c67ea8783b56537f9a20addae208159"
 
 
 class ConstructionK7AbstractExecutionUtilizationCampaignV101Error(ValueError):
