@@ -19,9 +19,9 @@ from acfqp.robust_factor_dictionary_campaign_core_v131r2 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "8ffa5d72a77d95c9f72e1a9e5b3c9d9e9d823648d219795a557756281bdb55ff"
+EXPECTED_CANONICAL_BYTE_COUNT = 14_522_210
+EXPECTED_CANONICAL_SHA256 = "f1a96f03cfc6982b93d1b55b841ff166826f3d8193d34df6a1c4ec885ca36f54"
 
 
 class ConstructionK7RobustFactorDictionaryCampaignV131R2Error(ValueError):
