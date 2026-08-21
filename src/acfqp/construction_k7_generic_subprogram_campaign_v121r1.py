@@ -17,9 +17,9 @@ from acfqp.generic_subprogram_opportunity_independent_campaign_core_v121r1 impor
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "0369d6ea8811a6af926599a8667c589ab22b317a57e6d4f9e2b8ab23542ca00d"
+EXPECTED_CANONICAL_BYTE_COUNT = 4_758_241
+EXPECTED_CANONICAL_SHA256 = "c5f1a591140a561173e0c327b4507bd05897995831bb53f7bc3c93ad7073cd31"
 
 
 class ConstructionK7GenericSubprogramCampaignV121R1Error(ValueError):
