@@ -1,0 +1,181 @@
+"""Select a maximal coherent source cohort without hiding archive members."""
+
+from __future__ import annotations
+
+from concurrent.futures import ProcessPoolExecutor
+import hashlib
+from itertools import combinations
+from typing import Any, Iterable, NoReturn
+
+from acfqp import construction_k7_domain_registry_extension_v137 as domains
+from acfqp.auto_calibrated_archive_dictionary_v135 import (
+    AutoCalibratedArchiveDictionaryV135Error,
+    derive_auto_calibrated_archive_dictionary_v135,
+)
+from acfqp.phase3e_ids import canonical_json_bytes
+
+
+DICTIONARY_ID = "0" * 64
+EXPECTED_CANONICAL_BYTE_COUNT = 0
+EXPECTED_CANONICAL_SHA256 = "0" * 64
+
+
+class HeterogeneousArchiveCohortDictionaryV137Error(ValueError):
+    pass
+
+
+def _fail(message: str) -> NoReturn:
+    raise HeterogeneousArchiveCohortDictionaryV137Error(message)
+
+
+def _attempt(args: tuple[tuple[bytes, ...], tuple[int, ...]]) -> dict[str, Any]:
+    sources, indices = args
+    selected = tuple(sources[index] for index in indices)
+    digests = [hashlib.sha256(raw).hexdigest() for raw in selected]
+    try:
+        dictionary = derive_auto_calibrated_archive_dictionary_v135(selected)
+    except AutoCalibratedArchiveDictionaryV135Error as error:
+        return {
+            "source_artifact_sha256s": digests,
+            "source_archive_cardinality": len(indices),
+            "calibration_succeeded": False,
+            "failure_type": type(error).__name__,
+        }
+    return {
+        "source_artifact_sha256s": digests,
+        "source_archive_cardinality": len(indices),
+        "calibration_succeeded": True,
+        "selected_template_count": dictionary["selected_template_count"],
+        "selected_summed_weakest_leave_one_prefix_gain_bits": dictionary[
+            "selected_summed_weakest_leave_one_prefix_gain_bits"
+        ],
+        "dictionary": dictionary,
+    }
+
+
+def derive_heterogeneous_archive_cohort_dictionary_v137(
+    source_artifact_bytes: Iterable[bytes],
+    *,
+    worker_count: int = 2,
+) -> dict[str, Any]:
+    sources = tuple(source_artifact_bytes)
+    if (
+        len(sources) < 5
+        or any(type(raw) is not bytes for raw in sources)
+        or len({hashlib.sha256(raw).digest() for raw in sources}) != len(sources)
+        or type(worker_count) is not int
+        or worker_count not in {1, 2}
+    ):
+        _fail("V137 heterogeneous archive contract changed")
+    full = _attempt((sources, tuple(range(len(sources)))))
+    attempts = [full]
+    if full["calibration_succeeded"] is not True:
+        frontier = [
+            tuple(indices)
+            for indices in combinations(range(len(sources)), len(sources) - 1)
+        ]
+        args = [(sources, indices) for indices in frontier]
+        if worker_count == 1:
+            attempts.extend(_attempt(arg) for arg in args)
+        else:
+            with ProcessPoolExecutor(max_workers=worker_count) as executor:
+                attempts.extend(executor.map(_attempt, args))
+    successful = [row for row in attempts if row["calibration_succeeded"] is True]
+    if not successful:
+        _fail("V137 no coherent maximal source cohort found")
+    selected = min(
+        successful,
+        key=lambda row: (
+            -row["source_archive_cardinality"],
+            -row["selected_summed_weakest_leave_one_prefix_gain_bits"],
+            canonical_json_bytes(row["source_artifact_sha256s"]),
+        ),
+    )
+    selected_hashes = frozenset(selected["source_artifact_sha256s"])
+    all_rows = sorted(
+        (
+            {
+                "artifact_sha256": hashlib.sha256(raw).hexdigest(),
+                "byte_count": len(raw),
+                "selected_in_coherent_cohort": hashlib.sha256(raw).hexdigest()
+                in selected_hashes,
+            }
+            for raw in sources
+        ),
+        key=lambda row: row["artifact_sha256"],
+    )
+    source_dictionary = selected["dictionary"]
+    attempt_documents = [
+        {key: value for key, value in row.items() if key != "dictionary"}
+        for row in attempts
+    ]
+    payload = {
+        "schema": "acfqp.heterogeneous_archive_cohort_dictionary.v137",
+        "complete_source_archive": all_rows,
+        "complete_source_archive_cardinality": len(sources),
+        "cohort_search_attempts": attempt_documents,
+        "selected_cohort_artifact_sha256s": sorted(selected_hashes),
+        "selected_cohort_cardinality": selected["source_archive_cardinality"],
+        "excluded_archive_artifact_sha256s": sorted(
+            row["artifact_sha256"]
+            for row in all_rows
+            if row["selected_in_coherent_cohort"] is False
+        ),
+        "selected_minimum_distinct_artifact_support": source_dictionary[
+            "selected_minimum_distinct_artifact_support"
+        ],
+        "selected_minimum_distinct_schema_pair_support": source_dictionary[
+            "selected_minimum_distinct_schema_pair_support"
+        ],
+        "selected_template_count": source_dictionary["selected_template_count"],
+        "selected_subprograms": source_dictionary["selected_subprograms"],
+        "maximal_cardinality_then_source_only_gain_selection": True,
+        "incompatible_sources_recorded_not_silently_dropped": True,
+        "source_aliases_or_family_names_used_for_cohort_selection": False,
+        "target_occurrences_accessed": False,
+        "target_outcomes_accessed": False,
+        "complete_world_model_claimed": False,
+        "official_execution_allowed": False,
+        "official_scalar_cost": None,
+        "official_N_break_even": None,
+        "WORKLOAD_ECONOMICS_GATE": "NOT_RUN",
+        "COUNTER_COMPLETENESS_GATE": "NOT_RUN",
+    }
+    dictionary_id = domains.extension_content_id_v137(
+        domains.CONSTRUCTION_K7_HETEROGENEOUS_ARCHIVE_DICTIONARY_V137_DOMAIN,
+        payload,
+    )
+    return {
+        **payload,
+        "dictionary_id": dictionary_id,
+        "v15_partial_synthesizer_projection": {
+            "schema": "acfqp.cross_schema_factor_template_projection.v15",
+            "source_factor_library_id": dictionary_id,
+            "cross_schema_subprograms": source_dictionary["selected_subprograms"],
+            "target_slot_inventory_supplied": False,
+            "semantic_names_supplied": False,
+        },
+    }
+
+
+def freeze_heterogeneous_archive_cohort_dictionary_v137(
+    source_artifact_bytes: Iterable[bytes],
+) -> bytes:
+    document = derive_heterogeneous_archive_cohort_dictionary_v137(
+        source_artifact_bytes
+    )
+    raw = canonical_json_bytes(document)
+    if DICTIONARY_ID != "0" * 64 and (
+        document["dictionary_id"] != DICTIONARY_ID
+        or len(raw) != EXPECTED_CANONICAL_BYTE_COUNT
+        or hashlib.sha256(raw).hexdigest() != EXPECTED_CANONICAL_SHA256
+    ):
+        _fail("V137 frozen heterogeneous archive dictionary changed")
+    return raw
+
+
+__all__ = (
+    "DICTIONARY_ID",
+    "derive_heterogeneous_archive_cohort_dictionary_v137",
+    "freeze_heterogeneous_archive_cohort_dictionary_v137",
+)
