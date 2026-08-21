@@ -19,9 +19,9 @@ from acfqp.symmetric_epoch_accounting_campaign_core_v112 import (
 )
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "9c77611e946310fb08ba1d22afe11326b975f0087c3b2712d39fc2899e09b2a4"
+EXPECTED_CANONICAL_BYTE_COUNT = 18_417_315
+EXPECTED_CANONICAL_SHA256 = "9c299ce8ed67ba6a8201d2b780b7a76a5cfef888733c5560c160a0d272e1c899"
 
 
 class ConstructionK7SymmetricEpochAccountingCampaignV112Error(ValueError):
