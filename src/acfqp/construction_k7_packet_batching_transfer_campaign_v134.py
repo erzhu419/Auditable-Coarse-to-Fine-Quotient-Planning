@@ -13,9 +13,9 @@ from acfqp.packet_batching_transfer_campaign_core_v134 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "bbf4781ed3c49f278eeeb2b266ac9e94e2bc250659f4578acecafb22ed9ca46d"
+EXPECTED_CANONICAL_BYTE_COUNT = 23_072_947
+EXPECTED_CANONICAL_SHA256 = "51c83073eb28e424ed34336203738bd693f3d662001a3b936bdbb5366424dc27"
 
 
 class ConstructionK7PacketBatchingTransferCampaignV134Error(ValueError):
