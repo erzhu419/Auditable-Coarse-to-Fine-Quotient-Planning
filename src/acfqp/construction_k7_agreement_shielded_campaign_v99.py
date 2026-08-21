@@ -25,9 +25,9 @@ from acfqp.construction_k7_residual_factor_library_v62 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "2af478cf92b8f6ccb1869042a923487c0f5eb859dc4cbacfdef4a47643930bfd"
+EXPECTED_CANONICAL_BYTE_COUNT = 4_457_987
+EXPECTED_CANONICAL_SHA256 = "b359520c21165da737b317e71c45454febb9e90de72c63760819a047a40e8597"
 
 
 class ConstructionK7AgreementShieldedCampaignV99Error(ValueError):
