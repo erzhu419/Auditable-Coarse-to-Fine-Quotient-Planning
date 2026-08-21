@@ -40,6 +40,12 @@ from acfqp.generic_compiler_ready_acquisition_v52 import (
 from acfqp.generic_compiler_ready_model_compiler_v52 import (
     compile_compiler_ready_model_v52,
 )
+from acfqp.generic_occurrence_balanced_compiler_ready_acquisition_v66 import (
+    run_occurrence_balanced_compiler_ready_acquisition_v66,
+)
+from acfqp.generic_occurrence_balanced_model_compiler_v66 import (
+    compile_occurrence_balanced_model_v66,
+)
 from acfqp.generic_frontier_prequential_model_compiler_v53 import (
     compile_frontier_prequential_model_v53,
 )
@@ -389,6 +395,31 @@ def test_v52_waits_for_nonempty_version_space_then_compiles():
     assert verified["nonempty_residual_version_space_used_as_acquisition_gate"] is True
     assert verified["every_batch_exact_residual_expression_retained"] is True
     assert verified["complete_world_model_claimed"] is False
+
+
+def test_v66_occurrence_balanced_acquisition_compiles_the_same_verified_model():
+    candidate, evidence, library = _compiler_fixture()
+    acquisition = run_occurrence_balanced_compiler_ready_acquisition_v66(
+        evidence,
+        role_free_template_library=library,
+        required_terminal_classes=("ACCEPT", "ACTIVE"),
+        confidence_denominator=2,
+    )
+    learned = acquisition["compiler_ready_acquisition"]
+    assert learned["status"] == "PROPOSAL_ISSUED_HELDOUT_VALIDATED"
+    schedule = acquisition["query_schedule"]
+    assert schedule["outcome_tape_accessed_by_ranking"] is False
+    assert schedule["terminal_acceptance_label_accessed_by_ranking"] is False
+    model = compile_occurrence_balanced_model_v66(
+        candidate, evidence, acquisition
+    )
+    verified = verify_joint_successor_version_space_model_v42(model)
+    assert verified["source_acquisition_protocol"] == (
+        "OCCURRENCE_BALANCED_COMPILER_READY_V66"
+    )
+    assert verified["every_batch_exact_residual_expression_retained"] is True
+    assert verified["complete_world_model_claimed"] is False
+    assert verified["abstract_plan_safety_authority_present"] is False
 
 
 def test_v53_checks_every_terminal_frontier_candidate_not_only_primary():
