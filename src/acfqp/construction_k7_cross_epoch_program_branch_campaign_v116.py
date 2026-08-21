@@ -21,9 +21,11 @@ from acfqp.cross_epoch_program_branch_campaign_core_v116 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "2ffeebf8f989a944afce3144aeed8aeba4eda529bce3f3bfe7be19cea4a8e406"
+EXPECTED_CANONICAL_BYTE_COUNT = 6_768_106
+EXPECTED_CANONICAL_SHA256 = (
+    "755a92500fcf5f4e88bf6f1b0990ced8b4660a35cfd92ad92e535112363b0be2"
+)
 
 
 class ConstructionK7CrossEpochProgramBranchCampaignV116Error(ValueError):
