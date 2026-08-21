@@ -14,9 +14,9 @@ from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 from acfqp.replayable_coordinate_target_campaign_core_v88 import build_replayable_coordinate_target_campaign_document_v88
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "041f758ee32cb6fdef0b1218a23bdbfe47a115781ef1fc8f9c557a79a7b065b2"
+EXPECTED_CANONICAL_BYTE_COUNT = 2_479_132
+EXPECTED_CANONICAL_SHA256 = "1a90ba4e41ec0e7ba45116eb1e7559893dbd6c82eee8994a2004c157af1f478d"
 
 
 class ConstructionK7ReplayableCoordinateCampaignV88Error(ValueError):
@@ -69,7 +69,7 @@ def run_replayable_coordinate_campaign_v88() -> ReplayableCoordinateCampaignV88:
     preregistration = pre.verify_replayable_coordinate_preregistration_v88(
         pre.freeze_replayable_coordinate_preregistration_v88()
     )
-    if pre._source_facts() != preregistration.to_document()["source_closure"][  # noqa: SLF001
+    if pre._frozen_source_facts() != preregistration.to_document()["source_closure"][  # noqa: SLF001
         "source_facts"
     ]:
         _fail("V88 source closure changed")
