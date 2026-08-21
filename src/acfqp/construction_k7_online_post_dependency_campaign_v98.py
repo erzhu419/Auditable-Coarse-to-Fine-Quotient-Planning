@@ -25,9 +25,9 @@ from acfqp.online_post_dependency_campaign_core_v98 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "0c81232368a76e987b9921e3312fa70653eb5cdbf18e077c8c482aa7bd827f6b"
+EXPECTED_CANONICAL_BYTE_COUNT = 2_818_317
+EXPECTED_CANONICAL_SHA256 = "102a3cbd116d09b793ecce9e3cb7172ea1044ca1d9cd5ba29186cd78b683a8c3"
 
 
 class ConstructionK7OnlinePostDependencyCampaignV98Error(ValueError):
