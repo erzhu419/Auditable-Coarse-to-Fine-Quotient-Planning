@@ -13,9 +13,11 @@ from acfqp.auto_calibrated_archive_planning_campaign_core_v136 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "e809dbaa08b788c4917fc5a15b7fd706fc4c73eca83157a177f086a73a136095"
+EXPECTED_CANONICAL_BYTE_COUNT = 8_988_291
+EXPECTED_CANONICAL_SHA256 = (
+    "32788dcf151f9c76970518efac52b81dcc67f9d0aaf718a27588f1cc7dea4eb0"
+)
 
 
 class ConstructionK7AutoCalibratedArchivePlanningCampaignV136Error(ValueError):
