@@ -17,13 +17,17 @@ ROOT = Path(__file__).resolve().parents[1] / ".tmp/exact-freeze"
 
 
 def test_v142_frozen_campaign_passes_registered_gate():
-    if ATTEMPT_TERMINAL_STATE == "FROZEN_PREREGISTERED_RESOURCE_CAP_FAILURE":
+    if ATTEMPT_TERMINAL_STATE == (
+        "FROZEN_PREREGISTERED_CAUSAL_OPCODE_EVALUATOR_FAILURE"
+    ):
         raw = (ROOT / "v142_occurrence_factor_bank_update_planning_failure.json").read_bytes()
         failure = loads_canonical_json(raw)
         assert hashlib.sha256(raw).hexdigest() == FAILURE_RECORD_SHA256
-        assert failure["outcome_kind"] == "PREREGISTERED_RESOURCE_CAP_FAILURE"
-        assert failure["failed_seed"] == 1_047_172
-        assert failure["frozen_maximum_acquisition_labels"] == 384
+        assert failure["outcome_kind"] == (
+            "PREREGISTERED_CAUSAL_OPCODE_EVALUATOR_FAILURE"
+        )
+        assert failure["error_type"] == "GenericArtifactSubprogramInstantiatorV121Error"
+        assert failure["frozen_maximum_acquisition_labels"] == 768
         assert failure["same_identity_rerun_forbidden"] is True
         assert failure["official_scalar_cost"] is None
         return
