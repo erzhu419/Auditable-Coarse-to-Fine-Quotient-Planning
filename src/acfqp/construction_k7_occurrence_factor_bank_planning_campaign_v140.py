@@ -16,6 +16,10 @@ from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 CAMPAIGN_ID = "0" * 64
 EXPECTED_CANONICAL_BYTE_COUNT = 0
 EXPECTED_CANONICAL_SHA256 = "0" * 64
+ATTEMPT_TERMINAL_STATE = "FROZEN_PREREGISTERED_RESOURCE_CAP_FAILURE"
+FAILURE_RECORD_SHA256 = (
+    "3123b0babe9b11a732bb565c855cbc852ec16998d0aa36bbc18cbf10f279af02"
+)
 
 
 class ConstructionK7OccurrenceFactorBankPlanningCampaignV140Error(ValueError):
@@ -63,6 +67,8 @@ def run_occurrence_factor_bank_planning_campaign_v140(
     global _CACHE
     if _CACHE is not None:
         return _CACHE
+    if ATTEMPT_TERMINAL_STATE != "UNEXECUTED":
+        _fail("frozen V140 attempt failed; same preregistered identity will not be rerun")
     if CAMPAIGN_ID != "0" * 64:
         _fail("frozen V140 campaign exists; same identity will not be rerun")
     registration = pre.freeze_occurrence_factor_bank_planning_preregistration_v140(
@@ -89,4 +95,9 @@ def run_occurrence_factor_bank_planning_campaign_v140(
     return _CACHE
 
 
-__all__ = ("CAMPAIGN_ID", "run_occurrence_factor_bank_planning_campaign_v140")
+__all__ = (
+    "ATTEMPT_TERMINAL_STATE",
+    "CAMPAIGN_ID",
+    "FAILURE_RECORD_SHA256",
+    "run_occurrence_factor_bank_planning_campaign_v140",
+)
