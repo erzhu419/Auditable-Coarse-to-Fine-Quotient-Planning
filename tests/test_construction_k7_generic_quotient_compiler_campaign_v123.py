@@ -3,6 +3,7 @@ from pathlib import Path
 import pytest
 
 from acfqp.construction_k7_generic_quotient_compiler_campaign_v123 import (
+    ATTEMPT_TERMINAL_STATE,
     CAMPAIGN_ID,
     EXPECTED_CANONICAL_BYTE_COUNT,
     EXPECTED_CANONICAL_SHA256,
@@ -29,6 +30,15 @@ def _inputs():
 
 
 def test_v123_frozen_campaign_identity_and_claim_locks():
+    if ATTEMPT_TERMINAL_STATE == "FROZEN_PREREGISTERED_RESOURCE_CAP_FAILURE":
+        failure = loads_canonical_json(
+            (ROOT / "v123_generic_quotient_compiler_failure.json").read_bytes()
+        )
+        assert failure["outcome_kind"] == "PREREGISTERED_RESOURCE_CAP_FAILURE"
+        assert failure["failed_seed"] == 1_036_102
+        assert failure["same_identity_rerun_forbidden"] is True
+        assert failure["official_scalar_cost"] is None
+        return
     if CAMPAIGN_ID == "0" * 64:
         with pytest.raises(ConstructionK7GenericQuotientCompilerCampaignV123Error):
             raise ConstructionK7GenericQuotientCompilerCampaignV123Error(
@@ -48,7 +58,10 @@ def test_v123_frozen_campaign_identity_and_claim_locks():
     assert document["WORKLOAD_ECONOMICS_GATE"] == "NOT_RUN"
 
 
-@pytest.mark.skipif(CAMPAIGN_ID != "0" * 64, reason="frozen identity is never rerun")
+@pytest.mark.skipif(
+    ATTEMPT_TERMINAL_STATE != "UNEXECUTED" or CAMPAIGN_ID != "0" * 64,
+    reason="frozen identity is never rerun",
+)
 def test_v123_registered_campaign_runs_only_before_freeze():
     value = run_generic_quotient_compiler_campaign_v123(*_inputs())
     assert value.to_document()["registered_gate"]["passed"] is True

@@ -20,6 +20,8 @@ from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 CAMPAIGN_ID = "0" * 64
 EXPECTED_CANONICAL_BYTE_COUNT = 0
 EXPECTED_CANONICAL_SHA256 = "0" * 64
+ATTEMPT_TERMINAL_STATE = "FROZEN_PREREGISTERED_RESOURCE_CAP_FAILURE"
+FAILURE_RECORD_SHA256 = "84f32d6ed71ac0b4496d457662d5f750dacb9e77e37a51a17d6db6b6939b778e"
 
 
 class ConstructionK7GenericQuotientCompilerCampaignV123Error(ValueError):
@@ -69,6 +71,8 @@ def run_generic_quotient_compiler_campaign_v123(
     global _CACHE
     if _CACHE is not None:
         return _CACHE
+    if ATTEMPT_TERMINAL_STATE != "UNEXECUTED":
+        _fail("frozen V123 attempt failed; same preregistered identity will not be rerun")
     if CAMPAIGN_ID != "0" * 64:
         _fail("frozen V123 campaign exists; same identity will not be rerun")
     source_bytes = dict(source_campaign_bytes)
