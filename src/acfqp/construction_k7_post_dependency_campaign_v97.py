@@ -20,9 +20,9 @@ from acfqp.post_dependency_campaign_core_v97 import (
 )
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "b132245b0827898cb497232ed82b911fc17bebc4a30e981a7b080895abc8bf3e"
+EXPECTED_CANONICAL_BYTE_COUNT = 2_361_088
+EXPECTED_CANONICAL_SHA256 = "dc5bd10f193e98038ef2ced4d0ab7558deb35200104195de8299ded1add32afc"
 
 
 class ConstructionK7PostDependencyCampaignV97Error(ValueError):
