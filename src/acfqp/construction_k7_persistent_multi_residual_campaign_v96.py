@@ -17,9 +17,9 @@ from acfqp.persistent_multi_residual_campaign_core_v96 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "93d3ae84f1a1f2e1a6cb7dac3f72d5e5ef24646b2e9f864657fee3a242443551"
+EXPECTED_CANONICAL_BYTE_COUNT = 1_115_065
+EXPECTED_CANONICAL_SHA256 = "7d34c7d96689536937a3e157a74aad597da7a707054326322cf6a19bcbbca4c5"
 
 
 class ConstructionK7PersistentMultiResidualCampaignV96Error(ValueError):
