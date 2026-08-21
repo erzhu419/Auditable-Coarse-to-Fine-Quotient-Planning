@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from concurrent.futures import ProcessPoolExecutor
 import hashlib
 from typing import Any, Iterable, Mapping, NoReturn
 
@@ -25,9 +26,9 @@ PREREGISTRATION_BYTE_COUNT = 11_683
 PREREGISTRATION_SHA256 = "cdc39409cf8bc7d3604ecc1daffc9c5df88e0dfb36292b6b6a7a98feacc53c5a"
 EXPECTED_SEEDS = (1_047_141, 1_047_142, 1_047_143, 1_047_144)
 EXPECTED_EPISODES = (374, 375, 376)
-VERIFICATION_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+VERIFICATION_ID = "d0cec89975c418cb4c517f22c64c63976b391660701f34722f60e3c5e30a1b91"
+EXPECTED_CANONICAL_BYTE_COUNT = 7_173
+EXPECTED_CANONICAL_SHA256 = "546c4d66dd681cf16faf7f334df9084221e805a1e241ef6d849ec996dd27ac7a"
 
 
 class ConstructionK7PacketBatchingTransferIndependentVerifierV134Error(ValueError):
@@ -409,6 +410,10 @@ def _verify_occurrence(
     }
 
 
+def _verify_occurrence_target_v134(args: tuple[Any, Mapping[str, Any]]) -> dict[str, Any]:
+    return _verify_occurrence(args[0], args[1])
+
+
 def freeze_packet_batching_transfer_verification_v134(
     campaign_raw: bytes,
     preregistration_raw: bytes,
@@ -482,9 +487,13 @@ def freeze_packet_batching_transfer_verification_v134(
         "V134 predecessor/preregistered target contract changed",
     )
     projection = dictionary["v15_partial_synthesizer_projection"]
-    rows = tuple(
-        _verify_occurrence(row, projection) for row in campaign["target_occurrences"]
-    )
+    with ProcessPoolExecutor(max_workers=2) as executor:
+        rows = tuple(
+            executor.map(
+                _verify_occurrence_target_v134,
+                ((row, projection) for row in campaign["target_occurrences"]),
+            )
+        )
     _require(
         tuple(row["seed"] for row in rows) == EXPECTED_SEEDS
         and campaign["target_occurrence_ids"]
