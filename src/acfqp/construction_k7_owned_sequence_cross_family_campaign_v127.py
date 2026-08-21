@@ -13,9 +13,9 @@ from acfqp.owned_sequence_cross_family_campaign_core_v127 import build_owned_seq
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "3495473ca3b76e18faf1b4d924447dbed5aecff5c9ea8c4a2a7e8db844649c21"
+EXPECTED_CANONICAL_BYTE_COUNT = 3_793_080
+EXPECTED_CANONICAL_SHA256 = "8240dd478393f5c49d5bf5c006672586838181906ee57a5e1ab4bc7afb4eb211"
 
 
 class ConstructionK7OwnedSequenceCrossFamilyCampaignV127Error(ValueError):
