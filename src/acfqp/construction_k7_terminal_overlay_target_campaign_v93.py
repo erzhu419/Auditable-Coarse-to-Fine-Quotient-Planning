@@ -33,9 +33,13 @@ from acfqp.terminal_overlay_target_campaign_core_v93 import (
 )
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = (
+    "1b9b2fb6a1a837428c40d7d4b42546d1bed75fb406f53a5d84af0c69d25b891e"
+)
+EXPECTED_CANONICAL_BYTE_COUNT = 222_761
+EXPECTED_CANONICAL_SHA256 = (
+    "21e9c700406d0a9bd50650adb2fd5a8f553c2b4566f63a5d5523b911baa4879f"
+)
 
 
 class ConstructionK7TerminalOverlayTargetCampaignV93Error(ValueError):
