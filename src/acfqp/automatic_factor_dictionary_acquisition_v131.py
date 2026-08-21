@@ -14,6 +14,9 @@ from acfqp.fair_unified_factor_prior_ablation_acquisition_v129r1 import (
 from acfqp.automatic_minimal_factor_dictionary_v131 import (
     verify_automatic_minimal_factor_dictionary_v131,
 )
+from acfqp.generic_artifact_derived_factor_projection_v120 import (
+    derive_artifact_factor_projection_v120,
+)
 from acfqp.generic_artifact_subprogram_instantiator_v121 import (
     _dependencies,
     exact_generic_artifact_factor_replay_v121,
@@ -395,9 +398,9 @@ def acquire_matched_automatic_dictionary_factor_arms_v131(
     source_campaign_bytes: Mapping[str, bytes],
     config: Mapping[str, Any],
 ) -> dict[str, Any]:
-    source_artifact_library = config.get("source_artifact_factor_library")
-    if type(source_artifact_library) is not dict:
-        _fail("V131 source artifact library is absent")
+    source_artifact_library = derive_artifact_factor_projection_v120(
+        dict(source_campaign_bytes)
+    )
     verified = verify_automatic_minimal_factor_dictionary_v131(
         artifact_factor_library,
         source_artifact_library,

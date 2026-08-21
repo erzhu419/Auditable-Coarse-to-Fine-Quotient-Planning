@@ -34,7 +34,6 @@ def test_v131_development_occurrence_runs_owned_sequence_with_normalized_prior()
     )
     config = modular_routing_config_v128()
     config["families"][FAMILY]["maximum_acquisition_labels"] = 320
-    config["source_artifact_factor_library"] = source_library
     document = build_automatic_dictionary_factor_prior_occurrence_v131(
         config,
         family=FAMILY,

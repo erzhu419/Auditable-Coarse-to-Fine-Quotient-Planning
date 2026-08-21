@@ -55,7 +55,6 @@ def test_v131_automatic_dictionary_development_arms_close_without_fixed_multipli
     config = config_builder()
     adapter = builder(seed, config)
     config["families"][adapter.family]["maximum_acquisition_labels"] = 320
-    config["source_artifact_factor_library"] = source_library
     arms = acquire_matched_automatic_dictionary_factor_arms_v131(
         adapter,
         dictionary,
