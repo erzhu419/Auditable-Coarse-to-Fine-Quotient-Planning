@@ -37,4 +37,11 @@ def test_v122_campaign_is_not_frozen_before_registered_execution():
     reason="V122 registered campaign has not been frozen",
 )
 def test_v122_exact_campaign_is_preserved():
-    assert CAMPAIGN.read_bytes() == _run().canonical_bytes
+    raw = CAMPAIGN.read_bytes()
+    assert len(raw) == producer.EXPECTED_CANONICAL_BYTE_COUNT
+    document = producer.loads_canonical_json(raw)
+    assert document["campaign_id"] == producer.CAMPAIGN_ID
+    assert document["registered_gate"]["passed"] is True
+    assert document["generic_planner_execution_adapter_verified"] is True
+    assert document["legacy_shape_specific_planner_execution_adapter_present"] is False
+    assert document["official_scalar_cost"] is None

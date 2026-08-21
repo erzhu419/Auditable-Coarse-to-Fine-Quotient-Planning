@@ -20,9 +20,9 @@ from acfqp.generic_factor_planner_campaign_core_v122 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "a958bef4dfdc141f010e7ee7a93e27f84a9db36c5f630a3ebc656937733a6421"
+EXPECTED_CANONICAL_BYTE_COUNT = 4_139_139
+EXPECTED_CANONICAL_SHA256 = "1a71026284a5fe00a252bfa4a146315aaf4c229ea3dff5a954da8157a2042d0f"
 
 
 class ConstructionK7GenericFactorPlannerCampaignV122Error(ValueError):
