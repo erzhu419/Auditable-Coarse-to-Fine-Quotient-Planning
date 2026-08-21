@@ -21,9 +21,11 @@ from acfqp.projected_program_memo_campaign_core_v115 import (
 )
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "d2d061867f8bfc3d2c1abe439537ad0a1432738bf2db4242ef4d35f2c41dfcfe"
+EXPECTED_CANONICAL_BYTE_COUNT = 6_519_817
+EXPECTED_CANONICAL_SHA256 = (
+    "94add1705c5780f4893a7dde82771e4dd3c8d27219ceb1c6b8a3631d393476dd"
+)
 
 
 class ConstructionK7ProjectedProgramMemoCampaignV115Error(ValueError):
