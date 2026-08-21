@@ -13,9 +13,9 @@ from acfqp.opaque_archive_planning_campaign_core_v133 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "010f13f7cb3981524baec4cedcf245d707ded136d440d8b29a6bd848de566874"
+EXPECTED_CANONICAL_BYTE_COUNT = 17_890_540
+EXPECTED_CANONICAL_SHA256 = "98e805ab53095f089e1dca3453c8ce2d8ddcd3a690d87395aac9e21e6b3c3d5e"
 
 
 class ConstructionK7OpaqueArchivePlanningCampaignV133Error(ValueError):
