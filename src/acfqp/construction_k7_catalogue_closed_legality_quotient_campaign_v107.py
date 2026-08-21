@@ -20,9 +20,9 @@ from acfqp.construction_k7_legality_conditioned_quotient_independent_verifier_v1
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "5876fc38db769e0ffd518d1580577b7779e7276372b59ba2173b05b4d94e1293"
+EXPECTED_CANONICAL_BYTE_COUNT = 3_822_627
+EXPECTED_CANONICAL_SHA256 = "10c35c92792032ae91c2e421d758e4ff5e4fb0244910d37acd25018dd96ef244"
 
 
 class ConstructionK7CatalogueClosedLegalityQuotientCampaignV107Error(ValueError):

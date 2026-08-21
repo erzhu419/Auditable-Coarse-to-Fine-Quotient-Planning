@@ -34,6 +34,16 @@ def test_v107_exact_campaign_is_preserved():
     assert document[
         "registered_catalogue_closed_legality_conditioned_quotient_verified"
     ] is True
+    assert document["accounting"]["execution_steps"] == 60
+    assert document["accounting"][
+        "quotient_proposal_admitted_execution_count"
+    ] == 60
+    assert document["accounting"][
+        "chosen_action_matches_admitted_quotient_proposal_count"
+    ] == 49
+    assert document["accounting"]["quotient_lifetime_target_labels"] == 306
+    assert document["accounting"]["cold_direct_lifetime_target_labels"] == 534
+    assert document["accounting"]["target_label_reduction"] == 228
     assert document["complete_ground_world_model_synthesized"] is False
     assert document["official_scalar_cost"] is None
     assert document["WORKLOAD_ECONOMICS_GATE"] == "NOT_RUN"
