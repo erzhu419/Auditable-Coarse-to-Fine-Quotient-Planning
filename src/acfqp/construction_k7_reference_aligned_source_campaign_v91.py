@@ -22,9 +22,9 @@ from acfqp.reference_aligned_source_campaign_core_v91 import (
 )
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "e9d6fd70a8cdf0d023dfaa5a3dfa60423a777632baef7b610b28da11024d7373"
+EXPECTED_CANONICAL_BYTE_COUNT = 561_886
+EXPECTED_CANONICAL_SHA256 = "ba35b013bca09e49a8d533dd86df0ef4d4e7b2c82862598942bb40a8a87f3bb9"
 
 
 class ConstructionK7ReferenceAlignedSourceCampaignV91Error(ValueError):
@@ -74,6 +74,8 @@ def run_reference_aligned_source_campaign_v91() -> ReferenceAlignedSourceCampaig
     global _CACHE
     if _CACHE is not None:
         return _CACHE
+    if CAMPAIGN_ID != "0" * 64:
+        _fail("frozen V91 outcome exists; same identity will not be rerun")
     preregistration = pre.verify_reference_aligned_source_preregistration_v91(
         pre.freeze_reference_aligned_source_preregistration_v91()
     )
