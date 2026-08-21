@@ -88,6 +88,28 @@ FROZEN_SOURCE_FACTS = (
     ("src/acfqp/generic_joint_successor_version_space_planner_v42.py", 36033, "d4b99c0f96688fc4d4dc4fae01a1d6896d254f166881ad5611c1e755c8bc1005"),
     ("src/acfqp/generic_layout_factorized_world_model_v5.py", 36010, "83d0f1505b039b705f44646662d69311a52aeb9c785ad45976014406a0b252ad"),
 )
+FROZEN_CALLABLE_FACTS = {
+    "canonicalizer_callable": {
+        "module": "acfqp.phase3e_ids",
+        "qualname": "canonical_json_bytes",
+        "code_sha256": "a6bd49e7e3247d80111d7985fc050202751c86dfd7f0f74c25ae1d6f8cc5f1aa",
+    },
+    "applicability_callable": {
+        "module": "acfqp.generic_low_label_residual_applicability_v73",
+        "qualname": "acquire_low_label_residual_applicability_v73",
+        "code_sha256": "a48ea584eddf924d5127a4d9d5b4418a72a9da41db148d3ba2c035ea24cf3a56",
+    },
+    "total_label_ablation_callable": {
+        "module": "acfqp.generic_total_label_residual_transfer_ablation_v75",
+        "qualname": "run_total_label_residual_transfer_ablation_v75",
+        "code_sha256": "117c5e37227bf5d479b891bebc6882de326caa4f606ac654f4776c9e27ba43f0",
+    },
+    "campaign_builder_callable": {
+        "module": "acfqp.total_label_meta_prior_campaign_core_v94",
+        "qualname": "build_total_label_meta_prior_campaign_document_v94",
+        "code_sha256": "7a6af27c72d1c77752efc7254194cc33204f67b7a257ed8d904271015e9f7d21",
+    },
+}
 
 
 class ConstructionK7TotalLabelMetaPriorPreregistrationV94Error(ValueError):
@@ -180,16 +202,12 @@ def _document() -> dict[str, Any]:
         "source_closure": {
             "source_facts": _frozen_source_facts(),
             "v94_domains": dict(domains.K7_DOMAIN_TAG_EXTENSION_REGISTRY_V94),
-            "canonicalizer_callable": _callable_fact(canonical_json_bytes),
-            "applicability_callable": _callable_fact(
-                acquire_low_label_residual_applicability_v73
-            ),
-            "total_label_ablation_callable": _callable_fact(
-                run_total_label_residual_transfer_ablation_v75
-            ),
-            "campaign_builder_callable": _callable_fact(
-                build_total_label_meta_prior_campaign_document_v94
-            ),
+            # CPython 3.11 quickens executed code objects.  marshal.dumps(code)
+            # therefore changes after a callable is exercised even though its
+            # source and semantic bytecode have not changed.  Preserve the
+            # preregistered pre-outcome facts verbatim; the exact source facts
+            # above remain the live code-integrity check.
+            **copy.deepcopy(FROZEN_CALLABLE_FACTS),
             "frozen_before_any_registered_v94_target_outcome": True,
         },
         "identity_contract": {
