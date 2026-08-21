@@ -20,9 +20,9 @@ from acfqp.memoized_catalogue_quotient_campaign_core_v108 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "fa9ce366738517878f37f171b553bde78a3522535063c82f9d17fa572bb95371"
+EXPECTED_CANONICAL_BYTE_COUNT = 6_947_135
+EXPECTED_CANONICAL_SHA256 = "f4cb08b6cfa7c5857dc6466e4ed1a0524cdc4e35322391025a2f203d6df127f5"
 
 
 class ConstructionK7MemoizedCatalogueQuotientCampaignV108Error(ValueError):

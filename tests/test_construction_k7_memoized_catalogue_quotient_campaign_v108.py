@@ -28,14 +28,15 @@ def test_v108_exact_campaign_is_preserved():
     assert len(raw) == campaign.EXPECTED_CANONICAL_BYTE_COUNT
     assert hashlib.sha256(raw).hexdigest() == campaign.EXPECTED_CANONICAL_SHA256
     assert document["campaign_id"] == campaign.CAMPAIGN_ID
-    assert document["registered_gate"]["passed"] is True
-    assert document["registered_gate"]["passed_target_occurrence_count"] == 4
+    assert document["registered_gate"]["passed"] is False
+    assert document["registered_gate"]["passed_target_occurrence_count"] == 2
     assert document["registered_gate"][
         "every_occurrence_planning_compute_strictly_reduced"
-    ] is True
+    ] is False
     assert document[
         "registered_identity_bound_quotient_memoization_verified"
-    ] is True
+    ] is False
+    assert document["accounting"]["planning_compute_events_avoided"] == 550
     assert document["complete_ground_world_model_synthesized"] is False
     assert document["official_scalar_cost"] is None
     assert document["WORKLOAD_ECONOMICS_GATE"] == "NOT_RUN"
