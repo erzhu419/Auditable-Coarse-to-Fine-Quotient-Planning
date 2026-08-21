@@ -28,6 +28,14 @@ def test_v105_exact_campaign_is_preserved():
     assert document["campaign_id"] == campaign.CAMPAIGN_ID
     assert document["registered_gate"]["passed"] is True
     assert document["registered_gate"]["passed_target_occurrence_count"] == 4
+    assert document["accounting"]["quotient_proposal_admitted_execution_count"] == 55
+    assert document["accounting"][
+        "chosen_action_matches_admitted_quotient_proposal_count"
+    ] == 51
+    assert document["accounting"]["execution_steps"] == 73
+    assert document["accounting"]["quotient_lifetime_target_labels"] == 230
+    assert document["accounting"]["cold_direct_lifetime_target_labels"] == 513
+    assert document["accounting"]["target_label_reduction"] == 283
     assert document[
         "registered_multistep_execution_primarily_ordered_by_observation_derived_quotient"
     ] is True

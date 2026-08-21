@@ -18,9 +18,9 @@ from acfqp.construction_k7_hierarchical_utilization_independent_verifier_v104 im
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "194cd7ccb5fa330dd4cad892f87c2618709a5320a4bdf49a3fd5f9a3fe4202ab"
+EXPECTED_CANONICAL_BYTE_COUNT = 3_348_042
+EXPECTED_CANONICAL_SHA256 = "fc21b35f88e83954aff0b9c79fc078188003c2911ad289beb4b7e5dcffc37772"
 
 
 class ConstructionK7QuotientUtilizationCampaignV105Error(ValueError):
