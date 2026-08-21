@@ -23,9 +23,13 @@ from acfqp.version_space_target_campaign_core_v92 import (
 )
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = (
+    "97dd235a71f67a79bc9c265f3e45c993773f92d5f6463023c940593a965fb335"
+)
+EXPECTED_CANONICAL_BYTE_COUNT = 86_536
+EXPECTED_CANONICAL_SHA256 = (
+    "4e11972eef3d99d7823091aeca36563e949b8fb56ed12bdc40f50530ac29346f"
+)
 
 
 class ConstructionK7VersionSpaceTargetCampaignV92Error(ValueError):
