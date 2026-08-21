@@ -15,9 +15,9 @@ from acfqp.generic_quotient_compiler_campaign_core_v123r1 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "b4267d948212555a86350f51b85f97dc6333a2f58e97836c9f8554fb775e8199"
+EXPECTED_CANONICAL_BYTE_COUNT = 5_620_455
+EXPECTED_CANONICAL_SHA256 = "487ae03a3702cf5f1f93d916e4e076f73eab43faa1fdf8bb10e6c94c27038a0b"
 
 
 class ConstructionK7GenericQuotientCompilerCampaignV123r1Error(ValueError):
