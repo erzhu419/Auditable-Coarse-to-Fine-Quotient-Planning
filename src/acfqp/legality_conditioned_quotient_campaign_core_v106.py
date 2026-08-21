@@ -64,6 +64,9 @@ def derive_legality_conditioned_utilization_v106(
         "chosen_action_match_fraction_numerator": matches,
         "chosen_action_match_fraction_denominator": steps,
         "quotient_actually_orders_strict_majority_of_execution": 2 * admitted > steps,
+        "quotient_actually_orders_at_least_three_quarters_of_execution": (
+            4 * admitted >= 3 * steps
+        ),
         "chosen_action_matches_quotient_strict_majority": 2 * matches > steps,
         "every_action_independently_receipted": True,
         "receipt_replay_uses_no_producer_summary_count": True,
@@ -119,6 +122,9 @@ def build_legality_conditioned_quotient_occurrence_v106(
         ],
         "quotient_model_actually_orders_strict_majority": utilization[
             "quotient_actually_orders_strict_majority_of_execution"
+        ],
+        "quotient_model_actually_orders_at_least_three_quarters": utilization[
+            "quotient_actually_orders_at_least_three_quarters_of_execution"
         ],
         "chosen_action_matches_quotient_strict_majority": utilization[
             "chosen_action_matches_quotient_strict_majority"
@@ -268,6 +274,12 @@ def build_legality_conditioned_quotient_campaign_document_v106(
         ),
         "every_occurrence_actual_quotient_ordering_strict_majority": all(
             row["registered_gate"]["quotient_model_actually_orders_strict_majority"]
+            for row in occurrences
+        ),
+        "every_occurrence_actual_quotient_ordering_at_least_three_quarters": all(
+            row["registered_gate"][
+                "quotient_model_actually_orders_at_least_three_quarters"
+            ]
             for row in occurrences
         ),
         "every_occurrence_chosen_action_match_strict_majority": all(
