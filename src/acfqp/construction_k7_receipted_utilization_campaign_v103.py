@@ -89,7 +89,8 @@ def run_receipted_utilization_campaign_v103(
         _fail(f"V103 frozen V102 predecessor is unreadable: {exc}")
     if (
         verified_v102.get("campaign_id") != pre.V102_CAMPAIGN_ID
-        or verified_v102.get("registered_gate", {}).get("passed") is not True
+        or verified_v102.get("campaign_declared_registered_gate_passed") is not True
+        or verified_v102.get("registered_v102_gate_independently_verified") is not False
         or canonical_json_bytes(verification_v102) != v102_verification_raw
         or verification_v102.get("verification_id") != pre.V102_VERIFICATION_ID
         or verification_v102.get("registered_v102_gate_independently_verified") is not False
