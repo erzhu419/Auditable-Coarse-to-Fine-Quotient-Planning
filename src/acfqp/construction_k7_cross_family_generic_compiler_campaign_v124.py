@@ -13,9 +13,9 @@ from acfqp.generic_artifact_derived_factor_projection_v120 import derive_artifac
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "d2da5c1f3271b362a584156fa7febe4d0cf2e715e14d9d4d453eeef471aa1d26"
+EXPECTED_CANONICAL_BYTE_COUNT = 1_830_635
+EXPECTED_CANONICAL_SHA256 = "b1a1f7e40747275077ce32e3147a48bef2235de23bc3b983e86b79d36a32eb49"
 
 
 class ConstructionK7CrossFamilyGenericCompilerCampaignV124Error(ValueError):
