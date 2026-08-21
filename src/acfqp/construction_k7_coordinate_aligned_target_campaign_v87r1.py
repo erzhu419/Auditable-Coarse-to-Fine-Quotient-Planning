@@ -20,9 +20,9 @@ from acfqp.coordinate_aligned_target_campaign_core_v87r1 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "33e9d49933e8b2d94169911170732b178095ce55fe52258c6ccfb9d425990739"
+EXPECTED_CANONICAL_BYTE_COUNT = 2_439_114
+EXPECTED_CANONICAL_SHA256 = "a0c033bd300584b9bda88520d7fdacc410970ee101c70e406387f122efec9937"
 
 
 class ConstructionK7CoordinateAlignedTargetCampaignV87R1Error(ValueError):
@@ -78,7 +78,7 @@ def run_coordinate_aligned_target_campaign_v87r1(
     preregistration = pre.verify_coordinate_aligned_target_preregistration_v87r1(
         pre.freeze_coordinate_aligned_target_preregistration_v87r1()
     )
-    if pre._source_facts() != preregistration.to_document()["source_closure"][  # noqa: SLF001
+    if pre._frozen_source_facts() != preregistration.to_document()["source_closure"][  # noqa: SLF001
         "source_facts"
     ]:
         _fail("V87r1 preregistered source closure changed")
