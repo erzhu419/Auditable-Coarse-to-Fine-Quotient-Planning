@@ -20,9 +20,9 @@ from acfqp.dependency_revalidated_quotient_campaign_core_v109 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "32de00511536f8cfd82bfa1b966290e36d589d1d7e910d4b20657a69937fa6d0"
+EXPECTED_CANONICAL_BYTE_COUNT = 7_213_563
+EXPECTED_CANONICAL_SHA256 = "46e00a6bf70ff12b010296ffdc01b341e8ce64abaf7f969747679533c7fdf4e1"
 
 
 class ConstructionK7DependencyRevalidatedQuotientCampaignV109Error(ValueError):
