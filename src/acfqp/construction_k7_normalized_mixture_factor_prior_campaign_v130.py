@@ -16,9 +16,9 @@ from acfqp.normalized_mixture_factor_prior_campaign_core_v130 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "96447e0821d622b044daaffa8f9e0c8b0e1814a799b9b40f438ce5b4b8d55cbe"
+EXPECTED_CANONICAL_BYTE_COUNT = 11_815_506
+EXPECTED_CANONICAL_SHA256 = "9c179b4c9b54fa885d85c58608879c8b39649dd5cc8881e2d5a1cd6cfc90a433"
 
 
 class ConstructionK7NormalizedMixtureFactorPriorCampaignV130Error(ValueError):
