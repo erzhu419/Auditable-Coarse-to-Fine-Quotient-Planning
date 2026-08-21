@@ -20,9 +20,9 @@ from acfqp.legality_conditioned_quotient_campaign_core_v106 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "ba998dae81c2e83c2e8dc388aebe878a5336a3dd6826d5f7d65e455545b7e5b7"
+EXPECTED_CANONICAL_BYTE_COUNT = 3_940_255
+EXPECTED_CANONICAL_SHA256 = "644cb223224f295cbe5ab8321d06004e3949cf9c3166569f061db3bc72cafd7d"
 
 
 class ConstructionK7LegalityConditionedQuotientCampaignV106Error(ValueError):
