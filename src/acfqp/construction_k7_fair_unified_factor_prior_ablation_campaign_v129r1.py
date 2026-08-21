@@ -18,9 +18,9 @@ from acfqp.generic_artifact_derived_factor_projection_v120 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "f99bb57dd7d6210c8ee55193a603c8e7195690457df4de9a952fa59c71cda447"
+EXPECTED_CANONICAL_BYTE_COUNT = 13_247_464
+EXPECTED_CANONICAL_SHA256 = "2196206b7533f885b301ae5f8f68c58222dc34a2ad80691d3079d5214dcfe24c"
 
 
 class ConstructionK7FairUnifiedFactorPriorAblationCampaignV129R1Error(
