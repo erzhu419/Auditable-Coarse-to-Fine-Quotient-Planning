@@ -8,8 +8,10 @@ from acfqp.construction_k7_permutation_matched_sample_tax_campaign_v89 import (
 )
 
 
-def test_v89_campaign_identity_starts_unfrozen():
-    assert CAMPAIGN_ID == "0" * 64
+def test_v89_campaign_identity_is_frozen():
+    assert CAMPAIGN_ID == (
+        "00e954daeda5823e22a4c489dbf72a207570f36b8ad008488cd38d649d90aaed"
+    )
 
 
 @pytest.mark.skipif(

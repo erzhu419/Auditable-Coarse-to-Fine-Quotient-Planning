@@ -20,9 +20,9 @@ from acfqp.permutation_matched_sample_tax_campaign_core_v89 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "00e954daeda5823e22a4c489dbf72a207570f36b8ad008488cd38d649d90aaed"
+EXPECTED_CANONICAL_BYTE_COUNT = 2_444_947
+EXPECTED_CANONICAL_SHA256 = "277a28d516d4c73c01f1e5d58441d7d74775a2fe3caac80e885d90dcf578f21d"
 
 
 class ConstructionK7PermutationMatchedSampleTaxCampaignV89Error(ValueError):
