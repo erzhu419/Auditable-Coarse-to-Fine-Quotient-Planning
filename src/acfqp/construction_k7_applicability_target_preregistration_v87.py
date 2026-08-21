@@ -48,6 +48,18 @@ BOUND_SOURCE_PATHS = (
     "src/acfqp/applicability_target_campaign_core_v87.py",
     "src/acfqp/construction_k7_applicability_target_campaign_v87.py",
 )
+FROZEN_SOURCE_FACTS = (
+    ("artifacts/world_model/v86_projected_disagreement_model.json", 136251, "30c5b8775ae05039a971c20c52450efb29fcc8b57d81a38f70c9567fd9ef2bec"),
+    ("artifacts/world_model/v87_action_applicability_model.json", 2978, "b564c19963692a593f38c8b64520643b71d28fb2c274d998fcd439553d1f7fd4"),
+    ("src/acfqp/construction_k7_domain_registry_extension_v87.py", 1627, "85425165a546febe57bc9990a034f780b790a17e90cd78cb91a86f7f0118ced2"),
+    ("src/acfqp/construction_k7_projected_model_artifact_v86.py", 2816, "9ce071589f9fa60bf6cc32f56518e88316152827832206654e96c78754f0b5e2"),
+    ("src/acfqp/construction_k7_action_applicability_model_v87.py", 4079, "e72edc8c42ca31f5c8a4aeaf339dff9bdc47d5264df251f0fd84d4d0f52066d5"),
+    ("src/acfqp/generic_action_applicability_compiler_v58.py", 10227, "44e079a8b45e01c17fe66c18f4f1a4698296f31fb00549a5bf1d70a7ceed256e"),
+    ("src/acfqp/generic_applicability_conditioned_planner_v58.py", 14772, "afd72df879951c941cee9b2dbb59b4eb9847d69e1cacc17c166b3b8ae93a20a6"),
+    ("src/acfqp/generic_applicability_certificate_planner_v59.py", 16867, "60e56328833716aca9a7dea64af7caba02cd2c345b67ffe313b398e200359566"),
+    ("src/acfqp/applicability_target_campaign_core_v87.py", 15499, "e0994e282288574e97162978c698e816aa39de9991797ace3574f63b16bc604f"),
+    ("src/acfqp/construction_k7_applicability_target_campaign_v87.py", 4713, "1c8911f419ea941936ae33e7d4e018a47bfd5365698e364e61d47d813642b88b"),
+)
 
 
 class ConstructionK7ApplicabilityTargetPreregistrationV87Error(ValueError):
@@ -70,6 +82,13 @@ def _source_facts() -> list[dict[str, Any]]:
             }
         )
     return result
+
+
+def _frozen_source_facts() -> list[dict[str, Any]]:
+    return [
+        {"relative_path": path, "byte_count": count, "sha256": digest}
+        for path, count, digest in FROZEN_SOURCE_FACTS
+    ]
 
 
 def _callable_fact(value: Any) -> dict[str, Any]:
@@ -107,7 +126,7 @@ def _document() -> dict[str, Any]:
             "applicability_model_artifact_id": APPLICABILITY_MODEL_ARTIFACT_ID,
         },
         "source_closure": {
-            "source_facts": _source_facts(),
+            "source_facts": _frozen_source_facts(),
             "v87_domains": dict(domains.K7_DOMAIN_TAG_EXTENSION_REGISTRY_V87),
             "canonicalizer_callable": _callable_fact(canonical_json_bytes),
             "campaign_builder_callable": _callable_fact(

@@ -20,9 +20,9 @@ from acfqp.construction_k7_projected_model_artifact_v86 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "e5432505db2bf911324d3d719986493bfa81aa131439ee31367da9329cc2b0d8"
+EXPECTED_CANONICAL_BYTE_COUNT = 85_215
+EXPECTED_CANONICAL_SHA256 = "233d01e1429fa1742ca9cfae9aaac29e26310840ee2354166df967888088cb95"
 
 
 class ConstructionK7ApplicabilityTargetCampaignV87Error(ValueError):
@@ -77,7 +77,7 @@ def run_applicability_target_campaign_v87() -> ApplicabilityTargetCampaignV87:
     preregistration = pre.verify_applicability_target_preregistration_v87(
         pre.freeze_applicability_target_preregistration_v87()
     )
-    if pre._source_facts() != preregistration.to_document()["source_closure"][  # noqa: SLF001
+    if pre._frozen_source_facts() != preregistration.to_document()["source_closure"][  # noqa: SLF001
         "source_facts"
     ]:
         _fail("V87 preregistered source closure changed")
