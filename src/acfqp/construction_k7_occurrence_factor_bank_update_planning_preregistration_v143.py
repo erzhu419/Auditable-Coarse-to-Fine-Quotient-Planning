@@ -1,0 +1,297 @@
+"""Outcome-free preregistration for the V143 occurrence factor bank update planner campaign."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+import hashlib
+from pathlib import Path
+from typing import Any, NoReturn
+
+from acfqp import construction_k7_domain_registry_extension_v143 as domains
+from acfqp.occurrence_factor_bank_update_v141 import (
+    BANK_ID as V141_BANK_ID,
+    EXPECTED_CANONICAL_BYTE_COUNT as V141_BANK_BYTE_COUNT,
+    EXPECTED_CANONICAL_SHA256 as V141_BANK_SHA256,
+)
+from acfqp.construction_k7_occurrence_factor_bank_update_independent_verifier_v141 import (
+    EXPECTED_CANONICAL_BYTE_COUNT as V141_VERIFICATION_BYTE_COUNT,
+    EXPECTED_CANONICAL_SHA256 as V141_VERIFICATION_SHA256,
+    VERIFICATION_ID as V141_VERIFICATION_ID,
+)
+from acfqp.generic_dual_budget_adapter_v119 import FAMILY as DUAL
+from acfqp.generic_inventory_assembly_adapter_v118 import FAMILY as INVENTORY
+from acfqp.generic_modular_routing_adapter_v128 import FAMILY as MODULAR
+from acfqp.generic_packet_batching_adapter_v134 import (
+    FAMILY as PACKET,
+    packet_batching_config_v134,
+)
+from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
+
+
+IMPLEMENTATION_COMMITS = ("84de39541e6652c8147422fd6b8de95c60b9de08",)
+V141_FINAL_COMMIT = "99e814d"
+V140_FAILED_PREREGISTRATION_ID = (
+    "a70ca4992729a9d583f747ab766a3fc258ff4bde799415464638dbb960a8122d"
+)
+V140_FAILURE_BYTE_COUNT = 1_107
+V140_FAILURE_SHA256 = (
+    "3123b0babe9b11a732bb565c855cbc852ec16998d0aa36bbc18cbf10f279af02"
+)
+V142_FAILED_PREREGISTRATION_ID = (
+    "b650f33fb02988b64cd583300c5138d79b5c2c29dd7a1e4d523abca503cb4712"
+)
+V142_FAILURE_BYTE_COUNT = 1_486
+V142_FAILURE_SHA256 = (
+    "b6782177e8bfabd9d8b4d7f0a9d12f4c54aba03a613bf8f0a4d18896229c7085"
+)
+PREREGISTRATION_ID = "8a49412db7846d894b3ea03a0b00716d978978514a52507f8fa002b39ed39246"
+EXPECTED_CANONICAL_BYTE_COUNT = 20_728
+EXPECTED_CANONICAL_SHA256 = (
+    "d1c9877c3a516f15c5b42fa5623dd15a6269666ddd3535541c4108a0616c92a9"
+)
+TARGET_OCCURRENCES = (
+    (INVENTORY, 1_047_211),
+    (INVENTORY, 1_047_212),
+    (INVENTORY, 1_047_213),
+    (DUAL, 1_047_214),
+    (DUAL, 1_047_215),
+    (DUAL, 1_047_216),
+    (MODULAR, 1_047_217),
+    (MODULAR, 1_047_218),
+    (MODULAR, 1_047_219),
+    (PACKET, 1_047_220),
+    (PACKET, 1_047_221),
+    (PACKET, 1_047_222),
+)
+TARGET_EPISODE_INDICES = (431, 432)
+TARGET_WORKER_COUNT = 2
+REQUIRED_TARGET_OCCURRENCE_COUNT = 12
+MAXIMUM_ACQUISITION_LABELS = 768
+SOURCE_ROOT = Path(__file__).resolve().parents[2]
+FROZEN_SOURCE_FACTS = (
+    (
+        "src/acfqp/construction_k7_domain_registry_extension_v143.py",
+        1_916,
+        "202af0361b221b49a52509dde323014192bb0fbe9bde54b6582d27f091a90862",
+    ),
+    (
+        "src/acfqp/occurrence_factor_bank_update_acquisition_v143.py",
+        12_932,
+        "6ab8e8953823d3a79d85e69ab531f9b378fd5bba3d03fd1f3475903c48907e11",
+    ),
+    (
+        "src/acfqp/occurrence_factor_bank_update_planning_campaign_core_v143.py",
+        14_640,
+        "5d4b374238fa216f614b70c0c8a1b60f57e842124b0ad5191752cc1c608e73a5",
+    ),
+)
+
+
+class ConstructionK7OccurrenceFactorBankUpdatePlanningPreregistrationV143Error(ValueError):
+    pass
+
+
+def _fail(message: str) -> NoReturn:
+    raise ConstructionK7OccurrenceFactorBankUpdatePlanningPreregistrationV143Error(message)
+
+
+def campaign_config_v143() -> dict[str, Any]:
+    config = packet_batching_config_v134()
+    for family in (INVENTORY, DUAL, MODULAR, PACKET):
+        config["families"][family]["maximum_acquisition_labels"] = (
+            MAXIMUM_ACQUISITION_LABELS
+        )
+    config.update(
+        target_occurrences=[
+            {"family": family, "seed": seed} for family, seed in TARGET_OCCURRENCES
+        ],
+        target_episode_indices=TARGET_EPISODE_INDICES,
+        target_worker_count=TARGET_WORKER_COUNT,
+        required_target_occurrence_count=REQUIRED_TARGET_OCCURRENCE_COUNT,
+    )
+    return config
+
+
+def _source_facts() -> list[dict[str, Any]]:
+    return [
+        {
+            "relative_path": path,
+            "byte_count": len(raw := (SOURCE_ROOT / path).read_bytes()),
+            "sha256": hashlib.sha256(raw).hexdigest(),
+        }
+        for path, _count, _digest in FROZEN_SOURCE_FACTS
+    ]
+
+
+def _document(
+    dictionary_raw: bytes,
+    verification_raw: bytes,
+    v140_failure_raw: bytes,
+    v142_failure_raw: bytes,
+) -> dict[str, Any]:
+    dictionary = loads_canonical_json(dictionary_raw)
+    verification = loads_canonical_json(verification_raw)
+    v140_failure = loads_canonical_json(v140_failure_raw)
+    v142_failure = loads_canonical_json(v142_failure_raw)
+    if (
+        canonical_json_bytes(dictionary) != dictionary_raw
+        or len(dictionary_raw) != V141_BANK_BYTE_COUNT
+        or hashlib.sha256(dictionary_raw).hexdigest() != V141_BANK_SHA256
+        or dictionary.get("bank_id") != V141_BANK_ID
+        or dictionary.get("source_occurrence_archive_cardinality") != 16
+        or dictionary.get("selected_minimum_distinct_occurrence_support") != 9
+        or dictionary.get("selected_template_count") != 5
+        or dictionary.get("robust_candidate_schema_decoded") is not True
+        or dictionary.get("new_target_outcomes_accessed") is not False
+        or canonical_json_bytes(verification) != verification_raw
+        or len(verification_raw) != V141_VERIFICATION_BYTE_COUNT
+        or hashlib.sha256(verification_raw).hexdigest() != V141_VERIFICATION_SHA256
+        or verification.get("verification_id") != V141_VERIFICATION_ID
+        or verification.get("bank_id") != V141_BANK_ID
+        or verification.get(
+            "producer_free_campaign_occurrence_candidate_reconstruction"
+        ) is not True
+        or verification.get(
+            "producer_free_support_threshold_and_factor_bank_reconstruction"
+        ) is not True
+        or canonical_json_bytes(v140_failure) != v140_failure_raw
+        or len(v140_failure_raw) != V140_FAILURE_BYTE_COUNT
+        or hashlib.sha256(v140_failure_raw).hexdigest() != V140_FAILURE_SHA256
+        or v140_failure.get("preregistration_id")
+        != V140_FAILED_PREREGISTRATION_ID
+        or v140_failure.get("outcome_kind")
+        != "PREREGISTERED_RESOURCE_CAP_FAILURE"
+        or v140_failure.get("failed_seed") != 1_047_172
+        or v140_failure.get("frozen_maximum_acquisition_labels") != 384
+        or v140_failure.get("same_identity_rerun_forbidden") is not True
+        or canonical_json_bytes(v142_failure) != v142_failure_raw
+        or len(v142_failure_raw) != V142_FAILURE_BYTE_COUNT
+        or hashlib.sha256(v142_failure_raw).hexdigest() != V142_FAILURE_SHA256
+        or v142_failure.get("preregistration_id")
+        != V142_FAILED_PREREGISTRATION_ID
+        or v142_failure.get("outcome_kind")
+        != "PREREGISTERED_CAUSAL_OPCODE_EVALUATOR_FAILURE"
+        or v142_failure.get("error_type")
+        != "GenericArtifactSubprogramInstantiatorV121Error"
+        or v142_failure.get("same_identity_rerun_forbidden") is not True
+    ):
+        _fail("V143 frozen V141 receipt changed")
+    source_facts = _source_facts()
+    expected_facts = [
+        {"relative_path": path, "byte_count": count, "sha256": digest}
+        for path, count, digest in FROZEN_SOURCE_FACTS
+    ]
+    if source_facts != expected_facts:
+        _fail("V143 frozen implementation source changed")
+    config = campaign_config_v143()
+    payload = {
+        "schema": "acfqp.occurrence_factor_bank_update_planning_preregistration.v143",
+        "implementation_commits": list(IMPLEMENTATION_COMMITS),
+        "v141_final_commit_precedes_v143_target_execution": V141_FINAL_COMMIT,
+        "frozen_implementation_source_facts": source_facts,
+        "frozen_v141_factor_bank": dictionary,
+        "frozen_v141_independent_verification": verification,
+        "frozen_v140_failed_predecessor": v140_failure,
+        "frozen_v142_failed_predecessor": v142_failure,
+        "target_occurrences": config["target_occurrences"],
+        "target_episode_indices": list(config["target_episode_indices"]),
+        "target_worker_count": config["target_worker_count"],
+        "required_target_occurrence_count": config[
+            "required_target_occurrence_count"
+        ],
+        "maximum_acquisition_labels": MAXIMUM_ACQUISITION_LABELS,
+        "registered_gate": {
+            "v141_occurrence_factor_bank_update_receipt_precedes_target_outcomes": True,
+            "v140_preregistered_resource_cap_failure_preserved": True,
+            "v140_identity_not_rerun": True,
+            "v142_causal_opcode_evaluator_failure_preserved": True,
+            "v142_identity_not_rerun": True,
+            "unreplayable_candidates_are_invalidated_before_stop": True,
+            "fresh_successor_resource_schedule": True,
+            "robust_candidate_schema_is_explicitly_decoded": True,
+            "occurrence_support_replaces_campaign_container_support": True,
+            "fresh_target_occurrence_identities": True,
+            "same_synthesizer_and_stop_rule_both_arms": True,
+            "only_arm_switch_is_factor_prior": True,
+            "aggregate_positive_reduction_is_primary_gate": True,
+            "strict_positive_reduction_required_each_occurrence": False,
+            "zero_and_negative_occurrences_must_be_preserved": True,
+            "both_arm_receding_episodes_required": True,
+            "certificate_failure_only_ground_recovery_required": True,
+            "compiled_world_model_only_planning_required": True,
+            "strict_incompatible_schema_no_transfer_required": True,
+        },
+        "claim_boundary": {
+            "target_outcomes_accessed": False,
+            "registered_v143_target_outcome_observed": False,
+            "complete_world_model_claimed": False,
+            "arbitrary_unseen_domain_transfer_claimed": False,
+            "official_execution_allowed": False,
+            "official_scalar_cost": None,
+            "official_N_break_even": None,
+            "WORKLOAD_ECONOMICS_GATE": "NOT_RUN",
+            "COUNTER_COMPLETENESS_GATE": "NOT_RUN",
+        },
+    }
+    preregistration_id = domains.extension_content_id_v143(
+        domains.CONSTRUCTION_K7_OCCURRENCE_FACTOR_BANK_UPDATE_PREREGISTRATION_V143_DOMAIN,
+        payload,
+    )
+    return {**payload, "preregistration_id": preregistration_id}
+
+
+_ISSUER = object()
+
+
+@dataclass(frozen=True, slots=True)
+class OccurrenceFactorBankUpdatePlanningPreregistrationV143:
+    _issuer: object = field(repr=False, compare=False)
+    canonical_bytes: bytes = field(repr=False)
+    preregistration_id: str
+
+    def __post_init__(self) -> None:
+        document = loads_canonical_json(self.canonical_bytes)
+        payload = {
+            key: value for key, value in document.items() if key != "preregistration_id"
+        }
+        if (
+            self._issuer is not _ISSUER
+            or canonical_json_bytes(document) != self.canonical_bytes
+            or document.get("preregistration_id") != self.preregistration_id
+            or domains.extension_content_id_v143(
+                domains.CONSTRUCTION_K7_OCCURRENCE_FACTOR_BANK_UPDATE_PREREGISTRATION_V143_DOMAIN,
+                payload,
+            )
+            != self.preregistration_id
+        ):
+            _fail("V143 preregistration bytes or issuer changed")
+
+    def to_document(self) -> dict[str, Any]:
+        return loads_canonical_json(self.canonical_bytes)
+
+
+def freeze_occurrence_factor_bank_update_planning_preregistration_v143(
+    dictionary_raw: bytes,
+    verification_raw: bytes,
+    v140_failure_raw: bytes,
+    v142_failure_raw: bytes,
+) -> OccurrenceFactorBankUpdatePlanningPreregistrationV143:
+    document = _document(
+        dictionary_raw, verification_raw, v140_failure_raw, v142_failure_raw
+    )
+    raw = canonical_json_bytes(document)
+    identity = document["preregistration_id"]
+    if PREREGISTRATION_ID != "0" * 64 and (
+        identity != PREREGISTRATION_ID
+        or len(raw) != EXPECTED_CANONICAL_BYTE_COUNT
+        or hashlib.sha256(raw).hexdigest() != EXPECTED_CANONICAL_SHA256
+    ):
+        _fail("V143 frozen preregistration changed")
+    return OccurrenceFactorBankUpdatePlanningPreregistrationV143(_ISSUER, raw, identity)
+
+
+__all__ = (
+    "PREREGISTRATION_ID",
+    "campaign_config_v143",
+    "freeze_occurrence_factor_bank_update_planning_preregistration_v143",
+)
