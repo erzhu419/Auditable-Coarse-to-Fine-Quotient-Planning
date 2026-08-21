@@ -34,9 +34,9 @@ def frozen():
 def test_v141_decodes_robust_candidates_at_occurrence_granularity(frozen):
     _raw, document = frozen
     assert document["source_occurrence_archive_cardinality"] == 16
-    assert document["selected_minimum_distinct_occurrence_support"] >= 3
-    assert document["selected_template_count"] >= 1
-    assert document["selected_cross_schema_template_count"] >= 1
+    assert document["selected_minimum_distinct_occurrence_support"] == 9
+    assert document["selected_template_count"] == 5
+    assert document["selected_cross_schema_template_count"] == 5
     assert document["selected_structural_schema_pair_template_count"] == 0
     assert document["robust_candidate_schema_decoded"] is True
     assert document["occurrence_support_not_campaign_container_support"] is True

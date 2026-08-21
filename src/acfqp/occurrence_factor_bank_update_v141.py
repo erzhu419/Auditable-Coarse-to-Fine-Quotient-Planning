@@ -16,9 +16,11 @@ from acfqp.generic_bit_codelength_universal_synthesizer_v14 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-BANK_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+BANK_ID = "eb0b4ccc1283d2ce431cbfc9f0100fccc931bc416a5cd60c626b7d59cdeef6f8"
+EXPECTED_CANONICAL_BYTE_COUNT = 13_110
+EXPECTED_CANONICAL_SHA256 = (
+    "c758cbe0041a5f0a9372188a0120142833136363dfffb53e5d6e1b1496198db9"
+)
 
 _CAMPAIGN_DOMAINS = {
     "acfqp.packet_batching_source_unseen_transfer_campaign.v134": (
