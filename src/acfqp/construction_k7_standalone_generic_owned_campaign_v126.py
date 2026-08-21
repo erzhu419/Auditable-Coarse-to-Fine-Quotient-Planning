@@ -13,9 +13,9 @@ from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 from acfqp.standalone_generic_owned_campaign_core_v126 import build_standalone_generic_owned_campaign_document_v126
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "c10d9d46c448c2fc12661b24a47886c9b8b4c53f6849609e76f0620f8d21877f"
+EXPECTED_CANONICAL_BYTE_COUNT = 2_287_042
+EXPECTED_CANONICAL_SHA256 = "4f4277bc8b35297ddc5ff272fbaaa0e37734f1ee0d419b52d825285f8ec36085"
 
 
 class ConstructionK7StandaloneGenericOwnedCampaignV126Error(ValueError):
