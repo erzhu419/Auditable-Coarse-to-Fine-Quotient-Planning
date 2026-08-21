@@ -19,9 +19,9 @@ from acfqp.incremental_abstract_successor_campaign_core_v113 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "eb59e83d53b6ebcf104ece21a60a99371ac15516f3e5629a604290142411b13a"
+EXPECTED_CANONICAL_BYTE_COUNT = 23_620_415
+EXPECTED_CANONICAL_SHA256 = "835e0a9687196b77a8af76ed5c025c7757d3656fc7317af3a9a43a519e268054"
 
 
 class ConstructionK7IncrementalAbstractSuccessorCampaignV113Error(ValueError):
