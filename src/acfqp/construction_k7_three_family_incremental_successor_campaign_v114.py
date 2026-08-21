@@ -19,9 +19,11 @@ from acfqp.three_family_incremental_successor_campaign_core_v114 import (
 )
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "0daf03f1891ed225b2221d61fa3780c1f0a84d2506ce8d2bff8164df1153c3a8"
+EXPECTED_CANONICAL_BYTE_COUNT = 33_074_844
+EXPECTED_CANONICAL_SHA256 = (
+    "819e551fcbac840826b01deef9072d67055922e8d1b310949752886418cc7b7d"
+)
 
 
 class ConstructionK7ThreeFamilyIncrementalSuccessorCampaignV114Error(ValueError):
