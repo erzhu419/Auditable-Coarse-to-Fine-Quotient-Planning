@@ -25,9 +25,9 @@ from acfqp.sequence_wide_agreement_shielded_campaign_core_v100 import (
 )
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "ce5886a86036c5f1163fcd98b5566c5dc5ca981405d433096944dc0d7c293a9a"
+EXPECTED_CANONICAL_BYTE_COUNT = 4_250_703
+EXPECTED_CANONICAL_SHA256 = "396cd4a9af3b0f25ce2449b341b15ac1bab69a02fe078ceacd93b36441df40d0"
 
 
 class ConstructionK7SequenceWideAgreementShieldedCampaignV100Error(ValueError):
