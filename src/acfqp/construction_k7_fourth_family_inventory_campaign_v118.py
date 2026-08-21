@@ -21,9 +21,9 @@ from acfqp.fourth_family_inventory_campaign_core_v118 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "0ab03c02a8b5b795860c5c96943204f8553fc6836e7dab92ef753c1fe6d86df1"
+EXPECTED_CANONICAL_BYTE_COUNT = 2_986_273
+EXPECTED_CANONICAL_SHA256 = "9afbade52f4b553ad5696e769ba6f8f1faced07fbb11b07b0f8a59991961e19d"
 
 
 class ConstructionK7FourthFamilyInventoryCampaignV118Error(ValueError):
