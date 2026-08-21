@@ -31,9 +31,13 @@ from acfqp.persistent_second_domain_campaign_core_v95 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = (
+    "7d23704aa7d6513182d59e6f782417d99c7b9f1dc467fe84f9fba30722ee5eb4"
+)
+EXPECTED_CANONICAL_BYTE_COUNT = 1_887_696
+EXPECTED_CANONICAL_SHA256 = (
+    "e9331415cee57536e4816b0582f28200c4f216c43e650065f5f12c3deeb19ae7"
+)
 
 
 class ConstructionK7PersistentSecondDomainCampaignV95Error(ValueError):
