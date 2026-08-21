@@ -20,9 +20,9 @@ from acfqp.epoch_indexed_quotient_campaign_core_v110 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "9efd58cd7d285b4f29b86ba8d750bac1569eea3d58027293c4699f48845b7ca7"
+EXPECTED_CANONICAL_BYTE_COUNT = 12_215_135
+EXPECTED_CANONICAL_SHA256 = "b3b57e0d3ea0db565ab254cf4898828d0409bc86537bd05ea01f2e3f6acf3b80"
 
 
 class ConstructionK7EpochIndexedQuotientCampaignV110Error(ValueError):
