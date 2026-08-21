@@ -20,9 +20,9 @@ from acfqp.identity_short_circuited_epoch_campaign_core_v111 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "378f333008191bdb338182c787547aeb80f4fa27b612f499043b20163a6327f5"
+EXPECTED_CANONICAL_BYTE_COUNT = 19_377_728
+EXPECTED_CANONICAL_SHA256 = "9aa43e94e150c085c155db2115ce01cc1447b7547f72b29c128392b972072efc"
 
 
 class ConstructionK7IdentityShortCircuitedEpochCampaignV111Error(ValueError):

@@ -28,12 +28,25 @@ def test_v111_exact_campaign_is_preserved():
     assert len(raw) == campaign.EXPECTED_CANONICAL_BYTE_COUNT
     assert hashlib.sha256(raw).hexdigest() == campaign.EXPECTED_CANONICAL_SHA256
     assert document["campaign_id"] == campaign.CAMPAIGN_ID
-    assert document["registered_gate"]["passed"] is True
-    assert document["registered_gate"]["passed_target_occurrence_count"] == 4
+    assert document["registered_gate"]["passed"] is False
+    assert document["registered_gate"]["passed_target_occurrence_count"] == 2
     assert document["registered_gate"][
         "aggregate_maintenance_strictly_below_full_diff"
     ] is True
-    assert document["registered_identity_short_circuited_epoch_invalidation_verified"] is True
+    assert document["registered_identity_short_circuited_epoch_invalidation_verified"] is False
+    failed = [
+        row
+        for row in document["target_occurrences"]
+        if row["registered_gate"]["passed"] is False
+    ]
+    assert [(row["target_family"], row["seed"]) for row in failed] == [
+        ("BALANCED_BATCH_REFINEMENT", 1_023_101),
+        ("BALANCED_BATCH_REFINEMENT", 1_023_102),
+    ]
+    assert [
+        row["accounting"]["maintenance_events_avoided_against_full_diff"]
+        for row in failed
+    ] == [-2, -2]
     assert document["cached_heuristic_used_as_safety_authority"] is False
     assert document["complete_ground_world_model_synthesized"] is False
     assert document["official_scalar_cost"] is None
