@@ -24,9 +24,9 @@ from acfqp.hierarchical_abstract_utilization_campaign_core_v104 import (
 )
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "1f9787eee1cb853f695c3fcb494822f7168abdebb1363f357069f468ce67eb79"
+EXPECTED_CANONICAL_BYTE_COUNT = 5_295_892
+EXPECTED_CANONICAL_SHA256 = "eb8cce92fe9c72f17bdd5493ea943fea7322dd280a1e7bcf00d92f899106a15c"
 
 
 class ConstructionK7HierarchicalUtilizationCampaignV104Error(ValueError):
