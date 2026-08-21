@@ -21,9 +21,9 @@ from acfqp.dependency_derived_program_branch_campaign_core_v117 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "5817b88896699206fcb08ed64111fc993691515fd0461e518c956a04de283b9d"
+EXPECTED_CANONICAL_BYTE_COUNT = 7_794_238
+EXPECTED_CANONICAL_SHA256 = "061a653cf1048fe01420a3159d4389b9b81eb573f97c5acfbd66fcf618d60039"
 
 
 class ConstructionK7DependencyDerivedProgramBranchCampaignV117Error(ValueError):

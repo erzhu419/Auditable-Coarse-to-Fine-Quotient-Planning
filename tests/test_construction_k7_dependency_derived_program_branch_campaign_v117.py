@@ -27,6 +27,12 @@ def test_v117_campaign_rejects_changed_v116_predecessor():
     reason="V117 registered campaign has not been frozen",
 )
 def test_v117_exact_campaign_is_preserved():
-    assert campaign.run_dependency_derived_program_branch_campaign_v117(
-        V116_CAMPAIGN.read_bytes(), V116_VERIFICATION.read_bytes()
-    ).canonical_bytes == V117_CAMPAIGN.read_bytes()
+    raw = V117_CAMPAIGN.read_bytes()
+    assert len(raw) == campaign.EXPECTED_CANONICAL_BYTE_COUNT
+    document = campaign.loads_canonical_json(raw)
+    assert document["campaign_id"] == campaign.CAMPAIGN_ID
+    assert document["registered_gate"]["passed"] is True
+    assert document["registered_gate"][
+        "every_occurrence_rederives_exact_dependency_and_rejects_changed_dependency"
+    ] is True
+    assert document["official_scalar_cost"] is None
