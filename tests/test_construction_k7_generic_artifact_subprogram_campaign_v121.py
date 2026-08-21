@@ -38,7 +38,15 @@ def test_v121_exact_campaign_is_preserved():
     assert len(raw) == campaign.EXPECTED_CANONICAL_BYTE_COUNT
     document = campaign.loads_canonical_json(raw)
     assert document["campaign_id"] == campaign.CAMPAIGN_ID
-    assert document["registered_gate"]["passed"] is True
+    assert document["registered_gate"]["passed"] is False
+    assert document["registered_gate"]["passed_target_occurrence_count"] == 1
+    assert all(
+        episode["success"]
+        for row in document["target_occurrences"]
+        for episode in row["genesis_authorized_program_branch_sequence"][
+            "genesis_authorized_base_sequence"
+        ]["episodes"]
+    )
     assert document["generic_planner_execution_adapter_verified"] is False
     assert document["complete_ground_world_model_synthesized"] is False
     assert document["official_scalar_cost"] is None

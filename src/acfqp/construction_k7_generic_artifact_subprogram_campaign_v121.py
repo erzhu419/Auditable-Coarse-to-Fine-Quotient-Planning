@@ -20,9 +20,9 @@ from acfqp.generic_artifact_subprogram_campaign_core_v121 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "0563a476a14b429b3266269df4427109bbd528f941f89443105d2eb0ee7aac32"
+EXPECTED_CANONICAL_BYTE_COUNT = 3_845_644
+EXPECTED_CANONICAL_SHA256 = "4569865824d41ac5f4fef7450cbaf6f3461263a8dfb0ff425714c0cd160ae9e5"
 
 
 class ConstructionK7GenericArtifactSubprogramCampaignV121Error(ValueError):
