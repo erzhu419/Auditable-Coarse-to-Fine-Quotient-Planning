@@ -20,9 +20,9 @@ from acfqp.generic_artifact_derived_factor_projection_v120 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+CAMPAIGN_ID = "64f1516fa490d4a3fed96f460850113bdcd2243fd1338d663b08b1b13e6e7432"
+EXPECTED_CANONICAL_BYTE_COUNT = 4_177_141
+EXPECTED_CANONICAL_SHA256 = "d6f50c58d3f8a953b62592fb620f57c39e71fd52e29582c7cbce2f5fc05bbbfd"
 
 
 class ConstructionK7ArtifactDerivedFactorCampaignV120Error(ValueError):
