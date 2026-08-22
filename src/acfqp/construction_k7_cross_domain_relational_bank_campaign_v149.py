@@ -16,8 +16,10 @@ from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 CAMPAIGN_ID = "0" * 64
 EXPECTED_CANONICAL_BYTE_COUNT = 0
 EXPECTED_CANONICAL_SHA256 = "0" * 64
-ATTEMPT_TERMINAL_STATE = "UNEXECUTED"
-FAILURE_RECORD_SHA256: str | None = None
+ATTEMPT_TERMINAL_STATE = "FROZEN_PREREGISTERED_PLANNER_ACTION_PATH_FAILURE"
+FAILURE_RECORD_SHA256: str | None = (
+    "0ad197ecd213fa53467ff7252b61e5d750dbc27d675fdf0d5fd8c242ab22458d"
+)
 
 
 class ConstructionK7CrossDomainRelationalBankCampaignV149Error(ValueError):
