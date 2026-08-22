@@ -8,6 +8,7 @@ from acfqp.construction_k7_fourth_family_sample_tax_campaign_v166 import (
     CAMPAIGN_ID,
     EXPECTED_CANONICAL_BYTE_COUNT,
     EXPECTED_CANONICAL_SHA256,
+    FAILURE_ID,
 )
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
@@ -22,6 +23,8 @@ def test_v166_attempt_state_is_explicit():
         "FROZEN_SUCCESS",
         "FROZEN_FAILURE",
     }
+    if ATTEMPT_TERMINAL_STATE == "FROZEN_FAILURE":
+        assert FAILURE_ID != "0" * 64
 
 
 def test_v166_frozen_campaign_bytes():

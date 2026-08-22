@@ -15,7 +15,8 @@ from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 CAMPAIGN_ID = "0" * 64
 EXPECTED_CANONICAL_BYTE_COUNT = 0
 EXPECTED_CANONICAL_SHA256 = "0" * 64
-ATTEMPT_TERMINAL_STATE = "UNEXECUTED"
+ATTEMPT_TERMINAL_STATE = "FROZEN_FAILURE"
+FAILURE_ID = "2d299454ac4aaa7d0517875f568b90a782d79c1c4aa6881b5d0e18ab48d15911"
 
 
 class ConstructionK7FourthFamilySampleTaxCampaignV166Error(ValueError):
@@ -70,5 +71,6 @@ def run_fourth_family_sample_tax_campaign_v166(
 __all__ = (
     "ATTEMPT_TERMINAL_STATE",
     "CAMPAIGN_ID",
+    "FAILURE_ID",
     "run_fourth_family_sample_tax_campaign_v166",
 )
