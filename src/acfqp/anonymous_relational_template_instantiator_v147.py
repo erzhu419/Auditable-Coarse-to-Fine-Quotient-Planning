@@ -211,6 +211,11 @@ def instantiate_anonymous_relational_templates_v147(
         "source_raw_transition_sha256": hashlib.sha256(
             canonical_json_bytes([row.to_document() for row in rows])
         ).hexdigest(),
+        "bank_selected_template_count": len(bank["selected_subprograms"]),
+        "bank_selected_relational_template_count": sum(
+            row.get("relation_symbol_count", 0) > 0
+            for row in bank["selected_subprograms"]
+        ),
         "observation_derived_binding": copy.deepcopy(binding),
         "exact_instantiations": exact_rows,
         "exact_instantiation_count": len(exact_rows),

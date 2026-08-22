@@ -41,6 +41,8 @@ def test_v147_rebinds_one_alpha_relation_template_on_every_source_occurrence():
             bank, verification, rows, adapter.catalogue, layout
         )
         assert receipt["exact_relational_instantiation_count"] >= 1
+        assert receipt["bank_selected_template_count"] == 6
+        assert receipt["bank_selected_relational_template_count"] == 1
         assert receipt["binding_derived_from_raw_observations"] is True
         assert receipt["target_coordinate_roles_supplied_by_bank"] is False
         assert receipt["exact_rows_are_program_proposals_not_planning_authority"] is True
