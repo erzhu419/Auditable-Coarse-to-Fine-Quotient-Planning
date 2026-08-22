@@ -46,7 +46,7 @@ def build_novel_positive_signature_adapter_v158(seed: int, config: Mapping[str, 
 
 def build_novel_fallback_signature_adapter_v158(seed: int, config: Mapping[str, Any]):
     base = build_relation_fanout_routing_adapter_v154(seed, config)
-    catalogue = _recode_repeated_noninitial_values(base, source_support=2, maximum_fields=2)
+    catalogue = _recode_repeated_noninitial_values(base, source_support=2, maximum_fields=1)
     return RelationFanoutRoutingFlatAdapterV154(FALLBACK_FAMILY, seed, base.kernel, catalogue, base.encode)
 
 
