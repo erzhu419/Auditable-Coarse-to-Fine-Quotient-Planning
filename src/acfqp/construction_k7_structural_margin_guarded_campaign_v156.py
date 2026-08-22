@@ -10,11 +10,12 @@ from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 from acfqp.structural_margin_guarded_campaign_core_v156 import build_structural_margin_guarded_campaign_document_v156
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
-ATTEMPT_TERMINAL_STATE = "UNEXECUTED"
-FAILURE_RECORD_SHA256: str | None = None
+CAMPAIGN_ID = "eddffbb380f9ea6e084515f622b81bce993b4e5b209bac2375417b1946dc6eb3"
+EXPECTED_CANONICAL_BYTE_COUNT = 14_015_131
+EXPECTED_CANONICAL_SHA256 = "15758409c83b82f2720529b5e0e80917077472bbe6664e5e2204704e3684788e"
+ATTEMPT_TERMINAL_STATE = "FROZEN_PREREGISTERED_GATE_FAILURE"
+FAILURE_RECORD_BYTE_COUNT = 5_207
+FAILURE_RECORD_SHA256 = "5bd68c477d98231ddbc4bcd7361ad18f2ba1a89fc12b6ced7796da617791e881"
 
 
 class ConstructionK7StructuralMarginGuardedCampaignV156Error(ValueError):
