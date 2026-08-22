@@ -284,12 +284,10 @@ def build_online_typed_plan_receipt_campaign_v172(
     )
     if not (
         v171_campaign["registered_gate"]["passed"] is True
-        and v171_verification[
-            "sixth_family_world_model_reuse_independently_verified"
-        ]
+        and v171_verification["producer_free_target_outcome_reexecution"]
         is True
         and v171_verification[
-            "sixth_family_factor_prior_sample_tax_reduction_independently_verified"
+            "factor_prior_strict_sample_tax_reduction_independently_verified"
         ]
         is True
     ):
