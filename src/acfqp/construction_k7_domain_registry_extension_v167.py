@@ -13,6 +13,7 @@ _DOMAIN_BY_KEY = {
     key: f"acfqp:{tag}:v167"
     for key, tag in (
         ("v166_failure", "construction-k7-v166-fourth-family-failure"),
+        ("sequence", "construction-k7-plan-mode-set-sequence"),
         ("occurrence", "construction-k7-plan-mode-set-fourth-family-occurrence"),
         ("campaign", "construction-k7-plan-mode-set-fourth-family-campaign"),
         (
