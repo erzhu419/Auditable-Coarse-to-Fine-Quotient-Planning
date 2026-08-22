@@ -156,9 +156,9 @@ def prepare_certified_paid_path_switch_v162(adapter, expression):
         "relation_candidates": candidates,
         "certified_positive_switch": certified_switch,
         "query_policy_decision": (
-            "CERTIFIED_RELATION_COVERAGE"
+            "RELATION_COVERAGE"
             if certified_switch
-            else "EXACT_PATH_FIRST_SAFE_FALLBACK"
+            else "PATH_FIRST_SAFE_FALLBACK"
         ),
     }
 
