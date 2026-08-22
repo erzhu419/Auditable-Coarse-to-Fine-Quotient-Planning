@@ -26,6 +26,13 @@ def test_v144_frozen_campaign_passes_registered_gate():
         assert failure["preregistration_id"] == (
             "f2e114e4c00b6a98475cd7548e1d4f3301c76204864453183cdf0df8903f9f38"
         )
+        assert failure["outcome_kind"] == (
+            "PREREGISTERED_INCREMENTAL_RELATIONAL_PROJECTION_FAILURE"
+        )
+        assert failure["error_type"] == "GenericCompiledQuotientModelV123Error"
+        assert failure["failed_seed"] is None
+        assert failure["process_pool_trace_exposed_failed_seed"] is False
+        assert failure["failure_reveals_post_certificate_relation_binding_nonclosure"] is True
         assert failure["same_identity_rerun_forbidden"] is True
         assert failure["official_scalar_cost"] is None
         return
