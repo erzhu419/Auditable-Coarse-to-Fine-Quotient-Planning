@@ -15,10 +15,12 @@ from acfqp.fifth_family_total_plan_receipt_set_campaign_core_v168 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
-ATTEMPT_TERMINAL_STATE = "UNEXECUTED"
+CAMPAIGN_ID = "447f04fb450a9b76083993593a66ef717431f0b814212927ff2adfa1e27e4dce"
+EXPECTED_CANONICAL_BYTE_COUNT = 25_586_483
+EXPECTED_CANONICAL_SHA256 = (
+    "e0cd4d36fb72bf79519878e1a368aeecf128cd91c4571bf0071d68af2760dfa5"
+)
+ATTEMPT_TERMINAL_STATE = "FROZEN_SUCCESS"
 FAILURE_ID = "0" * 64
 
 
