@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from concurrent.futures import ProcessPoolExecutor
-from types import FunctionType
+from types import FunctionType, SimpleNamespace
 import hashlib
 from pathlib import Path
 from typing import Any, Mapping, NoReturn
@@ -71,13 +71,75 @@ def _campaign_config() -> dict[str, Any]:
     return config
 
 
-_SEQUENCE_GLOBALS = dict(previous.__dict__)
-_SEQUENCE_GLOBALS.update(EXPECTED_EPISODES=EXPECTED_EPISODES, _fail=_fail, _require=_require)
-_VERIFY_SEQUENCE = FunctionType(
-    previous._verify_sequence.__code__,  # noqa: SLF001
-    _SEQUENCE_GLOBALS,
-    name=previous._verify_sequence.__name__,  # noqa: SLF001
+def _project_allow_nonaccepting_novel_delta(rows, candidate, actions):
+    original = previous.base.previous.base.model._project  # noqa: SLF001
+    try:
+        return original(rows, candidate, actions)
+    except Exception as error:
+        if str(error) != "V123r1 accepting projection changed":
+            raise
+    model = previous.base.previous.base.model  # noqa: SLF001
+    unique = {model._raw_key(row): row for row in rows}  # noqa: SLF001
+    layout = candidate["layout"]
+    state_order = layout["state_canonical_to_raw"]
+    action_order = layout["action_canonical_to_raw"]
+    assignments = candidate["compiled_factor_assignments"]
+    targets = tuple(row["target_column"] for row in assignments)
+    checks = 0
+    for row in unique.values():
+        selected = row["selected_action"]
+        action = tuple(selected["anonymous_fields"][index] for index in action_order)
+        _require(actions.get(selected["action_key"]) == action, "V151 novel raw/catalogue action join changed")
+        pre_full = tuple(row["pre_vector"][index] for index in state_order)
+        post_full = tuple(row["post_vector"][index] for index in state_order)
+        support = model.generic._successors(  # noqa: SLF001
+            assignments,
+            tuple(pre_full[index] for index in targets),
+            action,
+        )
+        checks += len(support)
+        _require(tuple(post_full[index] for index in targets) in support, "V151 novel row escaped compiled program")
+    return {"raw_keys": frozenset(unique), "checks": checks}
+
+
+_MODEL_PROXY = SimpleNamespace(**previous.base.previous.base.model.__dict__)
+_MODEL_PROXY._project = _project_allow_nonaccepting_novel_delta
+_ROBUST_BASE_PROXY = SimpleNamespace(**previous.base.previous.base.__dict__)
+_ROBUST_BASE_PROXY.model = _MODEL_PROXY
+_V145_PROXY = SimpleNamespace(**previous.base.previous.__dict__)
+_V145_PROXY.base = _ROBUST_BASE_PROXY
+_BASE_SEQUENCE_GLOBALS = dict(previous.base.__dict__)
+_BASE_SEQUENCE_GLOBALS.update(
+    EXPECTED_EPISODES=EXPECTED_EPISODES,
+    FAMILY=FAMILY,
+    previous=_V145_PROXY,
+    _fail=_fail,
+    _require=_require,
 )
+_BASE_VERIFY_SEQUENCE = FunctionType(
+    previous.base._verify_sequence.__code__,  # noqa: SLF001
+    _BASE_SEQUENCE_GLOBALS,
+    name=previous.base._verify_sequence.__name__,  # noqa: SLF001
+)
+
+
+def _verify_sequence(sequence, candidate, rows, *, family, seed):
+    previous._verify_id(  # noqa: SLF001
+        sequence,
+        "sequence_id",
+        previous.domains.CONSTRUCTION_K7_SEQUENCE_V150_DOMAIN,
+    )
+    _require(
+        sequence.get("schema") == "acfqp.certified_planner_abstention_sequence.v150"
+        and sequence.get("family") == family
+        and tuple(sequence.get("episode_indices", ())) == EXPECTED_EPISODES
+        and sequence.get("incomplete_abstract_action_path_treated_as_abstention") is True
+        and sequence.get("certified_legal_search_remains_fallback_authority") is True
+        and sequence.get("incomplete_abstract_plan_abstention_count")
+        == sum(episode["abstract_plan_abstention_count"] for episode in sequence["episodes"]),
+        "V151 sequence correction boundary changed",
+    )
+    return _BASE_VERIFY_SEQUENCE(previous._normalized_sequence(sequence), candidate, rows, seed=seed)  # noqa: SLF001
 
 
 def _verify_occurrence(args: tuple[Mapping[str, Any], Mapping[str, Any]]) -> dict[str, Any]:
@@ -102,14 +164,14 @@ def _verify_occurrence(args: tuple[Mapping[str, Any], Mapping[str, Any]]) -> dic
     strict_candidate, strict_rows = previous.base._rebuild_acquisition(  # noqa: SLF001
         strict_doc, adapter, bank, batches, enabled=False, config=config
     )
-    prior_sequence = _VERIFY_SEQUENCE(
+    prior_sequence = _verify_sequence(
         row["anonymous_relational_factor_prior_owned_sequence"],
         prior_candidate,
         prior_rows,
         family=family,
         seed=seed,
     )
-    strict_sequence = _VERIFY_SEQUENCE(
+    strict_sequence = _verify_sequence(
         row["strict_no_prior_owned_sequence"],
         strict_candidate,
         strict_rows,
