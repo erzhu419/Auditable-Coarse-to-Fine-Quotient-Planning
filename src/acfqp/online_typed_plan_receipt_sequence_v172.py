@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import contextvars
-import copy
 import hashlib
 from types import FunctionType, SimpleNamespace
 from typing import Any, Mapping, NoReturn
@@ -93,7 +92,15 @@ _ACTIVE_TRACE: contextvars.ContextVar[list[dict[str, Any]] | None] = (
 _BASE_ORDERER = v154._RUN.__globals__["_owned_orderer"]  # noqa: SLF001
 
 
-def _issuance_receipt(raw, legal, support_source, failure_index, plan, ordinal):
+def _issuance_receipt(
+    raw,
+    legal,
+    support_source,
+    failure_index,
+    plan,
+    ordinal,
+    delegate_plan_bytes,
+):
     typed_source = TAXONOMY.get((plan.get("schema"), plan.get("planning_source")))
     if typed_source is None:
         _fail("V172 online plan source escaped the complete taxonomy")
@@ -106,7 +113,9 @@ def _issuance_receipt(raw, legal, support_source, failure_index, plan, ordinal):
         and plan.get("initial_action_key") in legal
     ):
         _fail("V172 online plan identity or authority boundary changed")
-    wrapper = {"raw_state": list(raw), "abstract_plan": copy.deepcopy(plan)}
+    wrapper_bytes = canonical_json_bytes(
+        {"raw_state": list(raw), "abstract_plan": plan}
+    )
     payload = {
         "schema": "acfqp.online_typed_abstract_plan_issuance_receipt.v172",
         "issuance_ordinal": ordinal,
@@ -114,14 +123,16 @@ def _issuance_receipt(raw, legal, support_source, failure_index, plan, ordinal):
         "planning_source": plan["planning_source"],
         "typed_plan_source": typed_source,
         "source_plan_id": plan_id,
-        "source_plan_wrapper_sha256": _sha(wrapper),
+        "source_plan_wrapper_sha256": hashlib.sha256(wrapper_bytes).hexdigest(),
         "raw_state_sha256": _sha(list(raw)),
         "exact_legal_action_keys": list(legal),
         "exact_legal_action_keys_sha256": _sha(list(legal)),
         "legality_support_source": support_source,
         "legality_failure_index": failure_index,
         "initial_action_key": plan["initial_action_key"],
-        "delegate_plan_sha256_before_receipt": _sha(plan),
+        "delegate_plan_sha256_before_receipt": hashlib.sha256(
+            delegate_plan_bytes
+        ).hexdigest(),
         "receipt_issued_before_orderer_return": True,
         "caller_has_not_received_plan_at_receipt_issuance": True,
         "delegate_plan_returned_byte_exact": True,
@@ -135,7 +146,7 @@ def _issuance_receipt(raw, legal, support_source, failure_index, plan, ordinal):
             domains.CONSTRUCTION_K7_ONLINE_PLAN_ISSUANCE_V172_DOMAIN, payload
         ),
     }
-    return wrapper, receipt
+    return wrapper_bytes, receipt
 
 
 def _online_orderer(*args, **kwargs):
@@ -151,17 +162,18 @@ def _online_orderer(*args, **kwargs):
         if trace is None:
             _fail("V172 online orderer has no owner-bound issuance trace")
         before = canonical_json_bytes(plan)
-        wrapper, receipt = _issuance_receipt(
+        wrapper_bytes, receipt = _issuance_receipt(
             raw,
             legal,
             legality_support_source,
             legality_failure_index,
             plan,
             len(trace),
+            before,
         )
         if canonical_json_bytes(plan) != before:
             _fail("V172 receipt issuance mutated the delegate plan")
-        trace.append({"wrapper": wrapper, "receipt": receipt})
+        trace.append({"wrapper_bytes": wrapper_bytes, "receipt": receipt})
         return plan
 
     return order
@@ -194,7 +206,7 @@ def _execution_join(sequence_id, execution, issuance, ordinal):
         execution.get("actual_dependency_revalidated_execution_receipt_id")
         == source_id
         and canonical_json_bytes(execution.get("quotient_plan_receipt"))
-        == canonical_json_bytes(issuance["wrapper"])
+        == issuance["wrapper_bytes"]
         and execution.get("quotient_plan_id") == receipt["source_plan_id"]
         and execution.get("quotient_proposed_action_key")
         == receipt["initial_action_key"]
@@ -246,8 +258,7 @@ def run_online_typed_plan_receipt_sequence_v172(*args, **kwargs):
     if not (
         len(wrappers) == len(trace)
         and all(
-            canonical_json_bytes(wrapper)
-            == canonical_json_bytes(event["wrapper"])
+            canonical_json_bytes(wrapper) == event["wrapper_bytes"]
             for wrapper, event in zip(wrappers, trace, strict=True)
         )
     ):
