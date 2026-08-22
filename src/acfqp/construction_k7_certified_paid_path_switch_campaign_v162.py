@@ -12,10 +12,18 @@ from acfqp.certified_paid_path_switch_campaign_core_v162 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
-ATTEMPT_TERMINAL_STATE = "UNEXECUTED"
+CAMPAIGN_ID = (
+    "84250a94f22de611e57987c88bedbf5d44cc2bfa8f92cdec942ef625daa6b69a"
+)
+EXPECTED_CANONICAL_BYTE_COUNT = 20_607_166
+EXPECTED_CANONICAL_SHA256 = (
+    "371b2733c20b9834306be7a9afe191be6149751091a6dbd8496669828bc19073"
+)
+ATTEMPT_TERMINAL_STATE = "FROZEN_FAILED_REGISTERED_GATE"
+FAILURE_RECORD_BYTE_COUNT = 2_561
+FAILURE_RECORD_SHA256 = (
+    "3f69c16b089ce2bb95a458b1e046dd19c3d262b953397bd79d8579e1f9f96c7a"
+)
 
 
 class ConstructionK7CertifiedPaidPathSwitchCampaignV162Error(ValueError):
@@ -72,5 +80,6 @@ def run_certified_paid_path_switch_campaign_v162(
 __all__ = (
     "ATTEMPT_TERMINAL_STATE",
     "CAMPAIGN_ID",
+    "FAILURE_RECORD_SHA256",
     "run_certified_paid_path_switch_campaign_v162",
 )
