@@ -10,10 +10,10 @@ from acfqp.novel_signature_campaign_core_v158 import build_novel_signature_campa
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
-ATTEMPT_TERMINAL_STATE = "UNEXECUTED"
+CAMPAIGN_ID = "2c4dbab749685e8b3b7cafdd6c9ba7938ce0c5e4a9ee7efed82da3c65cde8adf"
+EXPECTED_CANONICAL_BYTE_COUNT = 15_598_562
+EXPECTED_CANONICAL_SHA256 = "5d14ca42d6168e237f1164995177db0216085eaa340f537b417c8c66f38a34ee"
+ATTEMPT_TERMINAL_STATE = "FROZEN_SUCCESS"
 FAILURE_RECORD_SHA256: str | None = None
 
 
