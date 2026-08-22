@@ -13,10 +13,10 @@ from acfqp.cross_domain_relational_factor_bank_campaign_core_v150 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
-ATTEMPT_TERMINAL_STATE = "UNEXECUTED"
+CAMPAIGN_ID = "d76a443f781cd6e6f0c19cf7af12de2627cbccb0a719c41f804f41c416b966c9"
+EXPECTED_CANONICAL_BYTE_COUNT = 61_088_428
+EXPECTED_CANONICAL_SHA256 = "00c5bad86cb05825ecc5cc0d7b0fc5dd00119b95c38a8f44eb3b67f6896c66e9"
+ATTEMPT_TERMINAL_STATE = "FROZEN_SUCCESS"
 FAILURE_RECORD_SHA256: str | None = None
 
 
