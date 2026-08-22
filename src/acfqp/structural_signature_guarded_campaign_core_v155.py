@@ -1,0 +1,208 @@
+"""V155 guarded query policy on fresh fan-out routing identities."""
+
+from __future__ import annotations
+
+import copy
+import hashlib
+from types import FunctionType
+
+from acfqp import anonymous_relational_factor_bank_acquisition_v148 as legacy_acquisition
+from acfqp import construction_k7_domain_registry_extension_v155 as domains
+from acfqp import cross_domain_relational_factor_bank_campaign_core_v149 as v149
+from acfqp.certified_memoized_planner_sequence_v154 import run_certified_memoized_planner_sequence_v154
+from acfqp.generic_relation_fanout_routing_adapter_v154 import FAMILY, build_relation_fanout_routing_adapter_v154
+from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
+from acfqp.relation_coverage_cross_structure_campaign_core_v154 import build_nonrelational_ood_control_v154
+from acfqp.structural_signature_guarded_acquisition_operator_v155 import acquire_matched_structural_signature_guarded_arms_v155
+from acfqp.structural_signature_query_guard_receipt_v155 import (
+    EXPECTED_CANONICAL_BYTE_COUNT as GUARD_RECEIPT_BYTE_COUNT,
+    EXPECTED_CANONICAL_SHA256 as GUARD_RECEIPT_SHA256,
+    GUARD_RECEIPT_ID,
+)
+
+
+TARGET_FAMILIES = (FAMILY,)
+
+
+def _clone(function, namespace):
+    clone = FunctionType(function.__code__, namespace, name=function.__name__, argdefs=function.__defaults__, closure=function.__closure__)
+    clone.__kwdefaults__ = function.__kwdefaults__
+    return clone
+
+
+def _verify_guard(raw: bytes):
+    document = loads_canonical_json(raw)
+    if (
+        canonical_json_bytes(document) != raw
+        or len(raw) != GUARD_RECEIPT_BYTE_COUNT
+        or hashlib.sha256(raw).hexdigest() != GUARD_RECEIPT_SHA256
+        or document.get("guard_receipt_id") != GUARD_RECEIPT_ID
+        or document.get("guard_frozen_before_v155_target_outcomes") is not True
+    ):
+        raise ValueError("V155 guard receipt changed")
+    return document
+
+
+_OCCURRENCE_GLOBALS = dict(v149.__dict__)
+_OCCURRENCE_GLOBALS.update(
+    _BUILDERS={FAMILY: build_relation_fanout_routing_adapter_v154},
+    acquire_matched_anonymous_relational_factor_bank_arms_v148=acquire_matched_structural_signature_guarded_arms_v155,
+    run_certificate_local_relational_overlay_sequence_v144r1=run_certified_memoized_planner_sequence_v154,
+)
+_BASE_OCCURRENCE = _clone(v149.build_cross_domain_relational_factor_bank_occurrence_v149, _OCCURRENCE_GLOBALS)
+
+
+def build_structural_signature_guarded_occurrence_v155(
+    config,
+    *,
+    family,
+    seed,
+    episode_indices,
+    bank_raw,
+    verification_raw,
+    guard_receipt_raw,
+):
+    guard = _verify_guard(guard_receipt_raw)
+    execution_config = copy.deepcopy(config)
+    execution_config["_v155_guard_receipt_hex"] = guard_receipt_raw.hex()
+    base = _BASE_OCCURRENCE(
+        execution_config,
+        family=family,
+        seed=seed,
+        episode_indices=episode_indices,
+        bank_raw=bank_raw,
+        verification_raw=verification_raw,
+    )
+    adapter = build_relation_fanout_routing_adapter_v154(seed, execution_config)
+    legacy = legacy_acquisition.acquire_matched_anonymous_relational_factor_bank_arms_v148(adapter, bank_raw, verification_raw, execution_config)
+    prior = base["anonymous_relational_factor_prior_acquisition"]
+    strict = base["strict_no_prior_acquisition"]
+    legacy_prior = legacy["ANONYMOUS_RELATIONAL_FACTOR_PRIOR_ON"]["document"]
+    operator_reduction = legacy_prior["ground_support_labels"] - prior["ground_support_labels"]
+    factor_reduction = strict["ground_support_labels"] - prior["ground_support_labels"]
+    ood = build_nonrelational_ood_control_v154(execution_config, seed=seed + 3_000_000)
+    sequences = (base["anonymous_relational_factor_prior_owned_sequence"], base["strict_no_prior_owned_sequence"])
+    accounting = {
+        **base["accounting"],
+        "legacy_path_first_prior_acquisition_labels": legacy_prior["ground_support_labels"],
+        "labels_avoided_by_structural_guard_vs_legacy_prior": operator_reduction,
+        "labels_avoided_by_factor_prior_within_guarded_operator": factor_reduction,
+        "nonrelational_ood_compatibility_observation_labels": ood["observation_batch_count"],
+    }
+    exact_fallback = (
+        prior["guard_decision"] == "PATH_FIRST_SAFE_FALLBACK"
+        and prior["source_v148_acquisition_id"] == legacy_prior["acquisition_id"]
+        and prior["ground_support_labels"] == legacy_prior["ground_support_labels"]
+        and prior["raw_transition_sha256"] == legacy_prior["raw_transition_sha256"]
+    )
+    gate = {
+        **base["registered_gate"],
+        "guard_receipt_frozen_before_target_outcomes": guard["guard_frozen_before_v155_target_outcomes"],
+        "failed_structural_signature_selected_exact_path_first_fallback": exact_fallback,
+        "guard_introduced_no_sample_regression": operator_reduction == 0,
+        "factor_prior_noninferior_within_same_guarded_policy": factor_reduction >= 0,
+        "relation_template_selected_in_prior_arm": prior["relational_artifact_expression_selected_count"] > 0,
+        "same_relation_available_in_strict_pool": strict["relational_artifact_expression_selected_count"] > 0,
+        "v115_memoized_plan_receipt_consumed_both_arms": all(sequence["v115_memoized_compiled_program_plan_receipts_consumed"] for sequence in sequences),
+        "nonrelational_ood_rejected_before_bank_access": ood["operator_transfer_rejected_before_bank_access"] and ood["factor_bank_bytes_supplied_to_ood_control"] is False,
+        "v154_failed_identity_preserved": guard["v154_failed_identity_preserved"],
+    }
+    gate["passed"] = all(gate.values())
+    legacy_summary = {
+        "acquisition_id": legacy_prior["acquisition_id"],
+        "ground_support_labels": legacy_prior["ground_support_labels"],
+        "first_accepting_observation_label": legacy_prior["first_accepting_observation_label"],
+        "raw_transition_sha256": legacy_prior["raw_transition_sha256"],
+        "relational_artifact_expression_selected_count": legacy_prior["relational_artifact_expression_selected_count"],
+    }
+    payload = {
+        **{key: value for key, value in base.items() if key != "occurrence_id"},
+        "schema": "acfqp.structural_signature_guarded_occurrence.v155",
+        "guard_receipt_id": guard["guard_receipt_id"],
+        "legacy_path_first_prior_acquisition_summary": legacy_summary,
+        "nonrelational_ood_control": ood,
+        "accounting": accounting,
+        "registered_gate": gate,
+        "guard_sample_reduction_vs_legacy_prior": operator_reduction,
+        "factor_prior_sample_reduction_within_guarded_operator": factor_reduction,
+        "sample_tax_guard_claim_scope": "ONLY_REGISTERED_ANONYMOUS_STRUCTURAL_SIGNATURES_WITH_UNKNOWN_SAFE_FALLBACK",
+        "guard_is_planning_or_certificate_authority": False,
+        "v153_success_and_v154_failure_preserved": True,
+    }
+    return {**payload, "occurrence_id": domains.extension_content_id_v155(domains.CONSTRUCTION_K7_OCCURRENCE_V155_DOMAIN, payload)}
+
+
+def _target(args):
+    config = args[0]
+    return build_structural_signature_guarded_occurrence_v155(
+        config,
+        family=args[1],
+        seed=args[2],
+        episode_indices=args[3],
+        bank_raw=args[4],
+        verification_raw=args[5],
+        guard_receipt_raw=bytes.fromhex(config["_v155_guard_receipt_hex"]),
+    )
+
+
+_CAMPAIGN_GLOBALS = dict(v149.__dict__)
+_CAMPAIGN_GLOBALS.update(TARGET_FAMILIES=TARGET_FAMILIES, _target=_target)
+_BASE_CAMPAIGN = _clone(v149.build_cross_domain_relational_factor_bank_campaign_document_v149, _CAMPAIGN_GLOBALS)
+
+
+def build_structural_signature_guarded_campaign_document_v155(
+    config,
+    *,
+    preregistration_id,
+    bank_raw,
+    verification_raw,
+    guard_receipt_raw,
+):
+    guard = _verify_guard(guard_receipt_raw)
+    execution_config = copy.deepcopy(config)
+    execution_config["_v155_guard_receipt_hex"] = guard_receipt_raw.hex()
+    base = _BASE_CAMPAIGN(execution_config, preregistration_id=preregistration_id, bank_raw=bank_raw, verification_raw=verification_raw)
+    guard_reduction = sum(row["guard_sample_reduction_vs_legacy_prior"] for row in base["target_occurrences"])
+    factor_reduction = sum(row["factor_prior_sample_reduction_within_guarded_operator"] for row in base["target_occurrences"])
+    inherited = guard["positive_source_operator_sample_reduction"]
+    gate = {
+        **base["registered_gate"],
+        "guard_receipt_id": guard["guard_receipt_id"],
+        "aggregate_guard_sample_reduction_vs_legacy_prior": guard_reduction,
+        "aggregate_factor_prior_reduction_within_guarded_operator": factor_reduction,
+        "zero_guard_regression_everywhere": all(row["guard_sample_reduction_vs_legacy_prior"] == 0 for row in base["target_occurrences"]),
+        "factor_prior_noninferior_everywhere": all(row["factor_prior_sample_reduction_within_guarded_operator"] >= 0 for row in base["target_occurrences"]),
+        "factor_prior_positive_in_aggregate": factor_reduction > 0,
+        "inherited_verified_relation_coverage_reduction": inherited,
+        "guarded_registered_context_net_reduction": inherited + guard_reduction,
+        "guarded_registered_context_net_reduction_positive": inherited + guard_reduction > 0,
+        "memoized_plan_receipt_consumed_everywhere": all(row["registered_gate"]["v115_memoized_plan_receipt_consumed_both_arms"] for row in base["target_occurrences"]),
+        "nonrelational_ood_rejected_everywhere": all(row["registered_gate"]["nonrelational_ood_rejected_before_bank_access"] for row in base["target_occurrences"]),
+        "v154_failed_identity_preserved": True,
+    }
+    gate["passed"] = (
+        base["registered_gate"]["passed"]
+        and gate["zero_guard_regression_everywhere"]
+        and gate["factor_prior_noninferior_everywhere"]
+        and gate["factor_prior_positive_in_aggregate"]
+        and gate["guarded_registered_context_net_reduction_positive"]
+        and gate["memoized_plan_receipt_consumed_everywhere"]
+        and gate["nonrelational_ood_rejected_everywhere"]
+    )
+    payload = {
+        **{key: value for key, value in base.items() if key != "campaign_id"},
+        "schema": "acfqp.structural_signature_guarded_campaign.v155",
+        "guard_receipt_id": guard["guard_receipt_id"],
+        "registered_gate": gate,
+        "structural_signature_guard_prevented_v154_sample_regression": gate["passed"],
+        "sample_tax_reduction_claim_scope": "ONLY_THE_REGISTERED_V153_POSITIVE_AND_V155_GUARDED_SIGNATURE_COHORTS",
+        "guard_is_model_planning_or_certificate_authority": False,
+        "complete_world_model_synthesized": False,
+    }
+    return {**payload, "campaign_id": domains.extension_content_id_v155(domains.CONSTRUCTION_K7_CAMPAIGN_V155_DOMAIN, payload)}
+
+
+__all__ = (
+    "build_structural_signature_guarded_campaign_document_v155",
+    "build_structural_signature_guarded_occurrence_v155",
+)
