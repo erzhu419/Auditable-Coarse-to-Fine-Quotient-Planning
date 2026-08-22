@@ -28,6 +28,16 @@ def test_v144r1_frozen_campaign_passes_registered_gate():
             "34beef0555332e3f95666007a587d9bfef465a82d1f5fed39eccc6d2511584c2"
         )
         assert failure["same_identity_rerun_forbidden"] is True
+        assert failure["campaign_artifact_written"] is True
+        assert failure["campaign_id"] == CAMPAIGN_ID
+        assert failure["campaign_byte_count"] == EXPECTED_CANONICAL_BYTE_COUNT
+        assert failure["campaign_sha256"] == EXPECTED_CANONICAL_SHA256
+        assert failure["registered_gate"]["passed"] is False
+        assert failure["registered_gate"][
+            "query_local_relational_overlay_exercised_at_least_once"
+        ] is False
+        assert failure["aggregate_sample_labels_avoided"] == 46
+        assert failure["query_local_overlay_edge_count"] == 0
         assert failure["official_scalar_cost"] is None
         return
     if CAMPAIGN_ID == "0" * 64:
