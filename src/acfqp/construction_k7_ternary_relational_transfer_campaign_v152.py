@@ -10,10 +10,10 @@ from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 from acfqp.ternary_relational_transfer_campaign_core_v152 import build_ternary_relational_transfer_campaign_document_v152
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
-ATTEMPT_TERMINAL_STATE = "UNEXECUTED"
+CAMPAIGN_ID = "043437af4d99d554275eaf1f13a5691b1f46a332081b5a1cbe3b75f0e0586783"
+EXPECTED_CANONICAL_BYTE_COUNT = 30_756_918
+EXPECTED_CANONICAL_SHA256 = "d77f1be15500ac909f81a0b782443a659970b625f534e3c3f0acd460c936091a"
+ATTEMPT_TERMINAL_STATE = "FROZEN_SUCCESS"
 FAILURE_RECORD_SHA256: str | None = None
 
 
