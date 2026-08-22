@@ -13,10 +13,10 @@ from acfqp.certificate_local_recovery_union_campaign_core_v145 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
-ATTEMPT_TERMINAL_STATE = "UNEXECUTED"
+CAMPAIGN_ID = "24a50acc5cf553f4fc457e17aa4ffff0fc6b6b9ebe08fa0d54076d998c3eeaa9"
+EXPECTED_CANONICAL_BYTE_COUNT = 17_516_246
+EXPECTED_CANONICAL_SHA256 = "5584aa76043f76d69b72ec189bc67a3952e758bbaaad33025b73dc859851f33c"
+ATTEMPT_TERMINAL_STATE = "FROZEN_SUCCESS"
 FAILURE_RECORD_SHA256: str | None = None
 
 
