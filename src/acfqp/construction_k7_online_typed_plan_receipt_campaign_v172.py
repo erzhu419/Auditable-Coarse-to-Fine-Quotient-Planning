@@ -16,8 +16,8 @@ from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 CAMPAIGN_ID = "0" * 64
 EXPECTED_CANONICAL_BYTE_COUNT = 0
 EXPECTED_CANONICAL_SHA256 = "0" * 64
-ATTEMPT_TERMINAL_STATE = "UNEXECUTED"
-FAILURE_ID = "0" * 64
+ATTEMPT_TERMINAL_STATE = "FROZEN_EXTERNAL_INTERRUPTION"
+FAILURE_ID = "a8eb6fa5978d45c70c9412c444b3f25e8ad78eb8e1cda3d317242b4c771fb653"
 
 
 class ConstructionK7OnlineTypedPlanReceiptCampaignV172Error(ValueError):
