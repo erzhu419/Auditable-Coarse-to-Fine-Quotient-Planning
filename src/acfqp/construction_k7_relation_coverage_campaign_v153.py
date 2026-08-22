@@ -10,10 +10,10 @@ from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 from acfqp.relation_coverage_planning_campaign_core_v153 import build_relation_coverage_planning_campaign_document_v153
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
-ATTEMPT_TERMINAL_STATE = "UNEXECUTED"
+CAMPAIGN_ID = "47028757be59d7b6617d01411d5e0b580944df931ecb82bcdcea27f98fccee27"
+EXPECTED_CANONICAL_BYTE_COUNT = 7_167_903
+EXPECTED_CANONICAL_SHA256 = "b85a19614111542a7cb1cd150019c7bf6775e15fc2cd4a8f6d2e8ec7c6c4f61d"
+ATTEMPT_TERMINAL_STATE = "FROZEN_SUCCESS"
 FAILURE_RECORD_SHA256: str | None = None
 
 
