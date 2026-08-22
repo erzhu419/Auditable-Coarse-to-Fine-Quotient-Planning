@@ -7,6 +7,7 @@ import hashlib
 from typing import Any, NoReturn
 
 from acfqp import construction_k7_domain_registry_extension_v159 as domains
+from acfqp import construction_k7_joint_factor_query_source_preregistration_v159 as source_pre
 from acfqp.generic_modular_routing_adapter_v128 import (
     build_modular_routing_adapter_v128,
     modular_routing_config_v128,
@@ -24,9 +25,6 @@ V157_CAMPAIGN_SHA256 = "8674649d85d991d8625d43104cd4a5e07fa75ccd4ffb88236e767cba
 V157_VERIFICATION_ID = "61332d6b56b476d960915b182eff944c0a5e67a6dcf8b4782d798b0e46a6d59d"
 V157_VERIFICATION_BYTE_COUNT = 17_545
 V157_VERIFICATION_SHA256 = "fae743f81b19b45e85c5a96a1ffcf2bcbeee405e8a4651aa937169c635bcb9d4"
-SOURCE_PREREGISTRATION_ID = "0" * 64
-SOURCE_PREREGISTRATION_BYTE_COUNT = 0
-SOURCE_PREREGISTRATION_SHA256 = "0" * 64
 CLASSIFIER_RECEIPT_ID = "0" * 64
 EXPECTED_CANONICAL_BYTE_COUNT = 0
 EXPECTED_CANONICAL_SHA256 = "0" * 64
@@ -60,10 +58,10 @@ def _document(source_preregistration_raw, v157_campaign_raw, v157_verification_r
     if not (
         canonical_json_bytes(source_registration) == source_preregistration_raw
         and source_registration.get("source_preregistration_id")
-        == SOURCE_PREREGISTRATION_ID
-        and len(source_preregistration_raw) == SOURCE_PREREGISTRATION_BYTE_COUNT
+        == source_pre.SOURCE_PREREGISTRATION_ID
+        and len(source_preregistration_raw) == source_pre.EXPECTED_CANONICAL_BYTE_COUNT
         and hashlib.sha256(source_preregistration_raw).hexdigest()
-        == SOURCE_PREREGISTRATION_SHA256
+        == source_pre.EXPECTED_CANONICAL_SHA256
         and canonical_json_bytes(campaign) == v157_campaign_raw
         and campaign.get("campaign_id") == V157_CAMPAIGN_ID
         and len(v157_campaign_raw) == V157_CAMPAIGN_BYTE_COUNT
@@ -104,7 +102,7 @@ def _document(source_preregistration_raw, v157_campaign_raw, v157_verification_r
     )
     payload = {
         "schema": "acfqp.joint_factor_query_classifier_receipt.v159",
-        "source_preregistration_id": SOURCE_PREREGISTRATION_ID,
+        "source_preregistration_id": source_pre.SOURCE_PREREGISTRATION_ID,
         "source_v157_campaign_id": V157_CAMPAIGN_ID,
         "source_v157_verification_id": V157_VERIFICATION_ID,
         "source_modular_factorization_observations": list(observations),
