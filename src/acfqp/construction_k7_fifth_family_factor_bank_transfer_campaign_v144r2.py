@@ -13,11 +13,13 @@ from acfqp.fifth_family_factor_bank_transfer_campaign_core_v144r2 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
-ATTEMPT_TERMINAL_STATE = "UNEXECUTED"
-FAILURE_RECORD_SHA256: str | None = None
+CAMPAIGN_ID = "5008bebdbac2bd80674873dde52ffec8b220a4dcb395a10e80c50b701619567e"
+EXPECTED_CANONICAL_BYTE_COUNT = 41_468_476
+EXPECTED_CANONICAL_SHA256 = "fe5baa36098041a57cb865e7882d27eb8666c3606d120d2c1a99becd0db282db"
+ATTEMPT_TERMINAL_STATE = "FROZEN_PREREGISTERED_REGISTERED_GATE_FAILURE"
+FAILURE_RECORD_SHA256: str | None = (
+    "420242cda458596a23302aa73763752ec8fc91943a099e5113bb3b25c9ca2162"
+)
 
 
 class ConstructionK7FifthFamilyFactorBankTransferCampaignV144R2Error(ValueError):

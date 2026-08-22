@@ -26,6 +26,17 @@ def test_v144r2_frozen_campaign_or_failure():
             "505c219aab3d82ecac7e1b65953e7c56045a56010c6304f35344c4f70249a03f"
         )
         assert failure["same_identity_rerun_forbidden"] is True
+        assert failure["campaign_artifact_written"] is True
+        assert failure["campaign_id"] == CAMPAIGN_ID
+        assert failure["campaign_byte_count"] == EXPECTED_CANONICAL_BYTE_COUNT
+        assert failure["campaign_sha256"] == EXPECTED_CANONICAL_SHA256
+        assert failure["registered_gate"]["passed"] is False
+        assert failure["aggregate_sample_labels_avoided"] == 63
+        assert failure["certificate_failure_local_ground_labels"] == 79
+        assert failure["query_local_exact_overlay_edge_count"] == 0
+        assert failure["observed_local_recovery_branch"] == (
+            "PROGRAM_COMPATIBLE_INCREMENTAL_REFINEMENT_ONLY"
+        )
         assert failure["official_scalar_cost"] is None
         return
     if CAMPAIGN_ID == "0" * 64:
