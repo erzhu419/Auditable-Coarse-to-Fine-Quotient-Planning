@@ -15,10 +15,12 @@ from acfqp.fourth_family_plan_mode_set_campaign_core_v167 import (
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
-ATTEMPT_TERMINAL_STATE = "UNEXECUTED"
+CAMPAIGN_ID = "433be30e23c4c6f1a27b6e271fb02127b3b62e8218268de8941eec64bec94839"
+EXPECTED_CANONICAL_BYTE_COUNT = 23_911_368
+EXPECTED_CANONICAL_SHA256 = (
+    "73a52baa738282a18a64b5be7c4aff0f089038647b9adeca9c8ecabe2b56920b"
+)
+ATTEMPT_TERMINAL_STATE = "FROZEN_SUCCESS"
 FAILURE_ID = "0" * 64
 
 
