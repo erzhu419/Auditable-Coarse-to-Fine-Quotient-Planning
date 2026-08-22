@@ -229,7 +229,11 @@ def acquire_matched_paid_path_continuation_arms_v161(
             "classifier_decision_trace": prepared["decision_trace"],
             "query_policy_decision": prepared["query_policy_decision"],
             "classifier_path_prefix_labels": len(prepared["prefix_batches"]),
+            "classifier_prefix_observation_labels": len(
+                prepared["prefix_batches"]
+            ),
             "classifier_prefix_labels_are_exact_path_first_acquisition_labels": True,
+            "classifier_prefix_labels_are_included_in_ground_support_labels": True,
             "additional_classifier_only_target_labels": 0,
             "classifier_prefix_raw_transition_count": len(prepared["prefix_rows"]),
             "classifier_prefix_raw_transition_sha256": ground._raw_sha(  # noqa: SLF001
@@ -243,6 +247,8 @@ def acquire_matched_paid_path_continuation_arms_v161(
                 "query_policy_decision"
             ]
             == "RELATION_COVERAGE",
+            "no_named_initial_or_catalogue_support_primitive": True,
+            "full_initial_action_frontier_required_for_decision": False,
             "exact_signature_registry_consulted": False,
             "classifier_accessed_only_its_paid_target_raw_prefix": True,
             "classifier_changes_query_order_not_hypothesis_pool_or_stop_rule": True,
