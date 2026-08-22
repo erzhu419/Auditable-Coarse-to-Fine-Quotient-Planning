@@ -544,6 +544,7 @@ def _verify_occurrence(args):
         "prior_sequence": prior_sequence,
         "strict_sequence": strict_sequence,
         "accounting": accounting,
+        "registered_gate": gate,
     }
 
 
@@ -701,9 +702,19 @@ def freeze_third_dynamics_verification_v159(
     guards = tuple(row["guard_labels_avoided"] for row in rows)
     gate = {
         "required_target_occurrence_count": 4,
-        "passed_target_occurrence_count": 4,
-        "fresh_third_dynamics_occurrence_count": 4,
-        "v158_false_positive_repaired_everywhere": True,
+        "passed_target_occurrence_count": sum(
+            row["registered_gate"]["passed"] for row in rows
+        ),
+        "fresh_third_dynamics_occurrence_count": len(rows),
+        "v158_false_positive_repaired_everywhere": all(
+            row["registered_gate"][
+                "v158_metadata_classifier_false_positive_observed"
+            ]
+            and row["registered_gate"][
+                "joint_factor_classifier_selected_safe_fallback"
+            ]
+            for row in rows
+        ),
         "paid_factorization_corroborates_fallback_everywhere": all(
             row["factorization"]["positive_factorization_relation_present"] is False
             for row in rows
@@ -719,14 +730,7 @@ def freeze_third_dynamics_verification_v159(
         "factor_prior_noninferior_everywhere": all(value >= 0 for value in factors),
         "factor_prior_positive_in_aggregate": sum(factors) > 0,
         "both_arm_receding_plans_succeed_everywhere": all(
-            all(
-                episode["success"]
-                for sequence in (
-                    row["prior_sequence"],
-                    row["strict_sequence"],
-                )
-                for episode in sequence["episodes"]
-            )
+            row["registered_gate"]["both_arm_receding_episodes_succeed"]
             for row in rows
         ),
         "certificate_failure_local_recovery_exercised": sum(
@@ -735,12 +739,22 @@ def freeze_third_dynamics_verification_v159(
             for row in rows
         )
         > 0,
-        "direct_generic_and_v109_receipt_path_exercised_everywhere": True,
+        "direct_generic_and_v109_receipt_path_exercised_everywhere": all(
+            row["registered_gate"][
+                "direct_generic_plan_receipt_mode_exercised_both_arms"
+            ]
+            and row["registered_gate"]["all_executed_actions_have_v109_receipts"]
+            for row in rows
+        ),
         "strict_incompatible_schema_no_transfer_verified": incompatible_schema_no_transfer_control_v99()[
             "strict_ood_no_transfer"
         ],
     }
-    gate["passed"] = all(value for value in gate.values() if type(value) is bool)
+    gate["passed"] = (
+        len(rows) == gate["required_target_occurrence_count"]
+        and gate["passed_target_occurrence_count"] == len(rows)
+        and all(value for value in gate.values() if type(value) is bool)
+    )
     _require(
         campaign["schema"] == "acfqp.third_dynamics_joint_factor_query_campaign.v159"
         and campaign["preregistration_id"] == PREREGISTRATION_ID
