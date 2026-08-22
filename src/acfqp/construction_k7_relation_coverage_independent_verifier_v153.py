@@ -30,9 +30,9 @@ BANK_ID = v151.BANK_ID
 BANK_VERIFICATION_ID = v151.BANK_VERIFICATION_ID
 EXPECTED_OCCURRENCES = tuple((FAMILY, seed) for seed in range(1_047_411, 1_047_415))
 EXPECTED_EPISODES = (641, 642, 643, 644)
-VERIFICATION_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+VERIFICATION_ID = "edeec1a912c6ff4da374490fd53a1ab8eb84d0d70ef4492f8d00b367f51128ef"
+EXPECTED_CANONICAL_BYTE_COUNT = 10_351
+EXPECTED_CANONICAL_SHA256 = "ccc9b46543e592d238a79cefbd8f7241631f8771bf297580cd265af291628c18"
 SOURCE_ROOT = Path(__file__).resolve().parents[2]
 _WRAPPER_KEYS = {
     "source_v148_acquisition_id",
@@ -280,8 +280,17 @@ def _verify_occurrence(args):
         "registered_gate": normalized_gate,
         "accounting": normalized_accounting,
         "relation_binding_derived_from_raw_transition_deltas": True,
+        "direct_numeric_increment_field_present": False,
         "relational_template_selection_itself_observed": True,
         "v150_cross_domain_campaign_preserved": True,
+        "incomplete_abstract_path_never_used_as_execution_authority": True,
+        "incomplete_abstract_plan_abstention_count": sum(
+            sequence["incomplete_abstract_plan_abstention_count"]
+            for sequence in (
+                row["anonymous_relational_factor_prior_owned_sequence"],
+                row["strict_no_prior_owned_sequence"],
+            )
+        ),
     }
     normalized["occurrence_id"] = v151.domains.extension_content_id_v151(v151.domains.CONSTRUCTION_K7_OCCURRENCE_V151_DOMAIN, {key: value for key, value in normalized.items() if key != "occurrence_id"})
     verified = _VERIFY_NORMALIZED_OCCURRENCE((normalized, bank))
