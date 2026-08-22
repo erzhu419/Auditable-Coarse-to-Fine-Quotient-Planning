@@ -10,10 +10,10 @@ from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 from acfqp.structural_signature_guarded_campaign_core_v155 import build_structural_signature_guarded_campaign_document_v155
 
 
-CAMPAIGN_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
-ATTEMPT_TERMINAL_STATE = "UNEXECUTED"
+CAMPAIGN_ID = "8e624c5e4fc054956e9c624d8612c016f91daf46a6d9991e07074b60ca2c4780"
+EXPECTED_CANONICAL_BYTE_COUNT = 8_411_353
+EXPECTED_CANONICAL_SHA256 = "2a0fba2417762da1c3e52357e4da484d93e798c4214d28366e9fef7c9e4ee08d"
+ATTEMPT_TERMINAL_STATE = "FROZEN_SUCCESS"
 FAILURE_RECORD_SHA256: str | None = None
 
 
