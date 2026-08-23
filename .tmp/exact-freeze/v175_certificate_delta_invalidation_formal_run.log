@@ -1,0 +1,47 @@
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/concurrent/futures/process.py", line 246, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+  File "/usr/lib/python3.10/concurrent/futures/process.py", line 205, in _process_chunk
+    return [fn(*args) for args in chunk]
+  File "/usr/lib/python3.10/concurrent/futures/process.py", line 205, in <listcomp>
+    return [fn(*args) for args in chunk]
+  File "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/src/acfqp/certificate_delta_invalidation_campaign_core_v175.py", line 262, in _target
+    return build_certificate_delta_invalidation_occurrence_v175(
+  File "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/src/acfqp/certificate_delta_invalidation_campaign_core_v175.py", line 125, in build_certificate_delta_invalidation_occurrence_v175
+    base = _BASE_V168(
+  File "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/src/acfqp/fifth_family_total_plan_receipt_set_campaign_core_v168.py", line 135, in build_fifth_family_total_plan_receipt_set_occurrence_v168
+    base = _BASE_V166_OCCURRENCE_V168(
+  File "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/src/acfqp/fourth_family_sample_tax_transfer_campaign_core_v166.py", line 104, in build_fourth_family_sample_tax_occurrence_v166
+    base = _BASE_OCCURRENCE(
+  File "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/src/acfqp/progressive_raw_prefix_campaign_core_v160.py", line 75, in build_progressive_raw_prefix_occurrence_v160
+    classifier = verify_frozen_progressive_raw_prefix_classifier_receipt_v160(
+  File "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/src/acfqp/fifth_family_total_plan_receipt_set_campaign_core_v168.py", line 63, in _verify_classifier_compat
+    document = verify_frozen_paid_path_prefix_classifier_receipt_v161(raw)
+  File "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/src/acfqp/construction_k7_paid_path_prefix_classifier_receipt_freeze_v161.py", line 57, in verify_frozen_paid_path_prefix_classifier_receipt_v161
+    _fail("V161 frozen classifier receipt changed")
+  File "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/src/acfqp/construction_k7_paid_path_prefix_classifier_receipt_freeze_v161.py", line 24, in _fail
+    raise ConstructionK7PaidPathPrefixClassifierReceiptFreezeV161Error(message)
+acfqp.construction_k7_paid_path_prefix_classifier_receipt_freeze_v161.ConstructionK7PaidPathPrefixClassifierReceiptFreezeV161Error: V161 frozen classifier receipt changed
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<stdin>", line 5, in <module>
+  File "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/src/acfqp/construction_k7_certificate_delta_invalidation_campaign_v175.py", line 60, in run_certificate_delta_invalidation_campaign_v175
+    document = build_certificate_delta_invalidation_campaign_v175(
+  File "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/src/acfqp/certificate_delta_invalidation_campaign_core_v175.py", line 336, in build_certificate_delta_invalidation_campaign_v175
+    rows = list(executor.map(_target, args))
+  File "/usr/lib/python3.10/concurrent/futures/process.py", line 575, in _chain_from_iterable_of_lists
+    for element in iterable:
+  File "/usr/lib/python3.10/concurrent/futures/_base.py", line 621, in result_iterator
+    yield _result_or_cancel(fs.pop())
+  File "/usr/lib/python3.10/concurrent/futures/_base.py", line 319, in _result_or_cancel
+    return fut.result(timeout)
+  File "/usr/lib/python3.10/concurrent/futures/_base.py", line 458, in result
+    return self.__get_result()
+  File "/usr/lib/python3.10/concurrent/futures/_base.py", line 403, in __get_result
+    raise self._exception
+acfqp.construction_k7_paid_path_prefix_classifier_receipt_freeze_v161.ConstructionK7PaidPathPrefixClassifierReceiptFreezeV161Error: V161 frozen classifier receipt changed
