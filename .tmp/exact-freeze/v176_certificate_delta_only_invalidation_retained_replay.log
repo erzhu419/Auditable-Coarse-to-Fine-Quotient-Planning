@@ -1,0 +1,4 @@
+command=ACFQP_RUN_V176_INDEPENDENT=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src pytest -q -s tests/test_construction_k7_certificate_delta_only_invalidation_independent_verifier_v176.py -k full_producer_free_reexecution_when_requested
+result=1 passed, 3 deselected in 823.66s (0:13:43)
+frozen_verification_id=ac6b3a604c49423cbac35154bf1a0dbea15b65e6723e9471bd9990822de1968f
+frozen_verification_sha256=58673e7b2ee7578a4ded651bbb46d9f9f2aa25a14dba37d4e8430663418107a4

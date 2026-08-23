@@ -1,0 +1,4 @@
+command=ACFQP_RUN_V177_INDEPENDENT=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src pytest -q -s tests/test_construction_k7_reverse_index_only_invalidation_independent_verifier_v177.py -k full_producer_free_reexecution_when_requested
+result=1 passed, 3 deselected in 720.71s (0:12:00)
+frozen_verification_id=1f062589b9db53758691431dec327c0d303f20d06bd6b44c647eca02a11c76dd
+frozen_verification_sha256=2d63f83a8ce12a200721107692768ff1e49f96d479e7d2809d35d9c4e8f1180d
