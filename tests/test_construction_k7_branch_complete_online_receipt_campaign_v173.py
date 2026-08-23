@@ -8,6 +8,7 @@ from acfqp.construction_k7_branch_complete_online_receipt_campaign_v173 import (
     CAMPAIGN_ID,
     EXPECTED_CANONICAL_BYTE_COUNT,
     EXPECTED_CANONICAL_SHA256,
+    FAILURE_ID,
     run_branch_complete_online_receipt_campaign_v173,
 )
 from acfqp.phase3e_ids import loads_canonical_json
@@ -50,7 +51,15 @@ def test_v173_frozen_campaign_is_branch_complete():
 
 
 def test_v173_frozen_producer_refuses_rerun():
-    if CAMPAIGN_ID == "0" * 64:
-        pytest.skip("V173 campaign not frozen")
     with pytest.raises(ValueError, match="terminal"):
         run_branch_complete_online_receipt_campaign_v173(*_inputs())
+
+
+def test_v173_failed_gate_is_frozen_without_subgate_invention():
+    raw = (FREEZE / "v173_branch_complete_online_receipt_failure.json").read_bytes()
+    document = loads_canonical_json(raw)
+    assert document["failure_id"] == FAILURE_ID
+    assert document["failure_class"] == "REGISTERED_SCIENTIFIC_GATE_FAILED"
+    assert document["campaign_artifact_present"] is False
+    assert document["inferred_failed_subgate"] is None
+    assert document["same_preregistration_identity_may_be_rerun"] is False

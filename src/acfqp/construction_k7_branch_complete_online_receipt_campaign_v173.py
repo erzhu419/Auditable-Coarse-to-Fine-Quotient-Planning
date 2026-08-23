@@ -16,8 +16,8 @@ from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 CAMPAIGN_ID = "0" * 64
 EXPECTED_CANONICAL_BYTE_COUNT = 0
 EXPECTED_CANONICAL_SHA256 = "0" * 64
-ATTEMPT_TERMINAL_STATE = "UNEXECUTED"
-FAILURE_ID = "0" * 64
+ATTEMPT_TERMINAL_STATE = "FROZEN_REGISTERED_GATE_FAILURE"
+FAILURE_ID = "ce5ca1449b5956b9b60fd3b0cfa45ce2ea987822f34145cb63ec4e5a87a5626d"
 
 
 class ConstructionK7BranchCompleteOnlineReceiptCampaignV173Error(ValueError):
