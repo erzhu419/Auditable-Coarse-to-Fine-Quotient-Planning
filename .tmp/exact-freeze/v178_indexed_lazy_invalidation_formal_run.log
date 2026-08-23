@@ -1,0 +1,5 @@
+terminal_state=FROZEN_FAILURE
+failure_id=1c749090356db31c10a22d58bd88bb620c097e9ec730ef746c06800f50effa49
+exception=ConstructionK7IndexedLazyInvalidationCampaignV178Error: V178 preregistered scientific gate failed
+campaign_canonical_bytes_present=false
+same_identity_rerun_forbidden=true
