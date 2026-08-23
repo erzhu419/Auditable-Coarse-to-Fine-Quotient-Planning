@@ -1,20 +1,25 @@
 from pathlib import Path
 import hashlib
 
+import pytest
+
 from acfqp.construction_k7_online_typed_plan_receipt_preregistration_v172 import (
+    ConstructionK7OnlineTypedPlanReceiptPreregistrationV172Error,
     EXPECTED_CANONICAL_BYTE_COUNT,
     EXPECTED_CANONICAL_SHA256,
     PREREGISTRATION_ID,
     TARGET_OCCURRENCES,
     freeze_online_typed_plan_receipt_preregistration_v172,
 )
+from acfqp.phase3e_ids import loads_canonical_json
 
 
 FREEZE = Path(__file__).resolve().parents[1] / ".tmp/exact-freeze"
 
 
 def test_v172_preregistration_is_outcome_free_and_online_receipt_bound():
-    document = freeze_online_typed_plan_receipt_preregistration_v172().to_document()
+    raw = (FREEZE / "v172_online_typed_plan_receipt_preregistration.json").read_bytes()
+    document = loads_canonical_json(raw)
     assert len(TARGET_OCCURRENCES) == 2
     assert document["claim_boundary"]["target_outcomes_accessed"] is False
     assert document["registered_gate"][
@@ -29,9 +34,16 @@ def test_v172_preregistration_is_outcome_free_and_online_receipt_bound():
 def test_v172_frozen_preregistration_bytes():
     if PREREGISTRATION_ID == "0" * 64:
         return
-    frozen = freeze_online_typed_plan_receipt_preregistration_v172()
     raw = (FREEZE / "v172_online_typed_plan_receipt_preregistration.json").read_bytes()
-    assert frozen.canonical_bytes == raw
-    assert frozen.preregistration_id == PREREGISTRATION_ID
+    document = loads_canonical_json(raw)
+    assert document["preregistration_id"] == PREREGISTRATION_ID
     assert len(raw) == EXPECTED_CANONICAL_BYTE_COUNT
     assert hashlib.sha256(raw).hexdigest() == EXPECTED_CANONICAL_SHA256
+
+
+def test_v172_failed_identity_cannot_be_regenerated_after_source_successor():
+    with pytest.raises(
+        ConstructionK7OnlineTypedPlanReceiptPreregistrationV172Error,
+        match="implementation changed before target outcomes",
+    ):
+        freeze_online_typed_plan_receipt_preregistration_v172()
