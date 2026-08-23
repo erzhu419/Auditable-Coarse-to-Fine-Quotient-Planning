@@ -150,20 +150,19 @@ def _graph_projection(
 def _compiled_projection(
     plan: Mapping[str, Any],
     *,
+    candidate,
+    raw: tuple[int, ...],
     legal: tuple[int, ...],
     program_cache: Mapping[Any, Any],
 ) -> dict[str, Any]:
     plan_id = v172._plan_id(plan)  # noqa: SLF001
     if plan["planning_source"] == "COMPILED_FACTOR_PROGRAM_FALLBACK":
-        matches = [
-            entry
-            for entry in program_cache.values()
-            if v172._plan_id(entry["source_plan"]) == plan_id  # noqa: SLF001
-        ]
-        if len(matches) != 1:
+        key = v109._stable_key(candidate, raw, legal)  # noqa: SLF001
+        entry = program_cache.get(key)
+        if entry is None or v172._plan_id(entry["source_plan"]) != plan_id:  # noqa: SLF001
             _fail("V174 direct program plan lacks one live memo dependency")
-        source_state = current_state = matches[0]["successor_state_id"]
-        terminal_sha = matches[0]["terminal_rule_sha256"]
+        source_state = current_state = entry["successor_state_id"]
+        terminal_sha = entry["terminal_rule_sha256"]
         source_plan_id = plan_id
     else:
         source_state = plan.get("source_successor_state_id")
@@ -205,7 +204,10 @@ def _compiled_projection(
 def _projection(
     plan: Mapping[str, Any],
     *,
+    candidate,
+    raw: tuple[int, ...],
     legal: tuple[int, ...],
+    cache: Mapping[Any, Any],
     entries: Mapping[str, Mapping[str, Any]],
     program_cache: Mapping[Any, Any],
 ) -> dict[str, Any]:
@@ -218,18 +220,26 @@ def _projection(
     ):
         if source == "OBSERVATION_DERIVED_QUOTIENT_ORDER":
             plan_id = v172._plan_id(plan)  # noqa: SLF001
-            matches = [
-                entry["dependency"]
-                for entry in entries.values()
-                if v172._plan_id(entry["source_plan"]) == plan_id  # noqa: SLF001
-            ]
-            if len(matches) != 1:
+            key = v109._stable_key(candidate, raw, legal)  # noqa: SLF001
+            matches = cache.get(key, ())
+            if (
+                len(matches) != 1
+                or v172._plan_id(matches[0]["source_plan"]) != plan_id  # noqa: SLF001
+            ):
                 _fail("V174 observation plan lacks one live graph dependency")
-            dependency = matches[0]
+            dependency = matches[0]["dependency"]
         else:
             dependency = plan.get("quotient_plan_dependency_receipt")
+            if dependency.get("dependency_receipt_id") not in entries:
+                _fail("V174 revalidated plan dependency is not live")
         return _graph_projection(plan, dependency, legal=legal)
-    return _compiled_projection(plan, legal=legal, program_cache=program_cache)
+    return _compiled_projection(
+        plan,
+        candidate=candidate,
+        raw=raw,
+        legal=legal,
+        program_cache=program_cache,
+    )
 
 
 _ACTIVE: contextvars.ContextVar[dict[str, Any] | None] = contextvars.ContextVar(
@@ -377,7 +387,10 @@ def _online_orderer(
         before = canonical_json_bytes(plan)
         dependency = _projection(
             plan,
+            candidate=candidate,
+            raw=raw,
             legal=legal,
+            cache=cache,
             entries=entries,
             program_cache=stats["_program_cache"],
         )
