@@ -1,6 +1,10 @@
 import hashlib
+from pathlib import Path
 
 from acfqp import construction_k7_all_path_fallback_execution_authorization_v180r7 as authorization
+
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_v180r7_authorizes_one_fresh_full_fallback_occurrence() -> None:
@@ -24,3 +28,12 @@ def test_v180r7_authorizes_one_fresh_full_fallback_occurrence() -> None:
         assert hashlib.sha256(frozen.canonical_bytes).hexdigest() == (
             authorization.EXPECTED_CANONICAL_SHA256
         )
+
+
+def test_v180r7_authorized_occurrence_is_now_an_exact_frozen_failure() -> None:
+    base = ROOT / ".tmp" / "exact-freeze"
+    assert (base / "v180r7_full_ground_fallback_failure.json").is_file()
+    assert (base / "v180r7_full_ground_fallback_output").is_dir()
+    assert not (base / "v180r7_full_ground_fallback_cas").exists()
+    assert not (base / "v180r7_full_ground_fallback_terminal_bundle.json").exists()
+    assert not (base / "v180r7_full_ground_fallback_verification.json").exists()
