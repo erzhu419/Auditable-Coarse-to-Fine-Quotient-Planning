@@ -473,6 +473,15 @@ def _atomic_programs(
                         (HALT, 2),
                     )
         for source in range(input_width):
+            for constant in constants:
+                for opcode in (ADD, SUBSAT, XOR, EQ, LT):
+                    yield (
+                        (READ, 0, source),
+                        (CONST, 1, constant),
+                        (opcode, 2, 0, 1),
+                        (HALT, 2),
+                    )
+        for source in range(input_width):
             for offset in constants:
                 for repetitions in range(1, maximum_loop_increment_repetitions + 1):
                     halt_pc = 4 + repetitions
