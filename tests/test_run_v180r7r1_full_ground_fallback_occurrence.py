@@ -110,7 +110,8 @@ def test_runner_is_fixed_to_fresh_paths_caps_and_one_shot_finalizer() -> None:
     assert "os.fsync(descriptor)" in source
     assert "except BaseException as error:" in source
     assert "run_full_ground_fallback_production_occurrence_v180r7(" not in source
-    assert not runner.CAS_ROOT.exists()
-    assert not runner.OUTPUT_ROOT.exists()
-    assert not runner.SUCCESS.exists()
+    assert runner.CAS_ROOT.is_dir()
+    assert runner.OUTPUT_ROOT.is_dir()
+    assert runner.SUCCESS.is_file()
+    assert runner.VERIFICATION.is_file()
     assert not runner.FAILURE.exists()
