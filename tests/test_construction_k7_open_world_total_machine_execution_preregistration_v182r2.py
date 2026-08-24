@@ -23,7 +23,13 @@ def test_v182r2_execution_is_fresh_outcome_free_and_source_closed() -> None:
         assert len(path.read_bytes()) == fact["byte_count"]
 
 
-def test_v182r2_output_root_is_absent_before_execution() -> None:
+def test_v182r2_output_root_was_absent_or_has_one_terminal_outcome() -> None:
     document = registration.freeze_open_world_total_machine_execution_preregistration_v182r2().to_document()
     root = ROOT / document["output_root_relative_path"]
-    assert root.exists() is False
+    if not root.exists():
+        assert document["output_root_must_be_absent"] is True
+        return
+    terminal = [
+        path for path in (root / "CAMPAIGN.json", root / "FAILURE.json") if path.is_file()
+    ]
+    assert len(terminal) == 1
