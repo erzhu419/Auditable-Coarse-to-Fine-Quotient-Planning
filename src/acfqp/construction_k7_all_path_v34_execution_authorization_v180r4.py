@@ -13,9 +13,13 @@ from acfqp import construction_k7_domain_registry_extension_v180r4 as domains
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
-EXPECTED_AUTHORIZATION_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
+EXPECTED_AUTHORIZATION_ID = (
+    "27945fa59edfef2394235ef48ad8a4fe9c9e37c81f5ee42b1cf2fc821b67f7eb"
+)
+EXPECTED_CANONICAL_BYTE_COUNT = 4_119
+EXPECTED_CANONICAL_SHA256 = (
+    "1c889526fa7eec248dc639525cc75be272d8462063b6f06037881339b6c7ef98"
+)
 
 
 def _source_fact(filename: str) -> dict[str, Any]:
