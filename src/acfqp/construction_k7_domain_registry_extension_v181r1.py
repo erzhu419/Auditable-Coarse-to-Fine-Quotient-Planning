@@ -13,6 +13,7 @@ _DOMAIN_BY_KEY = {
     key: f"acfqp:{tag}:v181r1"
     for key, tag in (
         ("protocol_successor", "construction-k7-open-world-protocol-successor"),
+        ("execution_preregistration", "construction-k7-open-world-execution-preregistration"),
         ("manifest_reveal", "construction-k7-open-world-manifest-reveal"),
         ("campaign", "construction-k7-open-world-campaign"),
         ("verification", "construction-k7-open-world-verification"),

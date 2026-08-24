@@ -5,7 +5,7 @@ from acfqp import construction_k7_open_world_protocol_successor_v181r1 as succes
 
 
 def test_v181r1_domains_are_fresh_and_complete() -> None:
-    assert len(domains.K7_DOMAIN_TAG_EXTENSION_V181R1) == 5
+    assert len(domains.K7_DOMAIN_TAG_EXTENSION_V181R1) == 6
     assert all(tag.endswith(":v181r1") for tag in domains.K7_DOMAIN_TAG_EXTENSION_V181R1)
 
 
