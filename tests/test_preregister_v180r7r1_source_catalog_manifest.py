@@ -6,14 +6,22 @@ import stat
 
 import pytest
 
-from acfqp.phase3e_ids import canonical_json_bytes
+from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 from scripts import preregister_v180r7r1_source_catalog_manifest as manifest
 
 
+def _manifest_document() -> dict[str, object]:
+    if manifest.OUTPUT_PATH.exists():
+        raw = manifest.OUTPUT_PATH.read_bytes()
+        document = loads_canonical_json(raw)
+        assert type(document) is dict
+        assert canonical_json_bytes(document) == raw
+        return document
+    return manifest.build_v180r7r1_source_catalog_manifest()
+
+
 def test_v180r7r1_source_catalog_manifest_is_exact_and_outcome_free() -> None:
-    assert not manifest.OUTPUT_PATH.exists()
-    document = manifest.build_v180r7r1_source_catalog_manifest()
-    assert not manifest.OUTPUT_PATH.exists()
+    document = _manifest_document()
     assert document["source_boundary_commit"] == (
         "0d9d32dcb2aa3652696ccc0b5010dfc39455e8af"
     )
@@ -60,7 +68,7 @@ def test_v180r7r1_source_catalog_manifest_is_exact_and_outcome_free() -> None:
 
 
 def test_v180r7r1_manifest_embeds_every_committed_file_fact() -> None:
-    document = manifest.build_v180r7r1_source_catalog_manifest()
+    document = _manifest_document()
     for fact in document["source_catalog_facts"]:
         raw = (manifest.ROOT / "src" / fact["relative_path"]).read_bytes()
         assert len(raw) == fact["source_byte_count"]
@@ -86,9 +94,7 @@ def test_v180r7r1_manifest_domain_and_source_avoid_an_identity_cycle() -> None:
     assert "source_catalog_manifest_id\": _content_id(payload)" in source
     assert str(Path("scripts/preregister_v180r7r1_source_catalog_manifest.py")) not in {
         row["relative_path"]
-        for row in manifest.build_v180r7r1_source_catalog_manifest()[
-            "source_catalog_facts"
-        ]
+        for row in _manifest_document()["source_catalog_facts"]
     }
 
 
