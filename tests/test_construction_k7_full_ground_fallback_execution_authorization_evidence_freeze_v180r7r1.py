@@ -30,10 +30,16 @@ def test_post_prereg_evidence_stub_has_exact_cycle_free_boundary() -> None:
             )
         )
     )
-    assert evidence.EXPECTED_AUTHORIZATION_EVIDENCE_ID == "0" * 64
-    assert evidence.EXPECTED_AUTHORIZATION_ID == "0" * 64
-    assert evidence.EXPECTED_CANONICAL_BYTE_COUNT == 0
-    assert evidence.EXPECTED_CANONICAL_SHA256 == "0" * 64
+    assert evidence.EXPECTED_AUTHORIZATION_EVIDENCE_ID == (
+        "1a9ed5c0fa2bb07550e78d0c104eadbbd2ffe1442091f41b0244f6b4eca36667"
+    )
+    assert evidence.EXPECTED_AUTHORIZATION_ID == (
+        "44c19c059e229b6d45b1a9cf4591bf5ee5a53a68ca33ba54b5f5b6ae1b115f6b"
+    )
+    assert evidence.EXPECTED_CANONICAL_BYTE_COUNT == 2_384
+    assert evidence.EXPECTED_CANONICAL_SHA256 == (
+        "ef68f263b92f2a1432535ead710e697be5e70d53b7cc57ea56c08ac3f060a906"
+    )
     assert evidence.AUTHORIZATION_EVIDENCE_FIELDS == {
         "BREAK_EVEN_GATE",
         "COUNTER_COMPLETENESS_GATE",
@@ -61,17 +67,35 @@ def test_post_prereg_evidence_stub_has_exact_cycle_free_boundary() -> None:
     }
 
 
-def test_post_prereg_evidence_stub_fails_closed_before_freeze() -> None:
+def test_post_prereg_evidence_freezes_exact_authorization() -> None:
     freeze_evidence = (
         evidence
         .freeze_full_ground_fallback_execution_authorization_evidence_v180r7r1
     )
     freeze_evidence.cache_clear()
-    with pytest.raises(
-        evidence.FullGroundFallbackAuthorizationEvidenceV180r7r1Error,
-        match="constants are not frozen",
-    ):
-        freeze_evidence()
+    frozen = freeze_evidence()
+    document = frozen.to_document()
+    assert frozen.authorization_evidence_id == evidence.EXPECTED_AUTHORIZATION_EVIDENCE_ID
+    assert frozen.authorization_id == evidence.EXPECTED_AUTHORIZATION_ID
+    assert document["fallback_execution_protocol_id"] == evidence.EXPECTED_PROTOCOL_ID
+    assert document["authorization_source_fact"] == {
+        "relative_path": (
+            "src/acfqp/construction_k7_full_ground_fallback_execution_"
+            "authorization_v180r7r1.py"
+        ),
+        "byte_count": evidence.EXPECTED_AUTHORIZATION_SOURCE_BYTE_COUNT,
+        "sha256": evidence.EXPECTED_AUTHORIZATION_SOURCE_SHA256,
+    }
+    assert document["execution_chain_source_facts"] == [
+        {
+            "relative_path": path,
+            "byte_count": byte_count,
+            "sha256": sha256,
+        }
+        for path, byte_count, sha256 in sorted(
+            evidence.EXPECTED_EXECUTION_CHAIN_SOURCE_FACTS
+        )
+    ]
 
 
 def test_runners_are_prewired_before_any_outcome_access() -> None:

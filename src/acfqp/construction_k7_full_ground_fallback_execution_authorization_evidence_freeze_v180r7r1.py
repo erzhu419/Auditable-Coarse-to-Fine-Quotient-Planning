@@ -26,17 +26,27 @@ from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 AUTHORIZATION_EVIDENCE_DOMAIN = (
     domains.CONSTRUCTION_K7_FALLBACK_EXECUTION_AUTHORIZATION_EVIDENCE_V180R7R1P_DOMAIN
 )
-EXPECTED_AUTHORIZATION_EVIDENCE_ID = "0" * 64
-EXPECTED_CANONICAL_BYTE_COUNT = 0
-EXPECTED_CANONICAL_SHA256 = "0" * 64
-EXPECTED_AUTHORIZATION_ID = "0" * 64
-EXPECTED_AUTHORIZATION_CANONICAL_BYTE_COUNT = 0
-EXPECTED_AUTHORIZATION_CANONICAL_SHA256 = "0" * 64
+EXPECTED_AUTHORIZATION_EVIDENCE_ID = (
+    "1a9ed5c0fa2bb07550e78d0c104eadbbd2ffe1442091f41b0244f6b4eca36667"
+)
+EXPECTED_CANONICAL_BYTE_COUNT = 2_384
+EXPECTED_CANONICAL_SHA256 = (
+    "ef68f263b92f2a1432535ead710e697be5e70d53b7cc57ea56c08ac3f060a906"
+)
+EXPECTED_AUTHORIZATION_ID = (
+    "44c19c059e229b6d45b1a9cf4591bf5ee5a53a68ca33ba54b5f5b6ae1b115f6b"
+)
+EXPECTED_AUTHORIZATION_CANONICAL_BYTE_COUNT = 32_413
+EXPECTED_AUTHORIZATION_CANONICAL_SHA256 = (
+    "b22709dddd2d2354812d064086cb7f0a9edcffb215b4788015e39bea1f40bb3e"
+)
 EXPECTED_PROTOCOL_ID = (
     "0d037ddaa78b4f6fceca4409db55eeb0acb93d8c1d64953430debd108ef31889"
 )
-EXPECTED_AUTHORIZATION_SOURCE_BYTE_COUNT = 0
-EXPECTED_AUTHORIZATION_SOURCE_SHA256 = "0" * 64
+EXPECTED_AUTHORIZATION_SOURCE_BYTE_COUNT = 22_697
+EXPECTED_AUTHORIZATION_SOURCE_SHA256 = (
+    "18a96df45a1d136fada59cf09d91b4f485dd7556d53cdd5532403d5229495b07"
+)
 
 _ROOT = Path(__file__).resolve().parents[2]
 _AUTHORIZATION_RELATIVE_PATH = (
@@ -56,25 +66,25 @@ SOURCE_FACT_EXCLUSIONS = tuple(
 EXPECTED_EXECUTION_CHAIN_SOURCE_FACTS = (
     (
         "scripts/run_v180r7r1_full_ground_fallback_occurrence.py",
-        0,
-        "0" * 64,
+        14_797,
+        "469d537e009a1d973357fa56932f3b630e989fb6933cd975fa0ae02f75f8b828",
     ),
     (
         "scripts/verify_v180r7r1_full_ground_fallback_occurrence.py",
-        0,
-        "0" * 64,
+        8_560,
+        "8b61b73de2cc4014f5c7ba6dcf4de774052f0d141fd92e17900412ea0cb159f8",
     ),
     (
         "src/acfqp/construction_k7_full_ground_fallback_"
         "production_terminal_finalizer_v180r7r1.py",
-        0,
-        "0" * 64,
+        35_642,
+        "92bde4152813958d10367c1fa80b38d08cd2f02a4d7f9a6a8707cd28d1d5802e",
     ),
     (
         "src/acfqp/construction_k7_full_ground_fallback_"
         "production_terminal_independent_verifier_v180r7r1.py",
-        0,
-        "0" * 64,
+        85_468,
+        "214ee363cdfc87760f9aabaceced89c48f29bc93f5f9b67a7d86d627c863207e",
     ),
 )
 
