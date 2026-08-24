@@ -25,6 +25,13 @@ def test_v180r10r1_authorization_is_outcome_free_and_source_closed() -> None:
         assert hashlib.sha256(raw).hexdigest() == fact["sha256"]
 
 
+def test_v180r10r1_successor_outputs_are_now_the_exact_success_inventory() -> None:
+    document = authorization.freeze_v36_retained_recovery_authorization_v180r10r1().to_document()
+    assert (ROOT / document["terminal_output_relative_path"]).is_file()
+    assert (ROOT / document["verification_output_relative_path"]).is_file()
+    assert not (ROOT / document["failure_output_relative_path"]).exists()
+
+
 def test_v180r10r1_verifier_does_not_import_terminal_producer() -> None:
     source = VERIFIER.read_text(encoding="utf-8")
     tree = ast.parse(source)
