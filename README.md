@@ -15,6 +15,32 @@ records the coverage mode/support hash/state count in `build_id`, and forbids RA
 certificate reuse outside that closure. This is an auditable scoped-build contract, not
 a claim of unrestricted reuse across arbitrary initial distributions.
 
+## Registered finite-objective status (V179)
+
+The repository's finite, coverage-bounded central objective is now complete for
+the preregistered symbolic-family scope.  V179 binds producer-free evidence for
+an actual full 2048 episode, observation-derived cross-family abstract-model
+synthesis, repeated receding multi-step planning in compiled models, strict OOD
+no-transfer, matched factor-prior sample-tax reduction, complete typed plan
+receipts, and certificate-failure-only local ground recovery.
+
+The final indexed-lazy campaign
+`43e174c7ffd17c5a0e18a584dc638ea2cb48a2695bd2073af0fc80e321d90687`
+removed the exact V177 predecessor's `2,292` production receipt-history scans
+and `488` eager retained-authorization updates; both are zero in V178r1.  Its
+producer-free verification is
+`990cffd9b99324c05281dcb190fb8ea5c514729486e923acbd1f4ce489f8f3a6`.
+The aggregate completion audit is
+`373e67b24f19b130f556fbf5249b5661c27430a2f1ff15bc12dadb38d7238561`,
+with independent verification
+`56fb4630b23cdfa0e28effaccaaabe30ddf8c9e18a40575ec30049fcabe9a3c9`.
+
+This status is deliberately not a universal-world-model claim.  Complete
+ground-model synthesis, open-ended invention, arbitrary unseen-domain transfer,
+and broad IID sample efficiency remain false.  Official execution remains
+disabled, scalar cost and break-even remain null, and Workload Economics and
+Counter Completeness remain `NOT_RUN`.
+
 The operational order is:
 
 ```text
