@@ -38,9 +38,20 @@ def manifest_commitment_v181(document: Mapping[str, Any]) -> str:
 def _expression(value: Any) -> tuple[Any, ...]:
     if type(value) is not list or not value or type(value[0]) is not str:
         _fail("revealed program is not one prefix expression")
-    return tuple(
-        _expression(item) if type(item) is list else item for item in value
-    )
+    opcode = value[0]
+    if opcode in {"S", "A", "W", "K"}:
+        if len(value) != 2 or type(value[1]) is not int:
+            _fail("revealed atomic expression changed")
+        return opcode, value[1]
+    children: list[tuple[Any, ...]] = []
+    for item in value[1:]:
+        if type(item) is list:
+            children.append(_expression(item))
+        elif type(item) is int:
+            children.append(("K", item))
+        else:
+            _fail("revealed compound operand changed")
+    return opcode, *children
 
 
 def _evaluate(
