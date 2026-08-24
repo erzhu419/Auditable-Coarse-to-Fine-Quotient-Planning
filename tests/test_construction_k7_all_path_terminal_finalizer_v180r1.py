@@ -13,6 +13,10 @@ from acfqp import (
     construction_k7_all_path_terminal_finalizer_independent_verifier_v180r1
     as verifier,
 )
+from acfqp import (
+    construction_k7_all_path_terminal_finalizer_fixture_freeze_v180r1
+    as frozen,
+)
 from acfqp import construction_k7_domain_registry_extension_v180r1 as domains
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 from acfqp.routing_v1 import TerminalCode
@@ -133,3 +137,12 @@ def test_independent_verifier_does_not_import_the_producer() -> None:
             imported.add(node.module or "")
             imported.update(alias.name for alias in node.names)
     assert not any("all_path_terminal_finalizer_v180r1" in name for name in imported)
+
+
+def test_retained_fixture_graph_matches_exact_frozen_identities() -> None:
+    graph = frozen.load_frozen_fixture_graph_v180r1()
+    _, campaign, verification = _fixture_graph()
+    assert graph.campaign_bytes == campaign
+    assert graph.verification_bytes == verification
+    assert graph.campaign_id == frozen.EXPECTED_CAMPAIGN_ID
+    assert graph.verification_id == frozen.EXPECTED_VERIFICATION_ID
