@@ -103,6 +103,7 @@ class SynthesizedMachineProgramV182:
     residual_values: tuple[int, ...]
     read_dependencies: tuple[tuple[str, int], ...]
     maximum_execution_steps: int
+    archive_reference_used: bool
 
     def to_document(self) -> dict[str, Any]:
         return {
@@ -115,6 +116,11 @@ class SynthesizedMachineProgramV182:
             "residual_values": list(self.residual_values),
             "read_dependencies": [list(row) for row in self.read_dependencies],
             "maximum_execution_steps": self.maximum_execution_steps,
+            "archive_reference_used": self.archive_reference_used,
+            "archive_mdl_discount_used": False,
+            "archive_reference_revalidated_on_all_current_rows": (
+                self.archive_reference_used
+            ),
             "domain_specific_primitive_used": False,
             "whole_program_template_used": False,
             "named_layout_used": False,
@@ -377,6 +383,7 @@ def synthesize_scalar_program_v182(
     maximum_execution_steps: int,
     register_count: int = 2,
     maximum_residual_support: int = 3,
+    archive: Iterable[ProgramV182] = (),
 ) -> SynthesizedMachineProgramV182:
     if (
         type(rows) not in {tuple, list}
@@ -406,6 +413,9 @@ def synthesize_scalar_program_v182(
         )
     )
     targets = tuple(row.target for row in rows)
+    frozen_archive = frozenset(tuple(program) for program in archive)
+    for program in frozen_archive:
+        _validate_program(program)
     best_residual: tuple[tuple[Any, ...], ProgramV182, tuple[int, ...], tuple[int, ...]] | None = None
     seen_semantics: set[tuple[int, ...]] = set()
     events = 0
@@ -447,6 +457,7 @@ def synthesize_scalar_program_v182(
                 (),
                 _dependencies(dependencies, state_width),
                 maximum_execution_steps,
+                program in frozen_archive,
             )
         residuals = tuple(
             sorted({target - output for output, target in zip(outputs, targets)})
@@ -473,6 +484,7 @@ def synthesize_scalar_program_v182(
         residuals,
         _dependencies(dependencies, state_width),
         maximum_execution_steps,
+        program in frozen_archive,
     )
 
 

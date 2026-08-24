@@ -12,6 +12,7 @@ from acfqp.phase3e_ids import canonical_json_bytes
 _DOMAINS = {
     key: f"acfqp:{role}:v182"
     for key, role in (
+        ("raw_observation", "open-world-universal-machine-raw-observation"),
         ("machine_program", "open-world-universal-machine-program"),
         ("compiled_model", "open-world-universal-machine-compiled-model"),
         ("certificate", "open-world-universal-machine-certificate"),
