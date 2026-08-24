@@ -655,6 +655,7 @@ def synthesize_ranked_scalar_program_v183(
 class RankedCompiledWorldModelV183:
     state_width: int
     action_width: int
+    legal_actions: tuple[tuple[int, ...], ...]
     register_count: int
     resource_step_cap: int
     coordinates: tuple[RankedSynthesizedProgramV183, ...]
@@ -688,6 +689,7 @@ class RankedCompiledWorldModelV183:
             len(state) != self.state_width
             or len(action) != self.action_width
             or any(type(value) is not int or value < 0 for value in (*state, *action))
+            or tuple(action) not in self.legal_actions
         ):
             _fail("V183 prediction crossed its opaque schema")
         supports = []
@@ -711,6 +713,7 @@ class RankedCompiledWorldModelV183:
             "schema": "acfqp.ranked_machine_compiled_world_model.v183",
             "state_width": self.state_width,
             "action_width": self.action_width,
+            "legal_actions": [list(row) for row in self.legal_actions],
             "register_count": self.register_count,
             "resource_step_cap": self.resource_step_cap,
             "coordinates": [row.to_document() for row in self.coordinates],
@@ -760,6 +763,7 @@ def compile_ranked_machine_world_model_v183(
     ):
         _fail("V183 observations are duplicated or cross opaque schemas")
     frozen_archive = tuple(archive)
+    legal_actions = tuple(sorted({row.action for row in observations}))
     coordinates = tuple(
         synthesize_ranked_scalar_program_v183(
             tuple(MachineSynthesisRowV182(row.state, row.action, row.successor[index]) for row in observations),
@@ -791,6 +795,7 @@ def compile_ranked_machine_world_model_v183(
         "schema": "acfqp.ranked_machine_compiled_world_model.v183",
         "state_width": state_width,
         "action_width": action_width,
+        "legal_actions": [list(row) for row in legal_actions],
         "register_count": register_count,
         "resource_step_cap": resource_step_cap,
         "coordinates": [row.to_document() for row in coordinates],
@@ -818,6 +823,7 @@ def compile_ranked_machine_world_model_v183(
     return RankedCompiledWorldModelV183(
         state_width,
         action_width,
+        legal_actions,
         register_count,
         resource_step_cap,
         coordinates,

@@ -8,6 +8,9 @@ from acfqp.open_world_ranked_machine_v183 import (
     compile_ranked_machine_world_model_v183,
     execute_ranked_program_v183,
 )
+from acfqp.open_world_ranked_machine_planner_v183 import (
+    RankedMachinePlannerSessionV183,
+)
 from acfqp.open_world_universal_machine_v182 import (
     CONST,
     DECJZ,
@@ -126,6 +129,12 @@ def test_raw_rows_compile_to_anonymous_ranked_world_model() -> None:
     assert document["generic_ranked_program_schema_enumerated"] is True
     assert document["current_occurrence_candidate_set_finite"] is True
     assert document["domain_specific_whole_program_template_used"] is False
+
+    planner = RankedMachinePlannerSessionV183(model, horizon=3)
+    certificate = planner.certify((0, 1))
+    assert certificate.certified is False
+    assert certificate.failure_reason == "NO_HORIZON_CERTIFICATE"
+    assert certificate.to_document()["local_ground_distinction_permitted"] is True
 
 
 def test_compiler_rejects_too_few_rows() -> None:
