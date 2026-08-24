@@ -230,7 +230,11 @@ class CompositeMacroLibraryV185:
 def _validate_source_model_document(document: Mapping[str, Any]) -> None:
     if (
         type(document) is not dict
-        or document.get("schema") != "acfqp.fair_ranked_compiled_world_model.v184"
+        or document.get("schema")
+        not in {
+            "acfqp.fair_ranked_compiled_world_model.v184",
+            "acfqp.composite_macro_compiled_world_model.v185",
+        }
         or type(document.get("compiled_model_id")) is not str
         or len(document["compiled_model_id"]) != 64
         or type(document.get("source_observation_ids")) is not list
@@ -683,11 +687,368 @@ def synthesize_composite_macro_scalar_program_v185(
     )
 
 
+@dataclass(frozen=True, slots=True)
+class CompositeMacroCompiledWorldModelV185:
+    state_width: int
+    action_width: int
+    legal_actions: tuple[tuple[int, ...], ...]
+    register_count: int
+    resource_step_cap: int
+    coordinates: tuple[CompositeMacroSynthesizedProgramV185, ...]
+    terminal_synthesis: CompositeMacroSynthesizedProgramV185
+    source_observation_ids: tuple[str, ...]
+    factor_boundaries: tuple[tuple[int, ...], ...]
+    macro_library_id: str | None
+    compiled_model_id: str
+
+    def _run(
+        self, program: ProgramV182, state: Sequence[int], action: Sequence[int]
+    ) -> int:
+        result = execute_ranked_program_v183(
+            program,
+            state=state,
+            action=action,
+            register_count=self.register_count,
+            resource_step_cap=self.resource_step_cap,
+        )
+        if not result.halted or result.output is None:
+            _fail("V185 compiled model crossed its execution resource cap")
+        return int(result.output)
+
+    def terminal(self, state: Sequence[int]) -> bool:
+        if len(state) != self.state_width:
+            _fail("V185 terminal input crossed its opaque width")
+        result = self._run(
+            self.terminal_synthesis.program,
+            state,
+            (0,) * self.action_width,
+        )
+        if result not in {0, 1}:
+            _fail("V185 terminal program is not boolean")
+        return bool(result)
+
+    def predict_support(
+        self, state: Sequence[int], action: Sequence[int]
+    ) -> tuple[tuple[int, ...], ...]:
+        if (
+            len(state) != self.state_width
+            or len(action) != self.action_width
+            or tuple(action) not in self.legal_actions
+        ):
+            _fail("V185 prediction crossed its opaque schema")
+        supports = []
+        for synthesis in self.coordinates:
+            base = self._run(synthesis.program, state, action)
+            residuals = synthesis.residual_values or (0,)
+            values = tuple(
+                sorted({base + value for value in residuals if base + value >= 0})
+            )
+            if not values:
+                _fail("V185 synthesized stochastic support is empty")
+            supports.append(values)
+        return tuple(product(*supports))
+
+    def covers(self, row: RawMachineTransitionV182) -> bool:
+        return (
+            row.successor in self.predict_support(row.state, row.action)
+            and self.terminal(row.successor) is row.terminal
+        )
+
+    def to_document(self) -> dict[str, Any]:
+        return {
+            "schema": "acfqp.composite_macro_compiled_world_model.v185",
+            "state_width": self.state_width,
+            "action_width": self.action_width,
+            "legal_actions": [list(row) for row in self.legal_actions],
+            "register_count": self.register_count,
+            "resource_step_cap": self.resource_step_cap,
+            "coordinates": [row.to_document() for row in self.coordinates],
+            "terminal_synthesis": self.terminal_synthesis.to_document(),
+            "source_observation_ids": list(self.source_observation_ids),
+            "source_label_count": len(self.source_observation_ids),
+            "factor_boundaries": [list(row) for row in self.factor_boundaries],
+            "factor_boundaries_derived_from_read_dependencies": True,
+            "macro_library_id": self.macro_library_id,
+            "macro_prior_present": self.macro_library_id is not None,
+            "same_scalar_synthesizer_with_only_macro_prior_toggle": True,
+            "layout_supplied": False,
+            "domain_family_supplied": False,
+            "predeclared_reusable_factor_slots": [],
+            "candidate_language_countably_infinite": True,
+            "actual_search_prefix_finite": True,
+            "base_typed_opcode_set_finite": True,
+            "new_low_level_primitive_opcode_invented": False,
+            "arbitrary_domain_transfer_claimed": False,
+            "compiled_model_id": self.compiled_model_id,
+        }
+
+
+def _factor_boundaries_v185(
+    rows: Sequence[CompositeMacroSynthesizedProgramV185],
+) -> tuple[tuple[int, ...], ...]:
+    groups: dict[tuple[tuple[str, int], ...], list[int]] = {}
+    for index, row in enumerate(rows):
+        groups.setdefault(row.read_dependencies, []).append(index)
+    return tuple(
+        sorted(
+            (tuple(indices) for indices in groups.values()),
+            key=lambda value: (value[0], len(value)),
+        )
+    )
+
+
+def compile_composite_macro_world_model_v185(
+    observations: Sequence[RawMachineTransitionV182],
+    *,
+    macro_library: CompositeMacroLibraryV185 | None,
+    maximum_macro_candidate_evaluations_per_scalar: int,
+    maximum_fair_enumeration_events_per_scalar: int,
+    resource_step_cap: int,
+    register_count: int = 6,
+    maximum_residual_support: int = 3,
+) -> CompositeMacroCompiledWorldModelV185:
+    if (
+        type(observations) not in {tuple, list}
+        or len(observations) < 8
+        or any(type(row) is not RawMachineTransitionV182 for row in observations)
+    ):
+        _fail("V185 compilation requires at least eight raw transitions")
+    state_width = len(observations[0].state)
+    action_width = len(observations[0].action)
+    if (
+        len({row.observation_id for row in observations}) != len(observations)
+        or any(
+            len(row.state) != state_width
+            or len(row.successor) != state_width
+            or len(row.action) != action_width
+            for row in observations
+        )
+    ):
+        _fail("V185 observations are duplicated or cross opaque schemas")
+    coordinates = tuple(
+        synthesize_composite_macro_scalar_program_v185(
+            tuple(
+                MachineSynthesisRowV182(row.state, row.action, row.successor[index])
+                for row in observations
+            ),
+            macro_library=macro_library,
+            maximum_macro_candidate_evaluations=(
+                maximum_macro_candidate_evaluations_per_scalar
+            ),
+            maximum_fair_enumeration_events=(
+                maximum_fair_enumeration_events_per_scalar
+            ),
+            resource_step_cap=resource_step_cap,
+            register_count=register_count,
+            maximum_residual_support=maximum_residual_support,
+        )
+        for index in range(state_width)
+    )
+    terminal = synthesize_composite_macro_scalar_program_v185(
+        tuple(
+            MachineSynthesisRowV182(
+                row.successor,
+                (0,) * action_width,
+                int(row.terminal),
+            )
+            for row in observations
+        ),
+        macro_library=macro_library,
+        maximum_macro_candidate_evaluations=(
+            maximum_macro_candidate_evaluations_per_scalar
+        ),
+        maximum_fair_enumeration_events=maximum_fair_enumeration_events_per_scalar,
+        resource_step_cap=resource_step_cap,
+        register_count=register_count,
+        maximum_residual_support=1,
+    )
+    if terminal.residual_values:
+        _fail("V185 terminal program cannot retain a residual support")
+    legal_actions = tuple(sorted({row.action for row in observations}))
+    boundaries = _factor_boundaries_v185(coordinates)
+    payload = {
+        "schema": "acfqp.composite_macro_compiled_world_model.v185",
+        "state_width": state_width,
+        "action_width": action_width,
+        "legal_actions": [list(row) for row in legal_actions],
+        "register_count": register_count,
+        "resource_step_cap": resource_step_cap,
+        "coordinates": [row.to_document() for row in coordinates],
+        "terminal_synthesis": terminal.to_document(),
+        "source_observation_ids": [row.observation_id for row in observations],
+        "source_label_count": len(observations),
+        "factor_boundaries": [list(row) for row in boundaries],
+        "factor_boundaries_derived_from_read_dependencies": True,
+        "macro_library_id": (
+            macro_library.macro_library_id if macro_library is not None else None
+        ),
+        "macro_prior_present": macro_library is not None,
+        "same_scalar_synthesizer_with_only_macro_prior_toggle": True,
+        "layout_supplied": False,
+        "domain_family_supplied": False,
+        "predeclared_reusable_factor_slots": [],
+        "candidate_language_countably_infinite": True,
+        "actual_search_prefix_finite": True,
+        "base_typed_opcode_set_finite": True,
+        "new_low_level_primitive_opcode_invented": False,
+        "arbitrary_domain_transfer_claimed": False,
+    }
+    return CompositeMacroCompiledWorldModelV185(
+        state_width,
+        action_width,
+        legal_actions,
+        register_count,
+        resource_step_cap,
+        coordinates,
+        terminal,
+        tuple(row.observation_id for row in observations),
+        boundaries,
+        macro_library.macro_library_id if macro_library is not None else None,
+        domains.extension_content_id_v185(
+            domains.CONSTRUCTION_K7_COMPILED_MODEL_V185_DOMAIN,
+            payload,
+        ),
+    )
+
+
+@dataclass(frozen=True, slots=True)
+class CompositeMacroPlanCertificateV185:
+    compiled_model_id: str
+    state: tuple[int, ...]
+    horizon: int
+    certified: bool
+    selected_action: tuple[int, ...] | None
+    terminal_distance_rank: int | None
+    selected_successor_rank_upper_bound: int | None
+    failure_reason: str | None
+    planning_compute_events: int
+    persistent_cache_hit_count: int
+    certificate_id: str
+
+    def to_document(self) -> dict[str, Any]:
+        return {
+            "schema": "acfqp.composite_macro_plan_certificate.v185",
+            "compiled_model_id": self.compiled_model_id,
+            "state": list(self.state),
+            "horizon": self.horizon,
+            "certified": self.certified,
+            "selected_action": (
+                list(self.selected_action) if self.selected_action is not None else None
+            ),
+            "terminal_distance_rank": self.terminal_distance_rank,
+            "selected_successor_rank_upper_bound": self.selected_successor_rank_upper_bound,
+            "strict_rank_decrease_proved": (
+                self.certified
+                and self.terminal_distance_rank is not None
+                and self.selected_successor_rank_upper_bound is not None
+                and self.selected_successor_rank_upper_bound
+                < self.terminal_distance_rank
+            ),
+            "failure_reason": self.failure_reason,
+            "planning_compute_events": self.planning_compute_events,
+            "persistent_cache_hit_count": self.persistent_cache_hit_count,
+            "ground_transition_argument_present": False,
+            "local_ground_distinction_permitted": (
+                not self.certified and self.failure_reason == "NO_HORIZON_CERTIFICATE"
+            ),
+            "compute_cap_failure_is_not_a_ground_label_request": False,
+            "certificate_id": self.certificate_id,
+        }
+
+
+class CompositeMacroPlannerSessionV185:
+    def __init__(
+        self, model: CompositeMacroCompiledWorldModelV185, *, horizon: int
+    ) -> None:
+        if (
+            type(model) is not CompositeMacroCompiledWorldModelV185
+            or type(horizon) is not int
+            or horizon <= 2
+        ):
+            _fail("V185 planner requires one compiled model and H>2")
+        self._model = model
+        self._horizon = horizon
+        self._memo: dict[
+            tuple[tuple[int, ...], int],
+            tuple[int | None, tuple[int, ...] | None, int | None],
+        ] = {}
+
+    def certify(self, state: Sequence[int]) -> CompositeMacroPlanCertificateV185:
+        frozen_state = tuple(state)
+        events = 0
+        cache_hits = 0
+
+        def minimum_rank(
+            current: tuple[int, ...], limit: int
+        ) -> tuple[int | None, tuple[int, ...] | None, int | None]:
+            nonlocal events, cache_hits
+            events += 1
+            if self._model.terminal(current):
+                return 0, None, None
+            if limit == 0:
+                return None, None, None
+            key = (current, limit)
+            if key in self._memo:
+                cache_hits += 1
+                return self._memo[key]
+            candidates: list[tuple[int, tuple[int, ...], int]] = []
+            for action in self._model.legal_actions:
+                support = self._model.predict_support(current, action)
+                ranks = [minimum_rank(successor, limit - 1)[0] for successor in support]
+                if any(rank is None for rank in ranks):
+                    continue
+                upper = max(int(rank) for rank in ranks)
+                candidates.append((upper + 1, action, upper))
+            self._memo[key] = min(candidates) if candidates else (None, None, None)
+            return self._memo[key]
+
+        rank, action, upper = minimum_rank(frozen_state, self._horizon)
+        certified = rank is not None and rank > 0 and action is not None
+        reason = None if certified else "NO_HORIZON_CERTIFICATE"
+        payload = {
+            "schema": "acfqp.composite_macro_plan_certificate.v185",
+            "compiled_model_id": self._model.compiled_model_id,
+            "state": list(frozen_state),
+            "horizon": self._horizon,
+            "certified": certified,
+            "selected_action": list(action) if action is not None else None,
+            "terminal_distance_rank": rank,
+            "selected_successor_rank_upper_bound": upper,
+            "strict_rank_decrease_proved": certified,
+            "failure_reason": reason,
+            "planning_compute_events": events,
+            "persistent_cache_hit_count": cache_hits,
+            "ground_transition_argument_present": False,
+            "local_ground_distinction_permitted": not certified,
+            "compute_cap_failure_is_not_a_ground_label_request": False,
+        }
+        return CompositeMacroPlanCertificateV185(
+            self._model.compiled_model_id,
+            frozen_state,
+            self._horizon,
+            certified,
+            action,
+            rank,
+            upper,
+            reason,
+            events,
+            cache_hits,
+            domains.extension_content_id_v185(
+                domains.CONSTRUCTION_K7_PLAN_CERTIFICATE_V185_DOMAIN,
+                payload,
+            ),
+        )
+
+
 __all__ = (
+    "CompositeMacroCompiledWorldModelV185",
     "CompositeMacroDefinitionV185",
     "CompositeMacroLibraryV185",
+    "CompositeMacroPlanCertificateV185",
+    "CompositeMacroPlannerSessionV185",
     "CompositeMacroSearchResourceExhaustedV185",
     "CompositeMacroSynthesizedProgramV185",
+    "compile_composite_macro_world_model_v185",
     "discover_composite_macro_library_v185",
     "synthesize_composite_macro_scalar_program_v185",
 )
