@@ -24,14 +24,11 @@ def test_v180r11_authorization_is_source_closed_and_outcome_free() -> None:
         assert hashlib.sha256(raw).hexdigest() == fact["sha256"]
 
 
-def test_v180r11_successor_outputs_are_absent_before_execution() -> None:
+def test_v180r11_successor_outputs_are_now_the_exact_success_inventory() -> None:
     document = authorization.freeze_v34_retained_recovery_authorization_v180r11().to_document()
-    for key in (
-        "terminal_output_relative_path",
-        "verification_output_relative_path",
-        "failure_output_relative_path",
-    ):
-        assert not (ROOT / document[key]).exists()
+    assert (ROOT / document["terminal_output_relative_path"]).is_file()
+    assert (ROOT / document["verification_output_relative_path"]).is_file()
+    assert not (ROOT / document["failure_output_relative_path"]).exists()
 
 
 def test_v180r11_independent_verifier_does_not_import_recovery_producer() -> None:
