@@ -1,0 +1,587 @@
+"""Fresh V184 multi-distribution campaign over fair expression synthesis."""
+
+from __future__ import annotations
+
+import hashlib
+from typing import Any, Iterable, Mapping, NoReturn, Sequence
+
+from acfqp import construction_k7_domain_registry_extension_v184 as domains
+from acfqp import construction_k7_open_world_fair_expression_manifest_reveal_v184 as reveal
+from acfqp import construction_k7_open_world_fair_expression_protocol_v184 as protocol
+from acfqp.open_world_fair_expression_machine_v184 import (
+    FairRankedCompiledWorldModelV184,
+    FairRankedPlannerSessionV184,
+    compile_fair_ranked_world_model_v184,
+)
+from acfqp.open_world_fair_expression_oracle_v184 import (
+    FairExpressionOracleV184,
+    reveal_fair_expression_oracle_v184,
+)
+from acfqp.open_world_machine_compiled_model_v182 import RawMachineTransitionV182
+from acfqp.open_world_universal_machine_v182 import ProgramV182
+from acfqp.phase3e_ids import canonical_json_bytes
+
+
+class OpenWorldFairExpressionCampaignV184Error(ValueError):
+    pass
+
+
+def _fail(message: str) -> NoReturn:
+    raise OpenWorldFairExpressionCampaignV184Error(message)
+
+
+def _oracle(
+    manifest_document: Mapping[str, Any], commitment: str
+) -> FairExpressionOracleV184:
+    return reveal_fair_expression_oracle_v184(
+        manifest_bytes=canonical_json_bytes(dict(manifest_document)),
+        expected_commitment=commitment,
+    )
+
+
+def _compile(
+    rows: Sequence[RawMachineTransitionV182],
+    archive: Iterable[ProgramV182] = (),
+) -> FairRankedCompiledWorldModelV184:
+    return compile_fair_ranked_world_model_v184(
+        rows,
+        maximum_enumeration_events_per_scalar=(
+            protocol.MAXIMUM_ENUMERATION_EVENTS_PER_SCALAR
+        ),
+        resource_step_cap=protocol.RESOURCE_STEP_CAP,
+        register_count=protocol.REGISTER_COUNT,
+        maximum_residual_support=protocol.MAXIMUM_RESIDUAL_SUPPORT,
+        archive=archive,
+    )
+
+
+def _synthesis_events(model: FairRankedCompiledWorldModelV184) -> int:
+    return sum(row.enumeration_events for row in model.coordinates) + (
+        model.terminal_synthesis.enumeration_events
+    )
+
+
+def _archive_references(model: FairRankedCompiledWorldModelV184) -> int:
+    return sum(int(row.archive_reference_used) for row in model.coordinates) + int(
+        model.terminal_synthesis.archive_reference_used
+    )
+
+
+def _model_summary(model: FairRankedCompiledWorldModelV184) -> dict[str, Any]:
+    return {
+        "compiled_model_id": model.compiled_model_id,
+        "source_label_count": len(model.source_observation_ids),
+        "synthesis_candidate_evaluations": _synthesis_events(model),
+        "archive_reference_count": _archive_references(model),
+        "coordinate_program_ids": [row.program_id for row in model.coordinates],
+        "terminal_program_id": model.terminal_synthesis.program_id,
+        "factor_boundaries": [list(row) for row in model.factor_boundaries],
+    }
+
+
+def _schema(oracle: FairExpressionOracleV184) -> dict[str, Any]:
+    return {
+        "state_width": oracle.state_width,
+        "action_width": oracle.action_width,
+        "legal_actions": [list(row) for row in oracle.legal_actions],
+    }
+
+
+def _acquisition_input(
+    oracle: FairExpressionOracleV184,
+    unique_index: int,
+) -> tuple[tuple[int, ...], tuple[int, ...]]:
+    digest = hashlib.sha256(
+        b"acfqp:v184:witness-blind-fair-expression-acquisition\x00"
+        + oracle.manifest_commitment.encode()
+        + unique_index.to_bytes(8, "big")
+    ).digest()
+    state = (digest[0] % 8, 1 + digest[1] % 5, digest[2] % 8)
+    return state, (unique_index % 2,)
+
+
+def _query_block(
+    oracle: FairExpressionOracleV184,
+    *,
+    occurrence_index: int,
+    block_index: int,
+) -> tuple[RawMachineTransitionV182, ...]:
+    rows = []
+    for local_index in range(protocol.ACQUISITION_BLOCK_SIZE):
+        query_index = (
+            block_index * protocol.ACQUISITION_BLOCK_SIZE + local_index
+        )
+        state, action = _acquisition_input(oracle, query_index)
+        rows.append(
+            oracle.query(
+                occurrence_index=occurrence_index,
+                query_index=query_index,
+                state=state,
+                action=action,
+            )
+        )
+    return tuple(rows)
+
+
+def _acquire(
+    oracle: FairExpressionOracleV184,
+    *,
+    arm: str,
+    occurrence_index: int,
+    archive: Sequence[ProgramV182],
+) -> tuple[
+    tuple[RawMachineTransitionV182, ...],
+    FairRankedCompiledWorldModelV184,
+    list[dict[str, Any]],
+]:
+    observations: list[RawMachineTransitionV182] = []
+    model: FairRankedCompiledWorldModelV184 | None = None
+    history: list[dict[str, Any]] = []
+    stable = 0
+    credit = 0
+    block_count = (
+        protocol.MAXIMUM_TARGET_LABELS_PER_DISTRIBUTION
+        // protocol.ACQUISITION_BLOCK_SIZE
+    )
+    for block_index in range(block_count):
+        current = _query_block(
+            oracle,
+            occurrence_index=occurrence_index,
+            block_index=block_index,
+        )
+        covered = model is not None and all(model.covers(row) for row in current)
+        observations.extend(current)
+        compiled = False
+        events = 0
+        archive_count = _archive_references(model) if model is not None else 0
+        if len(observations) >= protocol.MINIMUM_TARGET_LABELS_PER_DISTRIBUTION:
+            if covered:
+                stable += 1
+            else:
+                model = _compile(observations, archive)
+                compiled = True
+                stable = 0
+                events = _synthesis_events(model)
+                archive_count = _archive_references(model)
+                credit = int(
+                    arm == "REVALIDATED_FAIR_PROGRAM_PRIOR"
+                    and archive_count > 0
+                    and all(model.covers(row) for row in observations)
+                ) * protocol.REVALIDATED_PRIOR_CONFIRMATION_CREDIT
+        history.append(
+            {
+                "block_index": block_index,
+                "cumulative_target_acquisition_labels": len(observations),
+                "compiled": compiled,
+                "model_reused_without_recompile": covered,
+                "confirmation_zero_error": covered,
+                "stable_confirmation_count": stable,
+                "revalidated_prior_credit": credit,
+                "effective_confirmation_count": stable + credit,
+                "synthesis_candidate_evaluations": events,
+                "archive_reference_count": archive_count,
+                "compiled_model_id": (
+                    model.compiled_model_id if model is not None else None
+                ),
+            }
+        )
+        if (
+            model is not None
+            and stable + credit >= protocol.STABLE_CONFIRMATION_BLOCKS
+        ):
+            return tuple(observations), model, history
+    _fail(f"V184 acquisition did not stop for {arm}/{oracle.role}")
+
+
+def _initial_state(
+    oracle: FairExpressionOracleV184,
+    *,
+    occurrence_index: int,
+    occurrence_offset: int,
+) -> tuple[int, ...]:
+    state = list(oracle.initial_state(occurrence_index))
+    state[1] = (
+        protocol.PLANNING_HORIZON + 1
+        if occurrence_offset == 0
+        else 1 + ((occurrence_offset - 1) % protocol.PLANNING_HORIZON)
+    )
+    return tuple(state)
+
+
+def _episodes(
+    oracle: FairExpressionOracleV184,
+    *,
+    arm: str,
+    distribution_index: int,
+    acquisition_rows: Sequence[RawMachineTransitionV182],
+    acquisition_model: FairRankedCompiledWorldModelV184,
+    archive: Sequence[ProgramV182],
+) -> dict[str, Any]:
+    rows = list(acquisition_rows)
+    model = acquisition_model
+    episodes = []
+    local_labels = 0
+    execution_steps = 0
+    planning_events = 0
+    certificate_count = 0
+    recovery_synthesis_events = 0
+    for occurrence_offset in range(
+        protocol.IID_OCCURRENCES_PER_DISTRIBUTION_PER_ARM
+    ):
+        occurrence_index = 184_400 + distribution_index * 100 + occurrence_offset
+        state = _initial_state(
+            oracle,
+            occurrence_index=occurrence_index,
+            occurrence_offset=occurrence_offset,
+        )
+        session = FairRankedPlannerSessionV184(
+            model,
+            horizon=protocol.PLANNING_HORIZON,
+        )
+        steps = []
+        for decision_index in range(protocol.MAXIMUM_DECISIONS_PER_OCCURRENCE):
+            certificate = session.certify(state)
+            certificate_count += 1
+            planning_events += certificate.planning_compute_events
+            if not certificate.certified:
+                if certificate.failure_reason != "NO_HORIZON_CERTIFICATE":
+                    _fail("V184 compute/resource failure attempted a ground query")
+                if (
+                    local_labels
+                    >= protocol.MAXIMUM_LOCAL_GROUND_LABELS_PER_DISTRIBUTION_PER_ARM
+                ):
+                    _fail("V184 local-ground label cap exhausted")
+                action = oracle.legal_actions[0]
+                observed = oracle.query(
+                    occurrence_index=occurrence_index,
+                    query_index=decision_index,
+                    state=state,
+                    action=action,
+                )
+                local_labels += 1
+                execution_steps += 1
+                rows.append(observed)
+                model = _compile(rows, archive)
+                recovery_synthesis_events += _synthesis_events(model)
+                if not model.covers(observed):
+                    _fail("V184 local distinction did not repair current support")
+                session = FairRankedPlannerSessionV184(
+                    model,
+                    horizon=protocol.PLANNING_HORIZON,
+                )
+                steps.append(
+                    {
+                        "decision_index": decision_index,
+                        "state": list(state),
+                        "certificate": certificate.to_document(),
+                        "selected_action": list(action),
+                        "predicted_support": None,
+                        "observation": observed.to_document(),
+                        "certificate_failure": "NO_HORIZON_CERTIFICATE",
+                        "local_ground_distinction_acquired": True,
+                        "compiled_model_id_after_step": model.compiled_model_id,
+                    }
+                )
+                state = observed.successor
+                if observed.terminal:
+                    break
+                continue
+            if certificate.selected_action is None:
+                _fail("V184 certified action is absent")
+            support = model.predict_support(state, certificate.selected_action)
+            observed = oracle.query(
+                occurrence_index=occurrence_index,
+                query_index=decision_index,
+                state=state,
+                action=certificate.selected_action,
+            )
+            execution_steps += 1
+            matched = (
+                observed.successor in support
+                and model.terminal(observed.successor) is observed.terminal
+            )
+            local = False
+            failure = None
+            if not matched:
+                if (
+                    local_labels
+                    >= protocol.MAXIMUM_LOCAL_GROUND_LABELS_PER_DISTRIBUTION_PER_ARM
+                ):
+                    _fail("V184 local-ground label cap exhausted")
+                local = True
+                failure = "MISSING_SUPPORT_OR_TERMINAL"
+                local_labels += 1
+                rows.append(observed)
+                model = _compile(rows, archive)
+                recovery_synthesis_events += _synthesis_events(model)
+                if not model.covers(observed):
+                    _fail("V184 local support repair failed")
+                session = FairRankedPlannerSessionV184(
+                    model,
+                    horizon=protocol.PLANNING_HORIZON,
+                )
+            steps.append(
+                {
+                    "decision_index": decision_index,
+                    "state": list(state),
+                    "certificate": certificate.to_document(),
+                    "selected_action": list(certificate.selected_action),
+                    "predicted_support": [list(row) for row in support],
+                    "observation": observed.to_document(),
+                    "certificate_support_matched": matched,
+                    "certificate_failure": failure,
+                    "local_ground_distinction_acquired": local,
+                    "compiled_model_id_after_step": model.compiled_model_id,
+                }
+            )
+            state = observed.successor
+            if observed.terminal:
+                break
+        if not oracle.terminal(state):
+            _fail("V184 episode crossed its decision cap")
+        episodes.append(
+            {
+                "occurrence_index": occurrence_index,
+                "initial_state": steps[0]["state"],
+                "steps": steps,
+                "execution_step_count": len(steps),
+                "terminal_state": list(state),
+                "terminal": True,
+                "local_ground_label_count": sum(
+                    int(step["local_ground_distinction_acquired"])
+                    for step in steps
+                ),
+            }
+        )
+    return {
+        "episodes": episodes,
+        "terminal_episode_count": len(episodes),
+        "target_local_ground_label_count": local_labels,
+        "execution_step_count": execution_steps,
+        "planning_compute_events": planning_events,
+        "certificate_count": certificate_count,
+        "recovery_synthesis_candidate_evaluations": recovery_synthesis_events,
+        "final_compiled_model": model.to_document(),
+        "all_local_ground_labels_followed_certificate_failure": True,
+        "compute_cap_failures_requested_ground_labels": False,
+    }
+
+
+def _sum_work(rows: Sequence[Mapping[str, Any]]) -> dict[str, int]:
+    return {
+        "target_labels": sum(row["target_total_label_count"] for row in rows),
+        "synthesis_candidate_evaluations": sum(
+            row["acquisition_synthesis_candidate_evaluations"]
+            + row["recovery_synthesis_candidate_evaluations"]
+            for row in rows
+        ),
+        "planning_compute_events": sum(row["planning_compute_events"] for row in rows),
+        "certificate_evaluations": sum(row["certificate_count"] for row in rows),
+        "execution_steps": sum(row["execution_step_count"] for row in rows),
+    }
+
+
+def build_open_world_fair_expression_campaign_v184(
+    *,
+    manifest_documents: Sequence[Mapping[str, Any]],
+    manifest_commitments: Sequence[str],
+    execution_preregistration_id: str,
+) -> dict[str, Any]:
+    if (
+        type(manifest_documents) not in {tuple, list}
+        or type(manifest_commitments) not in {tuple, list}
+        or len(manifest_documents) != 6
+        or len(manifest_commitments) != 6
+        or type(execution_preregistration_id) is not str
+        or len(execution_preregistration_id) != 64
+    ):
+        _fail("V184 campaign denominator or execution identity changed")
+    source = _oracle(manifest_documents[0], manifest_commitments[0])
+    targets = tuple(
+        _oracle(manifest_documents[index], manifest_commitments[index])
+        for index in range(1, 5)
+    )
+    ood = _oracle(manifest_documents[5], manifest_commitments[5])
+    if any(target.schema_signature() != source.schema_signature() for target in targets):
+        _fail("V184 matched target schema changed")
+    if ood.schema_signature() == source.schema_signature():
+        _fail("V184 OOD negative control collapsed")
+    source_rows = tuple(
+        row
+        for block_index in range(
+            protocol.OFFLINE_SOURCE_LABELS // protocol.ACQUISITION_BLOCK_SIZE
+        )
+        for row in _query_block(
+            source,
+            occurrence_index=184_250,
+            block_index=block_index,
+        )
+    )
+    source_model = _compile(source_rows)
+    archive = source_model.reusable_program_archive()
+    arm_results = []
+    for arm in protocol.ARMS:
+        distribution_results = []
+        for distribution_index in range(protocol.TARGET_DISTRIBUTION_COUNT):
+            target = _oracle(
+                manifest_documents[distribution_index + 1],
+                manifest_commitments[distribution_index + 1],
+            )
+            arm_archive = archive if arm == "REVALIDATED_FAIR_PROGRAM_PRIOR" else ()
+            acquisition_rows, acquisition_model, history = _acquire(
+                target,
+                arm=arm,
+                occurrence_index=184_300 + distribution_index,
+                archive=arm_archive,
+            )
+            episode = _episodes(
+                target,
+                arm=arm,
+                distribution_index=distribution_index,
+                acquisition_rows=acquisition_rows,
+                acquisition_model=acquisition_model,
+                archive=arm_archive,
+            )
+            distribution_results.append(
+                {
+                    "distribution_index": distribution_index,
+                    "manifest_commitment": manifest_commitments[distribution_index + 1],
+                    "target_acquisition_label_count": len(acquisition_rows),
+                    "target_local_ground_label_count": episode[
+                        "target_local_ground_label_count"
+                    ],
+                    "target_total_label_count": len(acquisition_rows)
+                    + episode["target_local_ground_label_count"],
+                    "acquisition_observations": [
+                        row.to_document() for row in acquisition_rows
+                    ],
+                    "acquisition_model": acquisition_model.to_document(),
+                    "acquisition_model_summary": _model_summary(acquisition_model),
+                    "acquisition_history": history,
+                    "acquisition_synthesis_candidate_evaluations": sum(
+                        row["synthesis_candidate_evaluations"] for row in history
+                    ),
+                    **episode,
+                }
+            )
+        arm_work = _sum_work(distribution_results)
+        arm_results.append(
+            {
+                "arm": arm,
+                "distribution_results": distribution_results,
+                "registered_target_work_vector": arm_work,
+                "all_registered_episodes_terminal": all(
+                    row["terminal_episode_count"]
+                    == protocol.IID_OCCURRENCES_PER_DISTRIBUTION_PER_ARM
+                    for row in distribution_results
+                ),
+            }
+        )
+    by_arm = {row["arm"]: row for row in arm_results}
+    prior = by_arm["REVALIDATED_FAIR_PROGRAM_PRIOR"]
+    control = by_arm["EMPTY_ARCHIVE_NO_PRIOR"]
+    prior_work = prior["registered_target_work_vector"]
+    control_work = control["registered_target_work_vector"]
+    componentwise = all(
+        prior_work[axis] <= control_work[axis] for axis in protocol.TOTAL_WORK_AXES
+    )
+    strict_axes = [
+        axis
+        for axis in protocol.TOTAL_WORK_AXES
+        if prior_work[axis] < control_work[axis]
+    ]
+    per_distribution_tax = [
+        control_row["target_total_label_count"] - prior_row["target_total_label_count"]
+        for prior_row, control_row in zip(
+            prior["distribution_results"],
+            control["distribution_results"],
+            strict=True,
+        )
+    ]
+    if not (
+        prior["all_registered_episodes_terminal"] is True
+        and control["all_registered_episodes_terminal"] is True
+        and all(value > 0 for value in per_distribution_tax)
+        and componentwise
+        and {"target_labels", "synthesis_candidate_evaluations"}.issubset(strict_axes)
+    ):
+        _fail("V184 registered sample-tax or total-work comparison failed")
+    protocol_document = protocol.freeze_open_world_fair_expression_protocol_v184().to_document()
+    payload = {
+        "schema": "acfqp.open_world_fair_expression_campaign.v184",
+        "execution_preregistration_id": execution_preregistration_id,
+        "protocol_id": protocol.EXPECTED_PROTOCOL_ID,
+        "manifest_reveal_id": reveal.EXPECTED_REVEAL_ID,
+        "predecessor_campaign_id": protocol_document["predecessor_campaign_id"],
+        "predecessor_preserved": True,
+        "manifest_commitments": list(manifest_commitments),
+        "source_observations": [row.to_document() for row in source_rows],
+        "source_label_count": len(source_rows),
+        "source_compiled_model": source_model.to_document(),
+        "source_model_summary": _model_summary(source_model),
+        "source_archive_program_count": len(archive),
+        "ood_no_transfer_control": {
+            "source_schema_signature": _schema(source),
+            "ood_schema_signature": _schema(ood),
+            "prior_transfer_rejected": True,
+            "rejected_before_target_query": True,
+            "ood_target_query_count": ood.query_count,
+        },
+        "arm_results": arm_results,
+        "target_distribution_count": protocol.TARGET_DISTRIBUTION_COUNT,
+        "prior_target_total_labels": prior_work["target_labels"],
+        "no_prior_target_total_labels": control_work["target_labels"],
+        "target_labels_avoided": control_work["target_labels"]
+        - prior_work["target_labels"],
+        "per_distribution_target_labels_avoided": per_distribution_tax,
+        "componentwise_target_work_dominance_observed": componentwise,
+        "strictly_improved_target_work_axes": strict_axes,
+        "same_synthesizer_and_stop_rule_both_arms": True,
+        "exact_same_target_stream_until_prior_stop": True,
+        "archive_mdl_discount_used": False,
+        "candidate_language_countably_infinite": True,
+        "actual_search_prefix_finite": True,
+        "finite_candidate_catalog_used": False,
+        "whole_program_templates_supplied": False,
+        "all_compiled_programs_structurally_total": True,
+        "resource_cap_exhaustion_used_as_infeasibility": False,
+        "planning_horizon": protocol.PLANNING_HORIZON,
+        "planning_horizon_greater_than_two": True,
+        "all_local_ground_labels_followed_certificate_failure": True,
+        "compute_cap_failures_requested_ground_labels": False,
+        "multi_distribution_iid_sample_efficiency_observed": True,
+        "label_execution_and_compute_axes_separate": True,
+        "new_primitive_opcode_invented": False,
+        "broad_iid_sample_efficiency_claimed": False,
+        "arbitrary_domain_transfer_claimed": False,
+        "official_total_work_dominance_claimed": False,
+        "COUNTER_COMPLETENESS_GATE": "NOT_RUN",
+        "WORKLOAD_ECONOMICS_GATE": "NOT_RUN",
+        "official_scalar_cost": None,
+        "official_N_break_even": None,
+        "official_execution_allowed": False,
+    }
+    return {
+        **payload,
+        "campaign_id": domains.extension_content_id_v184(
+            domains.CONSTRUCTION_K7_CAMPAIGN_V184_DOMAIN,
+            payload,
+        ),
+    }
+
+
+def run_open_world_fair_expression_campaign_v184(
+    *, execution_preregistration_id: str
+) -> dict[str, Any]:
+    return build_open_world_fair_expression_campaign_v184(
+        manifest_documents=reveal.MANIFEST_DOCUMENTS_V184,
+        manifest_commitments=protocol.MANIFEST_COMMITMENTS_V184,
+        execution_preregistration_id=execution_preregistration_id,
+    )
+
+
+__all__ = (
+    "OpenWorldFairExpressionCampaignV184Error",
+    "build_open_world_fair_expression_campaign_v184",
+    "run_open_world_fair_expression_campaign_v184",
+)
