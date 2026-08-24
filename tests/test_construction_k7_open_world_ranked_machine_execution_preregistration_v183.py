@@ -22,9 +22,13 @@ def test_v183_execution_preregistration_is_source_closed_and_outcome_free() -> N
         assert hashlib.sha256(raw).hexdigest() == fact["sha256"]
 
 
-def test_v183_output_root_is_absent_before_execution() -> None:
+def test_v183_output_root_is_now_the_exact_committed_success_inventory() -> None:
     document = preregistration.freeze_open_world_ranked_machine_execution_preregistration_v183().to_document()
-    assert not (ROOT / document["output_root_relative_path"]).exists()
+    output_root = ROOT / document["output_root_relative_path"]
+    assert tuple(sorted(path.name for path in output_root.iterdir())) == (
+        "CAMPAIGN.json",
+        "VERIFICATION.json",
+    )
 
 
 def test_v183_independent_verifier_has_no_producer_import() -> None:
