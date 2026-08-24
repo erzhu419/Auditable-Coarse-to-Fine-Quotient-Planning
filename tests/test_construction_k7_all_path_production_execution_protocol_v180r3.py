@@ -1,9 +1,17 @@
+import hashlib
+
 from acfqp import construction_k7_all_path_production_execution_protocol_v180r3 as protocol
 from acfqp.routing_v1 import TerminalCode
 
 
 def test_protocol_preregisters_exactly_one_fresh_execution_per_terminal() -> None:
-    document = protocol.freeze_all_path_production_execution_protocol_v180r3().to_document()
+    frozen = protocol.freeze_all_path_production_execution_protocol_v180r3()
+    document = frozen.to_document()
+    assert frozen.production_execution_protocol_id == protocol.EXPECTED_PROTOCOL_ID
+    assert len(frozen.canonical_bytes) == protocol.EXPECTED_CANONICAL_BYTE_COUNT
+    assert hashlib.sha256(frozen.canonical_bytes).hexdigest() == (
+        protocol.EXPECTED_CANONICAL_SHA256
+    )
     rows = document["production_execution_slots"]
     assert [row["terminal_code"] for row in rows] == [
         code.value for code in TerminalCode
