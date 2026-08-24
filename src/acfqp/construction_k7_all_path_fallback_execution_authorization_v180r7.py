@@ -10,7 +10,6 @@ from typing import Any
 
 from acfqp import construction_k7_all_path_production_execution_protocol_v180r3 as protocol
 from acfqp import construction_k7_domain_registry_extension_v180r7 as domains
-from acfqp import construction_k7_full_ground_fallback_production_terminal_finalizer_v180r7 as finalizer
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
@@ -20,6 +19,22 @@ EXPECTED_AUTHORIZATION_ID = (
 EXPECTED_CANONICAL_BYTE_COUNT = 5_935
 EXPECTED_CANONICAL_SHA256 = (
     "f9fd4b872b54548ccc25515728159d0352de5071f96f787bda35f98cb6933690"
+)
+LOGICAL_OCCURRENCE_ID = (
+    "58e734a75fae219a40ada5077a4aca568ef5304ad12275a776f788d1ddb31bbb"
+)
+QUERY_ORDINAL = 7
+EXPECTED_BINDING_BYTE_COUNT = 4_405
+EXPECTED_BINDING_SHA256 = (
+    "bf5d7f5292a4b38136b141745b9349bc4e86c2ab7e67592e8d25c19b5daa527f"
+)
+EXPECTED_SNAPSHOT_BYTE_COUNT = 388_638
+EXPECTED_SNAPSHOT_SHA256 = (
+    "18056b6f1aba853cb3b705041be93bce31700c79d45fa894fd956b144f0e7823"
+)
+EXPECTED_TRANSITION_BYTE_COUNT = 859_154
+EXPECTED_TRANSITION_SHA256 = (
+    "e2278f8b499b13f45ab1c8fcba29be9665d472d4cd9ab65e1ee124187bfbbe30"
 )
 
 _SOURCE_NAMES = (
@@ -37,18 +52,18 @@ _SOURCE_NAMES = (
 _INPUT_SPECS = (
     (
         ".tmp/recovery-eligible-retained-v1/SOURCE_BUNDLE_BINDING.json",
-        finalizer.EXPECTED_BINDING_BYTE_COUNT,
-        finalizer.EXPECTED_BINDING_SHA256,
+        EXPECTED_BINDING_BYTE_COUNT,
+        EXPECTED_BINDING_SHA256,
     ),
     (
         ".tmp/recovery-eligible-retained-v1/REUSABLE_RAPM_SNAPSHOT.json",
-        finalizer.EXPECTED_SNAPSHOT_BYTE_COUNT,
-        finalizer.EXPECTED_SNAPSHOT_SHA256,
+        EXPECTED_SNAPSHOT_BYTE_COUNT,
+        EXPECTED_SNAPSHOT_SHA256,
     ),
     (
         ".tmp/recovery-eligible-retained-v1/PROOF_DEPENDENCY_TRANSITION.json",
-        finalizer.EXPECTED_TRANSITION_BYTE_COUNT,
-        finalizer.EXPECTED_TRANSITION_SHA256,
+        EXPECTED_TRANSITION_BYTE_COUNT,
+        EXPECTED_TRANSITION_SHA256,
     ),
 )
 
@@ -88,8 +103,8 @@ def build_fallback_execution_authorization_v180r7() -> dict[str, Any]:
         "schema": "acfqp.full_ground_fallback_execution_authorization.v180r7",
         "production_execution_protocol_id": frozen.production_execution_protocol_id,
         "production_execution_slot": slot,
-        "logical_occurrence_id": finalizer.LOGICAL_OCCURRENCE_ID,
-        "query_ordinal": finalizer.QUERY_ORDINAL,
+        "logical_occurrence_id": LOGICAL_OCCURRENCE_ID,
+        "query_ordinal": QUERY_ORDINAL,
         "source_facts": [_source_fact(filename) for filename in _SOURCE_NAMES],
         "retained_predecessor_input_facts": [
             _input_fact(path, byte_count, sha256)
