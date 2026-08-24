@@ -157,7 +157,10 @@ def _macro_mdl(
     argument_count: int,
 ) -> tuple[int, int, int]:
     raw_tokens = occurrence_count * _tree_size(body)
-    definition_tokens = _tree_size(body) + 1 + argument_count
+    # The normalized body already contains its argument references; charging a
+    # second signature row would count those tokens twice.  One invocation
+    # opcode plus its actual arguments replaces each repeated body.
+    definition_tokens = _tree_size(body)
     invocation_tokens = occurrence_count * (1 + argument_count)
     encoded_tokens = definition_tokens + invocation_tokens
     return raw_tokens, encoded_tokens, raw_tokens - encoded_tokens
