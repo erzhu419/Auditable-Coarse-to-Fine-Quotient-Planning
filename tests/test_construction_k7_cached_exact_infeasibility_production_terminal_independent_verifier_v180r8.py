@@ -2,10 +2,7 @@ from __future__ import annotations
 
 import ast
 import hashlib
-import os
 from pathlib import Path
-import subprocess
-import sys
 
 import pytest
 
@@ -15,7 +12,9 @@ from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
 ROOT = Path(__file__).resolve().parents[1]
-HELPER = Path(__file__).with_name("_cached_exact_v180r8_subprocess.py")
+RETAINED_TERMINAL = (
+    ROOT / ".tmp" / "v180r8-cached-exact-production" / "TERMINAL.json"
+)
 VERIFIER_SOURCE = (
     ROOT
     / "src"
@@ -25,21 +24,13 @@ VERIFIER_SOURCE = (
 
 
 @pytest.fixture(scope="module")
-def terminal_bytes(tmp_path_factory: pytest.TempPathFactory) -> bytes:
-    root = tmp_path_factory.mktemp("v180r8-independent") / "producer"
-    env = dict(os.environ)
-    env["PYTHONPATH"] = str(ROOT / "src")
-    env["PYTHONDONTWRITEBYTECODE"] = "1"
-    subprocess.run(
-        [sys.executable, str(HELPER), str(root)],
-        cwd=ROOT,
-        env=env,
-        check=True,
-        capture_output=True,
-        text=True,
-        timeout=60,
-    )
-    return (root / "TERMINAL.json").read_bytes()
+def terminal_bytes() -> bytes:
+    if not RETAINED_TERMINAL.is_file():
+        pytest.skip("retained V180r8 production terminal is absent")
+    raw = RETAINED_TERMINAL.read_bytes()
+    assert len(raw) == verifier.EXPECTED_TERMINAL_BYTE_COUNT
+    assert hashlib.sha256(raw).hexdigest() == verifier.EXPECTED_TERMINAL_SHA256
+    return raw
 
 
 def test_v180r8_verifier_reconstructs_the_complete_terminal(
@@ -56,6 +47,12 @@ def test_v180r8_verifier_reconstructs_the_complete_terminal(
     assert result["COUNTER_COMPLETENESS_GATE"] == "NOT_RUN"
     assert result["WORKLOAD_ECONOMICS_GATE"] == "NOT_RUN"
     assert result["official_execution_allowed"] is False
+    verification_bytes = canonical_json_bytes(result)
+    assert result["verification_id"] == verifier.EXPECTED_VERIFICATION_ID
+    assert len(verification_bytes) == verifier.EXPECTED_VERIFICATION_BYTE_COUNT
+    assert hashlib.sha256(verification_bytes).hexdigest() == (
+        verifier.EXPECTED_VERIFICATION_SHA256
+    )
 
 
 def test_v180r8_verifier_rejects_a_fully_rehashed_claim_flip(
