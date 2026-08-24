@@ -239,6 +239,12 @@ def synthesize_expression_v181(
     ):
         _fail("synthesis rows cross opaque schemas or target types")
     targets = tuple(row.target for row in rows)
+    targets_by_input: dict[tuple[tuple[int, ...], tuple[int, ...]], set[int | bool]] = {}
+    for row in rows:
+        targets_by_input.setdefault((row.state, row.action), set()).add(row.target)
+    stochastic_evidence_present = target_type is int and any(
+        len(values) > 1 for values in targets_by_input.values()
+    )
     by_semantics: dict[tuple[type, tuple[int | bool, ...]], _CandidateV181] = {}
     by_length: dict[int, list[_CandidateV181]] = {}
     events = 0
@@ -318,6 +324,42 @@ def synthesize_expression_v181(
                 selected.archive_reference_used,
             )
         return None
+
+    def best_residual_result() -> SynthesizedExpressionV181 | None:
+        if target_type is not int:
+            return None
+        residual_candidates = []
+        inferred_modulus = max(
+            max(max(row.state) for row in rows),
+            max(int(row.target) for row in rows),
+        ) + 1
+        for candidate in by_semantics.values():
+            if candidate.value_type is not int:
+                continue
+            residuals = _residual_signature(candidate.outputs, targets)
+            if residuals is not None and 1 < len(residuals) <= maximum_residual_support:
+                residual_candidates.append(
+                    (
+                        len(residuals),
+                        candidate.token_length,
+                        expression_bytes_v181(candidate.expression),
+                        candidate,
+                        residuals,
+                    )
+                )
+        if not residual_candidates:
+            return None
+        _, _, _, selected, residuals = min(residual_candidates)
+        return SynthesizedExpressionV181(
+            selected.expression,
+            selected.token_length,
+            events,
+            False,
+            residuals,
+            inferred_modulus,
+            expression_dependencies_v181(selected.expression),
+            selected.archive_reference_used,
+        )
 
     rebuild_lengths()
     found = best_result()
@@ -409,41 +451,17 @@ def synthesize_expression_v181(
         found = best_result()
         if found is not None:
             return found
+        if stochastic_evidence_present and total_length >= 3:
+            residual_result = best_residual_result()
+            if residual_result is not None:
+                return residual_result
 
     if target_type is bool:
         _fail("no exact boolean expression found within the run budget")
-    residual_candidates = []
-    inferred_modulus = max(
-        max(max(row.state) for row in rows),
-        max(int(row.target) for row in rows),
-    ) + 1
-    for candidate in by_semantics.values():
-        if candidate.value_type is not int:
-            continue
-        residuals = _residual_signature(candidate.outputs, targets)
-        if residuals is not None and len(residuals) <= maximum_residual_support:
-            residual_candidates.append(
-                (
-                    len(residuals),
-                    candidate.token_length,
-                    expression_bytes_v181(candidate.expression),
-                    candidate,
-                    residuals,
-                )
-            )
-    if not residual_candidates:
+    residual_result = best_residual_result()
+    if residual_result is None:
         _fail("no bounded finite residual support found within the run budget")
-    _, _, _, selected, residuals = min(residual_candidates)
-    return SynthesizedExpressionV181(
-        selected.expression,
-        selected.token_length,
-        events,
-        False,
-        residuals,
-        inferred_modulus,
-        expression_dependencies_v181(selected.expression),
-        selected.archive_reference_used,
-    )
+    return residual_result
 
 
 __all__ = (
