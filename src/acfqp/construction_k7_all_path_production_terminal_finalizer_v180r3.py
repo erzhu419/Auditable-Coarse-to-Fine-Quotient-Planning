@@ -235,7 +235,7 @@ def run_v34_abstract_certified_production_occurrence_v180r3(
 ) -> ProductionTerminalBundleV180r3:
     """Execute, independently replay, and finalize the fresh V34 site once."""
 
-    if type(output_root) is not Path or output_root.exists():
+    if not isinstance(output_root, Path) or output_root.exists():
         _fail("V180r3 V34 output root must be a new absent Path")
     slot = _slot(TerminalCode.ABSTRACT_CERTIFIED)
     result = v34_campaign.run_standard_2048_expression_full_accounted_campaign_v34(

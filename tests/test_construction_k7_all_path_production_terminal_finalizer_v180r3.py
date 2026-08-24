@@ -18,6 +18,25 @@ def test_v34_production_adapter_refuses_a_preexisting_output_tree(tmp_path: Path
         finalizer.run_v34_abstract_certified_production_occurrence_v180r3(root)
 
 
+def test_absent_platform_path_reaches_the_frozen_site_boundary(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    root = tmp_path / "absent-output"
+
+    def reached(_root: Path) -> None:
+        assert _root == root
+        raise RuntimeError("site boundary reached")
+
+    monkeypatch.setattr(
+        finalizer.v34_campaign,
+        "run_standard_2048_expression_full_accounted_campaign_v34",
+        reached,
+    )
+    with pytest.raises(RuntimeError, match="site boundary reached"):
+        finalizer.run_v34_abstract_certified_production_occurrence_v180r3(root)
+
+
 @pytest.mark.skipif(
     os.environ.get("ACFQP_RUN_V180R3_V34_PRODUCTION") != "1",
     reason="requires the preregistered fresh V34 production occurrence",
