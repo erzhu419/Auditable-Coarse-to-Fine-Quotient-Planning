@@ -2,6 +2,7 @@ import hashlib
 from pathlib import Path
 
 from acfqp import construction_k7_remaining_terminal_execution_authorization_v180r9 as authorization
+from acfqp import construction_k7_remaining_terminal_evidence_freeze_v180r9 as evidence_freeze
 from acfqp.phase3e_ids import canonical_json_bytes
 
 
@@ -27,6 +28,16 @@ def test_v180r9_authorization_is_outcome_free_and_source_closed() -> None:
         assert hashlib.sha256(raw).hexdigest() == fact["sha256"]
 
 
-def test_v180r9_output_root_is_absent_before_execution() -> None:
+def test_v180r9_output_root_is_absent_or_exactly_frozen_after_execution() -> None:
     document = authorization.freeze_remaining_terminal_execution_authorization_v180r9().to_document()
-    assert not (ROOT / document["output_root_relative_path"]).exists()
+    output_root = ROOT / document["output_root_relative_path"]
+    if not output_root.exists():
+        return
+    assert set(path.name for path in output_root.iterdir()) == {
+        "TERMINAL.json",
+        "VERIFICATION.json",
+    }
+    evidence_freeze.verify_frozen_remaining_terminal_evidence_v180r9(
+        (output_root / "TERMINAL.json").read_bytes(),
+        (output_root / "VERIFICATION.json").read_bytes(),
+    )
