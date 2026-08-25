@@ -23,6 +23,10 @@ def _wrapper_raw() -> bytes:
     return Path(evidence.__file__).read_bytes()
 
 
+def _c_pre_wrapper_raw() -> bytes:
+    return evidence.normalize_own_source_v180r12r3(_wrapper_raw())
+
+
 def _replace_literals(raw: bytes, *, include_evidence: bool = True) -> bytes:
     result = raw
     evidence_names = {
@@ -70,7 +74,7 @@ def _populate_source_boundary(repository: Path) -> None:
         path = repository / relative_path
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(
-            _wrapper_raw()
+            _c_pre_wrapper_raw()
             if relative_path == evidence._EVIDENCE_RELATIVE_PATH  # noqa: SLF001
             else f"frozen source {index}\n".encode("ascii")
         )
@@ -80,7 +84,7 @@ def _source_facts() -> tuple[dict[str, object], ...]:
     rows = []
     for index, relative_path in enumerate(evidence.SOURCE_BOUNDARY_REQUIRED_PATHS):
         raw = (
-            _wrapper_raw()
+            _c_pre_wrapper_raw()
             if relative_path == evidence._EVIDENCE_RELATIVE_PATH  # noqa: SLF001
             else f"frozen source {index}\n".encode("ascii")
         )
@@ -303,17 +307,19 @@ def test_authorization_anchor_mismatch_precedes_evidence_replay(
 
 
 def test_normalizer_changes_only_allowlisted_literal_values() -> None:
-    raw = _wrapper_raw()
-    changed = _replace_literals(raw)
-    assert evidence.normalize_own_source_v180r12r3(raw) == raw
-    assert evidence.normalize_own_source_v180r12r3(changed) == raw
-    changed_logic = raw.replace(
+    boundary = _c_pre_wrapper_raw()
+    current = _wrapper_raw()
+    changed = _replace_literals(boundary)
+    assert evidence.normalize_own_source_v180r12r3(current) == boundary
+    assert evidence.normalize_own_source_v180r12r3(boundary) == boundary
+    assert evidence.normalize_own_source_v180r12r3(changed) == boundary
+    changed_logic = boundary.replace(
         b"External, non-bootstrapping evidence",
         b"External non-bootstrapping evidence",
         1,
     )
-    assert changed_logic != raw
-    assert evidence.normalize_own_source_v180r12r3(changed_logic) != raw
+    assert changed_logic != boundary
+    assert evidence.normalize_own_source_v180r12r3(changed_logic) != boundary
 
 
 def test_normalizer_rejects_expression_duplicate_and_adjacent_literal() -> None:
@@ -344,7 +350,7 @@ def test_external_boundary_blob_replay_blocks_coordinated_source_resign() -> Non
     boundary: dict[str, bytes] = {}
     for index, path in enumerate(evidence.SOURCE_BOUNDARY_REQUIRED_PATHS):
         boundary[path] = (
-            _wrapper_raw()
+            _c_pre_wrapper_raw()
             if path == evidence._EVIDENCE_RELATIVE_PATH  # noqa: SLF001
             else f"source {index}\n".encode("ascii")
         )
