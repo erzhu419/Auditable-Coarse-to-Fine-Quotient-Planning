@@ -826,6 +826,361 @@ def _contextual_documents(
     return plan, attempt, header, chain
 
 
+@dataclass
+class HeldNetworkStartBoundaryV42r1:
+    """Hold the exact journal snapshot through marker publication and exec."""
+
+    _snapshot: _Snapshot
+    _start: dict[str, Any]
+    _marker_raw: bytes
+    _closed: bool = False
+    marker_effect_may_have_started: bool = False
+    marker_published: bool = False
+
+    def __enter__(self) -> "HeldNetworkStartBoundaryV42r1":
+        if self._closed:
+            _fail("pre-formal held network boundary was already closed")
+        return self
+
+    def __exit__(
+        self,
+        _exception_type: object,
+        _exception: object,
+        _traceback: object,
+    ) -> None:
+        self.close()
+
+    def close(self) -> None:
+        if not self._closed:
+            self._closed = True
+            self._snapshot.close()
+
+    def verify_exact(self, *, durable: bool = False) -> None:
+        if self._closed:
+            _fail("pre-formal held network boundary is closed")
+        if durable:
+            _durable_verify(self._snapshot)
+        else:
+            _verify_snapshot(self._snapshot)
+
+    def publish_once(self) -> dict[str, Any]:
+        if self._closed:
+            _fail("pre-formal held network boundary is closed")
+        if self.marker_effect_may_have_started or self.marker_published:
+            _fail("pre-formal held network marker replay was attempted")
+        self.verify_exact()
+        self.marker_effect_may_have_started = True
+        marker_pin = _write_once_at(
+            self._snapshot.current_slot.directory.descriptor,
+            transport.PREFORMAL_NETWORK_START_NAME,
+            self._marker_raw,
+            label=transport.PREFORMAL_NETWORK_START_NAME,
+        )
+        self._snapshot.current_slot.files[
+            transport.PREFORMAL_NETWORK_START_NAME
+        ] = marker_pin
+        self.marker_published = True
+        self.verify_exact(durable=True)
+        return loads_canonical_json(canonical_json_bytes(self._start))
+
+
+@dataclass(frozen=True)
+class PreformalJournalInspectionV42r1:
+    state: str
+    pre_network_prefix_length: int
+    receipt: dict[str, Any] | None
+    outcome: dict[str, Any] | None
+
+
+def _pin_bounded_unknown_file_at(
+    directory_fd: int,
+    name: str,
+    *,
+    maximum_byte_count: int,
+    label: str,
+) -> tuple[_FilePin, bytes]:
+    descriptor = -1
+    try:
+        descriptor = os.open(
+            _basename(name, label=label),
+            os.O_RDONLY
+            | os.O_NONBLOCK
+            | os.O_NOCTTY
+            | os.O_NOFOLLOW
+            | os.O_CLOEXEC,
+            dir_fd=directory_fd,
+        )
+        before = os.fstat(descriptor)
+        if not 0 < before.st_size <= maximum_byte_count:
+            _fail(f"{label} persisted size exceeds its recovery cap")
+        _file_fact(before, byte_count=before.st_size, label=label)
+        named_before = _named_stat(directory_fd, name, label=label)
+        if (named_before.st_dev, named_before.st_ino) != (
+            before.st_dev,
+            before.st_ino,
+        ):
+            _fail(f"{label} opened and named identities differ")
+        chunks: list[bytes] = []
+        remaining = before.st_size
+        while remaining:
+            chunk = os.read(descriptor, min(remaining, 1024 * 1024))
+            if not chunk:
+                _fail(f"{label} persisted bytes ended early")
+            chunks.append(chunk)
+            remaining -= len(chunk)
+        if os.read(descriptor, 1) != b"":
+            _fail(f"{label} persisted bytes exceed stat size")
+        raw = b"".join(chunks)
+        after = os.fstat(descriptor)
+        named_after = _named_stat(directory_fd, name, label=label)
+        if (
+            _file_state(after) != _file_state(before)
+            or (named_after.st_dev, named_after.st_ino)
+            != (after.st_dev, after.st_ino)
+        ):
+            _fail(f"{label} changed during bounded recovery read")
+        return (
+            _FilePin(
+                directory_fd=directory_fd,
+                name=name,
+                descriptor=descriptor,
+                expected_raw=raw,
+                state=_file_state(after),
+                label=label,
+            ),
+            raw,
+        )
+    except BaseException:
+        if descriptor >= 0:
+            os.close(descriptor)
+        raise
+
+
+def inspect_preformal_upload_journal_v42r1(
+    *,
+    plan: dict[str, Any],
+    attempt: dict[str, Any],
+    control_raw_by_name: dict[str, bytes],
+    loader_source_raw: bytes,
+    receiver_source_raw: bytes,
+    predecessor_chain: list[dict[str, dict[str, Any]]] | None = None,
+) -> PreformalJournalInspectionV42r1:
+    plan, attempt, header, chain = _contextual_documents(
+        plan=plan,
+        attempt=attempt,
+        control_raw_by_name=control_raw_by_name,
+        loader_source_raw=loader_source_raw,
+        receiver_source_raw=receiver_source_raw,
+        predecessor_chain=predecessor_chain,
+    )
+    base = _base_publications(plan=plan, attempt=attempt, header=header)
+    marker = (
+        transport.PREFORMAL_NETWORK_START_NAME,
+        canonical_json_bytes(
+            transport.build_preformal_network_start_v42r1(
+                plan=plan,
+                attempt=attempt,
+                control_raw_by_name=control_raw_by_name,
+                loader_source_raw=loader_source_raw,
+                receiver_source_raw=receiver_source_raw,
+                predecessor_chain=chain,
+            )
+        ),
+    )
+    snapshot = _open_snapshot(
+        plan=plan,
+        predecessor_chain=chain,
+        create_current_if_absent=False,
+    )
+    try:
+        observed = set(os.listdir(snapshot.current_slot.directory.descriptor))
+        base_names = [name for name, _raw in base]
+        prefix_length = next(
+            (
+                length
+                for length in range(len(base_names) + 1)
+                if observed == set(base_names[:length])
+            ),
+            None,
+        )
+        receipt_present = transport.PREFORMAL_RECEIPT_NAME in observed
+        outcome_present = transport.PREFORMAL_OUTCOME_NAME in observed
+        marker_present = transport.PREFORMAL_NETWORK_START_NAME in observed
+        allowed_full = {
+            frozenset(base_names),
+            frozenset([*base_names, marker[0]]),
+            frozenset([*base_names, transport.PREFORMAL_OUTCOME_NAME]),
+            frozenset(
+                [*base_names, marker[0], transport.PREFORMAL_OUTCOME_NAME]
+            ),
+            frozenset(
+                [*base_names, marker[0], transport.PREFORMAL_RECEIPT_NAME]
+            ),
+            frozenset(
+                [
+                    *base_names,
+                    marker[0],
+                    transport.PREFORMAL_RECEIPT_NAME,
+                    transport.PREFORMAL_OUTCOME_NAME,
+                ]
+            ),
+        }
+        if prefix_length is None and frozenset(observed) not in allowed_full:
+            _fail("pre-formal journal recovery inventory is not exact")
+        known_publications = base[: prefix_length if prefix_length is not None else len(base)]
+        for name, raw in known_publications:
+            snapshot.current_slot.files[name] = _pin_file_at(
+                snapshot.current_slot.directory.descriptor,
+                name,
+                raw,
+                label=f"pre-formal recovery {name}",
+            )
+        if marker_present:
+            snapshot.current_slot.files[marker[0]] = _pin_file_at(
+                snapshot.current_slot.directory.descriptor,
+                marker[0],
+                marker[1],
+                label="pre-formal recovery network marker",
+            )
+        receipt: dict[str, Any] | None = None
+        if receipt_present:
+            receipt_pin, receipt_raw = _pin_bounded_unknown_file_at(
+                snapshot.current_slot.directory.descriptor,
+                transport.PREFORMAL_RECEIPT_NAME,
+                maximum_byte_count=transport.MAXIMUM_RECEIPT_STDOUT_BYTES,
+                label="pre-formal recovery receipt",
+            )
+            snapshot.current_slot.files[transport.PREFORMAL_RECEIPT_NAME] = receipt_pin
+            parsed_receipt = loads_canonical_json(receipt_raw)
+            if type(parsed_receipt) is not dict:
+                _fail("pre-formal recovery receipt changed type")
+            receipt = transport.verify_preformal_upload_receipt_against_controls_v42r1(
+                parsed_receipt,
+                plan=plan,
+                attempt=attempt,
+                control_raw_by_name=control_raw_by_name,
+                loader_source_raw=loader_source_raw,
+                receiver_source_raw=receiver_source_raw,
+                predecessor_chain=chain,
+            )
+        outcome: dict[str, Any] | None = None
+        if outcome_present:
+            outcome_pin, outcome_raw = _pin_bounded_unknown_file_at(
+                snapshot.current_slot.directory.descriptor,
+                transport.PREFORMAL_OUTCOME_NAME,
+                maximum_byte_count=transport.MAXIMUM_RECEIPT_STDOUT_BYTES,
+                label="pre-formal recovery outcome",
+            )
+            snapshot.current_slot.files[transport.PREFORMAL_OUTCOME_NAME] = outcome_pin
+            parsed_outcome = loads_canonical_json(outcome_raw)
+            if type(parsed_outcome) is not dict:
+                _fail("pre-formal recovery outcome changed type")
+            outcome = transport.verify_preformal_upload_outcome_v42r1(
+                parsed_outcome,
+                plan=plan,
+                attempt=attempt,
+                receipt=receipt,
+            )
+            outcome_class = outcome["outcome_class"]
+            if outcome_class == transport.PREFORMAL_OUTCOME_ABANDONED_FAILURE:
+                expected_marker_and_receipt = (False, False)
+            elif outcome_class == transport.PREFORMAL_OUTCOME_ABANDONED_AMBIGUOUS:
+                expected_marker_and_receipt = (True, False)
+            elif outcome_class == transport.PREFORMAL_OUTCOME_COMPLETE:
+                expected_marker_and_receipt = (True, True)
+            else:
+                _fail("pre-formal recovery outcome class is unreachable")
+            if (marker_present, receipt_present) != expected_marker_and_receipt:
+                _fail(
+                    "pre-formal recovery outcome disagrees with marker/receipt inventory"
+                )
+        elif receipt_present and not marker_present:
+            _fail("pre-formal recovery receipt exists without its network marker")
+        _durable_verify(snapshot)
+        if prefix_length is not None:
+            state = (
+                "PRE_NETWORK_BASE"
+                if prefix_length == len(base_names)
+                else "PRE_NETWORK_PREFIX"
+            )
+        elif outcome is not None:
+            state = "TERMINAL"
+        elif receipt is not None:
+            state = "COMPLETE_RECEIPT_PENDING_OUTCOME"
+        elif marker_present:
+            state = "POSTNETWORK_UNRESOLVED"
+        else:
+            _fail("pre-formal journal recovery state is unreachable")
+        return PreformalJournalInspectionV42r1(
+            state=state,
+            pre_network_prefix_length=(
+                len(base_names) if prefix_length is None else prefix_length
+            ),
+            receipt=(
+                None
+                if receipt is None
+                else loads_canonical_json(canonical_json_bytes(receipt))
+            ),
+            outcome=(
+                None
+                if outcome is None
+                else loads_canonical_json(canonical_json_bytes(outcome))
+            ),
+        )
+    finally:
+        snapshot.close()
+
+
+def hold_network_start_boundary_v42r1(
+    *,
+    plan: dict[str, Any],
+    attempt: dict[str, Any],
+    control_raw_by_name: dict[str, bytes],
+    loader_source_raw: bytes,
+    receiver_source_raw: bytes,
+    predecessor_chain: list[dict[str, dict[str, Any]]] | None = None,
+) -> HeldNetworkStartBoundaryV42r1:
+    plan, attempt, header, chain = _contextual_documents(
+        plan=plan,
+        attempt=attempt,
+        control_raw_by_name=control_raw_by_name,
+        loader_source_raw=loader_source_raw,
+        receiver_source_raw=receiver_source_raw,
+        predecessor_chain=predecessor_chain,
+    )
+    start = transport.build_preformal_network_start_v42r1(
+        plan=plan,
+        attempt=attempt,
+        control_raw_by_name=control_raw_by_name,
+        loader_source_raw=loader_source_raw,
+        receiver_source_raw=receiver_source_raw,
+        predecessor_chain=chain,
+    )
+    base = _base_publications(plan=plan, attempt=attempt, header=header)
+    snapshot = _open_snapshot(
+        plan=plan,
+        predecessor_chain=chain,
+        create_current_if_absent=False,
+    )
+    try:
+        prefix_length = _pin_slot_prefix(
+            snapshot.current_slot,
+            base,
+            label="pre-formal current ordinal slot",
+        )
+        if prefix_length != len(base):
+            _fail("pre-formal held network boundary is not at the exact base")
+        _durable_verify(snapshot)
+        return HeldNetworkStartBoundaryV42r1(
+            _snapshot=snapshot,
+            _start=start,
+            _marker_raw=canonical_json_bytes(start),
+        )
+    except BaseException:
+        snapshot.close()
+        raise
+
+
 def publish_pre_network_journal_v42r1(
     *,
     plan: dict[str, Any],
@@ -879,50 +1234,15 @@ def publish_network_start_v42r1(
     receiver_source_raw: bytes,
     predecessor_chain: list[dict[str, dict[str, Any]]] | None = None,
 ) -> dict[str, Any]:
-    plan, attempt, header, chain = _contextual_documents(
+    with hold_network_start_boundary_v42r1(
         plan=plan,
         attempt=attempt,
         control_raw_by_name=control_raw_by_name,
         loader_source_raw=loader_source_raw,
         receiver_source_raw=receiver_source_raw,
         predecessor_chain=predecessor_chain,
-    )
-    start = transport._network_start_from_verified_documents(  # noqa: SLF001
-        plan=plan, attempt=attempt
-    )
-    base = _base_publications(plan=plan, attempt=attempt, header=header)
-    publications = [
-        *base,
-        (
-            transport.PREFORMAL_NETWORK_START_NAME,
-            canonical_json_bytes(start),
-        ),
-    ]
-    snapshot = _open_snapshot(
-        plan=plan,
-        predecessor_chain=chain,
-        create_current_if_absent=False,
-    )
-    try:
-        prefix_length = _pin_slot_prefix(
-            snapshot.current_slot,
-            publications,
-            label="pre-formal current ordinal slot",
-        )
-        if prefix_length != len(base):
-            _fail("pre-formal network-start boundary changed or was replayed")
-        _durable_verify(snapshot)
-        name, raw = publications[-1]
-        snapshot.current_slot.files[name] = _write_once_at(
-            snapshot.current_slot.directory.descriptor,
-            name,
-            raw,
-            label=name,
-        )
-        _durable_verify(snapshot)
-        return start
-    finally:
-        snapshot.close()
+    ) as boundary:
+        return boundary.publish_once()
 
 
 def publish_outcome_v42r1(
@@ -1011,7 +1331,11 @@ def publish_outcome_v42r1(
 
 
 __all__ = [
+    "HeldNetworkStartBoundaryV42r1",
+    "PreformalJournalInspectionV42r1",
     "V42PreformalJournalError",
+    "hold_network_start_boundary_v42r1",
+    "inspect_preformal_upload_journal_v42r1",
     "publish_network_start_v42r1",
     "publish_outcome_v42r1",
     "publish_pre_network_journal_v42r1",
