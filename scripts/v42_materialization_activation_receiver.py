@@ -603,6 +603,18 @@ def _verify_activation_envelope(
         domain=_DOMAIN + "remote-materialization-activation-attempt",
         label="remote activation attempt",
     )
+    expected_ingress_argv = _materialize_remote_python_template(
+        plan=plan,
+        template=plan.get("authorized_remote_ingress_python_argv_template"),
+        expected_mode="--activation-ingress",
+        plan_sentinel="{acfqp_v42_materialization_activation_plan_id}",
+        plan_id=expected_plan_id,
+        second_slot=(
+            "{acfqp_v42_local_materialization_activation_attempt_id}",
+            expected_local_attempt_id,
+        ),
+        label="activation ingress remote Python argv",
+    )
     if (
         plan["materialization_activation_plan_id"] != expected_plan_id
         or local["local_materialization_activation_attempt_id"]
@@ -619,6 +631,7 @@ def _verify_activation_envelope(
         or remote.get("materialization_activation_network_start") != network
         or remote.get("observed_remote_ingress_python_argv")
         != observed_remote_ingress_python_argv
+        or observed_remote_ingress_python_argv != expected_ingress_argv
     ):
         _fail("activation ingress document DAG changed")
     receiver = plan.get("activation_receiver_artifact")
@@ -875,17 +888,12 @@ def activate_selected_receipt_v42r1(
     environment = systemd_contract.get("client_environment")
     if type(argv) is not list or type(environment) is not dict:
         _fail("activation systemd invocation changed type")
-    argv = [
-        str(item)
-        .replace(
-            "{acfqp_v42_materialization_activation_plan_id}", expected_plan_id
-        )
-        .replace(
-            "{acfqp_v42_remote_materialization_activation_attempt_id}",
-            str(remote["remote_materialization_activation_attempt_id"]),
-        )
-        for item in argv
-    ]
+    argv = _materialize_systemd_template(
+        argv,
+        plan=plan,
+        plan_id=expected_plan_id,
+        remote_attempt_id=str(remote["remote_materialization_activation_attempt_id"]),
+    )
     if {"--wait", "--pipe", "--pty", "--scope", "--collect"}.intersection(argv):
         _fail("activation systemd invocation admitted a forbidden option")
     cut("BEFORE_SYSTEMD_RUN")
@@ -947,34 +955,196 @@ def _path_state_at(parent_fd: int, name: str) -> tuple[str, list[str]]:
 def _materialize_systemd_template(
     template: object,
     *,
+    plan: dict[str, object],
     plan_id: str,
     remote_attempt_id: str | None = None,
     invocation_id: str | None = None,
     control_group: str | None = None,
 ) -> list[str]:
-    if type(template) is not list or any(type(item) is not str for item in template):
-        _fail("systemd argv template changed")
-    result: list[str] = []
-    for item in template:
-        value = item.replace(
-            "{acfqp_v42_materialization_activation_plan_id}", plan_id
-        )
-        if remote_attempt_id is not None:
-            value = value.replace(
+    contract = plan.get("systemd_service_contract")
+    if (
+        _HEX64.fullmatch(plan_id) is None
+        or plan.get("materialization_activation_plan_id") != plan_id
+        or type(contract) is not dict
+    ):
+        _fail("systemd argv plan identity changed")
+    if remote_attempt_id is None and invocation_id is None and control_group is None:
+        expected_length = 23
+        opaque_source_index = None
+        replacements = {
+            22: (
+                "acfqp-v42-o2-activation-"
+                "{acfqp_v42_materialization_activation_plan_id}.service",
+                "acfqp-v42-o2-activation-" + plan_id + ".service",
+            )
+        }
+    elif remote_attempt_id is not None and invocation_id is None and control_group is None:
+        if _HEX64.fullmatch(remote_attempt_id) is None:
+            _fail("systemd argv remote attempt identity changed")
+        expected_length = 28
+        opaque_source_index = 20
+        replacements = {
+            4: (
+                "--unit=acfqp-v42-o2-activation-"
+                "{acfqp_v42_materialization_activation_plan_id}.service",
+                "--unit=acfqp-v42-o2-activation-" + plan_id + ".service",
+            ),
+            27: (
                 "{acfqp_v42_remote_materialization_activation_attempt_id}",
                 remote_attempt_id,
+            ),
+        }
+    elif (
+        remote_attempt_id is not None
+        and invocation_id is not None
+        and control_group is not None
+    ):
+        if (
+            _HEX64.fullmatch(remote_attempt_id) is None
+            or re.fullmatch(r"[0-9a-f]{32}", invocation_id) is None
+            or not control_group.startswith("/")
+            or ".." in control_group.split("/")
+        ):
+            _fail("systemd service worker identity changed")
+        expected_length = 15
+        opaque_source_index = 5
+        replacements = {
+            12: (
+                "{acfqp_v42_remote_materialization_activation_attempt_id}",
+                remote_attempt_id,
+            ),
+            13: ("{acfqp_v42_systemd_invocation_id}", invocation_id),
+            14: ("{acfqp_v42_systemd_control_group}", control_group),
+        }
+    else:
+        _fail("systemd argv materialization mode changed")
+    if (
+        type(template) is not list
+        or len(template) != expected_length
+        or any(type(item) is not str for item in template)
+        or (
+            opaque_source_index is not None
+            and (
+                template[opaque_source_index - 1] != "-c"
+                or opaque_source_index in replacements
             )
-        if invocation_id is not None:
-            value = value.replace(
-                "{acfqp_v42_systemd_invocation_id}", invocation_id
+        )
+    ):
+        _fail("systemd argv template shape changed")
+    if expected_length == 23:
+        expected_prefix = [
+            "/usr/bin/systemctl",
+            "--user",
+            "--no-pager",
+            "show",
+            "--property=Id",
+            "--property=LoadState",
+            "--property=ActiveState",
+            "--property=SubState",
+            "--property=FragmentPath",
+            "--property=MainPID",
+            "--property=InvocationID",
+            "--property=ControlGroup",
+            "--property=Type",
+            "--property=StandardInput",
+            "--property=StandardOutput",
+            "--property=StandardError",
+            "--property=Restart",
+            "--property=UMask",
+            "--property=KillMode",
+            "--property=RuntimeMaxUSec",
+            "--property=WorkingDirectory",
+            "--property=Slice",
+        ]
+        if (
+            template != contract.get("authorized_systemctl_show_argv_template")
+            or template[:22] != expected_prefix
+        ):
+            _fail("systemctl fixed read-only skeleton changed")
+    else:
+        loader = plan.get("activation_loader_artifact")
+        service = plan.get("activation_service_artifact")
+        if expected_length == 28:
+            service_template = contract.get(
+                "authorized_service_bootstrap_argv_template"
             )
-        if control_group is not None:
-            value = value.replace(
-                "{acfqp_v42_systemd_control_group}", control_group
-            )
-        result.append(value)
-    if any("{acfqp_v42_" in item for item in result):
+            service_mode = "--activation-service-bootstrap"
+            expected_service_length = 13
+            expected_prefix = [
+                "/usr/bin/systemd-run",
+                "--user",
+                "--quiet",
+                "--no-ask-password",
+                "--unit=acfqp-v42-o2-activation-"
+                "{acfqp_v42_materialization_activation_plan_id}.service",
+                "--slice=app.slice",
+                "--service-type=exec",
+                "--property=Restart=no",
+                "--property=UMask=0077",
+                "--property=StandardInput=null",
+                "--property=StandardOutput=null",
+                "--property=StandardError=null",
+                "--property=KillMode=control-group",
+                "--property=RuntimeMaxSec=604800",
+                "--working-directory=" + str(Path(str(plan["fixed_remote_root"])).parent),
+            ]
+            if (
+                template != contract.get("authorized_systemd_run_argv_template")
+                or template[:15] != expected_prefix
+                or template[15:] != service_template
+            ):
+                _fail("systemd run fixed skeleton or bootstrap join changed")
+        else:
+            service_template = contract.get("authorized_service_worker_argv_template")
+            service_mode = "--activation-service-clean"
+            expected_service_length = 15
+            if template != service_template:
+                _fail("systemd service worker template join changed")
+        if (
+            type(service_template) is not list
+            or len(service_template) != expected_service_length
+            or service_template[:5]
+            != ["/usr/bin/python3", "-I", "-S", "-B", "-c"]
+            or service_template[6] != service_mode
+            or type(loader) is not dict
+            or type(service) is not dict
+            or service_template[7] != loader.get("sha256")
+            or service_template[8] != str(loader.get("byte_count"))
+            or service_template[9] != contract.get("activation_service_source_path")
+            or service_template[10] != service.get("sha256")
+            or service_template[11] != str(service.get("byte_count"))
+            or contract.get("activation_loader_sha256") != loader.get("sha256")
+            or contract.get("activation_service_sha256") != service.get("sha256")
+            or contract.get("activation_service_byte_count")
+            != service.get("byte_count")
+        ):
+            _fail("systemd service fixed artifact slots changed")
+        try:
+            source_raw = service_template[5].encode("utf-8", errors="strict")
+        except (AttributeError, UnicodeError) as error:
+            raise _ActivationReceiverFailure(
+                "systemd service opaque source encoding changed"
+            ) from error
+        if (
+            len(source_raw) != loader.get("byte_count")
+            or hashlib.sha256(source_raw).hexdigest() != loader.get("sha256")
+        ):
+            _fail("systemd service opaque source artifact changed")
+    result = list(template)
+    for index, (sentinel, replacement) in replacements.items():
+        if template[index] != sentinel:
+            _fail("systemd argv replacement slot changed")
+        result[index] = replacement
+    for index, item in enumerate(template):
+        if index != opaque_source_index and index not in replacements and "{acfqp_v42_" in item:
+            _fail("systemd argv contains an undesignated sentinel")
+    if any(
+        index != opaque_source_index and "{acfqp_v42_" in item
+        for index, item in enumerate(result)
+    ):
         _fail("systemd argv replacement was incomplete")
+    if opaque_source_index is not None and result[opaque_source_index] != template[opaque_source_index]:
+        _fail("systemd argv opaque source changed")
     return result
 
 
@@ -1229,6 +1399,7 @@ def _observe_unit_read_only(plan: dict[str, object]) -> tuple[str, bool]:
     try:
         argv = _materialize_systemd_template(
             contract.get("authorized_systemctl_show_argv_template"),
+            plan=plan,
             plan_id=plan_id,
         )
         returncode, stdout, stderr = _run_pinned_read_only_tool(
@@ -1264,6 +1435,7 @@ def _observe_unit_read_only(plan: dict[str, object]) -> tuple[str, bool]:
     if remote_attempt_id is not None:
         expected_clean = _materialize_systemd_template(
             contract.get("authorized_service_worker_argv_template"),
+            plan=plan,
             plan_id=plan_id,
             remote_attempt_id=remote_attempt_id,
             invocation_id=properties["InvocationID"],
@@ -1475,6 +1647,63 @@ def _observe_python_projection(resource_plan: dict[str, object]) -> dict[str, ob
     return expected
 
 
+def _materialize_remote_python_template(
+    *,
+    plan: dict[str, object],
+    template: object,
+    expected_mode: str,
+    plan_sentinel: str,
+    plan_id: str,
+    second_slot: tuple[str, str],
+    label: str,
+) -> list[str]:
+    loader = plan.get("activation_loader_artifact")
+    receiver = plan.get("activation_receiver_artifact")
+    if (
+        _HEX64.fullmatch(plan_id) is None
+        or type(second_slot) is not tuple
+        or len(second_slot) != 2
+        or any(type(item) is not str for item in second_slot)
+        or _HEX64.fullmatch(second_slot[1]) is None
+        or type(template) is not list
+        or len(template) != 13
+        or any(type(item) is not str for item in template)
+        or template[:5] != ["/usr/bin/python3", "-I", "-S", "-B", "-c"]
+        or template[6] != expected_mode
+        or type(loader) is not dict
+        or type(receiver) is not dict
+        or template[7] != loader.get("sha256")
+        or template[8] != str(loader.get("byte_count"))
+        or template[9] != receiver.get("sha256")
+        or template[10] != str(receiver.get("byte_count"))
+        or template[11] != plan_sentinel
+        or template[12] != second_slot[0]
+    ):
+        _fail(label + " fixed slots changed")
+    try:
+        source_raw = template[5].encode("utf-8", errors="strict")
+    except (AttributeError, UnicodeError) as error:
+        raise _ActivationReceiverFailure(
+            label + " opaque source encoding changed"
+        ) from error
+    if (
+        len(source_raw) != loader.get("byte_count")
+        or hashlib.sha256(source_raw).hexdigest() != loader.get("sha256")
+    ):
+        _fail(label + " opaque source artifact changed")
+    result = list(template)
+    result[11] = plan_id
+    result[12] = second_slot[1]
+    for index, item in enumerate(template):
+        if index not in {5, 11, 12} and "{acfqp_v42_" in item:
+            _fail(label + " contains an undesignated sentinel")
+    if any(index != 5 and "{acfqp_v42_" in item for index, item in enumerate(result)):
+        _fail(label + " replacement was incomplete")
+    if result[5] != template[5]:
+        _fail(label + " opaque source changed")
+    return result
+
+
 def _verify_resource_probe_envelope(
     envelope: dict[str, object],
     *,
@@ -1516,15 +1745,15 @@ def _verify_resource_probe_envelope(
         observed_sha256={"activation_receiver_artifact": verified_receiver_sha256},
         durable=False,
     )
-    template = plan.get("authorized_resource_probe_remote_python_argv_template")
-    if type(template) is not list:
-        _fail("resource probe remote argv template changed")
-    expected_argv = [
-        str(item).replace(
-            "{acfqp_v42_preactivation_resource_probe_plan_id}", expected_plan_id
-        )
-        for item in template
-    ]
+    expected_argv = _materialize_remote_python_template(
+        plan=plan,
+        template=plan.get("authorized_resource_probe_remote_python_argv_template"),
+        expected_mode="--activation-resource-probe",
+        plan_sentinel="{acfqp_v42_preactivation_resource_probe_plan_id}",
+        plan_id=expected_plan_id,
+        second_slot=(expected_receipt_id, expected_receipt_id),
+        label="resource probe remote Python argv",
+    )
     if observed_remote_ingress_python_argv != expected_argv:
         _fail("resource probe remote Python argv changed")
     return plan, dict(receipt)
@@ -1608,18 +1837,20 @@ def _verify_classification_envelope(
         label="activation network start",
     )
     receiver = plan.get("activation_receiver_artifact")
-    template = plan.get("authorized_read_only_classifier_remote_python_argv_template")
-    if type(template) is not list:
-        _fail("activation classifier argv template changed")
-    expected_argv = [
-        str(item)
-        .replace("{acfqp_v42_materialization_activation_plan_id}", expected_plan_id)
-        .replace(
+    expected_argv = _materialize_remote_python_template(
+        plan=plan,
+        template=plan.get(
+            "authorized_read_only_classifier_remote_python_argv_template"
+        ),
+        expected_mode="--activation-classify",
+        plan_sentinel="{acfqp_v42_materialization_activation_plan_id}",
+        plan_id=expected_plan_id,
+        second_slot=(
             "{acfqp_v42_local_materialization_activation_attempt_id}",
             expected_local_attempt_id,
-        )
-        for item in template
-    ]
+        ),
+        label="activation classifier remote Python argv",
+    )
     if (
         plan["materialization_activation_plan_id"] != expected_plan_id
         or local["local_materialization_activation_attempt_id"]

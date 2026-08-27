@@ -5,6 +5,7 @@ import hashlib
 import os
 from pathlib import Path
 import re
+import shlex
 import stat
 import subprocess
 import sys
@@ -568,6 +569,62 @@ def _chain() -> dict[str, Any]:
         "ready": ready,
         "terminal": terminal,
     }
+
+
+def _canonical_remote_command(argv: list[str]) -> str:
+    return "builtin exec -c " + " ".join(shlex.quote(item) for item in argv)
+
+
+def _plans_with_real_activation_loader() -> tuple[dict[str, Any], dict[str, Any], str]:
+    """Splice the committed loader into fixture templates without executing it."""
+
+    chain = _chain()
+    plan = copy.deepcopy(chain["activation_plan"])
+    resource_plan = copy.deepcopy(chain["resource_plan"])
+    loader_raw = Path(activation_loader.__file__).read_bytes()
+    loader_source = loader_raw.decode("utf-8", errors="strict")
+    loader_sha = hashlib.sha256(loader_raw).hexdigest()
+    loader_oid = hashlib.sha1(  # noqa: S324 - Git object identity
+        f"blob {len(loader_raw)}\0".encode("ascii") + loader_raw
+    ).hexdigest()
+    for document in (plan, resource_plan):
+        artifact = document["activation_loader_artifact"]
+        artifact["byte_count"] = len(loader_raw)
+        artifact["sha256"] = loader_sha
+        artifact["git_blob_oid"] = loader_oid
+    resource_python = resource_plan[
+        "authorized_resource_probe_remote_python_argv_template"
+    ]
+    resource_python[5] = loader_source
+    resource_python[7] = loader_sha
+    resource_python[8] = str(len(loader_raw))
+    resource_plan["authorized_resource_probe_ssh_argv_template"][-1] = (
+        _canonical_remote_command(resource_python)
+    )
+    ingress_python = plan["authorized_remote_ingress_python_argv_template"]
+    classifier_python = plan[
+        "authorized_read_only_classifier_remote_python_argv_template"
+    ]
+    for python_template in (ingress_python, classifier_python):
+        python_template[5] = loader_source
+        python_template[7] = loader_sha
+        python_template[8] = str(len(loader_raw))
+    plan["authorized_ssh_argv_template"][-1] = _canonical_remote_command(
+        ingress_python
+    )
+    plan["authorized_read_only_classifier_ssh_argv_template"][-1] = (
+        _canonical_remote_command(classifier_python)
+    )
+    contract = plan["systemd_service_contract"]
+    contract["activation_loader_sha256"] = loader_sha
+    bootstrap = contract["authorized_service_bootstrap_argv_template"]
+    worker = contract["authorized_service_worker_argv_template"]
+    for service_template in (bootstrap, worker):
+        service_template[5] = loader_source
+        service_template[7] = loader_sha
+        service_template[8] = str(len(loader_raw))
+    contract["authorized_systemd_run_argv_template"][15:] = list(bootstrap)
+    return plan, resource_plan, loader_source
 
 
 def _bootstrap_success_documents(
@@ -1331,6 +1388,229 @@ def test_systemd_contract_forbids_lifecycle_coupling_and_binds_read_only_query()
     )[6] == "--activation-classify"
 
 
+def test_real_loader_source_is_opaque_in_every_activation_materializer() -> None:
+    plan, resource_plan, loader_source = _plans_with_real_activation_loader()
+    assert '"{acfqp_v42_"' in loader_source
+    plan_id = plan["materialization_activation_plan_id"]
+    local_id = "1" * 64
+    remote_id = "2" * 64
+    invocation_id = "3" * 32
+    control_group = "/user.slice/test.service"
+
+    resource_python = activation.materialize_authorized_resource_probe_argv_v42r1(
+        resource_plan=resource_plan, remote_python=True
+    )
+    assert len(resource_python) == 13
+    assert resource_python[4:6] == ["-c", loader_source]
+    assert activation.materialize_authorized_resource_probe_argv_v42r1(
+        resource_plan=resource_plan
+    )[-1] == _canonical_remote_command(resource_python)
+    assert activation_receiver._materialize_remote_python_template(  # noqa: SLF001
+        plan=resource_plan,
+        template=resource_plan[
+            "authorized_resource_probe_remote_python_argv_template"
+        ],
+        expected_mode="--activation-resource-probe",
+        plan_sentinel=activation.RESOURCE_PROBE_PLAN_ID_SENTINEL,
+        plan_id=resource_plan["preactivation_resource_probe_plan_id"],
+        second_slot=(
+            resource_plan["preformal_upload_receipt_id"],
+            resource_plan["preformal_upload_receipt_id"],
+        ),
+        label="resource probe test",
+    )[5] == loader_source
+
+    ingress_python = activation.materialize_authorized_remote_ingress_argv_v42r1(
+        activation_plan=plan, local_activation_attempt_id=local_id
+    )
+    classifier_python = activation.materialize_authorized_classifier_argv_v42r1(
+        activation_plan=plan,
+        local_activation_attempt_id=local_id,
+        remote_python=True,
+    )
+    assert len(ingress_python) == len(classifier_python) == 13
+    assert ingress_python[4:6] == classifier_python[4:6] == ["-c", loader_source]
+    assert activation.materialize_authorized_ssh_argv_v42r1(
+        activation_plan=plan, local_activation_attempt_id=local_id
+    )[-1] == _canonical_remote_command(ingress_python)
+    assert activation_receiver._materialize_remote_python_template(  # noqa: SLF001
+        plan=plan,
+        template=plan["authorized_remote_ingress_python_argv_template"],
+        expected_mode="--activation-ingress",
+        plan_sentinel=activation.ACTIVATION_PLAN_ID_SENTINEL,
+        plan_id=plan_id,
+        second_slot=(activation.LOCAL_ACTIVATION_ATTEMPT_ID_SENTINEL, local_id),
+        label="activation ingress test",
+    ) == ingress_python
+    assert activation.materialize_authorized_classifier_argv_v42r1(
+        activation_plan=plan, local_activation_attempt_id=local_id
+    )[-1] == _canonical_remote_command(classifier_python)
+    assert activation_receiver._materialize_remote_python_template(  # noqa: SLF001
+        plan=plan,
+        template=plan[
+            "authorized_read_only_classifier_remote_python_argv_template"
+        ],
+        expected_mode="--activation-classify",
+        plan_sentinel=activation.ACTIVATION_PLAN_ID_SENTINEL,
+        plan_id=plan_id,
+        second_slot=(activation.LOCAL_ACTIVATION_ATTEMPT_ID_SENTINEL, local_id),
+        label="classifier test",
+    )[5] == loader_source
+
+    systemd_run = activation.materialize_authorized_systemd_argv_v42r1(
+        activation_plan=plan, remote_activation_attempt_id=remote_id
+    )
+    bootstrap = activation.materialize_authorized_service_bootstrap_argv_v42r1(
+        activation_plan=plan, remote_activation_attempt_id=remote_id
+    )
+    worker = activation.materialize_authorized_service_argv_v42r1(
+        activation_plan=plan,
+        remote_activation_attempt_id=remote_id,
+        systemd_invocation_id=invocation_id,
+        systemd_control_group=control_group,
+    )
+    assert len(systemd_run) == 28 and systemd_run[19:21] == ["-c", loader_source]
+    assert len(bootstrap) == 13 and bootstrap[4:6] == ["-c", loader_source]
+    assert len(worker) == 15 and worker[4:6] == ["-c", loader_source]
+    assert systemd_run[15:] == bootstrap
+    assert len(activation.materialize_authorized_systemctl_argv_v42r1(
+        activation_plan=plan
+    )) == 23
+
+    receiver_run = activation_receiver._materialize_systemd_template(  # noqa: SLF001
+        plan["systemd_service_contract"]["authorized_systemd_run_argv_template"],
+        plan=plan,
+        plan_id=plan_id,
+        remote_attempt_id=remote_id,
+    )
+    receiver_worker = activation_receiver._materialize_systemd_template(  # noqa: SLF001
+        plan["systemd_service_contract"]["authorized_service_worker_argv_template"],
+        plan=plan,
+        plan_id=plan_id,
+        remote_attempt_id=remote_id,
+        invocation_id=invocation_id,
+        control_group=control_group,
+    )
+    assert receiver_run[20] == receiver_worker[5] == loader_source
+    assert activation_loader._materialize_service_template(  # noqa: SLF001
+        plan["systemd_service_contract"]["authorized_service_bootstrap_argv_template"],
+        plan=plan,
+        remote_attempt_id=remote_id,
+    )[5] == loader_source
+    assert activation_loader._materialize_service_template(  # noqa: SLF001
+        plan["systemd_service_contract"]["authorized_service_worker_argv_template"],
+        plan=plan,
+        remote_attempt_id=remote_id,
+        invocation_id=invocation_id,
+        control_group=control_group,
+    )[5] == loader_source
+    assert activation_service._expected_bootstrap_argv(plan, remote_id)[5] == loader_source  # noqa: SLF001
+    assert activation_service._expected_service_argv(  # noqa: SLF001
+        plan, remote_id, invocation_id, control_group
+    )[5] == loader_source
+    assert len(activation_service._expected_systemctl_argv(plan)) == 23  # noqa: SLF001
+
+
+def test_exact_slot_materializers_reject_skeleton_slot_and_length_drift() -> None:
+    plan, resource_plan, _loader_source = _plans_with_real_activation_loader()
+    local_id = "1" * 64
+    remote_id = "2" * 64
+
+    for index, replacement in (
+        (5, "changed source"),
+        (6, "--wrong-mode"),
+        (7, "f" * 64),
+        (9, "e" * 64),
+    ):
+        changed = copy.deepcopy(plan)
+        changed["authorized_remote_ingress_python_argv_template"][index] = replacement
+        with pytest.raises(activation.V42MaterializationActivationError):
+            activation.materialize_authorized_remote_ingress_argv_v42r1(
+                activation_plan=changed, local_activation_attempt_id=local_id
+            )
+    for operation in ("append", "drop"):
+        changed = copy.deepcopy(plan)
+        template = changed["authorized_remote_ingress_python_argv_template"]
+        if operation == "append":
+            template.append(activation.REMOTE_ACTIVATION_ATTEMPT_ID_SENTINEL)
+        else:
+            template.pop()
+        with pytest.raises(activation.V42MaterializationActivationError):
+            activation.materialize_authorized_remote_ingress_argv_v42r1(
+                activation_plan=changed, local_activation_attempt_id=local_id
+            )
+    changed = copy.deepcopy(resource_plan)
+    changed["authorized_resource_probe_remote_python_argv_template"][7] += (
+        activation.REMOTE_ACTIVATION_ATTEMPT_ID_SENTINEL
+    )
+    with pytest.raises(activation.V42MaterializationActivationError):
+        activation.materialize_authorized_resource_probe_argv_v42r1(
+            resource_plan=changed, remote_python=True
+        )
+    with pytest.raises(activation_receiver._ActivationReceiverFailure):  # noqa: SLF001
+        activation_receiver._materialize_remote_python_template(  # noqa: SLF001
+            plan=changed,
+            template=changed[
+                "authorized_resource_probe_remote_python_argv_template"
+            ],
+            expected_mode="--activation-resource-probe",
+            plan_sentinel=activation.RESOURCE_PROBE_PLAN_ID_SENTINEL,
+            plan_id=changed["preactivation_resource_probe_plan_id"],
+            second_slot=(
+                changed["preformal_upload_receipt_id"],
+                changed["preformal_upload_receipt_id"],
+            ),
+            label="resource probe test",
+        )
+
+    changed = copy.deepcopy(plan)
+    changed["systemd_service_contract"]["authorized_systemctl_show_argv_template"][
+        3
+    ] = "start"
+    with pytest.raises(activation.V42MaterializationActivationError):
+        activation.materialize_authorized_systemctl_argv_v42r1(
+            activation_plan=changed
+        )
+    changed = copy.deepcopy(plan)
+    changed["systemd_service_contract"]["authorized_systemd_run_argv_template"][
+        13
+    ] = "--property=RuntimeMaxSec=1"
+    with pytest.raises(activation.V42MaterializationActivationError):
+        activation.materialize_authorized_systemd_argv_v42r1(
+            activation_plan=changed, remote_activation_attempt_id=remote_id
+        )
+    with pytest.raises(activation_receiver._ActivationReceiverFailure):  # noqa: SLF001
+        activation_receiver._materialize_systemd_template(  # noqa: SLF001
+            changed["systemd_service_contract"][
+                "authorized_systemd_run_argv_template"
+            ],
+            plan=changed,
+            plan_id=changed["materialization_activation_plan_id"],
+            remote_attempt_id=remote_id,
+        )
+
+    changed = copy.deepcopy(plan)
+    changed["systemd_service_contract"][
+        "authorized_service_bootstrap_argv_template"
+    ].append(activation.SYSTEMD_INVOCATION_ID_SENTINEL)
+    with pytest.raises(activation_loader._ActivationLoaderFailure):  # noqa: SLF001
+        activation_loader._materialize_service_template(  # noqa: SLF001
+            changed["systemd_service_contract"][
+                "authorized_service_bootstrap_argv_template"
+            ],
+            plan=changed,
+            remote_attempt_id=remote_id,
+        )
+    changed = copy.deepcopy(plan)
+    changed["systemd_service_contract"]["authorized_service_worker_argv_template"][
+        7
+    ] = activation.SYSTEMD_INVOCATION_ID_SENTINEL
+    with pytest.raises(activation_service._ActivationServiceFailure):  # noqa: SLF001
+        activation_service._expected_service_argv(  # noqa: SLF001
+            changed, remote_id, "3" * 32, "/user.slice/test.service"
+        )
+
+
 def test_classification_lattice_is_monotone_and_never_authorizes_retry() -> None:
     chain = _chain()
     local = _classify(chain, stage="local", remote=False)
@@ -1937,6 +2217,60 @@ print("OK")
     assert completed.stdout == b"OK\n"
 
 
+def test_activation_journal_uses_one_existing_parent_and_publishes_before_network(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    chain = _chain()
+    with tempfile.TemporaryDirectory(dir="/tmp") as temporary:
+        parent = Path(temporary)
+        monkeypatch.setattr(preformal, "LOCAL_TRANSPORT_PARENT", parent)
+        programs = _activation_driver_fixture_programs(parent)
+        monkeypatch.setattr(activation_driver, "__file__", programs["driver"])
+        local = activation.build_local_materialization_activation_attempt_v42r1(
+            activation_plan=chain["activation_plan"],
+            local_effective_uid=authority.REMOTE_UID,
+        )
+        journal_root = Path(local["local_control_root"])
+        assert journal_root.parent == parent
+        assert journal_root.name == (
+            activation.LOCAL_ACTIVATION_CONTROL_ROOT_NAME_PREFIX
+            + chain["activation_plan"]["materialization_activation_plan_id"]
+        )
+        assert not (parent / ".tmp").exists()
+        observed_prepared_prefix = False
+        observed_network_marker = False
+
+        def effect() -> None:
+            nonlocal observed_network_marker
+            observed_network_marker = (
+                journal_root / activation.LOCAL_ACTIVATION_NETWORK_START_NAME
+            ).is_file()
+
+        def factory(**_arguments: Any) -> _FaultingPreparedDispatch:
+            nonlocal observed_prepared_prefix
+            observed_prepared_prefix = sorted(
+                path.name for path in journal_root.iterdir()
+            ) == [
+                activation.LOCAL_ACTIVATION_ATTEMPT_NAME,
+                activation.LOCAL_ACTIVATION_PLAN_NAME,
+            ]
+            return _FaultingPreparedDispatch(effect)
+
+        result = activation_driver.execute_activation_v42r1(
+            activation_plan=chain["activation_plan"],
+            preformal_receipt=chain["receipt"],
+            loader_path=programs["loader"],
+            receiver_path=programs["receiver"],
+            service_path=programs["service"],
+            local_effective_uid=authority.REMOTE_UID,
+            prepared_dispatch_factory=factory,
+        )
+        assert result["classification"] == "AMBIGUOUS_PERMANENTLY_CLOSED"
+        assert observed_prepared_prefix is True
+        assert observed_network_marker is True
+        assert not (parent / ".tmp").exists()
+
+
 def test_execute_activation_marker_unlink_reentry_never_spawns_twice(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -1951,7 +2285,7 @@ def test_execute_activation_marker_unlink_reentry_never_spawns_twice(
             local_effective_uid=authority.REMOTE_UID,
         )
         journal_root = Path(local["local_control_root"])
-        journal_root.parent.mkdir(parents=True, mode=0o700)
+        assert journal_root.parent == base
         spawn_count = 0
 
         def effect() -> None:
@@ -1992,7 +2326,7 @@ def test_execute_activation_named_root_swap_reentry_never_spawns_twice(
             local_effective_uid=authority.REMOTE_UID,
         )
         journal_root = Path(local["local_control_root"])
-        journal_root.parent.mkdir(parents=True, mode=0o700)
+        assert journal_root.parent == base
         moved = journal_root.with_name(journal_root.name + ".moved")
         spawn_count = 0
 
@@ -2027,7 +2361,9 @@ def test_execute_activation_named_parent_swap_reentry_never_spawns_twice(
     chain = _chain()
     with tempfile.TemporaryDirectory(dir="/tmp") as temporary:
         base = Path(temporary)
-        monkeypatch.setattr(preformal, "LOCAL_TRANSPORT_PARENT", base)
+        local_parent = base / "local-parent"
+        local_parent.mkdir(mode=0o700)
+        monkeypatch.setattr(preformal, "LOCAL_TRANSPORT_PARENT", local_parent)
         programs = _activation_driver_fixture_programs(base)
         monkeypatch.setattr(activation_driver, "__file__", programs["driver"])
         local = activation.build_local_materialization_activation_attempt_v42r1(
@@ -2036,7 +2372,7 @@ def test_execute_activation_named_parent_swap_reentry_never_spawns_twice(
         )
         journal_root = Path(local["local_control_root"])
         journal_parent = journal_root.parent
-        journal_parent.mkdir(parents=True, mode=0o700)
+        assert journal_parent == local_parent
         moved_parent = journal_parent.with_name(journal_parent.name + ".moved")
         spawn_count = 0
 
@@ -2100,10 +2436,6 @@ def test_production_orchestrator_builds_persists_and_resumes_without_request(
             path = control_root / name
             path.write_bytes(raw)
             path.chmod(0o400)
-        activation_control_parent = (
-            base / activation.LOCAL_ACTIVATION_CONTROL_ROOT_RELATIVE
-        )
-        activation_control_parent.mkdir(parents=True, mode=0o700)
         resource_calls = 0
         spawn_calls = 0
         classification_calls = 0

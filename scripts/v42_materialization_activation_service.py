@@ -685,17 +685,140 @@ def _resource_gate(
     }
 
 
-def _replace_template(template: object, replacements: dict[str, str], label: str) -> list[str]:
-    if type(template) is not list or any(type(item) is not str for item in template):
-        _fail(label + " template changed")
-    result: list[str] = []
-    for item in template:
-        value = item
-        for sentinel, replacement in replacements.items():
-            value = value.replace(sentinel, replacement)
-        result.append(value)
-    if any("{acfqp_v42_" in item for item in result):
+def _replace_template(
+    template: object,
+    replacements: dict[str, str],
+    label: str,
+    *,
+    plan: dict[str, object],
+) -> list[str]:
+    remote_sentinel = "{acfqp_v42_remote_materialization_activation_attempt_id}"
+    invocation_sentinel = "{acfqp_v42_systemd_invocation_id}"
+    group_sentinel = "{acfqp_v42_systemd_control_group}"
+    plan_sentinel = "{acfqp_v42_materialization_activation_plan_id}"
+    keys = set(replacements)
+    if keys == {remote_sentinel}:
+        expected_length = 13
+        opaque_source_index = 5
+        fixed_mode = "--activation-service-bootstrap"
+        slots = {12: (remote_sentinel, replacements[remote_sentinel])}
+    elif keys == {remote_sentinel, invocation_sentinel, group_sentinel}:
+        expected_length = 15
+        opaque_source_index = 5
+        fixed_mode = "--activation-service-clean"
+        slots = {
+            12: (remote_sentinel, replacements[remote_sentinel]),
+            13: (invocation_sentinel, replacements[invocation_sentinel]),
+            14: (group_sentinel, replacements[group_sentinel]),
+        }
+    elif keys == {plan_sentinel}:
+        expected_length = 23
+        opaque_source_index = None
+        fixed_mode = None
+        slots = {
+            22: (
+                SYSTEMD_UNIT_PREFIX + plan_sentinel + ".service",
+                SYSTEMD_UNIT_PREFIX + replacements[plan_sentinel] + ".service",
+            )
+        }
+    else:
+        _fail(label + " replacement set changed")
+    if (
+        type(template) is not list
+        or len(template) != expected_length
+        or any(type(item) is not str for item in template)
+        or (
+            opaque_source_index is not None
+            and (
+                template[:5]
+                != ["/usr/bin/python3", "-I", "-S", "-B", "-c"]
+                or template[6] != fixed_mode
+            )
+        )
+    ):
+        _fail(label + " template shape changed")
+    contract = plan.get("systemd_service_contract")
+    if type(contract) is not dict:
+        _fail(label + " systemd contract changed")
+    if expected_length == 23:
+        expected_prefix = [
+            SYSTEMCTL,
+            "--user",
+            "--no-pager",
+            "show",
+            "--property=Id",
+            "--property=LoadState",
+            "--property=ActiveState",
+            "--property=SubState",
+            "--property=FragmentPath",
+            "--property=MainPID",
+            "--property=InvocationID",
+            "--property=ControlGroup",
+            "--property=Type",
+            "--property=StandardInput",
+            "--property=StandardOutput",
+            "--property=StandardError",
+            "--property=Restart",
+            "--property=UMask",
+            "--property=KillMode",
+            "--property=RuntimeMaxUSec",
+            "--property=WorkingDirectory",
+            "--property=Slice",
+        ]
+        if (
+            template != contract.get("authorized_systemctl_show_argv_template")
+            or template[:22] != expected_prefix
+        ):
+            _fail(label + " fixed read-only skeleton changed")
+    else:
+        loader = plan.get("activation_loader_artifact")
+        service = plan.get("activation_service_artifact")
+        contract_key = (
+            "authorized_service_bootstrap_argv_template"
+            if expected_length == 13
+            else "authorized_service_worker_argv_template"
+        )
+        if (
+            template != contract.get(contract_key)
+            or type(loader) is not dict
+            or type(service) is not dict
+            or template[7] != loader.get("sha256")
+            or template[8] != str(loader.get("byte_count"))
+            or template[9] != contract.get("activation_service_source_path")
+            or template[10] != service.get("sha256")
+            or template[11] != str(service.get("byte_count"))
+            or contract.get("activation_loader_sha256") != loader.get("sha256")
+            or contract.get("activation_service_sha256") != service.get("sha256")
+            or contract.get("activation_service_byte_count")
+            != service.get("byte_count")
+        ):
+            _fail(label + " fixed artifact slots changed")
+        try:
+            source_raw = template[5].encode("utf-8", errors="strict")
+        except (AttributeError, UnicodeError) as error:
+            raise _ActivationServiceFailure(
+                label + " opaque source encoding changed"
+            ) from error
+        if (
+            len(source_raw) != loader.get("byte_count")
+            or hashlib.sha256(source_raw).hexdigest() != loader.get("sha256")
+        ):
+            _fail(label + " opaque source artifact changed")
+    result = list(template)
+    for index, (sentinel, replacement) in slots.items():
+        if type(replacement) is not str or template[index] != sentinel:
+            _fail(label + " replacement slot changed")
+        result[index] = replacement
+    for index, item in enumerate(template):
+        if index != opaque_source_index and index not in slots and "{acfqp_v42_" in item:
+            _fail(label + " contains an undesignated sentinel")
+    if any(
+        index != opaque_source_index and "{acfqp_v42_" in item
+        for index, item in enumerate(result)
+    ):
         _fail(label + " template replacement was incomplete")
+    if opaque_source_index is not None and result[opaque_source_index] != template[opaque_source_index]:
+        _fail(label + " opaque source changed")
     return result
 
 
@@ -713,6 +836,7 @@ def _expected_service_argv(
             "{acfqp_v42_systemd_control_group}": control_group,
         },
         "systemd service worker argv",
+        plan=plan,
     )
 
 
@@ -726,6 +850,7 @@ def _expected_bootstrap_argv(plan: dict[str, object], remote_attempt_id: str) ->
             "{acfqp_v42_remote_materialization_activation_attempt_id}": remote_attempt_id,
         },
         "systemd service bootstrap argv",
+        plan=plan,
     )
 
 
@@ -741,6 +866,7 @@ def _expected_systemctl_argv(plan: dict[str, object]) -> list[str]:
             )
         },
         "systemctl show argv",
+        plan=plan,
     )
 
 
