@@ -200,6 +200,95 @@ def _live_tcb_manifest() -> tuple[dict[str, Any], dict[str, tuple[str, str, str]
     return {"transport_facts": rows}, selected
 
 
+def test_selected_git_inventory_uses_real_fixed_git_for_current_head_and_tree(
+) -> None:
+    code = """
+from scripts import launch_v42_preformal_upload_sender as launcher
+commit = launcher._run_fixed_git_v42r1(
+    "-C", str(launcher.ROOT), "rev-parse", "--verify", "HEAD^{commit}"
+).decode("ascii", errors="strict").removesuffix("\\n")
+tree = launcher._run_fixed_git_v42r1(
+    "-C", str(launcher.ROOT), "rev-parse", "--verify", "HEAD^{tree}"
+).decode("ascii", errors="strict").removesuffix("\\n")
+assert len(commit) == 40 and len(tree) == 40
+observed = launcher._selected_git_inventory_v42r1(
+    source_commit=commit, source_tree=tree,
+)
+assert tuple(sorted(observed)) == launcher.LOCAL_EFFECTFUL_TCB_PATHS
+assert all(
+    mode == "100644" and kind == "blob" and len(oid) == 40
+    for mode, kind, oid in observed.values()
+)
+print("OK")
+"""
+    completed = subprocess.run(
+        ["/usr/bin/python3", "-B", "-c", code],
+        cwd=launcher.ROOT,
+        env={"LANG": "C", "LC_ALL": "C", "PATH": "/usr/bin:/bin"},
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        timeout=30,
+    )
+    assert completed.returncode == 0, completed.stderr.decode(errors="replace")
+    assert completed.stdout == b"OK\n"
+
+
+@pytest.mark.parametrize("changed_anchor", ["commit", "tree"])
+def test_selected_git_inventory_replays_separate_anchors_after_listing(
+    monkeypatch: pytest.MonkeyPatch,
+    changed_anchor: str,
+) -> None:
+    source_commit = "1" * 40
+    source_tree = "2" * 40
+    commit_reads = 0
+    tree_reads = 0
+    calls: list[tuple[str, ...]] = []
+
+    def fixed_git(*arguments: str) -> bytes:
+        nonlocal commit_reads, tree_reads
+        calls.append(arguments)
+        if arguments == ("--version",):
+            return launcher.GIT_VERSION_STDOUT
+        if arguments[-2:] == ("--verify", "HEAD^{commit}"):
+            commit_reads += 1
+            observed = (
+                "3" * 40
+                if changed_anchor == "commit" and commit_reads == 2
+                else source_commit
+            )
+            return observed.encode("ascii") + b"\n"
+        if arguments[-2:] == ("--verify", "HEAD^{tree}"):
+            tree_reads += 1
+            observed = (
+                "4" * 40
+                if changed_anchor == "tree" and tree_reads == 2
+                else source_tree
+            )
+            return observed.encode("ascii") + b"\n"
+        if "ls-tree" in arguments:
+            return b"\x00"
+        raise AssertionError(arguments)
+
+    monkeypatch.setattr(launcher, "_run_fixed_git_v42r1", fixed_git)
+    with pytest.raises(
+        launcher.V42PreformalSenderLauncherError,
+        match="changed across TCB inventory",
+    ):
+        launcher._selected_git_inventory_v42r1(  # noqa: SLF001
+            source_commit=source_commit,
+            source_tree=source_tree,
+        )
+    assert commit_reads == 2
+    assert tree_reads == 2
+    assert all(
+        not (
+            "HEAD^{commit}" in arguments and "HEAD^{tree}" in arguments
+        )
+        for arguments in calls
+    )
+
+
 def test_effectful_tcb_bytes_match_selected_git_and_transport_facts(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:

@@ -800,6 +800,34 @@ def test_journal_publish_is_mode_0400_under_hostile_umask_and_root_is_rejoined(
         driver._JournalPin.open()  # noqa: SLF001
 
 
+def test_directory_chain_ignores_sibling_nlink_churn_but_rejects_named_swap(
+    tmp_path: Path,
+) -> None:
+    held = tmp_path / "held"
+    replacement = tmp_path / "replacement"
+    held.mkdir(mode=0o700)
+    replacement.mkdir(mode=0o700)
+    chain = driver._open_directory_chain(held)  # noqa: SLF001
+    try:
+        unrelated = tmp_path / "unrelated"
+        unrelated.mkdir(mode=0o700)
+        driver._verify_directory_chain(chain)  # noqa: SLF001
+        unrelated.rmdir()
+        driver._verify_directory_chain(chain)  # noqa: SLF001
+
+        displaced = tmp_path / "displaced"
+        held.rename(displaced)
+        replacement.rename(held)
+        with pytest.raises(
+            driver.V42FormalTransportDriverError,
+            match="named directory component changed",
+        ):
+            driver._verify_directory_chain(chain)  # noqa: SLF001
+    finally:
+        for descriptor, _name, _identity in reversed(chain):
+            os.close(descriptor)
+
+
 def test_outer_cut_survives_inner_marker_unlink_and_parent_component_swap_is_seen(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path,
 ) -> None:

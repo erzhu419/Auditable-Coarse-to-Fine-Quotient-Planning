@@ -447,11 +447,11 @@ def _early_expected_activation_final_index_id(argv: Sequence[str]) -> str:
 
 
 _FROZEN_LAUNCHER_RELATIVE = "scripts/launch_v42_preformal_upload_sender.py"
-_FROZEN_LAUNCHER_BYTE_COUNT = 61_522
+_FROZEN_LAUNCHER_BYTE_COUNT = 61_999
 _FROZEN_LAUNCHER_SHA256 = (
-    "126c5628d07c3d82977ccf9d4023846161b4f45b87842330c3e3b75abe638a77"
+    "cb2839150adc1df8906604a7a7c9be3a6f7269085a555749050c849608ee9d8a"
 )
-_FROZEN_LAUNCHER_GIT_BLOB = "0f5a185642271dce244fc94dc72e9a59f5de40f9"
+_FROZEN_LAUNCHER_GIT_BLOB = "1da8eb02bd62a40a9e0c8472837d0a29a176539f"
 _FORMAL_TRANSPORT_ONLY_TCB_PATHS = frozenset(
     {
         _FROZEN_LAUNCHER_RELATIVE,
@@ -1679,16 +1679,16 @@ def _stat_state(value: os.stat_result) -> tuple[int, ...]:
 def _directory_identity(value: os.stat_result) -> tuple[int, ...]:
     """Return only stable directory identity fields.
 
-    Publishing a child legitimately changes a directory's size and timestamps;
-    those fields therefore cannot participate in the held-root identity.  The
-    parent anchor below makes the remaining inode identity durable across
-    processes.
+    Publishing a child legitimately changes a directory's link count, size,
+    and timestamps; those fields therefore cannot participate in the held-root
+    identity.  The parent named-child rejoin below makes the remaining inode
+    identity durable across processes.
     """
 
     return tuple(
         getattr(value, field)
         for field in (
-            "st_dev", "st_ino", "st_mode", "st_uid", "st_gid", "st_nlink",
+            "st_dev", "st_ino", "st_mode", "st_uid", "st_gid",
         )
     )
 

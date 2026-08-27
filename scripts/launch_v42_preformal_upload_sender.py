@@ -1102,15 +1102,29 @@ def _selected_git_inventory_v42r1(
 ) -> dict[str, tuple[str, str, str]]:
     if _run_fixed_git_v42r1("--version") != GIT_VERSION_STDOUT:
         _fail("fixed Git version output changed")
-    anchors = _run_fixed_git_v42r1(
-        "-C",
-        str(ROOT),
-        "rev-parse",
-        "--verify",
-        "HEAD^{commit}",
-        "HEAD^{tree}",
-    ).splitlines()
-    if anchors != [source_commit.encode("ascii"), source_tree.encode("ascii")]:
+
+    def selected_anchors() -> tuple[list[bytes], list[bytes]]:
+        commit = _run_fixed_git_v42r1(
+            "-C",
+            str(ROOT),
+            "rev-parse",
+            "--verify",
+            "HEAD^{commit}",
+        ).splitlines()
+        tree = _run_fixed_git_v42r1(
+            "-C",
+            str(ROOT),
+            "rev-parse",
+            "--verify",
+            "HEAD^{tree}",
+        ).splitlines()
+        return commit, tree
+
+    expected_anchors = (
+        [source_commit.encode("ascii")],
+        [source_tree.encode("ascii")],
+    )
+    if selected_anchors() != expected_anchors:
         _fail("selected committed HEAD or tree differs from the capsule")
     raw = _run_fixed_git_v42r1(
         "-C",
@@ -1122,6 +1136,8 @@ def _selected_git_inventory_v42r1(
         "--",
         *LOCAL_EFFECTFUL_TCB_PATHS,
     )
+    if selected_anchors() != expected_anchors:
+        _fail("selected committed HEAD or tree changed across TCB inventory")
     records = raw.split(b"\x00")
     if not records or records[-1] != b"":
         _fail("selected Git TCB inventory framing changed")
