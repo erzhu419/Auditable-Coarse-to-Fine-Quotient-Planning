@@ -93,9 +93,20 @@ def _load(path: Path) -> dict[str, object]:
 
 
 def _replace_canonical(path: Path, value: dict[str, object]) -> None:
+    original_mode = stat.S_IMODE(path.lstat().st_mode)
     path.chmod(0o600)
     path.write_bytes(canonical_json_bytes(value))
-    path.chmod(0o400)
+    path.chmod(original_mode)
+
+
+def _original_fixed_inputs_available() -> bool:
+    return all(
+        (ROOT / spec["original_relative_path"]).is_file()
+        for spec in retention.ARTIFACT_SPECS
+    ) and all(
+        Path(spec["original_absolute_path"]).is_file()
+        for spec in retention.INVOCATION_CAPTURE_SPECS
+    )
 
 
 @pytest.fixture(scope="module")
@@ -104,11 +115,23 @@ def retained_bundle() -> Path:
         prefix="acfqp-v42r1-failure-retention-", dir="/tmp"
     ) as parent_name:
         target = Path(parent_name) / "bundle"
-        materialized = _invoke_materializer(target)
-        assert materialized.returncode == 0, materialized.stderr.decode()
-        manifest = json.loads(materialized.stdout)
-        assert manifest["retention_manifest_id"] == EXPECTED_MANIFEST_ID
-        verified = _invoke_verifier(target, publish=True)
+        if _original_fixed_inputs_available():
+            materialized = _invoke_materializer(target)
+            assert materialized.returncode == 0, materialized.stderr.decode()
+            manifest = json.loads(materialized.stdout)
+            assert manifest["retention_manifest_id"] == EXPECTED_MANIFEST_ID
+            verified = _invoke_verifier(target, publish=True)
+        else:
+            committed = (
+                ROOT
+                / "retained_evidence/"
+                "v42_standard_2048_fresh_terminal_ordinal1_failure"
+            )
+            assert committed.is_dir()
+            shutil.copytree(committed, target)
+            manifest = _load(target / "RETENTION_MANIFEST.json")
+            assert manifest["retention_manifest_id"] == EXPECTED_MANIFEST_ID
+            verified = _invoke_verifier(target)
         assert verified.returncode == 0, verified.stderr.decode()
         verification = json.loads(verified.stdout)
         assert verification["independent_verification_id"] == EXPECTED_VERIFICATION_ID
@@ -122,7 +145,29 @@ def linux_tmp_path() -> Path:
 
 
 def test_original_failure_is_frozen_without_oom_reclassification() -> None:
-    manifest, raw_by_role = retention.audit_original_v42_ordinal1_failure(ROOT)
+    if _original_fixed_inputs_available():
+        manifest, raw_by_role = retention.audit_original_v42_ordinal1_failure(ROOT)
+    else:
+        retained = (
+            ROOT
+            / "retained_evidence/"
+            "v42_standard_2048_fresh_terminal_ordinal1_failure"
+        )
+        manifest = _load(retained / "RETENTION_MANIFEST.json")
+        raw_by_role = {
+            "EVIDENCE_ROOT_FAILURE": (
+                retained / "artifacts/06_FAILURE_EVIDENCE_ROOT.json"
+            ).read_bytes(),
+            "FIXED_PARENT_FAILURE": (
+                retained / "artifacts/07_FAILURE_FIXED_PARENT.json"
+            ).read_bytes(),
+            "PREPARE_RECEIPT": (
+                retained / "artifacts/01_PREPARE_RECEIPT.json"
+            ).read_bytes(),
+            "PREPARE_INVOCATION_STDOUT": (
+                retained / "invocation_captures/00_PREPARE_STDOUT.bin"
+            ).read_bytes(),
+        }
     assert manifest["retention_manifest_id"] == EXPECTED_MANIFEST_ID
     assert manifest["formal_worker_failure_classification"] == "PRODUCER_EXCEPTION"
     assert manifest["operator_observation_is_not_formal_oom_proof"] is True
@@ -178,8 +223,11 @@ def test_materialized_retention_and_fresh_verification_are_exact(
     assert verification["fresh_python_isolated_flag"] is True
     assert verification["fresh_python_no_site_flag"] is True
     assert verification["fresh_python_no_bytecode_flag"] is True
+    root_mode = stat.S_IMODE(retained_bundle.lstat().st_mode)
+    assert root_mode in {0o700, 0o755}
+    file_mode = 0o400 if root_mode == 0o700 else 0o644
     for path in retained_bundle.rglob("*"):
-        expected = 0o700 if path.is_dir() else 0o400
+        expected = root_mode if path.is_dir() else file_mode
         assert stat.S_IMODE(path.lstat().st_mode) == expected
 
 
@@ -209,7 +257,13 @@ def test_real_git_archive_and_clean_clone_use_portable_retained_modes(
     retained_relative = (
         "retained_evidence/v42_standard_2048_fresh_terminal_ordinal1_failure"
     )
-    shutil.copytree(retained_bundle, staging / retained_relative)
+    staging_retention = staging / retained_relative
+    if staging_retention.exists():
+        assert _load(staging_retention / "RETENTION_MANIFEST.json")[
+            "retention_manifest_id"
+        ] == EXPECTED_MANIFEST_ID
+    else:
+        shutil.copytree(retained_bundle, staging_retention)
     subprocess.run(
         ("git", "add", "--", *successor_paths, retained_relative),
         cwd=staging,
@@ -225,23 +279,33 @@ def test_real_git_archive_and_clean_clone_use_portable_retained_modes(
         "GIT_COMMITTER_NAME": "V42r1 portability fixture",
         "GIT_COMMITTER_EMAIL": "v42r1-fixture.invalid@example.invalid",
     }
-    subprocess.run(
-        (
-            "git",
-            "-c",
-            "commit.gpgSign=false",
-            "commit",
-            "--quiet",
-            "-m",
-            "temporary V42r1 portability fixture",
-        ),
+    staged = subprocess.run(
+        ("git", "diff", "--cached", "--quiet"),
         cwd=staging,
-        env=commit_environment,
-        check=True,
+        check=False,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         timeout=30,
     )
+    assert staged.returncode in {0, 1}, staged.stderr.decode()
+    if staged.returncode == 1:
+        subprocess.run(
+            (
+                "git",
+                "-c",
+                "commit.gpgSign=false",
+                "commit",
+                "--quiet",
+                "-m",
+                "temporary V42r1 portability fixture",
+            ),
+            cwd=staging,
+            env=commit_environment,
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            timeout=30,
+        )
 
     archive_path = linux_tmp_path / "retention.tar"
     subprocess.run(
@@ -373,9 +437,10 @@ def test_different_failure_copies_are_rejected(
     target = linux_tmp_path / "different-failures"
     shutil.copytree(retained_bundle, target)
     path = target / "artifacts/07_FAILURE_FIXED_PARENT.json"
+    original_mode = stat.S_IMODE(path.lstat().st_mode)
     path.chmod(0o600)
     path.write_bytes(path.read_bytes() + b"\n")
-    path.chmod(0o400)
+    path.chmod(original_mode)
     rejected = _invoke_verifier(target)
     assert rejected.returncode != 0
     assert b"FIXED_PARENT_FAILURE" in rejected.stderr
@@ -395,7 +460,9 @@ def test_partial_or_extra_retention_is_rejected(
     shutil.copytree(retained_bundle, extra)
     extra_path = extra / "artifacts/CAMPAIGN.json"
     extra_path.write_bytes(b"{}")
-    extra_path.chmod(0o400)
+    extra_path.chmod(
+        0o400 if stat.S_IMODE(extra.lstat().st_mode) == 0o700 else 0o644
+    )
     rejected_extra = _invoke_verifier(extra)
     assert rejected_extra.returncode != 0
     assert b"artifact inventory changed" in rejected_extra.stderr
@@ -407,10 +474,11 @@ def test_non_formal_invocation_capture_tamper_is_rejected(
     target = linux_tmp_path / "capture-tamper"
     shutil.copytree(retained_bundle, target)
     path = target / "invocation_captures/03_LAUNCH_STDERR.bin"
+    original_mode = stat.S_IMODE(path.lstat().st_mode)
     path.chmod(0o600)
     raw = path.read_bytes()
     path.write_bytes(b"X" + raw[1:])
-    path.chmod(0o400)
+    path.chmod(original_mode)
     rejected = _invoke_verifier(target)
     assert rejected.returncode != 0
     assert b"invocation capture changed" in rejected.stderr
