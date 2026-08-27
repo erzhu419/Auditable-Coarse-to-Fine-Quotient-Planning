@@ -85,6 +85,27 @@ def test_sender_segments_are_the_exact_receiver_wire_without_archive_copy() -> N
     assert b"".join(segments[1:]) == expected_wire
 
 
+def test_generic_prepared_child_ceiling_matches_activation_without_widening_preformal(
+) -> None:
+    plan = _plan()
+    assert sender.MAXIMUM_PREPARED_CHILD_STDOUT_BYTES == 32 * 1024**2
+    assert transport.MAXIMUM_RECEIPT_STDOUT_BYTES == 256 * 1024
+    assert plan["ssh_client_contract"]["identity_public_output_byte_cap"] == 1024
+    with pytest.raises(
+        sender.V42PreformalSenderError,
+        match="prepared child resource contract changed",
+    ):
+        sender._prepare_pinned_child(  # noqa: SLF001
+            executable_fd=0,
+            argv=("/usr/bin/ssh",),
+            environment=dict(transport.LOCAL_DISPATCH_ENVIRONMENT),
+            segments=(),
+            stdout_cap=sender.MAXIMUM_PREPARED_CHILD_STDOUT_BYTES + 1,
+            stderr_cap=sender.STDERR_DIAGNOSTIC_BYTE_CAP,
+            timeout_seconds=10.0,
+        )
+
+
 def test_held_network_boundary_keeps_snapshot_open_through_marker(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:

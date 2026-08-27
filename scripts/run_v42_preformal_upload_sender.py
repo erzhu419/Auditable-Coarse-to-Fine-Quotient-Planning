@@ -34,6 +34,11 @@ EXEC_STATUS_TIMEOUT_SECONDS = 5.0
 POST_EXIT_PIPE_DRAIN_SECONDS = 5.0
 STDERR_DIAGNOSTIC_BYTE_CAP = 64 * 1024
 PIPE_CHUNK_BYTES = 1024 * 1024
+# Structural ceiling for the reusable bounded child pump.  Individual
+# protocols retain their smaller caller-owned caps (1 KiB for identity
+# derivation and 256 KiB for the pre-formal receipt).  Activation responses
+# are canonically bounded at 32 MiB by both receiver and local parser.
+MAXIMUM_PREPARED_CHILD_STDOUT_BYTES = 32 * 1024**2
 
 # The formal sender is bound to the registered Linux x86-64 hosts.  Python
 # does not expose close_range(2) on every supported interpreter, and os.execve
@@ -917,7 +922,7 @@ def _prepare_pinned_child(
         or type(segments) is not tuple
         or any(type(segment) is not bytes for segment in segments)
         or type(stdout_cap) is not int
-        or not 0 < stdout_cap <= 1024 * 1024
+        or not 0 < stdout_cap <= MAXIMUM_PREPARED_CHILD_STDOUT_BYTES
         or type(stderr_cap) is not int
         or not 0 < stderr_cap <= 1024 * 1024
         or type(timeout_seconds) is not float

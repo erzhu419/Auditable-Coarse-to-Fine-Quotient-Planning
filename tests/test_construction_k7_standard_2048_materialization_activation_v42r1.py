@@ -6,6 +6,8 @@ import os
 from pathlib import Path
 import re
 import stat
+import subprocess
+import sys
 import tempfile
 from typing import Any
 
@@ -1588,6 +1590,78 @@ def _activation_driver_fixture_programs(root: Path) -> dict[str, str]:
         path.write_bytes(raw)
         result[name] = str(path)
     return result
+
+
+def test_real_prepare_dispatch_accepts_32mib_before_spawn_and_reclaims_fds() -> None:
+    assert activation_receiver._MAXIMUM_OUTPUT_BYTES == 32 * 1024**2  # noqa: SLF001
+    assert activation_driver.MAXIMUM_DOCUMENT_BYTES == 32 * 1024**2
+    assert activation_driver.MAXIMUM_STDOUT_BYTES == 32 * 1024**2
+    root = Path(__file__).resolve().parents[1]
+    probe = r'''
+import os
+from acfqp import construction_k7_standard_2048_materialization_activation_v42r1 as activation
+from scripts import run_v42_materialization_activation as activation_driver
+from scripts import run_v42_preformal_upload_sender as frozen_sender
+from tests.test_construction_k7_standard_2048_materialization_activation_v42r1 import _chain
+
+fixture = _chain()
+plan = fixture["resource_plan"]
+argv = activation.materialize_authorized_resource_probe_argv_v42r1(
+    resource_plan=plan,
+)
+before = sorted(
+    int(name) for name in os.listdir("/proc/self/fd")
+    if name.isdigit() and os.path.exists("/proc/self/fd/" + name)
+)
+expected_fingerprint = plan["ssh_client_contract"]["identity_public_fingerprint"]
+original_fingerprint = frozen_sender._derive_identity_fingerprint_v42r1
+original_spawn = frozen_sender._PreparedPinnedChild.spawn_and_pump
+def fingerprint(*, plan, pins):
+    pins.verify()
+    return expected_fingerprint
+def forbidden_spawn(self):
+    raise AssertionError("SSH spawn was reachable during preparation")
+frozen_sender._derive_identity_fingerprint_v42r1 = fingerprint
+frozen_sender._PreparedPinnedChild.spawn_and_pump = forbidden_spawn
+prepared = None
+try:
+    prepared = activation_driver._prepare_dispatch(
+        plan=plan,
+        argv=argv,
+        segments=(b"receiver", b"envelope"),
+    )
+    assert prepared.child.stdout_cap == 32 * 1024**2
+    assert prepared.child.spawned is False
+    assert prepared.child.closed is False
+    prepared.verify(plan)
+finally:
+    if prepared is not None:
+        prepared.close()
+    frozen_sender._derive_identity_fingerprint_v42r1 = original_fingerprint
+    frozen_sender._PreparedPinnedChild.spawn_and_pump = original_spawn
+after = sorted(
+    int(name) for name in os.listdir("/proc/self/fd")
+    if name.isdigit() and os.path.exists("/proc/self/fd/" + name)
+)
+assert after == before, (before, after)
+print("OK")
+'''
+    completed = subprocess.run(
+        [sys.executable, "-B", "-c", probe],
+        cwd=root,
+        env={
+            "LANG": "C.UTF-8",
+            "LC_ALL": "C.UTF-8",
+            "PATH": "/usr/bin:/bin",
+            "PYTHONPATH": str(root) + ":" + str(root / "src"),
+        },
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        timeout=30,
+    )
+    assert completed.returncode == 0, completed.stderr.decode(errors="replace")
+    assert completed.stdout == b"OK\n"
 
 
 def test_execute_activation_marker_unlink_reentry_never_spawns_twice(
