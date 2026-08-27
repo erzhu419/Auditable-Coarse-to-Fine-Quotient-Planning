@@ -221,8 +221,20 @@ def _resource_values() -> dict[str, Any]:
         "cgroup_memory_ancestry": [
             {
                 "cgroup_path": "/user.slice/user-1000.slice/app.scope",
-                "memory_max_mode": "FINITE",
-                "memory_max_bytes": activation.MINIMUM_MEMORY_TOTAL_BYTES + 2 * 1024**3,
+                "memory_max_mode": "MAX",
+                "memory_max_bytes": None,
+                "memory_current_bytes": 1024**3,
+            },
+            {
+                "cgroup_path": "/user.slice/user-1000.slice",
+                "memory_max_mode": "MAX",
+                "memory_max_bytes": None,
+                "memory_current_bytes": 1024**3,
+            },
+            {
+                "cgroup_path": "/user.slice",
+                "memory_max_mode": "MAX",
+                "memory_max_bytes": None,
                 "memory_current_bytes": 1024**3,
             },
             {
@@ -988,12 +1000,6 @@ def test_remote_receiver_rejects_self_consistent_plan_artifact_transport_splice(
     [
         [
             {
-                "cgroup_path": "/user.slice/user-1000.slice/app.scope",
-                "memory_max_mode": "MAX",
-                "memory_max_bytes": None,
-                "memory_current_bytes": 1024**3,
-            },
-            {
                 "cgroup_path": "/",
                 "memory_max_mode": "MAX",
                 "memory_max_bytes": None,
@@ -1001,6 +1007,24 @@ def test_remote_receiver_rejects_self_consistent_plan_artifact_transport_splice(
             },
         ],
         [
+            {
+                "cgroup_path": "/user.slice/user-1000.slice/session-1.scope",
+                "memory_max_mode": "MAX",
+                "memory_max_bytes": None,
+                "memory_current_bytes": 1024**3,
+            },
+            {
+                "cgroup_path": "/user.slice/user-1000.slice",
+                "memory_max_mode": "MAX",
+                "memory_max_bytes": None,
+                "memory_current_bytes": 1024**3,
+            },
+            {
+                "cgroup_path": "/user.slice",
+                "memory_max_mode": "MAX",
+                "memory_max_bytes": None,
+                "memory_current_bytes": 1024**3,
+            },
             {
                 "cgroup_path": "/",
                 "memory_max_mode": "ROOT_DELEGATED_VIEW_NO_LOCAL_MEMORY_FILES",
@@ -1010,7 +1034,7 @@ def test_remote_receiver_rejects_self_consistent_plan_artifact_transport_splice(
         ],
     ],
 )
-def test_resource_gate_requires_at_least_one_applicable_finite_cgroup_limit(
+def test_resource_gate_accepts_complete_unbounded_cgroup_ancestry(
     ancestry: list[dict[str, Any]],
 ) -> None:
     chain = _chain()
@@ -1031,8 +1055,257 @@ def test_resource_gate_requires_at_least_one_applicable_finite_cgroup_limit(
         filesystem_available_bytes=activation.MINIMUM_FILESYSTEM_AVAILABLE_BYTES,
         cgroup_memory_ancestry=ancestry,
     )
-    assert result["resource_gate_checks"]["cgroup_memory_gate"] is False
+    assert result["resource_gate_checks"]["cgroup_memory_gate"] is True
+    assert result["all_resource_gates_passed"] is True
+    service_values = _resource_values()
+    service_values["cgroup_memory_ancestry"] = copy.deepcopy(ancestry)
+    assert all(activation_service._resource_checks(service_values).values())  # noqa: SLF001
+
+
+def _mixed_cgroup_ancestry(
+    *, tested_maximum: int, tested_current: int
+) -> list[dict[str, Any]]:
+    return [
+        {
+            "cgroup_path": "/user.slice/user-1000.slice/session-1.scope",
+            "memory_max_mode": "FINITE",
+            "memory_max_bytes": activation.MINIMUM_MEMORY_TOTAL_BYTES
+            + 2 * 1024**3,
+            "memory_current_bytes": 1024**3,
+        },
+        {
+            "cgroup_path": "/user.slice/user-1000.slice",
+            "memory_max_mode": "MAX",
+            "memory_max_bytes": None,
+            "memory_current_bytes": 1024**3,
+        },
+        {
+            "cgroup_path": "/user.slice",
+            "memory_max_mode": "FINITE",
+            "memory_max_bytes": tested_maximum,
+            "memory_current_bytes": tested_current,
+        },
+        {
+            "cgroup_path": "/",
+            "memory_max_mode": "ROOT_DELEGATED_VIEW_NO_LOCAL_MEMORY_FILES",
+            "memory_max_bytes": None,
+            "memory_current_bytes": None,
+        },
+    ]
+
+
+@pytest.mark.parametrize(
+    ("tested_maximum", "tested_current", "expected"),
+    [
+        (
+            activation.MINIMUM_MEMORY_TOTAL_BYTES + 1024**3,
+            activation.MINIMUM_MEMORY_TOTAL_BYTES
+            + 1024**3
+            - activation.MINIMUM_MEMORY_AVAILABLE_BYTES,
+            True,
+        ),
+        (activation.MINIMUM_MEMORY_TOTAL_BYTES - 1, 0, False),
+        (
+            activation.MINIMUM_MEMORY_TOTAL_BYTES,
+            activation.MINIMUM_MEMORY_TOTAL_BYTES
+            - activation.MINIMUM_MEMORY_AVAILABLE_BYTES
+            + 1,
+            False,
+        ),
+    ],
+)
+def test_every_finite_cgroup_layer_must_meet_total_and_available_headroom(
+    tested_maximum: int, tested_current: int, expected: bool
+) -> None:
+    ancestry = _mixed_cgroup_ancestry(
+        tested_maximum=tested_maximum, tested_current=tested_current
+    )
+    chain = _chain()
+    result = activation.build_preactivation_resource_result_v42r1(
+        resource_plan=chain["resource_plan"],
+        preformal_receipt=chain["receipt"],
+        stage="READ_ONLY_PREACTIVATION_PROBE",
+        observed_hostname=authority.REMOTE_HOSTNAME,
+        observed_user=authority.REMOTE_USER,
+        observed_uid=authority.REMOTE_UID,
+        observed_gid=authority.REMOTE_GID,
+        observed_python=_python_observation(chain["resource_plan"]),
+        selected_remote_snapshot=chain["snapshot"],
+        memory_total_bytes=activation.MINIMUM_MEMORY_TOTAL_BYTES,
+        memory_available_bytes=activation.MINIMUM_MEMORY_AVAILABLE_BYTES,
+        swap_total_bytes=0,
+        swap_free_bytes=0,
+        filesystem_available_bytes=activation.MINIMUM_FILESYSTEM_AVAILABLE_BYTES,
+        cgroup_memory_ancestry=ancestry,
+    )
+    assert result["resource_gate_checks"]["cgroup_memory_gate"] is expected
+    assert result["all_resource_gates_passed"] is expected
+    service_values = _resource_values()
+    service_values["cgroup_memory_ancestry"] = copy.deepcopy(ancestry)
+    service_checks = activation_service._resource_checks(service_values)  # noqa: SLF001
+    assert service_checks["cgroup_memory_gate"] is expected
+
+
+@pytest.mark.parametrize(
+    ("ancestry", "message"),
+    [
+        (
+            [
+                {
+                    "cgroup_path": "/user.slice",
+                    "memory_max_mode": "MAX",
+                    "memory_max_bytes": None,
+                    "memory_current_bytes": 0,
+                }
+            ],
+            "omitted the root",
+        ),
+        (
+            [
+                {
+                    "cgroup_path": "/",
+                    "memory_max_mode": "UNKNOWN",
+                    "memory_max_bytes": None,
+                    "memory_current_bytes": None,
+                }
+            ],
+            "semantics changed",
+        ),
+        (
+            [
+                {
+                    "cgroup_path": "/",
+                    "memory_max_mode": "MAX",
+                    "memory_max_bytes": None,
+                }
+            ],
+            "row schema changed",
+        ),
+        (
+            [
+                {
+                    "cgroup_path": "/user.slice/user-1000.slice/session-1.scope",
+                    "memory_max_mode": "MAX",
+                    "memory_max_bytes": None,
+                    "memory_current_bytes": 0,
+                },
+                {
+                    "cgroup_path": "/",
+                    "memory_max_mode": "MAX",
+                    "memory_max_bytes": None,
+                    "memory_current_bytes": 0,
+                },
+            ],
+            "not an exact parent chain",
+        ),
+        (
+            [
+                {
+                    "cgroup_path": "/user.slice",
+                    "memory_max_mode": "MAX",
+                    "memory_max_bytes": None,
+                    "memory_current_bytes": 0,
+                },
+                {
+                    "cgroup_path": "/user.slice",
+                    "memory_max_mode": "MAX",
+                    "memory_max_bytes": None,
+                    "memory_current_bytes": 0,
+                },
+                {
+                    "cgroup_path": "/",
+                    "memory_max_mode": "MAX",
+                    "memory_max_bytes": None,
+                    "memory_current_bytes": 0,
+                },
+            ],
+            "not an exact parent chain",
+        ),
+        (
+            [
+                {
+                    "cgroup_path": "//user.slice",
+                    "memory_max_mode": "MAX",
+                    "memory_max_bytes": None,
+                    "memory_current_bytes": 0,
+                },
+                {
+                    "cgroup_path": "/",
+                    "memory_max_mode": "MAX",
+                    "memory_max_bytes": None,
+                    "memory_current_bytes": 0,
+                },
+            ],
+            "path changed",
+        ),
+    ],
+)
+def test_unbounded_cgroup_gate_rejects_missing_root_unknown_and_malformed_rows(
+    ancestry: list[dict[str, Any]], message: str
+) -> None:
+    chain = _chain()
+    with pytest.raises(activation.V42MaterializationActivationError, match=message):
+        activation.build_preactivation_resource_result_v42r1(
+            resource_plan=chain["resource_plan"],
+            preformal_receipt=chain["receipt"],
+            stage="READ_ONLY_PREACTIVATION_PROBE",
+            observed_hostname=authority.REMOTE_HOSTNAME,
+            observed_user=authority.REMOTE_USER,
+            observed_uid=authority.REMOTE_UID,
+            observed_gid=authority.REMOTE_GID,
+            observed_python=_python_observation(chain["resource_plan"]),
+            selected_remote_snapshot=chain["snapshot"],
+            memory_total_bytes=activation.MINIMUM_MEMORY_TOTAL_BYTES,
+            memory_available_bytes=activation.MINIMUM_MEMORY_AVAILABLE_BYTES,
+            swap_total_bytes=0,
+            swap_free_bytes=0,
+            filesystem_available_bytes=activation.MINIMUM_FILESYSTEM_AVAILABLE_BYTES,
+            cgroup_memory_ancestry=ancestry,
+        )
+    service_values = _resource_values()
+    service_values["cgroup_memory_ancestry"] = copy.deepcopy(ancestry)
+    with pytest.raises(RuntimeError, match=message):
+        activation_service._resource_checks(service_values)  # noqa: SLF001
+
+
+def test_unbounded_cgroup_does_not_bypass_physical_memory_gates() -> None:
+    ancestry = [
+        {
+            "cgroup_path": "/",
+            "memory_max_mode": "MAX",
+            "memory_max_bytes": None,
+            "memory_current_bytes": 1024**3,
+        }
+    ]
+    chain = _chain()
+    result = activation.build_preactivation_resource_result_v42r1(
+        resource_plan=chain["resource_plan"],
+        preformal_receipt=chain["receipt"],
+        stage="READ_ONLY_PREACTIVATION_PROBE",
+        observed_hostname=authority.REMOTE_HOSTNAME,
+        observed_user=authority.REMOTE_USER,
+        observed_uid=authority.REMOTE_UID,
+        observed_gid=authority.REMOTE_GID,
+        observed_python=_python_observation(chain["resource_plan"]),
+        selected_remote_snapshot=chain["snapshot"],
+        memory_total_bytes=activation.MINIMUM_MEMORY_TOTAL_BYTES,
+        memory_available_bytes=activation.MINIMUM_MEMORY_AVAILABLE_BYTES - 1,
+        swap_total_bytes=0,
+        swap_free_bytes=0,
+        filesystem_available_bytes=activation.MINIMUM_FILESYSTEM_AVAILABLE_BYTES,
+        cgroup_memory_ancestry=ancestry,
+    )
+    assert result["resource_gate_checks"]["cgroup_memory_gate"] is True
+    assert result["resource_gate_checks"]["memory_available_gate"] is False
     assert result["all_resource_gates_passed"] is False
+    service_values = _resource_values()
+    service_values["memory_available_bytes"] = (
+        activation.MINIMUM_MEMORY_AVAILABLE_BYTES - 1
+    )
+    service_values["cgroup_memory_ancestry"] = ancestry
+    service_checks = activation_service._resource_checks(service_values)  # noqa: SLF001
+    assert service_checks["cgroup_memory_gate"] is True
+    assert service_checks["memory_available_gate"] is False
 
 
 def test_systemd_contract_forbids_lifecycle_coupling_and_binds_read_only_query() -> None:
@@ -2080,6 +2353,12 @@ def test_offline_receiver_service_effect_chain_publishes_terminal_before_outer()
         remote = fixture["remote"]
         outer_events: list[tuple[list[str], dict[str, Any]]] = []
         service_results: list[dict[str, Any]] = []
+        resource_observations: list[dict[str, Any]] = []
+
+        def resource_observer(_parent: str) -> dict[str, Any]:
+            values = _resource_values()
+            resource_observations.append(copy.deepcopy(values))
+            return values
 
         def systemd_runner(
             argv: list[str], environment: dict[str, str], executable_fact: dict[str, Any]
@@ -2162,7 +2441,7 @@ def test_offline_receiver_service_effect_chain_publishes_terminal_before_outer()
                 systemd_invocation_id=invocation,
                 systemd_control_group=group,
                 observed_service_argv=service_argv,
-                resource_observer=lambda _parent: _resource_values(),
+                resource_observer=resource_observer,
                 unit_observer=unit_observer,
                 outer_exec=outer_exec,
                 fixed_ledger_override_for_offline_fixture=str(fixture["ledger"]),
@@ -2193,6 +2472,23 @@ def test_offline_receiver_service_effect_chain_publishes_terminal_before_outer()
         assert ingress["systemd_run_returncode"] == 0
         assert ingress["same_activation_identity_retry_forbidden"] is True
         assert len(service_results) == len(outer_events) == 1
+        assert len(resource_observations) == 2
+        assert all(
+            all(
+                row["memory_max_mode"]
+                in {"MAX", "ROOT_DELEGATED_VIEW_NO_LOCAL_MEMORY_FILES"}
+                for row in values["cgroup_memory_ancestry"]
+            )
+            for values in resource_observations
+        )
+        receipt = loads_canonical_json(
+            (fixture["ledger"] / activation_service.SERVICE_RECEIPT_NAME).read_bytes()
+        )
+        ready = loads_canonical_json(
+            (fixture["ledger"] / activation_service.READY_NAME).read_bytes()
+        )
+        assert receipt["first_service_resource_gate"]["all_resource_gates_passed"]
+        assert ready["second_service_resource_gate"]["all_resource_gates_passed"]
         terminal = service_results[0]
         assert terminal == outer_events[0][1]
         assert terminal[
@@ -2221,6 +2517,127 @@ def test_offline_receiver_service_effect_chain_publishes_terminal_before_outer()
             authority.LOCAL_MATERIALIZATION_ATTEMPT_NAME,
             authority.TRANSPORT_MANIFEST_NAME,
         }
+
+
+@pytest.mark.parametrize("failing_observation_ordinal", [1, 2])
+def test_run_service_first_and_second_gate_reject_finite_headroom_minus_one(
+    failing_observation_ordinal: int,
+) -> None:
+    with tempfile.TemporaryDirectory(dir="/tmp") as temporary:
+        fixture = _offline_effect_fixture(Path(temporary))
+        plan = fixture["plan"]
+        remote = fixture["remote"]
+        service_results: list[dict[str, Any]] = []
+        observation_count = 0
+
+        def resource_observer(_parent: str) -> dict[str, Any]:
+            nonlocal observation_count
+            observation_count += 1
+            values = _resource_values()
+            if observation_count == failing_observation_ordinal:
+                values["cgroup_memory_ancestry"] = _mixed_cgroup_ancestry(
+                    tested_maximum=activation.MINIMUM_MEMORY_TOTAL_BYTES,
+                    tested_current=(
+                        activation.MINIMUM_MEMORY_TOTAL_BYTES
+                        - activation.MINIMUM_MEMORY_AVAILABLE_BYTES
+                        + 1
+                    ),
+                )
+            return values
+
+        def systemd_runner(
+            argv: list[str], environment: dict[str, str], executable_fact: dict[str, Any]
+        ) -> int:
+            assert environment == activation.SYSTEMD_CLIENT_ENVIRONMENT
+            assert executable_fact == plan["systemd_service_contract"]["systemd_run"]
+            invocation, group, _, _ = _systemd_runtime(plan, remote)
+            service_argv = activation.materialize_authorized_service_argv_v42r1(
+                activation_plan=plan,
+                remote_activation_attempt_id=remote[
+                    "remote_materialization_activation_attempt_id"
+                ],
+                systemd_invocation_id=invocation,
+                systemd_control_group=group,
+            )
+
+            def unit_observer(
+                observed_plan: dict[str, Any],
+                remote_attempt_id: str,
+                invocation_id: str,
+                control_group: str,
+                service_pid: int,
+            ) -> dict[str, Any]:
+                expected_invocation, expected_group, _, properties = _systemd_runtime(
+                    plan, remote
+                )
+                assert observed_plan == plan
+                assert remote_attempt_id == remote[
+                    "remote_materialization_activation_attempt_id"
+                ]
+                assert invocation_id == expected_invocation
+                assert control_group == expected_group
+                properties["MainPID"] = service_pid
+                return properties
+
+            result = activation_service.run_service_v42r1(
+                remote_activation_attempt_id=remote[
+                    "remote_materialization_activation_attempt_id"
+                ],
+                systemd_invocation_id=invocation,
+                systemd_control_group=group,
+                observed_service_argv=service_argv,
+                resource_observer=resource_observer,
+                unit_observer=unit_observer,
+                outer_exec=lambda _argv, _plan: pytest.fail(
+                    "failed resource gate reached outer exec"
+                ),
+                fixed_ledger_override_for_offline_fixture=str(fixture["ledger"]),
+                formal_runtime_checks=False,
+            )
+            service_results.append(result)
+            return 0
+
+        envelope = {
+            "schema": "acfqp.v42_materialization_activation_ingress.v42r1",
+            "operation": "ACTIVATE_SELECTED_COMPLETE_RECEIPT",
+            "activation_plan": plan,
+            "local_activation_attempt": fixture["local"],
+            "network_start": fixture["network"],
+            "remote_activation_attempt": remote,
+            "service_source_utf8": fixture["service_raw"].decode("utf-8"),
+        }
+        ingress = activation_receiver.activate_selected_receipt_v42r1(
+            envelope=envelope,
+            expected_plan_id=plan["materialization_activation_plan_id"],
+            expected_local_attempt_id=fixture["local"][
+                "local_materialization_activation_attempt_id"
+            ],
+            verified_receiver_sha256=fixture["receiver_sha"],
+            observed_remote_ingress_python_argv=fixture["ingress_argv"],
+            systemd_runner=systemd_runner,
+        )
+        assert ingress["systemd_run_returncode"] == 0
+        assert observation_count == failing_observation_ordinal
+        assert len(service_results) == 1
+        failure = service_results[0]
+        assert failure["failure_classification"] == "RESOURCE_GATE_FAILED"
+        assert failure["failure_stage"] == (
+            "SYSTEMD_ADMISSION_BEFORE_SERVICE_RECEIPT"
+            if failing_observation_ordinal == 1
+            else "SERVICE_AFTER_RECEIPT_BEFORE_READY"
+        )
+        expected_inventory = {
+            activation_service.REMOTE_ATTEMPT_NAME,
+            activation_service.SERVICE_SOURCE_NAME,
+            activation_service.FAILURE_NAME,
+        }
+        if failing_observation_ordinal == 2:
+            expected_inventory.add(activation_service.SERVICE_RECEIPT_NAME)
+        assert {path.name for path in fixture["ledger"].iterdir()} == expected_inventory
+        assert fixture["scratch"].is_dir()
+        assert not fixture["fixed"].exists()
+        assert not (fixture["ledger"] / activation_service.READY_NAME).exists()
+        assert not (fixture["ledger"] / activation_service.TERMINAL_NAME).exists()
 
 
 def test_read_only_classification_evidence_is_o_excl_and_stably_replayed() -> None:

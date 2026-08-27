@@ -17,7 +17,7 @@ authorizes the existing trusted bootstrap launcher.
 from __future__ import annotations
 
 import hashlib
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import re
 import shlex
 from typing import Any, NoReturn
@@ -275,8 +275,18 @@ def _resource_checks(
         mode = row.get("memory_max_mode")
         maximum = row.get("memory_max_bytes")
         current = row.get("memory_current_bytes")
-        if type(path) is not str or not path.startswith("/") or ".." in path.split("/"):
+        if (
+            type(path) is not str
+            or not path.startswith("/")
+            or path.startswith("//")
+            or PurePosixPath(path).as_posix() != path
+            or ".." in path.split("/")
+        ):
             _fail("cgroup ancestry path changed")
+        if normalized:
+            previous = PurePosixPath(normalized[-1]["cgroup_path"])
+            if previous == PurePosixPath("/") or PurePosixPath(path) != previous.parent:
+                _fail("cgroup ancestry is not an exact parent chain")
         if mode == "MAX":
             valid = maximum is None and type(current) is int and current >= 0
         elif mode == "FINITE":
@@ -302,7 +312,7 @@ def _resource_checks(
             row["memory_max_bytes"] >= MINIMUM_MEMORY_TOTAL_BYTES
             and row["memory_max_bytes"] - row["memory_current_bytes"] >= MINIMUM_MEMORY_AVAILABLE_BYTES
             for row in finite
-        ) and bool(finite),
+        ),
         "cgroup_ancestry_reaches_root": normalized[-1]["cgroup_path"] == "/",
     }
     return normalized, checks

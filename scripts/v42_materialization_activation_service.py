@@ -15,7 +15,7 @@ import errno
 import hashlib
 import json
 import os
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import pwd
 import re
 import selectors
@@ -541,8 +541,54 @@ def _rename_noreplace_at(parent_fd: int, old_name: str, new_name: str) -> None:
 
 def _resource_checks(values: dict[str, object]) -> dict[str, bool]:
     ancestry = values.get("cgroup_memory_ancestry")
-    if type(ancestry) is not list:
-        _fail("service cgroup ancestry changed type")
+    if type(ancestry) is not list or not ancestry:
+        _fail("service cgroup ancestry changed type or is empty")
+    for index, row in enumerate(ancestry):
+        if type(row) is not dict or set(row) != {
+            "cgroup_path",
+            "memory_max_mode",
+            "memory_max_bytes",
+            "memory_current_bytes",
+        }:
+            _fail("service cgroup ancestry row schema changed")
+        path = row.get("cgroup_path")
+        mode = row.get("memory_max_mode")
+        maximum = row.get("memory_max_bytes")
+        current = row.get("memory_current_bytes")
+        if (
+            type(path) is not str
+            or not path.startswith("/")
+            or path.startswith("//")
+            or PurePosixPath(path).as_posix() != path
+            or ".." in path.split("/")
+        ):
+            _fail("service cgroup ancestry path changed")
+        if index:
+            previous = PurePosixPath(ancestry[index - 1]["cgroup_path"])
+            if previous == PurePosixPath("/") or PurePosixPath(path) != previous.parent:
+                _fail("service cgroup ancestry is not an exact parent chain")
+        if mode == "MAX":
+            valid = maximum is None and type(current) is int and current >= 0
+        elif mode == "FINITE":
+            valid = (
+                type(maximum) is int
+                and maximum > 0
+                and type(current) is int
+                and current >= 0
+            )
+        elif mode == "ROOT_DELEGATED_VIEW_NO_LOCAL_MEMORY_FILES":
+            valid = (
+                index == len(ancestry) - 1
+                and path == "/"
+                and maximum is None
+                and current is None
+            )
+        else:
+            valid = False
+        if not valid:
+            _fail("service cgroup ancestry semantics changed")
+    if ancestry[-1]["cgroup_path"] != "/":
+        _fail("service cgroup ancestry omitted the root")
     finite = [row for row in ancestry if row.get("memory_max_mode") == "FINITE"]
     return {
         "memory_total_gate": values["memory_total_bytes"] >= MINIMUM_MEMORY_TOTAL_BYTES,
@@ -557,8 +603,7 @@ def _resource_checks(values: dict[str, object]) -> dict[str, bool]:
         and (values["swap_total_bytes"] != 0 or values["swap_free_bytes"] == 0),
         "filesystem_available_gate": values["filesystem_available_bytes"]
         >= MINIMUM_FILESYSTEM_AVAILABLE_BYTES,
-        "cgroup_memory_gate": bool(finite)
-        and all(
+        "cgroup_memory_gate": all(
             row["memory_max_bytes"] >= MINIMUM_MEMORY_TOTAL_BYTES
             and row["memory_max_bytes"] - row["memory_current_bytes"]
             >= MINIMUM_MEMORY_AVAILABLE_BYTES
