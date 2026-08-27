@@ -793,6 +793,22 @@ def _execution_manifest_from_commit(
     )
 
 
+def _is_exact_direct_script_main_v42r1(
+    *,
+    module_name: str,
+    origin: object,
+    file_name: object,
+    bootstrap_path: Path,
+) -> bool:
+    """Recognize CPython's one native direct-script ``__main__`` shape."""
+
+    return (
+        module_name == "__main__"
+        and origin is None
+        and file_name == str(bootstrap_path)
+    )
+
+
 def _verify_live_build_tcb_matches_commit_v42r1(
     root: Path,
     *,
@@ -805,10 +821,30 @@ def _verify_live_build_tcb_matches_commit_v42r1(
         fact["relative_path"]: fact for fact in source_manifest["source_facts"]
     }
     resolved_root = root.resolve(strict=True)
+    bootstrap_path = Path(__file__)
+    if (
+        not bootstrap_path.is_absolute()
+        or bootstrap_path.resolve(strict=True) != bootstrap_path
+    ):
+        _fail("live bootstrap builder source is redirected")
     observed_rows: list[tuple[str, str, str]] = []
     for module_name, module in sorted(sys.modules.items()):
         origin = getattr(getattr(module, "__spec__", None), "origin", None)
         file_name = getattr(module, "__file__", None)
+        # CPython deliberately gives a directly executed script a null
+        # ``__main__.__spec__``.  The exact isolated argv is checked before
+        # this function, and the entry source is checked below, so recognize
+        # only that one native direct-script shape here.  The already-fixed
+        # bootstrap path is added below as ``__bootstrap_entry__`` and receives
+        # the same no-follow/hash/Git-fact checks as every imported module.
+        # Imported modules must still expose both origin and file values.
+        if _is_exact_direct_script_main_v42r1(
+            module_name=module_name,
+            origin=origin,
+            file_name=file_name,
+            bootstrap_path=bootstrap_path,
+        ):
+            continue
         candidates = [value for value in (origin, file_name) if type(value) is str]
         repo_relative: str | None = None
         exact_origin: str | None = None
@@ -830,9 +866,6 @@ def _verify_live_build_tcb_matches_commit_v42r1(
         if origin != exact_origin or file_name != exact_origin:
             _fail("live build TCB module origin or __file__ is not exact")
         observed_rows.append((module_name, repo_relative, exact_origin))
-    bootstrap_path = Path(__file__)
-    if bootstrap_path.resolve(strict=True) != bootstrap_path:
-        _fail("live bootstrap builder source is redirected")
     bootstrap_relative = bootstrap_path.relative_to(resolved_root).as_posix()
     if not any(row[1] == bootstrap_relative for row in observed_rows):
         observed_rows.append(("__bootstrap_entry__", bootstrap_relative, str(bootstrap_path)))

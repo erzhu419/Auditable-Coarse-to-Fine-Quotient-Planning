@@ -43,6 +43,36 @@ def _live_bootstrap_constants() -> dict[str, object]:
     }
 
 
+def test_direct_script_main_has_the_only_nullable_live_tcb_spec_origin() -> None:
+    source = Path(bootstrap.__file__)
+    is_direct_main = bootstrap._is_exact_direct_script_main_v42r1  # noqa: SLF001
+
+    assert is_direct_main(
+        module_name="__main__",
+        origin=None,
+        file_name=str(source),
+        bootstrap_path=source,
+    )
+    assert not is_direct_main(
+        module_name="imported_module",
+        origin=None,
+        file_name=str(source),
+        bootstrap_path=source,
+    )
+    assert not is_direct_main(
+        module_name="__main__",
+        origin=None,
+        file_name=str(source) + ".redirected",
+        bootstrap_path=source,
+    )
+    assert not is_direct_main(
+        module_name="__main__",
+        origin="redirected-origin",
+        file_name=str(source),
+        bootstrap_path=source,
+    )
+
+
 @pytest.mark.parametrize("boundary", ["write_fchmod", "directory_chmod"])
 def test_bootstrap_publication_birth_ignores_hostile_umask_and_restores_it(
     monkeypatch: pytest.MonkeyPatch, boundary: str,
