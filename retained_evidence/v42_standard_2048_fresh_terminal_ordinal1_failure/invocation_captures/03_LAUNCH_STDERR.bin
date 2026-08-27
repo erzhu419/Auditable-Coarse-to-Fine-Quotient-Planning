@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/scripts/run_v42_standard_2048_fresh_terminal_campaign.py", line 786, in <module>
+    raise SystemExit(main())
+  File "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/scripts/run_v42_standard_2048_fresh_terminal_campaign.py", line 782, in main
+    return _prepare() if arguments.prepare else _launch()
+  File "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/scripts/run_v42_standard_2048_fresh_terminal_campaign.py", line 678, in _launch
+    campaign_bytes, verification_bytes, all_terminal = _parse_worker_envelope(
+  File "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/scripts/run_v42_standard_2048_fresh_terminal_campaign.py", line 314, in _parse_worker_envelope
+    raise V42WorkerProcessError(
+__main__.V42WorkerProcessError: V42 supervised worker exited 70
