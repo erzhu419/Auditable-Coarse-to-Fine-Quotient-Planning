@@ -157,6 +157,35 @@ def create_one_shot_root(path: Path, *, expected_parent: Path) -> None:
     fsync_directory(path)
 
 
+def create_one_shot_root_at(parent_descriptor: int, name: str) -> None:
+    """Create one exact 0700 child relative to an already-pinned parent FD."""
+
+    if (
+        type(parent_descriptor) is not int
+        or parent_descriptor < 0
+        or type(name) is not str
+        or not name
+        or name in {".", ".."}
+        or "/" in name
+        or "\x00" in name
+    ):
+        fail("V42 remote ordinal-2 one-shot dir-fd target changed")
+    parent = os.fstat(parent_descriptor)
+    if not stat.S_ISDIR(parent.st_mode):
+        fail("V42 remote ordinal-2 one-shot dir-fd parent is non-directory")
+    previous_umask = os.umask(0o077)
+    try:
+        try:
+            os.mkdir(name, 0o700, dir_fd=parent_descriptor)
+        except FileExistsError as error:
+            raise V42RemoteOrdinal2ProcessError(
+                "V42 remote ordinal-2 identity already exists; retry is forbidden"
+            ) from error
+    finally:
+        os.umask(previous_umask)
+    os.fsync(parent_descriptor)
+
+
 def rename_noreplace(parent: Path, old_name: str, new_name: str) -> None:
     """Atomically publish one child without permitting replacement.
 
@@ -567,6 +596,7 @@ __all__ = (
     "bounded_message",
     "child_classification",
     "create_one_shot_root",
+    "create_one_shot_root_at",
     "fail",
     "fsync_directory",
     "memfd_from_bytes",
