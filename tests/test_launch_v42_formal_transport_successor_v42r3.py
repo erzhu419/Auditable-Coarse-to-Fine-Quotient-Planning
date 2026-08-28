@@ -7,6 +7,7 @@ import hashlib
 import json
 import shlex
 import stat
+import subprocess
 import sys
 from types import SimpleNamespace
 
@@ -36,6 +37,25 @@ def test_effect_capable_launcher_rejects_missing_sealed_materials(
         match="lacks verified sealed materials",
     ):
         launcher._require_sealed_stage_materials()  # noqa: SLF001
+
+
+def test_coherent_git_anchor_query_accepts_exact_commit_and_tree() -> None:
+    expected_commit = subprocess.run(
+        [launcher.GIT, "-C", str(launcher.ROOT), "rev-parse", "HEAD^{commit}"],
+        check=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    ).stdout.decode("ascii").strip()
+    expected_tree = subprocess.run(
+        [launcher.GIT, "-C", str(launcher.ROOT), "rev-parse", "HEAD^{tree}"],
+        check=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    ).stdout.decode("ascii").strip()
+    assert launcher._coherent_git_anchors(expected_commit) == (  # noqa: SLF001
+        expected_commit,
+        expected_tree,
+    )
 
 
 def test_controller_tcb_is_exact_predecessor_plus_six_native_paths() -> None:

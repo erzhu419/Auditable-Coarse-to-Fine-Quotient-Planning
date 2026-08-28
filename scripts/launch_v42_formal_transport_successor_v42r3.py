@@ -501,7 +501,7 @@ def _coherent_git_anchors(expected_commit: str) -> tuple[str, str]:
     if _HEX40.fullmatch(expected_commit) is None:
         _fail("expected V42r3 commit anchor changed")
     raw = _run_git(
-        "-C", str(ROOT), "rev-parse", "--verify",
+        "-C", str(ROOT), "rev-parse",
         "HEAD^{commit}", expected_commit + "^{tree}",
     )
     if len(raw) != 82 or raw.count(b"\n") != 2 or not raw.endswith(b"\n"):
