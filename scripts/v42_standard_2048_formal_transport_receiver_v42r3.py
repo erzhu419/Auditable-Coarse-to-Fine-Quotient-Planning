@@ -715,6 +715,7 @@ def _build_receipt_adapter(
     *, plan: Mapping[str, Any], observed_runtime: Mapping[str, Any],
     manager_binding: Mapping[str, Any], resource_observation: Mapping[str, Any],
     remote_tool_facts: Mapping[str, Any],
+    formal_successor_journal_state: str,
 ) -> dict[str, Any]:
     builder = getattr(formal, "build_formal_host_epoch_receipt_v42r3", None)
     if not callable(builder):
@@ -725,6 +726,7 @@ def _build_receipt_adapter(
         manager_binding=manager_binding,
         resource_observation=resource_observation,
         remote_tool_facts=remote_tool_facts,
+        formal_successor_journal_state=formal_successor_journal_state,
     )
     if type(receipt) is not dict:
         _fail("successor host epoch receipt changed type")
@@ -2866,6 +2868,7 @@ def _host_probe(
         manager_binding=manager,
         resource_observation=resources,
         remote_tool_facts=tools,
+        formal_successor_journal_state=_formal_successor_journal_state(),
     )
     raw = canonical_json_bytes(receipt)
     sys.stdout.buffer.write(raw + b"\n")

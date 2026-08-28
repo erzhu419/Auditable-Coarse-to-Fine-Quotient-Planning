@@ -1239,6 +1239,7 @@ def build_formal_host_epoch_receipt_v42r3(
     *, probe_plan: Mapping[str, Any], observed_runtime: Mapping[str, Any],
     manager_binding: Mapping[str, Any], resource_observation: Mapping[str, Any],
     remote_tool_facts: Mapping[str, Any],
+    formal_successor_journal_state: str,
 ) -> dict[str, Any]:
     plan = verify_formal_host_epoch_probe_plan_v42r3(probe_plan)
     runtime = _verify_runtime(observed_runtime)
@@ -1248,6 +1249,8 @@ def build_formal_host_epoch_receipt_v42r3(
         manager_control_group=manager["user_manager_control_group"],
     )
     tools = _verify_tools(remote_tool_facts)
+    if formal_successor_journal_state != "ABSENT":
+        _fail("formal successor journal was not absent at host probe")
     payload = {
         **_base(FORMAL_HOST_EPOCH_RECEIPT_SCHEMA),
         "formal_host_epoch_probe_plan_id": plan[
@@ -1257,6 +1260,7 @@ def build_formal_host_epoch_receipt_v42r3(
         "manager_binding": manager,
         "resource_observation": resources,
         "remote_tool_facts": tools,
+        "formal_successor_journal_state_at_probe": "ABSENT",
         "all_formal_resource_gates_passed": True,
         "authenticated_loader_and_receiver_observation_was_read_only": True,
         "authenticated_loader_and_receiver_remote_mutation_performed": False,
@@ -1291,6 +1295,7 @@ def verify_formal_host_epoch_receipt_v42r3(
             "manager_binding",
             "resource_observation",
             "remote_tool_facts",
+            "formal_successor_journal_state_at_probe",
             "all_formal_resource_gates_passed",
             "authenticated_loader_and_receiver_observation_was_read_only",
             "authenticated_loader_and_receiver_remote_mutation_performed",
@@ -1322,7 +1327,8 @@ def verify_formal_host_epoch_receipt_v42r3(
     )
     _verify_tools(document["remote_tool_facts"])
     if (
-        document["all_formal_resource_gates_passed"] is not True
+        document["formal_successor_journal_state_at_probe"] != "ABSENT"
+        or document["all_formal_resource_gates_passed"] is not True
         or document[
             "authenticated_loader_and_receiver_observation_was_read_only"
         ] is not True

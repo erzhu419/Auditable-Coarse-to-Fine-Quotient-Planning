@@ -277,6 +277,7 @@ def _host_receipt() -> dict[str, object]:
         manager_binding=_manager(),
         resource_observation=_resources(),
         remote_tool_facts=_tools(),
+        formal_successor_journal_state="ABSENT",
     )
 
 
@@ -545,6 +546,7 @@ def test_host_epoch_receipt_round_trips_and_rejects_mutation_or_failed_gate() ->
         manager_binding=_manager(),
         resource_observation=_resources(),
         remote_tool_facts=_tools(),
+        formal_successor_journal_state="ABSENT",
     )
     assert receipt[
         "authenticated_loader_and_receiver_observation_was_read_only"
@@ -555,6 +557,7 @@ def test_host_epoch_receipt_round_trips_and_rejects_mutation_or_failed_gate() ->
     assert receipt[
         "authenticated_loader_and_receiver_systemd_lifecycle_mutation_performed"
     ] is False
+    assert receipt["formal_successor_journal_state_at_probe"] == "ABSENT"
     assert receipt["end_to_end_remote_mutation_absence_claimed"] is False
     assert receipt["end_to_end_systemd_mutation_absence_claimed"] is False
     assert receipt["activation_effect_replay_authorized"] is False
@@ -567,6 +570,16 @@ def test_host_epoch_receipt_round_trips_and_rejects_mutation_or_failed_gate() ->
     with pytest.raises(formal.V42FormalTransportSuccessorError):
         formal.verify_formal_host_epoch_receipt_v42r3(mutated)
 
+    with pytest.raises(formal.V42FormalTransportSuccessorError):
+        formal.build_formal_host_epoch_receipt_v42r3(
+            probe_plan=_plan(),
+            observed_runtime=_runtime(),
+            manager_binding=_manager(),
+            resource_observation=_resources(),
+            remote_tool_facts=_tools(),
+            formal_successor_journal_state="DIRECTORY",
+        )
+
     resources = _resources()
     resources["memory_available_bytes"] = 1
     with pytest.raises(formal.V42FormalTransportSuccessorError):
@@ -576,6 +589,7 @@ def test_host_epoch_receipt_round_trips_and_rejects_mutation_or_failed_gate() ->
             manager_binding=_manager(),
             resource_observation=resources,
             remote_tool_facts=_tools(),
+            formal_successor_journal_state="ABSENT",
         )
 
 
