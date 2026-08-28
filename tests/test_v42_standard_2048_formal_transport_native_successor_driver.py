@@ -112,9 +112,13 @@ def test_historical_successor_sources_bind_declared_commit_without_head(
 ) -> None:
     commit = "1" * 40
     tree = "2" * 40
+    selected_paths = (
+        native.SUCCESSOR_CONTROLLER_TCB_PATHS
+        | native.RETAINED_PLAN_PROGRAM_PATHS
+    )
     raws = {
         relative: (relative + "\n").encode("utf-8")
-        for relative in native.SUCCESSOR_CONTROLLER_TCB_PATHS
+        for relative in selected_paths
     }
     facts = []
     oid_to_raw: dict[str, bytes] = {}
@@ -125,16 +129,17 @@ def test_historical_successor_sources_bind_declared_commit_without_head(
             b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw
         ).hexdigest()
         oid_to_raw[oid] = raw
-        facts.append(
-            {
-                "relative_path": relative,
-                "git_mode": "100644",
-                "git_object_type": "blob",
-                "git_blob_oid": oid,
-                "byte_count": len(raw),
-                "sha256": hashlib.sha256(raw).hexdigest(),
-            }
-        )
+        if relative in native.SUCCESSOR_CONTROLLER_TCB_PATHS:
+            facts.append(
+                {
+                    "relative_path": relative,
+                    "git_mode": "100644",
+                    "git_object_type": "blob",
+                    "git_blob_oid": oid,
+                    "byte_count": len(raw),
+                    "sha256": hashlib.sha256(raw).hexdigest(),
+                }
+            )
         rows.append((f"100644 blob {oid}\t{relative}").encode("utf-8"))
     calls: list[tuple[str, ...]] = []
 
@@ -165,7 +170,7 @@ def test_historical_successor_sources_bind_declared_commit_without_head(
         {"source_commit": commit, "source_tree": tree, "source_facts": facts}
     )
     assert observed == raws
-    assert set(git_tree) == native.SUCCESSOR_CONTROLLER_TCB_PATHS
+    assert set(git_tree) == selected_paths
     assert calls[0] == ("--version",)
 
 

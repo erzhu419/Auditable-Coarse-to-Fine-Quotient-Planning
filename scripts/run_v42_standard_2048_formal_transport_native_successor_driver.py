@@ -140,6 +140,19 @@ SUCCESSOR_CONTROLLER_TCB_PATHS = frozenset(
         "src/acfqp/phase3e_ids.py",
     }
 )
+RETAINED_PLAN_PROGRAM_PATHS = frozenset(
+    {
+        preformal.PREFORMAL_LOADER_SOURCE_RELATIVE,
+        preformal.PREFORMAL_RECEIVER_SOURCE_RELATIVE,
+        legacy.ACTIVATION_LOADER_RELATIVE,
+        legacy.ACTIVATION_RECEIVER_RELATIVE,
+        legacy.ACTIVATION_SERVICE_RELATIVE,
+        legacy.ACTIVATION_DRIVER_RELATIVE,
+        legacy.ACTIVATION_AUTHORITY_RELATIVE,
+        successor.SUCCESSOR_LOADER_RELATIVE,
+        successor.SUCCESSOR_RECEIVER_RELATIVE,
+    }
+)
 _FROZEN_GIT_MODULE_NAME = "_acfqp_frozen_preformal_launcher_primitives"
 _FROZEN_GIT_MODULE: object | None = None
 _FROZEN_GIT_PRIMITIVES: Mapping[str, object] | None = None
@@ -294,9 +307,10 @@ def _historical_successor_sources(
     expected_anchors = ([commit.encode("ascii")], [tree.encode("ascii")])
     if selected_anchors() != expected_anchors:
         _fail("successor historical Git commit/tree anchor changed")
+    selected_paths = SUCCESSOR_CONTROLLER_TCB_PATHS | RETAINED_PLAN_PROGRAM_PATHS
     listing = run(
         "-C", str(ROOT), "ls-tree", "-rz", "--full-tree", commit, "--",
-        *sorted(SUCCESSOR_CONTROLLER_TCB_PATHS),
+        *sorted(selected_paths),
     )
     if selected_anchors() != expected_anchors:
         _fail("successor historical Git anchor changed across tree listing")
@@ -318,34 +332,36 @@ def _historical_successor_sources(
             raise V42NativeFormalInputError(
                 "successor historical Git tree row changed"
             ) from error
-        if relative in git_tree or relative not in facts:
+        if relative in git_tree or relative not in selected_paths:
             _fail("successor historical Git tree inventory changed")
         git_tree[relative] = row
-    if set(git_tree) != set(facts):
-        _fail("successor historical Git tree omitted a controller source")
+    if set(git_tree) != selected_paths:
+        _fail("successor historical Git tree omitted a retained source")
     raws: dict[str, bytes] = {}
-    for relative in sorted(facts):
-        fact = facts[relative]
+    for relative in sorted(selected_paths):
         mode, kind, oid = git_tree[relative]
-        if (
-            mode != fact.get("git_mode")
-            or kind != fact.get("git_object_type")
-            or oid != fact.get("git_blob_oid")
-            or kind != "blob"
-        ):
+        if mode != "100644" or kind != "blob":
             _fail("successor historical Git fact changed: " + relative)
         raw = run("-C", str(ROOT), "cat-file", "blob", oid)
         if (
             not raw
             or len(raw) > 4 * 1024**2
-            or fact.get("byte_count") != len(raw)
-            or fact.get("sha256") != hashlib.sha256(raw).hexdigest()
             or oid
             != hashlib.sha1(  # noqa: S324 - exact Git blob identity
                 b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw
             ).hexdigest()
         ):
             _fail("successor historical Git blob changed: " + relative)
+        if relative in facts:
+            fact = facts[relative]
+            if (
+                mode != fact.get("git_mode")
+                or kind != fact.get("git_object_type")
+                or oid != fact.get("git_blob_oid")
+                or fact.get("byte_count") != len(raw)
+                or fact.get("sha256") != hashlib.sha256(raw).hexdigest()
+            ):
+                _fail("successor controller source fact changed: " + relative)
         raws[relative] = raw
     if selected_anchors() != expected_anchors:
         _fail("successor historical Git anchor changed across blob reads")
