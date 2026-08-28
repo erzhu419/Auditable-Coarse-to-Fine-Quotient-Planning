@@ -38,13 +38,13 @@ FORMAL_HOST_EPOCH_RECEIPT_SCHEMA = (
 )
 FORMAL_HOST_EPOCH_TRANSPORT_OBSERVATION_SCHEMA = (
     "acfqp.v42_formal_transport_successor_host_epoch_transport_observation."
-    "v42r3r2"
+    "v42r3r3"
 )
 FORMAL_HOST_EPOCH_PROBE_ATTEMPT_SCHEMA = (
-    "acfqp.v42_formal_transport_successor_host_epoch_probe_attempt.v42r3r2"
+    "acfqp.v42_formal_transport_successor_host_epoch_probe_attempt.v42r3r3"
 )
 FORMAL_HOST_EPOCH_DISPATCH_FAILURE_SCHEMA = (
-    "acfqp.v42_formal_transport_successor_host_epoch_dispatch_failure.v42r3r2"
+    "acfqp.v42_formal_transport_successor_host_epoch_dispatch_failure.v42r3r3"
 )
 EXTERNAL_LOCAL_STAGE0_ASSUMPTION_SCHEMA = (
     "acfqp.v42_formal_transport_external_local_stage0_assumption.v42r3"
@@ -67,14 +67,14 @@ FORMAL_HOST_EPOCH_RECEIPT_DOMAIN = (
 )
 FORMAL_HOST_EPOCH_TRANSPORT_OBSERVATION_DOMAIN = (
     b"acfqp:v42-formal-transport-successor:host-epoch-transport-observation:"
-    b"v42r3r2"
+    b"v42r3r3"
 )
 FORMAL_HOST_EPOCH_PROBE_ATTEMPT_DOMAIN = (
-    b"acfqp:v42-formal-transport-successor:host-epoch-probe-attempt:v42r3r2"
+    b"acfqp:v42-formal-transport-successor:host-epoch-probe-attempt:v42r3r3"
 )
 FORMAL_HOST_EPOCH_DISPATCH_FAILURE_DOMAIN = (
     b"acfqp:v42-formal-transport-successor:host-epoch-dispatch-failure:"
-    b"v42r3r2"
+    b"v42r3r3"
 )
 EXTERNAL_LOCAL_STAGE0_ASSUMPTION_DOMAIN = (
     b"acfqp:v42-formal-transport:external-local-stage0-assumption:v42r3"
@@ -147,16 +147,16 @@ FORMAL_CLASSIFICATION_DOMAIN = (
 
 LOCAL_FORMAL_JOURNAL_ROOT = PurePosixPath(
     "/home/erzhu419/mine_code/"
-    ".acfqp-v42-local-formal-transport-ordinal2-v42r3r2"
+    ".acfqp-v42-local-formal-transport-ordinal2-v42r3r3"
 )
 REMOTE_FORMAL_JOURNAL_ROOT = PurePosixPath(
     "/home/erzhu419/mine_code/"
-    ".acfqp-v42-remote-ordinal2-formal-transport-v42r3r2"
+    ".acfqp-v42-remote-ordinal2-formal-transport-v42r3r3"
 )
 LOCAL_KNOWN_HOSTS_NAME = "PINNED_KNOWN_HOSTS"
 
 SYSTEMD_RUN = "/usr/bin/systemd-run"
-SYSTEMD_UNIT_PREFIX = "acfqp-v42r3r2-remote-ordinal2-"
+SYSTEMD_UNIT_PREFIX = "acfqp-v42r3r3-remote-ordinal2-"
 SYSTEMD_SLICE = "app.slice"
 SYSTEMD_TIMEOUT_STOP_SECONDS = 30
 SYSTEMD_RUNTIME_MAX_SECONDS = 606_300
@@ -1374,7 +1374,7 @@ def verify_formal_host_epoch_receipt_v42r3(
     return document
 
 
-def build_formal_host_epoch_probe_attempt_v42r3r2(
+def build_formal_host_epoch_probe_attempt_v42r3r3(
     *, probe_plan: Mapping[str, Any],
 ) -> dict[str, Any]:
     """Publish a conservative one-shot cut before any probe dispatch."""
@@ -1400,11 +1400,11 @@ def build_formal_host_epoch_probe_attempt_v42r3r2(
     }
 
 
-def verify_formal_host_epoch_probe_attempt_v42r3r2(
+def verify_formal_host_epoch_probe_attempt_v42r3r3(
     value: bytes | Mapping[str, Any], *, probe_plan: Mapping[str, Any],
 ) -> dict[str, Any]:
     document = _canonical_document(value, "formal host epoch probe attempt")
-    expected = build_formal_host_epoch_probe_attempt_v42r3r2(
+    expected = build_formal_host_epoch_probe_attempt_v42r3r3(
         probe_plan=probe_plan
     )
     if document != expected:
@@ -1456,12 +1456,12 @@ def _verify_host_probe_failure_fact(value: Any) -> dict[str, Any]:
     return fact
 
 
-def build_formal_host_epoch_dispatch_failure_v42r3r2(
+def build_formal_host_epoch_dispatch_failure_v42r3r3(
     *, probe_plan: Mapping[str, Any], probe_attempt: Mapping[str, Any],
     failure_fact: Mapping[str, Any],
 ) -> dict[str, Any]:
     plan = verify_formal_host_epoch_probe_plan_v42r3(probe_plan)
-    attempt = verify_formal_host_epoch_probe_attempt_v42r3r2(
+    attempt = verify_formal_host_epoch_probe_attempt_v42r3r3(
         probe_attempt, probe_plan=plan
     )
     failure = _verify_host_probe_failure_fact(failure_fact)
@@ -1490,12 +1490,12 @@ def build_formal_host_epoch_dispatch_failure_v42r3r2(
     }
 
 
-def verify_formal_host_epoch_dispatch_failure_v42r3r2(
+def verify_formal_host_epoch_dispatch_failure_v42r3r3(
     value: bytes | Mapping[str, Any], *, probe_plan: Mapping[str, Any],
     probe_attempt: Mapping[str, Any],
 ) -> dict[str, Any]:
     document = _canonical_document(value, "formal host epoch dispatch failure")
-    expected = build_formal_host_epoch_dispatch_failure_v42r3r2(
+    expected = build_formal_host_epoch_dispatch_failure_v42r3r3(
         probe_plan=probe_plan,
         probe_attempt=probe_attempt,
         failure_fact=document.get("failure_fact"),
@@ -1509,9 +1509,9 @@ _HOST_PROBE_CAPTURE_PREFIX_MAX_BYTES = 4096
 _HOST_PROBE_STDOUT_CAP_BYTES = 64 * 1024**2
 _HOST_PROBE_STDERR_CAP_BYTES = 1024**2
 _LOADER_FAILURE_DIAGNOSTIC_SCHEMA = (
-    "acfqp.v42r3r2_formal_loader_failure_diagnostic"
+    "acfqp.v42r3r3_formal_loader_failure_diagnostic"
 )
-_LOADER_FAILURE_DIAGNOSTIC_VERSION = "42.3.2"
+_LOADER_FAILURE_DIAGNOSTIC_VERSION = "42.3.3"
 _LOADER_FAILURE_DIAGNOSTIC_SCOPE = "DIAGNOSTIC_ONLY_NOT_FORMAL_RECEIPT"
 _LOADER_FAILURE_DIAGNOSTIC_MAX_BYTES = 4096
 _LOADER_FAILURE_MESSAGE_PREFIX_BYTES = 256
@@ -1707,14 +1707,14 @@ def _verify_host_probe_child_observation(value: Any) -> tuple[dict[str, Any], bo
     return fact, closed_exactly
 
 
-def build_formal_host_epoch_transport_observation_v42r3r2(
+def build_formal_host_epoch_transport_observation_v42r3r3(
     *, probe_plan: Mapping[str, Any], probe_attempt: Mapping[str, Any],
     child_observation: Mapping[str, Any],
 ) -> dict[str, Any]:
     """Bind the controller-visible SSH closure before accepting a receipt."""
 
     plan = verify_formal_host_epoch_probe_plan_v42r3(probe_plan)
-    attempt = verify_formal_host_epoch_probe_attempt_v42r3r2(
+    attempt = verify_formal_host_epoch_probe_attempt_v42r3r3(
         probe_attempt, probe_plan=plan
     )
     child, closed_exactly = _verify_host_probe_child_observation(
@@ -1748,14 +1748,14 @@ def build_formal_host_epoch_transport_observation_v42r3r2(
     }
 
 
-def verify_formal_host_epoch_transport_observation_v42r3r2(
+def verify_formal_host_epoch_transport_observation_v42r3r3(
     value: bytes | Mapping[str, Any], *, probe_plan: Mapping[str, Any],
     probe_attempt: Mapping[str, Any],
 ) -> dict[str, Any]:
     document = _canonical_document(
         value, "formal host epoch transport observation"
     )
-    expected = build_formal_host_epoch_transport_observation_v42r3r2(
+    expected = build_formal_host_epoch_transport_observation_v42r3r3(
         probe_plan=probe_plan,
         probe_attempt=probe_attempt,
         child_observation=document.get("child_observation"),
@@ -2052,13 +2052,13 @@ def _verify_loader_failure_diagnostic(raw: bytes) -> dict[str, Any]:
     return document
 
 
-def verify_formal_host_epoch_loader_failure_join_v42r3r2(
+def verify_formal_host_epoch_loader_failure_join_v42r3r3(
     *, transport_observation: bytes | Mapping[str, Any],
     probe_plan: Mapping[str, Any], probe_attempt: Mapping[str, Any],
 ) -> dict[str, Any]:
     """Authenticate one bounded loader failure without authorizing replay."""
 
-    observation = verify_formal_host_epoch_transport_observation_v42r3r2(
+    observation = verify_formal_host_epoch_transport_observation_v42r3r3(
         transport_observation,
         probe_plan=probe_plan,
         probe_attempt=probe_attempt,
@@ -2093,7 +2093,7 @@ def verify_formal_host_epoch_loader_failure_join_v42r3r2(
     return _verify_loader_failure_diagnostic(raw)
 
 
-def verify_formal_host_epoch_transport_receipt_join_v42r3r2(
+def verify_formal_host_epoch_transport_receipt_join_v42r3r3(
     *, transport_observation: bytes | Mapping[str, Any],
     probe_plan: Mapping[str, Any], probe_attempt: Mapping[str, Any],
     receipt_raw: bytes,
@@ -2101,7 +2101,7 @@ def verify_formal_host_epoch_transport_receipt_join_v42r3r2(
     """Require the exact successful stdout stream to frame the retained receipt."""
 
     plan = verify_formal_host_epoch_probe_plan_v42r3(probe_plan)
-    observation = verify_formal_host_epoch_transport_observation_v42r3r2(
+    observation = verify_formal_host_epoch_transport_observation_v42r3r3(
         transport_observation,
         probe_plan=plan,
         probe_attempt=probe_attempt,

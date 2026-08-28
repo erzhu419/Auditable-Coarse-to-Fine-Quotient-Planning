@@ -596,12 +596,12 @@ def test_host_epoch_receipt_round_trips_and_rejects_mutation_or_failed_gate() ->
 
 def test_probe_attempt_and_transport_observation_are_one_shot_and_auditable() -> None:
     plan = _plan()
-    attempt = formal.build_formal_host_epoch_probe_attempt_v42r3r2(
+    attempt = formal.build_formal_host_epoch_probe_attempt_v42r3r3(
         probe_plan=plan
     )
     assert attempt["controller_same_probe_dispatch_replay_allowed"] is False
     assert attempt["network_dispatch_started_at_publication"] is False
-    assert formal.verify_formal_host_epoch_probe_attempt_v42r3r2(
+    assert formal.verify_formal_host_epoch_probe_attempt_v42r3r3(
         canonical_json_bytes(attempt), probe_plan=plan
     ) == attempt
 
@@ -639,7 +639,7 @@ def test_probe_attempt_and_transport_observation_are_one_shot_and_auditable() ->
         "stderr_eof": True,
     }
     observation = (
-        formal.build_formal_host_epoch_transport_observation_v42r3r2(
+        formal.build_formal_host_epoch_transport_observation_v42r3r3(
             probe_plan=plan,
             probe_attempt=attempt,
             child_observation=child,
@@ -650,19 +650,19 @@ def test_probe_attempt_and_transport_observation_are_one_shot_and_auditable() ->
     assert observation[
         "formal_host_epoch_receipt_authenticated_by_this_observation"
     ] is False
-    assert formal.verify_formal_host_epoch_transport_observation_v42r3r2(
+    assert formal.verify_formal_host_epoch_transport_observation_v42r3r3(
         canonical_json_bytes(observation),
         probe_plan=plan,
         probe_attempt=attempt,
     ) == observation
-    assert formal.verify_formal_host_epoch_transport_receipt_join_v42r3r2(
+    assert formal.verify_formal_host_epoch_transport_receipt_join_v42r3r3(
         transport_observation=observation,
         probe_plan=plan,
         probe_attempt=attempt,
         receipt_raw=receipt_raw,
     ) == receipt
     with pytest.raises(formal.V42FormalTransportSuccessorError):
-        formal.verify_formal_host_epoch_transport_receipt_join_v42r3r2(
+        formal.verify_formal_host_epoch_transport_receipt_join_v42r3r3(
             transport_observation=observation,
             probe_plan=plan,
             probe_attempt=attempt,
@@ -678,7 +678,7 @@ def test_probe_attempt_and_transport_observation_are_one_shot_and_auditable() ->
         stderr_total_byte_count=11,
         stderr_sha256=hashlib.sha256(b"ssh failure").hexdigest(),
     )
-    failed = formal.build_formal_host_epoch_transport_observation_v42r3r2(
+    failed = formal.build_formal_host_epoch_transport_observation_v42r3r3(
         probe_plan=plan,
         probe_attempt=attempt,
         child_observation=failed_child,
@@ -697,7 +697,7 @@ def test_probe_attempt_and_transport_observation_are_one_shot_and_auditable() ->
         stdout_sha256="2" * 64,
         stdout_overflow=True,
     )
-    overflow = formal.build_formal_host_epoch_transport_observation_v42r3r2(
+    overflow = formal.build_formal_host_epoch_transport_observation_v42r3r3(
         probe_plan=plan,
         probe_attempt=attempt,
         child_observation=overflow_child,
@@ -706,14 +706,14 @@ def test_probe_attempt_and_transport_observation_are_one_shot_and_auditable() ->
     malformed_overflow = copy.deepcopy(overflow_child)
     malformed_overflow["stdout_retained_byte_count"] = 64 * 1024**2
     with pytest.raises(formal.V42FormalTransportSuccessorError):
-        formal.build_formal_host_epoch_transport_observation_v42r3r2(
+        formal.build_formal_host_epoch_transport_observation_v42r3r3(
             probe_plan=plan,
             probe_attempt=attempt,
             child_observation=malformed_overflow,
         )
 
     message = b"local dispatch failed"
-    failure = formal.build_formal_host_epoch_dispatch_failure_v42r3r2(
+    failure = formal.build_formal_host_epoch_dispatch_failure_v42r3r3(
         probe_plan=plan,
         probe_attempt=attempt,
         failure_fact={
@@ -726,7 +726,7 @@ def test_probe_attempt_and_transport_observation_are_one_shot_and_auditable() ->
     )
     assert failure["controller_same_probe_dispatch_replay_allowed"] is False
     assert failure["network_dispatch_may_have_started"] is True
-    assert formal.verify_formal_host_epoch_dispatch_failure_v42r3r2(
+    assert formal.verify_formal_host_epoch_dispatch_failure_v42r3r3(
         canonical_json_bytes(failure),
         probe_plan=plan,
         probe_attempt=attempt,
@@ -735,14 +735,14 @@ def test_probe_attempt_and_transport_observation_are_one_shot_and_auditable() ->
     changed = copy.deepcopy(observation)
     changed["process_closed_exactly"] = False
     with pytest.raises(formal.V42FormalTransportSuccessorError):
-        formal.verify_formal_host_epoch_transport_observation_v42r3r2(
+        formal.verify_formal_host_epoch_transport_observation_v42r3r3(
             changed, probe_plan=plan, probe_attempt=attempt
         )
 
 
 def test_loader_failure_join_authenticates_exact_bounded_stderr_only() -> None:
     plan = _plan()
-    attempt = formal.build_formal_host_epoch_probe_attempt_v42r3r2(
+    attempt = formal.build_formal_host_epoch_probe_attempt_v42r3r3(
         probe_plan=plan
     )
 
@@ -778,12 +778,12 @@ def test_loader_failure_join_authenticates_exact_bounded_stderr_only() -> None:
         raise RuntimeError("authenticated receiver failure")
     except RuntimeError as error:
         diagnostic_raw = loader._loader_failure_stderr(error)  # noqa: SLF001
-    observation = formal.build_formal_host_epoch_transport_observation_v42r3r2(
+    observation = formal.build_formal_host_epoch_transport_observation_v42r3r3(
         probe_plan=plan,
         probe_attempt=attempt,
         child_observation=_child(diagnostic_raw),
     )
-    diagnostic = formal.verify_formal_host_epoch_loader_failure_join_v42r3r2(
+    diagnostic = formal.verify_formal_host_epoch_loader_failure_join_v42r3r3(
         transport_observation=observation,
         probe_plan=plan,
         probe_attempt=attempt,
@@ -838,14 +838,14 @@ def test_loader_failure_join_authenticates_exact_bounded_stderr_only() -> None:
     for changed in producer_invalid:
         changed_raw = canonical_json_bytes(changed) + b"\n"
         changed_observation = (
-            formal.build_formal_host_epoch_transport_observation_v42r3r2(
+            formal.build_formal_host_epoch_transport_observation_v42r3r3(
                 probe_plan=plan,
                 probe_attempt=attempt,
                 child_observation=_child(changed_raw),
             )
         )
         with pytest.raises(formal.V42FormalTransportSuccessorError):
-            formal.verify_formal_host_epoch_loader_failure_join_v42r3r2(
+            formal.verify_formal_host_epoch_loader_failure_join_v42r3r3(
                 transport_observation=changed_observation,
                 probe_plan=plan,
                 probe_attempt=attempt,
@@ -895,13 +895,13 @@ def test_loader_failure_join_authenticates_exact_bounded_stderr_only() -> None:
         legal_diagnostics.append(line_zero_raw)
     for legal_raw in legal_diagnostics:
         legal_observation = (
-            formal.build_formal_host_epoch_transport_observation_v42r3r2(
+            formal.build_formal_host_epoch_transport_observation_v42r3r3(
                 probe_plan=plan,
                 probe_attempt=attempt,
                 child_observation=_child(legal_raw),
             )
         )
-        formal.verify_formal_host_epoch_loader_failure_join_v42r3r2(
+        formal.verify_formal_host_epoch_loader_failure_join_v42r3r3(
             transport_observation=legal_observation,
             probe_plan=plan,
             probe_attempt=attempt,
@@ -914,13 +914,13 @@ def test_loader_failure_join_authenticates_exact_bounded_stderr_only() -> None:
     )
 
     fallback_observation = (
-        formal.build_formal_host_epoch_transport_observation_v42r3r2(
+        formal.build_formal_host_epoch_transport_observation_v42r3r3(
             probe_plan=plan,
             probe_attempt=attempt,
             child_observation=_child(loader.GENERIC_LOADER_FAILURE),
         )
     )
-    fallback = formal.verify_formal_host_epoch_loader_failure_join_v42r3r2(
+    fallback = formal.verify_formal_host_epoch_loader_failure_join_v42r3r3(
         transport_observation=fallback_observation,
         probe_plan=plan,
         probe_attempt=attempt,
@@ -934,13 +934,13 @@ def test_loader_failure_join_authenticates_exact_bounded_stderr_only() -> None:
         _child(b"x" * 4097),
     )
     for rejected_child in rejected_children:
-        rejected = formal.build_formal_host_epoch_transport_observation_v42r3r2(
+        rejected = formal.build_formal_host_epoch_transport_observation_v42r3r3(
             probe_plan=plan,
             probe_attempt=attempt,
             child_observation=rejected_child,
         )
         with pytest.raises(formal.V42FormalTransportSuccessorError):
-            formal.verify_formal_host_epoch_loader_failure_join_v42r3r2(
+            formal.verify_formal_host_epoch_loader_failure_join_v42r3r3(
                 transport_observation=rejected,
                 probe_plan=plan,
                 probe_attempt=attempt,
@@ -949,8 +949,8 @@ def test_loader_failure_join_authenticates_exact_bounded_stderr_only() -> None:
 
 def test_effect_plan_round_trips_and_rejects_tamper_extra_and_root_drift() -> None:
     plan = _transport_plan()
-    assert plan["local_journal_root"].endswith("-v42r3r2")
-    assert plan["remote_journal_root"].endswith("-v42r3r2")
+    assert plan["local_journal_root"].endswith("-v42r3r3")
+    assert plan["remote_journal_root"].endswith("-v42r3r3")
     assert plan[
         "ssh_daemon_login_shell_pam_and_startup_hooks_are_external_tcb"
     ] is True

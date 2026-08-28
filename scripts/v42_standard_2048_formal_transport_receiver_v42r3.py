@@ -77,7 +77,7 @@ FIXED_REMOTE_ROOT = Path("/home/erzhu419/mine_code/.acfqp-v42-remote-ordinal2")
 FIXED_SOURCE_ROOT = FIXED_REMOTE_ROOT / "source"
 REMOTE_V42R3_JOURNAL_ROOT = Path(
     "/home/erzhu419/mine_code/"
-    ".acfqp-v42-remote-ordinal2-formal-transport-v42r3r2"
+    ".acfqp-v42-remote-ordinal2-formal-transport-v42r3r3"
 )
 REMOTE_CONTROLLER_NAME = "CONTROLLER_SOURCE_MANIFEST.json"
 REMOTE_LOADER_NAME = "FORMAL_TRANSPORT_LOADER.py"
@@ -95,7 +95,7 @@ REMOTE_JOURNAL_INITIAL_INVENTORY = (
     REMOTE_RECEIVER_NAME,
     REMOTE_TRANSPORT_ATTEMPT_NAME,
 )
-SYSTEMD_UNIT_PREFIX = "acfqp-v42r3r2-remote-ordinal2-"
+SYSTEMD_UNIT_PREFIX = "acfqp-v42r3r3-remote-ordinal2-"
 REMOTE_HOST_ALIAS = "jtl110gpu2"
 REMOTE_HOSTNAME = "erzhu419-Super-Server"
 REMOTE_USER = "erzhu419"

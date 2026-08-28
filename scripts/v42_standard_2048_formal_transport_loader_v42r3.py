@@ -71,7 +71,7 @@ FIXED_SOURCE_ROOT = FIXED_REMOTE_ROOT + "/source"
 SOURCE_MANIFEST_PATH = FIXED_REMOTE_ROOT + "/EXECUTION_SOURCE_MANIFEST.json"
 REMOTE_V42R3_JOURNAL_ROOT = (
     "/home/erzhu419/mine_code/"
-    ".acfqp-v42-remote-ordinal2-formal-transport-v42r3r2"
+    ".acfqp-v42-remote-ordinal2-formal-transport-v42r3r3"
 )
 REMOTE_CONTROLLER_NAME = "CONTROLLER_SOURCE_MANIFEST.json"
 REMOTE_LOADER_NAME = "FORMAL_TRANSPORT_LOADER.py"
@@ -92,9 +92,9 @@ LOADER_FAILURE_TRACEBACK_FRAMES = 6
 LOADER_FAILURE_TRACEBACK_SCAN_FRAMES = 128
 LOADER_FAILURE_MESSAGE_SCAN_CHARACTERS = 4096
 LOADER_FAILURE_DIAGNOSTIC_SCHEMA = (
-    "acfqp.v42r3r2_formal_loader_failure_diagnostic"
+    "acfqp.v42r3r3_formal_loader_failure_diagnostic"
 )
-LOADER_FAILURE_DIAGNOSTIC_VERSION = "42.3.2"
+LOADER_FAILURE_DIAGNOSTIC_VERSION = "42.3.3"
 GENERIC_LOADER_FAILURE = (
     b'{"diagnostic_builder_succeeded":false,'
     b'"diagnostic_scope":"DIAGNOSTIC_ONLY_NOT_FORMAL_RECEIPT",'
@@ -107,8 +107,8 @@ GENERIC_LOADER_FAILURE = (
     b'"prefix_truncated":false,"scan_complete":true,'
     b'"scanned_byte_count":13,"scanned_character_count":13,'
     b'"scanned_sha256":"2aa53a73f8ccc3f2fc7dce145503ec3c9e4dad8db3adcec2471c9745a74ec11f"},'
-    b'"schema":"acfqp.v42r3r2_formal_loader_failure_diagnostic",'
-    b'"schema_version":"42.3.2","traceback_frames":[],'
+    b'"schema":"acfqp.v42r3r3_formal_loader_failure_diagnostic",'
+    b'"schema_version":"42.3.3","traceback_frames":[],'
     b'"traceback_frames_truncated":false,'
     b'"traceback_scan_truncated":false,'
     b'"traceback_scanned_frame_count":0}\n'

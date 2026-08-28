@@ -1033,7 +1033,7 @@ def test_phase2_mode_schema_and_remote_root_inventory(receiver_module) -> None:
     assert all(schema.endswith(".v42r3") for schema in receiver_module.INGRESS_SCHEMAS.values())
     root = (
         "/home/erzhu419/mine_code/"
-        ".acfqp-v42-remote-ordinal2-formal-transport-v42r3r2"
+        ".acfqp-v42-remote-ordinal2-formal-transport-v42r3r3"
     )
     assert loader.REMOTE_V42R3_JOURNAL_ROOT == root
     assert str(receiver_module.REMOTE_V42R3_JOURNAL_ROOT) == root
