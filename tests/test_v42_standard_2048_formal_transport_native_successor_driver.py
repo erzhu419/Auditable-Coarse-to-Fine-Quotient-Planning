@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 from pathlib import Path
 
 import pytest
@@ -104,6 +105,68 @@ def test_native_projection_keeps_compatibility_anchor_non_authoritative() -> Non
     assert projected["activation_effect_replay_authorized"] is False
     assert "materialization_activation_final_evidence_index_id" not in projected
     assert "production_activation_core_id" not in projected
+
+
+def test_historical_successor_sources_bind_declared_commit_without_head(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    commit = "1" * 40
+    tree = "2" * 40
+    raws = {
+        relative: (relative + "\n").encode("utf-8")
+        for relative in native.SUCCESSOR_CONTROLLER_TCB_PATHS
+    }
+    facts = []
+    oid_to_raw: dict[str, bytes] = {}
+    rows = []
+    for relative in sorted(raws):
+        raw = raws[relative]
+        oid = hashlib.sha1(  # noqa: S324 - exact Git blob identity
+            b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw
+        ).hexdigest()
+        oid_to_raw[oid] = raw
+        facts.append(
+            {
+                "relative_path": relative,
+                "git_mode": "100644",
+                "git_object_type": "blob",
+                "git_blob_oid": oid,
+                "byte_count": len(raw),
+                "sha256": hashlib.sha256(raw).hexdigest(),
+            }
+        )
+        rows.append((f"100644 blob {oid}\t{relative}").encode("utf-8"))
+    calls: list[tuple[str, ...]] = []
+
+    def run(*arguments: str) -> bytes:
+        calls.append(arguments)
+        assert not any("HEAD" in argument for argument in arguments)
+        if arguments == ("--version",):
+            return b"git version test\n"
+        if arguments[-2:] == ("--verify", commit + "^{commit}"):
+            return (commit + "\n").encode("ascii")
+        if arguments[-2:] == ("--verify", commit + "^{tree}"):
+            return (tree + "\n").encode("ascii")
+        if "ls-tree" in arguments:
+            return b"\0".join(rows) + b"\0"
+        if "cat-file" in arguments:
+            return oid_to_raw[arguments[-1]]
+        raise AssertionError(arguments)
+
+    monkeypatch.setattr(
+        native,
+        "_frozen_git_primitives",
+        lambda: {
+            "_run_fixed_git_v42r1": run,
+            "GIT_VERSION_STDOUT": b"git version test\n",
+        },
+    )
+    git_tree, observed = native._historical_successor_sources(  # noqa: SLF001
+        {"source_commit": commit, "source_tree": tree, "source_facts": facts}
+    )
+    assert observed == raws
+    assert set(git_tree) == native.SUCCESSOR_CONTROLLER_TCB_PATHS
+    assert calls[0] == ("--version",)
 
 
 def test_native_verifier_has_no_legacy_core_builder_or_effect_entry() -> None:

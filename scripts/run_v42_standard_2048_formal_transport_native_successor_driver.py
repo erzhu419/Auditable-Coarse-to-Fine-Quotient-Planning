@@ -264,6 +264,94 @@ class VerifiedSuccessorDocumentsV42r2:
     legacy_core_anchor: dict[str, Any]
 
 
+def _historical_successor_sources(
+    source_manifest: Mapping[str, Any],
+) -> tuple[dict[str, tuple[str, str, str]], dict[str, bytes]]:
+    """Read the retained controller bytes from its declared historical tree."""
+
+    commit = _hex(source_manifest.get("source_commit"), 40, "source commit")
+    tree = _hex(source_manifest.get("source_tree"), 40, "source tree")
+    fact_rows = source_manifest.get("source_facts")
+    if type(fact_rows) is not list or any(type(row) is not dict for row in fact_rows):
+        _fail("successor source fact rows changed type")
+    facts = {row.get("relative_path"): row for row in fact_rows}
+    if set(facts) != SUCCESSOR_CONTROLLER_TCB_PATHS or len(facts) != len(fact_rows):
+        _fail("successor controller TCB source inventory changed")
+    primitives = _frozen_git_primitives()
+    run = primitives["_run_fixed_git_v42r1"]
+    if not callable(run) or run("--version") != primitives["GIT_VERSION_STDOUT"]:
+        _fail("frozen pinned Git version output changed")
+
+    def selected_anchors() -> tuple[list[bytes], list[bytes]]:
+        commit_rows = run(
+            "-C", str(ROOT), "rev-parse", "--verify", commit + "^{commit}"
+        ).splitlines()
+        tree_rows = run(
+            "-C", str(ROOT), "rev-parse", "--verify", commit + "^{tree}"
+        ).splitlines()
+        return commit_rows, tree_rows
+
+    expected_anchors = ([commit.encode("ascii")], [tree.encode("ascii")])
+    if selected_anchors() != expected_anchors:
+        _fail("successor historical Git commit/tree anchor changed")
+    listing = run(
+        "-C", str(ROOT), "ls-tree", "-rz", "--full-tree", commit, "--",
+        *sorted(SUCCESSOR_CONTROLLER_TCB_PATHS),
+    )
+    if selected_anchors() != expected_anchors:
+        _fail("successor historical Git anchor changed across tree listing")
+    records = listing.split(b"\0")
+    if not records or records[-1] != b"":
+        _fail("successor historical Git tree framing changed")
+    git_tree: dict[str, tuple[str, str, str]] = {}
+    for record in records[:-1]:
+        try:
+            header, relative_raw = record.split(b"\t", 1)
+            mode_raw, kind_raw, oid_raw = header.split(b" ", 2)
+            relative = relative_raw.decode("utf-8", errors="strict")
+            row = (
+                mode_raw.decode("ascii"),
+                kind_raw.decode("ascii"),
+                oid_raw.decode("ascii"),
+            )
+        except (ValueError, UnicodeError) as error:
+            raise V42NativeFormalInputError(
+                "successor historical Git tree row changed"
+            ) from error
+        if relative in git_tree or relative not in facts:
+            _fail("successor historical Git tree inventory changed")
+        git_tree[relative] = row
+    if set(git_tree) != set(facts):
+        _fail("successor historical Git tree omitted a controller source")
+    raws: dict[str, bytes] = {}
+    for relative in sorted(facts):
+        fact = facts[relative]
+        mode, kind, oid = git_tree[relative]
+        if (
+            mode != fact.get("git_mode")
+            or kind != fact.get("git_object_type")
+            or oid != fact.get("git_blob_oid")
+            or kind != "blob"
+        ):
+            _fail("successor historical Git fact changed: " + relative)
+        raw = run("-C", str(ROOT), "cat-file", "blob", oid)
+        if (
+            not raw
+            or len(raw) > 4 * 1024**2
+            or fact.get("byte_count") != len(raw)
+            or fact.get("sha256") != hashlib.sha256(raw).hexdigest()
+            or oid
+            != hashlib.sha1(  # noqa: S324 - exact Git blob identity
+                b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw
+            ).hexdigest()
+        ):
+            _fail("successor historical Git blob changed: " + relative)
+        raws[relative] = raw
+    if selected_anchors() != expected_anchors:
+        _fail("successor historical Git anchor changed across blob reads")
+    return git_tree, raws
+
+
 def verify_successor_documents_v42r2(
     *, documents: Mapping[str, dict[str, Any]], raws: Mapping[str, bytes],
     expected_final_evidence_index_id: str,
@@ -292,18 +380,14 @@ def verify_successor_documents_v42r2(
     source_manifest = successor.verify_activation_successor_source_manifest_v42r2(
         documents[SUCCESSOR_SOURCE_MANIFEST_FILE]
     )
-    git_tree = legacy._early_git_tree(  # noqa: SLF001
-        source_commit=source_manifest["source_commit"],
-        source_tree=source_manifest["source_tree"],
-        primitives=_frozen_git_primitives(),
-    )
+    git_tree, historical_raws = _historical_successor_sources(source_manifest)
     facts = {
         row["relative_path"]: row for row in source_manifest["source_facts"]
     }
     if set(facts) != SUCCESSOR_CONTROLLER_TCB_PATHS:
         _fail("successor controller TCB source inventory changed")
     for relative, fact in facts.items():
-        raw = legacy._program_raw(relative)  # noqa: SLF001
+        raw = historical_raws[relative]
         if (
             git_tree.get(relative)
             != (
@@ -319,6 +403,13 @@ def verify_successor_documents_v42r2(
             ).hexdigest()
         ):
             _fail("successor controller TCB bytes changed: " + relative)
+    if (
+        loader_source_raw
+        != historical_raws[successor.SUCCESSOR_LOADER_RELATIVE]
+        or receiver_source_raw
+        != historical_raws[successor.SUCCESSOR_RECEIVER_RELATIVE]
+    ):
+        _fail("successor loader or receiver differs from historical Git bytes")
     legacy_dispatch_fact = facts[
         successor_finalizer.LEGACY_ACTIVATION_DRIVER_RELATIVE
     ]
@@ -752,18 +843,25 @@ def _verify_predecessor_and_build_native_inputs(
             pin, authority.LOCAL_MATERIALIZATION_ATTEMPT_NAME
         )
 
+        successor_source_manifest = (
+            successor.verify_activation_successor_source_manifest_v42r2(
+                successor_documents[SUCCESSOR_SOURCE_MANIFEST_FILE]
+            )
+        )
+        _successor_git_tree, successor_programs = _historical_successor_sources(
+            successor_source_manifest
+        )
         programs = {
-            preformal.PREFORMAL_LOADER_SOURCE_RELATIVE: legacy._program_raw(  # noqa: SLF001
-                preformal.PREFORMAL_LOADER_SOURCE_RELATIVE
-            ),
-            preformal.PREFORMAL_RECEIVER_SOURCE_RELATIVE: legacy._program_raw(  # noqa: SLF001
-                preformal.PREFORMAL_RECEIVER_SOURCE_RELATIVE
-            ),
-            legacy.ACTIVATION_LOADER_RELATIVE: legacy._program_raw(legacy.ACTIVATION_LOADER_RELATIVE),  # noqa: SLF001
-            legacy.ACTIVATION_RECEIVER_RELATIVE: legacy._program_raw(legacy.ACTIVATION_RECEIVER_RELATIVE),  # noqa: SLF001
-            legacy.ACTIVATION_SERVICE_RELATIVE: legacy._program_raw(legacy.ACTIVATION_SERVICE_RELATIVE),  # noqa: SLF001
-            legacy.ACTIVATION_DRIVER_RELATIVE: legacy._program_raw(legacy.ACTIVATION_DRIVER_RELATIVE),  # noqa: SLF001
-            legacy.ACTIVATION_AUTHORITY_RELATIVE: legacy._program_raw(legacy.ACTIVATION_AUTHORITY_RELATIVE),  # noqa: SLF001
+            relative: successor_programs[relative]
+            for relative in (
+                preformal.PREFORMAL_LOADER_SOURCE_RELATIVE,
+                preformal.PREFORMAL_RECEIVER_SOURCE_RELATIVE,
+                legacy.ACTIVATION_LOADER_RELATIVE,
+                legacy.ACTIVATION_RECEIVER_RELATIVE,
+                legacy.ACTIVATION_SERVICE_RELATIVE,
+                legacy.ACTIVATION_DRIVER_RELATIVE,
+                legacy.ACTIVATION_AUTHORITY_RELATIVE,
+            )
         }
         verified_plan = preformal.verify_preformal_upload_plan_against_controls_v42r1(
             p_plan, control_raw_by_name=controls,
@@ -1026,12 +1124,10 @@ def _verify_predecessor_and_build_native_inputs(
         ):
             _fail("predecessor successful tail changed its legacy claim set")
 
-        loader_source_raw = legacy._program_raw(  # noqa: SLF001
-            successor.SUCCESSOR_LOADER_RELATIVE
-        )
-        receiver_source_raw = legacy._program_raw(  # noqa: SLF001
+        loader_source_raw = successor_programs[successor.SUCCESSOR_LOADER_RELATIVE]
+        receiver_source_raw = successor_programs[
             successor.SUCCESSOR_RECEIVER_RELATIVE
-        )
+        ]
         verified_successor = verify_successor_documents_v42r2(
             documents=successor_documents, raws=successor_raws,
             expected_final_evidence_index_id=expected_final_evidence_index_id,
