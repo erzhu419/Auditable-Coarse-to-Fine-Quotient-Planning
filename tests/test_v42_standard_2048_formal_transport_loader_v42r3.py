@@ -3,10 +3,12 @@ from __future__ import annotations
 import ast
 import hashlib
 import importlib.util
+import json
 import os
 from pathlib import Path
 import stat
 import struct
+import subprocess
 import sys
 import tempfile
 import types
@@ -63,6 +65,222 @@ def _controller(
         ],
         "controller_source_manifest_id": "3" * 64,
     }
+
+
+def _raise_nested_loader_failure(depth: int) -> None:
+    if depth:
+        _raise_nested_loader_failure(depth - 1)
+    raise ValueError("loader diagnostic \N{SNOWMAN} " + "x" * 1000)
+
+
+def test_loader_failure_diagnostic_is_canonical_bounded_and_traceable() -> None:
+    try:
+        _raise_nested_loader_failure(10)
+    except ValueError as error:
+        raw = loader._loader_failure_stderr(error)  # noqa: SLF001
+        message = str(error)
+        message_raw = message.encode("utf-8", errors="backslashreplace")
+    else:  # pragma: no cover - the helper always raises
+        raise AssertionError("loader failure fixture did not raise")
+
+    assert raw.endswith(b"\n")
+    assert len(raw) <= loader.MAX_LOADER_FAILURE_DIAGNOSTIC_BYTES
+    document = json.loads(raw)
+    assert raw[:-1] == loader._canonical_bytes(document)  # noqa: SLF001
+    assert document["schema"] == loader.LOADER_FAILURE_DIAGNOSTIC_SCHEMA
+    assert document["schema_version"] == loader.LOADER_FAILURE_DIAGNOSTIC_VERSION
+    assert document["message"] == {
+        "character_count": len(message),
+        "prefix_byte_count": loader.LOADER_FAILURE_MESSAGE_PREFIX_BYTES,
+        "prefix_hex": message_raw[
+            : loader.LOADER_FAILURE_MESSAGE_PREFIX_BYTES
+        ].hex(),
+        "prefix_truncated": True,
+        "scan_complete": True,
+        "scanned_byte_count": len(message_raw),
+        "scanned_character_count": len(message),
+        "scanned_sha256": hashlib.sha256(message_raw).hexdigest(),
+    }
+    assert (
+        document["traceback_scanned_frame_count"]
+        > loader.LOADER_FAILURE_TRACEBACK_FRAMES
+    )
+    assert document["traceback_scan_truncated"] is False
+    assert len(document["traceback_frames"]) == loader.LOADER_FAILURE_TRACEBACK_FRAMES
+    assert document["traceback_frames_truncated"] is True
+    final_function = bytes.fromhex(
+        document["traceback_frames"][-1]["function"]["prefix_hex"]
+    ).decode("utf-8")
+    assert final_function == "_raise_nested_loader_failure"[
+        : loader.LOADER_FAILURE_FUNCTION_PREFIX_BYTES
+    ]
+
+
+def test_loader_failure_diagnostic_has_fail_safe_generic_fallback(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def fail_diagnostic(_error: BaseException) -> bytes:
+        raise MemoryError("diagnostic failure")
+
+    monkeypatch.setattr(loader, "_loader_failure_diagnostic", fail_diagnostic)
+    raw = loader._loader_failure_stderr(RuntimeError("hidden"))  # noqa: SLF001
+    assert raw == loader.GENERIC_LOADER_FAILURE
+    document = json.loads(raw)
+    assert raw[:-1] == loader._canonical_bytes(document)  # noqa: SLF001
+    assert document["diagnostic_builder_succeeded"] is False
+
+    monkeypatch.setattr(
+        loader,
+        "_canonical_bytes",
+        lambda _value: (_ for _ in ()).throw(MemoryError("encoder failure")),
+    )
+    raw = loader._loader_failure_stderr(RuntimeError("hidden"))  # noqa: SLF001
+    assert raw == loader.GENERIC_LOADER_FAILURE
+    assert json.loads(raw)["diagnostic_builder_succeeded"] is False
+
+
+def test_loader_failure_diagnostic_bypasses_hostile_exception_accessors() -> None:
+    class HostileMeta(type):
+        def __getattribute__(cls, _name: str) -> object:
+            raise SystemExit("metaclass accessor must not run")
+
+    class HostileError(Exception, metaclass=HostileMeta):
+        def __getattribute__(self, name: str) -> object:
+            if name == "__traceback__":
+                raise KeyboardInterrupt("traceback accessor must not run")
+            return object.__getattribute__(self, name)
+
+        def __str__(self) -> str:
+            raise MemoryError("exception __str__ must not run")
+
+    try:
+        raise HostileError("bounded message from exact args")
+    except HostileError as error:
+        raw = loader._loader_failure_stderr(error)  # noqa: SLF001
+
+    assert raw != loader.GENERIC_LOADER_FAILURE
+    document = json.loads(raw)
+    assert document["diagnostic_builder_succeeded"] is True
+    assert bytes.fromhex(document["message"]["prefix_hex"]) == (
+        b"bounded message from exact args"
+    )
+
+
+def test_loader_failure_diagnostic_caps_hostile_type_message_and_frame() -> None:
+    error_type = type(
+        "E" * 10_000,
+        (Exception,),
+        {"__module__": "m" * 10_000},
+    )
+    function_name = "f" * 10_000
+    code = compile(
+        f"def {function_name}(depth):\n"
+        "    if depth:\n"
+        f"        {function_name}(depth - 1)\n"
+        "        return\n"
+        "    raise error_type(message)\n"
+        f"{function_name}(10)\n",
+        "/" + "p" * 10_000,
+        "exec",
+        flags=0,
+        dont_inherit=True,
+        optimize=0,
+    )
+    try:
+        exec(code, {"error_type": error_type, "message": "\N{SNOWMAN}" * 10_000})
+    except Exception as error:
+        raw = loader._loader_failure_stderr(error)  # noqa: SLF001
+    else:  # pragma: no cover - the compiled fixture always raises
+        raise AssertionError("hostile loader failure fixture did not raise")
+
+    assert raw != loader.GENERIC_LOADER_FAILURE
+    assert len(raw) <= loader.MAX_LOADER_FAILURE_DIAGNOSTIC_BYTES
+    document = json.loads(raw)
+    assert raw[:-1] == loader._canonical_bytes(document)  # noqa: SLF001
+    assert document["exception_module"]["truncated"] is True
+    assert document["exception_qualname"]["truncated"] is True
+    assert document["message"]["scan_complete"] is False
+    assert document["message"]["prefix_truncated"] is True
+    assert len(document["traceback_frames"]) == loader.LOADER_FAILURE_TRACEBACK_FRAMES
+    assert document["traceback_frames"][-1]["filename"]["truncated"] is True
+    assert document["traceback_frames"][-1]["function"]["truncated"] is True
+
+
+def test_loader_failure_diagnostic_bounds_traceback_scan() -> None:
+    def recurse(depth: int) -> None:
+        if depth:
+            recurse(depth - 1)
+        raise RuntimeError("deep traceback")
+
+    try:
+        recurse(loader.LOADER_FAILURE_TRACEBACK_SCAN_FRAMES + 20)
+    except RuntimeError as error:
+        raw = loader._loader_failure_stderr(error)  # noqa: SLF001
+
+    document = json.loads(raw)
+    assert len(raw) <= loader.MAX_LOADER_FAILURE_DIAGNOSTIC_BYTES
+    assert (
+        document["traceback_scanned_frame_count"]
+        == loader.LOADER_FAILURE_TRACEBACK_SCAN_FRAMES
+    )
+    assert document["traceback_scan_truncated"] is True
+    assert document["traceback_frames_truncated"] is True
+
+
+def test_loader_top_level_emits_only_bounded_canonical_failure() -> None:
+    source = LOADER_PATH.read_text(encoding="utf-8")
+    completed = subprocess.run(
+        [sys.executable, "-I", "-S", "-B", "-c", source, "--invalid-mode"],
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        env={},
+        check=False,
+        timeout=10,
+    )
+    assert completed.returncode == 73
+    assert completed.stdout == b""
+    assert completed.stderr != loader.GENERIC_LOADER_FAILURE
+    assert len(completed.stderr) <= loader.MAX_LOADER_FAILURE_DIAGNOSTIC_BYTES
+    document = json.loads(completed.stderr)
+    assert completed.stderr[:-1] == loader._canonical_bytes(document)  # noqa: SLF001
+    assert document["diagnostic_scope"] == "DIAGNOSTIC_ONLY_NOT_FORMAL_RECEIPT"
+    message_prefix = bytes.fromhex(document["message"]["prefix_hex"])
+    assert message_prefix == b"formal transport loader mode or argv changed"
+
+
+@pytest.mark.parametrize(
+    "write_override",
+    (
+        "os.write=lambda *_args: 0",
+        (
+            "os.write=lambda *_args: "
+            "(_ for _ in ()).throw(OSError('write failed'))"
+        ),
+    ),
+)
+def test_loader_top_level_write_failure_exits_without_traceback(
+    write_override: str,
+) -> None:
+    source = LOADER_PATH.read_text(encoding="utf-8")
+    future = "from __future__ import annotations\n"
+    source = source.replace(
+        future,
+        future + "import os\n" + write_override + "\n",
+        1,
+    )
+    completed = subprocess.run(
+        [sys.executable, "-I", "-S", "-B", "-c", source, "--invalid-mode"],
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        env={},
+        check=False,
+        timeout=10,
+    )
+    assert completed.returncode == 74
+    assert completed.stdout == b""
+    assert completed.stderr == b""
 
 
 def test_virtual_procfs_reader_handles_zero_reported_size(
@@ -815,7 +1033,7 @@ def test_phase2_mode_schema_and_remote_root_inventory(receiver_module) -> None:
     assert all(schema.endswith(".v42r3") for schema in receiver_module.INGRESS_SCHEMAS.values())
     root = (
         "/home/erzhu419/mine_code/"
-        ".acfqp-v42-remote-ordinal2-formal-transport-v42r3r1"
+        ".acfqp-v42-remote-ordinal2-formal-transport-v42r3r2"
     )
     assert loader.REMOTE_V42R3_JOURNAL_ROOT == root
     assert str(receiver_module.REMOTE_V42R3_JOURNAL_ROOT) == root

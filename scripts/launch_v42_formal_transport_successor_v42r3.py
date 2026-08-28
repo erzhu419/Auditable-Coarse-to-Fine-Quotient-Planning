@@ -240,11 +240,11 @@ if (
 
 LOCAL_JOURNAL_ROOT = Path(
     "/home/erzhu419/mine_code/"
-    ".acfqp-v42-local-formal-transport-ordinal2-v42r3r1"
+    ".acfqp-v42-local-formal-transport-ordinal2-v42r3r2"
 )
 REMOTE_JOURNAL_ROOT = (
     "/home/erzhu419/mine_code/"
-    ".acfqp-v42-remote-ordinal2-formal-transport-v42r3r1"
+    ".acfqp-v42-remote-ordinal2-formal-transport-v42r3r2"
 )
 KNOWN_HOSTS_NAME = "PINNED_KNOWN_HOSTS"
 CONTROLLER_MANIFEST_NAME = "CONTROLLER_SOURCE_MANIFEST.json"
@@ -2098,7 +2098,7 @@ def _host_probe_child_observation_fact(observation: Any) -> dict[str, Any]:
         or type(observation.stdout_raw) is not bytes
         or type(observation.stderr_prefix) is not bytes
     ):
-        _fail("V42r3r1 host probe child observation bytes changed")
+        _fail("V42r3r2 host probe child observation bytes changed")
     prefix_cap = 4096
     stdout_prefix = observation.stdout_raw[:prefix_cap]
     stderr_prefix = observation.stderr_prefix[:prefix_cap]
@@ -2284,32 +2284,32 @@ def _probe_host_epoch_v42r3(
     )
     if retained_raw is None:
         if retained_attempt_raw is not None:
-            attempt = formal.verify_formal_host_epoch_probe_attempt_v42r3r1(
+            attempt = formal.verify_formal_host_epoch_probe_attempt_v42r3r2(
                 retained_attempt_raw, probe_plan=probe_plan
             )
             if (
                 retained_observation_raw is not None
                 and retained_failure_raw is not None
             ):
-                _fail("V42r3r1 host probe retained incompatible terminal records")
+                _fail("V42r3r2 host probe retained incompatible terminal records")
             if retained_observation_raw is not None:
-                formal.verify_formal_host_epoch_transport_observation_v42r3r1(
+                formal.verify_formal_host_epoch_transport_observation_v42r3r2(
                     retained_observation_raw,
                     probe_plan=probe_plan,
                     probe_attempt=attempt,
                 )
             if retained_failure_raw is not None:
-                formal.verify_formal_host_epoch_dispatch_failure_v42r3r1(
+                formal.verify_formal_host_epoch_dispatch_failure_v42r3r2(
                     retained_failure_raw,
                     probe_plan=probe_plan,
                     probe_attempt=attempt,
                 )
             _fail(
-                "retained V42r3r1 host probe attempt has no authenticated "
+                "retained V42r3r2 host probe attempt has no authenticated "
                 "receipt; controller replay is forbidden"
             )
         if retained_observation_raw is not None or retained_failure_raw is not None:
-            _fail("V42r3r1 host probe terminal record lacks its attempt cut")
+            _fail("V42r3r2 host probe terminal record lacks its attempt cut")
         transport = _transport_materialization_v42r3(
             mode=PROBE_MODE,
             controller_manifest=controller_manifest,
@@ -2317,13 +2317,13 @@ def _probe_host_epoch_v42r3(
             expected_plan_id=probe_plan["formal_host_epoch_probe_plan_id"],
             legacy_execution_source_manifest_id=legacy_id,
         )
-        attempt = formal.build_formal_host_epoch_probe_attempt_v42r3r1(
+        attempt = formal.build_formal_host_epoch_probe_attempt_v42r3r2(
             probe_plan=probe_plan
         )
-        if formal.verify_formal_host_epoch_probe_attempt_v42r3r1(
+        if formal.verify_formal_host_epoch_probe_attempt_v42r3r2(
             attempt, probe_plan=probe_plan
         ) != attempt:
-            _fail("V42r3r1 authority changed the host probe attempt")
+            _fail("V42r3r2 authority changed the host probe attempt")
         _publish_once(
             HOST_PROBE_ATTEMPT_NAME, _canonical_json_bytes(attempt)
         )
@@ -2335,23 +2335,23 @@ def _probe_host_epoch_v42r3(
                 stdout_cap=MAX_LOCAL_ARTIFACT_BYTES,
             )
         except BaseException as error:
-            failure = formal.build_formal_host_epoch_dispatch_failure_v42r3r1(
+            failure = formal.build_formal_host_epoch_dispatch_failure_v42r3r2(
                 probe_plan=probe_plan,
                 probe_attempt=attempt,
                 failure_fact=_host_probe_failure_fact(error),
             )
-            if formal.verify_formal_host_epoch_dispatch_failure_v42r3r1(
+            if formal.verify_formal_host_epoch_dispatch_failure_v42r3r2(
                 failure,
                 probe_plan=probe_plan,
                 probe_attempt=attempt,
             ) != failure:
-                _fail("V42r3r1 authority changed the host dispatch failure")
+                _fail("V42r3r2 authority changed the host dispatch failure")
             _publish_once(
                 HOST_PROBE_FAILURE_NAME, _canonical_json_bytes(failure)
             )
             raise
         transport_observation = (
-            formal.build_formal_host_epoch_transport_observation_v42r3r1(
+            formal.build_formal_host_epoch_transport_observation_v42r3r2(
                 probe_plan=probe_plan,
                 probe_attempt=attempt,
                 child_observation=_host_probe_child_observation_fact(
@@ -2359,25 +2359,34 @@ def _probe_host_epoch_v42r3(
                 ),
             )
         )
-        if formal.verify_formal_host_epoch_transport_observation_v42r3r1(
+        if formal.verify_formal_host_epoch_transport_observation_v42r3r2(
             transport_observation,
             probe_plan=probe_plan,
             probe_attempt=attempt,
         ) != transport_observation:
-            _fail("V42r3r1 authority changed the host transport observation")
+            _fail("V42r3r2 authority changed the host transport observation")
         _publish_once(
             HOST_PROBE_OBSERVATION_NAME,
             _canonical_json_bytes(transport_observation),
         )
         if not transport_observation["process_closed_exactly"]:
+            if (
+                transport_observation["child_observation"]["returncode"]
+                == 73
+            ):
+                formal.verify_formal_host_epoch_loader_failure_join_v42r3r2(
+                    transport_observation=transport_observation,
+                    probe_plan=probe_plan,
+                    probe_attempt=attempt,
+                )
             _fail(
-                "V42r3r1 read-only host probe did not close exactly; "
+                "V42r3r2 read-only host probe did not close exactly; "
                 "observation retained and controller replay forbidden"
             )
         retained_raw = _strip_canonical_stdout(
-            observation.stdout_raw, "V42r3r1 host probe"
+            observation.stdout_raw, "V42r3r2 host probe"
         )
-        receipt = formal.verify_formal_host_epoch_transport_receipt_join_v42r3r1(
+        receipt = formal.verify_formal_host_epoch_transport_receipt_join_v42r3r2(
             transport_observation=transport_observation,
             probe_plan=probe_plan,
             probe_attempt=attempt,
@@ -2386,7 +2395,7 @@ def _probe_host_epoch_v42r3(
         if receipt.get("formal_host_epoch_probe_plan_id") != probe_plan[
             "formal_host_epoch_probe_plan_id"
         ]:
-            _fail("V42r3r1 host receipt/probe plan join changed")
+            _fail("V42r3r2 host receipt/probe plan join changed")
         _publish_once(HOST_RECEIPT_NAME, retained_raw)
     else:
         if (
@@ -2394,20 +2403,20 @@ def _probe_host_epoch_v42r3(
             or retained_observation_raw is None
             or retained_failure_raw is not None
         ):
-            _fail("retained V42r3r1 host receipt lacks its local one-shot chain")
-        attempt = formal.verify_formal_host_epoch_probe_attempt_v42r3r1(
+            _fail("retained V42r3r2 host receipt lacks its local one-shot chain")
+        attempt = formal.verify_formal_host_epoch_probe_attempt_v42r3r2(
             retained_attempt_raw, probe_plan=probe_plan
         )
         transport_observation = (
-            formal.verify_formal_host_epoch_transport_observation_v42r3r1(
+            formal.verify_formal_host_epoch_transport_observation_v42r3r2(
                 retained_observation_raw,
                 probe_plan=probe_plan,
                 probe_attempt=attempt,
             )
         )
         if not transport_observation["process_closed_exactly"]:
-            _fail("retained V42r3r1 host receipt follows a nonexact transport")
-        receipt = formal.verify_formal_host_epoch_transport_receipt_join_v42r3r1(
+            _fail("retained V42r3r2 host receipt follows a nonexact transport")
+        receipt = formal.verify_formal_host_epoch_transport_receipt_join_v42r3r2(
             transport_observation=transport_observation,
             probe_plan=probe_plan,
             probe_attempt=attempt,
@@ -2416,7 +2425,7 @@ def _probe_host_epoch_v42r3(
         if receipt.get("formal_host_epoch_probe_plan_id") != probe_plan[
             "formal_host_epoch_probe_plan_id"
         ]:
-            _fail("retained V42r3r1 host receipt/probe plan join changed")
+            _fail("retained V42r3r2 host receipt/probe plan join changed")
     if verified_native_inputs.predecessor_formal_prefix != (
         _verified_module(NATIVE_DRIVER_MODULE)
         .verify_failed_v42r1_formal_prefix_read_only()
@@ -2461,15 +2470,15 @@ def _build_retained_formal_context_v42r3(
     if _read_optional_journal_artifact(
         HOST_PROBE_FAILURE_NAME, MAX_LOCAL_ARTIFACT_BYTES
     ) is not None:
-        _fail("retained V42r3r1 host probe has a dispatch failure record")
-    probe_attempt = formal.verify_formal_host_epoch_probe_attempt_v42r3r1(
+        _fail("retained V42r3r2 host probe has a dispatch failure record")
+    probe_attempt = formal.verify_formal_host_epoch_probe_attempt_v42r3r2(
         _read_journal_artifact(
             HOST_PROBE_ATTEMPT_NAME, MAX_LOCAL_ARTIFACT_BYTES
         ),
         probe_plan=probe_plan,
     )
     probe_transport_observation = (
-        formal.verify_formal_host_epoch_transport_observation_v42r3r1(
+        formal.verify_formal_host_epoch_transport_observation_v42r3r2(
             _read_journal_artifact(
                 HOST_PROBE_OBSERVATION_NAME, MAX_LOCAL_ARTIFACT_BYTES
             ),
@@ -2478,12 +2487,12 @@ def _build_retained_formal_context_v42r3(
         )
     )
     if not probe_transport_observation["process_closed_exactly"]:
-        _fail("retained V42r3r1 host probe transport did not close exactly")
+        _fail("retained V42r3r2 host probe transport did not close exactly")
     host_receipt_raw = _read_journal_artifact(
         HOST_RECEIPT_NAME, MAX_LOCAL_ARTIFACT_BYTES
     )
     host_receipt = (
-        formal.verify_formal_host_epoch_transport_receipt_join_v42r3r1(
+        formal.verify_formal_host_epoch_transport_receipt_join_v42r3r2(
             transport_observation=probe_transport_observation,
             probe_plan=probe_plan,
             probe_attempt=probe_attempt,

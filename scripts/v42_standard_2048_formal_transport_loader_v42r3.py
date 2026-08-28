@@ -71,7 +71,7 @@ FIXED_SOURCE_ROOT = FIXED_REMOTE_ROOT + "/source"
 SOURCE_MANIFEST_PATH = FIXED_REMOTE_ROOT + "/EXECUTION_SOURCE_MANIFEST.json"
 REMOTE_V42R3_JOURNAL_ROOT = (
     "/home/erzhu419/mine_code/"
-    ".acfqp-v42-remote-ordinal2-formal-transport-v42r3r1"
+    ".acfqp-v42-remote-ordinal2-formal-transport-v42r3r2"
 )
 REMOTE_CONTROLLER_NAME = "CONTROLLER_SOURCE_MANIFEST.json"
 REMOTE_LOADER_NAME = "FORMAL_TRANSPORT_LOADER.py"
@@ -83,6 +83,36 @@ MAX_AUTHORITY_BYTES = 4 * 1024**2
 MAX_RECEIVER_BYTES = 4 * 1024**2
 MAX_INGRESS_BYTES = 8 * 1024**2
 MAX_LEGACY_SOURCE_BYTES = 8 * 1024**2
+MAX_LOADER_FAILURE_DIAGNOSTIC_BYTES = 4096
+LOADER_FAILURE_MESSAGE_PREFIX_BYTES = 256
+LOADER_FAILURE_TYPE_PREFIX_BYTES = 64
+LOADER_FAILURE_FILENAME_PREFIX_BYTES = 64
+LOADER_FAILURE_FUNCTION_PREFIX_BYTES = 32
+LOADER_FAILURE_TRACEBACK_FRAMES = 6
+LOADER_FAILURE_TRACEBACK_SCAN_FRAMES = 128
+LOADER_FAILURE_MESSAGE_SCAN_CHARACTERS = 4096
+LOADER_FAILURE_DIAGNOSTIC_SCHEMA = (
+    "acfqp.v42r3r2_formal_loader_failure_diagnostic"
+)
+LOADER_FAILURE_DIAGNOSTIC_VERSION = "42.3.2"
+GENERIC_LOADER_FAILURE = (
+    b'{"diagnostic_builder_succeeded":false,'
+    b'"diagnostic_scope":"DIAGNOSTIC_ONLY_NOT_FORMAL_RECEIPT",'
+    b'"exception_module":{"prefix_byte_count":13,'
+    b'"prefix_hex":"3c756e617661696c61626c653e","truncated":false},'
+    b'"exception_qualname":{"prefix_byte_count":13,'
+    b'"prefix_hex":"3c756e617661696c61626c653e","truncated":false},'
+    b'"message":{"character_count":13,"prefix_byte_count":13,'
+    b'"prefix_hex":"3c756e617661696c61626c653e",'
+    b'"prefix_truncated":false,"scan_complete":true,'
+    b'"scanned_byte_count":13,"scanned_character_count":13,'
+    b'"scanned_sha256":"2aa53a73f8ccc3f2fc7dce145503ec3c9e4dad8db3adcec2471c9745a74ec11f"},'
+    b'"schema":"acfqp.v42r3r2_formal_loader_failure_diagnostic",'
+    b'"schema_version":"42.3.2","traceback_frames":[],'
+    b'"traceback_frames_truncated":false,'
+    b'"traceback_scan_truncated":false,'
+    b'"traceback_scanned_frame_count":0}\n'
+)
 _CAPS = (
     MAX_CONTROLLER_BYTES,
     MAX_AUTHORITY_BYTES,
@@ -135,6 +165,129 @@ def _canonical_bytes(value: object) -> bytes:
         separators=(",", ":"),
         allow_nan=False,
     ).encode("utf-8", errors="strict")
+
+
+def _diagnostic_exact_text(value: object) -> str:
+    return value if type(value) is str else "<unavailable>"
+
+
+def _diagnostic_text_prefix(value: object, cap: int) -> dict[str, object]:
+    text = _diagnostic_exact_text(value)
+    sampled = text[: cap + 1]
+    sampled_raw = sampled.encode("utf-8", errors="backslashreplace")
+    prefix = sampled_raw[:cap]
+    return {
+        "prefix_byte_count": len(prefix),
+        "prefix_hex": prefix.hex(),
+        "truncated": len(text) > len(sampled) or len(sampled_raw) > cap,
+    }
+
+
+def _diagnostic_exception_message(error: BaseException) -> str:
+    try:
+        arguments = object.__getattribute__(error, "args")
+    except BaseException:
+        return "<unavailable>"
+    if type(arguments) is not tuple:
+        return "<unavailable>"
+    if not arguments:
+        return ""
+    if len(arguments) == 1 and type(arguments[0]) is str:
+        return arguments[0]
+    return "<non-string exception message unavailable>"
+
+
+def _diagnostic_message(value: object) -> dict[str, object]:
+    text = _diagnostic_exact_text(value)
+    scanned_character_count = min(
+        len(text), LOADER_FAILURE_MESSAGE_SCAN_CHARACTERS
+    )
+    scanned = text[:scanned_character_count]
+    scanned_raw = scanned.encode("utf-8", errors="backslashreplace")
+    prefix = scanned_raw[:LOADER_FAILURE_MESSAGE_PREFIX_BYTES]
+    scan_complete = scanned_character_count == len(text)
+    return {
+        "character_count": len(text),
+        "scan_complete": scan_complete,
+        "scanned_character_count": scanned_character_count,
+        "scanned_byte_count": len(scanned_raw),
+        "scanned_sha256": hashlib.sha256(scanned_raw).hexdigest(),
+        "prefix_byte_count": len(prefix),
+        "prefix_hex": prefix.hex(),
+        "prefix_truncated": (
+            not scan_complete
+            or len(scanned_raw) > LOADER_FAILURE_MESSAGE_PREFIX_BYTES
+        ),
+    }
+
+
+def _loader_failure_diagnostic(error: BaseException) -> bytes:
+    error_type = type(error)
+    try:
+        module = type.__getattribute__(error_type, "__module__")
+        qualname = type.__getattribute__(error_type, "__qualname__")
+    except BaseException:
+        module = qualname = "<unavailable>"
+    traceback_frames: list[dict[str, object]] = []
+    traceback_scanned_frame_count = 0
+    try:
+        current = object.__getattribute__(error, "__traceback__")
+    except BaseException:
+        current = None
+    while (
+        current is not None
+        and traceback_scanned_frame_count < LOADER_FAILURE_TRACEBACK_SCAN_FRAMES
+    ):
+        traceback_scanned_frame_count += 1
+        code = current.tb_frame.f_code
+        traceback_frames.append(
+            {
+                "filename": _diagnostic_text_prefix(
+                    code.co_filename,
+                    LOADER_FAILURE_FILENAME_PREFIX_BYTES,
+                ),
+                "function": _diagnostic_text_prefix(
+                    code.co_name,
+                    LOADER_FAILURE_FUNCTION_PREFIX_BYTES,
+                ),
+                "line_number": current.tb_lineno,
+            }
+        )
+        if len(traceback_frames) > LOADER_FAILURE_TRACEBACK_FRAMES:
+            del traceback_frames[0]
+        current = current.tb_next
+    traceback_scan_truncated = current is not None
+    document = {
+        "schema": LOADER_FAILURE_DIAGNOSTIC_SCHEMA,
+        "schema_version": LOADER_FAILURE_DIAGNOSTIC_VERSION,
+        "diagnostic_scope": "DIAGNOSTIC_ONLY_NOT_FORMAL_RECEIPT",
+        "diagnostic_builder_succeeded": True,
+        "exception_module": _diagnostic_text_prefix(
+            module, LOADER_FAILURE_TYPE_PREFIX_BYTES
+        ),
+        "exception_qualname": _diagnostic_text_prefix(
+            qualname, LOADER_FAILURE_TYPE_PREFIX_BYTES
+        ),
+        "message": _diagnostic_message(_diagnostic_exception_message(error)),
+        "traceback_scanned_frame_count": traceback_scanned_frame_count,
+        "traceback_scan_truncated": traceback_scan_truncated,
+        "traceback_frames": traceback_frames,
+        "traceback_frames_truncated": (
+            traceback_scan_truncated
+            or traceback_scanned_frame_count > len(traceback_frames)
+        ),
+    }
+    raw = _canonical_bytes(document) + b"\n"
+    if len(raw) > MAX_LOADER_FAILURE_DIAGNOSTIC_BYTES:
+        raise V42FormalProbeLoaderError("loader failure diagnostic exceeded cap")
+    return raw
+
+
+def _loader_failure_stderr(error: BaseException) -> bytes:
+    try:
+        return _loader_failure_diagnostic(error)
+    except BaseException:
+        return GENERIC_LOADER_FAILURE
 
 
 def _unique_pairs(pairs: Sequence[tuple[str, object]]) -> dict[str, object]:
@@ -1102,8 +1255,14 @@ def _entry() -> int:
 if __name__ == "__main__" and sys.argv[0] == "-c":
     try:
         _status = _entry()
-    except BaseException:
-        os.write(2, b"acfqp v42r3 formal probe loader rejected ingress\n")
+    except BaseException as _error:
+        _failure_raw = _loader_failure_stderr(_error)
+        try:
+            _written = os.write(2, _failure_raw)
+        except BaseException:
+            os._exit(74)
+        if _written != len(_failure_raw):
+            os._exit(74)
         os._exit(73)
     else:
         os._exit(_status)

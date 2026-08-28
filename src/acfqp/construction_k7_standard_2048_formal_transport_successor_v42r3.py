@@ -38,13 +38,13 @@ FORMAL_HOST_EPOCH_RECEIPT_SCHEMA = (
 )
 FORMAL_HOST_EPOCH_TRANSPORT_OBSERVATION_SCHEMA = (
     "acfqp.v42_formal_transport_successor_host_epoch_transport_observation."
-    "v42r3r1"
+    "v42r3r2"
 )
 FORMAL_HOST_EPOCH_PROBE_ATTEMPT_SCHEMA = (
-    "acfqp.v42_formal_transport_successor_host_epoch_probe_attempt.v42r3r1"
+    "acfqp.v42_formal_transport_successor_host_epoch_probe_attempt.v42r3r2"
 )
 FORMAL_HOST_EPOCH_DISPATCH_FAILURE_SCHEMA = (
-    "acfqp.v42_formal_transport_successor_host_epoch_dispatch_failure.v42r3r1"
+    "acfqp.v42_formal_transport_successor_host_epoch_dispatch_failure.v42r3r2"
 )
 EXTERNAL_LOCAL_STAGE0_ASSUMPTION_SCHEMA = (
     "acfqp.v42_formal_transport_external_local_stage0_assumption.v42r3"
@@ -67,14 +67,14 @@ FORMAL_HOST_EPOCH_RECEIPT_DOMAIN = (
 )
 FORMAL_HOST_EPOCH_TRANSPORT_OBSERVATION_DOMAIN = (
     b"acfqp:v42-formal-transport-successor:host-epoch-transport-observation:"
-    b"v42r3r1"
+    b"v42r3r2"
 )
 FORMAL_HOST_EPOCH_PROBE_ATTEMPT_DOMAIN = (
-    b"acfqp:v42-formal-transport-successor:host-epoch-probe-attempt:v42r3r1"
+    b"acfqp:v42-formal-transport-successor:host-epoch-probe-attempt:v42r3r2"
 )
 FORMAL_HOST_EPOCH_DISPATCH_FAILURE_DOMAIN = (
     b"acfqp:v42-formal-transport-successor:host-epoch-dispatch-failure:"
-    b"v42r3r1"
+    b"v42r3r2"
 )
 EXTERNAL_LOCAL_STAGE0_ASSUMPTION_DOMAIN = (
     b"acfqp:v42-formal-transport:external-local-stage0-assumption:v42r3"
@@ -147,16 +147,16 @@ FORMAL_CLASSIFICATION_DOMAIN = (
 
 LOCAL_FORMAL_JOURNAL_ROOT = PurePosixPath(
     "/home/erzhu419/mine_code/"
-    ".acfqp-v42-local-formal-transport-ordinal2-v42r3r1"
+    ".acfqp-v42-local-formal-transport-ordinal2-v42r3r2"
 )
 REMOTE_FORMAL_JOURNAL_ROOT = PurePosixPath(
     "/home/erzhu419/mine_code/"
-    ".acfqp-v42-remote-ordinal2-formal-transport-v42r3r1"
+    ".acfqp-v42-remote-ordinal2-formal-transport-v42r3r2"
 )
 LOCAL_KNOWN_HOSTS_NAME = "PINNED_KNOWN_HOSTS"
 
 SYSTEMD_RUN = "/usr/bin/systemd-run"
-SYSTEMD_UNIT_PREFIX = "acfqp-v42r3r1-remote-ordinal2-"
+SYSTEMD_UNIT_PREFIX = "acfqp-v42r3r2-remote-ordinal2-"
 SYSTEMD_SLICE = "app.slice"
 SYSTEMD_TIMEOUT_STOP_SECONDS = 30
 SYSTEMD_RUNTIME_MAX_SECONDS = 606_300
@@ -1374,7 +1374,7 @@ def verify_formal_host_epoch_receipt_v42r3(
     return document
 
 
-def build_formal_host_epoch_probe_attempt_v42r3r1(
+def build_formal_host_epoch_probe_attempt_v42r3r2(
     *, probe_plan: Mapping[str, Any],
 ) -> dict[str, Any]:
     """Publish a conservative one-shot cut before any probe dispatch."""
@@ -1400,11 +1400,11 @@ def build_formal_host_epoch_probe_attempt_v42r3r1(
     }
 
 
-def verify_formal_host_epoch_probe_attempt_v42r3r1(
+def verify_formal_host_epoch_probe_attempt_v42r3r2(
     value: bytes | Mapping[str, Any], *, probe_plan: Mapping[str, Any],
 ) -> dict[str, Any]:
     document = _canonical_document(value, "formal host epoch probe attempt")
-    expected = build_formal_host_epoch_probe_attempt_v42r3r1(
+    expected = build_formal_host_epoch_probe_attempt_v42r3r2(
         probe_plan=probe_plan
     )
     if document != expected:
@@ -1456,12 +1456,12 @@ def _verify_host_probe_failure_fact(value: Any) -> dict[str, Any]:
     return fact
 
 
-def build_formal_host_epoch_dispatch_failure_v42r3r1(
+def build_formal_host_epoch_dispatch_failure_v42r3r2(
     *, probe_plan: Mapping[str, Any], probe_attempt: Mapping[str, Any],
     failure_fact: Mapping[str, Any],
 ) -> dict[str, Any]:
     plan = verify_formal_host_epoch_probe_plan_v42r3(probe_plan)
-    attempt = verify_formal_host_epoch_probe_attempt_v42r3r1(
+    attempt = verify_formal_host_epoch_probe_attempt_v42r3r2(
         probe_attempt, probe_plan=plan
     )
     failure = _verify_host_probe_failure_fact(failure_fact)
@@ -1490,12 +1490,12 @@ def build_formal_host_epoch_dispatch_failure_v42r3r1(
     }
 
 
-def verify_formal_host_epoch_dispatch_failure_v42r3r1(
+def verify_formal_host_epoch_dispatch_failure_v42r3r2(
     value: bytes | Mapping[str, Any], *, probe_plan: Mapping[str, Any],
     probe_attempt: Mapping[str, Any],
 ) -> dict[str, Any]:
     document = _canonical_document(value, "formal host epoch dispatch failure")
-    expected = build_formal_host_epoch_dispatch_failure_v42r3r1(
+    expected = build_formal_host_epoch_dispatch_failure_v42r3r2(
         probe_plan=probe_plan,
         probe_attempt=probe_attempt,
         failure_fact=document.get("failure_fact"),
@@ -1508,6 +1508,52 @@ def verify_formal_host_epoch_dispatch_failure_v42r3r1(
 _HOST_PROBE_CAPTURE_PREFIX_MAX_BYTES = 4096
 _HOST_PROBE_STDOUT_CAP_BYTES = 64 * 1024**2
 _HOST_PROBE_STDERR_CAP_BYTES = 1024**2
+_LOADER_FAILURE_DIAGNOSTIC_SCHEMA = (
+    "acfqp.v42r3r2_formal_loader_failure_diagnostic"
+)
+_LOADER_FAILURE_DIAGNOSTIC_VERSION = "42.3.2"
+_LOADER_FAILURE_DIAGNOSTIC_SCOPE = "DIAGNOSTIC_ONLY_NOT_FORMAL_RECEIPT"
+_LOADER_FAILURE_DIAGNOSTIC_MAX_BYTES = 4096
+_LOADER_FAILURE_MESSAGE_PREFIX_BYTES = 256
+_LOADER_FAILURE_TYPE_PREFIX_BYTES = 64
+_LOADER_FAILURE_FILENAME_PREFIX_BYTES = 64
+_LOADER_FAILURE_FUNCTION_PREFIX_BYTES = 32
+_LOADER_FAILURE_TRACEBACK_FRAMES = 6
+_LOADER_FAILURE_TRACEBACK_SCAN_FRAMES = 128
+_LOADER_FAILURE_MESSAGE_SCAN_CHARACTERS = 4096
+_LOADER_FAILURE_PREFIX_FIELDS = frozenset(
+    {"prefix_byte_count", "prefix_hex", "truncated"}
+)
+_LOADER_FAILURE_MESSAGE_FIELDS = frozenset(
+    {
+        "character_count",
+        "scan_complete",
+        "scanned_character_count",
+        "scanned_byte_count",
+        "scanned_sha256",
+        "prefix_byte_count",
+        "prefix_hex",
+        "prefix_truncated",
+    }
+)
+_LOADER_FAILURE_FRAME_FIELDS = frozenset(
+    {"filename", "function", "line_number"}
+)
+_LOADER_FAILURE_DIAGNOSTIC_FIELDS = frozenset(
+    {
+        "schema",
+        "schema_version",
+        "diagnostic_scope",
+        "diagnostic_builder_succeeded",
+        "exception_module",
+        "exception_qualname",
+        "message",
+        "traceback_scanned_frame_count",
+        "traceback_scan_truncated",
+        "traceback_frames",
+        "traceback_frames_truncated",
+    }
+)
 _HOST_PROBE_CHILD_OBSERVATION_FIELDS = frozenset(
     {
         "exec_succeeded",
@@ -1661,14 +1707,14 @@ def _verify_host_probe_child_observation(value: Any) -> tuple[dict[str, Any], bo
     return fact, closed_exactly
 
 
-def build_formal_host_epoch_transport_observation_v42r3r1(
+def build_formal_host_epoch_transport_observation_v42r3r2(
     *, probe_plan: Mapping[str, Any], probe_attempt: Mapping[str, Any],
     child_observation: Mapping[str, Any],
 ) -> dict[str, Any]:
     """Bind the controller-visible SSH closure before accepting a receipt."""
 
     plan = verify_formal_host_epoch_probe_plan_v42r3(probe_plan)
-    attempt = verify_formal_host_epoch_probe_attempt_v42r3r1(
+    attempt = verify_formal_host_epoch_probe_attempt_v42r3r2(
         probe_attempt, probe_plan=plan
     )
     child, closed_exactly = _verify_host_probe_child_observation(
@@ -1702,14 +1748,14 @@ def build_formal_host_epoch_transport_observation_v42r3r1(
     }
 
 
-def verify_formal_host_epoch_transport_observation_v42r3r1(
+def verify_formal_host_epoch_transport_observation_v42r3r2(
     value: bytes | Mapping[str, Any], *, probe_plan: Mapping[str, Any],
     probe_attempt: Mapping[str, Any],
 ) -> dict[str, Any]:
     document = _canonical_document(
         value, "formal host epoch transport observation"
     )
-    expected = build_formal_host_epoch_transport_observation_v42r3r1(
+    expected = build_formal_host_epoch_transport_observation_v42r3r2(
         probe_plan=probe_plan,
         probe_attempt=probe_attempt,
         child_observation=document.get("child_observation"),
@@ -1719,7 +1765,222 @@ def verify_formal_host_epoch_transport_observation_v42r3r1(
     return document
 
 
-def verify_formal_host_epoch_transport_receipt_join_v42r3r1(
+def _verify_loader_failure_prefix(
+    value: Any, *, cap: int, label: str,
+) -> dict[str, Any]:
+    fact = _mapping(value, _LOADER_FAILURE_PREFIX_FIELDS, label)
+    count = fact["prefix_byte_count"]
+    prefix_hex = fact["prefix_hex"]
+    if (
+        type(count) is not int
+        or not 0 <= count <= cap
+        or type(prefix_hex) is not str
+        or len(prefix_hex) != 2 * count
+        or re.fullmatch(r"[0-9a-f]*", prefix_hex) is None
+        or type(fact["truncated"]) is not bool
+        or fact["truncated"]
+        and count != cap
+    ):
+        _fail(label + " changed")
+    return fact
+
+
+def _verify_loader_failure_message(value: Any) -> dict[str, Any]:
+    fact = _mapping(value, _LOADER_FAILURE_MESSAGE_FIELDS, "loader failure message")
+    for field in (
+        "character_count",
+        "scanned_character_count",
+        "scanned_byte_count",
+        "prefix_byte_count",
+    ):
+        if type(fact[field]) is not int or fact[field] < 0:
+            _fail("loader failure message count changed")
+    if (
+        fact["character_count"] >= 2**63
+        or fact["scanned_character_count"]
+        != min(
+            fact["character_count"],
+            _LOADER_FAILURE_MESSAGE_SCAN_CHARACTERS,
+        )
+        or type(fact["scan_complete"]) is not bool
+        or fact["scan_complete"]
+        is not (fact["scanned_character_count"] == fact["character_count"])
+        or fact["scanned_byte_count"] < fact["scanned_character_count"]
+        or fact["scanned_byte_count"]
+        > 6 * fact["scanned_character_count"]
+        or type(fact["prefix_truncated"]) is not bool
+        or fact["prefix_truncated"]
+        is not (
+            not fact["scan_complete"]
+            or fact["scanned_byte_count"]
+            > _LOADER_FAILURE_MESSAGE_PREFIX_BYTES
+        )
+        or fact["prefix_byte_count"]
+        != min(
+            fact["scanned_byte_count"],
+            _LOADER_FAILURE_MESSAGE_PREFIX_BYTES,
+        )
+    ):
+        _fail("loader failure message scan changed")
+    _hex(fact["scanned_sha256"], 64, "loader failure message scanned SHA256")
+    prefix_hex = fact["prefix_hex"]
+    if (
+        type(prefix_hex) is not str
+        or len(prefix_hex) != 2 * fact["prefix_byte_count"]
+        or re.fullmatch(r"[0-9a-f]*", prefix_hex) is None
+    ):
+        _fail("loader failure message prefix changed")
+    prefix = bytes.fromhex(prefix_hex)
+    if (
+        fact["scan_complete"]
+        and fact["scanned_byte_count"] <= len(prefix)
+        and hashlib.sha256(prefix).hexdigest() != fact["scanned_sha256"]
+    ):
+        _fail("loader failure message digest changed")
+    return fact
+
+
+def _verify_loader_failure_diagnostic(raw: bytes) -> dict[str, Any]:
+    if (
+        not 1 < len(raw) <= _LOADER_FAILURE_DIAGNOSTIC_MAX_BYTES
+        or not raw.endswith(b"\n")
+    ):
+        _fail("loader failure diagnostic framing changed")
+    document = _canonical_document(raw[:-1], "loader failure diagnostic")
+    if set(document) != _LOADER_FAILURE_DIAGNOSTIC_FIELDS:
+        _fail("loader failure diagnostic field set changed")
+    if (
+        document["schema"] != _LOADER_FAILURE_DIAGNOSTIC_SCHEMA
+        or document["schema_version"] != _LOADER_FAILURE_DIAGNOSTIC_VERSION
+        or document["diagnostic_scope"] != _LOADER_FAILURE_DIAGNOSTIC_SCOPE
+        or type(document["diagnostic_builder_succeeded"]) is not bool
+    ):
+        _fail("loader failure diagnostic identity changed")
+    module = _verify_loader_failure_prefix(
+        document["exception_module"],
+        cap=_LOADER_FAILURE_TYPE_PREFIX_BYTES,
+        label="loader failure exception module",
+    )
+    qualname = _verify_loader_failure_prefix(
+        document["exception_qualname"],
+        cap=_LOADER_FAILURE_TYPE_PREFIX_BYTES,
+        label="loader failure exception qualname",
+    )
+    message = _verify_loader_failure_message(document["message"])
+    scanned_count = document["traceback_scanned_frame_count"]
+    scan_truncated = document["traceback_scan_truncated"]
+    frames_truncated = document["traceback_frames_truncated"]
+    frames = document["traceback_frames"]
+    if (
+        type(scanned_count) is not int
+        or not 0 <= scanned_count <= _LOADER_FAILURE_TRACEBACK_SCAN_FRAMES
+        or type(scan_truncated) is not bool
+        or scan_truncated
+        and scanned_count != _LOADER_FAILURE_TRACEBACK_SCAN_FRAMES
+        or type(frames_truncated) is not bool
+        or type(frames) is not list
+        or len(frames) != min(
+            scanned_count, _LOADER_FAILURE_TRACEBACK_FRAMES
+        )
+        or frames_truncated
+        is not (scan_truncated or scanned_count > len(frames))
+    ):
+        _fail("loader failure traceback cardinality changed")
+    for index, value in enumerate(frames):
+        frame = _mapping(
+            value,
+            _LOADER_FAILURE_FRAME_FIELDS,
+            f"loader failure traceback frame {index}",
+        )
+        _verify_loader_failure_prefix(
+            frame["filename"],
+            cap=_LOADER_FAILURE_FILENAME_PREFIX_BYTES,
+            label=f"loader failure traceback frame {index} filename",
+        )
+        _verify_loader_failure_prefix(
+            frame["function"],
+            cap=_LOADER_FAILURE_FUNCTION_PREFIX_BYTES,
+            label=f"loader failure traceback frame {index} function",
+        )
+        if (
+            type(frame["line_number"]) is not int
+            or not 0 < frame["line_number"] < 2**31
+        ):
+            _fail("loader failure traceback line number changed")
+    if document["diagnostic_builder_succeeded"] and scanned_count == 0:
+        _fail("loader failure diagnostic lost its traceback")
+    if not document["diagnostic_builder_succeeded"]:
+        unavailable = b"<unavailable>"
+        unavailable_prefix = {
+            "prefix_byte_count": len(unavailable),
+            "prefix_hex": unavailable.hex(),
+            "truncated": False,
+        }
+        if (
+            module != unavailable_prefix
+            or qualname != unavailable_prefix
+            or message
+            != {
+                "character_count": len(unavailable),
+                "scan_complete": True,
+                "scanned_character_count": len(unavailable),
+                "scanned_byte_count": len(unavailable),
+                "scanned_sha256": hashlib.sha256(unavailable).hexdigest(),
+                "prefix_byte_count": len(unavailable),
+                "prefix_hex": unavailable.hex(),
+                "prefix_truncated": False,
+            }
+            or scanned_count != 0
+            or scan_truncated
+            or frames
+            or frames_truncated
+        ):
+            _fail("loader failure diagnostic fallback changed")
+    return document
+
+
+def verify_formal_host_epoch_loader_failure_join_v42r3r2(
+    *, transport_observation: bytes | Mapping[str, Any],
+    probe_plan: Mapping[str, Any], probe_attempt: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Authenticate one bounded loader failure without authorizing replay."""
+
+    observation = verify_formal_host_epoch_transport_observation_v42r3r2(
+        transport_observation,
+        probe_plan=probe_plan,
+        probe_attempt=probe_attempt,
+    )
+    child = observation["child_observation"]
+    empty_sha256 = hashlib.sha256(b"").hexdigest()
+    if (
+        observation["process_closed_exactly"]
+        or not child["exec_succeeded"]
+        or child["returncode"] != 73
+        or child["timed_out"]
+        or not child["stdin_complete"]
+        or child["stdin_sent_byte_count"] != child["stdin_expected_byte_count"]
+        or child["stdout_retained_byte_count"] != 0
+        or child["stdout_total_byte_count"] != 0
+        or child["stdout_prefix_byte_count"] != 0
+        or child["stdout_prefix_hex"] != ""
+        or child["stdout_retained_sha256"] != empty_sha256
+        or child["stdout_sha256"] != empty_sha256
+        or child["stdout_overflow"]
+        or not child["stdout_eof"]
+        or not 0 < child["stderr_total_byte_count"]
+        <= _LOADER_FAILURE_DIAGNOSTIC_MAX_BYTES
+        or child["stderr_prefix_byte_count"] != child["stderr_total_byte_count"]
+        or child["stderr_overflow"]
+        or not child["stderr_eof"]
+    ):
+        _fail("formal host loader failure transport did not close exactly")
+    raw = bytes.fromhex(child["stderr_prefix_hex"])
+    if hashlib.sha256(raw).hexdigest() != child["stderr_sha256"]:
+        _fail("formal host loader failure stderr digest changed")
+    return _verify_loader_failure_diagnostic(raw)
+
+
+def verify_formal_host_epoch_transport_receipt_join_v42r3r2(
     *, transport_observation: bytes | Mapping[str, Any],
     probe_plan: Mapping[str, Any], probe_attempt: Mapping[str, Any],
     receipt_raw: bytes,
@@ -1727,7 +1988,7 @@ def verify_formal_host_epoch_transport_receipt_join_v42r3r1(
     """Require the exact successful stdout stream to frame the retained receipt."""
 
     plan = verify_formal_host_epoch_probe_plan_v42r3(probe_plan)
-    observation = verify_formal_host_epoch_transport_observation_v42r3r1(
+    observation = verify_formal_host_epoch_transport_observation_v42r3r2(
         transport_observation,
         probe_plan=plan,
         probe_attempt=probe_attempt,

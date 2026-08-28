@@ -147,13 +147,13 @@ def test_verified_importer_executes_cached_bytes_without_reading_named_source() 
 
 def test_successor_journal_roots_are_new_and_versioned() -> None:
     assert str(launcher.LOCAL_JOURNAL_ROOT).endswith(
-        ".acfqp-v42-local-formal-transport-ordinal2-v42r3r1"
+        ".acfqp-v42-local-formal-transport-ordinal2-v42r3r2"
     )
     assert launcher.REMOTE_JOURNAL_ROOT.endswith(
-        ".acfqp-v42-remote-ordinal2-formal-transport-v42r3r1"
+        ".acfqp-v42-remote-ordinal2-formal-transport-v42r3r2"
     )
-    assert "-v42r3r1" in launcher.LOCAL_JOURNAL_ROOT.name
-    assert "-v42r3r1" in launcher.REMOTE_JOURNAL_ROOT
+    assert "-v42r3r2" in launcher.LOCAL_JOURNAL_ROOT.name
+    assert "-v42r3r2" in launcher.REMOTE_JOURNAL_ROOT
 
 
 def test_input_summary_explicitly_denies_effects() -> None:
@@ -335,7 +335,7 @@ def test_probe_journal_prefix_publishes_pinned_known_hosts_before_dispatch(
 def test_nonexact_probe_retains_observation_and_refuses_same_root_replay(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path,
 ) -> None:
-    root = tmp_path / ".v42r3r1-journal"
+    root = tmp_path / ".v42r3r2-journal"
     monkeypatch.setattr(launcher, "LOCAL_JOURNAL_ROOT", root)
     prefix = {"predecessor_formal_effect_may_have_started": False}
     probe_plan = {"formal_host_epoch_probe_plan_id": "a" * 64}
@@ -365,23 +365,34 @@ def test_nonexact_probe_retains_observation_and_refuses_same_root_replay(
             "controller_same_probe_dispatch_replay_allowed": False,
         }
 
+    loader_failure_join_count = 0
+
+    def _verify_loader_failure_join(**_kwargs: object) -> dict[str, object]:
+        nonlocal loader_failure_join_count
+        loader_failure_join_count += 1
+        assert (root / launcher.HOST_PROBE_OBSERVATION_NAME).is_file()
+        return {"diagnostic_builder_succeeded": True}
+
     formal = SimpleNamespace(
         build_formal_host_epoch_probe_plan_v42r3=lambda **_kwargs: probe_plan,
         verify_formal_host_epoch_probe_plan_v42r3=lambda value: dict(value),
-        build_formal_host_epoch_probe_attempt_v42r3r1=(
+        build_formal_host_epoch_probe_attempt_v42r3r2=(
             lambda **_kwargs: attempt
         ),
-        verify_formal_host_epoch_probe_attempt_v42r3r1=(
+        verify_formal_host_epoch_probe_attempt_v42r3r2=(
             lambda value, **_kwargs: _document(value)
         ),
-        build_formal_host_epoch_transport_observation_v42r3r1=(
+        build_formal_host_epoch_transport_observation_v42r3r2=(
             _build_observation
         ),
-        verify_formal_host_epoch_transport_observation_v42r3r1=(
+        verify_formal_host_epoch_transport_observation_v42r3r2=(
             lambda value, **_kwargs: _document(value)
         ),
-        build_formal_host_epoch_dispatch_failure_v42r3r1=_build_failure,
-        verify_formal_host_epoch_dispatch_failure_v42r3r1=(
+        verify_formal_host_epoch_loader_failure_join_v42r3r2=(
+            _verify_loader_failure_join
+        ),
+        build_formal_host_epoch_dispatch_failure_v42r3r2=_build_failure,
+        verify_formal_host_epoch_dispatch_failure_v42r3r2=(
             lambda value, **_kwargs: _document(value)
         ),
     )
@@ -405,7 +416,7 @@ def test_nonexact_probe_retains_observation_and_refuses_same_root_replay(
     stderr = b"ssh failure"
     observation = SimpleNamespace(
         exec_succeeded=True,
-        returncode=255,
+        returncode=73,
         timed_out=False,
         stdin_expected_byte_count=5,
         stdin_sent_byte_count=5,
@@ -448,6 +459,7 @@ def test_nonexact_probe_retains_observation_and_refuses_same_root_replay(
                 native_activation_binding=binding,
             )
     assert dispatch_count == 1
+    assert loader_failure_join_count == 1
     assert (root / launcher.HOST_PROBE_ATTEMPT_NAME).is_file()
     assert (root / launcher.HOST_PROBE_OBSERVATION_NAME).is_file()
     assert not (root / launcher.HOST_RECEIPT_NAME).exists()
@@ -456,10 +468,10 @@ def test_nonexact_probe_retains_observation_and_refuses_same_root_replay(
             encoding="utf-8"
         )
     )
-    assert retained["child_observation"]["returncode"] == 255
+    assert retained["child_observation"]["returncode"] == 73
     assert retained["child_observation"]["stderr_prefix_hex"] == stderr.hex()
 
-    failure_root = tmp_path / ".v42r3r1-dispatch-failure"
+    failure_root = tmp_path / ".v42r3r2-dispatch-failure"
     monkeypatch.setattr(launcher, "LOCAL_JOURNAL_ROOT", failure_root)
     failure_dispatch_count = 0
 
