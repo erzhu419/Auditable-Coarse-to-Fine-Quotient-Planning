@@ -39,9 +39,9 @@ STAGE_ONE_RELATIVE = (
     "scripts/launch_v42_formal_transport_successor_v42r3.py"
 )
 STAGE_ONE_SHA256 = (
-    "a9e68b9fee9b830e7c9286b44b9c68c8ed84f9c721889143352f1f968952d636"
+    "7fee2e5364328ce7bb834d4ca41b5520e5bb80c9601e299711e6b50403647c8a"
 )
-STAGE_ONE_BYTE_COUNT = 119_165
+STAGE_ONE_BYTE_COUNT = 127_537
 EXTERNAL_ROOT_ARGUMENT = "--v42r3-external-repository-root"
 EXTERNAL_SHA_ARGUMENT = "--v42r3-external-bootstrap-sha256"
 STAGE_ONE_ROOT_ARGUMENT = "--v42r3-bootstrap-repository-root"

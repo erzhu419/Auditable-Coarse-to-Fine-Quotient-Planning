@@ -147,13 +147,13 @@ def test_verified_importer_executes_cached_bytes_without_reading_named_source() 
 
 def test_successor_journal_roots_are_new_and_versioned() -> None:
     assert str(launcher.LOCAL_JOURNAL_ROOT).endswith(
-        ".acfqp-v42-local-formal-transport-ordinal2-v42r3"
+        ".acfqp-v42-local-formal-transport-ordinal2-v42r3r1"
     )
     assert launcher.REMOTE_JOURNAL_ROOT.endswith(
-        ".acfqp-v42-remote-ordinal2-formal-transport-v42r3"
+        ".acfqp-v42-remote-ordinal2-formal-transport-v42r3r1"
     )
-    assert "-v42r3" in launcher.LOCAL_JOURNAL_ROOT.name
-    assert "-v42r3" in launcher.REMOTE_JOURNAL_ROOT
+    assert "-v42r3r1" in launcher.LOCAL_JOURNAL_ROOT.name
+    assert "-v42r3r1" in launcher.REMOTE_JOURNAL_ROOT
 
 
 def test_input_summary_explicitly_denies_effects() -> None:
@@ -330,6 +330,172 @@ def test_probe_journal_prefix_publishes_pinned_known_hosts_before_dispatch(
             launcher.HOST_PROBE_PLAN_NAME,
         }
     )
+
+
+def test_nonexact_probe_retains_observation_and_refuses_same_root_replay(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path,
+) -> None:
+    root = tmp_path / ".v42r3r1-journal"
+    monkeypatch.setattr(launcher, "LOCAL_JOURNAL_ROOT", root)
+    prefix = {"predecessor_formal_effect_may_have_started": False}
+    probe_plan = {"formal_host_epoch_probe_plan_id": "a" * 64}
+    attempt = {
+        "formal_host_epoch_probe_attempt_id": "b" * 64,
+        "controller_same_probe_dispatch_replay_allowed": False,
+    }
+
+    def _document(value: object) -> dict[str, object]:
+        if type(value) is bytes:
+            return json.loads(value.decode("utf-8"))
+        return dict(value)
+
+    def _build_observation(**kwargs: object) -> dict[str, object]:
+        return {
+            "formal_host_epoch_transport_observation_id": "c" * 64,
+            "formal_host_epoch_probe_attempt_id": "b" * 64,
+            "process_closed_exactly": False,
+            "child_observation": dict(kwargs["child_observation"]),
+        }
+
+    def _build_failure(**kwargs: object) -> dict[str, object]:
+        return {
+            "formal_host_epoch_dispatch_failure_id": "9" * 64,
+            "formal_host_epoch_probe_attempt_id": "b" * 64,
+            "failure_fact": dict(kwargs["failure_fact"]),
+            "controller_same_probe_dispatch_replay_allowed": False,
+        }
+
+    formal = SimpleNamespace(
+        build_formal_host_epoch_probe_plan_v42r3=lambda **_kwargs: probe_plan,
+        verify_formal_host_epoch_probe_plan_v42r3=lambda value: dict(value),
+        build_formal_host_epoch_probe_attempt_v42r3r1=(
+            lambda **_kwargs: attempt
+        ),
+        verify_formal_host_epoch_probe_attempt_v42r3r1=(
+            lambda value, **_kwargs: _document(value)
+        ),
+        build_formal_host_epoch_transport_observation_v42r3r1=(
+            _build_observation
+        ),
+        verify_formal_host_epoch_transport_observation_v42r3r1=(
+            lambda value, **_kwargs: _document(value)
+        ),
+        build_formal_host_epoch_dispatch_failure_v42r3r1=_build_failure,
+        verify_formal_host_epoch_dispatch_failure_v42r3r1=(
+            lambda value, **_kwargs: _document(value)
+        ),
+    )
+    native = SimpleNamespace(
+        verify_failed_v42r1_formal_prefix_read_only=lambda: dict(prefix)
+    )
+    preformal = SimpleNamespace(PINNED_KNOWN_HOSTS_BYTES=b"host key\n")
+    monkeypatch.setattr(launcher, "_authority", lambda: formal)
+    monkeypatch.setattr(
+        launcher,
+        "_verified_module",
+        lambda name: {
+            launcher.NATIVE_DRIVER_MODULE: native,
+            launcher.PREFORMAL_MODULE: preformal,
+        }[name],
+    )
+    monkeypatch.setattr(
+        launcher, "_transport_materialization_v42r3", lambda **_kwargs: object()
+    )
+    dispatch_count = 0
+    stderr = b"ssh failure"
+    observation = SimpleNamespace(
+        exec_succeeded=True,
+        returncode=255,
+        timed_out=False,
+        stdin_expected_byte_count=5,
+        stdin_sent_byte_count=5,
+        stdin_complete=True,
+        stdout_raw=b"",
+        stdout_total_byte_count=0,
+        stdout_sha256=hashlib.sha256(b"").hexdigest(),
+        stdout_overflow=False,
+        stdout_eof=True,
+        stderr_prefix=stderr,
+        stderr_total_byte_count=len(stderr),
+        stderr_sha256=hashlib.sha256(stderr).hexdigest(),
+        stderr_overflow=False,
+        stderr_eof=True,
+    )
+
+    def _dispatch(**_kwargs: object) -> object:
+        nonlocal dispatch_count
+        dispatch_count += 1
+        assert (root / launcher.HOST_PROBE_ATTEMPT_NAME).is_file()
+        assert not (root / launcher.HOST_PROBE_OBSERVATION_NAME).exists()
+        return observation
+
+    monkeypatch.setattr(launcher, "_dispatch_read_only_v42r3", _dispatch)
+    verified = SimpleNamespace(predecessor_formal_prefix=dict(prefix))
+    binding = {
+        "source_manifest_id": "d" * 64,
+        "native_activation_binding_id": "e" * 64,
+    }
+    controller = {"controller_source_manifest_id": "f" * 64}
+
+    for _ordinal in range(2):
+        with pytest.raises(
+            launcher.V42FormalTransportSuccessorLauncherError,
+            match="controller replay is forbidden|observation retained",
+        ):
+            launcher._probe_host_epoch_v42r3(  # noqa: SLF001
+                controller_manifest=controller,
+                verified_native_inputs=verified,
+                native_activation_binding=binding,
+            )
+    assert dispatch_count == 1
+    assert (root / launcher.HOST_PROBE_ATTEMPT_NAME).is_file()
+    assert (root / launcher.HOST_PROBE_OBSERVATION_NAME).is_file()
+    assert not (root / launcher.HOST_RECEIPT_NAME).exists()
+    retained = json.loads(
+        (root / launcher.HOST_PROBE_OBSERVATION_NAME).read_text(
+            encoding="utf-8"
+        )
+    )
+    assert retained["child_observation"]["returncode"] == 255
+    assert retained["child_observation"]["stderr_prefix_hex"] == stderr.hex()
+
+    failure_root = tmp_path / ".v42r3r1-dispatch-failure"
+    monkeypatch.setattr(launcher, "LOCAL_JOURNAL_ROOT", failure_root)
+    failure_dispatch_count = 0
+
+    def _raise_dispatch(**_kwargs: object) -> object:
+        nonlocal failure_dispatch_count
+        failure_dispatch_count += 1
+        raise RuntimeError("local dispatch failed")
+
+    monkeypatch.setattr(
+        launcher, "_dispatch_read_only_v42r3", _raise_dispatch
+    )
+    with pytest.raises(RuntimeError, match="local dispatch failed"):
+        launcher._probe_host_epoch_v42r3(  # noqa: SLF001
+            controller_manifest=controller,
+            verified_native_inputs=verified,
+            native_activation_binding=binding,
+        )
+    with pytest.raises(
+        launcher.V42FormalTransportSuccessorLauncherError,
+        match="controller replay is forbidden",
+    ):
+        launcher._probe_host_epoch_v42r3(  # noqa: SLF001
+            controller_manifest=controller,
+            verified_native_inputs=verified,
+            native_activation_binding=binding,
+        )
+    assert failure_dispatch_count == 1
+    failure = json.loads(
+        (failure_root / launcher.HOST_PROBE_FAILURE_NAME).read_text(
+            encoding="utf-8"
+        )
+    )
+    assert failure["failure_fact"]["failure_type"] == "builtins.RuntimeError"
+    assert bytes.fromhex(
+        failure["failure_fact"]["message_prefix_hex"]
+    ) == b"local dispatch failed"
 
 
 def test_effect_dispatch_publishes_parent_cut_then_marker_before_spawn(

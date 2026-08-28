@@ -36,6 +36,16 @@ FORMAL_HOST_EPOCH_PROBE_PLAN_SCHEMA = (
 FORMAL_HOST_EPOCH_RECEIPT_SCHEMA = (
     "acfqp.v42_formal_transport_successor_host_epoch_receipt.v42r3"
 )
+FORMAL_HOST_EPOCH_TRANSPORT_OBSERVATION_SCHEMA = (
+    "acfqp.v42_formal_transport_successor_host_epoch_transport_observation."
+    "v42r3r1"
+)
+FORMAL_HOST_EPOCH_PROBE_ATTEMPT_SCHEMA = (
+    "acfqp.v42_formal_transport_successor_host_epoch_probe_attempt.v42r3r1"
+)
+FORMAL_HOST_EPOCH_DISPATCH_FAILURE_SCHEMA = (
+    "acfqp.v42_formal_transport_successor_host_epoch_dispatch_failure.v42r3r1"
+)
 EXTERNAL_LOCAL_STAGE0_ASSUMPTION_SCHEMA = (
     "acfqp.v42_formal_transport_external_local_stage0_assumption.v42r3"
 )
@@ -54,6 +64,17 @@ FORMAL_HOST_EPOCH_PROBE_PLAN_DOMAIN = (
 )
 FORMAL_HOST_EPOCH_RECEIPT_DOMAIN = (
     b"acfqp:v42-formal-transport-successor:host-epoch-receipt:v42r3"
+)
+FORMAL_HOST_EPOCH_TRANSPORT_OBSERVATION_DOMAIN = (
+    b"acfqp:v42-formal-transport-successor:host-epoch-transport-observation:"
+    b"v42r3r1"
+)
+FORMAL_HOST_EPOCH_PROBE_ATTEMPT_DOMAIN = (
+    b"acfqp:v42-formal-transport-successor:host-epoch-probe-attempt:v42r3r1"
+)
+FORMAL_HOST_EPOCH_DISPATCH_FAILURE_DOMAIN = (
+    b"acfqp:v42-formal-transport-successor:host-epoch-dispatch-failure:"
+    b"v42r3r1"
 )
 EXTERNAL_LOCAL_STAGE0_ASSUMPTION_DOMAIN = (
     b"acfqp:v42-formal-transport:external-local-stage0-assumption:v42r3"
@@ -126,16 +147,16 @@ FORMAL_CLASSIFICATION_DOMAIN = (
 
 LOCAL_FORMAL_JOURNAL_ROOT = PurePosixPath(
     "/home/erzhu419/mine_code/"
-    ".acfqp-v42-local-formal-transport-ordinal2-v42r3"
+    ".acfqp-v42-local-formal-transport-ordinal2-v42r3r1"
 )
 REMOTE_FORMAL_JOURNAL_ROOT = PurePosixPath(
     "/home/erzhu419/mine_code/"
-    ".acfqp-v42-remote-ordinal2-formal-transport-v42r3"
+    ".acfqp-v42-remote-ordinal2-formal-transport-v42r3r1"
 )
 LOCAL_KNOWN_HOSTS_NAME = "PINNED_KNOWN_HOSTS"
 
 SYSTEMD_RUN = "/usr/bin/systemd-run"
-SYSTEMD_UNIT_PREFIX = "acfqp-v42r3-remote-ordinal2-"
+SYSTEMD_UNIT_PREFIX = "acfqp-v42r3r1-remote-ordinal2-"
 SYSTEMD_SLICE = "app.slice"
 SYSTEMD_TIMEOUT_STOP_SECONDS = 30
 SYSTEMD_RUNTIME_MAX_SECONDS = 606_300
@@ -1351,6 +1372,387 @@ def verify_formal_host_epoch_receipt_v42r3(
         label="formal host epoch receipt",
     )
     return document
+
+
+def build_formal_host_epoch_probe_attempt_v42r3r1(
+    *, probe_plan: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Publish a conservative one-shot cut before any probe dispatch."""
+
+    plan = verify_formal_host_epoch_probe_plan_v42r3(probe_plan)
+    payload = {
+        **_base(FORMAL_HOST_EPOCH_PROBE_ATTEMPT_SCHEMA),
+        "formal_host_epoch_probe_plan_id": plan[
+            "formal_host_epoch_probe_plan_id"
+        ],
+        "operation": "HOST_EPOCH_PROBE",
+        "network_dispatch_started_at_publication": False,
+        "formal_host_epoch_receipt_present_at_publication": False,
+        "controller_same_probe_dispatch_replay_allowed": False,
+        "authenticated_loader_and_receiver_remote_mutation_authorized": False,
+        "controller_prepare_authorized_by_this_attempt": False,
+    }
+    return {
+        **payload,
+        "formal_host_epoch_probe_attempt_id": _content_id(
+            FORMAL_HOST_EPOCH_PROBE_ATTEMPT_DOMAIN, payload
+        ),
+    }
+
+
+def verify_formal_host_epoch_probe_attempt_v42r3r1(
+    value: bytes | Mapping[str, Any], *, probe_plan: Mapping[str, Any],
+) -> dict[str, Any]:
+    document = _canonical_document(value, "formal host epoch probe attempt")
+    expected = build_formal_host_epoch_probe_attempt_v42r3r1(
+        probe_plan=probe_plan
+    )
+    if document != expected:
+        _fail("formal host epoch probe attempt changed")
+    return document
+
+
+_HOST_PROBE_FAILURE_FACT_FIELDS = frozenset(
+    {
+        "failure_type",
+        "message_byte_count",
+        "message_sha256",
+        "message_prefix_byte_count",
+        "message_prefix_hex",
+    }
+)
+
+
+def _verify_host_probe_failure_fact(value: Any) -> dict[str, Any]:
+    fact = _mapping(
+        value, _HOST_PROBE_FAILURE_FACT_FIELDS, "formal host probe failure fact"
+    )
+    if (
+        type(fact["failure_type"]) is not str
+        or not 0 < len(fact["failure_type"]) <= 256
+        or re.fullmatch(r"[\x20-\x7e]+", fact["failure_type"]) is None
+        or type(fact["message_byte_count"]) is not int
+        or not 0 <= fact["message_byte_count"] < 2**63
+        or type(fact["message_prefix_byte_count"]) is not int
+        or fact["message_prefix_byte_count"] < 0
+        or type(fact["message_prefix_hex"]) is not str
+        or len(fact["message_prefix_hex"])
+        > 2 * _HOST_PROBE_CAPTURE_PREFIX_MAX_BYTES
+        or len(fact["message_prefix_hex"]) % 2 != 0
+        or re.fullmatch(r"[0-9a-f]*", fact["message_prefix_hex"]) is None
+    ):
+        _fail("formal host probe failure fact changed")
+    _hex(fact["message_sha256"], 64, "formal host probe failure message")
+    prefix = bytes.fromhex(fact["message_prefix_hex"])
+    if (
+        len(prefix) != fact["message_prefix_byte_count"]
+        or len(prefix) != min(
+            fact["message_byte_count"], _HOST_PROBE_CAPTURE_PREFIX_MAX_BYTES
+        )
+        or fact["message_byte_count"] <= len(prefix)
+        and hashlib.sha256(prefix).hexdigest() != fact["message_sha256"]
+    ):
+        _fail("formal host probe failure message evidence changed")
+    return fact
+
+
+def build_formal_host_epoch_dispatch_failure_v42r3r1(
+    *, probe_plan: Mapping[str, Any], probe_attempt: Mapping[str, Any],
+    failure_fact: Mapping[str, Any],
+) -> dict[str, Any]:
+    plan = verify_formal_host_epoch_probe_plan_v42r3(probe_plan)
+    attempt = verify_formal_host_epoch_probe_attempt_v42r3r1(
+        probe_attempt, probe_plan=plan
+    )
+    failure = _verify_host_probe_failure_fact(failure_fact)
+    payload = {
+        **_base(FORMAL_HOST_EPOCH_DISPATCH_FAILURE_SCHEMA),
+        "formal_host_epoch_probe_plan_id": plan[
+            "formal_host_epoch_probe_plan_id"
+        ],
+        "formal_host_epoch_probe_attempt_id": attempt[
+            "formal_host_epoch_probe_attempt_id"
+        ],
+        "failure_fact": failure,
+        "network_dispatch_may_have_started": True,
+        "child_observation_returned_to_probe_controller": False,
+        "controller_same_probe_dispatch_replay_allowed": False,
+        "controller_prepare_authorized_by_this_failure": False,
+        "end_to_end_remote_mutation_absence_claimed": False,
+        "external_local_and_ssh_assumptions_observed_or_attested": False,
+        "remote_path_noninterference_observed_or_attested": False,
+    }
+    return {
+        **payload,
+        "formal_host_epoch_dispatch_failure_id": _content_id(
+            FORMAL_HOST_EPOCH_DISPATCH_FAILURE_DOMAIN, payload
+        ),
+    }
+
+
+def verify_formal_host_epoch_dispatch_failure_v42r3r1(
+    value: bytes | Mapping[str, Any], *, probe_plan: Mapping[str, Any],
+    probe_attempt: Mapping[str, Any],
+) -> dict[str, Any]:
+    document = _canonical_document(value, "formal host epoch dispatch failure")
+    expected = build_formal_host_epoch_dispatch_failure_v42r3r1(
+        probe_plan=probe_plan,
+        probe_attempt=probe_attempt,
+        failure_fact=document.get("failure_fact"),
+    )
+    if document != expected:
+        _fail("formal host epoch dispatch failure changed")
+    return document
+
+
+_HOST_PROBE_CAPTURE_PREFIX_MAX_BYTES = 4096
+_HOST_PROBE_STDOUT_CAP_BYTES = 64 * 1024**2
+_HOST_PROBE_STDERR_CAP_BYTES = 1024**2
+_HOST_PROBE_CHILD_OBSERVATION_FIELDS = frozenset(
+    {
+        "exec_succeeded",
+        "returncode",
+        "timed_out",
+        "stdin_expected_byte_count",
+        "stdin_sent_byte_count",
+        "stdin_complete",
+        "stdout_retained_byte_count",
+        "stdout_retained_sha256",
+        "stdout_prefix_byte_count",
+        "stdout_prefix_hex",
+        "stdout_total_byte_count",
+        "stdout_sha256",
+        "stdout_overflow",
+        "stdout_eof",
+        "stderr_prefix_byte_count",
+        "stderr_prefix_hex",
+        "stderr_total_byte_count",
+        "stderr_sha256",
+        "stderr_overflow",
+        "stderr_eof",
+    }
+)
+
+
+def _probe_capture_prefix(
+    fact: Mapping[str, Any], *, stream: str, retained_count: int,
+) -> bytes:
+    value = fact[f"{stream}_prefix_hex"]
+    byte_count = fact[f"{stream}_prefix_byte_count"]
+    if (
+        type(value) is not str
+        or len(value) > 2 * _HOST_PROBE_CAPTURE_PREFIX_MAX_BYTES
+        or len(value) % 2 != 0
+        or re.fullmatch(r"[0-9a-f]*", value) is None
+        or type(byte_count) is not int
+        or byte_count < 0
+    ):
+        _fail("formal host probe " + stream + " prefix changed")
+    raw = bytes.fromhex(value)
+    if (
+        len(raw) != byte_count
+        or byte_count != min(retained_count, _HOST_PROBE_CAPTURE_PREFIX_MAX_BYTES)
+    ):
+        _fail("formal host probe " + stream + " prefix length changed")
+    return raw
+
+
+def _verify_host_probe_child_observation(value: Any) -> tuple[dict[str, Any], bool]:
+    fact = _mapping(
+        value,
+        _HOST_PROBE_CHILD_OBSERVATION_FIELDS,
+        "formal host probe child observation",
+    )
+    for field in (
+        "exec_succeeded",
+        "timed_out",
+        "stdin_complete",
+        "stdout_overflow",
+        "stdout_eof",
+        "stderr_overflow",
+        "stderr_eof",
+    ):
+        if type(fact[field]) is not bool:
+            _fail("formal host probe child observation flag changed")
+    returncode = fact["returncode"]
+    if returncode is not None and (
+        type(returncode) is not int or not -(2**31) <= returncode < 2**31
+    ):
+        _fail("formal host probe child return code changed")
+    count_fields = (
+        "stdin_expected_byte_count",
+        "stdin_sent_byte_count",
+        "stdout_retained_byte_count",
+        "stdout_total_byte_count",
+        "stderr_total_byte_count",
+    )
+    for field in count_fields:
+        if type(fact[field]) is not int or not 0 <= fact[field] < 2**63:
+            _fail("formal host probe child byte count changed")
+    if (
+        fact["stdin_sent_byte_count"] > fact["stdin_expected_byte_count"]
+        or fact["stdin_complete"]
+        and fact["stdin_sent_byte_count"] != fact["stdin_expected_byte_count"]
+        or fact["stdout_retained_byte_count"]
+        > fact["stdout_total_byte_count"]
+        or fact["stdout_retained_byte_count"]
+        != min(
+            fact["stdout_total_byte_count"],
+            _HOST_PROBE_STDOUT_CAP_BYTES + 1,
+        )
+        or fact["stdout_overflow"]
+        is not (
+            fact["stdout_total_byte_count"] > _HOST_PROBE_STDOUT_CAP_BYTES
+        )
+        or fact["stderr_overflow"]
+        is not (
+            fact["stderr_total_byte_count"] > _HOST_PROBE_STDERR_CAP_BYTES
+        )
+    ):
+        _fail("formal host probe child stream cardinality changed")
+    for field in (
+        "stdout_retained_sha256", "stdout_sha256", "stderr_sha256"
+    ):
+        _hex(fact[field], 64, "formal host probe " + field)
+    stdout_prefix = _probe_capture_prefix(
+        fact,
+        stream="stdout",
+        retained_count=fact["stdout_retained_byte_count"],
+    )
+    stderr_prefix = _probe_capture_prefix(
+        fact,
+        stream="stderr",
+        retained_count=fact["stderr_total_byte_count"],
+    )
+    if (
+        fact["stdout_retained_byte_count"] <= len(stdout_prefix)
+        and hashlib.sha256(stdout_prefix).hexdigest()
+        != fact["stdout_retained_sha256"]
+        or fact["stderr_total_byte_count"] <= len(stderr_prefix)
+        and hashlib.sha256(stderr_prefix).hexdigest() != fact["stderr_sha256"]
+        or not fact["stdout_overflow"]
+        and (
+            fact["stdout_retained_byte_count"]
+            != fact["stdout_total_byte_count"]
+            or fact["stdout_retained_sha256"] != fact["stdout_sha256"]
+        )
+        or fact["stderr_total_byte_count"] == 0
+        and (
+            fact["stderr_prefix_byte_count"] != 0
+            or fact["stderr_sha256"] != hashlib.sha256(b"").hexdigest()
+            or fact["stderr_overflow"]
+        )
+    ):
+        _fail("formal host probe child stream digest changed")
+    closed_exactly = bool(
+        fact["exec_succeeded"]
+        and fact["returncode"] == 0
+        and not fact["timed_out"]
+        and fact["stdin_complete"]
+        and fact["stdin_sent_byte_count"]
+        == fact["stdin_expected_byte_count"]
+        and not fact["stdout_overflow"]
+        and fact["stdout_eof"]
+        and fact["stdout_total_byte_count"]
+        == fact["stdout_retained_byte_count"]
+        and fact["stderr_total_byte_count"] == 0
+        and fact["stderr_eof"]
+    )
+    return fact, closed_exactly
+
+
+def build_formal_host_epoch_transport_observation_v42r3r1(
+    *, probe_plan: Mapping[str, Any], probe_attempt: Mapping[str, Any],
+    child_observation: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Bind the controller-visible SSH closure before accepting a receipt."""
+
+    plan = verify_formal_host_epoch_probe_plan_v42r3(probe_plan)
+    attempt = verify_formal_host_epoch_probe_attempt_v42r3r1(
+        probe_attempt, probe_plan=plan
+    )
+    child, closed_exactly = _verify_host_probe_child_observation(
+        child_observation
+    )
+    payload = {
+        **_base(FORMAL_HOST_EPOCH_TRANSPORT_OBSERVATION_SCHEMA),
+        "formal_host_epoch_probe_plan_id": plan[
+            "formal_host_epoch_probe_plan_id"
+        ],
+        "formal_host_epoch_probe_attempt_id": attempt[
+            "formal_host_epoch_probe_attempt_id"
+        ],
+        "child_observation": child,
+        "process_closed_exactly": closed_exactly,
+        "network_dispatch_may_have_started": True,
+        "controller_same_probe_dispatch_replay_allowed": False,
+        "formal_host_epoch_receipt_authenticated_by_this_observation": False,
+        "controller_prepare_authorized_by_this_observation": False,
+        "authenticated_loader_and_receiver_probe_code_path_is_read_only": True,
+        "authenticated_loader_and_receiver_remote_mutation_authorized": False,
+        "end_to_end_remote_mutation_absence_claimed": False,
+        "external_local_and_ssh_assumptions_observed_or_attested": False,
+        "remote_path_noninterference_observed_or_attested": False,
+    }
+    return {
+        **payload,
+        "formal_host_epoch_transport_observation_id": _content_id(
+            FORMAL_HOST_EPOCH_TRANSPORT_OBSERVATION_DOMAIN, payload
+        ),
+    }
+
+
+def verify_formal_host_epoch_transport_observation_v42r3r1(
+    value: bytes | Mapping[str, Any], *, probe_plan: Mapping[str, Any],
+    probe_attempt: Mapping[str, Any],
+) -> dict[str, Any]:
+    document = _canonical_document(
+        value, "formal host epoch transport observation"
+    )
+    expected = build_formal_host_epoch_transport_observation_v42r3r1(
+        probe_plan=probe_plan,
+        probe_attempt=probe_attempt,
+        child_observation=document.get("child_observation"),
+    )
+    if document != expected:
+        _fail("formal host epoch transport observation changed")
+    return document
+
+
+def verify_formal_host_epoch_transport_receipt_join_v42r3r1(
+    *, transport_observation: bytes | Mapping[str, Any],
+    probe_plan: Mapping[str, Any], probe_attempt: Mapping[str, Any],
+    receipt_raw: bytes,
+) -> dict[str, Any]:
+    """Require the exact successful stdout stream to frame the retained receipt."""
+
+    plan = verify_formal_host_epoch_probe_plan_v42r3(probe_plan)
+    observation = verify_formal_host_epoch_transport_observation_v42r3r1(
+        transport_observation,
+        probe_plan=plan,
+        probe_attempt=probe_attempt,
+    )
+    if not observation["process_closed_exactly"]:
+        _fail("formal host receipt follows a nonexact transport observation")
+    receipt = verify_formal_host_epoch_receipt_v42r3(receipt_raw)
+    if receipt["formal_host_epoch_probe_plan_id"] != plan[
+        "formal_host_epoch_probe_plan_id"
+    ]:
+        _fail("formal host receipt/probe plan join changed")
+    framed = receipt_raw + b"\n"
+    digest = hashlib.sha256(framed).hexdigest()
+    child = observation["child_observation"]
+    prefix = framed[:_HOST_PROBE_CAPTURE_PREFIX_MAX_BYTES]
+    if (
+        child["stdout_retained_byte_count"] != len(framed)
+        or child["stdout_total_byte_count"] != len(framed)
+        or child["stdout_retained_sha256"] != digest
+        or child["stdout_sha256"] != digest
+        or child["stdout_prefix_byte_count"] != len(prefix)
+        or child["stdout_prefix_hex"] != prefix.hex()
+    ):
+        _fail("formal host transport stdout/receipt byte join changed")
+    return receipt
 
 
 def build_formal_transport_plan_v42r3(

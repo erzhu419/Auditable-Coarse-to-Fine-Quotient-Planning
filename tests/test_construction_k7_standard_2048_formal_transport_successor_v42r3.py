@@ -593,10 +593,156 @@ def test_host_epoch_receipt_round_trips_and_rejects_mutation_or_failed_gate() ->
         )
 
 
+def test_probe_attempt_and_transport_observation_are_one_shot_and_auditable() -> None:
+    plan = _plan()
+    attempt = formal.build_formal_host_epoch_probe_attempt_v42r3r1(
+        probe_plan=plan
+    )
+    assert attempt["controller_same_probe_dispatch_replay_allowed"] is False
+    assert attempt["network_dispatch_started_at_publication"] is False
+    assert formal.verify_formal_host_epoch_probe_attempt_v42r3r1(
+        canonical_json_bytes(attempt), probe_plan=plan
+    ) == attempt
+
+    receipt = formal.build_formal_host_epoch_receipt_v42r3(
+        probe_plan=plan,
+        observed_runtime=_runtime(),
+        manager_binding=_manager(),
+        resource_observation=_resources(),
+        remote_tool_facts=_tools(),
+        formal_successor_journal_state="ABSENT",
+    )
+    receipt_raw = canonical_json_bytes(receipt)
+    stdout = receipt_raw + b"\n"
+    stdout_prefix = stdout[:4096]
+    child = {
+        "exec_succeeded": True,
+        "returncode": 0,
+        "timed_out": False,
+        "stdin_expected_byte_count": 123,
+        "stdin_sent_byte_count": 123,
+        "stdin_complete": True,
+        "stdout_retained_byte_count": len(stdout),
+        "stdout_retained_sha256": hashlib.sha256(stdout).hexdigest(),
+        "stdout_prefix_byte_count": len(stdout_prefix),
+        "stdout_prefix_hex": stdout_prefix.hex(),
+        "stdout_total_byte_count": len(stdout),
+        "stdout_sha256": hashlib.sha256(stdout).hexdigest(),
+        "stdout_overflow": False,
+        "stdout_eof": True,
+        "stderr_prefix_byte_count": 0,
+        "stderr_prefix_hex": "",
+        "stderr_total_byte_count": 0,
+        "stderr_sha256": hashlib.sha256(b"").hexdigest(),
+        "stderr_overflow": False,
+        "stderr_eof": True,
+    }
+    observation = (
+        formal.build_formal_host_epoch_transport_observation_v42r3r1(
+            probe_plan=plan,
+            probe_attempt=attempt,
+            child_observation=child,
+        )
+    )
+    assert observation["process_closed_exactly"] is True
+    assert observation["controller_same_probe_dispatch_replay_allowed"] is False
+    assert observation[
+        "formal_host_epoch_receipt_authenticated_by_this_observation"
+    ] is False
+    assert formal.verify_formal_host_epoch_transport_observation_v42r3r1(
+        canonical_json_bytes(observation),
+        probe_plan=plan,
+        probe_attempt=attempt,
+    ) == observation
+    assert formal.verify_formal_host_epoch_transport_receipt_join_v42r3r1(
+        transport_observation=observation,
+        probe_plan=plan,
+        probe_attempt=attempt,
+        receipt_raw=receipt_raw,
+    ) == receipt
+    with pytest.raises(formal.V42FormalTransportSuccessorError):
+        formal.verify_formal_host_epoch_transport_receipt_join_v42r3r1(
+            transport_observation=observation,
+            probe_plan=plan,
+            probe_attempt=attempt,
+            receipt_raw=receipt_raw + b"\n",
+        )
+
+    failed_child = copy.deepcopy(child)
+    failed_child.update(
+        exec_succeeded=True,
+        returncode=255,
+        stderr_prefix_byte_count=11,
+        stderr_prefix_hex=b"ssh failure".hex(),
+        stderr_total_byte_count=11,
+        stderr_sha256=hashlib.sha256(b"ssh failure").hexdigest(),
+    )
+    failed = formal.build_formal_host_epoch_transport_observation_v42r3r1(
+        probe_plan=plan,
+        probe_attempt=attempt,
+        child_observation=failed_child,
+    )
+    assert failed["process_closed_exactly"] is False
+    assert failed["end_to_end_remote_mutation_absence_claimed"] is False
+
+    overflow_prefix = b"x" * 4096
+    overflow_child = copy.deepcopy(child)
+    overflow_child.update(
+        stdout_retained_byte_count=64 * 1024**2 + 1,
+        stdout_retained_sha256="1" * 64,
+        stdout_prefix_byte_count=len(overflow_prefix),
+        stdout_prefix_hex=overflow_prefix.hex(),
+        stdout_total_byte_count=64 * 1024**2 + 1,
+        stdout_sha256="2" * 64,
+        stdout_overflow=True,
+    )
+    overflow = formal.build_formal_host_epoch_transport_observation_v42r3r1(
+        probe_plan=plan,
+        probe_attempt=attempt,
+        child_observation=overflow_child,
+    )
+    assert overflow["process_closed_exactly"] is False
+    malformed_overflow = copy.deepcopy(overflow_child)
+    malformed_overflow["stdout_retained_byte_count"] = 64 * 1024**2
+    with pytest.raises(formal.V42FormalTransportSuccessorError):
+        formal.build_formal_host_epoch_transport_observation_v42r3r1(
+            probe_plan=plan,
+            probe_attempt=attempt,
+            child_observation=malformed_overflow,
+        )
+
+    message = b"local dispatch failed"
+    failure = formal.build_formal_host_epoch_dispatch_failure_v42r3r1(
+        probe_plan=plan,
+        probe_attempt=attempt,
+        failure_fact={
+            "failure_type": "builtins.RuntimeError",
+            "message_byte_count": len(message),
+            "message_sha256": hashlib.sha256(message).hexdigest(),
+            "message_prefix_byte_count": len(message),
+            "message_prefix_hex": message.hex(),
+        },
+    )
+    assert failure["controller_same_probe_dispatch_replay_allowed"] is False
+    assert failure["network_dispatch_may_have_started"] is True
+    assert formal.verify_formal_host_epoch_dispatch_failure_v42r3r1(
+        canonical_json_bytes(failure),
+        probe_plan=plan,
+        probe_attempt=attempt,
+    ) == failure
+
+    changed = copy.deepcopy(observation)
+    changed["process_closed_exactly"] = False
+    with pytest.raises(formal.V42FormalTransportSuccessorError):
+        formal.verify_formal_host_epoch_transport_observation_v42r3r1(
+            changed, probe_plan=plan, probe_attempt=attempt
+        )
+
+
 def test_effect_plan_round_trips_and_rejects_tamper_extra_and_root_drift() -> None:
     plan = _transport_plan()
-    assert plan["local_journal_root"].endswith("-v42r3")
-    assert plan["remote_journal_root"].endswith("-v42r3")
+    assert plan["local_journal_root"].endswith("-v42r3r1")
+    assert plan["remote_journal_root"].endswith("-v42r3r1")
     assert plan[
         "ssh_daemon_login_shell_pam_and_startup_hooks_are_external_tcb"
     ] is True

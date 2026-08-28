@@ -71,7 +71,7 @@ FIXED_SOURCE_ROOT = FIXED_REMOTE_ROOT + "/source"
 SOURCE_MANIFEST_PATH = FIXED_REMOTE_ROOT + "/EXECUTION_SOURCE_MANIFEST.json"
 REMOTE_V42R3_JOURNAL_ROOT = (
     "/home/erzhu419/mine_code/"
-    ".acfqp-v42-remote-ordinal2-formal-transport-v42r3"
+    ".acfqp-v42-remote-ordinal2-formal-transport-v42r3r1"
 )
 REMOTE_CONTROLLER_NAME = "CONTROLLER_SOURCE_MANIFEST.json"
 REMOTE_LOADER_NAME = "FORMAL_TRANSPORT_LOADER.py"
