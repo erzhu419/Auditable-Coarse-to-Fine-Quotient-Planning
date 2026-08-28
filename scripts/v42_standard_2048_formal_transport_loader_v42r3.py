@@ -240,6 +240,9 @@ def _loader_failure_diagnostic(error: BaseException) -> bytes:
     ):
         traceback_scanned_frame_count += 1
         code = current.tb_frame.f_code
+        line_number = current.tb_lineno
+        if type(line_number) is not int or not 0 <= line_number < 2**31:
+            line_number = 0
         traceback_frames.append(
             {
                 "filename": _diagnostic_text_prefix(
@@ -250,7 +253,7 @@ def _loader_failure_diagnostic(error: BaseException) -> bytes:
                     code.co_name,
                     LOADER_FAILURE_FUNCTION_PREFIX_BYTES,
                 ),
-                "line_number": current.tb_lineno,
+                "line_number": line_number,
             }
         )
         if len(traceback_frames) > LOADER_FAILURE_TRACEBACK_FRAMES:

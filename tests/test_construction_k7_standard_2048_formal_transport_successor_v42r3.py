@@ -801,6 +801,40 @@ def test_loader_failure_join_authenticates_exact_bounded_stderr_only() -> None:
     changed = copy.deepcopy(diagnostic)
     changed["traceback_frames"] = changed["traceback_frames"][:-1]
     producer_invalid.append(changed)
+    changed = copy.deepcopy(diagnostic)
+    changed["exception_module"] = {
+        "prefix_byte_count": 1,
+        "prefix_hex": "ff",
+        "truncated": False,
+    }
+    producer_invalid.append(changed)
+    changed = copy.deepcopy(diagnostic)
+    impossible_message = b"abcde"
+    changed["message"] = {
+        "character_count": 1,
+        "scan_complete": True,
+        "scanned_character_count": 1,
+        "scanned_byte_count": len(impossible_message),
+        "scanned_sha256": hashlib.sha256(impossible_message).hexdigest(),
+        "prefix_byte_count": len(impossible_message),
+        "prefix_hex": impossible_message.hex(),
+        "prefix_truncated": False,
+    }
+    producer_invalid.append(changed)
+    for impossible_byte_count in (6 * 4096 - 1, 6 * 4096):
+        changed = copy.deepcopy(diagnostic)
+        impossible_prefix = b"x" * 256
+        changed["message"] = {
+            "character_count": 5000,
+            "scan_complete": False,
+            "scanned_character_count": 4096,
+            "scanned_byte_count": impossible_byte_count,
+            "scanned_sha256": "0" * 64,
+            "prefix_byte_count": len(impossible_prefix),
+            "prefix_hex": impossible_prefix.hex(),
+            "prefix_truncated": True,
+        }
+        producer_invalid.append(changed)
     for changed in producer_invalid:
         changed_raw = canonical_json_bytes(changed) + b"\n"
         changed_observation = (
@@ -816,6 +850,68 @@ def test_loader_failure_join_authenticates_exact_bounded_stderr_only() -> None:
                 probe_plan=plan,
                 probe_attempt=attempt,
             )
+
+    legal_diagnostics = []
+    try:
+        raise RuntimeError("\ud800")
+    except RuntimeError as error:
+        legal_diagnostics.append(
+            loader._loader_failure_stderr(error)  # noqa: SLF001
+        )
+    for long_message in (
+        "\ud800" * 5000,
+        "\N{SNOWMAN}" * 5000,
+        "x" * 5000,
+    ):
+        try:
+            raise RuntimeError(long_message)
+        except RuntimeError as error:
+            legal_diagnostics.append(
+                loader._loader_failure_stderr(error)  # noqa: SLF001
+            )
+    multibyte_type = type(
+        "MultibyteError",
+        (Exception,),
+        {"__module__": "\N{SNOWMAN}" * 100},
+    )
+    try:
+        raise multibyte_type("multibyte prefix cut")
+    except Exception as error:
+        legal_diagnostics.append(
+            loader._loader_failure_stderr(error)  # noqa: SLF001
+        )
+    line_zero_code = compile(
+        "raise RuntimeError('line zero')",
+        "<line-zero>",
+        "exec",
+        flags=0,
+        dont_inherit=True,
+        optimize=0,
+    ).replace(co_firstlineno=0)
+    try:
+        exec(line_zero_code, {})
+    except RuntimeError as error:
+        line_zero_raw = loader._loader_failure_stderr(error)  # noqa: SLF001
+        legal_diagnostics.append(line_zero_raw)
+    for legal_raw in legal_diagnostics:
+        legal_observation = (
+            formal.build_formal_host_epoch_transport_observation_v42r3r2(
+                probe_plan=plan,
+                probe_attempt=attempt,
+                child_observation=_child(legal_raw),
+            )
+        )
+        formal.verify_formal_host_epoch_loader_failure_join_v42r3r2(
+            transport_observation=legal_observation,
+            probe_plan=plan,
+            probe_attempt=attempt,
+        )
+    line_zero = loader._canonical_document(  # noqa: SLF001
+        line_zero_raw[:-1], "line-zero diagnostic"
+    )
+    assert any(
+        frame["line_number"] == 0 for frame in line_zero["traceback_frames"]
+    )
 
     fallback_observation = (
         formal.build_formal_host_epoch_transport_observation_v42r3r2(

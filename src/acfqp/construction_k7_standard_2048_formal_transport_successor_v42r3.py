@@ -1782,7 +1782,111 @@ def _verify_loader_failure_prefix(
         and count != cap
     ):
         _fail(label + " changed")
+    _verify_loader_failure_text_prefix(
+        bytes.fromhex(prefix_hex),
+        truncated=fact["truncated"],
+        label=label,
+    )
     return fact
+
+
+def _verify_loader_failure_text_prefix(
+    raw: bytes, *, truncated: bool, label: str,
+) -> str | None:
+    state = _loader_failure_utf8_prefix_state(raw)
+    if state is None or state[1] and not truncated:
+        _fail(label + " is not a UTF-8/backslashreplace prefix")
+    return state[0] if state[1] == 0 else None
+
+
+def _loader_failure_utf8_prefix_state(
+    raw: bytes,
+) -> tuple[str, int, int] | None:
+    try:
+        return raw.decode("utf-8", errors="strict"), 0, 0
+    except UnicodeDecodeError as error:
+        if error.reason != "unexpected end of data" or error.end != len(raw):
+            return None
+        prefix = raw[: error.start]
+        pending = raw[error.start :]
+        try:
+            decoded = prefix.decode("utf-8", errors="strict")
+        except UnicodeDecodeError:
+            return None
+        lead = pending[0]
+        total = 2 if 0xC2 <= lead <= 0xDF else 3 if 0xE0 <= lead <= 0xEF else 4
+        if not 0xF0 <= lead <= 0xF4 and total == 4:
+            return None
+        return decoded, len(pending), total
+
+
+def _loader_failure_unknown_width_is_possible(
+    character_count: int, byte_count: int,
+) -> bool:
+    if character_count == 0:
+        return byte_count == 0
+    return (
+        character_count <= byte_count <= 6 * character_count
+        and byte_count != 6 * character_count - 1
+    )
+
+
+def _loader_failure_text_image_is_extendable(
+    raw_prefix: bytes, *, character_count: int, byte_count: int,
+) -> bool:
+    state = _loader_failure_utf8_prefix_state(raw_prefix)
+    if state is None or len(raw_prefix) > byte_count:
+        return False
+    decoded, pending_utf8_bytes, pending_utf8_total = state
+    surrogate_partials = [(0, "")]
+    if pending_utf8_bytes == 0:
+        partial_patterns = (
+            r"\\",
+            r"\\u",
+            r"\\ud",
+            r"\\ud[89a-f]",
+            r"\\ud[89a-f][0-9a-f]",
+        )
+        surrogate_partials.extend(
+            (size, decoded[-size:])
+            for size, pattern in enumerate(partial_patterns, start=1)
+            if len(decoded) >= size
+            and re.fullmatch(pattern, decoded[-size:]) is not None
+        )
+    for surrogate_partial_bytes, _value in surrogate_partials:
+        base = (
+            decoded[:-surrogate_partial_bytes]
+            if surrogate_partial_bytes
+            else decoded
+        )
+        collapsible = len(re.findall(r"\\ud[89a-f][0-9a-f]{2}", base))
+        pending_characters = bool(surrogate_partial_bytes) + bool(
+            pending_utf8_bytes
+        )
+        pending_extra_bytes = (
+            6 - surrogate_partial_bytes
+            if surrogate_partial_bytes
+            else 0
+        ) + (
+            pending_utf8_total - pending_utf8_bytes
+            if pending_utf8_bytes
+            else 0
+        )
+        for collapsed in range(collapsible + 1):
+            known_characters = len(base) - 5 * collapsed + pending_characters
+            remaining_characters = character_count - known_characters
+            remaining_bytes = (
+                byte_count - len(raw_prefix) - pending_extra_bytes
+            )
+            if (
+                remaining_characters >= 0
+                and remaining_bytes >= 0
+                and _loader_failure_unknown_width_is_possible(
+                    remaining_characters, remaining_bytes
+                )
+            ):
+                return True
+    return False
 
 
 def _verify_loader_failure_message(value: Any) -> dict[str, Any]:
@@ -1831,12 +1935,21 @@ def _verify_loader_failure_message(value: Any) -> dict[str, Any]:
     ):
         _fail("loader failure message prefix changed")
     prefix = bytes.fromhex(prefix_hex)
+    _verify_loader_failure_text_prefix(
+        prefix,
+        truncated=fact["prefix_truncated"],
+        label="loader failure message prefix",
+    )
     if (
-        fact["scan_complete"]
-        and fact["scanned_byte_count"] <= len(prefix)
+        fact["scanned_byte_count"] <= len(prefix)
         and hashlib.sha256(prefix).hexdigest() != fact["scanned_sha256"]
+        or not _loader_failure_text_image_is_extendable(
+            prefix,
+            character_count=fact["scanned_character_count"],
+            byte_count=fact["scanned_byte_count"],
+        )
     ):
-        _fail("loader failure message digest changed")
+        _fail("loader failure message exact image changed")
     return fact
 
 
@@ -1904,7 +2017,7 @@ def _verify_loader_failure_diagnostic(raw: bytes) -> dict[str, Any]:
         )
         if (
             type(frame["line_number"]) is not int
-            or not 0 < frame["line_number"] < 2**31
+            or not 0 <= frame["line_number"] < 2**31
         ):
             _fail("loader failure traceback line number changed")
     if document["diagnostic_builder_succeeded"] and scanned_count == 0:
