@@ -198,14 +198,14 @@ PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
 )
 PRODUCTION_TRANSIENT_SERVICE_ROWS = {
     "measurement": (
-        "2067202637b5200c9d7a4a4a2bf06be37391b8cd3b494b9bb4ab0842d1e619c6",
+        "1ba5304a7d653a3805fdca4754eeb7ff2feaa63794c6b866f47adda85160668d",
         "acfqp-v180r12r4-measurement-"
-        "2067202637b5200c9d7a4a4a2bf06be37391b8cd3b494b9bb4ab0842d1e619c6.service",
+        "1ba5304a7d653a3805fdca4754eeb7ff2feaa63794c6b866f47adda85160668d.service",
     ),
     "verification": (
-        "99bbf6c47c5387220a7fe0bd4084523b8d9de1889ddb3cbf781ebb09d4f06376",
+        "14e3fead4dab312dd06026196922d455600e970d5de64624e3d47b66525c0221",
         "acfqp-v180r12r4-verification-"
-        "99bbf6c47c5387220a7fe0bd4084523b8d9de1889ddb3cbf781ebb09d4f06376.service",
+        "14e3fead4dab312dd06026196922d455600e970d5de64624e3d47b66525c0221.service",
     ),
 }
 EXTERNAL_LAUNCH_CONTEXT_FIELDS = (

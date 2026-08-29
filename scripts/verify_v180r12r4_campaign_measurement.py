@@ -193,19 +193,21 @@ PRODUCTION_SYSTEMD_SERVICE_INVOCATION_FIELDS = (
 PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
     "acfqp:construction-k7-production-transient-service-token:v180r12r4"
 )
-V180R12R4R7_FAILED_PREDECESSOR_FREEZE_ID = (
-    "2f71e97fd2133c7983a400b5f536fe87740aa08c551580d62556aae5dcea496b"
+V180R12R4R8_FAILED_PREDECESSOR_FREEZE_ID = (
+    "0df765617aa1615b48ee5fd9192e3c596d6d50d1dfb1bc841e52d545e1716e25"
 )
-V180R12R4R7_FAILED_INNER_LAUNCH_FAILURE_ID = (
-    "46a3d92a70424c296e0137380cdb98f99f11b47b565dce3175baeab8b3546a67"
+V180R12R4R8_FAILED_INNER_LAUNCH_FAILURE_ID = (
+    "1cd76127af59458d6075f00cc4747f9489cd84e955031e5815cbf59488665238"
 )
-V180R12R4R7_FAILED_OUTER_SERVICE_FAILURE_ID = (
-    "a221f8d37ca354b7e1a753708d99229086ef6128fedd5cbf9879c89871846185"
+V180R12R4R8_FAILED_OUTER_SERVICE_FAILURE_ID = (
+    "acfc5832a9d12fa76469a624356b3e4470f085349df397645a3d0a32e6258c0b"
 )
-V180R12R4_REPAIR_SCOPE = "SOCKET_BUFFER_CAPABILITY_AND_T3_DIAGNOSTIC_CONFORMANCE"
+V180R12R4_REPAIR_SCOPE = (
+    "NAMESPACE_AWARE_PRECOMPILED_SOURCE_BINDING_AND_PRIMARY_CAUSE_CONFORMANCE"
+)
 PRODUCTION_TRANSIENT_SERVICE_TOKEN_BY_TARGET = {
-    "measurement": "2067202637b5200c9d7a4a4a2bf06be37391b8cd3b494b9bb4ab0842d1e619c6",
-    "verification": "99bbf6c47c5387220a7fe0bd4084523b8d9de1889ddb3cbf781ebb09d4f06376",
+    "measurement": "1ba5304a7d653a3805fdca4754eeb7ff2feaa63794c6b866f47adda85160668d",
+    "verification": "14e3fead4dab312dd06026196922d455600e970d5de64624e3d47b66525c0221",
 }
 PRODUCTION_RUNTIME_PLACEMENT_T1_SCHEMA = (
     "acfqp.v180r12r4_production_runtime_placement_t1.v1"
@@ -426,6 +428,10 @@ SOURCE_CLOSURE_REQUIRED_ROOTS = tuple(sorted((
     (
         "src/acfqp/construction_k7_campaign_measurement_"
         "failure_freeze_v180r12r4r7.py"
+    ),
+    (
+        "src/acfqp/construction_k7_campaign_measurement_"
+        "failure_freeze_v180r12r4r8.py"
     ),
     "src/acfqp/construction_k7_campaign_measurement_protocol_v180r12r4.py",
     "src/acfqp/construction_k7_campaign_measurement_supervisor_v180r12r4.py",
@@ -1629,13 +1635,13 @@ def _validated_production_token_input(
     ).hexdigest()
     expected_input = {
         "failed_predecessor_freeze_id": (
-            V180R12R4R7_FAILED_PREDECESSOR_FREEZE_ID
+            V180R12R4R8_FAILED_PREDECESSOR_FREEZE_ID
         ),
         "failed_inner_launch_failure_id": (
-            V180R12R4R7_FAILED_INNER_LAUNCH_FAILURE_ID
+            V180R12R4R8_FAILED_INNER_LAUNCH_FAILURE_ID
         ),
         "failed_outer_service_failure_id": (
-            V180R12R4R7_FAILED_OUTER_SERVICE_FAILURE_ID
+            V180R12R4R8_FAILED_OUTER_SERVICE_FAILURE_ID
         ),
         "repair_scope": V180R12R4_REPAIR_SCOPE,
         "purpose": target.upper(),
@@ -2575,13 +2581,13 @@ def _validate_production_systemd_service_invocation(
         and token_input
         == {
             "failed_predecessor_freeze_id": (
-                V180R12R4R7_FAILED_PREDECESSOR_FREEZE_ID
+                V180R12R4R8_FAILED_PREDECESSOR_FREEZE_ID
             ),
             "failed_inner_launch_failure_id": (
-                V180R12R4R7_FAILED_INNER_LAUNCH_FAILURE_ID
+                V180R12R4R8_FAILED_INNER_LAUNCH_FAILURE_ID
             ),
             "failed_outer_service_failure_id": (
-                V180R12R4R7_FAILED_OUTER_SERVICE_FAILURE_ID
+                V180R12R4R8_FAILED_OUTER_SERVICE_FAILURE_ID
             ),
             "repair_scope": V180R12R4_REPAIR_SCOPE,
             "purpose": target.upper(),

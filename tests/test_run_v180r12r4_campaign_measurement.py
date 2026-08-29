@@ -49,12 +49,12 @@ def _load(name: str, relative: str):
 run = _load("_test_run_v180r12r4", "scripts/run_v180r12r4_campaign_measurement.py")
 
 
-def test_runner_uses_ordinal12_transient_service_tokens() -> None:
+def test_runner_uses_ordinal14_transient_service_tokens() -> None:
     measurement = (
-        "2067202637b5200c9d7a4a4a2bf06be37391b8cd3b494b9bb4ab0842d1e619c6"
+        "1ba5304a7d653a3805fdca4754eeb7ff2feaa63794c6b866f47adda85160668d"
     )
     verification = (
-        "99bbf6c47c5387220a7fe0bd4084523b8d9de1889ddb3cbf781ebb09d4f06376"
+        "14e3fead4dab312dd06026196922d455600e970d5de64624e3d47b66525c0221"
     )
     assert run.PRODUCTION_TRANSIENT_SERVICE_ROWS == {
         "measurement": (

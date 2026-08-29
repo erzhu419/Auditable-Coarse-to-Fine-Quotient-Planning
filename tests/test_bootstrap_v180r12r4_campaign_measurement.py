@@ -24,6 +24,10 @@ from acfqp import construction_k7_campaign_measurement_protocol_v180r12r4 as pro
 
 ROOT = Path(__file__).resolve().parents[1]
 BOOTSTRAP = ROOT / "scripts/bootstrap_v180r12r4_campaign_measurement.py"
+ORDINAL13_FAILURE_LAUNCH_MANIFEST = (
+    ROOT
+    / "retained_evidence/v180r12r4r8_ordinal13_failure/raw/prelaunch/launch_manifest.json"
+)
 PYTHON = "/usr/bin/python3"
 PYCACHE_PREFIX = "/dev/null/v180r12r4"
 MANIFEST_SHA_ENV = "ACFQP_V180R12R4_LAUNCH_MANIFEST_SHA256"
@@ -134,6 +138,10 @@ SOURCE_CLOSURE_REQUIRED_ROOTS = tuple(
             (
                 "src/acfqp/construction_k7_campaign_measurement_"
                 "failure_freeze_v180r12r4r7.py"
+            ),
+            (
+                "src/acfqp/construction_k7_campaign_measurement_"
+                "failure_freeze_v180r12r4r8.py"
             ),
             (
                 "src/acfqp/construction_k7_campaign_measurement_"
@@ -1408,6 +1416,30 @@ def _internal_bundle(
             **_marshaled_row(package_code),
         }
     ]
+    third_party_root = repository.parent / f"{repository.name}-third-party"
+    assert third_party_root.parent == repository.parent
+    assert third_party_root != repository
+    third_party_sources = {
+        "packaging": ("packaging/__init__.py", True),
+        "packaging.utils": ("packaging/utils.py", False),
+        "tomli": ("tomli/__init__.py", True),
+    }
+    for module, (relative, is_package) in third_party_sources.items():
+        path = third_party_root / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        source = f"BOUND_MODULE = {module!r}\n"
+        path.write_text(source, encoding="utf-8")
+        source_rows.append(
+            {
+                "module": module,
+                "source_path": str(path),
+                "is_package": is_package,
+                **_marshaled_row(
+                    compile(source, str(path), "exec", dont_inherit=True)
+                ),
+            }
+        )
+    source_rows.sort(key=lambda row: row["module"])
     runner_source = (
         "def bootstrap_entrypoint_v180r12r4(context):\n"
         "    import hashlib, json, os\n"
@@ -1468,6 +1500,85 @@ def _internal_bundle(
     )
 
 
+def _production_shape_precompiled_inputs(
+    tmp_path: Path,
+) -> tuple[
+    Path,
+    Path,
+    Path,
+    dict[str, tuple[object, str, bool]],
+    dict[str, tuple[object, str]],
+]:
+    bootstrap = _bootstrap_module()
+    frozen_manifest = json.loads(
+        ORDINAL13_FAILURE_LAUNCH_MANIFEST.read_text(encoding="utf-8")
+    )
+    source_facts = frozen_manifest["source_modules"]
+    third_party_facts = frozen_manifest["third_party_source_closure"]["facts"]
+    assert len(source_facts) == 85
+    assert len(third_party_facts) == 21
+
+    repository = (tmp_path / "production-shape-repository").absolute()
+    c_pre = (tmp_path / "production-shape-c-pre").absolute()
+    third_party_root = (tmp_path / "production-shape-third-party").absolute()
+    repository.mkdir()
+    c_pre.mkdir()
+    third_party_root.mkdir()
+    assert repository.parent == third_party_root.parent
+    assert not str(third_party_root).startswith(str(repository) + os.sep)
+
+    records: dict[str, tuple[object, str, bool]] = {}
+    for fact in source_facts:
+        module = fact["module"]
+        relative = fact["relative_path"]
+        is_package = fact["is_package"]
+        raw = (ROOT / relative).read_bytes()
+        destination = repository / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_bytes(raw)
+        records[module] = (
+            compile(raw, str(destination), "exec", dont_inherit=True, optimize=0),
+            str(destination),
+            is_package,
+        )
+    assert len(records) == 85
+
+    synthetic_third_party_facts = []
+    for frozen in third_party_facts:
+        module = frozen["module"]
+        relative = frozen["relative_path"]
+        source = third_party_root / relative
+        source.parent.mkdir(parents=True, exist_ok=True)
+        source.write_text(f"BOUND_MODULE = {module!r}\n", encoding="utf-8")
+        synthetic_third_party_facts.append(
+            {
+                "module": module,
+                "is_package": frozen["is_package"],
+                "source_root": str(third_party_root),
+                **_file_fact(third_party_root, relative),
+            }
+        )
+    third_party_records = bootstrap._compile_third_party_sources(
+        synthetic_third_party_facts
+    )
+    assert len(third_party_records) == 21
+    assert not set(records) & set(third_party_records)
+    records.update(third_party_records)
+
+    runners: dict[str, tuple[object, str]] = {}
+    for target in bootstrap._MEASURED_TARGETS:
+        relative = RUNNER_PATHS[target]
+        raw = (ROOT / relative).read_bytes()
+        destination = repository / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_bytes(raw)
+        runners[target] = (
+            compile(raw, str(destination), "exec", dont_inherit=True, optimize=0),
+            str(destination),
+        )
+    return repository, c_pre, third_party_root, records, runners
+
+
 def test_native_zero_summary_rejects_acfqp_prefix_confusion(tmp_path: Path) -> None:
     bootstrap = _bootstrap_module()
     application = tmp_path / "src/acfqp/real.py"
@@ -1511,6 +1622,59 @@ def test_native_zero_summary_rejects_acfqp_prefix_confusion(tmp_path: Path) -> N
     assert {
         row["name"] for row in rows if row["source_kind"] == "TARGET"
     } == set(bootstrap._MEASURED_TARGETS)
+
+
+def test_production_shape_merged_bundle_round_trips_external_third_party(
+    tmp_path: Path,
+) -> None:
+    bootstrap = _bootstrap_module()
+    repository, c_pre, third_party_root, records, runners = (
+        _production_shape_precompiled_inputs(tmp_path)
+    )
+    manifest_path = c_pre / "launch_manifest.json"
+    manifest_digest = "a" * 64
+    raw, digest, native_zero_rows = bootstrap._create_precompiled_bundle(
+        records=records,
+        runners=runners,
+        manifest_digest=manifest_digest,
+        commit_id="b" * 40,
+        repository_root=repository,
+        c_pre_root=c_pre,
+        manifest_path=manifest_path,
+        install_descriptor=False,
+    )
+    loaded, selected, selected_path, bundle = bootstrap._load_precompiled_bundle(
+        raw,
+        target="supervisor",
+        manifest_digest=manifest_digest,
+        repository_root=str(repository),
+        c_pre_root=str(c_pre),
+        manifest_path=str(manifest_path),
+    )
+
+    assert hashlib.sha256(raw).hexdigest() == digest
+    assert len(bundle["source_records"]) == len(records) == len(loaded) == 106
+    assert set(loaded) == set(records)
+    assert isinstance(selected, type(compile("pass\n", "runner.py", "exec")))
+    assert selected_path == runners["supervisor"][1]
+    third_party_names = {
+        name
+        for name in loaded
+        if name.split(".", 1)[0] in {"packaging", "tomli"}
+    }
+    assert len(third_party_names) == 21
+    assert {"packaging", "tomli"} <= third_party_names
+    assert all(
+        loaded[name][1].startswith(str(third_party_root) + os.sep)
+        for name in third_party_names
+    )
+    assert all(
+        not loaded[name][1].startswith(str(repository) + os.sep)
+        for name in third_party_names
+    )
+    assert len(
+        [row for row in native_zero_rows if row["source_kind"] == "MODULE"]
+    ) == 85
 
 
 def _invoke_internal(
@@ -1773,7 +1937,7 @@ def _build_real_closure_launch(
     c_pre_bootstrap.parent.mkdir(parents=True)
     shutil.copyfile(BOOTSTRAP, c_pre_bootstrap)
     paths = _real_authorization_closure_paths()
-    assert len(paths) == 27
+    assert len(paths) == 28
     for relative in paths:
         destination = repository / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
@@ -2038,7 +2202,7 @@ def test_bootstrap_prework_exhausted_absolute_campaign_deadline_never_dispatches
     assert dispatches == []
 
 
-def test_exact_twenty_seven_static_roots_match_authorization_contract() -> None:
+def test_exact_twenty_eight_static_roots_match_authorization_contract() -> None:
     completed = subprocess.run(
         [
             PYTHON,
@@ -2057,7 +2221,7 @@ def test_exact_twenty_seven_static_roots_match_authorization_contract() -> None:
         text=True,
     )
     assert tuple(json.loads(completed.stdout)) == SOURCE_CLOSURE_REQUIRED_ROOTS
-    assert len(SOURCE_CLOSURE_REQUIRED_ROOTS) == 27
+    assert len(SOURCE_CLOSURE_REQUIRED_ROOTS) == 28
     assert (
         "src/acfqp/construction_k7_campaign_measurement_"
         "failure_freeze_v180r12r4r5.py"
@@ -2071,6 +2235,11 @@ def test_exact_twenty_seven_static_roots_match_authorization_contract() -> None:
     assert (
         "src/acfqp/construction_k7_campaign_measurement_"
         "failure_freeze_v180r12r4r7.py"
+        in SOURCE_CLOSURE_REQUIRED_ROOTS
+    )
+    assert (
+        "src/acfqp/construction_k7_campaign_measurement_"
+        "failure_freeze_v180r12r4r8.py"
         in SOURCE_CLOSURE_REQUIRED_ROOTS
     )
 
@@ -2372,6 +2541,116 @@ def test_internal_bundle_rejects_missing_reordered_or_foreign_targets(
                 c_pre_root=str(c_pre),
                 manifest_path=str(manifest),
             )
+
+
+def test_internal_bundle_source_binding_is_namespace_and_path_exact(
+    tmp_path: Path,
+) -> None:
+    bootstrap = _bootstrap_module()
+    repository = (tmp_path / "repository-source-binding").absolute()
+    c_pre = (tmp_path / "c-pre-source-binding").absolute()
+    repository.mkdir()
+    c_pre.mkdir()
+    manifest = c_pre / "launch_manifest.json"
+    digest = "a" * 64
+    original = json.loads(
+        _internal_bundle(repository, c_pre, manifest, digest).decode("utf-8")
+    )
+    assert [row["module"] for row in original["source_records"]] == [
+        "acfqp",
+        "packaging",
+        "packaging.utils",
+        "tomli",
+    ]
+    external_root = Path(original["source_records"][1]["source_path"]).parents[1]
+
+    attacks: list[tuple[dict, int, str, str, str]] = []
+
+    unknown = json.loads(json.dumps(original))
+    unknown["source_records"][1]["module"] = "unknown"
+    attacks.append(
+        (unknown, 1, "unknown", "module", "UNKNOWN_BOUND_SOURCE_NAMESPACE")
+    )
+
+    relative = json.loads(json.dumps(original))
+    relative["source_records"][1]["source_path"] = "packaging/__init__.py"
+    attacks.append((relative, 1, "packaging", "source_path", "NOT_ABSOLUTE"))
+
+    duplicate = json.loads(json.dumps(original))
+    duplicate["source_records"][3]["module"] = "packaging.utils"
+    attacks.append(
+        (duplicate, 3, "packaging.utils", "module", "DUPLICATE_MODULE_RECORD")
+    )
+
+    escaped_acfqp = json.loads(json.dumps(original))
+    escaped_acfqp["source_records"][0]["source_path"] = str(
+        external_root / "acfqp/__init__.py"
+    )
+    attacks.append(
+        (
+            escaped_acfqp,
+            0,
+            "acfqp",
+            "source_path",
+            "ACFQP_EXACT_REPOSITORY_PATH_REQUIRED",
+        )
+    )
+
+    wrong_shape = json.loads(json.dumps(original))
+    wrong_shape["source_records"][1]["source_path"] = str(
+        external_root / "not-packaging/__init__.py"
+    )
+    attacks.append(
+        (
+            wrong_shape,
+            1,
+            "packaging",
+            "source_path",
+            "THIRD_PARTY_MODULE_PATH_SHAPE_MISMATCH",
+        )
+    )
+
+    wrong_package_shape = json.loads(json.dumps(original))
+    wrong_package_shape["source_records"][2]["is_package"] = True
+    attacks.append(
+        (
+            wrong_package_shape,
+            2,
+            "packaging.utils",
+            "source_path",
+            "THIRD_PARTY_MODULE_PATH_SHAPE_MISMATCH",
+        )
+    )
+
+    split_root = json.loads(json.dumps(original))
+    split_root["source_records"][2]["source_path"] = str(
+        tmp_path / "second-third-party/packaging/utils.py"
+    )
+    attacks.append(
+        (
+            split_root,
+            2,
+            "packaging.utils",
+            "source_path",
+            "THIRD_PARTY_NAMESPACE_ROOT_MISMATCH",
+        )
+    )
+
+    for document, index, module, field, cause in attacks:
+        with pytest.raises(RuntimeError) as caught:
+            bootstrap._load_precompiled_bundle(
+                _canonical_bytes(document),
+                target="supervisor",
+                manifest_digest=digest,
+                repository_root=str(repository),
+                c_pre_root=str(c_pre),
+                manifest_path=str(manifest),
+            )
+        message = str(caught.value)
+        assert f"row_index={index}" in message
+        assert f"module={module!r}" in message
+        assert f"field={field}" in message
+        assert f"cause={cause}" in message
 
 
 def test_sourceless_legacy_pyc_is_rejected_even_if_runner_adds_repo_src(

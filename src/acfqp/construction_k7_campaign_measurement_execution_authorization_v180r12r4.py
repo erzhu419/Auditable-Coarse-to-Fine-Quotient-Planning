@@ -21,10 +21,8 @@ ZERO_ID = protocol.ZERO_ID
 EXPECTED_AUTHORIZATION_ID = ZERO_ID
 EXPECTED_CANONICAL_BYTE_COUNT = 0
 EXPECTED_CANONICAL_SHA256 = ZERO_ID
-EXPECTED_PROTOCOL_ID = "4b0c690f3267059f166835de758f0fc1a522438d653c2741f260e7ff7d612a7e"
-EXPECTED_CAMPAIGN_MEASUREMENT_EXECUTION_SLOT_ID = (
-    "8d932f122b7ac608de43897f1fa3e141cfcd1bebad220270736668768f5f56ef"
-)
+EXPECTED_PROTOCOL_ID = ZERO_ID
+EXPECTED_CAMPAIGN_MEASUREMENT_EXECUTION_SLOT_ID = ZERO_ID
 EXPECTED_SOURCE_CLOSURE_ID = ZERO_ID
 EXPECTED_SOURCE_CLOSURE_BYTE_COUNT = 0
 EXPECTED_SOURCE_CLOSURE_SHA256 = ZERO_ID
@@ -612,6 +610,9 @@ def build_campaign_measurement_execution_authorization_v180r12r4(
     failed_ordinal12 = (
         protocol.failed_ordinal12_repair_lineage_contract_v180r12r4()
     )
+    failed_ordinal13 = (
+        protocol.failed_ordinal13_repair_lineage_contract_v180r12r4()
+    )
     service_context_capture = (
         protocol.service_context_capture_contract_v180r12r4()
     )
@@ -677,6 +678,8 @@ def build_campaign_measurement_execution_authorization_v180r12r4(
         == failed_ordinal11
         and protocol_document["failed_ordinal12_repair_lineage"]
         == failed_ordinal12
+        and protocol_document["failed_ordinal13_repair_lineage"]
+        == failed_ordinal13
         and protocol_document["failed_v180r12r3_identity_rerun_forbidden"]
         is True
         and protocol_document["failed_v180r12r3r1_identity_rerun_forbidden"]
@@ -703,9 +706,15 @@ def build_campaign_measurement_execution_authorization_v180r12r4(
             "failed_v180r12r4r7_ordinal12_identity_rerun_forbidden"
         ]
         is True
+        and protocol_document[
+            "failed_v180r12r4r8_ordinal13_identity_rerun_forbidden"
+        ]
+        is True
         and protocol_document["repair_scope"]
-        == failed_ordinal12["repair_scope"]
+        == failed_ordinal13["repair_scope"]
         == protocol.V180R12R4_REPAIR_SCOPE
+        and failed_ordinal12["repair_scope"]
+        == protocol.V180R12R4R7_REPAIR_SCOPE
         and failed_ordinal11["repair_scope"]
         == protocol.V180R12R4R6_REPAIR_SCOPE
         and failed_ordinal10["repair_scope"]
@@ -720,7 +729,7 @@ def build_campaign_measurement_execution_authorization_v180r12r4(
         == runner_execution_envelope
         and prelaunch_contract["precompiled_runner_module_contract"]
         == runner_execution_envelope
-        and len(SOURCE_CLOSURE_REQUIRED_ROOTS) == 27
+        and len(SOURCE_CLOSURE_REQUIRED_ROOTS) == 28
         and protocol.V180R12R3_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
         in SOURCE_CLOSURE_REQUIRED_ROOTS
         and protocol.V180R12R3R1_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
@@ -736,6 +745,8 @@ def build_campaign_measurement_execution_authorization_v180r12r4(
         and protocol.V180R12R4R6_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
         in SOURCE_CLOSURE_REQUIRED_ROOTS
         and protocol.V180R12R4R7_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
+        in SOURCE_CLOSURE_REQUIRED_ROOTS
+        and protocol.V180R12R4R8_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
         in SOURCE_CLOSURE_REQUIRED_ROOTS
         and repair_lineage["scientific_attempt_record_present"] is False
         and repair_lineage["scientific_occurrence_started"] is False
@@ -871,6 +882,62 @@ def build_campaign_measurement_execution_authorization_v180r12r4(
         and failed_ordinal12["fresh_successor_identity_required"] is True
         and failed_ordinal12["repair_scope"]
         == protocol.V180R12R4R7_REPAIR_SCOPE
+        and failed_ordinal13["freeze_id"]
+        == protocol.V180R12R4R8_FAILED_PREDECESSOR_FREEZE_ID
+        and failed_ordinal13["campaign_attempt_id"]
+        == protocol.V180R12R4R8_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID
+        and failed_ordinal13["campaign_failure_id"]
+        == protocol.V180R12R4R8_FAILED_CAMPAIGN_FAILURE_ID
+        and failed_ordinal13["inner_launch_failure_id"]
+        == protocol.V180R12R4R8_FAILED_INNER_LAUNCH_FAILURE_ID
+        and failed_ordinal13["outer_service_failure_id"]
+        == protocol.V180R12R4R8_FAILED_OUTER_SERVICE_FAILURE_ID
+        and failed_ordinal13["scientific_attempt_opened"] is True
+        and failed_ordinal13["event_kinds"]
+        == ["ATTEMPT_OPEN", "PROCESS_BIRTH_INTENT", "PROCESS_BIRTH_OUTCOME"]
+        and failed_ordinal13["completed_event_count"] == 3
+        and failed_ordinal13["successful_process_birth_outcome_recorded"]
+        is True
+        and failed_ordinal13["full_source_conformance"] is True
+        and failed_ordinal13["full_host_conformance"] is True
+        and failed_ordinal13["production_runtime_placement_t1_complete"] is True
+        and failed_ordinal13["production_unit_ownership_t1_acquired"] is True
+        and failed_ordinal13["formal_failure_classification"]
+        == {
+            "failure_code": "INPUT_DRIFT",
+            "message": "ConnectionResetError: (104, 'Connection reset by peer')",
+        }
+        and failed_ordinal13["formal_failure_is_secondary"] is True
+        and failed_ordinal13["diagnosed_exact_cause"]
+        == {
+            "error_type": "RuntimeError",
+            "message": "V180r12r4 precompiled source binding changed",
+        }
+        and failed_ordinal13["diagnosed_exact_cause_is_primary"] is True
+        and failed_ordinal13["full_cgroup_topology_conformance_recorded"]
+        is False
+        and failed_ordinal13["source_binding_full_conformance"] is False
+        and failed_ordinal13["source_binding_mismatch_count"] == 21
+        and len(failed_ordinal13["source_binding_mismatch_rows"]) == 21
+        and failed_ordinal13["first_source_binding_mismatch_index"] == 85
+        and failed_ordinal13["first_source_binding_mismatch_module"]
+        == "packaging"
+        and failed_ordinal13["cleanup_complete"] is True
+        and failed_ordinal13["counter_record_count"] == 0
+        and failed_ordinal13["work_vector_count"] == 0
+        and failed_ordinal13["comparison_vector_count"] == 0
+        and failed_ordinal13["counter_records_issued"] is False
+        and failed_ordinal13["work_vectors_issued"] is False
+        and failed_ordinal13["comparison_vectors_issued"] is False
+        and set(failed_ordinal13["gate_statuses"].values()) == {"NOT_RUN"}
+        and failed_ordinal13["official_execution_allowed"] is False
+        and failed_ordinal13["scientific_effect_observed"] is False
+        and failed_ordinal13["scientific_effect_claimed"] is False
+        and failed_ordinal13["identity_consumed"] is True
+        and failed_ordinal13["same_identity_rerun_forbidden"] is True
+        and failed_ordinal13["fresh_successor_identity_required"] is True
+        and failed_ordinal13["repair_scope"]
+        == protocol.V180R12R4R8_REPAIR_SCOPE
         and protocol_document["service_context_capture_contract"]
         == service_context_capture
         and protocol_document["terminal_evidence_inventory_contract"]
@@ -1006,6 +1073,7 @@ def build_campaign_measurement_execution_authorization_v180r12r4(
         "failed_ordinal10_repair_lineage": failed_ordinal10,
         "failed_ordinal11_repair_lineage": failed_ordinal11,
         "failed_ordinal12_repair_lineage": failed_ordinal12,
+        "failed_ordinal13_repair_lineage": failed_ordinal13,
         "failed_v180r12r3_identity_rerun_forbidden": True,
         "failed_v180r12r3r1_identity_rerun_forbidden": True,
         "failed_v180r12r3r2_identity_rerun_forbidden": True,
@@ -1014,6 +1082,33 @@ def build_campaign_measurement_execution_authorization_v180r12r4(
         "failed_v180r12r4r5_ordinal10_identity_rerun_forbidden": True,
         "failed_v180r12r4r6_ordinal11_identity_rerun_forbidden": True,
         "failed_v180r12r4r7_ordinal12_identity_rerun_forbidden": True,
+        "failed_v180r12r4r8_ordinal13_identity_rerun_forbidden": True,
+        "historical_failed_ordinal12_freeze_id": failed_ordinal12["freeze_id"],
+        "historical_failed_ordinal12_logical_campaign_attempt_id": (
+            failed_ordinal12["campaign_attempt_id"]
+        ),
+        "historical_failed_ordinal12_campaign_failure_id": (
+            failed_ordinal12["campaign_failure_id"]
+        ),
+        "historical_failed_ordinal12_inner_launch_failure_id": (
+            failed_ordinal12["inner_launch_failure_id"]
+        ),
+        "historical_failed_ordinal12_outer_service_failure_id": (
+            failed_ordinal12["outer_service_failure_id"]
+        ),
+        "immediate_failed_predecessor_freeze_id": failed_ordinal13["freeze_id"],
+        "immediate_failed_predecessor_logical_campaign_attempt_id": (
+            failed_ordinal13["campaign_attempt_id"]
+        ),
+        "immediate_failed_predecessor_campaign_failure_id": (
+            failed_ordinal13["campaign_failure_id"]
+        ),
+        "immediate_failed_predecessor_inner_launch_failure_id": (
+            failed_ordinal13["inner_launch_failure_id"]
+        ),
+        "immediate_failed_predecessor_outer_service_failure_id": (
+            failed_ordinal13["outer_service_failure_id"]
+        ),
         "fresh_v180r12r4_physical_paths_and_identities_required": True,
         "repair_scope": protocol.V180R12R4_REPAIR_SCOPE,
         "repair_changes_campaign_path_roles_event_schedule_evidence_"

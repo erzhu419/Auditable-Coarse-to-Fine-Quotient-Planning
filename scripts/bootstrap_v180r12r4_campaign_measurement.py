@@ -108,6 +108,8 @@ _REQUIRED_MEMFD_SEALS = tuple(
 )
 _REQUIRED_MEMFD_SEAL_MASK = sum(_REQUIRED_MEMFD_SEALS)
 _PRECOMPILED_BUNDLE_SCHEMA = "acfqp.v180r12r4_precompiled_source_bundle.v1"
+_BOUND_SOURCE_NAMESPACES = frozenset(("acfqp", "packaging", "tomli"))
+_THIRD_PARTY_SOURCE_NAMESPACES = frozenset(("packaging", "tomli"))
 _INTERNAL_CONTEXT_SCHEMA = "acfqp.v180r12r4_internal_launch_context.v1"
 _INTERNAL_CONTEXT_MAC_ALGORITHM = "BLAKE2S_KEYED_256"
 _EXTERNAL_CONTEXT_FD = 249
@@ -124,14 +126,14 @@ _PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
 )
 _PRODUCTION_TRANSIENT_SERVICE_ROWS = {
     "measurement": (
-        "2067202637b5200c9d7a4a4a2bf06be37391b8cd3b494b9bb4ab0842d1e619c6",
+        "1ba5304a7d653a3805fdca4754eeb7ff2feaa63794c6b866f47adda85160668d",
         "acfqp-v180r12r4-measurement-"
-        "2067202637b5200c9d7a4a4a2bf06be37391b8cd3b494b9bb4ab0842d1e619c6.service",
+        "1ba5304a7d653a3805fdca4754eeb7ff2feaa63794c6b866f47adda85160668d.service",
     ),
     "verification": (
-        "99bbf6c47c5387220a7fe0bd4084523b8d9de1889ddb3cbf781ebb09d4f06376",
+        "14e3fead4dab312dd06026196922d455600e970d5de64624e3d47b66525c0221",
         "acfqp-v180r12r4-verification-"
-        "99bbf6c47c5387220a7fe0bd4084523b8d9de1889ddb3cbf781ebb09d4f06376.service",
+        "14e3fead4dab312dd06026196922d455600e970d5de64624e3d47b66525c0221.service",
     ),
 }
 _PRODUCTION_RUNTIME_PLACEMENT_T1_SCHEMA = (
@@ -431,6 +433,10 @@ _SOURCE_CLOSURE_REQUIRED_ROOTS = tuple(
             (
                 "src/acfqp/construction_k7_campaign_measurement_"
                 "failure_freeze_v180r12r4r7.py"
+            ),
+            (
+                "src/acfqp/construction_k7_campaign_measurement_"
+                "failure_freeze_v180r12r4r8.py"
             ),
             (
                 "src/acfqp/construction_k7_campaign_measurement_"
@@ -1330,7 +1336,7 @@ class _BoundSourceLoader(importlib.abc.MetaPathFinder, importlib.abc.Loader):
     def find_spec(self, fullname: str, path=None, target=None):
         del path, target
         namespace = fullname.split(".", 1)[0]
-        if namespace not in {"acfqp", "packaging", "tomli"}:
+        if namespace not in _BOUND_SOURCE_NAMESPACES:
             return None
         if fullname not in self._records:
             raise ImportError(
@@ -1372,7 +1378,7 @@ class _BoundImportAudit:
         root = fullname.split(".", 1)[0]
         if root in _FORBIDDEN_SITE_MODULES:
             raise ImportError("V180r12r4 site import machinery is forbidden")
-        if root in {"acfqp", "packaging", "tomli"}:
+        if root in _BOUND_SOURCE_NAMESPACES:
             if fullname not in self._bound_names:
                 raise ImportError(
                     f"V180r12r4 unlisted bound module origin rejected: {fullname}"
@@ -1870,7 +1876,7 @@ def _compile_third_party_sources(
     for index, fact in enumerate(facts):
         module = fact["module"]
         namespace = module.split(".", 1)[0]
-        if namespace not in {"packaging", "tomli"}:
+        if namespace not in _THIRD_PARTY_SOURCE_NAMESPACES:
             raise RuntimeError(
                 f"V180r12r4 foreign third-party namespace rejected: {module}"
             )
@@ -2222,6 +2228,136 @@ def _decode_marshaled_code(row: object, keys: set[str], label: str) -> object:
     return code
 
 
+def _precompiled_source_binding_failure(
+    *,
+    index: int,
+    module: object,
+    field: str,
+    cause: str,
+) -> None:
+    raise RuntimeError(
+        "V180r12r4 precompiled source binding changed: "
+        f"row_index={index}; module={module!r}; field={field}; cause={cause}"
+    )
+
+
+def _validated_precompiled_source_binding(
+    *,
+    index: int,
+    row: dict,
+    repository_root: str,
+    records: dict[str, tuple[object, str, bool]],
+    third_party_roots: dict[str, str],
+) -> tuple[str, str, bool]:
+    module_value = row["module"]
+    if type(module_value) is not str or not module_value:
+        _precompiled_source_binding_failure(
+            index=index,
+            module=module_value,
+            field="module",
+            cause="NOT_A_NONEMPTY_STRING",
+        )
+    module = module_value
+    module_parts = module.split(".")
+    if any(not part.isidentifier() for part in module_parts):
+        _precompiled_source_binding_failure(
+            index=index,
+            module=module,
+            field="module",
+            cause="MODULE_NAME_SHAPE_MISMATCH",
+        )
+    namespace = module_parts[0]
+    if namespace not in _BOUND_SOURCE_NAMESPACES:
+        _precompiled_source_binding_failure(
+            index=index,
+            module=module,
+            field="module",
+            cause="UNKNOWN_BOUND_SOURCE_NAMESPACE",
+        )
+    if module in records:
+        _precompiled_source_binding_failure(
+            index=index,
+            module=module,
+            field="module",
+            cause="DUPLICATE_MODULE_RECORD",
+        )
+
+    is_package = row["is_package"]
+    if type(is_package) is not bool:
+        _precompiled_source_binding_failure(
+            index=index,
+            module=module,
+            field="is_package",
+            cause="NOT_A_BOOLEAN",
+        )
+    source_path_value = row["source_path"]
+    if type(source_path_value) is not str or not source_path_value:
+        _precompiled_source_binding_failure(
+            index=index,
+            module=module,
+            field="source_path",
+            cause="NOT_A_NONEMPTY_STRING",
+        )
+    source_path = source_path_value
+    source = Path(source_path)
+    if not source.is_absolute():
+        _precompiled_source_binding_failure(
+            index=index,
+            module=module,
+            field="source_path",
+            cause="NOT_ABSOLUTE",
+        )
+    if os.path.normpath(source_path) != source_path:
+        _precompiled_source_binding_failure(
+            index=index,
+            module=module,
+            field="source_path",
+            cause="NONCANONICAL_ABSOLUTE_PATH",
+        )
+
+    expected_relative = PurePosixPath(*module_parts)
+    if is_package:
+        expected_relative /= "__init__.py"
+    else:
+        expected_relative = expected_relative.with_suffix(".py")
+    if namespace == "acfqp":
+        expected_path = str(Path(repository_root) / "src" / expected_relative)
+        if source_path != expected_path:
+            _precompiled_source_binding_failure(
+                index=index,
+                module=module,
+                field="source_path",
+                cause=f"ACFQP_EXACT_REPOSITORY_PATH_REQUIRED:{expected_path}",
+            )
+        return module, source_path, is_package
+
+    expected_suffix = expected_relative.parts
+    source_parts = source.parts
+    if (
+        len(source_parts) <= len(expected_suffix)
+        or source_parts[-len(expected_suffix) :] != expected_suffix
+    ):
+        _precompiled_source_binding_failure(
+            index=index,
+            module=module,
+            field="source_path",
+            cause=(
+                "THIRD_PARTY_MODULE_PATH_SHAPE_MISMATCH:"
+                + expected_relative.as_posix()
+            ),
+        )
+    source_root = str(Path(*source_parts[: -len(expected_suffix)]))
+    prior_root = third_party_roots.setdefault(namespace, source_root)
+    if source_root != prior_root:
+        _precompiled_source_binding_failure(
+            index=index,
+            module=module,
+            field="source_path",
+            cause=f"THIRD_PARTY_NAMESPACE_ROOT_MISMATCH:{prior_root}",
+        )
+    return module, source_path, is_package
+
+
 def _load_precompiled_bundle(
     raw: bytes,
     *,
@@ -2269,6 +2405,7 @@ def _load_precompiled_bundle(
     if type(source_rows) is not list or type(target_rows) is not list:
         raise RuntimeError("V180r12r4 precompiled bundle records changed")
     records: dict[str, tuple[object, str, bool]] = {}
+    third_party_roots: dict[str, str] = {}
     for index, row in enumerate(source_rows):
         code = _decode_marshaled_code(
             row,
@@ -2282,21 +2419,33 @@ def _load_precompiled_bundle(
             },
             f"precompiled source {index}",
         )
-        module = _require_str(row["module"], f"precompiled source {index} module")
-        source_path = _require_str(
-            row["source_path"], f"precompiled source {index} path"
+        module, source_path, is_package = _validated_precompiled_source_binding(
+            index=index,
+            row=row,
+            repository_root=repository_root,
+            records=records,
+            third_party_roots=third_party_roots,
         )
-        is_package = row["is_package"]
-        if (
-            type(is_package) is not bool
-            or module in records
-            or not Path(source_path).is_absolute()
-            or not source_path.startswith(repository_root + os.sep)
-        ):
-            raise RuntimeError("V180r12r4 precompiled source binding changed")
         records[module] = (code, source_path, is_package)
-    if [row["module"] for row in source_rows] != sorted(records):
-        raise RuntimeError("V180r12r4 precompiled source order changed")
+    observed_order = [row["module"] for row in source_rows]
+    expected_order = sorted(records)
+    if observed_order != expected_order:
+        mismatch_index = next(
+            index
+            for index, (observed, expected) in enumerate(
+                zip(observed_order, expected_order, strict=True)
+            )
+            if observed != expected
+        )
+        _precompiled_source_binding_failure(
+            index=mismatch_index,
+            module=observed_order[mismatch_index],
+            field="module",
+            cause=(
+                "SOURCE_RECORD_ORDER_MISMATCH:"
+                f"expected={expected_order[mismatch_index]!r}"
+            ),
+        )
     compiled_targets: dict[str, tuple[object, str]] = {}
     for index, row in enumerate(target_rows):
         code = _decode_marshaled_code(
@@ -3007,7 +3156,7 @@ def _execute_precompiled_runner(
             "V180r12r4 target runner module was registered before dispatch"
         )
 
-    namespaces = {"acfqp", "packaging", "tomli"}
+    namespaces = _BOUND_SOURCE_NAMESPACES
     if any(name.split(".", 1)[0] in namespaces for name in sys.modules):
         raise RuntimeError("V180r12r4 bound source was imported before dispatch")
     loader = _BoundSourceLoader(records)

@@ -429,6 +429,10 @@ SOURCE_CLOSURE_REQUIRED_ROOTS = tuple(
             ),
             (
                 "src/acfqp/construction_k7_campaign_measurement_"
+                "failure_freeze_v180r12r4r8.py"
+            ),
+            (
+                "src/acfqp/construction_k7_campaign_measurement_"
                 "independent_verifier_v180r12r4.py"
             ),
             (
@@ -467,7 +471,7 @@ PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
     "acfqp:construction-k7-production-transient-service-token:v180r12r4"
 )
 PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN = (
-    "2067202637b5200c9d7a4a4a2bf06be37391b8cd3b494b9bb4ab0842d1e619c6"
+    "1ba5304a7d653a3805fdca4754eeb7ff2feaa63794c6b866f47adda85160668d"
 )
 PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_UNIT_NAME = (
     "acfqp-v180r12r4-measurement-"
@@ -475,7 +479,7 @@ PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_UNIT_NAME = (
     + ".service"
 )
 PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_TOKEN = (
-    "99bbf6c47c5387220a7fe0bd4084523b8d9de1889ddb3cbf781ebb09d4f06376"
+    "14e3fead4dab312dd06026196922d455600e970d5de64624e3d47b66525c0221"
 )
 PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_UNIT_NAME = (
     "acfqp-v180r12r4-verification-"
@@ -517,19 +521,19 @@ GIT_COMMAND_TIMEOUT_SECONDS = 120
 FAILURE_MESSAGE_BYTE_CAP = 4096
 
 EXPECTED_SOURCE_CLOSURE_RULE_ID = (
-    "132d496fc7dc6569bb6205102f9157d020ca6dacd3f4c44b149a0eb4f569de1f"
+    "5ec6496223fdd24664d142d581847f3e95456a3b0bb171df2950302e413ac60b"
 )
 EXPECTED_MATERIALIZATION_RULE_ID = (
-    "63b22795125630204571da9e32063392b3fc29b866be16a08dbd865fc164f621"
+    "ee833b2260347a85442802459cd3ae6edd62b3abd35ba8d15b1829f7e9fa04f8"
 )
 LAUNCHER_RULE_LITERAL_NAMES = (
     "EXPECTED_SOURCE_CLOSURE_RULE_ID",
     "EXPECTED_MATERIALIZATION_RULE_ID",
     "EXPECTED_LAUNCH_RULE_ID",
 )
-LAUNCHER_NORMALIZED_STATIC_RULE_SOURCE_BYTE_COUNT = 258_991
+LAUNCHER_NORMALIZED_STATIC_RULE_SOURCE_BYTE_COUNT = 259_081
 LAUNCHER_NORMALIZED_STATIC_RULE_SOURCE_SHA256 = (
-    "9bed34c0aa72e339c2c7daa79a99ab3e4b6959627cf6af3450625b778a1e739f"
+    "1ddb8a0785d905158c17ce123e6c7739ad17b66e0d17740fd10cd439e0a5e70d"
 )
 
 SOURCE_CLOSURE_RULE_DOCUMENT = {
@@ -701,15 +705,18 @@ def _zero_preflight_receipt_interface() -> dict[str, Any]:
 def _production_systemd_service_contract() -> dict[str, Any]:
     base = {
         "failed_predecessor_freeze_id": (
-            "2f71e97fd2133c7983a400b5f536fe87740aa08c551580d62556aae5dcea496b"
+            "0df765617aa1615b48ee5fd9192e3c596d6d50d1dfb1bc841e52d545e1716e25"
         ),
         "failed_inner_launch_failure_id": (
-            "46a3d92a70424c296e0137380cdb98f99f11b47b565dce3175baeab8b3546a67"
+            "1cd76127af59458d6075f00cc4747f9489cd84e955031e5815cbf59488665238"
         ),
         "failed_outer_service_failure_id": (
-            "a221f8d37ca354b7e1a753708d99229086ef6128fedd5cbf9879c89871846185"
+            "acfc5832a9d12fa76469a624356b3e4470f085349df397645a3d0a32e6258c0b"
         ),
-        "repair_scope": "SOCKET_BUFFER_CAPABILITY_AND_T3_DIAGNOSTIC_CONFORMANCE",
+        "repair_scope": (
+            "NAMESPACE_AWARE_PRECOMPILED_SOURCE_BINDING_AND_PRIMARY_CAUSE_"
+            "CONFORMANCE"
+        ),
     }
     token_rows = {
         "measurement": (
