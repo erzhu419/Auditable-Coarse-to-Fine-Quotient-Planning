@@ -596,7 +596,7 @@ def test_public_schemas_paths_and_phase_aware_rule_identities() -> None:
         assert all(len(value) == 64 for value in rules)
     else:
         assert rules == (ZERO_ID, ZERO_ID)
-    assert len(materializer.SOURCE_CLOSURE_REQUIRED_ROOTS) == 28
+    assert len(materializer.SOURCE_CLOSURE_REQUIRED_ROOTS) == 29
     assert materializer.SOURCE_CLOSURE_REQUIRED_ROOTS == (
         protocol.SOURCE_CLOSURE_REQUIRED_ROOTS
     )
@@ -623,6 +623,11 @@ def test_public_schemas_paths_and_phase_aware_rule_identities() -> None:
     assert (
         "src/acfqp/construction_k7_campaign_measurement_"
         "failure_freeze_v180r12r4r8.py"
+        in materializer.SOURCE_CLOSURE_REQUIRED_ROOTS
+    )
+    assert (
+        "src/acfqp/construction_k7_campaign_measurement_"
+        "failure_freeze_v180r12r4r9.py"
         in materializer.SOURCE_CLOSURE_REQUIRED_ROOTS
     )
     assert (
@@ -918,6 +923,11 @@ def test_success_materializes_exact_bootstrap_manifest_and_terminal_last(
     mutated_internal_contract["sock_seqpacket_effective_min_bytes"] -= 1
     assert mutated_internal_contract != materializer.INTERNAL_TARGET_CONTRACT
     assert manifest["git"]["runner_process_count"] == 6
+    assert manifest["git"]["runner_process_count_by_target"] == {
+        "measurement": 6,
+        "verification": 0,
+    }
+    assert manifest["git"]["runner_argv_target"] == "measurement"
     assert manifest["git"]["runner_environment_template"][
         materializer.MANIFEST_SHA256_ENV
     ] == materializer.MANIFEST_SHA256_TEMPLATE

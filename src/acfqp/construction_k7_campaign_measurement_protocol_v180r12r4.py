@@ -66,15 +66,19 @@ from acfqp import (
     construction_k7_campaign_measurement_failure_freeze_v180r12r4r8
     as failed_ordinal13_predecessor,
 )
+from acfqp import (
+    construction_k7_campaign_measurement_failure_freeze_v180r12r4r9
+    as failed_ordinal14_predecessor,
+)
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
 ZERO_ID = "0" * 64
-EXPECTED_PROTOCOL_ID = "9fc6ecbe63cdb65752d5bac6690903ab34ffc540abb3062b5ffde7a3695ebd49"
-EXPECTED_CANONICAL_BYTE_COUNT = 492_573
-EXPECTED_CANONICAL_SHA256 = "e32acda505c2e7dc98593290fe5fb60561e22df8481581a1f4e25846348f7cba"
+EXPECTED_PROTOCOL_ID = "f181ba16ee7b3931c282255daddd7c7b6545aaf5037ef5092c6123e5a5eafbbb"
+EXPECTED_CANONICAL_BYTE_COUNT = 610_665
+EXPECTED_CANONICAL_SHA256 = "bfa07ebe387155405d5f936e54b74f66a8d4af72573702b0b236067ed3328fd6"
 EXPECTED_CAMPAIGN_MEASUREMENT_EXECUTION_SLOT_ID = (
-    "441e52cd3721793a0541288196776aa214dd44b91f01e1822114b0e4442559f5"
+    "602ae74c14a2dc3267015bf1b05d36b7d1a5b11a184186a520c0a29dbf7ffd4b"
 )
 LOGICAL_OCCURRENCE_ID = "a37770e56698857e162b2099766573ec5cabfc876145496f7d54756271d66599"
 EXECUTION_NONCE = "7d4ebffb564caeb42550670bf06276f9ef7f456cfa5231acef56497f2bd62ea4"
@@ -487,6 +491,28 @@ V180R12R4R8_FAILED_INNER_LAUNCH_FAILURE_ID = (
 V180R12R4R8_FAILED_OUTER_SERVICE_FAILURE_ID = (
     failed_ordinal13_predecessor.EXPECTED_OUTER_SERVICE_FAILURE_ID
 )
+V180R12R4R9_FAILURE_FREEZE_SOURCE_RELATIVE_PATH = (
+    "src/acfqp/"
+    "construction_k7_campaign_measurement_failure_freeze_v180r12r4r9.py"
+)
+V180R12R4R9_FAILED_PREDECESSOR_FREEZE_ID = (
+    failed_ordinal14_predecessor.ORDINAL14_FAILURE_FREEZE_ID
+)
+V180R12R4R9_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID = (
+    failed_ordinal14_predecessor.EXPECTED_CAMPAIGN_ATTEMPT_ID
+)
+V180R12R4R9_FAILED_MEASUREMENT_TERMINAL_ID = (
+    failed_ordinal14_predecessor.EXPECTED_MEASUREMENT_TERMINAL_ID
+)
+V180R12R4R9_FAILED_VERIFICATION_ID = (
+    failed_ordinal14_predecessor.EXPECTED_VERIFICATION_ID
+)
+V180R12R4R9_FAILED_INNER_LAUNCH_FAILURE_ID = (
+    failed_ordinal14_predecessor.EXPECTED_INNER_LAUNCH_FAILURE_ID
+)
+V180R12R4R9_FAILED_OUTER_SERVICE_FAILURE_ID = (
+    failed_ordinal14_predecessor.EXPECTED_OUTER_SERVICE_FAILURE_ID
+)
 V180R12R3R2_REPAIR_SCOPE = (
     "OUTER_OBSERVER_DELEGATED_SOURCE_CGROUP_PLACEMENT_AND_ATOMIC_BIRTH_"
     "PREFLIGHT_ONLY"
@@ -499,7 +525,8 @@ V180R12R4R5_REPAIR_SCOPE = failed_ordinal10_predecessor.REPAIR_SCOPE
 V180R12R4R6_REPAIR_SCOPE = failed_ordinal11_predecessor.REPAIR_SCOPE
 V180R12R4R7_REPAIR_SCOPE = failed_ordinal12_predecessor.REPAIR_SCOPE
 V180R12R4R8_REPAIR_SCOPE = failed_ordinal13_predecessor.REPAIR_SCOPE
-V180R12R4_REPAIR_SCOPE = V180R12R4R8_REPAIR_SCOPE
+V180R12R4R9_REPAIR_SCOPE = failed_ordinal14_predecessor.REPAIR_SCOPE
+V180R12R4_REPAIR_SCOPE = V180R12R4R9_REPAIR_SCOPE
 
 PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
     "acfqp:construction-k7-production-transient-service-token:v180r12r4"
@@ -512,12 +539,12 @@ PRODUCTION_TRANSIENT_SERVICE_TOKEN_INPUT_FIELDS = (
     "purpose",
 )
 PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN_INPUT = {
-    "failed_predecessor_freeze_id": V180R12R4R8_FAILED_PREDECESSOR_FREEZE_ID,
+    "failed_predecessor_freeze_id": V180R12R4R9_FAILED_PREDECESSOR_FREEZE_ID,
     "failed_inner_launch_failure_id": (
-        V180R12R4R8_FAILED_INNER_LAUNCH_FAILURE_ID
+        V180R12R4R9_FAILED_INNER_LAUNCH_FAILURE_ID
     ),
     "failed_outer_service_failure_id": (
-        V180R12R4R8_FAILED_OUTER_SERVICE_FAILURE_ID
+        V180R12R4R9_FAILED_OUTER_SERVICE_FAILURE_ID
     ),
     "repair_scope": V180R12R4_REPAIR_SCOPE,
     "purpose": "MEASUREMENT",
@@ -528,7 +555,7 @@ PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN = hashlib.sha256(
     + canonical_json_bytes(PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN_INPUT)
 ).hexdigest()
 EXPECTED_PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN = (
-    "1ba5304a7d653a3805fdca4754eeb7ff2feaa63794c6b866f47adda85160668d"
+    "5bfee9fa85834621b4947c1b68d32e96b7c53e260336d0815fd18bf59522dc72"
 )
 PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_UNIT_NAME = (
     "acfqp-v180r12r4-measurement-"
@@ -545,7 +572,7 @@ PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_TOKEN = hashlib.sha256(
     + canonical_json_bytes(PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_TOKEN_INPUT)
 ).hexdigest()
 EXPECTED_PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_TOKEN = (
-    "14e3fead4dab312dd06026196922d455600e970d5de64624e3d47b66525c0221"
+    "6dadbbfad8eb31dd5cc524f57132952a0c3535fa3751ea55ef9e4cf95f87bb01"
 )
 PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_UNIT_NAME = (
     "acfqp-v180r12r4-verification-"
@@ -766,6 +793,10 @@ SOURCE_BOUND_RUNNER_MODULE_METADATA_FIELDS = (
     "__cached__",
     "__loader__",
     "__spec__",
+)
+SOURCE_BOUND_RUNNER_GIT_PROCESS_COUNT_ROWS = (
+    ("measurement", 6),
+    ("verification", 0),
 )
 
 CAMPAIGN_PATHS = (
@@ -1797,13 +1828,13 @@ SUCCESS_DURABLE_WRITE_ORDER = (
 )
 
 EXPECTED_PRELAUNCH_SOURCE_CLOSURE_RULE_ID = (
-    "5ec6496223fdd24664d142d581847f3e95456a3b0bb171df2950302e413ac60b"
+    "e5f6f8aaa6a196011d0a64686fe9df743e995f4e66d14119116870a40d9c0530"
 )
 EXPECTED_PRELAUNCH_MATERIALIZATION_RULE_ID = (
-    "ee833b2260347a85442802459cd3ae6edd62b3abd35ba8d15b1829f7e9fa04f8"
+    "584a47eec792b577314cbdc3ae8e1e50d44d892c402e48de86369087c7e0bc74"
 )
 EXPECTED_PRELAUNCH_LAUNCH_RULE_ID = (
-    "9bedb474878ba9f3c7eb9735278b03fd91299c978f959ae30433a22b41b23817"
+    "30f0656ce92e74c2b60e8ba95b11f4833f7ebe89756e5303a8e1aa4322ec4008"
 )
 PROTOCOL_FINAL_ANCHOR_NAMES = (
     "EXPECTED_PROTOCOL_ID",
@@ -2683,6 +2714,7 @@ SOURCE_CLOSURE_REQUIRED_ROOTS = tuple(sorted((
     V180R12R4R6_FAILURE_FREEZE_SOURCE_RELATIVE_PATH,
     V180R12R4R7_FAILURE_FREEZE_SOURCE_RELATIVE_PATH,
     V180R12R4R8_FAILURE_FREEZE_SOURCE_RELATIVE_PATH,
+    V180R12R4R9_FAILURE_FREEZE_SOURCE_RELATIVE_PATH,
     V180R12R2_EVIDENCE_SOURCE_RELATIVE_PATH,
 )))
 WORKER_ALLOWED_LOCAL_IMPORTS = (
@@ -3242,6 +3274,22 @@ def source_bound_runner_execution_envelope_contract_v180r12r4() -> dict[str, Any
         "registration_removed_after_postchecks_on_success_or_failure": True,
         "runner_module_registration_leak_forbidden": True,
         "runner_primary_error_precedes_registration_secondary": True,
+    }
+
+
+def source_bound_runner_git_process_audit_contract_v180r12r4() -> dict[str, Any]:
+    """Return the target-specific runner subprocess contract."""
+
+    return {
+        "manifest_runner_argv_target": "measurement",
+        "manifest_runner_argv_process_count": 6,
+        "target_rows": [
+            {"target": target, "expected_process_count": count}
+            for target, count in SOURCE_BOUND_RUNNER_GIT_PROCESS_COUNT_ROWS
+        ],
+        "measurement_exact_argv_order_environment_and_cwd_required": True,
+        "verification_any_subprocess_is_foreign": True,
+        "post_run_completeness_required_for_each_target": True,
     }
 
 
@@ -4427,7 +4475,7 @@ def failed_ordinal12_repair_lineage_contract_v180r12r4() -> dict[str, Any]:
 
 
 def failed_ordinal13_repair_lineage_contract_v180r12r4() -> dict[str, Any]:
-    """Bind consumed ordinal13 as the immediate scientific predecessor."""
+    """Bind consumed ordinal13 as a historical scientific predecessor."""
 
     source = Path(failed_ordinal13_predecessor.__file__).resolve()
     expected_source = (
@@ -4579,6 +4627,175 @@ def failed_ordinal13_repair_lineage_contract_v180r12r4() -> dict[str, Any]:
         **contract,
         "failure_freeze_source_relative_path": (
             V180R12R4R8_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
+        ),
+        "failure_freeze_source_is_required_authorization_source_root": True,
+        "failure_freeze_source_is_resolved_from_source_bound_module_file": True,
+        "repair_changes_campaign_path_roles_event_schedule_evidence_"
+        "cardinality_or_reducers": False,
+    }
+
+
+def failed_ordinal14_repair_lineage_contract_v180r12r4() -> dict[str, Any]:
+    """Bind consumed ordinal14 as the immediate scientific predecessor."""
+
+    source = Path(failed_ordinal14_predecessor.__file__).resolve()
+    expected_source = (
+        _ROOT / V180R12R4R9_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
+    ).resolve()
+    if not (
+        source == expected_source
+        and source.parents[2] == _ROOT.resolve()
+        and failed_ordinal14_predecessor.ORDINAL14_FAILURE_FREEZE_ID
+        == V180R12R4R9_FAILED_PREDECESSOR_FREEZE_ID
+        and failed_ordinal14_predecessor.EXPECTED_CAMPAIGN_ATTEMPT_ID
+        == V180R12R4R9_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID
+        and failed_ordinal14_predecessor.EXPECTED_MEASUREMENT_TERMINAL_ID
+        == V180R12R4R9_FAILED_MEASUREMENT_TERMINAL_ID
+        and failed_ordinal14_predecessor.EXPECTED_VERIFICATION_ID
+        == V180R12R4R9_FAILED_VERIFICATION_ID
+        and failed_ordinal14_predecessor.EXPECTED_INNER_LAUNCH_FAILURE_ID
+        == V180R12R4R9_FAILED_INNER_LAUNCH_FAILURE_ID
+        and failed_ordinal14_predecessor.EXPECTED_OUTER_SERVICE_FAILURE_ID
+        == V180R12R4R9_FAILED_OUTER_SERVICE_FAILURE_ID
+        and failed_ordinal14_predecessor.REPAIR_SCOPE
+        == V180R12R4R9_REPAIR_SCOPE
+    ):
+        _fail("frozen ordinal14 failure authority changed")
+    contract = (
+        failed_ordinal14_predecessor.freeze_ordinal14_failure_v180r12r4r9()
+        .to_contract()
+    )
+    snapshots = contract.get("property_snapshots")
+    classification = contract.get("formal_failure_classification")
+    cause = contract.get("diagnosed_exact_cause")
+    inference = contract.get("static_control_flow_inference")
+    gates = contract.get("gate_statuses_by_layer")
+    if not (
+        contract.get("schema")
+        == "acfqp.v180r12r4r9_ordinal14_verification_failure_freeze.v1"
+        and contract.get("freeze_id")
+        == V180R12R4R9_FAILED_PREDECESSOR_FREEZE_ID
+        and contract.get("campaign_attempt_id")
+        == V180R12R4R9_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID
+        and contract.get("campaign_attempt_record_id")
+        == failed_ordinal14_predecessor.EXPECTED_CAMPAIGN_ATTEMPT_RECORD_ID
+        and contract.get("measurement_terminal_id")
+        == V180R12R4R9_FAILED_MEASUREMENT_TERMINAL_ID
+        and contract.get("verification_id")
+        == V180R12R4R9_FAILED_VERIFICATION_ID
+        and contract.get("verification_inner_launch_failure_id")
+        == V180R12R4R9_FAILED_INNER_LAUNCH_FAILURE_ID
+        and contract.get("verification_outer_service_failure_id")
+        == V180R12R4R9_FAILED_OUTER_SERVICE_FAILURE_ID
+        and "campaign_failure_id" not in contract
+        and "verification_failure_id" not in contract
+        and contract.get("formal_artifact_count") == 21
+        and contract.get("post_failure_diagnostic_artifact_count") == 1
+        and contract.get("post_failure_diagnostic_is_formal_campaign_artifact")
+        is False
+        and contract.get("all_retained_document_self_ids_verified") is True
+        and contract.get("self_id_document_count") == 18
+        and contract.get("unique_self_id_count") == 17
+        and contract.get("campaign_failure_artifact_present") is False
+        and contract.get("verification_failure_artifact_present") is False
+        and contract.get("source_root_count") == 28
+        and contract.get("full_source_conformance") is True
+        and contract.get("source_conformance_mismatch_count") == 0
+        and contract.get("source_conformance_cause") is None
+        and contract.get("full_host_conformance") is True
+        and contract.get("host_conformance_mismatch_count") == 0
+        and contract.get("host_conformance_cause") is None
+        and type(snapshots) is dict
+        and set(snapshots)
+        == {
+            "source_conformance",
+            "host_conformance",
+            "measurement_cgroup_topology",
+            "measurement_runtime_placement_t1",
+            "measurement_runtime_placement_t2",
+            "measurement_runtime_placement_t3",
+            "measurement_cgroup_lifecycle",
+            "verification_runtime_placement_t1",
+            "verification_payload",
+            "verification_transport",
+            "runner_git_contract_observation",
+        }
+        and contract.get("measurement_succeeded") is True
+        and contract.get("measurement_inner_launch_receipt_present") is True
+        and contract.get("measurement_outer_service_receipt_present") is True
+        and contract.get("measurement_full_cgroup_topology_conformance") is True
+        and contract.get("measurement_runtime_placement_t1_t2_t3_complete")
+        is True
+        and contract.get("verification_unit_ownership_t1_acquired") is True
+        and contract.get("verification_payload_conformance") is True
+        and contract.get("verification_payload_and_replay_byte_identical") is True
+        and contract.get("verification_transport_success") is False
+        and contract.get("producer_free_verification_attempted") is True
+        and contract.get("producer_free_verification_completed") is False
+        and contract.get("verification_inner_launch_receipt_present") is False
+        and contract.get("verification_outer_service_receipt_present") is False
+        and contract.get("full_verification_launch_conformance") is False
+        and type(classification) is dict
+        and classification.get("failure_type") == "V180r12r4PrelaunchLaunchError"
+        and classification.get("inner_return_code") == 1
+        and classification.get("outer_systemd_run_return_code") == 1
+        and classification.get("stage")
+        == (
+            "POST_RUN_BOOTSTRAP_SECONDARY_OBSERVATION_AFTER_DURABLE_"
+            "VERIFICATION_PUBLICATION"
+        )
+        and contract.get("formal_mismatch_count") == 1
+        and contract.get("formal_mismatch_rows")
+        == [
+            {
+                "expected": True,
+                "field": "source_bound_runner_git_audit.complete",
+                "observed": False,
+            }
+        ]
+        and type(cause) is dict
+        and cause.get("failure_code")
+        == "TARGET_AGNOSTIC_SIX_PROCESS_GIT_AUDIT_APPLIED_TO_VERIFICATION_RUNNER"
+        and contract.get("runtime_observed_git_process_count") is None
+        and contract.get("runtime_observed_git_process_count_recorded") is False
+        and type(inference) is dict
+        and inference.get("runtime_observation") is False
+        and inference.get("inferred_schedule_mismatch_count") == 7
+        and inference.get("inferred_schedule_mismatch_rows", [None])[0]
+        == {
+            "expected": 6,
+            "field": "verification_runner_git_process_count",
+            "inferred": 0,
+        }
+        and type(gates) is dict
+        and gates.get("measurement_terminal", {}).get("COUNTER_COMPLETENESS_GATE")
+        == "PENDING_INDEPENDENT_REPLAY"
+        and gates.get("verification_payload", {}).get("COUNTER_COMPLETENESS_GATE")
+        == "PASS"
+        and gates.get("verification_payload", {}).get(
+            "V180R12R4_CAMPAIGN_COUNTER_CLOSURE_STATUS"
+        )
+        == "PASS"
+        and set(gates.get("verification_transport", {}).values()) == {"NOT_RUN"}
+        and contract.get("counter_pass_is_payload_level_only") is True
+        and contract.get("counter_record_count") == 9
+        and contract.get("path_receipt_count") == 9
+        and contract.get("work_vector_count") == 1
+        and contract.get("comparison_vector_count") == 1
+        and contract.get("native_zero_attestation_count") == 1
+        and contract.get("official_execution_allowed") is False
+        and contract.get("scientific_success_claimed") is False
+        and contract.get("full_ordinal14_occurrence_success") is False
+        and contract.get("identity_consumed") is True
+        and contract.get("same_identity_rerun_forbidden") is True
+        and contract.get("fresh_successor_identity_required") is True
+        and contract.get("repair_scope") == V180R12R4R9_REPAIR_SCOPE
+    ):
+        _fail("frozen ordinal14 failure lineage changed")
+    return {
+        **contract,
+        "failure_freeze_source_relative_path": (
+            V180R12R4R9_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
         ),
         "failure_freeze_source_is_required_authorization_source_root": True,
         "failure_freeze_source_is_resolved_from_source_bound_module_file": True,
@@ -4790,6 +5007,9 @@ def prelaunch_contract_v180r12r4() -> dict[str, Any]:
         "schema": "acfqp.v180r12r4_campaign_measurement_prelaunch_contract.v1",
         "precompiled_runner_module_contract": (
             source_bound_runner_execution_envelope_contract_v180r12r4()
+        ),
+        "source_bound_runner_git_process_audit_contract": (
+            source_bound_runner_git_process_audit_contract_v180r12r4()
         ),
         "external_root_schema": PRELAUNCH_EXTERNAL_ROOT_SCHEMA,
         "launch_manifest_schema": PRELAUNCH_MANIFEST_SCHEMA,
@@ -6654,6 +6874,7 @@ def build_campaign_measurement_protocol_v180r12r4(
     failed_ordinal11 = failed_ordinal11_repair_lineage_contract_v180r12r4()
     failed_ordinal12 = failed_ordinal12_repair_lineage_contract_v180r12r4()
     failed_ordinal13 = failed_ordinal13_repair_lineage_contract_v180r12r4()
+    failed_ordinal14 = failed_ordinal14_repair_lineage_contract_v180r12r4()
     runner_execution_envelope = (
         source_bound_runner_execution_envelope_contract_v180r12r4()
     )
@@ -6819,7 +7040,7 @@ def build_campaign_measurement_protocol_v180r12r4(
         == SEMANTIC_HASH_OPERATION_COUNT
         and tuple(semantic_hash_scope["excluded_instrumentation_classes"])
         == SEMANTIC_HASH_COUNTER_EXCLUDED_INSTRUMENTATION_CLASSES
-        and len(SOURCE_CLOSURE_REQUIRED_ROOTS) == 28
+        and len(SOURCE_CLOSURE_REQUIRED_ROOTS) == 29
         and V180R12R3_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
         in SOURCE_CLOSURE_REQUIRED_ROOTS
         and V180R12R3R1_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
@@ -6837,6 +7058,8 @@ def build_campaign_measurement_protocol_v180r12r4(
         and V180R12R4R7_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
         in SOURCE_CLOSURE_REQUIRED_ROOTS
         and V180R12R4R8_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
+        in SOURCE_CLOSURE_REQUIRED_ROOTS
+        and V180R12R4R9_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
         in SOURCE_CLOSURE_REQUIRED_ROOTS
         and failed_external_replay["scientific_attempt_record_present"] is False
         and failed_external_replay["scientific_occurrence_started"] is False
@@ -7019,6 +7242,36 @@ def build_campaign_measurement_protocol_v180r12r4(
         and failed_ordinal13["same_identity_rerun_forbidden"] is True
         and failed_ordinal13["fresh_successor_identity_required"] is True
         and failed_ordinal13["repair_scope"] == V180R12R4R8_REPAIR_SCOPE
+        and failed_ordinal14["freeze_id"]
+        == V180R12R4R9_FAILED_PREDECESSOR_FREEZE_ID
+        and failed_ordinal14["campaign_attempt_id"]
+        == V180R12R4R9_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID
+        and failed_ordinal14["measurement_terminal_id"]
+        == V180R12R4R9_FAILED_MEASUREMENT_TERMINAL_ID
+        and failed_ordinal14["verification_id"]
+        == V180R12R4R9_FAILED_VERIFICATION_ID
+        and failed_ordinal14["verification_inner_launch_failure_id"]
+        == V180R12R4R9_FAILED_INNER_LAUNCH_FAILURE_ID
+        and failed_ordinal14["verification_outer_service_failure_id"]
+        == V180R12R4R9_FAILED_OUTER_SERVICE_FAILURE_ID
+        and "campaign_failure_id" not in failed_ordinal14
+        and failed_ordinal14["measurement_succeeded"] is True
+        and failed_ordinal14["verification_unit_ownership_t1_acquired"] is True
+        and failed_ordinal14["verification_payload_conformance"] is True
+        and failed_ordinal14["verification_transport_success"] is False
+        and failed_ordinal14["full_verification_launch_conformance"] is False
+        and failed_ordinal14["formal_mismatch_count"] == 1
+        and failed_ordinal14["counter_record_count"] == 9
+        and failed_ordinal14["path_receipt_count"] == 9
+        and failed_ordinal14["work_vector_count"] == 1
+        and failed_ordinal14["comparison_vector_count"] == 1
+        and failed_ordinal14["native_zero_attestation_count"] == 1
+        and failed_ordinal14["official_execution_allowed"] is False
+        and failed_ordinal14["scientific_success_claimed"] is False
+        and failed_ordinal14["identity_consumed"] is True
+        and failed_ordinal14["same_identity_rerun_forbidden"] is True
+        and failed_ordinal14["fresh_successor_identity_required"] is True
+        and failed_ordinal14["repair_scope"] == V180R12R4R9_REPAIR_SCOPE
         and runner_execution_envelope["module_type"] == "types.ModuleType"
         and tuple(runner_execution_envelope["target_order"])
         == SOURCE_BOUND_RUNNER_TARGET_ORDER
@@ -7126,20 +7379,34 @@ def build_campaign_measurement_protocol_v180r12r4(
         "historical_failed_ordinal12_outer_service_failure_id": (
             failed_ordinal12["outer_service_failure_id"]
         ),
-        "immediate_failed_predecessor_freeze_id": failed_ordinal13[
-            "freeze_id"
-        ],
-        "immediate_failed_predecessor_logical_campaign_attempt_id": (
+        "historical_failed_ordinal13_freeze_id": failed_ordinal13["freeze_id"],
+        "historical_failed_ordinal13_logical_campaign_attempt_id": (
             failed_ordinal13["campaign_attempt_id"]
         ),
-        "immediate_failed_predecessor_campaign_failure_id": (
+        "historical_failed_ordinal13_campaign_failure_id": (
             failed_ordinal13["campaign_failure_id"]
         ),
-        "immediate_failed_predecessor_inner_launch_failure_id": (
+        "historical_failed_ordinal13_inner_launch_failure_id": (
             failed_ordinal13["inner_launch_failure_id"]
         ),
-        "immediate_failed_predecessor_outer_service_failure_id": (
+        "historical_failed_ordinal13_outer_service_failure_id": (
             failed_ordinal13["outer_service_failure_id"]
+        ),
+        "immediate_failed_predecessor_freeze_id": failed_ordinal14["freeze_id"],
+        "immediate_failed_predecessor_logical_campaign_attempt_id": (
+            failed_ordinal14["campaign_attempt_id"]
+        ),
+        "immediate_failed_predecessor_measurement_terminal_id": (
+            failed_ordinal14["measurement_terminal_id"]
+        ),
+        "immediate_failed_predecessor_verification_id": (
+            failed_ordinal14["verification_id"]
+        ),
+        "immediate_failed_predecessor_inner_launch_failure_id": (
+            failed_ordinal14["verification_inner_launch_failure_id"]
+        ),
+        "immediate_failed_predecessor_outer_service_failure_id": (
+            failed_ordinal14["verification_outer_service_failure_id"]
         ),
         "pre_scientific_failed_predecessor_campaign_attempt_id": (
             failed_external_replay["campaign_attempt_id"]
@@ -7200,6 +7467,7 @@ def build_campaign_measurement_protocol_v180r12r4(
         "failed_ordinal11_repair_lineage": failed_ordinal11,
         "failed_ordinal12_repair_lineage": failed_ordinal12,
         "failed_ordinal13_repair_lineage": failed_ordinal13,
+        "failed_ordinal14_repair_lineage": failed_ordinal14,
         "failed_v180r12r3_identity_rerun_forbidden": True,
         "failed_v180r12r3r1_identity_rerun_forbidden": True,
         "failed_v180r12r3r2_identity_rerun_forbidden": True,
@@ -7209,6 +7477,7 @@ def build_campaign_measurement_protocol_v180r12r4(
         "failed_v180r12r4r6_ordinal11_identity_rerun_forbidden": True,
         "failed_v180r12r4r7_ordinal12_identity_rerun_forbidden": True,
         "failed_v180r12r4r8_ordinal13_identity_rerun_forbidden": True,
+        "failed_v180r12r4r9_ordinal14_identity_rerun_forbidden": True,
         "fresh_v180r12r4_protocol_authorization_evidence_attempt_and_"
         "prelaunch_identities_required": True,
         "fresh_v180r12r4_physical_paths_and_identities_required": True,
@@ -7808,6 +8077,7 @@ __all__ = (
     "SERVICE_CONTEXT_CAPTURE_RELATIVE_PATH",
     "SERVICE_CONTEXT_CAPTURE_RUNTIME_CAPABILITY_FACT",
     "SERVICE_CONTEXT_CAPTURE_SCHEMA",
+    "SOURCE_BOUND_RUNNER_GIT_PROCESS_COUNT_ROWS",
     "SOURCE_BOUND_RUNNER_MODULE_METADATA_FIELDS",
     "SOURCE_BOUND_RUNNER_MODULE_ROWS",
     "SOURCE_BOUND_RUNNER_TARGET_ORDER",
@@ -7971,6 +8241,14 @@ __all__ = (
     "V180R12R4R8_FAILED_PREDECESSOR_FREEZE_ID",
     "V180R12R4R8_FAILURE_FREEZE_SOURCE_RELATIVE_PATH",
     "V180R12R4R8_REPAIR_SCOPE",
+    "V180R12R4R9_FAILED_INNER_LAUNCH_FAILURE_ID",
+    "V180R12R4R9_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID",
+    "V180R12R4R9_FAILED_MEASUREMENT_TERMINAL_ID",
+    "V180R12R4R9_FAILED_OUTER_SERVICE_FAILURE_ID",
+    "V180R12R4R9_FAILED_PREDECESSOR_FREEZE_ID",
+    "V180R12R4R9_FAILED_VERIFICATION_ID",
+    "V180R12R4R9_FAILURE_FREEZE_SOURCE_RELATIVE_PATH",
+    "V180R12R4R9_REPAIR_SCOPE",
     "V180R12R4_REPAIR_SCOPE",
     "WALL_TIMEOUT_SECONDS",
     "WORK_SCOPE_KIND",
@@ -7992,6 +8270,7 @@ __all__ = (
     "failed_ordinal11_repair_lineage_contract_v180r12r4",
     "failed_ordinal12_repair_lineage_contract_v180r12r4",
     "failed_ordinal13_repair_lineage_contract_v180r12r4",
+    "failed_ordinal14_repair_lineage_contract_v180r12r4",
     "successful_event_schedule_template_v180r12r4",
     "freeze_campaign_measurement_protocol_v180r12r4",
     "measurement_derivation_contract_v180r12r4",
@@ -8003,6 +8282,7 @@ __all__ = (
     "source_closure_contract_v180r12r4",
     "service_context_capture_contract_v180r12r4",
     "source_bound_runner_execution_envelope_contract_v180r12r4",
+    "source_bound_runner_git_process_audit_contract_v180r12r4",
     "socket_buffer_capability_contract_v180r12r4",
     "success_durable_artifact_contract_v180r12r4",
     "topology_conformance_diagnostic_r4_contract_v180r12r4",

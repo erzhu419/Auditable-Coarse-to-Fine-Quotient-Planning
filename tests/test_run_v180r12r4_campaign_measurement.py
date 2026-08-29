@@ -51,10 +51,10 @@ run = _load("_test_run_v180r12r4", "scripts/run_v180r12r4_campaign_measurement.p
 
 def test_runner_uses_ordinal14_transient_service_tokens() -> None:
     measurement = (
-        "1ba5304a7d653a3805fdca4754eeb7ff2feaa63794c6b866f47adda85160668d"
+        "5bfee9fa85834621b4947c1b68d32e96b7c53e260336d0815fd18bf59522dc72"
     )
     verification = (
-        "14e3fead4dab312dd06026196922d455600e970d5de64624e3d47b66525c0221"
+        "6dadbbfad8eb31dd5cc524f57132952a0c3535fa3751ea55ef9e4cf95f87bb01"
     )
     assert run.PRODUCTION_TRANSIENT_SERVICE_ROWS == {
         "measurement": (

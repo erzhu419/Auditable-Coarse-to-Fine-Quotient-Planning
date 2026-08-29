@@ -433,6 +433,10 @@ SOURCE_CLOSURE_REQUIRED_ROOTS = tuple(
             ),
             (
                 "src/acfqp/construction_k7_campaign_measurement_"
+                "failure_freeze_v180r12r4r9.py"
+            ),
+            (
+                "src/acfqp/construction_k7_campaign_measurement_"
                 "independent_verifier_v180r12r4.py"
             ),
             (
@@ -471,7 +475,7 @@ PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
     "acfqp:construction-k7-production-transient-service-token:v180r12r4"
 )
 PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN = (
-    "1ba5304a7d653a3805fdca4754eeb7ff2feaa63794c6b866f47adda85160668d"
+    "5bfee9fa85834621b4947c1b68d32e96b7c53e260336d0815fd18bf59522dc72"
 )
 PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_UNIT_NAME = (
     "acfqp-v180r12r4-measurement-"
@@ -479,7 +483,7 @@ PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_UNIT_NAME = (
     + ".service"
 )
 PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_TOKEN = (
-    "14e3fead4dab312dd06026196922d455600e970d5de64624e3d47b66525c0221"
+    "6dadbbfad8eb31dd5cc524f57132952a0c3535fa3751ea55ef9e4cf95f87bb01"
 )
 PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_UNIT_NAME = (
     "acfqp-v180r12r4-verification-"
@@ -521,19 +525,19 @@ GIT_COMMAND_TIMEOUT_SECONDS = 120
 FAILURE_MESSAGE_BYTE_CAP = 4096
 
 EXPECTED_SOURCE_CLOSURE_RULE_ID = (
-    "5ec6496223fdd24664d142d581847f3e95456a3b0bb171df2950302e413ac60b"
+    "e5f6f8aaa6a196011d0a64686fe9df743e995f4e66d14119116870a40d9c0530"
 )
 EXPECTED_MATERIALIZATION_RULE_ID = (
-    "ee833b2260347a85442802459cd3ae6edd62b3abd35ba8d15b1829f7e9fa04f8"
+    "584a47eec792b577314cbdc3ae8e1e50d44d892c402e48de86369087c7e0bc74"
 )
 LAUNCHER_RULE_LITERAL_NAMES = (
     "EXPECTED_SOURCE_CLOSURE_RULE_ID",
     "EXPECTED_MATERIALIZATION_RULE_ID",
     "EXPECTED_LAUNCH_RULE_ID",
 )
-LAUNCHER_NORMALIZED_STATIC_RULE_SOURCE_BYTE_COUNT = 259_081
+LAUNCHER_NORMALIZED_STATIC_RULE_SOURCE_BYTE_COUNT = 258_969
 LAUNCHER_NORMALIZED_STATIC_RULE_SOURCE_SHA256 = (
-    "1ddb8a0785d905158c17ce123e6c7739ad17b66e0d17740fd10cd439e0a5e70d"
+    "a61e46bf8f0305a4e1b0580096ce945f3fca1883eda7f568156e93ebf0285c7c"
 )
 
 SOURCE_CLOSURE_RULE_DOCUMENT = {
@@ -705,18 +709,15 @@ def _zero_preflight_receipt_interface() -> dict[str, Any]:
 def _production_systemd_service_contract() -> dict[str, Any]:
     base = {
         "failed_predecessor_freeze_id": (
-            "0df765617aa1615b48ee5fd9192e3c596d6d50d1dfb1bc841e52d545e1716e25"
+            "89562134029a69da93ce1dda6e9ec70abb238050fda1f530a8c5c2f557b5eb60"
         ),
         "failed_inner_launch_failure_id": (
-            "1cd76127af59458d6075f00cc4747f9489cd84e955031e5815cbf59488665238"
+            "7a1b8496f89378f5b2131a096c17fb9f7ed43ac64b544eacdfb3ea2802a65e82"
         ),
         "failed_outer_service_failure_id": (
-            "acfc5832a9d12fa76469a624356b3e4470f085349df397645a3d0a32e6258c0b"
+            "aa3ee86dee489383a43a868180bd555a21978fc923c106e06e5b017adb4101bc"
         ),
-        "repair_scope": (
-            "NAMESPACE_AWARE_PRECOMPILED_SOURCE_BINDING_AND_PRIMARY_CAUSE_"
-            "CONFORMANCE"
-        ),
+        "repair_scope": "TARGET_AWARE_RUNNER_GIT_PROCESS_CONFORMANCE",
     }
     token_rows = {
         "measurement": (
@@ -3314,6 +3315,11 @@ def build_git_tcb_fact_v180r12r4(
         "version_environment": version_environment,
         "version_stdout": version_stdout,
         "runner_process_count": 6,
+        "runner_process_count_by_target": {
+            "measurement": 6,
+            "verification": 0,
+        },
+        "runner_argv_target": "measurement",
         "runner_argv": runner_argv,
         "runner_environment_template": {
             MANIFEST_SHA256_ENV: MANIFEST_SHA256_TEMPLATE,

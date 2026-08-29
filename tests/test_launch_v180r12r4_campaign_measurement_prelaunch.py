@@ -2138,18 +2138,15 @@ def test_dual_target_service_contract_freezes_outer_dispatch_and_inner_entry() -
     assert contract == protocol.production_systemd_service_contract_v180r12r4()
     predecessor = {
         "failed_predecessor_freeze_id": (
-            "0df765617aa1615b48ee5fd9192e3c596d6d50d1dfb1bc841e52d545e1716e25"
+            "89562134029a69da93ce1dda6e9ec70abb238050fda1f530a8c5c2f557b5eb60"
         ),
         "failed_inner_launch_failure_id": (
-            "1cd76127af59458d6075f00cc4747f9489cd84e955031e5815cbf59488665238"
+            "7a1b8496f89378f5b2131a096c17fb9f7ed43ac64b544eacdfb3ea2802a65e82"
         ),
         "failed_outer_service_failure_id": (
-            "acfc5832a9d12fa76469a624356b3e4470f085349df397645a3d0a32e6258c0b"
+            "aa3ee86dee489383a43a868180bd555a21978fc923c106e06e5b017adb4101bc"
         ),
-        "repair_scope": (
-            "NAMESPACE_AWARE_PRECOMPILED_SOURCE_BINDING_AND_PRIMARY_CAUSE_"
-            "CONFORMANCE"
-        ),
+        "repair_scope": "TARGET_AWARE_RUNNER_GIT_PROCESS_CONFORMANCE",
     }
     assert [row["target"] for row in contract["target_rows"]] == [
         "measurement",

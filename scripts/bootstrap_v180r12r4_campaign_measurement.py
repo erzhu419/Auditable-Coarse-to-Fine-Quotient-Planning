@@ -126,14 +126,14 @@ _PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
 )
 _PRODUCTION_TRANSIENT_SERVICE_ROWS = {
     "measurement": (
-        "1ba5304a7d653a3805fdca4754eeb7ff2feaa63794c6b866f47adda85160668d",
+        "5bfee9fa85834621b4947c1b68d32e96b7c53e260336d0815fd18bf59522dc72",
         "acfqp-v180r12r4-measurement-"
-        "1ba5304a7d653a3805fdca4754eeb7ff2feaa63794c6b866f47adda85160668d.service",
+        "5bfee9fa85834621b4947c1b68d32e96b7c53e260336d0815fd18bf59522dc72.service",
     ),
     "verification": (
-        "14e3fead4dab312dd06026196922d455600e970d5de64624e3d47b66525c0221",
+        "6dadbbfad8eb31dd5cc524f57132952a0c3535fa3751ea55ef9e4cf95f87bb01",
         "acfqp-v180r12r4-verification-"
-        "14e3fead4dab312dd06026196922d455600e970d5de64624e3d47b66525c0221.service",
+        "6dadbbfad8eb31dd5cc524f57132952a0c3535fa3751ea55ef9e4cf95f87bb01.service",
     ),
 }
 _PRODUCTION_RUNTIME_PLACEMENT_T1_SCHEMA = (
@@ -440,6 +440,10 @@ _SOURCE_CLOSURE_REQUIRED_ROOTS = tuple(
             ),
             (
                 "src/acfqp/construction_k7_campaign_measurement_"
+                "failure_freeze_v180r12r4r9.py"
+            ),
+            (
+                "src/acfqp/construction_k7_campaign_measurement_"
                 "independent_verifier_v180r12r4.py"
             ),
             (
@@ -616,6 +620,8 @@ _GIT_KEYS = {
     "version_environment",
     "version_stdout",
     "runner_process_count",
+    "runner_process_count_by_target",
+    "runner_argv_target",
     "runner_argv",
     "runner_environment_template",
 }
@@ -1219,7 +1225,10 @@ def _validated_git_boundary(
     repository_root: Path,
     manifest_digest: str,
     commit_id: str,
+    target: str,
 ) -> _GitProcessAudit:
+    if target not in _RUNNER_MODULE_NAMES:
+        raise RuntimeError("V180r12r4 Git audit target changed")
     git = _require_exact_dict(value, _GIT_KEYS, "Git runtime")
     if git["requested_executable"] != _EXPECTED_GIT_EXECUTABLE:
         raise RuntimeError("V180r12r4 requested Git executable changed")
@@ -1282,6 +1291,17 @@ def _validated_git_boundary(
         raise RuntimeError("V180r12r4 Git version identity changed")
 
     count = _require_nonnegative_int(git["runner_process_count"], "Git process count")
+    counts_by_target = _require_exact_dict(
+        git["runner_process_count_by_target"],
+        set(_EXTERNAL_TARGETS),
+        "Git process counts by target",
+    )
+    if (
+        counts_by_target != {"measurement": 6, "verification": 0}
+        or git["runner_argv_target"] != "measurement"
+        or counts_by_target[target] != (6 if target == "measurement" else 0)
+    ):
+        raise RuntimeError("V180r12r4 target Git process contract changed")
     argv_values = git["runner_argv"]
     if type(argv_values) is not list or count != 6 or len(argv_values) != count:
         raise RuntimeError("V180r12r4 Git process count changed")
@@ -1326,7 +1346,8 @@ def _validated_git_boundary(
         raise RuntimeError("V180r12r4 Git runner environment template changed")
     expected_environment = dict(expected_template)
     expected_environment[_MANIFEST_SHA_ENV] = manifest_digest
-    return _GitProcessAudit(checked_argv, expected_environment)
+    expected_runner_argv = checked_argv if target == "measurement" else []
+    return _GitProcessAudit(expected_runner_argv, expected_environment)
 
 
 class _BoundSourceLoader(importlib.abc.MetaPathFinder, importlib.abc.Loader):
@@ -3498,7 +3519,7 @@ def main() -> None:
     )
     commit_id = manifest["c_pre_commit_id"]
     git_audit = _validated_git_boundary(
-        manifest["git"], repository_root, manifest_digest, commit_id
+        manifest["git"], repository_root, manifest_digest, commit_id, target
     )
 
     records = _compile_bound_sources(

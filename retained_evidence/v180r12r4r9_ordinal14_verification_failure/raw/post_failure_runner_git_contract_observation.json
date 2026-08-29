@@ -1,0 +1,122 @@
+{
+  "campaign_attempt_id": "73a9a50c86c400c96dd12c43f7d979d21b2b7b68b0613588861391a366121082",
+  "cause": {
+    "diagnosis_basis": "EXACT_UNTRUNCATED_CHILD_STDERR_PLUS_FROZEN_MANIFEST_AND_VERIFICATION_RUNNER_CONTROL_FLOW",
+    "error_type": "_RunnerSecondaryObservation",
+    "failure_code": "TARGET_AGNOSTIC_SIX_PROCESS_GIT_AUDIT_APPLIED_TO_VERIFICATION_RUNNER",
+    "message": "V180r12r4 runner secondary observations: RuntimeError: V180r12r4 six-process Git contract was incomplete",
+    "scope": "POST_RUN_BOOTSTRAP_SECONDARY_OBSERVATION_AFTER_DURABLE_VERIFICATION_PUBLICATION"
+  },
+  "formal_inner_launch_failure_id": "7a1b8496f89378f5b2131a096c17fb9f7ed43ac64b544eacdfb3ea2802a65e82",
+  "formal_mismatch_count": 1,
+  "formal_mismatch_rows": [
+    {
+      "expected": true,
+      "field": "source_bound_runner_git_audit.complete",
+      "observed": false
+    }
+  ],
+  "formal_outer_service_failure_id": "aa3ee86dee489383a43a868180bd555a21978fc923c106e06e5b017adb4101bc",
+  "full_verification_launch_conformance": false,
+  "static_control_flow_inference": {
+    "inferred_schedule_mismatch_count": 7,
+    "inferred_schedule_mismatch_rows": [
+    {
+      "expected": 6,
+      "field": "verification_runner_git_process_count",
+      "inferred": 0
+    },
+    {
+      "expected": "PRESENT_IN_ORDER",
+      "field": "verification_runner_git_processes[0].rev_parse",
+      "inferred": "ABSENT"
+    },
+    {
+      "expected": "PRESENT_IN_ORDER",
+      "field": "verification_runner_git_processes[1].bridge_log",
+      "inferred": "ABSENT"
+    },
+    {
+      "expected": "PRESENT_IN_ORDER",
+      "field": "verification_runner_git_processes[2].literal_diff_tree",
+      "inferred": "ABSENT"
+    },
+    {
+      "expected": "PRESENT_IN_ORDER",
+      "field": "verification_runner_git_processes[3].post_literal_log",
+      "inferred": "ABSENT"
+    },
+    {
+      "expected": "PRESENT_IN_ORDER",
+      "field": "verification_runner_git_processes[4].c_pre_archive",
+      "inferred": "ABSENT"
+    },
+    {
+      "expected": "PRESENT_IN_ORDER",
+      "field": "verification_runner_git_processes[5].literal_wrapper_cat_file",
+      "inferred": "ABSENT"
+    }
+    ],
+    "runtime_observation": false
+  },
+  "observation_kind": "POST_FAILURE_READ_ONLY_TYPED_DIAGNOSTIC",
+  "property_snapshots": {
+    "full_verification_launch_conformance": {
+      "inner_launch_receipt_present": false,
+      "inner_launch_terminal_kind": "FAILURE",
+      "outer_service_receipt_present": false,
+      "outer_service_terminal_kind": "FAILURE",
+      "runner_exit_code": 1
+    },
+    "measurement": {
+      "campaign_comparison_vector_count": 1,
+      "campaign_counter_record_count": 9,
+      "campaign_native_zero_attestation_count": 1,
+      "campaign_path_receipt_count": 9,
+      "campaign_work_vector_count": 1,
+      "measurement_inner_launch_receipt_present": true,
+      "measurement_outer_service_receipt_present": true,
+      "measurement_terminal_id": "8d7ad44b5a6c8808ab14d77e062006bfed920bf739f27847b47f4f2c14ec8803"
+    },
+    "source_and_host": {
+      "full_host_conformance": true,
+      "full_source_conformance": true,
+      "host_conformance_cause": null,
+      "host_conformance_mismatch_count": 0,
+      "source_conformance_cause": null,
+      "source_conformance_mismatch_count": 0,
+      "source_root_count": 28
+    },
+    "verification_payload": {
+      "campaign_counter_closure_status": "PASS",
+      "counter_completeness_gate": "PASS",
+      "payload_and_replay_byte_identical": true,
+      "producer_modules_imported": false,
+      "verification_id": "7a3eae241a27283bb82e5f3eb2c0c107041008f98b5dd59b40b093c3c95d0655"
+    },
+    "verification_runner_git_schedule": {
+      "expected_process_count": 6,
+      "observed_process_count": null,
+      "observed_process_count_recorded": false,
+      "process_subcommands": [
+        "rev-parse",
+        "log",
+        "diff-tree",
+        "log",
+        "archive",
+        "cat-file"
+      ]
+    },
+    "verification_unit_ownership_t1": {
+      "expected_source_membership": "0::/user.slice/user-1000.slice/user@1000.service/app.slice/acfqp-v180r12r4-verification-14e3fead4dab312dd06026196922d455600e970d5de64624e3d47b66525c0221.service",
+      "observed_source_membership": "0::/user.slice/user-1000.slice/user@1000.service/app.slice/acfqp-v180r12r4-verification-14e3fead4dab312dd06026196922d455600e970d5de64624e3d47b66525c0221.service",
+      "self_pid": 767041,
+      "self_pid_in_source_cgroup_procs": true,
+      "t1_complete_before_child_popen": true,
+      "unit_name": "acfqp-v180r12r4-verification-14e3fead4dab312dd06026196922d455600e970d5de64624e3d47b66525c0221.service"
+    }
+  },
+  "schema": "acfqp.v180r12r4r9_post_failure_runner_git_contract_observation.v1",
+  "verification_payload_conformance": true,
+  "verification_unit_ownership_t1_acquired": true
+}

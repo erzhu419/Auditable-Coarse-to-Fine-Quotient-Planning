@@ -179,8 +179,8 @@ def test_outcome_free_wrapper_has_exact_phase_aware_twelve_literal_topology() ->
     assert evidence.SOURCE_BOUNDARY_REQUIRED_PATHS == tuple(
         sorted(evidence.SOURCE_BOUNDARY_REQUIRED_PATHS)
     )
-    assert len(evidence.SOURCE_BOUNDARY_REQUIRED_PATHS) == 28
-    assert len(set(evidence.SOURCE_BOUNDARY_REQUIRED_PATHS)) == 28
+    assert len(evidence.SOURCE_BOUNDARY_REQUIRED_PATHS) == 29
+    assert len(set(evidence.SOURCE_BOUNDARY_REQUIRED_PATHS)) == 29
     assert protocol.V180R12R3_FAILURE_FREEZE_SOURCE_RELATIVE_PATH in (
         evidence.SOURCE_BOUNDARY_REQUIRED_PATHS
     )
@@ -200,6 +200,9 @@ def test_outcome_free_wrapper_has_exact_phase_aware_twelve_literal_topology() ->
         evidence.SOURCE_BOUNDARY_REQUIRED_PATHS
     )
     assert protocol.V180R12R4R8_FAILURE_FREEZE_SOURCE_RELATIVE_PATH in (
+        evidence.SOURCE_BOUNDARY_REQUIRED_PATHS
+    )
+    assert protocol.V180R12R4R9_FAILURE_FREEZE_SOURCE_RELATIVE_PATH in (
         evidence.SOURCE_BOUNDARY_REQUIRED_PATHS
     )
     assert evidence._AUTHORIZATION_RELATIVE_PATH in (  # noqa: SLF001
@@ -602,6 +605,9 @@ def test_candidate_and_runtime_payloads_match_under_external_nonbootstrap(
             "failed_ordinal13_repair_lineage": (
                 protocol.failed_ordinal13_repair_lineage_contract_v180r12r4()
             ),
+            "failed_ordinal14_repair_lineage": (
+                protocol.failed_ordinal14_repair_lineage_contract_v180r12r4()
+            ),
         "failed_v180r12r3_identity_rerun_forbidden": True,
         "failed_v180r12r3r1_identity_rerun_forbidden": True,
         "failed_v180r12r3r2_identity_rerun_forbidden": True,
@@ -611,6 +617,7 @@ def test_candidate_and_runtime_payloads_match_under_external_nonbootstrap(
             "failed_v180r12r4r6_ordinal11_identity_rerun_forbidden": True,
             "failed_v180r12r4r7_ordinal12_identity_rerun_forbidden": True,
             "failed_v180r12r4r8_ordinal13_identity_rerun_forbidden": True,
+            "failed_v180r12r4r9_ordinal14_identity_rerun_forbidden": True,
         "historical_failed_ordinal12_freeze_id": (
             protocol.V180R12R4R7_FAILED_PREDECESSOR_FREEZE_ID
         ),
@@ -628,20 +635,38 @@ def test_candidate_and_runtime_payloads_match_under_external_nonbootstrap(
         "historical_failed_ordinal12_outer_service_failure_id": (
             protocol.V180R12R4R7_FAILED_OUTER_SERVICE_FAILURE_ID
         ),
-        "immediate_failed_predecessor_freeze_id": (
+        "historical_failed_ordinal13_freeze_id": (
             protocol.V180R12R4R8_FAILED_PREDECESSOR_FREEZE_ID
         ),
-        "immediate_failed_predecessor_logical_campaign_attempt_id": (
+        "historical_failed_ordinal13_logical_campaign_attempt_id": (
             protocol.V180R12R4R8_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID
         ),
-        "immediate_failed_predecessor_campaign_failure_id": (
+        "historical_failed_ordinal13_campaign_failure_id": (
             protocol.V180R12R4R8_FAILED_CAMPAIGN_FAILURE_ID
         ),
-        "immediate_failed_predecessor_inner_launch_failure_id": (
+        "historical_failed_ordinal13_inner_launch_failure_id": (
             protocol.V180R12R4R8_FAILED_INNER_LAUNCH_FAILURE_ID
         ),
-        "immediate_failed_predecessor_outer_service_failure_id": (
+        "historical_failed_ordinal13_outer_service_failure_id": (
             protocol.V180R12R4R8_FAILED_OUTER_SERVICE_FAILURE_ID
+        ),
+        "immediate_failed_predecessor_freeze_id": (
+            protocol.V180R12R4R9_FAILED_PREDECESSOR_FREEZE_ID
+        ),
+        "immediate_failed_predecessor_logical_campaign_attempt_id": (
+            protocol.V180R12R4R9_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID
+        ),
+        "immediate_failed_predecessor_measurement_terminal_id": (
+            protocol.V180R12R4R9_FAILED_MEASUREMENT_TERMINAL_ID
+        ),
+        "immediate_failed_predecessor_verification_id": (
+            protocol.V180R12R4R9_FAILED_VERIFICATION_ID
+        ),
+        "immediate_failed_predecessor_inner_launch_failure_id": (
+            protocol.V180R12R4R9_FAILED_INNER_LAUNCH_FAILURE_ID
+        ),
+        "immediate_failed_predecessor_outer_service_failure_id": (
+            protocol.V180R12R4R9_FAILED_OUTER_SERVICE_FAILURE_ID
         ),
         "fresh_v180r12r4_physical_paths_and_identities_required": True,
         "repair_scope": protocol.V180R12R4_REPAIR_SCOPE,
@@ -758,8 +783,12 @@ def test_candidate_and_runtime_payloads_match_under_external_nonbootstrap(
     assert candidate["failed_ordinal13_repair_lineage"] == (
         protocol.failed_ordinal13_repair_lineage_contract_v180r12r4()
     )
+    assert candidate["failed_ordinal14_repair_lineage"] == (
+        protocol.failed_ordinal14_repair_lineage_contract_v180r12r4()
+    )
     ordinal12 = candidate["failed_ordinal12_repair_lineage"]
     ordinal13 = candidate["failed_ordinal13_repair_lineage"]
+    ordinal14 = candidate["failed_ordinal14_repair_lineage"]
     assert ordinal12["completed_event_count"] == 2
     assert ordinal12["production_runtime_placement_t1_complete"] is True
     assert ordinal12["production_runtime_placement_t2_reached"] is False
@@ -785,10 +814,12 @@ def test_candidate_and_runtime_payloads_match_under_external_nonbootstrap(
     assert candidate["failed_v180r12r4r6_ordinal11_identity_rerun_forbidden"]
     assert candidate["failed_v180r12r4r7_ordinal12_identity_rerun_forbidden"]
     assert candidate["failed_v180r12r4r8_ordinal13_identity_rerun_forbidden"]
+    assert candidate["failed_v180r12r4r9_ordinal14_identity_rerun_forbidden"]
     assert candidate["fresh_v180r12r4_physical_paths_and_identities_required"]
     assert candidate["repair_scope"] == protocol.V180R12R4_REPAIR_SCOPE
-    assert candidate["repair_scope"] == ordinal13["repair_scope"]
+    assert candidate["repair_scope"] == ordinal14["repair_scope"]
     assert ordinal12["repair_scope"] == protocol.V180R12R4R7_REPAIR_SCOPE
+    assert ordinal13["repair_scope"] == protocol.V180R12R4R8_REPAIR_SCOPE
     assert ordinal13["freeze_id"] == protocol.V180R12R4R8_FAILED_PREDECESSOR_FREEZE_ID
     assert ordinal13["campaign_attempt_id"] == (
         protocol.V180R12R4R8_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID
@@ -831,6 +862,37 @@ def test_candidate_and_runtime_payloads_match_under_external_nonbootstrap(
     assert ordinal13["identity_consumed"] is True
     assert ordinal13["same_identity_rerun_forbidden"] is True
     assert ordinal13["fresh_successor_identity_required"] is True
+    assert ordinal14["freeze_id"] == (
+        protocol.V180R12R4R9_FAILED_PREDECESSOR_FREEZE_ID
+    )
+    assert ordinal14["campaign_attempt_id"] == (
+        protocol.V180R12R4R9_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID
+    )
+    assert ordinal14["measurement_terminal_id"] == (
+        protocol.V180R12R4R9_FAILED_MEASUREMENT_TERMINAL_ID
+    )
+    assert ordinal14["verification_id"] == (
+        protocol.V180R12R4R9_FAILED_VERIFICATION_ID
+    )
+    assert ordinal14["verification_inner_launch_failure_id"] == (
+        protocol.V180R12R4R9_FAILED_INNER_LAUNCH_FAILURE_ID
+    )
+    assert ordinal14["verification_outer_service_failure_id"] == (
+        protocol.V180R12R4R9_FAILED_OUTER_SERVICE_FAILURE_ID
+    )
+    assert "campaign_failure_id" not in ordinal14
+    assert ordinal14["measurement_succeeded"] is True
+    assert ordinal14["verification_payload_conformance"] is True
+    assert ordinal14["verification_transport_success"] is False
+    assert ordinal14["formal_mismatch_count"] == 1
+    assert ordinal14["counter_record_count"] == 9
+    assert ordinal14["path_receipt_count"] == 9
+    assert ordinal14["work_vector_count"] == 1
+    assert ordinal14["comparison_vector_count"] == 1
+    assert ordinal14["official_execution_allowed"] is False
+    assert ordinal14["scientific_success_claimed"] is False
+    assert ordinal14["same_identity_rerun_forbidden"] is True
+    assert ordinal14["repair_scope"] == protocol.V180R12R4R9_REPAIR_SCOPE
     assert candidate["historical_failed_ordinal12_freeze_id"] == ordinal12["freeze_id"]
     assert candidate[
         "historical_failed_ordinal12_logical_campaign_attempt_id"
@@ -844,21 +906,40 @@ def test_candidate_and_runtime_payloads_match_under_external_nonbootstrap(
     assert candidate["historical_failed_ordinal12_outer_service_failure_id"] == (
         ordinal12["outer_service_failure_id"]
     )
-    assert candidate["immediate_failed_predecessor_freeze_id"] == ordinal13[
+    assert candidate["historical_failed_ordinal13_freeze_id"] == ordinal13[
+        "freeze_id"
+    ]
+    assert candidate[
+        "historical_failed_ordinal13_logical_campaign_attempt_id"
+    ] == ordinal13["campaign_attempt_id"]
+    assert candidate["historical_failed_ordinal13_campaign_failure_id"] == (
+        ordinal13["campaign_failure_id"]
+    )
+    assert candidate["historical_failed_ordinal13_inner_launch_failure_id"] == (
+        ordinal13["inner_launch_failure_id"]
+    )
+    assert candidate["historical_failed_ordinal13_outer_service_failure_id"] == (
+        ordinal13["outer_service_failure_id"]
+    )
+    assert candidate["immediate_failed_predecessor_freeze_id"] == ordinal14[
         "freeze_id"
     ]
     assert candidate[
         "immediate_failed_predecessor_logical_campaign_attempt_id"
-    ] == ordinal13["campaign_attempt_id"]
-    assert candidate["immediate_failed_predecessor_campaign_failure_id"] == (
-        ordinal13["campaign_failure_id"]
+    ] == ordinal14["campaign_attempt_id"]
+    assert candidate["immediate_failed_predecessor_measurement_terminal_id"] == (
+        ordinal14["measurement_terminal_id"]
+    )
+    assert candidate["immediate_failed_predecessor_verification_id"] == (
+        ordinal14["verification_id"]
     )
     assert candidate["immediate_failed_predecessor_inner_launch_failure_id"] == (
-        ordinal13["inner_launch_failure_id"]
+        ordinal14["verification_inner_launch_failure_id"]
     )
     assert candidate["immediate_failed_predecessor_outer_service_failure_id"] == (
-        ordinal13["outer_service_failure_id"]
+        ordinal14["verification_outer_service_failure_id"]
     )
+    assert "immediate_failed_predecessor_campaign_failure_id" not in candidate
     assert candidate["v180r12r4_outcome_bytes_accessed"] is False
     assert candidate["campaign_measurement_execution_count"] == 0
     assert candidate["COUNTER_COMPLETENESS_GATE"] == "NOT_RUN"

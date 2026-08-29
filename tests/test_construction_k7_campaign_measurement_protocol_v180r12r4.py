@@ -86,7 +86,7 @@ def runtime_capability_fact() -> dict:
     }
 
 
-def test_production_service_tokens_bind_immediate_ordinal13_failure_terminals() -> None:
+def test_production_service_tokens_bind_immediate_ordinal14_failure_terminals() -> None:
     contract = protocol.production_systemd_service_contract_v180r12r4()
     assert contract["token_input_fields"] == [
         "failed_predecessor_freeze_id",
@@ -97,46 +97,46 @@ def test_production_service_tokens_bind_immediate_ordinal13_failure_terminals() 
     ]
     expected_tokens = {
         "measurement": (
-            "1ba5304a7d653a3805fdca4754eeb7ff2feaa63794c6b866f47adda85160668d"
+            "5bfee9fa85834621b4947c1b68d32e96b7c53e260336d0815fd18bf59522dc72"
         ),
         "verification": (
-            "14e3fead4dab312dd06026196922d455600e970d5de64624e3d47b66525c0221"
+            "6dadbbfad8eb31dd5cc524f57132952a0c3535fa3751ea55ef9e4cf95f87bb01"
         ),
     }
     for row in contract["target_rows"]:
         token_input = row["token_input"]
         assert token_input["failed_predecessor_freeze_id"] == (
-            protocol.V180R12R4R8_FAILED_PREDECESSOR_FREEZE_ID
+            protocol.V180R12R4R9_FAILED_PREDECESSOR_FREEZE_ID
         )
         assert token_input["failed_inner_launch_failure_id"] == (
-            protocol.V180R12R4R8_FAILED_INNER_LAUNCH_FAILURE_ID
+            protocol.V180R12R4R9_FAILED_INNER_LAUNCH_FAILURE_ID
         )
         assert token_input["failed_outer_service_failure_id"] == (
-            protocol.V180R12R4R8_FAILED_OUTER_SERVICE_FAILURE_ID
+            protocol.V180R12R4R9_FAILED_OUTER_SERVICE_FAILURE_ID
         )
         assert token_input["repair_scope"] == protocol.V180R12R4_REPAIR_SCOPE
         assert row["token"] == expected_tokens[row["target"]]
 
 
-def test_ordinal14_c_pre_freezes_protocol_and_slot_self_literals() -> None:
+def test_ordinal15_c_pre_freezes_protocol_and_slot_self_literals() -> None:
     assert protocol.EXPECTED_PROTOCOL_ID == (
-        "9fc6ecbe63cdb65752d5bac6690903ab34ffc540abb3062b5ffde7a3695ebd49"
+        "f181ba16ee7b3931c282255daddd7c7b6545aaf5037ef5092c6123e5a5eafbbb"
     )
-    assert protocol.EXPECTED_CANONICAL_BYTE_COUNT == 492_573
+    assert protocol.EXPECTED_CANONICAL_BYTE_COUNT == 610_665
     assert protocol.EXPECTED_CANONICAL_SHA256 == (
-        "e32acda505c2e7dc98593290fe5fb60561e22df8481581a1f4e25846348f7cba"
+        "bfa07ebe387155405d5f936e54b74f66a8d4af72573702b0b236067ed3328fd6"
     )
     assert protocol.EXPECTED_CAMPAIGN_MEASUREMENT_EXECUTION_SLOT_ID == (
-        "441e52cd3721793a0541288196776aa214dd44b91f01e1822114b0e4442559f5"
+        "602ae74c14a2dc3267015bf1b05d36b7d1a5b11a184186a520c0a29dbf7ffd4b"
     )
     assert protocol.EXPECTED_PRELAUNCH_SOURCE_CLOSURE_RULE_ID == (
-        "5ec6496223fdd24664d142d581847f3e95456a3b0bb171df2950302e413ac60b"
+        "e5f6f8aaa6a196011d0a64686fe9df743e995f4e66d14119116870a40d9c0530"
     )
     assert protocol.EXPECTED_PRELAUNCH_MATERIALIZATION_RULE_ID == (
-        "ee833b2260347a85442802459cd3ae6edd62b3abd35ba8d15b1829f7e9fa04f8"
+        "584a47eec792b577314cbdc3ae8e1e50d44d892c402e48de86369087c7e0bc74"
     )
     assert protocol.EXPECTED_PRELAUNCH_LAUNCH_RULE_ID == (
-        "9bedb474878ba9f3c7eb9735278b03fd91299c978f959ae30433a22b41b23817"
+        "30f0656ce92e74c2b60e8ba95b11f4833f7ebe89756e5303a8e1aa4322ec4008"
     )
     assert protocol.LOGICAL_OCCURRENCE_ID == (
         "a37770e56698857e162b2099766573ec5cabfc876145496f7d54756271d66599"
@@ -542,95 +542,131 @@ def test_protocol_preserves_ordinal8_as_historical_failure_lineage() -> None:
     assert document["failed_v180r12r4r2_ordinal8_identity_rerun_forbidden"]
 
 
-def test_protocol_binds_ordinal13_as_immediate_and_ordinal12_as_historical_lineage() -> None:
+def test_protocol_binds_ordinal14_as_immediate_and_ordinal13_as_historical_lineage() -> None:
     document = frozen().to_document()
-    historical = document["failed_ordinal12_repair_lineage"]
-    lineage = document["failed_ordinal13_repair_lineage"]
-    assert historical == protocol.failed_ordinal12_repair_lineage_contract_v180r12r4()
-    assert lineage == protocol.failed_ordinal13_repair_lineage_contract_v180r12r4()
+    historical = document["failed_ordinal13_repair_lineage"]
+    immediate = document["failed_ordinal14_repair_lineage"]
+    assert historical == (
+        protocol.failed_ordinal13_repair_lineage_contract_v180r12r4()
+    )
+    assert immediate == (
+        protocol.failed_ordinal14_repair_lineage_contract_v180r12r4()
+    )
     assert historical["freeze_id"] == (
-        protocol.V180R12R4R7_FAILED_PREDECESSOR_FREEZE_ID
-    )
-    assert historical["campaign_attempt_id"] == (
-        protocol.V180R12R4R7_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID
-    )
-    assert lineage["freeze_id"] == (
         protocol.V180R12R4R8_FAILED_PREDECESSOR_FREEZE_ID
     )
-    assert lineage["campaign_attempt_id"] == (
+    assert historical["campaign_attempt_id"] == (
         protocol.V180R12R4R8_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID
     )
-    assert lineage["campaign_failure_id"] == (
+    assert historical["campaign_failure_id"] == (
         protocol.V180R12R4R8_FAILED_CAMPAIGN_FAILURE_ID
     )
-    assert lineage["scientific_attempt_opened"] is True
-    assert lineage["event_kinds"] == [
+    assert historical["scientific_attempt_opened"] is True
+    assert historical["event_kinds"] == [
         "ATTEMPT_OPEN",
         "PROCESS_BIRTH_INTENT",
         "PROCESS_BIRTH_OUTCOME",
     ]
-    assert lineage["completed_event_count"] == 3
-    assert lineage["successful_process_birth_outcome_recorded"] is True
-    assert lineage["full_source_conformance"] is True
-    assert lineage["full_host_conformance"] is True
-    assert lineage["host_conformance_mismatch_count"] == 0
-    assert lineage["host_conformance_cause"] is None
-    assert lineage["production_runtime_placement_t1_complete"] is True
-    assert lineage["production_unit_ownership_t1_acquired"] is True
-    assert lineage["full_cgroup_topology_conformance_recorded"] is False
-    assert lineage["formal_cgroup_topology_conformance_diagnostic"] is None
-    assert lineage["formal_failure_classification"] == {
+    assert historical["completed_event_count"] == 3
+    assert historical["successful_process_birth_outcome_recorded"] is True
+    assert historical["formal_failure_classification"] == {
         "failure_code": "INPUT_DRIFT",
         "message": "ConnectionResetError: (104, 'Connection reset by peer')",
     }
-    assert lineage["formal_failure_is_secondary"] is True
-    assert lineage["diagnosed_exact_cause"] == {
+    assert historical["diagnosed_exact_cause"] == {
         "error_type": "RuntimeError",
         "message": "V180r12r4 precompiled source binding changed",
     }
-    assert lineage["diagnosed_exact_cause_is_primary"] is True
-    assert lineage["source_binding_full_conformance"] is False
-    assert lineage["source_binding_mismatch_count"] == 21
-    assert len(lineage["source_binding_mismatch_rows"]) == 21
-    assert lineage["first_source_binding_mismatch_index"] == 85
-    assert lineage["first_source_binding_mismatch_module"] == "packaging"
-    assert lineage["source_binding_cause"]["failure_code"] == (
-        "PRECOMPILED_SOURCE_BINDING_CONFORMANCE_FAILURE"
+    assert historical["source_binding_mismatch_count"] == 21
+    assert historical["same_identity_rerun_forbidden"] is True
+    assert historical["repair_scope"] == protocol.V180R12R4R8_REPAIR_SCOPE
+
+    assert immediate["freeze_id"] == (
+        protocol.V180R12R4R9_FAILED_PREDECESSOR_FREEZE_ID
     )
-    assert lineage["cleanup_complete"] is True
-    assert lineage["counter_record_count"] == 0
-    assert lineage["work_vector_count"] == 0
-    assert lineage["comparison_vector_count"] == 0
-    assert set(lineage["gate_statuses"].values()) == {"NOT_RUN"}
-    assert lineage["official_execution_allowed"] is False
-    assert lineage["same_identity_rerun_forbidden"] is True
-    assert lineage["repair_scope"] == protocol.V180R12R4R8_REPAIR_SCOPE
+    assert immediate["campaign_attempt_id"] == (
+        protocol.V180R12R4R9_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID
+    )
+    assert immediate["measurement_terminal_id"] == (
+        protocol.V180R12R4R9_FAILED_MEASUREMENT_TERMINAL_ID
+    )
+    assert immediate["verification_id"] == (
+        protocol.V180R12R4R9_FAILED_VERIFICATION_ID
+    )
+    assert immediate["verification_inner_launch_failure_id"] == (
+        protocol.V180R12R4R9_FAILED_INNER_LAUNCH_FAILURE_ID
+    )
+    assert immediate["verification_outer_service_failure_id"] == (
+        protocol.V180R12R4R9_FAILED_OUTER_SERVICE_FAILURE_ID
+    )
+    assert "campaign_failure_id" not in immediate
+    assert immediate["measurement_succeeded"] is True
+    assert immediate["measurement_full_cgroup_topology_conformance"] is True
+    assert immediate["verification_unit_ownership_t1_acquired"] is True
+    assert immediate["verification_payload_conformance"] is True
+    assert immediate["verification_transport_success"] is False
+    assert immediate["full_verification_launch_conformance"] is False
+    assert immediate["formal_mismatch_rows"] == [
+        {
+            "expected": True,
+            "field": "source_bound_runner_git_audit.complete",
+            "observed": False,
+        }
+    ]
+    assert immediate["runtime_observed_git_process_count"] is None
+    assert immediate["runtime_observed_git_process_count_recorded"] is False
+    assert immediate["static_control_flow_inference"]["runtime_observation"] is False
+    assert immediate["counter_record_count"] == 9
+    assert immediate["path_receipt_count"] == 9
+    assert immediate["work_vector_count"] == 1
+    assert immediate["comparison_vector_count"] == 1
+    assert immediate["native_zero_attestation_count"] == 1
+    assert immediate["gate_statuses_by_layer"]["verification_payload"][
+        "COUNTER_COMPLETENESS_GATE"
+    ] == "PASS"
+    assert immediate["counter_pass_is_payload_level_only"] is True
+    assert immediate["official_execution_allowed"] is False
+    assert immediate["scientific_success_claimed"] is False
+    assert immediate["same_identity_rerun_forbidden"] is True
+    assert immediate["repair_scope"] == protocol.V180R12R4R9_REPAIR_SCOPE
+
     slot = document["campaign_measurement_execution_slot"]
-    assert slot["historical_failed_ordinal12_freeze_id"] == historical["freeze_id"]
-    assert slot["historical_failed_ordinal12_logical_campaign_attempt_id"] == (
+    assert slot["historical_failed_ordinal13_freeze_id"] == historical["freeze_id"]
+    assert slot["historical_failed_ordinal13_logical_campaign_attempt_id"] == (
         historical["campaign_attempt_id"]
     )
-    assert slot["historical_failed_ordinal12_campaign_failure_id"] == (
+    assert slot["historical_failed_ordinal13_campaign_failure_id"] == (
         historical["campaign_failure_id"]
     )
-    assert slot["immediate_failed_predecessor_freeze_id"] == lineage["freeze_id"]
-    assert slot["immediate_failed_predecessor_logical_campaign_attempt_id"] == (
-        lineage["campaign_attempt_id"]
+    assert slot["historical_failed_ordinal13_inner_launch_failure_id"] == (
+        historical["inner_launch_failure_id"]
     )
-    assert slot["immediate_failed_predecessor_campaign_failure_id"] == (
-        lineage["campaign_failure_id"]
+    assert slot["historical_failed_ordinal13_outer_service_failure_id"] == (
+        historical["outer_service_failure_id"]
+    )
+    assert slot["immediate_failed_predecessor_freeze_id"] == immediate["freeze_id"]
+    assert slot["immediate_failed_predecessor_logical_campaign_attempt_id"] == (
+        immediate["campaign_attempt_id"]
+    )
+    assert slot["immediate_failed_predecessor_measurement_terminal_id"] == (
+        immediate["measurement_terminal_id"]
+    )
+    assert slot["immediate_failed_predecessor_verification_id"] == (
+        immediate["verification_id"]
     )
     assert slot["immediate_failed_predecessor_inner_launch_failure_id"] == (
-        lineage["inner_launch_failure_id"]
+        immediate["verification_inner_launch_failure_id"]
     )
     assert slot["immediate_failed_predecessor_outer_service_failure_id"] == (
-        lineage["outer_service_failure_id"]
+        immediate["verification_outer_service_failure_id"]
     )
+    assert "immediate_failed_predecessor_campaign_failure_id" not in slot
     assert document["failed_v180r12r4r4_ordinal9_identity_rerun_forbidden"]
     assert document["failed_v180r12r4r5_ordinal10_identity_rerun_forbidden"]
     assert document["failed_v180r12r4r6_ordinal11_identity_rerun_forbidden"]
     assert document["failed_v180r12r4r7_ordinal12_identity_rerun_forbidden"]
     assert document["failed_v180r12r4r8_ordinal13_identity_rerun_forbidden"]
+    assert document["failed_v180r12r4r9_ordinal14_identity_rerun_forbidden"]
 
 
 def test_r3r2_scientific_birth_lineage_rejects_public_identity_drift(
@@ -708,6 +744,21 @@ def test_ordinal13_lineage_rejects_public_identity_drift(
         protocol.failed_ordinal13_repair_lineage_contract_v180r12r4()
 
 
+def test_ordinal14_lineage_rejects_public_identity_drift(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        protocol.failed_ordinal14_predecessor,
+        "EXPECTED_VERIFICATION_ID",
+        "0" * 64,
+    )
+    with pytest.raises(
+        protocol.CampaignMeasurementProtocolV180R12R4Error,
+        match="ordinal14 failure authority changed",
+    ):
+        protocol.failed_ordinal14_repair_lineage_contract_v180r12r4()
+
+
 def test_failed_dispatch_replay_is_source_bound_pre_scientific_authority_not_measurement() -> None:
     lineage = protocol.failed_dispatch_repair_lineage_contract_v180r12r4()
     assert lineage["failure_freeze_source_relative_path"] == (
@@ -735,7 +786,7 @@ def test_failed_dispatch_replay_is_source_bound_pre_scientific_authority_not_mea
         "retained_artifact_absence_and_cgroup_reads_are_trusted_prereg_authority_replay"
     ] is True
     roots = protocol.SOURCE_CLOSURE_REQUIRED_ROOTS
-    assert len(roots) == len(set(roots)) == 28
+    assert len(roots) == len(set(roots)) == 29
     assert tuple(roots) == tuple(sorted(roots))
     assert roots.count(protocol.V180R12R3_FAILURE_FREEZE_SOURCE_RELATIVE_PATH) == 1
     assert roots.count(protocol.V180R12R3R1_FAILURE_FREEZE_SOURCE_RELATIVE_PATH) == 1
@@ -746,6 +797,7 @@ def test_failed_dispatch_replay_is_source_bound_pre_scientific_authority_not_mea
     assert roots.count(protocol.V180R12R4R6_FAILURE_FREEZE_SOURCE_RELATIVE_PATH) == 1
     assert roots.count(protocol.V180R12R4R7_FAILURE_FREEZE_SOURCE_RELATIVE_PATH) == 1
     assert roots.count(protocol.V180R12R4R8_FAILURE_FREEZE_SOURCE_RELATIVE_PATH) == 1
+    assert roots.count(protocol.V180R12R4R9_FAILURE_FREEZE_SOURCE_RELATIVE_PATH) == 1
 
 
 def test_failed_dispatch_lineage_rejects_absence_inventory_drift_before_replay(
@@ -1482,6 +1534,22 @@ def test_protocol_freezes_exact_four_target_moduletype_execution_envelope() -> N
     assert expected[
         "runner_primary_error_precedes_registration_secondary"
     ] is True
+
+
+def test_protocol_freezes_target_specific_runner_git_process_audit() -> None:
+    expected = protocol.source_bound_runner_git_process_audit_contract_v180r12r4()
+    document = frozen().to_document()
+    assert document["prelaunch_contract"][
+        "source_bound_runner_git_process_audit_contract"
+    ] == expected
+    assert expected["manifest_runner_argv_target"] == "measurement"
+    assert expected["manifest_runner_argv_process_count"] == 6
+    assert expected["target_rows"] == [
+        {"target": "measurement", "expected_process_count": 6},
+        {"target": "verification", "expected_process_count": 0},
+    ]
+    assert expected["verification_any_subprocess_is_foreign"] is True
+    assert expected["post_run_completeness_required_for_each_target"] is True
 
 
 def test_protocol_rejects_foreign_runner_module_execution_envelope(

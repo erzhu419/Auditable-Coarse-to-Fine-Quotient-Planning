@@ -145,6 +145,10 @@ SOURCE_CLOSURE_REQUIRED_ROOTS = tuple(
             ),
             (
                 "src/acfqp/construction_k7_campaign_measurement_"
+                "failure_freeze_v180r12r4r9.py"
+            ),
+            (
+                "src/acfqp/construction_k7_campaign_measurement_"
                 "independent_verifier_v180r12r4.py"
             ),
             (
@@ -591,6 +595,11 @@ def _git_manifest_fact(
         },
         "version_stdout": git_version,
         "runner_process_count": 6,
+        "runner_process_count_by_target": {
+            "measurement": 6,
+            "verification": 0,
+        },
+        "runner_argv_target": "measurement",
         "runner_argv": git_argv,
         "runner_environment_template": {
             MANIFEST_SHA_ENV: MANIFEST_SHA_TEMPLATE,
@@ -878,6 +887,7 @@ def _build_launch(
     *,
     measurement_body: str | None = None,
     measurement_failure_mode: str | None = None,
+    verification_body: str | None = None,
 ) -> tuple[Path, Path, Path, dict[str, object], str]:
     repository = (tmp_path / "repository").absolute()
     c_pre = (tmp_path / "c_pre").absolute()
@@ -949,7 +959,9 @@ def _build_launch(
         source = (
             runner_source
             if target == "measurement"
-            else _external_entrypoint(runner_prefix + _default_runner_body())
+            else _external_entrypoint(
+                verification_body or _default_runner_body()
+            )
         )
         (repository / relative).write_text(source, encoding="utf-8")
     _complete_required_static_roots(repository)
@@ -1937,7 +1949,7 @@ def _build_real_closure_launch(
     c_pre_bootstrap.parent.mkdir(parents=True)
     shutil.copyfile(BOOTSTRAP, c_pre_bootstrap)
     paths = _real_authorization_closure_paths()
-    assert len(paths) == 28
+    assert len(paths) == 29
     for relative in paths:
         destination = repository / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
@@ -2142,6 +2154,23 @@ def test_successful_dispatch_uses_only_in_memory_bound_source(tmp_path: Path) ->
     assert list(c_pre.rglob("__pycache__")) == []
 
 
+def test_verification_target_rejects_any_runner_subprocess(tmp_path: Path) -> None:
+    repository, c_pre, manifest_path, _, digest = _build_launch(
+        tmp_path,
+        verification_body=(
+            "import subprocess\n"
+            "subprocess.run(['/bin/true'], check=True)\n"
+        ),
+    )
+    completed = _invoke(
+        repository, c_pre, manifest_path, digest, target="verification"
+    )
+    assert completed.returncode != 0
+    assert completed.stderr.rstrip().endswith(
+        "RuntimeError: V180r12r4 foreign subprocess launch rejected"
+    )
+
+
 @pytest.mark.parametrize(
     ("updates", "removed", "expected"),
     (
@@ -2202,7 +2231,7 @@ def test_bootstrap_prework_exhausted_absolute_campaign_deadline_never_dispatches
     assert dispatches == []
 
 
-def test_exact_twenty_eight_static_roots_match_authorization_contract() -> None:
+def test_exact_twenty_nine_static_roots_match_authorization_contract() -> None:
     completed = subprocess.run(
         [
             PYTHON,
@@ -2221,7 +2250,7 @@ def test_exact_twenty_eight_static_roots_match_authorization_contract() -> None:
         text=True,
     )
     assert tuple(json.loads(completed.stdout)) == SOURCE_CLOSURE_REQUIRED_ROOTS
-    assert len(SOURCE_CLOSURE_REQUIRED_ROOTS) == 28
+    assert len(SOURCE_CLOSURE_REQUIRED_ROOTS) == 29
     assert (
         "src/acfqp/construction_k7_campaign_measurement_"
         "failure_freeze_v180r12r4r5.py"
@@ -2240,6 +2269,11 @@ def test_exact_twenty_eight_static_roots_match_authorization_contract() -> None:
     assert (
         "src/acfqp/construction_k7_campaign_measurement_"
         "failure_freeze_v180r12r4r8.py"
+        in SOURCE_CLOSURE_REQUIRED_ROOTS
+    )
+    assert (
+        "src/acfqp/construction_k7_campaign_measurement_"
+        "failure_freeze_v180r12r4r9.py"
         in SOURCE_CLOSURE_REQUIRED_ROOTS
     )
 
@@ -2845,6 +2879,31 @@ def test_runner_git_argv_is_enforced_by_process_audit(tmp_path: Path) -> None:
     completed = _invoke(repository, c_pre, manifest_path, digest)
     assert completed.returncode != 0
     assert "Git process 0 contract changed" in completed.stderr
+
+
+@pytest.mark.parametrize(
+    ("field", "replacement"),
+    (
+        (
+            "runner_process_count_by_target",
+            {"measurement": 6, "verification": 1},
+        ),
+        ("runner_argv_target", "verification"),
+    ),
+)
+def test_target_specific_runner_git_contract_is_exact(
+    tmp_path: Path,
+    field: str,
+    replacement: object,
+) -> None:
+    repository, c_pre, manifest_path, manifest, _ = _build_launch(tmp_path)
+    manifest["git"][field] = replacement
+    digest = _rewrite_manifest(manifest_path, manifest)
+    completed = _invoke(repository, c_pre, manifest_path, digest)
+    assert completed.returncode != 0
+    assert completed.stderr.rstrip().endswith(
+        "RuntimeError: V180r12r4 target Git process contract changed"
+    )
 
 
 def test_partial_git_primary_failure_is_preserved_with_incomplete_secondary(

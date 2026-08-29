@@ -254,8 +254,8 @@ def test_authorization_source_closure_is_explicitly_placeholder_before_literal_f
     assert tuple(contract["required_static_roots"]) == tuple(
         sorted(protocol.SOURCE_CLOSURE_REQUIRED_ROOTS)
     )
-    assert contract["required_static_root_count"] == 28
-    assert len(set(contract["required_static_roots"])) == 28
+    assert contract["required_static_root_count"] == 29
+    assert len(set(contract["required_static_roots"])) == 29
     assert protocol.V180R12R3_FAILURE_FREEZE_SOURCE_RELATIVE_PATH in contract[
         "required_static_roots"
     ]
@@ -269,6 +269,9 @@ def test_authorization_source_closure_is_explicitly_placeholder_before_literal_f
         "required_static_roots"
     ]
     assert protocol.V180R12R4R8_FAILURE_FREEZE_SOURCE_RELATIVE_PATH in contract[
+        "required_static_roots"
+    ]
+    assert protocol.V180R12R4R9_FAILURE_FREEZE_SOURCE_RELATIVE_PATH in contract[
         "required_static_roots"
     ]
 
@@ -637,6 +640,9 @@ def test_authorization_echoes_prelaunch_evidence_durable_and_arithmetic_contract
     assert document["failed_ordinal13_repair_lineage"] == (
         protocol.failed_ordinal13_repair_lineage_contract_v180r12r4()
     )
+    assert document["failed_ordinal14_repair_lineage"] == (
+        protocol.failed_ordinal14_repair_lineage_contract_v180r12r4()
+    )
     failed_external_replay = document["failed_external_replay_repair_lineage"]
     failed_scientific_birth = document[
         "failed_scientific_birth_repair_lineage"
@@ -647,6 +653,7 @@ def test_authorization_echoes_prelaunch_evidence_durable_and_arithmetic_contract
     failed_ordinal11 = document["failed_ordinal11_repair_lineage"]
     failed_ordinal12 = document["failed_ordinal12_repair_lineage"]
     failed_ordinal13 = document["failed_ordinal13_repair_lineage"]
+    failed_ordinal14 = document["failed_ordinal14_repair_lineage"]
     assert failed_external_replay["scientific_attempt_record_present"] is False
     assert failed_external_replay["scientific_occurrence_started"] is False
     assert failed_external_replay["campaign_actual_measurement"] is False
@@ -686,9 +693,13 @@ def test_authorization_echoes_prelaunch_evidence_durable_and_arithmetic_contract
     assert document[
         "failed_v180r12r4r8_ordinal13_identity_rerun_forbidden"
     ] is True
+    assert document[
+        "failed_v180r12r4r9_ordinal14_identity_rerun_forbidden"
+    ] is True
     assert document["fresh_v180r12r4_physical_paths_and_identities_required"]
     assert document["repair_scope"] == protocol.V180R12R4_REPAIR_SCOPE
-    assert document["repair_scope"] == failed_ordinal13["repair_scope"]
+    assert document["repair_scope"] == failed_ordinal14["repair_scope"]
+    assert failed_ordinal13["repair_scope"] == protocol.V180R12R4R8_REPAIR_SCOPE
     assert failed_ordinal12["repair_scope"] == protocol.V180R12R4R7_REPAIR_SCOPE
     assert failed_ordinal11["repair_scope"] == protocol.V180R12R4R6_REPAIR_SCOPE
     assert failed_external_replay["repair_scope"] == (
@@ -786,6 +797,37 @@ def test_authorization_echoes_prelaunch_evidence_durable_and_arithmetic_contract
     assert failed_ordinal13["same_identity_rerun_forbidden"] is True
     assert failed_ordinal13["fresh_successor_identity_required"] is True
     assert failed_ordinal13["repair_scope"] == protocol.V180R12R4R8_REPAIR_SCOPE
+    assert failed_ordinal14["freeze_id"] == (
+        protocol.V180R12R4R9_FAILED_PREDECESSOR_FREEZE_ID
+    )
+    assert failed_ordinal14["campaign_attempt_id"] == (
+        protocol.V180R12R4R9_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID
+    )
+    assert failed_ordinal14["measurement_terminal_id"] == (
+        protocol.V180R12R4R9_FAILED_MEASUREMENT_TERMINAL_ID
+    )
+    assert failed_ordinal14["verification_id"] == (
+        protocol.V180R12R4R9_FAILED_VERIFICATION_ID
+    )
+    assert failed_ordinal14["verification_inner_launch_failure_id"] == (
+        protocol.V180R12R4R9_FAILED_INNER_LAUNCH_FAILURE_ID
+    )
+    assert failed_ordinal14["verification_outer_service_failure_id"] == (
+        protocol.V180R12R4R9_FAILED_OUTER_SERVICE_FAILURE_ID
+    )
+    assert "campaign_failure_id" not in failed_ordinal14
+    assert failed_ordinal14["measurement_succeeded"] is True
+    assert failed_ordinal14["verification_payload_conformance"] is True
+    assert failed_ordinal14["verification_transport_success"] is False
+    assert failed_ordinal14["formal_mismatch_count"] == 1
+    assert failed_ordinal14["counter_record_count"] == 9
+    assert failed_ordinal14["path_receipt_count"] == 9
+    assert failed_ordinal14["work_vector_count"] == 1
+    assert failed_ordinal14["comparison_vector_count"] == 1
+    assert failed_ordinal14["official_execution_allowed"] is False
+    assert failed_ordinal14["scientific_success_claimed"] is False
+    assert failed_ordinal14["same_identity_rerun_forbidden"] is True
+    assert failed_ordinal14["repair_scope"] == protocol.V180R12R4R9_REPAIR_SCOPE
     assert document["historical_failed_ordinal12_freeze_id"] == (
         failed_ordinal12["freeze_id"]
     )
@@ -801,25 +843,44 @@ def test_authorization_echoes_prelaunch_evidence_durable_and_arithmetic_contract
     assert document["historical_failed_ordinal12_outer_service_failure_id"] == (
         failed_ordinal12["outer_service_failure_id"]
     )
-    assert document["immediate_failed_predecessor_freeze_id"] == (
+    assert document["historical_failed_ordinal13_freeze_id"] == (
         failed_ordinal13["freeze_id"]
     )
     assert document[
-        "immediate_failed_predecessor_logical_campaign_attempt_id"
+        "historical_failed_ordinal13_logical_campaign_attempt_id"
     ] == failed_ordinal13["campaign_attempt_id"]
-    assert document["immediate_failed_predecessor_campaign_failure_id"] == (
+    assert document["historical_failed_ordinal13_campaign_failure_id"] == (
         failed_ordinal13["campaign_failure_id"]
     )
-    assert document["immediate_failed_predecessor_inner_launch_failure_id"] == (
+    assert document["historical_failed_ordinal13_inner_launch_failure_id"] == (
         failed_ordinal13["inner_launch_failure_id"]
     )
-    assert document["immediate_failed_predecessor_outer_service_failure_id"] == (
+    assert document["historical_failed_ordinal13_outer_service_failure_id"] == (
         failed_ordinal13["outer_service_failure_id"]
     )
+    assert document["immediate_failed_predecessor_freeze_id"] == (
+        failed_ordinal14["freeze_id"]
+    )
+    assert document[
+        "immediate_failed_predecessor_logical_campaign_attempt_id"
+    ] == failed_ordinal14["campaign_attempt_id"]
+    assert document["immediate_failed_predecessor_measurement_terminal_id"] == (
+        failed_ordinal14["measurement_terminal_id"]
+    )
+    assert document["immediate_failed_predecessor_verification_id"] == (
+        failed_ordinal14["verification_id"]
+    )
+    assert document["immediate_failed_predecessor_inner_launch_failure_id"] == (
+        failed_ordinal14["verification_inner_launch_failure_id"]
+    )
+    assert document["immediate_failed_predecessor_outer_service_failure_id"] == (
+        failed_ordinal14["verification_outer_service_failure_id"]
+    )
+    assert "immediate_failed_predecessor_campaign_failure_id" not in document
     assert document[
         "repair_changes_campaign_path_roles_event_schedule_evidence_cardinality_or_reducers"
     ] is False
-    assert len(document["source_closure_contract"]["required_static_roots"]) == 28
+    assert len(document["source_closure_contract"]["required_static_roots"]) == 29
     assert protocol.V180R12R3_FAILURE_FREEZE_SOURCE_RELATIVE_PATH in document[
         "source_closure_contract"
     ]["required_static_roots"]
@@ -845,6 +906,9 @@ def test_authorization_echoes_prelaunch_evidence_durable_and_arithmetic_contract
         "source_closure_contract"
     ]["required_static_roots"]
     assert protocol.V180R12R4R8_FAILURE_FREEZE_SOURCE_RELATIVE_PATH in document[
+        "source_closure_contract"
+    ]["required_static_roots"]
+    assert protocol.V180R12R4R9_FAILURE_FREEZE_SOURCE_RELATIVE_PATH in document[
         "source_closure_contract"
     ]["required_static_roots"]
     assert (

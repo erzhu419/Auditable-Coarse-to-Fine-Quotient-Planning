@@ -657,22 +657,19 @@ def test_independent_verifier_binds_ordinal14_service_lineage() -> None:
         materialization_terminal_sha256=materialization_sha256,
     ) == invocation
     assert invocation["token"] == (
-        "1ba5304a7d653a3805fdca4754eeb7ff2feaa63794c6b866f47adda85160668d"
+        "5bfee9fa85834621b4947c1b68d32e96b7c53e260336d0815fd18bf59522dc72"
     )
     assert invocation["token_input"] == {
         "failed_predecessor_freeze_id": (
-            "0df765617aa1615b48ee5fd9192e3c596d6d50d1dfb1bc841e52d545e1716e25"
+            "89562134029a69da93ce1dda6e9ec70abb238050fda1f530a8c5c2f557b5eb60"
         ),
         "failed_inner_launch_failure_id": (
-            "1cd76127af59458d6075f00cc4747f9489cd84e955031e5815cbf59488665238"
+            "7a1b8496f89378f5b2131a096c17fb9f7ed43ac64b544eacdfb3ea2802a65e82"
         ),
         "failed_outer_service_failure_id": (
-            "acfc5832a9d12fa76469a624356b3e4470f085349df397645a3d0a32e6258c0b"
+            "aa3ee86dee489383a43a868180bd555a21978fc923c106e06e5b017adb4101bc"
         ),
-        "repair_scope": (
-            "NAMESPACE_AWARE_PRECOMPILED_SOURCE_BINDING_AND_PRIMARY_CAUSE_"
-            "CONFORMANCE"
-        ),
+        "repair_scope": "TARGET_AWARE_RUNNER_GIT_PROCESS_CONFORMANCE",
         "purpose": "MEASUREMENT",
     }
 

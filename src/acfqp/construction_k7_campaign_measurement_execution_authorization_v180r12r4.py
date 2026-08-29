@@ -21,9 +21,9 @@ ZERO_ID = protocol.ZERO_ID
 EXPECTED_AUTHORIZATION_ID = ZERO_ID
 EXPECTED_CANONICAL_BYTE_COUNT = 0
 EXPECTED_CANONICAL_SHA256 = ZERO_ID
-EXPECTED_PROTOCOL_ID = "9fc6ecbe63cdb65752d5bac6690903ab34ffc540abb3062b5ffde7a3695ebd49"
+EXPECTED_PROTOCOL_ID = "f181ba16ee7b3931c282255daddd7c7b6545aaf5037ef5092c6123e5a5eafbbb"
 EXPECTED_CAMPAIGN_MEASUREMENT_EXECUTION_SLOT_ID = (
-    "441e52cd3721793a0541288196776aa214dd44b91f01e1822114b0e4442559f5"
+    "602ae74c14a2dc3267015bf1b05d36b7d1a5b11a184186a520c0a29dbf7ffd4b"
 )
 EXPECTED_SOURCE_CLOSURE_ID = ZERO_ID
 EXPECTED_SOURCE_CLOSURE_BYTE_COUNT = 0
@@ -615,6 +615,9 @@ def build_campaign_measurement_execution_authorization_v180r12r4(
     failed_ordinal13 = (
         protocol.failed_ordinal13_repair_lineage_contract_v180r12r4()
     )
+    failed_ordinal14 = (
+        protocol.failed_ordinal14_repair_lineage_contract_v180r12r4()
+    )
     service_context_capture = (
         protocol.service_context_capture_contract_v180r12r4()
     )
@@ -682,6 +685,8 @@ def build_campaign_measurement_execution_authorization_v180r12r4(
         == failed_ordinal12
         and protocol_document["failed_ordinal13_repair_lineage"]
         == failed_ordinal13
+        and protocol_document["failed_ordinal14_repair_lineage"]
+        == failed_ordinal14
         and protocol_document["failed_v180r12r3_identity_rerun_forbidden"]
         is True
         and protocol_document["failed_v180r12r3r1_identity_rerun_forbidden"]
@@ -712,9 +717,15 @@ def build_campaign_measurement_execution_authorization_v180r12r4(
             "failed_v180r12r4r8_ordinal13_identity_rerun_forbidden"
         ]
         is True
+        and protocol_document[
+            "failed_v180r12r4r9_ordinal14_identity_rerun_forbidden"
+        ]
+        is True
         and protocol_document["repair_scope"]
-        == failed_ordinal13["repair_scope"]
+        == failed_ordinal14["repair_scope"]
         == protocol.V180R12R4_REPAIR_SCOPE
+        and failed_ordinal13["repair_scope"]
+        == protocol.V180R12R4R8_REPAIR_SCOPE
         and failed_ordinal12["repair_scope"]
         == protocol.V180R12R4R7_REPAIR_SCOPE
         and failed_ordinal11["repair_scope"]
@@ -731,7 +742,7 @@ def build_campaign_measurement_execution_authorization_v180r12r4(
         == runner_execution_envelope
         and prelaunch_contract["precompiled_runner_module_contract"]
         == runner_execution_envelope
-        and len(SOURCE_CLOSURE_REQUIRED_ROOTS) == 28
+        and len(SOURCE_CLOSURE_REQUIRED_ROOTS) == 29
         and protocol.V180R12R3_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
         in SOURCE_CLOSURE_REQUIRED_ROOTS
         and protocol.V180R12R3R1_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
@@ -749,6 +760,8 @@ def build_campaign_measurement_execution_authorization_v180r12r4(
         and protocol.V180R12R4R7_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
         in SOURCE_CLOSURE_REQUIRED_ROOTS
         and protocol.V180R12R4R8_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
+        in SOURCE_CLOSURE_REQUIRED_ROOTS
+        and protocol.V180R12R4R9_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
         in SOURCE_CLOSURE_REQUIRED_ROOTS
         and repair_lineage["scientific_attempt_record_present"] is False
         and repair_lineage["scientific_occurrence_started"] is False
@@ -940,6 +953,35 @@ def build_campaign_measurement_execution_authorization_v180r12r4(
         and failed_ordinal13["fresh_successor_identity_required"] is True
         and failed_ordinal13["repair_scope"]
         == protocol.V180R12R4R8_REPAIR_SCOPE
+        and failed_ordinal14["freeze_id"]
+        == protocol.V180R12R4R9_FAILED_PREDECESSOR_FREEZE_ID
+        and failed_ordinal14["campaign_attempt_id"]
+        == protocol.V180R12R4R9_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID
+        and failed_ordinal14["measurement_terminal_id"]
+        == protocol.V180R12R4R9_FAILED_MEASUREMENT_TERMINAL_ID
+        and failed_ordinal14["verification_id"]
+        == protocol.V180R12R4R9_FAILED_VERIFICATION_ID
+        and failed_ordinal14["verification_inner_launch_failure_id"]
+        == protocol.V180R12R4R9_FAILED_INNER_LAUNCH_FAILURE_ID
+        and failed_ordinal14["verification_outer_service_failure_id"]
+        == protocol.V180R12R4R9_FAILED_OUTER_SERVICE_FAILURE_ID
+        and "campaign_failure_id" not in failed_ordinal14
+        and failed_ordinal14["measurement_succeeded"] is True
+        and failed_ordinal14["verification_payload_conformance"] is True
+        and failed_ordinal14["verification_transport_success"] is False
+        and failed_ordinal14["full_verification_launch_conformance"] is False
+        and failed_ordinal14["formal_mismatch_count"] == 1
+        and failed_ordinal14["counter_record_count"] == 9
+        and failed_ordinal14["path_receipt_count"] == 9
+        and failed_ordinal14["work_vector_count"] == 1
+        and failed_ordinal14["comparison_vector_count"] == 1
+        and failed_ordinal14["official_execution_allowed"] is False
+        and failed_ordinal14["scientific_success_claimed"] is False
+        and failed_ordinal14["identity_consumed"] is True
+        and failed_ordinal14["same_identity_rerun_forbidden"] is True
+        and failed_ordinal14["fresh_successor_identity_required"] is True
+        and failed_ordinal14["repair_scope"]
+        == protocol.V180R12R4R9_REPAIR_SCOPE
         and protocol_document["service_context_capture_contract"]
         == service_context_capture
         and protocol_document["terminal_evidence_inventory_contract"]
@@ -1076,6 +1118,7 @@ def build_campaign_measurement_execution_authorization_v180r12r4(
         "failed_ordinal11_repair_lineage": failed_ordinal11,
         "failed_ordinal12_repair_lineage": failed_ordinal12,
         "failed_ordinal13_repair_lineage": failed_ordinal13,
+        "failed_ordinal14_repair_lineage": failed_ordinal14,
         "failed_v180r12r3_identity_rerun_forbidden": True,
         "failed_v180r12r3r1_identity_rerun_forbidden": True,
         "failed_v180r12r3r2_identity_rerun_forbidden": True,
@@ -1085,6 +1128,7 @@ def build_campaign_measurement_execution_authorization_v180r12r4(
         "failed_v180r12r4r6_ordinal11_identity_rerun_forbidden": True,
         "failed_v180r12r4r7_ordinal12_identity_rerun_forbidden": True,
         "failed_v180r12r4r8_ordinal13_identity_rerun_forbidden": True,
+        "failed_v180r12r4r9_ordinal14_identity_rerun_forbidden": True,
         "historical_failed_ordinal12_freeze_id": failed_ordinal12["freeze_id"],
         "historical_failed_ordinal12_logical_campaign_attempt_id": (
             failed_ordinal12["campaign_attempt_id"]
@@ -1098,18 +1142,34 @@ def build_campaign_measurement_execution_authorization_v180r12r4(
         "historical_failed_ordinal12_outer_service_failure_id": (
             failed_ordinal12["outer_service_failure_id"]
         ),
-        "immediate_failed_predecessor_freeze_id": failed_ordinal13["freeze_id"],
-        "immediate_failed_predecessor_logical_campaign_attempt_id": (
+        "historical_failed_ordinal13_freeze_id": failed_ordinal13["freeze_id"],
+        "historical_failed_ordinal13_logical_campaign_attempt_id": (
             failed_ordinal13["campaign_attempt_id"]
         ),
-        "immediate_failed_predecessor_campaign_failure_id": (
+        "historical_failed_ordinal13_campaign_failure_id": (
             failed_ordinal13["campaign_failure_id"]
         ),
-        "immediate_failed_predecessor_inner_launch_failure_id": (
+        "historical_failed_ordinal13_inner_launch_failure_id": (
             failed_ordinal13["inner_launch_failure_id"]
         ),
-        "immediate_failed_predecessor_outer_service_failure_id": (
+        "historical_failed_ordinal13_outer_service_failure_id": (
             failed_ordinal13["outer_service_failure_id"]
+        ),
+        "immediate_failed_predecessor_freeze_id": failed_ordinal14["freeze_id"],
+        "immediate_failed_predecessor_logical_campaign_attempt_id": (
+            failed_ordinal14["campaign_attempt_id"]
+        ),
+        "immediate_failed_predecessor_measurement_terminal_id": (
+            failed_ordinal14["measurement_terminal_id"]
+        ),
+        "immediate_failed_predecessor_verification_id": (
+            failed_ordinal14["verification_id"]
+        ),
+        "immediate_failed_predecessor_inner_launch_failure_id": (
+            failed_ordinal14["verification_inner_launch_failure_id"]
+        ),
+        "immediate_failed_predecessor_outer_service_failure_id": (
+            failed_ordinal14["verification_outer_service_failure_id"]
         ),
         "fresh_v180r12r4_physical_paths_and_identities_required": True,
         "repair_scope": protocol.V180R12R4_REPAIR_SCOPE,
