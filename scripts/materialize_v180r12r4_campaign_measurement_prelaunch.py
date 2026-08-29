@@ -190,6 +190,24 @@ RUNTIME_CAPABILITY_FACT_FIELDS = frozenset(
         "landlock_abi", "uid", "gid", "effective_capability_mask", "admitted",
     }
 )
+SERVICE_CONTEXT_CAPTURE_SCHEMA = (
+    "acfqp.v180r12r4r5_service_context_capture.v1"
+)
+SERVICE_CONTEXT_CAPTURE_PURPOSE = (
+    "BENIGN_PRE_FREEZE_SERVICE_CONTEXT_OBSERVATION_NO_CAMPAIGN_ATTEMPT"
+)
+SERVICE_CONTEXT_CAPTURE_CANONICAL_BYTE_COUNT = 1_459
+SERVICE_CONTEXT_CAPTURE_CANONICAL_SHA256 = (
+    "53508b200ae3b0279bda887cec804a8dd06f7d800734fe3d760f1712ea866fd3"
+)
+PRE_ATTEMPT_HOST_CONFORMANCE_RELATIVE_PATH = (
+    ".tmp/exact-freeze/"
+    "v180r12r4_campaign_measurement_pre_attempt_host_conformance.json"
+)
+PRE_ATTEMPT_HOST_CONFORMANCE_SCHEMA = (
+    "acfqp.v180r12r4_pre_attempt_host_conformance.v1"
+)
+PRE_ATTEMPT_HOST_CONFORMANCE_BYTE_CAP = 65_536
 INTERNAL_FD_ROLE_MAP = {
     "supervisor": (
         (PRECOMPILED_BUNDLE_FD, "PRECOMPILED_SOURCE_BUNDLE_MEMFD"),
@@ -399,6 +417,10 @@ SOURCE_CLOSURE_REQUIRED_ROOTS = tuple(
             ),
             (
                 "src/acfqp/construction_k7_campaign_measurement_"
+                "failure_freeze_v180r12r4r5.py"
+            ),
+            (
+                "src/acfqp/construction_k7_campaign_measurement_"
                 "independent_verifier_v180r12r4.py"
             ),
             (
@@ -437,7 +459,7 @@ PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
     "acfqp:construction-k7-production-transient-service-token:v180r12r4"
 )
 PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN = (
-    "c8d74b0ae750955932b08df9de7a3566368ba20e94ccb16696037c0446577bb6"
+    "36656cf3abb876d291de1e6707f86a9971efe447b224ac32b1909bd0d4166297"
 )
 PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_UNIT_NAME = (
     "acfqp-v180r12r4-measurement-"
@@ -445,7 +467,7 @@ PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_UNIT_NAME = (
     + ".service"
 )
 PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_TOKEN = (
-    "293c9c9fb1424204ccdba376bc48dd150d7d03139f7a263e6d5691abf61c20a3"
+    "5b7ccbbdc29cac0b1a43036f69909c941eab0127fda30de788f13cc54cee93e5"
 )
 PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_UNIT_NAME = (
     "acfqp-v180r12r4-verification-"
@@ -487,19 +509,19 @@ GIT_COMMAND_TIMEOUT_SECONDS = 120
 FAILURE_MESSAGE_BYTE_CAP = 4096
 
 EXPECTED_SOURCE_CLOSURE_RULE_ID = (
-    "e632515031d29fbe77f59dbe3bbe8255797a33c11142548279d319ba32166fb3"
+    "7f0d63c0143c72d3a41f9a4ad25b9fc29f6952ae05a1b4797cded68728d27090"
 )
 EXPECTED_MATERIALIZATION_RULE_ID = (
-    "d9845516a7f71827dadca0b42dfd75ee272fe514cfcb9e598080bde254dc6034"
+    "0dfee347b3b36527bcc06b81228545043b3aeff8c0163738001653b27e363b91"
 )
 LAUNCHER_RULE_LITERAL_NAMES = (
     "EXPECTED_SOURCE_CLOSURE_RULE_ID",
     "EXPECTED_MATERIALIZATION_RULE_ID",
     "EXPECTED_LAUNCH_RULE_ID",
 )
-LAUNCHER_NORMALIZED_STATIC_RULE_SOURCE_BYTE_COUNT = 245_153
+LAUNCHER_NORMALIZED_STATIC_RULE_SOURCE_BYTE_COUNT = 255_793
 LAUNCHER_NORMALIZED_STATIC_RULE_SOURCE_SHA256 = (
-    "31e6ab5927ac1ca2cd8011ea061b1bcd8dde2884856ae19af6cb61b847d43c71"
+    "8dd4ebdb7e175c3347ce3c02188a1b56aca61b76b739f59aa2f85a79e095c40f"
 )
 
 SOURCE_CLOSURE_RULE_DOCUMENT = {
@@ -531,6 +553,16 @@ SOURCE_CLOSURE_RULE_DOCUMENT = {
     ],
     "working_tree_source_conformance_precedes_prelaunch_output": True,
     "working_tree_source_mismatch_is_per_path_per_field": True,
+    "pre_attempt_host_conformance_relative_path": (
+        PRE_ATTEMPT_HOST_CONFORMANCE_RELATIVE_PATH
+    ),
+    "pre_attempt_host_conformance_schema": PRE_ATTEMPT_HOST_CONFORMANCE_SCHEMA,
+    "pre_attempt_host_conformance_byte_cap": (
+        PRE_ATTEMPT_HOST_CONFORMANCE_BYTE_CAP
+    ),
+    "pre_attempt_host_conformance_is_pre_campaign_and_not_source_conformance": (
+        True
+    ),
 }
 MATERIALIZATION_RULE_DOCUMENT = {
     "schema": "acfqp.v180r12r4_prelaunch_materialization_rule.v1",
@@ -614,6 +646,39 @@ def canonical_json_bytes(value: object) -> bytes:
     ).encode("utf-8")
 
 
+def _require_source_bound_service_context_capture(
+    cgroup_parent_fact: dict[str, Any],
+    runtime_capability_fact: dict[str, Any],
+) -> None:
+    capture = {
+        "capture_purpose": SERVICE_CONTEXT_CAPTURE_PURPOSE,
+        "cgroup_parent_fact": cgroup_parent_fact,
+        "runtime_capability_fact": runtime_capability_fact,
+        "schema": SERVICE_CONTEXT_CAPTURE_SCHEMA,
+    }
+    raw = canonical_json_bytes(capture) + b"\n"
+    membership = cgroup_parent_fact.get("self_membership")
+    parent_path = cgroup_parent_fact.get("parent_path")
+    mount_point = cgroup_parent_fact.get("mount_point")
+    if not (
+        len(raw) == SERVICE_CONTEXT_CAPTURE_CANONICAL_BYTE_COUNT
+        and hashlib.sha256(raw).hexdigest()
+        == SERVICE_CONTEXT_CAPTURE_CANONICAL_SHA256
+        and cgroup_parent_fact.get("controllers")
+        == ["cpu", "memory", "pids"]
+        and cgroup_parent_fact.get("subtree_control")
+        == ["cpu", "memory", "pids"]
+        and type(membership) is str
+        and type(parent_path) is str
+        and type(mount_point) is str
+        and PurePosixPath(membership.removeprefix("0::")).parent
+        == PurePosixPath(parent_path.removeprefix(mount_point))
+        and PurePosixPath(membership).name
+        == "acfqp-v180r12r4r5-freeze-capture-20260829.service"
+    ):
+        _fail("frozen facts do not exact-join the source-bound service capture")
+
+
 def _zero_preflight_receipt_interface() -> dict[str, Any]:
     return {
         "schema": ATOMIC_CGROUP_BIRTH_PREFLIGHT_RECEIPT_INTERFACE_SCHEMA,
@@ -628,16 +693,17 @@ def _zero_preflight_receipt_interface() -> dict[str, Any]:
 def _production_systemd_service_contract() -> dict[str, Any]:
     base = {
         "failed_predecessor_freeze_id": (
-            "296731d463b996bb4ff57133505babab9b5d7a3117d6fcdaa94b8ecb1e1050d0"
+            "4671ff59a5b141816c8cfe9a692a55354b799f077e6bf4efc8764ee991a34dc7"
         ),
         "failed_inner_launch_failure_id": (
-            "a08d14c74426ecc83a23d2851cced5f52f23fd8b99c11f9230846cb7df4ecd7a"
+            "d1fbf4b24625927cfa723fb33fe72ef633122c62ffc003ab73648f2fb7539f07"
         ),
         "failed_outer_service_failure_id": (
-            "975593a7652cd71314c203a27d87b7071e9b344d983dc2b72448e1627c45146c"
+            "83496c3cf1b3e01b81715e1529c182d4930fccccdb110d1656af737e07f110ec"
         ),
         "repair_scope": (
-            "WORKING_TREE_SOURCE_MODE_CONFORMANCE_AND_TYPED_DIAGNOSTIC"
+            "PRE_ATTEMPT_CGROUP_RUNTIME_PROPERTY_SNAPSHOTS_AND_PER_FIELD_"
+            "MISMATCH_DIAGNOSTIC"
         ),
     }
     token_rows = {
@@ -1412,6 +1478,7 @@ def _validated_frozen_authorization_context(
         != (stat.S_IWUSR | stat.S_IXUSR)
     ):
         _fail("frozen runtime or cgroup fact schema changed")
+    _require_source_bound_service_context_capture(cgroup, runtime)
     attempt_payload = {
         "schema": "acfqp.campaign_measurement_attempt.v180r12r4",
         "protocol_id": context["protocol_id"],
@@ -2226,9 +2293,9 @@ class _RestrictedStaticLauncherEvaluator:
         "SERVICE_LAUNCH_PUBLICATION_STAGES",
         "__all__",
     )
-    _EXPECTED_PRE_RULE_ASSIGNMENT_COUNT = 153
+    _EXPECTED_PRE_RULE_ASSIGNMENT_COUNT = 163
     _EXPECTED_PRE_RULE_ASSIGNMENT_NAMES_SHA256 = (
-        "af67693d1781f0eda54796282f522d79765c196055be9ee1d883a68686159a4f"
+        "10e2b8e4341d1b2c116b11ceda0c8ac1eb08f7e1f0287bf2795e1847d1eb8bf1"
     )
 
     def __init__(self, raw: bytes) -> None:

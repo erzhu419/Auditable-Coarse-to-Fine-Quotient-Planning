@@ -109,13 +109,13 @@ MATERIALIZATION_TERMINAL_SCHEMA = (
     "acfqp.v180r12r4_prelaunch_materialization_terminal.v1"
 )
 EXPECTED_SOURCE_CLOSURE_RULE_ID = (
-    "e632515031d29fbe77f59dbe3bbe8255797a33c11142548279d319ba32166fb3"
+    "7f0d63c0143c72d3a41f9a4ad25b9fc29f6952ae05a1b4797cded68728d27090"
 )
 EXPECTED_MATERIALIZATION_RULE_ID = (
-    "d9845516a7f71827dadca0b42dfd75ee272fe514cfcb9e598080bde254dc6034"
+    "0dfee347b3b36527bcc06b81228545043b3aeff8c0163738001653b27e363b91"
 )
 EXPECTED_LAUNCH_RULE_ID = (
-    "877a9f71160af1dce86c06ac8a466cc32fd2a7de46cd385aaabcc93d26e456a1"
+    "77943eb671fdc3f1d90c977b7b6405f7127284b223ced1491ba69fda8e91e28a"
 )
 SOURCE_CLOSURE_RULE_ID = EXPECTED_SOURCE_CLOSURE_RULE_ID
 MATERIALIZATION_RULE_ID = EXPECTED_MATERIALIZATION_RULE_ID
@@ -256,6 +256,13 @@ LEDGER_CLOSURE_RELATIVE_PATH = f"{OUTPUT_ROOT_RELATIVE_PATH}/LEDGER_CLOSURE.json
 MEASUREMENT_FAILURE_RELATIVE_PATH = (
     ".tmp/exact-freeze/v180r12r4_campaign_measurement_failure.json"
 )
+PRE_ATTEMPT_HOST_CONFORMANCE_RELATIVE_PATH = (
+    ".tmp/exact-freeze/"
+    "v180r12r4_campaign_measurement_pre_attempt_host_conformance.json"
+)
+PRE_ATTEMPT_HOST_CONFORMANCE_SCHEMA = (
+    "acfqp.v180r12r4_pre_attempt_host_conformance.v1"
+)
 VERIFICATION_RELATIVE_PATH = (
     ".tmp/exact-freeze/v180r12r4_campaign_measurement_verification.json"
 )
@@ -285,6 +292,7 @@ STREAM_BUFFER_BYTES = 1024 * 1024
 FAILURE_MESSAGE_BYTE_CAP = 4096
 LAUNCH_ARTIFACT_BYTE_CAP = 16 * 1024 * 1024
 SCIENTIFIC_ARTIFACT_BYTE_CAP = 16 * 1024 * 1024
+PRE_ATTEMPT_HOST_CONFORMANCE_BYTE_CAP = 65_536
 EVIDENCE_INVENTORY_BUNDLE_BYTE_CAP = 64 * 1024 * 1024
 EXECUTION_CLOSURE_BYTE_CAP = 1 * 1024 * 1024
 OS_RECEIPT_BUNDLE_BYTE_CAP = 16 * 1024 * 1024
@@ -301,11 +309,11 @@ PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
     "acfqp:construction-k7-production-transient-service-token:v180r12r4"
 )
 PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN = (
-    "c8d74b0ae750955932b08df9de7a3566368ba20e94ccb16696037c0446577bb6"
+    "36656cf3abb876d291de1e6707f86a9971efe447b224ac32b1909bd0d4166297"
 )
 PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_UNIT_NAME = (
     "acfqp-v180r12r4-measurement-"
-    "c8d74b0ae750955932b08df9de7a3566368ba20e94ccb16696037c0446577bb6.service"
+    "36656cf3abb876d291de1e6707f86a9971efe447b224ac32b1909bd0d4166297.service"
 )
 PRODUCTION_TRANSIENT_SERVICE_SLICE = "app.slice"
 MATERIALIZATION_TERMINAL_SHA256_TEMPLATE = (
@@ -319,38 +327,40 @@ ATOMIC_CGROUP_BIRTH_PREFLIGHT_RECEIPT_INTERFACE_SCHEMA = (
 )
 PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN_INPUT = {
     "failed_predecessor_freeze_id": (
-        "296731d463b996bb4ff57133505babab9b5d7a3117d6fcdaa94b8ecb1e1050d0"
+        "4671ff59a5b141816c8cfe9a692a55354b799f077e6bf4efc8764ee991a34dc7"
     ),
     "failed_inner_launch_failure_id": (
-        "a08d14c74426ecc83a23d2851cced5f52f23fd8b99c11f9230846cb7df4ecd7a"
+        "d1fbf4b24625927cfa723fb33fe72ef633122c62ffc003ab73648f2fb7539f07"
     ),
     "failed_outer_service_failure_id": (
-        "975593a7652cd71314c203a27d87b7071e9b344d983dc2b72448e1627c45146c"
+        "83496c3cf1b3e01b81715e1529c182d4930fccccdb110d1656af737e07f110ec"
     ),
     "repair_scope": (
-        "WORKING_TREE_SOURCE_MODE_CONFORMANCE_AND_TYPED_DIAGNOSTIC"
+        "PRE_ATTEMPT_CGROUP_RUNTIME_PROPERTY_SNAPSHOTS_AND_PER_FIELD_"
+        "MISMATCH_DIAGNOSTIC"
     ),
     "purpose": "MEASUREMENT",
 }
 PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_TOKEN = (
-    "293c9c9fb1424204ccdba376bc48dd150d7d03139f7a263e6d5691abf61c20a3"
+    "5b7ccbbdc29cac0b1a43036f69909c941eab0127fda30de788f13cc54cee93e5"
 )
 PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_UNIT_NAME = (
     "acfqp-v180r12r4-verification-"
-    "293c9c9fb1424204ccdba376bc48dd150d7d03139f7a263e6d5691abf61c20a3.service"
+    "5b7ccbbdc29cac0b1a43036f69909c941eab0127fda30de788f13cc54cee93e5.service"
 )
 PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_TOKEN_INPUT = {
     "failed_predecessor_freeze_id": (
-        "296731d463b996bb4ff57133505babab9b5d7a3117d6fcdaa94b8ecb1e1050d0"
+        "4671ff59a5b141816c8cfe9a692a55354b799f077e6bf4efc8764ee991a34dc7"
     ),
     "failed_inner_launch_failure_id": (
-        "a08d14c74426ecc83a23d2851cced5f52f23fd8b99c11f9230846cb7df4ecd7a"
+        "d1fbf4b24625927cfa723fb33fe72ef633122c62ffc003ab73648f2fb7539f07"
     ),
     "failed_outer_service_failure_id": (
-        "975593a7652cd71314c203a27d87b7071e9b344d983dc2b72448e1627c45146c"
+        "83496c3cf1b3e01b81715e1529c182d4930fccccdb110d1656af737e07f110ec"
     ),
     "repair_scope": (
-        "WORKING_TREE_SOURCE_MODE_CONFORMANCE_AND_TYPED_DIAGNOSTIC"
+        "PRE_ATTEMPT_CGROUP_RUNTIME_PROPERTY_SNAPSHOTS_AND_PER_FIELD_"
+        "MISMATCH_DIAGNOSTIC"
     ),
     "purpose": "VERIFICATION",
 }
@@ -451,6 +461,15 @@ CGROUP_PARENT_FACT_FIELDS = frozenset(
         "self_membership",
     }
 )
+CGROUP_PARENT_FACT_FIELD_ORDER = (
+    "schema", "mount_point", "mount_fstype", "mount_device", "mount_inode",
+    "mount_options", "parent_path", "parent_device", "parent_inode",
+    "owner_uid", "owner_gid", "mode", "controllers", "subtree_control",
+    "cgroup_type", "cgroup_namespace_inode", "cgroup_events_present",
+    "memory_events_present", "pids_events_present", "cgroup_kill_present",
+    "cgroup_procs_present", "memory_peak_present", "pids_peak_present",
+    "self_membership",
+)
 RUNTIME_CAPABILITY_FACT_FIELDS = frozenset(
     {
         "schema", "machine_architecture", "single_threaded",
@@ -459,6 +478,31 @@ RUNTIME_CAPABILITY_FACT_FIELDS = frozenset(
         "execveat_probe_errno", "execveat_recognized", "pidfd_wait_present",
         "landlock_abi", "uid", "gid", "effective_capability_mask", "admitted",
     }
+)
+RUNTIME_CAPABILITY_FACT_FIELD_ORDER = (
+    "schema", "machine_architecture", "single_threaded", "clone3_probe_errno",
+    "clone3_syscall_recognized", "pidfd_send_signal_probe_errno",
+    "pidfd_send_signal_recognized", "execveat_probe_errno",
+    "execveat_recognized", "pidfd_wait_present", "landlock_abi", "uid", "gid",
+    "effective_capability_mask", "admitted",
+)
+PRE_ATTEMPT_HOST_CONFORMANCE_FIELDS = {
+    "schema", "phase", "campaign_attempt_id", "expected", "observed",
+    "cgroup_parent_compared_fields", "cgroup_parent_excluded_fields",
+    "runtime_capability_compared_fields", "mismatch_rows", "mismatch_count",
+    "cause", "full_host_conformance", "working_tree_source_conformance_joined",
+    "production_unit_ownership_t1_joined",
+    "campaign_event_or_counter_record_issued", "campaign_attempt_created",
+}
+SERVICE_CONTEXT_CAPTURE_SCHEMA = (
+    "acfqp.v180r12r4r5_service_context_capture.v1"
+)
+SERVICE_CONTEXT_CAPTURE_PURPOSE = (
+    "BENIGN_PRE_FREEZE_SERVICE_CONTEXT_OBSERVATION_NO_CAMPAIGN_ATTEMPT"
+)
+SERVICE_CONTEXT_CAPTURE_CANONICAL_BYTE_COUNT = 1_459
+SERVICE_CONTEXT_CAPTURE_CANONICAL_SHA256 = (
+    "53508b200ae3b0279bda887cec804a8dd06f7d800734fe3d760f1712ea866fd3"
 )
 
 EVIDENCE_INVENTORY_BUNDLE_SCHEMA = (
@@ -920,6 +964,13 @@ LAUNCH_RULE_DOCUMENT = {
     "os_receipt_relative_path": OS_RECEIPT_RELATIVE_PATH,
     "ledger_closure_relative_path": LEDGER_CLOSURE_RELATIVE_PATH,
     "measurement_failure_relative_path": MEASUREMENT_FAILURE_RELATIVE_PATH,
+    "pre_attempt_host_conformance_relative_path": (
+        PRE_ATTEMPT_HOST_CONFORMANCE_RELATIVE_PATH
+    ),
+    "pre_attempt_host_conformance_schema": PRE_ATTEMPT_HOST_CONFORMANCE_SCHEMA,
+    "pre_attempt_host_conformance_byte_cap": (
+        PRE_ATTEMPT_HOST_CONFORMANCE_BYTE_CAP
+    ),
     "verification_relative_path": VERIFICATION_RELATIVE_PATH,
     "verification_failure_relative_path": VERIFICATION_FAILURE_RELATIVE_PATH,
     "retained_replay_relative_path": RETAINED_REPLAY_RELATIVE_PATH,
@@ -1039,7 +1090,21 @@ LAUNCH_RULE_DOCUMENT = {
     "success_artifact_stable_exact_readback_required": True,
     "terminal_written_after_all_four_success_artifacts": True,
     "measurement_success_requires_exact_four_artifact_terminal_join": True,
+    "measurement_success_requires_pre_attempt_host_conformance_mode_0400": True,
+    "measurement_success_replays_pre_attempt_host_conformance_canonical_"
+    "semantics": True,
+    "pre_attempt_host_conformance_expected_facts_equal_frozen_context": True,
+    "pre_attempt_host_conformance_observed_facts_exact_except_self_membership": (
+        True
+    ),
+    "pre_attempt_host_conformance_self_membership_joins_measurement_t1": True,
+    "pre_attempt_host_conformance_mismatch_rows_empty_cause_null_full_true": True,
+    "measurement_failure_progress_preserves_pre_attempt_host_conformance": True,
     "verification_predecessor_rejoins_current_exact_four_artifact_bytes": True,
+    "verification_predecessor_rejoins_same_pre_attempt_host_conformance_fact": (
+        True
+    ),
+    "pre_attempt_host_conformance_is_campaign_event_or_counter_record": False,
     "attempt_lock_written_before_child_exec": True,
     "attempt_and_terminal_distinguish_launcher_overhead_from_authorized_child_"
     "measurement_or_verification": True,
@@ -1191,6 +1256,41 @@ def _canonical_json_bytes(value: object) -> bytes:
         separators=(",", ":"),
         ensure_ascii=False,
     ).encode("utf-8")
+
+
+def _require_source_bound_service_context_capture(
+    cgroup_parent_fact: dict[str, Any],
+    runtime_capability_fact: dict[str, Any],
+) -> None:
+    capture = {
+        "capture_purpose": SERVICE_CONTEXT_CAPTURE_PURPOSE,
+        "cgroup_parent_fact": cgroup_parent_fact,
+        "runtime_capability_fact": runtime_capability_fact,
+        "schema": SERVICE_CONTEXT_CAPTURE_SCHEMA,
+    }
+    raw = _canonical_json_bytes(capture) + b"\n"
+    membership = cgroup_parent_fact.get("self_membership")
+    parent_path = cgroup_parent_fact.get("parent_path")
+    mount_point = cgroup_parent_fact.get("mount_point")
+    if not (
+        len(raw) == SERVICE_CONTEXT_CAPTURE_CANONICAL_BYTE_COUNT
+        and hashlib.sha256(raw).hexdigest()
+        == SERVICE_CONTEXT_CAPTURE_CANONICAL_SHA256
+        and cgroup_parent_fact.get("controllers")
+        == ["cpu", "memory", "pids"]
+        and cgroup_parent_fact.get("subtree_control")
+        == ["cpu", "memory", "pids"]
+        and type(membership) is str
+        and type(parent_path) is str
+        and type(mount_point) is str
+        and PurePosixPath(membership.removeprefix("0::")).parent
+        == PurePosixPath(parent_path.removeprefix(mount_point))
+        and PurePosixPath(membership).name
+        == "acfqp-v180r12r4r5-freeze-capture-20260829.service"
+    ):
+        _fail(
+            "frozen facts do not exact-join the source-bound service capture"
+        )
 
 
 def _zero_preflight_receipt_interface() -> dict[str, Any]:
@@ -1882,6 +1982,7 @@ def _validated_frozen_authorization_context(value: object) -> dict[str, Any]:
         != (stat.S_IWUSR | stat.S_IXUSR)
     ):
         _fail("frozen authorization cgroup or runtime fact changed")
+    _require_source_bound_service_context_capture(cgroup, runtime)
     attempt_payload = {
         "schema": "acfqp.campaign_measurement_attempt.v180r12r4",
         "protocol_id": value["protocol_id"],
@@ -1900,6 +2001,97 @@ def _validated_frozen_authorization_context(value: object) -> dict[str, Any]:
     if value["campaign_attempt_id"] != expected_attempt:
         _fail("frozen campaign attempt six-authority identity changed")
     return value
+
+
+def _validate_pre_attempt_host_conformance(
+    repository_root: Path,
+    *,
+    frozen_context: Mapping[str, Any],
+    expected_source_membership: str | None = None,
+) -> tuple[bytes, dict[str, Any], dict[str, Any]]:
+    """Replay the canonical pre-ATTEMPT host fact before accepting success."""
+
+    path = repository_root / PRE_ATTEMPT_HOST_CONFORMANCE_RELATIVE_PATH
+    raw = _stable_read(
+        path,
+        byte_cap=PRE_ATTEMPT_HOST_CONFORMANCE_BYTE_CAP,
+        required_mode=0o400,
+    )
+    document = _parse_canonical_object(raw, "pre-attempt host conformance")
+    expected = document.get("expected")
+    observed = document.get("observed")
+    compared_parent_fields = [
+        field for field in CGROUP_PARENT_FACT_FIELD_ORDER
+        if field != "self_membership"
+    ]
+    if not (
+        set(document) == PRE_ATTEMPT_HOST_CONFORMANCE_FIELDS
+        and type(expected) is dict
+        and set(expected) == {"cgroup_parent_fact", "runtime_capability_fact"}
+        and type(observed) is dict
+        and set(observed) == {"cgroup_parent_fact", "runtime_capability_fact"}
+    ):
+        _fail("pre-attempt host conformance schema changed")
+    expected_parent = expected["cgroup_parent_fact"]
+    expected_runtime = expected["runtime_capability_fact"]
+    observed_parent = observed["cgroup_parent_fact"]
+    observed_runtime = observed["runtime_capability_fact"]
+    if not (
+        type(expected_parent) is dict
+        and set(expected_parent) == CGROUP_PARENT_FACT_FIELDS
+        and type(observed_parent) is dict
+        and set(observed_parent) == CGROUP_PARENT_FACT_FIELDS
+        and type(expected_runtime) is dict
+        and set(expected_runtime) == RUNTIME_CAPABILITY_FACT_FIELDS
+        and type(observed_runtime) is dict
+        and set(observed_runtime) == RUNTIME_CAPABILITY_FACT_FIELDS
+        and _canonical_json_bytes(expected_parent)
+        == _canonical_json_bytes(frozen_context.get("cgroup_parent_fact"))
+        and _canonical_json_bytes(expected_runtime)
+        == _canonical_json_bytes(frozen_context.get("runtime_capability_fact"))
+        and _canonical_json_bytes(
+            {field: observed_parent[field] for field in compared_parent_fields}
+        )
+        == _canonical_json_bytes(
+            {field: expected_parent[field] for field in compared_parent_fields}
+        )
+        and type(observed_parent.get("self_membership")) is str
+        and observed_parent["self_membership"].startswith("0::/")
+        and (
+            expected_source_membership is None
+            or observed_parent["self_membership"] == expected_source_membership
+        )
+        and _canonical_json_bytes(observed_runtime)
+        == _canonical_json_bytes(expected_runtime)
+        and document.get("schema") == PRE_ATTEMPT_HOST_CONFORMANCE_SCHEMA
+        and document.get("phase") == "PRE_CAMPAIGN_ATTEMPT_HOST_CONFORMANCE"
+        and document.get("campaign_attempt_id")
+        == frozen_context.get("campaign_attempt_id")
+        and document.get("cgroup_parent_compared_fields")
+        == compared_parent_fields
+        and document.get("cgroup_parent_excluded_fields") == ["self_membership"]
+        and document.get("runtime_capability_compared_fields")
+        == list(RUNTIME_CAPABILITY_FACT_FIELD_ORDER)
+        and document.get("mismatch_rows") == []
+        and type(document.get("mismatch_count")) is int
+        and document.get("mismatch_count") == 0
+        and document.get("cause") is None
+        and document.get("full_host_conformance") is True
+        and document.get("working_tree_source_conformance_joined") is False
+        and document.get("production_unit_ownership_t1_joined") is False
+        and document.get("campaign_event_or_counter_record_issued") is False
+        and document.get("campaign_attempt_created") is False
+    ):
+        _fail("pre-attempt host conformance success semantics changed")
+    fact = _fact_for_path(path, PRE_ATTEMPT_HOST_CONFORMANCE_BYTE_CAP)
+    if fact != {
+        "presence": "REGULAR_FILE",
+        "mode": 0o400,
+        "byte_count": len(raw),
+        "sha256": hashlib.sha256(raw).hexdigest(),
+    }:
+        _fail("pre-attempt host conformance raw publication fact changed")
+    return raw, document, fact
 
 
 def _load_materialization(
@@ -2357,6 +2549,9 @@ def _state_paths(repository_root: Path, target: str) -> dict[str, Path]:
         "os_receipt": repository_root / OS_RECEIPT_RELATIVE_PATH,
         "ledger_closure": repository_root / LEDGER_CLOSURE_RELATIVE_PATH,
         "measurement_failure": repository_root / MEASUREMENT_FAILURE_RELATIVE_PATH,
+        "host_conformance": (
+            repository_root / PRE_ATTEMPT_HOST_CONFORMANCE_RELATIVE_PATH
+        ),
         "verification": repository_root / VERIFICATION_RELATIVE_PATH,
         "verification_failure": repository_root / VERIFICATION_FAILURE_RELATIVE_PATH,
         "retained_replay": repository_root / RETAINED_REPLAY_RELATIVE_PATH,
@@ -2692,6 +2887,7 @@ def _progress_observations(paths: dict[str, Path]) -> dict[str, Any]:
         "execution_closure": EXECUTION_CLOSURE_BYTE_CAP,
         "os_receipt": OS_RECEIPT_BUNDLE_BYTE_CAP,
         "ledger_closure": LEDGER_CLOSURE_BYTE_CAP,
+        "host_conformance": PRE_ATTEMPT_HOST_CONFORMANCE_BYTE_CAP,
     }
     return {
         name: _fact_for_path(
@@ -3092,6 +3288,21 @@ def _require_successful_measurement_launch(
     frozen_context = _validated_frozen_authorization_context(
         manifest_document.get("frozen_authorization_context")
     )
+    measurement_placement_t1 = receipt.get("production_runtime_placement_t1")
+    if (
+        type(measurement_placement_t1) is not dict
+        or type(measurement_placement_t1.get("source_membership")) is not str
+    ):
+        _fail("measurement receipt production T1 source membership changed")
+    _host_raw, _host_document, expected_host_conformance = (
+        _validate_pre_attempt_host_conformance(
+            repository_root,
+            frozen_context=frozen_context,
+            expected_source_membership=measurement_placement_t1[
+                "source_membership"
+            ],
+        )
+    )
     expected_child_argv = [
         *ISOLATED_ARGV_PREFIX,
         str(repository_root / BOOTSTRAP_RELATIVE_PATH),
@@ -3224,6 +3435,7 @@ def _require_successful_measurement_launch(
         and progress["receipt"] == {"presence": "ABSENT"}
         and progress["launch_failure"] == {"presence": "ABSENT"}
         and progress["measurement_failure"] == {"presence": "ABSENT"}
+        and progress["host_conformance"] == expected_host_conformance
         and progress["verification"] == {"presence": "ABSENT"}
         and progress["verification_failure"] == {"presence": "ABSENT"}
         and progress["retained_replay"] == {"presence": "ABSENT"}
@@ -4502,6 +4714,8 @@ def _expected_success(
             and progress["os_receipt"]["presence"] == "REGULAR_FILE"
             and progress["ledger_closure"]["presence"] == "REGULAR_FILE"
             and progress["measurement_failure"]["presence"] == "ABSENT"
+            and progress["host_conformance"]["presence"] == "REGULAR_FILE"
+            and progress["host_conformance"]["mode"] == 0o400
             and progress["verification"]["presence"] == "ABSENT"
             and progress["verification_failure"]["presence"] == "ABSENT"
             and progress["retained_replay"]["presence"] == "ABSENT"
@@ -4518,6 +4732,8 @@ def _expected_success(
         and progress["os_receipt"]["presence"] == "REGULAR_FILE"
         and progress["ledger_closure"]["presence"] == "REGULAR_FILE"
         and progress["measurement_failure"]["presence"] == "ABSENT"
+        and progress["host_conformance"]["presence"] == "REGULAR_FILE"
+        and progress["host_conformance"]["mode"] == 0o400
         and progress["verification"]["presence"] == "REGULAR_FILE"
         and progress["retained_replay"]["presence"] == "REGULAR_FILE"
         and progress["verification_failure"]["presence"] == "ABSENT"
@@ -5005,6 +5221,8 @@ def _require_exact_unit_absence_observation(
 def _inner_launch_join_observation(
     repository_root: Path,
     target: str,
+    *,
+    materialization_terminal_id: str | None = None,
 ) -> dict[str, Any]:
     paths = _service_state_paths(repository_root, target)
     attempt_fact = _fact_for_path(paths["inner_attempt"], LAUNCH_ARTIFACT_BYTE_CAP)
@@ -5031,11 +5249,16 @@ def _inner_launch_join_observation(
             )
             terminal_id = terminal["launch_receipt_id"]
             terminal_kind = "RECEIPT"
-            exact_join = (
+            base_join = (
                 terminal["launch_attempt_id"] == attempt_id
                 and terminal["target"] == target
                 and terminal["success"] is True
             )
+            if base_join and materialization_terminal_id is not None:
+                _require_successful_measurement_launch(
+                    repository_root, materialization_terminal_id
+                )
+                exact_join = True
         elif (
             failure_fact.get("presence") == "REGULAR_FILE"
             and receipt_fact.get("presence") == "ABSENT"
@@ -5313,7 +5536,13 @@ def dispatch_production_service_v180r12r4(
             hard_deadline_ns=deadlines["hard_deadline_ns"],
             process_runner=runner,
         )
-        inner_join = _inner_launch_join_observation(repository_root, target)
+        inner_join = _inner_launch_join_observation(
+            repository_root,
+            target,
+            materialization_terminal_id=materialization[
+                "materialization_terminal_id"
+            ],
+        )
         success = (
             return_code == 0
             and timed_out is False
@@ -5968,7 +6197,11 @@ def _require_successful_measurement_service_launch_v180r12r4(
         client_environment=_systemd_client_environment_v180r12r4(),
         require_absent=True,
     )
-    current_join = _inner_launch_join_observation(repository_root, "measurement")
+    current_join = _inner_launch_join_observation(
+        repository_root,
+        "measurement",
+        materialization_terminal_id=attempt["materialization_terminal_id"],
+    )
     receipt_join = {
         name: receipt[name] for name in SERVICE_LAUNCH_INNER_JOIN_FIELDS
     }
@@ -6069,6 +6302,9 @@ __all__ = (
     "LEDGER_CLOSURE_RELATIVE_PATH",
     "OS_RECEIPT_BUNDLE_BYTE_CAP",
     "OS_RECEIPT_RELATIVE_PATH",
+    "PRE_ATTEMPT_HOST_CONFORMANCE_BYTE_CAP",
+    "PRE_ATTEMPT_HOST_CONFORMANCE_RELATIVE_PATH",
+    "PRE_ATTEMPT_HOST_CONFORMANCE_SCHEMA",
     "SUCCESS_ARTIFACT_ORDER",
     "SUCCESS_ARTIFACT_ROWS",
     "SUCCESS_DURABLE_WRITE_ORDER",

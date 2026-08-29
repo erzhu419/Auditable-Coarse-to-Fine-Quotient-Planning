@@ -447,49 +447,12 @@ def _frozen_authorization_context() -> dict[str, object]:
         "logical_occurrence_id": values["logical_occurrence_id"],
         "execution_nonce": values["execution_nonce"],
         "campaign_attempt_id": attempt_id,
-        "cgroup_parent_fact": {
-            "schema": "acfqp.v180r12r4_cgroup_parent_fact.v1",
-            "mount_point": "/sys/fs/cgroup",
-            "mount_fstype": "cgroup2",
-            "mount_device": 25,
-            "mount_inode": 1,
-            "mount_options": ["rw"],
-            "parent_path": "/sys/fs/cgroup/delegated",
-            "parent_device": 25,
-            "parent_inode": 2,
-            "owner_uid": 1000,
-            "owner_gid": 1000,
-            "mode": 0o755,
-            "controllers": ["memory", "pids"],
-            "subtree_control": ["memory", "pids"],
-            "cgroup_type": "domain",
-            "cgroup_namespace_inode": 3,
-            "cgroup_events_present": True,
-            "memory_events_present": True,
-            "pids_events_present": True,
-            "cgroup_kill_present": True,
-            "cgroup_procs_present": True,
-            "memory_peak_present": True,
-            "pids_peak_present": True,
-            "self_membership": "0::/",
-        },
-        "runtime_capability_fact": {
-            "schema": "acfqp.v180r12r4_runtime_capability_fact.v1",
-            "machine_architecture": "x86_64",
-            "single_threaded": True,
-            "clone3_probe_errno": 22,
-            "clone3_syscall_recognized": True,
-            "pidfd_send_signal_probe_errno": 9,
-            "pidfd_send_signal_recognized": True,
-            "execveat_probe_errno": 9,
-            "execveat_recognized": True,
-            "pidfd_wait_present": True,
-            "landlock_abi": 7,
-            "uid": 1000,
-            "gid": 1000,
-            "effective_capability_mask": 0,
-            "admitted": True,
-        },
+        "cgroup_parent_fact": copy.deepcopy(
+            protocol.SERVICE_CONTEXT_CAPTURE_CGROUP_PARENT_FACT
+        ),
+        "runtime_capability_fact": copy.deepcopy(
+            protocol.SERVICE_CONTEXT_CAPTURE_RUNTIME_CAPABILITY_FACT
+        ),
     }
 
 
@@ -633,7 +596,7 @@ def test_public_schemas_paths_and_phase_aware_rule_identities() -> None:
         assert all(len(value) == 64 for value in rules)
     else:
         assert rules == (ZERO_ID, ZERO_ID)
-    assert len(materializer.SOURCE_CLOSURE_REQUIRED_ROOTS) == 24
+    assert len(materializer.SOURCE_CLOSURE_REQUIRED_ROOTS) == 25
     assert materializer.SOURCE_CLOSURE_REQUIRED_ROOTS == (
         protocol.SOURCE_CLOSURE_REQUIRED_ROOTS
     )
@@ -650,6 +613,11 @@ def test_public_schemas_paths_and_phase_aware_rule_identities() -> None:
     assert (
         "src/acfqp/construction_k7_campaign_measurement_"
         "failure_freeze_v180r12r4r4.py"
+        in materializer.SOURCE_CLOSURE_REQUIRED_ROOTS
+    )
+    assert (
+        "src/acfqp/construction_k7_campaign_measurement_"
+        "failure_freeze_v180r12r4r5.py"
         in materializer.SOURCE_CLOSURE_REQUIRED_ROOTS
     )
     assert materializer.EXPECTED_SOURCE_CLOSURE_RULE_ID == (

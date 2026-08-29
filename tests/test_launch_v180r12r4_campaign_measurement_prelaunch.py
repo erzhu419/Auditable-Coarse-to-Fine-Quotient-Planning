@@ -114,6 +114,63 @@ def _write_measurement_success(repository: Path) -> None:
     for key, raw in artifact_rows:
         _write_0400(repository / relative_by_key[key], raw)
     _write_0400(repository / launcher.TERMINAL_RELATIVE_PATH, terminal_raw)
+    _write_pre_attempt_host_conformance(repository)
+
+
+def _write_pre_attempt_host_conformance(
+    repository: Path,
+    *,
+    observed_parent_updates: dict[str, object] | None = None,
+) -> bytes:
+    manifest = json.loads(
+        (repository / launcher.MANIFEST_RELATIVE_PATH).read_bytes()
+    )
+    frozen = manifest["frozen_authorization_context"]
+    expected_parent = frozen["cgroup_parent_fact"]
+    expected_runtime = frozen["runtime_capability_fact"]
+    observed_parent = dict(expected_parent)
+    observed_parent["self_membership"] = (
+        "0::/app.slice/"
+        + launcher.PRODUCTION_TRANSIENT_SERVICE_ROWS["measurement"][2]
+    )
+    if observed_parent_updates is not None:
+        observed_parent.update(observed_parent_updates)
+    document = {
+        "schema": launcher.PRE_ATTEMPT_HOST_CONFORMANCE_SCHEMA,
+        "phase": "PRE_CAMPAIGN_ATTEMPT_HOST_CONFORMANCE",
+        "campaign_attempt_id": frozen["campaign_attempt_id"],
+        "expected": {
+            "cgroup_parent_fact": expected_parent,
+            "runtime_capability_fact": expected_runtime,
+        },
+        "observed": {
+            "cgroup_parent_fact": observed_parent,
+            "runtime_capability_fact": expected_runtime,
+        },
+        "cgroup_parent_compared_fields": [
+            field
+            for field in launcher.CGROUP_PARENT_FACT_FIELD_ORDER
+            if field != "self_membership"
+        ],
+        "cgroup_parent_excluded_fields": ["self_membership"],
+        "runtime_capability_compared_fields": list(
+            launcher.RUNTIME_CAPABILITY_FACT_FIELD_ORDER
+        ),
+        "mismatch_rows": [],
+        "mismatch_count": 0,
+        "cause": None,
+        "full_host_conformance": True,
+        "working_tree_source_conformance_joined": False,
+        "production_unit_ownership_t1_joined": False,
+        "campaign_event_or_counter_record_issued": False,
+        "campaign_attempt_created": False,
+    }
+    raw = _canonical(document)
+    _write_0400(
+        repository / launcher.PRE_ATTEMPT_HOST_CONFORMANCE_RELATIVE_PATH,
+        raw,
+    )
+    return raw
 
 
 def _stream(raw: bytes) -> dict[str, object]:
@@ -152,6 +209,16 @@ def _write_inner_launch_receipt(
     paths = launcher._state_paths(repository, target)
     _write_0400(paths["attempt"], attempt_raw)
     frozen = json.loads(manifest_raw)["frozen_authorization_context"]
+    placement_t1 = None
+    if target == "measurement":
+        _write_measurement_success(repository)
+        descriptors, placement_t1 = (
+            launcher._prepare_and_observe_production_runtime_placement_t1(
+                target="measurement", frozen_context=frozen
+            )
+        )
+        for descriptor in descriptors:
+            os.close(descriptor)
     deadlines = launcher._freeze_launch_deadlines_v180r12r4()
     cgroup_rows = (
         _successful_measurement_cgroup_observations(
@@ -176,7 +243,7 @@ def _write_inner_launch_receipt(
         launch_deadlines=deadlines,
         measurement_cgroup_cleanup_observations=cgroup_rows,
         production_systemd_service_invocation=invocation,
-        production_runtime_placement_t1=None,
+        production_runtime_placement_t1=placement_t1,
     )
     _write_0400(paths["receipt"], receipt_raw)
     return attempt, receipt
@@ -308,7 +375,9 @@ def _successful_measurement_cgroup_observations(
     ]
 
 
-def _frozen_authorization_context(repository: Path) -> dict[str, object]:
+def _frozen_authorization_context(
+    repository: Path, monkeypatch: pytest.MonkeyPatch
+) -> dict[str, object]:
     mount = repository / "fake-cgroup2"
     parent = mount / "app.slice"
     parent.mkdir(parents=True)
@@ -334,7 +403,7 @@ def _frozen_authorization_context(repository: Path) -> dict[str, object]:
         b"acfqp:construction-k7-campaign-measurement-attempt:v180r12r4\x00"
         + _canonical(attempt_payload)
     ).hexdigest()
-    return {
+    context = {
         "schema": launcher.FROZEN_AUTHORIZATION_CONTEXT_SCHEMA,
         "protocol_id": values["protocol_id"],
         "protocol_byte_count": 101,
@@ -364,8 +433,8 @@ def _frozen_authorization_context(repository: Path) -> dict[str, object]:
             "owner_uid": parent_stat.st_uid,
             "owner_gid": parent_stat.st_gid,
             "mode": stat.S_IMODE(parent_stat.st_mode),
-            "controllers": ["memory", "pids"],
-            "subtree_control": ["memory", "pids"],
+            "controllers": ["cpu", "memory", "pids"],
+            "subtree_control": ["cpu", "memory", "pids"],
             "cgroup_type": "domain",
             "cgroup_namespace_inode": 3,
             "cgroup_events_present": True,
@@ -375,7 +444,10 @@ def _frozen_authorization_context(repository: Path) -> dict[str, object]:
             "cgroup_procs_present": True,
             "memory_peak_present": True,
             "pids_peak_present": True,
-            "self_membership": "0::/",
+            "self_membership": (
+                "0::/app.slice/"
+                "acfqp-v180r12r4r5-freeze-capture-20260829.service"
+            ),
         },
         "runtime_capability_fact": {
             "schema": "acfqp.v180r12r4_runtime_capability_fact.v1",
@@ -395,6 +467,25 @@ def _frozen_authorization_context(repository: Path) -> dict[str, object]:
             "admitted": True,
         },
     }
+    capture_raw = _canonical(
+        {
+            "capture_purpose": launcher.SERVICE_CONTEXT_CAPTURE_PURPOSE,
+            "cgroup_parent_fact": context["cgroup_parent_fact"],
+            "runtime_capability_fact": context["runtime_capability_fact"],
+            "schema": launcher.SERVICE_CONTEXT_CAPTURE_SCHEMA,
+        }
+    ) + b"\n"
+    monkeypatch.setattr(
+        launcher,
+        "SERVICE_CONTEXT_CAPTURE_CANONICAL_BYTE_COUNT",
+        len(capture_raw),
+    )
+    monkeypatch.setattr(
+        launcher,
+        "SERVICE_CONTEXT_CAPTURE_CANONICAL_SHA256",
+        hashlib.sha256(capture_raw).hexdigest(),
+    )
+    return context
 
 
 def _materialized_repository(
@@ -422,7 +513,9 @@ def _materialized_repository(
     monkeypatch.setattr(launcher, "LAUNCH_RULE_ID", launch_rule_id)
     repository = tmp_path / "repository"
     repository.mkdir()
-    frozen_authorization_context = _frozen_authorization_context(repository)
+    frozen_authorization_context = _frozen_authorization_context(
+        repository, monkeypatch
+    )
 
     def fake_placement_t1(
         *, target: str, frozen_context: dict[str, object]
@@ -1024,6 +1117,31 @@ def test_measurement_attempt_precedes_child_and_success_receipt(
         )
 
 
+def test_host_conformance_rejects_bool_for_frozen_integer_field(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    repository, _digest = _materialized_repository(tmp_path, monkeypatch)
+    frozen = json.loads(
+        (repository / launcher.MANIFEST_RELATIVE_PATH).read_bytes()
+    )["frozen_authorization_context"]
+    _write_pre_attempt_host_conformance(
+        repository,
+        observed_parent_updates={"mount_inode": True},
+    )
+    with pytest.raises(
+        launcher.V180r12r4PrelaunchLaunchError,
+        match="success semantics changed",
+    ):
+        launcher._validate_pre_attempt_host_conformance(
+            repository,
+            frozen_context=frozen,
+            expected_source_membership=(
+                "0::/app.slice/"
+                + launcher.PRODUCTION_TRANSIENT_SERVICE_ROWS["measurement"][2]
+            ),
+        )
+
+
 @pytest.mark.parametrize(
     "field",
     (
@@ -1179,6 +1297,16 @@ def test_verification_requires_successful_measurement_and_writes_own_receipt(
     prior_progress = launcher._progress_observations(
         launcher._state_paths(repository, "measurement")
     )
+    frozen_context = json.loads(
+        (repository / launcher.MANIFEST_RELATIVE_PATH).read_bytes()
+    )["frozen_authorization_context"]
+    placement_descriptors, measurement_placement_t1 = (
+        launcher._prepare_and_observe_production_runtime_placement_t1(
+            target="measurement", frozen_context=frozen_context
+        )
+    )
+    for descriptor in placement_descriptors:
+        os.close(descriptor)
     empty = launcher._StreamObservation().document()
     prior_receipt, prior_receipt_raw = launcher._terminal_document(
         schema=launcher.LAUNCH_RECEIPT_SCHEMA,
@@ -1202,7 +1330,7 @@ def test_verification_requires_successful_measurement_and_writes_own_receipt(
                 repository, digest, "measurement"
             )
         ),
-        production_runtime_placement_t1=None,
+        production_runtime_placement_t1=measurement_placement_t1,
     )
     assert prior_receipt["success"] is True
     _write_0400(prelaunch / "MEASUREMENT_LAUNCH_RECEIPT.json", prior_receipt_raw)
@@ -2041,7 +2169,7 @@ def test_t1_producer_selects_exact_direct_service_and_opens_fd252(
 ) -> None:
     repository = (tmp_path / ("t1-" + target)).absolute()
     repository.mkdir()
-    frozen = _frozen_authorization_context(repository)
+    frozen = _frozen_authorization_context(repository, monkeypatch)
     cgroup = frozen["cgroup_parent_fact"]
     parent = Path(cgroup["parent_path"])
     unit_name = launcher.PRODUCTION_TRANSIENT_SERVICE_ROWS[target][2]
@@ -2898,7 +3026,6 @@ def test_verification_outer_dispatch_requires_measurement_outer_receipt(
     )
     inner_receipt_path = repository / launcher.MEASUREMENT_RECEIPT_RELATIVE_PATH
     inner_receipt_path.unlink()
-    _write_measurement_success(repository)
     manifest = json.loads(
         (repository / launcher.MANIFEST_RELATIVE_PATH).read_bytes()
     )
@@ -2925,7 +3052,9 @@ def test_verification_outer_dispatch_requires_measurement_outer_receipt(
             )
         ),
         production_systemd_service_invocation=invocation,
-        production_runtime_placement_t1=None,
+        production_runtime_placement_t1=(
+            _early_receipt["production_runtime_placement_t1"]
+        ),
     )
     assert inner_receipt["success"] is True
     _write_0400(inner_receipt_path, inner_receipt_raw)

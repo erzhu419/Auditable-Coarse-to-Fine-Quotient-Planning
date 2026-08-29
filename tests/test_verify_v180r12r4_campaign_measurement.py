@@ -425,6 +425,89 @@ def _success_cgroup_rows(campaign_attempt_id: str) -> list[dict[str, object]]:
     ]
 
 
+def _pre_attempt_host_conformance_raw(
+    *,
+    frozen_context: Mapping[str, object],
+    source_membership: str,
+) -> bytes:
+    expected_parent = copy.deepcopy(frozen_context["cgroup_parent_fact"])
+    expected_runtime = copy.deepcopy(frozen_context["runtime_capability_fact"])
+    observed_parent = copy.deepcopy(expected_parent)
+    observed_parent["self_membership"] = source_membership
+    return canonical_json_bytes(
+        {
+            "schema": runner.PRE_ATTEMPT_HOST_CONFORMANCE_SCHEMA,
+            "phase": "PRE_CAMPAIGN_ATTEMPT_HOST_CONFORMANCE",
+            "campaign_attempt_id": frozen_context["campaign_attempt_id"],
+            "expected": {
+                "cgroup_parent_fact": expected_parent,
+                "runtime_capability_fact": expected_runtime,
+            },
+            "observed": {
+                "cgroup_parent_fact": observed_parent,
+                "runtime_capability_fact": copy.deepcopy(expected_runtime),
+            },
+            "cgroup_parent_compared_fields": [
+                field for field in runner._CGROUP_PARENT_FACT_FIELD_ORDER
+                if field != "self_membership"
+            ],
+            "cgroup_parent_excluded_fields": ["self_membership"],
+            "runtime_capability_compared_fields": list(
+                runner._RUNTIME_CAPABILITY_FACT_FIELD_ORDER
+            ),
+            "mismatch_rows": [],
+            "mismatch_count": 0,
+            "cause": None,
+            "full_host_conformance": True,
+            "working_tree_source_conformance_joined": False,
+            "production_unit_ownership_t1_joined": False,
+            "campaign_event_or_counter_record_issued": False,
+            "campaign_attempt_created": False,
+        }
+    )
+
+
+def test_pre_attempt_host_conformance_rejects_bool_for_runtime_integer(
+    tmp_path: Path,
+) -> None:
+    context = {
+        "campaign_attempt_id": "a" * 64,
+        "cgroup_parent_fact": copy.deepcopy(
+            protocol.SERVICE_CONTEXT_CAPTURE_CGROUP_PARENT_FACT
+        ),
+        "runtime_capability_fact": copy.deepcopy(
+            protocol.SERVICE_CONTEXT_CAPTURE_RUNTIME_CAPABILITY_FACT
+        ),
+    }
+    raw = _pre_attempt_host_conformance_raw(
+        frozen_context=context,
+        source_membership="0::/app.slice/formal-measurement.service",
+    )
+    document = loads_canonical_json(raw)
+    document["expected"]["runtime_capability_fact"][
+        "effective_capability_mask"
+    ] = False
+    document["observed"]["runtime_capability_fact"][
+        "effective_capability_mask"
+    ] = False
+    _write(
+        tmp_path / runner.PRE_ATTEMPT_HOST_CONFORMANCE_RELATIVE_PATH,
+        canonical_json_bytes(document),
+    )
+    store = runner.VerificationDurableStoreV180R12R4(tmp_path)
+    try:
+        with pytest.raises(
+            runner.V180R12R4VerificationRunnerError,
+            match="success authority changed",
+        ):
+            runner._validate_pre_attempt_host_conformance(
+                store,
+                frozen_context=_deep_freeze(context),
+            )
+    finally:
+        store.close()
+
+
 def _source_manifest(
     repository: Path,
     *,
@@ -569,49 +652,12 @@ def _source_manifest(
         "logical_occurrence_id": subject["logical_occurrence_id"],
         "execution_nonce": subject["execution_nonce"],
         "campaign_attempt_id": success_bundle["terminal"].document["attempt_id"],
-        "cgroup_parent_fact": {
-            "schema": "acfqp.v180r12r4_cgroup_parent_fact.v1",
-            "mount_point": "/sys/fs/cgroup",
-            "mount_fstype": "cgroup2",
-            "mount_device": 25,
-            "mount_inode": 1,
-            "mount_options": ["rw"],
-            "parent_path": "/sys/fs/cgroup/delegated",
-            "parent_device": 25,
-            "parent_inode": 2,
-            "owner_uid": os.getuid(),
-            "owner_gid": os.getgid(),
-            "mode": 0o700,
-            "controllers": ["memory", "pids"],
-            "subtree_control": ["memory", "pids"],
-            "cgroup_type": "domain",
-            "cgroup_namespace_inode": 3,
-            "cgroup_events_present": True,
-            "memory_events_present": True,
-            "pids_events_present": True,
-            "cgroup_kill_present": True,
-            "cgroup_procs_present": True,
-            "memory_peak_present": True,
-            "pids_peak_present": True,
-            "self_membership": "0::/",
-        },
-        "runtime_capability_fact": {
-            "schema": "acfqp.v180r12r4_runtime_capability_fact.v1",
-            "machine_architecture": "x86_64",
-            "single_threaded": True,
-            "clone3_probe_errno": 22,
-            "clone3_syscall_recognized": True,
-            "pidfd_send_signal_probe_errno": 9,
-            "pidfd_send_signal_recognized": True,
-            "execveat_probe_errno": 9,
-            "execveat_recognized": True,
-            "pidfd_wait_present": True,
-            "landlock_abi": 7,
-            "uid": os.getuid(),
-            "gid": os.getgid(),
-            "effective_capability_mask": 0,
-            "admitted": True,
-        },
+        "cgroup_parent_fact": copy.deepcopy(
+            protocol.SERVICE_CONTEXT_CAPTURE_CGROUP_PARENT_FACT
+        ),
+        "runtime_capability_fact": copy.deepcopy(
+            protocol.SERVICE_CONTEXT_CAPTURE_RUNTIME_CAPABILITY_FACT
+        ),
     }
     assert tuple(frozen_context) == runner.FROZEN_AUTHORIZATION_CONTEXT_FIELDS
     manifest = {
@@ -917,6 +963,24 @@ def _repository(
     for key, relative in artifact_paths.items():
         _write(repository / relative, artifacts[key])
     _write(repository / runner.TERMINAL_RELATIVE_PATH, terminal.canonical_bytes)
+    topology = next(
+        row
+        for row in terminal.document["campaign_measurement_ledger"][
+            "evidence_documents"
+        ]
+        if row.get("schema")
+        == "acfqp.campaign_cgroup_topology_receipt.v180r12r4"
+    )
+    host_conformance_raw = _pre_attempt_host_conformance_raw(
+        frozen_context=manifest["frozen_authorization_context"],
+        source_membership=topology["production_runtime_placement_t1"][
+            "source_membership"
+        ],
+    )
+    _write(
+        repository / runner.PRE_ATTEMPT_HOST_CONFORMANCE_RELATIVE_PATH,
+        host_conformance_raw,
+    )
     store = runner.VerificationDurableStoreV180R12R4(repository)
     try:
         progress = {
@@ -943,6 +1007,10 @@ def _repository(
                 runner.LEDGER_CLOSURE_BYTE_CAP,
             ),
             "measurement_failure": {"presence": "ABSENT"},
+            "host_conformance": store.observe(
+                runner.PRE_ATTEMPT_HOST_CONFORMANCE_RELATIVE_PATH,
+                runner.PRE_ATTEMPT_HOST_CONFORMANCE_BYTE_CAP,
+            ),
             "verification": {"presence": "ABSENT"},
             "verification_failure": {"presence": "ABSENT"},
             "retained_replay": {"presence": "ABSENT"},
@@ -1053,6 +1121,7 @@ def _repository(
                     measurement_service_receipt_raw
                 ),
                 "measurement_service_receipt_raw": measurement_service_receipt_raw,
+                "host_conformance_raw": host_conformance_raw,
             },
         }
     )
@@ -1071,6 +1140,7 @@ def _fake_result(success_bundle: dict[str, object]) -> SimpleNamespace:
     measurement_service_receipt_raw = success_bundle[
         "measurement_service_receipt_raw"
     ]
+    host_conformance_raw = success_bundle["host_conformance_raw"]
     payload = {
         field_name: None
         for field_name in runner.independent_verifier.VERIFICATION_FIELDS
@@ -1124,6 +1194,22 @@ def _fake_result(success_bundle: dict[str, object]) -> SimpleNamespace:
         "measurement_launch_receipt_sha256": hashlib.sha256(
             measurement_receipt_raw
         ).hexdigest(),
+        "pre_attempt_host_conformance_relative_path": (
+            runner.PRE_ATTEMPT_HOST_CONFORMANCE_RELATIVE_PATH
+        ),
+        "pre_attempt_host_conformance_byte_count": len(host_conformance_raw),
+        "pre_attempt_host_conformance_sha256": hashlib.sha256(
+            host_conformance_raw
+        ).hexdigest(),
+        "pre_attempt_host_conformance_mode": 0o400,
+        "pre_attempt_host_conformance_expected_frozen_context_joined": True,
+        "pre_attempt_host_conformance_observed_exact_except_self_membership": (
+            True
+        ),
+        "pre_attempt_host_conformance_independently_replayed": True,
+        "pre_attempt_host_conformance_is_campaign_event_or_counter_record": (
+            False
+        ),
         "runtime_role_exit_origin_guard_status": (
             "PASS_TRANSITIVE_FROZEN_BOOTSTRAP_AND_MEASUREMENT_LAUNCH_RECEIPT"
         ),
@@ -1247,11 +1333,9 @@ def _verified_external_context(repository: Path) -> types.MappingProxyType:
         "monotonic_origin_ns": verification_origin_ns,
         "hard_deadline_ns": verification_hard_deadline_ns,
         "campaign_deadline_ns": verification_campaign_deadline_ns,
-        "cgroup_parent_fact": types.MappingProxyType(
-            dict(frozen["cgroup_parent_fact"])
-        ),
-        "runtime_capability_fact": types.MappingProxyType(
-            dict(frozen["runtime_capability_fact"])
+        "cgroup_parent_fact": _deep_freeze(frozen["cgroup_parent_fact"]),
+        "runtime_capability_fact": _deep_freeze(
+            frozen["runtime_capability_fact"]
         ),
         "production_systemd_service_invocation": _deep_freeze(
             current["production_systemd_service_invocation"]

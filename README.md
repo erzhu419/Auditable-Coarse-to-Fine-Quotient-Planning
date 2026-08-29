@@ -54,6 +54,28 @@ authoritative exact coverage or a preregistered trusted observation/action catal
 → jointly search local value/risk choices, rebuild, or use charged fallback
 ```
 
+## V180r12r4 ordinal11 pre-campaign successor
+
+The current V180r12r4 successor consumes the ordinal10 failure freeze
+`4671ff59a5b141816c8cfe9a692a55354b799f077e6bf4efc8764ee991a34dc7`
+as its immediate predecessor and retains ordinal9 as historical lineage.  Its
+formal source boundary has 25 sorted, unique, regular `0644` single-link roots,
+including the new ordinal10 failure-freeze module.  The source-closure,
+materialization and launch rule IDs are respectively
+`7f0d63c0143c72d3a41f9a4ad25b9fc29f6952ae05a1b4797cded68728d27090`,
+`0dfee347b3b36527bcc06b81228545043b3aeff8c0163738001653b27e363b91`
+and `77943eb671fdc3f1d90c977b7b6405f7127284b223ced1491ba69fda8e91e28a`.
+
+Protocol freeze and prelaunch construction exact-join one source-bound
+`app.slice` service-context capture with `cpu`, `memory` and `pids` enabled.
+Before a campaign ATTEMPT, the measurement runner publishes a separate `0400`
+host-conformance artifact containing the expected and observed parent/runtime
+facts, per-field mismatches and typed cause.  The launcher and producer-free
+verifier independently replay its canonical semantics and join its observed
+membership to the formal measurement T1 receipt; it is not a campaign event or
+CounterRecord.  The twelve wrapper self-reference literals remain zero at
+`C_pre`; no ordinal11 campaign attempt has been created by this construction.
+
 ## Current fresh-campaign construction (V0-075, target locked)
 
 V0-075 is a new authority family, not a third V0-072 attempt. Its construction

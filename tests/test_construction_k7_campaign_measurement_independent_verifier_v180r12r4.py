@@ -62,6 +62,49 @@ def _success_cgroup_rows(campaign_attempt_id: str) -> list[dict]:
     ]
 
 
+def _pre_attempt_host_conformance_raw(
+    *, campaign_attempt_id: str, source_membership: str
+) -> bytes:
+    expected_parent = copy.deepcopy(
+        protocol.SERVICE_CONTEXT_CAPTURE_CGROUP_PARENT_FACT
+    )
+    expected_runtime = copy.deepcopy(
+        protocol.SERVICE_CONTEXT_CAPTURE_RUNTIME_CAPABILITY_FACT
+    )
+    observed_parent = copy.deepcopy(expected_parent)
+    observed_parent["self_membership"] = source_membership
+    document = {
+        "schema": verifier.PRE_ATTEMPT_HOST_CONFORMANCE_SCHEMA,
+        "phase": "PRE_CAMPAIGN_ATTEMPT_HOST_CONFORMANCE",
+        "campaign_attempt_id": campaign_attempt_id,
+        "expected": {
+            "cgroup_parent_fact": expected_parent,
+            "runtime_capability_fact": expected_runtime,
+        },
+        "observed": {
+            "cgroup_parent_fact": observed_parent,
+            "runtime_capability_fact": copy.deepcopy(expected_runtime),
+        },
+        "cgroup_parent_compared_fields": [
+            field for field in verifier.CGROUP_PARENT_FACT_FIELDS
+            if field != "self_membership"
+        ],
+        "cgroup_parent_excluded_fields": ["self_membership"],
+        "runtime_capability_compared_fields": list(
+            verifier.RUNTIME_CAPABILITY_FACT_FIELDS
+        ),
+        "mismatch_rows": [],
+        "mismatch_count": 0,
+        "cause": None,
+        "full_host_conformance": True,
+        "working_tree_source_conformance_joined": False,
+        "production_unit_ownership_t1_joined": False,
+        "campaign_event_or_counter_record_issued": False,
+        "campaign_attempt_created": False,
+    }
+    return canonical_json_bytes(document)
+
+
 def _measurement_launch_attempt_document() -> dict:
     attempt = copy.deepcopy(ledger_fixture._measurement_launch_attempt_document())
     # The outer ``dispatch`` command enters the transient service; the command
@@ -84,7 +127,7 @@ def _measurement_launch_attempt_document() -> dict:
 
 
 def _measurement_launch_documents(
-    terminal, *, attempt: dict | None = None
+    terminal, *, host_conformance_raw: bytes, attempt: dict | None = None
 ) -> tuple[bytes, bytes]:
     attempt = (
         _measurement_launch_attempt_document()
@@ -139,6 +182,7 @@ def _measurement_launch_documents(
             "os_receipt": _regular_observation(artifacts["os_receipt"]),
             "ledger_closure": _regular_observation(artifacts["ledger_closure"]),
             "measurement_failure": {"presence": "ABSENT"},
+            "host_conformance": _regular_observation(host_conformance_raw),
             "verification": {"presence": "ABSENT"},
             "verification_failure": {"presence": "ABSENT"},
             "retained_replay": {"presence": "ABSENT"},
@@ -315,8 +359,26 @@ def _bundle():
     terminal = finalizer_fixture._finalize(inputs)
     fixture = inputs["fixture"]
     state = fixture["state"]
+    topology = next(
+        row
+        for row in terminal.document["campaign_measurement_ledger"][
+            "evidence_documents"
+        ]
+        if row.get("schema")
+        == "acfqp.campaign_cgroup_topology_receipt.v180r12r4"
+    )
+    host_conformance_raw = _pre_attempt_host_conformance_raw(
+        campaign_attempt_id=state.attempt_id,
+        source_membership=topology["production_runtime_placement_t1"][
+            "source_membership"
+        ],
+    )
     measurement_attempt_raw, measurement_receipt_raw = (
-        _measurement_launch_documents(terminal, attempt=measurement_attempt)
+        _measurement_launch_documents(
+            terminal,
+            host_conformance_raw=host_conformance_raw,
+            attempt=measurement_attempt,
+        )
     )
     measurement_service_attempt_raw, measurement_service_receipt_raw = (
         _measurement_service_launch_documents(
@@ -338,6 +400,13 @@ def _bundle():
         ),
         "measurement_launch_attempt_bytes": measurement_attempt_raw,
         "measurement_launch_receipt_bytes": measurement_receipt_raw,
+        "pre_attempt_host_conformance_bytes": host_conformance_raw,
+        "expected_cgroup_parent_fact": copy.deepcopy(
+            protocol.SERVICE_CONTEXT_CAPTURE_CGROUP_PARENT_FACT
+        ),
+        "expected_runtime_capability_fact": copy.deepcopy(
+            protocol.SERVICE_CONTEXT_CAPTURE_RUNTIME_CAPABILITY_FACT
+        ),
         "expected_protocol_id": state.protocol_id,
         "expected_authorization_id": state.authorization_id,
         "expected_authorization_evidence_id": (
@@ -417,6 +486,44 @@ def _verify(raw: bytes, arguments: dict):
     )
 
 
+def test_host_membership_must_exact_join_formal_measurement_t1() -> None:
+    terminal, arguments = _bundle()
+    host_document = loads_canonical_json(
+        arguments["pre_attempt_host_conformance_bytes"]
+    )
+    host_document["observed"]["cgroup_parent_fact"]["self_membership"] = (
+        "0::/app.slice/another-valid-looking.service"
+    )
+    host_raw = canonical_json_bytes(host_document)
+    measurement_attempt_raw, measurement_receipt_raw = (
+        _measurement_launch_documents(
+            terminal,
+            host_conformance_raw=host_raw,
+            attempt=loads_canonical_json(
+                arguments["measurement_launch_attempt_bytes"]
+            ),
+        )
+    )
+    service_attempt_raw, service_receipt_raw = (
+        _measurement_service_launch_documents(
+            measurement_attempt_raw,
+            measurement_receipt_raw,
+        )
+    )
+    arguments.update(
+        pre_attempt_host_conformance_bytes=host_raw,
+        measurement_launch_attempt_bytes=measurement_attempt_raw,
+        measurement_launch_receipt_bytes=measurement_receipt_raw,
+        measurement_service_launch_attempt_bytes=service_attempt_raw,
+        measurement_service_launch_receipt_bytes=service_receipt_raw,
+    )
+    with pytest.raises(
+        verifier.ConstructionK7CampaignMeasurementIndependentVerifierV180R12R4Error,
+        match="host membership does not join measurement T1",
+    ):
+        _verify(terminal.canonical_bytes, arguments)
+
+
 def test_independent_verifier_is_the_only_counter_pass_authority() -> None:
     terminal, arguments = _bundle()
     assert terminal.document["COUNTER_COMPLETENESS_GATE"] == (
@@ -456,6 +563,16 @@ def test_independent_verifier_is_the_only_counter_pass_authority() -> None:
     assert document[
         "pre_scientific_outer_service_launch_join_independently_replayed"
     ] is True
+    assert document["pre_attempt_host_conformance_independently_replayed"] is True
+    assert document["pre_attempt_host_conformance_relative_path"] == (
+        verifier.PRE_ATTEMPT_HOST_CONFORMANCE_RELATIVE_PATH
+    )
+    host_raw = arguments["pre_attempt_host_conformance_bytes"]
+    assert document["pre_attempt_host_conformance_byte_count"] == len(host_raw)
+    assert document["pre_attempt_host_conformance_sha256"] == hashlib.sha256(
+        host_raw
+    ).hexdigest()
+    assert document["pre_attempt_host_conformance_mode"] == 0o400
     assert document["bounded_native_zero_attestation_independently_rederived"] is True
     assert document["native_zero_is_not_an_os_syscall_count"] is True
     assert document["open_world_absence_claimed"] is False

@@ -49,7 +49,7 @@ def cgroup_parent_fact() -> dict:
         "owner_gid": 1_000,
         "mode": 0o755,
         "controllers": ["cpu", "memory", "pids"],
-        "subtree_control": ["memory", "pids"],
+        "subtree_control": ["cpu", "memory", "pids"],
         "cgroup_type": "domain",
         "cgroup_namespace_inode": 4_026_531_835,
         "cgroup_events_present": True,
@@ -59,7 +59,10 @@ def cgroup_parent_fact() -> dict:
         "cgroup_procs_present": True,
         "memory_peak_present": True,
         "pids_peak_present": True,
-        "self_membership": "0::/user.slice/user-1000.slice/session-3377.scope",
+        "self_membership": (
+            "0::/user.slice/user-1000.slice/user@1000.service/app.slice/"
+            "acfqp-v180r12r4r5-freeze-capture-20260829.service"
+        ),
     }
 
 
@@ -83,7 +86,7 @@ def runtime_capability_fact() -> dict:
     }
 
 
-def test_production_service_tokens_bind_immediate_ordinal9_failure_terminals() -> None:
+def test_production_service_tokens_bind_immediate_ordinal10_failure_terminals() -> None:
     contract = protocol.production_systemd_service_contract_v180r12r4()
     assert contract["token_input_fields"] == [
         "failed_predecessor_freeze_id",
@@ -94,25 +97,56 @@ def test_production_service_tokens_bind_immediate_ordinal9_failure_terminals() -
     ]
     expected_tokens = {
         "measurement": (
-            "c8d74b0ae750955932b08df9de7a3566368ba20e94ccb16696037c0446577bb6"
+            "36656cf3abb876d291de1e6707f86a9971efe447b224ac32b1909bd0d4166297"
         ),
         "verification": (
-            "293c9c9fb1424204ccdba376bc48dd150d7d03139f7a263e6d5691abf61c20a3"
+            "5b7ccbbdc29cac0b1a43036f69909c941eab0127fda30de788f13cc54cee93e5"
         ),
     }
     for row in contract["target_rows"]:
         token_input = row["token_input"]
         assert token_input["failed_predecessor_freeze_id"] == (
-            protocol.V180R12R4R4_FAILED_PREDECESSOR_FREEZE_ID
+            protocol.V180R12R4R5_FAILED_PREDECESSOR_FREEZE_ID
         )
         assert token_input["failed_inner_launch_failure_id"] == (
-            protocol.V180R12R4R4_FAILED_INNER_LAUNCH_FAILURE_ID
+            protocol.V180R12R4R5_FAILED_INNER_LAUNCH_FAILURE_ID
         )
         assert token_input["failed_outer_service_failure_id"] == (
-            protocol.V180R12R4R4_FAILED_OUTER_SERVICE_FAILURE_ID
+            protocol.V180R12R4R5_FAILED_OUTER_SERVICE_FAILURE_ID
         )
         assert token_input["repair_scope"] == protocol.V180R12R4_REPAIR_SCOPE
         assert row["token"] == expected_tokens[row["target"]]
+
+
+def test_source_bound_service_context_capture_is_exact_and_cpu_enabled() -> None:
+    root = Path(protocol.__file__).resolve().parents[2]
+    raw = (root / protocol.SERVICE_CONTEXT_CAPTURE_RELATIVE_PATH).read_bytes()
+    contract = protocol.service_context_capture_contract_v180r12r4()
+    expected_raw = canonical_json_bytes(
+        {
+            "capture_purpose": protocol.SERVICE_CONTEXT_CAPTURE_PURPOSE,
+            "cgroup_parent_fact": (
+                protocol.SERVICE_CONTEXT_CAPTURE_CGROUP_PARENT_FACT
+            ),
+            "runtime_capability_fact": (
+                protocol.SERVICE_CONTEXT_CAPTURE_RUNTIME_CAPABILITY_FACT
+            ),
+            "schema": protocol.SERVICE_CONTEXT_CAPTURE_SCHEMA,
+        }
+    ) + b"\n"
+    assert raw == expected_raw
+    assert len(raw) == contract["canonical_byte_count"] == 1_459
+    expected_sha256 = (
+        "53508b200ae3b0279bda887cec804a8dd06f7d800734fe3d760f1712ea866fd3"
+    )
+    assert hashlib.sha256(raw).hexdigest() == expected_sha256
+    assert contract["canonical_sha256"] == expected_sha256
+    parent = contract["cgroup_parent_fact"]
+    assert parent["controllers"] == ["cpu", "memory", "pids"]
+    assert parent["subtree_control"] == ["cpu", "memory", "pids"]
+    assert parent["self_membership"].endswith(
+        "/acfqp-v180r12r4r5-freeze-capture-20260829.service"
+    )
 
 
 def frozen():
@@ -379,23 +413,30 @@ def test_protocol_preserves_ordinal8_as_historical_failure_lineage() -> None:
     assert document["failed_v180r12r4r2_ordinal8_identity_rerun_forbidden"]
 
 
-def test_protocol_binds_ordinal9_as_immediate_failure_lineage() -> None:
+def test_protocol_binds_ordinal10_as_immediate_and_ordinal9_as_historical_lineage() -> None:
     document = frozen().to_document()
-    lineage = document["failed_ordinal9_repair_lineage"]
-    assert lineage == protocol.failed_ordinal9_repair_lineage_contract_v180r12r4()
-    assert lineage["freeze_id"] == protocol.V180R12R4R4_FAILED_PREDECESSOR_FREEZE_ID
+    historical = document["failed_ordinal9_repair_lineage"]
+    lineage = document["failed_ordinal10_repair_lineage"]
+    assert historical == protocol.failed_ordinal9_repair_lineage_contract_v180r12r4()
+    assert lineage == protocol.failed_ordinal10_repair_lineage_contract_v180r12r4()
+    assert lineage["freeze_id"] == protocol.V180R12R4R5_FAILED_PREDECESSOR_FREEZE_ID
     assert lineage["logical_campaign_attempt_id"] == (
+        protocol.V180R12R4R5_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID
+    )
+    assert historical["logical_campaign_attempt_id"] == (
         protocol.V180R12R4R4_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID
     )
     assert lineage["campaign_attempt_artifact_present"] is False
     assert lineage["campaign_started"] is False
     assert lineage["campaign_ledger_event_count"] == 0
     assert lineage["outer_service_unit_ownership_acquired"] is True
-    assert lineage["full_source_conformance"] is False
-    assert lineage["postmortem_full_property_diagnostic_recorded"] is True
-    assert lineage["source_conformance_diagnostic"]["mismatch_fields"] == ["mode"]
+    assert lineage["full_source_conformance"] is True
+    assert lineage["runtime_failure_property_snapshots_recorded"] is False
+    assert lineage["runtime_failure_per_field_mismatch_recorded"] is False
+    assert lineage["runtime_failure_exact_cause_dimension_recorded"] is False
     assert lineage["repair_scope"] == protocol.V180R12R4_REPAIR_SCOPE
     slot = document["campaign_measurement_execution_slot"]
+    assert slot["historical_failed_ordinal9_freeze_id"] == historical["freeze_id"]
     assert slot["immediate_failed_predecessor_freeze_id"] == lineage["freeze_id"]
     assert slot["immediate_failed_predecessor_logical_campaign_attempt_id"] == (
         lineage["logical_campaign_attempt_id"]
@@ -407,6 +448,7 @@ def test_protocol_binds_ordinal9_as_immediate_failure_lineage() -> None:
         lineage["outer_service_failure_id"]
     )
     assert document["failed_v180r12r4r4_ordinal9_identity_rerun_forbidden"]
+    assert document["failed_v180r12r4r5_ordinal10_identity_rerun_forbidden"]
 
 
 def test_r3r2_scientific_birth_lineage_rejects_public_identity_drift(
@@ -466,13 +508,14 @@ def test_failed_dispatch_replay_is_source_bound_pre_scientific_authority_not_mea
         "retained_artifact_absence_and_cgroup_reads_are_trusted_prereg_authority_replay"
     ] is True
     roots = protocol.SOURCE_CLOSURE_REQUIRED_ROOTS
-    assert len(roots) == len(set(roots)) == 24
+    assert len(roots) == len(set(roots)) == 25
     assert tuple(roots) == tuple(sorted(roots))
     assert roots.count(protocol.V180R12R3_FAILURE_FREEZE_SOURCE_RELATIVE_PATH) == 1
     assert roots.count(protocol.V180R12R3R1_FAILURE_FREEZE_SOURCE_RELATIVE_PATH) == 1
     assert roots.count(protocol.V180R12R3R2_FAILURE_FREEZE_SOURCE_RELATIVE_PATH) == 1
     assert roots.count(protocol.V180R12R4R2_FAILURE_FREEZE_SOURCE_RELATIVE_PATH) == 1
     assert roots.count(protocol.V180R12R4R4_FAILURE_FREEZE_SOURCE_RELATIVE_PATH) == 1
+    assert roots.count(protocol.V180R12R4R5_FAILURE_FREEZE_SOURCE_RELATIVE_PATH) == 1
 
 
 def test_failed_dispatch_lineage_rejects_absence_inventory_drift_before_replay(
@@ -805,9 +848,10 @@ def test_protocol_rejects_cgroup_parent_drift(field: str, replacement) -> None:
         )
 
 
-def test_cgroup_parent_controller_contract_accepts_available_cpu_without_enabling_it(
+def test_generic_cgroup_validator_accepts_available_cpu_without_enabling_it(
 ) -> None:
     parent = cgroup_parent_fact()
+    parent["subtree_control"] = ["memory", "pids"]
     assert parent["controllers"] == ["cpu", "memory", "pids"]
     assert parent["subtree_control"] == ["memory", "pids"]
     assert protocol.validate_cgroup_parent_fact_v180r12r4(parent) == parent
@@ -939,10 +983,10 @@ def test_protocol_identity_phase_and_content_ids_are_replayable() -> None:
             for value in (
                 protocol.EXPECTED_CANONICAL_SHA256,
                 protocol.EXPECTED_CAMPAIGN_MEASUREMENT_EXECUTION_SLOT_ID,
-                protocol.LOGICAL_OCCURRENCE_ID,
-                protocol.EXECUTION_NONCE,
             )
         )
+        assert protocol.LOGICAL_OCCURRENCE_ID != protocol.ZERO_ID
+        assert protocol.EXECUTION_NONCE != protocol.ZERO_ID
     rule_ids = (
         protocol.EXPECTED_PRELAUNCH_SOURCE_CLOSURE_RULE_ID,
         protocol.EXPECTED_PRELAUNCH_MATERIALIZATION_RULE_ID,
@@ -1101,28 +1145,18 @@ def test_protocol_complete_direct_final_anchor_set_freezes_exact_candidate(
     assert frozen_value.campaign_measurement_protocol_id == protocol_id
 
 
-def test_protocol_content_identity_changes_with_supplied_parent_fact() -> None:
+def test_protocol_freeze_rejects_parent_fact_outside_source_bound_capture() -> None:
     first = frozen()
     changed = cgroup_parent_fact()
     changed["parent_inode"] += 1
-    if protocol.EXPECTED_PROTOCOL_ID != protocol.ZERO_ID:
-        with pytest.raises(
-            protocol.CampaignMeasurementProtocolV180R12R4Error,
-            match="execution slot identity changed",
-        ):
-            protocol.freeze_campaign_measurement_protocol_v180r12r4(
-                cgroup_parent_fact=changed,
-                runtime_capability_fact=runtime_capability_fact(),
-            )
-    else:
-        second = protocol.freeze_campaign_measurement_protocol_v180r12r4(
+    with pytest.raises(
+        protocol.CampaignMeasurementProtocolV180R12R4Error,
+        match="same V180r12r4r5 source-bound service-context capture",
+    ):
+        protocol.freeze_campaign_measurement_protocol_v180r12r4(
             cgroup_parent_fact=changed,
             runtime_capability_fact=runtime_capability_fact(),
         )
-        assert first.campaign_measurement_protocol_id != (
-            second.campaign_measurement_protocol_id
-        )
-        assert first.canonical_bytes != second.canonical_bytes
     assert canonical_json_bytes(first.to_document()) == first.canonical_bytes
 
 

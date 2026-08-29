@@ -124,14 +124,14 @@ _PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
 )
 _PRODUCTION_TRANSIENT_SERVICE_ROWS = {
     "measurement": (
-        "c8d74b0ae750955932b08df9de7a3566368ba20e94ccb16696037c0446577bb6",
+        "36656cf3abb876d291de1e6707f86a9971efe447b224ac32b1909bd0d4166297",
         "acfqp-v180r12r4-measurement-"
-        "c8d74b0ae750955932b08df9de7a3566368ba20e94ccb16696037c0446577bb6.service",
+        "36656cf3abb876d291de1e6707f86a9971efe447b224ac32b1909bd0d4166297.service",
     ),
     "verification": (
-        "293c9c9fb1424204ccdba376bc48dd150d7d03139f7a263e6d5691abf61c20a3",
+        "5b7ccbbdc29cac0b1a43036f69909c941eab0127fda30de788f13cc54cee93e5",
         "acfqp-v180r12r4-verification-"
-        "293c9c9fb1424204ccdba376bc48dd150d7d03139f7a263e6d5691abf61c20a3.service",
+        "5b7ccbbdc29cac0b1a43036f69909c941eab0127fda30de788f13cc54cee93e5.service",
     ),
 }
 _PRODUCTION_RUNTIME_PLACEMENT_T1_SCHEMA = (
@@ -206,6 +206,24 @@ _RUNTIME_CAPABILITY_FACT_FIELDS = {
     "pidfd_wait_present", "landlock_abi", "uid", "gid",
     "effective_capability_mask", "admitted",
 }
+_SERVICE_CONTEXT_CAPTURE_SCHEMA = (
+    "acfqp.v180r12r4r5_service_context_capture.v1"
+)
+_SERVICE_CONTEXT_CAPTURE_PURPOSE = (
+    "BENIGN_PRE_FREEZE_SERVICE_CONTEXT_OBSERVATION_NO_CAMPAIGN_ATTEMPT"
+)
+_SERVICE_CONTEXT_CAPTURE_CANONICAL_BYTE_COUNT = 1_459
+_SERVICE_CONTEXT_CAPTURE_CANONICAL_SHA256 = (
+    "53508b200ae3b0279bda887cec804a8dd06f7d800734fe3d760f1712ea866fd3"
+)
+PRE_ATTEMPT_HOST_CONFORMANCE_RELATIVE_PATH = (
+    ".tmp/exact-freeze/"
+    "v180r12r4_campaign_measurement_pre_attempt_host_conformance.json"
+)
+PRE_ATTEMPT_HOST_CONFORMANCE_SCHEMA = (
+    "acfqp.v180r12r4_pre_attempt_host_conformance.v1"
+)
+PRE_ATTEMPT_HOST_CONFORMANCE_BYTE_CAP = 65_536
 _INTERNAL_FD_ROLE_MAP = {
     "supervisor": (
         (_PRECOMPILED_BUNDLE_FD, "PRECOMPILED_SOURCE_BUNDLE_MEMFD"),
@@ -401,6 +419,10 @@ _SOURCE_CLOSURE_REQUIRED_ROOTS = tuple(
             (
                 "src/acfqp/construction_k7_campaign_measurement_"
                 "failure_freeze_v180r12r4r4.py"
+            ),
+            (
+                "src/acfqp/construction_k7_campaign_measurement_"
+                "failure_freeze_v180r12r4r5.py"
             ),
             (
                 "src/acfqp/construction_k7_campaign_measurement_"
@@ -626,6 +648,42 @@ def _canonical_json_bytes(value: object) -> bytes:
         separators=(",", ":"),
         ensure_ascii=False,
     ).encode("utf-8")
+
+
+def _require_source_bound_service_context_capture(
+    cgroup_parent_fact: dict,
+    runtime_capability_fact: dict,
+) -> None:
+    capture = {
+        "capture_purpose": _SERVICE_CONTEXT_CAPTURE_PURPOSE,
+        "cgroup_parent_fact": cgroup_parent_fact,
+        "runtime_capability_fact": runtime_capability_fact,
+        "schema": _SERVICE_CONTEXT_CAPTURE_SCHEMA,
+    }
+    raw = _canonical_json_bytes(capture) + b"\n"
+    membership = cgroup_parent_fact.get("self_membership")
+    parent_path = cgroup_parent_fact.get("parent_path")
+    mount_point = cgroup_parent_fact.get("mount_point")
+    if not (
+        len(raw) == _SERVICE_CONTEXT_CAPTURE_CANONICAL_BYTE_COUNT
+        and hashlib.sha256(raw).hexdigest()
+        == _SERVICE_CONTEXT_CAPTURE_CANONICAL_SHA256
+        and cgroup_parent_fact.get("controllers")
+        == ["cpu", "memory", "pids"]
+        and cgroup_parent_fact.get("subtree_control")
+        == ["cpu", "memory", "pids"]
+        and type(membership) is str
+        and type(parent_path) is str
+        and type(mount_point) is str
+        and PurePosixPath(membership.removeprefix("0::")).parent
+        == PurePosixPath(parent_path.removeprefix(mount_point))
+        and PurePosixPath(membership).name
+        == "acfqp-v180r12r4r5-freeze-capture-20260829.service"
+    ):
+        raise RuntimeError(
+            "V180r12r4 frozen facts do not exact-join the source-bound "
+            "service capture"
+        )
 
 
 def _validated_root(text: str, label: str) -> Path:
@@ -1365,6 +1423,7 @@ def _validated_frozen_authorization_context(value: object) -> dict:
         != (stat.S_IWUSR | stat.S_IXUSR)
     ):
         raise RuntimeError("V180r12r4 frozen cgroup/runtime facts changed")
+    _require_source_bound_service_context_capture(cgroup, capability)
     attempt_payload = {
         "schema": "acfqp.campaign_measurement_attempt.v180r12r4",
         "protocol_id": context["protocol_id"],

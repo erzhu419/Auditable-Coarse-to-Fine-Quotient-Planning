@@ -149,6 +149,14 @@ VERIFIED_EXTERNAL_LAUNCH_CONTEXT_SCHEMA = (
 REVALIDATED_EXTERNAL_MEASUREMENT_CONTEXT_SCHEMA = (
     protocol.REVALIDATED_EXTERNAL_MEASUREMENT_CONTEXT_SCHEMA
 )
+PRE_ATTEMPT_HOST_CONFORMANCE_SCHEMA = (
+    "acfqp.v180r12r4_pre_attempt_host_conformance.v1"
+)
+PRE_ATTEMPT_HOST_CONFORMANCE_RELATIVE_PATH = (
+    ".tmp/exact-freeze/"
+    "v180r12r4_campaign_measurement_pre_attempt_host_conformance.json"
+)
+PRE_ATTEMPT_HOST_CONFORMANCE_BYTE_CAP = 64 * 1024
 PRODUCTION_RUNTIME_PLACEMENT_T1_SCHEMA = (
     protocol.PRODUCTION_RUNTIME_PLACEMENT_T1_SCHEMA
 )
@@ -164,14 +172,14 @@ PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
 )
 PRODUCTION_TRANSIENT_SERVICE_ROWS = {
     "measurement": (
-        "c8d74b0ae750955932b08df9de7a3566368ba20e94ccb16696037c0446577bb6",
+        "36656cf3abb876d291de1e6707f86a9971efe447b224ac32b1909bd0d4166297",
         "acfqp-v180r12r4-measurement-"
-        "c8d74b0ae750955932b08df9de7a3566368ba20e94ccb16696037c0446577bb6.service",
+        "36656cf3abb876d291de1e6707f86a9971efe447b224ac32b1909bd0d4166297.service",
     ),
     "verification": (
-        "293c9c9fb1424204ccdba376bc48dd150d7d03139f7a263e6d5691abf61c20a3",
+        "5b7ccbbdc29cac0b1a43036f69909c941eab0127fda30de788f13cc54cee93e5",
         "acfqp-v180r12r4-verification-"
-        "293c9c9fb1424204ccdba376bc48dd150d7d03139f7a263e6d5691abf61c20a3.service",
+        "5b7ccbbdc29cac0b1a43036f69909c941eab0127fda30de788f13cc54cee93e5.service",
     ),
 }
 EXTERNAL_LAUNCH_CONTEXT_FIELDS = (
@@ -1790,13 +1798,135 @@ def reobserve_precompiled_source_bundle_v180r12r4(
     return digest, rows
 
 
+def pre_attempt_host_conformance_mismatch_rows_v180r12r4(
+    *,
+    expected_cgroup_parent_fact: Mapping[str, Any],
+    observed_cgroup_parent_fact: Mapping[str, Any],
+    expected_runtime_capability_fact: Mapping[str, Any],
+    observed_runtime_capability_fact: Mapping[str, Any],
+) -> tuple[tuple[str, str, Any, Any], ...]:
+    """Compare complete host facts, excluding only observer membership."""
+
+    expected_parent = protocol.validate_cgroup_parent_fact_v180r12r4(
+        _thaw_json_value(expected_cgroup_parent_fact)
+    )
+    observed_parent = protocol.validate_cgroup_parent_fact_v180r12r4(
+        _thaw_json_value(observed_cgroup_parent_fact)
+    )
+    expected_runtime = protocol.validate_runtime_capability_fact_v180r12r4(
+        _thaw_json_value(expected_runtime_capability_fact)
+    )
+    observed_runtime = protocol.validate_runtime_capability_fact_v180r12r4(
+        _thaw_json_value(observed_runtime_capability_fact)
+    )
+    rows = [
+        ("cgroup_parent_fact", field, expected_parent[field], observed_parent[field])
+        for field in protocol.CGROUP_PARENT_FACT_FIELDS
+        if field != "self_membership"
+        and expected_parent[field] != observed_parent[field]
+    ]
+    rows.extend(
+        (
+            "runtime_capability_fact",
+            field,
+            expected_runtime[field],
+            observed_runtime[field],
+        )
+        for field in protocol.RUNTIME_CAPABILITY_FACT_FIELDS
+        if expected_runtime[field] != observed_runtime[field]
+    )
+    return tuple(sorted(rows, key=lambda row: (row[0], row[1])))
+
+
+def write_pre_attempt_host_conformance_v180r12r4(
+    store: "DurableStoreV180R12R4",
+    *,
+    campaign_attempt_id: str,
+    expected_cgroup_parent_fact: Mapping[str, Any],
+    observed_cgroup_parent_fact: Mapping[str, Any],
+    expected_runtime_capability_fact: Mapping[str, Any],
+    observed_runtime_capability_fact: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Durably retain the complete pre-ATTEMPT host comparison once."""
+
+    if type(store) is not DurableStoreV180R12R4:
+        _fail("pre-attempt host conformance requires the durable repository store")
+    _require_content_id(campaign_attempt_id, "campaign attempt ID")
+    expected_parent = protocol.validate_cgroup_parent_fact_v180r12r4(
+        _thaw_json_value(expected_cgroup_parent_fact)
+    )
+    observed_parent = protocol.validate_cgroup_parent_fact_v180r12r4(
+        _thaw_json_value(observed_cgroup_parent_fact)
+    )
+    expected_runtime = protocol.validate_runtime_capability_fact_v180r12r4(
+        _thaw_json_value(expected_runtime_capability_fact)
+    )
+    observed_runtime = protocol.validate_runtime_capability_fact_v180r12r4(
+        _thaw_json_value(observed_runtime_capability_fact)
+    )
+    mismatches = pre_attempt_host_conformance_mismatch_rows_v180r12r4(
+        expected_cgroup_parent_fact=expected_parent,
+        observed_cgroup_parent_fact=observed_parent,
+        expected_runtime_capability_fact=expected_runtime,
+        observed_runtime_capability_fact=observed_runtime,
+    )
+    mismatched_fact_kinds = {row[0] for row in mismatches}
+    if not mismatched_fact_kinds:
+        cause = None
+    elif mismatched_fact_kinds == {"cgroup_parent_fact"}:
+        cause = "CGROUP_PARENT_FACT_DRIFT"
+    elif mismatched_fact_kinds == {"runtime_capability_fact"}:
+        cause = "RUNTIME_CAPABILITY_FACT_DRIFT"
+    else:
+        cause = "CGROUP_PARENT_AND_RUNTIME_CAPABILITY_FACT_DRIFT"
+    document = {
+        "schema": PRE_ATTEMPT_HOST_CONFORMANCE_SCHEMA,
+        "phase": "PRE_CAMPAIGN_ATTEMPT_HOST_CONFORMANCE",
+        "campaign_attempt_id": campaign_attempt_id,
+        "expected": {
+            "cgroup_parent_fact": expected_parent,
+            "runtime_capability_fact": expected_runtime,
+        },
+        "observed": {
+            "cgroup_parent_fact": observed_parent,
+            "runtime_capability_fact": observed_runtime,
+        },
+        "cgroup_parent_compared_fields": [
+            field
+            for field in protocol.CGROUP_PARENT_FACT_FIELDS
+            if field != "self_membership"
+        ],
+        "cgroup_parent_excluded_fields": ["self_membership"],
+        "runtime_capability_compared_fields": list(
+            protocol.RUNTIME_CAPABILITY_FACT_FIELDS
+        ),
+        "mismatch_rows": [list(row) for row in mismatches],
+        "mismatch_count": len(mismatches),
+        "cause": cause,
+        "full_host_conformance": not mismatches,
+        "working_tree_source_conformance_joined": False,
+        "production_unit_ownership_t1_joined": False,
+        "campaign_event_or_counter_record_issued": False,
+        "campaign_attempt_created": False,
+    }
+    raw = _canonical(document)
+    store.write_once_verified(
+        PRE_ATTEMPT_HOST_CONFORMANCE_RELATIVE_PATH,
+        raw,
+        byte_cap=PRE_ATTEMPT_HOST_CONFORMANCE_BYTE_CAP,
+        mode=0o400,
+    )
+    return document
+
+
 def revalidate_external_measurement_pre_attempt_v180r12r4(
     context: Mapping[str, Any],
     *,
     replayed_documents: Mapping[str, bytes],
+    store: "DurableStoreV180R12R4",
     monotonic_ns: Callable[[], int] = time.monotonic_ns,
 ) -> types.MappingProxyType:
-    """Final read-only gate; failure here owns no campaign ATTEMPT."""
+    """Final gate; retain host conformance before any campaign ATTEMPT."""
 
     verified = validate_verified_external_launch_context_v180r12r4(
         context,
@@ -1808,16 +1938,21 @@ def revalidate_external_measurement_pre_attempt_v180r12r4(
     reobserve_precompiled_source_bundle_v180r12r4(verified)
     reobserved_parent = reobserve_cgroup_parent_fact_from_inherited_fds_v180r12r4()
     frozen_parent = _thaw_json_value(verified["cgroup_parent_fact"])
-    if (
-        any(
-            reobserved_parent[key] != frozen_parent[key]
-            for key in frozen_parent
-            if key != "self_membership"
+    reobserved_runtime = reobserve_runtime_capability_fact_v180r12r4()
+    frozen_runtime = _thaw_json_value(verified["runtime_capability_fact"])
+    host_conformance = write_pre_attempt_host_conformance_v180r12r4(
+        store,
+        campaign_attempt_id=verified["campaign_attempt_id"],
+        expected_cgroup_parent_fact=frozen_parent,
+        observed_cgroup_parent_fact=reobserved_parent,
+        expected_runtime_capability_fact=frozen_runtime,
+        observed_runtime_capability_fact=reobserved_runtime,
+    )
+    if host_conformance["full_host_conformance"] is not True:
+        _fail(
+            "pre-attempt host conformance failed: "
+            + host_conformance["cause"]
         )
-        or reobserve_runtime_capability_fact_v180r12r4()
-        != _thaw_json_value(verified["runtime_capability_fact"])
-    ):
-        _fail("pre-attempt cgroup or runtime capability fact drifted")
     placement_t2 = _revalidate_production_source_placement_v180r12r4(
         verified,
         schema=PRODUCTION_RUNTIME_PLACEMENT_T2_SCHEMA,
@@ -7345,7 +7480,7 @@ def bootstrap_entrypoint_v180r12r4(
             verified_context, store=store
         )
         context = revalidate_external_measurement_pre_attempt_v180r12r4(
-            verified_context, replayed_documents=replayed
+            verified_context, replayed_documents=replayed, store=store
         )
         authority = CampaignAttemptAuthorityV180R12R4.from_external_context(
             context

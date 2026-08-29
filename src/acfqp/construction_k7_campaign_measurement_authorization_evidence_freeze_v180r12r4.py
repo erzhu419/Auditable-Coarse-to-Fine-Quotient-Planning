@@ -38,18 +38,18 @@ ZERO_ID = "0" * 64
 # remain sentinels in this outcome-free preregistration slice.  Keep every value
 # as one direct module-level literal; the independent normalizer rejects aliases,
 # expressions, duplicate assignments, and missing names.
-EXPECTED_AUTHORIZATION_EVIDENCE_ID = "529f56da73c2881500dbbc7b5af51aaa45af5a62ead0ff7ee5eed68d23ab403d"
-EXPECTED_CANONICAL_BYTE_COUNT = 83364
-EXPECTED_CANONICAL_SHA256 = "61a876cada816215b6480bb957ba6f12c7e22d7200f1b5fba25e87752dcfabbf"
-EXPECTED_AUTHORIZATION_ID = "2ae76f19d496bf0f8596164591a1b98d4085a7e8251ed4f28776e10699958ad1"
-EXPECTED_AUTHORIZATION_CANONICAL_BYTE_COUNT = 391676
-EXPECTED_AUTHORIZATION_CANONICAL_SHA256 = "12983926abbe034e520b054579ab4e146ba620ed2cb20f4611c9d8fd84270d23"
-EXPECTED_AUTHORIZATION_SOURCE_BYTE_COUNT = 63174
-EXPECTED_AUTHORIZATION_SOURCE_SHA256 = "9bffc9a4a279557a422db5c449fe099efd3011629edd481d5eba79d81d1be109"
-EXPECTED_SOURCE_CLOSURE_ID = "c18f3744731ca4b6bcc7c8eaa291df6b4840c7b34aefe12a5a6b8a440e2c00d6"
-EXPECTED_SOURCE_CLOSURE_BYTE_COUNT = 6365
-EXPECTED_SOURCE_CLOSURE_SHA256 = "c18f3744731ca4b6bcc7c8eaa291df6b4840c7b34aefe12a5a6b8a440e2c00d6"
-EXPECTED_SOURCE_CLOSURE_FILE_COUNT = 24
+EXPECTED_AUTHORIZATION_EVIDENCE_ID = "0000000000000000000000000000000000000000000000000000000000000000"
+EXPECTED_CANONICAL_BYTE_COUNT = 0
+EXPECTED_CANONICAL_SHA256 = "0000000000000000000000000000000000000000000000000000000000000000"
+EXPECTED_AUTHORIZATION_ID = "0000000000000000000000000000000000000000000000000000000000000000"
+EXPECTED_AUTHORIZATION_CANONICAL_BYTE_COUNT = 0
+EXPECTED_AUTHORIZATION_CANONICAL_SHA256 = "0000000000000000000000000000000000000000000000000000000000000000"
+EXPECTED_AUTHORIZATION_SOURCE_BYTE_COUNT = 0
+EXPECTED_AUTHORIZATION_SOURCE_SHA256 = "0000000000000000000000000000000000000000000000000000000000000000"
+EXPECTED_SOURCE_CLOSURE_ID = "0000000000000000000000000000000000000000000000000000000000000000"
+EXPECTED_SOURCE_CLOSURE_BYTE_COUNT = 0
+EXPECTED_SOURCE_CLOSURE_SHA256 = "0000000000000000000000000000000000000000000000000000000000000000"
+EXPECTED_SOURCE_CLOSURE_FILE_COUNT = 0
 
 POST_PREREG_REDACTED_CONSTANTS = (
     "EXPECTED_AUTHORIZATION_EVIDENCE_ID",
@@ -790,6 +790,12 @@ def build_campaign_measurement_authorization_evidence_v180r12r4(
     ordinal9_repair_lineage = (
         protocol.failed_ordinal9_repair_lineage_contract_v180r12r4()
     )
+    ordinal10_repair_lineage = (
+        protocol.failed_ordinal10_repair_lineage_contract_v180r12r4()
+    )
+    service_context_capture = (
+        protocol.service_context_capture_contract_v180r12r4()
+    )
     runner_execution_envelope = (
         protocol.source_bound_runner_execution_envelope_contract_v180r12r4()
     )
@@ -832,6 +838,8 @@ def build_campaign_measurement_authorization_evidence_v180r12r4(
         == ordinal8_repair_lineage
         and document.get("failed_ordinal9_repair_lineage")
         == ordinal9_repair_lineage
+        and document.get("failed_ordinal10_repair_lineage")
+        == ordinal10_repair_lineage
         and document.get("failed_v180r12r3_identity_rerun_forbidden") is True
         and document.get("failed_v180r12r3r1_identity_rerun_forbidden") is True
         and document.get("failed_v180r12r3r2_identity_rerun_forbidden") is True
@@ -841,6 +849,10 @@ def build_campaign_measurement_authorization_evidence_v180r12r4(
         is True
         and document.get(
             "failed_v180r12r4r4_ordinal9_identity_rerun_forbidden"
+        )
+        is True
+        and document.get(
+            "failed_v180r12r4r5_ordinal10_identity_rerun_forbidden"
         )
         is True
         and document.get(
@@ -930,7 +942,39 @@ def build_campaign_measurement_authorization_evidence_v180r12r4(
         and ordinal9_repair_lineage["same_identity_rerun_forbidden"] is True
         and ordinal9_repair_lineage["fresh_successor_identity_required"] is True
         and ordinal9_repair_lineage["repair_scope"]
+        == protocol.V180R12R4R4_REPAIR_SCOPE
+        and ordinal10_repair_lineage["campaign_attempt_artifact_present"]
+        is False
+        and ordinal10_repair_lineage["campaign_started"] is False
+        and ordinal10_repair_lineage["outer_service_unit_ownership_acquired"]
+        is True
+        and ordinal10_repair_lineage["full_source_conformance"] is True
+        and ordinal10_repair_lineage[
+            "runtime_failure_generic_cause_recorded"
+        ]
+        is True
+        and ordinal10_repair_lineage[
+            "runtime_failure_property_snapshots_recorded"
+        ]
+        is False
+        and ordinal10_repair_lineage[
+            "runtime_failure_per_field_mismatch_recorded"
+        ]
+        is False
+        and ordinal10_repair_lineage[
+            "runtime_failure_exact_cause_dimension_recorded"
+        ]
+        is False
+        and ordinal10_repair_lineage["counter_records_issued"] is False
+        and ordinal10_repair_lineage["work_vectors_issued"] is False
+        and ordinal10_repair_lineage["comparison_vectors_issued"] is False
+        and ordinal10_repair_lineage["same_identity_rerun_forbidden"] is True
+        and ordinal10_repair_lineage["fresh_successor_identity_required"]
+        is True
+        and ordinal10_repair_lineage["repair_scope"]
         == protocol.V180R12R4_REPAIR_SCOPE
+        and document.get("service_context_capture_contract")
+        == service_context_capture
         and source_contract == protocol.source_closure_contract_v180r12r4()
         and source_contract.get("required_static_roots")
         == list(SOURCE_BOUNDARY_REQUIRED_PATHS)
@@ -1000,11 +1044,13 @@ def build_campaign_measurement_authorization_evidence_v180r12r4(
         ),
         "failed_ordinal8_repair_lineage": ordinal8_repair_lineage,
         "failed_ordinal9_repair_lineage": ordinal9_repair_lineage,
+        "failed_ordinal10_repair_lineage": ordinal10_repair_lineage,
         "failed_v180r12r3_identity_rerun_forbidden": True,
         "failed_v180r12r3r1_identity_rerun_forbidden": True,
         "failed_v180r12r3r2_identity_rerun_forbidden": True,
         "failed_v180r12r4r2_ordinal8_identity_rerun_forbidden": True,
         "failed_v180r12r4r4_ordinal9_identity_rerun_forbidden": True,
+        "failed_v180r12r4r5_ordinal10_identity_rerun_forbidden": True,
         "fresh_v180r12r4_physical_paths_and_identities_required": True,
         "repair_scope": protocol.V180R12R4_REPAIR_SCOPE,
         "repair_changes_campaign_path_roles_event_schedule_evidence_"
@@ -1014,6 +1060,10 @@ def build_campaign_measurement_authorization_evidence_v180r12r4(
         ),
         "cgroup_parent_fact": document["cgroup_parent_fact"],
         "runtime_capability_fact": document["runtime_capability_fact"],
+        "service_context_capture_contract": service_context_capture,
+        "cgroup_parent_and_runtime_facts_exact_join_same_source_bound_capture": (
+            True
+        ),
         **source_boundary,
         "source_fact_exclusions": list(SOURCE_FACT_EXCLUSIONS),
         "authorization_source_excluded_from_self_derived_fixed_point": True,

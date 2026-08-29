@@ -125,6 +125,10 @@ SOURCE_CLOSURE_REQUIRED_ROOTS = tuple(
             ),
             (
                 "src/acfqp/construction_k7_campaign_measurement_"
+                "failure_freeze_v180r12r4r5.py"
+            ),
+            (
+                "src/acfqp/construction_k7_campaign_measurement_"
                 "independent_verifier_v180r12r4.py"
             ),
             (
@@ -716,7 +720,9 @@ def _working_tree_source_conformance(
     }
 
 
-def _frozen_authorization_context(repository: Path) -> dict[str, object]:
+def _frozen_authorization_context(
+    repository: Path, *, local_capture: bool = False
+) -> dict[str, object]:
     mount = repository / "fake-cgroup2"
     parent = mount / "app.slice"
     parent.mkdir(parents=True, exist_ok=True)
@@ -738,7 +744,7 @@ def _frozen_authorization_context(repository: Path) -> dict[str, object]:
         b"acfqp:construction-k7-campaign-measurement-attempt:v180r12r4\x00"
         + _canonical_bytes(attempt_payload)
     ).hexdigest()
-    return {
+    context = {
         "schema": "acfqp.v180r12r4_frozen_authorization_context.v1",
         "protocol_id": six["protocol_id"],
         "protocol_byte_count": 101,
@@ -763,13 +769,16 @@ def _frozen_authorization_context(repository: Path) -> dict[str, object]:
             "parent_device": parent_stat.st_dev, "parent_inode": parent_stat.st_ino,
             "owner_uid": parent_stat.st_uid, "owner_gid": parent_stat.st_gid,
             "mode": stat.S_IMODE(parent_stat.st_mode),
-            "controllers": ["memory", "pids"],
-            "subtree_control": ["memory", "pids"], "cgroup_type": "domain",
+            "controllers": ["cpu", "memory", "pids"],
+            "subtree_control": ["cpu", "memory", "pids"], "cgroup_type": "domain",
             "cgroup_namespace_inode": 3, "cgroup_events_present": True,
             "memory_events_present": True, "pids_events_present": True,
             "cgroup_kill_present": True, "cgroup_procs_present": True,
             "memory_peak_present": True, "pids_peak_present": True,
-            "self_membership": "0::/",
+            "self_membership": (
+                "0::/app.slice/"
+                "acfqp-v180r12r4r5-freeze-capture-20260829.service"
+            ),
         },
         "runtime_capability_fact": {
             "schema": "acfqp.v180r12r4_runtime_capability_fact.v1",
@@ -782,6 +791,35 @@ def _frozen_authorization_context(repository: Path) -> dict[str, object]:
             "effective_capability_mask": 0, "admitted": True,
         },
     }
+    if not local_capture:
+        context["cgroup_parent_fact"] = json.loads(
+            json.dumps(protocol.SERVICE_CONTEXT_CAPTURE_CGROUP_PARENT_FACT)
+        )
+        context["runtime_capability_fact"] = json.loads(
+            json.dumps(protocol.SERVICE_CONTEXT_CAPTURE_RUNTIME_CAPABILITY_FACT)
+        )
+    return context
+
+
+def _bootstrap_source_for_local_capture(context: dict[str, object]) -> bytes:
+    capture_raw = _canonical_bytes(
+        {
+            "capture_purpose": protocol.SERVICE_CONTEXT_CAPTURE_PURPOSE,
+            "cgroup_parent_fact": context["cgroup_parent_fact"],
+            "runtime_capability_fact": context["runtime_capability_fact"],
+            "schema": protocol.SERVICE_CONTEXT_CAPTURE_SCHEMA,
+        }
+    ) + b"\n"
+    source = BOOTSTRAP.read_text(encoding="utf-8")
+    source = source.replace(
+        "_SERVICE_CONTEXT_CAPTURE_CANONICAL_BYTE_COUNT = 1_459",
+        f"_SERVICE_CONTEXT_CAPTURE_CANONICAL_BYTE_COUNT = {len(capture_raw)}",
+    )
+    source = source.replace(
+        protocol.SERVICE_CONTEXT_CAPTURE_CANONICAL_SHA256,
+        hashlib.sha256(capture_raw).hexdigest(),
+    )
+    return source.encode("utf-8")
 
 
 def _external_entrypoint(source: str) -> str:
@@ -830,10 +868,11 @@ def _build_launch(
     (repository / "scripts").mkdir(parents=True)
     (repository / "src/acfqp").mkdir(parents=True)
     (c_pre / "scripts").mkdir(parents=True)
-    frozen_authorization_context = _frozen_authorization_context(repository)
-    shutil.copyfile(
-        BOOTSTRAP,
-        c_pre / "scripts/bootstrap_v180r12r4_campaign_measurement.py",
+    frozen_authorization_context = _frozen_authorization_context(
+        repository, local_capture=True
+    )
+    (c_pre / "scripts/bootstrap_v180r12r4_campaign_measurement.py").write_bytes(
+        _bootstrap_source_for_local_capture(frozen_authorization_context)
     )
     (repository / "src/acfqp/__init__.py").write_text("", encoding="utf-8")
     (repository / "src/acfqp/bound.py").write_text(
@@ -1726,7 +1765,7 @@ def _build_real_closure_launch(
     c_pre_bootstrap.parent.mkdir(parents=True)
     shutil.copyfile(BOOTSTRAP, c_pre_bootstrap)
     paths = _real_authorization_closure_paths()
-    assert len(paths) == 24
+    assert len(paths) == 25
     for relative in paths:
         destination = repository / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
@@ -1991,7 +2030,7 @@ def test_bootstrap_prework_exhausted_absolute_campaign_deadline_never_dispatches
     assert dispatches == []
 
 
-def test_exact_twenty_four_static_roots_match_authorization_contract() -> None:
+def test_exact_twenty_five_static_roots_match_authorization_contract() -> None:
     completed = subprocess.run(
         [
             PYTHON,
@@ -2010,7 +2049,7 @@ def test_exact_twenty_four_static_roots_match_authorization_contract() -> None:
         text=True,
     )
     assert tuple(json.loads(completed.stdout)) == SOURCE_CLOSURE_REQUIRED_ROOTS
-    assert len(SOURCE_CLOSURE_REQUIRED_ROOTS) == 24
+    assert len(SOURCE_CLOSURE_REQUIRED_ROOTS) == 25
 
 
 def test_exact_four_manifest_targets_and_two_internal_entrypoints_are_bound() -> None:

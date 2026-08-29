@@ -49,6 +49,25 @@ def _load(name: str, relative: str):
 run = _load("_test_run_v180r12r4", "scripts/run_v180r12r4_campaign_measurement.py")
 
 
+def test_runner_uses_ordinal11_transient_service_tokens() -> None:
+    measurement = (
+        "36656cf3abb876d291de1e6707f86a9971efe447b224ac32b1909bd0d4166297"
+    )
+    verification = (
+        "5b7ccbbdc29cac0b1a43036f69909c941eab0127fda30de788f13cc54cee93e5"
+    )
+    assert run.PRODUCTION_TRANSIENT_SERVICE_ROWS == {
+        "measurement": (
+            measurement,
+            f"acfqp-v180r12r4-measurement-{measurement}.service",
+        ),
+        "verification": (
+            verification,
+            f"acfqp-v180r12r4-verification-{verification}.service",
+        ),
+    }
+
+
 def _attempt_fixture():
     authority = run.CampaignAttemptAuthorityV180R12R4(
         protocol_id="1" * 64,
@@ -113,6 +132,68 @@ def _placement_t1(target: str) -> dict[str, object]:
         "planned_measurement_root_absent": True,
         "t1_complete_before_child_popen": True,
     }
+
+
+def _verified_host_conformance_context(
+    tmp_path: Path,
+    *,
+    parent_fact: dict[str, object],
+    runtime_fact: dict[str, object],
+) -> types.MappingProxyType:
+    values = {
+        name: None for name in run.VERIFIED_EXTERNAL_LAUNCH_CONTEXT_FIELDS
+    }
+    values.update(
+        {
+            "schema": run.VERIFIED_EXTERNAL_LAUNCH_CONTEXT_SCHEMA,
+            "target": "measurement",
+            "repository_root": str(tmp_path),
+            "campaign_attempt_id": "a" * 64,
+            "cgroup_parent_fact": types.MappingProxyType(parent_fact),
+            "runtime_capability_fact": types.MappingProxyType(runtime_fact),
+        }
+    )
+    return types.MappingProxyType(values)
+
+
+def _patch_host_conformance_revalidation_dependencies(
+    monkeypatch: pytest.MonkeyPatch,
+    *,
+    observed_parent: dict[str, object],
+    observed_runtime: dict[str, object],
+) -> None:
+    monkeypatch.setattr(
+        run,
+        "validate_verified_external_launch_context_v180r12r4",
+        lambda supplied, *, replayed_documents, monotonic_ns: supplied,
+    )
+    monkeypatch.setattr(
+        run,
+        "reobserve_precompiled_source_bundle_v180r12r4",
+        lambda supplied: ("f" * 64, ()),
+    )
+    monkeypatch.setattr(
+        run,
+        "reobserve_cgroup_parent_fact_from_inherited_fds_v180r12r4",
+        lambda: observed_parent,
+    )
+    monkeypatch.setattr(
+        run,
+        "reobserve_runtime_capability_fact_v180r12r4",
+        lambda: observed_runtime,
+    )
+    monkeypatch.setattr(
+        run,
+        "_revalidate_production_source_placement_v180r12r4",
+        lambda *args, **kwargs: {
+            "schema": run.PRODUCTION_RUNTIME_PLACEMENT_T2_SCHEMA
+        },
+    )
+    monkeypatch.setattr(
+        run,
+        "_check_campaign_deadline_v180r12r4",
+        lambda *args, **kwargs: None,
+    )
 
 
 def _topology_failure():
@@ -221,6 +302,189 @@ def test_t2_failure_precedes_scientific_attempt_o_excl(tmp_path: Path) -> None:
         assert not (tmp_path / run.FAILURE_RELATIVE_PATH).exists()
     finally:
         store.close()
+
+
+def test_pre_attempt_host_mismatch_helper_ignores_only_self_membership_and_sorts(
+) -> None:
+    expected_parent = cgroup_parent_fact()
+    observed_parent = dict(expected_parent)
+    observed_parent["self_membership"] = "0::/app.slice/formal-measurement.service"
+    observed_parent["parent_inode"] = expected_parent["parent_inode"] + 1
+    observed_parent["mode"] = expected_parent["mode"] + 1
+    expected_runtime = runtime_capability_fact()
+    observed_runtime = dict(expected_runtime)
+    observed_runtime["landlock_abi"] = expected_runtime["landlock_abi"] + 1
+
+    assert run.pre_attempt_host_conformance_mismatch_rows_v180r12r4(
+        expected_cgroup_parent_fact=expected_parent,
+        observed_cgroup_parent_fact=observed_parent,
+        expected_runtime_capability_fact=expected_runtime,
+        observed_runtime_capability_fact=observed_runtime,
+    ) == (
+        (
+            "cgroup_parent_fact",
+            "mode",
+            expected_parent["mode"],
+            observed_parent["mode"],
+        ),
+        (
+            "cgroup_parent_fact",
+            "parent_inode",
+            expected_parent["parent_inode"],
+            observed_parent["parent_inode"],
+        ),
+        (
+            "runtime_capability_fact",
+            "landlock_abi",
+            expected_runtime["landlock_abi"],
+            observed_runtime["landlock_abi"],
+        ),
+    )
+
+    observed_parent["parent_inode"] = expected_parent["parent_inode"]
+    observed_parent["mode"] = expected_parent["mode"]
+    observed_runtime["landlock_abi"] = expected_runtime["landlock_abi"]
+    assert run.pre_attempt_host_conformance_mismatch_rows_v180r12r4(
+        expected_cgroup_parent_fact=expected_parent,
+        observed_cgroup_parent_fact=observed_parent,
+        expected_runtime_capability_fact=expected_runtime,
+        observed_runtime_capability_fact=observed_runtime,
+    ) == ()
+
+
+def test_pre_attempt_host_conformance_success_is_durable_before_campaign_attempt(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    expected_parent = cgroup_parent_fact()
+    observed_parent = dict(expected_parent)
+    observed_parent["self_membership"] = "0::/app.slice/formal-measurement.service"
+    expected_runtime = runtime_capability_fact()
+    observed_runtime = dict(expected_runtime)
+    context = _verified_host_conformance_context(
+        tmp_path,
+        parent_fact=expected_parent,
+        runtime_fact=expected_runtime,
+    )
+    _patch_host_conformance_revalidation_dependencies(
+        monkeypatch,
+        observed_parent=observed_parent,
+        observed_runtime=observed_runtime,
+    )
+    store = run.DurableStoreV180R12R4(tmp_path)
+    try:
+        result = run.revalidate_external_measurement_pre_attempt_v180r12r4(
+            context,
+            replayed_documents={},
+            store=store,
+        )
+    finally:
+        store.close()
+
+    artifact_path = tmp_path / run.PRE_ATTEMPT_HOST_CONFORMANCE_RELATIVE_PATH
+    artifact = json.loads(artifact_path.read_bytes())
+    assert result["schema"] == run.REVALIDATED_EXTERNAL_MEASUREMENT_CONTEXT_SCHEMA
+    assert artifact["schema"] == run.PRE_ATTEMPT_HOST_CONFORMANCE_SCHEMA
+    assert artifact["expected"] == {
+        "cgroup_parent_fact": expected_parent,
+        "runtime_capability_fact": expected_runtime,
+    }
+    assert artifact["observed"] == {
+        "cgroup_parent_fact": observed_parent,
+        "runtime_capability_fact": observed_runtime,
+    }
+    assert artifact["cgroup_parent_compared_fields"] == [
+        field
+        for field in run.protocol.CGROUP_PARENT_FACT_FIELDS
+        if field != "self_membership"
+    ]
+    assert artifact["cgroup_parent_excluded_fields"] == ["self_membership"]
+    assert artifact["runtime_capability_compared_fields"] == list(
+        run.protocol.RUNTIME_CAPABILITY_FACT_FIELDS
+    )
+    assert artifact["mismatch_rows"] == []
+    assert artifact["mismatch_count"] == 0
+    assert artifact["cause"] is None
+    assert artifact["full_host_conformance"] is True
+    assert artifact["working_tree_source_conformance_joined"] is False
+    assert artifact["production_unit_ownership_t1_joined"] is False
+    assert artifact["campaign_event_or_counter_record_issued"] is False
+    assert artifact["campaign_attempt_created"] is False
+    assert stat.S_IMODE(artifact_path.stat().st_mode) == 0o400
+    assert artifact_path.stat().st_size <= (
+        run.PRE_ATTEMPT_HOST_CONFORMANCE_BYTE_CAP
+    )
+    assert not (tmp_path / run.ATTEMPT_RELATIVE_PATH).exists()
+
+
+@pytest.mark.parametrize(
+    ("fact_kind", "field", "cause"),
+    [
+        ("cgroup_parent_fact", "parent_inode", "CGROUP_PARENT_FACT_DRIFT"),
+        (
+            "runtime_capability_fact",
+            "landlock_abi",
+            "RUNTIME_CAPABILITY_FACT_DRIFT",
+        ),
+    ],
+)
+def test_pre_attempt_host_drift_artifact_precedes_exception(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    fact_kind: str,
+    field: str,
+    cause: str,
+) -> None:
+    expected_parent = cgroup_parent_fact()
+    observed_parent = dict(expected_parent)
+    observed_parent["self_membership"] = "0::/app.slice/formal-measurement.service"
+    expected_runtime = runtime_capability_fact()
+    observed_runtime = dict(expected_runtime)
+    expected_fact = (
+        expected_parent
+        if fact_kind == "cgroup_parent_fact"
+        else expected_runtime
+    )
+    observed_fact = (
+        observed_parent
+        if fact_kind == "cgroup_parent_fact"
+        else observed_runtime
+    )
+    observed_fact[field] = expected_fact[field] + 1
+    context = _verified_host_conformance_context(
+        tmp_path,
+        parent_fact=expected_parent,
+        runtime_fact=expected_runtime,
+    )
+    _patch_host_conformance_revalidation_dependencies(
+        monkeypatch,
+        observed_parent=observed_parent,
+        observed_runtime=observed_runtime,
+    )
+    store = run.DurableStoreV180R12R4(tmp_path)
+    try:
+        with pytest.raises(run.V180R12R4RuntimeError, match=cause):
+            run.revalidate_external_measurement_pre_attempt_v180r12r4(
+                context,
+                replayed_documents={},
+                store=store,
+            )
+    finally:
+        store.close()
+
+    artifact_path = tmp_path / run.PRE_ATTEMPT_HOST_CONFORMANCE_RELATIVE_PATH
+    artifact = json.loads(artifact_path.read_bytes())
+    assert artifact["mismatch_rows"] == [
+        [fact_kind, field, expected_fact[field], observed_fact[field]]
+    ]
+    assert all(len(row) == 4 for row in artifact["mismatch_rows"])
+    assert artifact["mismatch_rows"] == sorted(
+        artifact["mismatch_rows"], key=lambda row: (row[0], row[1])
+    )
+    assert artifact["mismatch_count"] == 1
+    assert artifact["cause"] == cause
+    assert artifact["full_host_conformance"] is False
+    assert not (tmp_path / run.ATTEMPT_RELATIVE_PATH).exists()
 
 
 @pytest.mark.parametrize(
@@ -3105,7 +3369,7 @@ def test_external_measurement_bootstrap_entrypoint_reaches_concrete_outer_bounda
     monkeypatch.setattr(
         run,
         "revalidate_external_measurement_pre_attempt_v180r12r4",
-        lambda supplied, *, replayed_documents: revalidated_context,
+        lambda supplied, *, replayed_documents, store: revalidated_context,
     )
     monkeypatch.setattr(
         run,
