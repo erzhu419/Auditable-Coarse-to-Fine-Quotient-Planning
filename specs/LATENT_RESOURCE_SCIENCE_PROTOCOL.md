@@ -103,8 +103,9 @@ zero exact-kernel queries beyond this shared control interface.
 ## Execution environment
 
 The GPU campaign uses a project-private Python environment installed from
-`requirements-science-cu118.txt`, followed by an editable install of this
-checkout.  Each result records the full source commit, execution identity,
+`requirements-science-cu118.txt`.  The clean checkout is executed with its
+`src` directory on `PYTHONPATH`; no editable-install metadata is written into
+the source tree.  Each result records the full source commit, execution identity,
 Python/NumPy/PyTorch versions, CUDA runtime reported by PyTorch, device name,
 and host.  A source checkout plus the pinned requirements is therefore enough
 to distinguish code, package, and machine changes between attempts.
