@@ -1,0 +1,8 @@
+# Project-private Linux/CUDA environment used by the 2048 pilot on jtl110gpu2.
+# The CUDA wheel source is the official PyTorch index; all versions are frozen.
+--extra-index-url https://download.pytorch.org/whl/cu118
+
+numpy==2.2.6
+pytest==8.4.1
+scipy==1.15.3
+torch==2.7.0+cu118
