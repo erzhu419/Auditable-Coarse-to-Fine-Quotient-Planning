@@ -179,12 +179,15 @@ def test_outcome_free_wrapper_has_exact_phase_aware_twelve_literal_topology() ->
     assert evidence.SOURCE_BOUNDARY_REQUIRED_PATHS == tuple(
         sorted(evidence.SOURCE_BOUNDARY_REQUIRED_PATHS)
     )
-    assert len(evidence.SOURCE_BOUNDARY_REQUIRED_PATHS) == 23
-    assert len(set(evidence.SOURCE_BOUNDARY_REQUIRED_PATHS)) == 23
+    assert len(evidence.SOURCE_BOUNDARY_REQUIRED_PATHS) == 24
+    assert len(set(evidence.SOURCE_BOUNDARY_REQUIRED_PATHS)) == 24
     assert protocol.V180R12R3_FAILURE_FREEZE_SOURCE_RELATIVE_PATH in (
         evidence.SOURCE_BOUNDARY_REQUIRED_PATHS
     )
     assert protocol.V180R12R3R1_FAILURE_FREEZE_SOURCE_RELATIVE_PATH in (
+        evidence.SOURCE_BOUNDARY_REQUIRED_PATHS
+    )
+    assert protocol.V180R12R4R4_FAILURE_FREEZE_SOURCE_RELATIVE_PATH in (
         evidence.SOURCE_BOUNDARY_REQUIRED_PATHS
     )
     assert evidence._AUTHORIZATION_RELATIVE_PATH in (  # noqa: SLF001
@@ -572,10 +575,14 @@ def test_candidate_and_runtime_payloads_match_under_external_nonbootstrap(
         "failed_ordinal8_repair_lineage": (
             protocol.failed_ordinal8_repair_lineage_contract_v180r12r4()
         ),
+        "failed_ordinal9_repair_lineage": (
+            protocol.failed_ordinal9_repair_lineage_contract_v180r12r4()
+        ),
         "failed_v180r12r3_identity_rerun_forbidden": True,
         "failed_v180r12r3r1_identity_rerun_forbidden": True,
         "failed_v180r12r3r2_identity_rerun_forbidden": True,
         "failed_v180r12r4r2_ordinal8_identity_rerun_forbidden": True,
+        "failed_v180r12r4r4_ordinal9_identity_rerun_forbidden": True,
         "fresh_v180r12r4_physical_paths_and_identities_required": True,
         "repair_scope": protocol.V180R12R4_REPAIR_SCOPE,
         "repair_changes_campaign_path_roles_event_schedule_evidence_"

@@ -121,6 +121,10 @@ SOURCE_CLOSURE_REQUIRED_ROOTS = tuple(
             ),
             (
                 "src/acfqp/construction_k7_campaign_measurement_"
+                "failure_freeze_v180r12r4r4.py"
+            ),
+            (
+                "src/acfqp/construction_k7_campaign_measurement_"
                 "independent_verifier_v180r12r4.py"
             ),
             (
@@ -622,6 +626,96 @@ def _static_root_facts(repository: Path) -> list[dict[str, object]]:
     return facts
 
 
+def _working_tree_source_conformance(
+    repository: Path, closure: dict[str, object]
+) -> dict[str, object]:
+    facts = closure["facts"]
+    assert isinstance(facts, list) and facts
+    snapshots = []
+    for fact in facts:
+        assert isinstance(fact, dict)
+        relative = str(fact["relative_path"])
+        path = repository / relative
+        raw = path.read_bytes()
+        effective_raw = (
+            _normalize_wrapper(raw)
+            if relative == AUTHORIZATION_EVIDENCE_RELATIVE
+            else raw
+        )
+        binding_kind = str(
+            fact.get("binding_kind", "EXACT_C_PRE_GIT_BLOB")
+        )
+        assert len(effective_raw) == fact["byte_count"]
+        assert hashlib.sha256(effective_raw).hexdigest() == fact["sha256"]
+        metadata = path.stat()
+        assert stat.S_ISREG(metadata.st_mode)
+        assert stat.S_IMODE(metadata.st_mode) == 0o644
+        assert metadata.st_nlink == 1
+        observed_stat = {
+            "file_type": "REGULAR_FILE",
+            "st_dev": metadata.st_dev,
+            "st_ino": metadata.st_ino,
+            "st_mode": metadata.st_mode,
+            "mode": stat.S_IMODE(metadata.st_mode),
+            "st_nlink": metadata.st_nlink,
+            "st_uid": metadata.st_uid,
+            "st_gid": metadata.st_gid,
+            "st_size": metadata.st_size,
+            "st_mtime_ns": metadata.st_mtime_ns,
+            "st_ctime_ns": metadata.st_ctime_ns,
+        }
+        effective_blob = hashlib.sha1(
+            b"blob "
+            + str(len(effective_raw)).encode("ascii")
+            + b"\x00"
+            + effective_raw
+        ).hexdigest()
+        physical_blob = hashlib.sha1(
+            b"blob " + str(len(raw)).encode("ascii") + b"\x00" + raw
+        ).hexdigest()
+        snapshots.append(
+            {
+                "relative_path": relative,
+                "expected": {
+                    "file_type": "REGULAR_FILE",
+                    "git_mode": "100644",
+                    "mode": 0o644,
+                    "st_nlink": 1,
+                    "binding_kind": binding_kind,
+                    "byte_count": len(effective_raw),
+                    "sha256": hashlib.sha256(effective_raw).hexdigest(),
+                    "git_blob_id": effective_blob,
+                },
+                "observed_before": observed_stat,
+                "observed_after": dict(observed_stat),
+                "observed_content": {
+                    "binding_kind": binding_kind,
+                    "byte_count": len(effective_raw),
+                    "sha256": hashlib.sha256(effective_raw).hexdigest(),
+                    "git_blob_id": effective_blob,
+                    "physical_byte_count": len(raw),
+                    "physical_sha256": hashlib.sha256(raw).hexdigest(),
+                    "physical_git_blob_id": physical_blob,
+                },
+                "mismatch_fields": [],
+                "conformant": True,
+            }
+        )
+    return {
+        "schema": (
+            "acfqp.v180r12r4_working_tree_source_conformance_diagnostic.v1"
+        ),
+        "phase": "BEFORE_PRELAUNCH_OUTPUT_AND_SCIENTIFIC_CAMPAIGN",
+        "source_root_count": len(snapshots),
+        "snapshots": snapshots,
+        "mismatch_count": 0,
+        "per_field_mismatches": [],
+        "unit_ownership_evaluated": False,
+        "full_source_conformance": True,
+        "cause": None,
+    }
+
+
 def _frozen_authorization_context(repository: Path) -> dict[str, object]:
     mount = repository / "fake-cgroup2"
     parent = mount / "app.slice"
@@ -839,6 +933,10 @@ def _build_launch(
         for target, relative in RUNNER_PATHS.items()
     }
     authorization_raw_facts = _static_root_facts(repository)
+    authorization_closure = _closure(authorization_raw_facts)
+    source_conformance = _working_tree_source_conformance(
+        repository, authorization_closure
+    )
     service_contract, service_templates = _service_manifest_contract(repository)
     manifest: dict[str, object] = {
         "schema": SCHEMA,
@@ -860,7 +958,8 @@ def _build_launch(
             for module, _, _ in module_bindings
             if module != AUTHORIZATION_SELF_MODULE
         ),
-        "authorization_source_closure": _closure(authorization_raw_facts),
+        "authorization_source_closure": authorization_closure,
+        "working_tree_source_conformance": source_conformance,
         "source_modules": source_modules,
         "third_party_source_closure": _third_party_closure(third_party_facts),
         "targets": target_facts,
@@ -1627,7 +1726,7 @@ def _build_real_closure_launch(
     c_pre_bootstrap.parent.mkdir(parents=True)
     shutil.copyfile(BOOTSTRAP, c_pre_bootstrap)
     paths = _real_authorization_closure_paths()
-    assert len(paths) == 23
+    assert len(paths) == 24
     for relative in paths:
         destination = repository / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
@@ -1722,6 +1821,11 @@ def _build_real_closure_launch(
             )
     authorization_raw_facts += list(target_facts.values())
     third_party_facts = _real_third_party_facts()
+    authorization_closure = _closure(authorization_raw_facts)
+    source_conformance = _working_tree_source_conformance(
+        repository, authorization_closure
+    )
+    service_contract, service_templates = _service_manifest_contract(repository)
     manifest: dict[str, object] = {
         "schema": SCHEMA,
         "repository_root": str(repository),
@@ -1742,11 +1846,23 @@ def _build_real_closure_launch(
             for module, _, _ in module_bindings
             if module != AUTHORIZATION_SELF_MODULE
         ),
-        "authorization_source_closure": _closure(authorization_raw_facts),
+        "authorization_source_closure": authorization_closure,
+        "working_tree_source_conformance": source_conformance,
         "source_modules": source_modules,
         "third_party_source_closure": _third_party_closure(third_party_facts),
         "targets": target_facts,
         "internal_target_contract": _bootstrap_module()._INTERNAL_TARGET_CONTRACT,
+        "production_systemd_service_contract": service_contract,
+        "production_systemd_run_argv_templates": service_templates,
+        "production_service_launch_artifact_paths": _service_artifact_paths(),
+        "production_service_launch_modes": {
+            "outer_dispatch": "dispatch",
+            "retained_service_entry": "service-entry",
+        },
+        "atomic_cgroup_birth_preflight_receipt_interface": dict(
+            protocol.ZERO_ATOMIC_CGROUP_BIRTH_PREFLIGHT_RECEIPT_INTERFACE
+        ),
+        "frozen_authorization_context": _frozen_authorization_context(repository),
         "working_tree_mutation_after_snapshot_in_scope": False,
     }
     manifest_path = c_pre / "launch_manifest.json"
@@ -1875,7 +1991,7 @@ def test_bootstrap_prework_exhausted_absolute_campaign_deadline_never_dispatches
     assert dispatches == []
 
 
-def test_exact_twenty_three_static_roots_match_authorization_contract() -> None:
+def test_exact_twenty_four_static_roots_match_authorization_contract() -> None:
     completed = subprocess.run(
         [
             PYTHON,
@@ -1894,7 +2010,7 @@ def test_exact_twenty_three_static_roots_match_authorization_contract() -> None:
         text=True,
     )
     assert tuple(json.loads(completed.stdout)) == SOURCE_CLOSURE_REQUIRED_ROOTS
-    assert len(SOURCE_CLOSURE_REQUIRED_ROOTS) == 23
+    assert len(SOURCE_CLOSURE_REQUIRED_ROOTS) == 24
 
 
 def test_exact_four_manifest_targets_and_two_internal_entrypoints_are_bound() -> None:

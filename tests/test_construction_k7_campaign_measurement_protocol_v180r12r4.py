@@ -49,7 +49,7 @@ def cgroup_parent_fact() -> dict:
         "owner_gid": 1_000,
         "mode": 0o755,
         "controllers": ["cpu", "memory", "pids"],
-        "subtree_control": ["cpu", "memory", "pids"],
+        "subtree_control": ["memory", "pids"],
         "cgroup_type": "domain",
         "cgroup_namespace_inode": 4_026_531_835,
         "cgroup_events_present": True,
@@ -59,11 +59,7 @@ def cgroup_parent_fact() -> dict:
         "cgroup_procs_present": True,
         "memory_peak_present": True,
         "pids_peak_present": True,
-        "self_membership": (
-            "0::/user.slice/user-1000.slice/user@1000.service/app.slice/"
-            "acfqp-v180r12r4-measurement-"
-            "6796c5433437385a8984bec3663780fd722592210fcafb41a8ea35432c832f2e.service"
-        ),
+        "self_membership": "0::/user.slice/user-1000.slice/session-3377.scope",
     }
 
 
@@ -87,33 +83,33 @@ def runtime_capability_fact() -> dict:
     }
 
 
-def test_production_service_tokens_bind_all_ordinal8_failure_terminals() -> None:
+def test_production_service_tokens_bind_immediate_ordinal9_failure_terminals() -> None:
     contract = protocol.production_systemd_service_contract_v180r12r4()
     assert contract["token_input_fields"] == [
-        "failed_failure_state_id",
-        "failed_launch_failure_id",
+        "failed_predecessor_freeze_id",
+        "failed_inner_launch_failure_id",
         "failed_outer_service_failure_id",
         "repair_scope",
         "purpose",
     ]
     expected_tokens = {
         "measurement": (
-            "6796c5433437385a8984bec3663780fd722592210fcafb41a8ea35432c832f2e"
+            "c8d74b0ae750955932b08df9de7a3566368ba20e94ccb16696037c0446577bb6"
         ),
         "verification": (
-            "c0c98349b9bce217989e4a4826dcb409e2246056334d035589591adbdfbd7892"
+            "293c9c9fb1424204ccdba376bc48dd150d7d03139f7a263e6d5691abf61c20a3"
         ),
     }
     for row in contract["target_rows"]:
         token_input = row["token_input"]
-        assert token_input["failed_failure_state_id"] == (
-            protocol.V180R12R4R2_FAILED_CAMPAIGN_FAILURE_ID
+        assert token_input["failed_predecessor_freeze_id"] == (
+            protocol.V180R12R4R4_FAILED_PREDECESSOR_FREEZE_ID
         )
-        assert token_input["failed_launch_failure_id"] == (
-            protocol.V180R12R4R2_FAILED_INNER_LAUNCH_FAILURE_ID
+        assert token_input["failed_inner_launch_failure_id"] == (
+            protocol.V180R12R4R4_FAILED_INNER_LAUNCH_FAILURE_ID
         )
         assert token_input["failed_outer_service_failure_id"] == (
-            protocol.V180R12R4R2_FAILED_OUTER_SERVICE_FAILURE_ID
+            protocol.V180R12R4R4_FAILED_OUTER_SERVICE_FAILURE_ID
         )
         assert token_input["repair_scope"] == protocol.V180R12R4_REPAIR_SCOPE
         assert row["token"] == expected_tokens[row["target"]]
@@ -343,7 +339,7 @@ def test_protocol_preserves_r3r2_scientific_birth_failure_lineage() -> None:
     )
 
 
-def test_protocol_binds_ordinal8_as_immediate_failure_lineage() -> None:
+def test_protocol_preserves_ordinal8_as_historical_failure_lineage() -> None:
     document = frozen().to_document()
     lineage = document["failed_ordinal8_repair_lineage"]
     assert lineage == protocol.failed_ordinal8_repair_lineage_contract_v180r12r4()
@@ -366,13 +362,43 @@ def test_protocol_binds_ordinal8_as_immediate_failure_lineage() -> None:
         "subtree_control",
     ]
     assert lineage["full_property_diagnostic_recorded"] is False
-    assert lineage["repair_scope"] == protocol.V180R12R4_REPAIR_SCOPE
+    assert lineage["repair_scope"] == protocol.V180R12R4R3_REPAIR_SCOPE
     slot = document["campaign_measurement_execution_slot"]
-    assert slot["immediate_failed_predecessor_campaign_attempt_id"] == (
+    assert slot["historical_failed_ordinal8_campaign_attempt_id"] == (
         lineage["campaign_attempt_id"]
     )
-    assert slot["immediate_failed_predecessor_campaign_failure_id"] == (
+    assert slot["historical_failed_ordinal8_campaign_failure_id"] == (
         lineage["campaign_failure_id"]
+    )
+    assert slot["historical_failed_ordinal8_inner_launch_failure_id"] == (
+        lineage["inner_launch_failure_id"]
+    )
+    assert slot["historical_failed_ordinal8_outer_service_failure_id"] == (
+        lineage["outer_service_failure_id"]
+    )
+    assert document["failed_v180r12r4r2_ordinal8_identity_rerun_forbidden"]
+
+
+def test_protocol_binds_ordinal9_as_immediate_failure_lineage() -> None:
+    document = frozen().to_document()
+    lineage = document["failed_ordinal9_repair_lineage"]
+    assert lineage == protocol.failed_ordinal9_repair_lineage_contract_v180r12r4()
+    assert lineage["freeze_id"] == protocol.V180R12R4R4_FAILED_PREDECESSOR_FREEZE_ID
+    assert lineage["logical_campaign_attempt_id"] == (
+        protocol.V180R12R4R4_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID
+    )
+    assert lineage["campaign_attempt_artifact_present"] is False
+    assert lineage["campaign_started"] is False
+    assert lineage["campaign_ledger_event_count"] == 0
+    assert lineage["outer_service_unit_ownership_acquired"] is True
+    assert lineage["full_source_conformance"] is False
+    assert lineage["postmortem_full_property_diagnostic_recorded"] is True
+    assert lineage["source_conformance_diagnostic"]["mismatch_fields"] == ["mode"]
+    assert lineage["repair_scope"] == protocol.V180R12R4_REPAIR_SCOPE
+    slot = document["campaign_measurement_execution_slot"]
+    assert slot["immediate_failed_predecessor_freeze_id"] == lineage["freeze_id"]
+    assert slot["immediate_failed_predecessor_logical_campaign_attempt_id"] == (
+        lineage["logical_campaign_attempt_id"]
     )
     assert slot["immediate_failed_predecessor_inner_launch_failure_id"] == (
         lineage["inner_launch_failure_id"]
@@ -380,7 +406,7 @@ def test_protocol_binds_ordinal8_as_immediate_failure_lineage() -> None:
     assert slot["immediate_failed_predecessor_outer_service_failure_id"] == (
         lineage["outer_service_failure_id"]
     )
-    assert document["failed_v180r12r4r2_ordinal8_identity_rerun_forbidden"]
+    assert document["failed_v180r12r4r4_ordinal9_identity_rerun_forbidden"]
 
 
 def test_r3r2_scientific_birth_lineage_rejects_public_identity_drift(
@@ -440,12 +466,13 @@ def test_failed_dispatch_replay_is_source_bound_pre_scientific_authority_not_mea
         "retained_artifact_absence_and_cgroup_reads_are_trusted_prereg_authority_replay"
     ] is True
     roots = protocol.SOURCE_CLOSURE_REQUIRED_ROOTS
-    assert len(roots) == len(set(roots)) == 23
+    assert len(roots) == len(set(roots)) == 24
     assert tuple(roots) == tuple(sorted(roots))
     assert roots.count(protocol.V180R12R3_FAILURE_FREEZE_SOURCE_RELATIVE_PATH) == 1
     assert roots.count(protocol.V180R12R3R1_FAILURE_FREEZE_SOURCE_RELATIVE_PATH) == 1
     assert roots.count(protocol.V180R12R3R2_FAILURE_FREEZE_SOURCE_RELATIVE_PATH) == 1
     assert roots.count(protocol.V180R12R4R2_FAILURE_FREEZE_SOURCE_RELATIVE_PATH) == 1
+    assert roots.count(protocol.V180R12R4R4_FAILURE_FREEZE_SOURCE_RELATIVE_PATH) == 1
 
 
 def test_failed_dispatch_lineage_rejects_absence_inventory_drift_before_replay(
@@ -721,8 +748,19 @@ def test_protocol_binds_cgroup_parent_capability_without_using_self_membership_a
     assert document["cgroup_parent_fact"] == parent
     assert document["runtime_capability_fact"] == capability
     assert document["cgroup_parent_fact_bound_at_protocol_freeze"] is True
-    assert document["cgroup_parent_fact_must_be_reobserved_exactly_before_attempt"] is True
+    assert document[
+        "cgroup_parent_identity_fields_except_observer_self_membership_must_be_"
+        "reobserved_exactly_before_attempt"
+    ] is True
+    assert document["cgroup_parent_reobserved_identity_fields"] == [
+        field for field in protocol.CGROUP_PARENT_FACT_FIELDS
+        if field != "self_membership"
+    ]
     assert document["self_membership_is_parent_identity"] is False
+    assert document["frozen_self_membership_is_capture_provenance_only"] is True
+    assert document[
+        "production_source_self_membership_is_verified_separately_at_t1_t2_t3"
+    ] is True
     assert document["measurement_root_children"] == ["SUPERVISOR", "WORKER"]
     assert document["measurement_root_and_leaf_role_fact_count"] == 3
     assert document["measurement_root_no_internal_process_rule_required"] is True
@@ -767,10 +805,11 @@ def test_protocol_rejects_cgroup_parent_drift(field: str, replacement) -> None:
         )
 
 
-def test_cgroup_parent_controller_contract_accepts_delegated_superset() -> None:
+def test_cgroup_parent_controller_contract_accepts_available_cpu_without_enabling_it(
+) -> None:
     parent = cgroup_parent_fact()
     assert parent["controllers"] == ["cpu", "memory", "pids"]
-    assert parent["subtree_control"] == ["cpu", "memory", "pids"]
+    assert parent["subtree_control"] == ["memory", "pids"]
     assert protocol.validate_cgroup_parent_fact_v180r12r4(parent) == parent
 
 

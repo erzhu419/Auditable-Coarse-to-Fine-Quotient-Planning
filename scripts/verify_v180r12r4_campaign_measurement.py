@@ -194,8 +194,8 @@ PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
     "acfqp:construction-k7-production-transient-service-token:v180r12r4"
 )
 PRODUCTION_TRANSIENT_SERVICE_TOKEN_BY_TARGET = {
-    "measurement": "6796c5433437385a8984bec3663780fd722592210fcafb41a8ea35432c832f2e",
-    "verification": "c0c98349b9bce217989e4a4826dcb409e2246056334d035589591adbdfbd7892",
+    "measurement": "c8d74b0ae750955932b08df9de7a3566368ba20e94ccb16696037c0446577bb6",
+    "verification": "293c9c9fb1424204ccdba376bc48dd150d7d03139f7a263e6d5691abf61c20a3",
 }
 PRODUCTION_RUNTIME_PLACEMENT_T1_SCHEMA = (
     "acfqp.v180r12r4_production_runtime_placement_t1.v1"
@@ -393,6 +393,10 @@ SOURCE_CLOSURE_REQUIRED_ROOTS = tuple(sorted((
         "src/acfqp/construction_k7_campaign_measurement_"
         "failure_freeze_v180r12r4r2.py"
     ),
+    (
+        "src/acfqp/construction_k7_campaign_measurement_"
+        "failure_freeze_v180r12r4r4.py"
+    ),
     "src/acfqp/construction_k7_campaign_measurement_protocol_v180r12r4.py",
     "src/acfqp/construction_k7_campaign_measurement_supervisor_v180r12r4.py",
     "src/acfqp/construction_k7_campaign_measurement_worker_v180r12r4.py",
@@ -452,6 +456,58 @@ _NORMALIZED_WRAPPER_FIELDS = _RAW_FACT_FIELDS | {
     "binding_kind",
     "redacted_constant_names",
 }
+_SOURCE_CONFORMANCE_FIELDS = {
+    "schema",
+    "phase",
+    "source_root_count",
+    "snapshots",
+    "mismatch_count",
+    "per_field_mismatches",
+    "unit_ownership_evaluated",
+    "full_source_conformance",
+    "cause",
+}
+_SOURCE_CONFORMANCE_SNAPSHOT_FIELDS = {
+    "relative_path",
+    "expected",
+    "observed_before",
+    "observed_after",
+    "observed_content",
+    "mismatch_fields",
+    "conformant",
+}
+_SOURCE_CONFORMANCE_EXPECTED_FIELDS = {
+    "file_type",
+    "git_mode",
+    "mode",
+    "st_nlink",
+    "binding_kind",
+    "byte_count",
+    "sha256",
+    "git_blob_id",
+}
+_SOURCE_CONFORMANCE_STAT_FIELDS = {
+    "file_type",
+    "st_dev",
+    "st_ino",
+    "st_mode",
+    "mode",
+    "st_nlink",
+    "st_uid",
+    "st_gid",
+    "st_size",
+    "st_mtime_ns",
+    "st_ctime_ns",
+}
+_SOURCE_CONFORMANCE_CONTENT_FIELDS = {
+    "binding_kind",
+    "byte_count",
+    "sha256",
+    "git_blob_id",
+    "physical_byte_count",
+    "physical_sha256",
+    "physical_git_blob_id",
+}
 _WRAPPER_REDACTED_NAMES = (
     "EXPECTED_AUTHORIZATION_EVIDENCE_ID",
     "EXPECTED_CANONICAL_BYTE_COUNT",
@@ -491,10 +547,16 @@ _MANIFEST_FIELDS = {
     "authorization_self_module",
     "authorization_raw_source_modules",
     "authorization_source_closure",
+    "working_tree_source_conformance",
     "source_modules",
     "third_party_source_closure",
     "targets",
     "internal_target_contract",
+    "production_systemd_service_contract",
+    "production_systemd_run_argv_templates",
+    "production_service_launch_artifact_paths",
+    "production_service_launch_modes",
+    "atomic_cgroup_birth_preflight_receipt_interface",
     "frozen_authorization_context",
     "working_tree_mutation_after_snapshot_in_scope",
 }
@@ -511,6 +573,10 @@ _MATERIALIZATION_FIELDS = {
     "retained_bootstrap",
     "retained_launcher",
     "launch_manifest",
+    "production_transient_service_rows",
+    "production_service_launch_artifact_paths",
+    "production_service_launch_modes",
+    "atomic_cgroup_birth_preflight_receipt_interface",
     "materialization_terminal_relative_path",
     "materialization_failure_relative_path",
     "authorization_source_closure_file_count",
@@ -521,6 +587,7 @@ _MATERIALIZATION_FIELDS = {
     "third_party_source_closure_facts_sha256",
     "normalized_wrapper_fact",
     "current_literal_wrapper_raw_observation",
+    "working_tree_source_conformance",
     "launch_manifest_digest_is_runtime_supplied_not_protocol_frozen",
     "launch_manifest_has_no_self_digest",
     "frozen_authorization_context_sha256",
@@ -563,6 +630,7 @@ _EXTERNAL_ROOT_FIELDS = {
     "materializer_git_blob",
     "third_party_source_roots",
     "frozen_authorization_context",
+    "atomic_cgroup_birth_preflight_receipt_interface",
     "created_before_v180r12r4_authorized_measurement_execution",
     "v180r12r4_outcome_bytes_accessed",
 }
@@ -1335,6 +1403,360 @@ def _normalize_wrapper(raw: bytes) -> tuple[bytes, dict[str, Any]]:
     return result, values
 
 
+def _zero_atomic_cgroup_birth_preflight_interface() -> dict[str, Any]:
+    zero_id = "0" * 64
+    return {
+        "schema": (
+            "acfqp.v180r12r4_atomic_cgroup_birth_preflight_"
+            "receipt_interface.v1"
+        ),
+        "receipt_id": zero_id,
+        "receipt_byte_count": 0,
+        "receipt_sha256": zero_id,
+        "authority_accepted": False,
+        "production_launch_authorized": False,
+    }
+
+
+def _production_service_artifact_paths() -> dict[str, dict[str, str]]:
+    verification_prefix = f"{PRELAUNCH_ROOT_RELATIVE_PATH}/VERIFICATION"
+    return {
+        "measurement": {
+            "attempt": MEASUREMENT_SERVICE_LAUNCH_ATTEMPT_RELATIVE_PATH,
+            "receipt": MEASUREMENT_SERVICE_LAUNCH_RECEIPT_RELATIVE_PATH,
+            "failure": MEASUREMENT_SERVICE_LAUNCH_FAILURE_RELATIVE_PATH,
+        },
+        "verification": {
+            "attempt": verification_prefix + "_SERVICE_LAUNCH_ATTEMPT.json",
+            "receipt": verification_prefix + "_SERVICE_LAUNCH_RECEIPT.json",
+            "failure": (
+                ".tmp/exact-freeze/"
+                "v180r12r4_campaign_measurement_prelaunch_"
+                "verification_service_launch_failure.json"
+            ),
+        },
+    }
+
+
+def _validated_production_token_input(
+    value: Any, target: str
+) -> dict[str, Any]:
+    fields = {
+        "failed_predecessor_freeze_id",
+        "failed_inner_launch_failure_id",
+        "failed_outer_service_failure_id",
+        "repair_scope",
+        "purpose",
+    }
+    if type(value) is not dict or set(value) != fields:
+        _fail(f"{target} production token input changed")
+    for key in (
+        "failed_predecessor_freeze_id",
+        "failed_inner_launch_failure_id",
+        "failed_outer_service_failure_id",
+    ):
+        _cid(value[key], f"{target} production token {key}")
+    expected_token = hashlib.sha256(
+        PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN.encode("ascii")
+        + b"\x00"
+        + canonical_json_bytes(value)
+    ).hexdigest()
+    if not (
+        value["repair_scope"]
+        == "WORKING_TREE_SOURCE_MODE_CONFORMANCE_AND_TYPED_DIAGNOSTIC"
+        and value["purpose"] == target.upper()
+        and expected_token == PRODUCTION_TRANSIENT_SERVICE_TOKEN_BY_TARGET[target]
+    ):
+        _fail(f"{target} production token lineage changed")
+    return dict(value)
+
+
+def _expected_production_service_contract(
+    contract: Any,
+) -> dict[str, Any]:
+    contract_fields = {
+        "schema",
+        "token_domain",
+        "token_input_fields",
+        "target_order",
+        "target_rows",
+        "unit_kind",
+        "slice",
+        "service_type",
+        "delegate",
+        "umask",
+        "systemd_run_executable",
+        "environment_executable",
+        "materialization_terminal_sha256_template",
+        "repository_root_and_launcher_paths_must_be_absolute",
+        "outer_dispatch_process_cwd_must_equal_repository_root",
+        "service_working_directory_must_equal_repository_root",
+        "service_source_cgroup_is_exact_direct_child_of_app_slice",
+        "active_protocol_authorization_attempt_ids_in_token",
+        "host_facts_in_token",
+        "preflight_receipt_interface",
+    }
+    row_fields = {
+        "target",
+        "token_input",
+        "token",
+        "unit_name",
+        "outer_dispatch_cwd_template",
+        "outer_dispatch_argv_template",
+        "launcher_command_template",
+        "service_working_directory_template",
+        "systemd_run_argv_template",
+    }
+    if type(contract) is not dict or set(contract) != contract_fields:
+        _fail("production systemd service contract schema changed")
+    rows = contract.get("target_rows")
+    if (
+        type(rows) is not list
+        or len(rows) != 2
+        or any(type(row) is not dict or set(row) != row_fields for row in rows)
+        or [row["target"] for row in rows] != ["measurement", "verification"]
+    ):
+        _fail("production systemd service target rows changed")
+    expected_rows = []
+    digest_template = "__V180R12R4_MATERIALIZATION_TERMINAL_SHA256__"
+    for row in rows:
+        target = row["target"]
+        token_input = _validated_production_token_input(
+            row["token_input"], target
+        )
+        token = PRODUCTION_TRANSIENT_SERVICE_TOKEN_BY_TARGET[target]
+        unit_name = f"acfqp-v180r12r4-{target}-{token}.service"
+        launcher = "{repository_root}/" + LAUNCHER_RELATIVE_PATH
+        service_command = [
+            "/usr/bin/env",
+            "-i",
+            "ACFQP_V180R12R4_MATERIALIZATION_TERMINAL_SHA256="
+            + digest_template,
+            "LC_CTYPE=C.UTF-8",
+            *ISOLATED_ARGV_PREFIX,
+            launcher,
+            "service-entry",
+            target,
+            "{repository_root}",
+        ]
+        outer_command = [
+            *service_command[:-4],
+            launcher,
+            "dispatch",
+            target,
+            "{repository_root}",
+        ]
+        expected_rows.append(
+            {
+                "target": target,
+                "token_input": token_input,
+                "token": token,
+                "unit_name": unit_name,
+                "outer_dispatch_cwd_template": "{repository_root}",
+                "outer_dispatch_argv_template": outer_command,
+                "launcher_command_template": service_command,
+                "service_working_directory_template": "{repository_root}",
+                "systemd_run_argv_template": [
+                    "/usr/bin/systemd-run",
+                    "--user",
+                    "--wait",
+                    "--collect",
+                    "--pipe",
+                    "--quiet",
+                    "--no-ask-password",
+                    "--unit=" + unit_name,
+                    "--slice=app.slice",
+                    "--service-type=exec",
+                    "--property=Delegate=yes",
+                    "--property=UMask=0077",
+                    "--working-directory={repository_root}",
+                    *service_command,
+                ],
+            }
+        )
+    expected = {
+        "schema": "acfqp.v180r12r4_production_systemd_service_contracts.v1",
+        "token_domain": PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN,
+        "token_input_fields": [
+            "failed_predecessor_freeze_id",
+            "failed_inner_launch_failure_id",
+            "failed_outer_service_failure_id",
+            "repair_scope",
+            "purpose",
+        ],
+        "target_order": ["measurement", "verification"],
+        "target_rows": expected_rows,
+        "unit_kind": "SERVICE_NOT_SCOPE",
+        "slice": "app.slice",
+        "service_type": "exec",
+        "delegate": True,
+        "umask": "0077",
+        "systemd_run_executable": "/usr/bin/systemd-run",
+        "environment_executable": "/usr/bin/env",
+        "materialization_terminal_sha256_template": digest_template,
+        "repository_root_and_launcher_paths_must_be_absolute": True,
+        "outer_dispatch_process_cwd_must_equal_repository_root": True,
+        "service_working_directory_must_equal_repository_root": True,
+        "service_source_cgroup_is_exact_direct_child_of_app_slice": True,
+        "active_protocol_authorization_attempt_ids_in_token": False,
+        "host_facts_in_token": False,
+        "preflight_receipt_interface": (
+            _zero_atomic_cgroup_birth_preflight_interface()
+        ),
+    }
+    if contract != expected:
+        _fail("production systemd service contract changed")
+    return expected
+
+
+def _validate_production_manifest_fields(
+    manifest: Mapping[str, Any], repository_root: Path
+) -> None:
+    contract = _expected_production_service_contract(
+        manifest.get("production_systemd_service_contract")
+    )
+    expected_templates = {
+        row["target"]: [
+            item.replace("{repository_root}", str(repository_root))
+            for item in row["systemd_run_argv_template"]
+        ]
+        for row in contract["target_rows"]
+    }
+    if not (
+        manifest.get("production_systemd_run_argv_templates")
+        == expected_templates
+        and manifest.get("production_service_launch_artifact_paths")
+        == _production_service_artifact_paths()
+        and manifest.get("production_service_launch_modes")
+        == {"outer_dispatch": "dispatch", "retained_service_entry": "service-entry"}
+        and manifest.get("atomic_cgroup_birth_preflight_receipt_interface")
+        == _zero_atomic_cgroup_birth_preflight_interface()
+    ):
+        _fail("production prelaunch manifest contract changed")
+
+
+def _git_blob_id(raw: bytes) -> str:
+    return hashlib.sha1(
+        b"blob " + str(len(raw)).encode("ascii") + b"\x00" + raw
+    ).hexdigest()
+
+
+def _validate_working_tree_source_conformance(
+    value: Any,
+    closure_rows: Sequence[Mapping[str, Any]],
+    raw_by_path: Mapping[str, bytes],
+    wrapper_normalized: bytes,
+) -> dict[str, Any]:
+    if type(value) is not dict or set(value) != _SOURCE_CONFORMANCE_FIELDS:
+        _fail("working-tree source conformance schema changed")
+    snapshots = value.get("snapshots")
+    if not (
+        value.get("schema")
+        == "acfqp.v180r12r4_working_tree_source_conformance_diagnostic.v1"
+        and value.get("phase")
+        == "BEFORE_PRELAUNCH_OUTPUT_AND_SCIENTIFIC_CAMPAIGN"
+        and type(value.get("source_root_count")) is int
+        and value["source_root_count"] == len(SOURCE_CLOSURE_REQUIRED_ROOTS)
+        and type(snapshots) is list
+        and len(snapshots) == len(SOURCE_CLOSURE_REQUIRED_ROOTS)
+        and type(value.get("mismatch_count")) is int
+        and value["mismatch_count"] == 0
+        and value.get("per_field_mismatches") == []
+        and value.get("unit_ownership_evaluated") is False
+        and value.get("full_source_conformance") is True
+        and value.get("cause") is None
+    ):
+        _fail("working-tree source conformance did not pass")
+    if len(closure_rows) != len(snapshots):
+        _fail("working-tree source conformance denominator changed")
+    for index, (snapshot, closure_row) in enumerate(
+        zip(snapshots, closure_rows, strict=True)
+    ):
+        if (
+            type(snapshot) is not dict
+            or set(snapshot) != _SOURCE_CONFORMANCE_SNAPSHOT_FIELDS
+            or type(snapshot.get("expected")) is not dict
+            or set(snapshot["expected"]) != _SOURCE_CONFORMANCE_EXPECTED_FIELDS
+            or type(snapshot.get("observed_before")) is not dict
+            or set(snapshot["observed_before"]) != _SOURCE_CONFORMANCE_STAT_FIELDS
+            or type(snapshot.get("observed_after")) is not dict
+            or set(snapshot["observed_after"]) != _SOURCE_CONFORMANCE_STAT_FIELDS
+            or type(snapshot.get("observed_content")) is not dict
+            or set(snapshot["observed_content"])
+            != _SOURCE_CONFORMANCE_CONTENT_FIELDS
+        ):
+            _fail(f"working-tree source snapshot {index} schema changed")
+        relative = snapshot["relative_path"]
+        if relative != closure_row.get("relative_path"):
+            _fail("working-tree source-conformance closure join changed")
+        raw = raw_by_path.get(relative)
+        if raw is None:
+            _fail(f"working-tree source snapshot {index} raw source is absent")
+        effective_raw = (
+            wrapper_normalized
+            if relative == AUTHORIZATION_EVIDENCE_SOURCE_RELATIVE_PATH
+            else raw
+        )
+        binding_kind = (
+            "POST_PREREG_LITERAL_REDACTED_SOURCE_V1"
+            if relative == AUTHORIZATION_EVIDENCE_SOURCE_RELATIVE_PATH
+            else "EXACT_C_PRE_GIT_BLOB"
+        )
+        expected = snapshot["expected"]
+        before = snapshot["observed_before"]
+        after = snapshot["observed_after"]
+        content = snapshot["observed_content"]
+        expected_mode = {"100644": 0o644, "100755": 0o755}.get(
+            expected.get("git_mode")
+        )
+        if not (
+            before == after
+            and snapshot.get("mismatch_fields") == []
+            and snapshot.get("conformant") is True
+            and expected_mode is not None
+            and expected.get("file_type") == before.get("file_type")
+            == "REGULAR_FILE"
+            and type(before.get("st_mode")) is int
+            and stat.S_ISREG(before["st_mode"])
+            and stat.S_IMODE(before["st_mode"]) == before.get("mode")
+            == expected_mode
+            and expected.get("mode") == expected_mode
+            and expected.get("st_nlink") == before.get("st_nlink") == 1
+            and expected.get("binding_kind") == content.get("binding_kind")
+            == binding_kind
+            and expected.get("byte_count") == content.get("byte_count")
+            == len(effective_raw)
+            and expected.get("sha256") == content.get("sha256")
+            == hashlib.sha256(effective_raw).hexdigest()
+            and expected.get("git_blob_id") == content.get("git_blob_id")
+            == _git_blob_id(effective_raw)
+            and content.get("physical_byte_count") == before.get("st_size")
+            == len(raw)
+            and content.get("physical_sha256")
+            == hashlib.sha256(raw).hexdigest()
+            and content.get("physical_git_blob_id") == _git_blob_id(raw)
+            and closure_row.get("byte_count") == len(effective_raw)
+            and closure_row.get("sha256")
+            == hashlib.sha256(effective_raw).hexdigest()
+        ):
+            _fail(f"working-tree source snapshot {index} changed")
+        for field in (
+            "st_dev",
+            "st_ino",
+            "st_mode",
+            "mode",
+            "st_nlink",
+            "st_uid",
+            "st_gid",
+            "st_size",
+            "st_mtime_ns",
+            "st_ctime_ns",
+        ):
+            if type(before.get(field)) is not int or before[field] < 0:
+                _fail(f"working-tree source snapshot {index} stat changed")
+    return dict(value)
+
+
 def _validate_source_manifest(
     store: VerificationDurableStoreV180R12R4,
     manifest: dict[str, Any],
@@ -1355,6 +1777,7 @@ def _validate_source_manifest(
     _cid(expected_manifest_sha256, "expected launch manifest digest")
     if _COMMIT.fullmatch(expected_prereg_commit) is None:
         _fail("expected prereg commit is not one lowercase commit identity")
+    _validate_production_manifest_fields(manifest, store.repository_root)
 
     source_modules = manifest.get("source_modules")
     if type(source_modules) is not list or not source_modules:
@@ -1442,6 +1865,12 @@ def _validate_source_manifest(
             _validate_fact_bytes(raw, fact, "authorization closure source")
     if wrapper_values is None or wrapper_normalized is None:
         _fail("authorization evidence wrapper closure is absent")
+    _validate_working_tree_source_conformance(
+        manifest.get("working_tree_source_conformance"),
+        closure_rows,
+        raw_by_path,
+        wrapper_normalized,
+    )
 
     protocol_raw = raw_by_path.get(PROTOCOL_SOURCE_RELATIVE_PATH)
     authorization_raw = raw_by_path.get(AUTHORIZATION_SOURCE_RELATIVE_PATH)
@@ -1693,6 +2122,15 @@ def _validate_materialization(
         "official_execution_allowed": False,
         "success": True,
     }
+    service_rows = manifest["production_systemd_service_contract"]["target_rows"]
+    expected_transient_rows = [
+        {
+            "target": row["target"],
+            "token": row["token"],
+            "unit_name": row["unit_name"],
+        }
+        for row in service_rows
+    ]
     if not (
         identity == document["materialization_terminal_id"]
         and document.get("schema") == MATERIALIZATION_TERMINAL_SCHEMA
@@ -1709,6 +2147,14 @@ def _validate_materialization(
         ).hexdigest()
         and document.get("output_directory_mode") == "0700"
         and document.get("output_file_mode") == "0400"
+        and document.get("production_transient_service_rows")
+        == expected_transient_rows
+        and document.get("production_service_launch_artifact_paths")
+        == manifest["production_service_launch_artifact_paths"]
+        and document.get("production_service_launch_modes")
+        == manifest["production_service_launch_modes"]
+        and document.get("atomic_cgroup_birth_preflight_receipt_interface")
+        == manifest["atomic_cgroup_birth_preflight_receipt_interface"]
         and all(document.get(key) is expected for key, expected in booleans.items())
         and all(
             document.get(key) == "NOT_RUN"
@@ -1721,6 +2167,10 @@ def _validate_materialization(
         )
     ):
         _fail("materialization terminal boundary changed")
+    if document.get("working_tree_source_conformance") != manifest[
+        "working_tree_source_conformance"
+    ]:
+        _fail("manifest/materialization source conformance join changed")
 
     manifest_fact = _fact(
         document.get("launch_manifest"),
@@ -1785,6 +2235,8 @@ def _validate_materialization(
         )
         and external.get("frozen_authorization_context")
         == manifest["frozen_authorization_context"]
+        and external.get("atomic_cgroup_birth_preflight_receipt_interface")
+        == manifest["atomic_cgroup_birth_preflight_receipt_interface"]
     ):
         _fail("prelaunch external-root authority changed")
     for terminal_key, external_key, source_path in (
@@ -1897,12 +2349,18 @@ def _validate_production_systemd_service_invocation(
             _fail(f"{target} production systemd service invocation keyset changed")
     token_input = invocation.get("token_input")
     if type(token_input) is not dict or set(token_input) != {
-        "failed_failure_state_id", "failed_launch_failure_id",
+        "failed_predecessor_freeze_id", "failed_inner_launch_failure_id",
         "failed_outer_service_failure_id", "repair_scope", "purpose",
     }:
         _fail(f"{target} production systemd service token input changed")
-    _cid(token_input.get("failed_failure_state_id"), "failed failure-state ID")
-    _cid(token_input.get("failed_launch_failure_id"), "failed launch-failure ID")
+    _cid(
+        token_input.get("failed_predecessor_freeze_id"),
+        "failed predecessor-freeze ID",
+    )
+    _cid(
+        token_input.get("failed_inner_launch_failure_id"),
+        "failed inner launch-failure ID",
+    )
     _cid(
         token_input.get("failed_outer_service_failure_id"),
         "failed outer-service-failure ID",
@@ -1938,7 +2396,7 @@ def _validate_production_systemd_service_invocation(
         and invocation.get("token_domain") == PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN
         and invocation.get("target") == target
         and token_input.get("repair_scope")
-        == "CGROUP_CONTROLLER_SEMANTICS_AND_TYPED_DIAGNOSTIC_SUCCESSOR"
+        == "WORKING_TREE_SOURCE_MODE_CONFORMANCE_AND_TYPED_DIAGNOSTIC"
         and token_input.get("purpose") == target.upper()
         and invocation.get("token") == token
         == PRODUCTION_TRANSIENT_SERVICE_TOKEN_BY_TARGET[target]

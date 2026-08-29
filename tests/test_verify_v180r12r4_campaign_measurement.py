@@ -88,6 +88,97 @@ def _closure(facts: list[dict[str, object]]) -> dict[str, object]:
     }
 
 
+def _working_tree_source_conformance(
+    repository: Path,
+    closure_facts: list[dict[str, object]],
+    sources: Mapping[str, bytes],
+    normalized_wrapper: bytes,
+) -> dict[str, object]:
+    snapshots = []
+    for fact in closure_facts:
+        relative = str(fact["relative_path"])
+        physical_raw = sources[relative]
+        effective_raw = (
+            normalized_wrapper
+            if relative == runner.AUTHORIZATION_EVIDENCE_SOURCE_RELATIVE_PATH
+            else physical_raw
+        )
+        metadata = (repository / relative).stat()
+        assert stat.S_ISREG(metadata.st_mode)
+        assert stat.S_IMODE(metadata.st_mode) == 0o644
+        binding_kind = str(
+            fact.get("binding_kind", "EXACT_C_PRE_GIT_BLOB")
+        )
+        effective_blob = hashlib.sha1(
+            b"blob "
+            + str(len(effective_raw)).encode("ascii")
+            + b"\x00"
+            + effective_raw
+        ).hexdigest()
+        physical_blob = hashlib.sha1(
+            b"blob "
+            + str(len(physical_raw)).encode("ascii")
+            + b"\x00"
+            + physical_raw
+        ).hexdigest()
+        observed_stat = {
+            "file_type": "REGULAR_FILE",
+            "st_dev": metadata.st_dev,
+            "st_ino": metadata.st_ino,
+            "st_mode": metadata.st_mode,
+            "mode": stat.S_IMODE(metadata.st_mode),
+            "st_nlink": metadata.st_nlink,
+            "st_uid": metadata.st_uid,
+            "st_gid": metadata.st_gid,
+            "st_size": metadata.st_size,
+            "st_mtime_ns": metadata.st_mtime_ns,
+            "st_ctime_ns": metadata.st_ctime_ns,
+        }
+        snapshots.append(
+            {
+                "relative_path": relative,
+                "expected": {
+                    "file_type": "REGULAR_FILE",
+                    "git_mode": "100644",
+                    "mode": 0o644,
+                    "st_nlink": 1,
+                    "binding_kind": binding_kind,
+                    "byte_count": len(effective_raw),
+                    "sha256": hashlib.sha256(effective_raw).hexdigest(),
+                    "git_blob_id": effective_blob,
+                },
+                "observed_before": observed_stat,
+                "observed_after": dict(observed_stat),
+                "observed_content": {
+                    "binding_kind": binding_kind,
+                    "byte_count": len(effective_raw),
+                    "sha256": hashlib.sha256(effective_raw).hexdigest(),
+                    "git_blob_id": effective_blob,
+                    "physical_byte_count": len(physical_raw),
+                    "physical_sha256": hashlib.sha256(
+                        physical_raw
+                    ).hexdigest(),
+                    "physical_git_blob_id": physical_blob,
+                },
+                "mismatch_fields": [],
+                "conformant": True,
+            }
+        )
+    return {
+        "schema": (
+            "acfqp.v180r12r4_working_tree_source_conformance_diagnostic.v1"
+        ),
+        "phase": "BEFORE_PRELAUNCH_OUTPUT_AND_SCIENTIFIC_CAMPAIGN",
+        "source_root_count": len(snapshots),
+        "snapshots": snapshots,
+        "mismatch_count": 0,
+        "per_field_mismatches": [],
+        "unit_ownership_evaluated": False,
+        "full_source_conformance": True,
+        "cause": None,
+    }
+
+
 def _wrapper_source(values: dict[str, object]) -> bytes:
     lines = []
     for name in runner._WRAPPER_REDACTED_NAMES:
@@ -422,6 +513,17 @@ def _source_manifest(
     )
     for relative, raw in sources.items():
         _write(repository / relative, raw, mode=0o644)
+    source_conformance = _working_tree_source_conformance(
+        repository, normalized_facts, sources, normalized_wrapper
+    )
+    service_contract = protocol.production_systemd_service_contract_v180r12r4()
+    service_templates = {
+        row["target"]: [
+            item.replace("{repository_root}", str(repository))
+            for item in row["systemd_run_argv_template"]
+        ]
+        for row in service_contract["target_rows"]
+    }
 
     source_modules = []
     for index, relative in enumerate(runner.SOURCE_CLOSURE_REQUIRED_ROOTS):
@@ -527,6 +629,7 @@ def _source_manifest(
         "authorization_self_module": "bound.authorization",
         "authorization_raw_source_modules": ["bound.authorization"],
         "authorization_source_closure": _closure(normalized_facts),
+        "working_tree_source_conformance": source_conformance,
         "source_modules": source_modules,
         "third_party_source_closure": third_party,
         "targets": {
@@ -534,6 +637,18 @@ def _source_manifest(
             for target, path in runner.TARGET_RUNNER_PATHS.items()
         },
         "internal_target_contract": {"sealed": True},
+        "production_systemd_service_contract": service_contract,
+        "production_systemd_run_argv_templates": service_templates,
+        "production_service_launch_artifact_paths": (
+            runner._production_service_artifact_paths()
+        ),
+        "production_service_launch_modes": {
+            "outer_dispatch": "dispatch",
+            "retained_service_entry": "service-entry",
+        },
+        "atomic_cgroup_birth_preflight_receipt_interface": (
+            runner._zero_atomic_cgroup_birth_preflight_interface()
+        ),
         "frozen_authorization_context": frozen_context,
         "working_tree_mutation_after_snapshot_in_scope": False,
     }
@@ -608,6 +723,9 @@ def _repository(
         "frozen_authorization_context": manifest[
             "frozen_authorization_context"
         ],
+        "atomic_cgroup_birth_preflight_receipt_interface": manifest[
+            "atomic_cgroup_birth_preflight_receipt_interface"
+        ],
         "created_before_v180r12r4_authorized_measurement_execution": True,
         "v180r12r4_outcome_bytes_accessed": False,
     }
@@ -650,6 +768,25 @@ def _repository(
         "retained_bootstrap": _fact(runner.BOOTSTRAP_RELATIVE_PATH, bootstrap_raw),
         "retained_launcher": _fact(runner.LAUNCHER_RELATIVE_PATH, launcher_raw),
         "launch_manifest": _fact(runner.MANIFEST_RELATIVE_PATH, manifest_raw),
+        "production_transient_service_rows": [
+            {
+                "target": row["target"],
+                "token": row["token"],
+                "unit_name": row["unit_name"],
+            }
+            for row in manifest["production_systemd_service_contract"][
+                "target_rows"
+            ]
+        ],
+        "production_service_launch_artifact_paths": manifest[
+            "production_service_launch_artifact_paths"
+        ],
+        "production_service_launch_modes": manifest[
+            "production_service_launch_modes"
+        ],
+        "atomic_cgroup_birth_preflight_receipt_interface": manifest[
+            "atomic_cgroup_birth_preflight_receipt_interface"
+        ],
         "materialization_terminal_relative_path": runner.MATERIALIZATION_TERMINAL_RELATIVE_PATH,
         "materialization_failure_relative_path": runner.MATERIALIZATION_FAILURE_RELATIVE_PATH,
         "authorization_source_closure_file_count": manifest["authorization_source_closure"]["file_count"],
@@ -660,6 +797,9 @@ def _repository(
         "third_party_source_closure_facts_sha256": manifest["third_party_source_closure"]["facts_sha256"],
         "normalized_wrapper_fact": wrapper_normalized,
         "current_literal_wrapper_raw_observation": wrapper_current,
+        "working_tree_source_conformance": manifest[
+            "working_tree_source_conformance"
+        ],
         "launch_manifest_digest_is_runtime_supplied_not_protocol_frozen": True,
         "launch_manifest_has_no_self_digest": True,
         "frozen_authorization_context_sha256": hashlib.sha256(
@@ -1268,6 +1408,9 @@ def test_runner_ast_boundary_and_launcher_keysets_are_mechanical() -> None:
     assert spec is not None and spec.loader is not None
     launcher = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(launcher)
+    assert runner._MANIFEST_FIELDS == launcher._MANIFEST_KEYS
+    assert runner._MATERIALIZATION_FIELDS == launcher._MATERIALIZATION_REQUIRED_KEYS
+    assert runner._EXTERNAL_ROOT_FIELDS == launcher._EXTERNAL_ROOT_KEYS
     assert runner._ATTEMPT_FIELDS == launcher._ATTEMPT_KEYS
     assert runner._RECEIPT_FIELDS == launcher._TERMINAL_KEYS | {"launch_receipt_id"}
     assert runner._FAILURE_FIELDS == (
@@ -1659,6 +1802,75 @@ def test_precreate_rejects_receipt_and_failure_namespace_coexistence(
             match="one durable failure",
         ):
             runner._require_current_precreate_matrix(store)
+    finally:
+        store.close()
+
+
+def test_source_manifest_rejects_nonconformant_working_tree_snapshot(
+    tmp_path: Path, success_bundle: dict[str, object]
+) -> None:
+    repository, ids = _repository(tmp_path, success_bundle)
+    manifest_path = repository / runner.MANIFEST_RELATIVE_PATH
+    manifest = loads_canonical_json(manifest_path.read_bytes())
+    manifest["working_tree_source_conformance"][
+        "full_source_conformance"
+    ] = False
+    manifest_raw = canonical_json_bytes(manifest)
+    manifest_path.chmod(0o600)
+    _write(manifest_path, manifest_raw)
+    store = runner.VerificationDurableStoreV180R12R4(repository)
+    try:
+        with pytest.raises(
+            runner.V180R12R4VerificationRunnerError,
+            match="working-tree source conformance did not pass",
+        ):
+            runner._validate_source_manifest(
+                store,
+                manifest,
+                expected_manifest_sha256=hashlib.sha256(
+                    manifest_raw
+                ).hexdigest(),
+                expected_prereg_commit=ids["commit"],
+            )
+    finally:
+        store.close()
+
+
+def test_materialization_rejects_source_conformance_snapshot_substitution(
+    tmp_path: Path, success_bundle: dict[str, object]
+) -> None:
+    repository, ids = _repository(tmp_path, success_bundle)
+    store = runner.VerificationDurableStoreV180R12R4(repository)
+    try:
+        manifest_raw = store.read_stable(
+            runner.MANIFEST_RELATIVE_PATH,
+            byte_cap=runner.MANIFEST_BYTE_CAP,
+            required_mode=0o400,
+        )
+        manifest = runner._canonical_object(manifest_raw, "manifest")
+        anchors = runner._validate_source_manifest(
+            store,
+            manifest,
+            expected_manifest_sha256=hashlib.sha256(manifest_raw).hexdigest(),
+            expected_prereg_commit=ids["commit"],
+        )
+        terminal_path = repository / runner.MATERIALIZATION_TERMINAL_RELATIVE_PATH
+        terminal = loads_canonical_json(terminal_path.read_bytes())
+        terminal.pop("materialization_terminal_id")
+        diagnostic = copy.deepcopy(terminal["working_tree_source_conformance"])
+        diagnostic["snapshots"][0]["observed_before"]["st_ino"] += 1
+        diagnostic["snapshots"][0]["observed_after"]["st_ino"] += 1
+        terminal["working_tree_source_conformance"] = diagnostic
+        terminal_raw = _plain_document(terminal, "materialization_terminal_id")
+        terminal_path.chmod(0o600)
+        _write(terminal_path, terminal_raw)
+        with pytest.raises(
+            runner.V180R12R4VerificationRunnerError,
+            match="manifest/materialization source conformance join changed",
+        ):
+            runner._validate_materialization(
+                store, manifest, manifest_raw, anchors
+            )
     finally:
         store.close()
 

@@ -71,7 +71,7 @@ PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
     "acfqp:construction-k7-production-transient-service-token:v180r12r4"
 )
 EXPECTED_PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN = (
-    "6796c5433437385a8984bec3663780fd722592210fcafb41a8ea35432c832f2e"
+    "c8d74b0ae750955932b08df9de7a3566368ba20e94ccb16696037c0446577bb6"
 )
 PRODUCTION_RUNTIME_PLACEMENT_T1_SCHEMA = (
     "acfqp.v180r12r4_production_runtime_placement_t1.v1"
@@ -1300,12 +1300,18 @@ def _validate_production_systemd_service_invocation(
     invocation = dict(value)
     token_input = invocation.get("token_input")
     if type(token_input) is not dict or set(token_input) != {
-        "failed_failure_state_id", "failed_launch_failure_id",
+        "failed_predecessor_freeze_id", "failed_inner_launch_failure_id",
         "failed_outer_service_failure_id", "repair_scope", "purpose",
     }:
         _fail("production systemd service token input changed")
-    _cid(token_input.get("failed_failure_state_id"), "failed failure-state ID")
-    _cid(token_input.get("failed_launch_failure_id"), "failed launch-failure ID")
+    _cid(
+        token_input.get("failed_predecessor_freeze_id"),
+        "failed predecessor-freeze ID",
+    )
+    _cid(
+        token_input.get("failed_inner_launch_failure_id"),
+        "failed inner launch-failure ID",
+    )
     _cid(
         token_input.get("failed_outer_service_failure_id"),
         "failed outer-service-failure ID",
@@ -1341,7 +1347,7 @@ def _validate_production_systemd_service_invocation(
         and invocation.get("token_domain") == PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN
         and invocation.get("target") == "measurement"
         and token_input.get("repair_scope")
-        == "CGROUP_CONTROLLER_SEMANTICS_AND_TYPED_DIAGNOSTIC_SUCCESSOR"
+        == "WORKING_TREE_SOURCE_MODE_CONFORMANCE_AND_TYPED_DIAGNOSTIC"
         and token_input.get("purpose") == "MEASUREMENT"
         and invocation.get("token") == token
         == EXPECTED_PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN

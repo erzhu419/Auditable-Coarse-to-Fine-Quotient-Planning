@@ -395,6 +395,10 @@ SOURCE_CLOSURE_REQUIRED_ROOTS = tuple(
             ),
             (
                 "src/acfqp/construction_k7_campaign_measurement_"
+                "failure_freeze_v180r12r4r4.py"
+            ),
+            (
+                "src/acfqp/construction_k7_campaign_measurement_"
                 "independent_verifier_v180r12r4.py"
             ),
             (
@@ -433,7 +437,7 @@ PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
     "acfqp:construction-k7-production-transient-service-token:v180r12r4"
 )
 PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN = (
-    "6796c5433437385a8984bec3663780fd722592210fcafb41a8ea35432c832f2e"
+    "c8d74b0ae750955932b08df9de7a3566368ba20e94ccb16696037c0446577bb6"
 )
 PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_UNIT_NAME = (
     "acfqp-v180r12r4-measurement-"
@@ -441,7 +445,7 @@ PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_UNIT_NAME = (
     + ".service"
 )
 PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_TOKEN = (
-    "c0c98349b9bce217989e4a4826dcb409e2246056334d035589591adbdfbd7892"
+    "293c9c9fb1424204ccdba376bc48dd150d7d03139f7a263e6d5691abf61c20a3"
 )
 PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_UNIT_NAME = (
     "acfqp-v180r12r4-verification-"
@@ -483,19 +487,19 @@ GIT_COMMAND_TIMEOUT_SECONDS = 120
 FAILURE_MESSAGE_BYTE_CAP = 4096
 
 EXPECTED_SOURCE_CLOSURE_RULE_ID = (
-    "391275364a4dc21028612643cd25c29d4b87c26fcb9e4bfd92ad2043fa663a8b"
+    "e632515031d29fbe77f59dbe3bbe8255797a33c11142548279d319ba32166fb3"
 )
 EXPECTED_MATERIALIZATION_RULE_ID = (
-    "06222b180023ea967be5e4d88072e646239d06769945073bd29fcf1699f65228"
+    "d9845516a7f71827dadca0b42dfd75ee272fe514cfcb9e598080bde254dc6034"
 )
 LAUNCHER_RULE_LITERAL_NAMES = (
     "EXPECTED_SOURCE_CLOSURE_RULE_ID",
     "EXPECTED_MATERIALIZATION_RULE_ID",
     "EXPECTED_LAUNCH_RULE_ID",
 )
-LAUNCHER_NORMALIZED_STATIC_RULE_SOURCE_BYTE_COUNT = 239_965
+LAUNCHER_NORMALIZED_STATIC_RULE_SOURCE_BYTE_COUNT = 245_153
 LAUNCHER_NORMALIZED_STATIC_RULE_SOURCE_SHA256 = (
-    "fcf4ca68135bf353f1bf9b4cf6b0334106d97a466e320f4010fd5876acdbf1a5"
+    "31e6ab5927ac1ca2cd8011ea061b1bcd8dde2884856ae19af6cb61b847d43c71"
 )
 
 SOURCE_CLOSURE_RULE_DOCUMENT = {
@@ -517,6 +521,16 @@ SOURCE_CLOSURE_RULE_DOCUMENT = {
         "EXACT_REQUIRED_STATIC_ROOTS_WITH_NORMALIZED_WRAPPER"
     ),
     "execution_loader_binding": "TRANSITIVE_LOCAL_IMPORT_CLOSURE",
+    "working_tree_source_property_contract": (
+        "ALL_REQUIRED_STATIC_ROOTS_REGULAR_SINGLE_LINK_GIT_MODE_MAPPED_"
+        "STABLE_BYTES_SHA256_AND_GIT_BLOB"
+    ),
+    "working_tree_source_property_snapshot_fields": [
+        "st_dev", "st_ino", "st_mode", "st_nlink", "st_uid", "st_gid",
+        "st_size", "st_mtime_ns", "st_ctime_ns",
+    ],
+    "working_tree_source_conformance_precedes_prelaunch_output": True,
+    "working_tree_source_mismatch_is_per_path_per_field": True,
 }
 MATERIALIZATION_RULE_DOCUMENT = {
     "schema": "acfqp.v180r12r4_prelaunch_materialization_rule.v1",
@@ -585,6 +599,9 @@ MATERIALIZATION_RULE_DOCUMENT = {
     "production_service_type": "exec",
     "production_service_delegate": True,
     "atomic_cgroup_birth_preflight_receipt_interface_is_zero_authority": True,
+    "working_tree_source_conformance_precedes_campaign_and_unit_ownership": True,
+    "source_conformance_and_unit_ownership_are_distinct": True,
+    "typed_source_conformance_diagnostic_retained_on_failure": True,
 }
 
 
@@ -610,17 +627,17 @@ def _zero_preflight_receipt_interface() -> dict[str, Any]:
 
 def _production_systemd_service_contract() -> dict[str, Any]:
     base = {
-        "failed_failure_state_id": (
-            "7f98d4f33e7e6d3c36636ffad27dbc56f54da32cd006f6d5e94cb217cd569a02"
+        "failed_predecessor_freeze_id": (
+            "296731d463b996bb4ff57133505babab9b5d7a3117d6fcdaa94b8ecb1e1050d0"
         ),
-        "failed_launch_failure_id": (
-            "8be9a12c613373cdfde80d3fd9d64d18a8ca9aaca841ee0d2a454326748c5f43"
+        "failed_inner_launch_failure_id": (
+            "a08d14c74426ecc83a23d2851cced5f52f23fd8b99c11f9230846cb7df4ecd7a"
         ),
         "failed_outer_service_failure_id": (
-            "62ed6bf62f94b8c1c9d53ff8bb902ee26045c5896263f59bf28dd8ac1114c458"
+            "975593a7652cd71314c203a27d87b7071e9b344d983dc2b72448e1627c45146c"
         ),
         "repair_scope": (
-            "CGROUP_CONTROLLER_SEMANTICS_AND_TYPED_DIAGNOSTIC_SUCCESSOR"
+            "WORKING_TREE_SOURCE_MODE_CONFORMANCE_AND_TYPED_DIAGNOSTIC"
         ),
     }
     token_rows = {
@@ -686,7 +703,7 @@ def _production_systemd_service_contract() -> dict[str, Any]:
         "schema": PRODUCTION_SERVICE_CONTRACT_SCHEMA,
         "token_domain": PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN,
         "token_input_fields": [
-            "failed_failure_state_id", "failed_launch_failure_id",
+            "failed_predecessor_freeze_id", "failed_inner_launch_failure_id",
             "failed_outer_service_failure_id", "repair_scope", "purpose",
         ],
         "target_order": ["measurement", "verification"],
@@ -766,6 +783,16 @@ class V180r12r4PrelaunchMaterializationReplayForbidden(
     V180r12r4PrelaunchMaterializationError
 ):
     """A prior attempt exists and the same materialization may not run again."""
+
+
+class V180r12r4WorkingTreeSourceConformanceError(
+    V180r12r4PrelaunchMaterializationError
+):
+    """A frozen source root has a typed working-tree property mismatch."""
+
+    def __init__(self, message: str, diagnostic: dict[str, Any]) -> None:
+        super().__init__(message)
+        self.source_conformance_diagnostic = diagnostic
 
 
 def _fail(message: str) -> NoReturn:
@@ -938,6 +965,263 @@ def _stable_read_file(
     if expected_sha256 is not None and observed_digest != expected_sha256:
         _fail(f"{label} digest differs from its frozen fact")
     return raw
+
+
+def _working_tree_source_conformance_v180r12r4(
+    repository_root: Path,
+    tree: dict[str, tuple[str, str]],
+    blobs: dict[str, bytes],
+) -> dict[str, Any]:
+    """Snapshot every frozen source root and compare each material property."""
+
+    snapshots: list[dict[str, Any]] = []
+    mismatches: list[dict[str, Any]] = []
+    stable_fields = (
+        "st_dev",
+        "st_ino",
+        "st_mode",
+        "st_nlink",
+        "st_uid",
+        "st_gid",
+        "st_size",
+        "st_mtime_ns",
+        "st_ctime_ns",
+    )
+
+    for relative in SOURCE_CLOSURE_REQUIRED_ROOTS:
+        git_mode, expected_blob_id = tree[relative]
+        expected_raw = blobs[relative]
+        expected_mode = 0o644 if git_mode == "100644" else 0o755
+        path = repository_root / relative
+        try:
+            descriptor = os.open(
+                path, os.O_RDONLY | os.O_CLOEXEC | os.O_NOFOLLOW
+            )
+        except OSError as error:
+            diagnostic = {
+                "schema": (
+                    "acfqp.v180r12r4_working_tree_source_conformance_diagnostic.v1"
+                ),
+                "phase": "BEFORE_PRELAUNCH_OUTPUT_AND_SCIENTIFIC_CAMPAIGN",
+                "source_root_count": len(SOURCE_CLOSURE_REQUIRED_ROOTS),
+                "snapshots": snapshots,
+                "mismatch_count": 1,
+                "per_field_mismatches": [
+                    {
+                        "relative_path": relative,
+                        "field": "presence",
+                        "expected": "REGULAR_FILE",
+                        "observed_before": "UNREADABLE_OR_SYMLINK",
+                        "observed_after": "UNREADABLE_OR_SYMLINK",
+                    }
+                ],
+                "unit_ownership_evaluated": False,
+                "full_source_conformance": False,
+                "cause": {
+                    "type": type(error).__name__,
+                    "message": "frozen source root is unavailable or symlinked",
+                },
+            }
+            raise V180r12r4WorkingTreeSourceConformanceError(
+                f"working-tree source conformance failed: {relative}:presence",
+                diagnostic,
+            ) from error
+        try:
+            before = os.fstat(descriptor)
+            chunks: list[bytes] = []
+            digest = hashlib.sha256()
+            total = 0
+            while True:
+                chunk = os.read(descriptor, 1024 * 1024)
+                if not chunk:
+                    break
+                chunks.append(chunk)
+                digest.update(chunk)
+                total += len(chunk)
+                if total > SOURCE_FILE_BYTE_CAP:
+                    _fail("working-tree source root exceeds its byte cap")
+            after = os.fstat(descriptor)
+        finally:
+            os.close(descriptor)
+
+        raw = b"".join(chunks)
+        physical_blob_id = hashlib.sha1(
+            b"blob " + str(len(raw)).encode("ascii") + b"\x00" + raw
+        ).hexdigest()
+        comparison_raw = raw
+        binding_kind = "EXACT_C_PRE_GIT_BLOB"
+        if relative == AUTHORIZATION_EVIDENCE_RELATIVE_PATH:
+            comparison_raw, _wrapper_values = _normalize_wrapper(raw)
+            binding_kind = NORMALIZED_WRAPPER_BINDING_KIND
+        observed_blob_id = hashlib.sha1(
+            b"blob "
+            + str(len(comparison_raw)).encode("ascii")
+            + b"\x00"
+            + comparison_raw
+        ).hexdigest()
+
+        def property_snapshot(row: os.stat_result) -> dict[str, Any]:
+            return {
+                "file_type": (
+                    "REGULAR_FILE" if stat.S_ISREG(row.st_mode) else "OTHER"
+                ),
+                "st_dev": row.st_dev,
+                "st_ino": row.st_ino,
+                "st_mode": row.st_mode,
+                "mode": stat.S_IMODE(row.st_mode),
+                "st_nlink": row.st_nlink,
+                "st_uid": row.st_uid,
+                "st_gid": row.st_gid,
+                "st_size": row.st_size,
+                "st_mtime_ns": row.st_mtime_ns,
+                "st_ctime_ns": row.st_ctime_ns,
+            }
+
+        before_snapshot = property_snapshot(before)
+        after_snapshot = property_snapshot(after)
+        expected = {
+            "file_type": "REGULAR_FILE",
+            "git_mode": git_mode,
+            "mode": expected_mode,
+            "st_nlink": 1,
+            "binding_kind": binding_kind,
+            "byte_count": len(expected_raw),
+            "sha256": hashlib.sha256(expected_raw).hexdigest(),
+            "git_blob_id": expected_blob_id,
+        }
+        observed = {
+            "binding_kind": binding_kind,
+            "byte_count": len(comparison_raw),
+            "sha256": hashlib.sha256(comparison_raw).hexdigest(),
+            "git_blob_id": observed_blob_id,
+            "physical_byte_count": len(raw),
+            "physical_sha256": digest.hexdigest(),
+            "physical_git_blob_id": physical_blob_id,
+        }
+        row_mismatches: list[dict[str, Any]] = []
+
+        def compare(
+            field: str,
+            expected_value: Any,
+            before_value: Any,
+            after_value: Any,
+        ) -> None:
+            if before_value != expected_value or after_value != expected_value:
+                row_mismatches.append(
+                    {
+                        "relative_path": relative,
+                        "field": field,
+                        "expected": expected_value,
+                        "observed_before": before_value,
+                        "observed_after": after_value,
+                    }
+                )
+
+        compare(
+            "file_type",
+            expected["file_type"],
+            before_snapshot["file_type"],
+            after_snapshot["file_type"],
+        )
+        compare(
+            "mode",
+            expected_mode,
+            before_snapshot["mode"],
+            after_snapshot["mode"],
+        )
+        compare(
+            "st_nlink",
+            1,
+            before_snapshot["st_nlink"],
+            after_snapshot["st_nlink"],
+        )
+        compare(
+            "byte_count",
+            len(expected_raw),
+            len(comparison_raw),
+            len(comparison_raw),
+        )
+        compare(
+            "sha256",
+            expected["sha256"],
+            observed["sha256"],
+            observed["sha256"],
+        )
+        compare(
+            "git_blob_id",
+            expected_blob_id,
+            observed_blob_id,
+            observed_blob_id,
+        )
+        for field in stable_fields:
+            if getattr(before, field) != getattr(after, field):
+                row_mismatches.append(
+                    {
+                        "relative_path": relative,
+                        "field": field,
+                        "expected": "STABLE_BEFORE_AFTER",
+                        "observed_before": getattr(before, field),
+                        "observed_after": getattr(after, field),
+                    }
+                )
+        snapshots.append(
+            {
+                "relative_path": relative,
+                "expected": expected,
+                "observed_before": before_snapshot,
+                "observed_after": after_snapshot,
+                "observed_content": observed,
+                "mismatch_fields": sorted(
+                    {row["field"] for row in row_mismatches}
+                ),
+                "conformant": not row_mismatches,
+            }
+        )
+        mismatches.extend(row_mismatches)
+
+    diagnostic = {
+        "schema": (
+            "acfqp.v180r12r4_working_tree_source_conformance_diagnostic.v1"
+        ),
+        "phase": "BEFORE_PRELAUNCH_OUTPUT_AND_SCIENTIFIC_CAMPAIGN",
+        "source_root_count": len(SOURCE_CLOSURE_REQUIRED_ROOTS),
+        "snapshots": snapshots,
+        "mismatch_count": len(mismatches),
+        "per_field_mismatches": sorted(
+            mismatches, key=lambda row: (row["relative_path"], row["field"])
+        ),
+        "unit_ownership_evaluated": False,
+        "full_source_conformance": not mismatches,
+        "cause": (
+            None
+            if not mismatches
+            else {
+                "type": "WORKING_TREE_SOURCE_PROPERTY_MISMATCH",
+                "message": "one or more frozen source properties differ",
+            }
+        ),
+    }
+    if mismatches:
+        first = diagnostic["per_field_mismatches"][0]
+        wrapper_content_drift = any(
+            row["relative_path"] == AUTHORIZATION_EVIDENCE_RELATIVE_PATH
+            and row["field"] in {"byte_count", "sha256", "git_blob_id"}
+            for row in diagnostic["per_field_mismatches"]
+        )
+        raise V180r12r4WorkingTreeSourceConformanceError(
+            (
+                "literal HEAD changed wrapper bytes outside the twelve literals"
+                if wrapper_content_drift
+                else (
+                    "working-tree source conformance failed: "
+                    + first["relative_path"]
+                    + ":"
+                    + first["field"]
+                )
+            ),
+            diagnostic,
+        )
+    return diagnostic
 
 
 def _parse_canonical_json_object(raw: bytes, label: str) -> dict[str, Any]:
@@ -1925,6 +2209,11 @@ class _RestrictedStaticLauncherEvaluator:
         "_RAW_FACT_KEYS",
         "_NORMALIZED_WRAPPER_FACT_KEYS",
         "_CLOSURE_KEYS",
+        "_SOURCE_CONFORMANCE_KEYS",
+        "_SOURCE_CONFORMANCE_SNAPSHOT_KEYS",
+        "_SOURCE_CONFORMANCE_EXPECTED_KEYS",
+        "_SOURCE_CONFORMANCE_STAT_KEYS",
+        "_SOURCE_CONFORMANCE_CONTENT_KEYS",
         "_MANIFEST_KEYS",
         "_ATTEMPT_KEYS",
         "_TERMINAL_KEYS",
@@ -2509,6 +2798,11 @@ def build_c_pre_source_closure_v180r12r4(
 
     c_pre = external_root["c_pre_commit_id"]
     catalogue, tree, blobs = _catalogue_from_c_pre(repository_root, c_pre)
+    working_tree_source_conformance = (
+        _working_tree_source_conformance_v180r12r4(
+            repository_root, tree, blobs
+        )
+    )
     _require_c_pre_final_anchor_joins(blobs, external_root)
     available = frozenset(catalogue)
     all_roots = SOURCE_CLOSURE_REQUIRED_ROOTS
@@ -2705,6 +2999,7 @@ def build_c_pre_source_closure_v180r12r4(
         "current_wrapper_raw_fact": _raw_fact(
             AUTHORIZATION_EVIDENCE_RELATIVE_PATH, current_wrapper
         ),
+        "working_tree_source_conformance": working_tree_source_conformance,
     }
 
 
@@ -2982,6 +3277,9 @@ def build_launch_manifest_v180r12r4(
         ],
         "authorization_source_closure": source_plan[
             "authorization_source_closure"
+        ],
+        "working_tree_source_conformance": source_plan[
+            "working_tree_source_conformance"
         ],
         "source_modules": source_plan["source_modules"],
         "third_party_source_closure": third_party_closure,
@@ -3344,6 +3642,9 @@ def build_materialization_terminal_v180r12r4(
         "current_literal_wrapper_raw_observation": source_plan[
             "current_wrapper_raw_fact"
         ],
+        "working_tree_source_conformance": source_plan[
+            "working_tree_source_conformance"
+        ],
         "launch_manifest_digest_is_runtime_supplied_not_protocol_frozen": True,
         "launch_manifest_has_no_self_digest": True,
         "frozen_authorization_context_sha256": hashlib.sha256(
@@ -3388,6 +3689,13 @@ def build_materialization_failure_v180r12r4(
     error: BaseException,
 ) -> tuple[dict[str, Any], bytes]:
     error_type, message = _bounded_error_text(error)
+    source_conformance_diagnostic = getattr(
+        error, "source_conformance_diagnostic", None
+    )
+    if source_conformance_diagnostic is not None and type(
+        source_conformance_diagnostic
+    ) is not dict:
+        _fail("source-conformance failure diagnostic is not one mapping")
     payload = {
         "schema": MATERIALIZATION_FAILURE_SCHEMA,
         "materialization_rule_id": MATERIALIZATION_RULE_ID,
@@ -3398,6 +3706,7 @@ def build_materialization_failure_v180r12r4(
         "failed_phase": failed_phase,
         "failure_type": error_type,
         "failure_message": message,
+        "source_conformance_diagnostic": source_conformance_diagnostic,
         "partial_artifact_observations": observe_materialization_progress_v180r12r4(
             repository_root
         ),

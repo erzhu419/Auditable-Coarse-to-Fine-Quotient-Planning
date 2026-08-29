@@ -38,18 +38,18 @@ ZERO_ID = "0" * 64
 # remain sentinels in this outcome-free preregistration slice.  Keep every value
 # as one direct module-level literal; the independent normalizer rejects aliases,
 # expressions, duplicate assignments, and missing names.
-EXPECTED_AUTHORIZATION_EVIDENCE_ID = "6d8c1457efcc9ea0ad8784ecda781a1f4708beb763f428435ab0498b86e5ee9e"
-EXPECTED_CANONICAL_BYTE_COUNT = 79358
-EXPECTED_CANONICAL_SHA256 = "cd7fe363df8b4d5cb47a1765243d5c7cf0947669d1da04b269fbcab7daa54994"
-EXPECTED_AUTHORIZATION_ID = "f84bd4605097a5414075d9d23d53785dac66779d0097b1c7f240d2862290dde4"
-EXPECTED_AUTHORIZATION_CANONICAL_BYTE_COUNT = 387320
-EXPECTED_AUTHORIZATION_CANONICAL_SHA256 = "7a36cf6cdaf824e2480fc07a751b64daad8360f24cfadb0f1f49a2c24d76a94a"
-EXPECTED_AUTHORIZATION_SOURCE_BYTE_COUNT = 61837
-EXPECTED_AUTHORIZATION_SOURCE_SHA256 = "32fea754ff26de2e2eaee7f663606b83ffdcca889f18bc28a0ca4792a6b46d6f"
-EXPECTED_SOURCE_CLOSURE_ID = "e72f7fc4f70604ebd5f09c3540ddc442fda1ecb91cbd3e30d4af6b6c1957ab7a"
-EXPECTED_SOURCE_CLOSURE_BYTE_COUNT = 6094
-EXPECTED_SOURCE_CLOSURE_SHA256 = "e72f7fc4f70604ebd5f09c3540ddc442fda1ecb91cbd3e30d4af6b6c1957ab7a"
-EXPECTED_SOURCE_CLOSURE_FILE_COUNT = 23
+EXPECTED_AUTHORIZATION_EVIDENCE_ID = "0000000000000000000000000000000000000000000000000000000000000000"
+EXPECTED_CANONICAL_BYTE_COUNT = 0
+EXPECTED_CANONICAL_SHA256 = "0000000000000000000000000000000000000000000000000000000000000000"
+EXPECTED_AUTHORIZATION_ID = "0000000000000000000000000000000000000000000000000000000000000000"
+EXPECTED_AUTHORIZATION_CANONICAL_BYTE_COUNT = 0
+EXPECTED_AUTHORIZATION_CANONICAL_SHA256 = "0000000000000000000000000000000000000000000000000000000000000000"
+EXPECTED_AUTHORIZATION_SOURCE_BYTE_COUNT = 0
+EXPECTED_AUTHORIZATION_SOURCE_SHA256 = "0000000000000000000000000000000000000000000000000000000000000000"
+EXPECTED_SOURCE_CLOSURE_ID = "0000000000000000000000000000000000000000000000000000000000000000"
+EXPECTED_SOURCE_CLOSURE_BYTE_COUNT = 0
+EXPECTED_SOURCE_CLOSURE_SHA256 = "0000000000000000000000000000000000000000000000000000000000000000"
+EXPECTED_SOURCE_CLOSURE_FILE_COUNT = 0
 
 POST_PREREG_REDACTED_CONSTANTS = (
     "EXPECTED_AUTHORIZATION_EVIDENCE_ID",
@@ -787,6 +787,9 @@ def build_campaign_measurement_authorization_evidence_v180r12r4(
     ordinal8_repair_lineage = (
         protocol.failed_ordinal8_repair_lineage_contract_v180r12r4()
     )
+    ordinal9_repair_lineage = (
+        protocol.failed_ordinal9_repair_lineage_contract_v180r12r4()
+    )
     runner_execution_envelope = (
         protocol.source_bound_runner_execution_envelope_contract_v180r12r4()
     )
@@ -827,11 +830,17 @@ def build_campaign_measurement_authorization_evidence_v180r12r4(
         == scientific_birth_repair_lineage
         and document.get("failed_ordinal8_repair_lineage")
         == ordinal8_repair_lineage
+        and document.get("failed_ordinal9_repair_lineage")
+        == ordinal9_repair_lineage
         and document.get("failed_v180r12r3_identity_rerun_forbidden") is True
         and document.get("failed_v180r12r3r1_identity_rerun_forbidden") is True
         and document.get("failed_v180r12r3r2_identity_rerun_forbidden") is True
         and document.get(
             "failed_v180r12r4r2_ordinal8_identity_rerun_forbidden"
+        )
+        is True
+        and document.get(
+            "failed_v180r12r4r4_ordinal9_identity_rerun_forbidden"
         )
         is True
         and document.get(
@@ -904,6 +913,23 @@ def build_campaign_measurement_authorization_evidence_v180r12r4(
         and ordinal8_repair_lineage["same_identity_rerun_forbidden"] is True
         and ordinal8_repair_lineage["fresh_successor_identity_required"] is True
         and ordinal8_repair_lineage["repair_scope"]
+        == protocol.V180R12R4R3_REPAIR_SCOPE
+        and ordinal9_repair_lineage["campaign_attempt_artifact_present"]
+        is False
+        and ordinal9_repair_lineage["campaign_started"] is False
+        and ordinal9_repair_lineage["outer_service_unit_ownership_acquired"]
+        is True
+        and ordinal9_repair_lineage["full_source_conformance"] is False
+        and ordinal9_repair_lineage[
+            "postmortem_full_property_diagnostic_recorded"
+        ]
+        is True
+        and ordinal9_repair_lineage["counter_records_issued"] is False
+        and ordinal9_repair_lineage["work_vectors_issued"] is False
+        and ordinal9_repair_lineage["comparison_vectors_issued"] is False
+        and ordinal9_repair_lineage["same_identity_rerun_forbidden"] is True
+        and ordinal9_repair_lineage["fresh_successor_identity_required"] is True
+        and ordinal9_repair_lineage["repair_scope"]
         == protocol.V180R12R4_REPAIR_SCOPE
         and source_contract == protocol.source_closure_contract_v180r12r4()
         and source_contract.get("required_static_roots")
@@ -973,10 +999,12 @@ def build_campaign_measurement_authorization_evidence_v180r12r4(
             scientific_birth_repair_lineage
         ),
         "failed_ordinal8_repair_lineage": ordinal8_repair_lineage,
+        "failed_ordinal9_repair_lineage": ordinal9_repair_lineage,
         "failed_v180r12r3_identity_rerun_forbidden": True,
         "failed_v180r12r3r1_identity_rerun_forbidden": True,
         "failed_v180r12r3r2_identity_rerun_forbidden": True,
         "failed_v180r12r4r2_ordinal8_identity_rerun_forbidden": True,
+        "failed_v180r12r4r4_ordinal9_identity_rerun_forbidden": True,
         "fresh_v180r12r4_physical_paths_and_identities_required": True,
         "repair_scope": protocol.V180R12R4_REPAIR_SCOPE,
         "repair_changes_campaign_path_roles_event_schedule_evidence_"

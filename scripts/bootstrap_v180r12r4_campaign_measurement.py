@@ -124,14 +124,14 @@ _PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
 )
 _PRODUCTION_TRANSIENT_SERVICE_ROWS = {
     "measurement": (
-        "6796c5433437385a8984bec3663780fd722592210fcafb41a8ea35432c832f2e",
+        "c8d74b0ae750955932b08df9de7a3566368ba20e94ccb16696037c0446577bb6",
         "acfqp-v180r12r4-measurement-"
-        "6796c5433437385a8984bec3663780fd722592210fcafb41a8ea35432c832f2e.service",
+        "c8d74b0ae750955932b08df9de7a3566368ba20e94ccb16696037c0446577bb6.service",
     ),
     "verification": (
-        "c0c98349b9bce217989e4a4826dcb409e2246056334d035589591adbdfbd7892",
+        "293c9c9fb1424204ccdba376bc48dd150d7d03139f7a263e6d5691abf61c20a3",
         "acfqp-v180r12r4-verification-"
-        "c0c98349b9bce217989e4a4826dcb409e2246056334d035589591adbdfbd7892.service",
+        "293c9c9fb1424204ccdba376bc48dd150d7d03139f7a263e6d5691abf61c20a3.service",
     ),
 }
 _PRODUCTION_RUNTIME_PLACEMENT_T1_SCHEMA = (
@@ -400,6 +400,10 @@ _SOURCE_CLOSURE_REQUIRED_ROOTS = tuple(
             ),
             (
                 "src/acfqp/construction_k7_campaign_measurement_"
+                "failure_freeze_v180r12r4r4.py"
+            ),
+            (
+                "src/acfqp/construction_k7_campaign_measurement_"
                 "independent_verifier_v180r12r4.py"
             ),
             (
@@ -475,6 +479,7 @@ _TOP_LEVEL_KEYS = {
     "authorization_self_module",
     "authorization_raw_source_modules",
     "authorization_source_closure",
+    "working_tree_source_conformance",
     "source_modules",
     "third_party_source_closure",
     "targets",
@@ -486,6 +491,58 @@ _TOP_LEVEL_KEYS = {
     "atomic_cgroup_birth_preflight_receipt_interface",
     "frozen_authorization_context",
     "working_tree_mutation_after_snapshot_in_scope",
+}
+_SOURCE_CONFORMANCE_KEYS = {
+    "schema",
+    "phase",
+    "source_root_count",
+    "snapshots",
+    "mismatch_count",
+    "per_field_mismatches",
+    "unit_ownership_evaluated",
+    "full_source_conformance",
+    "cause",
+}
+_SOURCE_CONFORMANCE_SNAPSHOT_KEYS = {
+    "relative_path",
+    "expected",
+    "observed_before",
+    "observed_after",
+    "observed_content",
+    "mismatch_fields",
+    "conformant",
+}
+_SOURCE_CONFORMANCE_EXPECTED_KEYS = {
+    "file_type",
+    "git_mode",
+    "mode",
+    "st_nlink",
+    "binding_kind",
+    "byte_count",
+    "sha256",
+    "git_blob_id",
+}
+_SOURCE_CONFORMANCE_STAT_KEYS = {
+    "file_type",
+    "st_dev",
+    "st_ino",
+    "st_mode",
+    "mode",
+    "st_nlink",
+    "st_uid",
+    "st_gid",
+    "st_size",
+    "st_mtime_ns",
+    "st_ctime_ns",
+}
+_SOURCE_CONFORMANCE_CONTENT_KEYS = {
+    "binding_kind",
+    "byte_count",
+    "sha256",
+    "git_blob_id",
+    "physical_byte_count",
+    "physical_sha256",
+    "physical_git_blob_id",
 }
 _RAW_FACT_KEYS = {"relative_path", "byte_count", "sha256"}
 _NORMALIZED_WRAPPER_FACT_KEYS = _RAW_FACT_KEYS | {
@@ -1348,6 +1405,85 @@ def _validated_manifest(
         raise RuntimeError("V180r12r4 C_pre commit ID changed")
     if manifest["authorization_source_closure_kind"] != _CLOSURE_KIND:
         raise RuntimeError("V180r12r4 authorization closure kind changed")
+    source_conformance = _require_exact_dict(
+        manifest["working_tree_source_conformance"],
+        _SOURCE_CONFORMANCE_KEYS,
+        "working-tree source conformance",
+    )
+    snapshots = source_conformance["snapshots"]
+    if not (
+        source_conformance["schema"]
+        == "acfqp.v180r12r4_working_tree_source_conformance_diagnostic.v1"
+        and source_conformance["phase"]
+        == "BEFORE_PRELAUNCH_OUTPUT_AND_SCIENTIFIC_CAMPAIGN"
+        and type(source_conformance["source_root_count"]) is int
+        and source_conformance["source_root_count"] > 0
+        and type(snapshots) is list
+        and len(snapshots) == source_conformance["source_root_count"]
+        and source_conformance["mismatch_count"] == 0
+        and source_conformance["per_field_mismatches"] == []
+        and source_conformance["unit_ownership_evaluated"] is False
+        and source_conformance["full_source_conformance"] is True
+        and source_conformance["cause"] is None
+    ):
+        raise RuntimeError("V180r12r4 working-tree source conformance changed")
+    snapshot_paths: list[str] = []
+    for index, snapshot in enumerate(snapshots):
+        snapshot = _require_exact_dict(
+            snapshot,
+            _SOURCE_CONFORMANCE_SNAPSHOT_KEYS,
+            f"working-tree source snapshot {index}",
+        )
+        expected = _require_exact_dict(
+            snapshot["expected"],
+            _SOURCE_CONFORMANCE_EXPECTED_KEYS,
+            f"working-tree source expected {index}",
+        )
+        before = _require_exact_dict(
+            snapshot["observed_before"],
+            _SOURCE_CONFORMANCE_STAT_KEYS,
+            f"working-tree source before {index}",
+        )
+        after = _require_exact_dict(
+            snapshot["observed_after"],
+            _SOURCE_CONFORMANCE_STAT_KEYS,
+            f"working-tree source after {index}",
+        )
+        content = _require_exact_dict(
+            snapshot["observed_content"],
+            _SOURCE_CONFORMANCE_CONTENT_KEYS,
+            f"working-tree source content {index}",
+        )
+        relative = _validated_relative_path(
+            snapshot["relative_path"], f"working-tree source path {index}"
+        )
+        if not (
+            before == after
+            and snapshot["mismatch_fields"] == []
+            and snapshot["conformant"] is True
+            and expected["file_type"] == before["file_type"] == "REGULAR_FILE"
+            and expected["mode"] == before["mode"]
+            and expected["st_nlink"] == before["st_nlink"] == 1
+            and expected["binding_kind"] == content["binding_kind"]
+            and expected["byte_count"] == content["byte_count"]
+            and expected["sha256"] == content["sha256"]
+            and expected["git_blob_id"] == content["git_blob_id"]
+            and content["physical_byte_count"] == before["st_size"]
+        ):
+            raise RuntimeError(
+                f"V180r12r4 working-tree source snapshot {index} changed"
+            )
+        snapshot_paths.append(relative)
+    closure = manifest["authorization_source_closure"]
+    closure_paths = (
+        [row.get("relative_path") for row in closure.get("facts", [])]
+        if type(closure) is dict
+        else []
+    )
+    if snapshot_paths != closure_paths or len(set(snapshot_paths)) != len(
+        snapshot_paths
+    ):
+        raise RuntimeError("V180r12r4 source-conformance closure join changed")
     if manifest["authorization_self_module"] != _AUTHORIZATION_SELF_MODULE:
         raise RuntimeError("V180r12r4 authorization self module changed")
     if manifest["internal_target_contract"] != _INTERNAL_TARGET_CONTRACT:

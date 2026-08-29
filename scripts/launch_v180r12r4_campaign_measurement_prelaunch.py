@@ -109,13 +109,13 @@ MATERIALIZATION_TERMINAL_SCHEMA = (
     "acfqp.v180r12r4_prelaunch_materialization_terminal.v1"
 )
 EXPECTED_SOURCE_CLOSURE_RULE_ID = (
-    "391275364a4dc21028612643cd25c29d4b87c26fcb9e4bfd92ad2043fa663a8b"
+    "e632515031d29fbe77f59dbe3bbe8255797a33c11142548279d319ba32166fb3"
 )
 EXPECTED_MATERIALIZATION_RULE_ID = (
-    "06222b180023ea967be5e4d88072e646239d06769945073bd29fcf1699f65228"
+    "d9845516a7f71827dadca0b42dfd75ee272fe514cfcb9e598080bde254dc6034"
 )
 EXPECTED_LAUNCH_RULE_ID = (
-    "54d92c0c5887605fd97ad18adf27be20ec05d7169174b500eb1c3477f8898b11"
+    "877a9f71160af1dce86c06ac8a466cc32fd2a7de46cd385aaabcc93d26e456a1"
 )
 SOURCE_CLOSURE_RULE_ID = EXPECTED_SOURCE_CLOSURE_RULE_ID
 MATERIALIZATION_RULE_ID = EXPECTED_MATERIALIZATION_RULE_ID
@@ -301,11 +301,11 @@ PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
     "acfqp:construction-k7-production-transient-service-token:v180r12r4"
 )
 PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN = (
-    "6796c5433437385a8984bec3663780fd722592210fcafb41a8ea35432c832f2e"
+    "c8d74b0ae750955932b08df9de7a3566368ba20e94ccb16696037c0446577bb6"
 )
 PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_UNIT_NAME = (
     "acfqp-v180r12r4-measurement-"
-    "6796c5433437385a8984bec3663780fd722592210fcafb41a8ea35432c832f2e.service"
+    "c8d74b0ae750955932b08df9de7a3566368ba20e94ccb16696037c0446577bb6.service"
 )
 PRODUCTION_TRANSIENT_SERVICE_SLICE = "app.slice"
 MATERIALIZATION_TERMINAL_SHA256_TEMPLATE = (
@@ -318,39 +318,39 @@ ATOMIC_CGROUP_BIRTH_PREFLIGHT_RECEIPT_INTERFACE_SCHEMA = (
     "acfqp.v180r12r4_atomic_cgroup_birth_preflight_receipt_interface.v1"
 )
 PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN_INPUT = {
-    "failed_failure_state_id": (
-        "7f98d4f33e7e6d3c36636ffad27dbc56f54da32cd006f6d5e94cb217cd569a02"
+    "failed_predecessor_freeze_id": (
+        "296731d463b996bb4ff57133505babab9b5d7a3117d6fcdaa94b8ecb1e1050d0"
     ),
-    "failed_launch_failure_id": (
-        "8be9a12c613373cdfde80d3fd9d64d18a8ca9aaca841ee0d2a454326748c5f43"
+    "failed_inner_launch_failure_id": (
+        "a08d14c74426ecc83a23d2851cced5f52f23fd8b99c11f9230846cb7df4ecd7a"
     ),
     "failed_outer_service_failure_id": (
-        "62ed6bf62f94b8c1c9d53ff8bb902ee26045c5896263f59bf28dd8ac1114c458"
+        "975593a7652cd71314c203a27d87b7071e9b344d983dc2b72448e1627c45146c"
     ),
     "repair_scope": (
-        "CGROUP_CONTROLLER_SEMANTICS_AND_TYPED_DIAGNOSTIC_SUCCESSOR"
+        "WORKING_TREE_SOURCE_MODE_CONFORMANCE_AND_TYPED_DIAGNOSTIC"
     ),
     "purpose": "MEASUREMENT",
 }
 PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_TOKEN = (
-    "c0c98349b9bce217989e4a4826dcb409e2246056334d035589591adbdfbd7892"
+    "293c9c9fb1424204ccdba376bc48dd150d7d03139f7a263e6d5691abf61c20a3"
 )
 PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_UNIT_NAME = (
     "acfqp-v180r12r4-verification-"
-    "c0c98349b9bce217989e4a4826dcb409e2246056334d035589591adbdfbd7892.service"
+    "293c9c9fb1424204ccdba376bc48dd150d7d03139f7a263e6d5691abf61c20a3.service"
 )
 PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_TOKEN_INPUT = {
-    "failed_failure_state_id": (
-        "7f98d4f33e7e6d3c36636ffad27dbc56f54da32cd006f6d5e94cb217cd569a02"
+    "failed_predecessor_freeze_id": (
+        "296731d463b996bb4ff57133505babab9b5d7a3117d6fcdaa94b8ecb1e1050d0"
     ),
-    "failed_launch_failure_id": (
-        "8be9a12c613373cdfde80d3fd9d64d18a8ca9aaca841ee0d2a454326748c5f43"
+    "failed_inner_launch_failure_id": (
+        "a08d14c74426ecc83a23d2851cced5f52f23fd8b99c11f9230846cb7df4ecd7a"
     ),
     "failed_outer_service_failure_id": (
-        "62ed6bf62f94b8c1c9d53ff8bb902ee26045c5896263f59bf28dd8ac1114c458"
+        "975593a7652cd71314c203a27d87b7071e9b344d983dc2b72448e1627c45146c"
     ),
     "repair_scope": (
-        "CGROUP_CONTROLLER_SEMANTICS_AND_TYPED_DIAGNOSTIC_SUCCESSOR"
+        "WORKING_TREE_SOURCE_MODE_CONFORMANCE_AND_TYPED_DIAGNOSTIC"
     ),
     "purpose": "VERIFICATION",
 }
@@ -1330,7 +1330,7 @@ def _production_systemd_service_contract() -> dict[str, Any]:
         "schema": "acfqp.v180r12r4_production_systemd_service_contracts.v1",
         "token_domain": PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN,
         "token_input_fields": [
-            "failed_failure_state_id", "failed_launch_failure_id",
+            "failed_predecessor_freeze_id", "failed_inner_launch_failure_id",
             "failed_outer_service_failure_id", "repair_scope", "purpose",
         ],
         "target_order": ["measurement", "verification"],
@@ -1559,6 +1559,7 @@ _MATERIALIZATION_REQUIRED_KEYS = {
     "third_party_source_closure_facts_sha256",
     "normalized_wrapper_fact",
     "current_literal_wrapper_raw_observation",
+    "working_tree_source_conformance",
     "launch_manifest_digest_is_runtime_supplied_not_protocol_frozen",
     "launch_manifest_has_no_self_digest",
     "frozen_authorization_context_sha256",
@@ -1619,6 +1620,58 @@ _NORMALIZED_WRAPPER_FACT_KEYS = _RAW_FACT_KEYS | {
     "redacted_constant_names",
 }
 _CLOSURE_KEYS = {"facts", "file_count", "total_byte_count", "facts_sha256"}
+_SOURCE_CONFORMANCE_KEYS = {
+    "schema",
+    "phase",
+    "source_root_count",
+    "snapshots",
+    "mismatch_count",
+    "per_field_mismatches",
+    "unit_ownership_evaluated",
+    "full_source_conformance",
+    "cause",
+}
+_SOURCE_CONFORMANCE_SNAPSHOT_KEYS = {
+    "relative_path",
+    "expected",
+    "observed_before",
+    "observed_after",
+    "observed_content",
+    "mismatch_fields",
+    "conformant",
+}
+_SOURCE_CONFORMANCE_EXPECTED_KEYS = {
+    "file_type",
+    "git_mode",
+    "mode",
+    "st_nlink",
+    "binding_kind",
+    "byte_count",
+    "sha256",
+    "git_blob_id",
+}
+_SOURCE_CONFORMANCE_STAT_KEYS = {
+    "file_type",
+    "st_dev",
+    "st_ino",
+    "st_mode",
+    "mode",
+    "st_nlink",
+    "st_uid",
+    "st_gid",
+    "st_size",
+    "st_mtime_ns",
+    "st_ctime_ns",
+}
+_SOURCE_CONFORMANCE_CONTENT_KEYS = {
+    "binding_kind",
+    "byte_count",
+    "sha256",
+    "git_blob_id",
+    "physical_byte_count",
+    "physical_sha256",
+    "physical_git_blob_id",
+}
 _MANIFEST_KEYS = {
     "schema",
     "repository_root",
@@ -1632,6 +1685,7 @@ _MANIFEST_KEYS = {
     "authorization_self_module",
     "authorization_raw_source_modules",
     "authorization_source_closure",
+    "working_tree_source_conformance",
     "source_modules",
     "third_party_source_closure",
     "targets",
@@ -1644,6 +1698,81 @@ _MANIFEST_KEYS = {
     "frozen_authorization_context",
     "working_tree_mutation_after_snapshot_in_scope",
 }
+
+
+def _validated_working_tree_source_conformance(
+    value: object,
+) -> dict[str, Any]:
+    if type(value) is not dict or set(value) != _SOURCE_CONFORMANCE_KEYS:
+        _fail("working-tree source conformance schema changed")
+    snapshots = value["snapshots"]
+    count = value["source_root_count"]
+    if not (
+        value["schema"]
+        == "acfqp.v180r12r4_working_tree_source_conformance_diagnostic.v1"
+        and value["phase"] == "BEFORE_PRELAUNCH_OUTPUT_AND_SCIENTIFIC_CAMPAIGN"
+        and type(count) is int
+        and count > 0
+        and type(snapshots) is list
+        and len(snapshots) == count
+        and value["mismatch_count"] == 0
+        and value["per_field_mismatches"] == []
+        and value["unit_ownership_evaluated"] is False
+        and value["full_source_conformance"] is True
+        and value["cause"] is None
+    ):
+        _fail("working-tree source conformance did not pass")
+    paths: list[str] = []
+    for index, snapshot in enumerate(snapshots):
+        if (
+            type(snapshot) is not dict
+            or set(snapshot) != _SOURCE_CONFORMANCE_SNAPSHOT_KEYS
+            or type(snapshot["expected"]) is not dict
+            or set(snapshot["expected"]) != _SOURCE_CONFORMANCE_EXPECTED_KEYS
+            or type(snapshot["observed_before"]) is not dict
+            or set(snapshot["observed_before"]) != _SOURCE_CONFORMANCE_STAT_KEYS
+            or type(snapshot["observed_after"]) is not dict
+            or set(snapshot["observed_after"]) != _SOURCE_CONFORMANCE_STAT_KEYS
+            or type(snapshot["observed_content"]) is not dict
+            or set(snapshot["observed_content"])
+            != _SOURCE_CONFORMANCE_CONTENT_KEYS
+        ):
+            _fail(f"working-tree source snapshot {index} schema changed")
+        expected = snapshot["expected"]
+        before = snapshot["observed_before"]
+        after = snapshot["observed_after"]
+        content = snapshot["observed_content"]
+        relative = _require_relative(
+            snapshot["relative_path"],
+            f"working-tree source snapshot {index} path",
+        )
+        if not (
+            before == after
+            and snapshot["mismatch_fields"] == []
+            and snapshot["conformant"] is True
+            and expected["file_type"] == before["file_type"] == "REGULAR_FILE"
+            and expected["git_mode"] in {"100644", "100755"}
+            and expected["mode"] == before["mode"]
+            and expected["st_nlink"] == before["st_nlink"] == 1
+            and expected["binding_kind"] == content["binding_kind"]
+            and expected["byte_count"] == content["byte_count"]
+            and expected["sha256"] == content["sha256"]
+            and expected["git_blob_id"] == content["git_blob_id"]
+            and content["physical_byte_count"] == before["st_size"]
+        ):
+            _fail(f"working-tree source snapshot {index} changed")
+        _require_sha256(expected["sha256"], "working-tree expected digest")
+        _require_object_id(expected["git_blob_id"], "working-tree expected blob")
+        _require_sha256(content["physical_sha256"], "working-tree physical digest")
+        _require_object_id(
+            content["physical_git_blob_id"], "working-tree physical blob"
+        )
+        paths.append(relative)
+    if len(set(paths)) != len(paths):
+        _fail("working-tree source snapshot path repeated")
+    return value
+
+
 _ATTEMPT_KEYS = {
     "schema",
     "launch_rule_id",
@@ -1852,6 +1981,11 @@ def _load_materialization(
         and document["official_execution_allowed"] is False
     ):
         _fail("materialization terminal boundary changed")
+    materialization_source_conformance = (
+        _validated_working_tree_source_conformance(
+            document["working_tree_source_conformance"]
+        )
+    )
 
     external_fact = document["external_root"]
     if type(external_fact) is not dict or set(external_fact) != {
@@ -2112,6 +2246,11 @@ def _verify_materialized_files(
         == _zero_preflight_receipt_interface()
     ):
         _fail("launch manifest boundary changed")
+    manifest_source_conformance = _validated_working_tree_source_conformance(
+        manifest_document["working_tree_source_conformance"]
+    )
+    if manifest_source_conformance != document["working_tree_source_conformance"]:
+        _fail("manifest/materialization source conformance join changed")
     manifest_context = _validated_frozen_authorization_context(
         manifest_document["frozen_authorization_context"]
     )
@@ -2152,6 +2291,11 @@ def _verify_materialized_files(
         == document["third_party_source_closure_facts_sha256"]
     ):
         _fail("manifest closure summary join changed")
+    if [
+        snapshot["relative_path"]
+        for snapshot in manifest_source_conformance["snapshots"]
+    ] != [row.get("relative_path") for row in authorization["facts"]]:
+        _fail("manifest source-conformance path join changed")
     wrapper_rows = [
         row
         for row in authorization["facts"]

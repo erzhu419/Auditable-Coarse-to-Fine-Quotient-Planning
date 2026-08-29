@@ -207,6 +207,92 @@ def _closure(facts: list[dict[str, object]]) -> dict[str, object]:
     }
 
 
+def _working_tree_source_conformance(
+    rows: list[tuple[dict[str, object], bytes]],
+) -> dict[str, object]:
+    snapshots = []
+    for index, (fact, physical_raw) in enumerate(rows):
+        relative = str(fact["relative_path"])
+        binding_kind = str(
+            fact.get("binding_kind", "EXACT_C_PRE_GIT_BLOB")
+        )
+        effective_raw = (
+            b"EXPECTED_AUTHORIZATION_ID = 0\n"
+            if binding_kind == launcher.NORMALIZED_WRAPPER_BINDING_KIND
+            else physical_raw
+        )
+        assert len(effective_raw) == fact["byte_count"]
+        assert hashlib.sha256(effective_raw).hexdigest() == fact["sha256"]
+        effective_blob = hashlib.sha1(
+            b"blob "
+            + str(len(effective_raw)).encode("ascii")
+            + b"\x00"
+            + effective_raw
+        ).hexdigest()
+        physical_blob = hashlib.sha1(
+            b"blob "
+            + str(len(physical_raw)).encode("ascii")
+            + b"\x00"
+            + physical_raw
+        ).hexdigest()
+        observed_stat = {
+            "file_type": "REGULAR_FILE",
+            "st_dev": 1,
+            "st_ino": index + 1,
+            "st_mode": stat.S_IFREG | 0o644,
+            "mode": 0o644,
+            "st_nlink": 1,
+            "st_uid": os.getuid(),
+            "st_gid": os.getgid(),
+            "st_size": len(physical_raw),
+            "st_mtime_ns": 1,
+            "st_ctime_ns": 1,
+        }
+        snapshots.append(
+            {
+                "relative_path": relative,
+                "expected": {
+                    "file_type": "REGULAR_FILE",
+                    "git_mode": "100644",
+                    "mode": 0o644,
+                    "st_nlink": 1,
+                    "binding_kind": binding_kind,
+                    "byte_count": len(effective_raw),
+                    "sha256": hashlib.sha256(effective_raw).hexdigest(),
+                    "git_blob_id": effective_blob,
+                },
+                "observed_before": observed_stat,
+                "observed_after": dict(observed_stat),
+                "observed_content": {
+                    "binding_kind": binding_kind,
+                    "byte_count": len(effective_raw),
+                    "sha256": hashlib.sha256(effective_raw).hexdigest(),
+                    "git_blob_id": effective_blob,
+                    "physical_byte_count": len(physical_raw),
+                    "physical_sha256": hashlib.sha256(
+                        physical_raw
+                    ).hexdigest(),
+                    "physical_git_blob_id": physical_blob,
+                },
+                "mismatch_fields": [],
+                "conformant": True,
+            }
+        )
+    return {
+        "schema": (
+            "acfqp.v180r12r4_working_tree_source_conformance_diagnostic.v1"
+        ),
+        "phase": "BEFORE_PRELAUNCH_OUTPUT_AND_SCIENTIFIC_CAMPAIGN",
+        "source_root_count": len(snapshots),
+        "snapshots": snapshots,
+        "mismatch_count": 0,
+        "per_field_mismatches": [],
+        "unit_ownership_evaluated": False,
+        "full_source_conformance": True,
+        "cause": None,
+    }
+
+
 def _successful_measurement_cgroup_observations(
     campaign_attempt_id: str,
 ) -> list[dict[str, object]]:
@@ -441,6 +527,9 @@ def _materialized_repository(
         ),
     }
     authorization_closure = _closure([wrapper_normalized_fact])
+    source_conformance = _working_tree_source_conformance(
+        [(wrapper_normalized_fact, wrapper_raw)]
+    )
     third_party_closure = _closure(
         [
             {
@@ -464,6 +553,7 @@ def _materialized_repository(
         "authorization_self_module": "acfqp.test_authorization",
         "authorization_raw_source_modules": ["acfqp.test_wrapper"],
         "authorization_source_closure": authorization_closure,
+        "working_tree_source_conformance": source_conformance,
         "source_modules": [
             {
                 **wrapper_raw_fact,
@@ -632,6 +722,7 @@ def _materialized_repository(
         ],
         "normalized_wrapper_fact": wrapper_normalized_fact,
         "current_literal_wrapper_raw_observation": wrapper_raw_fact,
+        "working_tree_source_conformance": source_conformance,
         "launch_manifest_digest_is_runtime_supplied_not_protocol_frozen": True,
         "launch_manifest_has_no_self_digest": True,
         "frozen_authorization_context_sha256": hashlib.sha256(
