@@ -118,12 +118,16 @@ def test_production_service_tokens_bind_immediate_ordinal13_failure_terminals() 
         assert row["token"] == expected_tokens[row["target"]]
 
 
-def test_ordinal14_c_pre_keeps_protocol_and_slot_self_literals_zero() -> None:
-    assert protocol.EXPECTED_PROTOCOL_ID == protocol.ZERO_ID
-    assert protocol.EXPECTED_CANONICAL_BYTE_COUNT == 0
-    assert protocol.EXPECTED_CANONICAL_SHA256 == protocol.ZERO_ID
+def test_ordinal14_c_pre_freezes_protocol_and_slot_self_literals() -> None:
+    assert protocol.EXPECTED_PROTOCOL_ID == (
+        "9fc6ecbe63cdb65752d5bac6690903ab34ffc540abb3062b5ffde7a3695ebd49"
+    )
+    assert protocol.EXPECTED_CANONICAL_BYTE_COUNT == 492_573
+    assert protocol.EXPECTED_CANONICAL_SHA256 == (
+        "e32acda505c2e7dc98593290fe5fb60561e22df8481581a1f4e25846348f7cba"
+    )
     assert protocol.EXPECTED_CAMPAIGN_MEASUREMENT_EXECUTION_SLOT_ID == (
-        protocol.ZERO_ID
+        "441e52cd3721793a0541288196776aa214dd44b91f01e1822114b0e4442559f5"
     )
     assert protocol.EXPECTED_PRELAUNCH_SOURCE_CLOSURE_RULE_ID == (
         "5ec6496223fdd24664d142d581847f3e95456a3b0bb171df2950302e413ac60b"
