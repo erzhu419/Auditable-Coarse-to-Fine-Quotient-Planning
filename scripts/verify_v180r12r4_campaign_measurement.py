@@ -193,9 +193,19 @@ PRODUCTION_SYSTEMD_SERVICE_INVOCATION_FIELDS = (
 PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
     "acfqp:construction-k7-production-transient-service-token:v180r12r4"
 )
+V180R12R4R6_FAILED_PREDECESSOR_FREEZE_ID = (
+    "afdc3acd283daf018243acdf9920dfa32140459a6de1dd6bfc3a70c113579105"
+)
+V180R12R4R6_FAILED_INNER_LAUNCH_FAILURE_ID = (
+    "96cf56e7e7bb36105d2065b4252e9e7a3cc1052b6aa92ead94ef0d60dd498892"
+)
+V180R12R4R6_FAILED_OUTER_SERVICE_FAILURE_ID = (
+    "2bd19d84bf24877697395ff7f2c7bdea12d3a6f1331dc56b132a322176681cce"
+)
+V180R12R4_REPAIR_SCOPE = "T1_T2_ROLE_AWARE_PROCESS_ID_CONFORMANCE"
 PRODUCTION_TRANSIENT_SERVICE_TOKEN_BY_TARGET = {
-    "measurement": "36656cf3abb876d291de1e6707f86a9971efe447b224ac32b1909bd0d4166297",
-    "verification": "5b7ccbbdc29cac0b1a43036f69909c941eab0127fda30de788f13cc54cee93e5",
+    "measurement": "36ed4564c6b1e77e08ee99aac354f4fc9bc5aaa67b3ac0f6bf16e69996d338bf",
+    "verification": "77ab2901813ffcf1c297ad6ed041b8f5147d390d2adb0f95dc978cce2b54e6be",
 }
 PRODUCTION_RUNTIME_PLACEMENT_T1_SCHEMA = (
     "acfqp.v180r12r4_production_runtime_placement_t1.v1"
@@ -408,6 +418,10 @@ SOURCE_CLOSURE_REQUIRED_ROOTS = tuple(sorted((
     (
         "src/acfqp/construction_k7_campaign_measurement_"
         "failure_freeze_v180r12r4r5.py"
+    ),
+    (
+        "src/acfqp/construction_k7_campaign_measurement_"
+        "failure_freeze_v180r12r4r6.py"
     ),
     "src/acfqp/construction_k7_campaign_measurement_protocol_v180r12r4.py",
     "src/acfqp/construction_k7_campaign_measurement_supervisor_v180r12r4.py",
@@ -1570,13 +1584,21 @@ def _validated_production_token_input(
         + b"\x00"
         + canonical_json_bytes(value)
     ).hexdigest()
+    expected_input = {
+        "failed_predecessor_freeze_id": (
+            V180R12R4R6_FAILED_PREDECESSOR_FREEZE_ID
+        ),
+        "failed_inner_launch_failure_id": (
+            V180R12R4R6_FAILED_INNER_LAUNCH_FAILURE_ID
+        ),
+        "failed_outer_service_failure_id": (
+            V180R12R4R6_FAILED_OUTER_SERVICE_FAILURE_ID
+        ),
+        "repair_scope": V180R12R4_REPAIR_SCOPE,
+        "purpose": target.upper(),
+    }
     if not (
-        value["repair_scope"]
-        == (
-            "PRE_ATTEMPT_CGROUP_RUNTIME_PROPERTY_SNAPSHOTS_AND_PER_FIELD_"
-            "MISMATCH_DIAGNOSTIC"
-        )
-        and value["purpose"] == target.upper()
+        value == expected_input
         and expected_token == PRODUCTION_TRANSIENT_SERVICE_TOKEN_BY_TARGET[target]
     ):
         _fail(f"{target} production token lineage changed")
@@ -2507,12 +2529,20 @@ def _validate_production_systemd_service_invocation(
         and invocation.get("schema") == PRODUCTION_SYSTEMD_SERVICE_INVOCATION_SCHEMA
         and invocation.get("token_domain") == PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN
         and invocation.get("target") == target
-        and token_input.get("repair_scope")
-        == (
-            "PRE_ATTEMPT_CGROUP_RUNTIME_PROPERTY_SNAPSHOTS_AND_PER_FIELD_"
-            "MISMATCH_DIAGNOSTIC"
-        )
-        and token_input.get("purpose") == target.upper()
+        and token_input
+        == {
+            "failed_predecessor_freeze_id": (
+                V180R12R4R6_FAILED_PREDECESSOR_FREEZE_ID
+            ),
+            "failed_inner_launch_failure_id": (
+                V180R12R4R6_FAILED_INNER_LAUNCH_FAILURE_ID
+            ),
+            "failed_outer_service_failure_id": (
+                V180R12R4R6_FAILED_OUTER_SERVICE_FAILURE_ID
+            ),
+            "repair_scope": V180R12R4_REPAIR_SCOPE,
+            "purpose": target.upper(),
+        }
         and invocation.get("token") == token
         == PRODUCTION_TRANSIENT_SERVICE_TOKEN_BY_TARGET[target]
         and invocation.get("unit_name") == unit_name

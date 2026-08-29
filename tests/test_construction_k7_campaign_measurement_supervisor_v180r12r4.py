@@ -83,7 +83,11 @@ def _fd_fact(fd: int, role: str, access: str, path: str, inode: int) -> dict:
     }
 
 
-def _placements(attempt_id: str) -> tuple[dict, dict]:
+def _placements(
+    attempt_id: str,
+    *,
+    t2_updates: dict | None = None,
+) -> tuple[dict, dict]:
     token = protocol.PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN
     unit_name = protocol.PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_UNIT_NAME
     root_name = "v180r12r4-" + attempt_id
@@ -131,8 +135,10 @@ def _placements(attempt_id: str) -> tuple[dict, dict]:
         "unit_name": unit_name,
         "source_membership": t1["source_membership"],
         "expected_source_membership": t1["expected_source_membership"],
-        "self_pid": t1["self_pid"],
+        "self_pid": 502,
         "self_pid_in_source_cgroup_procs": True,
+        "parent_pid": t1["self_pid"],
+        "parent_pid_in_source_cgroup_procs": True,
         "source_service_fd": 252,
         "source_service_device": 25,
         "source_service_inode": 104,
@@ -144,6 +150,8 @@ def _placements(attempt_id: str) -> tuple[dict, dict]:
         "scientific_progress_present_paths": [],
         "scientific_progress_absent": True,
     }
+    if t2_updates is not None:
+        t2.update(t2_updates)
     return t1, t2
 
 
@@ -152,6 +160,7 @@ def _topology(
     *,
     controllers: tuple[str, ...] = ("cpu", "memory", "pids"),
     measurement_parent_path: str = "/sys/fs/cgroup/app.slice",
+    t2_updates: dict | None = None,
 ) -> supervisor.MeasurementCgroupTopologyReceiptV180R12R4:
     root_name = "v180r12r4-" + attempt_id
     root_path = "/sys/fs/cgroup/app.slice/" + root_name
@@ -211,7 +220,7 @@ def _topology(
             supervisor._REQUIRED_CGROUP_CONTROL_FILES
         )
     )
-    t1, t2 = _placements(attempt_id)
+    t1, t2 = _placements(attempt_id, t2_updates=t2_updates)
     return supervisor.MeasurementCgroupTopologyReceiptV180R12R4(
         _parent_fact(),
         nodes["DELEGATED_PARENT"],
@@ -652,6 +661,103 @@ def test_topology_failure_retains_full_diagnostic_and_separates_unit_ownership()
             "observed": "/sys/fs/cgroup",
         }
     ]
+
+
+def test_t1_t2_process_roles_require_exact_direct_child_evidence() -> None:
+    topology = _topology()
+
+    with pytest.raises(
+        supervisor.CgroupTopologyConformanceErrorV180R12R4R3
+    ) as same_pid_error:
+        _topology(
+            t2_updates={
+                "self_pid": topology.production_runtime_placement_t1["self_pid"]
+            }
+        )
+    assert same_pid_error.value.conformance_diagnostic["mismatch_rows"] == [
+        {
+            "field": "t2.pid_distinct_from_t1",
+            "expected": True,
+            "observed": False,
+        }
+    ]
+    assert (
+        same_pid_error.value.conformance_diagnostic["unit_ownership_acquired"]
+        is False
+    )
+
+    wrong_parent = topology.production_runtime_placement_t2["parent_pid"] + 1
+    with pytest.raises(
+        supervisor.CgroupTopologyConformanceErrorV180R12R4R3
+    ) as wrong_parent_error:
+        _topology(t2_updates={"parent_pid": wrong_parent})
+    assert wrong_parent_error.value.conformance_diagnostic["mismatch_rows"] == [
+        {
+            "field": "t2.parent_pid",
+            "expected": topology.production_runtime_placement_t1["self_pid"],
+            "observed": wrong_parent,
+        }
+    ]
+
+    expected_parent = topology.production_runtime_placement_t1["self_pid"]
+    for ill_typed_parent in (float(expected_parent), True):
+        with pytest.raises(
+            supervisor.CgroupTopologyConformanceErrorV180R12R4R3
+        ) as parent_type_error:
+            _topology(t2_updates={"parent_pid": ill_typed_parent})
+        mismatch = parent_type_error.value.conformance_diagnostic[
+            "mismatch_rows"
+        ]
+        assert len(mismatch) == 1
+        assert mismatch[0]["field"] == "t2.parent_pid"
+        assert mismatch[0]["expected"] == expected_parent
+        assert type(mismatch[0]["observed"]) is type(ill_typed_parent)
+
+    with pytest.raises(
+        supervisor.CgroupTopologyConformanceErrorV180R12R4R3
+    ) as parent_source_error:
+        _topology(
+            t2_updates={"parent_pid_in_source_cgroup_procs": False}
+        )
+    assert parent_source_error.value.conformance_diagnostic["mismatch_rows"] == [
+        {
+            "field": "t2.parent_pid_in_source_unit",
+            "expected": True,
+            "observed": False,
+        }
+    ]
+
+
+@pytest.mark.parametrize("field_name", ("self_pid", "parent_pid"))
+def test_t3_pid_roles_require_exact_type_stability(field_name: str) -> None:
+    attempt_id = "4" * 64
+    topology = _topology(attempt_id)
+    birth = _birth(
+        topology,
+        attempt_id,
+        supervisor.ProcessRoleV180R12R4.SUPERVISOR,
+        601,
+        61,
+    )
+    placement_t3 = dict(birth.production_runtime_placement_t3)
+    changed = {
+        **placement_t3,
+        "before_getrandom": {
+            **placement_t3["before_getrandom"],
+            field_name: float(placement_t3["before_getrandom"][field_name]),
+        },
+        "immediately_before_clone3": {
+            **placement_t3["immediately_before_clone3"],
+            field_name: float(
+                placement_t3["immediately_before_clone3"][field_name]
+            ),
+        },
+    }
+    with pytest.raises(
+        supervisor.ConstructionK7CampaignMeasurementSupervisorV180R12R4Error,
+        match="T3 placement",
+    ):
+        replace(birth, production_runtime_placement_t3=changed)
 
 
 def test_exact_eight_edge_io_graph_and_chunk_receipts_reject_role_swap() -> None:

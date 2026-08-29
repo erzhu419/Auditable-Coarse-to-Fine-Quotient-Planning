@@ -67,10 +67,10 @@ PRODUCTION_RUNTIME_PLACEMENT_T1_SCHEMA = (
     "acfqp.v180r12r4_production_runtime_placement_t1.v1"
 )
 PRODUCTION_RUNTIME_PLACEMENT_T2_SCHEMA = (
-    "acfqp.v180r12r4_production_runtime_placement_t2.v1"
+    "acfqp.v180r12r4_production_runtime_placement_t2.v2"
 )
 PRODUCTION_RUNTIME_PLACEMENT_T3_SCHEMA = (
-    "acfqp.v180r12r4_production_runtime_placement_t3.v1"
+    "acfqp.v180r12r4_production_runtime_placement_t3.v2"
 )
 PRODUCTION_RUNTIME_PLACEMENT_T1_FIELDS = (
     "schema", "target", "token", "unit_name", "slice",
@@ -86,7 +86,8 @@ PRODUCTION_RUNTIME_PLACEMENT_T1_FIELDS = (
 PRODUCTION_RUNTIME_PLACEMENT_T2_FIELDS = (
     "schema", "boundary", "target", "token", "unit_name",
     "source_membership", "expected_source_membership", "self_pid",
-    "self_pid_in_source_cgroup_procs", "source_service_fd",
+    "self_pid_in_source_cgroup_procs", "parent_pid",
+    "parent_pid_in_source_cgroup_procs", "source_service_fd",
     "source_service_device", "source_service_inode", "cgroup_namespace_inode",
     "nearest_common_ancestor_path", "nearest_common_ancestor_is_app_slice",
     "parent_cgroup_procs_o_wronly_openable", "planned_measurement_root_state",
@@ -109,7 +110,8 @@ PRODUCTION_RUNTIME_PLACEMENT_T3_FIELDS = (
 _PLACEMENT_STABLE_SOURCE_FIELDS = (
     "target", "token", "unit_name", "source_membership",
     "expected_source_membership", "self_pid",
-    "self_pid_in_source_cgroup_procs", "source_service_device",
+    "self_pid_in_source_cgroup_procs", "parent_pid",
+    "parent_pid_in_source_cgroup_procs", "source_service_device",
     "source_service_inode", "cgroup_namespace_inode",
     "nearest_common_ancestor_path", "nearest_common_ancestor_is_app_slice",
     "parent_cgroup_procs_o_wronly_openable",
@@ -654,7 +656,8 @@ def _property_mismatch_rows(
             "observed": observed_values[name],
         }
         for name in sorted(expected_values)
-        if expected_values[name] != observed_values[name]
+        if canonical_json_bytes(expected_values[name])
+        != canonical_json_bytes(observed_values[name])
     ]
 
 
@@ -675,6 +678,9 @@ def _source_unit_ownership_acquired(
     t2 = dict(placement_t2)
     unit_name = t1.get("unit_name")
     membership = t1.get("source_membership")
+    t1_pid = t1.get("self_pid")
+    t2_pid = t2.get("self_pid")
+    parent_pid = t2.get("parent_pid")
     return bool(
         type(unit_name) is str
         and unit_name
@@ -688,8 +694,16 @@ def _source_unit_ownership_acquired(
         and t2.get("token") == t1.get("token")
         and t2.get("source_membership") == membership
         and t2.get("expected_source_membership") == membership
-        and t2.get("self_pid") == t1.get("self_pid")
+        and type(t1_pid) is int
+        and t1_pid > 0
+        and type(t2_pid) is int
+        and t2_pid > 0
+        and t2_pid != t1_pid
         and t2.get("self_pid_in_source_cgroup_procs") is True
+        and type(parent_pid) is int
+        and parent_pid > 0
+        and parent_pid == t1_pid
+        and t2.get("parent_pid_in_source_cgroup_procs") is True
     )
 
 
@@ -1717,9 +1731,12 @@ class MeasurementCgroupTopologyReceiptV180R12R4:
             "t2.expected_source_membership": placement_t1.get(
                 "expected_source_membership"
             ),
+            "t2.parent_pid": placement_t1.get("self_pid"),
+            "t2.parent_pid_in_source_unit": True,
             "t2.parent_procs_openable": True,
-            "t2.pid": placement_t1.get("self_pid"),
+            "t2.pid_distinct_from_t1": True,
             "t2.pid_in_source_unit": True,
+            "t2.pid_positive": True,
             "t2.progress_absent": True,
             "t2.progress_present_paths": [],
             "t2.root_state": "ABSENT",
@@ -1789,13 +1806,23 @@ class MeasurementCgroupTopologyReceiptV180R12R4:
             "t2.expected_source_membership": placement_t2.get(
                 "expected_source_membership"
             ),
+            "t2.parent_pid": placement_t2.get("parent_pid"),
+            "t2.parent_pid_in_source_unit": placement_t2.get(
+                "parent_pid_in_source_cgroup_procs"
+            ),
             "t2.parent_procs_openable": placement_t2.get(
                 "parent_cgroup_procs_o_wronly_openable"
             ),
-            "t2.pid": placement_t2.get("self_pid"),
+            "t2.pid_distinct_from_t1": (
+                type(placement_t2.get("self_pid")) is int
+                and type(placement_t1.get("self_pid")) is int
+                and placement_t2["self_pid"] != placement_t1["self_pid"]
+            ),
             "t2.pid_in_source_unit": placement_t2.get(
                 "self_pid_in_source_cgroup_procs"
             ),
+            "t2.pid_positive": type(placement_t2.get("self_pid")) is int
+            and placement_t2["self_pid"] > 0,
             "t2.progress_absent": placement_t2.get("scientific_progress_absent"),
             "t2.progress_present_paths": placement_t2.get(
                 "scientific_progress_present_paths"
@@ -2002,8 +2029,10 @@ class PidfdBirthReceiptV180R12R4:
                 and before.get("unit_name") == placement_t3.get("unit_name")
                 and preclone.get("unit_name") == placement_t3.get("unit_name")
                 and all(
-                    before.get(field_name) == placement_t2.get(field_name)
-                    and preclone.get(field_name) == placement_t2.get(field_name)
+                    canonical_json_bytes(before.get(field_name))
+                    == canonical_json_bytes(placement_t2.get(field_name))
+                    and canonical_json_bytes(preclone.get(field_name))
+                    == canonical_json_bytes(placement_t2.get(field_name))
                     for field_name in _PLACEMENT_STABLE_SOURCE_FIELDS
                 )
                 and before.get("source_service_fd") == 252

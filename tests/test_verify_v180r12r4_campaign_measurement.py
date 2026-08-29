@@ -467,6 +467,66 @@ def _pre_attempt_host_conformance_raw(
     )
 
 
+def test_ordinal12_verifier_lineage_has_26_roots_and_exact_service_tokens() -> None:
+    r6_root = (
+        "src/acfqp/construction_k7_campaign_measurement_"
+        "failure_freeze_v180r12r4r6.py"
+    )
+    assert len(runner.SOURCE_CLOSURE_REQUIRED_ROOTS) == 26
+    assert r6_root in runner.SOURCE_CLOSURE_REQUIRED_ROOTS
+
+    base = {
+        "failed_predecessor_freeze_id": (
+            "afdc3acd283daf018243acdf9920dfa32140459a6de1dd6bfc3a70c113579105"
+        ),
+        "failed_inner_launch_failure_id": (
+            "96cf56e7e7bb36105d2065b4252e9e7a3cc1052b6aa92ead94ef0d60dd498892"
+        ),
+        "failed_outer_service_failure_id": (
+            "2bd19d84bf24877697395ff7f2c7bdea12d3a6f1331dc56b132a322176681cce"
+        ),
+        "repair_scope": "T1_T2_ROLE_AWARE_PROCESS_ID_CONFORMANCE",
+    }
+    expected_tokens = {
+        "measurement": (
+            "36ed4564c6b1e77e08ee99aac354f4fc9bc5aaa67b3ac0f6bf16e69996d338bf"
+        ),
+        "verification": (
+            "77ab2901813ffcf1c297ad6ed041b8f5147d390d2adb0f95dc978cce2b54e6be"
+        ),
+    }
+    repository = Path("/tmp/v180r12r4-ordinal12-lineage-test")
+    materialization_sha256 = "a" * 64
+    for target, expected_token in expected_tokens.items():
+        token_input = {**base, "purpose": target.upper()}
+        assert runner._validated_production_token_input(
+            token_input, target
+        ) == token_input
+        assert runner.PRODUCTION_TRANSIENT_SERVICE_TOKEN_BY_TARGET[target] == (
+            expected_token
+        )
+        assert protocol.PRODUCTION_TRANSIENT_SERVICE_ROWS[target][0] == (
+            token_input
+        )
+        invocation = _production_invocation(
+            repository, materialization_sha256, target
+        )
+        assert runner._validate_production_systemd_service_invocation(
+            invocation,
+            target=target,
+            repository_root=str(repository),
+            materialization_terminal_sha256=materialization_sha256,
+        ) == invocation
+
+    foreign = {**base, "purpose": "MEASUREMENT"}
+    foreign["failed_predecessor_freeze_id"] = "0" * 64
+    with pytest.raises(
+        runner.V180R12R4VerificationRunnerError,
+        match="production token lineage changed",
+    ):
+        runner._validated_production_token_input(foreign, "measurement")
+
+
 def test_pre_attempt_host_conformance_rejects_bool_for_runtime_integer(
     tmp_path: Path,
 ) -> None:

@@ -605,6 +605,138 @@ def test_independent_verifier_is_the_only_counter_pass_authority() -> None:
     )
 
 
+def test_independent_verifier_binds_ordinal12_service_lineage() -> None:
+    attempt = _measurement_launch_attempt_document()
+    invocation = attempt["production_systemd_service_invocation"]
+    materialization_sha256 = attempt["materialization_terminal_sha256"]
+    assert verifier._validate_production_systemd_service_invocation(
+        invocation,
+        repository_root=ledger_fixture.MEASUREMENT_LAUNCH_REPOSITORY_ROOT,
+        materialization_terminal_sha256=materialization_sha256,
+    ) == invocation
+    assert invocation["token"] == (
+        "36ed4564c6b1e77e08ee99aac354f4fc9bc5aaa67b3ac0f6bf16e69996d338bf"
+    )
+    assert invocation["token_input"] == {
+        "failed_predecessor_freeze_id": (
+            "afdc3acd283daf018243acdf9920dfa32140459a6de1dd6bfc3a70c113579105"
+        ),
+        "failed_inner_launch_failure_id": (
+            "96cf56e7e7bb36105d2065b4252e9e7a3cc1052b6aa92ead94ef0d60dd498892"
+        ),
+        "failed_outer_service_failure_id": (
+            "2bd19d84bf24877697395ff7f2c7bdea12d3a6f1331dc56b132a322176681cce"
+        ),
+        "repair_scope": "T1_T2_ROLE_AWARE_PROCESS_ID_CONFORMANCE",
+        "purpose": "MEASUREMENT",
+    }
+
+    for field_name, foreign_value in {
+        "failed_predecessor_freeze_id": "0" * 64,
+        "failed_inner_launch_failure_id": "0" * 64,
+        "failed_outer_service_failure_id": "0" * 64,
+        "repair_scope": "FOREIGN_REPAIR_SCOPE",
+    }.items():
+        foreign = copy.deepcopy(invocation)
+        foreign["token_input"][field_name] = foreign_value
+        with pytest.raises(
+            verifier.ConstructionK7CampaignMeasurementIndependentVerifierV180R12R4Error,
+            match="authority changed",
+        ):
+            verifier._validate_production_systemd_service_invocation(
+                foreign,
+                repository_root=(
+                    ledger_fixture.MEASUREMENT_LAUNCH_REPOSITORY_ROOT
+                ),
+                materialization_terminal_sha256=materialization_sha256,
+            )
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    (
+        "T2_PARENT_PID",
+        "T2_PARENT_PID_FLOAT",
+        "T2_PARENT_PID_BOOL",
+        "T2_SELF_EQUALS_T1",
+        "T2_PARENT_OUTSIDE_SOURCE",
+        "T3_PARENT_PID",
+        "T3_PARENT_PID_FLOAT",
+    ),
+)
+def test_independent_placement_replay_rejects_t2_role_and_t3_stability_drift(
+    mutation: str,
+) -> None:
+    fixture = ledger_fixture._fixture()
+    topology = copy.deepcopy(
+        next(
+            row
+            for row in fixture["docs"].values()
+            if row["schema"]
+            == "acfqp.campaign_cgroup_topology_receipt.v180r12r4"
+        )
+    )
+    births = {
+        row["process_role"]: copy.deepcopy(row)
+        for row in fixture["docs"].values()
+        if row["schema"] == "acfqp.campaign_pidfd_birth_receipt.v180r12r4"
+    }
+    node_rows = {
+        "MEASUREMENT_ROOT": topology["measurement_root"],
+        "SUPERVISOR": topology["supervisor_leaf"],
+        "WORKER": topology["worker_leaf"],
+    }
+    verifier._validate_production_runtime_placement_chain(
+        topology,
+        node_rows=node_rows,
+        supervisor_birth=births["SUPERVISOR"],
+        worker_birth=births["WORKER"],
+    )
+
+    if mutation == "T2_PARENT_PID":
+        topology["production_runtime_placement_t2"]["parent_pid"] += 1
+    elif mutation == "T2_PARENT_PID_FLOAT":
+        topology["production_runtime_placement_t2"]["parent_pid"] = float(
+            topology["production_runtime_placement_t2"]["parent_pid"]
+        )
+    elif mutation == "T2_PARENT_PID_BOOL":
+        topology["production_runtime_placement_t2"]["parent_pid"] = True
+    elif mutation == "T2_SELF_EQUALS_T1":
+        topology["production_runtime_placement_t2"]["self_pid"] = topology[
+            "production_runtime_placement_t1"
+        ]["self_pid"]
+    elif mutation == "T2_PARENT_OUTSIDE_SOURCE":
+        topology["production_runtime_placement_t2"][
+            "parent_pid_in_source_cgroup_procs"
+        ] = False
+    else:
+        for checkpoint in (
+            "before_getrandom",
+            "immediately_before_clone3",
+        ):
+            parent_pid = births["SUPERVISOR"][
+                "production_runtime_placement_t3"
+            ][checkpoint]["parent_pid"]
+            births["SUPERVISOR"]["production_runtime_placement_t3"][checkpoint][
+                "parent_pid"
+            ] = (
+                parent_pid + 1
+                if mutation == "T3_PARENT_PID"
+                else float(parent_pid)
+            )
+
+    with pytest.raises(
+        verifier.ConstructionK7CampaignMeasurementIndependentVerifierV180R12R4Error,
+        match="placement",
+    ):
+        verifier._validate_production_runtime_placement_chain(
+            topology,
+            node_rows=node_rows,
+            supervisor_birth=births["SUPERVISOR"],
+            worker_birth=births["WORKER"],
+        )
+
+
 @pytest.mark.parametrize(
     "argument_name",
     (

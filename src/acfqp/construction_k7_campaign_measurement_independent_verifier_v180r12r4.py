@@ -70,8 +70,18 @@ PRODUCTION_SYSTEMD_SERVICE_INVOCATION_FIELDS = frozenset(
 PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
     "acfqp:construction-k7-production-transient-service-token:v180r12r4"
 )
+V180R12R4R6_FAILED_PREDECESSOR_FREEZE_ID = (
+    "afdc3acd283daf018243acdf9920dfa32140459a6de1dd6bfc3a70c113579105"
+)
+V180R12R4R6_FAILED_INNER_LAUNCH_FAILURE_ID = (
+    "96cf56e7e7bb36105d2065b4252e9e7a3cc1052b6aa92ead94ef0d60dd498892"
+)
+V180R12R4R6_FAILED_OUTER_SERVICE_FAILURE_ID = (
+    "2bd19d84bf24877697395ff7f2c7bdea12d3a6f1331dc56b132a322176681cce"
+)
+V180R12R4_REPAIR_SCOPE = "T1_T2_ROLE_AWARE_PROCESS_ID_CONFORMANCE"
 EXPECTED_PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN = (
-    "36656cf3abb876d291de1e6707f86a9971efe447b224ac32b1909bd0d4166297"
+    "36ed4564c6b1e77e08ee99aac354f4fc9bc5aaa67b3ac0f6bf16e69996d338bf"
 )
 PRE_ATTEMPT_HOST_CONFORMANCE_SCHEMA = (
     "acfqp.v180r12r4_pre_attempt_host_conformance.v1"
@@ -136,10 +146,10 @@ PRODUCTION_RUNTIME_PLACEMENT_T1_SCHEMA = (
     "acfqp.v180r12r4_production_runtime_placement_t1.v1"
 )
 PRODUCTION_RUNTIME_PLACEMENT_T2_SCHEMA = (
-    "acfqp.v180r12r4_production_runtime_placement_t2.v1"
+    "acfqp.v180r12r4_production_runtime_placement_t2.v2"
 )
 PRODUCTION_RUNTIME_PLACEMENT_T3_SCHEMA = (
-    "acfqp.v180r12r4_production_runtime_placement_t3.v1"
+    "acfqp.v180r12r4_production_runtime_placement_t3.v2"
 )
 PRODUCTION_RUNTIME_PLACEMENT_T1_FIELDS = frozenset(
     "schema target token unit_name slice source_membership "
@@ -153,6 +163,7 @@ PRODUCTION_RUNTIME_PLACEMENT_T1_FIELDS = frozenset(
 PRODUCTION_RUNTIME_PLACEMENT_T2_FIELDS = frozenset(
     "schema boundary target token unit_name source_membership "
     "expected_source_membership self_pid self_pid_in_source_cgroup_procs "
+    "parent_pid parent_pid_in_source_cgroup_procs "
     "source_service_fd source_service_device source_service_inode "
     "cgroup_namespace_inode nearest_common_ancestor_path "
     "nearest_common_ancestor_is_app_slice parent_cgroup_procs_o_wronly_openable "
@@ -1512,12 +1523,20 @@ def _validate_production_systemd_service_invocation(
         invocation.get("schema") == PRODUCTION_SYSTEMD_SERVICE_INVOCATION_SCHEMA
         and invocation.get("token_domain") == PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN
         and invocation.get("target") == "measurement"
-        and token_input.get("repair_scope")
-        == (
-            "PRE_ATTEMPT_CGROUP_RUNTIME_PROPERTY_SNAPSHOTS_AND_PER_FIELD_"
-            "MISMATCH_DIAGNOSTIC"
-        )
-        and token_input.get("purpose") == "MEASUREMENT"
+        and token_input
+        == {
+            "failed_predecessor_freeze_id": (
+                V180R12R4R6_FAILED_PREDECESSOR_FREEZE_ID
+            ),
+            "failed_inner_launch_failure_id": (
+                V180R12R4R6_FAILED_INNER_LAUNCH_FAILURE_ID
+            ),
+            "failed_outer_service_failure_id": (
+                V180R12R4R6_FAILED_OUTER_SERVICE_FAILURE_ID
+            ),
+            "repair_scope": V180R12R4_REPAIR_SCOPE,
+            "purpose": "MEASUREMENT",
+        }
         and invocation.get("token") == token
         == EXPECTED_PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN
         and invocation.get("unit_name") == unit_name
@@ -2697,8 +2716,14 @@ def _validate_production_runtime_placement_chain(
         and t2.get("source_membership") == t1.get("source_membership")
         and t2.get("expected_source_membership")
         == t1.get("expected_source_membership")
-        and t2.get("self_pid") == t1.get("self_pid")
+        and type(t2.get("self_pid")) is int
+        and t2["self_pid"] > 0
+        and t2["self_pid"] != t1.get("self_pid")
         and t2.get("self_pid_in_source_cgroup_procs") is True
+        and type(t2.get("parent_pid")) is int
+        and t2["parent_pid"] > 0
+        and t2.get("parent_pid") == t1.get("self_pid")
+        and t2.get("parent_pid_in_source_cgroup_procs") is True
         and t2.get("source_service_fd") == 252
         and t2.get("source_service_device") == service.get("device")
         and t2.get("source_service_inode") == service.get("inode")
@@ -2721,7 +2746,8 @@ def _validate_production_runtime_placement_chain(
     stable_fields = (
         "target", "token", "unit_name", "source_membership",
         "expected_source_membership", "self_pid",
-        "self_pid_in_source_cgroup_procs", "source_service_device",
+        "self_pid_in_source_cgroup_procs", "parent_pid",
+        "parent_pid_in_source_cgroup_procs", "source_service_device",
         "source_service_inode", "cgroup_namespace_inode",
         "nearest_common_ancestor_path", "nearest_common_ancestor_is_app_slice",
         "parent_cgroup_procs_o_wronly_openable",
@@ -2743,8 +2769,10 @@ def _validate_production_runtime_placement_chain(
         and canonical_json_bytes(before)
         == canonical_json_bytes({**preclone, "boundary": "T3_BEFORE_GETRANDOM"})
         and all(
-            before.get(field_name) == t2.get(field_name)
-            and preclone.get(field_name) == t2.get(field_name)
+            canonical_json_bytes(before.get(field_name))
+            == canonical_json_bytes(t2.get(field_name))
+            and canonical_json_bytes(preclone.get(field_name))
+            == canonical_json_bytes(t2.get(field_name))
             for field_name in stable_fields
         )
         and before.get("source_service_fd") == 252

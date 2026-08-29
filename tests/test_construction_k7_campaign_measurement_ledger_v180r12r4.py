@@ -222,7 +222,8 @@ def _placement_facts(attempt_id: str = ATTEMPT_ID) -> tuple[dict, dict, dict]:
         "target": "measurement", "token": token, "unit_name": unit_name,
         "source_membership": t1["source_membership"],
         "expected_source_membership": t1["expected_source_membership"],
-        "self_pid": 501, "self_pid_in_source_cgroup_procs": True,
+        "self_pid": 502, "self_pid_in_source_cgroup_procs": True,
+        "parent_pid": 501, "parent_pid_in_source_cgroup_procs": True,
         "source_service_fd": 252, "source_service_device": 25,
         "source_service_inode": 104, "cgroup_namespace_inode": 999,
         "nearest_common_ancestor_path": "/sys/fs/cgroup/app.slice",
@@ -1384,7 +1385,19 @@ def test_semantic_receipts_directly_bind_all_three_registered_authorities(
 
 @pytest.mark.parametrize(
     "mutation",
-    ("T1_FD252", "T2_SOURCE_INODE", "T3_TARGET_FD", "WORKER_T3_NON_NULL"),
+    (
+        "T1_FD252",
+        "T2_SOURCE_INODE",
+        "T2_PARENT_PID",
+        "T2_PARENT_PID_FLOAT",
+        "T2_PARENT_PID_BOOL",
+        "T2_SELF_EQUALS_T1",
+        "T2_PARENT_OUTSIDE_SOURCE",
+        "T3_PARENT_PID",
+        "T3_PARENT_PID_FLOAT",
+        "T3_TARGET_FD",
+        "WORKER_T3_NON_NULL",
+    ),
 )
 def test_production_runtime_placement_chain_rejects_each_boundary_mutation(
     mutation: str,
@@ -1414,6 +1427,37 @@ def test_production_runtime_placement_chain_rejects_each_boundary_mutation(
         ]["fd"] = 253
     elif mutation == "T2_SOURCE_INODE":
         topology["production_runtime_placement_t2"]["source_service_inode"] += 1
+    elif mutation == "T2_PARENT_PID":
+        topology["production_runtime_placement_t2"]["parent_pid"] += 1
+    elif mutation == "T2_PARENT_PID_FLOAT":
+        topology["production_runtime_placement_t2"]["parent_pid"] = float(
+            topology["production_runtime_placement_t2"]["parent_pid"]
+        )
+    elif mutation == "T2_PARENT_PID_BOOL":
+        topology["production_runtime_placement_t2"]["parent_pid"] = True
+    elif mutation == "T2_SELF_EQUALS_T1":
+        topology["production_runtime_placement_t2"]["self_pid"] = topology[
+            "production_runtime_placement_t1"
+        ]["self_pid"]
+    elif mutation == "T2_PARENT_OUTSIDE_SOURCE":
+        topology["production_runtime_placement_t2"][
+            "parent_pid_in_source_cgroup_procs"
+        ] = False
+    elif mutation in {"T3_PARENT_PID", "T3_PARENT_PID_FLOAT"}:
+        for checkpoint in (
+            "before_getrandom",
+            "immediately_before_clone3",
+        ):
+            parent_pid = births["SUPERVISOR"][
+                "production_runtime_placement_t3"
+            ][checkpoint]["parent_pid"]
+            births["SUPERVISOR"]["production_runtime_placement_t3"][checkpoint][
+                "parent_pid"
+            ] = (
+                parent_pid + 1
+                if mutation == "T3_PARENT_PID"
+                else float(parent_pid)
+            )
     elif mutation == "T3_TARGET_FD":
         births["SUPERVISOR"]["production_runtime_placement_t3"][
             "before_getrandom"

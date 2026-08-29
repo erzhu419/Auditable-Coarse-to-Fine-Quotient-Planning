@@ -172,14 +172,14 @@ PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
 )
 PRODUCTION_TRANSIENT_SERVICE_ROWS = {
     "measurement": (
-        "36656cf3abb876d291de1e6707f86a9971efe447b224ac32b1909bd0d4166297",
+        "36ed4564c6b1e77e08ee99aac354f4fc9bc5aaa67b3ac0f6bf16e69996d338bf",
         "acfqp-v180r12r4-measurement-"
-        "36656cf3abb876d291de1e6707f86a9971efe447b224ac32b1909bd0d4166297.service",
+        "36ed4564c6b1e77e08ee99aac354f4fc9bc5aaa67b3ac0f6bf16e69996d338bf.service",
     ),
     "verification": (
-        "5b7ccbbdc29cac0b1a43036f69909c941eab0127fda30de788f13cc54cee93e5",
+        "77ab2901813ffcf1c297ad6ed041b8f5147d390d2adb0f95dc978cce2b54e6be",
         "acfqp-v180r12r4-verification-"
-        "5b7ccbbdc29cac0b1a43036f69909c941eab0127fda30de788f13cc54cee93e5.service",
+        "77ab2901813ffcf1c297ad6ed041b8f5147d390d2adb0f95dc978cce2b54e6be.service",
     ),
 }
 EXTERNAL_LAUNCH_CONTEXT_FIELDS = (
@@ -1372,6 +1372,38 @@ def _read_cgroup_control_from_fd_v180r12r4(
         os.close(descriptor)
 
 
+def _production_direct_child_pid_evidence_v180r12r4(
+    placement_t1: Mapping[str, Any],
+    source_cgroup_pids: tuple[int, ...],
+    *,
+    self_pid: int,
+    parent_pid: int,
+) -> dict[str, Any]:
+    """Bind the bootstrap child directly to its live service-entry parent."""
+
+    t1_pid = placement_t1.get("self_pid")
+    if not (
+        type(t1_pid) is int
+        and t1_pid > 0
+        and placement_t1.get("self_pid_in_source_cgroup_procs") is True
+        and type(self_pid) is int
+        and self_pid > 0
+        and type(parent_pid) is int
+        and parent_pid > 0
+        and self_pid != t1_pid
+        and parent_pid == t1_pid
+        and self_pid in source_cgroup_pids
+        and parent_pid in source_cgroup_pids
+    ):
+        _fail("T1 service-entry/T2 bootstrap direct-child PID relation changed")
+    return {
+        "self_pid": self_pid,
+        "self_pid_in_source_cgroup_procs": True,
+        "parent_pid": parent_pid,
+        "parent_pid_in_source_cgroup_procs": True,
+    }
+
+
 def _revalidate_production_source_placement_v180r12r4(
     context: Mapping[str, Any],
     *,
@@ -1404,13 +1436,21 @@ def _revalidate_production_source_placement_v180r12r4(
         PurePosixPath(mount_path)
     )
     expected_membership = "0::/" + (parent_relative / unit_name).as_posix()
-    membership = _proc_cgroup(os.getpid())
+    self_pid = os.getpid()
+    parent_pid = os.getppid()
+    membership = _proc_cgroup(self_pid)
     pids = tuple(
         int(row)
         for row in _read_cgroup_control_from_fd_v180r12r4(
             SOURCE_SYSTEMD_SERVICE_FD, "cgroup.procs"
         ).splitlines()
         if row
+    )
+    pid_evidence = _production_direct_child_pid_evidence_v180r12r4(
+        t1,
+        pids,
+        self_pid=self_pid,
+        parent_pid=parent_pid,
     )
     writable = os.open(
         "cgroup.procs",
@@ -1465,7 +1505,6 @@ def _revalidate_production_source_placement_v180r12r4(
         and service_path == expected_service_path
         and PurePosixPath(parent_path).name == "app.slice"
         and membership == expected_membership
-        and os.getpid() in pids
         and parent_flags & os.O_ACCMODE == os.O_RDONLY
         and mount_flags & os.O_PATH == os.O_PATH
         and service_flags & os.O_ACCMODE == os.O_RDONLY
@@ -1505,8 +1544,7 @@ def _revalidate_production_source_placement_v180r12r4(
         "unit_name": unit_name,
         "source_membership": membership,
         "expected_source_membership": expected_membership,
-        "self_pid": os.getpid(),
-        "self_pid_in_source_cgroup_procs": True,
+        **pid_evidence,
         "source_service_fd": SOURCE_SYSTEMD_SERVICE_FD,
         "source_service_device": service_metadata.st_dev,
         "source_service_inode": service_metadata.st_ino,

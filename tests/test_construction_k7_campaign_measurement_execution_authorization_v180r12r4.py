@@ -254,8 +254,8 @@ def test_authorization_source_closure_is_explicitly_placeholder_before_literal_f
     assert tuple(contract["required_static_roots"]) == tuple(
         sorted(protocol.SOURCE_CLOSURE_REQUIRED_ROOTS)
     )
-    assert contract["required_static_root_count"] == 25
-    assert len(set(contract["required_static_roots"])) == 25
+    assert contract["required_static_root_count"] == 26
+    assert len(set(contract["required_static_roots"])) == 26
     assert protocol.V180R12R3_FAILURE_FREEZE_SOURCE_RELATIVE_PATH in contract[
         "required_static_roots"
     ]
@@ -616,6 +616,9 @@ def test_authorization_echoes_prelaunch_evidence_durable_and_arithmetic_contract
     assert document["failed_ordinal10_repair_lineage"] == (
         protocol.failed_ordinal10_repair_lineage_contract_v180r12r4()
     )
+    assert document["failed_ordinal11_repair_lineage"] == (
+        protocol.failed_ordinal11_repair_lineage_contract_v180r12r4()
+    )
     failed_external_replay = document["failed_external_replay_repair_lineage"]
     failed_scientific_birth = document[
         "failed_scientific_birth_repair_lineage"
@@ -623,6 +626,7 @@ def test_authorization_echoes_prelaunch_evidence_durable_and_arithmetic_contract
     failed_ordinal8 = document["failed_ordinal8_repair_lineage"]
     failed_ordinal9 = document["failed_ordinal9_repair_lineage"]
     failed_ordinal10 = document["failed_ordinal10_repair_lineage"]
+    failed_ordinal11 = document["failed_ordinal11_repair_lineage"]
     assert failed_external_replay["scientific_attempt_record_present"] is False
     assert failed_external_replay["scientific_occurrence_started"] is False
     assert failed_external_replay["campaign_actual_measurement"] is False
@@ -653,9 +657,12 @@ def test_authorization_echoes_prelaunch_evidence_durable_and_arithmetic_contract
     assert document[
         "failed_v180r12r4r5_ordinal10_identity_rerun_forbidden"
     ] is True
+    assert document[
+        "failed_v180r12r4r6_ordinal11_identity_rerun_forbidden"
+    ] is True
     assert document["fresh_v180r12r4_physical_paths_and_identities_required"]
     assert document["repair_scope"] == protocol.V180R12R4_REPAIR_SCOPE
-    assert document["repair_scope"] == failed_ordinal10["repair_scope"]
+    assert document["repair_scope"] == failed_ordinal11["repair_scope"]
     assert failed_external_replay["repair_scope"] == (
         "AUTHORIZATION_EVIDENCE_WRAPPER_SOURCE_FACT_NORMALIZATION_ONLY"
     )
@@ -672,10 +679,25 @@ def test_authorization_echoes_prelaunch_evidence_durable_and_arithmetic_contract
     assert failed_ordinal10["runtime_failure_property_snapshots_recorded"] is False
     assert failed_ordinal10["runtime_failure_per_field_mismatch_recorded"] is False
     assert failed_ordinal10["runtime_failure_exact_cause_dimension_recorded"] is False
+    assert failed_ordinal11["scientific_attempt_opened"] is True
+    assert failed_ordinal11["completed_event_count"] == 1
+    assert failed_ordinal11["full_host_conformance"] is True
+    assert failed_ordinal11["host_conformance_mismatch_count"] == 0
+    assert failed_ordinal11["full_t1_t2_conformance"] is False
+    assert failed_ordinal11["only_mismatch"]["field"] == "t2.pid"
+    assert failed_ordinal11["exact_failure_cause"] == (
+        "T1_T2_PID_ROLE_CONFLATION"
+    )
+    assert failed_ordinal11["t1_t2_same_formal_service"] is True
+    assert failed_ordinal11["t1_t2_same_source_membership"] is True
+    assert failed_ordinal11["t1_t2_same_service_directory"] is True
+    assert failed_ordinal11["cleanup_complete"] is True
+    assert failed_ordinal11["counter_records_issued"] is False
+    assert failed_ordinal11["same_identity_rerun_forbidden"] is True
     assert document[
         "repair_changes_campaign_path_roles_event_schedule_evidence_cardinality_or_reducers"
     ] is False
-    assert len(document["source_closure_contract"]["required_static_roots"]) == 25
+    assert len(document["source_closure_contract"]["required_static_roots"]) == 26
     assert protocol.V180R12R3_FAILURE_FREEZE_SOURCE_RELATIVE_PATH in document[
         "source_closure_contract"
     ]["required_static_roots"]
@@ -692,6 +714,9 @@ def test_authorization_echoes_prelaunch_evidence_durable_and_arithmetic_contract
         "source_closure_contract"
     ]["required_static_roots"]
     assert protocol.V180R12R4R5_FAILURE_FREEZE_SOURCE_RELATIVE_PATH in document[
+        "source_closure_contract"
+    ]["required_static_roots"]
+    assert protocol.V180R12R4R6_FAILURE_FREEZE_SOURCE_RELATIVE_PATH in document[
         "source_closure_contract"
     ]["required_static_roots"]
     assert (

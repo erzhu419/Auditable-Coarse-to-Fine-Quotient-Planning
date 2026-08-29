@@ -54,15 +54,19 @@ from acfqp import (
     construction_k7_campaign_measurement_failure_freeze_v180r12r4r5
     as failed_ordinal10_predecessor,
 )
+from acfqp import (
+    construction_k7_campaign_measurement_failure_freeze_v180r12r4r6
+    as failed_ordinal11_predecessor,
+)
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
 ZERO_ID = "0" * 64
-EXPECTED_PROTOCOL_ID = "2aab7e4f285e05072378e1813b0345b966f1fac066a3713c16293f521bf001d5"
-EXPECTED_CANONICAL_BYTE_COUNT = 420_382
-EXPECTED_CANONICAL_SHA256 = "04c185ae47f71d308d37060d75470cbe854aa89755b24eb745fe22cfd17d72f4"
+EXPECTED_PROTOCOL_ID = "39ac13c2dde86d2d4d1a97475e227def0f2d1cf79be7d7998564ca99cd5afe9e"
+EXPECTED_CANONICAL_BYTE_COUNT = 441_354
+EXPECTED_CANONICAL_SHA256 = "66243f66dade13b33d3fd99c3f1fe944d4caf9b4e328fea549204f6c7ba36d56"
 EXPECTED_CAMPAIGN_MEASUREMENT_EXECUTION_SLOT_ID = (
-    "f69bcf6b049a12e7b2d8e1e1a710c64059f8a9a4a58cbda2f58f2fa4986fc3c7"
+    "57f9877f10e8cfa85cd13cc9ae1dd92d5a0faf9f9f8ffacc9856904f6b5b9504"
 )
 LOGICAL_OCCURRENCE_ID = "a37770e56698857e162b2099766573ec5cabfc876145496f7d54756271d66599"
 EXECUTION_NONCE = "7d4ebffb564caeb42550670bf06276f9ef7f456cfa5231acef56497f2bd62ea4"
@@ -424,6 +428,22 @@ V180R12R4R5_FAILED_INNER_LAUNCH_FAILURE_ID = (
 V180R12R4R5_FAILED_OUTER_SERVICE_FAILURE_ID = (
     failed_ordinal10_predecessor.EXPECTED_OUTER_SERVICE_FAILURE_ID
 )
+V180R12R4R6_FAILURE_FREEZE_SOURCE_RELATIVE_PATH = (
+    "src/acfqp/"
+    "construction_k7_campaign_measurement_failure_freeze_v180r12r4r6.py"
+)
+V180R12R4R6_FAILED_PREDECESSOR_FREEZE_ID = (
+    failed_ordinal11_predecessor.ORDINAL11_FAILURE_FREEZE_ID
+)
+V180R12R4R6_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID = (
+    failed_ordinal11_predecessor.EXPECTED_CAMPAIGN_ATTEMPT_ID
+)
+V180R12R4R6_FAILED_INNER_LAUNCH_FAILURE_ID = (
+    failed_ordinal11_predecessor.EXPECTED_INNER_LAUNCH_FAILURE_ID
+)
+V180R12R4R6_FAILED_OUTER_SERVICE_FAILURE_ID = (
+    failed_ordinal11_predecessor.EXPECTED_OUTER_SERVICE_FAILURE_ID
+)
 V180R12R3R2_REPAIR_SCOPE = (
     "OUTER_OBSERVER_DELEGATED_SOURCE_CGROUP_PLACEMENT_AND_ATOMIC_BIRTH_"
     "PREFLIGHT_ONLY"
@@ -433,7 +453,8 @@ V180R12R4R3_REPAIR_SCOPE = (
 )
 V180R12R4R4_REPAIR_SCOPE = failed_ordinal9_predecessor.REPAIR_SCOPE
 V180R12R4R5_REPAIR_SCOPE = failed_ordinal10_predecessor.REPAIR_SCOPE
-V180R12R4_REPAIR_SCOPE = V180R12R4R5_REPAIR_SCOPE
+V180R12R4R6_REPAIR_SCOPE = failed_ordinal11_predecessor.REPAIR_SCOPE
+V180R12R4_REPAIR_SCOPE = V180R12R4R6_REPAIR_SCOPE
 
 PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
     "acfqp:construction-k7-production-transient-service-token:v180r12r4"
@@ -446,12 +467,12 @@ PRODUCTION_TRANSIENT_SERVICE_TOKEN_INPUT_FIELDS = (
     "purpose",
 )
 PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN_INPUT = {
-    "failed_predecessor_freeze_id": V180R12R4R5_FAILED_PREDECESSOR_FREEZE_ID,
+    "failed_predecessor_freeze_id": V180R12R4R6_FAILED_PREDECESSOR_FREEZE_ID,
     "failed_inner_launch_failure_id": (
-        V180R12R4R5_FAILED_INNER_LAUNCH_FAILURE_ID
+        V180R12R4R6_FAILED_INNER_LAUNCH_FAILURE_ID
     ),
     "failed_outer_service_failure_id": (
-        V180R12R4R5_FAILED_OUTER_SERVICE_FAILURE_ID
+        V180R12R4R6_FAILED_OUTER_SERVICE_FAILURE_ID
     ),
     "repair_scope": V180R12R4_REPAIR_SCOPE,
     "purpose": "MEASUREMENT",
@@ -462,7 +483,7 @@ PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN = hashlib.sha256(
     + canonical_json_bytes(PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN_INPUT)
 ).hexdigest()
 EXPECTED_PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN = (
-    "36656cf3abb876d291de1e6707f86a9971efe447b224ac32b1909bd0d4166297"
+    "36ed4564c6b1e77e08ee99aac354f4fc9bc5aaa67b3ac0f6bf16e69996d338bf"
 )
 PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_UNIT_NAME = (
     "acfqp-v180r12r4-measurement-"
@@ -479,7 +500,7 @@ PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_TOKEN = hashlib.sha256(
     + canonical_json_bytes(PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_TOKEN_INPUT)
 ).hexdigest()
 EXPECTED_PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_TOKEN = (
-    "5b7ccbbdc29cac0b1a43036f69909c941eab0127fda30de788f13cc54cee93e5"
+    "77ab2901813ffcf1c297ad6ed041b8f5147d390d2adb0f95dc978cce2b54e6be"
 )
 PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_UNIT_NAME = (
     "acfqp-v180r12r4-verification-"
@@ -566,7 +587,7 @@ PRODUCTION_RUNTIME_PLACEMENT_T1_FIELDS = (
     "t1_complete_before_child_popen",
 )
 PRODUCTION_RUNTIME_PLACEMENT_T2_SCHEMA = (
-    "acfqp.v180r12r4_production_runtime_placement_t2.v1"
+    "acfqp.v180r12r4_production_runtime_placement_t2.v2"
 )
 PRODUCTION_RUNTIME_PLACEMENT_T2_FIELDS = (
     "schema",
@@ -578,6 +599,8 @@ PRODUCTION_RUNTIME_PLACEMENT_T2_FIELDS = (
     "expected_source_membership",
     "self_pid",
     "self_pid_in_source_cgroup_procs",
+    "parent_pid",
+    "parent_pid_in_source_cgroup_procs",
     "source_service_fd",
     "source_service_device",
     "source_service_inode",
@@ -590,7 +613,7 @@ PRODUCTION_RUNTIME_PLACEMENT_T2_FIELDS = (
     "scientific_progress_absent",
 )
 PRODUCTION_RUNTIME_PLACEMENT_T3_SCHEMA = (
-    "acfqp.v180r12r4_production_runtime_placement_t3.v1"
+    "acfqp.v180r12r4_production_runtime_placement_t3.v2"
 )
 PRODUCTION_RUNTIME_PLACEMENT_T3_CHECKPOINT_FIELDS = (
     *PRODUCTION_RUNTIME_PLACEMENT_T2_FIELDS,
@@ -1700,13 +1723,13 @@ SUCCESS_DURABLE_WRITE_ORDER = (
 )
 
 EXPECTED_PRELAUNCH_SOURCE_CLOSURE_RULE_ID = (
-    "7f0d63c0143c72d3a41f9a4ad25b9fc29f6952ae05a1b4797cded68728d27090"
+    "b00bc6e59018f124e9939e6237ee9afc1852cf6120fb7130d536b7ff2cb682f4"
 )
 EXPECTED_PRELAUNCH_MATERIALIZATION_RULE_ID = (
-    "0dfee347b3b36527bcc06b81228545043b3aeff8c0163738001653b27e363b91"
+    "fb3090b81da2b32d23cdff0f24888dbc843624308be35497797b8ae5383dbc67"
 )
 EXPECTED_PRELAUNCH_LAUNCH_RULE_ID = (
-    "77943eb671fdc3f1d90c977b7b6405f7127284b223ced1491ba69fda8e91e28a"
+    "590667c6806bfe8436b219cc78b27c71d4acd2675128eb453e967ece488aecee"
 )
 PROTOCOL_FINAL_ANCHOR_NAMES = (
     "EXPECTED_PROTOCOL_ID",
@@ -2521,6 +2544,7 @@ SOURCE_CLOSURE_REQUIRED_ROOTS = tuple(sorted((
     V180R12R4R2_FAILURE_FREEZE_SOURCE_RELATIVE_PATH,
     V180R12R4R4_FAILURE_FREEZE_SOURCE_RELATIVE_PATH,
     V180R12R4R5_FAILURE_FREEZE_SOURCE_RELATIVE_PATH,
+    V180R12R4R6_FAILURE_FREEZE_SOURCE_RELATIVE_PATH,
     V180R12R2_EVIDENCE_SOURCE_RELATIVE_PATH,
 )))
 WORKER_ALLOWED_LOCAL_IMPORTS = (
@@ -4029,6 +4053,114 @@ def failed_ordinal10_repair_lineage_contract_v180r12r4() -> dict[str, Any]:
     }
 
 
+def failed_ordinal11_repair_lineage_contract_v180r12r4() -> dict[str, Any]:
+    """Bind consumed ordinal11 as the immediate scientific predecessor."""
+
+    source = Path(failed_ordinal11_predecessor.__file__).resolve()
+    expected_source = (
+        _ROOT / V180R12R4R6_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
+    ).resolve()
+    if not (
+        source == expected_source
+        and source.parents[2] == _ROOT.resolve()
+        and failed_ordinal11_predecessor.ORDINAL11_FAILURE_FREEZE_ID
+        == V180R12R4R6_FAILED_PREDECESSOR_FREEZE_ID
+        and failed_ordinal11_predecessor.EXPECTED_CAMPAIGN_ATTEMPT_ID
+        == V180R12R4R6_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID
+        and failed_ordinal11_predecessor.EXPECTED_INNER_LAUNCH_FAILURE_ID
+        == V180R12R4R6_FAILED_INNER_LAUNCH_FAILURE_ID
+        and failed_ordinal11_predecessor.EXPECTED_OUTER_SERVICE_FAILURE_ID
+        == V180R12R4R6_FAILED_OUTER_SERVICE_FAILURE_ID
+        and failed_ordinal11_predecessor.REPAIR_SCOPE
+        == V180R12R4R6_REPAIR_SCOPE
+    ):
+        _fail("frozen ordinal11 failure authority changed")
+    contract = (
+        failed_ordinal11_predecessor.freeze_ordinal11_failure_v180r12r4r6()
+        .to_contract()
+    )
+    host = contract.get("host_conformance")
+    diagnostic = contract.get("topology_diagnostic")
+    if not (
+        contract.get("schema")
+        == "acfqp.v180r12r4r6_ordinal11_failure_freeze.v1"
+        and contract.get("freeze_id")
+        == V180R12R4R6_FAILED_PREDECESSOR_FREEZE_ID
+        and contract.get("campaign_attempt_id")
+        == V180R12R4R6_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID
+        and contract.get("campaign_attempt_record_id")
+        == failed_ordinal11_predecessor.EXPECTED_CAMPAIGN_ATTEMPT_RECORD_ID
+        and contract.get("campaign_failure_id")
+        == failed_ordinal11_predecessor.EXPECTED_CAMPAIGN_FAILURE_ID
+        and contract.get("inner_launch_failure_id")
+        == V180R12R4R6_FAILED_INNER_LAUNCH_FAILURE_ID
+        and contract.get("outer_service_failure_id")
+        == V180R12R4R6_FAILED_OUTER_SERVICE_FAILURE_ID
+        and contract.get("full_source_conformance") is True
+        and contract.get("source_root_count") == 25
+        and contract.get("full_host_conformance") is True
+        and contract.get("host_conformance_mismatch_count") == 0
+        and contract.get("host_conformance_cause") is None
+        and type(host) is dict
+        and host.get("full_host_conformance") is True
+        and host.get("mismatch_count") == 0
+        and host.get("mismatch_rows") == []
+        and host.get("cause") is None
+        and contract.get("scientific_attempt_opened") is True
+        and contract.get("event_kinds") == ["ATTEMPT_OPEN"]
+        and contract.get("completed_event_count") == 1
+        and contract.get("full_t1_t2_conformance") is False
+        and contract.get("topology_diagnostic_unit_ownership_acquired")
+        is False
+        and contract.get("t1_t2_same_formal_service") is True
+        and contract.get("t1_t2_same_source_membership") is True
+        and contract.get("t1_t2_same_service_directory") is True
+        and contract.get("only_mismatch")
+        == {
+            "field": "t2.pid",
+            "expected": failed_ordinal11_predecessor.EXPECTED_T1_PID,
+            "observed": failed_ordinal11_predecessor.OBSERVED_T2_PID,
+        }
+        and contract.get("exact_failure_cause")
+        == "T1_T2_PID_ROLE_CONFLATION"
+        and contract.get("t1_process_role") == "SERVICE_ENTRY_LAUNCHER"
+        and contract.get("t2_process_role") == "BOOTSTRAP_CHILD"
+        and contract.get("distinct_process_roles") is True
+        and contract.get("predecessor_t2_schema")
+        == "acfqp.v180r12r4_production_runtime_placement_t2.v1"
+        and contract.get("successor_t2_schema")
+        == "acfqp.v180r12r4_production_runtime_placement_t2.v2"
+        and contract.get("ordinal11_t3_present") is False
+        and type(diagnostic) is dict
+        and contract.get("measurement_root_created_before_failure") is True
+        and contract.get("cleanup_complete") is True
+        and contract.get("post_child_measurement_root_state") == "ABSENT"
+        and contract.get("counter_record_count") == 0
+        and contract.get("work_vector_count") == 0
+        and contract.get("comparison_vector_count") == 0
+        and set(contract.get("gate_statuses", {}).values()) == {"NOT_RUN"}
+        and contract.get("official_execution_allowed") is False
+        and contract.get("terminal_present") is False
+        and contract.get("independent_replay_present") is False
+        and contract.get("scientific_effect_claimed") is False
+        and contract.get("identity_consumed") is True
+        and contract.get("same_identity_rerun_forbidden") is True
+        and contract.get("fresh_successor_identity_required") is True
+        and contract.get("repair_scope") == V180R12R4R6_REPAIR_SCOPE
+    ):
+        _fail("frozen ordinal11 failure lineage changed")
+    return {
+        **contract,
+        "failure_freeze_source_relative_path": (
+            V180R12R4R6_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
+        ),
+        "failure_freeze_source_is_required_authorization_source_root": True,
+        "failure_freeze_source_is_resolved_from_source_bound_module_file": True,
+        "repair_changes_campaign_path_roles_event_schedule_evidence_"
+        "cardinality_or_reducers": False,
+    }
+
+
 def production_systemd_service_contract_v180r12r4() -> dict[str, Any]:
     """Return the exact effect-free transient-service invocation template."""
 
@@ -4552,9 +4684,13 @@ def prelaunch_contract_v180r12r4() -> dict[str, Any]:
         "run_reobserves_cgroup_parent_via_fd_250_fd_251_and_proc_controls": True,
         "run_t2_revalidates_source_membership_pid_fd252_namespace_nca_parent_"
         "writable_and_progress_absence": True,
+        "run_t2_records_bootstrap_child_and_service_entry_parent_pid": True,
+        "run_t2_requires_child_and_parent_in_same_fd252_cgroup_procs_read": True,
+        "run_t2_requires_direct_child_pid_relation_to_t1": True,
         "run_t2_failure_precedes_and_forbids_campaign_attempt_o_excl": True,
         "launch_supervisor_t3_revalidates_before_getrandom_and_adjacent_to_"
         "clone3": True,
+        "run_t3_exactly_preserves_t2_child_and_parent_pid_evidence": True,
         "run_reobserves_runtime_capability_without_side_effects": True,
         "run_requires_reobserved_parent_identity_fields_except_observer_"
         "self_membership_equal_external_context": True,
@@ -5988,6 +6124,7 @@ def build_campaign_measurement_protocol_v180r12r4(
     failed_ordinal8 = failed_ordinal8_repair_lineage_contract_v180r12r4()
     failed_ordinal9 = failed_ordinal9_repair_lineage_contract_v180r12r4()
     failed_ordinal10 = failed_ordinal10_repair_lineage_contract_v180r12r4()
+    failed_ordinal11 = failed_ordinal11_repair_lineage_contract_v180r12r4()
     runner_execution_envelope = (
         source_bound_runner_execution_envelope_contract_v180r12r4()
     )
@@ -6153,7 +6290,7 @@ def build_campaign_measurement_protocol_v180r12r4(
         == SEMANTIC_HASH_OPERATION_COUNT
         and tuple(semantic_hash_scope["excluded_instrumentation_classes"])
         == SEMANTIC_HASH_COUNTER_EXCLUDED_INSTRUMENTATION_CLASSES
-        and len(SOURCE_CLOSURE_REQUIRED_ROOTS) == 25
+        and len(SOURCE_CLOSURE_REQUIRED_ROOTS) == 26
         and V180R12R3_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
         in SOURCE_CLOSURE_REQUIRED_ROOTS
         and V180R12R3R1_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
@@ -6165,6 +6302,8 @@ def build_campaign_measurement_protocol_v180r12r4(
         and V180R12R4R4_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
         in SOURCE_CLOSURE_REQUIRED_ROOTS
         and V180R12R4R5_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
+        in SOURCE_CLOSURE_REQUIRED_ROOTS
+        and V180R12R4R6_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
         in SOURCE_CLOSURE_REQUIRED_ROOTS
         and failed_external_replay["scientific_attempt_record_present"] is False
         and failed_external_replay["scientific_occurrence_started"] is False
@@ -6259,6 +6398,36 @@ def build_campaign_measurement_protocol_v180r12r4(
         and failed_ordinal10["same_identity_rerun_forbidden"] is True
         and failed_ordinal10["fresh_successor_identity_required"] is True
         and failed_ordinal10["repair_scope"] == V180R12R4R5_REPAIR_SCOPE
+        and failed_ordinal11["freeze_id"]
+        == V180R12R4R6_FAILED_PREDECESSOR_FREEZE_ID
+        and failed_ordinal11["campaign_attempt_id"]
+        == V180R12R4R6_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID
+        and failed_ordinal11["scientific_attempt_opened"] is True
+        and failed_ordinal11["completed_event_count"] == 1
+        and failed_ordinal11["full_source_conformance"] is True
+        and failed_ordinal11["full_host_conformance"] is True
+        and failed_ordinal11["host_conformance_mismatch_count"] == 0
+        and failed_ordinal11["host_conformance_cause"] is None
+        and failed_ordinal11["full_t1_t2_conformance"] is False
+        and failed_ordinal11["t1_t2_same_formal_service"] is True
+        and failed_ordinal11["t1_t2_same_source_membership"] is True
+        and failed_ordinal11["t1_t2_same_service_directory"] is True
+        and failed_ordinal11["only_mismatch"]["field"] == "t2.pid"
+        and failed_ordinal11["exact_failure_cause"]
+        == "T1_T2_PID_ROLE_CONFLATION"
+        and failed_ordinal11["distinct_process_roles"] is True
+        and failed_ordinal11["predecessor_t2_schema"]
+        == "acfqp.v180r12r4_production_runtime_placement_t2.v1"
+        and failed_ordinal11["successor_t2_schema"]
+        == PRODUCTION_RUNTIME_PLACEMENT_T2_SCHEMA
+        and failed_ordinal11["ordinal11_t3_present"] is False
+        and failed_ordinal11["cleanup_complete"] is True
+        and failed_ordinal11["counter_records_issued"] is False
+        and failed_ordinal11["work_vectors_issued"] is False
+        and failed_ordinal11["comparison_vectors_issued"] is False
+        and failed_ordinal11["same_identity_rerun_forbidden"] is True
+        and failed_ordinal11["fresh_successor_identity_required"] is True
+        and failed_ordinal11["repair_scope"] == V180R12R4R6_REPAIR_SCOPE
         and runner_execution_envelope["module_type"] == "types.ModuleType"
         and tuple(runner_execution_envelope["target_order"])
         == SOURCE_BOUND_RUNNER_TARGET_ORDER
@@ -6333,17 +6502,27 @@ def build_campaign_measurement_protocol_v180r12r4(
         "historical_failed_ordinal9_outer_service_failure_id": (
             failed_ordinal9["outer_service_failure_id"]
         ),
-        "immediate_failed_predecessor_freeze_id": failed_ordinal10[
+        "historical_failed_ordinal10_freeze_id": failed_ordinal10["freeze_id"],
+        "historical_failed_ordinal10_logical_campaign_attempt_id": (
+            failed_ordinal10["logical_campaign_attempt_id"]
+        ),
+        "historical_failed_ordinal10_inner_launch_failure_id": (
+            failed_ordinal10["inner_launch_failure_id"]
+        ),
+        "historical_failed_ordinal10_outer_service_failure_id": (
+            failed_ordinal10["outer_service_failure_id"]
+        ),
+        "immediate_failed_predecessor_freeze_id": failed_ordinal11[
             "freeze_id"
         ],
         "immediate_failed_predecessor_logical_campaign_attempt_id": (
-            failed_ordinal10["logical_campaign_attempt_id"]
+            failed_ordinal11["campaign_attempt_id"]
         ),
         "immediate_failed_predecessor_inner_launch_failure_id": (
-            failed_ordinal10["inner_launch_failure_id"]
+            failed_ordinal11["inner_launch_failure_id"]
         ),
         "immediate_failed_predecessor_outer_service_failure_id": (
-            failed_ordinal10["outer_service_failure_id"]
+            failed_ordinal11["outer_service_failure_id"]
         ),
         "pre_scientific_failed_predecessor_campaign_attempt_id": (
             failed_external_replay["campaign_attempt_id"]
@@ -6401,12 +6580,14 @@ def build_campaign_measurement_protocol_v180r12r4(
         "failed_ordinal8_repair_lineage": failed_ordinal8,
         "failed_ordinal9_repair_lineage": failed_ordinal9,
         "failed_ordinal10_repair_lineage": failed_ordinal10,
+        "failed_ordinal11_repair_lineage": failed_ordinal11,
         "failed_v180r12r3_identity_rerun_forbidden": True,
         "failed_v180r12r3r1_identity_rerun_forbidden": True,
         "failed_v180r12r3r2_identity_rerun_forbidden": True,
         "failed_v180r12r4r2_ordinal8_identity_rerun_forbidden": True,
         "failed_v180r12r4r4_ordinal9_identity_rerun_forbidden": True,
         "failed_v180r12r4r5_ordinal10_identity_rerun_forbidden": True,
+        "failed_v180r12r4r6_ordinal11_identity_rerun_forbidden": True,
         "fresh_v180r12r4_protocol_authorization_evidence_attempt_and_"
         "prelaunch_identities_required": True,
         "fresh_v180r12r4_physical_paths_and_identities_required": True,
@@ -7136,6 +7317,12 @@ __all__ = (
     "V180R12R4R5_FAILED_PREDECESSOR_FREEZE_ID",
     "V180R12R4R5_FAILURE_FREEZE_SOURCE_RELATIVE_PATH",
     "V180R12R4R5_REPAIR_SCOPE",
+    "V180R12R4R6_FAILED_INNER_LAUNCH_FAILURE_ID",
+    "V180R12R4R6_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID",
+    "V180R12R4R6_FAILED_OUTER_SERVICE_FAILURE_ID",
+    "V180R12R4R6_FAILED_PREDECESSOR_FREEZE_ID",
+    "V180R12R4R6_FAILURE_FREEZE_SOURCE_RELATIVE_PATH",
+    "V180R12R4R6_REPAIR_SCOPE",
     "V180R12R4_REPAIR_SCOPE",
     "WALL_TIMEOUT_SECONDS",
     "WORK_SCOPE_KIND",
@@ -7154,6 +7341,7 @@ __all__ = (
     "failed_ordinal8_repair_lineage_contract_v180r12r4",
     "failed_ordinal9_repair_lineage_contract_v180r12r4",
     "failed_ordinal10_repair_lineage_contract_v180r12r4",
+    "failed_ordinal11_repair_lineage_contract_v180r12r4",
     "successful_event_schedule_template_v180r12r4",
     "freeze_campaign_measurement_protocol_v180r12r4",
     "measurement_derivation_contract_v180r12r4",

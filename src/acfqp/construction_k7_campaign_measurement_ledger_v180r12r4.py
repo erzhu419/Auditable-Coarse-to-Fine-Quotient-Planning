@@ -85,10 +85,10 @@ PRODUCTION_RUNTIME_PLACEMENT_T1_SCHEMA = (
     "acfqp.v180r12r4_production_runtime_placement_t1.v1"
 )
 PRODUCTION_RUNTIME_PLACEMENT_T2_SCHEMA = (
-    "acfqp.v180r12r4_production_runtime_placement_t2.v1"
+    "acfqp.v180r12r4_production_runtime_placement_t2.v2"
 )
 PRODUCTION_RUNTIME_PLACEMENT_T3_SCHEMA = (
-    "acfqp.v180r12r4_production_runtime_placement_t3.v1"
+    "acfqp.v180r12r4_production_runtime_placement_t3.v2"
 )
 PRODUCTION_RUNTIME_PLACEMENT_T1_FIELDS = frozenset(
     "schema target token unit_name slice source_membership "
@@ -102,6 +102,7 @@ PRODUCTION_RUNTIME_PLACEMENT_T1_FIELDS = frozenset(
 PRODUCTION_RUNTIME_PLACEMENT_T2_FIELDS = frozenset(
     "schema boundary target token unit_name source_membership "
     "expected_source_membership self_pid self_pid_in_source_cgroup_procs "
+    "parent_pid parent_pid_in_source_cgroup_procs "
     "source_service_fd source_service_device source_service_inode "
     "cgroup_namespace_inode nearest_common_ancestor_path "
     "nearest_common_ancestor_is_app_slice parent_cgroup_procs_o_wronly_openable "
@@ -125,7 +126,8 @@ PRODUCTION_RUNTIME_PLACEMENT_T3_FIELDS = frozenset(
 _PLACEMENT_STABLE_SOURCE_FIELDS = (
     "target", "token", "unit_name", "source_membership",
     "expected_source_membership", "self_pid",
-    "self_pid_in_source_cgroup_procs", "source_service_device",
+    "self_pid_in_source_cgroup_procs", "parent_pid",
+    "parent_pid_in_source_cgroup_procs", "source_service_device",
     "source_service_inode", "cgroup_namespace_inode",
     "nearest_common_ancestor_path", "nearest_common_ancestor_is_app_slice",
     "parent_cgroup_procs_o_wronly_openable",
@@ -2695,8 +2697,14 @@ def _validate_production_runtime_placement_chain_v180r12r4(
         and t2.get("source_membership") == t1.get("source_membership")
         and t2.get("expected_source_membership")
         == t1.get("expected_source_membership")
-        and t2.get("self_pid") == t1.get("self_pid")
+        and type(t2.get("self_pid")) is int
+        and t2["self_pid"] > 0
+        and t2["self_pid"] != t1.get("self_pid")
         and t2.get("self_pid_in_source_cgroup_procs") is True
+        and type(t2.get("parent_pid")) is int
+        and t2["parent_pid"] > 0
+        and t2.get("parent_pid") == t1.get("self_pid")
+        and t2.get("parent_pid_in_source_cgroup_procs") is True
         and t2.get("source_service_fd") == 252
         and t2.get("source_service_device") == service.get("device")
         and t2.get("source_service_inode") == service.get("inode")
@@ -2733,8 +2741,10 @@ def _validate_production_runtime_placement_chain_v180r12r4(
         and canonical_json_bytes(before)
         == canonical_json_bytes({**preclone, "boundary": "T3_BEFORE_GETRANDOM"})
         and all(
-            before.get(field_name) == t2.get(field_name)
-            and preclone.get(field_name) == t2.get(field_name)
+            canonical_json_bytes(before.get(field_name))
+            == canonical_json_bytes(t2.get(field_name))
+            and canonical_json_bytes(preclone.get(field_name))
+            == canonical_json_bytes(t2.get(field_name))
             for field_name in _PLACEMENT_STABLE_SOURCE_FIELDS
         )
         and before.get("source_service_fd") == 252

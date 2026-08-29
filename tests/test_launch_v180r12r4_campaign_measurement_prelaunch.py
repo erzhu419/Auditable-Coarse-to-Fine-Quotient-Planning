@@ -2072,6 +2072,18 @@ def test_startup_rejects_wrong_working_directory(
 def test_dual_target_service_contract_freezes_outer_dispatch_and_inner_entry() -> None:
     contract = launcher._production_systemd_service_contract()
     assert contract == protocol.production_systemd_service_contract_v180r12r4()
+    predecessor = {
+        "failed_predecessor_freeze_id": (
+            "afdc3acd283daf018243acdf9920dfa32140459a6de1dd6bfc3a70c113579105"
+        ),
+        "failed_inner_launch_failure_id": (
+            "96cf56e7e7bb36105d2065b4252e9e7a3cc1052b6aa92ead94ef0d60dd498892"
+        ),
+        "failed_outer_service_failure_id": (
+            "2bd19d84bf24877697395ff7f2c7bdea12d3a6f1331dc56b132a322176681cce"
+        ),
+        "repair_scope": "T1_T2_ROLE_AWARE_PROCESS_ID_CONFORMANCE",
+    }
     assert [row["target"] for row in contract["target_rows"]] == [
         "measurement",
         "verification",
@@ -2088,6 +2100,10 @@ def test_dual_target_service_contract_freezes_outer_dispatch_and_inner_entry() -
     }
     for row in contract["target_rows"]:
         target = row["target"]
+        assert row["token_input"] == {
+            **predecessor,
+            "purpose": target.upper(),
+        }
         outer = row["outer_dispatch_argv_template"]
         inner = row["launcher_command_template"]
         assert row["outer_dispatch_cwd_template"] == "{repository_root}"

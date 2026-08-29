@@ -179,8 +179,8 @@ def test_outcome_free_wrapper_has_exact_phase_aware_twelve_literal_topology() ->
     assert evidence.SOURCE_BOUNDARY_REQUIRED_PATHS == tuple(
         sorted(evidence.SOURCE_BOUNDARY_REQUIRED_PATHS)
     )
-    assert len(evidence.SOURCE_BOUNDARY_REQUIRED_PATHS) == 25
-    assert len(set(evidence.SOURCE_BOUNDARY_REQUIRED_PATHS)) == 25
+    assert len(evidence.SOURCE_BOUNDARY_REQUIRED_PATHS) == 26
+    assert len(set(evidence.SOURCE_BOUNDARY_REQUIRED_PATHS)) == 26
     assert protocol.V180R12R3_FAILURE_FREEZE_SOURCE_RELATIVE_PATH in (
         evidence.SOURCE_BOUNDARY_REQUIRED_PATHS
     )
@@ -191,6 +191,9 @@ def test_outcome_free_wrapper_has_exact_phase_aware_twelve_literal_topology() ->
         evidence.SOURCE_BOUNDARY_REQUIRED_PATHS
     )
     assert protocol.V180R12R4R5_FAILURE_FREEZE_SOURCE_RELATIVE_PATH in (
+        evidence.SOURCE_BOUNDARY_REQUIRED_PATHS
+    )
+    assert protocol.V180R12R4R6_FAILURE_FREEZE_SOURCE_RELATIVE_PATH in (
         evidence.SOURCE_BOUNDARY_REQUIRED_PATHS
     )
     assert evidence._AUTHORIZATION_RELATIVE_PATH in (  # noqa: SLF001
@@ -584,12 +587,16 @@ def test_candidate_and_runtime_payloads_match_under_external_nonbootstrap(
             "failed_ordinal10_repair_lineage": (
                 protocol.failed_ordinal10_repair_lineage_contract_v180r12r4()
             ),
+            "failed_ordinal11_repair_lineage": (
+                protocol.failed_ordinal11_repair_lineage_contract_v180r12r4()
+            ),
         "failed_v180r12r3_identity_rerun_forbidden": True,
         "failed_v180r12r3r1_identity_rerun_forbidden": True,
         "failed_v180r12r3r2_identity_rerun_forbidden": True,
         "failed_v180r12r4r2_ordinal8_identity_rerun_forbidden": True,
             "failed_v180r12r4r4_ordinal9_identity_rerun_forbidden": True,
             "failed_v180r12r4r5_ordinal10_identity_rerun_forbidden": True,
+            "failed_v180r12r4r6_ordinal11_identity_rerun_forbidden": True,
         "fresh_v180r12r4_physical_paths_and_identities_required": True,
         "repair_scope": protocol.V180R12R4_REPAIR_SCOPE,
         "repair_changes_campaign_path_roles_event_schedule_evidence_"
@@ -696,6 +703,9 @@ def test_candidate_and_runtime_payloads_match_under_external_nonbootstrap(
     assert candidate["failed_ordinal10_repair_lineage"] == (
         protocol.failed_ordinal10_repair_lineage_contract_v180r12r4()
     )
+    assert candidate["failed_ordinal11_repair_lineage"] == (
+        protocol.failed_ordinal11_repair_lineage_contract_v180r12r4()
+    )
     assert candidate["source_bound_runner_execution_envelope_contract"] == (
         protocol.source_bound_runner_execution_envelope_contract_v180r12r4()
     )
@@ -708,6 +718,7 @@ def test_candidate_and_runtime_payloads_match_under_external_nonbootstrap(
     )
     assert candidate["failed_v180r12r4r4_ordinal9_identity_rerun_forbidden"]
     assert candidate["failed_v180r12r4r5_ordinal10_identity_rerun_forbidden"]
+    assert candidate["failed_v180r12r4r6_ordinal11_identity_rerun_forbidden"]
     assert candidate["fresh_v180r12r4_physical_paths_and_identities_required"]
     assert candidate["repair_scope"] == protocol.V180R12R4_REPAIR_SCOPE
     assert candidate["v180r12r4_outcome_bytes_accessed"] is False

@@ -157,7 +157,7 @@ def _make_synthetic_cgroup_tree(
     (parent_path / "cgroup.procs").write_text("", encoding="ascii")
     (parent_path / "cgroup.procs").chmod(0o600)
     (source_service_path / "cgroup.procs").write_text(
-        f"{os.getpid()}\n", encoding="ascii"
+        f"{os.getppid()}\n{os.getpid()}\n", encoding="ascii"
     )
     (source_service_path / "cgroup.procs").chmod(0o400)
 
@@ -327,7 +327,7 @@ def _make_synthetic_cgroup_tree(
         "slice": "app.slice",
         "source_membership": source_membership,
         "expected_source_membership": source_membership,
-        "self_pid": os.getpid(),
+        "self_pid": os.getppid(),
         "self_pid_in_source_cgroup_procs": True,
         "cgroup_namespace_inode": parent_fact["cgroup_namespace_inode"],
         "delegated_parent_fd_fact": fd_fact(
@@ -366,6 +366,8 @@ def _make_synthetic_cgroup_tree(
         "expected_source_membership": source_membership,
         "self_pid": os.getpid(),
         "self_pid_in_source_cgroup_procs": True,
+        "parent_pid": os.getppid(),
+        "parent_pid_in_source_cgroup_procs": True,
         "source_service_fd": 252,
         "source_service_device": service_metadata.st_dev,
         "source_service_inode": service_metadata.st_ino,

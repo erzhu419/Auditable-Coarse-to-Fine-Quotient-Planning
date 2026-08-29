@@ -596,7 +596,7 @@ def test_public_schemas_paths_and_phase_aware_rule_identities() -> None:
         assert all(len(value) == 64 for value in rules)
     else:
         assert rules == (ZERO_ID, ZERO_ID)
-    assert len(materializer.SOURCE_CLOSURE_REQUIRED_ROOTS) == 25
+    assert len(materializer.SOURCE_CLOSURE_REQUIRED_ROOTS) == 26
     assert materializer.SOURCE_CLOSURE_REQUIRED_ROOTS == (
         protocol.SOURCE_CLOSURE_REQUIRED_ROOTS
     )
@@ -618,6 +618,11 @@ def test_public_schemas_paths_and_phase_aware_rule_identities() -> None:
     assert (
         "src/acfqp/construction_k7_campaign_measurement_"
         "failure_freeze_v180r12r4r5.py"
+        in materializer.SOURCE_CLOSURE_REQUIRED_ROOTS
+    )
+    assert (
+        "src/acfqp/construction_k7_campaign_measurement_"
+        "failure_freeze_v180r12r4r6.py"
         in materializer.SOURCE_CLOSURE_REQUIRED_ROOTS
     )
     assert materializer.EXPECTED_SOURCE_CLOSURE_RULE_ID == (

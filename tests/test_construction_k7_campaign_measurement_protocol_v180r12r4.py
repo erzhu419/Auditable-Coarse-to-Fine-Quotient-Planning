@@ -86,7 +86,7 @@ def runtime_capability_fact() -> dict:
     }
 
 
-def test_production_service_tokens_bind_immediate_ordinal10_failure_terminals() -> None:
+def test_production_service_tokens_bind_immediate_ordinal11_failure_terminals() -> None:
     contract = protocol.production_systemd_service_contract_v180r12r4()
     assert contract["token_input_fields"] == [
         "failed_predecessor_freeze_id",
@@ -97,22 +97,22 @@ def test_production_service_tokens_bind_immediate_ordinal10_failure_terminals() 
     ]
     expected_tokens = {
         "measurement": (
-            "36656cf3abb876d291de1e6707f86a9971efe447b224ac32b1909bd0d4166297"
+            "36ed4564c6b1e77e08ee99aac354f4fc9bc5aaa67b3ac0f6bf16e69996d338bf"
         ),
         "verification": (
-            "5b7ccbbdc29cac0b1a43036f69909c941eab0127fda30de788f13cc54cee93e5"
+            "77ab2901813ffcf1c297ad6ed041b8f5147d390d2adb0f95dc978cce2b54e6be"
         ),
     }
     for row in contract["target_rows"]:
         token_input = row["token_input"]
         assert token_input["failed_predecessor_freeze_id"] == (
-            protocol.V180R12R4R5_FAILED_PREDECESSOR_FREEZE_ID
+            protocol.V180R12R4R6_FAILED_PREDECESSOR_FREEZE_ID
         )
         assert token_input["failed_inner_launch_failure_id"] == (
-            protocol.V180R12R4R5_FAILED_INNER_LAUNCH_FAILURE_ID
+            protocol.V180R12R4R6_FAILED_INNER_LAUNCH_FAILURE_ID
         )
         assert token_input["failed_outer_service_failure_id"] == (
-            protocol.V180R12R4R5_FAILED_OUTER_SERVICE_FAILURE_ID
+            protocol.V180R12R4R6_FAILED_OUTER_SERVICE_FAILURE_ID
         )
         assert token_input["repair_scope"] == protocol.V180R12R4_REPAIR_SCOPE
         assert row["token"] == expected_tokens[row["target"]]
@@ -413,33 +413,57 @@ def test_protocol_preserves_ordinal8_as_historical_failure_lineage() -> None:
     assert document["failed_v180r12r4r2_ordinal8_identity_rerun_forbidden"]
 
 
-def test_protocol_binds_ordinal10_as_immediate_and_ordinal9_as_historical_lineage() -> None:
+def test_protocol_binds_ordinal11_as_immediate_and_ordinal10_as_historical_lineage() -> None:
     document = frozen().to_document()
-    historical = document["failed_ordinal9_repair_lineage"]
-    lineage = document["failed_ordinal10_repair_lineage"]
-    assert historical == protocol.failed_ordinal9_repair_lineage_contract_v180r12r4()
-    assert lineage == protocol.failed_ordinal10_repair_lineage_contract_v180r12r4()
-    assert lineage["freeze_id"] == protocol.V180R12R4R5_FAILED_PREDECESSOR_FREEZE_ID
-    assert lineage["logical_campaign_attempt_id"] == (
-        protocol.V180R12R4R5_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID
+    historical = document["failed_ordinal10_repair_lineage"]
+    lineage = document["failed_ordinal11_repair_lineage"]
+    assert historical == protocol.failed_ordinal10_repair_lineage_contract_v180r12r4()
+    assert lineage == protocol.failed_ordinal11_repair_lineage_contract_v180r12r4()
+    assert lineage["freeze_id"] == protocol.V180R12R4R6_FAILED_PREDECESSOR_FREEZE_ID
+    assert lineage["campaign_attempt_id"] == (
+        protocol.V180R12R4R6_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID
     )
     assert historical["logical_campaign_attempt_id"] == (
-        protocol.V180R12R4R4_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID
+        protocol.V180R12R4R5_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID
     )
-    assert lineage["campaign_attempt_artifact_present"] is False
-    assert lineage["campaign_started"] is False
-    assert lineage["campaign_ledger_event_count"] == 0
-    assert lineage["outer_service_unit_ownership_acquired"] is True
+    assert lineage["scientific_attempt_opened"] is True
+    assert lineage["completed_event_count"] == 1
     assert lineage["full_source_conformance"] is True
-    assert lineage["runtime_failure_property_snapshots_recorded"] is False
-    assert lineage["runtime_failure_per_field_mismatch_recorded"] is False
-    assert lineage["runtime_failure_exact_cause_dimension_recorded"] is False
+    assert lineage["full_host_conformance"] is True
+    assert lineage["host_conformance_mismatch_count"] == 0
+    assert lineage["host_conformance_cause"] is None
+    assert lineage["full_t1_t2_conformance"] is False
+    assert lineage["topology_diagnostic_unit_ownership_acquired"] is False
+    assert lineage["t1_t2_same_formal_service"] is True
+    assert lineage["t1_t2_same_source_membership"] is True
+    assert lineage["t1_t2_same_service_directory"] is True
+    assert lineage["only_mismatch"] == {
+        "field": "t2.pid",
+        "expected": 528_492,
+        "observed": 528_493,
+    }
+    assert lineage["exact_failure_cause"] == "T1_T2_PID_ROLE_CONFLATION"
+    assert lineage["t1_process_role"] == "SERVICE_ENTRY_LAUNCHER"
+    assert lineage["t2_process_role"] == "BOOTSTRAP_CHILD"
+    assert lineage["distinct_process_roles"] is True
+    assert lineage["predecessor_t2_schema"].endswith("_t2.v1")
+    assert lineage["successor_t2_schema"] == (
+        protocol.PRODUCTION_RUNTIME_PLACEMENT_T2_SCHEMA
+    )
+    assert lineage["ordinal11_t3_present"] is False
+    assert lineage["cleanup_complete"] is True
+    assert lineage["counter_record_count"] == 0
+    assert lineage["work_vector_count"] == 0
+    assert lineage["comparison_vector_count"] == 0
+    assert set(lineage["gate_statuses"].values()) == {"NOT_RUN"}
+    assert lineage["official_execution_allowed"] is False
+    assert lineage["same_identity_rerun_forbidden"] is True
     assert lineage["repair_scope"] == protocol.V180R12R4_REPAIR_SCOPE
     slot = document["campaign_measurement_execution_slot"]
-    assert slot["historical_failed_ordinal9_freeze_id"] == historical["freeze_id"]
+    assert slot["historical_failed_ordinal10_freeze_id"] == historical["freeze_id"]
     assert slot["immediate_failed_predecessor_freeze_id"] == lineage["freeze_id"]
     assert slot["immediate_failed_predecessor_logical_campaign_attempt_id"] == (
-        lineage["logical_campaign_attempt_id"]
+        lineage["campaign_attempt_id"]
     )
     assert slot["immediate_failed_predecessor_inner_launch_failure_id"] == (
         lineage["inner_launch_failure_id"]
@@ -449,6 +473,7 @@ def test_protocol_binds_ordinal10_as_immediate_and_ordinal9_as_historical_lineag
     )
     assert document["failed_v180r12r4r4_ordinal9_identity_rerun_forbidden"]
     assert document["failed_v180r12r4r5_ordinal10_identity_rerun_forbidden"]
+    assert document["failed_v180r12r4r6_ordinal11_identity_rerun_forbidden"]
 
 
 def test_r3r2_scientific_birth_lineage_rejects_public_identity_drift(
@@ -481,6 +506,21 @@ def test_ordinal8_lineage_rejects_public_identity_drift(
         protocol.failed_ordinal8_repair_lineage_contract_v180r12r4()
 
 
+def test_ordinal11_lineage_rejects_public_identity_drift(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        protocol.failed_ordinal11_predecessor,
+        "EXPECTED_OUTER_SERVICE_FAILURE_ID",
+        "0" * 64,
+    )
+    with pytest.raises(
+        protocol.CampaignMeasurementProtocolV180R12R4Error,
+        match="ordinal11 failure authority changed",
+    ):
+        protocol.failed_ordinal11_repair_lineage_contract_v180r12r4()
+
+
 def test_failed_dispatch_replay_is_source_bound_pre_scientific_authority_not_measurement() -> None:
     lineage = protocol.failed_dispatch_repair_lineage_contract_v180r12r4()
     assert lineage["failure_freeze_source_relative_path"] == (
@@ -508,7 +548,7 @@ def test_failed_dispatch_replay_is_source_bound_pre_scientific_authority_not_mea
         "retained_artifact_absence_and_cgroup_reads_are_trusted_prereg_authority_replay"
     ] is True
     roots = protocol.SOURCE_CLOSURE_REQUIRED_ROOTS
-    assert len(roots) == len(set(roots)) == 25
+    assert len(roots) == len(set(roots)) == 26
     assert tuple(roots) == tuple(sorted(roots))
     assert roots.count(protocol.V180R12R3_FAILURE_FREEZE_SOURCE_RELATIVE_PATH) == 1
     assert roots.count(protocol.V180R12R3R1_FAILURE_FREEZE_SOURCE_RELATIVE_PATH) == 1
@@ -516,6 +556,7 @@ def test_failed_dispatch_replay_is_source_bound_pre_scientific_authority_not_mea
     assert roots.count(protocol.V180R12R4R2_FAILURE_FREEZE_SOURCE_RELATIVE_PATH) == 1
     assert roots.count(protocol.V180R12R4R4_FAILURE_FREEZE_SOURCE_RELATIVE_PATH) == 1
     assert roots.count(protocol.V180R12R4R5_FAILURE_FREEZE_SOURCE_RELATIVE_PATH) == 1
+    assert roots.count(protocol.V180R12R4R6_FAILURE_FREEZE_SOURCE_RELATIVE_PATH) == 1
 
 
 def test_failed_dispatch_lineage_rejects_absence_inventory_drift_before_replay(

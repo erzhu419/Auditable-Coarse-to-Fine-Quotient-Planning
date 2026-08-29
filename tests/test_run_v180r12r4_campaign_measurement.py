@@ -49,12 +49,12 @@ def _load(name: str, relative: str):
 run = _load("_test_run_v180r12r4", "scripts/run_v180r12r4_campaign_measurement.py")
 
 
-def test_runner_uses_ordinal11_transient_service_tokens() -> None:
+def test_runner_uses_ordinal12_transient_service_tokens() -> None:
     measurement = (
-        "36656cf3abb876d291de1e6707f86a9971efe447b224ac32b1909bd0d4166297"
+        "36ed4564c6b1e77e08ee99aac354f4fc9bc5aaa67b3ac0f6bf16e69996d338bf"
     )
     verification = (
-        "5b7ccbbdc29cac0b1a43036f69909c941eab0127fda30de788f13cc54cee93e5"
+        "77ab2901813ffcf1c297ad6ed041b8f5147d390d2adb0f95dc978cce2b54e6be"
     )
     assert run.PRODUCTION_TRANSIENT_SERVICE_ROWS == {
         "measurement": (
@@ -204,8 +204,10 @@ def _topology_failure():
         "unit_name": t1["unit_name"],
         "source_membership": t1["source_membership"],
         "expected_source_membership": t1["expected_source_membership"],
-        "self_pid": t1["self_pid"],
+        "self_pid": t1["self_pid"] + 1,
         "self_pid_in_source_cgroup_procs": True,
+        "parent_pid": t1["self_pid"],
+        "parent_pid_in_source_cgroup_procs": True,
     }
     diagnostic = (
         supervisor.build_topology_conformance_diagnostic_v180r12r4r3(
@@ -232,6 +234,50 @@ def _topology_failure():
         supervisor.CgroupTopologyConformanceErrorV180R12R4R3(diagnostic),
         diagnostic,
     )
+
+
+@pytest.mark.parametrize(
+    ("self_pid", "parent_pid", "source_pids"),
+    (
+        (501, 500, (500, 501)),
+        (500, 500, (500,)),
+        (501, 499, (499, 500, 501)),
+        (501, 500, (501,)),
+        (501, 500, (500,)),
+    ),
+)
+def test_t2_pid_evidence_requires_distinct_direct_child_in_same_source_unit(
+    self_pid: int,
+    parent_pid: int,
+    source_pids: tuple[int, ...],
+) -> None:
+    t1 = {
+        "self_pid": 500,
+        "self_pid_in_source_cgroup_procs": True,
+    }
+    if (self_pid, parent_pid, source_pids) == (501, 500, (500, 501)):
+        assert run._production_direct_child_pid_evidence_v180r12r4(
+            t1,
+            source_pids,
+            self_pid=self_pid,
+            parent_pid=parent_pid,
+        ) == {
+            "self_pid": 501,
+            "self_pid_in_source_cgroup_procs": True,
+            "parent_pid": 500,
+            "parent_pid_in_source_cgroup_procs": True,
+        }
+        return
+    with pytest.raises(
+        run.V180R12R4RuntimeError,
+        match="T1 service-entry/T2 bootstrap direct-child PID relation changed",
+    ):
+        run._production_direct_child_pid_evidence_v180r12r4(
+            t1,
+            source_pids,
+            self_pid=self_pid,
+            parent_pid=parent_pid,
+        )
 
 
 def test_emergency_reserve_is_exact_committed_heap_and_precedes_attempt(
