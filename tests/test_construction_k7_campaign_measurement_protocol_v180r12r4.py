@@ -678,6 +678,16 @@ def test_protocol_rejects_cgroup_parent_drift(field: str, replacement) -> None:
         )
 
 
+def test_protocol_rejects_bootstrap_container_types_before_explicit_thaw() -> None:
+    value = cgroup_parent_fact()
+    value["mount_options"] = tuple(value["mount_options"])
+    with pytest.raises(
+        protocol.CampaignMeasurementProtocolV180R12R4Error,
+        match="not canonically serializable",
+    ):
+        protocol.validate_cgroup_parent_fact_v180r12r4(value)
+
+
 @pytest.mark.parametrize(
     ("field", "replacement"),
     [

@@ -537,6 +537,16 @@ def _verified_internal_context(payload, secret, *, target_payload, roles):
     )
 
 
+def _freeze_json(value):
+    if type(value) is dict:
+        return types.MappingProxyType(
+            {key: _freeze_json(item) for key, item in value.items()}
+        )
+    if type(value) is list:
+        return tuple(_freeze_json(item) for item in value)
+    return value
+
+
 class _SyntheticWorkerAdapter:
     def __init__(self, fixed: _FixedFDGuard) -> None:
         self.fixed = fixed
@@ -979,14 +989,14 @@ def test_full_authenticated_outer_supervisor_worker_lifecycle_consumes_625_and_3
                 "c_pre_root": c_pre.as_posix(),
                 "prereg_commit_id": "b" * 40,
                 "precompiled_source_bundle_sha256": bundle_sha256,
-                "cgroup_parent_fact": dict(
-                    tree.topology_receipt.cgroup_parent_fact
+                "cgroup_parent_fact": _freeze_json(
+                    dict(tree.topology_receipt.cgroup_parent_fact)
                 ),
-                "production_runtime_placement_t1": dict(
-                    tree.topology_receipt.production_runtime_placement_t1
+                "production_runtime_placement_t1": _freeze_json(
+                    dict(tree.topology_receipt.production_runtime_placement_t1)
                 ),
-                "production_runtime_placement_t2": dict(
-                    tree.topology_receipt.production_runtime_placement_t2
+                "production_runtime_placement_t2": _freeze_json(
+                    dict(tree.topology_receipt.production_runtime_placement_t2)
                 ),
                 "hard_deadline_ns": time.monotonic_ns() + 180_000_000_000,
             }

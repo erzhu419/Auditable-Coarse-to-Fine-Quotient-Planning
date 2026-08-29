@@ -1041,15 +1041,19 @@ def validate_verified_external_launch_context_v180r12r4(
     )
     if context["campaign_attempt_id"] != expected_attempt_id:
         _fail("external context campaign attempt differs from six-input authority")
-    cgroup_fact = protocol.validate_cgroup_parent_fact_v180r12r4(
-        context["cgroup_parent_fact"]
-    )
-    capability_fact = protocol.validate_runtime_capability_fact_v180r12r4(
+    supplied_cgroup_fact = _thaw_json_value(context["cgroup_parent_fact"])
+    supplied_capability_fact = _thaw_json_value(
         context["runtime_capability_fact"]
     )
+    cgroup_fact = protocol.validate_cgroup_parent_fact_v180r12r4(
+        supplied_cgroup_fact
+    )
+    capability_fact = protocol.validate_runtime_capability_fact_v180r12r4(
+        supplied_capability_fact
+    )
     if (
-        _thaw_json_value(context["cgroup_parent_fact"]) != cgroup_fact
-        or _thaw_json_value(context["runtime_capability_fact"]) != capability_fact
+        supplied_cgroup_fact != cgroup_fact
+        or supplied_capability_fact != capability_fact
     ):
         _fail("external context capability facts are not exact canonical mappings")
     _validate_native_zero_precompiled_rows_v180r12r4(
@@ -5770,7 +5774,7 @@ class LinuxOuterEffectAdapterV180R12R4:
         if attempt_id != self.authority.attempt_id:
             _fail("Linux outer adapter cgroup attempt changed")
         tree = self.cgroup_manager.create(
-            self.context["cgroup_parent_fact"],
+            _thaw_json_value(self.context["cgroup_parent_fact"]),
             attempt_id,
             production_runtime_placement_t1=_thaw_json_value(
                 self.context["production_runtime_placement_t1"]

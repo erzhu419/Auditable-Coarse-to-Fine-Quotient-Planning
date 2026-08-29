@@ -2759,12 +2759,35 @@ def test_external_authority_replay_normalizes_post_literal_wrapper_before_exact_
             "external_launch_context_sha256": external_context_sha256,
             "context_consumed_once": True,
         }
+
+        def freeze_json(value):
+            if type(value) is dict:
+                return types.MappingProxyType(
+                    {key: freeze_json(item) for key, item in value.items()}
+                )
+            if type(value) is list:
+                return tuple(freeze_json(item) for item in value)
+            return value
+
+        for field_name in (
+            "cgroup_parent_fact",
+            "runtime_capability_fact",
+            "production_systemd_service_invocation",
+            "production_runtime_placement_t1",
+            "target_payload",
+        ):
+            verified_values[field_name] = freeze_json(verified_values[field_name])
+        verified_values["native_zero_precompiled_source_rows"] = tuple(
+            freeze_json(row) for row in native_zero_rows
+        )
         context = types.MappingProxyType(
             {
                 name: verified_values[name]
                 for name in run.VERIFIED_EXTERNAL_LAUNCH_CONTEXT_FIELDS
             }
         )
+        assert type(context["cgroup_parent_fact"]) is types.MappingProxyType
+        assert type(context["cgroup_parent_fact"]["mount_options"]) is tuple
 
         replayed = run.replay_external_authority_documents_v180r12r4(
             context, store=store
