@@ -4943,6 +4943,7 @@ class TypedWireEvidenceRegistryV180R12R4:
                 document["cgroup_membership_line"],
                 document["membership_observed_before_work"],
                 document["pidfd_cloexec"],
+                document["production_runtime_placement_t3"],
             )
         if schema == "acfqp.campaign_pidfd_reap_receipt.v180r12r4":
             birth = self._dependency(

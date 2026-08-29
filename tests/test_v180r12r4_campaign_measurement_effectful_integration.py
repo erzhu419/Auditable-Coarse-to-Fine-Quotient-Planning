@@ -164,6 +164,7 @@ def _make_synthetic_cgroup_tree(
     raw_values = {
         ("MEASUREMENT_ROOT", "cgroup.events"): "frozen 0\npopulated 0\n",
         ("MEASUREMENT_ROOT", "cgroup.procs"): "",
+        ("MEASUREMENT_ROOT", "cgroup.subtree_control"): "memory pids\n",
         ("MEASUREMENT_ROOT", "memory.events"): (
             "high 0\nlow 0\nmax 0\noom 0\noom_group_kill 0\noom_kill 0\n"
         ),

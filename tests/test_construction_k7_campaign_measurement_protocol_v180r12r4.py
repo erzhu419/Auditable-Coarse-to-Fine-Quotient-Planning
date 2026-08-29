@@ -28,9 +28,10 @@ def cgroup_parent_fact() -> dict:
         "schema": "acfqp.v180r12r4_cgroup_parent_fact.v1",
         "mount_point": "/sys/fs/cgroup",
         "mount_fstype": "cgroup2",
-        "mount_device": 25,
+        "mount_device": 30,
         "mount_inode": 1,
         "mount_options": [
+            "memory_recursiveprot",
             "nodev",
             "noexec",
             "nosuid",
@@ -42,13 +43,13 @@ def cgroup_parent_fact() -> dict:
             "/sys/fs/cgroup/user.slice/user-1000.slice/"
             "user@1000.service/app.slice"
         ),
-        "parent_device": 25,
-        "parent_inode": 3_680,
+        "parent_device": 30,
+        "parent_inode": 7_109,
         "owner_uid": 1_000,
         "owner_gid": 1_000,
         "mode": 0o755,
-        "controllers": ["memory", "pids"],
-        "subtree_control": ["memory", "pids"],
+        "controllers": ["cpu", "memory", "pids"],
+        "subtree_control": ["cpu", "memory", "pids"],
         "cgroup_type": "domain",
         "cgroup_namespace_inode": 4_026_531_835,
         "cgroup_events_present": True,
@@ -58,7 +59,11 @@ def cgroup_parent_fact() -> dict:
         "cgroup_procs_present": True,
         "memory_peak_present": True,
         "pids_peak_present": True,
-        "self_membership": "0::/",
+        "self_membership": (
+            "0::/user.slice/user-1000.slice/user@1000.service/app.slice/"
+            "acfqp-v180r12r4-measurement-"
+            "b0f62f739847f89027311d52e8861257ba471d28c47439eca41e9cf8cfa04004.service"
+        ),
     }
 
 
