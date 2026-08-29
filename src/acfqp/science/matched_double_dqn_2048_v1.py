@@ -1,4 +1,4 @@
-"""Matched Double-DQN runtime for the latent-resource 2048 pilot.
+"""Matched Double-DQN runtime for latent-resource 2048 campaigns.
 
 Torch, NumPy, and SciPy are experiment-environment dependencies and are
 imported only by the runtime.  The repository's formal/accounting modules stay
@@ -11,13 +11,20 @@ from dataclasses import dataclass
 import math
 import random
 import time
-from typing import Any, Callable, NoReturn
+from typing import Any, Callable, Mapping, NoReturn
 
 from acfqp.domains.standard_2048 import ACTION_ORDER, GOAL_RANK, Swipe2048Status
 from acfqp.science.latent_resource_2048_v1 import (
+    STATE_ONLY_RESOURCE_FEATURE_NAMES_V1,
     encode_standard_2048_state_only_state_v1,
 )
-from acfqp.science.latent_resource_protocol_v1 import build_pilot_protocol_v1
+from acfqp.science.latent_resource_protocol_v1 import (
+    ARMS,
+    PILOT_ARMS,
+    build_pilot_protocol_v1,
+    validate_ratified_confirmatory_protocol_v1,
+    zero_mask_coordinate_indices_v1,
+)
 from acfqp.science.matched_2048_env_v1 import (
     initial_state_v1,
     legal_action_mask_v1,
@@ -30,8 +37,11 @@ from acfqp.science.sample_ledger_v1 import (
 )
 
 
-PILOT_ARMS = ("RAW_BOARD", "RESOURCE_STATE_ONLY")
 NETWORK_PARAMETER_COUNT_V1 = 71_172
+PILOT_RESULT_SCHEMA_V1 = "acfqp.science.matched_double_dqn_2048_pilot_result.v1"
+CONFIRMATORY_RESULT_SCHEMA_V1 = (
+    "acfqp.science.matched_double_dqn_2048_confirmatory_seed_arm_result.v1"
+)
 
 
 class MatchedDoubleDQN2048V1Error(RuntimeError):
@@ -66,13 +76,16 @@ def epsilon_at_interaction_v1(
 def observation_vector_v1(state, arm: str) -> tuple[float, ...]:
     """Build one registered 16-D observation from the current board only."""
 
-    if arm not in PILOT_ARMS:
-        _fail("pilot arm is not registered")
+    if arm not in ARMS:
+        _fail("arm is not registered")
     if arm == "RAW_BOARD":
         vector = tuple(min(rank, GOAL_RANK) / GOAL_RANK for rank in state.board)
     else:
         encoded = encode_standard_2048_state_only_state_v1(state)
-        vector = tuple(float(value) for value in encoded.resource_vector)
+        values = [float(value) for value in encoded.resource_vector]
+        for index in zero_mask_coordinate_indices_v1(arm):
+            values[index] = 0.0
+        vector = tuple(values)
     if len(vector) != 16 or any(not math.isfinite(value) for value in vector):
         _fail("network observation changed")
     return vector
@@ -210,7 +223,7 @@ def _evaluate_policy_v1(
     model,
     device,
     arm: str,
-    seed: int,
+    tape_root: str,
     checkpoint: int,
     episode_count: int,
     ledger: SampleLedgerV1,
@@ -226,8 +239,7 @@ def _evaluate_policy_v1(
     decision_total_ns = 0
     epsilon_rng = random.Random(0)
     action_choice_rng = random.Random(1)
-    # All checkpoints, seeds, and arms face the same held-out episode tapes.
-    tape_root = "acfqp-latent-resource-pilot-eval-v1"
+    # All checkpoints, seeds, and arms in one protocol face the same held-out tapes.
     for episode_index in range(episode_count):
         state = initial_state_v1(seed=tape_root, episode_index=episode_index)
         total_score = 0
@@ -328,14 +340,46 @@ def _evaluate_policy_v1(
     )
 
 
-def run_pilot_seed_arm_v1(
-    *, arm: str, seed: int, device_name: str = "cuda:0"
-) -> tuple[dict[str, Any], Any]:
-    """Run one preregistered pilot seed-arm and return JSON result plus model."""
+def _ratio_v1(value: Mapping[str, Any], *, name: str) -> float:
+    if (
+        type(value) is not dict
+        or type(value.get("numerator")) is not int
+        or type(value.get("denominator")) is not int
+        or value["denominator"] <= 0
+    ):
+        _fail(f"{name} ratio changed")
+    ratio = value["numerator"] / value["denominator"]
+    if not math.isfinite(ratio):
+        _fail(f"{name} ratio is not finite")
+    return ratio
 
-    protocol = build_pilot_protocol_v1()
+
+def _run_seed_arm_v1(
+    *,
+    protocol: Mapping[str, Any],
+    arm: str,
+    seed: int,
+    device_name: str,
+    result_schema: str,
+    training_tape_prefix: str,
+    result_gate_fields: Mapping[str, Any],
+) -> tuple[dict[str, Any], Any]:
+    """Run one already-validated protocol seed-arm plus its standalone evaluations."""
+
+    if type(protocol) is not dict:
+        _fail("runtime protocol must be a plain object")
     if arm not in protocol["arms"] or seed not in protocol["training_seeds"]:
-        _fail("pilot seed-arm is not registered")
+        _fail("seed-arm is not registered by the runtime protocol")
+    if (
+        type(result_schema) is not str
+        or not result_schema
+        or type(training_tape_prefix) is not str
+        or not training_tape_prefix
+        or type(protocol.get("evaluation_tape_prefix")) is not str
+        or not protocol["evaluation_tape_prefix"]
+        or type(result_gate_fields) is not dict
+    ):
+        _fail("runtime protocol execution binding changed")
     try:
         import numpy as np
         import torch
@@ -359,10 +403,28 @@ def run_pilot_seed_arm_v1(
     target.eval()
     if _parameter_count(online) != NETWORK_PARAMETER_COUNT_V1:
         _fail("matched network parameter count changed")
-    optimizer = torch.optim.Adam(online.parameters(), lr=3e-4)
-    replay = _ReplayBufferV1.create(np, protocol["training"]["replay_capacity"])
-    ledger = SampleLedgerV1()
     training = protocol["training"]
+    learning_rate = _ratio_v1(training["adam_learning_rate"], name="learning rate")
+    discount = _ratio_v1(training["discount"], name="discount")
+    epsilon_end = _ratio_v1(
+        training["epsilon_schedule"]["end"], name="epsilon end"
+    )
+    huber_delta = training["huber_delta"]
+    updates_per_event = training["gradient_updates_per_train_event"]
+    if (
+        not 0.0 <= discount <= 1.0
+        or learning_rate <= 0.0
+        or not 0.0 <= epsilon_end <= 1.0
+        or type(huber_delta) not in (int, float)
+        or not math.isfinite(float(huber_delta))
+        or huber_delta <= 0
+        or type(updates_per_event) is not int
+        or updates_per_event <= 0
+    ):
+        _fail("runtime optimizer or update contract changed")
+    optimizer = torch.optim.Adam(online.parameters(), lr=learning_rate)
+    replay = _ReplayBufferV1.create(np, training["replay_capacity"])
+    ledger = SampleLedgerV1()
     environment_steps = training["environment_steps_per_seed_arm"]
     warmup = training["replay_warmup_environment_steps"]
     batch_size = training["batch_size"]
@@ -370,9 +432,10 @@ def run_pilot_seed_arm_v1(
     target_sync = training["target_network_sync_environment_steps"]
     decay_steps = training["epsilon_schedule"]["decay_steps"]
     checkpoints = set(training["evaluation_checkpoints"])
+    training_tape_root = f"{training_tape_prefix}:{seed}"
     episode_index = 0
     decision_index = 0
-    state = initial_state_v1(seed=f"pilot-train:{seed}", episode_index=episode_index)
+    state = initial_state_v1(seed=training_tape_root, episode_index=episode_index)
     completed_training_episodes: list[dict[str, Any]] = []
     episode_score = 0
     episode_decisions = 0
@@ -411,7 +474,7 @@ def run_pilot_seed_arm_v1(
             observation=observation,
             legal_mask=legal_mask,
             epsilon=epsilon_at_interaction_v1(
-                interaction - 1, decay_steps=decay_steps
+                interaction - 1, decay_steps=decay_steps, end=epsilon_end
             ),
             epsilon_rng=epsilon_rng,
             action_choice_rng=action_choice_rng,
@@ -422,7 +485,7 @@ def run_pilot_seed_arm_v1(
         step = transition_v1(
             state,
             action,
-            seed=f"pilot-train:{seed}",
+            seed=training_tape_root,
             episode_index=episode_index,
             decision_index=decision_index,
         )
@@ -452,37 +515,42 @@ def run_pilot_seed_arm_v1(
         decision_index += 1
         state = next_state
         if interaction >= warmup and interaction % train_every == 0:
-            _sync_device_for_timing(torch, device)
-            update_started = time.perf_counter_ns()
-            batch = replay.sample(np, replay_rng, batch_size)
-            observations = torch.as_tensor(batch[0], device=device)
-            actions = torch.as_tensor(batch[1], device=device)
-            rewards = torch.as_tensor(batch[2], device=device)
-            next_observations = torch.as_tensor(batch[3], device=device)
-            dones = torch.as_tensor(batch[4], device=device)
-            next_masks = torch.as_tensor(batch[5], device=device)
-            q_values = online(observations).gather(1, actions.unsqueeze(1)).squeeze(1)
-            with torch.no_grad():
-                online_next = online(next_observations).masked_fill(
-                    ~next_masks, float("-inf")
-                )
-                no_next = ~next_masks.any(dim=1)
-                next_actions = online_next.argmax(dim=1)
-                target_next = target(next_observations).gather(
-                    1, next_actions.unsqueeze(1)
+            for _ in range(updates_per_event):
+                _sync_device_for_timing(torch, device)
+                update_started = time.perf_counter_ns()
+                batch = replay.sample(np, replay_rng, batch_size)
+                observations = torch.as_tensor(batch[0], device=device)
+                actions = torch.as_tensor(batch[1], device=device)
+                rewards = torch.as_tensor(batch[2], device=device)
+                next_observations = torch.as_tensor(batch[3], device=device)
+                dones = torch.as_tensor(batch[4], device=device)
+                next_masks = torch.as_tensor(batch[5], device=device)
+                q_values = online(observations).gather(
+                    1, actions.unsqueeze(1)
                 ).squeeze(1)
-                target_next = target_next.masked_fill(no_next, 0.0)
-                targets = rewards + 0.99 * (1.0 - dones) * target_next
-            loss = torch.nn.functional.smooth_l1_loss(q_values, targets, beta=1.0)
-            optimizer.zero_grad(set_to_none=True)
-            loss.backward()
-            torch.nn.utils.clip_grad_norm_(online.parameters(), 10.0)
-            optimizer.step()
-            _sync_device_for_timing(torch, device)
-            optimizer_update_total_ns += time.perf_counter_ns() - update_started
-            optimizer_update_calls += 1
-            ledger.increment_diagnostic("gradient_updates")
-            ledger.increment_diagnostic("replay_buffer_draws", batch_size)
+                with torch.no_grad():
+                    online_next = online(next_observations).masked_fill(
+                        ~next_masks, float("-inf")
+                    )
+                    no_next = ~next_masks.any(dim=1)
+                    next_actions = online_next.argmax(dim=1)
+                    target_next = target(next_observations).gather(
+                        1, next_actions.unsqueeze(1)
+                    ).squeeze(1)
+                    target_next = target_next.masked_fill(no_next, 0.0)
+                    targets = rewards + discount * (1.0 - dones) * target_next
+                loss = torch.nn.functional.smooth_l1_loss(
+                    q_values, targets, beta=float(huber_delta)
+                )
+                optimizer.zero_grad(set_to_none=True)
+                loss.backward()
+                torch.nn.utils.clip_grad_norm_(online.parameters(), 10.0)
+                optimizer.step()
+                _sync_device_for_timing(torch, device)
+                optimizer_update_total_ns += time.perf_counter_ns() - update_started
+                optimizer_update_calls += 1
+                ledger.increment_diagnostic("gradient_updates")
+                ledger.increment_diagnostic("replay_buffer_draws", batch_size)
         if interaction % target_sync == 0:
             target.load_state_dict(online.state_dict())
             ledger.increment_diagnostic("target_network_syncs")
@@ -502,7 +570,7 @@ def run_pilot_seed_arm_v1(
             episode_score = 0
             episode_decisions = 0
             state = initial_state_v1(
-                seed=f"pilot-train:{seed}", episode_index=episode_index
+                seed=training_tape_root, episode_index=episode_index
             )
         if interaction in checkpoints:
             evaluation, raw_rows, resource_rows = _evaluate_policy_v1(
@@ -510,7 +578,7 @@ def run_pilot_seed_arm_v1(
                 model=online,
                 device=device,
                 arm=arm,
-                seed=seed,
+                tape_root=protocol["evaluation_tape_prefix"],
                 checkpoint=interaction,
                 episode_count=training["evaluation_episodes_per_checkpoint"],
                 ledger=ledger,
@@ -537,8 +605,35 @@ def run_pilot_seed_arm_v1(
     evaluation_decision_total_ns = sum(
         row["compute_telemetry"]["decision_total_ns"] for row in evaluation_rows
     )
+    zero_mask_indices = zero_mask_coordinate_indices_v1(arm)
+    representation_telemetry = {
+        "active_representation": arm,
+        "executed_arm": arm,
+        "input_dimension": 16,
+        "raw_observation_bytes": 64,
+        "arm_observation_bytes": 64,
+        "lossless_raw_board_signature_count": len(raw_signature_set),
+        "quantized_state_only_resource_signature_count": len(
+            resource_signature_set
+        ),
+        "resource_quantization_bins_per_coordinate": 256,
+        "equal_dimension_is_not_counted_as_compression": True,
+        "compression_claimed": False,
+    }
+    if result_schema == CONFIRMATORY_RESULT_SCHEMA_V1:
+        representation_telemetry.update(
+            {
+                "zero_mask_coordinate_indices": list(zero_mask_indices),
+                "zero_mask_coordinate_names": [
+                    STATE_ONLY_RESOURCE_FEATURE_NAMES_V1[index]
+                    for index in zero_mask_indices
+                ],
+                "zero_mask_applied_after_full_state_only_encoding": arm
+                not in PILOT_ARMS,
+            }
+        )
     result = {
-        "schema": "acfqp.science.matched_double_dqn_2048_pilot_result.v1",
+        "schema": result_schema,
         "protocol_id": protocol["protocol_id"],
         "campaign_kind": protocol["campaign_kind"],
         "arm": arm,
@@ -554,20 +649,7 @@ def run_pilot_seed_arm_v1(
             "decisions_so_far": episode_decisions,
         },
         "evaluations": evaluation_rows,
-        "representation_telemetry": {
-            "active_representation": arm,
-            "executed_arm": arm,
-            "input_dimension": 16,
-            "raw_observation_bytes": 64,
-            "arm_observation_bytes": 64,
-            "lossless_raw_board_signature_count": len(raw_signature_set),
-            "quantized_state_only_resource_signature_count": len(
-                resource_signature_set
-            ),
-            "resource_quantization_bins_per_coordinate": 256,
-            "equal_dimension_is_not_counted_as_compression": True,
-            "compression_claimed": False,
-        },
+        "representation_telemetry": representation_telemetry,
         "sample_ledger": ledger.to_document(),
         "decision_latency_telemetry": {
             "lane": EvidenceLane.STANDALONE_EVALUATION.value,
@@ -601,18 +683,64 @@ def run_pilot_seed_arm_v1(
             "peak_device_memory_bytes": peak_device_memory_bytes,
             "device_latency_measured_with_synchronization": device.type == "cuda",
         },
-        "pilot_scientific_gate": "NOT_RUN",
-        "scientific_success_claimed": False,
     }
+    result.update(result_gate_fields)
     return result, online
 
 
+def run_pilot_seed_arm_v1(
+    *, arm: str, seed: int, device_name: str = "cuda:0"
+) -> tuple[dict[str, Any], Any]:
+    """Run one preregistered pilot seed-arm with its unchanged result contract."""
+
+    protocol = build_pilot_protocol_v1()
+    return _run_seed_arm_v1(
+        protocol=protocol,
+        arm=arm,
+        seed=seed,
+        device_name=device_name,
+        result_schema=PILOT_RESULT_SCHEMA_V1,
+        training_tape_prefix="pilot-train",
+        result_gate_fields={
+            "pilot_scientific_gate": "NOT_RUN",
+            "scientific_success_claimed": False,
+        },
+    )
+
+
+def run_confirmatory_seed_arm_v1(
+    *,
+    protocol: Mapping[str, Any],
+    arm: str,
+    seed: int,
+    device_name: str = "cuda:0",
+) -> tuple[dict[str, Any], Any]:
+    """Run one seed-arm from an exactly ratified confirmatory protocol."""
+
+    validated = validate_ratified_confirmatory_protocol_v1(protocol)
+    return _run_seed_arm_v1(
+        protocol=validated,
+        arm=arm,
+        seed=seed,
+        device_name=device_name,
+        result_schema=CONFIRMATORY_RESULT_SCHEMA_V1,
+        training_tape_prefix=validated["training_tape_prefix"],
+        result_gate_fields={
+            "confirmatory_joint_gate": "NOT_RUN_REQUIRES_COMPLETE_40_ARTIFACT_MATRIX",
+            "scientific_success_claimed": False,
+        },
+    )
+
+
 __all__ = (
+    "CONFIRMATORY_RESULT_SCHEMA_V1",
     "MatchedDoubleDQN2048V1Error",
     "NETWORK_PARAMETER_COUNT_V1",
     "PILOT_ARMS",
+    "PILOT_RESULT_SCHEMA_V1",
     "epsilon_at_interaction_v1",
     "observation_vector_v1",
     "reward_from_merge_score_v1",
+    "run_confirmatory_seed_arm_v1",
     "run_pilot_seed_arm_v1",
 )

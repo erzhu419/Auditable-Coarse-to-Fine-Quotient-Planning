@@ -1,6 +1,7 @@
 # Latent-Resource Representation Science Protocol V1
 
-Status: implementation pilot; confirmatory execution is not yet authorized.
+Status: confirmatory implementation is testable; a clean-HEAD ratification and
+the 500k execution matrix have not yet run.
 
 ## Question
 
@@ -56,10 +57,16 @@ The confirmatory matrix contains:
 2. `RESOURCE_STATE_ONLY`: sixteen registered current-board resource and
    action-oriented visible-opportunity coordinates; this is human feature
    engineering, not learned discovery.
-3. `RESOURCE_STATE_ONLY_DROP_ANCHOR`: the anchor/monotonicity information is
-   removed.
-4. `RESOURCE_STATE_ONLY_DROP_LIQUIDITY`: slack/visible-merge/flow information
-   is removed.
+3. `RESOURCE_STATE_ONLY_DROP_ANCHOR`: the full state-only vector is computed,
+   then coordinates 1, 2, 3, and 7 are set to zero.  These are
+   `max_tile_corner_anchor`, `snake_order`, `monotonic_order`, and the mixed
+   `current_irreversibility_risk` coordinate.
+4. `RESOURCE_STATE_ONLY_DROP_LIQUIDITY`: the full state-only vector is
+   computed, then coordinates 4 through 15 are set to zero.  These are
+   `empty_slack`, `visible_adjacent_merge_density`,
+   `directional_flow_liquidity`, the mixed `current_irreversibility_risk`, the
+   four directional visible-merge coordinates, and the four directional-flow
+   coordinates.
 
 All arms have input dimension 16 and the same 256-by-256 MLP, parameter count,
 Double-DQN update, optimizer, replay capacity, target-update schedule, epsilon
@@ -67,6 +74,9 @@ schedule, reward, action mask, interaction budget, seeds, and held-out evaluatio
 tapes.  The primary comparison isolates a state-only representation change
 rather than model size or data authority.  Preprocessing latency remains part
 of the reported compute comparison rather than being artificially equalized.
+Both ablations use a frozen post-encoding zero mask.  They therefore execute
+the same state-only encoder as the complete resource arm and add no transition,
+successor, oracle, or model-rollout calls.
 
 ## Sample ledger
 
@@ -126,10 +136,23 @@ second-domain experiment are later protocol revisions, not facts inferred from
 the 2048 campaign.
 
 The template itself is not executable.  Ratification must bind one full source
-commit and issue a new protocol identity.  The statistical Gate replays every
-checkpoint mean from its 64 episode outcomes and requires all 40 seed-arm
-artifacts to carry distinct execution identities and the same bound software
-and device environment.
+commit and issue a new protocol identity.  The ratifier derives that commit
+from its own clean checkout and writes the canonical protocol once, outside the
+source checkout.  Ratification sets the science-specific
+`confirmatory_execution_authorized=true`; it does not change the common V180
+claim boundary, whose `official_execution_allowed` remains false and whose
+`OFFICIAL_EXECUTION_GATE` remains `NOT_RUN`.
+
+Each confirmatory seed-arm process reloads the external protocol and verifies
+its exact identity, bound source HEAD, registered arm and seed, 500,000-step
+budget, six checkpoints, 64 evaluation episodes, and CUDA device before
+training.  Its result records checkpoint episode rows, decision counts, the
+complete twenty-row sample ledger, compute and latency telemetry,
+representation/mask telemetry, and execution context.  The statistical Gate
+replays every checkpoint mean from its 64 episode outcomes and requires exactly
+all 40 seed-arm artifacts to carry distinct execution identities and the same
+bound software and device environment.  Pilot schemas and protocol identities
+are foreign to this matrix and cannot be pooled into it.
 
 ## Joint success Gate
 

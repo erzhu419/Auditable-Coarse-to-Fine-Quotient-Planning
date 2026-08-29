@@ -9,7 +9,16 @@ from statistics import fmean
 from typing import Any, Mapping, Sequence
 
 from acfqp.phase3e_ids import canonical_json_bytes
-from acfqp.science.latent_resource_protocol_v1 import PROTOCOL_DOMAIN
+from acfqp.science.latent_resource_2048_v1 import (
+    STATE_ONLY_RESOURCE_FEATURE_NAMES_V1,
+)
+from acfqp.science.latent_resource_protocol_v1 import (
+    PILOT_ARMS,
+    PROTOCOL_DOMAIN,
+    LatentResourceProtocolV1Error,
+    validate_ratified_confirmatory_protocol_v1,
+    zero_mask_coordinate_indices_v1,
+)
 from acfqp.science.sample_ledger_v1 import (
     EvidenceClass,
     EvidenceLane,
@@ -188,10 +197,19 @@ def _registered_protocol_v1(protocol: Mapping[str, Any]) -> dict[str, Any]:
         protocol["campaign_kind"] == "CONFIRMATORY_RATIFIED"
         and protocol["authorization"] == "RATIFIED_FOR_EXECUTION"
         and protocol.get("confirmatory_protocol_ratified") is True
-        and claim_boundary.get("official_execution_allowed") is True
+        and protocol.get("confirmatory_execution_authorized") is True
+        and claim_boundary.get("official_execution_allowed") is False
+        and claim_boundary.get("OFFICIAL_EXECUTION_GATE") == "NOT_RUN"
         and type(protocol.get("source_commit")) is str
         and re.fullmatch(r"[0-9a-f]{40}", protocol["source_commit"]) is not None
     )
+    if execution_authorized:
+        try:
+            validate_ratified_confirmatory_protocol_v1(protocol)
+        except LatentResourceProtocolV1Error as error:
+            raise StatisticsGateV1Error(
+                "ratified protocol is not the frozen confirmatory template"
+            ) from error
     return {
         "protocol_id": protocol_id,
         "arms": tuple(arms),
@@ -275,6 +293,11 @@ def _validate_telemetry_v1(
         "input_dimension",
         "raw_observation_bytes",
         "arm_observation_bytes",
+        "zero_mask_coordinate_indices",
+        "zero_mask_coordinate_names",
+        "zero_mask_applied_after_full_state_only_encoding",
+        "equal_dimension_is_not_counted_as_compression",
+        "compression_claimed",
     } <= set(compression):
         raise StatisticsGateV1Error("compression telemetry is incomplete")
     _positive_integer_v1(latency["decision_count"], name="decision count")
@@ -291,13 +314,19 @@ def _validate_telemetry_v1(
         or compute["peak_device_memory_bytes"] < 0
     ):
         raise StatisticsGateV1Error("compute telemetry counters changed")
+    expected_zero_mask = zero_mask_coordinate_indices_v1(arm)
     if (
         compression["executed_arm"] != arm
         or compression["input_dimension"] != 16
-        or type(compression["raw_observation_bytes"]) is not int
-        or compression["raw_observation_bytes"] <= 0
-        or type(compression["arm_observation_bytes"]) is not int
-        or compression["arm_observation_bytes"] <= 0
+        or compression["raw_observation_bytes"] != 64
+        or compression["arm_observation_bytes"] != 64
+        or compression["zero_mask_coordinate_indices"] != list(expected_zero_mask)
+        or compression["zero_mask_coordinate_names"]
+        != [STATE_ONLY_RESOURCE_FEATURE_NAMES_V1[index] for index in expected_zero_mask]
+        or compression["zero_mask_applied_after_full_state_only_encoding"]
+        is not (arm not in PILOT_ARMS)
+        or compression["equal_dimension_is_not_counted_as_compression"] is not True
+        or compression["compression_claimed"] is not False
     ):
         raise StatisticsGateV1Error("compression telemetry changed")
 
@@ -444,7 +473,7 @@ def evaluate_confirmatory_joint_gate_v1(
     if registered["execution_authorized"] is not True:
         return _not_run_v1(
             protocol_id=protocol_id,
-            reasons=["confirmatory protocol is not ratified for official execution"],
+            reasons=["confirmatory protocol is not ratified for science execution"],
             artifact_count=len(seed_arm_artifacts),
         )
     if len(seed_arm_artifacts) < len(expected_identities):

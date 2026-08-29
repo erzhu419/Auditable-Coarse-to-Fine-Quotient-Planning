@@ -6,9 +6,15 @@ import hashlib
 import pytest
 
 from acfqp.phase3e_ids import canonical_json_bytes
+from acfqp.science.latent_resource_2048_v1 import (
+    STATE_ONLY_RESOURCE_FEATURE_NAMES_V1,
+)
 from acfqp.science.latent_resource_protocol_v1 import (
+    PILOT_ARMS,
     PROTOCOL_DOMAIN,
     build_confirmatory_template_v1,
+    build_ratified_confirmatory_protocol_v1,
+    zero_mask_coordinate_indices_v1,
 )
 from acfqp.science.sample_ledger_v1 import (
     EvidenceClass,
@@ -26,18 +32,7 @@ from acfqp.science.statistics_gate_v1 import (
 
 
 def _ratified_protocol() -> dict:
-    protocol = build_confirmatory_template_v1()
-    protocol["campaign_kind"] = "CONFIRMATORY_RATIFIED"
-    protocol["authorization"] = "RATIFIED_FOR_EXECUTION"
-    protocol["confirmatory_protocol_ratified"] = True
-    protocol["claim_boundary"]["official_execution_allowed"] = True
-    protocol["source_commit"] = "1" * 40
-    payload = dict(protocol)
-    del payload["protocol_id"]
-    protocol["protocol_id"] = hashlib.sha256(
-        PROTOCOL_DOMAIN.encode("ascii") + b"\x00" + canonical_json_bytes(payload)
-    ).hexdigest()
-    return protocol
+    return build_ratified_confirmatory_protocol_v1("1" * 40)
 
 
 def _expected_updates(protocol: dict) -> int:
@@ -93,6 +88,7 @@ def _artifact(protocol: dict, arm: str, seed: int) -> dict:
     seed_index = protocol["training_seeds"].index(seed)
     checkpoints = protocol["training"]["evaluation_checkpoints"]
     updates = _expected_updates(protocol)
+    zero_mask = zero_mask_coordinate_indices_v1(arm)
     return {
         "schema": CONFIRMATORY_RESULT_SCHEMA_V1,
         "protocol_id": protocol["protocol_id"],
@@ -146,6 +142,14 @@ def _artifact(protocol: dict, arm: str, seed: int) -> dict:
             "input_dimension": 16,
             "raw_observation_bytes": 64,
             "arm_observation_bytes": 64,
+            "zero_mask_coordinate_indices": list(zero_mask),
+            "zero_mask_coordinate_names": [
+                STATE_ONLY_RESOURCE_FEATURE_NAMES_V1[index] for index in zero_mask
+            ],
+            "zero_mask_applied_after_full_state_only_encoding": arm
+            not in PILOT_ARMS,
+            "equal_dimension_is_not_counted_as_compression": True,
+            "compression_claimed": False,
         },
         "execution_context": {
             "execution_id": f"confirmatory:{arm}:{seed}",
@@ -249,6 +253,21 @@ def test_protocol_identity_must_be_replayable() -> None:
     protocol = _ratified_protocol()
     protocol["training_seeds"][0] += 1
     with pytest.raises(StatisticsGateV1Error, match="identity is not replayable"):
+        evaluate_confirmatory_joint_gate_v1(
+            protocol=protocol, seed_arm_artifacts=[]
+        )
+
+
+def test_reidentified_protocol_mutation_is_not_the_frozen_template() -> None:
+    protocol = _ratified_protocol()
+    protocol["evaluation_tape_prefix"] = "outcome-selected-foreign-tapes"
+    payload = dict(protocol)
+    del payload["protocol_id"]
+    protocol["protocol_id"] = hashlib.sha256(
+        PROTOCOL_DOMAIN.encode("ascii") + b"\x00" + canonical_json_bytes(payload)
+    ).hexdigest()
+
+    with pytest.raises(StatisticsGateV1Error, match="not the frozen"):
         evaluate_confirmatory_joint_gate_v1(
             protocol=protocol, seed_arm_artifacts=[]
         )

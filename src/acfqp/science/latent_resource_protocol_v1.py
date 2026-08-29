@@ -3,9 +3,13 @@
 from __future__ import annotations
 
 import hashlib
-from typing import Any, NoReturn
+import re
+from typing import Any, Mapping, NoReturn
 
 from acfqp.phase3e_ids import canonical_json_bytes
+from acfqp.science.latent_resource_2048_v1 import (
+    STATE_ONLY_RESOURCE_FEATURE_NAMES_V1,
+)
 
 
 PROTOCOL_DOMAIN = "acfqp:latent-resource-matched-double-dqn-protocol:v1"
@@ -15,6 +19,31 @@ ARMS = (
     "RESOURCE_STATE_ONLY_DROP_ANCHOR",
     "RESOURCE_STATE_ONLY_DROP_LIQUIDITY",
 )
+PILOT_ARMS = ARMS[:2]
+
+# Every confirmatory arm retains the same sixteen network inputs.  Ablations are
+# applied only after the complete state-only vector has been computed, so they
+# cannot change data authority or preprocessing control flow.
+ARM_ZERO_MASK_COORDINATE_INDICES_V1: tuple[
+    tuple[str, tuple[int, ...]], ...
+] = (
+    ("RAW_BOARD", ()),
+    ("RESOURCE_STATE_ONLY", ()),
+    ("RESOURCE_STATE_ONLY_DROP_ANCHOR", (1, 2, 3, 7)),
+    (
+        "RESOURCE_STATE_ONLY_DROP_LIQUIDITY",
+        (4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
+    ),
+)
+
+if tuple(arm for arm, _ in ARM_ZERO_MASK_COORDINATE_INDICES_V1) != ARMS:
+    raise AssertionError("confirmatory arm zero-mask order changed")
+if any(
+    tuple(sorted(set(indices))) != indices
+    or any(not 0 <= index < len(STATE_ONLY_RESOURCE_FEATURE_NAMES_V1) for index in indices)
+    for _, indices in ARM_ZERO_MASK_COORDINATE_INDICES_V1
+):
+    raise AssertionError("confirmatory arm zero-mask coordinates changed")
 
 
 class LatentResourceProtocolV1Error(ValueError):
@@ -176,6 +205,56 @@ def _with_identity(payload: dict[str, Any]) -> dict[str, Any]:
     return {**payload, "protocol_id": protocol_id}
 
 
+def validate_protocol_identity_v1(protocol: Mapping[str, Any]) -> dict[str, Any]:
+    """Replay one protocol identity without granting execution authority."""
+
+    if type(protocol) is not dict:
+        _fail("protocol must be a plain object")
+    protocol_id = protocol.get("protocol_id")
+    if (
+        type(protocol_id) is not str
+        or re.fullmatch(r"[0-9a-f]{64}", protocol_id) is None
+    ):
+        _fail("protocol identity changed shape")
+    payload = dict(protocol)
+    del payload["protocol_id"]
+    expected = _with_identity(payload)
+    if expected["protocol_id"] != protocol_id:
+        _fail("protocol identity is not replayable")
+    return dict(protocol)
+
+
+def zero_mask_coordinate_indices_v1(arm: str) -> tuple[int, ...]:
+    """Return the frozen post-encoding zero mask for one registered arm."""
+
+    if type(arm) is not str:
+        _fail("arm must be exact")
+    for registered_arm, indices in ARM_ZERO_MASK_COORDINATE_INDICES_V1:
+        if registered_arm == arm:
+            return indices
+    _fail("arm is not registered")
+
+
+def _confirmatory_ablation_contract_v1() -> dict[str, Any]:
+    return {
+        "kind": "ZERO_MASK_AFTER_FULL_STATE_ONLY_ENCODING_BEFORE_NETWORK",
+        "input_dimension_for_every_arm": 16,
+        "mask_value": 0,
+        "state_only_coordinate_names": list(STATE_ONLY_RESOURCE_FEATURE_NAMES_V1),
+        "zero_mask_coordinate_indices_by_arm": {
+            arm: list(indices)
+            for arm, indices in ARM_ZERO_MASK_COORDINATE_INDICES_V1
+        },
+        "zero_mask_coordinate_names_by_arm": {
+            arm: [STATE_ONLY_RESOURCE_FEATURE_NAMES_V1[index] for index in indices]
+            for arm, indices in ARM_ZERO_MASK_COORDINATE_INDICES_V1
+        },
+        "full_state_only_vector_computed_before_every_state_only_ablation": True,
+        "mixed_irreversibility_coordinate_zeroed_in_both_ablations": True,
+        "zero_mask_changes_no_model_or_environment_authority": True,
+    }
+
+
 def build_pilot_protocol_v1() -> dict[str, Any]:
     """Return a nonconfirmatory implementation/calibration protocol."""
 
@@ -205,7 +284,15 @@ def build_confirmatory_template_v1() -> dict[str, Any]:
         "campaign_kind": "CONFIRMATORY_TEMPLATE_NOT_YET_AUTHORIZED",
         "arms": list(ARMS),
         "training_seeds": list(range(730101, 730111)),
+        "training_tape_prefix": "acfqp-latent-resource-confirmatory-train-v1",
         "evaluation_tape_prefix": "acfqp-latent-resource-confirmatory-eval-v1",
+        "confirmatory_ablation_contract": _confirmatory_ablation_contract_v1(),
+        "confirmatory_execution_contract": {
+            "required_device_type": "CUDA",
+            "source_commit_derived_from_clean_checkout": True,
+            "protocol_and_result_outputs_outside_source_checkout": True,
+            "pilot_artifacts_excluded_from_confirmatory_matrix": True,
+        },
         "training": _training_contract(
             environment_steps=500_000,
             checkpoints=(25_000, 50_000, 100_000, 200_000, 350_000, 500_000),
@@ -231,15 +318,56 @@ def build_confirmatory_template_v1() -> dict[str, Any]:
             "decision_latency_and_compute_reported": True,
             "representation_compression_reported": True,
         },
+        "confirmatory_execution_authorized": False,
         "authorization": "NOT_AUTHORIZED_UNTIL_PILOT_AND_CODE_FREEZE_COMPLETE",
     }
     return _with_identity(payload)
 
 
+def build_ratified_confirmatory_protocol_v1(source_commit: str) -> dict[str, Any]:
+    """Bind the unchanged confirmatory template to one clean source commit."""
+
+    if (
+        type(source_commit) is not str
+        or re.fullmatch(r"[0-9a-f]{40}", source_commit) is None
+    ):
+        _fail("ratification source commit must be one lowercase full Git object ID")
+    template = build_confirmatory_template_v1()
+    payload = dict(template)
+    del payload["protocol_id"]
+    payload["campaign_kind"] = "CONFIRMATORY_RATIFIED"
+    payload["authorization"] = "RATIFIED_FOR_EXECUTION"
+    payload["confirmatory_protocol_ratified"] = True
+    payload["confirmatory_execution_authorized"] = True
+    payload["source_commit"] = source_commit
+    return _with_identity(payload)
+
+
+def validate_ratified_confirmatory_protocol_v1(
+    protocol: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Accept only the exact template ratified against its recorded source."""
+
+    replayed = validate_protocol_identity_v1(protocol)
+    source_commit = replayed.get("source_commit")
+    if type(source_commit) is not str:
+        _fail("ratified confirmatory protocol has no source commit")
+    expected = build_ratified_confirmatory_protocol_v1(source_commit)
+    if replayed != expected:
+        _fail("ratified confirmatory protocol differs from the frozen template")
+    return replayed
+
+
 __all__ = (
+    "ARM_ZERO_MASK_COORDINATE_INDICES_V1",
     "ARMS",
     "LatentResourceProtocolV1Error",
+    "PILOT_ARMS",
     "PROTOCOL_DOMAIN",
     "build_confirmatory_template_v1",
     "build_pilot_protocol_v1",
+    "build_ratified_confirmatory_protocol_v1",
+    "validate_protocol_identity_v1",
+    "validate_ratified_confirmatory_protocol_v1",
+    "zero_mask_coordinate_indices_v1",
 )
