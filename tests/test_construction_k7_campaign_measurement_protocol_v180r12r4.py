@@ -44,7 +44,7 @@ def cgroup_parent_fact() -> dict:
             "user@1000.service/app.slice"
         ),
         "parent_device": 30,
-        "parent_inode": 7_109,
+        "parent_inode": 6_987,
         "owner_uid": 1_000,
         "owner_gid": 1_000,
         "mode": 0o755,
