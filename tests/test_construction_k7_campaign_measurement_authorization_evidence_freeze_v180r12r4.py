@@ -179,8 +179,8 @@ def test_outcome_free_wrapper_has_exact_phase_aware_twelve_literal_topology() ->
     assert evidence.SOURCE_BOUNDARY_REQUIRED_PATHS == tuple(
         sorted(evidence.SOURCE_BOUNDARY_REQUIRED_PATHS)
     )
-    assert len(evidence.SOURCE_BOUNDARY_REQUIRED_PATHS) == 26
-    assert len(set(evidence.SOURCE_BOUNDARY_REQUIRED_PATHS)) == 26
+    assert len(evidence.SOURCE_BOUNDARY_REQUIRED_PATHS) == 27
+    assert len(set(evidence.SOURCE_BOUNDARY_REQUIRED_PATHS)) == 27
     assert protocol.V180R12R3_FAILURE_FREEZE_SOURCE_RELATIVE_PATH in (
         evidence.SOURCE_BOUNDARY_REQUIRED_PATHS
     )
@@ -194,6 +194,9 @@ def test_outcome_free_wrapper_has_exact_phase_aware_twelve_literal_topology() ->
         evidence.SOURCE_BOUNDARY_REQUIRED_PATHS
     )
     assert protocol.V180R12R4R6_FAILURE_FREEZE_SOURCE_RELATIVE_PATH in (
+        evidence.SOURCE_BOUNDARY_REQUIRED_PATHS
+    )
+    assert protocol.V180R12R4R7_FAILURE_FREEZE_SOURCE_RELATIVE_PATH in (
         evidence.SOURCE_BOUNDARY_REQUIRED_PATHS
     )
     assert evidence._AUTHORIZATION_RELATIVE_PATH in (  # noqa: SLF001
@@ -590,6 +593,9 @@ def test_candidate_and_runtime_payloads_match_under_external_nonbootstrap(
             "failed_ordinal11_repair_lineage": (
                 protocol.failed_ordinal11_repair_lineage_contract_v180r12r4()
             ),
+            "failed_ordinal12_repair_lineage": (
+                protocol.failed_ordinal12_repair_lineage_contract_v180r12r4()
+            ),
         "failed_v180r12r3_identity_rerun_forbidden": True,
         "failed_v180r12r3r1_identity_rerun_forbidden": True,
         "failed_v180r12r3r2_identity_rerun_forbidden": True,
@@ -597,6 +603,7 @@ def test_candidate_and_runtime_payloads_match_under_external_nonbootstrap(
             "failed_v180r12r4r4_ordinal9_identity_rerun_forbidden": True,
             "failed_v180r12r4r5_ordinal10_identity_rerun_forbidden": True,
             "failed_v180r12r4r6_ordinal11_identity_rerun_forbidden": True,
+            "failed_v180r12r4r7_ordinal12_identity_rerun_forbidden": True,
         "fresh_v180r12r4_physical_paths_and_identities_required": True,
         "repair_scope": protocol.V180R12R4_REPAIR_SCOPE,
         "repair_changes_campaign_path_roles_event_schedule_evidence_"
@@ -706,6 +713,20 @@ def test_candidate_and_runtime_payloads_match_under_external_nonbootstrap(
     assert candidate["failed_ordinal11_repair_lineage"] == (
         protocol.failed_ordinal11_repair_lineage_contract_v180r12r4()
     )
+    assert candidate["failed_ordinal12_repair_lineage"] == (
+        protocol.failed_ordinal12_repair_lineage_contract_v180r12r4()
+    )
+    ordinal12 = candidate["failed_ordinal12_repair_lineage"]
+    assert ordinal12["completed_event_count"] == 2
+    assert ordinal12["production_runtime_placement_t1_complete"] is True
+    assert ordinal12["production_runtime_placement_t2_reached"] is False
+    assert ordinal12["production_runtime_placement_t3_reached"] is False
+    assert ordinal12["socket_capability_mismatch_count"] == 6
+    assert ordinal12["failure_stage"] == "SOCKET_BUFFER_CONFIGURATION"
+    assert ordinal12["counter_record_count"] == 0
+    assert ordinal12["work_vector_count"] == 0
+    assert ordinal12["comparison_vector_count"] == 0
+    assert ordinal12["cleanup_complete"] is True
     assert candidate["source_bound_runner_execution_envelope_contract"] == (
         protocol.source_bound_runner_execution_envelope_contract_v180r12r4()
     )
@@ -719,8 +740,10 @@ def test_candidate_and_runtime_payloads_match_under_external_nonbootstrap(
     assert candidate["failed_v180r12r4r4_ordinal9_identity_rerun_forbidden"]
     assert candidate["failed_v180r12r4r5_ordinal10_identity_rerun_forbidden"]
     assert candidate["failed_v180r12r4r6_ordinal11_identity_rerun_forbidden"]
+    assert candidate["failed_v180r12r4r7_ordinal12_identity_rerun_forbidden"]
     assert candidate["fresh_v180r12r4_physical_paths_and_identities_required"]
     assert candidate["repair_scope"] == protocol.V180R12R4_REPAIR_SCOPE
+    assert candidate["repair_scope"] == ordinal12["repair_scope"]
     assert candidate["v180r12r4_outcome_bytes_accessed"] is False
     assert candidate["campaign_measurement_execution_count"] == 0
     assert candidate["COUNTER_COMPLETENESS_GATE"] == "NOT_RUN"

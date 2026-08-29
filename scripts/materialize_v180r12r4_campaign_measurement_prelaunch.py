@@ -425,6 +425,10 @@ SOURCE_CLOSURE_REQUIRED_ROOTS = tuple(
             ),
             (
                 "src/acfqp/construction_k7_campaign_measurement_"
+                "failure_freeze_v180r12r4r7.py"
+            ),
+            (
+                "src/acfqp/construction_k7_campaign_measurement_"
                 "independent_verifier_v180r12r4.py"
             ),
             (
@@ -463,7 +467,7 @@ PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
     "acfqp:construction-k7-production-transient-service-token:v180r12r4"
 )
 PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN = (
-    "36ed4564c6b1e77e08ee99aac354f4fc9bc5aaa67b3ac0f6bf16e69996d338bf"
+    "2067202637b5200c9d7a4a4a2bf06be37391b8cd3b494b9bb4ab0842d1e619c6"
 )
 PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_UNIT_NAME = (
     "acfqp-v180r12r4-measurement-"
@@ -471,7 +475,7 @@ PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_UNIT_NAME = (
     + ".service"
 )
 PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_TOKEN = (
-    "77ab2901813ffcf1c297ad6ed041b8f5147d390d2adb0f95dc978cce2b54e6be"
+    "99bbf6c47c5387220a7fe0bd4084523b8d9de1889ddb3cbf781ebb09d4f06376"
 )
 PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_UNIT_NAME = (
     "acfqp-v180r12r4-verification-"
@@ -513,19 +517,19 @@ GIT_COMMAND_TIMEOUT_SECONDS = 120
 FAILURE_MESSAGE_BYTE_CAP = 4096
 
 EXPECTED_SOURCE_CLOSURE_RULE_ID = (
-    "b00bc6e59018f124e9939e6237ee9afc1852cf6120fb7130d536b7ff2cb682f4"
+    "132d496fc7dc6569bb6205102f9157d020ca6dacd3f4c44b149a0eb4f569de1f"
 )
 EXPECTED_MATERIALIZATION_RULE_ID = (
-    "fb3090b81da2b32d23cdff0f24888dbc843624308be35497797b8ae5383dbc67"
+    "63b22795125630204571da9e32063392b3fc29b866be16a08dbd865fc164f621"
 )
 LAUNCHER_RULE_LITERAL_NAMES = (
     "EXPECTED_SOURCE_CLOSURE_RULE_ID",
     "EXPECTED_MATERIALIZATION_RULE_ID",
     "EXPECTED_LAUNCH_RULE_ID",
 )
-LAUNCHER_NORMALIZED_STATIC_RULE_SOURCE_BYTE_COUNT = 255_659
+LAUNCHER_NORMALIZED_STATIC_RULE_SOURCE_BYTE_COUNT = 258_991
 LAUNCHER_NORMALIZED_STATIC_RULE_SOURCE_SHA256 = (
-    "cca597daaf8fd8ee5facad1d9e4396264f0140dd7ed2fc003fd41bfb07a2311a"
+    "9bed34c0aa72e339c2c7daa79a99ab3e4b6959627cf6af3450625b778a1e739f"
 )
 
 SOURCE_CLOSURE_RULE_DOCUMENT = {
@@ -697,15 +701,15 @@ def _zero_preflight_receipt_interface() -> dict[str, Any]:
 def _production_systemd_service_contract() -> dict[str, Any]:
     base = {
         "failed_predecessor_freeze_id": (
-            "afdc3acd283daf018243acdf9920dfa32140459a6de1dd6bfc3a70c113579105"
+            "2f71e97fd2133c7983a400b5f536fe87740aa08c551580d62556aae5dcea496b"
         ),
         "failed_inner_launch_failure_id": (
-            "96cf56e7e7bb36105d2065b4252e9e7a3cc1052b6aa92ead94ef0d60dd498892"
+            "46a3d92a70424c296e0137380cdb98f99f11b47b565dce3175baeab8b3546a67"
         ),
         "failed_outer_service_failure_id": (
-            "2bd19d84bf24877697395ff7f2c7bdea12d3a6f1331dc56b132a322176681cce"
+            "a221f8d37ca354b7e1a753708d99229086ef6128fedd5cbf9879c89871846185"
         ),
-        "repair_scope": "T1_T2_ROLE_AWARE_PROCESS_ID_CONFORMANCE",
+        "repair_scope": "SOCKET_BUFFER_CAPABILITY_AND_T3_DIAGNOSTIC_CONFORMANCE",
     }
     token_rows = {
         "measurement": (
@@ -2294,9 +2298,9 @@ class _RestrictedStaticLauncherEvaluator:
         "SERVICE_LAUNCH_PUBLICATION_STAGES",
         "__all__",
     )
-    _EXPECTED_PRE_RULE_ASSIGNMENT_COUNT = 163
+    _EXPECTED_PRE_RULE_ASSIGNMENT_COUNT = 169
     _EXPECTED_PRE_RULE_ASSIGNMENT_NAMES_SHA256 = (
-        "10e2b8e4341d1b2c116b11ceda0c8ac1eb08f7e1f0287bf2795e1847d1eb8bf1"
+        "5ae3745b4a9233b6ca9f93cb392a64e2bf7e455d5938aa779707c6601b8ac5b4"
     )
 
     def __init__(self, raw: bytes) -> None:

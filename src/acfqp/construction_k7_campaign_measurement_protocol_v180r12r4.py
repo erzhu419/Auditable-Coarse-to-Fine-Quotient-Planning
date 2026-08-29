@@ -58,16 +58,18 @@ from acfqp import (
     construction_k7_campaign_measurement_failure_freeze_v180r12r4r6
     as failed_ordinal11_predecessor,
 )
+from acfqp import (
+    construction_k7_campaign_measurement_failure_freeze_v180r12r4r7
+    as failed_ordinal12_predecessor,
+)
 from acfqp.phase3e_ids import canonical_json_bytes, loads_canonical_json
 
 
 ZERO_ID = "0" * 64
-EXPECTED_PROTOCOL_ID = "39ac13c2dde86d2d4d1a97475e227def0f2d1cf79be7d7998564ca99cd5afe9e"
-EXPECTED_CANONICAL_BYTE_COUNT = 441_354
-EXPECTED_CANONICAL_SHA256 = "66243f66dade13b33d3fd99c3f1fe944d4caf9b4e328fea549204f6c7ba36d56"
-EXPECTED_CAMPAIGN_MEASUREMENT_EXECUTION_SLOT_ID = (
-    "57f9877f10e8cfa85cd13cc9ae1dd92d5a0faf9f9f8ffacc9856904f6b5b9504"
-)
+EXPECTED_PROTOCOL_ID = ZERO_ID
+EXPECTED_CANONICAL_BYTE_COUNT = 0
+EXPECTED_CANONICAL_SHA256 = ZERO_ID
+EXPECTED_CAMPAIGN_MEASUREMENT_EXECUTION_SLOT_ID = ZERO_ID
 LOGICAL_OCCURRENCE_ID = "a37770e56698857e162b2099766573ec5cabfc876145496f7d54756271d66599"
 EXECUTION_NONCE = "7d4ebffb564caeb42550670bf06276f9ef7f456cfa5231acef56497f2bd62ea4"
 
@@ -444,6 +446,22 @@ V180R12R4R6_FAILED_INNER_LAUNCH_FAILURE_ID = (
 V180R12R4R6_FAILED_OUTER_SERVICE_FAILURE_ID = (
     failed_ordinal11_predecessor.EXPECTED_OUTER_SERVICE_FAILURE_ID
 )
+V180R12R4R7_FAILURE_FREEZE_SOURCE_RELATIVE_PATH = (
+    "src/acfqp/"
+    "construction_k7_campaign_measurement_failure_freeze_v180r12r4r7.py"
+)
+V180R12R4R7_FAILED_PREDECESSOR_FREEZE_ID = (
+    failed_ordinal12_predecessor.ORDINAL12_FAILURE_FREEZE_ID
+)
+V180R12R4R7_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID = (
+    failed_ordinal12_predecessor.EXPECTED_CAMPAIGN_ATTEMPT_ID
+)
+V180R12R4R7_FAILED_INNER_LAUNCH_FAILURE_ID = (
+    failed_ordinal12_predecessor.EXPECTED_INNER_LAUNCH_FAILURE_ID
+)
+V180R12R4R7_FAILED_OUTER_SERVICE_FAILURE_ID = (
+    failed_ordinal12_predecessor.EXPECTED_OUTER_SERVICE_FAILURE_ID
+)
 V180R12R3R2_REPAIR_SCOPE = (
     "OUTER_OBSERVER_DELEGATED_SOURCE_CGROUP_PLACEMENT_AND_ATOMIC_BIRTH_"
     "PREFLIGHT_ONLY"
@@ -454,7 +472,8 @@ V180R12R4R3_REPAIR_SCOPE = (
 V180R12R4R4_REPAIR_SCOPE = failed_ordinal9_predecessor.REPAIR_SCOPE
 V180R12R4R5_REPAIR_SCOPE = failed_ordinal10_predecessor.REPAIR_SCOPE
 V180R12R4R6_REPAIR_SCOPE = failed_ordinal11_predecessor.REPAIR_SCOPE
-V180R12R4_REPAIR_SCOPE = V180R12R4R6_REPAIR_SCOPE
+V180R12R4R7_REPAIR_SCOPE = failed_ordinal12_predecessor.REPAIR_SCOPE
+V180R12R4_REPAIR_SCOPE = V180R12R4R7_REPAIR_SCOPE
 
 PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
     "acfqp:construction-k7-production-transient-service-token:v180r12r4"
@@ -467,12 +486,12 @@ PRODUCTION_TRANSIENT_SERVICE_TOKEN_INPUT_FIELDS = (
     "purpose",
 )
 PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN_INPUT = {
-    "failed_predecessor_freeze_id": V180R12R4R6_FAILED_PREDECESSOR_FREEZE_ID,
+    "failed_predecessor_freeze_id": V180R12R4R7_FAILED_PREDECESSOR_FREEZE_ID,
     "failed_inner_launch_failure_id": (
-        V180R12R4R6_FAILED_INNER_LAUNCH_FAILURE_ID
+        V180R12R4R7_FAILED_INNER_LAUNCH_FAILURE_ID
     ),
     "failed_outer_service_failure_id": (
-        V180R12R4R6_FAILED_OUTER_SERVICE_FAILURE_ID
+        V180R12R4R7_FAILED_OUTER_SERVICE_FAILURE_ID
     ),
     "repair_scope": V180R12R4_REPAIR_SCOPE,
     "purpose": "MEASUREMENT",
@@ -483,7 +502,7 @@ PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN = hashlib.sha256(
     + canonical_json_bytes(PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN_INPUT)
 ).hexdigest()
 EXPECTED_PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN = (
-    "36ed4564c6b1e77e08ee99aac354f4fc9bc5aaa67b3ac0f6bf16e69996d338bf"
+    "2067202637b5200c9d7a4a4a2bf06be37391b8cd3b494b9bb4ab0842d1e619c6"
 )
 PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_UNIT_NAME = (
     "acfqp-v180r12r4-measurement-"
@@ -500,7 +519,7 @@ PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_TOKEN = hashlib.sha256(
     + canonical_json_bytes(PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_TOKEN_INPUT)
 ).hexdigest()
 EXPECTED_PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_TOKEN = (
-    "77ab2901813ffcf1c297ad6ed041b8f5147d390d2adb0f95dc978cce2b54e6be"
+    "99bbf6c47c5387220a7fe0bd4084523b8d9de1889ddb3cbf781ebb09d4f06376"
 )
 PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_UNIT_NAME = (
     "acfqp-v180r12r4-verification-"
@@ -642,6 +661,35 @@ PRODUCTION_RUNTIME_PLACEMENT_T3_FIELDS = (
     "before_getrandom",
     "immediately_before_clone3",
     "stable_across_boundaries",
+)
+TOPOLOGY_CONFORMANCE_DIAGNOSTIC_R4_SCHEMA = (
+    supervisor_contract.TOPOLOGY_CONFORMANCE_DIAGNOSTIC_R4_SCHEMA
+)
+TOPOLOGY_CONFORMANCE_DIAGNOSTIC_R4_FIELDS = (
+    "schema",
+    "scope",
+    "unit_ownership_acquired",
+    "full_conformance",
+    "property_snapshots",
+    "expected_properties",
+    "observed_properties",
+    "mismatch_rows",
+    "cause",
+)
+TOPOLOGY_CONFORMANCE_DIAGNOSTIC_R4_SCOPES = (
+    "PARENT_AND_CHILD_TOPOLOGY",
+    "T1_T2_PLACEMENT",
+    "T3_CHECKPOINT_CONFORMANCE",
+)
+TOPOLOGY_CONFORMANCE_DIAGNOSTIC_R4_PROPERTY_SNAPSHOT_FIELDS = (
+    "unit_ownership",
+    "parent_delegation",
+    "measurement_topology",
+    "production_runtime_placement_t3",
+)
+TOPOLOGY_CONFORMANCE_DIAGNOSTIC_R4_UNIT_OWNERSHIP_FIELDS = (
+    "production_runtime_placement_t1",
+    "production_runtime_placement_t2",
 )
 REVALIDATED_EXTERNAL_MEASUREMENT_CONTEXT_SCHEMA = (
     "acfqp.v180r12r4_revalidated_external_measurement_context.v1"
@@ -1723,13 +1771,13 @@ SUCCESS_DURABLE_WRITE_ORDER = (
 )
 
 EXPECTED_PRELAUNCH_SOURCE_CLOSURE_RULE_ID = (
-    "b00bc6e59018f124e9939e6237ee9afc1852cf6120fb7130d536b7ff2cb682f4"
+    "132d496fc7dc6569bb6205102f9157d020ca6dacd3f4c44b149a0eb4f569de1f"
 )
 EXPECTED_PRELAUNCH_MATERIALIZATION_RULE_ID = (
-    "fb3090b81da2b32d23cdff0f24888dbc843624308be35497797b8ae5383dbc67"
+    "63b22795125630204571da9e32063392b3fc29b866be16a08dbd865fc164f621"
 )
 EXPECTED_PRELAUNCH_LAUNCH_RULE_ID = (
-    "590667c6806bfe8436b219cc78b27c71d4acd2675128eb453e967ece488aecee"
+    "7bc77a021fc0ad0ae3f81f18938a52c1159451fbf25e83adb202249dbbeb71b9"
 )
 PROTOCOL_FINAL_ANCHOR_NAMES = (
     "EXPECTED_PROTOCOL_ID",
@@ -2443,9 +2491,71 @@ RUNTIME_CAPABILITY_FACT_FIELDS = (
     "admitted",
 )
 PRE_ATTEMPT_HOST_CONFORMANCE_SCHEMA = (
-    "acfqp.v180r12r4_pre_attempt_host_conformance.v1"
+    "acfqp.v180r12r4_pre_attempt_host_conformance.v2"
 )
 PRE_ATTEMPT_HOST_CONFORMANCE_BYTE_CAP = 65_536
+SOCKET_BUFFER_CAPABILITY_FACT_SCHEMA = (
+    "acfqp.v180r12r4_socket_buffer_capability_fact.v1"
+)
+SOCKET_BUFFER_CAPABILITY_FACT_FIELDS = (
+    "schema",
+    "probe_boundary",
+    "socket_family",
+    "socket_type",
+    "endpoint_count",
+    "buffer_request_bytes",
+    "effective_min_bytes",
+    "net_core_wmem_max_bytes",
+    "net_core_rmem_max_bytes",
+    "endpoint_0_so_sndbuf_bytes",
+    "endpoint_0_so_rcvbuf_bytes",
+    "endpoint_1_so_sndbuf_bytes",
+    "endpoint_1_so_rcvbuf_bytes",
+)
+SOCKET_BUFFER_CAPABILITY_EXACT_FIELDS = (
+    "schema",
+    "probe_boundary",
+    "socket_family",
+    "socket_type",
+    "endpoint_count",
+    "buffer_request_bytes",
+    "effective_min_bytes",
+)
+SOCKET_BUFFER_CAPABILITY_AT_LEAST_FIELDS = (
+    "net_core_wmem_max_bytes",
+    "net_core_rmem_max_bytes",
+    "endpoint_0_so_sndbuf_bytes",
+    "endpoint_0_so_rcvbuf_bytes",
+    "endpoint_1_so_sndbuf_bytes",
+    "endpoint_1_so_rcvbuf_bytes",
+)
+SOCKET_BUFFER_CAPABILITY_EXPECTED_EXACT_PROPERTIES = {
+    "schema": SOCKET_BUFFER_CAPABILITY_FACT_SCHEMA,
+    "probe_boundary": "PRE_CAMPAIGN_ATTEMPT_O_EXCL",
+    "socket_family": "AF_UNIX",
+    "socket_type": "SOCK_SEQPACKET|SOCK_CLOEXEC",
+    "endpoint_count": 2,
+    "buffer_request_bytes": SOCK_SEQPACKET_BUFFER_REQUEST_BYTES,
+    "effective_min_bytes": SOCK_SEQPACKET_EFFECTIVE_MIN_BYTES,
+}
+SOCKET_BUFFER_CAPABILITY_EXPECTED_MINIMUM_PROPERTIES = {
+    "net_core_wmem_max_bytes": SOCK_SEQPACKET_BUFFER_REQUEST_BYTES,
+    "net_core_rmem_max_bytes": SOCK_SEQPACKET_BUFFER_REQUEST_BYTES,
+    "endpoint_0_so_sndbuf_bytes": SOCK_SEQPACKET_EFFECTIVE_MIN_BYTES,
+    "endpoint_0_so_rcvbuf_bytes": SOCK_SEQPACKET_EFFECTIVE_MIN_BYTES,
+    "endpoint_1_so_sndbuf_bytes": SOCK_SEQPACKET_EFFECTIVE_MIN_BYTES,
+    "endpoint_1_so_rcvbuf_bytes": SOCK_SEQPACKET_EFFECTIVE_MIN_BYTES,
+}
+SOCKET_BUFFER_CAPABILITY_MISMATCH_ROW_FIELDS = (
+    "scope",
+    "field",
+    "minimum",
+    "observed",
+)
+SOCKET_BUFFER_CAPABILITY_MISMATCH_SCOPE = "socket_buffer_capability"
+SOCKET_BUFFER_CAPABILITY_INSUFFICIENT_CAUSE = (
+    "SOCKET_BUFFER_CAPABILITY_INSUFFICIENT"
+)
 
 SERVICE_CONTEXT_CAPTURE_RELATIVE_PATH = (
     "retained_evidence/v180r12r4r5_service_context_capture/"
@@ -2545,6 +2655,7 @@ SOURCE_CLOSURE_REQUIRED_ROOTS = tuple(sorted((
     V180R12R4R4_FAILURE_FREEZE_SOURCE_RELATIVE_PATH,
     V180R12R4R5_FAILURE_FREEZE_SOURCE_RELATIVE_PATH,
     V180R12R4R6_FAILURE_FREEZE_SOURCE_RELATIVE_PATH,
+    V180R12R4R7_FAILURE_FREEZE_SOURCE_RELATIVE_PATH,
     V180R12R2_EVIDENCE_SOURCE_RELATIVE_PATH,
 )))
 WORKER_ALLOWED_LOCAL_IMPORTS = (
@@ -4054,7 +4165,7 @@ def failed_ordinal10_repair_lineage_contract_v180r12r4() -> dict[str, Any]:
 
 
 def failed_ordinal11_repair_lineage_contract_v180r12r4() -> dict[str, Any]:
-    """Bind consumed ordinal11 as the immediate scientific predecessor."""
+    """Bind consumed ordinal11 as retained historical lineage."""
 
     source = Path(failed_ordinal11_predecessor.__file__).resolve()
     expected_source = (
@@ -4158,6 +4269,215 @@ def failed_ordinal11_repair_lineage_contract_v180r12r4() -> dict[str, Any]:
         "failure_freeze_source_is_resolved_from_source_bound_module_file": True,
         "repair_changes_campaign_path_roles_event_schedule_evidence_"
         "cardinality_or_reducers": False,
+    }
+
+
+def failed_ordinal12_repair_lineage_contract_v180r12r4() -> dict[str, Any]:
+    """Bind consumed ordinal12 as the immediate scientific predecessor."""
+
+    source = Path(failed_ordinal12_predecessor.__file__).resolve()
+    expected_source = (
+        _ROOT / V180R12R4R7_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
+    ).resolve()
+    if not (
+        source == expected_source
+        and source.parents[2] == _ROOT.resolve()
+        and failed_ordinal12_predecessor.ORDINAL12_FAILURE_FREEZE_ID
+        == V180R12R4R7_FAILED_PREDECESSOR_FREEZE_ID
+        and failed_ordinal12_predecessor.EXPECTED_CAMPAIGN_ATTEMPT_ID
+        == V180R12R4R7_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID
+        and failed_ordinal12_predecessor.EXPECTED_INNER_LAUNCH_FAILURE_ID
+        == V180R12R4R7_FAILED_INNER_LAUNCH_FAILURE_ID
+        and failed_ordinal12_predecessor.EXPECTED_OUTER_SERVICE_FAILURE_ID
+        == V180R12R4R7_FAILED_OUTER_SERVICE_FAILURE_ID
+        and failed_ordinal12_predecessor.REPAIR_SCOPE
+        == V180R12R4R7_REPAIR_SCOPE
+    ):
+        _fail("frozen ordinal12 failure authority changed")
+    contract = (
+        failed_ordinal12_predecessor.freeze_ordinal12_failure_v180r12r4r7()
+        .to_contract()
+    )
+    host = contract.get("host_conformance")
+    placement_t1 = contract.get("production_runtime_placement_t1")
+    socket_observation = contract.get("socket_capability_observation")
+    socket_cause = contract.get("socket_capability_cause")
+    if not (
+        contract.get("schema")
+        == "acfqp.v180r12r4r7_ordinal12_failure_freeze.v1"
+        and contract.get("freeze_id")
+        == V180R12R4R7_FAILED_PREDECESSOR_FREEZE_ID
+        and contract.get("campaign_attempt_id")
+        == V180R12R4R7_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID
+        and contract.get("campaign_attempt_record_id")
+        == failed_ordinal12_predecessor.EXPECTED_CAMPAIGN_ATTEMPT_RECORD_ID
+        and contract.get("campaign_failure_id")
+        == failed_ordinal12_predecessor.EXPECTED_CAMPAIGN_FAILURE_ID
+        and contract.get("inner_launch_failure_id")
+        == V180R12R4R7_FAILED_INNER_LAUNCH_FAILURE_ID
+        and contract.get("outer_service_failure_id")
+        == V180R12R4R7_FAILED_OUTER_SERVICE_FAILURE_ID
+        and contract.get("formal_artifact_count") == 12
+        and contract.get("post_failure_diagnostic_artifact_count") == 1
+        and contract.get("post_failure_diagnostic_is_formal_campaign_artifact")
+        is False
+        and contract.get("all_self_ids_verified") is True
+        and contract.get("self_id_count") == 9
+        and contract.get("prelaunch_materialization_succeeded") is True
+        and contract.get("full_source_conformance") is True
+        and contract.get("source_root_count") == 26
+        and contract.get("source_conformance_mismatch_count") == 0
+        and contract.get("source_conformance_cause") is None
+        and contract.get("full_host_conformance") is True
+        and contract.get("host_conformance_mismatch_count") == 0
+        and contract.get("host_conformance_cause") is None
+        and type(host) is dict
+        and host.get("schema")
+        == "acfqp.v180r12r4_pre_attempt_host_conformance.v1"
+        and host.get("full_host_conformance") is True
+        and host.get("mismatch_count") == 0
+        and host.get("mismatch_rows") == []
+        and host.get("cause") is None
+        and contract.get("scientific_attempt_opened") is True
+        and contract.get("event_kinds")
+        == ["ATTEMPT_OPEN", "PROCESS_BIRTH_INTENT"]
+        and contract.get("completed_event_count") == 2
+        and contract.get("failure_code") == "SUPERVISOR_BIRTH_FAILURE"
+        and contract.get("failure_stage") == "SOCKET_BUFFER_CONFIGURATION"
+        and contract.get("launch_child_created") is False
+        and contract.get("launch_exec_observed") is False
+        and contract.get("launch_pidfd_acquired") is False
+        and type(placement_t1) is dict
+        and placement_t1.get("schema")
+        == PRODUCTION_RUNTIME_PLACEMENT_T1_SCHEMA
+        and contract.get("production_runtime_placement_t1_complete") is True
+        and contract.get("production_runtime_placement_t2_reached") is False
+        and contract.get("production_runtime_placement_t3_reached") is False
+        and contract.get("t2_t3_full_conformance_reached") is False
+        and contract.get("cgroup_topology_conformance_diagnostic") is None
+        and type(socket_observation) is dict
+        and socket_observation.get("scope")
+        == "PRE_CHILD_IPC_SEQPACKET_CAPABILITY"
+        and contract.get("socket_capability_full_conformance") is False
+        and contract.get("socket_capability_mismatch_count") == 6
+        and type(contract.get("socket_capability_mismatch_rows")) is list
+        and len(contract["socket_capability_mismatch_rows"]) == 6
+        and type(socket_cause) is dict
+        and socket_cause.get("failure_code")
+        == "SOCKET_BUFFER_CAPABILITY_CONFORMANCE_FAILURE"
+        and contract.get("socket_request_bytes")
+        == SOCK_SEQPACKET_BUFFER_REQUEST_BYTES
+        and contract.get("socket_required_effective_min_bytes")
+        == SOCK_SEQPACKET_EFFECTIVE_MIN_BYTES
+        and contract.get("cleanup_complete") is True
+        and contract.get("post_failure_measurement_root_state") == "ABSENT"
+        and contract.get("formal_service_collected") is True
+        and contract.get("process_may_remain") is False
+        and contract.get("counter_record_count") == 0
+        and contract.get("work_vector_count") == 0
+        and contract.get("comparison_vector_count") == 0
+        and set(contract.get("gate_statuses", {}).values()) == {"NOT_RUN"}
+        and contract.get("official_execution_allowed") is False
+        and contract.get("terminal_present") is False
+        and contract.get("independent_replay_present") is False
+        and contract.get("scientific_effect_claimed") is False
+        and contract.get("identity_consumed") is True
+        and contract.get("same_identity_rerun_forbidden") is True
+        and contract.get("fresh_successor_identity_required") is True
+        and contract.get("repair_scope") == V180R12R4R7_REPAIR_SCOPE
+    ):
+        _fail("frozen ordinal12 failure lineage changed")
+    return {
+        **contract,
+        "failure_freeze_source_relative_path": (
+            V180R12R4R7_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
+        ),
+        "failure_freeze_source_is_required_authorization_source_root": True,
+        "failure_freeze_source_is_resolved_from_source_bound_module_file": True,
+        "repair_changes_campaign_path_roles_event_schedule_evidence_"
+        "cardinality_or_reducers": False,
+    }
+
+
+def socket_buffer_capability_contract_v180r12r4() -> dict[str, Any]:
+    """Return the preregistered exact/minimum socket host-fact contract."""
+
+    if not (
+        SOCKET_BUFFER_CAPABILITY_FACT_FIELDS
+        == (
+            *SOCKET_BUFFER_CAPABILITY_EXACT_FIELDS,
+            *SOCKET_BUFFER_CAPABILITY_AT_LEAST_FIELDS,
+        )
+        and tuple(SOCKET_BUFFER_CAPABILITY_EXPECTED_EXACT_PROPERTIES)
+        == SOCKET_BUFFER_CAPABILITY_EXACT_FIELDS
+        and tuple(SOCKET_BUFFER_CAPABILITY_EXPECTED_MINIMUM_PROPERTIES)
+        == SOCKET_BUFFER_CAPABILITY_AT_LEAST_FIELDS
+    ):
+        _fail("socket-buffer capability fact contract changed")
+    return {
+        "schema": "acfqp.v180r12r4_socket_buffer_capability_contract.v1",
+        "fact_schema": SOCKET_BUFFER_CAPABILITY_FACT_SCHEMA,
+        "fact_fields": list(SOCKET_BUFFER_CAPABILITY_FACT_FIELDS),
+        "exact_fields": list(SOCKET_BUFFER_CAPABILITY_EXACT_FIELDS),
+        "at_least_fields": list(SOCKET_BUFFER_CAPABILITY_AT_LEAST_FIELDS),
+        "expected_exact_properties": dict(
+            SOCKET_BUFFER_CAPABILITY_EXPECTED_EXACT_PROPERTIES
+        ),
+        "expected_minimum_properties": dict(
+            SOCKET_BUFFER_CAPABILITY_EXPECTED_MINIMUM_PROPERTIES
+        ),
+        "mismatch_row_fields": list(
+            SOCKET_BUFFER_CAPABILITY_MISMATCH_ROW_FIELDS
+        ),
+        "mismatch_scope": SOCKET_BUFFER_CAPABILITY_MISMATCH_SCOPE,
+        "insufficient_cause": SOCKET_BUFFER_CAPABILITY_INSUFFICIENT_CAUSE,
+        "observed_fact_retained_in_full": True,
+        "probe_precedes_campaign_attempt_o_excl": True,
+        "probe_socket_is_closed_before_campaign_attempt_o_excl": True,
+        "socket_conformance_is_host_conformance_not_unit_ownership": True,
+    }
+
+
+def topology_conformance_diagnostic_r4_contract_v180r12r4(
+) -> dict[str, Any]:
+    """Return the full-snapshot T3-capable diagnostic contract."""
+
+    if not (
+        TOPOLOGY_CONFORMANCE_DIAGNOSTIC_R4_SCHEMA
+        == supervisor_contract.TOPOLOGY_CONFORMANCE_DIAGNOSTIC_R4_SCHEMA
+        and PRODUCTION_RUNTIME_PLACEMENT_T3_SCHEMA
+        == supervisor_contract.PRODUCTION_RUNTIME_PLACEMENT_T3_SCHEMA
+        and PRODUCTION_RUNTIME_PLACEMENT_T3_CHECKPOINT_FIELDS
+        == supervisor_contract.PRODUCTION_RUNTIME_PLACEMENT_T3_CHECKPOINT_FIELDS
+        and PRODUCTION_RUNTIME_PLACEMENT_T3_FIELDS
+        == supervisor_contract.PRODUCTION_RUNTIME_PLACEMENT_T3_FIELDS
+    ):
+        _fail("topology conformance diagnostic r4 authority changed")
+    return {
+        "schema": TOPOLOGY_CONFORMANCE_DIAGNOSTIC_R4_SCHEMA,
+        "fields": list(TOPOLOGY_CONFORMANCE_DIAGNOSTIC_R4_FIELDS),
+        "scopes": list(TOPOLOGY_CONFORMANCE_DIAGNOSTIC_R4_SCOPES),
+        "property_snapshot_fields": list(
+            TOPOLOGY_CONFORMANCE_DIAGNOSTIC_R4_PROPERTY_SNAPSHOT_FIELDS
+        ),
+        "unit_ownership_fields": list(
+            TOPOLOGY_CONFORMANCE_DIAGNOSTIC_R4_UNIT_OWNERSHIP_FIELDS
+        ),
+        "production_runtime_placement_t3_schema": (
+            PRODUCTION_RUNTIME_PLACEMENT_T3_SCHEMA
+        ),
+        "production_runtime_placement_t3_fields": list(
+            PRODUCTION_RUNTIME_PLACEMENT_T3_FIELDS
+        ),
+        "production_runtime_placement_t3_checkpoint_fields": list(
+            PRODUCTION_RUNTIME_PLACEMENT_T3_CHECKPOINT_FIELDS
+        ),
+        "pre_t3_scope_retains_explicit_null_t3_snapshot": True,
+        "t3_scope_retains_complete_outer_t3_snapshot": True,
+        "t3_expected_boundary": "T3_IMMEDIATELY_BEFORE_CLONE3",
+        "t3_all_checkpoint_fields_compared_by_canonical_json": True,
+        "unit_ownership_acquired_is_separate_from_full_conformance": True,
+        "mismatch_rows_and_exact_cause_retained": True,
     }
 
 
@@ -4303,6 +4623,22 @@ def prelaunch_contract_v180r12r4() -> dict[str, Any]:
         "pre_attempt_host_conformance_expected_facts_equal_frozen_context": True,
         "pre_attempt_host_conformance_observed_facts_exact_except_"
         "self_membership": True,
+        "pre_attempt_host_conformance_socket_buffer_capability_contract": (
+            socket_buffer_capability_contract_v180r12r4()
+        ),
+        "pre_attempt_host_conformance_socket_observed_fact_retained_in_full": True,
+        "pre_attempt_host_conformance_socket_exact_fields_replay_exactly": True,
+        "pre_attempt_host_conformance_socket_at_least_fields_replay_by_minimum": True,
+        "pre_attempt_host_conformance_socket_low_value_mismatch_row": [
+            SOCKET_BUFFER_CAPABILITY_MISMATCH_SCOPE,
+            "{field}",
+            "{minimum}",
+            "{observed}",
+        ],
+        "pre_attempt_host_conformance_socket_only_cause": (
+            SOCKET_BUFFER_CAPABILITY_INSUFFICIENT_CAUSE
+        ),
+        "pre_attempt_host_conformance_unit_ownership_is_separate": True,
         "pre_attempt_host_conformance_mismatch_rows_empty_on_success": True,
         "pre_attempt_host_conformance_is_campaign_event_or_counter_record": False,
         "measurement_success_requires_pre_attempt_host_conformance": True,
@@ -4429,6 +4765,9 @@ def prelaunch_contract_v180r12r4() -> dict[str, Any]:
         ),
         "production_runtime_placement_t3_fields": list(
             PRODUCTION_RUNTIME_PLACEMENT_T3_FIELDS
+        ),
+        "topology_conformance_diagnostic_r4_contract": (
+            topology_conformance_diagnostic_r4_contract_v180r12r4()
         ),
         "revalidated_external_measurement_context_schema": (
             REVALIDATED_EXTERNAL_MEASUREMENT_CONTEXT_SCHEMA
@@ -6125,6 +6464,7 @@ def build_campaign_measurement_protocol_v180r12r4(
     failed_ordinal9 = failed_ordinal9_repair_lineage_contract_v180r12r4()
     failed_ordinal10 = failed_ordinal10_repair_lineage_contract_v180r12r4()
     failed_ordinal11 = failed_ordinal11_repair_lineage_contract_v180r12r4()
+    failed_ordinal12 = failed_ordinal12_repair_lineage_contract_v180r12r4()
     runner_execution_envelope = (
         source_bound_runner_execution_envelope_contract_v180r12r4()
     )
@@ -6290,7 +6630,7 @@ def build_campaign_measurement_protocol_v180r12r4(
         == SEMANTIC_HASH_OPERATION_COUNT
         and tuple(semantic_hash_scope["excluded_instrumentation_classes"])
         == SEMANTIC_HASH_COUNTER_EXCLUDED_INSTRUMENTATION_CLASSES
-        and len(SOURCE_CLOSURE_REQUIRED_ROOTS) == 26
+        and len(SOURCE_CLOSURE_REQUIRED_ROOTS) == 27
         and V180R12R3_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
         in SOURCE_CLOSURE_REQUIRED_ROOTS
         and V180R12R3R1_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
@@ -6304,6 +6644,8 @@ def build_campaign_measurement_protocol_v180r12r4(
         and V180R12R4R5_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
         in SOURCE_CLOSURE_REQUIRED_ROOTS
         and V180R12R4R6_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
+        in SOURCE_CLOSURE_REQUIRED_ROOTS
+        and V180R12R4R7_FAILURE_FREEZE_SOURCE_RELATIVE_PATH
         in SOURCE_CLOSURE_REQUIRED_ROOTS
         and failed_external_replay["scientific_attempt_record_present"] is False
         and failed_external_replay["scientific_occurrence_started"] is False
@@ -6428,6 +6770,30 @@ def build_campaign_measurement_protocol_v180r12r4(
         and failed_ordinal11["same_identity_rerun_forbidden"] is True
         and failed_ordinal11["fresh_successor_identity_required"] is True
         and failed_ordinal11["repair_scope"] == V180R12R4R6_REPAIR_SCOPE
+        and failed_ordinal12["freeze_id"]
+        == V180R12R4R7_FAILED_PREDECESSOR_FREEZE_ID
+        and failed_ordinal12["campaign_attempt_id"]
+        == V180R12R4R7_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID
+        and failed_ordinal12["scientific_attempt_opened"] is True
+        and failed_ordinal12["event_kinds"]
+        == ["ATTEMPT_OPEN", "PROCESS_BIRTH_INTENT"]
+        and failed_ordinal12["completed_event_count"] == 2
+        and failed_ordinal12["full_source_conformance"] is True
+        and failed_ordinal12["full_host_conformance"] is True
+        and failed_ordinal12["production_runtime_placement_t1_complete"] is True
+        and failed_ordinal12["production_runtime_placement_t2_reached"] is False
+        and failed_ordinal12["production_runtime_placement_t3_reached"] is False
+        and failed_ordinal12["socket_capability_full_conformance"] is False
+        and failed_ordinal12["socket_capability_mismatch_count"] == 6
+        and failed_ordinal12["failure_stage"] == "SOCKET_BUFFER_CONFIGURATION"
+        and failed_ordinal12["launch_child_created"] is False
+        and failed_ordinal12["cleanup_complete"] is True
+        and failed_ordinal12["counter_records_issued"] is False
+        and failed_ordinal12["work_vectors_issued"] is False
+        and failed_ordinal12["comparison_vectors_issued"] is False
+        and failed_ordinal12["same_identity_rerun_forbidden"] is True
+        and failed_ordinal12["fresh_successor_identity_required"] is True
+        and failed_ordinal12["repair_scope"] == V180R12R4R7_REPAIR_SCOPE
         and runner_execution_envelope["module_type"] == "types.ModuleType"
         and tuple(runner_execution_envelope["target_order"])
         == SOURCE_BOUND_RUNNER_TARGET_ORDER
@@ -6512,17 +6878,27 @@ def build_campaign_measurement_protocol_v180r12r4(
         "historical_failed_ordinal10_outer_service_failure_id": (
             failed_ordinal10["outer_service_failure_id"]
         ),
-        "immediate_failed_predecessor_freeze_id": failed_ordinal11[
+        "historical_failed_ordinal11_freeze_id": failed_ordinal11["freeze_id"],
+        "historical_failed_ordinal11_logical_campaign_attempt_id": (
+            failed_ordinal11["campaign_attempt_id"]
+        ),
+        "historical_failed_ordinal11_inner_launch_failure_id": (
+            failed_ordinal11["inner_launch_failure_id"]
+        ),
+        "historical_failed_ordinal11_outer_service_failure_id": (
+            failed_ordinal11["outer_service_failure_id"]
+        ),
+        "immediate_failed_predecessor_freeze_id": failed_ordinal12[
             "freeze_id"
         ],
         "immediate_failed_predecessor_logical_campaign_attempt_id": (
-            failed_ordinal11["campaign_attempt_id"]
+            failed_ordinal12["campaign_attempt_id"]
         ),
         "immediate_failed_predecessor_inner_launch_failure_id": (
-            failed_ordinal11["inner_launch_failure_id"]
+            failed_ordinal12["inner_launch_failure_id"]
         ),
         "immediate_failed_predecessor_outer_service_failure_id": (
-            failed_ordinal11["outer_service_failure_id"]
+            failed_ordinal12["outer_service_failure_id"]
         ),
         "pre_scientific_failed_predecessor_campaign_attempt_id": (
             failed_external_replay["campaign_attempt_id"]
@@ -6581,6 +6957,7 @@ def build_campaign_measurement_protocol_v180r12r4(
         "failed_ordinal9_repair_lineage": failed_ordinal9,
         "failed_ordinal10_repair_lineage": failed_ordinal10,
         "failed_ordinal11_repair_lineage": failed_ordinal11,
+        "failed_ordinal12_repair_lineage": failed_ordinal12,
         "failed_v180r12r3_identity_rerun_forbidden": True,
         "failed_v180r12r3r1_identity_rerun_forbidden": True,
         "failed_v180r12r3r2_identity_rerun_forbidden": True,
@@ -6588,6 +6965,7 @@ def build_campaign_measurement_protocol_v180r12r4(
         "failed_v180r12r4r4_ordinal9_identity_rerun_forbidden": True,
         "failed_v180r12r4r5_ordinal10_identity_rerun_forbidden": True,
         "failed_v180r12r4r6_ordinal11_identity_rerun_forbidden": True,
+        "failed_v180r12r4r7_ordinal12_identity_rerun_forbidden": True,
         "fresh_v180r12r4_protocol_authorization_evidence_attempt_and_"
         "prelaunch_identities_required": True,
         "fresh_v180r12r4_physical_paths_and_identities_required": True,
@@ -7054,6 +7432,15 @@ __all__ = (
     "FRAME_BYTE_CAP",
     "SOCK_SEQPACKET_BUFFER_REQUEST_BYTES",
     "SOCK_SEQPACKET_EFFECTIVE_MIN_BYTES",
+    "SOCKET_BUFFER_CAPABILITY_AT_LEAST_FIELDS",
+    "SOCKET_BUFFER_CAPABILITY_EXACT_FIELDS",
+    "SOCKET_BUFFER_CAPABILITY_EXPECTED_EXACT_PROPERTIES",
+    "SOCKET_BUFFER_CAPABILITY_EXPECTED_MINIMUM_PROPERTIES",
+    "SOCKET_BUFFER_CAPABILITY_FACT_FIELDS",
+    "SOCKET_BUFFER_CAPABILITY_FACT_SCHEMA",
+    "SOCKET_BUFFER_CAPABILITY_INSUFFICIENT_CAUSE",
+    "SOCKET_BUFFER_CAPABILITY_MISMATCH_ROW_FIELDS",
+    "SOCKET_BUFFER_CAPABILITY_MISMATCH_SCOPE",
     "FAILURE_PROGRESS_PATH_KIND_ROWS",
     "FAILURE_RELATIVE_PATH",
     "FAILURE_STATE_FIELDS",
@@ -7140,6 +7527,11 @@ __all__ = (
     "PRODUCTION_RUNTIME_PLACEMENT_T3_CHECKPOINT_FIELDS",
     "PRODUCTION_RUNTIME_PLACEMENT_T3_FIELDS",
     "PRODUCTION_RUNTIME_PLACEMENT_T3_SCHEMA",
+    "TOPOLOGY_CONFORMANCE_DIAGNOSTIC_R4_FIELDS",
+    "TOPOLOGY_CONFORMANCE_DIAGNOSTIC_R4_PROPERTY_SNAPSHOT_FIELDS",
+    "TOPOLOGY_CONFORMANCE_DIAGNOSTIC_R4_SCHEMA",
+    "TOPOLOGY_CONFORMANCE_DIAGNOSTIC_R4_SCOPES",
+    "TOPOLOGY_CONFORMANCE_DIAGNOSTIC_R4_UNIT_OWNERSHIP_FIELDS",
     "PRODUCTION_SYSTEMD_RUN_EXECUTABLE",
     "PRODUCTION_SYSTEMD_SERVICE_INVOCATION_FIELDS",
     "PRODUCTION_SYSTEMD_SERVICE_INVOCATION_SCHEMA",
@@ -7323,6 +7715,12 @@ __all__ = (
     "V180R12R4R6_FAILED_PREDECESSOR_FREEZE_ID",
     "V180R12R4R6_FAILURE_FREEZE_SOURCE_RELATIVE_PATH",
     "V180R12R4R6_REPAIR_SCOPE",
+    "V180R12R4R7_FAILED_INNER_LAUNCH_FAILURE_ID",
+    "V180R12R4R7_FAILED_LOGICAL_CAMPAIGN_ATTEMPT_ID",
+    "V180R12R4R7_FAILED_OUTER_SERVICE_FAILURE_ID",
+    "V180R12R4R7_FAILED_PREDECESSOR_FREEZE_ID",
+    "V180R12R4R7_FAILURE_FREEZE_SOURCE_RELATIVE_PATH",
+    "V180R12R4R7_REPAIR_SCOPE",
     "V180R12R4_REPAIR_SCOPE",
     "WALL_TIMEOUT_SECONDS",
     "WORK_SCOPE_KIND",
@@ -7342,6 +7740,7 @@ __all__ = (
     "failed_ordinal9_repair_lineage_contract_v180r12r4",
     "failed_ordinal10_repair_lineage_contract_v180r12r4",
     "failed_ordinal11_repair_lineage_contract_v180r12r4",
+    "failed_ordinal12_repair_lineage_contract_v180r12r4",
     "successful_event_schedule_template_v180r12r4",
     "freeze_campaign_measurement_protocol_v180r12r4",
     "measurement_derivation_contract_v180r12r4",
@@ -7353,7 +7752,9 @@ __all__ = (
     "source_closure_contract_v180r12r4",
     "service_context_capture_contract_v180r12r4",
     "source_bound_runner_execution_envelope_contract_v180r12r4",
+    "socket_buffer_capability_contract_v180r12r4",
     "success_durable_artifact_contract_v180r12r4",
+    "topology_conformance_diagnostic_r4_contract_v180r12r4",
     "validate_cgroup_parent_fact_v180r12r4",
     "validate_runtime_capability_fact_v180r12r4",
     "worker_import_contract_v180r12r4",

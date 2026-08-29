@@ -124,14 +124,14 @@ _PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
 )
 _PRODUCTION_TRANSIENT_SERVICE_ROWS = {
     "measurement": (
-        "36ed4564c6b1e77e08ee99aac354f4fc9bc5aaa67b3ac0f6bf16e69996d338bf",
+        "2067202637b5200c9d7a4a4a2bf06be37391b8cd3b494b9bb4ab0842d1e619c6",
         "acfqp-v180r12r4-measurement-"
-        "36ed4564c6b1e77e08ee99aac354f4fc9bc5aaa67b3ac0f6bf16e69996d338bf.service",
+        "2067202637b5200c9d7a4a4a2bf06be37391b8cd3b494b9bb4ab0842d1e619c6.service",
     ),
     "verification": (
-        "77ab2901813ffcf1c297ad6ed041b8f5147d390d2adb0f95dc978cce2b54e6be",
+        "99bbf6c47c5387220a7fe0bd4084523b8d9de1889ddb3cbf781ebb09d4f06376",
         "acfqp-v180r12r4-verification-"
-        "77ab2901813ffcf1c297ad6ed041b8f5147d390d2adb0f95dc978cce2b54e6be.service",
+        "99bbf6c47c5387220a7fe0bd4084523b8d9de1889ddb3cbf781ebb09d4f06376.service",
     ),
 }
 _PRODUCTION_RUNTIME_PLACEMENT_T1_SCHEMA = (
@@ -221,7 +221,7 @@ PRE_ATTEMPT_HOST_CONFORMANCE_RELATIVE_PATH = (
     "v180r12r4_campaign_measurement_pre_attempt_host_conformance.json"
 )
 PRE_ATTEMPT_HOST_CONFORMANCE_SCHEMA = (
-    "acfqp.v180r12r4_pre_attempt_host_conformance.v1"
+    "acfqp.v180r12r4_pre_attempt_host_conformance.v2"
 )
 PRE_ATTEMPT_HOST_CONFORMANCE_BYTE_CAP = 65_536
 _INTERNAL_FD_ROLE_MAP = {
@@ -427,6 +427,10 @@ _SOURCE_CLOSURE_REQUIRED_ROOTS = tuple(
             (
                 "src/acfqp/construction_k7_campaign_measurement_"
                 "failure_freeze_v180r12r4r6.py"
+            ),
+            (
+                "src/acfqp/construction_k7_campaign_measurement_"
+                "failure_freeze_v180r12r4r7.py"
             ),
             (
                 "src/acfqp/construction_k7_campaign_measurement_"

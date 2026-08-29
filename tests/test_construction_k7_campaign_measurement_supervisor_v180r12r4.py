@@ -610,7 +610,7 @@ def test_cgroup_path_alias_or_cross_device_fails_closed() -> None:
 def test_topology_failure_retains_full_diagnostic_and_separates_unit_ownership() -> None:
     topology = _topology()
     with pytest.raises(
-        supervisor.CgroupTopologyConformanceErrorV180R12R4R3
+        supervisor.CgroupTopologyConformanceErrorV180R12R4R4
     ) as caught:
         _topology(controllers=("memory", "pids"))
 
@@ -625,7 +625,7 @@ def test_topology_failure_retains_full_diagnostic_and_separates_unit_ownership()
         }
     ]
     assert diagnostic["cause"] == {
-        "error_type": "CgroupTopologyConformanceErrorV180R12R4R3",
+        "error_type": "CgroupTopologyConformanceErrorV180R12R4R4",
         "failure_code": "CGROUP_TOPOLOGY_CONFORMANCE_FAILURE",
         "scope": "PARENT_AND_CHILD_TOPOLOGY",
         "message": "cgroup topology conformance mismatch: child.controllers",
@@ -643,15 +643,16 @@ def test_topology_failure_retains_full_diagnostic_and_separates_unit_ownership()
     assert snapshots["unit_ownership"]["production_runtime_placement_t2"] == (
         topology.production_runtime_placement_t2
     )
+    assert snapshots["production_runtime_placement_t3"] is None
     assert (
-        supervisor.validate_topology_conformance_diagnostic_v180r12r4r3(
+        supervisor.validate_topology_conformance_diagnostic_v180r12r4r4(
             diagnostic
         )
         == diagnostic
     )
 
     with pytest.raises(
-        supervisor.CgroupTopologyConformanceErrorV180R12R4R3
+        supervisor.CgroupTopologyConformanceErrorV180R12R4R4
     ) as declared_parent:
         _topology(measurement_parent_path="/sys/fs/cgroup")
     assert declared_parent.value.conformance_diagnostic["mismatch_rows"] == [
@@ -667,7 +668,7 @@ def test_t1_t2_process_roles_require_exact_direct_child_evidence() -> None:
     topology = _topology()
 
     with pytest.raises(
-        supervisor.CgroupTopologyConformanceErrorV180R12R4R3
+        supervisor.CgroupTopologyConformanceErrorV180R12R4R4
     ) as same_pid_error:
         _topology(
             t2_updates={
@@ -688,7 +689,7 @@ def test_t1_t2_process_roles_require_exact_direct_child_evidence() -> None:
 
     wrong_parent = topology.production_runtime_placement_t2["parent_pid"] + 1
     with pytest.raises(
-        supervisor.CgroupTopologyConformanceErrorV180R12R4R3
+        supervisor.CgroupTopologyConformanceErrorV180R12R4R4
     ) as wrong_parent_error:
         _topology(t2_updates={"parent_pid": wrong_parent})
     assert wrong_parent_error.value.conformance_diagnostic["mismatch_rows"] == [
@@ -702,7 +703,7 @@ def test_t1_t2_process_roles_require_exact_direct_child_evidence() -> None:
     expected_parent = topology.production_runtime_placement_t1["self_pid"]
     for ill_typed_parent in (float(expected_parent), True):
         with pytest.raises(
-            supervisor.CgroupTopologyConformanceErrorV180R12R4R3
+            supervisor.CgroupTopologyConformanceErrorV180R12R4R4
         ) as parent_type_error:
             _topology(t2_updates={"parent_pid": ill_typed_parent})
         mismatch = parent_type_error.value.conformance_diagnostic[
@@ -714,7 +715,7 @@ def test_t1_t2_process_roles_require_exact_direct_child_evidence() -> None:
         assert type(mismatch[0]["observed"]) is type(ill_typed_parent)
 
     with pytest.raises(
-        supervisor.CgroupTopologyConformanceErrorV180R12R4R3
+        supervisor.CgroupTopologyConformanceErrorV180R12R4R4
     ) as parent_source_error:
         _topology(
             t2_updates={"parent_pid_in_source_cgroup_procs": False}
@@ -758,6 +759,110 @@ def test_t3_pid_roles_require_exact_type_stability(field_name: str) -> None:
         match="T3 placement",
     ):
         replace(birth, production_runtime_placement_t3=changed)
+
+
+def test_t3_r4_retains_both_complete_checkpoints_and_exact_type_mismatch() -> None:
+    attempt_id = "4" * 64
+    topology = _topology(attempt_id)
+    birth = _birth(
+        topology,
+        attempt_id,
+        supervisor.ProcessRoleV180R12R4.SUPERVISOR,
+        601,
+        61,
+    )
+    placement_t3 = dict(birth.production_runtime_placement_t3)
+    before = dict(placement_t3["before_getrandom"])
+    preclone = dict(placement_t3["immediately_before_clone3"])
+    expected_inode = preclone["target_cgroup_inode"]
+    preclone["target_cgroup_inode"] = float(expected_inode)
+
+    diagnostic = (
+        supervisor.build_t3_checkpoint_conformance_diagnostic_v180r12r4r4(
+            placement_t1=topology.production_runtime_placement_t1,
+            placement_t2=topology.production_runtime_placement_t2,
+            parent_snapshot=topology.cgroup_parent_fact,
+            measurement_snapshot=topology.to_document(),
+            before_getrandom=before,
+            immediately_before_clone3=preclone,
+        )
+    )
+    assert diagnostic["schema"] == (
+        supervisor.TOPOLOGY_CONFORMANCE_DIAGNOSTIC_R4_SCHEMA
+    )
+    assert diagnostic["scope"] == "T3_CHECKPOINT_CONFORMANCE"
+    assert diagnostic["unit_ownership_acquired"] is True
+    assert diagnostic["full_conformance"] is False
+    assert diagnostic["mismatch_rows"] == [
+        {
+            "field": "target_cgroup_inode",
+            "expected": expected_inode,
+            "observed": float(expected_inode),
+        }
+    ]
+    snapshot = diagnostic["property_snapshots"][
+        "production_runtime_placement_t3"
+    ]
+    assert set(snapshot) == set(supervisor.PRODUCTION_RUNTIME_PLACEMENT_T3_FIELDS)
+    assert set(snapshot["before_getrandom"]) == set(
+        supervisor.PRODUCTION_RUNTIME_PLACEMENT_T3_CHECKPOINT_FIELDS
+    )
+    assert set(snapshot["immediately_before_clone3"]) == set(
+        supervisor.PRODUCTION_RUNTIME_PLACEMENT_T3_CHECKPOINT_FIELDS
+    )
+    assert snapshot["before_getrandom"] == before
+    assert snapshot["immediately_before_clone3"] == preclone
+    assert snapshot["stable_across_boundaries"] is False
+    assert diagnostic["cause"] == {
+        "error_type": "CgroupTopologyConformanceErrorV180R12R4R4",
+        "failure_code": "CGROUP_TOPOLOGY_CONFORMANCE_FAILURE",
+        "scope": "T3_CHECKPOINT_CONFORMANCE",
+        "message": (
+            "cgroup topology conformance mismatch: target_cgroup_inode"
+        ),
+    }
+    assert (
+        supervisor.validate_topology_conformance_diagnostic_v180r12r4r4(
+            diagnostic
+        )
+        == diagnostic
+    )
+    with pytest.raises(
+        supervisor.ConstructionK7CampaignMeasurementSupervisorV180R12R4Error,
+        match="checkpoint replay",
+    ):
+        supervisor.validate_topology_conformance_diagnostic_v180r12r4r4(
+            {
+                **diagnostic,
+                "expected_properties": {
+                    **diagnostic["expected_properties"],
+                    "target_cgroup_inode": float(expected_inode),
+                },
+            }
+        )
+    with pytest.raises(
+        supervisor.CgroupTopologyConformanceErrorV180R12R4R4
+    ) as caught:
+        raise supervisor.CgroupTopologyConformanceErrorV180R12R4R4(
+            diagnostic
+        )
+    assert caught.value.conformance_diagnostic == diagnostic
+
+    conformant = (
+        supervisor.build_t3_checkpoint_conformance_diagnostic_v180r12r4r4(
+            placement_t1=topology.production_runtime_placement_t1,
+            placement_t2=topology.production_runtime_placement_t2,
+            parent_snapshot=topology.cgroup_parent_fact,
+            measurement_snapshot=topology.to_document(),
+            before_getrandom=before,
+            immediately_before_clone3=(
+                placement_t3["immediately_before_clone3"]
+            ),
+        )
+    )
+    assert conformant["full_conformance"] is True
+    assert conformant["mismatch_rows"] == []
+    assert conformant["cause"] is None
 
 
 def test_exact_eight_edge_io_graph_and_chunk_receipts_reject_role_swap() -> None:
@@ -1001,7 +1106,7 @@ def test_payload_auxiliary_and_failure_identity_are_exact() -> None:
     assert failure.to_document()["successful_ledger_claimed"] is False
 
     with pytest.raises(
-        supervisor.CgroupTopologyConformanceErrorV180R12R4R3
+        supervisor.CgroupTopologyConformanceErrorV180R12R4R4
     ) as topology_error:
         _topology(controllers=("memory", "pids"))
     topology_failure = supervisor.CampaignFailureStateV180R12R4(

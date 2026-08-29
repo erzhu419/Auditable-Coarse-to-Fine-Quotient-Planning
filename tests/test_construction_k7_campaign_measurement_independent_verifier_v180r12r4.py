@@ -63,7 +63,8 @@ def _success_cgroup_rows(campaign_attempt_id: str) -> list[dict]:
 
 
 def _pre_attempt_host_conformance_raw(
-    *, campaign_attempt_id: str, source_membership: str
+    *, campaign_attempt_id: str, source_membership: str,
+    observed_socket_updates: dict[str, object] | None = None,
 ) -> bytes:
     expected_parent = copy.deepcopy(
         protocol.SERVICE_CONTEXT_CAPTURE_CGROUP_PARENT_FACT
@@ -73,6 +74,10 @@ def _pre_attempt_host_conformance_raw(
     )
     observed_parent = copy.deepcopy(expected_parent)
     observed_parent["self_membership"] = source_membership
+    expected_socket = copy.deepcopy(verifier.SOCKET_BUFFER_CAPABILITY_EXPECTED)
+    observed_socket = copy.deepcopy(expected_socket)
+    if observed_socket_updates is not None:
+        observed_socket.update(observed_socket_updates)
     document = {
         "schema": verifier.PRE_ATTEMPT_HOST_CONFORMANCE_SCHEMA,
         "phase": "PRE_CAMPAIGN_ATTEMPT_HOST_CONFORMANCE",
@@ -80,10 +85,12 @@ def _pre_attempt_host_conformance_raw(
         "expected": {
             "cgroup_parent_fact": expected_parent,
             "runtime_capability_fact": expected_runtime,
+            "socket_buffer_capability": expected_socket,
         },
         "observed": {
             "cgroup_parent_fact": observed_parent,
             "runtime_capability_fact": copy.deepcopy(expected_runtime),
+            "socket_buffer_capability": observed_socket,
         },
         "cgroup_parent_compared_fields": [
             field for field in verifier.CGROUP_PARENT_FACT_FIELDS
@@ -92,6 +99,12 @@ def _pre_attempt_host_conformance_raw(
         "cgroup_parent_excluded_fields": ["self_membership"],
         "runtime_capability_compared_fields": list(
             verifier.RUNTIME_CAPABILITY_FACT_FIELDS
+        ),
+        "socket_buffer_capability_exact_fields": list(
+            verifier.SOCKET_BUFFER_CAPABILITY_EXACT_FIELDS
+        ),
+        "socket_buffer_capability_at_least_fields": list(
+            verifier.SOCKET_BUFFER_CAPABILITY_AT_LEAST_FIELDS
         ),
         "mismatch_rows": [],
         "mismatch_count": 0,
@@ -124,6 +137,29 @@ def _measurement_launch_attempt_document() -> dict:
         canonical_json_bytes(attempt)
     ).hexdigest()
     return attempt
+
+
+def test_host_authority_accepts_socket_values_above_frozen_minimum() -> None:
+    campaign_attempt_id = "a" * 64
+    raw = _pre_attempt_host_conformance_raw(
+        campaign_attempt_id=campaign_attempt_id,
+        source_membership="0::/app.slice/formal-measurement.service",
+        observed_socket_updates={
+            field: verifier.SOCKET_BUFFER_CAPABILITY_EXPECTED[field] + 1_048_576
+            for field in verifier.SOCKET_BUFFER_CAPABILITY_AT_LEAST_FIELDS
+        },
+    )
+    document = verifier._validate_pre_attempt_host_conformance_authority(
+        raw,
+        expected_cgroup_parent_fact=copy.deepcopy(
+            protocol.SERVICE_CONTEXT_CAPTURE_CGROUP_PARENT_FACT
+        ),
+        expected_runtime_capability_fact=copy.deepcopy(
+            protocol.SERVICE_CONTEXT_CAPTURE_RUNTIME_CAPABILITY_FACT
+        ),
+        expected_campaign_attempt_id=campaign_attempt_id,
+    )
+    assert document["full_host_conformance"] is True
 
 
 def _measurement_launch_documents(
@@ -573,6 +609,12 @@ def test_independent_verifier_is_the_only_counter_pass_authority() -> None:
         host_raw
     ).hexdigest()
     assert document["pre_attempt_host_conformance_mode"] == 0o400
+    assert document[
+        "pre_attempt_host_conformance_cgroup_runtime_exact_except_self_membership"
+    ] is True
+    assert document[
+        "pre_attempt_host_conformance_socket_buffer_minimums_met"
+    ] is True
     assert document["bounded_native_zero_attestation_independently_rederived"] is True
     assert document["native_zero_is_not_an_os_syscall_count"] is True
     assert document["open_world_absence_claimed"] is False
@@ -615,19 +657,19 @@ def test_independent_verifier_binds_ordinal12_service_lineage() -> None:
         materialization_terminal_sha256=materialization_sha256,
     ) == invocation
     assert invocation["token"] == (
-        "36ed4564c6b1e77e08ee99aac354f4fc9bc5aaa67b3ac0f6bf16e69996d338bf"
+        "2067202637b5200c9d7a4a4a2bf06be37391b8cd3b494b9bb4ab0842d1e619c6"
     )
     assert invocation["token_input"] == {
         "failed_predecessor_freeze_id": (
-            "afdc3acd283daf018243acdf9920dfa32140459a6de1dd6bfc3a70c113579105"
+            "2f71e97fd2133c7983a400b5f536fe87740aa08c551580d62556aae5dcea496b"
         ),
         "failed_inner_launch_failure_id": (
-            "96cf56e7e7bb36105d2065b4252e9e7a3cc1052b6aa92ead94ef0d60dd498892"
+            "46a3d92a70424c296e0137380cdb98f99f11b47b565dce3175baeab8b3546a67"
         ),
         "failed_outer_service_failure_id": (
-            "2bd19d84bf24877697395ff7f2c7bdea12d3a6f1331dc56b132a322176681cce"
+            "a221f8d37ca354b7e1a753708d99229086ef6128fedd5cbf9879c89871846185"
         ),
-        "repair_scope": "T1_T2_ROLE_AWARE_PROCESS_ID_CONFORMANCE",
+        "repair_scope": "SOCKET_BUFFER_CAPABILITY_AND_T3_DIAGNOSTIC_CONFORMANCE",
         "purpose": "MEASUREMENT",
     }
 

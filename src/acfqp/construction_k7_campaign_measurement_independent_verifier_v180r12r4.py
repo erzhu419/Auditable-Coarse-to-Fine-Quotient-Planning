@@ -71,20 +71,20 @@ PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
     "acfqp:construction-k7-production-transient-service-token:v180r12r4"
 )
 V180R12R4R6_FAILED_PREDECESSOR_FREEZE_ID = (
-    "afdc3acd283daf018243acdf9920dfa32140459a6de1dd6bfc3a70c113579105"
+    "2f71e97fd2133c7983a400b5f536fe87740aa08c551580d62556aae5dcea496b"
 )
 V180R12R4R6_FAILED_INNER_LAUNCH_FAILURE_ID = (
-    "96cf56e7e7bb36105d2065b4252e9e7a3cc1052b6aa92ead94ef0d60dd498892"
+    "46a3d92a70424c296e0137380cdb98f99f11b47b565dce3175baeab8b3546a67"
 )
 V180R12R4R6_FAILED_OUTER_SERVICE_FAILURE_ID = (
-    "2bd19d84bf24877697395ff7f2c7bdea12d3a6f1331dc56b132a322176681cce"
+    "a221f8d37ca354b7e1a753708d99229086ef6128fedd5cbf9879c89871846185"
 )
-V180R12R4_REPAIR_SCOPE = "T1_T2_ROLE_AWARE_PROCESS_ID_CONFORMANCE"
+V180R12R4_REPAIR_SCOPE = "SOCKET_BUFFER_CAPABILITY_AND_T3_DIAGNOSTIC_CONFORMANCE"
 EXPECTED_PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN = (
-    "36ed4564c6b1e77e08ee99aac354f4fc9bc5aaa67b3ac0f6bf16e69996d338bf"
+    "2067202637b5200c9d7a4a4a2bf06be37391b8cd3b494b9bb4ab0842d1e619c6"
 )
 PRE_ATTEMPT_HOST_CONFORMANCE_SCHEMA = (
-    "acfqp.v180r12r4_pre_attempt_host_conformance.v1"
+    "acfqp.v180r12r4_pre_attempt_host_conformance.v2"
 )
 PRE_ATTEMPT_HOST_CONFORMANCE_RELATIVE_PATH = (
     ".tmp/exact-freeze/"
@@ -94,11 +94,48 @@ PRE_ATTEMPT_HOST_CONFORMANCE_BYTE_CAP = 65_536
 PRE_ATTEMPT_HOST_CONFORMANCE_FIELDS = frozenset(
     "schema phase campaign_attempt_id expected observed "
     "cgroup_parent_compared_fields cgroup_parent_excluded_fields "
-    "runtime_capability_compared_fields mismatch_rows mismatch_count cause "
+    "runtime_capability_compared_fields "
+    "socket_buffer_capability_exact_fields "
+    "socket_buffer_capability_at_least_fields "
+    "mismatch_rows mismatch_count cause "
     "full_host_conformance working_tree_source_conformance_joined "
     "production_unit_ownership_t1_joined "
     "campaign_event_or_counter_record_issued campaign_attempt_created".split()
 )
+SOCKET_BUFFER_CAPABILITY_FACT_SCHEMA = (
+    "acfqp.v180r12r4_socket_buffer_capability_fact.v1"
+)
+SOCKET_BUFFER_CAPABILITY_FACT_FIELDS = (
+    "schema", "probe_boundary", "socket_family", "socket_type",
+    "endpoint_count", "buffer_request_bytes", "effective_min_bytes",
+    "net_core_wmem_max_bytes", "net_core_rmem_max_bytes",
+    "endpoint_0_so_sndbuf_bytes", "endpoint_0_so_rcvbuf_bytes",
+    "endpoint_1_so_sndbuf_bytes", "endpoint_1_so_rcvbuf_bytes",
+)
+SOCKET_BUFFER_CAPABILITY_EXACT_FIELDS = (
+    "schema", "probe_boundary", "socket_family", "socket_type",
+    "endpoint_count", "buffer_request_bytes", "effective_min_bytes",
+)
+SOCKET_BUFFER_CAPABILITY_AT_LEAST_FIELDS = (
+    "net_core_wmem_max_bytes", "net_core_rmem_max_bytes",
+    "endpoint_0_so_sndbuf_bytes", "endpoint_0_so_rcvbuf_bytes",
+    "endpoint_1_so_sndbuf_bytes", "endpoint_1_so_rcvbuf_bytes",
+)
+SOCKET_BUFFER_CAPABILITY_EXPECTED = {
+    "schema": SOCKET_BUFFER_CAPABILITY_FACT_SCHEMA,
+    "probe_boundary": "PRE_CAMPAIGN_ATTEMPT_O_EXCL",
+    "socket_family": "AF_UNIX",
+    "socket_type": "SOCK_SEQPACKET|SOCK_CLOEXEC",
+    "endpoint_count": 2,
+    "buffer_request_bytes": 1_048_576,
+    "effective_min_bytes": 2_097_152,
+    "net_core_wmem_max_bytes": 1_048_576,
+    "net_core_rmem_max_bytes": 1_048_576,
+    "endpoint_0_so_sndbuf_bytes": 2_097_152,
+    "endpoint_0_so_rcvbuf_bytes": 2_097_152,
+    "endpoint_1_so_sndbuf_bytes": 2_097_152,
+    "endpoint_1_so_rcvbuf_bytes": 2_097_152,
+}
 CGROUP_PARENT_FACT_FIELDS = (
     "schema",
     "mount_point",
@@ -424,7 +461,8 @@ VERIFICATION_FIELDS = frozenset(
     "pre_attempt_host_conformance_byte_count "
     "pre_attempt_host_conformance_sha256 pre_attempt_host_conformance_mode "
     "pre_attempt_host_conformance_expected_frozen_context_joined "
-    "pre_attempt_host_conformance_observed_exact_except_self_membership "
+    "pre_attempt_host_conformance_cgroup_runtime_exact_except_self_membership "
+    "pre_attempt_host_conformance_socket_buffer_minimums_met "
     "pre_attempt_host_conformance_independently_replayed "
     "pre_attempt_host_conformance_is_campaign_event_or_counter_record "
     "runtime_role_exit_origin_guard_status "
@@ -1352,20 +1390,54 @@ def _validate_pre_attempt_host_conformance_authority(
     if not (
         type(expected) is dict
         and frozenset(expected)
-        == frozenset({"cgroup_parent_fact", "runtime_capability_fact"})
+        == frozenset(
+            {
+                "cgroup_parent_fact",
+                "runtime_capability_fact",
+                "socket_buffer_capability",
+            }
+        )
         and type(observed) is dict
         and frozenset(observed)
-        == frozenset({"cgroup_parent_fact", "runtime_capability_fact"})
+        == frozenset(
+            {
+                "cgroup_parent_fact",
+                "runtime_capability_fact",
+                "socket_buffer_capability",
+            }
+        )
     ):
         _fail("pre-attempt host conformance fact pair changed")
     expected_parent = expected["cgroup_parent_fact"]
     expected_runtime = expected["runtime_capability_fact"]
+    expected_socket = expected["socket_buffer_capability"]
     observed_parent = observed["cgroup_parent_fact"]
     observed_runtime = observed["runtime_capability_fact"]
+    observed_socket = observed["socket_buffer_capability"]
     compared_parent_fields = [
         field for field in CGROUP_PARENT_FACT_FIELDS
         if field != "self_membership"
     ]
+    observed_socket_exact = (
+        {
+            field: observed_socket.get(field)
+            for field in SOCKET_BUFFER_CAPABILITY_EXACT_FIELDS
+        }
+        if type(observed_socket) is dict
+        else None
+    )
+    expected_socket_exact = {
+        field: SOCKET_BUFFER_CAPABILITY_EXPECTED[field]
+        for field in SOCKET_BUFFER_CAPABILITY_EXACT_FIELDS
+    }
+    socket_minimums_met = (
+        type(observed_socket) is dict
+        and all(
+            type(observed_socket.get(field)) is int
+            and observed_socket[field] >= SOCKET_BUFFER_CAPABILITY_EXPECTED[field]
+            for field in SOCKET_BUFFER_CAPABILITY_AT_LEAST_FIELDS
+        )
+    )
     if not (
         type(expected_parent) is dict
         and frozenset(expected_parent) == frozenset(CGROUP_PARENT_FACT_FIELDS)
@@ -1377,6 +1449,12 @@ def _validate_pre_attempt_host_conformance_authority(
         and type(observed_runtime) is dict
         and frozenset(observed_runtime)
         == frozenset(RUNTIME_CAPABILITY_FACT_FIELDS)
+        and type(expected_socket) is dict
+        and frozenset(expected_socket)
+        == frozenset(SOCKET_BUFFER_CAPABILITY_FACT_FIELDS)
+        and type(observed_socket) is dict
+        and frozenset(observed_socket)
+        == frozenset(SOCKET_BUFFER_CAPABILITY_FACT_FIELDS)
         and canonical_json_bytes(expected_parent)
         == canonical_json_bytes(expected_cgroup_parent_fact)
         and canonical_json_bytes(expected_runtime)
@@ -1395,6 +1473,11 @@ def _validate_pre_attempt_host_conformance_authority(
         and observed_parent["self_membership"].startswith("0::/")
         and canonical_json_bytes(observed_runtime)
         == canonical_json_bytes(expected_runtime)
+        and canonical_json_bytes(expected_socket)
+        == canonical_json_bytes(SOCKET_BUFFER_CAPABILITY_EXPECTED)
+        and canonical_json_bytes(observed_socket_exact)
+        == canonical_json_bytes(expected_socket_exact)
+        and socket_minimums_met
         and document.get("schema") == PRE_ATTEMPT_HOST_CONFORMANCE_SCHEMA
         and document.get("phase") == "PRE_CAMPAIGN_ATTEMPT_HOST_CONFORMANCE"
         and document.get("campaign_attempt_id")
@@ -1405,6 +1488,10 @@ def _validate_pre_attempt_host_conformance_authority(
         == ["self_membership"]
         and document.get("runtime_capability_compared_fields")
         == list(RUNTIME_CAPABILITY_FACT_FIELDS)
+        and document.get("socket_buffer_capability_exact_fields")
+        == list(SOCKET_BUFFER_CAPABILITY_EXACT_FIELDS)
+        and document.get("socket_buffer_capability_at_least_fields")
+        == list(SOCKET_BUFFER_CAPABILITY_AT_LEAST_FIELDS)
         and document.get("mismatch_rows") == []
         and type(document.get("mismatch_count")) is int
         and document.get("mismatch_count") == 0
@@ -4602,9 +4689,10 @@ def _verification_payload(
         ).hexdigest(),
         "pre_attempt_host_conformance_mode": 0o400,
         "pre_attempt_host_conformance_expected_frozen_context_joined": True,
-        "pre_attempt_host_conformance_observed_exact_except_self_membership": (
+        "pre_attempt_host_conformance_cgroup_runtime_exact_except_self_membership": (
             True
         ),
+        "pre_attempt_host_conformance_socket_buffer_minimums_met": True,
         "pre_attempt_host_conformance_independently_replayed": True,
         "pre_attempt_host_conformance_is_campaign_event_or_counter_record": (
             False

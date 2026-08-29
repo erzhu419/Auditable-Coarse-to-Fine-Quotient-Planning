@@ -40,6 +40,9 @@ REQUIRED_MEASUREMENT_CONTROLLERS = ("memory", "pids")
 TOPOLOGY_CONFORMANCE_DIAGNOSTIC_SCHEMA = (
     "acfqp.campaign_cgroup_topology_conformance_diagnostic.v180r12r4r3"
 )
+TOPOLOGY_CONFORMANCE_DIAGNOSTIC_R4_SCHEMA = (
+    "acfqp.campaign_cgroup_topology_conformance_diagnostic.v180r12r4r4"
+)
 WALL_TIMEOUT_SECONDS = 14_400
 SUCCESSFUL_LEDGER_EVENT_COUNT = 625
 MAX_EVENT_COUNT = 4_096
@@ -835,6 +838,275 @@ class CgroupTopologyConformanceErrorV180R12R4R3(RuntimeError):
         )
         if retained["full_conformance"] is not False:
             _fail("conformant topology cannot raise a conformance error")
+        super().__init__(retained["cause"]["message"])
+        self.conformance_diagnostic = retained
+
+
+def _t3_checkpoint_expected_and_observed_properties_v180r12r4r4(
+    placement_t3: Mapping[str, Any],
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    """Replay the exact fieldwise second-checkpoint comparison."""
+
+    t3 = dict(placement_t3)
+    before = t3.get("before_getrandom")
+    preclone = t3.get("immediately_before_clone3")
+    if (
+        set(t3) != set(PRODUCTION_RUNTIME_PLACEMENT_T3_FIELDS)
+        or type(before) is not dict
+        or type(preclone) is not dict
+        or set(before) != set(PRODUCTION_RUNTIME_PLACEMENT_T3_CHECKPOINT_FIELDS)
+        or set(preclone)
+        != set(PRODUCTION_RUNTIME_PLACEMENT_T3_CHECKPOINT_FIELDS)
+    ):
+        _fail("T3 conformance snapshot is not two complete checkpoints")
+    expected = {
+        name: (
+            "T3_IMMEDIATELY_BEFORE_CLONE3"
+            if name == "boundary"
+            else before[name]
+        )
+        for name in PRODUCTION_RUNTIME_PLACEMENT_T3_CHECKPOINT_FIELDS
+    }
+    observed = {
+        name: preclone[name]
+        for name in PRODUCTION_RUNTIME_PLACEMENT_T3_CHECKPOINT_FIELDS
+    }
+    return expected, observed
+
+
+def build_topology_conformance_diagnostic_v180r12r4r4(
+    *,
+    scope: str,
+    placement_t1: Mapping[str, Any],
+    placement_t2: Mapping[str, Any],
+    parent_snapshot: Mapping[str, Any],
+    measurement_snapshot: Mapping[str, Any],
+    expected_properties: Mapping[str, Any],
+    observed_properties: Mapping[str, Any],
+    production_runtime_placement_t3: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Successor diagnostic with an explicit optional full T3 snapshot."""
+
+    scopes = {
+        "PARENT_AND_CHILD_TOPOLOGY",
+        "T1_T2_PLACEMENT",
+        "T3_CHECKPOINT_CONFORMANCE",
+    }
+    if scope not in scopes:
+        _fail("topology conformance diagnostic r4 scope changed")
+    if scope == "T3_CHECKPOINT_CONFORMANCE":
+        if not isinstance(production_runtime_placement_t3, Mapping):
+            _fail("T3 conformance requires its complete outer snapshot")
+        t3: dict[str, Any] | None = loads_canonical_json(
+            canonical_json_bytes(dict(production_runtime_placement_t3))
+        )
+    else:
+        if production_runtime_placement_t3 is not None:
+            _fail("pre-T3 conformance must retain a null T3 snapshot")
+        t3 = None
+    t1 = loads_canonical_json(canonical_json_bytes(dict(placement_t1)))
+    t2 = loads_canonical_json(canonical_json_bytes(dict(placement_t2)))
+    parent = loads_canonical_json(canonical_json_bytes(dict(parent_snapshot)))
+    measurement = loads_canonical_json(
+        canonical_json_bytes(dict(measurement_snapshot))
+    )
+    expected = loads_canonical_json(
+        canonical_json_bytes(dict(expected_properties))
+    )
+    observed = loads_canonical_json(
+        canonical_json_bytes(dict(observed_properties))
+    )
+    mismatches = _property_mismatch_rows(expected, observed)
+    fields = ",".join(row["field"] for row in mismatches)
+    cause = (
+        None
+        if not mismatches
+        else {
+            "error_type": "CgroupTopologyConformanceErrorV180R12R4R4",
+            "failure_code": "CGROUP_TOPOLOGY_CONFORMANCE_FAILURE",
+            "scope": scope,
+            "message": "cgroup topology conformance mismatch: " + fields,
+        }
+    )
+    return {
+        "schema": TOPOLOGY_CONFORMANCE_DIAGNOSTIC_R4_SCHEMA,
+        "scope": scope,
+        "unit_ownership_acquired": _source_unit_ownership_acquired(t1, t2),
+        "full_conformance": not mismatches,
+        "property_snapshots": {
+            "unit_ownership": {
+                "production_runtime_placement_t1": t1,
+                "production_runtime_placement_t2": t2,
+            },
+            "parent_delegation": parent,
+            "measurement_topology": measurement,
+            "production_runtime_placement_t3": t3,
+        },
+        "expected_properties": expected,
+        "observed_properties": observed,
+        "mismatch_rows": mismatches,
+        "cause": cause,
+    }
+
+
+def build_t3_checkpoint_conformance_diagnostic_v180r12r4r4(
+    *,
+    placement_t1: Mapping[str, Any],
+    placement_t2: Mapping[str, Any],
+    parent_snapshot: Mapping[str, Any],
+    measurement_snapshot: Mapping[str, Any],
+    before_getrandom: Mapping[str, Any],
+    immediately_before_clone3: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Build the r4 diagnostic only after both complete T3 checkpoints exist."""
+
+    before = loads_canonical_json(canonical_json_bytes(dict(before_getrandom)))
+    preclone = loads_canonical_json(
+        canonical_json_bytes(dict(immediately_before_clone3))
+    )
+    provisional = {
+        "schema": PRODUCTION_RUNTIME_PLACEMENT_T3_SCHEMA,
+        "target": before.get("target"),
+        "token": before.get("token"),
+        "unit_name": before.get("unit_name"),
+        "before_getrandom": before,
+        "immediately_before_clone3": preclone,
+        "stable_across_boundaries": False,
+    }
+    expected, observed = (
+        _t3_checkpoint_expected_and_observed_properties_v180r12r4r4(
+            provisional
+        )
+    )
+    provisional["stable_across_boundaries"] = not _property_mismatch_rows(
+        expected, observed
+    )
+    return build_topology_conformance_diagnostic_v180r12r4r4(
+        scope="T3_CHECKPOINT_CONFORMANCE",
+        placement_t1=placement_t1,
+        placement_t2=placement_t2,
+        parent_snapshot=parent_snapshot,
+        measurement_snapshot=measurement_snapshot,
+        expected_properties=expected,
+        observed_properties=observed,
+        production_runtime_placement_t3=provisional,
+    )
+
+
+def validate_topology_conformance_diagnostic_v180r12r4r4(
+    value: Mapping[str, Any],
+) -> dict[str, Any]:
+    document = loads_canonical_json(canonical_json_bytes(dict(value)))
+    expected_fields = {
+        "schema", "scope", "unit_ownership_acquired", "full_conformance",
+        "property_snapshots", "expected_properties", "observed_properties",
+        "mismatch_rows", "cause",
+    }
+    scopes = {
+        "PARENT_AND_CHILD_TOPOLOGY",
+        "T1_T2_PLACEMENT",
+        "T3_CHECKPOINT_CONFORMANCE",
+    }
+    if (
+        set(document) != expected_fields
+        or document.get("schema") != TOPOLOGY_CONFORMANCE_DIAGNOSTIC_R4_SCHEMA
+        or document.get("scope") not in scopes
+        or type(document.get("unit_ownership_acquired")) is not bool
+        or type(document.get("full_conformance")) is not bool
+        or type(document.get("property_snapshots")) is not dict
+        or set(document["property_snapshots"])
+        != {
+            "unit_ownership", "parent_delegation", "measurement_topology",
+            "production_runtime_placement_t3",
+        }
+        or type(document.get("expected_properties")) is not dict
+        or type(document.get("observed_properties")) is not dict
+    ):
+        _fail("topology conformance diagnostic r4 structure changed")
+    snapshots = document["property_snapshots"]
+    ownership = snapshots["unit_ownership"]
+    t3 = snapshots["production_runtime_placement_t3"]
+    if (
+        type(ownership) is not dict
+        or set(ownership)
+        != {"production_runtime_placement_t1", "production_runtime_placement_t2"}
+        or type(ownership.get("production_runtime_placement_t1")) is not dict
+        or type(ownership.get("production_runtime_placement_t2")) is not dict
+        or type(snapshots["parent_delegation"]) is not dict
+        or type(snapshots["measurement_topology"]) is not dict
+        or document["unit_ownership_acquired"]
+        is not _source_unit_ownership_acquired(
+            ownership["production_runtime_placement_t1"],
+            ownership["production_runtime_placement_t2"],
+        )
+    ):
+        _fail("topology diagnostic r4 unit-ownership replay changed")
+    if document["scope"] == "T3_CHECKPOINT_CONFORMANCE":
+        if type(t3) is not dict:
+            _fail("T3 diagnostic lost its complete outer snapshot")
+        expected, observed = (
+            _t3_checkpoint_expected_and_observed_properties_v180r12r4r4(t3)
+        )
+        before = t3["before_getrandom"]
+        preclone = t3["immediately_before_clone3"]
+        if (
+            t3.get("schema") != PRODUCTION_RUNTIME_PLACEMENT_T3_SCHEMA
+            or t3.get("target") != "measurement"
+            or before.get("schema") != PRODUCTION_RUNTIME_PLACEMENT_T3_SCHEMA
+            or preclone.get("schema") != PRODUCTION_RUNTIME_PLACEMENT_T3_SCHEMA
+            or before.get("target") != "measurement"
+            or preclone.get("target") != "measurement"
+            or canonical_json_bytes(t3.get("token"))
+            != canonical_json_bytes(before.get("token"))
+            or canonical_json_bytes(t3.get("unit_name"))
+            != canonical_json_bytes(before.get("unit_name"))
+            or before.get("boundary") != "T3_BEFORE_GETRANDOM"
+            or preclone.get("boundary") != "T3_IMMEDIATELY_BEFORE_CLONE3"
+            or canonical_json_bytes(document["expected_properties"])
+            != canonical_json_bytes(expected)
+            or canonical_json_bytes(document["observed_properties"])
+            != canonical_json_bytes(observed)
+        ):
+            _fail("T3 diagnostic checkpoint replay changed")
+    elif t3 is not None:
+        _fail("pre-T3 diagnostic must retain an explicit null T3 snapshot")
+    mismatches = _property_mismatch_rows(
+        document["expected_properties"], document["observed_properties"]
+    )
+    if document["scope"] == "T3_CHECKPOINT_CONFORMANCE" and (
+        type(t3.get("stable_across_boundaries")) is not bool
+        or t3["stable_across_boundaries"] is not (not mismatches)
+    ):
+        _fail("T3 diagnostic stability summary changed")
+    expected_cause = (
+        None
+        if not mismatches
+        else {
+            "error_type": "CgroupTopologyConformanceErrorV180R12R4R4",
+            "failure_code": "CGROUP_TOPOLOGY_CONFORMANCE_FAILURE",
+            "scope": document["scope"],
+            "message": "cgroup topology conformance mismatch: "
+            + ",".join(row["field"] for row in mismatches),
+        }
+    )
+    if (
+        canonical_json_bytes(document.get("mismatch_rows"))
+        != canonical_json_bytes(mismatches)
+        or document.get("full_conformance") is not (not mismatches)
+        or canonical_json_bytes(document.get("cause"))
+        != canonical_json_bytes(expected_cause)
+    ):
+        _fail("topology conformance diagnostic r4 replay changed")
+    return document
+
+
+class CgroupTopologyConformanceErrorV180R12R4R4(RuntimeError):
+    def __init__(self, diagnostic: Mapping[str, Any]) -> None:
+        retained = validate_topology_conformance_diagnostic_v180r12r4r4(
+            diagnostic
+        )
+        if retained["full_conformance"] is not False:
+            _fail("conformant topology cannot raise an r4 conformance error")
         super().__init__(retained["cause"]["message"])
         self.conformance_diagnostic = retained
 
@@ -1640,7 +1912,7 @@ class MeasurementCgroupTopologyReceiptV180R12R4:
             "paths.root_is_not_leaf": self.measurement_root.path
             not in {self.supervisor_leaf.path, self.worker_leaf.path},
         }
-        topology_diagnostic = build_topology_conformance_diagnostic_v180r12r4r3(
+        topology_diagnostic = build_topology_conformance_diagnostic_v180r12r4r4(
             scope="PARENT_AND_CHILD_TOPOLOGY",
             placement_t1=self.production_runtime_placement_t1,
             placement_t2=self.production_runtime_placement_t2,
@@ -1650,7 +1922,7 @@ class MeasurementCgroupTopologyReceiptV180R12R4:
             observed_properties=observed_topology,
         )
         if topology_diagnostic["full_conformance"] is not True:
-            raise CgroupTopologyConformanceErrorV180R12R4R3(
+            raise CgroupTopologyConformanceErrorV180R12R4R4(
                 topology_diagnostic
             )
         if (
@@ -1837,7 +2109,7 @@ class MeasurementCgroupTopologyReceiptV180R12R4:
             "t2.token": placement_t2.get("token"),
             "t2.unit_name": placement_t2.get("unit_name"),
         }
-        placement_diagnostic = build_topology_conformance_diagnostic_v180r12r4r3(
+        placement_diagnostic = build_topology_conformance_diagnostic_v180r12r4r4(
             scope="T1_T2_PLACEMENT",
             placement_t1=placement_t1,
             placement_t2=placement_t2,
@@ -1847,7 +2119,7 @@ class MeasurementCgroupTopologyReceiptV180R12R4:
             observed_properties=observed_placement,
         )
         if placement_diagnostic["full_conformance"] is not True:
-            raise CgroupTopologyConformanceErrorV180R12R4R3(
+            raise CgroupTopologyConformanceErrorV180R12R4R4(
                 placement_diagnostic
             )
         object.__setattr__(
@@ -2531,11 +2803,25 @@ class CampaignFailureStateV180R12R4:
                 self.cgroup_topology_conformance_diagnostic, Mapping
             ):
                 _fail("failure topology conformance diagnostic is mistyped")
-            topology_diagnostic = (
-                validate_topology_conformance_diagnostic_v180r12r4r3(
-                    self.cgroup_topology_conformance_diagnostic
-                )
+            diagnostic_schema = self.cgroup_topology_conformance_diagnostic.get(
+                "schema"
             )
+            if diagnostic_schema == TOPOLOGY_CONFORMANCE_DIAGNOSTIC_SCHEMA:
+                topology_diagnostic = (
+                    validate_topology_conformance_diagnostic_v180r12r4r3(
+                        self.cgroup_topology_conformance_diagnostic
+                    )
+                )
+            elif (
+                diagnostic_schema == TOPOLOGY_CONFORMANCE_DIAGNOSTIC_R4_SCHEMA
+            ):
+                topology_diagnostic = (
+                    validate_topology_conformance_diagnostic_v180r12r4r4(
+                        self.cgroup_topology_conformance_diagnostic
+                    )
+                )
+            else:
+                _fail("failure topology conformance diagnostic schema changed")
             if topology_diagnostic["full_conformance"] is not False:
                 _fail("failure cannot retain a conformant topology diagnostic")
             object.__setattr__(
@@ -3730,6 +4016,7 @@ __all__ = (
     "CgroupControlFileReadbackV180R12R4",
     "CgroupNodeIdentityV180R12R4",
     "CgroupTopologyConformanceErrorV180R12R4R3",
+    "CgroupTopologyConformanceErrorV180R12R4R4",
     "CgroupV2ObservationReceiptV180R12R4",
     "ConstructionK7CampaignMeasurementSupervisorV180R12R4Error",
     "EVENT_KIND_ROLE_PHASES",
@@ -3769,12 +4056,16 @@ __all__ = (
     "SUCCESSFUL_LEDGER_EVENT_COUNT",
     "TYPED_LAUNCH_FAILURE_SUBSTAGES",
     "TOPOLOGY_CONFORMANCE_DIAGNOSTIC_SCHEMA",
+    "TOPOLOGY_CONFORMANCE_DIAGNOSTIC_R4_SCHEMA",
     "WALL_TIMEOUT_SECONDS",
     "build_campaign_operation_schedule_v180r12r4",
     "build_campaign_success_event_plan_v180r12r4",
     "campaign_event_payload_v180r12r4",
     "build_topology_conformance_diagnostic_v180r12r4r3",
+    "build_topology_conformance_diagnostic_v180r12r4r4",
+    "build_t3_checkpoint_conformance_diagnostic_v180r12r4r4",
     "supervisor_contract_v180r12r4",
     "validate_topology_conformance_diagnostic_v180r12r4r3",
+    "validate_topology_conformance_diagnostic_v180r12r4r4",
     "validate_campaign_io_transfer_edge_v180r12r4",
 )

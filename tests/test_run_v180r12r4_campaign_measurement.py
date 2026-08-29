@@ -51,10 +51,10 @@ run = _load("_test_run_v180r12r4", "scripts/run_v180r12r4_campaign_measurement.p
 
 def test_runner_uses_ordinal12_transient_service_tokens() -> None:
     measurement = (
-        "36ed4564c6b1e77e08ee99aac354f4fc9bc5aaa67b3ac0f6bf16e69996d338bf"
+        "2067202637b5200c9d7a4a4a2bf06be37391b8cd3b494b9bb4ab0842d1e619c6"
     )
     verification = (
-        "77ab2901813ffcf1c297ad6ed041b8f5147d390d2adb0f95dc978cce2b54e6be"
+        "99bbf6c47c5387220a7fe0bd4084523b8d9de1889ddb3cbf781ebb09d4f06376"
     )
     assert run.PRODUCTION_TRANSIENT_SERVICE_ROWS == {
         "measurement": (
@@ -156,11 +156,23 @@ def _verified_host_conformance_context(
     return types.MappingProxyType(values)
 
 
+def _socket_buffer_capability_fact(
+    **updates: object,
+) -> dict[str, object]:
+    document: dict[str, object] = {
+        **run.SOCKET_BUFFER_CAPABILITY_EXPECTED_EXACT_PROPERTIES,
+        **run.SOCKET_BUFFER_CAPABILITY_EXPECTED_MINIMUM_PROPERTIES,
+    }
+    document.update(updates)
+    return document
+
+
 def _patch_host_conformance_revalidation_dependencies(
     monkeypatch: pytest.MonkeyPatch,
     *,
     observed_parent: dict[str, object],
     observed_runtime: dict[str, object],
+    observed_socket: dict[str, object] | None = None,
 ) -> None:
     monkeypatch.setattr(
         run,
@@ -181,6 +193,15 @@ def _patch_host_conformance_revalidation_dependencies(
         run,
         "reobserve_runtime_capability_fact_v180r12r4",
         lambda: observed_runtime,
+    )
+    monkeypatch.setattr(
+        run,
+        "reobserve_socket_buffer_capability_fact_v180r12r4",
+        lambda: (
+            _socket_buffer_capability_fact()
+            if observed_socket is None
+            else observed_socket
+        ),
     )
     monkeypatch.setattr(
         run,
@@ -234,6 +255,51 @@ def _topology_failure():
         supervisor.CgroupTopologyConformanceErrorV180R12R4R3(diagnostic),
         diagnostic,
     )
+
+
+def _t3_checkpoint_fixture():
+    t1 = _placement_t1("measurement")
+    t2 = {
+        "target": t1["target"],
+        "token": t1["token"],
+        "unit_name": t1["unit_name"],
+        "source_membership": t1["source_membership"],
+        "expected_source_membership": t1["expected_source_membership"],
+        "self_pid": t1["self_pid"] + 1,
+        "self_pid_in_source_cgroup_procs": True,
+        "parent_pid": t1["self_pid"],
+        "parent_pid_in_source_cgroup_procs": True,
+    }
+    before = {
+        field_name: 1
+        for field_name in supervisor.PRODUCTION_RUNTIME_PLACEMENT_T3_CHECKPOINT_FIELDS
+    }
+    before.update(
+        {
+            "schema": run.PRODUCTION_RUNTIME_PLACEMENT_T3_SCHEMA,
+            "boundary": "T3_BEFORE_GETRANDOM",
+            "target": t1["target"],
+            "token": t1["token"],
+            "unit_name": t1["unit_name"],
+            "source_membership": t1["source_membership"],
+            "expected_source_membership": t1["expected_source_membership"],
+            "self_pid": t2["self_pid"],
+            "self_pid_in_source_cgroup_procs": True,
+            "parent_pid": t2["parent_pid"],
+            "parent_pid_in_source_cgroup_procs": True,
+        }
+    )
+    preclone = {
+        **before,
+        "boundary": "T3_IMMEDIATELY_BEFORE_CLONE3",
+    }
+    topology = SimpleNamespace(
+        production_runtime_placement_t1=t1,
+        production_runtime_placement_t2=t2,
+        cgroup_parent_fact={"snapshot": "parent"},
+        to_document=lambda: {"snapshot": "measurement"},
+    )
+    return topology, before, preclone
 
 
 @pytest.mark.parametrize(
@@ -350,6 +416,128 @@ def test_t2_failure_precedes_scientific_attempt_o_excl(tmp_path: Path) -> None:
         store.close()
 
 
+def test_socket_capability_probe_reads_sysctls_configures_both_and_closes(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    proc_reads: list[tuple[str, int]] = []
+    socketpair_arguments: list[tuple[int, int]] = []
+
+    class FakeEndpoint:
+        def __init__(self, sndbuf: int, rcvbuf: int) -> None:
+            self.sndbuf = sndbuf
+            self.rcvbuf = rcvbuf
+            self.set_calls: list[tuple[int, int, int]] = []
+            self.closed = False
+
+        def setsockopt(self, level: int, option: int, value: int) -> None:
+            self.set_calls.append((level, option, value))
+
+        def getsockopt(self, level: int, option: int) -> int:
+            assert level == socket.SOL_SOCKET
+            if option == socket.SO_SNDBUF:
+                return self.sndbuf
+            assert option == socket.SO_RCVBUF
+            return self.rcvbuf
+
+        def close(self) -> None:
+            self.closed = True
+
+    endpoint_0 = FakeEndpoint(2_097_152, 2_097_153)
+    endpoint_1 = FakeEndpoint(2_097_154, 2_097_155)
+
+    def read_proc(path: str, byte_cap: int) -> str:
+        proc_reads.append((path, byte_cap))
+        return "3145728\n" if path.endswith("wmem_max") else "4194304\n"
+
+    def make_pair(family: int, socket_type: int):
+        socketpair_arguments.append((family, socket_type))
+        return endpoint_0, endpoint_1
+
+    monkeypatch.setattr(run, "_bounded_proc_read", read_proc)
+    monkeypatch.setattr(run.socket, "socketpair", make_pair)
+    observed = run.reobserve_socket_buffer_capability_fact_v180r12r4()
+
+    assert len(run.SOCKET_BUFFER_CAPABILITY_FACT_FIELDS) == 13
+    assert run.SOCKET_BUFFER_CAPABILITY_FACT_FIELDS == (
+        *run.SOCKET_BUFFER_CAPABILITY_EXACT_FIELDS,
+        *run.SOCKET_BUFFER_CAPABILITY_AT_LEAST_FIELDS,
+    )
+    assert tuple(observed) == run.SOCKET_BUFFER_CAPABILITY_FACT_FIELDS
+    assert observed == {
+        **run.SOCKET_BUFFER_CAPABILITY_EXPECTED_EXACT_PROPERTIES,
+        "net_core_wmem_max_bytes": 3_145_728,
+        "net_core_rmem_max_bytes": 4_194_304,
+        "endpoint_0_so_sndbuf_bytes": 2_097_152,
+        "endpoint_0_so_rcvbuf_bytes": 2_097_153,
+        "endpoint_1_so_sndbuf_bytes": 2_097_154,
+        "endpoint_1_so_rcvbuf_bytes": 2_097_155,
+    }
+    assert proc_reads == [
+        ("/proc/sys/net/core/wmem_max", 64),
+        ("/proc/sys/net/core/rmem_max", 64),
+    ]
+    assert socketpair_arguments == [
+        (socket.AF_UNIX, socket.SOCK_SEQPACKET | socket.SOCK_CLOEXEC)
+    ]
+    expected_sets = [
+        (socket.SOL_SOCKET, socket.SO_SNDBUF, 1_048_576),
+        (socket.SOL_SOCKET, socket.SO_RCVBUF, 1_048_576),
+    ]
+    assert endpoint_0.set_calls == endpoint_1.set_calls == expected_sets
+    assert endpoint_0.closed is endpoint_1.closed is True
+
+
+def test_socket_capability_probe_closes_both_endpoints_on_configuration_error(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class FakeEndpoint:
+        def __init__(self, *, fail: bool) -> None:
+            self.fail = fail
+            self.closed = False
+
+        def setsockopt(self, *_arguments: object) -> None:
+            if self.fail:
+                raise OSError(errno.ENOBUFS, "injected socket buffer limit")
+
+        def getsockopt(self, *_arguments: object) -> int:
+            return 2_097_152
+
+        def close(self) -> None:
+            self.closed = True
+
+    endpoint_0 = FakeEndpoint(fail=False)
+    endpoint_1 = FakeEndpoint(fail=True)
+    monkeypatch.setattr(run, "_bounded_proc_read", lambda *_args, **_kwargs: "1048576\n")
+    monkeypatch.setattr(
+        run.socket,
+        "socketpair",
+        lambda *_args: (endpoint_0, endpoint_1),
+    )
+    with pytest.raises(OSError, match="injected socket buffer limit"):
+        run.reobserve_socket_buffer_capability_fact_v180r12r4()
+    assert endpoint_0.closed is endpoint_1.closed is True
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    (
+        ("endpoint_count", True),
+        ("buffer_request_bytes", 1_048_576.0),
+        ("endpoint_0_so_sndbuf_bytes", True),
+        ("net_core_rmem_max_bytes", 1_048_576.0),
+    ),
+)
+def test_socket_capability_numeric_fields_require_exact_int(
+    field: str, value: object
+) -> None:
+    document = _socket_buffer_capability_fact(**{field: value})
+    with pytest.raises(
+        run.V180R12R4RuntimeError,
+        match="socket-buffer capability fact types or values changed",
+    ):
+        run._validate_socket_buffer_capability_fact_v180r12r4(document)
+
+
 def test_pre_attempt_host_mismatch_helper_ignores_only_self_membership_and_sorts(
 ) -> None:
     expected_parent = cgroup_parent_fact()
@@ -360,12 +548,20 @@ def test_pre_attempt_host_mismatch_helper_ignores_only_self_membership_and_sorts
     expected_runtime = runtime_capability_fact()
     observed_runtime = dict(expected_runtime)
     observed_runtime["landlock_abi"] = expected_runtime["landlock_abi"] + 1
+    expected_socket = _socket_buffer_capability_fact()
+    observed_socket = dict(expected_socket)
+    observed_socket["endpoint_1_so_rcvbuf_bytes"] = (
+        expected_socket["endpoint_1_so_rcvbuf_bytes"] - 1
+    )
+    observed_socket["probe_boundary"] = "AFTER_CAMPAIGN_ATTEMPT_O_EXCL"
 
     assert run.pre_attempt_host_conformance_mismatch_rows_v180r12r4(
         expected_cgroup_parent_fact=expected_parent,
         observed_cgroup_parent_fact=observed_parent,
         expected_runtime_capability_fact=expected_runtime,
         observed_runtime_capability_fact=observed_runtime,
+        expected_socket_buffer_capability=expected_socket,
+        observed_socket_buffer_capability=observed_socket,
     ) == (
         (
             "cgroup_parent_fact",
@@ -385,16 +581,34 @@ def test_pre_attempt_host_mismatch_helper_ignores_only_self_membership_and_sorts
             expected_runtime["landlock_abi"],
             observed_runtime["landlock_abi"],
         ),
+        (
+            "socket_buffer_capability",
+            "endpoint_1_so_rcvbuf_bytes",
+            expected_socket["endpoint_1_so_rcvbuf_bytes"],
+            observed_socket["endpoint_1_so_rcvbuf_bytes"],
+        ),
+        (
+            "socket_buffer_capability",
+            "probe_boundary",
+            expected_socket["probe_boundary"],
+            observed_socket["probe_boundary"],
+        ),
     )
 
     observed_parent["parent_inode"] = expected_parent["parent_inode"]
     observed_parent["mode"] = expected_parent["mode"]
     observed_runtime["landlock_abi"] = expected_runtime["landlock_abi"]
+    observed_socket["endpoint_1_so_rcvbuf_bytes"] = (
+        expected_socket["endpoint_1_so_rcvbuf_bytes"] + 1
+    )
+    observed_socket["probe_boundary"] = expected_socket["probe_boundary"]
     assert run.pre_attempt_host_conformance_mismatch_rows_v180r12r4(
         expected_cgroup_parent_fact=expected_parent,
         observed_cgroup_parent_fact=observed_parent,
         expected_runtime_capability_fact=expected_runtime,
         observed_runtime_capability_fact=observed_runtime,
+        expected_socket_buffer_capability=expected_socket,
+        observed_socket_buffer_capability=observed_socket,
     ) == ()
 
 
@@ -407,6 +621,8 @@ def test_pre_attempt_host_conformance_success_is_durable_before_campaign_attempt
     observed_parent["self_membership"] = "0::/app.slice/formal-measurement.service"
     expected_runtime = runtime_capability_fact()
     observed_runtime = dict(expected_runtime)
+    expected_socket = _socket_buffer_capability_fact()
+    observed_socket = dict(expected_socket)
     context = _verified_host_conformance_context(
         tmp_path,
         parent_fact=expected_parent,
@@ -434,10 +650,12 @@ def test_pre_attempt_host_conformance_success_is_durable_before_campaign_attempt
     assert artifact["expected"] == {
         "cgroup_parent_fact": expected_parent,
         "runtime_capability_fact": expected_runtime,
+        "socket_buffer_capability": expected_socket,
     }
     assert artifact["observed"] == {
         "cgroup_parent_fact": observed_parent,
         "runtime_capability_fact": observed_runtime,
+        "socket_buffer_capability": observed_socket,
     }
     assert artifact["cgroup_parent_compared_fields"] == [
         field
@@ -447,6 +665,12 @@ def test_pre_attempt_host_conformance_success_is_durable_before_campaign_attempt
     assert artifact["cgroup_parent_excluded_fields"] == ["self_membership"]
     assert artifact["runtime_capability_compared_fields"] == list(
         run.protocol.RUNTIME_CAPABILITY_FACT_FIELDS
+    )
+    assert artifact["socket_buffer_capability_exact_fields"] == list(
+        run.SOCKET_BUFFER_CAPABILITY_EXACT_FIELDS
+    )
+    assert artifact["socket_buffer_capability_at_least_fields"] == list(
+        run.SOCKET_BUFFER_CAPABILITY_AT_LEAST_FIELDS
     )
     assert artifact["mismatch_rows"] == []
     assert artifact["mismatch_count"] == 0
@@ -464,13 +688,23 @@ def test_pre_attempt_host_conformance_success_is_durable_before_campaign_attempt
 
 
 @pytest.mark.parametrize(
-    ("fact_kind", "field", "cause"),
+    ("fact_kind", "field", "delta", "cause"),
     [
-        ("cgroup_parent_fact", "parent_inode", "CGROUP_PARENT_FACT_DRIFT"),
+        (
+            "cgroup_parent_fact", "parent_inode", 1,
+            "CGROUP_PARENT_FACT_DRIFT",
+        ),
         (
             "runtime_capability_fact",
             "landlock_abi",
+            1,
             "RUNTIME_CAPABILITY_FACT_DRIFT",
+        ),
+        (
+            "socket_buffer_capability",
+            "endpoint_0_so_sndbuf_bytes",
+            -1,
+            "SOCKET_BUFFER_CAPABILITY_INSUFFICIENT",
         ),
     ],
 )
@@ -479,6 +713,7 @@ def test_pre_attempt_host_drift_artifact_precedes_exception(
     monkeypatch: pytest.MonkeyPatch,
     fact_kind: str,
     field: str,
+    delta: int,
     cause: str,
 ) -> None:
     expected_parent = cgroup_parent_fact()
@@ -486,17 +721,19 @@ def test_pre_attempt_host_drift_artifact_precedes_exception(
     observed_parent["self_membership"] = "0::/app.slice/formal-measurement.service"
     expected_runtime = runtime_capability_fact()
     observed_runtime = dict(expected_runtime)
-    expected_fact = (
-        expected_parent
-        if fact_kind == "cgroup_parent_fact"
-        else expected_runtime
-    )
-    observed_fact = (
-        observed_parent
-        if fact_kind == "cgroup_parent_fact"
-        else observed_runtime
-    )
-    observed_fact[field] = expected_fact[field] + 1
+    expected_socket = _socket_buffer_capability_fact()
+    observed_socket = dict(expected_socket)
+    expected_fact = {
+        "cgroup_parent_fact": expected_parent,
+        "runtime_capability_fact": expected_runtime,
+        "socket_buffer_capability": expected_socket,
+    }[fact_kind]
+    observed_fact = {
+        "cgroup_parent_fact": observed_parent,
+        "runtime_capability_fact": observed_runtime,
+        "socket_buffer_capability": observed_socket,
+    }[fact_kind]
+    observed_fact[field] = expected_fact[field] + delta
     context = _verified_host_conformance_context(
         tmp_path,
         parent_fact=expected_parent,
@@ -506,6 +743,7 @@ def test_pre_attempt_host_drift_artifact_precedes_exception(
         monkeypatch,
         observed_parent=observed_parent,
         observed_runtime=observed_runtime,
+        observed_socket=observed_socket,
     )
     store = run.DurableStoreV180R12R4(tmp_path)
     try:
@@ -531,6 +769,43 @@ def test_pre_attempt_host_drift_artifact_precedes_exception(
     assert artifact["cause"] == cause
     assert artifact["full_host_conformance"] is False
     assert not (tmp_path / run.ATTEMPT_RELATIVE_PATH).exists()
+
+
+@pytest.mark.parametrize(
+    ("kinds", "cause"),
+    (
+        (
+            {"cgroup_parent_fact", "socket_buffer_capability"},
+            "CGROUP_PARENT_FACT_DRIFT_AND_SOCKET_BUFFER_CAPABILITY_INSUFFICIENT",
+        ),
+        (
+            {"runtime_capability_fact", "socket_buffer_capability"},
+            "RUNTIME_CAPABILITY_FACT_DRIFT_AND_SOCKET_BUFFER_CAPABILITY_INSUFFICIENT",
+        ),
+        (
+            {"cgroup_parent_fact", "runtime_capability_fact"},
+            "CGROUP_PARENT_AND_RUNTIME_CAPABILITY_FACT_DRIFT",
+        ),
+        (
+            {
+                "cgroup_parent_fact",
+                "runtime_capability_fact",
+                "socket_buffer_capability",
+            },
+            "CGROUP_PARENT_AND_RUNTIME_CAPABILITY_FACT_DRIFT_AND_"
+            "SOCKET_BUFFER_CAPABILITY_INSUFFICIENT",
+        ),
+    ),
+)
+def test_pre_attempt_host_combined_cause_retains_every_failed_scope(
+    kinds: set[str], cause: str
+) -> None:
+    mismatches = tuple(
+        (kind, "field", 2, 1) for kind in sorted(kinds)
+    )
+    assert run._pre_attempt_host_conformance_cause_v180r12r4(
+        mismatches
+    ) == cause
 
 
 @pytest.mark.parametrize(
@@ -678,6 +953,97 @@ def test_adjacent_t3_injection_prevents_clone3_and_preserves_primary(
         assert syscalls == []
     finally:
         os.close(target_fd)
+
+
+def test_t3_r4_mismatch_is_retained_and_blocks_clone3(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    topology, before, preclone = _t3_checkpoint_fixture()
+    conformant = run._complete_t3_checkpoint_conformance_v180r12r4(
+        topology,
+        before_getrandom=before,
+        immediately_before_clone3=preclone,
+    )
+    assert tuple(conformant) == (
+        supervisor.PRODUCTION_RUNTIME_PLACEMENT_T3_FIELDS
+    )
+    assert conformant["stable_across_boundaries"] is True
+    preclone["target_cgroup_inode"] = float(
+        preclone["target_cgroup_inode"]
+    )
+    syscalls: list[str] = []
+
+    class FakeLibc:
+        @staticmethod
+        def syscall(*_arguments: object) -> int:
+            syscalls.append("clone3")
+            return -1
+
+    launcher = object.__new__(run.LinuxClone3V180R12R4)
+    launcher.libc = FakeLibc()
+    launcher.fault_injector = None
+    monkeypatch.setattr(
+        run.LinuxClone3V180R12R4,
+        "validate_internal_exec_contract",
+        staticmethod(lambda **_arguments: None),
+    )
+    target_fd = os.open("/dev/null", os.O_RDONLY | os.O_CLOEXEC)
+    try:
+        with pytest.raises(
+            supervisor.CgroupTopologyConformanceErrorV180R12R4R4
+        ) as caught:
+            launcher.launch_exec(
+                role="SUPERVISOR",
+                target_cgroup_fd=target_fd,
+                expected_cgroup_membership_line=(
+                    "0::/app.slice/test.service/root/SUPERVISOR"
+                ),
+                argv=(),
+                env={},
+                inherited_fd_map={},
+                pre_clone_revalidate=lambda: (
+                    run._complete_t3_checkpoint_conformance_v180r12r4(
+                        topology,
+                        before_getrandom=before,
+                        immediately_before_clone3=preclone,
+                    )
+                ),
+            )
+        diagnostic = caught.value.conformance_diagnostic
+        assert caught.value.launch_substage == "T3_IMMEDIATELY_BEFORE_CLONE3"
+        assert diagnostic["scope"] == "T3_CHECKPOINT_CONFORMANCE"
+        assert diagnostic["unit_ownership_acquired"] is True
+        assert diagnostic["full_conformance"] is False
+        assert diagnostic["mismatch_rows"] == [
+            {
+                "field": "target_cgroup_inode",
+                "expected": 1,
+                "observed": 1.0,
+            }
+        ]
+        t3 = diagnostic["property_snapshots"][
+            "production_runtime_placement_t3"
+        ]
+        assert t3["before_getrandom"] == before
+        assert t3["immediately_before_clone3"] == preclone
+        assert syscalls == []
+        assert (
+            run._topology_conformance_diagnostic_v180r12r4(caught.value)
+            == diagnostic
+        )
+    finally:
+        os.close(target_fd)
+
+    before_only_failure = run.V180R12R4RuntimeError(
+        "T3 second checkpoint was not reached"
+    )
+    run._annotate_launch_primary_v180r12r4(
+        before_only_failure, "T3_BEFORE_GETRANDOM"
+    )
+    assert (
+        run._topology_conformance_diagnostic_v180r12r4(before_only_failure)
+        is None
+    )
 
 
 def test_sigalrm_mask_starts_after_preclone_fstat_and_pipe_and_wraps_second_t3(

@@ -429,11 +429,16 @@ def _pre_attempt_host_conformance_raw(
     *,
     frozen_context: Mapping[str, object],
     source_membership: str,
+    observed_socket_updates: Mapping[str, object] | None = None,
 ) -> bytes:
     expected_parent = copy.deepcopy(frozen_context["cgroup_parent_fact"])
     expected_runtime = copy.deepcopy(frozen_context["runtime_capability_fact"])
     observed_parent = copy.deepcopy(expected_parent)
     observed_parent["self_membership"] = source_membership
+    expected_socket = copy.deepcopy(runner._SOCKET_BUFFER_CAPABILITY_EXPECTED)
+    observed_socket = copy.deepcopy(expected_socket)
+    if observed_socket_updates is not None:
+        observed_socket.update(observed_socket_updates)
     return canonical_json_bytes(
         {
             "schema": runner.PRE_ATTEMPT_HOST_CONFORMANCE_SCHEMA,
@@ -442,10 +447,12 @@ def _pre_attempt_host_conformance_raw(
             "expected": {
                 "cgroup_parent_fact": expected_parent,
                 "runtime_capability_fact": expected_runtime,
+                "socket_buffer_capability": expected_socket,
             },
             "observed": {
                 "cgroup_parent_fact": observed_parent,
                 "runtime_capability_fact": copy.deepcopy(expected_runtime),
+                "socket_buffer_capability": observed_socket,
             },
             "cgroup_parent_compared_fields": [
                 field for field in runner._CGROUP_PARENT_FACT_FIELD_ORDER
@@ -454,6 +461,12 @@ def _pre_attempt_host_conformance_raw(
             "cgroup_parent_excluded_fields": ["self_membership"],
             "runtime_capability_compared_fields": list(
                 runner._RUNTIME_CAPABILITY_FACT_FIELD_ORDER
+            ),
+            "socket_buffer_capability_exact_fields": list(
+                runner._SOCKET_BUFFER_CAPABILITY_EXACT_FIELDS
+            ),
+            "socket_buffer_capability_at_least_fields": list(
+                runner._SOCKET_BUFFER_CAPABILITY_AT_LEAST_FIELDS
             ),
             "mismatch_rows": [],
             "mismatch_count": 0,
@@ -467,32 +480,42 @@ def _pre_attempt_host_conformance_raw(
     )
 
 
-def test_ordinal12_verifier_lineage_has_26_roots_and_exact_service_tokens() -> None:
+def test_ordinal13_verifier_lineage_has_27_roots_and_exact_service_tokens() -> None:
+    r5_root = (
+        "src/acfqp/construction_k7_campaign_measurement_"
+        "failure_freeze_v180r12r4r5.py"
+    )
     r6_root = (
         "src/acfqp/construction_k7_campaign_measurement_"
         "failure_freeze_v180r12r4r6.py"
     )
-    assert len(runner.SOURCE_CLOSURE_REQUIRED_ROOTS) == 26
+    r7_root = (
+        "src/acfqp/construction_k7_campaign_measurement_"
+        "failure_freeze_v180r12r4r7.py"
+    )
+    assert len(runner.SOURCE_CLOSURE_REQUIRED_ROOTS) == 27
+    assert r5_root in runner.SOURCE_CLOSURE_REQUIRED_ROOTS
     assert r6_root in runner.SOURCE_CLOSURE_REQUIRED_ROOTS
+    assert r7_root in runner.SOURCE_CLOSURE_REQUIRED_ROOTS
 
     base = {
         "failed_predecessor_freeze_id": (
-            "afdc3acd283daf018243acdf9920dfa32140459a6de1dd6bfc3a70c113579105"
+            "2f71e97fd2133c7983a400b5f536fe87740aa08c551580d62556aae5dcea496b"
         ),
         "failed_inner_launch_failure_id": (
-            "96cf56e7e7bb36105d2065b4252e9e7a3cc1052b6aa92ead94ef0d60dd498892"
+            "46a3d92a70424c296e0137380cdb98f99f11b47b565dce3175baeab8b3546a67"
         ),
         "failed_outer_service_failure_id": (
-            "2bd19d84bf24877697395ff7f2c7bdea12d3a6f1331dc56b132a322176681cce"
+            "a221f8d37ca354b7e1a753708d99229086ef6128fedd5cbf9879c89871846185"
         ),
-        "repair_scope": "T1_T2_ROLE_AWARE_PROCESS_ID_CONFORMANCE",
+        "repair_scope": "SOCKET_BUFFER_CAPABILITY_AND_T3_DIAGNOSTIC_CONFORMANCE",
     }
     expected_tokens = {
         "measurement": (
-            "36ed4564c6b1e77e08ee99aac354f4fc9bc5aaa67b3ac0f6bf16e69996d338bf"
+            "2067202637b5200c9d7a4a4a2bf06be37391b8cd3b494b9bb4ab0842d1e619c6"
         ),
         "verification": (
-            "77ab2901813ffcf1c297ad6ed041b8f5147d390d2adb0f95dc978cce2b54e6be"
+            "99bbf6c47c5387220a7fe0bd4084523b8d9de1889ddb3cbf781ebb09d4f06376"
         ),
     }
     repository = Path("/tmp/v180r12r4-ordinal12-lineage-test")
@@ -566,6 +589,77 @@ def test_pre_attempt_host_conformance_rejects_bool_for_runtime_integer(
             )
     finally:
         store.close()
+
+
+@pytest.mark.parametrize("value", [False, 2_097_152.0, 2_097_151])
+def test_pre_attempt_host_conformance_rejects_invalid_socket_minimum(
+    tmp_path: Path, value: object
+) -> None:
+    context = {
+        "campaign_attempt_id": "a" * 64,
+        "cgroup_parent_fact": copy.deepcopy(
+            protocol.SERVICE_CONTEXT_CAPTURE_CGROUP_PARENT_FACT
+        ),
+        "runtime_capability_fact": copy.deepcopy(
+            protocol.SERVICE_CONTEXT_CAPTURE_RUNTIME_CAPABILITY_FACT
+        ),
+    }
+    raw = _pre_attempt_host_conformance_raw(
+        frozen_context=context,
+        source_membership="0::/app.slice/formal-measurement.service",
+        observed_socket_updates={"endpoint_1_so_rcvbuf_bytes": value},
+    )
+    _write(
+        tmp_path / runner.PRE_ATTEMPT_HOST_CONFORMANCE_RELATIVE_PATH,
+        raw,
+    )
+    store = runner.VerificationDurableStoreV180R12R4(tmp_path)
+    try:
+        with pytest.raises(
+            runner.V180R12R4VerificationRunnerError,
+            match="success authority changed",
+        ):
+            runner._validate_pre_attempt_host_conformance(
+                store,
+                frozen_context=_deep_freeze(context),
+            )
+    finally:
+        store.close()
+
+
+def test_pre_attempt_host_conformance_accepts_socket_values_above_minimum(
+    tmp_path: Path,
+) -> None:
+    context = {
+        "campaign_attempt_id": "a" * 64,
+        "cgroup_parent_fact": copy.deepcopy(
+            protocol.SERVICE_CONTEXT_CAPTURE_CGROUP_PARENT_FACT
+        ),
+        "runtime_capability_fact": copy.deepcopy(
+            protocol.SERVICE_CONTEXT_CAPTURE_RUNTIME_CAPABILITY_FACT
+        ),
+    }
+    raw = _pre_attempt_host_conformance_raw(
+        frozen_context=context,
+        source_membership="0::/app.slice/formal-measurement.service",
+        observed_socket_updates={
+            field: runner._SOCKET_BUFFER_CAPABILITY_EXPECTED[field] + 1_048_576
+            for field in runner._SOCKET_BUFFER_CAPABILITY_AT_LEAST_FIELDS
+        },
+    )
+    _write(
+        tmp_path / runner.PRE_ATTEMPT_HOST_CONFORMANCE_RELATIVE_PATH,
+        raw,
+    )
+    store = runner.VerificationDurableStoreV180R12R4(tmp_path)
+    try:
+        _replayed_raw, document = runner._validate_pre_attempt_host_conformance(
+            store,
+            frozen_context=_deep_freeze(context),
+        )
+    finally:
+        store.close()
+    assert document["full_host_conformance"] is True
 
 
 def _source_manifest(
@@ -1263,9 +1357,10 @@ def _fake_result(success_bundle: dict[str, object]) -> SimpleNamespace:
         ).hexdigest(),
         "pre_attempt_host_conformance_mode": 0o400,
         "pre_attempt_host_conformance_expected_frozen_context_joined": True,
-        "pre_attempt_host_conformance_observed_exact_except_self_membership": (
+        "pre_attempt_host_conformance_cgroup_runtime_exact_except_self_membership": (
             True
         ),
+        "pre_attempt_host_conformance_socket_buffer_minimums_met": True,
         "pre_attempt_host_conformance_independently_replayed": True,
         "pre_attempt_host_conformance_is_campaign_event_or_counter_record": (
             False

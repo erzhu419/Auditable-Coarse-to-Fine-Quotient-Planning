@@ -150,13 +150,39 @@ REVALIDATED_EXTERNAL_MEASUREMENT_CONTEXT_SCHEMA = (
     protocol.REVALIDATED_EXTERNAL_MEASUREMENT_CONTEXT_SCHEMA
 )
 PRE_ATTEMPT_HOST_CONFORMANCE_SCHEMA = (
-    "acfqp.v180r12r4_pre_attempt_host_conformance.v1"
+    protocol.PRE_ATTEMPT_HOST_CONFORMANCE_SCHEMA
 )
 PRE_ATTEMPT_HOST_CONFORMANCE_RELATIVE_PATH = (
     ".tmp/exact-freeze/"
     "v180r12r4_campaign_measurement_pre_attempt_host_conformance.json"
 )
-PRE_ATTEMPT_HOST_CONFORMANCE_BYTE_CAP = 64 * 1024
+PRE_ATTEMPT_HOST_CONFORMANCE_BYTE_CAP = (
+    protocol.PRE_ATTEMPT_HOST_CONFORMANCE_BYTE_CAP
+)
+SOCKET_BUFFER_CAPABILITY_FACT_SCHEMA = (
+    protocol.SOCKET_BUFFER_CAPABILITY_FACT_SCHEMA
+)
+SOCKET_BUFFER_CAPABILITY_FACT_FIELDS = (
+    protocol.SOCKET_BUFFER_CAPABILITY_FACT_FIELDS
+)
+SOCKET_BUFFER_CAPABILITY_EXACT_FIELDS = (
+    protocol.SOCKET_BUFFER_CAPABILITY_EXACT_FIELDS
+)
+SOCKET_BUFFER_CAPABILITY_AT_LEAST_FIELDS = (
+    protocol.SOCKET_BUFFER_CAPABILITY_AT_LEAST_FIELDS
+)
+SOCKET_BUFFER_CAPABILITY_EXPECTED_EXACT_PROPERTIES = (
+    protocol.SOCKET_BUFFER_CAPABILITY_EXPECTED_EXACT_PROPERTIES
+)
+SOCKET_BUFFER_CAPABILITY_EXPECTED_MINIMUM_PROPERTIES = (
+    protocol.SOCKET_BUFFER_CAPABILITY_EXPECTED_MINIMUM_PROPERTIES
+)
+SOCKET_BUFFER_CAPABILITY_MISMATCH_SCOPE = (
+    protocol.SOCKET_BUFFER_CAPABILITY_MISMATCH_SCOPE
+)
+SOCKET_BUFFER_CAPABILITY_INSUFFICIENT_CAUSE = (
+    protocol.SOCKET_BUFFER_CAPABILITY_INSUFFICIENT_CAUSE
+)
 PRODUCTION_RUNTIME_PLACEMENT_T1_SCHEMA = (
     protocol.PRODUCTION_RUNTIME_PLACEMENT_T1_SCHEMA
 )
@@ -172,14 +198,14 @@ PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
 )
 PRODUCTION_TRANSIENT_SERVICE_ROWS = {
     "measurement": (
-        "36ed4564c6b1e77e08ee99aac354f4fc9bc5aaa67b3ac0f6bf16e69996d338bf",
+        "2067202637b5200c9d7a4a4a2bf06be37391b8cd3b494b9bb4ab0842d1e619c6",
         "acfqp-v180r12r4-measurement-"
-        "36ed4564c6b1e77e08ee99aac354f4fc9bc5aaa67b3ac0f6bf16e69996d338bf.service",
+        "2067202637b5200c9d7a4a4a2bf06be37391b8cd3b494b9bb4ab0842d1e619c6.service",
     ),
     "verification": (
-        "77ab2901813ffcf1c297ad6ed041b8f5147d390d2adb0f95dc978cce2b54e6be",
+        "99bbf6c47c5387220a7fe0bd4084523b8d9de1889ddb3cbf781ebb09d4f06376",
         "acfqp-v180r12r4-verification-"
-        "77ab2901813ffcf1c297ad6ed041b8f5147d390d2adb0f95dc978cce2b54e6be.service",
+        "99bbf6c47c5387220a7fe0bd4084523b8d9de1889ddb3cbf781ebb09d4f06376.service",
     ),
 }
 EXTERNAL_LAUNCH_CONTEXT_FIELDS = (
@@ -1346,6 +1372,111 @@ def reobserve_runtime_capability_fact_v180r12r4() -> dict[str, Any]:
     return protocol.validate_runtime_capability_fact_v180r12r4(document)
 
 
+def _validate_socket_buffer_capability_fact_v180r12r4(
+    value: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Validate one complete 13-field socket-capability observation."""
+
+    document = _thaw_json_value(value)
+    if (
+        type(document) is not dict
+        or set(document) != set(SOCKET_BUFFER_CAPABILITY_FACT_FIELDS)
+    ):
+        _fail("socket-buffer capability fact field set changed")
+    string_fields = (
+        "schema", "probe_boundary", "socket_family", "socket_type",
+    )
+    numeric_fields = (
+        "endpoint_count", "buffer_request_bytes", "effective_min_bytes",
+        *SOCKET_BUFFER_CAPABILITY_AT_LEAST_FIELDS,
+    )
+    if (
+        any(
+            type(document.get(field)) is not str or not document[field]
+            for field in string_fields
+        )
+        or any(
+            type(document.get(field)) is not int or document[field] <= 0
+            for field in numeric_fields
+        )
+    ):
+        _fail("socket-buffer capability fact types or values changed")
+    return {
+        field: document[field]
+        for field in SOCKET_BUFFER_CAPABILITY_FACT_FIELDS
+    }
+
+
+def expected_socket_buffer_capability_fact_v180r12r4() -> dict[str, Any]:
+    """Return the complete preregistered exact/minimum socket fact."""
+
+    return _validate_socket_buffer_capability_fact_v180r12r4(
+        {
+            **SOCKET_BUFFER_CAPABILITY_EXPECTED_EXACT_PROPERTIES,
+            **SOCKET_BUFFER_CAPABILITY_EXPECTED_MINIMUM_PROPERTIES,
+        }
+    )
+
+
+def _read_positive_socket_sysctl_v180r12r4(path: str) -> int:
+    raw = _bounded_proc_read(path, byte_cap=64)
+    rendered = raw.strip()
+    if not rendered.isdecimal():
+        _fail("socket-buffer sysctl observation is not one positive integer")
+    value = int(rendered, 10)
+    if type(value) is not int or value <= 0:
+        _fail("socket-buffer sysctl observation is not one positive integer")
+    return value
+
+
+def reobserve_socket_buffer_capability_fact_v180r12r4() -> dict[str, Any]:
+    """Probe seqpacket capacity without retaining sockets or campaign effects."""
+
+    wmem_max = _read_positive_socket_sysctl_v180r12r4(
+        "/proc/sys/net/core/wmem_max"
+    )
+    rmem_max = _read_positive_socket_sysctl_v180r12r4(
+        "/proc/sys/net/core/rmem_max"
+    )
+    endpoint_0, endpoint_1 = socket.socketpair(
+        socket.AF_UNIX, socket.SOCK_SEQPACKET | socket.SOCK_CLOEXEC
+    )
+    try:
+        observations: list[tuple[int, int]] = []
+        for endpoint in (endpoint_0, endpoint_1):
+            endpoint.setsockopt(
+                socket.SOL_SOCKET,
+                socket.SO_SNDBUF,
+                SOCK_SEQPACKET_BUFFER_REQUEST_BYTES,
+            )
+            endpoint.setsockopt(
+                socket.SOL_SOCKET,
+                socket.SO_RCVBUF,
+                SOCK_SEQPACKET_BUFFER_REQUEST_BYTES,
+            )
+            observations.append(
+                (
+                    endpoint.getsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF),
+                    endpoint.getsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF),
+                )
+            )
+        document = {
+            **SOCKET_BUFFER_CAPABILITY_EXPECTED_EXACT_PROPERTIES,
+            "net_core_wmem_max_bytes": wmem_max,
+            "net_core_rmem_max_bytes": rmem_max,
+            "endpoint_0_so_sndbuf_bytes": observations[0][0],
+            "endpoint_0_so_rcvbuf_bytes": observations[0][1],
+            "endpoint_1_so_sndbuf_bytes": observations[1][0],
+            "endpoint_1_so_rcvbuf_bytes": observations[1][1],
+        }
+        return _validate_socket_buffer_capability_fact_v180r12r4(document)
+    finally:
+        try:
+            endpoint_0.close()
+        finally:
+            endpoint_1.close()
+
+
 def _read_cgroup_control_from_fd_v180r12r4(
     directory_fd: int, name: str
 ) -> str:
@@ -1666,6 +1797,44 @@ def _production_runtime_placement_t3_checkpoint_v180r12r4(
     )
 
 
+def _complete_t3_checkpoint_conformance_v180r12r4(
+    topology_receipt: runtime.MeasurementCgroupTopologyReceiptV180R12R4,
+    *,
+    before_getrandom: Mapping[str, Any],
+    immediately_before_clone3: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Return one conformant outer T3 receipt or block before clone3."""
+
+    diagnostic = (
+        runtime.build_t3_checkpoint_conformance_diagnostic_v180r12r4r4(
+            placement_t1=topology_receipt.production_runtime_placement_t1,
+            placement_t2=topology_receipt.production_runtime_placement_t2,
+            parent_snapshot=topology_receipt.cgroup_parent_fact,
+            measurement_snapshot=topology_receipt.to_document(),
+            before_getrandom=before_getrandom,
+            immediately_before_clone3=immediately_before_clone3,
+        )
+    )
+    if diagnostic["full_conformance"] is not True:
+        primary = runtime.CgroupTopologyConformanceErrorV180R12R4R4(
+            diagnostic
+        )
+        _annotate_launch_primary_v180r12r4(
+            primary, "T3_IMMEDIATELY_BEFORE_CLONE3"
+        )
+        raise primary
+    snapshot = diagnostic["property_snapshots"][
+        "production_runtime_placement_t3"
+    ]
+    placement = {
+        name: snapshot[name]
+        for name in protocol.PRODUCTION_RUNTIME_PLACEMENT_T3_FIELDS
+    }
+    if tuple(placement) != protocol.PRODUCTION_RUNTIME_PLACEMENT_T3_FIELDS:
+        _fail("T3 placement receipt field order changed")
+    return placement
+
+
 def reobserve_precompiled_source_bundle_v180r12r4(
     context: Mapping[str, Any],
     descriptor: int = PRECOMPILED_SOURCE_BUNDLE_FD,
@@ -1842,8 +2011,10 @@ def pre_attempt_host_conformance_mismatch_rows_v180r12r4(
     observed_cgroup_parent_fact: Mapping[str, Any],
     expected_runtime_capability_fact: Mapping[str, Any],
     observed_runtime_capability_fact: Mapping[str, Any],
+    expected_socket_buffer_capability: Mapping[str, Any],
+    observed_socket_buffer_capability: Mapping[str, Any],
 ) -> tuple[tuple[str, str, Any, Any], ...]:
-    """Compare complete host facts, excluding only observer membership."""
+    """Compare complete host facts under exact and minimum predicates."""
 
     expected_parent = protocol.validate_cgroup_parent_fact_v180r12r4(
         _thaw_json_value(expected_cgroup_parent_fact)
@@ -1857,11 +2028,17 @@ def pre_attempt_host_conformance_mismatch_rows_v180r12r4(
     observed_runtime = protocol.validate_runtime_capability_fact_v180r12r4(
         _thaw_json_value(observed_runtime_capability_fact)
     )
+    expected_socket = _validate_socket_buffer_capability_fact_v180r12r4(
+        expected_socket_buffer_capability
+    )
+    observed_socket = _validate_socket_buffer_capability_fact_v180r12r4(
+        observed_socket_buffer_capability
+    )
     rows = [
         ("cgroup_parent_fact", field, expected_parent[field], observed_parent[field])
         for field in protocol.CGROUP_PARENT_FACT_FIELDS
         if field != "self_membership"
-        and expected_parent[field] != observed_parent[field]
+        and _canonical(expected_parent[field]) != _canonical(observed_parent[field])
     ]
     rows.extend(
         (
@@ -1871,9 +2048,53 @@ def pre_attempt_host_conformance_mismatch_rows_v180r12r4(
             observed_runtime[field],
         )
         for field in protocol.RUNTIME_CAPABILITY_FACT_FIELDS
-        if expected_runtime[field] != observed_runtime[field]
+        if _canonical(expected_runtime[field]) != _canonical(observed_runtime[field])
+    )
+    rows.extend(
+        (
+            SOCKET_BUFFER_CAPABILITY_MISMATCH_SCOPE,
+            field,
+            expected_socket[field],
+            observed_socket[field],
+        )
+        for field in SOCKET_BUFFER_CAPABILITY_EXACT_FIELDS
+        if _canonical(expected_socket[field]) != _canonical(observed_socket[field])
+    )
+    rows.extend(
+        (
+            SOCKET_BUFFER_CAPABILITY_MISMATCH_SCOPE,
+            field,
+            expected_socket[field],
+            observed_socket[field],
+        )
+        for field in SOCKET_BUFFER_CAPABILITY_AT_LEAST_FIELDS
+        if observed_socket[field] < expected_socket[field]
     )
     return tuple(sorted(rows, key=lambda row: (row[0], row[1])))
+
+
+def _pre_attempt_host_conformance_cause_v180r12r4(
+    mismatches: Sequence[tuple[str, str, Any, Any]],
+) -> str | None:
+    fact_kinds = {row[0] for row in mismatches}
+    cgroup_drift = "cgroup_parent_fact" in fact_kinds
+    runtime_drift = "runtime_capability_fact" in fact_kinds
+    socket_insufficient = SOCKET_BUFFER_CAPABILITY_MISMATCH_SCOPE in fact_kinds
+    if not (cgroup_drift or runtime_drift or socket_insufficient):
+        return None
+    if cgroup_drift and runtime_drift:
+        cause = "CGROUP_PARENT_AND_RUNTIME_CAPABILITY_FACT_DRIFT"
+    elif cgroup_drift:
+        cause = "CGROUP_PARENT_FACT_DRIFT"
+    elif runtime_drift:
+        cause = "RUNTIME_CAPABILITY_FACT_DRIFT"
+    else:
+        cause = ""
+    if socket_insufficient:
+        return (
+            cause + "_AND_" if cause else ""
+        ) + SOCKET_BUFFER_CAPABILITY_INSUFFICIENT_CAUSE
+    return cause
 
 
 def write_pre_attempt_host_conformance_v180r12r4(
@@ -1884,6 +2105,8 @@ def write_pre_attempt_host_conformance_v180r12r4(
     observed_cgroup_parent_fact: Mapping[str, Any],
     expected_runtime_capability_fact: Mapping[str, Any],
     observed_runtime_capability_fact: Mapping[str, Any],
+    expected_socket_buffer_capability: Mapping[str, Any],
+    observed_socket_buffer_capability: Mapping[str, Any],
 ) -> dict[str, Any]:
     """Durably retain the complete pre-ATTEMPT host comparison once."""
 
@@ -1902,21 +2125,21 @@ def write_pre_attempt_host_conformance_v180r12r4(
     observed_runtime = protocol.validate_runtime_capability_fact_v180r12r4(
         _thaw_json_value(observed_runtime_capability_fact)
     )
+    expected_socket = _validate_socket_buffer_capability_fact_v180r12r4(
+        expected_socket_buffer_capability
+    )
+    observed_socket = _validate_socket_buffer_capability_fact_v180r12r4(
+        observed_socket_buffer_capability
+    )
     mismatches = pre_attempt_host_conformance_mismatch_rows_v180r12r4(
         expected_cgroup_parent_fact=expected_parent,
         observed_cgroup_parent_fact=observed_parent,
         expected_runtime_capability_fact=expected_runtime,
         observed_runtime_capability_fact=observed_runtime,
+        expected_socket_buffer_capability=expected_socket,
+        observed_socket_buffer_capability=observed_socket,
     )
-    mismatched_fact_kinds = {row[0] for row in mismatches}
-    if not mismatched_fact_kinds:
-        cause = None
-    elif mismatched_fact_kinds == {"cgroup_parent_fact"}:
-        cause = "CGROUP_PARENT_FACT_DRIFT"
-    elif mismatched_fact_kinds == {"runtime_capability_fact"}:
-        cause = "RUNTIME_CAPABILITY_FACT_DRIFT"
-    else:
-        cause = "CGROUP_PARENT_AND_RUNTIME_CAPABILITY_FACT_DRIFT"
+    cause = _pre_attempt_host_conformance_cause_v180r12r4(mismatches)
     document = {
         "schema": PRE_ATTEMPT_HOST_CONFORMANCE_SCHEMA,
         "phase": "PRE_CAMPAIGN_ATTEMPT_HOST_CONFORMANCE",
@@ -1924,10 +2147,12 @@ def write_pre_attempt_host_conformance_v180r12r4(
         "expected": {
             "cgroup_parent_fact": expected_parent,
             "runtime_capability_fact": expected_runtime,
+            "socket_buffer_capability": expected_socket,
         },
         "observed": {
             "cgroup_parent_fact": observed_parent,
             "runtime_capability_fact": observed_runtime,
+            "socket_buffer_capability": observed_socket,
         },
         "cgroup_parent_compared_fields": [
             field
@@ -1937,6 +2162,12 @@ def write_pre_attempt_host_conformance_v180r12r4(
         "cgroup_parent_excluded_fields": ["self_membership"],
         "runtime_capability_compared_fields": list(
             protocol.RUNTIME_CAPABILITY_FACT_FIELDS
+        ),
+        "socket_buffer_capability_exact_fields": list(
+            SOCKET_BUFFER_CAPABILITY_EXACT_FIELDS
+        ),
+        "socket_buffer_capability_at_least_fields": list(
+            SOCKET_BUFFER_CAPABILITY_AT_LEAST_FIELDS
         ),
         "mismatch_rows": [list(row) for row in mismatches],
         "mismatch_count": len(mismatches),
@@ -1978,6 +2209,8 @@ def revalidate_external_measurement_pre_attempt_v180r12r4(
     frozen_parent = _thaw_json_value(verified["cgroup_parent_fact"])
     reobserved_runtime = reobserve_runtime_capability_fact_v180r12r4()
     frozen_runtime = _thaw_json_value(verified["runtime_capability_fact"])
+    expected_socket = expected_socket_buffer_capability_fact_v180r12r4()
+    reobserved_socket = reobserve_socket_buffer_capability_fact_v180r12r4()
     host_conformance = write_pre_attempt_host_conformance_v180r12r4(
         store,
         campaign_attempt_id=verified["campaign_attempt_id"],
@@ -1985,6 +2218,8 @@ def revalidate_external_measurement_pre_attempt_v180r12r4(
         observed_cgroup_parent_fact=reobserved_parent,
         expected_runtime_capability_fact=frozen_runtime,
         observed_runtime_capability_fact=reobserved_runtime,
+        expected_socket_buffer_capability=expected_socket,
+        observed_socket_buffer_capability=reobserved_socket,
     )
     if host_conformance["full_host_conformance"] is not True:
         _fail(
@@ -6200,26 +6435,11 @@ class LinuxOuterEffectAdapterV180R12R4:
                     boundary="T3_IMMEDIATELY_BEFORE_CLONE3",
                     fault_injector=self.launch_fault_injector,
                 )
-                stable = {**observed, "boundary": "T3_BEFORE_GETRANDOM"}
-                if stable != t3_before_getrandom:
-                    primary = V180R12R4RuntimeError(
-                        "T3 placement changed across supervisor pre-birth setup"
-                    )
-                    _annotate_launch_primary_v180r12r4(
-                        primary, "T3_IMMEDIATELY_BEFORE_CLONE3"
-                    )
-                    raise primary
-                placement = {
-                    "schema": PRODUCTION_RUNTIME_PLACEMENT_T3_SCHEMA,
-                    "target": "measurement",
-                    "token": t3_before_getrandom["token"],
-                    "unit_name": t3_before_getrandom["unit_name"],
-                    "before_getrandom": t3_before_getrandom,
-                    "immediately_before_clone3": observed,
-                    "stable_across_boundaries": True,
-                }
-                if tuple(placement) != protocol.PRODUCTION_RUNTIME_PLACEMENT_T3_FIELDS:
-                    _fail("T3 placement receipt field order changed")
+                placement = _complete_t3_checkpoint_conformance_v180r12r4(
+                    cgroup.topology_receipt,
+                    before_getrandom=t3_before_getrandom,
+                    immediately_before_clone3=observed,
+                )
                 placement_t3_holder.append(placement)
 
             try:
@@ -6693,6 +6913,13 @@ def _topology_conformance_diagnostic_v180r12r4(
             runtime.CgroupTopologyConformanceErrorV180R12R4R3,
         ):
             return runtime.validate_topology_conformance_diagnostic_v180r12r4r3(
+                candidate.conformance_diagnostic
+            )
+        if isinstance(
+            candidate,
+            runtime.CgroupTopologyConformanceErrorV180R12R4R4,
+        ):
+            return runtime.validate_topology_conformance_diagnostic_v180r12r4r4(
                 candidate.conformance_diagnostic
             )
     return None
