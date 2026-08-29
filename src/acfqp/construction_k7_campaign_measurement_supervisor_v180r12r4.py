@@ -36,6 +36,10 @@ PROFILE_KEY = "construction_k7_campaign_measurement_supervisor_v180r12r4"
 
 MEMORY_MAX_BYTES = 16 * 1024 * 1024 * 1024
 PIDS_MAX = 2
+REQUIRED_MEASUREMENT_CONTROLLERS = ("memory", "pids")
+TOPOLOGY_CONFORMANCE_DIAGNOSTIC_SCHEMA = (
+    "acfqp.campaign_cgroup_topology_conformance_diagnostic.v180r12r4r3"
+)
 WALL_TIMEOUT_SECONDS = 14_400
 SUCCESSFUL_LEDGER_EVENT_COUNT = 625
 MAX_EVENT_COUNT = 4_096
@@ -587,7 +591,9 @@ FAILURE_STATE_FIELD_KEYS = frozenset(
         "completed_event_count", "message", "message_sha256",
         "process_may_remain", "output_may_exist", "partial_artifact_observations",
         "partial_artifact_observation_boundary",
-        "cgroup_failure_observation", "same_identity_rerun_forbidden",
+        "cgroup_failure_observation",
+        "cgroup_topology_conformance_diagnostic",
+        "same_identity_rerun_forbidden",
         "launch_substage", "launch_errno", "launch_child_created",
         "launch_pidfd_acquired", "launch_exec_observed",
         "successful_ledger_claimed", "counter_records_issued", "failure_state_id",
@@ -630,6 +636,193 @@ def _positive(value: Any, label: str) -> int:
 
 def _identity(domain: str, payload: Mapping[str, Any]) -> str:
     return domains.extension_content_id_v180r12r4e(domain, dict(payload))
+
+
+def _property_mismatch_rows(
+    expected: Mapping[str, Any], observed: Mapping[str, Any]
+) -> list[dict[str, Any]]:
+    """Return every exact semantic mismatch in stable field order."""
+
+    expected_values = dict(expected)
+    observed_values = dict(observed)
+    if set(expected_values) != set(observed_values):
+        _fail("topology conformance property keysets changed")
+    return [
+        {
+            "field": name,
+            "expected": expected_values[name],
+            "observed": observed_values[name],
+        }
+        for name in sorted(expected_values)
+        if expected_values[name] != observed_values[name]
+    ]
+
+
+def _canonical_controller_names(value: Any) -> bool:
+    return bool(
+        type(value) is list
+        and all(type(name) is str and name for name in value)
+        and value == sorted(set(value))
+    )
+
+
+def _source_unit_ownership_acquired(
+    placement_t1: Mapping[str, Any], placement_t2: Mapping[str, Any]
+) -> bool:
+    """Keep source-unit ownership distinct from full path/OFD conformance."""
+
+    t1 = dict(placement_t1)
+    t2 = dict(placement_t2)
+    unit_name = t1.get("unit_name")
+    membership = t1.get("source_membership")
+    return bool(
+        type(unit_name) is str
+        and unit_name
+        and type(membership) is str
+        and membership.endswith("/" + unit_name)
+        and t1.get("target") == "measurement"
+        and membership == t1.get("expected_source_membership")
+        and t1.get("self_pid_in_source_cgroup_procs") is True
+        and t2.get("target") == "measurement"
+        and t2.get("unit_name") == unit_name
+        and t2.get("token") == t1.get("token")
+        and t2.get("source_membership") == membership
+        and t2.get("expected_source_membership") == membership
+        and t2.get("self_pid") == t1.get("self_pid")
+        and t2.get("self_pid_in_source_cgroup_procs") is True
+    )
+
+
+def build_topology_conformance_diagnostic_v180r12r4r3(
+    *,
+    scope: str,
+    placement_t1: Mapping[str, Any],
+    placement_t2: Mapping[str, Any],
+    parent_snapshot: Mapping[str, Any],
+    measurement_snapshot: Mapping[str, Any],
+    expected_properties: Mapping[str, Any],
+    observed_properties: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Freeze full snapshots, per-field mismatches, and one typed cause."""
+
+    if scope not in {"PARENT_AND_CHILD_TOPOLOGY", "T1_T2_PLACEMENT"}:
+        _fail("topology conformance diagnostic scope changed")
+    t1 = loads_canonical_json(canonical_json_bytes(dict(placement_t1)))
+    t2 = loads_canonical_json(canonical_json_bytes(dict(placement_t2)))
+    parent = loads_canonical_json(canonical_json_bytes(dict(parent_snapshot)))
+    measurement = loads_canonical_json(
+        canonical_json_bytes(dict(measurement_snapshot))
+    )
+    expected = loads_canonical_json(
+        canonical_json_bytes(dict(expected_properties))
+    )
+    observed = loads_canonical_json(
+        canonical_json_bytes(dict(observed_properties))
+    )
+    mismatches = _property_mismatch_rows(expected, observed)
+    fields = ",".join(row["field"] for row in mismatches)
+    cause = (
+        None
+        if not mismatches
+        else {
+            "error_type": "CgroupTopologyConformanceErrorV180R12R4R3",
+            "failure_code": "CGROUP_TOPOLOGY_CONFORMANCE_FAILURE",
+            "scope": scope,
+            "message": "cgroup topology conformance mismatch: " + fields,
+        }
+    )
+    return {
+        "schema": TOPOLOGY_CONFORMANCE_DIAGNOSTIC_SCHEMA,
+        "scope": scope,
+        "unit_ownership_acquired": _source_unit_ownership_acquired(t1, t2),
+        "full_conformance": not mismatches,
+        "property_snapshots": {
+            "unit_ownership": {
+                "production_runtime_placement_t1": t1,
+                "production_runtime_placement_t2": t2,
+            },
+            "parent_delegation": parent,
+            "measurement_topology": measurement,
+        },
+        "expected_properties": expected,
+        "observed_properties": observed,
+        "mismatch_rows": mismatches,
+        "cause": cause,
+    }
+
+
+def validate_topology_conformance_diagnostic_v180r12r4r3(
+    value: Mapping[str, Any],
+) -> dict[str, Any]:
+    document = loads_canonical_json(canonical_json_bytes(dict(value)))
+    expected_fields = {
+        "schema", "scope", "unit_ownership_acquired", "full_conformance",
+        "property_snapshots", "expected_properties", "observed_properties",
+        "mismatch_rows", "cause",
+    }
+    if (
+        set(document) != expected_fields
+        or document.get("schema") != TOPOLOGY_CONFORMANCE_DIAGNOSTIC_SCHEMA
+        or document.get("scope")
+        not in {"PARENT_AND_CHILD_TOPOLOGY", "T1_T2_PLACEMENT"}
+        or type(document.get("unit_ownership_acquired")) is not bool
+        or type(document.get("full_conformance")) is not bool
+        or type(document.get("property_snapshots")) is not dict
+        or set(document["property_snapshots"])
+        != {"unit_ownership", "parent_delegation", "measurement_topology"}
+        or type(document.get("expected_properties")) is not dict
+        or type(document.get("observed_properties")) is not dict
+    ):
+        _fail("topology conformance diagnostic structure changed")
+    snapshots = document["property_snapshots"]
+    ownership = snapshots["unit_ownership"]
+    if (
+        type(ownership) is not dict
+        or set(ownership)
+        != {"production_runtime_placement_t1", "production_runtime_placement_t2"}
+        or type(ownership.get("production_runtime_placement_t1")) is not dict
+        or type(ownership.get("production_runtime_placement_t2")) is not dict
+        or type(snapshots["parent_delegation"]) is not dict
+        or type(snapshots["measurement_topology"]) is not dict
+        or document["unit_ownership_acquired"]
+        is not _source_unit_ownership_acquired(
+            ownership["production_runtime_placement_t1"],
+            ownership["production_runtime_placement_t2"],
+        )
+    ):
+        _fail("topology diagnostic unit-ownership replay changed")
+    mismatches = _property_mismatch_rows(
+        document["expected_properties"], document["observed_properties"]
+    )
+    expected_cause = (
+        None
+        if not mismatches
+        else {
+            "error_type": "CgroupTopologyConformanceErrorV180R12R4R3",
+            "failure_code": "CGROUP_TOPOLOGY_CONFORMANCE_FAILURE",
+            "scope": document["scope"],
+            "message": "cgroup topology conformance mismatch: "
+            + ",".join(row["field"] for row in mismatches),
+        }
+    )
+    if (
+        document.get("mismatch_rows") != mismatches
+        or document.get("full_conformance") is not (not mismatches)
+        or document.get("cause") != expected_cause
+    ):
+        _fail("topology conformance diagnostic replay changed")
+    return document
+
+
+class CgroupTopologyConformanceErrorV180R12R4R3(RuntimeError):
+    def __init__(self, diagnostic: Mapping[str, Any]) -> None:
+        retained = validate_topology_conformance_diagnostic_v180r12r4r3(
+            diagnostic
+        )
+        if retained["full_conformance"] is not False:
+            _fail("conformant topology cannot raise a conformance error")
+        super().__init__(retained["cause"]["message"])
+        self.conformance_diagnostic = retained
 
 
 def _canonical_evidence_document(value: Any) -> tuple[str, str, dict[str, Any]]:
@@ -709,6 +902,9 @@ class FailureCodeV180R12R4(str, Enum):
     WORKER_BIRTH_FAILURE = "WORKER_BIRTH_FAILURE"
     WORKER_REPLAY_FAILURE = "WORKER_REPLAY_FAILURE"
     PROCESS_REAP_FAILURE = "PROCESS_REAP_FAILURE"
+    CGROUP_TOPOLOGY_CONFORMANCE_FAILURE = (
+        "CGROUP_TOPOLOGY_CONFORMANCE_FAILURE"
+    )
     SUBJECT_WRITE_FAILURE = "SUBJECT_WRITE_FAILURE"
     SUBJECT_COMMIT_FAILURE = "SUBJECT_COMMIT_FAILURE"
     WINDOW_CLOSE_FAILURE = "WINDOW_CLOSE_FAILURE"
@@ -1277,54 +1473,172 @@ class MeasurementCgroupTopologyReceiptV180R12R4:
         if len(identities) != len(nodes):
             _fail("cgroup topology nodes must be inode-distinct")
         if (
-            self.filesystem_type != "cgroup2"
-            or self.controllers != ("memory", "pids")
-            or self.subtree_control != ("memory", "pids")
-            or self.root_memory_max_bytes != MEMORY_MAX_BYTES
-            or self.root_pids_max != PIDS_MAX
-            or self.supervisor_leaf_pids_max != 1
-            or self.worker_leaf_pids_max != 1
-            or self.root_populated_before_birth is not False
-            or self.root_process_count_before_birth != 0
-            or self.leaf_process_counts_before_birth != (0, 0)
-            or self.measurement_root.role != "MEASUREMENT_ROOT"
-            or self.supervisor_leaf.role != "SUPERVISOR"
-            or self.worker_leaf.role != "WORKER"
-            or len({node.device for node in nodes}) != 1
-            or parent_fact.get("schema") != "acfqp.v180r12r4_cgroup_parent_fact.v1"
-            or parent_fact.get("mount_fstype") != "cgroup2"
-            or parent_fact.get("parent_path") != self.delegated_parent.path
-            or parent_fact.get("parent_device") != self.delegated_parent.device
-            or parent_fact.get("parent_inode") != self.delegated_parent.inode
-            or parent_fact.get("mode") != stat.S_IMODE(self.delegated_parent.mode)
-            or parent_fact.get("controllers") != ["memory", "pids"]
-            or parent_fact.get("subtree_control") != ["memory", "pids"]
-            or self.measurement_root.parent_path != self.delegated_parent.path
-            or self.measurement_root.parent_membership_path
-            != self.delegated_parent.membership_path
-            or self.supervisor_leaf.parent_path != self.measurement_root.path
-            or self.supervisor_leaf.parent_membership_path
-            != self.measurement_root.membership_path
-            or self.worker_leaf.parent_path != self.measurement_root.path
-            or self.worker_leaf.parent_membership_path
-            != self.measurement_root.membership_path
-            or self.measurement_root.path.rsplit("/", 1)[0]
-            != self.delegated_parent.path
-            or self.supervisor_leaf.path.rsplit("/", 1)[0]
-            != self.measurement_root.path
-            or self.worker_leaf.path.rsplit("/", 1)[0]
-            != self.measurement_root.path
-            or self.measurement_root.membership_path.rsplit("/", 1)[0]
-            != self.delegated_parent.membership_path.rstrip("/")
-            or self.supervisor_leaf.membership_path.rsplit("/", 1)[0]
-            != self.measurement_root.membership_path
-            or self.worker_leaf.membership_path.rsplit("/", 1)[0]
-            != self.measurement_root.membership_path
-            or self.measurement_root.path
-            in {self.supervisor_leaf.path, self.worker_leaf.path}
-            or self.supervisor_leaf.path == self.worker_leaf.path
+            type(self.production_runtime_placement_t1) is not dict
+            or type(self.production_runtime_placement_t2) is not dict
         ):
-            _fail("cgroup-v2 sibling-leaf topology or limits changed")
+            _fail("cgroup topology placement receipts must be canonical mappings")
+        parent_controllers = parent_fact.get("controllers")
+        parent_subtree_control = parent_fact.get("subtree_control")
+        required = set(REQUIRED_MEASUREMENT_CONTROLLERS)
+        expected_child_controllers = (
+            parent_subtree_control
+            if type(parent_subtree_control) is list
+            else list(REQUIRED_MEASUREMENT_CONTROLLERS)
+        )
+        measurement_snapshot = {
+            "delegated_parent": self.delegated_parent.to_document(),
+            "measurement_root": self.measurement_root.to_document(),
+            "supervisor_leaf": self.supervisor_leaf.to_document(),
+            "worker_leaf": self.worker_leaf.to_document(),
+            "filesystem_type": self.filesystem_type,
+            "controllers": list(self.controllers),
+            "subtree_control": list(self.subtree_control),
+            "root_memory_max_bytes": self.root_memory_max_bytes,
+            "root_pids_max": self.root_pids_max,
+            "supervisor_leaf_pids_max": self.supervisor_leaf_pids_max,
+            "worker_leaf_pids_max": self.worker_leaf_pids_max,
+            "root_populated_before_birth": self.root_populated_before_birth,
+            "root_process_count_before_birth": self.root_process_count_before_birth,
+            "leaf_process_counts_before_birth": list(
+                self.leaf_process_counts_before_birth
+            ),
+        }
+        expected_topology = {
+            "child.controllers": list(expected_child_controllers),
+            "child.filesystem_type": "cgroup2",
+            "child.leaf_process_counts_before_birth": [0, 0],
+            "child.root_memory_max_bytes": MEMORY_MAX_BYTES,
+            "child.root_pids_max": PIDS_MAX,
+            "child.root_populated_before_birth": False,
+            "child.root_process_count_before_birth": 0,
+            "child.subtree_control": list(REQUIRED_MEASUREMENT_CONTROLLERS),
+            "child.supervisor_leaf_pids_max": 1,
+            "child.worker_leaf_pids_max": 1,
+            "nodes.all_same_device": True,
+            "nodes.measurement_root_role": "MEASUREMENT_ROOT",
+            "nodes.supervisor_role": "SUPERVISOR",
+            "nodes.worker_role": "WORKER",
+            "parent.delegated_mode": parent_fact.get("mode"),
+            "parent.delegated_parent_device": parent_fact.get("parent_device"),
+            "parent.delegated_parent_inode": parent_fact.get("parent_inode"),
+            "parent.delegated_parent_path": parent_fact.get("parent_path"),
+            "parent.mount_fstype": "cgroup2",
+            "parent.controllers_are_canonical": True,
+            "parent.required_controllers_present": True,
+            "parent.required_subtree_control_present": True,
+            "parent.schema": "acfqp.v180r12r4_cgroup_parent_fact.v1",
+            "parent.subtree_control_are_canonical": True,
+            "parent.subtree_control_subset_of_controllers": True,
+            "paths.measurement_declared_membership_parent": (
+                self.delegated_parent.membership_path
+            ),
+            "paths.measurement_declared_parent": self.delegated_parent.path,
+            "paths.measurement_membership_parent": (
+                self.delegated_parent.membership_path.rstrip("/")
+            ),
+            "paths.measurement_parent": self.delegated_parent.path,
+            "paths.supervisor_declared_membership_parent": (
+                self.measurement_root.membership_path
+            ),
+            "paths.supervisor_declared_parent": self.measurement_root.path,
+            "paths.supervisor_membership_parent": self.measurement_root.membership_path,
+            "paths.supervisor_parent": self.measurement_root.path,
+            "paths.worker_declared_membership_parent": (
+                self.measurement_root.membership_path
+            ),
+            "paths.worker_declared_parent": self.measurement_root.path,
+            "paths.worker_membership_parent": self.measurement_root.membership_path,
+            "paths.worker_parent": self.measurement_root.path,
+            "paths.leaves_are_distinct": True,
+            "paths.root_is_not_leaf": True,
+        }
+        observed_topology = {
+            "child.controllers": list(self.controllers),
+            "child.filesystem_type": self.filesystem_type,
+            "child.leaf_process_counts_before_birth": list(
+                self.leaf_process_counts_before_birth
+            ),
+            "child.root_memory_max_bytes": self.root_memory_max_bytes,
+            "child.root_pids_max": self.root_pids_max,
+            "child.root_populated_before_birth": self.root_populated_before_birth,
+            "child.root_process_count_before_birth": self.root_process_count_before_birth,
+            "child.subtree_control": list(self.subtree_control),
+            "child.supervisor_leaf_pids_max": self.supervisor_leaf_pids_max,
+            "child.worker_leaf_pids_max": self.worker_leaf_pids_max,
+            "nodes.all_same_device": len({node.device for node in nodes}) == 1,
+            "nodes.measurement_root_role": self.measurement_root.role,
+            "nodes.supervisor_role": self.supervisor_leaf.role,
+            "nodes.worker_role": self.worker_leaf.role,
+            "parent.delegated_mode": stat.S_IMODE(self.delegated_parent.mode),
+            "parent.delegated_parent_device": self.delegated_parent.device,
+            "parent.delegated_parent_inode": self.delegated_parent.inode,
+            "parent.delegated_parent_path": self.delegated_parent.path,
+            "parent.mount_fstype": parent_fact.get("mount_fstype"),
+            "parent.controllers_are_canonical": _canonical_controller_names(
+                parent_controllers
+            ),
+            "parent.required_controllers_present": (
+                type(parent_controllers) is list
+                and required.issubset(parent_controllers)
+            ),
+            "parent.required_subtree_control_present": (
+                type(parent_subtree_control) is list
+                and required.issubset(parent_subtree_control)
+            ),
+            "parent.schema": parent_fact.get("schema"),
+            "parent.subtree_control_are_canonical": (
+                _canonical_controller_names(parent_subtree_control)
+            ),
+            "parent.subtree_control_subset_of_controllers": (
+                type(parent_controllers) is list
+                and type(parent_subtree_control) is list
+                and set(parent_subtree_control).issubset(parent_controllers)
+            ),
+            "paths.measurement_declared_membership_parent": (
+                self.measurement_root.parent_membership_path
+            ),
+            "paths.measurement_declared_parent": self.measurement_root.parent_path,
+            "paths.measurement_membership_parent": (
+                self.measurement_root.membership_path.rsplit("/", 1)[0]
+            ),
+            "paths.measurement_parent": (
+                self.measurement_root.path.rsplit("/", 1)[0]
+            ),
+            "paths.supervisor_declared_membership_parent": (
+                self.supervisor_leaf.parent_membership_path
+            ),
+            "paths.supervisor_declared_parent": self.supervisor_leaf.parent_path,
+            "paths.supervisor_membership_parent": (
+                self.supervisor_leaf.membership_path.rsplit("/", 1)[0]
+            ),
+            "paths.supervisor_parent": self.supervisor_leaf.path.rsplit("/", 1)[0],
+            "paths.worker_declared_membership_parent": (
+                self.worker_leaf.parent_membership_path
+            ),
+            "paths.worker_declared_parent": self.worker_leaf.parent_path,
+            "paths.worker_membership_parent": (
+                self.worker_leaf.membership_path.rsplit("/", 1)[0]
+            ),
+            "paths.worker_parent": self.worker_leaf.path.rsplit("/", 1)[0],
+            "paths.leaves_are_distinct": (
+                self.supervisor_leaf.path != self.worker_leaf.path
+            ),
+            "paths.root_is_not_leaf": self.measurement_root.path
+            not in {self.supervisor_leaf.path, self.worker_leaf.path},
+        }
+        topology_diagnostic = build_topology_conformance_diagnostic_v180r12r4r3(
+            scope="PARENT_AND_CHILD_TOPOLOGY",
+            placement_t1=self.production_runtime_placement_t1,
+            placement_t2=self.production_runtime_placement_t2,
+            parent_snapshot=parent_fact,
+            measurement_snapshot=measurement_snapshot,
+            expected_properties=expected_topology,
+            observed_properties=observed_topology,
+        )
+        if topology_diagnostic["full_conformance"] is not True:
+            raise CgroupTopologyConformanceErrorV180R12R4R3(
+                topology_diagnostic
+            )
         if (
             type(self.control_files) is not tuple
             or any(type(row) is not CgroupControlFileOFDV180R12R4 for row in self.control_files)
@@ -1342,11 +1656,6 @@ class MeasurementCgroupTopologyReceiptV180R12R4:
         }
         if any(row.device != node_by_role[row.node_role].device for row in self.control_files):
             _fail("cgroup control file crossed its cgroup filesystem device")
-        if (
-            type(self.production_runtime_placement_t1) is not dict
-            or type(self.production_runtime_placement_t2) is not dict
-        ):
-            _fail("cgroup topology placement receipts must be canonical mappings")
         placement_t1 = loads_canonical_json(
             canonical_json_bytes(self.production_runtime_placement_t1)
         )
@@ -1364,69 +1673,156 @@ class MeasurementCgroupTopologyReceiptV180R12R4:
         if not (
             set(placement_t1) == set(PRODUCTION_RUNTIME_PLACEMENT_T1_FIELDS)
             and set(placement_t2) == set(PRODUCTION_RUNTIME_PLACEMENT_T2_FIELDS)
-            and placement_t1.get("schema") == PRODUCTION_RUNTIME_PLACEMENT_T1_SCHEMA
-            and placement_t1.get("target") == "measurement"
-            and placement_t1.get("slice") == "app.slice"
-            and placement_t1.get("source_membership")
-            == placement_t1.get("expected_source_membership")
-            and type(placement_t1.get("self_pid")) is int
-            and placement_t1["self_pid"] > 0
-            and placement_t1.get("self_pid_in_source_cgroup_procs") is True
-            and placement_t1.get("nearest_common_ancestor_is_app_slice") is True
-            and placement_t1.get("parent_cgroup_procs_o_wronly_openable") is True
-            and placement_t1.get("planned_measurement_root_absent") is True
-            and placement_t1.get("t1_complete_before_child_popen") is True
             and type(t1_service) is dict
             and type(t1_parent) is dict
             and type(t1_mount) is dict
+            and type(t1_root) is dict
             and all(
                 set(row) == fd_fact_fields
                 for row in (t1_parent, t1_mount, t1_service)
             )
-            and (t1_parent.get("fd"), t1_parent.get("role"), t1_parent.get("access"))
-            == (250, "DELEGATED_CGROUP_PARENT_DIRECTORY", "O_RDONLY")
-            and (t1_mount.get("fd"), t1_mount.get("role"), t1_mount.get("access"))
-            == (251, "CGROUP2_MOUNT_DIRECTORY", "O_PATH")
-            and (t1_service.get("fd"), t1_service.get("role"), t1_service.get("access"))
-            == (252, "SOURCE_SYSTEMD_SERVICE_DIRECTORY", "O_RDONLY")
-            and t1_parent.get("path") == placement_t1.get("nearest_common_ancestor_path")
-            and t1_parent.get("path") == self.delegated_parent.path
-            and t1_parent.get("device") == self.delegated_parent.device
-            and t1_parent.get("inode") == self.delegated_parent.inode
-            and t1_service.get("device") == t1_parent.get("device")
-            and type(t1_root) is dict
-            and t1_root.get("phase") == "BEFORE_POPEN"
-            and t1_root.get("root_state") == "ABSENT"
-            and t1_root.get("ownership_acquired") is False
-            and t1_root.get("residual_tree_or_process_possible") is False
-            and placement_t2.get("schema") == PRODUCTION_RUNTIME_PLACEMENT_T2_SCHEMA
-            and placement_t2.get("boundary")
-            == "T2_BEFORE_SCIENTIFIC_ATTEMPT_O_EXCL"
-            and placement_t2.get("target") == "measurement"
-            and placement_t2.get("token") == placement_t1.get("token")
-            and placement_t2.get("unit_name") == placement_t1.get("unit_name")
-            and placement_t2.get("expected_source_membership")
-            == placement_t1.get("expected_source_membership")
-            and placement_t2.get("source_membership")
-            == placement_t1.get("source_membership")
-            and placement_t2.get("self_pid") == placement_t1.get("self_pid")
-            and placement_t2.get("self_pid_in_source_cgroup_procs") is True
-            and placement_t2.get("source_service_fd") == 252
-            and placement_t2.get("source_service_device")
-            == t1_service.get("device")
-            and placement_t2.get("source_service_inode")
-            == t1_service.get("inode")
-            and placement_t2.get("cgroup_namespace_inode")
-            == placement_t1.get("cgroup_namespace_inode")
-            and placement_t2.get("nearest_common_ancestor_path")
-            == placement_t1.get("nearest_common_ancestor_path")
-            and placement_t2.get("nearest_common_ancestor_is_app_slice") is True
-            and placement_t2.get("parent_cgroup_procs_o_wronly_openable") is True
-            and placement_t2.get("planned_measurement_root_state") == "ABSENT"
-            and placement_t2.get("scientific_progress_present_paths") == []
-            and placement_t2.get("scientific_progress_absent") is True
         ):
-            _fail("T1/T2 production placement chain changed")
+            _fail("T1/T2 production placement structure changed")
+        expected_placement = {
+            "t1.ancestor_is_app_slice": True,
+            "t1.complete_before_child_popen": True,
+            "t1.mount_fd_role_access": [251, "CGROUP2_MOUNT_DIRECTORY", "O_PATH"],
+            "t1.parent_device": self.delegated_parent.device,
+            "t1.parent_fd_role_access": [
+                250, "DELEGATED_CGROUP_PARENT_DIRECTORY", "O_RDONLY"
+            ],
+            "t1.parent_inode": self.delegated_parent.inode,
+            "t1.parent_path": self.delegated_parent.path,
+            "t1.parent_path_is_ancestor": True,
+            "t1.parent_procs_openable": True,
+            "t1.pid_in_source_unit": True,
+            "t1.pid_positive": True,
+            "t1.root_absent": True,
+            "t1.root_observation_ownership_acquired": False,
+            "t1.root_observation_phase": "BEFORE_POPEN",
+            "t1.root_observation_residual_possible": False,
+            "t1.root_observation_state": "ABSENT",
+            "t1.schema": PRODUCTION_RUNTIME_PLACEMENT_T1_SCHEMA,
+            "t1.service_device_matches_parent": True,
+            "t1.service_fd_role_access": [
+                252, "SOURCE_SYSTEMD_SERVICE_DIRECTORY", "O_RDONLY"
+            ],
+            "t1.slice": "app.slice",
+            "t1.source_membership": placement_t1.get("expected_source_membership"),
+            "t1.target": "measurement",
+            "t2.ancestor_is_app_slice": True,
+            "t2.ancestor_path": placement_t1.get("nearest_common_ancestor_path"),
+            "t2.boundary": "T2_BEFORE_SCIENTIFIC_ATTEMPT_O_EXCL",
+            "t2.cgroup_namespace_inode": placement_t1.get("cgroup_namespace_inode"),
+            "t2.expected_source_membership": placement_t1.get(
+                "expected_source_membership"
+            ),
+            "t2.parent_procs_openable": True,
+            "t2.pid": placement_t1.get("self_pid"),
+            "t2.pid_in_source_unit": True,
+            "t2.progress_absent": True,
+            "t2.progress_present_paths": [],
+            "t2.root_state": "ABSENT",
+            "t2.schema": PRODUCTION_RUNTIME_PLACEMENT_T2_SCHEMA,
+            "t2.service_device": t1_service.get("device"),
+            "t2.service_fd": 252,
+            "t2.service_inode": t1_service.get("inode"),
+            "t2.source_membership": placement_t1.get("source_membership"),
+            "t2.target": "measurement",
+            "t2.token": placement_t1.get("token"),
+            "t2.unit_name": placement_t1.get("unit_name"),
+        }
+        observed_placement = {
+            "t1.ancestor_is_app_slice": placement_t1.get(
+                "nearest_common_ancestor_is_app_slice"
+            ),
+            "t1.complete_before_child_popen": placement_t1.get(
+                "t1_complete_before_child_popen"
+            ),
+            "t1.mount_fd_role_access": [
+                t1_mount.get("fd"), t1_mount.get("role"), t1_mount.get("access")
+            ],
+            "t1.parent_device": t1_parent.get("device"),
+            "t1.parent_fd_role_access": [
+                t1_parent.get("fd"), t1_parent.get("role"), t1_parent.get("access")
+            ],
+            "t1.parent_inode": t1_parent.get("inode"),
+            "t1.parent_path": t1_parent.get("path"),
+            "t1.parent_path_is_ancestor": t1_parent.get("path")
+            == placement_t1.get("nearest_common_ancestor_path"),
+            "t1.parent_procs_openable": placement_t1.get(
+                "parent_cgroup_procs_o_wronly_openable"
+            ),
+            "t1.pid_in_source_unit": placement_t1.get(
+                "self_pid_in_source_cgroup_procs"
+            ),
+            "t1.pid_positive": type(placement_t1.get("self_pid")) is int
+            and placement_t1["self_pid"] > 0,
+            "t1.root_absent": placement_t1.get("planned_measurement_root_absent"),
+            "t1.root_observation_ownership_acquired": t1_root.get(
+                "ownership_acquired"
+            ),
+            "t1.root_observation_phase": t1_root.get("phase"),
+            "t1.root_observation_residual_possible": t1_root.get(
+                "residual_tree_or_process_possible"
+            ),
+            "t1.root_observation_state": t1_root.get("root_state"),
+            "t1.schema": placement_t1.get("schema"),
+            "t1.service_device_matches_parent": t1_service.get("device")
+            == t1_parent.get("device"),
+            "t1.service_fd_role_access": [
+                t1_service.get("fd"),
+                t1_service.get("role"),
+                t1_service.get("access"),
+            ],
+            "t1.slice": placement_t1.get("slice"),
+            "t1.source_membership": placement_t1.get("source_membership"),
+            "t1.target": placement_t1.get("target"),
+            "t2.ancestor_is_app_slice": placement_t2.get(
+                "nearest_common_ancestor_is_app_slice"
+            ),
+            "t2.ancestor_path": placement_t2.get("nearest_common_ancestor_path"),
+            "t2.boundary": placement_t2.get("boundary"),
+            "t2.cgroup_namespace_inode": placement_t2.get(
+                "cgroup_namespace_inode"
+            ),
+            "t2.expected_source_membership": placement_t2.get(
+                "expected_source_membership"
+            ),
+            "t2.parent_procs_openable": placement_t2.get(
+                "parent_cgroup_procs_o_wronly_openable"
+            ),
+            "t2.pid": placement_t2.get("self_pid"),
+            "t2.pid_in_source_unit": placement_t2.get(
+                "self_pid_in_source_cgroup_procs"
+            ),
+            "t2.progress_absent": placement_t2.get("scientific_progress_absent"),
+            "t2.progress_present_paths": placement_t2.get(
+                "scientific_progress_present_paths"
+            ),
+            "t2.root_state": placement_t2.get("planned_measurement_root_state"),
+            "t2.schema": placement_t2.get("schema"),
+            "t2.service_device": placement_t2.get("source_service_device"),
+            "t2.service_fd": placement_t2.get("source_service_fd"),
+            "t2.service_inode": placement_t2.get("source_service_inode"),
+            "t2.source_membership": placement_t2.get("source_membership"),
+            "t2.target": placement_t2.get("target"),
+            "t2.token": placement_t2.get("token"),
+            "t2.unit_name": placement_t2.get("unit_name"),
+        }
+        placement_diagnostic = build_topology_conformance_diagnostic_v180r12r4r3(
+            scope="T1_T2_PLACEMENT",
+            placement_t1=placement_t1,
+            placement_t2=placement_t2,
+            parent_snapshot=parent_fact,
+            measurement_snapshot=measurement_snapshot,
+            expected_properties=expected_placement,
+            observed_properties=observed_placement,
+        )
+        if placement_diagnostic["full_conformance"] is not True:
+            raise CgroupTopologyConformanceErrorV180R12R4R3(
+                placement_diagnostic
+            )
         object.__setattr__(
             self,
             "production_runtime_placement_t1",
@@ -2019,6 +2415,7 @@ class CampaignFailureStateV180R12R4:
         FailureArtifactObservationV180R12R4, ...
     ]
     cgroup_failure_observation: FailureCgroupObservationV180R12R4 | None
+    cgroup_topology_conformance_diagnostic: Mapping[str, Any] | None = None
     launch_substage: str | None = None
     launch_errno: int | None = None
     launch_child_created: bool = False
@@ -2098,6 +2495,35 @@ class CampaignFailureStateV180R12R4:
             is not FailureCgroupObservationV180R12R4
         ):
             _fail("failure artifact/cgroup observation closure is malformed")
+        if self.cgroup_topology_conformance_diagnostic is None:
+            topology_diagnostic = None
+        else:
+            if not isinstance(
+                self.cgroup_topology_conformance_diagnostic, Mapping
+            ):
+                _fail("failure topology conformance diagnostic is mistyped")
+            topology_diagnostic = (
+                validate_topology_conformance_diagnostic_v180r12r4r3(
+                    self.cgroup_topology_conformance_diagnostic
+                )
+            )
+            if topology_diagnostic["full_conformance"] is not False:
+                _fail("failure cannot retain a conformant topology diagnostic")
+            object.__setattr__(
+                self,
+                "cgroup_topology_conformance_diagnostic",
+                MappingProxyType(topology_diagnostic),
+            )
+        topology_failure = (
+            self.failure_code
+            is FailureCodeV180R12R4.CGROUP_TOPOLOGY_CONFORMANCE_FAILURE
+        )
+        if (
+            topology_failure is not (topology_diagnostic is not None)
+            or topology_failure
+            and self.phase is not CampaignPhaseV180R12R4.STAGE
+        ):
+            _fail("failure code and topology conformance diagnostic disagree")
         observations_by_path = {
             row.relative_path: row for row in self.partial_artifact_observations
         }
@@ -2131,6 +2557,7 @@ class CampaignFailureStateV180R12R4:
                     if self.cgroup_failure_observation is None
                     else self.cgroup_failure_observation.to_document()
                 ),
+                "cgroup_topology_conformance_diagnostic": topology_diagnostic,
             }
         )
         if len(nested_raw) > _FAILURE_ARTIFACT_METADATA_BYTE_CAP:
@@ -2175,6 +2602,11 @@ class CampaignFailureStateV180R12R4:
                 None
                 if self.cgroup_failure_observation is None
                 else self.cgroup_failure_observation.to_document()
+            ),
+            "cgroup_topology_conformance_diagnostic": (
+                None
+                if self.cgroup_topology_conformance_diagnostic is None
+                else dict(self.cgroup_topology_conformance_diagnostic)
             ),
             "same_identity_rerun_forbidden": self.same_identity_rerun_forbidden,
             "successful_ledger_claimed": False,
@@ -3121,6 +3553,7 @@ class CampaignMeasurementSupervisorV180R12R4:
             FailureArtifactObservationV180R12R4, ...
         ],
         cgroup_failure_observation: FailureCgroupObservationV180R12R4 | None,
+        cgroup_topology_conformance_diagnostic: Mapping[str, Any] | None = None,
         launch_substage: str | None = None,
         launch_errno: int | None = None,
         launch_child_created: bool = False,
@@ -3132,24 +3565,27 @@ class CampaignMeasurementSupervisorV180R12R4:
         if self._failed or self._closed:
             _fail("failed or closed campaign supervisor cannot fail again")
         receipt = CampaignFailureStateV180R12R4(
-            self.protocol_id,
-            self.authorization_id,
-            self.attempt_id,
-            failure_code,
-            phase,
-            operation_id,
-            self.last_event_id,
-            self.event_count,
-            message,
-            process_may_remain,
-            output_may_exist,
-            partial_artifact_observations,
-            cgroup_failure_observation,
-            launch_substage,
-            launch_errno,
-            launch_child_created,
-            launch_pidfd_acquired,
-            launch_exec_observed,
+            protocol_id=self.protocol_id,
+            authorization_id=self.authorization_id,
+            attempt_id=self.attempt_id,
+            failure_code=failure_code,
+            phase=phase,
+            operation_id=operation_id,
+            last_event_id=self.last_event_id,
+            completed_event_count=self.event_count,
+            message=message,
+            process_may_remain=process_may_remain,
+            output_may_exist=output_may_exist,
+            partial_artifact_observations=partial_artifact_observations,
+            cgroup_failure_observation=cgroup_failure_observation,
+            cgroup_topology_conformance_diagnostic=(
+                cgroup_topology_conformance_diagnostic
+            ),
+            launch_substage=launch_substage,
+            launch_errno=launch_errno,
+            launch_child_created=launch_child_created,
+            launch_pidfd_acquired=launch_pidfd_acquired,
+            launch_exec_observed=launch_exec_observed,
         )
         self._failed = True
         return receipt
@@ -3189,7 +3625,13 @@ def supervisor_contract_v180r12r4() -> dict[str, Any]:
         "io_transfer_graph_rows": [list(row) for row in IO_TRANSFER_GRAPH_ROWS],
         "io_transfer_returned_syscall_chunks_required": True,
         "cgroup_topology": "EMPTY_ROOT_WITH_SUPERVISOR_AND_WORKER_SIBLING_LEAVES",
-        "cgroup_controllers": ["memory", "pids"],
+        "required_parent_controllers": list(REQUIRED_MEASUREMENT_CONTROLLERS),
+        "measurement_root_available_controllers_source": (
+            "PARENT_SUBTREE_CONTROL"
+        ),
+        "measurement_root_enabled_controllers": list(
+            REQUIRED_MEASUREMENT_CONTROLLERS
+        ),
         "observer_owns_append_only_ledger": True,
         "intent_outcome_share_operation_id": True,
         "failure_preserves_exact_prefix": True,
@@ -3258,6 +3700,7 @@ __all__ = (
     "CgroupControlFileOFDV180R12R4",
     "CgroupControlFileReadbackV180R12R4",
     "CgroupNodeIdentityV180R12R4",
+    "CgroupTopologyConformanceErrorV180R12R4R3",
     "CgroupV2ObservationReceiptV180R12R4",
     "ConstructionK7CampaignMeasurementSupervisorV180R12R4Error",
     "EVENT_KIND_ROLE_PHASES",
@@ -3284,6 +3727,7 @@ __all__ = (
     "MeasurementCgroupTopologyReceiptV180R12R4",
     "PHASE_ORDER",
     "PIDS_MAX",
+    "REQUIRED_MEASUREMENT_CONTROLLERS",
     "PROTOCOL_OPERATION_FAMILIES",
     "PRODUCTION_RUNTIME_PLACEMENT_T1_FIELDS",
     "PRODUCTION_RUNTIME_PLACEMENT_T2_FIELDS",
@@ -3295,10 +3739,13 @@ __all__ = (
     "RUNTIME_EVIDENCE_DOCUMENT_FIELD_KEYSET_ROWS",
     "SUCCESSFUL_LEDGER_EVENT_COUNT",
     "TYPED_LAUNCH_FAILURE_SUBSTAGES",
+    "TOPOLOGY_CONFORMANCE_DIAGNOSTIC_SCHEMA",
     "WALL_TIMEOUT_SECONDS",
     "build_campaign_operation_schedule_v180r12r4",
     "build_campaign_success_event_plan_v180r12r4",
     "campaign_event_payload_v180r12r4",
+    "build_topology_conformance_diagnostic_v180r12r4r3",
     "supervisor_contract_v180r12r4",
+    "validate_topology_conformance_diagnostic_v180r12r4r3",
     "validate_campaign_io_transfer_edge_v180r12r4",
 )

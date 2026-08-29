@@ -115,6 +115,44 @@ def _placement_t1(target: str) -> dict[str, object]:
     }
 
 
+def _topology_failure():
+    t1 = _placement_t1("measurement")
+    t2 = {
+        "target": t1["target"],
+        "token": t1["token"],
+        "unit_name": t1["unit_name"],
+        "source_membership": t1["source_membership"],
+        "expected_source_membership": t1["expected_source_membership"],
+        "self_pid": t1["self_pid"],
+        "self_pid_in_source_cgroup_procs": True,
+    }
+    diagnostic = (
+        supervisor.build_topology_conformance_diagnostic_v180r12r4r3(
+            scope="PARENT_AND_CHILD_TOPOLOGY",
+            placement_t1=t1,
+            placement_t2=t2,
+            parent_snapshot={
+                "controllers": ["cpu", "memory", "pids"],
+                "subtree_control": ["cpu", "memory", "pids"],
+            },
+            measurement_snapshot={
+                "controllers": ["memory", "pids"],
+                "subtree_control": ["memory", "pids"],
+            },
+            expected_properties={
+                "measurement.controllers": ["cpu", "memory", "pids"],
+            },
+            observed_properties={
+                "measurement.controllers": ["memory", "pids"],
+            },
+        )
+    )
+    return (
+        supervisor.CgroupTopologyConformanceErrorV180R12R4R3(diagnostic),
+        diagnostic,
+    )
+
+
 def test_emergency_reserve_is_exact_committed_heap_and_precedes_attempt(
     tmp_path: Path,
 ) -> None:
@@ -1039,6 +1077,68 @@ def test_alarm_at_neutralize_call_entry_preserves_owned_primary_and_failure(
         store.close()
 
 
+@pytest.mark.parametrize("partial_cleanup_failure", [False, True])
+def test_topology_failure_keeps_exact_diagnostic_across_internal_cleanup(
+    tmp_path: Path,
+    partial_cleanup_failure: bool,
+) -> None:
+    authority, attempt_document, _manifest = _attempt_fixture()
+    topology_error, diagnostic = _topology_failure()
+
+    class FailingAdapter:
+        def create_cgroup(self, _attempt):
+            if partial_cleanup_failure:
+                raise run.V180R12R4PartialCgroupCreateFailure(
+                    ("synthetic root cleanup failure",),
+                    ({}, {}, {}),
+                ) from topology_error
+            raise topology_error
+
+    store = run.DurableStoreV180R12R4(tmp_path)
+    expected_error = (
+        run.V180R12R4PartialCgroupCreateFailure
+        if partial_cleanup_failure
+        else supervisor.CgroupTopologyConformanceErrorV180R12R4R3
+    )
+    try:
+        with pytest.raises(expected_error):
+            run.run_one_shot_outer_v180r12r4(
+                store=store,
+                adapter=FailingAdapter(),
+                attempt_document=attempt_document,
+                attempt_authority=authority,
+                protocol_id=authority.protocol_id,
+                authorization_id=authority.authorization_id,
+                attempt_id=authority.attempt_id,
+                campaign_deadline_ns=(
+                    run.time.monotonic_ns() + 60 * run.NANOSECONDS_PER_SECOND
+                ),
+                forbidden_progress_paths=(),
+            )
+        failure = json.loads(
+            store.read_exact(run.FAILURE_RELATIVE_PATH, 4 * 1024 * 1024)
+        )
+        assert (
+            failure["failure_code"]
+            == "CGROUP_TOPOLOGY_CONFORMANCE_FAILURE"
+        )
+        assert failure["cgroup_topology_conformance_diagnostic"] == diagnostic
+        assert diagnostic["unit_ownership_acquired"] is True
+        assert diagnostic["full_conformance"] is False
+        assert diagnostic["mismatch_rows"] == [
+            {
+                "field": "measurement.controllers",
+                "expected": ["cpu", "memory", "pids"],
+                "observed": ["memory", "pids"],
+            }
+        ]
+        assert (failure["cgroup_failure_observation"] is not None) is (
+            partial_cleanup_failure
+        )
+    finally:
+        store.close()
+
+
 def test_watchdog_handler_never_replaces_an_active_primary(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -1863,17 +1963,24 @@ def test_cgroup_membership_uses_delegated_path_not_observer_membership_and_caps_
         )
 
     values = {
+        (10, "cgroup.controllers"): "cpu memory pids\n",
         (10, "memory.max"): f"{run.MEMORY_MAX_BYTES}\n",
-        (10, "pids.max"): "2\n",
+        (10, "pids.max"): f"{run.PIDS_MAX}\n",
         (10, "cgroup.subtree_control"): "memory pids\n",
         (11, "pids.max"): "1\n",
-        (12, "pids.max"): "9\n",
+        (12, "pids.max"): "1\n",
     }
     monkeypatch.setattr(
         run.LinuxCgroupV2V180R12R4,
         "_read_at",
         classmethod(lambda cls, fd, name, byte_cap=0: values[(fd, name)]),
     )
+    observed = run.LinuxCgroupV2V180R12R4._observe_programmed_limits(
+        10, 11, 12
+    )
+    assert observed["controllers"] == ["cpu", "memory", "pids"]
+    run.LinuxCgroupV2V180R12R4._validate_programmed_limits(10, 11, 12)
+    values[(12, "pids.max")] = "9\n"
     with pytest.raises(run.V180R12R4RuntimeError, match="drifted"):
         run.LinuxCgroupV2V180R12R4._validate_programmed_limits(10, 11, 12)
 

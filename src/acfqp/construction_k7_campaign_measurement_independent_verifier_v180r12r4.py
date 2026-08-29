@@ -71,7 +71,7 @@ PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
     "acfqp:construction-k7-production-transient-service-token:v180r12r4"
 )
 EXPECTED_PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN = (
-    "b0f62f739847f89027311d52e8861257ba471d28c47439eca41e9cf8cfa04004"
+    "6796c5433437385a8984bec3663780fd722592210fcafb41a8ea35432c832f2e"
 )
 PRODUCTION_RUNTIME_PLACEMENT_T1_SCHEMA = (
     "acfqp.v180r12r4_production_runtime_placement_t1.v1"
@@ -1300,12 +1300,16 @@ def _validate_production_systemd_service_invocation(
     invocation = dict(value)
     token_input = invocation.get("token_input")
     if type(token_input) is not dict or set(token_input) != {
-        "failed_failure_state_id", "failed_launch_failure_id", "repair_scope",
-        "purpose",
+        "failed_failure_state_id", "failed_launch_failure_id",
+        "failed_outer_service_failure_id", "repair_scope", "purpose",
     }:
         _fail("production systemd service token input changed")
     _cid(token_input.get("failed_failure_state_id"), "failed failure-state ID")
     _cid(token_input.get("failed_launch_failure_id"), "failed launch-failure ID")
+    _cid(
+        token_input.get("failed_outer_service_failure_id"),
+        "failed outer-service-failure ID",
+    )
     token = hashlib.sha256(
         PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN.encode("ascii")
         + b"\x00"
@@ -1321,8 +1325,8 @@ def _validate_production_systemd_service_invocation(
         "ACFQP_V180R12R4_MATERIALIZATION_TERMINAL_SHA256="
         + materialization_terminal_sha256,
         "LC_CTYPE=C.UTF-8", "/usr/bin/python3", "-I", "-S", "-B", "-X",
-        "pycache_prefix=/dev/null/v180r12r4", launcher, "measurement",
-        repository_root,
+        "pycache_prefix=/dev/null/v180r12r4", launcher, "service-entry",
+        "measurement", repository_root,
     ]
     argv = [
         "/usr/bin/systemd-run", "--user", "--wait", "--collect", "--pipe",
@@ -1337,7 +1341,7 @@ def _validate_production_systemd_service_invocation(
         and invocation.get("token_domain") == PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN
         and invocation.get("target") == "measurement"
         and token_input.get("repair_scope")
-        == "OUTER_OBSERVER_DELEGATED_SOURCE_CGROUP_PLACEMENT_AND_ATOMIC_BIRTH_PREFLIGHT_ONLY"
+        == "CGROUP_CONTROLLER_SEMANTICS_AND_TYPED_DIAGNOSTIC_SUCCESSOR"
         and token_input.get("purpose") == "MEASUREMENT"
         and invocation.get("token") == token
         == EXPECTED_PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN
@@ -2324,6 +2328,12 @@ def _validate_cgroup_topology(
     topology: Mapping[str, Any],
 ) -> tuple[dict[str, Mapping[str, Any]], tuple[Mapping[str, Any], ...]]:
     parent = topology.get("cgroup_parent_fact")
+    parent_controllers = (
+        parent.get("controllers") if type(parent) is dict else None
+    )
+    parent_subtree_control = (
+        parent.get("subtree_control") if type(parent) is dict else None
+    )
     node_rows = {
         "DELEGATED_PARENT": topology.get("delegated_parent"),
         "MEASUREMENT_ROOT": topology.get("measurement_root"),
@@ -2335,12 +2345,23 @@ def _validate_cgroup_topology(
     if (
         parent.get("schema") != "acfqp.v180r12r4_cgroup_parent_fact.v1"
         or parent.get("mount_fstype") != "cgroup2"
-        or parent.get("controllers") != ["memory", "pids"]
-        or parent.get("subtree_control") != ["memory", "pids"]
+        or type(parent_controllers) is not list
+        or not all(
+            type(row) is str and row for row in parent_controllers
+        )
+        or parent_controllers != sorted(set(parent_controllers))
+        or not {"memory", "pids"}.issubset(parent_controllers)
+        or type(parent_subtree_control) is not list
+        or not all(
+            type(row) is str and row for row in parent_subtree_control
+        )
+        or parent_subtree_control != sorted(set(parent_subtree_control))
+        or not {"memory", "pids"}.issubset(parent_subtree_control)
+        or not set(parent_subtree_control).issubset(parent_controllers)
         or topology.get("cgroup_parent_fact_sha256")
         != hashlib.sha256(canonical_json_bytes(parent)).hexdigest()
         or topology.get("filesystem_type") != "cgroup2"
-        or topology.get("controllers") != ["memory", "pids"]
+        or topology.get("controllers") != parent_subtree_control
         or topology.get("subtree_control") != ["memory", "pids"]
         or topology.get("root_memory_max_bytes") != MEMORY_MAX_BYTES
         or topology.get("memory_max_bytes") != MEMORY_MAX_BYTES

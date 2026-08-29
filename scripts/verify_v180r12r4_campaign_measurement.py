@@ -194,8 +194,8 @@ PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
     "acfqp:construction-k7-production-transient-service-token:v180r12r4"
 )
 PRODUCTION_TRANSIENT_SERVICE_TOKEN_BY_TARGET = {
-    "measurement": "b0f62f739847f89027311d52e8861257ba471d28c47439eca41e9cf8cfa04004",
-    "verification": "581a28653336774058fd06d97c8095ccc0300cc9bce5c7daca7150938481a4dd",
+    "measurement": "6796c5433437385a8984bec3663780fd722592210fcafb41a8ea35432c832f2e",
+    "verification": "c0c98349b9bce217989e4a4826dcb409e2246056334d035589591adbdfbd7892",
 }
 PRODUCTION_RUNTIME_PLACEMENT_T1_SCHEMA = (
     "acfqp.v180r12r4_production_runtime_placement_t1.v1"
@@ -351,7 +351,7 @@ NATIVE_ZERO_MEASURED_TARGET_SOURCE_PATHS = {
     "worker": "scripts/work_v180r12r4_campaign_measurement.py",
 }
 
-SOURCE_CLOSURE_REQUIRED_ROOTS = (
+SOURCE_CLOSURE_REQUIRED_ROOTS = tuple(sorted((
     "scripts/bootstrap_v180r12r4_campaign_measurement.py",
     "scripts/launch_v180r12r4_campaign_measurement_prelaunch.py",
     "scripts/materialize_v180r12r4_campaign_measurement_prelaunch.py",
@@ -389,6 +389,10 @@ SOURCE_CLOSURE_REQUIRED_ROOTS = (
         "src/acfqp/construction_k7_campaign_measurement_"
         "failure_freeze_v180r12r3r2.py"
     ),
+    (
+        "src/acfqp/construction_k7_campaign_measurement_"
+        "failure_freeze_v180r12r4r2.py"
+    ),
     "src/acfqp/construction_k7_campaign_measurement_protocol_v180r12r4.py",
     "src/acfqp/construction_k7_campaign_measurement_supervisor_v180r12r4.py",
     "src/acfqp/construction_k7_campaign_measurement_worker_v180r12r4.py",
@@ -398,7 +402,7 @@ SOURCE_CLOSURE_REQUIRED_ROOTS = (
         "src/acfqp/construction_k7_ten_terminal_aggregation_"
         "production_evidence_freeze_v180r12r2.py"
     ),
-)
+)))
 PROTOCOL_SOURCE_RELATIVE_PATH = (
     "src/acfqp/construction_k7_campaign_measurement_protocol_v180r12r4.py"
 )
@@ -1893,12 +1897,16 @@ def _validate_production_systemd_service_invocation(
             _fail(f"{target} production systemd service invocation keyset changed")
     token_input = invocation.get("token_input")
     if type(token_input) is not dict or set(token_input) != {
-        "failed_failure_state_id", "failed_launch_failure_id", "repair_scope",
-        "purpose",
+        "failed_failure_state_id", "failed_launch_failure_id",
+        "failed_outer_service_failure_id", "repair_scope", "purpose",
     }:
         _fail(f"{target} production systemd service token input changed")
     _cid(token_input.get("failed_failure_state_id"), "failed failure-state ID")
     _cid(token_input.get("failed_launch_failure_id"), "failed launch-failure ID")
+    _cid(
+        token_input.get("failed_outer_service_failure_id"),
+        "failed outer-service-failure ID",
+    )
     digest = _cid(
         materialization_terminal_sha256,
         f"{target} materialization-terminal SHA256",
@@ -1913,8 +1921,8 @@ def _validate_production_systemd_service_invocation(
     command = [
         "/usr/bin/env", "-i",
         "ACFQP_V180R12R4_MATERIALIZATION_TERMINAL_SHA256=" + digest,
-        "LC_CTYPE=C.UTF-8", *ISOLATED_ARGV_PREFIX, launcher, target,
-        repository_root,
+        "LC_CTYPE=C.UTF-8", *ISOLATED_ARGV_PREFIX, launcher,
+        "service-entry", target, repository_root,
     ]
     argv = [
         "/usr/bin/systemd-run", "--user", "--wait", "--collect", "--pipe",
@@ -1930,7 +1938,7 @@ def _validate_production_systemd_service_invocation(
         and invocation.get("token_domain") == PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN
         and invocation.get("target") == target
         and token_input.get("repair_scope")
-        == "OUTER_OBSERVER_DELEGATED_SOURCE_CGROUP_PLACEMENT_AND_ATOMIC_BIRTH_PREFLIGHT_ONLY"
+        == "CGROUP_CONTROLLER_SEMANTICS_AND_TYPED_DIAGNOSTIC_SUCCESSOR"
         and token_input.get("purpose") == target.upper()
         and invocation.get("token") == token
         == PRODUCTION_TRANSIENT_SERVICE_TOKEN_BY_TARGET[target]

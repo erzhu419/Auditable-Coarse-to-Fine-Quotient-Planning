@@ -164,14 +164,14 @@ PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
 )
 PRODUCTION_TRANSIENT_SERVICE_ROWS = {
     "measurement": (
-        "b0f62f739847f89027311d52e8861257ba471d28c47439eca41e9cf8cfa04004",
+        "6796c5433437385a8984bec3663780fd722592210fcafb41a8ea35432c832f2e",
         "acfqp-v180r12r4-measurement-"
-        "b0f62f739847f89027311d52e8861257ba471d28c47439eca41e9cf8cfa04004.service",
+        "6796c5433437385a8984bec3663780fd722592210fcafb41a8ea35432c832f2e.service",
     ),
     "verification": (
-        "581a28653336774058fd06d97c8095ccc0300cc9bce5c7daca7150938481a4dd",
+        "c0c98349b9bce217989e4a4826dcb409e2246056334d035589591adbdfbd7892",
         "acfqp-v180r12r4-verification-"
-        "581a28653336774058fd06d97c8095ccc0300cc9bce5c7daca7150938481a4dd.service",
+        "c0c98349b9bce217989e4a4826dcb409e2246056334d035589591adbdfbd7892.service",
     ),
 }
 EXTERNAL_LAUNCH_CONTEXT_FIELDS = (
@@ -4095,17 +4095,63 @@ class LinuxCgroupV2V180R12R4:
         return b"".join(chunks).decode("ascii")
 
     @classmethod
+    def _observe_programmed_limits(
+        cls, root_fd: int, supervisor_fd: int, worker_fd: int
+    ) -> dict[str, Any]:
+        raw = {
+            "controllers": sorted(
+                cls._read_at(root_fd, "cgroup.controllers").split()
+            ),
+            "subtree_control": sorted(
+                cls._read_at(root_fd, "cgroup.subtree_control").split()
+            ),
+            "root_memory_max": cls._read_at(root_fd, "memory.max").strip(),
+            "root_pids_max": cls._read_at(root_fd, "pids.max").strip(),
+            "supervisor_pids_max": cls._read_at(
+                supervisor_fd, "pids.max"
+            ).strip(),
+            "worker_pids_max": cls._read_at(worker_fd, "pids.max").strip(),
+        }
+        if (
+            not raw["controllers"]
+            or len(raw["controllers"]) != len(set(raw["controllers"]))
+            or len(raw["subtree_control"]) != len(set(raw["subtree_control"]))
+            or any(
+                type(value) is not str or not value
+                for value in (*raw["controllers"], *raw["subtree_control"])
+            )
+            or any(
+                type(raw[name]) is not str or not raw[name].isdigit()
+                for name in (
+                    "root_memory_max", "root_pids_max",
+                    "supervisor_pids_max", "worker_pids_max",
+                )
+            )
+        ):
+            _fail("cgroup-v2 programmed property framing changed")
+        return {
+            "controllers": raw["controllers"],
+            "subtree_control": raw["subtree_control"],
+            "root_memory_max_bytes": int(raw["root_memory_max"]),
+            "root_pids_max": int(raw["root_pids_max"]),
+            "supervisor_leaf_pids_max": int(raw["supervisor_pids_max"]),
+            "worker_leaf_pids_max": int(raw["worker_pids_max"]),
+        }
+
+    @classmethod
     def _validate_programmed_limits(
         cls, root_fd: int, supervisor_fd: int, worker_fd: int
     ) -> None:
+        observed = cls._observe_programmed_limits(
+            root_fd, supervisor_fd, worker_fd
+        )
         if (
-            cls._read_at(root_fd, "memory.max").strip()
-            != str(MEMORY_MAX_BYTES)
-            or cls._read_at(root_fd, "pids.max").strip() != str(PIDS_MAX)
-            or sorted(cls._read_at(root_fd, "cgroup.subtree_control").split())
-            != ["memory", "pids"]
-            or cls._read_at(supervisor_fd, "pids.max").strip() != "1"
-            or cls._read_at(worker_fd, "pids.max").strip() != "1"
+            not {"memory", "pids"}.issubset(observed["controllers"])
+            or observed["subtree_control"] != ["memory", "pids"]
+            or observed["root_memory_max_bytes"] != MEMORY_MAX_BYTES
+            or observed["root_pids_max"] != PIDS_MAX
+            or observed["supervisor_leaf_pids_max"] != 1
+            or observed["worker_leaf_pids_max"] != 1
         ):
             _fail("cgroup-v2 caps/controllers drifted before process birth")
 
@@ -4369,18 +4415,31 @@ class LinuxCgroupV2V180R12R4:
                 worker_fd = 245
             self._write_at(supervisor_fd, "pids.max", "1")
             self._write_at(worker_fd, "pids.max", "1")
-            self._validate_programmed_limits(root_fd, supervisor_fd, worker_fd)
+            programmed = self._observe_programmed_limits(
+                root_fd, supervisor_fd, worker_fd
+            )
+            populated_values: list[int] = []
+            process_counts: list[int] = []
             for descriptor in (root_fd, supervisor_fd, worker_fd):
                 events = dict(
                     line.split(" ", 1)
                     for line in self._read_at(descriptor, "cgroup.events").splitlines()
                     if line
                 )
-                if (
-                    self._read_at(descriptor, "cgroup.procs") != ""
-                    or events.get("populated") != "0"
+                populated = events.get("populated")
+                processes = tuple(
+                    row
+                    for row in self._read_at(
+                        descriptor, "cgroup.procs"
+                    ).splitlines()
+                    if row
+                )
+                if populated not in {"0", "1"} or any(
+                    not row.isdigit() for row in processes
                 ):
-                    _fail("fresh root or leaf cgroup is nonempty before birth")
+                    _fail("fresh cgroup population property framing changed")
+                populated_values.append(int(populated))
+                process_counts.append(len(processes))
             self._checkpoint("LEAVES_OPENED")
 
             nodes = {
@@ -4430,15 +4489,15 @@ class LinuxCgroupV2V180R12R4:
                 nodes["SUPERVISOR"],
                 nodes["WORKER"],
                 "cgroup2",
-                ("memory", "pids"),
-                ("memory", "pids"),
-                MEMORY_MAX_BYTES,
-                PIDS_MAX,
-                1,
-                1,
-                False,
-                0,
-                (0, 0),
+                tuple(programmed["controllers"]),
+                tuple(programmed["subtree_control"]),
+                programmed["root_memory_max_bytes"],
+                programmed["root_pids_max"],
+                programmed["supervisor_leaf_pids_max"],
+                programmed["worker_leaf_pids_max"],
+                bool(populated_values[0]),
+                process_counts[0],
+                tuple(process_counts[1:]),
                 tuple(control_receipts),
                 _thaw_json_value(production_runtime_placement_t1),
                 _thaw_json_value(production_runtime_placement_t2),
@@ -6445,6 +6504,27 @@ def register_campaign_execution_closure_v180r12r4(
     return execution_closure_document
 
 
+def _topology_conformance_diagnostic_v180r12r4(
+    error: BaseException,
+) -> dict[str, Any] | None:
+    """Retain the exact topology cause across partial-create cleanup wrapping."""
+
+    candidates: tuple[BaseException, ...] = (error,)
+    if isinstance(error, V180R12R4PartialCgroupCreateFailure):
+        cause = BaseException.__getattribute__(error, "__cause__")
+        if isinstance(cause, BaseException):
+            candidates = (*candidates, cause)
+    for candidate in candidates:
+        if isinstance(
+            candidate,
+            runtime.CgroupTopologyConformanceErrorV180R12R4R3,
+        ):
+            return runtime.validate_topology_conformance_diagnostic_v180r12r4r3(
+                candidate.conformance_diagnostic
+            )
+    return None
+
+
 def _failure_document(
     *,
     protocol_id: str,
@@ -6457,6 +6537,7 @@ def _failure_document(
         runtime.FailureArtifactObservationV180R12R4, ...
     ],
     cgroup_failure_observation: runtime.FailureCgroupObservationV180R12R4 | None,
+    cgroup_topology_conformance_diagnostic: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     try:
         launch_substage = BaseException.__getattribute__(
@@ -6513,7 +6594,13 @@ def _failure_document(
         scheduled = journal.schedule[position]
         phase = runtime.CampaignPhaseV180R12R4(scheduled.phase)
         operation_id = scheduled.operation_id
-    if isinstance(error, (V180R12R4RuntimeTimeout, V180R12R4CapViolation, MemoryError)):
+    if cgroup_topology_conformance_diagnostic is not None:
+        failure_code = (
+            runtime.FailureCodeV180R12R4.CGROUP_TOPOLOGY_CONFORMANCE_FAILURE
+        )
+    elif isinstance(
+        error, (V180R12R4RuntimeTimeout, V180R12R4CapViolation, MemoryError)
+    ):
         failure_code = runtime.FailureCodeV180R12R4.CAP_VIOLATION
     elif journal is None or sequence == 0:
         failure_code = runtime.FailureCodeV180R12R4.PROTOCOL_FAILURE
@@ -6579,6 +6666,9 @@ def _failure_document(
         output_may_exist,
         partial_artifact_observations,
         cgroup_failure_observation,
+        cgroup_topology_conformance_diagnostic=(
+            cgroup_topology_conformance_diagnostic
+        ),
         launch_substage=launch_substage,
         launch_errno=launch_errno,
         launch_child_created=launch_child_created,
@@ -7099,6 +7189,9 @@ def run_one_shot_outer_v180r12r4(
             BaseException.__setattr__(primary, "__traceback__", None)
         except BaseException:
             pass
+        cgroup_topology_conformance_diagnostic = (
+            _topology_conformance_diagnostic_v180r12r4(primary)
+        )
         cleanup_errors: list[str] = []
         watchdog_cleanup_error = watchdog.first_cleanup_error()
         if watchdog_cleanup_error is not None:
@@ -7218,6 +7311,9 @@ def run_one_shot_outer_v180r12r4(
             cleanup_errors=cleanup_errors,
             partial_artifact_observations=artifact_observations,
             cgroup_failure_observation=cgroup_failure_observation,
+            cgroup_topology_conformance_diagnostic=(
+                cgroup_topology_conformance_diagnostic
+            ),
         )
         try:
             store.write_once(FAILURE_RELATIVE_PATH, _canonical(failure))

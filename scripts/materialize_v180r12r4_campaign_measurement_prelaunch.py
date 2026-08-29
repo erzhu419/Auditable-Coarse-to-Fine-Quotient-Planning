@@ -391,6 +391,10 @@ SOURCE_CLOSURE_REQUIRED_ROOTS = tuple(
             ),
             (
                 "src/acfqp/construction_k7_campaign_measurement_"
+                "failure_freeze_v180r12r4r2.py"
+            ),
+            (
+                "src/acfqp/construction_k7_campaign_measurement_"
                 "independent_verifier_v180r12r4.py"
             ),
             (
@@ -429,7 +433,7 @@ PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
     "acfqp:construction-k7-production-transient-service-token:v180r12r4"
 )
 PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN = (
-    "b0f62f739847f89027311d52e8861257ba471d28c47439eca41e9cf8cfa04004"
+    "6796c5433437385a8984bec3663780fd722592210fcafb41a8ea35432c832f2e"
 )
 PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_UNIT_NAME = (
     "acfqp-v180r12r4-measurement-"
@@ -437,7 +441,7 @@ PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_UNIT_NAME = (
     + ".service"
 )
 PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_TOKEN = (
-    "581a28653336774058fd06d97c8095ccc0300cc9bce5c7daca7150938481a4dd"
+    "c0c98349b9bce217989e4a4826dcb409e2246056334d035589591adbdfbd7892"
 )
 PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_UNIT_NAME = (
     "acfqp-v180r12r4-verification-"
@@ -479,19 +483,19 @@ GIT_COMMAND_TIMEOUT_SECONDS = 120
 FAILURE_MESSAGE_BYTE_CAP = 4096
 
 EXPECTED_SOURCE_CLOSURE_RULE_ID = (
-    "bd0b9e1f37be816832fe4eed74a7b9fdcb1a339ba8894b06d0037d1d5c9ef74c"
+    "391275364a4dc21028612643cd25c29d4b87c26fcb9e4bfd92ad2043fa663a8b"
 )
 EXPECTED_MATERIALIZATION_RULE_ID = (
-    "52623e88daff936413f3b6b8dced1099e913a1995d2009f8c6d1344eb93ae3de"
+    "06222b180023ea967be5e4d88072e646239d06769945073bd29fcf1699f65228"
 )
 LAUNCHER_RULE_LITERAL_NAMES = (
     "EXPECTED_SOURCE_CLOSURE_RULE_ID",
     "EXPECTED_MATERIALIZATION_RULE_ID",
     "EXPECTED_LAUNCH_RULE_ID",
 )
-LAUNCHER_NORMALIZED_STATIC_RULE_SOURCE_BYTE_COUNT = 239_750
+LAUNCHER_NORMALIZED_STATIC_RULE_SOURCE_BYTE_COUNT = 239_965
 LAUNCHER_NORMALIZED_STATIC_RULE_SOURCE_SHA256 = (
-    "d2250c80ef1dafcad2a43ece1409e62d25116aa653481ee81294460ee7822791"
+    "fcf4ca68135bf353f1bf9b4cf6b0334106d97a466e320f4010fd5876acdbf1a5"
 )
 
 SOURCE_CLOSURE_RULE_DOCUMENT = {
@@ -607,14 +611,16 @@ def _zero_preflight_receipt_interface() -> dict[str, Any]:
 def _production_systemd_service_contract() -> dict[str, Any]:
     base = {
         "failed_failure_state_id": (
-            "1ff2239cd5ca71f588149e987cded8fe5b8dbf75e7d7098435fda0955fffd09d"
+            "7f98d4f33e7e6d3c36636ffad27dbc56f54da32cd006f6d5e94cb217cd569a02"
         ),
         "failed_launch_failure_id": (
-            "594c08d5932d0f7188b232485f6e9a08a0d4b041aa2c9f84aa0095d2b1591935"
+            "8be9a12c613373cdfde80d3fd9d64d18a8ca9aaca841ee0d2a454326748c5f43"
+        ),
+        "failed_outer_service_failure_id": (
+            "62ed6bf62f94b8c1c9d53ff8bb902ee26045c5896263f59bf28dd8ac1114c458"
         ),
         "repair_scope": (
-            "OUTER_OBSERVER_DELEGATED_SOURCE_CGROUP_PLACEMENT_AND_ATOMIC_"
-            "BIRTH_PREFLIGHT_ONLY"
+            "CGROUP_CONTROLLER_SEMANTICS_AND_TYPED_DIAGNOSTIC_SUCCESSOR"
         ),
     }
     token_rows = {
@@ -681,7 +687,7 @@ def _production_systemd_service_contract() -> dict[str, Any]:
         "token_domain": PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN,
         "token_input_fields": [
             "failed_failure_state_id", "failed_launch_failure_id",
-            "repair_scope", "purpose",
+            "failed_outer_service_failure_id", "repair_scope", "purpose",
         ],
         "target_order": ["measurement", "verification"],
         "target_rows": rows,

@@ -62,8 +62,35 @@ def _success_cgroup_rows(campaign_attempt_id: str) -> list[dict]:
     ]
 
 
-def _measurement_launch_documents(terminal) -> tuple[bytes, bytes]:
-    attempt = ledger_fixture._measurement_launch_attempt_document()
+def _measurement_launch_attempt_document() -> dict:
+    attempt = copy.deepcopy(ledger_fixture._measurement_launch_attempt_document())
+    # The outer ``dispatch`` command enters the transient service; the command
+    # recorded inside that service is the retained launcher's ``service-entry``
+    # subcommand.  Keep this verifier fixture aligned with that producer
+    # boundary even though the shared ledger-only fixture predates it.
+    invocation = attempt["production_systemd_service_invocation"]
+    old_command = list(invocation["launcher_command"])
+    command = [*old_command[:-2], "service-entry", *old_command[-2:]]
+    invocation["launcher_command"] = command
+    invocation["systemd_run_argv"] = [
+        *invocation["systemd_run_argv"][: -len(old_command)],
+        *command,
+    ]
+    attempt.pop("launch_attempt_id")
+    attempt["launch_attempt_id"] = hashlib.sha256(
+        canonical_json_bytes(attempt)
+    ).hexdigest()
+    return attempt
+
+
+def _measurement_launch_documents(
+    terminal, *, attempt: dict | None = None
+) -> tuple[bytes, bytes]:
+    attempt = (
+        _measurement_launch_attempt_document()
+        if attempt is None
+        else copy.deepcopy(attempt)
+    )
     attempt_raw = canonical_json_bytes(attempt)
     artifacts = terminal.success_artifact_bytes
     topology = next(
@@ -281,12 +308,15 @@ def _measurement_service_launch_documents(
 
 
 def _bundle():
-    inputs = finalizer_fixture._closed_inputs()
+    measurement_attempt = _measurement_launch_attempt_document()
+    inputs = finalizer_fixture._closed_inputs(
+        measurement_launch_attempt_id=measurement_attempt["launch_attempt_id"]
+    )
     terminal = finalizer_fixture._finalize(inputs)
     fixture = inputs["fixture"]
     state = fixture["state"]
     measurement_attempt_raw, measurement_receipt_raw = (
-        _measurement_launch_documents(terminal)
+        _measurement_launch_documents(terminal, attempt=measurement_attempt)
     )
     measurement_service_attempt_raw, measurement_service_receipt_raw = (
         _measurement_service_launch_documents(

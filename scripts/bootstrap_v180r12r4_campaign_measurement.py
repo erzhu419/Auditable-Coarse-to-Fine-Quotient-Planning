@@ -124,14 +124,14 @@ _PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
 )
 _PRODUCTION_TRANSIENT_SERVICE_ROWS = {
     "measurement": (
-        "b0f62f739847f89027311d52e8861257ba471d28c47439eca41e9cf8cfa04004",
+        "6796c5433437385a8984bec3663780fd722592210fcafb41a8ea35432c832f2e",
         "acfqp-v180r12r4-measurement-"
-        "b0f62f739847f89027311d52e8861257ba471d28c47439eca41e9cf8cfa04004.service",
+        "6796c5433437385a8984bec3663780fd722592210fcafb41a8ea35432c832f2e.service",
     ),
     "verification": (
-        "581a28653336774058fd06d97c8095ccc0300cc9bce5c7daca7150938481a4dd",
+        "c0c98349b9bce217989e4a4826dcb409e2246056334d035589591adbdfbd7892",
         "acfqp-v180r12r4-verification-"
-        "581a28653336774058fd06d97c8095ccc0300cc9bce5c7daca7150938481a4dd.service",
+        "c0c98349b9bce217989e4a4826dcb409e2246056334d035589591adbdfbd7892.service",
     ),
 }
 _PRODUCTION_RUNTIME_PLACEMENT_T1_SCHEMA = (
@@ -393,6 +393,10 @@ _SOURCE_CLOSURE_REQUIRED_ROOTS = tuple(
             (
                 "src/acfqp/construction_k7_campaign_measurement_"
                 "failure_freeze_v180r12r3r2.py"
+            ),
+            (
+                "src/acfqp/construction_k7_campaign_measurement_"
+                "failure_freeze_v180r12r4r2.py"
             ),
             (
                 "src/acfqp/construction_k7_campaign_measurement_"

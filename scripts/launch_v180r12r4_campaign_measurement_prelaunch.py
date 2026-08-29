@@ -109,13 +109,13 @@ MATERIALIZATION_TERMINAL_SCHEMA = (
     "acfqp.v180r12r4_prelaunch_materialization_terminal.v1"
 )
 EXPECTED_SOURCE_CLOSURE_RULE_ID = (
-    "bd0b9e1f37be816832fe4eed74a7b9fdcb1a339ba8894b06d0037d1d5c9ef74c"
+    "391275364a4dc21028612643cd25c29d4b87c26fcb9e4bfd92ad2043fa663a8b"
 )
 EXPECTED_MATERIALIZATION_RULE_ID = (
-    "52623e88daff936413f3b6b8dced1099e913a1995d2009f8c6d1344eb93ae3de"
+    "06222b180023ea967be5e4d88072e646239d06769945073bd29fcf1699f65228"
 )
 EXPECTED_LAUNCH_RULE_ID = (
-    "ff88515d54fef4fa5021f7c22d48e654b9b42e4545808bf2e6c06a83eb3e95fd"
+    "54d92c0c5887605fd97ad18adf27be20ec05d7169174b500eb1c3477f8898b11"
 )
 SOURCE_CLOSURE_RULE_ID = EXPECTED_SOURCE_CLOSURE_RULE_ID
 MATERIALIZATION_RULE_ID = EXPECTED_MATERIALIZATION_RULE_ID
@@ -301,11 +301,11 @@ PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN = (
     "acfqp:construction-k7-production-transient-service-token:v180r12r4"
 )
 PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN = (
-    "b0f62f739847f89027311d52e8861257ba471d28c47439eca41e9cf8cfa04004"
+    "6796c5433437385a8984bec3663780fd722592210fcafb41a8ea35432c832f2e"
 )
 PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_UNIT_NAME = (
     "acfqp-v180r12r4-measurement-"
-    "b0f62f739847f89027311d52e8861257ba471d28c47439eca41e9cf8cfa04004.service"
+    "6796c5433437385a8984bec3663780fd722592210fcafb41a8ea35432c832f2e.service"
 )
 PRODUCTION_TRANSIENT_SERVICE_SLICE = "app.slice"
 MATERIALIZATION_TERMINAL_SHA256_TEMPLATE = (
@@ -319,34 +319,38 @@ ATOMIC_CGROUP_BIRTH_PREFLIGHT_RECEIPT_INTERFACE_SCHEMA = (
 )
 PRODUCTION_MEASUREMENT_TRANSIENT_SERVICE_TOKEN_INPUT = {
     "failed_failure_state_id": (
-        "1ff2239cd5ca71f588149e987cded8fe5b8dbf75e7d7098435fda0955fffd09d"
+        "7f98d4f33e7e6d3c36636ffad27dbc56f54da32cd006f6d5e94cb217cd569a02"
     ),
     "failed_launch_failure_id": (
-        "594c08d5932d0f7188b232485f6e9a08a0d4b041aa2c9f84aa0095d2b1591935"
+        "8be9a12c613373cdfde80d3fd9d64d18a8ca9aaca841ee0d2a454326748c5f43"
+    ),
+    "failed_outer_service_failure_id": (
+        "62ed6bf62f94b8c1c9d53ff8bb902ee26045c5896263f59bf28dd8ac1114c458"
     ),
     "repair_scope": (
-        "OUTER_OBSERVER_DELEGATED_SOURCE_CGROUP_PLACEMENT_AND_ATOMIC_BIRTH_"
-        "PREFLIGHT_ONLY"
+        "CGROUP_CONTROLLER_SEMANTICS_AND_TYPED_DIAGNOSTIC_SUCCESSOR"
     ),
     "purpose": "MEASUREMENT",
 }
 PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_TOKEN = (
-    "581a28653336774058fd06d97c8095ccc0300cc9bce5c7daca7150938481a4dd"
+    "c0c98349b9bce217989e4a4826dcb409e2246056334d035589591adbdfbd7892"
 )
 PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_UNIT_NAME = (
     "acfqp-v180r12r4-verification-"
-    "581a28653336774058fd06d97c8095ccc0300cc9bce5c7daca7150938481a4dd.service"
+    "c0c98349b9bce217989e4a4826dcb409e2246056334d035589591adbdfbd7892.service"
 )
 PRODUCTION_VERIFICATION_TRANSIENT_SERVICE_TOKEN_INPUT = {
     "failed_failure_state_id": (
-        "1ff2239cd5ca71f588149e987cded8fe5b8dbf75e7d7098435fda0955fffd09d"
+        "7f98d4f33e7e6d3c36636ffad27dbc56f54da32cd006f6d5e94cb217cd569a02"
     ),
     "failed_launch_failure_id": (
-        "594c08d5932d0f7188b232485f6e9a08a0d4b041aa2c9f84aa0095d2b1591935"
+        "8be9a12c613373cdfde80d3fd9d64d18a8ca9aaca841ee0d2a454326748c5f43"
+    ),
+    "failed_outer_service_failure_id": (
+        "62ed6bf62f94b8c1c9d53ff8bb902ee26045c5896263f59bf28dd8ac1114c458"
     ),
     "repair_scope": (
-        "OUTER_OBSERVER_DELEGATED_SOURCE_CGROUP_PLACEMENT_AND_ATOMIC_BIRTH_"
-        "PREFLIGHT_ONLY"
+        "CGROUP_CONTROLLER_SEMANTICS_AND_TYPED_DIAGNOSTIC_SUCCESSOR"
     ),
     "purpose": "VERIFICATION",
 }
@@ -1327,7 +1331,7 @@ def _production_systemd_service_contract() -> dict[str, Any]:
         "token_domain": PRODUCTION_TRANSIENT_SERVICE_TOKEN_DOMAIN,
         "token_input_fields": [
             "failed_failure_state_id", "failed_launch_failure_id",
-            "repair_scope", "purpose",
+            "failed_outer_service_failure_id", "repair_scope", "purpose",
         ],
         "target_order": ["measurement", "verification"],
         "target_rows": rows,

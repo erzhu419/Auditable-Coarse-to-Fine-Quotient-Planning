@@ -179,8 +179,8 @@ def test_outcome_free_wrapper_has_exact_phase_aware_twelve_literal_topology() ->
     assert evidence.SOURCE_BOUNDARY_REQUIRED_PATHS == tuple(
         sorted(evidence.SOURCE_BOUNDARY_REQUIRED_PATHS)
     )
-    assert len(evidence.SOURCE_BOUNDARY_REQUIRED_PATHS) == 22
-    assert len(set(evidence.SOURCE_BOUNDARY_REQUIRED_PATHS)) == 22
+    assert len(evidence.SOURCE_BOUNDARY_REQUIRED_PATHS) == 23
+    assert len(set(evidence.SOURCE_BOUNDARY_REQUIRED_PATHS)) == 23
     assert protocol.V180R12R3_FAILURE_FREEZE_SOURCE_RELATIVE_PATH in (
         evidence.SOURCE_BOUNDARY_REQUIRED_PATHS
     )
@@ -569,9 +569,13 @@ def test_candidate_and_runtime_payloads_match_under_external_nonbootstrap(
         "failed_scientific_birth_repair_lineage": (
             protocol.failed_scientific_birth_repair_lineage_contract_v180r12r4()
         ),
+        "failed_ordinal8_repair_lineage": (
+            protocol.failed_ordinal8_repair_lineage_contract_v180r12r4()
+        ),
         "failed_v180r12r3_identity_rerun_forbidden": True,
         "failed_v180r12r3r1_identity_rerun_forbidden": True,
         "failed_v180r12r3r2_identity_rerun_forbidden": True,
+        "failed_v180r12r4r2_ordinal8_identity_rerun_forbidden": True,
         "fresh_v180r12r4_physical_paths_and_identities_required": True,
         "repair_scope": protocol.V180R12R4_REPAIR_SCOPE,
         "repair_changes_campaign_path_roles_event_schedule_evidence_"
@@ -666,12 +670,19 @@ def test_candidate_and_runtime_payloads_match_under_external_nonbootstrap(
     assert candidate["failed_scientific_birth_repair_lineage"] == (
         protocol.failed_scientific_birth_repair_lineage_contract_v180r12r4()
     )
+    assert candidate["failed_ordinal8_repair_lineage"] == (
+        protocol.failed_ordinal8_repair_lineage_contract_v180r12r4()
+    )
     assert candidate["source_bound_runner_execution_envelope_contract"] == (
         protocol.source_bound_runner_execution_envelope_contract_v180r12r4()
     )
     assert candidate["failed_v180r12r3_identity_rerun_forbidden"] is True
     assert candidate["failed_v180r12r3r1_identity_rerun_forbidden"] is True
     assert candidate["failed_v180r12r3r2_identity_rerun_forbidden"] is True
+    assert (
+        candidate["failed_v180r12r4r2_ordinal8_identity_rerun_forbidden"]
+        is True
+    )
     assert candidate["fresh_v180r12r4_physical_paths_and_identities_required"]
     assert candidate["repair_scope"] == protocol.V180R12R4_REPAIR_SCOPE
     assert candidate["v180r12r4_outcome_bytes_accessed"] is False

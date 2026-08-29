@@ -29,6 +29,10 @@ from tests import (
     test_construction_k7_campaign_measurement_ledger_v180r12r4
     as ledger_fixture,
 )
+from tests import (
+    test_construction_k7_campaign_measurement_supervisor_v180r12r4
+    as supervisor_fixture,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -244,7 +248,8 @@ def _production_invocation(
         "ACFQP_V180R12R4_MATERIALIZATION_TERMINAL_SHA256="
         + materialization_sha256,
         "LC_CTYPE=C.UTF-8", *runner.ISOLATED_ARGV_PREFIX,
-        str(repository / runner.LAUNCHER_RELATIVE_PATH), target, str(repository),
+        str(repository / runner.LAUNCHER_RELATIVE_PATH),
+        "service-entry", target, str(repository),
     ]
     return {
         "schema": protocol.PRODUCTION_SYSTEMD_SERVICE_INVOCATION_SCHEMA,
@@ -1126,6 +1131,111 @@ def _verified_external_context(repository: Path) -> types.MappingProxyType:
     }
     assert tuple(values) == runner.VERIFIED_EXTERNAL_LAUNCH_CONTEXT_FIELDS
     return types.MappingProxyType(values)
+
+
+def _campaign_cgroup_topology() -> dict[str, object]:
+    return copy.deepcopy(supervisor_fixture._topology().to_document())
+
+
+def _refresh_cgroup_parent_fact_sha256(topology: dict[str, object]) -> None:
+    topology["cgroup_parent_fact_sha256"] = hashlib.sha256(
+        canonical_json_bytes(topology["cgroup_parent_fact"])
+    ).hexdigest()
+
+
+def test_independent_cgroup_topology_accepts_extra_parent_cpu_controller(
+) -> None:
+    topology = _campaign_cgroup_topology()
+    parent = topology["cgroup_parent_fact"]
+    parent["controllers"] = ["cpu", "memory", "pids"]
+    parent["subtree_control"] = ["cpu", "memory", "pids"]
+    topology["controllers"] = ["cpu", "memory", "pids"]
+    _refresh_cgroup_parent_fact_sha256(topology)
+
+    node_rows, controls = runner.independent_verifier._validate_cgroup_topology(
+        topology
+    )
+
+    assert set(node_rows) == {
+        "DELEGATED_PARENT", "MEASUREMENT_ROOT", "SUPERVISOR", "WORKER"
+    }
+    assert len(controls) == 14
+    assert topology["controllers"] == parent["subtree_control"]
+    assert topology["subtree_control"] == ["memory", "pids"]
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    (
+        ("controllers", ["pids"]),
+        ("controllers", ["memory"]),
+        ("subtree_control", ["pids"]),
+        ("subtree_control", ["memory"]),
+    ),
+)
+def test_independent_cgroup_topology_requires_parent_memory_and_pids(
+    field: str,
+    value: list[str],
+) -> None:
+    topology = _campaign_cgroup_topology()
+    topology["cgroup_parent_fact"][field] = value
+    _refresh_cgroup_parent_fact_sha256(topology)
+
+    with pytest.raises(
+        runner.independent_verifier.ConstructionK7CampaignMeasurementIndependentVerifierV180R12R4Error,
+        match="campaign cgroup topology root fact changed",
+    ):
+        runner.independent_verifier._validate_cgroup_topology(topology)
+
+
+@pytest.mark.parametrize(
+    ("parent_subtree_control", "root_controllers"),
+    (
+        (["cpu", "memory", "pids"], ["memory", "pids"]),
+        (["memory", "pids"], ["cpu", "memory", "pids"]),
+    ),
+)
+def test_independent_cgroup_topology_joins_root_controllers_to_parent_subtree(
+    parent_subtree_control: list[str],
+    root_controllers: list[str],
+) -> None:
+    topology = _campaign_cgroup_topology()
+    topology["cgroup_parent_fact"]["subtree_control"] = parent_subtree_control
+    topology["controllers"] = root_controllers
+    _refresh_cgroup_parent_fact_sha256(topology)
+
+    with pytest.raises(
+        runner.independent_verifier.ConstructionK7CampaignMeasurementIndependentVerifierV180R12R4Error,
+        match="campaign cgroup topology root fact changed",
+    ):
+        runner.independent_verifier._validate_cgroup_topology(topology)
+
+
+def test_independent_cgroup_topology_keeps_root_subtree_control_exact() -> None:
+    topology = _campaign_cgroup_topology()
+    topology["subtree_control"] = ["cpu", "memory", "pids"]
+
+    with pytest.raises(
+        runner.independent_verifier.ConstructionK7CampaignMeasurementIndependentVerifierV180R12R4Error,
+        match="campaign cgroup topology root fact changed",
+    ):
+        runner.independent_verifier._validate_cgroup_topology(topology)
+
+
+def test_independent_cgroup_topology_requires_delegated_parent_subset() -> None:
+    topology = _campaign_cgroup_topology()
+    topology["cgroup_parent_fact"]["controllers"] = ["memory", "pids"]
+    topology["cgroup_parent_fact"]["subtree_control"] = [
+        "cpu", "memory", "pids"
+    ]
+    topology["controllers"] = ["cpu", "memory", "pids"]
+    _refresh_cgroup_parent_fact_sha256(topology)
+
+    with pytest.raises(
+        runner.independent_verifier.ConstructionK7CampaignMeasurementIndependentVerifierV180R12R4Error,
+        match="campaign cgroup topology root fact changed",
+    ):
+        runner.independent_verifier._validate_cgroup_topology(topology)
 
 
 def test_runner_ast_boundary_and_launcher_keysets_are_mechanical() -> None:

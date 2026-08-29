@@ -117,6 +117,10 @@ SOURCE_CLOSURE_REQUIRED_ROOTS = tuple(
             ),
             (
                 "src/acfqp/construction_k7_campaign_measurement_"
+                "failure_freeze_v180r12r4r2.py"
+            ),
+            (
+                "src/acfqp/construction_k7_campaign_measurement_"
                 "independent_verifier_v180r12r4.py"
             ),
             (
@@ -1623,7 +1627,7 @@ def _build_real_closure_launch(
     c_pre_bootstrap.parent.mkdir(parents=True)
     shutil.copyfile(BOOTSTRAP, c_pre_bootstrap)
     paths = _real_authorization_closure_paths()
-    assert len(paths) == 22
+    assert len(paths) == 23
     for relative in paths:
         destination = repository / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
@@ -1871,7 +1875,7 @@ def test_bootstrap_prework_exhausted_absolute_campaign_deadline_never_dispatches
     assert dispatches == []
 
 
-def test_exact_twenty_two_static_roots_match_authorization_contract() -> None:
+def test_exact_twenty_three_static_roots_match_authorization_contract() -> None:
     completed = subprocess.run(
         [
             PYTHON,
@@ -1890,7 +1894,7 @@ def test_exact_twenty_two_static_roots_match_authorization_contract() -> None:
         text=True,
     )
     assert tuple(json.loads(completed.stdout)) == SOURCE_CLOSURE_REQUIRED_ROOTS
-    assert len(SOURCE_CLOSURE_REQUIRED_ROOTS) == 22
+    assert len(SOURCE_CLOSURE_REQUIRED_ROOTS) == 23
 
 
 def test_exact_four_manifest_targets_and_two_internal_entrypoints_are_bound() -> None:

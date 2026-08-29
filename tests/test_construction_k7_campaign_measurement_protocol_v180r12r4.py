@@ -62,7 +62,7 @@ def cgroup_parent_fact() -> dict:
         "self_membership": (
             "0::/user.slice/user-1000.slice/user@1000.service/app.slice/"
             "acfqp-v180r12r4-measurement-"
-            "b0f62f739847f89027311d52e8861257ba471d28c47439eca41e9cf8cfa04004.service"
+            "6796c5433437385a8984bec3663780fd722592210fcafb41a8ea35432c832f2e.service"
         ),
     }
 
@@ -85,6 +85,38 @@ def runtime_capability_fact() -> dict:
         "effective_capability_mask": 0,
         "admitted": True,
     }
+
+
+def test_production_service_tokens_bind_all_ordinal8_failure_terminals() -> None:
+    contract = protocol.production_systemd_service_contract_v180r12r4()
+    assert contract["token_input_fields"] == [
+        "failed_failure_state_id",
+        "failed_launch_failure_id",
+        "failed_outer_service_failure_id",
+        "repair_scope",
+        "purpose",
+    ]
+    expected_tokens = {
+        "measurement": (
+            "6796c5433437385a8984bec3663780fd722592210fcafb41a8ea35432c832f2e"
+        ),
+        "verification": (
+            "c0c98349b9bce217989e4a4826dcb409e2246056334d035589591adbdfbd7892"
+        ),
+    }
+    for row in contract["target_rows"]:
+        token_input = row["token_input"]
+        assert token_input["failed_failure_state_id"] == (
+            protocol.V180R12R4R2_FAILED_CAMPAIGN_FAILURE_ID
+        )
+        assert token_input["failed_launch_failure_id"] == (
+            protocol.V180R12R4R2_FAILED_INNER_LAUNCH_FAILURE_ID
+        )
+        assert token_input["failed_outer_service_failure_id"] == (
+            protocol.V180R12R4R2_FAILED_OUTER_SERVICE_FAILURE_ID
+        )
+        assert token_input["repair_scope"] == protocol.V180R12R4_REPAIR_SCOPE
+        assert row["token"] == expected_tokens[row["target"]]
 
 
 def frozen():
@@ -260,7 +292,7 @@ def test_protocol_preserves_r3r1_external_replay_failure_lineage() -> None:
     )
 
 
-def test_protocol_binds_immediate_r3r2_scientific_birth_failure_lineage() -> None:
+def test_protocol_preserves_r3r2_scientific_birth_failure_lineage() -> None:
     document = frozen().to_document()
     lineage = document["failed_scientific_birth_repair_lineage"]
     assert lineage == (
@@ -298,17 +330,57 @@ def test_protocol_binds_immediate_r3r2_scientific_birth_failure_lineage() -> Non
         "PERMISSION_DENIED_DURING_SUPERVISOR_BIRTH_OR_CLONE_PATH;"
         "EXACT_FAILING_SYSCALL_UNPROVEN"
     )
+    assert lineage["repair_scope"] == protocol.V180R12R3R2_REPAIR_SCOPE
+    slot = document["campaign_measurement_execution_slot"]
+    assert slot["historical_failed_scientific_birth_campaign_attempt_id"] == (
+        lineage["campaign_attempt_id"]
+    )
+    assert slot["historical_failed_scientific_birth_launch_attempt_id"] == (
+        lineage["launch_attempt_id"]
+    )
+    assert slot["historical_failed_scientific_birth_launch_failure_id"] == (
+        lineage["launch_failure_id"]
+    )
+
+
+def test_protocol_binds_ordinal8_as_immediate_failure_lineage() -> None:
+    document = frozen().to_document()
+    lineage = document["failed_ordinal8_repair_lineage"]
+    assert lineage == protocol.failed_ordinal8_repair_lineage_contract_v180r12r4()
+    assert lineage["campaign_attempt_id"] == (
+        "7dd2a5bdf2704655b41652b28a63c9309c557cc0470395870e77db7869b0a3f6"
+    )
+    assert lineage["campaign_failure_id"] == (
+        "7f98d4f33e7e6d3c36636ffad27dbc56f54da32cd006f6d5e94cb217cd569a02"
+    )
+    assert lineage["inner_launch_failure_id"] == (
+        "8be9a12c613373cdfde80d3fd9d64d18a8ca9aaca841ee0d2a454326748c5f43"
+    )
+    assert lineage["outer_service_failure_id"] == (
+        "62ed6bf62f94b8c1c9d53ff8bb902ee26045c5896263f59bf28dd8ac1114c458"
+    )
+    assert lineage["outer_service_unit_ownership_acquired"] is True
+    assert lineage["full_cgroup_conformance"] is False
+    assert lineage["parent_contract_mismatch_fields"] == [
+        "controllers",
+        "subtree_control",
+    ]
+    assert lineage["full_property_diagnostic_recorded"] is False
     assert lineage["repair_scope"] == protocol.V180R12R4_REPAIR_SCOPE
     slot = document["campaign_measurement_execution_slot"]
     assert slot["immediate_failed_predecessor_campaign_attempt_id"] == (
         lineage["campaign_attempt_id"]
     )
-    assert slot["immediate_failed_predecessor_launch_attempt_id"] == (
-        lineage["launch_attempt_id"]
+    assert slot["immediate_failed_predecessor_campaign_failure_id"] == (
+        lineage["campaign_failure_id"]
     )
-    assert slot["immediate_failed_predecessor_launch_failure_id"] == (
-        lineage["launch_failure_id"]
+    assert slot["immediate_failed_predecessor_inner_launch_failure_id"] == (
+        lineage["inner_launch_failure_id"]
     )
+    assert slot["immediate_failed_predecessor_outer_service_failure_id"] == (
+        lineage["outer_service_failure_id"]
+    )
+    assert document["failed_v180r12r4r2_ordinal8_identity_rerun_forbidden"]
 
 
 def test_r3r2_scientific_birth_lineage_rejects_public_identity_drift(
@@ -324,6 +396,21 @@ def test_r3r2_scientific_birth_lineage_rejects_public_identity_drift(
         match="scientific failure authority changed",
     ):
         protocol.failed_scientific_birth_repair_lineage_contract_v180r12r4()
+
+
+def test_ordinal8_lineage_rejects_public_identity_drift(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        protocol.failed_ordinal8_predecessor,
+        "EXPECTED_OUTER_SERVICE_FAILURE_ID",
+        "0" * 64,
+    )
+    with pytest.raises(
+        protocol.CampaignMeasurementProtocolV180R12R4Error,
+        match="ordinal8 failure authority changed",
+    ):
+        protocol.failed_ordinal8_repair_lineage_contract_v180r12r4()
 
 
 def test_failed_dispatch_replay_is_source_bound_pre_scientific_authority_not_measurement() -> None:
@@ -353,10 +440,12 @@ def test_failed_dispatch_replay_is_source_bound_pre_scientific_authority_not_mea
         "retained_artifact_absence_and_cgroup_reads_are_trusted_prereg_authority_replay"
     ] is True
     roots = protocol.SOURCE_CLOSURE_REQUIRED_ROOTS
-    assert len(roots) == len(set(roots)) == 22
+    assert len(roots) == len(set(roots)) == 23
     assert tuple(roots) == tuple(sorted(roots))
     assert roots.count(protocol.V180R12R3_FAILURE_FREEZE_SOURCE_RELATIVE_PATH) == 1
     assert roots.count(protocol.V180R12R3R1_FAILURE_FREEZE_SOURCE_RELATIVE_PATH) == 1
+    assert roots.count(protocol.V180R12R3R2_FAILURE_FREEZE_SOURCE_RELATIVE_PATH) == 1
+    assert roots.count(protocol.V180R12R4R2_FAILURE_FREEZE_SOURCE_RELATIVE_PATH) == 1
 
 
 def test_failed_dispatch_lineage_rejects_absence_inventory_drift_before_replay(
@@ -676,6 +765,37 @@ def test_protocol_rejects_cgroup_parent_drift(field: str, replacement) -> None:
             cgroup_parent_fact=value,
             runtime_capability_fact=runtime_capability_fact(),
         )
+
+
+def test_cgroup_parent_controller_contract_accepts_delegated_superset() -> None:
+    parent = cgroup_parent_fact()
+    assert parent["controllers"] == ["cpu", "memory", "pids"]
+    assert parent["subtree_control"] == ["cpu", "memory", "pids"]
+    assert protocol.validate_cgroup_parent_fact_v180r12r4(parent) == parent
+
+
+def test_supervisor_contract_separates_parent_available_and_enabled_controllers(
+) -> None:
+    contract = supervisor.supervisor_contract_v180r12r4()
+    assert contract["required_parent_controllers"] == ["memory", "pids"]
+    assert contract["measurement_root_available_controllers_source"] == (
+        "PARENT_SUBTREE_CONTROL"
+    )
+    assert contract["measurement_root_enabled_controllers"] == ["memory", "pids"]
+    assert "cgroup_controllers" not in contract
+
+
+def test_failure_contract_binds_topology_diagnostic_as_top_level_field() -> None:
+    contract = protocol.failure_observation_contract_v180r12r4()
+    assert "cgroup_topology_conformance_diagnostic" in (
+        contract["failure_state_fields"]
+    )
+    assert supervisor.FAILURE_STATE_FIELD_KEYS == frozenset(
+        contract["failure_state_fields"]
+    )
+    assert "cgroup_topology_conformance_diagnostic" not in (
+        contract["failure_cgroup_observation_fields"]
+    )
 
 
 def test_protocol_rejects_bootstrap_container_types_before_explicit_thaw() -> None:
@@ -1825,6 +1945,10 @@ def test_failure_observation_contract_mechanically_matches_runtime_and_stays_out
         contract["failure_cgroup_observation_fields"]
     )
     assert set(failure.to_document()) == set(contract["failure_state_fields"])
+    assert failure.to_document()["cgroup_topology_conformance_diagnostic"] is None
+    assert "cgroup_topology_conformance_diagnostic" in (
+        contract["failure_state_fields"]
+    )
     assert supervisor.FAILURE_ARTIFACT_OBSERVATION_KEYS == set(
         contract["failure_artifact_observation_fields"]
     )

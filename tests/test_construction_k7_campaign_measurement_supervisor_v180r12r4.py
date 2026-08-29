@@ -28,8 +28,8 @@ def _parent_fact() -> dict:
         "owner_uid": 1000,
         "owner_gid": 1000,
         "mode": 0o755,
-        "controllers": ["memory", "pids"],
-        "subtree_control": ["memory", "pids"],
+        "controllers": ["cpu", "memory", "pids"],
+        "subtree_control": ["cpu", "memory", "pids"],
         "cgroup_type": "domain",
         "cgroup_namespace_inode": 999,
         "cgroup_events_present": True,
@@ -149,6 +149,9 @@ def _placements(attempt_id: str) -> tuple[dict, dict]:
 
 def _topology(
     attempt_id: str = "4" * 64,
+    *,
+    controllers: tuple[str, ...] = ("cpu", "memory", "pids"),
+    measurement_parent_path: str = "/sys/fs/cgroup/app.slice",
 ) -> supervisor.MeasurementCgroupTopologyReceiptV180R12R4:
     root_name = "v180r12r4-" + attempt_id
     root_path = "/sys/fs/cgroup/app.slice/" + root_name
@@ -166,7 +169,7 @@ def _topology(
         "MEASUREMENT_ROOT": _node(
             "MEASUREMENT_ROOT",
             root_path,
-            "/sys/fs/cgroup/app.slice",
+            measurement_parent_path,
             root_membership,
             "/app.slice",
             4,
@@ -216,7 +219,7 @@ def _topology(
         nodes["SUPERVISOR"],
         nodes["WORKER"],
         "cgroup2",
-        ("memory", "pids"),
+        controllers,
         ("memory", "pids"),
         supervisor.MEMORY_MAX_BYTES,
         2,
@@ -515,6 +518,11 @@ def test_state_machine_rejects_same_count_permutation_and_unregistered_evidence(
 def test_cgroup_sibling_topology_pidfd_antireuse_and_raw_observation() -> None:
     attempt_id = "4" * 64
     topology = _topology()
+    assert topology.cgroup_parent_fact["subtree_control"] == [
+        "cpu", "memory", "pids"
+    ]
+    assert topology.controllers == ("cpu", "memory", "pids")
+    assert topology.subtree_control == ("memory", "pids")
     supervisor_birth = _birth(
         topology, attempt_id, supervisor.ProcessRoleV180R12R4.SUPERVISOR, 601, 61
     )
@@ -588,6 +596,62 @@ def test_cgroup_path_alias_or_cross_device_fails_closed() -> None:
     foreign_device["parent_device"] = 26
     with pytest.raises(supervisor.ConstructionK7CampaignMeasurementSupervisorV180R12R4Error):
         replace(topology, cgroup_parent_fact=foreign_device)
+
+
+def test_topology_failure_retains_full_diagnostic_and_separates_unit_ownership() -> None:
+    topology = _topology()
+    with pytest.raises(
+        supervisor.CgroupTopologyConformanceErrorV180R12R4R3
+    ) as caught:
+        _topology(controllers=("memory", "pids"))
+
+    diagnostic = caught.value.conformance_diagnostic
+    assert diagnostic["unit_ownership_acquired"] is True
+    assert diagnostic["full_conformance"] is False
+    assert diagnostic["mismatch_rows"] == [
+        {
+            "field": "child.controllers",
+            "expected": ["cpu", "memory", "pids"],
+            "observed": ["memory", "pids"],
+        }
+    ]
+    assert diagnostic["cause"] == {
+        "error_type": "CgroupTopologyConformanceErrorV180R12R4R3",
+        "failure_code": "CGROUP_TOPOLOGY_CONFORMANCE_FAILURE",
+        "scope": "PARENT_AND_CHILD_TOPOLOGY",
+        "message": "cgroup topology conformance mismatch: child.controllers",
+    }
+    snapshots = diagnostic["property_snapshots"]
+    assert snapshots["parent_delegation"]["controllers"] == [
+        "cpu", "memory", "pids"
+    ]
+    assert snapshots["measurement_topology"]["controllers"] == [
+        "memory", "pids"
+    ]
+    assert snapshots["unit_ownership"]["production_runtime_placement_t1"] == (
+        topology.production_runtime_placement_t1
+    )
+    assert snapshots["unit_ownership"]["production_runtime_placement_t2"] == (
+        topology.production_runtime_placement_t2
+    )
+    assert (
+        supervisor.validate_topology_conformance_diagnostic_v180r12r4r3(
+            diagnostic
+        )
+        == diagnostic
+    )
+
+    with pytest.raises(
+        supervisor.CgroupTopologyConformanceErrorV180R12R4R3
+    ) as declared_parent:
+        _topology(measurement_parent_path="/sys/fs/cgroup")
+    assert declared_parent.value.conformance_diagnostic["mismatch_rows"] == [
+        {
+            "field": "paths.measurement_declared_parent",
+            "expected": "/sys/fs/cgroup/app.slice",
+            "observed": "/sys/fs/cgroup",
+        }
+    ]
 
 
 def test_exact_eight_edge_io_graph_and_chunk_receipts_reject_role_swap() -> None:
@@ -784,6 +848,9 @@ def test_payload_auxiliary_and_failure_identity_are_exact() -> None:
     assert len(failure.to_document()["partial_artifact_observations"]) == 15
     assert failure.to_document()["partial_artifact_observations"][0]["state"] == "ABSENT"
     assert failure.to_document()["cgroup_failure_observation"] is None
+    assert (
+        failure.to_document()["cgroup_topology_conformance_diagnostic"] is None
+    )
     assert failure.to_document()["launch_substage"] is None
     assert failure.to_document()["launch_errno"] is None
     assert failure.to_document()["launch_child_created"] is False
@@ -826,6 +893,47 @@ def test_payload_auxiliary_and_failure_identity_are_exact() -> None:
     )
     assert set(cgroup_failure.to_document()) == supervisor.FAILURE_CGROUP_OBSERVATION_KEYS
     assert failure.to_document()["successful_ledger_claimed"] is False
+
+    with pytest.raises(
+        supervisor.CgroupTopologyConformanceErrorV180R12R4R3
+    ) as topology_error:
+        _topology(controllers=("memory", "pids"))
+    topology_failure = supervisor.CampaignFailureStateV180R12R4(
+        "1" * 64,
+        "2" * 64,
+        "3" * 64,
+        supervisor.FailureCodeV180R12R4.CGROUP_TOPOLOGY_CONFORMANCE_FAILURE,
+        supervisor.CampaignPhaseV180R12R4.STAGE,
+        None,
+        None,
+        0,
+        "typed topology mismatch",
+        False,
+        False,
+        failure.partial_artifact_observations,
+        None,
+        cgroup_topology_conformance_diagnostic=(
+            topology_error.value.conformance_diagnostic
+        ),
+    )
+    assert topology_failure.cgroup_failure_observation is None
+    assert topology_failure.to_document()[
+        "cgroup_topology_conformance_diagnostic"
+    ] == topology_error.value.conformance_diagnostic
+    assert set(topology_failure.to_document()) == supervisor.FAILURE_STATE_FIELD_KEYS
+    with pytest.raises(
+        supervisor.ConstructionK7CampaignMeasurementSupervisorV180R12R4Error,
+        match="failure code and topology conformance diagnostic disagree",
+    ):
+        replace(topology_failure, cgroup_topology_conformance_diagnostic=None)
+    with pytest.raises(
+        supervisor.ConstructionK7CampaignMeasurementSupervisorV180R12R4Error,
+        match="failure code and topology conformance diagnostic disagree",
+    ):
+        replace(
+            topology_failure,
+            failure_code=supervisor.FailureCodeV180R12R4.CAP_VIOLATION,
+        )
     with pytest.raises(
         supervisor.ConstructionK7CampaignMeasurementSupervisorV180R12R4Error,
         match="fixed path inventory",

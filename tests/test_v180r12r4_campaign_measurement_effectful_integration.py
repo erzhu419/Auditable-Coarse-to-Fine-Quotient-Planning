@@ -162,6 +162,7 @@ def _make_synthetic_cgroup_tree(
     (source_service_path / "cgroup.procs").chmod(0o400)
 
     raw_values = {
+        ("MEASUREMENT_ROOT", "cgroup.controllers"): "memory pids\n",
         ("MEASUREMENT_ROOT", "cgroup.events"): "frozen 0\npopulated 0\n",
         ("MEASUREMENT_ROOT", "cgroup.procs"): "",
         ("MEASUREMENT_ROOT", "cgroup.subtree_control"): "memory pids\n",
