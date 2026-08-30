@@ -71,3 +71,53 @@ interactions per seed-arm, 32 held-out episodes at 25k/50k/100k checkpoints,
 and no scientific Gate.  It can reject this successor or set the design of a
 new independently seeded confirmatory protocol.  It cannot alter or pool with
 u003.
+
+## Hybrid pilot outcome
+
+All four registered pilot jobs completed without failure.  The resource
+candidate exceeded the rotated-raw control at every seed and checkpoint.  At
+100,000 interactions the candidate-minus-control differences were 2,927.25
+and 1,688.25 for the two fresh seeds.  This is sufficient to retain the hybrid
+design, but two design-selection seeds do not constitute confirmatory evidence
+and no pilot scientific Gate was run.
+
+The pilot also showed a compute cost: relative to the control, the candidate's
+mean training time excluding evaluation was about 27.1% higher and mean
+decision latency was about 57.6% higher.  These diagnostics do not change the
+scientific design.  They also mean this campaign cannot claim total operational
+work dominance without a separately registered economics or break-even Gate.
+
+## Fresh hybrid confirmation
+
+The fresh confirmation contains three arms and ten new paired training seeds:
+
+1. `RAW_BOARD_STANDARD`, the ordinary 16-dimensional raw-board Double-DQN.
+2. `RAW_PLUS_ROTATED_RAW_CONTROL`, the active 32-dimensional width- and
+   parameter-matched redundant-input control.
+3. `RAW_PLUS_RESOURCE_STATE_ONLY`, the 32-dimensional raw-preserving resource
+   candidate.
+
+Every seed-arm receives 100,000 online-target interactions, with evaluations
+on the same fixed 64-episode tapes at 25k, 50k, and 100k.  A seed's three arms
+run on the same preregistered GPU ordinal.  The ten training seeds, not the 64
+evaluation episodes, are the statistical units.
+
+The joint claim is an intersection-union conjunction of four paired tests:
+
+1. The candidate at 50k exceeds 99% of the raw baseline at 100k.
+2. The raw baseline at both 25k and 50k remains below that same threshold.
+3. The candidate at 100k exceeds the raw baseline at 100k.
+4. The candidate at 100k exceeds the rotated control at 100k.
+
+The first two components use one-sided paired tests; the final comparisons use
+two-sided paired tests and require positive 95% confidence-interval lower
+bounds.  All four components must pass at alpha 0.05.  Because the global
+alternative is their conjunction, this intersection-union test does not split
+alpha.  Welch tests are sensitivity reports only and cannot change the Gate.
+
+The sample-tax claim is limited to the registered checkpoints; it does not
+assert an ordering at unobserved intermediate steps.  The raw comparison is a
+general-RL benchmark, not a pure representation-causal control, because its
+network has 71,172 parameters rather than 75,268.  Only the candidate-versus-
+rotated comparison is width- and parameter-matched.  Economics, scalar,
+break-even, and official-execution Gates remain `NOT_RUN`.
