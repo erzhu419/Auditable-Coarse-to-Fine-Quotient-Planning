@@ -42,6 +42,7 @@ PILOT_RESULT_SCHEMA_V1 = "acfqp.science.matched_double_dqn_2048_pilot_result.v1"
 CONFIRMATORY_RESULT_SCHEMA_V1 = (
     "acfqp.science.matched_double_dqn_2048_confirmatory_seed_arm_result.v1"
 )
+ObservationBuilderV1 = Callable[[Any, str], tuple[float, ...]]
 
 
 class MatchedDoubleDQN2048V1Error(RuntimeError):
@@ -91,9 +92,14 @@ def observation_vector_v1(state, arm: str) -> tuple[float, ...]:
     return vector
 
 
-def _timed_observation_v1(state, arm: str) -> tuple[tuple[float, ...], int]:
+def _timed_observation_v1(
+    state,
+    arm: str,
+    *,
+    observation_builder: ObservationBuilderV1 = observation_vector_v1,
+) -> tuple[tuple[float, ...], int]:
     started = time.perf_counter_ns()
-    observation = observation_vector_v1(state, arm)
+    observation = observation_builder(state, arm)
     return observation, time.perf_counter_ns() - started
 
 
@@ -115,12 +121,20 @@ class _ReplayBufferV1:
     size: int = 0
 
     @classmethod
-    def create(cls, np, capacity: int) -> "_ReplayBufferV1":
+    def create(
+        cls, np, capacity: int, observation_dimension: int = 16
+    ) -> "_ReplayBufferV1":
+        if type(observation_dimension) is not int or observation_dimension <= 0:
+            _fail("replay observation dimension is invalid")
         return cls(
-            observations=np.empty((capacity, 16), dtype=np.float32),
+            observations=np.empty(
+                (capacity, observation_dimension), dtype=np.float32
+            ),
             actions=np.empty(capacity, dtype=np.int64),
             rewards=np.empty(capacity, dtype=np.float32),
-            next_observations=np.empty((capacity, 16), dtype=np.float32),
+            next_observations=np.empty(
+                (capacity, observation_dimension), dtype=np.float32
+            ),
             dones=np.empty(capacity, dtype=np.float32),
             next_masks=np.empty((capacity, len(ACTION_ORDER)), dtype=np.bool_),
             capacity=capacity,
@@ -159,10 +173,13 @@ class _ReplayBufferV1:
         )
 
 
-def _network_factory(torch) -> Callable[[], Any]:
+def _network_factory(torch, input_dimension: int = 16) -> Callable[[], Any]:
+    if type(input_dimension) is not int or input_dimension <= 0:
+        _fail("network input dimension is invalid")
+
     def build():
         return torch.nn.Sequential(
-            torch.nn.Linear(16, 256),
+            torch.nn.Linear(input_dimension, 256),
             torch.nn.ReLU(),
             torch.nn.Linear(256, 256),
             torch.nn.ReLU(),
@@ -227,6 +244,8 @@ def _evaluate_policy_v1(
     checkpoint: int,
     episode_count: int,
     ledger: SampleLedgerV1,
+    observation_builder: ObservationBuilderV1 = observation_vector_v1,
+    collect_both_signature_families: bool = False,
 ) -> tuple[dict[str, Any], list[tuple[int, ...]], list[tuple[int, ...]]]:
     evaluation_started = time.perf_counter_ns()
     episode_rows: list[dict[str, Any]] = []
@@ -249,12 +268,14 @@ def _evaluate_policy_v1(
             if decisions >= 20_000:
                 _fail("evaluation episode exceeded the registered decision cap")
             decision_started = time.perf_counter_ns()
-            observation, encoding_ns = _timed_observation_v1(state, arm)
+            observation, encoding_ns = _timed_observation_v1(
+                state, arm, observation_builder=observation_builder
+            )
             encoding_calls += 1
             encoding_total_ns += encoding_ns
-            if arm == "RAW_BOARD":
+            if arm == "RAW_BOARD" or collect_both_signature_families:
                 raw_signatures.append(state.board)
-            else:
+            if arm != "RAW_BOARD" or collect_both_signature_families:
                 resource_signatures.append(
                     tuple(round(value * 255) for value in observation)
                 )
@@ -363,6 +384,17 @@ def _run_seed_arm_v1(
     result_schema: str,
     training_tape_prefix: str,
     result_gate_fields: Mapping[str, Any],
+    observation_builder: ObservationBuilderV1 = observation_vector_v1,
+    input_dimension: int = 16,
+    expected_parameter_count: int = NETWORK_PARAMETER_COUNT_V1,
+    collect_both_signature_families: bool = False,
+    representation_telemetry_builder: Callable[
+        [str, int, int], dict[str, Any]
+    ]
+    | None = None,
+    decision_latency_scope_field: str = (
+        "includes_state_only_encoding_action_mask_and_policy_forward"
+    ),
 ) -> tuple[dict[str, Any], Any]:
     """Run one already-validated protocol seed-arm plus its standalone evaluations."""
 
@@ -378,6 +410,18 @@ def _run_seed_arm_v1(
         or type(protocol.get("evaluation_tape_prefix")) is not str
         or not protocol["evaluation_tape_prefix"]
         or type(result_gate_fields) is not dict
+        or type(input_dimension) is not int
+        or input_dimension <= 0
+        or type(expected_parameter_count) is not int
+        or expected_parameter_count <= 0
+        or type(collect_both_signature_families) is not bool
+        or not callable(observation_builder)
+        or (
+            representation_telemetry_builder is not None
+            and not callable(representation_telemetry_builder)
+        )
+        or type(decision_latency_scope_field) is not str
+        or not decision_latency_scope_field
     ):
         _fail("runtime protocol execution binding changed")
     try:
@@ -396,12 +440,12 @@ def _run_seed_arm_v1(
     epsilon_rng = random.Random(seed)
     action_choice_rng = random.Random(seed + 2_000_000)
     replay_rng = np.random.default_rng(seed + 1_000_000)
-    network = _network_factory(torch)
+    network = _network_factory(torch, input_dimension)
     online = network().to(device)
     target = network().to(device)
     target.load_state_dict(online.state_dict())
     target.eval()
-    if _parameter_count(online) != NETWORK_PARAMETER_COUNT_V1:
+    if _parameter_count(online) != expected_parameter_count:
         _fail("matched network parameter count changed")
     training = protocol["training"]
     learning_rate = _ratio_v1(training["adam_learning_rate"], name="learning rate")
@@ -423,7 +467,9 @@ def _run_seed_arm_v1(
     ):
         _fail("runtime optimizer or update contract changed")
     optimizer = torch.optim.Adam(online.parameters(), lr=learning_rate)
-    replay = _ReplayBufferV1.create(np, training["replay_capacity"])
+    replay = _ReplayBufferV1.create(
+        np, training["replay_capacity"], input_dimension
+    )
     ledger = SampleLedgerV1()
     environment_steps = training["environment_steps_per_seed_arm"]
     warmup = training["replay_warmup_environment_steps"]
@@ -454,12 +500,14 @@ def _run_seed_arm_v1(
         torch.cuda.reset_peak_memory_stats(device)
     wall_started = time.perf_counter_ns()
     for interaction in range(1, environment_steps + 1):
-        observation, encoding_ns = _timed_observation_v1(state, arm)
+        observation, encoding_ns = _timed_observation_v1(
+            state, arm, observation_builder=observation_builder
+        )
         training_decision_encoding_calls += 1
         training_decision_encoding_total_ns += encoding_ns
-        if arm == "RAW_BOARD":
+        if arm == "RAW_BOARD" or collect_both_signature_families:
             raw_signature_set.add(state.board)
-        else:
+        if arm != "RAW_BOARD" or collect_both_signature_families:
             resource_signature_set.add(
                 tuple(round(value * 255) for value in observation)
             )
@@ -494,7 +542,9 @@ def _run_seed_arm_v1(
         )
         ledger.increment_diagnostic("simulator_transition_calls")
         next_state = step.next_state
-        next_observation, next_encoding_ns = _timed_observation_v1(next_state, arm)
+        next_observation, next_encoding_ns = _timed_observation_v1(
+            next_state, arm, observation_builder=observation_builder
+        )
         replay_next_encoding_calls += 1
         replay_next_encoding_total_ns += next_encoding_ns
         done = step.done
@@ -582,6 +632,8 @@ def _run_seed_arm_v1(
                 checkpoint=interaction,
                 episode_count=training["evaluation_episodes_per_checkpoint"],
                 ledger=ledger,
+                observation_builder=observation_builder,
+                collect_both_signature_families=collect_both_signature_families,
             )
             evaluation_rows.append(evaluation)
             standalone_evaluation_wall_ns += evaluation["compute_telemetry"][
@@ -605,22 +657,27 @@ def _run_seed_arm_v1(
     evaluation_decision_total_ns = sum(
         row["compute_telemetry"]["decision_total_ns"] for row in evaluation_rows
     )
-    zero_mask_indices = zero_mask_coordinate_indices_v1(arm)
-    representation_telemetry = {
-        "active_representation": arm,
-        "executed_arm": arm,
-        "input_dimension": 16,
-        "raw_observation_bytes": 64,
-        "arm_observation_bytes": 64,
-        "lossless_raw_board_signature_count": len(raw_signature_set),
-        "quantized_state_only_resource_signature_count": len(
-            resource_signature_set
-        ),
-        "resource_quantization_bins_per_coordinate": 256,
-        "equal_dimension_is_not_counted_as_compression": True,
-        "compression_claimed": False,
-    }
+    if representation_telemetry_builder is None:
+        representation_telemetry = {
+            "active_representation": arm,
+            "executed_arm": arm,
+            "input_dimension": input_dimension,
+            "raw_observation_bytes": 64,
+            "arm_observation_bytes": input_dimension * 4,
+            "lossless_raw_board_signature_count": len(raw_signature_set),
+            "quantized_state_only_resource_signature_count": len(
+                resource_signature_set
+            ),
+            "resource_quantization_bins_per_coordinate": 256,
+            "equal_dimension_is_not_counted_as_compression": True,
+            "compression_claimed": False,
+        }
+    else:
+        representation_telemetry = representation_telemetry_builder(
+            arm, len(raw_signature_set), len(resource_signature_set)
+        )
     if result_schema == CONFIRMATORY_RESULT_SCHEMA_V1:
+        zero_mask_indices = zero_mask_coordinate_indices_v1(arm)
         representation_telemetry.update(
             {
                 "zero_mask_coordinate_indices": list(zero_mask_indices),
@@ -657,7 +714,7 @@ def _run_seed_arm_v1(
             "total_decision_latency_ns": evaluation_decision_total_ns,
             "mean_decision_latency_ns": evaluation_decision_total_ns
             / evaluation_decision_calls,
-            "includes_state_only_encoding_action_mask_and_policy_forward": True,
+            decision_latency_scope_field: True,
         },
         "compute_telemetry": {
             "wall_time_ns": total_wall_ns,
