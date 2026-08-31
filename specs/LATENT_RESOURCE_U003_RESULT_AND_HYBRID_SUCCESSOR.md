@@ -121,3 +121,50 @@ general-RL benchmark, not a pure representation-causal control, because its
 network has 71,172 parameters rather than 75,268.  Only the candidate-versus-
 rotated comparison is width- and parameter-matched.  Economics, scalar,
 break-even, and official-execution Gates remain `NOT_RUN`.
+
+## u004 outcome
+
+The exact 30-job matrix completed without failure, but its frozen joint Gate
+was `FAIL`.  Three of the four paired components passed: candidate attainment
+at 50k, candidate final superiority to the raw baseline, and candidate final
+superiority to the rotated-raw control.  The sole failure was the requirement
+that the raw baseline remain below 99% of its final score at both 25k and 50k
+(`p=0.085987`, one-sided lower bound `-27.208`).  The result is retained without
+reinterpretation.
+
+Outcome-informed design analysis found that the candidate had already reached
+the threshold at 25k.  At that registered but non-primary u004 checkpoint,
+`candidate25 - 0.99*raw100` and `0.99*raw100 - raw25` were positive for all ten
+seeds.  The latter had paired standardized effect `d_z=1.051273`.  These values
+select and size the fresh u005 hypothesis; they are not u005 observations and
+will not be pooled into its tests.
+
+## u005 final fresh confirmation
+
+u005 uses the same three arms with 24 new paired training seeds.  Each arm is
+trained for 100,000 online-target interactions and evaluated on a fresh fixed
+64-episode tape at 25k, 50k, and 100k.  The 50k result is diagnostic only and
+cannot change the Gate.  The 24 seeds are the statistical units; each seed's
+three arms share one preregistered GPU ordinal and training tape.
+
+The frozen four-component intersection-union Gate requires:
+
+1. `candidate25 - 0.99*raw100 > 0`;
+2. `0.99*raw100 - raw25 > 0`;
+3. `candidate100 - raw100 > 0`;
+4. `candidate100 - rotated100 > 0`.
+
+The first two tests are one-sided paired tests.  The final two are two-sided
+paired tests whose 95% interval lower bounds must be positive.  All four must
+pass.  Twenty-four seeds provide approximately 0.803 marginal power for the
+design bottleneck if the u004 standardized effect shrinks by one half; this is
+not a guarantee of joint Gate power.
+
+The complete evidence closure is exactly 72 unique jobs, 72 `JOB_COMPLETED`
+events, no `JOB_FAILED`, two closed workers, and one JSON/model/log triplet per
+job.  A failed u005 cannot be rescued by selecting another checkpoint or adding
+seeds after outcomes.  Any later test of the same hypothesis would require
+pre-outcome cross-successor error control.  Positive claims remain limited to
+the registered fixed tapes and discrete 25k/100k checkpoints; no first-hitting
+time, broad IID, win-rate, total-work, economics, scalar, break-even, or
+official-execution claim is authorized.
