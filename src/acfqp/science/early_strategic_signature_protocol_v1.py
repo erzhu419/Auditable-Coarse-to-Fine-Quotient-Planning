@@ -58,8 +58,11 @@ PARENT_U005_SOURCE_COMMIT_V1 = "70bb7726f220d6ad7eb6ab83f5207186d9f7f42a"
 PARENT_U005_PROTOCOL_ID_V1 = (
     "38c19039d83af72f80333674451ccc968a4df9df834a6e8622af21157bf27393"
 )
-PILOT_EXECUTION_IDENTITY_V1 = (
+FAILED_PILOT_EXECUTION_IDENTITY_V1 = (
     "acfqp-early-strategic-signature-2048-pilot-v1-ordinal1-attempt1"
+)
+PILOT_EXECUTION_IDENTITY_V1 = (
+    "acfqp-early-strategic-signature-2048-pilot-v1-ordinal2-attempt1"
 )
 
 _COMMIT = re.compile(r"^[0-9a-f]{40}$")
@@ -217,6 +220,18 @@ def _payload(
         "parent_u005_manifest_id": parent_manifest_id,
         "source_commit": source_commit,
         "pilot_execution_identity": PILOT_EXECUTION_IDENTITY_V1,
+        "successor_lineage": {
+            "predecessor_execution_identity": FAILED_PILOT_EXECUTION_IDENTITY_V1,
+            "predecessor_terminal_state": "FAILED_WORKER_DOCUMENT_FINALIZATION",
+            "predecessor_completed_policy_counts": [12, 12],
+            "predecessor_worker_exit_codes": [1, 1],
+            "predecessor_failure_cause": (
+                "TORCH_VERSION_WAS_NOT_AN_EXACT_CANONICAL_JSON_STRING"
+            ),
+            "repair_scope": "COERCE_TORCH_VERSION_TO_BUILTIN_STR",
+            "scientific_design_changed": False,
+            "same_execution_identity_retry_forbidden": True,
+        },
         "parent_candidate_arm": RESOURCE_CANDIDATE_ARM_V2,
         "candidate_models": [dict(row) for row in candidate_models],
         "label_tape_root": LABEL_TAPE_ROOT_V1,
@@ -353,6 +368,7 @@ __all__ = (
     "PILOT_PROTOCOL_DOMAIN_V1",
     "PILOT_PROTOCOL_SCHEMA_V1",
     "PILOT_EXECUTION_IDENTITY_V1",
+    "FAILED_PILOT_EXECUTION_IDENTITY_V1",
     "PARENT_U005_PROTOCOL_ID_V1",
     "PARENT_U005_SOURCE_COMMIT_V1",
     "PREFIX_ACTION_COUNT_V1",

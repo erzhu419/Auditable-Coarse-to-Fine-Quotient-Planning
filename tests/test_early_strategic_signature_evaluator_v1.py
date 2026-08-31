@@ -177,8 +177,22 @@ def test_protocol_freezes_parent_roster_and_separate_pilot_commit() -> None:
     )
     assert protocol["source_commit"] == PILOT_SOURCE_COMMIT
     assert protocol["pilot_execution_identity"] == (
-        "acfqp-early-strategic-signature-2048-pilot-v1-ordinal1-attempt1"
+        "acfqp-early-strategic-signature-2048-pilot-v1-ordinal2-attempt1"
     )
+    assert protocol["successor_lineage"] == {
+        "predecessor_execution_identity": (
+            "acfqp-early-strategic-signature-2048-pilot-v1-ordinal1-attempt1"
+        ),
+        "predecessor_terminal_state": "FAILED_WORKER_DOCUMENT_FINALIZATION",
+        "predecessor_completed_policy_counts": [12, 12],
+        "predecessor_worker_exit_codes": [1, 1],
+        "predecessor_failure_cause": (
+            "TORCH_VERSION_WAS_NOT_AN_EXACT_CANONICAL_JSON_STRING"
+        ),
+        "repair_scope": "COERCE_TORCH_VERSION_TO_BUILTIN_STR",
+        "scientific_design_changed": False,
+        "same_execution_identity_retry_forbidden": True,
+    }
     assert len(protocol["candidate_models"]) == 24
     assert protocol["label_episode_indices"] == list(range(64))
     assert protocol["prefix_episode_indices"] == list(range(64))

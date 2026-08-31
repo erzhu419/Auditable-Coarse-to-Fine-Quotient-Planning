@@ -12,6 +12,17 @@ confirmatory experiment.  It cannot establish human expertise recognition,
 real-game generalization, causal benefit from the representation, or transfer
 to Layered Matching Buffer / Yang Le Ge Yang.
 
+## Successor execution identity
+
+The consumed `ordinal1-attempt1` workers each completed all 12 assigned policy
+collections but failed before writing a worker document because the runtime
+reported `torch.__version__` as a non-exact canonical-JSON string type.  Those
+logs and exit states are retained as failure evidence, and that identity is not
+retried.  `ordinal2-attempt1` changes only the source/runtime serialization:
+the Torch version is converted to a built-in string before canonical output.
+The policies, tapes, features, classifier, bootstrap, and provisional signal
+contract below are unchanged.
+
 ## Frozen parent cohort
 
 - Parent protocol: u005 protocol
