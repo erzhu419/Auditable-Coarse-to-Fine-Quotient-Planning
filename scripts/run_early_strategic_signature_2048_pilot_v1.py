@@ -226,6 +226,19 @@ def _worker(args: argparse.Namespace) -> dict[str, Any]:
     import torch
 
     policy_evidence: list[dict[str, Any]] = []
+    print(
+        json.dumps(
+            {
+                "event": "WORKER_STARTED",
+                "protocol_id": protocol["protocol_id"],
+                "worker": args.worker,
+                "device": args.device,
+                "policy_count": len(roster),
+            },
+            sort_keys=True,
+        ),
+        flush=True,
+    )
     for row in roster:
         model_path = parent_root / "artifacts" / row["model_filename"]
         if not model_path.is_file():
@@ -251,6 +264,19 @@ def _worker(args: argparse.Namespace) -> dict[str, Any]:
         del model
         gc.collect()
         torch.cuda.empty_cache()
+        print(
+            json.dumps(
+                {
+                    "event": "POLICY_EVIDENCE_COMPLETED",
+                    "worker": args.worker,
+                    "seed": row["seed"],
+                    "completed_policy_count": len(policy_evidence),
+                    "policy_count": len(roster),
+                },
+                sort_keys=True,
+            ),
+            flush=True,
+        )
 
     document = {
         "schema": WORKER_EVIDENCE_SCHEMA_V1,
