@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 from types import SimpleNamespace
 
+from acfqp.phase3e_ids import canonical_json_bytes
 from acfqp.science import early_strategic_signature_protocol_v1 as protocol_subject
 from acfqp.science.early_strategic_signature_evaluator_v1 import (
     WORKER_EVIDENCE_SCHEMA_V1,
@@ -84,6 +85,15 @@ def test_launch_manifest_closes_two_fixed_twelve_policy_workers() -> None:
         for row in manifest["workers"]
         for seed in row["policy_seeds"]
     } == set(HYBRID_CONFIRMATORY_TRAINING_SEEDS_V2)
+
+
+def test_runtime_context_is_exactly_canonical_json_serializable() -> None:
+    module = _load_script()
+
+    context = module._runtime_context("cpu")
+
+    assert type(context["torch_version"]) is str
+    canonical_json_bytes(context)
 
 
 def test_worker_document_matches_evaluator_interface(tmp_path: Path, monkeypatch) -> None:

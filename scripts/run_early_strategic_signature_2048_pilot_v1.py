@@ -88,7 +88,7 @@ def _runtime_context(device_name: str) -> dict[str, Any]:
         "python_version": platform.python_version(),
         "numpy_version": np.__version__,
         "scipy_version": scipy.__version__,
-        "torch_version": torch.__version__,
+        "torch_version": str(torch.__version__),
         "torch_cuda_runtime_version": torch.version.cuda,
         "torch_cudnn_version": torch.backends.cudnn.version(),
         "device": str(device),
