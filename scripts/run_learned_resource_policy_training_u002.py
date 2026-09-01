@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run one fresh seed-arm policy-training job for U001."""
+"""Run one fresh seed-arm policy-training job for U002."""
 
 from __future__ import annotations
 
@@ -35,7 +35,7 @@ REPOSITORY = Path(__file__).resolve().parents[1]
 
 
 class LearnedResourcePolicyTrainingCLIError(RuntimeError):
-    """The U001 execution request or runtime output is ineligible."""
+    """The U002 execution request or runtime output is ineligible."""
 
 
 def _arguments() -> argparse.Namespace:
@@ -56,11 +56,11 @@ def _load_protocol(path: Path) -> dict[str, Any]:
         document = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as error:
         raise LearnedResourcePolicyTrainingCLIError(
-            f"cannot read ratified U001 protocol: {path}"
+            f"cannot read ratified U002 protocol: {path}"
         ) from error
     if type(document) is not dict:
         raise LearnedResourcePolicyTrainingCLIError(
-            "ratified U001 protocol must contain one JSON object"
+            "ratified U002 protocol must contain one JSON object"
         )
     return validate_ratified_learned_resource_forecast_protocol_v1(document)
 
@@ -76,18 +76,18 @@ def _validate_execution_request(
 ) -> None:
     if protocol["source_commit"] != source_commit:
         raise LearnedResourcePolicyTrainingCLIError(
-            "ratified U001 protocol source commit differs from runtime checkout"
+            "ratified U002 protocol source commit differs from runtime checkout"
         )
     if arm not in protocol["arms"] or seed not in protocol["training_seeds"]:
         raise LearnedResourcePolicyTrainingCLIError(
-            "seed-arm is not registered by the ratified U001 protocol"
+            "seed-arm is not registered by the ratified U002 protocol"
         )
     expected_execution_id = expected_policy_training_execution_id_v1(
         protocol, arm=arm, seed=seed
     )
     if execution_id != expected_execution_id:
         raise LearnedResourcePolicyTrainingCLIError(
-            "execution ID differs from the registered U001 seed-arm identity"
+            "execution ID differs from the registered U002 seed-arm identity"
         )
     if type(device) is not str or not device or device.strip() != device:
         raise LearnedResourcePolicyTrainingCLIError(
@@ -103,7 +103,7 @@ def _validate_execution_request(
         is not True
     ):
         raise LearnedResourcePolicyTrainingCLIError(
-            "ratified U001 policy-training and snapshot schedule changed"
+            "ratified U002 policy-training and snapshot schedule changed"
         )
 
 
@@ -136,12 +136,12 @@ def _run(args: argparse.Namespace) -> dict[str, Any]:
     protocol_path = require_path_outside_repository_v1(
         repository=REPOSITORY,
         path=args.protocol,
-        label="ratified U001 protocol input",
+        label="ratified U002 protocol input",
     )
     output_dir = require_path_outside_repository_v1(
         repository=REPOSITORY,
         path=args.output_dir,
-        label="U001 policy-training result directory",
+        label="U002 policy-training result directory",
     )
     source_commit = bound_clean_source_commit_v1(REPOSITORY)
     protocol = _load_protocol(protocol_path)
@@ -172,7 +172,7 @@ def _run(args: argparse.Namespace) -> dict[str, Any]:
     ]
     if any(path.exists() for path in artifact_paths):
         raise LearnedResourcePolicyTrainingCLIError(
-            "U001 policy-training output already exists; the identity is consumed"
+            "U002 policy-training output already exists; the identity is consumed"
         )
 
     result, snapshots = run_learned_resource_policy_training_seed_arm_v1(
@@ -183,13 +183,13 @@ def _run(args: argparse.Namespace) -> dict[str, Any]:
     )
     if result.get("schema") != LEARNED_RESOURCE_POLICY_TRAINING_RESULT_SCHEMA_V1:
         raise LearnedResourcePolicyTrainingCLIError(
-            "U001 policy-training runtime returned a foreign result schema"
+            "U002 policy-training runtime returned a foreign result schema"
         )
     if tuple(snapshots) != tuple(
         protocol["training"]["evaluation_checkpoints"]
     ):
         raise LearnedResourcePolicyTrainingCLIError(
-            "U001 policy-training runtime returned an incomplete snapshot roster"
+            "U002 policy-training runtime returned an incomplete snapshot roster"
         )
 
     result["execution_context"] = {

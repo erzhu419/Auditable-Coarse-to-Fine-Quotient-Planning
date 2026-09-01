@@ -17,15 +17,15 @@ from acfqp.science.learned_resource_forecast_protocol_v1 import (
 
 REPOSITORY = Path(__file__).resolve().parents[1]
 POSTPROCESS = (
-    REPOSITORY / "scripts/postprocess_retain_learned_resource_forecast_u001.py"
+    REPOSITORY / "scripts/postprocess_retain_learned_resource_forecast_u002.py"
 )
-PREPARE = REPOSITORY / "scripts/prepare_learned_resource_forecast_campaign_u001.py"
+PREPARE = REPOSITORY / "scripts/prepare_learned_resource_forecast_campaign_u002.py"
 SOURCE_COMMIT = "5" * 40
 
 
 @pytest.fixture
 def linux_tmp_path(request) -> Path:
-    path = Path(tempfile.mkdtemp(prefix="acfqp-u001-postprocess-", dir="/tmp"))
+    path = Path(tempfile.mkdtemp(prefix="acfqp-u002-postprocess-", dir="/tmp"))
     request.addfinalizer(lambda: shutil.rmtree(path, ignore_errors=True))
     return path
 

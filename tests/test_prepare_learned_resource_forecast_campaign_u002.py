@@ -15,12 +15,12 @@ from acfqp.science.learned_resource_forecast_protocol_v1 import (
 
 
 REPOSITORY = Path(__file__).resolve().parents[1]
-SCRIPT = REPOSITORY / "scripts/prepare_learned_resource_forecast_campaign_u001.py"
+SCRIPT = REPOSITORY / "scripts/prepare_learned_resource_forecast_campaign_u002.py"
 SOURCE_COMMIT = "7" * 40
 
 
 def _module():
-    spec = importlib.util.spec_from_file_location("prepare_lrf_u001", SCRIPT)
+    spec = importlib.util.spec_from_file_location("prepare_lrf_u002", SCRIPT)
     assert spec is not None and spec.loader is not None
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
@@ -46,7 +46,31 @@ def _bind_fixed_output_paths(module, root: Path) -> None:
 
 def test_six_worker_manifest_closes_interleaved_seed_and_identity_rosters() -> None:
     module = _module()
-    _bind_fixed_output_paths(module, Path("/tmp/u001-launch-test"))
+    assert [
+        str(module.FIXED_SOURCE_CHECKOUT),
+        str(module.FIXED_LAUNCH_ROOT),
+        str(module.FIXED_RESULTS_ROOT),
+        str(module.FIXED_STATUS_ROOT),
+        str(module.FIXED_LOG_ROOT),
+        str(module.FIXED_ANALYSIS_ROOT),
+        str(module.FIXED_RETAINED_ROOT),
+    ] == [
+        "/home/erzhu419/mine_code/"
+        "acfqp-learned-resource-forecast-2048-pilot-u002-source",
+        "/home/erzhu419/mine_code/"
+        "acfqp-learned-resource-forecast-2048-pilot-u002-launch",
+        "/home/erzhu419/mine_code/"
+        "acfqp-learned-resource-forecast-2048-pilot-u002-results",
+        "/home/erzhu419/mine_code/"
+        "acfqp-learned-resource-forecast-2048-pilot-u002-status",
+        "/home/erzhu419/mine_code/"
+        "acfqp-learned-resource-forecast-2048-pilot-u002-logs",
+        "/home/erzhu419/mine_code/"
+        "acfqp-learned-resource-forecast-2048-pilot-u002-analysis",
+        "/home/erzhu419/mine_code/"
+        "acfqp-learned-resource-forecast-2048-pilot-u002-retained",
+    ]
+    _bind_fixed_output_paths(module, Path("/tmp/u002-launch-test"))
     protocol = build_ratified_learned_resource_forecast_protocol_v1(SOURCE_COMMIT)
     manifest = module.build_launch_manifest_v1(protocol)
 
@@ -62,6 +86,18 @@ def test_six_worker_manifest_closes_interleaved_seed_and_identity_rosters() -> N
     assert manifest["required_runtime"][
         "pythonpath_environment_must_equal_source_pythonpath"
     ] is True
+    assert manifest["required_runtime"]["python_implementation"] == "CPython"
+    assert manifest["required_runtime"][
+        "global_preflight_optimizer_smoke_required"
+    ] is True
+    assert manifest["required_runtime"]["optimizer_smoke_device"] == "cpu"
+    assert manifest["required_runtime"]["optimizer_smoke_linear_layer_count"] == 1
+    assert manifest["required_runtime"]["optimizer_smoke_module"] == (
+        "torch.nn.Linear"
+    )
+    assert manifest["required_runtime"]["optimizer_smoke_optimizer"] == (
+        "torch.optim.Adam"
+    )
     assert [len(worker["seeds"]) for worker in manifest["workers"]] == [8] * 6
     assert sum(
         len(worker["policy_training_jobs"]) for worker in manifest["workers"]
@@ -105,7 +141,7 @@ def test_six_worker_manifest_closes_interleaved_seed_and_identity_rosters() -> N
 
 def test_prepare_reexports_the_authoritative_evidence_identity_helper() -> None:
     module = _module()
-    _bind_fixed_output_paths(module, Path("/tmp/u001-launch-helper-test"))
+    _bind_fixed_output_paths(module, Path("/tmp/u002-launch-helper-test"))
     assert (
         module.expected_player_evidence_execution_id_v1
         is expected_player_evidence_execution_id_v1

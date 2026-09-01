@@ -18,19 +18,19 @@ def test_ratified_protocol_freezes_population_lanes_and_runtime_api() -> None:
 
     assert protocol["source_commit"] == SOURCE_COMMIT
     assert protocol["pilot_execution_identity"] == (
-        "acfqp-learned-resource-forecast-2048-pilot-u001-ordinal1-attempt1"
+        "acfqp-learned-resource-forecast-2048-pilot-u002-ordinal2-attempt1"
     )
     assert protocol["arms"] == [
         "RAW_BOARD_STANDARD",
         "RAW_PLUS_ROTATED_RAW_CONTROL",
         "RAW_PLUS_RESOURCE_STATE_ONLY",
     ]
-    assert protocol["training_seeds"] == list(range(781_101, 781_149))
+    assert protocol["training_seeds"] == list(range(782_101, 782_149))
     assert protocol["training_seed_split"]["train"] == list(
-        range(781_101, 781_133)
+        range(782_101, 782_133)
     )
     assert protocol["training_seed_split"]["test"] == list(
-        range(781_133, 781_149)
+        range(782_133, 782_149)
     )
     assert protocol["training"]["evaluation_checkpoints"] == [
         25_000,
@@ -41,6 +41,13 @@ def test_ratified_protocol_freezes_population_lanes_and_runtime_api() -> None:
     assert protocol["training_tape_prefix"]
     assert protocol["evaluation_tape_prefix"]
     roots = protocol["tape_independence_contract"]["pairwise_distinct_roots"]
+    assert roots == [
+        "acfqp-learned-resource-forecast-u002-policy-training-v1",
+        "acfqp-learned-resource-forecast-u002-model-evaluation-v1",
+        "acfqp-learned-resource-forecast-u002-self-supervised-trajectory-v1",
+        "acfqp-learned-resource-forecast-u002-skill-label-v1",
+        "acfqp-learned-resource-forecast-u002-eight-action-probe-v1",
+    ]
     assert len(roots) == len(set(roots)) == 5
     assert protocol["policy_population_contract"] == {
         "training_job_count": 144,
@@ -48,6 +55,27 @@ def test_ratified_protocol_freezes_population_lanes_and_runtime_api() -> None:
         "policy_player_count": 432,
         "checkpoints_are_player_identities_not_independent_training_runs": True,
         "generator_arm_checkpoint_seed_host_model_reward_never_classifier_inputs": True,
+    }
+    assert protocol["execution_contract"]["global_preflight_runtime_smoke"] == {
+        "required_for_each_worker_and_phase": True,
+        "python_implementation": "CPython",
+        "device": "cpu",
+        "linear_layer_count": 1,
+        "module": "torch.nn.Linear",
+        "optimizer": "torch.optim.Adam",
+        "optimizer_smoke_must_equal_true_before_dispatch_identity": True,
+    }
+    assert protocol["fresh_successor_boundary"] == {
+        "predecessor_execution_identity": (
+            "acfqp-learned-resource-forecast-2048-pilot-u001-ordinal1-attempt1"
+        ),
+        "predecessor_ordinal": 1,
+        "predecessor_attempt": 1,
+        "successor_ordinal": 2,
+        "successor_attempt": 1,
+        "predecessor_execution_identity_may_be_retried": False,
+        "predecessor_seeds_tapes_paths_or_outputs_reused": False,
+        "method_and_gate_changed_from_predecessor": False,
     }
     assert subject.validate_ratified_learned_resource_forecast_protocol_v1(
         protocol

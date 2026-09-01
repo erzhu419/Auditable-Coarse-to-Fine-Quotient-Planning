@@ -14,8 +14,8 @@ from acfqp.science.learned_resource_forecast_protocol_v1 import (
 
 
 REPOSITORY = Path(__file__).resolve().parents[1]
-LAUNCHER = REPOSITORY / "scripts/launch_learned_resource_forecast_campaign_u001.py"
-PREPARE = REPOSITORY / "scripts/prepare_learned_resource_forecast_campaign_u001.py"
+LAUNCHER = REPOSITORY / "scripts/launch_learned_resource_forecast_campaign_u002.py"
+PREPARE = REPOSITORY / "scripts/prepare_learned_resource_forecast_campaign_u002.py"
 SOURCE_COMMIT = "9" * 40
 
 
@@ -104,6 +104,7 @@ def _successful_global_preflight(manifest: dict, phase: str, calls: list):
         return {
             "success": True,
             "global_preflight_only": True,
+            "optimizer_smoke": True,
             "filesystem_mutation": False,
             "phase": phase,
             "worker": worker["worker"],
@@ -157,7 +158,7 @@ def test_launcher_dispatches_six_manifest_workers_with_exact_source_pythonpath(
         assert worker["python"] in command
         assert (
             f"{manifest['source_checkout']}/scripts/"
-            "run_learned_resource_forecast_worker_u001.py"
+            "run_learned_resource_forecast_worker_u002.py"
         ) in command
         assert f"--worker {worker['worker']}" in command
         assert f"--phase {phase}" in command
@@ -184,6 +185,8 @@ def test_launcher_dispatches_six_manifest_workers_with_exact_source_pythonpath(
         for index in range(6)
     ]
     assert events[0]["event"] == "GLOBAL_PRECHECK_COMPLETED"
+    assert events[0]["optimizer_smoke_worker_count"] == 6
+    assert events[0]["optimizer_smoke_all_passed"] is True
     assert events[1]["event"] == "DISPATCH_STARTED"
     assert sum(event["event"] == "WORKER_DISPATCHED" for event in events) == 6
     assert events[-1]["event"] == "DISPATCH_COMPLETED"
@@ -272,6 +275,7 @@ def test_unclosed_evidence_global_preflight_starts_no_worker_and_writes_no_state
         return {
             "success": True,
             "global_preflight_only": True,
+            "optimizer_smoke": True,
             "filesystem_mutation": False,
             "phase": "evidence",
             "worker": worker["worker"],
@@ -287,6 +291,91 @@ def test_unclosed_evidence_global_preflight_starts_no_worker_and_writes_no_state
         )
     assert len(preflight_calls) == 6
     assert dispatch_calls == []
+    assert not args.dispatch_status.exists()
+
+
+@pytest.mark.parametrize(
+    "failure_message",
+    [
+        "synthetic platform.python_implementation mismatch",
+        "synthetic torch.optim.Adam construction failure",
+    ],
+)
+def test_runtime_smoke_barrier_failure_consumes_no_dispatch_or_phase_roots(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    failure_message: str,
+) -> None:
+    launcher, _protocol, manifest, args = _fixture(
+        tmp_path, monkeypatch, "training"
+    )
+    preflight_calls = []
+    dispatch_calls = []
+
+    def fail_last(host_alias: str, command: str) -> dict:
+        worker = manifest["workers"][len(preflight_calls)]
+        preflight_calls.append((host_alias, command))
+        if worker["worker"] == 5:
+            raise RuntimeError(failure_message)
+        return {
+            "success": True,
+            "global_preflight_only": True,
+            "optimizer_smoke": True,
+            "filesystem_mutation": False,
+            "phase": "training",
+            "worker": worker["worker"],
+            "source_commit": manifest["source_commit"],
+            "protocol_id": manifest["protocol_id"],
+        }
+
+    with pytest.raises(RuntimeError, match="synthetic"):
+        launcher._launch(
+            args,
+            dispatcher=lambda host, command: dispatch_calls.append((host, command)),
+            global_preflight=fail_last,
+        )
+
+    assert len(preflight_calls) == 6
+    assert dispatch_calls == []
+    assert not args.dispatch_status.exists()
+    assert not args.remote_results_root.exists()
+    assert not args.remote_status_root.exists()
+    assert not args.remote_log_root.exists()
+
+
+def test_missing_optimizer_smoke_success_is_foreign_preflight_without_dispatch(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    launcher, _protocol, manifest, args = _fixture(
+        tmp_path, monkeypatch, "training"
+    )
+    calls = []
+
+    def missing_smoke(host_alias: str, command: str) -> dict:
+        worker = manifest["workers"][len(calls)]
+        calls.append((host_alias, command))
+        return {
+            "success": True,
+            "global_preflight_only": True,
+            "filesystem_mutation": False,
+            "phase": "training",
+            "worker": worker["worker"],
+            "source_commit": manifest["source_commit"],
+            "protocol_id": manifest["protocol_id"],
+        }
+
+    with pytest.raises(
+        launcher.LearnedResourceForecastLauncherV1Error,
+        match="foreign worker summary",
+    ):
+        launcher._launch(
+            args,
+            dispatcher=lambda _host, _command: (_ for _ in ()).throw(
+                AssertionError("dispatch must remain unreachable")
+            ),
+            global_preflight=missing_smoke,
+        )
+    assert len(calls) == 1
     assert not args.dispatch_status.exists()
 
 

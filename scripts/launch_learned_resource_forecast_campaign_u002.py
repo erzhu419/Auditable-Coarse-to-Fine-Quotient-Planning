@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Durably dispatch all six workers for one frozen U001 phase."""
+"""Durably dispatch all six workers for one frozen U002 phase."""
 
 from __future__ import annotations
 
@@ -26,7 +26,7 @@ from acfqp.science.learned_resource_forecast_protocol_v1 import (
 
 
 REPOSITORY = Path(__file__).resolve().parents[1]
-WORKER_SCRIPT_NAME_V1 = "run_learned_resource_forecast_worker_u001.py"
+WORKER_SCRIPT_NAME_V1 = "run_learned_resource_forecast_worker_u002.py"
 PHASES_V1 = ("training", "evidence")
 DispatcherV1 = Callable[[str, str], str]
 GlobalPreflightV1 = Callable[[str, str], dict[str, Any]]
@@ -64,11 +64,11 @@ def _read_object(path: Path, label: str) -> dict[str, Any]:
 
 
 def _load_prepare_module():
-    path = REPOSITORY / "scripts/prepare_learned_resource_forecast_campaign_u001.py"
-    spec = importlib.util.spec_from_file_location("acfqp_u001_prepare_for_launch", path)
+    path = REPOSITORY / "scripts/prepare_learned_resource_forecast_campaign_u002.py"
+    spec = importlib.util.spec_from_file_location("acfqp_u002_prepare_for_launch", path)
     if spec is None or spec.loader is None:
         raise LearnedResourceForecastLauncherV1Error(
-            "cannot load the U001 launch-manifest authority"
+            "cannot load the U002 launch-manifest authority"
         )
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
@@ -76,11 +76,11 @@ def _load_prepare_module():
 
 
 def _load_history_scan_module():
-    path = REPOSITORY / "scripts/scan_learned_resource_forecast_history_u001.py"
-    spec = importlib.util.spec_from_file_location("acfqp_u001_scan_for_launch", path)
+    path = REPOSITORY / "scripts/scan_learned_resource_forecast_history_u002.py"
+    spec = importlib.util.spec_from_file_location("acfqp_u002_scan_for_launch", path)
     if spec is None or spec.loader is None:
         raise LearnedResourceForecastLauncherV1Error(
-            "cannot load the U001 history-scan authority"
+            "cannot load the U002 history-scan authority"
         )
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
@@ -88,13 +88,13 @@ def _load_history_scan_module():
 
 
 def _load_postprocess_module():
-    path = REPOSITORY / "scripts/postprocess_retain_learned_resource_forecast_u001.py"
+    path = REPOSITORY / "scripts/postprocess_retain_learned_resource_forecast_u002.py"
     spec = importlib.util.spec_from_file_location(
-        "acfqp_u001_postprocess_for_launch", path
+        "acfqp_u002_postprocess_for_launch", path
     )
     if spec is None or spec.loader is None:
         raise LearnedResourceForecastLauncherV1Error(
-            "cannot load the U001 dispatch-status authority"
+            "cannot load the U002 dispatch-status authority"
         )
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
@@ -359,22 +359,22 @@ def _launch(
 ) -> dict[str, Any]:
     if args.phase not in PHASES_V1:
         raise LearnedResourceForecastLauncherV1Error(
-            "launch phase is outside the frozen U001 roster"
+            "launch phase is outside the frozen U002 roster"
         )
-    protocol_path = _outside(args.protocol, "ratified U001 protocol input")
-    manifest_path = _outside(args.manifest, "U001 launch manifest input")
+    protocol_path = _outside(args.protocol, "ratified U002 protocol input")
+    manifest_path = _outside(args.manifest, "U002 launch manifest input")
     history_receipt_path = _outside(
-        args.history_scan_receipt, "U001 history-scan receipt"
+        args.history_scan_receipt, "U002 history-scan receipt"
     )
-    results_root = _outside(args.remote_results_root, "remote U001 results root")
-    status_root = _outside(args.remote_status_root, "remote U001 status root")
-    log_root = _outside(args.remote_log_root, "remote U001 log root")
-    dispatch_path = _outside(args.dispatch_status, "U001 dispatch status")
+    results_root = _outside(args.remote_results_root, "remote U002 results root")
+    status_root = _outside(args.remote_status_root, "remote U002 status root")
+    log_root = _outside(args.remote_log_root, "remote U002 log root")
+    dispatch_path = _outside(args.dispatch_status, "U002 dispatch status")
     source_commit = bound_clean_source_commit_v1(REPOSITORY)
     protocol = validate_ratified_learned_resource_forecast_protocol_v1(
-        _read_object(protocol_path, "ratified U001 protocol")
+        _read_object(protocol_path, "ratified U002 protocol")
     )
-    manifest = _read_object(manifest_path, "U001 launch manifest")
+    manifest = _read_object(manifest_path, "U002 launch manifest")
     prepare = _load_prepare_module()
     if manifest != prepare.build_launch_manifest_v1(protocol):
         raise LearnedResourceForecastLauncherV1Error(
@@ -413,7 +413,7 @@ def _launch(
         )
     scan = _load_history_scan_module()
     scan.validate_history_scan_receipt_v1(
-        _read_object(history_receipt_path, "U001 history-scan receipt"),
+        _read_object(history_receipt_path, "U002 history-scan receipt"),
         protocol,
         manifest,
     )
@@ -449,6 +449,7 @@ def _launch(
         if (
             row.get("success") is not True
             or row.get("global_preflight_only") is not True
+            or row.get("optimizer_smoke") is not True
             or row.get("filesystem_mutation") is not False
             or row.get("phase") != args.phase
             or row.get("worker") != worker["worker"]
@@ -466,6 +467,10 @@ def _launch(
                 "event": "GLOBAL_PRECHECK_COMPLETED",
                 "phase": args.phase,
                 "prechecked_worker_count": len(preflight_rows),
+                "optimizer_smoke_worker_count": sum(
+                    row["optimizer_smoke"] is True for row in preflight_rows
+                ),
+                "optimizer_smoke_all_passed": True,
                 "filesystem_mutation_before_precheck_completed": False,
             }
         )

@@ -1,4 +1,4 @@
-"""Frozen learned resource-forecast primitives for the 2048 U001 pilot.
+"""Frozen learned resource-forecast primitives for the 2048 U002 pilot.
 
 This module deliberately separates three operations:
 

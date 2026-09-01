@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Independently replay the retained U001 analysis and its fixed Gate."""
+"""Independently replay the retained U002 analysis and its fixed Gate."""
 
 from __future__ import annotations
 
@@ -214,10 +214,10 @@ def _replay_manifest(
     document: Mapping[str, Any], protocol: Mapping[str, Any]
 ) -> dict[str, Any]:
     prepare_path = REPOSITORY / "scripts" / (
-        "prepare_learned_resource_forecast_campaign_u001.py"
+        "prepare_learned_resource_forecast_campaign_u002.py"
     )
     spec = importlib.util.spec_from_file_location(
-        "acfqp_u001_prepare_for_independent_verifier", prepare_path
+        "acfqp_u002_prepare_for_independent_verifier", prepare_path
     )
     if spec is None or spec.loader is None:
         _fail("cannot load exact launch-manifest builder independently")

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Gather remote U001 evidence to gpu2 by a retryable server-side tar stream."""
+"""Gather remote U002 evidence to gpu2 by a retryable server-side tar stream."""
 
 from __future__ import annotations
 
@@ -55,22 +55,22 @@ def _load_script_module(name: str, filename: str):
 
 def _load_prepare_module():
     return _load_script_module(
-        "acfqp_u001_prepare_for_gather",
-        "prepare_learned_resource_forecast_campaign_u001.py",
+        "acfqp_u002_prepare_for_gather",
+        "prepare_learned_resource_forecast_campaign_u002.py",
     )
 
 
 def _load_history_scan_module():
     return _load_script_module(
-        "acfqp_u001_history_for_gather",
-        "scan_learned_resource_forecast_history_u001.py",
+        "acfqp_u002_history_for_gather",
+        "scan_learned_resource_forecast_history_u002.py",
     )
 
 
 def _load_postprocess_module():
     return _load_script_module(
-        "acfqp_u001_postprocess_for_gather",
-        "postprocess_retain_learned_resource_forecast_u001.py",
+        "acfqp_u002_postprocess_for_gather",
+        "postprocess_retain_learned_resource_forecast_u002.py",
     )
 
 
@@ -226,7 +226,7 @@ def _inspect_local_source(
 
 
 def _ssh_source_inspector(host_alias: str, request: dict[str, Any]) -> dict[str, Any]:
-    script = REPOSITORY / "scripts/gather_learned_resource_forecast_evidence_u001.py"
+    script = REPOSITORY / "scripts/gather_learned_resource_forecast_evidence_u002.py"
     command = [
         "env",
         f"PYTHONPATH={request['source_pythonpath']}",
@@ -486,7 +486,7 @@ def _inspect_central_local(
 
 
 def _ssh_central_inspector(host_alias: str, request: dict[str, Any]) -> dict[str, Any]:
-    script = REPOSITORY / "scripts/gather_learned_resource_forecast_evidence_u001.py"
+    script = REPOSITORY / "scripts/gather_learned_resource_forecast_evidence_u002.py"
     command = [
         "env",
         f"PYTHONPATH={request['source_pythonpath']}",
@@ -679,9 +679,9 @@ def _gather(
     small_file_copier: SmallFileCopierV1 | None = None,
 ) -> dict[str, Any]:
     protocol = validate_ratified_learned_resource_forecast_protocol_v1(
-        _read_object(protocol_path, "ratified U001 protocol")
+        _read_object(protocol_path, "ratified U002 protocol")
     )
-    manifest = _read_object(manifest_path, "U001 launch manifest")
+    manifest = _read_object(manifest_path, "U002 launch manifest")
     prepare = _load_prepare_module()
     if manifest != prepare.build_launch_manifest_v1(protocol):
         raise LearnedResourceForecastGatherV1Error(
@@ -906,9 +906,9 @@ def main() -> int:
     args = _arguments()
     try:
         protocol = validate_ratified_learned_resource_forecast_protocol_v1(
-            _read_object(args.protocol, "ratified U001 protocol")
+            _read_object(args.protocol, "ratified U002 protocol")
         )
-        manifest = _read_object(args.manifest, "U001 launch manifest")
+        manifest = _read_object(args.manifest, "U002 launch manifest")
         prepare = _load_prepare_module()
         if manifest != prepare.build_launch_manifest_v1(protocol):
             raise LearnedResourceForecastGatherV1Error(

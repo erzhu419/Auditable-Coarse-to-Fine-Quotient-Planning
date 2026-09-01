@@ -13,8 +13,8 @@ from acfqp.science.learned_resource_forecast_protocol_v1 import (
 
 
 REPOSITORY = Path(__file__).resolve().parents[1]
-SCANNER = REPOSITORY / "scripts/scan_learned_resource_forecast_history_u001.py"
-PREPARE = REPOSITORY / "scripts/prepare_learned_resource_forecast_campaign_u001.py"
+SCANNER = REPOSITORY / "scripts/scan_learned_resource_forecast_history_u002.py"
+PREPARE = REPOSITORY / "scripts/prepare_learned_resource_forecast_campaign_u002.py"
 SOURCE_COMMIT = "6" * 40
 
 
@@ -130,7 +130,7 @@ def test_single_rg_scan_excludes_only_source_and_launch_and_finds_old_identity(
     old.mkdir()
     pilot = "pilot-execution-fixture"
     execution_id = f"{pilot}:policy-training:RAW:seed:830101"
-    tape_root = "acfqp-u001-fixture-tape-root"
+    tape_root = "acfqp-u002-fixture-tape-root"
     (source / "ignored.json").write_text(execution_id, encoding="utf-8")
     (launch / "ignored.json").write_text(execution_id, encoding="utf-8")
     (old / "evidence.json").write_text(

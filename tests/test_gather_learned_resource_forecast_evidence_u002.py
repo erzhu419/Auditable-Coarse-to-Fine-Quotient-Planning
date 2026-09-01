@@ -17,14 +17,14 @@ from acfqp.science.learned_resource_forecast_protocol_v1 import (
 
 
 REPOSITORY = Path(__file__).resolve().parents[1]
-GATHER = REPOSITORY / "scripts/gather_learned_resource_forecast_evidence_u001.py"
-PREPARE = REPOSITORY / "scripts/prepare_learned_resource_forecast_campaign_u001.py"
+GATHER = REPOSITORY / "scripts/gather_learned_resource_forecast_evidence_u002.py"
+PREPARE = REPOSITORY / "scripts/prepare_learned_resource_forecast_campaign_u002.py"
 SOURCE_COMMIT = "4" * 40
 
 
 @pytest.fixture
 def linux_tmp_path(request) -> Path:
-    path = Path(tempfile.mkdtemp(prefix="acfqp-u001-gather-", dir="/tmp"))
+    path = Path(tempfile.mkdtemp(prefix="acfqp-u002-gather-", dir="/tmp"))
     request.addfinalizer(lambda: shutil.rmtree(path, ignore_errors=True))
     return path
 
@@ -300,7 +300,7 @@ def test_small_authority_python_program_is_one_shell_quoted_remote_command(
     monkeypatch.setattr(subject.subprocess, "run", fake_run)
     subject._copy_small_to_remote(
         "jtl110gpu2",
-        Path("/home/erzhu419/mine_code/u001 launch/receipt.json"),
+        Path("/home/erzhu419/mine_code/u002 launch/receipt.json"),
         b'{"ok":true}',
         "/home/erzhu419/.venvs/runtime/bin/python",
     )
@@ -312,5 +312,5 @@ def test_small_authority_python_program_is_one_shell_quoted_remote_command(
     assert remote[0] == "/home/erzhu419/.venvs/runtime/bin/python"
     assert remote[1] == "-c"
     assert "os.O_EXCL" in remote[2]
-    assert remote[3] == "/home/erzhu419/mine_code/u001 launch/receipt.json"
+    assert remote[3] == "/home/erzhu419/mine_code/u002 launch/receipt.json"
     assert captured["input"] == b'{"ok":true}'

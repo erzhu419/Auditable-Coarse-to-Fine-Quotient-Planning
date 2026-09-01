@@ -27,7 +27,7 @@ from acfqp.science.matched_double_dqn_2048_learned_resource_pilot_v1 import (
 
 
 REPOSITORY = Path(__file__).resolve().parents[1]
-SCRIPT_PATH = REPOSITORY / "scripts/run_learned_resource_policy_training_u001.py"
+SCRIPT_PATH = REPOSITORY / "scripts/run_learned_resource_policy_training_u002.py"
 SOURCE_COMMIT = "6" * 40
 
 

@@ -1,8 +1,12 @@
-# Learned Resource-Forecast 2048 Pilot U001
+# Learned Resource-Forecast 2048 Pilot U002
 
 ## Status and scientific question
 
-This document freezes one new exploratory method family. It is not a third
+This document freezes the fresh ordinal-2, attempt-1 successor of one new
+exploratory method family. U001 remains immutable prior execution evidence;
+none of its identities, seeds, tapes, paths, or outputs is retried or admitted
+to U002. The learned representation, classifier, and provisional Gate are
+unchanged. This is not a third
 attempt to rescue the failed hand-designed short-signature line.
 
 The natural-opening V1 pilot failed (strategic AUROC 0.3155). The matched
@@ -11,7 +15,7 @@ corner-decision V2 pilot also failed (strategic AUROC 0.5754 versus raw
 decision states, tapes, feature matrices, and outcomes are ineligible for this
 pilot's Gate.
 
-U001 asks a different question: can a representation learned without skill
+U002 asks a different question: can a representation learned without skill
 labels from complete goal-terminated 2048 trajectories forecast future
 strategic-resource dynamics, and, once frozen, add held-out predictive utility for identifying
 stronger machine policies from exactly their first eight accepted actions?
@@ -21,15 +25,15 @@ episode ends on reaching tile 2048 or on having no legal action. It is not a
 continue-after-2048 score game, a visual/UI task, or a claim about human
 players.
 
-U001 is a feasibility pilot. Its result always records
+U002 is a feasibility pilot. Its result always records
 `scientific_success=false` and `scientific_success_claimed=false`. A positive
 provisional signal may only justify a fresh, separately ratified confirmatory
 successor.
 
 ## Fresh policy population
 
-The ratified protocol registers the 48 fresh base training seeds 781101 through
-781148 and the three unchanged u005 policy-generator arms:
+The ratified protocol registers the 48 fresh base training seeds 782101 through
+782148 and the three unchanged u005 policy-generator arms:
 
 - `RAW_BOARD_STANDARD`;
 - `RAW_PLUS_ROTATED_RAW_CONTROL`; and
@@ -42,8 +46,8 @@ three snapshots are three policy-player identities, not three independent
 training runs. All arms and checkpoints sharing a base seed stay in the same
 data split and on the same execution host.
 
-Seeds 781101 through 781132 are encoder/classifier train clusters. Seeds
-781133 through 781148 are one-time test clusters. Generator arm, checkpoint, seed, host,
+Seeds 782101 through 782132 are encoder/classifier train clusters. Seeds
+782133 through 782148 are one-time test clusters. Generator arm, checkpoint, seed, host,
 model path, training reward, and prior campaign results are never classifier
 inputs.
 
@@ -112,7 +116,7 @@ opportunity.
 
 The same 16 registered probe-tape episode indices are shared across train and
 test players to form a matched policy challenge. The held-out unit is therefore
-the base policy-training seed, not the opening. U001 does not test transfer to
+the base policy-training seed, not the opening. U002 does not test transfer to
 unseen opening tapes; a positive result must reserve that question for a fresh
 confirmatory successor.
 
@@ -219,6 +223,12 @@ must use those paths exactly; substituting a fresh empty root cannot restore a
 consumed identity. Training starts only when the fixed results/status/log roots
 are absent on each host. Evidence starts only from each worker's exact 24 JSON
 plus 72 snapshot training roster, with no foreign file or subdirectory.
+
+Before either phase consumes its dispatch status, all six read-only global
+preflights must report CPython and must actually construct one CPU
+`torch.nn.Linear` layer plus a `torch.optim.Adam` optimizer. Each summary
+records `optimizer_smoke=true`; any implementation or optimizer failure leaves
+all dispatch statuses and phase target directories absent.
 
 Large trajectory arrays and model files remain on the execution servers.
 Cross-host gathering uses a direct source-SSH tar stream into a gpu2-SSH tar

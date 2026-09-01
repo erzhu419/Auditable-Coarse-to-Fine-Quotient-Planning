@@ -1,4 +1,4 @@
-"""Independent per-player evidence lanes for the 2048 U001 pilot.
+"""Independent per-player evidence lanes for the 2048 U002 pilot.
 
 Trajectory, probe, and skill-label evidence are returned as separate documents.
 That separation is intentional: the later analysis can train and freeze both

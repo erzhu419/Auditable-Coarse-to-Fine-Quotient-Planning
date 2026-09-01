@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Write the one-shot three-host prior-identity scan receipt for U001."""
+"""Write the one-shot three-host prior-identity scan receipt for U002."""
 
 from __future__ import annotations
 
@@ -57,11 +57,11 @@ class LearnedResourceForecastHistoryScanV1Error(RuntimeError):
 
 
 def _load_prepare_module():
-    path = REPOSITORY / "scripts/prepare_learned_resource_forecast_campaign_u001.py"
-    spec = importlib.util.spec_from_file_location("acfqp_u001_prepare_for_scan", path)
+    path = REPOSITORY / "scripts/prepare_learned_resource_forecast_campaign_u002.py"
+    spec = importlib.util.spec_from_file_location("acfqp_u002_prepare_for_scan", path)
     if spec is None or spec.loader is None:
         raise LearnedResourceForecastHistoryScanV1Error(
-            "cannot load the U001 launch-manifest authority"
+            "cannot load the U002 launch-manifest authority"
         )
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
@@ -208,7 +208,7 @@ def _scan_local_host(request: dict[str, Any]) -> dict[str, Any]:
     regex_rows.extend(re.escape(value) for value in tape_roots)
     regex_rows.extend(re.escape(value) for value in campaign_artifact_paths)
     with tempfile.NamedTemporaryFile(
-        mode="w", encoding="utf-8", prefix="acfqp-u001-history-", suffix=".patterns"
+        mode="w", encoding="utf-8", prefix="acfqp-u002-history-", suffix=".patterns"
     ) as pattern_file:
         pattern_file.write("\n".join(regex_rows) + "\n")
         pattern_file.flush()
@@ -276,7 +276,7 @@ def _scan_local_host(request: dict[str, Any]) -> dict[str, Any]:
 
 
 def _ssh_host_scan(host_alias: str, request: dict[str, Any]) -> dict[str, Any]:
-    script = REPOSITORY / "scripts/scan_learned_resource_forecast_history_u001.py"
+    script = REPOSITORY / "scripts/scan_learned_resource_forecast_history_u002.py"
     command = shlex.join(
         [
             "env",
@@ -391,9 +391,9 @@ def _scan(
 ) -> dict[str, Any]:
     source_commit = bound_clean_source_commit_v1(REPOSITORY)
     protocol = validate_ratified_learned_resource_forecast_protocol_v1(
-        _read_object(protocol_path, "ratified U001 protocol")
+        _read_object(protocol_path, "ratified U002 protocol")
     )
-    manifest = _read_object(manifest_path, "U001 launch manifest")
+    manifest = _read_object(manifest_path, "U002 launch manifest")
     prepare = _load_prepare_module()
     if manifest != prepare.build_launch_manifest_v1(protocol):
         raise LearnedResourceForecastHistoryScanV1Error(
@@ -401,7 +401,7 @@ def _scan(
         )
     fixed = manifest["fixed_paths"]
     resolved_output = require_path_outside_repository_v1(
-        repository=REPOSITORY, path=output, label="U001 history-scan receipt"
+        repository=REPOSITORY, path=output, label="U002 history-scan receipt"
     )
     if (
         source_commit != protocol["source_commit"]
@@ -463,9 +463,9 @@ def main() -> int:
     try:
         if args.host_scan_only:
             protocol = validate_ratified_learned_resource_forecast_protocol_v1(
-                _read_object(args.protocol, "ratified U001 protocol")
+                _read_object(args.protocol, "ratified U002 protocol")
             )
-            manifest = _read_object(args.manifest, "U001 launch manifest")
+            manifest = _read_object(args.manifest, "U002 launch manifest")
             prepare = _load_prepare_module()
             if manifest != prepare.build_launch_manifest_v1(protocol):
                 raise LearnedResourceForecastHistoryScanV1Error(

@@ -1,8 +1,10 @@
-"""Outcome-free protocol for the learned resource-forecast 2048 pilot.
+"""Outcome-free protocol for the learned resource-forecast 2048 U002 pilot.
 
-U001 is a new exploratory method family.  The two failed hand-designed
-short-signature pilots are design history only and none of their policies,
-labels, tapes, features, or outcomes is eligible for this pilot's Gate.
+U002 is the fresh ordinal-2, attempt-1 successor of the new exploratory method
+family.  U001 is immutable prior execution evidence, and the two failed
+hand-designed short-signature pilots are design history only.  None of their
+identities, policies, labels, tapes, features, or outcomes is eligible for this
+pilot's Gate.
 """
 
 from __future__ import annotations
@@ -21,6 +23,9 @@ LEARNED_RESOURCE_FORECAST_PROTOCOL_SCHEMA_V1 = (
     "acfqp.science.learned_resource_forecast_2048_pilot_protocol.v1"
 )
 LEARNED_RESOURCE_FORECAST_EXECUTION_IDENTITY_V1 = (
+    "acfqp-learned-resource-forecast-2048-pilot-u002-ordinal2-attempt1"
+)
+LEARNED_RESOURCE_FORECAST_PREDECESSOR_EXECUTION_IDENTITY_V1 = (
     "acfqp-learned-resource-forecast-2048-pilot-u001-ordinal1-attempt1"
 )
 
@@ -31,7 +36,7 @@ LEARNED_RESOURCE_FORECAST_ARMS_V1 = (
     "RAW_PLUS_ROTATED_RAW_CONTROL",
     "RAW_PLUS_RESOURCE_STATE_ONLY",
 )
-LEARNED_RESOURCE_FORECAST_TRAINING_SEEDS_V1 = tuple(range(781_101, 781_149))
+LEARNED_RESOURCE_FORECAST_TRAINING_SEEDS_V1 = tuple(range(782_101, 782_149))
 LEARNED_RESOURCE_FORECAST_TRAIN_SEEDS_V1 = (
     LEARNED_RESOURCE_FORECAST_TRAINING_SEEDS_V1[:32]
 )
@@ -59,16 +64,16 @@ PROBE_REPRESENTATION_DIMENSIONS_V1 = {
 }
 
 TRAINING_TAPE_PREFIX_V1 = (
-    "acfqp-learned-resource-forecast-u001-policy-training-v1"
+    "acfqp-learned-resource-forecast-u002-policy-training-v1"
 )
 MODEL_EVALUATION_TAPE_PREFIX_V1 = (
-    "acfqp-learned-resource-forecast-u001-model-evaluation-v1"
+    "acfqp-learned-resource-forecast-u002-model-evaluation-v1"
 )
 TRAJECTORY_TAPE_ROOT_V1 = (
-    "acfqp-learned-resource-forecast-u001-self-supervised-trajectory-v1"
+    "acfqp-learned-resource-forecast-u002-self-supervised-trajectory-v1"
 )
-LABEL_TAPE_ROOT_V1 = "acfqp-learned-resource-forecast-u001-skill-label-v1"
-PROBE_TAPE_ROOT_V1 = "acfqp-learned-resource-forecast-u001-eight-action-probe-v1"
+LABEL_TAPE_ROOT_V1 = "acfqp-learned-resource-forecast-u002-skill-label-v1"
+PROBE_TAPE_ROOT_V1 = "acfqp-learned-resource-forecast-u002-eight-action-probe-v1"
 
 TRAJECTORY_EPISODES_PER_TRAIN_PLAYER_V1 = 16
 LABEL_EPISODES_PER_PLAYER_V1 = 64
@@ -104,7 +109,7 @@ FAILED_DECISION_POINT_PROTOCOL_ID_V1 = (
 
 
 class LearnedResourceForecastProtocolV1Error(ValueError):
-    """The frozen U001 design or content identity changed."""
+    """The frozen U002 design or content identity changed."""
 
 
 def _fail(message: str) -> NoReturn:
@@ -159,11 +164,11 @@ def _frozen_payload_v1() -> dict[str, Any]:
         PROBE_TAPE_ROOT_V1,
     )
     if len(set(tape_roots)) != 5:
-        raise AssertionError("U001 tape roots must be pairwise distinct")
+        raise AssertionError("U002 tape roots must be pairwise distinct")
     return {
         "schema": LEARNED_RESOURCE_FORECAST_PROTOCOL_SCHEMA_V1,
         "schema_version": "1.0.0",
-        "campaign_kind": "LEARNED_RESOURCE_FORECAST_2048_PILOT_U001_TEMPLATE",
+        "campaign_kind": "LEARNED_RESOURCE_FORECAST_2048_PILOT_U002_TEMPLATE",
         "research_question": (
             "Can a label-free representation learned from complete goal-terminated "
             "2048 trajectories add held-out predictive utility to exactly eight "
@@ -384,9 +389,30 @@ def _frozen_payload_v1() -> dict[str, Any]:
                 "predecessor_policies_labels_states_tapes_features_outcomes_"
                 "eligible"
             ): False,
-            "u001_is_third_rescue_of_same_hand_designed_representation": False,
+            "u002_is_third_rescue_of_same_hand_designed_representation": False,
+        },
+        "fresh_successor_boundary": {
+            "predecessor_execution_identity": (
+                LEARNED_RESOURCE_FORECAST_PREDECESSOR_EXECUTION_IDENTITY_V1
+            ),
+            "predecessor_ordinal": 1,
+            "predecessor_attempt": 1,
+            "successor_ordinal": 2,
+            "successor_attempt": 1,
+            "predecessor_execution_identity_may_be_retried": False,
+            "predecessor_seeds_tapes_paths_or_outputs_reused": False,
+            "method_and_gate_changed_from_predecessor": False,
         },
         "execution_contract": {
+            "global_preflight_runtime_smoke": {
+                "required_for_each_worker_and_phase": True,
+                "python_implementation": "CPython",
+                "device": "cpu",
+                "linear_layer_count": 1,
+                "module": "torch.nn.Linear",
+                "optimizer": "torch.optim.Adam",
+                "optimizer_smoke_must_equal_true_before_dispatch_identity": True,
+            },
             "policy_training_execution_id_template": (
                 "{pilot_execution_identity}:policy-training:{arm}:seed:{seed}"
             ),
@@ -451,7 +477,7 @@ def build_ratified_learned_resource_forecast_protocol_v1(
     ):
         _fail("ratification source commit must be one lowercase full Git object ID")
     payload = _frozen_payload_v1()
-    payload["campaign_kind"] = "LEARNED_RESOURCE_FORECAST_2048_PILOT_U001_RATIFIED"
+    payload["campaign_kind"] = "LEARNED_RESOURCE_FORECAST_2048_PILOT_U002_RATIFIED"
     payload["source_commit"] = source_commit
     payload["pilot_execution_identity"] = (
         LEARNED_RESOURCE_FORECAST_EXECUTION_IDENTITY_V1
@@ -507,7 +533,7 @@ def player_key_v1(base_seed: int, generator_arm: str, checkpoint: int) -> str:
         or type(checkpoint) is not int
         or checkpoint not in LEARNED_RESOURCE_FORECAST_CHECKPOINTS_V1
     ):
-        _fail("policy player identity is outside the frozen U001 roster")
+        _fail("policy player identity is outside the frozen U002 roster")
     return f"{base_seed}:{generator_arm}:{checkpoint}"
 
 

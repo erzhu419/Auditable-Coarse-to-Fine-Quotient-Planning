@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the three irreversible, lane-separated U001 analysis stages."""
+"""Run the three irreversible, lane-separated U002 analysis stages."""
 
 from __future__ import annotations
 
@@ -187,7 +187,7 @@ def _read_json(path: Path, *, label: str) -> dict[str, Any]:
 
 
 def _load_protocol(path: Path) -> dict[str, Any]:
-    value = _read_json(path, label="ratified U001 protocol")
+    value = _read_json(path, label="ratified U002 protocol")
     try:
         return validate_ratified_learned_resource_forecast_protocol_v1(value)
     except LearnedResourceForecastProtocolV1Error as error:
@@ -207,10 +207,10 @@ def _validate_manifest(
     value: Mapping[str, Any], protocol: Mapping[str, Any]
 ) -> dict[str, Any]:
     prepare_path = REPOSITORY / "scripts" / (
-        "prepare_learned_resource_forecast_campaign_u001.py"
+        "prepare_learned_resource_forecast_campaign_u002.py"
     )
     spec = importlib.util.spec_from_file_location(
-        "acfqp_u001_prepare_for_analysis", prepare_path
+        "acfqp_u002_prepare_for_analysis", prepare_path
     )
     if spec is None or spec.loader is None:
         _fail("cannot load the frozen launch-manifest builder")
@@ -359,7 +359,7 @@ def _validate_manifest(
             "exact_eight_action_probe_records": EXPECTED_PROBE_RECORD_COUNT_V1,
         }
     ):
-        _fail("launch manifest does not close the frozen U001 roster")
+        _fail("launch manifest does not close the frozen U002 roster")
     return {
         "document": dict(value),
         "training_jobs": training,
@@ -375,7 +375,7 @@ def _load_manifest(
     path: Path, protocol: Mapping[str, Any]
 ) -> dict[str, Any]:
     return _validate_manifest(
-        _read_json(path, label="U001 launch manifest"), protocol
+        _read_json(path, label="U002 launch manifest"), protocol
     )
 
 
@@ -699,10 +699,10 @@ def _run_fit_encoders(args: argparse.Namespace) -> dict[str, Any]:
     if os.environ.get("CUBLAS_WORKSPACE_CONFIG") != ":4096:8":
         _fail("deterministic cuBLAS workspace configuration changed")
     protocol_path = require_path_outside_repository_v1(
-        repository=REPOSITORY, path=args.protocol, label="U001 protocol input"
+        repository=REPOSITORY, path=args.protocol, label="U002 protocol input"
     )
     manifest_path = require_path_outside_repository_v1(
-        repository=REPOSITORY, path=args.manifest, label="U001 manifest input"
+        repository=REPOSITORY, path=args.manifest, label="U002 manifest input"
     )
     trajectory_dirs = [
         require_path_outside_repository_v1(
@@ -990,10 +990,10 @@ def _matrix_bytes(
 
 def _run_encode_probes(args: argparse.Namespace) -> dict[str, Any]:
     protocol_path = require_path_outside_repository_v1(
-        repository=REPOSITORY, path=args.protocol, label="U001 protocol input"
+        repository=REPOSITORY, path=args.protocol, label="U002 protocol input"
     )
     manifest_path = require_path_outside_repository_v1(
-        repository=REPOSITORY, path=args.manifest, label="U001 manifest input"
+        repository=REPOSITORY, path=args.manifest, label="U002 manifest input"
     )
     probe_dirs = [
         require_path_outside_repository_v1(
@@ -1640,10 +1640,10 @@ def _label_aggregates(
 
 def _run_evaluate(args: argparse.Namespace) -> dict[str, Any]:
     protocol_path = require_path_outside_repository_v1(
-        repository=REPOSITORY, path=args.protocol, label="U001 protocol input"
+        repository=REPOSITORY, path=args.protocol, label="U002 protocol input"
     )
     manifest_path = require_path_outside_repository_v1(
-        repository=REPOSITORY, path=args.manifest, label="U001 manifest input"
+        repository=REPOSITORY, path=args.manifest, label="U002 manifest input"
     )
     status_dirs = [
         require_path_outside_repository_v1(
@@ -1745,7 +1745,7 @@ def _run(args: argparse.Namespace) -> dict[str, Any]:
         return _run_encode_probes(args)
     if args.operation == "evaluate":
         return _run_evaluate(args)
-    raise AssertionError("unknown U001 analysis operation")
+    raise AssertionError("unknown U002 analysis operation")
 
 
 def main(argv: Sequence[str] | None = None) -> int:

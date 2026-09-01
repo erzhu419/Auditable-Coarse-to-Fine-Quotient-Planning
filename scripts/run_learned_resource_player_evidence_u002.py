@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Collect one registered U001 policy player's separated evidence lanes."""
+"""Collect one registered U002 policy player's separated evidence lanes."""
 
 from __future__ import annotations
 
@@ -73,11 +73,11 @@ def _load_protocol(path: Path) -> dict[str, Any]:
         value = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as error:
         raise LearnedResourcePlayerEvidenceCLIError(
-            f"cannot read ratified U001 protocol: {path}"
+            f"cannot read ratified U002 protocol: {path}"
         ) from error
     if type(value) is not dict:
         raise LearnedResourcePlayerEvidenceCLIError(
-            "ratified U001 protocol must contain one JSON object"
+            "ratified U002 protocol must contain one JSON object"
         )
     return validate_ratified_learned_resource_forecast_protocol_v1(value)
 
@@ -95,7 +95,7 @@ def _validate_execution_request(
 ) -> None:
     if protocol.get("source_commit") != source_commit:
         raise LearnedResourcePlayerEvidenceCLIError(
-            "ratified U001 protocol source commit differs from runtime checkout"
+            "ratified U002 protocol source commit differs from runtime checkout"
         )
     player_key_v1(seed, arm, checkpoint)
     if (
@@ -104,7 +104,7 @@ def _validate_execution_request(
         or checkpoint not in protocol["training"]["evaluation_checkpoints"]
     ):
         raise LearnedResourcePlayerEvidenceCLIError(
-            "player identity is not registered by the ratified U001 protocol"
+            "player identity is not registered by the ratified U002 protocol"
         )
     expected_execution_id = expected_player_evidence_execution_id_v1(
         protocol,
@@ -114,7 +114,7 @@ def _validate_execution_request(
     )
     if execution_id != expected_execution_id:
         raise LearnedResourcePlayerEvidenceCLIError(
-            "execution ID differs from the registered U001 player identity"
+            "execution ID differs from the registered U002 player identity"
         )
     expected_snapshot_name = policy_checkpoint_filename_v1(
         arm=arm, seed=seed, checkpoint=checkpoint
@@ -137,7 +137,7 @@ def _validate_execution_request(
         or protocol["probe_contract"]["accepted_action_count"] != 8
     ):
         raise LearnedResourcePlayerEvidenceCLIError(
-            "ratified U001 evidence-lane counts changed"
+            "ratified U002 evidence-lane counts changed"
         )
 
 
@@ -170,17 +170,17 @@ def _run(args: argparse.Namespace) -> dict[str, Any]:
     protocol_path = require_path_outside_repository_v1(
         repository=REPOSITORY,
         path=args.protocol,
-        label="ratified U001 protocol input",
+        label="ratified U002 protocol input",
     )
     snapshot_path = require_path_outside_repository_v1(
         repository=REPOSITORY,
         path=args.snapshot,
-        label="U001 policy snapshot input",
+        label="U002 policy snapshot input",
     )
     output_dir = require_path_outside_repository_v1(
         repository=REPOSITORY,
         path=args.output_dir,
-        label="U001 player-evidence result directory",
+        label="U002 player-evidence result directory",
     )
     source_commit = bound_clean_source_commit_v1(REPOSITORY)
     protocol = _load_protocol(protocol_path)
@@ -218,7 +218,7 @@ def _run(args: argparse.Namespace) -> dict[str, Any]:
     # same-stem trajectory files would still contaminate that identity.
     if any(path.exists() for path in reserved_paths.values()):
         raise LearnedResourcePlayerEvidenceCLIError(
-            "U001 player-evidence output already exists; the identity is consumed"
+            "U002 player-evidence output already exists; the identity is consumed"
         )
     context = {
         "execution_id": args.execution_id,

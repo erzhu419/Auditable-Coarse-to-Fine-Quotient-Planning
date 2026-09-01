@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the one-shot U001 analysis, verification, and server-side retention."""
+"""Run the one-shot U002 analysis, verification, and server-side retention."""
 
 from __future__ import annotations
 
@@ -87,37 +87,37 @@ def _load_script_module(name: str, filename: str):
 
 def _load_prepare_module():
     return _load_script_module(
-        "acfqp_u001_prepare_for_postprocess",
-        "prepare_learned_resource_forecast_campaign_u001.py",
+        "acfqp_u002_prepare_for_postprocess",
+        "prepare_learned_resource_forecast_campaign_u002.py",
     )
 
 
 def _load_history_scan_module():
     return _load_script_module(
-        "acfqp_u001_history_for_postprocess",
-        "scan_learned_resource_forecast_history_u001.py",
+        "acfqp_u002_history_for_postprocess",
+        "scan_learned_resource_forecast_history_u002.py",
     )
 
 
 def _load_gather_module():
     return _load_script_module(
-        "acfqp_u001_gather_for_postprocess",
-        "gather_learned_resource_forecast_evidence_u001.py",
+        "acfqp_u002_gather_for_postprocess",
+        "gather_learned_resource_forecast_evidence_u002.py",
     )
 
 
 def _default_analysis_runner(args: SimpleNamespace) -> dict[str, Any]:
     module = _load_script_module(
-        "acfqp_u001_analysis_for_postprocess",
-        "run_learned_resource_forecast_analysis_u001.py",
+        "acfqp_u002_analysis_for_postprocess",
+        "run_learned_resource_forecast_analysis_u002.py",
     )
     return module._run(args)
 
 
 def _default_verifier_runner(args: SimpleNamespace) -> dict[str, Any]:
     module = _load_script_module(
-        "acfqp_u001_verifier_for_postprocess",
-        "verify_learned_resource_forecast_analysis_u001.py",
+        "acfqp_u002_verifier_for_postprocess",
+        "verify_learned_resource_forecast_analysis_u002.py",
     )
     return module._verify(args)
 
@@ -126,8 +126,8 @@ def _default_runtime_validator(
     protocol_path: Path, manifest_path: Path, device: str
 ) -> None:
     module = _load_script_module(
-        "acfqp_u001_analysis_runtime_for_postprocess",
-        "run_learned_resource_forecast_analysis_u001.py",
+        "acfqp_u002_analysis_runtime_for_postprocess",
+        "run_learned_resource_forecast_analysis_u002.py",
     )
     protocol = module._load_protocol(protocol_path)
     manifest = module._load_manifest(manifest_path, protocol)
@@ -574,25 +574,25 @@ def _run(
 ) -> dict[str, Any]:
     prepare = _load_prepare_module()
     protocol_path = require_path_outside_repository_v1(
-        repository=REPOSITORY, path=args.protocol, label="ratified U001 protocol"
+        repository=REPOSITORY, path=args.protocol, label="ratified U002 protocol"
     )
     manifest_path = require_path_outside_repository_v1(
-        repository=REPOSITORY, path=args.manifest, label="U001 launch manifest"
+        repository=REPOSITORY, path=args.manifest, label="U002 launch manifest"
     )
     history_path = require_path_outside_repository_v1(
         repository=REPOSITORY,
         path=args.history_scan_receipt,
-        label="U001 history-scan receipt",
+        label="U002 history-scan receipt",
     )
     gather_path = require_path_outside_repository_v1(
         repository=REPOSITORY,
         path=args.gather_receipt,
-        label="U001 gather receipt",
+        label="U002 gather receipt",
     )
     protocol = validate_ratified_learned_resource_forecast_protocol_v1(
-        _read_object(protocol_path, "ratified U001 protocol")
+        _read_object(protocol_path, "ratified U002 protocol")
     )
-    manifest = _read_object(manifest_path, "U001 launch manifest")
+    manifest = _read_object(manifest_path, "U002 launch manifest")
     if manifest != prepare.build_launch_manifest_v1(protocol):
         raise LearnedResourceForecastPostprocessV1Error(
             "launch manifest does not replay from the ratified protocol"
@@ -619,11 +619,11 @@ def _run(
         )
     history = _load_history_scan_module()
     history.validate_history_scan_receipt_v1(
-        _read_object(history_path, "U001 history-scan receipt"), protocol, manifest
+        _read_object(history_path, "U002 history-scan receipt"), protocol, manifest
     )
     gather = _load_gather_module()
     gather.validate_gather_receipt_v1(
-        _read_object(gather_path, "U001 gather receipt"), protocol, manifest
+        _read_object(gather_path, "U002 gather receipt"), protocol, manifest
     )
     if analysis_root.exists() or retained_root.exists() or status_path.exists():
         raise LearnedResourceForecastPostprocessV1Error(

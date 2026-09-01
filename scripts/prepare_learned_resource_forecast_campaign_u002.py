@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Ratify U001 and write its fixed six-GPU launch manifest once."""
+"""Ratify U002 and write its fixed six-GPU launch manifest once."""
 
 from __future__ import annotations
 
@@ -40,32 +40,32 @@ from acfqp.science.matched_double_dqn_2048_learned_resource_pilot_v1 import (
 REPOSITORY = Path(__file__).resolve().parents[1]
 FIXED_SOURCE_CHECKOUT = Path(
     "/home/erzhu419/mine_code/"
-    "acfqp-learned-resource-forecast-2048-pilot-u001-source"
+    "acfqp-learned-resource-forecast-2048-pilot-u002-source"
 )
 FIXED_SOURCE_PYTHONPATH = FIXED_SOURCE_CHECKOUT / "src"
 FIXED_LAUNCH_ROOT = Path(
     "/home/erzhu419/mine_code/"
-    "acfqp-learned-resource-forecast-2048-pilot-u001-launch"
+    "acfqp-learned-resource-forecast-2048-pilot-u002-launch"
 )
 FIXED_RESULTS_ROOT = Path(
     "/home/erzhu419/mine_code/"
-    "acfqp-learned-resource-forecast-2048-pilot-u001-results"
+    "acfqp-learned-resource-forecast-2048-pilot-u002-results"
 )
 FIXED_STATUS_ROOT = Path(
     "/home/erzhu419/mine_code/"
-    "acfqp-learned-resource-forecast-2048-pilot-u001-status"
+    "acfqp-learned-resource-forecast-2048-pilot-u002-status"
 )
 FIXED_LOG_ROOT = Path(
     "/home/erzhu419/mine_code/"
-    "acfqp-learned-resource-forecast-2048-pilot-u001-logs"
+    "acfqp-learned-resource-forecast-2048-pilot-u002-logs"
 )
 FIXED_ANALYSIS_ROOT = Path(
     "/home/erzhu419/mine_code/"
-    "acfqp-learned-resource-forecast-2048-pilot-u001-analysis"
+    "acfqp-learned-resource-forecast-2048-pilot-u002-analysis"
 )
 FIXED_RETAINED_ROOT = Path(
     "/home/erzhu419/mine_code/"
-    "acfqp-learned-resource-forecast-2048-pilot-u001-retained"
+    "acfqp-learned-resource-forecast-2048-pilot-u002-retained"
 )
 FIXED_PROTOCOL_PATH = FIXED_LAUNCH_ROOT / "protocol.json"
 FIXED_MANIFEST_PATH = FIXED_LAUNCH_ROOT / "launch-manifest.json"
@@ -102,7 +102,7 @@ class LearnedResourceForecastPreparationV1Error(RuntimeError):
 def _worker_for_seed(seed: int) -> int:
     if seed not in LEARNED_RESOURCE_FORECAST_TRAINING_SEEDS_V1:
         raise LearnedResourceForecastPreparationV1Error(
-            "launch seed is outside the frozen U001 roster"
+            "launch seed is outside the frozen U002 roster"
         )
     return (seed - LEARNED_RESOURCE_FORECAST_TRAINING_SEEDS_V1[0]) % len(
         WORKER_BINDINGS_V1
@@ -284,6 +284,7 @@ def build_launch_manifest_v1(protocol: dict[str, Any]) -> dict[str, Any]:
         ),
         "train_and_test_seeds_interleaved_across_hosts": True,
         "required_runtime": {
+            "python_implementation": "CPython",
             "python_version": "3.11.15",
             "torch_version": "2.5.1+cu121",
             "torch_cuda_runtime_version": "12.1",
@@ -293,6 +294,11 @@ def build_launch_manifest_v1(protocol: dict[str, Any]) -> dict[str, Any]:
             "source_pythonpath": str(FIXED_SOURCE_PYTHONPATH),
             "acfqp_import_must_resolve_inside_source_pythonpath": True,
             "pythonpath_environment_must_equal_source_pythonpath": True,
+            "global_preflight_optimizer_smoke_required": True,
+            "optimizer_smoke_device": "cpu",
+            "optimizer_smoke_linear_layer_count": 1,
+            "optimizer_smoke_module": "torch.nn.Linear",
+            "optimizer_smoke_optimizer": "torch.optim.Adam",
         },
         "workers": workers,
         "expected_counts": {
@@ -327,16 +333,16 @@ def _prepare(output_root: Path) -> dict[str, Any]:
     root = require_path_outside_repository_v1(
         repository=REPOSITORY,
         path=output_root,
-        label="U001 launch preparation root",
+        label="U002 launch preparation root",
     )
     if root != FIXED_LAUNCH_ROOT.resolve():
         raise LearnedResourceForecastPreparationV1Error(
-            "U001 launch preparation root differs from its fixed identity path"
+            "U002 launch preparation root differs from its fixed identity path"
         )
     source_commit = bound_clean_source_commit_v1(REPOSITORY)
     if REPOSITORY.resolve() != FIXED_SOURCE_CHECKOUT.resolve():
         raise LearnedResourceForecastPreparationV1Error(
-            "U001 preparation checkout differs from the fixed deployment path"
+            "U002 preparation checkout differs from the fixed deployment path"
         )
     protocol = build_ratified_learned_resource_forecast_protocol_v1(source_commit)
     manifest = build_launch_manifest_v1(protocol)

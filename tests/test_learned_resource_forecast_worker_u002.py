@@ -22,9 +22,9 @@ from acfqp.science.matched_double_dqn_2048_learned_resource_pilot_v1 import (
 
 
 REPOSITORY = Path(__file__).resolve().parents[1]
-WORKER_SCRIPT = REPOSITORY / "scripts/run_learned_resource_forecast_worker_u001.py"
+WORKER_SCRIPT = REPOSITORY / "scripts/run_learned_resource_forecast_worker_u002.py"
 PREPARE_SCRIPT = (
-    REPOSITORY / "scripts/prepare_learned_resource_forecast_campaign_u001.py"
+    REPOSITORY / "scripts/prepare_learned_resource_forecast_campaign_u002.py"
 )
 SOURCE_COMMIT = "8" * 40
 
@@ -119,6 +119,7 @@ def _bind_runtime(subject, manifest: dict, worker: dict, monkeypatch) -> None:
         "_actual_runtime_context",
         lambda device: {
             "hostname": worker["expected_hostname"],
+            "python_implementation": required["python_implementation"],
             "python_version": required["python_version"],
             "python_path": worker["python"],
             "pythonpath_environment": manifest["source_pythonpath"],
@@ -136,6 +137,7 @@ def _bind_runtime(subject, manifest: dict, worker: dict, monkeypatch) -> None:
             "cuda_device_name": "fixture GPU",
         },
     )
+    monkeypatch.setattr(subject, "_optimizer_smoke_v1", lambda: True)
 
 
 def _training_result(
@@ -471,6 +473,7 @@ def test_evidence_phase_rejects_foreign_file_in_otherwise_complete_worker_dir(
 @pytest.mark.parametrize(
     ("field", "foreign_value"),
     [
+        ("python_implementation", "PyPy"),
         ("pythonpath_environment", "/foreign/src"),
         ("acfqp_file", "/foreign/src/acfqp/__init__.py"),
     ],
@@ -502,6 +505,70 @@ def test_runtime_binding_rejects_foreign_pythonpath_or_acfqp_import(
         )
 
 
+@pytest.mark.parametrize(
+    ("failure_kind", "message"),
+    [
+        ("python_implementation", "differs from the launch manifest"),
+        ("adam", "synthetic Adam construction failure"),
+    ],
+)
+def test_training_global_preflight_runtime_smoke_failure_writes_nothing(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    failure_kind: str,
+    message: str,
+) -> None:
+    subject, _protocol, manifest, worker, args = _fixture(
+        tmp_path, phase="training"
+    )
+    _bind_runtime(subject, manifest, worker, monkeypatch)
+    if failure_kind == "python_implementation":
+        monkeypatch.setattr(
+            subject.platform, "python_implementation", lambda: "PyPy"
+        )
+    else:
+        monkeypatch.setattr(
+            subject,
+            "_optimizer_smoke_v1",
+            lambda: (_ for _ in ()).throw(
+                RuntimeError("synthetic Adam construction failure")
+            ),
+        )
+    args.results_root.rmdir()
+    args.results_root.parent.rmdir()
+    args.global_preflight_only = True
+
+    with pytest.raises(Exception, match=message):
+        subject._run(args)
+
+    assert not Path(manifest["fixed_paths"]["results_root"]).exists()
+    assert not Path(manifest["fixed_paths"]["status_root"]).exists()
+    assert not Path(manifest["fixed_paths"]["log_root"]).exists()
+    assert not args.status_stream.exists()
+
+
+def test_optimizer_smoke_propagates_adam_construction_failure() -> None:
+    subject, _prepare = _modules()
+
+    class Layer:
+        def parameters(self):
+            return (object(),)
+
+    def fail_adam(_parameters, *, lr):
+        assert lr == 0.001
+        raise RuntimeError("synthetic Adam construction failure")
+
+    with pytest.raises(RuntimeError, match="Adam construction failure"):
+        subject._optimizer_smoke_v1(
+            linear_factory=lambda inputs, outputs, *, device: (
+                Layer()
+                if (inputs, outputs, device) == (1, 1, "cpu")
+                else (_ for _ in ()).throw(AssertionError("foreign Linear"))
+            ),
+            adam_factory=fail_adam,
+        )
+
+
 def test_training_global_preflight_is_read_only_before_fixed_roots_exist(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -517,6 +584,7 @@ def test_training_global_preflight_is_read_only_before_fixed_roots_exist(
 
     assert summary["success"] is True
     assert summary["global_preflight_only"] is True
+    assert summary["optimizer_smoke"] is True
     assert summary["filesystem_mutation"] is False
     assert not Path(manifest["fixed_paths"]["results_root"]).exists()
     assert not Path(manifest["fixed_paths"]["status_root"]).exists()
@@ -569,6 +637,7 @@ def test_evidence_global_preflight_requires_exact_training_roster_without_writes
 
     assert summary["success"] is True
     assert summary["global_preflight_only"] is True
+    assert summary["optimizer_smoke"] is True
     assert summary["filesystem_mutation"] is False
     assert not args.status_stream.exists()
     assert {path.name for path in args.results_root.iterdir()} == (

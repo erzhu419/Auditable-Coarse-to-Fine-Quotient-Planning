@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run one fixed U001 GPU worker phase without retries or identity reuse."""
+"""Run one fixed U002 GPU worker phase without retries or identity reuse."""
 
 from __future__ import annotations
 
@@ -9,6 +9,7 @@ import importlib.util
 import json
 import os
 from pathlib import Path
+import platform
 import socket
 import sys
 from types import SimpleNamespace
@@ -91,8 +92,8 @@ def _load_script_module(name: str, filename: str):
 
 def _expected_manifest(protocol: dict[str, Any]) -> dict[str, Any]:
     module = _load_script_module(
-        "acfqp_u001_prepare_for_worker",
-        "prepare_learned_resource_forecast_campaign_u001.py",
+        "acfqp_u002_prepare_for_worker",
+        "prepare_learned_resource_forecast_campaign_u002.py",
     )
     return module.build_launch_manifest_v1(protocol)
 
@@ -109,7 +110,7 @@ def _actual_runtime_context(device_name: str) -> dict[str, Any]:
     device = torch.device(device_name)
     if device.type != "cuda" or not torch.cuda.is_available():
         raise LearnedResourceForecastWorkerV1Error(
-            "formal U001 workers require one available CUDA device"
+            "formal U002 workers require one available CUDA device"
         )
     try:
         device_name_observed = torch.cuda.get_device_name(device)
@@ -119,6 +120,7 @@ def _actual_runtime_context(device_name: str) -> dict[str, Any]:
         ) from error
     return {
         "hostname": socket.gethostname(),
+        "python_implementation": platform.python_implementation(),
         "python_version": ".".join(
             str(component) for component in sys.version_info[:3]
         ),
@@ -134,6 +136,36 @@ def _actual_runtime_context(device_name: str) -> dict[str, Any]:
         "device": str(device),
         "cuda_device_name": device_name_observed,
     }
+
+
+def _optimizer_smoke_v1(
+    *, linear_factory=None, adam_factory=None
+) -> bool:
+    """Construct the registered CPU module and optimizer before identity use."""
+
+    if linear_factory is None or adam_factory is None:
+        import torch
+
+        linear_factory = linear_factory or torch.nn.Linear
+        adam_factory = adam_factory or torch.optim.Adam
+    layer = linear_factory(1, 1, device="cpu")
+    optimizer = adam_factory(layer.parameters(), lr=0.001)
+    if not getattr(optimizer, "param_groups", None):
+        raise LearnedResourceForecastWorkerV1Error(
+            "CPU Adam smoke returned no parameter group"
+        )
+    return True
+
+
+def _require_python_implementation_v1(
+    required_runtime: dict[str, Any],
+) -> str:
+    observed = platform.python_implementation()
+    if observed != required_runtime["python_implementation"]:
+        raise LearnedResourceForecastWorkerV1Error(
+            "actual Python implementation differs from the launch manifest"
+        )
+    return observed
 
 
 def _validate_runtime_binding(
@@ -156,6 +188,7 @@ def _validate_runtime_binding(
         resolved_sys_path.append(Path(entry or ".").resolve())
     acfqp_file = Path(str(context.get("acfqp_file", ""))).resolve()
     required_pairs = {
+        "python_implementation": required_runtime["python_implementation"],
         "python_version": required_runtime["python_version"],
         "numpy_version": required_runtime["numpy_version"],
         "scipy_version": required_runtime["scipy_version"],
@@ -438,16 +471,16 @@ def _validate_evidence_artifacts(
 
 def _run_policy_training_job(args: SimpleNamespace) -> dict[str, Any]:
     module = _load_script_module(
-        "acfqp_u001_policy_training_for_worker",
-        "run_learned_resource_policy_training_u001.py",
+        "acfqp_u002_policy_training_for_worker",
+        "run_learned_resource_policy_training_u002.py",
     )
     return module._run(args)
 
 
 def _run_player_evidence_job(args: SimpleNamespace) -> dict[str, Any]:
     module = _load_script_module(
-        "acfqp_u001_player_evidence_for_worker",
-        "run_learned_resource_player_evidence_u001.py",
+        "acfqp_u002_player_evidence_for_worker",
+        "run_learned_resource_player_evidence_u002.py",
     )
     return module._run(args)
 
@@ -530,8 +563,8 @@ def _validate_host_training_closure_for_evidence(
     *, protocol: dict[str, Any], manifest: dict[str, Any], worker: dict[str, Any]
 ) -> None:
     postprocess = _load_script_module(
-        "acfqp_u001_postprocess_for_worker_preflight",
-        "postprocess_retain_learned_resource_forecast_u001.py",
+        "acfqp_u002_postprocess_for_worker_preflight",
+        "postprocess_retain_learned_resource_forecast_u002.py",
     )
     fixed = manifest["fixed_paths"]
     host_workers = [
@@ -709,33 +742,33 @@ def _run(
 ) -> dict[str, Any]:
     if args.worker not in range(WORKER_COUNT_V1) or args.phase not in PHASES_V1:
         raise LearnedResourceForecastWorkerV1Error(
-            "worker index or phase is outside the frozen U001 roster"
+            "worker index or phase is outside the frozen U002 roster"
         )
     protocol_path = require_path_outside_repository_v1(
         repository=REPOSITORY,
         path=args.protocol,
-        label="ratified U001 protocol input",
+        label="ratified U002 protocol input",
     )
     manifest_path = require_path_outside_repository_v1(
         repository=REPOSITORY,
         path=args.manifest,
-        label="U001 launch manifest input",
+        label="U002 launch manifest input",
     )
     root = require_path_outside_repository_v1(
         repository=REPOSITORY,
         path=args.results_root,
-        label="U001 worker results root",
+        label="U002 worker results root",
     )
     status_path = require_path_outside_repository_v1(
         repository=REPOSITORY,
         path=args.status_stream,
-        label="U001 worker status stream",
+        label="U002 worker status stream",
     )
     source_commit = bound_clean_source_commit_v1(REPOSITORY)
     protocol = validate_ratified_learned_resource_forecast_protocol_v1(
-        _read_object(protocol_path, "ratified U001 protocol")
+        _read_object(protocol_path, "ratified U002 protocol")
     )
-    manifest = _read_object(manifest_path, "U001 launch manifest")
+    manifest = _read_object(manifest_path, "U002 launch manifest")
     if manifest != _expected_manifest(protocol):
         raise LearnedResourceForecastWorkerV1Error(
             "launch manifest does not replay from the ratified protocol"
@@ -789,6 +822,7 @@ def _run(
             raise LearnedResourceForecastWorkerV1Error(
                 "worker preflight modes are mutually exclusive"
             )
+        _require_python_implementation_v1(manifest["required_runtime"])
         context = _actual_runtime_context(args.device)
         _validate_runtime_binding(
             worker=worker,
@@ -798,6 +832,7 @@ def _run(
             requested_device=args.device,
             context=context,
         )
+        optimizer_smoke = _optimizer_smoke_v1()
         if args.phase == "training":
             if any(
                 Path(fixed[key]).exists()
@@ -826,6 +861,7 @@ def _run(
             "source_commit": source_commit,
             "protocol_id": protocol["protocol_id"],
             "runtime_context": context,
+            "optimizer_smoke": optimizer_smoke,
             "filesystem_mutation": False,
         }
     if getattr(args, "preflight_only", False):

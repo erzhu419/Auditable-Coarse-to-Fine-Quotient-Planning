@@ -32,16 +32,16 @@ def _load_script(module_name: str, filename: str):
 @pytest.fixture(scope="module")
 def analysis():
     return _load_script(
-        "acfqp_u001_analysis_test_subject",
-        "run_learned_resource_forecast_analysis_u001.py",
+        "acfqp_u002_analysis_test_subject",
+        "run_learned_resource_forecast_analysis_u002.py",
     )
 
 
 @pytest.fixture(scope="module")
 def verifier():
     return _load_script(
-        "acfqp_u001_verifier_test_subject",
-        "verify_learned_resource_forecast_analysis_u001.py",
+        "acfqp_u002_verifier_test_subject",
+        "verify_learned_resource_forecast_analysis_u002.py",
     )
 
 
