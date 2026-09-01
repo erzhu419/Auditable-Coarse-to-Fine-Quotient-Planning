@@ -9,6 +9,9 @@ import pytest
 
 from acfqp.science import learned_resource_forecast_evidence_v1 as evidence
 from acfqp.science.learned_resource_forecast_evidence_successor_protocol_v1 import (
+    ABANDONED_U003_EXECUTION_IDENTITY_V1,
+    ABANDONED_U003_PROTOCOL_ID_V1,
+    ABANDONED_U003_SOURCE_COMMIT_V1,
     U002_PROTOCOL_ID_V1,
     U002_SOURCE_COMMIT_V1,
     build_ratified_learned_resource_forecast_evidence_successor_protocol_v1,
@@ -17,6 +20,7 @@ from acfqp.science.learned_resource_forecast_evidence_successor_protocol_v1 impo
 from acfqp.science.learned_resource_forecast_protocol_v1 import (
     LEARNED_RESOURCE_FORECAST_ARMS_V1,
     LEARNED_RESOURCE_FORECAST_TRAIN_SEEDS_V1,
+    MODEL_EVALUATION_TAPE_PREFIX_V1,
     build_ratified_learned_resource_forecast_protocol_v1,
 )
 from acfqp.science.matched_double_dqn_2048_learned_resource_pilot_v1 import (
@@ -48,7 +52,7 @@ def protocol() -> dict:
 @pytest.fixture(scope="module")
 def manifest(protocol: dict) -> dict:
     prepare = _load_script(
-        "prepare_learned_resource_forecast_evidence_successor_u003.py"
+        "prepare_learned_resource_forecast_evidence_successor_u004.py"
     )
     return prepare.build_launch_manifest_v1(protocol)
 
@@ -86,7 +90,7 @@ def _numeric_lane(document: dict) -> dict:
     return result
 
 
-def test_protocol_is_exact_evidence_only_successor_with_four_fresh_roots(
+def test_protocol_is_exact_evidence_only_successor_with_three_fresh_roots(
     protocol: dict,
 ) -> None:
     assert validate_ratified_learned_resource_forecast_evidence_successor_protocol_v1(
@@ -98,14 +102,16 @@ def test_protocol_is_exact_evidence_only_successor_with_four_fresh_roots(
         ),
         "predecessor_ordinal": 2,
         "predecessor_attempt": 1,
-        "successor_ordinal": 3,
+        "successor_ordinal": 4,
         "successor_attempt": 1,
         "predecessor_training_population_reused_read_only": True,
         "predecessor_training_execution_ids_retried": False,
         "predecessor_failed_evidence_dispatch_identity_retried": False,
         "predecessor_evidence_outputs_reused": False,
         "successor_evidence_execution_ids_are_all_fresh": True,
-        "successor_model_evaluation_trajectory_label_probe_tapes_are_all_fresh": True,
+        "successor_trajectory_label_probe_tapes_are_all_fresh": True,
+        "successor_model_evaluation_tape_is_fresh": False,
+        "model_evaluation_measurement_inherited_from_u002": True,
         "method_gate_split_classifier_encoder_and_bootstrap_changed": False,
     }
     parent = protocol["predecessor_training_authority"]
@@ -114,23 +120,53 @@ def test_protocol_is_exact_evidence_only_successor_with_four_fresh_roots(
     assert parent["completed_training_jobs"] == 144
     assert parent["model_snapshots"] == 432
     assert parent["training_artifacts_are_read_only_inputs"] is True
-    assert parent["training_artifacts_may_be_relabelled_as_u003"] is False
+    assert parent["training_artifacts_may_be_relabelled_as_u004"] is False
+    assert parent["model_evaluation_tape_prefix"] == MODEL_EVALUATION_TAPE_PREFIX_V1
+    assert parent["model_evaluation_measurements_are_read_only_inputs"] is True
+    assert parent["model_evaluation_reexecuted_in_u004"] is False
     assert protocol["execution_contract"]["phase_roster"] == ["evidence"]
     assert protocol["execution_contract"]["policy_training_execution_id_template"] is None
-    assert len(
-        {
-            protocol["evaluation_tape_prefix"],
-            protocol["trajectory_tape_root"],
-            protocol["label_tape_root"],
-            protocol["probe_tape_root"],
-        }
-    ) == 4
-    assert all("u003" in value for value in (
-        protocol["evaluation_tape_prefix"],
+    assert protocol["evaluation_tape_prefix"] == MODEL_EVALUATION_TAPE_PREFIX_V1
+    fresh_roots = (
         protocol["trajectory_tape_root"],
         protocol["label_tape_root"],
         protocol["probe_tape_root"],
-    ))
+    )
+    assert len(set(fresh_roots)) == 3
+    assert all("u004" in value for value in fresh_roots)
+    assert protocol["evaluation_tape_prefix"] not in fresh_roots
+    assert protocol["tape_independence_contract"] == {
+        "pairwise_distinct_roots": [
+            protocol["training_tape_prefix"],
+            protocol["evaluation_tape_prefix"],
+            *fresh_roots,
+        ],
+        "training_tape_root_is_read_only_u002_predecessor": True,
+        "model_evaluation_tape_root_is_read_only_u002_predecessor": True,
+        "model_evaluation_tape_root_is_fresh_u004": False,
+        "model_evaluation_reexecuted_in_u004": False,
+        "trajectory_label_probe_roots_are_fresh_u004": True,
+        "fresh_u004_roots": list(fresh_roots),
+        "read_only_u002_roots": [
+            protocol["training_tape_prefix"],
+            protocol["evaluation_tape_prefix"],
+        ],
+        "u002_evidence_tapes_or_artifacts_reused": False,
+        "abandoned_u003_evidence_tapes_or_artifacts_reused": False,
+    }
+    assert protocol["abandoned_u003_boundary"] == {
+        "source_commit": ABANDONED_U003_SOURCE_COMMIT_V1,
+        "protocol_id": ABANDONED_U003_PROTOCOL_ID_V1,
+        "pilot_execution_identity": ABANDONED_U003_EXECUTION_IDENTITY_V1,
+        "protocol_and_manifest_prepared_and_deployed": True,
+        "history_scan_executed": False,
+        "dispatch_identity_consumed": False,
+        "evidence_jobs_executed": 0,
+        "evidence_artifacts_eligible_for_u004": False,
+        "abandonment_reason": (
+            "MODEL_EVALUATION_TAPE_WAS_FALSELY_DECLARED_FRESH_BUT_NOT_REEXECUTED"
+        ),
+    }
 
 
 def test_gate_split_classifier_encoder_and_bootstrap_are_byte_level_unchanged(
@@ -183,7 +219,7 @@ def test_manifest_closes_separate_parent_and_successor_rosters(
     assert len(parent_ids) == 144
     assert len(evidence_ids) == 432
     assert all(":policy-training:" in value and "u002" in value for value in parent_ids)
-    assert all(":player-evidence:" in value and "u003" in value for value in evidence_ids)
+    assert all(":player-evidence:" in value and "u004" in value for value in evidence_ids)
     assert parent_ids.isdisjoint(evidence_ids)
     for worker in manifest["workers"]:
         assert len(worker["predecessor_policy_training_jobs"]) == 24
@@ -192,13 +228,13 @@ def test_manifest_closes_separate_parent_and_successor_rosters(
             "successor_evidence_output_root"
         ]
         assert "u002-results" in worker["predecessor_snapshot_root"]
-        assert "u003-results" in worker["successor_evidence_output_root"]
+        assert "u004-results" in worker["successor_evidence_output_root"]
     assert manifest["history_scan_contract"][
         "predecessor_authority_tokens_are_expected_existing_inputs"
     ] is True
 
 
-def test_u003_reuses_exact_u002_numeric_measurement_logic_under_same_tapes(
+def test_u004_reuses_exact_u002_numeric_measurement_logic_under_same_tapes(
     monkeypatch: pytest.MonkeyPatch,
     protocol: dict,
 ) -> None:
@@ -212,14 +248,14 @@ def test_u003_reuses_exact_u002_numeric_measurement_logic_under_same_tapes(
         evidence,
         "collect_full_game_v1",
         lambda selector, *, tape_root, episode_index: original_full(
-            selector, tape_root="u002-u003-equivalence-tape", episode_index=episode_index
+            selector, tape_root="u002-u004-equivalence-tape", episode_index=episode_index
         ),
     )
     monkeypatch.setattr(
         evidence,
         "collect_prefix_v1",
         lambda selector, *, tape_root, episode_index: original_prefix(
-            selector, tape_root="u002-u003-equivalence-tape", episode_index=episode_index
+            selector, tape_root="u002-u004-equivalence-tape", episode_index=episode_index
         ),
     )
     common = {
@@ -259,7 +295,7 @@ def test_player_cli_writes_dual_provenance_without_mutating_parent_snapshot(
     monkeypatch: pytest.MonkeyPatch,
     protocol: dict,
 ) -> None:
-    module = _load_script("run_learned_resource_player_evidence_u003.py")
+    module = _load_script("run_learned_resource_player_evidence_u004.py")
     predecessor = build_ratified_learned_resource_forecast_protocol_v1(
         U002_SOURCE_COMMIT_V1
     )
@@ -279,7 +315,7 @@ def test_player_cli_writes_dual_provenance_without_mutating_parent_snapshot(
         label_episode_count=1,
         probe_count=1,
     )
-    protocol_path = tmp_path / "u003-protocol.json"
+    protocol_path = tmp_path / "u004-protocol.json"
     parent_path = tmp_path / "u002-protocol.json"
     protocol_path.write_text(json.dumps(protocol), encoding="utf-8")
     parent_path.write_text(json.dumps(predecessor), encoding="utf-8")
@@ -328,13 +364,13 @@ def test_player_cli_writes_dual_provenance_without_mutating_parent_snapshot(
         assert provenance["predecessor_source_commit"] == U002_SOURCE_COMMIT_V1
         assert provenance["predecessor_training_execution_id"] == training_id
         assert provenance["snapshot_is_read_only_predecessor_input"] is True
-        assert provenance["snapshot_is_u003_training_artifact"] is False
+        assert provenance["snapshot_is_u004_training_artifact"] is False
 
 
 def test_launcher_disables_ssh_multiplexing_and_never_retries(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    module = _load_script("launch_learned_resource_forecast_evidence_successor_u003.py")
+    module = _load_script("launch_learned_resource_forecast_evidence_successor_u004.py")
     seen = {}
 
     def fake_run(command, **kwargs):
@@ -354,7 +390,7 @@ def test_launcher_disables_ssh_multiplexing_and_never_retries(
 def test_launcher_global_preflight_is_read_only_and_binds_both_roots(
     manifest: dict,
 ) -> None:
-    module = _load_script("launch_learned_resource_forecast_evidence_successor_u003.py")
+    module = _load_script("launch_learned_resource_forecast_evidence_successor_u004.py")
     fixed = manifest["fixed_paths"]
     worker = {
         **manifest["workers"][0],
@@ -382,7 +418,7 @@ def test_launcher_global_preflight_is_read_only_and_binds_both_roots(
 def test_launcher_accepts_only_exact_zero_worker_u002_failure_history(
     tmp_path: Path,
 ) -> None:
-    module = _load_script("launch_learned_resource_forecast_evidence_successor_u003.py")
+    module = _load_script("launch_learned_resource_forecast_evidence_successor_u004.py")
     path = tmp_path / "u002-failed-evidence.jsonl"
     rows = [
         {"event": "GLOBAL_PRECHECK_COMPLETED", "phase": "evidence"},
@@ -408,20 +444,28 @@ def test_launcher_accepts_only_exact_zero_worker_u002_failure_history(
 def test_history_roster_scans_only_432_fresh_evidence_ids(
     protocol: dict, manifest: dict
 ) -> None:
-    module = _load_script("scan_learned_resource_forecast_history_u003.py")
+    module = _load_script("scan_learned_resource_forecast_history_u004.py")
     request = module._expected_scan_request(protocol, manifest, Path("/home/erzhu419/mine_code"))
     assert len(request["execution_ids"]) == 432
     assert len(set(request["execution_ids"])) == 432
-    assert all("u003" in value for value in request["execution_ids"])
-    assert len(request["tape_roots"]) == 4
-    assert all("u003" in value for value in request["tape_roots"])
+    assert all("u004" in value for value in request["execution_ids"])
+    assert len(request["tape_roots"]) == 3
+    assert all("u004" in value for value in request["tape_roots"])
+    assert protocol["evaluation_tape_prefix"] not in request["tape_roots"]
+    contract = manifest["history_scan_contract"]
+    assert contract["model_evaluation_tape_is_fresh"] is False
+    assert contract["model_evaluation_tape_is_scanned_as_fresh"] is False
+    assert contract["read_only_predecessor_tape_roots"] == [
+        protocol["training_tape_prefix"],
+        protocol["evaluation_tape_prefix"],
+    ]
     assert U002_PROTOCOL_ID_V1 not in request["execution_ids"]
 
 
 def test_worker_evidence_roster_counts_are_derived_from_split_ownership(
     manifest: dict,
 ) -> None:
-    module = _load_script("run_learned_resource_forecast_worker_u003.py")
+    module = _load_script("run_learned_resource_forecast_worker_u004.py")
     assert [len(module._expected_evidence_names(worker)) for worker in manifest["workers"]] == [
         252,
         252,

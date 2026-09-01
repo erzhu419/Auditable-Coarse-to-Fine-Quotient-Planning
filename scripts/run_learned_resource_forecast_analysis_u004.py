@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Run the U003 analysis with separate U002-training and U003-evidence authority.
+"""Run the U004 analysis with separate U002-training and U004-evidence authority.
 
 The numerical analysis and the irreversible lane ordering are the frozen U002
 implementation.  This entry point changes only provenance: policy training is
 validated against the completed U002 campaign, while every trajectory, probe,
-label, encoder, matrix, result, and status event belongs to U003.
+label, encoder, matrix, result, and status event belongs to U004.
 """
 
 from __future__ import annotations
@@ -48,12 +48,12 @@ SUCCESSOR_MANIFEST_SCHEMA_V1 = (
 )
 
 
-class LearnedResourceForecastAnalysisU003Error(RuntimeError):
-    """One side of the U002/U003 authority boundary is invalid."""
+class LearnedResourceForecastAnalysisU004Error(RuntimeError):
+    """One side of the U002/U004 authority boundary is invalid."""
 
 
 def _fail(message: str) -> NoReturn:
-    raise LearnedResourceForecastAnalysisU003Error(message)
+    raise LearnedResourceForecastAnalysisU004Error(message)
 
 
 def _load_script(module_name: str, filename: str) -> Any:
@@ -67,16 +67,16 @@ def _load_script(module_name: str, filename: str) -> Any:
 
 
 _BASE = _load_script(
-    "acfqp_u002_analysis_for_u003",
+    "acfqp_u002_analysis_for_u004",
     "run_learned_resource_forecast_analysis_u002.py",
 )
 _U002_PREPARE = _load_script(
-    "acfqp_u002_prepare_for_u003_analysis",
+    "acfqp_u002_prepare_for_u004_analysis",
     "prepare_learned_resource_forecast_campaign_u002.py",
 )
-_U003_PREPARE = _load_script(
-    "acfqp_u003_prepare_for_u003_analysis",
-    "prepare_learned_resource_forecast_evidence_successor_u003.py",
+_U004_PREPARE = _load_script(
+    "acfqp_u004_prepare_for_u004_analysis",
+    "prepare_learned_resource_forecast_evidence_successor_u004.py",
 )
 
 
@@ -84,7 +84,7 @@ def _read_json(path: Path, *, label: str) -> dict[str, Any]:
     try:
         value = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as error:
-        raise LearnedResourceForecastAnalysisU003Error(
+        raise LearnedResourceForecastAnalysisU004Error(
             f"cannot read {label}: {path}"
         ) from error
     if type(value) is not dict:
@@ -154,7 +154,7 @@ def _load_protocols(args: argparse.Namespace) -> tuple[dict[str, Any], dict[str,
     )
     successor = (
         validate_ratified_learned_resource_forecast_evidence_successor_protocol_v1(
-            _read_json(args.protocol, label="ratified U003 successor protocol")
+            _read_json(args.protocol, label="ratified U004 successor protocol")
         )
     )
     authority = successor["predecessor_training_authority"]
@@ -169,9 +169,16 @@ def _load_protocols(args: argparse.Namespace) -> tuple[dict[str, Any], dict[str,
         or authority.get("failed_u002_evidence_dispatch_eligible") is not False
         or authority.get("u002_evidence_status_logs_or_artifacts_eligible") is not False
         or authority.get("training_artifacts_are_read_only_inputs") is not True
-        or authority.get("training_artifacts_may_be_relabelled_as_u003") is not False
+        or authority.get("training_artifacts_may_be_relabelled_as_u004") is not False
+        or authority.get("model_evaluation_tape_prefix")
+        != predecessor["evaluation_tape_prefix"]
+        or authority.get("model_evaluation_measurements_are_read_only_inputs")
+        is not True
+        or authority.get("model_evaluation_reexecuted_in_u004") is not False
+        or successor["evaluation_tape_prefix"]
+        != predecessor["evaluation_tape_prefix"]
     ):
-        _fail("U003 protocol does not bind the exact read-only U002 training authority")
+        _fail("U004 protocol does not bind the exact read-only U002 training authority")
     return predecessor, successor
 
 
@@ -185,11 +192,11 @@ def _validate_dual_manifests(
     expected_predecessor = _U002_PREPARE.build_launch_manifest_v1(
         dict(predecessor_protocol)
     )
-    expected_successor = _U003_PREPARE.build_launch_manifest_v1(dict(successor_protocol))
+    expected_successor = _U004_PREPARE.build_launch_manifest_v1(dict(successor_protocol))
     if type(predecessor_document) is not dict or predecessor_document != expected_predecessor:
         _fail("U002 predecessor manifest differs from its frozen builder output")
     if type(successor_document) is not dict or successor_document != expected_successor:
-        _fail("U003 successor manifest differs from its frozen builder output")
+        _fail("U004 successor manifest differs from its frozen builder output")
     if (
         successor_document.get("schema") != SUCCESSOR_MANIFEST_SCHEMA_V1
         or successor_document.get("protocol_id") != successor_protocol["protocol_id"]
@@ -201,7 +208,7 @@ def _validate_dual_manifests(
         or successor_document.get("predecessor_training_authority")
         != successor_protocol["predecessor_training_authority"]
     ):
-        _fail("U003 manifest identity or evidence-only phase roster changed")
+        _fail("U004 manifest identity or evidence-only phase roster changed")
 
     training_jobs: dict[str, dict[str, Any]] = {}
     player_jobs: dict[str, dict[str, Any]] = {}
@@ -224,7 +231,7 @@ def _validate_dual_manifests(
             or len(new_worker.get("predecessor_policy_training_jobs", ())) != 24
             or len(new_worker.get("player_evidence_jobs", ())) != 72
         ):
-            _fail("U002/U003 worker ownership or fixed per-worker roster changed")
+            _fail("U002/U004 worker ownership or fixed per-worker roster changed")
         training_ids: list[str] = []
         for old_job, bound_job in zip(
             old_worker["policy_training_jobs"],
@@ -235,7 +242,7 @@ def _validate_dual_manifests(
                 "provenance": "READ_ONLY_U002_TRAINING_AUTHORITY"
             }
             if bound_job != expected_bound:
-                _fail("U003 predecessor training roster is not the exact U002 roster")
+                _fail("U004 predecessor training roster is not the exact U002 roster")
             execution_id = old_job["execution_id"]
             if execution_id in training_jobs:
                 _fail("U002 predecessor training execution ID is duplicated")
@@ -257,7 +264,7 @@ def _validate_dual_manifests(
                 not in training_jobs
                 or key in player_jobs
             ):
-                _fail("U003 evidence identity or predecessor snapshot binding changed")
+                _fail("U004 evidence identity or predecessor snapshot binding changed")
             player_jobs[key] = dict(job) | {
                 "worker": worker_index,
                 "expected_hostname": new_worker["expected_hostname"],
@@ -267,7 +274,7 @@ def _validate_dual_manifests(
         training_name = new_worker["predecessor_training_status_stream"]
         evidence_name = new_worker["player_evidence_status_stream"]
         if training_name != old_worker["policy_training_status_stream"]:
-            _fail("U003 predecessor training status basename changed")
+            _fail("U004 predecessor training status basename changed")
         training_rosters[training_name] = {
             "phase": "training",
             "worker": worker_index,
@@ -327,7 +334,7 @@ def _validate_status_stream(
     try:
         rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
     except (OSError, json.JSONDecodeError) as error:
-        raise LearnedResourceForecastAnalysisU003Error(
+        raise LearnedResourceForecastAnalysisU004Error(
             f"cannot read exact worker status stream: {path}"
         ) from error
     expected = tuple(roster["execution_ids"])
@@ -390,7 +397,7 @@ def _validate_exact_directory(directory: Path, expected: set[str], *, label: str
     try:
         entries = tuple(directory.iterdir())
     except OSError as error:
-        raise LearnedResourceForecastAnalysisU003Error(
+        raise LearnedResourceForecastAnalysisU004Error(
             f"cannot scan {label}: {directory}"
         ) from error
     actual = {entry.name for entry in entries if entry.is_file()}
@@ -449,9 +456,9 @@ def _ownership_validator(
             or snapshot.get("predecessor_pilot_execution_identity")
             != predecessor_protocol["pilot_execution_identity"]
             or snapshot.get("snapshot_is_read_only_predecessor_input") is not True
-            or snapshot.get("snapshot_is_u003_training_artifact") is not False
+            or snapshot.get("snapshot_is_u004_training_artifact") is not False
         ):
-            _fail("U003 evidence ownership failed the dual-authority snapshot binding")
+            _fail("U004 evidence ownership failed the dual-authority snapshot binding")
 
     return validate
 
@@ -466,12 +473,12 @@ def _install_base_boundary(
 
     def load_protocol(path: Path) -> dict[str, Any]:
         if path.resolve() != args.protocol.resolve():
-            _fail("base analysis attempted to open a non-U003 protocol")
+            _fail("base analysis attempted to open a non-U004 protocol")
         return dict(successor_protocol)
 
     def load_manifest(path: Path, protocol: Mapping[str, Any]) -> dict[str, Any]:
         if path.resolve() != args.manifest.resolve() or protocol != successor_protocol:
-            _fail("base analysis attempted to open a non-U003 manifest")
+            _fail("base analysis attempted to open a non-U004 manifest")
         return dict(manifest)
 
     def status_counts(
@@ -488,7 +495,7 @@ def _install_base_boundary(
             for name, roster in internal["evidence_stream_rosters"].items()
         )
         if training != EXPECTED_TRAINING_JOB_COUNT_V1 or evidence != EXPECTED_PLAYER_COUNT_V1:
-            _fail("U002 training and U003 evidence status matrices did not close")
+            _fail("U002 training and U004 evidence status matrices did not close")
         return {
             "completed_training_jobs": training,
             "failed_training_jobs": 0,
@@ -507,7 +514,7 @@ def _install_base_boundary(
         manifest: Mapping[str, Any],
     ) -> dict[str, int]:
         if protocol != successor_protocol:
-            _fail("training artifact validation received non-U003 analysis authority")
+            _fail("training artifact validation received non-U004 analysis authority")
         return original_training_counts(
             tuple(args.predecessor_training_result_dir),
             protocol=predecessor_protocol,
@@ -524,7 +531,7 @@ def _install_base_boundary(
             or len(successor_directories) != 6
             or len(set(successor_directories)) != 6
         ):
-            _fail("dual inventory requires six distinct U002 and six distinct U003 directories")
+            _fail("dual inventory requires six distinct U002 and six distinct U004 directories")
         for worker_index in range(6):
             old_expected, new_expected = _expected_worker_files(internal, worker_index)
             _validate_exact_directory(
@@ -535,7 +542,7 @@ def _install_base_boundary(
             _validate_exact_directory(
                 successor_directories[worker_index],
                 new_expected,
-                label="fresh U003 evidence directory",
+                label="fresh U004 evidence directory",
             )
 
     _BASE._load_protocol = load_protocol  # noqa: SLF001
@@ -553,7 +560,7 @@ def _run(args: argparse.Namespace) -> dict[str, Any]:
     predecessor, successor = _load_protocols(args)
     manifest = _validate_dual_manifests(
         _read_json(args.predecessor_manifest, label="U002 predecessor manifest"),
-        _read_json(args.manifest, label="U003 successor manifest"),
+        _read_json(args.manifest, label="U004 successor manifest"),
         predecessor_protocol=predecessor,
         successor_protocol=successor,
     )
@@ -564,6 +571,9 @@ def _run(args: argparse.Namespace) -> dict[str, Any]:
         "predecessor_training_authority_validated": True,
         "successor_protocol_id": successor["protocol_id"],
         "successor_evidence_authority_validated": True,
+        "model_evaluation_tape_prefix": predecessor["evaluation_tape_prefix"],
+        "model_evaluation_provenance": "READ_ONLY_U002_PREDECESSOR",
+        "model_evaluation_reexecuted_in_u004": False,
         "failed_u002_evidence_dispatch_used": False,
     }
 
@@ -572,7 +582,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     try:
         summary = _run(_arguments(argv))
     except (
-        LearnedResourceForecastAnalysisU003Error,
+        LearnedResourceForecastAnalysisU004Error,
         LearnedResourceForecastEvidenceSuccessorProtocolV1Error,
         LearnedResourceForecastProtocolV1Error,
         ScienceExecutionIOV1Error,

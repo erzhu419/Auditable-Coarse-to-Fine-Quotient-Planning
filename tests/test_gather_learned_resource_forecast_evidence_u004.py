@@ -30,7 +30,7 @@ def _load_script(filename: str):
 
 @pytest.fixture(scope="module")
 def bundle():
-    gather = _load_script("gather_learned_resource_forecast_evidence_u003.py")
+    gather = _load_script("gather_learned_resource_forecast_evidence_u004.py")
     old_protocol = build_ratified_learned_resource_forecast_protocol_v1(
         U002_SOURCE_COMMIT_V1
     )
@@ -48,7 +48,7 @@ def bundle():
     return gather, old_protocol, new_protocol, old_manifest, new_manifest
 
 
-def test_dual_worker_roster_keeps_u002_training_and_u003_evidence_separate(
+def test_dual_worker_roster_keeps_u002_training_and_u004_evidence_separate(
     bundle,
 ) -> None:
     gather, _old_protocol, _new_protocol, old_manifest, new_manifest = bundle
@@ -61,7 +61,7 @@ def test_dual_worker_roster_keeps_u002_training_and_u003_evidence_separate(
         paths = gather._worker_file_paths(old_manifest, new_manifest, index)
         assert sum("u002-results" in str(path) for path in paths) == 96
         expected_evidence = 252 if index < 2 else 234
-        assert sum("u003-results" in str(path) for path in paths) == expected_evidence
+        assert sum("u004-results" in str(path) for path in paths) == expected_evidence
         assert sum("-training" in path.name for path in paths) == 2
         assert sum("-evidence" in path.name for path in paths) == 2
 
@@ -71,11 +71,11 @@ def test_tar_roster_has_both_roots_and_only_registered_status_and_logs(bundle) -
     members = gather._transport_members(old_manifest, new_manifest, [2, 3])
     assert len(members) == len(set(members)) == 12
     assert sum("u002-results/worker-" in value for value in members) == 2
-    assert sum("u003-results/worker-" in value for value in members) == 2
+    assert sum("u004-results/worker-" in value for value in members) == 2
     assert sum("u002-status/worker-" in value for value in members) == 2
-    assert sum("u003-status/worker-" in value for value in members) == 2
+    assert sum("u004-status/worker-" in value for value in members) == 2
     assert sum("u002-logs/worker-" in value for value in members) == 2
-    assert sum("u003-logs/worker-" in value for value in members) == 2
+    assert sum("u004-logs/worker-" in value for value in members) == 2
 
 
 def _receipt(bundle) -> dict:
@@ -121,6 +121,9 @@ def _receipt(bundle) -> dict:
         "remote_workers": [2, 3, 4, 5],
         "transport_method": "LOCAL_CONTROLLER_SSH_DUAL_TREE_TAR_TO_SSH_GPU2_TAR",
         "job_reexecution": False,
+        "model_evaluation_tape_prefix": old_protocol["evaluation_tape_prefix"],
+        "model_evaluation_provenance": "READ_ONLY_U002_PREDECESSOR",
+        "model_evaluation_reexecuted_in_u004": False,
         "predecessor_training_artifacts_relabelled": False,
         "failed_u002_evidence_dispatch_used": False,
         "source_hosts": rows,
@@ -133,10 +136,15 @@ def test_receipt_binds_both_authorities_and_rejects_failed_u002_evidence(bundle)
     assert gather._validate_receipt_structure(
         receipt, old_protocol, new_protocol, old_manifest, new_manifest
     ) == receipt["source_hosts"]
+    assert receipt["model_evaluation_tape_prefix"] == old_protocol[
+        "evaluation_tape_prefix"
+    ]
+    assert receipt["model_evaluation_provenance"] == "READ_ONLY_U002_PREDECESSOR"
+    assert receipt["model_evaluation_reexecuted_in_u004"] is False
     tampered = json.loads(json.dumps(receipt))
     tampered["failed_u002_evidence_dispatch_used"] = True
     with pytest.raises(
-        gather.LearnedResourceForecastGatherU003V1Error,
+        gather.LearnedResourceForecastGatherU004V1Error,
         match="dual-authority contract",
     ):
         gather._validate_receipt_structure(
@@ -180,5 +188,10 @@ def test_marker_records_transport_not_execution_or_relabelling(bundle) -> None:
     assert marker["predecessor_protocol_id"] == old_protocol["protocol_id"]
     assert marker["successor_protocol_id"] == new_protocol["protocol_id"]
     assert marker["transport_is_not_job_execution"] is True
+    assert marker["model_evaluation_tape_prefix"] == old_protocol[
+        "evaluation_tape_prefix"
+    ]
+    assert marker["model_evaluation_provenance"] == "READ_ONLY_U002_PREDECESSOR"
+    assert marker["model_evaluation_reexecuted_in_u004"] is False
     assert marker["predecessor_training_artifacts_relabelled"] is False
     assert marker["failed_u002_evidence_dispatch_used"] is False

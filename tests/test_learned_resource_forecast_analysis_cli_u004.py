@@ -34,16 +34,16 @@ def _load_script(module_name: str, filename: str):
 @pytest.fixture(scope="module")
 def analysis():
     return _load_script(
-        "acfqp_u003_analysis_test_subject",
-        "run_learned_resource_forecast_analysis_u003.py",
+        "acfqp_u004_analysis_test_subject",
+        "run_learned_resource_forecast_analysis_u004.py",
     )
 
 
 @pytest.fixture(scope="module")
 def verifier():
     return _load_script(
-        "acfqp_u003_verifier_test_subject",
-        "verify_learned_resource_forecast_analysis_u003.py",
+        "acfqp_u004_verifier_test_subject",
+        "verify_learned_resource_forecast_analysis_u004.py",
     )
 
 
@@ -60,7 +60,7 @@ def authority_bundle(analysis):
     predecessor_manifest = analysis._U002_PREPARE.build_launch_manifest_v1(  # noqa: SLF001
         predecessor_protocol
     )
-    successor_manifest = analysis._U003_PREPARE.build_launch_manifest_v1(  # noqa: SLF001
+    successor_manifest = analysis._U004_PREPARE.build_launch_manifest_v1(  # noqa: SLF001
         successor_protocol
     )
     return (
@@ -88,9 +88,9 @@ def test_analysis_parser_requires_both_protocol_authorities(analysis) -> None:
             [
                 "fit-encoders",
                 "--protocol",
-                "u003-protocol.json",
+                "u004-protocol.json",
                 "--manifest",
-                "u003-manifest.json",
+                "u004-manifest.json",
                 "--trajectory-dir",
                 "trajectories",
                 "--output-dir",
@@ -127,7 +127,7 @@ def test_tampered_predecessor_manifest_is_rejected(
     tampered = deepcopy(old_manifest)
     tampered["workers"][0]["policy_training_jobs"][0]["seed"] += 1
     with pytest.raises(
-        analysis.LearnedResourceForecastAnalysisU003Error,
+        analysis.LearnedResourceForecastAnalysisU004Error,
         match="predecessor manifest",
     ):
         analysis._validate_dual_manifests(  # noqa: SLF001
@@ -175,7 +175,7 @@ def _ownership_document(
                 "pilot_execution_identity"
             ],
             "snapshot_is_read_only_predecessor_input": True,
-            "snapshot_is_u003_training_artifact": False,
+            "snapshot_is_u004_training_artifact": False,
         },
     }
 
@@ -209,14 +209,14 @@ def test_primary_and_independent_ownership_require_parent_snapshot_fields(
     tampered = deepcopy(document)
     tampered["policy_snapshot"]["predecessor_training_execution_id"] += ":other"
     with pytest.raises(
-        analysis.LearnedResourceForecastAnalysisU003Error,
+        analysis.LearnedResourceForecastAnalysisU004Error,
         match="dual-authority",
     ):
         analysis._ownership_validator(predecessor, successor)(  # noqa: SLF001
             tampered, protocol=successor, job=job
         )
     with pytest.raises(
-        verifier.LearnedResourceForecastIndependentVerifierU003Error,
+        verifier.LearnedResourceForecastIndependentVerifierU004Error,
         match="predecessor snapshot",
     ):
         verifier._ownership_validator(predecessor, successor)(  # noqa: SLF001
@@ -258,19 +258,19 @@ def test_status_replay_rejects_cross_authority_execution_id(
 ) -> None:
     path = tmp_path / "worker-0-evidence.jsonl"
     path.write_text(
-        "\n".join(json.dumps(row) for row in _closed_status_rows("evidence", 0, "u003:e0"))
+        "\n".join(json.dumps(row) for row in _closed_status_rows("evidence", 0, "u004:e0"))
         + "\n",
         encoding="utf-8",
     )
-    roster = {"phase": "evidence", "worker": 0, "execution_ids": ("u003:e0",)}
+    roster = {"phase": "evidence", "worker": 0, "execution_ids": ("u004:e0",)}
     assert analysis._validate_status_stream(  # noqa: SLF001
         (tmp_path,), path.name, roster
     ) == 1
     assert verifier._replay_stream((tmp_path,), path.name, roster) == 1  # noqa: SLF001
     foreign = dict(roster) | {"execution_ids": ("u002:e0",)}
-    with pytest.raises(analysis.LearnedResourceForecastAnalysisU003Error):
+    with pytest.raises(analysis.LearnedResourceForecastAnalysisU004Error):
         analysis._validate_status_stream((tmp_path,), path.name, foreign)  # noqa: SLF001
     with pytest.raises(
-        verifier.LearnedResourceForecastIndependentVerifierU003Error
+        verifier.LearnedResourceForecastIndependentVerifierU004Error
     ):
         verifier._replay_stream((tmp_path,), path.name, foreign)  # noqa: SLF001

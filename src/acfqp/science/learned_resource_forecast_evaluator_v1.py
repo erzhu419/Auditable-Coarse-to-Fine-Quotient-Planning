@@ -89,12 +89,12 @@ def _fail(message: str) -> NoReturn:
 def _validate_supported_measurement_protocol_v1(
     protocol: Mapping[str, Any],
 ) -> dict[str, Any]:
-    """Validate U002 or the exact fixed-policy U003 evidence successor."""
+    """Validate U002 or the exact fixed-policy U004 evidence successor."""
 
     campaign_kind = protocol.get("campaign_kind") if type(protocol) is dict else None
     if campaign_kind == (
         "LEARNED_RESOURCE_FORECAST_2048_FIXED_POLICY_"
-        "EVIDENCE_SUCCESSOR_U003_RATIFIED"
+        "EVIDENCE_SUCCESSOR_U004_RATIFIED"
     ):
         from acfqp.science.learned_resource_forecast_evidence_successor_protocol_v1 import (
             validate_ratified_learned_resource_forecast_evidence_successor_protocol_v1,

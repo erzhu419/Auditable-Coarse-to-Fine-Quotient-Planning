@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Collect one fresh U003 measurement from one read-only U002 snapshot."""
+"""Collect one fresh U004 measurement from one read-only U002 snapshot."""
 
 from __future__ import annotations
 
@@ -54,7 +54,7 @@ REPOSITORY = Path(__file__).resolve().parents[1]
 
 
 class LearnedResourcePlayerEvidenceSuccessorCLIError(RuntimeError):
-    """One U003 measurement request, parent snapshot, or output is ineligible."""
+    """One U004 measurement request, parent snapshot, or output is ineligible."""
 
 
 def _arguments() -> argparse.Namespace:
@@ -127,13 +127,13 @@ def _parent_snapshot_provenance(
         ],
         "predecessor_training_execution_id": training_execution_id,
         "snapshot_is_read_only_predecessor_input": True,
-        "snapshot_is_u003_training_artifact": False,
+        "snapshot_is_u004_training_artifact": False,
     }
 
 
 def _run(args: argparse.Namespace) -> dict[str, Any]:
     protocol_path = require_path_outside_repository_v1(
-        repository=REPOSITORY, path=args.protocol, label="ratified U003 protocol"
+        repository=REPOSITORY, path=args.protocol, label="ratified U004 protocol"
     )
     predecessor_protocol_path = require_path_outside_repository_v1(
         repository=REPOSITORY,
@@ -148,12 +148,12 @@ def _run(args: argparse.Namespace) -> dict[str, Any]:
     output_dir = require_path_outside_repository_v1(
         repository=REPOSITORY,
         path=args.output_dir,
-        label="fresh U003 player-evidence directory",
+        label="fresh U004 player-evidence directory",
     )
     source_commit = bound_clean_source_commit_v1(REPOSITORY)
     protocol = (
         validate_ratified_learned_resource_forecast_evidence_successor_protocol_v1(
-            _read_object(protocol_path, "ratified U003 protocol")
+            _read_object(protocol_path, "ratified U004 protocol")
         )
     )
     predecessor = validate_ratified_learned_resource_forecast_protocol_v1(
@@ -165,9 +165,19 @@ def _run(args: argparse.Namespace) -> dict[str, Any]:
         or predecessor["protocol_id"] != U002_PROTOCOL_ID_V1
         or protocol["predecessor_training_authority"]["protocol_id"]
         != predecessor["protocol_id"]
+        or protocol["predecessor_training_authority"][
+            "model_evaluation_tape_prefix"
+        ]
+        != predecessor["evaluation_tape_prefix"]
+        or protocol["predecessor_training_authority"][
+            "model_evaluation_reexecuted_in_u004"
+        ]
+        is not False
+        or protocol["evaluation_tape_prefix"]
+        != predecessor["evaluation_tape_prefix"]
     ):
         raise LearnedResourcePlayerEvidenceSuccessorCLIError(
-            "U003 source or U002 predecessor protocol binding changed"
+            "U004 source or U002 predecessor protocol binding changed"
         )
     player_key_v1(args.seed, args.arm, args.checkpoint)
     if (
@@ -209,7 +219,7 @@ def _run(args: argparse.Namespace) -> dict[str, Any]:
         != PROBES_PER_PLAYER_V1
     ):
         raise LearnedResourcePlayerEvidenceSuccessorCLIError(
-            "U003 evidence-lane counts differ from U002 measurement logic"
+            "U004 evidence-lane counts differ from U002 measurement logic"
         )
     names = player_evidence_artifact_basenames_v1(
         base_seed=args.seed,
@@ -231,7 +241,7 @@ def _run(args: argparse.Namespace) -> dict[str, Any]:
         )
     if any(path.exists() for path in reserved.values()):
         raise LearnedResourcePlayerEvidenceSuccessorCLIError(
-            "U003 player-evidence output already exists; identity is consumed"
+            "U004 player-evidence output already exists; identity is consumed"
         )
     context = {
         "execution_id": args.execution_id,

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Write the one-shot three-host fresh-identity scan receipt for U003."""
+"""Write the one-shot three-host fresh-identity scan receipt for U004."""
 
 from __future__ import annotations
 
@@ -42,7 +42,7 @@ SSH_NO_MUX_OPTIONS_V1 = (
 
 
 class LearnedResourceForecastEvidenceSuccessorHistoryScanV1Error(RuntimeError):
-    """The exact fresh U003 history scan or receipt is not exact."""
+    """The exact fresh U004 history scan or receipt is not exact."""
 
 
 def _load_script(name: str, filename: str):
@@ -59,14 +59,14 @@ def _load_script(name: str, filename: str):
 
 def _prepare_module():
     return _load_script(
-        "acfqp_u003_prepare_for_history",
-        "prepare_learned_resource_forecast_evidence_successor_u003.py",
+        "acfqp_u004_prepare_for_history",
+        "prepare_learned_resource_forecast_evidence_successor_u004.py",
     )
 
 
 def _base_scan_module():
     return _load_script(
-        "acfqp_u002_history_scan_engine_for_u003",
+        "acfqp_u002_history_scan_engine_for_u004",
         "scan_learned_resource_forecast_history_u002.py",
     )
 
@@ -102,7 +102,7 @@ def _identity_roster(
         or len(set(seeds)) != 48
     ):
         raise LearnedResourceForecastEvidenceSuccessorHistoryScanV1Error(
-            "U003 history-scan identity roster does not close 432 fresh jobs"
+            "U004 history-scan identity roster does not close 432 fresh jobs"
         )
     return protocol["pilot_execution_identity"], execution_ids, seeds
 
@@ -123,7 +123,7 @@ def _host_roster(manifest: dict[str, Any]) -> list[dict[str, str]]:
         )
     if len(rows) != 3:
         raise LearnedResourceForecastEvidenceSuccessorHistoryScanV1Error(
-            "U003 history scan no longer has exactly three hosts"
+            "U004 history scan no longer has exactly three hosts"
         )
     return rows
 
@@ -164,7 +164,7 @@ def _ssh_host_scan(host_alias: str, request: dict[str, Any]) -> dict[str, Any]:
             "env",
             f"PYTHONPATH={request['source_pythonpath']}",
             request["python"],
-            str(REPOSITORY / "scripts/scan_learned_resource_forecast_history_u003.py"),
+            str(REPOSITORY / "scripts/scan_learned_resource_forecast_history_u004.py"),
             "--host-scan-only",
             "--protocol",
             request["protocol"],
@@ -182,17 +182,17 @@ def _ssh_host_scan(host_alias: str, request: dict[str, Any]) -> dict[str, Any]:
     )
     if completed.returncode != 0:
         raise LearnedResourceForecastEvidenceSuccessorHistoryScanV1Error(
-            f"U003 history scan failed on {host_alias}: {completed.stderr.strip()}"
+            f"U004 history scan failed on {host_alias}: {completed.stderr.strip()}"
         )
     try:
         result = json.loads(completed.stdout)
     except json.JSONDecodeError as error:
         raise LearnedResourceForecastEvidenceSuccessorHistoryScanV1Error(
-            f"U003 history scan on {host_alias} returned no JSON"
+            f"U004 history scan on {host_alias} returned no JSON"
         ) from error
     if type(result) is not dict:
         raise LearnedResourceForecastEvidenceSuccessorHistoryScanV1Error(
-            "U003 history scan returned non-object"
+            "U004 history scan returned non-object"
         )
     return result
 
@@ -225,7 +225,7 @@ def validate_history_scan_receipt_v1(
         or receipt.get("no_prior_identity_hits") is not True
     ):
         raise LearnedResourceForecastEvidenceSuccessorHistoryScanV1Error(
-            "U003 history receipt does not bind exact fresh zero-hit roster"
+            "U004 history receipt does not bind exact fresh zero-hit roster"
         )
     for expected, actual in zip(_host_roster(manifest), host_rows, strict=True):
         if (
@@ -238,7 +238,7 @@ def validate_history_scan_receipt_v1(
             or actual.get("matches") != []
         ):
             raise LearnedResourceForecastEvidenceSuccessorHistoryScanV1Error(
-                "U003 history host row is not exact zero-hit scan"
+                "U004 history host row is not exact zero-hit scan"
             )
     return receipt
 
@@ -254,17 +254,17 @@ def _scan(
     source_commit = bound_clean_source_commit_v1(REPOSITORY)
     protocol = (
         validate_ratified_learned_resource_forecast_evidence_successor_protocol_v1(
-            _read_object(protocol_path, "U003 protocol")
+            _read_object(protocol_path, "U004 protocol")
         )
     )
-    manifest = _read_object(manifest_path, "U003 manifest")
+    manifest = _read_object(manifest_path, "U004 manifest")
     if manifest != _prepare_module().build_launch_manifest_v1(protocol):
         raise LearnedResourceForecastEvidenceSuccessorHistoryScanV1Error(
-            "U003 manifest does not replay from exact builder"
+            "U004 manifest does not replay from exact builder"
         )
     fixed = manifest["fixed_paths"]
     resolved_output = require_path_outside_repository_v1(
-        repository=REPOSITORY, path=output, label="U003 history receipt"
+        repository=REPOSITORY, path=output, label="U004 history receipt"
     )
     if (
         source_commit != protocol["source_commit"]
@@ -274,7 +274,7 @@ def _scan(
         or scan_root.resolve() != DEFAULT_SCAN_ROOT.resolve()
     ):
         raise LearnedResourceForecastEvidenceSuccessorHistoryScanV1Error(
-            "U003 history scan source, paths, or scope changed"
+            "U004 history scan source, paths, or scope changed"
         )
     request = _expected_scan_request(protocol, manifest, scan_root)
     run = scanner or _ssh_host_scan
@@ -329,12 +329,12 @@ def main() -> int:
     try:
         if args.host_scan_only:
             protocol = validate_ratified_learned_resource_forecast_evidence_successor_protocol_v1(
-                _read_object(args.protocol, "U003 protocol")
+                _read_object(args.protocol, "U004 protocol")
             )
-            manifest = _read_object(args.manifest, "U003 manifest")
+            manifest = _read_object(args.manifest, "U004 manifest")
             if manifest != _prepare_module().build_launch_manifest_v1(protocol):
                 raise LearnedResourceForecastEvidenceSuccessorHistoryScanV1Error(
-                    "U003 manifest does not replay"
+                    "U004 manifest does not replay"
                 )
             print(
                 json.dumps(
@@ -347,7 +347,7 @@ def main() -> int:
             return 0
         if args.output is None:
             raise LearnedResourceForecastEvidenceSuccessorHistoryScanV1Error(
-                "central U003 history scan requires fixed output"
+                "central U004 history scan requires fixed output"
             )
         receipt = _scan(
             protocol_path=args.protocol,

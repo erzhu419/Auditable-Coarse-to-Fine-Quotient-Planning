@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run U003 dual-authority analysis, verification, and server-side retention."""
+"""Run U004 dual-authority analysis, verification, and server-side retention."""
 
 from __future__ import annotations
 
@@ -33,7 +33,7 @@ from acfqp.science.learned_resource_forecast_protocol_v1 import (
 
 REPOSITORY = Path(__file__).resolve().parents[1]
 SCHEMA_V1 = (
-    "acfqp.science.learned_resource_forecast_postprocess_retention.u003.v1"
+    "acfqp.science.learned_resource_forecast_postprocess_retention.u004.v1"
 )
 INVENTORY_FILENAME_V1 = "retention-inventory.json"
 ANALYSIS_FILENAMES_V1 = (
@@ -48,13 +48,13 @@ ANALYSIS_FILENAMES_V1 = (
 )
 
 PROVENANCE_U002_TRAINING_V1 = "READ_ONLY_U002_TRAINING_AUTHORITY"
-PROVENANCE_U003_EVIDENCE_V1 = "FRESH_U003_EVIDENCE_AUTHORITY"
-PROVENANCE_GATHER_V1 = "U003_DUAL_AUTHORITY_GATHER"
+PROVENANCE_U004_EVIDENCE_V1 = "FRESH_U004_EVIDENCE_AUTHORITY"
+PROVENANCE_GATHER_V1 = "U004_DUAL_AUTHORITY_GATHER"
 PROVENANCE_FAILED_U002_EVIDENCE_V1 = (
     "U002_FAILED_EVIDENCE_DISPATCH_FAILURE_HISTORY_INELIGIBLE"
 )
-PROVENANCE_ANALYSIS_V1 = "U003_ANALYSIS_DERIVED_FROM_DUAL_AUTHORITY"
-PROVENANCE_POSTPROCESS_V1 = "U003_POSTPROCESS_STATUS"
+PROVENANCE_ANALYSIS_V1 = "U004_ANALYSIS_DERIVED_FROM_DUAL_AUTHORITY"
+PROVENANCE_POSTPROCESS_V1 = "U004_POSTPROCESS_STATUS"
 
 EXPECTED_CATEGORY_COUNTS_V1 = {
     "predecessor_protocol": 1,
@@ -87,7 +87,7 @@ EXPECTED_CATEGORY_COUNTS_V1 = {
 }
 EXPECTED_PROVENANCE_COUNTS_V1 = {
     PROVENANCE_U002_TRAINING_V1: 591,
-    PROVENANCE_U003_EVIDENCE_V1: 1456,
+    PROVENANCE_U004_EVIDENCE_V1: 1456,
     PROVENANCE_GATHER_V1: 2,
     PROVENANCE_FAILED_U002_EVIDENCE_V1: 1,
     PROVENANCE_ANALYSIS_V1: 8,
@@ -101,16 +101,16 @@ RetentionCopierV1 = Callable[..., dict[str, Any]]
 RuntimeValidatorV1 = Callable[[Path, Path, Path, Path, str], None]
 
 
-class LearnedResourceForecastPostprocessU003V1Error(RuntimeError):
-    """The U002-training/U003-evidence postprocess closure is not exact."""
+class LearnedResourceForecastPostprocessU004V1Error(RuntimeError):
+    """The U002-training/U004-evidence postprocess closure is not exact."""
 
 
 def _load_script_module(name: str, filename: str):
     path = REPOSITORY / "scripts" / filename
     spec = importlib.util.spec_from_file_location(name, path)
     if spec is None or spec.loader is None:
-        raise LearnedResourceForecastPostprocessU003V1Error(
-            f"cannot load registered U003 postprocess dependency: {path}"
+        raise LearnedResourceForecastPostprocessU004V1Error(
+            f"cannot load registered U004 postprocess dependency: {path}"
         )
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
@@ -119,44 +119,44 @@ def _load_script_module(name: str, filename: str):
 
 def _load_predecessor_prepare_module():
     return _load_script_module(
-        "acfqp_u002_prepare_for_u003_postprocess",
+        "acfqp_u002_prepare_for_u004_postprocess",
         "prepare_learned_resource_forecast_campaign_u002.py",
     )
 
 
 def _load_successor_prepare_module():
     return _load_script_module(
-        "acfqp_u003_prepare_for_u003_postprocess",
-        "prepare_learned_resource_forecast_evidence_successor_u003.py",
+        "acfqp_u004_prepare_for_u004_postprocess",
+        "prepare_learned_resource_forecast_evidence_successor_u004.py",
     )
 
 
 def _load_history_scan_module():
     return _load_script_module(
-        "acfqp_u003_history_for_u003_postprocess",
-        "scan_learned_resource_forecast_history_u003.py",
+        "acfqp_u004_history_for_u004_postprocess",
+        "scan_learned_resource_forecast_history_u004.py",
     )
 
 
 def _load_gather_module():
     return _load_script_module(
-        "acfqp_u003_gather_for_u003_postprocess",
-        "gather_learned_resource_forecast_evidence_u003.py",
+        "acfqp_u004_gather_for_u004_postprocess",
+        "gather_learned_resource_forecast_evidence_u004.py",
     )
 
 
 def _default_analysis_runner(args: SimpleNamespace) -> dict[str, Any]:
     module = _load_script_module(
-        "acfqp_u003_analysis_for_u003_postprocess",
-        "run_learned_resource_forecast_analysis_u003.py",
+        "acfqp_u004_analysis_for_u004_postprocess",
+        "run_learned_resource_forecast_analysis_u004.py",
     )
     return module._run(args)
 
 
 def _default_verifier_runner(args: SimpleNamespace) -> dict[str, Any]:
     module = _load_script_module(
-        "acfqp_u003_verifier_for_u003_postprocess",
-        "verify_learned_resource_forecast_analysis_u003.py",
+        "acfqp_u004_verifier_for_u004_postprocess",
+        "verify_learned_resource_forecast_analysis_u004.py",
     )
     return module._verify(args)
 
@@ -169,8 +169,8 @@ def _default_runtime_validator(
     device: str,
 ) -> None:
     module = _load_script_module(
-        "acfqp_u003_analysis_runtime_for_u003_postprocess",
-        "run_learned_resource_forecast_analysis_u003.py",
+        "acfqp_u004_analysis_runtime_for_u004_postprocess",
+        "run_learned_resource_forecast_analysis_u004.py",
     )
     args = SimpleNamespace(
         predecessor_protocol=predecessor_protocol_path,
@@ -181,7 +181,7 @@ def _default_runtime_validator(
     predecessor, successor = module._load_protocols(args)
     dual_manifest = module._validate_dual_manifests(
         _read_object(predecessor_manifest_path, "U002 predecessor manifest"),
-        _read_object(successor_manifest_path, "U003 successor manifest"),
+        _read_object(successor_manifest_path, "U004 successor manifest"),
         predecessor_protocol=predecessor,
         successor_protocol=successor,
     )
@@ -197,8 +197,8 @@ def _default_runtime_validator(
         or requested.index is None
         or requested.index >= torch.cuda.device_count()
     ):
-        raise LearnedResourceForecastPostprocessU003V1Error(
-            "central U003 analysis CUDA device is unavailable"
+        raise LearnedResourceForecastPostprocessU004V1Error(
+            "central U004 analysis CUDA device is unavailable"
         )
 
 
@@ -206,11 +206,11 @@ def _read_object(path: Path, label: str) -> dict[str, Any]:
     try:
         value = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as error:
-        raise LearnedResourceForecastPostprocessU003V1Error(
+        raise LearnedResourceForecastPostprocessU004V1Error(
             f"cannot read {label} as one JSON object: {path}"
         ) from error
     if type(value) is not dict:
-        raise LearnedResourceForecastPostprocessU003V1Error(
+        raise LearnedResourceForecastPostprocessU004V1Error(
             f"{label} must contain one JSON object"
         )
     return value
@@ -220,7 +220,7 @@ def _read_jsonl(path: Path, label: str) -> list[dict[str, Any]]:
     try:
         lines = path.read_text(encoding="utf-8").splitlines()
     except OSError as error:
-        raise LearnedResourceForecastPostprocessU003V1Error(
+        raise LearnedResourceForecastPostprocessU004V1Error(
             f"cannot read {label}: {path}"
         ) from error
     rows: list[dict[str, Any]] = []
@@ -228,16 +228,16 @@ def _read_jsonl(path: Path, label: str) -> list[dict[str, Any]]:
         try:
             row = json.loads(line)
         except json.JSONDecodeError as error:
-            raise LearnedResourceForecastPostprocessU003V1Error(
+            raise LearnedResourceForecastPostprocessU004V1Error(
                 f"{label} contains malformed JSONL"
             ) from error
         if type(row) is not dict:
-            raise LearnedResourceForecastPostprocessU003V1Error(
+            raise LearnedResourceForecastPostprocessU004V1Error(
                 f"{label} contains a non-object row"
             )
         rows.append(row)
     if not rows:
-        raise LearnedResourceForecastPostprocessU003V1Error(f"{label} is empty")
+        raise LearnedResourceForecastPostprocessU004V1Error(f"{label} is empty")
     return rows
 
 
@@ -255,15 +255,15 @@ class _ExclusiveStatusStreamV1:
                 0o600,
             )
         except FileExistsError as error:
-            raise LearnedResourceForecastPostprocessU003V1Error(
-                "U003 postprocess status already exists; the attempt is consumed"
+            raise LearnedResourceForecastPostprocessU004V1Error(
+                "U004 postprocess status already exists; the attempt is consumed"
             ) from error
         return self
 
     def emit(self, event: dict[str, Any]) -> None:
         if self._fd is None:
-            raise LearnedResourceForecastPostprocessU003V1Error(
-                "U003 postprocess status is not open"
+            raise LearnedResourceForecastPostprocessU004V1Error(
+                "U004 postprocess status is not open"
             )
         view = memoryview(canonical_json_bytes(event) + b"\n")
         while view:
@@ -283,7 +283,7 @@ def _predecessor_artifact_map(worker: dict[str, Any]) -> dict[str, str]:
         for filename in job["checkpoint_filenames"]:
             artifacts[filename] = "predecessor_model_pt"
     if len(artifacts) != 96:
-        raise LearnedResourceForecastPostprocessU003V1Error(
+        raise LearnedResourceForecastPostprocessU004V1Error(
             "U002 worker training artifact allowlist no longer closes at 96"
         )
     return artifacts
@@ -300,15 +300,15 @@ def _successor_artifact_map(worker: dict[str, Any]) -> dict[str, str]:
             )
             artifacts[job["trajectory_array_filename"]] = "successor_trajectory_npz"
     if len(artifacts) not in (234, 252):
-        raise LearnedResourceForecastPostprocessU003V1Error(
-            "U003 worker evidence artifact allowlist changed"
+        raise LearnedResourceForecastPostprocessU004V1Error(
+            "U004 worker evidence artifact allowlist changed"
         )
     return artifacts
 
 
 def _require_exact_directory(path: Path, expected_names: set[str], label: str) -> None:
     if not path.is_dir():
-        raise LearnedResourceForecastPostprocessU003V1Error(
+        raise LearnedResourceForecastPostprocessU004V1Error(
             f"{label} is not a directory"
         )
     entries = list(path.iterdir())
@@ -316,7 +316,7 @@ def _require_exact_directory(path: Path, expected_names: set[str], label: str) -
         any(not entry.is_file() for entry in entries)
         or {entry.name for entry in entries} != expected_names
     ):
-        raise LearnedResourceForecastPostprocessU003V1Error(
+        raise LearnedResourceForecastPostprocessU004V1Error(
             f"{label} contains missing, duplicate, foreign, or non-file artifacts"
         )
 
@@ -337,7 +337,7 @@ def _validate_worker_status(
         )
         or rows[-1].get("completed_job_count") != len(jobs)
     ):
-        raise LearnedResourceForecastPostprocessU003V1Error(
+        raise LearnedResourceForecastPostprocessU004V1Error(
             f"{phase} worker status lifecycle is not exactly complete"
         )
     for ordinal, job in enumerate(jobs):
@@ -352,7 +352,7 @@ def _validate_worker_status(
             or completed.get("completed_job_count") != ordinal + 1
             or completed.get("expected_job_count") != len(jobs)
         ):
-            raise LearnedResourceForecastPostprocessU003V1Error(
+            raise LearnedResourceForecastPostprocessU004V1Error(
                 f"{phase} worker status roster is missing, reordered, or foreign"
             )
 
@@ -369,7 +369,7 @@ def _validate_worker_log(
         lines = [line for line in path.read_text(encoding="utf-8").splitlines() if line]
         summary = json.loads(lines[-1])
     except (OSError, IndexError, json.JSONDecodeError) as error:
-        raise LearnedResourceForecastPostprocessU003V1Error(
+        raise LearnedResourceForecastPostprocessU004V1Error(
             f"{phase} worker log has no final JSON summary: {path}"
         ) from error
     if (
@@ -381,7 +381,7 @@ def _validate_worker_log(
         or Path(str(summary.get("results_root", ""))).resolve()
         != results_root.resolve()
     ):
-        raise LearnedResourceForecastPostprocessU003V1Error(
+        raise LearnedResourceForecastPostprocessU004V1Error(
             f"{phase} worker log final summary differs from its completed worker"
         )
 
@@ -409,7 +409,7 @@ def _validate_dispatch_status(
         or rows[-1].get("dispatched_worker_count") != 6
         or rows[-1].get("worker_execution_completed") is not False
     ):
-        raise LearnedResourceForecastPostprocessU003V1Error(
+        raise LearnedResourceForecastPostprocessU004V1Error(
             f"{phase} dispatch status is not exactly complete"
         )
     for worker, row in zip(manifest["workers"], rows[2:-1], strict=True):
@@ -440,15 +440,15 @@ def _validate_dispatch_status(
                 != worker["predecessor_snapshot_root"]
             )
         ):
-            raise LearnedResourceForecastPostprocessU003V1Error(
+            raise LearnedResourceForecastPostprocessU004V1Error(
                 f"{phase} dispatch worker row differs from its manifest"
             )
     if successor and (
         rows[0].get("parent_training_closure_all_passed") is not True
         or rows[1].get("u002_failed_evidence_dispatch_eligible") is not False
     ):
-        raise LearnedResourceForecastPostprocessU003V1Error(
-            "U003 dispatch did not preserve its predecessor/ineligible boundary"
+        raise LearnedResourceForecastPostprocessU004V1Error(
+            "U004 dispatch did not preserve its predecessor/ineligible boundary"
         )
 
 
@@ -467,7 +467,7 @@ def _validate_ineligible_failed_dispatch(path: Path) -> None:
         or rows[3].get("dispatched_worker_count") != 0
         or any(row.get("event") == "WORKER_DISPATCHED" for row in rows)
     ):
-        raise LearnedResourceForecastPostprocessU003V1Error(
+        raise LearnedResourceForecastPostprocessU004V1Error(
             "U002 failed evidence dispatch is not the exact zero-worker failure history"
         )
 
@@ -505,7 +505,7 @@ def _validate_prerequisites(
     evidence_dirs = [new_results / f"worker-{index}" for index in range(6)]
     for root, directories, label in (
         (old_results, training_dirs, "U002 training results"),
-        (new_results, evidence_dirs, "U003 evidence results"),
+        (new_results, evidence_dirs, "U004 evidence results"),
     ):
         if (
             not root.is_dir()
@@ -513,7 +513,7 @@ def _validate_prerequisites(
             != {path.name for path in directories}
             or any(not path.is_dir() for path in directories)
         ):
-            raise LearnedResourceForecastPostprocessU003V1Error(
+            raise LearnedResourceForecastPostprocessU004V1Error(
                 f"{label} root is not exactly six worker directories"
             )
 
@@ -528,7 +528,7 @@ def _validate_prerequisites(
             old_dir, set(old_artifacts), f"U002 worker-{index} training directory"
         )
         _require_exact_directory(
-            new_dir, set(new_artifacts), f"U003 worker-{index} evidence directory"
+            new_dir, set(new_artifacts), f"U004 worker-{index} evidence directory"
         )
         for filename, category in old_artifacts.items():
             entries.append(
@@ -546,8 +546,8 @@ def _validate_prerequisites(
                 (
                     new_dir / filename,
                     category,
-                    PROVENANCE_U003_EVIDENCE_V1,
-                    Path("successor-u003/evidence/workers")
+                    PROVENANCE_U004_EVIDENCE_V1,
+                    Path("successor-u004/evidence/workers")
                     / new_dir.name
                     / filename,
                 )
@@ -575,8 +575,8 @@ def _validate_prerequisites(
     }
     _require_exact_directory(old_status_root, old_status_names, "U002 training status root")
     _require_exact_directory(old_log_root, old_log_names, "U002 training log root")
-    _require_exact_directory(new_status_root, new_status_names, "U003 evidence status root")
-    _require_exact_directory(new_log_root, new_log_names, "U003 evidence log root")
+    _require_exact_directory(new_status_root, new_status_names, "U004 evidence status root")
+    _require_exact_directory(new_log_root, new_log_names, "U004 evidence log root")
     for index in range(6):
         old_worker = predecessor_manifest["workers"][index]
         new_worker = successor_manifest["workers"][index]
@@ -627,14 +627,14 @@ def _validate_prerequisites(
                 (
                     new_status,
                     "successor_evidence_worker_status",
-                    PROVENANCE_U003_EVIDENCE_V1,
-                    Path("successor-u003/evidence/status") / new_status.name,
+                    PROVENANCE_U004_EVIDENCE_V1,
+                    Path("successor-u004/evidence/status") / new_status.name,
                 ),
                 (
                     new_log,
                     "successor_evidence_worker_log",
-                    PROVENANCE_U003_EVIDENCE_V1,
-                    Path("successor-u003/evidence/logs") / new_log.name,
+                    PROVENANCE_U004_EVIDENCE_V1,
+                    Path("successor-u004/evidence/logs") / new_log.name,
                 ),
             )
         )
@@ -674,8 +674,8 @@ def _validate_prerequisites(
             (
                 new_dispatch,
                 "successor_evidence_dispatch_status",
-                PROVENANCE_U003_EVIDENCE_V1,
-                Path("successor-u003/evidence/dispatch") / new_dispatch.name,
+                PROVENANCE_U004_EVIDENCE_V1,
+                Path("successor-u004/evidence/dispatch") / new_dispatch.name,
             ),
         )
     )
@@ -696,20 +696,20 @@ def _validate_prerequisites(
         (
             Path(new_fixed["protocol"]),
             "successor_protocol",
-            PROVENANCE_U003_EVIDENCE_V1,
-            Path("successor-u003/authority/protocol.json"),
+            PROVENANCE_U004_EVIDENCE_V1,
+            Path("successor-u004/authority/protocol.json"),
         ),
         (
             Path(new_fixed["manifest"]),
             "successor_manifest",
-            PROVENANCE_U003_EVIDENCE_V1,
-            Path("successor-u003/authority/launch-manifest.json"),
+            PROVENANCE_U004_EVIDENCE_V1,
+            Path("successor-u004/authority/launch-manifest.json"),
         ),
         (
             Path(new_fixed["history_scan_receipt"]),
             "successor_history_scan_receipt",
-            PROVENANCE_U003_EVIDENCE_V1,
-            Path("successor-u003/authority/history-scan-receipt.json"),
+            PROVENANCE_U004_EVIDENCE_V1,
+            Path("successor-u004/authority/history-scan-receipt.json"),
         ),
         (
             Path(new_fixed["gather_transport_marker"]),
@@ -726,7 +726,7 @@ def _validate_prerequisites(
     )
     for entry in authority:
         if not entry[0].is_file():
-            raise LearnedResourceForecastPostprocessU003V1Error(
+            raise LearnedResourceForecastPostprocessU004V1Error(
                 f"retained dual-authority input is missing: {entry[0]}"
             )
         entries.append(entry)
@@ -735,7 +735,7 @@ def _validate_prerequisites(
     for _path, category, _provenance, _relative in entries:
         category_counts[category] = category_counts.get(category, 0) + 1
     if category_counts != _preanalysis_expected_counts():
-        raise LearnedResourceForecastPostprocessU003V1Error(
+        raise LearnedResourceForecastPostprocessU004V1Error(
             "dual-authority preanalysis category counts do not close exactly"
         )
     return training_dirs, evidence_dirs, entries
@@ -756,13 +756,13 @@ def _analysis_entries(analysis_root: Path) -> list[RetentionEntryV1]:
         "pilot-result.json": "successor_pilot_result",
         "independent-verification.json": "successor_verification",
     }
-    _require_exact_directory(analysis_root, set(categories), "U003 analysis output root")
+    _require_exact_directory(analysis_root, set(categories), "U004 analysis output root")
     return [
         (
             analysis_root / filename,
             category,
             PROVENANCE_ANALYSIS_V1,
-            Path("successor-u003/analysis") / filename,
+            Path("successor-u004/analysis") / filename,
         )
         for filename, category in categories.items()
     ]
@@ -776,8 +776,8 @@ def _copy_retained(
     successor_protocol: dict[str, Any],
 ) -> dict[str, Any]:
     if retained_root.exists():
-        raise LearnedResourceForecastPostprocessU003V1Error(
-            "U003 retained root already exists; retention identity is consumed"
+        raise LearnedResourceForecastPostprocessU004V1Error(
+            "U004 retained root already exists; retention identity is consumed"
         )
     retained_root.mkdir(parents=False)
     inventory_rows: list[dict[str, Any]] = []
@@ -785,14 +785,14 @@ def _copy_retained(
     provenance_counts: dict[str, int] = {}
     for source, category, provenance, relative in entries:
         if not source.is_file():
-            raise LearnedResourceForecastPostprocessU003V1Error(
-                f"U003 retention source disappeared: {source}"
+            raise LearnedResourceForecastPostprocessU004V1Error(
+                f"U004 retention source disappeared: {source}"
             )
         target = retained_root / relative
         target.parent.mkdir(parents=True, exist_ok=True)
         if target.exists():
-            raise LearnedResourceForecastPostprocessU003V1Error(
-                "U003 retention destination collision changed the exact inventory"
+            raise LearnedResourceForecastPostprocessU004V1Error(
+                "U004 retention destination collision changed the exact inventory"
             )
         shutil.copy2(source, target)
         inventory_rows.append(
@@ -807,12 +807,12 @@ def _copy_retained(
         category_counts[category] = category_counts.get(category, 0) + 1
         provenance_counts[provenance] = provenance_counts.get(provenance, 0) + 1
     if category_counts != EXPECTED_CATEGORY_COUNTS_V1:
-        raise LearnedResourceForecastPostprocessU003V1Error(
-            "U003 retention category counts differ from the registered inventory"
+        raise LearnedResourceForecastPostprocessU004V1Error(
+            "U004 retention category counts differ from the registered inventory"
         )
     if provenance_counts != EXPECTED_PROVENANCE_COUNTS_V1:
-        raise LearnedResourceForecastPostprocessU003V1Error(
-            "U003 retention provenance counts differ from the dual-authority boundary"
+        raise LearnedResourceForecastPostprocessU004V1Error(
+            "U004 retention provenance counts differ from the dual-authority boundary"
         )
     inventory = {
         "schema": SCHEMA_V1,
@@ -826,7 +826,12 @@ def _copy_retained(
         "successor_pilot_execution_identity": successor_protocol[
             "pilot_execution_identity"
         ],
-        "authority_mode": "READ_ONLY_U002_TRAINING_PLUS_FRESH_U003_EVIDENCE",
+        "authority_mode": "READ_ONLY_U002_TRAINING_PLUS_FRESH_U004_EVIDENCE",
+        "model_evaluation_tape_prefix": predecessor_protocol[
+            "evaluation_tape_prefix"
+        ],
+        "model_evaluation_provenance": "READ_ONLY_U002_PREDECESSOR",
+        "model_evaluation_reexecuted_in_u004": False,
         "failed_u002_evidence_dispatch_used": False,
         "predecessor_training_and_successor_evidence_retained_separately": True,
         "retention_complete": True,
@@ -847,8 +852,8 @@ def _copy_retained(
         row["retained_relative_path"] for row in inventory_rows
     } | {INVENTORY_FILENAME_V1}
     if actual_files != expected_files:
-        raise LearnedResourceForecastPostprocessU003V1Error(
-            "U003 retained tree contains a missing or foreign physical file"
+        raise LearnedResourceForecastPostprocessU004V1Error(
+            "U004 retained tree contains a missing or foreign physical file"
         )
     return inventory
 
@@ -874,48 +879,48 @@ def _run(
     successor_protocol_path = require_path_outside_repository_v1(
         repository=REPOSITORY,
         path=args.protocol,
-        label="ratified U003 successor protocol",
+        label="ratified U004 successor protocol",
     )
     successor_manifest_path = require_path_outside_repository_v1(
         repository=REPOSITORY,
         path=args.manifest,
-        label="U003 successor launch manifest",
+        label="U004 successor launch manifest",
     )
     history_path = require_path_outside_repository_v1(
         repository=REPOSITORY,
         path=args.history_scan_receipt,
-        label="U003 history-scan receipt",
+        label="U004 history-scan receipt",
     )
     gather_path = require_path_outside_repository_v1(
         repository=REPOSITORY,
         path=args.gather_receipt,
-        label="U003 dual-authority gather receipt",
+        label="U004 dual-authority gather receipt",
     )
     predecessor_protocol = validate_ratified_learned_resource_forecast_protocol_v1(
         _read_object(predecessor_protocol_path, "ratified U002 predecessor protocol")
     )
     successor_protocol = (
         validate_ratified_learned_resource_forecast_evidence_successor_protocol_v1(
-            _read_object(successor_protocol_path, "ratified U003 successor protocol")
+            _read_object(successor_protocol_path, "ratified U004 successor protocol")
         )
     )
     predecessor_manifest = _read_object(
         predecessor_manifest_path, "U002 predecessor launch manifest"
     )
     successor_manifest = _read_object(
-        successor_manifest_path, "U003 successor launch manifest"
+        successor_manifest_path, "U004 successor launch manifest"
     )
     if predecessor_manifest != _load_predecessor_prepare_module().build_launch_manifest_v1(
         predecessor_protocol
     ):
-        raise LearnedResourceForecastPostprocessU003V1Error(
+        raise LearnedResourceForecastPostprocessU004V1Error(
             "U002 predecessor manifest does not replay from its protocol"
         )
     if successor_manifest != _load_successor_prepare_module().build_launch_manifest_v1(
         successor_protocol
     ):
-        raise LearnedResourceForecastPostprocessU003V1Error(
-            "U003 successor manifest does not replay from its protocol"
+        raise LearnedResourceForecastPostprocessU004V1Error(
+            "U004 successor manifest does not replay from its protocol"
         )
     fixed = successor_manifest["fixed_paths"]
     analysis_root = Path(fixed["analysis_root"]).resolve()
@@ -936,31 +941,37 @@ def _run(
         or predecessor_protocol["source_commit"] != parent["source_commit"]
         or predecessor_protocol["pilot_execution_identity"]
         != parent["pilot_execution_identity"]
+        or parent["model_evaluation_tape_prefix"]
+        != predecessor_protocol["evaluation_tape_prefix"]
+        or parent["model_evaluation_measurements_are_read_only_inputs"] is not True
+        or parent["model_evaluation_reexecuted_in_u004"] is not False
+        or successor_protocol["evaluation_tape_prefix"]
+        != predecessor_protocol["evaluation_tape_prefix"]
         or socket.gethostname()
         != successor_manifest["central_analysis"]["expected_hostname"]
         or args.analysis_device != successor_manifest["central_analysis"]["device"]
         or args.verifier_device != successor_manifest["central_analysis"]["device"]
     ):
-        raise LearnedResourceForecastPostprocessU003V1Error(
-            "U003 postprocess source, authority, paths, host, or devices changed"
+        raise LearnedResourceForecastPostprocessU004V1Error(
+            "U004 postprocess source, authority, paths, host, or devices changed"
         )
     history = _load_history_scan_module()
     history.validate_history_scan_receipt_v1(
-        _read_object(history_path, "U003 history-scan receipt"),
+        _read_object(history_path, "U004 history-scan receipt"),
         successor_protocol,
         successor_manifest,
     )
     gather = _load_gather_module()
     gather.validate_gather_receipt_v1(
-        _read_object(gather_path, "U003 gather receipt"),
+        _read_object(gather_path, "U004 gather receipt"),
         predecessor_protocol,
         successor_protocol,
         predecessor_manifest,
         successor_manifest,
     )
     if analysis_root.exists() or retained_root.exists() or status_path.exists():
-        raise LearnedResourceForecastPostprocessU003V1Error(
-            "U003 analysis, retained, or status target already exists; attempt is consumed"
+        raise LearnedResourceForecastPostprocessU004V1Error(
+            "U004 analysis, retained, or status target already exists; attempt is consumed"
         )
 
     run_analysis = analysis_runner or _default_analysis_runner
@@ -990,8 +1001,13 @@ def _run(
                 "source_commit": source_commit,
                 "host": socket.gethostname(),
                 "authority_mode": (
-                    "READ_ONLY_U002_TRAINING_PLUS_FRESH_U003_EVIDENCE"
+                    "READ_ONLY_U002_TRAINING_PLUS_FRESH_U004_EVIDENCE"
                 ),
+                "model_evaluation_tape_prefix": predecessor_protocol[
+                    "evaluation_tape_prefix"
+                ],
+                "model_evaluation_provenance": "READ_ONLY_U002_PREDECESSOR",
+                "model_evaluation_reexecuted_in_u004": False,
             }
         )
         try:
@@ -1001,6 +1017,8 @@ def _run(
                     "predecessor_training_worker_directory_count": 6,
                     "predecessor_training_job_count": 144,
                     "predecessor_model_snapshot_count": 432,
+                    "predecessor_model_evaluation_measurements_are_read_only": True,
+                    "model_evaluation_reexecuted_in_u004": False,
                     "successor_evidence_worker_directory_count": 6,
                     "successor_evidence_job_count": 432,
                     "failed_u002_evidence_dispatch_used": False,
@@ -1064,8 +1082,8 @@ def _run(
                 status.emit({"event": "STAGE_STARTED", "stage": stage_name})
                 summary = run_analysis(stage_args)
                 if summary.get("success") is not True:
-                    raise LearnedResourceForecastPostprocessU003V1Error(
-                        f"U003 analysis stage returned no exact success: {stage_name}"
+                    raise LearnedResourceForecastPostprocessU004V1Error(
+                        f"U004 analysis stage returned no exact success: {stage_name}"
                     )
                 status.emit({"event": "STAGE_COMPLETED", "stage": stage_name})
             status.emit(
@@ -1095,8 +1113,8 @@ def _run(
                 )
             )
             if verification_summary.get("success") is not True:
-                raise LearnedResourceForecastPostprocessU003V1Error(
-                    "U003 independent verifier returned no exact success"
+                raise LearnedResourceForecastPostprocessU004V1Error(
+                    "U004 independent verifier returned no exact success"
                 )
             status.emit(
                 {"event": "STAGE_COMPLETED", "stage": "INDEPENDENT_VERIFIER"}
@@ -1126,7 +1144,7 @@ def _run(
             status_path,
             "postprocess_status",
             PROVENANCE_POSTPROCESS_V1,
-            Path("successor-u003/status") / status_path.name,
+            Path("successor-u004/status") / status_path.name,
         )
     )
     inventory = copy_retained(
@@ -1135,10 +1153,10 @@ def _run(
         predecessor_protocol=predecessor_protocol,
         successor_protocol=successor_protocol,
     )
-    result = _read_object(analysis_root / "pilot-result.json", "U003 pilot result")
+    result = _read_object(analysis_root / "pilot-result.json", "U004 pilot result")
     verification = _read_object(
         analysis_root / "independent-verification.json",
-        "U003 independent verification",
+        "U004 independent verification",
     )
     return {
         "success": True,
@@ -1147,7 +1165,7 @@ def _run(
         "analysis_root": str(analysis_root),
         "retained_root": str(retained_root),
         "postprocess_status": str(status_path),
-        "authority_mode": "READ_ONLY_U002_TRAINING_PLUS_FRESH_U003_EVIDENCE",
+        "authority_mode": "READ_ONLY_U002_TRAINING_PLUS_FRESH_U004_EVIDENCE",
         "failed_u002_evidence_dispatch_used": False,
         "retained_artifact_count_excluding_inventory": inventory[
             "retained_artifact_count_excluding_inventory"
@@ -1179,7 +1197,7 @@ def main() -> int:
     try:
         summary = _run(_arguments())
     except (
-        LearnedResourceForecastPostprocessU003V1Error,
+        LearnedResourceForecastPostprocessU004V1Error,
         LearnedResourceForecastEvidenceSuccessorProtocolV1Error,
         LearnedResourceForecastProtocolV1Error,
         ScienceExecutionIOV1Error,

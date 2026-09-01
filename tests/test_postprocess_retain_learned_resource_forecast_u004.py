@@ -22,19 +22,19 @@ from acfqp.science.learned_resource_forecast_protocol_v1 import (
 
 REPOSITORY = Path(__file__).resolve().parents[1]
 POSTPROCESS = (
-    REPOSITORY / "scripts/postprocess_retain_learned_resource_forecast_u003.py"
+    REPOSITORY / "scripts/postprocess_retain_learned_resource_forecast_u004.py"
 )
 U002_PREPARE = REPOSITORY / "scripts/prepare_learned_resource_forecast_campaign_u002.py"
-U003_PREPARE = (
+U004_PREPARE = (
     REPOSITORY
-    / "scripts/prepare_learned_resource_forecast_evidence_successor_u003.py"
+    / "scripts/prepare_learned_resource_forecast_evidence_successor_u004.py"
 )
-U003_SOURCE_COMMIT = "a" * 40
+U004_SOURCE_COMMIT = "a" * 40
 
 
 @pytest.fixture
 def linux_tmp_path(request) -> Path:
-    path = Path(tempfile.mkdtemp(prefix="acfqp-u003-postprocess-", dir="/tmp"))
+    path = Path(tempfile.mkdtemp(prefix="acfqp-u004-postprocess-", dir="/tmp"))
     request.addfinalizer(lambda: shutil.rmtree(path, ignore_errors=True))
     return path
 
@@ -143,15 +143,15 @@ def _dispatch_rows(manifest: dict, phase: str, *, successor: bool) -> list[dict]
 
 
 def _fixture(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
-    subject = _load(POSTPROCESS, "learned_resource_postprocess_u003_subject")
-    old_prepare = _load(U002_PREPARE, "learned_resource_postprocess_u003_old_prepare")
-    new_prepare = _load(U003_PREPARE, "learned_resource_postprocess_u003_new_prepare")
+    subject = _load(POSTPROCESS, "learned_resource_postprocess_u004_subject")
+    old_prepare = _load(U002_PREPARE, "learned_resource_postprocess_u004_old_prepare")
+    new_prepare = _load(U004_PREPARE, "learned_resource_postprocess_u004_new_prepare")
     predecessor_protocol = build_ratified_learned_resource_forecast_protocol_v1(
         U002_SOURCE_COMMIT_V1
     )
     successor_protocol = (
         build_ratified_learned_resource_forecast_evidence_successor_protocol_v1(
-            U003_SOURCE_COMMIT
+            U004_SOURCE_COMMIT
         )
     )
     predecessor_manifest = deepcopy(
@@ -161,16 +161,16 @@ def _fixture(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
         new_prepare.build_launch_manifest_v1(successor_protocol)
     )
 
-    launch = tmp_path / "u003-launch"
+    launch = tmp_path / "u004-launch"
     old_launch = tmp_path / "u002-launch"
     old_results = tmp_path / "u002-results"
     old_status = tmp_path / "u002-status"
     old_logs = tmp_path / "u002-logs"
-    new_results = tmp_path / "u003-results"
-    new_status = tmp_path / "u003-status"
-    new_logs = tmp_path / "u003-logs"
-    analysis = tmp_path / "u003-analysis"
-    retained = tmp_path / "u003-retained"
+    new_results = tmp_path / "u004-results"
+    new_status = tmp_path / "u004-status"
+    new_logs = tmp_path / "u004-logs"
+    analysis = tmp_path / "u004-analysis"
+    retained = tmp_path / "u004-retained"
     old_fixed = predecessor_manifest["fixed_paths"]
     old_fixed.update(
         {
@@ -355,7 +355,7 @@ def _fixture(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setattr(
         subject,
         "bound_clean_source_commit_v1",
-        lambda _repository: U003_SOURCE_COMMIT,
+        lambda _repository: U004_SOURCE_COMMIT,
     )
     monkeypatch.setattr(
         subject.socket,
@@ -460,8 +460,13 @@ def test_dual_authority_postprocess_orders_lanes_and_retains_exact_provenance(
     assert inventory["category_counts"] == subject.EXPECTED_CATEGORY_COUNTS_V1
     assert inventory["provenance_counts"] == subject.EXPECTED_PROVENANCE_COUNTS_V1
     assert inventory["failed_u002_evidence_dispatch_used"] is False
+    assert inventory["model_evaluation_tape_prefix"] == _old_protocol[
+        "evaluation_tape_prefix"
+    ]
+    assert inventory["model_evaluation_provenance"] == "READ_ONLY_U002_PREDECESSOR"
+    assert inventory["model_evaluation_reexecuted_in_u004"] is False
     assert (retained / "predecessor-u002/training/workers/worker-0").is_dir()
-    assert (retained / "successor-u003/evidence/workers/worker-0").is_dir()
+    assert (retained / "successor-u004/evidence/workers/worker-0").is_dir()
     failed = [
         row
         for row in inventory["entries"]
@@ -486,7 +491,7 @@ def test_failed_u002_dispatch_is_history_only_and_must_show_zero_dispatched_work
     calls: list[str] = []
 
     with pytest.raises(
-        subject.LearnedResourceForecastPostprocessU003V1Error,
+        subject.LearnedResourceForecastPostprocessU004V1Error,
         match="zero-worker failure history",
     ):
         subject._run(
@@ -513,7 +518,7 @@ def test_parent_artifact_in_successor_root_fails_before_analysis(
     calls: list[str] = []
 
     with pytest.raises(
-        subject.LearnedResourceForecastPostprocessU003V1Error,
+        subject.LearnedResourceForecastPostprocessU004V1Error,
         match="missing, duplicate, foreign",
     ):
         subject._run(

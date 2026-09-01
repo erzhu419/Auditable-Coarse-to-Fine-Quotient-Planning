@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run one U003 evidence worker against read-only U002 policy snapshots."""
+"""Run one U004 evidence worker against read-only U002 policy snapshots."""
 
 from __future__ import annotations
 
@@ -40,7 +40,7 @@ JobRunnerV1 = Callable[[SimpleNamespace], dict[str, Any]]
 
 
 class LearnedResourceForecastEvidenceSuccessorWorkerV1Error(RuntimeError):
-    """A U003 worker, U002 prerequisite, or fresh artifact is ineligible."""
+    """A U004 worker, U002 prerequisite, or fresh artifact is ineligible."""
 
 
 def _arguments() -> argparse.Namespace:
@@ -88,28 +88,28 @@ def _load_script(name: str, filename: str):
 
 def _prepare_module():
     return _load_script(
-        "acfqp_u003_prepare_for_worker",
-        "prepare_learned_resource_forecast_evidence_successor_u003.py",
+        "acfqp_u004_prepare_for_worker",
+        "prepare_learned_resource_forecast_evidence_successor_u004.py",
     )
 
 
 def _u002_prepare_module():
     return _load_script(
-        "acfqp_u002_prepare_for_u003_worker",
+        "acfqp_u002_prepare_for_u004_worker",
         "prepare_learned_resource_forecast_campaign_u002.py",
     )
 
 
 def _u002_worker_module():
     return _load_script(
-        "acfqp_u002_worker_helpers_for_u003",
+        "acfqp_u002_worker_helpers_for_u004",
         "run_learned_resource_forecast_worker_u002.py",
     )
 
 
 def _u002_postprocess_module():
     return _load_script(
-        "acfqp_u002_postprocess_helpers_for_u003",
+        "acfqp_u002_postprocess_helpers_for_u004",
         "postprocess_retain_learned_resource_forecast_u002.py",
     )
 
@@ -122,7 +122,7 @@ def _evidence_targets(job: dict[str, Any], root: Path) -> tuple[Path, ...]:
         )
     if any(type(name) is not str or not name for name in names):
         raise LearnedResourceForecastEvidenceSuccessorWorkerV1Error(
-            "U003 evidence target roster changed"
+            "U004 evidence target roster changed"
         )
     return tuple(root / name for name in names)
 
@@ -156,6 +156,12 @@ def _validate_parent_authority(
         or predecessor_protocol["source_commit"] != U002_SOURCE_COMMIT_V1
         or parent["protocol_id"] != predecessor_protocol["protocol_id"]
         or parent["source_commit"] != predecessor_protocol["source_commit"]
+        or parent["model_evaluation_tape_prefix"]
+        != predecessor_protocol["evaluation_tape_prefix"]
+        or parent["model_evaluation_measurements_are_read_only_inputs"] is not True
+        or parent["model_evaluation_reexecuted_in_u004"] is not False
+        or protocol["evaluation_tape_prefix"]
+        != predecessor_protocol["evaluation_tape_prefix"]
         or predecessor_manifest
         != _u002_prepare_module().build_launch_manifest_v1(predecessor_protocol)
     ):
@@ -177,7 +183,7 @@ def _validate_parent_authority(
         != Path(worker["predecessor_snapshot_root"]).resolve()
     ):
         raise LearnedResourceForecastEvidenceSuccessorWorkerV1Error(
-            "U003 worker no longer uses exact U002 host/GPU/player ownership"
+            "U004 worker no longer uses exact U002 host/GPU/player ownership"
         )
     helpers = _u002_worker_module()
     postprocess = _u002_postprocess_module()
@@ -228,10 +234,10 @@ def _validate_evidence_artifacts(
         )
         if not (root / job["trajectory_array_filename"]).is_file():
             raise LearnedResourceForecastEvidenceSuccessorWorkerV1Error(
-                "train-player U003 evidence lost trajectory array"
+                "train-player U004 evidence lost trajectory array"
             )
     for filename, schema in contracts:
-        document = _read_object(root / filename, "U003 evidence lane artifact")
+        document = _read_object(root / filename, "U004 evidence lane artifact")
         snapshot = document.get("policy_snapshot", {})
         if (
             document.get("schema") != schema
@@ -255,19 +261,19 @@ def _validate_evidence_artifacts(
             or snapshot.get("predecessor_training_execution_id")
             != job["predecessor_training_execution_id"]
             or snapshot.get("snapshot_is_read_only_predecessor_input") is not True
-            or snapshot.get("snapshot_is_u003_training_artifact") is not False
+            or snapshot.get("snapshot_is_u004_training_artifact") is not False
             or Path(str(snapshot.get("path", ""))).resolve()
             != (Path(worker["predecessor_snapshot_root"]) / job["model_filename"]).resolve()
         ):
             raise LearnedResourceForecastEvidenceSuccessorWorkerV1Error(
-                "U003 evidence artifact lost measurement or parent provenance"
+                "U004 evidence artifact lost measurement or parent provenance"
             )
 
 
 def _run_player_job(args: SimpleNamespace) -> dict[str, Any]:
     module = _load_script(
-        "acfqp_u003_player_evidence_for_worker",
-        "run_learned_resource_player_evidence_u003.py",
+        "acfqp_u004_player_evidence_for_worker",
+        "run_learned_resource_player_evidence_u004.py",
     )
     return module._run(args)
 
@@ -288,7 +294,7 @@ def _execute_jobs(
     jobs = worker["player_evidence_jobs"]
     if len(jobs) != EVIDENCE_JOBS_PER_WORKER_V1:
         raise LearnedResourceForecastEvidenceSuccessorWorkerV1Error(
-            "U003 worker no longer owns exactly 72 evidence jobs"
+            "U004 worker no longer owns exactly 72 evidence jobs"
         )
     completed = 0
     for ordinal, job in enumerate(jobs):
@@ -343,7 +349,7 @@ def _execute_jobs(
                 or not all(path.is_file() for path in targets)
             ):
                 raise LearnedResourceForecastEvidenceSuccessorWorkerV1Error(
-                    "U003 player runner returned foreign or incomplete summary"
+                    "U004 player runner returned foreign or incomplete summary"
                 )
             _validate_evidence_artifacts(
                 protocol=protocol,
@@ -396,14 +402,14 @@ def _run(
 ) -> dict[str, Any]:
     if args.worker not in range(6) or args.phase != "evidence":
         raise LearnedResourceForecastEvidenceSuccessorWorkerV1Error(
-            "U003 worker accepts only its frozen evidence phase"
+            "U004 worker accepts only its frozen evidence phase"
         )
     paths = {
         "protocol": require_path_outside_repository_v1(
-            repository=REPOSITORY, path=args.protocol, label="U003 protocol"
+            repository=REPOSITORY, path=args.protocol, label="U004 protocol"
         ),
         "manifest": require_path_outside_repository_v1(
-            repository=REPOSITORY, path=args.manifest, label="U003 manifest"
+            repository=REPOSITORY, path=args.manifest, label="U004 manifest"
         ),
         "predecessor_protocol": require_path_outside_repository_v1(
             repository=REPOSITORY,
@@ -423,30 +429,30 @@ def _run(
         "output_root": require_path_outside_repository_v1(
             repository=REPOSITORY,
             path=args.results_root,
-            label="U003 worker evidence output",
+            label="U004 worker evidence output",
         ),
         "status": require_path_outside_repository_v1(
             repository=REPOSITORY,
             path=args.status_stream,
-            label="U003 worker status",
+            label="U004 worker status",
         ),
     }
     source_commit = bound_clean_source_commit_v1(REPOSITORY)
     protocol = (
         validate_ratified_learned_resource_forecast_evidence_successor_protocol_v1(
-            _read_object(paths["protocol"], "U003 protocol")
+            _read_object(paths["protocol"], "U004 protocol")
         )
     )
     predecessor_protocol = validate_ratified_learned_resource_forecast_protocol_v1(
         _read_object(paths["predecessor_protocol"], "U002 predecessor protocol")
     )
-    manifest = _read_object(paths["manifest"], "U003 manifest")
+    manifest = _read_object(paths["manifest"], "U004 manifest")
     predecessor_manifest = _read_object(
         paths["predecessor_manifest"], "U002 predecessor manifest"
     )
     if manifest != _prepare_module().build_launch_manifest_v1(protocol):
         raise LearnedResourceForecastEvidenceSuccessorWorkerV1Error(
-            "U003 manifest does not replay from exact builder"
+            "U004 manifest does not replay from exact builder"
         )
     fixed = manifest["fixed_paths"]
     worker = manifest["workers"][args.worker]
@@ -472,7 +478,7 @@ def _run(
         or args.device != worker["device"]
     ):
         raise LearnedResourceForecastEvidenceSuccessorWorkerV1Error(
-            "U003 worker source, parent input, or successor output binding changed"
+            "U004 worker source, parent input, or successor output binding changed"
         )
     _validate_parent_authority(
         protocol=protocol,
@@ -504,7 +510,7 @@ def _run(
             for key in ("results_root", "status_root", "log_root")
         ):
             raise LearnedResourceForecastEvidenceSuccessorWorkerV1Error(
-                "U003 global preflight requires all successor roots absent"
+                "U004 global preflight requires all successor roots absent"
             )
         return {
             "success": True,
@@ -520,11 +526,11 @@ def _run(
         }
     if not paths["output_root"].is_dir() or any(paths["output_root"].iterdir()):
         raise LearnedResourceForecastEvidenceSuccessorWorkerV1Error(
-            "U003 launcher did not provide one exactly empty worker output directory"
+            "U004 launcher did not provide one exactly empty worker output directory"
         )
     if paths["status"].exists():
         raise LearnedResourceForecastEvidenceSuccessorWorkerV1Error(
-            "U003 status already exists; phase identity is consumed"
+            "U004 status already exists; phase identity is consumed"
         )
     context = helpers._actual_runtime_context(args.device)
     helpers._validate_runtime_binding(

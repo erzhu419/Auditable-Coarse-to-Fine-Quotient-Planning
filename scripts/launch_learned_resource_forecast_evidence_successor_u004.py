@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Durably dispatch the six fresh U003 evidence workers exactly once."""
+"""Durably dispatch the six fresh U004 evidence workers exactly once."""
 
 from __future__ import annotations
 
@@ -30,7 +30,7 @@ from acfqp.science.learned_resource_forecast_protocol_v1 import (
 
 
 REPOSITORY = Path(__file__).resolve().parents[1]
-WORKER_SCRIPT_NAME_V1 = "run_learned_resource_forecast_worker_u003.py"
+WORKER_SCRIPT_NAME_V1 = "run_learned_resource_forecast_worker_u004.py"
 DispatcherV1 = Callable[[str, str], str]
 GlobalPreflightV1 = Callable[[str, str], dict[str, Any]]
 SSH_NO_MUX_OPTIONS_V1 = (
@@ -44,7 +44,7 @@ SSH_NO_MUX_OPTIONS_V1 = (
 
 
 class LearnedResourceForecastEvidenceSuccessorLauncherV1Error(RuntimeError):
-    """One U003 preflight, one-shot dispatch, or parent binding failed."""
+    """One U004 preflight, one-shot dispatch, or parent binding failed."""
 
 
 def _arguments() -> argparse.Namespace:
@@ -128,7 +128,7 @@ class _DispatchStatusV1:
             )
         except FileExistsError as error:
             raise LearnedResourceForecastEvidenceSuccessorLauncherV1Error(
-                "U003 dispatch status exists; launch identity is consumed"
+                "U004 dispatch status exists; launch identity is consumed"
             ) from error
         return self
 
@@ -221,7 +221,7 @@ def _remote_global_preflight_command(
     ]
     command = "; ".join(checks)
     if "mkdir" in command or "nohup" in command or ">" in command:
-        raise AssertionError("U003 global preflight stopped being read-only")
+        raise AssertionError("U004 global preflight stopped being read-only")
     return command
 
 
@@ -363,27 +363,27 @@ def _launch(
             repository=REPOSITORY, path=path, label=label
         )
 
-    protocol_path = outside(args.protocol, "U003 protocol")
-    manifest_path = outside(args.manifest, "U003 manifest")
-    history_path = outside(args.history_scan_receipt, "U003 history receipt")
-    results_root = outside(args.remote_results_root, "U003 results root")
-    status_root = outside(args.remote_status_root, "U003 status root")
-    log_root = outside(args.remote_log_root, "U003 log root")
-    dispatch_path = outside(args.dispatch_status, "U003 dispatch status")
+    protocol_path = outside(args.protocol, "U004 protocol")
+    manifest_path = outside(args.manifest, "U004 manifest")
+    history_path = outside(args.history_scan_receipt, "U004 history receipt")
+    results_root = outside(args.remote_results_root, "U004 results root")
+    status_root = outside(args.remote_status_root, "U004 status root")
+    log_root = outside(args.remote_log_root, "U004 log root")
+    dispatch_path = outside(args.dispatch_status, "U004 dispatch status")
     source_commit = bound_clean_source_commit_v1(REPOSITORY)
     protocol = (
         validate_ratified_learned_resource_forecast_evidence_successor_protocol_v1(
-            _read_object(protocol_path, "U003 protocol")
+            _read_object(protocol_path, "U004 protocol")
         )
     )
     prepare = _load_script(
-        "acfqp_u003_prepare_for_launcher",
-        "prepare_learned_resource_forecast_evidence_successor_u003.py",
+        "acfqp_u004_prepare_for_launcher",
+        "prepare_learned_resource_forecast_evidence_successor_u004.py",
     )
-    manifest = _read_object(manifest_path, "U003 manifest")
+    manifest = _read_object(manifest_path, "U004 manifest")
     if manifest != prepare.build_launch_manifest_v1(protocol):
         raise LearnedResourceForecastEvidenceSuccessorLauncherV1Error(
-            "U003 manifest does not replay from exact builder"
+            "U004 manifest does not replay from exact builder"
         )
     fixed = manifest["fixed_paths"]
     if (
@@ -398,14 +398,14 @@ def _launch(
         or dispatch_path != Path(fixed["evidence_dispatch_status"]).resolve()
     ):
         raise LearnedResourceForecastEvidenceSuccessorLauncherV1Error(
-            "U003 source, authority, or fixed output path changed"
+            "U004 source, authority, or fixed output path changed"
         )
     history = _load_script(
-        "acfqp_u003_history_for_launcher",
-        "scan_learned_resource_forecast_history_u003.py",
+        "acfqp_u004_history_for_launcher",
+        "scan_learned_resource_forecast_history_u004.py",
     )
     history.validate_history_scan_receipt_v1(
-        _read_object(history_path, "U003 history receipt"), protocol, manifest
+        _read_object(history_path, "U004 history receipt"), protocol, manifest
     )
     predecessor_protocol = validate_ratified_learned_resource_forecast_protocol_v1(
         _read_object(Path(fixed["predecessor_protocol"]), "U002 protocol")
@@ -414,11 +414,21 @@ def _launch(
         Path(fixed["predecessor_manifest"]), "U002 manifest"
     )
     u002_prepare = _load_script(
-        "acfqp_u002_prepare_for_u003_launcher",
+        "acfqp_u002_prepare_for_u004_launcher",
         "prepare_learned_resource_forecast_campaign_u002.py",
     )
     if (
         predecessor_protocol["protocol_id"] != U002_PROTOCOL_ID_V1
+        or protocol["evaluation_tape_prefix"]
+        != predecessor_protocol["evaluation_tape_prefix"]
+        or protocol["predecessor_training_authority"][
+            "model_evaluation_tape_prefix"
+        ]
+        != predecessor_protocol["evaluation_tape_prefix"]
+        or protocol["predecessor_training_authority"][
+            "model_evaluation_reexecuted_in_u004"
+        ]
+        is not False
         or predecessor_manifest
         != u002_prepare.build_launch_manifest_v1(predecessor_protocol)
     ):
@@ -426,7 +436,7 @@ def _launch(
             "U002 predecessor protocol or manifest changed"
         )
     u002_postprocess = _load_script(
-        "acfqp_u002_postprocess_for_u003_launcher",
+        "acfqp_u002_postprocess_for_u004_launcher",
         "postprocess_retain_learned_resource_forecast_u002.py",
     )
     u002_postprocess._validate_dispatch_status(
@@ -440,7 +450,7 @@ def _launch(
     )
     if dispatch_path.exists():
         raise LearnedResourceForecastEvidenceSuccessorLauncherV1Error(
-            "U003 evidence dispatch exists; launch identity is consumed"
+            "U004 evidence dispatch exists; launch identity is consumed"
         )
     source_checkout = Path(manifest["source_checkout"])
     source_pythonpath = Path(manifest["source_pythonpath"])
@@ -482,7 +492,7 @@ def _launch(
             or row.get("filesystem_mutation") is not False
         ):
             raise LearnedResourceForecastEvidenceSuccessorLauncherV1Error(
-                "U003 global preflight returned foreign summary"
+                "U004 global preflight returned foreign summary"
             )
         preflight_rows.append(row)
     dispatch = dispatcher or _ssh_dispatch
@@ -495,6 +505,8 @@ def _launch(
                 "prechecked_worker_count": 6,
                 "optimizer_smoke_all_passed": True,
                 "parent_training_closure_all_passed": True,
+                "model_evaluation_authority_is_read_only_u002": True,
+                "model_evaluation_reexecuted_in_u004": False,
                 "filesystem_mutation_before_precheck_completed": False,
             }
         )
@@ -505,6 +517,8 @@ def _launch(
                 "source_commit": source_commit,
                 "protocol_id": protocol["protocol_id"],
                 "predecessor_protocol_id": U002_PROTOCOL_ID_V1,
+                "model_evaluation_authority_is_read_only_u002": True,
+                "model_evaluation_reexecuted_in_u004": False,
                 "worker_count": 6,
                 "u002_failed_evidence_dispatch_eligible": False,
             }

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Independently replay U003 under separate training/evidence authorities."""
+"""Independently replay U004 under separate training/evidence authorities."""
 
 from __future__ import annotations
 
@@ -36,17 +36,17 @@ from acfqp.science.learned_resource_forecast_protocol_v1 import (
 
 
 REPOSITORY = Path(__file__).resolve().parents[1]
-VERIFICATION_SCHEMA_U003_V1 = (
-    "acfqp.science.learned_resource_forecast_analysis_verification.u003.v1"
+VERIFICATION_SCHEMA_U004_V1 = (
+    "acfqp.science.learned_resource_forecast_analysis_verification.u004.v1"
 )
 
 
-class LearnedResourceForecastIndependentVerifierU003Error(RuntimeError):
-    """The retained U002-training/U003-evidence analysis cannot be replayed."""
+class LearnedResourceForecastIndependentVerifierU004Error(RuntimeError):
+    """The retained U002-training/U004-evidence analysis cannot be replayed."""
 
 
 def _fail(message: str) -> NoReturn:
-    raise LearnedResourceForecastIndependentVerifierU003Error(message)
+    raise LearnedResourceForecastIndependentVerifierU004Error(message)
 
 
 def _load_script(module_name: str, filename: str) -> Any:
@@ -61,16 +61,16 @@ def _load_script(module_name: str, filename: str) -> Any:
 
 
 _BASE = _load_script(
-    "acfqp_u002_independent_verifier_for_u003",
+    "acfqp_u002_independent_verifier_for_u004",
     "verify_learned_resource_forecast_analysis_u002.py",
 )
 _U002_PREPARE = _load_script(
-    "acfqp_u002_prepare_for_u003_independent_verifier",
+    "acfqp_u002_prepare_for_u004_independent_verifier",
     "prepare_learned_resource_forecast_campaign_u002.py",
 )
-_U003_PREPARE = _load_script(
-    "acfqp_u003_prepare_for_u003_independent_verifier",
-    "prepare_learned_resource_forecast_evidence_successor_u003.py",
+_U004_PREPARE = _load_script(
+    "acfqp_u004_prepare_for_u004_independent_verifier",
+    "prepare_learned_resource_forecast_evidence_successor_u004.py",
 )
 
 
@@ -78,7 +78,7 @@ def _read_json(path: Path, *, label: str) -> dict[str, Any]:
     try:
         value = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as error:
-        raise LearnedResourceForecastIndependentVerifierU003Error(
+        raise LearnedResourceForecastIndependentVerifierU004Error(
             f"cannot read {label}: {path}"
         ) from error
     if type(value) is not dict:
@@ -140,9 +140,16 @@ def _validate_protocol_pair(
         or authority.get("failed_u002_evidence_dispatch_eligible") is not False
         or authority.get("u002_evidence_status_logs_or_artifacts_eligible") is not False
         or authority.get("training_artifacts_are_read_only_inputs") is not True
-        or authority.get("training_artifacts_may_be_relabelled_as_u003") is not False
+        or authority.get("training_artifacts_may_be_relabelled_as_u004") is not False
+        or authority.get("model_evaluation_tape_prefix")
+        != predecessor["evaluation_tape_prefix"]
+        or authority.get("model_evaluation_measurements_are_read_only_inputs")
+        is not True
+        or authority.get("model_evaluation_reexecuted_in_u004") is not False
+        or successor.get("evaluation_tape_prefix")
+        != predecessor["evaluation_tape_prefix"]
     ):
-        _fail("independent replay rejected the U002/U003 protocol authority pair")
+        _fail("independent replay rejected the U002/U004 protocol authority pair")
 
 
 def _replay_dual_manifest(
@@ -156,10 +163,10 @@ def _replay_dual_manifest(
         dict(predecessor_protocol)
     ):
         _fail("independent replay rejected the U002 predecessor manifest")
-    if successor_document != _U003_PREPARE.build_launch_manifest_v1(
+    if successor_document != _U004_PREPARE.build_launch_manifest_v1(
         dict(successor_protocol)
     ):
-        _fail("independent replay rejected the U003 successor manifest")
+        _fail("independent replay rejected the U004 successor manifest")
     if (
         successor_document.get("phase_roster") != ["evidence"]
         or successor_document.get("worker_count") != 6
@@ -278,7 +285,7 @@ def _replay_stream(
     try:
         rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
     except (OSError, json.JSONDecodeError) as error:
-        raise LearnedResourceForecastIndependentVerifierU003Error(
+        raise LearnedResourceForecastIndependentVerifierU004Error(
             "independent worker status is unreadable JSONL"
         ) from error
     expected = tuple(roster["execution_ids"])
@@ -344,7 +351,7 @@ def _exact_inventory(directory: Path, expected: set[str], *, label: str) -> None
     try:
         entries = tuple(directory.iterdir())
     except OSError as error:
-        raise LearnedResourceForecastIndependentVerifierU003Error(
+        raise LearnedResourceForecastIndependentVerifierU004Error(
             f"cannot scan {label}"
         ) from error
     actual = {entry.name for entry in entries if entry.is_file()}
@@ -403,7 +410,7 @@ def _ownership_validator(
             or snapshot.get("predecessor_pilot_execution_identity")
             != predecessor_protocol["pilot_execution_identity"]
             or snapshot.get("snapshot_is_read_only_predecessor_input") is not True
-            or snapshot.get("snapshot_is_u003_training_artifact") is not False
+            or snapshot.get("snapshot_is_u004_training_artifact") is not False
         ):
             _fail("independent evidence replay rejected the predecessor snapshot binding")
 
@@ -424,14 +431,14 @@ def _install_boundary(
             value
         )
         if validated != successor_protocol:
-            _fail("base verifier opened a different U003 protocol")
+            _fail("base verifier opened a different U004 protocol")
         return validated
 
     def manifest_replay(
         document: Mapping[str, Any], protocol: Mapping[str, Any]
     ) -> dict[str, Any]:
         if document != manifest["document"] or protocol != successor_protocol:
-            _fail("base verifier opened a different U003 manifest")
+            _fail("base verifier opened a different U004 manifest")
         return dict(manifest)
 
     def status_replay(
@@ -487,7 +494,7 @@ def _install_boundary(
                 predecessor_dirs[worker_index], old_expected, label="U002 training inventory"
             )
             _exact_inventory(
-                successor_dirs[worker_index], new_expected, label="U003 evidence inventory"
+                successor_dirs[worker_index], new_expected, label="U004 evidence inventory"
             )
 
     def write(path: Path, data: bytes) -> None:
@@ -495,13 +502,13 @@ def _install_boundary(
             try:
                 document = json.loads(data)
             except (TypeError, json.JSONDecodeError) as error:
-                raise LearnedResourceForecastIndependentVerifierU003Error(
+                raise LearnedResourceForecastIndependentVerifierU004Error(
                     "independent verification document is not JSON"
                 ) from error
             document.update(
                 {
-                    "schema": VERIFICATION_SCHEMA_U003_V1,
-                    "authority_mode": "READ_ONLY_U002_TRAINING_PLUS_FRESH_U003_EVIDENCE",
+                    "schema": VERIFICATION_SCHEMA_U004_V1,
+                    "authority_mode": "READ_ONLY_U002_TRAINING_PLUS_FRESH_U004_EVIDENCE",
                     "predecessor_protocol_id": predecessor_protocol["protocol_id"],
                     "predecessor_source_commit": predecessor_protocol["source_commit"],
                     "predecessor_training_authority_validated": True,
@@ -529,12 +536,12 @@ def _verify(args: argparse.Namespace) -> dict[str, Any]:
         _read_json(args.predecessor_protocol, label="ratified U002 predecessor protocol")
     )
     successor = validate_ratified_learned_resource_forecast_evidence_successor_protocol_v1(
-        _read_json(args.protocol, label="ratified U003 successor protocol")
+        _read_json(args.protocol, label="ratified U004 successor protocol")
     )
     _validate_protocol_pair(predecessor, successor)
     manifest = _replay_dual_manifest(
         _read_json(args.predecessor_manifest, label="U002 predecessor manifest"),
-        _read_json(args.manifest, label="U003 successor manifest"),
+        _read_json(args.manifest, label="U004 successor manifest"),
         predecessor_protocol=predecessor,
         successor_protocol=successor,
     )
@@ -544,6 +551,9 @@ def _verify(args: argparse.Namespace) -> dict[str, Any]:
         "predecessor_protocol_id": predecessor["protocol_id"],
         "predecessor_training_authority_validated": True,
         "successor_evidence_authority_validated": True,
+        "model_evaluation_tape_prefix": predecessor["evaluation_tape_prefix"],
+        "model_evaluation_provenance": "READ_ONLY_U002_PREDECESSOR",
+        "model_evaluation_reexecuted_in_u004": False,
         "failed_u002_evidence_dispatch_used": False,
     }
 
@@ -552,7 +562,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     try:
         summary = _verify(_arguments(argv))
     except (
-        LearnedResourceForecastIndependentVerifierU003Error,
+        LearnedResourceForecastIndependentVerifierU004Error,
         ScienceExecutionIOV1Error,
         ValueError,
     ) as error:

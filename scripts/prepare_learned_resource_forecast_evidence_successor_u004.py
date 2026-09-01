@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Ratify U003 and write its fixed evidence-only launch manifest once."""
+"""Ratify U004 and write its fixed evidence-only launch manifest once."""
 
 from __future__ import annotations
 
@@ -47,32 +47,32 @@ from acfqp.science.matched_double_dqn_2048_learned_resource_pilot_v1 import (
 REPOSITORY = Path(__file__).resolve().parents[1]
 FIXED_SOURCE_CHECKOUT = Path(
     "/home/erzhu419/mine_code/"
-    "acfqp-learned-resource-forecast-2048-pilot-u003-source"
+    "acfqp-learned-resource-forecast-2048-pilot-u004-source"
 )
 FIXED_SOURCE_PYTHONPATH = FIXED_SOURCE_CHECKOUT / "src"
 FIXED_LAUNCH_ROOT = Path(
     "/home/erzhu419/mine_code/"
-    "acfqp-learned-resource-forecast-2048-pilot-u003-launch"
+    "acfqp-learned-resource-forecast-2048-pilot-u004-launch"
 )
 FIXED_RESULTS_ROOT = Path(
     "/home/erzhu419/mine_code/"
-    "acfqp-learned-resource-forecast-2048-pilot-u003-results"
+    "acfqp-learned-resource-forecast-2048-pilot-u004-results"
 )
 FIXED_STATUS_ROOT = Path(
     "/home/erzhu419/mine_code/"
-    "acfqp-learned-resource-forecast-2048-pilot-u003-status"
+    "acfqp-learned-resource-forecast-2048-pilot-u004-status"
 )
 FIXED_LOG_ROOT = Path(
     "/home/erzhu419/mine_code/"
-    "acfqp-learned-resource-forecast-2048-pilot-u003-logs"
+    "acfqp-learned-resource-forecast-2048-pilot-u004-logs"
 )
 FIXED_ANALYSIS_ROOT = Path(
     "/home/erzhu419/mine_code/"
-    "acfqp-learned-resource-forecast-2048-pilot-u003-analysis"
+    "acfqp-learned-resource-forecast-2048-pilot-u004-analysis"
 )
 FIXED_RETAINED_ROOT = Path(
     "/home/erzhu419/mine_code/"
-    "acfqp-learned-resource-forecast-2048-pilot-u003-retained"
+    "acfqp-learned-resource-forecast-2048-pilot-u004-retained"
 )
 FIXED_PROTOCOL_PATH = FIXED_LAUNCH_ROOT / "protocol.json"
 FIXED_MANIFEST_PATH = FIXED_LAUNCH_ROOT / "launch-manifest.json"
@@ -102,7 +102,7 @@ class LearnedResourceForecastEvidenceSuccessorPreparationV1Error(RuntimeError):
 def _worker_for_seed(seed: int) -> int:
     if seed not in LEARNED_RESOURCE_FORECAST_TRAINING_SEEDS_V1:
         raise LearnedResourceForecastEvidenceSuccessorPreparationV1Error(
-            "launch seed is outside the frozen U003 player roster"
+            "launch seed is outside the frozen U004 player roster"
         )
     return (seed - LEARNED_RESOURCE_FORECAST_TRAINING_SEEDS_V1[0]) % 6
 
@@ -133,7 +133,7 @@ def _parent_training_job(seed: int, arm: str) -> dict[str, Any]:
 
 
 def build_launch_manifest_v1(protocol: dict[str, Any]) -> dict[str, Any]:
-    """Build the fixed six-worker U003 evidence roster without consuming it."""
+    """Build the fixed six-worker U004 evidence roster without consuming it."""
 
     frozen = (
         validate_ratified_learned_resource_forecast_evidence_successor_protocol_v1(
@@ -288,11 +288,16 @@ def build_launch_manifest_v1(protocol: dict[str, Any]) -> dict[str, Any]:
                 "fresh_successor_artifact_path",
             ],
             "fresh_tape_roots": [
-                frozen["evaluation_tape_prefix"],
                 frozen["trajectory_tape_root"],
                 frozen["label_tape_root"],
                 frozen["probe_tape_root"],
             ],
+            "read_only_predecessor_tape_roots": [
+                frozen["training_tape_prefix"],
+                frozen["evaluation_tape_prefix"],
+            ],
+            "model_evaluation_tape_is_fresh": False,
+            "model_evaluation_tape_is_scanned_as_fresh": False,
             "fresh_campaign_artifact_paths": [
                 str(FIXED_RESULTS_ROOT),
                 str(FIXED_STATUS_ROOT),
@@ -359,15 +364,15 @@ def _prepare(output_root: Path) -> dict[str, Any]:
     root = require_path_outside_repository_v1(
         repository=REPOSITORY,
         path=output_root,
-        label="U003 evidence-successor launch preparation root",
+        label="U004 evidence-successor launch preparation root",
     )
     if root != FIXED_LAUNCH_ROOT.resolve():
         raise LearnedResourceForecastEvidenceSuccessorPreparationV1Error(
-            "U003 launch preparation root differs from its fixed identity path"
+            "U004 launch preparation root differs from its fixed identity path"
         )
     if REPOSITORY.resolve() != FIXED_SOURCE_CHECKOUT.resolve():
         raise LearnedResourceForecastEvidenceSuccessorPreparationV1Error(
-            "U003 preparation checkout differs from fixed deployment path"
+            "U004 preparation checkout differs from fixed deployment path"
         )
     source_commit = bound_clean_source_commit_v1(REPOSITORY)
     protocol = (

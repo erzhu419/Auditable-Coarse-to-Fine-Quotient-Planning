@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Gather U002 training and U003 evidence to gpu2 without rerunning jobs."""
+"""Gather U002 training and U004 evidence to gpu2 without rerunning jobs."""
 
 from __future__ import annotations
 
@@ -33,10 +33,10 @@ from acfqp.science.learned_resource_forecast_protocol_v1 import (
 
 REPOSITORY = Path(__file__).resolve().parents[1]
 SCHEMA_V1 = (
-    "acfqp.science.learned_resource_forecast_dual_authority_gather.u003.v1"
+    "acfqp.science.learned_resource_forecast_dual_authority_gather.u004.v1"
 )
 MARKER_SCHEMA_V1 = (
-    "acfqp.science.learned_resource_forecast_dual_authority_gather_marker.u003.v1"
+    "acfqp.science.learned_resource_forecast_dual_authority_gather_marker.u004.v1"
 )
 REMOTE_WORKERS_V1 = (2, 3, 4, 5)
 SSH_NO_MUX_OPTIONS_V1 = (
@@ -53,7 +53,7 @@ CentralInspectorV1 = Callable[[str, dict[str, Any]], dict[str, Any]]
 SmallFileCopierV1 = Callable[[str, Path, bytes, str], None]
 
 
-class LearnedResourceForecastGatherU003V1Error(RuntimeError):
+class LearnedResourceForecastGatherU004V1Error(RuntimeError):
     """The dual-authority transport or its exact receipt is invalid."""
 
 
@@ -61,8 +61,8 @@ def _load_script(name: str, filename: str):
     path = REPOSITORY / "scripts" / filename
     spec = importlib.util.spec_from_file_location(name, path)
     if spec is None or spec.loader is None:
-        raise LearnedResourceForecastGatherU003V1Error(
-            f"cannot load U003 gather dependency: {path}"
+        raise LearnedResourceForecastGatherU004V1Error(
+            f"cannot load U004 gather dependency: {path}"
         )
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
@@ -71,29 +71,29 @@ def _load_script(name: str, filename: str):
 
 def _predecessor_prepare_module():
     return _load_script(
-        "acfqp_u002_prepare_for_u003_gather",
+        "acfqp_u002_prepare_for_u004_gather",
         "prepare_learned_resource_forecast_campaign_u002.py",
     )
 
 
 def _successor_prepare_module():
     return _load_script(
-        "acfqp_u003_prepare_for_u003_gather",
-        "prepare_learned_resource_forecast_evidence_successor_u003.py",
+        "acfqp_u004_prepare_for_u004_gather",
+        "prepare_learned_resource_forecast_evidence_successor_u004.py",
     )
 
 
 def _history_module():
     return _load_script(
-        "acfqp_u003_history_for_u003_gather",
-        "scan_learned_resource_forecast_history_u003.py",
+        "acfqp_u004_history_for_u004_gather",
+        "scan_learned_resource_forecast_history_u004.py",
     )
 
 
 def _postprocess_module():
     return _load_script(
-        "acfqp_u003_postprocess_for_u003_gather",
-        "postprocess_retain_learned_resource_forecast_u003.py",
+        "acfqp_u004_postprocess_for_u004_gather",
+        "postprocess_retain_learned_resource_forecast_u004.py",
     )
 
 
@@ -101,11 +101,11 @@ def _read_object(path: Path, label: str) -> dict[str, Any]:
     try:
         value = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as error:
-        raise LearnedResourceForecastGatherU003V1Error(
+        raise LearnedResourceForecastGatherU004V1Error(
             f"cannot read {label}: {path}"
         ) from error
     if type(value) is not dict:
-        raise LearnedResourceForecastGatherU003V1Error(
+        raise LearnedResourceForecastGatherU004V1Error(
             f"{label} must contain one JSON object"
         )
     return value
@@ -120,14 +120,14 @@ def _validate_authorities(
     if predecessor_manifest != _predecessor_prepare_module().build_launch_manifest_v1(
         predecessor_protocol
     ):
-        raise LearnedResourceForecastGatherU003V1Error(
+        raise LearnedResourceForecastGatherU004V1Error(
             "U002 predecessor manifest does not replay"
         )
     if successor_manifest != _successor_prepare_module().build_launch_manifest_v1(
         successor_protocol
     ):
-        raise LearnedResourceForecastGatherU003V1Error(
-            "U003 successor manifest does not replay"
+        raise LearnedResourceForecastGatherU004V1Error(
+            "U004 successor manifest does not replay"
         )
     authority = successor_protocol["predecessor_training_authority"]
     if (
@@ -136,13 +136,20 @@ def _validate_authorities(
         or authority.get("pilot_execution_identity")
         != predecessor_protocol["pilot_execution_identity"]
         or authority.get("training_artifacts_are_read_only_inputs") is not True
-        or authority.get("training_artifacts_may_be_relabelled_as_u003") is not False
+        or authority.get("training_artifacts_may_be_relabelled_as_u004") is not False
+        or authority.get("model_evaluation_tape_prefix")
+        != predecessor_protocol["evaluation_tape_prefix"]
+        or authority.get("model_evaluation_measurements_are_read_only_inputs")
+        is not True
+        or authority.get("model_evaluation_reexecuted_in_u004") is not False
+        or successor_protocol["evaluation_tape_prefix"]
+        != predecessor_protocol["evaluation_tape_prefix"]
         or authority.get("failed_u002_evidence_dispatch_eligible") is not False
         or successor_manifest.get("phase_roster") != ["evidence"]
         or successor_manifest.get("predecessor_training_authority") != authority
     ):
-        raise LearnedResourceForecastGatherU003V1Error(
-            "U002/U003 authority boundary changed"
+        raise LearnedResourceForecastGatherU004V1Error(
+            "U002/U004 authority boundary changed"
         )
 
 
@@ -157,7 +164,7 @@ def _common_root(
         for key in ("results_root", "status_root", "log_root")
     }
     if len(parents) != 1:
-        raise LearnedResourceForecastGatherU003V1Error(
+        raise LearnedResourceForecastGatherU004V1Error(
             "dual-authority roots no longer share one server-side parent"
         )
     return parents.pop()
@@ -200,7 +207,7 @@ def _worker_file_paths(
     )
     expected = 352 if new_worker["train_seed_count"] == 6 else 334
     if len(paths) != expected or len(set(paths)) != expected:
-        raise LearnedResourceForecastGatherU003V1Error(
+        raise LearnedResourceForecastGatherU004V1Error(
             "dual-authority worker file roster changed"
         )
     return paths
@@ -215,8 +222,8 @@ def _host_workers(successor_manifest: dict[str, Any]) -> list[dict[str, Any]]:
             if worker["host_alias"] == host_alias
         ]
         if len(workers) != 2 or any(index not in REMOTE_WORKERS_V1 for index in workers):
-            raise LearnedResourceForecastGatherU003V1Error(
-                "remote worker ownership differs from the U003 manifest"
+            raise LearnedResourceForecastGatherU004V1Error(
+                "remote worker ownership differs from the U004 manifest"
             )
         first = successor_manifest["workers"][workers[0]]
         rows.append(
@@ -250,7 +257,7 @@ def _validate_worker_closure(
     postprocess._require_exact_directory(
         new_root,
         set(postprocess._successor_artifact_map(new_worker)),
-        f"U003 worker-{worker_index} evidence directory",
+        f"U004 worker-{worker_index} evidence directory",
     )
     postprocess._validate_worker_status(
         Path(old_fixed["status_root"])
@@ -291,14 +298,14 @@ def _inspect_local_source(
 ) -> dict[str, Any]:
     del predecessor_protocol
     if bound_clean_source_commit_v1(REPOSITORY) != successor_protocol["source_commit"]:
-        raise LearnedResourceForecastGatherU003V1Error(
-            "remote U003 gather source commit changed"
+        raise LearnedResourceForecastGatherU004V1Error(
+            "remote U004 gather source commit changed"
         )
     expected_hostname = successor_manifest["workers"][worker_indices[0]][
         "expected_hostname"
     ]
     if socket.gethostname() != expected_hostname:
-        raise LearnedResourceForecastGatherU003V1Error(
+        raise LearnedResourceForecastGatherU004V1Error(
             "remote gather source hostname changed"
         )
     for index in worker_indices:
@@ -309,7 +316,7 @@ def _inspect_local_source(
             or predecessor_manifest["workers"][index]["expected_hostname"]
             != expected_hostname
         ):
-            raise LearnedResourceForecastGatherU003V1Error(
+            raise LearnedResourceForecastGatherU004V1Error(
                 "remote gather source worker ownership changed"
             )
         _validate_worker_closure(
@@ -322,7 +329,7 @@ def _inspect_local_source(
             predecessor_manifest, successor_manifest, index
         ):
             if not path.is_file():
-                raise LearnedResourceForecastGatherU003V1Error(
+                raise LearnedResourceForecastGatherU004V1Error(
                     f"remote source file disappeared: {path}"
                 )
             files.append(
@@ -347,7 +354,7 @@ def _ssh_source_inspector(host_alias: str, request: dict[str, Any]) -> dict[str,
             "env",
             f"PYTHONPATH={request['source_pythonpath']}",
             request["python"],
-            str(REPOSITORY / "scripts/gather_learned_resource_forecast_evidence_u003.py"),
+            str(REPOSITORY / "scripts/gather_learned_resource_forecast_evidence_u004.py"),
             "--source-inspect-only",
             "--predecessor-protocol",
             request["predecessor_protocol"],
@@ -368,18 +375,18 @@ def _ssh_source_inspector(host_alias: str, request: dict[str, Any]) -> dict[str,
         text=True,
     )
     if completed.returncode != 0:
-        raise LearnedResourceForecastGatherU003V1Error(
+        raise LearnedResourceForecastGatherU004V1Error(
             f"remote source inspection failed on {host_alias}: "
             f"{completed.stderr.strip()}"
         )
     try:
         value = json.loads(completed.stdout)
     except json.JSONDecodeError as error:
-        raise LearnedResourceForecastGatherU003V1Error(
+        raise LearnedResourceForecastGatherU004V1Error(
             f"remote source inspection on {host_alias} returned no JSON"
         ) from error
     if type(value) is not dict:
-        raise LearnedResourceForecastGatherU003V1Error(
+        raise LearnedResourceForecastGatherU004V1Error(
             "remote source inspection returned a non-object"
         )
     return value
@@ -423,7 +430,7 @@ def _tar_stream_transport(host_alias: str, request: dict[str, Any]) -> None:
     remote_stderr = remote.stderr.read()
     remote_returncode = remote.wait()
     if remote_returncode != 0 or central.returncode != 0:
-        raise LearnedResourceForecastGatherU003V1Error(
+        raise LearnedResourceForecastGatherU004V1Error(
             "server-to-server dual-authority tar stream failed: "
             + remote_stderr.decode(errors="replace").strip()
             + " "
@@ -462,7 +469,7 @@ with os.fdopen(fd, "wb") as stream:
         capture_output=True,
     )
     if completed.returncode != 0:
-        raise LearnedResourceForecastGatherU003V1Error(
+        raise LearnedResourceForecastGatherU004V1Error(
             f"small authority copy failed for {path}: "
             + completed.stderr.decode(errors="replace").strip()
         )
@@ -472,7 +479,7 @@ def _root_state(
     root: Path, *, allowed: tuple[int, ...], required: tuple[int, ...], label: str
 ) -> None:
     if not root.is_dir():
-        raise LearnedResourceForecastGatherU003V1Error(f"{label} is not a directory")
+        raise LearnedResourceForecastGatherU004V1Error(f"{label} is not a directory")
     entries = tuple(root.iterdir())
     names = {path.name for path in entries}
     allowed_names = {f"worker-{index}" for index in allowed}
@@ -482,7 +489,7 @@ def _root_state(
         or not names.issubset(allowed_names)
         or not required_names.issubset(names)
     ):
-        raise LearnedResourceForecastGatherU003V1Error(
+        raise LearnedResourceForecastGatherU004V1Error(
             f"{label} differs from its gather state"
         )
 
@@ -491,7 +498,7 @@ def _flat_root_state(
     root: Path, *, allowed: set[str], required: set[str], label: str
 ) -> None:
     if not root.is_dir():
-        raise LearnedResourceForecastGatherU003V1Error(f"{label} is not a directory")
+        raise LearnedResourceForecastGatherU004V1Error(f"{label} is not a directory")
     entries = tuple(root.iterdir())
     names = {path.name for path in entries}
     if (
@@ -499,7 +506,7 @@ def _flat_root_state(
         or not names.issubset(allowed)
         or not required.issubset(names)
     ):
-        raise LearnedResourceForecastGatherU003V1Error(
+        raise LearnedResourceForecastGatherU004V1Error(
             f"{label} differs from its gather state"
         )
 
@@ -538,13 +545,13 @@ def _inspect_central_local(
 ) -> dict[str, Any]:
     del predecessor_protocol
     if state not in {"FIRST", "RETRY", "COMPLETE"}:
-        raise LearnedResourceForecastGatherU003V1Error("unknown central gather state")
+        raise LearnedResourceForecastGatherU004V1Error("unknown central gather state")
     if (
         bound_clean_source_commit_v1(REPOSITORY) != successor_protocol["source_commit"]
         or socket.gethostname()
         != successor_manifest["central_analysis"]["expected_hostname"]
     ):
-        raise LearnedResourceForecastGatherU003V1Error(
+        raise LearnedResourceForecastGatherU004V1Error(
             "central gather source or hostname changed"
         )
     old_fixed = predecessor_manifest["fixed_paths"]
@@ -562,7 +569,7 @@ def _inspect_central_local(
         Path(new_fixed["results_root"]),
         allowed=allowed,
         required=required,
-        label="central U003 evidence results",
+        label="central U004 evidence results",
     )
     old_status_all = {
         worker["policy_training_status_stream"]
@@ -587,8 +594,8 @@ def _inspect_central_local(
     for root, all_names, local_names, label in (
         (Path(old_fixed["status_root"]), old_status_all, old_status_local, "U002 status"),
         (Path(old_fixed["log_root"]), old_logs_all, old_logs_local, "U002 logs"),
-        (Path(new_fixed["status_root"]), new_status_all, new_status_local, "U003 status"),
-        (Path(new_fixed["log_root"]), new_logs_all, new_logs_local, "U003 logs"),
+        (Path(new_fixed["status_root"]), new_status_all, new_status_local, "U004 status"),
+        (Path(new_fixed["log_root"]), new_logs_all, new_logs_local, "U004 logs"),
     ):
         expected_required = all_names if state == "COMPLETE" else local_names
         expected_allowed = local_names if state == "FIRST" else all_names
@@ -630,7 +637,7 @@ def _ssh_central_inspector(host_alias: str, request: dict[str, Any]) -> dict[str
             "env",
             f"PYTHONPATH={request['source_pythonpath']}",
             request["python"],
-            str(REPOSITORY / "scripts/gather_learned_resource_forecast_evidence_u003.py"),
+            str(REPOSITORY / "scripts/gather_learned_resource_forecast_evidence_u004.py"),
             "--central-inspect-only",
             "--central-state",
             request["state"],
@@ -651,17 +658,17 @@ def _ssh_central_inspector(host_alias: str, request: dict[str, Any]) -> dict[str
         text=True,
     )
     if completed.returncode != 0:
-        raise LearnedResourceForecastGatherU003V1Error(
+        raise LearnedResourceForecastGatherU004V1Error(
             "central gather inspection failed: " + completed.stderr.strip()
         )
     try:
         value = json.loads(completed.stdout)
     except json.JSONDecodeError as error:
-        raise LearnedResourceForecastGatherU003V1Error(
+        raise LearnedResourceForecastGatherU004V1Error(
             "central gather inspection returned no JSON"
         ) from error
     if type(value) is not dict:
-        raise LearnedResourceForecastGatherU003V1Error(
+        raise LearnedResourceForecastGatherU004V1Error(
             "central gather inspection returned a non-object"
         )
     return value
@@ -691,6 +698,11 @@ def _marker(
         "remote_workers": list(REMOTE_WORKERS_V1),
         "transport_is_not_job_execution": True,
         "transport_retry_may_only_overwrite_registered_destination_files": True,
+        "model_evaluation_tape_prefix": predecessor_protocol[
+            "evaluation_tape_prefix"
+        ],
+        "model_evaluation_provenance": "READ_ONLY_U002_PREDECESSOR",
+        "model_evaluation_reexecuted_in_u004": False,
         "predecessor_training_artifacts_relabelled": False,
         "failed_u002_evidence_dispatch_used": False,
     }
@@ -727,7 +739,7 @@ def _validate_inspection(
             for file in files
         )
     ):
-        raise LearnedResourceForecastGatherU003V1Error(
+        raise LearnedResourceForecastGatherU004V1Error(
             "remote source inspection differs from the exact dual roster"
         )
     return files
@@ -757,11 +769,11 @@ def _validate_central_inspection(
             for file in files
         )
     ):
-        raise LearnedResourceForecastGatherU003V1Error(
+        raise LearnedResourceForecastGatherU004V1Error(
             "central inspector returned a foreign dual gather state"
         )
     if state == "FIRST" and files:
-        raise LearnedResourceForecastGatherU003V1Error(
+        raise LearnedResourceForecastGatherU004V1Error(
             "central first state already contains remote worker files"
         )
     if expected_files is not None and {
@@ -769,7 +781,7 @@ def _validate_central_inspection(
     } != {
         (file["relative_path"], file["size_bytes"]) for file in expected_files
     }:
-        raise LearnedResourceForecastGatherU003V1Error(
+        raise LearnedResourceForecastGatherU004V1Error(
             "central gathered sizes differ from source inspections"
         )
 
@@ -800,12 +812,17 @@ def _validate_receipt_structure(
         or receipt.get("transport_method")
         != "LOCAL_CONTROLLER_SSH_DUAL_TREE_TAR_TO_SSH_GPU2_TAR"
         or receipt.get("job_reexecution") is not False
+        or receipt.get("model_evaluation_tape_prefix")
+        != predecessor_protocol["evaluation_tape_prefix"]
+        or receipt.get("model_evaluation_provenance")
+        != "READ_ONLY_U002_PREDECESSOR"
+        or receipt.get("model_evaluation_reexecuted_in_u004") is not False
         or receipt.get("predecessor_training_artifacts_relabelled") is not False
         or receipt.get("failed_u002_evidence_dispatch_used") is not False
         or type(hosts) is not list
         or len(hosts) != 2
     ):
-        raise LearnedResourceForecastGatherU003V1Error(
+        raise LearnedResourceForecastGatherU004V1Error(
             "gather receipt differs from its dual-authority contract"
         )
     normalized = []
@@ -827,7 +844,7 @@ def _validate_central_files(
         for file in inspection["files"]:
             path = common / file["relative_path"]
             if not path.is_file() or path.stat().st_size != file["size_bytes"]:
-                raise LearnedResourceForecastGatherU003V1Error(
+                raise LearnedResourceForecastGatherU004V1Error(
                     "central gathered file is missing or size-incomplete"
                 )
     for index in REMOTE_WORKERS_V1:
@@ -841,7 +858,7 @@ def validate_gather_receipt_v1(
     predecessor_manifest: dict[str, Any],
     successor_manifest: dict[str, Any],
 ) -> dict[str, Any]:
-    """Validate the exact U002-training/U003-evidence gather receipt."""
+    """Validate the exact U002-training/U004-evidence gather receipt."""
 
     _validate_authorities(
         predecessor_protocol,
@@ -854,7 +871,7 @@ def validate_gather_receipt_v1(
     if marker != _marker(
         predecessor_protocol, successor_protocol, successor_manifest
     ):
-        raise LearnedResourceForecastGatherU003V1Error(
+        raise LearnedResourceForecastGatherU004V1Error(
             "gather marker differs from its fixed dual transport identity"
         )
     normalized = _validate_receipt_structure(
@@ -894,7 +911,7 @@ def _transport_members(
         ):
             members.append(path.resolve().relative_to(common).as_posix())
     if len(members) != 6 * len(worker_indices) or len(set(members)) != len(members):
-        raise LearnedResourceForecastGatherU003V1Error(
+        raise LearnedResourceForecastGatherU004V1Error(
             "dual-tree tar member roster changed"
         )
     return members
@@ -917,14 +934,14 @@ def _gather(
     )
     successor_protocol = (
         validate_ratified_learned_resource_forecast_evidence_successor_protocol_v1(
-            _read_object(successor_protocol_path, "U003 successor protocol")
+            _read_object(successor_protocol_path, "U004 successor protocol")
         )
     )
     predecessor_manifest = _read_object(
         predecessor_manifest_path, "U002 predecessor manifest"
     )
     successor_manifest = _read_object(
-        successor_manifest_path, "U003 successor manifest"
+        successor_manifest_path, "U004 successor manifest"
     )
     _validate_authorities(
         predecessor_protocol,
@@ -944,11 +961,11 @@ def _gather(
         or successor_manifest_path.resolve() != Path(fixed["manifest"]).resolve()
         or history_path.resolve() != Path(fixed["history_scan_receipt"]).resolve()
     ):
-        raise LearnedResourceForecastGatherU003V1Error(
+        raise LearnedResourceForecastGatherU004V1Error(
             "gather controller source or authority paths changed"
         )
     _history_module().validate_history_scan_receipt_v1(
-        _read_object(history_path, "U003 history receipt"),
+        _read_object(history_path, "U004 history receipt"),
         successor_protocol,
         successor_manifest,
     )
@@ -969,7 +986,7 @@ def _gather(
     )
     for path in authority_paths:
         if not path.is_file():
-            raise LearnedResourceForecastGatherU003V1Error(
+            raise LearnedResourceForecastGatherU004V1Error(
                 f"small dual authority is missing: {path}"
             )
         copy_small(central_alias, path, path.read_bytes(), central_python)
@@ -981,7 +998,7 @@ def _gather(
     )
     first_attempt = not marker_path.exists()
     if not first_attempt and _read_object(marker_path, "gather marker") != expected_marker:
-        raise LearnedResourceForecastGatherU003V1Error(
+        raise LearnedResourceForecastGatherU004V1Error(
             "existing gather marker belongs to another transport"
         )
     if not first_attempt:
@@ -1013,7 +1030,7 @@ def _gather(
         inspections.append({**row, "files": files})
     expected_files = [file for row in inspections for file in row["files"]]
     if len(expected_files) != 4 * 334:
-        raise LearnedResourceForecastGatherU003V1Error(
+        raise LearnedResourceForecastGatherU004V1Error(
             "remote gather roster no longer contains exactly 1336 files"
         )
     central_request = {
@@ -1027,7 +1044,7 @@ def _gather(
     inspect_central = central_inspector or _ssh_central_inspector
     if receipt_path.exists():
         if first_attempt:
-            raise LearnedResourceForecastGatherU003V1Error(
+            raise LearnedResourceForecastGatherU004V1Error(
                 "gather receipt exists without its transport marker"
             )
         receipt = _read_object(receipt_path, "gather receipt")
@@ -1038,7 +1055,7 @@ def _gather(
             predecessor_manifest,
             successor_manifest,
         ) != inspections:
-            raise LearnedResourceForecastGatherU003V1Error(
+            raise LearnedResourceForecastGatherU004V1Error(
                 "existing receipt differs from fresh source inspection"
             )
         central = inspect_central(
@@ -1110,6 +1127,11 @@ def _gather(
         "remote_workers": list(REMOTE_WORKERS_V1),
         "transport_method": "LOCAL_CONTROLLER_SSH_DUAL_TREE_TAR_TO_SSH_GPU2_TAR",
         "job_reexecution": False,
+        "model_evaluation_tape_prefix": predecessor_protocol[
+            "evaluation_tape_prefix"
+        ],
+        "model_evaluation_provenance": "READ_ONLY_U002_PREDECESSOR",
+        "model_evaluation_reexecuted_in_u004": False,
         "predecessor_training_artifacts_relabelled": False,
         "failed_u002_evidence_dispatch_used": False,
         "source_hosts": inspections,
@@ -1149,22 +1171,22 @@ def main() -> int:
             label="U002 predecessor manifest",
         )
         successor_protocol_path = require_path_outside_repository_v1(
-            repository=REPOSITORY, path=args.protocol, label="U003 protocol"
+            repository=REPOSITORY, path=args.protocol, label="U004 protocol"
         )
         successor_manifest_path = require_path_outside_repository_v1(
-            repository=REPOSITORY, path=args.manifest, label="U003 manifest"
+            repository=REPOSITORY, path=args.manifest, label="U004 manifest"
         )
         predecessor_protocol = validate_ratified_learned_resource_forecast_protocol_v1(
             _read_object(predecessor_protocol_path, "U002 predecessor protocol")
         )
         successor_protocol = validate_ratified_learned_resource_forecast_evidence_successor_protocol_v1(
-            _read_object(successor_protocol_path, "U003 successor protocol")
+            _read_object(successor_protocol_path, "U004 successor protocol")
         )
         predecessor_manifest = _read_object(
             predecessor_manifest_path, "U002 predecessor manifest"
         )
         successor_manifest = _read_object(
-            successor_manifest_path, "U003 successor manifest"
+            successor_manifest_path, "U004 successor manifest"
         )
         _validate_authorities(
             predecessor_protocol,
@@ -1174,7 +1196,7 @@ def main() -> int:
         )
         if args.source_inspect_only:
             if not args.workers:
-                raise LearnedResourceForecastGatherU003V1Error(
+                raise LearnedResourceForecastGatherU004V1Error(
                     "source inspection requires exact worker indices"
                 )
             workers = [int(value) for value in args.workers.split(",")]
@@ -1187,7 +1209,7 @@ def main() -> int:
             )
         elif args.central_inspect_only:
             if args.central_state is None:
-                raise LearnedResourceForecastGatherU003V1Error(
+                raise LearnedResourceForecastGatherU004V1Error(
                     "central inspection requires its gather state"
                 )
             summary = _inspect_central_local(
@@ -1199,8 +1221,8 @@ def main() -> int:
             )
         else:
             if args.history_scan_receipt is None:
-                raise LearnedResourceForecastGatherU003V1Error(
-                    "central gather requires the U003 history receipt"
+                raise LearnedResourceForecastGatherU004V1Error(
+                    "central gather requires the U004 history receipt"
                 )
             summary = _gather(
                 predecessor_protocol_path=predecessor_protocol_path,
@@ -1210,11 +1232,11 @@ def main() -> int:
                 history_path=require_path_outside_repository_v1(
                     repository=REPOSITORY,
                     path=args.history_scan_receipt,
-                    label="U003 history receipt",
+                    label="U004 history receipt",
                 ),
             )
     except (
-        LearnedResourceForecastGatherU003V1Error,
+        LearnedResourceForecastGatherU004V1Error,
         LearnedResourceForecastEvidenceSuccessorProtocolV1Error,
         LearnedResourceForecastProtocolV1Error,
         ScienceExecutionIOV1Error,
