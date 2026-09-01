@@ -43,6 +43,7 @@ CONFIRMATORY_RESULT_SCHEMA_V1 = (
     "acfqp.science.matched_double_dqn_2048_confirmatory_seed_arm_result.v1"
 )
 ObservationBuilderV1 = Callable[[Any, str], tuple[float, ...]]
+CheckpointObserverV1 = Callable[[int, Any], None]
 
 
 class MatchedDoubleDQN2048V1Error(RuntimeError):
@@ -392,6 +393,7 @@ def _run_seed_arm_v1(
         [str, int, int], dict[str, Any]
     ]
     | None = None,
+    checkpoint_observer: CheckpointObserverV1 | None = None,
     decision_latency_scope_field: str = (
         "includes_state_only_encoding_action_mask_and_policy_forward"
     ),
@@ -420,6 +422,7 @@ def _run_seed_arm_v1(
             representation_telemetry_builder is not None
             and not callable(representation_telemetry_builder)
         )
+        or (checkpoint_observer is not None and not callable(checkpoint_observer))
         or type(decision_latency_scope_field) is not str
         or not decision_latency_scope_field
     ):
@@ -623,6 +626,8 @@ def _run_seed_arm_v1(
                 seed=training_tape_root, episode_index=episode_index
             )
         if interaction in checkpoints:
+            if checkpoint_observer is not None:
+                checkpoint_observer(interaction, online)
             evaluation, raw_rows, resource_rows = _evaluate_policy_v1(
                 torch=torch,
                 model=online,
