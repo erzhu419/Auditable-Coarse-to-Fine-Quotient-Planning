@@ -74,6 +74,26 @@ def _fail(message: str) -> NoReturn:
     raise LearnedResourceForecastEvidenceV1Error(message)
 
 
+def _validate_supported_measurement_protocol_v1(
+    protocol: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Validate either the original U002 pilot or its exact U003 successor."""
+
+    campaign_kind = protocol.get("campaign_kind") if type(protocol) is dict else None
+    if campaign_kind == (
+        "LEARNED_RESOURCE_FORECAST_2048_FIXED_POLICY_"
+        "EVIDENCE_SUCCESSOR_U003_RATIFIED"
+    ):
+        from acfqp.science.learned_resource_forecast_evidence_successor_protocol_v1 import (
+            validate_ratified_learned_resource_forecast_evidence_successor_protocol_v1,
+        )
+
+        return validate_ratified_learned_resource_forecast_evidence_successor_protocol_v1(
+            protocol
+        )
+    return validate_ratified_learned_resource_forecast_protocol_v1(protocol)
+
+
 @dataclass(frozen=True, slots=True)
 class PlayerEvidenceArtifactsV1:
     """Separated in-memory artifacts for exactly one policy player."""
@@ -329,7 +349,7 @@ def _collect_player_evidence_with_selector_v1(
 ) -> PlayerEvidenceArtifactsV1:
     """Private count-injectable collector used by tiny deterministic tests."""
 
-    validated = validate_ratified_learned_resource_forecast_protocol_v1(protocol)
+    validated = _validate_supported_measurement_protocol_v1(protocol)
     if not callable(action_selector):
         _fail("player evidence action selector must be callable")
     if (
@@ -514,7 +534,7 @@ def collect_registered_player_evidence_v1(
 ) -> PlayerEvidenceArtifactsV1:
     """Load one registered snapshot and collect all eligible separated lanes."""
 
-    validated = validate_ratified_learned_resource_forecast_protocol_v1(protocol)
+    validated = _validate_supported_measurement_protocol_v1(protocol)
     snapshot = Path(snapshot_path)
     expected_name = policy_checkpoint_filename_v1(
         arm=generator_arm, seed=base_seed, checkpoint=checkpoint

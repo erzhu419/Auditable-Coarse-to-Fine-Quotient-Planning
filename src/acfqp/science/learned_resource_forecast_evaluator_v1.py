@@ -40,7 +40,6 @@ from acfqp.science.learned_resource_forecast_protocol_v1 import (
     PROBE_REPRESENTATION_DIMENSIONS_V1,
     RAW_PREFIX_ARM_V1,
     SHUFFLED_FORECAST_ARM_V1,
-    LearnedResourceForecastProtocolV1Error,
     player_key_v1,
     validate_ratified_learned_resource_forecast_protocol_v1,
 )
@@ -85,6 +84,26 @@ class LearnedResourceForecastEvaluatorV1Error(ValueError):
 
 def _fail(message: str) -> NoReturn:
     raise LearnedResourceForecastEvaluatorV1Error(message)
+
+
+def _validate_supported_measurement_protocol_v1(
+    protocol: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Validate U002 or the exact fixed-policy U003 evidence successor."""
+
+    campaign_kind = protocol.get("campaign_kind") if type(protocol) is dict else None
+    if campaign_kind == (
+        "LEARNED_RESOURCE_FORECAST_2048_FIXED_POLICY_"
+        "EVIDENCE_SUCCESSOR_U003_RATIFIED"
+    ):
+        from acfqp.science.learned_resource_forecast_evidence_successor_protocol_v1 import (
+            validate_ratified_learned_resource_forecast_evidence_successor_protocol_v1,
+        )
+
+        return validate_ratified_learned_resource_forecast_evidence_successor_protocol_v1(
+            protocol
+        )
+    return validate_ratified_learned_resource_forecast_protocol_v1(protocol)
 
 
 def _finite_number(value: Any) -> bool:
@@ -701,8 +720,8 @@ def evaluate_learned_resource_forecast_pilot_v1(
     """Run the preregistered train/test classifier and six-component pilot Gate."""
 
     try:
-        frozen = validate_ratified_learned_resource_forecast_protocol_v1(protocol)
-    except LearnedResourceForecastProtocolV1Error as error:
+        frozen = _validate_supported_measurement_protocol_v1(protocol)
+    except ValueError as error:
         raise LearnedResourceForecastEvaluatorV1Error(str(error)) from error
     if (
         tuple(frozen.get("arms", ())) != LEARNED_RESOURCE_FORECAST_ARMS_V1
