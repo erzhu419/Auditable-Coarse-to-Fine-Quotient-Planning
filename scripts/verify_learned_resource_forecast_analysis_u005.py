@@ -1,0 +1,172 @@
+#!/usr/bin/env python3
+"""Independently replay U004 evidence under ratified U005 runtime authority."""
+
+from __future__ import annotations
+
+import argparse
+from collections.abc import Sequence
+import importlib.util
+import json
+from pathlib import Path
+import sys
+from typing import Any, NoReturn
+
+from acfqp.science.execution_io_v1 import (
+    ScienceExecutionIOV1Error,
+    bound_clean_source_commit_v1,
+)
+from acfqp.science.learned_resource_forecast_analysis_successor_protocol_v1 import (
+    LearnedResourceForecastAnalysisSuccessorProtocolV1Error,
+    U004_PROTOCOL_ID_V1,
+    U004_SOURCE_COMMIT_V1,
+    validate_ratified_analysis_successor_protocol_v1,
+)
+
+
+REPOSITORY = Path(__file__).resolve().parents[1]
+
+
+class LearnedResourceForecastVerifierU005Error(RuntimeError):
+    """The independent U005 runtime authority is invalid."""
+
+
+def _fail(message: str) -> NoReturn:
+    raise LearnedResourceForecastVerifierU005Error(message)
+
+
+def _load_script(module_name: str, filename: str) -> Any:
+    path = REPOSITORY / "scripts" / filename
+    spec = importlib.util.spec_from_file_location(module_name, path)
+    if spec is None or spec.loader is None:
+        _fail(f"cannot load verifier dependency: {filename}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+_U004 = _load_script(
+    "acfqp_u004_verifier_for_u005",
+    "verify_learned_resource_forecast_analysis_u004.py",
+)
+_U005_PREPARE = _load_script(
+    "acfqp_u005_prepare_for_u005_verifier",
+    "prepare_learned_resource_forecast_analysis_successor_u005.py",
+)
+
+
+def _read_json(path: Path, label: str) -> dict[str, Any]:
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        raise LearnedResourceForecastVerifierU005Error(
+            f"cannot read {label}: {path}"
+        ) from error
+    if type(value) is not dict:
+        _fail(f"{label} must contain one JSON object")
+    return value
+
+
+def _arguments(argv: Sequence[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--u002-protocol", dest="predecessor_protocol", type=Path, required=True
+    )
+    parser.add_argument(
+        "--u002-manifest", dest="predecessor_manifest", type=Path, required=True
+    )
+    parser.add_argument("--u004-protocol", dest="protocol", type=Path, required=True)
+    parser.add_argument("--u004-manifest", dest="manifest", type=Path, required=True)
+    parser.add_argument("--u005-protocol", type=Path, required=True)
+    parser.add_argument("--u005-manifest", type=Path, required=True)
+    parser.add_argument(
+        "--predecessor-status-dir", type=Path, action="append", required=True
+    )
+    parser.add_argument("--status-dir", type=Path, action="append", required=True)
+    parser.add_argument("--trajectory-dir", type=Path, action="append", required=True)
+    parser.add_argument("--probe-dir", type=Path, action="append", required=True)
+    parser.add_argument("--label-dir", type=Path, action="append", required=True)
+    parser.add_argument("--encoder-dir", type=Path, required=True)
+    parser.add_argument(
+        "--predecessor-training-result-dir",
+        type=Path,
+        action="append",
+        required=True,
+    )
+    parser.add_argument(
+        "--evidence-dir",
+        dest="worker_result_dir",
+        type=Path,
+        action="append",
+        required=True,
+    )
+    parser.add_argument("--matrix", type=Path, required=True)
+    parser.add_argument("--matrix-metadata", type=Path, required=True)
+    parser.add_argument("--result", type=Path, required=True)
+    parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--device", default="cuda:0")
+    return parser.parse_args(argv)
+
+
+def _validate_runtime(args: argparse.Namespace) -> dict[str, Any]:
+    u005 = validate_ratified_analysis_successor_protocol_v1(
+        _read_json(args.u005_protocol, "ratified U005 protocol")
+    )
+    manifest = _read_json(args.u005_manifest, "U005 manifest")
+    if manifest != _U005_PREPARE.build_launch_manifest_v1(u005):
+        _fail("U005 manifest differs from its frozen builder output")
+    actual_commit = bound_clean_source_commit_v1(REPOSITORY)
+    fixed = manifest["fixed_paths"]
+    if (
+        actual_commit != u005["source_commit"]
+        or REPOSITORY.resolve() != Path(fixed["source_checkout"]).resolve()
+        or args.u005_protocol.resolve() != Path(fixed["protocol"]).resolve()
+        or args.u005_manifest.resolve() != Path(fixed["manifest"]).resolve()
+        or u005["analysis_execution_id"]
+        != manifest["analysis_jobs"][0]["execution_id"]
+        or u005["predecessor_evidence_authority"]["protocol_id"]
+        != U004_PROTOCOL_ID_V1
+        or u005["predecessor_evidence_authority"]["source_commit"]
+        != U004_SOURCE_COMMIT_V1
+    ):
+        _fail("U005 verifier source, identity, paths, or U004 authority changed")
+    return u005
+
+
+def _verify(args: argparse.Namespace) -> dict[str, Any]:
+    u005 = _validate_runtime(args)
+    args.analysis_runtime_protocol_id = u005["protocol_id"]
+    args.analysis_runtime_source_commit = u005["source_commit"]
+    args.analysis_runtime_execution_id = u005["analysis_execution_id"]
+    summary = _U004._verify(args)  # noqa: SLF001
+    if (
+        summary.get("measurement_protocol_id") != U004_PROTOCOL_ID_V1
+        or summary.get("measurement_source_commit") != U004_SOURCE_COMMIT_V1
+        or summary.get("analysis_runtime_protocol_id") != u005["protocol_id"]
+        or summary.get("analysis_runtime_source_commit") != u005["source_commit"]
+        or summary.get("analysis_runtime_execution_id")
+        != u005["analysis_execution_id"]
+    ):
+        _fail("independent verifier did not report both exact authorities")
+    return dict(summary) | {
+        "analysis_successor_protocol_id": u005["protocol_id"],
+        "analysis_execution_id": u005["analysis_execution_id"],
+        "u004_evidence_reexecuted": False,
+    }
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    try:
+        summary = _verify(_arguments(argv))
+    except (
+        LearnedResourceForecastVerifierU005Error,
+        LearnedResourceForecastAnalysisSuccessorProtocolV1Error,
+        ScienceExecutionIOV1Error,
+        ValueError,
+    ) as error:
+        raise SystemExit(str(error)) from error
+    print(json.dumps(summary, sort_keys=True))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

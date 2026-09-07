@@ -43,6 +43,7 @@ from acfqp.science.learned_resource_forecast_2048_v1 import (
     PREFIX_TOKEN_WIDTH_V1,
     ForecastExampleV1,
     ForecastWindowKeyV1,
+    aligned_forecast_examples_v1,
     deterministic_window_starts_v1,
     forecast_model_factory_v1,
     frozen_embeddings_v1,
@@ -131,6 +132,43 @@ class LearnedResourceForecastAnalysisCLIError(RuntimeError):
 
 def _fail(message: str) -> NoReturn:
     raise LearnedResourceForecastAnalysisCLIError(message)
+
+
+def _analysis_runtime_provenance_v1(
+    args: argparse.Namespace, protocol: Mapping[str, Any]
+) -> dict[str, str]:
+    """Validate an optional analysis runtime distinct from measurement source.
+
+    Legacy U002/U004 calls omit these internal Namespace attributes and retain
+    the original one-source behavior and artifact schema. U005 supplies all
+    three only after validating its separately ratified analysis protocol.
+    """
+
+    runtime_commit = getattr(
+        args, "analysis_runtime_source_commit", protocol["source_commit"]
+    )
+    if runtime_commit != bound_clean_source_commit_v1(REPOSITORY):
+        _fail("clean analysis runtime checkout differs from its bound source")
+    explicit = hasattr(args, "analysis_runtime_source_commit")
+    if not explicit:
+        return {}
+    runtime_protocol_id = getattr(args, "analysis_runtime_protocol_id", None)
+    runtime_execution_id = getattr(args, "analysis_runtime_execution_id", None)
+    if (
+        type(runtime_commit) is not str
+        or type(runtime_protocol_id) is not str
+        or not runtime_protocol_id
+        or type(runtime_execution_id) is not str
+        or not runtime_execution_id
+    ):
+        _fail("explicit analysis runtime authority is incomplete")
+    return {
+        "measurement_protocol_id": protocol["protocol_id"],
+        "measurement_source_commit": protocol["source_commit"],
+        "analysis_runtime_protocol_id": runtime_protocol_id,
+        "analysis_runtime_source_commit": runtime_commit,
+        "analysis_runtime_execution_id": runtime_execution_id,
+    }
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -660,6 +698,7 @@ def _stage_receipt(
     encoder_filename: str,
     trajectory_document_count: int,
     complete_episode_count: int,
+    runtime_provenance: Mapping[str, str],
 ) -> dict[str, Any]:
     core = receipt.document()
     return {
@@ -692,6 +731,7 @@ def _stage_receipt(
         "encoder_state_filename": encoder_filename,
         "encoder_state_is_bare_gru_state_dict": True,
         "CUBLAS_WORKSPACE_CONFIG": ":4096:8",
+        **runtime_provenance,
     }
 
 
@@ -714,8 +754,7 @@ def _run_fit_encoders(args: argparse.Namespace) -> dict[str, Any]:
         repository=REPOSITORY, path=args.output_dir, label="encoder output directory"
     )
     protocol = _load_protocol(protocol_path)
-    if protocol["source_commit"] != bound_clean_source_commit_v1(REPOSITORY):
-        _fail("ratified protocol source differs from clean analysis checkout")
+    runtime_provenance = _analysis_runtime_provenance_v1(args, protocol)
     manifest = _load_manifest(manifest_path, protocol)
     _validate_analysis_runtime(manifest, requested_device=args.device)
     outputs = {
@@ -804,6 +843,7 @@ def _run_fit_encoders(args: argparse.Namespace) -> dict[str, Any]:
         encoder_filename=ALIGNED_ENCODER_FILENAME_V1,
         trajectory_document_count=len(train_jobs),
         complete_episode_count=episode_count,
+        runtime_provenance=runtime_provenance,
     )
     shuffled_document = _stage_receipt(
         shuffled_receipt,
@@ -811,6 +851,7 @@ def _run_fit_encoders(args: argparse.Namespace) -> dict[str, Any]:
         encoder_filename=SHUFFLED_ENCODER_FILENAME_V1,
         trajectory_document_count=len(train_jobs),
         complete_episode_count=episode_count,
+        runtime_provenance=runtime_provenance,
     )
     write_exclusive_bytes_v1(
         outputs["aligned_encoder"], _bare_encoder_bytes(aligned_encoder)
@@ -835,6 +876,7 @@ def _run_fit_encoders(args: argparse.Namespace) -> dict[str, Any]:
         "receipt_count": 2,
         "skill_label_path_argument_present": False,
         "outputs": {key: str(path) for key, path in outputs.items()},
+        **runtime_provenance,
     }
 
 
@@ -1015,8 +1057,7 @@ def _run_encode_probes(args: argparse.Namespace) -> dict[str, Any]:
         repository=REPOSITORY, path=args.output_dir, label="probe matrix output"
     )
     protocol = _load_protocol(protocol_path)
-    if protocol["source_commit"] != bound_clean_source_commit_v1(REPOSITORY):
-        _fail("ratified protocol source differs from clean analysis checkout")
+    runtime_provenance = _analysis_runtime_provenance_v1(args, protocol)
     manifest = _load_manifest(manifest_path, protocol)
     _validate_analysis_runtime(manifest, requested_device=args.device)
     matrix_path = output_dir / MATRIX_FILENAME_V1
@@ -1122,6 +1163,7 @@ def _run_encode_probes(args: argparse.Namespace) -> dict[str, Any]:
         "skill_label_path_argument_present": False,
         "skill_label_file_opened": False,
         "dtype": "float32",
+        **runtime_provenance,
     }
     write_exclusive_bytes_v1(
         matrix_path, _matrix_bytes(player_keys, raw, shuffled, aligned)
@@ -1137,6 +1179,7 @@ def _run_encode_probes(args: argparse.Namespace) -> dict[str, Any]:
         "skill_label_path_argument_present": False,
         "matrix": str(matrix_path),
         "metadata": str(metadata_path),
+        **runtime_provenance,
     }
 
 
@@ -1690,8 +1733,7 @@ def _run_evaluate(args: argparse.Namespace) -> dict[str, Any]:
     # opened only after protocol, manifest, status, frozen receipts, and the
     # already-encoded probe matrix have all passed validation.
     protocol = _load_protocol(protocol_path)
-    if protocol["source_commit"] != bound_clean_source_commit_v1(REPOSITORY):
-        _fail("ratified protocol source differs from clean analysis checkout")
+    runtime_provenance = _analysis_runtime_provenance_v1(args, protocol)
     manifest = _load_manifest(manifest_path, protocol)
     _validate_analysis_runtime(manifest, requested_device=None)
     status = _status_counts(status_dirs, manifest)
@@ -1723,6 +1765,7 @@ def _run_evaluate(args: argparse.Namespace) -> dict[str, Any]:
     result = evaluate_learned_resource_forecast_pilot_v1(
         protocol, aggregates, matrices, counts
     )
+    result = dict(result) | runtime_provenance
     write_exclusive_bytes_v1(output, canonical_json_bytes(result))
     return {
         "success": True,
@@ -1735,6 +1778,7 @@ def _run_evaluate(args: argparse.Namespace) -> dict[str, Any]:
         "scientific_success": False,
         "scientific_success_claimed": False,
         "label_files_opened_only_in_final_stage": True,
+        **runtime_provenance,
     }
 
 

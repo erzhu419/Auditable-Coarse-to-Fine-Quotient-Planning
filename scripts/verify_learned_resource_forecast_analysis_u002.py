@@ -117,6 +117,35 @@ def _fail(message: str) -> NoReturn:
     raise LearnedResourceForecastIndependentVerifierV1Error(message)
 
 
+def _analysis_runtime_provenance_v1(
+    args: argparse.Namespace, protocol: Mapping[str, Any]
+) -> dict[str, str]:
+    runtime_commit = getattr(
+        args, "analysis_runtime_source_commit", protocol["source_commit"]
+    )
+    if runtime_commit != bound_clean_source_commit_v1(REPOSITORY):
+        _fail("clean verifier runtime checkout differs from its bound source")
+    if not hasattr(args, "analysis_runtime_source_commit"):
+        return {}
+    runtime_protocol_id = getattr(args, "analysis_runtime_protocol_id", None)
+    runtime_execution_id = getattr(args, "analysis_runtime_execution_id", None)
+    if (
+        type(runtime_commit) is not str
+        or type(runtime_protocol_id) is not str
+        or not runtime_protocol_id
+        or type(runtime_execution_id) is not str
+        or not runtime_execution_id
+    ):
+        _fail("explicit verifier runtime authority is incomplete")
+    return {
+        "measurement_protocol_id": protocol["protocol_id"],
+        "measurement_source_commit": protocol["source_commit"],
+        "analysis_runtime_protocol_id": runtime_protocol_id,
+        "analysis_runtime_source_commit": runtime_commit,
+        "analysis_runtime_execution_id": runtime_execution_id,
+    }
+
+
 def _arguments(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--protocol", type=Path, required=True)
@@ -932,8 +961,11 @@ def _load_encoder(path: Path, *, device_name: str) -> Any:
 
 
 def _replay_receipts(
-    directory: Path, protocol: Mapping[str, Any]
+    directory: Path,
+    protocol: Mapping[str, Any],
+    runtime_provenance: Mapping[str, str] | None = None,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
+    runtime_provenance = runtime_provenance or {}
     rows = []
     for receipt_name, mode, encoder_name in (
         (
@@ -980,6 +1012,10 @@ def _replay_receipts(
             or document.get("forecast_head_discarded") is not True
             or document.get("skill_labels_opened_during_training") is not False
             or document.get("CUBLAS_WORKSPACE_CONFIG") != ":4096:8"
+            or any(
+                document.get(key) != value
+                for key, value in runtime_provenance.items()
+            )
         ):
             _fail("encoder receipt failed independent replay")
         rows.append(document)
@@ -993,7 +1029,9 @@ def _replay_matrix(
     metadata_path: Path,
     *,
     protocol: Mapping[str, Any],
+    runtime_provenance: Mapping[str, str] | None = None,
 ) -> tuple[dict[str, np.ndarray], dict[str, Any]]:
+    runtime_provenance = runtime_provenance or {}
     metadata = _read_json(metadata_path, label="matrix metadata")
     expected_representations = {
         RAW_PREFIX_ARM_V1: {
@@ -1033,6 +1071,10 @@ def _replay_matrix(
         or metadata.get("skill_label_path_argument_present") is not False
         or metadata.get("skill_label_file_opened") is not False
         or metadata.get("dtype") != "float32"
+        or any(
+            metadata.get(key) != value
+            for key, value in runtime_provenance.items()
+        )
     ):
         _fail("matrix metadata failed independent replay")
     try:
@@ -1898,8 +1940,7 @@ def _verify(args: argparse.Namespace) -> dict[str, Any]:
     protocol = validate_ratified_learned_resource_forecast_protocol_v1(
         _read_json(resolved["protocol"], label="ratified protocol")
     )
-    if protocol["source_commit"] != bound_clean_source_commit_v1(REPOSITORY):
-        _fail("verifier checkout differs from ratified clean source")
+    runtime_provenance = _analysis_runtime_provenance_v1(args, protocol)
     manifest = _replay_manifest(
         _read_json(resolved["manifest"], label="launch manifest"), protocol
     )
@@ -1920,7 +1961,9 @@ def _verify(args: argparse.Namespace) -> dict[str, Any]:
     raw_from_probes, token_rows, probe_roots = _replay_probes(
         probe_dirs, protocol=protocol, manifest=manifest
     )
-    _replay_receipts(resolved["encoder_dir"], protocol)
+    _replay_receipts(
+        resolved["encoder_dir"], protocol, runtime_provenance
+    )
     aligned_encoder = _load_encoder(
         resolved["encoder_dir"] / ALIGNED_ENCODER_FILENAME_V1,
         device_name=args.device,
@@ -1930,7 +1973,10 @@ def _verify(args: argparse.Namespace) -> dict[str, Any]:
         device_name=args.device,
     )
     arrays, metadata = _replay_matrix(
-        resolved["matrix"], resolved["matrix_metadata"], protocol=protocol
+        resolved["matrix"],
+        resolved["matrix_metadata"],
+        protocol=protocol,
+        runtime_provenance=runtime_provenance,
     )
     if not np.array_equal(arrays[RAW_PREFIX_ARM_V1], raw_from_probes):
         _fail("retained raw matrix differs from independent probe reconstruction")
@@ -1979,6 +2025,7 @@ def _verify(args: argparse.Namespace) -> dict[str, Any]:
     replayed_result = _independent_evaluate(
         protocol, label_rows, arrays, counts
     )
+    replayed_result = dict(replayed_result) | runtime_provenance
     retained_result = _read_json(resolved["result"], label="pilot result")
     _require_exact_replayed_result(retained_result, replayed_result)
     verification = {
@@ -2009,6 +2056,7 @@ def _verify(args: argparse.Namespace) -> dict[str, Any]:
         ],
         "scientific_success": False,
         "scientific_success_claimed": False,
+        **runtime_provenance,
     }
     write_exclusive_bytes_v1(output, canonical_json_bytes(verification))
     return {
@@ -2019,6 +2067,7 @@ def _verify(args: argparse.Namespace) -> dict[str, Any]:
         "PROVISIONAL_DESIGN_SIGNAL_GATE": retained_result[
             "PROVISIONAL_DESIGN_SIGNAL_GATE"
         ],
+        **runtime_provenance,
     }
 
 
