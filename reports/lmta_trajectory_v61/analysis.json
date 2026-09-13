@@ -1,0 +1,521 @@
+{
+  "schema": "acfqp.lmta_trajectory_analysis.v61",
+  "protocol": {
+    "budget": 2,
+    "horizon": 3,
+    "replicates": 128,
+    "methods": [
+      "LOOKAHEAD_1_ANALYTIC",
+      "LOOKAHEAD_2_ANALYTIC"
+    ],
+    "graph_ids": [
+      580000,
+      580001,
+      580002,
+      580003,
+      580004,
+      580005,
+      580006,
+      580007,
+      580008,
+      580009,
+      580010,
+      580011,
+      580012,
+      580013,
+      580014,
+      580015,
+      580100,
+      580101,
+      580102,
+      580103,
+      580104,
+      580105,
+      580106,
+      580107,
+      580108,
+      580109,
+      580110,
+      580111,
+      580112,
+      580113,
+      580114,
+      580115,
+      580200,
+      580201,
+      580202,
+      580203,
+      580204,
+      580205,
+      580206,
+      580207,
+      580208,
+      580209,
+      580210,
+      580211,
+      580212,
+      580213,
+      580214,
+      580215,
+      580300,
+      580301,
+      580302,
+      580303,
+      580304,
+      580305,
+      580306,
+      580307,
+      580308,
+      580309,
+      580310,
+      580311,
+      580312,
+      580313,
+      580314,
+      580315
+    ],
+    "seed_base": 61000000,
+    "seed_graph_stride": 1000,
+    "limits": {
+      "max_planner_action_values": 2000000,
+      "max_decisions": 100000,
+      "max_wall_seconds": 60.0
+    },
+    "calibration_family_size": 12,
+    "calibration_alpha": 0.05
+  },
+  "integrity": {
+    "passed": true,
+    "errors": {}
+  },
+  "complete_trajectory_evidence": true,
+  "calibration_consistent": true,
+  "panels": [
+    {
+      "nodes": 9,
+      "stratum": "sparse",
+      "graph_count": 16,
+      "replicates_per_graph": 128,
+      "methods": {
+        "LOOKAHEAD_1_ANALYTIC": {
+          "mean": 6.38427734375,
+          "exact_mean": 6.403869467232577,
+          "error": -0.01959212348257733,
+          "standard_error": 0.026307847741097814,
+          "nominal_95_interval": [
+            6.332714909666685,
+            6.435839777833315
+          ],
+          "simultaneous_interval": [
+            6.308898513656075,
+            6.459656173843925
+          ],
+          "simultaneous_contains_exact": true
+        },
+        "LOOKAHEAD_2_ANALYTIC": {
+          "mean": 6.53515625,
+          "exact_mean": 6.571943874385295,
+          "error": -0.036787624385294926,
+          "standard_error": 0.026163986367492505,
+          "nominal_95_interval": [
+            6.483875779027718,
+            6.586436720972282
+          ],
+          "simultaneous_interval": [
+            6.460189620179727,
+            6.610122879820273
+          ],
+          "simultaneous_contains_exact": true
+        }
+      },
+      "paired_two_minus_one": {
+        "mean": 0.15087890625,
+        "exact_mean": 0.1680744071527177,
+        "error": -0.01719550090271771,
+        "standard_error": 0.021964110734363235,
+        "nominal_95_interval": [
+          0.10783004025819848,
+          0.19392777224180152
+        ],
+        "simultaneous_interval": [
+          0.0879460130881122,
+          0.2138117994118878
+        ],
+        "simultaneous_contains_exact": true
+      },
+      "work": {
+        "LOOKAHEAD_1_ANALYTIC": {
+          "action_value_evaluations": {
+            "actual": 30462,
+            "exact_expected": 30464.0,
+            "actual_over_expected": 0.9999343487394958
+          },
+          "transition_outcomes": {
+            "actual": 0,
+            "exact_expected": 0.0,
+            "actual_over_expected": null
+          },
+          "target_probability_evaluations": {
+            "actual": 207950,
+            "exact_expected": 207982.22222222222,
+            "actual_over_expected": 0.9998450722283956
+          }
+        },
+        "LOOKAHEAD_2_ANALYTIC": {
+          "action_value_evaluations": {
+            "actual": 477493,
+            "exact_expected": 477392.0,
+            "actual_over_expected": 1.000211566176224
+          },
+          "transition_outcomes": {
+            "actual": 118433,
+            "exact_expected": 118341.33333333333,
+            "actual_over_expected": 1.000774595520303
+          },
+          "target_probability_evaluations": {
+            "actual": 2673648,
+            "exact_expected": 2672950.222222222,
+            "actual_over_expected": 1.0002610515422161
+          }
+        }
+      }
+    },
+    {
+      "nodes": 9,
+      "stratum": "dense",
+      "graph_count": 16,
+      "replicates_per_graph": 128,
+      "methods": {
+        "LOOKAHEAD_1_ANALYTIC": {
+          "mean": 5.72998046875,
+          "exact_mean": 5.6943347845789285,
+          "error": 0.0356456841710715,
+          "standard_error": 0.03971415356296411,
+          "nominal_95_interval": [
+            5.652142158090097,
+            5.807818779409903
+          ],
+          "simultaneous_interval": [
+            5.61618908363908,
+            5.84377185386092
+          ],
+          "simultaneous_contains_exact": true
+        },
+        "LOOKAHEAD_2_ANALYTIC": {
+          "mean": 5.72021484375,
+          "exact_mean": 5.711774649213134,
+          "error": 0.008440194536865953,
+          "standard_error": 0.03973551412717725,
+          "nominal_95_interval": [
+            5.64233466715355,
+            5.79809502034645
+          ],
+          "simultaneous_interval": [
+            5.606362255063767,
+            5.834067432436233
+          ],
+          "simultaneous_contains_exact": true
+        }
+      },
+      "paired_two_minus_one": {
+        "mean": -0.009765625,
+        "exact_mean": 0.017439864634205715,
+        "error": -0.027205489634205715,
+        "standard_error": 0.024454705957665294,
+        "nominal_95_interval": [
+          -0.057695967929541056,
+          0.038164717929541056
+        ],
+        "simultaneous_interval": [
+          -0.07983472162549324,
+          0.06030347162549324
+        ],
+        "simultaneous_contains_exact": true
+      },
+      "work": {
+        "LOOKAHEAD_1_ANALYTIC": {
+          "action_value_evaluations": {
+            "actual": 31733,
+            "exact_expected": 31782.992756613767,
+            "actual_over_expected": 0.9984270594969895
+          },
+          "transition_outcomes": {
+            "actual": 0,
+            "exact_expected": 0.0,
+            "actual_over_expected": null
+          },
+          "target_probability_evaluations": {
+            "actual": 222846,
+            "exact_expected": 223402.90031746036,
+            "actual_over_expected": 0.9975071929833096
+          }
+        },
+        "LOOKAHEAD_2_ANALYTIC": {
+          "action_value_evaluations": {
+            "actual": 3609252,
+            "exact_expected": 3613302.4166049385,
+            "actual_over_expected": 0.9988790264035678
+          },
+          "transition_outcomes": {
+            "actual": 956148,
+            "exact_expected": 960167.7986631396,
+            "actual_over_expected": 0.9958134414956048
+          },
+          "target_probability_evaluations": {
+            "actual": 16066893,
+            "exact_expected": 16081122.273562612,
+            "actual_over_expected": 0.9991151566836847
+          }
+        }
+      }
+    },
+    {
+      "nodes": 11,
+      "stratum": "sparse",
+      "graph_count": 16,
+      "replicates_per_graph": 128,
+      "methods": {
+        "LOOKAHEAD_1_ANALYTIC": {
+          "mean": 7.48681640625,
+          "exact_mean": 7.466582570519839,
+          "error": 0.0202338357301608,
+          "standard_error": 0.029772106506179168,
+          "nominal_95_interval": [
+            7.4284641497539985,
+            7.5451686627460015
+          ],
+          "simultaneous_interval": [
+            7.401511573260501,
+            7.572121239239499
+          ],
+          "simultaneous_contains_exact": true
+        },
+        "LOOKAHEAD_2_ANALYTIC": {
+          "mean": 7.87255859375,
+          "exact_mean": 7.871528075854093,
+          "error": 0.0010305178959066907,
+          "standard_error": 0.030711390897527266,
+          "nominal_95_interval": [
+            7.812365373675715,
+            7.932751813824285
+          ],
+          "simultaneous_interval": [
+            7.784562466541297,
+            7.960554720958703
+          ],
+          "simultaneous_contains_exact": true
+        }
+      },
+      "paired_two_minus_one": {
+        "mean": 0.3857421875,
+        "exact_mean": 0.4049455053342548,
+        "error": -0.019203317834254774,
+        "standard_error": 0.027134925013437904,
+        "nominal_95_interval": [
+          0.3325587117504667,
+          0.4389256632495333
+        ],
+        "simultaneous_interval": [
+          0.3079935657834454,
+          0.4634908092165546
+        ],
+        "simultaneous_contains_exact": true
+      },
+      "work": {
+        "LOOKAHEAD_1_ANALYTIC": {
+          "action_value_evaluations": {
+            "actual": 37995,
+            "exact_expected": 38013.86666666667,
+            "actual_over_expected": 0.999503689881587
+          },
+          "transition_outcomes": {
+            "actual": 0,
+            "exact_expected": 0.0,
+            "actual_over_expected": null
+          },
+          "target_probability_evaluations": {
+            "actual": 328610,
+            "exact_expected": 328859.02222222224,
+            "actual_over_expected": 0.9992427690730834
+          }
+        },
+        "LOOKAHEAD_2_ANALYTIC": {
+          "action_value_evaluations": {
+            "actual": 817667,
+            "exact_expected": 818926.637037037,
+            "actual_over_expected": 0.9984618438574735
+          },
+          "transition_outcomes": {
+            "actual": 202134,
+            "exact_expected": 203398.10370370373,
+            "actual_over_expected": 0.9937850762584041
+          },
+          "target_probability_evaluations": {
+            "actual": 5860418,
+            "exact_expected": 5866141.451851851,
+            "actual_over_expected": 0.9990243242685455
+          }
+        }
+      }
+    },
+    {
+      "nodes": 11,
+      "stratum": "dense",
+      "graph_count": 16,
+      "replicates_per_graph": 128,
+      "methods": {
+        "LOOKAHEAD_1_ANALYTIC": {
+          "mean": 6.3115234375,
+          "exact_mean": 6.324932723606617,
+          "error": -0.013409286106616847,
+          "standard_error": 0.04582438708160188,
+          "nominal_95_interval": [
+            6.221709289206438,
+            6.401337585793562
+          ],
+          "simultaneous_interval": [
+            6.18022464323998,
+            6.44282223176002
+          ],
+          "simultaneous_contains_exact": true
+        },
+        "LOOKAHEAD_2_ANALYTIC": {
+          "mean": 6.328125,
+          "exact_mean": 6.398819416807561,
+          "error": -0.07069441680756139,
+          "standard_error": 0.04624998869959727,
+          "nominal_95_interval": [
+            6.2374766878634045,
+            6.4187733121365955
+          ],
+          "simultaneous_interval": [
+            6.195606746346483,
+            6.460643253653517
+          ],
+          "simultaneous_contains_exact": true
+        }
+      },
+      "paired_two_minus_one": {
+        "mean": 0.0166015625,
+        "exact_mean": 0.07388669320094415,
+        "error": -0.057285130700944153,
+        "standard_error": 0.0326832959795588,
+        "nominal_95_interval": [
+          -0.04745652051599798,
+          0.08065964551599798
+        ],
+        "simultaneous_interval": [
+          -0.07704458593440697,
+          0.11024771093440697
+        ],
+        "simultaneous_contains_exact": true
+      },
+      "work": {
+        "LOOKAHEAD_1_ANALYTIC": {
+          "action_value_evaluations": {
+            "actual": 39762,
+            "exact_expected": 39740.80000000001,
+            "actual_over_expected": 1.0005334568000641
+          },
+          "transition_outcomes": {
+            "actual": 0,
+            "exact_expected": 0.0,
+            "actual_over_expected": null
+          },
+          "target_probability_evaluations": {
+            "actual": 355482,
+            "exact_expected": 355051.919818594,
+            "actual_over_expected": 1.0012113163100926
+          }
+        },
+        "LOOKAHEAD_2_ANALYTIC": {
+          "action_value_evaluations": {
+            "actual": 8237654,
+            "exact_expected": 8249889.882997291,
+            "actual_over_expected": 0.9985168428705322
+          },
+          "transition_outcomes": {
+            "actual": 2080302,
+            "exact_expected": 2092588.0925210977,
+            "actual_over_expected": 0.9941287573196999
+          },
+          "target_probability_evaluations": {
+            "actual": 49241052,
+            "exact_expected": 49273889.77881567,
+            "actual_over_expected": 0.9993335663378095
+          }
+        }
+      }
+    }
+  ],
+  "calibration": {
+    "family_size": 12,
+    "alpha": 0.05,
+    "simultaneous_z": 2.8652602385321333,
+    "nominal_z": 1.9599639845400536,
+    "scope": "Approximate normal Monte Carlo diagnostic on 64 fixed graphs; not a scientific gate or graph-generalization interval."
+  },
+  "accounting": {
+    "completed_blocks": 128,
+    "successful_blocks": 128,
+    "resource_limited_blocks": 0,
+    "trajectory_records": 16384,
+    "completed_trajectories": 16384,
+    "decision_records": 49152,
+    "decision_work": {
+      "planner_calls": 49152,
+      "dp_states": 3389785,
+      "action_value_evaluations": 13282018,
+      "kernel_builds": 141529,
+      "kernel_cache_hits": 0,
+      "transition_outcomes": 3357017,
+      "target_probability_evaluations": 74956899,
+      "score_node_evaluations": 0,
+      "immediate_expectation_terms": 0,
+      "bellman_expectation_terms": 3357017,
+      "forced_choice": 16384,
+      "analytic_expectation_calls": 13140489,
+      "analytic_probability_terms": 73821451
+    },
+    "environment_work": {
+      "environment_calls": 49152,
+      "rng_draws": 1541376,
+      "eligible_edge_attempts": 230334,
+      "successful_edge_attempts": 77376,
+      "seeded_nodes": 32768,
+      "activated_targets": 74483
+    },
+    "verification": {
+      "certificate_queries": 49152,
+      "verification_random_draws": 1541376,
+      "verification_environment_steps": 49152
+    },
+    "missing_complete_trajectories": 0,
+    "new_full_policy_evaluations": 0,
+    "new_analysis_planner_calls": 0,
+    "new_graphs": 0,
+    "new_RL_updates": 0,
+    "new_MCTS_calls": 0,
+    "runner": {
+      "source_read_seconds": 0.014004443015437573,
+      "graph_reconstruction_seconds": 0.002606739930342883,
+      "data_output_seconds": 0.7339043451938778,
+      "whole_runner_seconds": 84.74865297600627
+    },
+    "block_times": {
+      "decision_seconds": 80.68016993411584,
+      "environment_seconds": 0.38557498884620145,
+      "wall_seconds": 81.77810999279609,
+      "prepare_gc_seconds": 0.6440151578281075,
+      "cleanup_seconds": 1.0250745392404497,
+      "block_seconds": 82.80318453203654,
+      "serialization_seconds": 0.7306246579391882
+    },
+    "analysis_seconds_before_serialization": 0.957801858021412,
+    "retained_certificate_keys": 11353,
+    "requested_certificate_keys": 11353,
+    "analysis_wall_seconds_including_reads": 3.6023777989903465
+  },
+  "exact_source": "V60 unified evidence: changed 580109 one-day policy freshly evaluated; other short policies preserve V59 certificates.",
+  "scope": "Simulator random draws and independent verification draws are separate. Planner outcome enumeration is not environment sampling. Timings are descriptive."
+}

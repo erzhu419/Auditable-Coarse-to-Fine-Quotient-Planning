@@ -1,0 +1,28 @@
+{
+  "schema": "acfqp.lmta_changed_policy_development.v60",
+  "final_test_results": {
+    "evaluator": {
+      "passed": 4,
+      "failed": 0,
+      "pytest_seconds": 0.25
+    },
+    "runner": {
+      "passed": 2,
+      "failed": 0,
+      "pytest_seconds": 0.24
+    },
+    "analysis": {
+      "passed": 4,
+      "failed": 0,
+      "pytest_seconds": 0.21
+    },
+    "unique_tests": 10,
+    "total_test_executions": 10
+  },
+  "attempt_ledgers": [
+    "lmta_changed_policy_v60.evaluator_checks.json",
+    "lmta_changed_policy_v60.runner_checks.json",
+    "lmta_changed_policy_v60.analysis_checks.json"
+  ],
+  "scope": "Actual development work and mocked cases are separated in the referenced ledgers. The final CLI read-stop optimization changes only source loading; the main source-row count check verifies coverage. This index adds no test runs or fees."
+}

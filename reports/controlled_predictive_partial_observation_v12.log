@@ -1,0 +1,539 @@
+{"case": "v6_crossing_rescue_pair_0", "scope": "DECLARED_SOURCE_PREPARATION", "status": "CLOSURE_COMPLETE"}
+{"case": "v6_spawn_edge_rescue_0", "scope": "DECLARED_SOURCE_PREPARATION", "status": "CLOSURE_COMPLETE"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "scope": "DECLARED_SOURCE_PREPARATION", "status": "CLOSURE_COMPLETE"}
+{"sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "SOURCE_PRIOR_FROZEN"}
+{"sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "SOURCE_PRIOR_FROZEN"}
+{"sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "SOURCE_PRIOR_FROZEN"}
+{"sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "SOURCE_PRIOR_FROZEN"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "scope": "AFTER_ALL_PARTIAL_CHECKPOINTS_FROZEN", "status": "CLOSURE_COMPLETE"}
+{"case": "v6_crossing_rescue_pair_1", "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "scope": "AFTER_ALL_PARTIAL_CHECKPOINTS_FROZEN", "status": "CLOSURE_COMPLETE"}
+{"case": "v6_crossing_rescue_pair_2", "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "scope": "AFTER_ALL_PARTIAL_CHECKPOINTS_FROZEN", "status": "CLOSURE_COMPLETE"}
+{"case": "v6_crossing_rescue_pair_3", "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_1", "rows": 8, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_1", "rows": 8, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_1", "rows": 8, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_1", "rows": 12, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "scope": "AFTER_ALL_PARTIAL_CHECKPOINTS_FROZEN", "status": "CLOSURE_COMPLETE"}
+{"case": "v6_spawn_edge_rescue_1", "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "scope": "AFTER_ALL_PARTIAL_CHECKPOINTS_FROZEN", "status": "CLOSURE_COMPLETE"}
+{"case": "v6_spawn_edge_rescue_2", "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_3", "rows": 10, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_3", "rows": 20, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_3", "rows": 10, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_3", "rows": 10, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "scope": "AFTER_ALL_PARTIAL_CHECKPOINTS_FROZEN", "status": "CLOSURE_COMPLETE"}
+{"case": "v6_spawn_edge_rescue_3", "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 128, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 20, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 20, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 20, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_1", "rows": 18, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_1", "rows": 18, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_1", "rows": 18, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_1", "rows": 128, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "scope": "AFTER_ALL_PARTIAL_CHECKPOINTS_FROZEN", "status": "CLOSURE_COMPLETE"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_2", "rows": 40, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_2", "rows": 40, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_2", "rows": 128, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_2", "rows": 40, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "scope": "AFTER_ALL_PARTIAL_CHECKPOINTS_FROZEN", "status": "CLOSURE_COMPLETE"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_3", "rows": 40, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_3", "rows": 128, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_3", "rows": 42, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_3", "rows": 44, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "scope": "AFTER_ALL_PARTIAL_CHECKPOINTS_FROZEN", "status": "CLOSURE_COMPLETE"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "bfs", "case": "v6_control_last_pair_spawn_risk", "rows": 12, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_control_last_pair_spawn_risk", "rows": 12, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_control_last_pair_spawn_risk", "rows": 12, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_control_last_pair_spawn_risk", "rows": 12, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "scope": "AFTER_ALL_PARTIAL_CHECKPOINTS_FROZEN", "status": "CLOSURE_COMPLETE"}
+{"case": "v6_control_last_pair_spawn_risk", "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "query_interval", "case": "v6_control_dense_merge_choice", "rows": 128, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_control_dense_merge_choice", "rows": 128, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_control_dense_merge_choice", "rows": 128, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_control_dense_merge_choice", "rows": 128, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "scope": "AFTER_ALL_PARTIAL_CHECKPOINTS_FROZEN", "status": "CLOSURE_COMPLETE"}
+{"case": "v6_control_dense_merge_choice", "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "source_priority", "case": "v6_control_adjacent_1024_goal", "rows": 7, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_control_adjacent_1024_goal", "rows": 7, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_control_adjacent_1024_goal", "rows": 7, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_control_adjacent_1024_goal", "rows": 7, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "scope": "AFTER_ALL_PARTIAL_CHECKPOINTS_FROZEN", "status": "CLOSURE_COMPLETE"}
+{"case": "v6_control_adjacent_1024_goal", "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "shuffled_source_priority", "case": "exposed_left_successor_7", "rows": 36, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "exposed_left_successor_7", "rows": 36, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "exposed_left_successor_7", "rows": 36, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "exposed_left_successor_7", "rows": 36, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "exposed_left_successor_7", "scope": "AFTER_ALL_PARTIAL_CHECKPOINTS_FROZEN", "status": "CLOSURE_COMPLETE"}
+{"case": "exposed_left_successor_7", "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "CASE_AUDITED"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 20, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 20, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 20, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "CASE_AUDITED"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "CASE_AUDITED"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "CASE_AUDITED"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "CASE_AUDITED"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "CASE_AUDITED"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "CASE_AUDITED"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 20, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 20, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 20, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "CASE_AUDITED"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "CASE_AUDITED"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_1", "rows": 8, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_1", "rows": 8, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_1", "rows": 8, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_1", "rows": 12, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "CASE_AUDITED"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "CASE_AUDITED"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_3", "rows": 10, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_3", "rows": 20, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_3", "rows": 10, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_3", "rows": 10, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "CASE_AUDITED"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "CASE_AUDITED"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "CASE_AUDITED"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 20, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 20, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 20, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "CASE_AUDITED"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_1", "rows": 18, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_1", "rows": 18, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_1", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_1", "rows": 18, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "CASE_AUDITED"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_2", "rows": 40, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_2", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_2", "rows": 40, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_2", "rows": 40, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "CASE_AUDITED"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_3", "rows": 128, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_3", "rows": 42, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_3", "rows": 42, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_3", "rows": 42, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "CASE_AUDITED"}
+{"sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "SOURCE_PRIOR_FROZEN"}
+{"sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "SOURCE_PRIOR_FROZEN"}
+{"sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "SOURCE_PRIOR_FROZEN"}
+{"sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "SOURCE_PRIOR_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_1", "rows": 8, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_1", "rows": 8, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_1", "rows": 12, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_1", "rows": 8, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_3", "rows": 20, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_3", "rows": 10, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_3", "rows": 10, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_3", "rows": 10, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 14, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 16, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 16, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 128, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_1", "rows": 18, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_1", "rows": 18, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_1", "rows": 128, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_1", "rows": 18, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_2", "rows": 37, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_2", "rows": 128, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_2", "rows": 37, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_2", "rows": 37, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_3", "rows": 128, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_3", "rows": 42, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_3", "rows": 44, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_3", "rows": 40, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "query_interval", "case": "v6_control_last_pair_spawn_risk", "rows": 12, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_control_last_pair_spawn_risk", "rows": 12, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_control_last_pair_spawn_risk", "rows": 12, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_control_last_pair_spawn_risk", "rows": 12, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "source_priority", "case": "v6_control_dense_merge_choice", "rows": 128, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_control_dense_merge_choice", "rows": 128, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_control_dense_merge_choice", "rows": 128, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_control_dense_merge_choice", "rows": 128, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "shuffled_source_priority", "case": "v6_control_adjacent_1024_goal", "rows": 7, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_control_adjacent_1024_goal", "rows": 7, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_control_adjacent_1024_goal", "rows": 7, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_control_adjacent_1024_goal", "rows": 7, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "bfs", "case": "exposed_left_successor_7", "rows": 36, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "exposed_left_successor_7", "rows": 36, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "exposed_left_successor_7", "rows": 36, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "exposed_left_successor_7", "rows": 36, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "exposed_left_successor_7", "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "CASE_AUDITED"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 16, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 14, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 16, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "CASE_AUDITED"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "CASE_AUDITED"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "CASE_AUDITED"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "CASE_AUDITED"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "CASE_AUDITED"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "CASE_AUDITED"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 14, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 16, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 16, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "CASE_AUDITED"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "CASE_AUDITED"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_1", "rows": 8, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_1", "rows": 8, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_1", "rows": 12, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_1", "rows": 8, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "CASE_AUDITED"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "CASE_AUDITED"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_3", "rows": 20, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_3", "rows": 10, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_3", "rows": 10, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_3", "rows": 10, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "CASE_AUDITED"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "CASE_AUDITED"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "CASE_AUDITED"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 14, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 14, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 14, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "CASE_AUDITED"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_1", "rows": 18, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_1", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_1", "rows": 18, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_1", "rows": 18, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "CASE_AUDITED"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_2", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_2", "rows": 37, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_2", "rows": 37, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_2", "rows": 37, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "CASE_AUDITED"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_3", "rows": 42, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_3", "rows": 42, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_3", "rows": 42, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_3", "rows": 128, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "CASE_AUDITED"}
+{"sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "SOURCE_PRIOR_FROZEN"}
+{"sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "SOURCE_PRIOR_FROZEN"}
+{"sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "SOURCE_PRIOR_FROZEN"}
+{"sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "SOURCE_PRIOR_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_1", "rows": 8, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_1", "rows": 12, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_1", "rows": 8, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_1", "rows": 8, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_3", "rows": 10, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_3", "rows": 10, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_3", "rows": 10, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_3", "rows": 20, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 17, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 17, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 128, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 17, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_1", "rows": 18, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_1", "rows": 128, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_1", "rows": 18, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_1", "rows": 18, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_2", "rows": 128, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_2", "rows": 36, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_2", "rows": 36, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_2", "rows": 36, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_3", "rows": 42, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_3", "rows": 44, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_3", "rows": 40, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_3", "rows": 128, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "source_priority", "case": "v6_control_last_pair_spawn_risk", "rows": 12, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_control_last_pair_spawn_risk", "rows": 12, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_control_last_pair_spawn_risk", "rows": 12, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_control_last_pair_spawn_risk", "rows": 12, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "shuffled_source_priority", "case": "v6_control_dense_merge_choice", "rows": 128, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_control_dense_merge_choice", "rows": 128, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_control_dense_merge_choice", "rows": 128, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_control_dense_merge_choice", "rows": 128, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "bfs", "case": "v6_control_adjacent_1024_goal", "rows": 7, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_control_adjacent_1024_goal", "rows": 7, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_control_adjacent_1024_goal", "rows": 7, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_control_adjacent_1024_goal", "rows": 7, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "query_interval", "case": "exposed_left_successor_7", "rows": 36, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "exposed_left_successor_7", "rows": 36, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "exposed_left_successor_7", "rows": 36, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "exposed_left_successor_7", "rows": 36, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "exposed_left_successor_7", "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "CASE_AUDITED"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "CASE_AUDITED"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 17, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 17, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 17, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "CASE_AUDITED"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "CASE_AUDITED"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "CASE_AUDITED"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "CASE_AUDITED"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "CASE_AUDITED"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "CASE_AUDITED"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 17, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 17, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 17, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "CASE_AUDITED"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "CASE_AUDITED"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_1", "rows": 8, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_1", "rows": 12, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_1", "rows": 8, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_1", "rows": 8, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "CASE_AUDITED"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "CASE_AUDITED"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_3", "rows": 10, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_3", "rows": 10, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_3", "rows": 10, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_3", "rows": 20, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "CASE_AUDITED"}
+{"arm": "query_interval", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "CASE_AUDITED"}
+{"arm": "source_priority", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "CASE_AUDITED"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 17, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 17, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_0", "rows": 17, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "CASE_AUDITED"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_1", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_1", "rows": 18, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_1", "rows": 18, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_1", "rows": 18, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "CASE_AUDITED"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_2", "rows": 36, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_2", "rows": 36, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_2", "rows": 36, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_2", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "CASE_AUDITED"}
+{"arm": "source_priority", "case": "v6_crossed_vacancy_goal_detour_3", "rows": 42, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "shuffled_source_priority", "case": "v6_crossed_vacancy_goal_detour_3", "rows": 42, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "bfs", "case": "v6_crossed_vacancy_goal_detour_3", "rows": 128, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"arm": "query_interval", "case": "v6_crossed_vacancy_goal_detour_3", "rows": 42, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "PARTIAL_CHECKPOINTS_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "CASE_AUDITED"}
+{"status": "DEVELOPMENT_COMPLETE", "output": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_partial_observation_v12.json", "result_serialization_seconds": 2.794839055000921, "result_bytes": 45064524}

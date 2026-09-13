@@ -1,0 +1,201 @@
+{
+  "attempts": [
+    {
+      "test_module": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/tests/test_controlled_predictive_learned_model_v68.py",
+      "session_failures": 0,
+      "scope": "Two synthetic source kernels only; no real V68 source or target roots",
+      "source_assemblies": [
+        {
+          "counts": {
+            "source_builds": 2,
+            "input_source_states": 10,
+            "input_source_rows": 12,
+            "input_source_outcomes": 12,
+            "unified_source_states": 2,
+            "source_states": 8,
+            "source_active_states": 6,
+            "source_rows": 12,
+            "source_outcomes": 12
+          },
+          "elapsed_seconds": 5.325902020558715e-05
+        }
+      ],
+      "training": [
+        {
+          "variant": "RAW",
+          "seed": 6801,
+          "steps": 40,
+          "batch_size": 16,
+          "optimizer": "Adam",
+          "learning_rate": 0.001,
+          "schedule": "Uniform horizon, then uniform source states with replacement; no validation/target selection",
+          "architecture": [
+            240,
+            128,
+            128
+          ],
+          "features": "16x12 raw ranks plus 48 directed adjacent equalities",
+          "classes_by_horizon": {
+            "1": 4,
+            "2": 2
+          },
+          "source_active_states": 6,
+          "teacher_active_cells": 6,
+          "source_classification": {
+            "1": {
+              "correct": 4,
+              "examples": 4,
+              "accuracy": 1.0
+            },
+            "2": {
+              "correct": 2,
+              "examples": 2,
+              "accuracy": 1.0
+            }
+          },
+          "final_training_batch_loss": 1.2899600267410278,
+          "parameters": 48134,
+          "device": "cpu",
+          "torch_threads": 1,
+          "teacher_compilation_seconds": 4.476204048842192e-05,
+          "feature_seconds": 0.015249813033733517,
+          "training_seconds": 0.7928749790298752,
+          "source_diagnostic_seconds": 0.0011012220056727529,
+          "total_seconds": 1.9156251000240445,
+          "counts": {
+            "optimizer_steps": 40,
+            "training_examples": 640,
+            "training_logits": 1920,
+            "h1_steps": 20,
+            "h2_steps": 20,
+            "training_diagnostic_examples": 6,
+            "training_diagnostic_logits": 20
+          },
+          "target_model_updates": 0
+        },
+        {
+          "variant": "QUOTIENT",
+          "seed": 6801,
+          "steps": 40,
+          "batch_size": 16,
+          "optimizer": "Adam",
+          "learning_rate": 0.001,
+          "schedule": "Uniform horizon, then uniform source states with replacement; no validation/target selection",
+          "architecture": [
+            240,
+            128,
+            128
+          ],
+          "features": "16x12 raw ranks plus 48 directed adjacent equalities",
+          "classes_by_horizon": {
+            "1": 2,
+            "2": 1
+          },
+          "source_active_states": 6,
+          "teacher_active_cells": 3,
+          "source_classification": {
+            "1": {
+              "correct": 4,
+              "examples": 4,
+              "accuracy": 1.0
+            },
+            "2": {
+              "correct": 2,
+              "examples": 2,
+              "accuracy": 1.0
+            }
+          },
+          "final_training_batch_loss": 0.5904957056045532,
+          "parameters": 47747,
+          "device": "cpu",
+          "torch_threads": 1,
+          "teacher_compilation_seconds": 0.0001313459943048656,
+          "feature_seconds": 0.00025900802575051785,
+          "training_seconds": 0.035199825011659414,
+          "source_diagnostic_seconds": 0.0003612249856814742,
+          "total_seconds": 0.03867951303254813,
+          "counts": {
+            "optimizer_steps": 40,
+            "training_examples": 640,
+            "training_logits": 960,
+            "h1_steps": 20,
+            "h2_steps": 20,
+            "training_diagnostic_examples": 6,
+            "training_diagnostic_logits": 10
+          },
+          "target_model_updates": 0
+        }
+      ],
+      "planner_calls": 8,
+      "planner_work": {
+        "active_states": 36,
+        "state_action_rows": 72,
+        "outcomes": 72,
+        "visited_cells": 52
+      },
+      "artifact_writes": [
+        {
+          "variant": "RAW",
+          "kernel_bytes": 1583,
+          "weight_bytes": 195789,
+          "elapsed_seconds": 0.0039981979643926024
+        },
+        {
+          "variant": "QUOTIENT",
+          "kernel_bytes": 1399,
+          "weight_bytes": 194253,
+          "elapsed_seconds": 0.001206556975375861
+        }
+      ],
+      "environment_calls": 0,
+      "inference": [
+        {
+          "variant": "RAW_RELOADED",
+          "counts": {
+            "batch_calls": 1,
+            "network_batches": 2,
+            "encoded_boards": 7,
+            "feature_entries": 1680,
+            "classification_logits": 22
+          },
+          "elapsed_seconds": 0.000495274958666414
+        },
+        {
+          "variant": "QUOTIENT_RELOADED",
+          "counts": {
+            "batch_calls": 1,
+            "network_batches": 2,
+            "encoded_boards": 7,
+            "feature_entries": 1680,
+            "classification_logits": 11
+          },
+          "elapsed_seconds": 0.00036094296956434846
+        },
+        {
+          "variant": "RAW",
+          "counts": {
+            "batch_calls": 2,
+            "network_batches": 4,
+            "encoded_boards": 9,
+            "feature_entries": 2160,
+            "classification_logits": 28,
+            "unsupported_horizon_boards": 1
+          },
+          "elapsed_seconds": 0.0013089560088701546
+        },
+        {
+          "variant": "QUOTIENT",
+          "counts": {
+            "batch_calls": 2,
+            "network_batches": 4,
+            "encoded_boards": 9,
+            "feature_entries": 2160,
+            "classification_logits": 14,
+            "unsupported_horizon_boards": 1
+          },
+          "elapsed_seconds": 0.0007703160517849028
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "attempts": [
+    {
+      "test_module": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/tests/test_controlled_predictive_relational_dynamics_v69.py",
+      "session_failures": 0,
+      "scope": "hand source and transfer boards only; no registered target roots",
+      "ground_afterstate_labels": 20,
+      "ground_spawn_rows": 17,
+      "ground_spawn_outcomes": 310,
+      "fits": [
+        {
+          "status": "identified",
+          "counts": {
+            "source_records": 12,
+            "rewrite_candidates": 144,
+            "candidate_observation_checks": 370,
+            "learned_swipe_calls": 370,
+            "learned_line_rewrites": 1480,
+            "consistent_rewrite_candidates": 1,
+            "source_spawn_rows": 9,
+            "source_spawn_outcomes": 250,
+            "spawn_location_candidates": 3,
+            "spawn_location_observation_checks": 11,
+            "consistent_spawn_location_candidates": 1
+          },
+          "elapsed_seconds": 0.016602251038420945
+        },
+        {
+          "status": "identified",
+          "counts": {
+            "source_records": 12,
+            "rewrite_candidates": 144,
+            "candidate_observation_checks": 370,
+            "learned_swipe_calls": 370,
+            "learned_line_rewrites": 1480,
+            "consistent_rewrite_candidates": 1,
+            "source_spawn_rows": 9,
+            "source_spawn_outcomes": 250,
+            "spawn_location_candidates": 3,
+            "spawn_location_observation_checks": 11,
+            "consistent_spawn_location_candidates": 1
+          },
+          "elapsed_seconds": 0.02281535102520138
+        },
+        {
+          "status": "fit_failed",
+          "counts": {
+            "source_records": 1,
+            "rewrite_candidates": 144,
+            "candidate_observation_checks": 144,
+            "learned_swipe_calls": 144,
+            "learned_line_rewrites": 576,
+            "consistent_rewrite_candidates": 144
+          }
+        },
+        {
+          "status": "fit_failed",
+          "counts": {
+            "source_records": 12,
+            "rewrite_candidates": 144,
+            "candidate_observation_checks": 144,
+            "learned_swipe_calls": 144,
+            "learned_line_rewrites": 576,
+            "consistent_rewrite_candidates": 0
+          }
+        }
+      ],
+      "prediction_work": {
+        "learned_swipe_calls": 8,
+        "learned_line_rewrites": 32,
+        "learned_spawn_outcomes": 60
+      }
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+[V41] last_pair_spawn_risk
+{"case": "last_pair_spawn_risk", "units": "raw", "primary_regret": 0.0, "primary_bias": -0.00018520259896686415, "complete_bytes": 568}
+{"case": "last_pair_spawn_risk", "units": "doorkey_metric_units", "primary_regret": 0.0, "primary_bias": -5.031275535792579e-05, "complete_bytes": 568}
+[V41] dense_merge_choice
+{"case": "dense_merge_choice", "units": "raw", "primary_regret": 0.014843749999999998, "primary_bias": -5.204170427930421e-18, "complete_bytes": 36544}
+{"case": "dense_merge_choice", "units": "doorkey_metric_units", "primary_regret": 0.0, "primary_bias": -0.00010853789313915174, "complete_bytes": 34952}
+[V41] adjacent_1024_goal
+{"case": "adjacent_1024_goal", "units": "raw", "primary_regret": 0.0, "primary_bias": -1.342488342714887e-10, "complete_bytes": 1000}
+{"case": "adjacent_1024_goal", "units": "doorkey_metric_units", "primary_regret": 0.0, "primary_bias": -6.455529888427236e-09, "complete_bytes": 1000}
+[V41] complete

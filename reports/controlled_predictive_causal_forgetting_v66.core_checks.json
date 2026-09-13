@@ -1,0 +1,401 @@
+{
+  "attempts": [
+    {
+      "test_module": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/tests/test_controlled_predictive_causal_forgetting_v66.py",
+      "session_failures": 0,
+      "scope": "hand boards only; no registered V66 experiment roots",
+      "hand_board_builds": [
+        {
+          "board": [
+            10,
+            9,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "horizon": 2,
+          "variant": "BASELINE",
+          "counts": {
+            "root_tiles_encoded": 16,
+            "root_tiles_forgotten": 0,
+            "kernel_terminal_checks": 6429,
+            "kernel_swipe_calls": 25716,
+            "kernel_line_transforms": 102864,
+            "spawn_support_entries": 6428,
+            "model_transition_rows": 269,
+            "model_successor_entries": 342,
+            "existing_terminal_state_visits": 6351,
+            "registered_states": 78,
+            "active_states": 77,
+            "terminal_states": 1,
+            "coalesced_outcomes": 6086
+          },
+          "elapsed_seconds": 0.1550021439907141
+        },
+        {
+          "board": [
+            10,
+            9,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "horizon": 2,
+          "variant": "CAUSAL",
+          "counts": {
+            "rule_synthesis_calls": 1,
+            "kernel_terminal_checks": 6430,
+            "kernel_swipe_calls": 25720,
+            "kernel_line_transforms": 102880,
+            "rule_rank_candidates": 2,
+            "rule_upper_bound_updates": 57,
+            "rule_transition_steps": 6,
+            "rule_forgotten_ranks": 2,
+            "root_tiles_encoded": 16,
+            "root_tiles_forgotten": 2,
+            "spawn_support_entries": 6428,
+            "model_transition_rows": 269,
+            "model_successor_entries": 342,
+            "existing_terminal_state_visits": 6351,
+            "registered_states": 78,
+            "active_states": 77,
+            "terminal_states": 1,
+            "coalesced_outcomes": 6086
+          },
+          "elapsed_seconds": 0.15555123996455222
+        },
+        {
+          "board": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "horizon": 2,
+          "variant": "BASELINE",
+          "counts": {
+            "root_tiles_encoded": 16,
+            "root_tiles_forgotten": 0,
+            "kernel_terminal_checks": 5932,
+            "kernel_swipe_calls": 23728,
+            "kernel_line_transforms": 94912,
+            "spawn_support_entries": 5932,
+            "model_transition_rows": 210,
+            "model_successor_entries": 268,
+            "existing_active_state_visits": 1,
+            "existing_terminal_state_visits": 5871,
+            "registered_states": 61,
+            "active_states": 60,
+            "terminal_states": 1,
+            "coalesced_outcomes": 5664
+          },
+          "elapsed_seconds": 0.13538699701894075
+        },
+        {
+          "board": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "horizon": 2,
+          "variant": "UNSAFE",
+          "counts": {
+            "rule_synthesis_calls": 1,
+            "kernel_terminal_checks": 5773,
+            "kernel_swipe_calls": 23092,
+            "kernel_line_transforms": 92368,
+            "rule_forgotten_ranks": 1,
+            "root_tiles_encoded": 16,
+            "root_tiles_forgotten": 1,
+            "spawn_support_entries": 5772,
+            "model_transition_rows": 206,
+            "model_successor_entries": 264,
+            "existing_active_state_visits": 1,
+            "existing_terminal_state_visits": 5711,
+            "registered_states": 61,
+            "active_states": 60,
+            "terminal_states": 1,
+            "coalesced_outcomes": 5508
+          },
+          "elapsed_seconds": 0.13251462701009586
+        }
+      ],
+      "standalone_rule_calls": [
+        {
+          "board": [
+            10,
+            9,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "rule": {
+            "horizon": 2,
+            "forgotten_ranks": [
+              9,
+              10
+            ],
+            "partner_upper_bounds": {
+              "9": 0,
+              "10": 0
+            },
+            "counts": {
+              "rule_synthesis_calls": 1,
+              "kernel_terminal_checks": 1,
+              "kernel_swipe_calls": 4,
+              "kernel_line_transforms": 16,
+              "rule_rank_candidates": 2,
+              "rule_upper_bound_updates": 57,
+              "rule_transition_steps": 6,
+              "rule_forgotten_ranks": 2
+            },
+            "certified": true
+          }
+        },
+        {
+          "board": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "rule": {
+            "horizon": 1,
+            "forgotten_ranks": [],
+            "partner_upper_bounds": {
+              "1": 2
+            },
+            "counts": {
+              "rule_synthesis_calls": 1,
+              "kernel_terminal_checks": 1,
+              "kernel_swipe_calls": 4,
+              "kernel_line_transforms": 16,
+              "rule_rank_candidates": 1,
+              "rule_upper_bound_updates": 2,
+              "rule_transition_steps": 2,
+              "rule_forgotten_ranks": 0
+            },
+            "certified": true
+          }
+        },
+        {
+          "board": [
+            10,
+            10,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "rule": {
+            "horizon": 1,
+            "forgotten_ranks": [],
+            "partner_upper_bounds": {},
+            "counts": {
+              "rule_synthesis_calls": 1,
+              "kernel_terminal_checks": 1,
+              "kernel_swipe_calls": 4,
+              "kernel_line_transforms": 16,
+              "rule_forgotten_ranks": 0
+            },
+            "certified": true
+          }
+        },
+        {
+          "board": [
+            11,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "rule": {
+            "horizon": 2,
+            "forgotten_ranks": [],
+            "partner_upper_bounds": {},
+            "counts": {
+              "rule_synthesis_calls": 1,
+              "kernel_terminal_checks": 1
+            },
+            "certified": true
+          }
+        },
+        {
+          "board": [
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1
+          ],
+          "rule": {
+            "horizon": 2,
+            "forgotten_ranks": [],
+            "partner_upper_bounds": {},
+            "counts": {
+              "rule_synthesis_calls": 1,
+              "kernel_terminal_checks": 1,
+              "kernel_swipe_calls": 4,
+              "kernel_line_transforms": 16
+            },
+            "certified": true
+          }
+        },
+        {
+          "board": [
+            4,
+            2,
+            2,
+            2,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "rule": {
+            "horizon": 1,
+            "forgotten_ranks": [],
+            "partner_upper_bounds": {
+              "4": 1
+            },
+            "counts": {
+              "rule_synthesis_calls": 1,
+              "kernel_terminal_checks": 1,
+              "kernel_swipe_calls": 4,
+              "kernel_line_transforms": 16,
+              "rule_rank_candidates": 1,
+              "rule_upper_bound_updates": 8,
+              "rule_transition_steps": 2,
+              "rule_forgotten_ranks": 0
+            },
+            "certified": true
+          }
+        }
+      ],
+      "direct_work": {
+        "kernel_swipe_calls": 6,
+        "kernel_line_transforms": 24,
+        "kernel_terminal_checks": 1
+      },
+      "planner_calls": 8,
+      "planner_work": {
+        "active_states": 582,
+        "state_action_rows": 2030,
+        "outcomes": 2584,
+        "visited_cells": 590
+      },
+      "ground_transition_rows": 269,
+      "ground_transition_outcomes": 6428
+    }
+  ]
+}

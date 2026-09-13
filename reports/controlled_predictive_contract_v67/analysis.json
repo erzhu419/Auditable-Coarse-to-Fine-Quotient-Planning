@@ -1,0 +1,522 @@
+{
+  "schema": "acfqp.controlled_predictive_contract_analysis.v67",
+  "complete": true,
+  "contract_correct_on_all_declared_states": true,
+  "portable_models_verified": true,
+  "structural_bridge_established": true,
+  "finite_joint_benefit_observed": true,
+  "contract_over_baseline": {
+    "active_states": 0.41708542713567837,
+    "action_rows": 0.3995668651867894,
+    "planning_outcomes": 0.4421011521187268,
+    "model_bytes": 0.3617054212656969,
+    "method_total_seconds": 0.8195239757496253
+  },
+  "variants": {
+    "BASELINE": {
+      "construction_counts": {
+        "root_tiles_encoded": 256,
+        "kernel_terminal_checks": 1477,
+        "kernel_swipe_calls": 4980,
+        "kernel_line_transforms": 19920,
+        "spawn_support_entries": 1784,
+        "model_transition_rows": 3694,
+        "model_successor_entries": 5121,
+        "action_contract_evaluations": 1055,
+        "analytic_terminal_rows": 3265,
+        "analytic_existing_pair_checks": 16859,
+        "analytic_vacancy_neighbor_checks": 1107,
+        "existing_active_state_visits": 323,
+        "existing_terminal_state_visits": 3777,
+        "analytic_model_action_rows": 3265,
+        "registered_states": 1247,
+        "active_states": 1194,
+        "terminal_states": 53,
+        "literal_board_states": 1194,
+        "contract_states": 0,
+        "h0_boards_generated": 0
+      },
+      "planning_counts": {
+        "active_states": 16716,
+        "state_action_rows": 51716,
+        "outcomes": 71694,
+        "visited_cells": 17458
+      },
+      "audit_counts": {
+        "encoded_concrete_states": 10527,
+        "encoded_board_tiles": 168432,
+        "joint_distribution_rows": 3694,
+        "ground_pushforward_outcome_terms": 15134,
+        "candidate_pushforward_outcome_terms": 5121,
+        "lifted_policy_states": 147378,
+        "lifted_policy_action_rows": 16716,
+        "lifted_policy_outcome_terms": 73978,
+        "candidate_policy_states": 17458,
+        "candidate_policy_action_rows": 16716,
+        "candidate_policy_outcome_terms": 23380,
+        "policy_state_comparisons": 147378,
+        "strict_query_switch_checks": 139
+      },
+      "valid_cases": 16,
+      "structural_valid_cases": 16,
+      "total_model_bytes": 213179,
+      "method_total_seconds": 0.2099624220863916,
+      "audit_seconds": 0.6510510259540752,
+      "strict_switches": 139,
+      "violated_switches": 0
+    },
+    "CONTRACT": {
+      "construction_counts": {
+        "root_tiles_encoded": 256,
+        "kernel_terminal_checks": 1800,
+        "kernel_swipe_calls": 6272,
+        "kernel_line_transforms": 25088,
+        "spawn_support_entries": 1784,
+        "model_transition_rows": 1476,
+        "model_successor_entries": 2264,
+        "action_contract_evaluations": 1378,
+        "analytic_terminal_rows": 4256,
+        "analytic_existing_pair_checks": 22145,
+        "existing_active_state_visits": 1019,
+        "contract_state_reuses": 1019,
+        "analytic_vacancy_neighbor_checks": 1447,
+        "existing_terminal_state_visits": 1480,
+        "analytic_model_action_rows": 1047,
+        "registered_states": 551,
+        "active_states": 498,
+        "terminal_states": 53,
+        "literal_board_states": 139,
+        "contract_states": 359,
+        "h0_boards_generated": 0
+      },
+      "planning_counts": {
+        "active_states": 6972,
+        "state_action_rows": 20664,
+        "outcomes": 31696,
+        "visited_cells": 7714
+      },
+      "audit_counts": {
+        "encoded_concrete_states": 10527,
+        "encoded_board_tiles": 168432,
+        "joint_distribution_rows": 3694,
+        "ground_pushforward_outcome_terms": 15134,
+        "candidate_pushforward_outcome_terms": 4561,
+        "lifted_policy_states": 147378,
+        "lifted_policy_action_rows": 16716,
+        "lifted_policy_outcome_terms": 74000,
+        "candidate_policy_states": 7714,
+        "candidate_policy_action_rows": 6972,
+        "candidate_policy_outcome_terms": 10344,
+        "policy_state_comparisons": 147378,
+        "strict_query_switch_checks": 139
+      },
+      "valid_cases": 16,
+      "structural_valid_cases": 16,
+      "total_model_bytes": 77108,
+      "method_total_seconds": 0.17206923890626058,
+      "audit_seconds": 0.629531285201665,
+      "strict_switches": 139,
+      "violated_switches": 0
+    },
+    "UNSAFE": {
+      "construction_counts": {
+        "root_tiles_encoded": 256,
+        "kernel_terminal_checks": 1800,
+        "kernel_swipe_calls": 6272,
+        "kernel_line_transforms": 25088,
+        "spawn_support_entries": 1784,
+        "model_transition_rows": 1124,
+        "model_successor_entries": 1670,
+        "action_contract_evaluations": 1378,
+        "analytic_terminal_rows": 4256,
+        "analytic_existing_pair_checks": 22145,
+        "existing_active_state_visits": 1155,
+        "contract_state_reuses": 1155,
+        "analytic_vacancy_neighbor_checks": 1447,
+        "existing_terminal_state_visits": 990,
+        "analytic_model_action_rows": 695,
+        "registered_states": 415,
+        "active_states": 362,
+        "terminal_states": 53,
+        "literal_board_states": 139,
+        "contract_states": 223,
+        "h0_boards_generated": 0
+      },
+      "planning_counts": {
+        "active_states": 5068,
+        "state_action_rows": 15736,
+        "outcomes": 23380,
+        "visited_cells": 5810
+      },
+      "audit_counts": {
+        "encoded_concrete_states": 10527,
+        "encoded_board_tiles": 168432,
+        "joint_distribution_rows": 3694,
+        "ground_pushforward_outcome_terms": 15134,
+        "candidate_pushforward_outcome_terms": 4516,
+        "lifted_policy_states": 147378,
+        "lifted_policy_action_rows": 16716,
+        "lifted_policy_outcome_terms": 74000,
+        "candidate_policy_states": 5810,
+        "candidate_policy_action_rows": 5068,
+        "candidate_policy_outcome_terms": 7225,
+        "policy_state_comparisons": 147378,
+        "strict_query_switch_checks": 139
+      },
+      "valid_cases": 4,
+      "structural_valid_cases": 4,
+      "total_model_bytes": 61718,
+      "method_total_seconds": 0.16527183400467038,
+      "audit_seconds": 0.6424172001425177,
+      "strict_switches": 139,
+      "violated_switches": 56
+    }
+  },
+  "per_case": [
+    {
+      "name": "v6_crossing_rescue_pair_0",
+      "contract_states": 32,
+      "active_states": {
+        "BASELINE": 162,
+        "CONTRACT": 45,
+        "UNSAFE": 36
+      },
+      "reference_cells": 45,
+      "contract_valid": true,
+      "contract_errors": {},
+      "unsafe_valid": false,
+      "unsafe_witness": {
+        "reason": "reward_successor_joint_distribution",
+        "state": 28,
+        "action": "LEFT",
+        "total_variation": 1.0,
+        "ground_atoms": 1,
+        "candidate_atoms": 1
+      }
+    },
+    {
+      "name": "v6_crossing_rescue_pair_1",
+      "contract_states": 45,
+      "active_states": {
+        "BASELINE": 144,
+        "CONTRACT": 58,
+        "UNSAFE": 46
+      },
+      "reference_cells": 58,
+      "contract_valid": true,
+      "contract_errors": {},
+      "unsafe_valid": false,
+      "unsafe_witness": {
+        "reason": "reward_successor_joint_distribution",
+        "state": 70,
+        "action": "UP",
+        "total_variation": 1.0,
+        "ground_atoms": 1,
+        "candidate_atoms": 1
+      }
+    },
+    {
+      "name": "v6_crossing_rescue_pair_2",
+      "contract_states": 33,
+      "active_states": {
+        "BASELINE": 173,
+        "CONTRACT": 46,
+        "UNSAFE": 43
+      },
+      "reference_cells": 45,
+      "contract_valid": true,
+      "contract_errors": {},
+      "unsafe_valid": false,
+      "unsafe_witness": {
+        "reason": "reward_successor_joint_distribution",
+        "state": 175,
+        "action": "UP",
+        "total_variation": 1.0,
+        "ground_atoms": 1,
+        "candidate_atoms": 1
+      }
+    },
+    {
+      "name": "v6_crossing_rescue_pair_3",
+      "contract_states": 44,
+      "active_states": {
+        "BASELINE": 93,
+        "CONTRACT": 57,
+        "UNSAFE": 23
+      },
+      "reference_cells": 56,
+      "contract_valid": true,
+      "contract_errors": {},
+      "unsafe_valid": false,
+      "unsafe_witness": {
+        "reason": "reward_successor_joint_distribution",
+        "state": 60,
+        "action": "UP",
+        "total_variation": 1.0,
+        "ground_atoms": 1,
+        "candidate_atoms": 1
+      }
+    },
+    {
+      "name": "v6_spawn_edge_rescue_0",
+      "contract_states": 2,
+      "active_states": {
+        "BASELINE": 8,
+        "CONTRACT": 5,
+        "UNSAFE": 5
+      },
+      "reference_cells": 5,
+      "contract_valid": true,
+      "contract_errors": {},
+      "unsafe_valid": true,
+      "unsafe_witness": null
+    },
+    {
+      "name": "v6_spawn_edge_rescue_1",
+      "contract_states": 3,
+      "active_states": {
+        "BASELINE": 6,
+        "CONTRACT": 6,
+        "UNSAFE": 5
+      },
+      "reference_cells": 6,
+      "contract_valid": true,
+      "contract_errors": {},
+      "unsafe_valid": false,
+      "unsafe_witness": {
+        "reason": "reward_successor_joint_distribution",
+        "state": 10,
+        "action": "RIGHT",
+        "total_variation": 0.8,
+        "ground_atoms": 2,
+        "candidate_atoms": 2
+      }
+    },
+    {
+      "name": "v6_spawn_edge_rescue_2",
+      "contract_states": 2,
+      "active_states": {
+        "BASELINE": 6,
+        "CONTRACT": 5,
+        "UNSAFE": 5
+      },
+      "reference_cells": 5,
+      "contract_valid": true,
+      "contract_errors": {},
+      "unsafe_valid": true,
+      "unsafe_witness": null
+    },
+    {
+      "name": "v6_spawn_edge_rescue_3",
+      "contract_states": 6,
+      "active_states": {
+        "BASELINE": 10,
+        "CONTRACT": 9,
+        "UNSAFE": 6
+      },
+      "reference_cells": 9,
+      "contract_valid": true,
+      "contract_errors": {},
+      "unsafe_valid": false,
+      "unsafe_witness": {
+        "reason": "reward_successor_joint_distribution",
+        "state": 7,
+        "action": "UP",
+        "total_variation": 1.0,
+        "ground_atoms": 1,
+        "candidate_atoms": 1
+      }
+    },
+    {
+      "name": "v6_crossed_vacancy_goal_detour_0",
+      "contract_states": 37,
+      "active_states": {
+        "BASELINE": 93,
+        "CONTRACT": 50,
+        "UNSAFE": 27
+      },
+      "reference_cells": 50,
+      "contract_valid": true,
+      "contract_errors": {},
+      "unsafe_valid": false,
+      "unsafe_witness": {
+        "reason": "reward_successor_joint_distribution",
+        "state": 34,
+        "action": "LEFT",
+        "total_variation": 0.9,
+        "ground_atoms": 1,
+        "candidate_atoms": 2
+      }
+    },
+    {
+      "name": "v6_crossed_vacancy_goal_detour_1",
+      "contract_states": 42,
+      "active_states": {
+        "BASELINE": 109,
+        "CONTRACT": 55,
+        "UNSAFE": 37
+      },
+      "reference_cells": 55,
+      "contract_valid": true,
+      "contract_errors": {},
+      "unsafe_valid": false,
+      "unsafe_witness": {
+        "reason": "reward_successor_joint_distribution",
+        "state": 57,
+        "action": "DOWN",
+        "total_variation": 1.0,
+        "ground_atoms": 1,
+        "candidate_atoms": 1
+      }
+    },
+    {
+      "name": "v6_crossed_vacancy_goal_detour_2",
+      "contract_states": 30,
+      "active_states": {
+        "BASELINE": 105,
+        "CONTRACT": 43,
+        "UNSAFE": 32
+      },
+      "reference_cells": 43,
+      "contract_valid": true,
+      "contract_errors": {},
+      "unsafe_valid": false,
+      "unsafe_witness": {
+        "reason": "reward_successor_joint_distribution",
+        "state": 41,
+        "action": "DOWN",
+        "total_variation": 1.0,
+        "ground_atoms": 1,
+        "candidate_atoms": 1
+      }
+    },
+    {
+      "name": "v6_crossed_vacancy_goal_detour_3",
+      "contract_states": 18,
+      "active_states": {
+        "BASELINE": 61,
+        "CONTRACT": 31,
+        "UNSAFE": 19
+      },
+      "reference_cells": 29,
+      "contract_valid": true,
+      "contract_errors": {},
+      "unsafe_valid": false,
+      "unsafe_witness": {
+        "reason": "reward_successor_joint_distribution",
+        "state": 60,
+        "action": "LEFT",
+        "total_variation": 1.0,
+        "ground_atoms": 1,
+        "candidate_atoms": 1
+      }
+    },
+    {
+      "name": "v6_control_last_pair_spawn_risk",
+      "contract_states": 1,
+      "active_states": {
+        "BASELINE": 6,
+        "CONTRACT": 3,
+        "UNSAFE": 3
+      },
+      "reference_cells": 3,
+      "contract_valid": true,
+      "contract_errors": {},
+      "unsafe_valid": true,
+      "unsafe_witness": null
+    },
+    {
+      "name": "v6_control_dense_merge_choice",
+      "contract_states": 53,
+      "active_states": {
+        "BASELINE": 202,
+        "CONTRACT": 70,
+        "UNSAFE": 63
+      },
+      "reference_cells": 70,
+      "contract_valid": true,
+      "contract_errors": {},
+      "unsafe_valid": false,
+      "unsafe_witness": {
+        "reason": "reward_successor_joint_distribution",
+        "state": 132,
+        "action": "RIGHT",
+        "total_variation": 1.0,
+        "ground_atoms": 1,
+        "candidate_atoms": 1
+      }
+    },
+    {
+      "name": "v6_control_adjacent_1024_goal",
+      "contract_states": 0,
+      "active_states": {
+        "BASELINE": 3,
+        "CONTRACT": 3,
+        "UNSAFE": 3
+      },
+      "reference_cells": 2,
+      "contract_valid": true,
+      "contract_errors": {},
+      "unsafe_valid": true,
+      "unsafe_witness": null
+    },
+    {
+      "name": "exposed_left_successor_7",
+      "contract_states": 11,
+      "active_states": {
+        "BASELINE": 13,
+        "CONTRACT": 12,
+        "UNSAFE": 9
+      },
+      "reference_cells": 12,
+      "contract_valid": true,
+      "contract_errors": {},
+      "unsafe_valid": false,
+      "unsafe_witness": {
+        "reason": "reward_successor_joint_distribution",
+        "state": 6,
+        "action": "UP",
+        "total_variation": 0.8,
+        "ground_atoms": 2,
+        "candidate_atoms": 2
+      }
+    }
+  ],
+  "accounting": {
+    "whole_runner_seconds": 5.5043715329957195,
+    "independent_ground_counts": {
+      "states": 10527,
+      "exact_transition_row_calls": 3694,
+      "exact_outcomes_enumerated": 15134,
+      "active_states": 1194
+    },
+    "reference_counts": {
+      "reference_dp_states": 147378,
+      "reference_dp_action_rows": 51716,
+      "reference_dp_outcome_terms": 211876,
+      "reference_policy_states": 147378,
+      "reference_policy_action_rows": 16716,
+      "reference_policy_outcome_terms": 73960
+    },
+    "ground_construction_seconds": 2.0142918709898368,
+    "reference_seconds": 0.26689600094687194,
+    "oracle_quotient_seconds": 0.02075976092601195,
+    "portable_command_seconds": 0.6487890189746395,
+    "portable_planning_counts": {
+      "active_states": 6972,
+      "state_action_rows": 20664,
+      "outcomes": 31696,
+      "visited_cells": 7714
+    },
+    "portable_prediction_counts": {
+      "active_states": 1354,
+      "state_action_rows": 1354,
+      "outcomes": 2561,
+      "visited_states": 1680
+    },
+    "random_samples": 0,
+    "learned_updates": 0,
+    "analysis_seconds_before_serialization": 0.006233473017346114
+  },
+  "limitations": "Previously exposed finite roots, known mechanics, one timing run. Action contracts are derived locally from known mechanics without a ground closure. The result is not unknown-dynamics learning or a general-game guarantee. Unsafe control failures are retained separately. Terminal folding is identical in the two primary arms."
+}

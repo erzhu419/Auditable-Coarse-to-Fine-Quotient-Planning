@@ -1,0 +1,39 @@
+  Computing DoorKey fixed-point pair metric (no cache hit)...
+    doorkey bisim iter 0: max change = 1.000e+00
+    doorkey bisim iter 10: max change = 5.987e-01
+    doorkey bisim iter 20: max change = 3.585e-01
+    doorkey bisim iter 24: max change = 0.000e+00
+[run] Building concrete baseline.
+[run] Fitting fixed abstraction ladder with alphabet cap 1165 across 5 betas.
+[run] Fitting beta=6 (1/5)
+[run] Fitting beta=7 (2/5)
+[run] Fitting beta=7.5 (3/5)
+[run] Fitting beta=8 (4/5)
+[run] Fitting beta=10 (5/5)
+[run] Solving abstract fixed point for beta=6 (1/5)
+[run] Solving abstract fixed point for beta=7 (2/5)
+[run] Solving abstract fixed point for beta=7.5 (3/5)
+[run] Solving abstract fixed point for beta=8 (4/5)
+[run] Solving abstract fixed point for beta=10 (5/5)
+[run] Fitting adaptive abstraction ladder across 5 betas.
+[run] Fitting beta=6 (1/5)
+[run] Fitting beta=7 (2/5)
+[run] Fitting beta=8 (3/5)
+[run] Fitting beta=9 (4/5)
+[run] Fitting beta=10 (5/5)
+[run] Solving abstract fixed point for beta=6 (1/5)
+[run] Solving abstract fixed point for beta=7 (2/5)
+[run] Solving abstract fixed point for beta=8 (3/5)
+[run] Solving abstract fixed point for beta=9 (4/5)
+[run] Solving abstract fixed point for beta=10 (5/5)
+[run] Running Bellman traces.
+[run] Tracing base MDP over 100 sweeps (101 checkpoints)
+[run] Tracing fixed beta=6 over 1975 sweeps (1976 checkpoints)
+[run] Tracing fixed beta=7 over 1031 sweeps (1032 checkpoints)
+[run] Tracing fixed beta=7.5 over 810 sweeps (811 checkpoints)
+[run] Tracing fixed beta=8 over 553 sweeps (554 checkpoints)
+[run] Tracing fixed beta=10 over 500 sweeps (501 checkpoints)
+[run] Tracing adaptive controller over 1975 sweep slots (1976 checkpoints)
+[run] Assembling summary and writing outputs.
+Finished. Results saved to /home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/rate_distortion_v39/doorkey
+[run] Done in 19.2s.

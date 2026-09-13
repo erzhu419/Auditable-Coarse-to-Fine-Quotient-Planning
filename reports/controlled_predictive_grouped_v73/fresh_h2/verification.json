@@ -1,0 +1,7589 @@
+{
+  "schema": "acfqp.grouped_generalization.v73",
+  "complete": true,
+  "valid": true,
+  "observations": 16,
+  "each_contracts_matched": 16,
+  "group_contracts_matched": 16,
+  "errors": {},
+  "cases": [
+    {
+      "name": "v73_fresh_h2_00",
+      "valid": true,
+      "matches": {
+        "EACH": true,
+        "GROUP": true
+      },
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    4,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    4,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    4,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    4,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  5,
+                  8
+                ]
+              },
+              {
+                "fraction": [
+                  9,
+                  20
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "LEFT",
+                    0,
+                    [
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            10
+                          ]
+                        }
+                      ],
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            9,
+                            10
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  5,
+                  8
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  20
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "LEFT",
+                    0,
+                    [
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  5,
+                  8
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  20
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "LEFT",
+                    4,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    4,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  5,
+                  8
+                ]
+              },
+              {
+                "fraction": [
+                  9,
+                  20
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    1280,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    1280,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  512
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    1280,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    1280,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  512
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  10
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    1280,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    1280,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  512
+                ]
+              },
+              {
+                "fraction": [
+                  9,
+                  10
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            9,
+                            10
+                          ]
+                        }
+                      ],
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            10
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  5,
+                  8
+                ]
+              },
+              {
+                "fraction": [
+                  9,
+                  20
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  5,
+                  8
+                ]
+              },
+              {
+                "fraction": [
+                  9,
+                  20
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    12,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    12,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  5,
+                  8
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  10
+                ]
+              }
+            ]
+          ]
+        ]
+      ],
+      "ground_counts": {
+        "ground_h2_explicit_state_calls": 1,
+        "ground_h2_active_roots": 1,
+        "ground_h2_explicit_swipe_calls": 4,
+        "ground_h2_step_calls": 4,
+        "ground_h2_step_outcomes": 12,
+        "ground_h1_contract_requests": 12,
+        "ground_h1_unique_active_boards": 12,
+        "ground_h1_explicit_swipe_calls": 48,
+        "ground_h1_step_calls": 35,
+        "ground_h1_step_outcomes": 130
+      }
+    },
+    {
+      "name": "v73_fresh_h2_01",
+      "valid": true,
+      "matches": {
+        "EACH": true,
+        "GROUP": true
+      },
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    128,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    128,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  512
+                ]
+              },
+              {
+                "fraction": [
+                  9,
+                  20
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    132,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    132,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  512
+                ]
+              },
+              {
+                "fraction": [
+                  9,
+                  20
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    136,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    136,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  512
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  10
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  35,
+                  512
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  4
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  35,
+                  512
+                ]
+              },
+              {
+                "fraction": [
+                  3,
+                  4
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    4,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    4,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  35,
+                  512
+                ]
+              },
+              {
+                "fraction": [
+                  9,
+                  40
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    4,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    4,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  35,
+                  512
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  2
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    4,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    4,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    4,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    4,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  35,
+                  512
+                ]
+              },
+              {
+                "fraction": [
+                  9,
+                  40
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    4,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    4,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  35,
+                  512
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  20
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  512
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          ]
+        ]
+      ],
+      "ground_counts": {
+        "ground_h2_explicit_state_calls": 1,
+        "ground_h2_active_roots": 1,
+        "ground_h2_explicit_swipe_calls": 4,
+        "ground_h2_step_calls": 4,
+        "ground_h2_step_outcomes": 24,
+        "ground_h1_contract_requests": 24,
+        "ground_h1_unique_active_boards": 24,
+        "ground_h1_explicit_swipe_calls": 96,
+        "ground_h1_step_calls": 86,
+        "ground_h1_step_outcomes": 508
+      }
+    },
+    {
+      "name": "v73_fresh_h2_02",
+      "valid": true,
+      "matches": {
+        "EACH": true,
+        "GROUP": true
+      },
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    2048,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    16,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    16,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    2048,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              [
+                "TERMINAL",
+                "WON"
+              ],
+              {
+                "fraction": [
+                  193,
+                  128
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              [
+                "TERMINAL",
+                "WON"
+              ],
+              {
+                "fraction": [
+                  193,
+                  128
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    2048,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    2064,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    2064,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    2048,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          ]
+        ]
+      ],
+      "ground_counts": {
+        "ground_h2_explicit_state_calls": 1,
+        "ground_h2_active_roots": 1,
+        "ground_h2_explicit_swipe_calls": 4,
+        "ground_h2_step_calls": 4,
+        "ground_h2_step_outcomes": 16,
+        "ground_h1_contract_requests": 4,
+        "ground_h1_unique_active_boards": 4,
+        "ground_h1_explicit_swipe_calls": 16,
+        "ground_h1_step_calls": 16,
+        "ground_h1_step_outcomes": 40
+      }
+    },
+    {
+      "name": "v73_fresh_h2_03",
+      "valid": true,
+      "matches": {
+        "EACH": true,
+        "GROUP": true
+      },
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "LEFT",
+                    32,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    32,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "fraction": [
+                  19,
+                  20
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "LEFT",
+                    40,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    40,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  20
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    64,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    64,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  33,
+                  64
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  30
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    64,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    64,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  33,
+                  64
+                ]
+              },
+              {
+                "fraction": [
+                  29,
+                  30
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    64,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    64,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  33,
+                  64
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  10
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    68,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    68,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  33,
+                  64
+                ]
+              },
+              {
+                "fraction": [
+                  9,
+                  10
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    0,
+                    [
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "fraction": [
+                  9,
+                  20
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  10
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    4,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            9,
+                            10
+                          ]
+                        }
+                      ],
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            10
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    4,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "fraction": [
+                  9,
+                  20
+                ]
+              }
+            ]
+          ]
+        ]
+      ],
+      "ground_counts": {
+        "ground_h2_explicit_state_calls": 1,
+        "ground_h2_active_roots": 1,
+        "ground_h2_explicit_swipe_calls": 4,
+        "ground_h2_step_calls": 4,
+        "ground_h2_step_outcomes": 20,
+        "ground_h1_contract_requests": 20,
+        "ground_h1_unique_active_boards": 20,
+        "ground_h1_explicit_swipe_calls": 80,
+        "ground_h1_step_calls": 61,
+        "ground_h1_step_outcomes": 292
+      }
+    },
+    {
+      "name": "v73_fresh_h2_04",
+      "valid": true,
+      "matches": {
+        "EACH": true,
+        "GROUP": true
+      },
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              [
+                "TERMINAL",
+                "WON"
+              ],
+              {
+                "fraction": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    2048,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    2048,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  32
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    2048,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    2048,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  32
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              [
+                "TERMINAL",
+                "WON"
+              ],
+              {
+                "fraction": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          ]
+        ]
+      ],
+      "ground_counts": {
+        "ground_h2_explicit_state_calls": 1,
+        "ground_h2_active_roots": 1,
+        "ground_h2_explicit_swipe_calls": 4,
+        "ground_h2_step_calls": 4,
+        "ground_h2_step_outcomes": 8,
+        "ground_h1_contract_requests": 4,
+        "ground_h1_unique_active_boards": 4,
+        "ground_h1_explicit_swipe_calls": 16,
+        "ground_h1_step_calls": 8,
+        "ground_h1_step_outcomes": 16
+      }
+    },
+    {
+      "name": "v73_fresh_h2_05",
+      "valid": true,
+      "matches": {
+        "EACH": true,
+        "GROUP": true
+      },
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "LEFT",
+                    1024,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    1024,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  256
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  20
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "LEFT",
+                    1024,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    1024,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    0,
+                    [
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  256
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  20
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "LEFT",
+                    1028,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    1028,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  256
+                ]
+              },
+              {
+                "fraction": [
+                  9,
+                  10
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    2048,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    256,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    256,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    2048,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  9,
+                  16
+                ]
+              },
+              {
+                "fraction": [
+                  29,
+                  30
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    2056,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    256,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    256,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    2056,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  9,
+                  16
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  30
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    256,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    256,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  9,
+                  16
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  30
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    12,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    256,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    256,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    12,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  9,
+                  16
+                ]
+              },
+              {
+                "fraction": [
+                  29,
+                  30
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            9,
+                            10
+                          ]
+                        }
+                      ],
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            10
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    128,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    128,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  256
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  2
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    128,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    128,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  256
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  2
+                ]
+              }
+            ]
+          ]
+        ]
+      ],
+      "ground_counts": {
+        "ground_h2_explicit_state_calls": 1,
+        "ground_h2_active_roots": 1,
+        "ground_h2_explicit_swipe_calls": 4,
+        "ground_h2_step_calls": 4,
+        "ground_h2_step_outcomes": 20,
+        "ground_h1_contract_requests": 20,
+        "ground_h1_unique_active_boards": 20,
+        "ground_h1_explicit_swipe_calls": 80,
+        "ground_h1_step_calls": 72,
+        "ground_h1_step_outcomes": 400
+      }
+    },
+    {
+      "name": "v73_fresh_h2_06",
+      "valid": true,
+      "matches": {
+        "EACH": true,
+        "GROUP": true
+      },
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              [
+                "TERMINAL",
+                "LOST"
+              ],
+              {
+                "fraction": [
+                  1,
+                  8
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    1056,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    1056,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  8
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              [
+                "TERMINAL",
+                "LOST"
+              ],
+              {
+                "fraction": [
+                  1,
+                  8
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              [
+                "TERMINAL",
+                "LOST"
+              ],
+              {
+                "fraction": [
+                  1,
+                  8
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          ]
+        ]
+      ],
+      "ground_counts": {
+        "ground_h2_explicit_state_calls": 1,
+        "ground_h2_active_roots": 1,
+        "ground_h2_explicit_swipe_calls": 4,
+        "ground_h2_step_calls": 4,
+        "ground_h2_step_outcomes": 8,
+        "ground_h1_contract_requests": 2,
+        "ground_h1_unique_active_boards": 2,
+        "ground_h1_explicit_swipe_calls": 8,
+        "ground_h1_step_calls": 4,
+        "ground_h1_step_outcomes": 16
+      }
+    },
+    {
+      "name": "v73_fresh_h2_07",
+      "valid": true,
+      "matches": {
+        "EACH": true,
+        "GROUP": true
+      },
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    1040,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    1040,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  137,
+                  256
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  5
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "LEFT",
+                    1024,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    1024,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  137,
+                  256
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  5
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "LEFT",
+                    1040,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    1040,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  137,
+                  256
+                ]
+              },
+              {
+                "fraction": [
+                  3,
+                  5
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    1088,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    1024,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    1024,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    1088,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "fraction": [
+                  9,
+                  10
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    1096,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    1024,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    1024,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    1096,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  15
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    1096,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    1032,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    1032,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    1096,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  30
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    1032,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    1024,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    1024,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    1032,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "fraction": [
+                  29,
+                  30
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    1032,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    1032,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    1032,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    1032,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  30
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  137,
+                  256
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  5
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  137,
+                  256
+                ]
+              },
+              {
+                "fraction": [
+                  29,
+                  50
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  137,
+                  256
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  5
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  137,
+                  256
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  50
+                ]
+              }
+            ]
+          ]
+        ]
+      ],
+      "ground_counts": {
+        "ground_h2_explicit_state_calls": 1,
+        "ground_h2_active_roots": 1,
+        "ground_h2_explicit_swipe_calls": 4,
+        "ground_h2_step_calls": 4,
+        "ground_h2_step_outcomes": 32,
+        "ground_h1_contract_requests": 32,
+        "ground_h1_unique_active_boards": 32,
+        "ground_h1_explicit_swipe_calls": 128,
+        "ground_h1_step_calls": 109,
+        "ground_h1_step_outcomes": 920
+      }
+    },
+    {
+      "name": "v73_fresh_h2_08",
+      "valid": true,
+      "matches": {
+        "EACH": true,
+        "GROUP": true
+      },
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    1280,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    1280,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  64
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  10
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "LEFT",
+                    1280,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    1280,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  64
+                ]
+              },
+              {
+                "fraction": [
+                  9,
+                  10
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    32,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            10
+                          ]
+                        }
+                      ],
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            9,
+                            10
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    32,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  5,
+                  8
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  2
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    32,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    32,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  5,
+                  8
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  2
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    2080,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    2080,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  5,
+                  8
+                ]
+              },
+              {
+                "fraction": [
+                  9,
+                  20
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    2080,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    0,
+                    [
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    2080,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  5,
+                  8
+                ]
+              },
+              {
+                "fraction": [
+                  9,
+                  20
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    2088,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    2088,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  5,
+                  8
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  10
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "LEFT",
+                    1280,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    1280,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  64
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          ]
+        ]
+      ],
+      "ground_counts": {
+        "ground_h2_explicit_state_calls": 1,
+        "ground_h2_active_roots": 1,
+        "ground_h2_explicit_swipe_calls": 4,
+        "ground_h2_step_calls": 4,
+        "ground_h2_step_outcomes": 12,
+        "ground_h1_contract_requests": 12,
+        "ground_h1_unique_active_boards": 12,
+        "ground_h1_explicit_swipe_calls": 48,
+        "ground_h1_step_calls": 34,
+        "ground_h1_step_outcomes": 140
+      }
+    },
+    {
+      "name": "v73_fresh_h2_09",
+      "valid": true,
+      "matches": {
+        "EACH": true,
+        "GROUP": true
+      },
+      "ground_contract": [
+        [
+          "LEFT",
+          [
+            [
+              [
+                "TERMINAL",
+                "WON"
+              ],
+              {
+                "fraction": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              [
+                "TERMINAL",
+                "WON"
+              ],
+              {
+                "fraction": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "LEFT",
+                    2080,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    2080,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  0,
+                  1
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  10
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "LEFT",
+                    2084,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    2084,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  0,
+                  1
+                ]
+              },
+              {
+                "fraction": [
+                  9,
+                  10
+                ]
+              }
+            ]
+          ]
+        ]
+      ],
+      "ground_counts": {
+        "ground_h2_explicit_state_calls": 1,
+        "ground_h2_active_roots": 1,
+        "ground_h2_explicit_swipe_calls": 4,
+        "ground_h2_step_calls": 3,
+        "ground_h2_step_outcomes": 10,
+        "ground_h1_contract_requests": 2,
+        "ground_h1_unique_active_boards": 2,
+        "ground_h1_explicit_swipe_calls": 8,
+        "ground_h1_step_calls": 4,
+        "ground_h1_step_outcomes": 20
+      }
+    },
+    {
+      "name": "v73_fresh_h2_10",
+      "valid": true,
+      "matches": {
+        "EACH": true,
+        "GROUP": true
+      },
+      "ground_contract": [
+        [
+          "LEFT",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    0,
+                    [
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  33,
+                  512
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  2
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    0,
+                    [
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    0,
+                    [
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            10
+                          ]
+                        }
+                      ],
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            9,
+                            10
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  33,
+                  512
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  20
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    0,
+                    [
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    0,
+                    [
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            9,
+                            10
+                          ]
+                        }
+                      ],
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            10
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  33,
+                  512
+                ]
+              },
+              {
+                "fraction": [
+                  9,
+                  20
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    0,
+                    [
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            10
+                          ]
+                        }
+                      ],
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            9,
+                            10
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  33,
+                  512
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  20
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    0,
+                    [
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            9,
+                            10
+                          ]
+                        }
+                      ],
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            10
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  33,
+                  512
+                ]
+              },
+              {
+                "fraction": [
+                  9,
+                  20
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    0,
+                    [
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    0,
+                    [
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  33,
+                  512
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  2
+                ]
+              }
+            ]
+          ]
+        ]
+      ],
+      "ground_counts": {
+        "ground_h2_explicit_state_calls": 1,
+        "ground_h2_active_roots": 1,
+        "ground_h2_explicit_swipe_calls": 4,
+        "ground_h2_step_calls": 2,
+        "ground_h2_step_outcomes": 8,
+        "ground_h1_contract_requests": 8,
+        "ground_h1_unique_active_boards": 8,
+        "ground_h1_explicit_swipe_calls": 32,
+        "ground_h1_step_calls": 20,
+        "ground_h1_step_outcomes": 40
+      }
+    },
+    {
+      "name": "v73_fresh_h2_11",
+      "valid": true,
+      "matches": {
+        "EACH": true,
+        "GROUP": true
+      },
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "LEFT",
+                    8,
+                    [
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    8,
+                    [
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  0,
+                  1
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  9,
+                  256
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  30
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  9,
+                  256
+                ]
+              },
+              {
+                "fraction": [
+                  3,
+                  10
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  9,
+                  256
+                ]
+              },
+              {
+                "fraction": [
+                  2,
+                  3
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  9,
+                  256
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  3
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  9,
+                  256
+                ]
+              },
+              {
+                "fraction": [
+                  2,
+                  3
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "LEFT",
+                    72,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    72,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  0,
+                  1
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          ]
+        ]
+      ],
+      "ground_counts": {
+        "ground_h2_explicit_state_calls": 1,
+        "ground_h2_active_roots": 1,
+        "ground_h2_explicit_swipe_calls": 4,
+        "ground_h2_step_calls": 4,
+        "ground_h2_step_outcomes": 16,
+        "ground_h1_contract_requests": 16,
+        "ground_h1_unique_active_boards": 16,
+        "ground_h1_explicit_swipe_calls": 64,
+        "ground_h1_step_calls": 41,
+        "ground_h1_step_outcomes": 160
+      }
+    },
+    {
+      "name": "v73_fresh_h2_12",
+      "valid": true,
+      "matches": {
+        "EACH": true,
+        "GROUP": true
+      },
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              [
+                "TERMINAL",
+                "WON"
+              ],
+              {
+                "fraction": [
+                  259,
+                  256
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    2072,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    8,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    2072,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  512
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  10
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    2072,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    2072,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  512
+                ]
+              },
+              {
+                "fraction": [
+                  9,
+                  10
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    2056,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    2056,
+                    [
+                      [
+                        "WON",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  512
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              [
+                "TERMINAL",
+                "WON"
+              ],
+              {
+                "fraction": [
+                  259,
+                  256
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          ]
+        ]
+      ],
+      "ground_counts": {
+        "ground_h2_explicit_state_calls": 1,
+        "ground_h2_active_roots": 1,
+        "ground_h2_explicit_swipe_calls": 4,
+        "ground_h2_step_calls": 4,
+        "ground_h2_step_outcomes": 16,
+        "ground_h1_contract_requests": 4,
+        "ground_h1_unique_active_boards": 4,
+        "ground_h1_explicit_swipe_calls": 16,
+        "ground_h1_step_calls": 10,
+        "ground_h1_step_outcomes": 44
+      }
+    },
+    {
+      "name": "v73_fresh_h2_13",
+      "valid": true,
+      "matches": {
+        "EACH": true,
+        "GROUP": true
+      },
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "LEFT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            10
+                          ]
+                        }
+                      ],
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            9,
+                            10
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  64
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  20
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "LEFT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            9,
+                            10
+                          ]
+                        }
+                      ],
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            10
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  64
+                ]
+              },
+              {
+                "fraction": [
+                  9,
+                  20
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "RIGHT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  64
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  2
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    256,
+                    [
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    256,
+                    [
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  0,
+                  1
+                ]
+              },
+              {
+                "fraction": [
+                  9,
+                  10
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    264,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    264,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  0,
+                  1
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  10
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    320,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    320,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  64
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          ]
+        ]
+      ],
+      "ground_counts": {
+        "ground_h2_explicit_state_calls": 1,
+        "ground_h2_active_roots": 1,
+        "ground_h2_explicit_swipe_calls": 4,
+        "ground_h2_step_calls": 3,
+        "ground_h2_step_outcomes": 10,
+        "ground_h1_contract_requests": 10,
+        "ground_h1_unique_active_boards": 10,
+        "ground_h1_explicit_swipe_calls": 40,
+        "ground_h1_step_calls": 26,
+        "ground_h1_step_outcomes": 88
+      }
+    },
+    {
+      "name": "v73_fresh_h2_14",
+      "valid": true,
+      "matches": {
+        "EACH": true,
+        "GROUP": true
+      },
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    128,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            9,
+                            10
+                          ]
+                        }
+                      ],
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            10
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    4,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    4,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    128,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  32
+                ]
+              },
+              {
+                "fraction": [
+                  9,
+                  10
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    128,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    128,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  32
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  10
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    128,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            9,
+                            10
+                          ]
+                        }
+                      ],
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            10
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    128,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  32
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  10
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    132,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    132,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  32
+                ]
+              },
+              {
+                "fraction": [
+                  9,
+                  10
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "LEFT",
+                    4,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    4,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            10
+                          ]
+                        }
+                      ],
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            9,
+                            10
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  32
+                ]
+              },
+              {
+                "fraction": [
+                  9,
+                  10
+                ]
+              }
+            ],
+            [
+              [
+                "TERMINAL",
+                "LOST"
+              ],
+              {
+                "fraction": [
+                  1,
+                  32
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  10
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    128,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    128,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            10
+                          ]
+                        }
+                      ],
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            9,
+                            10
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  32
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  10
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    128,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    128,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            9,
+                            10
+                          ]
+                        }
+                      ],
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            10
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  32
+                ]
+              },
+              {
+                "fraction": [
+                  9,
+                  10
+                ]
+              }
+            ]
+          ]
+        ]
+      ],
+      "ground_counts": {
+        "ground_h2_explicit_state_calls": 1,
+        "ground_h2_active_roots": 1,
+        "ground_h2_explicit_swipe_calls": 4,
+        "ground_h2_step_calls": 4,
+        "ground_h2_step_outcomes": 8,
+        "ground_h1_contract_requests": 7,
+        "ground_h1_unique_active_boards": 7,
+        "ground_h1_explicit_swipe_calls": 28,
+        "ground_h1_step_calls": 16,
+        "ground_h1_step_outcomes": 36
+      }
+    },
+    {
+      "name": "v73_fresh_h2_15",
+      "valid": true,
+      "matches": {
+        "EACH": true,
+        "GROUP": true
+      },
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "LEFT",
+                    16,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    16,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  16
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  2
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "LEFT",
+                    16,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    16,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    0,
+                    [
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  16
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  2
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    144,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    144,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  16
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  1
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    128,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    128,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  16
+                ]
+              },
+              {
+                "fraction": [
+                  9,
+                  10
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    136,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UP",
+                    136,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  16
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  10
+                ]
+              }
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    0,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    144,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    144,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  16
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  2
+                ]
+              }
+            ],
+            [
+              [
+                "H1",
+                [
+                  [
+                    "DOWN",
+                    0,
+                    [
+                      [
+                        "LOST",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "LEFT",
+                    144,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "RIGHT",
+                    144,
+                    [
+                      [
+                        "CUTOFF",
+                        {
+                          "fraction": [
+                            1,
+                            1
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              {
+                "fraction": [
+                  1,
+                  16
+                ]
+              },
+              {
+                "fraction": [
+                  1,
+                  2
+                ]
+              }
+            ]
+          ]
+        ]
+      ],
+      "ground_counts": {
+        "ground_h2_explicit_state_calls": 1,
+        "ground_h2_active_roots": 1,
+        "ground_h2_explicit_swipe_calls": 4,
+        "ground_h2_step_calls": 4,
+        "ground_h2_step_outcomes": 16,
+        "ground_h1_contract_requests": 16,
+        "ground_h1_unique_active_boards": 16,
+        "ground_h1_explicit_swipe_calls": 64,
+        "ground_h1_step_calls": 48,
+        "ground_h1_step_outcomes": 200
+      }
+    }
+  ],
+  "source_fit_calls": 0,
+  "predictions_frozen_before_ground": true,
+  "prediction_costs": {
+    "EACH": {
+      "seconds": 0.020083548093680292,
+      "counts": {
+        "compiled_programs": 16,
+        "full_board_materializations": 0,
+        "factorized_contexts": 76,
+        "candidate_predicate_evaluations": 193,
+        "contract_materializations": 193,
+        "prepare_calls": 16,
+        "line_lookups": 1988,
+        "line_evaluations": 1561,
+        "line_summary_adjacent_tests": 4644,
+        "base_adjacent_tests": 432,
+        "context_status_evaluations": 16,
+        "factorized_action_expansions": 16,
+        "action_changed_tests": 64,
+        "factorized_action_afterstates": 60,
+        "line_cache_hits": 427,
+        "spawn_group_requests": 60,
+        "spawn_candidates": 236,
+        "patch_status_evaluations": 236,
+        "patched_line_inputs": 772,
+        "unaffected_line_summaries_reused": 2316,
+        "predicate_calls": 193,
+        "candidate_action_changed_tests": 772,
+        "candidate_action_predicate_evaluations": 590,
+        "terminal_predicate_evaluations": 590,
+        "cross_line_adjacent_tests": 936,
+        "terminal_spawn_rank_classifications": 1180,
+        "predicate_materializations": 193,
+        "incoming_probability_evaluations": 236,
+        "contract_fraction_accumulations": 1180,
+        "terminal_probability_combinations": 1180,
+        "hole_neighbor_rank_reads": 111,
+        "spawn_groups": 236,
+        "vacancy_family_shortcuts": 281,
+        "base_hole_neighbor_reads": 10
+      }
+    },
+    "GROUP": {
+      "seconds": 0.015728711907286197,
+      "counts": {
+        "compiled_programs": 16,
+        "full_board_materializations": 0,
+        "factorized_contexts": 76,
+        "candidate_predicate_evaluations": 193,
+        "contract_materializations": 98,
+        "prepare_calls": 16,
+        "line_lookups": 1988,
+        "line_evaluations": 1561,
+        "line_summary_adjacent_tests": 4644,
+        "base_adjacent_tests": 432,
+        "context_status_evaluations": 16,
+        "factorized_action_expansions": 16,
+        "action_changed_tests": 64,
+        "factorized_action_afterstates": 60,
+        "line_cache_hits": 427,
+        "spawn_group_requests": 60,
+        "spawn_candidates": 236,
+        "patch_status_evaluations": 236,
+        "patched_line_inputs": 772,
+        "unaffected_line_summaries_reused": 2316,
+        "predicate_calls": 193,
+        "candidate_action_changed_tests": 772,
+        "candidate_action_predicate_evaluations": 590,
+        "terminal_predicate_evaluations": 590,
+        "cross_line_adjacent_tests": 936,
+        "terminal_spawn_rank_classifications": 1180,
+        "predicate_materializations": 193,
+        "incoming_probability_evaluations": 236,
+        "incoming_group_probability_additions": 236,
+        "hole_neighbor_rank_reads": 111,
+        "contract_cache_lookups": 101,
+        "contract_fraction_accumulations": 594,
+        "terminal_probability_combinations": 594,
+        "spawn_groups": 113,
+        "contract_cache_hits": 3,
+        "vacancy_family_shortcuts": 281,
+        "base_hole_neighbor_reads": 10
+      }
+    }
+  },
+  "ground_counts": {
+    "ground_h2_explicit_state_calls": 16,
+    "ground_h2_active_roots": 16,
+    "ground_h2_explicit_swipe_calls": 64,
+    "ground_h2_step_calls": 60,
+    "ground_h2_step_outcomes": 236,
+    "ground_h1_contract_requests": 193,
+    "ground_h1_unique_active_boards": 193,
+    "ground_h1_explicit_swipe_calls": 772,
+    "ground_h1_step_calls": 590,
+    "ground_h1_step_outcomes": 3050
+  },
+  "prediction_seconds": 0.03792142495512962,
+  "ground_seconds": 0.37151517800521106,
+  "wall_seconds_before_write": 0.4345866729854606,
+  "scope": "Sixteen fixed new H2 observations compare EACH and GROUP predictions to exact nested joint reward/H1-contract distributions. Every ground H2 action is queried once; actual H1 boards share an oracle cache. This is an exact-support semantic check, not sampled learning, reduced candidate support or unrestricted planning.",
+  "ground_count_scope": "Explicit state and swipe entry calls, step calls and returned outcomes are counted. Ground internal validation calls are not separately counted; their time is included in ground_seconds."
+}

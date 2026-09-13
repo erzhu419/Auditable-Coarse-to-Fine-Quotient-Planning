@@ -1,0 +1,36 @@
+{
+  "attempts": [
+    {
+      "test_module": "tests/test_lmta_analytic_short_v59.py",
+      "new_failures": 0,
+      "environment_counters": {},
+      "model_evaluations": 0,
+      "gradient_steps": 0,
+      "hand_graph_constructions": 6,
+      "sampled_graphs": 0,
+      "planner_calls": {
+        "candidate": 8,
+        "enumerated": 4,
+        "full": 1
+      },
+      "solver_instances": 13,
+      "standalone_solver_instances": 0,
+      "all_solver_counters": {
+        "dp_states": 122,
+        "action_value_evaluations": 232,
+        "kernel_builds": 126,
+        "kernel_cache_hits": 0,
+        "transition_outcomes": 178,
+        "target_probability_evaluations": 586,
+        "score_node_evaluations": 0,
+        "immediate_expectation_terms": 0,
+        "bellman_expectation_terms": 178,
+        "forced_choice": 3,
+        "analytic_expectation_calls": 106,
+        "analytic_probability_terms": 227
+      },
+      "wall_seconds": 0.006557410000823438,
+      "scope": "All actual hand-graph candidate, original short-window and original analytic-full controls are included. No main-panel replay, environment, outer policy evaluation or learned-model work."
+    }
+  ]
+}

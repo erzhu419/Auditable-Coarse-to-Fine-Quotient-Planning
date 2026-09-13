@@ -1,0 +1,43 @@
+{
+  "author_commit": "0d3b6f7e1cd63f8df8056bd35a0c82934390cefd",
+  "case_files": [
+    "last_pair_spawn_risk.json",
+    "dense_merge_choice.json",
+    "adjacent_1024_goal.json"
+  ],
+  "new_sampled_environment_draws": 0,
+  "fresh_process_replay": {
+    "operators": [
+      {
+        "operator": "adjacent_1024_goal.doorkey_metric_units.operator.npz",
+        "max_error": 0.0
+      },
+      {
+        "operator": "adjacent_1024_goal.raw.operator.npz",
+        "max_error": 0.0
+      },
+      {
+        "operator": "dense_merge_choice.doorkey_metric_units.operator.npz",
+        "max_error": 4.440892098500626e-16
+      },
+      {
+        "operator": "dense_merge_choice.raw.operator.npz",
+        "max_error": 5.204170427930421e-18
+      },
+      {
+        "operator": "last_pair_spawn_risk.doorkey_metric_units.operator.npz",
+        "max_error": 0.0
+      },
+      {
+        "operator": "last_pair_spawn_risk.raw.operator.npz",
+        "max_error": 0.0
+      }
+    ],
+    "original_model_modules_imported": false,
+    "valid": true
+  },
+  "wall_seconds": 1.5602213910024147,
+  "primary_beta": 10.0,
+  "tie_tolerance_original_units": 1e-12,
+  "scope": "Six public H2 conditions; one structural intervention, retained controls, newly specified tie readout. Array runtime has no original model dependency; preparation and evaluation use the exact model."
+}

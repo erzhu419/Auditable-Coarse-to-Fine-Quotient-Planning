@@ -1,0 +1,9 @@
+{
+  "complete": true,
+  "valid": true,
+  "observations": 16,
+  "early_contracts_matched": 16,
+  "shared_contracts_matched": 16,
+  "errors": {},
+  "ground_calls": 0
+}

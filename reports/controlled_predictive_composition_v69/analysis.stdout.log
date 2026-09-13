@@ -1,0 +1,18 @@
+{
+  "complete": true,
+  "policy_and_dynamics_preserved": true,
+  "portable_passed": true,
+  "concrete_expansion_identical": true,
+  "higher_active_cells": {
+    "full": 1660,
+    "composed": 1540
+  },
+  "ratios": {
+    "active_states": 0.2568873693207969,
+    "higher_active_states": 0.927710843373494,
+    "planning_action_rows": 0.25688911551617905,
+    "model_bytes": 0.2289588999408957,
+    "source_inclusive_construction_and_queries": 0.8100625458598524,
+    "source_inclusive_with_routing": 1.5353613127966472
+  }
+}

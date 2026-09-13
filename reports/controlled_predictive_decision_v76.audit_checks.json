@@ -1,0 +1,15 @@
+{
+  "attempts": [
+    {
+      "test_module": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/tests/test_controlled_predictive_decision_audit_v76.py",
+      "session_failures": 0,
+      "scope": "Three tiny native-contract fixtures only; no source or target boards.",
+      "ground_calls": 0,
+      "model_builds": 0,
+      "fit_calls": 0,
+      "production_solver_calls": 0,
+      "choice_evaluations": 3,
+      "standalone_query_evaluations": 1
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_lmta_trajectory_v61.py", line 250, in <module>
+    main()
+  File "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_lmta_trajectory_v61.py", line 242, in main
+    analysis = summarize(manifest, cases, rows, graphs, certificates, exact)
+  File "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_lmta_trajectory_v61.py", line 196, in summarize
+    comparisons = {method: {name: dict(actual=work[method][name], exact_expected=128*exact['expected_work_sums'][method][name],
+  File "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_lmta_trajectory_v61.py", line 196, in <dictcomp>
+    comparisons = {method: {name: dict(actual=work[method][name], exact_expected=128*exact['expected_work_sums'][method][name],
+  File "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_lmta_trajectory_v61.py", line 196, in <dictcomp>
+    comparisons = {method: {name: dict(actual=work[method][name], exact_expected=128*exact['expected_work_sums'][method][name],
+KeyError: 'transition_outcomes'

@@ -1,0 +1,503 @@
+{
+  "attempts": [
+    {
+      "test_module": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/tests/test_controlled_predictive_symbolic_contract_v71.py",
+      "session_failures": 0,
+      "scope": "Two fixed dense development boards at H2; no main-cohort cases.",
+      "ground_calls": 0,
+      "fit_calls": 0,
+      "planning_calls": 0,
+      "source_acquisition_calls": 0,
+      "model_builds": 8,
+      "builds": [
+        {
+          "board_index": 0,
+          "board": [
+            1,
+            1,
+            3,
+            4,
+            3,
+            4,
+            5,
+            6,
+            5,
+            6,
+            7,
+            8,
+            7,
+            8,
+            9,
+            10
+          ],
+          "horizon": 2,
+          "method": "V69",
+          "variant": "FULL",
+          "counts": {
+            "concrete_states": 9,
+            "learned_terminal_checks": 9,
+            "learned_swipe_calls": 36,
+            "learned_line_rewrites": 144,
+            "concrete_active_states": 2,
+            "learned_spawn_outcomes": 8,
+            "concrete_action_rows": 4,
+            "concrete_successor_entries": 8,
+            "terminal_reuses": 5,
+            "h0_boards_generated": 4,
+            "model_transition_rows": 4,
+            "model_successor_entries": 5,
+            "active_states": 2,
+            "terminal_states": 2,
+            "registered_states": 4,
+            "concrete_h0_states": 4,
+            "concrete_states_by_h": {
+              "0": 4,
+              "1": 4,
+              "2": 1
+            },
+            "concrete_active_by_h": {
+              "1": 1,
+              "2": 1
+            },
+            "active_cells_by_h": {
+              "1": 1,
+              "2": 1
+            }
+          },
+          "elapsed_seconds": 0.0031361290020868182
+        },
+        {
+          "board_index": 0,
+          "board": [
+            1,
+            1,
+            3,
+            4,
+            3,
+            4,
+            5,
+            6,
+            5,
+            6,
+            7,
+            8,
+            7,
+            8,
+            9,
+            10
+          ],
+          "horizon": 2,
+          "method": "V71",
+          "variant": "FULL",
+          "counts": {
+            "h0_boards_generated": 0,
+            "concrete_successor_entries": 1,
+            "concrete_states": 2,
+            "learned_terminal_checks": 2,
+            "learned_swipe_calls": 8,
+            "learned_line_rewrites": 32,
+            "concrete_active_states": 2,
+            "symbolic_predicate_calls": 4,
+            "symbolic_input_scan_cells": 128,
+            "potential_spawn_outcomes": 8,
+            "symbolic_adjacency_tests": 52,
+            "symbolic_spawn_rank_classifications": 8,
+            "symbolic_terminal_boards_avoided": 7,
+            "symbolic_terminal_mass_items": 4,
+            "symbolic_successor_entries": 5,
+            "concrete_action_rows": 4,
+            "symbolic_emitted_outcomes": 5,
+            "direct_terminal_mass_entries": 4,
+            "symbolic_board_materializations": 1,
+            "terminal_reuses": 2,
+            "model_transition_rows": 4,
+            "model_successor_entries": 5,
+            "active_states": 2,
+            "terminal_states": 2,
+            "registered_states": 4,
+            "concrete_h0_states": 0,
+            "concrete_states_by_h": {
+              "1": 1,
+              "2": 1
+            },
+            "concrete_active_by_h": {
+              "1": 1,
+              "2": 1
+            },
+            "active_cells_by_h": {
+              "1": 1,
+              "2": 1
+            }
+          },
+          "elapsed_seconds": 0.0008774339803494513
+        },
+        {
+          "board_index": 0,
+          "board": [
+            1,
+            1,
+            3,
+            4,
+            3,
+            4,
+            5,
+            6,
+            5,
+            6,
+            7,
+            8,
+            7,
+            8,
+            9,
+            10
+          ],
+          "horizon": 2,
+          "method": "V69",
+          "variant": "COMPOSED",
+          "counts": {
+            "concrete_states": 9,
+            "learned_terminal_checks": 9,
+            "learned_swipe_calls": 36,
+            "learned_line_rewrites": 144,
+            "concrete_active_states": 2,
+            "learned_spawn_outcomes": 8,
+            "concrete_action_rows": 4,
+            "concrete_successor_entries": 8,
+            "terminal_reuses": 5,
+            "h0_boards_generated": 4,
+            "model_transition_rows": 4,
+            "model_successor_entries": 5,
+            "active_states": 2,
+            "terminal_states": 2,
+            "registered_states": 4,
+            "concrete_h0_states": 4,
+            "concrete_states_by_h": {
+              "0": 4,
+              "1": 4,
+              "2": 1
+            },
+            "concrete_active_by_h": {
+              "1": 1,
+              "2": 1
+            },
+            "active_cells_by_h": {
+              "1": 1,
+              "2": 1
+            }
+          },
+          "elapsed_seconds": 0.0005425499984994531
+        },
+        {
+          "board_index": 0,
+          "board": [
+            1,
+            1,
+            3,
+            4,
+            3,
+            4,
+            5,
+            6,
+            5,
+            6,
+            7,
+            8,
+            7,
+            8,
+            9,
+            10
+          ],
+          "horizon": 2,
+          "method": "V71",
+          "variant": "COMPOSED",
+          "counts": {
+            "h0_boards_generated": 0,
+            "concrete_successor_entries": 1,
+            "concrete_states": 2,
+            "learned_terminal_checks": 2,
+            "learned_swipe_calls": 8,
+            "learned_line_rewrites": 32,
+            "concrete_active_states": 2,
+            "symbolic_predicate_calls": 4,
+            "symbolic_input_scan_cells": 128,
+            "potential_spawn_outcomes": 8,
+            "symbolic_adjacency_tests": 52,
+            "symbolic_spawn_rank_classifications": 8,
+            "symbolic_terminal_boards_avoided": 7,
+            "symbolic_terminal_mass_items": 4,
+            "symbolic_successor_entries": 5,
+            "concrete_action_rows": 4,
+            "symbolic_emitted_outcomes": 5,
+            "direct_terminal_mass_entries": 4,
+            "symbolic_board_materializations": 1,
+            "terminal_reuses": 2,
+            "model_transition_rows": 4,
+            "model_successor_entries": 5,
+            "active_states": 2,
+            "terminal_states": 2,
+            "registered_states": 4,
+            "concrete_h0_states": 0,
+            "concrete_states_by_h": {
+              "1": 1,
+              "2": 1
+            },
+            "concrete_active_by_h": {
+              "1": 1,
+              "2": 1
+            },
+            "active_cells_by_h": {
+              "1": 1,
+              "2": 1
+            }
+          },
+          "elapsed_seconds": 0.00026202999288216233
+        },
+        {
+          "board_index": 1,
+          "board": [
+            10,
+            10,
+            3,
+            4,
+            1,
+            2,
+            3,
+            6,
+            5,
+            6,
+            7,
+            8,
+            7,
+            8,
+            9,
+            10
+          ],
+          "horizon": 2,
+          "method": "V69",
+          "variant": "FULL",
+          "counts": {
+            "concrete_states": 33,
+            "learned_terminal_checks": 33,
+            "learned_swipe_calls": 20,
+            "learned_line_rewrites": 80,
+            "concrete_active_states": 5,
+            "learned_spawn_outcomes": 32,
+            "concrete_action_rows": 12,
+            "concrete_successor_entries": 32,
+            "h0_boards_generated": 24,
+            "terminal_reuses": 26,
+            "model_transition_rows": 12,
+            "model_successor_entries": 14,
+            "active_states": 5,
+            "terminal_states": 2,
+            "registered_states": 7,
+            "concrete_h0_states": 24,
+            "concrete_states_by_h": {
+              "0": 24,
+              "1": 8,
+              "2": 1
+            },
+            "concrete_active_by_h": {
+              "1": 4,
+              "2": 1
+            },
+            "active_cells_by_h": {
+              "1": 4,
+              "2": 1
+            }
+          },
+          "elapsed_seconds": 0.0008956600213423371
+        },
+        {
+          "board_index": 1,
+          "board": [
+            10,
+            10,
+            3,
+            4,
+            1,
+            2,
+            3,
+            6,
+            5,
+            6,
+            7,
+            8,
+            7,
+            8,
+            9,
+            10
+          ],
+          "horizon": 2,
+          "method": "V71",
+          "variant": "FULL",
+          "counts": {
+            "h0_boards_generated": 0,
+            "concrete_successor_entries": 4,
+            "concrete_states": 5,
+            "learned_terminal_checks": 5,
+            "learned_swipe_calls": 20,
+            "learned_line_rewrites": 80,
+            "concrete_active_states": 5,
+            "symbolic_predicate_calls": 12,
+            "symbolic_input_scan_cells": 384,
+            "potential_spawn_outcomes": 32,
+            "symbolic_adjacency_tests": 2,
+            "symbolic_spawn_rank_classifications": 24,
+            "symbolic_board_materializations": 4,
+            "symbolic_terminal_mass_items": 10,
+            "symbolic_successor_entries": 14,
+            "concrete_action_rows": 12,
+            "symbolic_emitted_outcomes": 14,
+            "symbolic_terminal_boards_avoided": 28,
+            "direct_terminal_mass_entries": 10,
+            "terminal_reuses": 8,
+            "model_transition_rows": 12,
+            "model_successor_entries": 14,
+            "active_states": 5,
+            "terminal_states": 2,
+            "registered_states": 7,
+            "concrete_h0_states": 0,
+            "concrete_states_by_h": {
+              "1": 4,
+              "2": 1
+            },
+            "concrete_active_by_h": {
+              "1": 4,
+              "2": 1
+            },
+            "active_cells_by_h": {
+              "1": 4,
+              "2": 1
+            }
+          },
+          "elapsed_seconds": 0.00047612603520974517
+        },
+        {
+          "board_index": 1,
+          "board": [
+            10,
+            10,
+            3,
+            4,
+            1,
+            2,
+            3,
+            6,
+            5,
+            6,
+            7,
+            8,
+            7,
+            8,
+            9,
+            10
+          ],
+          "horizon": 2,
+          "method": "V69",
+          "variant": "COMPOSED",
+          "counts": {
+            "concrete_states": 33,
+            "learned_terminal_checks": 33,
+            "learned_swipe_calls": 20,
+            "learned_line_rewrites": 80,
+            "concrete_active_states": 5,
+            "learned_spawn_outcomes": 32,
+            "concrete_action_rows": 12,
+            "concrete_successor_entries": 32,
+            "h0_boards_generated": 24,
+            "terminal_reuses": 26,
+            "model_transition_rows": 8,
+            "model_successor_entries": 8,
+            "contract_reuses": 2,
+            "active_states": 3,
+            "terminal_states": 2,
+            "registered_states": 5,
+            "concrete_h0_states": 24,
+            "concrete_states_by_h": {
+              "0": 24,
+              "1": 8,
+              "2": 1
+            },
+            "concrete_active_by_h": {
+              "1": 4,
+              "2": 1
+            },
+            "active_cells_by_h": {
+              "1": 2,
+              "2": 1
+            }
+          },
+          "elapsed_seconds": 0.0005662500043399632
+        },
+        {
+          "board_index": 1,
+          "board": [
+            10,
+            10,
+            3,
+            4,
+            1,
+            2,
+            3,
+            6,
+            5,
+            6,
+            7,
+            8,
+            7,
+            8,
+            9,
+            10
+          ],
+          "horizon": 2,
+          "method": "V71",
+          "variant": "COMPOSED",
+          "counts": {
+            "h0_boards_generated": 0,
+            "concrete_successor_entries": 4,
+            "concrete_states": 5,
+            "learned_terminal_checks": 5,
+            "learned_swipe_calls": 20,
+            "learned_line_rewrites": 80,
+            "concrete_active_states": 5,
+            "symbolic_predicate_calls": 12,
+            "symbolic_input_scan_cells": 384,
+            "potential_spawn_outcomes": 32,
+            "symbolic_adjacency_tests": 2,
+            "symbolic_spawn_rank_classifications": 24,
+            "symbolic_board_materializations": 4,
+            "symbolic_terminal_mass_items": 10,
+            "symbolic_successor_entries": 14,
+            "concrete_action_rows": 12,
+            "symbolic_emitted_outcomes": 14,
+            "symbolic_terminal_boards_avoided": 28,
+            "direct_terminal_mass_entries": 10,
+            "terminal_reuses": 8,
+            "model_transition_rows": 8,
+            "model_successor_entries": 8,
+            "contract_reuses": 2,
+            "active_states": 3,
+            "terminal_states": 2,
+            "registered_states": 5,
+            "concrete_h0_states": 0,
+            "concrete_states_by_h": {
+              "1": 4,
+              "2": 1
+            },
+            "concrete_active_by_h": {
+              "1": 4,
+              "2": 1
+            },
+            "active_cells_by_h": {
+              "1": 2,
+              "2": 1
+            }
+          },
+          "elapsed_seconds": 0.0004655469674617052
+        }
+      ],
+      "rule_compilations": 1
+    }
+  ]
+}

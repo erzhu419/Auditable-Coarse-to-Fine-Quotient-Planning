@@ -1,0 +1,56 @@
+{
+  "attempts": [
+    {
+      "test_module": "tests/test_lmta_trajectory_certificate_v62.py",
+      "new_failures": 0,
+      "actual_planner_work": {
+        "planner_calls": 6,
+        "dp_states": 13,
+        "action_value_evaluations": 31,
+        "kernel_builds": 6,
+        "kernel_cache_hits": 0,
+        "transition_outcomes": 9,
+        "target_probability_evaluations": 57,
+        "score_node_evaluations": 0,
+        "immediate_expectation_terms": 0,
+        "bellman_expectation_terms": 9,
+        "forced_choice": 2,
+        "analytic_expectation_calls": 25,
+        "analytic_probability_terms": 43
+      },
+      "verification_work": {
+        "queries": 9,
+        "graph_model_builds": 9,
+        "parent_membership_checks": 41,
+        "parent_product_factors": 16,
+        "outcome_probability_factors": 6,
+        "value_cache_hits": 0,
+        "root_Q_comparisons": 22,
+        "independent_dp_states": 16,
+        "independent_action_value_evaluations": 40,
+        "independent_kernel_builds": 6,
+        "independent_kernel_cache_hits": 0,
+        "independent_transition_outcomes": 9,
+        "independent_target_probability_evaluations": 75,
+        "independent_score_node_evaluations": 0,
+        "independent_immediate_expectation_terms": 0,
+        "independent_bellman_expectation_terms": 9,
+        "independent_analytic_expectation_calls": 34,
+        "independent_analytic_probability_terms": 61
+      },
+      "verification_calls": 9,
+      "hand_graph_constructions": 6,
+      "sampled_graphs": 0,
+      "environment_calls": 0,
+      "random_draws": 0,
+      "learned_model_calls": 0,
+      "gradient_steps": 0,
+      "wall_seconds": 0.05522219301201403,
+      "scope": "All production hand-query generation and independent verification calls, including corruption probes; no main graphs or complete policy evaluations.",
+      "pytest_summary": "9 passed in 1.71s",
+      "pytest_passed": 9,
+      "pytest_exit_code": 0,
+      "command_wall_seconds": 3.046356821
+    }
+  ]
+}

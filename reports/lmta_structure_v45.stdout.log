@@ -1,0 +1,6 @@
+{"completed_graphs": 10, "total_graphs": 58}
+{"completed_graphs": 20, "total_graphs": 58}
+{"completed_graphs": 30, "total_graphs": 58}
+{"completed_graphs": 40, "total_graphs": 58}
+{"completed_graphs": 50, "total_graphs": 58}
+{"structural_conditions": {"all_graphs_covered": true, "mean_constant": true, "exact_initial_score_recoverable": true, "score_variation_preserved": true}, "coverage": {"expected_encoder_conditions": 1044, "actual_encoder_conditions": 1044, "expected_q_conditions": 11832, "actual_q_conditions": 11832}, "wall_seconds": 25.26790015300503}

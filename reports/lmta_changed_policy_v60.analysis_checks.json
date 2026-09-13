@@ -1,0 +1,28 @@
+{
+  "schema": "acfqp.lmta_changed_policy_analysis_checks.v60",
+  "analysis_test_attempts": [
+    {
+      "command": "pytest tests/test_lmta_changed_policy_analysis_v60.py -q",
+      "exit_code": 0,
+      "command_wall_seconds": 0.7984814310038928,
+      "output": "....                                                                     [100%]\n4 passed in 0.21s\n",
+      "scope": "hand certificate and synthetic reuse provenance; no target production run"
+    }
+  ],
+  "development_work": {
+    "independent_query_checks": 19,
+    "independent_model_constructions": 10,
+    "independent_kernel_calls": 36,
+    "independent_kernel_builds": 36,
+    "independent_kernel_cache_hits": 0,
+    "independent_transition_outcomes_created": 53,
+    "new_graphs": 0,
+    "new_environment_samples": 0,
+    "new_environment_calls": 0,
+    "new_implementation_planner_calls": 0,
+    "new_production_policy_evaluations": 0,
+    "new_RL_updates": 0,
+    "new_MCTS_calls": 0,
+    "scope": "three-node hand-certificate enumeration; synthetic provenance test stubs certificate math"
+  }
+}

@@ -1,0 +1,49 @@
+{"board_index": 0, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 1, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 2, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 3, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 4, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 5, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 6, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 7, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 8, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 9, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 10, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 11, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 12, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 13, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 14, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 15, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"base_seed": 952001, "budget_matched_pairs": 160, "replicate_index": 0, "source_valid_pairs": 160, "stage": "SAMPLING"}
+{"base_seed": 952002, "budget_matched_pairs": 160, "replicate_index": 1, "source_valid_pairs": 160, "stage": "SAMPLING"}
+{"base_seed": 952003, "budget_matched_pairs": 160, "replicate_index": 2, "source_valid_pairs": 160, "stage": "SAMPLING"}
+{"base_seed": 952004, "budget_matched_pairs": 160, "replicate_index": 3, "source_valid_pairs": 160, "stage": "SAMPLING"}
+{"base_seed": 952005, "budget_matched_pairs": 160, "replicate_index": 4, "source_valid_pairs": 160, "stage": "SAMPLING"}
+{"base_seed": 952006, "budget_matched_pairs": 160, "replicate_index": 5, "source_valid_pairs": 160, "stage": "SAMPLING"}
+{"base_seed": 952007, "budget_matched_pairs": 160, "replicate_index": 6, "source_valid_pairs": 160, "stage": "SAMPLING"}
+{"base_seed": 952008, "budget_matched_pairs": 160, "replicate_index": 7, "source_valid_pairs": 160, "stage": "SAMPLING"}
+{"base_seed": 952009, "budget_matched_pairs": 160, "replicate_index": 8, "source_valid_pairs": 160, "stage": "SAMPLING"}
+{"base_seed": 952010, "budget_matched_pairs": 160, "replicate_index": 9, "source_valid_pairs": 160, "stage": "SAMPLING"}
+{"base_seed": 952011, "budget_matched_pairs": 160, "replicate_index": 10, "source_valid_pairs": 160, "stage": "SAMPLING"}
+{"base_seed": 952012, "budget_matched_pairs": 160, "replicate_index": 11, "source_valid_pairs": 160, "stage": "SAMPLING"}
+{"base_seed": 952013, "budget_matched_pairs": 160, "replicate_index": 12, "source_valid_pairs": 160, "stage": "SAMPLING"}
+{"base_seed": 952014, "budget_matched_pairs": 160, "replicate_index": 13, "source_valid_pairs": 160, "stage": "SAMPLING"}
+{"base_seed": 952015, "budget_matched_pairs": 160, "replicate_index": 14, "source_valid_pairs": 160, "stage": "SAMPLING"}
+{"base_seed": 952016, "budget_matched_pairs": 160, "replicate_index": 15, "source_valid_pairs": 160, "stage": "SAMPLING"}
+{"base_seed": 952001, "complete": true, "replicate_index": 0, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 952002, "complete": true, "replicate_index": 1, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 952003, "complete": true, "replicate_index": 2, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 952004, "complete": true, "replicate_index": 3, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 952005, "complete": true, "replicate_index": 4, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 952006, "complete": true, "replicate_index": 5, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 952007, "complete": true, "replicate_index": 6, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 952008, "complete": true, "replicate_index": 7, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 952009, "complete": true, "replicate_index": 8, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 952010, "complete": true, "replicate_index": 9, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 952011, "complete": true, "replicate_index": 10, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 952012, "complete": true, "replicate_index": 11, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 952013, "complete": true, "replicate_index": 12, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 952014, "complete": true, "replicate_index": 13, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 952015, "complete": true, "replicate_index": 14, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 952016, "complete": true, "replicate_index": 15, "source_valid": true, "stage": "EVALUATION"}
+{"status": "TRANSFER_COMPLETE", "source_valid_repetition_count": 16, "complete_repetition_count": 16, "output": "reports/controlled_predictive_transfer_v32.json.gz", "report_serialization_seconds": 3.326892336976016, "report_bytes": 1816783}

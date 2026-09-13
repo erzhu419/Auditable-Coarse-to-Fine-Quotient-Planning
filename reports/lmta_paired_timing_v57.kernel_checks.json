@@ -1,0 +1,35 @@
+{
+  "attempts": [
+    {
+      "test_module": "tests/test_lmta_paired_timing_v57.py",
+      "new_failures": 0,
+      "environment_counters": {},
+      "model_evaluations": 0,
+      "gradient_steps": 0,
+      "planner_calls": {
+        "LOOKAHEAD_FULL": 8,
+        "LOOKAHEAD_FULL_ANALYTIC": 12
+      },
+      "solver_instances": 20,
+      "all_solver_counters": {
+        "dp_states": 20,
+        "action_value_evaluations": 60,
+        "kernel_builds": 24,
+        "kernel_cache_hits": 0,
+        "transition_outcomes": 40,
+        "target_probability_evaluations": 120,
+        "score_node_evaluations": 0,
+        "immediate_expectation_terms": 0,
+        "bellman_expectation_terms": 40,
+        "forced_choice": 0,
+        "analytic_expectation_calls": 36,
+        "analytic_probability_terms": 72
+      },
+      "real_collector_calls": 2,
+      "mock_collector_calls": 14,
+      "mock_clock_blocks": 7,
+      "wall_seconds": 0.04514164800639264,
+      "scope": "Every planner and hand-reference call executes the original solver and is charged. Mock clock/collector blocks test accounting identities, not performance; only wall_seconds is actual total test time. No main-panel benchmark, environment call or outer policy evaluation."
+    }
+  ]
+}

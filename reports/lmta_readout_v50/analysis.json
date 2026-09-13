@@ -1,0 +1,897 @@
+{
+  "schema": "acfqp.lmta_readout_analysis.v50",
+  "protocol": {
+    "train_graph_ids": [
+      440000,
+      440001,
+      440002,
+      440003,
+      440004,
+      440005,
+      440006,
+      440007,
+      440008,
+      440009,
+      440010,
+      440011,
+      440012,
+      440013,
+      440014,
+      440015
+    ],
+    "heldout_graph_ids": [
+      490900,
+      490901,
+      490902,
+      490903,
+      490904,
+      490905,
+      490906,
+      490907
+    ],
+    "train_environment_seeds": [
+      491000,
+      491001,
+      491002,
+      491003,
+      491004,
+      491005,
+      491006,
+      491007,
+      491008,
+      491009,
+      491010,
+      491011,
+      491012,
+      491013,
+      491014,
+      491015
+    ],
+    "heldout_environment_seeds": [
+      492000,
+      492001,
+      492002,
+      492003,
+      492004,
+      492005,
+      492006,
+      492007
+    ],
+    "nodes": 500,
+    "p": 0.01,
+    "budget": 70,
+    "horizon": 10,
+    "runs": 3,
+    "initialization_seeds": [
+      493001,
+      493002,
+      493003
+    ],
+    "batch_seeds": [
+      494001,
+      494002,
+      494003
+    ],
+    "steps": 2000,
+    "batch_size": 4,
+    "checkpoints": [
+      0,
+      2000
+    ],
+    "learning_rate": 0.001,
+    "weight_decay": 1e-05,
+    "gradient_clip": 5.0,
+    "target_tie_tolerance": 1e-09,
+    "max_mean_relative_regret": 0.01,
+    "min_optimal_rate": 0.95,
+    "loss": "state_mean_legal_node_mse",
+    "state_policy": "AVERAGE_SCORE",
+    "operator": "IC_SUM",
+    "dtype": "float32",
+    "architecture": "NodeQ_plus_learned_first_message_linear",
+    "added_parameters": 6,
+    "readout_initialization": "zero",
+    "batch_source": "V49_recorded_batches",
+    "float64_readout_tolerance": 1e-12,
+    "float32_readout_tolerance": 2e-06
+  },
+  "integrity": {
+    "passed": true,
+    "candidate": {
+      "passed": true,
+      "errors": {},
+      "metric_records": 10080,
+      "expected_metric_records": 10080,
+      "missing_metric_records": 0,
+      "duplicate_metric_identities": 0,
+      "initial_metric_records_exact": 5040,
+      "expected_initial_metric_records": 5040,
+      "training_records": 6000,
+      "expected_training_records": 6000,
+      "recorded_batches_exact": 6000,
+      "missing_training_steps": 0
+    },
+    "source_V49": {
+      "passed": true,
+      "errors": {},
+      "expected_metric_records": 10080,
+      "actual_metric_records": 10080,
+      "missing_metric_records": 0,
+      "duplicate_metric_identities": 0,
+      "expected_training_records": 6000,
+      "actual_training_records": 6000,
+      "missing_training_steps": 0,
+      "duplicate_training_step_identities": 0,
+      "expected_collection_records": 24,
+      "actual_collection_records": 24
+    }
+  },
+  "valid_diagnostic": true,
+  "summaries": [
+    {
+      "run_id": 0,
+      "checkpoint": 0,
+      "split": "train",
+      "state_records": 1120,
+      "mean_score_regret": 0.14501158811426668,
+      "mean_relative_regret": 0.11621210573776944,
+      "optimal_rate": 0.15625,
+      "pairwise_accuracy": 0.9160328492858664,
+      "pairwise_pairs": 66646563,
+      "mse": 0.41892742851521625
+    },
+    {
+      "run_id": 0,
+      "checkpoint": 0,
+      "split": "heldout",
+      "state_records": 560,
+      "mean_score_regret": 0.1851992204224347,
+      "mean_relative_regret": 0.15914241762366607,
+      "optimal_rate": 0.13214285714285715,
+      "pairwise_accuracy": 0.9152656904056716,
+      "pairwise_pairs": 31917148,
+      "mse": 0.4094959458271368
+    },
+    {
+      "run_id": 0,
+      "checkpoint": 2000,
+      "split": "train",
+      "state_records": 1120,
+      "mean_score_regret": 0.010467590445269015,
+      "mean_relative_regret": 0.00852660231635015,
+      "optimal_rate": 0.5982142857142857,
+      "pairwise_accuracy": 0.9848641106969012,
+      "pairwise_pairs": 66646563,
+      "mse": 0.0007491813799003157
+    },
+    {
+      "run_id": 0,
+      "checkpoint": 2000,
+      "split": "heldout",
+      "state_records": 560,
+      "mean_score_regret": 0.009065225449154017,
+      "mean_relative_regret": 0.007396758014244239,
+      "optimal_rate": 0.6142857142857143,
+      "pairwise_accuracy": 0.9851349030308096,
+      "pairwise_pairs": 31917148,
+      "mse": 0.0006639150885253357
+    },
+    {
+      "run_id": 1,
+      "checkpoint": 0,
+      "split": "train",
+      "state_records": 1120,
+      "mean_score_regret": 0.6828550665604237,
+      "mean_relative_regret": 0.473284179295287,
+      "optimal_rate": 0.03660714285714286,
+      "pairwise_accuracy": 0.8334367970333294,
+      "pairwise_pairs": 66646563,
+      "mse": 0.5643239125182336
+    },
+    {
+      "run_id": 1,
+      "checkpoint": 0,
+      "split": "heldout",
+      "state_records": 560,
+      "mean_score_regret": 0.6709001068376068,
+      "mean_relative_regret": 0.4681123752131151,
+      "optimal_rate": 0.03214285714285714,
+      "pairwise_accuracy": 0.8303517125026334,
+      "pairwise_pairs": 31917148,
+      "mse": 0.5514062347236117
+    },
+    {
+      "run_id": 1,
+      "checkpoint": 2000,
+      "split": "train",
+      "state_records": 1120,
+      "mean_score_regret": 0.00970664504146647,
+      "mean_relative_regret": 0.008260663763555498,
+      "optimal_rate": 0.6107142857142858,
+      "pairwise_accuracy": 0.9851749369281053,
+      "pairwise_pairs": 66646563,
+      "mse": 0.0006828872440437557
+    },
+    {
+      "run_id": 1,
+      "checkpoint": 2000,
+      "split": "heldout",
+      "state_records": 560,
+      "mean_score_regret": 0.008592751494537207,
+      "mean_relative_regret": 0.0073636830124860055,
+      "optimal_rate": 0.6142857142857143,
+      "pairwise_accuracy": 0.9853286860091635,
+      "pairwise_pairs": 31917148,
+      "mse": 0.0007103274508892865
+    },
+    {
+      "run_id": 2,
+      "checkpoint": 0,
+      "split": "train",
+      "state_records": 1120,
+      "mean_score_regret": 0.28144219867434156,
+      "mean_relative_regret": 0.26461134591112745,
+      "optimal_rate": 0.12767857142857142,
+      "pairwise_accuracy": 0.8452994717822133,
+      "pairwise_pairs": 66646563,
+      "mse": 0.6642759708244317
+    },
+    {
+      "run_id": 2,
+      "checkpoint": 0,
+      "split": "heldout",
+      "state_records": 560,
+      "mean_score_regret": 0.2874114179471322,
+      "mean_relative_regret": 0.27987314820213843,
+      "optimal_rate": 0.11607142857142858,
+      "pairwise_accuracy": 0.8436654647213466,
+      "pairwise_pairs": 31917148,
+      "mse": 0.6504413887897387
+    },
+    {
+      "run_id": 2,
+      "checkpoint": 2000,
+      "split": "train",
+      "state_records": 1120,
+      "mean_score_regret": 0.020537086921015496,
+      "mean_relative_regret": 0.015125797333461661,
+      "optimal_rate": 0.4616071428571429,
+      "pairwise_accuracy": 0.9809194886764078,
+      "pairwise_pairs": 66646563,
+      "mse": 0.002261645994256316
+    },
+    {
+      "run_id": 2,
+      "checkpoint": 2000,
+      "split": "heldout",
+      "state_records": 560,
+      "mean_score_regret": 0.016132344837701977,
+      "mean_relative_regret": 0.011740450850922481,
+      "optimal_rate": 0.49464285714285716,
+      "pairwise_accuracy": 0.9813324799571691,
+      "pairwise_pairs": 31917148,
+      "mse": 0.0021151895355028174
+    }
+  ],
+  "final_criteria_by_run": [
+    {
+      "run_id": 0,
+      "train": {
+        "mean_relative_regret_passed": true,
+        "optimal_rate_passed": false,
+        "passed": false
+      },
+      "heldout": {
+        "mean_relative_regret_passed": true,
+        "optimal_rate_passed": false,
+        "passed": false
+      }
+    },
+    {
+      "run_id": 1,
+      "train": {
+        "mean_relative_regret_passed": true,
+        "optimal_rate_passed": false,
+        "passed": false
+      },
+      "heldout": {
+        "mean_relative_regret_passed": true,
+        "optimal_rate_passed": false,
+        "passed": false
+      }
+    },
+    {
+      "run_id": 2,
+      "train": {
+        "mean_relative_regret_passed": false,
+        "optimal_rate_passed": false,
+        "passed": false
+      },
+      "heldout": {
+        "mean_relative_regret_passed": false,
+        "optimal_rate_passed": false,
+        "passed": false
+      }
+    }
+  ],
+  "diagnostic_outcome": "FIT_NOT_ESTABLISHED",
+  "paired_final_candidate_minus_V49": {
+    "train": {
+      "mean_relative_regret": {
+        "run_values": [
+          -0.005421745718747763,
+          -0.004921452618799983,
+          -0.0030532033094798836
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": -0.004465467215675876,
+        "sample_std": 0.0012483750646427592,
+        "ci_95": [
+          -0.007566602792163377,
+          -0.0013643316391883753
+        ],
+        "all_runs_positive": false,
+        "all_positive_and_ci_lower_positive": false
+      },
+      "optimal_rate": {
+        "run_values": [
+          0.1026785714285714,
+          0.0848214285714286,
+          0.033035714285714335
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": 0.07351190476190478,
+        "sample_std": 0.03617265381961543,
+        "ci_95": [
+          -0.016345948725481882,
+          0.16336975824929145
+        ],
+        "all_runs_positive": true,
+        "all_positive_and_ci_lower_positive": false
+      },
+      "pairwise_accuracy": {
+        "run_values": [
+          0.0064341802592280395,
+          0.004855216614846225,
+          0.0050360361418787525
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": 0.005441811005317672,
+        "sample_std": 0.0008641594050978273,
+        "ci_95": [
+          0.003295120038150659,
+          0.007588501972484685
+        ],
+        "all_runs_positive": true,
+        "all_positive_and_ci_lower_positive": true
+      },
+      "mse": {
+        "run_values": [
+          -0.0004923261413735688,
+          -0.00043777328337172466,
+          0.0008128436336855569
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": -3.9085263686578875e-05,
+        "sample_std": 0.0007382961046980538,
+        "ci_95": [
+          -0.0018731144598051874,
+          0.0017949439324320298
+        ],
+        "all_runs_positive": false,
+        "all_positive_and_ci_lower_positive": false
+      }
+    },
+    "heldout": {
+      "mean_relative_regret": {
+        "run_values": [
+          -0.004884521240870781,
+          -0.002181309052762286,
+          -0.0021587023084353573
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": -0.0030748442006894748,
+        "sample_std": 0.001567267050805891,
+        "ci_95": [
+          -0.0069681513859796915,
+          0.0008184629846007415
+        ],
+        "all_runs_positive": false,
+        "all_positive_and_ci_lower_positive": false
+      },
+      "optimal_rate": {
+        "run_values": [
+          0.09464285714285714,
+          0.044642857142857206,
+          0.0267857142857143
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": 0.05535714285714288,
+        "sample_std": 0.035174492149271784,
+        "ci_95": [
+          -0.0320211395825197,
+          0.14273542529680547
+        ],
+        "all_runs_positive": true,
+        "all_positive_and_ci_lower_positive": false
+      },
+      "pairwise_accuracy": {
+        "run_values": [
+          0.00635373185599164,
+          0.00480719643246319,
+          0.00493388381693749
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": 0.005364937368464107,
+        "sample_std": 0.0008586607754345501,
+        "ci_95": [
+          0.0032319057546065883,
+          0.007497968982321625
+        ],
+        "all_runs_positive": true,
+        "all_positive_and_ci_lower_positive": true
+      },
+      "mse": {
+        "run_values": [
+          -0.0005812589675739904,
+          -0.0004410163290044219,
+          0.0007847569786250059
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": -7.917277265113549e-05,
+        "sample_std": 0.0007514638785552372,
+        "ci_95": [
+          -0.0019459125323881702,
+          0.0017875669870858991
+        ],
+        "all_runs_positive": false,
+        "all_positive_and_ci_lower_positive": false
+      }
+    }
+  },
+  "retained_V49": {
+    "diagnostic_outcome": "FIT_NOT_ESTABLISHED",
+    "summaries": [
+      {
+        "run_id": 0,
+        "checkpoint": 0,
+        "split": "train",
+        "state_records": 1120,
+        "mean_score_regret": 0.14501158811426668,
+        "mean_relative_regret": 0.11621210573776944,
+        "optimal_rate": 0.15625,
+        "pairwise_accuracy": 0.9160328492858664,
+        "pairwise_pairs": 66646563,
+        "mse": 0.41892742851521625
+      },
+      {
+        "run_id": 0,
+        "checkpoint": 0,
+        "split": "heldout",
+        "state_records": 560,
+        "mean_score_regret": 0.1851992204224347,
+        "mean_relative_regret": 0.15914241762366607,
+        "optimal_rate": 0.13214285714285715,
+        "pairwise_accuracy": 0.9152656904056716,
+        "pairwise_pairs": 31917148,
+        "mse": 0.4094959458271368
+      },
+      {
+        "run_id": 0,
+        "checkpoint": 2000,
+        "split": "train",
+        "state_records": 1120,
+        "mean_score_regret": 0.01759541549720121,
+        "mean_relative_regret": 0.013948348035097913,
+        "optimal_rate": 0.4955357142857143,
+        "pairwise_accuracy": 0.9784299304376731,
+        "pairwise_pairs": 66646563,
+        "mse": 0.0012415075212738845
+      },
+      {
+        "run_id": 0,
+        "checkpoint": 2000,
+        "split": "heldout",
+        "state_records": 560,
+        "mean_score_regret": 0.015696158999730425,
+        "mean_relative_regret": 0.01228127925511502,
+        "optimal_rate": 0.5196428571428572,
+        "pairwise_accuracy": 0.978781171174818,
+        "pairwise_pairs": 31917148,
+        "mse": 0.001245174056099326
+      },
+      {
+        "run_id": 1,
+        "checkpoint": 0,
+        "split": "train",
+        "state_records": 1120,
+        "mean_score_regret": 0.6828550665604237,
+        "mean_relative_regret": 0.473284179295287,
+        "optimal_rate": 0.03660714285714286,
+        "pairwise_accuracy": 0.8334367970333294,
+        "pairwise_pairs": 66646563,
+        "mse": 0.5643239125182336
+      },
+      {
+        "run_id": 1,
+        "checkpoint": 0,
+        "split": "heldout",
+        "state_records": 560,
+        "mean_score_regret": 0.6709001068376068,
+        "mean_relative_regret": 0.4681123752131151,
+        "optimal_rate": 0.03214285714285714,
+        "pairwise_accuracy": 0.8303517125026334,
+        "pairwise_pairs": 31917148,
+        "mse": 0.5514062347236117
+      },
+      {
+        "run_id": 1,
+        "checkpoint": 2000,
+        "split": "train",
+        "state_records": 1120,
+        "mean_score_regret": 0.015863578385899815,
+        "mean_relative_regret": 0.013182116382355481,
+        "optimal_rate": 0.5258928571428572,
+        "pairwise_accuracy": 0.9803197203132591,
+        "pairwise_pairs": 66646563,
+        "mse": 0.0011206605274154803
+      },
+      {
+        "run_id": 1,
+        "checkpoint": 2000,
+        "split": "heldout",
+        "state_records": 560,
+        "mean_score_regret": 0.011445166936238363,
+        "mean_relative_regret": 0.009544992065248292,
+        "optimal_rate": 0.5696428571428571,
+        "pairwise_accuracy": 0.9805214895767003,
+        "pairwise_pairs": 31917148,
+        "mse": 0.0011513437798937084
+      },
+      {
+        "run_id": 2,
+        "checkpoint": 0,
+        "split": "train",
+        "state_records": 1120,
+        "mean_score_regret": 0.28144219867434156,
+        "mean_relative_regret": 0.26461134591112745,
+        "optimal_rate": 0.12767857142857142,
+        "pairwise_accuracy": 0.8452994717822133,
+        "pairwise_pairs": 66646563,
+        "mse": 0.6642759708244317
+      },
+      {
+        "run_id": 2,
+        "checkpoint": 0,
+        "split": "heldout",
+        "state_records": 560,
+        "mean_score_regret": 0.2874114179471322,
+        "mean_relative_regret": 0.27987314820213843,
+        "optimal_rate": 0.11607142857142858,
+        "pairwise_accuracy": 0.8436654647213466,
+        "pairwise_pairs": 31917148,
+        "mse": 0.6504413887897387
+      },
+      {
+        "run_id": 2,
+        "checkpoint": 2000,
+        "split": "train",
+        "state_records": 1120,
+        "mean_score_regret": 0.023732351477887194,
+        "mean_relative_regret": 0.018179000642941544,
+        "optimal_rate": 0.42857142857142855,
+        "pairwise_accuracy": 0.975883452534529,
+        "pairwise_pairs": 66646563,
+        "mse": 0.001448802360570759
+      },
+      {
+        "run_id": 2,
+        "checkpoint": 2000,
+        "split": "heldout",
+        "state_records": 560,
+        "mean_score_regret": 0.018321797250368674,
+        "mean_relative_regret": 0.013899153159357839,
+        "optimal_rate": 0.46785714285714286,
+        "pairwise_accuracy": 0.9763985961402316,
+        "pairwise_pairs": 31917148,
+        "mse": 0.0013304325568778115
+      }
+    ],
+    "final_criteria_by_run": [
+      {
+        "run_id": 0,
+        "train": {
+          "mean_relative_regret_passed": false,
+          "optimal_rate_passed": false,
+          "passed": false
+        },
+        "heldout": {
+          "mean_relative_regret_passed": false,
+          "optimal_rate_passed": false,
+          "passed": false
+        }
+      },
+      {
+        "run_id": 1,
+        "train": {
+          "mean_relative_regret_passed": false,
+          "optimal_rate_passed": false,
+          "passed": false
+        },
+        "heldout": {
+          "mean_relative_regret_passed": true,
+          "optimal_rate_passed": false,
+          "passed": false
+        }
+      },
+      {
+        "run_id": 2,
+        "train": {
+          "mean_relative_regret_passed": false,
+          "optimal_rate_passed": false,
+          "passed": false
+        },
+        "heldout": {
+          "mean_relative_regret_passed": false,
+          "optimal_rate_passed": false,
+          "passed": false
+        }
+      }
+    ]
+  },
+  "information": {
+    "passed": true,
+    "states": 1680,
+    "legal_nodes": 547750,
+    "max_abs_error_float64": 1.3322676295501878e-15,
+    "max_abs_error_float32": 5.48053097348955e-07,
+    "by_graph": [
+      {
+        "graph_id": 440000,
+        "states": 70,
+        "legal_nodes": 23527,
+        "max_abs_error_float64": 8.881784197001252e-16,
+        "max_abs_error_float32": 4.0947444857053483e-07
+      },
+      {
+        "graph_id": 440001,
+        "states": 70,
+        "legal_nodes": 22449,
+        "max_abs_error_float64": 6.661338147750939e-16,
+        "max_abs_error_float32": 3.564925421528642e-07
+      },
+      {
+        "graph_id": 440002,
+        "states": 70,
+        "legal_nodes": 22974,
+        "max_abs_error_float64": 6.661338147750939e-16,
+        "max_abs_error_float32": 3.4513927626989016e-07
+      },
+      {
+        "graph_id": 440003,
+        "states": 70,
+        "legal_nodes": 21602,
+        "max_abs_error_float64": 4.440892098500626e-16,
+        "max_abs_error_float32": 3.769284202537193e-07
+      },
+      {
+        "graph_id": 440004,
+        "states": 70,
+        "legal_nodes": 23156,
+        "max_abs_error_float64": 6.661338147750939e-16,
+        "max_abs_error_float32": 5.48053097348955e-07
+      },
+      {
+        "graph_id": 440005,
+        "states": 70,
+        "legal_nodes": 22057,
+        "max_abs_error_float64": 1.3322676295501878e-15,
+        "max_abs_error_float32": 4.160535205244287e-07
+      },
+      {
+        "graph_id": 440006,
+        "states": 70,
+        "legal_nodes": 22197,
+        "max_abs_error_float64": 6.661338147750939e-16,
+        "max_abs_error_float32": 3.591072337272294e-07
+      },
+      {
+        "graph_id": 440007,
+        "states": 70,
+        "legal_nodes": 23023,
+        "max_abs_error_float64": 8.881784197001252e-16,
+        "max_abs_error_float32": 3.292447043889979e-07
+      },
+      {
+        "graph_id": 440008,
+        "states": 70,
+        "legal_nodes": 22785,
+        "max_abs_error_float64": 4.440892098500626e-16,
+        "max_abs_error_float32": 4.3596540200141476e-07
+      },
+      {
+        "graph_id": 440009,
+        "states": 70,
+        "legal_nodes": 23912,
+        "max_abs_error_float64": 6.661338147750939e-16,
+        "max_abs_error_float32": 4.291534423384036e-07
+      },
+      {
+        "graph_id": 440010,
+        "states": 70,
+        "legal_nodes": 23170,
+        "max_abs_error_float64": 6.661338147750939e-16,
+        "max_abs_error_float32": 3.860110329156896e-07
+      },
+      {
+        "graph_id": 440011,
+        "states": 70,
+        "legal_nodes": 22820,
+        "max_abs_error_float64": 4.440892098500626e-16,
+        "max_abs_error_float32": 4.3066721122642093e-07
+      },
+      {
+        "graph_id": 440012,
+        "states": 70,
+        "legal_nodes": 23590,
+        "max_abs_error_float64": 4.440892098500626e-16,
+        "max_abs_error_float32": 4.132588704575113e-07
+      },
+      {
+        "graph_id": 440013,
+        "states": 70,
+        "legal_nodes": 24759,
+        "max_abs_error_float64": 6.661338147750939e-16,
+        "max_abs_error_float32": 3.678458078137936e-07
+      },
+      {
+        "graph_id": 440014,
+        "states": 70,
+        "legal_nodes": 22043,
+        "max_abs_error_float64": 6.661338147750939e-16,
+        "max_abs_error_float32": 3.4793392633680753e-07
+      },
+      {
+        "graph_id": 440015,
+        "states": 70,
+        "legal_nodes": 24318,
+        "max_abs_error_float64": 6.661338147750939e-16,
+        "max_abs_error_float32": 3.405979700499273e-07
+      },
+      {
+        "graph_id": 490900,
+        "states": 70,
+        "legal_nodes": 23324,
+        "max_abs_error_float64": 6.661338147750939e-16,
+        "max_abs_error_float32": 3.716302297007701e-07
+      },
+      {
+        "graph_id": 490901,
+        "states": 70,
+        "legal_nodes": 24227,
+        "max_abs_error_float64": 6.661338147750939e-16,
+        "max_abs_error_float32": 3.9357987668964256e-07
+      },
+      {
+        "graph_id": 490902,
+        "states": 70,
+        "legal_nodes": 23359,
+        "max_abs_error_float64": 6.661338147750939e-16,
+        "max_abs_error_float32": 3.6062100239320216e-07
+      },
+      {
+        "graph_id": 490903,
+        "states": 70,
+        "legal_nodes": 22638,
+        "max_abs_error_float64": 8.881784197001252e-16,
+        "max_abs_error_float32": 3.9357987668964256e-07
+      },
+      {
+        "graph_id": 490904,
+        "states": 70,
+        "legal_nodes": 21560,
+        "max_abs_error_float64": 8.881784197001252e-16,
+        "max_abs_error_float32": 3.897954545806215e-07
+      },
+      {
+        "graph_id": 490905,
+        "states": 70,
+        "legal_nodes": 21581,
+        "max_abs_error_float64": 8.881784197001252e-16,
+        "max_abs_error_float32": 3.617907327058134e-07
+      },
+      {
+        "graph_id": 490906,
+        "states": 70,
+        "legal_nodes": 20594,
+        "max_abs_error_float64": 8.881784197001252e-16,
+        "max_abs_error_float32": 4.2461213611844073e-07
+      },
+      {
+        "graph_id": 490907,
+        "states": 70,
+        "legal_nodes": 22085,
+        "max_abs_error_float64": 4.440892098500626e-16,
+        "max_abs_error_float32": 3.557356578198778e-07
+      }
+    ],
+    "wall_seconds": 0.49222692000330426
+  },
+  "accounting": {
+    "new_readout": {
+      "new_environment_samples": 0,
+      "new_environment_calls": 0,
+      "new_RL_training_updates": 0,
+      "new_MCTS_calls": 0,
+      "gradient_update_records": 6000,
+      "training_state_presentations_recorded": 24000,
+      "evaluation_state_records": 10080,
+      "initial_anchor_state_evaluations": 5040,
+      "manifest_gradient_updates": 6000,
+      "manifest_training_state_presentations": 24000,
+      "manifest_evaluation_states": 10080,
+      "wall_seconds_by_stage": {
+        "source_read": 0.12363188198651187,
+        "graph_generation": 0.33738315000664443,
+        "tensor_preparation": 1.6726994730124716,
+        "information_check": 0.49222692000330426,
+        "initialization": 0.6325512550247367,
+        "supervised_training": 26.39826556900516,
+        "evaluation": 9.10175686996081,
+        "model_serialization": 0.006086806009989232
+      },
+      "whole_runner_seconds": 38.77687815899844,
+      "unitemized_runner_seconds": 0.012276233988814056,
+      "information_reported_wall_seconds": 0.49222692000330426,
+      "source_dataset_bytes": 255672,
+      "new_model_bytes": 617115,
+      "added_parameters_per_model": 6,
+      "scope": "All new supervised updates and state evaluations, including the initial anchors, are charged. Recorded and manifest counts describe the same work and are not additive. Information report timing is included in its runner stage, not an additional charge. No old collection or dataset serialization is charged anew."
+    },
+    "retained_V49": {
+      "collection_episodes_recorded": 24,
+      "new_physical_counters": {
+        "primitive_selections": 1680,
+        "day_transitions": 240,
+        "propagation_draws": 30348
+      },
+      "teacher_states_recorded": 1680,
+      "analytical_label_calls": 1680,
+      "analytical_label_node_evaluations": 840000,
+      "gradient_update_records": 6000,
+      "training_state_presentations_recorded": 24000,
+      "evaluation_state_records": 10080,
+      "manifest_gradient_updates": 6000,
+      "manifest_training_state_presentations": 24000,
+      "manifest_evaluation_states": 10080,
+      "new_RL_training_updates": 0,
+      "new_MCTS_calls": 0,
+      "wall_seconds_by_stage": {
+        "collection": 1.7080233179440256,
+        "initialization": 0.6093349159637,
+        "supervised_training": 15.248087803978706,
+        "evaluation": 9.503911428007996,
+        "model_serialization": 0.006477956019807607,
+        "graph_generation": 0.335830502997851,
+        "dataset_serialization": 0.07036922199768014,
+        "tensor_preparation": 1.7522554739844054
+      },
+      "whole_runner_seconds": 29.245833138003945,
+      "unitemized_runner_seconds": 0.011542517109774053,
+      "dataset_bytes": 255672,
+      "model_bytes": 615615,
+      "retained_history_reference": "reports/lmta_components_v48/analysis.json",
+      "scope": "All collection records, updates, presentations and evaluations remain charged. Manifest counters and raw-record counts are two records of the same work, not additive fees; disagreements remain visible. Training presentations and repeated state evaluations reuse the fixed teacher data, not new environment samples. Whole-run time contains the listed stages. Earlier experimental costs are not refunded."
+    },
+    "analysis_wall_seconds_before_serialization": 0.4188387200119905
+  },
+  "inference_scope": "Thresholds and state-weighted metrics are unchanged from V49. Every final candidate-minus-V49 difference uses the same data and recorded batches; descriptive t intervals use three run means (df=2). Lower relative regret/MSE and higher optimal rate/pairwise accuracy are better. These already-exposed heldout graphs provide a paired development comparison, not new generalization confirmation. Information recovery and finite-budget supervised learnability are distinct. No RL, online-return, adoption or continuation Gate is created; invalid evidence yields null outcome and paired contrasts while retaining all recorded and declared costs."
+}

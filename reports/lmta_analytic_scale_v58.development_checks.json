@@ -1,0 +1,28 @@
+{
+  "schema": "acfqp.lmta_analytic_scale_development.v58",
+  "final_test_results": {
+    "evaluator": {
+      "passed": 6,
+      "failed": 0,
+      "pytest_seconds": 0.25
+    },
+    "runner": {
+      "passed": 2,
+      "failed": 0,
+      "pytest_seconds": 0.26
+    },
+    "analysis": {
+      "passed": 5,
+      "failed": 0,
+      "pytest_seconds": 0.2
+    },
+    "unique_tests": 13,
+    "total_test_executions": 13
+  },
+  "attempt_ledgers": [
+    "lmta_analytic_scale_v58.evaluator_checks.json",
+    "lmta_analytic_scale_v58.runner_checks.json",
+    "lmta_analytic_scale_v58.analysis_checks.json"
+  ],
+  "scope": "All actual development work and mocked cases are separated in the referenced ledgers. This index adds no test runs or fees."
+}

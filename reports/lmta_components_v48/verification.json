@@ -1,0 +1,124 @@
+{
+  "schema": "acfqp.lmta_components_verification.v48",
+  "passed": true,
+  "basis": "Independent standard-library recomputation from all three event ledgers, without importing either analyzer.",
+  "event_count": 246,
+  "exact_restore_anchors": 6,
+  "all_cell_means_and_run_values_match": true,
+  "verified_component_effects": {
+    "BUDGET_HRL": {
+      "node_substitution_LS_minus_LL": {
+        "mean": 78.05,
+        "ci_95": [
+          56.58303969782201,
+          99.51696030217798
+        ]
+      },
+      "node_substitution_AS_minus_AL": {
+        "mean": 78.65,
+        "ci_95": [
+          60.43600143873752,
+          96.86399856126249
+        ]
+      },
+      "budget_substitution_AL_minus_LL": {
+        "mean": 0.21666666666666665,
+        "ci_95": [
+          -0.25357301277915434,
+          0.6869063461124876
+        ]
+      },
+      "budget_substitution_AS_minus_LS": {
+        "mean": 0.8166666666666667,
+        "ci_95": [
+          -2.7537862322148117,
+          4.387119565548145
+        ]
+      },
+      "interaction_AS_minus_AL_minus_LS_plus_LL": {
+        "mean": 0.6,
+        "ci_95": [
+          -2.6555475336089716,
+          3.8555475336089717
+        ]
+      },
+      "hybrid_LS_minus_AS": {
+        "mean": -0.8166666666666667,
+        "ci_95": [
+          -4.387119565548145,
+          2.7537862322148117
+        ]
+      },
+      "hybrid_AL_minus_AS": {
+        "mean": -78.65,
+        "ci_95": [
+          -96.86399856126249,
+          -60.43600143873752
+        ]
+      }
+    },
+    "LMTA_RI": {
+      "node_substitution_LS_minus_LL": {
+        "mean": 59.78333333333333,
+        "ci_95": [
+          37.33748460008162,
+          82.22918206658504
+        ]
+      },
+      "node_substitution_AS_minus_AL": {
+        "mean": 71.3,
+        "ci_95": [
+          -5.687531735559418,
+          148.2875317355594
+        ]
+      },
+      "budget_substitution_AL_minus_LL": {
+        "mean": 6.083333333333333,
+        "ci_95": [
+          -56.44300174514968,
+          68.60966841181634
+        ]
+      },
+      "budget_substitution_AS_minus_LS": {
+        "mean": 17.6,
+        "ci_95": [
+          6.987759043461468,
+          28.212240956538537
+        ]
+      },
+      "interaction_AS_minus_AL_minus_LS_plus_LL": {
+        "mean": 11.516666666666666,
+        "ci_95": [
+          -54.444830239279426,
+          77.47816357261276
+        ]
+      },
+      "hybrid_LS_minus_AS": {
+        "mean": -17.6,
+        "ci_95": [
+          -28.212240956538537,
+          -6.987759043461468
+        ]
+      },
+      "hybrid_AL_minus_AS": {
+        "mean": -71.3,
+        "ci_95": [
+          -148.2875317355594,
+          5.687531735559418
+        ]
+      }
+    }
+  },
+  "maximum_numeric_difference": 0.0,
+  "physical_counters": {
+    "primitive_selections": 17220,
+    "day_transitions": 2460,
+    "propagation_draws": 256173
+  },
+  "mcts_simulations": 184500,
+  "zero_gradient_updates": true,
+  "daily_reward_and_selected_node_records_match": true,
+  "historical_ledgers_counted_once": true,
+  "new_environment_calls": 0,
+  "verification_wall_seconds_before_serialization": 0.056035574991256
+}

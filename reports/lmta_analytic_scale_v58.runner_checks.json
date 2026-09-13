@@ -1,0 +1,19 @@
+{
+  "attempts": [
+    {
+      "command": "pytest -q tests/test_lmta_analytic_scale_runner_v58.py",
+      "returncode": 0,
+      "wall_seconds": 0.795378972979961,
+      "stdout": "..                                                                       [100%]\n2 passed in 0.26s\n",
+      "stderr": "",
+      "actual_planner_calls": 0,
+      "actual_full_policy_evaluations": 0,
+      "synthetic_evaluation_calls": 6,
+      "hand_graph_objects": 1,
+      "new_ER_graphs": 0,
+      "new_environment_samples": 0,
+      "model_updates": 0,
+      "scope": "Roster assertions and one two-graph synthetic runner; evaluation, generation and GC are mocked."
+    }
+  ]
+}

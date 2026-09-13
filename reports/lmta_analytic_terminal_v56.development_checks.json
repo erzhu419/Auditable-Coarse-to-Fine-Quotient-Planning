@@ -1,0 +1,28 @@
+{
+  "schema": "acfqp.lmta_analytic_terminal_development.v56",
+  "final_test_results": {
+    "evaluator": {
+      "passed": 5,
+      "failed": 0,
+      "pytest_seconds": 0.27
+    },
+    "runner": {
+      "passed": 2,
+      "failed": 0,
+      "pytest_seconds": 0.88
+    },
+    "analysis": {
+      "passed": 8,
+      "failed": 0,
+      "pytest_seconds": 0.19
+    },
+    "unique_tests": 15,
+    "total_test_executions": 15
+  },
+  "attempt_ledgers": [
+    "lmta_analytic_terminal_v56.evaluator_checks.json",
+    "lmta_analytic_terminal_v56.runner_checks.json",
+    "lmta_analytic_terminal_v56.analysis_checks.json"
+  ],
+  "scope": "Referenced ledgers retain all development work. This index adds no test runs or costs."
+}

@@ -1,0 +1,47 @@
+{
+  "schema": "acfqp.lmta_probability_execution_analysis_checks.v65",
+  "development_work": {
+    "queries": 4,
+    "graph_model_builds": 4,
+    "parent_membership_checks": 0,
+    "parent_product_factors": 0,
+    "outcome_probability_factors": 0,
+    "value_cache_hits": 0,
+    "root_Q_comparisons": 8,
+    "independent_dp_states": 4,
+    "independent_action_value_evaluations": 8,
+    "independent_kernel_builds": 0,
+    "independent_kernel_cache_hits": 0,
+    "independent_transition_outcomes": 0,
+    "independent_target_probability_evaluations": 8,
+    "independent_score_node_evaluations": 0,
+    "independent_immediate_expectation_terms": 0,
+    "independent_bellman_expectation_terms": 0,
+    "independent_analytic_expectation_calls": 8,
+    "independent_analytic_probability_terms": 8,
+    "production_planner_calls": 0,
+    "environment_calls": 0,
+    "random_draws": 0,
+    "new_generated_graphs": 0,
+    "new_full_policy_evaluations": 0,
+    "scope": "Two-node hand queries checked independently plus synthetic cost and skipped-cohort records."
+  },
+  "test_attempts": [
+    {
+      "command": [
+        ".venv-lmta-v42/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_lmta_probability_execution_analysis_v65.py"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 1.287231155030895,
+      "stdout": "....                                                                     [100%]\n4 passed in 0.71s\n",
+      "stderr": ""
+    }
+  ],
+  "unique_tests": 4,
+  "test_executions": 4,
+  "all_unique_tests_passed": true
+}

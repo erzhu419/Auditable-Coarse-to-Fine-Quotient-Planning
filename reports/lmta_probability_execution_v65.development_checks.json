@@ -1,0 +1,12 @@
+{
+  "schema": "acfqp.lmta_probability_execution_development.v65",
+  "unique_tests": 8,
+  "total_test_executions": 8,
+  "final_passed": 8,
+  "final_failed": 0,
+  "attempt_ledgers": [
+    "lmta_probability_execution_v65.simulation_checks.json",
+    "lmta_probability_execution_v65.analysis_checks.json"
+  ],
+  "scope": "Four execution tests and four analysis tests each ran once. Execution reference and variant hand-graph work and independent checker work are fully charged in the individual ledgers. No main data generated during development. Runner and frozen protocol received one read-only review."
+}

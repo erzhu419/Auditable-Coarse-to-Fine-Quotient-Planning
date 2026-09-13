@@ -1,0 +1,28 @@
+{
+  "schema": "acfqp.lmta_analytic_short_development.v59",
+  "final_test_results": {
+    "kernel": {
+      "passed": 6,
+      "failed": 0,
+      "pytest_seconds": 0.25
+    },
+    "runner": {
+      "passed": 4,
+      "failed": 0,
+      "pytest_seconds": 0.25
+    },
+    "analysis": {
+      "passed": 6,
+      "failed": 0,
+      "pytest_seconds": 0.22
+    },
+    "unique_tests": 16,
+    "total_test_executions": 16
+  },
+  "attempt_ledgers": [
+    "lmta_analytic_short_v59.kernel_checks.json",
+    "lmta_analytic_short_v59.runner_checks.json",
+    "lmta_analytic_short_v59.analysis_checks.json"
+  ],
+  "scope": "All actual development work and synthetic calls are separated in the referenced ledgers. This index adds no test runs or fees."
+}

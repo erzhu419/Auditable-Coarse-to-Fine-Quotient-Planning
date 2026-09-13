@@ -1,0 +1,252 @@
+{
+  "attempts": [
+    {
+      "test_module": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/tests/test_controlled_predictive_symbolic_successors_v71.py",
+      "session_failures": 0,
+      "scope": "four fixed afterstates, one winning swipe, and changed spawn probabilities; no target roots",
+      "ground_classifications": 24,
+      "ground_step_rows": 1,
+      "ground_step_outcomes": 2,
+      "fixture_checks": [
+        {
+          "name": "last_hole_mixed",
+          "remaining_h": 0,
+          "board": [
+            0,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1
+          ],
+          "score": 12
+        },
+        {
+          "name": "last_hole_mixed",
+          "remaining_h": 2,
+          "board": [
+            0,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1
+          ],
+          "score": 12
+        },
+        {
+          "name": "existing_pair",
+          "remaining_h": 0,
+          "board": [
+            0,
+            2,
+            2,
+            2,
+            2,
+            1,
+            2,
+            1,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1
+          ],
+          "score": 12
+        },
+        {
+          "name": "existing_pair",
+          "remaining_h": 2,
+          "board": [
+            0,
+            2,
+            2,
+            2,
+            2,
+            1,
+            2,
+            1,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1
+          ],
+          "score": 12
+        },
+        {
+          "name": "multiple_holes",
+          "remaining_h": 0,
+          "board": [
+            0,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            0
+          ],
+          "score": 12
+        },
+        {
+          "name": "multiple_holes",
+          "remaining_h": 2,
+          "board": [
+            0,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            0
+          ],
+          "score": 12
+        },
+        {
+          "name": "goal_priority",
+          "remaining_h": 0,
+          "board": [
+            11,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            0
+          ],
+          "score": 12
+        },
+        {
+          "name": "goal_priority",
+          "remaining_h": 2,
+          "board": [
+            11,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            0
+          ],
+          "score": 12
+        },
+        {
+          "name": "winning_legal_swipe",
+          "board": [
+            10,
+            10,
+            2,
+            1,
+            2,
+            3,
+            4,
+            5,
+            3,
+            4,
+            5,
+            6,
+            4,
+            5,
+            6,
+            7
+          ],
+          "action": "LEFT"
+        },
+        {
+          "name": "changed_spawn_probability",
+          "board": [
+            0,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1
+          ]
+        }
+      ],
+      "prediction_work": {
+        "symbolic_predicate_calls": 10,
+        "symbolic_input_rank_reads": 160,
+        "potential_spawn_outcomes": 24,
+        "symbolic_adjacency_tests": 78,
+        "symbolic_spawn_rank_classifications": 20,
+        "symbolic_terminal_boards_avoided": 17,
+        "symbolic_terminal_mass_items": 10,
+        "symbolic_successor_entries": 17,
+        "symbolic_board_materializations": 7
+      }
+    }
+  ]
+}

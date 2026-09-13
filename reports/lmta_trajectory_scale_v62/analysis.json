@@ -1,0 +1,863 @@
+{
+  "schema": "acfqp.lmta_trajectory_scale_analysis.v62",
+  "protocol": {
+    "budget": 2,
+    "horizon": 3,
+    "replicates": 128,
+    "methods": [
+      "LOOKAHEAD_1_ANALYTIC",
+      "LOOKAHEAD_2_ANALYTIC"
+    ],
+    "panels": [
+      {
+        "nodes": 13,
+        "stratum": "sparse",
+        "expected_degree": 1.5,
+        "p": 0.125,
+        "seeds": [
+          620000,
+          620001,
+          620002,
+          620003,
+          620004,
+          620005,
+          620006,
+          620007,
+          620008,
+          620009,
+          620010,
+          620011,
+          620012,
+          620013,
+          620014,
+          620015
+        ]
+      },
+      {
+        "nodes": 13,
+        "stratum": "dense",
+        "expected_degree": 4.5,
+        "p": 0.375,
+        "seeds": [
+          620100,
+          620101,
+          620102,
+          620103,
+          620104,
+          620105,
+          620106,
+          620107,
+          620108,
+          620109,
+          620110,
+          620111,
+          620112,
+          620113,
+          620114,
+          620115
+        ]
+      },
+      {
+        "nodes": 15,
+        "stratum": "sparse",
+        "expected_degree": 1.5,
+        "p": 0.10714285714285714,
+        "seeds": [
+          620200,
+          620201,
+          620202,
+          620203,
+          620204,
+          620205,
+          620206,
+          620207,
+          620208,
+          620209,
+          620210,
+          620211,
+          620212,
+          620213,
+          620214,
+          620215
+        ]
+      },
+      {
+        "nodes": 15,
+        "stratum": "dense",
+        "expected_degree": 4.5,
+        "p": 0.32142857142857145,
+        "seeds": [
+          620300,
+          620301,
+          620302,
+          620303,
+          620304,
+          620305,
+          620306,
+          620307,
+          620308,
+          620309,
+          620310,
+          620311,
+          620312,
+          620313,
+          620314,
+          620315
+        ]
+      }
+    ],
+    "seed_base": 61000000,
+    "seed_graph_stride": 1000,
+    "limits": {
+      "max_planner_action_values": 2000000,
+      "max_decisions": 100000,
+      "max_wall_seconds": 60.0
+    },
+    "primary_family_size": 4,
+    "primary_alpha": 0.05
+  },
+  "integrity": {
+    "passed": true,
+    "errors": {}
+  },
+  "complete_trajectory_evidence": false,
+  "observed_query_validation": {
+    "passed": true,
+    "errors": {},
+    "unique_queries": 12227,
+    "valid_queries": 12227,
+    "maximum_Q_difference": 8.881784197001252e-16,
+    "verification_work": {
+      "queries": 12227,
+      "graph_model_builds": 12227,
+      "parent_membership_checks": 75624564,
+      "parent_product_factors": 20676707,
+      "outcome_probability_factors": 21209616,
+      "value_cache_hits": 0,
+      "root_Q_comparisons": 34145,
+      "independent_dp_states": 2602279,
+      "independent_action_value_evaluations": 2820469,
+      "independent_kernel_builds": 15618,
+      "independent_kernel_cache_hits": 0,
+      "independent_transition_outcomes": 2599055,
+      "independent_target_probability_evaluations": 17083476,
+      "independent_score_node_evaluations": 0,
+      "independent_immediate_expectation_terms": 0,
+      "independent_bellman_expectation_terms": 2599055,
+      "independent_analytic_expectation_calls": 2804851,
+      "independent_analytic_probability_terms": 16930194
+    }
+  },
+  "panels": [
+    {
+      "nodes": 13,
+      "stratum": "sparse",
+      "p": 0.125,
+      "graph_ids": [
+        620000,
+        620001,
+        620002,
+        620003,
+        620004,
+        620005,
+        620006,
+        620007,
+        620008,
+        620009,
+        620010,
+        620011,
+        620012,
+        620013,
+        620014,
+        620015
+      ],
+      "complete_quality_evidence": true,
+      "quality": {
+        "method_means": {
+          "LOOKAHEAD_1_ANALYTIC": 8.21826171875,
+          "LOOKAHEAD_2_ANALYTIC": 8.80810546875
+        },
+        "paired_two_minus_one": {
+          "mean": 0.58984375,
+          "graph_standard_error": 0.17170623817020306,
+          "degrees_of_freedom": 15,
+          "graph_nominal_95_interval": [
+            0.22386056668241983,
+            0.9558269333175802
+          ],
+          "graph_simultaneous_interval": [
+            0.10277711700179071,
+            1.0769103829982094
+          ],
+          "fixed_panel_mc_standard_error": 0.03365553082352934,
+          "fixed_panel_mc_nominal_95_interval": [
+            0.5238801217053048,
+            0.6558073782946952
+          ],
+          "graph_means": [
+            0.6171875,
+            1.1953125,
+            1.4921875,
+            0.0390625,
+            1.3359375,
+            0.9375,
+            0,
+            0.796875,
+            0.1328125,
+            -0.40625,
+            0,
+            0,
+            0.1953125,
+            0,
+            1.1796875,
+            1.921875
+          ]
+        }
+      },
+      "costs": {
+        "LOOKAHEAD_1_ANALYTIC": {
+          "decision_work": {
+            "planner_calls": 6144,
+            "dp_states": 4096,
+            "action_value_evaluations": 46438,
+            "kernel_builds": 0,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 0,
+            "target_probability_evaluations": 492988,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "forced_choice": 2048,
+            "analytic_expectation_calls": 46438,
+            "analytic_probability_terms": 492988
+          },
+          "environment_work": {
+            "environment_calls": 6144,
+            "rng_draws": 116736,
+            "eligible_edge_attempts": 21466,
+            "successful_edge_attempts": 13018,
+            "seeded_nodes": 4096,
+            "activated_targets": 12735
+          },
+          "completed_trajectories": 2048,
+          "resource_limited_blocks": 0,
+          "decision_seconds": 0.44902184064267203,
+          "mean_trajectory_work": {
+            "planner_calls": 3.0,
+            "dp_states": 2.0,
+            "action_value_evaluations": 22.6748046875,
+            "kernel_builds": 0.0,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 0.0,
+            "target_probability_evaluations": 240.716796875,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 0.0,
+            "forced_choice": 1.0,
+            "analytic_expectation_calls": 22.6748046875,
+            "analytic_probability_terms": 240.716796875
+          }
+        },
+        "LOOKAHEAD_2_ANALYTIC": {
+          "decision_work": {
+            "planner_calls": 6144,
+            "dp_states": 213277,
+            "action_value_evaluations": 1008823,
+            "kernel_builds": 47130,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 209181,
+            "target_probability_evaluations": 9398475,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 209181,
+            "forced_choice": 2048,
+            "analytic_expectation_calls": 961693,
+            "analytic_probability_terms": 8892255
+          },
+          "environment_work": {
+            "environment_calls": 6144,
+            "rng_draws": 116736,
+            "eligible_edge_attempts": 22597,
+            "successful_edge_attempts": 14257,
+            "seeded_nodes": 4096,
+            "activated_targets": 13943
+          },
+          "completed_trajectories": 2048,
+          "resource_limited_blocks": 0,
+          "decision_seconds": 7.0418343532364815,
+          "mean_trajectory_work": {
+            "planner_calls": 3.0,
+            "dp_states": 104.13916015625,
+            "action_value_evaluations": 492.58935546875,
+            "kernel_builds": 23.0126953125,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 102.13916015625,
+            "target_probability_evaluations": 4589.09912109375,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 102.13916015625,
+            "forced_choice": 1.0,
+            "analytic_expectation_calls": 469.57666015625,
+            "analytic_probability_terms": 4341.92138671875
+          }
+        }
+      },
+      "two_over_one_work_ratios": {
+        "action_value_evaluations": 21.72408372453594,
+        "transition_outcomes": null,
+        "target_probability_evaluations": 19.064307853335173
+      }
+    },
+    {
+      "nodes": 13,
+      "stratum": "dense",
+      "p": 0.375,
+      "graph_ids": [
+        620100,
+        620101,
+        620102,
+        620103,
+        620104,
+        620105,
+        620106,
+        620107,
+        620108,
+        620109,
+        620110,
+        620111,
+        620112,
+        620113,
+        620114,
+        620115
+      ],
+      "complete_quality_evidence": true,
+      "quality": {
+        "method_means": {
+          "LOOKAHEAD_1_ANALYTIC": 7.015625,
+          "LOOKAHEAD_2_ANALYTIC": 7.0537109375
+        },
+        "paired_two_minus_one": {
+          "mean": 0.0380859375,
+          "graph_standard_error": 0.027333284827708804,
+          "degrees_of_freedom": 15,
+          "graph_nominal_95_interval": [
+            -0.02017358002466347,
+            0.09634545502466346
+          ],
+          "graph_simultaneous_interval": [
+            -0.039448409252251265,
+            0.11562028425225127
+          ],
+          "fixed_panel_mc_standard_error": 0.031026506594411796,
+          "fixed_panel_mc_nominal_95_interval": [
+            -0.022724897991141593,
+            0.0988967729911416
+          ],
+          "graph_means": [
+            -0.0390625,
+            0.0390625,
+            0.09375,
+            -0.0078125,
+            0.0625,
+            -0.125,
+            0.1015625,
+            0.34375,
+            -0.0703125,
+            -0.078125,
+            -0.0390625,
+            0.09375,
+            0.078125,
+            0.09375,
+            0.078125,
+            -0.015625
+          ]
+        }
+      },
+      "costs": {
+        "LOOKAHEAD_1_ANALYTIC": {
+          "decision_work": {
+            "planner_calls": 6144,
+            "dp_states": 4096,
+            "action_value_evaluations": 47615,
+            "kernel_builds": 0,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 0,
+            "target_probability_evaluations": 516260,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "forced_choice": 2048,
+            "analytic_expectation_calls": 47615,
+            "analytic_probability_terms": 516260
+          },
+          "environment_work": {
+            "environment_calls": 6144,
+            "rng_draws": 365952,
+            "eligible_edge_attempts": 47594,
+            "successful_edge_attempts": 10780,
+            "seeded_nodes": 4096,
+            "activated_targets": 10272
+          },
+          "completed_trajectories": 2048,
+          "resource_limited_blocks": 0,
+          "decision_seconds": 0.5403857867931947,
+          "mean_trajectory_work": {
+            "planner_calls": 3.0,
+            "dp_states": 2.0,
+            "action_value_evaluations": 23.24951171875,
+            "kernel_builds": 0.0,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 0.0,
+            "target_probability_evaluations": 252.080078125,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 0.0,
+            "forced_choice": 1.0,
+            "analytic_expectation_calls": 23.24951171875,
+            "analytic_probability_terms": 252.080078125
+          }
+        },
+        "LOOKAHEAD_2_ANALYTIC": {
+          "decision_work": {
+            "planner_calls": 6144,
+            "dp_states": 3843683,
+            "action_value_evaluations": 13445371,
+            "kernel_builds": 47640,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 3839587,
+            "target_probability_evaluations": 100764581,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 3839587,
+            "forced_choice": 2048,
+            "analytic_expectation_calls": 13397731,
+            "analytic_probability_terms": 100247851
+          },
+          "environment_work": {
+            "environment_calls": 6144,
+            "rng_draws": 365952,
+            "eligible_edge_attempts": 47986,
+            "successful_edge_attempts": 10875,
+            "seeded_nodes": 4096,
+            "activated_targets": 10350
+          },
+          "completed_trajectories": 2048,
+          "resource_limited_blocks": 0,
+          "decision_seconds": 100.58673356403597,
+          "mean_trajectory_work": {
+            "planner_calls": 3.0,
+            "dp_states": 1876.79833984375,
+            "action_value_evaluations": 6565.12255859375,
+            "kernel_builds": 23.26171875,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 1874.79833984375,
+            "target_probability_evaluations": 49201.45556640625,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 1874.79833984375,
+            "forced_choice": 1.0,
+            "analytic_expectation_calls": 6541.86083984375,
+            "analytic_probability_terms": 48949.14599609375
+          }
+        }
+      },
+      "two_over_one_work_ratios": {
+        "action_value_evaluations": 282.3767930274073,
+        "transition_outcomes": null,
+        "target_probability_evaluations": 195.18184829349553
+      }
+    },
+    {
+      "nodes": 15,
+      "stratum": "sparse",
+      "p": 0.10714285714285714,
+      "graph_ids": [
+        620200,
+        620201,
+        620202,
+        620203,
+        620204,
+        620205,
+        620206,
+        620207,
+        620208,
+        620209,
+        620210,
+        620211,
+        620212,
+        620213,
+        620214,
+        620215
+      ],
+      "complete_quality_evidence": true,
+      "quality": {
+        "method_means": {
+          "LOOKAHEAD_1_ANALYTIC": 8.59765625,
+          "LOOKAHEAD_2_ANALYTIC": 8.9794921875
+        },
+        "paired_two_minus_one": {
+          "mean": 0.3818359375,
+          "graph_standard_error": 0.20632480074115886,
+          "degrees_of_freedom": 15,
+          "graph_nominal_95_interval": [
+            -0.05793496527736092,
+            0.8216068402773609
+          ],
+          "graph_simultaneous_interval": [
+            -0.2034306612674165,
+            0.9671025362674165
+          ],
+          "fixed_panel_mc_standard_error": 0.043008315071226655,
+          "fixed_panel_mc_nominal_95_interval": [
+            0.29754118892464454,
+            0.46613068607535546
+          ],
+          "graph_means": [
+            1.203125,
+            0.0703125,
+            -0.2265625,
+            0.859375,
+            0.0625,
+            -0.9609375,
+            0.2265625,
+            1.734375,
+            0,
+            -0.3203125,
+            -0.1953125,
+            0,
+            2.2265625,
+            0.3984375,
+            0,
+            1.03125
+          ]
+        }
+      },
+      "costs": {
+        "LOOKAHEAD_1_ANALYTIC": {
+          "decision_work": {
+            "planner_calls": 6144,
+            "dp_states": 4096,
+            "action_value_evaluations": 54533,
+            "kernel_builds": 0,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 0,
+            "target_probability_evaluations": 684876,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "forced_choice": 2048,
+            "analytic_expectation_calls": 54533,
+            "analytic_probability_terms": 684876
+          },
+          "environment_work": {
+            "environment_calls": 6144,
+            "rng_draws": 130944,
+            "eligible_edge_attempts": 21197,
+            "successful_edge_attempts": 13721,
+            "seeded_nodes": 4096,
+            "activated_targets": 13512
+          },
+          "completed_trajectories": 2048,
+          "resource_limited_blocks": 0,
+          "decision_seconds": 0.8558962694369256,
+          "mean_trajectory_work": {
+            "planner_calls": 3.0,
+            "dp_states": 2.0,
+            "action_value_evaluations": 26.62744140625,
+            "kernel_builds": 0.0,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 0.0,
+            "target_probability_evaluations": 334.412109375,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 0.0,
+            "forced_choice": 1.0,
+            "analytic_expectation_calls": 26.62744140625,
+            "analytic_probability_terms": 334.412109375
+          }
+        },
+        "LOOKAHEAD_2_ANALYTIC": {
+          "decision_work": {
+            "planner_calls": 6144,
+            "dp_states": 322446,
+            "action_value_evaluations": 1389055,
+            "kernel_builds": 55281,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 318350,
+            "target_probability_evaluations": 15540305,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 318350,
+            "forced_choice": 2048,
+            "analytic_expectation_calls": 1333774,
+            "analytic_probability_terms": 14838353
+          },
+          "environment_work": {
+            "environment_calls": 6144,
+            "rng_draws": 130944,
+            "eligible_edge_attempts": 22537,
+            "successful_edge_attempts": 14524,
+            "seeded_nodes": 4096,
+            "activated_targets": 14294
+          },
+          "completed_trajectories": 2048,
+          "resource_limited_blocks": 0,
+          "decision_seconds": 15.843444268452004,
+          "mean_trajectory_work": {
+            "planner_calls": 3.0,
+            "dp_states": 157.4443359375,
+            "action_value_evaluations": 678.24951171875,
+            "kernel_builds": 26.99267578125,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 155.4443359375,
+            "target_probability_evaluations": 7588.03955078125,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 155.4443359375,
+            "forced_choice": 1.0,
+            "analytic_expectation_calls": 651.2568359375,
+            "analytic_probability_terms": 7245.28955078125
+          }
+        }
+      },
+      "two_over_one_work_ratios": {
+        "action_value_evaluations": 25.471824399904644,
+        "transition_outcomes": null,
+        "target_probability_evaluations": 22.69068415304376
+      }
+    },
+    {
+      "nodes": 15,
+      "stratum": "dense",
+      "p": 0.32142857142857145,
+      "graph_ids": [
+        620300,
+        620301,
+        620302,
+        620303,
+        620304,
+        620305,
+        620306,
+        620307,
+        620308,
+        620309,
+        620310,
+        620311,
+        620312,
+        620313,
+        620314,
+        620315
+      ],
+      "complete_quality_evidence": false,
+      "quality": null,
+      "costs": {
+        "LOOKAHEAD_1_ANALYTIC": {
+          "decision_work": {
+            "planner_calls": 6144,
+            "dp_states": 4096,
+            "action_value_evaluations": 55725,
+            "kernel_builds": 0,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 0,
+            "target_probability_evaluations": 713090,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "forced_choice": 2048,
+            "analytic_expectation_calls": 55725,
+            "analytic_probability_terms": 713090
+          },
+          "environment_work": {
+            "environment_calls": 6144,
+            "rng_draws": 409344,
+            "eligible_edge_attempts": 50952,
+            "successful_edge_attempts": 11721,
+            "seeded_nodes": 4096,
+            "activated_targets": 11231
+          },
+          "completed_trajectories": 2048,
+          "resource_limited_blocks": 0,
+          "decision_seconds": 0.8599982158048078,
+          "mean_trajectory_work": null
+        },
+        "LOOKAHEAD_2_ANALYTIC": {
+          "decision_work": {
+            "planner_calls": 6019,
+            "dp_states": 8820290,
+            "action_value_evaluations": 21179585,
+            "kernel_builds": 54837,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 8816276,
+            "target_probability_evaluations": 187673840,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 8816276,
+            "forced_choice": 2005,
+            "analytic_expectation_calls": 21124748,
+            "analytic_probability_terms": 186970144
+          },
+          "environment_work": {
+            "environment_calls": 6016,
+            "rng_draws": 399939,
+            "eligible_edge_attempts": 50001,
+            "successful_edge_attempts": 11823,
+            "seeded_nodes": 4011,
+            "activated_targets": 11317
+          },
+          "completed_trajectories": 2005,
+          "resource_limited_blocks": 3,
+          "decision_seconds": 224.15792493493063,
+          "mean_trajectory_work": null
+        }
+      },
+      "two_over_one_work_ratios": null
+    }
+  ],
+  "historical_V61_work": [
+    {
+      "nodes": 9,
+      "stratum": "sparse",
+      "mean_trajectory_work": {
+        "LOOKAHEAD_1_ANALYTIC": {
+          "action_value_evaluations": 14.8740234375,
+          "transition_outcomes": 0.0,
+          "target_probability_evaluations": 101.5380859375
+        },
+        "LOOKAHEAD_2_ANALYTIC": {
+          "action_value_evaluations": 233.15087890625,
+          "transition_outcomes": 57.82861328125,
+          "target_probability_evaluations": 1305.4921875
+        }
+      }
+    },
+    {
+      "nodes": 9,
+      "stratum": "dense",
+      "mean_trajectory_work": {
+        "LOOKAHEAD_1_ANALYTIC": {
+          "action_value_evaluations": 15.49462890625,
+          "transition_outcomes": 0.0,
+          "target_probability_evaluations": 108.8115234375
+        },
+        "LOOKAHEAD_2_ANALYTIC": {
+          "action_value_evaluations": 1762.330078125,
+          "transition_outcomes": 466.869140625,
+          "target_probability_evaluations": 7845.16259765625
+        }
+      }
+    },
+    {
+      "nodes": 11,
+      "stratum": "sparse",
+      "mean_trajectory_work": {
+        "LOOKAHEAD_1_ANALYTIC": {
+          "action_value_evaluations": 18.55224609375,
+          "transition_outcomes": 0.0,
+          "target_probability_evaluations": 160.4541015625
+        },
+        "LOOKAHEAD_2_ANALYTIC": {
+          "action_value_evaluations": 399.25146484375,
+          "transition_outcomes": 98.6982421875,
+          "target_probability_evaluations": 2861.5322265625
+        }
+      }
+    },
+    {
+      "nodes": 11,
+      "stratum": "dense",
+      "mean_trajectory_work": {
+        "LOOKAHEAD_1_ANALYTIC": {
+          "action_value_evaluations": 19.4150390625,
+          "transition_outcomes": 0.0,
+          "target_probability_evaluations": 173.5751953125
+        },
+        "LOOKAHEAD_2_ANALYTIC": {
+          "action_value_evaluations": 4022.2919921875,
+          "transition_outcomes": 1015.7724609375,
+          "target_probability_evaluations": 24043.482421875
+        }
+      }
+    }
+  ],
+  "uncertainty_scope": "Primary: graph-level paired t intervals, 16 new graphs per panel, Bonferroni four comparisons. Fixed-panel Monte Carlo intervals are secondary.",
+  "accounting": {
+    "completed_blocks": 128,
+    "successful_blocks": 125,
+    "resource_limited_blocks": 3,
+    "trajectory_records": 16344,
+    "completed_trajectories": 16341,
+    "decision_records": 49027,
+    "decision_work": {
+      "planner_calls": 49027,
+      "dp_states": 13216080,
+      "action_value_evaluations": 37227145,
+      "kernel_builds": 204888,
+      "kernel_cache_hits": 0,
+      "transition_outcomes": 13183394,
+      "target_probability_evaluations": 315784415,
+      "score_node_evaluations": 0,
+      "immediate_expectation_terms": 0,
+      "bellman_expectation_terms": 13183394,
+      "forced_choice": 16341,
+      "analytic_expectation_calls": 37022257,
+      "analytic_probability_terms": 313355817
+    },
+    "environment_work": {
+      "environment_calls": 49024,
+      "rng_draws": 2036547,
+      "eligible_edge_attempts": 284330,
+      "successful_edge_attempts": 100719,
+      "seeded_nodes": 32683,
+      "activated_targets": 97654
+    },
+    "independent_query_work": {
+      "queries": 12227,
+      "graph_model_builds": 12227,
+      "parent_membership_checks": 75624564,
+      "parent_product_factors": 20676707,
+      "outcome_probability_factors": 21209616,
+      "value_cache_hits": 0,
+      "root_Q_comparisons": 34145,
+      "independent_dp_states": 2602279,
+      "independent_action_value_evaluations": 2820469,
+      "independent_kernel_builds": 15618,
+      "independent_kernel_cache_hits": 0,
+      "independent_transition_outcomes": 2599055,
+      "independent_target_probability_evaluations": 17083476,
+      "independent_score_node_evaluations": 0,
+      "independent_immediate_expectation_terms": 0,
+      "independent_bellman_expectation_terms": 2599055,
+      "independent_analytic_expectation_calls": 2804851,
+      "independent_analytic_probability_terms": 16930194
+    },
+    "trajectory_verification": {
+      "certificate_queries": 49027,
+      "verification_random_draws": 2036547,
+      "verification_environment_steps": 49024
+    },
+    "runner": {
+      "source_read_seconds": 0.002638828009366989,
+      "graph_generation_seconds": 0.015627824992407113,
+      "data_output_seconds": 1.0608299833256751,
+      "whole_runner_seconds": 356.6454564340529
+    },
+    "new_graphs": 64,
+    "new_full_policy_evaluations": 0,
+    "new_analysis_production_planner_calls": 0,
+    "new_RL_updates": 0,
+    "new_MCTS_calls": 0,
+    "missing_complete_trajectories": 43,
+    "block_times": {
+      "decision_seconds": 350.3352392333327,
+      "environment_seconds": 0.5925040268921293,
+      "wall_seconds": 351.91342544881627,
+      "prepare_gc_seconds": 1.0593942722771317,
+      "cleanup_seconds": 1.7112476911279373,
+      "block_seconds": 353.6246731399442,
+      "serialization_seconds": 1.0566927792388014
+    },
+    "analysis_seconds_before_serialization": 1.060983508999925,
+    "analysis_wall_seconds_including_reads": 40.8732433639816
+  },
+  "limitations": "New graphs have no exact full-policy values. Incomplete panels retain costs with null quality; none are completed by dropping graphs. Historical work comparisons are descriptive and timings are not paired speedups."
+}

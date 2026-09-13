@@ -1,0 +1,32 @@
+{
+  "attempts": [
+    {
+      "test_module": "tests/test_lmta_analytic_terminal_v56.py",
+      "new_failures": 0,
+      "environment_counters": {},
+      "model_evaluations": 0,
+      "gradient_steps": 0,
+      "planner_calls": {
+        "candidate": 7,
+        "control": 2
+      },
+      "solver_instances": 9,
+      "all_solver_counters": {
+        "dp_states": 153,
+        "action_value_evaluations": 270,
+        "kernel_builds": 200,
+        "kernel_cache_hits": 3,
+        "transition_outcomes": 253,
+        "target_probability_evaluations": 708,
+        "score_node_evaluations": 0,
+        "immediate_expectation_terms": 0,
+        "bellman_expectation_terms": 256,
+        "forced_choice": 3,
+        "analytic_expectation_calls": 67,
+        "analytic_probability_terms": 127
+      },
+      "wall_seconds": 0.005414676998043433,
+      "scope": "All hand-graph analytic candidate and V53 control calls are included. No graph generation samples, environment calls, model work, fresh panel or outer policy evaluation."
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "acfqp.lmta_analytic_short_analysis_checks.v59",
+  "analysis_test_attempts": [
+    {
+      "command": "pytest tests/test_lmta_analytic_short_analysis_v59.py -q",
+      "exit_code": 0,
+      "command_wall_seconds": 0.6186559339985251,
+      "output": "......                                                                   [100%]\n6 passed in 0.22s\n",
+      "scope": "small hand short-window certificates and synthetic roster; no main panel replay"
+    }
+  ],
+  "development_work": {
+    "independent_short_query_checks": 25,
+    "independent_model_constructions": 9,
+    "independent_kernel_calls": 42,
+    "independent_kernel_builds": 42,
+    "independent_kernel_cache_hits": 0,
+    "independent_transition_outcomes_created": 60,
+    "new_graphs": 0,
+    "new_environment_samples": 0,
+    "new_environment_calls": 0,
+    "new_implementation_planner_calls": 0,
+    "new_full_policy_evaluations": 0,
+    "new_RL_updates": 0,
+    "new_MCTS_calls": 0,
+    "scope": "three-node hand short-window certificates; synthetic aggregation uses stubbed numeric verification"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "acfqp.observation_compilation.v70",
+  "status": "complete",
+  "completed_targets": 32,
+  "target_roots": 32,
+  "source_learning_reused": true,
+  "source_path": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_composition_v69",
+  "source_fit_calls": 0,
+  "target_ground_calls": 0,
+  "shared_composed_builds": true,
+  "runtime": {
+    "python": "3.10.12",
+    "executable": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python"
+  },
+  "wall_seconds": 24.42288412700873,
+  "peak_rss_bytes": 61501440
+}

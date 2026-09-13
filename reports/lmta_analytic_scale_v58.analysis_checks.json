@@ -1,0 +1,27 @@
+{
+  "schema": "acfqp.lmta_analytic_scale_analysis_checks.v58",
+  "analysis_test_attempts": [
+    {
+      "command": "pytest tests/test_lmta_analytic_scale_analysis_v58.py -q",
+      "exit_code": 0,
+      "command_wall_seconds": 0.6020630999992136,
+      "output": ".....                                                                    [100%]\n5 passed in 0.20s\n",
+      "scope": "three-node hand certificates and synthetic aggregate metadata; no fresh ER graphs"
+    }
+  ],
+  "development_work": {
+    "independent_query_checks": 23,
+    "independent_model_constructions": 16,
+    "independent_kernel_calls": 88,
+    "independent_kernel_cache_hits": 0,
+    "independent_kernel_builds": 88,
+    "independent_transition_outcomes_created": 113,
+    "new_graphs": 0,
+    "new_environment_samples": 0,
+    "new_environment_calls": 0,
+    "new_planner_implementation_calls": 0,
+    "new_RL_updates": 0,
+    "new_MCTS_calls": 0,
+    "scope": "independent checker enumeration of hand certificates; synthetic roster uses stubbed certificate math"
+  }
+}

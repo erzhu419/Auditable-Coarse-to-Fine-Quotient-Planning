@@ -1,0 +1,395 @@
+{
+  "complete": true,
+  "all_artifacts_routing_and_portable_preserved": true,
+  "inherited_v69_policy_evidence_valid": true,
+  "early_terminal_predicate_reduction_established": true,
+  "shared_spawn_candidate_reduction_established": true,
+  "higher_geometry_count_reduced": false,
+  "work_effects": {
+    "EARLY_vs_LATE": {
+      "contract_materializations": {
+        "candidate": 2544,
+        "baseline": 2544,
+        "delta": 0,
+        "ratio": 1.0
+      },
+      "terminal_probability_combinations": {
+        "candidate": 15572,
+        "baseline": 15572,
+        "delta": 0,
+        "ratio": 1.0
+      },
+      "contract_fraction_accumulations": {
+        "candidate": 15572,
+        "baseline": 15572,
+        "delta": 0,
+        "ratio": 1.0
+      },
+      "predicate_calls": {
+        "candidate": 21212,
+        "baseline": 21212,
+        "delta": 0,
+        "ratio": 1.0
+      },
+      "predicate_materializations": {
+        "candidate": 21212,
+        "baseline": 21212,
+        "delta": 0,
+        "ratio": 1.0
+      },
+      "candidate_predicate_evaluations": {
+        "candidate": 21185,
+        "baseline": 21185,
+        "delta": 0,
+        "ratio": 1.0
+      },
+      "terminal_predicate_evaluations": {
+        "candidate": 14791,
+        "baseline": 64999,
+        "delta": -50208,
+        "ratio": 0.22755734703610825
+      },
+      "candidate_action_predicate_evaluations": {
+        "candidate": 14791,
+        "baseline": 64999,
+        "delta": -50208,
+        "ratio": 0.22755734703610825
+      },
+      "candidate_action_changed_tests": {
+        "candidate": 84848,
+        "baseline": 84848,
+        "delta": 0,
+        "ratio": 1.0
+      },
+      "line_evaluations": {
+        "candidate": 21452,
+        "baseline": 21452,
+        "delta": 0,
+        "ratio": 1.0
+      },
+      "line_lookups": {
+        "candidate": 177576,
+        "baseline": 177576,
+        "delta": 0,
+        "ratio": 1.0
+      },
+      "spawn_candidates": {
+        "candidate": 22752,
+        "baseline": 22752,
+        "delta": 0,
+        "ratio": 1.0
+      },
+      "spawn_groups": {
+        "candidate": 13652,
+        "baseline": 13652,
+        "delta": 0,
+        "ratio": 1.0
+      },
+      "incoming_probability_evaluations": {
+        "candidate": 22752,
+        "baseline": 22752,
+        "delta": 0,
+        "ratio": 1.0
+      },
+      "incoming_group_probability_additions": {
+        "candidate": 22752,
+        "baseline": 22752,
+        "delta": 0,
+        "ratio": 1.0
+      },
+      "effect_key_constructions": {
+        "candidate": 64999,
+        "baseline": 0,
+        "delta": 64999,
+        "ratio": null
+      },
+      "effect_cache_lookups": {
+        "candidate": 64999,
+        "baseline": 0,
+        "delta": 64999,
+        "ratio": null
+      },
+      "effect_cache_hits": {
+        "candidate": 50208,
+        "baseline": 0,
+        "delta": 50208,
+        "ratio": null
+      },
+      "effect_cache_entries": {
+        "candidate": 14791,
+        "baseline": 0,
+        "delta": 14791,
+        "ratio": null
+      },
+      "effect_score_aggregations": {
+        "candidate": 14791,
+        "baseline": 0,
+        "delta": 14791,
+        "ratio": null
+      },
+      "effect_output_line_references": {
+        "candidate": 102588,
+        "baseline": 0,
+        "delta": 102588,
+        "ratio": null
+      },
+      "effect_vacancy_keys": {
+        "candidate": 39352,
+        "baseline": 0,
+        "delta": 39352,
+        "ratio": null
+      },
+      "effect_exact_output_keys": {
+        "candidate": 25647,
+        "baseline": 0,
+        "delta": 25647,
+        "ratio": null
+      },
+      "successor_group_cache_lookups": {
+        "candidate": 0,
+        "baseline": 0,
+        "delta": 0,
+        "ratio": null
+      },
+      "successor_group_cache_hits": {
+        "candidate": 0,
+        "baseline": 0,
+        "delta": 0,
+        "ratio": null
+      },
+      "successor_group_materializations": {
+        "candidate": 0,
+        "baseline": 0,
+        "delta": 0,
+        "ratio": null
+      },
+      "successor_group_cached_groups": {
+        "candidate": 0,
+        "baseline": 0,
+        "delta": 0,
+        "ratio": null
+      }
+    },
+    "SHARED_vs_EARLY": {
+      "contract_materializations": {
+        "candidate": 2544,
+        "baseline": 2544,
+        "delta": 0,
+        "ratio": 1.0
+      },
+      "terminal_probability_combinations": {
+        "candidate": 15572,
+        "baseline": 15572,
+        "delta": 0,
+        "ratio": 1.0
+      },
+      "contract_fraction_accumulations": {
+        "candidate": 15572,
+        "baseline": 15572,
+        "delta": 0,
+        "ratio": 1.0
+      },
+      "predicate_calls": {
+        "candidate": 14748,
+        "baseline": 21212,
+        "delta": -6464,
+        "ratio": 0.695266830096172
+      },
+      "predicate_materializations": {
+        "candidate": 14748,
+        "baseline": 21212,
+        "delta": -6464,
+        "ratio": 0.695266830096172
+      },
+      "candidate_predicate_evaluations": {
+        "candidate": 14721,
+        "baseline": 21185,
+        "delta": -6464,
+        "ratio": 0.694878451734718
+      },
+      "terminal_predicate_evaluations": {
+        "candidate": 14791,
+        "baseline": 14791,
+        "delta": 0,
+        "ratio": 1.0
+      },
+      "candidate_action_predicate_evaluations": {
+        "candidate": 14791,
+        "baseline": 14791,
+        "delta": 0,
+        "ratio": 1.0
+      },
+      "candidate_action_changed_tests": {
+        "candidate": 58992,
+        "baseline": 84848,
+        "delta": -25856,
+        "ratio": 0.695266830096172
+      },
+      "line_evaluations": {
+        "candidate": 21452,
+        "baseline": 21452,
+        "delta": 0,
+        "ratio": 1.0
+      },
+      "line_lookups": {
+        "candidate": 151720,
+        "baseline": 177576,
+        "delta": -25856,
+        "ratio": 0.8543947380276614
+      },
+      "spawn_candidates": {
+        "candidate": 15994,
+        "baseline": 22752,
+        "delta": -6758,
+        "ratio": 0.7029711673699015
+      },
+      "spawn_groups": {
+        "candidate": 9668,
+        "baseline": 13652,
+        "delta": -3984,
+        "ratio": 0.7081746264283622
+      },
+      "incoming_probability_evaluations": {
+        "candidate": 15994,
+        "baseline": 22752,
+        "delta": -6758,
+        "ratio": 0.7029711673699015
+      },
+      "incoming_group_probability_additions": {
+        "candidate": 15994,
+        "baseline": 22752,
+        "delta": -6758,
+        "ratio": 0.7029711673699015
+      },
+      "effect_key_constructions": {
+        "candidate": 45162,
+        "baseline": 64999,
+        "delta": -19837,
+        "ratio": 0.6948106893952215
+      },
+      "effect_cache_lookups": {
+        "candidate": 45162,
+        "baseline": 64999,
+        "delta": -19837,
+        "ratio": 0.6948106893952215
+      },
+      "effect_cache_hits": {
+        "candidate": 30371,
+        "baseline": 50208,
+        "delta": -19837,
+        "ratio": 0.6049036010197578
+      },
+      "effect_cache_entries": {
+        "candidate": 14791,
+        "baseline": 14791,
+        "delta": 0,
+        "ratio": 1.0
+      },
+      "effect_score_aggregations": {
+        "candidate": 14791,
+        "baseline": 14791,
+        "delta": 0,
+        "ratio": 1.0
+      },
+      "effect_output_line_references": {
+        "candidate": 77436,
+        "baseline": 102588,
+        "delta": -25152,
+        "ratio": 0.7548251257457013
+      },
+      "effect_vacancy_keys": {
+        "candidate": 25803,
+        "baseline": 39352,
+        "delta": -13549,
+        "ratio": 0.6556972961984143
+      },
+      "effect_exact_output_keys": {
+        "candidate": 19359,
+        "baseline": 25647,
+        "delta": -6288,
+        "ratio": 0.7548251257457013
+      },
+      "successor_group_cache_lookups": {
+        "candidate": 4731,
+        "baseline": 0,
+        "delta": 4731,
+        "ratio": null
+      },
+      "successor_group_cache_hits": {
+        "candidate": 1299,
+        "baseline": 0,
+        "delta": 1299,
+        "ratio": null
+      },
+      "successor_group_materializations": {
+        "candidate": 3432,
+        "baseline": 0,
+        "delta": 3432,
+        "ratio": null
+      },
+      "successor_group_cached_groups": {
+        "candidate": 9668,
+        "baseline": 0,
+        "delta": 9668,
+        "ratio": null
+      }
+    }
+  },
+  "ratios": {
+    "LATE_vs_BASE": {
+      "method_total_seconds": 0.9641963500117464,
+      "concrete_active_states": 0.0963855421686747,
+      "geometric_active_states": 1.0,
+      "generated_successors": 0.057840036150022596,
+      "active_cells": 1.0,
+      "planning_action_rows": 1.0,
+      "package_bytes": 0.9049948453148814,
+      "router_bytes": 0.11540961839029586,
+      "finite_method_cost_benefit": true
+    },
+    "EARLY_vs_BASE": {
+      "method_total_seconds": 0.9755974058925296,
+      "concrete_active_states": 0.0963855421686747,
+      "geometric_active_states": 1.0,
+      "generated_successors": 0.057840036150022596,
+      "active_cells": 1.0,
+      "planning_action_rows": 1.0,
+      "package_bytes": 0.9050423813159748,
+      "router_bytes": 0.1158522247887246,
+      "finite_method_cost_benefit": true
+    },
+    "EARLY_vs_LATE": {
+      "method_total_seconds": 1.0118244130260856,
+      "concrete_active_states": 1.0,
+      "geometric_active_states": 1.0,
+      "generated_successors": 1.0,
+      "active_cells": 1.0,
+      "planning_action_rows": 1.0,
+      "package_bytes": 1.0000525262672373,
+      "router_bytes": 1.0038350910834133,
+      "finite_method_cost_benefit": false
+    },
+    "SHARED_vs_EARLY": {
+      "method_total_seconds": 0.9683542299675104,
+      "concrete_active_states": 1.0,
+      "geometric_active_states": 1.0,
+      "generated_successors": 1.0,
+      "active_cells": 1.0,
+      "planning_action_rows": 1.0,
+      "package_bytes": 1.0003676645586137,
+      "router_bytes": 1.0267430754536773,
+      "finite_method_cost_benefit": true
+    },
+    "SHARED_vs_BASE": {
+      "method_total_seconds": 0.9447238747413613,
+      "concrete_active_states": 0.0963855421686747,
+      "geometric_active_states": 1.0,
+      "generated_successors": 0.057840036150022596,
+      "active_cells": 1.0,
+      "planning_action_rows": 1.0,
+      "package_bytes": 0.9053751333236281,
+      "router_bytes": 0.11895046957772583,
+      "finite_method_cost_benefit": true
+    }
+  }
+}

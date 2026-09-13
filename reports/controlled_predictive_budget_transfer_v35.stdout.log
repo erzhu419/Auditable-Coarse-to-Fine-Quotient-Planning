@@ -1,0 +1,49 @@
+{"board_index": 0, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 1, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 2, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 3, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 4, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 5, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 6, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 7, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 8, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 9, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 10, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 11, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 12, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 13, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 14, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"board_index": 15, "stage": "PREFIX_AND_QUERY_PREPARATION"}
+{"base_seed": 962001, "fixed_budget_complete_triples": 160, "replicate_index": 0, "source_valid_triples": 160, "stage": "SAMPLING"}
+{"base_seed": 962002, "fixed_budget_complete_triples": 160, "replicate_index": 1, "source_valid_triples": 160, "stage": "SAMPLING"}
+{"base_seed": 962003, "fixed_budget_complete_triples": 160, "replicate_index": 2, "source_valid_triples": 160, "stage": "SAMPLING"}
+{"base_seed": 962004, "fixed_budget_complete_triples": 160, "replicate_index": 3, "source_valid_triples": 160, "stage": "SAMPLING"}
+{"base_seed": 962005, "fixed_budget_complete_triples": 160, "replicate_index": 4, "source_valid_triples": 160, "stage": "SAMPLING"}
+{"base_seed": 962006, "fixed_budget_complete_triples": 160, "replicate_index": 5, "source_valid_triples": 160, "stage": "SAMPLING"}
+{"base_seed": 962007, "fixed_budget_complete_triples": 160, "replicate_index": 6, "source_valid_triples": 160, "stage": "SAMPLING"}
+{"base_seed": 962008, "fixed_budget_complete_triples": 160, "replicate_index": 7, "source_valid_triples": 160, "stage": "SAMPLING"}
+{"base_seed": 962009, "fixed_budget_complete_triples": 160, "replicate_index": 8, "source_valid_triples": 160, "stage": "SAMPLING"}
+{"base_seed": 962010, "fixed_budget_complete_triples": 160, "replicate_index": 9, "source_valid_triples": 160, "stage": "SAMPLING"}
+{"base_seed": 962011, "fixed_budget_complete_triples": 160, "replicate_index": 10, "source_valid_triples": 160, "stage": "SAMPLING"}
+{"base_seed": 962012, "fixed_budget_complete_triples": 160, "replicate_index": 11, "source_valid_triples": 160, "stage": "SAMPLING"}
+{"base_seed": 962013, "fixed_budget_complete_triples": 160, "replicate_index": 12, "source_valid_triples": 160, "stage": "SAMPLING"}
+{"base_seed": 962014, "fixed_budget_complete_triples": 160, "replicate_index": 13, "source_valid_triples": 160, "stage": "SAMPLING"}
+{"base_seed": 962015, "fixed_budget_complete_triples": 160, "replicate_index": 14, "source_valid_triples": 160, "stage": "SAMPLING"}
+{"base_seed": 962016, "fixed_budget_complete_triples": 160, "replicate_index": 15, "source_valid_triples": 160, "stage": "SAMPLING"}
+{"base_seed": 962001, "complete": true, "replicate_index": 0, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 962002, "complete": true, "replicate_index": 1, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 962003, "complete": true, "replicate_index": 2, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 962004, "complete": true, "replicate_index": 3, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 962005, "complete": true, "replicate_index": 4, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 962006, "complete": true, "replicate_index": 5, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 962007, "complete": true, "replicate_index": 6, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 962008, "complete": true, "replicate_index": 7, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 962009, "complete": true, "replicate_index": 8, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 962010, "complete": true, "replicate_index": 9, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 962011, "complete": true, "replicate_index": 10, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 962012, "complete": true, "replicate_index": 11, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 962013, "complete": true, "replicate_index": 12, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 962014, "complete": true, "replicate_index": 13, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 962015, "complete": true, "replicate_index": 14, "source_valid": true, "stage": "EVALUATION"}
+{"base_seed": 962016, "complete": true, "replicate_index": 15, "source_valid": true, "stage": "EVALUATION"}
+{"status": "BUDGET_TRANSFER_COMPLETE", "source_valid_repetition_count": 16, "complete_repetition_count": 16, "output": "reports/controlled_predictive_budget_transfer_v35.json.gz", "report_serialization_seconds": 4.585389924002811, "report_bytes": 3091608}

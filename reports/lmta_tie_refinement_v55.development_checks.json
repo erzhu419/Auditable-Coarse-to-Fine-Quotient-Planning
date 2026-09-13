@@ -1,0 +1,28 @@
+{
+  "schema": "acfqp.lmta_tie_refinement_development.v55",
+  "final_test_results": {
+    "evaluator": {
+      "passed": 8,
+      "failed": 0,
+      "pytest_seconds": 0.25
+    },
+    "analysis": {
+      "passed": 9,
+      "failed": 0,
+      "pytest_seconds": 0.2
+    },
+    "runner": {
+      "passed": 1,
+      "failed": 0,
+      "pytest_seconds": 0.33
+    },
+    "unique_tests": 18,
+    "total_test_executions": 18
+  },
+  "attempt_ledgers": [
+    "lmta_tie_refinement_v55.evaluator_checks.json",
+    "lmta_tie_refinement_v55.analysis_checks.json",
+    "lmta_tie_refinement_v55.runner_checks.json"
+  ],
+  "scope": "The referenced ledgers retain all development work. This index adds no test runs or fees."
+}

@@ -1,0 +1,21 @@
+
+[reproduce] /usr/bin/python3 code/exp3_doorkey/run_doorkey_experiment.py --output-dir /home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/rate_distortion_v39/release_entrypoint/doorkey --num-workers 4
+  Loading cached DoorKey fixed_point metric from doorkey_sa_fixed_point_n233_a5_g0.9500_403bc71638f22ad7.npy
+[run] Building concrete baseline.
+[run] Fitting fixed abstraction ladder with alphabet cap 1165 across 5 betas.
+[run] Fitting fixed ladder independently across 5 betas with 4 workers
+[run] Fitting adaptive abstraction ladder across 5 betas.
+[run] Fitting adaptive ladder independently across 5 betas with 4 workers
+[run] Running Bellman traces.
+[run] Tracing base MDP over 100 sweeps (101 checkpoints)
+[run] Tracing fixed beta=6 over 1975 sweeps (1976 checkpoints)
+[run] Tracing fixed beta=7 over 206 sweeps (207 checkpoints)
+[run] Tracing fixed beta=7.5 over 161 sweeps (162 checkpoints)
+[run] Tracing fixed beta=8 over 100 sweeps (101 checkpoints)
+[run] Tracing fixed beta=10 over 100 sweeps (101 checkpoints)
+[run] Tracing adaptive controller over 1975 sweep slots (1976 checkpoints)
+[run] Assembling summary and writing outputs.
+Finished. Results saved to /home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/rate_distortion_v39/release_entrypoint/doorkey
+[run] Done in 21.1s.
+
+[reproduce] /usr/bin/python3 code/exp3_doorkey/results.py --results-dir /home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/rate_distortion_v39/release_entrypoint/doorkey --output-dir /home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/rate_distortion_v39/release_entrypoint/doorkey/final_results

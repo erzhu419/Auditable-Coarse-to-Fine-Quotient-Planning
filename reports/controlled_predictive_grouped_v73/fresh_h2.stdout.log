@@ -1,0 +1,20 @@
+{
+  "complete": true,
+  "valid": true,
+  "observations": 16,
+  "each_contracts_matched": 16,
+  "group_contracts_matched": 16,
+  "errors": {},
+  "ground_counts": {
+    "ground_h2_explicit_state_calls": 16,
+    "ground_h2_active_roots": 16,
+    "ground_h2_explicit_swipe_calls": 64,
+    "ground_h2_step_calls": 60,
+    "ground_h2_step_outcomes": 236,
+    "ground_h1_contract_requests": 193,
+    "ground_h1_unique_active_boards": 193,
+    "ground_h1_explicit_swipe_calls": 772,
+    "ground_h1_step_calls": 590,
+    "ground_h1_step_outcomes": 3050
+  }
+}

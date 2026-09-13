@@ -1,0 +1,180 @@
+{"run_id": 0, "method": "FLAT_DQN", "phase": "evaluation", "checkpoint": 0, "completed": 20}
+{"run_id": 0, "method": "FLAT_DQN", "phase": "train", "completed": 8}
+{"run_id": 0, "method": "FLAT_DQN", "phase": "train", "completed": 16}
+{"run_id": 0, "method": "FLAT_DQN", "phase": "train", "completed": 24}
+{"run_id": 0, "method": "FLAT_DQN", "phase": "train", "completed": 32}
+{"run_id": 0, "method": "FLAT_DQN", "phase": "evaluation", "checkpoint": 32, "completed": 20}
+{"run_id": 0, "method": "FLAT_DQN", "phase": "train", "completed": 40}
+{"run_id": 0, "method": "FLAT_DQN", "phase": "train", "completed": 48}
+{"run_id": 0, "method": "FLAT_DQN", "phase": "train", "completed": 56}
+{"run_id": 0, "method": "FLAT_DQN", "phase": "train", "completed": 64}
+{"run_id": 0, "method": "FLAT_DQN", "phase": "evaluation", "checkpoint": 64, "completed": 20}
+{"run_id": 0, "method": "FLAT_DQN", "phase": "train", "completed": 72}
+{"run_id": 0, "method": "FLAT_DQN", "phase": "train", "completed": 80}
+{"run_id": 0, "method": "FLAT_DQN", "phase": "train", "completed": 88}
+{"run_id": 0, "method": "FLAT_DQN", "phase": "train", "completed": 96}
+{"run_id": 0, "method": "FLAT_DQN", "phase": "train", "completed": 104}
+{"run_id": 0, "method": "FLAT_DQN", "phase": "train", "completed": 112}
+{"run_id": 0, "method": "FLAT_DQN", "phase": "train", "completed": 120}
+{"run_id": 0, "method": "FLAT_DQN", "phase": "train", "completed": 128}
+{"run_id": 0, "method": "FLAT_DQN", "phase": "evaluation", "checkpoint": 128, "completed": 20}
+{"run_id": 0, "method": "BUDGET_HRL", "phase": "evaluation", "checkpoint": 0, "completed": 20}
+{"run_id": 0, "method": "BUDGET_HRL", "phase": "train", "completed": 8}
+{"run_id": 0, "method": "BUDGET_HRL", "phase": "train", "completed": 16}
+{"run_id": 0, "method": "BUDGET_HRL", "phase": "train", "completed": 24}
+{"run_id": 0, "method": "BUDGET_HRL", "phase": "train", "completed": 32}
+{"run_id": 0, "method": "BUDGET_HRL", "phase": "evaluation", "checkpoint": 32, "completed": 20}
+{"run_id": 0, "method": "BUDGET_HRL", "phase": "train", "completed": 40}
+{"run_id": 0, "method": "BUDGET_HRL", "phase": "train", "completed": 48}
+{"run_id": 0, "method": "BUDGET_HRL", "phase": "train", "completed": 56}
+{"run_id": 0, "method": "BUDGET_HRL", "phase": "train", "completed": 64}
+{"run_id": 0, "method": "BUDGET_HRL", "phase": "evaluation", "checkpoint": 64, "completed": 20}
+{"run_id": 0, "method": "BUDGET_HRL", "phase": "train", "completed": 72}
+{"run_id": 0, "method": "BUDGET_HRL", "phase": "train", "completed": 80}
+{"run_id": 0, "method": "BUDGET_HRL", "phase": "train", "completed": 88}
+{"run_id": 0, "method": "BUDGET_HRL", "phase": "train", "completed": 96}
+{"run_id": 0, "method": "BUDGET_HRL", "phase": "train", "completed": 104}
+{"run_id": 0, "method": "BUDGET_HRL", "phase": "train", "completed": 112}
+{"run_id": 0, "method": "BUDGET_HRL", "phase": "train", "completed": 120}
+{"run_id": 0, "method": "BUDGET_HRL", "phase": "train", "completed": 128}
+{"run_id": 0, "method": "BUDGET_HRL", "phase": "evaluation", "checkpoint": 128, "completed": 20}
+{"run_id": 0, "method": "LMTA_RI", "phase": "evaluation", "checkpoint": 0, "completed": 20}
+{"run_id": 0, "method": "LMTA_RI", "phase": "train", "completed": 8}
+{"run_id": 0, "method": "LMTA_RI", "phase": "train", "completed": 16}
+{"run_id": 0, "method": "LMTA_RI", "phase": "train", "completed": 24}
+{"run_id": 0, "method": "LMTA_RI", "phase": "train", "completed": 32}
+{"run_id": 0, "method": "LMTA_RI", "phase": "evaluation", "checkpoint": 32, "completed": 20}
+{"run_id": 0, "method": "LMTA_RI", "phase": "train", "completed": 40}
+{"run_id": 0, "method": "LMTA_RI", "phase": "train", "completed": 48}
+{"run_id": 0, "method": "LMTA_RI", "phase": "train", "completed": 56}
+{"run_id": 0, "method": "LMTA_RI", "phase": "train", "completed": 64}
+{"run_id": 0, "method": "LMTA_RI", "phase": "evaluation", "checkpoint": 64, "completed": 20}
+{"run_id": 0, "method": "LMTA_RI", "phase": "train", "completed": 72}
+{"run_id": 0, "method": "LMTA_RI", "phase": "train", "completed": 80}
+{"run_id": 0, "method": "LMTA_RI", "phase": "train", "completed": 88}
+{"run_id": 0, "method": "LMTA_RI", "phase": "train", "completed": 96}
+{"run_id": 0, "method": "LMTA_RI", "phase": "train", "completed": 104}
+{"run_id": 0, "method": "LMTA_RI", "phase": "train", "completed": 112}
+{"run_id": 0, "method": "LMTA_RI", "phase": "train", "completed": 120}
+{"run_id": 0, "method": "LMTA_RI", "phase": "train", "completed": 128}
+{"run_id": 0, "method": "LMTA_RI", "phase": "evaluation", "checkpoint": 128, "completed": 20}
+{"run_id": 1, "method": "BUDGET_HRL", "phase": "evaluation", "checkpoint": 0, "completed": 20}
+{"run_id": 1, "method": "BUDGET_HRL", "phase": "train", "completed": 8}
+{"run_id": 1, "method": "BUDGET_HRL", "phase": "train", "completed": 16}
+{"run_id": 1, "method": "BUDGET_HRL", "phase": "train", "completed": 24}
+{"run_id": 1, "method": "BUDGET_HRL", "phase": "train", "completed": 32}
+{"run_id": 1, "method": "BUDGET_HRL", "phase": "evaluation", "checkpoint": 32, "completed": 20}
+{"run_id": 1, "method": "BUDGET_HRL", "phase": "train", "completed": 40}
+{"run_id": 1, "method": "BUDGET_HRL", "phase": "train", "completed": 48}
+{"run_id": 1, "method": "BUDGET_HRL", "phase": "train", "completed": 56}
+{"run_id": 1, "method": "BUDGET_HRL", "phase": "train", "completed": 64}
+{"run_id": 1, "method": "BUDGET_HRL", "phase": "evaluation", "checkpoint": 64, "completed": 20}
+{"run_id": 1, "method": "BUDGET_HRL", "phase": "train", "completed": 72}
+{"run_id": 1, "method": "BUDGET_HRL", "phase": "train", "completed": 80}
+{"run_id": 1, "method": "BUDGET_HRL", "phase": "train", "completed": 88}
+{"run_id": 1, "method": "BUDGET_HRL", "phase": "train", "completed": 96}
+{"run_id": 1, "method": "BUDGET_HRL", "phase": "train", "completed": 104}
+{"run_id": 1, "method": "BUDGET_HRL", "phase": "train", "completed": 112}
+{"run_id": 1, "method": "BUDGET_HRL", "phase": "train", "completed": 120}
+{"run_id": 1, "method": "BUDGET_HRL", "phase": "train", "completed": 128}
+{"run_id": 1, "method": "BUDGET_HRL", "phase": "evaluation", "checkpoint": 128, "completed": 20}
+{"run_id": 1, "method": "LMTA_RI", "phase": "evaluation", "checkpoint": 0, "completed": 20}
+{"run_id": 1, "method": "LMTA_RI", "phase": "train", "completed": 8}
+{"run_id": 1, "method": "LMTA_RI", "phase": "train", "completed": 16}
+{"run_id": 1, "method": "LMTA_RI", "phase": "train", "completed": 24}
+{"run_id": 1, "method": "LMTA_RI", "phase": "train", "completed": 32}
+{"run_id": 1, "method": "LMTA_RI", "phase": "evaluation", "checkpoint": 32, "completed": 20}
+{"run_id": 1, "method": "LMTA_RI", "phase": "train", "completed": 40}
+{"run_id": 1, "method": "LMTA_RI", "phase": "train", "completed": 48}
+{"run_id": 1, "method": "LMTA_RI", "phase": "train", "completed": 56}
+{"run_id": 1, "method": "LMTA_RI", "phase": "train", "completed": 64}
+{"run_id": 1, "method": "LMTA_RI", "phase": "evaluation", "checkpoint": 64, "completed": 20}
+{"run_id": 1, "method": "LMTA_RI", "phase": "train", "completed": 72}
+{"run_id": 1, "method": "LMTA_RI", "phase": "train", "completed": 80}
+{"run_id": 1, "method": "LMTA_RI", "phase": "train", "completed": 88}
+{"run_id": 1, "method": "LMTA_RI", "phase": "train", "completed": 96}
+{"run_id": 1, "method": "LMTA_RI", "phase": "train", "completed": 104}
+{"run_id": 1, "method": "LMTA_RI", "phase": "train", "completed": 112}
+{"run_id": 1, "method": "LMTA_RI", "phase": "train", "completed": 120}
+{"run_id": 1, "method": "LMTA_RI", "phase": "train", "completed": 128}
+{"run_id": 1, "method": "LMTA_RI", "phase": "evaluation", "checkpoint": 128, "completed": 20}
+{"run_id": 1, "method": "FLAT_DQN", "phase": "evaluation", "checkpoint": 0, "completed": 20}
+{"run_id": 1, "method": "FLAT_DQN", "phase": "train", "completed": 8}
+{"run_id": 1, "method": "FLAT_DQN", "phase": "train", "completed": 16}
+{"run_id": 1, "method": "FLAT_DQN", "phase": "train", "completed": 24}
+{"run_id": 1, "method": "FLAT_DQN", "phase": "train", "completed": 32}
+{"run_id": 1, "method": "FLAT_DQN", "phase": "evaluation", "checkpoint": 32, "completed": 20}
+{"run_id": 1, "method": "FLAT_DQN", "phase": "train", "completed": 40}
+{"run_id": 1, "method": "FLAT_DQN", "phase": "train", "completed": 48}
+{"run_id": 1, "method": "FLAT_DQN", "phase": "train", "completed": 56}
+{"run_id": 1, "method": "FLAT_DQN", "phase": "train", "completed": 64}
+{"run_id": 1, "method": "FLAT_DQN", "phase": "evaluation", "checkpoint": 64, "completed": 20}
+{"run_id": 1, "method": "FLAT_DQN", "phase": "train", "completed": 72}
+{"run_id": 1, "method": "FLAT_DQN", "phase": "train", "completed": 80}
+{"run_id": 1, "method": "FLAT_DQN", "phase": "train", "completed": 88}
+{"run_id": 1, "method": "FLAT_DQN", "phase": "train", "completed": 96}
+{"run_id": 1, "method": "FLAT_DQN", "phase": "train", "completed": 104}
+{"run_id": 1, "method": "FLAT_DQN", "phase": "train", "completed": 112}
+{"run_id": 1, "method": "FLAT_DQN", "phase": "train", "completed": 120}
+{"run_id": 1, "method": "FLAT_DQN", "phase": "train", "completed": 128}
+{"run_id": 1, "method": "FLAT_DQN", "phase": "evaluation", "checkpoint": 128, "completed": 20}
+{"run_id": 2, "method": "LMTA_RI", "phase": "evaluation", "checkpoint": 0, "completed": 20}
+{"run_id": 2, "method": "LMTA_RI", "phase": "train", "completed": 8}
+{"run_id": 2, "method": "LMTA_RI", "phase": "train", "completed": 16}
+{"run_id": 2, "method": "LMTA_RI", "phase": "train", "completed": 24}
+{"run_id": 2, "method": "LMTA_RI", "phase": "train", "completed": 32}
+{"run_id": 2, "method": "LMTA_RI", "phase": "evaluation", "checkpoint": 32, "completed": 20}
+{"run_id": 2, "method": "LMTA_RI", "phase": "train", "completed": 40}
+{"run_id": 2, "method": "LMTA_RI", "phase": "train", "completed": 48}
+{"run_id": 2, "method": "LMTA_RI", "phase": "train", "completed": 56}
+{"run_id": 2, "method": "LMTA_RI", "phase": "train", "completed": 64}
+{"run_id": 2, "method": "LMTA_RI", "phase": "evaluation", "checkpoint": 64, "completed": 20}
+{"run_id": 2, "method": "LMTA_RI", "phase": "train", "completed": 72}
+{"run_id": 2, "method": "LMTA_RI", "phase": "train", "completed": 80}
+{"run_id": 2, "method": "LMTA_RI", "phase": "train", "completed": 88}
+{"run_id": 2, "method": "LMTA_RI", "phase": "train", "completed": 96}
+{"run_id": 2, "method": "LMTA_RI", "phase": "train", "completed": 104}
+{"run_id": 2, "method": "LMTA_RI", "phase": "train", "completed": 112}
+{"run_id": 2, "method": "LMTA_RI", "phase": "train", "completed": 120}
+{"run_id": 2, "method": "LMTA_RI", "phase": "train", "completed": 128}
+{"run_id": 2, "method": "LMTA_RI", "phase": "evaluation", "checkpoint": 128, "completed": 20}
+{"run_id": 2, "method": "FLAT_DQN", "phase": "evaluation", "checkpoint": 0, "completed": 20}
+{"run_id": 2, "method": "FLAT_DQN", "phase": "train", "completed": 8}
+{"run_id": 2, "method": "FLAT_DQN", "phase": "train", "completed": 16}
+{"run_id": 2, "method": "FLAT_DQN", "phase": "train", "completed": 24}
+{"run_id": 2, "method": "FLAT_DQN", "phase": "train", "completed": 32}
+{"run_id": 2, "method": "FLAT_DQN", "phase": "evaluation", "checkpoint": 32, "completed": 20}
+{"run_id": 2, "method": "FLAT_DQN", "phase": "train", "completed": 40}
+{"run_id": 2, "method": "FLAT_DQN", "phase": "train", "completed": 48}
+{"run_id": 2, "method": "FLAT_DQN", "phase": "train", "completed": 56}
+{"run_id": 2, "method": "FLAT_DQN", "phase": "train", "completed": 64}
+{"run_id": 2, "method": "FLAT_DQN", "phase": "evaluation", "checkpoint": 64, "completed": 20}
+{"run_id": 2, "method": "FLAT_DQN", "phase": "train", "completed": 72}
+{"run_id": 2, "method": "FLAT_DQN", "phase": "train", "completed": 80}
+{"run_id": 2, "method": "FLAT_DQN", "phase": "train", "completed": 88}
+{"run_id": 2, "method": "FLAT_DQN", "phase": "train", "completed": 96}
+{"run_id": 2, "method": "FLAT_DQN", "phase": "train", "completed": 104}
+{"run_id": 2, "method": "FLAT_DQN", "phase": "train", "completed": 112}
+{"run_id": 2, "method": "FLAT_DQN", "phase": "train", "completed": 120}
+{"run_id": 2, "method": "FLAT_DQN", "phase": "train", "completed": 128}
+{"run_id": 2, "method": "FLAT_DQN", "phase": "evaluation", "checkpoint": 128, "completed": 20}
+{"run_id": 2, "method": "BUDGET_HRL", "phase": "evaluation", "checkpoint": 0, "completed": 20}
+{"run_id": 2, "method": "BUDGET_HRL", "phase": "train", "completed": 8}
+{"run_id": 2, "method": "BUDGET_HRL", "phase": "train", "completed": 16}
+{"run_id": 2, "method": "BUDGET_HRL", "phase": "train", "completed": 24}
+{"run_id": 2, "method": "BUDGET_HRL", "phase": "train", "completed": 32}
+{"run_id": 2, "method": "BUDGET_HRL", "phase": "evaluation", "checkpoint": 32, "completed": 20}
+{"run_id": 2, "method": "BUDGET_HRL", "phase": "train", "completed": 40}
+{"run_id": 2, "method": "BUDGET_HRL", "phase": "train", "completed": 48}
+{"run_id": 2, "method": "BUDGET_HRL", "phase": "train", "completed": 56}
+{"run_id": 2, "method": "BUDGET_HRL", "phase": "train", "completed": 64}
+{"run_id": 2, "method": "BUDGET_HRL", "phase": "evaluation", "checkpoint": 64, "completed": 20}
+{"run_id": 2, "method": "BUDGET_HRL", "phase": "train", "completed": 72}
+{"run_id": 2, "method": "BUDGET_HRL", "phase": "train", "completed": 80}
+{"run_id": 2, "method": "BUDGET_HRL", "phase": "train", "completed": 88}
+{"run_id": 2, "method": "BUDGET_HRL", "phase": "train", "completed": 96}
+{"run_id": 2, "method": "BUDGET_HRL", "phase": "train", "completed": 104}
+{"run_id": 2, "method": "BUDGET_HRL", "phase": "train", "completed": 112}
+{"run_id": 2, "method": "BUDGET_HRL", "phase": "train", "completed": 120}
+{"run_id": 2, "method": "BUDGET_HRL", "phase": "train", "completed": 128}
+{"run_id": 2, "method": "BUDGET_HRL", "phase": "evaluation", "checkpoint": 128, "completed": 20}

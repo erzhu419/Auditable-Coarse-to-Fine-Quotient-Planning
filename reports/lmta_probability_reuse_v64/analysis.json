@@ -1,0 +1,1541 @@
+{
+  "schema": "acfqp.lmta_probability_reuse_analysis.v64",
+  "protocol": {
+    "rounds": 6,
+    "methods": [
+      "LOOKAHEAD_1_ANALYTIC",
+      "LOOKAHEAD_2_ANALYTIC"
+    ],
+    "variants": [
+      "BASELINE",
+      "REUSE"
+    ],
+    "limits": {
+      "max_planner_action_values": 2000000,
+      "max_queries": 100000,
+      "max_wall_seconds": 60.0
+    }
+  },
+  "integrity": {
+    "passed": true,
+    "errors": {}
+  },
+  "action_and_value_preservation": true,
+  "complete_performance_evidence": true,
+  "validation": [
+    {
+      "graph_id": 630000,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630000,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630001,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630001,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630002,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630002,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630003,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630003,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630004,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630004,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630005,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630005,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630006,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630006,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630007,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630007,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630008,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630008,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630009,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630009,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630010,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630010,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630011,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630011,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630012,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630012,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630013,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630013,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630014,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630014,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630015,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630015,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630016,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630016,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630017,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630017,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630018,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630018,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630019,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630019,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630020,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630020,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630021,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630021,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630022,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630022,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630023,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630023,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630024,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630024,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630025,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630025,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630026,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630026,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630027,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630027,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630028,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630028,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630029,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630029,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630030,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630030,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630031,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630031,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630032,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630032,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630033,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630033,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630034,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630034,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630035,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630035,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630036,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630036,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630037,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630037,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630038,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630038,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630039,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630039,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630040,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630040,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630041,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630041,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630042,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630042,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630043,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630043,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630044,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630044,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630045,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630045,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630046,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630046,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630047,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630047,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630048,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630048,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630049,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630049,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630050,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630050,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630051,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630051,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630052,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630052,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630053,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630053,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630054,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630054,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630055,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630055,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630056,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630056,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630057,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630057,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630058,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630058,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630059,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630059,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630060,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630060,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630061,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630061,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630062,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630062,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630063,
+      "method": "LOOKAHEAD_1_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    },
+    {
+      "graph_id": 630063,
+      "method": "LOOKAHEAD_2_ANALYTIC",
+      "output_preserved": true,
+      "logical_work_preserved": true,
+      "complete": true,
+      "mismatches": 0
+    }
+  ],
+  "timing": {
+    "LOOKAHEAD_1_ANALYTIC": {
+      "rounds": [
+        {
+          "round": 0,
+          "seconds": {
+            "BASELINE": 4.081043633457739,
+            "REUSE": 4.028490753087681
+          },
+          "reuse_over_baseline": 0.9871226859866892
+        },
+        {
+          "round": 1,
+          "seconds": {
+            "BASELINE": 4.226463954837527,
+            "REUSE": 4.166416803083848
+          },
+          "reuse_over_baseline": 0.9857925792351901
+        },
+        {
+          "round": 2,
+          "seconds": {
+            "BASELINE": 4.468277690117247,
+            "REUSE": 4.471208829723764
+          },
+          "reuse_over_baseline": 1.000655988685081
+        },
+        {
+          "round": 3,
+          "seconds": {
+            "BASELINE": 4.349045550334267,
+            "REUSE": 4.272688793600537
+          },
+          "reuse_over_baseline": 0.982442870314876
+        },
+        {
+          "round": 4,
+          "seconds": {
+            "BASELINE": 4.310196104110219,
+            "REUSE": 4.256906512135174
+          },
+          "reuse_over_baseline": 0.9876363880696223
+        },
+        {
+          "round": 5,
+          "seconds": {
+            "BASELINE": 4.311967069457751,
+            "REUSE": 4.3253251374699175
+          },
+          "reuse_over_baseline": 1.003097905850623
+        }
+      ],
+      "ratio_median": 0.9873795370281557,
+      "ratio_minimum": 0.982442870314876,
+      "ratio_maximum": 1.003097905850623,
+      "order_strata": [
+        {
+          "first_variant": "BASELINE",
+          "paired_blocks": 192,
+          "seconds": {
+            "BASELINE": 12.915963693405502,
+            "REUSE": 12.844733437290415
+          },
+          "reuse_over_baseline": 0.9944850993850769
+        },
+        {
+          "first_variant": "REUSE",
+          "paired_blocks": 192,
+          "seconds": {
+            "BASELINE": 12.831030308909249,
+            "REUSE": 12.676303391810507
+          },
+          "reuse_over_baseline": 0.9879411930785241
+        }
+      ],
+      "work": {
+        "BASELINE": {
+          "planner_calls": 36864,
+          "dp_states": 24576,
+          "action_value_evaluations": 327684,
+          "kernel_builds": 0,
+          "kernel_cache_hits": 0,
+          "transition_outcomes": 0,
+          "target_probability_evaluations": 4119120,
+          "score_node_evaluations": 0,
+          "immediate_expectation_terms": 0,
+          "bellman_expectation_terms": 0,
+          "forced_choice": 12288,
+          "analytic_expectation_calls": 327684,
+          "analytic_probability_terms": 4119120
+        },
+        "REUSE": {
+          "planner_calls": 36864,
+          "dp_states": 24576,
+          "action_value_evaluations": 327684,
+          "kernel_builds": 0,
+          "kernel_cache_hits": 0,
+          "transition_outcomes": 0,
+          "target_probability_evaluations": 102666,
+          "score_node_evaluations": 0,
+          "immediate_expectation_terms": 0,
+          "bellman_expectation_terms": 0,
+          "forced_choice": 12288,
+          "analytic_expectation_calls": 327684,
+          "analytic_probability_terms": 4119120,
+          "terminal_base_parent_checks": 496884,
+          "terminal_base_states": 24576,
+          "terminal_selected_edge_checks": 477054,
+          "terminal_selected_increments": 452172,
+          "terminal_probability_lookups": 725910,
+          "terminal_probability_cache_hits": 623244,
+          "terminal_probability_cache_misses": 102666,
+          "terminal_zero_source_terms": 3393210
+        }
+      }
+    },
+    "LOOKAHEAD_2_ANALYTIC": {
+      "rounds": [
+        {
+          "round": 0,
+          "seconds": {
+            "BASELINE": 15.411323493695818,
+            "REUSE": 14.05402990319999
+          },
+          "reuse_over_baseline": 0.9119288105884582
+        },
+        {
+          "round": 1,
+          "seconds": {
+            "BASELINE": 15.312469731783494,
+            "REUSE": 13.990572433336638
+          },
+          "reuse_over_baseline": 0.913671842517798
+        },
+        {
+          "round": 2,
+          "seconds": {
+            "BASELINE": 15.838298632123042,
+            "REUSE": 14.635544034827035
+          },
+          "reuse_over_baseline": 0.9240603662531912
+        },
+        {
+          "round": 3,
+          "seconds": {
+            "BASELINE": 15.815065891481936,
+            "REUSE": 14.286378894583322
+          },
+          "reuse_over_baseline": 0.903339827517129
+        },
+        {
+          "round": 4,
+          "seconds": {
+            "BASELINE": 15.562481674947776,
+            "REUSE": 14.0845245126402
+          },
+          "reuse_over_baseline": 0.9050307532450453
+        },
+        {
+          "round": 5,
+          "seconds": {
+            "BASELINE": 15.597876349522267,
+            "REUSE": 14.34326146991225
+          },
+          "reuse_over_baseline": 0.919565019525979
+        }
+      ],
+      "ratio_median": 0.9128003265531281,
+      "ratio_minimum": 0.903339827517129,
+      "ratio_maximum": 0.9240603662531912,
+      "order_strata": [
+        {
+          "first_variant": "BASELINE",
+          "paired_blocks": 192,
+          "seconds": {
+            "BASELINE": 46.7850412245607,
+            "REUSE": 42.88722303620307
+          },
+          "reuse_over_baseline": 0.916686656966941
+        },
+        {
+          "first_variant": "REUSE",
+          "paired_blocks": 192,
+          "seconds": {
+            "BASELINE": 46.75247454899363,
+            "REUSE": 42.50708821229637
+          },
+          "reuse_over_baseline": 0.909194403555081
+        }
+      ],
+      "work": {
+        "BASELINE": {
+          "planner_calls": 36864,
+          "dp_states": 2078718,
+          "action_value_evaluations": 9011250,
+          "kernel_builds": 331188,
+          "kernel_cache_hits": 0,
+          "transition_outcomes": 2054142,
+          "target_probability_evaluations": 100356216,
+          "score_node_evaluations": 0,
+          "immediate_expectation_terms": 0,
+          "bellman_expectation_terms": 2054142,
+          "forced_choice": 12288,
+          "analytic_expectation_calls": 8680062,
+          "analytic_probability_terms": 96156816
+        },
+        "REUSE": {
+          "planner_calls": 36864,
+          "dp_states": 2078718,
+          "action_value_evaluations": 9011250,
+          "kernel_builds": 331188,
+          "kernel_cache_hits": 0,
+          "transition_outcomes": 2054142,
+          "target_probability_evaluations": 4343112,
+          "score_node_evaluations": 0,
+          "immediate_expectation_terms": 0,
+          "bellman_expectation_terms": 2054142,
+          "forced_choice": 12288,
+          "analytic_expectation_calls": 8680062,
+          "analytic_probability_terms": 96156816,
+          "terminal_base_parent_checks": 29584470,
+          "terminal_base_states": 2054142,
+          "terminal_selected_edge_checks": 11133696,
+          "terminal_selected_increments": 9379584,
+          "terminal_probability_lookups": 21498330,
+          "terminal_probability_cache_hits": 21354618,
+          "terminal_probability_cache_misses": 143712,
+          "terminal_zero_source_terms": 74658486
+        }
+      }
+    }
+  },
+  "retained_V63_quality": {
+    "method_means": {
+      "LOOKAHEAD_1_ANALYTIC": 8.17578125,
+      "LOOKAHEAD_2_ANALYTIC": 8.74951171875
+    },
+    "paired_two_minus_one": {
+      "mean": 0.57373046875,
+      "graph_standard_error": 0.09001576008131769,
+      "degrees_of_freedom": 63,
+      "graph_primary_95_interval": [
+        0.39384832591368274,
+        0.7536126115863173
+      ],
+      "graph_historical_four_comparison_interval": [
+        0.34226023592937305,
+        0.805200701570627
+      ],
+      "fixed_panel_mc_standard_error": 0.03664187918193848,
+      "fixed_panel_mc_nominal_95_interval": [
+        0.5019137052275326,
+        0.6455472322724674
+      ],
+      "graph_means": [
+        0.0625,
+        0.53125,
+        1.53125,
+        0,
+        1.75,
+        0.53125,
+        1.25,
+        0.1875,
+        -0.15625,
+        1.71875,
+        0,
+        0,
+        -0.09375,
+        0.40625,
+        1.40625,
+        2.09375,
+        0,
+        0.875,
+        -0.09375,
+        0.15625,
+        0,
+        0,
+        0.59375,
+        2.25,
+        1.25,
+        2.28125,
+        0.125,
+        0,
+        0.375,
+        0.34375,
+        1.15625,
+        0.25,
+        0.84375,
+        0.28125,
+        0,
+        0,
+        0.0625,
+        0.3125,
+        -0.28125,
+        0.4375,
+        0.0625,
+        0.90625,
+        0,
+        0,
+        0.59375,
+        0.09375,
+        1.96875,
+        0,
+        0.21875,
+        1,
+        0.1875,
+        1.21875,
+        -0.1875,
+        -0.0625,
+        0,
+        0.375,
+        0,
+        0.78125,
+        2.1875,
+        1.5625,
+        0.84375,
+        0,
+        0.46875,
+        2.0625
+      ]
+    }
+  },
+  "accounting": {
+    "validation_blocks": 128,
+    "validation_queries": 12288,
+    "timing_blocks": 1536,
+    "timing_queries": 147456,
+    "phase_work": {
+      "warmup": {
+        "planner_calls": 2,
+        "dp_states": 6,
+        "action_value_evaluations": 8,
+        "kernel_builds": 4,
+        "kernel_cache_hits": 0,
+        "transition_outcomes": 4,
+        "target_probability_evaluations": 4,
+        "score_node_evaluations": 0,
+        "immediate_expectation_terms": 0,
+        "bellman_expectation_terms": 4,
+        "forced_choice": 0,
+        "analytic_expectation_calls": 4,
+        "analytic_probability_terms": 0,
+        "terminal_base_parent_checks": 0,
+        "terminal_base_states": 2,
+        "terminal_selected_edge_checks": 1,
+        "terminal_selected_increments": 0,
+        "terminal_probability_lookups": 0,
+        "terminal_probability_cache_hits": 0,
+        "terminal_probability_cache_misses": 0,
+        "terminal_zero_source_terms": 0
+      },
+      "validation": {
+        "planner_calls": 12288,
+        "dp_states": 350549,
+        "action_value_evaluations": 1556489,
+        "kernel_builds": 55198,
+        "kernel_cache_hits": 0,
+        "transition_outcomes": 342357,
+        "target_probability_evaluations": 740963,
+        "score_node_evaluations": 0,
+        "immediate_expectation_terms": 0,
+        "bellman_expectation_terms": 342357,
+        "forced_choice": 4096,
+        "analytic_expectation_calls": 1501291,
+        "analytic_probability_terms": 16712656,
+        "terminal_base_parent_checks": 5013559,
+        "terminal_base_states": 346453,
+        "terminal_selected_edge_checks": 1935125,
+        "terminal_selected_increments": 1638626,
+        "terminal_probability_lookups": 3704040,
+        "terminal_probability_cache_hits": 3662977,
+        "terminal_probability_cache_misses": 41063,
+        "terminal_zero_source_terms": 13008616
+      },
+      "timing": {
+        "planner_calls": 147456,
+        "dp_states": 4206588,
+        "action_value_evaluations": 18677868,
+        "kernel_builds": 662376,
+        "kernel_cache_hits": 0,
+        "transition_outcomes": 4108284,
+        "target_probability_evaluations": 108921114,
+        "score_node_evaluations": 0,
+        "immediate_expectation_terms": 0,
+        "bellman_expectation_terms": 4108284,
+        "forced_choice": 49152,
+        "analytic_expectation_calls": 18015492,
+        "analytic_probability_terms": 200551872,
+        "terminal_base_parent_checks": 30081354,
+        "terminal_base_states": 2078718,
+        "terminal_selected_edge_checks": 11610750,
+        "terminal_selected_increments": 9831756,
+        "terminal_probability_lookups": 22224240,
+        "terminal_probability_cache_hits": 21977862,
+        "terminal_probability_cache_misses": 246378,
+        "terminal_zero_source_terms": 78051696
+      }
+    },
+    "warmup": {
+      "calls": [
+        {
+          "variant": "BASELINE",
+          "decision_work": {
+            "planner_calls": 1,
+            "dp_states": 3,
+            "action_value_evaluations": 4,
+            "kernel_builds": 2,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 2,
+            "target_probability_evaluations": 2,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 2,
+            "forced_choice": 0,
+            "analytic_expectation_calls": 2,
+            "analytic_probability_terms": 0
+          },
+          "decision_seconds": 8.206797065213323e-05
+        },
+        {
+          "variant": "REUSE",
+          "decision_work": {
+            "planner_calls": 1,
+            "dp_states": 3,
+            "action_value_evaluations": 4,
+            "kernel_builds": 2,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 2,
+            "target_probability_evaluations": 2,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 2,
+            "forced_choice": 0,
+            "analytic_expectation_calls": 2,
+            "analytic_probability_terms": 0,
+            "terminal_base_parent_checks": 0,
+            "terminal_base_states": 2,
+            "terminal_selected_edge_checks": 1,
+            "terminal_selected_increments": 0,
+            "terminal_probability_lookups": 0,
+            "terminal_probability_cache_hits": 0,
+            "terminal_probability_cache_misses": 0,
+            "terminal_zero_source_terms": 0
+          },
+          "decision_seconds": 4.7970039304345846e-05
+        }
+      ],
+      "prepare_gc_seconds": 0.04345586901763454,
+      "cleanup_seconds": 0.05953691405011341,
+      "wall_seconds": 0.5186203260091133
+    },
+    "runner": {
+      "source_read_seconds": 0.504728886007797,
+      "graph_reconstruction_seconds": 0.002228223020210862,
+      "data_output_seconds": 0.5072470316081308,
+      "whole_runner_seconds": 355.40908667095937
+    },
+    "phase_times": {
+      "validation": {
+        "decision_seconds": 17.826725519320462,
+        "loop_seconds": 18.175679950159974,
+        "bookkeeping_seconds": 0.3489544308395125,
+        "prepare_gc_seconds": 6.809049944742583,
+        "cleanup_seconds": 6.984609674313106,
+        "decision_total_seconds": 24.811335193633568,
+        "block_seconds": 25.16028962447308,
+        "serialization_seconds": 0.3687382631469518
+      },
+      "timing": {
+        "decision_seconds": 139.12785951327533,
+        "loop_seconds": 141.2254524147138,
+        "bookkeeping_seconds": 2.0975929014384747,
+        "prepare_gc_seconds": 89.10494310961803,
+        "cleanup_seconds": 91.07199834019411,
+        "decision_total_seconds": 230.19985785346944,
+        "block_seconds": 232.2974507549079,
+        "serialization_seconds": 0.0
+      }
+    },
+    "new_graphs": 0,
+    "new_environment_calls": 0,
+    "new_environment_samples": 0,
+    "new_analysis_planner_calls": 0,
+    "new_RL_updates": 0,
+    "new_MCTS_calls": 0,
+    "new_full_policy_evaluations": 0,
+    "analysis_seconds_before_serialization": 0.5550887279678136,
+    "analysis_wall_seconds_including_reads": 1.3404889100347646
+  },
+  "limitations": "Exact preservation refers to all retained V63 query occurrences. Reused trajectory quality does not prove equality on unvisited states. Performance uses six paired cold-replay rounds; warmup, validation and timing costs are separate. Timing serialization is included in runner data_output_seconds, not independently timed in each block."
+}

@@ -3,6 +3,7 @@ __pycache__/
 .pytest_cache/
 .tmp/
 .venv/
+/.venv-lmta-v42/
 build/
 dist/
 *.egg-info/
@@ -10,6 +11,34 @@ dist/
 # Reproducible generated runs.  Keep only an empty anchor in version control.
 artifacts/*
 !artifacts/.gitkeep
+
+# Publish research summaries and recent complete evidence; retain bulky older
+# trajectories, sampled records and training outputs locally.
+/reports/**
+!/reports/**/
+!/reports/**/*.md
+!/reports/**/*.log
+!/reports/**/*analysis*.json
+!/reports/**/*summary*.json
+!/reports/**/*checks*.json
+!/reports/**/*diagnostic*.json
+!/reports/**/*roster*.json
+!/reports/**/manifest.json
+!/reports/**/verification.json
+!/reports/**/*.run_attempt.json
+!/reports/*_plan_*.json
+!/reports/*_v69.*
+!/reports/*_v7[0-6].*
+!/reports/controlled_predictive_composition_v69/**
+!/reports/controlled_predictive_observation_v70/**
+!/reports/controlled_predictive_symbolic_v71/**
+!/reports/controlled_predictive_local_v72/**
+!/reports/controlled_predictive_grouped_v73/**
+!/reports/controlled_predictive_effect_v74/**
+!/reports/controlled_predictive_parametric_v75/**
+!/reports/controlled_predictive_decision_v76/**
+!/reports/controlled_predictive_decision_v76.worker_checks/**
+/reports/**/__pycache__/
 
 # Private planning notes and the locally archived literature/repository corpus.
 # The curated third_party/ snapshot remains publishable project input.

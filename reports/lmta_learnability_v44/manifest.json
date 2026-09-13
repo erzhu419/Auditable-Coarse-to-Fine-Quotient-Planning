@@ -1,0 +1,534 @@
+{
+  "schema": "acfqp.lmta_learnability.v44",
+  "status": "complete",
+  "protocol": {
+    "runs": 3,
+    "training_episodes": 128,
+    "checkpoints": [
+      0,
+      32,
+      64,
+      128
+    ],
+    "panel_size": 20,
+    "methods": [
+      "FLAT_DQN",
+      "BUDGET_HRL",
+      "LMTA_RI"
+    ],
+    "heuristics": [
+      "AVERAGE_RANDOM",
+      "AVERAGE_SCORE"
+    ],
+    "horizon": 10,
+    "primary_checkpoint": 128,
+    "nodes": 500,
+    "budget": 70,
+    "p": 0.01,
+    "graph_rotation_every": 8
+  },
+  "runtime": {
+    "python": "3.10.12",
+    "numpy": "2.2.6",
+    "networkx": "2.8.8",
+    "torch": "2.8.0+cu128",
+    "device": "cuda",
+    "torch_threads": 1,
+    "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU"
+  },
+  "graphs": [
+    {
+      "graph_id": 440000,
+      "nodes": 500,
+      "edges": 2543
+    },
+    {
+      "graph_id": 440001,
+      "nodes": 500,
+      "edges": 2458
+    },
+    {
+      "graph_id": 440002,
+      "nodes": 500,
+      "edges": 2389
+    },
+    {
+      "graph_id": 440003,
+      "nodes": 500,
+      "edges": 2492
+    },
+    {
+      "graph_id": 440004,
+      "nodes": 500,
+      "edges": 2531
+    },
+    {
+      "graph_id": 440005,
+      "nodes": 500,
+      "edges": 2472
+    },
+    {
+      "graph_id": 440006,
+      "nodes": 500,
+      "edges": 2493
+    },
+    {
+      "graph_id": 440007,
+      "nodes": 500,
+      "edges": 2449
+    },
+    {
+      "graph_id": 440008,
+      "nodes": 500,
+      "edges": 2501
+    },
+    {
+      "graph_id": 440009,
+      "nodes": 500,
+      "edges": 2359
+    },
+    {
+      "graph_id": 440010,
+      "nodes": 500,
+      "edges": 2518
+    },
+    {
+      "graph_id": 440011,
+      "nodes": 500,
+      "edges": 2490
+    },
+    {
+      "graph_id": 440012,
+      "nodes": 500,
+      "edges": 2462
+    },
+    {
+      "graph_id": 440013,
+      "nodes": 500,
+      "edges": 2408
+    },
+    {
+      "graph_id": 440014,
+      "nodes": 500,
+      "edges": 2483
+    },
+    {
+      "graph_id": 440015,
+      "nodes": 500,
+      "edges": 2559
+    },
+    {
+      "graph_id": 440100,
+      "nodes": 500,
+      "edges": 2513
+    },
+    {
+      "graph_id": 440101,
+      "nodes": 500,
+      "edges": 2498
+    },
+    {
+      "graph_id": 440102,
+      "nodes": 500,
+      "edges": 2549
+    },
+    {
+      "graph_id": 440103,
+      "nodes": 500,
+      "edges": 2394
+    },
+    {
+      "graph_id": 440104,
+      "nodes": 500,
+      "edges": 2531
+    },
+    {
+      "graph_id": 440105,
+      "nodes": 500,
+      "edges": 2489
+    },
+    {
+      "graph_id": 440106,
+      "nodes": 500,
+      "edges": 2523
+    },
+    {
+      "graph_id": 440107,
+      "nodes": 500,
+      "edges": 2631
+    },
+    {
+      "graph_id": 440108,
+      "nodes": 500,
+      "edges": 2552
+    },
+    {
+      "graph_id": 440109,
+      "nodes": 500,
+      "edges": 2518
+    },
+    {
+      "graph_id": 440110,
+      "nodes": 500,
+      "edges": 2498
+    },
+    {
+      "graph_id": 440111,
+      "nodes": 500,
+      "edges": 2461
+    },
+    {
+      "graph_id": 440112,
+      "nodes": 500,
+      "edges": 2435
+    },
+    {
+      "graph_id": 440113,
+      "nodes": 500,
+      "edges": 2492
+    },
+    {
+      "graph_id": 440114,
+      "nodes": 500,
+      "edges": 2453
+    },
+    {
+      "graph_id": 440115,
+      "nodes": 500,
+      "edges": 2526
+    },
+    {
+      "graph_id": 440200,
+      "nodes": 500,
+      "edges": 2493
+    },
+    {
+      "graph_id": 440201,
+      "nodes": 500,
+      "edges": 2450
+    },
+    {
+      "graph_id": 440202,
+      "nodes": 500,
+      "edges": 2494
+    },
+    {
+      "graph_id": 440203,
+      "nodes": 500,
+      "edges": 2500
+    },
+    {
+      "graph_id": 440204,
+      "nodes": 500,
+      "edges": 2508
+    },
+    {
+      "graph_id": 440205,
+      "nodes": 500,
+      "edges": 2439
+    },
+    {
+      "graph_id": 440206,
+      "nodes": 500,
+      "edges": 2458
+    },
+    {
+      "graph_id": 440207,
+      "nodes": 500,
+      "edges": 2450
+    },
+    {
+      "graph_id": 440208,
+      "nodes": 500,
+      "edges": 2439
+    },
+    {
+      "graph_id": 440209,
+      "nodes": 500,
+      "edges": 2501
+    },
+    {
+      "graph_id": 440210,
+      "nodes": 500,
+      "edges": 2487
+    },
+    {
+      "graph_id": 440211,
+      "nodes": 500,
+      "edges": 2394
+    },
+    {
+      "graph_id": 440212,
+      "nodes": 500,
+      "edges": 2436
+    },
+    {
+      "graph_id": 440213,
+      "nodes": 500,
+      "edges": 2424
+    },
+    {
+      "graph_id": 440214,
+      "nodes": 500,
+      "edges": 2539
+    },
+    {
+      "graph_id": 440215,
+      "nodes": 500,
+      "edges": 2450
+    },
+    {
+      "graph_id": 440900,
+      "nodes": 500,
+      "edges": 2522
+    },
+    {
+      "graph_id": 440901,
+      "nodes": 500,
+      "edges": 2536
+    },
+    {
+      "graph_id": 440902,
+      "nodes": 500,
+      "edges": 2390
+    },
+    {
+      "graph_id": 440903,
+      "nodes": 500,
+      "edges": 2484
+    },
+    {
+      "graph_id": 440904,
+      "nodes": 500,
+      "edges": 2507
+    },
+    {
+      "graph_id": 440905,
+      "nodes": 500,
+      "edges": 2440
+    },
+    {
+      "graph_id": 440906,
+      "nodes": 500,
+      "edges": 2542
+    },
+    {
+      "graph_id": 440907,
+      "nodes": 500,
+      "edges": 2485
+    },
+    {
+      "graph_id": 440908,
+      "nodes": 500,
+      "edges": 2436
+    },
+    {
+      "graph_id": 440909,
+      "nodes": 500,
+      "edges": 2460
+    }
+  ],
+  "graph_generation_seconds": 1.8252249660145026,
+  "completed_runs": [
+    {
+      "run_id": 0,
+      "method": "FLAT_DQN",
+      "initialization_seconds": 0.6759076610032935,
+      "cumulative_model_work": {
+        "LL_gradient_steps": 1280,
+        "HL_gradient_steps": 0,
+        "LL_replay_samples": 10240,
+        "HL_replay_samples": 0
+      },
+      "cumulative_train_counters": {
+        "primitive_selections": 8960,
+        "day_transitions": 1280,
+        "propagation_draws": 82878
+      },
+      "model_path": "models/FLAT_DQN_run0.pt",
+      "model_bytes": 273649,
+      "model_save_seconds": 0.004559672990581021,
+      "peak_cuda_allocated_bytes": 69148672
+    },
+    {
+      "run_id": 0,
+      "method": "BUDGET_HRL",
+      "initialization_seconds": 0.004891612014034763,
+      "cumulative_model_work": {
+        "LL_gradient_steps": 1279,
+        "HL_gradient_steps": 1273,
+        "LL_replay_samples": 10232,
+        "HL_replay_samples": 10184
+      },
+      "cumulative_train_counters": {
+        "primitive_selections": 8960,
+        "day_transitions": 1280,
+        "propagation_draws": 109072
+      },
+      "model_path": "models/BUDGET_HRL_run0.pt",
+      "model_bytes": 446583,
+      "model_save_seconds": 0.0021973089897073805,
+      "peak_cuda_allocated_bytes": 68086784
+    },
+    {
+      "run_id": 0,
+      "method": "LMTA_RI",
+      "initialization_seconds": 0.0057826660049613565,
+      "cumulative_model_work": {
+        "latent_recurrent_calls": 215330,
+        "mcts_simulations": 312000,
+        "root_searches": 2080,
+        "LL_gradient_steps": 1279,
+        "LL_replay_samples": 10232,
+        "HL_gradient_steps": 121,
+        "HL_replay_games": 968,
+        "HL_replay_transitions": 3878,
+        "MTS_micro_replay_samples": 968,
+        "budget_gradient_steps": 121
+      },
+      "cumulative_train_counters": {
+        "primitive_selections": 8960,
+        "day_transitions": 1280,
+        "propagation_draws": 109566
+      },
+      "model_path": "models/LMTA_RI_run0.pt",
+      "model_bytes": 1211927,
+      "model_save_seconds": 0.004317168000852689,
+      "peak_cuda_allocated_bytes": 110904832
+    },
+    {
+      "run_id": 1,
+      "method": "BUDGET_HRL",
+      "initialization_seconds": 0.0053235579980537295,
+      "cumulative_model_work": {
+        "LL_gradient_steps": 1279,
+        "HL_gradient_steps": 1273,
+        "LL_replay_samples": 10232,
+        "HL_replay_samples": 10184
+      },
+      "cumulative_train_counters": {
+        "primitive_selections": 8960,
+        "day_transitions": 1280,
+        "propagation_draws": 108700
+      },
+      "model_path": "models/BUDGET_HRL_run1.pt",
+      "model_bytes": 446583,
+      "model_save_seconds": 0.0016809250228106976,
+      "peak_cuda_allocated_bytes": 68086784
+    },
+    {
+      "run_id": 1,
+      "method": "LMTA_RI",
+      "initialization_seconds": 0.0065568019927013665,
+      "cumulative_model_work": {
+        "latent_recurrent_calls": 247481,
+        "mcts_simulations": 312000,
+        "root_searches": 2080,
+        "LL_gradient_steps": 1279,
+        "LL_replay_samples": 10232,
+        "HL_gradient_steps": 121,
+        "HL_replay_games": 968,
+        "HL_replay_transitions": 3932,
+        "MTS_micro_replay_samples": 968,
+        "budget_gradient_steps": 121
+      },
+      "cumulative_train_counters": {
+        "primitive_selections": 8960,
+        "day_transitions": 1280,
+        "propagation_draws": 110018
+      },
+      "model_path": "models/LMTA_RI_run1.pt",
+      "model_bytes": 1211927,
+      "model_save_seconds": 0.004369070986285806,
+      "peak_cuda_allocated_bytes": 110682112
+    },
+    {
+      "run_id": 1,
+      "method": "FLAT_DQN",
+      "initialization_seconds": 0.0043573649891186506,
+      "cumulative_model_work": {
+        "LL_gradient_steps": 1277,
+        "HL_gradient_steps": 0,
+        "LL_replay_samples": 10216,
+        "HL_replay_samples": 0
+      },
+      "cumulative_train_counters": {
+        "primitive_selections": 8960,
+        "day_transitions": 1280,
+        "propagation_draws": 85132
+      },
+      "model_path": "models/FLAT_DQN_run1.pt",
+      "model_bytes": 273649,
+      "model_save_seconds": 0.0017143829900305718,
+      "peak_cuda_allocated_bytes": 69148672
+    },
+    {
+      "run_id": 2,
+      "method": "LMTA_RI",
+      "initialization_seconds": 0.00629365598433651,
+      "cumulative_model_work": {
+        "latent_recurrent_calls": 235488,
+        "mcts_simulations": 312000,
+        "root_searches": 2080,
+        "LL_gradient_steps": 1279,
+        "LL_replay_samples": 10232,
+        "HL_gradient_steps": 121,
+        "HL_replay_games": 968,
+        "HL_replay_transitions": 3896,
+        "MTS_micro_replay_samples": 968,
+        "budget_gradient_steps": 121
+      },
+      "cumulative_train_counters": {
+        "primitive_selections": 8960,
+        "day_transitions": 1280,
+        "propagation_draws": 110031
+      },
+      "model_path": "models/LMTA_RI_run2.pt",
+      "model_bytes": 1211927,
+      "model_save_seconds": 0.0050600489776115865,
+      "peak_cuda_allocated_bytes": 110700544
+    },
+    {
+      "run_id": 2,
+      "method": "FLAT_DQN",
+      "initialization_seconds": 0.004269552999176085,
+      "cumulative_model_work": {
+        "LL_gradient_steps": 1277,
+        "HL_gradient_steps": 0,
+        "LL_replay_samples": 10216,
+        "HL_replay_samples": 0
+      },
+      "cumulative_train_counters": {
+        "primitive_selections": 8960,
+        "day_transitions": 1280,
+        "propagation_draws": 84291
+      },
+      "model_path": "models/FLAT_DQN_run2.pt",
+      "model_bytes": 273649,
+      "model_save_seconds": 0.0012966299836989492,
+      "peak_cuda_allocated_bytes": 69148672
+    },
+    {
+      "run_id": 2,
+      "method": "BUDGET_HRL",
+      "initialization_seconds": 0.004232473002048209,
+      "cumulative_model_work": {
+        "LL_gradient_steps": 1279,
+        "HL_gradient_steps": 1273,
+        "LL_replay_samples": 10232,
+        "HL_replay_samples": 10184
+      },
+      "cumulative_train_counters": {
+        "primitive_selections": 8960,
+        "day_transitions": 1280,
+        "propagation_draws": 108420
+      },
+      "model_path": "models/BUDGET_HRL_run2.pt",
+      "model_bytes": 446583,
+      "model_save_seconds": 0.0017425080004613847,
+      "peak_cuda_allocated_bytes": 68086784
+    }
+  ],
+  "source_scope": "V44 agents/runner and unchanged V43 environment/models; independently specified LMTA variant.",
+  "wall_seconds": 812.911651774979
+}

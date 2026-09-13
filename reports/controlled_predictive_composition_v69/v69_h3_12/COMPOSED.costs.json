@@ -1,0 +1,45 @@
+{
+  "construction": {
+    "concrete_states": 9,
+    "learned_terminal_checks": 9,
+    "learned_swipe_calls": 36,
+    "learned_line_rewrites": 144,
+    "concrete_active_states": 1,
+    "learned_spawn_outcomes": 8,
+    "concrete_action_rows": 4,
+    "concrete_successor_entries": 8,
+    "terminal_reuses": 7,
+    "model_transition_rows": 4,
+    "model_successor_entries": 4,
+    "active_states": 1,
+    "terminal_states": 1,
+    "registered_states": 2,
+    "concrete_h0_states": 0,
+    "concrete_states_by_h": {
+      "2": 8,
+      "3": 1
+    },
+    "concrete_active_by_h": {
+      "3": 1
+    },
+    "active_cells_by_h": {
+      "3": 1
+    }
+  },
+  "planning_counts": {
+    "active_states": 14,
+    "state_action_rows": 56,
+    "outcomes": 56,
+    "visited_cells": 28
+  },
+  "model_bytes": 883,
+  "times": {
+    "prepare_gc": 0.0029260989977046847,
+    "construction": 0.0005234319833107293,
+    "compilation": 4.7587964218109846e-05,
+    "planning": 0.00020300800679251552,
+    "serialization": 0.0003047210047952831,
+    "cleanup_gc": 0.0028889929526485503,
+    "total": 0.006898925930727273
+  }
+}

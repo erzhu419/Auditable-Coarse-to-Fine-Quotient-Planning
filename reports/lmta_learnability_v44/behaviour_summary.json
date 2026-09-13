@@ -1,0 +1,758 @@
+{
+  "scope": "Descriptive retained-panel summaries; no causal interpretation or change to the primary criterion.",
+  "environment_samples": 0,
+  "processing_seconds": 0.03315716897486709,
+  "rows": [
+    {
+      "run_id": 0,
+      "method": "BUDGET_HRL",
+      "checkpoint": 0,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        66.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_nonempty_days": 5.0,
+      "subgoal_counts": {}
+    },
+    {
+      "run_id": 0,
+      "method": "BUDGET_HRL",
+      "checkpoint": 32,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0
+      ],
+      "mean_nonempty_days": 10.0,
+      "subgoal_counts": {}
+    },
+    {
+      "run_id": 0,
+      "method": "BUDGET_HRL",
+      "checkpoint": 64,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0
+      ],
+      "mean_nonempty_days": 10.0,
+      "subgoal_counts": {}
+    },
+    {
+      "run_id": 0,
+      "method": "BUDGET_HRL",
+      "checkpoint": 128,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        5.95,
+        3.0,
+        12.05
+      ],
+      "mean_nonempty_days": 10.0,
+      "subgoal_counts": {}
+    },
+    {
+      "run_id": 0,
+      "method": "FLAT_DQN",
+      "checkpoint": 0,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        70.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_nonempty_days": 1.0,
+      "subgoal_counts": {}
+    },
+    {
+      "run_id": 0,
+      "method": "FLAT_DQN",
+      "checkpoint": 32,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        70.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_nonempty_days": 1.0,
+      "subgoal_counts": {}
+    },
+    {
+      "run_id": 0,
+      "method": "FLAT_DQN",
+      "checkpoint": 64,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        70.0
+      ],
+      "mean_nonempty_days": 1.0,
+      "subgoal_counts": {}
+    },
+    {
+      "run_id": 0,
+      "method": "FLAT_DQN",
+      "checkpoint": 128,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        70.0
+      ],
+      "mean_nonempty_days": 1.0,
+      "subgoal_counts": {}
+    },
+    {
+      "run_id": 0,
+      "method": "LMTA_RI",
+      "checkpoint": 0,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        42.0,
+        15.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        6.0
+      ],
+      "mean_nonempty_days": 10.0,
+      "subgoal_counts": {
+        "4": 200
+      }
+    },
+    {
+      "run_id": 0,
+      "method": "LMTA_RI",
+      "checkpoint": 32,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        47.0,
+        20.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        3.0
+      ],
+      "mean_nonempty_days": 3.0,
+      "subgoal_counts": {
+        "20": 200
+      }
+    },
+    {
+      "run_id": 0,
+      "method": "LMTA_RI",
+      "checkpoint": 64,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        40.0,
+        20.0,
+        7.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        3.0
+      ],
+      "mean_nonempty_days": 4.0,
+      "subgoal_counts": {
+        "27": 200
+      }
+    },
+    {
+      "run_id": 0,
+      "method": "LMTA_RI",
+      "checkpoint": 128,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        47.0,
+        22.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "mean_nonempty_days": 3.0,
+      "subgoal_counts": {
+        "27": 200
+      }
+    },
+    {
+      "run_id": 1,
+      "method": "BUDGET_HRL",
+      "checkpoint": 0,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        60.0,
+        10.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_nonempty_days": 2.0,
+      "subgoal_counts": {}
+    },
+    {
+      "run_id": 1,
+      "method": "BUDGET_HRL",
+      "checkpoint": 32,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0
+      ],
+      "mean_nonempty_days": 10.0,
+      "subgoal_counts": {}
+    },
+    {
+      "run_id": 1,
+      "method": "BUDGET_HRL",
+      "checkpoint": 64,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0
+      ],
+      "mean_nonempty_days": 10.0,
+      "subgoal_counts": {}
+    },
+    {
+      "run_id": 1,
+      "method": "BUDGET_HRL",
+      "checkpoint": 128,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        7.0,
+        7.0,
+        7.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        31.0
+      ],
+      "mean_nonempty_days": 10.0,
+      "subgoal_counts": {}
+    },
+    {
+      "run_id": 1,
+      "method": "FLAT_DQN",
+      "checkpoint": 0,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        70.0
+      ],
+      "mean_nonempty_days": 1.0,
+      "subgoal_counts": {}
+    },
+    {
+      "run_id": 1,
+      "method": "FLAT_DQN",
+      "checkpoint": 32,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        70.0
+      ],
+      "mean_nonempty_days": 1.0,
+      "subgoal_counts": {}
+    },
+    {
+      "run_id": 1,
+      "method": "FLAT_DQN",
+      "checkpoint": 64,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        70.0
+      ],
+      "mean_nonempty_days": 1.0,
+      "subgoal_counts": {}
+    },
+    {
+      "run_id": 1,
+      "method": "FLAT_DQN",
+      "checkpoint": 128,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        70.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_nonempty_days": 1.0,
+      "subgoal_counts": {}
+    },
+    {
+      "run_id": 1,
+      "method": "LMTA_RI",
+      "checkpoint": 0,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        45.0,
+        25.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_nonempty_days": 2.0,
+      "subgoal_counts": {
+        "0": 100,
+        "3": 60,
+        "27": 40
+      }
+    },
+    {
+      "run_id": 1,
+      "method": "LMTA_RI",
+      "checkpoint": 32,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        4.0,
+        4.0,
+        4.0,
+        4.0,
+        4.0,
+        4.0,
+        4.0,
+        4.0,
+        4.0,
+        34.0
+      ],
+      "mean_nonempty_days": 10.0,
+      "subgoal_counts": {
+        "3": 200
+      }
+    },
+    {
+      "run_id": 1,
+      "method": "LMTA_RI",
+      "checkpoint": 64,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        59.0,
+        11.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_nonempty_days": 2.0,
+      "subgoal_counts": {
+        "3": 200
+      }
+    },
+    {
+      "run_id": 1,
+      "method": "LMTA_RI",
+      "checkpoint": 128,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        47.0,
+        2.0,
+        2.0,
+        2.0,
+        2.0,
+        2.0,
+        2.0,
+        2.0,
+        2.0,
+        7.0
+      ],
+      "mean_nonempty_days": 10.0,
+      "subgoal_counts": {
+        "3": 200
+      }
+    },
+    {
+      "run_id": 2,
+      "method": "BUDGET_HRL",
+      "checkpoint": 0,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        58.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_nonempty_days": 5.0,
+      "subgoal_counts": {}
+    },
+    {
+      "run_id": 2,
+      "method": "BUDGET_HRL",
+      "checkpoint": 32,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0
+      ],
+      "mean_nonempty_days": 10.0,
+      "subgoal_counts": {}
+    },
+    {
+      "run_id": 2,
+      "method": "BUDGET_HRL",
+      "checkpoint": 64,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0
+      ],
+      "mean_nonempty_days": 10.0,
+      "subgoal_counts": {}
+    },
+    {
+      "run_id": 2,
+      "method": "BUDGET_HRL",
+      "checkpoint": 128,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        5.0,
+        5.0,
+        11.0
+      ],
+      "mean_nonempty_days": 10.0,
+      "subgoal_counts": {}
+    },
+    {
+      "run_id": 2,
+      "method": "FLAT_DQN",
+      "checkpoint": 0,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        70.0
+      ],
+      "mean_nonempty_days": 1.0,
+      "subgoal_counts": {}
+    },
+    {
+      "run_id": 2,
+      "method": "FLAT_DQN",
+      "checkpoint": 32,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        70.0
+      ],
+      "mean_nonempty_days": 1.0,
+      "subgoal_counts": {}
+    },
+    {
+      "run_id": 2,
+      "method": "FLAT_DQN",
+      "checkpoint": 64,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        70.0
+      ],
+      "mean_nonempty_days": 1.0,
+      "subgoal_counts": {}
+    },
+    {
+      "run_id": 2,
+      "method": "FLAT_DQN",
+      "checkpoint": 128,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        70.0
+      ],
+      "mean_nonempty_days": 1.0,
+      "subgoal_counts": {}
+    },
+    {
+      "run_id": 2,
+      "method": "LMTA_RI",
+      "checkpoint": 0,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        45.0,
+        16.0,
+        8.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_nonempty_days": 4.0,
+      "subgoal_counts": {
+        "4": 75,
+        "0": 81,
+        "16": 20,
+        "24": 9,
+        "13": 8,
+        "6": 7
+      }
+    },
+    {
+      "run_id": 2,
+      "method": "LMTA_RI",
+      "checkpoint": 32,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        70.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_nonempty_days": 1.0,
+      "subgoal_counts": {
+        "2": 200
+      }
+    },
+    {
+      "run_id": 2,
+      "method": "LMTA_RI",
+      "checkpoint": 64,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        7.0
+      ],
+      "mean_nonempty_days": 10.0,
+      "subgoal_counts": {
+        "2": 200
+      }
+    },
+    {
+      "run_id": 2,
+      "method": "LMTA_RI",
+      "checkpoint": 128,
+      "panel_size": 20,
+      "mean_daily_durations": [
+        17.0,
+        17.0,
+        17.0,
+        17.0,
+        2.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_nonempty_days": 5.0,
+      "subgoal_counts": {
+        "2": 200
+      }
+    }
+  ]
+}

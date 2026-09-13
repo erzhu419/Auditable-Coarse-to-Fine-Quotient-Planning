@@ -1,0 +1,12 @@
+{
+  "total_env_step_calls": 1620,
+  "total_requested_seed_exposures": 5740,
+  "training_update_seconds": 2.921953150012996,
+  "evaluation_seconds": 0.10623756298446096,
+  "optimizer": {
+    "HL_step_calls": 10,
+    "HL_step_seconds": 0.38151403606752865,
+    "LL_step_calls": 10,
+    "LL_step_seconds": 0.011068635969422758
+  }
+}

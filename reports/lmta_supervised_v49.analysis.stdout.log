@@ -1,0 +1,45 @@
+{
+  "integrity_passed": true,
+  "diagnostic_outcome": "FIT_NOT_ESTABLISHED",
+  "final_criteria_by_run": [
+    {
+      "run_id": 0,
+      "train": {
+        "mean_relative_regret_passed": false,
+        "optimal_rate_passed": false,
+        "passed": false
+      },
+      "heldout": {
+        "mean_relative_regret_passed": false,
+        "optimal_rate_passed": false,
+        "passed": false
+      }
+    },
+    {
+      "run_id": 1,
+      "train": {
+        "mean_relative_regret_passed": false,
+        "optimal_rate_passed": false,
+        "passed": false
+      },
+      "heldout": {
+        "mean_relative_regret_passed": true,
+        "optimal_rate_passed": false,
+        "passed": false
+      }
+    },
+    {
+      "run_id": 2,
+      "train": {
+        "mean_relative_regret_passed": false,
+        "optimal_rate_passed": false,
+        "passed": false
+      },
+      "heldout": {
+        "mean_relative_regret_passed": false,
+        "optimal_rate_passed": false,
+        "passed": false
+      }
+    }
+  ]
+}

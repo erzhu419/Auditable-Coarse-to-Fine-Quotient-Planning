@@ -1,0 +1,20 @@
+{
+  "schema": "acfqp.lmta_readout_verification.v50",
+  "passed": true,
+  "errors": [],
+  "scope": "One standard-library recomputation of retained metric summaries, ordered batches, paired run differences and closed-form df=2 intervals, information-report aggregates and new/historical accounting. No model, environment, gradient, or per-label first-hop recomputation.",
+  "initial_records_exact": 5040,
+  "ordered_batches_exact": 6000,
+  "metric_records": 10080,
+  "checked_paired_metrics": 8,
+  "max_numeric_difference": 9.686695889854491e-15,
+  "diagnostic_outcome": "FIT_NOT_ESTABLISHED",
+  "run2_mse_change": {
+    "train": 0.0008128436336855569,
+    "heldout": 0.0007847569786250063
+  },
+  "new_environment_calls": 0,
+  "new_verification_gradients": 0,
+  "new_verification_model_evaluations": 0,
+  "wall_seconds": 0.2065549110120628
+}

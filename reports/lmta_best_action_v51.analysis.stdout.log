@@ -1,0 +1,112 @@
+{
+  "integrity_passed": true,
+  "diagnostic_outcome": "FIT_NOT_ESTABLISHED",
+  "paired_final_candidate_minus_V49": {
+    "train": {
+      "mean_relative_regret": {
+        "run_values": [
+          -0.009165781746878357,
+          -0.005928633538587753,
+          -0.012413765861883669
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": -0.00916939371578326,
+        "sample_std": 0.0032425676704432704,
+        "ci_95": [
+          -0.01722437834883294,
+          -0.0011144090827335806
+        ],
+        "all_runs_positive": false,
+        "all_positive_and_ci_lower_positive": false
+      },
+      "optimal_rate": {
+        "run_values": [
+          0.21517857142857144,
+          0.12767857142857142,
+          0.26964285714285713
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": 0.20416666666666666,
+        "sample_std": 0.07161990742423353,
+        "ci_95": [
+          0.026252953722079808,
+          0.3820803796112535
+        ],
+        "all_runs_positive": true,
+        "all_positive_and_ci_lower_positive": true
+      },
+      "pairwise_accuracy": {
+        "run_values": [
+          -0.025959343169729587,
+          -0.015841462072095136,
+          -0.018305385080397918
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": -0.020035396774074215,
+        "sample_std": 0.005276133510598427,
+        "ci_95": [
+          -0.03314203899998002,
+          -0.0069287545481684105
+        ],
+        "all_runs_positive": false,
+        "all_positive_and_ci_lower_positive": false
+      }
+    },
+    "heldout": {
+      "mean_relative_regret": {
+        "run_values": [
+          -0.0009643521454439936,
+          -0.0016950149386546626,
+          -0.0026567803655258744
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": -0.0017720491498748436,
+        "sample_std": 0.0008488398095672218,
+        "ci_95": [
+          -0.0038806841320555216,
+          0.00033658583230583464
+        ],
+        "all_runs_positive": false,
+        "all_positive_and_ci_lower_positive": false
+      },
+      "optimal_rate": {
+        "run_values": [
+          0.1499999999999999,
+          0.09464285714285714,
+          0.2053571428571429
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": 0.15,
+        "sample_std": 0.05535714285714288,
+        "ci_95": [
+          0.012485233813835706,
+          0.2875147661861643
+        ],
+        "all_runs_positive": true,
+        "all_positive_and_ci_lower_positive": true
+      },
+      "pairwise_accuracy": {
+        "run_values": [
+          -0.024442691433457675,
+          -0.014761359630252713,
+          -0.017217625459517882
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": -0.018807225507742758,
+        "sample_std": 0.00503261041666493,
+        "ci_95": [
+          -0.03130892283232631,
+          -0.006305528183159206
+        ],
+        "all_runs_positive": false,
+        "all_positive_and_ci_lower_positive": false
+      }
+    }
+  }
+}

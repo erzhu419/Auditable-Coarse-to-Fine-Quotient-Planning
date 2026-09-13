@@ -1,0 +1,17 @@
+{
+  "status": "complete",
+  "physical_costs": {
+    "primitive_selections": 11,
+    "day_transitions": 17,
+    "propagation_draws": 13
+  },
+  "environment_and_controller_calls": {
+    "reset_calls": 14,
+    "select_calls": 11,
+    "finish_day_calls": 17,
+    "transition_calls": 17,
+    "propagation_draws": 13,
+    "controlled_search_calls": 7
+  },
+  "wall_seconds": 0.5972251899947878
+}

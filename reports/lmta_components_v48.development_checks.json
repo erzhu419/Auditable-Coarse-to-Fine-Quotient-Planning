@@ -1,0 +1,70 @@
+{
+  "schema": "acfqp.lmta_components_development_checks.v48",
+  "scope": "Only tests/test_lmta_components_v48.py; excludes the separately run analyzer tests and the main panel.",
+  "command": ".venv-lmta-v42/bin/python -m pytest -q -s tests/test_lmta_components_v48.py",
+  "actual_test_invocations": 1,
+  "prior_failed_or_individual_invocations": 0,
+  "result": {
+    "passed": 7,
+    "failed": 0,
+    "exit_code": 0,
+    "pytest_reported_seconds": 1.86
+  },
+  "physical_samples": {
+    "primitive_selections": 38,
+    "day_transitions": 30,
+    "propagation_draws": 36,
+    "basis": "Observed by forwarding wrappers around the actual environment calls during the single test invocation."
+  },
+  "environment_calls": {
+    "select_calls": 38,
+    "finish_day_calls": 30,
+    "transition_calls": 30,
+    "reset_calls": 21,
+    "scope": "transition is nested inside finish_day and is not another physical day sample. reset includes constructors, episode resets, and the environment created for the rejected-training test."
+  },
+  "gradient_updates": {
+    "value": 0,
+    "basis": "Executed component checks assert zero per-agent gradient counters, unchanged network tensors and replay, no parameter gradients, and empty optimizer states. All original-reference calls also use training=False. Optimizer.step calls were not independently instrumented."
+  },
+  "mcts_accounting": {
+    "basis": "derived_from_executed_cases",
+    "aggregate_not_directly_instrumented": true,
+    "root_searches": 12,
+    "mcts_simulations": 36,
+    "derivation": [
+      {
+        "case": "LMTA all-LEARNED comparison: original agent and ComponentPolicy",
+        "episodes": 2,
+        "days_per_episode": 3,
+        "simulations_per_search": 3,
+        "root_searches": 6,
+        "mcts_simulations": 18
+      },
+      {
+        "case": "Two mixed LMTA cases: AVERAGE/LEARNED and LEARNED/SCORE",
+        "episodes": 2,
+        "days_per_episode": 3,
+        "simulations_per_search": 3,
+        "root_searches": 6,
+        "mcts_simulations": 18
+      },
+      {
+        "case": "Full replacements, Budget-HRL cases and rejected-training request",
+        "root_searches": 0,
+        "mcts_simulations": 0
+      }
+    ],
+    "latent_recurrent_calls": null,
+    "latent_recurrent_calls_note": "No aggregate was retained; not estimated. MCTS simulations are model computation, not environment samples."
+  },
+  "separate_analysis_checks": {
+    "file": "tests/test_lmta_components_analysis_v48.py",
+    "initial_invocation": {"passed": 9, "failed": 0, "pytest_reported_seconds": 0.62},
+    "additional_model_work_anchor_test": {"passed": 1, "failed": 0, "pytest_reported_seconds": 0.25},
+    "environment_calls": 0,
+    "scope": "Synthetic ledgers only. The initial nine tests were not rerun after adding the model-work assertion."
+  },
+  "runner_import_check": {"arguments": "--help", "exit_code": 0, "environment_calls": 0},
+  "observed_stdout": ".......\nV48_DEVELOPMENT_ACCOUNTING={\"counters\": {\"finish_day_calls\": 30, \"propagation_draws\": 36, \"reset_calls\": 21, \"select_calls\": 38, \"transition_calls\": 30}, \"scope\": \"Small test episodes only. finish_day is the physical day sample; its nested transition is not another sample. reset includes constructor and episode resets. All observers forward original calls without drawing RNG.\"}\n\n7 passed in 1.86s\n"
+}

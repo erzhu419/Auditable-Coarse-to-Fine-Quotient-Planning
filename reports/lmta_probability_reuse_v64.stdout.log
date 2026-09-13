@@ -1,0 +1,6 @@
+{"round": 0, "timing_blocks": 256}
+{"round": 1, "timing_blocks": 512}
+{"round": 2, "timing_blocks": 768}
+{"round": 3, "timing_blocks": 1024}
+{"round": 4, "timing_blocks": 1280}
+{"round": 5, "timing_blocks": 1536}

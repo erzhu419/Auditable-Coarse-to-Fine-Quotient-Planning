@@ -1,0 +1,183 @@
+{
+  "attempts": [
+    {
+      "test_module": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/tests/test_controlled_predictive_action_contract_v67.py",
+      "session_failures": 0,
+      "scope": "hand boards only; no registered V67 main roots",
+      "builds": [
+        {
+          "board": [
+            10,
+            9,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "horizon": 2,
+          "variant": "BASELINE",
+          "counts": {
+            "root_tiles_encoded": 16,
+            "kernel_terminal_checks": 77,
+            "kernel_swipe_calls": 308,
+            "kernel_line_transforms": 1232,
+            "action_contract_evaluations": 76,
+            "analytic_terminal_rows": 266,
+            "spawn_support_entries": 76,
+            "model_transition_rows": 269,
+            "model_successor_entries": 342,
+            "analytic_model_action_rows": 266,
+            "existing_terminal_state_visits": 265,
+            "registered_states": 78,
+            "active_states": 77,
+            "terminal_states": 1,
+            "literal_board_states": 77,
+            "contract_states": 0,
+            "h0_boards_generated": 0
+          },
+          "elapsed_seconds": 0.003563578997272998
+        },
+        {
+          "board": [
+            10,
+            9,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "horizon": 2,
+          "variant": "CONTRACT",
+          "counts": {
+            "root_tiles_encoded": 16,
+            "kernel_terminal_checks": 77,
+            "kernel_swipe_calls": 308,
+            "kernel_line_transforms": 1232,
+            "action_contract_evaluations": 76,
+            "analytic_terminal_rows": 266,
+            "spawn_support_entries": 76,
+            "existing_active_state_visits": 63,
+            "contract_state_reuses": 63,
+            "model_transition_rows": 42,
+            "model_successor_entries": 55,
+            "analytic_model_action_rows": 39,
+            "existing_terminal_state_visits": 38,
+            "registered_states": 15,
+            "active_states": 14,
+            "terminal_states": 1,
+            "literal_board_states": 1,
+            "contract_states": 13,
+            "h0_boards_generated": 0
+          },
+          "elapsed_seconds": 0.002907626039814204
+        },
+        {
+          "board": [
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1
+          ],
+          "horizon": 2,
+          "variant": "CONTRACT",
+          "counts": {
+            "root_tiles_encoded": 16,
+            "kernel_terminal_checks": 1,
+            "kernel_swipe_calls": 4,
+            "kernel_line_transforms": 16,
+            "registered_states": 1,
+            "active_states": 0,
+            "terminal_states": 1,
+            "literal_board_states": 0,
+            "contract_states": 0,
+            "h0_boards_generated": 0
+          },
+          "elapsed_seconds": 7.534300675615668e-05
+        },
+        {
+          "board": [
+            11,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "horizon": 2,
+          "variant": "CONTRACT",
+          "counts": {
+            "root_tiles_encoded": 16,
+            "kernel_terminal_checks": 1,
+            "registered_states": 1,
+            "active_states": 0,
+            "terminal_states": 1,
+            "literal_board_states": 0,
+            "contract_states": 0,
+            "h0_boards_generated": 0
+          },
+          "elapsed_seconds": 1.2465985491871834e-05
+        }
+      ],
+      "direct_work": {
+        "kernel_terminal_checks": 8,
+        "kernel_swipe_calls": 32,
+        "kernel_line_transforms": 128,
+        "action_contract_evaluations": 8,
+        "analytic_terminal_rows": 17,
+        "analytic_existing_pair_checks": 184,
+        "analytic_vacancy_neighbor_checks": 16
+      },
+      "ground_rows": 280,
+      "ground_outcomes": 6520,
+      "planner_calls": 6,
+      "planner_work": {
+        "active_states": 273,
+        "state_action_rows": 933,
+        "outcomes": 1191,
+        "visited_cells": 279
+      }
+    }
+  ]
+}

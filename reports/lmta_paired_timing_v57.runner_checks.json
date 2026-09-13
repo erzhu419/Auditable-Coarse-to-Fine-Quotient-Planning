@@ -1,0 +1,16 @@
+{
+  "attempts": [
+    {
+      "test_module": "tests/test_lmta_paired_timing_runner_v57.py",
+      "passed": 2,
+      "failed": 0,
+      "pytest_reported_seconds": 0.26,
+      "command_wall_seconds": 0.661210112,
+      "planner_calls": 0,
+      "new_environment_samples": 0,
+      "new_graphs": 0,
+      "new_independent_DP_checks": 0,
+      "scope": "Schedule balance and compact synthetic reference parsing only. No actual timing panel or planning."
+    }
+  ]
+}

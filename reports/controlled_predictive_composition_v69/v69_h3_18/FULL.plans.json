@@ -1,0 +1,324 @@
+{
+  "risk_0": {
+    "policy": {
+      "1": "LEFT",
+      "2": "LEFT",
+      "4": "LEFT",
+      "6": "UP"
+    },
+    "values": {
+      "0": 0.0,
+      "3": -0.0,
+      "1": 1.0,
+      "2": 1.0,
+      "4": 0.001953125,
+      "5": -0.0,
+      "6": 1.5
+    },
+    "counts": {
+      "active_states": 4,
+      "state_action_rows": 8,
+      "outcomes": 10,
+      "visited_cells": 7
+    }
+  },
+  "risk_0_05": {
+    "policy": {
+      "1": "LEFT",
+      "2": "LEFT",
+      "4": "LEFT",
+      "6": "UP"
+    },
+    "values": {
+      "0": 0.0,
+      "3": -0.05,
+      "1": 1.0,
+      "2": 1.0,
+      "4": -0.048046875,
+      "5": -0.05,
+      "6": 1.5
+    },
+    "counts": {
+      "active_states": 4,
+      "state_action_rows": 8,
+      "outcomes": 10,
+      "visited_cells": 7
+    }
+  },
+  "risk_0_2": {
+    "policy": {
+      "1": "LEFT",
+      "2": "LEFT",
+      "4": "LEFT",
+      "6": "UP"
+    },
+    "values": {
+      "0": 0.0,
+      "3": -0.2,
+      "1": 1.0,
+      "2": 1.0,
+      "4": -0.198046875,
+      "5": -0.2,
+      "6": 1.5
+    },
+    "counts": {
+      "active_states": 4,
+      "state_action_rows": 8,
+      "outcomes": 10,
+      "visited_cells": 7
+    }
+  },
+  "risk_1": {
+    "policy": {
+      "1": "LEFT",
+      "2": "LEFT",
+      "4": "LEFT",
+      "6": "UP"
+    },
+    "values": {
+      "0": 0.0,
+      "3": -1.0,
+      "1": 1.0,
+      "2": 1.0,
+      "4": -0.998046875,
+      "5": -1.0,
+      "6": 1.5
+    },
+    "counts": {
+      "active_states": 4,
+      "state_action_rows": 8,
+      "outcomes": 10,
+      "visited_cells": 7
+    }
+  },
+  "risk_5": {
+    "policy": {
+      "1": "LEFT",
+      "2": "LEFT",
+      "4": "LEFT",
+      "6": "UP"
+    },
+    "values": {
+      "0": 0.0,
+      "3": -5.0,
+      "1": 1.0,
+      "2": 1.0,
+      "4": -4.998046875,
+      "5": -5.0,
+      "6": 1.5
+    },
+    "counts": {
+      "active_states": 4,
+      "state_action_rows": 8,
+      "outcomes": 10,
+      "visited_cells": 7
+    }
+  },
+  "goal_1_risk_1": {
+    "policy": {
+      "1": "LEFT",
+      "2": "LEFT",
+      "4": "LEFT",
+      "6": "UP"
+    },
+    "values": {
+      "0": 1.0,
+      "3": -1.0,
+      "1": 2.0,
+      "2": 2.0,
+      "4": -0.998046875,
+      "5": -1.0,
+      "6": 2.5
+    },
+    "counts": {
+      "active_states": 4,
+      "state_action_rows": 8,
+      "outcomes": 10,
+      "visited_cells": 7
+    }
+  },
+  "probe_risk_0_1": {
+    "policy": {
+      "1": "LEFT",
+      "2": "LEFT",
+      "4": "LEFT",
+      "6": "UP"
+    },
+    "values": {
+      "0": 0.0,
+      "3": -0.1,
+      "1": 1.0,
+      "2": 1.0,
+      "4": -0.098046875,
+      "5": -0.1,
+      "6": 1.5
+    },
+    "counts": {
+      "active_states": 4,
+      "state_action_rows": 8,
+      "outcomes": 10,
+      "visited_cells": 7
+    }
+  },
+  "probe_risk_0_5": {
+    "policy": {
+      "1": "LEFT",
+      "2": "LEFT",
+      "4": "LEFT",
+      "6": "UP"
+    },
+    "values": {
+      "0": 0.0,
+      "3": -0.5,
+      "1": 1.0,
+      "2": 1.0,
+      "4": -0.498046875,
+      "5": -0.5,
+      "6": 1.5
+    },
+    "counts": {
+      "active_states": 4,
+      "state_action_rows": 8,
+      "outcomes": 10,
+      "visited_cells": 7
+    }
+  },
+  "probe_risk_2": {
+    "policy": {
+      "1": "LEFT",
+      "2": "LEFT",
+      "4": "LEFT",
+      "6": "UP"
+    },
+    "values": {
+      "0": 0.0,
+      "3": -2.0,
+      "1": 1.0,
+      "2": 1.0,
+      "4": -1.998046875,
+      "5": -2.0,
+      "6": 1.5
+    },
+    "counts": {
+      "active_states": 4,
+      "state_action_rows": 8,
+      "outcomes": 10,
+      "visited_cells": 7
+    }
+  },
+  "probe_goal_2_risk_0_5": {
+    "policy": {
+      "1": "LEFT",
+      "2": "LEFT",
+      "4": "LEFT",
+      "6": "UP"
+    },
+    "values": {
+      "0": 2.0,
+      "3": -0.5,
+      "1": 3.0,
+      "2": 3.0,
+      "4": -0.498046875,
+      "5": -0.5,
+      "6": 3.5
+    },
+    "counts": {
+      "active_states": 4,
+      "state_action_rows": 8,
+      "outcomes": 10,
+      "visited_cells": 7
+    }
+  },
+  "new_low_risk_goal": {
+    "policy": {
+      "1": "LEFT",
+      "2": "LEFT",
+      "4": "LEFT",
+      "6": "UP"
+    },
+    "values": {
+      "0": 0.3,
+      "3": -0.004,
+      "1": 1.3,
+      "2": 1.3,
+      "4": -0.002046875,
+      "5": -0.004,
+      "6": 1.8
+    },
+    "counts": {
+      "active_states": 4,
+      "state_action_rows": 8,
+      "outcomes": 10,
+      "visited_cells": 7
+    }
+  },
+  "new_risk_goal": {
+    "policy": {
+      "1": "LEFT",
+      "2": "LEFT",
+      "4": "LEFT",
+      "6": "UP"
+    },
+    "values": {
+      "0": 0.3,
+      "3": -0.02,
+      "1": 1.3,
+      "2": 1.3,
+      "4": -0.018046875,
+      "5": -0.02,
+      "6": 1.8
+    },
+    "counts": {
+      "active_states": 4,
+      "state_action_rows": 8,
+      "outcomes": 10,
+      "visited_cells": 7
+    }
+  },
+  "new_scaled_reward": {
+    "policy": {
+      "1": "LEFT",
+      "2": "LEFT",
+      "4": "LEFT",
+      "6": "UP"
+    },
+    "values": {
+      "0": 1.2,
+      "3": -0.4,
+      "1": 1.6,
+      "2": 1.6,
+      "4": -0.39921875,
+      "5": -0.4,
+      "6": 1.8
+    },
+    "counts": {
+      "active_states": 4,
+      "state_action_rows": 8,
+      "outcomes": 10,
+      "visited_cells": 7
+    }
+  },
+  "new_combined_query": {
+    "policy": {
+      "1": "LEFT",
+      "2": "LEFT",
+      "4": "LEFT",
+      "6": "UP"
+    },
+    "values": {
+      "0": 0.2,
+      "3": -0.3,
+      "1": 1.2,
+      "2": 1.2,
+      "4": -0.298046875,
+      "5": -0.3,
+      "6": 1.7
+    },
+    "counts": {
+      "active_states": 4,
+      "state_action_rows": 8,
+      "outcomes": 10,
+      "visited_cells": 7
+    }
+  }
+}

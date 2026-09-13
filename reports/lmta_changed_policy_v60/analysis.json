@@ -1,0 +1,2444 @@
+{
+  "schema": "acfqp.lmta_changed_policy_analysis.v60",
+  "protocol": {
+    "graph_id": 580109,
+    "method": "LOOKAHEAD_1_ANALYTIC",
+    "budget": 2,
+    "horizon": 3,
+    "limits": {
+      "max_planner_action_values": 2000000,
+      "max_policy_states": 100000,
+      "max_wall_seconds": 60.0
+    },
+    "changed_state": {
+      "statuses": [
+        0,
+        0,
+        2,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0
+      ],
+      "remaining_budget": 1,
+      "remaining_days": 2
+    }
+  },
+  "integrity": {
+    "passed": true,
+    "errors": {},
+    "case_validation": {
+      "passed": true,
+      "errors": {},
+      "status": "complete",
+      "state_records": 1043,
+      "quality_verified": true,
+      "planned_roots": 65,
+      "forced_roots": 978,
+      "full_policy_equations": 1043,
+      "maximum_bellman_residual": 4.440892098500626e-16
+    }
+  },
+  "complete_unified_policy_evidence": true,
+  "target_action_preservation_claim": false,
+  "target_policy_comparison": {
+    "old_root_value": 5.4665409239345815,
+    "new_root_value": 5.466374558229985,
+    "root_value_difference": -0.0001663657045964939,
+    "reachable_state_sets": {
+      "old_count": 1043,
+      "new_count": 1043,
+      "shared_count": 1027,
+      "newly_reachable_count": 16,
+      "no_longer_reachable_count": 16
+    },
+    "known_changed_state": {
+      "statuses": [
+        0,
+        0,
+        2,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0
+      ],
+      "remaining_budget": 1,
+      "remaining_days": 2,
+      "old_reachable": true,
+      "new_reachable": true,
+      "old_full_value": 3.1330717404925688,
+      "new_full_value": 3.115822944239933,
+      "full_value_difference": -0.017248796252635756,
+      "old_reach_probability": 0.00964506172839506,
+      "new_reach_probability": 0.00964506172839506,
+      "reach_probability_difference": 0.0
+    }
+  },
+  "unified_three_depth_strata": [
+    {
+      "nodes": 9,
+      "stratum": "sparse",
+      "p": 0.1875,
+      "values": {
+        "LOOKAHEAD_1_ANALYTIC": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 6.403869467232577,
+          "minimum": 4.0,
+          "maximum": 8.453703703703702,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_2_ANALYTIC": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 6.571943874385295,
+          "minimum": 4.0,
+          "maximum": 8.75,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_FULL_ANALYTIC": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 6.66087601269548,
+          "minimum": 4.0,
+          "maximum": 8.75,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        }
+      },
+      "contrasts": {
+        "two_minus_one": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.1680744071527177,
+          "minimum": -0.12291124999999958,
+          "maximum": 0.6805555555555571,
+          "positive_count": 8,
+          "negative_count": 1,
+          "tie_count": 7
+        },
+        "full_minus_two": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.0889321383101852,
+          "minimum": 0.0,
+          "maximum": 1.2129629629629637,
+          "positive_count": 2,
+          "negative_count": 0,
+          "tie_count": 14
+        },
+        "full_minus_one": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.2570065454629029,
+          "minimum": 0.0,
+          "maximum": 1.2129629629629637,
+          "positive_count": 10,
+          "negative_count": 0,
+          "tie_count": 6
+        }
+      },
+      "per_graph": [
+        {
+          "graph_id": 580000,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 6.92535400390625,
+            "LOOKAHEAD_2_ANALYTIC": 7.119415283203125,
+            "LOOKAHEAD_FULL_ANALYTIC": 7.119415283203125
+          },
+          "two_minus_one": 0.194061279296875,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.194061279296875,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580001,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 7.826388888888888,
+            "LOOKAHEAD_2_ANALYTIC": 7.826388888888888,
+            "LOOKAHEAD_FULL_ANALYTIC": 7.826388888888888
+          },
+          "two_minus_one": 0.0,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.0,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580002,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 5.96875,
+            "LOOKAHEAD_2_ANALYTIC": 5.96875,
+            "LOOKAHEAD_FULL_ANALYTIC": 5.96875
+          },
+          "two_minus_one": 0.0,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.0,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580003,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 7.337962962962962,
+            "LOOKAHEAD_2_ANALYTIC": 8.018518518518519,
+            "LOOKAHEAD_FULL_ANALYTIC": 8.018518518518519
+          },
+          "two_minus_one": 0.6805555555555571,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.6805555555555571,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580004,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 6.305555555555555,
+            "LOOKAHEAD_2_ANALYTIC": 6.841435185185185,
+            "LOOKAHEAD_FULL_ANALYTIC": 6.841435185185185
+          },
+          "two_minus_one": 0.5358796296296298,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.5358796296296298,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580005,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 6.525390625,
+            "LOOKAHEAD_2_ANALYTIC": 6.525390625,
+            "LOOKAHEAD_FULL_ANALYTIC": 6.525390625
+          },
+          "two_minus_one": 0.0,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.0,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580006,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 8.453703703703702,
+            "LOOKAHEAD_2_ANALYTIC": 8.75,
+            "LOOKAHEAD_FULL_ANALYTIC": 8.75
+          },
+          "two_minus_one": 0.2962962962962976,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.2962962962962976,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580007,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 7.528463648834019,
+            "LOOKAHEAD_2_ANALYTIC": 7.530006858710562,
+            "LOOKAHEAD_FULL_ANALYTIC": 7.530006858710562
+          },
+          "two_minus_one": 0.0015432098765435498,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.0015432098765435498,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580008,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 6.23559670781893,
+            "LOOKAHEAD_2_ANALYTIC": 6.260288065843621,
+            "LOOKAHEAD_FULL_ANALYTIC": 6.260288065843621
+          },
+          "two_minus_one": 0.024691358024691468,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.024691358024691468,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580009,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 5.475830078125,
+            "LOOKAHEAD_2_ANALYTIC": 6.072265625,
+            "LOOKAHEAD_FULL_ANALYTIC": 6.072265625
+          },
+          "two_minus_one": 0.596435546875,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.596435546875,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580010,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 7.41588,
+            "LOOKAHEAD_2_ANALYTIC": 7.29296875,
+            "LOOKAHEAD_FULL_ANALYTIC": 7.50292
+          },
+          "two_minus_one": -0.12291124999999958,
+          "full_minus_two": 0.2099512499999996,
+          "full_minus_one": 0.08704,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580011,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 4.0,
+            "LOOKAHEAD_2_ANALYTIC": 4.0,
+            "LOOKAHEAD_FULL_ANALYTIC": 4.0
+          },
+          "two_minus_one": 0.0,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.0,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580012,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 6.050925925925926,
+            "LOOKAHEAD_2_ANALYTIC": 6.050925925925926,
+            "LOOKAHEAD_FULL_ANALYTIC": 6.050925925925926
+          },
+          "two_minus_one": 0.0,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.0,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580013,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 5.549768518518518,
+            "LOOKAHEAD_2_ANALYTIC": 6.0324074074074066,
+            "LOOKAHEAD_FULL_ANALYTIC": 6.0324074074074066
+          },
+          "two_minus_one": 0.4826388888888884,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.4826388888888884,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580014,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 5.231481481481481,
+            "LOOKAHEAD_2_ANALYTIC": 5.231481481481481,
+            "LOOKAHEAD_FULL_ANALYTIC": 6.444444444444445
+          },
+          "two_minus_one": 0.0,
+          "full_minus_two": 1.2129629629629637,
+          "full_minus_one": 1.2129629629629637,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580015,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 5.630859375,
+            "LOOKAHEAD_2_ANALYTIC": 5.630859375,
+            "LOOKAHEAD_FULL_ANALYTIC": 5.630859375
+          },
+          "two_minus_one": 0.0,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.0,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        }
+      ],
+      "expected_work_sums": {
+        "LOOKAHEAD_1_ANALYTIC": {
+          "planner_calls": 48.0,
+          "dp_states": 32.0,
+          "action_value_evaluations": 238.0,
+          "kernel_builds": 0.0,
+          "kernel_cache_hits": 0.0,
+          "transition_outcomes": 0.0,
+          "target_probability_evaluations": 1624.861111111111,
+          "score_node_evaluations": 0.0,
+          "immediate_expectation_terms": 0.0,
+          "bellman_expectation_terms": 0.0,
+          "forced_choice": 16.0,
+          "analytic_expectation_calls": 238.0,
+          "analytic_probability_terms": 1624.861111111111
+        },
+        "LOOKAHEAD_2_ANALYTIC": {
+          "planner_calls": 47.99999999999999,
+          "dp_states": 956.5416666666667,
+          "action_value_evaluations": 3729.625,
+          "kernel_builds": 242.08333333333334,
+          "kernel_cache_hits": 0.0,
+          "transition_outcomes": 924.5416666666666,
+          "target_probability_evaluations": 20882.42361111111,
+          "score_node_evaluations": 0.0,
+          "immediate_expectation_terms": 0.0,
+          "bellman_expectation_terms": 924.5416666666666,
+          "forced_choice": 16.0,
+          "analytic_expectation_calls": 3487.5416666666665,
+          "analytic_probability_terms": 19213.979166666664
+        },
+        "LOOKAHEAD_FULL_ANALYTIC": {
+          "planner_calls": 48.0,
+          "dp_states": 10486.958333333334,
+          "action_value_evaluations": 13258.708333333334,
+          "kernel_builds": 3254.7499999999995,
+          "kernel_cache_hits": 0.0,
+          "transition_outcomes": 12691.958333333334,
+          "target_probability_evaluations": 58831.131944444445,
+          "score_node_evaluations": 0.0,
+          "immediate_expectation_terms": 0.0,
+          "bellman_expectation_terms": 12691.958333333334,
+          "forced_choice": 16.0,
+          "analytic_expectation_calls": 10003.958333333334,
+          "analytic_probability_terms": 39558.9375
+        }
+      },
+      "ratios_of_expected_work_sums": {
+        "LOOKAHEAD_2_ANALYTIC_over_LOOKAHEAD_1_ANALYTIC": {
+          "planner_calls": 0.9999999999999999,
+          "dp_states": 29.891927083333336,
+          "action_value_evaluations": 15.670693277310924,
+          "kernel_builds": null,
+          "kernel_cache_hits": null,
+          "transition_outcomes": null,
+          "target_probability_evaluations": 12.851820668433199,
+          "score_node_evaluations": null,
+          "immediate_expectation_terms": null,
+          "bellman_expectation_terms": null,
+          "forced_choice": 1.0,
+          "analytic_expectation_calls": 14.653536414565826,
+          "analytic_probability_terms": 11.824997863065217
+        },
+        "LOOKAHEAD_FULL_ANALYTIC_over_LOOKAHEAD_2_ANALYTIC": {
+          "planner_calls": 1.0000000000000002,
+          "dp_states": 10.963409853203816,
+          "action_value_evaluations": 3.5549708974316006,
+          "kernel_builds": 13.444750430292597,
+          "kernel_cache_hits": null,
+          "transition_outcomes": 13.72783811798639,
+          "target_probability_evaluations": 2.8172559392551353,
+          "score_node_evaluations": null,
+          "immediate_expectation_terms": null,
+          "bellman_expectation_terms": 13.72783811798639,
+          "forced_choice": 1.0,
+          "analytic_expectation_calls": 2.8684842475000303,
+          "analytic_probability_terms": 2.058862308367064
+        },
+        "LOOKAHEAD_FULL_ANALYTIC_over_LOOKAHEAD_1_ANALYTIC": {
+          "planner_calls": 1.0,
+          "dp_states": 327.7174479166667,
+          "action_value_evaluations": 55.70885854341737,
+          "kernel_builds": null,
+          "kernel_cache_hits": null,
+          "transition_outcomes": null,
+          "target_probability_evaluations": 36.206868108385336,
+          "score_node_evaluations": null,
+          "immediate_expectation_terms": null,
+          "bellman_expectation_terms": null,
+          "forced_choice": 1.0,
+          "analytic_expectation_calls": 42.033438375350144,
+          "analytic_probability_terms": 24.34604239678605
+        }
+      },
+      "expected_planning_seconds_descriptive": {
+        "LOOKAHEAD_1_ANALYTIC": 0.0033653117665637926,
+        "LOOKAHEAD_2_ANALYTIC": 0.020489359746575724,
+        "LOOKAHEAD_FULL_ANALYTIC": 0.08170023955945235
+      },
+      "provenance": {
+        "target": "V60 fresh evaluation; action preservation is not asserted",
+        "other_short_policies": "127 V59 action-preservation certificates",
+        "full": "64 retained V58 full-policy evaluations"
+      },
+      "scope": "Expected work uses each certified policy occupancy. Different-run times are descriptive, not paired speedup evidence."
+    },
+    {
+      "nodes": 9,
+      "stratum": "dense",
+      "p": 0.5625,
+      "values": {
+        "LOOKAHEAD_1_ANALYTIC": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 5.6943347845789285,
+          "minimum": 5.424889679132494,
+          "maximum": 6.150062975957435,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_2_ANALYTIC": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 5.711774649213134,
+          "minimum": 5.467395164658242,
+          "maximum": 6.156348924782043,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_FULL_ANALYTIC": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 5.72196210595561,
+          "minimum": 5.467395164658242,
+          "maximum": 6.249325757064513,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        }
+      },
+      "contrasts": {
+        "two_minus_one": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.017439864634205715,
+          "minimum": 0.0,
+          "maximum": 0.10681803883076224,
+          "positive_count": 15,
+          "negative_count": 0,
+          "tie_count": 1
+        },
+        "full_minus_two": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.010187456742476342,
+          "minimum": 0.0,
+          "maximum": 0.09297683228246978,
+          "positive_count": 4,
+          "negative_count": 0,
+          "tie_count": 12
+        },
+        "full_minus_one": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.027627321376682057,
+          "minimum": 0.0,
+          "maximum": 0.12550568705288523,
+          "positive_count": 15,
+          "negative_count": 0,
+          "tie_count": 1
+        }
+      },
+      "per_graph": [
+        {
+          "graph_id": 580100,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 5.78325182532478,
+            "LOOKAHEAD_2_ANALYTIC": 5.78492101833962,
+            "LOOKAHEAD_FULL_ANALYTIC": 5.822226735629465
+          },
+          "two_minus_one": 0.0016691930148402534,
+          "full_minus_two": 0.03730571728984433,
+          "full_minus_one": 0.038974910304684585,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580101,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 5.800455900759229,
+            "LOOKAHEAD_2_ANALYTIC": 5.806760462485043,
+            "LOOKAHEAD_FULL_ANALYTIC": 5.806760462485043
+          },
+          "two_minus_one": 0.006304561725813507,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.006304561725813507,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580102,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 5.514019031330004,
+            "LOOKAHEAD_2_ANALYTIC": 5.516419037934676,
+            "LOOKAHEAD_FULL_ANALYTIC": 5.516419037934676
+          },
+          "two_minus_one": 0.0024000066046721003,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.0024000066046721003,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580103,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 5.529112100601196,
+            "LOOKAHEAD_2_ANALYTIC": 5.53820013999939,
+            "LOOKAHEAD_FULL_ANALYTIC": 5.53820013999939
+          },
+          "two_minus_one": 0.00908803939819336,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.00908803939819336,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580104,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 5.754964328280184,
+            "LOOKAHEAD_2_ANALYTIC": 5.821239209910032,
+            "LOOKAHEAD_FULL_ANALYTIC": 5.821239209910032
+          },
+          "two_minus_one": 0.06627488162984818,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.06627488162984818,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580105,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 5.739755445397508,
+            "LOOKAHEAD_2_ANALYTIC": 5.780959448916203,
+            "LOOKAHEAD_FULL_ANALYTIC": 5.780959448916203
+          },
+          "two_minus_one": 0.04120400351869513,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.04120400351869513,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580106,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 5.567292362884147,
+            "LOOKAHEAD_2_ANALYTIC": 5.568067099117214,
+            "LOOKAHEAD_FULL_ANALYTIC": 5.568067099117214
+          },
+          "two_minus_one": 0.0007747362330672303,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.0007747362330672303,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580107,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 5.731196582463581,
+            "LOOKAHEAD_2_ANALYTIC": 5.731196582463581,
+            "LOOKAHEAD_FULL_ANALYTIC": 5.731196582463581
+          },
+          "two_minus_one": 0.0,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.0,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580108,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 5.424889679132494,
+            "LOOKAHEAD_2_ANALYTIC": 5.531707717963256,
+            "LOOKAHEAD_FULL_ANALYTIC": 5.550395366185379
+          },
+          "two_minus_one": 0.10681803883076224,
+          "full_minus_two": 0.018687648222122988,
+          "full_minus_one": 0.12550568705288523,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580109,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 5.466374558229985,
+            "LOOKAHEAD_2_ANALYTIC": 5.467395164658242,
+            "LOOKAHEAD_FULL_ANALYTIC": 5.467395164658242
+          },
+          "two_minus_one": 0.001020606428257409,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.001020606428257409,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V60_fresh_full_policy_evaluation",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580110,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 5.6258478733968165,
+            "LOOKAHEAD_2_ANALYTIC": 5.627737301004079,
+            "LOOKAHEAD_FULL_ANALYTIC": 5.627737301004079
+          },
+          "two_minus_one": 0.0018894276072627392,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.0018894276072627392,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580111,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 5.771270123578321,
+            "LOOKAHEAD_2_ANALYTIC": 5.771948007563695,
+            "LOOKAHEAD_FULL_ANALYTIC": 5.771948007563695
+          },
+          "two_minus_one": 0.0006778839853733842,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.0006778839853733842,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580112,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 5.766645616846599,
+            "LOOKAHEAD_2_ANALYTIC": 5.771104147532503,
+            "LOOKAHEAD_FULL_ANALYTIC": 5.785133257617687
+          },
+          "two_minus_one": 0.004458530685903739,
+          "full_minus_two": 0.01402911008518437,
+          "full_minus_one": 0.01848764077108811,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580113,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 5.611395627801838,
+            "LOOKAHEAD_2_ANALYTIC": 5.632367954986622,
+            "LOOKAHEAD_FULL_ANALYTIC": 5.632367954986622
+          },
+          "two_minus_one": 0.0209723271847837,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.0209723271847837,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580114,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 5.872822521278734,
+            "LOOKAHEAD_2_ANALYTIC": 5.882022169753944,
+            "LOOKAHEAD_FULL_ANALYTIC": 5.882022169753944
+          },
+          "two_minus_one": 0.009199648475210154,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.009199648475210154,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580115,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 6.150062975957435,
+            "LOOKAHEAD_2_ANALYTIC": 6.156348924782043,
+            "LOOKAHEAD_FULL_ANALYTIC": 6.249325757064513
+          },
+          "two_minus_one": 0.006285948824608312,
+          "full_minus_two": 0.09297683228246978,
+          "full_minus_one": 0.09926278110707809,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        }
+      ],
+      "expected_work_sums": {
+        "LOOKAHEAD_1_ANALYTIC": {
+          "planner_calls": 47.99999999999999,
+          "dp_states": 31.999869006283074,
+          "action_value_evaluations": 248.30463091104505,
+          "kernel_builds": 0.0,
+          "kernel_cache_hits": 0.0,
+          "transition_outcomes": 0.0,
+          "target_probability_evaluations": 1745.335158730159,
+          "score_node_evaluations": 0.0,
+          "immediate_expectation_terms": 0.0,
+          "bellman_expectation_terms": 0.0,
+          "forced_choice": 16.000130993716933,
+          "analytic_expectation_calls": 248.30463091104505,
+          "analytic_probability_terms": 1745.335158730159
+        },
+        "LOOKAHEAD_2_ANALYTIC": {
+          "planner_calls": 48.00000000000001,
+          "dp_states": 7533.310844011795,
+          "action_value_evaluations": 28228.92512972608,
+          "kernel_builds": 248.6142026703043,
+          "kernel_cache_hits": 0.0,
+          "transition_outcomes": 7501.310927055778,
+          "target_probability_evaluations": 125633.7677622079,
+          "score_node_evaluations": 0.0,
+          "immediate_expectation_terms": 0.0,
+          "bellman_expectation_terms": 7501.310927055778,
+          "forced_choice": 16.00008304398148,
+          "analytic_expectation_calls": 27980.31092705577,
+          "analytic_probability_terms": 123884.95542093807
+        },
+        "LOOKAHEAD_FULL_ANALYTIC": {
+          "planner_calls": 48.0,
+          "dp_states": 188476.9888774113,
+          "action_value_evaluations": 209173.02935360174,
+          "kernel_builds": 25578.04039700452,
+          "kernel_cache_hits": 0.0,
+          "transition_outcomes": 537994.9889565973,
+          "target_probability_evaluations": 638979.1869626046,
+          "score_node_evaluations": 0.0,
+          "immediate_expectation_terms": 0.0,
+          "bellman_expectation_terms": 537994.9889565973,
+          "forced_choice": 16.000079185956793,
+          "analytic_expectation_calls": 183594.98895659726,
+          "analytic_probability_terms": 522077.49509752536
+        }
+      },
+      "ratios_of_expected_work_sums": {
+        "LOOKAHEAD_2_ANALYTIC_over_LOOKAHEAD_1_ANALYTIC": {
+          "planner_calls": 1.0000000000000002,
+          "dp_states": 235.41692756719263,
+          "action_value_evaluations": 113.68666394240175,
+          "kernel_builds": null,
+          "kernel_cache_hits": null,
+          "transition_outcomes": null,
+          "target_probability_evaluations": 71.98260295954523,
+          "score_node_evaluations": null,
+          "immediate_expectation_terms": null,
+          "bellman_expectation_terms": null,
+          "forced_choice": 0.9999970031660695,
+          "analytic_expectation_calls": 112.68541720061474,
+          "analytic_probability_terms": 70.98061068744651
+        },
+        "LOOKAHEAD_FULL_ANALYTIC_over_LOOKAHEAD_2_ANALYTIC": {
+          "planner_calls": 0.9999999999999999,
+          "dp_states": 25.01914400986534,
+          "action_value_evaluations": 7.4098828911248535,
+          "kernel_builds": 102.8824585332497,
+          "kernel_cache_hits": null,
+          "transition_outcomes": 71.72012921316905,
+          "target_probability_evaluations": 5.086046517143594,
+          "score_node_evaluations": null,
+          "immediate_expectation_terms": null,
+          "bellman_expectation_terms": 71.72012921316905,
+          "forced_choice": 0.9999997588747086,
+          "analytic_expectation_calls": 6.561577869353436,
+          "analytic_probability_terms": 4.214212236858002
+        },
+        "LOOKAHEAD_FULL_ANALYTIC_over_LOOKAHEAD_1_ANALYTIC": {
+          "planner_calls": 1.0000000000000002,
+          "dp_states": 5889.93001316363,
+          "action_value_evaluations": 842.4048660958636,
+          "kernel_builds": null,
+          "kernel_cache_hits": null,
+          "transition_outcomes": null,
+          "target_probability_evaluations": 366.1068670773252,
+          "score_node_evaluations": null,
+          "immediate_expectation_terms": null,
+          "bellman_expectation_terms": null,
+          "forced_choice": 0.9999967620415007,
+          "analytic_expectation_calls": 739.3941397024126,
+          "analytic_probability_terms": 299.12735813869097
+        }
+      },
+      "expected_planning_seconds_descriptive": {
+        "LOOKAHEAD_1_ANALYTIC": 0.0034550768318120676,
+        "LOOKAHEAD_2_ANALYTIC": 0.13700734126377684,
+        "LOOKAHEAD_FULL_ANALYTIC": 1.734881297806799
+      },
+      "provenance": {
+        "target": "V60 fresh evaluation; action preservation is not asserted",
+        "other_short_policies": "127 V59 action-preservation certificates",
+        "full": "64 retained V58 full-policy evaluations"
+      },
+      "scope": "Expected work uses each certified policy occupancy. Different-run times are descriptive, not paired speedup evidence."
+    },
+    {
+      "nodes": 11,
+      "stratum": "sparse",
+      "p": 0.15,
+      "values": {
+        "LOOKAHEAD_1_ANALYTIC": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 7.466582570519839,
+          "minimum": 5.5,
+          "maximum": 9.564814814814815,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_2_ANALYTIC": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 7.871528075854093,
+          "minimum": 5.5,
+          "maximum": 9.891203703703702,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_FULL_ANALYTIC": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 7.9600386639885246,
+          "minimum": 5.5,
+          "maximum": 9.891203703703702,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        }
+      },
+      "contrasts": {
+        "two_minus_one": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.4049455053342548,
+          "minimum": 0.0,
+          "maximum": 1.7175925925925908,
+          "positive_count": 12,
+          "negative_count": 0,
+          "tie_count": 4
+        },
+        "full_minus_two": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.08851058813443069,
+          "minimum": 0.0,
+          "maximum": 0.8545953360768177,
+          "positive_count": 2,
+          "negative_count": 0,
+          "tie_count": 14
+        },
+        "full_minus_one": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.49345609346868546,
+          "minimum": 0.0,
+          "maximum": 1.7175925925925908,
+          "positive_count": 13,
+          "negative_count": 0,
+          "tie_count": 3
+        }
+      },
+      "per_graph": [
+        {
+          "graph_id": 580200,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 7.61902962962963,
+            "LOOKAHEAD_2_ANALYTIC": 8.11898148148148,
+            "LOOKAHEAD_FULL_ANALYTIC": 8.680555555555554
+          },
+          "two_minus_one": 0.49995185185185065,
+          "full_minus_two": 0.5615740740740733,
+          "full_minus_one": 1.061525925925924,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580201,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 7.084019204389575,
+            "LOOKAHEAD_2_ANALYTIC": 7.084019204389575,
+            "LOOKAHEAD_FULL_ANALYTIC": 7.938614540466393
+          },
+          "two_minus_one": 0.0,
+          "full_minus_two": 0.8545953360768177,
+          "full_minus_one": 0.8545953360768177,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580202,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 5.5,
+            "LOOKAHEAD_2_ANALYTIC": 5.5,
+            "LOOKAHEAD_FULL_ANALYTIC": 5.5
+          },
+          "two_minus_one": 0.0,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.0,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580203,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 6.037037037037036,
+            "LOOKAHEAD_2_ANALYTIC": 6.339506172839506,
+            "LOOKAHEAD_FULL_ANALYTIC": 6.339506172839506
+          },
+          "two_minus_one": 0.30246913580247003,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.30246913580247003,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580204,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 6.8125,
+            "LOOKAHEAD_2_ANALYTIC": 7.65625,
+            "LOOKAHEAD_FULL_ANALYTIC": 7.65625
+          },
+          "two_minus_one": 0.84375,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.84375,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580205,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 7.5268735532407405,
+            "LOOKAHEAD_2_ANALYTIC": 7.750795717592592,
+            "LOOKAHEAD_FULL_ANALYTIC": 7.750795717592592
+          },
+          "two_minus_one": 0.2239221643518512,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.2239221643518512,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580206,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 8.7421875,
+            "LOOKAHEAD_2_ANALYTIC": 8.7421875,
+            "LOOKAHEAD_FULL_ANALYTIC": 8.7421875
+          },
+          "two_minus_one": 0.0,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.0,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580207,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 7.17329326099537,
+            "LOOKAHEAD_2_ANALYTIC": 7.198722254050926,
+            "LOOKAHEAD_FULL_ANALYTIC": 7.198722254050926
+          },
+          "two_minus_one": 0.025428993055555793,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.025428993055555793,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580208,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 8.38888888888889,
+            "LOOKAHEAD_2_ANALYTIC": 9.203703703703704,
+            "LOOKAHEAD_FULL_ANALYTIC": 9.203703703703704
+          },
+          "two_minus_one": 0.8148148148148149,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.8148148148148149,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580209,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 6.9879999999999995,
+            "LOOKAHEAD_2_ANALYTIC": 7.238,
+            "LOOKAHEAD_FULL_ANALYTIC": 7.238
+          },
+          "two_minus_one": 0.2500000000000009,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.2500000000000009,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580210,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 6.6953125,
+            "LOOKAHEAD_2_ANALYTIC": 8.09375,
+            "LOOKAHEAD_FULL_ANALYTIC": 8.09375
+          },
+          "two_minus_one": 1.3984375,
+          "full_minus_two": 0.0,
+          "full_minus_one": 1.3984375,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580211,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 7.340277777777778,
+            "LOOKAHEAD_2_ANALYTIC": 9.057870370370368,
+            "LOOKAHEAD_FULL_ANALYTIC": 9.057870370370368
+          },
+          "two_minus_one": 1.7175925925925908,
+          "full_minus_two": 0.0,
+          "full_minus_one": 1.7175925925925908,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580212,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 9.564814814814815,
+            "LOOKAHEAD_2_ANALYTIC": 9.891203703703702,
+            "LOOKAHEAD_FULL_ANALYTIC": 9.891203703703702
+          },
+          "two_minus_one": 0.3263888888888875,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.3263888888888875,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580213,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 8.35082304526749,
+            "LOOKAHEAD_2_ANALYTIC": 8.396433470507544,
+            "LOOKAHEAD_FULL_ANALYTIC": 8.396433470507544
+          },
+          "two_minus_one": 0.04561042524005465,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.04561042524005465,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580214,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 8.5693359375,
+            "LOOKAHEAD_2_ANALYTIC": 8.60009765625,
+            "LOOKAHEAD_FULL_ANALYTIC": 8.60009765625
+          },
+          "two_minus_one": 0.03076171875,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.03076171875,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580215,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 7.0729279787761,
+            "LOOKAHEAD_2_ANALYTIC": 7.0729279787761,
+            "LOOKAHEAD_FULL_ANALYTIC": 7.0729279787761
+          },
+          "two_minus_one": 0.0,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.0,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        }
+      ],
+      "expected_work_sums": {
+        "LOOKAHEAD_1_ANALYTIC": {
+          "planner_calls": 48.00000000000001,
+          "dp_states": 32.0,
+          "action_value_evaluations": 296.98333333333335,
+          "kernel_builds": 0.0,
+          "kernel_cache_hits": 0.0,
+          "transition_outcomes": 0.0,
+          "target_probability_evaluations": 2569.211111111111,
+          "score_node_evaluations": 0.0,
+          "immediate_expectation_terms": 0.0,
+          "bellman_expectation_terms": 0.0,
+          "forced_choice": 16.0,
+          "analytic_expectation_calls": 296.98333333333335,
+          "analytic_probability_terms": 2569.211111111111
+        },
+        "LOOKAHEAD_2_ANALYTIC": {
+          "planner_calls": 47.99999999999999,
+          "dp_states": 1621.0476851851854,
+          "action_value_evaluations": 6397.864351851852,
+          "kernel_builds": 303.81666666666666,
+          "kernel_cache_hits": 0.0,
+          "transition_outcomes": 1589.0476851851854,
+          "target_probability_evaluations": 45829.23009259259,
+          "score_node_evaluations": 0.0,
+          "immediate_expectation_terms": 0.0,
+          "bellman_expectation_terms": 1589.0476851851854,
+          "forced_choice": 16.0,
+          "analytic_expectation_calls": 6094.0476851851845,
+          "analytic_probability_terms": 43162.79120370371
+        },
+        "LOOKAHEAD_FULL_ANALYTIC": {
+          "planner_calls": 48.0,
+          "dp_states": 23045.447685185183,
+          "action_value_evaluations": 27822.797685185185,
+          "kernel_builds": 5421.35,
+          "kernel_cache_hits": 0.0,
+          "transition_outcomes": 27438.447685185187,
+          "target_probability_evaluations": 158705.29675925928,
+          "score_node_evaluations": 0.0,
+          "immediate_expectation_terms": 0.0,
+          "bellman_expectation_terms": 27438.447685185187,
+          "forced_choice": 16.0,
+          "analytic_expectation_calls": 22401.447685185183,
+          "analytic_probability_terms": 117380.63564814815
+        }
+      },
+      "ratios_of_expected_work_sums": {
+        "LOOKAHEAD_2_ANALYTIC_over_LOOKAHEAD_1_ANALYTIC": {
+          "planner_calls": 0.9999999999999997,
+          "dp_states": 50.657740162037044,
+          "action_value_evaluations": 21.542839727880974,
+          "kernel_builds": null,
+          "kernel_cache_hits": null,
+          "transition_outcomes": null,
+          "target_probability_evaluations": 17.83786077150069,
+          "score_node_evaluations": null,
+          "immediate_expectation_terms": null,
+          "bellman_expectation_terms": null,
+          "forced_choice": 1.0,
+          "analytic_expectation_calls": 20.51983058034183,
+          "analytic_probability_terms": 16.800017334907533
+        },
+        "LOOKAHEAD_FULL_ANALYTIC_over_LOOKAHEAD_2_ANALYTIC": {
+          "planner_calls": 1.0000000000000002,
+          "dp_states": 14.21639097714298,
+          "action_value_evaluations": 4.348763298979904,
+          "kernel_builds": 17.844149432223382,
+          "kernel_cache_hits": null,
+          "transition_outcomes": 17.26722737208956,
+          "target_probability_evaluations": 3.462971043559183,
+          "score_node_evaluations": null,
+          "immediate_expectation_terms": null,
+          "bellman_expectation_terms": 17.26722737208956,
+          "forced_choice": 1.0,
+          "analytic_expectation_calls": 3.6759554310091445,
+          "analytic_probability_terms": 2.719486677638122
+        },
+        "LOOKAHEAD_FULL_ANALYTIC_over_LOOKAHEAD_1_ANALYTIC": {
+          "planner_calls": 0.9999999999999999,
+          "dp_states": 720.170240162037,
+          "action_value_evaluations": 93.68471076441502,
+          "kernel_builds": null,
+          "kernel_cache_hits": null,
+          "transition_outcomes": null,
+          "target_probability_evaluations": 61.77199533074716,
+          "score_node_evaluations": null,
+          "immediate_expectation_terms": null,
+          "bellman_expectation_terms": null,
+          "forced_choice": 1.0,
+          "analytic_expectation_calls": 75.42998266519507,
+          "analytic_probability_terms": 45.687423326370535
+        }
+      },
+      "expected_planning_seconds_descriptive": {
+        "LOOKAHEAD_1_ANALYTIC": 0.003839887859976808,
+        "LOOKAHEAD_2_ANALYTIC": 0.037710308871490295,
+        "LOOKAHEAD_FULL_ANALYTIC": 0.1908002664802078
+      },
+      "provenance": {
+        "target": "V60 fresh evaluation; action preservation is not asserted",
+        "other_short_policies": "127 V59 action-preservation certificates",
+        "full": "64 retained V58 full-policy evaluations"
+      },
+      "scope": "Expected work uses each certified policy occupancy. Different-run times are descriptive, not paired speedup evidence."
+    },
+    {
+      "nodes": 11,
+      "stratum": "dense",
+      "p": 0.45,
+      "values": {
+        "LOOKAHEAD_1_ANALYTIC": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 6.324932723606617,
+          "minimum": 5.91658433920117,
+          "maximum": 6.931218496045748,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_2_ANALYTIC": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 6.398819416807561,
+          "minimum": 5.987790455733602,
+          "maximum": 6.9333030385715135,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_FULL_ANALYTIC": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 6.402836866022922,
+          "minimum": 5.987790455733602,
+          "maximum": 6.9333030385715135,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        }
+      },
+      "contrasts": {
+        "two_minus_one": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.07388669320094415,
+          "minimum": 0.000450837578739538,
+          "maximum": 0.35497006055804015,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "full_minus_two": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.004017449215360458,
+          "minimum": 0.0,
+          "maximum": 0.06427918744576733,
+          "positive_count": 1,
+          "negative_count": 0,
+          "tie_count": 15
+        },
+        "full_minus_one": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.07790414241630461,
+          "minimum": 0.000450837578739538,
+          "maximum": 0.35497006055804015,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        }
+      },
+      "per_graph": [
+        {
+          "graph_id": 580300,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 6.620396935679512,
+            "LOOKAHEAD_2_ANALYTIC": 6.819112133209044,
+            "LOOKAHEAD_FULL_ANALYTIC": 6.819112133209044
+          },
+          "two_minus_one": 0.19871519752953226,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.19871519752953226,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580301,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 5.980136124934639,
+            "LOOKAHEAD_2_ANALYTIC": 5.987790455733602,
+            "LOOKAHEAD_FULL_ANALYTIC": 5.987790455733602
+          },
+          "two_minus_one": 0.007654330798962938,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.007654330798962938,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580302,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 6.0583653402969535,
+            "LOOKAHEAD_2_ANALYTIC": 6.072973752347807,
+            "LOOKAHEAD_FULL_ANALYTIC": 6.072973752347807
+          },
+          "two_minus_one": 0.014608412050853836,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.014608412050853836,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580303,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 6.931218496045748,
+            "LOOKAHEAD_2_ANALYTIC": 6.9333030385715135,
+            "LOOKAHEAD_FULL_ANALYTIC": 6.9333030385715135
+          },
+          "two_minus_one": 0.0020845425257656203,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.0020845425257656203,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580304,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 6.548051213525626,
+            "LOOKAHEAD_2_ANALYTIC": 6.552275340675447,
+            "LOOKAHEAD_FULL_ANALYTIC": 6.552275340675447
+          },
+          "two_minus_one": 0.004224127149821122,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.004224127149821122,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580305,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 6.071879195206748,
+            "LOOKAHEAD_2_ANALYTIC": 6.099379912476261,
+            "LOOKAHEAD_FULL_ANALYTIC": 6.099379912476261
+          },
+          "two_minus_one": 0.027500717269512975,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.027500717269512975,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580306,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 6.187338078823968,
+            "LOOKAHEAD_2_ANALYTIC": 6.193976450347931,
+            "LOOKAHEAD_FULL_ANALYTIC": 6.193976450347931
+          },
+          "two_minus_one": 0.006638371523962405,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.006638371523962405,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580307,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 5.91658433920117,
+            "LOOKAHEAD_2_ANALYTIC": 6.196272717051709,
+            "LOOKAHEAD_FULL_ANALYTIC": 6.196272717051709
+          },
+          "two_minus_one": 0.27968837785053946,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.27968837785053946,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580308,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 6.417584870370992,
+            "LOOKAHEAD_2_ANALYTIC": 6.419687534908937,
+            "LOOKAHEAD_FULL_ANALYTIC": 6.483966722354705
+          },
+          "two_minus_one": 0.0021026645379453868,
+          "full_minus_two": 0.06427918744576733,
+          "full_minus_one": 0.06638185198371271,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580309,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 6.0724694052596595,
+            "LOOKAHEAD_2_ANALYTIC": 6.07932505656193,
+            "LOOKAHEAD_FULL_ANALYTIC": 6.07932505656193
+          },
+          "two_minus_one": 0.006855651302270616,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.006855651302270616,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580310,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 6.561244558704268,
+            "LOOKAHEAD_2_ANALYTIC": 6.916214619262308,
+            "LOOKAHEAD_FULL_ANALYTIC": 6.916214619262308
+          },
+          "two_minus_one": 0.35497006055804015,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.35497006055804015,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580311,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 6.424431325545341,
+            "LOOKAHEAD_2_ANALYTIC": 6.430875878247102,
+            "LOOKAHEAD_FULL_ANALYTIC": 6.430875878247102
+          },
+          "two_minus_one": 0.006444552701760919,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.006444552701760919,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580312,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 6.777379203883785,
+            "LOOKAHEAD_2_ANALYTIC": 6.778228727551928,
+            "LOOKAHEAD_FULL_ANALYTIC": 6.778228727551928
+          },
+          "two_minus_one": 0.0008495236681431706,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.0008495236681431706,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580313,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 6.099015945296,
+            "LOOKAHEAD_2_ANALYTIC": 6.3584566704349585,
+            "LOOKAHEAD_FULL_ANALYTIC": 6.3584566704349585
+          },
+          "two_minus_one": 0.25944072513895833,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.25944072513895833,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580314,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 6.393619535149271,
+            "LOOKAHEAD_2_ANALYTIC": 6.403578534179569,
+            "LOOKAHEAD_FULL_ANALYTIC": 6.403578534179569
+          },
+          "two_minus_one": 0.009958999030297733,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.009958999030297733,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        },
+        {
+          "graph_id": 580315,
+          "values": {
+            "LOOKAHEAD_1_ANALYTIC": 6.139209009782193,
+            "LOOKAHEAD_2_ANALYTIC": 6.1396598473609325,
+            "LOOKAHEAD_FULL_ANALYTIC": 6.1396598473609325
+          },
+          "two_minus_one": 0.000450837578739538,
+          "full_minus_two": 0.0,
+          "full_minus_one": 0.000450837578739538,
+          "provenance": {
+            "LOOKAHEAD_1_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_2_ANALYTIC": "V59_preserved_policy_reuse",
+            "LOOKAHEAD_FULL_ANALYTIC": "V58_full_policy_reuse"
+          }
+        }
+      ],
+      "expected_work_sums": {
+        "LOOKAHEAD_1_ANALYTIC": {
+          "planner_calls": 48.000000000000014,
+          "dp_states": 32.00000000000001,
+          "action_value_evaluations": 310.4750000000001,
+          "kernel_builds": 0.0,
+          "kernel_cache_hits": 0.0,
+          "transition_outcomes": 0.0,
+          "target_probability_evaluations": 2773.8431235827657,
+          "score_node_evaluations": 0.0,
+          "immediate_expectation_terms": 0.0,
+          "bellman_expectation_terms": 0.0,
+          "forced_choice": 15.999999999999988,
+          "analytic_expectation_calls": 310.4750000000001,
+          "analytic_probability_terms": 2773.8431235827657
+        },
+        "LOOKAHEAD_2_ANALYTIC": {
+          "planner_calls": 48.000000000000014,
+          "dp_states": 16380.344472821072,
+          "action_value_evaluations": 64452.26471091634,
+          "kernel_builds": 310.9202380952383,
+          "kernel_cache_hits": 0.0,
+          "transition_outcomes": 16348.344472821076,
+          "target_probability_evaluations": 384952.26389699744,
+          "score_node_evaluations": 0.0,
+          "immediate_expectation_terms": 0.0,
+          "bellman_expectation_terms": 16348.344472821076,
+          "forced_choice": 16.000000000000004,
+          "analytic_expectation_calls": 64141.344472821045,
+          "analytic_probability_terms": 382170.99361921946
+        },
+        "LOOKAHEAD_FULL_ANALYTIC": {
+          "planner_calls": 48.0,
+          "dp_states": 1295746.1480555874,
+          "action_value_evaluations": 1343818.4111508257,
+          "kernel_builds": 56174.26309523809,
+          "kernel_cache_hits": 0.0,
+          "transition_outcomes": 2891782.148055588,
+          "target_probability_evaluations": 5029201.309278705,
+          "score_node_evaluations": 0.0,
+          "immediate_expectation_terms": 0.0,
+          "bellman_expectation_terms": 2891782.148055588,
+          "forced_choice": 16.0,
+          "analytic_expectation_calls": 1287644.1480555874,
+          "analytic_probability_terms": 4679914.7915632855
+        }
+      },
+      "ratios_of_expected_work_sums": {
+        "LOOKAHEAD_2_ANALYTIC_over_LOOKAHEAD_1_ANALYTIC": {
+          "planner_calls": 1.0,
+          "dp_states": 511.8857647756584,
+          "action_value_evaluations": 207.5924461258276,
+          "kernel_builds": null,
+          "kernel_cache_hits": null,
+          "transition_outcomes": null,
+          "target_probability_evaluations": 138.77939261387766,
+          "score_node_evaluations": null,
+          "immediate_expectation_terms": null,
+          "bellman_expectation_terms": null,
+          "forced_choice": 1.000000000000001,
+          "analytic_expectation_calls": 206.591012071249,
+          "analytic_probability_terms": 137.7767150456576
+        },
+        "LOOKAHEAD_FULL_ANALYTIC_over_LOOKAHEAD_2_ANALYTIC": {
+          "planner_calls": 0.9999999999999997,
+          "dp_states": 79.10371788612514,
+          "action_value_evaluations": 20.849824551211185,
+          "kernel_builds": 180.67097670892463,
+          "kernel_cache_hits": null,
+          "transition_outcomes": 176.8853202758934,
+          "target_probability_evaluations": 13.064480406911908,
+          "score_node_evaluations": null,
+          "immediate_expectation_terms": null,
+          "bellman_expectation_terms": 176.8853202758934,
+          "forced_choice": 0.9999999999999998,
+          "analytic_expectation_calls": 20.075103798318537,
+          "analytic_probability_terms": 12.245604375266044
+        },
+        "LOOKAHEAD_FULL_ANALYTIC_over_LOOKAHEAD_1_ANALYTIC": {
+          "planner_calls": 0.9999999999999997,
+          "dp_states": 40492.0671267371,
+          "action_value_evaluations": 4328.266079880265,
+          "kernel_builds": null,
+          "kernel_cache_hits": null,
+          "transition_outcomes": null,
+          "target_probability_evaluations": 1813.08065568714,
+          "score_node_evaluations": null,
+          "immediate_expectation_terms": null,
+          "bellman_expectation_terms": null,
+          "forced_choice": 1.0000000000000009,
+          "analytic_expectation_calls": 4147.336011130001,
+          "analytic_probability_terms": 1687.1591445728877
+        }
+      },
+      "expected_planning_seconds_descriptive": {
+        "LOOKAHEAD_1_ANALYTIC": 0.004682318729267038,
+        "LOOKAHEAD_2_ANALYTIC": 0.37950053360879604,
+        "LOOKAHEAD_FULL_ANALYTIC": 13.419352318862684
+      },
+      "provenance": {
+        "target": "V60 fresh evaluation; action preservation is not asserted",
+        "other_short_policies": "127 V59 action-preservation certificates",
+        "full": "64 retained V58 full-policy evaluations"
+      },
+      "scope": "Expected work uses each certified policy occupancy. Different-run times are descriptive, not paired speedup evidence."
+    }
+  ],
+  "new_case": {
+    "graph_id": 580109,
+    "method": "LOOKAHEAD_1_ANALYTIC",
+    "nodes": 9,
+    "stratum": "dense",
+    "p": 0.5625,
+    "budget": 2,
+    "horizon": 3,
+    "status": "complete",
+    "stop_reason": null,
+    "root_value": 5.466374558229985,
+    "root_selected": [
+      2
+    ],
+    "value_source": "V60_full_policy_evaluation",
+    "control_method": null,
+    "wall_seconds": 0.036620102007873356,
+    "decision_seconds": 0.015686820406699553,
+    "evaluation_seconds": 0.020933281601173803,
+    "last_limit_check_seconds": 0.033430804003728554,
+    "state_records": 1043,
+    "decision_work": {
+      "planner_calls": 1043,
+      "dp_states": 65,
+      "action_value_evaluations": 329,
+      "kernel_builds": 0,
+      "kernel_cache_hits": 0,
+      "transition_outcomes": 0,
+      "target_probability_evaluations": 1448,
+      "score_node_evaluations": 0,
+      "immediate_expectation_terms": 0,
+      "bellman_expectation_terms": 0,
+      "forced_choice": 978,
+      "analytic_expectation_calls": 329,
+      "analytic_probability_terms": 1448
+    },
+    "expected_decision_work": {
+      "planner_calls": 3.0,
+      "dp_states": 2.0,
+      "action_value_evaluations": 15.716666666666667,
+      "kernel_builds": 0.0,
+      "kernel_cache_hits": 0.0,
+      "transition_outcomes": 0.0,
+      "target_probability_evaluations": 111.38333333333334,
+      "score_node_evaluations": 0.0,
+      "immediate_expectation_terms": 0.0,
+      "bellman_expectation_terms": 0.0,
+      "forced_choice": 1.0,
+      "analytic_expectation_calls": 15.716666666666667,
+      "analytic_probability_terms": 111.38333333333334
+    },
+    "expected_decision_seconds": 0.00017682555745434348,
+    "evaluation_work": {
+      "dp_states": 0,
+      "action_value_evaluations": 0,
+      "kernel_builds": 1043,
+      "kernel_cache_hits": 0,
+      "transition_outcomes": 5657,
+      "target_probability_evaluations": 2693,
+      "score_node_evaluations": 0,
+      "immediate_expectation_terms": 0,
+      "bellman_expectation_terms": 0,
+      "new_full_policy_backups": 1043,
+      "retained_value_reads": 0,
+      "occupancy_probability_terms": 1362
+    },
+    "prepare_gc_seconds": 0.004913081997074187,
+    "cleanup_seconds": 0.00679323700023815,
+    "decision_total_seconds": 0.022480057406937703,
+    "block_seconds": 0.04341333900811151,
+    "serialization_seconds": 0.009266919019864872
+  },
+  "preserved_reuse_count": 127,
+  "accounting": {
+    "new_case": {
+      "case_records": 1,
+      "complete_cases": 1,
+      "resource_limited_cases": 0,
+      "state_records": 1043,
+      "decision_work": {
+        "planner_calls": 1043,
+        "dp_states": 65,
+        "action_value_evaluations": 329,
+        "kernel_builds": 0,
+        "kernel_cache_hits": 0,
+        "transition_outcomes": 0,
+        "target_probability_evaluations": 1448,
+        "score_node_evaluations": 0,
+        "immediate_expectation_terms": 0,
+        "bellman_expectation_terms": 0,
+        "forced_choice": 978,
+        "analytic_expectation_calls": 329,
+        "analytic_probability_terms": 1448
+      },
+      "evaluation_work": {
+        "dp_states": 0,
+        "action_value_evaluations": 0,
+        "kernel_builds": 1043,
+        "kernel_cache_hits": 0,
+        "transition_outcomes": 5657,
+        "target_probability_evaluations": 2693,
+        "score_node_evaluations": 0,
+        "immediate_expectation_terms": 0,
+        "bellman_expectation_terms": 0,
+        "new_full_policy_backups": 1043,
+        "retained_value_reads": 0,
+        "occupancy_probability_terms": 1362
+      },
+      "wall_seconds": 0.036620102007873356,
+      "decision_seconds": 0.015686820406699553,
+      "evaluation_seconds": 0.020933281601173803,
+      "serialization_seconds": 0.009266919019864872,
+      "expected_decision_work": {
+        "planner_calls": 3.0,
+        "dp_states": 2.0,
+        "action_value_evaluations": 15.716666666666667,
+        "kernel_builds": 0.0,
+        "kernel_cache_hits": 0.0,
+        "transition_outcomes": 0.0,
+        "target_probability_evaluations": 111.38333333333334,
+        "score_node_evaluations": 0.0,
+        "immediate_expectation_terms": 0.0,
+        "bellman_expectation_terms": 0.0,
+        "forced_choice": 1.0,
+        "analytic_expectation_calls": 15.716666666666667,
+        "analytic_probability_terms": 111.38333333333334
+      },
+      "expected_decision_seconds": 0.00017682555745434348,
+      "expected_nonforced_planner_calls": 2.0,
+      "prepare_gc_seconds": 0.004913081997074187,
+      "cleanup_seconds": 0.00679323700023815,
+      "decision_total_seconds": 0.022480057406937703,
+      "block_seconds": 0.04341333900811151
+    },
+    "source_read_seconds": 0.00942834501620382,
+    "graph_reconstruction_seconds": 5.7129975175485015e-05,
+    "data_output_seconds": 0.009454974002437666,
+    "whole_runner_seconds": 0.07122718798927963,
+    "runner_cpu_seconds": 0.06817657799999999,
+    "process_peak_rss_bytes": 32559104,
+    "data_bytes": {
+      "case.json": 2225,
+      "states.jsonl": 812051
+    },
+    "new_graphs": 0,
+    "new_environment_samples": 0,
+    "new_environment_calls": 0,
+    "new_RL_updates": 0,
+    "new_MCTS_calls": 0,
+    "new_full_policy_evaluations": 1,
+    "retained_V58": {
+      "new_cases": {
+        "case_records": 192,
+        "complete_cases": 192,
+        "resource_limited_cases": 0,
+        "state_records": 274253,
+        "decision_work": {
+          "planner_calls": 274253,
+          "dp_states": 2792729,
+          "action_value_evaluations": 2994144,
+          "kernel_builds": 874310,
+          "kernel_cache_hits": 0,
+          "transition_outcomes": 13418742,
+          "target_probability_evaluations": 10833597,
+          "score_node_evaluations": 0,
+          "immediate_expectation_terms": 0,
+          "bellman_expectation_terms": 13418742,
+          "forced_choice": 263989,
+          "analytic_expectation_calls": 2119834,
+          "analytic_probability_terms": 7377433
+        },
+        "evaluation_work": {
+          "dp_states": 0,
+          "action_value_evaluations": 0,
+          "kernel_builds": 274253,
+          "kernel_cache_hits": 0,
+          "transition_outcomes": 2261120,
+          "target_probability_evaluations": 906404,
+          "score_node_evaluations": 0,
+          "immediate_expectation_terms": 0,
+          "bellman_expectation_terms": 0,
+          "new_full_policy_backups": 274253,
+          "retained_value_reads": 0,
+          "occupancy_probability_terms": 375513
+        },
+        "wall_seconds": 51.826379499107134,
+        "decision_seconds": 44.087226720992476,
+        "evaluation_seconds": 7.739152778114658,
+        "serialization_seconds": 2.3933712820580695,
+        "expected_decision_work": {
+          "planner_calls": 576.0,
+          "dp_states": 1544374.7874892082,
+          "action_value_evaluations": 1697975.3886796844,
+          "kernel_builds": 194330.8456489813,
+          "kernel_cache_hits": 0.0,
+          "transition_outcomes": 7101115.422161228,
+          "target_probability_evaluations": 6471727.860812458,
+          "score_node_evaluations": 0.0,
+          "immediate_expectation_terms": 0.0,
+          "bellman_expectation_terms": 7101115.422161228,
+          "forced_choice": 192.0002932236552,
+          "analytic_expectation_calls": 1503644.543030703,
+          "analytic_probability_terms": 5358931.85980896
+        },
+        "expected_decision_seconds": 21.86106380914678,
+        "expected_nonforced_planner_calls": 383.9997067763448,
+        "prepare_gc_seconds": 1.020508385001449,
+        "cleanup_seconds": 2.087584964785492,
+        "decision_total_seconds": 46.17481168577797,
+        "block_seconds": 53.913964463892626
+      },
+      "source_read_seconds": 0.006582603004062548,
+      "graph_generation_seconds": 0.008464332990115508,
+      "data_output_seconds": 2.3992335581569932,
+      "whole_runner_seconds": 57.8537177000253,
+      "runner_cpu_seconds": 57.017547570000005,
+      "process_peak_rss_bytes": 162279424,
+      "data_bytes": {
+        "cases.jsonl": 365556,
+        "states.jsonl": 200228577
+      },
+      "new_graphs": 64,
+      "new_environment_samples": 0,
+      "new_environment_calls": 0,
+      "new_RL_updates": 0,
+      "new_MCTS_calls": 0,
+      "retained_V57": {
+        "all_blocks": {
+          "case_records": 778,
+          "query_records": 241354,
+          "declared_queries": 241354,
+          "decision_work": {
+            "planner_calls": 241354,
+            "dp_states": 4001300,
+            "action_value_evaluations": 4463544,
+            "kernel_builds": 2528190,
+            "kernel_cache_hits": 72,
+            "transition_outcomes": 17770736,
+            "target_probability_evaluations": 12723036,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 17770808,
+            "forced_choice": 214380,
+            "analytic_expectation_calls": 1935282,
+            "analytic_probability_terms": 5151908
+          },
+          "complete_cases": 778,
+          "resource_limited_cases": 0,
+          "output_mismatch_records": 0,
+          "prepare_gc_seconds": 31.678404166654218,
+          "loop_seconds": 55.09706928645028,
+          "decision_seconds": 54.00680412686779,
+          "cleanup_seconds": 35.55720825490425,
+          "decision_total_seconds": 89.56401238177205,
+          "bookkeeping_seconds": 1.0902651595824864,
+          "block_seconds": 90.65427754135453
+        },
+        "warmup": {
+          "case_records": 10,
+          "query_records": 10,
+          "declared_queries": 10,
+          "decision_work": {
+            "planner_calls": 10,
+            "dp_states": 980,
+            "action_value_evaluations": 1560,
+            "kernel_builds": 1140,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 1520,
+            "target_probability_evaluations": 5940,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 1520,
+            "forced_choice": 0,
+            "analytic_expectation_calls": 420,
+            "analytic_probability_terms": 1400
+          },
+          "complete_cases": 10,
+          "resource_limited_cases": 0,
+          "output_mismatch_records": 0,
+          "prepare_gc_seconds": 0.30007924599340186,
+          "loop_seconds": 0.011065980012062937,
+          "decision_seconds": 0.010919483989709988,
+          "cleanup_seconds": 0.30116944102337584,
+          "decision_total_seconds": 0.3120889250130858,
+          "bookkeeping_seconds": 0.00014649602235294878,
+          "block_seconds": 0.3122354210354388
+        },
+        "measured": {
+          "case_records": 768,
+          "query_records": 241344,
+          "declared_queries": 241344,
+          "decision_work": {
+            "planner_calls": 241344,
+            "dp_states": 4000320,
+            "action_value_evaluations": 4461984,
+            "kernel_builds": 2527050,
+            "kernel_cache_hits": 72,
+            "transition_outcomes": 17769216,
+            "target_probability_evaluations": 12717096,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 17769288,
+            "forced_choice": 214380,
+            "analytic_expectation_calls": 1934862,
+            "analytic_probability_terms": 5150508
+          },
+          "complete_cases": 768,
+          "resource_limited_cases": 0,
+          "output_mismatch_records": 0,
+          "prepare_gc_seconds": 31.378324920660816,
+          "loop_seconds": 55.086003306438215,
+          "decision_seconds": 53.99588464287808,
+          "cleanup_seconds": 35.25603881388088,
+          "decision_total_seconds": 89.25192345675896,
+          "bookkeeping_seconds": 1.0901186635601334,
+          "block_seconds": 90.34204212031909
+        },
+        "runner": {
+          "source_read_seconds": 0.873711624997668,
+          "graph_reconstruction_seconds": 0.0010878019966185093,
+          "data_output_seconds": 0.18234235182171687,
+          "whole_runner_seconds": 124.67077764702844,
+          "runner_cpu_seconds": 119.549992739,
+          "process_peak_rss_bytes": 171581440,
+          "data_bytes": {
+            "cases.jsonl": 6434765
+          }
+        },
+        "new_environment_samples": 0,
+        "new_RL_updates": 0,
+        "new_MCTS_calls": 0,
+        "analysis_independent_DP_checks": 0,
+        "analysis_full_policy_evaluations": 0,
+        "partition_note": "warmup and measured partition all_blocks; timing component views are not additive totals",
+        "analysis_seconds": 0.8168187129776925,
+        "analysis_cli_seconds_including_reads": 1.844795573008014
+      },
+      "analysis_wall_seconds_before_serialization": 131.9900200389966,
+      "analysis_independent_query_checks": 274253,
+      "analysis_full_policy_equations": 274253,
+      "scope": "Every complete or interrupted decision, evaluation, cleanup and serialization is charged. GC preparation is separate; timing component views overlap and are not additive. Cleanup includes outer policy evaluation objects. Reach-weighted work is the main scale measure; weighted planning time is secondary and excludes batch cleanup. Prior V57 remains historical.",
+      "analysis_wall_seconds_including_reads": 138.86909498201567
+    },
+    "retained_V59": {
+      "new_replay": {
+        "case_records": 128,
+        "state_records": 188499,
+        "decision_work": {
+          "planner_calls": 188499,
+          "dp_states": 655633,
+          "action_value_evaluations": 765409,
+          "kernel_builds": 19970,
+          "kernel_cache_hits": 0,
+          "transition_outcomes": 648648,
+          "target_probability_evaluations": 2832088,
+          "score_node_evaluations": 0,
+          "immediate_expectation_terms": 0,
+          "bellman_expectation_terms": 648648,
+          "forced_choice": 181514,
+          "analytic_expectation_calls": 745439,
+          "analytic_probability_terms": 2723824
+        },
+        "source_weighted_decision_work": {
+          "planner_calls": 384.00000000000006,
+          "dp_states": 26619.24453769101,
+          "action_value_evaluations": 103902.44215673862,
+          "kernel_builds": 1105.4344407655424,
+          "kernel_cache_hits": 0.0,
+          "transition_outcomes": 26363.2447517287,
+          "target_probability_evaluations": 586010.935867444,
+          "score_node_evaluations": 0.0,
+          "immediate_expectation_terms": 0.0,
+          "bellman_expectation_terms": 26363.2447517287,
+          "forced_choice": 128.00021403769844,
+          "analytic_expectation_calls": 102797.00771597303,
+          "analytic_probability_terms": 577145.9699150629
+        },
+        "decision_seconds": 7.15267913453863,
+        "replay_seconds": 8.359075545857195,
+        "replay_overhead_seconds": 1.2063964113185648,
+        "serialization_seconds": 1.472276541928295,
+        "prepare_gc_seconds": 6.610903603024781,
+        "cleanup_seconds": 6.853009161830414,
+        "decision_total_seconds": 14.005688296369044,
+        "block_seconds": 15.212084707687609,
+        "source_weighted_decision_seconds": 0.5900932608548233
+      },
+      "source_read_seconds": 1.8858807999931742,
+      "graph_reconstruction_seconds": 0.002391106158029288,
+      "data_output_seconds": 1.4760807769198436,
+      "whole_runner_seconds": 25.56337345900829,
+      "runner_cpu_seconds": 24.487858139,
+      "process_peak_rss_bytes": 139198464,
+      "data_bytes": {
+        "cases.jsonl": 204918,
+        "states.jsonl": 139829635
+      },
+      "new_graphs": 0,
+      "new_full_policy_evaluations": 0,
+      "new_environment_samples": 0,
+      "new_environment_calls": 0,
+      "new_RL_updates": 0,
+      "new_MCTS_calls": 0,
+      "retained_V58": {
+        "new_cases": {
+          "case_records": 192,
+          "complete_cases": 192,
+          "resource_limited_cases": 0,
+          "state_records": 274253,
+          "decision_work": {
+            "planner_calls": 274253,
+            "dp_states": 2792729,
+            "action_value_evaluations": 2994144,
+            "kernel_builds": 874310,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 13418742,
+            "target_probability_evaluations": 10833597,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 13418742,
+            "forced_choice": 263989,
+            "analytic_expectation_calls": 2119834,
+            "analytic_probability_terms": 7377433
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 274253,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 2261120,
+            "target_probability_evaluations": 906404,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 274253,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 375513
+          },
+          "wall_seconds": 51.826379499107134,
+          "decision_seconds": 44.087226720992476,
+          "evaluation_seconds": 7.739152778114658,
+          "serialization_seconds": 2.3933712820580695,
+          "expected_decision_work": {
+            "planner_calls": 576.0,
+            "dp_states": 1544374.7874892082,
+            "action_value_evaluations": 1697975.3886796844,
+            "kernel_builds": 194330.8456489813,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 7101115.422161228,
+            "target_probability_evaluations": 6471727.860812458,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 7101115.422161228,
+            "forced_choice": 192.0002932236552,
+            "analytic_expectation_calls": 1503644.543030703,
+            "analytic_probability_terms": 5358931.85980896
+          },
+          "expected_decision_seconds": 21.86106380914678,
+          "expected_nonforced_planner_calls": 383.9997067763448,
+          "prepare_gc_seconds": 1.020508385001449,
+          "cleanup_seconds": 2.087584964785492,
+          "decision_total_seconds": 46.17481168577797,
+          "block_seconds": 53.913964463892626
+        },
+        "source_read_seconds": 0.006582603004062548,
+        "graph_generation_seconds": 0.008464332990115508,
+        "data_output_seconds": 2.3992335581569932,
+        "whole_runner_seconds": 57.8537177000253,
+        "runner_cpu_seconds": 57.017547570000005,
+        "process_peak_rss_bytes": 162279424,
+        "data_bytes": {
+          "cases.jsonl": 365556,
+          "states.jsonl": 200228577
+        },
+        "new_graphs": 64,
+        "new_environment_samples": 0,
+        "new_environment_calls": 0,
+        "new_RL_updates": 0,
+        "new_MCTS_calls": 0,
+        "retained_V57": {
+          "all_blocks": {
+            "case_records": 778,
+            "query_records": 241354,
+            "declared_queries": 241354,
+            "decision_work": {
+              "planner_calls": 241354,
+              "dp_states": 4001300,
+              "action_value_evaluations": 4463544,
+              "kernel_builds": 2528190,
+              "kernel_cache_hits": 72,
+              "transition_outcomes": 17770736,
+              "target_probability_evaluations": 12723036,
+              "score_node_evaluations": 0,
+              "immediate_expectation_terms": 0,
+              "bellman_expectation_terms": 17770808,
+              "forced_choice": 214380,
+              "analytic_expectation_calls": 1935282,
+              "analytic_probability_terms": 5151908
+            },
+            "complete_cases": 778,
+            "resource_limited_cases": 0,
+            "output_mismatch_records": 0,
+            "prepare_gc_seconds": 31.678404166654218,
+            "loop_seconds": 55.09706928645028,
+            "decision_seconds": 54.00680412686779,
+            "cleanup_seconds": 35.55720825490425,
+            "decision_total_seconds": 89.56401238177205,
+            "bookkeeping_seconds": 1.0902651595824864,
+            "block_seconds": 90.65427754135453
+          },
+          "warmup": {
+            "case_records": 10,
+            "query_records": 10,
+            "declared_queries": 10,
+            "decision_work": {
+              "planner_calls": 10,
+              "dp_states": 980,
+              "action_value_evaluations": 1560,
+              "kernel_builds": 1140,
+              "kernel_cache_hits": 0,
+              "transition_outcomes": 1520,
+              "target_probability_evaluations": 5940,
+              "score_node_evaluations": 0,
+              "immediate_expectation_terms": 0,
+              "bellman_expectation_terms": 1520,
+              "forced_choice": 0,
+              "analytic_expectation_calls": 420,
+              "analytic_probability_terms": 1400
+            },
+            "complete_cases": 10,
+            "resource_limited_cases": 0,
+            "output_mismatch_records": 0,
+            "prepare_gc_seconds": 0.30007924599340186,
+            "loop_seconds": 0.011065980012062937,
+            "decision_seconds": 0.010919483989709988,
+            "cleanup_seconds": 0.30116944102337584,
+            "decision_total_seconds": 0.3120889250130858,
+            "bookkeeping_seconds": 0.00014649602235294878,
+            "block_seconds": 0.3122354210354388
+          },
+          "measured": {
+            "case_records": 768,
+            "query_records": 241344,
+            "declared_queries": 241344,
+            "decision_work": {
+              "planner_calls": 241344,
+              "dp_states": 4000320,
+              "action_value_evaluations": 4461984,
+              "kernel_builds": 2527050,
+              "kernel_cache_hits": 72,
+              "transition_outcomes": 17769216,
+              "target_probability_evaluations": 12717096,
+              "score_node_evaluations": 0,
+              "immediate_expectation_terms": 0,
+              "bellman_expectation_terms": 17769288,
+              "forced_choice": 214380,
+              "analytic_expectation_calls": 1934862,
+              "analytic_probability_terms": 5150508
+            },
+            "complete_cases": 768,
+            "resource_limited_cases": 0,
+            "output_mismatch_records": 0,
+            "prepare_gc_seconds": 31.378324920660816,
+            "loop_seconds": 55.086003306438215,
+            "decision_seconds": 53.99588464287808,
+            "cleanup_seconds": 35.25603881388088,
+            "decision_total_seconds": 89.25192345675896,
+            "bookkeeping_seconds": 1.0901186635601334,
+            "block_seconds": 90.34204212031909
+          },
+          "runner": {
+            "source_read_seconds": 0.873711624997668,
+            "graph_reconstruction_seconds": 0.0010878019966185093,
+            "data_output_seconds": 0.18234235182171687,
+            "whole_runner_seconds": 124.67077764702844,
+            "runner_cpu_seconds": 119.549992739,
+            "process_peak_rss_bytes": 171581440,
+            "data_bytes": {
+              "cases.jsonl": 6434765
+            }
+          },
+          "new_environment_samples": 0,
+          "new_RL_updates": 0,
+          "new_MCTS_calls": 0,
+          "analysis_independent_DP_checks": 0,
+          "analysis_full_policy_evaluations": 0,
+          "partition_note": "warmup and measured partition all_blocks; timing component views are not additive totals",
+          "analysis_seconds": 0.8168187129776925,
+          "analysis_cli_seconds_including_reads": 1.844795573008014
+        },
+        "analysis_wall_seconds_before_serialization": 131.9900200389966,
+        "analysis_independent_query_checks": 274253,
+        "analysis_full_policy_equations": 274253,
+        "scope": "Every complete or interrupted decision, evaluation, cleanup and serialization is charged. GC preparation is separate; timing component views overlap and are not additive. Cleanup includes outer policy evaluation objects. Reach-weighted work is the main scale measure; weighted planning time is secondary and excludes batch cleanup. Prior V57 remains historical.",
+        "analysis_wall_seconds_including_reads": 138.86909498201567
+      },
+      "analysis_wall_seconds_before_serialization": 36.93100681301439,
+      "analysis_independent_query_checks": 188499,
+      "analysis_new_full_policy_evaluations": 0,
+      "scope": "All completed or interrupted replay decisions, GC and serialization remain charged. Cost views overlap; data_output_seconds contains state serialization_seconds. V58 full-policy evaluations and FULL planning remain historical, not rerun or refunded.",
+      "analysis_wall_seconds_including_reads": 44.06792377901729
+    },
+    "analysis_independent_query_checks": 1043,
+    "analysis_full_policy_equations": 1043,
+    "analysis_wall_seconds_before_serialization": 0.06459573900792748,
+    "scope": "Only the target policy is freshly evaluated. All prior costs are retained, not recharged or refunded. GC and serialization views overlap; source histories are not additive new costs.",
+    "analysis_wall_seconds_including_reads": 0.25444884100579657
+  },
+  "scope": "The target may have a different valid policy value. Its actual new reachable states and occupancy are evaluated. The other 127 short policies and all FULL results are reused with explicit provenance. V59 failure flags remain unchanged. No same-policy claim, paired-time speedup, or adoption Gate is created."
+}

@@ -1,0 +1,272 @@
+{
+  "schema": "acfqp.decision_feature_diagnostic.v76",
+  "scope": "Post-result diagnosis on the exposed V76 cohort; no new validation, fitting, threshold adjustment or ground acquisition.",
+  "equality_rule": "All 41 raw feature values exactly equal within the same board and query; no tolerance, rounding or leaf-ID surrogate.",
+  "q_difference_tolerance": 1e-12,
+  "cases": 48,
+  "counts": {
+    "board_queries": 672,
+    "legal_action_feature_vectors": 2478,
+    "RULE_errors": 335,
+    "RULE_errors_on_equal_feature_queries": 0,
+    "RULE_errors_on_q_conflict_queries": 0,
+    "RULE_errors_on_membership_conflict_queries": 0,
+    "RULE_errors_on_unavoidable_lexicographic_error_queries": 0,
+    "RULE_wrong_selected_action_aliases_an_optimal_action": 0,
+    "SELECTIVE_errors": 28,
+    "SELECTIVE_errors_on_equal_feature_queries": 0,
+    "SELECTIVE_errors_on_q_conflict_queries": 0,
+    "SELECTIVE_errors_on_membership_conflict_queries": 0,
+    "SELECTIVE_errors_on_unavoidable_lexicographic_error_queries": 0,
+    "SELECTIVE_wrong_selected_action_aliases_an_optimal_action": 0,
+    "strict_query_pair_obligations": 37,
+    "boards_requiring_query_action_switch": 2,
+    "rule_boards_with_multiple_query_actions": 0,
+    "equal_feature_boards": 0,
+    "q_conflict_boards": 0,
+    "membership_conflict_boards": 0,
+    "unavoidable_lexicographic_error_boards": 0,
+    "equal_feature_action_groups": 0,
+    "equal_feature_action_pairs": 0,
+    "q_conflicting_action_pairs": 0,
+    "membership_conflicting_action_pairs": 0,
+    "q_conflicting_action_groups": 0,
+    "membership_conflicting_action_groups": 0,
+    "equal_feature_queries": 0,
+    "q_conflict_queries": 0,
+    "membership_conflict_queries": 0,
+    "unavoidable_lexicographic_error_queries": 0
+  },
+  "tree": {
+    "training": {
+      "max_depth": 8,
+      "min_samples_leaf": 16,
+      "random_state": 7601,
+      "records": 27912,
+      "optimal_labels": 10430,
+      "nonoptimal_labels": 17482,
+      "nodes": 281,
+      "leaves": 141,
+      "depth": 8
+    },
+    "declared_feature_columns": 41,
+    "base_feature_columns": 30,
+    "query_feature_columns": 11,
+    "split_nodes": 140,
+    "used_feature_columns": 27,
+    "unused_feature_names": [
+      "current_goal_gap",
+      "after_max_rank",
+      "after_goal_gap",
+      "along_packed_equal_pairs",
+      "along_once_merge_count",
+      "across_empty_mean",
+      "risk_per_reward",
+      "goal_per_reward",
+      "risk_x_after_equal_edges",
+      "risk_x_after_equal_edge_value",
+      "risk_x_empty_neighbor_rank2",
+      "goal_x_after_goal_reached",
+      "goal_x_after_goal_proximity",
+      "goal_x_action_merge_reward"
+    ],
+    "query_split_nodes": 3,
+    "query_importance": 0.000884772017770523,
+    "query_columns": [
+      {
+        "index": 30,
+        "name": "risk_per_reward",
+        "split_nodes": 0,
+        "importance": 0.0
+      },
+      {
+        "index": 31,
+        "name": "goal_per_reward",
+        "split_nodes": 0,
+        "importance": 0.0
+      },
+      {
+        "index": 32,
+        "name": "risk_x_after_empties",
+        "split_nodes": 1,
+        "importance": 9.723539849072153e-06
+      },
+      {
+        "index": 33,
+        "name": "risk_x_after_equal_edges",
+        "split_nodes": 0,
+        "importance": 0.0
+      },
+      {
+        "index": 34,
+        "name": "risk_x_after_equal_edge_value",
+        "split_nodes": 0,
+        "importance": 0.0
+      },
+      {
+        "index": 35,
+        "name": "risk_x_empty_neighbor_rank1",
+        "split_nodes": 1,
+        "importance": 0.000851868522244095
+      },
+      {
+        "index": 36,
+        "name": "risk_x_empty_neighbor_rank2",
+        "split_nodes": 0,
+        "importance": 0.0
+      },
+      {
+        "index": 37,
+        "name": "goal_x_after_goal_reached",
+        "split_nodes": 0,
+        "importance": 0.0
+      },
+      {
+        "index": 38,
+        "name": "goal_x_after_goal_proximity",
+        "split_nodes": 0,
+        "importance": 0.0
+      },
+      {
+        "index": 39,
+        "name": "goal_x_action_merge_reward",
+        "split_nodes": 0,
+        "importance": 0.0
+      },
+      {
+        "index": 40,
+        "name": "risk_x_action_merge_reward",
+        "split_nodes": 1,
+        "importance": 2.317995567735592e-05
+      }
+    ],
+    "query_invariant_scorer": false,
+    "column_scope": "The saved fitted model declares all 41 supplied columns. Split use is separate from inclusion in its input matrix."
+  },
+  "affected_boards": {},
+  "witnesses": [],
+  "reads": {
+    "files": 6,
+    "bytes": 4361021
+  },
+  "feature_work": {
+    "feature_boards": 48,
+    "learned_terminal_checks": 48,
+    "learned_swipe_calls": 192,
+    "learned_line_rewrites": 768,
+    "feature_adjacency_tests": 5400,
+    "feature_actions": 177,
+    "feature_line_summaries": 1416,
+    "feature_line_pair_tests": 3382,
+    "feature_once_merge_tests": 3248,
+    "feature_empty_neighbor_reads": 1151
+  },
+  "new_fit_calls": 0,
+  "new_ground_calls": 0,
+  "tree_prediction_calls": 0,
+  "elapsed_seconds_before_write": 0.07833581796148792,
+  "interpretation": "Different optimal labels inside an identical feature group cannot be represented by any actionwise scorer of these features. The strict local lower bound additionally requires every feature group to begin with a nonoptimal action under the fixed lexicographic tie rule. Mere overlap between a prediction error and a conflicting group does not prove that the conflict caused that error. Unused query columns establish query invariance of this fitted tree, not impossibility for other trained trees.",
+  "query_response_witnesses": [
+    {
+      "case": "v76_fresh_h2_12",
+      "board": [
+        3,
+        10,
+        5,
+        7,
+        3,
+        1,
+        7,
+        5,
+        9,
+        1,
+        10,
+        9,
+        1,
+        4,
+        6,
+        7
+      ],
+      "queries": [
+        {
+          "query_name": "risk_0",
+          "query": {
+            "reward_weight": 1.0,
+            "failure_penalty": 0.0,
+            "goal_bonus": 0.0
+          },
+          "optimal_actions": [
+            "UP"
+          ],
+          "rule_action": "UP",
+          "rule_regret": 0.0
+        },
+        {
+          "query_name": "risk_0_05",
+          "query": {
+            "reward_weight": 1.0,
+            "failure_penalty": 0.05,
+            "goal_bonus": 0.0
+          },
+          "optimal_actions": [
+            "DOWN"
+          ],
+          "rule_action": "UP",
+          "rule_regret": 0.0016210937500000001
+        }
+      ],
+      "interpretation": "The saved RULE action does not change although the two ground-optimal action sets are disjoint. This is not an identical-feature collision."
+    },
+    {
+      "case": "v76_fresh_h2_27",
+      "board": [
+        5,
+        9,
+        6,
+        4,
+        8,
+        8,
+        2,
+        6,
+        8,
+        4,
+        7,
+        1,
+        6,
+        1,
+        10,
+        7
+      ],
+      "queries": [
+        {
+          "query_name": "risk_0",
+          "query": {
+            "reward_weight": 1.0,
+            "failure_penalty": 0.0,
+            "goal_bonus": 0.0
+          },
+          "optimal_actions": [
+            "RIGHT"
+          ],
+          "rule_action": "RIGHT",
+          "rule_regret": 0.0
+        },
+        {
+          "query_name": "risk_5",
+          "query": {
+            "reward_weight": 1.0,
+            "failure_penalty": 5.0,
+            "goal_bonus": 0.0
+          },
+          "optimal_actions": [
+            "LEFT"
+          ],
+          "rule_action": "RIGHT",
+          "rule_regret": 0.06425781250000001
+        }
+      ],
+      "interpretation": "The saved RULE action does not change although the two ground-optimal action sets are disjoint. This is not an identical-feature collision."
+    }
+  ],
+  "supplement_scope": "Query witnesses were added by reading existing inputs, audit and RULE outputs; features were not recomputed."
+}

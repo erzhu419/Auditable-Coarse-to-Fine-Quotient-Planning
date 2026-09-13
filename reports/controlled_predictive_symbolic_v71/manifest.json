@@ -1,0 +1,31 @@
+{
+  "schema": "acfqp.symbolic_successors.v71",
+  "status": "complete",
+  "target_roots": 32,
+  "completed_targets": 32,
+  "source_learning_reused": true,
+  "source_fit_calls": 0,
+  "target_ground_calls": 0,
+  "arms": [
+    "FULL_ENUM",
+    "COMPOSED_ENUM",
+    "FULL_SYMBOLIC",
+    "COMPOSED_SYMBOLIC"
+  ],
+  "source_path": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_composition_v69",
+  "max_concrete_states": 200000,
+  "runtime": {
+    "python": "3.10.12",
+    "executable": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python"
+  },
+  "rule_compile": {
+    "seconds": 5.011970642954111e-06,
+    "counts": {
+      "compiled_programs": 1,
+      "compiled_spawn_ranks": 2,
+      "topology_edges": 24
+    }
+  },
+  "wall_seconds": 30.658952013996895,
+  "peak_rss_bytes": 70578176
+}

@@ -1,0 +1,14 @@
+{
+  "first_attempt": {
+    "exit_code": 1,
+    "error": "KeyError: h0_boards_generated",
+    "scope": "Unreached H0 counters are omitted rather than explicitly zero",
+    "command_seconds": null
+  },
+  "repair": "Read omitted count as zero; no model or scientific threshold change",
+  "second_attempt": {
+    "exit_code": 0,
+    "command_seconds": 0.03950385801726952
+  },
+  "main_experiment_reexecuted": false
+}

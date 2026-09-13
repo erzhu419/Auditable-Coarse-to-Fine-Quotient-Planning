@@ -1,0 +1,26 @@
+{
+  "wall_seconds": 1.731878294958733,
+  "exit_code": 0,
+  "error": null,
+  "stage": "complete",
+  "independent_query_work": {
+    "queries": 1467,
+    "graph_model_builds": 1467,
+    "parent_membership_checks": 1219829,
+    "parent_product_factors": 207794,
+    "outcome_probability_factors": 157246,
+    "value_cache_hits": 0,
+    "root_Q_comparisons": 4808,
+    "independent_dp_states": 40777,
+    "independent_action_value_evaluations": 80853,
+    "independent_kernel_builds": 4808,
+    "independent_kernel_cache_hits": 0,
+    "independent_transition_outcomes": 40385,
+    "independent_target_probability_evaluations": 791556,
+    "independent_score_node_evaluations": 0,
+    "independent_immediate_expectation_terms": 0,
+    "independent_bellman_expectation_terms": 40385,
+    "independent_analytic_expectation_calls": 76045,
+    "independent_analytic_probability_terms": 736394
+  }
+}

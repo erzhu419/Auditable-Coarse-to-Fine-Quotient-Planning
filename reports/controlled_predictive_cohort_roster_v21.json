@@ -1,0 +1,3313 @@
+{
+  "schema": "controlled_predictive_cohort_roster_v21",
+  "status": "REGISTERED_BEFORE_V21_COMMON_SNAPSHOT_EXTRACTION_LOCAL_ACQUISITION_AND_TRUTH",
+  "common_snapshot_extraction_or_local_acquisition_evaluated": false,
+  "input_roster": "controlled_predictive_cohort_roster_v20.json",
+  "input_analysis": "controlled_predictive_variance_analysis_v20.json",
+  "input_histories": "controlled_predictive_variance_v20.json.gz",
+  "source_v20_changed_contexts": [
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832101,
+      "query": "risk_0_2",
+      "candidate_minus_comparator": {
+        "reward": -1.9531249999982236e-05,
+        "failure": 0.0,
+        "success": 0.0,
+        "value": -1.9531249999982236e-05
+      },
+      "candidate": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5133007812500001,
+          "success": 0.0,
+          "value": 0.4953007812500001
+        },
+        "regret": 3.906249999985345e-05,
+        "extra_regret_over_full": -0.0007714843750000755,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 123.46000000000001,
+        "maximum_batches": 128
+      },
+      "comparator": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5133203125000001,
+          "success": 0.0,
+          "value": 0.4953203125000001
+        },
+        "regret": 1.9531249999871214e-05,
+        "extra_regret_over_full": -0.0007910156250000577,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 124.825,
+        "maximum_batches": 128
+      }
+    },
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832101,
+      "query": "risk_1",
+      "candidate_minus_comparator": {
+        "reward": 0.0007714843750000755,
+        "failure": 0.0,
+        "success": 0.0,
+        "value": 0.0007714843750000755
+      },
+      "candidate": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5133007812500001,
+          "success": 0.0,
+          "value": 0.4233007812500001
+        },
+        "regret": 3.906249999996447e-05,
+        "extra_regret_over_full": -0.0007714843750000755,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 123.46000000000001,
+        "maximum_batches": 128
+      },
+      "comparator": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.512529296875,
+          "success": 0.0,
+          "value": 0.422529296875
+        },
+        "regret": 0.00081054687500004,
+        "extra_regret_over_full": 0.0,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 114.7,
+        "maximum_batches": 128
+      }
+    },
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832101,
+      "query": "risk_5",
+      "candidate_minus_comparator": {
+        "reward": 0.0007714843750000755,
+        "failure": 0.0,
+        "success": 0.0,
+        "value": 0.0007714843750000755
+      },
+      "candidate": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5125097656250001,
+          "success": 0.0,
+          "value": 0.06250976562499999
+        },
+        "regret": 0.0008300781250000222,
+        "extra_regret_over_full": 1.9531249999982236e-05,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 111.445,
+        "maximum_batches": 128
+      },
+      "comparator": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.51173828125,
+          "success": 0.0,
+          "value": 0.061738281249999916
+        },
+        "regret": 0.0016015625000000977,
+        "extra_regret_over_full": 0.0007910156250000577,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 101.8075,
+        "maximum_batches": 128
+      }
+    },
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832101,
+      "query": "probe_risk_0_5",
+      "candidate_minus_comparator": {
+        "reward": -1.9531249999982236e-05,
+        "failure": 0.0,
+        "success": 0.0,
+        "value": -1.9531249999982236e-05
+      },
+      "candidate": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5133007812500001,
+          "success": 0.0,
+          "value": 0.46830078125000013
+        },
+        "regret": 3.906249999990896e-05,
+        "extra_regret_over_full": -0.0007714843750000755,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 123.46000000000001,
+        "maximum_batches": 128
+      },
+      "comparator": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5133203125000001,
+          "success": 0.0,
+          "value": 0.4683203125000001
+        },
+        "regret": 1.9531249999926725e-05,
+        "extra_regret_over_full": -0.0007910156250000577,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 124.825,
+        "maximum_batches": 128
+      }
+    },
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832101,
+      "query": "probe_risk_2",
+      "candidate_minus_comparator": {
+        "reward": 0.0007714843750000755,
+        "failure": 0.0,
+        "success": 0.0,
+        "value": 0.0007714843750000755
+      },
+      "candidate": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5125097656250001,
+          "success": 0.0,
+          "value": 0.332509765625
+        },
+        "regret": 0.0008300781250000222,
+        "extra_regret_over_full": 1.9531249999982236e-05,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 111.445,
+        "maximum_batches": 128
+      },
+      "comparator": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.51173828125,
+          "success": 0.0,
+          "value": 0.33173828124999993
+        },
+        "regret": 0.0016015625000000977,
+        "extra_regret_over_full": 0.0007910156250000577,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 101.8075,
+        "maximum_batches": 128
+      }
+    },
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832102,
+      "query": "risk_0_05",
+      "candidate_minus_comparator": {
+        "reward": -1.9531249999982236e-05,
+        "failure": 0.0,
+        "success": 0.0,
+        "value": -1.9531249999982236e-05
+      },
+      "candidate": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5133007812500001,
+          "success": 0.0,
+          "value": 0.5088007812500002
+        },
+        "regret": 3.906249999985345e-05,
+        "extra_regret_over_full": 0.0,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 123.4625,
+        "maximum_batches": 128
+      },
+      "comparator": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5133203125000001,
+          "success": 0.0,
+          "value": 0.5088203125000001
+        },
+        "regret": 1.9531249999871214e-05,
+        "extra_regret_over_full": -1.9531249999982236e-05,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 124.2425,
+        "maximum_batches": 128
+      }
+    },
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832102,
+      "query": "risk_0_2",
+      "candidate_minus_comparator": {
+        "reward": 0.0007910156250000577,
+        "failure": 0.0,
+        "success": 0.0,
+        "value": 0.0007910156250000577
+      },
+      "candidate": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5133007812500001,
+          "success": 0.0,
+          "value": 0.4953007812500001
+        },
+        "regret": 3.906249999985345e-05,
+        "extra_regret_over_full": -0.0007714843750001865,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 123.4625,
+        "maximum_batches": 128
+      },
+      "comparator": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5125097656250001,
+          "success": 0.0,
+          "value": 0.49450976562500004
+        },
+        "regret": 0.0008300781249999112,
+        "extra_regret_over_full": 1.9531249999871214e-05,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 111.30250000000001,
+        "maximum_batches": 128
+      }
+    },
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832102,
+      "query": "risk_5",
+      "candidate_minus_comparator": {
+        "reward": 0.0007910156250000577,
+        "failure": 0.0,
+        "success": 0.0,
+        "value": 0.0007910156250000577
+      },
+      "candidate": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5125097656250001,
+          "success": 0.0,
+          "value": 0.06250976562499999
+        },
+        "regret": 0.0008300781250000222,
+        "extra_regret_over_full": 1.9531249999815703e-05,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 111.42500000000001,
+        "maximum_batches": 128
+      },
+      "comparator": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.51171875,
+          "success": 0.0,
+          "value": 0.06171874999999993
+        },
+        "regret": 0.00162109375000008,
+        "extra_regret_over_full": 0.0008105468749998734,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 100.3425,
+        "maximum_batches": 109
+      }
+    },
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832102,
+      "query": "goal_1_risk_1",
+      "candidate_minus_comparator": {
+        "reward": -0.0007910156250000577,
+        "failure": 0.0,
+        "success": 0.0,
+        "value": -0.0007910156250000577
+      },
+      "candidate": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.51171875,
+          "success": 0.0,
+          "value": 0.42171875
+        },
+        "regret": 0.00162109375000008,
+        "extra_regret_over_full": 0.0008105468749999289,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 113.44,
+        "maximum_batches": 128
+      },
+      "comparator": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5125097656250001,
+          "success": 0.0,
+          "value": 0.42250976562500003
+        },
+        "regret": 0.0008300781250000222,
+        "extra_regret_over_full": 1.9531249999871214e-05,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 119.8525,
+        "maximum_batches": 128
+      }
+    },
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832102,
+      "query": "probe_risk_0_1",
+      "candidate_minus_comparator": {
+        "reward": 0.0007910156250000577,
+        "failure": 0.0,
+        "success": 0.0,
+        "value": 0.0007910156250000577
+      },
+      "candidate": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5133007812500001,
+          "success": 0.0,
+          "value": 0.5043007812500001
+        },
+        "regret": 3.906249999996447e-05,
+        "extra_regret_over_full": -0.0007714843750001865,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 123.4625,
+        "maximum_batches": 128
+      },
+      "comparator": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5125097656250001,
+          "success": 0.0,
+          "value": 0.503509765625
+        },
+        "regret": 0.0008300781250000222,
+        "extra_regret_over_full": 1.9531249999871214e-05,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 111.305,
+        "maximum_batches": 128
+      }
+    },
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832102,
+      "query": "probe_risk_0_5",
+      "candidate_minus_comparator": {
+        "reward": 0.0007910156250000577,
+        "failure": 0.0,
+        "success": 0.0,
+        "value": 0.0007910156250000577
+      },
+      "candidate": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5133007812500001,
+          "success": 0.0,
+          "value": 0.46830078125000013
+        },
+        "regret": 3.906249999990896e-05,
+        "extra_regret_over_full": -0.000771484375000242,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 123.4625,
+        "maximum_batches": 128
+      },
+      "comparator": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5125097656250001,
+          "success": 0.0,
+          "value": 0.4675097656250001
+        },
+        "regret": 0.0008300781249999667,
+        "extra_regret_over_full": 1.9531249999815703e-05,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 111.30250000000001,
+        "maximum_batches": 128
+      }
+    },
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832102,
+      "query": "probe_goal_2_risk_0_5",
+      "candidate_minus_comparator": {
+        "reward": -0.0007910156250000577,
+        "failure": 0.0,
+        "success": 0.0,
+        "value": -0.0007910156250000577
+      },
+      "candidate": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.51171875,
+          "success": 0.0,
+          "value": 0.46671875
+        },
+        "regret": 0.0016210937500000244,
+        "extra_regret_over_full": 0.0008105468749998734,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 113.44,
+        "maximum_batches": 128
+      },
+      "comparator": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5125097656250001,
+          "success": 0.0,
+          "value": 0.4675097656250001
+        },
+        "regret": 0.0008300781249999667,
+        "extra_regret_over_full": 1.9531249999815703e-05,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 119.92,
+        "maximum_batches": 128
+      }
+    },
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832103,
+      "query": "risk_0_2",
+      "candidate_minus_comparator": {
+        "reward": -1.9531249999982236e-05,
+        "failure": 0.0,
+        "success": 0.0,
+        "value": -1.9531249999982236e-05
+      },
+      "candidate": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5133007812500001,
+          "success": 0.0,
+          "value": 0.4953007812500001
+        },
+        "regret": 3.906249999985345e-05,
+        "extra_regret_over_full": 1.9531249999982236e-05,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 123.5875,
+        "maximum_batches": 128
+      },
+      "comparator": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5133203125000001,
+          "success": 0.0,
+          "value": 0.4953203125000001
+        },
+        "regret": 1.9531249999871214e-05,
+        "extra_regret_over_full": 0.0,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 124.96000000000001,
+        "maximum_batches": 128
+      }
+    },
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832103,
+      "query": "risk_1",
+      "candidate_minus_comparator": {
+        "reward": -0.00081054687500004,
+        "failure": 0.0,
+        "success": 0.0,
+        "value": -0.00081054687500004
+      },
+      "candidate": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5125097656250001,
+          "success": 0.0,
+          "value": 0.42250976562500003
+        },
+        "regret": 0.0008300781250000222,
+        "extra_regret_over_full": 1.9531249999982236e-05,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 111.16749999999999,
+        "maximum_batches": 128
+      },
+      "comparator": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5133203125000001,
+          "success": 0.0,
+          "value": 0.4233203125000001
+        },
+        "regret": 1.9531249999982236e-05,
+        "extra_regret_over_full": -0.0007910156250000577,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 124.96000000000001,
+        "maximum_batches": 128
+      }
+    },
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832103,
+      "query": "risk_5",
+      "candidate_minus_comparator": {
+        "reward": -0.0016015625000000977,
+        "failure": 0.0,
+        "success": 0.0,
+        "value": -0.0016015625000000977
+      },
+      "candidate": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.51171875,
+          "success": 0.0,
+          "value": 0.06171874999999993
+        },
+        "regret": 0.00162109375000008,
+        "extra_regret_over_full": 0.00081054687500004,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 99.03999999999999,
+        "maximum_batches": 104
+      },
+      "comparator": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5133203125000001,
+          "success": 0.0,
+          "value": 0.06332031250000003
+        },
+        "regret": 1.9531249999982236e-05,
+        "extra_regret_over_full": -0.0007910156250000577,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 124.96000000000001,
+        "maximum_batches": 128
+      }
+    },
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832103,
+      "query": "goal_1_risk_1",
+      "candidate_minus_comparator": {
+        "reward": -0.0007910156250000577,
+        "failure": 0.0,
+        "success": 0.0,
+        "value": -0.0007910156250000577
+      },
+      "candidate": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.512529296875,
+          "success": 0.0,
+          "value": 0.422529296875
+        },
+        "regret": 0.00081054687500004,
+        "extra_regret_over_full": 0.0,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 120.0,
+        "maximum_batches": 128
+      },
+      "comparator": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5133203125000001,
+          "success": 0.0,
+          "value": 0.4233203125000001
+        },
+        "regret": 1.9531249999982236e-05,
+        "extra_regret_over_full": -0.0007910156250000577,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 126.48,
+        "maximum_batches": 128
+      }
+    },
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832103,
+      "query": "probe_risk_0_1",
+      "candidate_minus_comparator": {
+        "reward": -1.9531249999982236e-05,
+        "failure": 0.0,
+        "success": 0.0,
+        "value": -1.9531249999982236e-05
+      },
+      "candidate": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5133007812500001,
+          "success": 0.0,
+          "value": 0.5043007812500001
+        },
+        "regret": 3.906249999996447e-05,
+        "extra_regret_over_full": 1.9531249999982236e-05,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 123.5875,
+        "maximum_batches": 128
+      },
+      "comparator": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5133203125000001,
+          "success": 0.0,
+          "value": 0.5043203125000001
+        },
+        "regret": 1.9531249999982236e-05,
+        "extra_regret_over_full": 0.0,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 124.96000000000001,
+        "maximum_batches": 128
+      }
+    },
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832103,
+      "query": "probe_risk_0_5",
+      "candidate_minus_comparator": {
+        "reward": -0.00081054687500004,
+        "failure": 0.0,
+        "success": 0.0,
+        "value": -0.00081054687500004
+      },
+      "candidate": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5125097656250001,
+          "success": 0.0,
+          "value": 0.4675097656250001
+        },
+        "regret": 0.0008300781249999667,
+        "extra_regret_over_full": 1.9531249999982236e-05,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 111.16749999999999,
+        "maximum_batches": 128
+      },
+      "comparator": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5133203125000001,
+          "success": 0.0,
+          "value": 0.4683203125000001
+        },
+        "regret": 1.9531249999926725e-05,
+        "extra_regret_over_full": -0.0007910156250000577,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 124.96000000000001,
+        "maximum_batches": 128
+      }
+    },
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832103,
+      "query": "probe_risk_2",
+      "candidate_minus_comparator": {
+        "reward": -0.0016015625000000977,
+        "failure": 0.0,
+        "success": 0.0,
+        "value": -0.0016015625000000977
+      },
+      "candidate": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.51171875,
+          "success": 0.0,
+          "value": 0.33171874999999995
+        },
+        "regret": 0.00162109375000008,
+        "extra_regret_over_full": 0.00081054687500004,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 99.03999999999999,
+        "maximum_batches": 104
+      },
+      "comparator": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5133203125000001,
+          "success": 0.0,
+          "value": 0.33332031250000005
+        },
+        "regret": 1.9531249999982236e-05,
+        "extra_regret_over_full": -0.0007910156250000577,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 124.96000000000001,
+        "maximum_batches": 128
+      }
+    },
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832103,
+      "query": "probe_goal_2_risk_0_5",
+      "candidate_minus_comparator": {
+        "reward": -0.0007910156250000577,
+        "failure": 0.0,
+        "success": 0.0,
+        "value": -0.0007910156250000577
+      },
+      "candidate": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.512529296875,
+          "success": 0.0,
+          "value": 0.46752929687500006
+        },
+        "regret": 0.0008105468749999845,
+        "extra_regret_over_full": 0.0,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 120.0,
+        "maximum_batches": 128
+      },
+      "comparator": {
+        "action": "DOWN",
+        "metrics": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5133203125000001,
+          "success": 0.0,
+          "value": 0.4683203125000001
+        },
+        "regret": 1.9531249999926725e-05,
+        "extra_regret_over_full": -0.0007910156250000577,
+        "first_action_optimal": true,
+        "full_policy_optimal": false,
+        "expected_batches": 126.48,
+        "maximum_batches": 128
+      }
+    }
+  ],
+  "source_witnesses": [
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832101,
+      "query": "risk_5",
+      "group": "two_cached_regressions_versus_base",
+      "root_components": {
+        "BASE": {
+          "failure": 0.09000000000000001,
+          "reward": 0.512529296875,
+          "success": 0.0,
+          "value": 0.06252929687499997
+        },
+        "CACHED": {
+          "failure": 0.09000000000000001,
+          "reward": 0.51173828125,
+          "success": 0.0,
+          "value": 0.061738281249999916
+        }
+      },
+      "cached_minus_base_value": -0.0007910156250000577,
+      "base_extra_regret_over_full": 0.0,
+      "first_divergence_count": 1,
+      "probability_of_reaching_a_first_divergence": 0.45,
+      "divergences": [
+        {
+          "key": [
+            2,
+            [
+              0,
+              9,
+              9,
+              1,
+              3,
+              4,
+              8,
+              4,
+              5,
+              8,
+              3,
+              7,
+              9,
+              6,
+              7,
+              4
+            ]
+          ],
+          "history": [
+            [
+              3,
+              [
+                2,
+                9,
+                9,
+                3,
+                2,
+                4,
+                8,
+                3,
+                5,
+                8,
+                3,
+                7,
+                9,
+                6,
+                7,
+                4
+              ]
+            ],
+            [
+              2,
+              [
+                0,
+                9,
+                9,
+                1,
+                3,
+                4,
+                8,
+                4,
+                5,
+                8,
+                3,
+                7,
+                9,
+                6,
+                7,
+                4
+              ]
+            ]
+          ],
+          "history_edges": [
+            {
+              "action": "DOWN",
+              "reward": 0.01171875,
+              "probability": 0.45
+            }
+          ],
+          "true_shared_history_reach": 0.45,
+          "compared_selected_actions": [
+            "LEFT",
+            "RIGHT"
+          ],
+          "BASE": {
+            "action": "LEFT",
+            "selected_action_batch_counts": {
+              "LEFT": 1,
+              "RIGHT": 1
+            },
+            "quota": 32,
+            "batches_before": 64,
+            "batches_after": 71,
+            "lower": 0.36505889892578125,
+            "upper": 0.36505889892578125,
+            "unresolved": false,
+            "acquisition_stop_reason": null,
+            "last_gap_assessment": null,
+            "unavailable": [
+              "acquisition_stop_reason_not_recorded",
+              "gap_assessment_not_recorded_at_this_decision"
+            ]
+          },
+          "CACHED": {
+            "action": "RIGHT",
+            "selected_action_batch_counts": {
+              "LEFT": 3,
+              "RIGHT": 2
+            },
+            "quota": 32,
+            "batches_before": 64,
+            "batches_after": 96,
+            "lower": 0.30061213175455725,
+            "upper": 0.30061213175455725,
+            "unresolved": false,
+            "acquisition_stop_reason": "DECISION_QUOTA_EXHAUSTED",
+            "last_gap_assessment": {
+              "candidate_count": 10,
+              "challenger": "RIGHT",
+              "challenger_upper": 0.7806083870920186,
+              "gap": -0.8915201102539015,
+              "incumbent": "LEFT",
+              "incumbent_lower": -0.11091172316188291,
+              "pair": [
+                [
+                  2,
+                  [
+                    0,
+                    9,
+                    9,
+                    1,
+                    3,
+                    4,
+                    8,
+                    4,
+                    5,
+                    8,
+                    3,
+                    7,
+                    9,
+                    6,
+                    7,
+                    4
+                  ]
+                ],
+                "RIGHT"
+              ],
+              "separated": false
+            },
+            "unavailable": []
+          }
+        }
+      ],
+      "retained_count_checks": {
+        "warm_rows_checks": 1,
+        "warm_rows_mismatches": 0,
+        "shared_decision_nodes": 17,
+        "path_batch_total_checks": 68,
+        "path_batch_total_mismatches": 0,
+        "batch_index_checks": 285,
+        "batch_index_mismatches": 0
+      },
+      "unavailable": []
+    },
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832101,
+      "query": "probe_risk_2",
+      "group": "two_cached_regressions_versus_base",
+      "root_components": {
+        "BASE": {
+          "failure": 0.09000000000000001,
+          "reward": 0.512529296875,
+          "success": 0.0,
+          "value": 0.332529296875
+        },
+        "CACHED": {
+          "failure": 0.09000000000000001,
+          "reward": 0.51173828125,
+          "success": 0.0,
+          "value": 0.33173828124999993
+        }
+      },
+      "cached_minus_base_value": -0.0007910156250000577,
+      "base_extra_regret_over_full": 0.0,
+      "first_divergence_count": 1,
+      "probability_of_reaching_a_first_divergence": 0.45,
+      "divergences": [
+        {
+          "key": [
+            2,
+            [
+              0,
+              9,
+              9,
+              1,
+              3,
+              4,
+              8,
+              4,
+              5,
+              8,
+              3,
+              7,
+              9,
+              6,
+              7,
+              4
+            ]
+          ],
+          "history": [
+            [
+              3,
+              [
+                2,
+                9,
+                9,
+                3,
+                2,
+                4,
+                8,
+                3,
+                5,
+                8,
+                3,
+                7,
+                9,
+                6,
+                7,
+                4
+              ]
+            ],
+            [
+              2,
+              [
+                0,
+                9,
+                9,
+                1,
+                3,
+                4,
+                8,
+                4,
+                5,
+                8,
+                3,
+                7,
+                9,
+                6,
+                7,
+                4
+              ]
+            ]
+          ],
+          "history_edges": [
+            {
+              "action": "DOWN",
+              "reward": 0.01171875,
+              "probability": 0.45
+            }
+          ],
+          "true_shared_history_reach": 0.45,
+          "compared_selected_actions": [
+            "LEFT",
+            "RIGHT"
+          ],
+          "BASE": {
+            "action": "LEFT",
+            "selected_action_batch_counts": {
+              "LEFT": 1,
+              "RIGHT": 1
+            },
+            "quota": 32,
+            "batches_before": 64,
+            "batches_after": 71,
+            "lower": 0.44709014892578125,
+            "upper": 0.44709014892578125,
+            "unresolved": false,
+            "acquisition_stop_reason": null,
+            "last_gap_assessment": null,
+            "unavailable": [
+              "acquisition_stop_reason_not_recorded",
+              "gap_assessment_not_recorded_at_this_decision"
+            ]
+          },
+          "CACHED": {
+            "action": "RIGHT",
+            "selected_action_batch_counts": {
+              "LEFT": 3,
+              "RIGHT": 2
+            },
+            "quota": 32,
+            "batches_before": 64,
+            "batches_after": 96,
+            "lower": 0.4202448527018229,
+            "upper": 0.4202448527018229,
+            "unresolved": false,
+            "acquisition_stop_reason": "DECISION_QUOTA_EXHAUSTED",
+            "last_gap_assessment": {
+              "candidate_count": 10,
+              "challenger": "RIGHT",
+              "challenger_upper": 0.6442237091372978,
+              "gap": -0.41362908135307097,
+              "incumbent": "LEFT",
+              "incumbent_lower": 0.2305946277842268,
+              "pair": [
+                [
+                  2,
+                  [
+                    0,
+                    9,
+                    9,
+                    1,
+                    3,
+                    4,
+                    8,
+                    4,
+                    5,
+                    8,
+                    3,
+                    7,
+                    9,
+                    6,
+                    7,
+                    4
+                  ]
+                ],
+                "RIGHT"
+              ],
+              "separated": false
+            },
+            "unavailable": []
+          }
+        }
+      ],
+      "retained_count_checks": {
+        "warm_rows_checks": 1,
+        "warm_rows_mismatches": 0,
+        "shared_decision_nodes": 17,
+        "path_batch_total_checks": 68,
+        "path_batch_total_mismatches": 0,
+        "batch_index_checks": 285,
+        "batch_index_mismatches": 0
+      },
+      "unavailable": []
+    },
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832102,
+      "query": "risk_0_2",
+      "group": "original_eight_base_worse_than_full",
+      "root_components": {
+        "BASE": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5125097656250001,
+          "success": 0.0,
+          "value": 0.49450976562500004
+        },
+        "CACHED": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5125097656250001,
+          "success": 0.0,
+          "value": 0.49450976562500004
+        }
+      },
+      "cached_minus_base_value": 0.0,
+      "base_extra_regret_over_full": 1.9531249999871214e-05,
+      "first_divergence_count": 0,
+      "probability_of_reaching_a_first_divergence": 0.0,
+      "divergences": [],
+      "retained_count_checks": {
+        "warm_rows_checks": 1,
+        "warm_rows_mismatches": 0,
+        "shared_decision_nodes": 21,
+        "path_batch_total_checks": 84,
+        "path_batch_total_mismatches": 0,
+        "batch_index_checks": 265,
+        "batch_index_mismatches": 0
+      },
+      "unavailable": []
+    },
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832102,
+      "query": "risk_1",
+      "group": "original_eight_base_worse_than_full",
+      "root_components": {
+        "BASE": {
+          "failure": 0.09000000000000001,
+          "reward": 0.51171875,
+          "success": 0.0,
+          "value": 0.42171875
+        },
+        "CACHED": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5125097656250001,
+          "success": 0.0,
+          "value": 0.42250976562500003
+        }
+      },
+      "cached_minus_base_value": 0.0007910156250000577,
+      "base_extra_regret_over_full": 0.0008105468749999289,
+      "first_divergence_count": 1,
+      "probability_of_reaching_a_first_divergence": 0.45,
+      "divergences": [
+        {
+          "key": [
+            2,
+            [
+              1,
+              9,
+              9,
+              0,
+              3,
+              4,
+              8,
+              4,
+              5,
+              8,
+              3,
+              7,
+              9,
+              6,
+              7,
+              4
+            ]
+          ],
+          "history": [
+            [
+              3,
+              [
+                2,
+                9,
+                9,
+                3,
+                2,
+                4,
+                8,
+                3,
+                5,
+                8,
+                3,
+                7,
+                9,
+                6,
+                7,
+                4
+              ]
+            ],
+            [
+              2,
+              [
+                1,
+                9,
+                9,
+                0,
+                3,
+                4,
+                8,
+                4,
+                5,
+                8,
+                3,
+                7,
+                9,
+                6,
+                7,
+                4
+              ]
+            ]
+          ],
+          "history_edges": [
+            {
+              "action": "DOWN",
+              "reward": 0.01171875,
+              "probability": 0.45
+            }
+          ],
+          "true_shared_history_reach": 0.45,
+          "compared_selected_actions": [
+            "LEFT",
+            "RIGHT"
+          ],
+          "BASE": {
+            "action": "LEFT",
+            "selected_action_batch_counts": {
+              "LEFT": 1,
+              "RIGHT": 1
+            },
+            "quota": 32,
+            "batches_before": 64,
+            "batches_after": 76,
+            "lower": 0.452850341796875,
+            "upper": 0.452850341796875,
+            "unresolved": false,
+            "acquisition_stop_reason": null,
+            "last_gap_assessment": null,
+            "unavailable": [
+              "acquisition_stop_reason_not_recorded",
+              "gap_assessment_not_recorded_at_this_decision"
+            ]
+          },
+          "CACHED": {
+            "action": "RIGHT",
+            "selected_action_batch_counts": {
+              "LEFT": 2,
+              "RIGHT": 2
+            },
+            "quota": 32,
+            "batches_before": 64,
+            "batches_after": 96,
+            "lower": 0.4529266357421875,
+            "upper": 0.4529266357421875,
+            "unresolved": false,
+            "acquisition_stop_reason": "DECISION_QUOTA_EXHAUSTED",
+            "last_gap_assessment": {
+              "candidate_count": 10,
+              "challenger": "RIGHT",
+              "challenger_upper": 0.5909725077585969,
+              "gap": -0.2751194083726697,
+              "incumbent": "LEFT",
+              "incumbent_lower": 0.3158530993859272,
+              "pair": [
+                [
+                  2,
+                  [
+                    1,
+                    9,
+                    9,
+                    0,
+                    3,
+                    4,
+                    8,
+                    4,
+                    5,
+                    8,
+                    3,
+                    7,
+                    9,
+                    6,
+                    7,
+                    4
+                  ]
+                ],
+                "LEFT"
+              ],
+              "separated": false
+            },
+            "unavailable": []
+          }
+        }
+      ],
+      "retained_count_checks": {
+        "warm_rows_checks": 1,
+        "warm_rows_mismatches": 0,
+        "shared_decision_nodes": 17,
+        "path_batch_total_checks": 68,
+        "path_batch_total_mismatches": 0,
+        "batch_index_checks": 167,
+        "batch_index_mismatches": 0
+      },
+      "unavailable": []
+    },
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832102,
+      "query": "risk_5",
+      "group": "original_eight_base_worse_than_full",
+      "root_components": {
+        "BASE": {
+          "failure": 0.09000000000000001,
+          "reward": 0.51171875,
+          "success": 0.0,
+          "value": 0.06171874999999993
+        },
+        "CACHED": {
+          "failure": 0.09000000000000001,
+          "reward": 0.51171875,
+          "success": 0.0,
+          "value": 0.06171874999999993
+        }
+      },
+      "cached_minus_base_value": 0.0,
+      "base_extra_regret_over_full": 0.0008105468749998734,
+      "first_divergence_count": 0,
+      "probability_of_reaching_a_first_divergence": 0.0,
+      "divergences": [],
+      "retained_count_checks": {
+        "warm_rows_checks": 1,
+        "warm_rows_mismatches": 0,
+        "shared_decision_nodes": 21,
+        "path_batch_total_checks": 84,
+        "path_batch_total_mismatches": 0,
+        "batch_index_checks": 193,
+        "batch_index_mismatches": 0
+      },
+      "unavailable": []
+    },
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832102,
+      "query": "goal_1_risk_1",
+      "group": "original_eight_base_worse_than_full",
+      "root_components": {
+        "BASE": {
+          "failure": 0.09000000000000001,
+          "reward": 0.51171875,
+          "success": 0.0,
+          "value": 0.42171875
+        },
+        "CACHED": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5125097656250001,
+          "success": 0.0,
+          "value": 0.42250976562500003
+        }
+      },
+      "cached_minus_base_value": 0.0007910156250000577,
+      "base_extra_regret_over_full": 0.0008105468749999289,
+      "first_divergence_count": 1,
+      "probability_of_reaching_a_first_divergence": 0.45,
+      "divergences": [
+        {
+          "key": [
+            2,
+            [
+              1,
+              9,
+              9,
+              0,
+              3,
+              4,
+              8,
+              4,
+              5,
+              8,
+              3,
+              7,
+              9,
+              6,
+              7,
+              4
+            ]
+          ],
+          "history": [
+            [
+              3,
+              [
+                2,
+                9,
+                9,
+                3,
+                2,
+                4,
+                8,
+                3,
+                5,
+                8,
+                3,
+                7,
+                9,
+                6,
+                7,
+                4
+              ]
+            ],
+            [
+              2,
+              [
+                1,
+                9,
+                9,
+                0,
+                3,
+                4,
+                8,
+                4,
+                5,
+                8,
+                3,
+                7,
+                9,
+                6,
+                7,
+                4
+              ]
+            ]
+          ],
+          "history_edges": [
+            {
+              "action": "DOWN",
+              "reward": 0.01171875,
+              "probability": 0.45
+            }
+          ],
+          "true_shared_history_reach": 0.45,
+          "compared_selected_actions": [
+            "LEFT",
+            "RIGHT"
+          ],
+          "BASE": {
+            "action": "LEFT",
+            "selected_action_batch_counts": {
+              "LEFT": 1,
+              "RIGHT": 1
+            },
+            "quota": 32,
+            "batches_before": 64,
+            "batches_after": 82,
+            "lower": 0.452850341796875,
+            "upper": 0.452850341796875,
+            "unresolved": false,
+            "acquisition_stop_reason": null,
+            "last_gap_assessment": null,
+            "unavailable": [
+              "acquisition_stop_reason_not_recorded",
+              "gap_assessment_not_recorded_at_this_decision"
+            ]
+          },
+          "CACHED": {
+            "action": "RIGHT",
+            "selected_action_batch_counts": {
+              "LEFT": 1,
+              "RIGHT": 1
+            },
+            "quota": 32,
+            "batches_before": 64,
+            "batches_after": 96,
+            "lower": 0.4509735107421875,
+            "upper": 0.4509735107421875,
+            "unresolved": false,
+            "acquisition_stop_reason": "DECISION_QUOTA_EXHAUSTED",
+            "last_gap_assessment": {
+              "candidate_count": 10,
+              "challenger": "LEFT",
+              "challenger_upper": 0.7397950362626748,
+              "gap": -0.5775882911375558,
+              "incumbent": "RIGHT",
+              "incumbent_lower": 0.16220674512511907,
+              "pair": [
+                [
+                  2,
+                  [
+                    1,
+                    9,
+                    9,
+                    0,
+                    3,
+                    4,
+                    8,
+                    4,
+                    5,
+                    8,
+                    3,
+                    7,
+                    9,
+                    6,
+                    7,
+                    4
+                  ]
+                ],
+                "LEFT"
+              ],
+              "separated": false
+            },
+            "unavailable": []
+          }
+        }
+      ],
+      "retained_count_checks": {
+        "warm_rows_checks": 1,
+        "warm_rows_mismatches": 0,
+        "shared_decision_nodes": 17,
+        "path_batch_total_checks": 68,
+        "path_batch_total_mismatches": 0,
+        "batch_index_checks": 413,
+        "batch_index_mismatches": 0
+      },
+      "unavailable": []
+    },
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832102,
+      "query": "probe_risk_0_1",
+      "group": "original_eight_base_worse_than_full",
+      "root_components": {
+        "BASE": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5125097656250001,
+          "success": 0.0,
+          "value": 0.503509765625
+        },
+        "CACHED": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5125097656250001,
+          "success": 0.0,
+          "value": 0.503509765625
+        }
+      },
+      "cached_minus_base_value": 0.0,
+      "base_extra_regret_over_full": 1.9531249999871214e-05,
+      "first_divergence_count": 0,
+      "probability_of_reaching_a_first_divergence": 0.0,
+      "divergences": [],
+      "retained_count_checks": {
+        "warm_rows_checks": 1,
+        "warm_rows_mismatches": 0,
+        "shared_decision_nodes": 21,
+        "path_batch_total_checks": 84,
+        "path_batch_total_mismatches": 0,
+        "batch_index_checks": 266,
+        "batch_index_mismatches": 0
+      },
+      "unavailable": []
+    },
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832102,
+      "query": "probe_risk_0_5",
+      "group": "original_eight_base_worse_than_full",
+      "root_components": {
+        "BASE": {
+          "failure": 0.09000000000000001,
+          "reward": 0.51171875,
+          "success": 0.0,
+          "value": 0.46671875
+        },
+        "CACHED": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5125097656250001,
+          "success": 0.0,
+          "value": 0.4675097656250001
+        }
+      },
+      "cached_minus_base_value": 0.0007910156250000577,
+      "base_extra_regret_over_full": 0.0008105468749998734,
+      "first_divergence_count": 1,
+      "probability_of_reaching_a_first_divergence": 0.45,
+      "divergences": [
+        {
+          "key": [
+            2,
+            [
+              1,
+              9,
+              9,
+              0,
+              3,
+              4,
+              8,
+              4,
+              5,
+              8,
+              3,
+              7,
+              9,
+              6,
+              7,
+              4
+            ]
+          ],
+          "history": [
+            [
+              3,
+              [
+                2,
+                9,
+                9,
+                3,
+                2,
+                4,
+                8,
+                3,
+                5,
+                8,
+                3,
+                7,
+                9,
+                6,
+                7,
+                4
+              ]
+            ],
+            [
+              2,
+              [
+                1,
+                9,
+                9,
+                0,
+                3,
+                4,
+                8,
+                4,
+                5,
+                8,
+                3,
+                7,
+                9,
+                6,
+                7,
+                4
+              ]
+            ]
+          ],
+          "history_edges": [
+            {
+              "action": "DOWN",
+              "reward": 0.01171875,
+              "probability": 0.45
+            }
+          ],
+          "true_shared_history_reach": 0.45,
+          "compared_selected_actions": [
+            "LEFT",
+            "RIGHT"
+          ],
+          "BASE": {
+            "action": "LEFT",
+            "selected_action_batch_counts": {
+              "LEFT": 1,
+              "RIGHT": 1
+            },
+            "quota": 32,
+            "batches_before": 64,
+            "batches_after": 76,
+            "lower": 0.4764251708984375,
+            "upper": 0.4764251708984375,
+            "unresolved": false,
+            "acquisition_stop_reason": null,
+            "last_gap_assessment": null,
+            "unavailable": [
+              "acquisition_stop_reason_not_recorded",
+              "gap_assessment_not_recorded_at_this_decision"
+            ]
+          },
+          "CACHED": {
+            "action": "RIGHT",
+            "selected_action_batch_counts": {
+              "LEFT": 2,
+              "RIGHT": 2
+            },
+            "quota": 32,
+            "batches_before": 64,
+            "batches_after": 96,
+            "lower": 0.4773406982421875,
+            "upper": 0.4773406982421875,
+            "unresolved": false,
+            "acquisition_stop_reason": "DECISION_QUOTA_EXHAUSTED",
+            "last_gap_assessment": {
+              "candidate_count": 10,
+              "challenger": "LEFT",
+              "challenger_upper": 0.5724880819070504,
+              "gap": -0.19062262219887138,
+              "incumbent": "RIGHT",
+              "incumbent_lower": 0.381865459708179,
+              "pair": [
+                [
+                  2,
+                  [
+                    1,
+                    9,
+                    9,
+                    0,
+                    3,
+                    4,
+                    8,
+                    4,
+                    5,
+                    8,
+                    3,
+                    7,
+                    9,
+                    6,
+                    7,
+                    4
+                  ]
+                ],
+                "LEFT"
+              ],
+              "separated": false
+            },
+            "unavailable": []
+          }
+        }
+      ],
+      "retained_count_checks": {
+        "warm_rows_checks": 1,
+        "warm_rows_mismatches": 0,
+        "shared_decision_nodes": 17,
+        "path_batch_total_checks": 68,
+        "path_batch_total_mismatches": 0,
+        "batch_index_checks": 169,
+        "batch_index_mismatches": 0
+      },
+      "unavailable": []
+    },
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832102,
+      "query": "probe_risk_2",
+      "group": "original_eight_base_worse_than_full",
+      "root_components": {
+        "BASE": {
+          "failure": 0.09000000000000001,
+          "reward": 0.51171875,
+          "success": 0.0,
+          "value": 0.33171874999999995
+        },
+        "CACHED": {
+          "failure": 0.09000000000000001,
+          "reward": 0.51171875,
+          "success": 0.0,
+          "value": 0.33171874999999995
+        }
+      },
+      "cached_minus_base_value": 0.0,
+      "base_extra_regret_over_full": 0.0008105468749999289,
+      "first_divergence_count": 0,
+      "probability_of_reaching_a_first_divergence": 0.0,
+      "divergences": [],
+      "retained_count_checks": {
+        "warm_rows_checks": 1,
+        "warm_rows_mismatches": 0,
+        "shared_decision_nodes": 21,
+        "path_batch_total_checks": 84,
+        "path_batch_total_mismatches": 0,
+        "batch_index_checks": 193,
+        "batch_index_mismatches": 0
+      },
+      "unavailable": []
+    },
+    {
+      "case": "v6_crossing_rescue_pair_3",
+      "seed": 832102,
+      "query": "probe_goal_2_risk_0_5",
+      "group": "original_eight_base_worse_than_full",
+      "root_components": {
+        "BASE": {
+          "failure": 0.09000000000000001,
+          "reward": 0.51171875,
+          "success": 0.0,
+          "value": 0.46671875
+        },
+        "CACHED": {
+          "failure": 0.09000000000000001,
+          "reward": 0.5125097656250001,
+          "success": 0.0,
+          "value": 0.4675097656250001
+        }
+      },
+      "cached_minus_base_value": 0.0007910156250000577,
+      "base_extra_regret_over_full": 0.0008105468749998734,
+      "first_divergence_count": 1,
+      "probability_of_reaching_a_first_divergence": 0.45,
+      "divergences": [
+        {
+          "key": [
+            2,
+            [
+              1,
+              9,
+              9,
+              0,
+              3,
+              4,
+              8,
+              4,
+              5,
+              8,
+              3,
+              7,
+              9,
+              6,
+              7,
+              4
+            ]
+          ],
+          "history": [
+            [
+              3,
+              [
+                2,
+                9,
+                9,
+                3,
+                2,
+                4,
+                8,
+                3,
+                5,
+                8,
+                3,
+                7,
+                9,
+                6,
+                7,
+                4
+              ]
+            ],
+            [
+              2,
+              [
+                1,
+                9,
+                9,
+                0,
+                3,
+                4,
+                8,
+                4,
+                5,
+                8,
+                3,
+                7,
+                9,
+                6,
+                7,
+                4
+              ]
+            ]
+          ],
+          "history_edges": [
+            {
+              "action": "DOWN",
+              "reward": 0.01171875,
+              "probability": 0.45
+            }
+          ],
+          "true_shared_history_reach": 0.45,
+          "compared_selected_actions": [
+            "LEFT",
+            "RIGHT"
+          ],
+          "BASE": {
+            "action": "LEFT",
+            "selected_action_batch_counts": {
+              "LEFT": 1,
+              "RIGHT": 1
+            },
+            "quota": 32,
+            "batches_before": 64,
+            "batches_after": 82,
+            "lower": 0.4764251708984375,
+            "upper": 0.4764251708984375,
+            "unresolved": false,
+            "acquisition_stop_reason": null,
+            "last_gap_assessment": null,
+            "unavailable": [
+              "acquisition_stop_reason_not_recorded",
+              "gap_assessment_not_recorded_at_this_decision"
+            ]
+          },
+          "CACHED": {
+            "action": "RIGHT",
+            "selected_action_batch_counts": {
+              "LEFT": 1,
+              "RIGHT": 1
+            },
+            "quota": 32,
+            "batches_before": 64,
+            "batches_after": 96,
+            "lower": 0.4763641357421875,
+            "upper": 0.4763641357421875,
+            "unresolved": false,
+            "acquisition_stop_reason": "DECISION_QUOTA_EXHAUSTED",
+            "last_gap_assessment": {
+              "candidate_count": 10,
+              "challenger": "LEFT",
+              "challenger_upper": 0.8192368983556872,
+              "gap": -0.6873105969813775,
+              "incumbent": "RIGHT",
+              "incumbent_lower": 0.13192630137430966,
+              "pair": [
+                [
+                  2,
+                  [
+                    1,
+                    9,
+                    9,
+                    0,
+                    3,
+                    4,
+                    8,
+                    4,
+                    5,
+                    8,
+                    3,
+                    7,
+                    9,
+                    6,
+                    7,
+                    4
+                  ]
+                ],
+                "LEFT"
+              ],
+              "separated": false
+            },
+            "unavailable": []
+          }
+        }
+      ],
+      "retained_count_checks": {
+        "warm_rows_checks": 1,
+        "warm_rows_mismatches": 0,
+        "shared_decision_nodes": 17,
+        "path_batch_total_checks": 68,
+        "path_batch_total_mismatches": 0,
+        "batch_index_checks": 416,
+        "batch_index_mismatches": 0
+      },
+      "unavailable": []
+    }
+  ],
+  "source_v20_changed_count": 20,
+  "source_old_witness_count": 10,
+  "contexts": [
+    {
+      "context_index": 0,
+      "case_name": "v6_crossing_rescue_pair_3",
+      "case": {
+        "name": "v6_crossing_rescue_pair_3",
+        "group": "v6_crossing_rescue_pair_3",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_9_edge_ranks_2_3",
+        "board": [
+          2,
+          9,
+          9,
+          3,
+          2,
+          4,
+          8,
+          3,
+          5,
+          8,
+          3,
+          7,
+          9,
+          6,
+          7,
+          4
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "sample_seed": 832101,
+      "query_name": "risk_0_2",
+      "query": {
+        "reward_weight": 1.0,
+        "failure_penalty": 0.2,
+        "goal_bonus": 0.0
+      },
+      "group": "regression",
+      "source_v20_changed": true,
+      "source_old_witness": false,
+      "source_old_group": null,
+      "v20_value_difference": -1.9531249999982236e-05
+    },
+    {
+      "context_index": 1,
+      "case_name": "v6_crossing_rescue_pair_3",
+      "case": {
+        "name": "v6_crossing_rescue_pair_3",
+        "group": "v6_crossing_rescue_pair_3",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_9_edge_ranks_2_3",
+        "board": [
+          2,
+          9,
+          9,
+          3,
+          2,
+          4,
+          8,
+          3,
+          5,
+          8,
+          3,
+          7,
+          9,
+          6,
+          7,
+          4
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "sample_seed": 832101,
+      "query_name": "risk_1",
+      "query": {
+        "reward_weight": 1.0,
+        "failure_penalty": 1.0,
+        "goal_bonus": 0.0
+      },
+      "group": "improvement",
+      "source_v20_changed": true,
+      "source_old_witness": false,
+      "source_old_group": null,
+      "v20_value_difference": 0.0007714843750000755
+    },
+    {
+      "context_index": 2,
+      "case_name": "v6_crossing_rescue_pair_3",
+      "case": {
+        "name": "v6_crossing_rescue_pair_3",
+        "group": "v6_crossing_rescue_pair_3",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_9_edge_ranks_2_3",
+        "board": [
+          2,
+          9,
+          9,
+          3,
+          2,
+          4,
+          8,
+          3,
+          5,
+          8,
+          3,
+          7,
+          9,
+          6,
+          7,
+          4
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "sample_seed": 832101,
+      "query_name": "risk_5",
+      "query": {
+        "reward_weight": 1.0,
+        "failure_penalty": 5.0,
+        "goal_bonus": 0.0
+      },
+      "group": "improvement",
+      "source_v20_changed": true,
+      "source_old_witness": true,
+      "source_old_group": "two_cached_regressions_versus_base",
+      "v20_value_difference": 0.0007714843750000755
+    },
+    {
+      "context_index": 3,
+      "case_name": "v6_crossing_rescue_pair_3",
+      "case": {
+        "name": "v6_crossing_rescue_pair_3",
+        "group": "v6_crossing_rescue_pair_3",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_9_edge_ranks_2_3",
+        "board": [
+          2,
+          9,
+          9,
+          3,
+          2,
+          4,
+          8,
+          3,
+          5,
+          8,
+          3,
+          7,
+          9,
+          6,
+          7,
+          4
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "sample_seed": 832101,
+      "query_name": "probe_risk_0_5",
+      "query": {
+        "reward_weight": 1.0,
+        "failure_penalty": 0.5,
+        "goal_bonus": 0.0
+      },
+      "group": "regression",
+      "source_v20_changed": true,
+      "source_old_witness": false,
+      "source_old_group": null,
+      "v20_value_difference": -1.9531249999982236e-05
+    },
+    {
+      "context_index": 4,
+      "case_name": "v6_crossing_rescue_pair_3",
+      "case": {
+        "name": "v6_crossing_rescue_pair_3",
+        "group": "v6_crossing_rescue_pair_3",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_9_edge_ranks_2_3",
+        "board": [
+          2,
+          9,
+          9,
+          3,
+          2,
+          4,
+          8,
+          3,
+          5,
+          8,
+          3,
+          7,
+          9,
+          6,
+          7,
+          4
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "sample_seed": 832101,
+      "query_name": "probe_risk_2",
+      "query": {
+        "reward_weight": 1.0,
+        "failure_penalty": 2.0,
+        "goal_bonus": 0.0
+      },
+      "group": "improvement",
+      "source_v20_changed": true,
+      "source_old_witness": true,
+      "source_old_group": "two_cached_regressions_versus_base",
+      "v20_value_difference": 0.0007714843750000755
+    },
+    {
+      "context_index": 5,
+      "case_name": "v6_crossing_rescue_pair_3",
+      "case": {
+        "name": "v6_crossing_rescue_pair_3",
+        "group": "v6_crossing_rescue_pair_3",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_9_edge_ranks_2_3",
+        "board": [
+          2,
+          9,
+          9,
+          3,
+          2,
+          4,
+          8,
+          3,
+          5,
+          8,
+          3,
+          7,
+          9,
+          6,
+          7,
+          4
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "sample_seed": 832102,
+      "query_name": "risk_0_05",
+      "query": {
+        "reward_weight": 1.0,
+        "failure_penalty": 0.05,
+        "goal_bonus": 0.0
+      },
+      "group": "regression",
+      "source_v20_changed": true,
+      "source_old_witness": false,
+      "source_old_group": null,
+      "v20_value_difference": -1.9531249999982236e-05
+    },
+    {
+      "context_index": 6,
+      "case_name": "v6_crossing_rescue_pair_3",
+      "case": {
+        "name": "v6_crossing_rescue_pair_3",
+        "group": "v6_crossing_rescue_pair_3",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_9_edge_ranks_2_3",
+        "board": [
+          2,
+          9,
+          9,
+          3,
+          2,
+          4,
+          8,
+          3,
+          5,
+          8,
+          3,
+          7,
+          9,
+          6,
+          7,
+          4
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "sample_seed": 832102,
+      "query_name": "risk_0_2",
+      "query": {
+        "reward_weight": 1.0,
+        "failure_penalty": 0.2,
+        "goal_bonus": 0.0
+      },
+      "group": "improvement",
+      "source_v20_changed": true,
+      "source_old_witness": true,
+      "source_old_group": "original_eight_base_worse_than_full",
+      "v20_value_difference": 0.0007910156250000577
+    },
+    {
+      "context_index": 7,
+      "case_name": "v6_crossing_rescue_pair_3",
+      "case": {
+        "name": "v6_crossing_rescue_pair_3",
+        "group": "v6_crossing_rescue_pair_3",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_9_edge_ranks_2_3",
+        "board": [
+          2,
+          9,
+          9,
+          3,
+          2,
+          4,
+          8,
+          3,
+          5,
+          8,
+          3,
+          7,
+          9,
+          6,
+          7,
+          4
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "sample_seed": 832102,
+      "query_name": "risk_1",
+      "query": {
+        "reward_weight": 1.0,
+        "failure_penalty": 1.0,
+        "goal_bonus": 0.0
+      },
+      "group": "old_witness_only",
+      "source_v20_changed": false,
+      "source_old_witness": true,
+      "source_old_group": "original_eight_base_worse_than_full",
+      "v20_value_difference": 0.0
+    },
+    {
+      "context_index": 8,
+      "case_name": "v6_crossing_rescue_pair_3",
+      "case": {
+        "name": "v6_crossing_rescue_pair_3",
+        "group": "v6_crossing_rescue_pair_3",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_9_edge_ranks_2_3",
+        "board": [
+          2,
+          9,
+          9,
+          3,
+          2,
+          4,
+          8,
+          3,
+          5,
+          8,
+          3,
+          7,
+          9,
+          6,
+          7,
+          4
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "sample_seed": 832102,
+      "query_name": "risk_5",
+      "query": {
+        "reward_weight": 1.0,
+        "failure_penalty": 5.0,
+        "goal_bonus": 0.0
+      },
+      "group": "improvement",
+      "source_v20_changed": true,
+      "source_old_witness": true,
+      "source_old_group": "original_eight_base_worse_than_full",
+      "v20_value_difference": 0.0007910156250000577
+    },
+    {
+      "context_index": 9,
+      "case_name": "v6_crossing_rescue_pair_3",
+      "case": {
+        "name": "v6_crossing_rescue_pair_3",
+        "group": "v6_crossing_rescue_pair_3",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_9_edge_ranks_2_3",
+        "board": [
+          2,
+          9,
+          9,
+          3,
+          2,
+          4,
+          8,
+          3,
+          5,
+          8,
+          3,
+          7,
+          9,
+          6,
+          7,
+          4
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "sample_seed": 832102,
+      "query_name": "goal_1_risk_1",
+      "query": {
+        "reward_weight": 1.0,
+        "failure_penalty": 1.0,
+        "goal_bonus": 1.0
+      },
+      "group": "regression",
+      "source_v20_changed": true,
+      "source_old_witness": true,
+      "source_old_group": "original_eight_base_worse_than_full",
+      "v20_value_difference": -0.0007910156250000577
+    },
+    {
+      "context_index": 10,
+      "case_name": "v6_crossing_rescue_pair_3",
+      "case": {
+        "name": "v6_crossing_rescue_pair_3",
+        "group": "v6_crossing_rescue_pair_3",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_9_edge_ranks_2_3",
+        "board": [
+          2,
+          9,
+          9,
+          3,
+          2,
+          4,
+          8,
+          3,
+          5,
+          8,
+          3,
+          7,
+          9,
+          6,
+          7,
+          4
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "sample_seed": 832102,
+      "query_name": "probe_risk_0_1",
+      "query": {
+        "reward_weight": 1.0,
+        "failure_penalty": 0.1,
+        "goal_bonus": 0.0
+      },
+      "group": "improvement",
+      "source_v20_changed": true,
+      "source_old_witness": true,
+      "source_old_group": "original_eight_base_worse_than_full",
+      "v20_value_difference": 0.0007910156250000577
+    },
+    {
+      "context_index": 11,
+      "case_name": "v6_crossing_rescue_pair_3",
+      "case": {
+        "name": "v6_crossing_rescue_pair_3",
+        "group": "v6_crossing_rescue_pair_3",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_9_edge_ranks_2_3",
+        "board": [
+          2,
+          9,
+          9,
+          3,
+          2,
+          4,
+          8,
+          3,
+          5,
+          8,
+          3,
+          7,
+          9,
+          6,
+          7,
+          4
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "sample_seed": 832102,
+      "query_name": "probe_risk_0_5",
+      "query": {
+        "reward_weight": 1.0,
+        "failure_penalty": 0.5,
+        "goal_bonus": 0.0
+      },
+      "group": "improvement",
+      "source_v20_changed": true,
+      "source_old_witness": true,
+      "source_old_group": "original_eight_base_worse_than_full",
+      "v20_value_difference": 0.0007910156250000577
+    },
+    {
+      "context_index": 12,
+      "case_name": "v6_crossing_rescue_pair_3",
+      "case": {
+        "name": "v6_crossing_rescue_pair_3",
+        "group": "v6_crossing_rescue_pair_3",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_9_edge_ranks_2_3",
+        "board": [
+          2,
+          9,
+          9,
+          3,
+          2,
+          4,
+          8,
+          3,
+          5,
+          8,
+          3,
+          7,
+          9,
+          6,
+          7,
+          4
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "sample_seed": 832102,
+      "query_name": "probe_risk_2",
+      "query": {
+        "reward_weight": 1.0,
+        "failure_penalty": 2.0,
+        "goal_bonus": 0.0
+      },
+      "group": "old_witness_only",
+      "source_v20_changed": false,
+      "source_old_witness": true,
+      "source_old_group": "original_eight_base_worse_than_full",
+      "v20_value_difference": 0.0
+    },
+    {
+      "context_index": 13,
+      "case_name": "v6_crossing_rescue_pair_3",
+      "case": {
+        "name": "v6_crossing_rescue_pair_3",
+        "group": "v6_crossing_rescue_pair_3",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_9_edge_ranks_2_3",
+        "board": [
+          2,
+          9,
+          9,
+          3,
+          2,
+          4,
+          8,
+          3,
+          5,
+          8,
+          3,
+          7,
+          9,
+          6,
+          7,
+          4
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "sample_seed": 832102,
+      "query_name": "probe_goal_2_risk_0_5",
+      "query": {
+        "reward_weight": 1.0,
+        "failure_penalty": 0.5,
+        "goal_bonus": 2.0
+      },
+      "group": "regression",
+      "source_v20_changed": true,
+      "source_old_witness": true,
+      "source_old_group": "original_eight_base_worse_than_full",
+      "v20_value_difference": -0.0007910156250000577
+    },
+    {
+      "context_index": 14,
+      "case_name": "v6_crossing_rescue_pair_3",
+      "case": {
+        "name": "v6_crossing_rescue_pair_3",
+        "group": "v6_crossing_rescue_pair_3",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_9_edge_ranks_2_3",
+        "board": [
+          2,
+          9,
+          9,
+          3,
+          2,
+          4,
+          8,
+          3,
+          5,
+          8,
+          3,
+          7,
+          9,
+          6,
+          7,
+          4
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "sample_seed": 832103,
+      "query_name": "risk_0_2",
+      "query": {
+        "reward_weight": 1.0,
+        "failure_penalty": 0.2,
+        "goal_bonus": 0.0
+      },
+      "group": "regression",
+      "source_v20_changed": true,
+      "source_old_witness": false,
+      "source_old_group": null,
+      "v20_value_difference": -1.9531249999982236e-05
+    },
+    {
+      "context_index": 15,
+      "case_name": "v6_crossing_rescue_pair_3",
+      "case": {
+        "name": "v6_crossing_rescue_pair_3",
+        "group": "v6_crossing_rescue_pair_3",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_9_edge_ranks_2_3",
+        "board": [
+          2,
+          9,
+          9,
+          3,
+          2,
+          4,
+          8,
+          3,
+          5,
+          8,
+          3,
+          7,
+          9,
+          6,
+          7,
+          4
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "sample_seed": 832103,
+      "query_name": "risk_1",
+      "query": {
+        "reward_weight": 1.0,
+        "failure_penalty": 1.0,
+        "goal_bonus": 0.0
+      },
+      "group": "regression",
+      "source_v20_changed": true,
+      "source_old_witness": false,
+      "source_old_group": null,
+      "v20_value_difference": -0.00081054687500004
+    },
+    {
+      "context_index": 16,
+      "case_name": "v6_crossing_rescue_pair_3",
+      "case": {
+        "name": "v6_crossing_rescue_pair_3",
+        "group": "v6_crossing_rescue_pair_3",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_9_edge_ranks_2_3",
+        "board": [
+          2,
+          9,
+          9,
+          3,
+          2,
+          4,
+          8,
+          3,
+          5,
+          8,
+          3,
+          7,
+          9,
+          6,
+          7,
+          4
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "sample_seed": 832103,
+      "query_name": "risk_5",
+      "query": {
+        "reward_weight": 1.0,
+        "failure_penalty": 5.0,
+        "goal_bonus": 0.0
+      },
+      "group": "regression",
+      "source_v20_changed": true,
+      "source_old_witness": false,
+      "source_old_group": null,
+      "v20_value_difference": -0.0016015625000000977
+    },
+    {
+      "context_index": 17,
+      "case_name": "v6_crossing_rescue_pair_3",
+      "case": {
+        "name": "v6_crossing_rescue_pair_3",
+        "group": "v6_crossing_rescue_pair_3",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_9_edge_ranks_2_3",
+        "board": [
+          2,
+          9,
+          9,
+          3,
+          2,
+          4,
+          8,
+          3,
+          5,
+          8,
+          3,
+          7,
+          9,
+          6,
+          7,
+          4
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "sample_seed": 832103,
+      "query_name": "goal_1_risk_1",
+      "query": {
+        "reward_weight": 1.0,
+        "failure_penalty": 1.0,
+        "goal_bonus": 1.0
+      },
+      "group": "regression",
+      "source_v20_changed": true,
+      "source_old_witness": false,
+      "source_old_group": null,
+      "v20_value_difference": -0.0007910156250000577
+    },
+    {
+      "context_index": 18,
+      "case_name": "v6_crossing_rescue_pair_3",
+      "case": {
+        "name": "v6_crossing_rescue_pair_3",
+        "group": "v6_crossing_rescue_pair_3",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_9_edge_ranks_2_3",
+        "board": [
+          2,
+          9,
+          9,
+          3,
+          2,
+          4,
+          8,
+          3,
+          5,
+          8,
+          3,
+          7,
+          9,
+          6,
+          7,
+          4
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "sample_seed": 832103,
+      "query_name": "probe_risk_0_1",
+      "query": {
+        "reward_weight": 1.0,
+        "failure_penalty": 0.1,
+        "goal_bonus": 0.0
+      },
+      "group": "regression",
+      "source_v20_changed": true,
+      "source_old_witness": false,
+      "source_old_group": null,
+      "v20_value_difference": -1.9531249999982236e-05
+    },
+    {
+      "context_index": 19,
+      "case_name": "v6_crossing_rescue_pair_3",
+      "case": {
+        "name": "v6_crossing_rescue_pair_3",
+        "group": "v6_crossing_rescue_pair_3",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_9_edge_ranks_2_3",
+        "board": [
+          2,
+          9,
+          9,
+          3,
+          2,
+          4,
+          8,
+          3,
+          5,
+          8,
+          3,
+          7,
+          9,
+          6,
+          7,
+          4
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "sample_seed": 832103,
+      "query_name": "probe_risk_0_5",
+      "query": {
+        "reward_weight": 1.0,
+        "failure_penalty": 0.5,
+        "goal_bonus": 0.0
+      },
+      "group": "regression",
+      "source_v20_changed": true,
+      "source_old_witness": false,
+      "source_old_group": null,
+      "v20_value_difference": -0.00081054687500004
+    },
+    {
+      "context_index": 20,
+      "case_name": "v6_crossing_rescue_pair_3",
+      "case": {
+        "name": "v6_crossing_rescue_pair_3",
+        "group": "v6_crossing_rescue_pair_3",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_9_edge_ranks_2_3",
+        "board": [
+          2,
+          9,
+          9,
+          3,
+          2,
+          4,
+          8,
+          3,
+          5,
+          8,
+          3,
+          7,
+          9,
+          6,
+          7,
+          4
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "sample_seed": 832103,
+      "query_name": "probe_risk_2",
+      "query": {
+        "reward_weight": 1.0,
+        "failure_penalty": 2.0,
+        "goal_bonus": 0.0
+      },
+      "group": "regression",
+      "source_v20_changed": true,
+      "source_old_witness": false,
+      "source_old_group": null,
+      "v20_value_difference": -0.0016015625000000977
+    },
+    {
+      "context_index": 21,
+      "case_name": "v6_crossing_rescue_pair_3",
+      "case": {
+        "name": "v6_crossing_rescue_pair_3",
+        "group": "v6_crossing_rescue_pair_3",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_9_edge_ranks_2_3",
+        "board": [
+          2,
+          9,
+          9,
+          3,
+          2,
+          4,
+          8,
+          3,
+          5,
+          8,
+          3,
+          7,
+          9,
+          6,
+          7,
+          4
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "sample_seed": 832103,
+      "query_name": "probe_goal_2_risk_0_5",
+      "query": {
+        "reward_weight": 1.0,
+        "failure_penalty": 0.5,
+        "goal_bonus": 2.0
+      },
+      "group": "regression",
+      "source_v20_changed": true,
+      "source_old_witness": false,
+      "source_old_group": null,
+      "v20_value_difference": -0.0007910156250000577
+    }
+  ],
+  "context_count": 22,
+  "group_counts": {
+    "regression": 13,
+    "improvement": 7,
+    "old_witness_only": 2
+  },
+  "all_source_changed_and_old_witness_identities_included": true,
+  "case_count": 1,
+  "cases": [
+    {
+      "case": {
+        "name": "v6_crossing_rescue_pair_3",
+        "group": "v6_crossing_rescue_pair_3",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_9_edge_ranks_2_3",
+        "board": [
+          2,
+          9,
+          9,
+          3,
+          2,
+          4,
+          8,
+          3,
+          5,
+          8,
+          3,
+          7,
+          9,
+          6,
+          7,
+          4
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "total_tile_mass": 2464,
+      "mass_plus_4h": 2476,
+      "goal_mass_excluded": false
+    }
+  ],
+  "sample_seeds": [
+    832101,
+    832102,
+    832103
+  ],
+  "queries": {
+    "risk_0": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.0,
+      "goal_bonus": 0.0
+    },
+    "risk_0_05": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.05,
+      "goal_bonus": 0.0
+    },
+    "risk_0_2": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.2,
+      "goal_bonus": 0.0
+    },
+    "risk_1": {
+      "reward_weight": 1.0,
+      "failure_penalty": 1.0,
+      "goal_bonus": 0.0
+    },
+    "risk_5": {
+      "reward_weight": 1.0,
+      "failure_penalty": 5.0,
+      "goal_bonus": 0.0
+    },
+    "goal_1_risk_1": {
+      "reward_weight": 1.0,
+      "failure_penalty": 1.0,
+      "goal_bonus": 1.0
+    },
+    "probe_risk_0_1": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.1,
+      "goal_bonus": 0.0
+    },
+    "probe_risk_0_5": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.5,
+      "goal_bonus": 0.0
+    },
+    "probe_risk_2": {
+      "reward_weight": 1.0,
+      "failure_penalty": 2.0,
+      "goal_bonus": 0.0
+    },
+    "probe_goal_2_risk_0_5": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.5,
+      "goal_bonus": 2.0
+    }
+  },
+  "initial_query_order": [
+    "risk_0",
+    "risk_0_05",
+    "risk_0_2",
+    "risk_1",
+    "risk_5",
+    "goal_1_risk_1",
+    "probe_risk_0_1",
+    "probe_risk_0_5",
+    "probe_risk_2",
+    "probe_goal_2_risk_0_5"
+  ],
+  "query_roles": {
+    "risk_0": "CONSTRUCTION_AND_EVALUATION",
+    "risk_0_05": "CONSTRUCTION_AND_EVALUATION",
+    "risk_0_2": "CONSTRUCTION_AND_EVALUATION",
+    "risk_1": "CONSTRUCTION_AND_EVALUATION",
+    "risk_5": "CONSTRUCTION_AND_EVALUATION",
+    "goal_1_risk_1": "CONSTRUCTION_AND_EVALUATION",
+    "probe_risk_0_1": "CONSTRUCTION_AND_EVALUATION",
+    "probe_risk_0_5": "CONSTRUCTION_AND_EVALUATION",
+    "probe_risk_2": "CONSTRUCTION_AND_EVALUATION",
+    "probe_goal_2_risk_0_5": "CONSTRUCTION_AND_EVALUATION"
+  },
+  "historical_exposure": "ALL_ROOTS_AND_FAMILIES_PREVIOUSLY_EXPOSED_IN_DEVELOPMENT",
+  "methods": [
+    "CACHED",
+    "VARIANCE"
+  ],
+  "method_implementations": {
+    "CACHED": "Unchanged V18 CachedGapPlannerState",
+    "VARIANCE": "Unchanged V20 VarianceGapPlannerState"
+  },
+  "declared_common_snapshot_count": 22,
+  "declared_local_arm_count": 44,
+  "common_snapshot": {
+    "search": "Breadth-first, preserving original retained child order. Follow only histories whose earlier requests, observations, actions and true-history edges agree exactly.",
+    "request_identity": [
+      "row_key",
+      "batch_index",
+      "kind"
+    ],
+    "boundary": "Freeze immediately before the first differing acquisition request. Equal requests must have equal retained observations.",
+    "state": "Preserve all observed rows, profiles, integer counts, accumulated batch counts, empirical policies and intervals. Do not convert a resampled state with from_warm or use post-divergence data.",
+    "unavailable": "Keep every identity with a status and reason when no request difference exists or reconstruction fails; do not choose a substitute snapshot.",
+    "persistence": "Persist every extracted common snapshot before starting any local intervention."
+  },
+  "local_intervention": {
+    "quota": "(128 - node.batches_before) // target_horizon",
+    "common_batches_at_decision": "j = zero-based index of the first differing request",
+    "snapshot_spent_batches": "node.batches_before + j",
+    "fixed_batches_per_arm": "K = node.quota - j",
+    "budget_scope": "Derive K only from the common pre-divergence record. Both arms have the same K; starting spent_batches plus K is at most128. Do not recompute a full decision quota at the snapshot or select K from later stopping/results.",
+    "execution": "Clone the same snapshot independently for each original allocation class; remain at its target state for K acquisitions. Rotate arm order by context-index parity.",
+    "stopping": "Record and charge every original gap assessment but jointly ignore its early-stop signal in this local intervention. Keep structural select_row priority and each original resampling selector, including zero-variance fallback.",
+    "no_candidate": "Retain actual batches and the original no-candidate reason. Mark fixed-sample matching incomplete and exclude only from the complete-pair primary comparison, while retaining the identity and both arm records.",
+    "samples_per_batch": 256,
+    "total_path_batch_cap": 128,
+    "source_reproduction": "The first actual request must match the corresponding recorded differing request. Validate subsequent retained requests while available; mark acquisition beyond recorded stopping as the local intervention.",
+    "endpoint_persistence": "Persist both final observed models for all arms before constructing the exact evaluator."
+  },
+  "fixed_state_panel": {
+    "selection": "Starting at the target, traverse every already observed action row in the common snapshot; retain reachable known ACTIVE states including the target. Stop at unknown rows and sort by original state key.",
+    "evaluation_points": [
+      "COMMON_START",
+      "CACHED_ENDPOINT",
+      "VARIANCE_ENDPOINT"
+    ],
+    "endpoint_new_states_expand_panel": false,
+    "metrics": [
+      "selected_action",
+      "selected_action_observed",
+      "empirical_interval_closed",
+      "local_regret",
+      "optimal_action"
+    ],
+    "scope": "The common observed state panel is fixed before local acquisition and truth evaluation; states are not independent samples or a complete-policy evaluation."
+  },
+  "target_evaluation": {
+    "horizons": [
+      1,
+      2,
+      3
+    ],
+    "actions": "Every legal target action",
+    "q_hat": "Current empirical lower-bound action value",
+    "q_star": "Exact action value under optimal continuation",
+    "A": "E_Phat[r+Vstar] - Qstar",
+    "D": "E_Phat[Vhat-Vstar]",
+    "identity": "Qhat-Qstar = A+D",
+    "action_pairs": "All fixed alphabetical pairs of legal actions; retain empirical/true margins and A/D differences.",
+    "unobserved_action": "Keep original lower/upper bounds and unobserved status; do not invent empirical transitions or A/D terms.",
+    "regret": "Vstar(target)-Qstar(snapshot_selected_action)",
+    "scope": "Current-action optimal-continuation benchmark only. No multi-step Vpi or claimed frozen/online complete-policy value."
+  },
+  "warm_replay": {
+    "planner": "Unchanged MASS_BOUND32 with the original ten queries and order",
+    "sample_seeds": [
+      832101,
+      832102,
+      832103
+    ],
+    "trajectory_count": 3,
+    "batch_cap_per_trajectory": 32,
+    "physical_replayed_batches": 96,
+    "physical_replayed_draws": 24576,
+    "samples_per_batch": 256,
+    "stream": {
+      "batch_zero_version": "V12_V14_UNCHANGED",
+      "key": "(remaining_horizon, tuple(board_ranks))",
+      "action_order": [
+        "DOWN",
+        "LEFT",
+        "RIGHT",
+        "UP"
+      ],
+      "base_seeds": [
+        832101,
+        832102,
+        832103
+      ],
+      "batch_index_range": [
+        0,
+        127
+      ],
+      "batch_index_source": "The number of previous batches of this row on the current planner history.",
+      "batch_seed_stride": 1000000,
+      "integer_seed": "row_seed(base_seed + 1000000 * batch_index, key, action)",
+      "sampling": "One current-row support enumeration and random.Random(integer_seed).choices(support, weights, k=256) per actual call.",
+      "mutable_random_cursor": false,
+      "discard_old_prefix_to_position_stream": false,
+      "complete_support_returned_to_planner": false,
+      "repeated_identical_batch_requests": "Physically enumerate and sample again; every such call is charged even when it belongs to an alternative counterfactual history.",
+      "sharing_scope": "Only the explicitly shared paid warm prefix is reused across methods. Every post-warm method/query provider and every history-local row batch count is independent."
+    },
+    "scope": "Rebuild one original batch-zero warm per seed and share its immutable results. Count actual regeneration as paid replay, not new independent evidence. Shared suffix prefixes replay retained aggregates without provider calls."
+  },
+  "local_sampling": {
+    "stream": {
+      "batch_zero_version": "V12_V14_UNCHANGED",
+      "key": "(remaining_horizon, tuple(board_ranks))",
+      "action_order": [
+        "DOWN",
+        "LEFT",
+        "RIGHT",
+        "UP"
+      ],
+      "base_seeds": [
+        832101,
+        832102,
+        832103
+      ],
+      "batch_index_range": [
+        0,
+        127
+      ],
+      "batch_index_source": "The number of previous batches of this row on the current planner history.",
+      "batch_seed_stride": 1000000,
+      "integer_seed": "row_seed(base_seed + 1000000 * batch_index, key, action)",
+      "sampling": "One current-row support enumeration and random.Random(integer_seed).choices(support, weights, k=256) per actual call.",
+      "mutable_random_cursor": false,
+      "discard_old_prefix_to_position_stream": false,
+      "complete_support_returned_to_planner": false,
+      "repeated_identical_batch_requests": "Physically enumerate and sample again; every such call is charged even when it belongs to an alternative counterfactual history.",
+      "sharing_scope": "Only the explicitly shared paid warm prefix is reused across methods. Every post-warm method/query provider and every history-local row batch count is independent."
+    },
+    "retain_accumulated_batch_indices": true,
+    "physical_draws": "256 * actual_local_batch_requests, counted for every arm",
+    "scope": "Use the same fixed row/batch streams and original seeds; every local provider call is physical work, including repeated rows. This is a posthoc allocation intervention, not an independent confirmation cohort."
+  },
+  "reporting": "Retain all22 identities and7/13/2 groups, common-snapshot statuses, completed equal-K pairs, actual batches, target and fixed-panel choices/errors, stage costs and physical work. Do not condition selection on local outcomes.",
+  "source_fits": 0,
+  "source_setup_seconds": 0.0,
+  "scientific_gate": "NOT_A_FORMAL_GATE",
+  "u006_assurance_started": false,
+  "original_deferred_24_case_cohort_loaded_or_executed": false,
+  "scope": "Posthoc local fixed-observation and fixed-batch intervention on exposed V20 contexts. The formal V18 stopping/execution rules remain unchanged and V20 remains a negative complete-policy comparison."
+}

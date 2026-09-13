@@ -1,0 +1,16 @@
+{"case": "v6_crossing_rescue_pair_0", "classification": "NO_QUERY_CONFLICT", "completed_records": 1, "declared_records": 15, "status": "COMPLETE"}
+{"case": "v6_crossing_rescue_pair_1", "classification": "NO_QUERY_CONFLICT", "completed_records": 2, "declared_records": 15, "status": "COMPLETE"}
+{"case": "v6_crossing_rescue_pair_2", "classification": "NO_QUERY_CONFLICT", "completed_records": 3, "declared_records": 15, "status": "COMPLETE"}
+{"case": "v6_crossing_rescue_pair_3", "classification": "OFF_POLICY_ONLY_QUERY_CONFLICT", "completed_records": 4, "declared_records": 15, "status": "COMPLETE"}
+{"case": "v6_spawn_edge_rescue_0", "classification": "ROOT_QUERY_CONFLICT", "completed_records": 5, "declared_records": 15, "status": "COMPLETE"}
+{"case": "v6_spawn_edge_rescue_1", "classification": "NO_QUERY_CONFLICT", "completed_records": 6, "declared_records": 15, "status": "COMPLETE"}
+{"case": "v6_spawn_edge_rescue_2", "classification": "ROOT_QUERY_CONFLICT", "completed_records": 7, "declared_records": 15, "status": "COMPLETE"}
+{"case": "v6_spawn_edge_rescue_3", "classification": "NO_QUERY_CONFLICT", "completed_records": 8, "declared_records": 15, "status": "COMPLETE"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "classification": "NO_QUERY_CONFLICT", "completed_records": 9, "declared_records": 15, "status": "COMPLETE"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "classification": "NO_QUERY_CONFLICT", "completed_records": 10, "declared_records": 15, "status": "COMPLETE"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "classification": "NO_QUERY_CONFLICT", "completed_records": 11, "declared_records": 15, "status": "COMPLETE"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "classification": "NO_QUERY_CONFLICT", "completed_records": 12, "declared_records": 15, "status": "COMPLETE"}
+{"case": "v6_control_last_pair_spawn_risk", "classification": "NO_QUERY_CONFLICT", "completed_records": 13, "declared_records": 15, "status": "COMPLETE"}
+{"case": "v6_control_dense_merge_choice", "classification": "OFF_POLICY_ONLY_QUERY_CONFLICT", "completed_records": 14, "declared_records": 15, "status": "COMPLETE"}
+{"case": "v6_control_adjacent_1024_goal", "classification": "NO_QUERY_CONFLICT", "completed_records": 15, "declared_records": 15, "status": "COMPLETE"}
+{"status": "COMPLETE", "output": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_characterization_v6.json"}

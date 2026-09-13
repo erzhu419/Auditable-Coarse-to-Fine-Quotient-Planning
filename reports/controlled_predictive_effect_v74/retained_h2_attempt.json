@@ -1,0 +1,11 @@
+{
+  "command": [
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/scripts/check_controlled_predictive_effect_generalization_v74.py",
+    "--output",
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_effect_v74/retained_h2"
+  ],
+  "exit_code": 0,
+  "command_seconds": 0.09015755297150463,
+  "stderr_bytes": 0
+}

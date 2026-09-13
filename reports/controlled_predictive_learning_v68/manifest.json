@@ -1,0 +1,259 @@
+{
+  "schema": "acfqp.learned_world_model.v68",
+  "status": "complete",
+  "source_cases": 48,
+  "target_cases": 24,
+  "completed_targets": 24,
+  "runtime": {
+    "python": "3.10.12",
+    "torch": "2.8.0+cu128",
+    "executable": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "device": "cpu",
+    "threads": 1
+  },
+  "training_protocol": {
+    "steps": 1500,
+    "batch_size": 128,
+    "seed": 6801,
+    "lr": 0.001
+  },
+  "target_transition_rows_used_for_training_or_kernel_fill": 0,
+  "new_random_environment_samples": 0,
+  "source": {
+    "counts": {
+      "source_builds": 48,
+      "input_source_states": 6325,
+      "input_source_rows": 19795,
+      "input_source_outcomes": 27855,
+      "unified_source_states": 135,
+      "source_states": 6190,
+      "source_active_states": 6183,
+      "source_rows": 19795,
+      "source_outcomes": 27855
+    },
+    "assembly_seconds": 0.05257717100903392,
+    "teacher_seconds": 0.4363361619762145,
+    "teacher_counts": {
+      "root_tiles_encoded": 768,
+      "kernel_terminal_checks": 7652,
+      "kernel_swipe_calls": 25424,
+      "kernel_line_transforms": 101696,
+      "spawn_support_entries": 10264,
+      "model_transition_rows": 19795,
+      "model_successor_entries": 27855,
+      "action_contract_evaluations": 5571,
+      "analytic_terminal_rows": 17811,
+      "analytic_existing_pair_checks": 49239,
+      "analytic_vacancy_neighbor_checks": 3508,
+      "existing_active_state_visits": 2660,
+      "existing_terminal_state_visits": 20051,
+      "analytic_model_action_rows": 17811,
+      "registered_states": 6325,
+      "active_states": 6183,
+      "terminal_states": 142,
+      "literal_board_states": 6183
+    }
+  },
+  "models": {
+    "QUOTIENT": {
+      "training": {
+        "variant": "QUOTIENT",
+        "seed": 6801,
+        "steps": 1500,
+        "batch_size": 128,
+        "optimizer": "Adam",
+        "learning_rate": 0.001,
+        "schedule": "Uniform horizon, then uniform source states with replacement; no validation/target selection",
+        "architecture": [
+          240,
+          128,
+          128
+        ],
+        "features": "16x12 raw ranks plus 48 directed adjacent equalities",
+        "classes_by_horizon": {
+          "1": 716,
+          "2": 508,
+          "3": 47
+        },
+        "source_active_states": 6183,
+        "teacher_active_cells": 1271,
+        "source_classification": {
+          "1": {
+            "correct": 4274,
+            "examples": 5571,
+            "accuracy": 0.7671872195297074
+          },
+          "2": {
+            "correct": 563,
+            "examples": 565,
+            "accuracy": 0.9964601769911504
+          },
+          "3": {
+            "correct": 47,
+            "examples": 47,
+            "accuracy": 1.0
+          }
+        },
+        "final_training_batch_loss": 0.6736504435539246,
+        "parameters": 211319,
+        "device": "cpu",
+        "torch_threads": 1,
+        "teacher_compilation_seconds": 0.06921297701774165,
+        "feature_seconds": 0.0247133580269292,
+        "training_seconds": 4.552919808018487,
+        "source_diagnostic_seconds": 0.022378752997610718,
+        "total_seconds": 5.4577085669734515,
+        "counts": {
+          "optimizer_steps": 1500,
+          "training_examples": 192000,
+          "training_logits": 83954688,
+          "h3_steps": 472,
+          "h2_steps": 492,
+          "h1_steps": 536,
+          "training_diagnostic_examples": 6183,
+          "training_diagnostic_logits": 4278065
+        },
+        "target_model_updates": 0
+      },
+      "learning_and_compile_seconds": 5.457860889961012,
+      "planning_seconds": 0.057953202980570495,
+      "serialization_seconds": 0.03848976094741374,
+      "prepare_gc_seconds": 0.058339303999673575,
+      "cleanup_gc_seconds": 0.12417491897940636,
+      "model_bytes": 1088215,
+      "total_seconds": 5.736818076868076,
+      "active_cells": 1271,
+      "cells_by_horizon": {
+        "1": 716,
+        "2": 508,
+        "3": 47
+      },
+      "planning_counts": {
+        "active_states": 17794,
+        "state_action_rows": 56266,
+        "outcomes": 107072,
+        "visited_cells": 17892
+      },
+      "portable": {
+        "exit_code": 0,
+        "command_seconds": 1.4248228570213541,
+        "stderr_bytes": 0,
+        "passed": true,
+        "codes_equal": true,
+        "query_mismatches": [],
+        "worker_seconds": 0.11728689499432221,
+        "inference_counts": {
+          "batch_calls": 1,
+          "network_batches": 1,
+          "encoded_boards": 24,
+          "feature_entries": 5760,
+          "classification_logits": 1128
+        }
+      }
+    },
+    "RAW": {
+      "training": {
+        "variant": "RAW",
+        "seed": 6801,
+        "steps": 1500,
+        "batch_size": 128,
+        "optimizer": "Adam",
+        "learning_rate": 0.001,
+        "schedule": "Uniform horizon, then uniform source states with replacement; no validation/target selection",
+        "architecture": [
+          240,
+          128,
+          128
+        ],
+        "features": "16x12 raw ranks plus 48 directed adjacent equalities",
+        "classes_by_horizon": {
+          "3": 47,
+          "2": 565,
+          "1": 5571
+        },
+        "source_active_states": 6183,
+        "teacher_active_cells": 6183,
+        "source_classification": {
+          "1": {
+            "correct": 4787,
+            "examples": 5571,
+            "accuracy": 0.859271225991743
+          },
+          "2": {
+            "correct": 565,
+            "examples": 565,
+            "accuracy": 1.0
+          },
+          "3": {
+            "correct": 47,
+            "examples": 47,
+            "accuracy": 1.0
+          }
+        },
+        "final_training_batch_loss": 0.4511542022228241,
+        "parameters": 844967,
+        "device": "cpu",
+        "torch_threads": 1,
+        "teacher_compilation_seconds": 0.058275952003896236,
+        "feature_seconds": 0.013056472002062947,
+        "training_seconds": 8.53407104802318,
+        "source_diagnostic_seconds": 0.15792371600400656,
+        "total_seconds": 8.767871251038741,
+        "counts": {
+          "optimizer_steps": 1500,
+          "training_examples": 192000,
+          "training_logits": 420636160,
+          "h3_steps": 472,
+          "h2_steps": 492,
+          "h1_steps": 536,
+          "training_diagnostic_examples": 6183,
+          "training_diagnostic_logits": 31357475
+        },
+        "target_model_updates": 0
+      },
+      "learning_and_compile_seconds": 8.768061945971567,
+      "planning_seconds": 0.3494758700253442,
+      "serialization_seconds": 0.35098036198178306,
+      "prepare_gc_seconds": 0.10410420299740508,
+      "cleanup_gc_seconds": 0.10939966002479196,
+      "model_bytes": 4352919,
+      "total_seconds": 9.682022041000891,
+      "active_cells": 6183,
+      "cells_by_horizon": {
+        "3": 47,
+        "2": 565,
+        "1": 5571
+      },
+      "planning_counts": {
+        "active_states": 86562,
+        "state_action_rows": 277130,
+        "outcomes": 389970,
+        "visited_cells": 86660
+      },
+      "portable": {
+        "exit_code": 0,
+        "command_seconds": 1.7540884200134315,
+        "stderr_bytes": 0,
+        "passed": true,
+        "codes_equal": true,
+        "query_mismatches": [],
+        "worker_seconds": 0.5282635479816236,
+        "inference_counts": {
+          "batch_calls": 1,
+          "network_batches": 1,
+          "encoded_boards": 24,
+          "feature_entries": 5760,
+          "classification_logits": 1128
+        }
+      }
+    }
+  },
+  "freeze_seconds_since_start": 15.927107146999333,
+  "source_support_seconds": 0.31756978295743465,
+  "source_support_counts": {
+    "semantic_states": 6190,
+    "semantic_outcome_terms": 27855
+  },
+  "wall_seconds": 41.786818091990426,
+  "process_peak_rss_bytes": 813883392
+}

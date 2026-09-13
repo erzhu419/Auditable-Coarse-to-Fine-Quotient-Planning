@@ -1,0 +1,131 @@
+{"case": "v6_crossing_rescue_pair_0", "completed_closures": 1, "status": "CLOSURE_COMPLETE", "total": 16}
+{"case": "v6_crossing_rescue_pair_1", "completed_closures": 2, "status": "CLOSURE_COMPLETE", "total": 16}
+{"case": "v6_crossing_rescue_pair_2", "completed_closures": 3, "status": "CLOSURE_COMPLETE", "total": 16}
+{"case": "v6_crossing_rescue_pair_3", "completed_closures": 4, "status": "CLOSURE_COMPLETE", "total": 16}
+{"case": "v6_spawn_edge_rescue_0", "completed_closures": 5, "status": "CLOSURE_COMPLETE", "total": 16}
+{"case": "v6_spawn_edge_rescue_1", "completed_closures": 6, "status": "CLOSURE_COMPLETE", "total": 16}
+{"case": "v6_spawn_edge_rescue_2", "completed_closures": 7, "status": "CLOSURE_COMPLETE", "total": 16}
+{"case": "v6_spawn_edge_rescue_3", "completed_closures": 8, "status": "CLOSURE_COMPLETE", "total": 16}
+{"case": "v6_crossed_vacancy_goal_detour_0", "completed_closures": 9, "status": "CLOSURE_COMPLETE", "total": 16}
+{"case": "v6_crossed_vacancy_goal_detour_1", "completed_closures": 10, "status": "CLOSURE_COMPLETE", "total": 16}
+{"case": "v6_crossed_vacancy_goal_detour_2", "completed_closures": 11, "status": "CLOSURE_COMPLETE", "total": 16}
+{"case": "v6_crossed_vacancy_goal_detour_3", "completed_closures": 12, "status": "CLOSURE_COMPLETE", "total": 16}
+{"case": "v6_control_last_pair_spawn_risk", "completed_closures": 13, "status": "CLOSURE_COMPLETE", "total": 16}
+{"case": "v6_control_dense_merge_choice", "completed_closures": 14, "status": "CLOSURE_COMPLETE", "total": 16}
+{"case": "v6_control_adjacent_1024_goal", "completed_closures": 15, "status": "CLOSURE_COMPLETE", "total": 16}
+{"case": "exposed_left_successor_7", "completed_closures": 16, "status": "CLOSURE_COMPLETE", "total": 16}
+{"constraint_fit_satisfied": true, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "source_case_names": ["v6_crossing_rescue_pair_0", "v6_spawn_edge_rescue_0", "v6_crossed_vacancy_goal_detour_0"], "status": "THREE_ENCODERS_FROZEN"}
+{"constraint_fit_satisfied": true, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "source_case_names": ["v6_spawn_edge_rescue_0", "v6_crossed_vacancy_goal_detour_0"], "status": "THREE_ENCODERS_FROZEN"}
+{"constraint_fit_satisfied": true, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "source_case_names": ["v6_crossing_rescue_pair_0", "v6_crossed_vacancy_goal_detour_0"], "status": "THREE_ENCODERS_FROZEN"}
+{"constraint_fit_satisfied": true, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "source_case_names": ["v6_crossing_rescue_pair_0", "v6_spawn_edge_rescue_0"], "status": "THREE_ENCODERS_FROZEN"}
+{"active_states": 162, "case": "v6_crossing_rescue_pair_0", "constraint_active_cells": 48, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 144, "case": "v6_crossing_rescue_pair_1", "constraint_active_cells": 44, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 173, "case": "v6_crossing_rescue_pair_2", "constraint_active_cells": 30, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 93, "case": "v6_crossing_rescue_pair_3", "constraint_active_cells": 26, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 8, "case": "v6_spawn_edge_rescue_0", "constraint_active_cells": 5, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 6, "case": "v6_spawn_edge_rescue_1", "constraint_active_cells": 5, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 6, "case": "v6_spawn_edge_rescue_2", "constraint_active_cells": 5, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 10, "case": "v6_spawn_edge_rescue_3", "constraint_active_cells": 6, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 93, "case": "v6_crossed_vacancy_goal_detour_0", "constraint_active_cells": 60, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 109, "case": "v6_crossed_vacancy_goal_detour_1", "constraint_active_cells": 43, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 105, "case": "v6_crossed_vacancy_goal_detour_2", "constraint_active_cells": 32, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 61, "case": "v6_crossed_vacancy_goal_detour_3", "constraint_active_cells": 22, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 6, "case": "v6_control_last_pair_spawn_risk", "constraint_active_cells": 3, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 202, "case": "v6_control_dense_merge_choice", "constraint_active_cells": 20, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 3, "case": "v6_control_adjacent_1024_goal", "constraint_active_cells": 2, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 13, "case": "exposed_left_successor_7", "constraint_active_cells": 7, "sample_seed": 832101, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 8, "case": "v6_spawn_edge_rescue_0", "constraint_active_cells": 5, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "SAMPLE_COMPLETE"}
+{"active_states": 93, "case": "v6_crossed_vacancy_goal_detour_0", "constraint_active_cells": 60, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "SAMPLE_COMPLETE"}
+{"active_states": 162, "case": "v6_crossing_rescue_pair_0", "constraint_active_cells": 17, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "SAMPLE_COMPLETE"}
+{"active_states": 144, "case": "v6_crossing_rescue_pair_1", "constraint_active_cells": 34, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "SAMPLE_COMPLETE"}
+{"active_states": 173, "case": "v6_crossing_rescue_pair_2", "constraint_active_cells": 11, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "SAMPLE_COMPLETE"}
+{"active_states": 93, "case": "v6_crossing_rescue_pair_3", "constraint_active_cells": 31, "sample_seed": 832101, "scenario": "LOFO_crossing_rescue_pair", "status": "SAMPLE_COMPLETE"}
+{"active_states": 162, "case": "v6_crossing_rescue_pair_0", "constraint_active_cells": 48, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "SAMPLE_COMPLETE"}
+{"active_states": 93, "case": "v6_crossed_vacancy_goal_detour_0", "constraint_active_cells": 60, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "SAMPLE_COMPLETE"}
+{"active_states": 8, "case": "v6_spawn_edge_rescue_0", "constraint_active_cells": 5, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "SAMPLE_COMPLETE"}
+{"active_states": 6, "case": "v6_spawn_edge_rescue_1", "constraint_active_cells": 4, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "SAMPLE_COMPLETE"}
+{"active_states": 6, "case": "v6_spawn_edge_rescue_2", "constraint_active_cells": 4, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "SAMPLE_COMPLETE"}
+{"active_states": 10, "case": "v6_spawn_edge_rescue_3", "constraint_active_cells": 6, "sample_seed": 832101, "scenario": "LOFO_spawn_edge_rescue", "status": "SAMPLE_COMPLETE"}
+{"active_states": 162, "case": "v6_crossing_rescue_pair_0", "constraint_active_cells": 48, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "SAMPLE_COMPLETE"}
+{"active_states": 8, "case": "v6_spawn_edge_rescue_0", "constraint_active_cells": 5, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "SAMPLE_COMPLETE"}
+{"active_states": 93, "case": "v6_crossed_vacancy_goal_detour_0", "constraint_active_cells": 15, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "SAMPLE_COMPLETE"}
+{"active_states": 109, "case": "v6_crossed_vacancy_goal_detour_1", "constraint_active_cells": 19, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "SAMPLE_COMPLETE"}
+{"active_states": 105, "case": "v6_crossed_vacancy_goal_detour_2", "constraint_active_cells": 13, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "SAMPLE_COMPLETE"}
+{"active_states": 61, "case": "v6_crossed_vacancy_goal_detour_3", "constraint_active_cells": 9, "sample_seed": 832101, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "SAMPLE_COMPLETE"}
+{"constraint_fit_satisfied": true, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "source_case_names": ["v6_crossing_rescue_pair_0", "v6_spawn_edge_rescue_0", "v6_crossed_vacancy_goal_detour_0"], "status": "THREE_ENCODERS_FROZEN"}
+{"constraint_fit_satisfied": true, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "source_case_names": ["v6_spawn_edge_rescue_0", "v6_crossed_vacancy_goal_detour_0"], "status": "THREE_ENCODERS_FROZEN"}
+{"constraint_fit_satisfied": true, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "source_case_names": ["v6_crossing_rescue_pair_0", "v6_crossed_vacancy_goal_detour_0"], "status": "THREE_ENCODERS_FROZEN"}
+{"constraint_fit_satisfied": true, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "source_case_names": ["v6_crossing_rescue_pair_0", "v6_spawn_edge_rescue_0"], "status": "THREE_ENCODERS_FROZEN"}
+{"active_states": 162, "case": "v6_crossing_rescue_pair_0", "constraint_active_cells": 48, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 144, "case": "v6_crossing_rescue_pair_1", "constraint_active_cells": 44, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 173, "case": "v6_crossing_rescue_pair_2", "constraint_active_cells": 30, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 93, "case": "v6_crossing_rescue_pair_3", "constraint_active_cells": 26, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 8, "case": "v6_spawn_edge_rescue_0", "constraint_active_cells": 5, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 6, "case": "v6_spawn_edge_rescue_1", "constraint_active_cells": 5, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 6, "case": "v6_spawn_edge_rescue_2", "constraint_active_cells": 5, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 10, "case": "v6_spawn_edge_rescue_3", "constraint_active_cells": 6, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 93, "case": "v6_crossed_vacancy_goal_detour_0", "constraint_active_cells": 59, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 109, "case": "v6_crossed_vacancy_goal_detour_1", "constraint_active_cells": 43, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 105, "case": "v6_crossed_vacancy_goal_detour_2", "constraint_active_cells": 32, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 61, "case": "v6_crossed_vacancy_goal_detour_3", "constraint_active_cells": 21, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 6, "case": "v6_control_last_pair_spawn_risk", "constraint_active_cells": 3, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 202, "case": "v6_control_dense_merge_choice", "constraint_active_cells": 20, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 3, "case": "v6_control_adjacent_1024_goal", "constraint_active_cells": 2, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 13, "case": "exposed_left_successor_7", "constraint_active_cells": 7, "sample_seed": 832102, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 8, "case": "v6_spawn_edge_rescue_0", "constraint_active_cells": 5, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "SAMPLE_COMPLETE"}
+{"active_states": 93, "case": "v6_crossed_vacancy_goal_detour_0", "constraint_active_cells": 59, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "SAMPLE_COMPLETE"}
+{"active_states": 162, "case": "v6_crossing_rescue_pair_0", "constraint_active_cells": 17, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "SAMPLE_COMPLETE"}
+{"active_states": 144, "case": "v6_crossing_rescue_pair_1", "constraint_active_cells": 34, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "SAMPLE_COMPLETE"}
+{"active_states": 173, "case": "v6_crossing_rescue_pair_2", "constraint_active_cells": 11, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "SAMPLE_COMPLETE"}
+{"active_states": 93, "case": "v6_crossing_rescue_pair_3", "constraint_active_cells": 31, "sample_seed": 832102, "scenario": "LOFO_crossing_rescue_pair", "status": "SAMPLE_COMPLETE"}
+{"active_states": 162, "case": "v6_crossing_rescue_pair_0", "constraint_active_cells": 48, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "SAMPLE_COMPLETE"}
+{"active_states": 93, "case": "v6_crossed_vacancy_goal_detour_0", "constraint_active_cells": 59, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "SAMPLE_COMPLETE"}
+{"active_states": 8, "case": "v6_spawn_edge_rescue_0", "constraint_active_cells": 5, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "SAMPLE_COMPLETE"}
+{"active_states": 6, "case": "v6_spawn_edge_rescue_1", "constraint_active_cells": 4, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "SAMPLE_COMPLETE"}
+{"active_states": 6, "case": "v6_spawn_edge_rescue_2", "constraint_active_cells": 4, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "SAMPLE_COMPLETE"}
+{"active_states": 10, "case": "v6_spawn_edge_rescue_3", "constraint_active_cells": 6, "sample_seed": 832102, "scenario": "LOFO_spawn_edge_rescue", "status": "SAMPLE_COMPLETE"}
+{"active_states": 162, "case": "v6_crossing_rescue_pair_0", "constraint_active_cells": 48, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "SAMPLE_COMPLETE"}
+{"active_states": 8, "case": "v6_spawn_edge_rescue_0", "constraint_active_cells": 5, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "SAMPLE_COMPLETE"}
+{"active_states": 93, "case": "v6_crossed_vacancy_goal_detour_0", "constraint_active_cells": 15, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "SAMPLE_COMPLETE"}
+{"active_states": 109, "case": "v6_crossed_vacancy_goal_detour_1", "constraint_active_cells": 19, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "SAMPLE_COMPLETE"}
+{"active_states": 105, "case": "v6_crossed_vacancy_goal_detour_2", "constraint_active_cells": 13, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "SAMPLE_COMPLETE"}
+{"active_states": 61, "case": "v6_crossed_vacancy_goal_detour_3", "constraint_active_cells": 9, "sample_seed": 832102, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "SAMPLE_COMPLETE"}
+{"constraint_fit_satisfied": true, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "source_case_names": ["v6_crossing_rescue_pair_0", "v6_spawn_edge_rescue_0", "v6_crossed_vacancy_goal_detour_0"], "status": "THREE_ENCODERS_FROZEN"}
+{"constraint_fit_satisfied": true, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "source_case_names": ["v6_spawn_edge_rescue_0", "v6_crossed_vacancy_goal_detour_0"], "status": "THREE_ENCODERS_FROZEN"}
+{"constraint_fit_satisfied": true, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "source_case_names": ["v6_crossing_rescue_pair_0", "v6_crossed_vacancy_goal_detour_0"], "status": "THREE_ENCODERS_FROZEN"}
+{"constraint_fit_satisfied": true, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "source_case_names": ["v6_crossing_rescue_pair_0", "v6_spawn_edge_rescue_0"], "status": "THREE_ENCODERS_FROZEN"}
+{"active_states": 162, "case": "v6_crossing_rescue_pair_0", "constraint_active_cells": 48, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 144, "case": "v6_crossing_rescue_pair_1", "constraint_active_cells": 44, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 173, "case": "v6_crossing_rescue_pair_2", "constraint_active_cells": 30, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 93, "case": "v6_crossing_rescue_pair_3", "constraint_active_cells": 26, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 8, "case": "v6_spawn_edge_rescue_0", "constraint_active_cells": 5, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 6, "case": "v6_spawn_edge_rescue_1", "constraint_active_cells": 5, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 6, "case": "v6_spawn_edge_rescue_2", "constraint_active_cells": 5, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 10, "case": "v6_spawn_edge_rescue_3", "constraint_active_cells": 6, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 93, "case": "v6_crossed_vacancy_goal_detour_0", "constraint_active_cells": 60, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 109, "case": "v6_crossed_vacancy_goal_detour_1", "constraint_active_cells": 43, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 105, "case": "v6_crossed_vacancy_goal_detour_2", "constraint_active_cells": 32, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 61, "case": "v6_crossed_vacancy_goal_detour_3", "constraint_active_cells": 22, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 6, "case": "v6_control_last_pair_spawn_risk", "constraint_active_cells": 3, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 202, "case": "v6_control_dense_merge_choice", "constraint_active_cells": 20, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 3, "case": "v6_control_adjacent_1024_goal", "constraint_active_cells": 2, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 13, "case": "exposed_left_successor_7", "constraint_active_cells": 7, "sample_seed": 832103, "scenario": "PRIMARY_V7_SPLIT", "status": "SAMPLE_COMPLETE"}
+{"active_states": 8, "case": "v6_spawn_edge_rescue_0", "constraint_active_cells": 5, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "SAMPLE_COMPLETE"}
+{"active_states": 93, "case": "v6_crossed_vacancy_goal_detour_0", "constraint_active_cells": 60, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "SAMPLE_COMPLETE"}
+{"active_states": 162, "case": "v6_crossing_rescue_pair_0", "constraint_active_cells": 17, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "SAMPLE_COMPLETE"}
+{"active_states": 144, "case": "v6_crossing_rescue_pair_1", "constraint_active_cells": 34, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "SAMPLE_COMPLETE"}
+{"active_states": 173, "case": "v6_crossing_rescue_pair_2", "constraint_active_cells": 11, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "SAMPLE_COMPLETE"}
+{"active_states": 93, "case": "v6_crossing_rescue_pair_3", "constraint_active_cells": 31, "sample_seed": 832103, "scenario": "LOFO_crossing_rescue_pair", "status": "SAMPLE_COMPLETE"}
+{"active_states": 162, "case": "v6_crossing_rescue_pair_0", "constraint_active_cells": 48, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "SAMPLE_COMPLETE"}
+{"active_states": 93, "case": "v6_crossed_vacancy_goal_detour_0", "constraint_active_cells": 60, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "SAMPLE_COMPLETE"}
+{"active_states": 8, "case": "v6_spawn_edge_rescue_0", "constraint_active_cells": 5, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "SAMPLE_COMPLETE"}
+{"active_states": 6, "case": "v6_spawn_edge_rescue_1", "constraint_active_cells": 4, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "SAMPLE_COMPLETE"}
+{"active_states": 6, "case": "v6_spawn_edge_rescue_2", "constraint_active_cells": 4, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "SAMPLE_COMPLETE"}
+{"active_states": 10, "case": "v6_spawn_edge_rescue_3", "constraint_active_cells": 6, "sample_seed": 832103, "scenario": "LOFO_spawn_edge_rescue", "status": "SAMPLE_COMPLETE"}
+{"active_states": 162, "case": "v6_crossing_rescue_pair_0", "constraint_active_cells": 48, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "SAMPLE_COMPLETE"}
+{"active_states": 8, "case": "v6_spawn_edge_rescue_0", "constraint_active_cells": 5, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "SAMPLE_COMPLETE"}
+{"active_states": 93, "case": "v6_crossed_vacancy_goal_detour_0", "constraint_active_cells": 15, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "SAMPLE_COMPLETE"}
+{"active_states": 109, "case": "v6_crossed_vacancy_goal_detour_1", "constraint_active_cells": 19, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "SAMPLE_COMPLETE"}
+{"active_states": 105, "case": "v6_crossed_vacancy_goal_detour_2", "constraint_active_cells": 13, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "SAMPLE_COMPLETE"}
+{"active_states": 61, "case": "v6_crossed_vacancy_goal_detour_3", "constraint_active_cells": 9, "sample_seed": 832103, "scenario": "LOFO_crossed_vacancy_goal_detour", "status": "SAMPLE_COMPLETE"}
+{"status": "DEVELOPMENT_COMPLETE", "output": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_encoder_comparison_v8.json"}

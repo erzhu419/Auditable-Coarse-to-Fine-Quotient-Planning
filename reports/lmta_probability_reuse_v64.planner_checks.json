@@ -1,0 +1,57 @@
+{
+  "attempts": [
+    {
+      "test_module": "tests/test_lmta_probability_reuse_v64.py",
+      "new_failures": 0,
+      "candidate_work": {
+        "dp_states": 33,
+        "action_value_evaluations": 85,
+        "kernel_builds": 8,
+        "kernel_cache_hits": 0,
+        "transition_outcomes": 25,
+        "target_probability_evaluations": 34,
+        "score_node_evaluations": 0,
+        "immediate_expectation_terms": 0,
+        "bellman_expectation_terms": 25,
+        "forced_choice": 2,
+        "analytic_expectation_calls": 77,
+        "analytic_probability_terms": 177,
+        "terminal_base_parent_checks": 96,
+        "terminal_base_states": 31,
+        "terminal_selected_edge_checks": 72,
+        "terminal_selected_increments": 52,
+        "terminal_probability_lookups": 59,
+        "terminal_probability_cache_hits": 51,
+        "terminal_probability_cache_misses": 8,
+        "terminal_zero_source_terms": 118
+      },
+      "frozen_work": {
+        "dp_states": 33,
+        "action_value_evaluations": 85,
+        "kernel_builds": 8,
+        "kernel_cache_hits": 0,
+        "transition_outcomes": 25,
+        "target_probability_evaluations": 203,
+        "score_node_evaluations": 0,
+        "immediate_expectation_terms": 0,
+        "bellman_expectation_terms": 25,
+        "forced_choice": 2,
+        "analytic_expectation_calls": 77,
+        "analytic_probability_terms": 177
+      },
+      "candidate_planner_calls": 10,
+      "frozen_planner_calls": 10,
+      "hand_graph_constructions": 10,
+      "environment_calls": 0,
+      "random_draws": 0,
+      "sampled_graphs": 0,
+      "learned_model_calls": 0,
+      "wall_seconds": 0.00928463600575924,
+      "scope": "All cold candidate and V59 reference hand-query calls; no main graph, trajectory, or full-policy evaluation.",
+      "pytest_summary": "9 passed in 0.38s",
+      "pytest_passed": 9,
+      "pytest_exit_code": 0,
+      "command_wall_seconds": 0.977355202
+    }
+  ]
+}

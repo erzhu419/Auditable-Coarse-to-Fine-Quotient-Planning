@@ -1,0 +1,238 @@
+{
+  "schema": "acfqp.controlled_predictive_regression_plan.v30",
+  "status": "FROZEN_BEFORE_REPLAY_AND_BOUNDARY_EVALUATION",
+  "protocol": "specs/CONTROLLED_PREDICTIVE_REGRESSION_V30.md",
+  "source_plan": "reports/controlled_predictive_new_starts_plan_v28.json",
+  "source_prefixes": "reports/controlled_predictive_new_starts_prefixes_v28.json.gz",
+  "source_endpoints": "reports/controlled_predictive_new_starts_endpoints_v28.jsonl.gz",
+  "source_result": "reports/controlled_predictive_new_starts_v28.json.gz",
+  "source_prefix_result": "reports/controlled_predictive_prefix_baseline_v29.json.gz",
+  "source_analysis": "reports/controlled_predictive_prefix_baseline_analysis_v29.json",
+  "context_index": 69,
+  "context": {
+    "context_index": 69,
+    "board_index": 6,
+    "case_name": "v28_dense_pairs_940007",
+    "query_name": "probe_goal_2_risk_0_5",
+    "target_key": [
+      2,
+      [
+        1,
+        1,
+        4,
+        5,
+        6,
+        1,
+        9,
+        7,
+        4,
+        10,
+        8,
+        6,
+        7,
+        4,
+        8,
+        8
+      ]
+    ],
+    "requested_batch_count": 32,
+    "initial_batches": 32
+  },
+  "board": {
+    "board_index": 6,
+    "name": "v28_dense_pairs_940007",
+    "board": [
+      1,
+      1,
+      4,
+      5,
+      6,
+      1,
+      9,
+      7,
+      4,
+      10,
+      8,
+      6,
+      7,
+      4,
+      8,
+      8
+    ],
+    "horizon": 2,
+    "generation_seed": 940007,
+    "prefix_seed": 941007,
+    "legal_actions": [
+      "DOWN",
+      "LEFT",
+      "RIGHT",
+      "UP"
+    ],
+    "novelty": {
+      "registered_root_or_target_d4_matches": [],
+      "earlier_current_board_d4_matches": [],
+      "new_against_listed_sources": true
+    }
+  },
+  "queries": {
+    "risk_0": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.0,
+      "goal_bonus": 0.0
+    },
+    "risk_0_05": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.05,
+      "goal_bonus": 0.0
+    },
+    "risk_0_2": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.2,
+      "goal_bonus": 0.0
+    },
+    "risk_1": {
+      "reward_weight": 1.0,
+      "failure_penalty": 1.0,
+      "goal_bonus": 0.0
+    },
+    "risk_5": {
+      "reward_weight": 1.0,
+      "failure_penalty": 5.0,
+      "goal_bonus": 0.0
+    },
+    "goal_1_risk_1": {
+      "reward_weight": 1.0,
+      "failure_penalty": 1.0,
+      "goal_bonus": 1.0
+    },
+    "probe_risk_0_1": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.1,
+      "goal_bonus": 0.0
+    },
+    "probe_risk_0_5": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.5,
+      "goal_bonus": 0.0
+    },
+    "probe_risk_2": {
+      "reward_weight": 1.0,
+      "failure_penalty": 2.0,
+      "goal_bonus": 0.0
+    },
+    "probe_goal_2_risk_0_5": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.5,
+      "goal_bonus": 2.0
+    }
+  },
+  "source_query_order": [
+    "risk_0",
+    "risk_0_05",
+    "risk_0_2",
+    "risk_1",
+    "risk_5",
+    "goal_1_risk_1",
+    "probe_risk_0_1",
+    "probe_risk_0_5",
+    "probe_risk_2",
+    "probe_goal_2_risk_0_5"
+  ],
+  "query": {
+    "reward_weight": 1.0,
+    "failure_penalty": 0.5,
+    "goal_bonus": 2.0
+  },
+  "replicates": [
+    {
+      "replicate_index": 0,
+      "base_seed": 942001
+    },
+    {
+      "replicate_index": 1,
+      "base_seed": 942002
+    },
+    {
+      "replicate_index": 2,
+      "base_seed": 942003
+    },
+    {
+      "replicate_index": 3,
+      "base_seed": 942004
+    },
+    {
+      "replicate_index": 4,
+      "base_seed": 942005
+    },
+    {
+      "replicate_index": 5,
+      "base_seed": 942006
+    },
+    {
+      "replicate_index": 6,
+      "base_seed": 942007
+    },
+    {
+      "replicate_index": 7,
+      "base_seed": 942008
+    },
+    {
+      "replicate_index": 8,
+      "base_seed": 942009
+    },
+    {
+      "replicate_index": 9,
+      "base_seed": 942010
+    },
+    {
+      "replicate_index": 10,
+      "base_seed": 942011
+    },
+    {
+      "replicate_index": 11,
+      "base_seed": 942012
+    },
+    {
+      "replicate_index": 12,
+      "base_seed": 942013
+    },
+    {
+      "replicate_index": 13,
+      "base_seed": 942014
+    },
+    {
+      "replicate_index": 14,
+      "base_seed": 942015
+    },
+    {
+      "replicate_index": 15,
+      "base_seed": 942016
+    }
+  ],
+  "arms": [
+    "CACHED",
+    "VARIANCE"
+  ],
+  "replicate_count": 16,
+  "requested_batches": 32,
+  "samples_per_batch": 256,
+  "expected_trajectories": 32,
+  "expected_boundaries_per_trajectory": 33,
+  "tolerance": 1e-10,
+  "true_optimal_reference": "lexicographically first root action with Vstar-Qstar <= tolerance; evaluator only",
+  "first_harmful_update": "first adjacent root choice transition from true-optimal to nonoptimal; after-batch index is 1-based",
+  "transition_scope": "retain every optimal-to-nonoptimal and nonoptimal-to-optimal transition, including later re-entry",
+  "signed_margin": "same after-transition action minus fixed true-optimal reference at both adjacent boundaries; Qhat_gap=Qstar_gap+A_gap+D_gap when both rows observed",
+  "representative_rule": "minimum replicate_index, then declared arm order; no favorable trajectory selection",
+  "source_historical_physical_batches": 164352,
+  "source_historical_physical_draws": 42074112,
+  "selected_suffix_historical_batches": 1024,
+  "selected_suffix_historical_draws": 262144,
+  "new_sampling_calls": 0,
+  "new_physical_draws": 0,
+  "scientific_gate": "NOT_A_FORMAL_GATE",
+  "u006_assurance_started": false,
+  "original_deferred_24_case_cohort_loaded_or_executed": false,
+  "scope": "selected induced-error history diagnosis; not an independent cohort or a stopping/budget intervention",
+  "secondary_policy_trigger": "separately retain first evaluable full-policy zero-to-positive total regret and all later repairs/re-entries; unknown policy is not zero regret"
+}

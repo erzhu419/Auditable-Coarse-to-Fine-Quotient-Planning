@@ -1,0 +1,318 @@
+{
+  "complete": true,
+  "declared_targets": 32,
+  "completed_targets": 32,
+  "incomplete_targets": [],
+  "source_learning_reused": true,
+  "all_artifacts_routing_and_portable_preserved": true,
+  "inherited_v69_policy_evidence_valid": true,
+  "inherited_v69_policy_metrics": {
+    "FULL": {
+      "root_queries": 448,
+      "optimal_executable_root_queries": 448,
+      "strict_query_switches": {
+        "required": 1227,
+        "violations": 0
+      }
+    },
+    "COMPOSED": {
+      "root_queries": 448,
+      "optimal_executable_root_queries": 448,
+      "strict_query_switches": {
+        "required": 1227,
+        "violations": 0
+      }
+    }
+  },
+  "inheritance_source": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_composition_v69/analysis.json",
+  "active_observations": 15209,
+  "matched_observations": 60,
+  "methods": {
+    "FULL_MAP": {
+      "complete_targets": 32,
+      "upstream_variant": "FULL",
+      "artifacts_preserved": true,
+      "portable_passed": true,
+      "full_active_routing_preserved": true,
+      "active_observations_checked": 15209,
+      "matched_observations": 60,
+      "unsupported_observations_checked": 95,
+      "package_bytes": 2617890,
+      "router_bytes": 661725,
+      "construction_counts": {
+        "concrete_states": 131923,
+        "learned_terminal_checks": 131923,
+        "learned_swipe_calls": 511276,
+        "learned_line_rewrites": 2045104,
+        "concrete_active_states": 15209,
+        "learned_spawn_outcomes": 226074,
+        "concrete_action_rows": 47067,
+        "concrete_successor_entries": 226074,
+        "h0_boards_generated": 201106,
+        "terminal_reuses": 116614,
+        "model_transition_rows": 47067,
+        "model_successor_entries": 68898,
+        "concrete_memo_hits": 94183,
+        "active_states": 15209,
+        "terminal_states": 100,
+        "registered_states": 15309,
+        "concrete_h0_states": 115277
+      },
+      "compile_counts": {
+        "input_labels": 15209,
+        "retained_rank_slots": 243344
+      },
+      "routing_counts": {
+        "observations": 60,
+        "map_lookups": 60,
+        "supported_observations": 60
+      },
+      "planning_counts": {
+        "active_states": 212926,
+        "state_action_rows": 658938,
+        "outcomes": 964572,
+        "visited_cells": 214326
+      },
+      "times": {
+        "upstream_seconds": 7.183095367799979,
+        "downstream_seconds": 3.9526542290113866,
+        "cold_method_total_seconds": 11.135749596811365,
+        "upstream_stages": {
+          "construction": 6.9745893509243615,
+          "payload_labels": 0.10593710996909067,
+          "cleanup_gc": 0.10250648902729154,
+          "total": 7.183095367799979
+        },
+        "downstream_stages": {
+          "router_compile": 4.842103226110339e-05,
+          "serialize": 0.06484714586986229,
+          "worker_command": 3.7862751920474693,
+          "load": 0.5886275381199084,
+          "index": 0.0213282480253838,
+          "planning": 2.1048292506602593,
+          "routing": 0.00017783005023375154,
+          "release_gc": 0.10133875609608367,
+          "total": 3.9526542290113866,
+          "worker_overhead": 1.071312325191684
+        },
+        "worker_command_seconds_included_in_downstream": 3.7862751920474693
+      }
+    },
+    "COMPOSED_MAP": {
+      "complete_targets": 32,
+      "upstream_variant": "COMPOSED",
+      "artifacts_preserved": true,
+      "portable_passed": true,
+      "full_active_routing_preserved": true,
+      "active_observations_checked": 15209,
+      "matched_observations": 60,
+      "unsupported_observations_checked": 95,
+      "package_bytes": 1248742,
+      "router_bytes": 647867,
+      "construction_counts": {
+        "concrete_states": 131923,
+        "learned_terminal_checks": 131923,
+        "learned_swipe_calls": 511276,
+        "learned_line_rewrites": 2045104,
+        "concrete_active_states": 15209,
+        "learned_spawn_outcomes": 226074,
+        "concrete_action_rows": 47067,
+        "concrete_successor_entries": 226074,
+        "h0_boards_generated": 201106,
+        "terminal_reuses": 116614,
+        "model_transition_rows": 12091,
+        "model_successor_entries": 23589,
+        "contract_reuses": 11302,
+        "concrete_memo_hits": 94183,
+        "active_states": 3907,
+        "terminal_states": 100,
+        "registered_states": 4007,
+        "concrete_h0_states": 115277
+      },
+      "compile_counts": {
+        "input_labels": 15209,
+        "retained_rank_slots": 243344
+      },
+      "routing_counts": {
+        "observations": 60,
+        "map_lookups": 60,
+        "supported_observations": 60
+      },
+      "planning_counts": {
+        "active_states": 54698,
+        "state_action_rows": 169274,
+        "outcomes": 330246,
+        "visited_cells": 56098
+      },
+      "times": {
+        "upstream_seconds": 7.133905527705792,
+        "downstream_seconds": 2.234057580935769,
+        "cold_method_total_seconds": 9.367963108641561,
+        "upstream_stages": {
+          "construction": 6.990807051945012,
+          "payload_labels": 0.047478336666245013,
+          "cleanup_gc": 0.09556403110036626,
+          "total": 7.133905527705792
+        },
+        "downstream_stages": {
+          "router_compile": 5.044991848990321e-05,
+          "serialize": 0.038411691959481686,
+          "worker_command": 2.079530659946613,
+          "load": 0.4592541888705455,
+          "index": 0.006652961135841906,
+          "planning": 0.6607358892215416,
+          "routing": 0.00017244706396013498,
+          "release_gc": 0.11597858206368983,
+          "total": 2.234057580935769,
+          "worker_overhead": 0.9527151736547239
+        },
+        "worker_command_seconds_included_in_downstream": 2.079530659946613
+      }
+    },
+    "COMPOSED_DAG": {
+      "complete_targets": 32,
+      "upstream_variant": "COMPOSED",
+      "artifacts_preserved": true,
+      "portable_passed": true,
+      "full_active_routing_preserved": true,
+      "active_observations_checked": 15209,
+      "matched_observations": 60,
+      "unsupported_observations_checked": 95,
+      "package_bytes": 1392204,
+      "router_bytes": 791329,
+      "construction_counts": {
+        "concrete_states": 131923,
+        "learned_terminal_checks": 131923,
+        "learned_swipe_calls": 511276,
+        "learned_line_rewrites": 2045104,
+        "concrete_active_states": 15209,
+        "learned_spawn_outcomes": 226074,
+        "concrete_action_rows": 47067,
+        "concrete_successor_entries": 226074,
+        "h0_boards_generated": 201106,
+        "terminal_reuses": 116614,
+        "model_transition_rows": 12091,
+        "model_successor_entries": 23589,
+        "contract_reuses": 11302,
+        "concrete_memo_hits": 94183,
+        "active_states": 3907,
+        "terminal_states": 100,
+        "registered_states": 4007,
+        "concrete_h0_states": 115277
+      },
+      "compile_counts": {
+        "input_labels": 15209,
+        "input_rank_slots": 243344,
+        "trie_prefix_visits": 102405,
+        "compile_rank_reads": 243344,
+        "leaf_label_checks": 15209,
+        "distinct_observations": 15209,
+        "duplicate_observations": 0,
+        "trie_edges_visited": 102310,
+        "shared_subtree_visits": 55042,
+        "dag_nodes": 47363,
+        "horizon_roots": 95,
+        "dag_leaves": 3907,
+        "dag_decisions": 43456,
+        "dag_edges": 54916
+      },
+      "routing_counts": {
+        "observations": 60,
+        "horizon_tests": 60,
+        "node_visits": 1020,
+        "rank_tests": 960,
+        "edge_matches": 960,
+        "supported_observations": 60
+      },
+      "planning_counts": {
+        "active_states": 54698,
+        "state_action_rows": 169274,
+        "outcomes": 330246,
+        "visited_cells": 56098
+      },
+      "times": {
+        "upstream_seconds": 7.133905527705792,
+        "downstream_seconds": 2.4955526180565357,
+        "cold_method_total_seconds": 9.629458145762328,
+        "upstream_stages": {
+          "construction": 6.990807051945012,
+          "payload_labels": 0.047478336666245013,
+          "cleanup_gc": 0.09556403110036626,
+          "total": 7.133905527705792
+        },
+        "downstream_stages": {
+          "router_compile": 0.2176176980137825,
+          "serialize": 0.04711517895339057,
+          "worker_command": 2.082889373181388,
+          "load": 0.457969672861509,
+          "index": 0.03951614606194198,
+          "planning": 0.6220899458276108,
+          "routing": 0.0005612008972093463,
+          "release_gc": 0.14783939201151952,
+          "total": 2.4955526180565357,
+          "worker_overhead": 0.9627524075331166
+        },
+        "worker_command_seconds_included_in_downstream": 2.082889373181388
+      }
+    }
+  },
+  "ratios": {
+    "COMPOSED_MAP_vs_FULL_MAP": {
+      "cold_method_total_seconds": 0.8412512356890643,
+      "package_bytes": 0.47700323543006007,
+      "router_bytes": 0.9790577656881635,
+      "planning_action_rows": 0.25688911551617905
+    },
+    "COMPOSED_DAG_vs_FULL_MAP": {
+      "cold_method_total_seconds": 0.8647337174786732,
+      "package_bytes": 0.5318038573049287,
+      "router_bytes": 1.1958577959121992,
+      "planning_action_rows": 0.25688911551617905
+    },
+    "COMPOSED_DAG_vs_COMPOSED_MAP": {
+      "cold_method_total_seconds": 1.027913756073564,
+      "package_bytes": 1.114885220485897,
+      "router_bytes": 1.221437424656604,
+      "planning_action_rows": 1.0
+    }
+  },
+  "finite_direct_routing_established": true,
+  "finite_dag_cold_cost_benefit_vs_full": true,
+  "finite_dag_cold_cost_benefit_vs_composed_map": false,
+  "general_semantic_encoder_established": false,
+  "general_strategic_learning_solved": false,
+  "actual_execution": {
+    "upstream_seconds_by_variant": {
+      "FULL": 7.183095367799979,
+      "COMPOSED": 7.133905527705792
+    },
+    "upstream_seconds": 14.317000895505771,
+    "downstream_seconds": 8.682264428003691,
+    "shared_composed_upstream_executions_per_target": 1,
+    "audit_seconds": 0.9297706309589557,
+    "audit_counts": {
+      "full_rows": 47067,
+      "full_outcome_terms": 68898,
+      "composed_rows": 12091,
+      "composed_outcome_terms": 23589,
+      "full_state_contract_checks": 15309,
+      "joint_rows_verified": 47067,
+      "router_FULL_MAP_retained_active_observation": 15209,
+      "router_FULL_MAP_portable_observation": 60,
+      "router_FULL_MAP_unsupported_observation": 95,
+      "router_COMPOSED_MAP_retained_active_observation": 15209,
+      "router_COMPOSED_MAP_portable_observation": 60,
+      "router_COMPOSED_MAP_unsupported_observation": 95,
+      "router_COMPOSED_DAG_retained_active_observation": 15209,
+      "router_COMPOSED_DAG_portable_observation": 60,
+      "router_COMPOSED_DAG_unsupported_observation": 95
+    },
+    "worker_command_seconds_included_in_downstream": 7.94869522517547,
+    "case_cleanup_seconds": 0.09393703594105318,
+    "runner_wall_seconds": 24.42288412700873,
+    "peak_rss_bytes": 61501440
+  },
+  "timing_scope": "Each method pays its upstream construction once plus downstream times.total. The two composed deployments each attribute the same shared construction, which actually executes once per target. Worker startup, loading, indexing, planning, routing, and result serialization are included in downstream total; their displayed substage times and portable command time must not be added again. Frozen source learning and independent audit costs are outside method cost.",
+  "evidence_scope": "Same 32 V69 supports and frozen relational rule. Kernels, 14 query policies, all retained active routes, and the same 60 observations are compared. V69 policy evidence is inherited only after complete preservation; no new ground validation or strategic generalization result is claimed. Timing is one descriptive cold-start comparison.",
+  "analysis_seconds_before_write": 0.0047873209696263075
+}

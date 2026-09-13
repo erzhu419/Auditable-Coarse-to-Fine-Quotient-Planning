@@ -1,0 +1,1786 @@
+{
+  "integrity_passed": true,
+  "complete_quality_evidence": true,
+  "strata": [
+    {
+      "nodes": 7,
+      "stratum": "sparse",
+      "expected_degree": 1.5,
+      "p": 0.25,
+      "quality_complete": true,
+      "expected_graphs": 16,
+      "terminal_cases": 48,
+      "complete_cases": 48,
+      "resource_limited_cases": 0,
+      "costs_by_method": {
+        "LOOKAHEAD_1": {
+          "case_records": 16,
+          "complete_cases": 16,
+          "resource_limited_cases": 0,
+          "state_records": 222,
+          "decision_work": {
+            "planner_calls": 222,
+            "dp_states": 71,
+            "action_value_evaluations": 325,
+            "kernel_builds": 325,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 893,
+            "target_probability_evaluations": 1322,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 893,
+            "forced_choice": 151
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 222,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 457,
+            "target_probability_evaluations": 498,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 222,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 232
+          },
+          "wall_seconds": 0.009618259005947039,
+          "decision_seconds": 0.0057623329339548945,
+          "evaluation_seconds": 0.003855926071992144,
+          "serialization_seconds": 0.0034213101025670767,
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 32.0,
+            "action_value_evaluations": 178.08333333333331,
+            "kernel_builds": 178.08333333333331,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 455.90277777777777,
+            "target_probability_evaluations": 886.8888888888889,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 455.90277777777777,
+            "forced_choice": 16.0
+          },
+          "expected_decision_seconds": 0.002418930841043327,
+          "expected_nonforced_planner_calls": 32.0
+        },
+        "LOOKAHEAD_2": {
+          "case_records": 16,
+          "complete_cases": 16,
+          "resource_limited_cases": 0,
+          "state_records": 221,
+          "decision_work": {
+            "planner_calls": 221,
+            "dp_states": 1018,
+            "action_value_evaluations": 2364,
+            "kernel_builds": 2364,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 5296,
+            "target_probability_evaluations": 8248,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 5296,
+            "forced_choice": 149
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 221,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 444,
+            "target_probability_evaluations": 506,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 221,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 233
+          },
+          "wall_seconds": 0.031183172977762297,
+          "decision_seconds": 0.027723134495317936,
+          "evaluation_seconds": 0.003460038482444361,
+          "serialization_seconds": 0.003431736957281828,
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 503.3611111111111,
+            "action_value_evaluations": 1730.611111111111,
+            "kernel_builds": 1730.611111111111,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 4135.125,
+            "target_probability_evaluations": 6809.930555555556,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 4135.125,
+            "forced_choice": 16.0
+          },
+          "expected_decision_seconds": 0.021432595254765804,
+          "expected_nonforced_planner_calls": 32.0
+        },
+        "LOOKAHEAD_FULL": {
+          "case_records": 16,
+          "complete_cases": 16,
+          "resource_limited_cases": 0,
+          "state_records": 222,
+          "decision_work": {
+            "planner_calls": 222,
+            "dp_states": 3589,
+            "action_value_evaluations": 4935,
+            "kernel_builds": 4935,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 9427,
+            "target_probability_evaluations": 15258,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 9427,
+            "forced_choice": 151
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 222,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 452,
+            "target_probability_evaluations": 532,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 222,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 232
+          },
+          "wall_seconds": 0.04503847300657071,
+          "decision_seconds": 0.04099269688595086,
+          "evaluation_seconds": 0.004045776120619848,
+          "serialization_seconds": 0.003683098067995161,
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 3089.361111111111,
+            "action_value_evaluations": 4317.944444444445,
+            "kernel_builds": 4317.944444444445,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 8286.875,
+            "target_probability_evaluations": 13843.763888888889,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 8286.875,
+            "forced_choice": 16.0
+          },
+          "expected_decision_seconds": 0.03466773032147899,
+          "expected_nonforced_planner_calls": 32.0
+        }
+      },
+      "values": {
+        "LOOKAHEAD_1": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 5.540606714570473,
+          "minimum": 4.027777777777778,
+          "maximum": 6.453703703703703,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_2": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 5.724187654722865,
+          "minimum": 4.4375,
+          "maximum": 6.5,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_FULL": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 5.771713696389532,
+          "minimum": 4.4375,
+          "maximum": 6.5,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        }
+      },
+      "contrasts": {
+        "candidate_minus_myopic": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.183580940152392,
+          "minimum": -0.09375,
+          "maximum": 1.0,
+          "positive_count": 8,
+          "negative_count": 1,
+          "tie_count": 7
+        },
+        "full_minus_candidate": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.04752604166666663,
+          "minimum": 0.0,
+          "maximum": 0.33333333333333304,
+          "positive_count": 4,
+          "negative_count": 0,
+          "tie_count": 12
+        },
+        "full_minus_myopic": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.23110698181905864,
+          "minimum": 0.0,
+          "maximum": 1.0555555555555554,
+          "positive_count": 10,
+          "negative_count": 0,
+          "tie_count": 6
+        },
+        "headroom_fraction": {
+          "count": 16,
+          "available_count": 10,
+          "null_count": 6,
+          "mean": 0.768421052631579,
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "positive_count": 8,
+          "negative_count": 0,
+          "tie_count": 2
+        }
+      },
+      "per_graph": [
+        {
+          "graph_id": 540000,
+          "values": {
+            "LOOKAHEAD_1": 4.027777777777778,
+            "LOOKAHEAD_2": 4.75,
+            "LOOKAHEAD_FULL": 5.083333333333333
+          },
+          "candidate_minus_myopic": 0.7222222222222223,
+          "full_minus_candidate": 0.33333333333333304,
+          "full_minus_myopic": 1.0555555555555554,
+          "headroom_fraction": 0.6842105263157897
+        },
+        {
+          "graph_id": 540001,
+          "values": {
+            "LOOKAHEAD_1": 5.75,
+            "LOOKAHEAD_2": 5.75,
+            "LOOKAHEAD_FULL": 5.75
+          },
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0,
+          "headroom_fraction": null
+        },
+        {
+          "graph_id": 540002,
+          "values": {
+            "LOOKAHEAD_1": 6.041666666666666,
+            "LOOKAHEAD_2": 6.041666666666666,
+            "LOOKAHEAD_FULL": 6.041666666666666
+          },
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0,
+          "headroom_fraction": null
+        },
+        {
+          "graph_id": 540003,
+          "values": {
+            "LOOKAHEAD_1": 5.375,
+            "LOOKAHEAD_2": 5.4375,
+            "LOOKAHEAD_FULL": 5.4375
+          },
+          "candidate_minus_myopic": 0.0625,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0625,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540004,
+          "values": {
+            "LOOKAHEAD_1": 5.578125,
+            "LOOKAHEAD_2": 5.747829861111111,
+            "LOOKAHEAD_FULL": 5.747829861111111
+          },
+          "candidate_minus_myopic": 0.16970486111111072,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.16970486111111072,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540005,
+          "values": {
+            "LOOKAHEAD_1": 5.5,
+            "LOOKAHEAD_2": 5.5,
+            "LOOKAHEAD_FULL": 5.583333333333333
+          },
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.08333333333333304,
+          "full_minus_myopic": 0.08333333333333304,
+          "headroom_fraction": 0.0
+        },
+        {
+          "graph_id": 540006,
+          "values": {
+            "LOOKAHEAD_1": 5.275720164609053,
+            "LOOKAHEAD_2": 5.275720164609053,
+            "LOOKAHEAD_FULL": 5.275720164609053
+          },
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0,
+          "headroom_fraction": null
+        },
+        {
+          "graph_id": 540007,
+          "values": {
+            "LOOKAHEAD_1": 4.4375,
+            "LOOKAHEAD_2": 4.4375,
+            "LOOKAHEAD_FULL": 4.4375
+          },
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0,
+          "headroom_fraction": null
+        },
+        {
+          "graph_id": 540008,
+          "values": {
+            "LOOKAHEAD_1": 6.453703703703703,
+            "LOOKAHEAD_2": 6.453703703703704,
+            "LOOKAHEAD_FULL": 6.453703703703704
+          },
+          "candidate_minus_myopic": 8.881784197001252e-16,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 8.881784197001252e-16,
+          "headroom_fraction": null
+        },
+        {
+          "graph_id": 540009,
+          "values": {
+            "LOOKAHEAD_1": 5.5,
+            "LOOKAHEAD_2": 5.40625,
+            "LOOKAHEAD_FULL": 5.5
+          },
+          "candidate_minus_myopic": -0.09375,
+          "full_minus_candidate": 0.09375,
+          "full_minus_myopic": 0.0,
+          "headroom_fraction": null
+        },
+        {
+          "graph_id": 540010,
+          "values": {
+            "LOOKAHEAD_1": 5.638888888888889,
+            "LOOKAHEAD_2": 5.7253086419753085,
+            "LOOKAHEAD_FULL": 5.7253086419753085
+          },
+          "candidate_minus_myopic": 0.08641975308641925,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.08641975308641925,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540011,
+          "values": {
+            "LOOKAHEAD_1": 6.25,
+            "LOOKAHEAD_2": 6.25,
+            "LOOKAHEAD_FULL": 6.5
+          },
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.25,
+          "full_minus_myopic": 0.25,
+          "headroom_fraction": 0.0
+        },
+        {
+          "graph_id": 540012,
+          "values": {
+            "LOOKAHEAD_1": 4.75,
+            "LOOKAHEAD_2": 5.75,
+            "LOOKAHEAD_FULL": 5.75
+          },
+          "candidate_minus_myopic": 1.0,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 1.0,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540013,
+          "values": {
+            "LOOKAHEAD_1": 5.981481481481481,
+            "LOOKAHEAD_2": 6.5,
+            "LOOKAHEAD_FULL": 6.5
+          },
+          "candidate_minus_myopic": 0.518518518518519,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.518518518518519,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540014,
+          "values": {
+            "LOOKAHEAD_1": 6.2646484375,
+            "LOOKAHEAD_2": 6.2861328125,
+            "LOOKAHEAD_FULL": 6.2861328125
+          },
+          "candidate_minus_myopic": 0.021484375,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.021484375,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540015,
+          "values": {
+            "LOOKAHEAD_1": 5.8251953125,
+            "LOOKAHEAD_2": 6.275390625,
+            "LOOKAHEAD_FULL": 6.275390625
+          },
+          "candidate_minus_myopic": 0.4501953125,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.4501953125,
+          "headroom_fraction": 1.0
+        }
+      ],
+      "sum_gain_over_sum_headroom": 0.7943547992683477
+    },
+    {
+      "nodes": 7,
+      "stratum": "dense",
+      "expected_degree": 4.5,
+      "p": 0.75,
+      "quality_complete": true,
+      "expected_graphs": 16,
+      "terminal_cases": 48,
+      "complete_cases": 48,
+      "resource_limited_cases": 0,
+      "costs_by_method": {
+        "LOOKAHEAD_1": {
+          "case_records": 16,
+          "complete_cases": 16,
+          "resource_limited_cases": 0,
+          "state_records": 4034,
+          "decision_work": {
+            "planner_calls": 4034,
+            "dp_states": 793,
+            "action_value_evaluations": 2677,
+            "kernel_builds": 2677,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 21107,
+            "target_probability_evaluations": 7392,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 21107,
+            "forced_choice": 3241
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 4022,
+            "kernel_cache_hits": 12,
+            "transition_outcomes": 13873,
+            "target_probability_evaluations": 7187,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 4034,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 5853
+          },
+          "wall_seconds": 0.1577927390462719,
+          "decision_seconds": 0.08775116669130512,
+          "evaluation_seconds": 0.07004157235496677,
+          "serialization_seconds": 0.04888541402760893,
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 31.95593841145833,
+            "action_value_evaluations": 185.85784482060183,
+            "kernel_builds": 185.85784482060183,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 4137.487931235532,
+            "target_probability_evaluations": 956.081111111111,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 4137.487931235532,
+            "forced_choice": 16.044061588541663
+          },
+          "expected_decision_seconds": 0.007888831203361856,
+          "expected_nonforced_planner_calls": 31.955938411458337
+        },
+        "LOOKAHEAD_2": {
+          "case_records": 16,
+          "complete_cases": 16,
+          "resource_limited_cases": 0,
+          "state_records": 3768,
+          "decision_work": {
+            "planner_calls": 3768,
+            "dp_states": 21082,
+            "action_value_evaluations": 30799,
+            "kernel_builds": 30799,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 155724,
+            "target_probability_evaluations": 67652,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 155724,
+            "forced_choice": 3027
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 3758,
+            "kernel_cache_hits": 10,
+            "transition_outcomes": 13281,
+            "target_probability_evaluations": 6829,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 3768,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 5573
+          },
+          "wall_seconds": 0.5753260760393459,
+          "decision_seconds": 0.4896022057509981,
+          "evaluation_seconds": 0.08572387028834783,
+          "serialization_seconds": 0.044537632988067344,
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 4174.763610387732,
+            "action_value_evaluations": 12259.998757537614,
+            "kernel_builds": 12259.998757537614,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 98533.02541451101,
+            "target_probability_evaluations": 34782.89057712673,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 98533.02541451101,
+            "forced_choice": 16.041580107060184
+          },
+          "expected_decision_seconds": 0.25115583207323544,
+          "expected_nonforced_planner_calls": 31.958419892939816
+        },
+        "LOOKAHEAD_FULL": {
+          "case_records": 16,
+          "complete_cases": 16,
+          "resource_limited_cases": 0,
+          "state_records": 3768,
+          "decision_work": {
+            "planner_calls": 3768,
+            "dp_states": 43750,
+            "action_value_evaluations": 53467,
+            "kernel_builds": 53455,
+            "kernel_cache_hits": 12,
+            "transition_outcomes": 243449,
+            "target_probability_evaluations": 114800,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 243461,
+            "forced_choice": 3027
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 3758,
+            "kernel_cache_hits": 10,
+            "transition_outcomes": 13281,
+            "target_probability_evaluations": 6829,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 3768,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 5573
+          },
+          "wall_seconds": 0.8235767350124661,
+          "decision_seconds": 0.7427129967254587,
+          "evaluation_seconds": 0.08086373828700744,
+          "serialization_seconds": 0.045550613052910194,
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 26842.763610387734,
+            "action_value_evaluations": 34927.998757537614,
+            "kernel_builds": 34915.998757537614,
+            "kernel_cache_hits": 12.0,
+            "transition_outcomes": 186258.02541451104,
+            "target_probability_evaluations": 81930.89057712675,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 186270.02541451104,
+            "forced_choice": 16.041580107060184
+          },
+          "expected_decision_seconds": 0.53726587603897,
+          "expected_nonforced_planner_calls": 31.958419892939816
+        }
+      },
+      "values": {
+        "LOOKAHEAD_1": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 4.922004106575426,
+          "minimum": 4.621827432951702,
+          "maximum": 5.494663622336822,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_2": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 4.941747402275677,
+          "minimum": 4.686898743604774,
+          "maximum": 5.495147118189446,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_FULL": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 4.941747402275677,
+          "minimum": 4.686898743604774,
+          "maximum": 5.495147118189446,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        }
+      },
+      "contrasts": {
+        "candidate_minus_myopic": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.019743295700251018,
+          "minimum": 0.0,
+          "maximum": 0.08426142361089006,
+          "positive_count": 15,
+          "negative_count": 0,
+          "tie_count": 1
+        },
+        "full_minus_candidate": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0,
+          "positive_count": 0,
+          "negative_count": 0,
+          "tie_count": 16
+        },
+        "full_minus_myopic": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.019743295700251018,
+          "minimum": 0.0,
+          "maximum": 0.08426142361089006,
+          "positive_count": 15,
+          "negative_count": 0,
+          "tie_count": 1
+        },
+        "headroom_fraction": {
+          "count": 16,
+          "available_count": 15,
+          "null_count": 1,
+          "mean": 1.0,
+          "minimum": 1.0,
+          "maximum": 1.0,
+          "positive_count": 15,
+          "negative_count": 0,
+          "tie_count": 0
+        }
+      },
+      "per_graph": [
+        {
+          "graph_id": 540100,
+          "values": {
+            "LOOKAHEAD_1": 4.7276855318465785,
+            "LOOKAHEAD_2": 4.795891719511564,
+            "LOOKAHEAD_FULL": 4.795891719511564
+          },
+          "candidate_minus_myopic": 0.06820618766498576,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.06820618766498576,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540101,
+          "values": {
+            "LOOKAHEAD_1": 5.046164641156793,
+            "LOOKAHEAD_2": 5.049036532640457,
+            "LOOKAHEAD_FULL": 5.049036532640457
+          },
+          "candidate_minus_myopic": 0.0028718914836645126,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0028718914836645126,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540102,
+          "values": {
+            "LOOKAHEAD_1": 4.919873528022896,
+            "LOOKAHEAD_2": 5.004134951633786,
+            "LOOKAHEAD_FULL": 5.004134951633786
+          },
+          "candidate_minus_myopic": 0.08426142361089006,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.08426142361089006,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540103,
+          "values": {
+            "LOOKAHEAD_1": 4.854459684259757,
+            "LOOKAHEAD_2": 4.855582626583795,
+            "LOOKAHEAD_FULL": 4.855582626583795
+          },
+          "candidate_minus_myopic": 0.0011229423240379788,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0011229423240379788,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540104,
+          "values": {
+            "LOOKAHEAD_1": 4.865671079124832,
+            "LOOKAHEAD_2": 4.866975483366069,
+            "LOOKAHEAD_FULL": 4.866975483366069
+          },
+          "candidate_minus_myopic": 0.0013044042412371226,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0013044042412371226,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540105,
+          "values": {
+            "LOOKAHEAD_1": 4.86470700719194,
+            "LOOKAHEAD_2": 4.8663426295492735,
+            "LOOKAHEAD_FULL": 4.8663426295492735
+          },
+          "candidate_minus_myopic": 0.0016356223573339435,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0016356223573339435,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540106,
+          "values": {
+            "LOOKAHEAD_1": 5.494663622336822,
+            "LOOKAHEAD_2": 5.495147118189446,
+            "LOOKAHEAD_FULL": 5.495147118189446
+          },
+          "candidate_minus_myopic": 0.00048349585262386086,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.00048349585262386086,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540107,
+          "values": {
+            "LOOKAHEAD_1": 4.857501829310207,
+            "LOOKAHEAD_2": 4.857501829310207,
+            "LOOKAHEAD_FULL": 4.857501829310207
+          },
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0,
+          "headroom_fraction": null
+        },
+        {
+          "graph_id": 540108,
+          "values": {
+            "LOOKAHEAD_1": 4.91704353534143,
+            "LOOKAHEAD_2": 4.980880919408012,
+            "LOOKAHEAD_FULL": 4.980880919408012
+          },
+          "candidate_minus_myopic": 0.06383738406658157,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.06383738406658157,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540109,
+          "values": {
+            "LOOKAHEAD_1": 4.988573284560524,
+            "LOOKAHEAD_2": 4.9908450239952185,
+            "LOOKAHEAD_FULL": 4.9908450239952185
+          },
+          "candidate_minus_myopic": 0.0022717394346942754,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0022717394346942754,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540110,
+          "values": {
+            "LOOKAHEAD_1": 5.027370130267031,
+            "LOOKAHEAD_2": 5.029773352867031,
+            "LOOKAHEAD_FULL": 5.029773352867031
+          },
+          "candidate_minus_myopic": 0.0024032225999999213,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0024032225999999213,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540111,
+          "values": {
+            "LOOKAHEAD_1": 5.124856820329861,
+            "LOOKAHEAD_2": 5.125598077505787,
+            "LOOKAHEAD_FULL": 5.125598077505787
+          },
+          "candidate_minus_myopic": 0.0007412571759255471,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0007412571759255471,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540112,
+          "values": {
+            "LOOKAHEAD_1": 4.621827432951702,
+            "LOOKAHEAD_2": 4.686898743604774,
+            "LOOKAHEAD_FULL": 4.686898743604774
+          },
+          "candidate_minus_myopic": 0.0650713106530727,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0650713106530727,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540113,
+          "values": {
+            "LOOKAHEAD_1": 4.9688366804683675,
+            "LOOKAHEAD_2": 4.969134244473855,
+            "LOOKAHEAD_FULL": 4.969134244473855
+          },
+          "candidate_minus_myopic": 0.00029756400548741624,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.00029756400548741624,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540114,
+          "values": {
+            "LOOKAHEAD_1": 4.766123007669228,
+            "LOOKAHEAD_2": 4.787185041550858,
+            "LOOKAHEAD_FULL": 4.787185041550858
+          },
+          "candidate_minus_myopic": 0.021062033881629638,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.021062033881629638,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540115,
+          "values": {
+            "LOOKAHEAD_1": 4.706707890368848,
+            "LOOKAHEAD_2": 4.7070301422207,
+            "LOOKAHEAD_FULL": 4.7070301422207
+          },
+          "candidate_minus_myopic": 0.00032225185185197347,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.00032225185185197347,
+          "headroom_fraction": 1.0
+        }
+      ],
+      "sum_gain_over_sum_headroom": 1.0
+    },
+    {
+      "nodes": 9,
+      "stratum": "sparse",
+      "expected_degree": 1.5,
+      "p": 0.1875,
+      "quality_complete": true,
+      "expected_graphs": 16,
+      "terminal_cases": 48,
+      "complete_cases": 48,
+      "resource_limited_cases": 0,
+      "costs_by_method": {
+        "LOOKAHEAD_1": {
+          "case_records": 16,
+          "complete_cases": 16,
+          "resource_limited_cases": 0,
+          "state_records": 370,
+          "decision_work": {
+            "planner_calls": 370,
+            "dp_states": 77,
+            "action_value_evaluations": 482,
+            "kernel_builds": 482,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 1779,
+            "target_probability_evaluations": 2740,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 1779,
+            "forced_choice": 293
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 370,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 870,
+            "target_probability_evaluations": 1142,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 370,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 364
+          },
+          "wall_seconds": 0.01805635297205299,
+          "decision_seconds": 0.01135194901144132,
+          "evaluation_seconds": 0.006704403960611671,
+          "serialization_seconds": 0.005133905913680792,
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 32.0,
+            "action_value_evaluations": 238.25,
+            "kernel_builds": 238.25,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 763.0833333333334,
+            "target_probability_evaluations": 1622.9722222222224,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 763.0833333333334,
+            "forced_choice": 16.0
+          },
+          "expected_decision_seconds": 0.003966463030730755,
+          "expected_nonforced_planner_calls": 32.0
+        },
+        "LOOKAHEAD_2": {
+          "case_records": 16,
+          "complete_cases": 16,
+          "resource_limited_cases": 0,
+          "state_records": 356,
+          "decision_work": {
+            "planner_calls": 356,
+            "dp_states": 1819,
+            "action_value_evaluations": 4366,
+            "kernel_builds": 4366,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 12270,
+            "target_probability_evaluations": 21825,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 12270,
+            "forced_choice": 279
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 356,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 848,
+            "target_probability_evaluations": 1088,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 356,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 350
+          },
+          "wall_seconds": 0.057118120952509344,
+          "decision_seconds": 0.050846740981796756,
+          "evaluation_seconds": 0.006271379970712587,
+          "serialization_seconds": 0.005205208930419758,
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 785.5833333333334,
+            "action_value_evaluations": 3132.583333333333,
+            "kernel_builds": 3132.583333333333,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 9591.055555555555,
+            "target_probability_evaluations": 17787.180555555555,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 9591.055555555555,
+            "forced_choice": 16.0
+          },
+          "expected_decision_seconds": 0.03518248958672782,
+          "expected_nonforced_planner_calls": 32.0
+        },
+        "LOOKAHEAD_FULL": {
+          "case_records": 16,
+          "complete_cases": 16,
+          "resource_limited_cases": 0,
+          "state_records": 325,
+          "decision_work": {
+            "planner_calls": 325,
+            "dp_states": 8662,
+            "action_value_evaluations": 11196,
+            "kernel_builds": 11196,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 26200,
+            "target_probability_evaluations": 49923,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 26200,
+            "forced_choice": 251
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 325,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 775,
+            "target_probability_evaluations": 988,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 325,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 319
+          },
+          "wall_seconds": 0.15322125892271288,
+          "decision_seconds": 0.1469198638224043,
+          "evaluation_seconds": 0.006301395100308582,
+          "serialization_seconds": 0.004953857860527933,
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 7714.916666666667,
+            "action_value_evaluations": 10062.583333333332,
+            "kernel_builds": 10062.583333333332,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 23709.72222222222,
+            "target_probability_evaluations": 46270.26388888889,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 23709.72222222222,
+            "forced_choice": 16.0
+          },
+          "expected_decision_seconds": 0.13151332059852397,
+          "expected_nonforced_planner_calls": 32.0
+        }
+      },
+      "values": {
+        "LOOKAHEAD_1": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 7.029427234037422,
+          "minimum": 5.083333333333333,
+          "maximum": 8.4375,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_2": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 7.186775866849922,
+          "minimum": 5.166666666666666,
+          "maximum": 8.5,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_FULL": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 7.239184721016589,
+          "minimum": 5.75,
+          "maximum": 8.5,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        }
+      },
+      "contrasts": {
+        "candidate_minus_myopic": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.1573486328125,
+          "minimum": 0.0,
+          "maximum": 0.768518518518519,
+          "positive_count": 8,
+          "negative_count": 0,
+          "tie_count": 8
+        },
+        "full_minus_candidate": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.05240885416666674,
+          "minimum": 0.0,
+          "maximum": 0.5833333333333339,
+          "positive_count": 3,
+          "negative_count": 0,
+          "tie_count": 13
+        },
+        "full_minus_myopic": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.20975748697916674,
+          "minimum": 0.0,
+          "maximum": 0.768518518518519,
+          "positive_count": 9,
+          "negative_count": 0,
+          "tie_count": 7
+        },
+        "headroom_fraction": {
+          "count": 16,
+          "available_count": 9,
+          "null_count": 7,
+          "mean": 0.6944444444444444,
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "positive_count": 8,
+          "negative_count": 0,
+          "tie_count": 1
+        }
+      },
+      "per_graph": [
+        {
+          "graph_id": 540200,
+          "values": {
+            "LOOKAHEAD_1": 6.125,
+            "LOOKAHEAD_2": 6.15625,
+            "LOOKAHEAD_FULL": 6.375
+          },
+          "candidate_minus_myopic": 0.03125,
+          "full_minus_candidate": 0.21875,
+          "full_minus_myopic": 0.25,
+          "headroom_fraction": 0.125
+        },
+        {
+          "graph_id": 540201,
+          "values": {
+            "LOOKAHEAD_1": 7.162037037037037,
+            "LOOKAHEAD_2": 7.310185185185185,
+            "LOOKAHEAD_FULL": 7.310185185185185
+          },
+          "candidate_minus_myopic": 0.14814814814814792,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.14814814814814792,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540202,
+          "values": {
+            "LOOKAHEAD_1": 7.342592592592592,
+            "LOOKAHEAD_2": 7.342592592592592,
+            "LOOKAHEAD_FULL": 7.342592592592592
+          },
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0,
+          "headroom_fraction": null
+        },
+        {
+          "graph_id": 540203,
+          "values": {
+            "LOOKAHEAD_1": 7.0,
+            "LOOKAHEAD_2": 7.5,
+            "LOOKAHEAD_FULL": 7.5
+          },
+          "candidate_minus_myopic": 0.5,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.5,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540204,
+          "values": {
+            "LOOKAHEAD_1": 5.083333333333333,
+            "LOOKAHEAD_2": 5.166666666666666,
+            "LOOKAHEAD_FULL": 5.75
+          },
+          "candidate_minus_myopic": 0.08333333333333304,
+          "full_minus_candidate": 0.5833333333333339,
+          "full_minus_myopic": 0.666666666666667,
+          "headroom_fraction": 0.1249999999999995
+        },
+        {
+          "graph_id": 540205,
+          "values": {
+            "LOOKAHEAD_1": 7.34375,
+            "LOOKAHEAD_2": 7.34375,
+            "LOOKAHEAD_FULL": 7.34375
+          },
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0,
+          "headroom_fraction": null
+        },
+        {
+          "graph_id": 540206,
+          "values": {
+            "LOOKAHEAD_1": 6.055555555555555,
+            "LOOKAHEAD_2": 6.055555555555555,
+            "LOOKAHEAD_FULL": 6.055555555555555
+          },
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0,
+          "headroom_fraction": null
+        },
+        {
+          "graph_id": 540207,
+          "values": {
+            "LOOKAHEAD_1": 7.1025390625,
+            "LOOKAHEAD_2": 7.634765625,
+            "LOOKAHEAD_FULL": 7.634765625
+          },
+          "candidate_minus_myopic": 0.5322265625,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.5322265625,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540208,
+          "values": {
+            "LOOKAHEAD_1": 8.4375,
+            "LOOKAHEAD_2": 8.4375,
+            "LOOKAHEAD_FULL": 8.4375
+          },
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0,
+          "headroom_fraction": null
+        },
+        {
+          "graph_id": 540209,
+          "values": {
+            "LOOKAHEAD_1": 6.794921875,
+            "LOOKAHEAD_2": 6.9365234375,
+            "LOOKAHEAD_FULL": 6.9365234375
+          },
+          "candidate_minus_myopic": 0.1416015625,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.1416015625,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540210,
+          "values": {
+            "LOOKAHEAD_1": 7.318359375,
+            "LOOKAHEAD_2": 7.318359375,
+            "LOOKAHEAD_FULL": 7.354817708333334
+          },
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.036458333333333925,
+          "full_minus_myopic": 0.036458333333333925,
+          "headroom_fraction": 0.0
+        },
+        {
+          "graph_id": 540211,
+          "values": {
+            "LOOKAHEAD_1": 7.354166666666666,
+            "LOOKAHEAD_2": 7.354166666666666,
+            "LOOKAHEAD_FULL": 7.354166666666666
+          },
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0,
+          "headroom_fraction": null
+        },
+        {
+          "graph_id": 540212,
+          "values": {
+            "LOOKAHEAD_1": 6.446502057613168,
+            "LOOKAHEAD_2": 7.215020576131687,
+            "LOOKAHEAD_FULL": 7.215020576131687
+          },
+          "candidate_minus_myopic": 0.768518518518519,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.768518518518519,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540213,
+          "values": {
+            "LOOKAHEAD_1": 8.09207818930041,
+            "LOOKAHEAD_2": 8.09207818930041,
+            "LOOKAHEAD_FULL": 8.09207818930041
+          },
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0,
+          "headroom_fraction": null
+        },
+        {
+          "graph_id": 540214,
+          "values": {
+            "LOOKAHEAD_1": 8.1875,
+            "LOOKAHEAD_2": 8.5,
+            "LOOKAHEAD_FULL": 8.5
+          },
+          "candidate_minus_myopic": 0.3125,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.3125,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540215,
+          "values": {
+            "LOOKAHEAD_1": 6.625,
+            "LOOKAHEAD_2": 6.625,
+            "LOOKAHEAD_FULL": 6.625
+          },
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0,
+          "headroom_fraction": null
+        }
+      ],
+      "sum_gain_over_sum_headroom": 0.7501454898157126
+    },
+    {
+      "nodes": 9,
+      "stratum": "dense",
+      "expected_degree": 4.5,
+      "p": 0.5625,
+      "quality_complete": true,
+      "expected_graphs": 16,
+      "terminal_cases": 48,
+      "complete_cases": 48,
+      "resource_limited_cases": 0,
+      "costs_by_method": {
+        "LOOKAHEAD_1": {
+          "case_records": 16,
+          "complete_cases": 16,
+          "resource_limited_cases": 0,
+          "state_records": 17530,
+          "decision_work": {
+            "planner_calls": 17530,
+            "dp_states": 1392,
+            "action_value_evaluations": 6564,
+            "kernel_builds": 6564,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 108949,
+            "target_probability_evaluations": 26988,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 108949,
+            "forced_choice": 16138
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 17530,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 92079,
+            "target_probability_evaluations": 45477,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 17530,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 24590
+          },
+          "wall_seconds": 0.9020863479818217,
+          "decision_seconds": 0.5320554340432864,
+          "evaluation_seconds": 0.3700309139385354,
+          "serialization_seconds": 0.17310506300418638,
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 31.99971540816327,
+            "action_value_evaluations": 246.76876302721092,
+            "kernel_builds": 246.76876302721092,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 7669.149855616025,
+            "target_probability_evaluations": 1727.2336337868483,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 7669.149855616025,
+            "forced_choice": 16.00028459183674
+          },
+          "expected_decision_seconds": 0.014730298777887792,
+          "expected_nonforced_planner_calls": 31.99971540816326
+        },
+        "LOOKAHEAD_2": {
+          "case_records": 16,
+          "complete_cases": 16,
+          "resource_limited_cases": 0,
+          "state_records": 15980,
+          "decision_work": {
+            "planner_calls": 15980,
+            "dp_states": 109441,
+            "action_value_evaluations": 134792,
+            "kernel_builds": 134792,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 1052868,
+            "target_probability_evaluations": 397926,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 1052868,
+            "forced_choice": 14620
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 15980,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 86815,
+            "target_probability_evaluations": 42056,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 15980,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 23960
+          },
+          "wall_seconds": 3.175481725978898,
+          "decision_seconds": 2.833989265462151,
+          "evaluation_seconds": 0.3414924605167471,
+          "serialization_seconds": 0.1510574700369034,
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 7790.771817937767,
+            "action_value_evaluations": 28296.690865556822,
+            "kernel_builds": 28296.690865556822,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 535996.8574127199,
+            "target_probability_evaluations": 124630.26386920005,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 535996.8574127199,
+            "forced_choice": 16.00028459183674
+          },
+          "expected_decision_seconds": 1.2476623664565878,
+          "expected_nonforced_planner_calls": 31.99971540816326
+        },
+        "LOOKAHEAD_FULL": {
+          "case_records": 16,
+          "complete_cases": 16,
+          "resource_limited_cases": 0,
+          "state_records": 15723,
+          "decision_work": {
+            "planner_calls": 15723,
+            "dp_states": 287500,
+            "action_value_evaluations": 312959,
+            "kernel_builds": 312959,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 2113984,
+            "target_probability_evaluations": 902422,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 2113984,
+            "forced_choice": 14339
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 15723,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 86066,
+            "target_probability_evaluations": 41387,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 15723,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 23669
+          },
+          "wall_seconds": 7.057330077892402,
+          "decision_seconds": 6.629150515975198,
+          "evaluation_seconds": 0.4281795619172044,
+          "serialization_seconds": 0.1696031220490113,
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 185386.37006639453,
+            "action_value_evaluations": 205892.4557806803,
+            "kernel_builds": 205892.4557806803,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 1593090.3473124113,
+            "target_probability_evaluations": 626563.2315621013,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 1593090.3473124113,
+            "forced_choice": 16.00028459183674
+          },
+          "expected_decision_seconds": 4.48482173730866,
+          "expected_nonforced_planner_calls": 31.99971540816326
+        }
+      },
+      "values": {
+        "LOOKAHEAD_1": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 5.842556120350848,
+          "minimum": 5.34873920864709,
+          "maximum": 6.3375608545291255,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_2": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 5.885557778990539,
+          "minimum": 5.349673954628039,
+          "maximum": 6.339524087464706,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_FULL": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 5.886156966719753,
+          "minimum": 5.349673954628039,
+          "maximum": 6.339524087464706,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        }
+      },
+      "contrasts": {
+        "candidate_minus_myopic": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.04300165863969113,
+          "minimum": 0.0007318192330680873,
+          "maximum": 0.24233382076416632,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "full_minus_candidate": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.0005991877292143011,
+          "minimum": 0.0,
+          "maximum": 0.009537102380719809,
+          "positive_count": 2,
+          "negative_count": 0,
+          "tie_count": 14
+        },
+        "full_minus_myopic": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.04360084636890543,
+          "minimum": 0.000781720519777096,
+          "maximum": 0.2518709231448861,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "headroom_fraction": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.9936437349706327,
+          "minimum": 0.9361647987400435,
+          "maximum": 1.0,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        }
+      },
+      "per_graph": [
+        {
+          "graph_id": 540300,
+          "values": {
+            "LOOKAHEAD_1": 5.986477507738479,
+            "LOOKAHEAD_2": 5.994442974761293,
+            "LOOKAHEAD_FULL": 5.994442974761293
+          },
+          "candidate_minus_myopic": 0.007965467022814643,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.007965467022814643,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540301,
+          "values": {
+            "LOOKAHEAD_1": 6.2940384206000015,
+            "LOOKAHEAD_2": 6.29477023983307,
+            "LOOKAHEAD_FULL": 6.294820141119779
+          },
+          "candidate_minus_myopic": 0.0007318192330680873,
+          "full_minus_candidate": 4.990128670900873e-05,
+          "full_minus_myopic": 0.000781720519777096,
+          "headroom_fraction": 0.9361647987400435
+        },
+        {
+          "graph_id": 540302,
+          "values": {
+            "LOOKAHEAD_1": 5.871848817077851,
+            "LOOKAHEAD_2": 5.875977803040908,
+            "LOOKAHEAD_FULL": 5.875977803040908
+          },
+          "candidate_minus_myopic": 0.004128985963057552,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.004128985963057552,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540303,
+          "values": {
+            "LOOKAHEAD_1": 5.972827126340518,
+            "LOOKAHEAD_2": 5.974901949248578,
+            "LOOKAHEAD_FULL": 5.974901949248578
+          },
+          "candidate_minus_myopic": 0.00207482290806027,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.00207482290806027,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540304,
+          "values": {
+            "LOOKAHEAD_1": 5.445038392523664,
+            "LOOKAHEAD_2": 5.450016627779637,
+            "LOOKAHEAD_FULL": 5.450016627779637
+          },
+          "candidate_minus_myopic": 0.004978235255973296,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.004978235255973296,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540305,
+          "values": {
+            "LOOKAHEAD_1": 5.630295452496225,
+            "LOOKAHEAD_2": 5.872629273260391,
+            "LOOKAHEAD_FULL": 5.882166375641111
+          },
+          "candidate_minus_myopic": 0.24233382076416632,
+          "full_minus_candidate": 0.009537102380719809,
+          "full_minus_myopic": 0.2518709231448861,
+          "headroom_fraction": 0.9621349607900802
+        },
+        {
+          "graph_id": 540306,
+          "values": {
+            "LOOKAHEAD_1": 6.2397751438732865,
+            "LOOKAHEAD_2": 6.245182864377267,
+            "LOOKAHEAD_FULL": 6.245182864377267
+          },
+          "candidate_minus_myopic": 0.005407720503980862,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.005407720503980862,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540307,
+          "values": {
+            "LOOKAHEAD_1": 5.453328039968911,
+            "LOOKAHEAD_2": 5.613481097408919,
+            "LOOKAHEAD_FULL": 5.613481097408919
+          },
+          "candidate_minus_myopic": 0.16015305744000852,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.16015305744000852,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540308,
+          "values": {
+            "LOOKAHEAD_1": 5.558436261418809,
+            "LOOKAHEAD_2": 5.559499161128989,
+            "LOOKAHEAD_FULL": 5.559499161128989
+          },
+          "candidate_minus_myopic": 0.001062899710180254,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.001062899710180254,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540309,
+          "values": {
+            "LOOKAHEAD_1": 5.549433228628026,
+            "LOOKAHEAD_2": 5.769415188647888,
+            "LOOKAHEAD_FULL": 5.769415188647888
+          },
+          "candidate_minus_myopic": 0.2199819600198616,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.2199819600198616,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540310,
+          "values": {
+            "LOOKAHEAD_1": 6.3375608545291255,
+            "LOOKAHEAD_2": 6.339524087464706,
+            "LOOKAHEAD_FULL": 6.339524087464706
+          },
+          "candidate_minus_myopic": 0.001963232935580095,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.001963232935580095,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540311,
+          "values": {
+            "LOOKAHEAD_1": 6.063953020610641,
+            "LOOKAHEAD_2": 6.06835922177194,
+            "LOOKAHEAD_FULL": 6.06835922177194
+          },
+          "candidate_minus_myopic": 0.004406201161299528,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.004406201161299528,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540312,
+          "values": {
+            "LOOKAHEAD_1": 5.798242111110372,
+            "LOOKAHEAD_2": 5.800643856589274,
+            "LOOKAHEAD_FULL": 5.800643856589274
+          },
+          "candidate_minus_myopic": 0.002401745478902484,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.002401745478902484,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540313,
+          "values": {
+            "LOOKAHEAD_1": 5.952561098226223,
+            "LOOKAHEAD_2": 5.967354356788192,
+            "LOOKAHEAD_FULL": 5.967354356788192
+          },
+          "candidate_minus_myopic": 0.014793258561969225,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.014793258561969225,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540314,
+          "values": {
+            "LOOKAHEAD_1": 5.34873920864709,
+            "LOOKAHEAD_2": 5.349673954628039,
+            "LOOKAHEAD_FULL": 5.349673954628039
+          },
+          "candidate_minus_myopic": 0.0009347459809490033,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0009347459809490033,
+          "headroom_fraction": 1.0
+        },
+        {
+          "graph_id": 540315,
+          "values": {
+            "LOOKAHEAD_1": 5.978343241824344,
+            "LOOKAHEAD_2": 5.993051807119531,
+            "LOOKAHEAD_FULL": 5.993051807119531
+          },
+          "candidate_minus_myopic": 0.014708565295186382,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.014708565295186382,
+          "headroom_fraction": 1.0
+        }
+      ],
+      "sum_gain_over_sum_headroom": 0.9862574289465715
+    }
+  ]
+}

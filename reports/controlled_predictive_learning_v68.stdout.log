@@ -1,0 +1,38 @@
+{"variant": "QUOTIENT", "training_step": 250, "final_batch_loss": 2.7563018798828125}
+{"variant": "QUOTIENT", "training_step": 500, "final_batch_loss": 0.001114461338147521}
+{"variant": "QUOTIENT", "training_step": 750, "final_batch_loss": 0.5307428240776062}
+{"variant": "QUOTIENT", "training_step": 1000, "final_batch_loss": 1.2243032455444336}
+{"variant": "QUOTIENT", "training_step": 1250, "final_batch_loss": 0.0001214817602885887}
+{"variant": "QUOTIENT", "training_step": 1500, "final_batch_loss": 0.6736504435539246}
+{"variant": "QUOTIENT", "phase": "trained", "active_cells": 1271, "seconds": 5.457860889961012}
+{"variant": "RAW", "training_step": 250, "final_batch_loss": 2.8536460399627686}
+{"variant": "RAW", "training_step": 500, "final_batch_loss": 0.000288041919702664}
+{"variant": "RAW", "training_step": 750, "final_batch_loss": 0.24384276568889618}
+{"variant": "RAW", "training_step": 1000, "final_batch_loss": 1.5673742294311523}
+{"variant": "RAW", "training_step": 1250, "final_batch_loss": 3.7811003039678326e-06}
+{"variant": "RAW", "training_step": 1500, "final_batch_loss": 0.4511542022228241}
+{"variant": "RAW", "phase": "trained", "active_cells": 6183, "seconds": 8.768061945971567}
+{"case": "v68_target_00", "phase": "audited", "active": 185, "completed_targets": 1}
+{"case": "v68_target_01", "phase": "audited", "active": 450, "completed_targets": 2}
+{"case": "v68_target_02", "phase": "audited", "active": 397, "completed_targets": 3}
+{"case": "v68_target_03", "phase": "audited", "active": 152, "completed_targets": 4}
+{"case": "v68_target_04", "phase": "audited", "active": 66, "completed_targets": 5}
+{"case": "v68_target_05", "phase": "audited", "active": 779, "completed_targets": 6}
+{"case": "v68_target_06", "phase": "audited", "active": 124, "completed_targets": 7}
+{"case": "v68_target_07", "phase": "audited", "active": 173, "completed_targets": 8}
+{"case": "v68_target_08", "phase": "audited", "active": 181, "completed_targets": 9}
+{"case": "v68_target_09", "phase": "audited", "active": 1, "completed_targets": 10}
+{"case": "v68_target_10", "phase": "audited", "active": 197, "completed_targets": 11}
+{"case": "v68_target_11", "phase": "audited", "active": 547, "completed_targets": 12}
+{"case": "v68_target_12", "phase": "audited", "active": 5, "completed_targets": 13}
+{"case": "v68_target_13", "phase": "audited", "active": 219, "completed_targets": 14}
+{"case": "v68_target_14", "phase": "audited", "active": 157, "completed_targets": 15}
+{"case": "v68_target_15", "phase": "audited", "active": 93, "completed_targets": 16}
+{"case": "v68_target_16", "phase": "audited", "active": 209, "completed_targets": 17}
+{"case": "v68_target_17", "phase": "audited", "active": 668, "completed_targets": 18}
+{"case": "v68_target_18", "phase": "audited", "active": 25, "completed_targets": 19}
+{"case": "v68_target_19", "phase": "audited", "active": 9, "completed_targets": 20}
+{"case": "v68_target_20", "phase": "audited", "active": 293, "completed_targets": 21}
+{"case": "v68_target_21", "phase": "audited", "active": 1, "completed_targets": 22}
+{"case": "v68_target_22", "phase": "audited", "active": 448, "completed_targets": 23}
+{"case": "v68_target_23", "phase": "audited", "active": 435, "completed_targets": 24}

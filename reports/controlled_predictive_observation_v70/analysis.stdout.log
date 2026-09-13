@@ -1,0 +1,27 @@
+{
+  "complete": true,
+  "all_artifacts_routing_and_portable_preserved": true,
+  "inherited_v69_policy_evidence_valid": true,
+  "active_observations": 15209,
+  "matched_observations": 60,
+  "ratios": {
+    "COMPOSED_MAP_vs_FULL_MAP": {
+      "cold_method_total_seconds": 0.8412512356890643,
+      "package_bytes": 0.47700323543006007,
+      "router_bytes": 0.9790577656881635,
+      "planning_action_rows": 0.25688911551617905
+    },
+    "COMPOSED_DAG_vs_FULL_MAP": {
+      "cold_method_total_seconds": 0.8647337174786732,
+      "package_bytes": 0.5318038573049287,
+      "router_bytes": 1.1958577959121992,
+      "planning_action_rows": 0.25688911551617905
+    },
+    "COMPOSED_DAG_vs_COMPOSED_MAP": {
+      "cold_method_total_seconds": 1.027913756073564,
+      "package_bytes": 1.114885220485897,
+      "router_bytes": 1.221437424656604,
+      "planning_action_rows": 1.0
+    }
+  }
+}

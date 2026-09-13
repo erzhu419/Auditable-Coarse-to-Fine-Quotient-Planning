@@ -1,0 +1,898 @@
+{
+  "schema": "controlled_predictive_cohort_roster_v14",
+  "status": "REGISTERED_BEFORE_V14_TARGET_ACQUISITION_EXECUTION_AND_OUTCOMES",
+  "v14_target_acquisition_execution_or_outcomes_evaluated": false,
+  "input_roster": "controlled_predictive_cohort_roster_v13.json",
+  "case_count": 16,
+  "cases": [
+    {
+      "case": {
+        "name": "v6_crossing_rescue_pair_0",
+        "group": "v6_crossing_rescue_pair_0",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_6_edge_ranks_1_2",
+        "board": [
+          1,
+          6,
+          6,
+          2,
+          1,
+          4,
+          8,
+          2,
+          9,
+          7,
+          5,
+          3,
+          4,
+          9,
+          3,
+          7
+        ],
+        "horizon": 3,
+        "role": "TRAIN",
+        "split": "TRAIN",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "total_tile_mass": 1756,
+      "mass_plus_4h": 1768,
+      "goal_mass_excluded": true
+    },
+    {
+      "case": {
+        "name": "v6_crossing_rescue_pair_1",
+        "group": "v6_crossing_rescue_pair_1",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_7_edge_ranks_2_1",
+        "board": [
+          2,
+          7,
+          7,
+          1,
+          2,
+          4,
+          8,
+          1,
+          6,
+          9,
+          3,
+          5,
+          9,
+          5,
+          8,
+          4
+        ],
+        "horizon": 3,
+        "role": "VALIDATION_DIAGNOSTIC",
+        "split": "VALIDATION_DIAGNOSTIC",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "total_tile_mass": 1972,
+      "mass_plus_4h": 1984,
+      "goal_mass_excluded": true
+    },
+    {
+      "case": {
+        "name": "v6_crossing_rescue_pair_2",
+        "group": "v6_crossing_rescue_pair_2",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_8_edge_ranks_1_3",
+        "board": [
+          1,
+          8,
+          8,
+          3,
+          1,
+          4,
+          6,
+          3,
+          7,
+          5,
+          9,
+          4,
+          5,
+          8,
+          4,
+          6
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "total_tile_mass": 1668,
+      "mass_plus_4h": 1680,
+      "goal_mass_excluded": true
+    },
+    {
+      "case": {
+        "name": "v6_crossing_rescue_pair_3",
+        "group": "v6_crossing_rescue_pair_3",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_9_edge_ranks_2_3",
+        "board": [
+          2,
+          9,
+          9,
+          3,
+          2,
+          4,
+          8,
+          3,
+          5,
+          8,
+          3,
+          7,
+          9,
+          6,
+          7,
+          4
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "total_tile_mass": 2464,
+      "mass_plus_4h": 2476,
+      "goal_mass_excluded": false
+    },
+    {
+      "case": {
+        "name": "v6_spawn_edge_rescue_0",
+        "group": "v6_spawn_edge_rescue_0",
+        "family": "spawn_edge_rescue",
+        "variant": "large_rank_6_edge_ranks_2_1",
+        "board": [
+          6,
+          6,
+          5,
+          7,
+          2,
+          4,
+          6,
+          1,
+          3,
+          6,
+          8,
+          9,
+          4,
+          8,
+          9,
+          5
+        ],
+        "horizon": 3,
+        "role": "TRAIN",
+        "split": "TRAIN",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "total_tile_mass": 2030,
+      "mass_plus_4h": 2042,
+      "goal_mass_excluded": true
+    },
+    {
+      "case": {
+        "name": "v6_spawn_edge_rescue_1",
+        "group": "v6_spawn_edge_rescue_1",
+        "family": "spawn_edge_rescue",
+        "variant": "large_rank_7_edge_ranks_1_2",
+        "board": [
+          7,
+          7,
+          5,
+          7,
+          1,
+          4,
+          6,
+          2,
+          5,
+          8,
+          3,
+          9,
+          8,
+          3,
+          9,
+          4
+        ],
+        "horizon": 3,
+        "role": "VALIDATION_DIAGNOSTIC",
+        "split": "VALIDATION_DIAGNOSTIC",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "total_tile_mass": 2102,
+      "mass_plus_4h": 2114,
+      "goal_mass_excluded": false
+    },
+    {
+      "case": {
+        "name": "v6_spawn_edge_rescue_2",
+        "group": "v6_spawn_edge_rescue_2",
+        "family": "spawn_edge_rescue",
+        "variant": "large_rank_8_edge_ranks_2_1",
+        "board": [
+          8,
+          8,
+          5,
+          7,
+          2,
+          4,
+          6,
+          1,
+          6,
+          3,
+          9,
+          5,
+          3,
+          9,
+          5,
+          8
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "total_tile_mass": 2182,
+      "mass_plus_4h": 2194,
+      "goal_mass_excluded": false
+    },
+    {
+      "case": {
+        "name": "v6_spawn_edge_rescue_3",
+        "group": "v6_spawn_edge_rescue_3",
+        "family": "spawn_edge_rescue",
+        "variant": "large_rank_9_edge_ranks_1_2",
+        "board": [
+          9,
+          9,
+          5,
+          7,
+          1,
+          4,
+          6,
+          2,
+          8,
+          5,
+          9,
+          3,
+          5,
+          9,
+          3,
+          6
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "total_tile_mass": 2694,
+      "mass_plus_4h": 2706,
+      "goal_mass_excluded": false
+    },
+    {
+      "case": {
+        "name": "v6_crossed_vacancy_goal_detour_0",
+        "group": "v6_crossed_vacancy_goal_detour_0",
+        "family": "crossed_vacancy_goal_detour",
+        "variant": "detour_pair_rank_4",
+        "board": [
+          9,
+          0,
+          4,
+          7,
+          10,
+          10,
+          4,
+          8,
+          0,
+          5,
+          9,
+          6,
+          7,
+          3,
+          8,
+          5
+        ],
+        "horizon": 3,
+        "role": "TRAIN",
+        "split": "TRAIN",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "total_tile_mass": 4008,
+      "mass_plus_4h": 4020,
+      "goal_mass_excluded": false
+    },
+    {
+      "case": {
+        "name": "v6_crossed_vacancy_goal_detour_1",
+        "group": "v6_crossed_vacancy_goal_detour_1",
+        "family": "crossed_vacancy_goal_detour",
+        "variant": "detour_pair_rank_6",
+        "board": [
+          8,
+          0,
+          6,
+          9,
+          10,
+          10,
+          6,
+          7,
+          0,
+          4,
+          8,
+          5,
+          6,
+          2,
+          9,
+          3
+        ],
+        "horizon": 3,
+        "role": "VALIDATION_DIAGNOSTIC",
+        "split": "VALIDATION_DIAGNOSTIC",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "total_tile_mass": 3964,
+      "mass_plus_4h": 3976,
+      "goal_mass_excluded": false
+    },
+    {
+      "case": {
+        "name": "v6_crossed_vacancy_goal_detour_2",
+        "group": "v6_crossed_vacancy_goal_detour_2",
+        "family": "crossed_vacancy_goal_detour",
+        "variant": "detour_pair_rank_8",
+        "board": [
+          7,
+          0,
+          8,
+          6,
+          10,
+          10,
+          8,
+          9,
+          0,
+          3,
+          5,
+          7,
+          9,
+          4,
+          6,
+          2
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "total_tile_mass": 4028,
+      "mass_plus_4h": 4040,
+      "goal_mass_excluded": false
+    },
+    {
+      "case": {
+        "name": "v6_crossed_vacancy_goal_detour_3",
+        "group": "v6_crossed_vacancy_goal_detour_3",
+        "family": "crossed_vacancy_goal_detour",
+        "variant": "detour_pair_rank_9",
+        "board": [
+          6,
+          0,
+          9,
+          8,
+          10,
+          10,
+          9,
+          7,
+          0,
+          2,
+          8,
+          4,
+          5,
+          3,
+          7,
+          6
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "total_tile_mass": 4028,
+      "mass_plus_4h": 4040,
+      "goal_mass_excluded": false
+    },
+    {
+      "case": {
+        "name": "v6_control_last_pair_spawn_risk",
+        "group": "v6_control_last_pair_spawn_risk",
+        "family": "public_development_control",
+        "variant": "last_pair_spawn_risk",
+        "board": [
+          8,
+          6,
+          9,
+          7,
+          5,
+          9,
+          7,
+          10,
+          9,
+          7,
+          10,
+          8,
+          4,
+          3,
+          1,
+          1
+        ],
+        "horizon": 3,
+        "role": "EXPOSED_REGRESSION",
+        "split": "EXPOSED_REGRESSION",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "total_tile_mass": 4604,
+      "mass_plus_4h": 4616,
+      "goal_mass_excluded": false
+    },
+    {
+      "case": {
+        "name": "v6_control_dense_merge_choice",
+        "group": "v6_control_dense_merge_choice",
+        "family": "public_development_control",
+        "variant": "dense_merge_choice",
+        "board": [
+          6,
+          5,
+          4,
+          3,
+          5,
+          4,
+          3,
+          2,
+          4,
+          3,
+          2,
+          1,
+          3,
+          2,
+          2,
+          0
+        ],
+        "horizon": 3,
+        "role": "EXPOSED_REGRESSION",
+        "split": "EXPOSED_REGRESSION",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "total_tile_mass": 226,
+      "mass_plus_4h": 238,
+      "goal_mass_excluded": true
+    },
+    {
+      "case": {
+        "name": "v6_control_adjacent_1024_goal",
+        "group": "v6_control_adjacent_1024_goal",
+        "family": "public_development_control",
+        "variant": "adjacent_1024_goal",
+        "board": [
+          10,
+          9,
+          8,
+          7,
+          10,
+          8,
+          7,
+          6,
+          8,
+          7,
+          6,
+          5,
+          7,
+          6,
+          5,
+          0
+        ],
+        "horizon": 3,
+        "role": "EXPOSED_REGRESSION",
+        "split": "EXPOSED_REGRESSION",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "total_tile_mass": 4096,
+      "mass_plus_4h": 4108,
+      "goal_mass_excluded": false
+    },
+    {
+      "case": {
+        "name": "exposed_left_successor_7",
+        "group": "discovery_cross_axis_pairs_830011",
+        "family": "exposed_reached_decision_point",
+        "variant": "exposed_h2_decision_point",
+        "board": [
+          3,
+          7,
+          9,
+          0,
+          7,
+          9,
+          6,
+          1,
+          8,
+          4,
+          9,
+          0,
+          1,
+          9,
+          8,
+          2
+        ],
+        "horizon": 2,
+        "role": "EXPOSED_REGRESSION",
+        "split": "EXPOSED_REGRESSION",
+        "source": "controlled_predictive_comparison_v3.refinement_cases()[0]"
+      },
+      "total_tile_mass": 2912,
+      "mass_plus_4h": 2920,
+      "goal_mass_excluded": false
+    }
+  ],
+  "sample_seeds": [
+    832101,
+    832102,
+    832103
+  ],
+  "case_seed_count": 48,
+  "queries": {
+    "risk_0": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.0,
+      "goal_bonus": 0.0
+    },
+    "risk_0_05": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.05,
+      "goal_bonus": 0.0
+    },
+    "risk_0_2": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.2,
+      "goal_bonus": 0.0
+    },
+    "risk_1": {
+      "reward_weight": 1.0,
+      "failure_penalty": 1.0,
+      "goal_bonus": 0.0
+    },
+    "risk_5": {
+      "reward_weight": 1.0,
+      "failure_penalty": 5.0,
+      "goal_bonus": 0.0
+    },
+    "goal_1_risk_1": {
+      "reward_weight": 1.0,
+      "failure_penalty": 1.0,
+      "goal_bonus": 1.0
+    },
+    "probe_risk_0_1": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.1,
+      "goal_bonus": 0.0
+    },
+    "probe_risk_0_5": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.5,
+      "goal_bonus": 0.0
+    },
+    "probe_risk_2": {
+      "reward_weight": 1.0,
+      "failure_penalty": 2.0,
+      "goal_bonus": 0.0
+    },
+    "probe_goal_2_risk_0_5": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.5,
+      "goal_bonus": 2.0
+    }
+  },
+  "initial_query_order": [
+    "risk_0",
+    "risk_0_05",
+    "risk_0_2",
+    "risk_1",
+    "risk_5",
+    "goal_1_risk_1",
+    "probe_risk_0_1",
+    "probe_risk_0_5",
+    "probe_risk_2",
+    "probe_goal_2_risk_0_5"
+  ],
+  "query_roles": {
+    "risk_0": "CONSTRUCTION_AND_EVALUATION",
+    "risk_0_05": "CONSTRUCTION_AND_EVALUATION",
+    "risk_0_2": "CONSTRUCTION_AND_EVALUATION",
+    "risk_1": "CONSTRUCTION_AND_EVALUATION",
+    "risk_5": "CONSTRUCTION_AND_EVALUATION",
+    "goal_1_risk_1": "CONSTRUCTION_AND_EVALUATION",
+    "probe_risk_0_1": "CONSTRUCTION_AND_EVALUATION",
+    "probe_risk_0_5": "CONSTRUCTION_AND_EVALUATION",
+    "probe_risk_2": "CONSTRUCTION_AND_EVALUATION",
+    "probe_goal_2_risk_0_5": "CONSTRUCTION_AND_EVALUATION"
+  },
+  "probe_or_query_holdout_roles": [],
+  "query_execution_context_count": 480,
+  "query_execution_count_scope": "Each of eight methods is evaluated on 16 original cases x 3 seeds x 10 declared queries; four acquisition methods produce 1920 execution trees.",
+  "historical_exposure": "ALL_ROOTS_AND_FAMILIES_PREVIOUSLY_EXPOSED_IN_DEVELOPMENT",
+  "scenario_count": 1,
+  "scenario_case_evaluation_count": 16,
+  "scenarios": [
+    {
+      "name": "PRIMARY_V7_SPLIT",
+      "source_case_names": [],
+      "evaluation_case_names": [
+        "v6_crossing_rescue_pair_0",
+        "v6_crossing_rescue_pair_1",
+        "v6_crossing_rescue_pair_2",
+        "v6_crossing_rescue_pair_3",
+        "v6_spawn_edge_rescue_0",
+        "v6_spawn_edge_rescue_1",
+        "v6_spawn_edge_rescue_2",
+        "v6_spawn_edge_rescue_3",
+        "v6_crossed_vacancy_goal_detour_0",
+        "v6_crossed_vacancy_goal_detour_1",
+        "v6_crossed_vacancy_goal_detour_2",
+        "v6_crossed_vacancy_goal_detour_3",
+        "v6_control_last_pair_spawn_risk",
+        "v6_control_dense_merge_choice",
+        "v6_control_adjacent_1024_goal",
+        "exposed_left_successor_7"
+      ],
+      "target_family": null,
+      "case_splits": {
+        "v6_crossing_rescue_pair_0": "TRAIN",
+        "v6_crossing_rescue_pair_1": "VALIDATION_DIAGNOSTIC",
+        "v6_crossing_rescue_pair_2": "FIT_HELD_OUT_DEVELOPMENT",
+        "v6_crossing_rescue_pair_3": "FIT_HELD_OUT_DEVELOPMENT",
+        "v6_spawn_edge_rescue_0": "TRAIN",
+        "v6_spawn_edge_rescue_1": "VALIDATION_DIAGNOSTIC",
+        "v6_spawn_edge_rescue_2": "FIT_HELD_OUT_DEVELOPMENT",
+        "v6_spawn_edge_rescue_3": "FIT_HELD_OUT_DEVELOPMENT",
+        "v6_crossed_vacancy_goal_detour_0": "TRAIN",
+        "v6_crossed_vacancy_goal_detour_1": "VALIDATION_DIAGNOSTIC",
+        "v6_crossed_vacancy_goal_detour_2": "FIT_HELD_OUT_DEVELOPMENT",
+        "v6_crossed_vacancy_goal_detour_3": "FIT_HELD_OUT_DEVELOPMENT",
+        "v6_control_last_pair_spawn_risk": "EXPOSED_REGRESSION",
+        "v6_control_dense_merge_choice": "EXPOSED_REGRESSION",
+        "v6_control_adjacent_1024_goal": "EXPOSED_REGRESSION",
+        "exposed_left_successor_7": "EXPOSED_REGRESSION"
+      }
+    }
+  ],
+  "historical_primary_case_splits": {
+    "v6_crossing_rescue_pair_0": "TRAIN",
+    "v6_crossing_rescue_pair_1": "VALIDATION_DIAGNOSTIC",
+    "v6_crossing_rescue_pair_2": "FIT_HELD_OUT_DEVELOPMENT",
+    "v6_crossing_rescue_pair_3": "FIT_HELD_OUT_DEVELOPMENT",
+    "v6_spawn_edge_rescue_0": "TRAIN",
+    "v6_spawn_edge_rescue_1": "VALIDATION_DIAGNOSTIC",
+    "v6_spawn_edge_rescue_2": "FIT_HELD_OUT_DEVELOPMENT",
+    "v6_spawn_edge_rescue_3": "FIT_HELD_OUT_DEVELOPMENT",
+    "v6_crossed_vacancy_goal_detour_0": "TRAIN",
+    "v6_crossed_vacancy_goal_detour_1": "VALIDATION_DIAGNOSTIC",
+    "v6_crossed_vacancy_goal_detour_2": "FIT_HELD_OUT_DEVELOPMENT",
+    "v6_crossed_vacancy_goal_detour_3": "FIT_HELD_OUT_DEVELOPMENT",
+    "v6_control_last_pair_spawn_risk": "EXPOSED_REGRESSION",
+    "v6_control_dense_merge_choice": "EXPOSED_REGRESSION",
+    "v6_control_adjacent_1024_goal": "EXPOSED_REGRESSION",
+    "exposed_left_successor_7": "EXPOSED_REGRESSION"
+  },
+  "split_label_scope": "Original PRIMARY splits and families remain historical metadata; no source representation is fitted or used in V14.",
+  "lofo_scenarios_reexecuted": false,
+  "source_fitting_enabled": false,
+  "source_priority_enabled": false,
+  "source_fees": 0,
+  "samples_per_acquired_row": 256,
+  "row_stream": {
+    "version": "V12_UNCHANGED",
+    "key": "(remaining_horizon, tuple(board_ranks))",
+    "action_order": [
+      "DOWN",
+      "LEFT",
+      "RIGHT",
+      "UP"
+    ],
+    "integer_seed": "seed*(12**16*16)+(h*4+action_index)*12**16+sum(rank*12**i)",
+    "sampling": "random.Random(integer_seed).choices(requested_row_support, weights, k=256)",
+    "cross_method_prewarming": false
+  },
+  "initial_shared_row_cap": 32,
+  "total_episode_row_cap": 128,
+  "initial_acquisition_mode": "query_interval",
+  "single_active_query_for_upfront_and_online": true,
+  "online_per_decision_quota": "(128 - observed_rows) // remaining_horizon",
+  "online_quota_scope": "At each ACTIVE decision; stop acquiring earlier when the current query interval closes. Terminal states require no decision quota.",
+  "variants": [
+    "LEGACY",
+    "MASS_BOUND"
+  ],
+  "variant_scope": {
+    "LEGACY": "Unchanged V13 incremental interval planner.",
+    "MASS_BOUND": "Same incremental planner; only the goal-bonus upper-bound term of an unobserved ACTIVE action becomes zero when mass + 4*h < 2048.",
+    "unchanged": [
+      "lower_bounds",
+      "reward_upper_bounds",
+      "failure_bounds",
+      "empirical_rows",
+      "terminal_values",
+      "quota",
+      "tie_order",
+      "stopping_tolerance",
+      "row_stream"
+    ]
+  },
+  "mass_bound": {
+    "goal_rank": 11,
+    "goal_tile_value": 2048,
+    "maximum_spawn_value_per_step": 4,
+    "predicate": "ACTIVE and total_tile_mass + 4 * remaining_horizon < 2048",
+    "equality_behavior": "At equality retain the legacy goal-bonus upper bound.",
+    "won_behavior": "Already WON states retain terminal goal_bonus before ACTIVE unknown-action bounds are considered."
+  },
+  "root_mass_groups": {
+    "goal_mass_excluded": [
+      "v6_crossing_rescue_pair_0",
+      "v6_crossing_rescue_pair_1",
+      "v6_crossing_rescue_pair_2",
+      "v6_spawn_edge_rescue_0",
+      "v6_control_dense_merge_choice"
+    ],
+    "goal_mass_not_excluded": [
+      "v6_crossing_rescue_pair_3",
+      "v6_spawn_edge_rescue_1",
+      "v6_spawn_edge_rescue_2",
+      "v6_spawn_edge_rescue_3",
+      "v6_crossed_vacancy_goal_detour_0",
+      "v6_crossed_vacancy_goal_detour_1",
+      "v6_crossed_vacancy_goal_detour_2",
+      "v6_crossed_vacancy_goal_detour_3",
+      "v6_control_last_pair_spawn_risk",
+      "v6_control_adjacent_1024_goal",
+      "exposed_left_successor_7"
+    ]
+  },
+  "mechanism_query_pairs": [
+    {
+      "goal_query": "goal_1_risk_1",
+      "no_goal_query": "risk_1"
+    },
+    {
+      "goal_query": "probe_goal_2_risk_0_5",
+      "no_goal_query": "probe_risk_0_5"
+    }
+  ],
+  "mechanism_comparison": {
+    "case_names": [
+      "v6_crossing_rescue_pair_0",
+      "v6_crossing_rescue_pair_1",
+      "v6_crossing_rescue_pair_2",
+      "v6_spawn_edge_rescue_0",
+      "v6_control_dense_merge_choice"
+    ],
+    "variants": [
+      "LEGACY",
+      "MASS_BOUND"
+    ],
+    "execution_modes": [
+      "upfront",
+      "online"
+    ],
+    "comparison_fields": [
+      "complete_trace",
+      "root_metrics"
+    ],
+    "scope": "Within each variant, compare the already declared goal and no-goal query trees on roots excluded by the frozen mass predicate. No extra roots, seeds, queries, or provider calls.",
+    "mass_bound_expected_equal": true,
+    "legacy_expected_equal": false,
+    "legacy_expectation_scope": "LEGACY equality is measured, not required to pass or fail."
+  },
+  "stage_a": {
+    "variants": [
+      "LEGACY",
+      "MASS_BOUND"
+    ],
+    "update_modes": [
+      "incremental"
+    ],
+    "acquisition_mode": "query_interval",
+    "row_checkpoints": [
+      32,
+      128
+    ],
+    "query_order": [
+      "risk_0",
+      "risk_0_05",
+      "risk_0_2",
+      "risk_1",
+      "risk_5",
+      "goal_1_risk_1",
+      "probe_risk_0_1",
+      "probe_risk_0_5",
+      "probe_risk_2",
+      "probe_goal_2_risk_0_5"
+    ],
+    "independent_trajectories": true,
+    "trajectory_count": 96,
+    "scope": "Each variant independently starts from the root and preserves its own 32/128 multi-query prefixes. Cross-variant observations may differ as part of the method's effect."
+  },
+  "stage_b": {
+    "execution_arms": [
+      "upfront_legacy",
+      "upfront_mass_bound",
+      "online_legacy",
+      "online_mass_bound"
+    ],
+    "reference_arms": [
+      "frozen32_legacy",
+      "frozen32_mass_bound",
+      "full_state_empirical",
+      "exact_empirical_quotient"
+    ],
+    "execution_tree_count": 1920,
+    "upfront_acquisition": "After the initial multi-query prefix, the active query alone may acquire until its root interval closes or the total row cap is reached.",
+    "online_acquisition": "After the initial multi-query prefix, the active query acquires at each actual decision under the declared per-decision quota and remaining episode row cap.",
+    "branch_history": "Each true successor branch has an independent cloned planner, observation history and remaining budget; probabilities combine audit outcomes only.",
+    "prefix_accounting": "Each variant shares only its own paid Stage A 32-row snapshot within that variant. Initial preparation is attributed fully for a standalone query and divided by ten for a batch. Query-start cloning is deployment work; sibling-history clones are audit work.",
+    "cross_variant_warm_states_required_equal": false,
+    "provider_scope": "Each execution arm and query has an independent provider. Already observed rows are not resampled within a history; actual repeated acquisition across alternative histories is physically counted."
+  },
+  "history_policy_examples": [
+    {
+      "name": "spawn_all_queries",
+      "case_name": "v6_spawn_edge_rescue_2",
+      "sample_seed": 832101,
+      "method": "online_mass_bound",
+      "query_names": [
+        "risk_0",
+        "risk_0_05",
+        "risk_0_2",
+        "risk_1",
+        "risk_5",
+        "goal_1_risk_1",
+        "probe_risk_0_1",
+        "probe_risk_0_5",
+        "probe_risk_2",
+        "probe_goal_2_risk_0_5"
+      ]
+    },
+    {
+      "name": "crossing_risk_5",
+      "case_name": "v6_crossing_rescue_pair_3",
+      "sample_seed": 832102,
+      "method": "online_mass_bound",
+      "query_names": [
+        "risk_5"
+      ]
+    },
+    {
+      "name": "crossing_goal_pairs",
+      "case_name": "v6_crossing_rescue_pair_2",
+      "sample_seed": 832102,
+      "method": "online_mass_bound",
+      "query_names": [
+        "risk_1",
+        "goal_1_risk_1",
+        "probe_risk_0_5",
+        "probe_goal_2_risk_0_5"
+      ]
+    }
+  ],
+  "legacy_v13_comparison": {
+    "input_result": "controlled_predictive_execution_acquisition_v13.json",
+    "stage_a_incremental_prefix_count": 96,
+    "stage_b_incremental_query_tree_count": 960,
+    "scope": "Read-only comparison with retained V13 records after all current V14 trees freeze; LEGACY is physically rebuilt and paid within V14; the posthoc comparison itself issues no sampling or execution calls. No timing equality is expected."
+  },
+  "all_sixteen_declared_cases_retained": true,
+  "new_board_discovery_performed": false,
+  "boards_or_symmetries_changed": false,
+  "original_deferred_24_case_cohort_loaded_or_executed": false,
+  "u006_assurance_started": false,
+  "scope": "Previously exposed development inputs only. V14 tests one structural goal-unreachability bound, not new data, representation transfer, statistical confidence, or a formal scientific gate."
+}

@@ -1,0 +1,945 @@
+{
+  "integrity_passed": true,
+  "strata": [
+    {
+      "p": 0.25,
+      "horizon": 1,
+      "values": {
+        "LOOKAHEAD_1": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 4.937934027777778,
+          "minimum": 4.0,
+          "maximum": 6.25,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_2": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 4.937934027777778,
+          "minimum": 4.0,
+          "maximum": 6.25,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_FULL": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 4.937934027777778,
+          "minimum": 4.0,
+          "maximum": 6.25,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        }
+      },
+      "contrasts": {
+        "candidate_minus_myopic": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0,
+          "positive_count": 0,
+          "negative_count": 0,
+          "tie_count": 16
+        },
+        "full_minus_candidate": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0,
+          "positive_count": 0,
+          "negative_count": 0,
+          "tie_count": 16
+        },
+        "full_minus_myopic": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0,
+          "positive_count": 0,
+          "negative_count": 0,
+          "tie_count": 16
+        },
+        "headroom_fraction": {
+          "count": 16,
+          "available_count": 0,
+          "null_count": 16,
+          "mean": null,
+          "minimum": null,
+          "maximum": null,
+          "positive_count": 0,
+          "negative_count": 0,
+          "tie_count": 0
+        }
+      },
+      "sum_gain_over_sum_headroom": null,
+      "costs_by_method": {
+        "LOOKAHEAD_1": {
+          "case_records": 16,
+          "decision_work": {
+            "planner_calls": 16,
+            "dp_states": 16,
+            "action_value_evaluations": 336,
+            "kernel_builds": 336,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 1156,
+            "target_probability_evaluations": 1680,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 1156,
+            "forced_choice": 0
+          },
+          "expected_decision_work": {
+            "planner_calls": 16.0,
+            "dp_states": 16.0,
+            "action_value_evaluations": 336.0,
+            "kernel_builds": 336.0,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 1156.0,
+            "target_probability_evaluations": 1680.0,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 1156.0,
+            "forced_choice": 0.0
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 16,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 72,
+            "target_probability_evaluations": 80,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 0,
+            "retained_value_reads": 16,
+            "occupancy_probability_terms": 0
+          },
+          "expected_nonforced_planner_calls": 16.0,
+          "wall_seconds": 0.004214410990243778,
+          "decision_seconds": 0.0033491819631308317,
+          "evaluation_seconds": 0.0008652290271129459,
+          "serialization_seconds": 0.0005455960927065462,
+          "expected_decision_seconds": 0.0033491819631308317
+        },
+        "LOOKAHEAD_2": {
+          "case_records": 16,
+          "decision_work": {
+            "planner_calls": 16,
+            "dp_states": 16,
+            "action_value_evaluations": 336,
+            "kernel_builds": 336,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 1156,
+            "target_probability_evaluations": 1680,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 1156,
+            "forced_choice": 0
+          },
+          "expected_decision_work": {
+            "planner_calls": 16.0,
+            "dp_states": 16.0,
+            "action_value_evaluations": 336.0,
+            "kernel_builds": 336.0,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 1156.0,
+            "target_probability_evaluations": 1680.0,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 1156.0,
+            "forced_choice": 0.0
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 16,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 72,
+            "target_probability_evaluations": 80,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 16,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 0
+          },
+          "expected_nonforced_planner_calls": 16.0,
+          "wall_seconds": 0.004870781092904508,
+          "decision_seconds": 0.0038045950059313327,
+          "evaluation_seconds": 0.0010661860869731754,
+          "serialization_seconds": 0.000498118024552241,
+          "expected_decision_seconds": 0.0038045950059313327
+        },
+        "LOOKAHEAD_FULL": {
+          "case_records": 16,
+          "decision_work": {
+            "planner_calls": 16,
+            "dp_states": 16,
+            "action_value_evaluations": 336,
+            "kernel_builds": 336,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 1156,
+            "target_probability_evaluations": 1680,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 1156,
+            "forced_choice": 0
+          },
+          "expected_decision_work": {
+            "planner_calls": 16.0,
+            "dp_states": 16.0,
+            "action_value_evaluations": 336.0,
+            "kernel_builds": 336.0,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 1156.0,
+            "target_probability_evaluations": 1680.0,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 1156.0,
+            "forced_choice": 0.0
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 16,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 72,
+            "target_probability_evaluations": 80,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 0,
+            "retained_value_reads": 16,
+            "occupancy_probability_terms": 0
+          },
+          "expected_nonforced_planner_calls": 16.0,
+          "wall_seconds": 0.003898530005244538,
+          "decision_seconds": 0.003239947836846113,
+          "evaluation_seconds": 0.000658582168398425,
+          "serialization_seconds": 0.0004709050408564508,
+          "expected_decision_seconds": 0.003239947836846113
+        }
+      }
+    },
+    {
+      "p": 0.25,
+      "horizon": 3,
+      "values": {
+        "LOOKAHEAD_1": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 5.770248601466049,
+          "minimum": 4.305555555555555,
+          "maximum": 6.75,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_2": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 5.919808679483882,
+          "minimum": 4.305555555555555,
+          "maximum": 6.75,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_FULL": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 6.015511804483882,
+          "minimum": 4.305555555555555,
+          "maximum": 6.875,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        }
+      },
+      "contrasts": {
+        "candidate_minus_myopic": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.14956007801783272,
+          "minimum": 0.0,
+          "maximum": 0.666666666666667,
+          "positive_count": 9,
+          "negative_count": 0,
+          "tie_count": 7
+        },
+        "full_minus_candidate": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.095703125,
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "positive_count": 4,
+          "negative_count": 0,
+          "tie_count": 12
+        },
+        "full_minus_myopic": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.24526320301783272,
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "positive_count": 10,
+          "negative_count": 0,
+          "tie_count": 6
+        },
+        "headroom_fraction": {
+          "count": 16,
+          "available_count": 10,
+          "null_count": 6,
+          "mean": 0.7690476190476191,
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "positive_count": 9,
+          "negative_count": 0,
+          "tie_count": 1
+        }
+      },
+      "sum_gain_over_sum_headroom": 0.6097941973258763,
+      "costs_by_method": {
+        "LOOKAHEAD_1": {
+          "case_records": 16,
+          "decision_work": {
+            "planner_calls": 231,
+            "dp_states": 73,
+            "action_value_evaluations": 325,
+            "kernel_builds": 325,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 860,
+            "target_probability_evaluations": 1294,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 860,
+            "forced_choice": 158
+          },
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 32.0,
+            "action_value_evaluations": 176.41666666666666,
+            "kernel_builds": 176.41666666666666,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 455.4791666666667,
+            "target_probability_evaluations": 874.9305555555554,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 455.4791666666667,
+            "forced_choice": 16.0
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 231,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 464,
+            "target_probability_evaluations": 478,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 0,
+            "retained_value_reads": 231,
+            "occupancy_probability_terms": 217
+          },
+          "expected_nonforced_planner_calls": 32.0,
+          "wall_seconds": 0.00870864390162751,
+          "decision_seconds": 0.005642220843583345,
+          "evaluation_seconds": 0.0030664230580441654,
+          "serialization_seconds": 0.001994762977119535,
+          "expected_decision_seconds": 0.0024888351866521976
+        },
+        "LOOKAHEAD_2": {
+          "case_records": 16,
+          "decision_work": {
+            "planner_calls": 250,
+            "dp_states": 1147,
+            "action_value_evaluations": 2510,
+            "kernel_builds": 2510,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 5635,
+            "target_probability_evaluations": 8351,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 5635,
+            "forced_choice": 163
+          },
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 492.24999999999994,
+            "action_value_evaluations": 1695.1666666666667,
+            "kernel_builds": 1695.1666666666667,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 4134.986111111111,
+            "target_probability_evaluations": 6555.078703703704,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 4134.986111111111,
+            "forced_choice": 16.0
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 250,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 543,
+            "target_probability_evaluations": 535,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 250,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 257
+          },
+          "expected_nonforced_planner_calls": 32.0,
+          "wall_seconds": 0.02428810190758668,
+          "decision_seconds": 0.020954456529580057,
+          "evaluation_seconds": 0.003333645378006622,
+          "serialization_seconds": 0.0023533400672022253,
+          "expected_decision_seconds": 0.012834538341674605
+        },
+        "LOOKAHEAD_FULL": {
+          "case_records": 16,
+          "decision_work": {
+            "planner_calls": 232,
+            "dp_states": 3791,
+            "action_value_evaluations": 5147,
+            "kernel_builds": 5147,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 9833,
+            "target_probability_evaluations": 15188,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 9833,
+            "forced_choice": 148
+          },
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 3191.25,
+            "action_value_evaluations": 4396.166666666667,
+            "kernel_builds": 4396.166666666667,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 8455.236111111111,
+            "target_probability_evaluations": 13513.328703703703,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 8455.236111111111,
+            "forced_choice": 16.0
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 232,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 502,
+            "target_probability_evaluations": 516,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 0,
+            "retained_value_reads": 232,
+            "occupancy_probability_terms": 235
+          },
+          "expected_nonforced_planner_calls": 32.0,
+          "wall_seconds": 0.042687350971391425,
+          "decision_seconds": 0.039555372146423906,
+          "evaluation_seconds": 0.0031319788249675184,
+          "serialization_seconds": 0.0023102520499378443,
+          "expected_decision_seconds": 0.031631148878840235
+        }
+      }
+    },
+    {
+      "p": 0.75,
+      "horizon": 1,
+      "values": {
+        "LOOKAHEAD_1": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 3.9794791666666662,
+          "minimum": 3.8311111111111105,
+          "maximum": 4.416666666666666,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_2": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 3.9794791666666662,
+          "minimum": 3.8311111111111105,
+          "maximum": 4.416666666666666,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_FULL": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 3.9794791666666662,
+          "minimum": 3.8311111111111105,
+          "maximum": 4.416666666666666,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        }
+      },
+      "contrasts": {
+        "candidate_minus_myopic": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0,
+          "positive_count": 0,
+          "negative_count": 0,
+          "tie_count": 16
+        },
+        "full_minus_candidate": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0,
+          "positive_count": 0,
+          "negative_count": 0,
+          "tie_count": 16
+        },
+        "full_minus_myopic": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0,
+          "positive_count": 0,
+          "negative_count": 0,
+          "tie_count": 16
+        },
+        "headroom_fraction": {
+          "count": 16,
+          "available_count": 0,
+          "null_count": 16,
+          "mean": null,
+          "minimum": null,
+          "maximum": null,
+          "positive_count": 0,
+          "negative_count": 0,
+          "tie_count": 0
+        }
+      },
+      "sum_gain_over_sum_headroom": null,
+      "costs_by_method": {
+        "LOOKAHEAD_1": {
+          "case_records": 16,
+          "decision_work": {
+            "planner_calls": 16,
+            "dp_states": 16,
+            "action_value_evaluations": 336,
+            "kernel_builds": 336,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 9116,
+            "target_probability_evaluations": 1680,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 9116,
+            "forced_choice": 0
+          },
+          "expected_decision_work": {
+            "planner_calls": 16.0,
+            "dp_states": 16.0,
+            "action_value_evaluations": 336.0,
+            "kernel_builds": 336.0,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 9116.0,
+            "target_probability_evaluations": 1680.0,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 9116.0,
+            "forced_choice": 0.0
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 16,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 496,
+            "target_probability_evaluations": 80,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 0,
+            "retained_value_reads": 16,
+            "occupancy_probability_terms": 0
+          },
+          "expected_nonforced_planner_calls": 16.0,
+          "wall_seconds": 0.014935765066184103,
+          "decision_seconds": 0.01330798800336197,
+          "evaluation_seconds": 0.0016277770628221333,
+          "serialization_seconds": 0.0007045760576147586,
+          "expected_decision_seconds": 0.01330798800336197
+        },
+        "LOOKAHEAD_2": {
+          "case_records": 16,
+          "decision_work": {
+            "planner_calls": 16,
+            "dp_states": 16,
+            "action_value_evaluations": 336,
+            "kernel_builds": 336,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 9116,
+            "target_probability_evaluations": 1680,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 9116,
+            "forced_choice": 0
+          },
+          "expected_decision_work": {
+            "planner_calls": 16.0,
+            "dp_states": 16.0,
+            "action_value_evaluations": 336.0,
+            "kernel_builds": 336.0,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 9116.0,
+            "target_probability_evaluations": 1680.0,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 9116.0,
+            "forced_choice": 0.0
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 16,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 496,
+            "target_probability_evaluations": 80,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 16,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 0
+          },
+          "expected_nonforced_planner_calls": 16.0,
+          "wall_seconds": 0.014815325994277373,
+          "decision_seconds": 0.013597929006209597,
+          "evaluation_seconds": 0.001217396988067776,
+          "serialization_seconds": 0.0006117020093370229,
+          "expected_decision_seconds": 0.013597929006209597
+        },
+        "LOOKAHEAD_FULL": {
+          "case_records": 16,
+          "decision_work": {
+            "planner_calls": 16,
+            "dp_states": 16,
+            "action_value_evaluations": 336,
+            "kernel_builds": 336,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 9116,
+            "target_probability_evaluations": 1680,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 9116,
+            "forced_choice": 0
+          },
+          "expected_decision_work": {
+            "planner_calls": 16.0,
+            "dp_states": 16.0,
+            "action_value_evaluations": 336.0,
+            "kernel_builds": 336.0,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 9116.0,
+            "target_probability_evaluations": 1680.0,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 9116.0,
+            "forced_choice": 0.0
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 16,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 496,
+            "target_probability_evaluations": 80,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 0,
+            "retained_value_reads": 16,
+            "occupancy_probability_terms": 0
+          },
+          "expected_nonforced_planner_calls": 16.0,
+          "wall_seconds": 0.016894227039301768,
+          "decision_seconds": 0.015617527009453624,
+          "evaluation_seconds": 0.0012767000298481435,
+          "serialization_seconds": 0.0006539869646076113,
+          "expected_decision_seconds": 0.015617527009453624
+        }
+      }
+    },
+    {
+      "p": 0.75,
+      "horizon": 3,
+      "values": {
+        "LOOKAHEAD_1": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 4.939806736584037,
+          "minimum": 4.751413946686453,
+          "maximum": 5.477944514337777,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_2": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 4.956737355049945,
+          "minimum": 4.807805959300684,
+          "maximum": 5.487330787748147,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_FULL": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 4.960228994067585,
+          "minimum": 4.810111917551056,
+          "maximum": 5.487330787748147,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        }
+      },
+      "contrasts": {
+        "candidate_minus_myopic": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.016930618465908487,
+          "minimum": 0.0,
+          "maximum": 0.16706055446207557,
+          "positive_count": 15,
+          "negative_count": 0,
+          "tie_count": 1
+        },
+        "full_minus_candidate": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.003491639017639714,
+          "minimum": 0.0,
+          "maximum": 0.045218111656598836,
+          "positive_count": 3,
+          "negative_count": 0,
+          "tie_count": 13
+        },
+        "full_minus_myopic": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.0204222574835482,
+          "minimum": 0.0,
+          "maximum": 0.16706055446207557,
+          "positive_count": 15,
+          "negative_count": 0,
+          "tie_count": 1
+        },
+        "headroom_fraction": {
+          "count": 16,
+          "available_count": 15,
+          "null_count": 1,
+          "mean": 0.8601706211166731,
+          "minimum": 0.004065279801579967,
+          "maximum": 1.0,
+          "positive_count": 15,
+          "negative_count": 0,
+          "tie_count": 0
+        }
+      },
+      "sum_gain_over_sum_headroom": 0.8290277644157354,
+      "costs_by_method": {
+        "LOOKAHEAD_1": {
+          "case_records": 16,
+          "decision_work": {
+            "planner_calls": 3975,
+            "dp_states": 801,
+            "action_value_evaluations": 2705,
+            "kernel_builds": 2705,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 21110,
+            "target_probability_evaluations": 7468,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 21110,
+            "forced_choice": 3174
+          },
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 31.959978877314814,
+            "action_value_evaluations": 185.86171824845675,
+            "kernel_builds": 185.86171824845675,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 4085.890278240741,
+            "target_probability_evaluations": 955.6888888888886,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 4085.890278240741,
+            "forced_choice": 16.040021122685186
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 3963,
+            "kernel_cache_hits": 12,
+            "transition_outcomes": 13628,
+            "target_probability_evaluations": 7092,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 0,
+            "retained_value_reads": 3975,
+            "occupancy_probability_terms": 5895
+          },
+          "expected_nonforced_planner_calls": 31.959978877314814,
+          "wall_seconds": 0.1359920889372006,
+          "decision_seconds": 0.08283909095916897,
+          "evaluation_seconds": 0.053152997978031635,
+          "serialization_seconds": 0.03044171500368975,
+          "expected_decision_seconds": 0.0069440995681725615
+        },
+        "LOOKAHEAD_2": {
+          "case_records": 16,
+          "decision_work": {
+            "planner_calls": 3769,
+            "dp_states": 21148,
+            "action_value_evaluations": 30778,
+            "kernel_builds": 30778,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 153827,
+            "target_probability_evaluations": 67512,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 153827,
+            "forced_choice": 3020
+          },
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 4129.842568229167,
+            "action_value_evaluations": 12108.060444637347,
+            "kernel_builds": 12108.060444637347,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 96624.22621992668,
+            "target_probability_evaluations": 34367.954052816356,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 96624.22621992668,
+            "forced_choice": 16.03231741898148
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 3759,
+            "kernel_cache_hits": 10,
+            "transition_outcomes": 13122,
+            "target_probability_evaluations": 6830,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 3769,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 5607
+          },
+          "expected_nonforced_planner_calls": 31.96768258101852,
+          "wall_seconds": 0.5281443659041543,
+          "decision_seconds": 0.4754004738642834,
+          "evaluation_seconds": 0.05274389203987084,
+          "serialization_seconds": 0.029901255067670718,
+          "expected_decision_seconds": 0.17832942055573184
+        },
+        "LOOKAHEAD_FULL": {
+          "case_records": 16,
+          "decision_work": {
+            "planner_calls": 3506,
+            "dp_states": 42415,
+            "action_value_evaluations": 51898,
+            "kernel_builds": 51886,
+            "kernel_cache_hits": 12,
+            "transition_outcomes": 236311,
+            "target_probability_evaluations": 112187,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 236323,
+            "forced_choice": 2835
+          },
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 26586.786422395828,
+            "action_value_evaluations": 34565.50383005401,
+            "kernel_builds": 34553.50383005401,
+            "kernel_cache_hits": 12.0,
+            "transition_outcomes": 182521.94349423223,
+            "target_probability_evaluations": 81060.06174378858,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 182533.94349423223,
+            "forced_choice": 16.02495630787037
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 3499,
+            "kernel_cache_hits": 7,
+            "transition_outcomes": 12471,
+            "target_probability_evaluations": 6487,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 0,
+            "retained_value_reads": 3506,
+            "occupancy_probability_terms": 5185
+          },
+          "expected_nonforced_planner_calls": 31.97504369212963,
+          "wall_seconds": 0.8012289229955059,
+          "decision_seconds": 0.751235182833625,
+          "evaluation_seconds": 0.04999374016188085,
+          "serialization_seconds": 0.02751857493421994,
+          "expected_decision_seconds": 0.5261423706019632
+        }
+      }
+    }
+  ]
+}

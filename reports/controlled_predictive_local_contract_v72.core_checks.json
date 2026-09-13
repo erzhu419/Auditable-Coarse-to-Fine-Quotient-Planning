@@ -1,0 +1,318 @@
+{
+  "attempts": [
+    {
+      "test_module": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/tests/test_controlled_predictive_local_contract_v72.py",
+      "session_failures": 0,
+      "scope": "four fixed spawn bases, two independent ground boards, one changed-probability case; no target roots",
+      "fixture_checks": [
+        {
+          "base": [
+            0,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1
+          ],
+          "cell": 0,
+          "rank": 1
+        },
+        {
+          "base": [
+            0,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1
+          ],
+          "cell": 0,
+          "rank": 2
+        },
+        {
+          "base": [
+            0,
+            2,
+            2,
+            2,
+            2,
+            1,
+            2,
+            1,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1
+          ],
+          "cell": 0,
+          "rank": 1
+        },
+        {
+          "base": [
+            0,
+            2,
+            2,
+            2,
+            2,
+            1,
+            2,
+            1,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1
+          ],
+          "cell": 0,
+          "rank": 2
+        },
+        {
+          "base": [
+            0,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            0
+          ],
+          "cell": 0,
+          "rank": 1
+        },
+        {
+          "base": [
+            0,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            0
+          ],
+          "cell": 0,
+          "rank": 2
+        },
+        {
+          "base": [
+            0,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            0
+          ],
+          "cell": 15,
+          "rank": 1
+        },
+        {
+          "base": [
+            0,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            0
+          ],
+          "cell": 15,
+          "rank": 2
+        },
+        {
+          "base": [
+            11,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            0
+          ],
+          "cell": 15,
+          "rank": 1
+        },
+        {
+          "base": [
+            11,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            0
+          ],
+          "cell": 15,
+          "rank": 2
+        },
+        {
+          "ground_board": [
+            2,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1
+          ],
+          "cell": 0
+        },
+        {
+          "ground_board": [
+            10,
+            10,
+            2,
+            1,
+            2,
+            3,
+            4,
+            5,
+            3,
+            4,
+            5,
+            6,
+            4,
+            5,
+            6,
+            7
+          ],
+          "cell": 2
+        },
+        {
+          "changed_probability_board": [
+            2,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1
+          ]
+        }
+      ],
+      "ground_states": 2,
+      "ground_step_rows": 6,
+      "ground_outcomes": 12,
+      "compiler_work": {
+        "compiled_programs": 3,
+        "full_board_materializations": 0,
+        "prepare_calls": 19,
+        "line_lookups": 344,
+        "line_evaluations": 43,
+        "line_summary_adjacent_tests": 127,
+        "line_cache_hits": 301,
+        "base_adjacent_tests": 146,
+        "base_hole_neighbor_reads": 10,
+        "patch_status_evaluations": 12,
+        "patched_contract_evaluations": 12,
+        "patched_line_inputs": 40,
+        "unaffected_line_summaries_reused": 120,
+        "action_changed_tests": 84,
+        "direct_observation_evaluations": 13,
+        "action_contract_evaluations": 64,
+        "terminal_contract_evaluations": 64,
+        "cross_line_adjacent_tests": 226,
+        "terminal_spawn_rank_classifications": 128,
+        "hole_neighbor_rank_reads": 26
+      }
+    }
+  ]
+}

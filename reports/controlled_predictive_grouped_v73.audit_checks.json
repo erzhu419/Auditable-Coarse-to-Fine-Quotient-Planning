@@ -1,0 +1,14 @@
+{
+  "attempts": [
+    {
+      "session_failures": 0,
+      "test_module": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/tests/test_controlled_predictive_grouped_audit_v73.py",
+      "model_builds": 0,
+      "fit_calls": 0,
+      "ground_calls": 0,
+      "planning_calls": 0,
+      "main_cohort_cases": 0,
+      "audit_calls": 3
+    }
+  ]
+}

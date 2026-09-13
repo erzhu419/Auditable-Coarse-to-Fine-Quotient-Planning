@@ -1,0 +1,75 @@
+{
+  "schema": "acfqp.compositional_dynamics.v69",
+  "status": "complete",
+  "source_roots": 52,
+  "target_roots": 32,
+  "completed_targets": 32,
+  "limited_targets": 0,
+  "max_concrete_states": 200000,
+  "target_labels_used_for_fit_or_construction": 0,
+  "random_environment_samples": 0,
+  "runtime": {
+    "python": "3.10.12",
+    "executable": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python"
+  },
+  "acquisition": {
+    "counts": {
+      "source_status_calls": 52,
+      "afterstate_labels": 208,
+      "full_support_rows": 184,
+      "full_support_outcomes": 1132
+    },
+    "seconds": 0.09437717095715925
+  },
+  "rule": {
+    "schema": "controlled_predictive_relational_dynamics_v69",
+    "program": {
+      "pack": true,
+      "merge_relation": "equal",
+      "rank_increment": 1,
+      "consumption": "once",
+      "reward_rule": "output_value"
+    },
+    "spawn_location": "uniform",
+    "spawn_distribution": [
+      [
+        1,
+        9,
+        10
+      ],
+      [
+        2,
+        1,
+        10
+      ]
+    ],
+    "goal_rank": 11,
+    "fit_counts": {
+      "source_records": 208,
+      "rewrite_candidates": 144,
+      "candidate_observation_checks": 383,
+      "learned_swipe_calls": 383,
+      "learned_line_rewrites": 1532,
+      "consistent_rewrite_candidates": 1,
+      "source_spawn_rows": 184,
+      "source_spawn_outcomes": 1132,
+      "spawn_location_candidates": 3,
+      "spawn_location_observation_checks": 186,
+      "consistent_spawn_location_candidates": 1
+    },
+    "fit_seconds": 0.01230475795455277
+  },
+  "rule_freeze_seconds_since_start": 0.13164165703346953,
+  "source_semantics_reference": {
+    "source_path": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_learning_v68/QUOTIENT/kernel.json",
+    "seconds": 0.13102337199961767,
+    "counts": {
+      "semantic_states": 1278,
+      "semantic_outcome_terms": 7648
+    },
+    "source_reward_grid_restored_atoms": 116,
+    "maximum_reward_restoration": 1.1102230246251565e-16
+  },
+  "wall_seconds": 79.29933768499177,
+  "peak_rss_bytes": 300273664
+}

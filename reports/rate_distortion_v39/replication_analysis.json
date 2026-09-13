@@ -1,0 +1,229 @@
+{
+  "author_commit": "0d3b6f7e1cd63f8df8056bd35a0c82934390cefd",
+  "independent_optimal_return": 0.773639922875503,
+  "independent_bellman_residual": 1.1102230246251565e-16,
+  "primary_sequential": {
+    "source_directory": "reports/rate_distortion_v39/doorkey",
+    "config": {
+      "num_states": 233,
+      "num_actions": 5,
+      "num_state_action_pairs": 1165,
+      "beta_schedule": [
+        6.0,
+        7.0,
+        7.5,
+        8.0,
+        10.0
+      ],
+      "adaptive_beta_schedule": [
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0
+      ],
+      "abstract_alphabet_size_cap": 1165,
+      "max_sweeps": 100,
+      "eval_interval": 1,
+      "save_policies": false,
+      "num_workers": 1,
+      "abstraction_solver": "flat",
+      "abstraction_error_mode": "average",
+      "reference_distribution": "uniform over concrete state-action pairs",
+      "abstraction_space": "state_action_pairs",
+      "planner": "deterministic-decoder specialization of the decoder-based operator Fbar_eta = L F Gamma, with soft encoder grounding and deterministic decoder representatives",
+      "ba_solver_limits": {
+        "max_outer": 200,
+        "max_inner": 50
+      },
+      "scenario": "doorkey",
+      "abstraction": "sa",
+      "solver": "modelbased_state_action",
+      "environment": "fully_observable_doorkey",
+      "benchmark_family": "MiniGrid-inspired DoorKey",
+      "grid_size": 5,
+      "gamma": 0.95,
+      "goal_reward": 1.0,
+      "metric_kind": "fixed_point",
+      "distance": "fixed-point state-action bisimulation metric",
+      "mu": "uniform over concrete state-action pairs",
+      "door_position": [
+        2,
+        2
+      ],
+      "key_position": [
+        1,
+        3
+      ],
+      "goal_position": [
+        3,
+        3
+      ],
+      "reward_structure": {
+        "goal_reward": 1.0,
+        "other_transitions": 0.0
+      }
+    },
+    "adaptive_final_return": 0.7713207808683671,
+    "adaptive_final_return_fraction": 0.9970022979184994,
+    "adaptive_best_return": 0.7713207808683671,
+    "adaptive_optimal_checkpoint_exists": false,
+    "first_optimal_adaptive": null,
+    "paper_joint_information_rounding_match": false,
+    "paper_state_component_rounding_match": false,
+    "paper_action_component_rounding_match": false,
+    "fixed_family": [
+      {
+        "beta": 6.0,
+        "final_return": 0.20946351931330476,
+        "active_codes": 59,
+        "information_fraction": 0.0009169704729846743
+      },
+      {
+        "beta": 7.0,
+        "final_return": 0.7403151294240656,
+        "active_codes": 113,
+        "information_fraction": 0.003148133674349819
+      },
+      {
+        "beta": 7.5,
+        "final_return": 0.7427563315368402,
+        "active_codes": 144,
+        "information_fraction": 0.008233256910669158
+      },
+      {
+        "beta": 8.0,
+        "final_return": 0.773639922875503,
+        "active_codes": 211,
+        "information_fraction": 0.03694273364642648
+      },
+      {
+        "beta": 10.0,
+        "final_return": 0.7713207808683671,
+        "active_codes": 233,
+        "information_fraction": 0.1868292499945518
+      }
+    ],
+    "trace_rows": 5478,
+    "stderr_bytes": 0,
+    "wall_time": "real 19.39\nuser 17.90\nsys 1.48"
+  },
+  "readme_independent_diagnostic": {
+    "source_directory": "reports/rate_distortion_v39/release_entrypoint/doorkey",
+    "config": {
+      "num_states": 233,
+      "num_actions": 5,
+      "num_state_action_pairs": 1165,
+      "beta_schedule": [
+        6.0,
+        7.0,
+        7.5,
+        8.0,
+        10.0
+      ],
+      "adaptive_beta_schedule": [
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0
+      ],
+      "abstract_alphabet_size_cap": 1165,
+      "max_sweeps": 100,
+      "eval_interval": 1,
+      "save_policies": false,
+      "num_workers": 4,
+      "abstraction_solver": "flat",
+      "abstraction_error_mode": "average",
+      "reference_distribution": "uniform over concrete state-action pairs",
+      "abstraction_space": "state_action_pairs",
+      "planner": "deterministic-decoder specialization of the decoder-based operator Fbar_eta = L F Gamma, with soft encoder grounding and deterministic decoder representatives",
+      "ba_solver_limits": {
+        "max_outer": 200,
+        "max_inner": 50
+      },
+      "scenario": "doorkey",
+      "abstraction": "sa",
+      "solver": "modelbased_state_action",
+      "environment": "fully_observable_doorkey",
+      "benchmark_family": "MiniGrid-inspired DoorKey",
+      "grid_size": 5,
+      "gamma": 0.95,
+      "goal_reward": 1.0,
+      "metric_kind": "fixed_point",
+      "distance": "fixed-point state-action bisimulation metric",
+      "mu": "uniform over concrete state-action pairs",
+      "door_position": [
+        2,
+        2
+      ],
+      "key_position": [
+        1,
+        3
+      ],
+      "goal_position": [
+        3,
+        3
+      ],
+      "reward_structure": {
+        "goal_reward": 1.0,
+        "other_transitions": 0.0
+      }
+    },
+    "adaptive_final_return": 0.773639922875503,
+    "adaptive_final_return_fraction": 1.0,
+    "adaptive_best_return": 0.773639922875503,
+    "adaptive_optimal_checkpoint_exists": true,
+    "first_optimal_adaptive": {
+      "sweep": 12.0,
+      "beta": 8.0,
+      "active_abstracts": 1165.0,
+      "bellman_backup_units": 12874.0,
+      "policy_return": 0.773639922875503,
+      "information_fraction": 0.13301472433944045,
+      "state_information_fraction": 0.3752881433352148,
+      "action_information_fraction": 0.35443359109970285,
+      "information_provenance": "same beta, identical deterministic independent fit inputs in both families"
+    },
+    "paper_joint_information_rounding_match": true,
+    "paper_state_component_rounding_match": false,
+    "paper_action_component_rounding_match": false,
+    "fixed_family": [
+      {
+        "beta": 6.0,
+        "final_return": 0.20946351931330476,
+        "active_codes": 59,
+        "information_fraction": 0.0009169704729846743
+      },
+      {
+        "beta": 7.0,
+        "final_return": 0.7403151294240656,
+        "active_codes": 568,
+        "information_fraction": 0.003257795959379996
+      },
+      {
+        "beta": 7.5,
+        "final_return": 0.7427563315368402,
+        "active_codes": 726,
+        "information_fraction": 0.00848185625579832
+      },
+      {
+        "beta": 8.0,
+        "final_return": 0.773639922875503,
+        "active_codes": 1165,
+        "information_fraction": 0.13301472433944045
+      },
+      {
+        "beta": 10.0,
+        "final_return": 0.773639922875503,
+        "active_codes": 1165,
+        "information_fraction": 0.1906194048793321
+      }
+    ],
+    "trace_rows": 2750,
+    "stderr_bytes": 0,
+    "wall_time": "real 21.55\nuser 54.37\nsys 5.89"
+  },
+  "conclusion": "README entrypoint reproduces optimal return and joint information fraction; default sequential path does not. Information components differ from paper rounding.",
+  "cost_boundary": "Author backup units omit full concrete backups and stage probes; wall times include fitting and evaluation, not isolated deployment timings."
+}

@@ -1,0 +1,19 @@
+{
+  "attempts": [
+    {
+      "command": "pytest -q tests/test_lmta_changed_policy_runner_v60.py",
+      "returncode": 0,
+      "wall_seconds": 0.6909407079801895,
+      "stdout": "..                                                                       [100%]\n2 passed in 0.24s\n",
+      "stderr": "",
+      "actual_planner_calls": 0,
+      "actual_full_policy_evaluations": 0,
+      "synthetic_evaluation_calls": 2,
+      "hand_graph_reconstructions": 2,
+      "new_random_graphs": 0,
+      "new_environment_samples": 0,
+      "model_updates": 0,
+      "scope": "Two mocked one-case executions exercise complete and limited output. Source reading, evaluation and GC are mocked; command wall time is real."
+    }
+  ]
+}

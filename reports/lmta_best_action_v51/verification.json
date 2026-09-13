@@ -1,0 +1,36 @@
+{
+  "schema": "acfqp.lmta_best_action_verification.v51",
+  "passed": true,
+  "errors": [],
+  "scope": "One standard-library aggregation of retained V51/V49 metrics, ordered batches, final criteria, six paired contrasts with closed-form df=2 intervals, supervision histogram, and new/historical costs. No analysis implementation imported, NPZ read, model evaluation, gradient or environment execution.",
+  "initial_original_records_exact": 5040,
+  "ordered_batches_exact": 6000,
+  "metric_records": 10080,
+  "paired_contrasts_checked": 6,
+  "max_numeric_difference": 1.9206858326015208e-14,
+  "diagnostic_outcome": "FIT_NOT_ESTABLISHED",
+  "endpoint_means": {
+    "train": {
+      "mean_relative_regret": 0.005933761304348387,
+      "optimal_rate": 0.6875,
+      "pairwise_accuracy": 0.9581756376544128,
+      "mean_best_set_probability": 0.5719502318161972
+    },
+    "heldout": {
+      "mean_relative_regret": 0.010136425676698873,
+      "optimal_rate": 0.669047619047619,
+      "pairwise_accuracy": 0.9597598601228405,
+      "mean_best_set_probability": 0.5577453557765207
+    }
+  },
+  "supervision_histogram": {
+    "1": 1570,
+    "2": 95,
+    "3": 13,
+    "4": 2
+  },
+  "new_verification_environment_calls": 0,
+  "new_verification_gradient_steps": 0,
+  "new_verification_model_evaluations": 0,
+  "wall_seconds": 0.2519691710185725
+}

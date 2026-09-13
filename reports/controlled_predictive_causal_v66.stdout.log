@@ -1,0 +1,16 @@
+{"case": "v6_crossing_rescue_pair_0", "completed_cases": 1, "active_states": {"BASELINE": 162, "CAUSAL": 162, "UNSAFE": 162}, "forgotten": [], "portable": false}
+{"case": "v6_crossing_rescue_pair_1", "completed_cases": 2, "active_states": {"BASELINE": 144, "CAUSAL": 144, "UNSAFE": 144}, "forgotten": [], "portable": false}
+{"case": "v6_crossing_rescue_pair_2", "completed_cases": 3, "active_states": {"BASELINE": 173, "CAUSAL": 173, "UNSAFE": 173}, "forgotten": [], "portable": false}
+{"case": "v6_crossing_rescue_pair_3", "completed_cases": 4, "active_states": {"BASELINE": 93, "CAUSAL": 93, "UNSAFE": 93}, "forgotten": [], "portable": false}
+{"case": "v6_spawn_edge_rescue_0", "completed_cases": 5, "active_states": {"BASELINE": 8, "CAUSAL": 8, "UNSAFE": 1}, "forgotten": [], "portable": false}
+{"case": "v6_spawn_edge_rescue_1", "completed_cases": 6, "active_states": {"BASELINE": 6, "CAUSAL": 6, "UNSAFE": 1}, "forgotten": [], "portable": false}
+{"case": "v6_spawn_edge_rescue_2", "completed_cases": 7, "active_states": {"BASELINE": 6, "CAUSAL": 6, "UNSAFE": 1}, "forgotten": [], "portable": false}
+{"case": "v6_spawn_edge_rescue_3", "completed_cases": 8, "active_states": {"BASELINE": 10, "CAUSAL": 10, "UNSAFE": 1}, "forgotten": [], "portable": false}
+{"case": "v6_crossed_vacancy_goal_detour_0", "completed_cases": 9, "active_states": {"BASELINE": 93, "CAUSAL": 93, "UNSAFE": 93}, "forgotten": [], "portable": false}
+{"case": "v6_crossed_vacancy_goal_detour_1", "completed_cases": 10, "active_states": {"BASELINE": 109, "CAUSAL": 109, "UNSAFE": 93}, "forgotten": [], "portable": false}
+{"case": "v6_crossed_vacancy_goal_detour_2", "completed_cases": 11, "active_states": {"BASELINE": 105, "CAUSAL": 105, "UNSAFE": 101}, "forgotten": [], "portable": false}
+{"case": "v6_crossed_vacancy_goal_detour_3", "completed_cases": 12, "active_states": {"BASELINE": 61, "CAUSAL": 61, "UNSAFE": 61}, "forgotten": [], "portable": false}
+{"case": "v6_control_last_pair_spawn_risk", "completed_cases": 13, "active_states": {"BASELINE": 6, "CAUSAL": 6, "UNSAFE": 2}, "forgotten": [6], "portable": false}
+{"case": "v6_control_dense_merge_choice", "completed_cases": 14, "active_states": {"BASELINE": 202, "CAUSAL": 202, "UNSAFE": 191}, "forgotten": [], "portable": false}
+{"case": "v6_control_adjacent_1024_goal", "completed_cases": 15, "active_states": {"BASELINE": 3, "CAUSAL": 3, "UNSAFE": 3}, "forgotten": [], "portable": false}
+{"case": "exposed_left_successor_7", "completed_cases": 16, "active_states": {"BASELINE": 13, "CAUSAL": 13, "UNSAFE": 13}, "forgotten": [6], "portable": false}

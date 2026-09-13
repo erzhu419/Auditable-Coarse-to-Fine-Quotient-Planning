@@ -1,0 +1,63 @@
+[transfer] building last_pair_spawn_risk
+    iterating SysAdmin state metric fixed point...
+    sysadmin bisim iter 0: max change = 3.906e-03
+    sysadmin bisim iter 2: max change = 0.000e+00
+    lifting fixed-point state metric to pair metric...
+    pair rows 1/15
+    pair rows 2/15
+    pair rows 3/15
+    pair rows 4/15
+    pair rows 5/15
+    pair rows 6/15
+    pair rows 7/15
+    pair rows 8/15
+    pair rows 9/15
+    pair rows 10/15
+    pair rows 11/15
+    pair rows 12/15
+    pair rows 13/15
+    pair rows 14/15
+    pair rows 15/15
+[transfer] last_pair_spawn_risk / raw, scale=1
+{"case": "last_pair_spawn_risk", "condition": "raw", "adaptive": {"root_value": 0.00232421875, "root_regret": 0.0, "information_fraction": 0.2, "active_codes": 5}}
+[transfer] last_pair_spawn_risk / doorkey_metric_units, scale=499.2
+{"case": "last_pair_spawn_risk", "condition": "doorkey_metric_units", "adaptive": {"root_value": 0.00232421875, "root_regret": 0.0, "information_fraction": 0.6461816883143685, "active_codes": 5}}
+[transfer] building dense_merge_choice
+    iterating SysAdmin state metric fixed point...
+    sysadmin bisim iter 0: max change = 2.344e-02
+    sysadmin bisim iter 2: max change = 6.939e-18
+    lifting fixed-point state metric to pair metric...
+    pair rows 1/90
+    pair rows 12/90
+    pair rows 23/90
+    pair rows 34/90
+    pair rows 45/90
+    pair rows 56/90
+    pair rows 67/90
+    pair rows 78/90
+    pair rows 89/90
+    pair rows 90/90
+[transfer] dense_merge_choice / raw, scale=1
+{"case": "dense_merge_choice", "condition": "raw", "adaptive": {"root_value": 0.011328125, "root_regret": 0.014843749999999998, "information_fraction": 0.015384615384615385, "active_codes": 64}}
+[transfer] dense_merge_choice / doorkey_metric_units, scale=46.6542
+{"case": "dense_merge_choice", "condition": "doorkey_metric_units", "adaptive": {"root_value": 0.026171874999999997, "root_regret": 0.0, "information_fraction": 0.03294890338718362, "active_codes": 55}}
+[transfer] building adjacent_1024_goal
+    iterating SysAdmin state metric fixed point...
+    sysadmin bisim iter 0: max change = 1.219e+00
+    sysadmin bisim iter 2: max change = 0.000e+00
+    lifting fixed-point state metric to pair metric...
+    pair rows 1/20
+    pair rows 3/20
+    pair rows 5/20
+    pair rows 7/20
+    pair rows 9/20
+    pair rows 11/20
+    pair rows 13/20
+    pair rows 15/20
+    pair rows 17/20
+    pair rows 19/20
+    pair rows 20/20
+[transfer] adjacent_1024_goal / raw, scale=1
+{"case": "adjacent_1024_goal", "condition": "raw", "adaptive": {"root_value": 1.1578125, "root_regret": 0.0, "information_fraction": 0.32892538685573686, "active_codes": 8}}
+[transfer] adjacent_1024_goal / doorkey_metric_units, scale=0.820513
+{"case": "adjacent_1024_goal", "condition": "doorkey_metric_units", "adaptive": {"root_value": 1.1578125, "root_regret": 0.0, "information_fraction": 0.3088889636681511, "active_codes": 8}}

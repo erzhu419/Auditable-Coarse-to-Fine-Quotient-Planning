@@ -1,0 +1,23 @@
+{
+  "schema": "acfqp.lmta_supervised_verification.v49",
+  "passed": true,
+  "errors": [],
+  "scope": "Standard-library independent aggregation of retained raw metrics, training and collection, plus NPZ state metadata and chosen-score checks. No environment execution, gradients, network loading or model evaluation; pair credits are aggregated from retained metrics.",
+  "metric_records": 10080,
+  "training_records": 6000,
+  "collection_records": 24,
+  "training_state_ids_range": [
+    0,
+    1119
+  ],
+  "max_numeric_difference": 1.1102230246251565e-16,
+  "diagnostic_outcome": "FIT_NOT_ESTABLISHED",
+  "new_physical_counters": {
+    "primitive_selections": 1680,
+    "day_transitions": 240,
+    "propagation_draws": 30348
+  },
+  "new_verification_environment_calls": 0,
+  "new_verification_gradient_steps": 0,
+  "wall_seconds": 0.7130528409907129
+}

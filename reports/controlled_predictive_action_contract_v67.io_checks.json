@@ -1,0 +1,10 @@
+{
+  "exit_code": 0,
+  "command_wall_seconds": 0.6350767739932053,
+  "stdout": ".                                                                        [100%]\n1 passed in 0.19s\n",
+  "stderr": "",
+  "tests": 1,
+  "planner_calls": 0,
+  "environment_calls": 0,
+  "scope": "Restore many-to-one H1 routing from serialized rows without concrete members."
+}

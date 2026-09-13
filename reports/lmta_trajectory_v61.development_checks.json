@@ -1,0 +1,12 @@
+{
+  "schema": "acfqp.lmta_trajectory_development.v61",
+  "unique_tests": 12,
+  "total_test_executions": 13,
+  "final_passed": 12,
+  "final_failed": 0,
+  "attempt_ledgers": [
+    "lmta_trajectory_v61.simulation_checks.json",
+    "lmta_trajectory_v61.analysis_checks.json"
+  ],
+  "scope": "Simulator tests ran once. Analysis first attempt had one test-fixture list-aliasing failure; only that test was corrected and rerun, without analyzer changes. After the completed main run, the analyzer zero-counter aggregation repair added one regression test, executed once without extra sampling or planning. All attempts and work remain charged in the ledgers. No main trajectories were run during development."
+}

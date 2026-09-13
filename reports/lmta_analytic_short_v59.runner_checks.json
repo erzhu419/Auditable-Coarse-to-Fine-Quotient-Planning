@@ -1,0 +1,18 @@
+{
+  "attempts": [
+    {
+      "command": "pytest -q tests/test_lmta_analytic_short_runner_v59.py",
+      "returncode": 0,
+      "wall_seconds": 0.6904809219995514,
+      "stdout": "....                                                                     [100%]\n4 passed in 0.25s\n",
+      "stderr": "",
+      "actual_planner_calls": 0,
+      "synthetic_planner_calls": 5,
+      "actual_full_policy_evaluations": 0,
+      "new_graphs": 0,
+      "new_environment_samples": 0,
+      "model_updates": 0,
+      "scope": "Compact source JSON fixture and three mocked replay calls. All mocked clock/work values are synthetic; command wall time is real."
+    }
+  ]
+}

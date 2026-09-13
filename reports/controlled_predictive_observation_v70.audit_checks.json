@@ -1,0 +1,27 @@
+{
+  "counts": {
+    "full_rows": 12,
+    "full_outcome_terms": 16,
+    "composed_rows": 8,
+    "composed_outcome_terms": 12,
+    "full_state_contract_checks": 20,
+    "joint_rows_verified": 9,
+    "standalone_mapping_calls": 1,
+    "router_FULL_MAP_retained_active_observation": 9,
+    "router_FULL_MAP_portable_observation": 6,
+    "router_FULL_MAP_unsupported_observation": 6,
+    "router_COMPOSED_MAP_retained_active_observation": 9,
+    "router_COMPOSED_MAP_portable_observation": 6,
+    "router_COMPOSED_MAP_unsupported_observation": 6,
+    "router_COMPOSED_DAG_retained_active_observation": 9,
+    "router_COMPOSED_DAG_portable_observation": 6,
+    "router_COMPOSED_DAG_unsupported_observation": 6,
+    "audit_calls": 3
+  },
+  "main_cohort_roots": 0,
+  "ground_calls": 0,
+  "model_builds": 0,
+  "fit_calls": 0,
+  "planning_calls": 0,
+  "scope": "Three tiny saved-kernel fixtures check exact matching, malformed kernels, and wrong/extrapolated routing."
+}

@@ -1,0 +1,29 @@
+{
+  "attempts": [
+    {
+      "test_module": "tests/test_lmta_analytic_terminal_runner_v56.py",
+      "new_failures": 0,
+      "planner_calls": 7,
+      "all_planner_counters": {
+        "dp_states": 26,
+        "action_value_evaluations": 37,
+        "kernel_builds": 24,
+        "kernel_cache_hits": 0,
+        "transition_outcomes": 33,
+        "target_probability_evaluations": 34,
+        "score_node_evaluations": 0,
+        "immediate_expectation_terms": 0,
+        "bellman_expectation_terms": 33,
+        "forced_choice": 4,
+        "analytic_expectation_calls": 13,
+        "analytic_probability_terms": 8
+      },
+      "wall_seconds": 0.35360420000506565,
+      "environment_samples": 0,
+      "environment_calls": 0,
+      "gradient_steps": 0,
+      "new_full_policy_evaluations": 0,
+      "scope": "Hand-specified reference occupancy; all complete and intentionally limited replay work is charged."
+    }
+  ]
+}

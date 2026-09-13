@@ -1,0 +1,16 @@
+{"case": "v6_crossing_rescue_pair_0", "completed_cases": 1, "active_states": {"BASELINE": 162, "CONTRACT": 45, "UNSAFE": 36}, "contract_states": 32, "portable": true}
+{"case": "v6_crossing_rescue_pair_1", "completed_cases": 2, "active_states": {"BASELINE": 144, "CONTRACT": 58, "UNSAFE": 46}, "contract_states": 45, "portable": true}
+{"case": "v6_crossing_rescue_pair_2", "completed_cases": 3, "active_states": {"BASELINE": 173, "CONTRACT": 46, "UNSAFE": 43}, "contract_states": 33, "portable": true}
+{"case": "v6_crossing_rescue_pair_3", "completed_cases": 4, "active_states": {"BASELINE": 93, "CONTRACT": 57, "UNSAFE": 23}, "contract_states": 44, "portable": true}
+{"case": "v6_spawn_edge_rescue_0", "completed_cases": 5, "active_states": {"BASELINE": 8, "CONTRACT": 5, "UNSAFE": 5}, "contract_states": 2, "portable": true}
+{"case": "v6_spawn_edge_rescue_1", "completed_cases": 6, "active_states": {"BASELINE": 6, "CONTRACT": 6, "UNSAFE": 5}, "contract_states": 3, "portable": true}
+{"case": "v6_spawn_edge_rescue_2", "completed_cases": 7, "active_states": {"BASELINE": 6, "CONTRACT": 5, "UNSAFE": 5}, "contract_states": 2, "portable": true}
+{"case": "v6_spawn_edge_rescue_3", "completed_cases": 8, "active_states": {"BASELINE": 10, "CONTRACT": 9, "UNSAFE": 6}, "contract_states": 6, "portable": true}
+{"case": "v6_crossed_vacancy_goal_detour_0", "completed_cases": 9, "active_states": {"BASELINE": 93, "CONTRACT": 50, "UNSAFE": 27}, "contract_states": 37, "portable": true}
+{"case": "v6_crossed_vacancy_goal_detour_1", "completed_cases": 10, "active_states": {"BASELINE": 109, "CONTRACT": 55, "UNSAFE": 37}, "contract_states": 42, "portable": true}
+{"case": "v6_crossed_vacancy_goal_detour_2", "completed_cases": 11, "active_states": {"BASELINE": 105, "CONTRACT": 43, "UNSAFE": 32}, "contract_states": 30, "portable": true}
+{"case": "v6_crossed_vacancy_goal_detour_3", "completed_cases": 12, "active_states": {"BASELINE": 61, "CONTRACT": 31, "UNSAFE": 19}, "contract_states": 18, "portable": true}
+{"case": "v6_control_last_pair_spawn_risk", "completed_cases": 13, "active_states": {"BASELINE": 6, "CONTRACT": 3, "UNSAFE": 3}, "contract_states": 1, "portable": true}
+{"case": "v6_control_dense_merge_choice", "completed_cases": 14, "active_states": {"BASELINE": 202, "CONTRACT": 70, "UNSAFE": 63}, "contract_states": 53, "portable": true}
+{"case": "v6_control_adjacent_1024_goal", "completed_cases": 15, "active_states": {"BASELINE": 3, "CONTRACT": 3, "UNSAFE": 3}, "contract_states": 0, "portable": true}
+{"case": "exposed_left_successor_7", "completed_cases": 16, "active_states": {"BASELINE": 13, "CONTRACT": 12, "UNSAFE": 9}, "contract_states": 11, "portable": true}

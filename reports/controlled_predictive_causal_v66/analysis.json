@@ -1,0 +1,486 @@
+{
+  "schema": "acfqp.controlled_predictive_causal_analysis.v66",
+  "complete": true,
+  "causal_correct_on_all_declared_states": true,
+  "portable_models_verified": true,
+  "structural_bridge_established": false,
+  "finite_joint_benefit_observed": false,
+  "causal_over_baseline": {
+    "active_states": 1.0,
+    "action_rows": 1.0,
+    "planning_outcomes": 1.0,
+    "model_bytes": 1.0000995171050948,
+    "method_total_seconds": 0.9809081071467685
+  },
+  "variants": {
+    "BASELINE": {
+      "construction_counts": {
+        "root_tiles_encoded": 256,
+        "root_tiles_forgotten": 0,
+        "kernel_terminal_checks": 14827,
+        "kernel_swipe_calls": 54444,
+        "kernel_line_transforms": 217776,
+        "spawn_support_entries": 15134,
+        "model_transition_rows": 3694,
+        "model_successor_entries": 5121,
+        "existing_active_state_visits": 323,
+        "existing_terminal_state_visits": 13580,
+        "registered_states": 1247,
+        "active_states": 1194,
+        "terminal_states": 53,
+        "coalesced_outcomes": 10013
+      },
+      "planning_counts": {
+        "active_states": 16716,
+        "state_action_rows": 51716,
+        "outcomes": 71694,
+        "visited_cells": 17458
+      },
+      "audit_counts": {
+        "encoded_concrete_states": 10527,
+        "encoded_board_tiles": 168432,
+        "joint_distribution_rows": 3694,
+        "ground_pushforward_outcome_terms": 15134,
+        "candidate_pushforward_outcome_terms": 5121,
+        "lifted_policy_states": 147378,
+        "lifted_policy_action_rows": 16716,
+        "lifted_policy_outcome_terms": 73978,
+        "candidate_policy_states": 17458,
+        "candidate_policy_action_rows": 16716,
+        "candidate_policy_outcome_terms": 23380,
+        "policy_state_comparisons": 147378,
+        "strict_query_switch_checks": 139
+      },
+      "valid_cases": 16,
+      "structural_valid_cases": 16,
+      "total_model_bytes": 211019,
+      "method_total_seconds": 0.5289162299013697,
+      "audit_seconds": 0.6468706280575134,
+      "strict_switches": 139,
+      "violated_switches": 0
+    },
+    "CAUSAL": {
+      "construction_counts": {
+        "rule_synthesis_calls": 16,
+        "kernel_terminal_checks": 14843,
+        "kernel_swipe_calls": 54508,
+        "kernel_line_transforms": 218032,
+        "rule_rank_candidates": 50,
+        "rule_upper_bound_updates": 841,
+        "rule_transition_steps": 196,
+        "rule_forgotten_ranks": 2,
+        "root_tiles_encoded": 256,
+        "root_tiles_forgotten": 2,
+        "spawn_support_entries": 15134,
+        "model_transition_rows": 3694,
+        "model_successor_entries": 5121,
+        "existing_active_state_visits": 323,
+        "existing_terminal_state_visits": 13580,
+        "registered_states": 1247,
+        "active_states": 1194,
+        "terminal_states": 53,
+        "coalesced_outcomes": 10013
+      },
+      "planning_counts": {
+        "active_states": 16716,
+        "state_action_rows": 51716,
+        "outcomes": 71694,
+        "visited_cells": 17458
+      },
+      "audit_counts": {
+        "encoded_concrete_states": 10527,
+        "encoded_board_tiles": 168432,
+        "joint_distribution_rows": 3694,
+        "ground_pushforward_outcome_terms": 15134,
+        "candidate_pushforward_outcome_terms": 5121,
+        "lifted_policy_states": 147378,
+        "lifted_policy_action_rows": 16716,
+        "lifted_policy_outcome_terms": 73978,
+        "candidate_policy_states": 17458,
+        "candidate_policy_action_rows": 16716,
+        "candidate_policy_outcome_terms": 23380,
+        "policy_state_comparisons": 147378,
+        "strict_query_switch_checks": 139
+      },
+      "valid_cases": 16,
+      "structural_valid_cases": 16,
+      "total_model_bytes": 211040,
+      "method_total_seconds": 0.5188182179117575,
+      "audit_seconds": 0.6467826319858432,
+      "strict_switches": 139,
+      "violated_switches": 0
+    },
+    "UNSAFE": {
+      "construction_counts": {
+        "rule_synthesis_calls": 16,
+        "kernel_terminal_checks": 13184,
+        "kernel_swipe_calls": 48192,
+        "kernel_line_transforms": 192768,
+        "rule_forgotten_ranks": 50,
+        "root_tiles_encoded": 256,
+        "root_tiles_forgotten": 50,
+        "spawn_support_entries": 13442,
+        "model_transition_rows": 3492,
+        "model_successor_entries": 4816,
+        "existing_active_state_visits": 290,
+        "existing_terminal_state_visits": 11994,
+        "registered_states": 1174,
+        "active_states": 1133,
+        "terminal_states": 41,
+        "coalesced_outcomes": 8626
+      },
+      "planning_counts": {
+        "active_states": 15862,
+        "state_action_rows": 48888,
+        "outcomes": 67424,
+        "visited_cells": 16436
+      },
+      "audit_counts": {
+        "encoded_concrete_states": 10527,
+        "encoded_board_tiles": 168432,
+        "joint_distribution_rows": 3694,
+        "ground_pushforward_outcome_terms": 15134,
+        "candidate_pushforward_outcome_terms": 4603,
+        "lifted_policy_states": 147378,
+        "lifted_policy_action_rows": 15288,
+        "lifted_policy_outcome_terms": 66072,
+        "candidate_policy_states": 16436,
+        "candidate_policy_action_rows": 15862,
+        "candidate_policy_outcome_terms": 22355,
+        "policy_state_comparisons": 147378,
+        "strict_query_switch_checks": 139,
+        "lifted_policy_missing_actions": 1428
+      },
+      "valid_cases": 6,
+      "structural_valid_cases": 6,
+      "total_model_bytes": 200495,
+      "method_total_seconds": 0.4718041981686838,
+      "audit_seconds": 0.6321504921652377,
+      "strict_switches": 139,
+      "violated_switches": 126
+    }
+  },
+  "per_case": [
+    {
+      "name": "v6_crossing_rescue_pair_0",
+      "forgotten": [],
+      "active_states": {
+        "BASELINE": 162,
+        "CAUSAL": 162,
+        "UNSAFE": 162
+      },
+      "reference_cells": 45,
+      "causal_valid": true,
+      "causal_errors": {},
+      "unsafe_valid": true,
+      "unsafe_witness": null
+    },
+    {
+      "name": "v6_crossing_rescue_pair_1",
+      "forgotten": [],
+      "active_states": {
+        "BASELINE": 144,
+        "CAUSAL": 144,
+        "UNSAFE": 144
+      },
+      "reference_cells": 58,
+      "causal_valid": true,
+      "causal_errors": {},
+      "unsafe_valid": true,
+      "unsafe_witness": null
+    },
+    {
+      "name": "v6_crossing_rescue_pair_2",
+      "forgotten": [],
+      "active_states": {
+        "BASELINE": 173,
+        "CAUSAL": 173,
+        "UNSAFE": 173
+      },
+      "reference_cells": 45,
+      "causal_valid": true,
+      "causal_errors": {},
+      "unsafe_valid": true,
+      "unsafe_witness": null
+    },
+    {
+      "name": "v6_crossing_rescue_pair_3",
+      "forgotten": [],
+      "active_states": {
+        "BASELINE": 93,
+        "CAUSAL": 93,
+        "UNSAFE": 93
+      },
+      "reference_cells": 56,
+      "causal_valid": true,
+      "causal_errors": {},
+      "unsafe_valid": true,
+      "unsafe_witness": null
+    },
+    {
+      "name": "v6_spawn_edge_rescue_0",
+      "forgotten": [],
+      "active_states": {
+        "BASELINE": 8,
+        "CAUSAL": 8,
+        "UNSAFE": 1
+      },
+      "reference_cells": 5,
+      "causal_valid": true,
+      "causal_errors": {},
+      "unsafe_valid": false,
+      "unsafe_witness": {
+        "reason": "layer_or_terminal_mismatch",
+        "state": 1,
+        "ground": "ACTIVE",
+        "encoded": "LOST"
+      }
+    },
+    {
+      "name": "v6_spawn_edge_rescue_1",
+      "forgotten": [],
+      "active_states": {
+        "BASELINE": 6,
+        "CAUSAL": 6,
+        "UNSAFE": 1
+      },
+      "reference_cells": 6,
+      "causal_valid": true,
+      "causal_errors": {},
+      "unsafe_valid": false,
+      "unsafe_witness": {
+        "reason": "layer_or_terminal_mismatch",
+        "state": 2,
+        "ground": "ACTIVE",
+        "encoded": "LOST"
+      }
+    },
+    {
+      "name": "v6_spawn_edge_rescue_2",
+      "forgotten": [],
+      "active_states": {
+        "BASELINE": 6,
+        "CAUSAL": 6,
+        "UNSAFE": 1
+      },
+      "reference_cells": 5,
+      "causal_valid": true,
+      "causal_errors": {},
+      "unsafe_valid": false,
+      "unsafe_witness": {
+        "reason": "layer_or_terminal_mismatch",
+        "state": 1,
+        "ground": "ACTIVE",
+        "encoded": "LOST"
+      }
+    },
+    {
+      "name": "v6_spawn_edge_rescue_3",
+      "forgotten": [],
+      "active_states": {
+        "BASELINE": 10,
+        "CAUSAL": 10,
+        "UNSAFE": 1
+      },
+      "reference_cells": 9,
+      "causal_valid": true,
+      "causal_errors": {},
+      "unsafe_valid": false,
+      "unsafe_witness": {
+        "reason": "layer_or_terminal_mismatch",
+        "state": 2,
+        "ground": "ACTIVE",
+        "encoded": "LOST"
+      }
+    },
+    {
+      "name": "v6_crossed_vacancy_goal_detour_0",
+      "forgotten": [],
+      "active_states": {
+        "BASELINE": 93,
+        "CAUSAL": 93,
+        "UNSAFE": 93
+      },
+      "reference_cells": 50,
+      "causal_valid": true,
+      "causal_errors": {},
+      "unsafe_valid": true,
+      "unsafe_witness": null
+    },
+    {
+      "name": "v6_crossed_vacancy_goal_detour_1",
+      "forgotten": [],
+      "active_states": {
+        "BASELINE": 109,
+        "CAUSAL": 109,
+        "UNSAFE": 93
+      },
+      "reference_cells": 55,
+      "causal_valid": true,
+      "causal_errors": {},
+      "unsafe_valid": false,
+      "unsafe_witness": {
+        "reason": "reward_successor_joint_distribution",
+        "state": 25,
+        "action": "LEFT",
+        "total_variation": 1.0,
+        "ground_atoms": 1,
+        "candidate_atoms": 1
+      }
+    },
+    {
+      "name": "v6_crossed_vacancy_goal_detour_2",
+      "forgotten": [],
+      "active_states": {
+        "BASELINE": 105,
+        "CAUSAL": 105,
+        "UNSAFE": 101
+      },
+      "reference_cells": 43,
+      "causal_valid": true,
+      "causal_errors": {},
+      "unsafe_valid": false,
+      "unsafe_witness": {
+        "reason": "reward_successor_joint_distribution",
+        "state": 30,
+        "action": "RIGHT",
+        "total_variation": 1.0,
+        "ground_atoms": 1,
+        "candidate_atoms": 2
+      }
+    },
+    {
+      "name": "v6_crossed_vacancy_goal_detour_3",
+      "forgotten": [],
+      "active_states": {
+        "BASELINE": 61,
+        "CAUSAL": 61,
+        "UNSAFE": 61
+      },
+      "reference_cells": 29,
+      "causal_valid": true,
+      "causal_errors": {},
+      "unsafe_valid": false,
+      "unsafe_witness": {
+        "reason": "layer_or_terminal_mismatch",
+        "state": 166,
+        "ground": "CUTOFF",
+        "encoded": "LOST"
+      }
+    },
+    {
+      "name": "v6_control_last_pair_spawn_risk",
+      "forgotten": [
+        6
+      ],
+      "active_states": {
+        "BASELINE": 6,
+        "CAUSAL": 6,
+        "UNSAFE": 2
+      },
+      "reference_cells": 3,
+      "causal_valid": true,
+      "causal_errors": {},
+      "unsafe_valid": false,
+      "unsafe_witness": {
+        "reason": "layer_or_terminal_mismatch",
+        "state": 5,
+        "ground": "ACTIVE",
+        "encoded": "LOST"
+      }
+    },
+    {
+      "name": "v6_control_dense_merge_choice",
+      "forgotten": [],
+      "active_states": {
+        "BASELINE": 202,
+        "CAUSAL": 202,
+        "UNSAFE": 191
+      },
+      "reference_cells": 70,
+      "causal_valid": true,
+      "causal_errors": {},
+      "unsafe_valid": false,
+      "unsafe_witness": {
+        "reason": "reward_successor_joint_distribution",
+        "state": 17,
+        "action": "UP",
+        "total_variation": 1.0,
+        "ground_atoms": 1,
+        "candidate_atoms": 1
+      }
+    },
+    {
+      "name": "v6_control_adjacent_1024_goal",
+      "forgotten": [],
+      "active_states": {
+        "BASELINE": 3,
+        "CAUSAL": 3,
+        "UNSAFE": 3
+      },
+      "reference_cells": 2,
+      "causal_valid": true,
+      "causal_errors": {},
+      "unsafe_valid": true,
+      "unsafe_witness": null
+    },
+    {
+      "name": "exposed_left_successor_7",
+      "forgotten": [
+        6
+      ],
+      "active_states": {
+        "BASELINE": 13,
+        "CAUSAL": 13,
+        "UNSAFE": 13
+      },
+      "reference_cells": 12,
+      "causal_valid": true,
+      "causal_errors": {},
+      "unsafe_valid": false,
+      "unsafe_witness": {
+        "reason": "reward_successor_joint_distribution",
+        "state": 2,
+        "action": "DOWN",
+        "total_variation": 1.0,
+        "ground_atoms": 1,
+        "candidate_atoms": 2
+      }
+    }
+  ],
+  "accounting": {
+    "whole_runner_seconds": 7.23913858801825,
+    "portable_initial_failures": 16,
+    "portable_repair_wall_seconds": 0.8041559219709598,
+    "portable_repair_planning_counts": {
+      "active_states": 33432,
+      "state_action_rows": 103432,
+      "outcomes": 143388,
+      "visited_cells": 34916
+    },
+    "independent_ground_counts": {
+      "states": 10527,
+      "exact_transition_row_calls": 3694,
+      "exact_outcomes_enumerated": 15134,
+      "active_states": 1194
+    },
+    "reference_counts": {
+      "reference_dp_states": 147378,
+      "reference_dp_action_rows": 51716,
+      "reference_dp_outcome_terms": 211876,
+      "reference_policy_states": 147378,
+      "reference_policy_action_rows": 16716,
+      "reference_policy_outcome_terms": 73960
+    },
+    "ground_construction_seconds": 1.9722372280084528,
+    "reference_seconds": 0.2574605268309824,
+    "oracle_quotient_seconds": 0.019461211806628853,
+    "portable_command_seconds": 1.466715909074992,
+    "portable_planning_counts": {},
+    "portable_prediction_counts": {},
+    "random_samples": 0,
+    "learned_updates": 0,
+    "analysis_seconds_before_serialization": 0.005987638025544584
+  },
+  "limitations": "Previously exposed finite roots, known mechanics, one timing run. The new structural rule is synthesized from each root without a ground closure; this is not a learned unknown-dynamics model or a general-game guarantee. Unsafe control failures are retained separately. Terminal folding is identical in the two primary arms."
+}

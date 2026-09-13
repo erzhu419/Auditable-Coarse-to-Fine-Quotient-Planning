@@ -1,0 +1,77 @@
+{
+  "attempts": [
+    {
+      "test_module": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/tests/test_controlled_predictive_observation_dag_v70.py",
+      "session_failures": 0,
+      "scope": "toy labels only; no V69 main cohort",
+      "compilations": [
+        {
+          "counts": {
+            "input_labels": 2,
+            "input_ranks_materialized": 32,
+            "trie_prefix_visits": 33,
+            "compile_rank_reads": 32,
+            "leaf_label_checks": 2,
+            "distinct_observations": 2,
+            "duplicate_observations": 0,
+            "trie_edges_visited": 32,
+            "shared_subtree_visits": 15,
+            "dag_nodes": 18,
+            "horizon_roots": 1,
+            "dag_leaves": 1,
+            "dag_decisions": 17,
+            "dag_edges": 18
+          },
+          "elapsed_seconds": 8.827203419059515e-05
+        },
+        {
+          "counts": {
+            "input_labels": 8,
+            "input_ranks_materialized": 128,
+            "trie_prefix_visits": 126,
+            "compile_rank_reads": 128,
+            "leaf_label_checks": 8,
+            "distinct_observations": 8,
+            "duplicate_observations": 0,
+            "trie_edges_visited": 124,
+            "shared_subtree_visits": 94,
+            "dag_nodes": 32,
+            "horizon_roots": 2,
+            "dag_leaves": 2,
+            "dag_decisions": 30,
+            "dag_edges": 32
+          },
+          "elapsed_seconds": 0.0002710449625737965
+        },
+        {
+          "counts": {
+            "input_labels": 2,
+            "input_ranks_materialized": 32,
+            "trie_prefix_visits": 17,
+            "compile_rank_reads": 32,
+            "leaf_label_checks": 2,
+            "distinct_observations": 1,
+            "duplicate_observations": 1,
+            "trie_edges_visited": 16,
+            "dag_nodes": 17,
+            "horizon_roots": 1,
+            "dag_leaves": 1,
+            "dag_decisions": 16,
+            "dag_edges": 16
+          },
+          "elapsed_seconds": 4.8298039473593235e-05
+        }
+      ],
+      "encoding_counts": {
+        "observations": 32,
+        "horizon_tests": 32,
+        "node_visits": 328,
+        "rank_tests": 317,
+        "edge_matches": 298,
+        "supported_observations": 11,
+        "unsupported_observations": 21
+      },
+      "conflicting_label_attempts": 1
+    }
+  ]
+}

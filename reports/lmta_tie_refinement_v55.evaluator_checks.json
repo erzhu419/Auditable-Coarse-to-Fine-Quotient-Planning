@@ -1,0 +1,63 @@
+{
+  "attempts": [
+    {
+      "test_module": "tests/test_lmta_tie_refinement_v55.py",
+      "new_failures": 0,
+      "environment_counters": {},
+      "model_evaluations": 0,
+      "gradient_steps": 0,
+      "planner_calls": 8,
+      "solver_instances": 15,
+      "all_solver_counters": {
+        "dp_states": 292,
+        "action_value_evaluations": 595,
+        "kernel_builds": 595,
+        "kernel_cache_hits": 0,
+        "transition_outcomes": 1131,
+        "target_probability_evaluations": 2054,
+        "score_node_evaluations": 0,
+        "immediate_expectation_terms": 0,
+        "bellman_expectation_terms": 1131,
+        "forced_choice": 1
+      },
+      "returned_candidate_plan_counters": {
+        "dp_states": 286,
+        "action_value_evaluations": 573,
+        "kernel_builds": 573,
+        "kernel_cache_hits": 0,
+        "transition_outcomes": 1109,
+        "target_probability_evaluations": 2006,
+        "score_node_evaluations": 0,
+        "immediate_expectation_terms": 0,
+        "bellman_expectation_terms": 1109,
+        "forced_choice": 1,
+        "refinement_calls": 4,
+        "refined_root_actions": 12
+      },
+      "outer_evaluations": [
+        {
+          "status": "resource_limit",
+          "state_records": 1,
+          "stop_reason": "max_planner_action_values",
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 0,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 0,
+            "target_probability_evaluations": 0,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 0,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 0
+          },
+          "actual_test_seconds": 0.0018587730010040104
+        }
+      ],
+      "wall_seconds": 0.010440151992952451,
+      "scope": "All candidate/prefix controls and resource-limited test work is included. Returned-plan counters describe a subset of all_solver_counters and are not additive fees; no environment draws, main panel or learned models."
+    }
+  ]
+}

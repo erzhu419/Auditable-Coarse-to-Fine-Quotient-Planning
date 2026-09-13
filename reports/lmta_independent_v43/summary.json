@@ -1,0 +1,894 @@
+{
+  "schema": "acfqp.lmta_independent.v43",
+  "status": "complete",
+  "purpose": "Independent implementation engineering probe; no sample-efficiency or convergence verdict.",
+  "parameters": {
+    "n": 500,
+    "p": 0.01,
+    "T": 10,
+    "K": 70,
+    "training_episodes": 8,
+    "evaluation_episodes": 2,
+    "graph_seed": 43000,
+    "agent_seed": 43001,
+    "train_environment_seed": 43002,
+    "evaluation_graph_seeds": [
+      43010,
+      43011
+    ],
+    "evaluation_environment_seeds": [
+      43020,
+      43021
+    ],
+    "LMTA_mcts_simulations_per_decision": 150
+  },
+  "runtime": {
+    "python": "3.10.12",
+    "numpy": "2.2.6",
+    "networkx": "2.8.8",
+    "torch": "2.8.0+cu128",
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU"
+  },
+  "graph_generation_seconds": 0.04553081499761902,
+  "graphs": {
+    "43000": {
+      "nodes": 500,
+      "edges": 2599
+    },
+    "43010": {
+      "nodes": 500,
+      "edges": 2473
+    },
+    "43011": {
+      "nodes": 500,
+      "edges": 2449
+    }
+  },
+  "arms": {
+    "FLAT_DQN": {
+      "initialization_seconds": 0.7011924959952012,
+      "training": [
+        {
+          "arm": "FLAT_DQN",
+          "phase": "train",
+          "episode": 0,
+          "wall_seconds": 0.7360984709812328,
+          "raw_return": 283.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 1029
+          },
+          "losses": [
+            12.954580307006836,
+            1.0287712812423706,
+            314.2951354980469,
+            0.8625681400299072,
+            10.39661693572998,
+            1124.87890625,
+            10.068575859069824,
+            319.29510498046875
+          ],
+          "final_remaining_budget": 0
+        },
+        {
+          "arm": "FLAT_DQN",
+          "phase": "train",
+          "episode": 1,
+          "wall_seconds": 0.09584517602343112,
+          "raw_return": 252.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 985
+          },
+          "losses": [
+            0.3328700065612793,
+            1.8113927841186523,
+            373.3224182128906,
+            0.12784087657928467,
+            1113.1009521484375,
+            0.008143581449985504,
+            0.007224815897643566,
+            4135.6005859375,
+            0.07927580177783966,
+            0.10363391786813736
+          ],
+          "final_remaining_budget": 0
+        },
+        {
+          "arm": "FLAT_DQN",
+          "phase": "train",
+          "episode": 2,
+          "wall_seconds": 0.09114285401301458,
+          "raw_return": 227.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 840
+          },
+          "losses": [
+            0.12454427778720856,
+            3063.501953125,
+            3060.525146484375,
+            300.5299987792969,
+            3052.751708984375,
+            0.929231584072113,
+            0.8852826356887817,
+            0.8662297129631042,
+            7.929394245147705,
+            3044.2919921875
+          ],
+          "final_remaining_budget": 0
+        },
+        {
+          "arm": "FLAT_DQN",
+          "phase": "train",
+          "episode": 3,
+          "wall_seconds": 0.09094177099177614,
+          "raw_return": 222.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 887
+          },
+          "losses": [
+            0.954301118850708,
+            360.5471496582031,
+            2852.8525390625,
+            0.9358289241790771,
+            0.8634312152862549,
+            0.7592986226081848,
+            0.5673723220825195,
+            0.5629593133926392,
+            0.43196287751197815,
+            0.28123795986175537
+          ],
+          "final_remaining_budget": 0
+        },
+        {
+          "arm": "FLAT_DQN",
+          "phase": "train",
+          "episode": 4,
+          "wall_seconds": 0.14051279099658132,
+          "raw_return": 246.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 943
+          },
+          "losses": [
+            0.14713671803474426,
+            0.05741496384143829,
+            1104.6094970703125,
+            0.003788986708968878,
+            0.0050856140442192554,
+            3537.925048828125,
+            0.030819691717624664,
+            0.0389389842748642,
+            3084.701904296875,
+            0.05282469093799591
+          ],
+          "final_remaining_budget": 0
+        },
+        {
+          "arm": "FLAT_DQN",
+          "phase": "train",
+          "episode": 5,
+          "wall_seconds": 0.1231363240221981,
+          "raw_return": 267.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 1005
+          },
+          "losses": [
+            0.03046286851167679,
+            0.026190217584371567,
+            62.04889678955078,
+            0.01837649568915367,
+            94.89041900634766,
+            0.005099560134112835,
+            66.9847640991211,
+            0.0010600381065160036,
+            101.8877182006836,
+            57.70735549926758
+          ],
+          "final_remaining_budget": 0
+        },
+        {
+          "arm": "FLAT_DQN",
+          "phase": "train",
+          "episode": 6,
+          "wall_seconds": 0.1233784070063848,
+          "raw_return": 255.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 957
+          },
+          "losses": [
+            0.017972785979509354,
+            0.02861354872584343,
+            0.02442888915538788,
+            0.03681236505508423,
+            0.03534872829914093,
+            1.2747434377670288,
+            0.022852055728435516,
+            0.01225236151367426,
+            266.25506591796875,
+            21.51181411743164
+          ],
+          "final_remaining_budget": 0
+        },
+        {
+          "arm": "FLAT_DQN",
+          "phase": "train",
+          "episode": 7,
+          "wall_seconds": 0.11713964099180885,
+          "raw_return": 240.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 892
+          },
+          "losses": [
+            36.0146369934082,
+            38.73106384277344,
+            3072.903564453125,
+            18.881752014160156,
+            0.03515223413705826,
+            0.03529924154281616,
+            247.61927795410156,
+            2872.898193359375,
+            0.11635701358318329,
+            0.12555602192878723
+          ],
+          "final_remaining_budget": 0
+        }
+      ],
+      "evaluation": [
+        {
+          "arm": "FLAT_DQN",
+          "phase": "evaluation",
+          "episode": 0,
+          "wall_seconds": 0.042714584997156635,
+          "raw_return": 108.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 199
+          },
+          "losses": [],
+          "final_remaining_budget": 0
+        },
+        {
+          "arm": "FLAT_DQN",
+          "phase": "evaluation",
+          "episode": 1,
+          "wall_seconds": 0.043036792980274186,
+          "raw_return": 107.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 220
+          },
+          "losses": [],
+          "final_remaining_budget": 0
+        }
+      ],
+      "train_counters": {
+        "primitive_selections": 560,
+        "day_transitions": 80,
+        "propagation_draws": 7538
+      },
+      "train_model_work": {
+        "LL_gradient_steps": 78,
+        "LL_replay_samples": 624
+      },
+      "train_wall_seconds": 1.5196160359773785,
+      "evaluation_counters": {
+        "primitive_selections": 140,
+        "day_transitions": 20,
+        "propagation_draws": 419
+      },
+      "evaluation_model_work": {},
+      "evaluation_wall_seconds": 0.09794226600206457
+    },
+    "BUDGET_HRL": {
+      "initialization_seconds": 0.003924880002159625,
+      "training": [
+        {
+          "arm": "BUDGET_HRL",
+          "phase": "train",
+          "episode": 0,
+          "wall_seconds": 0.16696273899287917,
+          "raw_return": 280.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 1026
+          },
+          "losses": [
+            19.08290672302246,
+            50.61231231689453,
+            0.7420061826705933,
+            32.016658782958984,
+            142.7921142578125,
+            120.51752471923828,
+            0.38507211208343506,
+            987.8479614257812,
+            0.2793682813644409,
+            886.3048706054688,
+            0.23009109497070312,
+            1007.324462890625
+          ],
+          "final_remaining_budget": 0
+        },
+        {
+          "arm": "BUDGET_HRL",
+          "phase": "train",
+          "episode": 1,
+          "wall_seconds": 0.1370425570057705,
+          "raw_return": 249.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 938
+          },
+          "losses": [
+            262.849609375,
+            905.1734008789062,
+            15.77734375,
+            838.4172973632812,
+            0.014081181958317757,
+            828.8031616210938,
+            60.841373443603516,
+            691.53369140625,
+            14.797690391540527,
+            813.906494140625,
+            0.04906633123755455,
+            883.1220092773438,
+            58.79270935058594,
+            699.4296875,
+            0.33368709683418274,
+            632.3140258789062,
+            70.29418182373047,
+            658.9588012695312,
+            6.712145805358887,
+            650.383544921875
+          ],
+          "final_remaining_budget": 0
+        },
+        {
+          "arm": "BUDGET_HRL",
+          "phase": "train",
+          "episode": 2,
+          "wall_seconds": 0.13988472797791474,
+          "raw_return": 240.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 875
+          },
+          "losses": [
+            6.640952110290527,
+            540.6199951171875,
+            78.89064025878906,
+            871.5167236328125,
+            1.5200237035751343,
+            593.760986328125,
+            43.918846130371094,
+            584.3927001953125,
+            41.65869903564453,
+            506.41680908203125,
+            2.130742073059082,
+            808.2366333007812,
+            3.651029109954834,
+            563.883056640625,
+            3.443413496017456,
+            730.3052978515625,
+            29.58963394165039,
+            535.489990234375,
+            2.5850863456726074,
+            947.7572021484375
+          ],
+          "final_remaining_budget": 0
+        },
+        {
+          "arm": "BUDGET_HRL",
+          "phase": "train",
+          "episode": 3,
+          "wall_seconds": 0.13245507501414977,
+          "raw_return": 230.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 908
+          },
+          "losses": [
+            3.130342960357666,
+            538.50732421875,
+            88.27583312988281,
+            1053.3603515625,
+            2.7549996376037598,
+            852.858154296875,
+            28.63880729675293,
+            1180.15673828125,
+            97.34638977050781,
+            667.1088256835938,
+            3.9680299758911133,
+            1431.4871826171875,
+            125.89295959472656,
+            621.62890625,
+            13.6673583984375,
+            481.16815185546875,
+            364.80010986328125,
+            1181.013671875,
+            2.5865345001220703,
+            587.2688598632812
+          ],
+          "final_remaining_budget": 0
+        },
+        {
+          "arm": "BUDGET_HRL",
+          "phase": "train",
+          "episode": 4,
+          "wall_seconds": 0.12922808399889618,
+          "raw_return": 240.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 921
+          },
+          "losses": [
+            84.04904174804688,
+            892.7620849609375,
+            3.50925612449646,
+            1806.474609375,
+            3.8911309242248535,
+            633.3817138671875,
+            3.336564064025879,
+            669.1832275390625,
+            2.217555522918701,
+            1945.094970703125,
+            2.403533458709717,
+            1870.0748291015625,
+            260.3564758300781,
+            461.5718078613281,
+            2.2739105224609375,
+            2151.489013671875,
+            1.9504828453063965,
+            1278.392333984375,
+            190.6531982421875,
+            659.9832763671875
+          ],
+          "final_remaining_budget": 0
+        },
+        {
+          "arm": "BUDGET_HRL",
+          "phase": "train",
+          "episode": 5,
+          "wall_seconds": 0.13859484597924165,
+          "raw_return": 240.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 934
+          },
+          "losses": [
+            2.8294477462768555,
+            1324.880126953125,
+            46.17828369140625,
+            2012.22900390625,
+            1.4368810653686523,
+            1742.2049560546875,
+            46.862396240234375,
+            481.2911682128906,
+            59.38298416137695,
+            1254.2333984375,
+            232.99856567382812,
+            583.8208618164062,
+            1.2070741653442383,
+            2579.58837890625,
+            181.37612915039062,
+            435.677734375,
+            145.50160217285156,
+            1080.6527099609375,
+            145.3135223388672,
+            1044.2427978515625
+          ],
+          "final_remaining_budget": 0
+        },
+        {
+          "arm": "BUDGET_HRL",
+          "phase": "train",
+          "episode": 6,
+          "wall_seconds": 0.1146729490137659,
+          "raw_return": 248.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 945
+          },
+          "losses": [
+            70.83230590820312,
+            733.8349609375,
+            185.4688262939453,
+            1374.872314453125,
+            404.5594787597656,
+            502.58544921875,
+            33.49839782714844,
+            982.5298461914062,
+            2.6636962890625,
+            426.9360046386719,
+            141.76307678222656,
+            678.8607177734375,
+            70.41499328613281,
+            2000.486572265625,
+            3.8609848022460938,
+            452.04150390625,
+            110.7530517578125,
+            319.60797119140625,
+            24.871742248535156,
+            1604.6787109375
+          ],
+          "final_remaining_budget": 0
+        },
+        {
+          "arm": "BUDGET_HRL",
+          "phase": "train",
+          "episode": 7,
+          "wall_seconds": 0.12671448200126179,
+          "raw_return": 272.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 1012
+          },
+          "losses": [
+            5.112695217132568,
+            420.141845703125,
+            5.055570602416992,
+            993.0870361328125,
+            24.992095947265625,
+            893.5145263671875,
+            32.81365203857422,
+            1608.4996337890625,
+            130.4204864501953,
+            391.38043212890625,
+            123.86177062988281,
+            518.9877319335938,
+            81.81303405761719,
+            211.05776977539062,
+            5.157554626464844,
+            1168.5675048828125,
+            65.58179473876953,
+            932.0390014648438,
+            4.647762298583984,
+            1296.03564453125
+          ],
+          "final_remaining_budget": 0
+        }
+      ],
+      "evaluation": [
+        {
+          "arm": "BUDGET_HRL",
+          "phase": "evaluation",
+          "episode": 0,
+          "wall_seconds": 0.03404052299447358,
+          "raw_return": 217.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 733
+          },
+          "losses": [],
+          "final_remaining_budget": 0
+        },
+        {
+          "arm": "BUDGET_HRL",
+          "phase": "evaluation",
+          "episode": 1,
+          "wall_seconds": 0.034315442986553535,
+          "raw_return": 253.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 853
+          },
+          "losses": [],
+          "final_remaining_budget": 0
+        }
+      ],
+      "train_counters": {
+        "primitive_selections": 560,
+        "day_transitions": 80,
+        "propagation_draws": 7559
+      },
+      "train_model_work": {
+        "LL_gradient_steps": 79,
+        "HL_gradient_steps": 73,
+        "LL_replay_samples": 632,
+        "HL_replay_samples": 584
+      },
+      "train_wall_seconds": 1.087013363983715,
+      "evaluation_counters": {
+        "primitive_selections": 140,
+        "day_transitions": 20,
+        "propagation_draws": 1586
+      },
+      "evaluation_model_work": {},
+      "evaluation_wall_seconds": 0.0804449089919217
+    },
+    "LMTA_RI": {
+      "initialization_seconds": 0.005789502989500761,
+      "training": [
+        {
+          "arm": "LMTA_RI",
+          "phase": "train",
+          "episode": 0,
+          "wall_seconds": 1.0052380159904715,
+          "raw_return": 269.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 976
+          },
+          "losses": [
+            5.315918445587158,
+            105.27660369873047,
+            4.934422969818115,
+            0.6891334056854248,
+            97.32484436035156,
+            142.56129455566406,
+            0.5073912143707275,
+            129.1211395263672,
+            0.35270529985427856
+          ],
+          "final_remaining_budget": 0
+        },
+        {
+          "arm": "LMTA_RI",
+          "phase": "train",
+          "episode": 1,
+          "wall_seconds": 0.9366785540187266,
+          "raw_return": 246.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 922
+          },
+          "losses": [
+            0.3003593683242798,
+            0.16412387788295746,
+            0.10361207276582718,
+            150.41900634765625,
+            0.03883044049143791,
+            0.014348503202199936,
+            195.00344848632812,
+            66.07501220703125,
+            191.2952117919922,
+            0.29346179962158203
+          ],
+          "final_remaining_budget": 0
+        },
+        {
+          "arm": "LMTA_RI",
+          "phase": "train",
+          "episode": 2,
+          "wall_seconds": 0.9684043770248536,
+          "raw_return": 241.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 926
+          },
+          "losses": [
+            59.23554611206055,
+            0.49423158168792725,
+            38.214599609375,
+            55.19279479980469,
+            0.8107068538665771,
+            38.89617919921875,
+            42.86991500854492,
+            160.11277770996094,
+            2.5910234451293945,
+            16.674835205078125
+          ],
+          "final_remaining_budget": 0
+        },
+        {
+          "arm": "LMTA_RI",
+          "phase": "train",
+          "episode": 3,
+          "wall_seconds": 1.0025788999919314,
+          "raw_return": 241.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 943
+          },
+          "losses": [
+            41.7191162109375,
+            3.1822595596313477,
+            172.1141357421875,
+            3.109632968902588,
+            174.14315795898438,
+            68.14146423339844,
+            3.988356590270996,
+            21.209911346435547,
+            25.970600128173828,
+            45.35870361328125
+          ],
+          "final_remaining_budget": 0
+        },
+        {
+          "arm": "LMTA_RI",
+          "phase": "train",
+          "episode": 4,
+          "wall_seconds": 1.0105474999872968,
+          "raw_return": 225.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 871
+          },
+          "losses": [
+            16.412281036376953,
+            54.443355560302734,
+            5.146659851074219,
+            5.396410942077637,
+            8.236388206481934,
+            53.506622314453125,
+            10.866518020629883,
+            3.95011043548584,
+            122.4891128540039,
+            3.8718318939208984
+          ],
+          "final_remaining_budget": 0
+        },
+        {
+          "arm": "LMTA_RI",
+          "phase": "train",
+          "episode": 5,
+          "wall_seconds": 1.0213627899938729,
+          "raw_return": 238.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 920
+          },
+          "losses": [
+            88.68746948242188,
+            3.4477741718292236,
+            3.3739538192749023,
+            39.32460021972656,
+            125.19735717773438,
+            2.509873151779175,
+            2.382063627243042,
+            55.49689483642578,
+            2.2708468437194824,
+            77.07534790039062
+          ],
+          "final_remaining_budget": 0
+        },
+        {
+          "arm": "LMTA_RI",
+          "phase": "train",
+          "episode": 6,
+          "wall_seconds": 0.9040579510037787,
+          "raw_return": 224.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 873
+          },
+          "losses": [
+            7.087458610534668,
+            64.16534423828125,
+            67.42315673828125,
+            1.8892345428466797,
+            1.709862470626831,
+            1.5577101707458496,
+            102.65052032470703,
+            96.31983947753906,
+            1.568466305732727,
+            1.3375442028045654
+          ],
+          "final_remaining_budget": 0
+        },
+        {
+          "arm": "LMTA_RI",
+          "phase": "train",
+          "episode": 7,
+          "wall_seconds": 1.1876288040075451,
+          "raw_return": 250.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 970
+          },
+          "losses": [
+            1.2383253574371338,
+            1.205904483795166,
+            0.9180596470832825,
+            0.7986764907836914,
+            0.6110391616821289,
+            29.77334976196289,
+            0.40273457765579224,
+            0.21548713743686676,
+            7.394986152648926,
+            107.47222900390625,
+            12043.958984375
+          ],
+          "final_remaining_budget": 0
+        }
+      ],
+      "evaluation": [
+        {
+          "arm": "LMTA_RI",
+          "phase": "evaluation",
+          "episode": 0,
+          "wall_seconds": 0.978719770006137,
+          "raw_return": 176.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 562
+          },
+          "losses": [],
+          "final_remaining_budget": 0
+        },
+        {
+          "arm": "LMTA_RI",
+          "phase": "evaluation",
+          "episode": 1,
+          "wall_seconds": 0.9433980339963455,
+          "raw_return": 154.0,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 416
+          },
+          "losses": [],
+          "final_remaining_budget": 0
+        }
+      ],
+      "train_counters": {
+        "primitive_selections": 560,
+        "day_transitions": 80,
+        "propagation_draws": 7401
+      },
+      "train_model_work": {
+        "latent_recurrent_calls": 9543,
+        "mcts_simulations": 12000,
+        "root_searches": 80,
+        "LL_gradient_steps": 79,
+        "LL_replay_samples": 632,
+        "HL_gradient_steps": 1,
+        "HL_replay_games": 8,
+        "HL_replay_transitions": 31,
+        "MTS_micro_replay_samples": 8,
+        "budget_gradient_steps": 1
+      },
+      "train_wall_seconds": 8.037826828978723,
+      "evaluation_counters": {
+        "primitive_selections": 140,
+        "day_transitions": 20,
+        "propagation_draws": 978
+      },
+      "evaluation_model_work": {
+        "latent_recurrent_calls": 2437,
+        "mcts_simulations": 3000,
+        "root_searches": 20
+      },
+      "evaluation_wall_seconds": 1.93467187799979
+    }
+  },
+  "checkpoint_files_written": 0,
+  "engineering_checks_passed": true,
+  "scientifically_validated": false,
+  "wall_seconds": 13.689206033974187
+}

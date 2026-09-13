@@ -1,0 +1,46 @@
+{
+  "attempts": [
+    {
+      "test_module": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/tests/test_controlled_predictive_decision_rule_v76.py",
+      "session_failures": 1,
+      "scope": "One fixed legal-action board and 32 synthetic query labels; interface validation only.",
+      "source_campaign_training_calls": 0,
+      "target_calls": 0,
+      "ground_calls": 0,
+      "feature_work": {
+        "feature_boards": 1,
+        "learned_terminal_checks": 1,
+        "learned_swipe_calls": 4,
+        "learned_line_rewrites": 16,
+        "feature_adjacency_tests": 72,
+        "feature_actions": 2,
+        "feature_line_summaries": 16,
+        "feature_empty_neighbor_reads": 92
+      },
+      "synthetic_fit_calls": 1,
+      "synthetic_training_rows": 32,
+      "cold_worker_calls": 0
+    },
+    {
+      "test_module": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/tests/test_controlled_predictive_decision_rule_v76.py",
+      "session_failures": 0,
+      "scope": "One fixed legal-action board and 32 synthetic query labels; interface validation only.",
+      "source_campaign_training_calls": 0,
+      "target_calls": 0,
+      "ground_calls": 0,
+      "feature_work": {
+        "feature_boards": 1,
+        "learned_terminal_checks": 1,
+        "learned_swipe_calls": 4,
+        "learned_line_rewrites": 16,
+        "feature_adjacency_tests": 72,
+        "feature_actions": 2,
+        "feature_line_summaries": 16,
+        "feature_empty_neighbor_reads": 92
+      },
+      "synthetic_fit_calls": 1,
+      "synthetic_training_rows": 32,
+      "cold_worker_calls": 1
+    }
+  ]
+}

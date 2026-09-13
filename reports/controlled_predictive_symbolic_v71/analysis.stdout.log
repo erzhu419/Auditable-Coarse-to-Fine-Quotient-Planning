@@ -1,0 +1,39 @@
+{
+  "complete": true,
+  "all_artifacts_routing_and_portable_preserved": true,
+  "inherited_v69_policy_evidence_valid": true,
+  "terminal_generation_reduction_established": true,
+  "nonterminal_distinct_states_reduced": false,
+  "ratios": {
+    "FULL_SYMBOLIC_vs_FULL_ENUM": {
+      "method_total_seconds": 0.5241439023270617,
+      "concrete_states": 0.11528694768918232,
+      "generated_successors": 0.10219220255314632,
+      "concrete_active_states": 1.0,
+      "active_cells": 1.0,
+      "planning_action_rows": 1.0,
+      "package_bytes": 1.0,
+      "router_bytes": 1.0
+    },
+    "COMPOSED_SYMBOLIC_vs_COMPOSED_ENUM": {
+      "method_total_seconds": 0.42761181103127804,
+      "concrete_states": 0.11528694768918232,
+      "generated_successors": 0.10219220255314632,
+      "concrete_active_states": 1.0,
+      "active_cells": 1.0,
+      "planning_action_rows": 1.0,
+      "package_bytes": 1.0,
+      "router_bytes": 1.0
+    },
+    "COMPOSED_SYMBOLIC_vs_FULL_SYMBOLIC": {
+      "method_total_seconds": 0.6888559735205014,
+      "concrete_states": 1.0,
+      "generated_successors": 1.0,
+      "concrete_active_states": 1.0,
+      "active_cells": 0.2568873693207969,
+      "planning_action_rows": 0.25688911551617905,
+      "package_bytes": 0.47700323543006007,
+      "router_bytes": 0.9790577656881635
+    }
+  }
+}

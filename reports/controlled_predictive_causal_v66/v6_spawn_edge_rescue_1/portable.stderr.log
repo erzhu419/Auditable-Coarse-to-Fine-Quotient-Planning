@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/scripts/query_controlled_predictive_causal_v66.py", line 45, in <module>
+    main()
+  File "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/scripts/query_controlled_predictive_causal_v66.py", line 35, in main
+    raise AssertionError('portable planner imported a ground domain')
+AssertionError: portable planner imported a ground domain

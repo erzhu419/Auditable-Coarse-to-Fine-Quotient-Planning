@@ -1,0 +1,48 @@
+{
+  "schema": "acfqp.lmta_mechanism_verification.v47",
+  "status": "complete",
+  "synthetic_tests": {
+    "initial_tests_passed": 5,
+    "initial_reported_seconds": 0.19,
+    "supplemental_tests_passed": 1,
+    "supplemental_reported_seconds": 0.19,
+    "supplemental_scope": "Only the new paired full-sequence test was executed; the initial five were not rerun.",
+    "environment_calls": 0,
+    "evidence": "Reported execution by the behaviour-analysis agent."
+  },
+  "boundary_probes": {
+    "case_count": 7,
+    "all_assertions_passed": true,
+    "exit_code": 0,
+    "stderr_bytes": 0,
+    "physical_costs": {
+      "primitive_selections": 11,
+      "day_transitions": 17,
+      "propagation_draws": 13
+    },
+    "gradient_updates": 0,
+    "mcts_simulations": 0,
+    "wall_seconds": 0.5972251899947878
+  },
+  "behaviour_analysis": {
+    "evaluation_count": 720,
+    "group_count": 36,
+    "paired_comparison_count": 9,
+    "passes": 2,
+    "analysis_seconds_before_serialization": 0.06265175499720499,
+    "scope": "First group summaries were retained before the supplemental all-nine-group full-sequence comparison."
+  },
+  "new_physical_costs": {
+    "primitive_selections": 11,
+    "day_transitions": 17,
+    "propagation_draws": 13
+  },
+  "old_cost_reference": "reports/lmta_weighted_v46/analysis.json",
+  "historical_status": {
+    "V46_continue_signal": false,
+    "V44_continue_signal": false,
+    "U005_scientific_gate": "FAIL",
+    "U006_launched": false,
+    "V41_efficiency_branch": "closed"
+  }
+}

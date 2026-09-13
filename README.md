@@ -15,6 +15,691 @@ records the coverage mode/support hash/state count in `build_id`, and forbids RA
 certificate reuse outside that closure. This is an auditable scoped-build contract, not
 a claim of unrestricted reuse across arbitrary initial distributions.
 
+## Current representation research (2026-09-13)
+
+Read the [current progress, remaining bottlenecks and next route](reports/PROJECT_PROGRESS_2026_09_13.md)
+for the consolidated V76 status and the published evidence scope.
+
+[V76 query-conditioned decision learning](reports/CORE_DECISION_LEARNING_V76_RESULTS.md)
+trains once on 1,500 old H2 observations and tests 48 fresh boards with six seen
+and eight unseen queries. Direct rules attain only 337/672 optimal decisions,
+versus 362 for one-step greedy and 672 for exact H2. Confidence fallback reaches
+644/672, but all 28 remaining errors have confidence 1.0. Including source cost,
+RULE/SELECTIVE cost 1.981/2.540 seconds versus EXACT's 0.860. Ground contracts,
+all 728 H1 encodings and every matched H1 execution pass. Keep V74 SHARED;
+query-dependent strategic learning remains open. Next preserve composable
+continuation reward and terminal-risk information and verify action ordering.
+
+[V75 guarded parametric H2 generation](reports/CORE_PARAMETRIC_H2_V75_RESULTS.md)
+generates exact new numeric contracts: all 48 new H2 observations match ground,
+and all 32 shifted bindings reuse a seed template. However, the frozen main
+cohort reuses only 104/1,500 H2 inputs and complete cost increases 76.7%
+(5.953 versus 3.368 seconds); even the binding probe remains 7.1% slower than
+V74 after seed costs. Keep V74 SHARED as the current mainline and retain V75
+as an experimental generator. Exact deployment packages and plans are preserved.
+A separate retained-data diagnosis finds 144 within-task selected-action
+patterns across 1,500 H2 observations, but many same-pattern states have
+different values. V76 above executes the proposed learned decision-rule test
+with separate value/risk validation; it does not establish a usable abstraction.
+
+[V74 early effects and shared successors](reports/CORE_EFFECT_SHARING_V74_RESULTS.md)
+preserves exact kernels, plans and all three complete 15,209-observation audits.
+Risk predicates fall 77.2%, but early predicate sharing alone costs 1.2% more
+than V73. Reusing identical action-afterstate successors additionally cuts
+candidate scans 29.7%; combined complete cost is 3.400 versus 3.599 seconds
+for V72 (5.5% lower). Prefer SHARED for this exploratory cohort. Expanded
+observation geometries remain 1,660, and the new afterstate caches are counted
+separately. A retained-data diagnosis finds only 8% possible exact H2 state
+compression; the tested inactive-rank relation merges none. V75 above tests
+the proposed numeric-parameter transition structures. General strategic
+learning remains open.
+
+[V73 grouped H2 contracts](reports/CORE_GROUPED_H2_V73_RESULTS.md)
+preserves every retained model and plan; both procedural encoders pass all
+15,209 observations, and both methods match 16 fresh H2 ground contracts.
+Grouping reduces full probability-contract creation by 88.0% and costs 7.5%
+less than the same H2 engine without grouping. Against V72, however, total
+cost falls only 3.0% and only 14/32 roots improve. Predicate work and the
+1,660 distinct higher geometries remain unchanged. V73 was retained as a
+verified candidate with V72 still preferred at that stage; V74 above executes
+the proposed earlier effect sharing and repeated-successor comparison.
+
+[V72 local H1 contracts](reports/CORE_LOCAL_CONTRACT_V72_RESULTS.md)
+enters H1 contracts from single-cell spawn descriptors and routes H1
+observations procedurally, without an H1 board graph or member table.
+All retained models, plans and 15,209 observation mappings remain exact;
+32 fresh H1 boards also match the true action kernels. Concrete construction
+falls from 15,209 to 1,660 states, line rewrites from 243,344 to 45,073,
+and complete package size by 46.1%. With 87 matched execution observations,
+method cost falls 12.3% (4.170 to 3.656 seconds). Adopt COMPOSED_LOCAL.
+Boundary candidates are still enumerated; V73 above tests later grouping and
+H2 direct construction without resolving that bottleneck. General strategic
+learning remains open.
+
+[V71 symbolic terminal successors](reports/CORE_SYMBOLIC_SUCCESSORS_V71_RESULTS.md)
+reduces concrete generation from 131,923 to 15,209 states and from 226,074 to
+23,103 successor boards. All four factorial arms preserve exact models,
+active mappings and plans. Adopt symbolic COMPOSED construction with V70's
+map: complete frozen-rule method cost falls from 9.039 to 3.865 seconds
+(57.2%); against FULL with the same symbolic mechanism it saves 31.1%.
+V71 leaves nonterminal enumeration unchanged; V72 above subsequently removes
+the H1 concrete graph through direct local contracts.
+
+[V70 direct observation encoding](reports/CORE_OBSERVATION_COMPILATION_V70_RESULTS.md)
+eliminates future reconstruction on the covered model. All 15,209 active
+observations, 60 retained routes and complete V69 kernels and plans are
+preserved. Adopt the COMPOSED map: frozen-rule construction, export and cold
+use cost falls from 11.136 to 9.368 seconds (15.9%), including result writing.
+The decision DAG is 2.8% slower and 11.5% larger than that simple map.
+V71 above subsequently reduces terminal generation; finite routing is
+resolved, while general strategic learning remains open.
+
+[V69 compositional dynamics](reports/CORE_COMPOSITIONAL_DYNAMICS_V69_RESULTS.md)
+identifies executable source rules and generates correct new H3/H4 contracts.
+All 32 targets, 448 root queries, 1,227 strict query switches and portable
+models pass. Active planning states fall from 15,209 to 3,907; higher-layer
+merges occur only at H2. Concrete generation remains unchanged. Source,
+construction and 14-query cost falls 19.0%, but adding the same 60 observation
+routings raises cost 53.5%. V70 above removes that cost within the covered
+support. V69 remains the correct compositional reference; synthesis of
+general observation predicates and reduced concrete generation remains open.
+
+[V68 source-only strategic learning](reports/CORE_STRATEGIC_LEARNING_V68_RESULTS.md)
+is complete: 48 source roots train a direct neural encoder and frozen multistep
+kernel, followed by 24 new target roots with no target transition filling.
+Seven tests and both portable models pass. The quotient reduces source states
+from 6,183 to 1,271, but exact transfer fails on all 24 targets; only 28/336
+root queries, from two layouts, attain the full-state optimum. Source semantic
+coverage is 82.10% at H1, 0.72% at H2 and zero at H3. This fixed-class candidate
+is closed. Its proposed variable-based relational dynamics are implemented
+and tested in V69 above. Summary updated 2026-09-13.
+
+[V67 strategic action contracts](reports/CORE_STRATEGIC_ABSTRACTION_V67_RESULTS.md)
+return the mainline to executable state abstraction in standard 2048. Across
+all 16 retained roots and 14 queries, active states fall from 1,194 to 498,
+planning action rows by 60.0%, model bytes by 63.8%, and construction/use cost
+by 18.0% against the same analytic-kernel baseline. Six new tests pass; full
+independent policy audits preserve optimal values and all 139 strict query
+switches. All 16 portable models recover their encoding indexes and replan
+without importing the ground environment. A reward-only abstraction fails on
+12 roots. V66's preceding rank anonymization gives no state compression and
+is retained as a negative result. Higher-layer contracts and independent new
+tasks are the next mainline work; query-cache optimization is suspended.
+
+[V65 new-graph execution](reports/LMTA_PROBABILITY_EXECUTION_V65_RESULTS.md)
+completes all 4,096 paired trajectories on 64 fresh sparse graphs without
+limits. Eight tests and independent checks of 1,467 distinct queries and
+12,288 decisions pass; Q values, actions and returns are exactly preserved.
+Including preparation, execution, cleanup and trajectory serialization,
+REUSE/BASELINE cost is 0.9008, with all 64 graphs faster and both execution
+orders favorable. Mean return is 8.72119 for both; sampling and search work
+are unchanged. Main and analysis commands total 25.83 seconds. This remains
+an AIM engineering result. Its proposed query-cache experiment is suspended;
+current work prioritizes strategic abstraction in standard 2048.
+
+[V64 probability reuse](reports/LMTA_PROBABILITY_REUSE_V64_RESULTS.md)
+preserves all 12,288 retained queries exactly; 13 tests and independent
+accounting checks pass. Six paired rounds complete 1,536 blocks without drift
+or limits. Two-day planning-plus-cleanup time has a median candidate/baseline
+ratio of 0.9128, or 0.9299 including preparation and comparison overhead.
+One-day gains are small and reverse in one round. Main and analysis cost
+356.75 seconds, with no new environment samples. Its new-graph execution
+confirmation is complete in V65, with preserved trajectories and lower
+inclusive block cost.
+
+[V63 sparse-graph coverage](reports/LMTA_GRAPH_COVERAGE_V63_RESULTS.md)
+completes all 4,096 trajectories on 64 fresh 15-node sparse graphs without
+resource limits. Nine tests and independent checks of 2,836 distinct queries
+and 12,288 decisions pass. Two-day control gains 0.57373 mean reward, with a
+graph-level 95% interval [0.39385, 0.75361]; the four-comparison reference interval
+is also positive. Its action-value work is 27.50 times one-day work. Main and
+independent analysis take 17.41 seconds. The within-call probability reuse
+comparison is complete in V64, preserving retained outputs and search scope
+with a modest two-day timing benefit.
+
+[V62 new-graph trajectory scale trial](reports/LMTA_TRAJECTORY_SCALE_V62_RESULTS.md)
+executes all 128 blocks on 64 new 13/15-node graphs: 125 complete and three
+reach the cumulative action-value budget. Thirteen tests pass; 12,227 distinct
+queries and all 49,027 decisions pass independent checks. Only the 13-node
+sparse panel has a positive graph-level simultaneous interval. The 15-node
+dense panel remains incomplete; sparse uncertainty is dominated by graph
+variation. Main and analysis take 397.52 seconds. Its 64-graph sparse follow-up
+is complete in V63, preserving the total trajectory budget under a fixed
+whole-run computation cap; the three V62 limited blocks remain unchanged.
+
+[V61 trajectory calibration](reports/LMTA_TRAJECTORY_V61_RESULTS.md)
+completes 16,384 trajectories on 64 retained graphs without resource limits.
+Twelve tests pass; all 49,152 decisions and transitions agree with independent
+replay, and all 12 simultaneous intervals contain their exact expectations.
+Sparse-panel gains are detected; both dense-panel difference intervals include
+zero. Main execution takes 84.75 seconds, including 79.34 seconds of two-day
+planning. An analysis zero-counter repair and both analysis attempts are charged;
+main trajectories ran once. The fixed 13/15-node scale trial ran in V62 with
+unchanged policies and trajectory budgets; three blocks reached budget limits.
+
+[V60 changed-policy evaluation](reports/LMTA_CHANGED_POLICY_V60_RESULTS.md)
+completes the single outstanding one-day policy on graph 580109: 1,043 states,
+10 tests and independent checks pass. Its expected reward falls by 0.0001664;
+16 new states replace 16 old states. Reusing the remaining certificates completes
+all four panels under the analytic implementation. Run and analysis total
+0.326 seconds. Paired trajectory calibration against retained exact values is
+complete in V61, with propagation and planning costs recorded.
+
+[V59 analytic short-window replay](reports/LMTA_ANALYTIC_SHORT_V59_RESULTS.md)
+completes 128 cases and 188,499 states, with 16 tests and independent checks
+passing. All Q values agree within tolerance; two-day policies are preserved
+on all 64 graphs. One one-day nonroot action changes on graph 580109 after a
+4.44e-16 Q gap becomes a computed tie, so that policy value cannot be reused.
+Expected two-day outcome enumeration falls to 0.544–6.84% of the old work.
+Run and analysis total 69.63 seconds. The changed one-day policy is now fully
+evaluated in V60; V59's failed overall action-preservation result remains intact.
+
+[V58 analytic full-lookahead scale validation](reports/LMTA_ANALYTIC_SCALE_V58_RESULTS.md)
+completes 192 cases on 64 fresh nine/eleven-node graphs, with 13 tests and
+independent checks of 274,253 states passing; no resource limit is reached.
+Two-day control improves over one-day control on 51 graphs, ties on 12 and
+degrades on one. At eleven dense nodes, full lookahead adds only 0.00402 mean
+reward beyond two days; its expected action-value work grows 6.42-fold from
+nine dense nodes. Run and analysis total 196.72 seconds. Its analytic short-window
+comparison is complete in V59: all two-day policies and 63 one-day policies are
+preserved, with the remaining one-day policy freshly evaluated in V60.
+
+[V57 paired timing](reports/LMTA_PAIRED_TIMING_V57_RESULTS.md) completes six
+interleaved rounds on 64 retained graphs, with 21 tests and independent timing
+checks passing. Including warmup, all 778 blocks and 241,354 planning calls
+complete without output drift or resource limits. Median planning-plus-cleanup
+ratios are 0.988/0.837/0.930/0.525 for seven-node sparse/dense and nine-node
+sparse/dense panels. Dense-panel savings persist in both execution orders;
+seven-node sparse savings are unstable. Run and analysis total 126.52 seconds.
+Its fixed new-graph and modest size validation is complete in V58, with fresh
+policy certificates and all costs recorded.
+
+[V56 analytic terminal expectation](reports/LMTA_ANALYTIC_TERMINAL_V56_RESULTS.md)
+completes replay of 20,112 full-policy states on 64 retained graphs, with 15
+targeted tests and independent checks passing. Every action is preserved;
+maximum Q difference is 4.44e-16, allowing reuse of the original policy values.
+Expected outcome enumeration falls to 32.7–51.2% of the original work, while
+action-value and target-probability counts remain unchanged. The run and checks
+cost 14.45 seconds in total. Its proposed fixed, interleaved timing comparison
+is complete in V57, retaining the original actions and all timing costs.
+
+[V55 exact-tie refinement](reports/LMTA_TIE_REFINEMENT_V55_RESULTS.md) completes
+257 cases, 18 targeted tests and independent checks of 83,520 states, without
+resource limits. It repairs the known V54 regression, but adds no value on 64
+fresh graphs: two refinements trigger and neither changes the action. Two fresh
+graphs still trail one-day control despite unique two-day best actions. This
+trigger candidate is closed. Its proposed analytic final-day expectation
+comparison is complete in V56, preserving all retained full-policy actions and
+values while recording total costs. New environment samples are zero.
+
+[V54 new-graph and size validation](reports/LMTA_SCALE_V54_RESULTS.md) completes
+192 cases on 64 new seven/nine-node graphs, with 16 targeted tests and independent
+checks of 62,519 states passing; no resource limit is reached. Two-day lookahead
+improves on one-day control on 47 graphs, ties on 16 and degrades on one.
+The negative case exposes an exact two-day tie hiding unequal later returns.
+Expected action-value work is 13.7–40.1% of full lookahead, but 9.72–114.67 times
+one-day work. Its proposed third-day refinement among exactly tied two-day
+best actions is complete in V55, with both stages charged and a fresh panel.
+No environment samples or updates were added.
+
+[V53 two-day lookahead](reports/LMTA_LOOKAHEAD_V53_RESULTS.md) completes 192 cases,
+20 targeted tests and independent checks of all 12,059 policy states. At three
+days it improves on one-day greedy control on 24/32 graphs, with eight ties.
+It retains 61.0%/82.9% of the sparse/dense panels' additional full-lookahead gain,
+using 38.6%/35.0% of full-lookahead expected action-value evaluations. Its mean
+absolute gains are 0.1496/0.0169 nodes, at 9.61/65.15 times greedy evaluation work.
+Its new-graph and modest size validation with fixed resource limits is complete
+in V54. No environment samples or learning updates were added.
+
+[V52 exact small-graph policy headroom](reports/LMTA_EXACT_V52_RESULTS.md) completes
+320 cold-cache policy solves on 32 seven-node graphs, with 15 targeted tests
+and independent Bellman checks of all 116,442 retained states passing.
+At three days, joint optimal control beats the original heuristic on 30/32
+graphs. Under the same uniform allocation, long-term node choices beat exact
+one-day greedy control on 25/32 graphs. Within the sparse panel, the node-choice
+contrast exceeds the allocation contrast; their order reverses within the dense panel.
+Its two-day lookahead comparison is complete in V53, separating decision
+computation from full-policy evaluation.
+The main panel adds no environment samples or learning updates; small-graph
+headroom does not establish learnability or gains on the 500-node task.
+
+[V51 best-action-set objective](reports/LMTA_BEST_ACTION_V51_RESULTS.md) completes
+13 targeted tests and 6,000 updates with the original NodeQ, exact V49 initial
+anchors and recorded batches. Training/external-graph optimal-node hit rates rise
+to 68.75%/66.90%; both paired run-level intervals versus V49 are positive.
+Relative score regret is 0.59%/1.01%, while pairwise ordering declines.
+The frozen 95% hit requirement remains unmet: FIT_NOT_ESTABLISHED.
+This objective candidate is closed and the V49–V51 supervised evidence is
+consolidated. Its proposed small finite-horizon headroom probe is complete in
+V52, with exact-solution and independent verification costs recorded.
+V51 adds no environment sampling, RL updates or MCTS; all supervised costs remain.
+
+[V50 learned first-message readout](reports/LMTA_READOUT_V50_RESULTS.md) completes
+12 new tests, 5,040 exact initial anchors and 6,000 updates with the exact V49
+batches. Six additional zero-initialized parameters reduce training/external-graph
+relative score regret to 1.06%/0.88%, but optimal-node hit rates remain
+55.68%/57.44%; the frozen fit requirement is unmet. The structural candidate
+is closed. Its proposed best-action supervision comparison is complete in V51,
+holding the original V49 NodeQ and budget fixed.
+New environment sampling is zero; the supervised work and all old fees remain.
+
+[V49 fixed supervised node-ranking probe](reports/LMTA_SUPERVISED_V49_RESULTS.md)
+completes 24 teacher episodes and three fits of 2,000 updates, with 19 targeted
+tests passing. Mean relative score regret drops to 1.51% on training states and
+1.19% on held-out graphs; pairwise ordering reaches about 98%. Optimal-node hit
+rates remain 48.33% and 51.90%, below the frozen 95% requirement, so the outcome
+is FIT_NOT_ESTABLISHED. This shows substantial learning with insufficient
+top-choice precision under the fixed budget. Its proposed first-message readout
+comparison is complete in V50, reusing the retained data and original control.
+New physical costs are 1,680 selections, 240 daily transitions and 30,348 draws;
+6,000 supervised updates reuse the data. No new RL or MCTS is performed.
+
+[V48 frozen endpoint component comparison](reports/LMTA_COMPONENTS_V48_RESULTS.md)
+completes 240 hybrid episodes and six exact restoration anchors, with 17 targeted
+tests passing. Replacing learned node selection with the score heuristic improves
+Budget-HRL by 78.05 and LMTA by 59.78; both run-level intervals are positive.
+Replacing budgets alone has no stable benefit. With score nodes, LMTA's learned
+budget still trails uniform allocation by 17.60. Its proposed fixed supervised
+score-ranking probe is complete in V49. New costs are 17,220 selections, 2,460 daily
+transitions and 184,500 latent simulations; training remains closed.
+
+[V47 reward-boundary and behaviour review](reports/LMTA_MECHANISM_V47_RESULTS.md)
+finds correct reward accounting and terminal handling in seven scripted small-graph
+episodes. All 720 retained evaluations are analyzed. Budget-HRL run 2 loses 73.05
+despite identical daily seed counts in all 20 paired episodes; one LMTA
+run seeds earlier yet also declines. Later allocation alone cannot explain the
+observed degradation. Its proposed crossing of learned/uniform budgets with
+learned/score-based node selection is complete in V48, using retained endpoint weights.
+Six synthetic tests pass; the probes add 11 selections and 17 daily transitions.
+
+[V46 paired weighted-aggregation training](reports/LMTA_WEIGHTED_V46_RESULTS.md)
+completes 1,872 new episodes and 22 targeted tests, reusing retained V44 controls.
+LMTA-RI reaches 243.22, exceeding the mean-aggregation endpoint by 29.03
+(95% run-level interval [3.80, 54.27]), but its own-initial gain is unstable
+and it remains below the score heuristic's 320.60. Only one of three continuation
+conditions passes. All nine method/run curves decline from checkpoint 32 to 128;
+the reward-boundary review is complete in V47 and leads to a component comparison.
+The candidate training budget is closed, and intermediate policies are not adopted.
+
+[V45 initial-structure comparison](reports/LMTA_STRUCTURE_V45_RESULTS.md)
+completes all 58 graphs and nine retained policies with zero environment calls.
+An unnormalized sum using the environment's inverse-indegree edge weights
+recovers the exact initial single-seed one-step score within 1.33e-15.
+All 5,916 conditional seed-Q vectors show node variation, versus none with
+mean aggregation. Its proposed paired learning trial is complete in V46;
+stable learning and sample-efficiency benefits remain unestablished.
+The comparison takes 25.27 CPU wall seconds, with seven tests passing.
+
+[V44 cross-graph learnability trial](reports/LMTA_LEARNABILITY_V44_RESULTS.md)
+completes 1,912 episodes with valid accounting, but fails both prespecified
+continuation conditions. LMTA-RI's mean held-out return falls from 227.80 to
+214.18 across three training runs; the nonlearning score heuristic yields 320.60.
+A zero-sample diagnostic establishes an initial-state blind spot: row-normalized
+mean aggregation preserves identical node features and cannot distinguish their
+topology. Its proposed structural-identifiability comparison is complete in V45;
+the V44 training budget remains closed. Nine final inference policies and
+the run sources are retained.
+
+[V43 independent LMTA engineering probe](reports/LMTA_INDEPENDENT_V43_RESULTS.md)
+implements a shared AIM environment, LMTA-RI, Flat DQN and Budget-HRL, completing
+eight training and two held-out evaluation episodes per arm. Actual selections,
+daily propagation, replay updates and latent search are counted separately.
+This was an engineering result with only one LMTA high-level update, leading
+to the completed V44 comparison with graph-aware replay and nonlearning
+heuristics. The user's choice of independent implementation and
+all unresolved paper details are recorded in the V43 specification.
+[V42 original WS-option accounting](reports/LMTA_SAMPLE_ACCOUNTING_V42_RESULTS.md)
+also retains its 1,600 additional reward-simulation calls and a reproduced
+internal-state filtering problem. The released WS code and Budget-HRL are
+distinct references.
+
+[V41 layered comparison and branch closure](reports/LAYERED_ABSTRACTION_V41_RESULTS.md)
+eliminates false terminal continuation and has no compiled action disagreements
+across 625 snapshots. Policy quality remains optimal in only five of six
+conditions; all six complete numeric models exceed ground P/r storage and
+require more one-query preparation time. The prespecified continuation rule
+fails, closing the current flat/layered BA efficiency-candidate branch. Further
+project research requires a new task with actual reuse opportunities.
+
+[V40 systemic diagnosis and future route](reports/SYSTEMIC_DIAGNOSIS_AND_ROUTE_V40.md)
+identifies nonzero terminal continuation introduced by soft grounding, with
+value bias persisting after convergence. Terminal clamping improves three of
+six conditions and worsens three. Array-only backups remove the original-P
+runtime dependency, but 20 near-tie action disagreements prevent a behaviorally
+identical replacement; five of six operator-plus-readout arrays exceed ground
+model storage. Its proposed bounded horizon-layered experiment is now complete
+in V41, with the stopping condition applied.
+
+[V39 author-code replication and exact-model transfer](reports/RATE_DISTORTION_V39_RESULTS.md)
+reproduces DoorKey's optimal return and 0.133 joint information fraction through
+the author's README entrypoint. The default warm-start entrypoint differs and
+is retained. In three exact H2 2048 cases, the prespecified reward-unit
+normalization recovers all optimal policies; raw units fail one case. This is
+a new soft-abstraction baseline, with no demonstrated total-cost advantage or
+general model guarantee. The original author planner accesses the full ground model.
+The [current next step](specs/CONTROLLED_PREDICTIVE_QUOTIENT_NEXT_STEP.md)
+records the completed V47 review and the proposed component comparison.
+
+The U005 learned resource-forecast pilot completed successfully as an execution
+and failed its scientific Gate (2/6; aligned AUROC 0.575822). The failed result
+closes this representation's rescue path and leaves U006 assurance ineligible.
+This independent exploratory worktree starts from its clean source `8dcd411b`.
+
+The new development slice learns action-conditioned finite predictive cells
+and compares repeated planning in their compiled model against a full-state
+model using the same transition samples. See the
+[diagnosis review](specs/GPT6_DIAGNOSIS_REVIEW_20260908.md) and
+[development specification](specs/CONTROLLED_PREDICTIVE_QUOTIENT_DEVELOPMENT_V1.md).
+The [first development result](reports/CONTROLLED_PREDICTIVE_DEVELOPMENT_V1_RESULTS.md)
+records the finite compression, policy quality, prediction errors and construction costs.
+The [next development step](specs/CONTROLLED_PREDICTIVE_QUOTIENT_NEXT_STEP.md)
+targets an executable encoder for unseen development boards and query-dependent strategy changes.
+The [V2 query-conflict diagnosis](reports/QUERY_CONFLICT_DEVELOPMENT_V2_RESULTS.md)
+found a reached decision point where the same-data full-state model preserves the
+optimal risk tradeoff and the approximate quotient does not. This motivated
+query-guided local partition refinement before encoder migration.
+The [V3 refinement result](reports/QUERY_REFINEMENT_DEVELOPMENT_V3_RESULTS.md)
+repairs that regression and completes 12 new development cases: mean active cells
+fall from 207.92 to 64 with no additional objective loss against the same-sample
+full-state model on the audited queries. Sampling-induced risk errors remain,
+and refinement construction prevents a total-cost win over ten queries.
+A saved dynamics model also successfully replans a probe query in a new process.
+The [V4 cost and sampling result](reports/COST_AND_SAMPLING_DEVELOPMENT_V4_RESULTS.md)
+now makes the zero-tolerance empirical quotient (`build_quotient(empirical)`)
+the default finite-model development baseline. It retains matched policy quality
+at lower measured cost than either refinement builder. V4 reduces redundant
+processing while preserving V3's partition and behavior, but its extra compression
+does not justify construction cost in this workload. The 25 declared cases contain
+23 distinct root boards; two newly seeded cases reuse exposed roots.
+A nested 64/256/1024-sample curve improves most exposed decision errors but leaves
+two wrong query outcomes at its largest budget.
+The [V5 directed-sampling result](reports/DIRECTED_SAMPLING_DEVELOPMENT_V5_RESULTS.md)
+completes a fixed-pilot, equal-budget comparison on 14 distinct roots and three
+sampling seeds. Directed allocation improves eight and worsens two root-query
+outcomes at budget 256, and improves one at 1024; all changes concern one exposed
+root. The 11 new roots have no required query switches anywhere in their covered
+closures, and both final-budget methods already solve them. Allocation adds about
+40.5 ms per run and does not uniformly improve risk prediction. Uniform sampling
+with the exact empirical quotient remains the default development baseline; V5
+is retained as a candidate.
+The [V6 mechanism characterization](reports/MECHANISM_CHARACTERIZATION_DEVELOPMENT_V6_RESULTS.md)
+now retains 12 fixed structural challenges and three exposed controls. Two new
+roots in one spawn-rescue family exhibit a reversal between one-step and H3
+failure ranking: reward-only planning chooses LEFT, while the nine positive-risk
+queries choose RIGHT. Two other cases have strict conflicts only on paths avoided
+by the canonical optimal root policies; eleven have none. The exact quotient
+preserves all 11,810 state-query policies while reducing 1,181 active states to
+481 cells. These are privileged finite-model references.
+The [V7 executable encoder result](reports/EXECUTABLE_ENCODER_DEVELOPMENT_V7_RESULTS.md)
+now completes direct board encoding, a fixed same-sample comparison, and portable
+model reload. Across 16 cases and three seeds, the learned rule achieves 360/480
+optimal root policies versus 453/480 for both full-state and exact empirical
+quotient baselines. It preserves both V6 risk-reversal roots, but already merges
+training states requiring opposite actions and adds downstream failure risk.
+Its mean construction plus ten queries costs 45.13 ms versus 2.06 ms for the
+exact empirical quotient, despite smaller models. The 6,195-byte saved example
+executes a new numeric query consistently after reload. V7 is retained as a negative development comparison.
+The [V8 constraint and family-holdout result](reports/CONSTRAINT_ENCODER_DEVELOPMENT_V8_RESULTS.md)
+now satisfies every source empirical-signature constraint in all twelve fits.
+Uncapped SSE also satisfies them. Both recover all source policies, but V8 lowers
+fit-held-out root-policy optimality from V7's 120/180 to 90/180; its overall
+390/480 reflects source and exposed-regression gains. Complete family holdouts
+remain at 193/360 for all three encoders versus 333/360 for the empirical
+baselines. The terminal optimization preserves V7 results while reducing actual
+feature work; V8 construction plus ten queries still costs 14.98 ms versus
+2.12 ms for the exact empirical quotient.
+The [V9 target-adaptation result](reports/TARGET_ADAPTATION_DEVELOPMENT_V9_RESULTS.md)
+now restores the same-sample baselines' full-policy outcomes: 453/480 optimal
+root policies in the primary scenario and 333/360 in family-holdout targets.
+Direct target fitting achieves the same results. Source initialization halves
+primary split-candidate work, but sampling, construction, ten queries and
+amortized source fitting cost 47.39 ms versus 43.19 ms for direct target rules
+and 19.28 ms for the exact empirical quotient. Identical-feature empirical
+conflicts remain in one case; this is policy recovery on the declared queries,
+not universal empirical equivalence. The 9,351-byte adapted example reloads
+consistently.
+The [V10 demand-driven feature result](reports/LAZY_FEATURES_DEVELOPMENT_V10_RESULTS.md)
+preserves all 204 paired V9/V10 rule, model and planning comparisons exactly,
+but costs more than concurrent V9. Primary adapted feature computations fall
+40.57%, while construction plus ten queries rises from 21.07 to 24.61 ms;
+family-holdout targets rise from 24.28 to 30.32 ms. Repeated boards account for
+only 2–3% of profile calls, and actual swipe work falls by about 2%.
+V10 remains a negative implementation comparison.
+The [V11 feature-block result](reports/BLOCK_FEATURES_DEVELOPMENT_V11_RESULTS.md)
+also preserves all 204 paired semantics checks. It removes terminal feature
+contexts and batches mixed-group vectors, but average construction still costs
+more than concurrent V9: 2.08%/12.65% for primary scratch/adapted builds and
+6.52%/20.11% for family-holdout targets. Actual swipe, signature-validation and
+pooling work remain unchanged. Use V9 direct target fitting for current
+executable-rule construction and retain uniform sampling plus the exact empirical
+quotient as the finite-planning baseline. Further feature-dispatch optimization
+is paused.
+The [V12 partial-observation result](reports/PARTIAL_OBSERVATION_DEVELOPMENT_V12_RESULTS.md)
+completes 102 runs and 1,224 budget checkpoints. At the 128-row cap, query-driven
+construction acquires about 77% fewer rows, but costs 168.23/173.47 ms for
+primary/family-holdout targets versus the complete empirical quotient's
+157.89/152.95 ms. Source-priority totals rise to 213.24/252.19 ms without improving
+the complete-root-policy optimum counts. Those counts match the full baseline,
+yet 27 root queries in each scope have larger losses; policy preservation is
+not established. The next question is execution-time acquisition for unresolved
+actions with matched total budgets, alongside separately measured incremental
+interval updates. Source priority remains outside the default method. A saved
+partial policy executes all ten declared queries consistently in a new process.
+The [V13 execution-acquisition result](reports/EXECUTION_ACQUISITION_DEVELOPMENT_V13_RESULTS.md)
+completes 48 case/seed runs and 480 query contexts per method. Incremental
+updates preserve all 96 paired prefixes and 960 complete execution trees;
+128-row-prefix acquisition and computation fall from 239.85 to 82.25 ms.
+Execution-time acquisition improves 38 complete-root-policy values and worsens
+five versus same-query upfront acquisition, with 435/480 optimal policies
+versus 434/480 and the full empirical baseline's 453/480. Its incremental
+implementation uses 32.73 expected rows and costs 42.28 ms per standalone query
+versus upfront's 38.08 rows and 50.45 ms; ten-query preparation amortization
+reduces these costs to 16.68 and 24.85 ms per query. All four acquisition arms
+respect the 128-row path cap including initial observations. The five regressions
+involve positive goal bonuses on roots whose total tile mass cannot reach 2048
+within the horizon. The next isolated comparison will test this reachability
+bound while retaining the current budgets and controls. Empirical sampling errors
+remain separate. Two recorded-history artifacts replay consistently in fresh
+processes; source priority remains paused.
+The [V14 mass-bound result](reports/MASS_BOUND_DEVELOPMENT_V14_RESULTS.md)
+now completes that isolated comparison. The legacy arm exactly reproduces all
+96 V13 prefixes and 960 execution trees. Removing impossible goal bonuses makes
+all 60 within-variant goal/no-goal history pairs identical, versus 12 for the
+legacy bound. Online full-policy optimality rises from 435/480 to 453/480 with
+18 improvements and no regressions; all five prior online-versus-upfront
+regressions become optimal. Online mass-bound acquisition uses 30.62 expected
+rows and costs 31.13 ms per standalone query versus concurrent legacy's 32.73
+rows and 34.36 ms. Eight complete-root values still fall below the full empirical
+baseline, with maximum added loss 0.000810547, despite matching its optimum
+count. All eight occur in one exposed case and seed: finite samples still
+misrank subsequent actions when empirical intervals close. Retain V14 as the
+partial-observation candidate; next test uncertainty and repeated sampling of observed actions under
+an explicitly matched total sample budget. Three recorded-history artifacts
+replay consistently in separate processes. Source priority remains paused.
+The [V15 resampling result](reports/RESAMPLING_DEVELOPMENT_V15_RESULTS.md) completes the next comparison.
+All three online methods remain optimal on 453/480 full policies. With exactly
+matched realized batch counts, directed resampling improves eight and worsens
+15 outcomes relative to balanced resampling. Both use 25,167 expected samples
+versus V14's 7,838 and cost more. Retain V14 for partial observation; next test
+acquisition and stopping based on competing action-value gaps, with scoring
+update costs tested separately. The frozen V15 results are not retuned.
+The [V16 gap-stopping result](reports/GAP_DEVELOPMENT_V16_RESULTS.md) preserves all
+480 full-policy outcomes when stopping is enabled under the same allocation,
+reducing expected samples by 13.71% and standalone query cost by 6.00%.
+The gap allocation still improves six and worsens 15 outcomes against balanced
+resampling and costs more. Retain V14; next combine the stopping condition with
+balanced allocation, keeping scoring-update optimization separate. The saving
+is in deployment-path expectation; all-history physical sampling did not fall.
+The [V17 balanced-stopping result](reports/BALANCED_STOP_DEVELOPMENT_V17_RESULTS.md)
+preserves all 480 evaluated full-policy outcomes relative to original balanced
+resampling and reduces expected samples by 10.37%. Including gap scoring,
+standalone cost rises from 125.83 to 170.39 ms. Retain V14; next optimize repeated
+score computation while requiring exact V17 acquisition, stopping and action
+history reproduction. All-history physical sampling falls by only 0.84%.
+The [V18 scoring-cache result](reports/SCORE_CACHE_DEVELOPMENT_V18_RESULTS.md)
+reproduces all 480 original STOP histories exactly, including gap diagnostics.
+With cache maintenance and copying charged, standalone cost falls by 31.81%
+against original STOP and 15.08% against balanced resampling in the same run.
+Use cached scoring for further resampling development while retaining V14 and
+the full empirical quotient controls. Next decompose action-ranking errors in
+fixed observed snapshots to separate transition estimates from continuation values.
+The [V19 snapshot decomposition](reports/DECOMPOSITION_DEVELOPMENT_V19_RESULTS.md)
+reconstructs all 24 fixed snapshots and satisfies the error identities. Both
+cached regressions flip after a final downstream batch increases failure-risk
+underestimation; the current-action transition term is unchanged. Next test
+empirical-variance allocation propagated to action differences, keeping V18
+stopping, execution and actual sample caps fixed. This diagnostic adds no
+independent observations and does not yet establish a policy repair.
+The [V20 variance-allocation result](reports/VARIANCE_ALLOCATION_DEVELOPMENT_V20_RESULTS.md)
+improves seven and worsens thirteen outcomes against concurrent cached balanced
+allocation. Mean samples fall by 0.1225%, while standalone cost rises from 83.78
+to 84.10 ms; all methods remain at 453/480 optimal full policies. Retain V14 and
+V18 cached balanced allocation. Next isolate local allocation from stopping-time
+changes using common observed snapshots and fixed actual batch counts.
+The [V21 common-snapshot result](reports/LOCAL_ALLOCATION_DEVELOPMENT_V21_RESULTS.md)
+completes all 22 pairs at equal actual batch counts. Variance allocation improves
+one and worsens four target actions, with no gap stopping in either arm;
+local mean cost rises from 40.662 to 44.715 ms. Fixed-panel outcomes are mixed,
+and these local regrets do not measure complete online policies. Next retain
+the snapshots, budgets and rules for paired repetitions with new suffix streams.
+The [V22 suffix-repetition result](reports/REPETITION_DEVELOPMENT_V22_RESULTS.md)
+completes all 64 streams and 1,408 fixed-budget pairs. Variance allocation lowers
+the target error-rate point estimate by 7.74 percentage points, but the 95%
+stream-level Monte Carlo interval spans -16.48 to +1.00 points; local cost rises
+7.67%. It also acquires 805 more first-observation batches. Retain the baselines;
+next use the retained endpoints to ablate newly observed rows and assess their
+information contribution, with all actual acquisition costs retained.
+The [V23 information ablation](reports/PROJECTION_DEVELOPMENT_V23_RESULTS.md)
+reproduces V22 exactly and adds no samples. Withholding newly observed rows
+increases target error by 10.44 points for CACHED and 19.18 for VARIANCE;
+the paired difference changes by 8.74 points (95% stream interval 1.60–15.87).
+Next test explicit query-relevant unknown-frontier acquisition before balanced
+resampling, keeping the starts, budgets, paired streams and both old controls.
+The [V24 frontier trial](reports/FRONTIER_DEVELOPMENT_V24_RESULTS.md)
+completes all 64 streams and 1,408 three-arm groups, with exact control replay.
+FRONTIER increases target error by 4.05 points versus CACHED (95% stream interval
+2.11–5.99) and local cost by 13.22%, despite closing every fixed-panel interval.
+Retain the baselines; next inspect signed action-margin A/D errors in the retained
+evaluations before selecting another allocation change, with no added sampling.
+The [V25 signed-error diagnosis](reports/SIGNED_ERRORS_DEVELOPMENT_V25_RESULTS.md)
+reproduces all 4,224 RAW targets with no new samples or oracle calls. Removing
+A repairs 47 of the 70 FRONTIER-only errors versus CACHED; removing D repairs
+29 but introduces 23 CACHED errors, exposing the role of error cancellation.
+Next add the FRONTIER-plus-VARIANCE arm under the same starts, streams and
+budgets to test the combination and its interaction, retaining all three controls.
+The [V26 factorial result](reports/FACTORIAL_DEVELOPMENT_V26_RESULTS.md)
+completes all 5,632 arms and exactly reproduces the three controls. The combined
+rule increases target error by 8.66 points versus VARIANCE (95% stream interval
+5.57–11.76) and local cost by 10.66%; its interaction is adverse. Retain the
+baselines. Next evaluate the retained policies under true transition weights to
+separate first-action loss from continuation loss, without further acquisition.
+The [V27 frozen-policy result](reports/FROZEN_POLICY_DEVELOPMENT_V27_RESULTS.md)
+completes all 5,632 retained policies with no new acquisition. VARIANCE,
+FRONTIER and the combination have zero true-reach continuation regret; the
+combination still raises total regret versus VARIANCE by 0.00015231 (95%
+stream interval 0.00009795–0.00020668). Retire frontier expansion and retain
+the baselines. Next compare frozen CACHED/VARIANCE on prospectively selected
+new H2 development starts, using policy value and all actual costs.
+The [V28 new-start result](reports/NEW_STARTS_DEVELOPMENT_V28_RESULTS.md)
+completes 5,120 runs on sixteen prospectively generated H2 boards. Every paired
+policy value is equal, with 99.375% optimality for both methods; VARIANCE adds
+0.606 ms (1.67%) to independent query cost, including the full shared prefix
+and query preparation. Retain the baselines. Next evaluate the retained
+prefix-only policies to measure what the additional 32 batches contribute,
+without further sampling or replanning.
+[V29 prefix-policy evaluation](reports/PREFIX_BASELINE_DEVELOPMENT_V29_RESULTS.md) evaluated all 160 retained
+prefix policies once against the existing endpoints. Optimality rose from 75% to
+99.375% for both sampling methods: all 40 original error identities were repaired,
+while one previously correct identity became wrong in both arms on all 16 streams.
+Seven tests and 15 analysis checks passed; V28 quality and costs reproduced exactly.
+Retain CACHED. Next, replay all 32 retained histories for the induced error to locate
+the first harmful update and separate action-value error components; this diagnostic
+has not run. The comparison is conditional on the fixed prefixes.
+[V30 retained-history replay](reports/REGRESSION_DEVELOPMENT_V30_RESULTS.md) exactly reproduced all 32 selected
+histories and 1,056 boundaries; ten tests and 20 analysis checks passed. Root choice
+became wrong after batches 3, 15 and 29, with repairs after 13 and 25. Unequal
+underestimation of continuation values drove these changes while root transition
+estimates stayed fixed; all 32 acquisitions were first observations. Next, test
+ranking the original structural acquisition candidates by their estimated impact
+on the competing root-action gap, against CACHED on all 160 starts and 16 streams
+at the same 32-batch budget. This candidate has not been frozen or executed.
+[V31 gap-frontier comparison](reports/GAP_FRONTIER_DEVELOPMENT_V31_RESULTS.md) completed all 2,560 pairs at
+32 batches per arm; 20 tests and 23 analysis checks passed, with exact CACHED
+history/state/value reproduction. GAP_FRONTIER repaired the one remaining error
+identity on all 16 streams without new errors, raising optimality from 99.375% to
+100%. Full attributed query cost increased 1.24% (+0.473 ms; 95% stream interval
+[0.179, 0.768] ms). Keep the baseline and frozen candidate for a prospective paired
+comparison on new boards with independent prefixes and suffixes. That validation
+has not been prepared or run; the present quality gain concerns one known identity.
+[V32 new-start validation](reports/TRANSFER_DEVELOPMENT_V32_RESULTS.md) completed 2,560 pairs on 16 new boards
+with independent prefixes and suffixes; 11 tests and 24 analysis checks passed.
+Both methods attained 100% optimality, while GAP_FRONTIER cost 1.88% more per
+attributed independent query (+0.692 ms; 95% stream interval [0.641, 0.744] ms).
+Keep CACHED. Next, evaluate the retained policies after 0, 4, 8, 16, 24 and 32
+local batches with a common completeness mask and all historical costs retained.
+This finite sample-efficiency diagnosis has not run; without an advantage, stop
+extending this candidate on the current generator.
+The V33 retained-history budget curve completed all 5,120 histories at six
+fixed checkpoints (7 tests, 18 analysis checks; full K32 reproduction). GAP_FRONTIER
+has lower regret at K=8/24, higher regret at K=4/16, and equal regret at K=32.
+This budget-specific signal retains CACHED as the baseline; the next comparison
+will measure actual costs at all five positive budgets, preserving both favorable
+and unfavorable points. No new samples were acquired, and historical fees remain.
+The follow-up protocol and execution are pending; see the [V33 result](reports/BUDGET_CURVE_DEVELOPMENT_V33_RESULTS.md).
+
+The V34 contemporary budget-cost comparison completed all 25,600 runs
+(7 tests, 28 analysis checks; exact V33 history, policy and value reproduction).
+GAP_FRONTIER at K=24 and CACHED at K=32 both attain zero regret on this retained
+cohort, while measured full independent-query cost falls by 14.02% (36.549 to
+31.424 ms). GAP_FRONTIER costs 1.46% more at the same K=24; other budgets retain
+their quality tradeoffs. CACHED remains the baseline. The next prospective test
+will fix GAP_FRONTIER K24, CACHED K24 and CACHED K32 on new boards and independent
+prefix/suffix streams. That protocol and execution are pending. All 110,231,552
+physically repeated samples were charged; see the [V34 result](reports/BUDGET_COST_DEVELOPMENT_V34_RESULTS.md).
+
+The V35 three-configuration transfer completed all 7,680 runs on a new
+16-board cohort with new prefix/suffix streams (9 tests, 21 analysis checks).
+GAP24 costs 13.99% less than CACHED32 but repairs 2 cases and introduces 8 new
+errors; equal quality did not reproduce. At the same budget it costs 0.98% more
+than CACHED24 without a demonstrated quality benefit. CACHED32 remains the
+baseline, and GAP24 is no longer being advanced as its replacement. The next
+step will diagnose transition versus downstream-value estimation errors using
+all retained CACHED24/CACHED32 endpoints; no further samples are planned for that
+diagnosis. Its protocol and execution are pending; see the [V35 result](reports/BUDGET_TRANSFER_DEVELOPMENT_V35_RESULTS.md).
+
+The V36 diagnosis covered all 5,120 retained CACHED24/CACHED32 endpoints and
+20,480 legal actions (10 tests, 18 analysis checks). Removing downstream-value
+error D in an oracle diagnostic repairs all 61/57 root-action errors, including
+all 56 shared failures, with no new errors; removing transition error A repairs
+only 4/3. Original states, full-policy values, and all V35 quality/cost streams
+reproduce exactly. CACHED32 remains the baseline. The next finite diagnosis will
+separate incomplete model coverage from estimation error within observed rows;
+its protocol and execution are pending. No new samples were acquired; historical
+costs remain charged. See the [V36 result](reports/ENDPOINT_ERRORS_DEVELOPMENT_V36_RESULTS.md).
+
+The V37 continuation diagnosis completed all 5,120 endpoints (16 tests,
+19 analysis checks). Removing observed-row estimation error E repairs 31/30
+root-action errors at 24/32 batches; removing coverage error C repairs 0/8,
+with no new errors in either diagnostic. C has the larger signed magnitude in
+shared failures, but E removal repairs more rankings. Nonzero paired-regret
+intervals include zero. CACHED32 remains the baseline; the next method test
+will use disjoint samples to cross-select and evaluate H1 actions while fixing
+coverage, allocation rules and the total sample budget. Its protocol and
+implementation are pending; this diagnosis does not establish maximization
+bias or a new algorithm benefit. See the [V37 result](reports/CONTINUATION_SOURCES_DEVELOPMENT_V37_RESULTS.md).
+
+The V38 crossfit readout completed all 2,560 pairs (12 tests, 18 analysis
+checks). Every root action and full-policy value matches CACHED32; all 57 errors
+remain. Postprocessing adds 1.3068 ms per endpoint, with a 95% stream interval
+of [1.2850, 1.3286] ms. CACHED32 remains the baseline and this crossfit branch
+is closed. The next feasibility check will look for distinct observed rows
+sharing an identical deterministic afterstate within each retained endpoint,
+with immediate rewards kept separate. That check and a shared-statistics
+estimator are not yet implemented. See the [V38 result](reports/CROSSFIT_DEVELOPMENT_V38_RESULTS.md).
+
+All cases are exposed development material; independent scientific confirmation
+has not been performed.
+
 ## Registered finite-objective status (V179)
 
 The repository's finite, coverage-bounded central objective is now complete for

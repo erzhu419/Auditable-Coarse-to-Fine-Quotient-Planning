@@ -1,0 +1,12 @@
+{
+  "schema": "acfqp.lmta_probability_reuse_development.v64",
+  "unique_tests": 13,
+  "total_test_executions": 13,
+  "final_passed": 13,
+  "final_failed": 0,
+  "attempt_ledgers": [
+    "lmta_probability_reuse_v64.planner_checks.json",
+    "lmta_probability_reuse_v64.analysis_checks.json"
+  ],
+  "scope": "All new planner and analysis tests ran once. Hand-query original and candidate planning costs are retained in the planner ledger. Analysis tests use synthetic records without new planning or environmental draws. No main queries were run during development."
+}

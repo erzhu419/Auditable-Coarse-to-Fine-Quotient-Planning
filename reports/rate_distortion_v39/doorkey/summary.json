@@ -1,0 +1,173 @@
+{
+  "config": {
+    "num_states": 233,
+    "num_actions": 5,
+    "num_state_action_pairs": 1165,
+    "beta_schedule": [
+      6.0,
+      7.0,
+      7.5,
+      8.0,
+      10.0
+    ],
+    "adaptive_beta_schedule": [
+      6.0,
+      7.0,
+      8.0,
+      9.0,
+      10.0
+    ],
+    "abstract_alphabet_size_cap": 1165,
+    "max_sweeps": 100,
+    "eval_interval": 1,
+    "save_policies": false,
+    "num_workers": 1,
+    "abstraction_solver": "flat",
+    "abstraction_error_mode": "average",
+    "reference_distribution": "uniform over concrete state-action pairs",
+    "abstraction_space": "state_action_pairs",
+    "planner": "deterministic-decoder specialization of the decoder-based operator Fbar_eta = L F Gamma, with soft encoder grounding and deterministic decoder representatives",
+    "ba_solver_limits": {
+      "max_outer": 200,
+      "max_inner": 50
+    },
+    "scenario": "doorkey",
+    "abstraction": "sa",
+    "solver": "modelbased_state_action",
+    "environment": "fully_observable_doorkey",
+    "benchmark_family": "MiniGrid-inspired DoorKey",
+    "grid_size": 5,
+    "gamma": 0.95,
+    "goal_reward": 1.0,
+    "metric_kind": "fixed_point",
+    "distance": "fixed-point state-action bisimulation metric",
+    "mu": "uniform over concrete state-action pairs",
+    "door_position": [
+      2,
+      2
+    ],
+    "key_position": [
+      1,
+      3
+    ],
+    "goal_position": [
+      3,
+      3
+    ],
+    "reward_structure": {
+      "goal_reward": 1.0,
+      "other_transitions": 0.0
+    }
+  },
+  "adaptive_summary": {
+    "switch_updates": [
+      1,
+      8,
+      41
+    ],
+    "switch_betas": [
+      6.0,
+      8.0,
+      9.0,
+      10.0
+    ],
+    "final_beta": 10.0,
+    "final_concrete_q_error": 1.0303232742005237,
+    "final_concrete_value_error": 1.0303232742005237,
+    "final_policy_return": 0.7713207808683671
+  },
+  "fixed_family_table": [
+    {
+      "beta": 6.0,
+      "effective_abstract_pairs": 59,
+      "abstraction_error": 0.7222703680794627,
+      "mutual_information": 0.09527713888948697,
+      "solver_kind": "flat",
+      "joint_code_state_information": 0.06747267643572058,
+      "joint_code_conditional_action_information": 0.027804462453765347,
+      "joint_code_information": 0.09527713888948593,
+      "bar_state_information": 0.09527713888948486,
+      "bar_conditional_action_information": 0.0,
+      "bar_information_sum": 0.09527713888948486,
+      "bar_information_split": "I(S,A;Sbar)+I(S,A;Abar|Sbar)"
+    },
+    {
+      "beta": 7.0,
+      "effective_abstract_pairs": 113,
+      "abstraction_error": 0.5354206689621661,
+      "mutual_information": 1.8748267559622946,
+      "solver_kind": "flat",
+      "joint_code_state_information": 1.462598149951802,
+      "joint_code_conditional_action_information": 0.41222860601049266,
+      "joint_code_information": 1.8748267559622946,
+      "bar_state_information": 1.6779025740627125,
+      "bar_conditional_action_information": 0.19692418189958005,
+      "bar_information_sum": 1.8748267559622924,
+      "bar_information_split": "I(S,A;Sbar)+I(S,A;Abar|Sbar)"
+    },
+    {
+      "beta": 7.5,
+      "effective_abstract_pairs": 144,
+      "abstraction_error": 0.4023555797847564,
+      "mutual_information": 3.2617931995467693,
+      "solver_kind": "flat",
+      "joint_code_state_information": 2.5574464676887305,
+      "joint_code_conditional_action_information": 0.704346731858039,
+      "joint_code_information": 3.2617931995467693,
+      "bar_state_information": 2.9251905321372056,
+      "bar_conditional_action_information": 0.33660266740956335,
+      "bar_information_sum": 3.261793199546769,
+      "bar_information_split": "I(S,A;Sbar)+I(S,A;Abar|Sbar)"
+    },
+    {
+      "beta": 8.0,
+      "effective_abstract_pairs": 211,
+      "abstraction_error": 0.20826800745311203,
+      "mutual_information": 5.427548674945535,
+      "solver_kind": "flat",
+      "joint_code_state_information": 4.240942074068244,
+      "joint_code_conditional_action_information": 1.1866066008772904,
+      "joint_code_information": 5.427548674945535,
+      "bar_state_information": 4.868941524133572,
+      "bar_conditional_action_information": 0.5586071508119658,
+      "bar_information_sum": 5.4275486749455375,
+      "bar_information_split": "I(S,A;Sbar)+I(S,A;Abar|Sbar)"
+    },
+    {
+      "beta": 10.0,
+      "effective_abstract_pairs": 233,
+      "abstraction_error": 0.00706082085641774,
+      "mutual_information": 7.765906485775671,
+      "solver_kind": "flat",
+      "joint_code_state_information": 6.041447734385606,
+      "joint_code_conditional_action_information": 1.7244587513900635,
+      "joint_code_information": 7.76590648577567,
+      "bar_state_information": 6.895183530639575,
+      "bar_conditional_action_information": 0.8707229551360973,
+      "bar_information_sum": 7.765906485775672,
+      "bar_information_split": "I(S,A;Sbar)+I(S,A;Abar|Sbar)"
+    }
+  ],
+  "metric_summary": {
+    "max_state_action_distance": 1.95
+  },
+  "exact_policy_values": {
+    "Base MDP": 0.773639922875503,
+    "Fixed $\\beta=6$": 0.20946351931330476,
+    "Fixed $\\beta=7$": 0.7403151294240656,
+    "Fixed $\\beta=7.5$": 0.7427563315368402,
+    "Fixed $\\beta=8$": 0.773639922875503,
+    "Fixed $\\beta=10$": 0.7713207808683671,
+    "Adaptive": 0.7713207808683671
+  },
+  "notes": {
+    "policy_value_estimator": "exact tabular evaluation: solve (I - gamma P^pi) V = r^pi in closed form on the original MDP",
+    "metric": "fixed-point state-action bisimulation metric",
+    "grounding": "Gamma barQ is formed by averaging barQ(z) under the soft encoder nu(z|s,a); abstract updates are then read off at the deterministic BA decoder representatives g(z)",
+    "abstraction_error": "scalar abstraction error used in traces and adaptive switching: average(mu-uniform) encoder/decoder distortion",
+    "sweep_budget": "max_sweeps denotes the compute budget of that many full-MDP Bellman sweeps; fixed and adaptive traces expand this budget internally using their own per-sweep backup costs",
+    "layout": "two-room DoorKey layout with one internal locked door, one key, and an absorbing goal behind the door"
+  },
+  "adaptive_trigger_metric": "abstract_residual <= abstraction_error on the current beta stage",
+  "abstraction_notes": "Compression is performed over concrete state-action pairs, then planning proceeds directly in abstract Q-space via the deterministic-decoder specialization of Fbar_eta = L F Gamma."
+}

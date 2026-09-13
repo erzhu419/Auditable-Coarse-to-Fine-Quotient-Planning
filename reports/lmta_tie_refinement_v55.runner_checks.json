@@ -1,0 +1,18 @@
+{
+  "attempts": [
+    {
+      "test_module": "tests/test_lmta_tie_refinement_runner_v55.py",
+      "passed": 1,
+      "failed": 0,
+      "pytest_reported_seconds": 0.33,
+      "command_wall_seconds": 0.624840127,
+      "environment_samples": 0,
+      "environment_calls": 0,
+      "gradient_steps": 0,
+      "actual_planner_calls": 0,
+      "actual_generated_graphs": 0,
+      "mocked_evaluator_calls": 257,
+      "scope": "Mock-only routing and serialization test; no fresh graph or environment realization, no real planning."
+    }
+  ]
+}

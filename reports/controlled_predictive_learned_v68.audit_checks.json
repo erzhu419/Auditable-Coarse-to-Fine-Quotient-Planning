@@ -1,0 +1,51 @@
+{
+  "schema": "acfqp.controlled_predictive_learned_audit_checks.v68",
+  "development_work": {
+    "source_singleton_compilations": 3,
+    "source_plan_active_states": 9,
+    "source_plan_state_action_rows": 11,
+    "source_plan_outcomes": 14,
+    "source_plan_visited_cells": 18,
+    "source_support_semantic_states": 12,
+    "source_support_semantic_outcome_terms": 9,
+    "reference_dp_states": 22,
+    "reference_dp_action_rows": 13,
+    "reference_dp_outcome_terms": 17,
+    "reference_policy_states": 22,
+    "reference_policy_action_rows": 11,
+    "reference_policy_outcome_terms": 15,
+    "target_support_semantic_states": 16,
+    "target_support_semantic_outcome_terms": 12,
+    "target_model_row_checks": 9,
+    "target_model_outcome_terms": 12,
+    "source_model_outcome_terms": 8,
+    "policy_evaluation_states": 22,
+    "policy_evaluation_action_rows": 9,
+    "policy_evaluation_outcome_terms": 13,
+    "audit_calls": 4,
+    "unsupported_policy_states": 2,
+    "main_cohort_roots": 0,
+    "training_updates": 0,
+    "random_samples": 0,
+    "target_model_updates": 0,
+    "scope": "Tiny hand finite kernels; frozen source plans, exact target reference and independent support/policy audits."
+  },
+  "test_attempts": [
+    {
+      "command": [
+        ".venv-lmta-v42/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_controlled_predictive_learned_audit_v68.py"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.6996973089990206,
+      "stdout": "...                                                                      [100%]\n3 passed in 0.20s\n",
+      "stderr": ""
+    }
+  ],
+  "unique_tests": 3,
+  "test_executions": 3,
+  "all_unique_tests_passed": true
+}

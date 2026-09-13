@@ -1,0 +1,54 @@
+{
+  "construction": {
+    "concrete_states": 1198,
+    "learned_terminal_checks": 1198,
+    "learned_swipe_calls": 4792,
+    "learned_line_rewrites": 19168,
+    "concrete_active_states": 139,
+    "learned_spawn_outcomes": 1972,
+    "concrete_action_rows": 430,
+    "concrete_successor_entries": 1972,
+    "h0_boards_generated": 1730,
+    "terminal_reuses": 1057,
+    "model_transition_rows": 190,
+    "model_successor_entries": 344,
+    "concrete_memo_hits": 775,
+    "contract_reuses": 78,
+    "active_states": 61,
+    "terminal_states": 2,
+    "registered_states": 63,
+    "concrete_h0_states": 1059,
+    "concrete_states_by_h": {
+      "0": 1059,
+      "1": 124,
+      "2": 14,
+      "3": 1
+    },
+    "concrete_active_by_h": {
+      "1": 124,
+      "2": 14,
+      "3": 1
+    },
+    "active_cells_by_h": {
+      "1": 46,
+      "2": 14,
+      "3": 1
+    }
+  },
+  "planning_counts": {
+    "active_states": 854,
+    "state_action_rows": 2660,
+    "outcomes": 4816,
+    "visited_cells": 882
+  },
+  "model_bytes": 9258,
+  "times": {
+    "prepare_gc": 0.0029332719859667122,
+    "construction": 0.06358856300357729,
+    "compilation": 0.0010812240070663393,
+    "planning": 0.008987718028947711,
+    "serialization": 0.002136670984327793,
+    "cleanup_gc": 0.005502479034475982,
+    "total": 0.08423871803097427
+  }
+}

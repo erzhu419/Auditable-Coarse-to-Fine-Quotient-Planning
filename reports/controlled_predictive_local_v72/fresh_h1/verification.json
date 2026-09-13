@@ -1,0 +1,1997 @@
+{
+  "schema": "acfqp.local_generalization.v72",
+  "complete": true,
+  "valid": true,
+  "observations": 32,
+  "whole_contracts_checked": 32,
+  "patch_contracts_checked": 31,
+  "errors": {},
+  "cases": [
+    {
+      "name": "v72_fresh_h1_00",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "LEFT",
+          [
+            [
+              "CUTOFF",
+              1,
+              512,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "CUTOFF",
+              1,
+              512,
+              1,
+              10
+            ],
+            [
+              "LOST",
+              1,
+              512,
+              9,
+              10
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 2,
+        "ground_step_outcomes": 4
+      }
+    },
+    {
+      "name": "v72_fresh_h1_01",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "CUTOFF",
+              1,
+              32,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "WON",
+              257,
+              256,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "WON",
+              257,
+              256,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "CUTOFF",
+              1,
+              32,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 20
+      }
+    },
+    {
+      "name": "v72_fresh_h1_02",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "CUTOFF",
+              1,
+              2,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "CUTOFF",
+              65,
+              128,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "CUTOFF",
+              65,
+              128,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "CUTOFF",
+              1,
+              2,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 28
+      }
+    },
+    {
+      "name": "v72_fresh_h1_03",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "CUTOFF",
+              3,
+              128,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "CUTOFF",
+              3,
+              128,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "CUTOFF",
+              3,
+              128,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "CUTOFF",
+              3,
+              128,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 48
+      }
+    },
+    {
+      "name": "v72_fresh_h1_04",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "LEFT",
+          [
+            [
+              "CUTOFF",
+              3,
+              32,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "CUTOFF",
+              3,
+              32,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 2,
+        "ground_step_outcomes": 8
+      }
+    },
+    {
+      "name": "v72_fresh_h1_05",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "CUTOFF",
+              5,
+              16,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "CUTOFF",
+              1,
+              16,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "CUTOFF",
+              1,
+              16,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "CUTOFF",
+              5,
+              16,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": false,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 20
+      }
+    },
+    {
+      "name": "v72_fresh_h1_06",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "CUTOFF",
+              0,
+              1,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "CUTOFF",
+              1,
+              8,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "CUTOFF",
+              1,
+              8,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "CUTOFF",
+              0,
+              1,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 20
+      }
+    },
+    {
+      "name": "v72_fresh_h1_07",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "CUTOFF",
+              1,
+              4,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "CUTOFF",
+              1,
+              4,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "CUTOFF",
+              1,
+              4,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "CUTOFF",
+              1,
+              4,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 40
+      }
+    },
+    {
+      "name": "v72_fresh_h1_08",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "CUTOFF",
+              1,
+              1,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "CUTOFF",
+              1,
+              2,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "CUTOFF",
+              1,
+              2,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "CUTOFF",
+              1,
+              1,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 12
+      }
+    },
+    {
+      "name": "v72_fresh_h1_09",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "WON",
+              1,
+              1,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "WON",
+              1,
+              1,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "WON",
+              1,
+              1,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "WON",
+              1,
+              1,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 16
+      }
+    },
+    {
+      "name": "v72_fresh_h1_10",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "CUTOFF",
+              1,
+              128,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "CUTOFF",
+              5,
+              512,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "CUTOFF",
+              5,
+              512,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "CUTOFF",
+              1,
+              128,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 28
+      }
+    },
+    {
+      "name": "v72_fresh_h1_11",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "CUTOFF",
+              0,
+              1,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "CUTOFF",
+              1,
+              256,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "CUTOFF",
+              1,
+              256,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "CUTOFF",
+              0,
+              1,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 36
+      }
+    },
+    {
+      "name": "v72_fresh_h1_12",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "CUTOFF",
+              3,
+              256,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "CUTOFF",
+              9,
+              256,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "CUTOFF",
+              9,
+              256,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "CUTOFF",
+              3,
+              256,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 16
+      }
+    },
+    {
+      "name": "v72_fresh_h1_13",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "CUTOFF",
+              9,
+              512,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "CUTOFF",
+              1,
+              2,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "CUTOFF",
+              1,
+              2,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "CUTOFF",
+              9,
+              512,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 24
+      }
+    },
+    {
+      "name": "v72_fresh_h1_14",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "CUTOFF",
+              1,
+              32,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "WON",
+              577,
+              512,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "WON",
+              577,
+              512,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "CUTOFF",
+              1,
+              32,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 32
+      }
+    },
+    {
+      "name": "v72_fresh_h1_15",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "CUTOFF",
+              9,
+              128,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "CUTOFF",
+              0,
+              1,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "CUTOFF",
+              0,
+              1,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "CUTOFF",
+              9,
+              128,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 40
+      }
+    },
+    {
+      "name": "v72_fresh_h1_16",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "CUTOFF",
+              3,
+              8,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "CUTOFF",
+              3,
+              8,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 2,
+        "ground_step_outcomes": 8
+      }
+    },
+    {
+      "name": "v72_fresh_h1_17",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "CUTOFF",
+              1,
+              4,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "CUTOFF",
+              49,
+              64,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "CUTOFF",
+              49,
+              64,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "CUTOFF",
+              1,
+              4,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 24
+      }
+    },
+    {
+      "name": "v72_fresh_h1_18",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "CUTOFF",
+              1,
+              2,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "CUTOFF",
+              1,
+              128,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "CUTOFF",
+              1,
+              128,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "CUTOFF",
+              1,
+              2,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 24
+      }
+    },
+    {
+      "name": "v72_fresh_h1_19",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "WON",
+              1,
+              1,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "CUTOFF",
+              0,
+              1,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "CUTOFF",
+              0,
+              1,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "WON",
+              1,
+              1,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 36
+      }
+    },
+    {
+      "name": "v72_fresh_h1_20",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "WON",
+              517,
+              512,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "CUTOFF",
+              33,
+              128,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "CUTOFF",
+              33,
+              128,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "WON",
+              517,
+              512,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 20
+      }
+    },
+    {
+      "name": "v72_fresh_h1_21",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "CUTOFF",
+              1,
+              256,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "CUTOFF",
+              37,
+              256,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "CUTOFF",
+              37,
+              256,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "CUTOFF",
+              1,
+              256,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 24
+      }
+    },
+    {
+      "name": "v72_fresh_h1_22",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "CUTOFF",
+              5,
+              128,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "WON",
+              1,
+              1,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "WON",
+              1,
+              1,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "CUTOFF",
+              5,
+              128,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 28
+      }
+    },
+    {
+      "name": "v72_fresh_h1_23",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "CUTOFF",
+              9,
+              64,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "CUTOFF",
+              0,
+              1,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "CUTOFF",
+              0,
+              1,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "CUTOFF",
+              9,
+              64,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 40
+      }
+    },
+    {
+      "name": "v72_fresh_h1_24",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "CUTOFF",
+              9,
+              512,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "CUTOFF",
+              1,
+              32,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "CUTOFF",
+              1,
+              32,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "CUTOFF",
+              9,
+              512,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 12
+      }
+    },
+    {
+      "name": "v72_fresh_h1_25",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "CUTOFF",
+              0,
+              1,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "CUTOFF",
+              1,
+              16,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "CUTOFF",
+              1,
+              16,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "CUTOFF",
+              0,
+              1,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 12
+      }
+    },
+    {
+      "name": "v72_fresh_h1_26",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "CUTOFF",
+              0,
+              1,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "CUTOFF",
+              41,
+              64,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "CUTOFF",
+              41,
+              64,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "CUTOFF",
+              0,
+              1,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 28
+      }
+    },
+    {
+      "name": "v72_fresh_h1_27",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "CUTOFF",
+              0,
+              1,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "CUTOFF",
+              1,
+              4,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "CUTOFF",
+              1,
+              4,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "CUTOFF",
+              0,
+              1,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 36
+      }
+    },
+    {
+      "name": "v72_fresh_h1_28",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "CUTOFF",
+              1,
+              256,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "CUTOFF",
+              133,
+              256,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "CUTOFF",
+              133,
+              256,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "CUTOFF",
+              1,
+              256,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 16
+      }
+    },
+    {
+      "name": "v72_fresh_h1_29",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "WON",
+              257,
+              256,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "WON",
+              1,
+              1,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "WON",
+              1,
+              1,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "WON",
+              257,
+              256,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 20
+      }
+    },
+    {
+      "name": "v72_fresh_h1_30",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "CUTOFF",
+              1,
+              4,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "CUTOFF",
+              1,
+              512,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "CUTOFF",
+              1,
+              512,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "CUTOFF",
+              1,
+              4,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 24
+      }
+    },
+    {
+      "name": "v72_fresh_h1_31",
+      "valid": true,
+      "errors": [],
+      "ground_status": "ACTIVE",
+      "ground_contract": [
+        [
+          "DOWN",
+          [
+            [
+              "CUTOFF",
+              0,
+              1,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "LEFT",
+          [
+            [
+              "CUTOFF",
+              1,
+              256,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "RIGHT",
+          [
+            [
+              "CUTOFF",
+              1,
+              256,
+              1,
+              1
+            ]
+          ]
+        ],
+        [
+          "UP",
+          [
+            [
+              "CUTOFF",
+              0,
+              1,
+              1,
+              1
+            ]
+          ]
+        ]
+      ],
+      "patch_checked": true,
+      "ground_counts": {
+        "ground_explicit_state_calls": 1,
+        "ground_explicit_swipe_calls": 4,
+        "ground_step_calls": 4,
+        "ground_step_outcomes": 36
+      }
+    }
+  ],
+  "source_fit_calls": 0,
+  "predictions_frozen_before_ground": true,
+  "prediction_counts": {
+    "compiled_programs": 1,
+    "full_board_materializations": 0,
+    "direct_observation_evaluations": 32,
+    "prepare_calls": 63,
+    "line_lookups": 1132,
+    "line_evaluations": 606,
+    "line_summary_adjacent_tests": 1783,
+    "line_cache_hits": 526,
+    "action_changed_tests": 252,
+    "action_contract_evaluations": 240,
+    "terminal_contract_evaluations": 240,
+    "cross_line_adjacent_tests": 104,
+    "terminal_spawn_rank_classifications": 480,
+    "hole_neighbor_rank_reads": 4,
+    "base_adjacent_tests": 97,
+    "base_hole_neighbor_reads": 2,
+    "patch_status_evaluations": 31,
+    "patched_contract_evaluations": 31,
+    "patched_line_inputs": 124,
+    "unaffected_line_summaries_reused": 372
+  },
+  "ground_counts": {
+    "ground_explicit_state_calls": 32,
+    "ground_explicit_swipe_calls": 128,
+    "ground_step_calls": 122,
+    "ground_step_outcomes": 780
+  },
+  "prediction_seconds": 0.007298109005205333,
+  "ground_seconds": 0.08236371097154915,
+  "wall_seconds_before_write": 0.10219862504163757,
+  "scope": "Thirty-two fresh, fixed H1 boards test whole-observation and available single-spawn patch contracts against one true row per legal action. Exact terminal/reward joints are checked after all predictions are saved. These are exact-support ground checks, not sampled episodes, a learning campaign, higher-horizon transfer, or support reduction.",
+  "ground_count_scope": "Explicit state and swipe API invocations, step invocations and returned outcomes are counted. Validation calls internal to the ground APIs are not separately counted; their time is included in ground_seconds."
+}

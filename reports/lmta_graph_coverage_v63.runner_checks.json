@@ -1,0 +1,24 @@
+{
+  "attempts": [
+    {
+      "test_module": "tests/test_lmta_graph_coverage_runner_v63.py",
+      "new_failures": 0,
+      "mock_campaigns": 4,
+      "mock_block_calls": 7,
+      "hand_graph_constructions": 8,
+      "mock_paid_action_values": 30,
+      "mock_decisions": 7,
+      "mock_environment_calls": 3,
+      "actual_planner_calls": 0,
+      "actual_environment_calls": 0,
+      "sampled_graphs": 0,
+      "random_draws": 0,
+      "wall_seconds": 0.025603374000638723,
+      "scope": "Runner campaigns use explicit tiny fixture protocols, hand graphs and paid synthetic blocks; prerequisite checks use small JSON fixtures. No main graph generator or production simulator runs.",
+      "pytest_summary": "5 passed in 0.33s",
+      "pytest_passed": 5,
+      "pytest_exit_code": 0,
+      "command_wall_seconds": 0.720118563
+    }
+  ]
+}

@@ -1,0 +1,543 @@
+{
+  "schema": "acfqp.lmta_weighted.v46",
+  "status": "complete",
+  "operator": "IC_SUM",
+  "protocol": {
+    "runs": 3,
+    "training_episodes": 128,
+    "checkpoints": [
+      0,
+      32,
+      64,
+      128
+    ],
+    "panel_size": 20,
+    "methods": [
+      "FLAT_DQN",
+      "BUDGET_HRL",
+      "LMTA_RI"
+    ],
+    "heuristics": [],
+    "horizon": 10,
+    "primary_checkpoint": 128,
+    "nodes": 500,
+    "budget": 70,
+    "p": 0.01,
+    "graph_rotation_every": 8
+  },
+  "runtime": {
+    "python": "3.10.12",
+    "numpy": "2.2.6",
+    "networkx": "2.8.8",
+    "torch": "2.8.0+cu128",
+    "device": "cuda",
+    "torch_threads": 1,
+    "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU"
+  },
+  "graphs": [
+    {
+      "graph_id": 440000,
+      "nodes": 500,
+      "edges": 2543
+    },
+    {
+      "graph_id": 440001,
+      "nodes": 500,
+      "edges": 2458
+    },
+    {
+      "graph_id": 440002,
+      "nodes": 500,
+      "edges": 2389
+    },
+    {
+      "graph_id": 440003,
+      "nodes": 500,
+      "edges": 2492
+    },
+    {
+      "graph_id": 440004,
+      "nodes": 500,
+      "edges": 2531
+    },
+    {
+      "graph_id": 440005,
+      "nodes": 500,
+      "edges": 2472
+    },
+    {
+      "graph_id": 440006,
+      "nodes": 500,
+      "edges": 2493
+    },
+    {
+      "graph_id": 440007,
+      "nodes": 500,
+      "edges": 2449
+    },
+    {
+      "graph_id": 440008,
+      "nodes": 500,
+      "edges": 2501
+    },
+    {
+      "graph_id": 440009,
+      "nodes": 500,
+      "edges": 2359
+    },
+    {
+      "graph_id": 440010,
+      "nodes": 500,
+      "edges": 2518
+    },
+    {
+      "graph_id": 440011,
+      "nodes": 500,
+      "edges": 2490
+    },
+    {
+      "graph_id": 440012,
+      "nodes": 500,
+      "edges": 2462
+    },
+    {
+      "graph_id": 440013,
+      "nodes": 500,
+      "edges": 2408
+    },
+    {
+      "graph_id": 440014,
+      "nodes": 500,
+      "edges": 2483
+    },
+    {
+      "graph_id": 440015,
+      "nodes": 500,
+      "edges": 2559
+    },
+    {
+      "graph_id": 440100,
+      "nodes": 500,
+      "edges": 2513
+    },
+    {
+      "graph_id": 440101,
+      "nodes": 500,
+      "edges": 2498
+    },
+    {
+      "graph_id": 440102,
+      "nodes": 500,
+      "edges": 2549
+    },
+    {
+      "graph_id": 440103,
+      "nodes": 500,
+      "edges": 2394
+    },
+    {
+      "graph_id": 440104,
+      "nodes": 500,
+      "edges": 2531
+    },
+    {
+      "graph_id": 440105,
+      "nodes": 500,
+      "edges": 2489
+    },
+    {
+      "graph_id": 440106,
+      "nodes": 500,
+      "edges": 2523
+    },
+    {
+      "graph_id": 440107,
+      "nodes": 500,
+      "edges": 2631
+    },
+    {
+      "graph_id": 440108,
+      "nodes": 500,
+      "edges": 2552
+    },
+    {
+      "graph_id": 440109,
+      "nodes": 500,
+      "edges": 2518
+    },
+    {
+      "graph_id": 440110,
+      "nodes": 500,
+      "edges": 2498
+    },
+    {
+      "graph_id": 440111,
+      "nodes": 500,
+      "edges": 2461
+    },
+    {
+      "graph_id": 440112,
+      "nodes": 500,
+      "edges": 2435
+    },
+    {
+      "graph_id": 440113,
+      "nodes": 500,
+      "edges": 2492
+    },
+    {
+      "graph_id": 440114,
+      "nodes": 500,
+      "edges": 2453
+    },
+    {
+      "graph_id": 440115,
+      "nodes": 500,
+      "edges": 2526
+    },
+    {
+      "graph_id": 440200,
+      "nodes": 500,
+      "edges": 2493
+    },
+    {
+      "graph_id": 440201,
+      "nodes": 500,
+      "edges": 2450
+    },
+    {
+      "graph_id": 440202,
+      "nodes": 500,
+      "edges": 2494
+    },
+    {
+      "graph_id": 440203,
+      "nodes": 500,
+      "edges": 2500
+    },
+    {
+      "graph_id": 440204,
+      "nodes": 500,
+      "edges": 2508
+    },
+    {
+      "graph_id": 440205,
+      "nodes": 500,
+      "edges": 2439
+    },
+    {
+      "graph_id": 440206,
+      "nodes": 500,
+      "edges": 2458
+    },
+    {
+      "graph_id": 440207,
+      "nodes": 500,
+      "edges": 2450
+    },
+    {
+      "graph_id": 440208,
+      "nodes": 500,
+      "edges": 2439
+    },
+    {
+      "graph_id": 440209,
+      "nodes": 500,
+      "edges": 2501
+    },
+    {
+      "graph_id": 440210,
+      "nodes": 500,
+      "edges": 2487
+    },
+    {
+      "graph_id": 440211,
+      "nodes": 500,
+      "edges": 2394
+    },
+    {
+      "graph_id": 440212,
+      "nodes": 500,
+      "edges": 2436
+    },
+    {
+      "graph_id": 440213,
+      "nodes": 500,
+      "edges": 2424
+    },
+    {
+      "graph_id": 440214,
+      "nodes": 500,
+      "edges": 2539
+    },
+    {
+      "graph_id": 440215,
+      "nodes": 500,
+      "edges": 2450
+    },
+    {
+      "graph_id": 440900,
+      "nodes": 500,
+      "edges": 2522
+    },
+    {
+      "graph_id": 440901,
+      "nodes": 500,
+      "edges": 2536
+    },
+    {
+      "graph_id": 440902,
+      "nodes": 500,
+      "edges": 2390
+    },
+    {
+      "graph_id": 440903,
+      "nodes": 500,
+      "edges": 2484
+    },
+    {
+      "graph_id": 440904,
+      "nodes": 500,
+      "edges": 2507
+    },
+    {
+      "graph_id": 440905,
+      "nodes": 500,
+      "edges": 2440
+    },
+    {
+      "graph_id": 440906,
+      "nodes": 500,
+      "edges": 2542
+    },
+    {
+      "graph_id": 440907,
+      "nodes": 500,
+      "edges": 2485
+    },
+    {
+      "graph_id": 440908,
+      "nodes": 500,
+      "edges": 2436
+    },
+    {
+      "graph_id": 440909,
+      "nodes": 500,
+      "edges": 2460
+    }
+  ],
+  "graph_generation_seconds": 0.8600689389859326,
+  "completed_runs": [
+    {
+      "run_id": 0,
+      "method": "FLAT_DQN",
+      "initialization_seed": 445001,
+      "initialization_seconds": 1.382473909005057,
+      "cumulative_model_work": {
+        "LL_gradient_steps": 1280,
+        "HL_gradient_steps": 0,
+        "LL_replay_samples": 10240,
+        "HL_replay_samples": 0
+      },
+      "cumulative_train_counters": {
+        "primitive_selections": 8960,
+        "day_transitions": 1280,
+        "propagation_draws": 122727
+      },
+      "model_path": "models/FLAT_DQN_run0.pt",
+      "model_bytes": 273649,
+      "model_save_seconds": 0.002635006996570155,
+      "peak_cuda_allocated_bytes": 69148672
+    },
+    {
+      "run_id": 0,
+      "method": "BUDGET_HRL",
+      "initialization_seed": 445001,
+      "initialization_seconds": 0.03730120000545867,
+      "cumulative_model_work": {
+        "LL_gradient_steps": 1279,
+        "HL_gradient_steps": 1273,
+        "LL_replay_samples": 10232,
+        "HL_replay_samples": 10184
+      },
+      "cumulative_train_counters": {
+        "primitive_selections": 8960,
+        "day_transitions": 1280,
+        "propagation_draws": 121633
+      },
+      "model_path": "models/BUDGET_HRL_run0.pt",
+      "model_bytes": 446583,
+      "model_save_seconds": 0.002284927002619952,
+      "peak_cuda_allocated_bytes": 68086784
+    },
+    {
+      "run_id": 0,
+      "method": "LMTA_RI",
+      "initialization_seed": 445001,
+      "initialization_seconds": 0.040198851987952366,
+      "cumulative_model_work": {
+        "latent_recurrent_calls": 208823,
+        "mcts_simulations": 312000,
+        "root_searches": 2080,
+        "LL_gradient_steps": 1279,
+        "LL_replay_samples": 10232,
+        "HL_gradient_steps": 121,
+        "HL_replay_games": 968,
+        "HL_replay_transitions": 3854,
+        "MTS_micro_replay_samples": 968,
+        "budget_gradient_steps": 121
+      },
+      "cumulative_train_counters": {
+        "primitive_selections": 8960,
+        "day_transitions": 1280,
+        "propagation_draws": 122273
+      },
+      "model_path": "models/LMTA_RI_run0.pt",
+      "model_bytes": 1211927,
+      "model_save_seconds": 0.005004097998607904,
+      "peak_cuda_allocated_bytes": 108503040
+    },
+    {
+      "run_id": 1,
+      "method": "BUDGET_HRL",
+      "initialization_seed": 445002,
+      "initialization_seconds": 0.03923650100477971,
+      "cumulative_model_work": {
+        "LL_gradient_steps": 1279,
+        "HL_gradient_steps": 1273,
+        "LL_replay_samples": 10232,
+        "HL_replay_samples": 10184
+      },
+      "cumulative_train_counters": {
+        "primitive_selections": 8960,
+        "day_transitions": 1280,
+        "propagation_draws": 123523
+      },
+      "model_path": "models/BUDGET_HRL_run1.pt",
+      "model_bytes": 446583,
+      "model_save_seconds": 0.001863562996732071,
+      "peak_cuda_allocated_bytes": 68086784
+    },
+    {
+      "run_id": 1,
+      "method": "LMTA_RI",
+      "initialization_seed": 445002,
+      "initialization_seconds": 0.03816086699953303,
+      "cumulative_model_work": {
+        "latent_recurrent_calls": 252282,
+        "mcts_simulations": 312000,
+        "root_searches": 2080,
+        "LL_gradient_steps": 1279,
+        "LL_replay_samples": 10232,
+        "HL_gradient_steps": 121,
+        "HL_replay_games": 968,
+        "HL_replay_transitions": 3906,
+        "MTS_micro_replay_samples": 968,
+        "budget_gradient_steps": 121
+      },
+      "cumulative_train_counters": {
+        "primitive_selections": 8960,
+        "day_transitions": 1280,
+        "propagation_draws": 126311
+      },
+      "model_path": "models/LMTA_RI_run1.pt",
+      "model_bytes": 1211927,
+      "model_save_seconds": 0.004418160999193788,
+      "peak_cuda_allocated_bytes": 110900224
+    },
+    {
+      "run_id": 1,
+      "method": "FLAT_DQN",
+      "initialization_seed": 445002,
+      "initialization_seconds": 0.036145293997833505,
+      "cumulative_model_work": {
+        "LL_gradient_steps": 1277,
+        "HL_gradient_steps": 0,
+        "LL_replay_samples": 10216,
+        "HL_replay_samples": 0
+      },
+      "cumulative_train_counters": {
+        "primitive_selections": 8960,
+        "day_transitions": 1280,
+        "propagation_draws": 116320
+      },
+      "model_path": "models/FLAT_DQN_run1.pt",
+      "model_bytes": 273649,
+      "model_save_seconds": 0.0015531030076090246,
+      "peak_cuda_allocated_bytes": 69148672
+    },
+    {
+      "run_id": 2,
+      "method": "LMTA_RI",
+      "initialization_seed": 445003,
+      "initialization_seconds": 0.03845858899876475,
+      "cumulative_model_work": {
+        "latent_recurrent_calls": 251275,
+        "mcts_simulations": 312000,
+        "root_searches": 2080,
+        "LL_gradient_steps": 1279,
+        "LL_replay_samples": 10232,
+        "HL_gradient_steps": 121,
+        "HL_replay_games": 968,
+        "HL_replay_transitions": 3855,
+        "MTS_micro_replay_samples": 968,
+        "budget_gradient_steps": 121
+      },
+      "cumulative_train_counters": {
+        "primitive_selections": 8960,
+        "day_transitions": 1280,
+        "propagation_draws": 121986
+      },
+      "model_path": "models/LMTA_RI_run2.pt",
+      "model_bytes": 1211927,
+      "model_save_seconds": 0.006110807997174561,
+      "peak_cuda_allocated_bytes": 110901760
+    },
+    {
+      "run_id": 2,
+      "method": "FLAT_DQN",
+      "initialization_seed": 445003,
+      "initialization_seconds": 0.03735735599184409,
+      "cumulative_model_work": {
+        "LL_gradient_steps": 1280,
+        "HL_gradient_steps": 0,
+        "LL_replay_samples": 10240,
+        "HL_replay_samples": 0
+      },
+      "cumulative_train_counters": {
+        "primitive_selections": 8960,
+        "day_transitions": 1280,
+        "propagation_draws": 110844
+      },
+      "model_path": "models/FLAT_DQN_run2.pt",
+      "model_bytes": 273649,
+      "model_save_seconds": 0.001566955994348973,
+      "peak_cuda_allocated_bytes": 69148672
+    },
+    {
+      "run_id": 2,
+      "method": "BUDGET_HRL",
+      "initialization_seed": 445003,
+      "initialization_seconds": 0.03756221997900866,
+      "cumulative_model_work": {
+        "LL_gradient_steps": 1279,
+        "HL_gradient_steps": 1273,
+        "LL_replay_samples": 10232,
+        "HL_replay_samples": 10184
+      },
+      "cumulative_train_counters": {
+        "primitive_selections": 8960,
+        "day_transitions": 1280,
+        "propagation_draws": 123808
+      },
+      "model_path": "models/BUDGET_HRL_run2.pt",
+      "model_bytes": 446583,
+      "model_save_seconds": 0.0022131469740998,
+      "peak_cuda_allocated_bytes": 68086784
+    }
+  ],
+  "control_directory": "reports/lmta_learnability_v44",
+  "control_reused_without_new_episodes": true,
+  "source_scope": "V44 training algorithms with V45 IC_SUM graph operators in float32; fresh V46 training.",
+  "wall_seconds": 844.9637186229811
+}

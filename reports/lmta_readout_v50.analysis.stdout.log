@@ -1,0 +1,146 @@
+{
+  "integrity_passed": true,
+  "diagnostic_outcome": "FIT_NOT_ESTABLISHED",
+  "paired_final_candidate_minus_V49": {
+    "train": {
+      "mean_relative_regret": {
+        "run_values": [
+          -0.005421745718747763,
+          -0.004921452618799983,
+          -0.0030532033094798836
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": -0.004465467215675876,
+        "sample_std": 0.0012483750646427592,
+        "ci_95": [
+          -0.007566602792163377,
+          -0.0013643316391883753
+        ],
+        "all_runs_positive": false,
+        "all_positive_and_ci_lower_positive": false
+      },
+      "optimal_rate": {
+        "run_values": [
+          0.1026785714285714,
+          0.0848214285714286,
+          0.033035714285714335
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": 0.07351190476190478,
+        "sample_std": 0.03617265381961543,
+        "ci_95": [
+          -0.016345948725481882,
+          0.16336975824929145
+        ],
+        "all_runs_positive": true,
+        "all_positive_and_ci_lower_positive": false
+      },
+      "pairwise_accuracy": {
+        "run_values": [
+          0.0064341802592280395,
+          0.004855216614846225,
+          0.0050360361418787525
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": 0.005441811005317672,
+        "sample_std": 0.0008641594050978273,
+        "ci_95": [
+          0.003295120038150659,
+          0.007588501972484685
+        ],
+        "all_runs_positive": true,
+        "all_positive_and_ci_lower_positive": true
+      },
+      "mse": {
+        "run_values": [
+          -0.0004923261413735688,
+          -0.00043777328337172466,
+          0.0008128436336855569
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": -3.9085263686578875e-05,
+        "sample_std": 0.0007382961046980538,
+        "ci_95": [
+          -0.0018731144598051874,
+          0.0017949439324320298
+        ],
+        "all_runs_positive": false,
+        "all_positive_and_ci_lower_positive": false
+      }
+    },
+    "heldout": {
+      "mean_relative_regret": {
+        "run_values": [
+          -0.004884521240870781,
+          -0.002181309052762286,
+          -0.0021587023084353573
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": -0.0030748442006894748,
+        "sample_std": 0.001567267050805891,
+        "ci_95": [
+          -0.0069681513859796915,
+          0.0008184629846007415
+        ],
+        "all_runs_positive": false,
+        "all_positive_and_ci_lower_positive": false
+      },
+      "optimal_rate": {
+        "run_values": [
+          0.09464285714285714,
+          0.044642857142857206,
+          0.0267857142857143
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": 0.05535714285714288,
+        "sample_std": 0.035174492149271784,
+        "ci_95": [
+          -0.0320211395825197,
+          0.14273542529680547
+        ],
+        "all_runs_positive": true,
+        "all_positive_and_ci_lower_positive": false
+      },
+      "pairwise_accuracy": {
+        "run_values": [
+          0.00635373185599164,
+          0.00480719643246319,
+          0.00493388381693749
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": 0.005364937368464107,
+        "sample_std": 0.0008586607754345501,
+        "ci_95": [
+          0.0032319057546065883,
+          0.007497968982321625
+        ],
+        "all_runs_positive": true,
+        "all_positive_and_ci_lower_positive": true
+      },
+      "mse": {
+        "run_values": [
+          -0.0005812589675739904,
+          -0.0004410163290044219,
+          0.0007847569786250059
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": -7.917277265113549e-05,
+        "sample_std": 0.0007514638785552372,
+        "ci_95": [
+          -0.0019459125323881702,
+          0.0017875669870858991
+        ],
+        "all_runs_positive": false,
+        "all_positive_and_ci_lower_positive": false
+      }
+    }
+  }
+}

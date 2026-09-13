@@ -1,0 +1,8 @@
+{
+  "command": [
+    ".venv-lmta-v42/bin/python",
+    "scripts/analyze_lmta_probability_execution_v65.py"
+  ],
+  "exit_code": 0,
+  "command_wall_seconds": 2.3055327140027657
+}

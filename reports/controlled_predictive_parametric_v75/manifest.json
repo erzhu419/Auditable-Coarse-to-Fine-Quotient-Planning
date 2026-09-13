@@ -1,0 +1,30 @@
+{
+  "schema": "acfqp.parametric_h2.v75",
+  "status": "complete",
+  "target_roots": 32,
+  "completed_targets": 32,
+  "original_observations": 87,
+  "added_h2_observations": 8,
+  "inherited_v74_audit": true,
+  "new_full_route_audits": 0,
+  "matched_observations": 95,
+  "source_learning_reused": true,
+  "source_fit_calls": 0,
+  "target_ground_calls": 0,
+  "max_geometries": 200000,
+  "source_path": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_composition_v69",
+  "runtime": {
+    "python": "3.10.12",
+    "executable": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python"
+  },
+  "rule_compile": {
+    "seconds": 7.99703411757946e-06,
+    "counts": {
+      "compiled_programs": 1,
+      "compiled_spawn_ranks": 2,
+      "topology_edges": 24
+    }
+  },
+  "wall_seconds": 15.406756725977175,
+  "peak_rss_bytes": 32210944
+}

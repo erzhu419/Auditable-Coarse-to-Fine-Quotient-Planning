@@ -1,0 +1,16 @@
+{
+  "schema": "acfqp.lmta_trajectory_analysis_failed_attempt.v61",
+  "exit_code": 1,
+  "error": "KeyError: transition_outcomes in panel cost aggregation after all independent replays",
+  "completed_certificate_queries": 49152,
+  "verification_random_draws": 1541376,
+  "verification_environment_steps": 49152,
+  "new_analysis_planner_calls": 0,
+  "new_full_policy_evaluations": 0,
+  "analysis_wall_seconds": null,
+  "command_seconds_from_log_timestamps": 3.6722865104675293,
+  "timing_note": "Approximate command interval from initial empty stdout redirection to final traceback stderr modification; internal analysis timer was not persisted on this failed attempt.",
+  "work_basis": "Traceback reaches comparisons after summarize completed every replay and complete=true; counts come from the completed main case records.",
+  "stderr_log": "../lmta_trajectory_v61.analysis.stderr.log",
+  "frozen_analyzer": "source/scripts/analyze_lmta_trajectory_v61.py"
+}

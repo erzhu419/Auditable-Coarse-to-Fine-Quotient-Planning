@@ -1,0 +1,216 @@
+{
+  "attempts": [
+    {
+      "test_module": "tests/test_lmta_scale_v54.py",
+      "new_failures": 0,
+      "environment_counters": {},
+      "model_evaluations": 0,
+      "gradient_steps": 0,
+      "planner_calls": 25,
+      "solver_instances": 32,
+      "all_solver_counters": {
+        "dp_states": 47,
+        "action_value_evaluations": 80,
+        "kernel_builds": 101,
+        "kernel_cache_hits": 0,
+        "transition_outcomes": 137,
+        "target_probability_evaluations": 103,
+        "score_node_evaluations": 0,
+        "immediate_expectation_terms": 0,
+        "bellman_expectation_terms": 108,
+        "forced_choice": 14
+      },
+      "outer_evaluations": [
+        {
+          "method": "LOOKAHEAD_1",
+          "status": "complete",
+          "stop_reason": null,
+          "state_records": 6,
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 6,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 8,
+            "target_probability_evaluations": 4,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 6,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 5
+          },
+          "actual_test_seconds": 0.0002902089909184724
+        },
+        {
+          "method": "LOOKAHEAD_2",
+          "status": "complete",
+          "stop_reason": null,
+          "state_records": 6,
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 6,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 8,
+            "target_probability_evaluations": 4,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 6,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 5
+          },
+          "actual_test_seconds": 0.00022524900850839913
+        },
+        {
+          "method": "LOOKAHEAD_FULL",
+          "status": "complete",
+          "stop_reason": null,
+          "state_records": 6,
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 6,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 8,
+            "target_probability_evaluations": 4,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 6,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 5
+          },
+          "actual_test_seconds": 0.0003133550053462386
+        },
+        {
+          "method": "LOOKAHEAD_2",
+          "status": "resource_limit",
+          "stop_reason": "max_planner_action_values",
+          "state_records": 1,
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 0,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 0,
+            "target_probability_evaluations": 0,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 0,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 0
+          },
+          "actual_test_seconds": 0.00011742400238290429
+        },
+        {
+          "method": "LOOKAHEAD_2",
+          "status": "resource_limit",
+          "stop_reason": "max_policy_states",
+          "state_records": 1,
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 0,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 0,
+            "target_probability_evaluations": 0,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 0,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 0
+          },
+          "actual_test_seconds": 0.00011412199819460511
+        },
+        {
+          "method": "LOOKAHEAD_1",
+          "status": "resource_limit",
+          "stop_reason": "max_policy_states",
+          "state_records": 4,
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 3,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 5,
+            "target_probability_evaluations": 4,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 1,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 0
+          },
+          "actual_test_seconds": 0.00015336499200202525
+        },
+        {
+          "method": "LOOKAHEAD_2",
+          "status": "resource_limit",
+          "stop_reason": "max_wall_seconds",
+          "state_records": 1,
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 0,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 0,
+            "target_probability_evaluations": 0,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 0,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 0
+          },
+          "actual_test_seconds": 0.00015598797472193837
+        }
+      ],
+      "wall_seconds": 0.004774872999405488,
+      "scope": "All hand-graph work, including resource-limited attempts, is charged. The clock-limit case uses mocked ledger times; actual_test_seconds and this wall_seconds use the real clock. No environments or main panel."
+    }
+  ],
+  "analysis_test_attempts": [
+    {
+      "test_module": "tests/test_lmta_scale_analysis_v54.py",
+      "attempt": 1,
+      "passed": 10,
+      "failed": 0,
+      "pytest_reported_seconds": 0.19,
+      "command_wall_seconds": 0.459531535,
+      "change": "Initial complete-certificate, limit-boundary and stratum-coverage tests.",
+      "environment_calls": 0,
+      "neural_model_evaluations": 0,
+      "gradient_steps": 0
+    },
+    {
+      "test_module": "tests/test_lmta_scale_analysis_v54.py",
+      "attempt": 2,
+      "passed": 11,
+      "failed": 0,
+      "pytest_reported_seconds": 0.19,
+      "command_wall_seconds": 0.451552087,
+      "change": "Moved retained decision verification into the common complete/resource-limit path; added corrupted partial root-Q test after review identified the missing check.",
+      "environment_calls": 0,
+      "neural_model_evaluations": 0,
+      "gradient_steps": 0
+    }
+  ],
+  "final_test_results": {
+    "evaluator": {
+      "passed": 5,
+      "failed": 0,
+      "pytest_seconds": 0.29
+    },
+    "analysis": {
+      "passed": 11,
+      "failed": 0,
+      "pytest_seconds": 0.19
+    },
+    "unique_tests": 16,
+    "total_test_executions": 26
+  }
+}

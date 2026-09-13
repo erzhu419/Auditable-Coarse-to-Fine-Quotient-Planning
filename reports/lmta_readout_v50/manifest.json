@@ -1,0 +1,377 @@
+{
+  "schema": "acfqp.lmta_readout.v50",
+  "status": "complete",
+  "protocol": {
+    "train_graph_ids": [
+      440000,
+      440001,
+      440002,
+      440003,
+      440004,
+      440005,
+      440006,
+      440007,
+      440008,
+      440009,
+      440010,
+      440011,
+      440012,
+      440013,
+      440014,
+      440015
+    ],
+    "heldout_graph_ids": [
+      490900,
+      490901,
+      490902,
+      490903,
+      490904,
+      490905,
+      490906,
+      490907
+    ],
+    "train_environment_seeds": [
+      491000,
+      491001,
+      491002,
+      491003,
+      491004,
+      491005,
+      491006,
+      491007,
+      491008,
+      491009,
+      491010,
+      491011,
+      491012,
+      491013,
+      491014,
+      491015
+    ],
+    "heldout_environment_seeds": [
+      492000,
+      492001,
+      492002,
+      492003,
+      492004,
+      492005,
+      492006,
+      492007
+    ],
+    "nodes": 500,
+    "p": 0.01,
+    "budget": 70,
+    "horizon": 10,
+    "runs": 3,
+    "initialization_seeds": [
+      493001,
+      493002,
+      493003
+    ],
+    "batch_seeds": [
+      494001,
+      494002,
+      494003
+    ],
+    "steps": 2000,
+    "batch_size": 4,
+    "checkpoints": [
+      0,
+      2000
+    ],
+    "learning_rate": 0.001,
+    "weight_decay": 1e-05,
+    "gradient_clip": 5.0,
+    "target_tie_tolerance": 1e-09,
+    "max_mean_relative_regret": 0.01,
+    "min_optimal_rate": 0.95,
+    "loss": "state_mean_legal_node_mse",
+    "state_policy": "AVERAGE_SCORE",
+    "operator": "IC_SUM",
+    "dtype": "float32",
+    "architecture": "NodeQ_plus_learned_first_message_linear",
+    "added_parameters": 6,
+    "readout_initialization": "zero",
+    "batch_source": "V49_recorded_batches",
+    "float64_readout_tolerance": 1e-12,
+    "float32_readout_tolerance": 2e-06
+  },
+  "runtime": {
+    "python": "3.10.12",
+    "numpy": "2.2.6",
+    "networkx": "2.8.8",
+    "torch": "2.8.0+cu128",
+    "device": "cuda",
+    "torch_threads": 1,
+    "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU"
+  },
+  "source_directory": "reports/lmta_supervised_v49",
+  "dataset_path": "reports/lmta_supervised_v49/dataset.npz",
+  "dataset_bytes": 255672,
+  "source_read_seconds": 0.12363188198651187,
+  "graphs": [
+    {
+      "graph_id": 440000,
+      "split": "train",
+      "nodes": 500,
+      "edges": 2543
+    },
+    {
+      "graph_id": 440001,
+      "split": "train",
+      "nodes": 500,
+      "edges": 2458
+    },
+    {
+      "graph_id": 440002,
+      "split": "train",
+      "nodes": 500,
+      "edges": 2389
+    },
+    {
+      "graph_id": 440003,
+      "split": "train",
+      "nodes": 500,
+      "edges": 2492
+    },
+    {
+      "graph_id": 440004,
+      "split": "train",
+      "nodes": 500,
+      "edges": 2531
+    },
+    {
+      "graph_id": 440005,
+      "split": "train",
+      "nodes": 500,
+      "edges": 2472
+    },
+    {
+      "graph_id": 440006,
+      "split": "train",
+      "nodes": 500,
+      "edges": 2493
+    },
+    {
+      "graph_id": 440007,
+      "split": "train",
+      "nodes": 500,
+      "edges": 2449
+    },
+    {
+      "graph_id": 440008,
+      "split": "train",
+      "nodes": 500,
+      "edges": 2501
+    },
+    {
+      "graph_id": 440009,
+      "split": "train",
+      "nodes": 500,
+      "edges": 2359
+    },
+    {
+      "graph_id": 440010,
+      "split": "train",
+      "nodes": 500,
+      "edges": 2518
+    },
+    {
+      "graph_id": 440011,
+      "split": "train",
+      "nodes": 500,
+      "edges": 2490
+    },
+    {
+      "graph_id": 440012,
+      "split": "train",
+      "nodes": 500,
+      "edges": 2462
+    },
+    {
+      "graph_id": 440013,
+      "split": "train",
+      "nodes": 500,
+      "edges": 2408
+    },
+    {
+      "graph_id": 440014,
+      "split": "train",
+      "nodes": 500,
+      "edges": 2483
+    },
+    {
+      "graph_id": 440015,
+      "split": "train",
+      "nodes": 500,
+      "edges": 2559
+    },
+    {
+      "graph_id": 490900,
+      "split": "heldout",
+      "nodes": 500,
+      "edges": 2504
+    },
+    {
+      "graph_id": 490901,
+      "split": "heldout",
+      "nodes": 500,
+      "edges": 2500
+    },
+    {
+      "graph_id": 490902,
+      "split": "heldout",
+      "nodes": 500,
+      "edges": 2523
+    },
+    {
+      "graph_id": 490903,
+      "split": "heldout",
+      "nodes": 500,
+      "edges": 2542
+    },
+    {
+      "graph_id": 490904,
+      "split": "heldout",
+      "nodes": 500,
+      "edges": 2532
+    },
+    {
+      "graph_id": 490905,
+      "split": "heldout",
+      "nodes": 500,
+      "edges": 2434
+    },
+    {
+      "graph_id": 490906,
+      "split": "heldout",
+      "nodes": 500,
+      "edges": 2492
+    },
+    {
+      "graph_id": 490907,
+      "split": "heldout",
+      "nodes": 500,
+      "edges": 2602
+    }
+  ],
+  "runs": [
+    {
+      "run_id": 0,
+      "initialization_seed": 493001,
+      "batch_seed": 494001,
+      "initialization_seconds": 0.6296776120143477,
+      "base_parameters": 50433,
+      "candidate_parameters": 50439,
+      "gradient_steps": 2000,
+      "training_state_presentations": 8000,
+      "evaluations": [
+        {
+          "checkpoint": 0,
+          "states": 1680,
+          "wall_seconds": 1.470540001988411,
+          "initial_mismatch_count": 0
+        },
+        {
+          "checkpoint": 2000,
+          "states": 1680,
+          "wall_seconds": 1.5295493199955672,
+          "initial_mismatch_count": 0
+        }
+      ],
+      "training_seconds": 5.695036171004176,
+      "model_path": "models/run0.pt",
+      "model_bytes": 205705,
+      "model_serialization_seconds": 0.0027083349996246397,
+      "learned_message_weight": [
+        0.05960629880428314,
+        -0.2599388360977173,
+        -0.1916694939136505,
+        0.026645036414265633,
+        0.02244129404425621
+      ],
+      "learned_message_bias": -0.05369244143366814
+    },
+    {
+      "run_id": 1,
+      "initialization_seed": 493002,
+      "batch_seed": 494002,
+      "initialization_seconds": 0.0018511009984649718,
+      "base_parameters": 50433,
+      "candidate_parameters": 50439,
+      "gradient_steps": 2000,
+      "training_state_presentations": 8000,
+      "evaluations": [
+        {
+          "checkpoint": 0,
+          "states": 1680,
+          "wall_seconds": 1.4238492879958358,
+          "initial_mismatch_count": 0
+        },
+        {
+          "checkpoint": 2000,
+          "states": 1680,
+          "wall_seconds": 1.6671110409952234,
+          "initial_mismatch_count": 0
+        }
+      ],
+      "training_seconds": 7.24446629799786,
+      "model_path": "models/run1.pt",
+      "model_bytes": 205705,
+      "model_serialization_seconds": 0.0016091389989014715,
+      "learned_message_weight": [
+        0.05087708681821823,
+        -0.2184271216392517,
+        -0.19793468713760376,
+        0.019193259999155998,
+        0.020267732441425323
+      ],
+      "learned_message_bias": -0.04596385359764099
+    },
+    {
+      "run_id": 2,
+      "initialization_seed": 493003,
+      "batch_seed": 494003,
+      "initialization_seconds": 0.001022542011924088,
+      "base_parameters": 50433,
+      "candidate_parameters": 50439,
+      "gradient_steps": 2000,
+      "training_state_presentations": 8000,
+      "evaluations": [
+        {
+          "checkpoint": 0,
+          "states": 1680,
+          "wall_seconds": 1.4105312530009542,
+          "initial_mismatch_count": 0
+        },
+        {
+          "checkpoint": 2000,
+          "states": 1680,
+          "wall_seconds": 1.6001759659848176,
+          "initial_mismatch_count": 0
+        }
+      ],
+      "training_seconds": 13.458763100003125,
+      "model_path": "models/run2.pt",
+      "model_bytes": 205705,
+      "model_serialization_seconds": 0.0017693320114631206,
+      "learned_message_weight": [
+        0.05429252237081528,
+        -0.190736785531044,
+        -0.15137504041194916,
+        0.02814052253961563,
+        0.028552532196044922
+      ],
+      "learned_message_bias": -0.036673858761787415
+    }
+  ],
+  "information_passed": true,
+  "initial_anchors_complete": true,
+  "new_environment_calls": 0,
+  "new_RL_training_updates": 0,
+  "new_MCTS_calls": 0,
+  "graph_generation_seconds": 0.33738315000664443,
+  "tensor_preparation_seconds": 1.6726994730124716,
+  "information_check_seconds": 0.49222692000330426,
+  "wall_seconds": 38.77687815899844
+}

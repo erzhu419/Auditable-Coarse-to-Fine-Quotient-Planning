@@ -1,0 +1,377 @@
+{
+  "complete": true,
+  "declared_targets": 32,
+  "completed_targets": 32,
+  "limited_targets": [],
+  "rule": {
+    "schema": "controlled_predictive_relational_dynamics_v69",
+    "program": {
+      "pack": true,
+      "merge_relation": "equal",
+      "rank_increment": 1,
+      "consumption": "once",
+      "reward_rule": "output_value"
+    },
+    "spawn_location": "uniform",
+    "spawn_distribution": [
+      [
+        1,
+        9,
+        10
+      ],
+      [
+        2,
+        1,
+        10
+      ]
+    ],
+    "goal_rank": 11,
+    "fit_counts": {
+      "source_records": 208,
+      "rewrite_candidates": 144,
+      "candidate_observation_checks": 383,
+      "learned_swipe_calls": 383,
+      "learned_line_rewrites": 1532,
+      "consistent_rewrite_candidates": 1,
+      "source_spawn_rows": 184,
+      "source_spawn_outcomes": 1132,
+      "spawn_location_candidates": 3,
+      "spawn_location_observation_checks": 186,
+      "consistent_spawn_location_candidates": 1
+    },
+    "fit_seconds": 0.01230475795455277
+  },
+  "source_acquisition": {
+    "counts": {
+      "source_status_calls": 52,
+      "afterstate_labels": 208,
+      "full_support_rows": 184,
+      "full_support_outcomes": 1132
+    },
+    "seconds": 0.09437717095715925
+  },
+  "source_semantics_reference": {
+    "source_path": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_learning_v68/QUOTIENT/kernel.json",
+    "seconds": 0.13102337199961767,
+    "counts": {
+      "semantic_states": 1278,
+      "semantic_outcome_terms": 7648
+    },
+    "source_reward_grid_restored_atoms": 116,
+    "maximum_reward_restoration": 1.1102230246251565e-16
+  },
+  "arms": {
+    "FULL": {
+      "scientifically_correct_targets": 32,
+      "construction": {
+        "concrete_states": 131923,
+        "learned_terminal_checks": 131923,
+        "learned_swipe_calls": 511276,
+        "learned_line_rewrites": 2045104,
+        "concrete_active_states": 15209,
+        "learned_spawn_outcomes": 226074,
+        "concrete_action_rows": 47067,
+        "concrete_successor_entries": 226074,
+        "h0_boards_generated": 201106,
+        "terminal_reuses": 116614,
+        "model_transition_rows": 47067,
+        "model_successor_entries": 68898,
+        "concrete_memo_hits": 94183,
+        "active_states": 15209,
+        "terminal_states": 100,
+        "registered_states": 15309,
+        "concrete_h0_states": 115277
+      },
+      "planning": {
+        "active_states": 212926,
+        "state_action_rows": 658938,
+        "outcomes": 964572,
+        "visited_cells": 214326
+      },
+      "model_bytes": 2615714,
+      "by_horizon": {
+        "1": {
+          "concrete_active_states": 13549,
+          "candidate_active_cells": 13549,
+          "reached_candidate_cells": 13549,
+          "many_to_one_groups": 0,
+          "collapsed_concrete_states": 0,
+          "recursive_correct_states": 13549,
+          "all_query_optimal_states": 13549
+        },
+        "2": {
+          "concrete_active_states": 1500,
+          "candidate_active_cells": 1500,
+          "reached_candidate_cells": 1500,
+          "many_to_one_groups": 0,
+          "collapsed_concrete_states": 0,
+          "recursive_correct_states": 1500,
+          "all_query_optimal_states": 1500
+        },
+        "3": {
+          "concrete_active_states": 152,
+          "candidate_active_cells": 152,
+          "reached_candidate_cells": 152,
+          "many_to_one_groups": 0,
+          "collapsed_concrete_states": 0,
+          "recursive_correct_states": 152,
+          "all_query_optimal_states": 152
+        },
+        "4": {
+          "concrete_active_states": 8,
+          "candidate_active_cells": 8,
+          "reached_candidate_cells": 8,
+          "many_to_one_groups": 0,
+          "collapsed_concrete_states": 0,
+          "recursive_correct_states": 8,
+          "all_query_optimal_states": 8
+        }
+      },
+      "novel_semantics": {
+        "1": {
+          "active_states": 13549,
+          "source_unsupported_states": 2350,
+          "source_supported_states": 11199,
+          "new_recursive_correct_states": 2350,
+          "new_all_query_optimal_states": 2350,
+          "new_recursive_correct_and_all_query_optimal_states": 2350
+        },
+        "2": {
+          "active_states": 1500,
+          "source_unsupported_states": 1495,
+          "source_supported_states": 5,
+          "new_recursive_correct_states": 1495,
+          "new_all_query_optimal_states": 1495,
+          "new_recursive_correct_and_all_query_optimal_states": 1495
+        },
+        "3": {
+          "active_states": 152,
+          "source_unsupported_states": 152,
+          "source_supported_states": 0,
+          "new_recursive_correct_states": 152,
+          "new_all_query_optimal_states": 152,
+          "new_recursive_correct_and_all_query_optimal_states": 152
+        },
+        "4": {
+          "active_states": 8,
+          "source_unsupported_states": 8,
+          "source_supported_states": 0,
+          "new_recursive_correct_states": 8,
+          "new_all_query_optimal_states": 8,
+          "new_recursive_correct_and_all_query_optimal_states": 8
+        }
+      },
+      "maximum_joint_total_variation": 5.551115123125783e-17,
+      "maximum_value_loss": 8.881784197001252e-16,
+      "maximum_metric_prediction_error": 4.440892098500626e-16,
+      "strict_max_lex_action_mismatches": 23,
+      "root_queries": 448,
+      "optimal_executable_root_queries": 448,
+      "strict_query_switches": {
+        "required": 1227,
+        "violations": 0
+      },
+      "times": {
+        "construction_and_14_queries": 10.166995280771516,
+        "matched_observation_routing": 0.005143458896782249,
+        "source_inclusive_construction_and_queries": 10.273677209683228,
+        "source_inclusive_with_routing": 10.27882066858001,
+        "stages": {
+          "prepare_gc": 0.12528625677805394,
+          "construction": 6.9927002399927005,
+          "compilation": 0.32312870101304725,
+          "planning": 2.0643190231057815,
+          "serialization": 0.37941070506349206,
+          "cleanup_gc": 0.28181110095465556,
+          "total": 10.166995280771516
+        },
+        "audit_seconds": 9.098206210008357
+      }
+    },
+    "COMPOSED": {
+      "scientifically_correct_targets": 32,
+      "construction": {
+        "concrete_states": 131923,
+        "learned_terminal_checks": 131923,
+        "learned_swipe_calls": 511276,
+        "learned_line_rewrites": 2045104,
+        "concrete_active_states": 15209,
+        "learned_spawn_outcomes": 226074,
+        "concrete_action_rows": 47067,
+        "concrete_successor_entries": 226074,
+        "h0_boards_generated": 201106,
+        "terminal_reuses": 116614,
+        "model_transition_rows": 12091,
+        "model_successor_entries": 23589,
+        "contract_reuses": 11302,
+        "concrete_memo_hits": 94183,
+        "active_states": 3907,
+        "terminal_states": 100,
+        "registered_states": 4007,
+        "concrete_h0_states": 115277
+      },
+      "planning": {
+        "active_states": 54698,
+        "state_action_rows": 169274,
+        "outcomes": 330246,
+        "visited_cells": 56098
+      },
+      "model_bytes": 598891,
+      "by_horizon": {
+        "1": {
+          "concrete_active_states": 13549,
+          "candidate_active_cells": 2367,
+          "reached_candidate_cells": 2367,
+          "many_to_one_groups": 1621,
+          "collapsed_concrete_states": 11182,
+          "recursive_correct_states": 13549,
+          "all_query_optimal_states": 13549
+        },
+        "2": {
+          "concrete_active_states": 1500,
+          "candidate_active_cells": 1380,
+          "reached_candidate_cells": 1380,
+          "many_to_one_groups": 103,
+          "collapsed_concrete_states": 120,
+          "recursive_correct_states": 1500,
+          "all_query_optimal_states": 1500
+        },
+        "3": {
+          "concrete_active_states": 152,
+          "candidate_active_cells": 152,
+          "reached_candidate_cells": 152,
+          "many_to_one_groups": 0,
+          "collapsed_concrete_states": 0,
+          "recursive_correct_states": 152,
+          "all_query_optimal_states": 152
+        },
+        "4": {
+          "concrete_active_states": 8,
+          "candidate_active_cells": 8,
+          "reached_candidate_cells": 8,
+          "many_to_one_groups": 0,
+          "collapsed_concrete_states": 0,
+          "recursive_correct_states": 8,
+          "all_query_optimal_states": 8
+        }
+      },
+      "novel_semantics": {
+        "1": {
+          "active_states": 13549,
+          "source_unsupported_states": 2350,
+          "source_supported_states": 11199,
+          "new_recursive_correct_states": 2350,
+          "new_all_query_optimal_states": 2350,
+          "new_recursive_correct_and_all_query_optimal_states": 2350
+        },
+        "2": {
+          "active_states": 1500,
+          "source_unsupported_states": 1495,
+          "source_supported_states": 5,
+          "new_recursive_correct_states": 1495,
+          "new_all_query_optimal_states": 1495,
+          "new_recursive_correct_and_all_query_optimal_states": 1495
+        },
+        "3": {
+          "active_states": 152,
+          "source_unsupported_states": 152,
+          "source_supported_states": 0,
+          "new_recursive_correct_states": 152,
+          "new_all_query_optimal_states": 152,
+          "new_recursive_correct_and_all_query_optimal_states": 152
+        },
+        "4": {
+          "active_states": 8,
+          "source_unsupported_states": 8,
+          "source_supported_states": 0,
+          "new_recursive_correct_states": 8,
+          "new_all_query_optimal_states": 8,
+          "new_recursive_correct_and_all_query_optimal_states": 8
+        }
+      },
+      "maximum_joint_total_variation": 8.326672684688674e-17,
+      "maximum_value_loss": 8.881784197001252e-16,
+      "maximum_metric_prediction_error": 4.440892098500626e-16,
+      "strict_max_lex_action_mismatches": 60,
+      "root_queries": 448,
+      "optimal_executable_root_queries": 448,
+      "strict_query_switches": {
+        "required": 1227,
+        "violations": 0
+      },
+      "times": {
+        "construction_and_14_queries": 8.215639186906628,
+        "matched_observation_routing": 7.459382479893975,
+        "source_inclusive_construction_and_queries": 8.32232111581834,
+        "source_inclusive_with_routing": 15.781703595712315,
+        "stages": {
+          "prepare_gc": 0.13838448288151994,
+          "construction": 7.023153131012805,
+          "compilation": 0.07448725798167288,
+          "planning": 0.6235578647465445,
+          "serialization": 0.10827093193074688,
+          "cleanup_gc": 0.24746906996006146,
+          "total": 8.215639186906628
+        },
+        "audit_seconds": 7.595126923988573
+      }
+    }
+  },
+  "policy_and_dynamics_preserved": true,
+  "portable_passed": true,
+  "concrete_expansion_identical": true,
+  "higher_active_cells": {
+    "full": 1660,
+    "composed": 1540
+  },
+  "ratios": {
+    "active_states": 0.2568873693207969,
+    "higher_active_states": 0.927710843373494,
+    "planning_action_rows": 0.25688911551617905,
+    "model_bytes": 0.2289588999408957,
+    "source_inclusive_construction_and_queries": 0.8100625458598524,
+    "source_inclusive_with_routing": 1.5353613127966472
+  },
+  "finite_compositional_transfer_established": true,
+  "finite_higher_compression_established": true,
+  "finite_total_cost_benefit_with_routing": false,
+  "general_strategic_learning_solved": false,
+  "verification": {
+    "ground_counts": {
+      "states": 131923,
+      "exact_transition_row_calls": 47067,
+      "exact_outcomes_enumerated": 226074,
+      "active_states": 15209
+    },
+    "reference_counts": {
+      "reference_dp_states": 1846922,
+      "reference_dp_action_rows": 658938,
+      "reference_dp_outcome_terms": 3165036,
+      "reference_policy_states": 1846922,
+      "reference_policy_action_rows": 212926,
+      "reference_policy_outcome_terms": 1090386
+    },
+    "ground_seconds": 29.4625084270956,
+    "reference_seconds": 4.142929556954186,
+    "portable_command_seconds": 9.663984552957118,
+    "routing_counts": {
+      "routing_index_outcomes": 47162,
+      "routing_index_rows": 24166,
+      "routing_index_cells": 8006,
+      "routing_concrete_states": 141665,
+      "learned_terminal_checks": 141665,
+      "learned_swipe_calls": 548996,
+      "learned_line_rewrites": 2195984,
+      "learned_spawn_outcomes": 242158,
+      "routing_action_rows": 50312,
+      "routing_successor_entries": 242158,
+      "routing_h0_boards_generated": 215700,
+      "routing_concrete_memo_hits": 100553
+    }
+  },
+  "timing": {
+    "runner_seconds": 79.29933768499177,
+    "analysis_seconds_before_write": 0.013524801004678011
+  },
+  "scope": "Fixed source-supervised DSL, exact spawn teacher, new dense 2048 H3/H4 boards. Source fee is once per arm deployment; validation fees are separate. Both methods generate complete concrete support. Routing reconstructs contracts and is not constant-time encoding. Timing is a single descriptive comparison."
+}

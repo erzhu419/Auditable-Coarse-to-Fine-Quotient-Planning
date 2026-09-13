@@ -1,0 +1,6 @@
+{"phase": "source_complete", "seconds": 1.8450302560231648, "training": {"max_depth": 8, "min_samples_leaf": 16, "random_state": 7601, "records": 27912, "optimal_labels": 10430, "nonoptimal_labels": 17482, "nodes": 281, "leaves": 141, "depth": 8}}
+{"phase": "worker_complete", "method": "EXACT", "seconds": 0.8474877189728431, "exit_code": 0, "stderr_bytes": 0}
+{"phase": "worker_complete", "method": "GREEDY", "seconds": 0.2694367819931358, "exit_code": 0, "stderr_bytes": 0}
+{"phase": "worker_complete", "method": "RULE", "seconds": 0.12371310696471483, "exit_code": 0, "stderr_bytes": 0}
+{"phase": "worker_complete", "method": "SELECTIVE", "seconds": 0.6822670160327107, "exit_code": 0, "stderr_bytes": 0}
+{"phase": "complete", "valid_ground_models": true, "h1_encoder_valid": true, "ground_counts": {"ground_h2_explicit_state_calls": 48, "ground_h2_active_roots": 48, "ground_h2_explicit_swipe_calls": 192, "ground_h2_step_calls": 177, "ground_h2_step_outcomes": 878, "ground_h1_contract_requests": 767, "ground_h1_unique_active_boards": 728, "ground_h1_explicit_swipe_calls": 2912, "ground_h1_step_calls": 2336, "ground_h1_step_outcomes": 13236, "matched_h1_explicit_state_calls": 48, "ground_h1_contract_cache_hits": 39}, "campaign_wall_seconds": 7.089602574007586}

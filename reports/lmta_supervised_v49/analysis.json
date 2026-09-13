@@ -1,0 +1,332 @@
+{
+  "schema": "acfqp.lmta_supervised_analysis.v49",
+  "protocol": {
+    "train_graph_ids": [
+      440000,
+      440001,
+      440002,
+      440003,
+      440004,
+      440005,
+      440006,
+      440007,
+      440008,
+      440009,
+      440010,
+      440011,
+      440012,
+      440013,
+      440014,
+      440015
+    ],
+    "heldout_graph_ids": [
+      490900,
+      490901,
+      490902,
+      490903,
+      490904,
+      490905,
+      490906,
+      490907
+    ],
+    "train_environment_seeds": [
+      491000,
+      491001,
+      491002,
+      491003,
+      491004,
+      491005,
+      491006,
+      491007,
+      491008,
+      491009,
+      491010,
+      491011,
+      491012,
+      491013,
+      491014,
+      491015
+    ],
+    "heldout_environment_seeds": [
+      492000,
+      492001,
+      492002,
+      492003,
+      492004,
+      492005,
+      492006,
+      492007
+    ],
+    "nodes": 500,
+    "p": 0.01,
+    "budget": 70,
+    "horizon": 10,
+    "runs": 3,
+    "initialization_seeds": [
+      493001,
+      493002,
+      493003
+    ],
+    "batch_seeds": [
+      494001,
+      494002,
+      494003
+    ],
+    "steps": 2000,
+    "batch_size": 4,
+    "checkpoints": [
+      0,
+      2000
+    ],
+    "learning_rate": 0.001,
+    "weight_decay": 1e-05,
+    "gradient_clip": 5.0,
+    "target_tie_tolerance": 1e-09,
+    "max_mean_relative_regret": 0.01,
+    "min_optimal_rate": 0.95,
+    "loss": "state_mean_legal_node_mse",
+    "state_policy": "AVERAGE_SCORE",
+    "operator": "IC_SUM",
+    "dtype": "float32"
+  },
+  "integrity": {
+    "passed": true,
+    "errors": {},
+    "expected_metric_records": 10080,
+    "actual_metric_records": 10080,
+    "missing_metric_records": 0,
+    "duplicate_metric_identities": 0,
+    "expected_training_records": 6000,
+    "actual_training_records": 6000,
+    "missing_training_steps": 0,
+    "duplicate_training_step_identities": 0,
+    "expected_collection_records": 24,
+    "actual_collection_records": 24
+  },
+  "valid_diagnostic": true,
+  "summaries": [
+    {
+      "run_id": 0,
+      "checkpoint": 0,
+      "split": "train",
+      "state_records": 1120,
+      "mean_score_regret": 0.14501158811426668,
+      "mean_relative_regret": 0.11621210573776944,
+      "optimal_rate": 0.15625,
+      "pairwise_accuracy": 0.9160328492858664,
+      "pairwise_pairs": 66646563,
+      "mse": 0.41892742851521625
+    },
+    {
+      "run_id": 0,
+      "checkpoint": 0,
+      "split": "heldout",
+      "state_records": 560,
+      "mean_score_regret": 0.1851992204224347,
+      "mean_relative_regret": 0.15914241762366607,
+      "optimal_rate": 0.13214285714285715,
+      "pairwise_accuracy": 0.9152656904056716,
+      "pairwise_pairs": 31917148,
+      "mse": 0.4094959458271368
+    },
+    {
+      "run_id": 0,
+      "checkpoint": 2000,
+      "split": "train",
+      "state_records": 1120,
+      "mean_score_regret": 0.01759541549720121,
+      "mean_relative_regret": 0.013948348035097913,
+      "optimal_rate": 0.4955357142857143,
+      "pairwise_accuracy": 0.9784299304376731,
+      "pairwise_pairs": 66646563,
+      "mse": 0.0012415075212738845
+    },
+    {
+      "run_id": 0,
+      "checkpoint": 2000,
+      "split": "heldout",
+      "state_records": 560,
+      "mean_score_regret": 0.015696158999730425,
+      "mean_relative_regret": 0.01228127925511502,
+      "optimal_rate": 0.5196428571428572,
+      "pairwise_accuracy": 0.978781171174818,
+      "pairwise_pairs": 31917148,
+      "mse": 0.001245174056099326
+    },
+    {
+      "run_id": 1,
+      "checkpoint": 0,
+      "split": "train",
+      "state_records": 1120,
+      "mean_score_regret": 0.6828550665604237,
+      "mean_relative_regret": 0.473284179295287,
+      "optimal_rate": 0.03660714285714286,
+      "pairwise_accuracy": 0.8334367970333294,
+      "pairwise_pairs": 66646563,
+      "mse": 0.5643239125182336
+    },
+    {
+      "run_id": 1,
+      "checkpoint": 0,
+      "split": "heldout",
+      "state_records": 560,
+      "mean_score_regret": 0.6709001068376068,
+      "mean_relative_regret": 0.4681123752131151,
+      "optimal_rate": 0.03214285714285714,
+      "pairwise_accuracy": 0.8303517125026334,
+      "pairwise_pairs": 31917148,
+      "mse": 0.5514062347236117
+    },
+    {
+      "run_id": 1,
+      "checkpoint": 2000,
+      "split": "train",
+      "state_records": 1120,
+      "mean_score_regret": 0.015863578385899815,
+      "mean_relative_regret": 0.013182116382355481,
+      "optimal_rate": 0.5258928571428572,
+      "pairwise_accuracy": 0.9803197203132591,
+      "pairwise_pairs": 66646563,
+      "mse": 0.0011206605274154803
+    },
+    {
+      "run_id": 1,
+      "checkpoint": 2000,
+      "split": "heldout",
+      "state_records": 560,
+      "mean_score_regret": 0.011445166936238363,
+      "mean_relative_regret": 0.009544992065248292,
+      "optimal_rate": 0.5696428571428571,
+      "pairwise_accuracy": 0.9805214895767003,
+      "pairwise_pairs": 31917148,
+      "mse": 0.0011513437798937084
+    },
+    {
+      "run_id": 2,
+      "checkpoint": 0,
+      "split": "train",
+      "state_records": 1120,
+      "mean_score_regret": 0.28144219867434156,
+      "mean_relative_regret": 0.26461134591112745,
+      "optimal_rate": 0.12767857142857142,
+      "pairwise_accuracy": 0.8452994717822133,
+      "pairwise_pairs": 66646563,
+      "mse": 0.6642759708244317
+    },
+    {
+      "run_id": 2,
+      "checkpoint": 0,
+      "split": "heldout",
+      "state_records": 560,
+      "mean_score_regret": 0.2874114179471322,
+      "mean_relative_regret": 0.27987314820213843,
+      "optimal_rate": 0.11607142857142858,
+      "pairwise_accuracy": 0.8436654647213466,
+      "pairwise_pairs": 31917148,
+      "mse": 0.6504413887897387
+    },
+    {
+      "run_id": 2,
+      "checkpoint": 2000,
+      "split": "train",
+      "state_records": 1120,
+      "mean_score_regret": 0.023732351477887194,
+      "mean_relative_regret": 0.018179000642941544,
+      "optimal_rate": 0.42857142857142855,
+      "pairwise_accuracy": 0.975883452534529,
+      "pairwise_pairs": 66646563,
+      "mse": 0.001448802360570759
+    },
+    {
+      "run_id": 2,
+      "checkpoint": 2000,
+      "split": "heldout",
+      "state_records": 560,
+      "mean_score_regret": 0.018321797250368674,
+      "mean_relative_regret": 0.013899153159357839,
+      "optimal_rate": 0.46785714285714286,
+      "pairwise_accuracy": 0.9763985961402316,
+      "pairwise_pairs": 31917148,
+      "mse": 0.0013304325568778115
+    }
+  ],
+  "final_criteria_by_run": [
+    {
+      "run_id": 0,
+      "train": {
+        "mean_relative_regret_passed": false,
+        "optimal_rate_passed": false,
+        "passed": false
+      },
+      "heldout": {
+        "mean_relative_regret_passed": false,
+        "optimal_rate_passed": false,
+        "passed": false
+      }
+    },
+    {
+      "run_id": 1,
+      "train": {
+        "mean_relative_regret_passed": false,
+        "optimal_rate_passed": false,
+        "passed": false
+      },
+      "heldout": {
+        "mean_relative_regret_passed": true,
+        "optimal_rate_passed": false,
+        "passed": false
+      }
+    },
+    {
+      "run_id": 2,
+      "train": {
+        "mean_relative_regret_passed": false,
+        "optimal_rate_passed": false,
+        "passed": false
+      },
+      "heldout": {
+        "mean_relative_regret_passed": false,
+        "optimal_rate_passed": false,
+        "passed": false
+      }
+    }
+  ],
+  "diagnostic_outcome": "FIT_NOT_ESTABLISHED",
+  "accounting": {
+    "collection_episodes_recorded": 24,
+    "new_physical_counters": {
+      "primitive_selections": 1680,
+      "day_transitions": 240,
+      "propagation_draws": 30348
+    },
+    "teacher_states_recorded": 1680,
+    "analytical_label_calls": 1680,
+    "analytical_label_node_evaluations": 840000,
+    "gradient_update_records": 6000,
+    "training_state_presentations_recorded": 24000,
+    "evaluation_state_records": 10080,
+    "manifest_gradient_updates": 6000,
+    "manifest_training_state_presentations": 24000,
+    "manifest_evaluation_states": 10080,
+    "new_RL_training_updates": 0,
+    "new_MCTS_calls": 0,
+    "wall_seconds_by_stage": {
+      "collection": 1.7080233179440256,
+      "initialization": 0.6093349159637,
+      "supervised_training": 15.248087803978706,
+      "evaluation": 9.503911428007996,
+      "model_serialization": 0.006477956019807607,
+      "graph_generation": 0.335830502997851,
+      "dataset_serialization": 0.07036922199768014,
+      "tensor_preparation": 1.7522554739844054
+    },
+    "whole_runner_seconds": 29.245833138003945,
+    "unitemized_runner_seconds": 0.011542517109774053,
+    "dataset_bytes": 255672,
+    "model_bytes": 615615,
+    "retained_history_reference": "reports/lmta_components_v48/analysis.json",
+    "scope": "All collection records, updates, presentations and evaluations remain charged. Manifest counters and raw-record counts are two records of the same work, not additive fees; disagreements remain visible. Training presentations and repeated state evaluations reuse the fixed teacher data, not new environment samples. Whole-run time contains the listed stages. Earlier experimental costs are not refunded.",
+    "analysis_wall_seconds_before_serialization": 0.20112445298582315
+  },
+  "inference_scope": "State means weight each retained teacher state equally; pairwise accuracy sums correct pair credit over all counted non-tied teacher-score pairs. Each of three runs must independently meet both final thresholds on train and then heldout. Initial metrics are descriptive. This is a fixed-budget supervised ranking diagnosis on average-score teacher states, not evidence about RL targets, LMTA benefit, arbitrary visited states, or adoption. Invalid or incomplete evidence produces a null outcome while its recorded and declared costs remain retained."
+}

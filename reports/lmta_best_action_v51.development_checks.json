@@ -1,0 +1,36 @@
+{
+  "model_test_result": {
+    "passed": 5,
+    "failed": 0,
+    "pytest_seconds": 3.55
+  },
+  "runner_import_check": {
+    "arguments": "--help",
+    "exit_code": 0,
+    "environment_calls": 0
+  },
+  "attempts": [
+    {
+      "test_module": "tests/test_lmta_best_action_v51.py",
+      "new_failures": 0,
+      "environment_counters": {},
+      "computation_counters": {
+        "loss_state_presentations": 9,
+        "backward_calls": 4,
+        "model_forward_state_presentations": 2,
+        "gradient_enabled_model_states": 2,
+        "supervised_training_state_presentations": 2,
+        "optimizer_gradient_steps": 1
+      },
+      "wall_seconds": 2.4540823709976394,
+      "scope": "CPU best-set objective/gradient checks and one two-state original-NodeQ optimizer update; no environments."
+    }
+  ],
+  "analysis_test_result": {
+    "passed": 8,
+    "failed": 0,
+    "pytest_seconds": 3.34,
+    "environment_calls": 0,
+    "optimizer_updates": 0
+  }
+}

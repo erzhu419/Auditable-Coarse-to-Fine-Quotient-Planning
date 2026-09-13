@@ -1,0 +1,12 @@
+{
+  "schema": "acfqp.lmta_trajectory_scale_development.v62",
+  "unique_tests": 13,
+  "total_test_executions": 13,
+  "final_passed": 13,
+  "final_failed": 0,
+  "attempt_ledgers": [
+    "lmta_trajectory_v62.certificate_checks.json",
+    "lmta_trajectory_v62.analysis_checks.json"
+  ],
+  "scope": "Only new certificate and analysis tests ran, each once. Frozen V61 sampler tests were reused. Hand-query production and independent verification work remain separated in the referenced ledgers. No main graph or trajectory was generated during development."
+}

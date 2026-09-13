@@ -1,0 +1,21 @@
+{
+  "attempts": [
+    {
+      "test_module": "tests/test_lmta_tie_refinement_analysis_v55.py",
+      "passed": 9,
+      "failed": 0,
+      "wall_seconds": 0.008714291994692758,
+      "independent_checker_calls": {
+        "independent_prefix_plan_calls": 10,
+        "independent_kernel_instances": 15,
+        "independent_refinement_calls": 6
+      },
+      "environment_calls": 0,
+      "neural_model_evaluations": 0,
+      "gradient_steps": 0,
+      "scope": "Hand-derived small graph records only. Prefix/refinement calls are included within kernel-instance work, not additive costs.",
+      "pytest_reported_seconds": 0.2,
+      "command_wall_seconds": 0.51573979
+    }
+  ]
+}

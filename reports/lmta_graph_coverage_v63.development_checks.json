@@ -1,0 +1,12 @@
+{
+  "schema": "acfqp.lmta_graph_coverage_development.v63",
+  "unique_tests": 9,
+  "total_test_executions": 9,
+  "final_passed": 9,
+  "final_failed": 0,
+  "attempt_ledgers": [
+    "lmta_graph_coverage_v63.runner_checks.json",
+    "lmta_graph_coverage_v63.analysis_checks.json"
+  ],
+  "scope": "Only new campaign-budget and analysis tests ran, each once. Frozen sampler and query checker evidence were reused. Tests used hand fixtures and mocked blocks; no main graph, production planning, or environment sampling was run during development."
+}

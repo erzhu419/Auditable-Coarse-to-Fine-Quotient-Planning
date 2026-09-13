@@ -1,0 +1,713 @@
+{
+  "complete": true,
+  "declared_targets": 32,
+  "completed_targets": 32,
+  "incomplete_targets": [],
+  "source_learning_reused": true,
+  "all_artifacts_routing_and_portable_preserved": true,
+  "inherited_v69_policy_evidence_valid": true,
+  "inherited_v69_policy_metrics": {
+    "FULL": {
+      "root_queries": 448,
+      "optimal_executable_root_queries": 448,
+      "strict_query_switches": {
+        "required": 1227,
+        "violations": 0
+      }
+    },
+    "COMPOSED": {
+      "root_queries": 448,
+      "optimal_executable_root_queries": 448,
+      "strict_query_switches": {
+        "required": 1227,
+        "violations": 0
+      }
+    }
+  },
+  "inheritance_source": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_composition_v69/analysis.json",
+  "active_observations": 15209,
+  "matched_observations": 87,
+  "original_observations": 60,
+  "added_h1_observations": 27,
+  "observation_schedule_valid": true,
+  "arms": {
+    "FULL_BASE": {
+      "complete_targets": 32,
+      "artifacts_preserved": true,
+      "portable_passed": true,
+      "construction_counts": {
+        "h0_boards_generated": 0,
+        "concrete_successor_entries": 23103,
+        "concrete_states": 15209,
+        "learned_terminal_checks": 15209,
+        "learned_swipe_calls": 60836,
+        "learned_line_rewrites": 243344,
+        "concrete_active_states": 15209,
+        "symbolic_predicate_calls": 47067,
+        "symbolic_input_scan_cells": 1506144,
+        "potential_spawn_outcomes": 226074,
+        "symbolic_spawn_rank_classifications": 94134,
+        "symbolic_board_materializations": 23103,
+        "symbolic_terminal_mass_items": 45795,
+        "symbolic_successor_entries": 68898,
+        "concrete_action_rows": 47067,
+        "symbolic_emitted_outcomes": 68898,
+        "symbolic_adjacency_tests": 202025,
+        "symbolic_terminal_boards_avoided": 202971,
+        "direct_terminal_mass_entries": 45795,
+        "terminal_reuses": 45695,
+        "model_transition_rows": 47067,
+        "model_successor_entries": 68898,
+        "concrete_memo_hits": 7926,
+        "active_states": 15209,
+        "terminal_states": 100,
+        "registered_states": 15309,
+        "concrete_h0_states": 0,
+        "concrete_states_by_h": {
+          "1": 13549,
+          "2": 1500,
+          "3": 152,
+          "4": 8
+        },
+        "concrete_active_by_h": {
+          "1": 13549,
+          "2": 1500,
+          "3": 152,
+          "4": 8
+        },
+        "active_cells_by_h": {
+          "1": 13549,
+          "2": 1500,
+          "3": 152,
+          "4": 8
+        }
+      },
+      "concrete_active_states": 15209,
+      "active_cells_by_h": {
+        "1": 13549,
+        "2": 1500,
+        "3": 152,
+        "4": 8
+      },
+      "concrete_active_by_h": {
+        "1": 13549,
+        "2": 1500,
+        "3": 152,
+        "4": 8
+      },
+      "concrete_states_by_h": {
+        "1": 13549,
+        "2": 1500,
+        "3": 152,
+        "4": 8
+      },
+      "h1_materialized_states": 13549,
+      "h1_boards_generated": null,
+      "higher_materialized_active_states": 1660,
+      "direct_h1_contract_evaluations": 0,
+      "boundary_spawn_candidates": 0,
+      "active_boundary_candidates": 0,
+      "local_compiler_counts": {},
+      "planning_counts": {
+        "active_states": 212926,
+        "state_action_rows": 658938,
+        "outcomes": 964572,
+        "visited_cells": 214326
+      },
+      "routing_counts": {
+        "observations": 87,
+        "map_lookups": 87,
+        "supported_observations": 87
+      },
+      "package_bytes": 2617890,
+      "router_bytes": 661725,
+      "times": {
+        "case_method_seconds": 5.8160375923034735,
+        "attributed_rule_compile_seconds": 1.3963028322905302e-05,
+        "method_total_seconds": 5.816051555331796,
+        "case_stages": {
+          "construction": 1.6862943210289814,
+          "payload_labels": 0.07241789787076414,
+          "build_release_gc": 0.1293890590313822,
+          "upstream_total": 1.8881424349965528,
+          "deployment_total": 3.9278951573069207,
+          "total": 5.8160375923034735
+        },
+        "deployment_stages": {
+          "serialize": 0.07379247713834047,
+          "worker_command": 3.7339257229468785,
+          "release_gc": 0.12009533098898828,
+          "total": 3.9278951573069207,
+          "load": 0.5370698078768328,
+          "index": 0.01812515896745026,
+          "routing": 0.0002054620417766273,
+          "planning": 2.0470678760902956
+        },
+        "worker_command_seconds_included_in_method": 3.7339257229468785
+      }
+    },
+    "COMPOSED_BASE": {
+      "complete_targets": 32,
+      "artifacts_preserved": true,
+      "portable_passed": true,
+      "construction_counts": {
+        "h0_boards_generated": 0,
+        "concrete_successor_entries": 23103,
+        "concrete_states": 15209,
+        "learned_terminal_checks": 15209,
+        "learned_swipe_calls": 60836,
+        "learned_line_rewrites": 243344,
+        "concrete_active_states": 15209,
+        "symbolic_predicate_calls": 47067,
+        "symbolic_input_scan_cells": 1506144,
+        "potential_spawn_outcomes": 226074,
+        "symbolic_spawn_rank_classifications": 94134,
+        "symbolic_board_materializations": 23103,
+        "symbolic_terminal_mass_items": 45795,
+        "symbolic_successor_entries": 68898,
+        "concrete_action_rows": 47067,
+        "symbolic_emitted_outcomes": 68898,
+        "symbolic_adjacency_tests": 202025,
+        "symbolic_terminal_boards_avoided": 202971,
+        "direct_terminal_mass_entries": 45795,
+        "terminal_reuses": 45695,
+        "model_transition_rows": 12091,
+        "model_successor_entries": 23589,
+        "contract_reuses": 11302,
+        "concrete_memo_hits": 7926,
+        "active_states": 3907,
+        "terminal_states": 100,
+        "registered_states": 4007,
+        "concrete_h0_states": 0,
+        "concrete_states_by_h": {
+          "1": 13549,
+          "2": 1500,
+          "3": 152,
+          "4": 8
+        },
+        "concrete_active_by_h": {
+          "1": 13549,
+          "2": 1500,
+          "3": 152,
+          "4": 8
+        },
+        "active_cells_by_h": {
+          "1": 2367,
+          "2": 1380,
+          "3": 152,
+          "4": 8
+        }
+      },
+      "concrete_active_states": 15209,
+      "active_cells_by_h": {
+        "1": 2367,
+        "2": 1380,
+        "3": 152,
+        "4": 8
+      },
+      "concrete_active_by_h": {
+        "1": 13549,
+        "2": 1500,
+        "3": 152,
+        "4": 8
+      },
+      "concrete_states_by_h": {
+        "1": 13549,
+        "2": 1500,
+        "3": 152,
+        "4": 8
+      },
+      "h1_materialized_states": 13549,
+      "h1_boards_generated": null,
+      "higher_materialized_active_states": 1660,
+      "direct_h1_contract_evaluations": 0,
+      "boundary_spawn_candidates": 0,
+      "active_boundary_candidates": 0,
+      "local_compiler_counts": {},
+      "planning_counts": {
+        "active_states": 54698,
+        "state_action_rows": 169274,
+        "outcomes": 330246,
+        "visited_cells": 56098
+      },
+      "routing_counts": {
+        "observations": 87,
+        "map_lookups": 87,
+        "supported_observations": 87
+      },
+      "package_bytes": 1248742,
+      "router_bytes": 647867,
+      "times": {
+        "case_method_seconds": 4.169853538973257,
+        "attributed_rule_compile_seconds": 1.3963028322905302e-05,
+        "method_total_seconds": 4.16986750200158,
+        "case_stages": {
+          "construction": 1.7617856227443554,
+          "payload_labels": 0.023049162176903337,
+          "build_release_gc": 0.10460058489115909,
+          "upstream_total": 1.8894733958877623,
+          "deployment_total": 2.2803801430854946,
+          "total": 4.169853538973257
+        },
+        "deployment_stages": {
+          "serialize": 0.042285499977879226,
+          "worker_command": 2.1125060411868617,
+          "release_gc": 0.12550876283785328,
+          "total": 2.2803801430854946,
+          "load": 0.4104553032084368,
+          "index": 0.007627179031260312,
+          "routing": 0.00020460301311686635,
+          "planning": 0.6819985690526664
+        },
+        "worker_command_seconds_included_in_method": 2.1125060411868617
+      }
+    },
+    "FULL_LOCAL": {
+      "complete_targets": 32,
+      "artifacts_preserved": true,
+      "portable_passed": true,
+      "construction_counts": {
+        "h0_boards_generated": 0,
+        "h1_boards_generated": 20890,
+        "concrete_successor_entries": 23103,
+        "concrete_states": 15209,
+        "learned_terminal_checks": 1660,
+        "learned_swipe_calls": 6640,
+        "learned_line_rewrites": 26560,
+        "concrete_active_states": 15209,
+        "concrete_action_rows": 5179,
+        "symbolic_predicate_calls": 527,
+        "symbolic_input_scan_cells": 16864,
+        "potential_spawn_outcomes": 2582,
+        "symbolic_spawn_rank_classifications": 1054,
+        "symbolic_board_materializations": 2213,
+        "symbolic_terminal_mass_items": 79,
+        "symbolic_successor_entries": 2292,
+        "symbolic_emitted_outcomes": 2292,
+        "boundary_spawn_candidates": 22386,
+        "active_boundary_candidates": 20890,
+        "direct_h1_contract_evaluations": 13549,
+        "direct_h1_rows_registered": 41888,
+        "terminal_reuses": 46700,
+        "model_transition_rows": 47067,
+        "model_successor_entries": 68898,
+        "concrete_memo_hits": 7926,
+        "symbolic_adjacency_tests": 1609,
+        "active_states": 15209,
+        "terminal_states": 100,
+        "registered_states": 15309,
+        "concrete_h0_states": 0,
+        "concrete_states_by_h": {
+          "1": 13549,
+          "2": 1500,
+          "3": 152,
+          "4": 8
+        },
+        "concrete_active_by_h": {
+          "1": 13549,
+          "2": 1500,
+          "3": 152,
+          "4": 8
+        },
+        "active_cells_by_h": {
+          "1": 13549,
+          "2": 1500,
+          "3": 152,
+          "4": 8
+        },
+        "local_compiler": {
+          "compiled_programs": 32,
+          "full_board_materializations": 0,
+          "prepare_calls": 4652,
+          "line_lookups": 128628,
+          "line_evaluations": 18513,
+          "line_summary_adjacent_tests": 54858,
+          "base_adjacent_tests": 12519,
+          "patch_status_evaluations": 22386,
+          "patched_contract_evaluations": 13549,
+          "patched_line_inputs": 54196,
+          "unaffected_line_summaries_reused": 162588,
+          "action_changed_tests": 54196,
+          "action_contract_evaluations": 41888,
+          "terminal_contract_evaluations": 41888,
+          "cross_line_adjacent_tests": 92241,
+          "hole_neighbor_rank_reads": 13189,
+          "terminal_spawn_rank_classifications": 83776,
+          "line_cache_hits": 110115,
+          "base_hole_neighbor_reads": 816
+        },
+        "symbolic_terminal_boards_avoided": 369
+      },
+      "concrete_active_states": 15209,
+      "active_cells_by_h": {
+        "1": 13549,
+        "2": 1500,
+        "3": 152,
+        "4": 8
+      },
+      "concrete_active_by_h": {
+        "1": 13549,
+        "2": 1500,
+        "3": 152,
+        "4": 8
+      },
+      "concrete_states_by_h": {
+        "1": 13549,
+        "2": 1500,
+        "3": 152,
+        "4": 8
+      },
+      "h1_materialized_states": 13549,
+      "h1_boards_generated": 20890,
+      "higher_materialized_active_states": 1660,
+      "direct_h1_contract_evaluations": 13549,
+      "boundary_spawn_candidates": 22386,
+      "active_boundary_candidates": 20890,
+      "local_compiler_counts": {
+        "compiled_programs": 32,
+        "full_board_materializations": 0,
+        "prepare_calls": 4652,
+        "line_lookups": 128628,
+        "line_evaluations": 18513,
+        "line_summary_adjacent_tests": 54858,
+        "base_adjacent_tests": 12519,
+        "patch_status_evaluations": 22386,
+        "patched_contract_evaluations": 13549,
+        "patched_line_inputs": 54196,
+        "unaffected_line_summaries_reused": 162588,
+        "action_changed_tests": 54196,
+        "action_contract_evaluations": 41888,
+        "terminal_contract_evaluations": 41888,
+        "cross_line_adjacent_tests": 92241,
+        "hole_neighbor_rank_reads": 13189,
+        "terminal_spawn_rank_classifications": 83776,
+        "line_cache_hits": 110115,
+        "base_hole_neighbor_reads": 816
+      },
+      "planning_counts": {
+        "active_states": 212926,
+        "state_action_rows": 658938,
+        "outcomes": 964572,
+        "visited_cells": 214326
+      },
+      "routing_counts": {
+        "observations": 87,
+        "map_lookups": 87,
+        "supported_observations": 87
+      },
+      "package_bytes": 2617890,
+      "router_bytes": 661725,
+      "times": {
+        "case_method_seconds": 5.173046938027255,
+        "attributed_rule_compile_seconds": 1.3963028322905302e-05,
+        "method_total_seconds": 5.173060901055578,
+        "case_stages": {
+          "construction": 1.0879910281510092,
+          "payload_labels": 0.09774265513988212,
+          "build_release_gc": 0.10983660101192072,
+          "upstream_total": 1.2956130561651662,
+          "deployment_total": 3.877433881862089,
+          "total": 5.173046938027255
+        },
+        "deployment_stages": {
+          "serialize": 0.06988764076959342,
+          "worker_command": 3.680449654115364,
+          "release_gc": 0.1270131958881393,
+          "total": 3.877433881862089,
+          "load": 0.5446503271232359,
+          "index": 0.018571564054582268,
+          "routing": 0.0002166200429201126,
+          "planning": 1.987716461007949
+        },
+        "worker_command_seconds_included_in_method": 3.680449654115364
+      }
+    },
+    "COMPOSED_LOCAL": {
+      "complete_targets": 32,
+      "artifacts_preserved": true,
+      "portable_passed": true,
+      "construction_counts": {
+        "h0_boards_generated": 0,
+        "h1_boards_generated": 0,
+        "concrete_successor_entries": 2213,
+        "concrete_states": 1660,
+        "learned_terminal_checks": 1660,
+        "learned_swipe_calls": 6640,
+        "learned_line_rewrites": 26560,
+        "concrete_active_states": 1660,
+        "concrete_action_rows": 5179,
+        "symbolic_predicate_calls": 527,
+        "symbolic_input_scan_cells": 16864,
+        "potential_spawn_outcomes": 2582,
+        "symbolic_spawn_rank_classifications": 1054,
+        "symbolic_board_materializations": 2213,
+        "symbolic_terminal_mass_items": 79,
+        "symbolic_successor_entries": 2292,
+        "symbolic_emitted_outcomes": 2292,
+        "boundary_spawn_candidates": 22386,
+        "active_boundary_candidates": 20890,
+        "direct_h1_contract_evaluations": 20890,
+        "direct_h1_rows_registered": 7236,
+        "terminal_reuses": 10114,
+        "model_transition_rows": 12091,
+        "model_successor_entries": 23589,
+        "direct_h1_contract_reuses": 18523,
+        "symbolic_adjacency_tests": 1609,
+        "active_states": 3907,
+        "terminal_states": 100,
+        "registered_states": 4007,
+        "concrete_h0_states": 0,
+        "concrete_states_by_h": {
+          "2": 1500,
+          "3": 152,
+          "4": 8
+        },
+        "concrete_active_by_h": {
+          "2": 1500,
+          "3": 152,
+          "4": 8
+        },
+        "active_cells_by_h": {
+          "1": 2367,
+          "2": 1380,
+          "3": 152,
+          "4": 8
+        },
+        "local_compiler": {
+          "compiled_programs": 32,
+          "full_board_materializations": 0,
+          "prepare_calls": 4652,
+          "line_lookups": 157992,
+          "line_evaluations": 18513,
+          "line_summary_adjacent_tests": 54858,
+          "base_adjacent_tests": 12519,
+          "patch_status_evaluations": 22386,
+          "patched_contract_evaluations": 20890,
+          "patched_line_inputs": 83560,
+          "unaffected_line_summaries_reused": 250680,
+          "action_changed_tests": 83560,
+          "action_contract_evaluations": 64009,
+          "terminal_contract_evaluations": 64009,
+          "cross_line_adjacent_tests": 135448,
+          "hole_neighbor_rank_reads": 19454,
+          "terminal_spawn_rank_classifications": 128018,
+          "line_cache_hits": 139479,
+          "base_hole_neighbor_reads": 816
+        },
+        "contract_reuses": 120,
+        "symbolic_terminal_boards_avoided": 369,
+        "concrete_memo_hits": 585
+      },
+      "concrete_active_states": 1660,
+      "active_cells_by_h": {
+        "1": 2367,
+        "2": 1380,
+        "3": 152,
+        "4": 8
+      },
+      "concrete_active_by_h": {
+        "2": 1500,
+        "3": 152,
+        "4": 8
+      },
+      "concrete_states_by_h": {
+        "2": 1500,
+        "3": 152,
+        "4": 8
+      },
+      "h1_materialized_states": 0,
+      "h1_boards_generated": 0,
+      "higher_materialized_active_states": 1660,
+      "direct_h1_contract_evaluations": 20890,
+      "boundary_spawn_candidates": 22386,
+      "active_boundary_candidates": 20890,
+      "local_compiler_counts": {
+        "compiled_programs": 32,
+        "full_board_materializations": 0,
+        "prepare_calls": 4652,
+        "line_lookups": 157992,
+        "line_evaluations": 18513,
+        "line_summary_adjacent_tests": 54858,
+        "base_adjacent_tests": 12519,
+        "patch_status_evaluations": 22386,
+        "patched_contract_evaluations": 20890,
+        "patched_line_inputs": 83560,
+        "unaffected_line_summaries_reused": 250680,
+        "action_changed_tests": 83560,
+        "action_contract_evaluations": 64009,
+        "terminal_contract_evaluations": 64009,
+        "cross_line_adjacent_tests": 135448,
+        "hole_neighbor_rank_reads": 19454,
+        "terminal_spawn_rank_classifications": 128018,
+        "line_cache_hits": 139479,
+        "base_hole_neighbor_reads": 816
+      },
+      "planning_counts": {
+        "active_states": 54698,
+        "state_action_rows": 169274,
+        "outcomes": 330246,
+        "visited_cells": 56098
+      },
+      "routing_counts": {
+        "observations": 87,
+        "map_lookups": 60,
+        "supported_observations": 87,
+        "h1_observation_contract_calls": 27,
+        "direct_observation_evaluations": 27,
+        "prepare_calls": 27,
+        "line_lookups": 432,
+        "line_evaluations": 431,
+        "line_summary_adjacent_tests": 1281,
+        "action_changed_tests": 108,
+        "action_contract_evaluations": 74,
+        "terminal_contract_evaluations": 74,
+        "cross_line_adjacent_tests": 274,
+        "hole_neighbor_rank_reads": 29,
+        "terminal_spawn_rank_classifications": 148,
+        "base_adjacent_tests": 231,
+        "base_hole_neighbor_reads": 13,
+        "line_cache_hits": 1
+      },
+      "package_bytes": 673174,
+      "router_bytes": 72299,
+      "times": {
+        "case_method_seconds": 3.655839117243886,
+        "attributed_rule_compile_seconds": 1.3963028322905302e-05,
+        "method_total_seconds": 3.655853080272209,
+        "case_stages": {
+          "construction": 1.2777253142558038,
+          "payload_labels": 0.016861877928022295,
+          "build_release_gc": 0.1124616417218931,
+          "upstream_total": 1.4070880351937376,
+          "deployment_total": 2.2487510820501484,
+          "total": 3.655839117243886
+        },
+        "deployment_stages": {
+          "serialize": 0.0238529461203143,
+          "worker_command": 2.1050857988884673,
+          "release_gc": 0.11973162594949827,
+          "total": 2.2487510820501484,
+          "load": 0.3923054231563583,
+          "index": 0.10370624612551183,
+          "routing": 0.004620051302481443,
+          "planning": 0.6029966849600896
+        },
+        "worker_command_seconds_included_in_method": 2.1050857988884673
+      }
+    }
+  },
+  "ratios": {
+    "FULL_LOCAL_vs_FULL_BASE": {
+      "method_total_seconds": 0.8894455029913267,
+      "concrete_states": 1.0,
+      "generated_successors": 1.0,
+      "concrete_active_states": 1.0,
+      "h1_materialized_states": 1.0,
+      "higher_materialized_active_states": 1.0,
+      "active_cells": 1.0,
+      "planning_action_rows": 1.0,
+      "package_bytes": 1.0,
+      "router_bytes": 1.0
+    },
+    "COMPOSED_LOCAL_vs_COMPOSED_BASE": {
+      "method_total_seconds": 0.8767312339102769,
+      "concrete_states": 0.10914590045367874,
+      "generated_successors": 0.09578842574557417,
+      "concrete_active_states": 0.10914590045367874,
+      "h1_materialized_states": 0.0,
+      "higher_materialized_active_states": 1.0,
+      "active_cells": 1.0,
+      "planning_action_rows": 1.0,
+      "package_bytes": 0.5390817318549388,
+      "router_bytes": 0.11159543548290005
+    },
+    "COMPOSED_LOCAL_vs_FULL_LOCAL": {
+      "method_total_seconds": 0.7067098474572804,
+      "concrete_states": 0.10914590045367874,
+      "generated_successors": 0.09578842574557417,
+      "concrete_active_states": 0.10914590045367874,
+      "h1_materialized_states": 0.0,
+      "higher_materialized_active_states": 1.0,
+      "active_cells": 0.2568873693207969,
+      "planning_action_rows": 0.25688911551617905,
+      "package_bytes": 0.2571437302560459,
+      "router_bytes": 0.10925837772488571
+    }
+  },
+  "effects": {
+    "FULL_LOCAL_vs_FULL_BASE": {
+      "isolated_factor": "local_h1_construction",
+      "saved_concrete_states": 0,
+      "saved_generated_successors": 0,
+      "saved_h1_materialized_states": 0,
+      "higher_materialized_active_states_delta": 0,
+      "active_cells_delta": 0,
+      "candidate_direct_h1_contract_evaluations": 13549,
+      "candidate_boundary_spawn_candidates": 22386,
+      "candidate_active_boundary_candidates": 20890,
+      "finite_method_cost_benefit": true
+    },
+    "COMPOSED_LOCAL_vs_COMPOSED_BASE": {
+      "isolated_factor": "local_h1_construction",
+      "saved_concrete_states": 13549,
+      "saved_generated_successors": 20890,
+      "saved_h1_materialized_states": 13549,
+      "higher_materialized_active_states_delta": 0,
+      "active_cells_delta": 0,
+      "candidate_direct_h1_contract_evaluations": 20890,
+      "candidate_boundary_spawn_candidates": 22386,
+      "candidate_active_boundary_candidates": 20890,
+      "finite_method_cost_benefit": true
+    },
+    "COMPOSED_LOCAL_vs_FULL_LOCAL": {
+      "isolated_factor": "state_quotient",
+      "saved_concrete_states": 13549,
+      "saved_generated_successors": 20890,
+      "saved_h1_materialized_states": 13549,
+      "higher_materialized_active_states_delta": 0,
+      "active_cells_delta": -11302,
+      "candidate_direct_h1_contract_evaluations": 20890,
+      "candidate_boundary_spawn_candidates": 22386,
+      "candidate_active_boundary_candidates": 20890,
+      "finite_method_cost_benefit": true
+    }
+  },
+  "finite_h1_board_materialization_removed": true,
+  "local_boundary_candidates_still_enumerated": true,
+  "higher_materialized_active_states_reduced": false,
+  "general_strategic_learning_solved": false,
+  "actual_execution": {
+    "arm_method_seconds": 18.81477718654787,
+    "rule_compile_seconds": 1.3963028322905302e-05,
+    "rule_compile_counts": {
+      "compiled_programs": 1,
+      "compiled_spawn_ranks": 2,
+      "topology_edges": 24
+    },
+    "rule_compile_executions": 1,
+    "construction_executions": 128,
+    "cold_worker_executions": 128,
+    "verification_seconds": 2.188980893814005,
+    "audit_counts": {
+      "full_rows": 47067,
+      "full_outcome_terms": 68898,
+      "composed_rows": 12091,
+      "composed_outcome_terms": 23589,
+      "full_state_contract_checks": 15309,
+      "joint_rows_verified": 47067,
+      "high_label_checks": 1660,
+      "retained_h1_procedural_calls": 13549,
+      "retained_high_map_lookups": 1660,
+      "portable_high_map_lookups": 60,
+      "portable_h1_procedural_calls": 27
+    },
+    "case_cleanup_seconds": 0.12723095796536654,
+    "summed_case_seconds": 21.354491158912424,
+    "runner_wall_seconds": 21.471584628976416,
+    "peak_rss_bytes": 72605696
+  },
+  "timing_scope": "All four methods attribute one full V71 terminal-rule compilation. That compilation executes once in actual_execution. Per-case LocalCompiler initialization is already included in LOCAL construction. Method totals sum case times.total plus the attributed compile fee; stage and worker times are included, not additional. Frozen source learning is historical, verification is separate, and this is one descriptive timing run.",
+  "evidence_scope": "This analysis reads only the 32-root frozen main cohort and its V69 evidence, not the separate new-observation probe. The four methods receive the same 60 old observations plus the first retained H1 observation from each of 27 eligible roots. Policy inheritance requires preserved exact kernels, active labels/routes, all query plans, portable results, and valid audits. H1 board materialization, direct contract evaluation, boundary candidate enumeration, and higher-layer states are reported separately. Fewer generated boards do not establish fewer boundary candidates or new general strategic learning.",
+  "counter_scope": "BASE h1_boards_generated is null when that generation counter was not recorded; concrete_states_by_h still gives materialized distinct H1 states. Boundary and direct-contract counters describe LOCAL operations, not the size of the full mathematical support. Nested local_compiler counts include line work and reuse.",
+  "analysis_seconds_before_write": 0.006997539021540433
+}

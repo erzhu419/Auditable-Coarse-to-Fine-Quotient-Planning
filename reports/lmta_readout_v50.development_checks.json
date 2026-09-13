@@ -1,0 +1,22 @@
+{
+  "model_test_result": {"passed": 4, "failed": 0, "pytest_seconds": 3.85},
+  "analysis_test_result": {"passed": 8, "failed": 0, "pytest_seconds": 4.44, "environment_calls": 0, "optimizer_steps": 0},
+  "runner_import_check": {"arguments": "--help", "exit_code": 0, "environment_calls": 0},
+  "attempts": [
+    {
+      "test_module": "tests/test_lmta_readout_v50.py",
+      "new_failures": 0,
+      "environment_counters": {},
+      "computation_counters": {
+        "model_forward_state_presentations": 6,
+        "no_grad_model_states": 4,
+        "gradient_enabled_model_states": 2,
+        "supervised_loss_state_presentations": 2,
+        "optimizer_gradient_steps": 1,
+        "backward_calls": 1
+      },
+      "wall_seconds": 2.540034096018644,
+      "scope": "CPU initial-parameter/Q parity, one two-state gradient update, and analytic first-message checks; no environment calls."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{"restore_anchors": 6, "exact": true}
+{"method": "BUDGET_HRL", "run_id": 0, "cell": "LS", "completed": 20}
+{"method": "BUDGET_HRL", "run_id": 0, "cell": "AL", "completed": 20}
+{"method": "LMTA_RI", "run_id": 0, "cell": "LS", "completed": 20}
+{"method": "LMTA_RI", "run_id": 0, "cell": "AL", "completed": 20}
+{"method": "LMTA_RI", "run_id": 1, "cell": "AL", "completed": 20}
+{"method": "LMTA_RI", "run_id": 1, "cell": "LS", "completed": 20}
+{"method": "BUDGET_HRL", "run_id": 1, "cell": "AL", "completed": 20}
+{"method": "BUDGET_HRL", "run_id": 1, "cell": "LS", "completed": 20}
+{"method": "BUDGET_HRL", "run_id": 2, "cell": "LS", "completed": 20}
+{"method": "BUDGET_HRL", "run_id": 2, "cell": "AL", "completed": 20}
+{"method": "LMTA_RI", "run_id": 2, "cell": "LS", "completed": 20}
+{"method": "LMTA_RI", "run_id": 2, "cell": "AL", "completed": 20}

@@ -1,0 +1,13 @@
+{
+  "command": [
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_symbolic_v71.py",
+    "--input",
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_symbolic_v71",
+    "--output",
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_symbolic_v71/analysis.json"
+  ],
+  "exit_code": 0,
+  "command_seconds": 0.03300521499477327,
+  "stderr_bytes": 0
+}

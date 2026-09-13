@@ -1,0 +1,220 @@
+{
+  "rows": [
+    {
+      "case": "last_pair_spawn_risk",
+      "units": "raw",
+      "actual_root_value": 0.00232421875,
+      "optimal_root_value": 0.00232421875,
+      "frozen_predicted_root_value": 0.03881905718666378,
+      "converged_predicted_root_value": 0.03906249998188855,
+      "converged_bias": 0.03673828123188855,
+      "clamped_predicted_root_value": 0.0019531249999999996,
+      "clamped_bias": -0.00037109375000000033,
+      "clamp_improves_absolute_bias": true,
+      "clamp_changed_states": [],
+      "remaining_iteration_error_bound": 1.811134575646632e-11,
+      "terminal_source_root_contribution": [
+        0.036923828107880086
+      ],
+      "snapshots_compared": 101,
+      "action_disagreement_events": 0,
+      "max_snapshot_root_value_difference": 0.0,
+      "max_snapshot_update_error": 1.3877787807814457e-17,
+      "max_identity_error": 6.938893903907228e-17,
+      "operator_array_bytes": 160,
+      "operator_plus_readout_array_bytes": 400,
+      "ground_model_array_bytes": 480,
+      "median_backup_time_reduction_percent": 45.13722668053411,
+      "costs": {
+        "fitting_seconds": 0.019085354986600578,
+        "compiling_seconds": 0.0008277330198325217,
+        "trajectory_reconstruction_seconds": 0.024745016009546816,
+        "snapshot_comparison_seconds": 0.028561495011672378,
+        "fixed_points_and_diagnosis_seconds": 0.04319252498680726,
+        "benchmark_seconds": 0.1310556210228242
+      }
+    },
+    {
+      "case": "last_pair_spawn_risk",
+      "units": "doorkey_metric_units",
+      "actual_root_value": 0.00232421875,
+      "optimal_root_value": 0.00232421875,
+      "frozen_predicted_root_value": 0.002276701952788483,
+      "converged_predicted_root_value": 0.0022764644664414638,
+      "converged_bias": -4.775428355853614e-05,
+      "clamped_predicted_root_value": 0.002273908211618702,
+      "clamped_bias": -5.03105383812979e-05,
+      "clamp_improves_absolute_bias": false,
+      "clamp_changed_states": [],
+      "remaining_iteration_error_bound": 3.623837341315547e-14,
+      "terminal_source_root_contribution": [
+        2.5545141480606466e-06
+      ],
+      "snapshots_compared": 101,
+      "action_disagreement_events": 0,
+      "max_snapshot_root_value_difference": 0.0,
+      "max_snapshot_update_error": 0.0,
+      "max_identity_error": 8.199278929421627e-19,
+      "operator_array_bytes": 288,
+      "operator_plus_readout_array_bytes": 528,
+      "ground_model_array_bytes": 480,
+      "median_backup_time_reduction_percent": 26.48066555049724,
+      "costs": {
+        "fitting_seconds": 0.008200142998248339,
+        "compiling_seconds": 0.0010336900304537266,
+        "trajectory_reconstruction_seconds": 0.026776713988510892,
+        "snapshot_comparison_seconds": 0.02524659101618454,
+        "fixed_points_and_diagnosis_seconds": 0.042206926009384915,
+        "benchmark_seconds": 0.13302268600091338
+      }
+    },
+    {
+      "case": "dense_merge_choice",
+      "units": "raw",
+      "actual_root_value": 0.011328125,
+      "optimal_root_value": 0.026171874999999997,
+      "frozen_predicted_root_value": 0.1553711714438598,
+      "converged_predicted_root_value": 0.15624999998186695,
+      "converged_bias": 0.14492187498186695,
+      "clamped_predicted_root_value": 0.007812500000000007,
+      "clamped_bias": -0.0035156249999999927,
+      "clamp_improves_absolute_bias": true,
+      "clamp_changed_states": [],
+      "remaining_iteration_error_bound": 1.813604821876423e-11,
+      "terminal_source_root_contribution": [
+        0.1410156249836351
+      ],
+      "snapshots_compared": 103,
+      "action_disagreement_events": 20,
+      "max_snapshot_root_value_difference": 0.007421875,
+      "max_snapshot_update_error": 8.326672684688674e-17,
+      "max_identity_error": 2.9976021664879227e-15,
+      "operator_array_bytes": 1104,
+      "operator_plus_readout_array_bytes": 34904,
+      "ground_model_array_bytes": 13680,
+      "median_backup_time_reduction_percent": 38.75621191072194,
+      "costs": {
+        "fitting_seconds": 0.02658120999694802,
+        "compiling_seconds": 0.0005204769840929657,
+        "trajectory_reconstruction_seconds": 0.015447000012500212,
+        "snapshot_comparison_seconds": 0.018627032986842096,
+        "fixed_points_and_diagnosis_seconds": 0.024658509995788336,
+        "benchmark_seconds": 0.05756716901669279
+      }
+    },
+    {
+      "case": "dense_merge_choice",
+      "units": "doorkey_metric_units",
+      "actual_root_value": 0.026171874999999997,
+      "optimal_root_value": 0.026171874999999997,
+      "frozen_predicted_root_value": 0.0638773988695389,
+      "converged_predicted_root_value": 0.06166663482631218,
+      "converged_bias": 0.035494759826312186,
+      "clamped_predicted_root_value": 0.026063949043544553,
+      "clamped_bias": -0.0001079259564554444,
+      "clamp_improves_absolute_bias": true,
+      "clamp_changed_states": [],
+      "remaining_iteration_error_bound": 3.87190279838023e-13,
+      "terminal_source_root_contribution": [
+        0.035602190789668975
+      ],
+      "snapshots_compared": 123,
+      "action_disagreement_events": 0,
+      "max_snapshot_root_value_difference": 0.0,
+      "max_snapshot_update_error": 3.552713678800501e-15,
+      "max_identity_error": 2.2898349882893854e-16,
+      "operator_array_bytes": 5336,
+      "operator_plus_readout_array_bytes": 34456,
+      "ground_model_array_bytes": 13680,
+      "median_backup_time_reduction_percent": 39.02005735313976,
+      "costs": {
+        "fitting_seconds": 0.07868650002637878,
+        "compiling_seconds": 0.002470477018505335,
+        "trajectory_reconstruction_seconds": 0.017775513988453895,
+        "snapshot_comparison_seconds": 0.017638489982346073,
+        "fixed_points_and_diagnosis_seconds": 0.03000331498333253,
+        "benchmark_seconds": 0.057338801008882
+      }
+    },
+    {
+      "case": "adjacent_1024_goal",
+      "units": "raw",
+      "actual_root_value": 1.1578125,
+      "optimal_root_value": 1.1578125,
+      "frozen_predicted_root_value": 1.1508314831019502,
+      "converged_predicted_root_value": 1.1507453052800445,
+      "converged_bias": -0.0070671947199554275,
+      "clamped_predicted_root_value": 1.1486427831084756,
+      "clamped_bias": -0.009169716891524349,
+      "clamp_improves_absolute_bias": false,
+      "clamp_changed_states": [],
+      "remaining_iteration_error_bound": 1.882938249764264e-11,
+      "terminal_source_root_contribution": [
+        0.0021025211329543216
+      ],
+      "snapshots_compared": 101,
+      "action_disagreement_events": 0,
+      "max_snapshot_root_value_difference": 0.0,
+      "max_snapshot_update_error": 4.440892098500626e-16,
+      "max_identity_error": 2.636779683484747e-16,
+      "operator_array_bytes": 360,
+      "operator_plus_readout_array_bytes": 936,
+      "ground_model_array_bytes": 800,
+      "median_backup_time_reduction_percent": 33.71511435273899,
+      "costs": {
+        "fitting_seconds": 0.005968867044430226,
+        "compiling_seconds": 0.00048390700249001384,
+        "trajectory_reconstruction_seconds": 0.013536154991015792,
+        "snapshot_comparison_seconds": 0.013320696976734325,
+        "fixed_points_and_diagnosis_seconds": 0.01958175702020526,
+        "benchmark_seconds": 0.05344996601343155
+      }
+    },
+    {
+      "case": "adjacent_1024_goal",
+      "units": "doorkey_metric_units",
+      "actual_root_value": 1.1578125,
+      "optimal_root_value": 1.1578125,
+      "frozen_predicted_root_value": 1.1599557693803837,
+      "converged_predicted_root_value": 1.1596939366077665,
+      "converged_bias": 0.001881436607766629,
+      "clamped_predicted_root_value": 1.145857428943656,
+      "clamped_bias": -0.011955071056343858,
+      "clamp_improves_absolute_bias": false,
+      "clamp_changed_states": [],
+      "remaining_iteration_error_bound": 2.271995092062438e-11,
+      "terminal_source_root_contribution": [
+        0.013836453141908147
+      ],
+      "snapshots_compared": 101,
+      "action_disagreement_events": 0,
+      "max_snapshot_root_value_difference": 0.0,
+      "max_snapshot_update_error": 2.220446049250313e-16,
+      "max_identity_error": 4.440621047957505e-16,
+      "operator_array_bytes": 360,
+      "operator_plus_readout_array_bytes": 936,
+      "ground_model_array_bytes": 800,
+      "median_backup_time_reduction_percent": 29.88444057623012,
+      "costs": {
+        "fitting_seconds": 0.008175228984327987,
+        "compiling_seconds": 0.0005006710125599056,
+        "trajectory_reconstruction_seconds": 0.013480608002282679,
+        "snapshot_comparison_seconds": 0.013088334002532065,
+        "fixed_points_and_diagnosis_seconds": 0.02047775700339116,
+        "benchmark_seconds": 0.05454373097745702
+      }
+    }
+  ],
+  "reconstruction_acquisition": {
+    "rows": 75,
+    "outcomes": 334,
+    "construction_seconds": 0.07604179202462547,
+    "metric_seconds": 1.3885214920155704,
+    "exact_solve_seconds": 0.0005828790017403662
+  },
+  "total_compared_snapshots": 630,
+  "total_action_disagreement_events": 20,
+  "clamp_improves_absolute_bias_conditions": 3,
+  "operator_plus_readout_exceeds_ground_bytes_conditions": 5,
+  "interpretation": "Arithmetic/operator agreement within tolerance does not establish identical actions. Terminal clamp changes the operator and is diagnostic only. Counts summarize the fixed six conditions, not a population sample."
+}

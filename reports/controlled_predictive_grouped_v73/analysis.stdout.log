@@ -1,0 +1,104 @@
+{
+  "complete": true,
+  "all_artifacts_routing_and_portable_preserved": true,
+  "inherited_v69_policy_evidence_valid": true,
+  "grouping_materialization_reduction_established": true,
+  "higher_geometry_count_reduced": false,
+  "grouping_effects": {
+    "contract_materializations": {
+      "each": 21212,
+      "group": 2544,
+      "delta": -18668,
+      "ratio": 0.11993211389779371
+    },
+    "terminal_probability_combinations": {
+      "each": 129998,
+      "group": 15572,
+      "delta": -114426,
+      "ratio": 0.1197864582532039
+    },
+    "contract_fraction_accumulations": {
+      "each": 129998,
+      "group": 15572,
+      "delta": -114426,
+      "ratio": 0.1197864582532039
+    },
+    "predicate_calls": {
+      "each": 21212,
+      "group": 21212,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "predicate_materializations": {
+      "each": 21212,
+      "group": 21212,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "candidate_predicate_evaluations": {
+      "each": 21185,
+      "group": 21185,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "spawn_candidates": {
+      "each": 22752,
+      "group": 22752,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "spawn_groups": {
+      "each": 22752,
+      "group": 13652,
+      "delta": -9100,
+      "ratio": 0.6000351617440225
+    },
+    "incoming_probability_evaluations": {
+      "each": 22752,
+      "group": 22752,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "incoming_group_probability_additions": {
+      "each": 0,
+      "group": 22752,
+      "delta": 22752,
+      "ratio": null
+    }
+  },
+  "ratios": {
+    "DIRECT_EACH_vs_BASE": {
+      "method_total_seconds": 1.0491539732181427,
+      "concrete_active_states": 0.0963855421686747,
+      "geometric_active_states": 1.0,
+      "generated_successors": 0.057840036150022596,
+      "active_cells": 1.0,
+      "planning_action_rows": 1.0,
+      "package_bytes": 0.9050423813159748,
+      "router_bytes": 0.1158522247887246,
+      "finite_method_cost_benefit": false
+    },
+    "DIRECT_GROUP_vs_BASE": {
+      "method_total_seconds": 0.9702854623629446,
+      "concrete_active_states": 0.0963855421686747,
+      "geometric_active_states": 1.0,
+      "generated_successors": 0.057840036150022596,
+      "active_cells": 1.0,
+      "planning_action_rows": 1.0,
+      "package_bytes": 0.9049948453148814,
+      "router_bytes": 0.11540961839029586,
+      "finite_method_cost_benefit": true
+    },
+    "DIRECT_GROUP_vs_DIRECT_EACH": {
+      "method_total_seconds": 0.9248265622887752,
+      "concrete_active_states": 1.0,
+      "geometric_active_states": 1.0,
+      "generated_successors": 1.0,
+      "active_cells": 1.0,
+      "planning_action_rows": 1.0,
+      "package_bytes": 0.9999474764916266,
+      "router_bytes": 0.9961795606494747,
+      "finite_method_cost_benefit": true
+    }
+  }
+}

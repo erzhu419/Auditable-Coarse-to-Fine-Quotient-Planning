@@ -1,0 +1,7 @@
+{
+  "exit_code": 0,
+  "wall_seconds": 7.34143115603365,
+  "stderr_bytes": 0,
+  "source_fit_attempts": 1,
+  "command": "scripts/run_controlled_predictive_decisions_v76.py --output reports/controlled_predictive_decision_v76"
+}

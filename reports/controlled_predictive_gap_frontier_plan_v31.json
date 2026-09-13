@@ -1,0 +1,5411 @@
+{
+  "boards": [
+    {
+      "board_index": 0,
+      "name": "v28_dense_pairs_940001",
+      "board": [
+        1,
+        1,
+        10,
+        3,
+        9,
+        3,
+        1,
+        4,
+        7,
+        2,
+        5,
+        7,
+        9,
+        4,
+        5,
+        1
+      ],
+      "horizon": 2,
+      "generation_seed": 940001,
+      "prefix_seed": 941001,
+      "legal_actions": [
+        "DOWN",
+        "LEFT",
+        "RIGHT",
+        "UP"
+      ],
+      "novelty": {
+        "registered_root_or_target_d4_matches": [],
+        "earlier_current_board_d4_matches": [],
+        "new_against_listed_sources": true
+      }
+    },
+    {
+      "board_index": 1,
+      "name": "v28_dense_pairs_940002",
+      "board": [
+        8,
+        8,
+        7,
+        8,
+        8,
+        3,
+        6,
+        5,
+        7,
+        5,
+        3,
+        7,
+        1,
+        9,
+        3,
+        5
+      ],
+      "horizon": 2,
+      "generation_seed": 940002,
+      "prefix_seed": 941002,
+      "legal_actions": [
+        "DOWN",
+        "LEFT",
+        "RIGHT",
+        "UP"
+      ],
+      "novelty": {
+        "registered_root_or_target_d4_matches": [],
+        "earlier_current_board_d4_matches": [],
+        "new_against_listed_sources": true
+      }
+    },
+    {
+      "board_index": 2,
+      "name": "v28_dense_pairs_940003",
+      "board": [
+        2,
+        2,
+        10,
+        3,
+        6,
+        7,
+        2,
+        1,
+        4,
+        5,
+        9,
+        2,
+        6,
+        3,
+        9,
+        9
+      ],
+      "horizon": 2,
+      "generation_seed": 940003,
+      "prefix_seed": 941003,
+      "legal_actions": [
+        "DOWN",
+        "LEFT",
+        "RIGHT",
+        "UP"
+      ],
+      "novelty": {
+        "registered_root_or_target_d4_matches": [],
+        "earlier_current_board_d4_matches": [],
+        "new_against_listed_sources": true
+      }
+    },
+    {
+      "board_index": 3,
+      "name": "v28_dense_pairs_940004",
+      "board": [
+        6,
+        6,
+        4,
+        1,
+        8,
+        7,
+        9,
+        8,
+        5,
+        9,
+        4,
+        2,
+        1,
+        6,
+        4,
+        10
+      ],
+      "horizon": 2,
+      "generation_seed": 940004,
+      "prefix_seed": 941004,
+      "legal_actions": [
+        "DOWN",
+        "LEFT",
+        "RIGHT",
+        "UP"
+      ],
+      "novelty": {
+        "registered_root_or_target_d4_matches": [],
+        "earlier_current_board_d4_matches": [],
+        "new_against_listed_sources": true
+      }
+    },
+    {
+      "board_index": 4,
+      "name": "v28_dense_pairs_940005",
+      "board": [
+        2,
+        2,
+        1,
+        4,
+        5,
+        10,
+        5,
+        7,
+        6,
+        9,
+        5,
+        1,
+        7,
+        6,
+        5,
+        3
+      ],
+      "horizon": 2,
+      "generation_seed": 940005,
+      "prefix_seed": 941005,
+      "legal_actions": [
+        "DOWN",
+        "LEFT",
+        "RIGHT",
+        "UP"
+      ],
+      "novelty": {
+        "registered_root_or_target_d4_matches": [],
+        "earlier_current_board_d4_matches": [],
+        "new_against_listed_sources": true
+      }
+    },
+    {
+      "board_index": 5,
+      "name": "v28_dense_pairs_940006",
+      "board": [
+        7,
+        7,
+        2,
+        4,
+        8,
+        5,
+        10,
+        9,
+        10,
+        1,
+        2,
+        6,
+        4,
+        8,
+        2,
+        8
+      ],
+      "horizon": 2,
+      "generation_seed": 940006,
+      "prefix_seed": 941006,
+      "legal_actions": [
+        "DOWN",
+        "LEFT",
+        "RIGHT",
+        "UP"
+      ],
+      "novelty": {
+        "registered_root_or_target_d4_matches": [],
+        "earlier_current_board_d4_matches": [],
+        "new_against_listed_sources": true
+      }
+    },
+    {
+      "board_index": 6,
+      "name": "v28_dense_pairs_940007",
+      "board": [
+        1,
+        1,
+        4,
+        5,
+        6,
+        1,
+        9,
+        7,
+        4,
+        10,
+        8,
+        6,
+        7,
+        4,
+        8,
+        8
+      ],
+      "horizon": 2,
+      "generation_seed": 940007,
+      "prefix_seed": 941007,
+      "legal_actions": [
+        "DOWN",
+        "LEFT",
+        "RIGHT",
+        "UP"
+      ],
+      "novelty": {
+        "registered_root_or_target_d4_matches": [],
+        "earlier_current_board_d4_matches": [],
+        "new_against_listed_sources": true
+      }
+    },
+    {
+      "board_index": 7,
+      "name": "v28_dense_pairs_940008",
+      "board": [
+        4,
+        4,
+        3,
+        5,
+        3,
+        10,
+        9,
+        4,
+        10,
+        9,
+        10,
+        8,
+        2,
+        3,
+        10,
+        9
+      ],
+      "horizon": 2,
+      "generation_seed": 940008,
+      "prefix_seed": 941008,
+      "legal_actions": [
+        "DOWN",
+        "LEFT",
+        "RIGHT",
+        "UP"
+      ],
+      "novelty": {
+        "registered_root_or_target_d4_matches": [],
+        "earlier_current_board_d4_matches": [],
+        "new_against_listed_sources": true
+      }
+    },
+    {
+      "board_index": 8,
+      "name": "v28_dense_pairs_940009",
+      "board": [
+        7,
+        7,
+        9,
+        2,
+        6,
+        2,
+        1,
+        8,
+        8,
+        3,
+        10,
+        9,
+        10,
+        5,
+        10,
+        7
+      ],
+      "horizon": 2,
+      "generation_seed": 940009,
+      "prefix_seed": 941009,
+      "legal_actions": [
+        "DOWN",
+        "LEFT",
+        "RIGHT",
+        "UP"
+      ],
+      "novelty": {
+        "registered_root_or_target_d4_matches": [],
+        "earlier_current_board_d4_matches": [],
+        "new_against_listed_sources": true
+      }
+    },
+    {
+      "board_index": 9,
+      "name": "v28_dense_pairs_940010",
+      "board": [
+        10,
+        10,
+        5,
+        6,
+        1,
+        8,
+        1,
+        9,
+        3,
+        6,
+        8,
+        6,
+        4,
+        8,
+        8,
+        8
+      ],
+      "horizon": 2,
+      "generation_seed": 940010,
+      "prefix_seed": 941010,
+      "legal_actions": [
+        "DOWN",
+        "LEFT",
+        "RIGHT",
+        "UP"
+      ],
+      "novelty": {
+        "registered_root_or_target_d4_matches": [],
+        "earlier_current_board_d4_matches": [],
+        "new_against_listed_sources": true
+      }
+    },
+    {
+      "board_index": 10,
+      "name": "v28_dense_pairs_940011",
+      "board": [
+        7,
+        7,
+        1,
+        10,
+        3,
+        2,
+        3,
+        9,
+        8,
+        10,
+        8,
+        3,
+        4,
+        5,
+        8,
+        2
+      ],
+      "horizon": 2,
+      "generation_seed": 940011,
+      "prefix_seed": 941011,
+      "legal_actions": [
+        "DOWN",
+        "LEFT",
+        "RIGHT",
+        "UP"
+      ],
+      "novelty": {
+        "registered_root_or_target_d4_matches": [],
+        "earlier_current_board_d4_matches": [],
+        "new_against_listed_sources": true
+      }
+    },
+    {
+      "board_index": 11,
+      "name": "v28_dense_pairs_940012",
+      "board": [
+        9,
+        9,
+        10,
+        5,
+        7,
+        5,
+        6,
+        3,
+        3,
+        8,
+        10,
+        9,
+        7,
+        9,
+        10,
+        2
+      ],
+      "horizon": 2,
+      "generation_seed": 940012,
+      "prefix_seed": 941012,
+      "legal_actions": [
+        "DOWN",
+        "LEFT",
+        "RIGHT",
+        "UP"
+      ],
+      "novelty": {
+        "registered_root_or_target_d4_matches": [],
+        "earlier_current_board_d4_matches": [],
+        "new_against_listed_sources": true
+      }
+    },
+    {
+      "board_index": 12,
+      "name": "v28_dense_pairs_940013",
+      "board": [
+        7,
+        7,
+        1,
+        10,
+        7,
+        3,
+        5,
+        2,
+        9,
+        1,
+        7,
+        7,
+        5,
+        8,
+        7,
+        1
+      ],
+      "horizon": 2,
+      "generation_seed": 940013,
+      "prefix_seed": 941013,
+      "legal_actions": [
+        "DOWN",
+        "LEFT",
+        "RIGHT",
+        "UP"
+      ],
+      "novelty": {
+        "registered_root_or_target_d4_matches": [],
+        "earlier_current_board_d4_matches": [],
+        "new_against_listed_sources": true
+      }
+    },
+    {
+      "board_index": 13,
+      "name": "v28_dense_pairs_940014",
+      "board": [
+        2,
+        2,
+        8,
+        9,
+        7,
+        10,
+        3,
+        8,
+        2,
+        8,
+        4,
+        3,
+        6,
+        2,
+        4,
+        7
+      ],
+      "horizon": 2,
+      "generation_seed": 940014,
+      "prefix_seed": 941014,
+      "legal_actions": [
+        "DOWN",
+        "LEFT",
+        "RIGHT",
+        "UP"
+      ],
+      "novelty": {
+        "registered_root_or_target_d4_matches": [],
+        "earlier_current_board_d4_matches": [],
+        "new_against_listed_sources": true
+      }
+    },
+    {
+      "board_index": 14,
+      "name": "v28_dense_pairs_940015",
+      "board": [
+        10,
+        10,
+        1,
+        5,
+        4,
+        10,
+        8,
+        2,
+        9,
+        5,
+        5,
+        8,
+        5,
+        3,
+        5,
+        5
+      ],
+      "horizon": 2,
+      "generation_seed": 940015,
+      "prefix_seed": 941015,
+      "legal_actions": [
+        "DOWN",
+        "LEFT",
+        "RIGHT",
+        "UP"
+      ],
+      "novelty": {
+        "registered_root_or_target_d4_matches": [],
+        "earlier_current_board_d4_matches": [],
+        "new_against_listed_sources": true
+      }
+    },
+    {
+      "board_index": 15,
+      "name": "v28_dense_pairs_940016",
+      "board": [
+        2,
+        2,
+        8,
+        7,
+        1,
+        7,
+        1,
+        9,
+        3,
+        9,
+        3,
+        4,
+        7,
+        4,
+        3,
+        8
+      ],
+      "horizon": 2,
+      "generation_seed": 940016,
+      "prefix_seed": 941016,
+      "legal_actions": [
+        "DOWN",
+        "LEFT",
+        "RIGHT",
+        "UP"
+      ],
+      "novelty": {
+        "registered_root_or_target_d4_matches": [],
+        "earlier_current_board_d4_matches": [],
+        "new_against_listed_sources": true
+      }
+    }
+  ],
+  "contexts": [
+    {
+      "context_index": 0,
+      "board_index": 0,
+      "case_name": "v28_dense_pairs_940001",
+      "query_name": "risk_0",
+      "target_key": [
+        2,
+        [
+          1,
+          1,
+          10,
+          3,
+          9,
+          3,
+          1,
+          4,
+          7,
+          2,
+          5,
+          7,
+          9,
+          4,
+          5,
+          1
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 1,
+      "board_index": 0,
+      "case_name": "v28_dense_pairs_940001",
+      "query_name": "risk_0_05",
+      "target_key": [
+        2,
+        [
+          1,
+          1,
+          10,
+          3,
+          9,
+          3,
+          1,
+          4,
+          7,
+          2,
+          5,
+          7,
+          9,
+          4,
+          5,
+          1
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 2,
+      "board_index": 0,
+      "case_name": "v28_dense_pairs_940001",
+      "query_name": "risk_0_2",
+      "target_key": [
+        2,
+        [
+          1,
+          1,
+          10,
+          3,
+          9,
+          3,
+          1,
+          4,
+          7,
+          2,
+          5,
+          7,
+          9,
+          4,
+          5,
+          1
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 3,
+      "board_index": 0,
+      "case_name": "v28_dense_pairs_940001",
+      "query_name": "risk_1",
+      "target_key": [
+        2,
+        [
+          1,
+          1,
+          10,
+          3,
+          9,
+          3,
+          1,
+          4,
+          7,
+          2,
+          5,
+          7,
+          9,
+          4,
+          5,
+          1
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 4,
+      "board_index": 0,
+      "case_name": "v28_dense_pairs_940001",
+      "query_name": "risk_5",
+      "target_key": [
+        2,
+        [
+          1,
+          1,
+          10,
+          3,
+          9,
+          3,
+          1,
+          4,
+          7,
+          2,
+          5,
+          7,
+          9,
+          4,
+          5,
+          1
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 5,
+      "board_index": 0,
+      "case_name": "v28_dense_pairs_940001",
+      "query_name": "goal_1_risk_1",
+      "target_key": [
+        2,
+        [
+          1,
+          1,
+          10,
+          3,
+          9,
+          3,
+          1,
+          4,
+          7,
+          2,
+          5,
+          7,
+          9,
+          4,
+          5,
+          1
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 6,
+      "board_index": 0,
+      "case_name": "v28_dense_pairs_940001",
+      "query_name": "probe_risk_0_1",
+      "target_key": [
+        2,
+        [
+          1,
+          1,
+          10,
+          3,
+          9,
+          3,
+          1,
+          4,
+          7,
+          2,
+          5,
+          7,
+          9,
+          4,
+          5,
+          1
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 7,
+      "board_index": 0,
+      "case_name": "v28_dense_pairs_940001",
+      "query_name": "probe_risk_0_5",
+      "target_key": [
+        2,
+        [
+          1,
+          1,
+          10,
+          3,
+          9,
+          3,
+          1,
+          4,
+          7,
+          2,
+          5,
+          7,
+          9,
+          4,
+          5,
+          1
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 8,
+      "board_index": 0,
+      "case_name": "v28_dense_pairs_940001",
+      "query_name": "probe_risk_2",
+      "target_key": [
+        2,
+        [
+          1,
+          1,
+          10,
+          3,
+          9,
+          3,
+          1,
+          4,
+          7,
+          2,
+          5,
+          7,
+          9,
+          4,
+          5,
+          1
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 9,
+      "board_index": 0,
+      "case_name": "v28_dense_pairs_940001",
+      "query_name": "probe_goal_2_risk_0_5",
+      "target_key": [
+        2,
+        [
+          1,
+          1,
+          10,
+          3,
+          9,
+          3,
+          1,
+          4,
+          7,
+          2,
+          5,
+          7,
+          9,
+          4,
+          5,
+          1
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 10,
+      "board_index": 1,
+      "case_name": "v28_dense_pairs_940002",
+      "query_name": "risk_0",
+      "target_key": [
+        2,
+        [
+          8,
+          8,
+          7,
+          8,
+          8,
+          3,
+          6,
+          5,
+          7,
+          5,
+          3,
+          7,
+          1,
+          9,
+          3,
+          5
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 11,
+      "board_index": 1,
+      "case_name": "v28_dense_pairs_940002",
+      "query_name": "risk_0_05",
+      "target_key": [
+        2,
+        [
+          8,
+          8,
+          7,
+          8,
+          8,
+          3,
+          6,
+          5,
+          7,
+          5,
+          3,
+          7,
+          1,
+          9,
+          3,
+          5
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 12,
+      "board_index": 1,
+      "case_name": "v28_dense_pairs_940002",
+      "query_name": "risk_0_2",
+      "target_key": [
+        2,
+        [
+          8,
+          8,
+          7,
+          8,
+          8,
+          3,
+          6,
+          5,
+          7,
+          5,
+          3,
+          7,
+          1,
+          9,
+          3,
+          5
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 13,
+      "board_index": 1,
+      "case_name": "v28_dense_pairs_940002",
+      "query_name": "risk_1",
+      "target_key": [
+        2,
+        [
+          8,
+          8,
+          7,
+          8,
+          8,
+          3,
+          6,
+          5,
+          7,
+          5,
+          3,
+          7,
+          1,
+          9,
+          3,
+          5
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 14,
+      "board_index": 1,
+      "case_name": "v28_dense_pairs_940002",
+      "query_name": "risk_5",
+      "target_key": [
+        2,
+        [
+          8,
+          8,
+          7,
+          8,
+          8,
+          3,
+          6,
+          5,
+          7,
+          5,
+          3,
+          7,
+          1,
+          9,
+          3,
+          5
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 15,
+      "board_index": 1,
+      "case_name": "v28_dense_pairs_940002",
+      "query_name": "goal_1_risk_1",
+      "target_key": [
+        2,
+        [
+          8,
+          8,
+          7,
+          8,
+          8,
+          3,
+          6,
+          5,
+          7,
+          5,
+          3,
+          7,
+          1,
+          9,
+          3,
+          5
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 16,
+      "board_index": 1,
+      "case_name": "v28_dense_pairs_940002",
+      "query_name": "probe_risk_0_1",
+      "target_key": [
+        2,
+        [
+          8,
+          8,
+          7,
+          8,
+          8,
+          3,
+          6,
+          5,
+          7,
+          5,
+          3,
+          7,
+          1,
+          9,
+          3,
+          5
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 17,
+      "board_index": 1,
+      "case_name": "v28_dense_pairs_940002",
+      "query_name": "probe_risk_0_5",
+      "target_key": [
+        2,
+        [
+          8,
+          8,
+          7,
+          8,
+          8,
+          3,
+          6,
+          5,
+          7,
+          5,
+          3,
+          7,
+          1,
+          9,
+          3,
+          5
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 18,
+      "board_index": 1,
+      "case_name": "v28_dense_pairs_940002",
+      "query_name": "probe_risk_2",
+      "target_key": [
+        2,
+        [
+          8,
+          8,
+          7,
+          8,
+          8,
+          3,
+          6,
+          5,
+          7,
+          5,
+          3,
+          7,
+          1,
+          9,
+          3,
+          5
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 19,
+      "board_index": 1,
+      "case_name": "v28_dense_pairs_940002",
+      "query_name": "probe_goal_2_risk_0_5",
+      "target_key": [
+        2,
+        [
+          8,
+          8,
+          7,
+          8,
+          8,
+          3,
+          6,
+          5,
+          7,
+          5,
+          3,
+          7,
+          1,
+          9,
+          3,
+          5
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 20,
+      "board_index": 2,
+      "case_name": "v28_dense_pairs_940003",
+      "query_name": "risk_0",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          10,
+          3,
+          6,
+          7,
+          2,
+          1,
+          4,
+          5,
+          9,
+          2,
+          6,
+          3,
+          9,
+          9
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 21,
+      "board_index": 2,
+      "case_name": "v28_dense_pairs_940003",
+      "query_name": "risk_0_05",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          10,
+          3,
+          6,
+          7,
+          2,
+          1,
+          4,
+          5,
+          9,
+          2,
+          6,
+          3,
+          9,
+          9
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 22,
+      "board_index": 2,
+      "case_name": "v28_dense_pairs_940003",
+      "query_name": "risk_0_2",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          10,
+          3,
+          6,
+          7,
+          2,
+          1,
+          4,
+          5,
+          9,
+          2,
+          6,
+          3,
+          9,
+          9
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 23,
+      "board_index": 2,
+      "case_name": "v28_dense_pairs_940003",
+      "query_name": "risk_1",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          10,
+          3,
+          6,
+          7,
+          2,
+          1,
+          4,
+          5,
+          9,
+          2,
+          6,
+          3,
+          9,
+          9
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 24,
+      "board_index": 2,
+      "case_name": "v28_dense_pairs_940003",
+      "query_name": "risk_5",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          10,
+          3,
+          6,
+          7,
+          2,
+          1,
+          4,
+          5,
+          9,
+          2,
+          6,
+          3,
+          9,
+          9
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 25,
+      "board_index": 2,
+      "case_name": "v28_dense_pairs_940003",
+      "query_name": "goal_1_risk_1",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          10,
+          3,
+          6,
+          7,
+          2,
+          1,
+          4,
+          5,
+          9,
+          2,
+          6,
+          3,
+          9,
+          9
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 26,
+      "board_index": 2,
+      "case_name": "v28_dense_pairs_940003",
+      "query_name": "probe_risk_0_1",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          10,
+          3,
+          6,
+          7,
+          2,
+          1,
+          4,
+          5,
+          9,
+          2,
+          6,
+          3,
+          9,
+          9
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 27,
+      "board_index": 2,
+      "case_name": "v28_dense_pairs_940003",
+      "query_name": "probe_risk_0_5",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          10,
+          3,
+          6,
+          7,
+          2,
+          1,
+          4,
+          5,
+          9,
+          2,
+          6,
+          3,
+          9,
+          9
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 28,
+      "board_index": 2,
+      "case_name": "v28_dense_pairs_940003",
+      "query_name": "probe_risk_2",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          10,
+          3,
+          6,
+          7,
+          2,
+          1,
+          4,
+          5,
+          9,
+          2,
+          6,
+          3,
+          9,
+          9
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 29,
+      "board_index": 2,
+      "case_name": "v28_dense_pairs_940003",
+      "query_name": "probe_goal_2_risk_0_5",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          10,
+          3,
+          6,
+          7,
+          2,
+          1,
+          4,
+          5,
+          9,
+          2,
+          6,
+          3,
+          9,
+          9
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 30,
+      "board_index": 3,
+      "case_name": "v28_dense_pairs_940004",
+      "query_name": "risk_0",
+      "target_key": [
+        2,
+        [
+          6,
+          6,
+          4,
+          1,
+          8,
+          7,
+          9,
+          8,
+          5,
+          9,
+          4,
+          2,
+          1,
+          6,
+          4,
+          10
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 31,
+      "board_index": 3,
+      "case_name": "v28_dense_pairs_940004",
+      "query_name": "risk_0_05",
+      "target_key": [
+        2,
+        [
+          6,
+          6,
+          4,
+          1,
+          8,
+          7,
+          9,
+          8,
+          5,
+          9,
+          4,
+          2,
+          1,
+          6,
+          4,
+          10
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 32,
+      "board_index": 3,
+      "case_name": "v28_dense_pairs_940004",
+      "query_name": "risk_0_2",
+      "target_key": [
+        2,
+        [
+          6,
+          6,
+          4,
+          1,
+          8,
+          7,
+          9,
+          8,
+          5,
+          9,
+          4,
+          2,
+          1,
+          6,
+          4,
+          10
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 33,
+      "board_index": 3,
+      "case_name": "v28_dense_pairs_940004",
+      "query_name": "risk_1",
+      "target_key": [
+        2,
+        [
+          6,
+          6,
+          4,
+          1,
+          8,
+          7,
+          9,
+          8,
+          5,
+          9,
+          4,
+          2,
+          1,
+          6,
+          4,
+          10
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 34,
+      "board_index": 3,
+      "case_name": "v28_dense_pairs_940004",
+      "query_name": "risk_5",
+      "target_key": [
+        2,
+        [
+          6,
+          6,
+          4,
+          1,
+          8,
+          7,
+          9,
+          8,
+          5,
+          9,
+          4,
+          2,
+          1,
+          6,
+          4,
+          10
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 35,
+      "board_index": 3,
+      "case_name": "v28_dense_pairs_940004",
+      "query_name": "goal_1_risk_1",
+      "target_key": [
+        2,
+        [
+          6,
+          6,
+          4,
+          1,
+          8,
+          7,
+          9,
+          8,
+          5,
+          9,
+          4,
+          2,
+          1,
+          6,
+          4,
+          10
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 36,
+      "board_index": 3,
+      "case_name": "v28_dense_pairs_940004",
+      "query_name": "probe_risk_0_1",
+      "target_key": [
+        2,
+        [
+          6,
+          6,
+          4,
+          1,
+          8,
+          7,
+          9,
+          8,
+          5,
+          9,
+          4,
+          2,
+          1,
+          6,
+          4,
+          10
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 37,
+      "board_index": 3,
+      "case_name": "v28_dense_pairs_940004",
+      "query_name": "probe_risk_0_5",
+      "target_key": [
+        2,
+        [
+          6,
+          6,
+          4,
+          1,
+          8,
+          7,
+          9,
+          8,
+          5,
+          9,
+          4,
+          2,
+          1,
+          6,
+          4,
+          10
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 38,
+      "board_index": 3,
+      "case_name": "v28_dense_pairs_940004",
+      "query_name": "probe_risk_2",
+      "target_key": [
+        2,
+        [
+          6,
+          6,
+          4,
+          1,
+          8,
+          7,
+          9,
+          8,
+          5,
+          9,
+          4,
+          2,
+          1,
+          6,
+          4,
+          10
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 39,
+      "board_index": 3,
+      "case_name": "v28_dense_pairs_940004",
+      "query_name": "probe_goal_2_risk_0_5",
+      "target_key": [
+        2,
+        [
+          6,
+          6,
+          4,
+          1,
+          8,
+          7,
+          9,
+          8,
+          5,
+          9,
+          4,
+          2,
+          1,
+          6,
+          4,
+          10
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 40,
+      "board_index": 4,
+      "case_name": "v28_dense_pairs_940005",
+      "query_name": "risk_0",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          1,
+          4,
+          5,
+          10,
+          5,
+          7,
+          6,
+          9,
+          5,
+          1,
+          7,
+          6,
+          5,
+          3
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 41,
+      "board_index": 4,
+      "case_name": "v28_dense_pairs_940005",
+      "query_name": "risk_0_05",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          1,
+          4,
+          5,
+          10,
+          5,
+          7,
+          6,
+          9,
+          5,
+          1,
+          7,
+          6,
+          5,
+          3
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 42,
+      "board_index": 4,
+      "case_name": "v28_dense_pairs_940005",
+      "query_name": "risk_0_2",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          1,
+          4,
+          5,
+          10,
+          5,
+          7,
+          6,
+          9,
+          5,
+          1,
+          7,
+          6,
+          5,
+          3
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 43,
+      "board_index": 4,
+      "case_name": "v28_dense_pairs_940005",
+      "query_name": "risk_1",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          1,
+          4,
+          5,
+          10,
+          5,
+          7,
+          6,
+          9,
+          5,
+          1,
+          7,
+          6,
+          5,
+          3
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 44,
+      "board_index": 4,
+      "case_name": "v28_dense_pairs_940005",
+      "query_name": "risk_5",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          1,
+          4,
+          5,
+          10,
+          5,
+          7,
+          6,
+          9,
+          5,
+          1,
+          7,
+          6,
+          5,
+          3
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 45,
+      "board_index": 4,
+      "case_name": "v28_dense_pairs_940005",
+      "query_name": "goal_1_risk_1",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          1,
+          4,
+          5,
+          10,
+          5,
+          7,
+          6,
+          9,
+          5,
+          1,
+          7,
+          6,
+          5,
+          3
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 46,
+      "board_index": 4,
+      "case_name": "v28_dense_pairs_940005",
+      "query_name": "probe_risk_0_1",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          1,
+          4,
+          5,
+          10,
+          5,
+          7,
+          6,
+          9,
+          5,
+          1,
+          7,
+          6,
+          5,
+          3
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 47,
+      "board_index": 4,
+      "case_name": "v28_dense_pairs_940005",
+      "query_name": "probe_risk_0_5",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          1,
+          4,
+          5,
+          10,
+          5,
+          7,
+          6,
+          9,
+          5,
+          1,
+          7,
+          6,
+          5,
+          3
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 48,
+      "board_index": 4,
+      "case_name": "v28_dense_pairs_940005",
+      "query_name": "probe_risk_2",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          1,
+          4,
+          5,
+          10,
+          5,
+          7,
+          6,
+          9,
+          5,
+          1,
+          7,
+          6,
+          5,
+          3
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 49,
+      "board_index": 4,
+      "case_name": "v28_dense_pairs_940005",
+      "query_name": "probe_goal_2_risk_0_5",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          1,
+          4,
+          5,
+          10,
+          5,
+          7,
+          6,
+          9,
+          5,
+          1,
+          7,
+          6,
+          5,
+          3
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 50,
+      "board_index": 5,
+      "case_name": "v28_dense_pairs_940006",
+      "query_name": "risk_0",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          2,
+          4,
+          8,
+          5,
+          10,
+          9,
+          10,
+          1,
+          2,
+          6,
+          4,
+          8,
+          2,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 51,
+      "board_index": 5,
+      "case_name": "v28_dense_pairs_940006",
+      "query_name": "risk_0_05",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          2,
+          4,
+          8,
+          5,
+          10,
+          9,
+          10,
+          1,
+          2,
+          6,
+          4,
+          8,
+          2,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 52,
+      "board_index": 5,
+      "case_name": "v28_dense_pairs_940006",
+      "query_name": "risk_0_2",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          2,
+          4,
+          8,
+          5,
+          10,
+          9,
+          10,
+          1,
+          2,
+          6,
+          4,
+          8,
+          2,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 53,
+      "board_index": 5,
+      "case_name": "v28_dense_pairs_940006",
+      "query_name": "risk_1",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          2,
+          4,
+          8,
+          5,
+          10,
+          9,
+          10,
+          1,
+          2,
+          6,
+          4,
+          8,
+          2,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 54,
+      "board_index": 5,
+      "case_name": "v28_dense_pairs_940006",
+      "query_name": "risk_5",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          2,
+          4,
+          8,
+          5,
+          10,
+          9,
+          10,
+          1,
+          2,
+          6,
+          4,
+          8,
+          2,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 55,
+      "board_index": 5,
+      "case_name": "v28_dense_pairs_940006",
+      "query_name": "goal_1_risk_1",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          2,
+          4,
+          8,
+          5,
+          10,
+          9,
+          10,
+          1,
+          2,
+          6,
+          4,
+          8,
+          2,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 56,
+      "board_index": 5,
+      "case_name": "v28_dense_pairs_940006",
+      "query_name": "probe_risk_0_1",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          2,
+          4,
+          8,
+          5,
+          10,
+          9,
+          10,
+          1,
+          2,
+          6,
+          4,
+          8,
+          2,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 57,
+      "board_index": 5,
+      "case_name": "v28_dense_pairs_940006",
+      "query_name": "probe_risk_0_5",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          2,
+          4,
+          8,
+          5,
+          10,
+          9,
+          10,
+          1,
+          2,
+          6,
+          4,
+          8,
+          2,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 58,
+      "board_index": 5,
+      "case_name": "v28_dense_pairs_940006",
+      "query_name": "probe_risk_2",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          2,
+          4,
+          8,
+          5,
+          10,
+          9,
+          10,
+          1,
+          2,
+          6,
+          4,
+          8,
+          2,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 59,
+      "board_index": 5,
+      "case_name": "v28_dense_pairs_940006",
+      "query_name": "probe_goal_2_risk_0_5",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          2,
+          4,
+          8,
+          5,
+          10,
+          9,
+          10,
+          1,
+          2,
+          6,
+          4,
+          8,
+          2,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 60,
+      "board_index": 6,
+      "case_name": "v28_dense_pairs_940007",
+      "query_name": "risk_0",
+      "target_key": [
+        2,
+        [
+          1,
+          1,
+          4,
+          5,
+          6,
+          1,
+          9,
+          7,
+          4,
+          10,
+          8,
+          6,
+          7,
+          4,
+          8,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 61,
+      "board_index": 6,
+      "case_name": "v28_dense_pairs_940007",
+      "query_name": "risk_0_05",
+      "target_key": [
+        2,
+        [
+          1,
+          1,
+          4,
+          5,
+          6,
+          1,
+          9,
+          7,
+          4,
+          10,
+          8,
+          6,
+          7,
+          4,
+          8,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 62,
+      "board_index": 6,
+      "case_name": "v28_dense_pairs_940007",
+      "query_name": "risk_0_2",
+      "target_key": [
+        2,
+        [
+          1,
+          1,
+          4,
+          5,
+          6,
+          1,
+          9,
+          7,
+          4,
+          10,
+          8,
+          6,
+          7,
+          4,
+          8,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 63,
+      "board_index": 6,
+      "case_name": "v28_dense_pairs_940007",
+      "query_name": "risk_1",
+      "target_key": [
+        2,
+        [
+          1,
+          1,
+          4,
+          5,
+          6,
+          1,
+          9,
+          7,
+          4,
+          10,
+          8,
+          6,
+          7,
+          4,
+          8,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 64,
+      "board_index": 6,
+      "case_name": "v28_dense_pairs_940007",
+      "query_name": "risk_5",
+      "target_key": [
+        2,
+        [
+          1,
+          1,
+          4,
+          5,
+          6,
+          1,
+          9,
+          7,
+          4,
+          10,
+          8,
+          6,
+          7,
+          4,
+          8,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 65,
+      "board_index": 6,
+      "case_name": "v28_dense_pairs_940007",
+      "query_name": "goal_1_risk_1",
+      "target_key": [
+        2,
+        [
+          1,
+          1,
+          4,
+          5,
+          6,
+          1,
+          9,
+          7,
+          4,
+          10,
+          8,
+          6,
+          7,
+          4,
+          8,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 66,
+      "board_index": 6,
+      "case_name": "v28_dense_pairs_940007",
+      "query_name": "probe_risk_0_1",
+      "target_key": [
+        2,
+        [
+          1,
+          1,
+          4,
+          5,
+          6,
+          1,
+          9,
+          7,
+          4,
+          10,
+          8,
+          6,
+          7,
+          4,
+          8,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 67,
+      "board_index": 6,
+      "case_name": "v28_dense_pairs_940007",
+      "query_name": "probe_risk_0_5",
+      "target_key": [
+        2,
+        [
+          1,
+          1,
+          4,
+          5,
+          6,
+          1,
+          9,
+          7,
+          4,
+          10,
+          8,
+          6,
+          7,
+          4,
+          8,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 68,
+      "board_index": 6,
+      "case_name": "v28_dense_pairs_940007",
+      "query_name": "probe_risk_2",
+      "target_key": [
+        2,
+        [
+          1,
+          1,
+          4,
+          5,
+          6,
+          1,
+          9,
+          7,
+          4,
+          10,
+          8,
+          6,
+          7,
+          4,
+          8,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 69,
+      "board_index": 6,
+      "case_name": "v28_dense_pairs_940007",
+      "query_name": "probe_goal_2_risk_0_5",
+      "target_key": [
+        2,
+        [
+          1,
+          1,
+          4,
+          5,
+          6,
+          1,
+          9,
+          7,
+          4,
+          10,
+          8,
+          6,
+          7,
+          4,
+          8,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 70,
+      "board_index": 7,
+      "case_name": "v28_dense_pairs_940008",
+      "query_name": "risk_0",
+      "target_key": [
+        2,
+        [
+          4,
+          4,
+          3,
+          5,
+          3,
+          10,
+          9,
+          4,
+          10,
+          9,
+          10,
+          8,
+          2,
+          3,
+          10,
+          9
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 71,
+      "board_index": 7,
+      "case_name": "v28_dense_pairs_940008",
+      "query_name": "risk_0_05",
+      "target_key": [
+        2,
+        [
+          4,
+          4,
+          3,
+          5,
+          3,
+          10,
+          9,
+          4,
+          10,
+          9,
+          10,
+          8,
+          2,
+          3,
+          10,
+          9
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 72,
+      "board_index": 7,
+      "case_name": "v28_dense_pairs_940008",
+      "query_name": "risk_0_2",
+      "target_key": [
+        2,
+        [
+          4,
+          4,
+          3,
+          5,
+          3,
+          10,
+          9,
+          4,
+          10,
+          9,
+          10,
+          8,
+          2,
+          3,
+          10,
+          9
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 73,
+      "board_index": 7,
+      "case_name": "v28_dense_pairs_940008",
+      "query_name": "risk_1",
+      "target_key": [
+        2,
+        [
+          4,
+          4,
+          3,
+          5,
+          3,
+          10,
+          9,
+          4,
+          10,
+          9,
+          10,
+          8,
+          2,
+          3,
+          10,
+          9
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 74,
+      "board_index": 7,
+      "case_name": "v28_dense_pairs_940008",
+      "query_name": "risk_5",
+      "target_key": [
+        2,
+        [
+          4,
+          4,
+          3,
+          5,
+          3,
+          10,
+          9,
+          4,
+          10,
+          9,
+          10,
+          8,
+          2,
+          3,
+          10,
+          9
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 75,
+      "board_index": 7,
+      "case_name": "v28_dense_pairs_940008",
+      "query_name": "goal_1_risk_1",
+      "target_key": [
+        2,
+        [
+          4,
+          4,
+          3,
+          5,
+          3,
+          10,
+          9,
+          4,
+          10,
+          9,
+          10,
+          8,
+          2,
+          3,
+          10,
+          9
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 76,
+      "board_index": 7,
+      "case_name": "v28_dense_pairs_940008",
+      "query_name": "probe_risk_0_1",
+      "target_key": [
+        2,
+        [
+          4,
+          4,
+          3,
+          5,
+          3,
+          10,
+          9,
+          4,
+          10,
+          9,
+          10,
+          8,
+          2,
+          3,
+          10,
+          9
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 77,
+      "board_index": 7,
+      "case_name": "v28_dense_pairs_940008",
+      "query_name": "probe_risk_0_5",
+      "target_key": [
+        2,
+        [
+          4,
+          4,
+          3,
+          5,
+          3,
+          10,
+          9,
+          4,
+          10,
+          9,
+          10,
+          8,
+          2,
+          3,
+          10,
+          9
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 78,
+      "board_index": 7,
+      "case_name": "v28_dense_pairs_940008",
+      "query_name": "probe_risk_2",
+      "target_key": [
+        2,
+        [
+          4,
+          4,
+          3,
+          5,
+          3,
+          10,
+          9,
+          4,
+          10,
+          9,
+          10,
+          8,
+          2,
+          3,
+          10,
+          9
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 79,
+      "board_index": 7,
+      "case_name": "v28_dense_pairs_940008",
+      "query_name": "probe_goal_2_risk_0_5",
+      "target_key": [
+        2,
+        [
+          4,
+          4,
+          3,
+          5,
+          3,
+          10,
+          9,
+          4,
+          10,
+          9,
+          10,
+          8,
+          2,
+          3,
+          10,
+          9
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 80,
+      "board_index": 8,
+      "case_name": "v28_dense_pairs_940009",
+      "query_name": "risk_0",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          9,
+          2,
+          6,
+          2,
+          1,
+          8,
+          8,
+          3,
+          10,
+          9,
+          10,
+          5,
+          10,
+          7
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 81,
+      "board_index": 8,
+      "case_name": "v28_dense_pairs_940009",
+      "query_name": "risk_0_05",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          9,
+          2,
+          6,
+          2,
+          1,
+          8,
+          8,
+          3,
+          10,
+          9,
+          10,
+          5,
+          10,
+          7
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 82,
+      "board_index": 8,
+      "case_name": "v28_dense_pairs_940009",
+      "query_name": "risk_0_2",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          9,
+          2,
+          6,
+          2,
+          1,
+          8,
+          8,
+          3,
+          10,
+          9,
+          10,
+          5,
+          10,
+          7
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 83,
+      "board_index": 8,
+      "case_name": "v28_dense_pairs_940009",
+      "query_name": "risk_1",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          9,
+          2,
+          6,
+          2,
+          1,
+          8,
+          8,
+          3,
+          10,
+          9,
+          10,
+          5,
+          10,
+          7
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 84,
+      "board_index": 8,
+      "case_name": "v28_dense_pairs_940009",
+      "query_name": "risk_5",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          9,
+          2,
+          6,
+          2,
+          1,
+          8,
+          8,
+          3,
+          10,
+          9,
+          10,
+          5,
+          10,
+          7
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 85,
+      "board_index": 8,
+      "case_name": "v28_dense_pairs_940009",
+      "query_name": "goal_1_risk_1",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          9,
+          2,
+          6,
+          2,
+          1,
+          8,
+          8,
+          3,
+          10,
+          9,
+          10,
+          5,
+          10,
+          7
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 86,
+      "board_index": 8,
+      "case_name": "v28_dense_pairs_940009",
+      "query_name": "probe_risk_0_1",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          9,
+          2,
+          6,
+          2,
+          1,
+          8,
+          8,
+          3,
+          10,
+          9,
+          10,
+          5,
+          10,
+          7
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 87,
+      "board_index": 8,
+      "case_name": "v28_dense_pairs_940009",
+      "query_name": "probe_risk_0_5",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          9,
+          2,
+          6,
+          2,
+          1,
+          8,
+          8,
+          3,
+          10,
+          9,
+          10,
+          5,
+          10,
+          7
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 88,
+      "board_index": 8,
+      "case_name": "v28_dense_pairs_940009",
+      "query_name": "probe_risk_2",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          9,
+          2,
+          6,
+          2,
+          1,
+          8,
+          8,
+          3,
+          10,
+          9,
+          10,
+          5,
+          10,
+          7
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 89,
+      "board_index": 8,
+      "case_name": "v28_dense_pairs_940009",
+      "query_name": "probe_goal_2_risk_0_5",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          9,
+          2,
+          6,
+          2,
+          1,
+          8,
+          8,
+          3,
+          10,
+          9,
+          10,
+          5,
+          10,
+          7
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 90,
+      "board_index": 9,
+      "case_name": "v28_dense_pairs_940010",
+      "query_name": "risk_0",
+      "target_key": [
+        2,
+        [
+          10,
+          10,
+          5,
+          6,
+          1,
+          8,
+          1,
+          9,
+          3,
+          6,
+          8,
+          6,
+          4,
+          8,
+          8,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 91,
+      "board_index": 9,
+      "case_name": "v28_dense_pairs_940010",
+      "query_name": "risk_0_05",
+      "target_key": [
+        2,
+        [
+          10,
+          10,
+          5,
+          6,
+          1,
+          8,
+          1,
+          9,
+          3,
+          6,
+          8,
+          6,
+          4,
+          8,
+          8,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 92,
+      "board_index": 9,
+      "case_name": "v28_dense_pairs_940010",
+      "query_name": "risk_0_2",
+      "target_key": [
+        2,
+        [
+          10,
+          10,
+          5,
+          6,
+          1,
+          8,
+          1,
+          9,
+          3,
+          6,
+          8,
+          6,
+          4,
+          8,
+          8,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 93,
+      "board_index": 9,
+      "case_name": "v28_dense_pairs_940010",
+      "query_name": "risk_1",
+      "target_key": [
+        2,
+        [
+          10,
+          10,
+          5,
+          6,
+          1,
+          8,
+          1,
+          9,
+          3,
+          6,
+          8,
+          6,
+          4,
+          8,
+          8,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 94,
+      "board_index": 9,
+      "case_name": "v28_dense_pairs_940010",
+      "query_name": "risk_5",
+      "target_key": [
+        2,
+        [
+          10,
+          10,
+          5,
+          6,
+          1,
+          8,
+          1,
+          9,
+          3,
+          6,
+          8,
+          6,
+          4,
+          8,
+          8,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 95,
+      "board_index": 9,
+      "case_name": "v28_dense_pairs_940010",
+      "query_name": "goal_1_risk_1",
+      "target_key": [
+        2,
+        [
+          10,
+          10,
+          5,
+          6,
+          1,
+          8,
+          1,
+          9,
+          3,
+          6,
+          8,
+          6,
+          4,
+          8,
+          8,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 96,
+      "board_index": 9,
+      "case_name": "v28_dense_pairs_940010",
+      "query_name": "probe_risk_0_1",
+      "target_key": [
+        2,
+        [
+          10,
+          10,
+          5,
+          6,
+          1,
+          8,
+          1,
+          9,
+          3,
+          6,
+          8,
+          6,
+          4,
+          8,
+          8,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 97,
+      "board_index": 9,
+      "case_name": "v28_dense_pairs_940010",
+      "query_name": "probe_risk_0_5",
+      "target_key": [
+        2,
+        [
+          10,
+          10,
+          5,
+          6,
+          1,
+          8,
+          1,
+          9,
+          3,
+          6,
+          8,
+          6,
+          4,
+          8,
+          8,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 98,
+      "board_index": 9,
+      "case_name": "v28_dense_pairs_940010",
+      "query_name": "probe_risk_2",
+      "target_key": [
+        2,
+        [
+          10,
+          10,
+          5,
+          6,
+          1,
+          8,
+          1,
+          9,
+          3,
+          6,
+          8,
+          6,
+          4,
+          8,
+          8,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 99,
+      "board_index": 9,
+      "case_name": "v28_dense_pairs_940010",
+      "query_name": "probe_goal_2_risk_0_5",
+      "target_key": [
+        2,
+        [
+          10,
+          10,
+          5,
+          6,
+          1,
+          8,
+          1,
+          9,
+          3,
+          6,
+          8,
+          6,
+          4,
+          8,
+          8,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 100,
+      "board_index": 10,
+      "case_name": "v28_dense_pairs_940011",
+      "query_name": "risk_0",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          1,
+          10,
+          3,
+          2,
+          3,
+          9,
+          8,
+          10,
+          8,
+          3,
+          4,
+          5,
+          8,
+          2
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 101,
+      "board_index": 10,
+      "case_name": "v28_dense_pairs_940011",
+      "query_name": "risk_0_05",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          1,
+          10,
+          3,
+          2,
+          3,
+          9,
+          8,
+          10,
+          8,
+          3,
+          4,
+          5,
+          8,
+          2
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 102,
+      "board_index": 10,
+      "case_name": "v28_dense_pairs_940011",
+      "query_name": "risk_0_2",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          1,
+          10,
+          3,
+          2,
+          3,
+          9,
+          8,
+          10,
+          8,
+          3,
+          4,
+          5,
+          8,
+          2
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 103,
+      "board_index": 10,
+      "case_name": "v28_dense_pairs_940011",
+      "query_name": "risk_1",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          1,
+          10,
+          3,
+          2,
+          3,
+          9,
+          8,
+          10,
+          8,
+          3,
+          4,
+          5,
+          8,
+          2
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 104,
+      "board_index": 10,
+      "case_name": "v28_dense_pairs_940011",
+      "query_name": "risk_5",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          1,
+          10,
+          3,
+          2,
+          3,
+          9,
+          8,
+          10,
+          8,
+          3,
+          4,
+          5,
+          8,
+          2
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 105,
+      "board_index": 10,
+      "case_name": "v28_dense_pairs_940011",
+      "query_name": "goal_1_risk_1",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          1,
+          10,
+          3,
+          2,
+          3,
+          9,
+          8,
+          10,
+          8,
+          3,
+          4,
+          5,
+          8,
+          2
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 106,
+      "board_index": 10,
+      "case_name": "v28_dense_pairs_940011",
+      "query_name": "probe_risk_0_1",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          1,
+          10,
+          3,
+          2,
+          3,
+          9,
+          8,
+          10,
+          8,
+          3,
+          4,
+          5,
+          8,
+          2
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 107,
+      "board_index": 10,
+      "case_name": "v28_dense_pairs_940011",
+      "query_name": "probe_risk_0_5",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          1,
+          10,
+          3,
+          2,
+          3,
+          9,
+          8,
+          10,
+          8,
+          3,
+          4,
+          5,
+          8,
+          2
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 108,
+      "board_index": 10,
+      "case_name": "v28_dense_pairs_940011",
+      "query_name": "probe_risk_2",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          1,
+          10,
+          3,
+          2,
+          3,
+          9,
+          8,
+          10,
+          8,
+          3,
+          4,
+          5,
+          8,
+          2
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 109,
+      "board_index": 10,
+      "case_name": "v28_dense_pairs_940011",
+      "query_name": "probe_goal_2_risk_0_5",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          1,
+          10,
+          3,
+          2,
+          3,
+          9,
+          8,
+          10,
+          8,
+          3,
+          4,
+          5,
+          8,
+          2
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 110,
+      "board_index": 11,
+      "case_name": "v28_dense_pairs_940012",
+      "query_name": "risk_0",
+      "target_key": [
+        2,
+        [
+          9,
+          9,
+          10,
+          5,
+          7,
+          5,
+          6,
+          3,
+          3,
+          8,
+          10,
+          9,
+          7,
+          9,
+          10,
+          2
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 111,
+      "board_index": 11,
+      "case_name": "v28_dense_pairs_940012",
+      "query_name": "risk_0_05",
+      "target_key": [
+        2,
+        [
+          9,
+          9,
+          10,
+          5,
+          7,
+          5,
+          6,
+          3,
+          3,
+          8,
+          10,
+          9,
+          7,
+          9,
+          10,
+          2
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 112,
+      "board_index": 11,
+      "case_name": "v28_dense_pairs_940012",
+      "query_name": "risk_0_2",
+      "target_key": [
+        2,
+        [
+          9,
+          9,
+          10,
+          5,
+          7,
+          5,
+          6,
+          3,
+          3,
+          8,
+          10,
+          9,
+          7,
+          9,
+          10,
+          2
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 113,
+      "board_index": 11,
+      "case_name": "v28_dense_pairs_940012",
+      "query_name": "risk_1",
+      "target_key": [
+        2,
+        [
+          9,
+          9,
+          10,
+          5,
+          7,
+          5,
+          6,
+          3,
+          3,
+          8,
+          10,
+          9,
+          7,
+          9,
+          10,
+          2
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 114,
+      "board_index": 11,
+      "case_name": "v28_dense_pairs_940012",
+      "query_name": "risk_5",
+      "target_key": [
+        2,
+        [
+          9,
+          9,
+          10,
+          5,
+          7,
+          5,
+          6,
+          3,
+          3,
+          8,
+          10,
+          9,
+          7,
+          9,
+          10,
+          2
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 115,
+      "board_index": 11,
+      "case_name": "v28_dense_pairs_940012",
+      "query_name": "goal_1_risk_1",
+      "target_key": [
+        2,
+        [
+          9,
+          9,
+          10,
+          5,
+          7,
+          5,
+          6,
+          3,
+          3,
+          8,
+          10,
+          9,
+          7,
+          9,
+          10,
+          2
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 116,
+      "board_index": 11,
+      "case_name": "v28_dense_pairs_940012",
+      "query_name": "probe_risk_0_1",
+      "target_key": [
+        2,
+        [
+          9,
+          9,
+          10,
+          5,
+          7,
+          5,
+          6,
+          3,
+          3,
+          8,
+          10,
+          9,
+          7,
+          9,
+          10,
+          2
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 117,
+      "board_index": 11,
+      "case_name": "v28_dense_pairs_940012",
+      "query_name": "probe_risk_0_5",
+      "target_key": [
+        2,
+        [
+          9,
+          9,
+          10,
+          5,
+          7,
+          5,
+          6,
+          3,
+          3,
+          8,
+          10,
+          9,
+          7,
+          9,
+          10,
+          2
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 118,
+      "board_index": 11,
+      "case_name": "v28_dense_pairs_940012",
+      "query_name": "probe_risk_2",
+      "target_key": [
+        2,
+        [
+          9,
+          9,
+          10,
+          5,
+          7,
+          5,
+          6,
+          3,
+          3,
+          8,
+          10,
+          9,
+          7,
+          9,
+          10,
+          2
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 119,
+      "board_index": 11,
+      "case_name": "v28_dense_pairs_940012",
+      "query_name": "probe_goal_2_risk_0_5",
+      "target_key": [
+        2,
+        [
+          9,
+          9,
+          10,
+          5,
+          7,
+          5,
+          6,
+          3,
+          3,
+          8,
+          10,
+          9,
+          7,
+          9,
+          10,
+          2
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 120,
+      "board_index": 12,
+      "case_name": "v28_dense_pairs_940013",
+      "query_name": "risk_0",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          1,
+          10,
+          7,
+          3,
+          5,
+          2,
+          9,
+          1,
+          7,
+          7,
+          5,
+          8,
+          7,
+          1
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 121,
+      "board_index": 12,
+      "case_name": "v28_dense_pairs_940013",
+      "query_name": "risk_0_05",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          1,
+          10,
+          7,
+          3,
+          5,
+          2,
+          9,
+          1,
+          7,
+          7,
+          5,
+          8,
+          7,
+          1
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 122,
+      "board_index": 12,
+      "case_name": "v28_dense_pairs_940013",
+      "query_name": "risk_0_2",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          1,
+          10,
+          7,
+          3,
+          5,
+          2,
+          9,
+          1,
+          7,
+          7,
+          5,
+          8,
+          7,
+          1
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 123,
+      "board_index": 12,
+      "case_name": "v28_dense_pairs_940013",
+      "query_name": "risk_1",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          1,
+          10,
+          7,
+          3,
+          5,
+          2,
+          9,
+          1,
+          7,
+          7,
+          5,
+          8,
+          7,
+          1
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 124,
+      "board_index": 12,
+      "case_name": "v28_dense_pairs_940013",
+      "query_name": "risk_5",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          1,
+          10,
+          7,
+          3,
+          5,
+          2,
+          9,
+          1,
+          7,
+          7,
+          5,
+          8,
+          7,
+          1
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 125,
+      "board_index": 12,
+      "case_name": "v28_dense_pairs_940013",
+      "query_name": "goal_1_risk_1",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          1,
+          10,
+          7,
+          3,
+          5,
+          2,
+          9,
+          1,
+          7,
+          7,
+          5,
+          8,
+          7,
+          1
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 126,
+      "board_index": 12,
+      "case_name": "v28_dense_pairs_940013",
+      "query_name": "probe_risk_0_1",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          1,
+          10,
+          7,
+          3,
+          5,
+          2,
+          9,
+          1,
+          7,
+          7,
+          5,
+          8,
+          7,
+          1
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 127,
+      "board_index": 12,
+      "case_name": "v28_dense_pairs_940013",
+      "query_name": "probe_risk_0_5",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          1,
+          10,
+          7,
+          3,
+          5,
+          2,
+          9,
+          1,
+          7,
+          7,
+          5,
+          8,
+          7,
+          1
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 128,
+      "board_index": 12,
+      "case_name": "v28_dense_pairs_940013",
+      "query_name": "probe_risk_2",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          1,
+          10,
+          7,
+          3,
+          5,
+          2,
+          9,
+          1,
+          7,
+          7,
+          5,
+          8,
+          7,
+          1
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 129,
+      "board_index": 12,
+      "case_name": "v28_dense_pairs_940013",
+      "query_name": "probe_goal_2_risk_0_5",
+      "target_key": [
+        2,
+        [
+          7,
+          7,
+          1,
+          10,
+          7,
+          3,
+          5,
+          2,
+          9,
+          1,
+          7,
+          7,
+          5,
+          8,
+          7,
+          1
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 130,
+      "board_index": 13,
+      "case_name": "v28_dense_pairs_940014",
+      "query_name": "risk_0",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          8,
+          9,
+          7,
+          10,
+          3,
+          8,
+          2,
+          8,
+          4,
+          3,
+          6,
+          2,
+          4,
+          7
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 131,
+      "board_index": 13,
+      "case_name": "v28_dense_pairs_940014",
+      "query_name": "risk_0_05",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          8,
+          9,
+          7,
+          10,
+          3,
+          8,
+          2,
+          8,
+          4,
+          3,
+          6,
+          2,
+          4,
+          7
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 132,
+      "board_index": 13,
+      "case_name": "v28_dense_pairs_940014",
+      "query_name": "risk_0_2",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          8,
+          9,
+          7,
+          10,
+          3,
+          8,
+          2,
+          8,
+          4,
+          3,
+          6,
+          2,
+          4,
+          7
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 133,
+      "board_index": 13,
+      "case_name": "v28_dense_pairs_940014",
+      "query_name": "risk_1",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          8,
+          9,
+          7,
+          10,
+          3,
+          8,
+          2,
+          8,
+          4,
+          3,
+          6,
+          2,
+          4,
+          7
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 134,
+      "board_index": 13,
+      "case_name": "v28_dense_pairs_940014",
+      "query_name": "risk_5",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          8,
+          9,
+          7,
+          10,
+          3,
+          8,
+          2,
+          8,
+          4,
+          3,
+          6,
+          2,
+          4,
+          7
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 135,
+      "board_index": 13,
+      "case_name": "v28_dense_pairs_940014",
+      "query_name": "goal_1_risk_1",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          8,
+          9,
+          7,
+          10,
+          3,
+          8,
+          2,
+          8,
+          4,
+          3,
+          6,
+          2,
+          4,
+          7
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 136,
+      "board_index": 13,
+      "case_name": "v28_dense_pairs_940014",
+      "query_name": "probe_risk_0_1",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          8,
+          9,
+          7,
+          10,
+          3,
+          8,
+          2,
+          8,
+          4,
+          3,
+          6,
+          2,
+          4,
+          7
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 137,
+      "board_index": 13,
+      "case_name": "v28_dense_pairs_940014",
+      "query_name": "probe_risk_0_5",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          8,
+          9,
+          7,
+          10,
+          3,
+          8,
+          2,
+          8,
+          4,
+          3,
+          6,
+          2,
+          4,
+          7
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 138,
+      "board_index": 13,
+      "case_name": "v28_dense_pairs_940014",
+      "query_name": "probe_risk_2",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          8,
+          9,
+          7,
+          10,
+          3,
+          8,
+          2,
+          8,
+          4,
+          3,
+          6,
+          2,
+          4,
+          7
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 139,
+      "board_index": 13,
+      "case_name": "v28_dense_pairs_940014",
+      "query_name": "probe_goal_2_risk_0_5",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          8,
+          9,
+          7,
+          10,
+          3,
+          8,
+          2,
+          8,
+          4,
+          3,
+          6,
+          2,
+          4,
+          7
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 140,
+      "board_index": 14,
+      "case_name": "v28_dense_pairs_940015",
+      "query_name": "risk_0",
+      "target_key": [
+        2,
+        [
+          10,
+          10,
+          1,
+          5,
+          4,
+          10,
+          8,
+          2,
+          9,
+          5,
+          5,
+          8,
+          5,
+          3,
+          5,
+          5
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 141,
+      "board_index": 14,
+      "case_name": "v28_dense_pairs_940015",
+      "query_name": "risk_0_05",
+      "target_key": [
+        2,
+        [
+          10,
+          10,
+          1,
+          5,
+          4,
+          10,
+          8,
+          2,
+          9,
+          5,
+          5,
+          8,
+          5,
+          3,
+          5,
+          5
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 142,
+      "board_index": 14,
+      "case_name": "v28_dense_pairs_940015",
+      "query_name": "risk_0_2",
+      "target_key": [
+        2,
+        [
+          10,
+          10,
+          1,
+          5,
+          4,
+          10,
+          8,
+          2,
+          9,
+          5,
+          5,
+          8,
+          5,
+          3,
+          5,
+          5
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 143,
+      "board_index": 14,
+      "case_name": "v28_dense_pairs_940015",
+      "query_name": "risk_1",
+      "target_key": [
+        2,
+        [
+          10,
+          10,
+          1,
+          5,
+          4,
+          10,
+          8,
+          2,
+          9,
+          5,
+          5,
+          8,
+          5,
+          3,
+          5,
+          5
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 144,
+      "board_index": 14,
+      "case_name": "v28_dense_pairs_940015",
+      "query_name": "risk_5",
+      "target_key": [
+        2,
+        [
+          10,
+          10,
+          1,
+          5,
+          4,
+          10,
+          8,
+          2,
+          9,
+          5,
+          5,
+          8,
+          5,
+          3,
+          5,
+          5
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 145,
+      "board_index": 14,
+      "case_name": "v28_dense_pairs_940015",
+      "query_name": "goal_1_risk_1",
+      "target_key": [
+        2,
+        [
+          10,
+          10,
+          1,
+          5,
+          4,
+          10,
+          8,
+          2,
+          9,
+          5,
+          5,
+          8,
+          5,
+          3,
+          5,
+          5
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 146,
+      "board_index": 14,
+      "case_name": "v28_dense_pairs_940015",
+      "query_name": "probe_risk_0_1",
+      "target_key": [
+        2,
+        [
+          10,
+          10,
+          1,
+          5,
+          4,
+          10,
+          8,
+          2,
+          9,
+          5,
+          5,
+          8,
+          5,
+          3,
+          5,
+          5
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 147,
+      "board_index": 14,
+      "case_name": "v28_dense_pairs_940015",
+      "query_name": "probe_risk_0_5",
+      "target_key": [
+        2,
+        [
+          10,
+          10,
+          1,
+          5,
+          4,
+          10,
+          8,
+          2,
+          9,
+          5,
+          5,
+          8,
+          5,
+          3,
+          5,
+          5
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 148,
+      "board_index": 14,
+      "case_name": "v28_dense_pairs_940015",
+      "query_name": "probe_risk_2",
+      "target_key": [
+        2,
+        [
+          10,
+          10,
+          1,
+          5,
+          4,
+          10,
+          8,
+          2,
+          9,
+          5,
+          5,
+          8,
+          5,
+          3,
+          5,
+          5
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 149,
+      "board_index": 14,
+      "case_name": "v28_dense_pairs_940015",
+      "query_name": "probe_goal_2_risk_0_5",
+      "target_key": [
+        2,
+        [
+          10,
+          10,
+          1,
+          5,
+          4,
+          10,
+          8,
+          2,
+          9,
+          5,
+          5,
+          8,
+          5,
+          3,
+          5,
+          5
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 150,
+      "board_index": 15,
+      "case_name": "v28_dense_pairs_940016",
+      "query_name": "risk_0",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          8,
+          7,
+          1,
+          7,
+          1,
+          9,
+          3,
+          9,
+          3,
+          4,
+          7,
+          4,
+          3,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 151,
+      "board_index": 15,
+      "case_name": "v28_dense_pairs_940016",
+      "query_name": "risk_0_05",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          8,
+          7,
+          1,
+          7,
+          1,
+          9,
+          3,
+          9,
+          3,
+          4,
+          7,
+          4,
+          3,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 152,
+      "board_index": 15,
+      "case_name": "v28_dense_pairs_940016",
+      "query_name": "risk_0_2",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          8,
+          7,
+          1,
+          7,
+          1,
+          9,
+          3,
+          9,
+          3,
+          4,
+          7,
+          4,
+          3,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 153,
+      "board_index": 15,
+      "case_name": "v28_dense_pairs_940016",
+      "query_name": "risk_1",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          8,
+          7,
+          1,
+          7,
+          1,
+          9,
+          3,
+          9,
+          3,
+          4,
+          7,
+          4,
+          3,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 154,
+      "board_index": 15,
+      "case_name": "v28_dense_pairs_940016",
+      "query_name": "risk_5",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          8,
+          7,
+          1,
+          7,
+          1,
+          9,
+          3,
+          9,
+          3,
+          4,
+          7,
+          4,
+          3,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 155,
+      "board_index": 15,
+      "case_name": "v28_dense_pairs_940016",
+      "query_name": "goal_1_risk_1",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          8,
+          7,
+          1,
+          7,
+          1,
+          9,
+          3,
+          9,
+          3,
+          4,
+          7,
+          4,
+          3,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 156,
+      "board_index": 15,
+      "case_name": "v28_dense_pairs_940016",
+      "query_name": "probe_risk_0_1",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          8,
+          7,
+          1,
+          7,
+          1,
+          9,
+          3,
+          9,
+          3,
+          4,
+          7,
+          4,
+          3,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 157,
+      "board_index": 15,
+      "case_name": "v28_dense_pairs_940016",
+      "query_name": "probe_risk_0_5",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          8,
+          7,
+          1,
+          7,
+          1,
+          9,
+          3,
+          9,
+          3,
+          4,
+          7,
+          4,
+          3,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 158,
+      "board_index": 15,
+      "case_name": "v28_dense_pairs_940016",
+      "query_name": "probe_risk_2",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          8,
+          7,
+          1,
+          7,
+          1,
+          9,
+          3,
+          9,
+          3,
+          4,
+          7,
+          4,
+          3,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    },
+    {
+      "context_index": 159,
+      "board_index": 15,
+      "case_name": "v28_dense_pairs_940016",
+      "query_name": "probe_goal_2_risk_0_5",
+      "target_key": [
+        2,
+        [
+          2,
+          2,
+          8,
+          7,
+          1,
+          7,
+          1,
+          9,
+          3,
+          9,
+          3,
+          4,
+          7,
+          4,
+          3,
+          8
+        ]
+      ],
+      "requested_batch_count": 32,
+      "initial_batches": 32
+    }
+  ],
+  "queries": {
+    "risk_0": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.0,
+      "goal_bonus": 0.0
+    },
+    "risk_0_05": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.05,
+      "goal_bonus": 0.0
+    },
+    "risk_0_2": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.2,
+      "goal_bonus": 0.0
+    },
+    "risk_1": {
+      "reward_weight": 1.0,
+      "failure_penalty": 1.0,
+      "goal_bonus": 0.0
+    },
+    "risk_5": {
+      "reward_weight": 1.0,
+      "failure_penalty": 5.0,
+      "goal_bonus": 0.0
+    },
+    "goal_1_risk_1": {
+      "reward_weight": 1.0,
+      "failure_penalty": 1.0,
+      "goal_bonus": 1.0
+    },
+    "probe_risk_0_1": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.1,
+      "goal_bonus": 0.0
+    },
+    "probe_risk_0_5": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.5,
+      "goal_bonus": 0.0
+    },
+    "probe_risk_2": {
+      "reward_weight": 1.0,
+      "failure_penalty": 2.0,
+      "goal_bonus": 0.0
+    },
+    "probe_goal_2_risk_0_5": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.5,
+      "goal_bonus": 2.0
+    }
+  },
+  "source_query_order": [
+    "risk_0",
+    "risk_0_05",
+    "risk_0_2",
+    "risk_1",
+    "risk_5",
+    "goal_1_risk_1",
+    "probe_risk_0_1",
+    "probe_risk_0_5",
+    "probe_risk_2",
+    "probe_goal_2_risk_0_5"
+  ],
+  "replicates": [
+    {
+      "replicate_index": 0,
+      "base_seed": 942001
+    },
+    {
+      "replicate_index": 1,
+      "base_seed": 942002
+    },
+    {
+      "replicate_index": 2,
+      "base_seed": 942003
+    },
+    {
+      "replicate_index": 3,
+      "base_seed": 942004
+    },
+    {
+      "replicate_index": 4,
+      "base_seed": 942005
+    },
+    {
+      "replicate_index": 5,
+      "base_seed": 942006
+    },
+    {
+      "replicate_index": 6,
+      "base_seed": 942007
+    },
+    {
+      "replicate_index": 7,
+      "base_seed": 942008
+    },
+    {
+      "replicate_index": 8,
+      "base_seed": 942009
+    },
+    {
+      "replicate_index": 9,
+      "base_seed": 942010
+    },
+    {
+      "replicate_index": 10,
+      "base_seed": 942011
+    },
+    {
+      "replicate_index": 11,
+      "base_seed": 942012
+    },
+    {
+      "replicate_index": 12,
+      "base_seed": 942013
+    },
+    {
+      "replicate_index": 13,
+      "base_seed": 942014
+    },
+    {
+      "replicate_index": 14,
+      "base_seed": 942015
+    },
+    {
+      "replicate_index": 15,
+      "base_seed": 942016
+    }
+  ],
+  "replicate_count": 16,
+  "board_count": 16,
+  "query_count": 10,
+  "context_count": 160,
+  "prefix_batches_per_board": 32,
+  "requested_batches_per_arm": 32,
+  "samples_per_batch": 256,
+  "total_path_batch_cap": 128,
+  "expected_pair_count": 2560,
+  "expected_arm_count": 5120,
+  "schema": "acfqp.controlled_predictive_gap_frontier_plan.v31",
+  "status": "FROZEN_BEFORE_CANDIDATE_SAMPLING",
+  "protocol": "specs/CONTROLLED_PREDICTIVE_GAP_FRONTIER_V31.md",
+  "source_plan": "reports/controlled_predictive_new_starts_plan_v28.json",
+  "source_prefixes": "reports/controlled_predictive_new_starts_prefixes_v28.json.gz",
+  "source_endpoints": "reports/controlled_predictive_new_starts_endpoints_v28.jsonl.gz",
+  "source_result": "reports/controlled_predictive_new_starts_v28.json.gz",
+  "arms": [
+    "CACHED",
+    "GAP_FRONTIER"
+  ],
+  "source_historical_physical_batches": 164352,
+  "source_historical_physical_draws": 42074112,
+  "maximum_new_physical_batches": 163840,
+  "maximum_new_physical_draws": 41943040,
+  "expected_prefix_restores": 160,
+  "new_prefix_sampling_calls": 0,
+  "new_prefix_physical_draws": 0,
+  "primary_metrics": [
+    "total_regret",
+    "independent_query_seconds"
+  ],
+  "primary_comparison": [
+    "GAP_FRONTIER",
+    "CACHED"
+  ],
+  "decomposition_tolerance": 1e-10,
+  "diagnostic_context_index": 69,
+  "scientific_gate": "NOT_A_FORMAL_GATE",
+  "u006_assurance_started": false,
+  "original_deferred_24_case_cohort_loaded_or_executed": false,
+  "selection_rule": {
+    "domain": "ACTIVE H2 target with observed root actions; other supported inherited cases fall back to original selector",
+    "incumbent": "current empirical cache.policy[target]",
+    "challenger": "largest same-cache q_upper over other legal root actions; lexicographic action tie",
+    "signed_reach": "math.fsum of empirical incumbent probabilities minus challenger probabilities for each common H1 successor",
+    "eligible": "retained ACTIVE H1 state, nonzero signed reach, unobserved legal action with q_upper > state lower",
+    "score": "abs(signed_reach) * (q_upper[action] - lower[state])",
+    "tie_break": "lexicographic (state_key,action)",
+    "fallback": "original structural select_row, then inherited balanced repeat selection",
+    "truth_access": false,
+    "new_stop_rule": false
+  },
+  "primary_quality_eligibility": "Whole stream: every160pair source-valid, CACHED baseline reproduced, bothpolicies evaluable with true reach/regret identities, completedK or sharednormal NO_ELIGIBLE_CANDIDATE at same actualn<K. No padding.",
+  "primary_cost_eligibility": "All source-valid streams, independent of policy availability or matched budget; all actual costs additionally retained unconditionally.",
+  "primary_unit": "suffix stream, first average10queries/board then16boards equally; pairedtwo-sided95%StudenttMC conditional fixedprefix",
+  "independent_query_cost": "old full prefix_sampling_seconds + old full single_query_prepare_seconds + current full prefix_restore_seconds + current local_whole_run_seconds; none amortized; actual restoration globally160 once",
+  "historical_and_new_costs": "Old V28 42074112draws retained separately; physically regenerated CACHED and candidate batches both charged as new, up41943040draws. No newprefixacquisition. Evaluation/retention/checks overhead separate.",
+  "evidence_scope": "Exploratory method comparison on previously exposed160contexts/16streams; no independent scientific confirmation or newGate."
+}

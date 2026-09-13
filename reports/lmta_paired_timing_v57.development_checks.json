@@ -1,0 +1,28 @@
+{
+  "schema": "acfqp.lmta_paired_timing_development.v57",
+  "final_test_results": {
+    "kernel": {
+      "passed": 8,
+      "failed": 0,
+      "pytest_seconds": 0.27
+    },
+    "runner": {
+      "passed": 2,
+      "failed": 0,
+      "pytest_seconds": 0.26
+    },
+    "analysis": {
+      "passed": 11,
+      "failed": 0,
+      "pytest_seconds": 2.99
+    },
+    "unique_tests": 21,
+    "total_test_executions": 21
+  },
+  "attempt_ledgers": [
+    "lmta_paired_timing_v57.kernel_checks.json",
+    "lmta_paired_timing_v57.runner_checks.json",
+    "lmta_paired_timing_v57.analysis_checks.json"
+  ],
+  "scope": "All development work is in the referenced ledgers. This index adds no test runs or fees."
+}

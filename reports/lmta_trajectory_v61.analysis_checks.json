@@ -1,0 +1,61 @@
+{
+  "schema": "acfqp.lmta_trajectory_analysis_checks.v61",
+  "development_work": {
+    "independent_trajectory_replays": 9,
+    "certificate_queries": 21,
+    "verification_random_draws": 54,
+    "verification_environment_steps": 18,
+    "new_graphs": 0,
+    "new_planner_calls": 0,
+    "new_full_policy_evaluations": 0,
+    "new_RL_updates": 0,
+    "new_MCTS_calls": 0,
+    "scope": "Hand-authored trajectory replay; counted validation draws are not main environment samples."
+  },
+  "test_attempts": [
+    {
+      "command": [
+        ".venv-lmta-v42/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_lmta_trajectory_analysis_v61.py"
+      ],
+      "exit_code": 1,
+      "wall_seconds": 0.6334577079978772,
+      "stdout": "F...                                                                     [100%]\n=================================== FAILURES ===================================\n________ test_independent_seeded_replay_and_wrong_transition_detection _________\n\n    def test_independent_seeded_replay_and_wrong_transition_detection():\n        inputs = fixture()\n        result = checked(*inputs)\n        assert not result['errors'] and result['verification']['verification_random_draws'] == 6\n        inputs[0]['decisions'][1]['next_statuses'][3] = 0\n>       assert checked(*inputs)['errors'] == {'independent_transition_replay':1}\nE       AssertionError: assert {'decision_st...on_replay': 1} == {'independent...on_replay': 1}\nE         \nE         Omitting 1 identical items, use -vv to show\nE         Left contains 1 more item:\nE         {'decision_state_chain': 1}\nE         Use -v to get more diff\n\ntests/test_lmta_trajectory_analysis_v61.py:62: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_lmta_trajectory_analysis_v61.py::test_independent_seeded_replay_and_wrong_transition_detection\n1 failed, 3 passed in 0.22s\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv-lmta-v42/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_lmta_trajectory_analysis_v61.py::test_independent_seeded_replay_and_wrong_transition_detection"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.622296717017889,
+      "stdout": ".                                                                        [100%]\n1 passed in 0.19s\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv-lmta-v42/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_lmta_trajectory_analysis_v61.py::test_one_day_counter_aggregation_preserves_zero_outcome_meaning"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.6281110770069063,
+      "stdout": ".                                                                        [100%]\n1 passed in 0.21s\n",
+      "stderr": ""
+    }
+  ],
+  "unique_tests": 5,
+  "test_executions": 6,
+  "all_unique_tests_passed": true,
+  "repair": "Copied the intentionally corrupted next-state list so the fixture does not also alter the subsequent input state; analyzer unchanged.",
+  "analysis_aggregation_repair": "Counter addition removes zero fields; missing actual outcome totals now mean zero. Only the new regression test was executed, with no replay draws or planning."
+}

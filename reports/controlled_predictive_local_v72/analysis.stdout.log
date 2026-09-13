@@ -1,0 +1,45 @@
+{
+  "complete": true,
+  "all_artifacts_routing_and_portable_preserved": true,
+  "inherited_v69_policy_evidence_valid": true,
+  "finite_h1_board_materialization_removed": true,
+  "local_boundary_candidates_still_enumerated": true,
+  "ratios": {
+    "FULL_LOCAL_vs_FULL_BASE": {
+      "method_total_seconds": 0.8894455029913267,
+      "concrete_states": 1.0,
+      "generated_successors": 1.0,
+      "concrete_active_states": 1.0,
+      "h1_materialized_states": 1.0,
+      "higher_materialized_active_states": 1.0,
+      "active_cells": 1.0,
+      "planning_action_rows": 1.0,
+      "package_bytes": 1.0,
+      "router_bytes": 1.0
+    },
+    "COMPOSED_LOCAL_vs_COMPOSED_BASE": {
+      "method_total_seconds": 0.8767312339102769,
+      "concrete_states": 0.10914590045367874,
+      "generated_successors": 0.09578842574557417,
+      "concrete_active_states": 0.10914590045367874,
+      "h1_materialized_states": 0.0,
+      "higher_materialized_active_states": 1.0,
+      "active_cells": 1.0,
+      "planning_action_rows": 1.0,
+      "package_bytes": 0.5390817318549388,
+      "router_bytes": 0.11159543548290005
+    },
+    "COMPOSED_LOCAL_vs_FULL_LOCAL": {
+      "method_total_seconds": 0.7067098474572804,
+      "concrete_states": 0.10914590045367874,
+      "generated_successors": 0.09578842574557417,
+      "concrete_active_states": 0.10914590045367874,
+      "h1_materialized_states": 0.0,
+      "higher_materialized_active_states": 1.0,
+      "active_cells": 0.2568873693207969,
+      "planning_action_rows": 0.25688911551617905,
+      "package_bytes": 0.2571437302560459,
+      "router_bytes": 0.10925837772488571
+    }
+  }
+}

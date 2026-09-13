@@ -1,0 +1,556 @@
+{
+  "complete": true,
+  "declared_targets": 32,
+  "completed_targets": 32,
+  "incomplete_targets": [],
+  "source_learning_reused": true,
+  "all_artifacts_routing_and_portable_preserved": true,
+  "inherited_v69_policy_evidence_valid": true,
+  "inherited_v69_policy_metrics": {
+    "FULL": {
+      "root_queries": 448,
+      "optimal_executable_root_queries": 448,
+      "strict_query_switches": {
+        "required": 1227,
+        "violations": 0
+      }
+    },
+    "COMPOSED": {
+      "root_queries": 448,
+      "optimal_executable_root_queries": 448,
+      "strict_query_switches": {
+        "required": 1227,
+        "violations": 0
+      }
+    }
+  },
+  "inheritance_source": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_composition_v69/analysis.json",
+  "active_observations": 15209,
+  "matched_observations": 60,
+  "arms": {
+    "FULL_ENUM": {
+      "complete_targets": 32,
+      "artifacts_preserved": true,
+      "portable_passed": true,
+      "construction_counts": {
+        "concrete_states": 131923,
+        "learned_terminal_checks": 131923,
+        "learned_swipe_calls": 511276,
+        "learned_line_rewrites": 2045104,
+        "concrete_active_states": 15209,
+        "learned_spawn_outcomes": 226074,
+        "concrete_action_rows": 47067,
+        "concrete_successor_entries": 226074,
+        "h0_boards_generated": 201106,
+        "terminal_reuses": 116614,
+        "model_transition_rows": 47067,
+        "model_successor_entries": 68898,
+        "concrete_memo_hits": 94183,
+        "active_states": 15209,
+        "terminal_states": 100,
+        "registered_states": 15309,
+        "concrete_h0_states": 115277,
+        "concrete_states_by_h": {
+          "0": 115277,
+          "1": 14659,
+          "2": 1811,
+          "3": 168,
+          "4": 8
+        },
+        "concrete_active_by_h": {
+          "1": 13549,
+          "2": 1500,
+          "3": 152,
+          "4": 8
+        },
+        "active_cells_by_h": {
+          "1": 13549,
+          "2": 1500,
+          "3": 152,
+          "4": 8
+        }
+      },
+      "concrete_active_states": 15209,
+      "active_cells_by_h": {
+        "1": 13549,
+        "2": 1500,
+        "3": 152,
+        "4": 8
+      },
+      "concrete_active_by_h": {
+        "1": 13549,
+        "2": 1500,
+        "3": 152,
+        "4": 8
+      },
+      "concrete_states_by_h": {
+        "0": 115277,
+        "1": 14659,
+        "2": 1811,
+        "3": 168,
+        "4": 8
+      },
+      "planning_counts": {
+        "active_states": 212926,
+        "state_action_rows": 658938,
+        "outcomes": 964572,
+        "visited_cells": 214326
+      },
+      "routing_counts": {
+        "observations": 60,
+        "map_lookups": 60,
+        "supported_observations": 60
+      },
+      "package_bytes": 2617890,
+      "router_bytes": 661725,
+      "times": {
+        "case_method_seconds": 10.704611413064413,
+        "attributed_rule_compile_seconds": 0.0,
+        "method_total_seconds": 10.704611413064413,
+        "case_stages": {
+          "construction": 6.681870786123909,
+          "payload_labels": 0.11110729997744784,
+          "build_release_gc": 0.10624578082934022,
+          "upstream_total": 6.899268394918181,
+          "deployment_total": 3.8053430181462318,
+          "total": 10.704611413064413
+        },
+        "deployment_stages": {
+          "router_compile": 0.00012168585089966655,
+          "serialize": 0.06493721785955131,
+          "worker_command": 3.637185067811515,
+          "load": 0.5816640901612118,
+          "index": 0.017791569931432605,
+          "planning": 1.9923874409869313,
+          "routing": 0.00019480905029922724,
+          "release_gc": 0.10301786818308756,
+          "total": 3.8053430181462318,
+          "worker_overhead": 1.0451471576816402
+        },
+        "worker_command_seconds_included_in_method": 3.637185067811515
+      }
+    },
+    "COMPOSED_ENUM": {
+      "complete_targets": 32,
+      "artifacts_preserved": true,
+      "portable_passed": true,
+      "construction_counts": {
+        "concrete_states": 131923,
+        "learned_terminal_checks": 131923,
+        "learned_swipe_calls": 511276,
+        "learned_line_rewrites": 2045104,
+        "concrete_active_states": 15209,
+        "learned_spawn_outcomes": 226074,
+        "concrete_action_rows": 47067,
+        "concrete_successor_entries": 226074,
+        "h0_boards_generated": 201106,
+        "terminal_reuses": 116614,
+        "model_transition_rows": 12091,
+        "model_successor_entries": 23589,
+        "contract_reuses": 11302,
+        "concrete_memo_hits": 94183,
+        "active_states": 3907,
+        "terminal_states": 100,
+        "registered_states": 4007,
+        "concrete_h0_states": 115277,
+        "concrete_states_by_h": {
+          "0": 115277,
+          "1": 14659,
+          "2": 1811,
+          "3": 168,
+          "4": 8
+        },
+        "concrete_active_by_h": {
+          "1": 13549,
+          "2": 1500,
+          "3": 152,
+          "4": 8
+        },
+        "active_cells_by_h": {
+          "1": 2367,
+          "2": 1380,
+          "3": 152,
+          "4": 8
+        }
+      },
+      "concrete_active_states": 15209,
+      "active_cells_by_h": {
+        "1": 2367,
+        "2": 1380,
+        "3": 152,
+        "4": 8
+      },
+      "concrete_active_by_h": {
+        "1": 13549,
+        "2": 1500,
+        "3": 152,
+        "4": 8
+      },
+      "concrete_states_by_h": {
+        "0": 115277,
+        "1": 14659,
+        "2": 1811,
+        "3": 168,
+        "4": 8
+      },
+      "planning_counts": {
+        "active_states": 54698,
+        "state_action_rows": 169274,
+        "outcomes": 330246,
+        "visited_cells": 56098
+      },
+      "routing_counts": {
+        "observations": 60,
+        "map_lookups": 60,
+        "supported_observations": 60
+      },
+      "package_bytes": 1248742,
+      "router_bytes": 647867,
+      "times": {
+        "case_method_seconds": 9.03857947140932,
+        "attributed_rule_compile_seconds": 0.0,
+        "method_total_seconds": 9.03857947140932,
+        "case_stages": {
+          "construction": 6.774774379795417,
+          "payload_labels": 0.04997943015769124,
+          "build_release_gc": 0.09678855101810768,
+          "upstream_total": 6.921580265683588,
+          "deployment_total": 2.116999205725733,
+          "total": 9.03857947140932
+        },
+        "deployment_stages": {
+          "router_compile": 8.990016067400575e-05,
+          "serialize": 0.03925389802316204,
+          "worker_command": 1.9829671059851535,
+          "load": 0.44407713192049414,
+          "index": 0.0064443398732692,
+          "planning": 0.6074497951194644,
+          "routing": 0.00017412396846339107,
+          "release_gc": 0.09460608212975785,
+          "total": 2.116999205725733,
+          "worker_overhead": 0.9248217151034623
+        },
+        "worker_command_seconds_included_in_method": 1.9829671059851535
+      }
+    },
+    "FULL_SYMBOLIC": {
+      "complete_targets": 32,
+      "artifacts_preserved": true,
+      "portable_passed": true,
+      "construction_counts": {
+        "h0_boards_generated": 0,
+        "concrete_successor_entries": 23103,
+        "concrete_states": 15209,
+        "learned_terminal_checks": 15209,
+        "learned_swipe_calls": 60836,
+        "learned_line_rewrites": 243344,
+        "concrete_active_states": 15209,
+        "symbolic_predicate_calls": 47067,
+        "symbolic_input_scan_cells": 1506144,
+        "potential_spawn_outcomes": 226074,
+        "symbolic_spawn_rank_classifications": 94134,
+        "symbolic_board_materializations": 23103,
+        "symbolic_terminal_mass_items": 45795,
+        "symbolic_successor_entries": 68898,
+        "concrete_action_rows": 47067,
+        "symbolic_emitted_outcomes": 68898,
+        "symbolic_adjacency_tests": 202025,
+        "symbolic_terminal_boards_avoided": 202971,
+        "direct_terminal_mass_entries": 45795,
+        "terminal_reuses": 45695,
+        "model_transition_rows": 47067,
+        "model_successor_entries": 68898,
+        "concrete_memo_hits": 7926,
+        "active_states": 15209,
+        "terminal_states": 100,
+        "registered_states": 15309,
+        "concrete_h0_states": 0,
+        "concrete_states_by_h": {
+          "1": 13549,
+          "2": 1500,
+          "3": 152,
+          "4": 8
+        },
+        "concrete_active_by_h": {
+          "1": 13549,
+          "2": 1500,
+          "3": 152,
+          "4": 8
+        },
+        "active_cells_by_h": {
+          "1": 13549,
+          "2": 1500,
+          "3": 152,
+          "4": 8
+        }
+      },
+      "concrete_active_states": 15209,
+      "active_cells_by_h": {
+        "1": 13549,
+        "2": 1500,
+        "3": 152,
+        "4": 8
+      },
+      "concrete_active_by_h": {
+        "1": 13549,
+        "2": 1500,
+        "3": 152,
+        "4": 8
+      },
+      "concrete_states_by_h": {
+        "1": 13549,
+        "2": 1500,
+        "3": 152,
+        "4": 8
+      },
+      "planning_counts": {
+        "active_states": 212926,
+        "state_action_rows": 658938,
+        "outcomes": 964572,
+        "visited_cells": 214326
+      },
+      "routing_counts": {
+        "observations": 60,
+        "map_lookups": 60,
+        "supported_observations": 60
+      },
+      "package_bytes": 2617890,
+      "router_bytes": 661725,
+      "times": {
+        "case_method_seconds": 5.6107517869677395,
+        "attributed_rule_compile_seconds": 5.011970642954111e-06,
+        "method_total_seconds": 5.610756798938382,
+        "case_stages": {
+          "construction": 1.652188814128749,
+          "payload_labels": 0.06823855690890923,
+          "build_release_gc": 0.09818753210129216,
+          "upstream_total": 1.8186549119418487,
+          "deployment_total": 3.7920968750258908,
+          "total": 5.6107517869677395
+        },
+        "deployment_stages": {
+          "router_compile": 9.885488543659449e-05,
+          "serialize": 0.06578430911758915,
+          "worker_command": 3.6237126208725385,
+          "load": 0.591879837855231,
+          "index": 0.016208183951675892,
+          "planning": 1.9649356980226003,
+          "routing": 0.000175369787029922,
+          "release_gc": 0.10241688467795029,
+          "total": 3.7920968750258908,
+          "worker_overhead": 1.0505135312560014
+        },
+        "worker_command_seconds_included_in_method": 3.6237126208725385
+      }
+    },
+    "COMPOSED_SYMBOLIC": {
+      "complete_targets": 32,
+      "artifacts_preserved": true,
+      "portable_passed": true,
+      "construction_counts": {
+        "h0_boards_generated": 0,
+        "concrete_successor_entries": 23103,
+        "concrete_states": 15209,
+        "learned_terminal_checks": 15209,
+        "learned_swipe_calls": 60836,
+        "learned_line_rewrites": 243344,
+        "concrete_active_states": 15209,
+        "symbolic_predicate_calls": 47067,
+        "symbolic_input_scan_cells": 1506144,
+        "potential_spawn_outcomes": 226074,
+        "symbolic_spawn_rank_classifications": 94134,
+        "symbolic_board_materializations": 23103,
+        "symbolic_terminal_mass_items": 45795,
+        "symbolic_successor_entries": 68898,
+        "concrete_action_rows": 47067,
+        "symbolic_emitted_outcomes": 68898,
+        "symbolic_adjacency_tests": 202025,
+        "symbolic_terminal_boards_avoided": 202971,
+        "direct_terminal_mass_entries": 45795,
+        "terminal_reuses": 45695,
+        "model_transition_rows": 12091,
+        "model_successor_entries": 23589,
+        "contract_reuses": 11302,
+        "concrete_memo_hits": 7926,
+        "active_states": 3907,
+        "terminal_states": 100,
+        "registered_states": 4007,
+        "concrete_h0_states": 0,
+        "concrete_states_by_h": {
+          "1": 13549,
+          "2": 1500,
+          "3": 152,
+          "4": 8
+        },
+        "concrete_active_by_h": {
+          "1": 13549,
+          "2": 1500,
+          "3": 152,
+          "4": 8
+        },
+        "active_cells_by_h": {
+          "1": 2367,
+          "2": 1380,
+          "3": 152,
+          "4": 8
+        }
+      },
+      "concrete_active_states": 15209,
+      "active_cells_by_h": {
+        "1": 2367,
+        "2": 1380,
+        "3": 152,
+        "4": 8
+      },
+      "concrete_active_by_h": {
+        "1": 13549,
+        "2": 1500,
+        "3": 152,
+        "4": 8
+      },
+      "concrete_states_by_h": {
+        "1": 13549,
+        "2": 1500,
+        "3": 152,
+        "4": 8
+      },
+      "planning_counts": {
+        "active_states": 54698,
+        "state_action_rows": 169274,
+        "outcomes": 330246,
+        "visited_cells": 56098
+      },
+      "routing_counts": {
+        "observations": 60,
+        "map_lookups": 60,
+        "supported_observations": 60
+      },
+      "package_bytes": 1248742,
+      "router_bytes": 647867,
+      "times": {
+        "case_method_seconds": 3.8649983249488287,
+        "attributed_rule_compile_seconds": 5.011970642954111e-06,
+        "method_total_seconds": 3.8650033369194716,
+        "case_stages": {
+          "construction": 1.6885107698035426,
+          "payload_labels": 0.019007646071258932,
+          "build_release_gc": 0.08154423290397972,
+          "upstream_total": 1.7890948569984175,
+          "deployment_total": 2.075903467950411,
+          "total": 3.8649983249488287
+        },
+        "deployment_stages": {
+          "router_compile": 8.431897731497884e-05,
+          "serialize": 0.03737122530583292,
+          "worker_command": 1.948137583967764,
+          "load": 0.43598496593767777,
+          "index": 0.007062235090415925,
+          "planning": 0.5938192490721121,
+          "routing": 0.00016750290524214506,
+          "release_gc": 0.09023269591853023,
+          "total": 2.075903467950411,
+          "worker_overhead": 0.911103630962316
+        },
+        "worker_command_seconds_included_in_method": 1.948137583967764
+      }
+    }
+  },
+  "ratios": {
+    "FULL_SYMBOLIC_vs_FULL_ENUM": {
+      "method_total_seconds": 0.5241439023270617,
+      "concrete_states": 0.11528694768918232,
+      "generated_successors": 0.10219220255314632,
+      "concrete_active_states": 1.0,
+      "active_cells": 1.0,
+      "planning_action_rows": 1.0,
+      "package_bytes": 1.0,
+      "router_bytes": 1.0
+    },
+    "COMPOSED_SYMBOLIC_vs_COMPOSED_ENUM": {
+      "method_total_seconds": 0.42761181103127804,
+      "concrete_states": 0.11528694768918232,
+      "generated_successors": 0.10219220255314632,
+      "concrete_active_states": 1.0,
+      "active_cells": 1.0,
+      "planning_action_rows": 1.0,
+      "package_bytes": 1.0,
+      "router_bytes": 1.0
+    },
+    "COMPOSED_SYMBOLIC_vs_FULL_SYMBOLIC": {
+      "method_total_seconds": 0.6888559735205014,
+      "concrete_states": 1.0,
+      "generated_successors": 1.0,
+      "concrete_active_states": 1.0,
+      "active_cells": 0.2568873693207969,
+      "planning_action_rows": 0.25688911551617905,
+      "package_bytes": 0.47700323543006007,
+      "router_bytes": 0.9790577656881635
+    }
+  },
+  "effects": {
+    "FULL_SYMBOLIC_vs_FULL_ENUM": {
+      "isolated_factor": "terminal_construction",
+      "saved_concrete_states": 116714,
+      "saved_generated_successors": 202971,
+      "candidate_h0_boards_generated": 0,
+      "baseline_h0_boards_generated": 201106,
+      "concrete_active_states_delta": 0,
+      "active_cells_delta": 0,
+      "finite_method_cost_benefit": true
+    },
+    "COMPOSED_SYMBOLIC_vs_COMPOSED_ENUM": {
+      "isolated_factor": "terminal_construction",
+      "saved_concrete_states": 116714,
+      "saved_generated_successors": 202971,
+      "candidate_h0_boards_generated": 0,
+      "baseline_h0_boards_generated": 201106,
+      "concrete_active_states_delta": 0,
+      "active_cells_delta": 0,
+      "finite_method_cost_benefit": true
+    },
+    "COMPOSED_SYMBOLIC_vs_FULL_SYMBOLIC": {
+      "isolated_factor": "state_quotient",
+      "saved_concrete_states": 0,
+      "saved_generated_successors": 0,
+      "candidate_h0_boards_generated": 0,
+      "baseline_h0_boards_generated": 0,
+      "concrete_active_states_delta": 0,
+      "active_cells_delta": -11302,
+      "finite_method_cost_benefit": true
+    }
+  },
+  "terminal_generation_reduction_established": true,
+  "nonterminal_distinct_states_reduced": false,
+  "general_strategic_learning_solved": false,
+  "actual_execution": {
+    "arm_method_seconds": 29.2189409963903,
+    "rule_compile_seconds": 5.011970642954111e-06,
+    "rule_compile_counts": {
+      "compiled_programs": 1,
+      "compiled_spawn_ranks": 2,
+      "topology_edges": 24
+    },
+    "rule_compile_executions": 1,
+    "construction_executions": 128,
+    "cold_worker_executions": 128,
+    "verification_seconds": 1.0636909978929907,
+    "audit_counts": {
+      "full_rows": 47067,
+      "full_outcome_terms": 68898,
+      "composed_rows": 12091,
+      "composed_outcome_terms": 23589,
+      "full_state_contract_checks": 15309,
+      "joint_rows_verified": 47067,
+      "candidate_label_checks": 15209,
+      "retained_active_route_checks": 15209,
+      "portable_route_checks": 60
+    },
+    "case_cleanup_seconds": 0.09538900316692889,
+    "summed_case_seconds": 30.641070267825853,
+    "runner_wall_seconds": 30.658952013996895,
+    "peak_rss_bytes": 70578176
+  },
+  "timing_scope": "Each arm is built and cold-loaded independently once per target. Method totals sum case times.total and attribute one complete rule compilation to each SYMBOLIC arm. Rule compilation actually executes once and is counted once in actual_execution. Deployment, worker wall time, and stage durations are already included in method totals. Frozen source learning is a historical expense, and verification is outside method cost. Timings are one descriptive run.",
+  "evidence_scope": "The same 32 frozen V69 supports and rule are compared in a 2x2 design. Inheritance requires exact kernels, all active labels, policies, routes, and portable results with valid audits. Symbolic construction avoids terminal board materialization; concrete nonterminal states and active abstract cells are reported separately. This is not new strategic generalization or a new ground-policy experiment.",
+  "analysis_seconds_before_write": 0.005562060046941042
+}

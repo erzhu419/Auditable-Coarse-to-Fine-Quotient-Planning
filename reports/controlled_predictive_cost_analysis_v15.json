@@ -1,0 +1,311 @@
+{
+  "schema": "controlled_predictive_cost_analysis_v15",
+  "status": "PASS",
+  "source_status": "DEVELOPMENT_COMPLETE",
+  "case_seed_runs": 48,
+  "query_contexts_per_method": 480,
+  "methods": {
+    "full_state_empirical": {
+      "query_context_count": 480,
+      "mean_expected_batches": 230.875,
+      "mean_expected_distinct_rows": 230.875,
+      "mean_expected_first_batches_including_warm": 230.875,
+      "mean_expected_repeat_batches": 0.0,
+      "maximum_path_batches": 758,
+      "maximum_path_distinct_rows": 758,
+      "mean_expected_draws": 59104.0,
+      "mean_standalone_ms": 206.6517965462123,
+      "mean_ten_query_amortized_ms": 21.193034777352892,
+      "mean_suffix_ms": 0.004142837734122994,
+      "mean_suffix_ms_by_stage": {
+        "action_and_fallback": 0.004142837734122994
+      },
+      "physical_suffix_provider_counts": {},
+      "scope": "Per episode deployment means; physical suffix counts separately sum all enumerated histories. Full benchmarks are not128-batch methods."
+    },
+    "exact_empirical_quotient": {
+      "query_context_count": 480,
+      "mean_expected_batches": 230.875,
+      "mean_expected_distinct_rows": 230.875,
+      "mean_expected_first_batches_including_warm": 230.875,
+      "mean_expected_repeat_batches": 0.0,
+      "maximum_path_batches": 758,
+      "maximum_path_distinct_rows": 758,
+      "mean_expected_draws": 59104.0,
+      "mean_standalone_ms": 205.20635366858872,
+      "mean_ten_query_amortized_ms": 20.62839640059568,
+      "mean_suffix_ms": 0.0024291983459416196,
+      "mean_suffix_ms_by_stage": {
+        "action_and_fallback": 0.0024291983459416196
+      },
+      "physical_suffix_provider_counts": {},
+      "scope": "Per episode deployment means; physical suffix counts separately sum all enumerated histories. Full benchmarks are not128-batch methods."
+    },
+    "online_mass_bound": {
+      "query_context_count": 480,
+      "mean_expected_batches": 30.616979166666667,
+      "mean_expected_distinct_rows": 30.616979166666667,
+      "mean_expected_first_batches_including_warm": 30.616979166666667,
+      "mean_expected_repeat_batches": 0.0,
+      "maximum_path_batches": 92,
+      "maximum_path_distinct_rows": 92,
+      "mean_expected_draws": 7837.946666666667,
+      "mean_standalone_ms": 36.18457933618534,
+      "mean_ten_query_amortized_ms": 12.627956405794023,
+      "mean_suffix_ms": 10.010553857972766,
+      "mean_suffix_ms_by_stage": {
+        "acquisition": 6.187853564917228,
+        "action": 0.0012400373103378956,
+        "actual_state_profile": 0.004618030541770942,
+        "query_initialization_clone": 0.1053750602901952,
+        "sampled_model_update_and_profiles": 1.4129314102622932,
+        "solve_and_frontier": 2.298535754650941
+      },
+      "physical_suffix_provider_counts": {
+        "exact_transition_row_calls": 5377,
+        "first_batch_requests": 5377,
+        "physical_draws": 1376512,
+        "row_requests": 5377,
+        "sampled_successor_entries_returned": 22473,
+        "support_entries_enumerated": 22482
+      },
+      "scope": "Per episode deployment means; physical suffix counts separately sum all enumerated histories. Full benchmarks are not128-batch methods.",
+      "mean_shared_warm_attributed_ms": 26.17402547821257,
+      "mean_conversion_attributed_ms": 0.0,
+      "mean_total_initial_preparation_ms": 26.17402547821257
+    },
+    "online_balanced_resampling": {
+      "query_context_count": 480,
+      "mean_expected_batches": 98.30708333333334,
+      "mean_expected_distinct_rows": 30.778333333333332,
+      "mean_expected_first_batches_including_warm": 30.778333333333332,
+      "mean_expected_repeat_batches": 67.52875,
+      "maximum_path_batches": 128,
+      "maximum_path_distinct_rows": 92,
+      "mean_expected_draws": 25166.613333333335,
+      "mean_standalone_ms": 136.85116796825096,
+      "mean_ten_query_amortized_ms": 113.13989169904599,
+      "mean_suffix_ms": 110.5053054469121,
+      "mean_suffix_ms_by_stage": {
+        "acquisition": 50.39792360793781,
+        "action": 0.0015461618272638589,
+        "actual_state_profile": 0.00536534099543402,
+        "query_initialization_clone": 0.1450115896962719,
+        "resampling_score_and_selection": 50.7994700200486,
+        "sampled_model_update_and_profiles": 3.438386049676267,
+        "solve_and_structural_frontier": 5.717602676730452
+      },
+      "physical_suffix_provider_counts": {
+        "exact_transition_row_calls": 188062,
+        "first_batch_requests": 5504,
+        "physical_draws": 48143872,
+        "repeat_batch_requests": 182558,
+        "row_requests": 188062,
+        "sampled_successor_entries_returned": 1047707,
+        "support_entries_enumerated": 1048448
+      },
+      "scope": "Per episode deployment means; physical suffix counts separately sum all enumerated histories. Full benchmarks are not128-batch methods.",
+      "mean_shared_warm_attributed_ms": 26.17402547821257,
+      "mean_conversion_attributed_ms": 0.17183704312628834,
+      "mean_total_initial_preparation_ms": 26.34586252133886
+    },
+    "online_directed_resampling": {
+      "query_context_count": 480,
+      "mean_expected_batches": 98.30708333333334,
+      "mean_expected_distinct_rows": 30.85895833333333,
+      "mean_expected_first_batches_including_warm": 30.85895833333333,
+      "mean_expected_repeat_batches": 67.44812499999999,
+      "maximum_path_batches": 128,
+      "maximum_path_distinct_rows": 92,
+      "mean_expected_draws": 25166.613333333335,
+      "mean_standalone_ms": 132.5803381160101,
+      "mean_ten_query_amortized_ms": 108.86906184680514,
+      "mean_suffix_ms": 106.23447559467127,
+      "mean_suffix_ms_by_stage": {
+        "acquisition": 49.535510083059854,
+        "action": 0.0017166295451547572,
+        "actual_state_profile": 0.005469013599580379,
+        "query_initialization_clone": 0.14767599611028953,
+        "resampling_score_and_selection": 48.328241897651296,
+        "sampled_model_update_and_profiles": 3.254708092869064,
+        "solve_and_structural_frontier": 4.961153881836018
+      },
+      "physical_suffix_provider_counts": {
+        "exact_transition_row_calls": 188062,
+        "first_batch_requests": 5580,
+        "physical_draws": 48143872,
+        "repeat_batch_requests": 182482,
+        "row_requests": 188062,
+        "sampled_successor_entries_returned": 1024278,
+        "support_entries_enumerated": 1024980
+      },
+      "scope": "Per episode deployment means; physical suffix counts separately sum all enumerated histories. Full benchmarks are not128-batch methods.",
+      "mean_shared_warm_attributed_ms": 26.17402547821257,
+      "mean_conversion_attributed_ms": 0.17183704312628834,
+      "mean_total_initial_preparation_ms": 26.34586252133886
+    }
+  },
+  "directed_versus_balanced_actual_consumption": {
+    "query_context_count": 480,
+    "difference_direction": "DIRECTED_MINUS_BALANCED",
+    "expected_count_numeric_tolerance": 1e-09,
+    "fields": {
+      "expected_total_batches": {
+        "exact_equal_count": 480,
+        "exact_different_count": 0,
+        "numeric_equal_count": 480,
+        "numeric_different_count": 0,
+        "directed_more_count": 0,
+        "directed_less_count": 0,
+        "mean_difference": 0.0,
+        "maximum_absolute_difference": 0.0,
+        "largest_absolute_difference_context": {
+          "case_name": "v6_crossing_rescue_pair_0",
+          "sample_seed": 832101,
+          "query_name": "risk_0",
+          "directed": 96.0,
+          "balanced": 96.0,
+          "difference": 0.0
+        },
+        "minimum_difference_context": {
+          "case_name": "v6_crossing_rescue_pair_0",
+          "sample_seed": 832101,
+          "query_name": "risk_0",
+          "directed": 96.0,
+          "balanced": 96.0,
+          "difference": 0.0
+        },
+        "maximum_difference_context": {
+          "case_name": "v6_crossing_rescue_pair_0",
+          "sample_seed": 832101,
+          "query_name": "risk_0",
+          "directed": 96.0,
+          "balanced": 96.0,
+          "difference": 0.0
+        }
+      },
+      "maximum_total_batches": {
+        "exact_equal_count": 480,
+        "exact_different_count": 0,
+        "numeric_equal_count": 480,
+        "numeric_different_count": 0,
+        "directed_more_count": 0,
+        "directed_less_count": 0,
+        "mean_difference": 0.0,
+        "maximum_absolute_difference": 0,
+        "largest_absolute_difference_context": {
+          "case_name": "v6_crossing_rescue_pair_0",
+          "sample_seed": 832101,
+          "query_name": "risk_0",
+          "directed": 96,
+          "balanced": 96,
+          "difference": 0
+        },
+        "minimum_difference_context": {
+          "case_name": "v6_crossing_rescue_pair_0",
+          "sample_seed": 832101,
+          "query_name": "risk_0",
+          "directed": 96,
+          "balanced": 96,
+          "difference": 0
+        },
+        "maximum_difference_context": {
+          "case_name": "v6_crossing_rescue_pair_0",
+          "sample_seed": 832101,
+          "query_name": "risk_0",
+          "directed": 96,
+          "balanced": 96,
+          "difference": 0
+        }
+      }
+    },
+    "both_fields_exact_equal_count": 480,
+    "both_fields_numeric_equal_count": 480,
+    "scope": "A common128-batch upper limit does not imply equal actual consumption; terminal/no-eligible stopping and execution histories can differ."
+  },
+  "shared_preparation": {
+    "physical_warm_trajectories": 48,
+    "warm_first_batches": 1046,
+    "warm_physical_draws": 267776,
+    "mean_warm_preparation_ms": 26.17402547821257,
+    "physical_integer_count_conversions": 48,
+    "actual_conversion_seconds_counted_once": 0.00824817807006184,
+    "mean_conversion_ms": 0.17183704312628834,
+    "conversion_work_counts": {
+      "branch_clones": 48,
+      "clone_cache_entries_copied": 231350,
+      "clone_profile_entries_copied": 3474,
+      "clone_row_entries_copied": 1046,
+      "conversion_outcome_entries_copied": 4177,
+      "conversion_rows_copied": 1046,
+      "warm_batch_conversions": 48
+    }
+  },
+  "physical_acquisition": {
+    "warm_first_batches": 1046,
+    "all_history_suffix_counts": {
+      "exact_transition_row_calls": 381501,
+      "first_batch_requests": 16461,
+      "physical_draws": 97664256,
+      "row_requests": 381501,
+      "sampled_successor_entries_returned": 2094458,
+      "support_entries_enumerated": 2095910,
+      "repeat_batch_requests": 365040
+    },
+    "full_benchmark_shared_first_batches": 11082,
+    "full_benchmark_physical_draws_counted_once": 2836992,
+    "total_first_batch_requests": 28589,
+    "total_repeat_batch_requests": 365040,
+    "total_batch_requests": 393629,
+    "total_physical_draws": 100769024,
+    "first_request_scope": "A first batch can be physically requested again on another history. This is a request count, not the cardinality of a global row-key union."
+  },
+  "recorded_physical_time_components_seconds": {
+    "actual_baseline_validation_seconds": 1.7927832319983281,
+    "actual_complete_closure_seconds": 2.765125705016544,
+    "actual_environment_assembly_seconds": 0.04875320295104757,
+    "actual_exact_reference_seconds": 0.5237888450064929,
+    "actual_full_benchmark_compile_and_plan_seconds": 0.5689746400312288,
+    "actual_full_benchmark_inventory_serialization_seconds": 0.6438849739497527,
+    "actual_full_target_sampling_seconds": 1.4557017589831958,
+    "actual_history_evaluation_seconds": 781.3151755603903,
+    "actual_shared_conversion_seconds": 0.00824817807006184,
+    "actual_warm_trajectory_seconds": 1.265423339078552,
+    "source_setup_seconds": 0.0
+  },
+  "time_aggregation_scope": "The history-evaluation total already includes initial query and sibling clones. The warm-trajectory total already includes its prefix snapshot. Do not add these subcomponents again, or add method-attributed preparation to physical totals. Counterfactual branch totals are not deployment expectations.",
+  "checks_executed_by_name": {
+    "all48_declared_runs_completed": 1,
+    "all480_query_contexts_retained": 1,
+    "batch_to_draw_conversion": 2400,
+    "distinct_rows_not_more_than_batches": 2400,
+    "suffix_stage_seconds_sum": 2400,
+    "physical_suffix_method_total": 21,
+    "online128_batch_path_cap": 1440,
+    "warm_and_conversion_attribution": 1440,
+    "standalone_and_ten_query_attribution": 1440,
+    "deployment_first_repeat_and_warm_balance": 1440,
+    "physical_batch_calls_are_all_paid": 1440,
+    "shared_warm_first_batches_only": 48,
+    "one_conversion_preserves_initial_counts": 48,
+    "physical_acquisition_totals": 3,
+    "shared_work_counted_once": 1,
+    "source_cost_zero": 1,
+    "baseline48_warm_and480_tree_reproduction": 1
+  },
+  "finding_count": 0,
+  "findings": [],
+  "baseline_reference_validation": {
+    "prefix_comparison_count": 48,
+    "prefix_equal_count": 48,
+    "execution_comparison_count": 480,
+    "execution_equal_count": 480,
+    "all_prefixes_equal": true,
+    "all_execution_trees_equal": true
+  },
+  "scope": "Descriptive analysis of the single retained V15 run. No sampling, planning, new policy evaluation, confidence claim, or change to the frozen experiment.",
+  "source_artifact": "reports/controlled_predictive_resampling_v15.json.gz",
+  "source_gzip_bytes": 12797899,
+  "source_load_seconds": 16.254011204000562,
+  "cost_analysis_seconds": 0.021416559000499547
+}

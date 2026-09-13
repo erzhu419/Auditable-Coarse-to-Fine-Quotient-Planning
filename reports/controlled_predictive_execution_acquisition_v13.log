@@ -1,0 +1,577 @@
+{"case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_crossing_rescue_pair_0", "query": "risk_0", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "query": "risk_0_05", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "query": "risk_0_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "query": "risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "query": "risk_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "query": "goal_1_risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "query": "probe_risk_0_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "query": "probe_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "query": "probe_risk_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "query": "probe_goal_2_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_crossing_rescue_pair_0", "query": "risk_0", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "query": "risk_0_05", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "query": "risk_0_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "query": "risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "query": "risk_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "query": "goal_1_risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "query": "probe_risk_0_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "query": "probe_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "query": "probe_risk_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "query": "probe_goal_2_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_crossing_rescue_pair_0", "rows": 128, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_crossing_rescue_pair_0", "query": "risk_0", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "query": "risk_0_05", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "query": "risk_0_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "query": "risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "query": "risk_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "query": "goal_1_risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "query": "probe_risk_0_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "query": "probe_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "query": "probe_risk_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_0", "query": "probe_goal_2_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_crossing_rescue_pair_1", "query": "risk_0", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "query": "risk_0_05", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "query": "risk_0_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "query": "risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "query": "risk_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "query": "goal_1_risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "query": "probe_risk_0_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "query": "probe_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "query": "probe_risk_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "query": "probe_goal_2_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_crossing_rescue_pair_1", "query": "risk_0", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "query": "risk_0_05", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "query": "risk_0_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "query": "risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "query": "risk_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "query": "goal_1_risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "query": "probe_risk_0_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "query": "probe_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "query": "probe_risk_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "query": "probe_goal_2_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_crossing_rescue_pair_1", "rows": 128, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_crossing_rescue_pair_1", "query": "risk_0", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "query": "risk_0_05", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "query": "risk_0_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "query": "risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "query": "risk_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "query": "goal_1_risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "query": "probe_risk_0_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "query": "probe_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "query": "probe_risk_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_1", "query": "probe_goal_2_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_crossing_rescue_pair_2", "query": "risk_0", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "query": "risk_0_05", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "query": "risk_0_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "query": "risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "query": "risk_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "query": "goal_1_risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "query": "probe_risk_0_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "query": "probe_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "query": "probe_risk_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "query": "probe_goal_2_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_crossing_rescue_pair_2", "query": "risk_0", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "query": "risk_0_05", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "query": "risk_0_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "query": "risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "query": "risk_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "query": "goal_1_risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "query": "probe_risk_0_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "query": "probe_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "query": "probe_risk_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "query": "probe_goal_2_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_crossing_rescue_pair_2", "rows": 128, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_crossing_rescue_pair_2", "query": "risk_0", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "query": "risk_0_05", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "query": "risk_0_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "query": "risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "query": "risk_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "query": "goal_1_risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "query": "probe_risk_0_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "query": "probe_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "query": "probe_risk_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_2", "query": "probe_goal_2_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_crossing_rescue_pair_3", "query": "risk_0", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "query": "risk_0_05", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "query": "risk_0_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "query": "risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "query": "risk_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "query": "goal_1_risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "query": "probe_risk_0_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "query": "probe_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "query": "probe_risk_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "query": "probe_goal_2_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_crossing_rescue_pair_3", "query": "risk_0", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "query": "risk_0_05", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "query": "risk_0_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "query": "risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "query": "risk_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "query": "goal_1_risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "query": "probe_risk_0_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "query": "probe_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "query": "probe_risk_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "query": "probe_goal_2_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_crossing_rescue_pair_3", "rows": 128, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_crossing_rescue_pair_3", "query": "risk_0", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "query": "risk_0_05", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "query": "risk_0_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "query": "risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "query": "risk_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "query": "goal_1_risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "query": "probe_risk_0_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "query": "probe_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "query": "probe_risk_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossing_rescue_pair_3", "query": "probe_goal_2_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_spawn_edge_rescue_0", "query": "risk_0", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "query": "risk_0_05", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "query": "risk_0_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "query": "risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "query": "risk_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "query": "goal_1_risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "query": "probe_risk_0_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "query": "probe_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "query": "probe_risk_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "query": "probe_goal_2_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_spawn_edge_rescue_0", "query": "risk_0", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "query": "risk_0_05", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "query": "risk_0_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "query": "risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "query": "risk_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "query": "goal_1_risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "query": "probe_risk_0_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "query": "probe_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "query": "probe_risk_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "query": "probe_goal_2_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_spawn_edge_rescue_0", "rows": 16, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_spawn_edge_rescue_0", "query": "risk_0", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "query": "risk_0_05", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "query": "risk_0_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "query": "risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "query": "risk_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "query": "goal_1_risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "query": "probe_risk_0_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "query": "probe_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "query": "probe_risk_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_0", "query": "probe_goal_2_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "rows": 8, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_spawn_edge_rescue_1", "rows": 8, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_spawn_edge_rescue_1", "query": "risk_0", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "query": "risk_0_05", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "query": "risk_0_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "query": "risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "query": "risk_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "query": "goal_1_risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "query": "probe_risk_0_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "query": "probe_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "query": "probe_risk_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "query": "probe_goal_2_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "rows": 8, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_spawn_edge_rescue_1", "rows": 8, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_spawn_edge_rescue_1", "query": "risk_0", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "query": "risk_0_05", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "query": "risk_0_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "query": "risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "query": "risk_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "query": "goal_1_risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "query": "probe_risk_0_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "query": "probe_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "query": "probe_risk_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "query": "probe_goal_2_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "rows": 8, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_spawn_edge_rescue_1", "rows": 8, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_spawn_edge_rescue_1", "query": "risk_0", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "query": "risk_0_05", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "query": "risk_0_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "query": "risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "query": "risk_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "query": "goal_1_risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "query": "probe_risk_0_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "query": "probe_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "query": "probe_risk_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_1", "query": "probe_goal_2_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_spawn_edge_rescue_2", "query": "risk_0", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "query": "risk_0_05", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "query": "risk_0_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "query": "risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "query": "risk_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "query": "goal_1_risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "query": "probe_risk_0_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "query": "probe_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "query": "probe_risk_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "query": "probe_goal_2_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_spawn_edge_rescue_2", "query": "risk_0", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "query": "risk_0_05", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "query": "risk_0_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "query": "risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "query": "risk_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "query": "goal_1_risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "query": "probe_risk_0_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "query": "probe_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "query": "probe_risk_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "query": "probe_goal_2_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_spawn_edge_rescue_2", "rows": 12, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_spawn_edge_rescue_2", "query": "risk_0", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "query": "risk_0_05", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "query": "risk_0_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "query": "risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "query": "risk_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "query": "goal_1_risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "query": "probe_risk_0_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "query": "probe_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "query": "probe_risk_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_2", "query": "probe_goal_2_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "rows": 10, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_spawn_edge_rescue_3", "rows": 10, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_spawn_edge_rescue_3", "query": "risk_0", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "query": "risk_0_05", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "query": "risk_0_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "query": "risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "query": "risk_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "query": "goal_1_risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "query": "probe_risk_0_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "query": "probe_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "query": "probe_risk_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "query": "probe_goal_2_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "rows": 10, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_spawn_edge_rescue_3", "rows": 10, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_spawn_edge_rescue_3", "query": "risk_0", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "query": "risk_0_05", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "query": "risk_0_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "query": "risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "query": "risk_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "query": "goal_1_risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "query": "probe_risk_0_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "query": "probe_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "query": "probe_risk_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "query": "probe_goal_2_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "rows": 10, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_spawn_edge_rescue_3", "rows": 10, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_spawn_edge_rescue_3", "query": "risk_0", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "query": "risk_0_05", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "query": "risk_0_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "query": "risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "query": "risk_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "query": "goal_1_risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "query": "probe_risk_0_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "query": "probe_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "query": "probe_risk_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_spawn_edge_rescue_3", "query": "probe_goal_2_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "rows": 20, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "rows": 20, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "risk_0", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "risk_0_05", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "risk_0_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "risk_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "goal_1_risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "probe_risk_0_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "probe_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "probe_risk_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "probe_goal_2_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "rows": 14, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "rows": 14, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "risk_0", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "risk_0_05", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "risk_0_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "risk_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "goal_1_risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "probe_risk_0_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "probe_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "probe_risk_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "probe_goal_2_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "rows": 17, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "rows": 17, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "risk_0", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "risk_0_05", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "risk_0_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "risk_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "goal_1_risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "probe_risk_0_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "probe_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "probe_risk_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_0", "query": "probe_goal_2_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "rows": 18, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "rows": 18, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "risk_0", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "risk_0_05", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "risk_0_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "risk_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "goal_1_risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "probe_risk_0_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "probe_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "probe_risk_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "probe_goal_2_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "rows": 18, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "rows": 18, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "risk_0", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "risk_0_05", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "risk_0_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "risk_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "goal_1_risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "probe_risk_0_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "probe_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "probe_risk_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "probe_goal_2_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "rows": 18, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "rows": 18, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "risk_0", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "risk_0_05", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "risk_0_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "risk_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "goal_1_risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "probe_risk_0_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "probe_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "probe_risk_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_1", "query": "probe_goal_2_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "rows": 40, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "rows": 40, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "risk_0", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "risk_0_05", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "risk_0_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "risk_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "goal_1_risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "probe_risk_0_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "probe_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "probe_risk_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "probe_goal_2_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "rows": 37, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "rows": 37, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "risk_0", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "risk_0_05", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "risk_0_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "risk_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "goal_1_risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "probe_risk_0_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "probe_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "probe_risk_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "probe_goal_2_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "rows": 36, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "rows": 36, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "risk_0", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "risk_0_05", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "risk_0_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "risk_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "goal_1_risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "probe_risk_0_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "probe_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "probe_risk_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_2", "query": "probe_goal_2_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "rows": 42, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "rows": 42, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "risk_0", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "risk_0_05", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "risk_0_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "risk_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "goal_1_risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "probe_risk_0_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "probe_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "probe_risk_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "probe_goal_2_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "rows": 42, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "rows": 42, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "risk_0", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "risk_0_05", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "risk_0_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "risk_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "goal_1_risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "probe_risk_0_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "probe_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "probe_risk_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "probe_goal_2_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "rows": 42, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "rows": 42, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "risk_0", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "risk_0_05", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "risk_0_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "risk_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "goal_1_risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "probe_risk_0_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "probe_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "probe_risk_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_crossed_vacancy_goal_detour_3", "query": "probe_goal_2_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "rows": 12, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_control_last_pair_spawn_risk", "rows": 12, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "risk_0", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "risk_0_05", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "risk_0_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "risk_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "goal_1_risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "probe_risk_0_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "probe_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "probe_risk_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "probe_goal_2_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "rows": 12, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_control_last_pair_spawn_risk", "rows": 12, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "risk_0", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "risk_0_05", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "risk_0_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "risk_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "goal_1_risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "probe_risk_0_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "probe_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "probe_risk_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "probe_goal_2_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "rows": 12, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_control_last_pair_spawn_risk", "rows": 12, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "risk_0", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "risk_0_05", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "risk_0_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "risk_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "goal_1_risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "probe_risk_0_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "probe_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "probe_risk_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_last_pair_spawn_risk", "query": "probe_goal_2_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "rows": 128, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_control_dense_merge_choice", "rows": 128, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_control_dense_merge_choice", "query": "risk_0", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "query": "risk_0_05", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "query": "risk_0_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "query": "risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "query": "risk_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "query": "goal_1_risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "query": "probe_risk_0_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "query": "probe_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "query": "probe_risk_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "query": "probe_goal_2_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "rows": 128, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_control_dense_merge_choice", "rows": 128, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_control_dense_merge_choice", "query": "risk_0", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "query": "risk_0_05", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "query": "risk_0_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "query": "risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "query": "risk_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "query": "goal_1_risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "query": "probe_risk_0_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "query": "probe_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "query": "probe_risk_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "query": "probe_goal_2_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "rows": 128, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_control_dense_merge_choice", "rows": 128, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_control_dense_merge_choice", "query": "risk_0", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "query": "risk_0_05", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "query": "risk_0_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "query": "risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "query": "risk_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "query": "goal_1_risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "query": "probe_risk_0_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "query": "probe_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "query": "probe_risk_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_dense_merge_choice", "query": "probe_goal_2_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "rows": 7, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_control_adjacent_1024_goal", "rows": 7, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_control_adjacent_1024_goal", "query": "risk_0", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "query": "risk_0_05", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "query": "risk_0_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "query": "risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "query": "risk_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "query": "goal_1_risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "query": "probe_risk_0_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "query": "probe_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "query": "probe_risk_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "query": "probe_goal_2_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "rows": 7, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_control_adjacent_1024_goal", "rows": 7, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_control_adjacent_1024_goal", "query": "risk_0", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "query": "risk_0_05", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "query": "risk_0_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "query": "risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "query": "risk_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "query": "goal_1_risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "query": "probe_risk_0_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "query": "probe_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "query": "probe_risk_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "query": "probe_goal_2_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "rows": 7, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "v6_control_adjacent_1024_goal", "rows": 7, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "v6_control_adjacent_1024_goal", "query": "risk_0", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "query": "risk_0_05", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "query": "risk_0_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "query": "risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "query": "risk_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "query": "goal_1_risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "query": "probe_risk_0_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "query": "probe_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "query": "probe_risk_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "v6_control_adjacent_1024_goal", "query": "probe_goal_2_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "rows": 36, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "exposed_left_successor_7", "rows": 36, "sample_seed": 832101, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "exposed_left_successor_7", "query": "risk_0", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "query": "risk_0_05", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "query": "risk_0_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "query": "risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "query": "risk_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "query": "goal_1_risk_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "query": "probe_risk_0_1", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "query": "probe_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "query": "probe_risk_2", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "query": "probe_goal_2_risk_0_5", "sample_seed": 832101, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "rows": 36, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "exposed_left_successor_7", "rows": 36, "sample_seed": 832102, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "exposed_left_successor_7", "query": "risk_0", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "query": "risk_0_05", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "query": "risk_0_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "query": "risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "query": "risk_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "query": "goal_1_risk_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "query": "probe_risk_0_1", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "query": "probe_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "query": "probe_risk_2", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "query": "probe_goal_2_risk_0_5", "sample_seed": 832102, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "rows": 36, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "incremental"}
+{"case": "exposed_left_successor_7", "rows": 36, "sample_seed": 832103, "stage": "A", "status": "PREFIXES_FROZEN", "update_mode": "full_recompute"}
+{"case": "exposed_left_successor_7", "query": "risk_0", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "query": "risk_0_05", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "query": "risk_0_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "query": "risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "query": "risk_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "query": "goal_1_risk_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "query": "probe_risk_0_1", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "query": "probe_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "query": "probe_risk_2", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"case": "exposed_left_successor_7", "query": "probe_goal_2_risk_0_5", "sample_seed": 832103, "stage": "B", "status": "EXECUTION_TREES_FROZEN"}
+{"status": "DEVELOPMENT_COMPLETE", "output": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_execution_acquisition_v13.json", "result_serialization_seconds": 4.109975898005359, "result_bytes": 30838685}

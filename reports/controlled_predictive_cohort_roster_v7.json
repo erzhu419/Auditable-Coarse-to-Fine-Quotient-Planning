@@ -1,0 +1,518 @@
+{
+  "schema": "controlled_predictive_cohort_roster_v7",
+  "status": "REGISTERED_BEFORE_V7_ENCODER_FIT_AND_OUTCOMES",
+  "encoder_fitted_or_v7_outcomes_evaluated": false,
+  "declared_case_count": 16,
+  "unique_raw_root_board_count": 16,
+  "role_counts": {
+    "TRAIN": 3,
+    "VALIDATION_DIAGNOSTIC": 3,
+    "FIT_HELD_OUT_DEVELOPMENT": 6,
+    "EXPOSED_REGRESSION": 4
+  },
+  "historical_exposure": "ALL_ROOTS_PREVIOUSLY_EXPOSED_IN_DEVELOPMENT",
+  "fit_split_rule": "Each of the three fixed V6 mechanism families uses variant index 0 for TRAIN, index 1 for VALIDATION_DIAGNOSTIC, and indices 2 and 3 for FIT_HELD_OUT_DEVELOPMENT. The three V1 public controls and the existing H2 decision point are EXPOSED_REGRESSION.",
+  "validation_used_for_model_selection": false,
+  "cases": [
+    {
+      "case": {
+        "name": "v6_crossing_rescue_pair_0",
+        "group": "v6_crossing_rescue_pair_0",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_6_edge_ranks_1_2",
+        "board": [
+          1,
+          6,
+          6,
+          2,
+          1,
+          4,
+          8,
+          2,
+          9,
+          7,
+          5,
+          3,
+          4,
+          9,
+          3,
+          7
+        ],
+        "horizon": 3,
+        "role": "TRAIN",
+        "split": "TRAIN",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "historical_exposure": "PREVIOUSLY_EXPOSED"
+    },
+    {
+      "case": {
+        "name": "v6_crossing_rescue_pair_1",
+        "group": "v6_crossing_rescue_pair_1",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_7_edge_ranks_2_1",
+        "board": [
+          2,
+          7,
+          7,
+          1,
+          2,
+          4,
+          8,
+          1,
+          6,
+          9,
+          3,
+          5,
+          9,
+          5,
+          8,
+          4
+        ],
+        "horizon": 3,
+        "role": "VALIDATION_DIAGNOSTIC",
+        "split": "VALIDATION_DIAGNOSTIC",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "historical_exposure": "PREVIOUSLY_EXPOSED"
+    },
+    {
+      "case": {
+        "name": "v6_crossing_rescue_pair_2",
+        "group": "v6_crossing_rescue_pair_2",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_8_edge_ranks_1_3",
+        "board": [
+          1,
+          8,
+          8,
+          3,
+          1,
+          4,
+          6,
+          3,
+          7,
+          5,
+          9,
+          4,
+          5,
+          8,
+          4,
+          6
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "historical_exposure": "PREVIOUSLY_EXPOSED"
+    },
+    {
+      "case": {
+        "name": "v6_crossing_rescue_pair_3",
+        "group": "v6_crossing_rescue_pair_3",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_9_edge_ranks_2_3",
+        "board": [
+          2,
+          9,
+          9,
+          3,
+          2,
+          4,
+          8,
+          3,
+          5,
+          8,
+          3,
+          7,
+          9,
+          6,
+          7,
+          4
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "historical_exposure": "PREVIOUSLY_EXPOSED"
+    },
+    {
+      "case": {
+        "name": "v6_spawn_edge_rescue_0",
+        "group": "v6_spawn_edge_rescue_0",
+        "family": "spawn_edge_rescue",
+        "variant": "large_rank_6_edge_ranks_2_1",
+        "board": [
+          6,
+          6,
+          5,
+          7,
+          2,
+          4,
+          6,
+          1,
+          3,
+          6,
+          8,
+          9,
+          4,
+          8,
+          9,
+          5
+        ],
+        "horizon": 3,
+        "role": "TRAIN",
+        "split": "TRAIN",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "historical_exposure": "PREVIOUSLY_EXPOSED"
+    },
+    {
+      "case": {
+        "name": "v6_spawn_edge_rescue_1",
+        "group": "v6_spawn_edge_rescue_1",
+        "family": "spawn_edge_rescue",
+        "variant": "large_rank_7_edge_ranks_1_2",
+        "board": [
+          7,
+          7,
+          5,
+          7,
+          1,
+          4,
+          6,
+          2,
+          5,
+          8,
+          3,
+          9,
+          8,
+          3,
+          9,
+          4
+        ],
+        "horizon": 3,
+        "role": "VALIDATION_DIAGNOSTIC",
+        "split": "VALIDATION_DIAGNOSTIC",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "historical_exposure": "PREVIOUSLY_EXPOSED"
+    },
+    {
+      "case": {
+        "name": "v6_spawn_edge_rescue_2",
+        "group": "v6_spawn_edge_rescue_2",
+        "family": "spawn_edge_rescue",
+        "variant": "large_rank_8_edge_ranks_2_1",
+        "board": [
+          8,
+          8,
+          5,
+          7,
+          2,
+          4,
+          6,
+          1,
+          6,
+          3,
+          9,
+          5,
+          3,
+          9,
+          5,
+          8
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "historical_exposure": "PREVIOUSLY_EXPOSED"
+    },
+    {
+      "case": {
+        "name": "v6_spawn_edge_rescue_3",
+        "group": "v6_spawn_edge_rescue_3",
+        "family": "spawn_edge_rescue",
+        "variant": "large_rank_9_edge_ranks_1_2",
+        "board": [
+          9,
+          9,
+          5,
+          7,
+          1,
+          4,
+          6,
+          2,
+          8,
+          5,
+          9,
+          3,
+          5,
+          9,
+          3,
+          6
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "historical_exposure": "PREVIOUSLY_EXPOSED"
+    },
+    {
+      "case": {
+        "name": "v6_crossed_vacancy_goal_detour_0",
+        "group": "v6_crossed_vacancy_goal_detour_0",
+        "family": "crossed_vacancy_goal_detour",
+        "variant": "detour_pair_rank_4",
+        "board": [
+          9,
+          0,
+          4,
+          7,
+          10,
+          10,
+          4,
+          8,
+          0,
+          5,
+          9,
+          6,
+          7,
+          3,
+          8,
+          5
+        ],
+        "horizon": 3,
+        "role": "TRAIN",
+        "split": "TRAIN",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "historical_exposure": "PREVIOUSLY_EXPOSED"
+    },
+    {
+      "case": {
+        "name": "v6_crossed_vacancy_goal_detour_1",
+        "group": "v6_crossed_vacancy_goal_detour_1",
+        "family": "crossed_vacancy_goal_detour",
+        "variant": "detour_pair_rank_6",
+        "board": [
+          8,
+          0,
+          6,
+          9,
+          10,
+          10,
+          6,
+          7,
+          0,
+          4,
+          8,
+          5,
+          6,
+          2,
+          9,
+          3
+        ],
+        "horizon": 3,
+        "role": "VALIDATION_DIAGNOSTIC",
+        "split": "VALIDATION_DIAGNOSTIC",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "historical_exposure": "PREVIOUSLY_EXPOSED"
+    },
+    {
+      "case": {
+        "name": "v6_crossed_vacancy_goal_detour_2",
+        "group": "v6_crossed_vacancy_goal_detour_2",
+        "family": "crossed_vacancy_goal_detour",
+        "variant": "detour_pair_rank_8",
+        "board": [
+          7,
+          0,
+          8,
+          6,
+          10,
+          10,
+          8,
+          9,
+          0,
+          3,
+          5,
+          7,
+          9,
+          4,
+          6,
+          2
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "historical_exposure": "PREVIOUSLY_EXPOSED"
+    },
+    {
+      "case": {
+        "name": "v6_crossed_vacancy_goal_detour_3",
+        "group": "v6_crossed_vacancy_goal_detour_3",
+        "family": "crossed_vacancy_goal_detour",
+        "variant": "detour_pair_rank_9",
+        "board": [
+          6,
+          0,
+          9,
+          8,
+          10,
+          10,
+          9,
+          7,
+          0,
+          2,
+          8,
+          4,
+          5,
+          3,
+          7,
+          6
+        ],
+        "horizon": 3,
+        "role": "FIT_HELD_OUT_DEVELOPMENT",
+        "split": "FIT_HELD_OUT_DEVELOPMENT",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "historical_exposure": "PREVIOUSLY_EXPOSED"
+    },
+    {
+      "case": {
+        "name": "v6_control_last_pair_spawn_risk",
+        "group": "v6_control_last_pair_spawn_risk",
+        "family": "public_development_control",
+        "variant": "last_pair_spawn_risk",
+        "board": [
+          8,
+          6,
+          9,
+          7,
+          5,
+          9,
+          7,
+          10,
+          9,
+          7,
+          10,
+          8,
+          4,
+          3,
+          1,
+          1
+        ],
+        "horizon": 3,
+        "role": "EXPOSED_REGRESSION",
+        "split": "EXPOSED_REGRESSION",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "historical_exposure": "PREVIOUSLY_EXPOSED"
+    },
+    {
+      "case": {
+        "name": "v6_control_dense_merge_choice",
+        "group": "v6_control_dense_merge_choice",
+        "family": "public_development_control",
+        "variant": "dense_merge_choice",
+        "board": [
+          6,
+          5,
+          4,
+          3,
+          5,
+          4,
+          3,
+          2,
+          4,
+          3,
+          2,
+          1,
+          3,
+          2,
+          2,
+          0
+        ],
+        "horizon": 3,
+        "role": "EXPOSED_REGRESSION",
+        "split": "EXPOSED_REGRESSION",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "historical_exposure": "PREVIOUSLY_EXPOSED"
+    },
+    {
+      "case": {
+        "name": "v6_control_adjacent_1024_goal",
+        "group": "v6_control_adjacent_1024_goal",
+        "family": "public_development_control",
+        "variant": "adjacent_1024_goal",
+        "board": [
+          10,
+          9,
+          8,
+          7,
+          10,
+          8,
+          7,
+          6,
+          8,
+          7,
+          6,
+          5,
+          7,
+          6,
+          5,
+          0
+        ],
+        "horizon": 3,
+        "role": "EXPOSED_REGRESSION",
+        "split": "EXPOSED_REGRESSION",
+        "source": "controlled_predictive_cohort_roster_v6.json"
+      },
+      "historical_exposure": "PREVIOUSLY_EXPOSED"
+    },
+    {
+      "case": {
+        "name": "exposed_left_successor_7",
+        "group": "discovery_cross_axis_pairs_830011",
+        "family": "exposed_reached_decision_point",
+        "variant": "exposed_h2_decision_point",
+        "board": [
+          3,
+          7,
+          9,
+          0,
+          7,
+          9,
+          6,
+          1,
+          8,
+          4,
+          9,
+          0,
+          1,
+          9,
+          8,
+          2
+        ],
+        "horizon": 2,
+        "role": "EXPOSED_REGRESSION",
+        "split": "EXPOSED_REGRESSION",
+        "source": "controlled_predictive_comparison_v3.refinement_cases()[0]"
+      },
+      "historical_exposure": "PREVIOUSLY_EXPOSED"
+    }
+  ],
+  "all_declared_cases_retained": true,
+  "new_board_discovery_performed": false,
+  "original_deferred_24_case_cohort_loaded_or_executed": false,
+  "scope": "Fitting roles describe this encoder fit only. Every root and its previous result were already exposed during research. Family variants are not independent mechanism sources; root separation does not establish descendant-state separation."
+}

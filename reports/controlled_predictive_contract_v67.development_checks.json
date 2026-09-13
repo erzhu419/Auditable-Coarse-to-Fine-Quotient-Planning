@@ -1,0 +1,13 @@
+{
+  "schema": "acfqp.controlled_predictive_contract_development.v67",
+  "unique_tests": 6,
+  "test_executions": 6,
+  "passed": 6,
+  "failed": 0,
+  "attempt_ledgers": [
+    "controlled_predictive_action_contract_v67.core_checks.json",
+    "controlled_predictive_action_contract_v67.audit_checks.json",
+    "controlled_predictive_action_contract_v67.io_checks.json"
+  ],
+  "scope": "Four core tests, one independent audit test and one portable routing test, each once on non-main hand examples; all fees in ledgers. No V67 main roots evaluated during development."
+}

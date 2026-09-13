@@ -1,0 +1,1300 @@
+{
+  "schema": "acfqp.lmta_probability_execution_analysis.v65",
+  "protocol": {
+    "nodes": 15,
+    "stratum": "sparse",
+    "expected_degree": 1.5,
+    "p": 0.10714285714285714,
+    "graph_ids": [
+      650000,
+      650001,
+      650002,
+      650003,
+      650004,
+      650005,
+      650006,
+      650007,
+      650008,
+      650009,
+      650010,
+      650011,
+      650012,
+      650013,
+      650014,
+      650015,
+      650016,
+      650017,
+      650018,
+      650019,
+      650020,
+      650021,
+      650022,
+      650023,
+      650024,
+      650025,
+      650026,
+      650027,
+      650028,
+      650029,
+      650030,
+      650031,
+      650032,
+      650033,
+      650034,
+      650035,
+      650036,
+      650037,
+      650038,
+      650039,
+      650040,
+      650041,
+      650042,
+      650043,
+      650044,
+      650045,
+      650046,
+      650047,
+      650048,
+      650049,
+      650050,
+      650051,
+      650052,
+      650053,
+      650054,
+      650055,
+      650056,
+      650057,
+      650058,
+      650059,
+      650060,
+      650061,
+      650062,
+      650063
+    ],
+    "budget": 2,
+    "horizon": 3,
+    "replicates": 32,
+    "method": "LOOKAHEAD_2_ANALYTIC",
+    "variants": [
+      "BASELINE",
+      "REUSE"
+    ],
+    "seed_base": 61000000,
+    "seed_graph_stride": 1000,
+    "limits": {
+      "max_planner_action_values": 2000000,
+      "max_decisions": 100000,
+      "max_wall_seconds": 60.0
+    },
+    "campaign_limits": {
+      "max_planner_action_values": 6000000,
+      "max_wall_seconds": 300.0
+    },
+    "primary_alpha": 0.05
+  },
+  "integrity": {
+    "passed": true,
+    "errors": {}
+  },
+  "complete_trajectory_evidence": true,
+  "observed_query_validation": {
+    "passed": true,
+    "errors": {},
+    "distinct_input_queries": 1467,
+    "independent_queries": 1467,
+    "distinct_result_differences": 0,
+    "maximum_Q_difference": 0.0,
+    "verification_work": {
+      "queries": 1467,
+      "graph_model_builds": 1467,
+      "parent_membership_checks": 1219829,
+      "parent_product_factors": 207794,
+      "outcome_probability_factors": 157246,
+      "value_cache_hits": 0,
+      "root_Q_comparisons": 4808,
+      "independent_dp_states": 40777,
+      "independent_action_value_evaluations": 80853,
+      "independent_kernel_builds": 4808,
+      "independent_kernel_cache_hits": 0,
+      "independent_transition_outcomes": 40385,
+      "independent_target_probability_evaluations": 791556,
+      "independent_score_node_evaluations": 0,
+      "independent_immediate_expectation_terms": 0,
+      "independent_bellman_expectation_terms": 40385,
+      "independent_analytic_expectation_calls": 76045,
+      "independent_analytic_probability_terms": 736394
+    },
+    "counter_normalization": "REUSE removes eight terminal fields and restores target count as actual + analytic terms - cache misses before independent V62 validation."
+  },
+  "paired_trajectory_validation": {
+    "preserved": true,
+    "errors": {},
+    "paired_trajectory_keys": 2048
+  },
+  "action_and_trajectory_preservation": true,
+  "complete_performance_evidence": true,
+  "quality": {
+    "BASELINE": 8.72119140625,
+    "REUSE": 8.72119140625
+  },
+  "cost_comparison": {
+    "full_costs": {
+      "BASELINE": 12.069912349164952,
+      "REUSE": 10.872917357541155
+    },
+    "full_cost_ratio": 0.9008281951851448,
+    "decision_costs": {
+      "BASELINE": 11.486750558309723,
+      "REUSE": 10.265344270330388
+    },
+    "decision_cost_ratio": 0.8936682500608715,
+    "paired_geometric_cost_ratio": 0.8934964351168645,
+    "paired_log_ratio_standard_error": 0.0063171083200297875,
+    "paired_geometric_ratio_95_interval": [
+      0.8822880686491877,
+      0.9048471898626307
+    ],
+    "degrees_of_freedom": 63,
+    "faster_graphs": 64,
+    "tied_graphs": 0,
+    "slower_graphs": 0,
+    "order_strata": [
+      {
+        "first_variant": "BASELINE",
+        "graphs": 32,
+        "full_costs": {
+          "BASELINE": 6.09101873554755,
+          "REUSE": 5.52284815890016
+        },
+        "ratio": 0.9067199427032604
+      },
+      {
+        "first_variant": "REUSE",
+        "graphs": 32,
+        "full_costs": {
+          "BASELINE": 5.978893613617402,
+          "REUSE": 5.350069198640995
+        },
+        "ratio": 0.8948259568385345
+      }
+    ],
+    "per_graph": [
+      {
+        "graph_id": 650000,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.13912586390506476,
+          "REUSE": 0.1018333999090828
+        },
+        "decision_costs": {
+          "BASELINE": 0.127543440728914,
+          "REUSE": 0.09319941303692758
+        },
+        "full_cost_ratio": 0.7319516087862052
+      },
+      {
+        "graph_id": 650001,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.15611380303744227,
+          "REUSE": 0.1435576020157896
+        },
+        "decision_costs": {
+          "BASELINE": 0.14835034386487678,
+          "REUSE": 0.133398502250202
+        },
+        "full_cost_ratio": 0.9195702059820988
+      },
+      {
+        "graph_id": 650002,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.21294215496163815,
+          "REUSE": 0.19876900792587548
+        },
+        "decision_costs": {
+          "BASELINE": 0.20420983049552888,
+          "REUSE": 0.18903480528388172
+        },
+        "full_cost_ratio": 0.9334413280530763
+      },
+      {
+        "graph_id": 650003,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.32571562798693776,
+          "REUSE": 0.2894267659285106
+        },
+        "decision_costs": {
+          "BASELINE": 0.3181441291817464,
+          "REUSE": 0.2765967036248185
+        },
+        "full_cost_ratio": 0.8885872861467904
+      },
+      {
+        "graph_id": 650004,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.2438760430086404,
+          "REUSE": 0.23086953698657453
+        },
+        "decision_costs": {
+          "BASELINE": 0.23379766789730638,
+          "REUSE": 0.22283642523689196
+        },
+        "full_cost_ratio": 0.9466675534767265
+      },
+      {
+        "graph_id": 650005,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.31710629910230637,
+          "REUSE": 0.27587810199474916
+        },
+        "decision_costs": {
+          "BASELINE": 0.3068870709394105,
+          "REUSE": 0.26485524070449173
+        },
+        "full_cost_ratio": 0.8699861931968246
+      },
+      {
+        "graph_id": 650006,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.18695161608047783,
+          "REUSE": 0.16334588796598837
+        },
+        "decision_costs": {
+          "BASELINE": 0.1740564747597091,
+          "REUSE": 0.1474490693071857
+        },
+        "full_cost_ratio": 0.8737334899296735
+      },
+      {
+        "graph_id": 650007,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.09268038702430204,
+          "REUSE": 0.08512320701265708
+        },
+        "decision_costs": {
+          "BASELINE": 0.08365523273823783,
+          "REUSE": 0.07465371408034116
+        },
+        "full_cost_ratio": 0.9184597706776584
+      },
+      {
+        "graph_id": 650008,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.39129697490716353,
+          "REUSE": 0.37664897000649944
+        },
+        "decision_costs": {
+          "BASELINE": 0.38315946282818913,
+          "REUSE": 0.36375755176413804
+        },
+        "full_cost_ratio": 0.962565504361133
+      },
+      {
+        "graph_id": 650009,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.14119113894412294,
+          "REUSE": 0.13055852497927845
+        },
+        "decision_costs": {
+          "BASELINE": 0.13338765420485288,
+          "REUSE": 0.12086143484339118
+        },
+        "full_cost_ratio": 0.9246934754945747
+      },
+      {
+        "graph_id": 650010,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.17093082197243348,
+          "REUSE": 0.1540775690227747
+        },
+        "decision_costs": {
+          "BASELINE": 0.16226650547469035,
+          "REUSE": 0.14003199274884537
+        },
+        "full_cost_ratio": 0.9014030778347467
+      },
+      {
+        "graph_id": 650011,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.13717210898175836,
+          "REUSE": 0.11983479699119925
+        },
+        "decision_costs": {
+          "BASELINE": 0.13039754232158884,
+          "REUSE": 0.11181444104295224
+        },
+        "full_cost_ratio": 0.8736090585815468
+      },
+      {
+        "graph_id": 650012,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.17203401506412774,
+          "REUSE": 0.15118981787236407
+        },
+        "decision_costs": {
+          "BASELINE": 0.1647894411580637,
+          "REUSE": 0.14251198974670842
+        },
+        "full_cost_ratio": 0.8788367685077062
+      },
+      {
+        "graph_id": 650013,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.0796957190032117,
+          "REUSE": 0.06863754795631394
+        },
+        "decision_costs": {
+          "BASELINE": 0.07336672488600016,
+          "REUSE": 0.06217121850932017
+        },
+        "full_cost_ratio": 0.8612451059453754
+      },
+      {
+        "graph_id": 650014,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.14553681696997955,
+          "REUSE": 0.13070505793439224
+        },
+        "decision_costs": {
+          "BASELINE": 0.13892061373917386,
+          "REUSE": 0.12397457292536274
+        },
+        "full_cost_ratio": 0.8980892990215203
+      },
+      {
+        "graph_id": 650015,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.2357079049688764,
+          "REUSE": 0.21265052899252623
+        },
+        "decision_costs": {
+          "BASELINE": 0.2222272761282511,
+          "REUSE": 0.20305244985502213
+        },
+        "full_cost_ratio": 0.9021781811713326
+      },
+      {
+        "graph_id": 650016,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.19804372999351472,
+          "REUSE": 0.16927416704129428
+        },
+        "decision_costs": {
+          "BASELINE": 0.19028176803840324,
+          "REUSE": 0.16173307283315808
+        },
+        "full_cost_ratio": 0.8547312608525272
+      },
+      {
+        "graph_id": 650017,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.12357012502616271,
+          "REUSE": 0.1060274529736489
+        },
+        "decision_costs": {
+          "BASELINE": 0.1166637281421572,
+          "REUSE": 0.0982481908868067
+        },
+        "full_cost_ratio": 0.8580346823409006
+      },
+      {
+        "graph_id": 650018,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.08590401499532163,
+          "REUSE": 0.07111291907494888
+        },
+        "decision_costs": {
+          "BASELINE": 0.07928729039849713,
+          "REUSE": 0.06263835274148732
+        },
+        "full_cost_ratio": 0.8278183397926362
+      },
+      {
+        "graph_id": 650019,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.30371297599049285,
+          "REUSE": 0.28011727501871064
+        },
+        "decision_costs": {
+          "BASELINE": 0.29423015675274655,
+          "REUSE": 0.2711885111639276
+        },
+        "full_cost_ratio": 0.9223092102178709
+      },
+      {
+        "graph_id": 650020,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.11366962397005409,
+          "REUSE": 0.09823431906988844
+        },
+        "decision_costs": {
+          "BASELINE": 0.10543585114646703,
+          "REUSE": 0.09083209012169391
+        },
+        "full_cost_ratio": 0.8642090616554513
+      },
+      {
+        "graph_id": 650021,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.13740775093901902,
+          "REUSE": 0.11890603700885549
+        },
+        "decision_costs": {
+          "BASELINE": 0.13010500115342438,
+          "REUSE": 0.11149733298225328
+        },
+        "full_cost_ratio": 0.8653517446888821
+      },
+      {
+        "graph_id": 650022,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.21088970598066226,
+          "REUSE": 0.19628589204512537
+        },
+        "decision_costs": {
+          "BASELINE": 0.20329705899348482,
+          "REUSE": 0.18504063069121912
+        },
+        "full_cost_ratio": 0.930751414026458
+      },
+      {
+        "graph_id": 650023,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.18356267997296527,
+          "REUSE": 0.1708327509695664
+        },
+        "decision_costs": {
+          "BASELINE": 0.17363359674345702,
+          "REUSE": 0.1618798934505321
+        },
+        "full_cost_ratio": 0.9306507782231459
+      },
+      {
+        "graph_id": 650024,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.14957916602725163,
+          "REUSE": 0.1313913959893398
+        },
+        "decision_costs": {
+          "BASELINE": 0.14191949710948393,
+          "REUSE": 0.12458849529502913
+        },
+        "full_cost_ratio": 0.8784070634903912
+      },
+      {
+        "graph_id": 650025,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.26071889407467097,
+          "REUSE": 0.22716047597350553
+        },
+        "decision_costs": {
+          "BASELINE": 0.2505763412336819,
+          "REUSE": 0.21960886055603623
+        },
+        "full_cost_ratio": 0.8712850550388029
+      },
+      {
+        "graph_id": 650026,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.3847938049584627,
+          "REUSE": 0.3480315130436793
+        },
+        "decision_costs": {
+          "BASELINE": 0.36587577796308324,
+          "REUSE": 0.3361418594722636
+        },
+        "full_cost_ratio": 0.9044623602535602
+      },
+      {
+        "graph_id": 650027,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.21163788298144937,
+          "REUSE": 0.18952757096849382
+        },
+        "decision_costs": {
+          "BASELINE": 0.1998124101664871,
+          "REUSE": 0.1780107034719549
+        },
+        "full_cost_ratio": 0.895527626238382
+      },
+      {
+        "graph_id": 650028,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.18080810504034162,
+          "REUSE": 0.16042092099087313
+        },
+        "decision_costs": {
+          "BASELINE": 0.17207524908008054,
+          "REUSE": 0.14815981191350147
+        },
+        "full_cost_ratio": 0.8872440809834287
+      },
+      {
+        "graph_id": 650029,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.1140981859061867,
+          "REUSE": 0.10097326897084713
+        },
+        "decision_costs": {
+          "BASELINE": 0.10555300995474681,
+          "REUSE": 0.09283097193110734
+        },
+        "full_cost_ratio": 0.8849682242438887
+      },
+      {
+        "graph_id": 650030,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.1644825309049338,
+          "REUSE": 0.14892947801854461
+        },
+        "decision_costs": {
+          "BASELINE": 0.1575085350777954,
+          "REUSE": 0.14010527322534472
+        },
+        "full_cost_ratio": 0.9054425244989791
+      },
+      {
+        "graph_id": 650031,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.19292946095811203,
+          "REUSE": 0.17788180202478543
+        },
+        "decision_costs": {
+          "BASELINE": 0.18603815167443827,
+          "REUSE": 0.1704906171071343
+        },
+        "full_cost_ratio": 0.9220043488506212
+      },
+      {
+        "graph_id": 650032,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.15754013892728835,
+          "REUSE": 0.14269789797253907
+        },
+        "decision_costs": {
+          "BASELINE": 0.14936972525902092,
+          "REUSE": 0.12880501517793164
+        },
+        "full_cost_ratio": 0.9057875595653776
+      },
+      {
+        "graph_id": 650033,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.21531809197040275,
+          "REUSE": 0.20649953203974292
+        },
+        "decision_costs": {
+          "BASELINE": 0.20817898388486356,
+          "REUSE": 0.19855395006015897
+        },
+        "full_cost_ratio": 0.9590440364301945
+      },
+      {
+        "graph_id": 650034,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.31715602695476264,
+          "REUSE": 0.3121615400305018
+        },
+        "decision_costs": {
+          "BASELINE": 0.3092276977840811,
+          "REUSE": 0.3027112119598314
+        },
+        "full_cost_ratio": 0.9842522717533814
+      },
+      {
+        "graph_id": 650035,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.14801212900783867,
+          "REUSE": 0.12208286300301552
+        },
+        "decision_costs": {
+          "BASELINE": 0.13615480210864916,
+          "REUSE": 0.11401225393638015
+        },
+        "full_cost_ratio": 0.8248166134854398
+      },
+      {
+        "graph_id": 650036,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.13119822001317516,
+          "REUSE": 0.11042567808181047
+        },
+        "decision_costs": {
+          "BASELINE": 0.12255533796269447,
+          "REUSE": 0.10292032198049128
+        },
+        "full_cost_ratio": 0.8416705506425417
+      },
+      {
+        "graph_id": 650037,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.16176238795742393,
+          "REUSE": 0.1424633739516139
+        },
+        "decision_costs": {
+          "BASELINE": 0.15392030123621225,
+          "REUSE": 0.13309598190244287
+        },
+        "full_cost_ratio": 0.8806952948117361
+      },
+      {
+        "graph_id": 650038,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.1236976039945148,
+          "REUSE": 0.10459055396495387
+        },
+        "decision_costs": {
+          "BASELINE": 0.11515745584620163,
+          "REUSE": 0.09750650898786262
+        },
+        "full_cost_ratio": 0.845534194579806
+      },
+      {
+        "graph_id": 650039,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.110880751919467,
+          "REUSE": 0.09615786001086235
+        },
+        "decision_costs": {
+          "BASELINE": 0.1041599758900702,
+          "REUSE": 0.08917160320561379
+        },
+        "full_cost_ratio": 0.867218686257666
+      },
+      {
+        "graph_id": 650040,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.15044334897538647,
+          "REUSE": 0.1388988129911013
+        },
+        "decision_costs": {
+          "BASELINE": 0.1419091603020206,
+          "REUSE": 0.13001923757838085
+        },
+        "full_cost_ratio": 0.9232632345470192
+      },
+      {
+        "graph_id": 650041,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.25142526801209897,
+          "REUSE": 0.22964106703875586
+        },
+        "decision_costs": {
+          "BASELINE": 0.24286889302311465,
+          "REUSE": 0.21943198842927814
+        },
+        "full_cost_ratio": 0.9133571532186064
+      },
+      {
+        "graph_id": 650042,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.19502605800516903,
+          "REUSE": 0.17930320498999208
+        },
+        "decision_costs": {
+          "BASELINE": 0.18527688103495166,
+          "REUSE": 0.17164260329445824
+        },
+        "full_cost_ratio": 0.9193807577510477
+      },
+      {
+        "graph_id": 650043,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.14176293008495122,
+          "REUSE": 0.12353059597080573
+        },
+        "decision_costs": {
+          "BASELINE": 0.13486359332455322,
+          "REUSE": 0.11581387073965743
+        },
+        "full_cost_ratio": 0.8713885632638957
+      },
+      {
+        "graph_id": 650044,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.13455858099041507,
+          "REUSE": 0.11866280599497259
+        },
+        "decision_costs": {
+          "BASELINE": 0.12680908042239025,
+          "REUSE": 0.11009630368789658
+        },
+        "full_cost_ratio": 0.8818672515833473
+      },
+      {
+        "graph_id": 650045,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.15071719588013366,
+          "REUSE": 0.13151496805949137
+        },
+        "decision_costs": {
+          "BASELINE": 0.14408834680216387,
+          "REUSE": 0.12444821099052206
+        },
+        "full_cost_ratio": 0.8725943134191938
+      },
+      {
+        "graph_id": 650046,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.21173306094715372,
+          "REUSE": 0.18782450800063089
+        },
+        "decision_costs": {
+          "BASELINE": 0.20479315100237727,
+          "REUSE": 0.18050228391075507
+        },
+        "full_cost_ratio": 0.8870816260834667
+      },
+      {
+        "graph_id": 650047,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.19991212204331532,
+          "REUSE": 0.1792414189549163
+        },
+        "decision_costs": {
+          "BASELINE": 0.19199547095922753,
+          "REUSE": 0.17121213593054563
+        },
+        "full_cost_ratio": 0.8966010521166883
+      },
+      {
+        "graph_id": 650048,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.17109208402689546,
+          "REUSE": 0.16241033998085186
+        },
+        "decision_costs": {
+          "BASELINE": 0.1634686822653748,
+          "REUSE": 0.153989196754992
+        },
+        "full_cost_ratio": 0.9492568923020492
+      },
+      {
+        "graph_id": 650049,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.176532389014028,
+          "REUSE": 0.15360175794921815
+        },
+        "decision_costs": {
+          "BASELINE": 0.16940994514152408,
+          "REUSE": 0.14388032915303484
+        },
+        "full_cost_ratio": 0.8701052470151089
+      },
+      {
+        "graph_id": 650050,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.27767244999995455,
+          "REUSE": 0.2646200119634159
+        },
+        "decision_costs": {
+          "BASELINE": 0.2704112063511275,
+          "REUSE": 0.2565953551675193
+        },
+        "full_cost_ratio": 0.9529933991055259
+      },
+      {
+        "graph_id": 650051,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.16702420299407095,
+          "REUSE": 0.1450993200414814
+        },
+        "decision_costs": {
+          "BASELINE": 0.15851014823419973,
+          "REUSE": 0.13683759607374668
+        },
+        "full_cost_ratio": 0.8687323001124104
+      },
+      {
+        "graph_id": 650052,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.16390381602104753,
+          "REUSE": 0.1498037000419572
+        },
+        "decision_costs": {
+          "BASELINE": 0.156765227264259,
+          "REUSE": 0.14217453805031255
+        },
+        "full_cost_ratio": 0.9139732294135258
+      },
+      {
+        "graph_id": 650053,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.2916296959738247,
+          "REUSE": 0.2601413179654628
+        },
+        "decision_costs": {
+          "BASELINE": 0.28278782207053155,
+          "REUSE": 0.2470369710936211
+        },
+        "full_cost_ratio": 0.892026160425075
+      },
+      {
+        "graph_id": 650054,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.19898144894978032,
+          "REUSE": 0.1823553370195441
+        },
+        "decision_costs": {
+          "BASELINE": 0.19024404976516962,
+          "REUSE": 0.17051041399827227
+        },
+        "full_cost_ratio": 0.91644390963083
+      },
+      {
+        "graph_id": 650055,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.1831537369871512,
+          "REUSE": 0.16364126099506393
+        },
+        "decision_costs": {
+          "BASELINE": 0.1684719951590523,
+          "REUSE": 0.1471994222374633
+        },
+        "full_cost_ratio": 0.8934639483034074
+      },
+      {
+        "graph_id": 650056,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.174170043959748,
+          "REUSE": 0.13360276201274246
+        },
+        "decision_costs": {
+          "BASELINE": 0.15739588672295213,
+          "REUSE": 0.12271238735411316
+        },
+        "full_cost_ratio": 0.7670823235459426
+      },
+      {
+        "graph_id": 650057,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.181368519901298,
+          "REUSE": 0.15660198300611228
+        },
+        "decision_costs": {
+          "BASELINE": 0.17098649084800854,
+          "REUSE": 0.14748829609015957
+        },
+        "full_cost_ratio": 0.8634463306605588
+      },
+      {
+        "graph_id": 650058,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.2774421390495263,
+          "REUSE": 0.26727643905906007
+        },
+        "decision_costs": {
+          "BASELINE": 0.26539972284808755,
+          "REUSE": 0.25651045906124637
+        },
+        "full_cost_ratio": 0.9633592069853111
+      },
+      {
+        "graph_id": 650059,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.13335052400361747,
+          "REUSE": 0.12650315597420558
+        },
+        "decision_costs": {
+          "BASELINE": 0.12363910808926448,
+          "REUSE": 0.11522593908011913
+        },
+        "full_cost_ratio": 0.9486513601609384
+      },
+      {
+        "graph_id": 650060,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.13039879797725007,
+          "REUSE": 0.11518265388440341
+        },
+        "decision_costs": {
+          "BASELINE": 0.12186251988168806,
+          "REUSE": 0.10515322617720813
+        },
+        "full_cost_ratio": 0.8833107027911306
+      },
+      {
+        "graph_id": 650061,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.16631531092571095,
+          "REUSE": 0.15158356894971803
+        },
+        "decision_costs": {
+          "BASELINE": 0.15622215415351093,
+          "REUSE": 0.14328238292364404
+        },
+        "full_cost_ratio": 0.9114228155303559
+      },
+      {
+        "graph_id": 650062,
+        "first_variant": "BASELINE",
+        "full_costs": {
+          "BASELINE": 0.12513992801541463,
+          "REUSE": 0.12191206001443788
+        },
+        "decision_costs": {
+          "BASELINE": 0.11423013400053605,
+          "REUSE": 0.11216634220909327
+        },
+        "full_cost_ratio": 0.9742059304958276
+      },
+      {
+        "graph_id": 650063,
+        "first_variant": "REUSE",
+        "full_costs": {
+          "BASELINE": 0.28670741204405203,
+          "REUSE": 0.26467144495109096
+        },
+        "decision_costs": {
+          "BASELINE": 0.2681637736968696,
+          "REUSE": 0.2514437403297052
+        },
+        "full_cost_ratio": 0.923141271668361
+      }
+    ]
+  },
+  "historical_V64_timing": {
+    "rounds": [
+      {
+        "round": 0,
+        "seconds": {
+          "BASELINE": 15.411323493695818,
+          "REUSE": 14.05402990319999
+        },
+        "reuse_over_baseline": 0.9119288105884582
+      },
+      {
+        "round": 1,
+        "seconds": {
+          "BASELINE": 15.312469731783494,
+          "REUSE": 13.990572433336638
+        },
+        "reuse_over_baseline": 0.913671842517798
+      },
+      {
+        "round": 2,
+        "seconds": {
+          "BASELINE": 15.838298632123042,
+          "REUSE": 14.635544034827035
+        },
+        "reuse_over_baseline": 0.9240603662531912
+      },
+      {
+        "round": 3,
+        "seconds": {
+          "BASELINE": 15.815065891481936,
+          "REUSE": 14.286378894583322
+        },
+        "reuse_over_baseline": 0.903339827517129
+      },
+      {
+        "round": 4,
+        "seconds": {
+          "BASELINE": 15.562481674947776,
+          "REUSE": 14.0845245126402
+        },
+        "reuse_over_baseline": 0.9050307532450453
+      },
+      {
+        "round": 5,
+        "seconds": {
+          "BASELINE": 15.597876349522267,
+          "REUSE": 14.34326146991225
+        },
+        "reuse_over_baseline": 0.919565019525979
+      }
+    ],
+    "ratio_median": 0.9128003265531281,
+    "ratio_minimum": 0.903339827517129,
+    "ratio_maximum": 0.9240603662531912,
+    "order_strata": [
+      {
+        "first_variant": "BASELINE",
+        "paired_blocks": 192,
+        "seconds": {
+          "BASELINE": 46.7850412245607,
+          "REUSE": 42.88722303620307
+        },
+        "reuse_over_baseline": 0.916686656966941
+      },
+      {
+        "first_variant": "REUSE",
+        "paired_blocks": 192,
+        "seconds": {
+          "BASELINE": 46.75247454899363,
+          "REUSE": 42.50708821229637
+        },
+        "reuse_over_baseline": 0.909194403555081
+      }
+    ],
+    "work": {
+      "BASELINE": {
+        "planner_calls": 36864,
+        "dp_states": 2078718,
+        "action_value_evaluations": 9011250,
+        "kernel_builds": 331188,
+        "kernel_cache_hits": 0,
+        "transition_outcomes": 2054142,
+        "target_probability_evaluations": 100356216,
+        "score_node_evaluations": 0,
+        "immediate_expectation_terms": 0,
+        "bellman_expectation_terms": 2054142,
+        "forced_choice": 12288,
+        "analytic_expectation_calls": 8680062,
+        "analytic_probability_terms": 96156816
+      },
+      "REUSE": {
+        "planner_calls": 36864,
+        "dp_states": 2078718,
+        "action_value_evaluations": 9011250,
+        "kernel_builds": 331188,
+        "kernel_cache_hits": 0,
+        "transition_outcomes": 2054142,
+        "target_probability_evaluations": 4343112,
+        "score_node_evaluations": 0,
+        "immediate_expectation_terms": 0,
+        "bellman_expectation_terms": 2054142,
+        "forced_choice": 12288,
+        "analytic_expectation_calls": 8680062,
+        "analytic_probability_terms": 96156816,
+        "terminal_base_parent_checks": 29584470,
+        "terminal_base_states": 2054142,
+        "terminal_selected_edge_checks": 11133696,
+        "terminal_selected_increments": 9379584,
+        "terminal_probability_lookups": 21498330,
+        "terminal_probability_cache_hits": 21354618,
+        "terminal_probability_cache_misses": 143712,
+        "terminal_zero_source_terms": 74658486
+      }
+    }
+  },
+  "terminal_reason": "finished_roster",
+  "campaign_stop_reason": null,
+  "skipped_blocks": [],
+  "accounting": {
+    "completed_blocks": 128,
+    "successful_blocks": 128,
+    "resource_limited_blocks": 0,
+    "trajectory_records": 4096,
+    "completed_trajectories": 4096,
+    "decision_records": 12288,
+    "decision_work": {
+      "planner_calls": 12288,
+      "dp_states": 683650,
+      "action_value_evaluations": 3068168,
+      "kernel_builds": 110470,
+      "kernel_cache_hits": 0,
+      "transition_outcomes": 675458,
+      "target_probability_evaluations": 17753806,
+      "score_node_evaluations": 0,
+      "immediate_expectation_terms": 0,
+      "bellman_expectation_terms": 675458,
+      "forced_choice": 4096,
+      "analytic_expectation_calls": 2957698,
+      "analytic_probability_terms": 32654288,
+      "terminal_base_parent_checks": 4779802,
+      "terminal_base_states": 337729,
+      "terminal_selected_edge_checks": 1918880,
+      "terminal_selected_increments": 1597344,
+      "terminal_probability_lookups": 3763450,
+      "terminal_probability_cache_hits": 3739424,
+      "terminal_probability_cache_misses": 24026,
+      "terminal_zero_source_terms": 12563694
+    },
+    "environment_work": {
+      "environment_calls": 12288,
+      "rng_draws": 280128,
+      "eligible_edge_attempts": 46596,
+      "successful_edge_attempts": 27994,
+      "seeded_nodes": 8192,
+      "activated_targets": 27530
+    },
+    "variant_costs": {
+      "BASELINE": {
+        "decision_work": {
+          "planner_calls": 6144,
+          "dp_states": 341825,
+          "action_value_evaluations": 1534084,
+          "kernel_builds": 55235,
+          "kernel_cache_hits": 0,
+          "transition_outcomes": 337729,
+          "target_probability_evaluations": 17028462,
+          "score_node_evaluations": 0,
+          "immediate_expectation_terms": 0,
+          "bellman_expectation_terms": 337729,
+          "forced_choice": 2048,
+          "analytic_expectation_calls": 1478849,
+          "analytic_probability_terms": 16327144
+        },
+        "environment_work": {
+          "environment_calls": 6144,
+          "rng_draws": 140064,
+          "eligible_edge_attempts": 23298,
+          "successful_edge_attempts": 13997,
+          "seeded_nodes": 4096,
+          "activated_targets": 13765
+        },
+        "times": {
+          "decision_seconds": 10.966210180602502,
+          "environment_seconds": 0.04246075206901878,
+          "wall_seconds": 11.099766253959388,
+          "prepare_gc_seconds": 0.34879569796612486,
+          "cleanup_seconds": 0.5205403777072206,
+          "decision_total_seconds": 11.486750558309723,
+          "block_seconds": 11.620306631666608,
+          "serialization_seconds": 0.10081001953221858
+        }
+      },
+      "REUSE": {
+        "decision_work": {
+          "planner_calls": 6144,
+          "dp_states": 341825,
+          "action_value_evaluations": 1534084,
+          "kernel_builds": 55235,
+          "kernel_cache_hits": 0,
+          "transition_outcomes": 337729,
+          "target_probability_evaluations": 725344,
+          "score_node_evaluations": 0,
+          "immediate_expectation_terms": 0,
+          "bellman_expectation_terms": 337729,
+          "forced_choice": 2048,
+          "analytic_expectation_calls": 1478849,
+          "analytic_probability_terms": 16327144,
+          "terminal_base_parent_checks": 4779802,
+          "terminal_base_states": 337729,
+          "terminal_selected_edge_checks": 1918880,
+          "terminal_selected_increments": 1597344,
+          "terminal_probability_lookups": 3763450,
+          "terminal_probability_cache_hits": 3739424,
+          "terminal_probability_cache_misses": 24026,
+          "terminal_zero_source_terms": 12563694
+        },
+        "environment_work": {
+          "environment_calls": 6144,
+          "rng_draws": 140064,
+          "eligible_edge_attempts": 23298,
+          "successful_edge_attempts": 13997,
+          "seeded_nodes": 4096,
+          "activated_targets": 13765
+        },
+        "times": {
+          "decision_seconds": 9.730275104462635,
+          "environment_seconds": 0.04168765008216724,
+          "wall_seconds": 9.86561467620777,
+          "prepare_gc_seconds": 0.36298415157943964,
+          "cleanup_seconds": 0.5350691658677533,
+          "decision_total_seconds": 10.265344270330388,
+          "block_seconds": 10.400683842075523,
+          "serialization_seconds": 0.10924936388619244
+        }
+      }
+    },
+    "independent_query_work": {
+      "queries": 1467,
+      "graph_model_builds": 1467,
+      "parent_membership_checks": 1219829,
+      "parent_product_factors": 207794,
+      "outcome_probability_factors": 157246,
+      "value_cache_hits": 0,
+      "root_Q_comparisons": 4808,
+      "independent_dp_states": 40777,
+      "independent_action_value_evaluations": 80853,
+      "independent_kernel_builds": 4808,
+      "independent_kernel_cache_hits": 0,
+      "independent_transition_outcomes": 40385,
+      "independent_target_probability_evaluations": 791556,
+      "independent_score_node_evaluations": 0,
+      "independent_immediate_expectation_terms": 0,
+      "independent_bellman_expectation_terms": 40385,
+      "independent_analytic_expectation_calls": 76045,
+      "independent_analytic_probability_terms": 736394
+    },
+    "trajectory_verification": {
+      "certificate_queries": 12288,
+      "verification_random_draws": 280128,
+      "verification_environment_steps": 12288
+    },
+    "runner": {
+      "source_read_seconds": 0.003939255024306476,
+      "source_snapshot_seconds": 0.006012981990352273,
+      "graph_generation_seconds": 0.011162540002260357,
+      "data_output_seconds": 0.2131664525368251,
+      "whole_runner_seconds": 23.326705766026862,
+      "unexecuted_prepare_gc_seconds": 0.0
+    },
+    "new_graphs": 64,
+    "new_full_policy_evaluations": 0,
+    "new_analysis_production_planner_calls": 0,
+    "primary_component_seconds": 22.942829706706107,
+    "common_unallocated_runner_seconds": 0.3838760593207553,
+    "new_RL_updates": 0,
+    "new_MCTS_calls": 0,
+    "missing_complete_trajectories": 0,
+    "campaign_action_overshoot": 0,
+    "campaign_runner_wall_overshoot": 0.0,
+    "limited_blocks": [],
+    "analysis_seconds_before_serialization": 0.2679655379615724,
+    "analysis_wall_seconds_including_reads": 1.730551389977336
+  },
+  "limitations": "Counter normalization is for independent logical-work verification; original actual counters remain charged. Paired costs include preparation, execution, cleanup and trajectory serialization. Case/manifest output and source/graph setup remain common runner costs. One execution pair per new graph does not repeat V64 six-round stability or establish exact full-policy values. The graph-level log-cost t interval is approximate and descriptive; limited/skipped cohorts have null quality and performance."
+}

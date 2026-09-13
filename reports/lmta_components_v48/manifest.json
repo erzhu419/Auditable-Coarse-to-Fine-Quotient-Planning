@@ -1,0 +1,215 @@
+{
+  "schema": "acfqp.lmta_components.v48",
+  "status": "complete",
+  "protocol": {
+    "methods": [
+      "BUDGET_HRL",
+      "LMTA_RI"
+    ],
+    "runs": 3,
+    "panel_size": 20,
+    "source_checkpoint": 128,
+    "cells": [
+      "LS",
+      "AL"
+    ],
+    "anchor_episode": 0,
+    "expected_hybrid_events": 240,
+    "expected_anchor_events": 6,
+    "nodes": 500,
+    "p": 0.01,
+    "budget": 70,
+    "horizon": 10,
+    "goal_rule": "live_search_on_hybrid_state"
+  },
+  "runtime": {
+    "python": "3.10.12",
+    "numpy": "2.2.6",
+    "networkx": "2.8.8",
+    "torch": "2.8.0+cu128",
+    "device": "cuda",
+    "torch_threads": 1,
+    "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU"
+  },
+  "source_directory": "reports/lmta_weighted_v46",
+  "graphs": [
+    {
+      "graph_id": 440900,
+      "nodes": 500,
+      "edges": 2522
+    },
+    {
+      "graph_id": 440901,
+      "nodes": 500,
+      "edges": 2536
+    },
+    {
+      "graph_id": 440902,
+      "nodes": 500,
+      "edges": 2390
+    },
+    {
+      "graph_id": 440903,
+      "nodes": 500,
+      "edges": 2484
+    },
+    {
+      "graph_id": 440904,
+      "nodes": 500,
+      "edges": 2507
+    },
+    {
+      "graph_id": 440905,
+      "nodes": 500,
+      "edges": 2440
+    },
+    {
+      "graph_id": 440906,
+      "nodes": 500,
+      "edges": 2542
+    },
+    {
+      "graph_id": 440907,
+      "nodes": 500,
+      "edges": 2485
+    },
+    {
+      "graph_id": 440908,
+      "nodes": 500,
+      "edges": 2436
+    },
+    {
+      "graph_id": 440909,
+      "nodes": 500,
+      "edges": 2460
+    }
+  ],
+  "graph_generation_seconds": 0.13914347399258986,
+  "loaded_policies": [
+    {
+      "method": "BUDGET_HRL",
+      "run_id": 0,
+      "source_checkpoint": 128,
+      "model_path": "models/BUDGET_HRL_run0.pt",
+      "model_bytes": 446583,
+      "load_seconds": 1.3063739859790076
+    },
+    {
+      "method": "LMTA_RI",
+      "run_id": 0,
+      "source_checkpoint": 128,
+      "model_path": "models/LMTA_RI_run0.pt",
+      "model_bytes": 1211927,
+      "load_seconds": 0.04796207702020183
+    },
+    {
+      "method": "BUDGET_HRL",
+      "run_id": 1,
+      "source_checkpoint": 128,
+      "model_path": "models/BUDGET_HRL_run1.pt",
+      "model_bytes": 446583,
+      "load_seconds": 0.04195268198964186
+    },
+    {
+      "method": "LMTA_RI",
+      "run_id": 1,
+      "source_checkpoint": 128,
+      "model_path": "models/LMTA_RI_run1.pt",
+      "model_bytes": 1211927,
+      "load_seconds": 0.04534468401107006
+    },
+    {
+      "method": "LMTA_RI",
+      "run_id": 2,
+      "source_checkpoint": 128,
+      "model_path": "models/LMTA_RI_run2.pt",
+      "model_bytes": 1211927,
+      "load_seconds": 0.0438622799993027
+    },
+    {
+      "method": "BUDGET_HRL",
+      "run_id": 2,
+      "source_checkpoint": 128,
+      "model_path": "models/BUDGET_HRL_run2.pt",
+      "model_bytes": 446583,
+      "load_seconds": 0.04481953399954364
+    }
+  ],
+  "completed_cells": [
+    {
+      "method": "BUDGET_HRL",
+      "run_id": 0,
+      "cell": "LS",
+      "episodes": 20
+    },
+    {
+      "method": "BUDGET_HRL",
+      "run_id": 0,
+      "cell": "AL",
+      "episodes": 20
+    },
+    {
+      "method": "LMTA_RI",
+      "run_id": 0,
+      "cell": "LS",
+      "episodes": 20
+    },
+    {
+      "method": "LMTA_RI",
+      "run_id": 0,
+      "cell": "AL",
+      "episodes": 20
+    },
+    {
+      "method": "LMTA_RI",
+      "run_id": 1,
+      "cell": "AL",
+      "episodes": 20
+    },
+    {
+      "method": "LMTA_RI",
+      "run_id": 1,
+      "cell": "LS",
+      "episodes": 20
+    },
+    {
+      "method": "BUDGET_HRL",
+      "run_id": 1,
+      "cell": "AL",
+      "episodes": 20
+    },
+    {
+      "method": "BUDGET_HRL",
+      "run_id": 1,
+      "cell": "LS",
+      "episodes": 20
+    },
+    {
+      "method": "BUDGET_HRL",
+      "run_id": 2,
+      "cell": "LS",
+      "episodes": 20
+    },
+    {
+      "method": "BUDGET_HRL",
+      "run_id": 2,
+      "cell": "AL",
+      "episodes": 20
+    },
+    {
+      "method": "LMTA_RI",
+      "run_id": 2,
+      "cell": "LS",
+      "episodes": 20
+    },
+    {
+      "method": "LMTA_RI",
+      "run_id": 2,
+      "cell": "AL",
+      "episodes": 20
+    }
+  ],
+  "anchors_complete": true,
+  "old_heuristic_directory": "reports/lmta_learnability_v44",
+  "wall_seconds": 114.57986958601396
+}

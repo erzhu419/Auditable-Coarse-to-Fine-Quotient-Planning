@@ -1,0 +1,29 @@
+{
+  "schema": "acfqp.lmta_weighted.development_checks.v46",
+  "checks": [
+    {
+      "command": ".venv-lmta-v42/bin/python -m pytest -q -s tests/test_lmta_weighted_v46.py",
+      "passed": 9,
+      "reported_seconds": 3.64,
+      "attempts": 1
+    },
+    {
+      "command": ".venv-lmta-v42/bin/python -m pytest -q tests/test_lmta_weighted_analysis_v46.py",
+      "passed": 13,
+      "reported_seconds": 0.72,
+      "environment_calls": 0
+    }
+  ],
+  "physical_counters": {
+    "primitive_selections": 84,
+    "day_transitions": 54,
+    "propagation_draws": 24
+  },
+  "method_calls": {
+    "select": 84,
+    "finish_day": 54,
+    "transition": 54,
+    "reset": 78
+  },
+  "scope": "Agent-reported results of completed targeted tests. The weighted-agent tests ran exactly once; no failed or single-test exploratory runs. Synthetic analyzer tests invoke no environment. transition calls are nested in finish_day, not extra physical daily samples. Counts are separate from the main experiment."
+}

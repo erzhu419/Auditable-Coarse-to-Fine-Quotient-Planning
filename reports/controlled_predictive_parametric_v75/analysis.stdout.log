@@ -1,0 +1,42 @@
+{
+  "complete": true,
+  "all_artifacts_routing_and_portable_preserved": true,
+  "inherited_v69_policy_evidence_valid": true,
+  "template_reuse_observed": true,
+  "symbolic_compilation_reduction_established": true,
+  "ratios": {
+    "TRACE_vs_BASE": {
+      "method_total_seconds": 1.7455176971320547,
+      "construction_seconds": 3.7376688623654237,
+      "geometric_active_states": 1.0,
+      "unique_h2_geometries": 1.0,
+      "active_cells": 1.0,
+      "planning_action_rows": 1.0,
+      "package_bytes": 1.0,
+      "router_bytes": 1.0,
+      "finite_method_cost_benefit": false
+    },
+    "PARAM_vs_TRACE": {
+      "method_total_seconds": 1.0125616249011349,
+      "construction_seconds": 1.0011412579243828,
+      "geometric_active_states": 1.0,
+      "unique_h2_geometries": 1.0,
+      "active_cells": 1.0,
+      "planning_action_rows": 1.0,
+      "package_bytes": 1.0,
+      "router_bytes": 1.0,
+      "finite_method_cost_benefit": false
+    },
+    "PARAM_vs_BASE": {
+      "method_total_seconds": 1.7674442357017204,
+      "construction_seconds": 3.7419345065733176,
+      "geometric_active_states": 1.0,
+      "unique_h2_geometries": 1.0,
+      "active_cells": 1.0,
+      "planning_action_rows": 1.0,
+      "package_bytes": 1.0,
+      "router_bytes": 1.0,
+      "finite_method_cost_benefit": false
+    }
+  }
+}

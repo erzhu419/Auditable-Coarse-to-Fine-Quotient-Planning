@@ -1,0 +1,13 @@
+{
+  "complete": true,
+  "valid": true,
+  "observations": 32,
+  "patch_contracts_checked": 31,
+  "errors": {},
+  "ground_counts": {
+    "ground_explicit_state_calls": 32,
+    "ground_explicit_swipe_calls": 128,
+    "ground_step_calls": 122,
+    "ground_step_outcomes": 780
+  }
+}

@@ -1,0 +1,297 @@
+{
+  "attempts": [
+    {
+      "test_module": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/tests/test_controlled_predictive_compositional_contract_v69.py",
+      "session_failures": 0,
+      "scope": "explicit toy graph only; no source or main target boards",
+      "builds": [
+        {
+          "variant": "FULL",
+          "counts": {
+            "concrete_states": 10,
+            "toy_classifications": 10,
+            "concrete_active_states": 7,
+            "toy_spawn_calls": 10,
+            "concrete_action_rows": 10,
+            "concrete_successor_entries": 13,
+            "h0_boards_generated": 6,
+            "model_transition_rows": 10,
+            "model_successor_entries": 13,
+            "concrete_memo_hits": 4,
+            "active_states": 7,
+            "terminal_states": 3,
+            "registered_states": 10,
+            "concrete_h0_states": 3,
+            "concrete_states_by_h": {
+              "0": 3,
+              "1": 4,
+              "2": 2,
+              "3": 1
+            },
+            "concrete_active_by_h": {
+              "1": 4,
+              "2": 2,
+              "3": 1
+            },
+            "active_cells_by_h": {
+              "1": 4,
+              "2": 2,
+              "3": 1
+            }
+          },
+          "elapsed_seconds": 0.0029875640175305307
+        },
+        {
+          "variant": "COMPOSED",
+          "counts": {
+            "concrete_states": 10,
+            "toy_classifications": 10,
+            "concrete_active_states": 7,
+            "toy_spawn_calls": 10,
+            "concrete_action_rows": 10,
+            "concrete_successor_entries": 13,
+            "h0_boards_generated": 6,
+            "model_transition_rows": 6,
+            "model_successor_entries": 7,
+            "concrete_memo_hits": 4,
+            "contract_reuses": 3,
+            "active_states": 4,
+            "terminal_states": 3,
+            "registered_states": 7,
+            "concrete_h0_states": 3,
+            "concrete_states_by_h": {
+              "0": 3,
+              "1": 4,
+              "2": 2,
+              "3": 1
+            },
+            "concrete_active_by_h": {
+              "1": 4,
+              "2": 2,
+              "3": 1
+            },
+            "active_cells_by_h": {
+              "1": 2,
+              "2": 1,
+              "3": 1
+            }
+          },
+          "elapsed_seconds": 0.00025580404326319695
+        },
+        {
+          "variant": "COMPOSED",
+          "counts": {
+            "concrete_states": 10,
+            "toy_classifications": 10,
+            "concrete_active_states": 7,
+            "toy_spawn_calls": 10,
+            "concrete_action_rows": 10,
+            "concrete_successor_entries": 13,
+            "h0_boards_generated": 6,
+            "model_transition_rows": 6,
+            "model_successor_entries": 7,
+            "concrete_memo_hits": 4,
+            "contract_reuses": 3,
+            "active_states": 4,
+            "terminal_states": 3,
+            "registered_states": 7,
+            "concrete_h0_states": 3,
+            "concrete_states_by_h": {
+              "0": 3,
+              "1": 4,
+              "2": 2,
+              "3": 1
+            },
+            "concrete_active_by_h": {
+              "1": 4,
+              "2": 2,
+              "3": 1
+            },
+            "active_cells_by_h": {
+              "1": 2,
+              "2": 1,
+              "3": 1
+            }
+          },
+          "elapsed_seconds": 0.0002260910114273429
+        }
+      ],
+      "routing": [
+        {
+          "horizon": 0,
+          "board": [
+            9
+          ],
+          "counts": {
+            "routing_index_outcomes": 7,
+            "routing_index_rows": 6,
+            "routing_index_cells": 7,
+            "routing_concrete_states": 1,
+            "toy_classifications": 1
+          }
+        },
+        {
+          "horizon": 0,
+          "board": [
+            7
+          ],
+          "counts": {
+            "routing_index_outcomes": 7,
+            "routing_index_rows": 6,
+            "routing_index_cells": 7,
+            "routing_concrete_states": 1,
+            "toy_classifications": 1
+          }
+        },
+        {
+          "horizon": 1,
+          "board": [
+            3
+          ],
+          "counts": {
+            "routing_index_outcomes": 7,
+            "routing_index_rows": 6,
+            "routing_index_cells": 7,
+            "routing_concrete_states": 3,
+            "toy_classifications": 3,
+            "toy_spawn_calls": 1,
+            "routing_action_rows": 1,
+            "routing_successor_entries": 2,
+            "routing_h0_boards_generated": 2
+          }
+        },
+        {
+          "horizon": 0,
+          "board": [
+            8
+          ],
+          "counts": {
+            "routing_index_outcomes": 7,
+            "routing_index_rows": 6,
+            "routing_index_cells": 7,
+            "routing_concrete_states": 1,
+            "toy_classifications": 1
+          }
+        },
+        {
+          "horizon": 1,
+          "board": [
+            4
+          ],
+          "counts": {
+            "routing_index_outcomes": 7,
+            "routing_index_rows": 6,
+            "routing_index_cells": 7,
+            "routing_concrete_states": 2,
+            "toy_classifications": 2,
+            "toy_spawn_calls": 1,
+            "routing_action_rows": 1,
+            "routing_successor_entries": 1,
+            "routing_h0_boards_generated": 1
+          }
+        },
+        {
+          "horizon": 2,
+          "board": [
+            1
+          ],
+          "counts": {
+            "routing_index_outcomes": 7,
+            "routing_index_rows": 6,
+            "routing_index_cells": 7,
+            "routing_concrete_states": 6,
+            "toy_classifications": 6,
+            "toy_spawn_calls": 4,
+            "routing_action_rows": 4,
+            "routing_successor_entries": 5,
+            "routing_h0_boards_generated": 3
+          }
+        },
+        {
+          "horizon": 1,
+          "board": [
+            5
+          ],
+          "counts": {
+            "routing_index_outcomes": 7,
+            "routing_index_rows": 6,
+            "routing_index_cells": 7,
+            "routing_concrete_states": 3,
+            "toy_classifications": 3,
+            "toy_spawn_calls": 1,
+            "routing_action_rows": 1,
+            "routing_successor_entries": 2,
+            "routing_h0_boards_generated": 2
+          }
+        },
+        {
+          "horizon": 1,
+          "board": [
+            6
+          ],
+          "counts": {
+            "routing_index_outcomes": 7,
+            "routing_index_rows": 6,
+            "routing_index_cells": 7,
+            "routing_concrete_states": 2,
+            "toy_classifications": 2,
+            "toy_spawn_calls": 1,
+            "routing_action_rows": 1,
+            "routing_successor_entries": 1,
+            "routing_h0_boards_generated": 1
+          }
+        },
+        {
+          "horizon": 2,
+          "board": [
+            2
+          ],
+          "counts": {
+            "routing_index_outcomes": 7,
+            "routing_index_rows": 6,
+            "routing_index_cells": 7,
+            "routing_concrete_states": 6,
+            "toy_classifications": 6,
+            "toy_spawn_calls": 4,
+            "routing_action_rows": 4,
+            "routing_successor_entries": 5,
+            "routing_h0_boards_generated": 3
+          }
+        },
+        {
+          "horizon": 3,
+          "board": [
+            0
+          ],
+          "counts": {
+            "routing_index_outcomes": 7,
+            "routing_index_rows": 6,
+            "routing_index_cells": 7,
+            "routing_concrete_states": 10,
+            "toy_classifications": 10,
+            "toy_spawn_calls": 10,
+            "routing_action_rows": 10,
+            "routing_successor_entries": 13,
+            "routing_h0_boards_generated": 6,
+            "routing_concrete_memo_hits": 4
+          }
+        }
+      ],
+      "planner_calls": 4,
+      "cap_failure": {
+        "counts": {
+          "concrete_states": 5,
+          "toy_classifications": 5,
+          "concrete_active_states": 3,
+          "toy_spawn_calls": 4,
+          "concrete_action_rows": 4,
+          "concrete_successor_entries": 6,
+          "h0_boards_generated": 2,
+          "model_transition_rows": 1,
+          "model_successor_entries": 2
+        },
+        "elapsed_seconds": 6.654404569417238e-05
+      }
+    }
+  ]
+}

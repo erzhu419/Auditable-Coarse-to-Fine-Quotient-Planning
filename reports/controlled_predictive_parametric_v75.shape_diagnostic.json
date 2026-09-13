@@ -1,0 +1,666 @@
+{
+  "schema": "acfqp.parametric_shape_diagnostic.v75",
+  "complete": true,
+  "exact_recovery": true,
+  "exact_kernel_correspondence": true,
+  "source_path": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_composition_v69",
+  "counts": {
+    "files_read": 66,
+    "bytes_read": 3257840,
+    "retained_action_rows_decoded": 58104,
+    "retained_outcomes_decoded": 87999,
+    "h1_semantic_states": 15916,
+    "h2_semantic_states": 2880,
+    "full_h2_instances": 1500,
+    "exact_h2_cells_within_case_total": 1380,
+    "parametric_templates_within_case_total": 1330,
+    "instances_recovered_exactly": 1500,
+    "independent_reward_bindings": 44416,
+    "independent_h1_outcome_slots": 12957,
+    "instances_with_binding_different_from_first_shape_instance": 58,
+    "parametric_templates_global": 1326,
+    "exact_h2_semantics_global": 1380
+  },
+  "cases": [
+    {
+      "case": "v69_h3_00",
+      "full_h2_instances": 12,
+      "exact_h2_cells": 12,
+      "parametric_templates": 12,
+      "instances_recovered_exactly": 12,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 330,
+      "h1_outcome_slots": 102,
+      "shape_reuses_with_different_binding": 0
+    },
+    {
+      "case": "v69_h3_01",
+      "full_h2_instances": 8,
+      "exact_h2_cells": 7,
+      "parametric_templates": 7,
+      "instances_recovered_exactly": 8,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 236,
+      "h1_outcome_slots": 67,
+      "shape_reuses_with_different_binding": 0
+    },
+    {
+      "case": "v69_h3_02",
+      "full_h2_instances": 24,
+      "exact_h2_cells": 22,
+      "parametric_templates": 22,
+      "instances_recovered_exactly": 24,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 816,
+      "h1_outcome_slots": 242,
+      "shape_reuses_with_different_binding": 0
+    },
+    {
+      "case": "v69_h3_03",
+      "full_h2_instances": 12,
+      "exact_h2_cells": 12,
+      "parametric_templates": 9,
+      "instances_recovered_exactly": 12,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 208,
+      "h1_outcome_slots": 56,
+      "shape_reuses_with_different_binding": 3
+    },
+    {
+      "case": "v69_h3_04",
+      "full_h2_instances": 16,
+      "exact_h2_cells": 15,
+      "parametric_templates": 15,
+      "instances_recovered_exactly": 16,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 336,
+      "h1_outcome_slots": 91,
+      "shape_reuses_with_different_binding": 0
+    },
+    {
+      "case": "v69_h3_05",
+      "full_h2_instances": 28,
+      "exact_h2_cells": 28,
+      "parametric_templates": 27,
+      "instances_recovered_exactly": 28,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 997,
+      "h1_outcome_slots": 286,
+      "shape_reuses_with_different_binding": 1
+    },
+    {
+      "case": "v69_h3_06",
+      "full_h2_instances": 12,
+      "exact_h2_cells": 8,
+      "parametric_templates": 7,
+      "instances_recovered_exactly": 12,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 156,
+      "h1_outcome_slots": 44,
+      "shape_reuses_with_different_binding": 1
+    },
+    {
+      "case": "v69_h3_07",
+      "full_h2_instances": 8,
+      "exact_h2_cells": 8,
+      "parametric_templates": 7,
+      "instances_recovered_exactly": 8,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 150,
+      "h1_outcome_slots": 42,
+      "shape_reuses_with_different_binding": 1
+    },
+    {
+      "case": "v69_h3_08",
+      "full_h2_instances": 20,
+      "exact_h2_cells": 19,
+      "parametric_templates": 18,
+      "instances_recovered_exactly": 20,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 474,
+      "h1_outcome_slots": 126,
+      "shape_reuses_with_different_binding": 1
+    },
+    {
+      "case": "v69_h3_09",
+      "full_h2_instances": 0,
+      "exact_h2_cells": 0,
+      "parametric_templates": 0,
+      "instances_recovered_exactly": 0,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 0,
+      "h1_outcome_slots": 0,
+      "shape_reuses_with_different_binding": 0
+    },
+    {
+      "case": "v69_h3_10",
+      "full_h2_instances": 0,
+      "exact_h2_cells": 0,
+      "parametric_templates": 0,
+      "instances_recovered_exactly": 0,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 0,
+      "h1_outcome_slots": 0,
+      "shape_reuses_with_different_binding": 0
+    },
+    {
+      "case": "v69_h3_11",
+      "full_h2_instances": 24,
+      "exact_h2_cells": 24,
+      "parametric_templates": 24,
+      "instances_recovered_exactly": 24,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 807,
+      "h1_outcome_slots": 246,
+      "shape_reuses_with_different_binding": 0
+    },
+    {
+      "case": "v69_h3_12",
+      "full_h2_instances": 0,
+      "exact_h2_cells": 0,
+      "parametric_templates": 0,
+      "instances_recovered_exactly": 0,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 0,
+      "h1_outcome_slots": 0,
+      "shape_reuses_with_different_binding": 0
+    },
+    {
+      "case": "v69_h3_13",
+      "full_h2_instances": 14,
+      "exact_h2_cells": 14,
+      "parametric_templates": 14,
+      "instances_recovered_exactly": 14,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 569,
+      "h1_outcome_slots": 161,
+      "shape_reuses_with_different_binding": 0
+    },
+    {
+      "case": "v69_h3_14",
+      "full_h2_instances": 24,
+      "exact_h2_cells": 24,
+      "parametric_templates": 24,
+      "instances_recovered_exactly": 24,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 968,
+      "h1_outcome_slots": 273,
+      "shape_reuses_with_different_binding": 0
+    },
+    {
+      "case": "v69_h3_15",
+      "full_h2_instances": 8,
+      "exact_h2_cells": 8,
+      "parametric_templates": 8,
+      "instances_recovered_exactly": 8,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 220,
+      "h1_outcome_slots": 68,
+      "shape_reuses_with_different_binding": 0
+    },
+    {
+      "case": "v69_h3_16",
+      "full_h2_instances": 8,
+      "exact_h2_cells": 5,
+      "parametric_templates": 4,
+      "instances_recovered_exactly": 8,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 94,
+      "h1_outcome_slots": 22,
+      "shape_reuses_with_different_binding": 1
+    },
+    {
+      "case": "v69_h3_17",
+      "full_h2_instances": 28,
+      "exact_h2_cells": 28,
+      "parametric_templates": 26,
+      "instances_recovered_exactly": 28,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 852,
+      "h1_outcome_slots": 225,
+      "shape_reuses_with_different_binding": 2
+    },
+    {
+      "case": "v69_h3_18",
+      "full_h2_instances": 3,
+      "exact_h2_cells": 2,
+      "parametric_templates": 2,
+      "instances_recovered_exactly": 3,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 6,
+      "h1_outcome_slots": 0,
+      "shape_reuses_with_different_binding": 0
+    },
+    {
+      "case": "v69_h3_19",
+      "full_h2_instances": 4,
+      "exact_h2_cells": 2,
+      "parametric_templates": 2,
+      "instances_recovered_exactly": 4,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 20,
+      "h1_outcome_slots": 4,
+      "shape_reuses_with_different_binding": 0
+    },
+    {
+      "case": "v69_h3_20",
+      "full_h2_instances": 0,
+      "exact_h2_cells": 0,
+      "parametric_templates": 0,
+      "instances_recovered_exactly": 0,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 0,
+      "h1_outcome_slots": 0,
+      "shape_reuses_with_different_binding": 0
+    },
+    {
+      "case": "v69_h3_21",
+      "full_h2_instances": 12,
+      "exact_h2_cells": 10,
+      "parametric_templates": 10,
+      "instances_recovered_exactly": 12,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 237,
+      "h1_outcome_slots": 74,
+      "shape_reuses_with_different_binding": 0
+    },
+    {
+      "case": "v69_h3_22",
+      "full_h2_instances": 16,
+      "exact_h2_cells": 16,
+      "parametric_templates": 16,
+      "instances_recovered_exactly": 16,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 583,
+      "h1_outcome_slots": 175,
+      "shape_reuses_with_different_binding": 0
+    },
+    {
+      "case": "v69_h3_23",
+      "full_h2_instances": 28,
+      "exact_h2_cells": 28,
+      "parametric_templates": 27,
+      "instances_recovered_exactly": 28,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 987,
+      "h1_outcome_slots": 297,
+      "shape_reuses_with_different_binding": 1
+    },
+    {
+      "case": "v69_h4_00",
+      "full_h2_instances": 61,
+      "exact_h2_cells": 60,
+      "parametric_templates": 59,
+      "instances_recovered_exactly": 61,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 861,
+      "h1_outcome_slots": 269,
+      "shape_reuses_with_different_binding": 1
+    },
+    {
+      "case": "v69_h4_01",
+      "full_h2_instances": 128,
+      "exact_h2_cells": 123,
+      "parametric_templates": 122,
+      "instances_recovered_exactly": 128,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 3289,
+      "h1_outcome_slots": 978,
+      "shape_reuses_with_different_binding": 1
+    },
+    {
+      "case": "v69_h4_02",
+      "full_h2_instances": 12,
+      "exact_h2_cells": 7,
+      "parametric_templates": 5,
+      "instances_recovered_exactly": 12,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 68,
+      "h1_outcome_slots": 13,
+      "shape_reuses_with_different_binding": 5
+    },
+    {
+      "case": "v69_h4_03",
+      "full_h2_instances": 278,
+      "exact_h2_cells": 259,
+      "parametric_templates": 249,
+      "instances_recovered_exactly": 278,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 9040,
+      "h1_outcome_slots": 2642,
+      "shape_reuses_with_different_binding": 10
+    },
+    {
+      "case": "v69_h4_04",
+      "full_h2_instances": 208,
+      "exact_h2_cells": 200,
+      "parametric_templates": 195,
+      "instances_recovered_exactly": 208,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 6916,
+      "h1_outcome_slots": 2075,
+      "shape_reuses_with_different_binding": 5
+    },
+    {
+      "case": "v69_h4_05",
+      "full_h2_instances": 156,
+      "exact_h2_cells": 143,
+      "parametric_templates": 139,
+      "instances_recovered_exactly": 156,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 4909,
+      "h1_outcome_slots": 1413,
+      "shape_reuses_with_different_binding": 4
+    },
+    {
+      "case": "v69_h4_06",
+      "full_h2_instances": 148,
+      "exact_h2_cells": 114,
+      "parametric_templates": 107,
+      "instances_recovered_exactly": 148,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 4738,
+      "h1_outcome_slots": 1342,
+      "shape_reuses_with_different_binding": 12
+    },
+    {
+      "case": "v69_h4_07",
+      "full_h2_instances": 200,
+      "exact_h2_cells": 182,
+      "parametric_templates": 173,
+      "instances_recovered_exactly": 200,
+      "exact_kernel_correspondence": true,
+      "reward_binding_slots": 5549,
+      "h1_outcome_slots": 1624,
+      "shape_reuses_with_different_binding": 9
+    }
+  ],
+  "first_shape_with_different_binding": {
+    "case": "v69_h3_03",
+    "full_states": [
+      8,
+      13
+    ],
+    "template": [
+      [
+        "DOWN",
+        [
+          "PARAM",
+          0
+        ],
+        [
+          [
+            [
+              "TERMINAL",
+              "WON"
+            ],
+            {
+              "fraction": [
+                1,
+                1
+              ]
+            }
+          ]
+        ]
+      ],
+      [
+        "RIGHT",
+        [
+          "PARAM",
+          1
+        ],
+        [
+          [
+            [
+              "H1_SLOT",
+              0,
+              [
+                [
+                  "DOWN",
+                  [
+                    "PARAM",
+                    2
+                  ],
+                  [
+                    [
+                      "CUTOFF",
+                      {
+                        "fraction": [
+                          1,
+                          1
+                        ]
+                      }
+                    ]
+                  ]
+                ],
+                [
+                  "LEFT",
+                  [
+                    "PARAM",
+                    3
+                  ],
+                  [
+                    [
+                      "CUTOFF",
+                      {
+                        "fraction": [
+                          1,
+                          1
+                        ]
+                      }
+                    ]
+                  ]
+                ]
+              ]
+            ],
+            {
+              "fraction": [
+                1,
+                2
+              ]
+            }
+          ],
+          [
+            [
+              "H1_SLOT",
+              1,
+              [
+                [
+                  "DOWN",
+                  [
+                    "PARAM",
+                    4
+                  ],
+                  [
+                    [
+                      "WON",
+                      {
+                        "fraction": [
+                          1,
+                          1
+                        ]
+                      }
+                    ]
+                  ]
+                ],
+                [
+                  "LEFT",
+                  [
+                    "PARAM",
+                    5
+                  ],
+                  [
+                    [
+                      "CUTOFF",
+                      {
+                        "fraction": [
+                          1,
+                          1
+                        ]
+                      }
+                    ]
+                  ]
+                ],
+                [
+                  "UP",
+                  [
+                    "PARAM",
+                    6
+                  ],
+                  [
+                    [
+                      "WON",
+                      {
+                        "fraction": [
+                          1,
+                          1
+                        ]
+                      }
+                    ]
+                  ]
+                ]
+              ]
+            ],
+            {
+              "fraction": [
+                1,
+                2
+              ]
+            }
+          ]
+        ]
+      ],
+      [
+        "UP",
+        [
+          "PARAM",
+          7
+        ],
+        [
+          [
+            [
+              "TERMINAL",
+              "WON"
+            ],
+            {
+              "fraction": [
+                1,
+                1
+              ]
+            }
+          ]
+        ]
+      ]
+    ],
+    "bindings": [
+      [
+        {
+          "fraction": [
+            3,
+            2
+          ]
+        },
+        {
+          "fraction": [
+            0,
+            1
+          ]
+        },
+        {
+          "fraction": [
+            0,
+            1
+          ]
+        },
+        {
+          "fraction": [
+            0,
+            1
+          ]
+        },
+        {
+          "fraction": [
+            1,
+            1
+          ]
+        },
+        {
+          "fraction": [
+            0,
+            1
+          ]
+        },
+        {
+          "fraction": [
+            1,
+            1
+          ]
+        },
+        {
+          "fraction": [
+            3,
+            2
+          ]
+        }
+      ],
+      [
+        {
+          "fraction": [
+            385,
+            256
+          ]
+        },
+        {
+          "fraction": [
+            0,
+            1
+          ]
+        },
+        {
+          "fraction": [
+            0,
+            1
+          ]
+        },
+        {
+          "fraction": [
+            0,
+            1
+          ]
+        },
+        {
+          "fraction": [
+            1,
+            1
+          ]
+        },
+        {
+          "fraction": [
+            0,
+            1
+          ]
+        },
+        {
+          "fraction": [
+            1,
+            1
+          ]
+        },
+        {
+          "fraction": [
+            385,
+            256
+          ]
+        }
+      ]
+    ],
+    "both_recover_exact": true,
+    "independent_h1_outcome_slots": 2
+  },
+  "ground_calls": 0,
+  "fit_calls": 0,
+  "construction_calls": 0,
+  "planning_calls": 0,
+  "scope": "Exploratory structure diagnostic on retained H2 kernels. Each H2 action reward and each H1 outcome-slot action reward is an independent parameter. Distinct exact H1 bindings remain distinct outcome slots even when their reward-free shapes match. Repeated children across H2 actions have independent slots; no cross-slot equality constraint is learned. Templates are canonically ordered without retained cell IDs. This measures shape reuse plus exact reconstruction of observed bindings, not learned or generative strategic transfer.",
+  "elapsed_seconds_before_write": 2.0610310370102525
+}

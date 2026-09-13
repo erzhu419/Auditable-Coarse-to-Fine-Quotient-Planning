@@ -1,0 +1,33 @@
+{"base_seed": 962001, "replicate_index": 0, "source_valid": true, "stage": "PROPOSALS_FROZEN"}
+{"base_seed": 962002, "replicate_index": 1, "source_valid": true, "stage": "PROPOSALS_FROZEN"}
+{"base_seed": 962003, "replicate_index": 2, "source_valid": true, "stage": "PROPOSALS_FROZEN"}
+{"base_seed": 962004, "replicate_index": 3, "source_valid": true, "stage": "PROPOSALS_FROZEN"}
+{"base_seed": 962005, "replicate_index": 4, "source_valid": true, "stage": "PROPOSALS_FROZEN"}
+{"base_seed": 962006, "replicate_index": 5, "source_valid": true, "stage": "PROPOSALS_FROZEN"}
+{"base_seed": 962007, "replicate_index": 6, "source_valid": true, "stage": "PROPOSALS_FROZEN"}
+{"base_seed": 962008, "replicate_index": 7, "source_valid": true, "stage": "PROPOSALS_FROZEN"}
+{"base_seed": 962009, "replicate_index": 8, "source_valid": true, "stage": "PROPOSALS_FROZEN"}
+{"base_seed": 962010, "replicate_index": 9, "source_valid": true, "stage": "PROPOSALS_FROZEN"}
+{"base_seed": 962011, "replicate_index": 10, "source_valid": true, "stage": "PROPOSALS_FROZEN"}
+{"base_seed": 962012, "replicate_index": 11, "source_valid": true, "stage": "PROPOSALS_FROZEN"}
+{"base_seed": 962013, "replicate_index": 12, "source_valid": true, "stage": "PROPOSALS_FROZEN"}
+{"base_seed": 962014, "replicate_index": 13, "source_valid": true, "stage": "PROPOSALS_FROZEN"}
+{"base_seed": 962015, "replicate_index": 14, "source_valid": true, "stage": "PROPOSALS_FROZEN"}
+{"base_seed": 962016, "replicate_index": 15, "source_valid": true, "stage": "PROPOSALS_FROZEN"}
+{"base_seed": 962001, "complete": true, "replicate_index": 0, "source_valid": true, "stage": "CANDIDATES_EVALUATED"}
+{"base_seed": 962002, "complete": true, "replicate_index": 1, "source_valid": true, "stage": "CANDIDATES_EVALUATED"}
+{"base_seed": 962003, "complete": true, "replicate_index": 2, "source_valid": true, "stage": "CANDIDATES_EVALUATED"}
+{"base_seed": 962004, "complete": true, "replicate_index": 3, "source_valid": true, "stage": "CANDIDATES_EVALUATED"}
+{"base_seed": 962005, "complete": true, "replicate_index": 4, "source_valid": true, "stage": "CANDIDATES_EVALUATED"}
+{"base_seed": 962006, "complete": true, "replicate_index": 5, "source_valid": true, "stage": "CANDIDATES_EVALUATED"}
+{"base_seed": 962007, "complete": true, "replicate_index": 6, "source_valid": true, "stage": "CANDIDATES_EVALUATED"}
+{"base_seed": 962008, "complete": true, "replicate_index": 7, "source_valid": true, "stage": "CANDIDATES_EVALUATED"}
+{"base_seed": 962009, "complete": true, "replicate_index": 8, "source_valid": true, "stage": "CANDIDATES_EVALUATED"}
+{"base_seed": 962010, "complete": true, "replicate_index": 9, "source_valid": true, "stage": "CANDIDATES_EVALUATED"}
+{"base_seed": 962011, "complete": true, "replicate_index": 10, "source_valid": true, "stage": "CANDIDATES_EVALUATED"}
+{"base_seed": 962012, "complete": true, "replicate_index": 11, "source_valid": true, "stage": "CANDIDATES_EVALUATED"}
+{"base_seed": 962013, "complete": true, "replicate_index": 12, "source_valid": true, "stage": "CANDIDATES_EVALUATED"}
+{"base_seed": 962014, "complete": true, "replicate_index": 13, "source_valid": true, "stage": "CANDIDATES_EVALUATED"}
+{"base_seed": 962015, "complete": true, "replicate_index": 14, "source_valid": true, "stage": "CANDIDATES_EVALUATED"}
+{"base_seed": 962016, "complete": true, "replicate_index": 15, "source_valid": true, "stage": "CANDIDATES_EVALUATED"}
+{"status": "CROSSFIT_COMPLETE", "complete_repetition_count": 16, "output": "reports/controlled_predictive_crossfit_v38.json.gz", "report_serialization_seconds": 3.257413925981382, "report_bytes": 2686455, "proposal_bytes": 2486598}

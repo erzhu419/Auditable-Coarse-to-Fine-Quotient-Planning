@@ -1,0 +1,47 @@
+{
+  "test_results": [
+    {"test_module": "tests/test_lmta_supervised_v49.py", "passed": 7, "failed": 0, "pytest_seconds": 0.31},
+    {"test_module": "tests/test_lmta_supervised_runner_v49.py", "passed": 3, "failed": 0, "pytest_seconds": 3.73},
+    {"test_module": "tests/test_lmta_supervised_analysis_v49.py", "passed": 9, "failed": 0, "pytest_seconds": 1.50, "environment_calls": 0, "optimizer_steps": 0}
+  ],
+  "runner_import_check": {"arguments": "--help", "exit_code": 0, "environment_calls": 0},
+  "attempts": [
+    {
+      "test_module": "tests/test_lmta_supervised_v49.py",
+      "new_failures": 0,
+      "environment_counters": {
+        "collection": {
+          "primitive_selections": 4,
+          "day_transitions": 3,
+          "propagation_draws": 5
+        },
+        "evaluation": {
+          "primitive_selections": 4,
+          "day_transitions": 3,
+          "propagation_draws": 5
+        },
+        "feature_check": {
+          "primitive_selections": 1,
+          "day_transitions": 1,
+          "propagation_draws": 3
+        }
+      },
+      "scope": "Every physical select and finish_day in collector, reference, and feature checks; no optimizer."
+    },
+    {
+      "test_module": "tests/test_lmta_supervised_runner_v49.py",
+      "new_failures": 0,
+      "environment_counters": {},
+      "computation_counters": {
+        "supervised_loss_state_presentations": 4,
+        "backward_calls": 2,
+        "model_forward_state_presentations": 8,
+        "no_grad_model_states": 6,
+        "gradient_enabled_model_states": 2,
+        "optimizer_gradient_steps": 1
+      },
+      "wall_seconds": 2.6140922819904517,
+      "scope": "CPU objective, batch/individual forward parity, one tiny optimizer update; no environment calls."
+    }
+  ]
+}

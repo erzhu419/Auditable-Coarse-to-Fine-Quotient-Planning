@@ -1,0 +1,177 @@
+{
+  "attempts": [
+    {
+      "test_module": "tests/test_lmta_lookahead_v53.py",
+      "new_failures": 0,
+      "environment_counters": {},
+      "model_evaluations": 0,
+      "gradient_steps": 0,
+      "planner_calls": 15,
+      "solver_instances": 18,
+      "standalone_V52_solver_instances": 3,
+      "all_solver_counters": {
+        "dp_states": 139,
+        "action_value_evaluations": 246,
+        "kernel_builds": 243,
+        "kernel_cache_hits": 4,
+        "transition_outcomes": 315,
+        "target_probability_evaluations": 702,
+        "score_node_evaluations": 0,
+        "immediate_expectation_terms": 32,
+        "bellman_expectation_terms": 300,
+        "forced_choice": 9
+      },
+      "wall_seconds": 0.005721786001231521,
+      "scope": "Hand-graph finite-depth calls and original V52 controls; every planner/kernel/DP enumeration is included, with no environment or main-panel evaluation."
+    },
+    {
+      "test_module": "tests/test_lmta_lookahead_runner_v53.py",
+      "new_failures": 0,
+      "environment_counters": {},
+      "model_evaluations": 0,
+      "gradient_steps": 0,
+      "planner_calls": 18,
+      "solver_instances": 23,
+      "all_solver_counters": {
+        "dp_states": 44,
+        "action_value_evaluations": 67,
+        "kernel_builds": 85,
+        "kernel_cache_hits": 0,
+        "transition_outcomes": 111,
+        "target_probability_evaluations": 79,
+        "score_node_evaluations": 0,
+        "immediate_expectation_terms": 12,
+        "bellman_expectation_terms": 83,
+        "forced_choice": 12
+      },
+      "retained_source_solver_counters": {
+        "dp_states": 17,
+        "action_value_evaluations": 25,
+        "kernel_builds": 25,
+        "kernel_cache_hits": 0,
+        "transition_outcomes": 32,
+        "target_probability_evaluations": 24,
+        "score_node_evaluations": 0,
+        "immediate_expectation_terms": 12,
+        "bellman_expectation_terms": 28
+      },
+      "outer_evaluations": [
+        {
+          "method": "LOOKAHEAD_1",
+          "wall_seconds": 0.00022506699315272272,
+          "decision_seconds": 0.00011591700604185462,
+          "evaluation_seconds": 0.0001091499871108681,
+          "state_records": 6,
+          "planner_calls": 6,
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 6,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 8,
+            "target_probability_evaluations": 4,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 0,
+            "retained_value_reads": 6,
+            "occupancy_probability_terms": 5
+          }
+        },
+        {
+          "method": "LOOKAHEAD_2",
+          "wall_seconds": 0.0002626389905344695,
+          "decision_seconds": 0.00016488094115629792,
+          "evaluation_seconds": 9.775804937817156e-05,
+          "state_records": 6,
+          "planner_calls": 6,
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 6,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 8,
+            "target_probability_evaluations": 4,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 6,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 5
+          }
+        },
+        {
+          "method": "LOOKAHEAD_FULL",
+          "wall_seconds": 0.00041897600749507546,
+          "decision_seconds": 0.0003113789716735482,
+          "evaluation_seconds": 0.00010759703582152724,
+          "state_records": 6,
+          "planner_calls": 6,
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 6,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 8,
+            "target_probability_evaluations": 4,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 0,
+            "retained_value_reads": 6,
+            "occupancy_probability_terms": 5
+          }
+        }
+      ],
+      "wall_seconds": 0.0036542059970088303,
+      "scope": "All small-graph planning, outer evaluation, and creation of V52 control rows is charged. Source counters are a subset of all_solver_counters, not an extra charge; no environments or main-panel results."
+    }
+  ],
+  "analysis_test_attempts": [
+    {
+      "test_module": "tests/test_lmta_lookahead_analysis_v53.py",
+      "attempt": 1,
+      "passed": 11,
+      "failed": 0,
+      "pytest_reported_seconds": 0.19,
+      "command_wall_seconds": 0.454581216,
+      "change": "Initial completed analyzer and hand-derived synthetic certificates.",
+      "environment_calls": 0,
+      "neural_model_evaluations": 0,
+      "gradient_steps": 0,
+      "scope": "Independent checker arithmetic on small synthetic graphs only; no main panel or production solver calls."
+    },
+    {
+      "test_module": "tests/test_lmta_lookahead_analysis_v53.py",
+      "attempt": 2,
+      "passed": 11,
+      "failed": 0,
+      "pytest_reported_seconds": 0.19,
+      "command_wall_seconds": 0.431412232,
+      "change": "Changed truncated Q and planned-value checks to absolute 1e-10 tolerance; previous tests had already passed.",
+      "environment_calls": 0,
+      "neural_model_evaluations": 0,
+      "gradient_steps": 0,
+      "scope": "Same synthetic suite after the numerical-check correction; no main panel or production solver calls."
+    }
+  ],
+  "final_test_results": {
+    "planner": {
+      "passed": 6,
+      "failed": 0,
+      "pytest_seconds": 0.25
+    },
+    "runner": {
+      "passed": 3,
+      "failed": 0,
+      "pytest_seconds": 0.26
+    },
+    "analysis": {
+      "passed": 11,
+      "failed": 0,
+      "pytest_seconds": 0.19
+    },
+    "unique_tests": 20,
+    "total_test_executions": 31
+  }
+}

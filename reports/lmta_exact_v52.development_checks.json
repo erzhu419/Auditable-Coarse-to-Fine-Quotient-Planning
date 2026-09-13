@@ -1,0 +1,40 @@
+{
+  "attempts": [
+    {
+      "test_module": "tests/test_lmta_exact_v52.py",
+      "new_failures": 0,
+      "environment_counters": {
+        "oracle_day_transitions": 16,
+        "oracle_seed_exposures": 32,
+        "oracle_propagation_draws": 64
+      },
+      "exact_solver_counters": {
+        "dp_states": 233,
+        "action_value_evaluations": 428,
+        "kernel_builds": 297,
+        "kernel_cache_hits": 135,
+        "transition_outcomes": 400,
+        "target_probability_evaluations": 811,
+        "score_node_evaluations": 99,
+        "immediate_expectation_terms": 48,
+        "bellman_expectation_terms": 558
+      },
+      "solver_instances": 12,
+      "wall_seconds": 0.012253193999640644,
+      "scope": "Hand-solvable graphs and independent scripted V43 transition enumeration; no main-panel evaluation, gradients or learned models."
+    }
+  ],
+  "solver_test_result": {
+    "passed": 5,
+    "failed": 0,
+    "pytest_seconds": 0.26
+  },
+  "analysis_test_result": {
+    "passed": 10,
+    "failed": 0,
+    "pytest_seconds": 0.18,
+    "environment_calls": 0,
+    "gradient_updates": 0,
+    "model_evaluations": 0
+  }
+}

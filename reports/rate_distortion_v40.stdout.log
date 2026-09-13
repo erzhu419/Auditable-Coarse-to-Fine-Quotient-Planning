@@ -1,0 +1,10 @@
+[V40] reconstructing last_pair_spawn_risk
+{"case": "last_pair_spawn_risk", "condition": "raw", "snapshot_bias": [0.036494838436663776], "fixed_bias": [0.03673828123188855], "clamped": 0.0019531249999999996}
+{"case": "last_pair_spawn_risk", "condition": "doorkey_metric_units", "snapshot_bias": [-4.7516797211516904e-05], "fixed_bias": [-4.7754283558535705e-05], "clamped": 0.002273908211618702}
+[V40] reconstructing dense_merge_choice
+{"case": "dense_merge_choice", "condition": "raw", "snapshot_bias": [0.14404304644385982], "fixed_bias": [0.14492187498186695], "clamped": 0.007812500000000007}
+{"case": "dense_merge_choice", "condition": "doorkey_metric_units", "snapshot_bias": [0.03770552386953892], "fixed_bias": [0.03549475982631216], "clamped": 0.026063949043544553}
+[V40] reconstructing adjacent_1024_goal
+{"case": "adjacent_1024_goal", "condition": "raw", "snapshot_bias": [-0.006981016898049752], "fixed_bias": [-0.0070671947199554275], "clamped": 1.1486427831084756}
+{"case": "adjacent_1024_goal", "condition": "doorkey_metric_units", "snapshot_bias": [0.0021432693803840053], "fixed_bias": [0.001881436607766851], "clamped": 1.145857428943656}
+[V40] complete

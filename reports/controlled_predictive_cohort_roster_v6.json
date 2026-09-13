@@ -1,0 +1,679 @@
+{
+  "schema": "controlled_predictive_cohort_roster_v6",
+  "status": "REGISTERED_BEFORE_V6_CHARACTERIZATION_AND_SAMPLE_OUTCOMES",
+  "v6_characterization_and_sample_outcomes_evaluated": false,
+  "historical_sources": [
+    "controlled_predictive_development_v1.json",
+    "challenge_generator_discovery_v2.json",
+    "controlled_predictive_refinement_v3.json",
+    "controlled_predictive_comparison_v4.json",
+    "controlled_predictive_sampling_diagnosis_v4.json",
+    "controlled_predictive_comparison_v5.json"
+  ],
+  "historical_root_record_count": 99,
+  "historical_unique_raw_root_board_count": 77,
+  "historical_unique_root_symmetry_orbit_count": 77,
+  "historical_root_records_by_source": {
+    "controlled_predictive_development_v1.json": 3,
+    "challenge_generator_discovery_v2.json": 36,
+    "controlled_predictive_refinement_v3.json": 13,
+    "controlled_predictive_comparison_v4.json": 25,
+    "controlled_predictive_sampling_diagnosis_v4.json": 8,
+    "controlled_predictive_comparison_v5.json": 14
+  },
+  "declared_case_count": 15,
+  "unique_raw_root_board_count": 15,
+  "unique_root_symmetry_orbit_count": 15,
+  "unique_new_root_symmetry_orbit_count": 12,
+  "registered_exposure_counts": {
+    "NEW_ROOT_DEVELOPMENT_V6": 12,
+    "EXPOSED_ROOT_REUSE": 3
+  },
+  "role_counts": {
+    "MECHANISM_CHALLENGE": 12,
+    "EXPOSED_PUBLIC_CONTROL": 3
+  },
+  "generation_group_count": 15,
+  "family_group_count": 4,
+  "family_groups": [
+    {
+      "family": "crossing_rescue_pair",
+      "generation_groups": [
+        "v6_crossing_rescue_pair_0",
+        "v6_crossing_rescue_pair_1",
+        "v6_crossing_rescue_pair_2",
+        "v6_crossing_rescue_pair_3"
+      ],
+      "case_names": [
+        "v6_crossing_rescue_pair_0",
+        "v6_crossing_rescue_pair_1",
+        "v6_crossing_rescue_pair_2",
+        "v6_crossing_rescue_pair_3"
+      ],
+      "variants": [
+        "large_rank_6_edge_ranks_1_2",
+        "large_rank_7_edge_ranks_2_1",
+        "large_rank_8_edge_ranks_1_3",
+        "large_rank_9_edge_ranks_2_3"
+      ],
+      "roles": [
+        "MECHANISM_CHALLENGE"
+      ],
+      "variants_are_independent_replicates": false
+    },
+    {
+      "family": "spawn_edge_rescue",
+      "generation_groups": [
+        "v6_spawn_edge_rescue_0",
+        "v6_spawn_edge_rescue_1",
+        "v6_spawn_edge_rescue_2",
+        "v6_spawn_edge_rescue_3"
+      ],
+      "case_names": [
+        "v6_spawn_edge_rescue_0",
+        "v6_spawn_edge_rescue_1",
+        "v6_spawn_edge_rescue_2",
+        "v6_spawn_edge_rescue_3"
+      ],
+      "variants": [
+        "large_rank_6_edge_ranks_2_1",
+        "large_rank_7_edge_ranks_1_2",
+        "large_rank_8_edge_ranks_2_1",
+        "large_rank_9_edge_ranks_1_2"
+      ],
+      "roles": [
+        "MECHANISM_CHALLENGE"
+      ],
+      "variants_are_independent_replicates": false
+    },
+    {
+      "family": "crossed_vacancy_goal_detour",
+      "generation_groups": [
+        "v6_crossed_vacancy_goal_detour_0",
+        "v6_crossed_vacancy_goal_detour_1",
+        "v6_crossed_vacancy_goal_detour_2",
+        "v6_crossed_vacancy_goal_detour_3"
+      ],
+      "case_names": [
+        "v6_crossed_vacancy_goal_detour_0",
+        "v6_crossed_vacancy_goal_detour_1",
+        "v6_crossed_vacancy_goal_detour_2",
+        "v6_crossed_vacancy_goal_detour_3"
+      ],
+      "variants": [
+        "detour_pair_rank_4",
+        "detour_pair_rank_6",
+        "detour_pair_rank_8",
+        "detour_pair_rank_9"
+      ],
+      "roles": [
+        "MECHANISM_CHALLENGE"
+      ],
+      "variants_are_independent_replicates": false
+    },
+    {
+      "family": "public_development_control",
+      "generation_groups": [
+        "v6_control_last_pair_spawn_risk",
+        "v6_control_dense_merge_choice",
+        "v6_control_adjacent_1024_goal"
+      ],
+      "case_names": [
+        "v6_control_last_pair_spawn_risk",
+        "v6_control_dense_merge_choice",
+        "v6_control_adjacent_1024_goal"
+      ],
+      "variants": [
+        "last_pair_spawn_risk",
+        "dense_merge_choice",
+        "adjacent_1024_goal"
+      ],
+      "roles": [
+        "EXPOSED_PUBLIC_CONTROL"
+      ],
+      "variants_are_independent_replicates": false
+    }
+  ],
+  "cases": [
+    {
+      "case": {
+        "name": "v6_crossing_rescue_pair_0",
+        "group": "v6_crossing_rescue_pair_0",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_6_edge_ranks_1_2",
+        "board": [
+          1,
+          6,
+          6,
+          2,
+          1,
+          4,
+          8,
+          2,
+          9,
+          7,
+          5,
+          3,
+          4,
+          9,
+          3,
+          7
+        ],
+        "horizon": 3,
+        "role": "MECHANISM_CHALLENGE",
+        "mechanism": "A horizontal swipe takes the central large pair but shifts one of the two edge tiles away from its vertical rescue partner. A vertical swipe takes both small edge pairs, creates two vacancies, and shifts those columns relative to the central large pair. The reward gained and the surviving escape geometry can favor different continuations."
+      },
+      "exposure": "NEW_ROOT_DEVELOPMENT_V6",
+      "historical_raw_root_matches": [],
+      "historical_symmetry_root_matches": [],
+      "within_roster_raw_root_matches": [],
+      "within_roster_symmetry_root_matches": []
+    },
+    {
+      "case": {
+        "name": "v6_crossing_rescue_pair_1",
+        "group": "v6_crossing_rescue_pair_1",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_7_edge_ranks_2_1",
+        "board": [
+          2,
+          7,
+          7,
+          1,
+          2,
+          4,
+          8,
+          1,
+          6,
+          9,
+          3,
+          5,
+          9,
+          5,
+          8,
+          4
+        ],
+        "horizon": 3,
+        "role": "MECHANISM_CHALLENGE",
+        "mechanism": "A horizontal swipe takes the central large pair but shifts one of the two edge tiles away from its vertical rescue partner. A vertical swipe takes both small edge pairs, creates two vacancies, and shifts those columns relative to the central large pair. The reward gained and the surviving escape geometry can favor different continuations."
+      },
+      "exposure": "NEW_ROOT_DEVELOPMENT_V6",
+      "historical_raw_root_matches": [],
+      "historical_symmetry_root_matches": [],
+      "within_roster_raw_root_matches": [],
+      "within_roster_symmetry_root_matches": []
+    },
+    {
+      "case": {
+        "name": "v6_crossing_rescue_pair_2",
+        "group": "v6_crossing_rescue_pair_2",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_8_edge_ranks_1_3",
+        "board": [
+          1,
+          8,
+          8,
+          3,
+          1,
+          4,
+          6,
+          3,
+          7,
+          5,
+          9,
+          4,
+          5,
+          8,
+          4,
+          6
+        ],
+        "horizon": 3,
+        "role": "MECHANISM_CHALLENGE",
+        "mechanism": "A horizontal swipe takes the central large pair but shifts one of the two edge tiles away from its vertical rescue partner. A vertical swipe takes both small edge pairs, creates two vacancies, and shifts those columns relative to the central large pair. The reward gained and the surviving escape geometry can favor different continuations."
+      },
+      "exposure": "NEW_ROOT_DEVELOPMENT_V6",
+      "historical_raw_root_matches": [],
+      "historical_symmetry_root_matches": [],
+      "within_roster_raw_root_matches": [],
+      "within_roster_symmetry_root_matches": []
+    },
+    {
+      "case": {
+        "name": "v6_crossing_rescue_pair_3",
+        "group": "v6_crossing_rescue_pair_3",
+        "family": "crossing_rescue_pair",
+        "variant": "large_rank_9_edge_ranks_2_3",
+        "board": [
+          2,
+          9,
+          9,
+          3,
+          2,
+          4,
+          8,
+          3,
+          5,
+          8,
+          3,
+          7,
+          9,
+          6,
+          7,
+          4
+        ],
+        "horizon": 3,
+        "role": "MECHANISM_CHALLENGE",
+        "mechanism": "A horizontal swipe takes the central large pair but shifts one of the two edge tiles away from its vertical rescue partner. A vertical swipe takes both small edge pairs, creates two vacancies, and shifts those columns relative to the central large pair. The reward gained and the surviving escape geometry can favor different continuations."
+      },
+      "exposure": "NEW_ROOT_DEVELOPMENT_V6",
+      "historical_raw_root_matches": [],
+      "historical_symmetry_root_matches": [],
+      "within_roster_raw_root_matches": [],
+      "within_roster_symmetry_root_matches": []
+    },
+    {
+      "case": {
+        "name": "v6_spawn_edge_rescue_0",
+        "group": "v6_spawn_edge_rescue_0",
+        "family": "spawn_edge_rescue",
+        "variant": "large_rank_6_edge_ranks_2_1",
+        "board": [
+          6,
+          6,
+          5,
+          7,
+          2,
+          4,
+          6,
+          1,
+          3,
+          6,
+          8,
+          9,
+          4,
+          8,
+          9,
+          5
+        ],
+        "horizon": 3,
+        "role": "MECHANISM_CHALLENGE",
+        "mechanism": "The only initial merge is the large top-row pair. LEFT frees the top-right boundary and RIGHT frees the top-left boundary; their vertical neighbors have different spawn ranks (1 versus 2). A matching spawn supplies an escape merge with rank-dependent payoff. Background ranks vary the subsequent continuation. This mechanism tests whether unequal escape probabilities actually create a reward/risk conflict rather than assuming that they do."
+      },
+      "exposure": "NEW_ROOT_DEVELOPMENT_V6",
+      "historical_raw_root_matches": [],
+      "historical_symmetry_root_matches": [],
+      "within_roster_raw_root_matches": [],
+      "within_roster_symmetry_root_matches": []
+    },
+    {
+      "case": {
+        "name": "v6_spawn_edge_rescue_1",
+        "group": "v6_spawn_edge_rescue_1",
+        "family": "spawn_edge_rescue",
+        "variant": "large_rank_7_edge_ranks_1_2",
+        "board": [
+          7,
+          7,
+          5,
+          7,
+          1,
+          4,
+          6,
+          2,
+          5,
+          8,
+          3,
+          9,
+          8,
+          3,
+          9,
+          4
+        ],
+        "horizon": 3,
+        "role": "MECHANISM_CHALLENGE",
+        "mechanism": "The only initial merge is the large top-row pair. LEFT frees the top-right boundary and RIGHT frees the top-left boundary; their vertical neighbors have different spawn ranks (1 versus 2). A matching spawn supplies an escape merge with rank-dependent payoff. Background ranks vary the subsequent continuation. This mechanism tests whether unequal escape probabilities actually create a reward/risk conflict rather than assuming that they do."
+      },
+      "exposure": "NEW_ROOT_DEVELOPMENT_V6",
+      "historical_raw_root_matches": [],
+      "historical_symmetry_root_matches": [],
+      "within_roster_raw_root_matches": [],
+      "within_roster_symmetry_root_matches": []
+    },
+    {
+      "case": {
+        "name": "v6_spawn_edge_rescue_2",
+        "group": "v6_spawn_edge_rescue_2",
+        "family": "spawn_edge_rescue",
+        "variant": "large_rank_8_edge_ranks_2_1",
+        "board": [
+          8,
+          8,
+          5,
+          7,
+          2,
+          4,
+          6,
+          1,
+          6,
+          3,
+          9,
+          5,
+          3,
+          9,
+          5,
+          8
+        ],
+        "horizon": 3,
+        "role": "MECHANISM_CHALLENGE",
+        "mechanism": "The only initial merge is the large top-row pair. LEFT frees the top-right boundary and RIGHT frees the top-left boundary; their vertical neighbors have different spawn ranks (1 versus 2). A matching spawn supplies an escape merge with rank-dependent payoff. Background ranks vary the subsequent continuation. This mechanism tests whether unequal escape probabilities actually create a reward/risk conflict rather than assuming that they do."
+      },
+      "exposure": "NEW_ROOT_DEVELOPMENT_V6",
+      "historical_raw_root_matches": [],
+      "historical_symmetry_root_matches": [],
+      "within_roster_raw_root_matches": [],
+      "within_roster_symmetry_root_matches": []
+    },
+    {
+      "case": {
+        "name": "v6_spawn_edge_rescue_3",
+        "group": "v6_spawn_edge_rescue_3",
+        "family": "spawn_edge_rescue",
+        "variant": "large_rank_9_edge_ranks_1_2",
+        "board": [
+          9,
+          9,
+          5,
+          7,
+          1,
+          4,
+          6,
+          2,
+          8,
+          5,
+          9,
+          3,
+          5,
+          9,
+          3,
+          6
+        ],
+        "horizon": 3,
+        "role": "MECHANISM_CHALLENGE",
+        "mechanism": "The only initial merge is the large top-row pair. LEFT frees the top-right boundary and RIGHT frees the top-left boundary; their vertical neighbors have different spawn ranks (1 versus 2). A matching spawn supplies an escape merge with rank-dependent payoff. Background ranks vary the subsequent continuation. This mechanism tests whether unequal escape probabilities actually create a reward/risk conflict rather than assuming that they do."
+      },
+      "exposure": "NEW_ROOT_DEVELOPMENT_V6",
+      "historical_raw_root_matches": [],
+      "historical_symmetry_root_matches": [],
+      "within_roster_raw_root_matches": [],
+      "within_roster_symmetry_root_matches": []
+    },
+    {
+      "case": {
+        "name": "v6_crossed_vacancy_goal_detour_0",
+        "group": "v6_crossed_vacancy_goal_detour_0",
+        "family": "crossed_vacancy_goal_detour",
+        "variant": "detour_pair_rank_4",
+        "board": [
+          9,
+          0,
+          4,
+          7,
+          10,
+          10,
+          4,
+          8,
+          0,
+          5,
+          9,
+          6,
+          7,
+          3,
+          8,
+          5
+        ],
+        "horizon": 3,
+        "role": "MECHANISM_CHALLENGE",
+        "mechanism": "The middle-row 1024 pair can win immediately by a horizontal swipe. A separate vertical pair offers extra merge score. One vacancy lies above the right 1024 and another below the left 1024, so either vertical detour moves the goal tiles to different rows. Recovering the goal then depends on subsequent moves and spawns. The four fixed detour ranks change the extra reward without preserving a trivially aligned goal pair."
+      },
+      "exposure": "NEW_ROOT_DEVELOPMENT_V6",
+      "historical_raw_root_matches": [],
+      "historical_symmetry_root_matches": [],
+      "within_roster_raw_root_matches": [],
+      "within_roster_symmetry_root_matches": []
+    },
+    {
+      "case": {
+        "name": "v6_crossed_vacancy_goal_detour_1",
+        "group": "v6_crossed_vacancy_goal_detour_1",
+        "family": "crossed_vacancy_goal_detour",
+        "variant": "detour_pair_rank_6",
+        "board": [
+          8,
+          0,
+          6,
+          9,
+          10,
+          10,
+          6,
+          7,
+          0,
+          4,
+          8,
+          5,
+          6,
+          2,
+          9,
+          3
+        ],
+        "horizon": 3,
+        "role": "MECHANISM_CHALLENGE",
+        "mechanism": "The middle-row 1024 pair can win immediately by a horizontal swipe. A separate vertical pair offers extra merge score. One vacancy lies above the right 1024 and another below the left 1024, so either vertical detour moves the goal tiles to different rows. Recovering the goal then depends on subsequent moves and spawns. The four fixed detour ranks change the extra reward without preserving a trivially aligned goal pair."
+      },
+      "exposure": "NEW_ROOT_DEVELOPMENT_V6",
+      "historical_raw_root_matches": [],
+      "historical_symmetry_root_matches": [],
+      "within_roster_raw_root_matches": [],
+      "within_roster_symmetry_root_matches": []
+    },
+    {
+      "case": {
+        "name": "v6_crossed_vacancy_goal_detour_2",
+        "group": "v6_crossed_vacancy_goal_detour_2",
+        "family": "crossed_vacancy_goal_detour",
+        "variant": "detour_pair_rank_8",
+        "board": [
+          7,
+          0,
+          8,
+          6,
+          10,
+          10,
+          8,
+          9,
+          0,
+          3,
+          5,
+          7,
+          9,
+          4,
+          6,
+          2
+        ],
+        "horizon": 3,
+        "role": "MECHANISM_CHALLENGE",
+        "mechanism": "The middle-row 1024 pair can win immediately by a horizontal swipe. A separate vertical pair offers extra merge score. One vacancy lies above the right 1024 and another below the left 1024, so either vertical detour moves the goal tiles to different rows. Recovering the goal then depends on subsequent moves and spawns. The four fixed detour ranks change the extra reward without preserving a trivially aligned goal pair."
+      },
+      "exposure": "NEW_ROOT_DEVELOPMENT_V6",
+      "historical_raw_root_matches": [],
+      "historical_symmetry_root_matches": [],
+      "within_roster_raw_root_matches": [],
+      "within_roster_symmetry_root_matches": []
+    },
+    {
+      "case": {
+        "name": "v6_crossed_vacancy_goal_detour_3",
+        "group": "v6_crossed_vacancy_goal_detour_3",
+        "family": "crossed_vacancy_goal_detour",
+        "variant": "detour_pair_rank_9",
+        "board": [
+          6,
+          0,
+          9,
+          8,
+          10,
+          10,
+          9,
+          7,
+          0,
+          2,
+          8,
+          4,
+          5,
+          3,
+          7,
+          6
+        ],
+        "horizon": 3,
+        "role": "MECHANISM_CHALLENGE",
+        "mechanism": "The middle-row 1024 pair can win immediately by a horizontal swipe. A separate vertical pair offers extra merge score. One vacancy lies above the right 1024 and another below the left 1024, so either vertical detour moves the goal tiles to different rows. Recovering the goal then depends on subsequent moves and spawns. The four fixed detour ranks change the extra reward without preserving a trivially aligned goal pair."
+      },
+      "exposure": "NEW_ROOT_DEVELOPMENT_V6",
+      "historical_raw_root_matches": [],
+      "historical_symmetry_root_matches": [],
+      "within_roster_raw_root_matches": [],
+      "within_roster_symmetry_root_matches": []
+    },
+    {
+      "case": {
+        "name": "v6_control_last_pair_spawn_risk",
+        "group": "v6_control_last_pair_spawn_risk",
+        "family": "public_development_control",
+        "variant": "last_pair_spawn_risk",
+        "board": [
+          8,
+          6,
+          9,
+          7,
+          5,
+          9,
+          7,
+          10,
+          9,
+          7,
+          10,
+          8,
+          4,
+          3,
+          1,
+          1
+        ],
+        "horizon": 3,
+        "role": "EXPOSED_PUBLIC_CONTROL",
+        "mechanism": "The unchanged V1 public board provides an exposed ordinary development control."
+      },
+      "exposure": "EXPOSED_ROOT_REUSE",
+      "historical_raw_root_matches": [
+        {
+          "source_report": "controlled_predictive_development_v1.json",
+          "source_section": "public_development_boards_rank_encoding",
+          "case_name": "last_pair_spawn_risk",
+          "transforms_of_current_board_matching_historical_board": [
+            "identity"
+          ]
+        }
+      ],
+      "historical_symmetry_root_matches": [],
+      "within_roster_raw_root_matches": [],
+      "within_roster_symmetry_root_matches": []
+    },
+    {
+      "case": {
+        "name": "v6_control_dense_merge_choice",
+        "group": "v6_control_dense_merge_choice",
+        "family": "public_development_control",
+        "variant": "dense_merge_choice",
+        "board": [
+          6,
+          5,
+          4,
+          3,
+          5,
+          4,
+          3,
+          2,
+          4,
+          3,
+          2,
+          1,
+          3,
+          2,
+          2,
+          0
+        ],
+        "horizon": 3,
+        "role": "EXPOSED_PUBLIC_CONTROL",
+        "mechanism": "The unchanged V1 public board provides an exposed ordinary development control."
+      },
+      "exposure": "EXPOSED_ROOT_REUSE",
+      "historical_raw_root_matches": [
+        {
+          "source_report": "controlled_predictive_development_v1.json",
+          "source_section": "public_development_boards_rank_encoding",
+          "case_name": "dense_merge_choice",
+          "transforms_of_current_board_matching_historical_board": [
+            "identity"
+          ]
+        }
+      ],
+      "historical_symmetry_root_matches": [],
+      "within_roster_raw_root_matches": [],
+      "within_roster_symmetry_root_matches": []
+    },
+    {
+      "case": {
+        "name": "v6_control_adjacent_1024_goal",
+        "group": "v6_control_adjacent_1024_goal",
+        "family": "public_development_control",
+        "variant": "adjacent_1024_goal",
+        "board": [
+          10,
+          9,
+          8,
+          7,
+          10,
+          8,
+          7,
+          6,
+          8,
+          7,
+          6,
+          5,
+          7,
+          6,
+          5,
+          0
+        ],
+        "horizon": 3,
+        "role": "EXPOSED_PUBLIC_CONTROL",
+        "mechanism": "The unchanged V1 public board provides an exposed ordinary development control."
+      },
+      "exposure": "EXPOSED_ROOT_REUSE",
+      "historical_raw_root_matches": [
+        {
+          "source_report": "controlled_predictive_development_v1.json",
+          "source_section": "public_development_boards_rank_encoding",
+          "case_name": "adjacent_1024_goal",
+          "transforms_of_current_board_matching_historical_board": [
+            "identity"
+          ]
+        }
+      ],
+      "historical_symmetry_root_matches": [],
+      "within_roster_raw_root_matches": [],
+      "within_roster_symmetry_root_matches": []
+    }
+  ],
+  "all_declared_cases_retained": true,
+  "original_deferred_24_case_cohort_loaded_or_executed": false,
+  "scope": "Starting-board equality, excluding horizon, and all eight rotations/reflections against the six enumerated historical development reports and within the declared V6 roster. Mechanism variants within a family and symmetric roots are not independent replicates. This root-only inventory does not audit descendant-state overlap or establish unseen states. All declared cases remain in the roster regardless of exposure or later outcomes."
+}

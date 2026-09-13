@@ -1,0 +1,17 @@
+{"base_seed": 962001, "complete": true, "replicate_index": 0, "source_valid": true}
+{"base_seed": 962002, "complete": true, "replicate_index": 1, "source_valid": true}
+{"base_seed": 962003, "complete": true, "replicate_index": 2, "source_valid": true}
+{"base_seed": 962004, "complete": true, "replicate_index": 3, "source_valid": true}
+{"base_seed": 962005, "complete": true, "replicate_index": 4, "source_valid": true}
+{"base_seed": 962006, "complete": true, "replicate_index": 5, "source_valid": true}
+{"base_seed": 962007, "complete": true, "replicate_index": 6, "source_valid": true}
+{"base_seed": 962008, "complete": true, "replicate_index": 7, "source_valid": true}
+{"base_seed": 962009, "complete": true, "replicate_index": 8, "source_valid": true}
+{"base_seed": 962010, "complete": true, "replicate_index": 9, "source_valid": true}
+{"base_seed": 962011, "complete": true, "replicate_index": 10, "source_valid": true}
+{"base_seed": 962012, "complete": true, "replicate_index": 11, "source_valid": true}
+{"base_seed": 962013, "complete": true, "replicate_index": 12, "source_valid": true}
+{"base_seed": 962014, "complete": true, "replicate_index": 13, "source_valid": true}
+{"base_seed": 962015, "complete": true, "replicate_index": 14, "source_valid": true}
+{"base_seed": 962016, "complete": true, "replicate_index": 15, "source_valid": true}
+{"status": "ENDPOINT_ERRORS_COMPLETE", "complete_repetition_count": 16, "output": "reports/controlled_predictive_endpoint_errors_v36.json.gz", "report_serialization_seconds": 8.616900833992986, "report_bytes": 5919186}

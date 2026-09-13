@@ -1,0 +1,12 @@
+{
+  "schema": "acfqp.controlled_predictive_causal_development.v66",
+  "unique_tests": 9,
+  "test_executions": 9,
+  "passed": 9,
+  "failed": 0,
+  "attempt_ledgers": [
+    "controlled_predictive_causal_forgetting_v66.core_checks.json",
+    "controlled_predictive_causal_v66.audit_checks.json"
+  ],
+  "scope": "Core 5 tests and independent audit 4 tests each ran once on hand examples. All planner/ground/build work is charged in the component ledgers. Main 16 roots not used during development."
+}

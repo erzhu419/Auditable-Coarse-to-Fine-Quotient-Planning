@@ -1,0 +1,28 @@
+{
+  "schema": "acfqp.local_contract.v72",
+  "status": "complete",
+  "target_roots": 32,
+  "completed_targets": 32,
+  "original_observations": 60,
+  "added_h1_observations": 27,
+  "matched_observations": 87,
+  "source_learning_reused": true,
+  "source_fit_calls": 0,
+  "target_ground_calls": 0,
+  "source_path": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_composition_v69",
+  "max_concrete_states": 200000,
+  "runtime": {
+    "python": "3.10.12",
+    "executable": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python"
+  },
+  "rule_compile": {
+    "seconds": 1.3963028322905302e-05,
+    "counts": {
+      "compiled_programs": 1,
+      "compiled_spawn_ranks": 2,
+      "topology_edges": 24
+    }
+  },
+  "wall_seconds": 21.471584628976416,
+  "peak_rss_bytes": 72605696
+}

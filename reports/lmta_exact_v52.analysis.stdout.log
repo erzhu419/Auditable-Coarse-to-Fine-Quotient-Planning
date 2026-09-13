@@ -1,0 +1,289 @@
+{
+  "integrity_passed": true,
+  "strata": [
+    {
+      "p": 0.25,
+      "horizon": 1,
+      "values": {
+        "AVERAGE_SCORE": {
+          "count": 16,
+          "mean": 4.86328125,
+          "minimum": 4.0,
+          "maximum": 6.25,
+          "positive_count": 16
+        },
+        "AVERAGE_MYOPIC": {
+          "count": 16,
+          "mean": 4.937934027777778,
+          "minimum": 4.0,
+          "maximum": 6.25,
+          "positive_count": 16
+        },
+        "AVERAGE_OPTIMAL": {
+          "count": 16,
+          "mean": 4.937934027777778,
+          "minimum": 4.0,
+          "maximum": 6.25,
+          "positive_count": 16
+        },
+        "SCORE_OPTIMAL_BUDGET": {
+          "count": 16,
+          "mean": 4.86328125,
+          "minimum": 4.0,
+          "maximum": 6.25,
+          "positive_count": 16
+        },
+        "JOINT_OPTIMAL": {
+          "count": 16,
+          "mean": 4.937934027777778,
+          "minimum": 4.0,
+          "maximum": 6.25,
+          "positive_count": 16
+        }
+      },
+      "gaps": {
+        "joint_minus_score": {
+          "count": 16,
+          "mean": 0.07465277777777779,
+          "minimum": 0.0,
+          "maximum": 0.7222222222222223,
+          "positive_count": 3
+        },
+        "average_optimal_minus_score": {
+          "count": 16,
+          "mean": 0.07465277777777779,
+          "minimum": 0.0,
+          "maximum": 0.7222222222222223,
+          "positive_count": 3
+        },
+        "budget_optimal_minus_score": {
+          "count": 16,
+          "mean": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0,
+          "positive_count": 0
+        },
+        "average_optimal_minus_myopic": {
+          "count": 16,
+          "mean": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0,
+          "positive_count": 0
+        }
+      }
+    },
+    {
+      "p": 0.25,
+      "horizon": 3,
+      "values": {
+        "AVERAGE_SCORE": {
+          "count": 16,
+          "mean": 5.665551456404321,
+          "minimum": 4.305555555555555,
+          "maximum": 6.75,
+          "positive_count": 16
+        },
+        "AVERAGE_MYOPIC": {
+          "count": 16,
+          "mean": 5.770248601466049,
+          "minimum": 4.305555555555555,
+          "maximum": 6.75,
+          "positive_count": 16
+        },
+        "AVERAGE_OPTIMAL": {
+          "count": 16,
+          "mean": 6.015511804483882,
+          "minimum": 4.305555555555555,
+          "maximum": 6.875,
+          "positive_count": 16
+        },
+        "SCORE_OPTIMAL_BUDGET": {
+          "count": 16,
+          "mean": 5.803229186760545,
+          "minimum": 4.305555555555555,
+          "maximum": 6.875,
+          "positive_count": 16
+        },
+        "JOINT_OPTIMAL": {
+          "count": 16,
+          "mean": 6.061256733123821,
+          "minimum": 4.472222222222222,
+          "maximum": 6.875,
+          "positive_count": 16
+        }
+      },
+      "gaps": {
+        "joint_minus_score": {
+          "count": 16,
+          "mean": 0.3957052767195003,
+          "minimum": 0.0,
+          "maximum": 1.018518518518519,
+          "positive_count": 14
+        },
+        "average_optimal_minus_score": {
+          "count": 16,
+          "mean": 0.3499603480795611,
+          "minimum": 0.0,
+          "maximum": 1.018518518518519,
+          "positive_count": 11
+        },
+        "budget_optimal_minus_score": {
+          "count": 16,
+          "mean": 0.13767773035622438,
+          "minimum": 0.0,
+          "maximum": 1.0000000000000009,
+          "positive_count": 10
+        },
+        "average_optimal_minus_myopic": {
+          "count": 16,
+          "mean": 0.24526320301783272,
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "positive_count": 10
+        }
+      }
+    },
+    {
+      "p": 0.75,
+      "horizon": 1,
+      "values": {
+        "AVERAGE_SCORE": {
+          "count": 16,
+          "mean": 3.9576215277777775,
+          "minimum": 3.795,
+          "maximum": 4.416666666666666,
+          "positive_count": 16
+        },
+        "AVERAGE_MYOPIC": {
+          "count": 16,
+          "mean": 3.9794791666666662,
+          "minimum": 3.8311111111111105,
+          "maximum": 4.416666666666666,
+          "positive_count": 16
+        },
+        "AVERAGE_OPTIMAL": {
+          "count": 16,
+          "mean": 3.9794791666666662,
+          "minimum": 3.8311111111111105,
+          "maximum": 4.416666666666666,
+          "positive_count": 16
+        },
+        "SCORE_OPTIMAL_BUDGET": {
+          "count": 16,
+          "mean": 3.9576215277777775,
+          "minimum": 3.795,
+          "maximum": 4.416666666666666,
+          "positive_count": 16
+        },
+        "JOINT_OPTIMAL": {
+          "count": 16,
+          "mean": 3.9794791666666662,
+          "minimum": 3.8311111111111105,
+          "maximum": 4.416666666666666,
+          "positive_count": 16
+        }
+      },
+      "gaps": {
+        "joint_minus_score": {
+          "count": 16,
+          "mean": 0.021857638888888864,
+          "minimum": 0.0,
+          "maximum": 0.1333333333333333,
+          "positive_count": 6
+        },
+        "average_optimal_minus_score": {
+          "count": 16,
+          "mean": 0.021857638888888864,
+          "minimum": 0.0,
+          "maximum": 0.1333333333333333,
+          "positive_count": 6
+        },
+        "budget_optimal_minus_score": {
+          "count": 16,
+          "mean": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0,
+          "positive_count": 0
+        },
+        "average_optimal_minus_myopic": {
+          "count": 16,
+          "mean": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0,
+          "positive_count": 0
+        }
+      }
+    },
+    {
+      "p": 0.75,
+      "horizon": 3,
+      "values": {
+        "AVERAGE_SCORE": {
+          "count": 16,
+          "mean": 4.921080698342979,
+          "minimum": 4.736294269442977,
+          "maximum": 5.4813662281037026,
+          "positive_count": 16
+        },
+        "AVERAGE_MYOPIC": {
+          "count": 16,
+          "mean": 4.939806736584037,
+          "minimum": 4.751413946686453,
+          "maximum": 5.477944514337777,
+          "positive_count": 16
+        },
+        "AVERAGE_OPTIMAL": {
+          "count": 16,
+          "mean": 4.960228994067585,
+          "minimum": 4.810111917551056,
+          "maximum": 5.487330787748147,
+          "positive_count": 16
+        },
+        "SCORE_OPTIMAL_BUDGET": {
+          "count": 16,
+          "mean": 5.0257761312585005,
+          "minimum": 4.818569751278346,
+          "maximum": 5.6290798244266655,
+          "positive_count": 16
+        },
+        "JOINT_OPTIMAL": {
+          "count": 16,
+          "mean": 5.064161927931294,
+          "minimum": 4.892409348547946,
+          "maximum": 5.660491768617512,
+          "positive_count": 16
+        }
+      },
+      "gaps": {
+        "joint_minus_score": {
+          "count": 16,
+          "mean": 0.1430812295883157,
+          "minimum": 0.09860292061544929,
+          "maximum": 0.36153699446979193,
+          "positive_count": 16
+        },
+        "average_optimal_minus_score": {
+          "count": 16,
+          "mean": 0.03914829572460693,
+          "minimum": 0.005964559644444201,
+          "maximum": 0.17737187268886956,
+          "positive_count": 16
+        },
+        "budget_optimal_minus_score": {
+          "count": 16,
+          "mean": 0.10469543291552236,
+          "minimum": 0.08227548183536904,
+          "maximum": 0.147713596322963,
+          "positive_count": 16
+        },
+        "average_optimal_minus_myopic": {
+          "count": 16,
+          "mean": 0.0204222574835482,
+          "minimum": 0.0,
+          "maximum": 0.16706055446207557,
+          "positive_count": 15
+        }
+      }
+    }
+  ]
+}

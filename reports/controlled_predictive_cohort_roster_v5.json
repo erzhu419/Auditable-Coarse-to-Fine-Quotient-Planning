@@ -1,0 +1,524 @@
+{
+  "schema": "controlled_predictive_cohort_roster_v5",
+  "status": "REGISTERED_BEFORE_V5_QUERY_AND_SAMPLE_OUTCOMES",
+  "v5_query_and_sample_outcomes_evaluated": false,
+  "historical_sources": [
+    "controlled_predictive_development_v1.json",
+    "challenge_generator_discovery_v2.json",
+    "controlled_predictive_refinement_v3.json",
+    "controlled_predictive_comparison_v4.json",
+    "controlled_predictive_sampling_diagnosis_v4.json"
+  ],
+  "historical_root_record_count": 85,
+  "historical_unique_root_board_count": 66,
+  "historical_root_records_by_source": {
+    "controlled_predictive_development_v1.json": 3,
+    "challenge_generator_discovery_v2.json": 36,
+    "controlled_predictive_refinement_v3.json": 13,
+    "controlled_predictive_comparison_v4.json": 25,
+    "controlled_predictive_sampling_diagnosis_v4.json": 8
+  },
+  "declared_case_count": 14,
+  "unique_root_board_count": 14,
+  "new_seed_case_count": 12,
+  "new_seed_cases_reusing_exposed_roots": 1,
+  "unique_new_roots_absent_from_historical_root_inventory": 11,
+  "registered_split_counts": {
+    "EXPOSED_V4_ERROR_ROOT": 2,
+    "NEW_ROOT_DEVELOPMENT_V5": 11,
+    "EXPOSED_ROOT_REUSE": 1
+  },
+  "duplicate_root_groups": [],
+  "cases": [
+    {
+      "case": {
+        "name": "v3_cross_axis_pairs_835401",
+        "group": "v3_cross_axis_pairs_835401",
+        "split": "EXPOSED_V4_ERROR_ROOT",
+        "board": [
+          3,
+          3,
+          8,
+          9,
+          6,
+          9,
+          5,
+          9,
+          6,
+          4,
+          6,
+          8,
+          1,
+          6,
+          6,
+          2
+        ],
+        "family": "cross_axis_pairs",
+        "seed": 835401,
+        "horizon": 3
+      },
+      "declared_split": "EXPOSED_V4_ERROR_ROOT",
+      "historical_root_matches": [
+        {
+          "source_report": "controlled_predictive_refinement_v3.json",
+          "source_section": "cases",
+          "case_name": "v3_cross_axis_pairs_835401"
+        },
+        {
+          "source_report": "controlled_predictive_comparison_v4.json",
+          "source_section": "cases",
+          "case_name": "v3_cross_axis_pairs_835401"
+        },
+        {
+          "source_report": "controlled_predictive_sampling_diagnosis_v4.json",
+          "source_section": "original_exposed_diagnosis.cases",
+          "case_name": "v3_cross_axis_pairs_835401"
+        },
+        {
+          "source_report": "controlled_predictive_sampling_diagnosis_v4.json",
+          "source_section": "nested_sampling_curve.cases",
+          "case_name": "v3_cross_axis_pairs_835401"
+        }
+      ],
+      "within_roster_other_case_names": []
+    },
+    {
+      "case": {
+        "name": "v3_gradient_bottleneck_835402",
+        "group": "v3_gradient_bottleneck_835402",
+        "split": "EXPOSED_V4_ERROR_ROOT",
+        "board": [
+          8,
+          8,
+          6,
+          5,
+          7,
+          6,
+          5,
+          4,
+          6,
+          5,
+          4,
+          4,
+          5,
+          4,
+          1,
+          1
+        ],
+        "family": "gradient_bottleneck",
+        "seed": 835402,
+        "horizon": 3
+      },
+      "declared_split": "EXPOSED_V4_ERROR_ROOT",
+      "historical_root_matches": [
+        {
+          "source_report": "controlled_predictive_refinement_v3.json",
+          "source_section": "cases",
+          "case_name": "v3_gradient_bottleneck_835402"
+        },
+        {
+          "source_report": "controlled_predictive_comparison_v4.json",
+          "source_section": "cases",
+          "case_name": "v3_gradient_bottleneck_835402"
+        },
+        {
+          "source_report": "controlled_predictive_comparison_v4.json",
+          "source_section": "cases",
+          "case_name": "v4_gradient_bottleneck_836102"
+        },
+        {
+          "source_report": "controlled_predictive_sampling_diagnosis_v4.json",
+          "source_section": "original_exposed_diagnosis.cases",
+          "case_name": "v3_gradient_bottleneck_835402"
+        },
+        {
+          "source_report": "controlled_predictive_sampling_diagnosis_v4.json",
+          "source_section": "nested_sampling_curve.cases",
+          "case_name": "v3_gradient_bottleneck_835402"
+        }
+      ],
+      "within_roster_other_case_names": []
+    },
+    {
+      "case": {
+        "name": "v5_cross_axis_pairs_838101",
+        "group": "v5_cross_axis_pairs_838101",
+        "split": "NEW_ROOT_DEVELOPMENT_V5",
+        "board": [
+          2,
+          2,
+          4,
+          6,
+          6,
+          7,
+          8,
+          8,
+          6,
+          9,
+          5,
+          4,
+          1,
+          4,
+          6,
+          2
+        ],
+        "family": "cross_axis_pairs",
+        "seed": 838101,
+        "horizon": 3
+      },
+      "declared_split": "NEW_ROOT_DEVELOPMENT_V5",
+      "historical_root_matches": [],
+      "within_roster_other_case_names": []
+    },
+    {
+      "case": {
+        "name": "v5_cross_axis_pairs_838201",
+        "group": "v5_cross_axis_pairs_838201",
+        "split": "NEW_ROOT_DEVELOPMENT_V5",
+        "board": [
+          2,
+          2,
+          5,
+          5,
+          5,
+          9,
+          8,
+          6,
+          5,
+          7,
+          6,
+          8,
+          1,
+          5,
+          6,
+          2
+        ],
+        "family": "cross_axis_pairs",
+        "seed": 838201,
+        "horizon": 3
+      },
+      "declared_split": "NEW_ROOT_DEVELOPMENT_V5",
+      "historical_root_matches": [],
+      "within_roster_other_case_names": []
+    },
+    {
+      "case": {
+        "name": "v5_cross_axis_pairs_838301",
+        "group": "v5_cross_axis_pairs_838301",
+        "split": "NEW_ROOT_DEVELOPMENT_V5",
+        "board": [
+          1,
+          1,
+          9,
+          9,
+          7,
+          5,
+          8,
+          9,
+          7,
+          6,
+          8,
+          5,
+          1,
+          9,
+          7,
+          2
+        ],
+        "family": "cross_axis_pairs",
+        "seed": 838301,
+        "horizon": 3
+      },
+      "declared_split": "NEW_ROOT_DEVELOPMENT_V5",
+      "historical_root_matches": [],
+      "within_roster_other_case_names": []
+    },
+    {
+      "case": {
+        "name": "v5_cross_axis_pairs_838401",
+        "group": "v5_cross_axis_pairs_838401",
+        "split": "NEW_ROOT_DEVELOPMENT_V5",
+        "board": [
+          2,
+          2,
+          5,
+          5,
+          5,
+          8,
+          5,
+          5,
+          5,
+          9,
+          6,
+          6,
+          1,
+          9,
+          4,
+          2
+        ],
+        "family": "cross_axis_pairs",
+        "seed": 838401,
+        "horizon": 3
+      },
+      "declared_split": "NEW_ROOT_DEVELOPMENT_V5",
+      "historical_root_matches": [],
+      "within_roster_other_case_names": []
+    },
+    {
+      "case": {
+        "name": "v5_gradient_bottleneck_838102",
+        "group": "v5_gradient_bottleneck_838102",
+        "split": "EXPOSED_ROOT_REUSE",
+        "board": [
+          8,
+          8,
+          6,
+          5,
+          7,
+          6,
+          5,
+          3,
+          6,
+          5,
+          4,
+          3,
+          5,
+          4,
+          1,
+          1
+        ],
+        "family": "gradient_bottleneck",
+        "seed": 838102,
+        "horizon": 3
+      },
+      "declared_split": "NEW_ROOT_DEVELOPMENT_V5",
+      "historical_root_matches": [
+        {
+          "source_report": "challenge_generator_discovery_v2.json",
+          "source_section": "records",
+          "case_name": "discovery_gradient_bottleneck_830022"
+        }
+      ],
+      "within_roster_other_case_names": []
+    },
+    {
+      "case": {
+        "name": "v5_gradient_bottleneck_838202",
+        "group": "v5_gradient_bottleneck_838202",
+        "split": "NEW_ROOT_DEVELOPMENT_V5",
+        "board": [
+          8,
+          8,
+          6,
+          5,
+          7,
+          6,
+          5,
+          2,
+          6,
+          5,
+          4,
+          2,
+          5,
+          4,
+          2,
+          2
+        ],
+        "family": "gradient_bottleneck",
+        "seed": 838202,
+        "horizon": 3
+      },
+      "declared_split": "NEW_ROOT_DEVELOPMENT_V5",
+      "historical_root_matches": [],
+      "within_roster_other_case_names": []
+    },
+    {
+      "case": {
+        "name": "v5_gradient_bottleneck_838302",
+        "group": "v5_gradient_bottleneck_838302",
+        "split": "NEW_ROOT_DEVELOPMENT_V5",
+        "board": [
+          7,
+          7,
+          5,
+          4,
+          6,
+          5,
+          4,
+          3,
+          5,
+          4,
+          3,
+          4,
+          4,
+          3,
+          1,
+          1
+        ],
+        "family": "gradient_bottleneck",
+        "seed": 838302,
+        "horizon": 3
+      },
+      "declared_split": "NEW_ROOT_DEVELOPMENT_V5",
+      "historical_root_matches": [],
+      "within_roster_other_case_names": []
+    },
+    {
+      "case": {
+        "name": "v5_gradient_bottleneck_838402",
+        "group": "v5_gradient_bottleneck_838402",
+        "split": "NEW_ROOT_DEVELOPMENT_V5",
+        "board": [
+          9,
+          9,
+          7,
+          6,
+          8,
+          7,
+          6,
+          2,
+          7,
+          6,
+          5,
+          4,
+          6,
+          5,
+          2,
+          2
+        ],
+        "family": "gradient_bottleneck",
+        "seed": 838402,
+        "horizon": 3
+      },
+      "declared_split": "NEW_ROOT_DEVELOPMENT_V5",
+      "historical_root_matches": [],
+      "within_roster_other_case_names": []
+    },
+    {
+      "case": {
+        "name": "v5_near_goal_corridor_838103",
+        "group": "v5_near_goal_corridor_838103",
+        "split": "NEW_ROOT_DEVELOPMENT_V5",
+        "board": [
+          9,
+          9,
+          4,
+          8,
+          10,
+          6,
+          4,
+          4,
+          4,
+          6,
+          5,
+          3,
+          1,
+          7,
+          7,
+          2
+        ],
+        "family": "near_goal_corridor",
+        "seed": 838103,
+        "horizon": 3
+      },
+      "declared_split": "NEW_ROOT_DEVELOPMENT_V5",
+      "historical_root_matches": [],
+      "within_roster_other_case_names": []
+    },
+    {
+      "case": {
+        "name": "v5_near_goal_corridor_838203",
+        "group": "v5_near_goal_corridor_838203",
+        "split": "NEW_ROOT_DEVELOPMENT_V5",
+        "board": [
+          9,
+          9,
+          7,
+          7,
+          10,
+          5,
+          4,
+          4,
+          3,
+          5,
+          8,
+          8,
+          1,
+          8,
+          6,
+          2
+        ],
+        "family": "near_goal_corridor",
+        "seed": 838203,
+        "horizon": 3
+      },
+      "declared_split": "NEW_ROOT_DEVELOPMENT_V5",
+      "historical_root_matches": [],
+      "within_roster_other_case_names": []
+    },
+    {
+      "case": {
+        "name": "v5_near_goal_corridor_838303",
+        "group": "v5_near_goal_corridor_838303",
+        "split": "NEW_ROOT_DEVELOPMENT_V5",
+        "board": [
+          9,
+          9,
+          4,
+          8,
+          10,
+          4,
+          8,
+          3,
+          3,
+          4,
+          6,
+          5,
+          1,
+          3,
+          7,
+          2
+        ],
+        "family": "near_goal_corridor",
+        "seed": 838303,
+        "horizon": 3
+      },
+      "declared_split": "NEW_ROOT_DEVELOPMENT_V5",
+      "historical_root_matches": [],
+      "within_roster_other_case_names": []
+    },
+    {
+      "case": {
+        "name": "v5_near_goal_corridor_838403",
+        "group": "v5_near_goal_corridor_838403",
+        "split": "NEW_ROOT_DEVELOPMENT_V5",
+        "board": [
+          9,
+          9,
+          4,
+          3,
+          10,
+          5,
+          4,
+          3,
+          6,
+          5,
+          6,
+          8,
+          1,
+          8,
+          5,
+          2
+        ],
+        "family": "near_goal_corridor",
+        "seed": 838403,
+        "horizon": 3
+      },
+      "declared_split": "NEW_ROOT_DEVELOPMENT_V5",
+      "historical_root_matches": [],
+      "within_roster_other_case_names": []
+    }
+  ],
+  "all_declared_cases_retained": true,
+  "original_deferred_24_case_cohort_executed": false,
+  "scope": "Raw starting-board equality, excluding horizon, against the five enumerated historical development reports. This does not audit descendant-state overlap, establish unseen states, or establish independent samples. Repeated generator outputs stay in the declared denominator."
+}

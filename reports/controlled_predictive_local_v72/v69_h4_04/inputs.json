@@ -1,0 +1,145 @@
+{
+  "observations": [
+    {
+      "board": [
+        9,
+        8,
+        9,
+        9,
+        6,
+        5,
+        5,
+        3,
+        8,
+        8,
+        6,
+        1,
+        8,
+        10,
+        3,
+        4
+      ],
+      "horizon": 4,
+      "expected": 481,
+      "expected_full": 1930
+    },
+    {
+      "board": [
+        9,
+        8,
+        9,
+        9,
+        6,
+        5,
+        5,
+        3,
+        9,
+        8,
+        6,
+        1,
+        1,
+        10,
+        3,
+        4
+      ],
+      "horizon": 3,
+      "expected": 62,
+      "expected_full": 94
+    },
+    {
+      "board": [
+        9,
+        8,
+        10,
+        2,
+        6,
+        6,
+        3,
+        4,
+        9,
+        8,
+        6,
+        1,
+        1,
+        10,
+        3,
+        0
+      ],
+      "horizon": 1,
+      "expected_full": 1,
+      "expected": 1
+    }
+  ],
+  "queries": {
+    "risk_0": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.0,
+      "goal_bonus": 0.0
+    },
+    "risk_0_05": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.05,
+      "goal_bonus": 0.0
+    },
+    "risk_0_2": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.2,
+      "goal_bonus": 0.0
+    },
+    "risk_1": {
+      "reward_weight": 1.0,
+      "failure_penalty": 1.0,
+      "goal_bonus": 0.0
+    },
+    "risk_5": {
+      "reward_weight": 1.0,
+      "failure_penalty": 5.0,
+      "goal_bonus": 0.0
+    },
+    "goal_1_risk_1": {
+      "reward_weight": 1.0,
+      "failure_penalty": 1.0,
+      "goal_bonus": 1.0
+    },
+    "probe_risk_0_1": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.1,
+      "goal_bonus": 0.0
+    },
+    "probe_risk_0_5": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.5,
+      "goal_bonus": 0.0
+    },
+    "probe_risk_2": {
+      "reward_weight": 1.0,
+      "failure_penalty": 2.0,
+      "goal_bonus": 0.0
+    },
+    "probe_goal_2_risk_0_5": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.5,
+      "goal_bonus": 2.0
+    },
+    "new_low_risk_goal": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.004,
+      "goal_bonus": 0.3
+    },
+    "new_risk_goal": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.02,
+      "goal_bonus": 0.3
+    },
+    "new_scaled_reward": {
+      "reward_weight": 0.4,
+      "failure_penalty": 0.4,
+      "goal_bonus": 1.2
+    },
+    "new_combined_query": {
+      "reward_weight": 1.0,
+      "failure_penalty": 0.3,
+      "goal_bonus": 0.2
+    }
+  }
+}

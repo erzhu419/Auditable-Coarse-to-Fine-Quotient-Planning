@@ -1,0 +1,4168 @@
+{
+  "integrity_passed": true,
+  "strata": [
+    {
+      "nodes": 7,
+      "stratum": "sparse",
+      "p": 0.25,
+      "quality_complete": true,
+      "expected_graphs": 16,
+      "terminal_cases": 64,
+      "resource_limited_cases": 0,
+      "costs_by_method": {
+        "LOOKAHEAD_1": {
+          "case_records": 16,
+          "complete_cases": 16,
+          "resource_limited_cases": 0,
+          "state_records": 223,
+          "decision_work": {
+            "planner_calls": 223,
+            "dp_states": 82,
+            "action_value_evaluations": 369,
+            "kernel_builds": 369,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 959,
+            "target_probability_evaluations": 1464,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 959,
+            "forced_choice": 141
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 223,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 455,
+            "target_probability_evaluations": 505,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 223,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 245
+          },
+          "wall_seconds": 0.011349186941515654,
+          "decision_seconds": 0.007319022173760459,
+          "evaluation_seconds": 0.0040301647677551955,
+          "serialization_seconds": 0.00250014997436665,
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 32.0,
+            "action_value_evaluations": 175.41666666666669,
+            "kernel_builds": 175.41666666666669,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 405.48611111111114,
+            "target_probability_evaluations": 870.9722222222223,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 405.48611111111114,
+            "forced_choice": 16.0
+          },
+          "expected_decision_seconds": 0.0028395804319459638,
+          "expected_nonforced_planner_calls": 32.0
+        },
+        "LOOKAHEAD_2": {
+          "case_records": 16,
+          "complete_cases": 16,
+          "resource_limited_cases": 0,
+          "state_records": 225,
+          "decision_work": {
+            "planner_calls": 225,
+            "dp_states": 1035,
+            "action_value_evaluations": 2294,
+            "kernel_builds": 2294,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 4835,
+            "target_probability_evaluations": 7737,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 4835,
+            "forced_choice": 147
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 225,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 465,
+            "target_probability_evaluations": 494,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 225,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 247
+          },
+          "wall_seconds": 0.03198132396209985,
+          "decision_seconds": 0.028487169067375362,
+          "evaluation_seconds": 0.0034941548947244883,
+          "serialization_seconds": 0.002522108959965408,
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 452.58333333333337,
+            "action_value_evaluations": 1577.1666666666667,
+            "kernel_builds": 1577.1666666666667,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 3536.75,
+            "target_probability_evaluations": 6173.25,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 3536.75,
+            "forced_choice": 16.0
+          },
+          "expected_decision_seconds": 0.021259210056482684,
+          "expected_nonforced_planner_calls": 32.0
+        },
+        "LOOKAHEAD_2_TIE3": {
+          "case_records": 16,
+          "complete_cases": 16,
+          "resource_limited_cases": 0,
+          "state_records": 225,
+          "decision_work": {
+            "planner_calls": 225,
+            "dp_states": 1035,
+            "action_value_evaluations": 2294,
+            "kernel_builds": 2294,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 4835,
+            "target_probability_evaluations": 7737,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 4835,
+            "forced_choice": 147,
+            "refinement_calls": 0,
+            "refined_root_actions": 0
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 225,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 465,
+            "target_probability_evaluations": 494,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 225,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 247
+          },
+          "wall_seconds": 0.025791296968236566,
+          "decision_seconds": 0.021030491159763187,
+          "evaluation_seconds": 0.004760805808473378,
+          "serialization_seconds": 0.003413653961615637,
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 452.58333333333337,
+            "action_value_evaluations": 1577.1666666666667,
+            "kernel_builds": 1577.1666666666667,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 3536.75,
+            "target_probability_evaluations": 6173.25,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 3536.75,
+            "forced_choice": 16.0,
+            "refinement_calls": 0.0,
+            "refined_root_actions": 0.0
+          },
+          "expected_decision_seconds": 0.01260953227710228,
+          "expected_nonforced_planner_calls": 32.0,
+          "prefix_work": {
+            "dp_states": 1035,
+            "action_value_evaluations": 2294,
+            "kernel_builds": 2294,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 4835,
+            "target_probability_evaluations": 7737,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 4835,
+            "forced_choice": 147
+          },
+          "expected_prefix_work": {
+            "dp_states": 452.58333333333337,
+            "action_value_evaluations": 1577.1666666666667,
+            "kernel_builds": 1577.1666666666667,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 3536.75,
+            "target_probability_evaluations": 6173.25,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 3536.75,
+            "forced_choice": 16.0
+          },
+          "refinement_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 0,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 0,
+            "target_probability_evaluations": 0,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0
+          },
+          "expected_refinement_work": {
+            "dp_states": 0.0,
+            "action_value_evaluations": 0.0,
+            "kernel_builds": 0.0,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 0.0,
+            "target_probability_evaluations": 0.0,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 0.0
+          },
+          "triggering_roots": 0,
+          "root_trigger_rate": 0.0,
+          "expected_refinement_calls_per_trajectory": 0.0,
+          "reach_weighted_trigger_fraction_of_decisions": 0.0
+        },
+        "LOOKAHEAD_FULL": {
+          "case_records": 16,
+          "complete_cases": 16,
+          "resource_limited_cases": 0,
+          "state_records": 200,
+          "decision_work": {
+            "planner_calls": 200,
+            "dp_states": 3188,
+            "action_value_evaluations": 4450,
+            "kernel_builds": 4450,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 8112,
+            "target_probability_evaluations": 13671,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 8112,
+            "forced_choice": 126
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 200,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 390,
+            "target_probability_evaluations": 479,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 200,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 194
+          },
+          "wall_seconds": 0.03737359007936902,
+          "decision_seconds": 0.03422569087706506,
+          "evaluation_seconds": 0.003147899202303961,
+          "serialization_seconds": 0.002333949989406392,
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 2738.1944444444443,
+            "action_value_evaluations": 3868.361111111111,
+            "kernel_builds": 3868.361111111111,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 7138.833333333333,
+            "target_probability_evaluations": 12251.90277777778,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 7138.833333333333,
+            "forced_choice": 16.0
+          },
+          "expected_decision_seconds": 0.028121361404718874,
+          "expected_nonforced_planner_calls": 32.0
+        }
+      },
+      "values": {
+        "LOOKAHEAD_1": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 5.821076758113908,
+          "minimum": 4.061728395061728,
+          "maximum": 6.833333333333334,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_2": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 6.003660790714217,
+          "minimum": 4.555555555555555,
+          "maximum": 6.833333333333334,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_2_TIE3": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 6.003660790714217,
+          "minimum": 4.555555555555555,
+          "maximum": 6.833333333333334,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_FULL": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 6.079030731577932,
+          "minimum": 4.7407407407407405,
+          "maximum": 6.851851851851851,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        }
+      },
+      "contrasts": {
+        "candidate_minus_two": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0,
+          "positive_count": 0,
+          "negative_count": 0,
+          "tie_count": 16
+        },
+        "candidate_minus_myopic": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.18258403260030864,
+          "minimum": 0.0,
+          "maximum": 1.148148148148148,
+          "positive_count": 7,
+          "negative_count": 0,
+          "tie_count": 9
+        },
+        "full_minus_candidate": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.07536994086371518,
+          "minimum": 0.0,
+          "maximum": 0.4736328125,
+          "positive_count": 5,
+          "negative_count": 0,
+          "tie_count": 11
+        },
+        "full_minus_myopic": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.2579539734640238,
+          "minimum": 0.0,
+          "maximum": 1.148148148148148,
+          "positive_count": 9,
+          "negative_count": 0,
+          "tie_count": 7
+        },
+        "headroom_fraction": {
+          "count": 16,
+          "available_count": 9,
+          "null_count": 7,
+          "mean": 0.5931370773681219,
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "positive_count": 7,
+          "negative_count": 0,
+          "tie_count": 2
+        }
+      },
+      "per_graph": [
+        {
+          "graph_id": 550000,
+          "values": {
+            "LOOKAHEAD_1": 5.125,
+            "LOOKAHEAD_2": 5.25,
+            "LOOKAHEAD_2_TIE3": 5.25,
+            "LOOKAHEAD_FULL": 5.25
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.125,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.125,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 7.386363636363637,
+              "expected_decision_seconds": 4.214482321054391
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.69847939232889
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.491679273827534,
+              "expected_decision_seconds": 0.5513242178320739
+            }
+          }
+        },
+        {
+          "graph_id": 550001,
+          "values": {
+            "LOOKAHEAD_1": 6.75,
+            "LOOKAHEAD_2": 6.75,
+            "LOOKAHEAD_2_TIE3": 6.75,
+            "LOOKAHEAD_FULL": 6.75
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0,
+          "headroom_fraction": null,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 5.761904761904762,
+              "expected_decision_seconds": 2.6738592649642925
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 1.1303768228292257
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.5426008968609866,
+              "expected_decision_seconds": 0.6492245399777837
+            }
+          }
+        },
+        {
+          "graph_id": 550002,
+          "values": {
+            "LOOKAHEAD_1": 4.061728395061728,
+            "LOOKAHEAD_2": 4.555555555555555,
+            "LOOKAHEAD_2_TIE3": 4.555555555555555,
+            "LOOKAHEAD_FULL": 4.7407407407407405
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.4938271604938276,
+          "full_minus_candidate": 0.18518518518518512,
+          "full_minus_myopic": 0.6790123456790127,
+          "headroom_fraction": 0.7272727272727275,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 7.7142857142857135,
+              "expected_decision_seconds": 4.484589969324571
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.9778428219381465
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.4873646209386282,
+              "expected_decision_seconds": 0.7176273085476829
+            }
+          }
+        },
+        {
+          "graph_id": 550003,
+          "values": {
+            "LOOKAHEAD_1": 5.934362340856482,
+            "LOOKAHEAD_2": 5.955430772569445,
+            "LOOKAHEAD_2_TIE3": 5.955430772569445,
+            "LOOKAHEAD_FULL": 6.090422453703703
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.0210684317129628,
+          "full_minus_candidate": 0.13499168113425863,
+          "full_minus_myopic": 0.15606011284722143,
+          "headroom_fraction": 0.13500202792745777,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 16.981343283582092,
+              "expected_decision_seconds": 8.842252999421701
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 1.068089400266709
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.2812731767614339,
+              "expected_decision_seconds": 0.3241315148646243
+            }
+          }
+        },
+        {
+          "graph_id": 550004,
+          "values": {
+            "LOOKAHEAD_1": 6.572016460905349,
+            "LOOKAHEAD_2": 6.572016460905349,
+            "LOOKAHEAD_2_TIE3": 6.572016460905349,
+            "LOOKAHEAD_FULL": 6.572016460905349
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0,
+          "headroom_fraction": null,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 9.223880597014926,
+              "expected_decision_seconds": 4.26440004757614
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.0865602684505305
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.37184115523465705,
+              "expected_decision_seconds": 0.3901785417711133
+            }
+          }
+        },
+        {
+          "graph_id": 550005,
+          "values": {
+            "LOOKAHEAD_1": 6.564742476851852,
+            "LOOKAHEAD_2": 6.564742476851852,
+            "LOOKAHEAD_2_TIE3": 6.564742476851852,
+            "LOOKAHEAD_FULL": 6.851851851851851
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.2871093749999991,
+          "full_minus_myopic": 0.2871093749999991,
+          "headroom_fraction": 0.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 9.761194029850747,
+              "expected_decision_seconds": 4.142739765477999
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 1.029773756692679
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.3784722222222222,
+              "expected_decision_seconds": 0.3477855830844766
+            }
+          }
+        },
+        {
+          "graph_id": 550006,
+          "values": {
+            "LOOKAHEAD_1": 4.125,
+            "LOOKAHEAD_2": 4.78125,
+            "LOOKAHEAD_2_TIE3": 4.78125,
+            "LOOKAHEAD_FULL": 4.78125
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.65625,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.65625,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 8.347826086956522,
+              "expected_decision_seconds": 4.0880561110871225
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.8301871625122534
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.45933014354066987,
+              "expected_decision_seconds": 0.44009923391993017
+            }
+          }
+        },
+        {
+          "graph_id": 550007,
+          "values": {
+            "LOOKAHEAD_1": 5.34156378600823,
+            "LOOKAHEAD_2": 5.34156378600823,
+            "LOOKAHEAD_2_TIE3": 5.34156378600823,
+            "LOOKAHEAD_FULL": 5.34156378600823
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0,
+          "headroom_fraction": null,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 9.088235294117647,
+              "expected_decision_seconds": 3.421140133173922
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 1.0476074599905238
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.49973045822102424,
+              "expected_decision_seconds": 0.5403399339651777
+            }
+          }
+        },
+        {
+          "graph_id": 550008,
+          "values": {
+            "LOOKAHEAD_1": 6.833333333333334,
+            "LOOKAHEAD_2": 6.833333333333334,
+            "LOOKAHEAD_2_TIE3": 6.833333333333334,
+            "LOOKAHEAD_FULL": 6.833333333333334
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0,
+          "headroom_fraction": null,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 7.875,
+              "expected_decision_seconds": 3.2687333471408717
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.8721290899159336
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.48554913294797686,
+              "expected_decision_seconds": 0.43028011177802467
+            }
+          }
+        },
+        {
+          "graph_id": 550009,
+          "values": {
+            "LOOKAHEAD_1": 6.75,
+            "LOOKAHEAD_2": 6.75,
+            "LOOKAHEAD_2_TIE3": 6.75,
+            "LOOKAHEAD_FULL": 6.75
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0,
+          "headroom_fraction": null,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 6.052631578947368,
+              "expected_decision_seconds": 2.7839080587366145
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 1.280495258689584
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.5299539170506913,
+              "expected_decision_seconds": 0.7035069772958664
+            }
+          }
+        },
+        {
+          "graph_id": 550010,
+          "values": {
+            "LOOKAHEAD_1": 6.25,
+            "LOOKAHEAD_2": 6.25,
+            "LOOKAHEAD_2_TIE3": 6.25,
+            "LOOKAHEAD_FULL": 6.25
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0,
+          "headroom_fraction": null,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 9.477272727272727,
+              "expected_decision_seconds": 4.927270707320614
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.96044223727085
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.4508108108108108,
+              "expected_decision_seconds": 0.41037064738377554
+            }
+          }
+        },
+        {
+          "graph_id": 550011,
+          "values": {
+            "LOOKAHEAD_1": 4.993055555555555,
+            "LOOKAHEAD_2": 6.141203703703703,
+            "LOOKAHEAD_2_TIE3": 6.141203703703703,
+            "LOOKAHEAD_FULL": 6.141203703703703
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 1.148148148148148,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 1.148148148148148,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 9.333333333333334,
+              "expected_decision_seconds": 5.366866622469675
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.5675756624244341
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.3984476067270375,
+              "expected_decision_seconds": 0.46641070230947757
+            }
+          }
+        },
+        {
+          "graph_id": 550012,
+          "values": {
+            "LOOKAHEAD_1": 4.97705078125,
+            "LOOKAHEAD_2": 5.4072265625,
+            "LOOKAHEAD_2_TIE3": 5.4072265625,
+            "LOOKAHEAD_FULL": 5.880859375
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.43017578125,
+          "full_minus_candidate": 0.4736328125,
+          "full_minus_myopic": 0.90380859375,
+          "headroom_fraction": 0.4759589411129119,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 10.71111111111111,
+              "expected_decision_seconds": 4.987148138997646
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.988109522701226
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.4244826067811537,
+              "expected_decision_seconds": 0.44597903131835165
+            }
+          }
+        },
+        {
+          "graph_id": 550013,
+          "values": {
+            "LOOKAHEAD_1": 6.296875,
+            "LOOKAHEAD_2": 6.34375,
+            "LOOKAHEAD_2_TIE3": 6.34375,
+            "LOOKAHEAD_FULL": 6.34375
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.046875,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.046875,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 10.464285714285714,
+              "expected_decision_seconds": 4.09545808669963
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.9473260096723635
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.33716915995397007,
+              "expected_decision_seconds": 0.36643473968434515
+            }
+          }
+        },
+        {
+          "graph_id": 550014,
+          "values": {
+            "LOOKAHEAD_1": 6.125,
+            "LOOKAHEAD_2": 6.125,
+            "LOOKAHEAD_2_TIE3": 6.125,
+            "LOOKAHEAD_FULL": 6.125
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0,
+          "headroom_fraction": null,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 6.695652173913044,
+              "expected_decision_seconds": 6.179123746922507
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 1.6892586415499713
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.4967741935483871,
+              "expected_decision_seconds": 0.9728541155496502
+            }
+          }
+        },
+        {
+          "graph_id": 550015,
+          "values": {
+            "LOOKAHEAD_1": 6.4375,
+            "LOOKAHEAD_2": 6.4375,
+            "LOOKAHEAD_2_TIE3": 6.4375,
+            "LOOKAHEAD_FULL": 6.5625
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.125,
+          "full_minus_myopic": 0.125,
+          "headroom_fraction": 0.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 8.476190476190476,
+              "expected_decision_seconds": 3.4297683947257207
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.7855990081561682
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.4091954022988506,
+              "expected_decision_seconds": 0.380018591804045
+            }
+          }
+        }
+      ],
+      "sum_gain_over_sum_headroom": 0.7078163214484198,
+      "new_degradations": 0,
+      "repaired_degradations": 0,
+      "root_actions_changed_vs_two": 0,
+      "candidate_over_control_cost_ratios": {
+        "LOOKAHEAD_1": {
+          "expected_action_values": {
+            "count": 16,
+            "available_count": 16,
+            "null_count": 0,
+            "mean": 8.959406907445613,
+            "minimum": 5.761904761904762,
+            "maximum": 16.981343283582092,
+            "positive_count": 16,
+            "negative_count": 0,
+            "tie_count": 0
+          },
+          "expected_decision_seconds": {
+            "count": 16,
+            "available_count": 16,
+            "null_count": 0,
+            "mean": 4.448112357193339,
+            "minimum": 2.6738592649642925,
+            "maximum": 8.842252999421701,
+            "positive_count": 16,
+            "negative_count": 0,
+            "tie_count": 0
+          }
+        },
+        "LOOKAHEAD_2": {
+          "expected_action_values": {
+            "count": 16,
+            "available_count": 16,
+            "null_count": 0,
+            "mean": 1.0,
+            "minimum": 1.0,
+            "maximum": 1.0,
+            "positive_count": 16,
+            "negative_count": 0,
+            "tie_count": 0
+          },
+          "expected_decision_seconds": {
+            "count": 16,
+            "available_count": 16,
+            "null_count": 0,
+            "mean": 0.9349907822118431,
+            "minimum": 0.0865602684505305,
+            "maximum": 1.6892586415499713,
+            "positive_count": 16,
+            "negative_count": 0,
+            "tie_count": 0
+          }
+        },
+        "LOOKAHEAD_FULL": {
+          "expected_action_values": {
+            "count": 16,
+            "available_count": 16,
+            "null_count": 0,
+            "mean": 0.4402921736078771,
+            "minimum": 0.2812731767614339,
+            "maximum": 0.5426008968609866,
+            "positive_count": 16,
+            "negative_count": 0,
+            "tie_count": 0
+          },
+          "expected_decision_seconds": {
+            "count": 16,
+            "available_count": 16,
+            "null_count": 0,
+            "mean": 0.5085353619428999,
+            "minimum": 0.3241315148646243,
+            "maximum": 0.9728541155496502,
+            "positive_count": 16,
+            "negative_count": 0,
+            "tie_count": 0
+          }
+        }
+      },
+      "ratio_of_summed_expected_action_values": {
+        "LOOKAHEAD_1": 8.990973871733965,
+        "LOOKAHEAD_2": 1.0,
+        "LOOKAHEAD_FULL": 0.407709265336311
+      }
+    },
+    {
+      "nodes": 7,
+      "stratum": "dense",
+      "p": 0.75,
+      "quality_complete": true,
+      "expected_graphs": 16,
+      "terminal_cases": 64,
+      "resource_limited_cases": 0,
+      "costs_by_method": {
+        "LOOKAHEAD_1": {
+          "case_records": 16,
+          "complete_cases": 16,
+          "resource_limited_cases": 0,
+          "state_records": 3931,
+          "decision_work": {
+            "planner_calls": 3931,
+            "dp_states": 782,
+            "action_value_evaluations": 2649,
+            "kernel_builds": 2649,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 20677,
+            "target_probability_evaluations": 7344,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 20677,
+            "forced_choice": 3149
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 3920,
+            "kernel_cache_hits": 11,
+            "transition_outcomes": 13785,
+            "target_probability_evaluations": 7075,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 3931,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 5816
+          },
+          "wall_seconds": 0.13737718609627336,
+          "decision_seconds": 0.07917761462158523,
+          "evaluation_seconds": 0.05819957147468813,
+          "serialization_seconds": 0.03188805698300712,
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 31.964587021604938,
+            "action_value_evaluations": 185.94924208333333,
+            "kernel_builds": 185.94924208333333,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 4107.664187037038,
+            "target_probability_evaluations": 956.1305555555556,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 4107.664187037038,
+            "forced_choice": 16.035412978395062
+          },
+          "expected_decision_seconds": 0.007390290636460751,
+          "expected_nonforced_planner_calls": 31.964587021604938
+        },
+        "LOOKAHEAD_2": {
+          "case_records": 16,
+          "complete_cases": 16,
+          "resource_limited_cases": 0,
+          "state_records": 3979,
+          "decision_work": {
+            "planner_calls": 3979,
+            "dp_states": 21531,
+            "action_value_evaluations": 31252,
+            "kernel_builds": 31252,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 154654,
+            "target_probability_evaluations": 68266,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 154654,
+            "forced_choice": 3197
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 3968,
+            "kernel_cache_hits": 11,
+            "transition_outcomes": 13896,
+            "target_probability_evaluations": 7147,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 3979,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 5808
+          },
+          "wall_seconds": 0.4996480889967643,
+          "decision_seconds": 0.42526011759764515,
+          "evaluation_seconds": 0.07438797139911912,
+          "serialization_seconds": 0.03257933698478155,
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 4152.922784475309,
+            "action_value_evaluations": 12160.99077287037,
+            "kernel_builds": 12160.99077287037,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 96243.16601719137,
+            "target_probability_evaluations": 34459.999508271605,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 96243.16601719137,
+            "forced_choice": 16.035152561728395
+          },
+          "expected_decision_seconds": 0.17759267110273796,
+          "expected_nonforced_planner_calls": 31.964847438271605
+        },
+        "LOOKAHEAD_2_TIE3": {
+          "case_records": 16,
+          "complete_cases": 16,
+          "resource_limited_cases": 0,
+          "state_records": 3979,
+          "decision_work": {
+            "planner_calls": 3979,
+            "dp_states": 21531,
+            "action_value_evaluations": 31252,
+            "kernel_builds": 31252,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 154654,
+            "target_probability_evaluations": 68266,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 154654,
+            "forced_choice": 3197,
+            "refinement_calls": 0,
+            "refined_root_actions": 0
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 3968,
+            "kernel_cache_hits": 11,
+            "transition_outcomes": 13896,
+            "target_probability_evaluations": 7147,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 3979,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 5808
+          },
+          "wall_seconds": 0.58340689499164,
+          "decision_seconds": 0.50413428581669,
+          "evaluation_seconds": 0.07927260917495005,
+          "serialization_seconds": 0.04792582988739014,
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 4152.922784475309,
+            "action_value_evaluations": 12160.99077287037,
+            "kernel_builds": 12160.99077287037,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 96243.16601719137,
+            "target_probability_evaluations": 34459.999508271605,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 96243.16601719137,
+            "forced_choice": 16.035152561728395,
+            "refinement_calls": 0.0,
+            "refined_root_actions": 0.0
+          },
+          "expected_decision_seconds": 0.24063358424653927,
+          "expected_nonforced_planner_calls": 31.964847438271605,
+          "prefix_work": {
+            "dp_states": 21531,
+            "action_value_evaluations": 31252,
+            "kernel_builds": 31252,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 154654,
+            "target_probability_evaluations": 68266,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 154654,
+            "forced_choice": 3197
+          },
+          "expected_prefix_work": {
+            "dp_states": 4152.922784475309,
+            "action_value_evaluations": 12160.99077287037,
+            "kernel_builds": 12160.99077287037,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 96243.16601719137,
+            "target_probability_evaluations": 34459.999508271605,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 96243.16601719137,
+            "forced_choice": 16.035152561728395
+          },
+          "refinement_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 0,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 0,
+            "target_probability_evaluations": 0,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0
+          },
+          "expected_refinement_work": {
+            "dp_states": 0.0,
+            "action_value_evaluations": 0.0,
+            "kernel_builds": 0.0,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 0.0,
+            "target_probability_evaluations": 0.0,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 0.0
+          },
+          "triggering_roots": 0,
+          "root_trigger_rate": 0.0,
+          "expected_refinement_calls_per_trajectory": 0.0,
+          "reach_weighted_trigger_fraction_of_decisions": 0.0
+        },
+        "LOOKAHEAD_FULL": {
+          "case_records": 16,
+          "complete_cases": 16,
+          "resource_limited_cases": 0,
+          "state_records": 3934,
+          "decision_work": {
+            "planner_calls": 3934,
+            "dp_states": 43413,
+            "action_value_evaluations": 53085,
+            "kernel_builds": 53073,
+            "kernel_cache_hits": 12,
+            "transition_outcomes": 238725,
+            "target_probability_evaluations": 113984,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 238737,
+            "forced_choice": 3178
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 3924,
+            "kernel_cache_hits": 10,
+            "transition_outcomes": 13808,
+            "target_probability_evaluations": 7102,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 3934,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 5686
+          },
+          "wall_seconds": 0.6822726160171442,
+          "decision_seconds": 0.6108093365910463,
+          "evaluation_seconds": 0.07146327942609787,
+          "serialization_seconds": 0.032403308956418186,
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 26428.13139558642,
+            "action_value_evaluations": 34436.36588398149,
+            "kernel_builds": 34424.36588398149,
+            "kernel_cache_hits": 12.0,
+            "transition_outcomes": 181353.5124616358,
+            "target_probability_evaluations": 80836.26173049383,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 181365.5124616358,
+            "forced_choice": 16.032541450617284
+          },
+          "expected_decision_seconds": 0.41496720442027846,
+          "expected_nonforced_planner_calls": 31.967458549382716
+        }
+      },
+      "values": {
+        "LOOKAHEAD_1": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 4.968596098818865,
+          "minimum": 4.682678768892568,
+          "maximum": 5.501888541663318,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_2": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 4.974289865077493,
+          "minimum": 4.682761124379304,
+          "maximum": 5.501888541663318,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_2_TIE3": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 4.974289865077493,
+          "minimum": 4.682761124379304,
+          "maximum": 5.501888541663318,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_FULL": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 4.975193820193169,
+          "minimum": 4.682761124379304,
+          "maximum": 5.501888541663318,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        }
+      },
+      "contrasts": {
+        "candidate_minus_two": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0,
+          "positive_count": 0,
+          "negative_count": 0,
+          "tie_count": 16
+        },
+        "candidate_minus_myopic": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.005693766258628108,
+          "minimum": 0.0,
+          "maximum": 0.05914817838513109,
+          "positive_count": 14,
+          "negative_count": 0,
+          "tie_count": 2
+        },
+        "full_minus_candidate": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.0009039551156767578,
+          "minimum": 0.0,
+          "maximum": 0.014463281850828125,
+          "positive_count": 1,
+          "negative_count": 0,
+          "tie_count": 15
+        },
+        "full_minus_myopic": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.006597721374304866,
+          "minimum": 0.0,
+          "maximum": 0.05914817838513109,
+          "positive_count": 14,
+          "negative_count": 0,
+          "tie_count": 2
+        },
+        "headroom_fraction": {
+          "count": 16,
+          "available_count": 14,
+          "null_count": 2,
+          "mean": 0.9410486935683982,
+          "minimum": 0.17468170995757432,
+          "maximum": 1.0,
+          "positive_count": 14,
+          "negative_count": 0,
+          "tie_count": 0
+        }
+      },
+      "per_graph": [
+        {
+          "graph_id": 550100,
+          "values": {
+            "LOOKAHEAD_1": 5.0231500945162235,
+            "LOOKAHEAD_2": 5.024741364957183,
+            "LOOKAHEAD_2_TIE3": 5.024741364957183,
+            "LOOKAHEAD_FULL": 5.024741364957183
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.0015912704409597467,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0015912704409597467,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 61.9126840537757,
+              "expected_decision_seconds": 22.357020558308285
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 1.0331490434726511
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.34290009136964594,
+              "expected_decision_seconds": 0.4419799731999528
+            }
+          }
+        },
+        {
+          "graph_id": 550101,
+          "values": {
+            "LOOKAHEAD_1": 5.118348064982189,
+            "LOOKAHEAD_2": 5.118797498066894,
+            "LOOKAHEAD_2_TIE3": 5.118797498066894,
+            "LOOKAHEAD_FULL": 5.118797498066894
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.00044943308470557497,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.00044943308470557497,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 53.650228202240534,
+              "expected_decision_seconds": 22.9950751517261
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.9945960605265975
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.3312480580920061,
+              "expected_decision_seconds": 0.42560015047087085
+            }
+          }
+        },
+        {
+          "graph_id": 550102,
+          "values": {
+            "LOOKAHEAD_1": 5.012561996606554,
+            "LOOKAHEAD_2": 5.01266888123231,
+            "LOOKAHEAD_2_TIE3": 5.01266888123231,
+            "LOOKAHEAD_FULL": 5.01266888123231
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.00010688462575547675,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.00010688462575547675,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 68.2213624153001,
+              "expected_decision_seconds": 26.217728073701693
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 1.0271785530487962
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.3529699625499087,
+              "expected_decision_seconds": 0.4590546413223652
+            }
+          }
+        },
+        {
+          "graph_id": 550103,
+          "values": {
+            "LOOKAHEAD_1": 4.810466340932465,
+            "LOOKAHEAD_2": 4.810633720685551,
+            "LOOKAHEAD_2_TIE3": 4.810633720685551,
+            "LOOKAHEAD_FULL": 4.810633720685551
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.00016737975308611652,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.00016737975308611652,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 78.68263281644018,
+              "expected_decision_seconds": 25.10752251152018
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.9821926130739727
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.3772115197479423,
+              "expected_decision_seconds": 0.46608782570518836
+            }
+          }
+        },
+        {
+          "graph_id": 550104,
+          "values": {
+            "LOOKAHEAD_1": 5.1387405583045584,
+            "LOOKAHEAD_2": 5.140204645248456,
+            "LOOKAHEAD_2_TIE3": 5.140204645248456,
+            "LOOKAHEAD_FULL": 5.140204645248456
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.0014640869438977688,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0014640869438977688,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 66.07823550856726,
+              "expected_decision_seconds": 22.69903965129474
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.8305987301009161
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.34719221779567805,
+              "expected_decision_seconds": 0.4421079954647172
+            }
+          }
+        },
+        {
+          "graph_id": 550105,
+          "values": {
+            "LOOKAHEAD_1": 4.9295388946151695,
+            "LOOKAHEAD_2": 4.930707383463073,
+            "LOOKAHEAD_2_TIE3": 4.930707383463073,
+            "LOOKAHEAD_FULL": 4.930707383463073
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.0011684888479033262,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0011684888479033262,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 68.43448424532029,
+              "expected_decision_seconds": 56.21514473356914
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 2.3705878887070693
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.35231562516358117,
+              "expected_decision_seconds": 1.0311034658680123
+            }
+          }
+        },
+        {
+          "graph_id": 550106,
+          "values": {
+            "LOOKAHEAD_1": 4.731001651923152,
+            "LOOKAHEAD_2": 4.731001651923152,
+            "LOOKAHEAD_2_TIE3": 4.731001651923152,
+            "LOOKAHEAD_FULL": 4.731001651923152
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0,
+          "headroom_fraction": null,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 89.91621488186199,
+              "expected_decision_seconds": 45.6918402814349
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 1.9767424196901362
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.40512168619359673,
+              "expected_decision_seconds": 0.797045426669603
+            }
+          }
+        },
+        {
+          "graph_id": 550107,
+          "values": {
+            "LOOKAHEAD_1": 5.0331270177694964,
+            "LOOKAHEAD_2": 5.033344321593208,
+            "LOOKAHEAD_2_TIE3": 5.033344321593208,
+            "LOOKAHEAD_FULL": 5.033344321593208
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.00021730382371121237,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.00021730382371121237,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 46.77041373152098,
+              "expected_decision_seconds": 66.77006869488784
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 2.800487701543834
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.2957825485416334,
+              "expected_decision_seconds": 1.1183760147216533
+            }
+          }
+        },
+        {
+          "graph_id": 550108,
+          "values": {
+            "LOOKAHEAD_1": 4.881536240338028,
+            "LOOKAHEAD_2": 4.881563079736887,
+            "LOOKAHEAD_2_TIE3": 4.881563079736887,
+            "LOOKAHEAD_FULL": 4.881563079736887
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 2.6839398858946595e-05,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 2.6839398858946595e-05,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 69.43612324326037,
+              "expected_decision_seconds": 21.773148983000105
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.9801805530320803
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.3571390043800409,
+              "expected_decision_seconds": 0.4481068730946176
+            }
+          }
+        },
+        {
+          "graph_id": 550109,
+          "values": {
+            "LOOKAHEAD_1": 4.930208064023959,
+            "LOOKAHEAD_2": 4.933269271846181,
+            "LOOKAHEAD_2_TIE3": 4.933269271846181,
+            "LOOKAHEAD_FULL": 4.947732553697009
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.0030612078222223005,
+          "full_minus_candidate": 0.014463281850828125,
+          "full_minus_myopic": 0.017524489673050425,
+          "headroom_fraction": 0.17468170995757432,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 54.36978956471605,
+              "expected_decision_seconds": 24.2748666028295
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 1.0195110426388343
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.31512460708724394,
+              "expected_decision_seconds": 0.2598832168270383
+            }
+          }
+        },
+        {
+          "graph_id": 550110,
+          "values": {
+            "LOOKAHEAD_1": 5.501888541663318,
+            "LOOKAHEAD_2": 5.501888541663318,
+            "LOOKAHEAD_2_TIE3": 5.501888541663318,
+            "LOOKAHEAD_FULL": 5.501888541663318
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0,
+          "headroom_fraction": null,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 57.54195856312416,
+              "expected_decision_seconds": 19.776219842040792
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.9817021392922444
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.37485980954489445,
+              "expected_decision_seconds": 0.4517582052693369
+            }
+          }
+        },
+        {
+          "graph_id": 550111,
+          "values": {
+            "LOOKAHEAD_1": 4.75155232295001,
+            "LOOKAHEAD_2": 4.810700501335141,
+            "LOOKAHEAD_2_TIE3": 4.810700501335141,
+            "LOOKAHEAD_FULL": 4.810700501335141
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.05914817838513109,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.05914817838513109,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 52.442693504601735,
+              "expected_decision_seconds": 60.29880135157118
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 2.5623870886040736
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.3150973766351771,
+              "expected_decision_seconds": 1.0459846166147693
+            }
+          }
+        },
+        {
+          "graph_id": 550112,
+          "values": {
+            "LOOKAHEAD_1": 4.682678768892568,
+            "LOOKAHEAD_2": 4.682761124379304,
+            "LOOKAHEAD_2_TIE3": 4.682761124379304,
+            "LOOKAHEAD_FULL": 4.682761124379304
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 8.235548673596327e-05,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 8.235548673596327e-05,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 93.99638187970335,
+              "expected_decision_seconds": 30.640091564678617
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 1.2347205090588098
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.41592623834982706,
+              "expected_decision_seconds": 0.5938220103855169
+            }
+          }
+        },
+        {
+          "graph_id": 550113,
+          "values": {
+            "LOOKAHEAD_1": 4.83400832719952,
+            "LOOKAHEAD_2": 4.83420155599952,
+            "LOOKAHEAD_2_TIE3": 4.83420155599952,
+            "LOOKAHEAD_FULL": 4.83420155599952
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.00019322880000061105,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.00019322880000061105,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 69.49879464514694,
+              "expected_decision_seconds": 27.886546830333078
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 1.0833894246912683
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.35393514013817257,
+              "expected_decision_seconds": 0.4693136424842953
+            }
+          }
+        },
+        {
+          "graph_id": 550114,
+          "values": {
+            "LOOKAHEAD_1": 4.920326849224022,
+            "LOOKAHEAD_2": 4.9211288118599406,
+            "LOOKAHEAD_2_TIE3": 4.9211288118599406,
+            "LOOKAHEAD_FULL": 4.9211288118599406
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.000801962635918585,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.000801962635918585,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 65.33555577669419,
+              "expected_decision_seconds": 27.26548524472461
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.9982952352850984
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.34955727476543363,
+              "expected_decision_seconds": 0.4593623995590203
+            }
+          }
+        },
+        {
+          "graph_id": 550115,
+          "values": {
+            "LOOKAHEAD_1": 5.198403847160601,
+            "LOOKAHEAD_2": 5.221025487249764,
+            "LOOKAHEAD_2_TIE3": 5.221025487249764,
+            "LOOKAHEAD_FULL": 5.221025487249764
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.02262164008916301,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.02262164008916301,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 48.869633193024654,
+              "expected_decision_seconds": 24.3844506871785
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 1.0840582746628795
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.3145250864777379,
+              "expected_decision_seconds": 0.44415537345038514
+            }
+          }
+        }
+      ],
+      "sum_gain_over_sum_headroom": 0.8629898014188272,
+      "new_degradations": 0,
+      "repaired_degradations": 0,
+      "root_actions_changed_vs_two": 0,
+      "candidate_over_control_cost_ratios": {
+        "LOOKAHEAD_1": {
+          "expected_action_values": {
+            "count": 16,
+            "available_count": 16,
+            "null_count": 0,
+            "mean": 65.32232413908116,
+            "minimum": 46.77041373152098,
+            "maximum": 93.99638187970335,
+            "positive_count": 16,
+            "negative_count": 0,
+            "tie_count": 0
+          },
+          "expected_decision_seconds": {
+            "count": 16,
+            "available_count": 16,
+            "null_count": 0,
+            "mean": 32.772065672674955,
+            "minimum": 19.776219842040792,
+            "maximum": 66.77006869488784,
+            "positive_count": 16,
+            "negative_count": 0,
+            "tie_count": 0
+          }
+        },
+        "LOOKAHEAD_2": {
+          "expected_action_values": {
+            "count": 16,
+            "available_count": 16,
+            "null_count": 0,
+            "mean": 1.0,
+            "minimum": 1.0,
+            "maximum": 1.0,
+            "positive_count": 16,
+            "negative_count": 0,
+            "tie_count": 0
+          },
+          "expected_decision_seconds": {
+            "count": 16,
+            "available_count": 16,
+            "null_count": 0,
+            "mean": 1.3724860798393288,
+            "minimum": 0.8305987301009161,
+            "maximum": 2.800487701543834,
+            "positive_count": 16,
+            "negative_count": 0,
+            "tie_count": 0
+          }
+        },
+        "LOOKAHEAD_FULL": {
+          "expected_action_values": {
+            "count": 16,
+            "available_count": 16,
+            "null_count": 0,
+            "mean": 0.3500566404270325,
+            "minimum": 0.2957825485416334,
+            "maximum": 0.41592623834982706,
+            "positive_count": 16,
+            "negative_count": 0,
+            "tie_count": 0
+          },
+          "expected_decision_seconds": {
+            "count": 16,
+            "available_count": 16,
+            "null_count": 0,
+            "mean": 0.5846088644442089,
+            "minimum": 0.2598832168270383,
+            "maximum": 1.1183760147216533,
+            "positive_count": 16,
+            "negative_count": 0,
+            "tie_count": 0
+          }
+        }
+      },
+      "ratio_of_summed_expected_action_values": {
+        "LOOKAHEAD_1": 65.39951782874388,
+        "LOOKAHEAD_2": 1.0,
+        "LOOKAHEAD_FULL": 0.3531438483910176
+      }
+    },
+    {
+      "nodes": 9,
+      "stratum": "sparse",
+      "p": 0.1875,
+      "quality_complete": true,
+      "expected_graphs": 16,
+      "terminal_cases": 64,
+      "resource_limited_cases": 0,
+      "costs_by_method": {
+        "LOOKAHEAD_1": {
+          "case_records": 16,
+          "complete_cases": 16,
+          "resource_limited_cases": 0,
+          "state_records": 446,
+          "decision_work": {
+            "planner_calls": 446,
+            "dp_states": 76,
+            "action_value_evaluations": 496,
+            "kernel_builds": 496,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 2317,
+            "target_probability_evaluations": 2914,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 2317,
+            "forced_choice": 370
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 446,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 1369,
+            "target_probability_evaluations": 1489,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 446,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 466
+          },
+          "wall_seconds": 0.019754512992221862,
+          "decision_seconds": 0.01176339911762625,
+          "evaluation_seconds": 0.007991113874595612,
+          "serialization_seconds": 0.004267033975338563,
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 32.0,
+            "action_value_evaluations": 241.91666666666663,
+            "kernel_builds": 241.91666666666663,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 803.1666666666666,
+            "target_probability_evaluations": 1663.138888888889,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 803.1666666666666,
+            "forced_choice": 16.0
+          },
+          "expected_decision_seconds": 0.0038483714487551036,
+          "expected_nonforced_planner_calls": 32.0
+        },
+        "LOOKAHEAD_2": {
+          "case_records": 16,
+          "complete_cases": 16,
+          "resource_limited_cases": 0,
+          "state_records": 403,
+          "decision_work": {
+            "planner_calls": 403,
+            "dp_states": 2598,
+            "action_value_evaluations": 5411,
+            "kernel_builds": 5411,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 18388,
+            "target_probability_evaluations": 26984,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 18388,
+            "forced_choice": 316
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 403,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 1209,
+            "target_probability_evaluations": 1491,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 403,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 463
+          },
+          "wall_seconds": 0.07958183501614258,
+          "decision_seconds": 0.07275503178243525,
+          "evaluation_seconds": 0.006826803233707324,
+          "serialization_seconds": 0.003953198960516602,
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 839.25,
+            "action_value_evaluations": 3376.0000000000005,
+            "kernel_builds": 3376.0000000000005,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 12759.541666666668,
+            "target_probability_evaluations": 19422.034722222223,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 12759.541666666668,
+            "forced_choice": 16.0
+          },
+          "expected_decision_seconds": 0.03693823188096718,
+          "expected_nonforced_planner_calls": 32.0
+        },
+        "LOOKAHEAD_2_TIE3": {
+          "case_records": 16,
+          "complete_cases": 16,
+          "resource_limited_cases": 0,
+          "state_records": 403,
+          "decision_work": {
+            "planner_calls": 403,
+            "dp_states": 2665,
+            "action_value_evaluations": 5515,
+            "kernel_builds": 5515,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 18528,
+            "target_probability_evaluations": 27499,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 18528,
+            "forced_choice": 316,
+            "refinement_calls": 2,
+            "refined_root_actions": 5
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 403,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 1209,
+            "target_probability_evaluations": 1491,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 403,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 463
+          },
+          "wall_seconds": 0.08273943598032929,
+          "decision_seconds": 0.07378331007203087,
+          "evaluation_seconds": 0.008956125908298418,
+          "serialization_seconds": 0.005618752009468153,
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 906.2500000000001,
+            "action_value_evaluations": 3480.0000000000005,
+            "kernel_builds": 3480.0000000000005,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 12899.541666666668,
+            "target_probability_evaluations": 19937.034722222223,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 12899.541666666668,
+            "forced_choice": 16.0,
+            "refinement_calls": 2.0,
+            "refined_root_actions": 5.0
+          },
+          "expected_decision_seconds": 0.038780882356196276,
+          "expected_nonforced_planner_calls": 32.0,
+          "prefix_work": {
+            "dp_states": 2598,
+            "action_value_evaluations": 5411,
+            "kernel_builds": 5411,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 18388,
+            "target_probability_evaluations": 26984,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 18388,
+            "forced_choice": 316
+          },
+          "expected_prefix_work": {
+            "dp_states": 839.25,
+            "action_value_evaluations": 3376.0000000000005,
+            "kernel_builds": 3376.0000000000005,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 12759.541666666668,
+            "target_probability_evaluations": 19422.034722222223,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 12759.541666666668,
+            "forced_choice": 16.0
+          },
+          "refinement_work": {
+            "dp_states": 67,
+            "action_value_evaluations": 104,
+            "kernel_builds": 104,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 140,
+            "target_probability_evaluations": 515,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 140
+          },
+          "expected_refinement_work": {
+            "dp_states": 67.0,
+            "action_value_evaluations": 104.0,
+            "kernel_builds": 104.0,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 140.0,
+            "target_probability_evaluations": 515.0,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 140.0
+          },
+          "triggering_roots": 2,
+          "root_trigger_rate": 0.125,
+          "expected_refinement_calls_per_trajectory": 0.125,
+          "reach_weighted_trigger_fraction_of_decisions": 0.041666666666666664
+        },
+        "LOOKAHEAD_FULL": {
+          "case_records": 16,
+          "complete_cases": 16,
+          "resource_limited_cases": 0,
+          "state_records": 360,
+          "decision_work": {
+            "planner_calls": 360,
+            "dp_states": 11578,
+            "action_value_evaluations": 14347,
+            "kernel_builds": 14347,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 40694,
+            "target_probability_evaluations": 63260,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 40694,
+            "forced_choice": 281
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 360,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 1175,
+            "target_probability_evaluations": 1363,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 360,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 432
+          },
+          "wall_seconds": 0.13930666804662906,
+          "decision_seconds": 0.13319958504871465,
+          "evaluation_seconds": 0.006107082997914404,
+          "serialization_seconds": 0.0037777149700559676,
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 9907.75,
+            "action_value_evaluations": 12444.333333333332,
+            "kernel_builds": 12444.333333333332,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 34981.41666666667,
+            "target_probability_evaluations": 56336.805555555555,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 34981.41666666667,
+            "forced_choice": 16.0
+          },
+          "expected_decision_seconds": 0.11243315278460315,
+          "expected_nonforced_planner_calls": 32.0
+        }
+      },
+      "values": {
+        "LOOKAHEAD_1": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 6.480069007402585,
+          "minimum": 4.9165219907407405,
+          "maximum": 7.930555555555555,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_2": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 6.575166584532938,
+          "minimum": 5.096788194444445,
+          "maximum": 7.5,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_2_TIE3": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 6.575166584532938,
+          "minimum": 5.096788194444445,
+          "maximum": 7.5,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_FULL": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 6.747942794988185,
+          "minimum": 5.096788194444445,
+          "maximum": 8.375,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        }
+      },
+      "contrasts": {
+        "candidate_minus_two": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0,
+          "positive_count": 0,
+          "negative_count": 0,
+          "tie_count": 16
+        },
+        "candidate_minus_myopic": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.09509757713035305,
+          "minimum": -0.4398148148148149,
+          "maximum": 0.5,
+          "positive_count": 8,
+          "negative_count": 2,
+          "tie_count": 6
+        },
+        "full_minus_candidate": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.172776210455247,
+          "minimum": 0.0,
+          "maximum": 0.8842592592592595,
+          "positive_count": 6,
+          "negative_count": 0,
+          "tie_count": 10
+        },
+        "full_minus_myopic": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.26787378758560004,
+          "minimum": 0.0,
+          "maximum": 0.8580246913580254,
+          "positive_count": 10,
+          "negative_count": 0,
+          "tie_count": 6
+        },
+        "headroom_fraction": {
+          "count": 16,
+          "available_count": 10,
+          "null_count": 6,
+          "mean": 0.5087778612476981,
+          "minimum": -0.989583333333333,
+          "maximum": 1.0,
+          "positive_count": 8,
+          "negative_count": 1,
+          "tie_count": 1
+        }
+      },
+      "per_graph": [
+        {
+          "graph_id": 550200,
+          "values": {
+            "LOOKAHEAD_1": 4.9165219907407405,
+            "LOOKAHEAD_2": 5.096788194444445,
+            "LOOKAHEAD_2_TIE3": 5.096788194444445,
+            "LOOKAHEAD_FULL": 5.096788194444445
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.18026620370370416,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.18026620370370416,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 14.904761904761905,
+              "expected_decision_seconds": 10.120455609129628
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.941682092716433
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.3160552002692696,
+              "expected_decision_seconds": 0.3576102996128511
+            }
+          }
+        },
+        {
+          "graph_id": 550201,
+          "values": {
+            "LOOKAHEAD_1": 6.680555555555555,
+            "LOOKAHEAD_2": 6.680555555555555,
+            "LOOKAHEAD_2_TIE3": 6.680555555555555,
+            "LOOKAHEAD_FULL": 6.680555555555555
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0,
+          "headroom_fraction": null,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 11.68131868131868,
+              "expected_decision_seconds": 6.6451558903527115
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.7088687454931941
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.35924298749577555,
+              "expected_decision_seconds": 0.38434121327543463
+            }
+          }
+        },
+        {
+          "graph_id": 550202,
+          "values": {
+            "LOOKAHEAD_1": 6.864149305555555,
+            "LOOKAHEAD_2": 7.010778356481481,
+            "LOOKAHEAD_2_TIE3": 7.010778356481481,
+            "LOOKAHEAD_FULL": 7.491319444444445
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.1466290509259256,
+          "full_minus_candidate": 0.4805410879629637,
+          "full_minus_myopic": 0.6271701388888893,
+          "headroom_fraction": 0.2337946943483269,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 17.098360655737704,
+              "expected_decision_seconds": 10.400513180330563
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 1.017862326039177
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.2615783313827119,
+              "expected_decision_seconds": 0.29163268754412475
+            }
+          }
+        },
+        {
+          "graph_id": 550203,
+          "values": {
+            "LOOKAHEAD_1": 6.125,
+            "LOOKAHEAD_2": 6.125,
+            "LOOKAHEAD_2_TIE3": 6.125,
+            "LOOKAHEAD_FULL": 6.125
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0,
+          "headroom_fraction": null,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 11.75,
+              "expected_decision_seconds": 8.246540185638947
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.4461538461538461,
+              "expected_decision_seconds": 1.6889859099187532
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.7230769230769231,
+              "expected_decision_seconds": 0.742396839285807
+            }
+          }
+        },
+        {
+          "graph_id": 550204,
+          "values": {
+            "LOOKAHEAD_1": 7.20679012345679,
+            "LOOKAHEAD_2": 7.20679012345679,
+            "LOOKAHEAD_2_TIE3": 7.20679012345679,
+            "LOOKAHEAD_FULL": 7.20679012345679
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0,
+          "headroom_fraction": null,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 14.529411764705884,
+              "expected_decision_seconds": 14.257330244781404
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 1.4155153149783815
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.3018821803959912,
+              "expected_decision_seconds": 0.48247621009660135
+            }
+          }
+        },
+        {
+          "graph_id": 550205,
+          "values": {
+            "LOOKAHEAD_1": 5.856481481481482,
+            "LOOKAHEAD_2": 5.87962962962963,
+            "LOOKAHEAD_2_TIE3": 5.87962962962963,
+            "LOOKAHEAD_FULL": 6.208333333333333
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.023148148148147918,
+          "full_minus_candidate": 0.3287037037037033,
+          "full_minus_myopic": 0.3518518518518512,
+          "headroom_fraction": 0.06578947368421,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 11.940860215053764,
+              "expected_decision_seconds": 5.141211867579962
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.9600611498827226
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.3456271397447868,
+              "expected_decision_seconds": 0.3163254217587692
+            }
+          }
+        },
+        {
+          "graph_id": 550206,
+          "values": {
+            "LOOKAHEAD_1": 5.5,
+            "LOOKAHEAD_2": 5.888888888888888,
+            "LOOKAHEAD_2_TIE3": 5.888888888888888,
+            "LOOKAHEAD_FULL": 6.0
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.3888888888888884,
+          "full_minus_candidate": 0.1111111111111116,
+          "full_minus_myopic": 0.5,
+          "headroom_fraction": 0.7777777777777768,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 8.387096774193548,
+              "expected_decision_seconds": 4.521361762573789
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 1.2679972171193614
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.4878048780487805,
+              "expected_decision_seconds": 0.5676574468626996
+            }
+          }
+        },
+        {
+          "graph_id": 550207,
+          "values": {
+            "LOOKAHEAD_1": 6.125,
+            "LOOKAHEAD_2": 6.458333333333334,
+            "LOOKAHEAD_2_TIE3": 6.458333333333334,
+            "LOOKAHEAD_FULL": 6.458333333333334
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.3333333333333339,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.3333333333333339,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 14.177777777777777,
+              "expected_decision_seconds": 8.649547502465614
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 1.0224946904869614
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.31061343719571566,
+              "expected_decision_seconds": 0.3249620310453695
+            }
+          }
+        },
+        {
+          "graph_id": 550208,
+          "values": {
+            "LOOKAHEAD_1": 6.4646990740740735,
+            "LOOKAHEAD_2": 6.517505787037036,
+            "LOOKAHEAD_2_TIE3": 6.517505787037036,
+            "LOOKAHEAD_FULL": 6.517505787037036
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.0528067129629628,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0528067129629628,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 27.565217391304348,
+              "expected_decision_seconds": 25.907486941902036
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.9115465090955767
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.1363147710169856,
+              "expected_decision_seconds": 0.22241275720187498
+            }
+          }
+        },
+        {
+          "graph_id": 550209,
+          "values": {
+            "LOOKAHEAD_1": 7.0,
+            "LOOKAHEAD_2": 7.5,
+            "LOOKAHEAD_2_TIE3": 7.5,
+            "LOOKAHEAD_FULL": 7.5
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.5,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.5,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 10.133333333333333,
+              "expected_decision_seconds": 6.401090193255472
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.4339622641509433,
+              "expected_decision_seconds": 1.3358879546671498
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.7958115183246073,
+              "expected_decision_seconds": 0.7888560188958423
+            }
+          }
+        },
+        {
+          "graph_id": 550210,
+          "values": {
+            "LOOKAHEAD_1": 6.984567901234567,
+            "LOOKAHEAD_2": 6.984567901234567,
+            "LOOKAHEAD_2_TIE3": 6.984567901234567,
+            "LOOKAHEAD_FULL": 7.842592592592593
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.8580246913580254,
+          "full_minus_myopic": 0.8580246913580254,
+          "headroom_fraction": 0.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 11.65909090909091,
+              "expected_decision_seconds": 5.051868351578047
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.9034254229146179
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.39675174013921116,
+              "expected_decision_seconds": 0.3868176801418663
+            }
+          }
+        },
+        {
+          "graph_id": 550211,
+          "values": {
+            "LOOKAHEAD_1": 7.930555555555555,
+            "LOOKAHEAD_2": 7.4907407407407405,
+            "LOOKAHEAD_2_TIE3": 7.4907407407407405,
+            "LOOKAHEAD_FULL": 8.375
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": -0.4398148148148149,
+          "full_minus_candidate": 0.8842592592592595,
+          "full_minus_myopic": 0.44444444444444464,
+          "headroom_fraction": -0.989583333333333,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 13.223529411764707,
+              "expected_decision_seconds": 10.941587474744248
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 1.434195178149357
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.32151029748283755,
+              "expected_decision_seconds": 0.5213926368158471
+            }
+          }
+        },
+        {
+          "graph_id": 550212,
+          "values": {
+            "LOOKAHEAD_1": 6.12255859375,
+            "LOOKAHEAD_2": 6.560641818576389,
+            "LOOKAHEAD_2_TIE3": 6.560641818576389,
+            "LOOKAHEAD_FULL": 6.560641818576389
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.4380832248263893,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.4380832248263893,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 19.774193548387096,
+              "expected_decision_seconds": 10.871927121529858
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.9738651046277463
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.24510195921631348,
+              "expected_decision_seconds": 0.3080709574319616
+            }
+          }
+        },
+        {
+          "graph_id": 550213,
+          "values": {
+            "LOOKAHEAD_1": 6.741898148148148,
+            "LOOKAHEAD_2": 6.741898148148148,
+            "LOOKAHEAD_2_TIE3": 6.741898148148148,
+            "LOOKAHEAD_FULL": 6.741898148148148
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0,
+          "headroom_fraction": null,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 15.78409090909091,
+              "expected_decision_seconds": 8.032798675983205
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.6752516108586656
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.2665515256188831,
+              "expected_decision_seconds": 0.29062039808522194
+            }
+          }
+        },
+        {
+          "graph_id": 550214,
+          "values": {
+            "LOOKAHEAD_1": 5.709201388888888,
+            "LOOKAHEAD_2": 5.607421875,
+            "LOOKAHEAD_2_TIE3": 5.607421875,
+            "LOOKAHEAD_FULL": 5.709201388888888
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": -0.1017795138888884,
+          "full_minus_candidate": 0.1017795138888884,
+          "full_minus_myopic": 0.0,
+          "headroom_fraction": null,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 14.612903225806452,
+              "expected_decision_seconds": 16.386488245245626
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 1.8626430573360457
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.2798023471278567,
+              "expected_decision_seconds": 0.6342947302531217
+            }
+          }
+        },
+        {
+          "graph_id": 550215,
+          "values": {
+            "LOOKAHEAD_1": 7.453125,
+            "LOOKAHEAD_2": 7.453125,
+            "LOOKAHEAD_2_TIE3": 7.453125,
+            "LOOKAHEAD_FULL": 7.453125
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.0,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0,
+          "headroom_fraction": null,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 12.76271186440678,
+              "expected_decision_seconds": 6.087123260143709
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.9179278346262589
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.3427401001365498,
+              "expected_decision_seconds": 0.3308515777147847
+            }
+          }
+        }
+      ],
+      "sum_gain_over_sum_headroom": 0.35500889425384435,
+      "new_degradations": 0,
+      "repaired_degradations": 0,
+      "root_actions_changed_vs_two": 0,
+      "candidate_over_control_cost_ratios": {
+        "LOOKAHEAD_1": {
+          "expected_action_values": {
+            "count": 16,
+            "available_count": 16,
+            "null_count": 0,
+            "mean": 14.374041147920863,
+            "minimum": 8.387096774193548,
+            "maximum": 27.565217391304348,
+            "positive_count": 16,
+            "negative_count": 0,
+            "tie_count": 0
+          },
+          "expected_decision_seconds": {
+            "count": 16,
+            "available_count": 16,
+            "null_count": 0,
+            "mean": 9.853905406702177,
+            "minimum": 4.521361762573789,
+            "maximum": 25.907486941902036,
+            "positive_count": 16,
+            "negative_count": 0,
+            "tie_count": 0
+          }
+        },
+        "LOOKAHEAD_2": {
+          "expected_action_values": {
+            "count": 16,
+            "available_count": 16,
+            "null_count": 0,
+            "mean": 1.0550072568940494,
+            "minimum": 1.0,
+            "maximum": 1.4461538461538461,
+            "positive_count": 16,
+            "negative_count": 0,
+            "tie_count": 0
+          },
+          "expected_decision_seconds": {
+            "count": 16,
+            "available_count": 16,
+            "null_count": 0,
+            "mean": 1.1273881324319002,
+            "minimum": 0.6752516108586656,
+            "maximum": 1.8626430573360457,
+            "positive_count": 16,
+            "negative_count": 0,
+            "tie_count": 0
+          }
+        },
+        "LOOKAHEAD_FULL": {
+          "expected_action_values": {
+            "count": 16,
+            "available_count": 16,
+            "null_count": 0,
+            "mean": 0.3681540835420749,
+            "minimum": 0.1363147710169856,
+            "maximum": 0.7958115183246073,
+            "positive_count": 16,
+            "negative_count": 0,
+            "tie_count": 0
+          },
+          "expected_decision_seconds": {
+            "count": 16,
+            "available_count": 16,
+            "null_count": 0,
+            "mean": 0.4344199316263861,
+            "minimum": 0.22241275720187498,
+            "maximum": 0.7888560188958423,
+            "positive_count": 16,
+            "negative_count": 0,
+            "tie_count": 0
+          }
+        }
+      },
+      "ratio_of_summed_expected_action_values": {
+        "LOOKAHEAD_1": 14.385118842576649,
+        "LOOKAHEAD_2": 1.0308056872037914,
+        "LOOKAHEAD_FULL": 0.27964535397637486
+      }
+    },
+    {
+      "nodes": 9,
+      "stratum": "dense",
+      "p": 0.5625,
+      "quality_complete": true,
+      "expected_graphs": 16,
+      "terminal_cases": 64,
+      "resource_limited_cases": 0,
+      "costs_by_method": {
+        "LOOKAHEAD_1": {
+          "case_records": 16,
+          "complete_cases": 16,
+          "resource_limited_cases": 0,
+          "state_records": 16873,
+          "decision_work": {
+            "planner_calls": 16873,
+            "dp_states": 1369,
+            "action_value_evaluations": 6521,
+            "kernel_builds": 6521,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 106621,
+            "target_probability_evaluations": 27088,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 106621,
+            "forced_choice": 15504
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 16873,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 86685,
+            "target_probability_evaluations": 44226,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 16873,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 23973
+          },
+          "wall_seconds": 0.8912611519626807,
+          "decision_seconds": 0.5431235206779093,
+          "evaluation_seconds": 0.3481376312847715,
+          "serialization_seconds": 0.1400994000141509,
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 31.999711027826766,
+            "action_value_evaluations": 246.4056634087792,
+            "kernel_builds": 246.4056634087792,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 7299.290365414951,
+            "target_probability_evaluations": 1723.664166666667,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 7299.290365414951,
+            "forced_choice": 16.00028897217323
+          },
+          "expected_decision_seconds": 0.015057897910797199,
+          "expected_nonforced_planner_calls": 31.99971102782677
+        },
+        "LOOKAHEAD_2": {
+          "case_records": 16,
+          "complete_cases": 16,
+          "resource_limited_cases": 0,
+          "state_records": 16351,
+          "decision_work": {
+            "planner_calls": 16351,
+            "dp_states": 110044,
+            "action_value_evaluations": 135005,
+            "kernel_builds": 135005,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 1005666,
+            "target_probability_evaluations": 396888,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 1005666,
+            "forced_choice": 14950
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 16351,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 85440,
+            "target_probability_evaluations": 43023,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 16351,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 24151
+          },
+          "wall_seconds": 2.8535034740925767,
+          "decision_seconds": 2.53252695617266,
+          "evaluation_seconds": 0.32097651791991666,
+          "serialization_seconds": 0.13727145109442063,
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 7323.045477677348,
+            "action_value_evaluations": 27234.451430058296,
+            "kernel_builds": 27234.451430058296,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 497567.65866386076,
+            "target_probability_evaluations": 119987.2900042818,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 497567.65866386076,
+            "forced_choice": 16.00028897217323
+          },
+          "expected_decision_seconds": 0.9453170314082909,
+          "expected_nonforced_planner_calls": 31.99971102782677
+        },
+        "LOOKAHEAD_2_TIE3": {
+          "case_records": 16,
+          "complete_cases": 16,
+          "resource_limited_cases": 0,
+          "state_records": 16351,
+          "decision_work": {
+            "planner_calls": 16351,
+            "dp_states": 110044,
+            "action_value_evaluations": 135005,
+            "kernel_builds": 135005,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 1005666,
+            "target_probability_evaluations": 396888,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 1005666,
+            "forced_choice": 14950,
+            "refinement_calls": 0,
+            "refined_root_actions": 0
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 16351,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 85440,
+            "target_probability_evaluations": 43023,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 16351,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 24151
+          },
+          "wall_seconds": 3.0603951689845417,
+          "decision_seconds": 2.6360494332911912,
+          "evaluation_seconds": 0.42434573569335043,
+          "serialization_seconds": 0.19973180902888998,
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 7323.045477677348,
+            "action_value_evaluations": 27234.451430058296,
+            "kernel_builds": 27234.451430058296,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 497567.65866386076,
+            "target_probability_evaluations": 119987.2900042818,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 497567.65866386076,
+            "forced_choice": 16.00028897217323,
+            "refinement_calls": 0.0,
+            "refined_root_actions": 0.0
+          },
+          "expected_decision_seconds": 0.9665744199649152,
+          "expected_nonforced_planner_calls": 31.99971102782677,
+          "prefix_work": {
+            "dp_states": 110044,
+            "action_value_evaluations": 135005,
+            "kernel_builds": 135005,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 1005666,
+            "target_probability_evaluations": 396888,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 1005666,
+            "forced_choice": 14950
+          },
+          "expected_prefix_work": {
+            "dp_states": 7323.045477677348,
+            "action_value_evaluations": 27234.451430058296,
+            "kernel_builds": 27234.451430058296,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 497567.65866386076,
+            "target_probability_evaluations": 119987.2900042818,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 497567.65866386076,
+            "forced_choice": 16.00028897217323
+          },
+          "refinement_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 0,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 0,
+            "target_probability_evaluations": 0,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0
+          },
+          "expected_refinement_work": {
+            "dp_states": 0.0,
+            "action_value_evaluations": 0.0,
+            "kernel_builds": 0.0,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 0.0,
+            "target_probability_evaluations": 0.0,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 0.0
+          },
+          "triggering_roots": 0,
+          "root_trigger_rate": 0.0,
+          "expected_refinement_calls_per_trajectory": 0.0,
+          "reach_weighted_trigger_fraction_of_decisions": 0.0
+        },
+        "LOOKAHEAD_FULL": {
+          "case_records": 16,
+          "complete_cases": 16,
+          "resource_limited_cases": 0,
+          "state_records": 15618,
+          "decision_work": {
+            "planner_calls": 15618,
+            "dp_states": 275181,
+            "action_value_evaluations": 299950,
+            "kernel_builds": 299950,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 1968490,
+            "target_probability_evaluations": 868843,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 1968490,
+            "forced_choice": 14280
+          },
+          "evaluation_work": {
+            "dp_states": 0,
+            "action_value_evaluations": 0,
+            "kernel_builds": 15618,
+            "kernel_cache_hits": 0,
+            "transition_outcomes": 82965,
+            "target_probability_evaluations": 41447,
+            "score_node_evaluations": 0,
+            "immediate_expectation_terms": 0,
+            "bellman_expectation_terms": 0,
+            "new_full_policy_backups": 15618,
+            "retained_value_reads": 0,
+            "occupancy_probability_terms": 23246
+          },
+          "wall_seconds": 5.5113893159723375,
+          "decision_seconds": 5.177670165401651,
+          "evaluation_seconds": 0.3337191505706869,
+          "serialization_seconds": 0.13346649706363678,
+          "expected_decision_work": {
+            "planner_calls": 48.0,
+            "dp_states": 175858.19829249213,
+            "action_value_evaluations": 195769.78757820645,
+            "kernel_builds": 195769.78757820645,
+            "kernel_cache_hits": 0.0,
+            "transition_outcomes": 1472553.5215934904,
+            "target_probability_evaluations": 599846.7984042818,
+            "score_node_evaluations": 0.0,
+            "immediate_expectation_terms": 0.0,
+            "bellman_expectation_terms": 1472553.5215934904,
+            "forced_choice": 16.0002593425436
+          },
+          "expected_decision_seconds": 3.592607189726415,
+          "expected_nonforced_planner_calls": 31.9997406574564
+        }
+      },
+      "values": {
+        "LOOKAHEAD_1": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 5.927829219067911,
+          "minimum": 5.565221436499339,
+          "maximum": 6.7542826844637505,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_2": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 5.941534068815525,
+          "minimum": 5.58426053646785,
+          "maximum": 6.758877979693136,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_2_TIE3": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 5.941534068815525,
+          "minimum": 5.58426053646785,
+          "maximum": 6.758877979693136,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "LOOKAHEAD_FULL": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 5.942571286095836,
+          "minimum": 5.58426053646785,
+          "maximum": 6.758877979693136,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        }
+      },
+      "contrasts": {
+        "candidate_minus_two": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0,
+          "positive_count": 0,
+          "negative_count": 0,
+          "tie_count": 16
+        },
+        "candidate_minus_myopic": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.013704849747612713,
+          "minimum": 0.0012223945060965136,
+          "maximum": 0.04695227119638812,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "full_minus_candidate": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.0010372172803113644,
+          "minimum": 0.0,
+          "maximum": 0.013864374514955813,
+          "positive_count": 2,
+          "negative_count": 0,
+          "tie_count": 14
+        },
+        "full_minus_myopic": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.014742067027924077,
+          "minimum": 0.0012223945060965136,
+          "maximum": 0.04695227119638812,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        },
+        "headroom_fraction": {
+          "count": 16,
+          "available_count": 16,
+          "null_count": 0,
+          "mean": 0.9407571948897455,
+          "minimum": 0.1131722311174172,
+          "maximum": 1.0,
+          "positive_count": 16,
+          "negative_count": 0,
+          "tie_count": 0
+        }
+      },
+      "per_graph": [
+        {
+          "graph_id": 550300,
+          "values": {
+            "LOOKAHEAD_1": 5.608978504544401,
+            "LOOKAHEAD_2": 5.618169511545786,
+            "LOOKAHEAD_2_TIE3": 5.618169511545786,
+            "LOOKAHEAD_FULL": 5.618169511545786
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.009191007001384754,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.009191007001384754,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 115.45165419313258,
+              "expected_decision_seconds": 68.00512866455156
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.8606437088224426
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.12790009637877503,
+              "expected_decision_seconds": 0.21008533678583405
+            }
+          }
+        },
+        {
+          "graph_id": 550301,
+          "values": {
+            "LOOKAHEAD_1": 6.415462332364605,
+            "LOOKAHEAD_2": 6.420057872809066,
+            "LOOKAHEAD_2_TIE3": 6.420057872809066,
+            "LOOKAHEAD_FULL": 6.420057872809066
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.004595540444460866,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.004595540444460866,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 95.71332781456952,
+              "expected_decision_seconds": 51.697741625722976
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 1.0200746516547738
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.1344904866420527,
+              "expected_decision_seconds": 0.21335481579060733
+            }
+          }
+        },
+        {
+          "graph_id": 550302,
+          "values": {
+            "LOOKAHEAD_1": 5.8532147079043675,
+            "LOOKAHEAD_2": 5.855138944987261,
+            "LOOKAHEAD_2_TIE3": 5.855138944987261,
+            "LOOKAHEAD_FULL": 5.855138944987261
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.0019242370828935762,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0019242370828935762,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 125.28310026757832,
+              "expected_decision_seconds": 73.83696641631904
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.8995461583355083
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.136232819989812,
+              "expected_decision_seconds": 0.2388118907135004
+            }
+          }
+        },
+        {
+          "graph_id": 550303,
+          "values": {
+            "LOOKAHEAD_1": 6.7331522677951385,
+            "LOOKAHEAD_2": 6.736953543500791,
+            "LOOKAHEAD_2_TIE3": 6.736953543500791,
+            "LOOKAHEAD_FULL": 6.736953543500791
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.0038012757056522517,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0038012757056522517,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 88.3655964432766,
+              "expected_decision_seconds": 62.80631701998384
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 1.6860610387230466
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.16767048423767877,
+              "expected_decision_seconds": 0.3954414028968194
+            }
+          }
+        },
+        {
+          "graph_id": 550304,
+          "values": {
+            "LOOKAHEAD_1": 5.810031990029629,
+            "LOOKAHEAD_2": 5.8121884703036555,
+            "LOOKAHEAD_2_TIE3": 5.8121884703036555,
+            "LOOKAHEAD_FULL": 5.8121884703036555
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.0021564802740261513,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0021564802740261513,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 113.69325889909358,
+              "expected_decision_seconds": 42.21145404964755
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 1.1431223212417505
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.130623811016115,
+              "expected_decision_seconds": 0.2681639063658738
+            }
+          }
+        },
+        {
+          "graph_id": 550305,
+          "values": {
+            "LOOKAHEAD_1": 5.899260365890975,
+            "LOOKAHEAD_2": 5.9077443780219765,
+            "LOOKAHEAD_2_TIE3": 5.9077443780219765,
+            "LOOKAHEAD_FULL": 5.9077443780219765
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.00848401213100125,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.00848401213100125,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 89.11425485961122,
+              "expected_decision_seconds": 72.63985489851943
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 1.3658883686977867
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.12385528888280517,
+              "expected_decision_seconds": 0.323922510614636
+            }
+          }
+        },
+        {
+          "graph_id": 550306,
+          "values": {
+            "LOOKAHEAD_1": 5.874166429410745,
+            "LOOKAHEAD_2": 5.905601746322195,
+            "LOOKAHEAD_2_TIE3": 5.905601746322195,
+            "LOOKAHEAD_FULL": 5.905601746322195
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.03143531691145007,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.03143531691145007,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 88.45742753623189,
+              "expected_decision_seconds": 63.5267913351966
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.9622144538054717
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.11569624242223198,
+              "expected_decision_seconds": 0.21537995843466806
+            }
+          }
+        },
+        {
+          "graph_id": 550307,
+          "values": {
+            "LOOKAHEAD_1": 5.582553703317854,
+            "LOOKAHEAD_2": 5.58426053646785,
+            "LOOKAHEAD_2_TIE3": 5.58426053646785,
+            "LOOKAHEAD_FULL": 5.58426053646785
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.001706833149996534,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.001706833149996534,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 105.22228285584356,
+              "expected_decision_seconds": 51.13380799647357
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.6487924240040455
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.15380431769715017,
+              "expected_decision_seconds": 0.2499995831526146
+            }
+          }
+        },
+        {
+          "graph_id": 550308,
+          "values": {
+            "LOOKAHEAD_1": 5.955528915294635,
+            "LOOKAHEAD_2": 5.957298212842548,
+            "LOOKAHEAD_2_TIE3": 5.957298212842548,
+            "LOOKAHEAD_FULL": 5.971162587357504
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.0017692975479128847,
+          "full_minus_candidate": 0.013864374514955813,
+          "full_minus_myopic": 0.015633672062868698,
+          "headroom_fraction": 0.1131722311174172,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 122.72249259579195,
+              "expected_decision_seconds": 50.445371877940744
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 1.2205331815048914
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.14057633480523424,
+              "expected_decision_seconds": 0.2896467351333355
+            }
+          }
+        },
+        {
+          "graph_id": 550309,
+          "values": {
+            "LOOKAHEAD_1": 6.113722731162679,
+            "LOOKAHEAD_2": 6.1149451256687755,
+            "LOOKAHEAD_2_TIE3": 6.1149451256687755,
+            "LOOKAHEAD_FULL": 6.1149451256687755
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.0012223945060965136,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.0012223945060965136,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 98.04890829694324,
+              "expected_decision_seconds": 77.98589674194749
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 1.0253107387569063
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.13477052061424993,
+              "expected_decision_seconds": 0.2797107811296718
+            }
+          }
+        },
+        {
+          "graph_id": 550310,
+          "values": {
+            "LOOKAHEAD_1": 5.674997274856425,
+            "LOOKAHEAD_2": 5.714474505614877,
+            "LOOKAHEAD_2_TIE3": 5.714474505614877,
+            "LOOKAHEAD_FULL": 5.714474505614877
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.03947723075845211,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.03947723075845211,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 93.62504925137902,
+              "expected_decision_seconds": 53.60693994316021
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 1.016459500497371
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.11572516436976255,
+              "expected_decision_seconds": 0.21772195479458903
+            }
+          }
+        },
+        {
+          "graph_id": 550311,
+          "values": {
+            "LOOKAHEAD_1": 5.803096053992053,
+            "LOOKAHEAD_2": 5.850048325188441,
+            "LOOKAHEAD_2_TIE3": 5.850048325188441,
+            "LOOKAHEAD_FULL": 5.850048325188441
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.04695227119638812,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.04695227119638812,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 142.29446627827699,
+              "expected_decision_seconds": 87.18004914227852
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 1.1562537335281953
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.15781207941876832,
+              "expected_decision_seconds": 0.34029399759102114
+            }
+          }
+        },
+        {
+          "graph_id": 550312,
+          "values": {
+            "LOOKAHEAD_1": 5.565221436499339,
+            "LOOKAHEAD_2": 5.607220618048074,
+            "LOOKAHEAD_2_TIE3": 5.607220618048074,
+            "LOOKAHEAD_FULL": 5.6099517200181
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.04199918154873483,
+          "full_minus_candidate": 0.0027311019700260175,
+          "full_minus_myopic": 0.04473028351876085,
+          "headroom_fraction": 0.9389428871185104,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 89.29436769394262,
+              "expected_decision_seconds": 76.1969237249382
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.9400173242408202
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.11735214442013468,
+              "expected_decision_seconds": 0.2793729366291811
+            }
+          }
+        },
+        {
+          "graph_id": 550313,
+          "values": {
+            "LOOKAHEAD_1": 5.581848011718374,
+            "LOOKAHEAD_2": 5.595780714202811,
+            "LOOKAHEAD_2_TIE3": 5.595780714202811,
+            "LOOKAHEAD_FULL": 5.595780714202811
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.013932702484437343,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.013932702484437343,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 189.91311644639225,
+              "expected_decision_seconds": 76.01515367757068
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.9984584697004423
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.17554969421747904,
+              "expected_decision_seconds": 0.3056849722795759
+            }
+          }
+        },
+        {
+          "graph_id": 550314,
+          "values": {
+            "LOOKAHEAD_1": 6.7542826844637505,
+            "LOOKAHEAD_2": 6.758877979693136,
+            "LOOKAHEAD_2_TIE3": 6.758877979693136,
+            "LOOKAHEAD_FULL": 6.758877979693136
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.004595295229385954,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.004595295229385954,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 56.348050036791754,
+              "expected_decision_seconds": 32.712787192815036
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.9816693947779218
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.13167356469675892,
+              "expected_decision_seconds": 0.20060938495508995
+            }
+          }
+        },
+        {
+          "graph_id": 550315,
+          "values": {
+            "LOOKAHEAD_1": 5.619750095841616,
+            "LOOKAHEAD_2": 5.625784615831146,
+            "LOOKAHEAD_2_TIE3": 5.625784615831146,
+            "LOOKAHEAD_FULL": 5.625784615831146
+          },
+          "candidate_minus_two": 0.0,
+          "candidate_minus_myopic": 0.006034519989530196,
+          "full_minus_candidate": 0.0,
+          "full_minus_myopic": 0.006034519989530196,
+          "headroom_fraction": 1.0,
+          "new_degradation": false,
+          "repaired_degradation": false,
+          "root_action_changed_vs_two": false,
+          "candidate_over_control_cost_ratios": {
+            "LOOKAHEAD_1": {
+              "expected_action_values": 151.89756963258546,
+              "expected_decision_seconds": 89.49883364786281
+            },
+            "LOOKAHEAD_2": {
+              "expected_action_values": 1.0,
+              "expected_decision_seconds": 0.985179213319091
+            },
+            "LOOKAHEAD_FULL": {
+              "expected_action_values": 0.15085688536767114,
+              "expected_decision_seconds": 0.27352900870449237
+            }
+          }
+        }
+      ],
+      "sum_gain_over_sum_headroom": 0.9296423440249802,
+      "new_degradations": 0,
+      "repaired_degradations": 0,
+      "root_actions_changed_vs_two": 0,
+      "candidate_over_control_cost_ratios": {
+        "LOOKAHEAD_1": {
+          "expected_action_values": {
+            "count": 16,
+            "available_count": 16,
+            "null_count": 0,
+            "mean": 110.34030769384003,
+            "minimum": 56.348050036791754,
+            "maximum": 189.91311644639225,
+            "positive_count": 16,
+            "negative_count": 0,
+            "tie_count": 0
+          },
+          "expected_decision_seconds": {
+            "count": 16,
+            "available_count": 16,
+            "null_count": 0,
+            "mean": 64.34375112218302,
+            "minimum": 32.712787192815036,
+            "maximum": 89.49883364786281,
+            "positive_count": 16,
+            "negative_count": 0,
+            "tie_count": 0
+          }
+        },
+        "LOOKAHEAD_2": {
+          "expected_action_values": {
+            "count": 16,
+            "available_count": 16,
+            "null_count": 0,
+            "mean": 1.0,
+            "minimum": 1.0,
+            "maximum": 1.0,
+            "positive_count": 16,
+            "negative_count": 0,
+            "tie_count": 0
+          },
+          "expected_decision_seconds": {
+            "count": 16,
+            "available_count": 16,
+            "null_count": 0,
+            "mean": 1.056889042600654,
+            "minimum": 0.6487924240040455,
+            "maximum": 1.6860610387230466,
+            "positive_count": 16,
+            "negative_count": 0,
+            "tie_count": 0
+          }
+        },
+        "LOOKAHEAD_FULL": {
+          "expected_action_values": {
+            "count": 16,
+            "available_count": 16,
+            "null_count": 0,
+            "mean": 0.1384118709485425,
+            "minimum": 0.11569624242223198,
+            "maximum": 0.17554969421747904,
+            "positive_count": 16,
+            "negative_count": 0,
+            "tie_count": 0
+          },
+          "expected_decision_seconds": {
+            "count": 16,
+            "available_count": 16,
+            "null_count": 0,
+            "mean": 0.2688580734982194,
+            "minimum": 0.20060938495508995,
+            "maximum": 0.3954414028968194,
+            "positive_count": 16,
+            "negative_count": 0,
+            "tie_count": 0
+          }
+        }
+      },
+      "ratio_of_summed_expected_action_values": {
+        "LOOKAHEAD_1": 110.52688908727396,
+        "LOOKAHEAD_2": 1.0,
+        "LOOKAHEAD_FULL": 0.13911468039560818
+      }
+    }
+  ],
+  "regression": {
+    "graph_id": 540009,
+    "role": "known_regression_only",
+    "quality_complete": true,
+    "comparison": {
+      "values": {
+        "LOOKAHEAD_1": 5.5,
+        "LOOKAHEAD_2": 5.40625,
+        "LOOKAHEAD_2_TIE3": 5.5,
+        "LOOKAHEAD_FULL": 5.5
+      },
+      "candidate_minus_two": 0.09375,
+      "candidate_minus_myopic": 0.0,
+      "full_minus_candidate": 0.0,
+      "full_minus_myopic": 0.0,
+      "headroom_fraction": null,
+      "new_degradation": false,
+      "repaired_degradation": true,
+      "root_action_changed_vs_two": true,
+      "candidate_over_control_cost_ratios": {
+        "LOOKAHEAD_1": {
+          "expected_action_values": 21.08695652173913,
+          "expected_decision_seconds": 13.942598587958415
+        },
+        "LOOKAHEAD_2": {
+          "expected_action_values": 2.0995670995670994,
+          "expected_decision_seconds": 2.3261350429840655
+        },
+        "LOOKAHEAD_FULL": {
+          "expected_action_values": 0.8178752107925801,
+          "expected_decision_seconds": 0.9811857614646912
+        }
+      }
+    },
+    "new_candidate_costs": {
+      "case_records": 1,
+      "complete_cases": 1,
+      "resource_limited_cases": 0,
+      "state_records": 19,
+      "decision_work": {
+        "planner_calls": 19,
+        "dp_states": 157,
+        "action_value_evaluations": 265,
+        "kernel_builds": 265,
+        "kernel_cache_hits": 0,
+        "transition_outcomes": 588,
+        "target_probability_evaluations": 917,
+        "score_node_evaluations": 0,
+        "immediate_expectation_terms": 0,
+        "bellman_expectation_terms": 588,
+        "forced_choice": 16,
+        "refinement_calls": 1,
+        "refined_root_actions": 2
+      },
+      "evaluation_work": {
+        "dp_states": 0,
+        "action_value_evaluations": 0,
+        "kernel_builds": 19,
+        "kernel_cache_hits": 0,
+        "transition_outcomes": 54,
+        "target_probability_evaluations": 45,
+        "score_node_evaluations": 0,
+        "immediate_expectation_terms": 0,
+        "bellman_expectation_terms": 0,
+        "new_full_policy_backups": 19,
+        "retained_value_reads": 0,
+        "occupancy_probability_terms": 18
+      },
+      "wall_seconds": 0.0029738779994659126,
+      "decision_seconds": 0.002492926985723898,
+      "evaluation_seconds": 0.00048095101374201477,
+      "serialization_seconds": 0.0002701840130612254,
+      "expected_decision_work": {
+        "planner_calls": 3.0,
+        "dp_states": 138.0,
+        "action_value_evaluations": 242.5,
+        "kernel_builds": 242.5,
+        "kernel_cache_hits": 0.0,
+        "transition_outcomes": 538.0,
+        "target_probability_evaluations": 857.0,
+        "score_node_evaluations": 0.0,
+        "immediate_expectation_terms": 0.0,
+        "bellman_expectation_terms": 538.0,
+        "forced_choice": 1.0,
+        "refinement_calls": 1.0,
+        "refined_root_actions": 2.0
+      },
+      "expected_decision_seconds": 0.0020583398745657178,
+      "expected_nonforced_planner_calls": 2.0,
+      "prefix_work": {
+        "dp_states": 56,
+        "action_value_evaluations": 140,
+        "kernel_builds": 140,
+        "kernel_cache_hits": 0,
+        "transition_outcomes": 340,
+        "target_probability_evaluations": 538,
+        "score_node_evaluations": 0,
+        "immediate_expectation_terms": 0,
+        "bellman_expectation_terms": 340,
+        "forced_choice": 16
+      },
+      "expected_prefix_work": {
+        "dp_states": 37.0,
+        "action_value_evaluations": 117.5,
+        "kernel_builds": 117.5,
+        "kernel_cache_hits": 0.0,
+        "transition_outcomes": 290.0,
+        "target_probability_evaluations": 478.0,
+        "score_node_evaluations": 0.0,
+        "immediate_expectation_terms": 0.0,
+        "bellman_expectation_terms": 290.0,
+        "forced_choice": 1.0
+      },
+      "refinement_work": {
+        "dp_states": 101,
+        "action_value_evaluations": 125,
+        "kernel_builds": 125,
+        "kernel_cache_hits": 0,
+        "transition_outcomes": 248,
+        "target_probability_evaluations": 379,
+        "score_node_evaluations": 0,
+        "immediate_expectation_terms": 0,
+        "bellman_expectation_terms": 248
+      },
+      "expected_refinement_work": {
+        "dp_states": 101.0,
+        "action_value_evaluations": 125.0,
+        "kernel_builds": 125.0,
+        "kernel_cache_hits": 0.0,
+        "transition_outcomes": 248.0,
+        "target_probability_evaluations": 379.0,
+        "score_node_evaluations": 0.0,
+        "immediate_expectation_terms": 0.0,
+        "bellman_expectation_terms": 248.0
+      },
+      "triggering_roots": 1,
+      "root_trigger_rate": 1.0,
+      "expected_refinement_calls_per_trajectory": 1.0,
+      "reach_weighted_trigger_fraction_of_decisions": 0.3333333333333333
+    },
+    "retained_control_cases": [
+      {
+        "graph_id": 540009,
+        "method": "LOOKAHEAD_1",
+        "nodes": 7,
+        "stratum": "sparse",
+        "p": 0.25,
+        "budget": 2,
+        "horizon": 3,
+        "status": "complete",
+        "stop_reason": null,
+        "root_value": 5.5,
+        "root_selected": [
+          5
+        ],
+        "value_source": "V54_full_policy_evaluation",
+        "control_method": null,
+        "wall_seconds": 0.0006803729920648038,
+        "decision_seconds": 0.0003366340242791921,
+        "evaluation_seconds": 0.00034373896778561175,
+        "last_limit_check_seconds": 0.0006308529991656542,
+        "state_records": 19,
+        "decision_work": {
+          "planner_calls": 19,
+          "dp_states": 3,
+          "action_value_evaluations": 16,
+          "kernel_builds": 16,
+          "kernel_cache_hits": 0,
+          "transition_outcomes": 53,
+          "target_probability_evaluations": 74,
+          "score_node_evaluations": 0,
+          "immediate_expectation_terms": 0,
+          "bellman_expectation_terms": 53,
+          "forced_choice": 16
+        },
+        "expected_decision_work": {
+          "planner_calls": 3.0,
+          "dp_states": 2.0,
+          "action_value_evaluations": 11.5,
+          "kernel_builds": 11.5,
+          "kernel_cache_hits": 0.0,
+          "transition_outcomes": 35.0,
+          "target_probability_evaluations": 58.0,
+          "score_node_evaluations": 0.0,
+          "immediate_expectation_terms": 0.0,
+          "bellman_expectation_terms": 35.0,
+          "forced_choice": 1.0
+        },
+        "expected_decision_seconds": 0.00014762957289349288,
+        "evaluation_work": {
+          "dp_states": 0,
+          "action_value_evaluations": 0,
+          "kernel_builds": 19,
+          "kernel_cache_hits": 0,
+          "transition_outcomes": 54,
+          "target_probability_evaluations": 45,
+          "score_node_evaluations": 0,
+          "immediate_expectation_terms": 0,
+          "bellman_expectation_terms": 0,
+          "new_full_policy_backups": 19,
+          "retained_value_reads": 0,
+          "occupancy_probability_terms": 18
+        },
+        "serialization_seconds": 0.0002861829998437315
+      },
+      {
+        "graph_id": 540009,
+        "method": "LOOKAHEAD_2",
+        "nodes": 7,
+        "stratum": "sparse",
+        "p": 0.25,
+        "budget": 2,
+        "horizon": 3,
+        "status": "complete",
+        "stop_reason": null,
+        "root_value": 5.40625,
+        "root_selected": [
+          1
+        ],
+        "value_source": "V54_full_policy_evaluation",
+        "control_method": null,
+        "wall_seconds": 0.0018447549955453724,
+        "decision_seconds": 0.001521255966508761,
+        "evaluation_seconds": 0.0003234990290366113,
+        "last_limit_check_seconds": 0.0017900469829328358,
+        "state_records": 21,
+        "decision_work": {
+          "planner_calls": 21,
+          "dp_states": 84,
+          "action_value_evaluations": 177,
+          "kernel_builds": 177,
+          "kernel_cache_hits": 0,
+          "transition_outcomes": 386,
+          "target_probability_evaluations": 677,
+          "score_node_evaluations": 0,
+          "immediate_expectation_terms": 0,
+          "bellman_expectation_terms": 386,
+          "forced_choice": 16
+        },
+        "expected_decision_work": {
+          "planner_calls": 3.0,
+          "dp_states": 34.5,
+          "action_value_evaluations": 115.5,
+          "kernel_builds": 115.5,
+          "kernel_cache_hits": 0.0,
+          "transition_outcomes": 276.5,
+          "target_probability_evaluations": 482.75,
+          "score_node_evaluations": 0.0,
+          "immediate_expectation_terms": 0.0,
+          "bellman_expectation_terms": 276.5,
+          "forced_choice": 1.0
+        },
+        "expected_decision_seconds": 0.0008848754850987461,
+        "evaluation_work": {
+          "dp_states": 0,
+          "action_value_evaluations": 0,
+          "kernel_builds": 21,
+          "kernel_cache_hits": 0,
+          "transition_outcomes": 49,
+          "target_probability_evaluations": 50,
+          "score_node_evaluations": 0,
+          "immediate_expectation_terms": 0,
+          "bellman_expectation_terms": 0,
+          "new_full_policy_backups": 21,
+          "retained_value_reads": 0,
+          "occupancy_probability_terms": 20
+        },
+        "serialization_seconds": 0.0003110189863946289
+      },
+      {
+        "graph_id": 540009,
+        "method": "LOOKAHEAD_FULL",
+        "nodes": 7,
+        "stratum": "sparse",
+        "p": 0.25,
+        "budget": 2,
+        "horizon": 3,
+        "status": "complete",
+        "stop_reason": null,
+        "root_value": 5.5,
+        "root_selected": [
+          5
+        ],
+        "value_source": "V54_full_policy_evaluation",
+        "control_method": null,
+        "wall_seconds": 0.0031998640042729676,
+        "decision_seconds": 0.002413390961010009,
+        "evaluation_seconds": 0.0007864730432629585,
+        "last_limit_check_seconds": 0.003147198003716767,
+        "state_records": 19,
+        "decision_work": {
+          "planner_calls": 19,
+          "dp_states": 235,
+          "action_value_evaluations": 319,
+          "kernel_builds": 319,
+          "kernel_cache_hits": 0,
+          "transition_outcomes": 607,
+          "target_probability_evaluations": 1090,
+          "score_node_evaluations": 0,
+          "immediate_expectation_terms": 0,
+          "bellman_expectation_terms": 607,
+          "forced_choice": 16
+        },
+        "expected_decision_work": {
+          "planner_calls": 3.0,
+          "dp_states": 216.0,
+          "action_value_evaluations": 296.5,
+          "kernel_builds": 296.5,
+          "kernel_cache_hits": 0.0,
+          "transition_outcomes": 557.0,
+          "target_probability_evaluations": 1030.0,
+          "score_node_evaluations": 0.0,
+          "immediate_expectation_terms": 0.0,
+          "bellman_expectation_terms": 557.0,
+          "forced_choice": 1.0
+        },
+        "expected_decision_seconds": 0.0020978085449314676,
+        "evaluation_work": {
+          "dp_states": 0,
+          "action_value_evaluations": 0,
+          "kernel_builds": 19,
+          "kernel_cache_hits": 0,
+          "transition_outcomes": 54,
+          "target_probability_evaluations": 45,
+          "score_node_evaluations": 0,
+          "immediate_expectation_terms": 0,
+          "bellman_expectation_terms": 0,
+          "new_full_policy_backups": 19,
+          "retained_value_reads": 0,
+          "occupancy_probability_terms": 18
+        },
+        "serialization_seconds": 0.00028989100246690214
+      }
+    ]
+  }
+}

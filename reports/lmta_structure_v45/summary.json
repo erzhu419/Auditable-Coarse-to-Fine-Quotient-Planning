@@ -1,0 +1,179 @@
+{
+  "schema": "acfqp.lmta_structure.v45",
+  "status": "complete",
+  "runtime": {
+    "device": "cpu",
+    "dtype": "float64",
+    "torch_threads": 1,
+    "torch": "2.8.0+cu128",
+    "numpy": "2.2.6",
+    "networkx": "2.8.8"
+  },
+  "counts": {
+    "checkpoint_files_loaded": 9,
+    "graph_generation_calls": 58,
+    "operator_constructions": 116,
+    "first_message_products": 116,
+    "encoder_node_calls": 1044,
+    "conditional_head_batches": 1044,
+    "conditional_q_vectors": 11832,
+    "flat_end_day_head_calls": 348
+  },
+  "coverage": {
+    "expected_encoder_conditions": 1044,
+    "actual_encoder_conditions": 1044,
+    "expected_q_conditions": 11832,
+    "actual_q_conditions": 11832
+  },
+  "structural_conditions": {
+    "all_graphs_covered": true,
+    "mean_constant": true,
+    "exact_initial_score_recoverable": true,
+    "score_variation_preserved": true
+  },
+  "initial_structural_information_restored": true,
+  "max_mean_constant_error": 3.3306690738754696e-16,
+  "max_weighted_readout_error": 1.3322676295501878e-15,
+  "encoder_diagnostics": [
+    {
+      "operator": "MEAN",
+      "method": "FLAT_DQN",
+      "conditions": 174,
+      "visible_conditions": 0,
+      "min_scaled_spread": 9.556452706551617e-16,
+      "median_scaled_spread": 9.856243802553713e-16,
+      "max_scaled_spread": 1.1945565883189523e-15
+    },
+    {
+      "operator": "MEAN",
+      "method": "BUDGET_HRL",
+      "conditions": 174,
+      "visible_conditions": 0,
+      "min_scaled_spread": 6.658466636321484e-16,
+      "median_scaled_spread": 7.995938839288964e-16,
+      "max_scaled_spread": 1.0380552898963859e-15
+    },
+    {
+      "operator": "MEAN",
+      "method": "LMTA_RI",
+      "conditions": 174,
+      "visible_conditions": 0,
+      "min_scaled_spread": 5.647952570462071e-16,
+      "median_scaled_spread": 7.954855579690814e-16,
+      "max_scaled_spread": 8.016170784892299e-16
+    },
+    {
+      "operator": "IC_SUM",
+      "method": "FLAT_DQN",
+      "conditions": 174,
+      "visible_conditions": 174,
+      "min_scaled_spread": 0.8337262537788619,
+      "median_scaled_spread": 0.8778130040817718,
+      "max_scaled_spread": 0.9074115654309433
+    },
+    {
+      "operator": "IC_SUM",
+      "method": "BUDGET_HRL",
+      "conditions": 174,
+      "visible_conditions": 174,
+      "min_scaled_spread": 0.8026004712417141,
+      "median_scaled_spread": 0.8420507419284455,
+      "max_scaled_spread": 0.8782026960442985
+    },
+    {
+      "operator": "IC_SUM",
+      "method": "LMTA_RI",
+      "conditions": 174,
+      "visible_conditions": 174,
+      "min_scaled_spread": 0.8012360338129803,
+      "median_scaled_spread": 0.8430950494959351,
+      "max_scaled_spread": 0.8821095875052517
+    }
+  ],
+  "q_diagnostics": [
+    {
+      "operator": "MEAN",
+      "method": "FLAT_DQN",
+      "conditions": 174,
+      "visible_conditions": 0,
+      "min_scaled_spread": 3.045950221917512e-16,
+      "median_scaled_spread": 4.621430307405179e-16,
+      "max_scaled_spread": 6.161907076540239e-16
+    },
+    {
+      "operator": "MEAN",
+      "method": "BUDGET_HRL",
+      "conditions": 174,
+      "visible_conditions": 0,
+      "min_scaled_spread": 2.008658972376756e-16,
+      "median_scaled_spread": 2.0549352538924366e-16,
+      "max_scaled_spread": 4.109870507784873e-16
+    },
+    {
+      "operator": "MEAN",
+      "method": "LMTA_RI",
+      "conditions": 5568,
+      "visible_conditions": 0,
+      "min_scaled_spread": 0.0,
+      "median_scaled_spread": 3.685481432743391e-16,
+      "max_scaled_spread": 7.936086497396346e-16
+    },
+    {
+      "operator": "IC_SUM",
+      "method": "FLAT_DQN",
+      "conditions": 174,
+      "visible_conditions": 174,
+      "min_scaled_spread": 0.8137942112943961,
+      "median_scaled_spread": 0.8658787651048453,
+      "max_scaled_spread": 0.9056883683614869
+    },
+    {
+      "operator": "IC_SUM",
+      "method": "BUDGET_HRL",
+      "conditions": 174,
+      "visible_conditions": 174,
+      "min_scaled_spread": 0.7729887945050019,
+      "median_scaled_spread": 0.8159454161308173,
+      "max_scaled_spread": 0.8581314144017155
+    },
+    {
+      "operator": "IC_SUM",
+      "method": "LMTA_RI",
+      "conditions": 5568,
+      "visible_conditions": 5568,
+      "min_scaled_spread": 0.7609008098743206,
+      "median_scaled_spread": 0.8092601838635902,
+      "max_scaled_spread": 0.8610446365472065
+    }
+  ],
+  "cost": {
+    "timing_seconds": {
+      "checkpoint_loading_seconds": 0.028016455995384604,
+      "graph_generation_seconds": 0.8475131499872077,
+      "analytic_score_seconds": 0.0591397438547574,
+      "MEAN_operator_seconds": 0.30641123102395795,
+      "message_diagnostic_seconds": 0.07650881301378831,
+      "MEAN_encoder_seconds": 1.1697564820642583,
+      "MEAN_head_seconds": 10.046765714214416,
+      "readout_summary_seconds": 0.6402829655562527,
+      "IC_SUM_operator_seconds": 0.5438870949146803,
+      "IC_SUM_encoder_seconds": 1.2184086650086101,
+      "IC_SUM_head_seconds": 9.966249565040926
+    },
+    "storage": {
+      "retained_input_file_bytes": 5796477,
+      "loaded_parameter_bytes": 4423776,
+      "loaded_goal_bytes": 98304,
+      "per_operator_bytes": 2000000,
+      "all_graph_operators_cached": false
+    }
+  },
+  "environment_samples": 0,
+  "environment_calls": 0,
+  "gradient_updates": 0,
+  "mcts_simulations": 0,
+  "training_benefit_tested": false,
+  "fixed_weights_adopted": false,
+  "interpretation": "Initial structural information only. Existing weights face a changed input distribution. Seed-conditional one-step scores are analytical descriptions, not policy returns. MEAN64 is a precision-controlled formula comparison, not a V44 float32 action replay.",
+  "wall_seconds_before_summary_serialization": 25.26790015300503
+}

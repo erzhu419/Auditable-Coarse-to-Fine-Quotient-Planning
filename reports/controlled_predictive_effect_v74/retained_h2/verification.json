@@ -1,0 +1,257 @@
+{
+  "schema": "acfqp.effect_retained_generalization.v74",
+  "complete": true,
+  "valid": true,
+  "observations": 16,
+  "fresh_observations": 0,
+  "reused_observations": 16,
+  "early_contracts_matched": 16,
+  "shared_contracts_matched": 16,
+  "errors": {},
+  "cases": [
+    {
+      "name": "v73_fresh_h2_00",
+      "valid": true,
+      "matches": {
+        "EARLY": true,
+        "SHARED": true
+      }
+    },
+    {
+      "name": "v73_fresh_h2_01",
+      "valid": true,
+      "matches": {
+        "EARLY": true,
+        "SHARED": true
+      }
+    },
+    {
+      "name": "v73_fresh_h2_02",
+      "valid": true,
+      "matches": {
+        "EARLY": true,
+        "SHARED": true
+      }
+    },
+    {
+      "name": "v73_fresh_h2_03",
+      "valid": true,
+      "matches": {
+        "EARLY": true,
+        "SHARED": true
+      }
+    },
+    {
+      "name": "v73_fresh_h2_04",
+      "valid": true,
+      "matches": {
+        "EARLY": true,
+        "SHARED": true
+      }
+    },
+    {
+      "name": "v73_fresh_h2_05",
+      "valid": true,
+      "matches": {
+        "EARLY": true,
+        "SHARED": true
+      }
+    },
+    {
+      "name": "v73_fresh_h2_06",
+      "valid": true,
+      "matches": {
+        "EARLY": true,
+        "SHARED": true
+      }
+    },
+    {
+      "name": "v73_fresh_h2_07",
+      "valid": true,
+      "matches": {
+        "EARLY": true,
+        "SHARED": true
+      }
+    },
+    {
+      "name": "v73_fresh_h2_08",
+      "valid": true,
+      "matches": {
+        "EARLY": true,
+        "SHARED": true
+      }
+    },
+    {
+      "name": "v73_fresh_h2_09",
+      "valid": true,
+      "matches": {
+        "EARLY": true,
+        "SHARED": true
+      }
+    },
+    {
+      "name": "v73_fresh_h2_10",
+      "valid": true,
+      "matches": {
+        "EARLY": true,
+        "SHARED": true
+      }
+    },
+    {
+      "name": "v73_fresh_h2_11",
+      "valid": true,
+      "matches": {
+        "EARLY": true,
+        "SHARED": true
+      }
+    },
+    {
+      "name": "v73_fresh_h2_12",
+      "valid": true,
+      "matches": {
+        "EARLY": true,
+        "SHARED": true
+      }
+    },
+    {
+      "name": "v73_fresh_h2_13",
+      "valid": true,
+      "matches": {
+        "EARLY": true,
+        "SHARED": true
+      }
+    },
+    {
+      "name": "v73_fresh_h2_14",
+      "valid": true,
+      "matches": {
+        "EARLY": true,
+        "SHARED": true
+      }
+    },
+    {
+      "name": "v73_fresh_h2_15",
+      "valid": true,
+      "matches": {
+        "EARLY": true,
+        "SHARED": true
+      }
+    }
+  ],
+  "source_fit_calls": 0,
+  "ground_calls": 0,
+  "retained_oracle_valid": true,
+  "oracle_reused": true,
+  "oracle_path": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_grouped_v73/fresh_h2/verification.json",
+  "predictions_frozen_before_oracle_read": true,
+  "prediction_costs": {
+    "EARLY": {
+      "seconds": 0.0199814549414441,
+      "counts": {
+        "compiled_programs": 16,
+        "full_board_materializations": 0,
+        "factorized_contexts": 76,
+        "candidate_predicate_evaluations": 193,
+        "contract_materializations": 98,
+        "effect_key_constructions": 590,
+        "effect_cache_lookups": 590,
+        "effect_cache_hits": 298,
+        "effect_cache_entries": 292,
+        "effect_score_aggregations": 292,
+        "effect_output_line_references": 1236,
+        "effect_vacancy_keys": 281,
+        "effect_exact_output_keys": 309,
+        "prepare_calls": 16,
+        "line_lookups": 1988,
+        "line_evaluations": 1561,
+        "line_summary_adjacent_tests": 4644,
+        "base_adjacent_tests": 432,
+        "context_status_evaluations": 16,
+        "factorized_action_expansions": 16,
+        "action_changed_tests": 64,
+        "factorized_action_afterstates": 60,
+        "line_cache_hits": 427,
+        "spawn_group_requests": 60,
+        "spawn_candidates": 236,
+        "patch_status_evaluations": 236,
+        "patched_line_inputs": 772,
+        "unaffected_line_summaries_reused": 2316,
+        "predicate_calls": 193,
+        "candidate_action_changed_tests": 772,
+        "candidate_action_predicate_evaluations": 292,
+        "terminal_predicate_evaluations": 292,
+        "cross_line_adjacent_tests": 873,
+        "terminal_spawn_rank_classifications": 584,
+        "predicate_materializations": 193,
+        "incoming_probability_evaluations": 236,
+        "incoming_group_probability_additions": 236,
+        "hole_neighbor_rank_reads": 101,
+        "contract_cache_lookups": 101,
+        "contract_fraction_accumulations": 594,
+        "terminal_probability_combinations": 594,
+        "spawn_groups": 113,
+        "contract_cache_hits": 3,
+        "vacancy_family_shortcuts": 25,
+        "base_hole_neighbor_reads": 10
+      }
+    },
+    "SHARED": {
+      "seconds": 0.015489758050534874,
+      "counts": {
+        "compiled_programs": 16,
+        "full_board_materializations": 0,
+        "factorized_contexts": 76,
+        "candidate_predicate_evaluations": 193,
+        "contract_materializations": 98,
+        "effect_key_constructions": 590,
+        "effect_cache_lookups": 590,
+        "effect_cache_hits": 298,
+        "effect_cache_entries": 292,
+        "effect_score_aggregations": 292,
+        "effect_output_line_references": 1236,
+        "effect_vacancy_keys": 281,
+        "effect_exact_output_keys": 309,
+        "successor_group_cache_lookups": 60,
+        "successor_group_cache_hits": 0,
+        "successor_group_materializations": 60,
+        "successor_group_cached_groups": 113,
+        "prepare_calls": 16,
+        "line_lookups": 1988,
+        "line_evaluations": 1561,
+        "line_summary_adjacent_tests": 4644,
+        "base_adjacent_tests": 432,
+        "context_status_evaluations": 16,
+        "factorized_action_expansions": 16,
+        "action_changed_tests": 64,
+        "factorized_action_afterstates": 60,
+        "line_cache_hits": 427,
+        "spawn_group_requests": 60,
+        "spawn_candidates": 236,
+        "patch_status_evaluations": 236,
+        "patched_line_inputs": 772,
+        "unaffected_line_summaries_reused": 2316,
+        "predicate_calls": 193,
+        "candidate_action_changed_tests": 772,
+        "candidate_action_predicate_evaluations": 292,
+        "terminal_predicate_evaluations": 292,
+        "cross_line_adjacent_tests": 873,
+        "terminal_spawn_rank_classifications": 584,
+        "predicate_materializations": 193,
+        "incoming_probability_evaluations": 236,
+        "incoming_group_probability_additions": 236,
+        "hole_neighbor_rank_reads": 101,
+        "contract_cache_lookups": 101,
+        "contract_fraction_accumulations": 594,
+        "terminal_probability_combinations": 594,
+        "spawn_groups": 113,
+        "contract_cache_hits": 3,
+        "vacancy_family_shortcuts": 25,
+        "base_hole_neighbor_reads": 10
+      }
+    }
+  },
+  "prediction_seconds": 0.037572050001472235,
+  "verification_seconds": 0.00245448702480644,
+  "wall_seconds_before_write": 0.06079006096115336,
+  "scope": "The same sixteen H2 observations and exact nested ground contracts retained by V73 are reused. EARLY and SHARED predictions are saved before oracle access. No new observations, ground transitions, fitting, or fresh generalization trial are executed."
+}

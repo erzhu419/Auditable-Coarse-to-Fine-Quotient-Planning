@@ -1,0 +1,1857 @@
+{
+  "schema": "acfqp.lmta_components_analysis.v48",
+  "protocol": {
+    "methods": [
+      "BUDGET_HRL",
+      "LMTA_RI"
+    ],
+    "runs": 3,
+    "panel_size": 20,
+    "source_checkpoint": 128,
+    "cells": [
+      "LS",
+      "AL"
+    ],
+    "anchor_episode": 0,
+    "expected_hybrid_events": 240,
+    "expected_anchor_events": 6,
+    "nodes": 500,
+    "p": 0.01,
+    "budget": 70,
+    "horizon": 10,
+    "goal_rule": "live_search_on_hybrid_state"
+  },
+  "integrity": {
+    "passed": true,
+    "candidate": {
+      "passed": true,
+      "expected_events": 246,
+      "actual_events": 246,
+      "missing_count": 0,
+      "duplicate_identity_count": 0,
+      "phase_counts": {
+        "restore_anchor": 6,
+        "evaluation": 240
+      },
+      "anchors": [
+        {
+          "method": "BUDGET_HRL",
+          "run_id": 0,
+          "passed": true,
+          "checks": {
+            "raw_return": true,
+            "counters": true,
+            "daily_budgets": true,
+            "daily_durations": true,
+            "original_model_work": true
+          }
+        },
+        {
+          "method": "BUDGET_HRL",
+          "run_id": 1,
+          "passed": true,
+          "checks": {
+            "raw_return": true,
+            "counters": true,
+            "daily_budgets": true,
+            "daily_durations": true,
+            "original_model_work": true
+          }
+        },
+        {
+          "method": "BUDGET_HRL",
+          "run_id": 2,
+          "passed": true,
+          "checks": {
+            "raw_return": true,
+            "counters": true,
+            "daily_budgets": true,
+            "daily_durations": true,
+            "original_model_work": true
+          }
+        },
+        {
+          "method": "LMTA_RI",
+          "run_id": 0,
+          "passed": true,
+          "checks": {
+            "raw_return": true,
+            "counters": true,
+            "daily_budgets": true,
+            "daily_durations": true,
+            "subgoals": true,
+            "search_values": true,
+            "original_model_work": true
+          }
+        },
+        {
+          "method": "LMTA_RI",
+          "run_id": 1,
+          "passed": true,
+          "checks": {
+            "raw_return": true,
+            "counters": true,
+            "daily_budgets": true,
+            "daily_durations": true,
+            "subgoals": true,
+            "search_values": true,
+            "original_model_work": true
+          }
+        },
+        {
+          "method": "LMTA_RI",
+          "run_id": 2,
+          "passed": true,
+          "checks": {
+            "raw_return": true,
+            "counters": true,
+            "daily_budgets": true,
+            "daily_durations": true,
+            "subgoals": true,
+            "search_values": true,
+            "original_model_work": true
+          }
+        }
+      ],
+      "errors": []
+    },
+    "weighted_source": {
+      "passed": true,
+      "manifest_complete": true,
+      "expected_events": 1872,
+      "actual_events": 1872,
+      "phase_event_counts": {
+        "evaluation": 720,
+        "train": 1152
+      },
+      "missing_count": 0,
+      "duplicate_identity_count": 0,
+      "unexpected_identity_count": 0,
+      "errors": [],
+      "frozen_binding_errors": []
+    },
+    "heuristic_source": {
+      "passed": true,
+      "manifest_complete": true,
+      "expected_events": 1912,
+      "actual_events": 1912,
+      "phase_event_counts": {
+        "heuristic": 40,
+        "evaluation": 720,
+        "train": 1152
+      },
+      "missing_count": 0,
+      "duplicate_identity_count": 0,
+      "unexpected_identity_count": 0,
+      "errors": [],
+      "frozen_binding_errors": []
+    },
+    "source_graphs_match": true
+  },
+  "valid_component_estimates": true,
+  "cell_means": {
+    "BUDGET_HRL": {
+      "LL": {
+        "run_values": [
+          240.0,
+          249.65,
+          235.55
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": 241.73333333333335,
+        "sample_std": 7.208039493047559,
+        "ci_95": [
+          223.8275706008701,
+          259.6390960657966
+        ],
+        "all_runs_positive": true,
+        "all_positive_and_ci_lower_positive": true
+      },
+      "LS": {
+        "run_values": [
+          320.0,
+          318.25,
+          321.1
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": 319.78333333333336,
+        "sample_std": 1.4373007108233695,
+        "ci_95": [
+          316.21288043445185,
+          323.3537862322149
+        ],
+        "all_runs_positive": true,
+        "all_positive_and_ci_lower_positive": true
+      },
+      "AL": {
+        "run_values": [
+          240.35,
+          249.95,
+          235.55
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": 241.95,
+        "sample_std": 7.332121111929334,
+        "ci_95": [
+          223.73600143873753,
+          260.1639985612625
+        ],
+        "all_runs_positive": true,
+        "all_positive_and_ci_lower_positive": true
+      },
+      "AS": {
+        "panel_mean": 320.6,
+        "panel_size": 20,
+        "ci_95": null,
+        "n_independent_training_runs": 0,
+        "source": "One retained V44 AVERAGE_SCORE panel, shared across all comparisons."
+      }
+    },
+    "LMTA_RI": {
+      "LL": {
+        "run_values": [
+          245.15,
+          229.05,
+          255.45
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": 243.21666666666667,
+        "sample_std": 13.305763162379414,
+        "ci_95": [
+          210.1633186113852,
+          276.27001472194814
+        ],
+        "all_runs_positive": true,
+        "all_positive_and_ci_lower_positive": true
+      },
+      "LS": {
+        "run_values": [
+          303.5,
+          298.5,
+          307.0
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": 303.0,
+        "sample_std": 4.272001872658765,
+        "ci_95": [
+          292.3877590434615,
+          313.6122409565385
+        ],
+        "all_runs_positive": true,
+        "all_positive_and_ci_lower_positive": true
+      },
+      "AL": {
+        "run_values": [
+          223.95,
+          240.1,
+          283.85
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": 249.3,
+        "sample_std": 30.99165210181608,
+        "ci_95": [
+          172.31246826444055,
+          326.28753173555947
+        ],
+        "all_runs_positive": true,
+        "all_positive_and_ci_lower_positive": true
+      },
+      "AS": {
+        "panel_mean": 320.6,
+        "panel_size": 20,
+        "ci_95": null,
+        "n_independent_training_runs": 0,
+        "source": "One retained V44 AVERAGE_SCORE panel, shared across all comparisons."
+      }
+    }
+  },
+  "component_effects": {
+    "BUDGET_HRL": {
+      "node_substitution_LS_minus_LL": {
+        "run_values": [
+          80.0,
+          68.6,
+          85.55
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": 78.05,
+        "sample_std": 8.641614432500448,
+        "ci_95": [
+          56.58303969782201,
+          99.51696030217798
+        ],
+        "all_runs_positive": true,
+        "all_positive_and_ci_lower_positive": true
+      },
+      "node_substitution_AS_minus_AL": {
+        "run_values": [
+          80.25,
+          70.65,
+          85.05
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": 78.65,
+        "sample_std": 7.3321211119293395,
+        "ci_95": [
+          60.43600143873752,
+          96.86399856126249
+        ],
+        "all_runs_positive": true,
+        "all_positive_and_ci_lower_positive": true
+      },
+      "budget_substitution_AL_minus_LL": {
+        "run_values": [
+          0.35,
+          0.3,
+          0.0
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": 0.21666666666666665,
+        "sample_std": 0.18929694486000911,
+        "ci_95": [
+          -0.25357301277915434,
+          0.6869063461124876
+        ],
+        "all_runs_positive": false,
+        "all_positive_and_ci_lower_positive": false
+      },
+      "budget_substitution_AS_minus_LS": {
+        "run_values": [
+          0.6,
+          2.35,
+          -0.5
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": 0.8166666666666667,
+        "sample_std": 1.437300710823359,
+        "ci_95": [
+          -2.7537862322148117,
+          4.387119565548145
+        ],
+        "all_runs_positive": false,
+        "all_positive_and_ci_lower_positive": false
+      },
+      "interaction_AS_minus_AL_minus_LS_plus_LL": {
+        "run_values": [
+          0.25,
+          2.05,
+          -0.5
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": 0.6,
+        "sample_std": 1.3105342422081157,
+        "ci_95": [
+          -2.6555475336089716,
+          3.8555475336089717
+        ],
+        "all_runs_positive": false,
+        "all_positive_and_ci_lower_positive": false
+      },
+      "hybrid_LS_minus_AS": {
+        "run_values": [
+          -0.6,
+          -2.35,
+          0.5
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": -0.8166666666666667,
+        "sample_std": 1.437300710823359,
+        "ci_95": [
+          -4.387119565548145,
+          2.7537862322148117
+        ],
+        "all_runs_positive": false,
+        "all_positive_and_ci_lower_positive": false
+      },
+      "hybrid_AL_minus_AS": {
+        "run_values": [
+          -80.25,
+          -70.65,
+          -85.05
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": -78.65,
+        "sample_std": 7.3321211119293395,
+        "ci_95": [
+          -96.86399856126249,
+          -60.43600143873752
+        ],
+        "all_runs_positive": false,
+        "all_positive_and_ci_lower_positive": false
+      }
+    },
+    "LMTA_RI": {
+      "node_substitution_LS_minus_LL": {
+        "run_values": [
+          58.35,
+          69.45,
+          51.55
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": 59.78333333333333,
+        "sample_std": 9.035670054474842,
+        "ci_95": [
+          37.33748460008162,
+          82.22918206658504
+        ],
+        "all_runs_positive": true,
+        "all_positive_and_ci_lower_positive": true
+      },
+      "node_substitution_AS_minus_AL": {
+        "run_values": [
+          96.65,
+          80.5,
+          36.75
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": 71.3,
+        "sample_std": 30.991652101816065,
+        "ci_95": [
+          -5.687531735559418,
+          148.2875317355594
+        ],
+        "all_runs_positive": true,
+        "all_positive_and_ci_lower_positive": false
+      },
+      "budget_substitution_AL_minus_LL": {
+        "run_values": [
+          -21.2,
+          11.05,
+          28.4
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": 6.083333333333333,
+        "sample_std": 25.170237053578443,
+        "ci_95": [
+          -56.44300174514968,
+          68.60966841181634
+        ],
+        "all_runs_positive": false,
+        "all_positive_and_ci_lower_positive": false
+      },
+      "budget_substitution_AS_minus_LS": {
+        "run_values": [
+          17.1,
+          22.1,
+          13.6
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": 17.6,
+        "sample_std": 4.272001872658766,
+        "ci_95": [
+          6.987759043461468,
+          28.212240956538537
+        ],
+        "all_runs_positive": true,
+        "all_positive_and_ci_lower_positive": true
+      },
+      "interaction_AS_minus_AL_minus_LS_plus_LL": {
+        "run_values": [
+          38.3,
+          11.05,
+          -14.8
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": 11.516666666666666,
+        "sample_std": 26.55307577915096,
+        "ci_95": [
+          -54.444830239279426,
+          77.47816357261276
+        ],
+        "all_runs_positive": false,
+        "all_positive_and_ci_lower_positive": false
+      },
+      "hybrid_LS_minus_AS": {
+        "run_values": [
+          -17.1,
+          -22.1,
+          -13.6
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": -17.6,
+        "sample_std": 4.272001872658766,
+        "ci_95": [
+          -28.212240956538537,
+          -6.987759043461468
+        ],
+        "all_runs_positive": false,
+        "all_positive_and_ci_lower_positive": false
+      },
+      "hybrid_AL_minus_AS": {
+        "run_values": [
+          -96.65,
+          -80.5,
+          -36.75
+        ],
+        "complete": true,
+        "n_independent_training_runs": 3,
+        "mean": -71.3,
+        "sample_std": 30.991652101816065,
+        "ci_95": [
+          -148.2875317355594,
+          5.687531735559418
+        ],
+        "all_runs_positive": false,
+        "all_positive_and_ci_lower_positive": false
+      }
+    }
+  },
+  "accounting": {
+    "new_components": {
+      "all_actual_events": {
+        "event_count": 246,
+        "wall_seconds": 112.8230696200917,
+        "counters": {
+          "primitive_selections": 17220,
+          "day_transitions": 2460,
+          "propagation_draws": 256173
+        },
+        "model_work": {
+          "component_budget_head_calls": 1197,
+          "component_low_head_calls": 8820,
+          "component_search_requests": 1230,
+          "latent_recurrent_calls": 114637,
+          "mcts_simulations": 184500,
+          "root_searches": 1230,
+          "component_goal_embedding_calls": 1230,
+          "component_budget_state_encoder_calls": 630,
+          "component_score_calls": 8400,
+          "component_score_candidate_evaluations": 2943631
+        }
+      },
+      "by_phase_method_run": [
+        {
+          "phase": "restore_anchor",
+          "method": "BUDGET_HRL",
+          "run_id": 0,
+          "event_count": 1,
+          "wall_seconds": 0.27052211700356565,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 962
+          },
+          "model_work": {
+            "component_budget_head_calls": 9,
+            "component_low_head_calls": 70
+          }
+        },
+        {
+          "phase": "restore_anchor",
+          "method": "LMTA_RI",
+          "run_id": 0,
+          "event_count": 1,
+          "wall_seconds": 0.714380433986662,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 909
+          },
+          "model_work": {
+            "component_search_requests": 10,
+            "latent_recurrent_calls": 697,
+            "mcts_simulations": 1500,
+            "root_searches": 10,
+            "component_goal_embedding_calls": 10,
+            "component_budget_state_encoder_calls": 10,
+            "component_budget_head_calls": 10,
+            "component_low_head_calls": 70
+          }
+        },
+        {
+          "phase": "restore_anchor",
+          "method": "BUDGET_HRL",
+          "run_id": 1,
+          "event_count": 1,
+          "wall_seconds": 0.03938979102531448,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 897
+          },
+          "model_work": {
+            "component_budget_head_calls": 9,
+            "component_low_head_calls": 70
+          }
+        },
+        {
+          "phase": "restore_anchor",
+          "method": "LMTA_RI",
+          "run_id": 1,
+          "event_count": 1,
+          "wall_seconds": 0.8560397530090995,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 928
+          },
+          "model_work": {
+            "component_search_requests": 10,
+            "latent_recurrent_calls": 1084,
+            "mcts_simulations": 1500,
+            "root_searches": 10,
+            "component_goal_embedding_calls": 10,
+            "component_budget_state_encoder_calls": 10,
+            "component_budget_head_calls": 10,
+            "component_low_head_calls": 70
+          }
+        },
+        {
+          "phase": "restore_anchor",
+          "method": "LMTA_RI",
+          "run_id": 2,
+          "event_count": 1,
+          "wall_seconds": 0.7691498420026619,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 1004
+          },
+          "model_work": {
+            "component_search_requests": 10,
+            "latent_recurrent_calls": 1018,
+            "mcts_simulations": 1500,
+            "root_searches": 10,
+            "component_goal_embedding_calls": 10,
+            "component_budget_state_encoder_calls": 10,
+            "component_budget_head_calls": 10,
+            "component_low_head_calls": 70
+          }
+        },
+        {
+          "phase": "restore_anchor",
+          "method": "BUDGET_HRL",
+          "run_id": 2,
+          "event_count": 1,
+          "wall_seconds": 0.03874729698873125,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 851
+          },
+          "model_work": {
+            "component_budget_head_calls": 9,
+            "component_low_head_calls": 70
+          }
+        },
+        {
+          "phase": "evaluation",
+          "method": "BUDGET_HRL",
+          "run_id": 0,
+          "event_count": 40,
+          "wall_seconds": 2.2565099259081762,
+          "counters": {
+            "primitive_selections": 2800,
+            "day_transitions": 400,
+            "propagation_draws": 42271
+          },
+          "model_work": {
+            "component_budget_head_calls": 180,
+            "component_score_calls": 1400,
+            "component_score_candidate_evaluations": 465444,
+            "component_low_head_calls": 1400
+          }
+        },
+        {
+          "phase": "evaluation",
+          "method": "LMTA_RI",
+          "run_id": 0,
+          "event_count": 40,
+          "wall_seconds": 26.337939496093895,
+          "counters": {
+            "primitive_selections": 2800,
+            "day_transitions": 400,
+            "propagation_draws": 39210
+          },
+          "model_work": {
+            "component_search_requests": 400,
+            "latent_recurrent_calls": 27877,
+            "mcts_simulations": 60000,
+            "root_searches": 400,
+            "component_goal_embedding_calls": 400,
+            "component_budget_state_encoder_calls": 200,
+            "component_budget_head_calls": 200,
+            "component_score_calls": 1400,
+            "component_score_candidate_evaluations": 544521,
+            "component_low_head_calls": 1400
+          }
+        },
+        {
+          "phase": "evaluation",
+          "method": "LMTA_RI",
+          "run_id": 1,
+          "event_count": 40,
+          "wall_seconds": 39.20238345503458,
+          "counters": {
+            "primitive_selections": 2800,
+            "day_transitions": 400,
+            "propagation_draws": 39068
+          },
+          "model_work": {
+            "component_search_requests": 400,
+            "latent_recurrent_calls": 43266,
+            "mcts_simulations": 60000,
+            "root_searches": 400,
+            "component_goal_embedding_calls": 400,
+            "component_low_head_calls": 1400,
+            "component_budget_state_encoder_calls": 200,
+            "component_budget_head_calls": 200,
+            "component_score_calls": 1400,
+            "component_score_candidate_evaluations": 458439
+          }
+        },
+        {
+          "phase": "evaluation",
+          "method": "BUDGET_HRL",
+          "run_id": 1,
+          "event_count": 40,
+          "wall_seconds": 2.5583214450452942,
+          "counters": {
+            "primitive_selections": 2800,
+            "day_transitions": 400,
+            "propagation_draws": 42842
+          },
+          "model_work": {
+            "component_low_head_calls": 1400,
+            "component_budget_head_calls": 180,
+            "component_score_calls": 1400,
+            "component_score_candidate_evaluations": 465003
+          }
+        },
+        {
+          "phase": "evaluation",
+          "method": "BUDGET_HRL",
+          "run_id": 2,
+          "event_count": 40,
+          "wall_seconds": 2.880950973078143,
+          "counters": {
+            "primitive_selections": 2800,
+            "day_transitions": 400,
+            "propagation_draws": 41852
+          },
+          "model_work": {
+            "component_budget_head_calls": 180,
+            "component_score_calls": 1400,
+            "component_score_candidate_evaluations": 465858,
+            "component_low_head_calls": 1400
+          }
+        },
+        {
+          "phase": "evaluation",
+          "method": "LMTA_RI",
+          "run_id": 2,
+          "event_count": 40,
+          "wall_seconds": 36.89873509091558,
+          "counters": {
+            "primitive_selections": 2800,
+            "day_transitions": 400,
+            "propagation_draws": 45379
+          },
+          "model_work": {
+            "component_search_requests": 400,
+            "latent_recurrent_calls": 40695,
+            "mcts_simulations": 60000,
+            "root_searches": 400,
+            "component_goal_embedding_calls": 400,
+            "component_budget_state_encoder_calls": 200,
+            "component_budget_head_calls": 200,
+            "component_score_calls": 1400,
+            "component_score_candidate_evaluations": 544366,
+            "component_low_head_calls": 1400
+          }
+        }
+      ],
+      "runner_costs": {
+        "whole_runner_seconds": 114.57986958601396,
+        "graph_generation_seconds": 0.13914347399258986,
+        "policy_load_seconds": 1.5303152429987676,
+        "loaded_policy_bytes": 4975530,
+        "unitemized_runner_seconds": 0.08734124893089756
+      },
+      "scope": "All 240 hybrid and six anchor episodes are newly charged once, including failed or duplicate records. Policy loads and graph construction are additional runner components; whole-run wall time contains them.",
+      "by_phase_cell_method_run": [
+        {
+          "phase": "restore_anchor",
+          "cell": "LL",
+          "method": "BUDGET_HRL",
+          "run_id": 0,
+          "event_count": 1,
+          "wall_seconds": 0.27052211700356565,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 962
+          },
+          "model_work": {
+            "component_budget_head_calls": 9,
+            "component_low_head_calls": 70
+          }
+        },
+        {
+          "phase": "restore_anchor",
+          "cell": "LL",
+          "method": "LMTA_RI",
+          "run_id": 0,
+          "event_count": 1,
+          "wall_seconds": 0.714380433986662,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 909
+          },
+          "model_work": {
+            "component_search_requests": 10,
+            "latent_recurrent_calls": 697,
+            "mcts_simulations": 1500,
+            "root_searches": 10,
+            "component_goal_embedding_calls": 10,
+            "component_budget_state_encoder_calls": 10,
+            "component_budget_head_calls": 10,
+            "component_low_head_calls": 70
+          }
+        },
+        {
+          "phase": "restore_anchor",
+          "cell": "LL",
+          "method": "BUDGET_HRL",
+          "run_id": 1,
+          "event_count": 1,
+          "wall_seconds": 0.03938979102531448,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 897
+          },
+          "model_work": {
+            "component_budget_head_calls": 9,
+            "component_low_head_calls": 70
+          }
+        },
+        {
+          "phase": "restore_anchor",
+          "cell": "LL",
+          "method": "LMTA_RI",
+          "run_id": 1,
+          "event_count": 1,
+          "wall_seconds": 0.8560397530090995,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 928
+          },
+          "model_work": {
+            "component_search_requests": 10,
+            "latent_recurrent_calls": 1084,
+            "mcts_simulations": 1500,
+            "root_searches": 10,
+            "component_goal_embedding_calls": 10,
+            "component_budget_state_encoder_calls": 10,
+            "component_budget_head_calls": 10,
+            "component_low_head_calls": 70
+          }
+        },
+        {
+          "phase": "restore_anchor",
+          "cell": "LL",
+          "method": "LMTA_RI",
+          "run_id": 2,
+          "event_count": 1,
+          "wall_seconds": 0.7691498420026619,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 1004
+          },
+          "model_work": {
+            "component_search_requests": 10,
+            "latent_recurrent_calls": 1018,
+            "mcts_simulations": 1500,
+            "root_searches": 10,
+            "component_goal_embedding_calls": 10,
+            "component_budget_state_encoder_calls": 10,
+            "component_budget_head_calls": 10,
+            "component_low_head_calls": 70
+          }
+        },
+        {
+          "phase": "restore_anchor",
+          "cell": "LL",
+          "method": "BUDGET_HRL",
+          "run_id": 2,
+          "event_count": 1,
+          "wall_seconds": 0.03874729698873125,
+          "counters": {
+            "primitive_selections": 70,
+            "day_transitions": 10,
+            "propagation_draws": 851
+          },
+          "model_work": {
+            "component_budget_head_calls": 9,
+            "component_low_head_calls": 70
+          }
+        },
+        {
+          "phase": "evaluation",
+          "cell": "LS",
+          "method": "BUDGET_HRL",
+          "run_id": 0,
+          "event_count": 20,
+          "wall_seconds": 1.5697916448989417,
+          "counters": {
+            "primitive_selections": 1400,
+            "day_transitions": 200,
+            "propagation_draws": 24937
+          },
+          "model_work": {
+            "component_budget_head_calls": 180,
+            "component_score_calls": 1400,
+            "component_score_candidate_evaluations": 465444
+          }
+        },
+        {
+          "phase": "evaluation",
+          "cell": "AL",
+          "method": "BUDGET_HRL",
+          "run_id": 0,
+          "event_count": 20,
+          "wall_seconds": 0.6867182810092345,
+          "counters": {
+            "primitive_selections": 1400,
+            "day_transitions": 200,
+            "propagation_draws": 17334
+          },
+          "model_work": {
+            "component_low_head_calls": 1400
+          }
+        },
+        {
+          "phase": "evaluation",
+          "cell": "LS",
+          "method": "LMTA_RI",
+          "run_id": 0,
+          "event_count": 20,
+          "wall_seconds": 13.035194155061617,
+          "counters": {
+            "primitive_selections": 1400,
+            "day_transitions": 200,
+            "propagation_draws": 23783
+          },
+          "model_work": {
+            "component_search_requests": 200,
+            "latent_recurrent_calls": 13890,
+            "mcts_simulations": 30000,
+            "root_searches": 200,
+            "component_goal_embedding_calls": 200,
+            "component_budget_state_encoder_calls": 200,
+            "component_budget_head_calls": 200,
+            "component_score_calls": 1400,
+            "component_score_candidate_evaluations": 544521
+          }
+        },
+        {
+          "phase": "evaluation",
+          "cell": "AL",
+          "method": "LMTA_RI",
+          "run_id": 0,
+          "event_count": 20,
+          "wall_seconds": 13.302745341032278,
+          "counters": {
+            "primitive_selections": 1400,
+            "day_transitions": 200,
+            "propagation_draws": 15427
+          },
+          "model_work": {
+            "component_search_requests": 200,
+            "latent_recurrent_calls": 13987,
+            "mcts_simulations": 30000,
+            "root_searches": 200,
+            "component_goal_embedding_calls": 200,
+            "component_low_head_calls": 1400
+          }
+        },
+        {
+          "phase": "evaluation",
+          "cell": "AL",
+          "method": "LMTA_RI",
+          "run_id": 1,
+          "event_count": 20,
+          "wall_seconds": 20.678364730032627,
+          "counters": {
+            "primitive_selections": 1400,
+            "day_transitions": 200,
+            "propagation_draws": 16983
+          },
+          "model_work": {
+            "component_search_requests": 200,
+            "latent_recurrent_calls": 21584,
+            "mcts_simulations": 30000,
+            "root_searches": 200,
+            "component_goal_embedding_calls": 200,
+            "component_low_head_calls": 1400
+          }
+        },
+        {
+          "phase": "evaluation",
+          "cell": "LS",
+          "method": "LMTA_RI",
+          "run_id": 1,
+          "event_count": 20,
+          "wall_seconds": 18.52401872500195,
+          "counters": {
+            "primitive_selections": 1400,
+            "day_transitions": 200,
+            "propagation_draws": 22085
+          },
+          "model_work": {
+            "component_search_requests": 200,
+            "latent_recurrent_calls": 21682,
+            "mcts_simulations": 30000,
+            "root_searches": 200,
+            "component_goal_embedding_calls": 200,
+            "component_budget_state_encoder_calls": 200,
+            "component_budget_head_calls": 200,
+            "component_score_calls": 1400,
+            "component_score_candidate_evaluations": 458439
+          }
+        },
+        {
+          "phase": "evaluation",
+          "cell": "AL",
+          "method": "BUDGET_HRL",
+          "run_id": 1,
+          "event_count": 20,
+          "wall_seconds": 1.1068862270039972,
+          "counters": {
+            "primitive_selections": 1400,
+            "day_transitions": 200,
+            "propagation_draws": 18080
+          },
+          "model_work": {
+            "component_low_head_calls": 1400
+          }
+        },
+        {
+          "phase": "evaluation",
+          "cell": "LS",
+          "method": "BUDGET_HRL",
+          "run_id": 1,
+          "event_count": 20,
+          "wall_seconds": 1.451435218041297,
+          "counters": {
+            "primitive_selections": 1400,
+            "day_transitions": 200,
+            "propagation_draws": 24762
+          },
+          "model_work": {
+            "component_budget_head_calls": 180,
+            "component_score_calls": 1400,
+            "component_score_candidate_evaluations": 465003
+          }
+        },
+        {
+          "phase": "evaluation",
+          "cell": "LS",
+          "method": "BUDGET_HRL",
+          "run_id": 2,
+          "event_count": 20,
+          "wall_seconds": 1.95918569600326,
+          "counters": {
+            "primitive_selections": 1400,
+            "day_transitions": 200,
+            "propagation_draws": 25040
+          },
+          "model_work": {
+            "component_budget_head_calls": 180,
+            "component_score_calls": 1400,
+            "component_score_candidate_evaluations": 465858
+          }
+        },
+        {
+          "phase": "evaluation",
+          "cell": "AL",
+          "method": "BUDGET_HRL",
+          "run_id": 2,
+          "event_count": 20,
+          "wall_seconds": 0.9217652770748828,
+          "counters": {
+            "primitive_selections": 1400,
+            "day_transitions": 200,
+            "propagation_draws": 16812
+          },
+          "model_work": {
+            "component_low_head_calls": 1400
+          }
+        },
+        {
+          "phase": "evaluation",
+          "cell": "LS",
+          "method": "LMTA_RI",
+          "run_id": 2,
+          "event_count": 20,
+          "wall_seconds": 18.44149182495312,
+          "counters": {
+            "primitive_selections": 1400,
+            "day_transitions": 200,
+            "propagation_draws": 24091
+          },
+          "model_work": {
+            "component_search_requests": 200,
+            "latent_recurrent_calls": 20364,
+            "mcts_simulations": 30000,
+            "root_searches": 200,
+            "component_goal_embedding_calls": 200,
+            "component_budget_state_encoder_calls": 200,
+            "component_budget_head_calls": 200,
+            "component_score_calls": 1400,
+            "component_score_candidate_evaluations": 544366
+          }
+        },
+        {
+          "phase": "evaluation",
+          "cell": "AL",
+          "method": "LMTA_RI",
+          "run_id": 2,
+          "event_count": 20,
+          "wall_seconds": 18.45724326596246,
+          "counters": {
+            "primitive_selections": 1400,
+            "day_transitions": 200,
+            "propagation_draws": 21288
+          },
+          "model_work": {
+            "component_search_requests": 200,
+            "latent_recurrent_calls": 20331,
+            "mcts_simulations": 30000,
+            "root_searches": 200,
+            "component_goal_embedding_calls": 200,
+            "component_low_head_calls": 1400
+          }
+        }
+      ]
+    },
+    "retained_weighted_V46": {
+      "all_actual_events": {
+        "event_count": 1872,
+        "wall_seconds": 840.1737399346894,
+        "counters": {
+          "primitive_selections": 131040,
+          "day_transitions": 18720,
+          "propagation_draws": 1730061
+        },
+        "model_work": {
+          "LL_gradient_steps": 11511,
+          "LL_replay_samples": 92088,
+          "HL_gradient_steps": 4182,
+          "HL_replay_samples": 30552,
+          "latent_recurrent_calls": 712380,
+          "mcts_simulations": 936000,
+          "root_searches": 6240,
+          "HL_replay_games": 2904,
+          "HL_replay_transitions": 11615,
+          "MTS_micro_replay_samples": 2904,
+          "budget_gradient_steps": 363
+        }
+      },
+      "by_phase_method_run": [
+        {
+          "phase": "evaluation",
+          "method": "FLAT_DQN",
+          "run_id": 0,
+          "event_count": 80,
+          "wall_seconds": 4.397232549003093,
+          "counters": {
+            "primitive_selections": 5600,
+            "day_transitions": 800,
+            "propagation_draws": 66532
+          },
+          "model_work": {}
+        },
+        {
+          "phase": "train",
+          "method": "FLAT_DQN",
+          "run_id": 0,
+          "event_count": 128,
+          "wall_seconds": 12.678530513017904,
+          "counters": {
+            "primitive_selections": 8960,
+            "day_transitions": 1280,
+            "propagation_draws": 122727
+          },
+          "model_work": {
+            "LL_gradient_steps": 1280,
+            "LL_replay_samples": 10240
+          }
+        },
+        {
+          "phase": "evaluation",
+          "method": "BUDGET_HRL",
+          "run_id": 0,
+          "event_count": 80,
+          "wall_seconds": 3.9009993768995628,
+          "counters": {
+            "primitive_selections": 5600,
+            "day_transitions": 800,
+            "propagation_draws": 66549
+          },
+          "model_work": {}
+        },
+        {
+          "phase": "train",
+          "method": "BUDGET_HRL",
+          "run_id": 0,
+          "event_count": 128,
+          "wall_seconds": 16.487749611842446,
+          "counters": {
+            "primitive_selections": 8960,
+            "day_transitions": 1280,
+            "propagation_draws": 121633
+          },
+          "model_work": {
+            "LL_gradient_steps": 1279,
+            "HL_gradient_steps": 1273,
+            "LL_replay_samples": 10232,
+            "HL_replay_samples": 10184
+          }
+        },
+        {
+          "phase": "evaluation",
+          "method": "LMTA_RI",
+          "run_id": 0,
+          "event_count": 80,
+          "wall_seconds": 92.45251968709636,
+          "counters": {
+            "primitive_selections": 5600,
+            "day_transitions": 800,
+            "propagation_draws": 85387
+          },
+          "model_work": {
+            "latent_recurrent_calls": 83699,
+            "mcts_simulations": 120000,
+            "root_searches": 800
+          }
+        },
+        {
+          "phase": "train",
+          "method": "LMTA_RI",
+          "run_id": 0,
+          "event_count": 128,
+          "wall_seconds": 156.52521152803092,
+          "counters": {
+            "primitive_selections": 8960,
+            "day_transitions": 1280,
+            "propagation_draws": 122273
+          },
+          "model_work": {
+            "latent_recurrent_calls": 125124,
+            "mcts_simulations": 192000,
+            "root_searches": 1280,
+            "LL_gradient_steps": 1279,
+            "LL_replay_samples": 10232,
+            "HL_gradient_steps": 121,
+            "HL_replay_games": 968,
+            "HL_replay_transitions": 3854,
+            "MTS_micro_replay_samples": 968,
+            "budget_gradient_steps": 121
+          }
+        },
+        {
+          "phase": "evaluation",
+          "method": "BUDGET_HRL",
+          "run_id": 1,
+          "event_count": 80,
+          "wall_seconds": 3.7008950601157267,
+          "counters": {
+            "primitive_selections": 5600,
+            "day_transitions": 800,
+            "propagation_draws": 75631
+          },
+          "model_work": {}
+        },
+        {
+          "phase": "train",
+          "method": "BUDGET_HRL",
+          "run_id": 1,
+          "event_count": 128,
+          "wall_seconds": 15.036875655321637,
+          "counters": {
+            "primitive_selections": 8960,
+            "day_transitions": 1280,
+            "propagation_draws": 123523
+          },
+          "model_work": {
+            "LL_gradient_steps": 1279,
+            "HL_gradient_steps": 1273,
+            "LL_replay_samples": 10232,
+            "HL_replay_samples": 10184
+          }
+        },
+        {
+          "phase": "evaluation",
+          "method": "LMTA_RI",
+          "run_id": 1,
+          "event_count": 80,
+          "wall_seconds": 80.18665840299218,
+          "counters": {
+            "primitive_selections": 5600,
+            "day_transitions": 800,
+            "propagation_draws": 63972
+          },
+          "model_work": {
+            "latent_recurrent_calls": 95774,
+            "mcts_simulations": 120000,
+            "root_searches": 800
+          }
+        },
+        {
+          "phase": "train",
+          "method": "LMTA_RI",
+          "run_id": 1,
+          "event_count": 128,
+          "wall_seconds": 154.01156568303122,
+          "counters": {
+            "primitive_selections": 8960,
+            "day_transitions": 1280,
+            "propagation_draws": 126311
+          },
+          "model_work": {
+            "latent_recurrent_calls": 156508,
+            "mcts_simulations": 192000,
+            "root_searches": 1280,
+            "LL_gradient_steps": 1279,
+            "LL_replay_samples": 10232,
+            "HL_gradient_steps": 121,
+            "HL_replay_games": 968,
+            "HL_replay_transitions": 3906,
+            "MTS_micro_replay_samples": 968,
+            "budget_gradient_steps": 121
+          }
+        },
+        {
+          "phase": "evaluation",
+          "method": "FLAT_DQN",
+          "run_id": 1,
+          "event_count": 80,
+          "wall_seconds": 4.129530100850388,
+          "counters": {
+            "primitive_selections": 5600,
+            "day_transitions": 800,
+            "propagation_draws": 64026
+          },
+          "model_work": {}
+        },
+        {
+          "phase": "train",
+          "method": "FLAT_DQN",
+          "run_id": 1,
+          "event_count": 128,
+          "wall_seconds": 11.701660137216095,
+          "counters": {
+            "primitive_selections": 8960,
+            "day_transitions": 1280,
+            "propagation_draws": 116320
+          },
+          "model_work": {
+            "LL_gradient_steps": 1277,
+            "LL_replay_samples": 10216
+          }
+        },
+        {
+          "phase": "evaluation",
+          "method": "LMTA_RI",
+          "run_id": 2,
+          "event_count": 80,
+          "wall_seconds": 84.93165975788725,
+          "counters": {
+            "primitive_selections": 5600,
+            "day_transitions": 800,
+            "propagation_draws": 74556
+          },
+          "model_work": {
+            "latent_recurrent_calls": 95381,
+            "mcts_simulations": 120000,
+            "root_searches": 800
+          }
+        },
+        {
+          "phase": "train",
+          "method": "LMTA_RI",
+          "run_id": 2,
+          "event_count": 128,
+          "wall_seconds": 160.64670246170135,
+          "counters": {
+            "primitive_selections": 8960,
+            "day_transitions": 1280,
+            "propagation_draws": 121986
+          },
+          "model_work": {
+            "latent_recurrent_calls": 155894,
+            "mcts_simulations": 192000,
+            "root_searches": 1280,
+            "LL_gradient_steps": 1279,
+            "LL_replay_samples": 10232,
+            "HL_gradient_steps": 121,
+            "HL_replay_games": 968,
+            "HL_replay_transitions": 3855,
+            "MTS_micro_replay_samples": 968,
+            "budget_gradient_steps": 121
+          }
+        },
+        {
+          "phase": "evaluation",
+          "method": "FLAT_DQN",
+          "run_id": 2,
+          "event_count": 80,
+          "wall_seconds": 4.553835429076571,
+          "counters": {
+            "primitive_selections": 5600,
+            "day_transitions": 800,
+            "propagation_draws": 65693
+          },
+          "model_work": {}
+        },
+        {
+          "phase": "train",
+          "method": "FLAT_DQN",
+          "run_id": 2,
+          "event_count": 128,
+          "wall_seconds": 12.914070274215192,
+          "counters": {
+            "primitive_selections": 8960,
+            "day_transitions": 1280,
+            "propagation_draws": 110844
+          },
+          "model_work": {
+            "LL_gradient_steps": 1280,
+            "LL_replay_samples": 10240
+          }
+        },
+        {
+          "phase": "evaluation",
+          "method": "BUDGET_HRL",
+          "run_id": 2,
+          "event_count": 80,
+          "wall_seconds": 3.8444516010640655,
+          "counters": {
+            "primitive_selections": 5600,
+            "day_transitions": 800,
+            "propagation_draws": 78290
+          },
+          "model_work": {}
+        },
+        {
+          "phase": "train",
+          "method": "BUDGET_HRL",
+          "run_id": 2,
+          "event_count": 128,
+          "wall_seconds": 18.073592105327407,
+          "counters": {
+            "primitive_selections": 8960,
+            "day_transitions": 1280,
+            "propagation_draws": 123808
+          },
+          "model_work": {
+            "LL_gradient_steps": 1279,
+            "HL_gradient_steps": 1273,
+            "LL_replay_samples": 10232,
+            "HL_replay_samples": 10184
+          }
+        }
+      ],
+      "runner_costs": {
+        "whole_runner_seconds": 844.9637186229811,
+        "graph_generation_seconds": 0.8600689389859326,
+        "all_model_initialization_seconds": 1.6868947879702318,
+        "all_model_save_seconds": 0.027649769966956228,
+        "saved_policy_bytes": 5796477,
+        "unitemized_runner_seconds": 2.215365191368619
+      },
+      "scope": "Every raw event is charged once, including duplicate or incomplete runs. Heuristic evaluations are sampled once and reused without multiplying their costs. Event wall spans exclude graph generation, initialization and other runner overhead, which are retained separately under runner_costs. Whole-run time contains these components; model-work counters are not additional environment samples."
+    },
+    "retained_heuristic_source_V44": {
+      "all_actual_events": {
+        "event_count": 1912,
+        "wall_seconds": 807.8280951015768,
+        "counters": {
+          "primitive_selections": 133840,
+          "day_transitions": 19120,
+          "propagation_draws": 1384102
+        },
+        "model_work": {
+          "LL_gradient_steps": 11508,
+          "LL_replay_samples": 92064,
+          "HL_gradient_steps": 4182,
+          "HL_replay_samples": 30552,
+          "latent_recurrent_calls": 698299,
+          "mcts_simulations": 936000,
+          "root_searches": 6240,
+          "HL_replay_games": 2904,
+          "HL_replay_transitions": 11706,
+          "MTS_micro_replay_samples": 2904,
+          "budget_gradient_steps": 363
+        }
+      },
+      "by_phase_method_run": [
+        {
+          "phase": "heuristic",
+          "method": "AVERAGE_RANDOM",
+          "run_id": null,
+          "event_count": 20,
+          "wall_seconds": 0.17351011495338753,
+          "counters": {
+            "primitive_selections": 1400,
+            "day_transitions": 200,
+            "propagation_draws": 17607
+          },
+          "model_work": {}
+        },
+        {
+          "phase": "heuristic",
+          "method": "AVERAGE_SCORE",
+          "run_id": null,
+          "event_count": 20,
+          "wall_seconds": 1.0904151189897675,
+          "counters": {
+            "primitive_selections": 1400,
+            "day_transitions": 200,
+            "propagation_draws": 25027
+          },
+          "model_work": {}
+        },
+        {
+          "phase": "evaluation",
+          "method": "FLAT_DQN",
+          "run_id": 0,
+          "event_count": 80,
+          "wall_seconds": 4.039203059975989,
+          "counters": {
+            "primitive_selections": 5600,
+            "day_transitions": 800,
+            "propagation_draws": 39779
+          },
+          "model_work": {}
+        },
+        {
+          "phase": "train",
+          "method": "FLAT_DQN",
+          "run_id": 0,
+          "event_count": 128,
+          "wall_seconds": 12.232974931044737,
+          "counters": {
+            "primitive_selections": 8960,
+            "day_transitions": 1280,
+            "propagation_draws": 82878
+          },
+          "model_work": {
+            "LL_gradient_steps": 1280,
+            "LL_replay_samples": 10240
+          }
+        },
+        {
+          "phase": "evaluation",
+          "method": "BUDGET_HRL",
+          "run_id": 0,
+          "event_count": 80,
+          "wall_seconds": 3.365554412943311,
+          "counters": {
+            "primitive_selections": 5600,
+            "day_transitions": 800,
+            "propagation_draws": 56472
+          },
+          "model_work": {}
+        },
+        {
+          "phase": "train",
+          "method": "BUDGET_HRL",
+          "run_id": 0,
+          "event_count": 128,
+          "wall_seconds": 14.382101153983967,
+          "counters": {
+            "primitive_selections": 8960,
+            "day_transitions": 1280,
+            "propagation_draws": 109072
+          },
+          "model_work": {
+            "LL_gradient_steps": 1279,
+            "HL_gradient_steps": 1273,
+            "LL_replay_samples": 10232,
+            "HL_replay_samples": 10184
+          }
+        },
+        {
+          "phase": "evaluation",
+          "method": "LMTA_RI",
+          "run_id": 0,
+          "event_count": 80,
+          "wall_seconds": 68.02284033896285,
+          "counters": {
+            "primitive_selections": 5600,
+            "day_transitions": 800,
+            "propagation_draws": 64528
+          },
+          "model_work": {
+            "latent_recurrent_calls": 84365,
+            "mcts_simulations": 120000,
+            "root_searches": 800
+          }
+        },
+        {
+          "phase": "train",
+          "method": "LMTA_RI",
+          "run_id": 0,
+          "event_count": 128,
+          "wall_seconds": 158.30896478684735,
+          "counters": {
+            "primitive_selections": 8960,
+            "day_transitions": 1280,
+            "propagation_draws": 109566
+          },
+          "model_work": {
+            "latent_recurrent_calls": 130965,
+            "mcts_simulations": 192000,
+            "root_searches": 1280,
+            "LL_gradient_steps": 1279,
+            "LL_replay_samples": 10232,
+            "HL_gradient_steps": 121,
+            "HL_replay_games": 968,
+            "HL_replay_transitions": 3878,
+            "MTS_micro_replay_samples": 968,
+            "budget_gradient_steps": 121
+          }
+        },
+        {
+          "phase": "evaluation",
+          "method": "BUDGET_HRL",
+          "run_id": 1,
+          "event_count": 80,
+          "wall_seconds": 3.308005085098557,
+          "counters": {
+            "primitive_selections": 5600,
+            "day_transitions": 800,
+            "propagation_draws": 54572
+          },
+          "model_work": {}
+        },
+        {
+          "phase": "train",
+          "method": "BUDGET_HRL",
+          "run_id": 1,
+          "event_count": 128,
+          "wall_seconds": 12.826411306043155,
+          "counters": {
+            "primitive_selections": 8960,
+            "day_transitions": 1280,
+            "propagation_draws": 108700
+          },
+          "model_work": {
+            "LL_gradient_steps": 1279,
+            "HL_gradient_steps": 1273,
+            "LL_replay_samples": 10232,
+            "HL_replay_samples": 10184
+          }
+        },
+        {
+          "phase": "evaluation",
+          "method": "LMTA_RI",
+          "run_id": 1,
+          "event_count": 80,
+          "wall_seconds": 72.13054933107924,
+          "counters": {
+            "primitive_selections": 5600,
+            "day_transitions": 800,
+            "propagation_draws": 55473
+          },
+          "model_work": {
+            "latent_recurrent_calls": 93578,
+            "mcts_simulations": 120000,
+            "root_searches": 800
+          }
+        },
+        {
+          "phase": "train",
+          "method": "LMTA_RI",
+          "run_id": 1,
+          "event_count": 128,
+          "wall_seconds": 144.92796282988274,
+          "counters": {
+            "primitive_selections": 8960,
+            "day_transitions": 1280,
+            "propagation_draws": 110018
+          },
+          "model_work": {
+            "latent_recurrent_calls": 153903,
+            "mcts_simulations": 192000,
+            "root_searches": 1280,
+            "LL_gradient_steps": 1279,
+            "LL_replay_samples": 10232,
+            "HL_gradient_steps": 121,
+            "HL_replay_games": 968,
+            "HL_replay_transitions": 3932,
+            "MTS_micro_replay_samples": 968,
+            "budget_gradient_steps": 121
+          }
+        },
+        {
+          "phase": "evaluation",
+          "method": "FLAT_DQN",
+          "run_id": 1,
+          "event_count": 80,
+          "wall_seconds": 3.8879139091877732,
+          "counters": {
+            "primitive_selections": 5600,
+            "day_transitions": 800,
+            "propagation_draws": 29163
+          },
+          "model_work": {}
+        },
+        {
+          "phase": "train",
+          "method": "FLAT_DQN",
+          "run_id": 1,
+          "event_count": 128,
+          "wall_seconds": 11.407655223942129,
+          "counters": {
+            "primitive_selections": 8960,
+            "day_transitions": 1280,
+            "propagation_draws": 85132
+          },
+          "model_work": {
+            "LL_gradient_steps": 1277,
+            "LL_replay_samples": 10216
+          }
+        },
+        {
+          "phase": "evaluation",
+          "method": "LMTA_RI",
+          "run_id": 2,
+          "event_count": 80,
+          "wall_seconds": 86.90434992688824,
+          "counters": {
+            "primitive_selections": 5600,
+            "day_transitions": 800,
+            "propagation_draws": 60166
+          },
+          "model_work": {
+            "latent_recurrent_calls": 90236,
+            "mcts_simulations": 120000,
+            "root_searches": 800
+          }
+        },
+        {
+          "phase": "train",
+          "method": "LMTA_RI",
+          "run_id": 2,
+          "event_count": 128,
+          "wall_seconds": 178.59060629896703,
+          "counters": {
+            "primitive_selections": 8960,
+            "day_transitions": 1280,
+            "propagation_draws": 110031
+          },
+          "model_work": {
+            "latent_recurrent_calls": 145252,
+            "mcts_simulations": 192000,
+            "root_searches": 1280,
+            "LL_gradient_steps": 1279,
+            "LL_replay_samples": 10232,
+            "HL_gradient_steps": 121,
+            "HL_replay_games": 968,
+            "HL_replay_transitions": 3896,
+            "MTS_micro_replay_samples": 968,
+            "budget_gradient_steps": 121
+          }
+        },
+        {
+          "phase": "evaluation",
+          "method": "FLAT_DQN",
+          "run_id": 2,
+          "event_count": 80,
+          "wall_seconds": 4.042473933979636,
+          "counters": {
+            "primitive_selections": 5600,
+            "day_transitions": 800,
+            "propagation_draws": 17016
+          },
+          "model_work": {}
+        },
+        {
+          "phase": "train",
+          "method": "FLAT_DQN",
+          "run_id": 2,
+          "event_count": 128,
+          "wall_seconds": 11.208449075842509,
+          "counters": {
+            "primitive_selections": 8960,
+            "day_transitions": 1280,
+            "propagation_draws": 84291
+          },
+          "model_work": {
+            "LL_gradient_steps": 1277,
+            "LL_replay_samples": 10216
+          }
+        },
+        {
+          "phase": "evaluation",
+          "method": "BUDGET_HRL",
+          "run_id": 2,
+          "event_count": 80,
+          "wall_seconds": 3.174702987074852,
+          "counters": {
+            "primitive_selections": 5600,
+            "day_transitions": 800,
+            "propagation_draws": 56191
+          },
+          "model_work": {}
+        },
+        {
+          "phase": "train",
+          "method": "BUDGET_HRL",
+          "run_id": 2,
+          "event_count": 128,
+          "wall_seconds": 13.803451275889529,
+          "counters": {
+            "primitive_selections": 8960,
+            "day_transitions": 1280,
+            "propagation_draws": 108420
+          },
+          "model_work": {
+            "LL_gradient_steps": 1279,
+            "HL_gradient_steps": 1273,
+            "LL_replay_samples": 10232,
+            "HL_replay_samples": 10184
+          }
+        }
+      ],
+      "runner_costs": {
+        "whole_runner_seconds": 812.911651774979,
+        "graph_generation_seconds": 1.8252249660145026,
+        "all_model_initialization_seconds": 0.7176153459877241,
+        "all_model_save_seconds": 0.026937715942040086,
+        "saved_policy_bytes": 5796477,
+        "unitemized_runner_seconds": 2.5137786454579327
+      },
+      "scope": "Every raw event is charged once, including duplicate or incomplete runs. Heuristic evaluations are sampled once and reused without multiplying their costs. Event wall spans exclude graph generation, initialization and other runner overhead, which are retained separately under runner_costs. Whole-run time contains these components; model-work counters are not additional environment samples."
+    },
+    "scope": "Each source event ledger is retained once. The shared AS panel is not resampled or multiplied by methods, cells, or training runs. No historical fee is refunded.",
+    "analysis_wall_seconds_before_serialization": 0.09217984799761325
+  },
+  "inference_scope": "LL uses the frozen V46 endpoint at 128. LS uses learned budgets and score nodes; AL uses average budgets and learned nodes. AS is one retained average-budget/score-node panel, with no independent training-run CI of its own. Effects first pair the same 20 fixed graph/flow episodes, then use three training-run means for descriptive t intervals (df=2). Intervals are conditional on these policies and this panel. LMTA searches live on each hybrid state. These are fixed-policy component substitutions, not explanations of the training trajectory or an adoption/continuation Gate."
+}

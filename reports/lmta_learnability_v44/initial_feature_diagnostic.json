@@ -1,0 +1,131 @@
+{
+  "schema": "acfqp.lmta_initial_feature_diagnostic.v44",
+  "scope": "Read-only diagnostic on run0 final policies; no new policy or training intervention.",
+  "graph_seed": 440900,
+  "graph_nodes": 500,
+  "graph_edges": 2522,
+  "initial_features": [
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    1.0
+  ],
+  "legal_seed_nodes": 500,
+  "environment_samples": 0,
+  "environment_select_calls": 0,
+  "environment_transition_calls": 0,
+  "graph_generation_calls": 1,
+  "low_network_forward_calls_by_method": {
+    "FLAT_DQN": 1,
+    "BUDGET_HRL": 1,
+    "LMTA_RI": 1
+  },
+  "device": "cpu",
+  "torch_threads": 1,
+  "torch_version": "2.8.0+cu128",
+  "numpy_version": "2.2.6",
+  "networkx_version": "2.8.8",
+  "model_versions": {
+    "agent": "lmta_agent_v44",
+    "shared_models": "lmta_models_v43",
+    "baseline": "lmta_baselines_v44",
+    "environment_graph_generator": "lmta_aim_v43"
+  },
+  "mathematical_result": "For constant node features X=1*x and row-stochastic A, AX=X. Shared affine layers and pointwise ReLU preserve identical rows at both message-passing layers, for every choice of weights. A shared node head, including any fixed shared goal, therefore gives identical initial seed-node Q in exact arithmetic. This does not constrain END_DAY versus seed Q or later nonuniform status features.",
+  "float32_adjacency_max_row_sum_error": 1.1920928955078125e-07,
+  "first_aggregate_max_feature_row_spread": 2.384185791015625e-07,
+  "methods": {
+    "FLAT_DQN": {
+      "checkpoint_path": "reports/lmta_learnability_v44/models/FLAT_DQN_run0.pt",
+      "saved_method": "FLAT_DQN",
+      "run_id": 0,
+      "training_episodes": 128,
+      "saved_network_key": "ll",
+      "architecture": {
+        "width": 128,
+        "goal_size": 0,
+        "wait": true
+      },
+      "legal_seed_q": {
+        "min": 46.124855041503906,
+        "max": 46.12486267089844,
+        "range": 7.62939453125e-06,
+        "max_abs": 46.12486267089844,
+        "range_over_max_abs": 1.654074199783713e-07
+      },
+      "encoder_max_feature_row_spread": 9.5367431640625e-07,
+      "encoder_max_abs": 2.7033982276916504,
+      "encoder_row_spread_over_max_abs": 3.5276871407160885e-07,
+      "legal_seed_node_count": 500,
+      "end_day_q_separate_from_node_spread": 51.238529205322266
+    },
+    "BUDGET_HRL": {
+      "checkpoint_path": "reports/lmta_learnability_v44/models/BUDGET_HRL_run0.pt",
+      "saved_method": "BUDGET_HRL",
+      "run_id": 0,
+      "training_episodes": 128,
+      "saved_network_key": "ll",
+      "architecture": {
+        "width": 128,
+        "goal_size": 0,
+        "wait": false
+      },
+      "legal_seed_q": {
+        "min": 17.686992645263672,
+        "max": 17.686994552612305,
+        "range": 1.9073486328125e-06,
+        "max_abs": 17.686994552612305,
+        "range_over_max_abs": 1.0783904677184353e-07
+      },
+      "encoder_max_feature_row_spread": 3.5762786865234375e-07,
+      "encoder_max_abs": 1.6673855781555176,
+      "encoder_row_spread_over_max_abs": 2.1448420409630513e-07,
+      "legal_seed_node_count": 500
+    },
+    "LMTA_RI": {
+      "checkpoint_path": "reports/lmta_learnability_v44/models/LMTA_RI_run0.pt",
+      "saved_method": "LMTA_RI",
+      "run_id": 0,
+      "training_episodes": 128,
+      "saved_network_key": "low",
+      "architecture": {
+        "width": 128,
+        "goal_size": 128,
+        "wait": false
+      },
+      "legal_seed_q": {
+        "min": 17.7116756439209,
+        "max": 17.7116756439209,
+        "range": 0.0,
+        "max_abs": 17.7116756439209,
+        "range_over_max_abs": 0.0
+      },
+      "encoder_max_feature_row_spread": 4.76837158203125e-07,
+      "encoder_max_abs": 1.9657093286514282,
+      "encoder_row_spread_over_max_abs": 2.4257765441356395e-07,
+      "legal_seed_node_count": 500,
+      "fixed_goal_z": 0
+    }
+  },
+  "exact_heuristic_score": {
+    "formula": "sum over outgoing inactive targets of 1 / target indegree",
+    "interpretation": "Exact expected one-step number of newly influenced neighbors from one seed in the all-inactive state; not full-horizon Q.",
+    "min": 0.0,
+    "max": 3.0095238095238095,
+    "range": 3.0095238095238095,
+    "max_abs": 3.0095238095238095,
+    "range_over_max_abs": 1.0
+  },
+  "timing_seconds": {
+    "graph_generation": 0.01756773199304007,
+    "checkpoint_loading_and_network_construction": 0.01559089103830047,
+    "low_network_forward": 0.006721210986142978,
+    "total_before_serialization": 0.04648755199741572
+  },
+  "limitations": [
+    "One held-out graph and run0 checkpoints only; this is not a primary V44 endpoint.",
+    "Float32 row normalization and matrix arithmetic can create small score differences and affect exact argmax ties.",
+    "Initial-state structural blindness does not establish a causal explanation of performance or collapse of all later-state representations."
+  ]
+}
